@@ -3,15 +3,14 @@ use dioxus::prelude::*;
 pub mod components;
 pub mod icons;
 pub mod sitemap;
-pub mod snippets;
 pub mod utils;
 
-fn main() {
-    let mut dom = VirtualDom::new(App);
-    dioxus::ssr::render_vdom(&mut dom);
+#[derive(PartialEq, Props)]
+pub struct AppProps {
+    pub route: String,
 }
 
-static App: FC<()> = |cx| {
+pub static App: FC<AppProps> = |cx| {
     let url = use_state(cx, || "");
 
     use components::*;
@@ -20,14 +19,17 @@ static App: FC<()> = |cx| {
         "tutorial" => rsx!(in cx, Tutorial {}),
         "blog" => rsx!(in cx, Blog {}),
         "docs" => rsx!(in cx, Docs {}),
-        _ => rsx!(in cx, Home {}),
+        "home" | _ => rsx!(in cx, Home {}),
     };
 
     cx.render(rsx! {
+        link { href: "https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css", rel: "stylesheet" }
+        style { {[include_str!("./components/prism/prsim.css")]} }
         div {
             NavBar {}
             {body}
             Footer {}
         }
+        script { {[include_str!("./components/prism/js.js")]} }
     })
 };

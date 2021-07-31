@@ -1,5 +1,5 @@
 [package]
-name = "dioxus-docs-site"
+name = "dioxus_docs_site"
 version = "0.0.0"
 authors = ["Jonathan Kelley <jkelleyrtp@gmail.com>"]
 edition = "2018"
@@ -7,5 +7,20 @@ edition = "2018"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-dioxus = { path = "../../dioxus" }
-codeblocks = { path = "../syntec-dioxus" }
+dioxus = { path = "../../dioxus", features = ["web"] }
+
+# codeblocks = { path = "../syntec-dioxus", default-features = false, features = [
+#     "Rust",
+#     "wasm",
+# ] }
+
+
+serde = { version = "1.0.126", features = ["derive"] }
+serde_json = "1.0.64"
+# fern = { version = "0.6.0", features = ["colored"] }
+log = "0.4.14"
+wasm-logger = "0.2.0"
+
+
+# [profile.dev]
+# opt-level = 3

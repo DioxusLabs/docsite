@@ -1,10 +1,12 @@
-mod blog;
-mod community;
-mod docs;
-mod footer;
-mod homepage;
-mod navbar;
-mod tutorial;
+pub mod blog;
+pub mod community;
+pub mod docs;
+pub mod footer;
+pub mod hero;
+pub mod homepage;
+pub mod navbar;
+pub mod snippets;
+pub mod tutorial;
 
 pub use blog::*;
 pub use community::*;

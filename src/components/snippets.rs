@@ -55,23 +55,10 @@ pub fn build_snippets() -> Vec<Snippet> {
     snips
 }
 
-// use crate::snippets;
-// static Snips: &[FC<()>] = &[
-//     snippets::Simple,
-//     snippets::Stateful,
-//     snippets::AdvancedRendering,
-//     snippets::ErrorHandling,
-//     snippets::GlobalState,
-//     snippets::Tasks,
-//     snippets::Suspense,
-// ];
 static SnippetCode: &str = include_str!("../snippets/mod.rs");
 
 #[test]
 fn render_s() {
     let snips = build_snippets();
     dbg!(&snips[0]);
-    // let mut dom = VirtualDom::new(Home);
-
-    // dioxus::desktop::launch(Home, |c| c);
 }

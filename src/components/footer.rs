@@ -2,7 +2,7 @@ use crate::icons::*;
 use crate::sitemap::SECTIONS;
 use dioxus::prelude::*;
 
-pub fn Footer(cx: Context<()>) -> DomTree {
+pub static Footer: FC<()> = |(cx, props)| {
     let sections = SECTIONS.iter().map(|(section, raw_links)| {
         let links = raw_links.iter().map(|(link_name, href)| {
             rsx! (
@@ -53,7 +53,7 @@ pub fn Footer(cx: Context<()>) -> DomTree {
             }
         }
     })
-}
+};
 
 #[derive(PartialEq, Props)]
 struct CategoryProps {
@@ -61,8 +61,8 @@ struct CategoryProps {
     links: &'static [(&'static str, &'static str)],
 }
 
-static Category: FC<CategoryProps> = |cx| {
-    let links = cx.props.links.iter().map(|(link_name, href)| {
+static Category: FC<CategoryProps> = |(cx, props)| {
+    let links = props.links.iter().map(|(link_name, href)| {
         rsx! {
             li {
                 a { href: "{href}", "{link_name}"}
@@ -72,7 +72,7 @@ static Category: FC<CategoryProps> = |cx| {
     cx.render(rsx! {
         div { class: "lg:w-1/4 md:w-1/2 w-full px-4",
             h2 { class: "title-font font-medium text-gray-900 tracking-widest text-sm mb-3",
-                "{cx.name}"
+                "{props.name}"
             }
             nav { class: "list-none mb-10",
                 {links}

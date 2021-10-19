@@ -1,7 +1,7 @@
 use crate::icons;
 use dioxus::prelude::*;
 
-pub static NavBar: FC<()> = |cx| {
+pub static NavBar: FC<()> = |(cx, props)| {
     cx.render(rsx! {
         header { class: "text-gray-400 bg-gray-900 body-font",
             div { class: "container mx-auto flex flex-wrap p-5 flex-col md:flex-row items-center",

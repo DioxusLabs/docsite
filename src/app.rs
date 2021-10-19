@@ -1,4 +1,4 @@
-static App: FC<()> = |cx| {
+static App: FC<()> = |(cx, props)| {
     use_initialize(cx);
 
     let url = use_state(cx, || "");

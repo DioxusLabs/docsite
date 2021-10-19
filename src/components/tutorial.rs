@@ -1,9 +1,6 @@
 use dioxus::prelude::*;
 
-pub static Tutorial: FC<()> = |cx| {
-    rsx! { in cx,
-        div {
-
-        }
-    }
+pub static Tutorial: FC<()> = |(cx, props)| {
+    //
+    rsx!(cx, div {})
 };

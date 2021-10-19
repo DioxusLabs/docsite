@@ -2,10 +2,15 @@ use dioxus::prelude::*;
 use dioxus_docs_site::*;
 
 fn main() {
-    let mut dom = VirtualDom::new(AppContainer);
-    dom.rebuild_in_place();
+    let mut dom = VirtualDom::new_with_props(
+        App,
+        AppProps {
+            route: "".to_string(),
+        },
+    );
+    dom.rebuild();
 
-    let out = dioxus::ssr::render_vdom(&dom, |c| c);
+    let out = dioxus::ssr::render_vdom(&dom, |c| c.pre_render(true));
 
     use std::fs::File;
     use std::io::Write;
@@ -14,13 +19,16 @@ fn main() {
     file.write_all(out.as_bytes()).unwrap();
 }
 
-static AppContainer: FC<()> = |cx| {
+static AppContainer: FC<()> = |(cx, props)| {
     cx.render(rsx! {
-        head {}
-        body {
-            App {
-                route: "home".to_string()
-            }
+        div {
+            "hello world!"
         }
+        // head {}
+        // body {
+        //     App {
+        //         route: "home".to_string()
+        //     }
+        // }
     })
 };

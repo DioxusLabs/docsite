@@ -10,16 +10,16 @@ pub struct AppProps {
     pub route: String,
 }
 
-pub static App: FC<AppProps> = |cx| {
+pub static App: FC<AppProps> = |(cx, props)| {
     let url = use_state(cx, || "");
 
     use components::*;
     let body = match *url {
-        "community" => rsx!(in cx, Community {}),
-        "tutorial" => rsx!(in cx, Tutorial {}),
-        "blog" => rsx!(in cx, Blog {}),
-        "docs" => rsx!(in cx, Docs {}),
-        "home" | _ => rsx!(in cx, Home {}),
+        "community" => rsx!(cx, Community {}),
+        "tutorial" => rsx!(cx, Tutorial {}),
+        "blog" => rsx!(cx, Blog {}),
+        "docs" => rsx!(cx, Docs {}),
+        "home" | _ => rsx!(cx, Home {}),
     };
 
     cx.render(rsx! {

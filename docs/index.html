@@ -383,7 +383,7 @@ https://prismjs.com/download.html#themes=prism-okaidia&languages=markup+css+clik
                     </div>
                     <div class="flex flex-col md:w-1/2 md:pl-12">
                         <div class="pt-4">
-                            <pre><code class="language-rust">pub static Simple: FC<()> = |cx| {
+                            <pre><code class="language-rust">pub static Simple: FC<()> = |(cx, props)| {
     cx.render(rsx! {
         div { "Hello world!"}
     })
@@ -410,7 +410,7 @@ https://prismjs.com/download.html#themes=prism-okaidia&languages=markup+css+clik
                     </div>
                     <div class="flex flex-col md:w-1/2 md:pl-12">
                         <div class="pt-4">
-                            <pre><code class="language-rust">pub static Stateful: FC<()> = |cx| {
+                            <pre><code class="language-rust">pub static Stateful: FC<()> = |(cx, props)| {
     let mut count = use_state(cx, || 0);
 
     cx.render(rsx! {
@@ -439,7 +439,7 @@ https://prismjs.com/download.html#themes=prism-okaidia&languages=markup+css+clik
                     </div>
                     <div class="flex flex-col md:w-1/2 md:pl-12">
                         <div class="pt-4">
-                            <pre><code class="language-rust">pub static AdvancedRendering: FC<()> = |cx| {
+                            <pre><code class="language-rust">pub static AdvancedRendering: FC<()> = |(cx, props)| {
     let should_show = use_state(cx, || true);
 
     let button_text = match *should_show {
@@ -482,7 +482,7 @@ https://prismjs.com/download.html#themes=prism-okaidia&languages=markup+css+clik
                     </div>
                     <div class="flex flex-col md:w-1/2 md:pl-12">
                         <div class="pt-4">
-                            <pre><code class="language-rust">pub static ErrorHandling: FC<()> = |cx| {
+                            <pre><code class="language-rust">pub static ErrorHandling: FC<()> = |(cx, props)| {
     let items = vec!["a", "b", "c", "d", "e"];
     let first_item = items.first()?;
     
@@ -508,12 +508,12 @@ https://prismjs.com/download.html#themes=prism-okaidia&languages=markup+css+clik
                     </div>
                     <div class="flex flex-col md:w-1/2 md:pl-12">
                         <div class="pt-4">
-                            <pre><code class="language-rust">pub static GlobalState: FC<()> = |cx| {
+                            <pre><code class="language-rust">pub static GlobalState: FC<()> = |(cx, props)| {
     struct SharedState(&'static str);
 
     cx.use_provide_context(|| SharedState("world!"));
 
-    static Child: FC<()> = |cx| {
+    static Child: FC<()> = |(cx, props)| {
         let name = cx.use_context::<SharedState>().0;
         rsx!(in cx, "{name}")
     };
@@ -542,7 +542,7 @@ https://prismjs.com/download.html#themes=prism-okaidia&languages=markup+css+clik
                     </div>
                     <div class="flex flex-col md:w-1/2 md:pl-12">
                         <div class="pt-4">
-                            <pre><code class="language-rust">pub static Tasks: FC<()> = |cx| {
+                            <pre><code class="language-rust">pub static Tasks: FC<()> = |(cx, props)| {
     let count = use_state(cx, || 0);
     let count_async = count.for_async();
 
@@ -576,7 +576,7 @@ https://prismjs.com/download.html#themes=prism-okaidia&languages=markup+css+clik
                     </div>
                     <div class="flex flex-col md:w-1/2 md:pl-12">
                         <div class="pt-4">
-                            <pre><code class="language-rust">pub static Suspense: FC<()> = |cx| {
+                            <pre><code class="language-rust">pub static Suspense: FC<()> = |(cx, props)| {
     #[derive(serde::Deserialize)]
     struct DogApi {
         message: String,

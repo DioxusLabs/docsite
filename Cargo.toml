@@ -7,20 +7,15 @@ edition = "2018"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-dioxus = { path = "../../dioxus", features = ["web"] }
-
-# codeblocks = { path = "../syntec-dioxus", default-features = false, features = [
-#     "Rust",
-#     "wasm",
-# ] }
-
-
+dioxus = { path = "../../dioxus" }
 serde = { version = "1.0.126", features = ["derive"] }
 serde_json = "1.0.64"
-# fern = { version = "0.6.0", features = ["colored"] }
 log = "0.4.14"
 wasm-logger = "0.2.0"
+wasm-bindgen = { version = "0.2.78", features = ["enable-interning"] }
+dioxus_markdown = { path = "../markdown-to-diouxs" }
 
-
-# [profile.dev]
-# opt-level = 3
+[features]
+default = ["ssr"]
+web = ["dioxus/web"]
+ssr = ["dioxus/ssr"]

@@ -5,6 +5,7 @@ pub mod footer;
 pub mod hero;
 pub mod homepage;
 pub mod navbar;
+mod roadmap;
 pub mod snippets;
 pub mod tutorial;
 

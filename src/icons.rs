@@ -1,7 +1,7 @@
 use dioxus::prelude::*;
 
 
-pub static ExternalLinkIcon: FC<()> = |cx| {
+pub static ExternalLinkIcon: FC<()> = |(cx, props)| {
     cx.render(rsx! {
         svg { 
             width: "15",
@@ -21,7 +21,7 @@ pub static ExternalLinkIcon: FC<()> = |cx| {
     })
 };
 
-pub static Stacks: FC<()> = |cx| {
+pub static Stacks: FC<()> = |(cx, props)| {
     cx.render(rsx!{
         svg { 
             class: "w-10 h-10 text-white p-2 bg-indigo-500 rounded-full",
@@ -40,7 +40,7 @@ pub static Stacks: FC<()> = |cx| {
 };
 
 
-pub static ArrowRight: FC<()> = |cx| {
+pub static ArrowRight: FC<()> = |(cx, props)| {
     cx.render(rsx! {
         svg { 
             class: "w-4 h-4 ml-1",
@@ -58,7 +58,7 @@ pub static ArrowRight: FC<()> = |cx| {
 };
 
 
-pub static Icon1: FC<()> = |cx| {
+pub static Icon1: FC<()> = |(cx, props)| {
 cx.render(rsx!(
 svg { class: "w-6 h-6",
     stroke_linecap: "round",
@@ -72,7 +72,7 @@ svg { class: "w-6 h-6",
     }
 })) };
 
-pub static Icon2: FC<()> = |cx| {
+pub static Icon2: FC<()> = |(cx, props)| {
 cx.render(rsx!(svg { class: "w-6 h-6",
     stroke_linejoin: "round",
     stroke_width: "2",
@@ -95,7 +95,7 @@ cx.render(rsx!(svg { class: "w-6 h-6",
     }
 })) };
 
-pub static Icon3: FC<()> = |cx| {
+pub static Icon3: FC<()> = |(cx, props)| {
 cx.render(rsx!(svg { class: "w-6 h-6",
     stroke_linecap: "round",
     fill: "none",
@@ -113,7 +113,7 @@ cx.render(rsx!(svg { class: "w-6 h-6",
     }
 })) };
 
-pub static Icon4: FC<()> = |cx| {
+pub static Icon4: FC<()> = |(cx, props)| {
 cx.render(rsx!(svg { class: "w-6 h-6",
     stroke: "currentColor",
     viewBox: "0 0 24 24",
@@ -127,7 +127,7 @@ cx.render(rsx!(svg { class: "w-6 h-6",
 })) 
 };
 
-pub static Icon5: FC<()> = |cx| {
+pub static Icon5: FC<()> = |(cx, props)| {
     cx.render(rsx!(
     svg { class: "w-6 h-6",
         fill: "none",
@@ -140,7 +140,7 @@ pub static Icon5: FC<()> = |cx| {
     })) 
 };
 
-pub static Icon6: FC<()> = |cx| {
+pub static Icon6: FC<()> = |(cx, props)| {
     cx.render(rsx!(svg { class: "w-6 h-6",
         stroke: "currentColor",
         viewBox: "0 0 24 24",
@@ -155,7 +155,7 @@ pub static Icon6: FC<()> = |cx| {
 };
 
 
-pub static IconCheck: FC<()> = |cx| {
+pub static IconCheck: FC<()> = |(cx, props)| {
     cx.render(rsx!(
         svg { class: "text-indigo-500 w-6 h-6 flex-shrink-0 mr-4",
             stroke_width: "3",

@@ -1,6 +1,6 @@
 use dioxus::prelude::*;
 
-pub static Community: FC<()> = |cx| {
+pub static Community: FC<()> = |(cx, props)| {
     cx.render(rsx! {
         div {
 

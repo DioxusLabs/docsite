@@ -5,11 +5,7 @@ use dioxus::prelude::*;
 /// Dioxus components are declaratively defined using either the `rsx!` macro or the `html!` macro. Both these macros are
 /// just helpful wrappers around the `NodeFactory` API - which can be used directly to create new elements, listeners,
 /// attributes, and components.
-///
-/// The `rsx!` macro is designed to feel like writing nested structs with optional values, taking advantage of deep
-/// integration with Rust-Analyzer. The `html!` macro is designed to feel like writing HTML - it's possible to drop in
-/// HTML templates without any additional work.
-pub static Simple: FC<()> = |cx| {
+pub static Simple: FC<()> = |(cx, props)| {
     cx.render(rsx! {
         div { "Hello world!"}
     })
@@ -21,11 +17,14 @@ pub static Simple: FC<()> = |cx| {
 /// event listeners attached to elements in the component. Whenever the state is modified, the component will be re-rendered.
 ///
 /// Thanks to Rust's ownership rules, it's impossible to misuse the `use_state` hook.
-pub static Stateful: FC<()> = |cx| {
+pub static Stateful: FC<()> = |(cx, props)| {
     let mut count = use_state(cx, || 0);
 
     cx.render(rsx! {
-        button { "Upvote counter: {count}", onclick: move |_| count += 1 }
+        button { 
+            "Upvote counter: {count}", 
+            onclick: move |_| count += 1 
+        }
     })
 };
 
@@ -37,7 +36,7 @@ pub static Stateful: FC<()> = |cx| {
 ///
 /// Elements are created with a dedicated memory allocator that intelligently reuses memory between renders. A component
 /// at "steady-state" performs zero global allocations, making rendering extremely fast and memory efficient.
-pub static AdvancedRendering: FC<()> = |cx| {
+pub static AdvancedRendering: FC<()> = |(cx, props)| {
     let should_show = use_state(cx, || true);
 
     let button_text = match *should_show {
@@ -54,7 +53,10 @@ pub static AdvancedRendering: FC<()> = |cx| {
 
     cx.render(rsx! {
         "Advanced rendering"
-        button { "{button_text}", onclick: move |_| should_show.set(!should_show)}
+        button { 
+            "{button_text}", 
+            onclick: move |_| should_show.set(!should_show)
+        }
         {should_show.then(|| rsx!( ul { {fizzes} } ))}
     })
 };
@@ -66,7 +68,7 @@ pub static AdvancedRendering: FC<()> = |cx| {
 ///
 /// This is exceptionally useful for components that select optional values that will never be `None` while the component
 /// is being viewed - IE a settings panel that can only be shown if a user is logged in.
-pub static ErrorHandling: FC<()> = |cx| {
+pub static ErrorHandling: FC<()> = |(cx, props)| {
     let items = vec!["a", "b", "c", "d", "e"];
     let first_item = items.first()?;
     
@@ -79,12 +81,12 @@ pub static ErrorHandling: FC<()> = |cx| {
 /// Components lower in the tree can then directly read and write to the shared state with runtime safety.
 ///
 /// Dioxus also has 1st-class support for Diplex: a global state management toolkit modeled after RecoilJS.
-pub static GlobalState: FC<()> = |cx| {
+pub static GlobalState: FC<()> = |(cx, props)| {
     struct SharedState(&'static str);
 
     cx.use_provide_context(|| SharedState("world!"));
 
-    static Child: FC<()> = |cx| {
+    static Child: FC<()> = |(cx, props)| {
         let name = cx.use_context::<SharedState>().0;
         rsx!(in cx, "{name}")
     };
@@ -99,7 +101,7 @@ pub static GlobalState: FC<()> = |cx| {
 /// Components may spawn a coroutine or task to perform asynchronous operations. These tasks may be started, stopped, or
 /// reset by other logc in the component. Coroutines are extremely handy for asynchronous tasks like network requests,
 /// websockets, and multi-threading.
-pub static Tasks: FC<()> = |cx| {
+pub static Tasks: FC<()> = |(cx, props)| {
     let count = use_state(cx, || 0);
     let count_async = count.for_async();
 
@@ -119,18 +121,22 @@ pub static Tasks: FC<()> = |cx| {
 /// Dioxus supports Suspense - a way of deferring rendering until a condition is met. Simply pass in a future and a callback,
 /// and Dioxus will wait for the future to resolve before rendering the result. Suspense makes it possible to prevent
 /// cascaded re-rendering and allows Dioxus to render the rest of the component while waiting for the future to complete.
-pub static Suspense: FC<()> = |cx| {
+pub static Suspense: FC<()> = |(cx, props)| {
     #[derive(serde::Deserialize)]
     struct DogApi {
         message: String,
     }
-    const ENDPOINT: &str = "https://dog.ceo/api/breeds/image/random";
 
+    let endpoint = "https://dog.ceo/api/breeds/image/random";
     let doggo = cx.use_suspense(
-        || surf::get(ENDPOINT).recv_json::<DogApi>(),
+        || surf::get(endpoint).recv_json::<DogApi>(),
         |cx, res| match res {
-            Ok(res) => rsx!(in cx, img { src: "{res.message}" }),
-            Err(_) => rsx!(in cx, div { "No doggos for you :(" }),
+            Ok(res) => rsx!(in cx, 
+                img { src: "{res.message}" }
+            ),
+            Err(_) => rsx!(in cx, 
+                div { "No doggos for you :(" }
+            ),
         },
     );
 

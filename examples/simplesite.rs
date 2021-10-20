@@ -1,10 +1,18 @@
 use dioxus::prelude::*;
 
+#[cfg(not(target_arch = "wasm32"))]
 fn main() {
     let mut dom = VirtualDom::new_with_props(App, AppProps {
         route: "home"
     });
     let out = dioxus::ssr::render_vdom(&dom, |c| c);
+}
+
+#[cfg(target_arch = "wasm32")]
+fn main() {
+    dioxus::web::launch_with_props(App, AppProps {
+        route: "home"
+    }, |c| c);
 }
 
 struct AppProps {

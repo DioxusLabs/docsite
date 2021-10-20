@@ -8,7 +8,7 @@ pub static ExternalLinkIcon: FC<()> = |(cx, props)| {
             height: "15",
             y: "0px",
             x: "0px",
-            viewBox: "0 0 100 100",
+            view_box: "0 0 100 100",
             path { 
                 fill: "currentColor",
                 d: "M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0, 0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z",
@@ -25,7 +25,7 @@ pub static Stacks: FC<()> = |(cx, props)| {
     cx.render(rsx!{
         svg { 
             class: "w-10 h-10 text-white p-2 bg-indigo-500 rounded-full",
-            viewBox: "0 0 24 24",
+            view_box: "0 0 24 24",
             stroke: "currentColor",
             fill: "none",
             stroke_linecap: "round",
@@ -47,7 +47,7 @@ pub static ArrowRight: FC<()> = |(cx, props)| {
             stroke_linejoin: "round",
             stroke: "currentColor",
             fill: "none",
-            viewBox: "0 0 24 24",
+            view_box: "0 0 24 24",
             stroke_width: "2",
             stroke_linecap: "round",
             path { 
@@ -65,7 +65,7 @@ svg { class: "w-6 h-6",
     stroke_linejoin: "round",
     fill: "none",
     stroke_width: "2",
-    viewBox: "0 0 24 24",
+    view_box: "0 0 24 24",
     stroke: "currentColor",
     path { 
         d: "M22 12h-4l-3 9L9 3l-3 9H2",
@@ -76,7 +76,7 @@ pub static Icon2: FC<()> = |(cx, props)| {
 cx.render(rsx!(svg { class: "w-6 h-6",
     stroke_linejoin: "round",
     stroke_width: "2",
-    viewBox: "0 0 24 24",
+    view_box: "0 0 24 24",
     stroke_linecap: "round",
     stroke: "currentColor",
     fill: "none",
@@ -102,7 +102,7 @@ cx.render(rsx!(svg { class: "w-6 h-6",
     stroke_linejoin: "round",
     stroke_width: "2",
     stroke: "currentColor",
-    viewBox: "0 0 24 24",
+    view_box: "0 0 24 24",
     path { 
         d: "M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2",
     }
@@ -116,7 +116,7 @@ cx.render(rsx!(svg { class: "w-6 h-6",
 pub static Icon4: FC<()> = |(cx, props)| {
 cx.render(rsx!(svg { class: "w-6 h-6",
     stroke: "currentColor",
-    viewBox: "0 0 24 24",
+    view_box: "0 0 24 24",
     stroke_linecap: "round",
     fill: "none",
     stroke_linejoin: "round",
@@ -134,7 +134,7 @@ pub static Icon5: FC<()> = |(cx, props)| {
         stroke: "currentColor",
         stroke_linecap: "round",
         stroke_linejoin: "round",
-        viewBox: "0 0 24 24",
+        view_box: "0 0 24 24",
         stroke_width: "2",
         path { d: "M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" }
     })) 
@@ -143,7 +143,7 @@ pub static Icon5: FC<()> = |(cx, props)| {
 pub static Icon6: FC<()> = |(cx, props)| {
     cx.render(rsx!(svg { class: "w-6 h-6",
         stroke: "currentColor",
-        viewBox: "0 0 24 24",
+        view_box: "0 0 24 24",
         stroke_linejoin: "round",
         fill: "none",
         stroke_width: "2",
@@ -161,7 +161,7 @@ pub static IconCheck: FC<()> = |(cx, props)| {
             stroke_width: "3",
             fill: "none",
             stroke_linejoin: "round",
-            viewBox: "0 0 24 24",
+            view_box: "0 0 24 24",
             stroke: "currentColor",
             stroke_linecap: "round",
             path { d: "M22 11.08V12a10 10 0 11-5.93-9.14" }

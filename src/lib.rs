@@ -19,17 +19,17 @@ pub static App: FC<AppProps> = |(cx, props)| {
         "tutorial" => rsx!(cx, Tutorial {}),
         "blog" => rsx!(cx, Blog {}),
         "docs" => rsx!(cx, Docs {}),
-        "home" | _ => rsx!(cx, Home {}),
+        _ => rsx!(cx, Home {}),
     };
 
     cx.render(rsx! {
         link { href: "https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css", rel: "stylesheet" }
-        style { {[include_str!("./components/prism/prsim.css")]} }
+        style { {[include_str!("./components/prism/prism.css")]} }
         div {
             NavBar {}
             {body}
             Footer {}
         }
-        script { {[include_str!("./components/prism/js.js")]} }
+        script { {[include_str!("./components/prism/prism.js")]} }
     })
 };

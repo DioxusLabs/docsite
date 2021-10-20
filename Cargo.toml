@@ -16,6 +16,6 @@ wasm-bindgen = { version = "0.2.78", features = ["enable-interning"] }
 dioxus_markdown = { path = "../markdown-to-diouxs" }
 
 [features]
-default = ["ssr"]
+default = ["ssr", "web"]
 web = ["dioxus/web"]
 ssr = ["dioxus/ssr"]

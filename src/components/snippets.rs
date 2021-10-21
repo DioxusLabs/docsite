@@ -55,7 +55,7 @@ pub fn build_snippets() -> Vec<Snippet> {
     snips
 }
 
-static SnippetCode: &str = include_str!("../snippets/mod.rs");
+static SnippetCode: &str = include_str!("../../snippets/mod.rs");
 
 #[test]
 fn render_s() {

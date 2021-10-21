@@ -3,22 +3,22 @@ use dioxus::prelude::*;
 pub mod components;
 pub mod icons;
 pub mod sitemap;
-pub mod utils;
 
 #[derive(PartialEq, Props)]
 pub struct AppProps {
-    pub route: String,
+    pub route: &'static str,
 }
 
-pub static App: FC<AppProps> = |(cx, props)| {
-    let url = use_state(cx, || "");
+pub struct AppRoute(&'static str);
 
+pub static App: FC<AppProps> = |(cx, props)| {
     use components::*;
-    let body = match *url {
-        "community" => rsx!(cx, Community {}),
-        "tutorial" => rsx!(cx, Tutorial {}),
+
+    use_provide_state(cx, || AppRoute(props.route));
+    let url = use_shared_state::<AppRoute>(cx)?;
+
+    let body = match url.read().0 {
         "blog" => rsx!(cx, Blog {}),
-        "docs" => rsx!(cx, Docs {}),
         _ => rsx!(cx, Home {}),
     };
 

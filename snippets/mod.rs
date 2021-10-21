@@ -6,9 +6,9 @@ use dioxus::prelude::*;
 /// just helpful wrappers around the `NodeFactory` API - which can be used directly to create new elements, listeners,
 /// attributes, and components.
 pub static Simple: FC<()> = |(cx, props)| {
-    cx.render(rsx! {
+    cx.render(rsx! (
         div { "Hello world!"}
-    })
+    ))
 };
 
 /// # A Stateful Component
@@ -20,12 +20,12 @@ pub static Simple: FC<()> = |(cx, props)| {
 pub static Stateful: FC<()> = |(cx, props)| {
     let mut count = use_state(cx, || 0);
 
-    cx.render(rsx! {
-        button { 
-            "Upvote counter: {count}", 
-            onclick: move |_| count += 1 
+    cx.render(rsx! (
+        button {
+            "Upvote counter: {count}",
+            onclick: move |_| count += 1
         }
-    })
+    ))
 };
 
 /// # Advanced Rendering
@@ -45,20 +45,19 @@ pub static AdvancedRendering: FC<()> = |(cx, props)| {
     };
 
     let fizzes = (0..10).map(|i| match (i % 3, i % 5) {
-        (0, 0) => rsx!(in cx, li {"FizzBuzz"} ),
-        (0, _) => rsx!(in cx, li {"Fizz"} ),
-        (_, 0) => rsx!(in cx, li {"Buzz"} ),
-        (_, _) => rsx!(in cx, li {"{i}"} ),
+        (0, 0) => rsx!(cx, li {"FizzBuzz"} ),
+        (0, _) => rsx!(cx, li {"Fizz"} ),
+        (_, 0) => rsx!(cx, li {"Buzz"} ),
+        (_, _) => rsx!(cx, li {"{i}"} ),
     });
 
-    cx.render(rsx! {
-        "Advanced rendering"
-        button { 
-            "{button_text}", 
+    cx.render(rsx! (
+        button {
+            "{button_text}",
             onclick: move |_| should_show.set(!should_show)
         }
         {should_show.then(|| rsx!( ul { {fizzes} } ))}
-    })
+    ))
 };
 
 /// # Built-in error handling
@@ -71,8 +70,8 @@ pub static AdvancedRendering: FC<()> = |(cx, props)| {
 pub static ErrorHandling: FC<()> = |(cx, props)| {
     let items = vec!["a", "b", "c", "d", "e"];
     let first_item = items.first()?;
-    
-    rsx!(in cx, h1 { "First item: {first_item}" })
+
+    rsx!(cx, h1 { "First item: {first_item}" })
 };
 
 /// # Global state
@@ -84,16 +83,14 @@ pub static ErrorHandling: FC<()> = |(cx, props)| {
 pub static GlobalState: FC<()> = |(cx, props)| {
     struct SharedState(&'static str);
 
-    cx.use_provide_context(|| SharedState("world!"));
+    use_provide_state(|| SharedState("world!"));
 
     static Child: FC<()> = |(cx, props)| {
-        let name = cx.use_context::<SharedState>().0;
-        rsx!(in cx, "{name}")
+        let name = use_shared_state::<SharedState>()?;
+        rsx!(cx, "{name}")
     };
 
-    cx.render(rsx! {
-        div { "Hello, ", Child {} }
-    })
+    rsx!(cx, div { "Hello, ", Child {} })
 };
 
 /// # Coroutines and tasks
@@ -103,17 +100,16 @@ pub static GlobalState: FC<()> = |(cx, props)| {
 /// websockets, and multi-threading.
 pub static Tasks: FC<()> = |(cx, props)| {
     let count = use_state(cx, || 0);
-    let count_async = count.for_async();
+    let mut count_async = count.for_async();
 
-    cx.use_task(|| async move {
-        loop {
-            *count_async.get_mut() += 1;
+    use_task(cx, || async move {
+        while true {
+            count_async.write() += 1;
+            timer::from_ms(500).await;
         }
     });
 
-    cx.render(rsx! {
-        pre {"Count: {count}"}
-    })
+    rsx!(cx, pre {"Count: {count}"})
 };
 
 /// # Suspense
@@ -131,17 +127,10 @@ pub static Suspense: FC<()> = |(cx, props)| {
     let doggo = cx.use_suspense(
         || surf::get(endpoint).recv_json::<DogApi>(),
         |cx, res| match res {
-            Ok(res) => rsx!(in cx, 
-                img { src: "{res.message}" }
-            ),
-            Err(_) => rsx!(in cx, 
-                div { "No doggos for you :(" }
-            ),
+            Ok(res) => rsx!(cx, img { src: "{res.message}" }),
+            Err(_) => rsx!(cx, div { "No doggos for you :(" } ),
         },
     );
 
-    cx.render(rsx! {
-        h1 {"Waiting for doggos:"}
-        {doggo}
-    })
+    rsx!(cx, h1 {"Waiting for doggos:"} {doggo})
 };

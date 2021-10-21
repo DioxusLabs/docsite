@@ -14,6 +14,7 @@ log = "0.4.14"
 wasm-logger = "0.2.0"
 wasm-bindgen = { version = "0.2.78", features = ["enable-interning"] }
 dioxus_markdown = { path = "../markdown-to-diouxs" }
+once_cell = "1.8.0"
 
 [features]
 default = ["ssr", "web"]

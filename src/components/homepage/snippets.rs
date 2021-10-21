@@ -3,7 +3,7 @@ use dioxus::prelude::*;
 
 pub static Snippets: FC<()> = |(cx, _)| {
     let (snippets, _) = use_state(cx, build_snippets).classic();
-    let selected_snippet = use_state(cx, || 0);
+    let mut selected_snippet = use_state(cx, || 0);
 
     let snip_list = snippets.iter().enumerate().map(|(id, s)| {
         let is_selected = if *selected_snippet == id {

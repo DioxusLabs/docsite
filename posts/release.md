@@ -113,7 +113,7 @@ dioxus = { version = "*", features = ["desktop"] }
 
 Because it's so simple to get started, you probably won't need to reach for a prebuilt template, though we have pre-configured a few templates with suggested project layout.
 
-For web development, you'll want to install the Dioxus CLI to run a local development server and run some basic WASM optimization tools. This can be done with a simple `cargo install dioxus-cli`. The `dioxus-cli` tool will handle building, bundling, development, and optimization for the web and mobile.
+For web development, you'll want to install the Dioxus CLI to run a local development server and run some basic Wasm optimization tools. This can be done with a simple `cargo install dioxus-cli`. The `dioxus-cli` tool will handle building, bundling, development, and optimization for the web and mobile.
 
 
 ### **Multiple flavors of templating: `rsx!`, `html!`, and `factory`, oh my!**

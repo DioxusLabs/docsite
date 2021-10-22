@@ -22,8 +22,8 @@ pub static RecentBlogPosts: FC<()> = |(cx, _)| {
         BlogPostDisplay {
             category: "Technical Notes",
             date: "28 Oct 2021",
-            title: "WASM, Allocators, and Performance Deep Dive",
-            description: "WebAssembly is a promising new web technology that brings a wide variety of programming languages to the web. However, WASM performance is a poorly understood topic - especially when considering memory allocators and interaction with JS APIs.",
+            title: "Wasm, Allocators, and Performance Deep Dive",
+            description: "WebAssembly is a promising new web technology that brings a wide variety of programming languages to the web. However, Wasm performance is a poorly understood topic - especially when considering memory allocators and interaction with JS APIs.",
             link: "/blog/wasm_allocators_performance",
         },
     ];

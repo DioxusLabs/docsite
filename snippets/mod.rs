@@ -30,7 +30,7 @@ pub static Stateful: FC<()> = |(cx, props)| {
 
 /// # Advanced Rendering
 ///
-/// Dioxus accepts fragments, iterators, conditionals, listeners, matching, f_string iterpolation and more. Anything that can
+/// Dioxus accepts fragments, iterators, conditionals, listeners, matching, f-string interpolation and more. Anything that can
 /// be coerced into an iterator of VNodes can be used in the macro bodies. By default, `rsx!` is Lazy, meaning it won't allocate
 /// until "rendered" with a `render` call.
 ///
@@ -63,10 +63,10 @@ pub static AdvancedRendering: FC<()> = |(cx, props)| {
 /// # Built-in error handling
 ///
 /// Because components return an `Option<VNode>`, errors can be handled gracefully through the use of the question mark
-/// syntax. Components that fail to render will return will be frozen until the next successful render.
+/// syntax. Components that fail to render will be frozen until the next successful render.
 ///
 /// This is exceptionally useful for components that select optional values that will never be `None` while the component
-/// is being viewed - IE a settings panel that can only be shown if a user is logged in.
+/// is being viewed - i.e. a settings panel that can only be shown if a user is logged in.
 pub static ErrorHandling: FC<()> = |(cx, props)| {
     let items = vec!["a", "b", "c", "d", "e"];
     let first_item = items.first()?;
@@ -79,7 +79,7 @@ pub static ErrorHandling: FC<()> = |(cx, props)| {
 /// With Dioxus, it's possible to directly expose shared state to child components with the `use_provide_context` hook.
 /// Components lower in the tree can then directly read and write to the shared state with runtime safety.
 ///
-/// Dioxus also has 1st-class support for Diplex: a global state management toolkit modeled after RecoilJS.
+/// Dioxus also has first-class support for Diplex: a global state management toolkit modeled after [RecoilJS](https://recoiljs.org/).
 pub static GlobalState: FC<()> = |(cx, props)| {
     struct SharedState(&'static str);
 
@@ -95,9 +95,9 @@ pub static GlobalState: FC<()> = |(cx, props)| {
 
 /// # Coroutines and tasks
 ///
-/// Components may spawn a coroutine or task to perform asynchronous operations. These tasks may be started, stopped, or
-/// reset by other logc in the component. Coroutines are extremely handy for asynchronous tasks like network requests,
-/// websockets, and multi-threading.
+/// Components can spawn a task (or *coroutine*) to perform asynchronous operations. These tasks can be started, stopped, or
+/// reset by other logic in the component. Coroutines are extremely handy for asynchronous tasks like network requests,
+/// WebSockets, and multi-threading.
 pub static Tasks: FC<()> = |(cx, props)| {
     let count = use_state(cx, || 0);
     let mut count_async = count.for_async();
@@ -114,7 +114,7 @@ pub static Tasks: FC<()> = |(cx, props)| {
 
 /// # Suspense
 ///
-/// Dioxus supports Suspense - a way of deferring rendering until a condition is met. Simply pass in a future and a callback,
+/// Dioxus supports Suspense — a way of deferring rendering until a condition is met. Simply pass in a future and a callback,
 /// and Dioxus will wait for the future to resolve before rendering the result. Suspense makes it possible to prevent
 /// cascaded re-rendering and allows Dioxus to render the rest of the component while waiting for the future to complete.
 pub static Suspense: FC<()> = |(cx, props)| {

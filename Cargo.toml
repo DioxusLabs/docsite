@@ -17,6 +17,7 @@ dioxus_markdown = { path = "../markdown-to-diouxs" }
 once_cell = "1.8.0"
 
 [features]
-default = ["ssr", "web"]
+default = ["ssr", "web", "desktop"]
 web = ["dioxus/web"]
 ssr = ["dioxus/ssr"]
+desktop = ["dioxus/desktop"]

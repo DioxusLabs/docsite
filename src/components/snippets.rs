@@ -1,5 +1,3 @@
-use dioxus::prelude::*;
-
 #[derive(PartialEq, Debug)]
 pub struct Snippet {
     pub title: &'static str,
@@ -8,8 +6,10 @@ pub struct Snippet {
     pub caller_id: usize,
 }
 
+static SNIPPETS: &str = include_str!("../../snippets/mod.rs");
+
 pub fn build_snippets() -> Vec<Snippet> {
-    let mut lines = SnippetCode.lines().peekable();
+    let mut lines = SNIPPETS.lines().peekable();
     let mut snips: Vec<Snippet> = Vec::new();
 
     let mut caller_id = 0;
@@ -54,8 +54,6 @@ pub fn build_snippets() -> Vec<Snippet> {
     }
     snips
 }
-
-static SnippetCode: &str = include_str!("../../snippets/mod.rs");
 
 #[test]
 fn render_s() {

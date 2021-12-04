@@ -1,5 +1,5 @@
-use dioxus_docs_site::{App, AppProps};
+use dioxus_docs_site::App;
 
 fn main() {
-    dioxus::desktop::launch_with_props(App, AppProps { route: "home" }, |c| c)
+    dioxus::desktop::launch_with_props(App, (), |c| c)
 }

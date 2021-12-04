@@ -381,7 +381,7 @@ fn App((cx, props): Component&lt;()&gt;) -&gt; Element {
 <pre><pre class="playground"><code class="language-rust edition2018">
 <span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
-</span>static App: Fc&lt;()&gt; = |(cx, props)| {
+</span>static App: Fc&lt;()&gt; = |cx, props| {
     cx.render(rsx! {
         div { &quot;Hello, world!&quot; }
     })
@@ -1229,7 +1229,7 @@ rsx!(cx, {items} )
 <pre><pre class="playground"><code class="language-rust edition2018">
 <span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
-</span>fn render_list(cx: Context, items: HashMap&lt;String, Todo&gt;) -&gt; DomTree {
+</span>fn render_list(cx: Context, items: HashMap&lt;String, Todo&gt;) -&gt; Element {
     rsx!(cx, ul {
         {items.iter().map(|key, item| {
             li {

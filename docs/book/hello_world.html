@@ -249,7 +249,7 @@ fn App((cx, props): Component&lt;()&gt;) -&gt; Element {
 <pre><pre class="playground"><code class="language-rust edition2018">
 <span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
-</span>static App: Fc&lt;()&gt; = |(cx, props)| {
+</span>static App: Fc&lt;()&gt; = |cx, props| {
     cx.render(rsx! {
         div { &quot;Hello, world!&quot; }
     })

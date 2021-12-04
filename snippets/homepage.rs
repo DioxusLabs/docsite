@@ -1,4 +1,4 @@
-static App: FC<()> = |(cx, props)| {
+fn App(cx: Context, props: &()) -> Element {
     let mut count = use_state(cx, || 0);
 
     cx.render(rsx!(
@@ -6,4 +6,4 @@ static App: FC<()> = |(cx, props)| {
         button { onclick: move |_| count += 1, "Up high!" }
         button { onclick: move |_| count -= 1, "Down low!" }
     ))
-};
+}

@@ -4,10 +4,10 @@
 use std::io::Write;
 
 use dioxus::prelude::*;
-use dioxus_docs_site::{App, AppProps};
+use dioxus_docs_site::App;
 
 fn main() {
-    let mut dom = VirtualDom::new_with_props(App, AppProps { route: "home" });
+    let mut dom = VirtualDom::new_with_props(App, ());
     dom.rebuild();
 
     let out = dioxus::ssr::render_vdom(&dom, |c| c.pre_render(true));

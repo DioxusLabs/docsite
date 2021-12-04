@@ -1,9 +1,9 @@
 use super::super::snippets::*;
 use dioxus::prelude::*;
 
-pub static Snippets: FC<()> = |(cx, _)| {
+pub static Snippets: FC<()> = |cx, _props| {
     let (snippets, _) = use_state(cx, build_snippets).classic();
-    let mut selected_snippet = use_state(cx, || 0);
+    let selected_snippet = use_state(cx, || 0);
 
     let snip_list = snippets.iter().enumerate().map(|(id, s)| {
         let is_selected = if *selected_snippet == id {
@@ -44,7 +44,7 @@ pub static Snippets: FC<()> = |(cx, _)| {
 pub struct SnippetProps<'a> {
     snippet: &'a Snippet,
 }
-fn RenderSnippet<'a>((cx, props): Component<'a, SnippetProps>) -> DomTree<'a> {
+fn RenderSnippet(cx: Context, props: &SnippetProps) -> Element {
     let Snippet {
         title,
         body,

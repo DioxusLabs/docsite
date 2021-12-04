@@ -1,17 +1,15 @@
 use crate::icons;
 use dioxus::prelude::*;
 
-pub fn Hero((cx, _): Component<()>) -> DomTree {
+pub fn Hero(cx: Context, _props: &()) -> Element {
     cx.render(rsx!{
         section { class: "text-gray-400 bg-gray-800",
             div { class: "container flex flex-col md:flex-row w:2/3 px-24 py-20 mx-auto",
                 div { class: "flex flex-col md:pr-10 md:mb-0 mb-6 pr-0 w-full md:w-auto md:text-left text-center w:1/2",
                     h1 { class: "sm:text-6xl text-16xl font-medium title-font mb-2 text-white", "Dioxus" }
                     p { class: "leading-relaxed text-white text-4xl", "A Rust library for building user interfaces." }
-                    p {
-                        class: "leading-relaxed text-opacity-90 text-xl py-5",
-                        "Build reliable, fast, and scalable user interfaces that run on the web, desktop, mobile, server,
-                        and more."
+                    p { class: "leading-relaxed text-opacity-90 text-xl py-5",
+                        "Build reliable, fast, and scalable user interfaces that run on the web, desktop, mobile, server, and more."
                     }
                     div { class: "container flex flex-wrap p-5 flex-col md:flex-row mx-0 px-0",
                         a {
@@ -37,7 +35,7 @@ pub fn Hero((cx, _): Component<()>) -> DomTree {
     })
 }
 
-static InteractiveHeader: FC<()> = |(cx, _)| {
+pub static InteractiveHeader: FC<()> = |cx, _props| {
     let mut count = use_state(cx, || 0);
 
     cx.render(rsx!{
@@ -50,7 +48,7 @@ static InteractiveHeader: FC<()> = |(cx, _)| {
                     class: "inline-flex items-center text-white bg-green-500 border-0 py-1 px-4 focus:outline-none hover:bg-gray-600"
                     onclick: move |_| count += 1, "Up high!"
                 }
-                img { class: "h-12 mx-4" src: "https://rustacean.net/assets/rustacean-flat-gesture.png" }
+                img { class: "h-12 mx-4" src: "https://i.imgur.com/aK3dWXs.png" }
                 button {
                     class: "inline-flex items-center text-white bg-red-500 border-0 py-1 px-4 focus:outline-none hover:bg-gray-600"
                     onclick: move |_| count -= 1, "Down low!"

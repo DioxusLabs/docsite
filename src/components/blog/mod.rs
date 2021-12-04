@@ -10,7 +10,7 @@ static POST2: Lazy<String> = Lazy::new(|| {
     dioxus_markdown::render_markdown_to_string(include_str!("../../../posts/allocators.md"))
 });
 
-pub static Blog: FC<()> = |(cx, _)| {
+pub static Blog: FC<()> = |cx, _props| {
     struct BlogPostDisplay {
         category: &'static str,
         date: &'static str,

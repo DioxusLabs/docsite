@@ -1,6 +1,6 @@
 use dioxus::prelude::*;
 
-pub static ValueAdd: FC<()> = |(cx, _)| {
+pub static ValueAdd: FC<()> = |cx, _props| {
     rsx!(cx, section { class: "text-gray-600 body-font"
         div { class: "container mx-auto py-12 px-40",
             div { class: "flex flex-wrap sm:-m-4 -mx-4 -mb-10 -mt-4 md:space-y-0 space-y-6 ",
@@ -18,7 +18,7 @@ pub static ValueAdd: FC<()> = |(cx, _)| {
                         div { class: "flex-grow pl-6",
                             // todo: find a cute icon for each value add
                             // people like icons
-                            // icons::Icon3 {}
+                            crate::icons::Icon3 {}
                             a { href: "#"
                                 h2 { class: "text-black text-lg title-font font-medium mb-2",
                                     "{title}"

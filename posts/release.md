@@ -116,7 +116,7 @@ By using Rust, we gain:
 - Best-in-class error handling
 - Powerful and sane standard library
 - Flexible macro system
-- Access the crates.io ecosystem
+- Access to the crates.io ecosystem
 
 Dioxus itself leverages this platform to provide the following guarantees:
 

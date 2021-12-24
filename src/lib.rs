@@ -36,15 +36,19 @@ pub static App: Component<()> = |cx| {
         _ => AppRoute::Home,
     });
 
-    cx.render(rsx! {
-        // style {
-        //     {[include_str!("../tailwind.css")]}
-        // }
-        script {
-            {[include_str!("./darktheme.js")]}
-        }
+    let remote_css = if cfg!(debug_assertions) {
+        Some(rsx!(link {
+            href: "https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css",
+            rel: "stylesheet"
+        }))
+    } else {
+        None
+    };
 
-        link { href: "https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css", rel: "stylesheet" }
+    cx.render(rsx! {
+        style { {[include_str!("../tailwind.css")]} }
+        script { {[include_str!("./darktheme.js")]} }
+        {remote_css}
         link { href: "https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.0.0/github-markdown-light.min.css", rel: "stylesheet" }
         style { {[include_str!("./components/prism/prism.css")]} }
         style { {[r#"
@@ -56,7 +60,6 @@ pub static App: Component<()> = |cx| {
                 padding: 45px;
                 list_style: disc;
             }
-
             @media (max-width: 767px) {
                 .markdown-body {
                     padding: 15px;
@@ -201,13 +204,13 @@ fn nav_header(cx: Scope<()>) -> Element {
                             }
                             li {
                                 a { class: "hover:text-sky-500 dark:hover:text-sky-400",
-                                    href: "https://dioxuslabs.com/book/",
+                                    href: "https://dioxuslabs.com/guide/",
                                     "Guide"
                                 }
                             }
                             li {
                                 a { class: "hover:text-sky-500 dark:hover:text-sky-400",
-                                    href: "https://dioxuslabs.com/book/",
+                                    href: "https://dioxuslabs.com/reference/",
                                     "Reference"
                                 }
                             }
@@ -220,13 +223,16 @@ fn nav_header(cx: Scope<()>) -> Element {
                                 }
                             }
                             li {
-                                a { class: "hover:text-sky-500 dark:hover:text-sky-400",
-                                    href: "/blog",
+                                Link {
+                                    class: "hover:text-sky-500 dark:hover:text-sky-400"
+                                    href: "/",
+                                    to: AppRoute::Home,
                                     "Home"
                                 }
                             }
                             li {
-                                a { class: "hover:text-sky-500 dark:hover:text-sky-400",
+                                a { class: "dark:hover:text-sky-400 p-2 rounded bg-gray-600 hover:bg-gray-300 text-white",
+                                // a { class: "hover:text-sky-500 dark:hover:text-sky-400 p-2 rounded bg-gray-600 hover:bg-gray-300 text-white",
                                     href: "/blog",
                                     "Get Started"
                                 }

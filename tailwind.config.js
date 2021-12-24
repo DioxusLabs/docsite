@@ -8,6 +8,7 @@ module.exports = {
       "./src/**/*.css",
     ],
   },
+  darkMode: 'class', // <= 'media' or 'class'
   theme: {},
   variants: {},
   plugins: [],

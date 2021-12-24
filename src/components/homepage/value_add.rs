@@ -34,12 +34,12 @@ pub static ValueAdd: Component<()> = |cx| {
                             div { class: "flex-grow pl-6",
                                 {[icon]}
                                 a { href: "#"
-                                    h2 { class: "text-black text-lg title-font font-medium mb-2",
+                                    h2 { class: "dark:text-white text-gray-800 text-lg title-font font-medium mb-2",
                                         "{title}"
                                     }
                                 }
                                 {content.split('\n').map(|line| rsx!{
-                                    p { class: "leading-relaxed text-base pb-4",
+                                    p { class: "leading-relaxed text-gray-700 text-base pb-4 dark:text-white",
                                         "{line}"
                                     }
                                 })}

@@ -30,13 +30,13 @@ pub static RecentBlogPosts: Component<()> = |cx| {
 
     cx.render(rsx!{
         section { class: "text-gray-600 body-font overflow-hidden",
-            div { class: "container px-6 lg:px-40 pt-0 pb-12 mx-auto",
+            div { class: "container px-6 lg:px-40 py-12 mx-auto",
                 div { class: "-my-8 divide-y-2 divide-gray-100",
                     // Individual Post starts here
                     {posts.iter().map(|BlogPostDisplay { category, date, title, description, link }| rsx!{
                         div { class: "py-8 flex flex-wrap md:flex-nowrap",
                             div { class: "md:w-64 md:mb-0 mb-6 flex-shrink-0 flex flex-col",
-                                span { class: "font-semibold title-font text-gray-700",
+                                span { class: "font-semibold title-font text-gray-700 dark:text-white",
                                     "{category}"
                                 }
                                 span { class: "mt-1 text-gray-500 text-sm",
@@ -44,10 +44,10 @@ pub static RecentBlogPosts: Component<()> = |cx| {
                                 }
                             }
                             div { class: "md:flex-grow",
-                                h2 { class: "text-2xl font-medium text-gray-900 title-font mb-2",
+                                h2 { class: "text-2xl font-medium text-gray-900 title-font mb-2 dark:text-white",
                                     "{title}"
                                 }
-                                p { class: "leading-relaxed",
+                                p { class: "leading-relaxed dark:text-white text-base dark:opacity-75",
                                     "{description}"
                                     // "Glossier echo park pug, church-key sartorial biodiesel vexillologist pop-up snackwave ramps cornhole. Marfa 3 wolf moon party messenger bag selfies, poke vaporware kombucha lumbersexual pork belly polaroid hoodie portland craft beer."
                                 }

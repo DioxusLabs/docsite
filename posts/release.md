@@ -23,8 +23,9 @@ fn main() {
 	dioxus::desktop::launch(CounterApp)
 }
 
-fn CounterApp(cx: Scope, props: &()) -> Element {
-    let mut count = use_state(cx, || 0);
+
+fn App(cx: Scope, props: &()) -> Element {
+    let mut count = use_state(&cx, || 0);
 
     cx.render(rsx! {
         h1 { "Count: {count}" }
@@ -78,7 +79,6 @@ To get started with Dioxus, check out any of the "Getting Started" guides for yo
 - Custom elements
 - Jank-free rendering (with fibers)
 - Refs to elements
-- Bind values to inputs
 
 Some features also consciously diverge from React idioms:
 

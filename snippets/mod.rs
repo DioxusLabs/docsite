@@ -5,7 +5,7 @@ use dioxus::prelude::*;
 /// Dioxus components are declaratively defined using either the `rsx!` macro or the `html!` macro. Both these macros are
 /// just helpful wrappers around the `NodeFactory` API - which can be used directly to create new elements, listeners,
 /// attributes, and components.
-fn Simple(cx: Context, props: &()) -> Element {
+fn Simple(cx: Scope<()>) -> Element {
     cx.render(rsx! (
         div { "Hello world!"}
     ))
@@ -17,8 +17,8 @@ fn Simple(cx: Context, props: &()) -> Element {
 /// event listeners attached to elements in the component. Whenever the state is modified, the component will be re-rendered.
 ///
 /// Thanks to Rust's ownership rules, it's impossible to misuse the `use_state` hook.
-fn Stateful(cx: Context, props: &()) -> Element {
-    let mut count = use_state(cx, || 0);
+fn Stateful(cx: Scope<()>) -> Element {
+    let mut count = use_state(&cx, || 0);
 
     cx.render(rsx! (
         button {
@@ -26,6 +26,21 @@ fn Stateful(cx: Context, props: &()) -> Element {
             onclick: move |_| count += 1
         }
     ))
+}
+
+/// # Custom Props
+///
+/// Dioxus components use hooks to store state between renders. The `use_state` hooks make it easy to update state from
+/// event listeners attached to elements in the component. Whenever the state is modified, the component will be re-rendered.
+///
+/// Thanks to Rust's ownership rules, it's impossible to misuse the `use_state` hook.
+#[derive(Props, PartialEq)]
+struct PropBased {
+    name: String,
+    age: String,
+}
+fn Stateful(cx: Scope<PropBased>) -> Element {
+    cx.render(rsx! ( "Hello {props.name}, you are {props.age} years old!" ))
 }
 
 /// # Advanced Rendering
@@ -36,8 +51,8 @@ fn Stateful(cx: Context, props: &()) -> Element {
 ///
 /// Elements are created with a dedicated memory allocator that intelligently reuses memory between renders. A component
 /// at "steady-state" performs zero global allocations, making rendering extremely fast and memory efficient.
-fn AdvancedRendering(cx: Context, props: &()) -> Element {
-    let should_show = use_state(cx, || true);
+fn AdvancedRendering(cx: Scope<()>) -> Element {
+    let should_show = use_state(&cx, || true);
 
     let button_text = match *should_show {
         true => "Click to show",
@@ -67,7 +82,7 @@ fn AdvancedRendering(cx: Context, props: &()) -> Element {
 ///
 /// This is exceptionally useful for components that select optional values that will never be `None` while the component
 /// is being viewed - IE a settings panel that can only be shown if a user is logged in.
-fn ErrorHandling(cx: Context, props: &()) -> Element {
+fn ErrorHandling(cx: Scope<()>) -> Element {
     let items = vec!["a", "b", "c", "d", "e"];
     let first_item = items.first()?;
 
@@ -82,14 +97,14 @@ fn ErrorHandling(cx: Context, props: &()) -> Element {
 /// Components lower in the tree can then directly read and write to the shared state with runtime safety.
 struct SharedState(&'static str);
 
-fn GlobalState(cx: Context, props: &()) -> Element {    
+fn GlobalState(cx: Scope<()>) -> Element {    
     use_provide_state(cx, || SharedState("world!"));
     cx.render(rsx!( 
         div { "Hello, ", Child {} } 
     ))
 }
 
-fn Child(cx: Context, props: &()) -> Element {
+fn Child(cx: Scope<()>) -> Element {
     let name = use_shared_state::<SharedState>(cx)?;
     cx.render(rsx!( 
         "{name}" 
@@ -107,7 +122,7 @@ struct AppState {
     user: Option<User>
 }
 
-fn UserInfo(cx: Context, props: &()) -> Element {
+fn UserInfo(cx: Scope<()>) -> Element {
     let user_name = use_read!(cx, AppState.user?.name);
 
     match user_name {
@@ -121,8 +136,8 @@ fn UserInfo(cx: Context, props: &()) -> Element {
 /// Components may spawn a coroutine or task to perform asynchronous operations. These tasks may be started, stopped, or
 /// reset by other logc in the component. Coroutines are extremely handy for asynchronous tasks like network requests,
 /// websockets, and multi-threading.
-fn Tasks(cx: Context, props: &()) -> Element {
-    let count = use_state(cx, || 0);
+fn Tasks(cx: Scope<()>) -> Element {
+    let count = use_state(&cx, || 0);
 
     let mut count_async = count.for_async();
     use_task(cx, || async move {
@@ -142,7 +157,7 @@ fn Tasks(cx: Context, props: &()) -> Element {
 /// Dioxus supports Suspense - a way of deferring rendering until a condition is met. Simply pass in a future and a callback,
 /// and Dioxus will wait for the future to resolve before rendering the result. Suspense makes it possible to prevent
 /// cascaded re-rendering and allows Dioxus to render the rest of the component while waiting for the future to complete.
-fn Suspense(cx: Context, props: &()) -> Element {
+fn Suspense(cx: Scope<()>) -> Element {
     #[derive(serde::Deserialize)]
     struct DogApi {
         message: String,

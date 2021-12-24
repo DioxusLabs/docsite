@@ -10,7 +10,7 @@ static POST2: Lazy<String> = Lazy::new(|| {
     dioxus_markdown::render_markdown_to_string(include_str!("../../../posts/allocators.md"))
 });
 
-pub static Blog: FC<()> = |cx, _props| {
+pub static Blog: Component<()> = |cx| {
     struct BlogPostDisplay {
         category: &'static str,
         date: &'static str,
@@ -39,7 +39,7 @@ pub static Blog: FC<()> = |cx, _props| {
         },
     ];
 
-    let mut cur_post = use_state(cx, || None);
+    let mut cur_post = use_state(&cx, || None);
 
     let inner = if let Some(post) = *cur_post {
         let BlogPostDisplay {

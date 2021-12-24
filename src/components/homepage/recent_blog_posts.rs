@@ -1,7 +1,7 @@
 use crate::icons;
 use dioxus::prelude::*;
 
-pub static RecentBlogPosts: FC<()> = |cx, _props| {
+pub static RecentBlogPosts: Component<()> = |cx| {
     struct BlogPostDisplay {
         category: &'static str,
         date: &'static str,

@@ -1,6 +1,6 @@
 use dioxus::prelude::*;
 
-pub fn FeaturedExamples(cx: Context, _props: &()) -> Element {
+pub fn FeaturedExamples(cx: Scope<()>) -> Element {
     cx.render(rsx! {
         section { class: "bg-gray-800 body-font"
             div { class: "container px-40 py-12 mx-auto",
@@ -74,38 +74,37 @@ struct FeaturedExampleProps {
     img_alt: &'static str,
 }
 
-fn FeaturedExample(
-    cx: Context,
-    FeaturedExampleProps {
+fn FeaturedExample(cx: Scope<FeaturedExampleProps>) -> Element {
+    let FeaturedExampleProps {
         subtitle,
         title,
         description,
         link,
         img,
         img_alt,
-    }: &FeaturedExampleProps,
-) -> Element {
+    } = cx.props;
+
     cx.render(rsx!{
-            div { class: "lg:w-1/3 sm:w-1/2 p-4",
-                a { href: "{link}"
-                    div { class: "flex relative",
-                        img { class: "absolute inset-0 w-full h-full object-cover object-center",
-                            alt: "{img_alt}",
-                            src: "{img}",
+        div { class: "lg:w-1/3 sm:w-1/2 p-4",
+            a { href: "{link}"
+                div { class: "flex relative",
+                    img { class: "absolute inset-0 w-full h-full object-cover object-center",
+                        alt: "{img_alt}",
+                        src: "{img}",
+                    }
+                    div { class: "px-8 py-10 relative z-10 w-full border-4 border-gray-200 bg-white opacity-0 hover:opacity-100",
+                        h2 { class: "tracking-widest text-sm title-font font-medium text-indigo-500 mb-1",
+                            "{subtitle}"
                         }
-                        div { class: "px-8 py-10 relative z-10 w-full border-4 border-gray-200 bg-white opacity-0 hover:opacity-100",
-                            h2 { class: "tracking-widest text-sm title-font font-medium text-indigo-500 mb-1",
-                                "{subtitle}"
-                            }
-                            h1 { class: "title-font text-lg font-medium text-gray-900 mb-3",
-                                "{title}"
-                            }
-                            p { class: "leading-relaxed",
-                                "{description}"
-                            }
+                        h1 { class: "title-font text-lg font-medium text-gray-900 mb-3",
+                            "{title}"
+                        }
+                        p { class: "leading-relaxed",
+                            "{description}"
                         }
                     }
                 }
             }
-        })
+        }
+    })
 }

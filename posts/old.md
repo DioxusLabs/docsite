@@ -51,7 +51,7 @@ To make components with props that borrow data, we need to use the regular funct
 struct ChildProps<'a> {
 		name: &'a str
 }
-fn Child<'a>(cx: Context<'a, ChildProps>) -> Element<'a> {
+fn Child<'a>(cx: Scope<'a, ChildProps>) -> Element<'a> {
 		rsx!(cx, div {"Hello, {cx.name}"})
 }
 ```
@@ -258,7 +258,7 @@ Frankly, the type of code used to write UI is not that complex. When dealing wit
 ```rust
 // The Rust-Dioxus version
 fn App(cx: Context, props: &()) -> Element {
-    let mut count = use_state(cx, || 0);
+    let mut count = use_state(&cx, || 0);
     cx.render(rsx!{
         h1 { "Count: {count}" }
         button { onclick: move |_| count += 1, "+" }

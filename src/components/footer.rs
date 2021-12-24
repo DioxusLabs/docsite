@@ -1,7 +1,7 @@
 use dioxus::prelude::*;
 use crate::icons::*;
 
-pub static Footer: FC<()> = |cx, props| {
+pub static Footer: Component<()> = |cx| {
 
     let categories = [
         (

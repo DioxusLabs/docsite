@@ -147,7 +147,7 @@
 <span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>fn App((cx, props): Component&lt;()&gt;) -&gt; Element {
-    let mut count = use_state(cx, || 0);
+    let mut count = use_state(&cx, || 0);
 
     cx.render(rsx!(
         h1 { &quot;High-Five counter: {count}&quot; }
@@ -355,7 +355,7 @@ fn App((cx, props): Component&lt;()&gt;) -&gt; Element {
     dioxus::desktop::start(App, |c| c);
 }
 </code></pre></pre>
-<p>Finally, our app. Every component in Dioxus is a function that takes in <code>Context</code> and <code>Props</code> and returns an <code>Element</code>.</p>
+<p>Finally, our app. Every component in Dioxus is a function that takes in <code>Scope</code> and <code>Props</code> and returns an <code>Element</code>.</p>
 <pre><pre class="playground"><code class="language-rust edition2018">
 <span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
@@ -388,8 +388,8 @@ fn App((cx, props): Component&lt;()&gt;) -&gt; Element {
 };
 <span class="boring">}
 </span></code></pre></pre>
-<h3 id="the-context-object"><a class="header" href="#the-context-object">The <code>Context</code> object</a></h3>
-<p>In React, you'll want to store data between renders with hooks. However, hooks rely on global variables which make them difficult to integrate in multi-tenant systems like server-rendering. In Dioxus, you are given an explicit <code>Context</code> object to control how the component renders and stores data.</p>
+<h3 id="the-context-object"><a class="header" href="#the-context-object">The <code>Scope</code> object</a></h3>
+<p>In React, you'll want to store data between renders with hooks. However, hooks rely on global variables which make them difficult to integrate in multi-tenant systems like server-rendering. In Dioxus, you are given an explicit <code>Scope</code> object to control how the component renders and stores data.</p>
 <h3 id="the-rsx-macro"><a class="header" href="#the-rsx-macro">The <code>rsx!</code> macro</a></h3>
 <p>Next, we're greeted with the <code>rsx!</code> macro. This lets us add a custom DSL for declaratively building the structure of our app. The semantics of this macro are similar to that of JSX and HTML, though with a familiar Rust-y interface. The <code>html!</code> macro is also available for writing components with a JSX/HTML syntax.</p>
 <p>The <code>rsx!</code> macro is lazy: it does not immediately produce elements or allocates, but rather builds a closure which can be rendered with <code>cx.render</code>.</p>
@@ -713,7 +713,7 @@ struct PostProps {
 </span></code></pre></pre>
 <p>When we render components, we use the traditional Rust struct syntax to declare their properties. Dioxus will automatically call &quot;into&quot; on the property fields, cloning when necessary. Notice how our <code>Post</code> component is simply a collection of important smaller components wrapped together in a single container.</p>
 <p>Let's take a look at the <code>VoteButtons</code> component. For now, we won't include any interactivity - just the rendering the vote buttons and score to the screen.</p>
-<p>Most of your Components will look exactly like this: a Props struct and a render function. As covered before, we'll build our User Interface with the <code>rsx!</code> macro and HTML tags. However, with components, we must actually &quot;render&quot; our HTML markup. Calling <code>cx.render</code> converts our &quot;lazy&quot; <code>rsx!</code> structure into an <code>Element</code>. Every component must take a tuple of <code>Context</code> and <code>&amp;Props</code> and return an <code>Element</code>.</p>
+<p>Most of your Components will look exactly like this: a Props struct and a render function. As covered before, we'll build our User Interface with the <code>rsx!</code> macro and HTML tags. However, with components, we must actually &quot;render&quot; our HTML markup. Calling <code>cx.render</code> converts our &quot;lazy&quot; <code>rsx!</code> structure into an <code>Element</code>. Every component must take a tuple of <code>Scope</code> and <code>&amp;Props</code> and return an <code>Element</code>.</p>
 <pre><pre class="playground"><code class="language-rust edition2018">
 <span class="boring">#![allow(unused)]
 </span>
@@ -753,15 +753,15 @@ fn TitleCard&lt;'a&gt;((cx, props): Component&lt;'a, TitleCardProps&gt;) -&gt; E
 }   
 <span class="boring">}
 </span></code></pre></pre>
-<h2 id="the-context-object-1"><a class="header" href="#the-context-object-1">The <code>Context</code> object</a></h2>
-<p>Though very similar with React, Dioxus is different in a few ways. Most notably, React components will not have a <code>Context</code> parameter in the component declaration. </p>
+<h2 id="the-context-object-1"><a class="header" href="#the-context-object-1">The <code>Scope</code> object</a></h2>
+<p>Though very similar with React, Dioxus is different in a few ways. Most notably, React components will not have a <code>Scope</code> parameter in the component declaration. </p>
 <p>Have you ever wondered how the <code>useState()</code> call works in React without a <code>this</code> object to actually store the state? </p>
 <p>React uses global variables to store this information which must be carefully managed, especially in environments with multiple React roots - like the server.</p>
 <pre><code class="language-javascript">function Component({}) {
     let [state, set_state] = useState(10);
 }
 </code></pre>
-<p>Because Dioxus needs to work with the rules of Rust, we need to provide a way for the component to do some internal bookkeeping. That's what the <code>Context</code> object is: a place for the component to store state, manage listeners, and allocate elements. Advanced users of Dioxus will want to learn how to properly leverage the <code>Context</code> object to build robust, performant extensions for Dioxus.</p>
+<p>Because Dioxus needs to work with the rules of Rust, we need to provide a way for the component to do some internal bookkeeping. That's what the <code>Scope</code> object is: a place for the component to store state, manage listeners, and allocate elements. Advanced users of Dioxus will want to learn how to properly leverage the <code>Scope</code> object to build robust, performant extensions for Dioxus.</p>
 <pre><pre class="playground"><code class="language-rust edition2018">
 <span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {

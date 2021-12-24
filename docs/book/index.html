@@ -149,7 +149,7 @@
 <span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>fn App((cx, props): Component&lt;()&gt;) -&gt; Element {
-    let mut count = use_state(cx, || 0);
+    let mut count = use_state(&cx, || 0);
 
     cx.render(rsx!(
         h1 { &quot;High-Five counter: {count}&quot; }

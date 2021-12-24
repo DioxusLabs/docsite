@@ -223,7 +223,7 @@ fn App((cx, props): Component&lt;()&gt;) -&gt; Element {
     dioxus::desktop::start(App, |c| c);
 }
 </code></pre></pre>
-<p>Finally, our app. Every component in Dioxus is a function that takes in <code>Context</code> and <code>Props</code> and returns an <code>Element</code>.</p>
+<p>Finally, our app. Every component in Dioxus is a function that takes in <code>Scope</code> and <code>Props</code> and returns an <code>Element</code>.</p>
 <pre><pre class="playground"><code class="language-rust edition2018">
 <span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
@@ -256,8 +256,8 @@ fn App((cx, props): Component&lt;()&gt;) -&gt; Element {
 };
 <span class="boring">}
 </span></code></pre></pre>
-<h3 id="the-context-object"><a class="header" href="#the-context-object">The <code>Context</code> object</a></h3>
-<p>In React, you'll want to store data between renders with hooks. However, hooks rely on global variables which make them difficult to integrate in multi-tenant systems like server-rendering. In Dioxus, you are given an explicit <code>Context</code> object to control how the component renders and stores data.</p>
+<h3 id="the-context-object"><a class="header" href="#the-context-object">The <code>Scope</code> object</a></h3>
+<p>In React, you'll want to store data between renders with hooks. However, hooks rely on global variables which make them difficult to integrate in multi-tenant systems like server-rendering. In Dioxus, you are given an explicit <code>Scope</code> object to control how the component renders and stores data.</p>
 <h3 id="the-rsx-macro"><a class="header" href="#the-rsx-macro">The <code>rsx!</code> macro</a></h3>
 <p>Next, we're greeted with the <code>rsx!</code> macro. This lets us add a custom DSL for declaratively building the structure of our app. The semantics of this macro are similar to that of JSX and HTML, though with a familiar Rust-y interface. The <code>html!</code> macro is also available for writing components with a JSX/HTML syntax.</p>
 <p>The <code>rsx!</code> macro is lazy: it does not immediately produce elements or allocates, but rather builds a closure which can be rendered with <code>cx.render</code>.</p>

@@ -24,7 +24,7 @@ fn main() {
 }
 
 fn App(cx: Scope, props: &()) -> Element {
-    let mut count = use_state(cx, || 0);
+    let mut count = use_state(&cx, || 0);
 
     cx.render(rsx! {
         h1 { "Count: {count}" }
@@ -59,7 +59,6 @@ To get started with Dioxus, check out any of the "Getting Started" guides for yo
 - Getting Started with Mobile
 - Getting Started with SSR
 
-
 ## Show me some examples of what can be built!
 
 - File explorer desktop app
@@ -67,7 +66,6 @@ To get started with Dioxus, check out any of the "Getting Started" guides for yo
 - IoT management web app
 - Chat mobile app
 - Hackernews LiveView app
-
 
 ## What features does Dioxus support?
 
@@ -80,7 +78,6 @@ To get started with Dioxus, check out any of the "Getting Started" guides for yo
 - Custom elements
 - Jank-free rendering (with fibers)
 - Refs to elements
-- Bind values to inputs
 
 We do support some differences from React as features:
 

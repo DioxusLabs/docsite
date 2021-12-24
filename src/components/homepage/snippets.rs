@@ -1,9 +1,9 @@
 use super::super::snippets::*;
 use dioxus::prelude::*;
 
-pub static Snippets: FC<()> = |cx, _props| {
-    let (snippets, _) = use_state(cx, build_snippets).classic();
-    let selected_snippet = use_state(cx, || 0);
+pub static Snippets: Component<()> = |cx| {
+    let (snippets, _) = use_state(&cx, build_snippets).classic();
+    let selected_snippet = use_state(&cx, || 0);
 
     let snip_list = snippets.iter().enumerate().map(|(id, s)| {
         let is_selected = if *selected_snippet == id {
@@ -30,9 +30,7 @@ pub static Snippets: FC<()> = |cx, _props| {
                 div { class: "flex flex-col md:pr-10 md:mb-0 mb-6 pr-0 w-full md:w-auto md:text-left text-center w:1/2 text-gray-800",
                     {snippets.iter().enumerate().map(|(id, f)| {
                         let show = if id == *selected_snippet {"block"} else {"none"};
-                        rsx!(div { style: "display: {show};"
-                            RenderSnippet { snippet: f }
-                        })
+                        rsx!(div { style: "display: {show};" snippet( snippet: f ) })
                     })}
                 }
             }
@@ -44,13 +42,13 @@ pub static Snippets: FC<()> = |cx, _props| {
 pub struct SnippetProps<'a> {
     snippet: &'a Snippet,
 }
-fn RenderSnippet(cx: Context, props: &SnippetProps) -> Element {
+fn snippet<'a>(cx: Scope<'a, SnippetProps<'a>>) -> Element {
     let Snippet {
         title,
         body,
         code,
         caller_id: _,
-    } = &props.snippet;
+    } = &cx.props.snippet;
 
     let body = body
         .split('\n')
@@ -69,7 +67,7 @@ fn RenderSnippet(cx: Context, props: &SnippetProps) -> Element {
                 div { class: "flex flex-col",
                     pre {
                         code {
-                            class: "language-rust"
+                            class: "language-rust line-numbers"
                             "{code}"
                         }
                     }

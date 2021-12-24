@@ -1,7 +1,7 @@
 use crate::icons;
 use dioxus::prelude::*;
 
-pub fn Hero(cx: Context, _props: &()) -> Element {
+pub fn Hero(cx: Scope<()>) -> Element {
     cx.render(rsx!{
         section { class: "text-gray-400 bg-gray-800",
             div { class: "container flex flex-col md:flex-row w:2/3 px-24 py-20 mx-auto",
@@ -35,8 +35,8 @@ pub fn Hero(cx: Context, _props: &()) -> Element {
     })
 }
 
-pub static InteractiveHeader: FC<()> = |cx, _props| {
-    let mut count = use_state(cx, || 0);
+pub static InteractiveHeader: Component<()> = |cx| {
+    let mut count = use_state(&cx, || 0);
 
     cx.render(rsx!{
         div { class: "flex flex-col items-center py-3" background_color: "hsl(220, 13%, 18%)"

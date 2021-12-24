@@ -1,6 +1,6 @@
 use dioxus::prelude::*;
 
-pub static CallToAction: FC<()> = |cx, _| {
+pub static CallToAction: Component<()> = |cx| {
     cx.render(rsx!{
         section { class: "text-gray-400 bg-gray-800 body-font",
             div { class: "container px-5 py-12 mx-auto",

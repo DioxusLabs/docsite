@@ -1,7 +1,7 @@
 use crate::{icons, AppRoute};
 use dioxus::prelude::*;
 
-pub static NavBar: FC<()> = |cx, props| {
+pub static NavBar: Component<()> = |cx| {
     cx.render(rsx! {
         section { class: "py-8 px-4 lg:px-10 bg-gray-900",
             nav { class: "relative flex justify-between items-center",

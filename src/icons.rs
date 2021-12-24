@@ -1,7 +1,7 @@
 use dioxus::prelude::*;
 
 
-pub static ExternalLinkIcon: FC<()> = |cx, _props| {
+pub static ExternalLinkIcon: Component<()> = |cx| {
     cx.render(rsx! {
         svg { 
             width: "15",
@@ -21,7 +21,7 @@ pub static ExternalLinkIcon: FC<()> = |cx, _props| {
     })
 };
 
-pub static Stacks: FC<()> = |cx, _props| {
+pub static Stacks: Component<()> = |cx| {
     cx.render(rsx!{
         svg { 
             class: "w-10 h-10 text-white p-2 bg-indigo-500 rounded-full",
@@ -40,7 +40,7 @@ pub static Stacks: FC<()> = |cx, _props| {
 };
 
 
-pub static ArrowRight: FC<()> = |cx, _props| {
+pub static ArrowRight: Component<()> = |cx| {
     cx.render(rsx! {
         svg { 
             class: "w-4 h-4 ml-1",
@@ -58,7 +58,7 @@ pub static ArrowRight: FC<()> = |cx, _props| {
 };
 
 
-pub static Icon1: FC<()> = |cx, _props| {
+pub static Icon1: Component<()> = |cx| {
 cx.render(rsx!(
 svg { class: "w-6 h-6",
     stroke_linecap: "round",
@@ -72,7 +72,7 @@ svg { class: "w-6 h-6",
     }
 })) };
 
-pub static Icon2: FC<()> = |cx, _props| {
+pub static Icon2: Component<()> = |cx| {
 cx.render(rsx!(svg { class: "w-6 h-6",
     stroke_linejoin: "round",
     stroke_width: "2",
@@ -95,7 +95,7 @@ cx.render(rsx!(svg { class: "w-6 h-6",
     }
 })) };
 
-pub static Icon3: FC<()> = |cx, _props| {
+pub static Icon3: Component<()> = |cx| {
 cx.render(rsx!(svg { class: "w-6 h-6",
     stroke_linecap: "round",
     fill: "none",
@@ -113,7 +113,7 @@ cx.render(rsx!(svg { class: "w-6 h-6",
     }
 })) };
 
-pub static Icon4: FC<()> = |cx, _props| {
+pub static Icon4: Component<()> = |cx| {
 cx.render(rsx!(svg { class: "w-6 h-6",
     stroke: "currentColor",
     view_box: "0 0 24 24",
@@ -127,7 +127,7 @@ cx.render(rsx!(svg { class: "w-6 h-6",
 })) 
 };
 
-pub static Icon5: FC<()> = |cx, _props| {
+pub static Icon5: Component<()> = |cx| {
     cx.render(rsx!(
     svg { class: "w-6 h-6",
         fill: "none",
@@ -140,7 +140,7 @@ pub static Icon5: FC<()> = |cx, _props| {
     })) 
 };
 
-pub static Icon6: FC<()> = |cx, _props| {
+pub static Icon6: Component<()> = |cx| {
     cx.render(rsx!(svg { class: "w-6 h-6",
         stroke: "currentColor",
         view_box: "0 0 24 24",
@@ -155,7 +155,7 @@ pub static Icon6: FC<()> = |cx, _props| {
 };
 
 
-pub static IconCheck: FC<()> = |cx, _props| {
+pub static IconCheck: Component<()> = |cx| {
     cx.render(rsx!(
         svg { class: "text-indigo-500 w-6 h-6 flex-shrink-0 mr-4",
             stroke_width: "3",
@@ -170,7 +170,7 @@ pub static IconCheck: FC<()> = |cx, _props| {
     ))
 };
 
-pub static TailwindLogo: FC<()> = |cx, _| {
+pub static TailwindLogo: Component<()> = |cx| {
     cx.render(rsx!(
         svg { class: "w-auto h-7 sm:h-8",
             view_box: "0 0 248 31",
@@ -190,7 +190,7 @@ pub static TailwindLogo: FC<()> = |cx, _| {
     ))
 };
 
-pub static Copy: FC<()> = |cx, _| {
+pub static Copy: Component<()> = |cx| {
     cx.render(rsx!(
         svg { 
             width: "24",
@@ -206,7 +206,7 @@ pub static Copy: FC<()> = |cx, _| {
 };
 
 
-pub static GithubLogo: FC<()> = |cx, _| {
+pub static GithubLogo: Component<()> = |cx| {
     cx.render(rsx!(
         svg { 
             height: "24",
@@ -222,7 +222,7 @@ pub static GithubLogo: FC<()> = |cx, _| {
 };
 
 
-pub static Search: FC<()> = |cx, _| {
+pub static Search: Component<()> = |cx| {
     cx.render(rsx!(
         svg { class: "text-gray-400 group-hover:text-gray-500 transition-colors duration-200",
             height: "24",

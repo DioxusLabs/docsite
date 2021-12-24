@@ -1,6 +1,6 @@
 use dioxus::prelude::*;
 
-pub static Docs: FC<()> = |cx, props| {
+pub static Docs: Component<()> = |cx| {
     cx.render(rsx! {
         div {
 

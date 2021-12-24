@@ -3,7 +3,7 @@ use dioxus::prelude::*;
 pub fn FeaturedExamples(cx: Scope<()>) -> Element {
     cx.render(rsx! {
         section { class: "bg-gray-800 body-font"
-            div { class: "container px-40 py-12 mx-auto",
+            div { class: "container px-6 lg:px-40 py-12 mx-auto",
                 div { class: "flex flex-col text-center w-full mb-10",
                     h1 { class: "sm:text-3xl text-2xl font-medium title-font mb-4 text-white",
                         "Feature-packed examples"

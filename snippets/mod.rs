@@ -98,18 +98,15 @@ fn ErrorHandling(cx: Scope<()>) -> Element {
 struct SharedState(&'static str);
 
 fn GlobalState(cx: Scope<()>) -> Element {    
-    use_provide_state(cx, || SharedState("world!"));
-    cx.render(rsx!( 
-        div { "Hello, ", Child {} } 
-    ))
+    use_provide_state(&cx, || SharedState("world!"));
+    rsx!(cx, div { "Hello, ", Child {} })
 }
 
 fn Child(cx: Scope<()>) -> Element {
     let name = use_shared_state::<SharedState>(cx)?;
-    cx.render(rsx!( 
-        "{name}" 
-    ))
+    rsx!(cx, "{name}" )
 }
+
 /// # Advanced State management
 ///
 /// With Dioxus, it's possible to directly expose shared state to child components with the `use_provide_context` hook.
@@ -123,7 +120,7 @@ struct AppState {
 }
 
 fn UserInfo(cx: Scope<()>) -> Element {
-    let user_name = use_read!(cx, AppState.user?.name);
+    let user_name = use_read!(&cx, AppState.user?.name);
 
     match user_name {
         Some(name) => rsx!(cx, "Hello, {name}"),
@@ -139,17 +136,17 @@ fn UserInfo(cx: Scope<()>) -> Element {
 fn Tasks(cx: Scope<()>) -> Element {
     let count = use_state(&cx, || 0);
 
-    let mut count_async = count.for_async();
-    use_task(cx, || async move {
-        loop {
-            count_async += 1;
-            timer::from_ms(500).await;
+    use_future(cx, || {
+        let mut count = count.to_owned(); // explicitly capture `count` for use between renders
+        async move {
+            loop {
+                count += 1;
+                timer::from_ms(500).await;
+            }
         }
     });
 
-    cx.render(rsx!(
-        pre {"Count: {count}"}
-    ))
+    rsx!(cx, pre {"Count: {count}"})
 }
 
 /// # Suspense

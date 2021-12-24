@@ -20,8 +20,8 @@ pub static Snippets: Component<()> = |cx| {
     });
 
     cx.render(rsx! {
-        section { class: "text-gray-500 bg-white body-font mx-auto px-48 pt-12"
-            div { class: "container flex flex-col md:flex-row w:2/3 px-24 py-10 mx-auto"
+        section { class: "text-gray-500 bg-white body-font mx-auto px-6 lg:px-48 pt-12"
+            div { class: "container flex flex-col md:flex-row w:2/3 px-6 lg:px-24 py-10 mx-auto"
                 div { class: "h-full resize-none flex-shrink-0 mb-6 pr-0 w-full md:w-auto md:text-left text-center rounded-lg shadow",
                     ul { class: "divide-y-2 divide-gray-100"
                         {snip_list}

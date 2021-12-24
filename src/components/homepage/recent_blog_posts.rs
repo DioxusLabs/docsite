@@ -30,7 +30,7 @@ pub static RecentBlogPosts: Component<()> = |cx| {
 
     cx.render(rsx!{
         section { class: "text-gray-600 body-font overflow-hidden",
-            div { class: "container px-40 pt-0 pb-12 mx-auto",
+            div { class: "container px-6 lg:px-40 pt-0 pb-12 mx-auto",
                 div { class: "-my-8 divide-y-2 divide-gray-100",
                     // Individual Post starts here
                     {posts.iter().map(|BlogPostDisplay { category, date, title, description, link }| rsx!{

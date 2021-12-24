@@ -1,8 +1,20 @@
+use crate::icons;
 use dioxus::prelude::*;
+
+static IconsSet: &[Component<()>; 8] = &[
+    icons::Icon1,
+    icons::Icon2,
+    icons::Icon3,
+    icons::Icon4,
+    icons::Icon5,
+    icons::Icon6,
+    icons::Icon1,
+    icons::Icon2,
+];
 
 pub static ValueAdd: Component<()> = |cx| {
     rsx!(cx, section { class: "text-gray-600 body-font"
-        div { class: "container mx-auto py-12 px-40",
+        div { class: "container mx-auto py-12 px-6 lg:px-40",
             div { class: "flex flex-wrap sm:-m-4 -mx-4 -mb-10 -mt-4 md:space-y-0 space-y-6 ",
                 {[
                     ("Declarative", "Easily describe the layout of your application with HTML or RSX syntax."),
@@ -13,25 +25,28 @@ pub static ValueAdd: Component<()> = |cx| {
                     ("If it compiles, it works", "Fearlessly refactor even the largest of apps with powerful compile-time guarantees."),
                     ("First-class error handling", "No more uncaught exceptions. Components can easily abort rendering without crashing the entire app."),
                     ("Incredible inline documentation", "Comprenehsive doc comments provide MDN hints and guides right under your finger tips."),
-                ].iter().enumerate().map(|(_, (title, content))| rsx!(
-                    div { class: "p-4 md:w-1/4 flex",
-                        div { class: "flex-grow pl-6",
-                            // todo: find a cute icon for each value add
-                            // people like icons
-                            crate::icons::Icon3 {}
-                            a { href: "#"
-                                h2 { class: "text-black text-lg title-font font-medium mb-2",
-                                    "{title}"
+                ].iter().enumerate().map(|(idx, (title, content))| {
+                    // perhaps we should at a utility function to convert a component into a vnode?
+                    let icon = LazyNodes::new(move |f| f.component(IconsSet[idx], (), None));
+
+                    rsx!(
+                        div { class: "p-4 md:w-1/4 flex",
+                            div { class: "flex-grow pl-6",
+                                {[icon]}
+                                a { href: "#"
+                                    h2 { class: "text-black text-lg title-font font-medium mb-2",
+                                        "{title}"
+                                    }
                                 }
+                                {content.split('\n').map(|line| rsx!{
+                                    p { class: "leading-relaxed text-base pb-4",
+                                        "{line}"
+                                    }
+                                })}
                             }
-                            {content.split('\n').map(|line| rsx!{
-                                p { class: "leading-relaxed text-base pb-4",
-                                    "{line}"
-                                }
-                            })}
                         }
-                    }
-                ))}
+                    )}
+                )}
             }
         }
     })

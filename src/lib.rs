@@ -5,6 +5,7 @@ use dioxus::{
     router::{use_router, Link},
 };
 
+pub mod icons;
 pub mod sitemap;
 pub mod components {
     pub mod homepage {
@@ -21,8 +22,6 @@ pub mod components {
     pub mod navbar;
     pub mod snippets;
 }
-
-pub mod icons;
 
 #[derive(PartialEq, Clone, Debug)]
 enum AppRoute {
@@ -72,8 +71,8 @@ pub static App: Component<()> = |cx| {
             }
         "#]} }
 
+        nav_header()
         div { class: "dark:bg-gray-800"
-            nav_header()
             div { class: "relative max-w-5xl mx-auto pt-20 sm:pt-24 lg:pt-32 text-gray-600",
                 h1 { class: "font-extrabold text-4xl sm:text-5xl lg:text-6xl tracking-tight text-center dark:text-white",
                     "Build reliable user interfaces that run "

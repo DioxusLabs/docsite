@@ -39,7 +39,7 @@ pub fn FeaturedExamples(cx: Scope<()>) -> Element {
                         subtitle: "Desktop, Mobile",
                         description: "Spawn native Tokio tasks and interact with hardware directly from your app with Dioxus coroutines.",
                         link: "https://github.com/DioxusLabs/bluetooth-scanner",
-                        img: "https://dioxuslabs.com/static/todos_cropped.png",
+                        img: "https://dioxuslabs.com/static/scanner.png",
                         img_alt: "",
                     }
                     FeaturedExample {

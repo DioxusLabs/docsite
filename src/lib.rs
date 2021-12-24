@@ -30,19 +30,24 @@ enum AppRoute {
     Blog,
 }
 
+#[wasm_bindgen::prelude::wasm_bindgen(start)]
+pub fn start() {
+    dioxus::web::launch(App)
+}
+
 pub static App: Component<()> = |cx| {
     let route = use_router(&cx, |s| match s {
         "blog" => AppRoute::Blog,
         _ => AppRoute::Home,
     });
 
-    let remote_css = if cfg!(debug_assertions) {
-        Some(rsx!(link {
+    // in deubg mode we want to bring in the dev mode of tailwind, but generate the propduction mode for release
+    let remote_css = match cfg!(debug_assertions) {
+        true => Some(rsx!(link {
             href: "https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css",
             rel: "stylesheet"
-        }))
-    } else {
-        None
+        })),
+        false => None,
     };
 
     cx.render(rsx! {

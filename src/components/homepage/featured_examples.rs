@@ -15,7 +15,7 @@ pub fn FeaturedExamples(cx: Scope<()>) -> Element {
                         subtitle: "Web",
                         description: "The classic demonstration of a web framework. Fits in one file in less than 150 lines of code.",
                         link: "https://github.com/dioxuslabs/todomvc",
-                        img: "https://dummyimage.com/606x366",
+                        img: "https://dioxuslabs.com/static/todos_cropped.png",
                         img_alt: "",
                     }
                     FeaturedExample {
@@ -23,7 +23,7 @@ pub fn FeaturedExamples(cx: Scope<()>) -> Element {
                         subtitle: "Web",
                         description: "A complex website leveraging Tailwind, global state, animations, pre-rendering, and project structure.",
                         link: "https://github.com/DioxusLabs/ecommerce-example",
-                        img: "https://dummyimage.com/606x366",
+                        img: "https://dioxuslabs.com/static/marktplace_cropped.png",
                         img_alt: "",
                     }
                     FeaturedExample {
@@ -31,7 +31,7 @@ pub fn FeaturedExamples(cx: Scope<()>) -> Element {
                         subtitle: "Desktop",
                         description: "Interact with native APIs directly from your UI. Works with a simple `cargo run` and is bundle-ready.",
                         link: "https://github.com/DioxusLabs/file-explorer",
-                        img: "https://dummyimage.com/606x366",
+                        img: "https://dioxuslabs.com/static/file_explorer.png",
                         img_alt: "",
                     }
                     FeaturedExample {
@@ -39,15 +39,15 @@ pub fn FeaturedExamples(cx: Scope<()>) -> Element {
                         subtitle: "Desktop, Mobile",
                         description: "Spawn native Tokio tasks and interact with hardware directly from your app with Dioxus coroutines.",
                         link: "https://github.com/DioxusLabs/bluetooth-scanner",
-                        img: "https://dummyimage.com/606x366",
+                        img: "https://dioxuslabs.com/static/todos_cropped.png",
                         img_alt: "",
                     }
                     FeaturedExample {
                         title: "Documentation Site",
                         subtitle: "SSR",
                         description: "This very site is written in Dioxus, pre-rendered with SSR, and rehydrated with Dioxus-Web!",
-                        link: "",
-                        img: "https://dummyimage.com/606x366",
+                        link: "https://github.com/DioxusLabs/docsite",
+                        img: "https://dioxuslabs.com/static/docsite_cropped.png",
                         img_alt: "",
                     }
                     FeaturedExample {
@@ -55,7 +55,7 @@ pub fn FeaturedExamples(cx: Scope<()>) -> Element {
                         subtitle: "Web",
                         description: "The classic performance benchmark for web frameworks. Dioxus ranks extraordinarily high!",
                         link: "",
-                        img: "https://dummyimage.com/606x366",
+                        img: "https://dioxuslabs.com/static/jsbenchmark_cropped.png",
                         img_alt: "",
                     }
                 }

@@ -1,0 +1,388 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Hooks and Internal State - Dioxus Documentation</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="Create book from markdown files. Like Gitbook but implemented in Rust">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../highlight.css">
+        <link rel="stylesheet" href="../tomorrow-night.css">
+        <link rel="stylesheet" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+        <!-- MathJax -->
+        <script async type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded "><a href="../index.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="../setup.html"><strong aria-hidden="true">2.</strong> Getting Setup</a></li><li class="chapter-item expanded "><a href="../hello_world.html"><strong aria-hidden="true">3.</strong> Hello, World!</a></li><li class="chapter-item expanded "><a href="../concepts/00-index.html"><strong aria-hidden="true">4.</strong> Describing the UI</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../concepts/vnodes.html"><strong aria-hidden="true">4.1.</strong> Intro to Elements</a></li><li class="chapter-item expanded "><a href="../concepts/components.html"><strong aria-hidden="true">4.2.</strong> Intro to Components</a></li><li class="chapter-item expanded "><a href="../concepts/exporting_components.html"><strong aria-hidden="true">4.3.</strong> Reusing, Importing, and Exporting Components</a></li><li class="chapter-item expanded "><a href="../concepts/component_children.html"><strong aria-hidden="true">4.4.</strong> Passing children and attributes</a></li><li class="chapter-item expanded "><a href="../concepts/conditional_rendering.html"><strong aria-hidden="true">4.5.</strong> Conditional Rendering</a></li><li class="chapter-item expanded "><a href="../concepts/lists.html"><strong aria-hidden="true">4.6.</strong> Lists</a></li></ol></li><li class="chapter-item expanded "><a href="../concepts/interactivity.html"><strong aria-hidden="true">5.</strong> Adding Interactivity</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../concepts/hooks.html" class="active"><strong aria-hidden="true">5.1.</strong> Hooks and Internal State</a></li><li class="chapter-item expanded "><a href="../concepts/event_handlers.html"><strong aria-hidden="true">5.2.</strong> Event handlers</a></li><li class="chapter-item expanded "><a href="../concepts/user_input.html"><strong aria-hidden="true">5.3.</strong> User Input and Controlled Components</a></li><li class="chapter-item expanded "><a href="../concepts/lifecycles.html"><strong aria-hidden="true">5.4.</strong> Lifecycle, updates, and effects</a></li></ol></li><li class="chapter-item expanded "><a href="../concepts/managing_state.html"><strong aria-hidden="true">6.</strong> Managing State</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../concepts/sharedstate.html"><strong aria-hidden="true">6.1.</strong> Global State</a></li><li class="chapter-item expanded "><a href="../concepts/errorhandling.html"><strong aria-hidden="true">6.2.</strong> Error handling</a></li><li class="chapter-item expanded "><a href="../concepts/effects.html"><strong aria-hidden="true">6.3.</strong> Effects</a></li></ol></li><li class="chapter-item expanded "><a href="../concepts/async.html"><strong aria-hidden="true">7.</strong> Working with Async</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../concepts/asynctasks.html"><strong aria-hidden="true">7.1.</strong> Tasks</a></li><li class="chapter-item expanded "><a href="../concepts/suspense.html"><strong aria-hidden="true">7.2.</strong> Suspense</a></li><li class="chapter-item expanded "><a href="../concepts/asynccallbacks.html"><strong aria-hidden="true">7.3.</strong> Async Callbacks</a></li></ol></li><li class="chapter-item expanded "><a href="../tutorial/index.html"><strong aria-hidden="true">8.</strong> Putting it all together</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../tutorial/new_app.html"><strong aria-hidden="true">8.1.</strong> New app</a></li><li class="chapter-item expanded "><a href="../tutorial/structure.html"><strong aria-hidden="true">8.2.</strong> Structuring our app</a></li><li class="chapter-item expanded "><a href="../tutorial/state.html"><strong aria-hidden="true">8.3.</strong> Defining State</a></li><li class="chapter-item expanded "><a href="../tutorial/components.html"><strong aria-hidden="true">8.4.</strong> Defining Components</a></li><li class="chapter-item expanded "><a href="../tutorial/styling.html"><strong aria-hidden="true">8.5.</strong> Styling</a></li><li class="chapter-item expanded "><a href="../tutorial/publishing.html"><strong aria-hidden="true">8.6.</strong> Publishing</a></li></ol></li><li class="chapter-item expanded "><a href="../final/index.html"><strong aria-hidden="true">9.</strong> Next Steps and Advanced Topics</a></li><li class="spacer"></li><li class="chapter-item expanded affix "><a href="../misc/contributors.html">Contributors</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Dioxus Documentation</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/rust-lang/mdBook/tree/master/guide" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+                        <a href="https://github.com/rust-lang/mdBook/edit/master/guide/src/concepts/hooks.md" title="Suggest an edit" aria-label="Suggest an edit">
+                            <i id="git-edit-button" class="fa fa-edit"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="hooks-and-internal-state"><a class="header" href="#hooks-and-internal-state">Hooks and Internal State</a></h1>
+<p>In the <a href="./interactivity.html">Adding Interactivity</a> section, we briefly covered the concept of hooks and state stored internal to components.</p>
+<p>In this section, we'll dive a bit deeper into hooks, exploring both the theory and mechanics.</p>
+<h2 id="theory-of-hooks"><a class="header" href="#theory-of-hooks">Theory of Hooks</a></h2>
+<p>Over the past several decades, computer scientists and engineers have long sought the &quot;right way&quot; of designing user interfaces. With each new programming language, novel features are unlocked that change the paradigm in which user interfaces are coded.</p>
+<p>Generally, a number of patterns have emerged, each with their own strengths and tradeoffs. </p>
+<p>Broadly, there are two types of GUI structures:</p>
+<ul>
+<li>Immediate GUIs: re-render the entire screen on every update</li>
+<li>Retained GUIs: only re-render the portion of the screen that changed</li>
+</ul>
+<p>Typically, immediate-mode GUIs are simpler to write but can slow down as more features, like styling, are added.</p>
+<p>Many GUIs today - including Dioxus - are written in <em>Retained mode</em> - your code changes the data of the user interface but the renderer is responsible for actually drawing to the screen. In these cases, our GUI's state sticks around as the UI is rendered.</p>
+<p>Dioxus, following in the footsteps of React, provides a &quot;Reactive&quot; model for you to design your UI. This model emphasizes one-way data flow and encapsulation. Essentially, your UI code should be as predictable as possible.</p>
+<h2 id="mechanics-of-hooks"><a class="header" href="#mechanics-of-hooks">Mechanics of Hooks</a></h2>
+<p>In order to have state stick around between renders, Dioxus provides the <code>hook</code> through the <code>use_hook</code> API. This gives us a mutable reference to data returned from the initialization function.</p>
+<pre><pre class="playground"><code class="language-rust edition2018">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn example(cx: Scope) -&gt; Element {
+    let name: &amp;mut String = cx.use_hook(|| &quot;John Doe&quot;.to_string(), |hook| hook);
+
+    //
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>We can even modify this value directly from an event handler:</p>
+<pre><pre class="playground"><code class="language-rust edition2018">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn example(cx: Scope) -&gt; Element {
+    let name: &amp;mut String = cx.use_hook(|| &quot;John Doe&quot;.to_string(), |hook| hook);
+
+    cx.render(rsx!(
+        button {
+            onclick: move |_| name.push_str(&quot;..&quot;),
+        }
+    ))
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>Mechanically, each call to <code>use_hook</code> provides us with <code>&amp;mut T</code> for a new value. </p>
+<pre><pre class="playground"><code class="language-rust edition2018">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn example(cx: Scope) -&gt; Element {
+    let name: &amp;mut String = cx.use_hook(|| &quot;John Doe&quot;.to_string(), |hook| hook);
+    let age: &amp;mut u32 = cx.use_hook(|| 10, |hook| hook);
+    let friends: &amp;mut Vec&lt;String&gt; = cx.use_hook(|| vec![&quot;Jane Doe&quot;.to_string()], |hook| hook);
+
+    //
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>Internally, Dioxus is creating a list of hook values with each call to <code>use_hook</code> advancing the index of the list to return the next value.</p>
+<p>Our internal HookList would look something like:</p>
+<pre><pre class="playground"><code class="language-rust edition2018">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>[
+    Hook&lt;String&gt;,
+    Hook&lt;u32&gt;,
+    Hook&lt;String&gt;,
+]
+<span class="boring">}
+</span></code></pre></pre>
+<p>This is why hooks called out of order will fail - if we try to downcast a <code>Hook&lt;String&gt;</code> to <code>Hook&lt;u32&gt;</code>, Dioxus has no choice but to panic. We do provide a <code>try_use_hook</code> but you should never need that in practice.</p>
+<p>This pattern might seem strange at first, but it can be a significant upgrade over structs as blobs of state, which tend to be difficult to use in <a href="https://rust-lang.github.io/rfcs/2229-capture-disjoint-fields.html">Rust given the ownership system</a>.</p>
+<h2 id="building-new-hooks"><a class="header" href="#building-new-hooks">Building new Hooks</a></h2>
+<p>However, most hooks you'll interact with <em>don't</em> return an <code>&amp;mut T</code> since this is not very useful in a real-world situation.</p>
+<p>Consider when we try to pass our <code>&amp;mut String</code> into two different handlers:</p>
+<pre><pre class="playground"><code class="language-rust edition2018">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn example(cx: Scope) -&gt; Element {
+    let name: &amp;mut String = cx.use_hook(|| &quot;John Doe&quot;.to_string(), |hook| hook);
+
+    cx.render(rsx!(
+        button { onclick: move |_| name.push_str(&quot;yes&quot;), }
+        button { onclick: move |_| name.push_str(&quot;no&quot;), }
+    ))
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>Rust will not allow this to compile! We cannot <code>Copy</code> unique mutable references - they are, by definition, unique. However, we <em>can</em> reborrow our <code>&amp;mut T</code> as an <code>&amp;T</code> which are non-unique references and share those between handlers:</p>
+<pre><pre class="playground"><code class="language-rust edition2018">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn example(cx: Scope) -&gt; Element {
+    let name: &amp;String = &amp;*cx.use_hook(|| &quot;John Doe&quot;.to_string());
+
+    cx.render(rsx!(
+        button { onclick: move |_| log::info!(&quot;{}&quot;, name), }
+        button { onclick: move |_| log::info!(&quot;{}&quot;, name), }
+    ))
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>So, for any custom hook we want to design, we need to enable mutation through <a href="https://doc.rust-lang.org/book/ch15-05-interior-mutability.html">interior mutability</a> - IE move to runtime <a href="https://doc.rust-lang.org/1.8.0/book/references-and-borrowing.html">borrow checking</a>. We might incur a tiny runtime cost for each time we grab a new value from the hook, but this cost is extremely minimal.</p>
+<p>This example uses the <code>Cell</code> type to let us replace the value through interior mutability. <code>Cell</code> has practically zero overhead, but is slightly more limited that its <code>RefCell</code> cousin.</p>
+<pre><pre class="playground"><code class="language-rust edition2018">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn example(cx: Scope) -&gt; Element {
+    let name: &amp;Cell&lt;&amp;'static str&gt; = cx.use_hook(|| &quot;John Doe&quot;, |hook| hook);
+
+    cx.render(rsx!(
+        button { onclick: move |_| name.set(&quot;John&quot;), }
+        button { onclick: move |_| name.set(&quot;Jane&quot;), }
+    ))
+}
+<span class="boring">}
+</span></code></pre></pre>
+<h2 id="driving-state-updates-through-hooks"><a class="header" href="#driving-state-updates-through-hooks">Driving state updates through hooks</a></h2>
+<p>Hooks like <code>use_state</code> and <code>use_ref</code> wrap this runtime borrow checking in a type that <em>does</em> implement <code>Copy</code>. Additionally, they also mark the component as &quot;dirty&quot; whenever a new value has been set. This way, whenever <code>use_state</code> has a new value <code>set</code>, the component knows to update.</p>
+<pre><pre class="playground"><code class="language-rust edition2018">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn example(cx: Scope) -&gt; Element {
+    let name = use_state(&amp;cx, || &quot;Jack&quot;);
+
+    cx.render(rsx!(
+        &quot;Hello, {name}&quot;
+        button { onclick: move |_| name.set(&quot;John&quot;), }
+        button { onclick: move |_| name.set(&quot;Jane&quot;), }
+    ))
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>Internally, our <code>set</code> function looks something like this:</p>
+<pre><pre class="playground"><code class="language-rust edition2018">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>impl&lt;'a, T&gt; UseState&lt;'a, T&gt; {
+    fn set(&amp;self, new: T) {
+        // Replace the value in the cell
+        self.value.set(new);
+
+        // Mark our component as dirty
+        self.cx.needs_update();
+    }
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>Most hooks we provide implement <code>Deref</code> on their values since they are essentially smart pointers. To access the underlying value, you'll often need to use the deref operator:</p>
+<pre><pre class="playground"><code class="language-rust edition2018">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn example(cx: Scope) -&gt; Element {
+    let name = use_state(&amp;cx, || &quot;Jack&quot;);
+
+    match *name {
+        &quot;Jack&quot; =&gt; {}
+        &quot;Jill&quot; =&gt; {}
+        _ =&gt; {}
+    }
+
+    // ..
+}
+
+<span class="boring">}
+</span></code></pre></pre>
+<h2 id="hooks-provided-by-the-dioxus-hooks-package"><a class="header" href="#hooks-provided-by-the-dioxus-hooks-package">Hooks provided by the <code>Dioxus-Hooks</code> package</a></h2>
+<p>By default, we bundle a handful of hooks in the Dioxus-Hooks package. Feel free to click on each hook to view its definition and associated documentation.</p>
+<ul>
+<li><a href="https://docs.rs/dioxus_hooks/use_state">use_state</a> - store state with ergonomic updates</li>
+<li><a href="https://docs.rs/dioxus_hooks/use_ref">use_ref</a> - store non-clone state with a refcell</li>
+<li><a href="https://docs.rs/dioxus_hooks/use_future">use_future</a> - store a future to be polled after initialization</li>
+<li><a href="https://docs.rs/dioxus_hooks/use_coroutine">use_coroutine</a> - store a future that can be stopped/started/communicated with</li>
+<li><a href="https://docs.rs/dioxus_hooks/use_noderef">use_noderef</a> - store a handle to the native element</li>
+<li><a href="https://docs.rs/dioxus_hooks/use_callback">use_callback</a> - store a callback that implements PartialEq for memoization</li>
+<li><a href="https://docs.rs/dioxus_hooks/use_provide_context">use_provide_context</a> - expose state to descendent components</li>
+<li><a href="https://docs.rs/dioxus_hooks/use_context">use_context</a> - consume state provided by <code>use_provide_context</code></li>
+</ul>
+<h2 id="wrapping-up"><a class="header" href="#wrapping-up">Wrapping up</a></h2>
+<p>In this chapter, we learned about the mechanics and intricacies of storing state inside a component.</p>
+<p>In the next chapter, we'll cover event listeners in similar depth, and how to combine the two to build interactive components.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../concepts/interactivity.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next" href="../concepts/event_handlers.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../concepts/interactivity.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next" href="../concepts/event_handlers.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+        <script type="text/javascript">
+            window.playground_line_numbers = true;
+        </script>
+
+        <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+
+        <script src="../ace.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../editor.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../mode-rust.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../theme-dawn.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../theme-tomorrow_night.js" type="text/javascript" charset="utf-8"></script>
+
+        <script src="../elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../searcher.js" type="text/javascript" charset="utf-8"></script>
+
+        <script src="../clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </body>
+</html>

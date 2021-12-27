@@ -35,10 +35,10 @@ impl Default for AppRoute {
     }
 }
 
-// #[wasm_bindgen::prelude::wasm_bindgen(start)]
-// pub fn start() {
-//     dioxus::web::launch(App)
-// }
+#[wasm_bindgen::prelude::wasm_bindgen(start)]
+pub fn start() {
+    dioxus::web::launch(App)
+}
 
 pub static App: Component<()> = |cx| {
     let route: &AppRoute = use_router(&cx, |c| {});

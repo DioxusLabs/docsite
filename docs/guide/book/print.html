@@ -1,0 +1,2215 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Dioxus Documentation</title>
+        <meta name="robots" content="noindex" />
+
+
+        <!-- Custom HTML head -->
+
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="Create book from markdown files. Like Gitbook but implemented in Rust">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+        <!-- MathJax -->
+        <script async type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded "><a href="index.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="setup.html"><strong aria-hidden="true">2.</strong> Getting Setup</a></li><li class="chapter-item expanded "><a href="hello_world.html"><strong aria-hidden="true">3.</strong> Hello, World!</a></li><li class="chapter-item expanded "><a href="concepts/00-index.html"><strong aria-hidden="true">4.</strong> Describing the UI</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="concepts/vnodes.html"><strong aria-hidden="true">4.1.</strong> Intro to Elements</a></li><li class="chapter-item expanded "><a href="concepts/components.html"><strong aria-hidden="true">4.2.</strong> Intro to Components</a></li><li class="chapter-item expanded "><a href="concepts/exporting_components.html"><strong aria-hidden="true">4.3.</strong> Reusing, Importing, and Exporting Components</a></li><li class="chapter-item expanded "><a href="concepts/component_children.html"><strong aria-hidden="true">4.4.</strong> Passing children and attributes</a></li><li class="chapter-item expanded "><a href="concepts/conditional_rendering.html"><strong aria-hidden="true">4.5.</strong> Conditional Rendering</a></li><li class="chapter-item expanded "><a href="concepts/lists.html"><strong aria-hidden="true">4.6.</strong> Lists</a></li></ol></li><li class="chapter-item expanded "><a href="concepts/interactivity.html"><strong aria-hidden="true">5.</strong> Adding Interactivity</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="concepts/hooks.html"><strong aria-hidden="true">5.1.</strong> Hooks and Internal State</a></li><li class="chapter-item expanded "><a href="concepts/event_handlers.html"><strong aria-hidden="true">5.2.</strong> Event handlers</a></li><li class="chapter-item expanded "><a href="concepts/user_input.html"><strong aria-hidden="true">5.3.</strong> User Input and Controlled Components</a></li><li class="chapter-item expanded "><a href="concepts/lifecycles.html"><strong aria-hidden="true">5.4.</strong> Lifecycle, updates, and effects</a></li></ol></li><li class="chapter-item expanded "><a href="concepts/managing_state.html"><strong aria-hidden="true">6.</strong> Managing State</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="concepts/sharedstate.html"><strong aria-hidden="true">6.1.</strong> Global State</a></li><li class="chapter-item expanded "><a href="concepts/errorhandling.html"><strong aria-hidden="true">6.2.</strong> Error handling</a></li><li class="chapter-item expanded "><a href="concepts/effects.html"><strong aria-hidden="true">6.3.</strong> Effects</a></li></ol></li><li class="chapter-item expanded "><a href="concepts/async.html"><strong aria-hidden="true">7.</strong> Working with Async</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="concepts/asynctasks.html"><strong aria-hidden="true">7.1.</strong> Tasks</a></li><li class="chapter-item expanded "><a href="concepts/suspense.html"><strong aria-hidden="true">7.2.</strong> Suspense</a></li><li class="chapter-item expanded "><a href="concepts/asynccallbacks.html"><strong aria-hidden="true">7.3.</strong> Async Callbacks</a></li></ol></li><li class="chapter-item expanded "><a href="tutorial/index.html"><strong aria-hidden="true">8.</strong> Putting it all together</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="tutorial/new_app.html"><strong aria-hidden="true">8.1.</strong> New app</a></li><li class="chapter-item expanded "><a href="tutorial/structure.html"><strong aria-hidden="true">8.2.</strong> Structuring our app</a></li><li class="chapter-item expanded "><a href="tutorial/state.html"><strong aria-hidden="true">8.3.</strong> Defining State</a></li><li class="chapter-item expanded "><a href="tutorial/components.html"><strong aria-hidden="true">8.4.</strong> Defining Components</a></li><li class="chapter-item expanded "><a href="tutorial/styling.html"><strong aria-hidden="true">8.5.</strong> Styling</a></li><li class="chapter-item expanded "><a href="tutorial/publishing.html"><strong aria-hidden="true">8.6.</strong> Publishing</a></li></ol></li><li class="chapter-item expanded "><a href="final/index.html"><strong aria-hidden="true">9.</strong> Next Steps and Advanced Topics</a></li><li class="spacer"></li><li class="chapter-item expanded affix "><a href="misc/contributors.html">Contributors</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Dioxus Documentation</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/rust-lang/mdBook/tree/master/guide" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="introduction"><a class="header" href="#introduction">Introduction</a></h1>
+<p><img src="./images/dioxuslogo_full.png" alt="dioxuslogo" /></p>
+<p><strong>Dioxus</strong> is a framework and ecosystem for building fast, scalable, and robust user interfaces with the Rust programming language. This guide will help you get started with Dioxus running on the Web, Desktop, Mobile, and more.</p>
+<pre><pre class="playground"><code class="language-rust edition2018">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn App(cx: Scope) -&gt; Element {
+    let mut count = use_state(&amp;cx, || 0);
+
+    cx.render(rsx!(
+        h1 { &quot;High-Five counter: {count}&quot; }
+        button { onclick: move |_| count += 1, &quot;Up high!&quot; }
+        button { onclick: move |_| count -= 1, &quot;Down low!&quot; }
+    ))
+};
+<span class="boring">}
+</span></code></pre></pre>
+<p>In general, Dioxus and React share many functional similarities. If this guide is lacking in any general concept or an error message is confusing, React's documentation might be more helpful. We are dedicated to providing a <em>familiar</em> toolkit for UI in Rust, so we've chosen to follow in the footsteps of popular UI frameworks (React, Redux, etc). If you know React, then you already know Dioxus. If you don't know either, this guide will still help you!</p>
+<blockquote>
+<p>This is introduction book! For advanced topics, check out the <a href="https://dioxuslabs.com/reference">Reference</a> instead.</p>
+</blockquote>
+<h2 id="multiplatform"><a class="header" href="#multiplatform">Multiplatform</a></h2>
+<p>Dioxus is a <em>portable</em> toolkit, meaning the Core implementation can run anywhere with no platform-dependent linking. Unlike many other Rust frontend toolkits, Dioxus is not intrinsically linked to Web-Sys. In fact, every element and event listener can be swapped out at compile time. By default, Dioxus ships with the <code>Html</code> feature enabled which can be disabled depending on your target renderer.</p>
+<p>Right now, we have several 1st-party renderers:</p>
+<ul>
+<li>WebSys (for WASM)</li>
+<li>Tao/Tokio (for Desktop apps)</li>
+<li>Tao/Tokio (for Mobile apps)</li>
+<li>SSR (for generating static markup)</li>
+</ul>
+<h3 id="web-support"><a class="header" href="#web-support">Web Support</a></h3>
+<hr />
+<p>The Web is the most-supported target platform for Dioxus. To run on the Web, your app must be compiled to WebAssembly and depend on the <code>dioxus</code> crate with the <code>web</code> feature enabled. Because of the Wasm limitation, not every crate will work with your web-apps, so you'll need to make sure that your crates work without native system calls (timers, IO, etc).</p>
+<p>Because the web is a fairly mature platform, we expect there to be very little API churn for web-based features.</p>
+<p><a href="">Jump to the getting started guide for the web.</a></p>
+<p>Examples:</p>
+<ul>
+<li><a href="https://github.com/dioxusLabs/todomvc/">TodoMVC</a></li>
+<li><a href="">ECommerce</a></li>
+<li><a href="">Photo Editor</a></li>
+</ul>
+<p><a href="https://github.com/dioxusLabs/todomvc/"><img src="https://github.com/DioxusLabs/todomvc/raw/master/example.png" alt="TODOMVC" /></a></p>
+<h3 id="ssr-support"><a class="header" href="#ssr-support">SSR Support</a></h3>
+<hr />
+<p>Dioxus supports server-side rendering! </p>
+<p>For rendering statically to an <code>.html</code> file or from a WebServer, then you'll want to make sure the <code>ssr</code> feature is enabled in the <code>dioxus</code> crate and use the <code>dioxus::ssr</code> API. We don't expect the SSR API to change drastically in the future.</p>
+<pre><pre class="playground"><code class="language-rust edition2018">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>let contents = dioxus::ssr::render_vdom(&amp;dom);
+<span class="boring">}
+</span></code></pre></pre>
+<p><a href="">Jump to the getting started guide for SSR.</a></p>
+<p>Examples:</p>
+<ul>
+<li><a href="">Example DocSite</a></li>
+<li><a href="">Tide WebServer</a></li>
+<li><a href="">Markdown to fancy HTML generator</a></li>
+</ul>
+<h3 id="desktop-support"><a class="header" href="#desktop-support">Desktop Support</a></h3>
+<hr />
+<p>The desktop is a powerful target for Dioxus, but is currently limited in capability when compared to the Web platform. Currently, desktop apps are rendered with the platform's WebView library, but your Rust code is running natively on a native thread. This means that browser APIs are <em>not</em> available, so rendering WebGL, Canvas, etc is not as easy as the Web. However, native system APIs <em>are</em> accessible, so streaming, WebSockets, filesystem, etc are all viable APIs. In the future, we plan to move to a custom webrenderer-based DOM renderer with WGPU integrations.</p>
+<p>Desktop APIs will likely be in flux as we figure out better patterns than our ElectronJS counterpart.</p>
+<p><a href="">Jump to the getting started guide for Desktop.</a></p>
+<p>Examples:</p>
+<ul>
+<li><a href="">File explorer</a></li>
+<li><a href="">Bluetooth scanner</a></li>
+<li><a href="">Device Viewer</a></li>
+</ul>
+<p><a href="https://github.com/dioxusLabs/file-explorer/"><img src="https://github.com/DioxusLabs/file-explorer-example/raw/master/image.png" alt="File ExplorerExample" /></a></p>
+<h3 id="mobile-support"><a class="header" href="#mobile-support">Mobile Support</a></h3>
+<hr />
+<p>Mobile is currently the least-supported renderer target for Dioxus. Mobile apps are rendered with the platform's WebView, meaning that animations, transparency, and native widgets are not currently achievable. In addition, iOS is the only supported Mobile Platform. It is possible to get Dioxus running on Android and rendered with WebView, but the Rust windowing library that Dioxus uses - tao - does not currently supported Android.</p>
+<p>Mobile support is currently best suited for CRUD-style apps, ideally for internal teams who need to develop quickly but don't care much about animations or native widgets.</p>
+<p><a href="">Jump to the getting started guide for Mobile.</a></p>
+<p>Examples:</p>
+<ul>
+<li><a href="">Todo App</a></li>
+<li><a href="">Chat App</a></li>
+</ul>
+<h3 id="liveview--server-component-support"><a class="header" href="#liveview--server-component-support">LiveView / Server Component Support</a></h3>
+<hr />
+<p>The internal architecture of Dioxus was designed from day one to support the <code>LiveView</code> use-case, where a web server hosts a running app for each connected user. As of today, there is no first-class LiveView support - you'll need to wire this up yourself. </p>
+<p>While not currently fully implemented, the expectation is that LiveView apps can be a hybrid between Wasm and server-rendered where only portions of a page are &quot;live&quot; and the rest of the page is either server-rendered, statically generated, or handled by the host SPA.</p>
+<h3 id="multithreaded-support"><a class="header" href="#multithreaded-support">Multithreaded Support</a></h3>
+<hr />
+<p>The Dioxus VirtualDom, sadly, is not currently <code>Send</code>. Internally, we use quite a bit of interior mutability which is not thread-safe. This means you can't easily use Dioxus with most web frameworks like Tide, Rocket, Axum, etc. </p>
+<p>To solve this, you'll want to spawn a VirtualDom on its own thread and communicate with it via channels.</p>
+<p>When working with web frameworks that require <code>Send</code>, it is possible to render a VirtualDom immediately to a String - but you cannot hold the VirtualDom across an await point. For retained-state SSR (essentially LiveView), you'll need to create a pool of VirtualDoms.</p>
+<p>Ultimately, you can always wrap the VirtualDom with a <code>Send</code> type and manually uphold the <code>Send</code> guarantees yourself.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="overview"><a class="header" href="#overview">Overview</a></h1>
+<p>In this chapter, we're going to get &quot;set up&quot; with a small desktop application.</p>
+<p>We'll learn about:</p>
+<ul>
+<li>Installing the Rust programming language</li>
+<li>Installing the Dioxus CLI for bundling and developing</li>
+<li>Suggested cargo extensions</li>
+</ul>
+<p>For platform-specific guides, check out the <a href="../platforms/00-index.html">Platform Specific Guides</a>.</p>
+<h1 id="setting-up-dioxus"><a class="header" href="#setting-up-dioxus">Setting up Dioxus</a></h1>
+<p>Dioxus requires a few main things to get up and running:</p>
+<ul>
+<li>
+<p>The <a href="https://www.rust-lang.org">Rust compiler</a> and associated build tooling</p>
+</li>
+<li>
+<p>An editor of your choice, ideally configured with the <a href="https://rust-analyzer.github.io">Rust-Analyzer LSP plugin</a></p>
+</li>
+</ul>
+<p>Dioxus integrates very well with the Rust-Analyzer IDE plugin which will provide appropriate syntax highlighting, code navigation, folding, and more.</p>
+<h3 id="installing-rust"><a class="header" href="#installing-rust">Installing Rust</a></h3>
+<p>Head over to <a href="http://rust-lang.org">https://rust-lang.org</a> and install the Rust compiler. </p>
+<p>Once installed, make sure to  install wasm32-unknown-unknown as a target if you're planning on deploying your app to the web.</p>
+<pre><code>rustup target add wasm32-unknown-uknown
+</code></pre>
+<h3 id="dioxus-cli-for-dev-server-bundling-etc"><a class="header" href="#dioxus-cli-for-dev-server-bundling-etc">Dioxus-CLI for dev server, bundling, etc.</a></h3>
+<p>We also recommend installing the Dioxus CLI. The Dioxus CLI automates building and packaging for various targets and integrates with simulators, development servers, and app deployment. To install the CLI, you'll need cargo (should be automatically installed with Rust):</p>
+<pre><code>$ cargo install dioxus-cli
+</code></pre>
+<p>You can update the dioxus-cli at any time with:</p>
+<pre><code>$ cargo install --force dioxus-cli
+</code></pre>
+<p>We provide this 1st-party tool to save you from having to run potentially untrusted code every time you add a crate to your project - as is standard in the NPM ecosystem.</p>
+<h3 id="suggested-extensions"><a class="header" href="#suggested-extensions">Suggested extensions</a></h3>
+<p>If you want to keep your traditional <code>npm install XXX</code> workflow for adding packages, you might want to install <code>cargo-edit</code> and a few other fun <code>cargo</code> extensions:</p>
+<ul>
+<li><a href="https://github.com/killercup/cargo-edit">cargo edit</a> for adding dependencies from the CLI</li>
+<li><a href="https://github.com/dtolnay/cargo-expand">cargo-expand</a> for expanding macro calls</li>
+<li><a href="https://doc.rust-lang.org/cargo/commands/cargo-tree.html">cargo tree</a> - an integrated cargo command that lets you inspect your dependency tree</li>
+</ul>
+<p>That's it! We won't need to touch NPM/WebPack/Babel/Parcel, etc. However, you <em>can</em> configure your app to use WebPack with <a href="https://rustwasm.github.io/wasm-pack/book/tutorials/hybrid-applications-with-webpack/using-your-library.html">traditional WASM-pack tooling</a>.</p>
+<h2 id="rust-knowledge"><a class="header" href="#rust-knowledge">Rust Knowledge</a></h2>
+<p>With Rust, things like benchmarking, testing, and documentation are included in the language. We strongly recommend going through the official Rust book <em>completely</em>. However, our hope is that a Dioxus app can serve as a great first project. With Dioxus you'll learn about:</p>
+<ul>
+<li>Error handling</li>
+<li>Structs, Functions, Enums</li>
+<li>Closures</li>
+<li>Macros</li>
+</ul>
+<p>We've put a lot of care into making Dioxus syntax familiar and easy to understand, so you won't need deep knowledge on async, lifetimes, or smart pointers until you really start building complex Dioxus apps.</p>
+<p>We strongly encourage exploring the guides for more information on how to work with the integrated tooling:</p>
+<ul>
+<li><a href="Testing.html">Testing</a></li>
+<li><a href="Documentation.html">Documentation</a></li>
+<li><a href="Benchmarking.html">Benchmarking</a></li>
+<li><a href="Building.html">Building</a></li>
+<li><a href="Modules.html">Modules</a></li>
+<li><a href="Crates.html">Crates</a></li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="hello-world-desktop-app"><a class="header" href="#hello-world-desktop-app">Hello, World desktop app</a></h1>
+<p>Let's put together a simple &quot;hello world&quot; desktop application to get acquainted with Dioxus. </p>
+<p>In this chapter, we'll cover:</p>
+<ul>
+<li>Starting a new Dioxus project with Cargo</li>
+<li>Adding Dioxus as a dependency</li>
+<li>Launching our first component as the app root</li>
+</ul>
+<h3 id="a-new-project-with-cargo"><a class="header" href="#a-new-project-with-cargo">A new project with Cargo</a></h3>
+<p>First, let's start a new project. Rust has the concept of executables and libraries. Executables have a <code>main.rs</code> and libraries have <code>lib.rs</code>. A project may have both. Our <code>hello world</code> will be an executable - we expect our app to launch when we run it! Cargo provides this for us:</p>
+<pre><code class="language-shell">$ cargo new --bin hello-dioxus
+</code></pre>
+<p>Now, we can <code>cd</code> into our project and poke around:</p>
+<pre><code class="language-shell">$ cd hello-dioxus
+$ tree
+.
+├── Cargo.toml
+├── .git
+├── .gitignore
+└── src
+    └── main.rs
+</code></pre>
+<p>We are greeted with a pre-initialized git repository, our code folder (<code>src</code>) and our project file (<code>Cargo.toml</code>).</p>
+<p>Our <code>src</code> folder holds our code. Our <code>main.rs</code> file holds our <code>fn main</code> which will be executed when our app is ran.</p>
+<pre><code class="language-shell">$ more src/main.rs
+</code></pre>
+<pre><pre class="playground"><code class="language-rust edition2018">fn main() {
+    println!(&quot;Hello, world!&quot;);
+}
+</code></pre></pre>
+<p>Right now, whenever our app is launched, &quot;Hello world&quot; will be echoed to the terminal.</p>
+<pre><code class="language-shell">$ cargo run
+   Compiling hello-dioxus v0.1.0
+    Finished dev [unoptimized + debuginfo] target(s) in 0.41s
+     Running `target/debug/hello-dioxus`
+Hello, world!
+</code></pre>
+<p>Our <code>Cargo.toml</code> file holds our dependencies and project flags.</p>
+<pre><code class="language-shell">$ cat Cargo.toml
+</code></pre>
+<pre><code class="language-toml">[package]
+name = &quot;hello-dioxus&quot;
+version = &quot;0.1.0&quot;
+edition = &quot;2018&quot;
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+
+</code></pre>
+<h3 id="adding-dioxus-as-a-dependency"><a class="header" href="#adding-dioxus-as-a-dependency">Adding Dioxus as a dependency</a></h3>
+<p>To use the Dioxus library, we'll want to add the most recent version of <code>Dioxus</code> to our crate. If you have <code>cargo edit</code> installed, simply call:</p>
+<pre><code class="language-shell">$ cargo add dioxus --features desktop
+</code></pre>
+<p>It's very important to add <code>dioxus</code> with the <code>desktop</code> feature for this example. The <code>dioxus</code> crate is a batteries-include crate that combines a bunch of utility crates together, ensuring compatibility of the most important parts of the ecosystem. Under the hood, the <code>dioxus</code> crate configures various renderers, hooks, debug tooling, and more. The <code>desktop</code> feature ensures the we only depend on the smallest set of required crates to compile and render.</p>
+<p>If you plan to develop extensions for the <code>Dioxus</code> ecosystem, please use the <code>dioxus</code> crate with the <code>core</code> feature to limit the amount of dependencies your project brings in.</p>
+<h3 id="our-first-app"><a class="header" href="#our-first-app">Our first app</a></h3>
+<p>Now, let's edit our <code>main.rs</code> file:</p>
+<pre><pre class="playground"><code class="language-rust edition2018">use dioxus::prelude::*;
+
+
+fn main() {
+    dioxus::desktop::launch(App);
+}
+
+fn App(cx: Scope) -&gt; Element {
+    cx.render(rsx! (
+        div { &quot;Hello, world!&quot; }
+    ))
+}
+</code></pre></pre>
+<p>At this point, you could call <code>cargo run</code> and be greeted with a simple <code>Hello, World!</code> screen:</p>
+<p><img src="images/helloworld.png" alt="hello world" /></p>
+<h3 id="dissecting-our-example"><a class="header" href="#dissecting-our-example">Dissecting our example</a></h3>
+<p>The <code>use</code> statement at the top of our app imports everything from the the <code>prelude</code> module. <code>use</code>-ing the prelude imports the right traits, types, and macros needed for working with Dioxus.</p>
+<pre><pre class="playground"><code class="language-rust edition2018">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use dioxus::prelude::*;
+<span class="boring">}
+</span></code></pre></pre>
+<p>This initialization code launches a Tokio runtime on a helper thread where your code will run. Then, the WebView renderer will be launched on the main-thread. Due to platform requirements, the main thread is blocked by your app's event loop.</p>
+<pre><pre class="playground"><code class="language-rust edition2018">fn main() {
+    dioxus::desktop::launch(App);
+}
+</code></pre></pre>
+<p>Finally, our app. Every component in Dioxus is a function that takes in <code>Context</code> and <code>Props</code> and returns an <code>Element</code>.</p>
+<pre><pre class="playground"><code class="language-rust edition2018">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn App(cx: Scope) -&gt; Element {
+    cx.render(rsx! {
+        div { &quot;Hello, world!&quot; }
+    })    
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>Writing <code>fn App(cx: Scope) -&gt; Element {</code> might become tedious. Rust will also let you write functions as static closures, but these types of Components cannot have props that borrow data.</p>
+<pre><pre class="playground"><code class="language-rust edition2018">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>static App: Component&lt;()&gt; = |cx| cx.render(rsx!(div { &quot;Hello, world!&quot; }));
+<span class="boring">}
+</span></code></pre></pre>
+<h3 id="what-is-this-context-object"><a class="header" href="#what-is-this-context-object">What is this <code>Context</code> object?</a></h3>
+<p>Coming from React, the <code>Context</code> object might be confusing. In React, you'll want to store data between renders with hooks. However, hooks rely on global variables which make them difficult to integrate in multi-tenant systems like server-rendering. </p>
+<p>In Dioxus, you are given an explicit <code>Context</code> object to control how the component renders and stores data. The <code>Context</code> object provides a handful of useful APIs for features like suspense, rendering, and more.</p>
+<h2 id="moving-on"><a class="header" href="#moving-on">Moving on</a></h2>
+<p>Congrats! You've built your first desktop application with Dioxus. Next, we're going to learn about the basics of building interactive user interfaces.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="core-topics"><a class="header" href="#core-topics">Core Topics</a></h1>
+<p>In this chapter, we'll cover some core topics on how Dioxus works and how to best leverage the features to build a beautiful, reactive app.</p>
+<p>At a very high level, Dioxus is simply a Rust framework for <em>declaring</em> user interfaces and <em>reacting</em> to changes.</p>
+<ol>
+<li>We declare what we want our user interface to look like given a state using Rust-based logic and control flow.</li>
+<li>We declare how we want our state to change when the user triggers an event.</li>
+</ol>
+<h2 id="declarative-ui"><a class="header" href="#declarative-ui">Declarative UI</a></h2>
+<p>Dioxus is a <em>declarative</em> framework. This means that instead of manually writing calls to &quot;create element&quot; and &quot;set element background to red,&quot; we simply <em>declare</em> what we want the element to look like and let Dioxus handle the differences.</p>
+<p>Let's pretend that we have a stoplight we need to control - it has a color state with red, yellow, and green as options.</p>
+<p>Using an imperative approach, we would have to manually declare each element and then handlers for advancing the stoplight.</p>
+<pre><pre class="playground"><code class="language-rust edition2018">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>let container = Container::new();
+
+let green_light = Light::new().color(&quot;green&quot;).enabled(true);
+let yellow_light = Light::new().color(&quot;yellow&quot;).enabled(false);
+let red_light = Light::new().color(&quot;red&quot;).enabled(false);
+container.push(green_light);
+container.push(yellow_light);
+container.push(red_light);
+
+container.set_onclick(move |_| {
+    if red_light.enabled() {
+        red_light.set_enabled(false);
+        green_light.set_enabled(true);
+    } else if yellow_light.enabled() {
+        yellow_light.set_enabled(false);
+        red_light.set_enabled(true);
+    } else if green_light.enabled() {
+        green_light.set_enabled(false);
+        yellow_light.set_enabled(true);
+    }
+});
+<span class="boring">}
+</span></code></pre></pre>
+<p>As the UI grows in scale, our logic to keep each element in the proper state would grow exponentially. This can become very unwieldy and lead to out-of-sync UIs that harm user experience.</p>
+<p>Instead, with Dioxus, we <em>declare</em> what we want our UI to look like:</p>
+<pre><pre class="playground"><code class="language-rust edition2018">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>let mut state = use_state(&amp;cx, || &quot;red&quot;);
+
+cx.render(rsx!(
+    Container {
+        Light { color: &quot;red&quot;, enabled: state == &quot;red&quot;, }
+        Light { color: &quot;yellow&quot;, enabled: state == &quot;yellow&quot;, }
+        Light { color: &quot;green&quot;, enabled: state == &quot;green&quot;, }
+
+        onclick: move |_| {
+            state.set(match *state {
+                &quot;green&quot; =&gt; &quot;yellow&quot;,
+                &quot;yellow&quot; =&gt; &quot;red&quot;,
+                &quot;red&quot; =&gt; &quot;green&quot;,
+            })
+        }
+    }
+))
+<span class="boring">}
+</span></code></pre></pre>
+<p>Remember: this concept is not new! Many frameworks are declarative - with React being the most popular. Declarative frameworks tend to be much more enjoyable to work with than imperative frameworks.</p>
+<p>Here's some reading about declaring UI in React:</p>
+<ul>
+<li>
+<p><a href="https://stackoverflow.com/questions/33655534/difference-between-declarative-and-imperative-in-react-js">https://stackoverflow.com/questions/33655534/difference-between-declarative-and-imperative-in-react-js</a></p>
+</li>
+<li>
+<p><a href="https://medium.com/@myung.kim287/declarative-vs-imperative-251ce99c6c44">https://medium.com/@myung.kim287/declarative-vs-imperative-251ce99c6c44</a></p>
+</li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="declaring-your-first-ui-with-elements"><a class="header" href="#declaring-your-first-ui-with-elements">Declaring your first UI with Elements</a></h1>
+<p>Every user interface you've ever used is just a symphony of tiny widgets working together to abstract over larger complex functions. In Dioxus, we call these tiny widgets &quot;Elements.&quot; Using Components, you can easily compose Elements into larger groups to form even larger structures: Apps.</p>
+<p>In this chapter, we'll cover:</p>
+<ul>
+<li>Declaring our first Element</li>
+<li>Composing Elements together</li>
+<li>Element properties</li>
+</ul>
+<h2 id="declaring-our-first-element"><a class="header" href="#declaring-our-first-element">Declaring our first Element</a></h2>
+<p>Because Dioxus is mostly used with HTML/CSS renderers, the default Element &quot;collection&quot; is HTML. Provided the <code>html</code> feature is not disabled, we can declare Elements using the <code>rsx!</code> macro:</p>
+<pre><pre class="playground"><code class="language-rust edition2018">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>rsx!(
+    div {}
+)
+<span class="boring">}
+</span></code></pre></pre>
+<p>As you might expect, we can render this call using Dioxus-SSR to produce valid HTML:</p>
+<pre><pre class="playground"><code class="language-rust edition2018">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>dioxus::ssr::render_lazy(rsx!(
+    div {}
+))
+<span class="boring">}
+</span></code></pre></pre>
+<p>Produces:</p>
+<pre><code class="language-html">&lt;div&gt;&lt;/div&gt;
+</code></pre>
+<p>We can construct any valid HTML tag with the <code>tag {}</code> pattern and expect the resulting HTML structure to resemble our declaration.</p>
+<h2 id="composing-elements"><a class="header" href="#composing-elements">Composing Elements</a></h2>
+<p>Of course, we need more complex structures to make our apps actually useful! Just like HTML, the <code>rsx!</code> macro lets us nest Elements inside of each other.</p>
+<pre><pre class="playground"><code class="language-rust edition2018">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span><span class="boring">use dioxus::prelude::*;
+</span>rsx!(
+    div {
+        h1 {}
+        h2 {}
+        p {}
+    }
+)
+<span class="boring">}
+</span></code></pre></pre>
+<p>As you might expect, the generated HTML for this structure would look like:</p>
+<pre><code class="language-html">&lt;div&gt;
+    &lt;h1&gt;&lt;/h1&gt;
+    &lt;h2&gt;&lt;/h2&gt;
+    &lt;p&gt;&lt;/p&gt;
+&lt;/div&gt;
+</code></pre>
+<p>With the default configuration, any Element defined within the <code>dioxus-html</code> crate can be declared in this way. To create your own new elements, see the <code>Custom Elements</code> Advanced Guide.</p>
+<h2 id="text-elements"><a class="header" href="#text-elements">Text Elements</a></h2>
+<p>Dioxus also supports a special type of Element: Text. Text Elements do not accept children, but rather just string literals denoted with double quotes.</p>
+<pre><pre class="playground"><code class="language-rust edition2018">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>rsx! (
+    &quot;hello world&quot;
+)
+<span class="boring">}
+</span></code></pre></pre>
+<p>Text Elements can be composed within other Elements:</p>
+<pre><pre class="playground"><code class="language-rust edition2018">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>rsx! (
+    div {
+        h1 { &quot;hello world&quot; }
+        p { &quot;Some body content&quot; }
+    }
+)
+<span class="boring">}
+</span></code></pre></pre>
+<p>Text can also be formatted with any value that implements <code>Display</code>. We use <a href="https://docs.rs/fstrings/0.2.3/fstrings/">f-string formatting</a> - a &quot;coming soon&quot; feature for stable Rust that is familiar for Python and JavaScript users:</p>
+<pre><pre class="playground"><code class="language-rust edition2018">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>let name = &quot;Bob&quot;;
+rsx! ( &quot;hello {name}&quot; )
+<span class="boring">}
+</span></code></pre></pre>
+<p>Unfortunately, you cannot drop in arbitrary expressions directly into the string literal. In the cases where we need to compute a complex value, we'll want to use <code>format_args!</code> directly. Due to specifics of how the <code>rsx!</code> macro (we'll cover later), our call to <code>format_args</code> must be contained within curly braces <em>and</em> square braces.</p>
+<pre><pre class="playground"><code class="language-rust edition2018">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>rsx!( {[format_args!(&quot;Hello {}&quot;, if enabled { &quot;Jack&quot; } else { &quot;Bob&quot; } )]} )
+<span class="boring">}
+</span></code></pre></pre>
+<p>This is different from React's way of generating arbitrary markup but fits within idiomatic Rust. </p>
+<p>Typically, with Dioxus, you'll just want to compute your substrings outside of the <code>rsx!</code> call:</p>
+<pre><pre class="playground"><code class="language-rust edition2018">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>let name = if enabled { &quot;Jack&quot; } else { &quot;Bob&quot; };
+rsx! ( &quot;hello {name}&quot; )
+<span class="boring">}
+</span></code></pre></pre>
+<h2 id="attributes"><a class="header" href="#attributes">Attributes</a></h2>
+<p>Every Element in your User Interface will have some sort of properties that the renderer will use when drawing to the screen. These might inform the renderer if the component should be hidden, what its background color should be, or to give it a specific name or ID.</p>
+<p>To do this, we use the familiar struct-style syntax that Rust provides. Commas are optional:</p>
+<pre><pre class="playground"><code class="language-rust edition2018">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>rsx!(
+    div {
+        hidden: &quot;true&quot;,
+        background_color: &quot;blue&quot;,
+        class: &quot;card color-{mycolor}&quot;
+    }
+)
+<span class="boring">}
+</span></code></pre></pre>
+<p>Each field is defined as a method on the element in the <code>dioxus-html</code> crate. This prevents you from misspelling a field name and lets us provide inline documentation. When you need to use a field not defined as a method, you have two options:</p>
+<ol>
+<li>file an issue if the attribute <em>should</em> be enabled</li>
+<li>add a custom attribute on-the-fly</li>
+</ol>
+<p>To use custom attributes, simply put the attribute name in quotes followed by a colon:</p>
+<pre><pre class="playground"><code class="language-rust edition2018">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>rsx!(
+    div {
+        &quot;customAttr&quot;: &quot;important data here&quot;
+    }
+)
+<span class="boring">}
+</span></code></pre></pre>
+<p>Note: the name of the custom attribute must match exactly what you want the renderer to output. All attributes defined as methods in <code>dioxus-html</code> follow the snake_case naming convention. However, they internally translate their snake_case convention to HTML's camelCase convention. When using custom attributes, make sure the name of the attribute exactly matches what the renderer is expecting.</p>
+<h2 id="listeners"><a class="header" href="#listeners">Listeners</a></h2>
+<p>Listeners are a special type of Attribute that only accept functions. Listeners let us attach functionality to our Elements by running a provided closure whenever the specified Listener is triggered.</p>
+<p>We'll cover listeners in more depth in the Listeners chapter, but for now, just know that every listener must start with the <code>on</code> keyword and can accept either a closure or an expression wrapped in curly braces.</p>
+<pre><pre class="playground"><code class="language-rust edition2018">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>rsx!(
+    div {
+        onclick: move |_| {}
+        onmouseover: {handler},
+    }
+)
+<span class="boring">}
+</span></code></pre></pre>
+<h2 id="moving-on-1"><a class="header" href="#moving-on-1">Moving On</a></h2>
+<p>This chapter just scratches the surface on how Elements can be defined.</p>
+<p>We learned:</p>
+<ul>
+<li>Elements are the basic building blocks of User Interfaces</li>
+<li>Elements can contain other elements </li>
+<li>Elements can either be a named container or text</li>
+<li>Some Elements have properties that the renderer can use to draw the UI to the screen</li>
+</ul>
+<p>Next, we'll compose Elements together to form components.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="introduction-to-components"><a class="header" href="#introduction-to-components">Introduction to Components</a></h1>
+<p>In the previous chapter, we learned about Elements and how they can be composed to create a basic User Interface. In this chapter, we'll learn how to group Elements together to form Components.</p>
+<p>In this chapter, we'll learn:</p>
+<ul>
+<li>What makes a Component </li>
+<li>How to model a component and its properties in Dioxus </li>
+<li>How to &quot;think declaratively&quot;</li>
+</ul>
+<h2 id="what-is-a-component"><a class="header" href="#what-is-a-component">What is a component?</a></h2>
+<p>In short, a component is a special function that takes input properties and outputs an Element. Typically, Components serve a single purpose: group functionality of a User Interface. Much like a function encapsulates some specific computation task, a Component encapsulates some specific rendering task.</p>
+<h3 id="learning-through-prior-art"><a class="header" href="#learning-through-prior-art">Learning through prior art</a></h3>
+<p>Let's take a look at a post on r/rust and see if we can sketch out a component representation.</p>
+<p><img src="concepts/../images/reddit_post.png" alt="Reddit Post" /></p>
+<p>This component has a bunch of important information:</p>
+<ul>
+<li>The score</li>
+<li>The number of comments</li>
+<li>How long ago it was posted</li>
+<li>The url short address</li>
+<li>The title</li>
+<li>The username of the original poster</li>
+</ul>
+<p>If we wanted to sketch out these requirements in Rust, we would start with a struct:</p>
+<pre><pre class="playground"><code class="language-rust edition2018">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>struct PostData {
+    score: i32,
+    comment_count: u32,
+    post_time: Instant,
+    url: String,
+    title: String,
+    original_poster_name: String
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>If we look at the layout of the component, we notice quite a few buttons and functionality:</p>
+<ul>
+<li>Upvote/Downvote</li>
+<li>View comments</li>
+<li>Share</li>
+<li>Save</li>
+<li>Hide</li>
+<li>Give award</li>
+<li>Report</li>
+<li>Crosspost</li>
+<li>Filter by site</li>
+<li>View article</li>
+<li>Visit user </li>
+</ul>
+<p>If we included all this functionality in one <code>rsx!</code> call, it would be huge! Instead, let's break the post down into some core pieces:</p>
+<p><img src="concepts/../images/reddit_post_components.png" alt="Post as Component" /></p>
+<ul>
+<li><strong>VoteButton</strong>: Upvote/Downvote</li>
+<li><strong>TitleCard</strong>: Title, Filter-By-Url</li>
+<li><strong>MetaCard</strong>: Original Poster, Time Submitted</li>
+<li><strong>ActionCard</strong>: View comments, Share, Save, Hide, Give award, Report, Crosspost</li>
+</ul>
+<h3 id="modeling-with-dioxus"><a class="header" href="#modeling-with-dioxus">Modeling with Dioxus</a></h3>
+<p>We can start by sketching out the Element hierarchy using Dioxus. In general, our &quot;Post&quot; component will be comprised of the four sub-components listed above. First, let's define our <code>Post</code> component.</p>
+<p>Unlike normal functions, Dioxus components must explicitly define a single struct to contain all the inputs. These are commonly called &quot;Properties&quot; (props). Our component will be a combination of these properties and a function to render them.</p>
+<p>Our props must implement the <code>Props</code> trait and - if the component does not borrow any data - <code>PartialEq</code>. Both of these can be done automatically through derive macros:</p>
+<pre><pre class="playground"><code class="language-rust edition2018">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[derive(Props, PartialEq)]
+struct PostProps {
+    id: Uuid,
+    score: i32,
+    comment_count: u32,
+    post_time: Instant,
+    url: String,
+    title: String,
+    original_poster: String
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>And our render function:</p>
+<pre><pre class="playground"><code class="language-rust edition2018">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn Post(cx: Scope&lt;PostProps&gt;) -&gt; Element {
+    cx.render(rsx!{
+        div { class: &quot;post-container&quot;
+            VoteButton {
+                score: cx.props.score,
+            }
+            TitleCard {
+                title: cx.props.title,
+                url: cx.props.url,
+            }
+            MetaCard {
+                original_poster: cx.props.original_poster,
+                post_time: cx.props.post_time,
+            }
+            ActionCard {
+                post_id: cx.props.id
+            }
+        }
+    })
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>When declaring a component in <code>rsx!</code>, we can pass in properties using the traditional Rust struct syntax. Dioxus will automatically call &quot;into&quot; on the property fields, cloning when necessary. Our <code>Post</code> component is simply a collection of smaller components wrapped together in a single container.</p>
+<p>Let's take a look at the <code>VoteButton</code> component. For now, we won't include any interactivity - just the rendering the score and buttons to the screen.</p>
+<p>Most of your Components will look exactly like this: a Props struct and a render function. Every component must take a tuple of <code>Scope</code> and <code>&amp;Props</code> and return an <code>Element</code>.</p>
+<p>As covered before, we'll build our User Interface with the <code>rsx!</code> macro and HTML tags. However, with components, we must actually &quot;render&quot; our HTML markup. Calling <code>cx.render</code> converts our &quot;lazy&quot; <code>rsx!</code> structure into an <code>Element</code>. </p>
+<pre><pre class="playground"><code class="language-rust edition2018">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[derive(PartialEq, Props)]
+struct VoteButtonProps {
+    score: i32
+}
+
+fn VoteButton(cx: Scope&lt;VoteButtonProps&gt;) -&gt; Element {
+    cx.render(rsx!{
+        div { class: &quot;votebutton&quot;
+            div { class: &quot;arrow up&quot; }
+            div { class: &quot;score&quot;, &quot;{cx.props.score}&quot;}
+            div { class: &quot;arrow down&quot; }
+        }
+    })
+}
+<span class="boring">}
+</span></code></pre></pre>
+<h2 id="borrowing"><a class="header" href="#borrowing">Borrowing</a></h2>
+<p>You can avoid clones using borrowed component syntax. For example, let's say we passed the <code>TitleCard</code> title as an <code>&amp;str</code> instead of <code>String</code>. In JavaScript, the string would be copied by reference - none of the contents would be copied, but rather the reference to the string's contents are copied. In Rust, this would be similar to calling <code>clone</code> on <code>Rc&lt;str&gt;</code>.</p>
+<p>Because we're working in Rust, we can choose to either use <code>Rc&lt;str&gt;</code>, clone <code>Title</code> on every re-render of <code>Post</code>, or simply borrow it. In most cases, you'll just want to let <code>Title</code> be cloned. </p>
+<p>To enable borrowed values for your component, we need to add a lifetime to let the Rust compiler know that the output <code>Element</code> borrows from the component's props.</p>
+<pre><pre class="playground"><code class="language-rust edition2018">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[derive(Props)]
+struct TitleCardProps&lt;'a&gt; {
+    title: &amp;'a str,
+}
+
+fn TitleCard(cx: Scope&lt;TitleCardProps&gt;) -&gt; Element {
+    cx.render(rsx!{
+        h1 { &quot;{cx.props.title}&quot; }
+    })
+}   
+<span class="boring">}
+</span></code></pre></pre>
+<p>For users of React: Dioxus knows <em>not</em> to memoize components that borrow property fields. By default, every component in Dioxus is memoized. This can be disabled by the presence of a non-<code>'static</code> borrow.</p>
+<p>This means that during the render process, a newer version of <code>TitleCardProps</code> will never be compared with a previous version, saving some clock cycles.</p>
+<h2 id="the-scope-object"><a class="header" href="#the-scope-object">The <code>Scope</code> object</a></h2>
+<p>Though very similar to React, Dioxus is different in a few ways. Most notably, React components will not have a <code>Scope</code> parameter in the component declaration. </p>
+<p>Have you ever wondered how the <code>useState()</code> call works in React without a <code>this</code> object to actually store the state? </p>
+<p>React uses global variables to store this information. Global mutable variables must be carefully managed and are broadly discouraged in Rust programs.</p>
+<pre><code class="language-javascript">function Component(props) {
+    let [state, set_state] = useState(10);
+}
+</code></pre>
+<p>Because Dioxus needs to work with the rules of Rust it uses the <code>Scope</code> object to maintain some internal bookkeeping. That's what the <code>Scope</code> object is: a place for the component to store state, manage listeners, and allocate elements. Advanced users of Dioxus will want to learn how to properly leverage the <code>Scope</code> object to build robust and performant extensions for Dioxus.</p>
+<pre><pre class="playground"><code class="language-rust edition2018">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn Post(cx: Scope&lt;PostProps&gt;) -&gt; Element {
+    cx.render(rsx!(&quot;hello&quot;))
+}
+<span class="boring">}
+</span></code></pre></pre>
+<h2 id="moving-forward"><a class="header" href="#moving-forward">Moving forward</a></h2>
+<p>Next chapter, we'll talk about composing Elements and Components across files to build a larger Dioxus App.</p>
+<p>For more references on components, make sure to check out:</p>
+<ul>
+<li><a href="concepts/">Components in depth</a></li>
+<li><a href="concepts/">Lifecycles</a></li>
+<li><a href="concepts/">The Scope object</a></li>
+<li><a href="concepts/">Optional Prop fields</a></li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="reusing-importing-and-exporting-components"><a class="header" href="#reusing-importing-and-exporting-components">Reusing, Importing, and Exporting Components</a></h1>
+<p>As your application grows in size, you'll want to start breaking your UI into components and, eventually, different files. This is a great idea to encapsulate functionality of your UI and scale your team.</p>
+<p>In this chapter we'll cover:</p>
+<ul>
+<li>Rust's modules</li>
+<li>Pub/Private components</li>
+<li>Structure for large components</li>
+</ul>
+<h2 id="breaking-it-down"><a class="header" href="#breaking-it-down">Breaking it down</a></h2>
+<p>Let's say our app looks something like this:</p>
+<pre><code class="language-shell">├── Cargo.toml
+└── src
+    └── main.rs
+</code></pre>
+<pre><pre class="playground"><code class="language-rust edition2018">// main.rs
+use dioxus::prelude::*;
+
+fn main() {
+    dioxus::desktop::launch(App);
+}
+
+fn App((cx, props): Component&lt;()&gt;) -&gt; Element {} 
+
+#[derive(PartialEq, Props)]
+struct PostProps{}
+fn Post((cx, props): Component&lt;PostProps&gt;) -&gt; Element {} 
+
+#[derive(PartialEq, Props)]
+struct VoteButtonsProps {}
+fn VoteButtons((cx, props): Component&lt;VoteButtonsProps&gt;) -&gt; Element {} 
+
+#[derive(PartialEq, Props)]
+struct TitleCardProps {}
+fn TitleCard((cx, props): Component&lt;TitleCardProps&gt;) -&gt; Element {} 
+
+#[derive(PartialEq, Props)]
+struct MetaCardProps {}
+fn MetaCard((cx, props): Component&lt;MetaCardProps&gt;) -&gt; Element {} 
+
+#[derive(PartialEq, Props)]
+struct ActionCardProps {}
+fn ActionCard((cx, props): Component&lt;ActionCardProps&gt;) -&gt; Element {} 
+</code></pre></pre>
+<p>That's a lot of components for one file! We've successfully refactored our app into components, but we should probably start breaking it up into a file for each component.</p>
+<h2 id="breaking-into-different-files"><a class="header" href="#breaking-into-different-files">Breaking into different files</a></h2>
+<p>Fortunately, Rust has a built-in module system that's much cleaner than what you might be used to in JavaScript. Because <code>VoteButtons</code>, <code>TitleCard</code>, <code>MetaCard</code>, and <code>ActionCard</code> all belong to the <code>Post</code> component, let's put them all in a folder together called &quot;post&quot;. We'll make a file for each component and move the props and render function.</p>
+<pre><pre class="playground"><code class="language-rust edition2018">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// src/post/action.rs
+
+use dioxus::prelude::*;
+
+#[derive(PartialEq, Props)]
+struct ActionCardProps {}
+fn ActionCard((cx, props): Component&lt;ActionCardProps&gt;) -&gt; Element {} 
+<span class="boring">}
+</span></code></pre></pre>
+<p>We should also create a <code>mod.rs</code> file in the <code>post</code> folder so we can use it from our <code>main.rs</code>. Our <code>Post</code> component and its props will go into this file.</p>
+<pre><code class="language-shell">├── Cargo.toml
+└── src
+    ├── main.rs
+    └── post
+        ├── vote.rs
+        ├── title.rs
+        ├── meta.rs
+        ├── action.rs
+        └── mod.rs
+</code></pre>
+<p>In our <code>main.rs</code>, we'll want to declare the <code>post</code> module so we can access our <code>Post</code> component.</p>
+<pre><pre class="playground"><code class="language-rust edition2018">// main.rs
+use dioxus::prelude::*;
+
+fn main() {
+    dioxus::desktop::launch(App);
+}
+
+mod post;
+
+fn App((cx, props): Component&lt;()&gt;) -&gt; Element {
+    cx.render(rsx!{
+        post::Post {
+            id: Uuid::new_v4(),
+            score: 10,
+            comment_count: 10,
+            post_time: std::Instant::now(),
+            url: &quot;example&quot;.to_string(),
+            title: &quot;Title&quot;.to_string(),
+            original_poster: &quot;me&quot;.to_string()
+        }
+    })
+} 
+</code></pre></pre>
+<p>If you tried to build this app right now, you'll get an error message saying that <code>Post is private, trying changing it to public</code>. This is because we haven't properly exported our component! To fix this, we need to make sure both the Props and Component are declared as &quot;public&quot;:</p>
+<pre><pre class="playground"><code class="language-rust edition2018">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// src/post/mod.rs
+
+use dioxus::prelude::*;
+
+#[derive(PartialEq, Props)]
+pub struct PostProps {}
+pub fn Post((cx, props): Component&lt;PostProps&gt;) -&gt; Element {} 
+<span class="boring">}
+</span></code></pre></pre>
+<p>While we're here, we also need to make sure each of our subcomponents are included as modules and exported.</p>
+<p>Our &quot;post/mod.rs&quot; file will eventually look like this:</p>
+<pre><pre class="playground"><code class="language-rust edition2018">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use dioxus::prelude::*;
+
+mod vote;
+mod title;
+mod meta;
+mod action;
+
+#[derive(Props, PartialEq)]
+pub struct PostProps {
+    id: uuid::Uuid,
+    score: i32,
+    comment_count: u32,
+    post_time: std::time::Instant,
+    url: String,
+    title: String,
+    original_poster: String
+}
+
+pub fn Post((cx, props): Component&lt;PostProps&gt;) -&gt; Element {
+    cx.render(rsx!{
+        div { class: &quot;post-container&quot;
+            vote::VoteButtons {
+                score: props.score,
+            }
+            title::TitleCard {
+                title: props.title,
+                url: props.url,
+            }
+            meta::MetaCard {
+                original_poster: props.original_poster,
+                post_time: props.post_time,
+            }
+            action::ActionCard {
+                post_id: props.id
+            }
+        }
+    })
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>Ultimately, including and exporting components is governed by Rust's module system. <a href="https://doc.rust-lang.org/book/ch07-00-managing-growing-projects-with-packages-crates-and-modules.html">The Rust book is a great resource to learn about these concepts in greater detail.</a></p>
+<h2 id="final-structure"><a class="header" href="#final-structure">Final structure:</a></h2>
+<pre><code class="language-shell">├── Cargo.toml
+└── src
+    ├── main.rs
+    └── post
+        ├── vote.rs
+        ├── title.rs
+        ├── meta.rs
+        ├── action.rs
+        └── mod.rs
+</code></pre>
+<pre><pre class="playground"><code class="language-rust edition2018">// main.rs:
+use dioxus::prelude::*;
+
+fn main() {
+    dioxus::desktop::launch(App);
+}
+
+mod post;
+
+fn App((cx, props): Component&lt;()&gt;) -&gt; Element {
+    cx.render(rsx!{
+        post::Post {
+            id: Uuid::new_v4(),
+            score: 10,
+            comment_count: 10,
+            post_time: std::Instant::now(),
+            url: &quot;example&quot;.to_string(),
+            title: &quot;Title&quot;.to_string(),
+            original_poster: &quot;me&quot;.to_string()
+        }
+    })
+} 
+</code></pre></pre>
+<pre><pre class="playground"><code class="language-rust edition2018">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// src/post/mod.rs
+use dioxus::prelude::*;
+
+mod vote;
+mod title;
+mod meta;
+mod action;
+
+#[derive(Props, PartialEq)]
+pub struct PostProps {
+    id: uuid::Uuid,
+    score: i32,
+    comment_count: u32,
+    post_time: std::time::Instant,
+    url: String,
+    title: String,
+    original_poster: String
+}
+
+pub fn Post((cx, props): Component&lt;PostProps&gt;) -&gt; Element {
+    cx.render(rsx!{
+        div { class: &quot;post-container&quot;
+            vote::VoteButtons {
+                score: props.score,
+            }
+            title::TitleCard {
+                title: props.title,
+                url: props.url,
+            }
+            meta::MetaCard {
+                original_poster: props.original_poster,
+                post_time: props.post_time,
+            }
+            action::ActionCard {
+                post_id: props.id
+            }
+        }
+    })
+}
+<span class="boring">}
+</span></code></pre></pre>
+<pre><pre class="playground"><code class="language-rust edition2018">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// src/post/vote.rs
+use dioxus::prelude::*;
+
+#[derive(PartialEq, Props)]
+pub struct VoteButtonsProps {}
+pub fn VoteButtons((cx, props): Component&lt;VoteButtonsProps&gt;) -&gt; Element {} 
+<span class="boring">}
+</span></code></pre></pre>
+<pre><pre class="playground"><code class="language-rust edition2018">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// src/post/title.rs
+use dioxus::prelude::*;
+
+#[derive(PartialEq, Props)]
+pub struct TitleCardProps {}
+pub fn TitleCard((cx, props): Component&lt;TitleCardProps&gt;) -&gt; Element {} 
+<span class="boring">}
+</span></code></pre></pre>
+<pre><pre class="playground"><code class="language-rust edition2018">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// src/post/meta.rs
+use dioxus::prelude::*;
+
+#[derive(PartialEq, Props)]
+pub struct MetaCardProps {}
+pub fn MetaCard((cx, props): Component&lt;MetaCardProps&gt;) -&gt; Element {} 
+<span class="boring">}
+</span></code></pre></pre>
+<pre><pre class="playground"><code class="language-rust edition2018">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// src/post/action.rs
+use dioxus::prelude::*;
+
+#[derive(PartialEq, Props)]
+pub struct ActionCardProps {}
+pub fn ActionCard((cx, props): Component&lt;ActionCardProps&gt;) -&gt; Element {} 
+<span class="boring">}
+</span></code></pre></pre>
+<h2 id="moving-forward-1"><a class="header" href="#moving-forward-1">Moving forward</a></h2>
+<p>Next chapter, we'll start to add use code to hide and show Elements with conditional rendering.</p>
+<p>For more reading on components:</p>
+<ul>
+<li><a href="concepts/">Components in depth</a></li>
+<li><a href="concepts/">Lifecycles</a></li>
+<li><a href="concepts/">The Context object</a></li>
+<li><a href="concepts/">Optional Prop fields</a></li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="passing-children-and-attributes"><a class="header" href="#passing-children-and-attributes">Passing children and attributes</a></h1>
+<p>Often times, you'll want to wrap some important functionality <em>around</em> your state, not directly nested <em>inside</em> another component. In these cases, you'll want to pass elements and attributes into a component and let the component place them appropriately.</p>
+<p>In this chapter, you'll learn about:</p>
+<ul>
+<li>Passing elements into components</li>
+<li>Passing attributes into components</li>
+</ul>
+<h2 id="the-use-case"><a class="header" href="#the-use-case">The use case</a></h2>
+<p>Let's say you're building a user interface and want to make some part of it clickable to another website. You would normally start with the HTML <code>&lt;a&gt;</code> tag, like so:</p>
+<pre><pre class="playground"><code class="language-rust edition2018">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>rsx!(
+    a {
+        href: &quot;https://google.com&quot;
+        &quot;Link to google&quot;
+    }
+)
+<span class="boring">}
+</span></code></pre></pre>
+<p>But, what if we wanted to style our <code>&lt;a&gt;</code> tag? Or wrap it with some helper icon? We could abstract our RSX into its own component:</p>
+<pre><pre class="playground"><code class="language-rust edition2018">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[derive(Props)]
+struct ClickableProps&lt;'a&gt; {
+    href: &amp;'a str,
+    title: &amp;'a str
+}
+
+fn clickable(cx: Scope&lt;ClickableProps&gt;) -&gt; Element {
+    cx.render(rsx!(
+        a {
+            href: &quot;{cx.props.href}&quot;
+            &quot;{cx.props.title}&quot;
+        }
+    ))
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>And then use it in our code like so:</p>
+<pre><pre class="playground"><code class="language-rust edition2018">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>rsx!(
+    clickable(
+        href: &quot;https://google.com&quot;
+        title: &quot;Link to Google&quot;
+    )
+)
+<span class="boring">}
+</span></code></pre></pre>
+<p>Let's say we don't just want the text to be clickable, but we want another element, like an image, to be clickable. How do we implement that?</p>
+<h2 id="passing-children"><a class="header" href="#passing-children">Passing children</a></h2>
+<p>If we want to pass an image into our component, we can just adjust our props and component to allow any <code>Element</code>.</p>
+<pre><pre class="playground"><code class="language-rust edition2018">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[derive(Props)]
+struct ClickableProps&lt;'a&gt; {
+    href: &amp;'a str,
+    body: Element&lt;'a&gt;
+}
+
+fn clickable(cx: Scope&lt;ClickableProps&gt;) -&gt; Element {
+    cx.render(rsx!(
+        a {
+            href: &quot;{cx.props.href}&quot;
+            {&amp;cx.props.body}
+        }
+    ))
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>Then, at the call site, we can render some nodes and pass them in:</p>
+<pre><pre class="playground"><code class="language-rust edition2018">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>rsx!(
+    clickable(
+        href: &quot;https://google.com&quot;
+        body: cx.render(rsx!(
+            img { src: &quot;https://www.google.com/logos/doodles/2021/seasonal-holidays-2021-6753651837109324-6752733080595603-cst.gif&quot; }
+        ))
+    )
+)
+<span class="boring">}
+</span></code></pre></pre>
+<p>This pattern can become tedious in some instances, so Dioxus actually performs an implicit conversion of any <code>rsx</code> calls inside components into <code>Elements</code> at the <code>children</code> field. This means you must explicitly declare if a component can take children.</p>
+<pre><pre class="playground"><code class="language-rust edition2018">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[derive(Props)]
+struct ClickableProps&lt;'a&gt; {
+    href: &amp;'a str,
+    children: Element&lt;'a&gt;
+}
+
+fn clickable(cx: Scope&lt;ClickableProps&gt;) -&gt; Element {
+    cx.render(rsx!(
+        a {
+            href: &quot;{cx.props.href}&quot;
+            {&amp;cx.props.children}
+        }
+    ))
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>And to call <code>clickable</code>:</p>
+<pre><pre class="playground"><code class="language-rust edition2018">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>rsx!(
+    clickable(
+        href: &quot;https://google.com&quot;
+        img { src: &quot;https://www.google.com/logos/doodles/2021/seasonal-holidays-2021-6753651837109324-6752733080595603-cst.gif&quot; }
+    )
+)
+<span class="boring">}
+</span></code></pre></pre>
+<blockquote>
+<p>Note: Passing children into components will break any memoization due to the associated lifetime.</p>
+</blockquote>
+<p>While technically allowed, it's an antipattern to pass children more than once in a component and will probably break your app significantly.</p>
+<p>However, because the <code>Element</code> is transparently a <code>VNode</code>, we can actually match on it to extract the nodes themselves, in case we are expecting a specific format:</p>
+<pre><pre class="playground"><code class="language-rust edition2018">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn clickable(cx: Scope&lt;ClickableProps&gt;) -&gt; Element {
+    match cx.props.children {
+        Some(VNode::Text(text)) =&gt; {
+            // ...
+        }
+        _ =&gt; {
+            // ...
+        }
+    }
+}
+<span class="boring">}
+</span></code></pre></pre>
+<h2 id="passing-attributes"><a class="header" href="#passing-attributes">Passing attributes</a></h2>
+<p>In the cases where you need to pass arbitrary element properties into a component - say to add more functionality to the <code>&lt;a&gt;</code> tag, Dioxus will accept any quoted fields. This is similar to adding arbitrary fields to regular elements using quotes.</p>
+<pre><pre class="playground"><code class="language-rust edition2018">
+<span class="boring">#![allow(unused)]
+</span>
+<span class="boring">fn main() {
+</span>rsx!(
+    clickable(
+        &quot;class&quot;: &quot;blue-button&quot;,
+        &quot;style&quot;: &quot;background: red;&quot;
+    )
+)
+
+<span class="boring">}
+</span></code></pre></pre>
+<p>For a component to accept these attributes, you must add an <code>attributes</code> field to your component's properties. We can use the spread syntax to add these attributes to whatever nodes are in our component.</p>
+<pre><pre class="playground"><code class="language-rust edition2018">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[derive(Props)]
+struct ClickableProps&lt;'a&gt; {
+    attributes: Attributes&lt;'a&gt;
+}
+
+fn clickable(cx: Scope&lt;ClickableProps&gt;) -&gt; Element {
+    cx.render(rsx!(
+        a { 
+            ..{cx.props.attributes},
+            &quot;Any link, anywhere&quot;
+        }
+    ))
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>The quoted escapes are a great way to make your components more flexible.</p>
+<h2 id="passing-handlers"><a class="header" href="#passing-handlers">Passing handlers</a></h2>
+<p>Dioxus also provides some implicit conversions from listener attributes into an <code>EventHandler</code> for any field on components that starts with <code>on</code>. IE <code>onclick</code>, <code>onhover</code>, etc. For properties, we want to define our <code>on</code> fields as an event handler:</p>
+<pre><pre class="playground"><code class="language-rust edition2018">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[derive(Props)]
+struct ClickableProps&lt;'a&gt; {
+    onclick: EventHandler&lt;'a, MouseEvent&gt;
+}
+
+fn clickable(cx: Scope&lt;ClickableProps&gt;) -&gt; Element {
+    cx.render(rsx!(
+        a { 
+            onclick: move |evt| cx.props.onclick.call(evt)
+        }
+    ))
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>Then, we can attach a listener at the call site:</p>
+<pre><pre class="playground"><code class="language-rust edition2018">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>rsx!(
+    clickable(
+        onclick: move |_| log::info!(&quot;Clicked&quot;),
+    )
+)
+<span class="boring">}
+</span></code></pre></pre>
+<p>Currently, Dioxus does not support an arbitrary amount of listeners - they must be strongly typed in <code>Properties</code>. If you need this use case, you can pass in an element with these listeners, or dip down into the <code>NodeFactory</code> API.</p>
+<h2 id="wrapping-up"><a class="header" href="#wrapping-up">Wrapping up</a></h2>
+<p>In this chapter, we learned:</p>
+<ul>
+<li>How to pass arbitrary nodes through the tree</li>
+<li>How the <code>children</code> field works on component properties</li>
+<li>How the <code>attributes</code> field works on component properties</li>
+<li>How to convert <code>listeners</code> into <code>EventHandlers</code> for components</li>
+<li>How to extend any node with custom attributes and children</li>
+</ul>
+<p>Next chapter, we'll talk about conditionally rendering parts of your user interface.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="conditional-rendering"><a class="header" href="#conditional-rendering">Conditional Rendering</a></h1>
+<p>Your components will often need to display different things depending on different conditions. With Dioxus, we can use Rust's normal control flow to conditional hide, show, and modify the structure of our markup.</p>
+<p>In this chapter, you'll learn:</p>
+<ul>
+<li>How to return different Elements depending on a condition</li>
+<li>How to conditionally include an Element in your structure</li>
+<li>Common patterns like matching and bool mapping</li>
+</ul>
+<h2 id="conditionally-returning-elements"><a class="header" href="#conditionally-returning-elements">Conditionally returning Elements</a></h2>
+<p>In some components, you might want to render different markup given some condition. The typical example for conditional rendering is showing a &quot;Log In&quot; screen for users who aren't logged into your app. To break down this condition, we can consider two states:</p>
+<ul>
+<li>Logged in: show the app</li>
+<li>Logged out: show the login screen</li>
+</ul>
+<p>Using the knowledge from the previous section on components, we'll start by making the app's props:</p>
+<pre><pre class="playground"><code class="language-rust edition2018">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[derive(Props, PartialEq)]
+struct AppProps {
+    logged_in: bool
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>Now that we have a &quot;logged_in&quot; flag accessible in our props, we can render two different screens:</p>
+<pre><pre class="playground"><code class="language-rust edition2018">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn App(cx: Scope&lt;AppProps&gt;) -&gt; Element {
+    if props.logged_in {
+        cx.render(rsx!{
+            DashboardScreen {}
+        })
+    } else {
+        cx.render(rsx!{
+            LoginScreen {}
+        })
+    }
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>When the user is logged in, then this component will return the DashboardScreen. Else, the component will render the LoginScreen.</p>
+<h2 id="using-match-statements"><a class="header" href="#using-match-statements">Using match statements</a></h2>
+<p>Rust provides us algebraic datatypes: enums that can contain values. Using the <code>match</code> keyword, we can execute different branches of code given a condition.</p>
+<p>For instance, we could run a function that returns a Result:</p>
+<pre><pre class="playground"><code class="language-rust edition2018">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn App(cx: Scope)-&gt; Element {
+    match get_name() {
+        Ok(name) =&gt; cx.render(rsx!( &quot;Hello, {name}!&quot; )),
+        Err(err) =&gt; cx.render(rsx!( &quot;Sorry, I don't know your name, because an error occurred: {err}&quot; )),
+    }
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>We can even match against values:</p>
+<pre><pre class="playground"><code class="language-rust edition2018">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn App(cx: Scope)-&gt; Element {
+    match get_name() {
+        &quot;jack&quot; =&gt; cx.render(rsx!( &quot;Hey Jack, how's Diane?&quot; )),
+        &quot;diane&quot; =&gt; cx.render(rsx!( &quot;Hey Diana, how's Jack?&quot; )),
+        name =&gt; cx.render(rsx!( &quot;Hello, {name}!&quot; )),
+    }
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>Do note: the <code>rsx!</code> macro returns a <code>Closure</code>, an anonymous function that has a unique type. To turn our <code>rsx!</code> into Elements, we need to call <code>cx.render</code>.</p>
+<p>To make patterns like these less verbose, the <code>rsx!</code> macro accepts an optional first argument on which it will call <code>render</code>. Our previous component can be shortened with this alternative syntax:</p>
+<pre><pre class="playground"><code class="language-rust edition2018">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn App(cx: Scope)-&gt; Element {
+    match get_name() {
+        &quot;jack&quot; =&gt; rsx!(cx, &quot;Hey Jack, how's Diane?&quot; ),
+        &quot;diane&quot; =&gt; rsx!(cx, &quot;Hey Diana, how's Jack?&quot; ),
+        name =&gt; rsx!(cx, &quot;Hello, {name}!&quot; ),
+    }
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>This syntax even enables us to write a one-line component:</p>
+<pre><pre class="playground"><code class="language-rust edition2018">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>static App: Component&lt;()&gt; = |cx| rsx!(cx, &quot;hello world!&quot;);
+<span class="boring">}
+</span></code></pre></pre>
+<p>Alternatively, for match statements, we can just return the builder itself and pass it into a final, single call to <code>cx.render</code>:</p>
+<pre><pre class="playground"><code class="language-rust edition2018">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn App(cx: Scope)-&gt; Element {
+    let greeting = match get_name() {
+        &quot;jack&quot; =&gt; rsx!(&quot;Hey Jack, how's Diane?&quot; ),
+        &quot;diane&quot; =&gt; rsx!(&quot;Hey Diana, how's Jack?&quot; ),
+        name =&gt; rsx!(&quot;Hello, {name}!&quot; ),
+    };
+    cx.render(greeting)
+}
+<span class="boring">}
+</span></code></pre></pre>
+<h2 id="nesting-rsx"><a class="header" href="#nesting-rsx">Nesting RSX</a></h2>
+<p>By looking at other examples, you might have noticed that it's possible to include <code>rsx!</code> calls inside other <code>rsx!</code> calls. With the curly-brace syntax, we can include anything in our <code>rsx!</code> that implements <code>IntoVnodeList</code>: a marker trait for iterators that produce Elements. <code>rsx!</code> itself implements this trait, so we can include it directly:</p>
+<pre><pre class="playground"><code class="language-rust edition2018">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>rsx!(
+    div {
+        {rsx!(
+            &quot;more rsx!&quot;
+        )}
+    }
+)
+<span class="boring">}
+</span></code></pre></pre>
+<p>As you might expect, we can refactor this structure into two separate calls using variables:</p>
+<pre><pre class="playground"><code class="language-rust edition2018">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>let title = rsx!( &quot;more rsx!&quot; );
+
+rsx!(
+    div {
+        {title}
+    }
+)
+<span class="boring">}
+</span></code></pre></pre>
+<p>In the case of a log-in screen, we might want to display the same NavBar and Footer for both logged in and logged out users. We can model this entirely by assigning a <code>screen</code> variable to a different Element depending on a condition:</p>
+<pre><pre class="playground"><code class="language-rust edition2018">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>let screen = match logged_in {
+    true =&gt; rsx!(DashboardScreen {}),
+    false =&gt; rsx!(LoginScreen {})
+};
+
+cx.render(rsx!{
+    Navbar {}
+    {screen}
+    Footer {}
+})
+<span class="boring">}
+</span></code></pre></pre>
+<h2 id="boolean-mapping"><a class="header" href="#boolean-mapping">Boolean Mapping</a></h2>
+<p>In the spirit of highly-functional apps, we suggest using the &quot;boolean mapping&quot; pattern when trying to conditionally hide/show an Element.</p>
+<p>By default, Rust lets you convert any <code>boolean</code> into any other type by calling <code>and_then()</code>. We can exploit this functionality in components by mapping to some Element.</p>
+<pre><pre class="playground"><code class="language-rust edition2018">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>let show_title = true;
+rsx!(
+    div {
+        {show_title.and_then(|| rsx!{
+            &quot;This is the title&quot;
+        })}
+    }
+)
+<span class="boring">}
+</span></code></pre></pre>
+<p>We can use this pattern for many things, including options:</p>
+<pre><pre class="playground"><code class="language-rust edition2018">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>let user_name = Some(&quot;bob&quot;);
+rsx!(
+    div {
+        {user_name.map(|name| rsx!(&quot;Hello {name}&quot;))}
+    }
+)
+<span class="boring">}
+</span></code></pre></pre>
+<h2 id="rendering-nothing"><a class="header" href="#rendering-nothing">Rendering Nothing</a></h2>
+<p>Sometimes, you don't want your component to return anything at all. In these cases, we can pass &quot;None&quot; into our bracket. However, Rust is not able to infer that our <code>None</code> corresponds to <code>Element</code> so we need to cast it appropriately:</p>
+<pre><pre class="playground"><code class="language-rust edition2018">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>rsx!(cx, {None as Element} )
+<span class="boring">}
+</span></code></pre></pre>
+<h2 id="moving-forward-2"><a class="header" href="#moving-forward-2">Moving Forward:</a></h2>
+<p>In this chapter, we learned how to render different Elements from a Component depending on a condition. This is a very powerful building block to assemble complex User Interfaces!</p>
+<p>In the next chapter, we'll cover how to renderer lists inside your <code>rsx!</code>.</p>
+<p>Related Reading:</p>
+<ul>
+<li><a href="concepts/">RSX in Depth</a></li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="conditional-lists-and-keys"><a class="header" href="#conditional-lists-and-keys">Conditional Lists and Keys</a></h1>
+<p>You will often want to display multiple similar components from a collection of data. </p>
+<p>In this chapter, you will learn:</p>
+<ul>
+<li>How to use iterators in <code>rsx!</code></li>
+<li>How to filter and transform data into a list of Elements</li>
+<li>How to create efficient lists with keys</li>
+</ul>
+<h2 id="rendering-data-from-lists"><a class="header" href="#rendering-data-from-lists">Rendering data from lists</a></h2>
+<p>Thinking back to our analysis of the <code>r/reddit</code> page, we notice a list of data that needs to be rendered: the list of posts. This list of posts is always changing, so we cannot just hardcode the lists into our app like:</p>
+<pre><pre class="playground"><code class="language-rust edition2018">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>rsx!(
+    div {
+        Post {/* some properties */}
+        Post {/* some properties */}
+        Post {/* some properties */}
+    }
+)
+<span class="boring">}
+</span></code></pre></pre>
+<p>Instead, we need to transform the list of data into a list of Elements. </p>
+<p>For convenience, <code>rsx!</code> supports any type in curly braces that implements the <code>IntoVnodeList</code> trait. Conveniently, every iterator that returns something that can be rendered as an Element also implements <code>IntoVnodeList</code>. </p>
+<p>As a simple example, let's render a list of names. First, start with our input data:</p>
+<pre><pre class="playground"><code class="language-rust edition2018">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>let names = [&quot;jim&quot;, &quot;bob&quot;, &quot;jane&quot;, &quot;doe&quot;];
+<span class="boring">}
+</span></code></pre></pre>
+<p>Then, we create a new iterator by calling <code>iter</code> and then <code>map</code>. In our <code>map</code> function, we'll place render our template.</p>
+<pre><pre class="playground"><code class="language-rust edition2018">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>let name_list = names.iter().map(|name| rsx!(
+    li { &quot;{name}&quot; }
+));
+<span class="boring">}
+</span></code></pre></pre>
+<p>Finally, we can include this list in the final structure:</p>
+<pre><pre class="playground"><code class="language-rust edition2018">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>rsx!(
+    ul {
+        {name_list}
+    }
+)
+<span class="boring">}
+</span></code></pre></pre>
+<p>The HTML-rendered version of this list would follow what you would expect:</p>
+<pre><code class="language-html">&lt;ul&gt;
+    &lt;li&gt; jim &lt;/li&gt;
+    &lt;li&gt; bob &lt;/li&gt;
+    &lt;li&gt; jane &lt;/li&gt;
+    &lt;li&gt; doe &lt;/li&gt;
+&lt;/ul&gt;
+</code></pre>
+<h3 id="rendering-our-posts-with-a-postlist-component"><a class="header" href="#rendering-our-posts-with-a-postlist-component">Rendering our posts with a PostList component</a></h3>
+<p>Let's start by modeling this problem with a component and some properties. </p>
+<p>For this example, we're going to use the borrowed component syntax since we probably have a large list of posts that we don't want to clone every time we render the Post List.</p>
+<pre><pre class="playground"><code class="language-rust edition2018">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[derive(Props, PartialEq)]
+struct PostListProps&lt;'a&gt; {
+    posts: &amp;'a [PostData]
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>Next, we're going to define our component:</p>
+<pre><pre class="playground"><code class="language-rust edition2018">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn App(cx: Scope&lt;PostList?) -&gt; Element {
+    // First, we create a new iterator by mapping the post array
+    let posts = cx.props.posts.iter().map(|post| rsx!{
+        Post {
+            title: post.title,
+            age: post.age,
+            original_poster: post.original_poster
+        }
+    });
+
+    // Finally, we render the post list inside of a container
+    cx.render(rsx!{
+        ul { class: &quot;post-list&quot;
+            {posts}
+        }
+    })
+}
+<span class="boring">}
+</span></code></pre></pre>
+<h2 id="filtering-iterators"><a class="header" href="#filtering-iterators">Filtering Iterators</a></h2>
+<p>Rust's iterators are extremely powerful, especially when used for filtering tasks. When building user interfaces, you might want to display a list of items filtered by some arbitrary check.</p>
+<p>As a very simple example, let's set up a filter where we only list names that begin with the letter &quot;J&quot;. </p>
+<p>Let's make our list of names:</p>
+<pre><pre class="playground"><code class="language-rust edition2018">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>let names = [&quot;jim&quot;, &quot;bob&quot;, &quot;jane&quot;, &quot;doe&quot;];
+<span class="boring">}
+</span></code></pre></pre>
+<p>Then, we create a new iterator by calling <code>iter</code>, then <code>filter</code>, then <code>map</code>. In our <code>filter</code> function, we'll only allow &quot;j&quot; names, and in our <code>map</code> function, we'll  render our template.</p>
+<pre><pre class="playground"><code class="language-rust edition2018">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>let name_list = names
+    .iter()
+    .filter(|name| name.starts_with('j'))
+    .map(|name| rsx!( li { &quot;{name}&quot; }));
+<span class="boring">}
+</span></code></pre></pre>
+<p>Rust's iterators provide us tons of functionality and are significantly easier to work with than JavaScript's map/filter/reduce.</p>
+<p>For keen Rustaceans: notice how we don't actually call <code>collect</code> on the name list. If we <code>collected</code> our filtered list into new Vec, then we would need to make an allocation to store these new elements. Instead, we create an entirely new <em>lazy</em> iterator which will then be consumed by Dioxus in the <code>render</code> call. </p>
+<p>The <code>render</code> method is extraordinarily efficient, so it's best practice to let it do most of the allocations for us.</p>
+<h2 id="keeping-list-items-in-order-with-key"><a class="header" href="#keeping-list-items-in-order-with-key">Keeping list items in order with key</a></h2>
+<p>The examples above demonstrate the power of iterators in <code>rsx!</code> but all share the same issue: a lack of &quot;keys&quot;. Whenever you render a list of elements, each item in the list must be <strong>uniquely identifiable</strong>. To make each item unique, you need to give it a &quot;key&quot;.</p>
+<p>In Dioxus, keys are strings that uniquely identifies it among other items in that array:</p>
+<pre><pre class="playground"><code class="language-rust edition2018">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>rsx!( li { key: &quot;a&quot; } )
+<span class="boring">}
+</span></code></pre></pre>
+<p>Keys tell Dioxus which array item each component corresponds to, so that it can match them up later. This becomes important if your array items can move (e.g. due to sorting), get inserted, or get deleted. A well-chosen key helps Dioxus infer what exactly has happened, and make the correct updates to the screen</p>
+<p>NB: the language from this section is strongly borrowed from <a href="https://reactjs.org/docs/lists-and-keys.html">React's guide on keys</a>.</p>
+<h3 id="where-to-get-your-key"><a class="header" href="#where-to-get-your-key">Where to get your key</a></h3>
+<p>Different sources of data provide different sources of keys:</p>
+<ul>
+<li><em>Data from a database</em>: If your data is coming from a database, you can use the database keys/IDs, which are unique by nature.</li>
+<li><em>Locally generated data</em>: If your data is generated and persisted locally (e.g. notes in a note-taking app), use an incrementing counter or a package like <code>uuid</code> when creating items.</li>
+</ul>
+<h3 id="rules-of-keys"><a class="header" href="#rules-of-keys">Rules of keys</a></h3>
+<ul>
+<li>Keys must be unique among siblings. However, it’s okay to use the same keys for Elements in different arrays.</li>
+<li>Keys must not change or that defeats their purpose! Don’t generate them while rendering.</li>
+</ul>
+<h3 id="why-does-dioxus-need-keys"><a class="header" href="#why-does-dioxus-need-keys">Why does Dioxus need keys?</a></h3>
+<p>Imagine that files on your desktop didn’t have names. Instead, you’d refer to them by their order — the first file, the second file, and so on. You could get used to it, but once you delete a file, it would get confusing. The second file would become the first file, the third file would be the second file, and so on.</p>
+<p>File names in a folder and Element keys in an array serve a similar purpose. They let us uniquely identify an item between its siblings. A well-chosen key provides more information than the position within the array. Even if the position changes due to reordering, the key lets Dioxus identify the item throughout its lifetime.</p>
+<h3 id="gotcha"><a class="header" href="#gotcha">Gotcha</a></h3>
+<p>You might be tempted to use an item’s index in the array as its key. In fact, that’s what Dioxus will use if you don’t specify a key at all. But the order in which you render items will change over time if an item is inserted, deleted, or if the array gets reordered. Index as a key often leads to subtle and confusing bugs.</p>
+<p>Similarly, do not generate keys on the fly, <code>gen_random</code>. This will cause keys to never match up between renders, leading to all your components and DOM being recreated every time. Not only is this slow, but it will also lose any user input inside the list items. Instead, use a stable ID based on the data.</p>
+<p>Note that your components won’t receive key as a prop. It’s only used as a hint by Dioxus itself. If your component needs an ID, you have to pass it as a separate prop:</p>
+<pre><pre class="playground"><code class="language-rust edition2018">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>Post { key: &quot;{key}&quot;, id: &quot;{id}&quot; }
+<span class="boring">}
+</span></code></pre></pre>
+<h2 id="moving-on-2"><a class="header" href="#moving-on-2">Moving on</a></h2>
+<p>In this section, we learned:</p>
+<ul>
+<li>How to render lists of data</li>
+<li>How to use iterator tools to filter and transform data</li>
+<li>How to use keys to render lists efficiently</li>
+</ul>
+<p>Moving forward, we'll finally cover user input and interactivity.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="adding-interactivity"><a class="header" href="#adding-interactivity">Adding Interactivity</a></h1>
+<p>So far, we've learned how to describe the structure and properties of our user interfaces. Unfortunately, they're static and quite a bit uninteresting. In this chapter, we're going to learn how to add interactivity through events, state, and tasks.</p>
+<h2 id="primer-on-interactivity"><a class="header" href="#primer-on-interactivity">Primer on interactivity</a></h2>
+<p>Before we get too deep into the mechanics of interactivity, we should first understand how Dioxus exactly chooses to handle user interaction and updates to your app.</p>
+<h3 id="what-is-state"><a class="header" href="#what-is-state">What is state?</a></h3>
+<p>Every app you'll ever build has some sort of information that needs to be rendered to the screen. Dioxus is responsible for translating your desired user interface to what is rendered to the screen. <em>You</em> are responsible for providing the content.</p>
+<p>The dynamic data in your user interface is called <code>State</code>. </p>
+<p>When you first launch your app with <code>dioxus::web::launch_with_props</code> you'll be providing the initial state. You need to declare the initial state <em>before</em> starting the app.</p>
+<pre><pre class="playground"><code class="language-rust edition2018">fn main() {
+    // declare our initial state
+    let props = PostProps {
+        id: Uuid::new_v4(),
+        score: 10,
+        comment_count: 0,
+        post_time: std::time::Instant::now(),
+        url: String::from(&quot;dioxuslabs.com&quot;),
+        title: String::from(&quot;Hello, world&quot;),
+        original_poster: String::from(&quot;dioxus&quot;)
+    };
+
+    // start the render loop
+    dioxus::desktop::launch_with_props(Post, props);
+}
+</code></pre></pre>
+<p>When Dioxus renders your app, it will pass an immutable reference of <code>PostProps</code> to your <code>Post</code> component. Here, you can pass the state down into children.</p>
+<pre><pre class="playground"><code class="language-rust edition2018">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn App(cx: Scope&lt;PostProps&gt;) -&gt; Element {
+    cx.render(rsx!{
+        Title { title: &amp;cx.props.title }
+        Score { score: &amp;cx.props.score }
+        // etc
+    })
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>State in Dioxus follows a pattern called &quot;one-way-data-flow.&quot; As your components create new components as their children, your app's structure will eventually grow into a tree where state gets passed down from the root component into &quot;leaves&quot; of the tree.</p>
+<p>You've probably seen the tree of UI components represented using an directed-acyclic-graph:</p>
+<p><img src="concepts/../images/component_tree.png" alt="image" /></p>
+<p>With Dioxus, your state will always flow down from parent components into child components.</p>
+<h3 id="how-do-i-change-my-apps-state"><a class="header" href="#how-do-i-change-my-apps-state">How do I change my app's state?</a></h3>
+<p>We've talked about the data flow of state, but we haven't yet talked about how to change that state dynamically. Dioxus provides a variety of ways to change the state of your app while it's running.</p>
+<p>For starters, we <em>could</em> use the <code>update_root_props</code> method on the VirtualDom to provide an entirely new root state of your App. However, for most applications, you probably don't want to regenerate your entire app just to update some text or a flag.</p>
+<p>Instead, you'll want to store state internally in your components and let <em>that</em> flow down the tree. To store state in your components, you'll use something called a <code>hook</code>. Hooks are special functions that reserve a slot of state in your component's memory and provide some functionality to update that state.</p>
+<p>The most common hook you'll use for storing state is <code>use_state</code>. <code>use_state</code> provides a slot for some data that allows you to read and update the value without accidentally mutating it.</p>
+<pre><pre class="playground"><code class="language-rust edition2018">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn App(cx: Scope)-&gt; Element {
+    let post = use_state(&amp;cx, || {
+        PostData {
+            id: Uuid::new_v4(),
+            score: 10,
+            comment_count: 0,
+            post_time: std::time::Instant::now(),
+            url: String::from(&quot;dioxuslabs.com&quot;),
+            title: String::from(&quot;Hello, world&quot;),
+            original_poster: String::from(&quot;dioxus&quot;)
+        }        
+    });
+
+    cx.render(rsx!{
+        Title { title: &amp;post.title }
+        Score { score: &amp;post.score }
+        // etc
+    })   
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>Whenever we have a new post that we want to render, we can call <code>set</code> on <code>post</code> and provide a new value:</p>
+<pre><pre class="playground"><code class="language-rust edition2018">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>post.set(PostData {
+    id: Uuid::new_v4(),
+    score: 20,
+    comment_count: 0,
+    post_time: std::time::Instant::now(),
+    url: String::from(&quot;google.com&quot;),
+    title: String::from(&quot;goodbye, world&quot;),
+    original_poster: String::from(&quot;google&quot;)
+})
+<span class="boring">}
+</span></code></pre></pre>
+<p>We'll dive deeper into how exactly these hooks work later.</p>
+<h3 id="when-do-i-update-my-state"><a class="header" href="#when-do-i-update-my-state">When do I update my state?</a></h3>
+<p>There are a few different approaches to choosing when to update your state. You can update your state in response to user-triggered events or asynchronously in some background task.</p>
+<h3 id="updating-state-in-listeners"><a class="header" href="#updating-state-in-listeners">Updating state in listeners</a></h3>
+<p>When responding to user-triggered events, we'll want to &quot;listen&quot; for an event on some element in our component.</p>
+<p>For example, let's say we provide a button to generate a new post. Whenever the user clicks the button, they get a new post. To achieve this functionality, we'll want to attach a function to the <code>on_click</code> method of <code>button</code>. Whenever the button is clicked, our function will run, and we'll get new Post data to work with.</p>
+<pre><pre class="playground"><code class="language-rust edition2018">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn App(cx: Scope)-&gt; Element {
+    let post = use_state(&amp;cx, || PostData::new());
+
+    cx.render(rsx!{
+        button {
+            on_click: move |_| post.set(PostData::random())
+            &quot;Generate a random post&quot;
+        }
+        Post { props: &amp;post }
+    })   
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>We'll dive much deeper into event listeners later.</p>
+<h3 id="updating-state-asynchronously"><a class="header" href="#updating-state-asynchronously">Updating state asynchronously</a></h3>
+<p>We can also update our state outside of event listeners with <code>coroutines</code>. <code>Coroutines</code> are asynchronous blocks of our component that have the ability to cleanly interact with values, hooks, and other data in the component. Since coroutines stick around between renders, the data in them must be valid for the <code>'static</code> lifetime. We must explicitly declare which values our task will rely on to avoid the <code>stale props</code> problem common in React.</p>
+<p>We can use tasks in our components to build a tiny stopwatch that ticks every second.</p>
+<blockquote>
+<p>Note: The <code>use_future</code> hook will start our coroutine immediately. The <code>use_coroutine</code> hook provides more flexibility over starting and stopping futures on the fly.</p>
+</blockquote>
+<pre><pre class="playground"><code class="language-rust edition2018">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn App(cx: Scope)-&gt; Element {
+    let mut sec_elapsed = use_state(&amp;cx, || 0);
+
+    use_future(&amp;cx, || {
+        let mut sec_elapsed = sec_elapsed.to_owned();
+        async move {
+            loop {
+                TimeoutFuture::from_ms(1000).await;
+                sec_elapsed += 1;
+            }
+        }
+    });
+
+    rsx!(cx, div { &quot;Current stopwatch time: {sec_elapsed}&quot; })
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>Using asynchronous code can be difficult! This is just scratching the surface of what's possible. We have an entire chapter on using async properly in your Dioxus Apps.</p>
+<h3 id="how-do-i-tell-dioxus-that-my-state-changed"><a class="header" href="#how-do-i-tell-dioxus-that-my-state-changed">How do I tell Dioxus that my state changed?</a></h3>
+<p>So far, we've only updated our state with <code>.set</code>. However, you might've noticed that we used <code>AddAssign</code> to increment the <code>sec_elapsed</code> value in our stopwatch example <em>without</em> calling set. This is because the <code>AddAssign</code> trait is implemented for <code>UseState&lt;T&gt;</code> (the wrapper around our value returned from <code>use_state</code>). Under the hood, whenever you try to mutate our value through <code>UseState</code>, you're actually calling <code>.set</code> which informs Dioxus that <em>this</em> component needs to be updated on the screen.</p>
+<p>Whenever you inform Dioxus that the component needs to be updated, it will &quot;render&quot; your component again, storing the previous and current Elements in memory. Dioxus will automatically figure out the differences between the old and the new and generate a list of edits that the renderer needs to apply to change what's on the screen. This process is called &quot;diffing&quot;:</p>
+<p><img src="concepts/../images/diffing.png" alt="Diffing" /></p>
+<p>In React, the specifics of when a component gets re-rendered is somewhat blurry. With Dioxus, any component can mark itself as &quot;dirty&quot; through a method on <code>Context</code>: <code>needs_update</code>. In addition, any component can mark any <em>other</em> component as dirty provided it knows the other component's ID with <code>needs_update_any</code>. </p>
+<p>With these building blocks, we can craft new hooks similar to <code>use_state</code> that let us easily tell Dioxus that new information is ready to be sent to the screen.</p>
+<h3 id="how-do-i-update-my-state-efficiently"><a class="header" href="#how-do-i-update-my-state-efficiently">How do I update my state efficiently?</a></h3>
+<p>In general, Dioxus should be plenty fast for most use cases. However, there are some rules you should consider following to ensure your apps are quick.</p>
+<ul>
+<li>
+<ol>
+<li><strong>Don't call set—state <em>while rendering</em></strong>. This will cause Dioxus to unnecessarily re-check the component for updates.</li>
+</ol>
+</li>
+<li>
+<ol start="2">
+<li><strong>Break your state apart into smaller sections.</strong> Hooks are explicitly designed to &quot;unshackle&quot; your state from the typical model-view-controller paradigm, making it easy to reuse useful bits of code with a single function.</li>
+</ol>
+</li>
+<li>
+<ol start="3">
+<li><strong>Move local state down</strong>. Dioxus will need to re-check child components of your app if the root component is constantly being updated. You'll get best results if rapidly-changing state does not cause major re-renders.</li>
+</ol>
+</li>
+</ul>
+<p>Don't worry - Dioxus is fast. But, if your app needs <em>extreme performance</em>, then take a look at the <code>Performance Tuning</code> in the <code>Advanced Guides</code> book.</p>
+<h2 id="moving-on-3"><a class="header" href="#moving-on-3">Moving On</a></h2>
+<p>This overview was a lot of information - but it doesn't tell you everything!</p>
+<p>In the next sections we'll go over:</p>
+<ul>
+<li><code>use_state</code> in depth</li>
+<li><code>use_ref</code> and other hooks</li>
+<li>Handling user input</li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="hooks-and-internal-state"><a class="header" href="#hooks-and-internal-state">Hooks and Internal State</a></h1>
+<p>In the <a href="concepts/./interactivity.html">Adding Interactivity</a> section, we briefly covered the concept of hooks and state stored internal to components.</p>
+<p>In this section, we'll dive a bit deeper into hooks, exploring both the theory and mechanics.</p>
+<h2 id="theory-of-hooks"><a class="header" href="#theory-of-hooks">Theory of Hooks</a></h2>
+<p>Over the past several decades, computer scientists and engineers have long sought the &quot;right way&quot; of designing user interfaces. With each new programming language, novel features are unlocked that change the paradigm in which user interfaces are coded.</p>
+<p>Generally, a number of patterns have emerged, each with their own strengths and tradeoffs. </p>
+<p>Broadly, there are two types of GUI structures:</p>
+<ul>
+<li>Immediate GUIs: re-render the entire screen on every update</li>
+<li>Retained GUIs: only re-render the portion of the screen that changed</li>
+</ul>
+<p>Typically, immediate-mode GUIs are simpler to write but can slow down as more features, like styling, are added.</p>
+<p>Many GUIs today - including Dioxus - are written in <em>Retained mode</em> - your code changes the data of the user interface but the renderer is responsible for actually drawing to the screen. In these cases, our GUI's state sticks around as the UI is rendered.</p>
+<p>Dioxus, following in the footsteps of React, provides a &quot;Reactive&quot; model for you to design your UI. This model emphasizes one-way data flow and encapsulation. Essentially, your UI code should be as predictable as possible.</p>
+<h2 id="mechanics-of-hooks"><a class="header" href="#mechanics-of-hooks">Mechanics of Hooks</a></h2>
+<p>In order to have state stick around between renders, Dioxus provides the <code>hook</code> through the <code>use_hook</code> API. This gives us a mutable reference to data returned from the initialization function.</p>
+<pre><pre class="playground"><code class="language-rust edition2018">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn example(cx: Scope) -&gt; Element {
+    let name: &amp;mut String = cx.use_hook(|| &quot;John Doe&quot;.to_string(), |hook| hook);
+
+    //
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>We can even modify this value directly from an event handler:</p>
+<pre><pre class="playground"><code class="language-rust edition2018">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn example(cx: Scope) -&gt; Element {
+    let name: &amp;mut String = cx.use_hook(|| &quot;John Doe&quot;.to_string(), |hook| hook);
+
+    cx.render(rsx!(
+        button {
+            onclick: move |_| name.push_str(&quot;..&quot;),
+        }
+    ))
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>Mechanically, each call to <code>use_hook</code> provides us with <code>&amp;mut T</code> for a new value. </p>
+<pre><pre class="playground"><code class="language-rust edition2018">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn example(cx: Scope) -&gt; Element {
+    let name: &amp;mut String = cx.use_hook(|| &quot;John Doe&quot;.to_string(), |hook| hook);
+    let age: &amp;mut u32 = cx.use_hook(|| 10, |hook| hook);
+    let friends: &amp;mut Vec&lt;String&gt; = cx.use_hook(|| vec![&quot;Jane Doe&quot;.to_string()], |hook| hook);
+
+    //
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>Internally, Dioxus is creating a list of hook values with each call to <code>use_hook</code> advancing the index of the list to return the next value.</p>
+<p>Our internal HookList would look something like:</p>
+<pre><pre class="playground"><code class="language-rust edition2018">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>[
+    Hook&lt;String&gt;,
+    Hook&lt;u32&gt;,
+    Hook&lt;String&gt;,
+]
+<span class="boring">}
+</span></code></pre></pre>
+<p>This is why hooks called out of order will fail - if we try to downcast a <code>Hook&lt;String&gt;</code> to <code>Hook&lt;u32&gt;</code>, Dioxus has no choice but to panic. We do provide a <code>try_use_hook</code> but you should never need that in practice.</p>
+<p>This pattern might seem strange at first, but it can be a significant upgrade over structs as blobs of state, which tend to be difficult to use in <a href="https://rust-lang.github.io/rfcs/2229-capture-disjoint-fields.html">Rust given the ownership system</a>.</p>
+<h2 id="building-new-hooks"><a class="header" href="#building-new-hooks">Building new Hooks</a></h2>
+<p>However, most hooks you'll interact with <em>don't</em> return an <code>&amp;mut T</code> since this is not very useful in a real-world situation.</p>
+<p>Consider when we try to pass our <code>&amp;mut String</code> into two different handlers:</p>
+<pre><pre class="playground"><code class="language-rust edition2018">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn example(cx: Scope) -&gt; Element {
+    let name: &amp;mut String = cx.use_hook(|| &quot;John Doe&quot;.to_string(), |hook| hook);
+
+    cx.render(rsx!(
+        button { onclick: move |_| name.push_str(&quot;yes&quot;), }
+        button { onclick: move |_| name.push_str(&quot;no&quot;), }
+    ))
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>Rust will not allow this to compile! We cannot <code>Copy</code> unique mutable references - they are, by definition, unique. However, we <em>can</em> reborrow our <code>&amp;mut T</code> as an <code>&amp;T</code> which are non-unique references and share those between handlers:</p>
+<pre><pre class="playground"><code class="language-rust edition2018">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn example(cx: Scope) -&gt; Element {
+    let name: &amp;String = &amp;*cx.use_hook(|| &quot;John Doe&quot;.to_string());
+
+    cx.render(rsx!(
+        button { onclick: move |_| log::info!(&quot;{}&quot;, name), }
+        button { onclick: move |_| log::info!(&quot;{}&quot;, name), }
+    ))
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>So, for any custom hook we want to design, we need to enable mutation through <a href="https://doc.rust-lang.org/book/ch15-05-interior-mutability.html">interior mutability</a> - IE move to runtime <a href="https://doc.rust-lang.org/1.8.0/book/references-and-borrowing.html">borrow checking</a>. We might incur a tiny runtime cost for each time we grab a new value from the hook, but this cost is extremely minimal.</p>
+<p>This example uses the <code>Cell</code> type to let us replace the value through interior mutability. <code>Cell</code> has practically zero overhead, but is slightly more limited that its <code>RefCell</code> cousin.</p>
+<pre><pre class="playground"><code class="language-rust edition2018">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn example(cx: Scope) -&gt; Element {
+    let name: &amp;Cell&lt;&amp;'static str&gt; = cx.use_hook(|| &quot;John Doe&quot;, |hook| hook);
+
+    cx.render(rsx!(
+        button { onclick: move |_| name.set(&quot;John&quot;), }
+        button { onclick: move |_| name.set(&quot;Jane&quot;), }
+    ))
+}
+<span class="boring">}
+</span></code></pre></pre>
+<h2 id="driving-state-updates-through-hooks"><a class="header" href="#driving-state-updates-through-hooks">Driving state updates through hooks</a></h2>
+<p>Hooks like <code>use_state</code> and <code>use_ref</code> wrap this runtime borrow checking in a type that <em>does</em> implement <code>Copy</code>. Additionally, they also mark the component as &quot;dirty&quot; whenever a new value has been set. This way, whenever <code>use_state</code> has a new value <code>set</code>, the component knows to update.</p>
+<pre><pre class="playground"><code class="language-rust edition2018">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn example(cx: Scope) -&gt; Element {
+    let name = use_state(&amp;cx, || &quot;Jack&quot;);
+
+    cx.render(rsx!(
+        &quot;Hello, {name}&quot;
+        button { onclick: move |_| name.set(&quot;John&quot;), }
+        button { onclick: move |_| name.set(&quot;Jane&quot;), }
+    ))
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>Internally, our <code>set</code> function looks something like this:</p>
+<pre><pre class="playground"><code class="language-rust edition2018">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>impl&lt;'a, T&gt; UseState&lt;'a, T&gt; {
+    fn set(&amp;self, new: T) {
+        // Replace the value in the cell
+        self.value.set(new);
+
+        // Mark our component as dirty
+        self.cx.needs_update();
+    }
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>Most hooks we provide implement <code>Deref</code> on their values since they are essentially smart pointers. To access the underlying value, you'll often need to use the deref operator:</p>
+<pre><pre class="playground"><code class="language-rust edition2018">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn example(cx: Scope) -&gt; Element {
+    let name = use_state(&amp;cx, || &quot;Jack&quot;);
+
+    match *name {
+        &quot;Jack&quot; =&gt; {}
+        &quot;Jill&quot; =&gt; {}
+        _ =&gt; {}
+    }
+
+    // ..
+}
+
+<span class="boring">}
+</span></code></pre></pre>
+<h2 id="hooks-provided-by-the-dioxus-hooks-package"><a class="header" href="#hooks-provided-by-the-dioxus-hooks-package">Hooks provided by the <code>Dioxus-Hooks</code> package</a></h2>
+<p>By default, we bundle a handful of hooks in the Dioxus-Hooks package. Feel free to click on each hook to view its definition and associated documentation.</p>
+<ul>
+<li><a href="https://docs.rs/dioxus_hooks/use_state">use_state</a> - store state with ergonomic updates</li>
+<li><a href="https://docs.rs/dioxus_hooks/use_ref">use_ref</a> - store non-clone state with a refcell</li>
+<li><a href="https://docs.rs/dioxus_hooks/use_future">use_future</a> - store a future to be polled after initialization</li>
+<li><a href="https://docs.rs/dioxus_hooks/use_coroutine">use_coroutine</a> - store a future that can be stopped/started/communicated with</li>
+<li><a href="https://docs.rs/dioxus_hooks/use_noderef">use_noderef</a> - store a handle to the native element</li>
+<li><a href="https://docs.rs/dioxus_hooks/use_callback">use_callback</a> - store a callback that implements PartialEq for memoization</li>
+<li><a href="https://docs.rs/dioxus_hooks/use_provide_context">use_provide_context</a> - expose state to descendent components</li>
+<li><a href="https://docs.rs/dioxus_hooks/use_context">use_context</a> - consume state provided by <code>use_provide_context</code></li>
+</ul>
+<h2 id="wrapping-up-1"><a class="header" href="#wrapping-up-1">Wrapping up</a></h2>
+<p>In this chapter, we learned about the mechanics and intricacies of storing state inside a component.</p>
+<p>In the next chapter, we'll cover event listeners in similar depth, and how to combine the two to build interactive components.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="handling-events"><a class="header" href="#handling-events">Handling Events</a></h1>
+<p>In the overview for this section, we mentioned how we can modify the state of our component by responding to user-generated events inside of event listeners.</p>
+<p>In this section, we'll talk more about event listeners:</p>
+<ul>
+<li>What events are available</li>
+<li>Handling event data</li>
+<li>Mutability in event listeners</li>
+</ul>
+<h2 id="event-listeners"><a class="header" href="#event-listeners">Event Listeners</a></h2>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="user-input-and-controlled-components"><a class="header" href="#user-input-and-controlled-components">User Input and Controlled Components</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="lifecycle-updates-and-effects"><a class="header" href="#lifecycle-updates-and-effects">Lifecycle, updates, and effects</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="managing-state"><a class="header" href="#managing-state">Managing State</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="global-state"><a class="header" href="#global-state">Global State</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="error-handling"><a class="header" href="#error-handling">Error handling</a></h1>
+<p>Astute observers might have noticed that <code>Element</code> is actually a type alias for <code>Option&lt;VNode&gt;</code>. You don't need to know what a <code>VNode</code> is, but it's important to recognize that we could actually return nothing at all:</p>
+<pre><pre class="playground"><code class="language-rust edition2018">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn App((cx, props): Component&lt;()&gt;) -&gt; Element {
+    None
+}
+<span class="boring">}
+</span></code></pre></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="effects"><a class="header" href="#effects">Effects</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="working-with-async"><a class="header" href="#working-with-async">Working with Async</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="tasks"><a class="header" href="#tasks">Tasks</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="suspense"><a class="header" href="#suspense">Suspense</a></h1>
+<p>Suspense in Dioxus is enabled through placeholder nodes.</p>
+<p>just a component that renders nodes into the placeholder after the future is finished?</p>
+<p>in react, suspense is just completely pausing diffing while a </p>
+<pre><pre class="playground"><code class="language-rust edition2018">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>let n = use_suspense(cx || {
+    cx.render(rsx!{
+        Suspense {
+            prom: fut,
+            callback: || {}
+        }
+    })
+})
+
+suspense () {
+    let value = use_state();
+    if first_render {
+        push_task({
+            value.set(fut.await);
+        });
+    } else {
+        callback(value)
+    }
+}
+
+
+let name = fetch_name().await;
+
+
+function ProfileDetails() {
+  // Try to read user info, although it might not have loaded yet
+  const user = resource.read();
+  return &lt;h1&gt;{user.name}&lt;/h1&gt;;
+}
+
+
+fn ProfileDteails() {
+    let user = resource.suspend(cx, |l| rsx!(&quot;{l}&quot;));
+
+    // waits for the resource to be ready and updates the placeholder with the tree
+    let name = resource.suspend_with(cx, |val| rsx!( div { &quot;hello&quot; &quot;{user}&quot; } ));
+
+    cx.render(rsx!(
+        div {
+            {user}
+            {name}
+        }
+    ))
+}
+<span class="boring">}
+</span></code></pre></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="async-callbacks"><a class="header" href="#async-callbacks">Async Callbacks</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="putting-it-all-together"><a class="header" href="#putting-it-all-together">Putting it all together</a></h1>
+<p>So far, we've covered the basics of Dioxus. We've talked about:</p>
+<ul>
+<li>Elements</li>
+<li>Components</li>
+<li>Interactivity</li>
+<li>State Management</li>
+<li>Async Actions</li>
+<li>Styling</li>
+</ul>
+<p>In this chapter, we'll build a real-world weather app that combines everything we've learned into a cute application that you can run locally. It'll let us monitor different locations simultaneously and periodically check for updates.</p>
+<p>The app is running on the web <a href="tutorial/">here</a> but is also available:</p>
+<ul>
+<li>as a desktop app</li>
+<li>a mobile app</li>
+<li>and as an API endpoint here</li>
+</ul>
+<p><img src="tutorial/static/weather_app.png" alt="Weather App Image" /></p>
+<p>Let's get started! Head on to the next chapter where we create our app.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="new-app"><a class="header" href="#new-app">New app</a></h1>
+<p>To get started, let's create a new Rust project for our app. </p>
+<pre><code class="language-shell">$ cargo new --bin weatherapp
+$ cd weatherapp
+</code></pre>
+<p>Make sure our project builds by default</p>
+<pre><code class="language-shell">$ cargo run
+
+   Compiling weatherapp v0.1.0
+    Finished dev [unoptimized + debuginfo] target(s) in 0.41s
+     Running `target/debug/weatherapp`
+Hello, world!
+</code></pre>
+<h2 id="adding-dioxus-desktop-as-a-dependency"><a class="header" href="#adding-dioxus-desktop-as-a-dependency">Adding Dioxus Desktop as a dependency</a></h2>
+<p>We can either edit our Cargo.toml directly:</p>
+<pre><code class="language-toml">[dependencies]
+dioxus = { version = &quot;*&quot;, features = [&quot;desktop&quot;]}
+</code></pre>
+<p>or use <code>cargo-edit</code> to add it via the CLI:</p>
+<pre><code class="language-shell">$ cargo add dioxus --features desktop
+</code></pre>
+<h2 id="setting-up-a-hello-world"><a class="header" href="#setting-up-a-hello-world">Setting up a hello world</a></h2>
+<p>Let's edit the project's <code>main.rs</code> and add the skeleton of </p>
+<pre><pre class="playground"><code class="language-rust edition2018">use dioxus::prelude::*;
+
+fn main() {
+    dioxus::desktop::launch(app);
+}
+
+fn app(cx: Scope) -&gt; Element {
+    cx.render(rsx!(
+        div { &quot;hello world!&quot; }
+    ))
+}
+</code></pre></pre>
+<h2 id="making-sure-things-run"><a class="header" href="#making-sure-things-run">Making sure things run</a></h2>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="structuring-our-app"><a class="header" href="#structuring-our-app">Structuring our app</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="defining-state"><a class="header" href="#defining-state">Defining State</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="defining-components"><a class="header" href="#defining-components">Defining Components</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="styling"><a class="header" href="#styling">Styling</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="publishing"><a class="header" href="#publishing">Publishing</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="next-steps-and-advanced-topics"><a class="header" href="#next-steps-and-advanced-topics">Next Steps and Advanced Topics</a></h1>
+<p>Congrats! You've made it through the <code>learning Dioxus</code> book. Throughout this tutorial, you've learned a ton:</p>
+<ul>
+<li>How to build User Interfaces with Elements</li>
+<li>How to compose Element groups together as Components</li>
+<li>How to handle user input with event listeners</li>
+<li>How to manage global and local state</li>
+<li>How to work with async using tasks, coroutines, and suspense</li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="contributors"><a class="header" href="#contributors">Contributors</a></h1>
+<p>All pull requests (including those made by a team member) must be approved by at least one other team member.
+Larger, more nuanced decisions about design, architecture, breaking changes, trade offs, etc are made by team consensus.</p>
+<p>Contributors to this guide:</p>
+<ul>
+<li><a href="https://github.com/jkelleyrtp">jkelleyrtp</a></li>
+<li><a href="https://github.com/alexkirsz">alexkirsz</a></li>
+</ul>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+
+            </nav>
+
+        </div>
+
+
+
+        <script type="text/javascript">
+            window.playground_line_numbers = true;
+        </script>
+
+        <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+
+        <script src="ace.js" type="text/javascript" charset="utf-8"></script>
+        <script src="editor.js" type="text/javascript" charset="utf-8"></script>
+        <script src="mode-rust.js" type="text/javascript" charset="utf-8"></script>
+        <script src="theme-dawn.js" type="text/javascript" charset="utf-8"></script>
+        <script src="theme-tomorrow_night.js" type="text/javascript" charset="utf-8"></script>
+
+        <script src="elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="searcher.js" type="text/javascript" charset="utf-8"></script>
+
+        <script src="clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+
+        <script type="text/javascript">
+        window.addEventListener('load', function() {
+            MathJax.Hub.Register.StartupHook('End', function() {
+                window.setTimeout(window.print, 100);
+            });
+        });
+        </script>
+
+    </body>
+</html>

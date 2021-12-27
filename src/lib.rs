@@ -4,6 +4,7 @@ use dioxus::{
     prelude::*,
     router::{use_router, Link},
 };
+use serde::{Deserialize, Serialize};
 
 pub mod icons;
 pub mod sitemap;
@@ -12,7 +13,6 @@ pub mod components {
         pub mod call_to_action;
         pub mod featured_examples;
         pub mod hero;
-        pub mod recent_blog_posts;
         pub mod snippets;
         pub mod value_add;
     }
@@ -23,22 +23,25 @@ pub mod components {
     pub mod snippets;
 }
 
-#[derive(PartialEq, Clone, Debug)]
+#[derive(PartialEq, Clone, Debug, Serialize, Deserialize)]
 enum AppRoute {
     Home,
     Blog,
+    BlogPost { id: usize },
+}
+impl Default for AppRoute {
+    fn default() -> Self {
+        AppRoute::Home
+    }
 }
 
-#[wasm_bindgen::prelude::wasm_bindgen(start)]
-pub fn start() {
-    dioxus::web::launch(App)
-}
+// #[wasm_bindgen::prelude::wasm_bindgen(start)]
+// pub fn start() {
+//     dioxus::web::launch(App)
+// }
 
 pub static App: Component<()> = |cx| {
-    let route = use_router(&cx, |s| match s {
-        "blog" => AppRoute::Blog,
-        _ => AppRoute::Home,
-    });
+    let route: &AppRoute = use_router(&cx, |c| {});
 
     // in deubg mode we want to bring in the dev mode of tailwind, but generate the propduction mode for release
     let remote_css = match cfg!(debug_assertions) {
@@ -72,6 +75,19 @@ pub static App: Component<()> = |cx| {
         "#]} }
 
         nav_header()
+        {match route {
+            AppRoute::Home => rsx!(home()),
+            AppRoute::Blog => rsx!(components::blog::BlogList {}),
+            AppRoute::BlogPost{ id } => rsx!(components::blog::single_blog_post( id: *id )),
+        }}
+
+
+
+        script { {[include_str!("./components/prism/prism.js")]} }
+    })
+};
+fn home(cx: Scope) -> Element {
+    cx.render(rsx!(
         div { class: "dark:bg-gray-800"
             div { class: "relative max-w-5xl mx-auto pt-20 sm:pt-24 lg:pt-32 text-gray-600",
                 h1 { class: "font-extrabold text-4xl sm:text-5xl lg:text-6xl tracking-tight text-center dark:text-white",
@@ -123,19 +139,17 @@ pub static App: Component<()> = |cx| {
             components::homepage::value_add::ValueAdd {}
             components::homepage::featured_examples::FeaturedExamples {}
             components::homepage::snippets::Snippets {}
-            components::homepage::recent_blog_posts::RecentBlogPosts {}
+            components::blog::RecentBlogPosts {}
             components::homepage::call_to_action::CallToAction {}
             components::footer::Footer {}
+
+            // ensure Prism is able to highlight all our code elements
+            script { "Prism.highlightAll();" }
         }
+    ))
+}
 
-        // ensure Prism is able to highlight all our code elements
-        script { "Prism.highlightAll();" }
-
-        script { {[include_str!("./components/prism/prism.js")]} }
-    })
-};
-
-fn whatever(cx: Scope<()>) -> Element {
+fn whatever(cx: Scope) -> Element {
     cx.render(rsx! {
         div { class: "absolute inset-0 bottom-10 bg-bottom bg-no-repeat bg-gray-50 dark:bg-[#0B1120] index_beams__3fKa4",
             div { class: "absolute inset-0 bg-grid-gray-900/[0.04] bg-[bottom_1px_center] dark:bg-grid-gray-400/[0.05] dark:bg-bottom dark:border-b dark:border-gray-100/5",
@@ -145,11 +159,12 @@ fn whatever(cx: Scope<()>) -> Element {
     })
 }
 
-fn nav_header(cx: Scope<()>) -> Element {
+fn nav_header(cx: Scope) -> Element {
     cx.render(rsx!(
         div { class: "relative pt-6 lg:pt-8 pb-4 flex items-center justify-between font-semibold text-sm leading-6 dark:text-gray-200 dark:bg-gray-900 px-4 sm:px-6 md:px-8",
-        // div { class: "relative pt-6 lg:pt-8 pb-4 flex items-center justify-between font-semibold text-sm leading-6 dark:text-gray-200 dark:bg-gray-900 px-4 sm:px-6 md:px-8",
-            a { class: "flex title-font font-medium items-center text-gray-900",
+            Link {
+                class: "flex title-font font-medium items-center text-gray-900"
+                to: AppRoute::Home,
                 img { src: "https://avatars.githubusercontent.com/u/79236386?s=200&v=4", class: "h-10 w-auto" },
                 span { class: "ml-3 text-4xl dark:text-white", "dioxus" }
             }
@@ -197,6 +212,14 @@ fn nav_header(cx: Scope<()>) -> Element {
                     nav {
                         ul { class: "flex items-center space-x-8",
                             li {
+                                Link {
+                                    class: "hover:text-sky-500 dark:hover:text-sky-400"
+                                    href: "/",
+                                    to: AppRoute::Home,
+                                    "Home"
+                                }
+                            }
+                            li {
                                 a { class: "hover:text-sky-500 dark:hover:text-sky-400",
                                     href: "https://github.com/DioxusLabs/awesome-dioxus#community",
                                     "Community"
@@ -210,7 +233,7 @@ fn nav_header(cx: Scope<()>) -> Element {
                             }
                             li {
                                 a { class: "hover:text-sky-500 dark:hover:text-sky-400",
-                                    href: "https://dioxuslabs.com/reference/",
+                                    href: "https://github.com/DioxusLabs/dioxus/tree/master/examples/core_reference",
                                     "Reference"
                                 }
                             }
@@ -219,14 +242,6 @@ fn nav_header(cx: Scope<()>) -> Element {
                                     href: "/blog",
                                     to: AppRoute::Blog,
                                     "Blog"
-                                }
-                            }
-                            li {
-                                Link {
-                                    class: "hover:text-sky-500 dark:hover:text-sky-400"
-                                    href: "/",
-                                    to: AppRoute::Home,
-                                    "Home"
                                 }
                             }
                             li {
@@ -273,153 +288,3 @@ pub static InteractiveHeader: Component<()> = |cx| {
         }
     })
 };
-
-// div { class: "text-gray-500 antialiased bg-white js-focus-visible"
-//     div { class: "space-y-20 sm:space-y-32 md:space-y-40 lg:space-y-44 overflow-hidden"
-//         header { class: "relative z-10 max-w-screen-lg xl:max-w-screen-xl mx-auto"
-//             div { class: "px-4 sm:px-6 md:px-8 mb-14 sm:mb-20 xl:mb-8",
-
-//                 div { class: "border-b border-gray-200 py-4 flex items-center justify-between mb-4 -mx-4 px-4 sm:mx-0 sm:px-0",
-//                     button { class: "group leading-6 font-medium flex items-center space-x-3 sm:space-x-4 hover:text-gray-600 transition-colors duration-200 w-full py-2",
-//                         r#"type": "button",
-//                         icons::Search {}
-//                         span {  "Quick search" span { class: "hidden sm:inline", " for anything" } }
-//                         span { class: "hidden sm:block text-gray-400 text-sm leading-5 py-0.5 px-1.5 border border-gray-300 rounded-md",
-//                             style: "opacity: 1;",
-//                             span { class: "sr-only", "Press" }
-//                             kbd { class: "font-sans", abbr { class: "no-underline", title: "Command", "⌘" } }
-//                             span { class: "sr-only", "and" }
-//                             kbd { class: "font-sans", "K" }
-//                             span { class: "sr-only", "to search" }
-//                         }
-//                     }
-//                     div { class: "flex items-center space-x-6 sm:space-x-10 ml-6 sm:ml-10",
-//                         a { class: "text-base leading-6 font-medium hover:text-gray-600 transition-colors duration-200 py-2",
-//                             href: "/docs",
-//                             span { class: "sm:hidden", "Docs" }
-//                             span { class: "hidden sm:inline", "Book" }
-//                         }
-//                         a { class: "text-base leading-6 font-medium hover:text-gray-600 transition-colors duration-200 py-2",
-//                             href: "/docs",
-//                             span { class: "sm:hidden", "Docs" }
-//                             span { class: "hidden sm:inline", "Reference" }
-//                         }
-//                         a { class: "text-base leading-6 font-medium hover:text-gray-600 transition-colors duration-200 py-2",
-//                             href: "/docs",
-//                             span { class: "sm:hidden", "Docs" }
-//                             span { class: "hidden sm:inline", "docs.rs" }
-//                         }
-//                         a { class: "text-gray-400 hover:text-gray-500 transition-colors duration-200",
-//                             href: "https://github.com/dioxuslabs/dioxus",
-//                             span { class: "sr-only", "Tailwind CSS on GitHub" }
-//                             icons::GithubLogo {}
-//                         }
-//                     }
-//                 }
-//                 // icons::TailwindLogo {}
-//                 a { class: "flex title-font font-medium items-center mt-24",
-//                     img { src: "https://avatars.githubusercontent.com/u/79236386?s=200&v=4", class: "h-10 w-auto" },
-//                     span { class: "ml-3 text-4xl text-gray-900", "dioxus" }
-//                 }
-//                 h1 { class: "text-4xl sm:text-6xl lg:text-7xl leading-none font-extrabold text-gray-900 mt-8 mb-8 sm:mt-14 sm:mb-10",
-//                     "Build reliable user interfaces."
-//                     // span { class: "text-red-400", "Rust"}
-//                 }
-//                 p { class: "max-w-screen-lg text-lg sm:text-2xl sm:leading-10 font-medium mb-10 sm:mb-11",
-//                     // "Feels like React."
-//                     span { class: "text-red-400", "Dioxus "}
-//                     "is a React-like library for building fast, portable, and beautiful user interfaces with Rust."
-
-//                     " Runs on the web, desktop, mobile, and more."
-//                     // "A React-like library for building fast, portable, and beautiful user interfaces with Rust that run on the web, desktop, mobile, and more."
-//                     // "If it compiles, it works."
-//                     // " Runs blazingly fast on the web, desktop, mobile, and more."
-//                 }
-//                 // p { class: "max-w-screen-lg text-lg sm:text-2xl sm:leading-10 font-medium mb-10 sm:mb-11",
-//                 //     "If it compiles, it works."
-//                 // }
-//                 div { class: "flex flex-wrap space-y-4 sm:space-y-0 sm:space-x-4 text-center",
-//                     a { class: "w-full sm:w-auto flex-none bg-gray-900 hover:bg-gray-700 text-white text-lg leading-6 font-semibold py-3 px-6 border border-transparent rounded-xl focus:ring-2 focus:ring-offset-2 focus:ring-offset-white focus:ring-gray-900 focus:outline-none transition-colors duration-200",
-//                         href: "/docs",
-//                         "Get started"
-//                     }
-//                     button { class: "w-full sm:w-auto flex-none bg-gray-50 text-gray-400 hover:text-gray-900 font-mono leading-6 py-3 sm:px-6 border border-gray-200 rounded-xl flex items-center justify-center space-x-2 sm:space-x-4 focus:ring-2 focus:ring-offset-2 focus:ring-offset-white focus:ring-gray-300 focus:outline-none transition-colors duration-200",
-//                         r#"type": "button",
-//                         span { class: "text-gray-900",
-//                             span { class: "hidden sm:inline text-gray-500", aria_hidden: "true", "$ " }
-//                             span { class: "text-red-400" "cargo " }
-//                             "add dioxus"
-//                         }
-//                         span { class: "sr-only", "(click to copy to clipboard)" }
-//                         icons::Copy {}
-//                     }
-//                 }
-//             }
-//         }
-//     }
-// }
-
-// for changing dark mode
-// button {
-//                             id: "headlessui-listbox-button-3",
-//                             "aria-expanded": "false",
-//                             "type": "button",
-//                             "aria-labelledby": "headlessui-listbox-label-2 headlessui-listbox-button-3",
-//                             "aria-haspopup": "true",
-//                             span { class: "dark:hidden",
-//                                 svg { class: "w-6 h-6",
-//                                     "stroke-width": "2",
-//                                     "viewBox": "0 0 24 24",
-//                                     fill: "none",
-//                                     "stroke-linecap": "round",
-//                                     "stroke-linejoin": "round",
-//                                     path { class: "stroke-gray-400 dark:stroke-gray-500",
-//                                         d: "M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z",
-//                                     }
-//                                     path { class: "stroke-gray-400 dark:stroke-gray-500",
-//                                         d: "M12 4v1M17.66 6.344l-.828.828M20.005 12.004h-1M17.66 17.664l-.828-.828M12 20.01V19M6.34 17.664l.835-.836M3.995 12.004h1.01M6 6l.835.836",
-//                                     }
-//                                 }
-//                             }
-//                             span { class: "hidden dark:inline",
-//                                 svg { class: "w-6 h-6",
-//                                     fill: "none",
-//                                     "viewBox": "0 0 24 24",
-//                                     path { class: "fill-transparent",
-//                                         "clip-rule": "evenodd",
-//                                         d: "M17.715 15.15A6.5 6.5 0 0 1 9 6.035C6.106 6.922 4 9.645 4 12.867c0 3.94 3.153 7.136 7.042 7.136 3.101 0 5.734-2.032 6.673-4.853Z",
-//                                         "fill-rule": "evenodd",
-//                                     }
-//                                     path { class: "fill-gray-400 dark:fill-gray-500",
-//                                         d: "m17.715 15.15.95.316a1 1 0 0 0-1.445-1.185l.495.869ZM9 6.035l.846.534a1 1 0 0 0-1.14-1.49L9 6.035Zm8.221 8.246a5.47 5.47 0 0 1-2.72.718v2a7.47 7.47 0 0 0 3.71-.98l-.99-1.738Zm-2.72.718A5.5 5.5 0 0 1 9 9.5H7a7.5 7.5 0 0 0 7.5 7.5v-2ZM9 9.5c0-1.079.31-2.082.845-2.93L8.153 5.5A7.47 7.47 0 0 0 7 9.5h2Zm-4 3.368C5 10.089 6.815 7.75 9.292 6.99L8.706 5.08C5.397 6.094 3 9.201 3 12.867h2Zm6.042 6.136C7.718 19.003 5 16.268 5 12.867H3c0 4.48 3.588 8.136 8.042 8.136v-2Zm5.725-4.17c-.81 2.433-3.074 4.17-5.725 4.17v2c3.552 0 6.553-2.327 7.622-5.537l-1.897-.632Z",
-//                                     }
-//                                     path { class: "fill-gray-400 dark:fill-gray-500",
-//                                         "fill-rule": "evenodd",
-//                                         d: "M17 3a1 1 0 0 1 1 1 2 2 0 0 0 2 2 1 1 0 1 1 0 2 2 2 0 0 0-2 2 1 1 0 1 1-2 0 2 2 0 0 0-2-2 1 1 0 1 1 0-2 2 2 0 0 0 2-2 1 1 0 0 1 1-1Z",
-//                                         "clip-rule": "evenodd",
-//                                     }
-//                                 }
-//                             }
-//                         }
-
-// todo: add search
-// button { class: "hidden sm:flex items-center w-72 text-left space-x-3 px-4 h-12 bg-white ring-1 ring-gray-900/10 hover:ring-gray-300 focus:outline-none focus:ring-2 focus:ring-sky-500 shadow-sm rounded-lg text-gray-400 dark:bg-gray-800 dark:ring-0 dark:text-gray-300 dark:highlight-white/5 dark:hover:bg-gray-700",
-//     "type": "button",
-//     svg { class: "flex-none text-gray-300 dark:text-gray-400",
-//         fill: "none",
-//         "stroke-width": "2",
-//         "stroke-linejoin": "round",
-//         stroke: "currentColor",
-//         "stroke-linecap": "round",
-//         "aria-hidden": "true",
-//         width: "24",
-//         height: "24",
-//         path { d: "m19 19-3.5-3.5", }
-//         circle { cy: "11", r: "6", cx: "11", }
-//     }
-//     span { class: "flex-auto", "Quick search..." }
-//     kbd { class: "font-sans font-semibold dark:text-gray-500",
-//         abbr { class: "no-underline text-gray-300 dark:text-gray-500", title: "Command", "⌘" }
-//         "K"
-//     }
-// }

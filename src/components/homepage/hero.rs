@@ -1,7 +1,7 @@
 use crate::icons;
 use dioxus::prelude::*;
 
-pub fn Hero(cx: Scope<()>) -> Element {
+pub fn Hero(cx: Scope) -> Element {
     cx.render(rsx!{
         section { class: "text-gray-400 bg-gray-800",
             div { class: "container flex flex-col md:flex-row w:2/3 px-24 py-20 mx-auto",

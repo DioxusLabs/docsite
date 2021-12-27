@@ -1,6 +1,6 @@
 use dioxus::prelude::*;
 
-pub fn FeaturedExamples(cx: Scope<()>) -> Element {
+pub fn FeaturedExamples(cx: Scope) -> Element {
     cx.render(rsx! {
         section { class: "bg-gray-800 body-font"
             div { class: "container px-6 lg:px-40 py-12 mx-auto",

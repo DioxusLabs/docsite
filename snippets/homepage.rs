@@ -1,4 +1,4 @@
-fn App(cx: Scope<()>) -> Element {
+fn app(cx: Scope) -> Element {
     let mut count = use_state(&cx, || 0);
 
     cx.render(rsx!(

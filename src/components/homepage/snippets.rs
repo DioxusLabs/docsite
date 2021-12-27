@@ -12,6 +12,7 @@ pub static Snippets: Component<()> = |cx| {
             ""
         };
         rsx!(li {
+            key: "{s.title}"
             cursor: "pointer"
             class: "p-3 pr-8 hover:bg-blue-500 hover:text-blue-100 {is_selected}"
             onclick: move |_| selected_snippet.set(id),

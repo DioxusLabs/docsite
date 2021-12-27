@@ -1,5 +1,6 @@
-use crate::icons;
+use crate::{icons, AppRoute};
 use dioxus::prelude::*;
+use dioxus::router::Link;
 use once_cell::sync::Lazy;
 
 static POST1: Lazy<String> = Lazy::new(|| {
@@ -10,17 +11,22 @@ static POST2: Lazy<String> = Lazy::new(|| {
     dioxus_markdown::render_markdown_to_string(include_str!("../../../posts/allocators.md"))
 });
 
-pub static Blog: Component<()> = |cx| {
-    struct BlogPostDisplay {
-        category: &'static str,
-        date: &'static str,
-        title: &'static str,
-        description: &'static str,
-        link: &'static str,
-        content: &'static Lazy<String>,
-    }
+pub struct BlogPostDisplay {
+    category: &'static str,
+    date: &'static str,
+    title: &'static str,
+    description: &'static str,
+    link: &'static str,
+    content: &'static Lazy<String>,
+}
 
-    let posts = [
+impl PartialEq for &'static BlogPostDisplay {
+    fn eq(&self, other: &Self) -> bool {
+        std::ptr::eq(self, other)
+    }
+}
+
+pub static POSTS: &[BlogPostDisplay] = &[
         BlogPostDisplay {
             category: "Release Notes",
             date: "21 Oct 2021",
@@ -39,71 +45,130 @@ pub static Blog: Component<()> = |cx| {
         },
     ];
 
-    let mut cur_post = use_state(&cx, || None);
-
-    let inner = if let Some(post) = *cur_post {
-        let BlogPostDisplay {
-            category,
-            date,
-            title,
-            description,
-            link,
-            content,
-        } = &posts[post];
-
-        cx.render(rsx! {
-            div { class: "flex w-full mb-20 flex-wrap list-none",
-                style {
-                    "ul {{ list-style: disc; }}"
-                    "li {{ display: list-item; }}"
-                }
-                article { class: "markdown-body",
-                    dangerous_inner_html: format_args!("{}", content.as_str()),
-                }
-                script {"Prism.highlightAll()"}
-            }
-        })
-    } else {
-        cx.render(rsx!(
-            // Individual Post starts here
-            {posts.iter().enumerate().map(|(id, BlogPostDisplay { category, date, title, description, link, content })| rsx!{
-                div { class: "py-8 flex flex-wrap md:flex-nowrap",
-                    div { class: "md:w-64 md:mb-0 mb-6 flex-shrink-0 flex flex-col",
-                        span { class: "font-semibold title-font text-gray-700",
-                            "{category}"
-                        }
-                        span { class: "mt-1 text-gray-500 text-sm",
-                            "{date}"
-                        }
-                    }
-                    div { class: "md:flex-grow",
-                        h2 { class: "text-2xl font-medium text-gray-900 title-font mb-2",
-                            "{title}"
-                        }
-                        p { class: "leading-relaxed",
-                            "{description}"
-                            // "Glossier echo park pug, church-key sartorial biodiesel vexillologist pop-up snackwave ramps cornhole. Marfa 3 wolf moon party messenger bag selfies, poke vaporware kombucha lumbersexual pork belly polaroid hoodie portland craft beer."
-                        }
-                        a { class: "text-indigo-500 inline-flex items-center mt-4",
-                            href: "#",
-                            onclick: move |_| cur_post.set(Some(id))
-                            // href: "{link}",
-                            "Read more"
-                            icons::ArrowRight {}
-                        }
-                    }
-                }
-            })}
-        ))
-    };
-
-    cx.render(rsx! {
+pub static BlogList: Component = |cx| {
+    cx.render(rsx!(
         section { class: "text-gray-600 body-font overflow-hidden",
             div { class: "container px-48 pt-12 pb-12 mx-auto",
                 div { class: "-my-8 divide-y-2 divide-gray-100",
-                    {inner}
+                    // Header
+                    blog_header()
+
+                    // Individual Post starts here
+                    {POSTS.iter().enumerate().map(|(id, BlogPostDisplay { category, date, title, description, link, content })| rsx!{
+                        div { class: "py-8 flex flex-wrap md:flex-nowrap",
+                            div { class: "md:w-64 md:mb-0 mb-6 flex-shrink-0 flex flex-col",
+                                span { class: "font-semibold title-font text-gray-700", "{category}" }
+                                span { class: "mt-1 text-gray-500 text-sm", "{date}" }
+                            }
+                            div { class: "md:flex-grow",
+                                h2 { class: "text-2xl font-medium text-gray-900 title-font mb-2", "{title}" }
+                                p { class: "leading-relaxed", "{description}" }
+                                Link {
+                                    class: "text-indigo-500 inline-flex items-center mt-4",
+                                    to: AppRoute::BlogPost { id: id }
+                                    "Read more"
+                                    icons::ArrowRight {}
+                                }
+                            }
+                        }
+                    })}
+                }
+            }
+        }
+    ))
+};
+
+#[inline_props]
+pub fn single_blog_post(cx: Scope, id: usize) -> Element {
+    let BlogPostDisplay { content, .. } = &POSTS[*id];
+
+    cx.render(rsx! {
+
+        section { class: "text-gray-600 body-font overflow-hidden",
+            div { class: "container px-48 pt-12 pb-12 mx-auto",
+                div { class: "-my-8 divide-y-2 divide-gray-100",
+                    // Header
+                    blog_header()
+
+                    div { class: "flex w-full mb-20 flex-wrap list-none",
+                        style {
+                            ".markdown-body ul {{ list-style: disc; }}"
+                            ".markdown-body li {{ display: list-item; }}"
+                        }
+                        article { class: "markdown-body", dangerous_inner_html: format_args!("{}", content.as_str()), }
+                        script {"Prism.highlightAll()"}
+                    }
+                }
+            }
+        }
+    })
+}
+
+fn blog_header(cx: Scope) -> Element {
+    rsx!(cx,
+        section { class: "py-20",
+            div { class: "container px-4 mx-auto",
+
+                Link { to: AppRoute::Blog
+                    h2 { class: "mb-8 md:mb-16 text-5xl lg:text-6xl font-semibold font-heading",
+                        "Dioxus Official Blog"
+                    }
+                }
+
+                div { class: "flex flex-wrap items-center",
+                    div { class: "inline-block max-w-xl mb-6 md:mb-0",
+                        p { class: "text-xl text-gray-500",
+                            "Updates, changelogs, and general musings of the Dioxus community."
+                        }
+                    }
+                    a { class: "inline-block ml-auto w-full md:w-auto px-12 py-4 text-center text-sm text-white font-medium leading-normal bg-red-400 hover:bg-red-300 rounded",
+                        href: "#",
+                        "Save to RSS (WIP)"
+                    }
+                }
+            }
+        }
+    )
+}
+
+pub static RecentBlogPosts: Component<()> = |cx| {
+    cx.render(rsx! {
+        section { class: "text-gray-600 body-font overflow-hidden",
+            div { class: "container px-6 lg:px-40 py-12 mx-auto",
+                div { class: "-my-8 divide-y-2 divide-gray-100",
+                    {POSTS.iter().enumerate().map(|(id, post)| rsx!{ blog_list_item(post: post, id: id) })}
                 }
             }
         }
     })
 };
+
+#[inline_props]
+fn blog_list_item(cx: Scope, post: &'static BlogPostDisplay, id: usize) -> Element {
+    let BlogPostDisplay {
+        category,
+        date,
+        title,
+        description,
+        ..
+    } = post;
+
+    cx.render(rsx!(
+        div { class: "py-8 flex flex-wrap md:flex-nowrap",
+            div { class: "md:w-64 md:mb-0 mb-6 flex-shrink-0 flex flex-col",
+                span { class: "font-semibold title-font text-gray-700 dark:text-white", "{category}" }
+                span { class: "mt-1 text-gray-500 text-sm", "{date}" }
+            }
+            div { class: "md:flex-grow",
+                h2 { class: "text-2xl font-medium text-gray-900 title-font mb-2 dark:text-white", "{title}" }
+                p { class: "leading-relaxed dark:text-white text-base dark:opacity-75", "{description}" }
+                Link {
+                    class: "text-indigo-500 inline-flex items-center mt-4",
+                    to: AppRoute::BlogPost { id: *id }
+                    "Read more"
+                    icons::ArrowRight {}
+                }
+            }
+        }
+    ))
+}

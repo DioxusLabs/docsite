@@ -119,7 +119,7 @@ fn home(cx: Scope) -> Element {
                 div { class: "flex flex-col flex-shrink-0 ml-auto mr-2",
                     div { class: "pt-4",
                         pre {
-                            code { class: "language-rust line-numbers", {[include_str!("../snippets/homepage.rs")]} }
+                            code { class: "language-rust line-numbers", [include_str!("../snippets/homepage.rs")] }
                         }
                     }
                 }
@@ -223,7 +223,7 @@ fn nav_header(cx: Scope) -> Element {
                             }
                             li {
                                 a { class: "hover:text-sky-500 dark:hover:text-sky-400",
-                                    href: "https://github.com/DioxusLabs/dioxus/tree/master/examples/core_reference",
+                                    href: "https://dioxuslabs.com/reference/",
                                     "Reference"
                                 }
                             }

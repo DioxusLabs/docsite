@@ -6,6 +6,8 @@ use dioxus::{
 };
 use serde::{Deserialize, Serialize};
 
+use gloo_history::{BrowserHistory, History};
+
 pub mod icons;
 pub mod sitemap;
 pub mod components {
@@ -31,51 +33,44 @@ enum AppRoute {
 }
 impl Default for AppRoute {
     fn default() -> Self {
-        AppRoute::Home
+        // parse the url in the browser
+        // this is the dumbest router ever
+        if cfg!(target_arch = "wasm32") {
+            let history = BrowserHistory::new();
+
+            let route = history.location();
+
+            match route.path() {
+                "/" => AppRoute::Home,
+                "/blog" | "/blog/" => AppRoute::Blog,
+                "/blog/0" | "/blog/introducing-dioxus" | "/blog/introducing-dioxus/" => {
+                    AppRoute::BlogPost { id: 0 }
+                }
+                path => AppRoute::Home,
+            }
+        } else {
+            AppRoute::Home
+        }
     }
 }
 
-#[wasm_bindgen::prelude::wasm_bindgen(start)]
-pub fn start() {
-    dioxus::web::launch(App)
-}
-
-pub static App: Component<()> = |cx| {
+pub fn app(cx: Scope) -> Element {
     let route: &AppRoute = use_router(&cx, |c| {});
 
     cx.render(rsx! {
         style { [include_str!("../tailwind.css")] }
         script { [include_str!("./darktheme.js")] }
-        match cfg!(debug_assertions) {
-            true => Some(rsx!(link { href: "https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css", rel: "stylesheet" })),
-            false => None,
-        }
-        link { href: "https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.0.0/github-markdown-light.min.css", rel: "stylesheet" }
         style { [include_str!("./components/prism/prism.css")] }
-        style { {[r#"
-            .markdown-body {
-                box-sizing: border-box;
-                min-width: 200px;
-                max-width: 980px;
-                margin: 0 auto;
-                padding: 45px;
-                list_style: disc;
-            }
-            @media (max-width: 767px) {
-                .markdown-body {
-                    padding: 15px;
-                }
-            }
-        "#]} }
         nav_header()
         match route {
             AppRoute::Home => rsx!(home()),
             AppRoute::Blog => rsx!(components::blog::BlogList {}),
             AppRoute::BlogPost{ id } => rsx!(components::blog::single_blog_post( id: *id )),
         }
-        script { [include_str!("./components/prism/prism.js")]} 
+        script { [include_str!("./components/prism/prism.js")]}
     })
-};
+}
+
 fn home(cx: Scope) -> Element {
     cx.render(rsx!(
         div { class: "dark:bg-gray-800",
@@ -260,10 +255,10 @@ pub static InteractiveHeader: Component<()> = |cx| {
     let mut count = use_state(&cx, || 0);
 
     cx.render(rsx!{
-        div { 
+        div {
             class: "flex flex-col items-center px-10 rounded mt-6 mb-2 pt-4 mr-auto hidden lg:block lg:ml-2" ,
             background_color: "hsl(220, 13%, 18%)",
-            
+
             div { class: "pb-3 text-white",
                 h1 { "High-Five counter: {count}" }
             }
@@ -275,7 +270,7 @@ pub static InteractiveHeader: Component<()> = |cx| {
                 img { class: "h-12 mx-4 my-4", src: "https://rustacean.net/assets/rustacean-flat-gesture.png" }
                 button {
                     class: "inline-flex items-center text-white bg-red-500 border-0 py-1 px-4 focus:outline-none hover:bg-gray-600",
-                    onclick: move |_| count -= 1, 
+                    onclick: move |_| count -= 1,
                     "Down low!"
                 }
             }

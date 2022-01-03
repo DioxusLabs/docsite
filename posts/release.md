@@ -2,7 +2,7 @@
 
 > Jan 3, 2022
 
-> [@jkelleyrtp](https://github.com/jkelleyrtp), [@alexkirsz](https://github.com/alexkirsz)
+> [@jkelleyrtp](https://github.com/jkelleyrtp), thanks [@alexkirsz](https://github.com/alexkirsz)
 
 After many months of work, we're very excited to release the first version of Dioxus!
 
@@ -63,11 +63,11 @@ This very site is built with Dioxus, and the source code is available [here](git
 
 To get started with Dioxus, check out any of the "Getting Started" guides for your platform of choice, or check out the GitHub Repository for more details.
 
-- [Getting Started with Dioxus]()
-- [Getting Started with Web]()
-- [Getting Started with Desktop]()
-- [Getting Started with Mobile]()
-- [Getting Started with SSR]()
+- [Getting Started with Dioxus](https://dioxuslabs.com/guide)
+- [Getting Started with Web](https://dioxuslabs.com/reference/web)
+- [Getting Started with Desktop](https://dioxuslabs.com/reference/desktop)
+- [Getting Started with Mobile](https://dioxuslabs.com/reference/mobile)
+- [Getting Started with SSR](https://dioxuslabs.com/reference/ssr)
 
 ## Show me some examples of what can be built!
 
@@ -239,7 +239,7 @@ LazyNodes::new(|f| {
 
 The `rsx!` macro generates idiomatic Rust code that uses the factory API — no different than what you'd write by hand yourself.
 
-To make it easier to work with RSX, we've built a small [VSCode extension](https://github.com/DioxusLabs/extension) with useful utilities. This extension provides a command that converts a selected block of HTML into RSX so you can easily reuse existing web templates.
+To make it easier to work with RSX, we've built a small [VSCode extension](https://github.com/DioxusLabs/studio) with useful utilities. This extension provides a command that converts a selected block of HTML into RSX so you can easily reuse existing web templates. 
 
 ## Dioxus prioritizes developer experience
 

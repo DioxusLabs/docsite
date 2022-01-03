@@ -4,13 +4,13 @@
 use std::io::Write;
 
 use dioxus::prelude::*;
-use dioxus_docs_site::App;
+use dioxus_docs_site::app;
 
 fn main() {
-    let mut dom = VirtualDom::new_with_props(App, ());
+    let mut dom = VirtualDom::new_with_props(app, ());
     dom.rebuild();
 
-    let out = dioxus::ssr::render_vdom(&dom, |c| c.pre_render(true));
+    let out = dioxus::ssr::render_vdom_cfg(&dom, |c| c.pre_render(true));
 
     let mut file = std::fs::File::create("prerender.html").unwrap();
     file.write_all(out.as_bytes()).unwrap();

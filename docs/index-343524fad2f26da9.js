@@ -316,7 +316,7 @@ async function load(module, imports) {
 
 async function init(input) {
     if (typeof input === 'undefined') {
-        input = new URL('index-343524fad2f26da9_bg.wasm', import.meta.url);
+        input = new URL('index-927e51f646229e52_bg.wasm', import.meta.url);
     }
     const imports = {};
     imports.wbg = {};
@@ -1061,24 +1061,24 @@ imports.wbg.__wbindgen_memory = function() {
     var ret = wasm.memory;
     return addHeapObject(ret);
 };
-imports.wbg.__wbindgen_closure_wrapper634 = function(arg0, arg1, arg2) {
-    var ret = makeMutClosure(arg0, arg1, 255, __wbg_adapter_32);
+imports.wbg.__wbindgen_closure_wrapper633 = function(arg0, arg1, arg2) {
+    var ret = makeMutClosure(arg0, arg1, 254, __wbg_adapter_32);
     return addHeapObject(ret);
 };
-imports.wbg.__wbindgen_closure_wrapper793 = function(arg0, arg1, arg2) {
-    var ret = makeMutClosure(arg0, arg1, 331, __wbg_adapter_35);
+imports.wbg.__wbindgen_closure_wrapper792 = function(arg0, arg1, arg2) {
+    var ret = makeMutClosure(arg0, arg1, 330, __wbg_adapter_35);
     return addHeapObject(ret);
 };
-imports.wbg.__wbindgen_closure_wrapper795 = function(arg0, arg1, arg2) {
-    var ret = makeClosure(arg0, arg1, 331, __wbg_adapter_38);
+imports.wbg.__wbindgen_closure_wrapper794 = function(arg0, arg1, arg2) {
+    var ret = makeClosure(arg0, arg1, 330, __wbg_adapter_38);
     return addHeapObject(ret);
 };
-imports.wbg.__wbindgen_closure_wrapper867 = function(arg0, arg1, arg2) {
-    var ret = makeMutClosure(arg0, arg1, 388, __wbg_adapter_41);
+imports.wbg.__wbindgen_closure_wrapper866 = function(arg0, arg1, arg2) {
+    var ret = makeMutClosure(arg0, arg1, 387, __wbg_adapter_41);
     return addHeapObject(ret);
 };
-imports.wbg.__wbindgen_closure_wrapper905 = function(arg0, arg1, arg2) {
-    var ret = makeMutClosure(arg0, arg1, 406, __wbg_adapter_44);
+imports.wbg.__wbindgen_closure_wrapper904 = function(arg0, arg1, arg2) {
+    var ret = makeMutClosure(arg0, arg1, 405, __wbg_adapter_44);
     return addHeapObject(ret);
 };
 

@@ -29,20 +29,20 @@ impl PartialEq for &'static BlogPostDisplay {
 pub static POSTS: &[BlogPostDisplay] = &[
         BlogPostDisplay {
             category: "Release Notes",
-            date: "21 Oct 2021",
+            date: "3 Jan 2021",
             title: "Announcing Dioxus 0.1",
             description: "After months of work, we're very excited to release the first version of Dioxus! Dioxus is a new library for building interactive user interfaces with Rust. It is built around a VirtualDOM, making it portable for the web, desktop, server, mobile, and more.",
             link: "/blog/announcing_dioxus_01",
             content: &POST1,
         },
-        BlogPostDisplay {
-            category: "Technical Notes",
-            date: "28 Oct 2021",
-            title: "WASM, Allocators, and Performance Deep Dive",
-            description: "WebAssembly is a promising new web technology that brings a wide variety of programming languages to the web. However, WASM performance is a poorly understood topic - especially when considering memory allocators and interaction with JS APIs.",
-            link: "/blog/wasm_allocators_performance",
-            content: &POST2,
-        },
+        // BlogPostDisplay {
+        //     category: "Technical Notes",
+        //     date: "28 Oct 2021",
+        //     title: "WASM, Allocators, and Performance Deep Dive",
+        //     description: "WebAssembly is a promising new web technology that brings a wide variety of programming languages to the web. However, WASM performance is a poorly understood topic - especially when considering memory allocators and interaction with JS APIs.",
+        //     link: "/blog/wasm_allocators_performance",
+        //     content: &POST2,
+        // },
     ];
 
 pub static BlogList: Component = |cx| {

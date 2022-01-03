@@ -143,6 +143,33 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="desktop"><a class="header" href="#desktop">Desktop</a></h1>
+<p>One of Dioxus' killer features is the ability to quickly build a native desktop app that looks and feels the same across platforms. Apps built with Dioxus are typically &lt;5mb in size and use existing system resources, so they won't hog extreme amounts of RAM or memory.</p>
+<p>Dioxus Desktop is built off Tauri. Right now there aren't any Dioxus abstractions over keyboard shortcuts, menubar, handling, etc, so you'll want to leverage Tauri - mostly <a href="http://github.com/tauri-apps/wry/">Wry</a> and <a href="http://github.com/tauri-apps/tao">Tao</a>) directly. The next major release of Dioxus-Desktop will include components and hooks for notifications, global shortcuts, menubar, etc.</p>
+<h2 id="getting-set-up"><a class="header" href="#getting-set-up">Getting Set up</a></h2>
+<p>Getting Set up with Dioxus-Desktop is quite easy. Make sure you have Rust and Cargo installed, and then create a new project:</p>
+<pre><code class="language-shell">$ cargo new --bin demo
+$ cd app
+</code></pre>
+<p>Add Dioxus with the <code>desktop</code> feature:</p>
+<pre><code class="language-shell">$ cargo add dioxus --features desktop
+</code></pre>
+<p>Edit your <code>main.rs</code>:</p>
+<pre><pre class="playground"><code class="language-rust">// main.rs
+use dioxus::prelude::*;
+
+fn main() {
+    dioxus::desktop::launch(app);
+}
+
+fn app(cx: Scope) -&gt; Element {
+    cx.render(rsx!{
+        div {
+            &quot;hello world!&quot;
+        }
+    })
+}
+</code></pre></pre>
+<p>To configure the webview, menubar, and other important desktop-specific features, checkout out some of the launch configuration in the <a href="https://docs.rs/dioxus-desktop/">API reference</a>.</p>
 <h2 id="future-steps"><a class="header" href="#future-steps">Future Steps</a></h2>
 <p>Make sure to read the <a href="https://dioxuslabs.com/guide">Dioxus Guide</a> if you already haven't!</p>
 

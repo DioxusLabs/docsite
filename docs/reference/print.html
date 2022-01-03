@@ -241,15 +241,219 @@ fn app(cx: Scope) -&gt; Element {
 <h2 id="future-steps"><a class="header" href="#future-steps">Future Steps</a></h2>
 <p>Make sure to read the <a href="https://dioxuslabs.com/guide">Dioxus Guide</a> if you already haven't!</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="desktop"><a class="header" href="#desktop">Desktop</a></h1>
+<p>One of Dioxus' killer features is the ability to quickly build a native desktop app that looks and feels the same across platforms. Apps built with Dioxus are typically &lt;5mb in size and use existing system resources, so they won't hog extreme amounts of RAM or memory.</p>
+<p>Dioxus Desktop is built off Tauri. Right now there aren't any Dioxus abstractions over keyboard shortcuts, menubar, handling, etc, so you'll want to leverage Tauri - mostly <a href="http://github.com/tauri-apps/wry/">Wry</a> and <a href="http://github.com/tauri-apps/tao">Tao</a>) directly. The next major release of Dioxus-Desktop will include components and hooks for notifications, global shortcuts, menubar, etc.</p>
+<h2 id="getting-set-up"><a class="header" href="#getting-set-up">Getting Set up</a></h2>
+<p>Getting Set up with Dioxus-Desktop is quite easy. Make sure you have Rust and Cargo installed, and then create a new project:</p>
+<pre><code class="language-shell">$ cargo new --bin demo
+$ cd app
+</code></pre>
+<p>Add Dioxus with the <code>desktop</code> feature:</p>
+<pre><code class="language-shell">$ cargo add dioxus --features desktop
+</code></pre>
+<p>Edit your <code>main.rs</code>:</p>
+<pre><pre class="playground"><code class="language-rust">// main.rs
+use dioxus::prelude::*;
+
+fn main() {
+    dioxus::desktop::launch(app);
+}
+
+fn app(cx: Scope) -&gt; Element {
+    cx.render(rsx!{
+        div {
+            &quot;hello world!&quot;
+        }
+    })
+}
+</code></pre></pre>
+<p>To configure the webview, menubar, and other important desktop-specific features, checkout out some of the launch configuration in the <a href="https://docs.rs/dioxus-desktop/">API reference</a>.</p>
 <h2 id="future-steps-1"><a class="header" href="#future-steps-1">Future Steps</a></h2>
 <p>Make sure to read the <a href="https://dioxuslabs.com/guide">Dioxus Guide</a> if you already haven't!</p>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="mobile"><a class="header" href="#mobile">Mobile</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="getting-started-mobile"><a class="header" href="#getting-started-mobile">Getting started: mobile</a></h1>
+<p>Dioxus is unique in that it actually supports mobile. However, support is very young and you might need to dip down into some of the primitives until better supported is ready.</p>
+<p>Currently, only iOS is supported through us, however you <em>can</em> add android support by following the same instructions below, but using the <code>android</code> guide in <code>cargo-mobile</code>.</p>
+<p>Also, Dioxus Desktop and Dioxus Mobile share the same codebase, and dioxus-mobile currently just re-exports dioxus-desktop.</p>
+<h2 id="getting-set-up-1"><a class="header" href="#getting-set-up-1">Getting Set up</a></h2>
+<p>Getting set up with mobile can but quite challenging. The tooling here isn't great (yet) and might take some hacking around to get things working. macOS M1 is broadly unexplored and might not work for you.</p>
+<p>We're going to be using <code>cargo-mobile</code> to build for mobile. First, install it:</p>
+<pre><code class="language-shell">$ cargo install --git https://github.com/BrainiumLLC/cargo-mobile
+</code></pre>
+<p>And then initialize your app for the right platform. Use the <code>winit</code> template for now. Right now, there's no &quot;Dioxus&quot; template in cargo-mobile.</p>
+<pre><code class="language-shell">$ cargo moble init 
+</code></pre>
+<p>We're going to completely clear out the <code>dependencies</code> it generates for us, swapping out <code>winit</code> with <code>dioxus-mobile</code>.</p>
+<pre><code class="language-toml">
+[package]
+name = &quot;dioxus-ios-demo&quot;
+version = &quot;0.1.0&quot;
+authors = [&quot;Jonathan Kelley &lt;jkelleyrtp@gmail.com&gt;&quot;]
+edition = &quot;2018&quot;
+
+
+# leave the `lib` declaration
+[lib]
+crate-type = [&quot;staticlib&quot;, &quot;cdylib&quot;, &quot;rlib&quot;]
+
+
+# leave the binary it generates for us
+[[bin]]
+name = &quot;dioxus-ios-demo-desktop&quot;
+path = &quot;gen/bin/desktop.rs&quot;
+
+# clear all the dependencies
+[dependencies]
+mobile-entry-point = &quot;0.1.0&quot;
+dioxus = { version = &quot;*&quot;, features = [&quot;mobile&quot;] }
+simple_logger = &quot;*&quot;
+</code></pre>
+<p>Edit your <code>lib.rs</code>:</p>
+<pre><pre class="playground"><code class="language-rust">// main.rs
+use dioxus::prelude::*;
+
+fn main() {
+    dioxus::mobile::launch(app);
+}
+
+fn app(cx: Scope) -&gt; Element {
+    cx.render(rsx!{
+        div {
+            &quot;hello world!&quot;
+        }
+    })
+}
+</code></pre></pre>
+<p>To configure the webview, menubar, and other important desktop-specific features, checkout out some of the launch configuration in the <a href="https://docs.rs/dioxus-mobile/">API reference</a>.</p>
 <h2 id="future-steps-2"><a class="header" href="#future-steps-2">Future Steps</a></h2>
 <p>Make sure to read the <a href="https://dioxuslabs.com/guide">Dioxus Guide</a> if you already haven't!</p>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="ssr"><a class="header" href="#ssr">SSR</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="getting-stated-server-side-rendering"><a class="header" href="#getting-stated-server-side-rendering">Getting Stated: Server-Side-Rendering</a></h1>
+<p>The Dioxus VirtualDom can be rendered to a string by traversing the Element Tree. This is implemented in the <code>ssr</code> crate where your Dioxus app can be directly rendered to HTML to be served by a web server.</p>
+<h2 id="setup"><a class="header" href="#setup">Setup</a></h2>
+<p>If you just want to render <code>rsx!</code> or a VirtualDom to HTML, check out the API docs. It's pretty simple:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// We can render VirtualDoms
+let mut vdom = VirtualDom::new(app);
+let _ = vdom.rebuild();
+println!(&quot;{}&quot;, dioxus::ssr::render_vdom(&amp;vdom));
+
+// Or we can render rsx! calls directly
+println!( &quot;{}&quot;, dioxus::ssr::render_lazy(rsx! { h1 { &quot;Hello, world!&quot; } } );
+<span class="boring">}
+</span></code></pre></pre>
+<p>However, for this guide, we're going to show how to use Dioxus SSR with <code>Axum</code>. </p>
+<p>Make sure you have Rust and Cargo installed, and then create a new project:</p>
+<pre><code class="language-shell">$ cargo new --bin demo
+$ cd app
+</code></pre>
+<p>Add Dioxus with the <code>desktop</code> feature:</p>
+<pre><code class="language-shell">$ cargo add dioxus --features ssr
+</code></pre>
+<p>Next, add all the Axum dependencies. This will be different if you're using a different Web Framework</p>
+<pre><code>$ cargo add dioxus tokio --features full
+$ cargo add axum
+</code></pre>
+<p>Your dependencies should look roughly like this:</p>
+<pre><code class="language-toml">[dependencies]
+axum = &quot;0.4.3&quot;
+dioxus = { version = &quot;*&quot;, features = [&quot;ssr&quot;] }
+tokio = { version = &quot;1.15.0&quot;, features = [&quot;full&quot;] }
+</code></pre>
+<p>Now, setup your Axum app to respond on an endpoint.</p>
+<pre><pre class="playground"><code class="language-rust">use axum::{response::Html, routing::get, Router};
+use dioxus::prelude::*;
+
+#[tokio::main]
+async fn main() {
+    let addr = std::net::SocketAddr::from(([127, 0, 0, 1], 3000));
+    println!(&quot;listening on http://{}&quot;, addr);
+
+    axum::Server::bind(&amp;addr)
+        .serve(Router::new().route(&quot;/&quot;, get(app_endpoint)))
+        .await
+        .unwrap();
+}
+</code></pre></pre>
+<p>And then add our endpoint. We can either render <code>rsx!</code> directly:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>async fn app_endpoint() -&gt; Html&lt;String&gt; {
+    Html(dioxus::ssr::render_lazy(rsx! {
+            h1 { &quot;hello world!&quot; }
+    }))
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>Or we can render VirtualDoms.</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>async fn app_endpoint() -&gt; Html&lt;String&gt; {
+    fn app(cx: Scope) -&gt; Element {
+        cx.render(rsx!(h1 { &quot;hello world&quot; }))
+    }
+    let mut app = VirtualDom::new(app);
+    let _ = app.rebuild();
+    
+    Html(dioxus::ssr::render_vdom(&amp;app))
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>And that's it!</p>
+<blockquote>
+<p>You might notice that you cannot hold the VirtualDom across an await point. Dioxus is currently not ThreadSafe, so it <em>must</em> remain on the thread it started. We are working on loosening this requirement.</p>
+</blockquote>
 <h2 id="future-steps-3"><a class="header" href="#future-steps-3">Future Steps</a></h2>
 <p>Make sure to read the <a href="https://dioxuslabs.com/guide">Dioxus Guide</a> if you already haven't!</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="tui"><a class="header" href="#tui">TUI</a></h1>
+<p>TUI support is currently quite experimental. Even the project name will change. But, if you're willing to venture into the realm of the unknown, this guide will get you started.</p>
+<p><a href="https://github.com/DioxusLabs/rink/raw/master/examples/example.png">TUI Support</a></p>
+<h2 id="getting-set-up-2"><a class="header" href="#getting-set-up-2">Getting Set up</a></h2>
+<p>To tinker with TUI support, start by making a new package and adding our TUI package from git.</p>
+<pre><code class="language-shell">$ cargo new --bin demo
+$ cd demo
+$ cargo add dioxus
+$ cargo add rink --git https://github.com/DioxusLabs/rink.git
+</code></pre>
+<p>Then, edit your <code>main.rs</code> with the basic template. </p>
+<pre><pre class="playground"><code class="language-rust">//  main
+use dioxus::prelude::*;
+
+fn main() {
+    let mut dom = VirtualDom::new(app);
+    dom.rebuild();
+
+    rink::render_vdom(&amp;mut dom).unwrap();
+}
+
+fn app(cx: Scope) -&gt; Element {
+    cx.render(rsx! {
+        div {
+            width: &quot;100%&quot;,
+            height: &quot;10px&quot;,
+            background_color: &quot;red&quot;,
+            justify_content: &quot;center&quot;,
+            align_items: &quot;center&quot;,
+
+            &quot;Hello world!&quot;
+        }
+    })
+}
+</code></pre></pre>
+<p>To run our app:</p>
+<pre><code class="language-shell">$ cargo run
+</code></pre>
+<p>Press &quot;q&quot; to close the app (yes, this is hardcoded, we are working on handlers to expose this in your code.)</p>
+<h2 id="notes"><a class="header" href="#notes">Notes</a></h2>
+<ul>
+<li>Our TUI package uses flexbox for layout</li>
+<li>1px is one character lineheight. Your regular CSS px does not translate.</li>
+<li>If your app panics, your terminal is wrecked. This will be fixed eventually.</li>
+</ul>
+<h2 id="future-steps-4"><a class="header" href="#future-steps-4">Future Steps</a></h2>
+<p>Make sure to read the <a href="https://dioxuslabs.com/guide">Dioxus Guide</a> if you already haven't!</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="advanced-guides"><a class="header" href="#advanced-guides">Advanced Guides</a></h1>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="rsx-in-depth"><a class="header" href="#rsx-in-depth">RSX in Depth</a></h1>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="components"><a class="header" href="#components">Components</a></h1>

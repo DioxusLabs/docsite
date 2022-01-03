@@ -142,7 +142,60 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="mobile"><a class="header" href="#mobile">Mobile</a></h1>
+                        <h1 id="getting-started-mobile"><a class="header" href="#getting-started-mobile">Getting started: mobile</a></h1>
+<p>Dioxus is unique in that it actually supports mobile. However, support is very young and you might need to dip down into some of the primitives until better supported is ready.</p>
+<p>Currently, only iOS is supported through us, however you <em>can</em> add android support by following the same instructions below, but using the <code>android</code> guide in <code>cargo-mobile</code>.</p>
+<p>Also, Dioxus Desktop and Dioxus Mobile share the same codebase, and dioxus-mobile currently just re-exports dioxus-desktop.</p>
+<h2 id="getting-set-up"><a class="header" href="#getting-set-up">Getting Set up</a></h2>
+<p>Getting set up with mobile can but quite challenging. The tooling here isn't great (yet) and might take some hacking around to get things working. macOS M1 is broadly unexplored and might not work for you.</p>
+<p>We're going to be using <code>cargo-mobile</code> to build for mobile. First, install it:</p>
+<pre><code class="language-shell">$ cargo install --git https://github.com/BrainiumLLC/cargo-mobile
+</code></pre>
+<p>And then initialize your app for the right platform. Use the <code>winit</code> template for now. Right now, there's no &quot;Dioxus&quot; template in cargo-mobile.</p>
+<pre><code class="language-shell">$ cargo moble init 
+</code></pre>
+<p>We're going to completely clear out the <code>dependencies</code> it generates for us, swapping out <code>winit</code> with <code>dioxus-mobile</code>.</p>
+<pre><code class="language-toml">
+[package]
+name = &quot;dioxus-ios-demo&quot;
+version = &quot;0.1.0&quot;
+authors = [&quot;Jonathan Kelley &lt;jkelleyrtp@gmail.com&gt;&quot;]
+edition = &quot;2018&quot;
+
+
+# leave the `lib` declaration
+[lib]
+crate-type = [&quot;staticlib&quot;, &quot;cdylib&quot;, &quot;rlib&quot;]
+
+
+# leave the binary it generates for us
+[[bin]]
+name = &quot;dioxus-ios-demo-desktop&quot;
+path = &quot;gen/bin/desktop.rs&quot;
+
+# clear all the dependencies
+[dependencies]
+mobile-entry-point = &quot;0.1.0&quot;
+dioxus = { version = &quot;*&quot;, features = [&quot;mobile&quot;] }
+simple_logger = &quot;*&quot;
+</code></pre>
+<p>Edit your <code>lib.rs</code>:</p>
+<pre><pre class="playground"><code class="language-rust">// main.rs
+use dioxus::prelude::*;
+
+fn main() {
+    dioxus::mobile::launch(app);
+}
+
+fn app(cx: Scope) -&gt; Element {
+    cx.render(rsx!{
+        div {
+            &quot;hello world!&quot;
+        }
+    })
+}
+</code></pre></pre>
+<p>To configure the webview, menubar, and other important desktop-specific features, checkout out some of the launch configuration in the <a href="https://docs.rs/dioxus-mobile/">API reference</a>.</p>
 <h2 id="future-steps"><a class="header" href="#future-steps">Future Steps</a></h2>
 <p>Make sure to read the <a href="https://dioxuslabs.com/guide">Dioxus Guide</a> if you already haven't!</p>
 

@@ -142,7 +142,85 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="ssr"><a class="header" href="#ssr">SSR</a></h1>
+                        <h1 id="getting-stated-server-side-rendering"><a class="header" href="#getting-stated-server-side-rendering">Getting Stated: Server-Side-Rendering</a></h1>
+<p>The Dioxus VirtualDom can be rendered to a string by traversing the Element Tree. This is implemented in the <code>ssr</code> crate where your Dioxus app can be directly rendered to HTML to be served by a web server.</p>
+<h2 id="setup"><a class="header" href="#setup">Setup</a></h2>
+<p>If you just want to render <code>rsx!</code> or a VirtualDom to HTML, check out the API docs. It's pretty simple:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// We can render VirtualDoms
+let mut vdom = VirtualDom::new(app);
+let _ = vdom.rebuild();
+println!(&quot;{}&quot;, dioxus::ssr::render_vdom(&amp;vdom));
+
+// Or we can render rsx! calls directly
+println!( &quot;{}&quot;, dioxus::ssr::render_lazy(rsx! { h1 { &quot;Hello, world!&quot; } } );
+<span class="boring">}
+</span></code></pre></pre>
+<p>However, for this guide, we're going to show how to use Dioxus SSR with <code>Axum</code>. </p>
+<p>Make sure you have Rust and Cargo installed, and then create a new project:</p>
+<pre><code class="language-shell">$ cargo new --bin demo
+$ cd app
+</code></pre>
+<p>Add Dioxus with the <code>desktop</code> feature:</p>
+<pre><code class="language-shell">$ cargo add dioxus --features ssr
+</code></pre>
+<p>Next, add all the Axum dependencies. This will be different if you're using a different Web Framework</p>
+<pre><code>$ cargo add dioxus tokio --features full
+$ cargo add axum
+</code></pre>
+<p>Your dependencies should look roughly like this:</p>
+<pre><code class="language-toml">[dependencies]
+axum = &quot;0.4.3&quot;
+dioxus = { version = &quot;*&quot;, features = [&quot;ssr&quot;] }
+tokio = { version = &quot;1.15.0&quot;, features = [&quot;full&quot;] }
+</code></pre>
+<p>Now, setup your Axum app to respond on an endpoint.</p>
+<pre><pre class="playground"><code class="language-rust">use axum::{response::Html, routing::get, Router};
+use dioxus::prelude::*;
+
+#[tokio::main]
+async fn main() {
+    let addr = std::net::SocketAddr::from(([127, 0, 0, 1], 3000));
+    println!(&quot;listening on http://{}&quot;, addr);
+
+    axum::Server::bind(&amp;addr)
+        .serve(Router::new().route(&quot;/&quot;, get(app_endpoint)))
+        .await
+        .unwrap();
+}
+</code></pre></pre>
+<p>And then add our endpoint. We can either render <code>rsx!</code> directly:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>async fn app_endpoint() -&gt; Html&lt;String&gt; {
+    Html(dioxus::ssr::render_lazy(rsx! {
+            h1 { &quot;hello world!&quot; }
+    }))
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>Or we can render VirtualDoms.</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>async fn app_endpoint() -&gt; Html&lt;String&gt; {
+    fn app(cx: Scope) -&gt; Element {
+        cx.render(rsx!(h1 { &quot;hello world&quot; }))
+    }
+    let mut app = VirtualDom::new(app);
+    let _ = app.rebuild();
+    
+    Html(dioxus::ssr::render_vdom(&amp;app))
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>And that's it!</p>
+<blockquote>
+<p>You might notice that you cannot hold the VirtualDom across an await point. Dioxus is currently not ThreadSafe, so it <em>must</em> remain on the thread it started. We are working on loosening this requirement.</p>
+</blockquote>
 <h2 id="future-steps"><a class="header" href="#future-steps">Future Steps</a></h2>
 <p>Make sure to read the <a href="https://dioxuslabs.com/guide">Dioxus Guide</a> if you already haven't!</p>
 

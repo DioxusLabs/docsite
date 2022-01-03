@@ -43,21 +43,15 @@ pub fn start() {
 pub static App: Component<()> = |cx| {
     let route: &AppRoute = use_router(&cx, |c| {});
 
-    // in deubg mode we want to bring in the dev mode of tailwind, but generate the propduction mode for release
-    let remote_css = match cfg!(debug_assertions) {
-        true => Some(rsx!(link {
-            href: "https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css",
-            rel: "stylesheet"
-        })),
-        false => None,
-    };
-
     cx.render(rsx! {
-        style { {[include_str!("../tailwind.css")]} }
-        script { {[include_str!("./darktheme.js")]} }
-        {remote_css}
+        style { [include_str!("../tailwind.css")] }
+        script { [include_str!("./darktheme.js")] }
+        match cfg!(debug_assertions) {
+            true => Some(rsx!(link { href: "https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css", rel: "stylesheet" })),
+            false => None,
+        }
         link { href: "https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.0.0/github-markdown-light.min.css", rel: "stylesheet" }
-        style { {[include_str!("./components/prism/prism.css")]} }
+        style { [include_str!("./components/prism/prism.css")] }
         style { {[r#"
             .markdown-body {
                 box-sizing: border-box;
@@ -73,27 +67,23 @@ pub static App: Component<()> = |cx| {
                 }
             }
         "#]} }
-
         nav_header()
-        {match route {
+        match route {
             AppRoute::Home => rsx!(home()),
             AppRoute::Blog => rsx!(components::blog::BlogList {}),
             AppRoute::BlogPost{ id } => rsx!(components::blog::single_blog_post( id: *id )),
-        }}
-
-
-
-        script { {[include_str!("./components/prism/prism.js")]} }
+        }
+        script { [include_str!("./components/prism/prism.js")]} 
     })
 };
 fn home(cx: Scope) -> Element {
     cx.render(rsx!(
-        div { class: "dark:bg-gray-800"
+        div { class: "dark:bg-gray-800",
             div { class: "relative max-w-5xl mx-auto pt-20 sm:pt-24 lg:pt-32 text-gray-600",
                 h1 { class: "font-extrabold text-4xl sm:text-5xl lg:text-6xl tracking-tight text-center dark:text-white",
                     "Build reliable user interfaces that run "
                     pre {
-                        class: "text-transparent text-8xl bg-clip-text pb-3 bg-gradient-to-r from-red-400 via-purple-300 to-blue-500"
+                        class: "text-transparent text-8xl bg-clip-text pb-3 bg-gradient-to-r from-red-400 via-purple-300 to-blue-500",
                         "anywhere"
                     }
                 }
@@ -112,11 +102,11 @@ fn home(cx: Scope) -> Element {
                     button { class: "w-full sm:w-auto flex-none bg-gray-50 text-gray-400 hover:text-gray-900 font-mono leading-6 py-3 sm:px-6 border border-gray-200 rounded-xl flex items-center justify-center space-x-2 sm:space-x-4 focus:ring-2 focus:ring-offset-2 focus:ring-offset-white focus:ring-gray-300 focus:outline-none transition-colors duration-200 hidden md:flex",
                         // funny that we can just default to some javascript like this
                         // might want to do the same thing in rust so we can display a selected state
-                        "onclick": "navigator.clipboard.writeText(\"cargo add dioxus\")"
+                        "onclick": "navigator.clipboard.writeText(\"cargo add dioxus\")",
                         "type": "button",
                         span { class: "text-gray-900",
                             span { class: "hidden sm:inline text-gray-500", aria_hidden: "true", "$ " }
-                            span { class: "text-red-400" "cargo " }
+                            span { class: "text-red-400", "cargo " }
                             "add dioxus"
                         }
                         span { class: "sr-only", "(click to copy to clipboard)" }
@@ -127,7 +117,7 @@ fn home(cx: Scope) -> Element {
 
             div { class: "container flex flex-col md:flex-row md:px-24 md:py-12 mx-auto",
                 div { class: "flex flex-col flex-shrink-0 ml-auto mr-2",
-                    div { class: "pt-4"
+                    div { class: "pt-4",
                         pre {
                             code { class: "language-rust line-numbers", {[include_str!("../snippets/homepage.rs")]} }
                         }
@@ -270,19 +260,23 @@ pub static InteractiveHeader: Component<()> = |cx| {
     let mut count = use_state(&cx, || 0);
 
     cx.render(rsx!{
-        div { class: "flex flex-col items-center px-10 rounded mt-6 mb-2 pt-4 mr-auto hidden lg:block lg:ml-2" background_color: "hsl(220, 13%, 18%)"
-            div { class: "pb-3 text-white"
+        div { 
+            class: "flex flex-col items-center px-10 rounded mt-6 mb-2 pt-4 mr-auto hidden lg:block lg:ml-2" ,
+            background_color: "hsl(220, 13%, 18%)",
+            
+            div { class: "pb-3 text-white",
                 h1 { "High-Five counter: {count}" }
             }
-            div { class: "flex flex-col items-center"
+            div { class: "flex flex-col items-center",
                 button {
-                    class: "inline-flex items-center text-white bg-green-500 border-0 py-1 px-4 focus:outline-none hover:bg-gray-600"
+                    class: "inline-flex items-center text-white bg-green-500 border-0 py-1 px-4 focus:outline-none hover:bg-gray-600",
                     onclick: move |_| count += 1, "Up high!"
                 }
-                img { class: "h-12 mx-4 my-4" src: "https://rustacean.net/assets/rustacean-flat-gesture.png" }
+                img { class: "h-12 mx-4 my-4", src: "https://rustacean.net/assets/rustacean-flat-gesture.png" }
                 button {
-                    class: "inline-flex items-center text-white bg-red-500 border-0 py-1 px-4 focus:outline-none hover:bg-gray-600"
-                    onclick: move |_| count -= 1, "Down low!"
+                    class: "inline-flex items-center text-white bg-red-500 border-0 py-1 px-4 focus:outline-none hover:bg-gray-600",
+                    onclick: move |_| count -= 1, 
+                    "Down low!"
                 }
             }
         }

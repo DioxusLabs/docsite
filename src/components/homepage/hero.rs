@@ -13,7 +13,7 @@ pub fn Hero(cx: Scope) -> Element {
                     }
                     div { class: "container flex flex-wrap p-5 flex-col md:flex-row mx-0 px-0",
                         a {
-                            href: "book"
+                            href: "book",
                             class: "inline-flex items-center text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600",
                             "Read the book"
                             icons::ArrowRight {}
@@ -21,11 +21,11 @@ pub fn Hero(cx: Scope) -> Element {
                     }
                 }
                 div { class: "flex flex-col mx-auto w:1/2 flex-shrink-0",
-                    div { class: "pt-4"
+                    div { class: "pt-4",
                         pre {
-                            padding_bottom: "0px"
-                            margin_bottom: "0px"
-                            code { class: "language-rust", {[include_str!("../../../snippets/homepage.rs")]} }
+                            padding_bottom: "0px",
+                            margin_bottom: "0px",
+                            code { class: "language-rust", [include_str!("../../../snippets/homepage.rs")] }
                         }
                     }
                     InteractiveHeader {}
@@ -39,19 +39,21 @@ pub static InteractiveHeader: Component<()> = |cx| {
     let mut count = use_state(&cx, || 0);
 
     cx.render(rsx!{
-        div { class: "flex flex-col items-center py-3" background_color: "hsl(220, 13%, 18%)"
-            div { class: "pb-3"
+        div { class: "flex flex-col items-center py-3", background_color: "hsl(220, 13%, 18%)",
+            div { class: "pb-3",
                 h1 { "High-Five counter: {count}" }
             }
-            div { class: "flex flex-row items-center"
+            div { class: "flex flex-row items-center",
                 button {
-                    class: "inline-flex items-center text-white bg-green-500 border-0 py-1 px-4 focus:outline-none hover:bg-gray-600"
-                    onclick: move |_| count += 1, "Up high!"
+                    class: "inline-flex items-center text-white bg-green-500 border-0 py-1 px-4 focus:outline-none hover:bg-gray-600",
+                    onclick: move |_| count += 1, 
+                    "Up high!"
                 }
-                img { class: "h-12 mx-4" src: "https://i.imgur.com/aK3dWXs.png" }
+                img { class: "h-12 mx-4", src: "https://i.imgur.com/aK3dWXs.png" }
                 button {
-                    class: "inline-flex items-center text-white bg-red-500 border-0 py-1 px-4 focus:outline-none hover:bg-gray-600"
-                    onclick: move |_| count -= 1, "Down low!"
+                    class: "inline-flex items-center text-white bg-red-500 border-0 py-1 px-4 focus:outline-none hover:bg-gray-600",
+                    onclick: move |_| count -= 1, 
+                    "Down low!"
                 }
             }
         }

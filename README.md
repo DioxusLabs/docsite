@@ -5,6 +5,14 @@ This repository contains the source code for the https://dioxuslabs.com website.
 This website is written with Dioxus, pre-generated with `dioxus_ssr`, and then rehydrated with interactivity provided by `dioxus_web`.
 
 ## Development
+
+Using trunk:
+
+```
+trunk serve
+```
+
+
 The documentation can be edited using any text editor. Most commonly used editors support syntax highlighting for the `markdown` format. To view your changes you can install the [dioxus-cli] tool locally, assuming you already have a working `Rust` setup;
 ```console
 > cargo install dioxus-cli
@@ -14,6 +22,7 @@ With [dioxus] installed you can use it to build and serve the documentation on y
 ```console
 > dixous develop --example spa
 ```
+
 this will start a local server that will be available on [localhost](http://localhost:3000) and will automatically build and re-build the documentation when it changes.
 
 ## Contributing

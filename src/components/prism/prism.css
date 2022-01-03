@@ -3,6 +3,7 @@
  * Based on Atom's One Dark theme: https://github.com/atom/atom/tree/master/packages/one-dark-syntax
  */
 
+
 /**
  * One Dark colours (accurate as of commit 8ae45ca on 6 Sep 2018)
  * From colors.less
@@ -49,7 +50,9 @@ pre[class*="language-"] {
     hyphens: none;
 }
 
+
 /* Selection */
+
 code[class*="language-"]::-moz-selection,
 code[class*="language-"] *::-moz-selection,
 pre[class*="language-"] *::-moz-selection {
@@ -66,7 +69,9 @@ pre[class*="language-"] *::selection {
     text-shadow: none;
 }
 
+
 /* Code blocks */
+
 pre[class*="language-"] {
     padding: 1em;
     margin: 0.5em 0;
@@ -74,16 +79,19 @@ pre[class*="language-"] {
     border-radius: 0.3em;
 }
 
+
 /* Inline code */
+
 :not(pre)>code[class*="language-"] {
     padding: 0.2em 0.3em;
     border-radius: 0.3em;
     white-space: normal;
 }
 
-/* Print */
-@media print {
 
+/* Print */
+
+@media print {
     code[class*="language-"],
     pre[class*="language-"] {
         text-shadow: none;
@@ -144,13 +152,17 @@ pre[class*="language-"] {
     color: hsl(187, 47%, 55%);
 }
 
+
 /* HTML overrides */
+
 .token.attr-value>.token.punctuation.attr-equals,
 .token.special-attr>.token.attr-value>.token.value.css {
     color: hsl(220, 14%, 71%);
 }
 
+
 /* CSS overrides */
+
 .language-css .token.selector {
     color: hsl(355, 65%, 65%);
 }
@@ -173,7 +185,9 @@ pre[class*="language-"] {
     color: hsl(286, 60%, 67%);
 }
 
+
 /* JS overrides */
+
 .language-javascript .token.operator {
     color: hsl(286, 60%, 67%);
 }
@@ -182,7 +196,9 @@ pre[class*="language-"] {
     color: hsl(5, 48%, 51%);
 }
 
+
 /* JSON overrides */
+
 .language-json .token.operator {
     color: hsl(220, 14%, 71%);
 }
@@ -191,7 +207,9 @@ pre[class*="language-"] {
     color: hsl(29, 54%, 61%);
 }
 
+
 /* MD overrides */
+
 .language-markdown .token.url,
 .language-markdown .token.url>.token.operator,
 .language-markdown .token.url-reference.url>.token.string {
@@ -232,7 +250,9 @@ pre[class*="language-"] {
     color: hsl(355, 65%, 65%);
 }
 
+
 /* General */
+
 .token.bold {
     font-weight: bold;
 }
@@ -250,10 +270,15 @@ pre[class*="language-"] {
     opacity: 0.8;
 }
 
+
 /* Plugin overrides */
+
+
 /* Selectors should have higher specificity than those in the plugins' default stylesheets */
 
+
 /* Show Invisibles plugin overrides */
+
 .token.token.tab:not(:empty):before,
 .token.token.cr:before,
 .token.token.lf:before,
@@ -262,13 +287,19 @@ pre[class*="language-"] {
     text-shadow: none;
 }
 
+
 /* Toolbar plugin overrides */
+
+
 /* Space out all buttons and move them away from the right edge of the code block */
+
 div.code-toolbar>.toolbar.toolbar>.toolbar-item {
     margin-right: 0.4em;
 }
 
+
 /* Styling the buttons */
+
 div.code-toolbar>.toolbar.toolbar>.toolbar-item>button,
 div.code-toolbar>.toolbar.toolbar>.toolbar-item>a,
 div.code-toolbar>.toolbar.toolbar>.toolbar-item>span {
@@ -288,13 +319,19 @@ div.code-toolbar>.toolbar.toolbar>.toolbar-item>span:focus {
     color: hsl(220, 14%, 71%);
 }
 
+
 /* Line Highlight plugin overrides */
+
+
 /* The highlighted line itself */
+
 .line-highlight.line-highlight {
     background: hsla(220, 100%, 80%, 0.04);
 }
 
+
 /* Default line numbers in Line Highlight plugin */
+
 .line-highlight.line-highlight:before,
 .line-highlight.line-highlight[data-end]:after {
     background: hsl(220, 13%, 26%);
@@ -305,27 +342,41 @@ div.code-toolbar>.toolbar.toolbar>.toolbar-item>span:focus {
     /* same as Toolbar plugin default */
 }
 
+
 /* Hovering over a linkable line number (in the gutter area) */
+
+
 /* Requires Line Numbers plugin as well */
+
 pre[id].linkable-line-numbers.linkable-line-numbers span.line-numbers-rows>span:hover:before {
     background-color: hsla(220, 100%, 80%, 0.04);
 }
 
+
 /* Line Numbers and Command Line plugins overrides */
+
+
 /* Line separating gutter from coding area */
+
 .line-numbers.line-numbers .line-numbers-rows,
 .command-line .command-line-prompt {
     border-right-color: hsla(220, 14%, 71%, 0.15);
 }
 
+
 /* Stuff in the gutter */
+
 .line-numbers .line-numbers-rows>span:before,
 .command-line .command-line-prompt>span:before {
     color: hsl(220, 14%, 45%);
 }
 
+
 /* Match Braces plugin overrides */
+
+
 /* Note: Outline colour is inherited from the braces */
+
 .rainbow-braces .token.token.punctuation.brace-level-1,
 .rainbow-braces .token.token.punctuation.brace-level-5,
 .rainbow-braces .token.token.punctuation.brace-level-9 {
@@ -350,8 +401,12 @@ pre[id].linkable-line-numbers.linkable-line-numbers span.line-numbers-rows>span:
     color: hsl(286, 60%, 67%);
 }
 
+
 /* Diff Highlight plugin overrides */
+
+
 /* Taken from https://github.com/atom/github/blob/master/styles/variables.less */
+
 pre.diff-highlight>code .token.token.deleted:not(.prefix),
 pre>code.diff-highlight .token.token.deleted:not(.prefix) {
     background-color: hsla(353, 100%, 66%, 0.15);
@@ -390,22 +445,32 @@ pre>code.diff-highlight .token.token.inserted:not(.prefix) *::selection {
     background-color: hsla(135, 73%, 55%, 0.25);
 }
 
+
 /* Previewers plugin overrides */
+
+
 /* Based on https://github.com/atom-community/atom-ide-datatip/blob/master/styles/atom-ide-datatips.less and https://github.com/atom/atom/blob/master/packages/one-dark-ui */
+
+
 /* Border around popup */
+
 .prism-previewer.prism-previewer:before,
 .prism-previewer-gradient.prism-previewer-gradient div {
     border-color: hsl(224, 13%, 17%);
 }
 
+
 /* Angle and time should remain as circles and are hence not included */
+
 .prism-previewer-color.prism-previewer-color:before,
 .prism-previewer-gradient.prism-previewer-gradient div,
 .prism-previewer-easing.prism-previewer-easing:before {
     border-radius: 0.3em;
 }
 
+
 /* Triangles pointing to the code */
+
 .prism-previewer.prism-previewer:after {
     border-top-color: hsl(224, 13%, 17%);
 }
@@ -414,31 +479,142 @@ pre>code.diff-highlight .token.token.inserted:not(.prefix) *::selection {
     border-bottom-color: hsl(224, 13%, 17%);
 }
 
+
 /* Background colour within the popup */
+
 .prism-previewer-angle.prism-previewer-angle:before,
 .prism-previewer-time.prism-previewer-time:before,
 .prism-previewer-easing.prism-previewer-easing {
     background: hsl(219, 13%, 22%);
 }
 
+
 /* For angle, this is the positive area (eg. 90deg will display one quadrant in this colour) */
+
+
 /* For time, this is the alternate colour */
+
 .prism-previewer-angle.prism-previewer-angle circle,
 .prism-previewer-time.prism-previewer-time circle {
     stroke: hsl(220, 14%, 71%);
     stroke-opacity: 1;
 }
 
+
 /* Stroke colours of the handle, direction point, and vector itself */
+
 .prism-previewer-easing.prism-previewer-easing circle,
 .prism-previewer-easing.prism-previewer-easing path,
 .prism-previewer-easing.prism-previewer-easing line {
     stroke: hsl(220, 14%, 71%);
 }
 
+
 /* Fill colour of the handle */
+
 .prism-previewer-easing.prism-previewer-easing circle {
     fill: transparent;
 }
 
-pre[class*=language-].line-numbers{position:relative;padding-left:3.8em;counter-reset:linenumber}pre[class*=language-].line-numbers>code{position:relative;white-space:inherit}.line-numbers .line-numbers-rows{position:absolute;pointer-events:none;top:0;font-size:100%;left:-3.8em;width:3em;letter-spacing:-1px;border-right:1px solid #999;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}.line-numbers-rows>span{display:block;counter-increment:linenumber}.line-numbers-rows>span:before{content:counter(linenumber);color:#999;display:block;padding-right:.8em;text-align:right}
+pre[class*=language-].line-numbers {
+    position: relative;
+    padding-left: 3.8em;
+    counter-reset: linenumber
+}
+
+pre[class*=language-].line-numbers>code {
+    position: relative;
+    white-space: inherit
+}
+
+.line-numbers .line-numbers-rows {
+    position: absolute;
+    pointer-events: none;
+    top: 0;
+    font-size: 100%;
+    left: -3.8em;
+    width: 3em;
+    letter-spacing: -1px;
+    border-right: 1px solid #999;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none
+}
+
+.line-numbers-rows>span {
+    display: block;
+    counter-increment: linenumber
+}
+
+.line-numbers-rows>span:before {
+    content: counter(linenumber);
+    color: #999;
+    display: block;
+    padding-right: .8em;
+    text-align: right
+}
+
+div.code-toolbar {
+    position: relative
+}
+
+div.code-toolbar>.toolbar {
+    position: absolute;
+    z-index: 10;
+    top: .3em;
+    right: .2em;
+    transition: opacity .3s ease-in-out;
+    opacity: 0
+}
+
+div.code-toolbar:hover>.toolbar {
+    opacity: 1
+}
+
+div.code-toolbar:focus-within>.toolbar {
+    opacity: 1
+}
+
+div.code-toolbar>.toolbar>.toolbar-item {
+    display: inline-block
+}
+
+div.code-toolbar>.toolbar>.toolbar-item>a {
+    cursor: pointer
+}
+
+div.code-toolbar>.toolbar>.toolbar-item>button {
+    background: 0 0;
+    border: 0;
+    color: inherit;
+    font: inherit;
+    line-height: normal;
+    overflow: visible;
+    padding: 0;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none
+}
+
+div.code-toolbar>.toolbar>.toolbar-item>a,
+div.code-toolbar>.toolbar>.toolbar-item>button,
+div.code-toolbar>.toolbar>.toolbar-item>span {
+    color: #bbb;
+    font-size: .8em;
+    padding: 0 .5em;
+    background: #f5f2f0;
+    background: rgba(224, 224, 224, .2);
+    box-shadow: 0 2px 0 0 rgba(0, 0, 0, .2);
+    border-radius: .5em
+}
+
+div.code-toolbar>.toolbar>.toolbar-item>a:focus,
+div.code-toolbar>.toolbar>.toolbar-item>a:hover,
+div.code-toolbar>.toolbar>.toolbar-item>button:focus,
+div.code-toolbar>.toolbar>.toolbar-item>button:hover,
+div.code-toolbar>.toolbar>.toolbar-item>span:focus,
+div.code-toolbar>.toolbar>.toolbar-item>span:hover {
+    color: inherit;
+    text-decoration: none
+}

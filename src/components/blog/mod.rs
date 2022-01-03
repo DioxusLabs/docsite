@@ -48,13 +48,13 @@ pub static POSTS: &[BlogPostDisplay] = &[
 pub static BlogList: Component = |cx| {
     cx.render(rsx!(
         section { class: "text-gray-600 body-font overflow-hidden",
-            div { class: "container px-48 pt-12 pb-12 mx-auto",
+            div { class: "container lg:px-48 pt-12 pb-12 mx-auto",
                 div { class: "-my-8 divide-y-2 divide-gray-100",
                     // Header
-                    blog_header()
+                    blog_header(),
 
                     // Individual Post starts here
-                    {POSTS.iter().enumerate().map(|(id, BlogPostDisplay { category, date, title, description, link, content })| rsx!{
+                    POSTS.iter().enumerate().map(|(id, BlogPostDisplay { category, date, title, description, .. })| rsx!{
                         div { class: "py-8 flex flex-wrap md:flex-nowrap",
                             div { class: "md:w-64 md:mb-0 mb-6 flex-shrink-0 flex flex-col",
                                 span { class: "font-semibold title-font text-gray-700", "{category}" }
@@ -71,7 +71,7 @@ pub static BlogList: Component = |cx| {
                                 }
                             }
                         }
-                    })}
+                    })
                 }
             }
         }
@@ -85,10 +85,10 @@ pub fn single_blog_post(cx: Scope, id: usize) -> Element {
     cx.render(rsx! {
 
         section { class: "text-gray-600 body-font overflow-hidden",
-            div { class: "container px-48 pt-12 pb-12 mx-auto",
+            div { class: "container lg:px-20 xl:px-48 pt-12 pb-12 mx-auto",
                 div { class: "-my-8 divide-y-2 divide-gray-100",
                     // Header
-                    blog_header()
+                    // blog_header()
 
                     div { class: "flex w-full mb-20 flex-wrap list-none",
                         style {
@@ -121,10 +121,10 @@ fn blog_header(cx: Scope) -> Element {
                             "Updates, changelogs, and general musings of the Dioxus community."
                         }
                     }
-                    a { class: "inline-block ml-auto w-full md:w-auto px-12 py-4 text-center text-sm text-white font-medium leading-normal bg-red-400 hover:bg-red-300 rounded",
-                        href: "#",
-                        "Save to RSS (WIP)"
-                    }
+                    // a { class: "inline-block ml-auto w-full md:w-auto px-12 py-4 text-center text-sm text-white font-medium leading-normal bg-red-400 hover:bg-red-300 rounded",
+                    //     href: "#",
+                    //     "Save to RSS (WIP)"
+                    // }
                 }
             }
         }
@@ -136,7 +136,7 @@ pub static RecentBlogPosts: Component<()> = |cx| {
         section { class: "text-gray-600 body-font overflow-hidden",
             div { class: "container px-6 lg:px-40 py-12 mx-auto",
                 div { class: "-my-8 divide-y-2 divide-gray-100",
-                    {POSTS.iter().enumerate().map(|(id, post)| rsx!{ blog_list_item(post: post, id: id) })}
+                    POSTS.iter().enumerate().map(|(id, post)| rsx!{ blog_list_item(post: post, id: id) })
                 }
             }
         }

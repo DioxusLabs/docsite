@@ -54,24 +54,25 @@ fn Stateful(cx: Scope<PropBased>) -> Element {
 fn AdvancedRendering(cx: Scope) -> Element {
     let should_show = use_state(&cx, || true);
 
-    let button_text = match *should_show {
-        true => "Click to show",
-        false => "Click to hide",
-    };
-
-    let fizzes = (0..10).map(|i| match (i % 3, i % 5) {
-        (0, 0) => rsx!( li {"FizzBuzz"} ),
-        (0, _) => rsx!( li {"Fizz"} ),
-        (_, 0) => rsx!( li {"Buzz"} ),
-        (_, _) => rsx!( li {"{i}"} ),
-    });
-
     cx.render(rsx! (
         button {
-            "{button_text}",
-            onclick: move |_| should_show.set(!should_show)
+            onclick: move |_| should_show.set(!should_show),
+            match *should_show {
+               true => rsx!("Click to show"),
+                false => rsx!("Click to hide"),
+            },
         }
-        {should_show.then(|| rsx!( ul { {fizzes} } ))}
+        
+        should_show.then(|| rsx!(
+            ul {
+                (0..10).map(|i| match (i % 3, i % 5) {
+                    (0, 0) => rsx!( li { "FizzBuzz" } ),
+                    (0, _) => rsx!( li { "Fizz" } ),
+                    (_, 0) => rsx!( li { "Buzz" } ),
+                    (_, _) => rsx!( li { "{i}" } ),
+                })
+            }
+        ))
     ))
 }
 
@@ -97,7 +98,7 @@ fn ErrorHandling(cx: Scope) -> Element {
 /// Components lower in the tree can then directly read and write to the shared state with runtime safety.
 struct SharedState(&'static str);
 
-fn GlobalState(cx: Scope) -> Element {    
+fn GlobalState(cx: Scope) -> Element {
     use_provide_state(&cx, || SharedState("world!"));
     rsx!(cx, div { "Hello, ", Child {} })
 }
@@ -170,7 +171,7 @@ fn Suspense(cx: Scope) -> Element {
     );
 
     cx.render(rsx!(
-        h1 { "Waiting for doggos:" } 
+        h1 { "Waiting for doggos:" }
         {doggo}
     ))
 }

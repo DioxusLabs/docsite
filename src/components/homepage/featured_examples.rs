@@ -2,14 +2,14 @@ use dioxus::prelude::*;
 
 pub fn FeaturedExamples(cx: Scope) -> Element {
     cx.render(rsx! {
-        section { class: "bg-gray-800 body-font"
+        section { class: "bg-gray-800 body-font",
             div { class: "container px-6 lg:px-40 py-12 mx-auto",
                 div { class: "flex flex-col text-center w-full mb-10",
                     h1 { class: "sm:text-3xl text-2xl font-medium title-font mb-4 text-white",
                         "Feature-packed examples"
                     }
                 }
-                div { class: "flex flex-wrap -m-4"
+                div { class: "flex flex-wrap -m-4",
                     FeaturedExample {
                         title: "TodoMVC",
                         subtitle: "Web",
@@ -86,7 +86,7 @@ fn FeaturedExample(cx: Scope<FeaturedExampleProps>) -> Element {
 
     cx.render(rsx!{
         div { class: "lg:w-1/3 sm:w-1/2 p-4",
-            a { href: "{link}"
+            a { href: "{link}",
                 div { class: "flex relative",
                     img { class: "absolute inset-0 w-full h-full object-cover object-center",
                         alt: "{img_alt}",

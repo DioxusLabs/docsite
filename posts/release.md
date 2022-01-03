@@ -1,13 +1,17 @@
 # Introducing Dioxus v0.1 ✨
 
+> Jan 3, 2022
+
+> [@jkelleyrtp](https://github.com/jkelleyrtp), [@alexkirsz](https://github.com/alexkirsz)
+
 After many months of work, we're very excited to release the first version of Dioxus!
 
-Dioxus is a new library for building interactive user interfaces with Rust. It is built around a Virtual DOM, making it portable for the web, desktop, server, mobile, and more.
+Dioxus is a new library for building interactive user interfaces (GUI) with Rust. It is built around a Virtual DOM, making it portable for the web, desktop, server, mobile, and more. 
 
 Dioxus has the following design goals:
 
 - **Familiar**: Offer a React-like mental model and API surface
-- **Correct**: Avoid runtime bugs by moving rules and error handling into the type system
+- **Robust**: Avoid runtime bugs by moving rules and error handling into the type system
 - **Performant**: Scale to the largest apps and the largest teams
 - **Productive**: Comprehensive inline documentation, fast recompiles, and deeply integrated tooling
 - **Extensible**: Reusable hooks and components that work on every platform
@@ -34,7 +38,7 @@ fn app(cx: Scope) -> Element {
 }
 ```
 
-This simple counter is a complete desktop application, running at native speeds on a native thread. Dioxus automatically shuttles all events from the WebView runtime into the application code. In our app, we can interact natively with system APIs, run multi-threaded code, and do anything a regular native Rust application might do. Running `cargo build --release` will compile a portable binary that looks and feels the same on Windows, macOS, and Linux.
+This simple counter is a complete desktop application, running at native speeds on a native thread. Dioxus automatically shuttles all events from the WebView runtime into the application code. In our app, we can interact natively with system APIs, run multi-threaded code, and do anything a regular native Rust application might do. Running `cargo build --release` will compile a portable binary that looks and feels the same on Windows, macOS, and Linux. We can then use `cargo-bundle` to bundle our binary into a native `.app`/`.exe`/`.deb`.
 
 Dioxus supports many of the same features React does including:
 
@@ -51,10 +55,9 @@ However, some things are different in Dioxus:
 - Suspense is implemented as hooks - _not_ deeply ingrained within Dioxus Core
 - Async code is _explicit_ with a preference for _coroutines_ instead
 
-As a demo, here's our TodoMVC app running on all our current supported platforms:
+As a demo, here's our teaser example running on all our current supported platforms:
 
-<!-- todo: add this -->
-![Untitled](static/Untitled.png)
+![Teaser Example](static/Untitled.png)
 
 This very site is built with Dioxus, and the source code is available [here](github.com/dioxuslabs/docsite).
 
@@ -68,17 +71,17 @@ To get started with Dioxus, check out any of the "Getting Started" guides for yo
 
 ## Show me some examples of what can be built!
 
-- File explorer desktop app
-- Bluetooth scanner desktop app
-- IoT management web app
-- Chat mobile app
-- Hackernews LiveView app
+- [File explorer desktop app](https://github.com/dioxuslabs/example-projects)
+- [WiFi scanner desktop app](https://github.com/dioxuslabs/example-projects)
+- [Dog CEO API Search](https://github.com/dioxuslabs/example-projects)
+- [TodoMVC Mobile App](https://github.com/dioxuslabs/example-projects)
+- [E-Commerce Liveview App](https://github.com/dioxuslabs/example-projects)
 
 ## Why should I use Rust and Dioxus for frontend?
 
 We believe that Rust's ability to write high-level and statically typed code should make it easier for frontend teams to take on even the most ambitious of projects. Rust projects can be refactored fearlessly: the powerful type system prevents an entire class of bugs at compile-time. No more `cannot read property of undefined` ever again! With Rust, all errors must be accounted for at compile time. You cannot ship an app that does not — in some way — handle its errors.
 
-### Difference from TypeScript:
+### Difference from TypeScript/React:
 
 TypeScript is still fundamentally JavaScript. If you've written enough TypeScript, you might be bogged down with lots of configuration options, lack of proper support for "go-to-source," or incorrect ad-hoc typing. With Rust, strong types are built-in, saving tons of headache like `cannot read property of undefined`.
 
@@ -94,7 +97,7 @@ By using Rust, we gain:
 - High quality error handling
 - Flexible standard library and traits
 - Powerful macro system
-- Access to the crates.io ecosystem
+- Access to the [crates.io](https://crates.io) ecosystem
 
 Dioxus itself leverages this platform to provide the following guarantees:
 
@@ -107,7 +110,7 @@ And much more. Dioxus makes Rust apps just as fast to write as React apps, but a
 
 Semantically, TypeScript-React and Rust-Dioxus are very similar. In TypeScript, we would declare a simple component as:
 
-```jsx
+```tsx
 type CardProps = {
   title: string,
   paragraph: string,
@@ -146,10 +149,6 @@ static Card: Component<CardProps> = |cx| {
 };
 ```
 
-
-
-<!-- Dioxus' design encourage patterns that make your apps more robust. Typically, React apps struggle with async code, unnecessary re-renders, and global state management. Many of the differences from React (memo by default, lack of suspense, preference for async coroutines, etc) were implemented to solve these common problems. -->
-
 However, we recognize that not every project needs Rust - many are fine with JavaScript! We also acknowledge that Rust/Wasm/Dioxus does not fix "everything that is wrong with frontend development." There are always going to be new patterns, frameworks, and languages that solve these problems better than Rust and Dioxus.
 
 As a general rule of thumb, Dioxus is for you if:
@@ -160,17 +159,19 @@ As a general rule of thumb, Dioxus is for you if:
 - you want to avoid electron or need direct access to hardware
 - you're tired of JavaScript tooling
 
+Today, to publish a Dioxus app, you don't need NPM/WebPack/Parcel/etc. Dioxus simply builds with cargo, and for web builds, Dioxus happily works with the popular [trunk](http://trunkrs.dev) project.
+
 ## Show me more
 
 Here, we'll dive into some features of Dioxus and why it's so fun to use. The [guide](https://dioxuslabs.com/guide/) serves as a deeper and more comprehensive look at what Dioxus can do.
 
-### Building a new project is simple
+## Building a new project is simple
 
 To start a new project, all you need is Cargo, which comes with Rust. For a simple desktop app, all we'll need is the `dioxus` crate with the appropriate `desktop` feature. We start by initializing a new binary crate:
 
 ```shell
-cargo init dioxus_example
-cd dioxus_example
+$ cargo init dioxus_example
+$ cd dioxus_example
 ```
 
 We then add a dependency on Dioxus to the `Cargo.toml` file, with the "desktop" feature enabled:
@@ -205,7 +206,7 @@ And voilà! We can `cargo run` our app
 
 ![Simple Counter Desktop App](static/counter.png)
 
-### Support for JSX-style templating
+## Support for JSX-style templating
 
 Dioxus ships with a templating macro called RSX, a spin on React's JSX. RSX is very similar to regular struct syntax for Rust so it integrates well with your IDE. If used with [Rust-Analyzer](https://github.com/rust-analyzer/rust-analyzer) (not tested anywhere else) RSX supports code-folding, block selection, bracket pair colorizing, autocompletion, symbol renaming — pretty much anything you would expect from writing regular struct-style code.
 
@@ -240,7 +241,7 @@ The `rsx!` macro generates idiomatic Rust code that uses the factory API — no 
 
 To make it easier to work with RSX, we've built a small [VSCode extension](https://github.com/DioxusLabs/extension) with useful utilities. This extension provides a command that converts a selected block of HTML into RSX so you can easily reuse existing web templates.
 
-### Dioxus is perfected for the IDE
+## Dioxus is perfected for the IDE
 
 Note: all IDE-related features have only been tested with [Rust-Analyzer](https://github.com/rust-analyzer/rust-analyzer). 
 
@@ -273,26 +274,46 @@ We take the performance of Dioxus seriously. Instead of resolving to "good enoug
 - Usage of bump memory allocators and double-buffering
 - Compile-time hashing of templates
 - Automatic component memoization
-- Fiber-like schedule
+- Fiber-like scheduler
 - DOM Patch Batching
 
 Dioxus is humbly built off the work done by [Dodrio](https://github.com/fitzgen/dodrio), a now-archived research project by fitzgen exploring the use of bump allocators in UI frameworks.
 
-### Works on mobile and desktop
+Dioxus is *substantially* more performant than many of the other Rust DOM-based UI libraries (Yew/Percy) and is *significantly* more performant than React - roughly competitive with InfernoJS. While not as performant as libraries like SolidJS/Sycamore, Dioxus imposes roughly a ~3% overhead over DOM patching, so it's *plenty* fast.
 
-We’ve mentioned before that Dioxus works practically anywhere that Rust does. When running natively as a desktop or mobile app, your Dioxus code will run on its own thread, not inside of a web runtime. This means you can access hardware, file system, and platform APIs directly without needing to go through a shim layer. In our examples, we feature a file explorer app and Bluetooth scanner app where platform access occurs inside an asynchronous multithreaded coroutine. This solves the problem faced by React Native and other cross-platform toolkits where JavaScript apps incur a massive performance penalty with substantial maintenance overhead associated with platform API shims.
+## Works on Desktop and Mobile 
+We’ve mentioned before that Dioxus works practically anywhere that Rust does. When running natively as a desktop or mobile app, your Dioxus code will run on its own thread, not inside of a web runtime. This means you can access hardware, file system, and platform APIs directly without needing to go through a shim layer. In our examples, we feature a [file explorer app](https://github.com/DioxusLabs/example-projects/tree/master/file-explorer) and [WiFi scanner app](https://github.com/DioxusLabs/example-projects/tree/master/wifi-scanner) where platform access occurs inside an asynchronous multithreaded coroutine. This solves the problem faced by React Native and other cross-platform toolkits where JavaScript apps incur a massive performance penalty with substantial maintenance overhead associated with platform API shims.
 
 A desktop app:
 
-![Example Dioxus desktop app](https://github.com/DioxusLabs/file-explorer/raw/master/image.png)
+[![Example Dioxus desktop app](https://github.com/DioxusLabs/example-projects/raw/master/file-explorer/image.png)](https://github.com/DioxusLabs/example-projects/blob/master/file-explorer)
 
 A mobile app:
 
-![Example Dioxus mobile app](https://github.com/DioxusLabs/ios_demo/raw/master/assets/screenshot.jpeg)
+[![Example Dioxus mobile app](https://github.com/DioxusLabs/example-projects/raw/master/ios_demo/assets/screenshot_smaller.jpeg)](https://github.com/DioxusLabs/example-projects/blob/master/ios_demo)
 
 However, be warned that mobile is currently considered very experimental and there will likely be quirks. Dioxus is leveraging the work done by the [Tauri](https://github.com/tauri-apps/tauri) team to enable mobile support, and mobile support isn't technically complete in Tauri yet.
 
 iOS should be supported out of the box, but Android support will take custom some boilerplate that hasn't been completely figured out. If you're interested in contributing to Dioxus, improving mobile support would be extremely helpful.
+
+### Did someone say TUI support?
+
+Yes, you can even build terminal user interfaces with Dioxus. Full support is still a work in progress, but the foundation is there.
+
+[![TUI Support](https://github.com/DioxusLabs/rink/raw/master/examples/example.png)](https://github.com/dioxusLabs/rink)
+
+### Things we didn't cover:
+
+There are a bunch of things we didn't talk about here. Check out the guide for more information, or peruse the examples and reference for more context.
+
+- Jank-free rendering with fiber scheduler
+- [Support for borrowed props]()
+- [Conditional rendering]()
+- [CSS/Styling/Inline style support]()
+- [Support for inline Context Providing/Consuming]()
+- [First-class global state management]()
+
+For a quick glance at party with React, check out the [Readme on Github](https://github.com/DioxusLabs/dioxus#parity-with-react).
 
 ## What's on the roadmap?
 
@@ -311,7 +332,7 @@ We also need some help in important crates currently missing:
 - First class cross-platform router (currently in progress)
 - An extension to DioxusStudio that enables lazy bundling of static assets
 - Animation library (see [React Spring](https://react-spring.io/), [Framer Motion](https://www.framer.com/motion/))
-- A TUI renderer for Dioxus (see [Ink](https://github.com/vadimdemedes/ink))
+- A [TUI renderer for Dioxus](https://github.com/dioxuslabs/rink) (see [Ink](https://github.com/vadimdemedes/ink))
 
 And finally, some bigger, forward-thinking projects that are too big for a one-person team:
 

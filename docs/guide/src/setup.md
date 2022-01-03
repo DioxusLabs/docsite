@@ -35,7 +35,7 @@ rustup target add wasm32-unknown-uknown
 We also recommend installing the Dioxus CLI. The Dioxus CLI automates building and packaging for various targets and integrates with simulators, development servers, and app deployment. To install the CLI, you'll need cargo (should be automatically installed with Rust):
 
 ```
-$ cargo install dioxus-cli
+$ cargo install dioxus-cli --locked
 ```
 
 You can update the dioxus-cli at any time with:

@@ -14,7 +14,7 @@ pub fn FeaturedExamples(cx: Scope) -> Element {
                         title: "TodoMVC",
                         subtitle: "Web",
                         description: "The classic demonstration of a web framework. Fits in one file in less than 150 lines of code.",
-                        link: "https://github.com/dioxuslabs/todomvc",
+                        link: "https://github.com/DioxusLabs/example-projects/tree/master/todomvc",
                         img: "https://dioxuslabs.com/static/todos_cropped.png",
                         img_alt: "",
                     }
@@ -22,7 +22,7 @@ pub fn FeaturedExamples(cx: Scope) -> Element {
                         title: "E-Commerce Site",
                         subtitle: "Web",
                         description: "A complex website leveraging Tailwind, global state, animations, pre-rendering, and project structure.",
-                        link: "https://github.com/DioxusLabs/ecommerce-example",
+                        link: "https://github.com/DioxusLabs/example-projects/tree/master/ecommerce-site",
                         img: "https://dioxuslabs.com/static/marktplace_cropped.png",
                         img_alt: "",
                     }
@@ -30,15 +30,15 @@ pub fn FeaturedExamples(cx: Scope) -> Element {
                         title: "File Explorer",
                         subtitle: "Desktop",
                         description: "Interact with native APIs directly from your UI. Works with a simple `cargo run` and is bundle-ready.",
-                        link: "https://github.com/DioxusLabs/file-explorer",
+                        link: "https://github.com/DioxusLabs/example-projects/tree/master/file-explorer",
                         img: "https://dioxuslabs.com/static/file_explorer.png",
                         img_alt: "",
                     }
                     FeaturedExample {
-                        title: "Bluetooth Scanner",
+                        title: "WiFi Scanner",
                         subtitle: "Desktop, Mobile",
                         description: "Spawn native Tokio tasks and interact with hardware directly from your app with Dioxus coroutines.",
-                        link: "https://github.com/DioxusLabs/bluetooth-scanner",
+                        link: "https://github.com/DioxusLabs/example-projects/tree/master/wifi-scanner",
                         img: "https://dioxuslabs.com/static/scanner.png",
                         img_alt: "",
                     }

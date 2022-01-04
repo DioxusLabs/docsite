@@ -59,7 +59,7 @@ As a demo, here's our teaser example running on all our current supported platfo
 
 ![Teaser Example](/static/Untitled.png)
 
-This very site is built with Dioxus, and the source code is available [here](github.com/dioxuslabs/docsite).
+This very site is built with Dioxus, and the source code is available [here](https://github.com/dioxuslabs/docsite).
 
 To get started with Dioxus, check out any of the "Getting Started" guides for your platform of choice, or check out the GitHub Repository for more details.
 

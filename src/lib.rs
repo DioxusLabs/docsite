@@ -1,5 +1,11 @@
 #![allow(non_upper_case_globals)]
 
+// use wasm_bindgen::prelude::*;
+// #[wasm_bindgen(start)]
+// pub fn start() {
+//     dioxus::web::launch(app);
+// }
+
 use dioxus::{
     prelude::*,
     router::{use_router, Link},

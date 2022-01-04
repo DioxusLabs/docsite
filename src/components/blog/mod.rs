@@ -7,9 +7,9 @@ static POST1: Lazy<String> = Lazy::new(|| {
     dioxus_markdown::render_markdown_to_string(include_str!("../../../posts/release.md"))
 });
 
-static POST2: Lazy<String> = Lazy::new(|| {
-    dioxus_markdown::render_markdown_to_string(include_str!("../../../posts/allocators.md"))
-});
+// static POST2: Lazy<String> = Lazy::new(|| {
+//     dioxus_markdown::render_markdown_to_string(include_str!("../../../posts/allocators.md"))
+// });
 
 pub struct BlogPostDisplay {
     category: &'static str,

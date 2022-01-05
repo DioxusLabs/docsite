@@ -1,8 +1,7 @@
-use dioxus::prelude::*;
 use crate::icons::*;
+use dioxus::prelude::*;
 
 pub static Footer: Component<()> = |cx| {
-
     let categories = [
         (
             "Community",
@@ -41,16 +40,16 @@ pub static Footer: Component<()> = |cx| {
                 }
                 nav { class: "list-none mb-10",
                     {links.iter().map(|f| rsx!{
-                        li { 
+                        li {
                             a { class: "text-gray-400 hover:text-white",
                                 href: "{f.1}",
                                 "{f.0}"
                             }
-                        }                        
+                        }
                     })}
                 }
-            }            
-        )        
+            }
+        )
     });
 
     cx.render(rsx! {
@@ -90,7 +89,7 @@ pub static Footer: Component<()> = |cx| {
                                 view_box: "0 0 24 24",
                                 fill: "currentColor",
                                 stroke_linejoin: "round",
-                                path { 
+                                path {
                                     d: "M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z",
                                 }
                             }
@@ -102,7 +101,7 @@ pub static Footer: Component<()> = |cx| {
                                 fill: "currentColor",
                                 stroke_linejoin: "round",
                                 stroke_width: "2",
-                                path { 
+                                path {
                                     d: "M23 3a10.9 10.9 0 01-3.14 1.53 4.48 4.48 0 00-7.86 3v1A10.66 10.66 0 013 4s-4 9 5 13a11.64 11.64 0 01-7 2c9 5 20 0 20-11.5a4.5 4.5 0 00-.08-.83A7.72 7.72 0 0023 3z",
                                 }
                             }
@@ -115,7 +114,7 @@ pub static Footer: Component<()> = |cx| {
                                 stroke_linejoin: "round",
                                 stroke_width: "2",
                                 stroke_linecap: "round",
-                                rect { 
+                                rect {
                                     width: "20",
                                     height: "20",
                                     rx: "5",
@@ -123,7 +122,7 @@ pub static Footer: Component<()> = |cx| {
                                     x: "2",
                                     ry: "5",
                                 }
-                                path { 
+                                path {
                                     d: "M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37zm1.5-4.87h.01",
                                 }
                             }
@@ -136,11 +135,11 @@ pub static Footer: Component<()> = |cx| {
                                 stroke_width: "0",
                                 stroke_linecap: "round",
                                 stroke_linejoin: "round",
-                                path { 
+                                path {
                                     d: "M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z",
                                     stroke: "none",
                                 }
-                                circle { 
+                                circle {
                                     stroke: "none",
                                     cy: "4",
                                     r: "2",
@@ -153,7 +152,7 @@ pub static Footer: Component<()> = |cx| {
             }
         }
 
-        
+
         // footer { class: "text-gray-600 body-font",
         //     div { class: "container px-5 py-24 mx-auto flex md:items-center lg:items-start md:flex-row md:flex-nowrap flex-wrap flex-col",
         //         div { class: "w-64 flex-shrink-0 md:mx-0 mx-auto text-center md:text-left",

@@ -1,11 +1,9 @@
-use crate::{icons, AppRoute};
+use crate::icons;
 use dioxus::prelude::*;
 use dioxus::router::Link;
 use once_cell::sync::Lazy;
 
-static POST1: Lazy<String> = Lazy::new(|| {
-    dioxus_markdown::render_markdown_to_string(include_str!("../../../posts/release.md"))
-});
+static POST1: &str = include_str!("../../../posts/release.html");
 
 // static POST2: Lazy<String> = Lazy::new(|| {
 //     dioxus_markdown::render_markdown_to_string(include_str!("../../../posts/allocators.md"))
@@ -17,7 +15,7 @@ pub struct BlogPostDisplay {
     title: &'static str,
     description: &'static str,
     link: &'static str,
-    content: &'static Lazy<String>,
+    content: &'static str,
 }
 
 impl PartialEq for &'static BlogPostDisplay {
@@ -32,7 +30,7 @@ pub static POSTS: &[BlogPostDisplay] = &[
             date: "3 Jan 2021",
             title: "Announcing Dioxus 0.1",
             description: "After months of work, we're very excited to release the first version of Dioxus! Dioxus is a new library for building interactive user interfaces with Rust. It is built around a VirtualDOM, making it portable for the web, desktop, server, mobile, and more.",
-            link: "/blog/announcing_dioxus_01",
+            link: "/blog/introducing-dioxus/",
             content: &POST1,
         },
         // BlogPostDisplay {
@@ -54,7 +52,7 @@ pub static BlogList: Component = |cx| {
                     blog_header(),
 
                     // Individual Post starts here
-                    POSTS.iter().enumerate().map(|(id, BlogPostDisplay { category, date, title, description, .. })| rsx!{
+                    POSTS.iter().enumerate().map(|(id, BlogPostDisplay { category, date, title, description, link, .. })| rsx!{
                         div { class: "py-8 flex flex-wrap md:flex-nowrap",
                             div { class: "md:w-64 md:mb-0 mb-6 flex-shrink-0 flex flex-col",
                                 span { class: "font-semibold title-font text-gray-700", "{category}" }
@@ -65,7 +63,7 @@ pub static BlogList: Component = |cx| {
                                 p { class: "leading-relaxed", "{description}" }
                                 Link {
                                     class: "text-indigo-500 inline-flex items-center mt-4",
-                                    to: AppRoute::BlogPost { id: id }
+                                    to: "{link}",
                                     "Read more"
                                     icons::ArrowRight {}
                                 }
@@ -78,9 +76,9 @@ pub static BlogList: Component = |cx| {
     ))
 };
 
-#[inline_props]
-pub fn single_blog_post(cx: Scope, id: usize) -> Element {
-    let BlogPostDisplay { content, .. } = &POSTS[*id];
+pub fn single_blog_post(cx: Scope) -> Element {
+    let id = 0;
+    let BlogPostDisplay { content, .. } = &POSTS[id];
 
     cx.render(rsx! {
 
@@ -95,7 +93,7 @@ pub fn single_blog_post(cx: Scope, id: usize) -> Element {
                             ".markdown-body ul {{ list-style: disc; }}"
                             ".markdown-body li {{ display: list-item; }}"
                         }
-                        article { class: "markdown-body", dangerous_inner_html: format_args!("{}", content.as_str()), }
+                        article { class: "markdown-body", dangerous_inner_html: format_args!("{}", content), }
                         script {"Prism.highlightAll()"}
                     }
                 }
@@ -109,7 +107,7 @@ fn blog_header(cx: Scope) -> Element {
         section { class: "py-20",
             div { class: "container px-4 mx-auto",
 
-                Link { to: AppRoute::Blog
+                Link { to: "/blog"
                     h2 { class: "mb-8 md:mb-16 text-5xl lg:text-6xl font-semibold font-heading",
                         "Dioxus Official Blog"
                     }
@@ -150,6 +148,7 @@ fn blog_list_item(cx: Scope, post: &'static BlogPostDisplay, id: usize) -> Eleme
         date,
         title,
         description,
+        link,
         ..
     } = post;
 
@@ -164,7 +163,7 @@ fn blog_list_item(cx: Scope, post: &'static BlogPostDisplay, id: usize) -> Eleme
                 p { class: "leading-relaxed dark:text-white text-base dark:opacity-75", "{description}" }
                 Link {
                     class: "text-indigo-500 inline-flex items-center mt-4",
-                    to: AppRoute::BlogPost { id: *id }
+                    to: "{link}",
                     "Read more"
                     icons::ArrowRight {}
                 }

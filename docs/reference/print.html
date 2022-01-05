@@ -207,7 +207,8 @@
                     </blockquote>
                     <h2 id="reference-and-guides"><a class="header" href="#reference-and-guides">Reference and Guides</a></h2>
                     <p>With the reference, we aim to maintain documentation of functionality that might not be mentioned in the official guide to keep the information load to a minimum. Some topics not included by the guide but discussed in the reference
-                        include:</p>
+                        include:
+                    </p>
                     <ul>
                         <li>ThreadSafety of the VirtualDom</li>
                         <li>Full usage of <code>rsx!</code> and included features</li>
@@ -232,7 +233,7 @@
                     <pre><code class="language-shell">$ cargo install trunk
 </code></pre>
                     <p>Make sure the <code>wasm32-unknown-unknown</code> target is installed:</p>
-                    <pre><code class="language-shell">$ rustup target add wasm32-unknown-uknown
+                    <pre><code class="language-shell">$ rustup target add wasm32-unknown-unknown
 </code></pre>
                     <p>Create a new project:</p>
                     <pre><code class="language-shell">$ cargo new --bin demo
@@ -303,8 +304,7 @@ fn app(cx: Scope) -&gt; Element {
                     <p>One of Dioxus' killer features is the ability to quickly build a native desktop app that looks and feels the same across platforms. Apps built with Dioxus are typically &lt;5mb in size and use existing system resources, so they won't
                         hog extreme amounts of RAM or memory.</p>
                     <p>Dioxus Desktop is built off Tauri. Right now there aren't any Dioxus abstractions over keyboard shortcuts, menubar, handling, etc, so you'll want to leverage Tauri - mostly <a href="http://github.com/tauri-apps/wry/">Wry</a> and
-                        <a
-                            href="http://github.com/tauri-apps/tao">Tao</a>) directly. The next major release of Dioxus-Desktop will include components and hooks for notifications, global shortcuts, menubar, etc.</p>
+                        <a href="http://github.com/tauri-apps/tao">Tao</a>) directly. The next major release of Dioxus-Desktop will include components and hooks for notifications, global shortcuts, menubar, etc.</p>
                     <h2 id="getting-set-up"><a class="header" href="#getting-set-up">Getting Set up</a></h2>
                     <p>Getting Set up with Dioxus-Desktop is quite easy. Make sure you have Rust and Cargo installed, and then create a new project:</p>
                     <pre><code class="language-shell">$ cargo new --bin demo

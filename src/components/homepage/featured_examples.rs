@@ -65,16 +65,16 @@ pub fn FeaturedExamples(cx: Scope) -> Element {
 }
 
 #[derive(PartialEq, Props)]
-struct FeaturedExampleProps {
-    title: &'static str,
-    subtitle: &'static str,
-    description: &'static str,
-    link: &'static str,
-    img: &'static str,
-    img_alt: &'static str,
+struct FeaturedExampleProps<'a> {
+    title: &'a str,
+    subtitle: &'a str,
+    description: &'a str,
+    link: &'a str,
+    img: &'a str,
+    img_alt: &'a str,
 }
 
-fn FeaturedExample(cx: Scope<FeaturedExampleProps>) -> Element {
+fn FeaturedExample<'a>(cx: Scope<'a, FeaturedExampleProps<'a>>) -> Element {
     let FeaturedExampleProps {
         subtitle,
         title,

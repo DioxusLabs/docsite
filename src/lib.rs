@@ -2,11 +2,8 @@
 
 use dioxus::{
     prelude::*,
-    router::{use_router, Link},
+    router::{Link, Route, Router},
 };
-use serde::{Deserialize, Serialize};
-
-use gloo_history::{BrowserHistory, History};
 
 pub mod icons;
 pub mod sitemap;
@@ -25,47 +22,33 @@ pub mod components {
     pub mod snippets;
 }
 
-#[derive(PartialEq, Clone, Debug, Serialize, Deserialize)]
-enum AppRoute {
-    Home,
-    Blog,
-    BlogPost { id: usize },
-}
-impl Default for AppRoute {
-    fn default() -> Self {
-        // parse the url in the browser
-        // this is the dumbest router ever
-        if cfg!(target_arch = "wasm32") {
-            let history = BrowserHistory::new();
+use wasm_bindgen::prelude::*;
 
-            let route = history.location();
-
-            match route.path() {
-                "/" => AppRoute::Home,
-                "/blog" | "/blog/" => AppRoute::Blog,
-                "/blog/0" | "/blog/introducing-dioxus" | "/blog/introducing-dioxus/" => {
-                    AppRoute::BlogPost { id: 0 }
-                }
-                path => AppRoute::Home,
-            }
-        } else {
-            AppRoute::Home
-        }
-    }
+#[wasm_bindgen(start)]
+pub fn start() {
+    console_error_panic_hook::set_once();
+    wasm_logger::init(wasm_logger::Config::new(log::Level::Debug));
+    dioxus::web::launch(app);
 }
 
 pub fn app(cx: Scope) -> Element {
-    let route: &AppRoute = use_router(&cx, |c| {});
-
     cx.render(rsx! {
         style { [include_str!("../tailwind.css")] }
         script { [include_str!("./darktheme.js")] }
         style { [include_str!("./components/prism/prism.css")] }
-        nav_header()
-        match route {
-            AppRoute::Home => rsx!(home()),
-            AppRoute::Blog => rsx!(components::blog::BlogList {}),
-            AppRoute::BlogPost{ id } => rsx!(components::blog::single_blog_post( id: *id )),
+        Router {
+            nav_header(),
+            Route { to: "/", home() }
+            Route { to: "/index.html", home() }
+            Route { to: "/blog", components::blog::BlogList {} }
+            Route { to: "/blog/introducing-dioxus/", components::blog::single_blog_post() }
+            Route { to: ""
+                div {
+                    h1 { "404" }
+                    p { "Page not found" }
+                    Link { to: "/", "go back home" }
+                }
+            }
         }
         script { [include_str!("./components/prism/prism.js")]}
     })
@@ -149,7 +132,7 @@ fn nav_header(cx: Scope) -> Element {
         div { class: "relative pt-6 lg:pt-8 pb-4 flex items-center justify-between font-semibold text-sm leading-6 dark:text-gray-200 dark:bg-gray-900 px-4 sm:px-6 md:px-8",
             Link {
                 class: "flex title-font font-medium items-center text-gray-900"
-                to: AppRoute::Home,
+                to: "/",
                 img { src: "https://avatars.githubusercontent.com/u/79236386?s=200&v=4", class: "h-10 w-auto" },
                 span { class: "ml-3 text-4xl dark:text-white", "dioxus" }
             }
@@ -198,9 +181,8 @@ fn nav_header(cx: Scope) -> Element {
                         ul { class: "flex items-center space-x-8",
                             li {
                                 Link {
-                                    class: "hover:text-sky-500 dark:hover:text-sky-400"
-                                    href: "/",
-                                    to: AppRoute::Home,
+                                    class: "hover:text-sky-500 dark:hover:text-sky-400",
+                                    to: "/",
                                     "Home"
                                 }
                             }
@@ -224,8 +206,7 @@ fn nav_header(cx: Scope) -> Element {
                             }
                             li {
                                 Link { class: "hover:text-sky-500 dark:hover:text-sky-400"
-                                    href: "/blog",
-                                    to: AppRoute::Blog,
+                                    to: "/blog",
                                     "Blog"
                                 }
                             }

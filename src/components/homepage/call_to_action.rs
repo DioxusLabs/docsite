@@ -1,5 +1,5 @@
-use dioxus::prelude::*;
 use crate::icons::FERROUS_LOGO;
+use dioxus::prelude::*;
 
 pub static CallToAction: Component<()> = |cx| {
     cx.render(rsx!{
@@ -12,13 +12,13 @@ pub static CallToAction: Component<()> = |cx| {
                     }
                     a {
                         href: "https://dioxuslabs.com/guide/",
-                        button { 
+                        button {
                             class: "flex-shrink-0 text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg mt-10 sm:mt-0",
                             "Get started"
                         }
                     }
                 }
             }
-        }        
+        }
     })
 };

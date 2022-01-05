@@ -1,4 +1,4 @@
-use crate::{icons, AppRoute};
+use crate::icons;
 use dioxus::prelude::*;
 
 pub static NavBar: Component<()> = |cx| {
@@ -21,13 +21,13 @@ pub static NavBar: Component<()> = |cx| {
                             height: "13",
                             width: "39",
                             view_box: "0 0 39 13",
-                            rect { 
+                            rect {
                                 width: "39",
                                 height: "2",
                                 rx: "1",
                                 fill: "#C4C4C4",
                             }
-                            rect { 
+                            rect {
                                 fill: "#C4C4C4",
                                 x: "19",
                                 height: "2",
@@ -40,20 +40,20 @@ pub static NavBar: Component<()> = |cx| {
                 }
                 div { class: "hidden lg:block ml-auto mr-16",
                     ul { class: "flex items-center text-white space-x-10",
-                        li { 
+                        li {
                             a { class: "text-white font-bold text-lg",
                                 href: "#",
                                 "Product"
                             }
                         }
-                        span { 
-                            svg { 
+                        span {
+                            svg {
                                 width: "5",
                                 view_box: "0 0 5 5",
                                 fill: "none",
                                 xmlns: "http://www.w3.org/2000/svg",
                                 height: "5",
-                                circle { 
+                                circle {
                                     cy: "2.5",
                                     r: "2.5",
                                     cx: "2.5",
@@ -61,20 +61,20 @@ pub static NavBar: Component<()> = |cx| {
                                 }
                             }
                         }
-                        li { 
+                        li {
                             a { class: "text-white font-bold text-lg",
                                 href: "#",
                                 "Story"
                             }
                         }
-                        span { 
-                            svg { 
+                        span {
+                            svg {
                                 view_box: "0 0 5 5",
                                 width: "5",
                                 height: "5",
                                 fill: "none",
                                 xmlns: "http://www.w3.org/2000/svg",
-                                circle { 
+                                circle {
                                     fill: "#726B6B",
                                     cy: "2.5",
                                     cx: "2.5",
@@ -82,20 +82,20 @@ pub static NavBar: Component<()> = |cx| {
                                 }
                             }
                         }
-                        li { 
+                        li {
                             a { class: "text-white font-bold text-lg",
                                 href: "#",
                                 "Features"
                             }
                         }
-                        span { 
-                            svg { 
+                        span {
+                            svg {
                                 height: "5",
                                 width: "5",
                                 fill: "none",
                                 view_box: "0 0 5 5",
                                 xmlns: "http://www.w3.org/2000/svg",
-                                circle { 
+                                circle {
                                     fill: "#726B6B",
                                     cy: "2.5",
                                     cx: "2.5",
@@ -103,7 +103,7 @@ pub static NavBar: Component<()> = |cx| {
                                 }
                             }
                         }
-                        li { 
+                        li {
                             a { class: "text-white font-bold text-lg",
                                 href: "#",
                                 "Contact"
@@ -132,8 +132,8 @@ pub static NavBar: Component<()> = |cx| {
                             }
                         }
                     }
-                    div { 
-                        ul { 
+                    div {
+                        ul {
                             li { class: "mb-1 px-10",
                                 a { class: "block pl-8 py-4 text-xl text-gray-800 hover:bg-blueGray-50 rounded-xl",
                                     href: "#",
@@ -172,7 +172,7 @@ pub static NavBar: Component<()> = |cx| {
                             }
                         }
                         p { class: "mt-6 mb-4 text-lg text-center",
-                            span { 
+                            span {
                                 "2021 © Zospace. All rights reserved."
                             }
                         }

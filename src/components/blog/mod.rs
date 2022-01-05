@@ -1,13 +1,8 @@
 use crate::icons;
 use dioxus::prelude::*;
 use dioxus::router::Link;
-use once_cell::sync::Lazy;
 
 static POST1: &str = include_str!("../../../posts/release.html");
-
-// static POST2: Lazy<String> = Lazy::new(|| {
-//     dioxus_markdown::render_markdown_to_string(include_str!("../../../posts/allocators.md"))
-// });
 
 pub struct BlogPostDisplay {
     category: &'static str,
@@ -33,14 +28,7 @@ pub static POSTS: &[BlogPostDisplay] = &[
             link: "/blog/introducing-dioxus/",
             content: &POST1,
         },
-        // BlogPostDisplay {
-        //     category: "Technical Notes",
-        //     date: "28 Oct 2021",
-        //     title: "WASM, Allocators, and Performance Deep Dive",
-        //     description: "WebAssembly is a promising new web technology that brings a wide variety of programming languages to the web. However, WASM performance is a poorly understood topic - especially when considering memory allocators and interaction with JS APIs.",
-        //     link: "/blog/wasm_allocators_performance",
-        //     content: &POST2,
-        // },
+
     ];
 
 pub static BlogList: Component = |cx| {

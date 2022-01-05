@@ -41,6 +41,7 @@ pub fn app(cx: Scope) -> Element {
             Route { to: "/", home() }
             Route { to: "/index.html", home() }
             Route { to: "/blog", components::blog::BlogList {} }
+            Route { to: "/blog/", components::blog::BlogList {} }
             Route { to: "/blog/introducing-dioxus/", components::blog::single_blog_post() }
             Route { to: ""
                 div {

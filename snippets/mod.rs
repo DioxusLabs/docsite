@@ -113,15 +113,11 @@ fn Child(cx: Scope) -> Element {
 /// With Dioxus, it's possible to directly expose shared state to child components with the `use_provide_context` hook.
 /// Components lower in the tree can then directly read and write to the shared state with runtime safety.
 ///
-/// Dioxus also has 1st-class support for Diplex: a global state management toolkit modeled after RecoilJS.
-struct AppState {
-    title: String,
-    subtitle: String,
-    user: Option<User>
-}
+/// Dioxus also has 1st-class support for Fermi: a global state management toolkit modeled after RecoilJS.
+static Name: Atom<Option<String>> = |_| Some("Dioxus".into());
 
 fn UserInfo(cx: Scope) -> Element {
-    let user_name = use_read!(&cx, AppState.user?.name);
+    let user_name = use_read(&cx, Name);
 
     match user_name {
         Some(name) => rsx!(cx, "Hello, {name}"),

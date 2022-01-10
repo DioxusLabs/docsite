@@ -118,16 +118,6 @@ fn home(cx: Scope) -> Element {
     ))
 }
 
-fn whatever(cx: Scope) -> Element {
-    cx.render(rsx! {
-        div { class: "absolute inset-0 bottom-10 bg-bottom bg-no-repeat bg-gray-50 dark:bg-[#0B1120] index_beams__3fKa4",
-            div { class: "absolute inset-0 bg-grid-gray-900/[0.04] bg-[bottom_1px_center] dark:bg-grid-gray-400/[0.05] dark:bg-bottom dark:border-b dark:border-gray-100/5",
-                style: "mask-image:linear-gradient(to bottom, transparent, black);-webkit-mask-image:linear-gradient(to bottom, transparent, black)",
-            }
-        }
-    })
-}
-
 fn nav_header(cx: Scope) -> Element {
     cx.render(rsx!(
         div { class: "relative pt-6 lg:pt-8 pb-4 flex items-center justify-between font-semibold text-sm leading-6 dark:text-gray-200 dark:bg-gray-900 px-4 sm:px-6 md:px-8",

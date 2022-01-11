@@ -151,25 +151,5 @@ pub static Footer: Component<()> = |cx| {
                 }
             }
         }
-
-
-        // footer { class: "text-gray-600 body-font",
-        //     div { class: "container px-5 py-24 mx-auto flex md:items-center lg:items-start md:flex-row md:flex-nowrap flex-wrap flex-col",
-        //         div { class: "w-64 flex-shrink-0 md:mx-0 mx-auto text-center md:text-left",
-        //             a { class: "flex title-font font-medium items-center md:justify-start justify-center text-gray-900",
-        //                 svg {}
-        //                 span { class: "ml-3 text-xl",
-        //                     "Tailblocks"
-        //                 }
-        //             }
-        //             // p { class: "mt-2 text-sm text-gray-500",
-        //             //     "Air plant banjo lyft occupy retro adaptogen indego"
-        //             // }
-        //         }
-        //         div { class: "flex-grow flex flex-wrap md:pl-20 -mb-10 md:mt-0 mt-10 md:text-left text-center",
-        //             {categories}
-        //         }
-        //     }
-        // }
     })
 };

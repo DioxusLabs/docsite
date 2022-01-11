@@ -17,7 +17,6 @@ pub mod components {
     }
     pub mod blog;
     pub mod footer;
-    pub mod hero;
     pub mod navbar;
     pub mod snippets;
 }
@@ -28,7 +27,7 @@ use wasm_bindgen::prelude::*;
 pub fn start() {
     console_error_panic_hook::set_once();
     wasm_logger::init(wasm_logger::Config::new(log::Level::Debug));
-    dioxus::web::launch(app);
+    dioxus::web::launch_with_props(app, (), |c| c.hydrate(true));
 }
 
 pub fn app(cx: Scope) -> Element {

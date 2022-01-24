@@ -58,7 +58,7 @@ fn AdvancedRendering(cx: Scope) -> Element {
         button {
             onclick: move |_| should_show.set(!should_show),
             match *should_show {
-               true => rsx!("Click to show"),
+                true => rsx!("Click to show"),
                 false => rsx!("Click to hide"),
             },
         }

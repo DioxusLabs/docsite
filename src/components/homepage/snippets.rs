@@ -2,8 +2,8 @@ use super::super::snippets::*;
 use dioxus::prelude::*;
 
 pub static Snippets: Component<()> = |cx| {
-    let (snippets, _) = use_state(&cx, build_snippets).classic();
-    let selected_snippet = use_state(&cx, || 0);
+    let (snippets, _) = use_state(&cx, build_snippets);
+    let (selected_snippet, set_selected_snippet) = use_state(&cx, || 0);
 
     cx.render(rsx! {
         section { class: "text-gray-500 bg-white body-font mx-auto px-6 lg:px-24 xl:px-48 pt-12",
@@ -20,7 +20,7 @@ pub static Snippets: Component<()> = |cx| {
                                 key: "{s.title}",
                                 cursor: "pointer",
                                 class: "p-3 pr-8 hover:bg-blue-500 hover:text-blue-100 {is_selected}",
-                                onclick: move |_| selected_snippet.set(id),
+                                onclick: move |_| set_selected_snippet(id),
                                 "{s.title}"
                             })
                         })

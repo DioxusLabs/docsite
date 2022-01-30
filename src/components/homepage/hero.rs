@@ -36,7 +36,7 @@ pub fn Hero(cx: Scope) -> Element {
 }
 
 pub static InteractiveHeader: Component<()> = |cx| {
-    let mut count = use_state(&cx, || 0);
+    let (count, set_count) = use_state(&cx, || 0);
 
     cx.render(rsx!{
         div { class: "flex flex-col items-center py-3", background_color: "hsl(220, 13%, 18%)",
@@ -46,13 +46,13 @@ pub static InteractiveHeader: Component<()> = |cx| {
             div { class: "flex flex-row items-center",
                 button {
                     class: "inline-flex items-center text-white bg-green-500 border-0 py-1 px-4 focus:outline-none hover:bg-gray-600",
-                    onclick: move |_| count += 1,
+                    onclick: move |_| set_count(count + 1),
                     "Up high!"
                 }
                 img { class: "h-12 mx-4", src: "https://i.imgur.com/aK3dWXs.png" }
                 button {
                     class: "inline-flex items-center text-white bg-red-500 border-0 py-1 px-4 focus:outline-none hover:bg-gray-600",
-                    onclick: move |_| count -= 1,
+                    onclick: move |_| set_count(count - 1),
                     "Down low!"
                 }
             }

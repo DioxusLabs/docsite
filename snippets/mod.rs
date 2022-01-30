@@ -18,12 +18,12 @@ fn Simple(cx: Scope) -> Element {
 ///
 /// Thanks to Rust's ownership rules, it's impossible to misuse the `use_state` hook.
 fn Stateful(cx: Scope) -> Element {
-    let mut count = use_state(&cx, || 0);
+    let (count, set_count) = use_state(&cx, || 0);
 
     cx.render(rsx! (
         button {
             "Upvote counter: {count}",
-            onclick: move |_| count += 1
+            onclick: move |_| set_count(count + 1)
         }
     ))
 }
@@ -52,7 +52,7 @@ fn Stateful(cx: Scope<PropBased>) -> Element {
 /// Elements are created with a dedicated memory allocator that intelligently reuses memory between renders. A component
 /// at "steady-state" performs zero global allocations, making rendering extremely fast and memory efficient.
 fn AdvancedRendering(cx: Scope) -> Element {
-    let should_show = use_state(&cx, || true);
+    let (should_show, _) = use_state(&cx, || true);
 
     cx.render(rsx! (
         button {

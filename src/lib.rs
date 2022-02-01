@@ -27,7 +27,7 @@ use wasm_bindgen::prelude::*;
 pub fn start() {
     console_error_panic_hook::set_once();
     wasm_logger::init(wasm_logger::Config::new(log::Level::Debug));
-    dioxus::web::launch_with_props(app, (), |c| c.hydrate(true));
+    dioxus::web::launch_with_props(app, (), |c| c.hydrate(false));
 }
 
 pub fn app(cx: Scope) -> Element {
@@ -223,7 +223,7 @@ fn nav_header(cx: Scope) -> Element {
 }
 
 pub static InteractiveHeader: Component<()> = |cx| {
-    let mut count = use_state(&cx, || 0);
+    let (count, set_count) = use_state(&cx, || 0);
 
     cx.render(rsx!{
         div {
@@ -236,12 +236,13 @@ pub static InteractiveHeader: Component<()> = |cx| {
             div { class: "flex flex-col items-center",
                 button {
                     class: "inline-flex items-center text-white bg-green-500 border-0 py-1 px-4 focus:outline-none hover:bg-gray-600",
-                    onclick: move |_| count += 1, "Up high!"
+                    onclick: move |_| set_count(count + 1),
+                    "Up high!"
                 }
                 img { class: "h-12 mx-4 my-4", src: "https://rustacean.net/assets/rustacean-flat-gesture.png" }
                 button {
                     class: "inline-flex items-center text-white bg-red-500 border-0 py-1 px-4 focus:outline-none hover:bg-gray-600",
-                    onclick: move |_| count -= 1,
+                    onclick: move |_| set_count(count - 1),
                     "Down low!"
                 }
             }

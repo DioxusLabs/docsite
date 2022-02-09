@@ -32,7 +32,7 @@ pub fn start() {
 
 pub fn app(cx: Scope) -> Element {
     cx.render(rsx! {
-        style { [include_str!("../tailwind.css")] }
+        // style { [include_str!("../tailwind.css")] }
         script { [include_str!("./darktheme.js")] }
         style { [include_str!("./components/prism/prism.css")] }
         Router {
@@ -57,11 +57,11 @@ pub fn app(cx: Scope) -> Element {
 fn home(cx: Scope) -> Element {
     cx.render(rsx!(
         div { class: "dark:bg-gray-800",
-            div { class: "relative max-w-5xl mx-auto pt-20 sm:pt-24 lg:pt-32 text-gray-600",
+            div { class: "relative max-w-5xl mx-auto px-4 pt-20 sm:pt-24 lg:pt-32 text-gray-600",
                 h1 { class: "font-extrabold text-4xl sm:text-5xl lg:text-6xl tracking-tight text-center dark:text-white",
                     "Build reliable user interfaces that run "
                     pre {
-                        class: "text-transparent text-8xl bg-clip-text pb-3 bg-gradient-to-r from-red-400 via-purple-300 to-blue-500",
+                        class: "text-transparent text-6xl lg:text-8xl bg-clip-text pb-3 bg-gradient-to-r from-red-400 via-purple-300 to-blue-500",
                         "anywhere"
                     }
                 }
@@ -94,7 +94,9 @@ fn home(cx: Scope) -> Element {
             }
 
             div { class: "container flex flex-col md:flex-row md:px-24 md:py-12 mx-auto",
-                div { class: "flex flex-col flex-shrink-0 ml-auto mr-2",
+            // div { class: "container flex flex-col md:flex-row md:px-24 md:py-12 mx-auto",
+                div { class: "lg:ml-auto lg:mr-2",
+                // div { class: "flex flex-col flex-shrink-0 ml-auto mr-2",
                     div { class: "pt-4",
                         pre {
                             code { class: "language-rust line-numbers", [include_str!("../snippets/homepage.rs")] }

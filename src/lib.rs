@@ -55,7 +55,7 @@ pub fn app(cx: Scope) -> Element {
 fn home(cx: Scope) -> Element {
     cx.render(rsx!(
         div { class: "dark:bg-gray-800",
-            div { class: "relative max-w-5xl mx-auto px-4 pt-20 sm:pt-24 lg:pt-32 text-gray-600",
+            div { class: "relative max-w-5xl mx-4 sm:mx-auto pt-20 sm:pt-24 lg:pt-32 text-gray-600",
                 h1 { class: "font-extrabold text-4xl sm:text-5xl lg:text-6xl tracking-tight text-center dark:text-white",
                     "Build reliable user interfaces that run "
                     pre {

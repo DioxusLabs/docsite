@@ -1,1 +1,0 @@
-# Lifecycle, updates, and effects

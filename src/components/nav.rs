@@ -151,7 +151,7 @@ fn LinkList(cx: Scope) -> Element {
             rsx! {
                 li { class: "group relative dropdown",
                     Link { to: "{link}", class: "py-1 px-2 {hover} {hover_bg}", "{name}" }
-                    nav { class: "group-hover:block dropdown-menu absolute hidden h-auto dd",
+                    nav { class: "dropdown-menu absolute h-auto -mt-64 group-hover:mt-0 opacity-0 group-hover:opacity-100 transition-opacity duration-250",
                         ul { class: "top-0 w-36 bg-white dark:bg-gray-800 shadow px-4 py-4 rounded",
                             links.iter().map(|(name, link)| rsx!{
                                 Link {  to: "{link}",

@@ -26,7 +26,7 @@ pub fn Err404(cx: Scope) -> Element {
                     }
                 }
                 div { class: "max-w-4xl h-64 md:h-96 mx-auto",
-                    img { class: "h-full w-full rounded-lg object-cover",
+                    img { class: "w-full rounded-lg object-cover",
                         src: "https://rustacean.net/assets/rustacean-flat-gesture.png",
                         alt: "",
                     }

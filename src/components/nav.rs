@@ -1,4 +1,5 @@
 use dioxus::{
+    events::{onmouseenter, onmouseout, onmouseover},
     prelude::*,
     router::{Link, Route, Router},
 };
@@ -7,8 +8,9 @@ pub fn Nav(cx: Scope) -> Element {
     let (show, set_show) = use_state(&cx, || false);
 
     cx.render(rsx!(
-        div {
-            div { class: "relative pt-6 lg:pt-8 pb-4 flex items-center justify-between font-semibold text-sm leading-6 dark:text-gray-200 dark:bg-gray-900 px-4 sm:px-6 md:px-8",
+        header {
+            class: "sticky top-0 z-50",
+            div { class: "pt-6 lg:pt-8 pb-4 flex items-center justify-between font-semibold text-sm leading-6 bg-white shadow dark:text-gray-200 dark:bg-gray-900 px-4 sm:px-6 md:px-8",
                 Link {
                     class: "flex title-font font-medium items-center text-gray-900"
                     to: "/",
@@ -97,44 +99,73 @@ fn MobileNav<'a>(cx: Scope<'a>, show: &'a UseState<bool>) -> Element {
     })
 }
 
+type LinkPairs<'a> = &'a [(&'a str, &'a str)];
+static LINKS: &[(&str, &str, LinkPairs)] = &[
+    (
+        "Platforms",
+        "/platforms",
+        &[
+            ("Web", "https://dioxuslabs.com/reference/web"),
+            ("Desktop", "https://dioxuslabs.com/reference/desktop"),
+            ("Mobile", "https://dioxuslabs.com/reference/mobile"),
+            ("SSR", "https://dioxuslabs.com/reference/ssr"),
+            ("TUI", "https://github.com/dioxusLabs/rink"),
+            //
+            // todo: make dedicated pages for these platforms
+            // ("Web", "/platforms/web"),
+            // ("Desktop", "/platforms/desktop"),
+            // ("Mobile", "/platforms/mobile"),
+            // ("Liveview", "/platforms/liveview"),
+            // ("SSR", "/platforms/ssr"),
+            // ("TUI", "/platforms/tui"),
+        ],
+    ),
+    (
+        "Community",
+        "https://github.com/DioxusLabs/awesome-dioxus#community",
+        &[
+            ("Discord", "https://discord.gg/XgGxMSkvUM"),
+            ("Twitter", "https://twitter.com/dioxuslabs"),
+            ("Reddit", "https://www.reddit.com/r/dioxus/"),
+        ],
+    ),
+    ("Blog", "/blog", &[]),
+    ("Reference", "https://dioxuslabs.com/reference/", &[]),
+    ("Guide", "https://dioxuslabs.com/guide/", &[]),
+];
+
 fn LinkList(cx: Scope) -> Element {
-    cx.render(rsx!{
-        li {
-            Link {
-                class: "hover:text-sky-500 dark:hover:text-sky-400",
-                to: "/",
-                "Home"
+    let hover = "hover:text-sky-500 dark:hover:text-sky-400";
+    let hover_bg = "dark:hover:bg-gray-500 hover:bg-gray-200 rounded";
+
+    let links = LINKS.iter().copied().map(|(name, link, links)| {
+        if links.is_empty() {
+            rsx! {
+                li {
+                    Link { class: "py-1 px-2 {hover} {hover_bg}", to: "{link}",
+                        "{name}"
+                    }
+                }
+            }
+        } else {
+            rsx! {
+                li { class: "group relative dropdown",
+                    Link { to: "{link}", class: "py-1 px-2 {hover} {hover_bg}", "{name}" }
+                    nav { class: "group-hover:block dropdown-menu absolute hidden h-auto dd",
+                        ul { class: "top-0 w-36 bg-white dark:bg-gray-800 shadow px-4 py-4 rounded",
+                            links.iter().map(|(name, link)| rsx!{
+                                Link {  to: "{link}",
+                                    li { class: "rounded px-1 py-1 {hover} {hover_bg}",
+                                        "{name}"
+                                    }
+                                }
+                            })
+                        }
+                    }
+                }
             }
         }
-        li {
-            a { class: "hover:text-sky-500 dark:hover:text-sky-400",
-                href: "https://github.com/DioxusLabs/awesome-dioxus#community",
-                "Community"
-            }
-        }
-        li {
-            a { class: "hover:text-sky-500 dark:hover:text-sky-400",
-                href: "https://dioxuslabs.com/guide/",
-                "Guide"
-            }
-        }
-        li {
-            a { class: "hover:text-sky-500 dark:hover:text-sky-400",
-                href: "https://dioxuslabs.com/reference/",
-                "Reference"
-            }
-        }
-        li {
-            Link { class: "hover:text-sky-500 dark:hover:text-sky-400"
-                to: "/blog",
-                "Blog"
-            }
-        }
-        li {
-            a { class: "dark:hover:text-sky-400 p-2 rounded bg-gray-600 hover:bg-gray-300 text-white",
-                href: "https://dioxuslabs.com/guide/",
-                "Get Started"
-            }
-        }
-    })
+    });
+
+    cx.render(rsx! { links })
 }

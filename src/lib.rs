@@ -18,8 +18,6 @@ pub mod components {
 
 pub fn app(cx: Scope) -> Element {
     cx.render(rsx! {
-        script { [include_str!("./darktheme.js")] }
-        style { [include_str!("./components/prism/prism.css")] }
         Router {
             components::nav::Nav {},
 
@@ -31,6 +29,7 @@ pub fn app(cx: Scope) -> Element {
             Route { to: "/platforms/", components::homepage::Homepage {} }
             Route { to: "/platforms/web", components::homepage::Homepage {} }
             Route { to: "/platforms/desktop", components::homepage::Homepage {} }
+            Route { to: "/platforms/liveview", components::homepage::Homepage {} }
             Route { to: "/platforms/mobile", components::homepage::Homepage {} }
             Route { to: "/platforms/ssr", components::homepage::Homepage {} }
             Route { to: "/platforms/tui", components::homepage::Homepage {} }
@@ -42,6 +41,6 @@ pub fn app(cx: Scope) -> Element {
 
             Route { to: "", components::notfound::Err404 {} }
         }
-        script { [include_str!("./components/prism/prism.js")]}
+        crate::components::footer::Footer {}
     })
 }

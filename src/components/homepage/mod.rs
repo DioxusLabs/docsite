@@ -15,7 +15,6 @@ pub fn Homepage(cx: Scope) -> Element {
             snippets::Snippets {}
             crate::components::blog::RecentBlogPosts {}
             call_to_action::CallToAction {}
-            crate::components::footer::Footer {}
             script { "Prism.highlightAll();" } // ensure Prism is able to highlight all our code elements
         }
     ))

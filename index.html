@@ -1,19 +1,44 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta content="text/html;charset=utf-8" http-equiv="Content-Type" />
     <meta charset="UTF-8" />
+
+    <!-- Social meta stuff -->
+    <meta property="og:title" content="Dioxus Labs" />
+    <meta
+      property="og:description"
+      content="A blog about frontend web development - tips, tricks, use cases, how-tos, examples, stories."
+    />
+    <meta property="og:url" content="https://dioxuslabs.com/" />
+    <meta
+      property="og:image"
+      content="https://nikitahl.com/images/icons/twitter-image.png"
+    />
+
+    <meta name="twitter:title" content="Frontend Dev Blog" />
+    <meta
+      name="twitter:description"
+      content="A blog about frontend web development - tips, tricks, use cases, how-tos, examples, stories."
+    />
+    <meta
+      name="twitter:image"
+      content="https://nikitahl.com/images/icons/twitter-image.png"
+    />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <!-- Trunk configuration stuff -->
     <link data-trunk rel="rust" data-wasm-opt="z" />
     <link data-trunk rel="copy-dir" href="static" />
-    <link rel="stylesheet" type="text/css" href="./tailwind.css" />
+
+    <!-- style stuff -->
+    <script src="https://cdn.tailwindcss.com"></script>
     <link
       rel="stylesheet"
       type="text/css"
       href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.0.0/github-markdown-light.min.css"
     />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <script src="https://cdn.tailwindcss.com"></script>
     <style>
       .markdown-body {
         box-sizing: border-box;
@@ -30,11 +55,11 @@
         }
       }
     </style>
+    <script src="/static/darktheme.js"></script>
+    <link rel="stylesheet" type="text/css" href="/static/prism/prism.css" />
   </head>
-
   <body>
+    <script src="/static/prism/prism.js"></script>
     <div id="main"></div>
-    <script src="./src/darktheme.js"></script>
-    <script src="./src/components/prism/prism.js"></script>
   </body>
 </html>

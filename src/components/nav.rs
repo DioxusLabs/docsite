@@ -121,6 +121,18 @@ static LINKS: &[(&str, &str, LinkPairs)] = &[
         ],
     ),
     (
+        "Projects",
+        "https://github.com/dioxuslabs",
+        &[
+            ("Fermi", "https://github.com/DioxusLabs/fermi"),
+            (
+                "Router",
+                "https://github.com/DioxusLabs/dioxus/tree/master/packages/router",
+            ),
+            ("CLI", "https://github.com/DioxusLabs/cli"),
+        ],
+    ),
+    (
         "Community",
         "https://github.com/DioxusLabs/awesome-dioxus#community",
         &[
@@ -130,8 +142,19 @@ static LINKS: &[(&str, &str, LinkPairs)] = &[
         ],
     ),
     ("Blog", "/blog", &[]),
-    ("Reference", "https://dioxuslabs.com/reference/", &[]),
-    ("Guide", "https://dioxuslabs.com/guide/", &[]),
+    (
+        "Guide",
+        "https://dioxuslabs.com/guide/",
+        &[
+            ("Guide", "https://dioxuslabs.com/guide/"),
+            ("Advanced Guides", "https://dioxuslabs.com/reference/"),
+            ("Reference", "https://dioxuslabs.com/reference/"),
+            (
+                "Router",
+                "https://github.com/DioxusLabs/dioxus/tree/master/packages/router",
+            ),
+        ],
+    ),
 ];
 
 fn LinkList(cx: Scope) -> Element {

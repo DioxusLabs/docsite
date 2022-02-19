@@ -60,8 +60,8 @@ pub fn InteractiveHeader(cx: Scope) -> Element {
             class: "flex flex-col items-center px-10 rounded mt-6 mb-2 pt-4 mr-auto hidden lg:block lg:ml-2" ,
             background_color: "hsl(220, 13%, 18%)",
 
-            div { class: "pb-3 text-white",
-                h1 { "High-Five counter: {count}" }
+            div { class: "pb-3 text-white text-center w-44",
+                h1 { "Counter: {count}" }
             }
             div { class: "flex flex-col items-center",
                 button {

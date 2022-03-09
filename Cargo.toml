@@ -7,11 +7,12 @@ edition = "2018"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+# dioxus = { path = "../../dioxus", features = [
 dioxus = { git = "https://github.com/dioxuslabs/dioxus", features = [
     "web",
     "router",
     "ssr",
-    "fermi"
+    "fermi",
 ] }
 serde = { version = "1.0.126", features = ["derive"] }
 serde_json = "1.0.64"

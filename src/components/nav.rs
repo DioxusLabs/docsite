@@ -160,7 +160,7 @@ fn LinkList(cx: Scope) -> Element {
     let links = LINKS.iter().copied().map(|(name, link, links)| {
         if links.is_empty() {
             rsx! {
-                li {
+                li { key: "{link}",
                     Link { class: "py-1 px-2 {hover} {hover_bg}", to: "{link}",
                         "{name}"
                     }
@@ -168,12 +168,12 @@ fn LinkList(cx: Scope) -> Element {
             }
         } else {
             rsx! {
-                li { class: "group relative dropdown",
+                li { class: "group relative dropdown", key: "{link}",
                     Link { to: "{link}", class: "py-1 px-2 {hover} {hover_bg}", "{name}" }
                     nav { class: "dropdown-menu absolute h-auto -mt-64 group-hover:mt-0 opacity-0 group-hover:opacity-100 transition-opacity duration-250",
                         ul { class: "top-0 w-36 bg-white dark:bg-gray-800 shadow px-4 py-4 rounded",
                             links.iter().map(|(name, link)| rsx!{
-                                Link {  to: "{link}",
+                                Link {  to: "{link}", key: "{link}",
                                     li { class: "rounded px-1 py-1 {hover} {hover_bg}",
                                         "{name}"
                                     }

@@ -33,13 +33,13 @@ pub static Footer: Component<()> = |cx| {
     .iter()
     .map(|(name, links)| {
         rsx!(
-            div { class: "lg:w-1/4 md:w-1/2 w-full px-4",
+            div { class: "lg:w-1/4 md:w-1/2 w-full px-4", key: "{name}",
                 h2 { class: "title-font font-medium text-white tracking-widest text-sm mb-3",
                     "{name}"
                 }
                 nav { class: "list-none mb-10",
                     {links.iter().map(|f| rsx!{
-                        li {
+                        li { key: "{f.0}",
                             a { class: "text-gray-400 hover:text-white",
                                 href: "{f.1}",
                                 "{f.0}"

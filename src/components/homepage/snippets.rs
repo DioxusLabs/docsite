@@ -58,7 +58,7 @@ fn snippet<'a>(cx: Scope<'a, SnippetProps<'a>>) -> Element {
                     }
                     body
                         .split('\n')
-                        .map(|paragraph| rsx!( p{ class: "leading-relaxed text-base pb-4", "{paragraph}"} ))
+                        .map(|paragraph| rsx!( p { class: "leading-relaxed text-base pb-4", "{paragraph}"} ))
                         .take(3)
                 }
                 div { class: "flex flex-col",

@@ -28,11 +28,8 @@ pub static ValueAdd: Component<()> = |cx| {
                 ].iter().enumerate().map(|(idx, (title, content))| {
                     let comp = cx.render(LazyNodes::new(move |f| f.component(IconsSet[idx], (), None, "asd")));
                     rsx!(
-                        div { class: "p-4 md:w-1/4 flex",
-                        div { class: "flex-grow lg:pl-6",
-                                // perhaps we should at a utility function to convert a component into a vnode?
-                                // todo: we wrap this in curly braces, but we shouldn't have ot
-                                // the rsx! macro sees the path syntax and automatically makes it a component...
+                        div { class: "p-4 md:w-1/4 flex", key: "{title}",
+                            div { class: "flex-grow lg:pl-6",
                                 comp,
                                 a { href: "#",
                                     h2 { class: "dark:text-white text-gray-800 text-lg title-font font-medium mb-2",
@@ -46,8 +43,8 @@ pub static ValueAdd: Component<()> = |cx| {
                                 })
                             }
                         }
-                    )}
-                )
+                    )
+                })
             }
         }
     })

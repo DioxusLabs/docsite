@@ -53,7 +53,7 @@ pub fn Hero(cx: Scope) -> Element {
 }
 
 pub fn InteractiveHeader(cx: Scope) -> Element {
-    let (count, set_count) = use_state(&cx, || 0);
+    let mut count = use_state(&cx, || 0);
 
     cx.render(rsx!{
         div {
@@ -66,13 +66,13 @@ pub fn InteractiveHeader(cx: Scope) -> Element {
             div { class: "flex flex-col items-center",
                 button {
                     class: "inline-flex items-center text-white bg-green-500 border-0 py-1 px-4 focus:outline-none hover:bg-gray-600",
-                    onclick: move |_| set_count(count + 1),
+                    onclick: move |_| count += 1,
                     "Up high!"
                 }
                 img { class: "h-12 mx-4 my-4", src: "https://rustacean.net/assets/rustacean-flat-gesture.png" }
                 button {
                     class: "inline-flex items-center text-white bg-red-500 border-0 py-1 px-4 focus:outline-none hover:bg-gray-600",
-                    onclick: move |_| set_count(count - 1),
+                    onclick: move |_| count -= 1,
                     "Down low!"
                 }
             }

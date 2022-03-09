@@ -1,9 +1,6 @@
 #![allow(non_snake_case)]
 
-use dioxus::{
-    prelude::*,
-    router::{Link, Route, Router},
-};
+use dioxus::prelude::*;
 
 pub mod icons;
 pub mod sitemap;

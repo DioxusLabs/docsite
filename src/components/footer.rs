@@ -1,4 +1,3 @@
-use crate::icons::*;
 use dioxus::prelude::*;
 
 pub static Footer: Component<()> = |cx| {
@@ -67,7 +66,7 @@ pub static Footer: Component<()> = |cx| {
                     }
                 }
                 div { class: "flex-grow flex flex-wrap md:pl-20 -mb-10 md:mt-0 mt-10 md:text-left text-center",
-                    {categories}
+                    categories
                 }
             }
             div { class: "bg-gray-900",

@@ -2,8 +2,8 @@ use super::super::snippets::*;
 use dioxus::prelude::*;
 
 pub static Snippets: Component<()> = |cx| {
-    let (snippets, _) = use_state(&cx, build_snippets);
-    let (selected_snippet, set_selected_snippet) = use_state(&cx, || 0);
+    let snippets = use_state(&cx, build_snippets);
+    let selected_snippet = use_state(&cx, || 0);
 
     cx.render(rsx! {
         section { class: "text-gray-500 bg-white body-font mx-auto sm:px-6 lg:px-24 xl:px-48 pt-12",
@@ -20,7 +20,7 @@ pub static Snippets: Component<()> = |cx| {
                                 key: "{s.title}",
                                 cursor: "pointer",
                                 class: "p-3 pr-8 hover:bg-blue-500 hover:text-blue-100 {is_selected}",
-                                onclick: move |_| set_selected_snippet(id),
+                                onclick: move |_| selected_snippet.set(id),
                                 "{s.title}"
                             })
                         })
@@ -28,7 +28,7 @@ pub static Snippets: Component<()> = |cx| {
                 }
                 div { class: "flex flex-col md:pr-10 md:mb-0 mb-6 pr-0 w-full md:w-auto md:text-left text-center w:1/2 text-gray-800",
                     snippets.iter().enumerate().map(|(id, f)| {
-                        let show = if id == *selected_snippet {"block"} else {"none"};
+                        let show = if id == **selected_snippet {"block"} else {"none"};
                         rsx!(div { style: "display: {show};", snippet( snippet: f ) })
                     })
                 }

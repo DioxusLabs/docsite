@@ -1,11 +1,7 @@
-use dioxus::{
-    events::{onmouseenter, onmouseout, onmouseover},
-    prelude::*,
-    router::{Link, Route, Router},
-};
+use dioxus::prelude::*;
 
 pub fn Nav(cx: Scope) -> Element {
-    let (show, set_show) = use_state(&cx, || false);
+    let show = use_state(&cx, || false);
 
     cx.render(rsx!(
         header {
@@ -18,7 +14,7 @@ pub fn Nav(cx: Scope) -> Element {
                     span { class: "ml-3 text-4xl dark:text-white", "dioxus" }
                 }
                 div { class: "flex items-center",
-                    MobileNav { show: set_show }
+                    MobileNav { show: show }
                     FullNav {}
                 }
             }

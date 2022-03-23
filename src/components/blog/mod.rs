@@ -20,7 +20,7 @@ impl PartialEq for &'static BlogPostDisplay {
 pub static POSTS: &[BlogPostDisplay] = &[
         BlogPostDisplay {
             category: "Release Notes",
-            date: "3 Jan 2021",
+            date: "3 Jan 2022",
             title: "Announcing Dioxus 0.1",
             description: "After months of work, we're very excited to release the first version of Dioxus! Dioxus is a new library for building interactive user interfaces with Rust. It is built around a VirtualDOM, making it portable for the web, desktop, server, mobile, and more.",
             link: "/blog/introducing-dioxus/",
@@ -29,7 +29,7 @@ pub static POSTS: &[BlogPostDisplay] = &[
 
         BlogPostDisplay {
             category: "Release Notes",
-            date: "Mar 9 2021",
+            date: "Mar 9 2022",
             title: "Announcing Dioxus 0.2",
             description: "Just over two months in, and we already a ton of awesome changes to Dioxus!",
             link: "/blog/release-020/",

@@ -14,7 +14,7 @@ pub static Footer: Component<()> = |cx| {
             "Learning",
             &[
                 ("docs.rs", "https://docs.rs/dioxus"),
-                ("Book", "https://dioxuslabs.com/book"),
+                ("Guide", "https://dioxuslabs.com/guide"),
                 (
                     "Awesome List",
                     "https://github.com/DioxusLabs/awesome-dioxus",

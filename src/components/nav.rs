@@ -120,7 +120,10 @@ static LINKS: &[(&str, &str, LinkPairs)] = &[
         "Projects",
         "https://github.com/dioxuslabs",
         &[
-            ("Fermi", "https://github.com/DioxusLabs/fermi"),
+            (
+                "Fermi",
+                "https://github.com/DioxusLabs/dioxus/tree/master/packages/fermi",
+            ),
             (
                 "Router",
                 "https://github.com/DioxusLabs/dioxus/tree/master/packages/router",

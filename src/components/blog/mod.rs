@@ -26,7 +26,6 @@ pub static POSTS: &[BlogPostDisplay] = &[
             link: "/blog/introducing-dioxus/",
             content: include_str!("../../../posts/release.html"),
         },
-
         BlogPostDisplay {
             category: "Release Notes",
             date: "Mar 9 2022",

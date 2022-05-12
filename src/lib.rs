@@ -16,32 +16,79 @@ pub mod components {
 pub fn app(cx: Scope) -> Element {
     cx.render(rsx! {
         Router {
-            components::nav::Nav {},
-
-            // Variosu homepage entrypoints
-            Route { to: "/", components::homepage::Homepage {} }
-            Route { to: "/index.html", components::homepage::Homepage {} }
-
-            // Showcase all our platforms
-            Route { to: "/platforms/", components::homepage::Homepage {} }
-            Route { to: "/platforms/web", components::homepage::Homepage {} }
-            Route { to: "/platforms/desktop", components::homepage::Homepage {} }
-            Route { to: "/platforms/liveview", components::homepage::Homepage {} }
-            Route { to: "/platforms/mobile", components::homepage::Homepage {} }
-            Route { to: "/platforms/ssr", components::homepage::Homepage {} }
-            Route { to: "/platforms/tui", components::homepage::Homepage {} }
-
-            // Blog is done manually for now :)
-            Route { to: "/blog", components::blog::BlogList {} }
-            Route { to: "/blog/", components::blog::BlogList {} }
-
-            Route { to: "/blog/introducing-dioxus/", components::blog::SinglePost { id: 0 } }
-            Route { to: "/blog/release-020/", components::blog::SinglePost { id: 1 } }
-
-            Route { to: "/blog/introducing-dioxus", components::blog::SinglePost { id: 0 } }
-            Route { to: "/blog/release-020", components::blog::SinglePost { id: 1 } }
-
-            Route { to: "", components::notfound::Err404 {} }
+            components::nav::Nav {}
+            Route {
+                to: "/",
+                components::homepage::Homepage {}
+            }
+            Route {
+                to: "/index.html",
+                components::homepage::Homepage {}
+            }
+            Route {
+                to: "/platforms/",
+                components::homepage::Homepage {}
+            }
+            Route {
+                to: "/platforms/web",
+                components::homepage::Homepage {}
+            }
+            Route {
+                to: "/platforms/desktop",
+                components::homepage::Homepage {}
+            }
+            Route {
+                to: "/platforms/liveview",
+                components::homepage::Homepage {}
+            }
+            Route {
+                to: "/platforms/mobile",
+                components::homepage::Homepage {}
+            }
+            Route {
+                to: "/platforms/ssr",
+                components::homepage::Homepage {}
+            }
+            Route {
+                to: "/platforms/tui",
+                components::homepage::Homepage {}
+            }
+            Route {
+                to: "/blog",
+                components::blog::BlogList {}
+            }
+            Route {
+                to: "/blog/",
+                components::blog::BlogList {}
+            }
+            Route {
+                to: "/blog/introducing-dioxus/",
+                components::blog::SinglePost {
+                    id: 0,
+                }
+            }
+            Route {
+                to: "/blog/release-020/",
+                components::blog::SinglePost {
+                    id: 1,
+                }
+            }
+            Route {
+                to: "/blog/introducing-dioxus",
+                components::blog::SinglePost {
+                    id: 0,
+                }
+            }
+            Route {
+                to: "/blog/release-020",
+                components::blog::SinglePost {
+                    id: 1,
+                }
+            }
+            Route {
+                to: "",
+                components::notfound::Err404 {}
+            }
         }
         crate::components::footer::Footer {}
     })

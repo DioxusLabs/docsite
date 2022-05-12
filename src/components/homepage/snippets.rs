@@ -6,7 +6,7 @@ pub static Snippets: Component<()> = |cx| {
     let selected_snippet = use_state(&cx, || 0);
 
     cx.render(rsx! {
-        section { class: "text-gray-500 bg-white body-font mx-auto sm:px-6 lg:px-24 xl:px-48 pt-12",
+        section { class: "text-gray-500 body-font mx-auto sm:px-6 lg:px-24 xl:px-48 pt-12",
             div { class: "container flex flex-col md:flex-row w:2/3 px-6 py-10 mx-auto",
                 div { class: "h-full resize-none flex-shrink-0 mb-6 pr-0 w-full md:w-auto md:text-left text-center rounded-lg shadow",
                     ul { class: "divide-y-2 divide-gray-100",

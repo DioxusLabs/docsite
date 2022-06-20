@@ -6,7 +6,7 @@ pub fn Nav(cx: Scope) -> Element {
     cx.render(rsx!(
         header {
             class: "sticky top-0 z-50",
-            div { class: "pt-6 lg:pt-8 pb-4 flex items-center justify-between font-semibold text-sm leading-6 bg-white shadow dark:text-gray-200 dark:bg-gray-900 px-4 sm:px-6 md:px-8",
+            div { class: "pt-6 lg:pt-8 pb-4 flex items-center justify-between font-semibold text-sm leading-6 bg-white shadow dark:text-gray-200 dark:bg-black px-4 sm:px-6 md:px-8",
                 Link {
                     class: "flex title-font font-medium items-center text-gray-900"
                     to: "/",

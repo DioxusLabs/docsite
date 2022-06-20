@@ -37,7 +37,7 @@ pub static ValueAdd: Component<()> = |cx| {
                                     }
                                 }
                                 content.split('\n').map(|line| rsx!{
-                                    p { class: "leading-relaxed text-gray-700 text-base pb-4 dark:text-white",
+                                    p { class: "leading-relaxed text-gray-700 text-base pb-4 dark:text-white", key: "{line}",
                                         "{line}"
                                     }
                                 })

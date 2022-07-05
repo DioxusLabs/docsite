@@ -58,31 +58,15 @@ pub fn app(cx: Scope) -> Element {
                 components::blog::BlogList {}
             }
             Route {
-                to: "/blog/",
-                components::blog::BlogList {}
-            }
-            Route {
-                to: "/blog/introducing-dioxus/",
-                components::blog::SinglePost {
-                    id: 0,
-                }
-            }
-            Route {
-                to: "/blog/release-020/",
-                components::blog::SinglePost {
-                    id: 1,
-                }
-            }
-            Route {
                 to: "/blog/introducing-dioxus",
                 components::blog::SinglePost {
-                    id: 0,
+                    post: components::blog::POST_RELEASE_010,
                 }
             }
             Route {
                 to: "/blog/release-020",
                 components::blog::SinglePost {
-                    id: 1,
+                    post: components::blog::POST_RELEASE_020,
                 }
             }
             Route {

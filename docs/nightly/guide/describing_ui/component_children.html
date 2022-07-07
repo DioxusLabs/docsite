@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>UseFuture - Dioxus Documentation</title>
+        <title>Component Children - Dioxus Documentation</title>
                 
 
         <!-- Custom HTML head -->
@@ -84,7 +84,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded affix "><a href="../index.html">Introduction</a></li><li class="chapter-item expanded "><a href="../getting_started/index.html"><strong aria-hidden="true">1.</strong> Getting Started</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../getting_started/desktop.html"><strong aria-hidden="true">1.1.</strong> Desktop</a></li><li class="chapter-item expanded "><a href="../getting_started/web.html"><strong aria-hidden="true">1.2.</strong> Web</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../getting_started/hot_reload.html"><strong aria-hidden="true">1.2.1.</strong> Hot Reload</a></li></ol></li><li class="chapter-item expanded "><a href="../getting_started/ssr.html"><strong aria-hidden="true">1.3.</strong> Server-Side Rendering</a></li><li class="chapter-item expanded "><a href="../getting_started/tui.html"><strong aria-hidden="true">1.4.</strong> Terminal UI</a></li><li class="chapter-item expanded "><a href="../getting_started/mobile.html"><strong aria-hidden="true">1.5.</strong> Mobile</a></li></ol></li><li class="chapter-item expanded "><a href="../describing_ui/index.html"><strong aria-hidden="true">2.</strong> Describing the UI</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../describing_ui/special_attributes.html"><strong aria-hidden="true">2.1.</strong> Special Attributes</a></li><li class="chapter-item expanded "><a href="../describing_ui/components.html"><strong aria-hidden="true">2.2.</strong> Components</a></li><li class="chapter-item expanded "><a href="../describing_ui/component_props.html"><strong aria-hidden="true">2.3.</strong> Props</a></li><li class="chapter-item expanded "><a href="../describing_ui/component_children.html"><strong aria-hidden="true">2.4.</strong> Component Children</a></li></ol></li><li class="chapter-item expanded "><a href="../interactivity/index.html"><strong aria-hidden="true">3.</strong> Interactivity</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../interactivity/event_handlers.html"><strong aria-hidden="true">3.1.</strong> Event Listeners</a></li><li class="chapter-item expanded "><a href="../interactivity/hooks.html"><strong aria-hidden="true">3.2.</strong> Hooks &amp; Component State</a></li><li class="chapter-item expanded "><a href="../interactivity/user_input.html"><strong aria-hidden="true">3.3.</strong> User Input</a></li><li class="chapter-item expanded "><a href="../interactivity/sharing_state.html"><strong aria-hidden="true">3.4.</strong> Sharing State</a></li><li class="chapter-item expanded "><a href="../interactivity/custom_hooks.html"><strong aria-hidden="true">3.5.</strong> Custom Hooks</a></li><li class="chapter-item expanded "><a href="../interactivity/dynamic_rendering.html"><strong aria-hidden="true">3.6.</strong> Dynamic Rendering</a></li><li class="chapter-item expanded "><a href="../interactivity/router.html"><strong aria-hidden="true">3.7.</strong> Routing</a></li></ol></li><li class="chapter-item expanded "><a href="../async/index.html"><strong aria-hidden="true">4.</strong> Async</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../async/use_future.html" class="active"><strong aria-hidden="true">4.1.</strong> UseFuture</a></li><li class="chapter-item expanded "><a href="../async/use_coroutine.html"><strong aria-hidden="true">4.2.</strong> UseCoroutine</a></li><li class="chapter-item expanded "><a href="../async/spawn.html"><strong aria-hidden="true">4.3.</strong> Spawning Futures</a></li></ol></li><li class="chapter-item expanded "><a href="../best_practices/index.html"><strong aria-hidden="true">5.</strong> Best Practices</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../best_practices/error_handling.html"><strong aria-hidden="true">5.1.</strong> Error Handling</a></li><li class="chapter-item expanded "><a href="../best_practices/antipatterns.html"><strong aria-hidden="true">5.2.</strong> Antipatterns</a></li></ol></li><li class="chapter-item expanded "><a href="../publishing/index.html"><strong aria-hidden="true">6.</strong> Publishing</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../publishing/desktop.html"><strong aria-hidden="true">6.1.</strong> Desktop</a></li><li class="chapter-item expanded "><a href="../publishing/web.html"><strong aria-hidden="true">6.2.</strong> Web</a></li><li class="spacer"></li></ol></li><li class="chapter-item expanded "><a href="../custom_renderer/index.html"><strong aria-hidden="true">7.</strong> Custom Renderer</a></li><li class="spacer"></li><li class="chapter-item expanded affix "><a href="../roadmap.html">Roadmap</a></li><li class="chapter-item expanded affix "><a href="../contributing.html">Contributing</a></li></ol>            </div>
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="../index.html">Introduction</a></li><li class="chapter-item expanded "><a href="../getting_started/index.html"><strong aria-hidden="true">1.</strong> Getting Started</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../getting_started/desktop.html"><strong aria-hidden="true">1.1.</strong> Desktop</a></li><li class="chapter-item expanded "><a href="../getting_started/web.html"><strong aria-hidden="true">1.2.</strong> Web</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../getting_started/hot_reload.html"><strong aria-hidden="true">1.2.1.</strong> Hot Reload</a></li></ol></li><li class="chapter-item expanded "><a href="../getting_started/ssr.html"><strong aria-hidden="true">1.3.</strong> Server-Side Rendering</a></li><li class="chapter-item expanded "><a href="../getting_started/tui.html"><strong aria-hidden="true">1.4.</strong> Terminal UI</a></li><li class="chapter-item expanded "><a href="../getting_started/mobile.html"><strong aria-hidden="true">1.5.</strong> Mobile</a></li></ol></li><li class="chapter-item expanded "><a href="../describing_ui/index.html"><strong aria-hidden="true">2.</strong> Describing the UI</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../describing_ui/special_attributes.html"><strong aria-hidden="true">2.1.</strong> Special Attributes</a></li><li class="chapter-item expanded "><a href="../describing_ui/components.html"><strong aria-hidden="true">2.2.</strong> Components</a></li><li class="chapter-item expanded "><a href="../describing_ui/component_props.html"><strong aria-hidden="true">2.3.</strong> Props</a></li><li class="chapter-item expanded "><a href="../describing_ui/component_children.html" class="active"><strong aria-hidden="true">2.4.</strong> Component Children</a></li></ol></li><li class="chapter-item expanded "><a href="../interactivity/index.html"><strong aria-hidden="true">3.</strong> Interactivity</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../interactivity/event_handlers.html"><strong aria-hidden="true">3.1.</strong> Event Listeners</a></li><li class="chapter-item expanded "><a href="../interactivity/hooks.html"><strong aria-hidden="true">3.2.</strong> Hooks &amp; Component State</a></li><li class="chapter-item expanded "><a href="../interactivity/user_input.html"><strong aria-hidden="true">3.3.</strong> User Input</a></li><li class="chapter-item expanded "><a href="../interactivity/sharing_state.html"><strong aria-hidden="true">3.4.</strong> Sharing State</a></li><li class="chapter-item expanded "><a href="../interactivity/custom_hooks.html"><strong aria-hidden="true">3.5.</strong> Custom Hooks</a></li><li class="chapter-item expanded "><a href="../interactivity/dynamic_rendering.html"><strong aria-hidden="true">3.6.</strong> Dynamic Rendering</a></li><li class="chapter-item expanded "><a href="../interactivity/router.html"><strong aria-hidden="true">3.7.</strong> Routing</a></li></ol></li><li class="chapter-item expanded "><a href="../async/index.html"><strong aria-hidden="true">4.</strong> Async</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../async/use_future.html"><strong aria-hidden="true">4.1.</strong> UseFuture</a></li><li class="chapter-item expanded "><a href="../async/use_coroutine.html"><strong aria-hidden="true">4.2.</strong> UseCoroutine</a></li><li class="chapter-item expanded "><a href="../async/spawn.html"><strong aria-hidden="true">4.3.</strong> Spawning Futures</a></li></ol></li><li class="chapter-item expanded "><a href="../best_practices/index.html"><strong aria-hidden="true">5.</strong> Best Practices</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../best_practices/error_handling.html"><strong aria-hidden="true">5.1.</strong> Error Handling</a></li><li class="chapter-item expanded "><a href="../best_practices/antipatterns.html"><strong aria-hidden="true">5.2.</strong> Antipatterns</a></li></ol></li><li class="chapter-item expanded "><a href="../publishing/index.html"><strong aria-hidden="true">6.</strong> Publishing</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../publishing/desktop.html"><strong aria-hidden="true">6.1.</strong> Desktop</a></li><li class="chapter-item expanded "><a href="../publishing/web.html"><strong aria-hidden="true">6.2.</strong> Web</a></li><li class="spacer"></li></ol></li><li class="chapter-item expanded "><a href="../custom_renderer/index.html"><strong aria-hidden="true">7.</strong> Custom Renderer</a></li><li class="spacer"></li><li class="chapter-item expanded affix "><a href="../roadmap.html">Roadmap</a></li><li class="chapter-item expanded affix "><a href="../contributing.html">Contributing</a></li></ol>            </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
 
@@ -122,7 +122,7 @@
                                                                         <a href="https://github.com/DioxusLabs/dioxus/edit/master/docs/guide" title="Git repository" aria-label="Git repository">
                             <i id="git-repository-button" class="fa fa-github"></i>
                         </a>
-                                                                        <a href="https://github.com/DioxusLabs/dioxus/edit/master/docs/guide/src/async/use_future.md" title="Suggest an edit" aria-label="Suggest an edit">
+                                                                        <a href="https://github.com/DioxusLabs/dioxus/edit/master/docs/guide/src/describing_ui/component_children.md" title="Suggest an edit" aria-label="Suggest an edit">
                             <i id="git-edit-button" class="fa fa-edit"></i>
                         </a>
                         
@@ -151,60 +151,78 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="usefuture"><a class="header" href="#usefuture">UseFuture</a></h1>
-<p><a href="https://docs.rs/dioxus-hooks/latest/dioxus_hooks/fn.use_future.html"><code>use_future</code></a> lets you run an async closure, and provides you with its result.</p>
-<p>For example, we can make an API request inside <code>use_future</code>:</p>
+                        <h1 id="component-children"><a class="header" href="#component-children">Component Children</a></h1>
+<p>In some cases, you may wish to create a component that acts as a container for some other content, without the component needing to know what that content is. To achieve this, create a prop of type <code>Element</code>:</p>
 <pre><pre class="playground"><code class="language-rust edition2018">
 <span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
-</span>    let future = use_future(&amp;cx, (), |_| async move {
-        reqwest::get(&quot;https://dog.ceo/api/breeds/image/random&quot;)
-            .await
-            .unwrap()
-            .json::&lt;ApiResponse&gt;()
-            .await
-    });
+</span>#[derive(Props)]
+struct ClickableProps&lt;'a&gt; {
+    href: &amp;'a str,
+    body: Element&lt;'a&gt;,
+}
+
+fn Clickable&lt;'a&gt;(cx: Scope&lt;'a, ClickableProps&lt;'a&gt;&gt;) -&gt; Element {
+    cx.render(rsx!(
+        a {
+            href: &quot;{cx.props.href}&quot;,
+            class: &quot;fancy-button&quot;,
+            &amp;cx.props.body
+        }
+    ))
+}
 <span class="boring">}
 </span></code></pre></pre>
-<p>The code inside <code>use_future</code> will be submitted to the Dioxus scheduler once the component has rendered.</p>
-<p>We can use <code>.value()</code> to get the result of the future. On the first run, since there's no data ready when the component loads, its value will be <code>None</code>.  However, once the future is finished, the component will be re-rendered and the value will now be <code>Some(...)</code>, containing the return value of the closure.</p>
-<p>We can then render that result:</p>
+<p>Then, when rendering the component, you can pass in the output of <code>cx.render(rsx!(...))</code>:</p>
 <pre><pre class="playground"><code class="language-rust edition2018">
 <span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
-</span>    cx.render(match future.value() {
-        Some(Ok(response)) =&gt; rsx! {
-            button {
-                onclick: move |_| future.restart(),
-                &quot;Click to fetch another doggo&quot;
-            }
-            div {
-                img {
-                    max_width: &quot;500px&quot;,
-                    max_height: &quot;500px&quot;,
-                    src: &quot;{response.image_url}&quot;,
-                }
-            }
-        },
-        Some(Err(_)) =&gt; rsx! { div { &quot;Loading dogs failed&quot; } },
-        None =&gt; rsx! { div { &quot;Loading dogs...&quot; } },
+</span>    cx.render(rsx! {
+        Clickable {
+            href: &quot;https://www.youtube.com/watch?v=C-M2hs3sXGo&quot;,
+            body: cx.render(rsx!(&quot;How to &quot; i {&quot;not&quot;} &quot; be seen&quot;)),
+        }
     })
 <span class="boring">}
 </span></code></pre></pre>
-<h2 id="restarting-the-future"><a class="header" href="#restarting-the-future">Restarting the Future</a></h2>
-<p>The <code>UseFuture</code> handle provides a <code>restart</code> method. It can be used to execute the future again, producing a new value.</p>
-<h2 id="dependencies"><a class="header" href="#dependencies">Dependencies</a></h2>
-<p>Often, you will need to run the future again every time some value (e.g. a prop) changes. Rather than <code>.restart</code>ing it manually, you can provide a tuple of &quot;dependencies&quot; to the hook. It will automatically re-run the future when any of those dependencies change. Example:</p>
+<blockquote>
+<p>Note: Since <code>Element&lt;'a&gt;</code> is a borrowed prop, there will be no memoization.</p>
+</blockquote>
+<blockquote>
+<p>Warning: While it may compile, do not include the same <code>Element</code> more than once in the RSX. The resulting behavior is unspecified.</p>
+</blockquote>
+<h2 id="the-children-field"><a class="header" href="#the-children-field">The <code>children</code> field</a></h2>
+<p>Rather than passing the RSX through a regular prop, you may wish to accept children similarly to how elements can have children. The &quot;magic&quot; <code>children</code> prop lets you achieve this:</p>
 <pre><pre class="playground"><code class="language-rust edition2018">
 <span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
-</span>    let future = use_future(&amp;cx, (breed,), |(breed,)| async move {
-        reqwest::get(format!(&quot;https://dog.ceo/api/breed/{breed}/images/random&quot;))
-            .await
-            .unwrap()
-            .json::&lt;ApiResponse&gt;()
-            .await
-    });
+</span>#[derive(Props)]
+struct ClickableProps&lt;'a&gt; {
+    href: &amp;'a str,
+    children: Element&lt;'a&gt;,
+}
+
+fn Clickable&lt;'a&gt;(cx: Scope&lt;'a, ClickableProps&lt;'a&gt;&gt;) -&gt; Element {
+    cx.render(rsx!(
+        a {
+            href: &quot;{cx.props.href}&quot;,
+            class: &quot;fancy-button&quot;,
+            &amp;cx.props.children
+        }
+    ))
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>This makes using the component much simpler: simply put the RSX inside the <code>{}</code> brackets – and there is no need for a <code>render</code> call or another macro!</p>
+<pre><pre class="playground"><code class="language-rust edition2018">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>    cx.render(rsx! {
+        Clickable {
+            href: &quot;https://www.youtube.com/watch?v=C-M2hs3sXGo&quot;,
+            &quot;How to &quot; i {&quot;not&quot;} &quot; be seen&quot;
+        }
+    })
 <span class="boring">}
 </span></code></pre></pre>
 
@@ -212,11 +230,11 @@
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                                                    <a rel="prev" href="../async/index.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                                    <a rel="prev" href="../describing_ui/component_props.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
                         
-                                                    <a rel="next" href="../async/use_coroutine.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                                    <a rel="next" href="../interactivity/index.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
                         
@@ -226,11 +244,11 @@
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                                    <a rel="prev" href="../async/index.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                    <a rel="prev" href="../describing_ui/component_props.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
                 
-                                    <a rel="next" href="../async/use_coroutine.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                    <a rel="next" href="../interactivity/index.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
                             </nav>

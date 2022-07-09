@@ -8,6 +8,5 @@ Cargo.lock
 !.vscode/launch.json
 !.vscode/extensions.json
 
-/public
 /pkg
 dist

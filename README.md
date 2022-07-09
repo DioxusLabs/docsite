@@ -6,10 +6,10 @@ This website is written with Dioxus, pre-generated with `dioxus_ssr`, and then r
 
 ## Development
 
-Using trunk:
+Using dioxus-cli:
 
 ```
-trunk serve
+dioxus serve
 ```
 
 

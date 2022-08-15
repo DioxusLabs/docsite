@@ -24,7 +24,7 @@ pub static ValueAdd: Component<()> = |cx| {
                     ("Static Types Everywhere", "Eliminate a whole class of bugs at compile time with static typing for every library."),
                     ("If it compiles, it works", "Fearlessly refactor even the largest of apps with powerful compile-time guarantees."),
                     ("First-class error handling", "No more uncaught exceptions. Components can easily abort rendering without crashing the entire app."),
-                    ("Incredible inline documentation", "Comprenehsive doc comments provide MDN hints and guides right under your finger tips."),
+                    ("Incredible inline documentation", "Comprehensive doc comments provide MDN hints and guides right under your finger tips."),
                 ].iter().enumerate().map(|(idx, (title, content))| {
                     let comp = cx.render(LazyNodes::new(move |f| f.component(IconsSet[idx], (), None, "asd")));
                     rsx!(

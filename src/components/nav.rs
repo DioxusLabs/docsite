@@ -20,7 +20,7 @@ pub fn Nav(cx: Scope) -> Element {
             }
             show.then(|| {
                 rsx!{
-                    ul { class: "flex items-center flex-col", gap: "10px",
+                    ul { class: "flex items-center flex-col dark:bg-gray-800 md:py-0 py-4 font-semibold bg-white md:bg-none", gap: "10px",
                         LinkList {}
                     }
                 }
@@ -155,18 +155,18 @@ fn LinkList(cx: Scope) -> Element {
     let links = LINKS.iter().copied().map(|(name, link, links)| {
         if links.is_empty() {
             rsx! {
-                li { key: "{link}",
-                    Link { class: "py-1 px-2 {hover} {hover_bg}", to: "{link}",
+                li { class: "md:text-left text-center", key: "{link}",
+                    Link { class: "md:py-1 md:px-2 dark:text-white {hover} {hover_bg}", to: "{link}",
                         "{name}"
                     }
                 }
             }
         } else {
             rsx! {
-                li { class: "group relative dropdown", key: "{link}",
-                    Link { to: "{link}", class: "py-1 px-2 {hover} {hover_bg}", "{name}" }
-                    nav { class: "dropdown-menu absolute h-auto -mt-64 group-hover:mt-0 opacity-0 group-hover:opacity-100 transition-opacity duration-250",
-                        ul { class: "top-0 w-36 bg-white dark:bg-gray-800 shadow px-4 py-4 rounded",
+                li { class: "group relative dropdown md:text-left text-center", key: "{link}",
+                    Link { to: "{link}", class: "py-1 md:px-2 {hover} {hover_bg} dark:text-white", "{name}" }
+                    nav { class: "dropdown-menu dark:bg-gray-800 dark:text-white md:absolute md:h-auto md:-mt-64 md:group-hover:mt-0 md:opacity-0 md:group-hover:opacity-100 md:transition-opacity md:duration-250 rounded",
+                        ul { class: "top-0 w-36 md:bg-white md:dark:bg-gray-800 md:shadow md:px-4 md:py-4 pt-2 pb-2 rounded",
                             links.iter().map(|(name, link)| rsx!{
                                 Link {  to: "{link}", key: "{link}",
                                     li { class: "rounded px-1 py-1 {hover} {hover_bg}",

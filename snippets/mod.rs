@@ -30,10 +30,11 @@ fn Stateful(cx: Scope) -> Element {
 
 /// # Custom Props
 ///
-/// Dioxus components use hooks to store state between renders. The `use_state` hooks make it easy to update state from
-/// event listeners attached to elements in the component. Whenever the state is modified, the component will be re-rendered.
+/// Dioxus accepts component properties as simple Rust structs that implement `Props`. With two flavors 
+/// - owned and borrowed props - you can pick what fits your use case. For simple cases, you can even
+/// "inline" them as arguments to the component function.
 ///
-/// Thanks to Rust's ownership rules, it's impossible to misuse the `use_state` hook.
+/// Thanks to Rust's ownership and borrowing rules, and even optional props fields you can safely use them.
 #[derive(Props, PartialEq)]
 struct PropBased {
     name: String,

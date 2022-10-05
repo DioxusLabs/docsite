@@ -5,7 +5,7 @@ pub fn Nav(cx: Scope) -> Element {
     let show = use_state(&cx, || false);
 
     cx.render(rsx! {
-        header { class: "sticky top-0 z-50 bg-white shadow dark:text-gray-200 dark:bg-gray-900 dark:border-b border-stone-600",
+        header { class: "sticky top-0 z-50 bg-white shadow dark:text-gray-200 dark:bg-ghmetal dark:border-b border-stone-600",
             div { class: "py-4 px-12 max-w-screen-2xl mx-auto flex items-center justify-between font-semibold text-sm leading-6",
             // div { class: "py-4 flex items-center justify-between font-semibold text-sm leading-6 bg-white shadow dark:text-gray-200 dark:bg-black px-48",
             // div { class: "py-4 flex items-center justify-between font-semibold text-sm leading-6 bg-white shadow dark:text-gray-200 dark:bg-black px-4 sm:px-6 md:px-8",

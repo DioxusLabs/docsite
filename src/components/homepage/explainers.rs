@@ -57,7 +57,7 @@ pub fn Explainers(cx: Scope) -> Element {
                     h2 { class: "mb-6 text-3xl leading-tight md:text-4xl md:leading-tight lg:text-3xl lg:leading-tight font-heading font-mono font-bold",
                         "Inspired by React, made for Rust"
                     }
-                    p { class: "mb-6", "Dioxus apps are built declaritively with an ergonomic JSX-like syntax. Reusability is achieved through functional hooks and encapsulated components." }
+                    p { class: "mb-6", "Dioxus apps are built declaratively with an ergonomic JSX-like syntax. Reusability is achieved through functional hooks and encapsulated components." }
                     p { class: "mb-3",
                         strong { class: "font-bold", "Know React? You already know Dioxus." }
                         " Dioxus borrows the same concepts like hooks, components, elements, context, suspense, and more."
@@ -77,7 +77,7 @@ pub fn Explainers(cx: Scope) -> Element {
                     h2 { class: "mb-6 text-3xl leading-tight md:text-4xl md:leading-tight lg:text-3xl lg:leading-tight font-heading font-mono font-bold",
                         "Inspired by React, made for Rust"
                     }
-                    p { class: "mb-6", "Dioxus apps are built declaritively with an ergonomic JSX-like syntax. Reusability is achieved through functional hooks and encapsulated components." }
+                    p { class: "mb-6", "Dioxus apps are built declaratively with an ergonomic JSX-like syntax. Reusability is achieved through functional hooks and encapsulated components." }
                     p { class: "mb-3",
                         strong { class: "font-bold", "Know React? You already know Dioxus." }
                         " Dioxus borrows the same concepts like hooks, components, elements, context, suspense, and more."

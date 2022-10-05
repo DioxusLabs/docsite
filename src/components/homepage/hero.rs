@@ -155,7 +155,7 @@ pub fn InteractiveHeader(cx: Scope) -> Element {
 }
 
 fn AnimatedIcon(cx: Scope) -> Element {
-    let s = include_str!("../../../static/multiplatform.svg");
+    let s = include_str!("../../../public/static/multiplatform.svg");
     let mut count = use_state(&cx, || 0);
 
     cx.render(rsx! {

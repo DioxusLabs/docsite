@@ -1,74 +1,100 @@
-use super::super::snippets::*;
 use dioxus::prelude::*;
 
-pub static Snippets: Component<()> = |cx| {
-    let snippets = use_state(&cx, build_snippets);
+#[derive(PartialEq, Eq, Debug)]
+pub struct Snippet {
+    pub title: &'static str,
+    pub filename: &'static str,
+    pub code: &'static str,
+}
+
+pub static SNIPPETS: &[Snippet] = &[
+    Snippet {
+        title: "Hello world",
+        filename: "readme.rs",
+        code: include_str!("../../../snippets/readme.rs"),
+    },
+    Snippet {
+        title: "Components",
+        filename: "components.rs",
+        code: include_str!("../../../snippets/components.rs"),
+    },
+    Snippet {
+        title: "Async",
+        filename: "async.rs",
+        code: include_str!("../../../snippets/async.rs"),
+    },
+    Snippet {
+        title: "Fetching",
+        filename: "fetching.rs",
+        code: include_str!("../../../snippets/fetching.rs"),
+    },
+    Snippet {
+        title: "Global State",
+        filename: "globalstate.rs",
+        code: include_str!("../../../snippets/fermi.rs"),
+    },
+];
+
+pub fn Snippets(cx: Scope) -> Element {
     let selected_snippet = use_state(&cx, || 0);
 
     cx.render(rsx! {
-        section { class: "text-gray-500 body-font mx-auto sm:px-6 lg:px-24 xl:px-48 pt-12",
-            div { class: "container flex flex-col md:flex-row w:2/3 px-6 py-10 mx-auto",
-                div { class: "h-full resize-none flex-shrink-0 mb-6 pr-0 w-full md:w-auto md:text-left text-center rounded-lg shadow",
-                    ul { class: "divide-y-2 divide-gray-100",
-                        snippets.iter().enumerate().map(|(id, s)| {
-                            let is_selected = if *selected_snippet == id {
-                                "bg-blue-600 text-blue-200"
-                            } else {
-                                ""
-                            };
-                            rsx!(li {
-                                key: "{s.title}",
-                                cursor: "pointer",
-                                class: "p-3 pr-8 hover:bg-blue-500 hover:text-blue-100 {is_selected}",
-                                onclick: move |_| selected_snippet.set(id),
-                                "{s.title}"
+        section { class: "dark:text-white mt-4 -mx-4 sm:mx-0 lg:mt-0 lg:col-span-7 xl:col-span-6",
+            div { class: "relative overflow-hidden flex bg-ghmetal max-h-[60vh] sm:max-h-[none] sm:rounded-xl dark:backdrop-blur dark:ring-1 dark:ring-inset dark:ring-white/10 shadow-3xl",
+            // div { class: "relative overflow-hidden flex bg-neutral-800 max-h-[60vh] sm:max-h-[none] sm:rounded-xl dark:bg-neutral-900/70 dark:backdrop-blur dark:ring-1 dark:ring-inset dark:ring-white/10 shadow-3xl",
+            // div { class: "relative overflow-hidden flex bg-neutral-800 h-[31.625rem] max-h-[60vh] sm:max-h-[none] sm:rounded-xl lg:h-[34.6875rem] xl:h-[31.625rem] dark:bg-neutral-900/70 dark:backdrop-blur dark:ring-1 dark:ring-inset dark:ring-white/10 shadow-3xl",
+                // div { class: "relative w-full flex flex-col",
+                    // div { class: "flex-none",
+                    //     div { class: "flex items-center h-8 space-x-1.5 px-3",
+                    //         div { class: "w-2.5 h-2.5 bg-red-600 rounded-full" }
+                    //         div { class: "w-2.5 h-2.5 bg-yellow-600 rounded-full" }
+                    //         div { class: "w-2.5 h-2.5 bg-green-600 rounded-full" }
+                    //     }
+                    // }
+                div { class: "relative min-h-0 flex-auto flex flex-col w-full",
+                    div { class: "flex-none overflow-auto whitespace-nowrap flex relative min-w-full bg-ghdarkmetal pt-3 px-3", style: "opacity: 1",
+                        ul { class: "flex text-sm leading-6 text-gray-100",
+                            SNIPPETS.iter().enumerate().map(|(id, snippet)| {
+                                let selected = **selected_snippet == id;
+
+                                let bg_selected = match selected {
+                                    true => "bg-ghmetal border-neutral-500/30 border text-white border-b-0",
+                                    false => "bg-ghdarkmetal",
+                                };
+
+                                rsx! {
+                                    li { class: "flex-none",
+                                        button { class: "relative py-2 px-4 rounded-t-md {bg_selected}", r#type: "button", onclick: move |_| selected_snippet.set(id),
+                                            "{snippet.filename}"
+                                            if selected {
+                                                Some(rsx!{ span { class: "absolute z-10 bottom-0 inset-x-0 h-2 bg-ghmetal" } })
+                                                // Some(rsx!{ span { class: "absolute z-10 bottom-0 inset-x-3 h-px bg-ghmetal" } })
+                                            } else {
+                                                None
+                                            }
+                                        }
+                                    }
+                                }
                             })
-                        })
+
+                        }
+                        div { class: "absolute bottom-0 inset-x-0 h-px bg-neutral-500/30" }
                     }
-                }
-                div { class: "flex flex-col md:pr-10 md:mb-0 mb-6 pr-0 w-full md:w-auto md:text-left text-center w:1/2 text-gray-800",
-                    snippets.iter().enumerate().map(|(id, f)| {
-                        let show = if id == **selected_snippet {"block"} else {"none"};
-                        rsx!(div { style: "display: {show};", snippet( snippet: f ) })
+
+                    SNIPPETS.iter().enumerate().map(|(id, snippet)| {
+                        // We're working with prism here and need force it back into action occasionally
+                        // Instead of hiding/showing, we just render all the code blocks at once and hide them with css instead
+                        let show = match **selected_snippet {
+                            a if a == id => "block",
+                            _ => "hidden"
+                        };
+
+                        rsx! {
+                            div { key: "{snippet.title}", class: "w-full flex-auto flex min-h-0 {show}", style: "opacity: 1", div { class: "w-full flex-auto flex min-h-0 overflow-auto", div { class: "w-full relative flex-auto", pre { class: "flex min-h-full text-sm leading-6", code { class: "language-rust line-numbers", "{snippet.code}" } } } } }
+                        }
                     })
                 }
-            }
-        }
-    })
-};
-
-#[derive(PartialEq, Props)]
-pub struct SnippetProps<'a> {
-    snippet: &'a Snippet,
-}
-fn snippet<'a>(cx: Scope<'a, SnippetProps<'a>>) -> Element {
-    let Snippet {
-        title,
-        body,
-        code,
-        caller_id: _,
-    } = &cx.props.snippet;
-
-    cx.render(rsx! {
-        section { class: "text-gray-600 body-font",
-            div { class: "container sm:px-5 mx-auto",
-                div { class: "md:pr-12 md:mb-0 mb-10",
-                    h1 { class: "sm:text-3xl text-2xl font-medium title-font mb-2 text-black",
-                        "{title}"
-                    }
-                    body
-                        .split('\n')
-                        .map(|paragraph| rsx!( p { class: "leading-relaxed text-base pb-4", "{paragraph}"} ))
-                        .take(3)
-                }
-                div { class: "flex flex-col",
-                    pre {
-                        code {
-                            class: "language-rust line-numbers",
-                            "{code}"
-                        }
-                    }
-                }
+                // }
             }
         }
     })

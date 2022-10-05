@@ -52,6 +52,35 @@
     <!-- <script src="https://cdn.tailwindcss.com"></script> -->
     <!-- <link data-trunk rel="css" href="/tailwind.css" /> -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://rsms.me/inter/inter.css" />
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              ghmetal: "#24292f",
+              ghdarkmetal: "#161b22",
+            },
+            fontFamily: {
+              sans: ["Inter var", "sans-serif"],
+            },
+            boxShadow: {
+              "3xl": "0 35px 60px -1ww5px rgba(0, 0, 0, 0.5)",
+              pop: "0px 0px 30px -10px rgba(0, 0, 0, 0.5)",
+            },
+          },
+        },
+
+        // theme: {
+        //   extend: {
+        //     colors: {
+        //       clifford: "#da373d",
+        //     },
+        //   },
+        // },
+      };
+    </script>
+
     <link
       rel="stylesheet"
       type="text/css"

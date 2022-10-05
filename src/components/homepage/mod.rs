@@ -10,7 +10,7 @@ pub mod value_add;
 
 pub fn Homepage(cx: Scope) -> Element {
     cx.render(rsx! {
-        div { class: "dark:bg-gradient-to-b from-gray-700 to-gray-900",
+        div { class: "dark:bg-gradient-to-b from-gray-700 to-ghdarkmetal",
             hero::Hero {}
             AvailablePlatforms {}
             // ProjectCards {}

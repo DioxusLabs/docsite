@@ -1,74 +1,121 @@
 <!DOCTYPE html>
 <html>
+  <head>
+    <title>{app_title}</title>
+    <meta content="text/html;charset=utf-8" http-equiv="Content-Type" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta charset="UTF-8" />
 
-<head>
-  <title>{app_title}</title>
-  <meta content="text/html;charset=utf-8" http-equiv="Content-Type" />
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta charset="UTF-8" />
+    <link rel="icon shortcut" type="image/png" href="static/favicon.png" />
 
-  <link rel="icon shortcut" type="image/png" href="static/favicon.png" />
+    <!-- Social meta stuff -->
+    <!-- open graph -->
+    <meta
+      property="og:title"
+      content="Dioxus - Reliable Rust apps that run anywhere"
+    />
 
-  <!-- Social meta stuff -->
-  <!-- open graph -->
-  <meta property="og:title" content="Dioxus - Reliable Rust apps that run anywhere" />
+    <meta property="og:type" content="website" />
 
-  <meta property="og:type" content="website" />
+    <meta
+      property="og:description"
+      content="An elegant GUI library for Rust, inspired by React. Supports Web, Desktop, SSR, Liveview, and Mobile."
+    />
 
-  <meta property="og:description"
-    content="An elegant GUI library for Rust, inspired by React. Supports Web, Desktop, SSR, Liveview, and Mobile." />
+    <meta property="og:url" content="https://dioxuslabs.com/" />
 
-  <meta property="og:url" content="https://dioxuslabs.com/" />
+    <meta
+      property="og:image"
+      content="https://dioxuslabs.com/static/opengraph.png"
+    />
 
-  <meta property="og:image" content="https://dioxuslabs.com/static/opengraph.png" />
+    <!-- twitter -->
+    <meta
+      name="twitter:title"
+      content="Dioxus - Reliable Rust apps that run anywhere"
+    />
+    <meta
+      name="twitter:description"
+      content="An elegant GUI library for Rust, inspired by React. Supports Web, Desktop, SSR, Liveview, and Mobile."
+    />
+    <meta
+      name="twitter:image"
+      content="https://dioxuslabs.com/static/opengraph.png"
+    />
+    <meta name="twitter:card" content="summary_large_image" />
 
-  <!-- twitter -->
-  <meta name="twitter:title" content="Dioxus - Reliable Rust apps that run anywhere" />
-  <meta name="twitter:description"
-    content="An elegant GUI library for Rust, inspired by React. Supports Web, Desktop, SSR, Liveview, and Mobile." />
-  <meta name="twitter:image" content="https://dioxuslabs.com/static/opengraph.png" />
-  <meta name="twitter:card" content="summary_large_image" />
+    <!-- style stuff -->
+    <!-- <script src="https://cdn.tailwindcss.com"></script> -->
+    <!-- <link data-trunk rel="css" href="/tailwind.css" /> -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://rsms.me/inter/inter.css" />
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              ghmetal: "#24292f",
+              ghdarkmetal: "#161b22",
+            },
+            fontFamily: {
+              sans: ["Inter var", "sans-serif"],
+            },
+            boxShadow: {
+              "3xl": "0 35px 60px -1ww5px rgba(0, 0, 0, 0.5)",
+              pop: "0px 0px 30px -10px rgba(0, 0, 0, 0.5)",
+            },
+          },
+        },
 
-  <!-- style stuff -->
-  <!-- <script src="https://cdn.tailwindcss.com"></script> -->
-  <!-- <link data-trunk rel="css" href="/tailwind.css" /> -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" type="text/css"
-    href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.0.0/github-markdown-light.min.css" />
-  <style>
-    .markdown-body {
-      box-sizing: border-box;
-      min-width: 200px;
-      max-width: 980px;
-      margin: 0 auto;
-      padding: 45px;
-      list-style: disc;
-    }
+        // theme: {
+        //   extend: {
+        //     colors: {
+        //       clifford: "#da373d",
+        //     },
+        //   },
+        // },
+      };
+    </script>
 
-    @media (max-width: 767px) {
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.0.0/github-markdown-light.min.css"
+    />
+
+    <style>
       .markdown-body {
-        padding: 15px;
+        box-sizing: border-box;
+        min-width: 200px;
+        max-width: 980px;
+        margin: 0 auto;
+        padding: 45px;
+        list-style: disc;
       }
-    }
-  </style>
-  <script src="/static/darktheme.js"></script>
-  <link rel="stylesheet" type="text/css" href="/static/prism/prism.css" />
-  {style_include}
-</head>
 
-<body>
-  <div id="main"></div>
-  <!-- Note the usage of `type=module` here as this is an ES6 module -->
-  <script src="/static/prism/prism.js"></script>
-  <script type="module">
-    import init from "/{base_path}/assets/dioxus/{app_name}.js";
-    init("/{base_path}/assets/dioxus/{app_name}_bg.wasm").then(wasm => {
-      if (wasm.__wbindgen_start == undefined) {
-        wasm.main();
+      @media (max-width: 767px) {
+        .markdown-body {
+          padding: 15px;
+        }
       }
-    });
-  </script>
-  {script_include}
-</body>
+    </style>
+    <script src="/static/darktheme.js"></script>
+    <link rel="stylesheet" type="text/css" href="/static/prism/prism.css" />
+    {style_include}
+  </head>
 
+  <body>
+    <div id="main"></div>
+    <!-- Note the usage of `type=module` here as this is an ES6 module -->
+    <script src="/static/prism/prism.js"></script>
+    <script type="module">
+      import init from "/{base_path}/assets/dioxus/{app_name}.js";
+      init("/{base_path}/assets/dioxus/{app_name}_bg.wasm").then((wasm) => {
+        if (wasm.__wbindgen_start == undefined) {
+          wasm.main();
+        }
+      });
+    </script>
+    {script_include}
+  </body>
 </html>

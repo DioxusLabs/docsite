@@ -34,9 +34,7 @@ pub static Stacks: Component<()> = |cx| {
 
 pub static ArrowRight: Component<()> = |cx| {
     cx.render(rsx! {
-        svg { class: "w-4 h-4 ml-1", stroke_linejoin: "round", stroke: "currentColor", fill: "none", view_box: "0 0 24 24", stroke_width: "2", stroke_linecap: "round",
-            path { d: "M5 12h14M12 5l7 7-7 7" }
-        }
+        svg { class: "w-4 h-4 ml-1", stroke_linejoin: "round", stroke: "currentColor", fill: "none", view_box: "0 0 24 24", stroke_width: "2", stroke_linecap: "round", path { d: "M5 12h14M12 5l7 7-7 7" } }
     })
 };
 
@@ -221,7 +219,7 @@ pub static Search: Component<()> = |cx| {
     ))
 };
 
-pub static github2: Component<()> = |cx| {
+pub static Github2: Component<()> = |cx| {
     cx.render(rsx!(
         svg { class: "w-5 h-5",
             "viewBox": "0 0 16 16",
@@ -232,4 +230,23 @@ pub static github2: Component<()> = |cx| {
             }
         }
     ))
+};
+
+pub static IconCheckGh: Component<()> = |cx| {
+    cx.render(rsx! {
+        svg {
+            class: "octicon octicon-check js-clipboard-check-icon d-inline-block d-none",
+            fill: "rgb(26, 127, 55)",
+            height: "24",
+            version: "1.1",
+            "aria_hidden": "true",
+            width: "24",
+            view_box: "0 0 16 16",
+            "data_view_component": "true",
+            path {
+                d: "M13.78 4.22a.75.75 0 010 1.06l-7.25 7.25a.75.75 0 01-1.06 0L2.22 9.28a.75.75 0 011.06-1.06L6 10.94l6.72-6.72a.75.75 0 011.06 0z",
+                fill_rule: "evenodd"
+            }
+        }
+    })
 };

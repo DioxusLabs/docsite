@@ -1,6 +1,6 @@
 use crate::icons;
 use dioxus::prelude::*;
-use dioxus::router::Link;
+use dioxus_router::Link;
 
 #[derive(PartialEq)]
 pub struct BlogPost {
@@ -30,10 +30,7 @@ pub const POST_RELEASE_010: BlogPost = BlogPost {
     content: include_str!("../../../posts/release.html"),
 };
 
-pub const POSTS: &[BlogPost] = &[
-    POST_RELEASE_020,
-    POST_RELEASE_010,
-];
+pub const POSTS: &[BlogPost] = &[POST_RELEASE_020, POST_RELEASE_010];
 
 pub fn BlogList(cx: Scope) -> Element {
     cx.render(rsx!(
@@ -41,7 +38,7 @@ pub fn BlogList(cx: Scope) -> Element {
             div { class: "container lg:px-48 pt-12 pb-12 mx-auto",
                 div { class: "-my-8 divide-y-2 divide-gray-100",
                     // Header
-                    blog_header(),
+                    BlogHeader {},
 
                     // Individual Post starts here
                     POSTS.iter().rev().enumerate().map(|(id, BlogPost { category, date, title, description, link, .. })| rsx!{
@@ -80,13 +77,11 @@ pub fn SinglePost(cx: Scope, post: BlogPost) -> Element {
                     // Header
                     // blog_header()
 
+                    script { "Prism.highlightAll()" }
                     div { class: "flex w-full mb-20 flex-wrap list-none",
-                        style {
-                            ".markdown-body ul {{ list-style: disc; }}"
-                            ".markdown-body li {{ display: list-item; }}"
-                        }
-                        article { class: "markdown-body", dangerous_inner_html: format_args!("{}", content), }
-                        script {"Prism.highlightAll()"}
+                        style { ".markdown-body ul {{ list-style: disc; }}", ".markdown-body li {{ display: list-item; }}" }
+                        article { class: "markdown-body", dangerous_inner_html: format_args!("{}", content) }
+                        script { "Prism.highlightAll()" }
                     }
                 }
             }
@@ -94,13 +89,13 @@ pub fn SinglePost(cx: Scope, post: BlogPost) -> Element {
     })
 }
 
-fn blog_header(cx: Scope) -> Element {
-    rsx!(cx,
+fn BlogHeader(cx: Scope) -> Element {
+    render!(
         section { class: "py-20",
             div { class: "container px-4 mx-auto",
 
                 Link { to: "/blog"
-                    h2 { class: "mb-8 md:mb-16 text-5xl lg:text-6xl font-semibold font-heading",
+                    h2 { class: "mb-8 md:mb-16 text-5xl lg:text-6xl font-semibold font-heading font-mono",
                         "Dioxus Official Blog"
                     }
                 }
@@ -123,11 +118,12 @@ fn blog_header(cx: Scope) -> Element {
 
 pub static RecentBlogPosts: Component<()> = |cx| {
     cx.render(rsx! {
-        section { class: "text-gray-600 body-font overflow-hidden",
-            div { class: "container px-6 lg:px-40 py-12 mx-auto",
-                div { class: "-my-8 divide-y-2 divide-gray-100",
-                    POSTS.iter().enumerate().map(|(id, post)| rsx!{ BlogPostItem { post: post, id: id } })
+        section { class: "body-font overflow-hidden",
+            div { class: "container px-6 lg:px-40 pt-24 pb-36 mx-auto",
+                div { class: "flex flex-col w-full mb-10",
+                    h1 { class: "sm:text-3xl text-2xl font-medium title-font mb-4 dark:text-white font-mono", "Recent Blog Posts" }
                 }
+                div { class: "-my-8 divide-y-2 divide-gray-100", POSTS.iter().enumerate().map(|(id, post)| rsx!{ BlogPostItem { post: post, id: id } }) }
             }
         }
     })

@@ -10,7 +10,7 @@ pub mod value_add;
 
 pub fn Homepage(cx: Scope) -> Element {
     cx.render(rsx! {
-        div { class: "dark:bg-gradient-to-b from-gray-900 to-gray-800",
+        div { class: "dark:bg-gradient-to-b from-gray-700 to-gray-900",
             hero::Hero {}
             AvailablePlatforms {}
             // ProjectCards {}
@@ -97,7 +97,7 @@ fn AvailablePlatforms(cx: Scope) -> Element {
                     snippets::Snippets {}
                 }
                 div { class: "ml-24 max-w-screen-lg",
-                    div { class: "w-8", div { class: "w-1 mx-auto bg-ghmetal h-16 relative z-10" } }
+                    div { class: "w-8", div { class: "w-1 mx-auto bg-ghmetal dark:bg-white h-16 relative z-10" } }
                     Platforms {}
                 }
             }
@@ -107,9 +107,7 @@ fn AvailablePlatforms(cx: Scope) -> Element {
 
 fn IconSplit(cx: Scope) -> Element {
     cx.render(rsx! {
-        svg {
-            class: "mx-auto",
-            fill: "#161b22",
+        svg { class: "mx-auto fill-[#161b22] dark:fill-white",
             version: "1.1",
             view_box: "0 0 24 24",
             width: "24",
@@ -188,13 +186,13 @@ fn Platform<'a>(
             div { class: "w-8",
                 div { class: "flex flex-col h-full mx-auto",
                     if !last {
-                        rsx! { div { class: "bg-ghmetal w-1 h-12 mx-auto" } }
+                        rsx! { div { class: "bg-ghmetal dark:bg-white w-1 h-12 mx-auto" } }
                     } else {
-                        rsx! { div { class: "bg-ghmetal w-1 h-8 mx-auto" } }
+                        rsx! { div { class: "bg-ghmetal dark:bg-white w-1 h-8 mx-auto" } }
                     }
                     div { class:"mx-auto w-full", IconSplit {} }
                     if !last {
-                        Some(rsx!{ div { class: "bg-ghmetal w-1 h-full mx-auto" } })
+                        Some(rsx!{ div { class: "bg-ghmetal dark:bg-white w-1 h-full mx-auto" } })
                     } else {
                         None
                     }
@@ -203,7 +201,7 @@ fn Platform<'a>(
 
             Link { class: "min-w-lg mb-12 p-8 rounded max-w-screen-md hover:shadow-pop rounded-lg", to: to,
             // div { class: "min-w-lg p-8 m-8 bg-slate-800 dark:bg-slate-900/70 dark:backdrop-blur dark:ring-1 dark:ring-inset dark:ring-white/10 rounded shadow-xl",
-                h2 { class: "text-2xl text-gray-800 font-semibold font-mono pb-2", *name }
+                h2 { class: "text-2xl text-gray-800 font-semibold font-mono pb-2 dark:text-gray-100 ", *name }
                 p { class: "text-md text-gray-500 dark:text-gray-400", *content },
                 children
             }

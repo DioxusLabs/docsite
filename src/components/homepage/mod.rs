@@ -20,10 +20,10 @@ pub fn Homepage(cx: Scope) -> Element {
 
             // value_add::ValueAdd {}
             crate::components::blog::RecentBlogPosts {}
-            call_to_action::CallToAction {}
             // ensure Prism is able to highlight all our code elements
             script { "Prism.highlightAll();" }
         }
+        call_to_action::CallToAction {}
     })
 }
 

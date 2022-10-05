@@ -2,7 +2,8 @@ use crate::icons;
 use dioxus::prelude::*;
 use dioxus_router::Link;
 
-pub struct BlogPostDisplay {
+#[derive(PartialEq)]
+pub struct BlogPost {
     category: &'static str,
     date: &'static str,
     title: &'static str,
@@ -11,32 +12,27 @@ pub struct BlogPostDisplay {
     content: &'static str,
 }
 
-impl PartialEq for &'static BlogPostDisplay {
-    fn eq(&self, other: &Self) -> bool {
-        std::ptr::eq(self, other)
-    }
-}
+pub const POST_RELEASE_020: BlogPost = BlogPost {
+    category: "Release Notes",
+    date: "Mar 9 2022",
+    title: "Announcing Dioxus 0.2",
+    description: "Just over two months in, and we already have a ton of awesome changes to Dioxus!",
+    link: "/blog/release-020/",
+    content: include_str!("../../../posts/release020.html"),
+};
 
-pub static POSTS: &[BlogPostDisplay] = &[
-        BlogPostDisplay {
-            category: "Release Notes",
-            date: "3 Jan 2022",
-            title: "Announcing Dioxus 0.1",
-            description: "After months of work, we're very excited to release the first version of Dioxus! Dioxus is a new library for building interactive user interfaces with Rust. It is built around a VirtualDOM, making it portable for the web, desktop, server, mobile, and more.",
-            link: "/blog/introducing-dioxus/",
-            content: include_str!("../../../posts/release.html"),
-        },
-        BlogPostDisplay {
-            category: "Release Notes",
-            date: "Mar 9 2022",
-            title: "Announcing Dioxus 0.2",
-            description: "Just over two months in, and we already a ton of awesome changes to Dioxus!",
-            link: "/blog/release-020/",
-            content: include_str!("../../../posts/release020.html"),
-        },
-    ];
+pub const POST_RELEASE_010: BlogPost = BlogPost {
+    category: "Release Notes",
+    date: "Jan 3 2022",
+    title: "Announcing Dioxus 0.1",
+    description: "After months of work, we're very excited to release the first version of Dioxus! Dioxus is a new library for building interactive user interfaces with Rust. It is built around a VirtualDOM, making it portable for the web, desktop, server, mobile, and more.",
+    link: "/blog/introducing-dioxus/",
+    content: include_str!("../../../posts/release.html"),
+};
 
-pub static BlogList: Component = |cx| {
+pub const POSTS: &[BlogPost] = &[POST_RELEASE_020, POST_RELEASE_010];
+
+pub fn BlogList(cx: Scope) -> Element {
     cx.render(rsx!(
         section { class: "text-gray-600 body-font overflow-hidden",
             div { class: "container lg:px-48 pt-12 pb-12 mx-auto",
@@ -45,8 +41,8 @@ pub static BlogList: Component = |cx| {
                     BlogHeader {},
 
                     // Individual Post starts here
-                    POSTS.iter().rev().enumerate().map(|(_, BlogPostDisplay { category, date, title, description, link, .. })| rsx!{
-                        div { class: "py-8 flex flex-wrap md:flex-nowrap", id: "{title}",
+                    POSTS.iter().rev().enumerate().map(|(id, BlogPost { category, date, title, description, link, .. })| rsx!{
+                        div { class: "py-8 flex flex-wrap md:flex-nowrap",
                             div { class: "md:w-64 md:mb-0 mb-6 flex-shrink-0 flex flex-col",
                                 span { class: "font-semibold title-font text-gray-700", "{category}" }
                                 span { class: "mt-1 text-gray-500 text-sm", "{date}" }
@@ -67,11 +63,11 @@ pub static BlogList: Component = |cx| {
             }
         }
     ))
-};
+}
 
 #[inline_props]
-pub fn SinglePost(cx: Scope, id: usize) -> Element {
-    let BlogPostDisplay { content, .. } = &POSTS[*id];
+pub fn SinglePost(cx: Scope, post: BlogPost) -> Element {
+    let BlogPost { content, .. } = post;
 
     cx.render(rsx! {
 
@@ -134,8 +130,8 @@ pub static RecentBlogPosts: Component<()> = |cx| {
 };
 
 #[inline_props]
-fn BlogPostItem(cx: Scope, post: &'static BlogPostDisplay, id: usize) -> Element {
-    let BlogPostDisplay {
+fn BlogPostItem(cx: Scope, post: &'static BlogPost, id: usize) -> Element {
+    let BlogPost {
         category,
         date,
         title,

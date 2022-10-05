@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>{app_title}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta content="text/html;charset=utf-8" http-equiv="Content-Type" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta charset="UTF-8" />
 
+    <title>Dioxus | An elegant GUI library for Rust</title>
     <link rel="icon shortcut" type="image/png" href="static/favicon.png" />
 
     <!-- Social meta stuff -->
@@ -44,45 +44,19 @@
     />
     <meta name="twitter:card" content="summary_large_image" />
 
+    <!-- Trunk configuration stuff -->
+    <link data-trunk rel="rust" data-wasm-opt="z" />
+    <link data-trunk rel="copy-dir" href="static" />
+
     <!-- style stuff -->
     <!-- <script src="https://cdn.tailwindcss.com"></script> -->
     <!-- <link data-trunk rel="css" href="/tailwind.css" /> -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://rsms.me/inter/inter.css" />
-    <script>
-      tailwind.config = {
-        theme: {
-          extend: {
-            colors: {
-              ghmetal: "#24292f",
-              ghdarkmetal: "#161b22",
-            },
-            fontFamily: {
-              sans: ["Inter var", "sans-serif"],
-            },
-            boxShadow: {
-              "3xl": "0 35px 60px -1ww5px rgba(0, 0, 0, 0.5)",
-              pop: "0px 0px 30px -10px rgba(0, 0, 0, 0.5)",
-            },
-          },
-        },
-
-        // theme: {
-        //   extend: {
-        //     colors: {
-        //       clifford: "#da373d",
-        //     },
-        //   },
-        // },
-      };
-    </script>
-
     <link
       rel="stylesheet"
       type="text/css"
       href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.0.0/github-markdown-light.min.css"
     />
-
     <style>
       .markdown-body {
         box-sizing: border-box;
@@ -101,21 +75,9 @@
     </style>
     <script src="/static/darktheme.js"></script>
     <link rel="stylesheet" type="text/css" href="/static/prism/prism.css" />
-    {style_include}
   </head>
-
   <body>
-    <div id="main"></div>
-    <!-- Note the usage of `type=module` here as this is an ES6 module -->
     <script src="/static/prism/prism.js"></script>
-    <script type="module">
-      import init from "/{base_path}/assets/dioxus/{app_name}.js";
-      init("/{base_path}/assets/dioxus/{app_name}_bg.wasm").then((wasm) => {
-        if (wasm.__wbindgen_start == undefined) {
-          wasm.main();
-        }
-      });
-    </script>
-    {script_include}
+    <div id="main"></div>
   </body>
 </html>

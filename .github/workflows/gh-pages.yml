@@ -17,10 +17,10 @@ jobs:
           override: true
           target: wasm32-unknown-unknown
       - uses: Swatinem/rust-cache@v1
-      - run: wget -qO- https://github.com/thedodd/trunk/releases/download/v0.14.0/trunk-x86_64-unknown-linux-gnu.tar.gz | tar -xzf-
+      - run: cargo install --git https://github.com/DioxusLabs/cli
 
       - name: Build
-        run: ./trunk build --release && cp dist/index.html dist/404.html
+        run: dioxus build --release && cp dist/index.html dist/404.html
 
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@v4.2.3

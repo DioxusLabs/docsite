@@ -42,7 +42,7 @@ const CARDS: &[(&str, &str)] = &[
     ),
     (
         "LiveView",
-        "Build faster than ever: your app lives on the server, elminating the need for a dedicated backend API."
+        "Build faster than ever: your app lives on the server, eliminating the need for a dedicated backend API."
     ),
     (
         "TUI",
@@ -157,7 +157,7 @@ fn Platforms(cx: Scope) -> Element {
             Platform {
                 to: "https://github.com/DioxusLabs/dioxus/tree/master/packages/liveview",
                 name: "LiveView and LiveComponents",
-                content: "Render your app entirely on the server. Zero backend configuration capable of carring 10s of thousands of actve clients. Integrates with Axum, Actix, Warp, Salvo, and Tokamak.",
+                content: "Render your app entirely on the server. Zero backend configuration capable of handling thousands of active clients. Integrates with Axum, Actix, Warp, Salvo, and Tokamak.",
                 last: true
             }
         }

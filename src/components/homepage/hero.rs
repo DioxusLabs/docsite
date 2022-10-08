@@ -3,12 +3,12 @@ use dioxus::prelude::*;
 
 pub fn Hero(cx: Scope) -> Element {
     cx.render(rsx! {
-        div { class: "flex flex-wrap items-center pb-12 px-12 max-w-screen-2xl mx-auto",
+        div { class: "flex flex-wrap items-center pb-12 px-3 md:px-6 xl:px-12 max-w-screen-2xl mx-auto",
             div { class: "relative w-1/2 mx-4 sm:mx-auto pt-5 sm:pt-24 lg:pt-24 text-gray-600",
             // div { class: "relative max-w-5xl mx-4 sm:mx-auto pt-5 sm:pt-24 lg:pt-32 text-gray-600",
                 // div { class: "flex flex-row",
                     // img { src: "https://avatars.githubusercontent.com/u/79236386?s=400", class: "w-auto aspect-square" },
-                h1 { class: "text-[8em] font-mono dark:text-white text-ghdarkmetal",
+                h1 { class: "text-[5em] md:text-[6em] xl:text-[8em] font-mono dark:text-white text-ghdarkmetal",
                 // h1 { class: "text-[8em] font-mono dark:text-white ml-8 text-transparent bg-clip-text pb-3 bg-gradient-to-b from-sky-400 to-sky-200",
                 // h1 { class: "text-[8em] font-mono dark:text-white ml-8 text-transparent bg-clip-text pb-3 bg-gradient-to-r from-rose-500 via-red-400 to-red-500",
                 // h1 { class: "text-[8em] font-mono dark:text-white ml-8 text-transparent bg-clip-text pb-3 bg-gradient-to-r from-red-400 via-purple-300 to-blue-500",

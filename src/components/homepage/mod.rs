@@ -91,13 +91,13 @@ fn AvailablePlatforms(cx: Scope) -> Element {
             div { class: "container mx-auto max-w-screen-lg",
 
                 div { class: "relative",
-                    h1 { class: "text-3xl tracking-tight dark:text-white font-mono text-ghdarkmetal flex flex-row pb-4 mb-4",
+                    h1 { class: "text-3xl tracking-tight dark:text-white font-mono text-ghdarkmetal flex flex-row pb-4 mb-4 justify-center lg:justify-start px-5 md:px-0",
                         "One codebase, any platform."
                     }
                     snippets::Snippets {}
                 }
-                div { class: "ml-24 max-w-screen-lg",
-                    div { class: "w-8", div { class: "w-1 mx-auto bg-ghmetal dark:bg-white h-16 relative z-10" } }
+                div { class: "ml-3 lg:ml-12 xl:ml-24 max-w-screen-lg",
+                    div { class: "w-8 ml-[-4px] lg:ml-[0px]", div { class: "w-1 mx-auto bg-ghmetal dark:bg-white h-16 relative z-10" } }
                     Platforms {}
                 }
             }

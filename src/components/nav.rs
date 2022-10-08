@@ -22,7 +22,7 @@ pub fn Nav(cx: Scope) -> Element {
             }
             show.then(|| {
                 rsx! {
-                    ul { class: "flex items-center flex-col", gap: "10px", LinkList {} }
+                    ul { class: "flex items-center flex-col py-4", gap: "10px", LinkList {} }
                 }
             })
         }
@@ -163,20 +163,20 @@ fn LinkList(cx: Scope) -> Element {
         if links.is_empty() {
             rsx! {
                 li { key: "{link}",
-                    Link { class: "py-1 px-2 {hover} {hover_bg}", to: "{link}", "{name}" }
+                    Link { class: "ml-[-3.8em] md:ml-0 md:py-1 md:px-2 {hover} {hover_bg} text-lg md:text-sm", to: "{link}", "{name}" }
                 }
             }
         } else {
             rsx! {
                 li { key: "{link}", class: "group relative dropdown",
-                    span { class: "py-1 px-2 {hover} {hover_bg} cursor-default", "{name}" }
+                    span { class: "py-1 px-[0.25rem] md:px-2 text-lg md:text-sm {hover} {hover_bg} cursor-default", "{name}" }
                     // Link { to: "{link}", class: "py-1 px-2 {hover} {hover_bg}", "{name}" }
                     // Link { to: "{link}", class: "py-1 px-2 {hover} {hover_bg}", "{name}" }
-                    nav { class: "dropdown-menu absolute h-auto -mt-64 group-hover:mt-0 opacity-0 group-hover:opacity-100 transition-opacity duration-250",
-                        ul { class: "top-0 w-36 bg-white dark:bg-gray-800 shadow px-4 py-4 rounded",
+                    nav { class: "md:dropdown-menu md:absolute h-auto md:-mt-64 md:group-hover:mt-0 md:opacity-0 md:group-hover:opacity-100 md:transition-opacity md:duration-250",
+                        ul { class: "top-0 w-36 md:bg-white dark:md:bg-gray-800 md:shadow md:px-4 md:py-4 rounded",
                             links.iter().map(|(name, link)| rsx!{
                                 Link {  to: "{link}", key: "{link}",
-                                    li { class: "rounded px-1 py-1 {hover} {hover_bg}",
+                                    li { class: "rounded px-1 py-1 {hover} {hover_bg} text-base md:text-sm",
                                         "{name}"
                                     }
                                 }

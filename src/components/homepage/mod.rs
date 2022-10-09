@@ -9,17 +9,18 @@ pub mod snippets;
 pub mod value_add;
 
 pub fn Homepage(cx: Scope) -> Element {
+    // value_add::ValueAdd {}
+    // Projecchildren: right}
+    // explainers::Explainers {}
+    // snippets::Snippets {}
+
     cx.render(rsx! {
-        div { class: "dark:bg-gradient-to-b from-gray-700 to-ghdarkmetal",
+        div { class: "",
             hero::Hero {}
             AvailablePlatforms {}
-            // ProjectCards {}
-            // explainers::Explainers {}
-            // snippets::Snippets {}
-            featured_examples::FeaturedExamples {}
+            // featured_examples::FeaturedExamples {}
+            // crate::components::blog::RecentBlogPosts {}
 
-            // value_add::ValueAdd {}
-            crate::components::blog::RecentBlogPosts {}
             // ensure Prism is able to highlight all our code elements
             script { "Prism.highlightAll();" }
         }
@@ -57,12 +58,6 @@ const CARDS: &[(&str, &str)] = &[
 fn ProjectCards(cx: Scope) -> Element {
     cx.render(rsx! {
         section { class: "py-12",
-            // div { class: "max-w-xl lg:max-w-3xl mx-auto text-center ",
-            //     p {
-            //         class: "mb-8 text-base leading-relaxed lg:text-xl lg:leading-relaxed text-gray-500",
-            //         "Supported Platforms"
-            //     }
-            // }
             div { class: "container mx-auto px-4 px-6 lg:px-64",
                 div { class: "flex flex-wrap -mx-3",
                     CARDS.iter().map(|(title, description)| rsx! {
@@ -87,18 +82,89 @@ fn ProjectCards(cx: Scope) -> Element {
 
 fn AvailablePlatforms(cx: Scope) -> Element {
     cx.render(rsx! {
-        section { class: "pt-36",
+        section { class: "pt-36 w-full dark:bg-ideblack",
             div { class: "container mx-auto max-w-screen-lg",
-
-                div { class: "relative",
-                    h1 { class: "text-3xl tracking-tight dark:text-white font-mono text-ghdarkmetal flex flex-row pb-4 mb-4",
-                        "One codebase, any platform."
+                div { class: "relative ",
+                    div { class: "flex flex-col items-center justify-center text-center max-w-screen-lg mx-auto pb-20",
+                        // span { class: "text-xl text-blue-300", "Portable" }
+                        h1 { class: "text-[3.3em] font-bold tracking-tight dark:text-white font-mono text-ghdarkmetal pb-4 mb-4 ",
+                            "One codebase, any platform."
+                        }
+                        p { class: "text-xl text-base text-gray-500 dark:text-gray-500 pb-4 max-w-screen-sm",
+                            "Dioxus is a framework for building user interfaces. It is designed to be portable, allowing you to build apps for the web, desktop, mobile, and more."
+                        }
                     }
                     snippets::Snippets {}
                 }
-                div { class: "ml-24 max-w-screen-lg",
-                    div { class: "w-8", div { class: "w-1 mx-auto bg-ghmetal dark:bg-white h-16 relative z-10" } }
-                    Platforms {}
+            }
+            div { class: "max-w-screen-xl mx-auto pb-64 px-16 text-white",
+                TriShow {
+                    left: render!( "" ),
+                    center: render!( "" ),
+                    right: render!( "Build for the web using Rust and WebAssembly. As fast as SolidJS and more robust than React. Integrated hot reloading for instant iterations." ),
+                    to: "https://dioxuslabs.com/reference/web",
+                    title: "Web with WASM",
+                }
+                TriShow {
+                    left: render!( "" ),
+                    center: render!( "" ),
+                    right: render!( "Lightweight (<2mb) desktop and mobile apps with zero configuration. Choose between WebView or WGPU-enabled renderers. Runs on macOS, Windows, Linux, iOS, and Android." ),
+                    to: "https://dioxuslabs.com/reference/desktop",
+                    title: "Desktop and Mobile",
+                }
+                TriShow {
+                    to: "https://github.com/DioxusLabs/dioxus/tree/master/packages/tui",
+                    title: "Terminal User Interfaces",
+                    right: render!("Quickly convert any CLI tool to a beautiful interactive user interface with just a few lines of code. Runs anywhere with a terminal.")
+                    left: render!( "" ),
+                    center: render!( "" ),
+                }
+                TriShow {
+                    to: "https://dioxuslabs.com/reference/ssr",
+                    title: "Fullstack Apps",
+                    right: render!("Pre-render on the server, and hydrate on the client. Perfect lighthouse scores and performance over 1000x better than Node and Python. Perfect for static site generation or fullstack apps.")
+                    left: render!( "" ),
+                    center: render!( "" ),
+                }
+                TriShow {
+                    to: "https://github.com/DioxusLabs/dioxus/tree/master/packages/liveview",
+                    title: "LiveView and LiveComponents",
+                    right: render!("Render your app entirely on the server. Zero backend configuration capable of handling thousands of active clients. Integrates with Axum, Actix, Warp, Salvo, and Tokamak.",)
+                    left: render!( "" ),
+                    center: render!( "" ),
+                }
+            }
+        }
+    })
+}
+
+#[inline_props]
+fn TriShow<'a>(
+    cx: Scope<'a>,
+    left: Element<'a>,
+    center: Element<'a>,
+    right: Element<'a>,
+    title: &'static str,
+    to: &'static str,
+) -> Element {
+    cx.render(rsx! {
+        div { class: "w-full flex flex-row justify-center",
+            div { class: "grow basis-0",
+                left,
+            }
+            div { class: "flex flex-col items-center",
+                div { class: "w-0 h-10 border-dashed border border-[#444]" }
+                IconSplit {}
+                div { class: "w-0 h-40 border-dashed border border-[#444]", center }
+            }
+            // div { class: "min-w-lg p-8 m-8 bg-slate-800 dark:bg-slate-900/70 dark:backdrop-blur dark:ring-1 dark:ring-inset dark:ring-white/10 rounded shadow-xl",
+            // p { class: "text-md text-gray-500 dark:text-gray-400", *content },
+            div { class: "grow basis-0 ",
+                Link { to: to,
+                    div { class: "min-w-lg mb-12 p-8 rounded max-w-screen-md hover:shadow-pop rounded-lg p-8",
+                        h2 { class: "text-2xl text-gray-800 font-semibold font-mono pb-2 dark:text-gray-100 ", *title }
+                        right
+                    }
                 }
             }
         }
@@ -107,7 +173,7 @@ fn AvailablePlatforms(cx: Scope) -> Element {
 
 fn IconSplit(cx: Scope) -> Element {
     cx.render(rsx! {
-        svg { class: "mx-auto fill-[#161b22] dark:fill-white",
+        svg { class: "mx-auto fill-[#444] dark:fill-white",
             version: "1.1",
             view_box: "0 0 24 24",
             width: "24",
@@ -130,39 +196,6 @@ fn IconSplit(cx: Scope) -> Element {
 //     ("Fullstack Apps", "Pre-render on the server, and hydrate on the client. Perfect lighthouse scores and performance over 1000x better than Node and Python. Perfect for static site generation or fullstack apps."),
 //     ("LiveView and LiveComponents", "Render your app entirely on the server. Zero backend configuration capable of carring 10s of thousands of actve clients. Integrates with Axum, Actix, Warp, Salvo, and Tokamak." ),
 // ]
-
-fn Platforms(cx: Scope) -> Element {
-    cx.render(rsx! {
-        ul {
-            Platform {
-                to: "https://dioxuslabs.com/reference/web",
-                name: "Web with WASM",
-                content: "Build for the web using Rust and WebAssembly. As fast as SolidJS and more robust than React. Integrated hot reloading for instant iterations."
-            }
-            Platform {
-                to: "https://dioxuslabs.com/reference/desktop",
-                name: "Desktop and Mobile",
-                content: "Lightweight (<2mb) desktop and mobile apps with zero configuration. Choose between WebView or WGPU-enabled renderers. Runs on macOS, Windows, Linux, iOS, and Android."
-            }
-            Platform {
-                to: "https://github.com/DioxusLabs/dioxus/tree/master/packages/tui",
-                name: "Commandline Tools",
-                content: "Quickly convert any commandline tool to a beautiful interactive user interface with just a few lines of code. Runs anywhere with a terminal."
-            }
-            Platform {
-                to: "https://dioxuslabs.com/reference/ssr",
-                name: "Fullstack Apps",
-                content: "Pre-render on the server, and hydrate on the client. Perfect lighthouse scores and performance over 1000x better than Node and Python. Perfect for static site generation or fullstack apps."
-            }
-            Platform {
-                to: "https://github.com/DioxusLabs/dioxus/tree/master/packages/liveview",
-                name: "LiveView and LiveComponents",
-                content: "Render your app entirely on the server. Zero backend configuration capable of handling thousands of active clients. Integrates with Axum, Actix, Warp, Salvo, and Tokamak.",
-                last: true
-            }
-        }
-    })
-}
 
 // ("Web", "https://dioxuslabs.com/reference/web"),
 // ("Desktop", "https://dioxuslabs.com/reference/desktop"),

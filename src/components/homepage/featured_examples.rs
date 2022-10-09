@@ -2,7 +2,7 @@ use dioxus::prelude::*;
 
 pub fn FeaturedExamples(cx: Scope) -> Element {
     cx.render(rsx! {
-        section { class: "body-font",
+        section { class: "body-font w-full",
             div { class: "container px-6 lg:px-40 py-24 mx-auto",
                 div { class: "flex flex-col w-full mb-10",
                     h1 { class: "sm:text-3xl text-2xl font-medium title-font mb-4 dark:text-white font-mono", "Feature-packed examples" }

@@ -88,10 +88,10 @@ fn AvailablePlatforms(cx: Scope) -> Element {
                     div { class: "flex flex-col items-center justify-center text-center max-w-screen-lg mx-auto pb-20",
                         // span { class: "text-xl text-blue-300", "Portable" }
                         h1 { class: "text-[3.3em] font-bold tracking-tight dark:text-white font-mono text-ghdarkmetal pb-4 mb-4 ",
-                            "One codebase, any platform."
+                            "One codebase, every platform."
                         }
-                        p { class: "text-xl text-base text-gray-500 dark:text-gray-500 pb-4 max-w-screen-sm",
-                            "Dioxus is a framework for building user interfaces. It is designed to be portable, allowing you to build apps for the web, desktop, mobile, and more."
+                        p { class: "text-xl text-gray-500 dark:text-gray-500 pb-4 max-w-screen-sm",
+                            ""
                         }
                     }
                     snippets::Snippets {}
@@ -149,14 +149,8 @@ fn TriShow<'a>(
 ) -> Element {
     cx.render(rsx! {
         div { class: "w-full flex flex-row justify-center",
-            div { class: "grow basis-0",
-                left,
-            }
-            div { class: "flex flex-col items-center",
-                div { class: "w-0 h-10 border-dashed border border-[#444]" }
-                IconSplit {}
-                div { class: "w-0 h-40 border-dashed border border-[#444]", center }
-            }
+            div { class: "grow basis-0", left }
+            TriPadding { center }
             // div { class: "min-w-lg p-8 m-8 bg-slate-800 dark:bg-slate-900/70 dark:backdrop-blur dark:ring-1 dark:ring-inset dark:ring-white/10 rounded shadow-xl",
             // p { class: "text-md text-gray-500 dark:text-gray-400", *content },
             div { class: "grow basis-0 ",
@@ -169,6 +163,17 @@ fn TriShow<'a>(
             }
         }
     })
+}
+
+#[inline_props]
+fn TriPadding<'a>(cx: Scope<'a>, children: Element<'a>) -> Element {
+    render!(
+        div { class: "flex flex-col items-center",
+            div { class: "w-0 h-10 border-dashed border border-[#444]" }
+            IconSplit {}
+            div { class: "w-0 h-40 border-dashed border border-[#444]", children }
+        }
+    )
 }
 
 fn IconSplit(cx: Scope) -> Element {

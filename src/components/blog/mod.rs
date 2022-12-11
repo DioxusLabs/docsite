@@ -12,6 +12,15 @@ pub struct BlogPost {
     content: &'static str,
 }
 
+pub const POST_TEMPLATE: BlogPost = BlogPost {
+    category: "Tech",
+    date: "Dec 11, 2022",
+    title: "Making Dioxus (almost) as fast as SolidJS",
+    description:
+        "Using a new technique called subtree memoization, Dioxus is now almost as fast as SolidJS.",
+    link: "/blog/templates-diffing/",
+    content: include_str!("../../../posts/templates.html"),
+};
 pub const POST_RELEASE_020: BlogPost = BlogPost {
     category: "Release Notes",
     date: "Mar 9 2022",
@@ -30,7 +39,7 @@ pub const POST_RELEASE_010: BlogPost = BlogPost {
     content: include_str!("../../../posts/release.html"),
 };
 
-pub const POSTS: &[BlogPost] = &[POST_RELEASE_020, POST_RELEASE_010];
+pub const POSTS: &[BlogPost] = &[POST_TEMPLATE, POST_RELEASE_020, POST_RELEASE_010];
 
 pub fn BlogList(cx: Scope) -> Element {
     cx.render(rsx!(
@@ -41,7 +50,7 @@ pub fn BlogList(cx: Scope) -> Element {
                     BlogHeader {},
 
                     // Individual Post starts here
-                    POSTS.iter().rev().enumerate().map(|(id, BlogPost { category, date, title, description, link, .. })| rsx!{
+                    POSTS.iter().enumerate().map(|(id, BlogPost { category, date, title, description, link, .. })| rsx!{
                         div { class: "py-8 flex flex-wrap md:flex-nowrap",
                             div { class: "md:w-64 md:mb-0 mb-6 flex-shrink-0 flex flex-col",
                                 span { class: "font-semibold title-font text-gray-700", "{category}" }

@@ -12,7 +12,7 @@ static IconsSet: &[Component<()>; 8] = &[
     icons::Icon2,
 ];
 
-pub static ValueAdd: Component<()> = |cx| {
+pub fn ValueAdd(cx: Scope) -> Element {
     cx.render(rsx! {
         section { class: "text-gray-600 body-font",
             div { class: "container mx-auto py-12 px-6 lg:px-40",
@@ -27,10 +27,9 @@ pub static ValueAdd: Component<()> = |cx| {
                         ("First-class error handling", "No more uncaught exceptions. Components can easily abort rendering without crashing the entire app."),
                         ("Incredible inline documentation", "Comprehensive doc comments provide MDN hints and guides right under your finger tips."),
                     ].iter().enumerate().map(|(idx, (title, content))| {
-                        let comp = cx.render(LazyNodes::new(move |f| f.component(IconsSet[idx], (), None, "asd")));
                         rsx! {
                             div { class: "p-4 md:w-1/4 flex", key: "{title}",
-                                div { class: "flex-grow lg:pl-6", comp,
+                                div { class: "flex-grow lg:pl-6", cx.component(IconsSet[idx], (), title),
                                     a { href: "#",
                                         h2 { class: "dark:text-white text-gray-800 text-lg title-font font-medium mb-2", "{title}" }
                                     }
@@ -43,4 +42,4 @@ pub static ValueAdd: Component<()> = |cx| {
             }
         }
     })
-};
+}

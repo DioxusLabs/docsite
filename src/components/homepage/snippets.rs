@@ -36,7 +36,7 @@ pub static SNIPPETS: &[Snippet] = &[
 ];
 
 pub fn Snippets(cx: Scope) -> Element {
-    let selected_snippet = use_state(&cx, || 0);
+    let selected_snippet = use_state(cx, || 0);
 
     cx.render(rsx! {
         section { class: "dark:text-white mt-4 sm:mx-0 lg:mt-0 lg:col-span-7 xl:col-span-6",

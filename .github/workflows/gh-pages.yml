@@ -16,12 +16,14 @@ jobs:
           toolchain: stable
           override: true
           target: wasm32-unknown-unknown
+      - uses: actions-rs/install@v0.1
+        with:
+          crate: dioxus-cli
+          version: latest
+          use-tool-cache: true
       - uses: Swatinem/rust-cache@v1
-      - run: cargo install --git https://github.com/DioxusLabs/cli
-
       - name: Build
         run: dioxus build --release && cp dist/index.html dist/404.html
-
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@v4.2.3
         with:

@@ -9,19 +9,19 @@ jobs:
   build-deploy:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
       - uses: actions-rs/toolchain@v1
         with:
           profile: minimal
           toolchain: stable
           override: true
           target: wasm32-unknown-unknown
+      - uses: Swatinem/rust-cache@v1
       - uses: actions-rs/install@v0.1
         with:
           crate: dioxus-cli
           version: latest
           use-tool-cache: true
-      - uses: Swatinem/rust-cache@v1
+      - uses: actions/checkout@v2
       - name: Build
         run: dioxus build --release && cp dist/index.html dist/404.html
       - name: Deploy 🚀

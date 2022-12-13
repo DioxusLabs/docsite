@@ -3,7 +3,7 @@ use dioxus::prelude::*;
 
 pub static CallToAction: Component<()> = |cx| {
     cx.render(rsx!{
-        section { class: "text-gray-400 bg-ghdarkmetal body-font",
+        section { class: "text-gray-400 bg-ideblack body-font",
             div { class: "container px-5 py-12 mx-auto",
                 div { class: "lg:w-2/3 flex flex-col sm:flex-row items-center items-start mx-auto",
                     img { class: "h-12 mx-4", src: "{FERROUS_LOGO}" }

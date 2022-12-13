@@ -37,8 +37,8 @@ code[class*="language-"] *::selection {
 }
 
 pre[class*="language-"] {
-    padding: 1em;
-    margin: .5em 0;
+    padding: 1.5em;
+    /* margin: .5em 0; */
     overflow: auto;
     /* background: #1e1e1e; */
 }
@@ -509,7 +509,7 @@ pre[class*=language-].line-numbers>code {
     left: -3.8em;
     width: 3em;
     letter-spacing: -1px;
-    border-right: 1px solid #999;
+    /* border-right: 1px solid #999; */
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;

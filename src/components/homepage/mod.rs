@@ -21,9 +21,10 @@ pub fn Homepage(cx: Scope) -> Element {
             // DeveloperExperience {}
             // Stats {}
             // JumpStart {}
+            featured_examples::FeaturedExamples {}
+
             crate::components::blog::RecentBlogPosts {}
 
-            // featured_examples::FeaturedExamples {}
 
             // ensure Prism is able to highlight all our code elements
             script { "Prism.highlightAll();" }

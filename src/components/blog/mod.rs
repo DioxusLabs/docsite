@@ -43,31 +43,33 @@ pub const POSTS: &[BlogPost] = &[POST_TEMPLATE, POST_RELEASE_020, POST_RELEASE_0
 
 pub fn BlogList(cx: Scope) -> Element {
     cx.render(rsx!(
-        section { class: "text-gray-600 body-font overflow-hidden",
+        section { class: "text-gray-600 body-font overflow-hidden dark:bg-ideblack",
             div { class: "container lg:px-48 pt-12 pb-12 mx-auto",
                 div { class: "-my-8 px-8 divide-y-2 divide-gray-100",
                     // Header
                     BlogHeader {},
 
-                    // Individual Post starts here
-                    POSTS.iter().enumerate().map(|(id, BlogPost { category, date, title, description, link, .. })| rsx!{
-                        div { class: "py-8 flex flex-wrap md:flex-nowrap",
-                            div { class: "md:w-64 md:mb-0 mb-6 flex-shrink-0 flex flex-col",
-                                span { class: "font-semibold title-font text-gray-700", "{category}" }
-                                span { class: "mt-1 text-gray-500 text-sm", "{date}" }
-                            }
-                            div { class: "md:flex-grow",
-                                h2 { class: "text-2xl font-medium text-gray-900 title-font mb-2", "{title}" }
-                                p { class: "leading-relaxed", "{description}" }
-                                Link {
-                                    class: "text-indigo-500 inline-flex items-center mt-4",
-                                    to: "{link}",
-                                    "Read more"
-                                    icons::ArrowRight {}
-                                }
-                            }
-                        }
-                    })
+
+                    RecentBlogPosts {}
+                    // // Individual Post starts here
+                    // POSTS.iter().enumerate().map(|(id, BlogPost { category, date, title, description, link, .. })| rsx!{
+                    //     div { class: "py-8 flex flex-wrap md:flex-nowrap",
+                    //         div { class: "md:w-64 md:mb-0 mb-6 flex-shrink-0 flex flex-col",
+                    //             span { class: "font-semibold title-font text-gray-700", "{category}" }
+                    //             span { class: "mt-1 text-gray-500 text-sm", "{date}" }
+                    //         }
+                    //         div { class: "md:flex-grow",
+                    //             h2 { class: "text-2xl font-medium text-gray-900 title-font mb-2", "{title}" }
+                    //             p { class: "leading-relaxed", "{description}" }
+                    //             Link {
+                    //                 class: "text-indigo-500 inline-flex items-center mt-4",
+                    //                 to: "{link}",
+                    //                 "Read more"
+                    //                 icons::ArrowRight {}
+                    //             }
+                    //         }
+                    //     }
+                    // })
                 }
             }
         }
@@ -79,7 +81,7 @@ pub fn SinglePost(cx: Scope, post: BlogPost) -> Element {
     let BlogPost { content, .. } = post;
 
     cx.render(rsx! {
-        section { class: "text-gray-600 body-font overflow-hidden",
+        section { class: "text-gray-600 body-font overflow-hidden dark:bg-ideblack",
             div { class: "container lg:px-20 xl:px-48 pt-12 pb-12 mx-auto",
                 div { class: "-my-8 divide-y-2 divide-gray-100",
                     // Header
@@ -100,7 +102,7 @@ pub fn SinglePost(cx: Scope, post: BlogPost) -> Element {
 fn BlogHeader(cx: Scope) -> Element {
     cx.render(rsx!(
         section { class: "py-20",
-            div { class: "container px-4 mx-auto",
+            div { class: "container px-4 mx-auto dark:text-white",
 
                 Link { to: "/blog"
                     h2 { class: "mb-8 md:mb-16 text-5xl lg:text-6xl font-semibold font-heading font-mono",
@@ -110,7 +112,7 @@ fn BlogHeader(cx: Scope) -> Element {
 
                 div { class: "flex flex-wrap items-center",
                     div { class: "inline-block max-w-xl mb-6 md:mb-0",
-                        p { class: "text-xl text-gray-500",
+                        p { class: "text-xl text-gray-500 dark:text-gray-300",
                             "Updates, changelogs, and general musings of the Dioxus community."
                         }
                     }

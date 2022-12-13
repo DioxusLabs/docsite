@@ -18,9 +18,9 @@ pub fn Homepage(cx: Scope) -> Element {
         div {
             hero::Hero {}
             AvailablePlatforms {}
-            DeveloperExperience {}
-            Stats {}
-            JumpStart {}
+            // DeveloperExperience {}
+            // Stats {}
+            // JumpStart {}
             crate::components::blog::RecentBlogPosts {}
 
             // featured_examples::FeaturedExamples {}
@@ -101,7 +101,8 @@ fn AvailablePlatforms(cx: Scope) -> Element {
                     snippets::Snippets {}
                 }
             }
-            div { class: "max-w-screen-xl mx-auto pb-64 px-16 dark:text-white",
+            div { class: "max-w-screen-lg mx-auto pb-8 px-16 dark:text-white",
+            // div { class: "max-w-screen-xl mx-auto pb-64 px-16 dark:text-white",
                 TriShow {
                     left: render!( "" ),
                     center: render!( "" ),
@@ -136,6 +137,7 @@ fn AvailablePlatforms(cx: Scope) -> Element {
                     right: render!("Render your app entirely on the server. Zero backend configuration capable of handling thousands of active clients. Integrates with Axum, Actix, Warp, Salvo, and Tokamak.",)
                     left: render!( "" ),
                     center: render!( "" ),
+                    last: true,
                 }
             }
         }
@@ -150,11 +152,12 @@ fn TriShow<'a>(
     right: Element<'a>,
     title: &'static str,
     to: &'static str,
+    last: Option<bool>,
 ) -> Element {
     render! {
-        div { class: "w-full flex flex-row justify-center",
-            div { class: "grow basis-0", left }
-            TriPadding { center }
+        div { class: "w-full flex flex-row justify-center max-w-screen-lg",
+            // div { class: "grow basis-0", left }
+            TriPadding { last: last.unwrap_or_default(), center  }
             div { class: "grow basis-0 ",
                 Link { to: to,
                     div { class: "min-w-lg mb-12 p-8 rounded max-w-screen-md hover:shadow-pop rounded-lg p-8",
@@ -168,12 +171,15 @@ fn TriShow<'a>(
 }
 
 #[inline_props]
-fn TriPadding<'a>(cx: Scope<'a>, children: Element<'a>) -> Element {
+fn TriPadding<'a>(cx: Scope<'a>, children: Element<'a>, last: bool) -> Element {
     render!(
         div { class: "flex flex-col items-center",
             div { class: "w-0 h-10 border-dashed border border-[#444]" }
             IconSplit {}
-            div { class: "w-0 h-40 border-dashed border border-[#444]", children }
+
+            if !last {
+                rsx!( div { class: "w-0 h-40 border-dashed border border-[#444]", children } )
+            }
         }
     )
 }

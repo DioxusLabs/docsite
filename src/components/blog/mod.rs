@@ -126,7 +126,7 @@ fn BlogHeader(cx: Scope) -> Element {
 
 pub static RecentBlogPosts: Component<()> = |cx| {
     cx.render(rsx! {
-        section { class: "body-font overflow-hidden",
+        section { class: "body-font overflow-hidden dark:bg-ideblack",
             div { class: "container px-6 lg:px-40 pt-24 pb-36 mx-auto",
                 div { class: "flex flex-col w-full mb-10",
                     h1 { class: "sm:text-3xl text-2xl font-medium title-font mb-4 dark:text-white font-mono", "Recent Blog Posts" }

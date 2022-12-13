@@ -45,12 +45,18 @@ pub fn BlogList(cx: Scope) -> Element {
     cx.render(rsx!(
         section { class: "text-gray-600 body-font overflow-hidden dark:bg-ideblack",
             div { class: "container lg:px-48 pt-12 pb-12 mx-auto",
-                div { class: "-my-8 px-8 divide-y-2 divide-gray-100",
+                div { class: "-my-8 px-8 pb-12",
                     // Header
                     BlogHeader {},
 
 
-                    RecentBlogPosts {}
+                    section { class: "body-font overflow-hidden dark:bg-ideblack",
+                        div { class: "container px-6 mx-auto",
+                            div { class: "-my-8 divide-y-2 divide-gray-100", POSTS.iter().enumerate().map(|(id, post)| rsx! {
+                                BlogPostItem { post: post, id: id }
+                            }) }
+                        }
+                    }
                     // // Individual Post starts here
                     // POSTS.iter().enumerate().map(|(id, BlogPost { category, date, title, description, link, .. })| rsx!{
                     //     div { class: "py-8 flex flex-wrap md:flex-nowrap",
@@ -129,7 +135,7 @@ fn BlogHeader(cx: Scope) -> Element {
 pub static RecentBlogPosts: Component<()> = |cx| {
     cx.render(rsx! {
         section { class: "body-font overflow-hidden dark:bg-ideblack",
-            div { class: "container px-6 lg:px-40 pt-24 pb-36 mx-auto",
+            div { class: "container px-6 lg:px-40 pt-24 pb-36 mx-auto max-w-screen-xl",
                 div { class: "flex flex-col w-full mb-10",
                     h1 { class: "sm:text-3xl text-2xl font-medium title-font mb-4 dark:text-white font-mono", "Recent Blog Posts" }
                 }
@@ -152,7 +158,7 @@ fn BlogPostItem(cx: Scope, post: &'static BlogPost, id: usize) -> Element {
 
     cx.render(rsx!(
         div { class: "py-8 flex flex-wrap md:flex-nowrap",
-            div { class: "md:w-64 md:mb-0 mb-6 flex-shrink-0 flex flex-col",
+            div { class: "md:w-32 md:mb-0 mb-6 flex-shrink-0 flex flex-col",
                 span { class: "font-semibold title-font text-gray-700 dark:text-white", "{category}" }
                 span { class: "mt-1 text-gray-500 text-sm", "{date}" }
             }

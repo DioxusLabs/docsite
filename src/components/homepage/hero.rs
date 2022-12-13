@@ -28,7 +28,7 @@ pub fn Hero(cx: Scope) -> Element {
 }
 
 fn SaveClipboard(cx: Scope) -> Element {
-    let saved = use_state(&cx, || false);
+    let saved = use_state(cx, || false);
 
     // funny that we can just default to some javascript like this
     // might want to do the same thing in rust so we can display a selected state
@@ -53,7 +53,7 @@ fn SaveClipboard(cx: Scope) -> Element {
 }
 
 pub fn InteractiveHeader(cx: Scope) -> Element {
-    let mut count = use_state(&cx, || 0);
+    let mut count = use_state(cx, || 0);
 
     cx.render(rsx! {
         div {

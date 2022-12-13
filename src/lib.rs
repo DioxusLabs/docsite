@@ -36,7 +36,7 @@ pub fn app(cx: Scope) -> Element {
             Route { to: "/blog/", BlogList {} }
             Route { to: "/blog/introducing-dioxus", components::blog::SinglePost { post: components::blog::POST_RELEASE_010 } }
             Route { to: "/blog/release-020", components::blog::SinglePost { post: components::blog::POST_RELEASE_020 } }
-            Route { to: "/blog/templates-diffing", components::blog::SinglePost { post: components::blog::POST_TEMPLATE } }
+            Route { to: "/blog/templates-diffing/", components::blog::SinglePost { post: components::blog::POST_TEMPLATE } }
             Route { to: "", components::notfound::Err404 {} }
         }
         crate::components::footer::Footer {}

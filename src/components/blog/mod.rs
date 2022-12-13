@@ -2,7 +2,7 @@ use crate::icons;
 use dioxus::prelude::*;
 use dioxus_router::Link;
 
-#[derive(PartialEq)]
+#[derive(PartialEq, Eq)]
 pub struct BlogPost {
     category: &'static str,
     date: &'static str,
@@ -79,7 +79,6 @@ pub fn SinglePost(cx: Scope, post: BlogPost) -> Element {
     let BlogPost { content, .. } = post;
 
     cx.render(rsx! {
-
         section { class: "text-gray-600 body-font overflow-hidden",
             div { class: "container lg:px-20 xl:px-48 pt-12 pb-12 mx-auto",
                 div { class: "-my-8 divide-y-2 divide-gray-100",
@@ -99,7 +98,7 @@ pub fn SinglePost(cx: Scope, post: BlogPost) -> Element {
 }
 
 fn BlogHeader(cx: Scope) -> Element {
-    render!(
+    cx.render(rsx!(
         section { class: "py-20",
             div { class: "container px-4 mx-auto",
 
@@ -122,7 +121,7 @@ fn BlogHeader(cx: Scope) -> Element {
                 }
             }
         }
-    )
+    ))
 }
 
 pub static RecentBlogPosts: Component<()> = |cx| {

@@ -89,7 +89,7 @@ pub fn SinglePost(cx: Scope, post: BlogPost) -> Element {
     cx.render(rsx! {
         section { class: "text-gray-600 body-font overflow-hidden dark:bg-ideblack",
             div { class: "container lg:px-20 xl:px-48 pt-12 pb-12 mx-auto",
-                div { class: "-my-8 divide-y-2 divide-gray-100",
+                div { class: "-my-8",
                     // Header
                     // blog_header()
 

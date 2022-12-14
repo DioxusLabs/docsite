@@ -19,7 +19,7 @@
 </ul>
 <p>The final point is arguably the most important: React’s functional model maps well into Rust’s lifetime system. Any value provided to the component through <code>use_hook</code> is bounded by the lifetime of the <code>Scope</code> itself. <code>Scope</code> can be shared into any handler - like <code>onclick</code> in the following example. Since <code>value</code> shares a lifetime with <code>Scope</code>, it can be modified directly within element callbacks.</p>
 <pre><code class="lang-rust">fn app(cx: <span class="hljs-keyword">Scope</span>) -&gt; Element {
-        <span class="hljs-keyword">let</span> value: &amp;mut u32 = cx.use_hook(|<span class="hljs-type">| 0</span>);
+    <span class="hljs-keyword">let</span> value: &amp;mut u32 = cx.use_hook(|<span class="hljs-type">| 0</span>);
 
     cx.render(rsx!(
         button { onclick: <span class="hljs-built_in">move</span> |<span class="hljs-type">_</span>| <span class="hljs-type">value</span> += <span class="hljs-number">1</span>, <span class="hljs-string">"Increment"</span> }
@@ -82,7 +82,7 @@ React.createElement(div, { <span class="hljs-class"><span class="hljs-keyword">c
     }
 }
 </code></pre>
-<p>If you look closely, you’ll notice that the entire tree is declared within the macro. There aren’t  elements being created at compile time, except for the dynamic text within the paragraph element. In React, you’d have to create every element from scratch, one-by-one, every time. But in Dioxus, we can do better.</p>
+<p>If you look closely, you’ll notice that the entire tree is declared within the macro. There aren’t elements being created at runtime time, except for the dynamic text within the paragraph element. In React, you’d have to create every element from scratch, one-by-one, every time. But in Dioxus, we can do better.</p>
 <p>The new technique Dioxus uses is to split each <code>rsx!</code> call into a static <code>Template</code> and a list of dynamic nodes. For the above <code>rsx!</code> call, this might look like</p>
 <pre><code class="lang-rust">static THIS_TEMPLATE: Template = <span class="hljs-class">Template </span>{ <span class="hljs-comment">/* */</span> };
 

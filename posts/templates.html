@@ -9,7 +9,7 @@
 <p><img src="https://i.imgur.com/Mfu8QOX.png"></p>
 <p>Anyways…</p>
 <h2 id="dioxus-shares-react-s-dna">Dioxus shares React’s DNA</h2>
-<hr>
+
 <p>As eloquently put by the creator of Svelte, the <a href="https://svelte.dev/blog/virtual-dom-is-pure-overhead">“Virtual DOM is pure overhead”</a>. So, why does Dioxus continue to share the React DNA if it’s ultimately just frivolous work?</p>
 <p>Well, we still love React, despite its warts, footguns, and idiosyncrasies.</p>
 <ul>
@@ -46,7 +46,7 @@ rsx! {
 </code></pre>
 <p>All in all, we’ve learned to love lifetimes rather than fear them. But for all the good of React, we’re still stuck with the bad.</p>
 <h2 id="overcoming-the-warts-of-react">Overcoming the warts of React</h2>
-<hr>
+
 <p>One of the biggest issues React has is the need to recreate entire chunks of the virtual DOM between renders. If you’re not aware, in React, your JSX markup is converted directly to <code>React.createElement</code> calls.</p>
 <pre><code class="lang-jsx"><span class="hljs-comment">// This markup</span>
 &lt;div <span class="hljs-class"><span class="hljs-keyword">class</span>="<span class="hljs-title">abc</span>"&gt; <span class="hljs-title">Hello</span> <span class="hljs-title">world</span> &lt;<span class="hljs-type">/div</span>&gt;</span>
@@ -68,7 +68,7 @@ React.createElement(div, { <span class="hljs-class"><span class="hljs-keyword">c
 <p>But you know what would be even faster? <em>Not doing that.</em></p>
 </blockquote>
 <h2 id="making-dioxus-faster-by-doing-less-work">Making Dioxus faster by doing less work</h2>
-<hr>
+
 <p>To really make Dioxus faster, we need to make it do less work - or, at the very least, less work at runtime. SolidJS does this by thrusting you into this world of signals. We love signals! They might even come to Dioxus at some point (aka Preact signals). But, in the world where we still care about providing <code>&amp;mut T</code> from <code>use_hook</code> , we need to find a new solution that doesn’t require rewriting your React apps to use signals.</p>
 <p>Well, we’re working in Rust, we’ve got const, macros, custom PartialEq… let’s see if we can move some of this work to compile time.</p>
 <p>To build a Dioxus app, you pretty much have to use the <code>rsx!</code> proc macro. We unfortunately don’t support a builder API or alternatives. There’s a lot of good reasons to do this: performance, forward compatibility, tooling, ergonomics, etc.</p>
@@ -99,7 +99,7 @@ React.createElement(div, { <span class="hljs-class"><span class="hljs-keyword">c
 <p><a href="https://reactjs.org/blog/2022/06/15/react-labs-what-we-have-been-working-on-june-2022.html">https://reactjs.org/blog/2022/06/15/react-labs-what-we-have-been-working-on-june-2022.html</a></p>
 <p>The plan here is to cache these elements and only update them when variables inside the <em>component</em> change. However, React-Forget still doesn’t fix the underlying issue of node creation, memory usage, or anything of the other things compile-time memoization achieves.</p>
 <h2 id="taking-it-a-step-further">Taking it a step further</h2>
-<hr>
+
 <p>Templates make diffing the tree faster, but they can also make building the UI faster too. Both SolidJS and LitHTML take advantage of this hack to achieve fantastic performance.</p>
 <p>With support from the renderer, Dioxus can actually serialize these parsed RSX templates and let the renderer do all the caching.</p>
 <p>Before, if we wanted to assemble a tree of nodes from an iterator, we’d have to do a ton of tedious work, creating each list item part by part.</p>
@@ -147,15 +147,15 @@ Edit::HydateText(<span class="hljs-number">0</span>, <span class="hljs-string">"
 </code></pre>
 <p>For the tiny case we’re showing here, the benefit might seem limited. However, for real-world apps with lots of elements, custom styles, and all sorts of extra metadata, this caching system is immensely powerful and extremely performant.</p>
 <h2 id="what-does-this-enable-">What does this enable?</h2>
-<hr>
+
 <p>Now that we’re working with the mindset of templates, we can start to build new functionality previously locked behind the old model.</p>
 <h3 id="hot-reloading">Hot Reloading</h3>
-<hr>
+
 <p>One amazing feature added to Dioxus using the new template model is hot reloading. You can now modify your running Dioxus app without recompiling, provided you add, remove, or modify elements inside of <code>rsx!</code> . This mechanism works for <em>any</em> renderer too, since each renderer has to implement the same protocol to manage edits.</p>
-<p><video muted src="https://i.imgur.com/PSJdqKO.mp4"></video></p>
+<p><video autoplay playsinline muted src="https://i.imgur.com/PSJdqKO.mp4"></video></p>
 <p>Not only can templates be cached inside of a renderer, they can be modified after-the-fact. The renderer is smart enough to track down the instance of every template node on the page and apply the same patches.</p>
 <h3 id="performant-liveview">Performant LiveView</h3>
-<hr>
+
 <p>Another addition to Diouxs 0.3 is the new LiveView renderer. Much like its counterpart Phoenix LiveView, Dioxus LiveView enables entirely server-rendered apps and components while shipping minimal JS to the client. In the Liveview model, minimizing latency and bandwidth is crucial to keeping apps snappy, especially for lower-end clients.</p>
 <p><img src="https://i.imgur.com/nJOX4cw.jpg" alt="Elixir LiveView"></p>
 <p>Now, instead of sending hundreds or thousands of edits to the client to render things like lists and complex markup, Dioxus packages all the templates the client will use inside of the HTML shipped to the client. A sample HTML document that might be sent from the server to the client may look like this:</p>
@@ -175,7 +175,7 @@ Edit::HydateText(<span class="hljs-number">0</span>, <span class="hljs-string">"
 </code></pre>
 <p>Notice how the templates are collected during SSR and inserted into the header. The only edits sent over the network from the server to the client are commands to create/remove template nodes and to precisely modify just the nodes that changed. Fast, simple, and scalable!</p>
 <h2 id="faster-server-side-rendering-ssr-">Faster Server-Side-Rendering (SSR)</h2>
-<hr>
+
 <p>The other technique that SolidJS uses to achieve faster SSR performance is combining pre-rendered portions of templates together through string concatenation. Since the template is known at compile time, we can break it up into smaller chunks and just stitch them together during rendering. No need to build and traverse huge element trees!</p>
 <pre><code class="lang-rust"><span class="hljs-comment">// Cached template segements:</span>
 
@@ -191,7 +191,7 @@ PreRendered(
 <span class="hljs-function"><span class="hljs-title">PreRendered</span><span class="hljs-params">(<span class="hljs-string">"&lt;/div&gt;"</span>.into()</span></span>,)
 </code></pre>
 <h2 id="disclaimer">Disclaimer</h2>
-<hr>
+
 <p>Even with all the innovations here, it’s still very important to remember that Dioxus still takes after React. No matter how many tweaks, optimizations, and improvements we make to Dioxus, you can still shoot yourself in the foot with the classic React footguns.</p>
 <p>These include</p>
 <ul>

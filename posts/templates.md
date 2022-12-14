@@ -20,8 +20,6 @@ Anyways…
 
 ## Dioxus shares React’s DNA
 
----
-
 As eloquently put by the creator of Svelte, the [“Virtual DOM is pure overhead”](https://svelte.dev/blog/virtual-dom-is-pure-overhead). So, why does Dioxus continue to share the React DNA if it’s ultimately just frivolous work?
 
 Well, we still love React, despite its warts, footguns, and idiosyncrasies.
@@ -66,8 +64,6 @@ All in all, we’ve learned to love lifetimes rather than fear them. But for all
 
 ## Overcoming the warts of React
 
----
-
 One of the biggest issues React has is the need to recreate entire chunks of the virtual DOM between renders. If you’re not aware, in React, your JSX markup is converted directly to `React.createElement` calls.
 
 ```jsx
@@ -102,8 +98,6 @@ Except, we’re creating new objects, still in the heap, and doing a lot of diff
 >
 
 ## Making Dioxus faster by doing less work
-
----
 
 To really make Dioxus faster, we need to make it do less work - or, at the very least, less work at runtime. SolidJS does this by thrusting you into this world of signals. We love signals! They might even come to Dioxus at some point (aka Preact signals). But, in the world where we still care about providing `&mut T` from `use_hook` , we need to find a new solution that doesn’t require rewriting your React apps to use signals.
 
@@ -150,8 +144,6 @@ The React team also agrees that React can be better. That’s why they’ve star
 The plan here is to cache these elements and only update them when variables inside the *component* change. However, React-Forget still doesn’t fix the underlying issue of node creation, memory usage, or anything of the other things compile-time memoization achieves.
 
 ## Taking it a step further
-
----
 
 Templates make diffing the tree faster, but they can also make building the UI faster too. Both SolidJS and LitHTML take advantage of this hack to achieve fantastic performance.
 
@@ -213,13 +205,9 @@ For the tiny case we’re showing here, the benefit might seem limited. However,
 
 ## What does this enable?
 
----
-
 Now that we’re working with the mindset of templates, we can start to build new functionality previously locked behind the old model.
 
 ### Hot Reloading
-
----
 
 One amazing feature added to Dioxus using the new template model is hot reloading. You can now modify your running Dioxus app without recompiling, provided you add, remove, or modify elements inside of `rsx!` . This mechanism works for *any* renderer too, since each renderer has to implement the same protocol to manage edits.
 
@@ -228,8 +216,6 @@ One amazing feature added to Dioxus using the new template model is hot reloadin
 Not only can templates be cached inside of a renderer, they can be modified after-the-fact. The renderer is smart enough to track down the instance of every template node on the page and apply the same patches.
 
 ### Performant LiveView
-
----
 
 Another addition to Diouxs 0.3 is the new LiveView renderer. Much like its counterpart Phoenix LiveView, Dioxus LiveView enables entirely server-rendered apps and components while shipping minimal JS to the client. In the Liveview model, minimizing latency and bandwidth is crucial to keeping apps snappy, especially for lower-end clients.
 
@@ -257,8 +243,6 @@ Notice how the templates are collected during SSR and inserted into the header. 
 
 ## Faster Server-Side-Rendering (SSR)
 
----
-
 The other technique that SolidJS uses to achieve faster SSR performance is combining pre-rendered portions of templates together through string concatenation. Since the template is known at compile time, we can break it up into smaller chunks and just stitch them together during rendering. No need to build and traverse huge element trees!
 
 ```rust
@@ -277,8 +261,6 @@ PreRendered("</div>".into(),)
 ```
 
 ## Disclaimer
-
----
 
 Even with all the innovations here, it’s still very important to remember that Dioxus still takes after React. No matter how many tweaks, optimizations, and improvements we make to Dioxus, you can still shoot yourself in the foot with the classic React footguns.
 

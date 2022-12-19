@@ -135,7 +135,7 @@ fn AvailablePlatforms(cx: Scope) -> Element {
                 TriShow {
                     to: "https://github.com/DioxusLabs/dioxus/tree/master/packages/liveview",
                     title: "LiveView and LiveComponents",
-                    right: render!("Render your app entirely on the server. Zero backend configuration capable of handling thousands of active clients. Integrates with Axum, Actix, Warp, Salvo, and Tokamak.",)
+                    right: render!("Render your app entirely on the server. Zero backend configuration capable of handling thousands of active clients. Integrates with Axum, Warp, Salvo, and Tokamak.",)
                     left: render!( "" ),
                     center: render!( "" ),
                     last: true,

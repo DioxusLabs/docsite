@@ -7,13 +7,18 @@ edition = "2018"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-dioxus-router = { git = "https://github.com/dioxuslabs/dioxus", branch = "jk/fix-scope-rollover", features = [
-    "web",
-] }
-dioxus = { git = "https://github.com/dioxuslabs/dioxus", branch = "jk/fix-scope-rollover" }
-dioxus-web = { git = "https://github.com/dioxuslabs/dioxus", branch = "jk/fix-scope-rollover" }
-dioxus-ssr = { git = "https://github.com/dioxuslabs/dioxus", branch = "jk/fix-scope-rollover" }
-fermi = { git = "https://github.com/dioxuslabs/dioxus", branch = "jk/fix-scope-rollover" }
+dioxus-router = { path = "../../dioxus/packages/router", features = ["web"] }
+dioxus = { path = "../../dioxus/packages/dioxus" }
+dioxus-web = { path = "../../dioxus/packages/web" }
+dioxus-ssr = { path = "../../dioxus/packages/ssr" }
+fermi = { path = "../../dioxus/packages/fermi" }
+# dioxus-router = { git = "https://github.com/dioxuslabs/dioxus", features = [
+#     "web",
+# ] }
+# dioxus = { git = "https://github.com/dioxuslabs/dioxus" }
+# dioxus-web = { git = "https://github.com/dioxuslabs/dioxus" }
+# dioxus-ssr = { git = "https://github.com/dioxuslabs/dioxus" }
+# fermi = { git = "https://github.com/dioxuslabs/dioxus" }
 serde = { version = "1.0.126", features = ["derive"] }
 serde_json = "1.0.64"
 log = "0.4.14"

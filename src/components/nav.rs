@@ -130,28 +130,26 @@ static LINKS: &[(&str, &str, LinkPairs)] = &[
             ("CLI", "https://github.com/DioxusLabs/cli"),
         ],
     ),
+    // (
+    //     "Community",
+    //     "https://github.com/DioxusLabs/awesome-dioxus#community",
+    //     &[
+    //         ("Discord", "https://discord.gg/XgGxMSkvUM"),
+    //         ("Twitter", "https://twitter.com/dioxuslabs"),
+    //         ("Reddit", "https://www.reddit.com/r/dioxus/"),
+    //     ],
+    // ),
     (
-        "Community",
-        "https://github.com/DioxusLabs/awesome-dioxus#community",
-        &[
-            ("Discord", "https://discord.gg/XgGxMSkvUM"),
-            ("Twitter", "https://twitter.com/dioxuslabs"),
-            ("Reddit", "https://www.reddit.com/r/dioxus/"),
-        ],
-    ),
-    (
-        "Learn",
+        "Docs",
         "/learn/",
         &[
             ("Guide", "https://dioxuslabs.com/guide/"),
             ("Advanced", "https://dioxuslabs.com/reference/"),
             ("Reference", "https://dioxuslabs.com/reference/"),
-            (
-                "Router",
-                "https://dioxuslabs.com/router/",
-            ),
+            ("Router", "https://dioxuslabs.com/router/"),
         ],
     ),
+    ("Tutorials", "/tutorials/", &[]),
     ("Blog", "/blog", &[]),
 ];
 

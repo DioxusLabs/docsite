@@ -19,17 +19,16 @@ pub fn Homepage(cx: Scope) -> Element {
             hero::Hero {}
             AvailablePlatforms {}
             // DeveloperExperience {}
-            // Stats {}
             // JumpStart {}
             featured_examples::FeaturedExamples {}
 
             crate::components::blog::RecentBlogPosts {}
-
+            Stats {}
 
             // ensure Prism is able to highlight all our code elements
             script { "Prism.highlightAll();" }
         }
-        // call_to_action::CallToAction {}
+        call_to_action::CallToAction {}
     })
 }
 
@@ -89,9 +88,8 @@ fn AvailablePlatforms(cx: Scope) -> Element {
     cx.render(rsx! {
         section { class: "pt-36 w-full dark:bg-ideblack",
             div { class: "container mx-auto max-w-screen-lg",
-                div { class: "relative ",
+                div { class: "relative overflow-x-hidden",
                     div { class: "flex flex-col items-center justify-center text-center max-w-screen-lg mx-auto pb-20",
-                        // span { class: "text-xl text-blue-300", "Portable" }
                         h1 { class: "text-[3.3em] font-bold tracking-tight dark:text-white text-ghdarkmetal pb-4 mb-4 ",
                             "One codebase, every platform."
                         }
@@ -102,7 +100,7 @@ fn AvailablePlatforms(cx: Scope) -> Element {
                     snippets::Snippets {}
                 }
             }
-            div { class: "max-w-screen-lg mx-auto pb-8 px-16 dark:text-white",
+            div { class: "max-w-screen-lg mx-auto pb-8 px-2 md:px-16 dark:text-white",
             // div { class: "max-w-screen-xl mx-auto pb-64 px-16 dark:text-white",
                 TriShow {
                     left: render!( "" ),
@@ -161,7 +159,7 @@ fn TriShow<'a>(
             TriPadding { last: last.unwrap_or_default(), center  }
             div { class: "grow basis-0 ",
                 Link { to: to,
-                    div { class: "min-w-lg mb-12 p-8 rounded max-w-screen-md hover:shadow-pop rounded-lg p-8",
+                    div { class: "min-w-lg p-8 rounded max-w-screen-md hover:shadow-pop rounded-lg p-8",
                         h2 { class: "text-2xl text-gray-800 font-semibold pb-2 dark:text-gray-100 ", *title }
                         right
                     }
@@ -179,7 +177,7 @@ fn TriPadding<'a>(cx: Scope<'a>, children: Element<'a>, last: bool) -> Element {
             IconSplit {}
 
             if !last {
-                rsx!( div { class: "w-0 h-40 border-dashed border border-[#444]", children } )
+                rsx!( div { class: "w-0 h-full border-dashed border border-[#444]", children } )
             }
         }
     )
@@ -257,8 +255,8 @@ fn IconSplit(cx: Scope) -> Element {
 }
 
 fn Stats(cx: Scope) -> Element {
-    render! {
-        section { class: "pt-36 w-full dark:bg-ideblack",
+    cx.render(rsx! {
+        section { class: "pb-24 w-full dark:bg-ideblack",
             div { class: "container mx-auto max-w-screen-lg",
                 div { class: "relative ",
                     div { class: "flex flex-col items-center justify-center text-center max-w-screen-lg mx-auto pb-4",
@@ -267,7 +265,7 @@ fn Stats(cx: Scope) -> Element {
                             "A vibrant, active community."
                         }
                         p { class: "text-xl text-gray-600 dark:text-gray-400 pb-4 max-w-screen-sm",
-                            "Driven by a large, active, and welcoming community, Dioxus is just getting started."
+                            "Driven by a large, active, and welcoming community."
                         }
                     }
                 }
@@ -276,16 +274,16 @@ fn Stats(cx: Scope) -> Element {
             a { href: "https://github.com/dioxuslabs/dioxus/graphs/contributors",
                 img { src: "https://contrib.rocks/image?repo=dioxuslabs/dioxus&max=52&columns=13", class: "mx-auto pb-12" }
             }
-            div { class: "w-full mx-auto dark:bg-[#111111] border-t border-b border-[#444]",
-                div { class: "flex flex-row max-w-screen-xl mx-auto py-6",
-                    StatsItem { major: "5k", minor: "Stars" }
-                    StatsItem { major: "17k", minor: "Downloads" }
-                    StatsItem { major: "56", minor: "Contributors" }
-                    StatsItem { major: "300+", minor: "Communtiy Projects", last: true }
-                }
-            }
+            // div { class: "w-full mx-auto dark:bg-[#111111] border-t border-b border-[#444]",
+            //     div { class: "flex flex-row max-w-screen-xl mx-auto py-6",
+            //         StatsItem { major: "5k", minor: "Stars" }
+            //         StatsItem { major: "17k", minor: "Downloads" }
+            //         StatsItem { major: "56", minor: "Contributors" }
+            //         StatsItem { major: "300+", minor: "Communtiy Projects", last: true }
+            //     }
+            // }
         }
-    }
+    })
 }
 
 #[inline_props]

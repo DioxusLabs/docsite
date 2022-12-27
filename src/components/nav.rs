@@ -1,8 +1,11 @@
 use dioxus::prelude::*;
 use dioxus_router::Link;
+use fermi::{use_atom_state, use_read, Atom};
+
+pub static SHOW_NAV: Atom<bool> = |_| false;
 
 pub fn Nav(cx: Scope) -> Element {
-    let show = use_state(&cx, || false);
+    let show = use_read(cx, SHOW_NAV);
 
     cx.render(rsx! {
         header { class: "sticky top-0 z-50 bg-white shadow dark:text-gray-200 dark:bg-ideblack dark:border-b border-stone-600",
@@ -16,13 +19,13 @@ pub fn Nav(cx: Scope) -> Element {
                     span { class: "ml-3 text-xl dark:text-white font-mono", "Dioxus Labs" }
                 }
                 div { class: "flex items-center font-mono",
-                    MobileNav { show: show }
+                    MobileNav { }
                     FullNav {}
                 }
             }
             show.then(|| {
                 rsx! {
-                    ul { class: "flex items-center flex-col py-4", gap: "10px", LinkList {} }
+                    ul { class: "flex items-center flex-col py-4", gap: "10px", LinkList { } }
                 }
             })
         }
@@ -48,8 +51,9 @@ fn FullNav(cx: Scope) -> Element {
     })
 }
 
-#[inline_props]
-fn MobileNav<'a>(cx: Scope<'a>, show: &'a UseState<bool>) -> Element {
+fn MobileNav(cx: Scope) -> Element {
+    let show = use_atom_state(cx, SHOW_NAV);
+
     cx.render(rsx! {
         div { class: "flex items-center",
             button {
@@ -149,19 +153,25 @@ static LINKS: &[(&str, &str, LinkPairs)] = &[
             ("Router", "https://dioxuslabs.com/router/"),
         ],
     ),
-    ("Tutorials", "/tutorials/", &[]),
+    // ("Tutorials", "/tutorials/", &[]),
     ("Blog", "/blog", &[]),
 ];
 
+#[inline_props]
 fn LinkList(cx: Scope) -> Element {
     let hover = "hover:text-sky-500 dark:hover:text-sky-400";
     let hover_bg = "dark:hover:bg-gray-500 hover:bg-gray-200 rounded";
+    let show = use_atom_state(cx, SHOW_NAV);
 
     let links = LINKS.iter().copied().map(|(name, link, links)| {
         if links.is_empty() {
             rsx! {
                 li { key: "{link}",
-                    Link { class: "ml-[-3.8em] md:ml-0 md:py-1 md:px-2 {hover} {hover_bg} text-lg md:text-sm", to: "{link}", "{name}" }
+                    Link {
+                        class: "ml-[-3.8em] md:ml-0 md:py-1 md:px-2 {hover} {hover_bg} text-lg md:text-sm",
+                        to: "{link}",
+                        "{name}"
+                    }
                 }
             }
         } else {
@@ -173,7 +183,7 @@ fn LinkList(cx: Scope) -> Element {
                     nav { class: "md:dropdown-menu md:absolute h-auto md:-mt-64 md:group-hover:mt-0 md:opacity-0 md:group-hover:opacity-100 md:transition-opacity md:duration-250",
                         ul { class: "top-0 w-36 md:bg-white dark:md:bg-gray-800 md:shadow md:px-4 md:py-4 rounded",
                             links.iter().map(|(name, link)| rsx!{
-                                Link {  to: "{link}", key: "{link}",
+                                Link {  to: "{link}", key: "{name}",
                                     li { class: "rounded px-1 py-1 {hover} {hover_bg} text-base md:text-sm",
                                         "{name}"
                                     }

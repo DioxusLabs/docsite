@@ -27,6 +27,7 @@ wasm-bindgen = { version = "0.2.78", features = ["enable-interning"] }
 once_cell = "1.8.0"
 console_error_panic_hook = "0.1.7"
 gloo-history = "0.1.0"
+autoexport = "0.1.0"
 
 
 [profile.release]

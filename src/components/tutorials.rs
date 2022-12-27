@@ -31,34 +31,6 @@ static TUTORIALS: &[Tutorial] = &[
         author: "@jkelleyrtp",
         tags: &["desktop", "async", "state"],
     },
-    Tutorial {
-        title: "Making an HTTP request",
-        contents: "here's how to make an HTTP request",
-        description: "here's how to make an HTTP request",
-        author: "@jkelleyrtp",
-        tags: &["desktop", "async", "state"],
-    },
-    Tutorial {
-        title: "Making an HTTP request",
-        contents: "here's how to make an HTTP request",
-        description: "here's how to make an HTTP request",
-        author: "@jkelleyrtp",
-        tags: &["desktop", "async", "state"],
-    },
-    Tutorial {
-        title: "Making an HTTP request",
-        contents: "here's how to make an HTTP request",
-        description: "here's how to make an HTTP request",
-        author: "@jkelleyrtp",
-        tags: &["desktop", "async", "state"],
-    },
-    Tutorial {
-        title: "Making an HTTP request",
-        contents: "here's how to make an HTTP request",
-        description: "here's how to make an HTTP request",
-        author: "@jkelleyrtp",
-        tags: &["desktop", "async", "state"],
-    },
 ];
 
 pub fn Tutorials(cx: Scope) -> Element {
@@ -96,7 +68,7 @@ fn TutorialPreview(cx: Scope, id: usize) -> Element {
     let tutorial = &TUTORIALS[*id];
 
     cx.render(rsx! {
-        li { class: "pb-8",
+        li { class: "pb-4 border-b border-gray-200 dark:border-gray-500",
             Link { to: "/tutorials/{id}",
                 div { class: "rounded p-4 shadow",
                     div { class: "flex justify-between",

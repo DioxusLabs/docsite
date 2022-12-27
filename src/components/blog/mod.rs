@@ -110,16 +110,14 @@ fn BlogHeader(cx: Scope) -> Element {
         section { class: "py-20",
             div { class: "container px-4 mx-auto dark:text-white",
 
-                Link { to: "/blog"
-                    h2 { class: "mb-8 md:mb-16 text-5xl lg:text-6xl font-semibold font-heading font-mono",
-                        "Dioxus Official Blog"
-                    }
+                h2 { class: "mb-8 md:mb-16 text-5xl lg:text-6xl font-semibold font-heading font-mono",
+                    "Dioxus Official Blog"
                 }
 
                 div { class: "flex flex-wrap items-center",
                     div { class: "inline-block max-w-xl mb-6 md:mb-0",
-                        p { class: "text-xl text-gray-500 dark:text-gray-300",
-                            "Updates, changelogs, and general musings of the Dioxus community."
+                        p { class: "text-xl pb-4 text-gray-500 dark:text-gray-300",
+                            "Updates, changelogs, anaaaad general musings of the Dioxus community...."
                         }
                     }
                     // a { class: "inline-block ml-auto w-full md:w-auto px-12 py-4 text-center text-sm text-white font-medium leading-normal bg-red-400 hover:bg-red-300 rounded",

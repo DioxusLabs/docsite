@@ -20,6 +20,7 @@ pub mod icons;
 pub mod sitemap;
 
 pub use components::*;
+use fermi::{use_init_atom_root, use_set};
 pub mod components {
     export_items! {
         pub mod blog;
@@ -33,8 +34,13 @@ pub mod components {
 }
 
 pub fn app(cx: Scope) -> Element {
+    use_init_atom_root(cx);
+
+    let show_nav = use_set(cx, SHOW_NAV);
+
     cx.render(rsx! {
         Router {
+            onchange: move |_| show_nav(false),
             Nav {}
             Route { to: "/", Homepage {} }
             Route { to: "/index.html", Homepage {} }
@@ -47,7 +53,7 @@ pub fn app(cx: Scope) -> Element {
             Route { to: "/platforms/ssr", Homepage {} }
             Route { to: "/platforms/tui", Homepage {} }
             Route { to: "/tutorials/:id", Tutorial {} }
-            Route { to: "/tutorials/", Tutorials {} }
+            // Route { to: "/tutorials/", Tutorials {} }
 
             Route { to: "/blog", BlogList {} }
             Route { to: "/blog/", BlogList {} }

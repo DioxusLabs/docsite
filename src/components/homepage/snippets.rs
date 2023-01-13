@@ -65,7 +65,6 @@ pub fn Snippets(cx: Scope) -> Element {
                                 }
                             }
                         })
-
                     }
                     div { class: "absolute bottom-0 inset-x-0 h-px bg-neutral-500/30" }
                 }

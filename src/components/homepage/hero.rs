@@ -27,7 +27,6 @@ pub fn Hero(cx: Scope) -> Element {
                 div { class: "w-full md:w-1/2 px-4 flex flex-col pt-5 sm:pt-24 lg:pt-24 justify-end", AnimatedIcon {} }
             }
         }
-
     })
 }
 

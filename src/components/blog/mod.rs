@@ -52,9 +52,9 @@ pub fn BlogList(cx: Scope) -> Element {
 
                     section { class: "body-font overflow-hidden dark:bg-ideblack",
                         div { class: "container px-6 mx-auto",
-                            div { class: "-my-8 divide-y-2 divide-gray-100", POSTS.iter().enumerate().map(|(id, post)| rsx! {
-                                BlogPostItem { post: post, id: id }
-                            }) }
+                            div { class: "-my-8 divide-y-2 divide-gray-100",
+                                POSTS.iter().enumerate().map(|(id, post)| rsx! { BlogPostItem { post: post, id: id } })
+                            }
                         }
                     }
                     // // Individual Post starts here
@@ -95,7 +95,10 @@ pub fn SinglePost(cx: Scope, post: BlogPost) -> Element {
 
                     script { "Prism.highlightAll()" }
                     div { class: "flex w-full mb-20 flex-wrap list-none",
-                        style { ".markdown-body ul {{ list-style: disc; }}", ".markdown-body li {{ display: list-item; }}" }
+                        style {
+                            ".markdown-body ul {{ list-style: disc; }}"
+                            ".markdown-body li {{ display: list-item; }}"
+                        }
                         article { class: "markdown-body", dangerous_inner_html: format_args!("{}", content) }
                         script { "Prism.highlightAll()" }
                     }
@@ -135,9 +138,13 @@ pub static RecentBlogPosts: Component<()> = |cx| {
         section { class: "body-font overflow-hidden dark:bg-ideblack",
             div { class: "container px-6 lg:px-40 pt-24 pb-36 mx-auto max-w-screen-xl",
                 div { class: "flex flex-col w-full mb-10",
-                    h1 { class: "sm:text-3xl text-2xl font-medium title-font mb-4 dark:text-white font-mono", "Recent Blog Posts" }
+                    h1 { class: "sm:text-3xl text-2xl font-medium title-font mb-4 dark:text-white font-mono",
+                        "Recent Blog Posts"
+                    }
                 }
-                div { class: "-my-8 divide-y-2 divide-gray-100", POSTS.iter().enumerate().map(|(id, post)| rsx!{ BlogPostItem { post: post, id: id } }) }
+                div { class: "-my-8 divide-y-2 divide-gray-100",
+                    POSTS.iter().enumerate().map(|(id, post)| rsx!{ BlogPostItem { post: post, id: id } })
+                }
             }
         }
     })

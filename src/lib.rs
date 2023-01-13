@@ -39,8 +39,7 @@ pub fn app(cx: Scope) -> Element {
     let show_nav = use_set(cx, SHOW_NAV);
 
     cx.render(rsx! {
-        Router {
-            onchange: move |_| show_nav(false),
+        Router { onchange: move |_| show_nav(false),
             Nav {}
             Route { to: "/", Homepage {} }
             Route { to: "/index.html", Homepage {} }

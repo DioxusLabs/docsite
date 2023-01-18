@@ -101,42 +101,52 @@ fn AvailablePlatforms(cx: Scope) -> Element {
                 }
             }
             div { class: "max-w-screen-lg mx-auto pb-8 px-2 md:px-16 dark:text-white",
-            // div { class: "max-w-screen-xl mx-auto pb-64 px-16 dark:text-white",
+                // div { class: "max-w-screen-xl mx-auto pb-64 px-16 dark:text-white",
                 TriShow {
-                    left: render!( "" ),
-                    center: render!( "" ),
-                    right: render!( "Build for the web using Rust and WebAssembly. As fast as SolidJS and more robust than React. Integrated hot reloading for instant iterations." ),
+                    left: render!(""),
+                    center: render!(""),
+                    right: render!(
+    "Build for the web using Rust and WebAssembly. As fast as SolidJS and more robust than React. Integrated hot reloading for instant iterations."
+),
                     to: "https://dioxuslabs.com/reference/web",
-                    title: "Web with WASM",
+                    title: "Web with WASM"
                 }
                 TriShow {
-                    left: render!( "" ),
-                    center: render!( "" ),
-                    right: render!( "Lightweight (<2mb) desktop and mobile apps with zero configuration. Choose between WebView or WGPU-enabled renderers. Runs on macOS, Windows, Linux, iOS, and Android." ),
+                    left: render!(""),
+                    center: render!(""),
+                    right: render!(
+    "Lightweight (<2mb) desktop and mobile apps with zero configuration. Choose between WebView or WGPU-enabled renderers. Runs on macOS, Windows, Linux, iOS, and Android."
+),
                     to: "https://dioxuslabs.com/reference/desktop",
-                    title: "Desktop and Mobile",
+                    title: "Desktop and Mobile"
                 }
                 TriShow {
                     to: "https://github.com/DioxusLabs/dioxus/tree/master/packages/tui",
                     title: "Terminal User Interfaces",
-                    right: render!("Quickly convert any CLI tool to a beautiful interactive user interface with just a few lines of code. Runs anywhere with a terminal.")
-                    left: render!( "" ),
-                    center: render!( "" ),
+                    right: render!(
+    "Quickly convert any CLI tool to a beautiful interactive user interface with just a few lines of code. Runs anywhere with a terminal."
+),
+                    left: render!(""),
+                    center: render!("")
                 }
                 TriShow {
                     to: "https://dioxuslabs.com/reference/ssr",
                     title: "Fullstack Apps",
-                    right: render!("Pre-render on the server, and hydrate on the client. Perfect lighthouse scores and performance over 1000x better than Node and Python. Perfect for static site generation or fullstack apps.")
-                    left: render!( "" ),
-                    center: render!( "" ),
+                    right: render!(
+    "Pre-render on the server, and hydrate on the client. Perfect lighthouse scores and performance over 1000x better than Node and Python. Perfect for static site generation or fullstack apps."
+),
+                    left: render!(""),
+                    center: render!("")
                 }
                 TriShow {
                     to: "https://github.com/DioxusLabs/dioxus/tree/master/packages/liveview",
                     title: "LiveView and LiveComponents",
-                    right: render!("Render your app entirely on the server. Zero backend configuration capable of handling thousands of active clients. Integrates with Axum, Warp, Salvo, and Tokamak.",)
-                    left: render!( "" ),
-                    center: render!( "" ),
-                    last: true,
+                    right: render!(
+    "Render your app entirely on the server. Zero backend configuration capable of handling thousands of active clients. Integrates with Axum, Warp, Salvo, and Tokamak.",
+),
+                    left: render!(""),
+                    center: render!(""),
+                    last: true
                 }
             }
         }
@@ -156,11 +166,13 @@ fn TriShow<'a>(
     render! {
         div { class: "w-full flex flex-row justify-center max-w-screen-lg",
             // div { class: "grow basis-0", left }
-            TriPadding { last: last.unwrap_or_default(), center  }
+            TriPadding { last: last.unwrap_or_default(), center }
             div { class: "grow basis-0 ",
                 Link { to: to,
                     div { class: "min-w-lg p-8 rounded max-w-screen-md hover:shadow-pop rounded-lg p-8",
-                        h2 { class: "text-2xl text-gray-800 font-semibold pb-2 dark:text-gray-100 ", *title }
+                        h2 { class: "text-2xl text-gray-800 font-semibold pb-2 dark:text-gray-100 ",
+                            *title
+                        }
                         right
                     }
                 }
@@ -186,7 +198,7 @@ fn TriPadding<'a>(cx: Scope<'a>, children: Element<'a>, last: bool) -> Element {
 #[inline_props]
 fn DeveloperExperience(cx: Scope) -> Element {
     render! (
-         section { class: "pt-36 w-full dark:bg-ideblack dark:text-white",
+        section { class: "pt-36 w-full dark:bg-ideblack dark:text-white",
             div { class: "container mx-auto max-w-screen-2xl",
                 div { class: "relative",
                     div { class: "flex flex-col max-w-screen-lg mx-auto pb-20",
@@ -207,11 +219,11 @@ fn DeveloperExperience(cx: Scope) -> Element {
                         div { class: "w-1/2",
                             ExperienceText {
                                 title: "Integrated Devtools",
-                                content: "Hot reloading for instant iteration, automatic code formatting, convert HTML to RSX, and more.",
+                                content: "Hot reloading for instant iteration, automatic code formatting, convert HTML to RSX, and more."
                             }
                             ExperienceText {
                                 title: "Minimal configuration",
-                                content: "Start projects with `cargo new`. No build scripts or configuration required for development.",
+                                content: "Start projects with `cargo new`. No build scripts or configuration required for development."
                             }
                             ExperienceText {
                                 title: "",
@@ -219,7 +231,6 @@ fn DeveloperExperience(cx: Scope) -> Element {
                             }
                         }
                     }
-
                 }
             }
         }
@@ -238,7 +249,8 @@ fn ExperienceText(cx: Scope, title: &'static str, content: &'static str) -> Elem
 
 fn IconSplit(cx: Scope) -> Element {
     cx.render(rsx! {
-        svg { class: "mx-auto fill-[#444] dark:fill-white",
+        svg {
+            class: "mx-auto fill-[#444] dark:fill-white",
             version: "1.1",
             view_box: "0 0 24 24",
             width: "24",
@@ -248,7 +260,7 @@ fn IconSplit(cx: Scope) -> Element {
             path {
                 stroke_width: "1.5",
                 fill_rule: "evenodd",
-                d: "M15.5 11.75a3.5 3.5 0 11-7 0 3.5 3.5 0 017 0zm1.444-.75a5.001 5.001 0 00-9.888 0H2.75a.75.75 0 100 1.5h4.306a5.001 5.001 0 009.888 0h4.306a.75.75 0 100-1.5h-4.306z",
+                d: "M15.5 11.75a3.5 3.5 0 11-7 0 3.5 3.5 0 017 0zm1.444-.75a5.001 5.001 0 00-9.888 0H2.75a.75.75 0 100 1.5h4.306a5.001 5.001 0 009.888 0h4.306a.75.75 0 100-1.5h-4.306z"
             }
         }
     })
@@ -269,10 +281,6 @@ fn Stats(cx: Scope) -> Element {
                         }
                     }
                 }
-                // stars, contributors, issues, pul requests, downloads
-            }
-            a { href: "https://github.com/dioxuslabs/dioxus/graphs/contributors",
-                img { src: "https://contrib.rocks/image?repo=dioxuslabs/dioxus&max=52&columns=13", class: "mx-auto pb-12" }
             }
             // div { class: "w-full mx-auto dark:bg-[#111111] border-t border-b border-[#444]",
             //     div { class: "flex flex-row max-w-screen-xl mx-auto py-6",
@@ -282,6 +290,13 @@ fn Stats(cx: Scope) -> Element {
             //         StatsItem { major: "300+", minor: "Communtiy Projects", last: true }
             //     }
             // }
+
+            a { href: "https://github.com/dioxuslabs/dioxus/graphs/contributors",
+                img {
+                    src: "https://contrib.rocks/image?repo=dioxuslabs/dioxus&max=52&columns=13",
+                    class: "mx-auto pb-12"
+                }
+            }
         }
     })
 }
@@ -320,7 +335,7 @@ fn Platform<'a>(
                     } else {
                         rsx! { div { class: "bg-ghmetal dark:bg-white w-1 h-8 mx-auto" } }
                     }
-                    div { class:"mx-auto w-full", IconSplit {} }
+                    div { class: "mx-auto w-full", IconSplit {} }
                     if !last {
                         Some(rsx!{ div { class: "bg-ghmetal dark:bg-white w-1 h-full mx-auto" } })
                     } else {
@@ -329,10 +344,14 @@ fn Platform<'a>(
                 }
             }
 
-            Link { class: "min-w-lg mb-12 p-8 rounded max-w-screen-md hover:shadow-pop rounded-lg", to: to,
-            // div { class: "min-w-lg p-8 m-8 bg-slate-800 dark:bg-slate-900/70 dark:backdrop-blur dark:ring-1 dark:ring-inset dark:ring-white/10 rounded shadow-xl",
-                h2 { class: "text-2xl text-gray-800 font-semibold font-mono pb-2 dark:text-gray-100 ", *name }
-                p { class: "text-md text-gray-500 dark:text-gray-400", *content },
+            Link {
+                class: "min-w-lg mb-12 p-8 rounded max-w-screen-md hover:shadow-pop rounded-lg",
+                to: to,
+                // div { class: "min-w-lg p-8 m-8 bg-slate-800 dark:bg-slate-900/70 dark:backdrop-blur dark:ring-1 dark:ring-inset dark:ring-white/10 rounded shadow-xl",
+                h2 { class: "text-2xl text-gray-800 font-semibold font-mono pb-2 dark:text-gray-100 ",
+                    *name
+                }
+                p { class: "text-md text-gray-500 dark:text-gray-400", *content }
                 children
             }
         }
@@ -354,8 +373,6 @@ fn JumpStart(cx: Scope) -> Element {
                         }
                     }
                 }
-                // stars, contributors, issues, pul requests, downloads
-
             }
             div { class: "w-full mx-auto",
                 div { class: "flex flex-row max-w-screen-xl mx-auto py-6",

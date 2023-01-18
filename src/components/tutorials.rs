@@ -39,7 +39,9 @@ pub fn Tutorials(cx: Scope) -> Element {
             div { class: "max-w-screen-lg mx-auto",
                 section { class: "py-10",
                     div { class: "container px-4 mx-auto dark:text-white",
-                        h2 { class: "mb-8 md:mb-16 text-5xl lg:text-6xl font-semibold font-heading font-mono", "Tutorials" }
+                        h2 { class: "mb-8 md:mb-16 text-5xl lg:text-6xl font-semibold font-heading font-mono",
+                            "Tutorials"
+                        }
                         div { class: "flex flex-wrap items-center",
                             div { class: "inline-block mb-6 md:mb-0",
                                 p { class: "text-xl text-gray-500 dark:text-gray-300",
@@ -93,7 +95,7 @@ pub fn Tutorial(cx: Scope) -> Element {
 
     render!(
         div {
-            h1 { tutorial.title  }
+            h1 { tutorial.title }
             h3 { tutorial.author }
             ul {
                 for tag in tutorial.tags {

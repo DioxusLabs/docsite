@@ -6,7 +6,9 @@ pub fn Hero(cx: Scope) -> Element {
         section { class: "w-full dark:bg-ideblack",
             div { class: "flex flex-wrap items-center pb-12 px-3 md:px-12 max-w-screen-2xl mx-auto text-center md:text-left",
                 div { class: "relative w-full md:w-1/2 mx-4 sm:mx-auto pt-5 sm:pt-24 lg:pt-24 text-gray-600",
-                    h1 { class: "text-[5em] md:text-[8em] font-mono dark:text-white text-ghdarkmetal", "Dioxus" }
+                    h1 { class: "text-[5em] md:text-[8em] font-mono dark:text-white text-ghdarkmetal",
+                        "Dioxus"
+                    }
                     h1 { class: "text-xl md:text-3xl tracking-tight dark:text-white font-mono text-ghdarkmetal flex flex-row",
                         "User interfaces that run anywhere. 🦀"
                     }
@@ -24,7 +26,9 @@ pub fn Hero(cx: Scope) -> Element {
                         SaveClipboard {}
                     }
                 }
-                div { class: "w-full md:w-1/2 px-4 flex flex-col pt-5 sm:pt-24 lg:pt-24 justify-end", AnimatedIcon {} }
+                div { class: "w-full md:w-1/2 px-4 flex flex-col pt-5 sm:pt-24 lg:pt-24 justify-end",
+                    AnimatedIcon {}
+                }
             }
         }
     })
@@ -49,7 +53,7 @@ fn SaveClipboard(cx: Scope) -> Element {
                 "add dioxus"
             }
         }
-  })
+    })
 }
 
 fn AnimatedIcon(cx: Scope) -> Element {

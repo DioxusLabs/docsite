@@ -10,12 +10,11 @@ fn AdvancedRendering(cx: Scope) -> Element {
     let (should_show, _) = use_state(&cx, || true);
 
     cx.render(rsx! (
-        button {
-            onclick: move |_| should_show.set(!should_show),
+        button { onclick: move |_| should_show.set(!should_show),
             match *should_show {
                 true => rsx!("Click to show"),
                 false => rsx!("Click to hide"),
-            },
+            }
         }
 
         should_show.then(|| rsx!(

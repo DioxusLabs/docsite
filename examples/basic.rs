@@ -1,10 +1,12 @@
 use dioxus::prelude::*;
 
 fn main() {
-    let p = rsx!(div {
+    let p = rsx!(
         div {
-            div { "asd" }
-            h2 { "" }
+            div {
+                div { "asd" }
+                h2 { "" }
+            }
         }
-    });
+    );
 }

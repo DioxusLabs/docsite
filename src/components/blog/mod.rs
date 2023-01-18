@@ -47,8 +47,7 @@ pub fn BlogList(cx: Scope) -> Element {
             div { class: "container lg:px-48 pt-12 pb-12 mx-auto",
                 div { class: "-my-8 px-8 pb-12",
                     // Header
-                    BlogHeader {},
-
+                    BlogHeader {}
 
                     section { class: "body-font overflow-hidden dark:bg-ideblack",
                         div { class: "container px-6 mx-auto",
@@ -57,30 +56,31 @@ pub fn BlogList(cx: Scope) -> Element {
                             }
                         }
                     }
-                    // // Individual Post starts here
-                    // POSTS.iter().enumerate().map(|(id, BlogPost { category, date, title, description, link, .. })| rsx!{
-                    //     div { class: "py-8 flex flex-wrap md:flex-nowrap",
-                    //         div { class: "md:w-64 md:mb-0 mb-6 flex-shrink-0 flex flex-col",
-                    //             span { class: "font-semibold title-font text-gray-700", "{category}" }
-                    //             span { class: "mt-1 text-gray-500 text-sm", "{date}" }
-                    //         }
-                    //         div { class: "md:flex-grow",
-                    //             h2 { class: "text-2xl font-medium text-gray-900 title-font mb-2", "{title}" }
-                    //             p { class: "leading-relaxed", "{description}" }
-                    //             Link {
-                    //                 class: "text-indigo-500 inline-flex items-center mt-4",
-                    //                 to: "{link}",
-                    //                 "Read more"
-                    //                 icons::ArrowRight {}
-                    //             }
-                    //         }
-                    //     }
-                    // })
                 }
             }
         }
     ))
 }
+
+// // Individual Post starts here
+// POSTS.iter().enumerate().map(|(id, BlogPost { category, date, title, description, link, .. })| rsx!{
+//     div { class: "py-8 flex flex-wrap md:flex-nowrap",
+//         div { class: "md:w-64 md:mb-0 mb-6 flex-shrink-0 flex flex-col",
+//             span { class: "font-semibold title-font text-gray-700", "{category}" }
+//             span { class: "mt-1 text-gray-500 text-sm", "{date}" }
+//         }
+//         div { class: "md:flex-grow",
+//             h2 { class: "text-2xl font-medium text-gray-900 title-font mb-2", "{title}" }
+//             p { class: "leading-relaxed", "{description}" }
+//             Link {
+//                 class: "text-indigo-500 inline-flex items-center mt-4",
+//                 to: "{link}",
+//                 "Read more"
+//                 icons::ArrowRight {}
+//             }
+//         }
+//     }
+// })
 
 #[inline_props]
 pub fn SinglePost(cx: Scope, post: BlogPost) -> Element {
@@ -123,10 +123,6 @@ fn BlogHeader(cx: Scope) -> Element {
                             "Updates, changelogs, anaaaad general musings of the Dioxus community...."
                         }
                     }
-                    // a { class: "inline-block ml-auto w-full md:w-auto px-12 py-4 text-center text-sm text-white font-medium leading-normal bg-red-400 hover:bg-red-300 rounded",
-                    //     href: "#",
-                    //     "Save to RSS (WIP)"
-                    // }
                 }
             }
         }
@@ -168,11 +164,11 @@ fn BlogPostItem(cx: Scope, post: &'static BlogPost, id: usize) -> Element {
                 span { class: "mt-1 text-gray-500 text-sm", "{date}" }
             }
             div { class: "md:flex-grow",
-                h2 { class: "text-2xl font-medium text-gray-900 title-font mb-2 dark:text-white", "{title}" }
+                h2 { class: "text-2xl font-medium text-gray-900 title-font mb-2 dark:text-white",
+                    "{title}"
+                }
                 p { class: "leading-relaxed dark:text-white text-base dark:opacity-75", "{description}" }
-                Link {
-                    class: "text-indigo-500 inline-flex items-center mt-4",
-                    to: "{link}",
+                Link { class: "text-indigo-500 inline-flex items-center mt-4", to: "{link}",
                     "Read more"
                     icons::ArrowRight {}
                 }

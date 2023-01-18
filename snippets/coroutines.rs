@@ -16,5 +16,8 @@ fn Tasks(cx: Scope) -> Element {
         }
     });
 
-    rsx!(cx, pre {"Count: {count}"})
+    rsx!(
+        cx,
+        pre { "Count: {count}" }
+    )
 }

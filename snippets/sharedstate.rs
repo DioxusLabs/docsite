@@ -6,10 +6,16 @@ struct SharedState(&'static str);
 
 fn GlobalState(cx: Scope) -> Element {
     use_provide_state(&cx, || SharedState("world!"));
-    rsx!(cx, div { "Hello, ", Child {} })
+    rsx!(
+        cx,
+        div {
+            "Hello, "
+            Child {}
+        }
+    )
 }
 
 fn Child(cx: Scope) -> Element {
     let name = use_shared_state::<SharedState>(cx)?;
-    rsx!(cx, "{name}")
+    rsx!( cx, "{name}" )
 }

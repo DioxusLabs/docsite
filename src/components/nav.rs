@@ -100,14 +100,21 @@ static LINKS: &[(&str, &str, LinkPairs)] = &[
         "Platforms",
         "/platforms",
         &[
-            ("Web", "https://dioxuslabs.com/reference/web"),
-            ("Desktop", "https://dioxuslabs.com/reference/desktop"),
-            ("Mobile", "https://dioxuslabs.com/reference/mobile"),
-            ("SSR", "https://dioxuslabs.com/reference/ssr"),
+            ("Web", "https://dioxuslabs.com/guide/en/getting_started/web"),
             (
-                "TUI",
-                "https://github.com/DioxusLabs/dioxus/tree/master/packages/tui",
+                "Desktop",
+                "https://dioxuslabs.com/guide/en/getting_started/desktop",
             ),
+            (
+                "Mobile",
+                "https://dioxuslabs.com/guide/en/getting_started/mobile",
+            ),
+            ("SSR", "https://dioxuslabs.com/guide/en/getting_started/ssr"),
+            (
+                "Liveview",
+                "https://dioxuslabs.com/guide/en/getting_started/liveview",
+            ),
+            ("TUI", "https://dioxuslabs.com/guide/en/getting_started/tui"),
             //
             // todo: make dedicated pages for these platforms
             // ("Web", "/platforms/web"),
@@ -147,9 +154,7 @@ static LINKS: &[(&str, &str, LinkPairs)] = &[
         "Docs",
         "/learn/",
         &[
-            ("Guide", "https://dioxuslabs.com/guide/"),
-            ("Advanced", "https://dioxuslabs.com/reference/"),
-            ("Reference", "https://dioxuslabs.com/reference/"),
+            ("Guide", "https://dioxuslabs.com/guide/en/"),
             ("Router", "https://dioxuslabs.com/router/"),
         ],
     ),

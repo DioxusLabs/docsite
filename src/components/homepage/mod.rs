@@ -71,7 +71,7 @@ fn ProjectCards(cx: Scope) -> Element {
                                     h3 { class: "mb-4 text-2xl font-semibold font-heading font-mono", "{title}" }
                                     p { class: "text-base text-gray-500 pb-4", "{description}" }
                                     a { class: "bg-gray-900 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 focus:ring-offset-gray-50 text-white font-semibold h-12 px-6 rounded-lg flex items-center justify-center sm:w-auto dark:bg-sky-500 dark:highlight-white/20 dark:hover:bg-sky-400",
-                                        href: "https://dioxuslabs.com/guide/",
+                                        href: "https://dioxuslabs.com/guide/en/",
                                         "Get started"
                                     }
                                 }
@@ -106,32 +106,32 @@ fn AvailablePlatforms(cx: Scope) -> Element {
                     left: render!( "" ),
                     center: render!( "" ),
                     right: render!( "Build for the web using Rust and WebAssembly. As fast as SolidJS and more robust than React. Integrated hot reloading for instant iterations." ),
-                    to: "https://dioxuslabs.com/reference/web",
+                    to: "https://dioxuslabs.com/guide/en/getting_started/web",
                     title: "Web with WASM",
                 }
                 TriShow {
                     left: render!( "" ),
                     center: render!( "" ),
                     right: render!( "Lightweight (<2mb) desktop and mobile apps with zero configuration. Choose between WebView or WGPU-enabled renderers. Runs on macOS, Windows, Linux, iOS, and Android." ),
-                    to: "https://dioxuslabs.com/reference/desktop",
+                    to: "https://dioxuslabs.com/guide/en/getting_started/desktop",
                     title: "Desktop and Mobile",
                 }
                 TriShow {
-                    to: "https://github.com/DioxusLabs/dioxus/tree/master/packages/tui",
                     title: "Terminal User Interfaces",
+                    to: "https://dioxuslabs.com/guide/en/getting_started/tui",
                     right: render!("Quickly convert any CLI tool to a beautiful interactive user interface with just a few lines of code. Runs anywhere with a terminal.")
                     left: render!( "" ),
                     center: render!( "" ),
                 }
                 TriShow {
-                    to: "https://dioxuslabs.com/reference/ssr",
+                    to: "https://dioxuslabs.com/guide/en/getting_started/ssr",
                     title: "Fullstack Apps",
                     right: render!("Pre-render on the server, and hydrate on the client. Perfect lighthouse scores and performance over 1000x better than Node and Python. Perfect for static site generation or fullstack apps.")
                     left: render!( "" ),
                     center: render!( "" ),
                 }
                 TriShow {
-                    to: "https://github.com/DioxusLabs/dioxus/tree/master/packages/liveview",
+                    to: "https://dioxuslabs.com/guide/en/getting_started/liveview",
                     title: "LiveView and LiveComponents",
                     right: render!("Render your app entirely on the server. Zero backend configuration capable of handling thousands of active clients. Integrates with Axum, Warp, Salvo, and Tokamak.",)
                     left: render!( "" ),

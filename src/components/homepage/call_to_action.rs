@@ -10,7 +10,7 @@ pub static CallToAction: Component<()> = |cx| {
                         "Start building today, with Dioxus."
                     }
                     img { class: "h-12 mx-4", src: "{FERROUS_LOGO}" }
-                    a { href: "https://dioxuslabs.com/guide/",
+                    a { href: "https://dioxuslabs.com/guide/en/",
                         button { class: "flex-shrink-0 text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg mt-10 sm:mt-0",
                             "Get started"
                         }

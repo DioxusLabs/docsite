@@ -42,7 +42,13 @@ fn FullNav(cx: Scope) -> Element {
             div { class: "flex items-center border-l border-gray-200 ml-6 pl-6 dark:border-gray-800",
                 label { class: "sr-only", id: "headlessui-listbox-label-2", "Theme" }
                 a {
-                    class: "ml-3 block text-gray-400 hover:text-gray-500 dark:hover:text-gray-300",
+                    class: "block text-gray-400 hover:text-gray-500 dark:hover:text-gray-300",
+                    href: "https://discord.gg/XgGxMSkvUM",
+                    span { class: "sr-only", "Dioxus on Discord" }
+                    crate::icons::DiscordLogo {}
+                }
+                a {
+                    class: "ml-6 block text-gray-400 hover:text-gray-500 dark:hover:text-gray-300",
                     href: "https://github.com/dioxuslabs/dioxus",
                     span { class: "sr-only", "Dioxus on GitHub" }
                     crate::icons::Github2 {}

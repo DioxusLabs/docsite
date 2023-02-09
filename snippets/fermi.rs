@@ -14,5 +14,5 @@ fn Demo(cx: Scope) -> Element {
 fn Increment(cx: Scope) -> Element {
     let mut count = use_atom(&cx, COUNT);
 
-    render!(button { onclick: move |_| count += 1, "Increment" } )
+    render!( button { onclick: move |_| count += 1, "Increment" } )
 }

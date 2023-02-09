@@ -56,6 +56,7 @@ pub fn app(cx: Scope) -> Element {
 
             Route { to: "/blog", BlogList {} }
             Route { to: "/blog/", BlogList {} }
+            Route { to: "/blog/release-030", SinglePost { post: POST_RELEASE_030 } }
             Route { to: "/blog/introducing-dioxus", SinglePost { post: POST_RELEASE_010 } }
             Route { to: "/blog/release-020", SinglePost { post: POST_RELEASE_020 } }
             Route { to: "/blog/templates-diffing/", SinglePost { post: POST_TEMPLATE } }

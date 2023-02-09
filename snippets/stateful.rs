@@ -10,10 +10,5 @@
 fn Stateful(cx: Scope) -> Element {
     let (count, set_count) = use_state(&cx, || 0);
 
-    cx.render(rsx! (
-        button {
-            "Upvote counter: {count}",
-            onclick: move |_| set_count(count + 1)
-        }
-    ))
+    cx.render(rsx! ( button { onclick: move |_| set_count(count + 1), "Upvote counter: {count}" } ))
 }

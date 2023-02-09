@@ -10,16 +10,17 @@ pub fn Nav(cx: Scope) -> Element {
     cx.render(rsx! {
         header { class: "sticky top-0 z-50 bg-white shadow dark:text-gray-200 dark:bg-ideblack dark:border-b border-stone-600",
             div { class: "py-4 px-12 max-w-screen-2xl mx-auto flex items-center justify-between font-semibold text-sm leading-6",
-            // div { class: "py-4 flex items-center justify-between font-semibold text-sm leading-6 bg-white shadow dark:text-gray-200 dark:bg-black px-48",
-            // div { class: "py-4 flex items-center justify-between font-semibold text-sm leading-6 bg-white shadow dark:text-gray-200 dark:bg-black px-4 sm:px-6 md:px-8",
-                Link {
-                    class: "flex title-font font-medium items-center text-gray-900"
-                    to: "/",
-                    img { src: "https://avatars.githubusercontent.com/u/79236386?s=200&v=4", class: "h-5 w-auto" },
+                // div { class: "py-4 flex items-center justify-between font-semibold text-sm leading-6 bg-white shadow dark:text-gray-200 dark:bg-black px-48",
+                // div { class: "py-4 flex items-center justify-between font-semibold text-sm leading-6 bg-white shadow dark:text-gray-200 dark:bg-black px-4 sm:px-6 md:px-8",
+                Link { class: "flex title-font font-medium items-center text-gray-900", to: "/",
+                    img {
+                        src: "https://avatars.githubusercontent.com/u/79236386?s=200&v=4",
+                        class: "h-5 w-auto"
+                    }
                     span { class: "ml-3 text-xl dark:text-white font-mono", "Dioxus Labs" }
                 }
                 div { class: "flex items-center font-mono",
-                    MobileNav { }
+                    MobileNav {}
                     FullNav {}
                 }
             }
@@ -41,7 +42,13 @@ fn FullNav(cx: Scope) -> Element {
             div { class: "flex items-center border-l border-gray-200 ml-6 pl-6 dark:border-gray-800",
                 label { class: "sr-only", id: "headlessui-listbox-label-2", "Theme" }
                 a {
-                    class: "ml-3 block text-gray-400 hover:text-gray-500 dark:hover:text-gray-300",
+                    class: "block text-gray-400 hover:text-gray-500 dark:hover:text-gray-300",
+                    href: "https://discord.gg/XgGxMSkvUM",
+                    span { class: "sr-only", "Dioxus on Discord" }
+                    crate::icons::DiscordLogo {}
+                }
+                a {
+                    class: "ml-6 block text-gray-400 hover:text-gray-500 dark:hover:text-gray-300",
                     href: "https://github.com/dioxuslabs/dioxus",
                     span { class: "sr-only", "Dioxus on GitHub" }
                     crate::icons::Github2 {}
@@ -182,7 +189,9 @@ fn LinkList(cx: Scope) -> Element {
         } else {
             rsx! {
                 li { key: "{link}", class: "group relative dropdown",
-                    span { class: "py-1 px-[0.25rem] md:px-2 text-lg md:text-sm {hover} {hover_bg} cursor-default", "{name}" }
+                    span { class: "py-1 px-[0.25rem] md:px-2 text-lg md:text-sm {hover} {hover_bg} cursor-default",
+                        "{name}"
+                    }
                     // Link { to: "{link}", class: "py-1 px-2 {hover} {hover_bg}", "{name}" }
                     // Link { to: "{link}", class: "py-1 px-2 {hover} {hover_bg}", "{name}" }
                     nav { class: "md:dropdown-menu md:absolute h-auto md:-mt-64 md:group-hover:mt-0 md:opacity-0 md:group-hover:opacity-100 md:transition-opacity md:duration-250",
@@ -201,5 +210,5 @@ fn LinkList(cx: Scope) -> Element {
         }
     });
 
-    cx.render(rsx! { links })
+    cx.render(rsx! {links})
 }

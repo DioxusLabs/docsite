@@ -157,7 +157,7 @@ static LINKS: &[(&str, &str, LinkPairs)] = &[
         "Docs",
         "/learn/",
         &[
-            ("Guide", "https://dioxuslabs.com/docs/a.3/guide/en/"),
+            ("Guide", "https://dioxuslabs.com/docs/0.3/guide/en/"),
             ("Advanced", "https://dioxuslabs.com/docs/0.3/reference/"),
             ("Reference", "https://dioxuslabs.com/docs/0.3/reference/"),
             ("Router", "https://dioxuslabs.com/docs/0.3/router/"),

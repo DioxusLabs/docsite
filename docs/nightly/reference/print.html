@@ -1,0 +1,1244 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title></title>
+                <meta name="robots" content="noindex" />
+                
+
+        <!-- Custom HTML head -->
+        
+
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+                <link rel="icon" href="favicon.svg">
+                        <link rel="shortcut icon" href="favicon.png">
+                <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+                <link rel="stylesheet" href="css/print.css" media="print">
+        
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+                <link rel="stylesheet" href="fonts/fonts.css">
+        
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        
+            </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded "><a href="index.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="platforms/index.html"><strong aria-hidden="true">2.</strong> Platforms</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="platforms/web.html"><strong aria-hidden="true">2.1.</strong> Web</a></li><li class="chapter-item expanded "><a href="platforms/ssr.html"><strong aria-hidden="true">2.2.</strong> Server Side Rendering</a></li><li class="chapter-item expanded "><a href="platforms/desktop.html"><strong aria-hidden="true">2.3.</strong> Desktop</a></li><li class="chapter-item expanded "><a href="platforms/mobile.html"><strong aria-hidden="true">2.4.</strong> Mobile</a></li><li class="chapter-item expanded "><a href="platforms/tui.html"><strong aria-hidden="true">2.5.</strong> TUI</a></li></ol></li><li class="chapter-item expanded "><a href="guide/index.html"><strong aria-hidden="true">3.</strong> Advanced Guides</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="guide/rsx_in_depth.html"><strong aria-hidden="true">3.1.</strong> RSX in Depth</a></li><li class="chapter-item expanded "><a href="guide/custom_renderer.html"><strong aria-hidden="true">3.2.</strong> Custom Renderer</a></li><li class="chapter-item expanded "><a href="guide/hot_reloading.html"><strong aria-hidden="true">3.3.</strong> Hot Reloading Rsx</a></li></ol></li></ol>            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                                                <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                                            </div>
+
+                    <h1 class="menu-title"></h1>
+
+                    <div class="right-buttons">
+                                                <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                                                                        
+                    </div>
+                </div>
+
+                                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="dioxus-reference-and-advanced-guides"><a class="header" href="#dioxus-reference-and-advanced-guides">Dioxus: Reference and Advanced Guides</a></h1>
+<p><img src="./images/dioxuslogo_full.png" alt="dioxuslogo" /></p>
+<p><strong>Dioxus</strong> is a framework and ecosystem for building fast, scalable, and robust user interfaces with the Rust programming language. This guide will help you get started with Dioxus running on the Web, Desktop, Mobile, and more.</p>
+<blockquote>
+<p>This book is the reference and Advanced Guides for the Dioxus framework. For a tutorial on how to actually <em>use</em> Dioxus, make sure to check out the <a href="https://dioxuslabs.com/guide/">official guide</a>.</p>
+</blockquote>
+<h2 id="reference-and-guides"><a class="header" href="#reference-and-guides">Reference and Guides</a></h2>
+<p>With the reference, we aim to maintain documentation of functionality that might not be mentioned in the official guide to keep the information load to a minimum. Some topics not included by the guide but discussed in the reference include:</p>
+<ul>
+<li>ThreadSafety of the VirtualDom</li>
+<li>Full usage of <code>rsx!</code> and included features</li>
+<li>Spread pattern for component properties</li>
+<li>Testing</li>
+<li>Memoization in Depth</li>
+<li>Custom Elements</li>
+<li>Custom Renderers</li>
+</ul>
+<h2 id="contributing"><a class="header" href="#contributing">Contributing</a></h2>
+<p>If this doc is lacking in any way, is confusing, has a typo, or you'd just like to help improve things, feel free to make a PR against the <a href="https://github.com/DioxusLabs/dioxus/tree/master/docs/reference">Dioxus repo</a>.</p>
+<p>All contributions will be licensed under MIT/Apache2.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="platforms"><a class="header" href="#platforms">Platforms</a></h1>
+<p>Dioxus supports many different platforms. Below are a list of guides that walk you through setting up Dioxus for a specific platform.</p>
+<h3 id="setup-guides"><a class="header" href="#setup-guides">Setup Guides</a></h3>
+<ul>
+<li><a href="platforms/web.html">Web</a></li>
+<li><a href="platforms/ssr.html">Server Side Rendering</a></li>
+<li><a href="platforms/desktop.html">Desktop</a></li>
+<li><a href="platforms/mobile.html">Mobile</a></li>
+<li><a href="platforms/tui.html">TUI</a></li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="getting-started-web"><a class="header" href="#getting-started-web">Getting Started: Web</a></h1>
+<p><a href="https://trunkrs.dev"><em>&quot;Pack your things, we're going on an adventure!&quot;</em></a></p>
+<p>Dioxus is well supported for the web through WebAssembly. A build of Dioxus for the web will be roughly equivalent to the size of a React build (70kb vs 65kb), but will load significantly faster due to <a href="https://hacks.mozilla.org/2018/01/making-webassembly-even-faster-firefoxs-new-streaming-and-tiering-compiler/">WebAssembly's StreamingCompile</a> option.</p>
+<p>Building Dioxus apps for the web requires much less configuration than our JavaScript counterparts.</p>
+<h2 id="tooling"><a class="header" href="#tooling">Tooling</a></h2>
+<p>To develop your Dioxus app for the web, you'll need a tool to build and serve your assets. We recommend using <a href="https://trunkrs.dev">trunk</a> which includes a build system, Wasm optimization, a dev server, and support for SASS/CSS.</p>
+<p>Currently, trunk projects can only build the root binary (ie the <code>main.rs</code>). To build a new Dioxus compatible project, this should get you up and running.</p>
+<p>First, <a href="https://trunkrs.dev/#install">install trunk</a>:</p>
+<pre><code class="language-shell">$ cargo install trunk
+</code></pre>
+<p>Make sure the <code>wasm32-unknown-unknown</code> target is installed:</p>
+<pre><code class="language-shell">$ rustup target add wasm32-unknown-unknown
+</code></pre>
+<p>Create a new project:</p>
+<pre><code class="language-shell">$ cargo new --bin demo
+$ cd demo
+</code></pre>
+<p>Add Dioxus with the <code>web</code> features:</p>
+<pre><code>$ cargo add dioxus --features web
+</code></pre>
+<p>Add an <code>index.html</code> for Trunk to use. Make sure your &quot;mount point&quot; element has an ID of &quot;main&quot; (this can be configured later):</p>
+<pre><code class="language-html">&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+  &lt;head&gt;
+    &lt;meta charset=&quot;utf-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;div id=&quot;main&quot;&gt; &lt;/div&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+<p>Edit your <code>main.rs</code>:</p>
+<pre><pre class="playground"><code class="language-rust">// main.rs
+
+use dioxus::prelude::*;
+
+fn main() {
+    dioxus::web::launch(app);
+}
+
+fn app(cx: Scope) -&gt; Element {
+    cx.render(rsx!{
+        div { &quot;hello, wasm!&quot; }
+    })
+}
+</code></pre></pre>
+<p>And to serve our app:</p>
+<pre><code class="language-shell">trunk serve
+</code></pre>
+<p>To build our app and publish it to Github:</p>
+<ul>
+<li>Make sure Github Pages is set up for your repo</li>
+<li>Build your app with <code>trunk build --release</code> (include <code>--public-url &lt;repo-name&gt;</code> to update asset prefixes if using a project site)</li>
+<li>Move your generated HTML/CSS/JS/Wasm from <code>dist</code> into the folder configured for Github Pages</li>
+<li>Add and commit with git</li>
+<li>Push to Github</li>
+</ul>
+<p>That's it!</p>
+<h2 id="future-build-tool"><a class="header" href="#future-build-tool">Future Build Tool</a></h2>
+<p>We are currently working on our own build tool called <a href="http://github.com/dioxusLabs/studio">Dioxus Studio</a> which will support:</p>
+<ul>
+<li>an interactive TUI</li>
+<li>on-the-fly reconfiguration</li>
+<li>hot CSS reloading</li>
+<li>two-way data binding between browser and source code</li>
+<li>an interpreter for <code>rsx!</code> </li>
+<li>ability to publish to github/netlify/vercel</li>
+<li>bundling for iOS/Desktop/etc</li>
+</ul>
+<h2 id="features"><a class="header" href="#features">Features</a></h2>
+<p>Currently, the web supports:</p>
+<ul>
+<li>Pre-rendering/Hydration</li>
+</ul>
+<h2 id="events"><a class="header" href="#events">Events</a></h2>
+<p>The regular events in the <code>html</code> crate work just fine in the web.</p>
+<h2 id="future-steps"><a class="header" href="#future-steps">Future Steps</a></h2>
+<p>Make sure to read the <a href="https://dioxuslabs.com/guide">Dioxus Guide</a> if you already haven't!</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="getting-started-server-side-rendering"><a class="header" href="#getting-started-server-side-rendering">Getting Started: Server-Side-Rendering</a></h1>
+<p>The Dioxus VirtualDom can be rendered to a string by traversing the Element Tree. This is implemented in the <code>ssr</code> crate where your Dioxus app can be directly rendered to HTML to be served by a web server.</p>
+<h2 id="setup"><a class="header" href="#setup">Setup</a></h2>
+<p>If you just want to render <code>rsx!</code> or a VirtualDom to HTML, check out the API docs. It's pretty simple:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// We can render VirtualDoms
+let mut vdom = VirtualDom::new(app);
+let _ = vdom.rebuild();
+println!(&quot;{}&quot;, dioxus::ssr::render_vdom(&amp;vdom));
+
+// Or we can render rsx! calls directly
+println!( &quot;{}&quot;, dioxus::ssr::render_lazy(rsx! { h1 { &quot;Hello, world!&quot; } } );
+<span class="boring">}
+</span></code></pre></pre>
+<p>However, for this guide, we're going to show how to use Dioxus SSR with <code>Axum</code>.</p>
+<p>Make sure you have Rust and Cargo installed, and then create a new project:</p>
+<pre><code class="language-shell">$ cargo new --bin demo
+$ cd app
+</code></pre>
+<p>Add Dioxus with the <code>ssr</code> feature:</p>
+<pre><code class="language-shell">$ cargo add dioxus --features ssr
+</code></pre>
+<p>Next, add all the Axum dependencies. This will be different if you're using a different Web Framework</p>
+<pre><code>$ cargo add tokio --features full
+$ cargo add axum
+</code></pre>
+<p>Your dependencies should look roughly like this:</p>
+<pre><code class="language-toml">[dependencies]
+axum = &quot;0.4.5&quot;
+dioxus = { version = &quot;*&quot;, features = [&quot;ssr&quot;] }
+tokio = { version = &quot;1.15.0&quot;, features = [&quot;full&quot;] }
+</code></pre>
+<p>Now, setup your Axum app to respond on an endpoint.</p>
+<pre><pre class="playground"><code class="language-rust">use axum::{response::Html, routing::get, Router};
+use dioxus::prelude::*;
+
+#[tokio::main]
+async fn main() {
+    let addr = std::net::SocketAddr::from(([127, 0, 0, 1], 3000));
+    println!(&quot;listening on http://{}&quot;, addr);
+
+    axum::Server::bind(&amp;addr)
+        .serve(
+            Router::new()
+                .route(&quot;/&quot;, get(app_endpoint))
+                .into_make_service(),
+        )
+        .await
+        .unwrap();
+}
+</code></pre></pre>
+<p>And then add our endpoint. We can either render <code>rsx!</code> directly:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>async fn app_endpoint() -&gt; Html&lt;String&gt; {
+    Html(dioxus::ssr::render_lazy(rsx! {
+            h1 { &quot;hello world!&quot; }
+    }))
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>Or we can render VirtualDoms.</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>async fn app_endpoint() -&gt; Html&lt;String&gt; {
+    fn app(cx: Scope) -&gt; Element {
+        cx.render(rsx!(h1 { &quot;hello world&quot; }))
+    }
+    let mut app = VirtualDom::new(app);
+    let _ = app.rebuild();
+
+    Html(dioxus::ssr::render_vdom(&amp;app))
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>And that's it!</p>
+<blockquote>
+<p>You might notice that you cannot hold the VirtualDom across an await point. Dioxus is currently not ThreadSafe, so it <em>must</em> remain on the thread it started. We are working on loosening this requirement.</p>
+</blockquote>
+<h2 id="future-steps-1"><a class="header" href="#future-steps-1">Future Steps</a></h2>
+<p>Make sure to read the <a href="https://dioxuslabs.com/guide">Dioxus Guide</a> if you already haven't!</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="getting-started-desktop"><a class="header" href="#getting-started-desktop">Getting Started: Desktop</a></h1>
+<p>One of Dioxus' killer features is the ability to quickly build a native desktop app that looks and feels the same across platforms. Apps built with Dioxus are typically &lt;5mb in size and use existing system resources, so they won't hog extreme amounts of RAM or memory.</p>
+<p>Dioxus Desktop is built off Tauri. Right now there aren't any Dioxus abstractions over keyboard shortcuts, menubar, handling, etc, so you'll want to leverage Tauri - mostly <a href="http://github.com/tauri-apps/wry/">Wry</a> and <a href="http://github.com/tauri-apps/tao">Tao</a>) directly. The next major release of Dioxus-Desktop will include components and hooks for notifications, global shortcuts, menubar, etc.</p>
+<h2 id="getting-set-up"><a class="header" href="#getting-set-up">Getting Set up</a></h2>
+<p>Getting Set up with Dioxus-Desktop is quite easy. Make sure you have Rust and Cargo installed, and then create a new project:</p>
+<pre><code class="language-shell">$ cargo new --bin demo
+$ cd demo
+</code></pre>
+<p>Add Dioxus with the <code>desktop</code> feature:</p>
+<pre><code class="language-shell">$ cargo add dioxus --features desktop
+</code></pre>
+<p>Edit your <code>main.rs</code>:</p>
+<pre><pre class="playground"><code class="language-rust">// main.rs
+use dioxus::prelude::*;
+
+fn main() {
+    dioxus::desktop::launch(app);
+}
+
+fn app(cx: Scope) -&gt; Element {
+    cx.render(rsx!{
+        div {
+            &quot;hello world!&quot;
+        }
+    })
+}
+</code></pre></pre>
+<p>To configure the webview, menubar, and other important desktop-specific features, checkout out some of the launch configuration in the <a href="https://docs.rs/dioxus-desktop/">API reference</a>.</p>
+<h2 id="future-steps-2"><a class="header" href="#future-steps-2">Future Steps</a></h2>
+<p>Make sure to read the <a href="https://dioxuslabs.com/guide">Dioxus Guide</a> if you already haven't!</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="getting-started-mobile"><a class="header" href="#getting-started-mobile">Getting started: mobile</a></h1>
+<p>Dioxus is unique in that it actually supports mobile. However, support is very young and you might need to dip down into some of the primitives until better support is ready.</p>
+<p>Currently, only iOS is supported through us, however you <em>can</em> add android support by following the same instructions below by using the <code>android</code> guide in <code>cargo-mobile</code>.</p>
+<p>Also, Dioxus Desktop and Dioxus Mobile share the same codebase, and dioxus-mobile currently just re-exports dioxus-desktop.</p>
+<h2 id="getting-set-up-1"><a class="header" href="#getting-set-up-1">Getting Set up</a></h2>
+<p>Getting set up with mobile can be quite challenging. The tooling here isn't great (yet) and might take some hacking around to get things working. macOS M1 is broadly unexplored and might not work for you.</p>
+<p>We're going to be using <code>cargo-mobile</code> to build for mobile. First, install it:</p>
+<pre><code class="language-shell">$ cargo install --git https://github.com/BrainiumLLC/cargo-mobile
+</code></pre>
+<p>And then initialize your app for the right platform. Use the <code>winit</code> template for now. Right now, there's no &quot;Dioxus&quot; template in cargo-mobile.</p>
+<pre><code class="language-shell">$ cargo mobile init 
+</code></pre>
+<p>We're going to completely clear out the <code>dependencies</code> it generates for us, swapping out <code>winit</code> with <code>dioxus-mobile</code>.</p>
+<pre><code class="language-toml">
+[package]
+name = &quot;dioxus-ios-demo&quot;
+version = &quot;0.1.0&quot;
+authors = [&quot;Jonathan Kelley &lt;jkelleyrtp@gmail.com&gt;&quot;]
+edition = &quot;2018&quot;
+
+
+# leave the `lib` declaration
+[lib]
+crate-type = [&quot;staticlib&quot;, &quot;cdylib&quot;, &quot;rlib&quot;]
+
+
+# leave the binary it generates for us
+[[bin]]
+name = &quot;dioxus-ios-demo-desktop&quot;
+path = &quot;gen/bin/desktop.rs&quot;
+
+# clear all the dependencies
+[dependencies]
+mobile-entry-point = &quot;0.1.0&quot;
+dioxus = { version = &quot;*&quot;, features = [&quot;mobile&quot;] }
+simple_logger = &quot;*&quot;
+</code></pre>
+<p>Edit your <code>lib.rs</code>:</p>
+<pre><pre class="playground"><code class="language-rust">// main.rs
+use dioxus::prelude::*;
+
+fn main() {
+    dioxus::mobile::launch(app);
+}
+
+fn app(cx: Scope) -&gt; Element {
+    cx.render(rsx!{
+        div {
+            &quot;hello world!&quot;
+        }
+    })
+}
+</code></pre></pre>
+<p>To configure the webview, menubar, and other important desktop-specific features, checkout out some of the launch configuration in the <a href="https://docs.rs/dioxus-mobile/">API reference</a>.</p>
+<h2 id="future-steps-3"><a class="header" href="#future-steps-3">Future Steps</a></h2>
+<p>Make sure to read the <a href="https://dioxuslabs.com/guide">Dioxus Guide</a> if you already haven't!</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="getting-started-tui"><a class="header" href="#getting-started-tui">Getting Started: TUI</a></h1>
+<p>TUI support is currently quite experimental. Even the project name will change. But, if you're willing to venture into the realm of the unknown, this guide will get you started.</p>
+<p><a href="https://github.com/DioxusLabs/rink/raw/master/examples/example.png">TUI Support</a></p>
+<h2 id="getting-set-up-2"><a class="header" href="#getting-set-up-2">Getting Set up</a></h2>
+<p>To tinker with TUI support, start by making a new package and adding our TUI feature.</p>
+<pre><code class="language-shell">$ cargo new --bin demo
+$ cd demo
+$ cargo add dioxus --features tui
+</code></pre>
+<p>Then, edit your <code>main.rs</code> with the basic template. </p>
+<pre><pre class="playground"><code class="language-rust">//  main
+use dioxus::prelude::*;
+
+fn main() {
+    dioxus::tui::launch(app);
+}
+
+fn app(cx: Scope) -&gt; Element {
+    cx.render(rsx! {
+        div {
+            width: &quot;100%&quot;,
+            height: &quot;10px&quot;,
+            background_color: &quot;red&quot;,
+            justify_content: &quot;center&quot;,
+            align_items: &quot;center&quot;,
+
+            &quot;Hello world!&quot;
+        }
+    })
+}
+</code></pre></pre>
+<p>To run our app:</p>
+<pre><code class="language-shell">$ cargo run
+</code></pre>
+<p>Press &quot;ctrl-c&quot; to close the app. To switch from &quot;ctrl-c&quot; to  just &quot;q&quot; to quit you can launch the app with a configuration to disable the default quit and use the root TuiContext to quit on your own.</p>
+<pre><pre class="playground"><code class="language-rust">use dioxus::events::{KeyCode, KeyboardEvent};
+use dioxus::prelude::*;
+use dioxus::tui::TuiContext;
+
+fn main() {
+    dioxus::tui::launch_cfg(
+        app,
+        dioxus::tui::Config::new()
+            .without_ctrl_c_quit()
+            // Some older terminals only support 16 colors or ANSI colors if your terminal is one of these change this to BaseColors or ANSI
+            .with_rendering_mode(dioxus::tui::RenderingMode::Rgb),
+    );
+}
+
+fn app(cx: Scope) -&gt; Element {
+    let tui_ctx: TuiContext = cx.consume_context().unwrap();
+
+    cx.render(rsx! {
+        div {
+            width: &quot;100%&quot;,
+            height: &quot;10px&quot;,
+            background_color: &quot;red&quot;,
+            justify_content: &quot;center&quot;,
+            align_items: &quot;center&quot;,
+            onkeydown: move |k: KeyboardEvent| if let KeyCode::Q = k.data.key_code {
+                tui_ctx.quit();
+            },
+
+            &quot;Hello world!&quot;
+        }
+    })
+}
+</code></pre></pre>
+<h2 id="notes"><a class="header" href="#notes">Notes</a></h2>
+<ul>
+<li>Our TUI package uses flexbox for layout</li>
+<li>1px is one character lineheight. Your regular CSS px does not translate.</li>
+<li>If your app panics, your terminal is wrecked. This will be fixed eventually.</li>
+</ul>
+<h2 id="future-steps-4"><a class="header" href="#future-steps-4">Future Steps</a></h2>
+<p>Make sure to read the <a href="https://dioxuslabs.com/guide">Dioxus Guide</a> if you already haven't!</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="advanced-guides"><a class="header" href="#advanced-guides">Advanced Guides</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="rsx-in-depth"><a class="header" href="#rsx-in-depth">RSX in Depth</a></h1>
+<p>The RSX macro makes it very easy to assemble complex UIs with a very natural Rust syntax:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>rsx!(
+    div {
+        button {
+            onclick: move |e| todos.write().new_todo(),
+            &quot;Add todo&quot;
+        }
+        ul {
+            class: &quot;todo-list&quot;,
+            todos.iter().map(|(key, todo)| rsx!(
+                li { 
+                    class: &quot;beautiful-todo&quot;
+                    key: &quot;f&quot;
+                    h3 { &quot;{todo.title}&quot; }
+                    p { &quot;{todo.contents}&quot;}
+                }
+            ))
+        }
+    }
+)
+<span class="boring">}
+</span></code></pre></pre>
+<p>In this section, we'll cover the <code>rsx!</code> macro in depth. If you prefer to learn through examples, the  <code>code reference</code> guide has plenty of examples on how to use <code>rsx!</code> effectively.</p>
+<h3 id="element-structure"><a class="header" href="#element-structure">Element structure</a></h3>
+<p>Attributes must come before  child elements</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>div {
+    hidden: &quot;false&quot;,
+    &quot;some text&quot;
+    child {}
+    Component {} // uppercase
+    component() // lowercase is treated like a function call
+    (0..10).map(|f| rsx!{ &quot;hi {f}&quot; }) // arbitrary rust expressions
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>Each element takes a comma-separated list of expressions to build the node. Roughly, here's how they work:</p>
+<ul>
+<li><code>name: value</code> sets a property on this element.</li>
+<li><code>&quot;text&quot;</code> adds a new text element</li>
+<li><code>tag {}</code> adds a new child element</li>
+<li><code>CustomTag {}</code> adds a new child component</li>
+<li><code>{expr}</code> pastes the <code>expr</code> tokens literally. They must be <code>IntoIterator&lt;T&gt; where T: IntoVnode</code> to work properly</li>
+</ul>
+<p>Commas are entirely optional, but might be useful to delineate between elements and attributes.</p>
+<p>The <code>render</code> function provides an <strong>extremely efficient</strong> allocator for VNodes and text, so try not to use the <code>format!</code> macro in your components. Rust's default <code>ToString</code> methods pass through the global allocator, but all text in components is allocated inside a manually-managed Bump arena. To push you in the right direction, all text-based attributes take <code>std::fmt::Arguments</code> directly, so you'll want to reach for <code>format_args!</code> when the built-in <code>f-string</code> interpolation just doesn't cut it.</p>
+<h3 id="ignoring-cxrender-with-rsxcx-"><a class="header" href="#ignoring-cxrender-with-rsxcx-">Ignoring <code>cx.render</code> with <code>rsx!(cx, ...)</code></a></h3>
+<p>Sometimes, writing <code>cx.render</code> is a hassle. The `rsx! macro will accept any token followed by a comma as the target to call &quot;render&quot; on:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>cx.render(rsx!( div {} ))
+// becomes
+rsx!(cx, div {})
+<span class="boring">}
+</span></code></pre></pre>
+<h3 id="conditional-rendering"><a class="header" href="#conditional-rendering">Conditional Rendering</a></h3>
+<p>Sometimes, you might not want to render an element given a condition. The rsx! macro will accept any tokens directly contained with curly braces, provided they resolve to a type that implements <code>IntoIterator&lt;VNode&gt;</code>. This lets us write any Rust expression that resolves to a VNode:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>rsx!({
+    if enabled {
+        rsx!(cx, div {&quot;enabled&quot;})
+    } else {
+        rsx!(cx, li {&quot;disabled&quot;})
+    }
+})
+<span class="boring">}
+</span></code></pre></pre>
+<p>A convenient way of hiding/showing an element is returning an <code>Option&lt;VNode&gt;</code>. When combined with <code>and_then</code>, we can succinctly control the display state given some boolean:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>rsx!({
+    a.and_then(rsx!(div {&quot;enabled&quot;}))
+})
+<span class="boring">}
+</span></code></pre></pre>
+<p>It's important to note that the expression <code>rsx!()</code> is typically lazy - this expression must be <em>rendered</em> to produce a VNode. When using match statements, we must render every arm as to avoid the <code>no two closures are identical</code> rule that Rust imposes:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// this will not compile!
+match case {
+    true =&gt; rsx!(div {}),
+    false =&gt; rsx!(div {})
+}
+
+// the nodes must be rendered first
+match case {
+    true =&gt; rsx!(cx, div {}),
+    false =&gt; rsx!(cx, div {})
+}
+<span class="boring">}
+</span></code></pre></pre>
+<h3 id="lists"><a class="header" href="#lists">Lists</a></h3>
+<p>Again, because anything that implements <code>IntoIterator&lt;VNode&gt;</code> is valid, we can use lists directly in our <code>rsx!</code>:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>let items = vec![&quot;a&quot;, &quot;b&quot;, &quot;c&quot;];
+
+cx.render(rsx!{
+    ul {
+        {items.iter().map(|f| rsx!(li { &quot;a&quot; }))}
+    }
+})
+<span class="boring">}
+</span></code></pre></pre>
+<p>Sometimes, it makes sense to render VNodes into a list:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>let mut items = vec![];
+
+for _ in 0..5 {
+    items.push(rsx!(cx, li {} ))
+}
+
+rsx!(cx, {items} )
+<span class="boring">}
+</span></code></pre></pre>
+<h4 id="lists-and-keys"><a class="header" href="#lists-and-keys">Lists and Keys</a></h4>
+<p>When rendering the VirtualDom to the screen, Dioxus needs to know which elements have been added and which have been removed. These changes are determined through a process called &quot;diffing&quot; - an old set of elements is compared to a new set of elements. If an element is removed, then it won't show up in the new elements, and Dioxus knows to remove it.</p>
+<p>However, with lists, Dioxus does not exactly know how to determine which elements have been added or removed if the order changes or if an element is added or removed from the middle of the list.</p>
+<p>In these cases, it is vitally important to specify a &quot;key&quot; alongside the element. Keys should be persistent between renders.</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn render_list(cx: Scope, items: HashMap&lt;String, Todo&gt;) -&gt; DomTree {
+    rsx!(cx, ul {
+        {items.iter().map(|key, item| {
+            li {
+                key: key,
+                h2 { &quot;{todo.title}&quot; }
+                p { &quot;{todo.contents}&quot; }
+            }
+        })}
+    })
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>There have been many guides made for keys in React, so we recommend reading up to understand their importance:</p>
+<ul>
+<li><a href="https://reactjs.org/docs/lists-and-keys.html">React guide on keys</a></li>
+<li><a href="https://kentcdodds.com/blog/understanding-reacts-key-prop">Importance of keys (Medium)</a></li>
+</ul>
+<h3 id="complete-reference"><a class="header" href="#complete-reference">Complete Reference</a></h3>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>let text = &quot;example&quot;;
+
+cx.render(rsx!{
+    div {
+        h1 { &quot;Example&quot; },
+
+        {title}
+
+        // fstring interpolation
+        &quot;{text}&quot;
+
+        p {
+            // Attributes
+            tag: &quot;type&quot;,
+
+            // Anything that implements display can be an attribute
+            abc: 123,
+            
+            enabled: true,
+
+            // attributes also supports interpolation
+            // `class` is not a restricted keyword unlike JS and ClassName
+            class: &quot;big small wide short {text}&quot;,
+
+            class: format_args!(&quot;attributes take fmt::Arguments. {}&quot;, 99),
+
+            tag: {&quot;these tokens are placed directly&quot;}
+
+            // Children
+            a { &quot;abcder&quot; },
+
+            // Children with attributes
+            h2 { &quot;hello&quot;, class: &quot;abc-123&quot; },
+
+            // Child components
+            CustomComponent { a: 123, b: 456, key: &quot;1&quot; },
+
+            // Child components with paths
+            crate::components::CustomComponent { a: 123, b: 456, key: &quot;1&quot; },
+
+            // Iterators
+            { (0..3).map(|i| rsx!( h1 {&quot;{:i}&quot;} )) },
+
+            // More rsx!, or even html!
+            { rsx! { div { } } },
+            { html! { &lt;div&gt; &lt;/div&gt; } },
+
+            // Matching
+            // Requires rendering the nodes first.
+            // rsx! is lazy, and the underlying closures cannot have the same type
+            // Rendering produces the VNode type
+            {match rand::gen_range::&lt;i32&gt;(1..3) {
+                1 =&gt; rsx!(cx, h1 { &quot;big&quot; })
+                2 =&gt; rsx!(cx, h2 { &quot;medium&quot; })
+                _ =&gt; rsx!(cx, h3 { &quot;small&quot; })
+            }}
+
+            // Optionals
+            {true.and_then(|f| rsx!( h1 {&quot;Conditional Rendering&quot;} ))}
+
+            // Child nodes
+            {cx.props.children}
+
+            // Any expression that is `IntoVNode`
+            {expr}
+        }
+    }
+})
+<span class="boring">}
+</span></code></pre></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="custom-renderer"><a class="header" href="#custom-renderer">Custom Renderer</a></h1>
+<p>Dioxus is an incredibly portable framework for UI development. The lessons, knowledge, hooks, and components you acquire over time can always be used for future projects. However, sometimes those projects cannot leverage a supported renderer or you need to implement your own better renderer.</p>
+<p>Great news: the design of the renderer is entirely up to you! We provide suggestions and inspiration with the 1st party renderers, but only really require processing <code>DomEdits</code> and sending <code>UserEvents</code>.</p>
+<h2 id="the-specifics"><a class="header" href="#the-specifics">The specifics:</a></h2>
+<p>Implementing the renderer is fairly straightforward. The renderer needs to:</p>
+<ol>
+<li>Handle the stream of edits generated by updates to the virtual DOM</li>
+<li>Register listeners and pass events into the virtual DOM's event system</li>
+</ol>
+<p>Essentially, your renderer needs to implement the <code>RealDom</code> trait and generate <code>EventTrigger</code> objects to update the VirtualDOM. From there, you'll have everything needed to render the VirtualDOM to the screen.</p>
+<p>Internally, Dioxus handles the tree relationship, diffing, memory management, and the event system, leaving as little as possible required for renderers to implement themselves.</p>
+<p>For reference, check out the javascript interperter or tui renderer as a starting point for your custom renderer.</p>
+<h2 id="domedits"><a class="header" href="#domedits">DomEdits</a></h2>
+<p>The &quot;DomEdit&quot; type is a serialized enum that represents an atomic operation occurring on the RealDom. The variants roughly follow this set:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>enum DomEdit {
+    PushRoot,
+    AppendChildren,
+    ReplaceWith,
+    InsertAfter,
+    InsertBefore,
+    Remove,
+    CreateTextNode,
+    CreateElement,
+    CreateElementNs,
+    CreatePlaceholder,
+    NewEventListener,
+    RemoveEventListener,
+    SetText,
+    SetAttribute,
+    RemoveAttribute,
+    PopRoot,
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>The Dioxus diffing mechanism operates as a <a href="https://en.wikipedia.org/wiki/Stack_machine">stack machine</a> where the &quot;push_root&quot; method pushes a new &quot;real&quot; DOM node onto the stack and &quot;append_child&quot; and &quot;replace_with&quot; both remove nodes from the stack.</p>
+<h3 id="an-example"><a class="header" href="#an-example">An example</a></h3>
+<p>For the sake of understanding, lets consider this example - a very simple UI declaration:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>rsx!( h1 {&quot;hello world&quot;} )
+<span class="boring">}
+</span></code></pre></pre>
+<p>To get things started, Dioxus must first navigate to the container of this h1 tag. To &quot;navigate&quot; here, the internal diffing algorithm generates the DomEdit <code>PushRoot</code> where the ID of the root is the container.</p>
+<p>When the renderer receives this instruction, it pushes the actual Node onto its own stack. The real renderer's stack will look like this:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>instructions: [
+    PushRoot(Container)
+]
+stack: [
+    ContainerNode,
+]
+<span class="boring">}
+</span></code></pre></pre>
+<p>Next, Dioxus will encounter the h1 node. The diff algorithm decides that this node needs to be created, so Dioxus will generate the DomEdit <code>CreateElement</code>. When the renderer receives this instruction, it will create an unmounted node and push into its own stack:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>instructions: [
+    PushRoot(Container),
+    CreateElement(h1),
+]
+stack: [
+    ContainerNode,
+    h1,
+]
+<span class="boring">}
+</span></code></pre></pre>
+<p>Next, Dioxus sees the text node, and generates the <code>CreateTextNode</code> DomEdit:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>instructions: [
+    PushRoot(Container),
+    CreateElement(h1),
+    CreateTextNode(&quot;hello world&quot;)
+]
+stack: [
+    ContainerNode,
+    h1,
+    &quot;hello world&quot;
+]
+<span class="boring">}
+</span></code></pre></pre>
+<p>Remember, the text node is not attached to anything (it is unmounted) so Dioxus needs to generate an Edit that connects the text node to the h1 element. It depends on the situation, but in this case we use <code>AppendChildren</code>. This pops the text node off the stack, leaving the h1 element as the next element in line.</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>instructions: [
+    PushRoot(Container),
+    CreateElement(h1),
+    CreateTextNode(&quot;hello world&quot;),
+    AppendChildren(1)
+]
+stack: [
+    ContainerNode,
+    h1
+]
+<span class="boring">}
+</span></code></pre></pre>
+<p>We call <code>AppendChildren</code> again, popping off the h1 node and attaching it to the parent:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>instructions: [
+    PushRoot(Container),
+    CreateElement(h1),
+    CreateTextNode(&quot;hello world&quot;),
+    AppendChildren(1),
+    AppendChildren(1)
+]
+stack: [
+    ContainerNode,
+]
+<span class="boring">}
+</span></code></pre></pre>
+<p>Finally, the container is popped since we don't need it anymore.</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>instructions: [
+    PushRoot(Container),
+    CreateElement(h1),
+    CreateTextNode(&quot;hello world&quot;),
+    AppendChildren(1),
+    AppendChildren(1),
+    PopRoot
+]
+stack: []
+<span class="boring">}
+</span></code></pre></pre>
+<p>Over time, our stack looked like this:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>[]
+[Container]
+[Container, h1]
+[Container, h1, &quot;hello world&quot;]
+[Container, h1]
+[Container]
+[]
+<span class="boring">}
+</span></code></pre></pre>
+<p>Notice how our stack is empty once UI has been mounted. Conveniently, this approach completely separates the VirtualDOM and the Real DOM. Additionally, these edits are serializable, meaning we can even manage UIs across a network connection. This little stack machine and serialized edits makes Dioxus independent of platform specifics.</p>
+<p>Dioxus is also really fast. Because Dioxus splits the diff and patch phase, it's able to make all the edits to the RealDOM in a very short amount of time (less than a single frame) making rendering very snappy. It also allows Dioxus to cancel large diffing operations if higher priority work comes in while it's diffing.</p>
+<p>It's important to note that there <em>is</em> one layer of connectedness between Dioxus and the renderer. Dioxus saves and loads elements (the PushRoot edit) with an ID. Inside the VirtualDOM, this is just tracked as a u64.</p>
+<p>Whenever a <code>CreateElement</code> edit is generated during diffing, Dioxus increments its node counter and assigns that new element its current NodeCount. The RealDom is responsible for remembering this ID and pushing the correct node when PushRoot(ID) is generated. Dioxus reclaims IDs of elements when removed. To stay in sync with Dioxus you can use a sparce Vec (Vec&lt;Option<T>&gt;) with possibly unoccupied items. You can use the ids as indexes into the Vec for elements, and grow the Vec when a id does not exist.</p>
+<p>This little demo serves to show exactly how a Renderer would need to process an edit stream to build UIs. A set of serialized DomEditss for various demos is available for you to test your custom renderer against.</p>
+<h2 id="event-loop"><a class="header" href="#event-loop">Event loop</a></h2>
+<p>Like most GUIs, Dioxus relies on an event loop to progress the VirtualDOM. The VirtualDOM itself can produce events as well, so it's important that your custom renderer can handle those too.</p>
+<p>The code for the WebSys implementation is straightforward, so we'll add it here to demonstrate how simple an event loop is:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub async fn run(&amp;mut self) -&gt; dioxus_core::error::Result&lt;()&gt; {
+    // Push the body element onto the WebsysDom's stack machine
+    let mut websys_dom = crate::new::WebsysDom::new(prepare_websys_dom());
+    websys_dom.stack.push(root_node);
+
+    // Rebuild or hydrate the virtualdom
+    let mutations = self.internal_dom.rebuild();
+    websys_dom.apply_mutations(mutations);
+
+    // Wait for updates from the real dom and progress the virtual dom
+    loop {
+        let user_input_future = websys_dom.wait_for_event();
+        let internal_event_future = self.internal_dom.wait_for_work();
+
+        match select(user_input_future, internal_event_future).await {
+            Either::Left((_, _)) =&gt; {
+                let mutations = self.internal_dom.work_with_deadline(|| false);
+                websys_dom.apply_mutations(mutations);
+            },
+            Either::Right((event, _)) =&gt; websys_dom.handle_event(event),
+        }
+
+        // render
+    }
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>It's important that you decode the real events from your event system into Dioxus' synthetic event system (synthetic meaning abstracted). This simply means matching your event type and creating a Dioxus <code>UserEvent</code> type. Right now, the VirtualEvent system is modeled almost entirely around the HTML spec, but we are interested in slimming it down.</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn virtual_event_from_websys_event(event: &amp;web_sys::Event) -&gt; VirtualEvent {
+    match event.type_().as_str() {
+        &quot;keydown&quot; =&gt; {
+            let event: web_sys::KeyboardEvent = event.clone().dyn_into().unwrap();
+            UserEvent::KeyboardEvent(UserEvent {
+                scope_id: None,
+                priority: EventPriority::Medium,
+                name: &quot;keydown&quot;,
+                // This should be whatever element is focused
+                element: Some(ElementId(0)),
+                data: Arc::new(KeyboardData{
+                    char_code: event.char_code(),
+                    key: event.key(),
+                    key_code: event.key_code(),
+                    alt_key: event.alt_key(),
+                    ctrl_key: event.ctrl_key(),
+                    meta_key: event.meta_key(),
+                    shift_key: event.shift_key(),
+                    location: event.location(),
+                    repeat: event.repeat(),
+                    which: event.which(),
+                })
+            })
+        }
+        _ =&gt; todo!()
+    }
+}
+<span class="boring">}
+</span></code></pre></pre>
+<h2 id="custom-raw-elements"><a class="header" href="#custom-raw-elements">Custom raw elements</a></h2>
+<p>If you need to go as far as relying on custom elements for your renderer - you totally can. This still enables you to use Dioxus' reactive nature, component system, shared state, and other features, but will ultimately generate different nodes. All attributes and listeners for the HTML and SVG namespace are shuttled through helper structs that essentially compile away (pose no runtime overhead). You can drop in your own elements any time you want, with little hassle. However, you must be absolutely sure your renderer can handle the new type, or it will crash and burn.</p>
+<p>These custom elements are defined as unit structs with trait implementations.</p>
+<p>For example, the <code>div</code> element is (approximately!) defined as such:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>struct div;
+impl div {
+    /// Some glorious documentation about the class property.
+    const TAG_NAME: &amp;'static str = &quot;div&quot;;
+    const NAME_SPACE: Option&lt;&amp;'static str&gt; = None;
+    // define the class attribute
+    pub fn class&lt;'a&gt;(&amp;self, cx: NodeFactory&lt;'a&gt;, val: Arguments) -&gt; Attribute&lt;'a&gt; {
+        cx.attr(&quot;class&quot;, val, None, false)
+    }
+    // more attributes
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>You've probably noticed that many elements in the <code>rsx!</code> macros support on-hover documentation. The approach we take to custom elements means that the unit struct is created immediately where the element is used in the macro. When the macro is expanded, the doc comments still apply to the unit struct, giving tons of in-editor feedback, even inside a proc macro.</p>
+<h1 id="native-core"><a class="header" href="#native-core">Native Core</a></h1>
+<p>If you are creating a renderer in rust, native core provides some utilites to implement a renderer. It provides an abstraction over DomEdits and handles layout for you.</p>
+<h2 id="realdom"><a class="header" href="#realdom">RealDom</a></h2>
+<p>The <code>RealDom</code> is a higher level abstraction over updating the Dom. It updates with <code>DomEdits</code> and provides a way to incrementally update the state of nodes based on what attributes change.</p>
+<h3 id="example"><a class="header" href="#example">Example</a></h3>
+<p>Let's build a toy renderer with borders, size, and text color.
+Before we start lets take a look at an exaple element we can render:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>cx.render(rsx!{
+    div{
+        color: &quot;red&quot;,
+        p{
+            border: &quot;1px solid black&quot;,
+            &quot;hello world&quot;
+        }
+    }
+})
+<span class="boring">}
+</span></code></pre></pre>
+<p>In this tree the color depends on the parent's color. The size depends on the childrens size, the current text, and a text size. The border depends on only the current node.</p>
+<p>In the following diagram arrows represent dataflow:</p>
+<p><a href="https://mermaid-js.github.io/mermaid-live-editor/edit#pako:eNqdVNFqgzAU_RXJXizUUZPJmIM-jO0LukdhpCbO0JhIGteW0n9fNK1Oa0brfUnu9VxyzzkXjyCVhIIYZFzu0hwr7X2-JcIzsa3W3wqXuZdKoele22oddfa1Y0Tnfn31muvMfqeCDNq3GmvaNROmaKqZFO1DPTRhP8MOd1fTWYNDvzlmQbBMJZcq9JtjNgY1mLVUhBqQPQeojl3wGCw5PsjqnIe-zXqEL8GZ2Kz0gVMPmoeU3ND4IcuiaLGY2zRouuKncv_qGKv3VodpJe0JVU6QCQ5kgqMyWQVr8hbk4hm1PBcmsuwmnrCVH94rP7xN_ucp8sOB_EPSfz9drYVrkpc_AmH8_yTjJueUc-ntpOJkgt2os9tKjcYlt-DLUiD3UsB2KZCLcwjv3Aq33-g2v0M0xXA0MBy5DUdXi-gcJZriuLmAOSioKjAj5ld8rMsJ0DktaAJicyVYbRKQiJPBVSUx438QpqUCcYb5ls4BrrRcHUTaFizqnWGzR8W5evoFI-bJdw"><img src="https://mermaid.ink/img/pako:eNqdVNFqgzAU_RXJXizUUZPJmIM-jO0LukdhpCbO0JhIGteW0n9fNK1Oa0brfUnu9VxyzzkXjyCVhIIYZFzu0hwr7X2-JcIzsa3W3wqXuZdKoele22oddfa1Y0Tnfn31muvMfqeCDNq3GmvaNROmaKqZFO1DPTRhP8MOd1fTWYNDvzlmQbBMJZcq9JtjNgY1mLVUhBqQPQeojl3wGCw5PsjqnIe-zXqEL8GZ2Kz0gVMPmoeU3ND4IcuiaLGY2zRouuKncv_qGKv3VodpJe0JVU6QCQ5kgqMyWQVr8hbk4hm1PBcmsuwmnrCVH94rP7xN_ucp8sOB_EPSfz9drYVrkpc_AmH8_yTjJueUc-ntpOJkgt2os9tKjcYlt-DLUiD3UsB2KZCLcwjv3Aq33-g2v0M0xXA0MBy5DUdXi-gcJZriuLmAOSioKjAj5ld8rMsJ0DktaAJicyVYbRKQiJPBVSUx438QpqUCcYb5ls4BrrRcHUTaFizqnWGzR8W5evoFI-bJdw" alt="" /></a></p>
+<p>To help in building a Dom, native core provides four traits: State, ChildDepState, ParentDepState, and NodeDepState and a RealDom struct. The ChildDepState, ParentDepState, and NodeDepState provide a way to discribe how some information in a node relates to that of its relatives. By providing how to build a single node from its relations, native-core will derive a way to update the state of all nodes for you with <code>#[derive(State)]</code>. Once you have a state you can provide it as a generic to RealDom. RealDom provides all of the methods to interact and update your new dom.</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use dioxus_native_core::node_ref::*;
+use dioxus_native_core::state::{ChildDepState, NodeDepState, ParentDepState, State};
+use dioxus_native_core_macro::{sorted_str_slice, State};
+
+#[derive(Default, Copy, Clone)]
+struct Size(f32, f32);
+// Size only depends on the current node and its children, so it implements ChildDepState
+impl ChildDepState for Size {
+    // Size accepts a font size context
+    type Ctx = f32;
+    // Size depends on the Size part of each child
+    type DepState = Self;
+    // Size only cares about the width, height, and text parts of the current node
+    const NODE_MASK: NodeMask =
+        NodeMask::new_with_attrs(AttributeMask::Static(&amp;sorted_str_slice!([&quot;width&quot;, &quot;height&quot;]))).with_text();
+    fn reduce&lt;'a&gt;(
+        &amp;mut self,
+        node: NodeView,
+        children: impl Iterator&lt;Item = &amp;'a Self::DepState&gt;,
+        ctx: &amp;Self::Ctx,
+    ) -&gt; bool
+    where
+        Self::DepState: 'a,
+    {
+        let mut width;
+        let mut height;
+        if let Some(text) = node.text() {
+            // if the node has text, use the text to size our object
+            width = text.len() as f32 * ctx;
+            height = ctx;
+        } else {
+            // otherwise, the size is the maximum size of the children
+            width = *children
+                .reduce(|accum, item| if accum &gt;= item.0 { accum } else { item.0 })
+                .unwrap_or(0.0));
+            height = *children
+                .reduce(|accum, item| if accum &gt;= item.1 { accum } else { item.1 })
+                .unwrap_or(&amp;0.0);
+        }
+        // if the node contains a width or height attribute it overrides the other size
+        for a in node.attibutes(){
+            match a.name{
+                &quot;width&quot; =&gt; width = a.value.parse().unwrap(),
+                &quot;height&quot; =&gt; height = a.value.parse().unwrap(),
+                // because Size only depends on the width and height, no other attributes will be passed to the member
+                _ =&gt; panic!()
+            }
+        }
+        // to determine what other parts of the dom need to be updated we return a boolean that marks if this member changed
+        let changed = (width != self.0) || (height != self.1);
+        *self = Self(width, height);
+        changed
+    }
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Default)]
+struct TextColor {
+    r: u8,
+    g: u8,
+    b: u8,
+}
+// TextColor only depends on the current node and its parent, so it implements ParentDepState
+impl ParentDepState for TextColor {
+    type Ctx = ();
+    // TextColor depends on the TextColor part of the parent
+    type DepState = Self;
+    // TextColor only cares about the color attribute of the current node
+    const NODE_MASK: NodeMask = NodeMask::new_with_attrs(AttributeMask::Static(&amp;[&quot;color&quot;]));
+    fn reduce(
+        &amp;mut self,
+        node: NodeView,
+        parent: Option&lt;&amp;Self::DepState&gt;,
+        _ctx: &amp;Self::Ctx,
+    ) -&gt; bool {
+        // TextColor only depends on the color tag, so getting the first tag is equivilent to looking through all tags
+        let new = match node.attributes().next() {
+            // if there is a color tag, translate it
+            Some(&quot;red&quot;) =&gt; TextColor { r: 255, g: 0, b: 0 },
+            Some(&quot;green&quot;) =&gt; TextColor { r: 0, g: 255, b: 0 },
+            Some(&quot;blue&quot;) =&gt; TextColor { r: 0, g: 0, b: 255 },
+            Some(_) =&gt; panic!(&quot;unknown color&quot;),
+            // otherwise check if the node has a parent and inherit that color
+            None =&gt; match parent {
+                Some(parent) =&gt; *parent,
+                None =&gt; Self::default(),
+            },
+        };
+        // check if the member has changed
+        let changed = new != *self;
+        *self = new;
+        changed
+    }
+}
+
+#[derive(Debug, Clone, PartialEq, Default)]
+struct Border(bool);
+// TextColor only depends on the current node, so it implements NodeDepState
+impl NodeDepState for Border {
+    type Ctx = ();
+    // Border does not depended on any other member in the current node
+    type DepState = ();
+    // Border does not depended on any other member in the current node
+    const NODE_MASK: NodeMask =
+        NodeMask::new_with_attrs(AttributeMask::Static(&amp;[&quot;border&quot;]));
+    fn reduce(&amp;mut self, node: NodeView, _sibling: &amp;Self::DepState, _ctx: &amp;Self::Ctx) -&gt; bool {
+        // check if the node contians a border attribute
+        let new = Self(node.attributes().next().map(|a| a.name == &quot;border&quot;).is_some());
+        // check if the member has changed
+        let changed = new != *self;
+        *self = new;
+        changed
+    }
+}
+
+// State provides a derive macro, but anotations on the members are needed in the form #[dep_type(dep_member, CtxType)]
+#[derive(State, Default, Clone)]
+struct ToyState {
+    // the color member of it's parent and no context
+    #[parent_dep_state(color)]
+    color: TextColor,
+    // depends on the node, and no context
+    #[node_dep_state()]
+    border: Border,
+    // depends on the layout_width member of children and f32 context (for text size)
+    #[child_dep_state(size, f32)]
+    size: Size,
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>Now that we have our state, we can put it to use in our dom. Re can update the dom with update_state to update the structure of the dom (adding, removing, and chaning properties of nodes) and then apply_mutations to update the ToyState for each of the nodes that changed.</p>
+<pre><pre class="playground"><code class="language-rust">fn main(){
+    fn app(cx: Scope) -&gt; Element {
+        cx.render(rsx!{
+            div{
+                color: &quot;red&quot;,
+                &quot;hello world&quot;
+            }
+        })
+    }
+    let vdom = VirtualDom::new(app);
+    let rdom: RealDom&lt;ToyState&gt; = RealDom::new();
+
+    let mutations = dom.rebuild();
+    // update the structure of the real_dom tree
+    let to_update = rdom.apply_mutations(vec![mutations]);
+    let mut ctx = AnyMap::new();
+    // set the font size to 3.3
+    ctx.insert(3.3);
+    // update the ToyState for nodes in the real_dom tree
+    let _to_rerender = rdom.update_state(&amp;dom, to_update, ctx).unwrap();
+
+    // we need to run the vdom in a async runtime
+    tokio::runtime::Builder::new_current_thread()
+        .enable_all()
+        .build()?
+        .block_on(async {
+            loop{
+                let wait = vdom.wait_for_work();
+                let mutations = vdom.work_with_deadline(|| false);
+                let to_update = rdom.apply_mutations(mutations);
+                let mut ctx = AnyMap::new();
+                ctx.insert(3.3);
+                let _to_rerender = rdom.update_state(vdom, to_update, ctx).unwrap();
+
+                // render...
+            }
+        })
+}
+</code></pre></pre>
+<h2 id="layout"><a class="header" href="#layout">Layout</a></h2>
+<p>For most platforms the layout of the Elements will stay the same. The layout_attributes module provides a way to apply html attributes to a stretch layout style.</p>
+<h2 id="conclusion"><a class="header" href="#conclusion">Conclusion</a></h2>
+<p>That should be it! You should have nearly all the knowledge required on how to implement your own renderer. We're super interested in seeing Dioxus apps brought to custom desktop renderers, mobile renderer, video game UI, and even augmented reality! If you're interesting in contributing to any of the these projects, don't be afraid to reach out or join the community.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="hot-reloading"><a class="header" href="#hot-reloading">Hot Reloading</a></h1>
+<ol>
+<li>Hot reloading allows much faster iteration times inside of rsx calls by interperting them and streaming the edits.</li>
+<li>It is useful when changing the styling/layout of a program, but will not help with changing the logic of a program.</li>
+<li>Currently the cli only implements hot reloading for the web renderer.</li>
+</ol>
+<h1 id="setup-1"><a class="header" href="#setup-1">Setup</a></h1>
+<p>Install <a href="https://github.com/DioxusLabs/cli">dioxus-cli</a>.
+Enable the hot-reload feature on dioxus:</p>
+<pre><code class="language-toml">dioxus = { version = &quot;*&quot;, features = [&quot;web&quot;, &quot;hot-reload&quot;] }
+</code></pre>
+<h1 id="usage"><a class="header" href="#usage">Usage</a></h1>
+<ol>
+<li>run:</li>
+</ol>
+<pre><code>dioxus serve --hot-reload
+</code></pre>
+<ol start="2">
+<li>change some code within a rsx macro</li>
+<li>open your localhost in a browser</li>
+<li>save and watch the style change without recompiling</li>
+</ol>
+<h1 id="limitations"><a class="header" href="#limitations">Limitations</a></h1>
+<ol>
+<li>The interperter can only use expressions that existed on the last full recompile. If you introduce a new variable or expression to the rsx call, it will trigger a full recompile to capture the expression.</li>
+<li>Components and Iterators can contain abritary rust code, and will trigger a full recompile when changed.</li>
+</ol>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                        
+                        
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                
+                            </nav>
+
+        </div>
+
+        
+        
+        
+                <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+        
+        
+                <script src="elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="searcher.js" type="text/javascript" charset="utf-8"></script>
+        
+        <script src="clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+        
+                        <script type="text/javascript">
+        window.addEventListener('load', function() {
+            window.setTimeout(window.print, 100);
+        });
+        </script>
+                
+    </body>
+</html>

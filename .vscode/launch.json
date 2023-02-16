@@ -1,0 +1,138 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug unit tests in library 'dioxus_docs_site'",
+            "cargo": {
+                "args": [
+                    "test",
+                    "--no-run",
+                    "--lib",
+                    "--package=dioxus_docs_site"
+                ],
+                "filter": {
+                    "name": "dioxus_docs_site",
+                    "kind": "lib"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug example 'spa'",
+            "cargo": {
+                "args": [
+                    "build",
+                    "--example=spa",
+                    "--package=dioxus_docs_site"
+                ],
+                "filter": {
+                    "name": "spa",
+                    "kind": "example"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug unit tests in example 'spa'",
+            "cargo": {
+                "args": [
+                    "test",
+                    "--no-run",
+                    "--example=spa",
+                    "--package=dioxus_docs_site"
+                ],
+                "filter": {
+                    "name": "spa",
+                    "kind": "example"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug example 'desktp'",
+            "cargo": {
+                "args": [
+                    "build",
+                    "--example=desktp",
+                    "--package=dioxus_docs_site"
+                ],
+                "filter": {
+                    "name": "desktp",
+                    "kind": "example"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug unit tests in example 'desktp'",
+            "cargo": {
+                "args": [
+                    "test",
+                    "--no-run",
+                    "--example=desktp",
+                    "--package=dioxus_docs_site"
+                ],
+                "filter": {
+                    "name": "desktp",
+                    "kind": "example"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug example 'prerender'",
+            "cargo": {
+                "args": [
+                    "build",
+                    "--example=prerender",
+                    "--package=dioxus_docs_site"
+                ],
+                "filter": {
+                    "name": "prerender",
+                    "kind": "example"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug unit tests in example 'prerender'",
+            "cargo": {
+                "args": [
+                    "test",
+                    "--no-run",
+                    "--example=prerender",
+                    "--package=dioxus_docs_site"
+                ],
+                "filter": {
+                    "name": "prerender",
+                    "kind": "example"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        }
+    ]
+}

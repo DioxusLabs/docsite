@@ -1,0 +1,31 @@
+name: github pages
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions-rs/toolchain@v1
+        with:
+          profile: minimal
+          toolchain: stable
+          override: true
+          target: wasm32-unknown-unknown
+      - uses: Swatinem/rust-cache@v1
+      - run: wget -qO- https://github.com/thedodd/trunk/releases/download/v0.14.0/trunk-x86_64-unknown-linux-gnu.tar.gz | tar -xzf-
+
+      - name: Build
+        run: ./trunk build --release && cp dist/index.html dist/404.html
+
+      - name: Deploy 🚀
+        uses: JamesIves/github-pages-deploy-action@v4.2.3
+        with:
+          branch: gh-pages # The branch the action should deploy to.
+          folder: dist # The folder the action should deploy.
+          target-folder: docs
+          clean: false

@@ -29,5 +29,5 @@ jobs:
         with:
           branch: gh-pages # The branch the action should deploy to.
           folder: dist # The folder the action should deploy.
-          target-folder: docs
+          target-folder: .
           clean: false # don't scrub docs

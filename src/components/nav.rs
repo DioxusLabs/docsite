@@ -24,11 +24,9 @@ pub fn Nav(cx: Scope) -> Element {
                     FullNav {}
                 }
             }
-            show.then(|| {
-                rsx! {
-                    ul { class: "flex items-center flex-col py-4", gap: "10px", LinkList { } }
-                }
-            })
+            if *show {rsx! {
+                ul { class: "flex items-center flex-col py-4", gap: "10px", LinkList { } }
+            }}
         }
     })
 }
@@ -107,25 +105,26 @@ static LINKS: &[(&str, &str, LinkPairs)] = &[
         "Platforms",
         "/platforms",
         &[
-            ("Web", "https://dioxuslabs.com/docs/0.3/reference/web"),
+            (
+                "Web",
+                "https://dioxuslabs.com/docs/0.3/guide/en/getting_started/web",
+            ),
             (
                 "Desktop",
-                "https://dioxuslabs.com/docs/0.3/reference/desktop",
+                "https://dioxuslabs.com/docs/0.3/guide/en/getting_started/desktop",
             ),
-            ("Mobile", "https://dioxuslabs.com/docs/0.3/reference/mobile"),
-            ("SSR", "https://dioxuslabs.com/docs/0.3/reference/ssr"),
+            (
+                "Mobile",
+                "https://dioxuslabs.com/docs/0.3/guide/en/getting_started/mobile",
+            ),
+            (
+                "SSR",
+                "https://dioxuslabs.com/docs/0.3/guide/en/getting_started/ssr",
+            ),
             (
                 "TUI",
                 "https://github.com/DioxusLabs/dioxus/tree/master/packages/tui",
             ),
-            //
-            // todo: make dedicated pages for these platforms
-            // ("Web", "/platforms/web"),
-            // ("Desktop", "/platforms/desktop"),
-            // ("Mobile", "/platforms/mobile"),
-            // ("Liveview", "/platforms/liveview"),
-            // ("SSR", "/platforms/ssr"),
-            // ("TUI", "/platforms/tui"),
         ],
     ),
     (
@@ -144,22 +143,13 @@ static LINKS: &[(&str, &str, LinkPairs)] = &[
             ("CLI", "https://github.com/DioxusLabs/cli"),
         ],
     ),
-    // (
-    //     "Community",
-    //     "https://github.com/DioxusLabs/awesome-dioxus#community",
-    //     &[
-    //         ("Discord", "https://discord.gg/XgGxMSkvUM"),
-    //         ("Twitter", "https://twitter.com/dioxuslabs"),
-    //         ("Reddit", "https://www.reddit.com/r/dioxus/"),
-    //     ],
-    // ),
     (
         "Docs",
         "/learn/",
         &[
             ("Guide", "https://dioxuslabs.com/docs/0.3/guide/en/"),
-            ("Advanced", "https://dioxuslabs.com/docs/0.3/reference/"),
-            ("Reference", "https://dioxuslabs.com/docs/0.3/reference/"),
+            // ("Advanced", "https://dioxuslabs.com/docs/0.3/reference/"),
+            // ("Reference", "https://dioxuslabs.com/docs/0.3/reference/"),
             ("Router", "https://dioxuslabs.com/docs/0.3/router/"),
         ],
     ),
@@ -171,7 +161,6 @@ static LINKS: &[(&str, &str, LinkPairs)] = &[
 fn LinkList(cx: Scope) -> Element {
     let hover = "hover:text-sky-500 dark:hover:text-sky-400";
     let hover_bg = "dark:hover:bg-gray-500 hover:bg-gray-200 rounded";
-    let show = use_atom_state(cx, SHOW_NAV);
 
     let links = LINKS.iter().copied().map(|(name, link, links)| {
         if links.is_empty() {

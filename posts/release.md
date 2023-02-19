@@ -6,7 +6,7 @@
 
 After many months of work, we're very excited to release the first version of Dioxus!
 
-Dioxus is a new library for building interactive user interfaces (GUI) with Rust. It is built around a Virtual DOM, making it portable for the web, desktop, server, mobile, and more. 
+Dioxus is a new library for building interactive user interfaces (GUI) with Rust. It is built around a Virtual DOM, making it portable for the web, desktop, server, mobile, and more.
 
 Dioxus has the following design goals:
 
@@ -63,7 +63,7 @@ This very site is built with Dioxus, and the source code is available [here](htt
 
 To get started with Dioxus, check out any of the "Getting Started" guides for your platform of choice, or check out the GitHub Repository for more details.
 
-- [Getting Started with Dioxus](https://dioxuslabs.com/guide)
+- [Getting Started with Dioxus](https://dioxuslabs.com/docs/0.3/guide/en)
 - [Getting Started with Web](https://dioxuslabs.com/reference/web)
 - [Getting Started with Desktop](https://dioxuslabs.com/reference/desktop)
 - [Getting Started with Mobile](https://dioxuslabs.com/reference/mobile)
@@ -112,8 +112,8 @@ Semantically, TypeScript-React and Rust-Dioxus are very similar. In TypeScript, 
 
 ```tsx
 type CardProps = {
-  title: string,
-  paragraph: string,
+  title: string;
+  paragraph: string;
 };
 
 const Card: FunctionComponent<CardProps> = (props) => {
@@ -122,7 +122,7 @@ const Card: FunctionComponent<CardProps> = (props) => {
     <aside>
       <h2>{props.title}</h2>
       <p> {props.paragraph} </p>
-	  <button onclick={() => set_count(count + 1)}> Count {count} </button>
+      <button onclick={() => set_count(count + 1)}> Count {count} </button>
     </aside>
   );
 };
@@ -163,7 +163,7 @@ Today, to publish a Dioxus app, you don't need NPM/WebPack/Parcel/etc. Dioxus si
 
 ## Show me more
 
-Here, we'll dive into some features of Dioxus and why it's so fun to use. The [guide](https://dioxuslabs.com/guide/) serves as a deeper and more comprehensive look at what Dioxus can do.
+Here, we'll dive into some features of Dioxus and why it's so fun to use. The [guide](https://dioxuslabs.com/docs/0.3/guide/en/) serves as a deeper and more comprehensive look at what Dioxus can do.
 
 ## Building a new project is simple
 
@@ -203,7 +203,6 @@ fn app(cx: Scope) -> Element {
 
 And voilà! We can `cargo run` our app
 
-
 ![Simple Counter Desktop App](/static/counter.png)
 
 ## Support for JSX-style templating
@@ -239,13 +238,13 @@ LazyNodes::new(|f| {
 
 The `rsx!` macro generates idiomatic Rust code that uses the factory API — no different than what you'd write by hand yourself.
 
-To make it easier to work with RSX, we've built a small [VSCode extension](https://github.com/DioxusLabs/studio) with useful utilities. This extension provides a command that converts a selected block of HTML into RSX so you can easily reuse existing web templates. 
+To make it easier to work with RSX, we've built a small [VSCode extension](https://github.com/DioxusLabs/studio) with useful utilities. This extension provides a command that converts a selected block of HTML into RSX so you can easily reuse existing web templates.
 
 ## Dioxus prioritizes developer experience
 
 Many of the Rust UI frameworks are particularly difficult to work with. Even the ones branded as "ergonomic" are quite challenging to in comparison to TSX/JSX. With Dioxus, we've innovated on a number of Rust patterns to deliver a framework that is actually enjoyable to develop in.
 
-For example, many Rust frameworks require you to clone your data in for *every* closure and handler you use. This can get really clumsy for large apps.
+For example, many Rust frameworks require you to clone your data in for _every_ closure and handler you use. This can get really clumsy for large apps.
 
 ```rust
 div()
@@ -257,7 +256,6 @@ div()
 ```
 
 Dioxus understands the lifetimes of data borrowed from `Scope`, so you can safely return any borrowed data without declaring explicit captures. Hook handles all implement `Copy` so they can be shared between listeners without any ceremony.
-
 
 ```rust
 let name = use_state(&cx, || "asd");
@@ -294,12 +292,11 @@ fn Button<'a>(cx: Scope<'a, Childprops<'a>>) -> Element {
 }
 ```
 
-There's *way* more to this story, but hopefully we've convinced you that Dioxus' DX somewhat approximates JSX/React.
-
+There's _way_ more to this story, but hopefully we've convinced you that Dioxus' DX somewhat approximates JSX/React.
 
 ## Dioxus is perfected for the IDE
 
-Note: all IDE-related features have only been tested with [Rust-Analyzer](https://github.com/rust-analyzer/rust-analyzer). 
+Note: all IDE-related features have only been tested with [Rust-Analyzer](https://github.com/rust-analyzer/rust-analyzer).
 
 Dioxus code operates pleasantly with your IDE. For starters, most elements are documented through the Rustdoc system. A quick summary of the MDN docs is always under your finger tips:
 
@@ -335,9 +332,10 @@ We take the performance of Dioxus seriously. Instead of resolving to "good enoug
 
 Dioxus is humbly built off the work done by [Dodrio](https://github.com/fitzgen/dodrio), a now-archived research project by fitzgen exploring the use of bump allocators in UI frameworks.
 
-Dioxus is *substantially* more performant than many of the other Rust DOM-based UI libraries (Yew/Percy) and is *significantly* more performant than React - roughly competitive with InfernoJS. While not as performant as libraries like SolidJS/Sycamore, Dioxus imposes roughly a ~3% overhead over DOM patching, so it's *plenty* fast.
+Dioxus is _substantially_ more performant than many of the other Rust DOM-based UI libraries (Yew/Percy) and is _significantly_ more performant than React - roughly competitive with InfernoJS. While not as performant as libraries like SolidJS/Sycamore, Dioxus imposes roughly a ~3% overhead over DOM patching, so it's _plenty_ fast.
 
-## Works on Desktop and Mobile 
+## Works on Desktop and Mobile
+
 We’ve mentioned before that Dioxus works practically anywhere that Rust does. When running natively as a desktop or mobile app, your Dioxus code will run on its own thread, not inside of a web runtime. This means you can access hardware, file system, and platform APIs directly without needing to go through a shim layer. In our examples, we feature a [file explorer app](https://github.com/DioxusLabs/example-projects/tree/master/file-explorer) and [WiFi scanner app](https://github.com/DioxusLabs/example-projects/tree/master/wifi-scanner) where platform access occurs inside an asynchronous multithreaded coroutine. This solves the problem faced by React Native and other cross-platform toolkits where JavaScript apps incur a massive performance penalty with substantial maintenance overhead associated with platform API shims.
 
 A desktop app:
@@ -401,7 +399,7 @@ Stay tuned for our next article, which will go over some of the optimization tec
 
 ## Community
 
-The future is bright for Rust frontends! If you'd like to get involved, we have a [Discord server](https://discord.gg/XgGxMSkvUM), [a subreddit](http://reddit.com/r/dioxus), and [GitHub discussion pages](https://github.com/DioxusLabs/dioxus/discussions). 
+The future is bright for Rust frontends! If you'd like to get involved, we have a [Discord server](https://discord.gg/XgGxMSkvUM), [a subreddit](http://reddit.com/r/dioxus), and [GitHub discussion pages](https://github.com/DioxusLabs/dioxus/discussions).
 
 Let us know what you build!
 

@@ -6,7 +6,7 @@ pub fn Learn(cx: Scope) -> Element {
             iframe {
                 class: "w-full",
                 style: "overflow: hidden; height: 100%; width: 100%; position: absolute;",
-                src: "https://dioxuslabs.com/guide/"
+                src: "https://dioxuslabs.com/docs/0.3/guide/en/"
             }
         }
     })

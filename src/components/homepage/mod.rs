@@ -71,7 +71,7 @@ fn ProjectCards(cx: Scope) -> Element {
                                     h3 { class: "mb-4 text-2xl font-semibold font-heading font-mono", "{title}" }
                                     p { class: "text-base text-gray-500 pb-4", "{description}" }
                                     a { class: "bg-gray-900 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 focus:ring-offset-gray-50 text-white font-semibold h-12 px-6 rounded-lg flex items-center justify-center sm:w-auto dark:bg-sky-500 dark:highlight-white/20 dark:hover:bg-sky-400",
-                                        href: "https://dioxuslabs.com/guide/",
+                                        href: "https://dioxuslabs.com/docs/0.3/guide/en/",
                                         "Get started"
                                     }
                                 }

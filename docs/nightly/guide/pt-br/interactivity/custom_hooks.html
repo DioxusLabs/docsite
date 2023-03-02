@@ -165,7 +165,7 @@
 <pre><pre class="playground"><code class="language-rust edition2018">
 <span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
-</span>fn use_settings(cx: &amp;ScopeState) -&gt; UseSharedState&lt;AppSettings&gt; {
+</span>fn use_settings(cx: &amp;ScopeState) -&gt; &amp;UseSharedState&lt;AppSettings&gt; {
     use_shared_state::&lt;AppSettings&gt;(cx).expect(&quot;App settings not provided&quot;)
 }
 <span class="boring">}

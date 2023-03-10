@@ -145,10 +145,12 @@
                     <main>
                         <h1 id="dioxus-router-introduction"><a class="header" href="#dioxus-router-introduction">Dioxus Router: Introduction</a></h1>
 <p>Whether or not you're building a website, desktop app, or mobile app, organizing your app's views into &quot;pages&quot; can be an effective method for organization and maintainability. </p>
-<p>Dioxus comes with a router built-in. To start utilizing Dioxus Router, enable the <code>router</code> feature in your <code>Cargo.toml</code> file.</p>
-<pre><code class="language-toml">[dependencies]
-dioxus = { version = &quot;x.x.x&quot;, features = [.., &quot;router&quot;] }
+<p>The <code>dioxus-router</code> crate contains the Router module. To add it to your project run:</p>
+<pre><code>cargo add dioxus-router
 </code></pre>
+<blockquote>
+<p><strong>Be sure to include the <code>web</code> feature (<code>--feature web</code>) for deployment into a browser!</strong></p>
+</blockquote>
 <p>In this book you'll find a short <a href="./guide/index.html">guide</a> to get up to speed with Dioxus Router, as well as the router's <a href="./reference/index.html">reference</a>.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="dioxus-router-guide"><a class="header" href="#dioxus-router-guide">Dioxus Router: Guide</a></h1>
 <p>In this guide you'll learn to effectively use Dioxus Router whether you're building a small todo app or the next FAANG company. We will create a small website with a blog, homepage, and more!</p>

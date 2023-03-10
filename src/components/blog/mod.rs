@@ -111,7 +111,7 @@ fn BlogHeader(cx: Scope) -> Element {
                 div { class: "flex flex-wrap items-center",
                     div { class: "inline-block max-w-xl mb-6 md:mb-0",
                         p { class: "text-xl pb-4 text-gray-500 dark:text-gray-300",
-                            "Updates, changelogs, anaaaad general musings of the Dioxus community...."
+                            "Updates, changelogs, and general musings of the Dioxus community...."
                         }
                     }
                 }

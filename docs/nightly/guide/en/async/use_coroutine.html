@@ -244,7 +244,9 @@ let sync_task = use_coroutine(cx, |rx: UnboundedReceiver&lt;SyncAction&gt;| {
 <pre><pre class="playground"><code class="language-rust edition2018">
 <span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
-</span>enum ProfileUpdate {
+</span>use futures_util::stream::StreamExt;
+
+enum ProfileUpdate {
     SetUsername(String),
     SetAge(i32)
 }
@@ -269,6 +271,9 @@ cx.render(rsx!{
 })
 <span class="boring">}
 </span></code></pre></pre>
+<blockquote>
+<p>Note: In order to use/run the <code>rx.next().await</code> statement you will need to extend the [<code>Stream</code>] trait (used by [<code>UnboundedReceiver</code>]) by adding 'futures_util' as a dependency to your project and adding the <code>use futures_util::stream::StreamExt;</code>.</p>
+</blockquote>
 <p>For sufficiently complex apps, we could build a bunch of different useful &quot;services&quot; that loop on channels to update the app.</p>
 <pre><pre class="playground"><code class="language-rust edition2018">
 <span class="boring">#![allow(unused)]
@@ -319,7 +324,9 @@ fn Banner(cx: Scope) -&gt; Element {
 <pre><pre class="playground"><code class="language-rust edition2018">
 <span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
-</span>enum SyncAction {
+</span>use futures_util::stream::StreamExt;
+
+enum SyncAction {
     SetUsername(String),
 }
 

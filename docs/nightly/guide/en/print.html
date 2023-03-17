@@ -1842,8 +1842,8 @@ fn CaptionEditor&lt;'a&gt;(
 </blockquote>
 <p>Inside the initialization closure, you will typically make calls to other <code>cx</code> methods. For example:</p>
 <ul>
-<li>The <code>use_state</code> hook tracks state in the hook value, and uses <a href="https://docs.rs/dioxus/latest/dioxus/prelude/struct.Scope.html#method.schedule_update"><code>cx.schedule_update</code></a> to make Dioxus re-render the component whenever it changes.</li>
-<li>The <code>use_context</code> hook calls <a href="https://docs.rs/dioxus/latest/dioxus/prelude/struct.Scope.html#method.consume_context"><code>cx.consume_context</code></a> (which would be expensive to call on every render) to get some context from the scope</li>
+<li>The <code>use_state</code> hook tracks state in the hook value, and uses <a href="https://docs.rs/dioxus/latest/dioxus/prelude/struct.ScopeState.html#method.schedule_update"><code>cx.schedule_update</code></a> to make Dioxus re-render the component whenever it changes.</li>
+<li>The <code>use_context</code> hook calls <a href="https://docs.rs/dioxus/latest/dioxus/prelude/struct.ScopeState.html#method.consume_context"><code>cx.consume_context</code></a> (which would be expensive to call on every render) to get some context from the scope</li>
 </ul>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="dynamic-rendering"><a class="header" href="#dynamic-rendering">Dynamic Rendering</a></h1>
 <p>Sometimes you want to render different things depending on the state/props. With Dioxus, just describe what you want to see using Rust control flow – the framework will take care of making the necessary changes on the fly if the state or props change!</p>

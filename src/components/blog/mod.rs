@@ -22,6 +22,16 @@ pub const POST_TEMPLATE: BlogPost = BlogPost {
     content: include_str!("../../../posts/templates.html"),
 };
 
+pub const POST_FULLTINME: BlogPost = BlogPost {
+    category: "Misc",
+    date: "May 5 2023",
+    title: "Going full time on Dioxus",
+    description:
+        "Dioxus is now my full time job! I'm so excited to be able to work on this full time.",
+    link: "/blog/going-fulltime/",
+    content: include_str!("../../../posts/fulltime.html"),
+};
+
 pub const POST_RELEASE_030: BlogPost = BlogPost {
     category: "Release Notes",
     date: "Feb 8 2023",
@@ -50,6 +60,7 @@ pub const POST_RELEASE_010: BlogPost = BlogPost {
 };
 
 pub const POSTS: &[BlogPost] = &[
+    POST_FULLTINME,
     POST_RELEASE_030,
     POST_TEMPLATE,
     POST_RELEASE_020,

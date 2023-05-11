@@ -11,5 +11,5 @@ struct PropBased {
 }
 
 fn Stateful(cx: Scope<PropBased>) -> Element {
-    cx.render(rsx!("Hello {props.name}, you are {props.age} years old!"))
+    render!("Hello {props.name}, you are {props.age} years old!")
 }

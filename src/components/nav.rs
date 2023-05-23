@@ -15,9 +15,8 @@ pub fn Nav(cx: Scope) -> Element {
     cx.render(rsx! {
         SearchModal {}
         header { class: "sticky top-0 z-30 bg-white shadow dark:text-gray-200 dark:bg-ideblack dark:border-b border-stone-600",
-            div { class: "py-3 px-12 max-w-screen-2xl mx-auto flex items-center justify-between text-sm leading-6",
-                div {
-                    class: "flex md:w-60 relative z-50",
+            div { class: "py-3 px-12 max-w-screen-3xl mx-auto flex items-center justify-between text-sm leading-6",
+                div { class: "flex z-50 flex-1",
                     Link { class: "flex title-font font-medium items-center text-gray-900", to: "/",
                         img {
                             src: "https://avatars.githubusercontent.com/u/79236386?s=200&v=4",
@@ -26,11 +25,10 @@ pub fn Nav(cx: Scope) -> Element {
                         span { class: "ml-3 text-xl dark:text-white font-mono", "Dioxus Labs" }
                     }
                 }
-                // div {
-                // }
+
                 Search {}
-                div {
-                    class: "hidden xl:flex w-60 h-full",
+
+                div { class: "hidden xl:flex flex-1 h-full justify-end",
                     div { class: "hidden md:flex items-center  font-semibold",
                         nav {
                             ul { class: "flex items-center space-x-2", LinkList {} }
@@ -57,6 +55,10 @@ pub fn Nav(cx: Scope) -> Element {
                                 class: "ml-[-3.8em] md:ml-0 md:py-2 md:px-3 bg-blue-500 ml-4 text-lg md:text-sm text-white rounded font-semibold",
                                 to: "",
                                 "DEPLOY"
+                            }
+                            img {
+                                src: "https://avatars.githubusercontent.com/u/10237910?s=40&v=4",
+                                class: "ml-4 h-10 rounded-full w-auto"
                             }
                         }
                     }
@@ -265,7 +267,7 @@ fn Search(cx: Scope) -> Element {
     let show_modal = use_atom_state(cx, SHOW_SEARCH);
 
     render! {
-        div { class: "relative hidden sm:block md:w-full max-w-[46rem] xl:max-w-[40rem] 2xl:max-w-[46rem] mx-auto",
+        div { class: "relative hidden sm:block md:w-full max-w-[40rem] xl:max-w-[40rem] 2xl:max-w-[40rem] mx-auto",
             // Pop up a modal
             button { class: "bg-gray-100 rounded-lg px-3 py-3 w-full text-left text-gray-400 my-auto flex flex-row align-middle justify-between",
                 onclick: move |_| {

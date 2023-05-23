@@ -70,7 +70,7 @@ pub const POSTS: &[BlogPost] = &[
 pub fn BlogList(cx: Scope) -> Element {
     cx.render(rsx!(
         section { class: "text-gray-600 body-font overflow-hidden dark:bg-ideblack",
-            div { class: "container lg:px-48 pt-12 pb-12 mx-auto",
+            div { class: "container max-w-screen-lg pt-12 pb-12 mx-auto",
                 div { class: "-my-8 px-8 pb-12",
                     // Header
                     BlogHeader {}
@@ -114,17 +114,8 @@ fn BlogHeader(cx: Scope) -> Element {
     cx.render(rsx!(
         section { class: "py-20",
             div { class: "container px-4 mx-auto dark:text-white",
-
-                h2 { class: "mb-8 md:mb-16 text-5xl lg:text-6xl font-semibold font-heading font-mono",
-                    "Dioxus Official Blog"
-                }
-
-                div { class: "flex flex-wrap items-center",
-                    div { class: "inline-block max-w-xl mb-6 md:mb-0",
-                        p { class: "text-xl pb-4 text-gray-500 dark:text-gray-300",
-                            "Updates, changelogs, and general musings of the Dioxus community...."
-                        }
-                    }
+                h2 { class: "text-5xl lg:text-6xl font-semibold font-heading text-center border-b border-gray-200 dark:border-gray-800 pb-8 max-w-screen-md mx-auto",
+                    "Technical Blog"
                 }
             }
         }
@@ -170,7 +161,7 @@ fn BlogPostItem(cx: Scope, post: &'static BlogPost, id: usize) -> Element {
                     "{title}"
                 }
                 p { class: "leading-relaxed dark:text-white text-base dark:opacity-75", "{description}" }
-                Link { class: "text-indigo-500 inline-flex items-center mt-4", to: "{link}",
+                Link { class: "text-indigo-500 inline-flex items-center mt-2", to: "{link}",
                     "Read more"
                     icons::ArrowRight {}
                 }

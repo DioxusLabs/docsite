@@ -35,7 +35,7 @@ pub fn Nav(cx: Scope) -> Element {
                         nav {
                             ul { class: "flex items-center space-x-2", LinkList {} }
                         }
-                        div { class: "flex items-center border-l border-gray-200 ml-3 pl-3 dark:border-gray-800",
+                        div { class: "flex items-center border-l border-gray-200 ml-4 pl-4 dark:border-gray-800",
                             label { class: "sr-only", id: "headlessui-listbox-label-2", "Theme" }
                             a {
                                 class: "block text-gray-400 hover:text-gray-500 dark:hover:text-gray-300",
@@ -44,14 +44,14 @@ pub fn Nav(cx: Scope) -> Element {
                                 crate::icons::DiscordLogo {}
                             }
                             a {
-                                class: "ml-3 block text-gray-400 hover:text-gray-500 dark:hover:text-gray-300",
+                                class: "ml-4 block text-gray-400 hover:text-gray-500 dark:hover:text-gray-300",
                                 href: "https://github.com/dioxuslabs/dioxus",
                                 span { class: "sr-only", "Dioxus on GitHub" }
                                 crate::icons::Github2 {}
                             }
 
                         }
-                        div { class: "flex items-center border-l border-gray-200 ml-6 pl-6 dark:border-gray-800",
+                        div { class: "flex items-center border-l border-gray-200 ml-4 pl-4 dark:border-gray-800",
                             label { class: "sr-only", id: "headlessui-listbox-label-2", "Theme" }
                             Link {
                                 class: "ml-[-3.8em] md:ml-0 md:py-2 md:px-3 bg-blue-500 ml-4 text-lg md:text-sm text-white rounded font-semibold",

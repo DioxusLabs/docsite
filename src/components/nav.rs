@@ -123,7 +123,7 @@ static LINKS: &[(&str, &str, LinkPairs)] = &[
             ),
             (
                 "TUI",
-                "https://github.com/DioxusLabs/dioxus/tree/master/packages/tui",
+                "https://github.com/DioxusLabs/dioxus/tree/master/packages/dioxus-tui",
             ),
         ],
     ),

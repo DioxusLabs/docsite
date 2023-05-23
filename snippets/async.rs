@@ -1,9 +1,9 @@
 //! Easily integrate async Rust code into your components.
 
 fn Tasks(cx: Scope) -> Element {
-    let count = use_state(&cx, || 0);
+    let count = use_state(cx, || 0);
 
-    use_coroutine(&cx, |_| {
+    use_coroutine(cx, |_| {
         to_owned![count];
         async move {
             loop {
@@ -13,5 +13,5 @@ fn Tasks(cx: Scope) -> Element {
         }
     });
 
-    cx.render(rsx! { pre { "Count: {count}" } })
+    render!( pre { "Count: {count}" } )
 }

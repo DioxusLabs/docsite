@@ -153,7 +153,7 @@ The CLI has been overhauled with a ton of new features and improved ergonomics. 
 
 The community seems to really enjoy Dioxus! And they want their friends to know about Dioxus, too! But, our guides have not been available in every language that developers want. In this release, we’re adding two new languages to our guide:
 
-- Chinese provided by @mrxiaux
+- Chinese provided by @mrxiaozhuox
 - Portuguese provided by @whoeverdidthis
 
 ## A new landing page and better docs

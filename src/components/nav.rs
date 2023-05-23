@@ -54,7 +54,7 @@ pub fn Nav(cx: Scope) -> Element {
                         div { class: "flex items-center border-l border-gray-200 ml-6 pl-6 dark:border-gray-800",
                             label { class: "sr-only", id: "headlessui-listbox-label-2", "Theme" }
                             Link {
-                                class: "ml-[-3.8em] md:ml-0 md:py-2 md:px-2 bg-green-500 ml-4 text-lg md:text-sm text-white rounded font-semibold",
+                                class: "ml-[-3.8em] md:ml-0 md:py-2 md:px-3 bg-blue-500 ml-4 text-lg md:text-sm text-white rounded font-semibold",
                                 to: "",
                                 "DEPLOY"
                             }

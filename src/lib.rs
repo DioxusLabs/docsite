@@ -40,6 +40,7 @@ pub fn app(cx: Scope) -> Element {
 
     cx.render(rsx! {
         Router { onchange: move |_| show_nav(false),
+            dioxus_material_icons::MaterialIconStylesheet {}
             Nav {}
             Route { to: "/", Homepage {} }
             Route { to: "/index.html", Homepage {} }

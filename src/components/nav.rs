@@ -1,32 +1,86 @@
 use dioxus::prelude::*;
+use dioxus_material_icons::{MaterialIcon, MaterialIconColor};
 use dioxus_router::Link;
 use fermi::{use_atom_state, use_read, Atom};
 
 pub static SHOW_NAV: Atom<bool> = |_| false;
+pub static SHOW_SEARCH: Atom<bool> = |_| false;
 
 pub fn Nav(cx: Scope) -> Element {
     let show = use_read(cx, SHOW_NAV);
+    let show_modal = use_read(cx, SHOW_SEARCH);
+
+    // w-full max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8 h-full grid grid-cols-auto-span-auto items-center justify-between text-navy
 
     cx.render(rsx! {
-        header { class: "sticky top-0 z-50 bg-white shadow dark:text-gray-200 dark:bg-ideblack dark:border-b border-stone-600",
-            div { class: "py-4 px-12 max-w-screen-2xl mx-auto flex items-center justify-between font-semibold text-sm leading-6",
-                // div { class: "py-4 flex items-center justify-between font-semibold text-sm leading-6 bg-white shadow dark:text-gray-200 dark:bg-black px-48",
-                // div { class: "py-4 flex items-center justify-between font-semibold text-sm leading-6 bg-white shadow dark:text-gray-200 dark:bg-black px-4 sm:px-6 md:px-8",
-                Link { class: "flex title-font font-medium items-center text-gray-900", to: "/",
-                    img {
-                        src: "https://avatars.githubusercontent.com/u/79236386?s=200&v=4",
-                        class: "h-5 w-auto"
+        SearchModal {}
+        header { class: "sticky top-0 z-30 bg-white shadow dark:text-gray-200 dark:bg-ideblack dark:border-b border-stone-600",
+            div { class: "py-3 px-12 max-w-screen-2xl mx-auto flex items-center justify-between text-sm leading-6",
+                div {
+                    class: "flex md:w-60 relative z-50",
+                    Link { class: "flex title-font font-medium items-center text-gray-900", to: "/",
+                        img {
+                            src: "https://avatars.githubusercontent.com/u/79236386?s=200&v=4",
+                            class: "h-5 w-auto"
+                        }
+                        span { class: "ml-3 text-xl dark:text-white font-mono", "Dioxus Labs" }
                     }
-                    span { class: "ml-3 text-xl dark:text-white font-mono", "Dioxus Labs" }
                 }
-                div { class: "flex items-center font-mono",
-                    MobileNav {}
-                    FullNav {}
+                // div {
+                // }
+                Search {}
+                div {
+                    class: "hidden xl:flex w-60 h-full",
+                    div { class: "hidden md:flex items-center  font-semibold",
+                        nav {
+                            ul { class: "flex items-center space-x-2", LinkList {} }
+                        }
+                        div { class: "flex items-center border-l border-gray-200 ml-3 pl-3 dark:border-gray-800",
+                            label { class: "sr-only", id: "headlessui-listbox-label-2", "Theme" }
+                            a {
+                                class: "block text-gray-400 hover:text-gray-500 dark:hover:text-gray-300",
+                                href: "https://discord.gg/XgGxMSkvUM",
+                                span { class: "sr-only", "Dioxus on Discord" }
+                                crate::icons::DiscordLogo {}
+                            }
+                            a {
+                                class: "ml-3 block text-gray-400 hover:text-gray-500 dark:hover:text-gray-300",
+                                href: "https://github.com/dioxuslabs/dioxus",
+                                span { class: "sr-only", "Dioxus on GitHub" }
+                                crate::icons::Github2 {}
+                            }
+
+                        }
+                        div { class: "flex items-center border-l border-gray-200 ml-6 pl-6 dark:border-gray-800",
+                            label { class: "sr-only", id: "headlessui-listbox-label-2", "Theme" }
+                            Link {
+                                class: "ml-[-3.8em] md:ml-0 md:py-2 md:px-2 bg-green-500 ml-4 text-lg md:text-sm text-white rounded font-semibold",
+                                to: "",
+                                "DEPLOY"
+                            }
+                        }
+                    }
                 }
             }
-            if *show {rsx! {
-                ul { class: "flex items-center flex-col py-4", gap: "10px", LinkList { } }
-            }}
+            // div { class: "py-4 px-12 max-w-screen-2xl mx-auto flex items-center justify-between font-semibold text-sm leading-6",
+            //     // div { class: "py-4 flex items-center justify-between font-semibold text-sm leading-6 bg-white shadow dark:text-gray-200 dark:bg-black px-48",
+            //     // div { class: "py-4 flex items-center justify-between font-semibold text-sm leading-6 bg-white shadow dark:text-gray-200 dark:bg-black px-4 sm:px-6 md:px-8",
+            //     Link { class: "flex title-font font-medium items-center text-gray-900", to: "/",
+            //         img {
+            //             src: "https://avatars.githubusercontent.com/u/79236386?s=200&v=4",
+            //             class: "h-5 w-auto"
+            //         }
+            //         span { class: "ml-3 text-xl dark:text-white font-mono", "Dioxus Labs" }
+            //     }
+            //     Search {}
+            //     div { class: "flex items-center font-mono",
+            //         MobileNav {}
+            //         FullNav {}
+            //     }
+            // }
+            // if *show {rsx! {
+            //     ul { class: "flex items-center flex-col py-4", gap: "10px", LinkList { } }
+            // }}
         }
     })
 }
@@ -35,9 +89,9 @@ fn FullNav(cx: Scope) -> Element {
     cx.render(rsx! {
         div { class: "hidden md:flex items-center",
             nav {
-                ul { class: "flex items-center space-x-8", LinkList {} }
+                ul { class: "flex items-center space-x-2", LinkList {} }
             }
-            div { class: "flex items-center border-l border-gray-200 ml-6 pl-6 dark:border-gray-800",
+            div { class: "flex items-center border-l border-gray-200 ml-2 pl-3 dark:border-gray-800",
                 label { class: "sr-only", id: "headlessui-listbox-label-2", "Theme" }
                 a {
                     class: "block text-gray-400 hover:text-gray-500 dark:hover:text-gray-300",
@@ -101,60 +155,62 @@ fn MobileNav(cx: Scope) -> Element {
 
 type LinkPairs<'a> = &'a [(&'a str, &'a str)];
 static LINKS: &[(&str, &str, LinkPairs)] = &[
-    (
-        "Platforms",
-        "/platforms",
-        &[
-            (
-                "Web",
-                "https://dioxuslabs.com/docs/0.3/guide/en/getting_started/web",
-            ),
-            (
-                "Desktop",
-                "https://dioxuslabs.com/docs/0.3/guide/en/getting_started/desktop",
-            ),
-            (
-                "Mobile",
-                "https://dioxuslabs.com/docs/0.3/guide/en/getting_started/mobile",
-            ),
-            (
-                "SSR",
-                "https://dioxuslabs.com/docs/0.3/guide/en/getting_started/ssr",
-            ),
-            (
-                "TUI",
-                "https://github.com/DioxusLabs/dioxus/tree/master/packages/dioxus-tui",
-            ),
-        ],
-    ),
-    (
-        "Projects",
-        "https://github.com/dioxuslabs",
-        &[
-            (
-                "Fermi",
-                "https://github.com/DioxusLabs/dioxus/tree/master/packages/fermi",
-            ),
-            (
-                "Router",
-                "https://github.com/DioxusLabs/dioxus/tree/master/packages/router",
-            ),
-            ("Taffy", "https://github.com/DioxusLabs/taffy"),
-            ("CLI", "https://github.com/DioxusLabs/cli"),
-        ],
-    ),
+    // (
+    //     "Platforms",
+    //     "/platforms",
+    //     &[
+    //         (
+    //             "Web",
+    //             "https://dioxuslabs.com/docs/0.3/guide/en/getting_started/web",
+    //         ),
+    //         (
+    //             "Desktop",
+    //             "https://dioxuslabs.com/docs/0.3/guide/en/getting_started/desktop",
+    //         ),
+    //         (
+    //             "Mobile",
+    //             "https://dioxuslabs.com/docs/0.3/guide/en/getting_started/mobile",
+    //         ),
+    //         (
+    //             "SSR",
+    //             "https://dioxuslabs.com/docs/0.3/guide/en/getting_started/ssr",
+    //         ),
+    //         (
+    //             "TUI",
+    //             "https://github.com/DioxusLabs/dioxus/tree/master/packages/dioxus-tui",
+    //         ),
+    //     ],
+    // ),
+    // (
+    //     "Projects",
+    //     "https://github.com/dioxuslabs",
+    //     &[
+    //         (
+    //             "Fermi",
+    //             "https://github.com/DioxusLabs/dioxus/tree/master/packages/fermi",
+    //         ),
+    //         (
+    //             "Router",
+    //             "https://github.com/DioxusLabs/dioxus/tree/master/packages/router",
+    //         ),
+    //         ("Taffy", "https://github.com/DioxusLabs/taffy"),
+    //         ("CLI", "https://github.com/DioxusLabs/cli"),
+    //     ],
+    // ),
+    // ("Tutorials", "/tutorials/", &[]),
+    ("Blog", "/blog", &[]),
     (
         "Docs",
         "/learn/",
-        &[
-            ("Guide", "https://dioxuslabs.com/docs/0.3/guide/en/"),
-            // ("Advanced", "https://dioxuslabs.com/docs/0.3/reference/"),
-            // ("Reference", "https://dioxuslabs.com/docs/0.3/reference/"),
-            ("Router", "https://dioxuslabs.com/docs/0.3/router/"),
-        ],
+        &[],
+        // &[
+        //     ("Guide", "https://dioxuslabs.com/docs/0.3/guide/en/"),
+        //     // ("Advanced", "https://dioxuslabs.com/docs/0.3/reference/"),
+        //     // ("Reference", "https://dioxuslabs.com/docs/0.3/reference/"),
+        //     ("Router", "https://dioxuslabs.com/docs/0.3/router/"),
+        // ],
     ),
-    // ("Tutorials", "/tutorials/", &[]),
-    ("Blog", "/blog", &[]),
+    // ("Deploy", "/deploy", &[]),
 ];
 
 #[inline_props]
@@ -163,11 +219,16 @@ fn LinkList(cx: Scope) -> Element {
     let hover_bg = "dark:hover:bg-gray-500 hover:bg-gray-200 rounded";
 
     let links = LINKS.iter().copied().map(|(name, link, links)| {
+        let modifier = match name {
+            "De__ploy" => "bg-green-500 text-white",
+            _ => ""
+        };
+
         if links.is_empty() {
             rsx! {
                 li { key: "{link}",
                     Link {
-                        class: "ml-[-3.8em] md:ml-0 md:py-1 md:px-2 {hover} {hover_bg} text-lg md:text-sm",
+                        class: "ml-[-3.8em] md:ml-0 md:py-2 md:px-2 {hover} {hover_bg} {modifier} text-lg md:text-sm",
                         to: "{link}",
                         "{name}"
                     }
@@ -198,4 +259,126 @@ fn LinkList(cx: Scope) -> Element {
     });
 
     cx.render(rsx! {links})
+}
+
+fn Search(cx: Scope) -> Element {
+    let show_modal = use_atom_state(cx, SHOW_SEARCH);
+
+    render! {
+        div { class: "relative hidden sm:block md:w-full max-w-[46rem] xl:max-w-[40rem] 2xl:max-w-[46rem] mx-auto",
+            // Pop up a modal
+            button { class: "bg-gray-100 rounded-lg px-3 py-3 w-full text-left text-gray-400 my-auto flex flex-row align-middle justify-between",
+                onclick: move |_| {
+                    show_modal.set(true);
+                },
+                div { class: "h-full my-auto flex flex-row align-middle justify-between",
+                    MaterialIcon {
+                        name: "search",
+                        size: 24,
+                        color: MaterialIconColor::Dark,
+                    }
+                    span { class: "pl-2", "Search the docs" }
+                }
+                div {
+                    class: "border border-gray-300 rounded-lg p-1 text-xs text-gray-400",
+                    "⌘K"
+                }
+            }
+        }
+    }
+}
+
+fn SearchModal(cx: Scope) -> Element {
+    let show_modal = use_atom_state(cx, SHOW_SEARCH);
+
+    // when we search, we do a similar search to mdbook
+    // This will bring up individual sections that reference the search term with the breadcrumb
+    // entries are sorted by breadcrumb
+
+    render! {
+        if *show_modal.get() {
+            rsx! {
+                div {
+                    height: "100vh",
+                    width: "100vw",
+                    class: "fixed top-0 left-0 z-50 hidden md:block bg-gray-500 bg-opacity-50 overflow-y-hidden",
+                    onclick: move |_| show_modal.set(false),
+
+                    // A little weird, but we're putting an empty div with a scaled height to buffer the top of the modal
+                    div { class: "max-w-screen-md mx-auto h-full flex flex-col",
+                        onclick: move |evt| evt.stop_propagation(),
+                        div { class: "h-30" }
+
+                        // The actual modal
+                        div { class: "bg-white dark:bg-ideblack p-6 rounded-2xl m-8 max-h-[calc(100%-8rem)] overflow-y-auto",
+                            // Search input
+                            div { class: "flex flex-row flex-grow border-b border-gray-300 pb-4",
+                                div { class: "my-auto flex flex-row",
+                                    MaterialIcon {
+                                        name: "search",
+                                        size: 40,
+                                        color: MaterialIconColor::Dark,
+                                    }
+                                    input {
+                                        class: "flex-grow bg-transparent border-none outline-none text-xl pl-2",
+                                        placeholder: "Search the docs",
+                                    }
+                                }
+                                div {}
+                            }
+
+                            // Results
+                            div { class: "overflow-y-auto",
+                                ul {
+                                    SearchResult { crumb: &["Router", "Introduction"], }
+                                    SearchResult { crumb: &["Reference", "Styling", "TailwindCSS"], }
+                                    SearchResult { crumb: &["Reference", "Styling", "ChakraUI"], }
+                                    SearchResult { crumb: &["Reference", "Styling", "MaterialUi"], }
+                                    SearchResult { crumb: &["Reference", "Styling", "MaterialUi"], }
+                                    SearchResult { crumb: &["Reference", "Styling", "MaterialUi"], }
+                                    SearchResult { crumb: &["Reference", "Styling", "MaterialUi"], }
+                                    SearchResult { crumb: &["Reference", "Styling", "MaterialUi"], }
+                                    SearchResult { crumb: &["Reference", "Styling", "MaterialUi"], }
+                                    SearchResult { crumb: &["Reference", "Styling", "MaterialUi"], }
+                                }
+                            }
+
+                            //
+                            div {
+
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+#[inline_props]
+fn SearchResult(cx: Scope, crumb: &'static [&'static str]) -> Element {
+    let title = crumb.last().unwrap();
+
+    let description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed vitae nisi eget nunc aliquam aliquet.";
+
+    render! {
+        li { class: "w-full mt-4 p-2 rounded hover:bg-gray-100 dark:hover:bg-ideblack transition-colors duration-200 ease-in-out",
+            div { class: "flex flex-row justify-between pb-1",
+                h2 { class: "font-semibold", "{title}" }
+                div {
+                    if crumb.len() > 1 {
+                        rsx! {
+                            for crumb in crumb.iter().take(crumb.len() - 1) {
+                                span { class: "text-sm text-gray-400", "{crumb}" }
+                                span { class: "text-sm text-gray-400", "/" }
+                            }
+                        }
+                    }
+                }
+            }
+            p { class: "text-sm text-gray-400 pr-8",
+                "{description}"
+            }
+        }
+    }
 }

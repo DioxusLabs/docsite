@@ -4,12 +4,12 @@ use dioxus_router::Link;
 
 #[derive(PartialEq, Eq)]
 pub struct BlogPost {
-    category: &'static str,
-    date: &'static str,
-    title: &'static str,
-    description: &'static str,
-    link: &'static str,
-    content: &'static str,
+    pub category: &'static str,
+    pub date: &'static str,
+    pub title: &'static str,
+    pub description: &'static str,
+    pub link: &'static str,
+    pub content: &'static str,
 }
 
 pub const POST_TEMPLATE: BlogPost = BlogPost {

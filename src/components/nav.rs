@@ -5,23 +5,20 @@ use fermi::{use_atom_state, use_read, Atom};
 
 pub static SHOW_NAV: Atom<bool> = |_| false;
 pub static SHOW_SEARCH: Atom<bool> = |_| false;
+pub static LOGGED_IN: Atom<bool> = |_| false;
 
 pub fn Nav(cx: Scope) -> Element {
     let show = use_read(cx, SHOW_NAV);
     let show_modal = use_read(cx, SHOW_SEARCH);
-
-    // w-full max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8 h-full grid grid-cols-auto-span-auto items-center justify-between text-navy
+    let logged_in = use_read(cx, LOGGED_IN);
 
     cx.render(rsx! {
         SearchModal {}
         header { class: "sticky top-0 z-30 bg-white shadow dark:text-gray-200 dark:bg-ideblack dark:border-b border-stone-600",
             div { class: "py-3 px-12 max-w-screen-3xl mx-auto flex items-center justify-between text-sm leading-6",
                 div { class: "flex z-50 flex-1",
-                    Link { class: "flex title-font font-medium items-center text-gray-900", to: "/",
-                        img {
-                            src: "https://avatars.githubusercontent.com/u/79236386?s=200&v=4",
-                            class: "h-5 w-auto"
-                        }
+                    Link { to: "/", class: "flex title-font font-medium items-center text-gray-900",
+                        img { src: "https://avatars.githubusercontent.com/u/79236386?s=200&v=4", class: "h-5 w-auto" }
                         span { class: "ml-3 text-xl dark:text-white font-mono", "Dioxus Labs" }
                     }
                 }
@@ -35,54 +32,40 @@ pub fn Nav(cx: Scope) -> Element {
                         }
                         div { class: "flex items-center border-l border-gray-200 ml-4 pl-4 dark:border-gray-800",
                             label { class: "sr-only", id: "headlessui-listbox-label-2", "Theme" }
-                            a {
+                            Link {
+                                to: "https://discord.gg/XgGxMSkvUM"
                                 class: "block text-gray-400 hover:text-gray-500 dark:hover:text-gray-300",
-                                href: "https://discord.gg/XgGxMSkvUM",
                                 span { class: "sr-only", "Dioxus on Discord" }
                                 crate::icons::DiscordLogo {}
                             }
-                            a {
+                            Link {
+                                to: "https://github.com/dioxuslabs/dioxus",
                                 class: "ml-4 block text-gray-400 hover:text-gray-500 dark:hover:text-gray-300",
-                                href: "https://github.com/dioxuslabs/dioxus",
                                 span { class: "sr-only", "Dioxus on GitHub" }
                                 crate::icons::Github2 {}
                             }
-
                         }
-                        div { class: "flex items-center border-l border-gray-200 ml-4 pl-4 dark:border-gray-800",
+                        div { class: "flex items-center border-l border-gray-200 ml-4 pl-6 dark:border-gray-800",
                             label { class: "sr-only", id: "headlessui-listbox-label-2", "Theme" }
                             Link {
-                                class: "ml-[-3.8em] md:ml-0 md:py-2 md:px-3 bg-blue-500 ml-4 text-lg md:text-sm text-white rounded font-semibold",
                                 to: "",
+                                class: "ml-[-3.8em] md:ml-0 md:py-2 md:px-3 bg-blue-500 ml-4 text-lg md:text-sm text-white rounded font-semibold",
                                 "DEPLOY"
                             }
-                            img {
-                                src: "https://avatars.githubusercontent.com/u/10237910?s=40&v=4",
-                                class: "ml-4 h-10 rounded-full w-auto"
+                            if *logged_in {
+                                rsx! {
+                                    Link { to: "/profile",
+                                        img {
+                                            src: "https://avatars.githubusercontent.com/u/10237910?s=40&v=4",
+                                            class: "ml-4 h-10 rounded-full w-auto"
+                                        }
+                                    }
+                                }
                             }
                         }
                     }
                 }
             }
-            // div { class: "py-4 px-12 max-w-screen-2xl mx-auto flex items-center justify-between font-semibold text-sm leading-6",
-            //     // div { class: "py-4 flex items-center justify-between font-semibold text-sm leading-6 bg-white shadow dark:text-gray-200 dark:bg-black px-48",
-            //     // div { class: "py-4 flex items-center justify-between font-semibold text-sm leading-6 bg-white shadow dark:text-gray-200 dark:bg-black px-4 sm:px-6 md:px-8",
-            //     Link { class: "flex title-font font-medium items-center text-gray-900", to: "/",
-            //         img {
-            //             src: "https://avatars.githubusercontent.com/u/79236386?s=200&v=4",
-            //             class: "h-5 w-auto"
-            //         }
-            //         span { class: "ml-3 text-xl dark:text-white font-mono", "Dioxus Labs" }
-            //     }
-            //     Search {}
-            //     div { class: "flex items-center font-mono",
-            //         MobileNav {}
-            //         FullNav {}
-            //     }
-            // }
-            // if *show {rsx! {
-            //     ul { class: "flex items-center flex-col py-4", gap: "10px", LinkList { } }
-            // }}
         }
     })
 }
@@ -157,61 +140,8 @@ fn MobileNav(cx: Scope) -> Element {
 
 type LinkPairs<'a> = &'a [(&'a str, &'a str)];
 static LINKS: &[(&str, &str, LinkPairs)] = &[
-    // (
-    //     "Platforms",
-    //     "/platforms",
-    //     &[
-    //         (
-    //             "Web",
-    //             "https://dioxuslabs.com/docs/0.3/guide/en/getting_started/web",
-    //         ),
-    //         (
-    //             "Desktop",
-    //             "https://dioxuslabs.com/docs/0.3/guide/en/getting_started/desktop",
-    //         ),
-    //         (
-    //             "Mobile",
-    //             "https://dioxuslabs.com/docs/0.3/guide/en/getting_started/mobile",
-    //         ),
-    //         (
-    //             "SSR",
-    //             "https://dioxuslabs.com/docs/0.3/guide/en/getting_started/ssr",
-    //         ),
-    //         (
-    //             "TUI",
-    //             "https://github.com/DioxusLabs/dioxus/tree/master/packages/dioxus-tui",
-    //         ),
-    //     ],
-    // ),
-    // (
-    //     "Projects",
-    //     "https://github.com/dioxuslabs",
-    //     &[
-    //         (
-    //             "Fermi",
-    //             "https://github.com/DioxusLabs/dioxus/tree/master/packages/fermi",
-    //         ),
-    //         (
-    //             "Router",
-    //             "https://github.com/DioxusLabs/dioxus/tree/master/packages/router",
-    //         ),
-    //         ("Taffy", "https://github.com/DioxusLabs/taffy"),
-    //         ("CLI", "https://github.com/DioxusLabs/cli"),
-    //     ],
-    // ),
-    // ("Tutorials", "/tutorials/", &[]),
     ("Blog", "/blog", &[]),
-    (
-        "Docs",
-        "/learn/",
-        &[],
-        // &[
-        //     ("Guide", "https://dioxuslabs.com/docs/0.3/guide/en/"),
-        //     // ("Advanced", "https://dioxuslabs.com/docs/0.3/reference/"),
-        //     // ("Reference", "https://dioxuslabs.com/docs/0.3/reference/"),
-        //     ("Router", "https://dioxuslabs.com/docs/0.3/router/"),
-        // ],
-    ),
+    ("Docs", "/learn/", &[]),
     // ("Deploy", "/deploy", &[]),
 ];
 
@@ -221,16 +151,11 @@ fn LinkList(cx: Scope) -> Element {
     let hover_bg = "dark:hover:bg-gray-500 hover:bg-gray-200 rounded";
 
     let links = LINKS.iter().copied().map(|(name, link, links)| {
-        let modifier = match name {
-            "De__ploy" => "bg-green-500 text-white",
-            _ => ""
-        };
-
         if links.is_empty() {
             rsx! {
                 li { key: "{link}",
                     Link {
-                        class: "ml-[-3.8em] md:ml-0 md:py-2 md:px-2 {hover} {hover_bg} {modifier} text-lg md:text-sm",
+                        class: "ml-[-3.8em] md:ml-0 md:py-2 md:px-2 {hover} {hover_bg} text-lg md:text-sm",
                         to: "{link}",
                         "{name}"
                     }
@@ -246,13 +171,13 @@ fn LinkList(cx: Scope) -> Element {
                     // Link { to: "{link}", class: "py-1 px-2 {hover} {hover_bg}", "{name}" }
                     nav { class: "md:dropdown-menu md:absolute h-auto md:-mt-64 md:group-hover:mt-0 md:opacity-0 md:group-hover:opacity-100 md:transition-opacity md:duration-250",
                         ul { class: "top-0 w-36 md:bg-white dark:md:bg-gray-800 md:shadow md:px-4 md:py-4 rounded",
-                            links.iter().map(|(name, link)| rsx!{
+                            for (name, link) in links.iter() {
                                 Link {  to: "{link}", key: "{name}",
                                     li { class: "rounded px-1 py-1 {hover} {hover_bg} text-base md:text-sm",
                                         "{name}"
                                     }
                                 }
-                            })
+                            }
                         }
                     }
                 }
@@ -322,7 +247,7 @@ fn SearchModal(cx: Scope) -> Element {
                                         color: MaterialIconColor::Dark,
                                     }
                                     input {
-                                        class: "flex-grow bg-transparent border-none outline-none text-xl pl-2",
+                                        class: "flex-grow bg-transparent border-none outline-none text-xl pl-2 text-white",
                                         placeholder: "Search the docs",
                                     }
                                 }
@@ -359,28 +284,100 @@ fn SearchModal(cx: Scope) -> Element {
 
 #[inline_props]
 fn SearchResult(cx: Scope, crumb: &'static [&'static str]) -> Element {
-    let title = crumb.last().unwrap();
-
+    let title = crumb.last()?;
     let description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed vitae nisi eget nunc aliquam aliquet.";
 
     render! {
         li { class: "w-full mt-4 p-2 rounded hover:bg-gray-100 dark:hover:bg-ideblack transition-colors duration-200 ease-in-out",
-            div { class: "flex flex-row justify-between pb-1",
-                h2 { class: "font-semibold", "{title}" }
-                div {
-                    if crumb.len() > 1 {
-                        rsx! {
-                            for crumb in crumb.iter().take(crumb.len() - 1) {
-                                span { class: "text-sm text-gray-400", "{crumb}" }
-                                span { class: "text-sm text-gray-400", "/" }
+            Link { to: "https://google.com",
+                div { class: "flex flex-col justify-between pb-1",
+                    h2 { class: "font-semibold dark:text-white", "{title}" }
+                    div { class: "font-mono text-xs text-gray-400",
+                        span { "/" }
+
+                        if crumb.len() > 1 {
+                            rsx! {
+                                for crumb in crumb.iter() {
+                                    span { "{crumb}" }
+                                    span { "/" }
+                                }
                             }
                         }
                     }
                 }
-            }
-            p { class: "text-sm text-gray-400 pr-8",
-                "{description}"
+                p { class: "text-sm text-gray-500 dark:text-gray-300 pr-8", "{description}" }
             }
         }
     }
 }
+
+// div { class: "py-4 px-12 max-w-screen-2xl mx-auto flex items-center justify-between font-semibold text-sm leading-6",
+//     // div { class: "py-4 flex items-center justify-between font-semibold text-sm leading-6 bg-white shadow dark:text-gray-200 dark:bg-black px-48",
+//     // div { class: "py-4 flex items-center justify-between font-semibold text-sm leading-6 bg-white shadow dark:text-gray-200 dark:bg-black px-4 sm:px-6 md:px-8",
+//     Link { class: "flex title-font font-medium items-center text-gray-900", to: "/",
+//         img {
+//             src: "https://avatars.githubusercontent.com/u/79236386?s=200&v=4",
+//             class: "h-5 w-auto"
+//         }
+//         span { class: "ml-3 text-xl dark:text-white font-mono", "Dioxus Labs" }
+//     }
+//     Search {}
+//     div { class: "flex items-center font-mono",
+//         MobileNav {}
+//         FullNav {}
+//     }
+// }
+// if *show {rsx! {
+//     ul { class: "flex items-center flex-col py-4", gap: "10px", LinkList { } }
+// }}
+
+// (
+//     "Platforms",
+//     "/platforms",
+//     &[
+//         (
+//             "Web",
+//             "https://dioxuslabs.com/docs/0.3/guide/en/getting_started/web",
+//         ),
+//         (
+//             "Desktop",
+//             "https://dioxuslabs.com/docs/0.3/guide/en/getting_started/desktop",
+//         ),
+//         (
+//             "Mobile",
+//             "https://dioxuslabs.com/docs/0.3/guide/en/getting_started/mobile",
+//         ),
+//         (
+//             "SSR",
+//             "https://dioxuslabs.com/docs/0.3/guide/en/getting_started/ssr",
+//         ),
+//         (
+//             "TUI",
+//             "https://github.com/DioxusLabs/dioxus/tree/master/packages/dioxus-tui",
+//         ),
+//     ],
+// ),
+// (
+//     "Projects",
+//     "https://github.com/dioxuslabs",
+//     &[
+//         (
+//             "Fermi",
+//             "https://github.com/DioxusLabs/dioxus/tree/master/packages/fermi",
+//         ),
+//         (
+//             "Router",
+//             "https://github.com/DioxusLabs/dioxus/tree/master/packages/router",
+//         ),
+//         ("Taffy", "https://github.com/DioxusLabs/taffy"),
+//         ("CLI", "https://github.com/DioxusLabs/cli"),
+//     ],
+// ),
+// ("Tutorials", "/tutorials/", &[]),
+
+// &[
+//     ("Guide", "https://dioxuslabs.com/docs/0.3/guide/en/"),
+//     // ("Advanced", "https://dioxuslabs.com/docs/0.3/reference/"),
+//     // ("Reference", "https://dioxuslabs.com/docs/0.3/reference/"),
+//     ("Router", "https://dioxuslabs.com/docs/0.3/router/"),
+// ],

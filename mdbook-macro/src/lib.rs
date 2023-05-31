@@ -39,9 +39,7 @@ fn write_book(book: mdbook_shared::Summary) -> TokenStream {
     let sum = serde_json::to_string(&book).unwrap();
 
     let out = quote! {
-        ::once_cell::sync::Lazy::new(|| {
-            ::use_mdbook::MdBook::load(#sum)
-        })
+        ::once_cell::sync::Lazy::new(|| ::use_mdbook::static_load(#sum))
     };
 
     out.to_token_stream().into()

@@ -6,5 +6,5 @@ use use_mdbook::{include_mdbook, LazyMdbook};
 static DOCS: LazyMdbook = include_mdbook!("../example-book");
 
 fn main() {
-    println!("{:?}", DOCS.summary);
+    println!("{:#?}", DOCS.summary);
 }

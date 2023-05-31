@@ -1,0 +1,2 @@
+[workspace]
+members = ["mdbook-macro", "use-mdbook", "mdbook-shared"]

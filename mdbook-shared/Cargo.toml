@@ -1,19 +1,13 @@
 [package]
-name = "mdbook-macro"
+name = "mdbook-shared"
 version = "0.1.0"
 edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
-[lib]
-proc-macro = true
-
 [dependencies]
-proc-macro2 = { version = "1.0" }
-quote = "1.0"
-syn = "2.0"
-mdbook-shared = { path = "../mdbook-shared" }
 anyhow = "1.0.71"
+log = "0.4.18"
+memchr = "2.5.0"
+pulldown-cmark = "0.9.3"
 serde = { version = "1.0.163", features = ["derive"] }
-serde_json = "1.0.96"
-macro_state = "0.2.0"

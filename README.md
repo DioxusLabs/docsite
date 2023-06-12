@@ -11,6 +11,20 @@ Planned features for this crate:
 - Hotreloading for mdbooks
 - Devtool integration for live mdbook editing
 
+
+## Todo:
+
+- incremental processing with invalidation
+- search manifest generation
+- integration with dioxus bundle
+- extract all logic to a generic asset system
+- write mdbook as static str and not require json bouncing
+- investigate compile time performance impacts
+
+
+## References
+
+
 <!--
 This crate provides the `use_mdbook()` macro hook that provides *live editing* of mdbooks from within a running Dioxus app.
 

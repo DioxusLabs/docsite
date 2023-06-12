@@ -1,16 +1,14 @@
+use std::path::PathBuf;
+
 use dioxus::prelude::*;
-
-use crate::{learn::learn_hook::use_mdbook, BlogPost, SinglePost, POST_RELEASE_030};
-
-mod learn_hook;
+use dioxus_router::use_route;
+use dioxus_router::Link;
+use use_mdbook::{include_mdbook, LazyMdbook};
 
 pub fn Learn(cx: Scope) -> Element {
     cx.render(rsx! {
         div { class: "w-full pt-12 text-sm dark:bg-ideblack", min_height: "100vh",
-        // How we do the nav:
-        // - do a typical three-column flex layout with a single centered
-        // then pin the nav items on top
-
+            // do a typical three-column flex layout with a single centered then pin the nav items on top
             div { class: "max-w-screen-2xl flex flex-row justify-between mx-auto dark:text-white",
                 Content {}
                 LeftNav {}
@@ -20,37 +18,55 @@ pub fn Learn(cx: Scope) -> Element {
     })
 }
 
+static DOCS: LazyMdbook = include_mdbook!("docs");
+
 fn LeftNav(cx: Scope) -> Element {
-    let book = use_mdbook(cx);
-
-    let sections = book
-        .summary
-        .numbered_chapters
-        .iter_mut()
-        .filter_map(|chapter| {
-            //
-            let link = chapter.maybe_link_mut()?;
-
-            let sections = link.nested_items.iter_mut().filter_map(|link| {
-                let link = link.maybe_link_mut()?;
-                render! {
-                    li { class: "pt-1",
-                        dioxus_material_icons::MaterialIcon {
-                            name: "chevron_right",
-                            color: "gray",
-                        }
-                        "{link.name}"
-                    }
-                }
-            });
+    let sections = DOCS.summary.numbered_chapters.iter().filter_map(|chapter| {
+        let link = chapter.maybe_link()?;
+        let sections = link.nested_items.iter().filter_map(|link| {
+            let link = link.maybe_link()?;
+            let show_chevron = link.nested_items.len() > 0;
+            let url = link.location.as_ref().unwrap().to_string_lossy();
 
             render! {
-                div {  class: "pb-4",
-                    h2 { class: "font-semibold", "{link.name}" }
-                    ul { class: "pl-2", sections }
+                li { class: "pt-1",
+                    if show_chevron {
+                        rsx! {
+                            dioxus_material_icons::MaterialIcon {
+                                name: "chevron_right",
+                                color: "gray",
+                            }
+                        }
+                    }
+                    Link {
+                        to: "/docs/0.4/en/{url}",
+                        "{link.name}"
+                    }
+                    if show_chevron {
+                        rsx! {
+                            ul {
+                                for nest in link.nested_items.iter().filter_map(|link| link.maybe_link()) {
+                                    li { class: "pl-8",
+                                        Link {
+                                            to: "/docs/0.4/en/{link.location.as_ref().unwrap().to_string_lossy()}",
+                                            "{nest.name}"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
             }
         });
+
+        render! {
+            div {  class: "pb-4",
+                h2 { class: "font-semibold", "{link.name}" }
+                ul { class: "pl-2", sections }
+            }
+        }
+    });
 
     render! {
         // Now, pin the nav to the left
@@ -77,14 +93,10 @@ fn RightNav(cx: Scope) -> Element {
 }
 
 fn Content(cx: Scope) -> Element {
-    let BlogPost {
-        category,
-        date,
-        title,
-        description,
-        link,
-        content,
-    } = crate::blog::POST_RELEASE_030;
+    let url: PathBuf = "index.md".parse().unwrap();
+    let page = DOCS.pages.get(&url).unwrap();
+
+    // let BlogPost { content, .. } = crate::blog::POST_RELEASE_030;
 
     render! {
         section { class: "text-gray-600 body-font overflow-hidden dark:bg-ideblack mx-auto container pt-12 pb-12",
@@ -95,7 +107,7 @@ fn Content(cx: Scope) -> Element {
                         ".markdown-body ul {{ list-style: disc; }}"
                         ".markdown-body li {{ display: list-item; }}"
                     }
-                    article { class: "markdown-body pt-1", dangerous_inner_html: format_args!("{}", content) }
+                    article { class: "markdown-body pt-1", dangerous_inner_html: format_args!("{}", page.content) }
                     script { "Prism.highlightAll()" }
                 }
             }
@@ -104,32 +116,19 @@ fn Content(cx: Scope) -> Element {
 }
 
 fn BreadCrumbs(cx: Scope) -> Element {
-    use dioxus_router::Link;
+    // parse out the route after the version and language
+    let route = use_route(cx);
 
     render! {
         h2 { class: "font-semibold pb-4",
-            Link { to: "https://google.com", class: "text-blue-600", "Learn" }
-            " / "
-            Link { to: "https://google.com", class: "text-blue-600", "Platforms" }
-            " / "
-            Link { to: "https://google.com", class: "text-blue-600", "Mobile" }
-        }
-    }
-}
-
-#[inline_props]
-fn Section(cx: Scope, title: &'static str, items: &'static [&'static str]) -> Element {
-    render! {
-        div {  class: "pb-4",
-            h2 { class: "font-semibold", "Deploying" }
-            ul { class: "pl-2",
-                for item in items.iter() {
-                    li { class: "pt-1",
-                        dioxus_material_icons::MaterialIcon {
-                            name: "chevron_right",
-                            color: "gray",
+            // dioxus_router::Link { to: "https://google.com", class: "text-blue-600", "Learn" }
+            for segment in route.url().path_segments().unwrap().skip(3).filter(|f| !f.is_empty()).map(|f| f.trim_end_matches(".md")) {
+                rsx! {
+                    if segment != "index" {
+                        rsx! {
+                            dioxus_router::Link { to: "https://google.com", class: "text-blue-600", "{segment}" }
+                            " / "
                         }
-                        "Desktop"
                     }
                 }
             }

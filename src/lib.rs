@@ -44,7 +44,9 @@ pub fn app(cx: Scope) -> Element {
             Nav {}
             Route { to: "/", Homepage {} }
             Route { to: "/index.html", Homepage {} }
-            Route { to: "/learn", Learn {} }
+
+
+
             Route { to: "/platforms/", Homepage {} }
             Route { to: "/platforms/web", Homepage {} }
             Route { to: "/platforms/desktop", Homepage {} }
@@ -62,6 +64,19 @@ pub fn app(cx: Scope) -> Element {
             Route { to: "/blog/introducing-dioxus", SinglePost { post: POST_RELEASE_010 } }
             Route { to: "/blog/release-020", SinglePost { post: POST_RELEASE_020 } }
             Route { to: "/blog/templates-diffing/", SinglePost { post: POST_TEMPLATE } }
+
+
+            // hacky bs since the router doesn't support completely dynamic URLs right now...
+            Route { to: "/docs/", Learn {} }
+            Route { to: "/docs/0.4", Learn {} }
+            Route { to: "/docs/0.4/en/", Learn {} }
+            Route { to: "/docs/0.4/en/:a/", Learn {} }
+            Route { to: "/docs/0.4/en/:a/:b/", Learn {} }
+            Route { to: "/docs/0.4/en/:a/:b/:c", Learn {} }
+            Route { to: "/docs/0.4/en/:a/:b/:c/:d", Learn {} }
+            Route { to: "/docs/0.4/en/:a/:b/:c/:d/:e", Learn {} }
+            Route { to: "/docs/0.4/en/:a/:b/:c/:d/:e/:f", Learn {} }
+
             Route { to: "", Err404 {} }
         }
         Footer {}

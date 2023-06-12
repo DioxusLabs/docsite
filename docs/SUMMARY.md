@@ -37,17 +37,22 @@
     - [Web](guide/publishing/web.md)
 
 ---
-
 - [Fullstack](fullstack/index.md)
   - [Getting Started](fullstack/getting_started.md)
   - [Communicating with the Server](fullstack/server_functions.md)
+
+---
+- [Router](router/index.md)
+    - [Getting Started](router/getting-started.md)
+    - [Creating Our First Route](router/first-route.md)
+    - [Building a Nest](router/building-a-nest.md)
+    - [Redirection Perfection](router/redirection-perfection.md)
 
 ---
 - [Reference](reference/index.md)
   - [Custom Renderer](reference/custom_renderer.md)
 
 ---
-
 - [Contributing](contributing/index.md)
   - [Project Structure](contributing/project_structure.md)
   - [Walkthrough of Internals](contributing/walkthrough_readme.md)

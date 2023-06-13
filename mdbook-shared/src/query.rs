@@ -20,6 +20,15 @@ pub struct Page {
 
     // rendered as HTML
     pub content: String,
+
+    // headers
+    pub sections: Vec<Section>,
+}
+
+#[derive(Serialize, Deserialize, Debug)]
+pub struct Section {
+    pub title: String,
+    pub id: String,
 }
 
 impl MdBook {
@@ -66,7 +75,28 @@ impl MdBook {
 
         let body = std::fs::read_to_string(md_file).unwrap();
         let mut content = String::new();
-        pulldown_cmark::html::push_html(&mut content, pulldown_cmark::Parser::new(&body));
+
+        let parser = pulldown_cmark::Parser::new(&body);
+
+        // let parser = parser.map(|event| {
+        //     //
+
+        //     match event {
+        //         pulldown_cmark::Event::Start(_) => todo!(),
+        //         pulldown_cmark::Event::End(_) => todo!(),
+        //         pulldown_cmark::Event::Text(_) => todo!(),
+        //         pulldown_cmark::Event::Code(_) => todo!(),
+        //         pulldown_cmark::Event::Html(_) => todo!(),
+        //         pulldown_cmark::Event::FootnoteReference(_) => todo!(),
+        //         pulldown_cmark::Event::SoftBreak => todo!(),
+        //         pulldown_cmark::Event::HardBreak => todo!(),
+        //         pulldown_cmark::Event::Rule => todo!(),
+        //         pulldown_cmark::Event::TaskListMarker(_) => todo!(),
+        //     }
+        //     event
+        // });
+
+        pulldown_cmark::html::push_html(&mut content, parser);
 
         self.pages.insert(
             url.to_owned(),
@@ -75,6 +105,24 @@ impl MdBook {
                 segments: vec![],
                 url: url.to_owned(),
                 title: link.name.clone(),
+                sections: vec![
+                    Section {
+                        title: "Section 1".to_owned(),
+                        id: "section-1".to_owned(),
+                    },
+                    Section {
+                        title: "Section 2".to_owned(),
+                        id: "section-2".to_owned(),
+                    },
+                    Section {
+                        title: "Section 3".to_owned(),
+                        id: "section-3".to_owned(),
+                    },
+                    Section {
+                        title: "Section 4".to_owned(),
+                        id: "section-4".to_owned(),
+                    },
+                ],
             },
         );
 

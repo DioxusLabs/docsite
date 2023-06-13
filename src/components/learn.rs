@@ -73,9 +73,7 @@ fn SidebarSection(cx: Scope, chapter: &'static SummaryItem) -> Element {
 #[inline_props]
 fn SidebarChapter(cx: Scope, link: &'static SummaryItem) -> Element {
     let link = link.maybe_link()?;
-    let show_chevron = link.nested_items.len() > 0;
     let url = link.location.as_ref().unwrap();
-
     let list_toggle = use_state(cx, || false);
 
     // current route of the browser, trimmed to the book url
@@ -85,21 +83,13 @@ fn SidebarChapter(cx: Scope, link: &'static SummaryItem) -> Element {
     // then we want to show the dropdown for /docs/0.4/en/learn
     let url_without_index = url.with_file_name("");
     let show_dropdown = *list_toggle.get() || book_url.starts_with(&url_without_index);
+    let show_chevron = link.nested_items.len() > 0;
 
     render! {
         li { class: "pt-1",
-            // h1 {
-            //     "{book_url.to_string_lossy()}"
-            // }
-            // h1 {
-            //     "{url.to_string_lossy()}"
-            // }
             if show_chevron {
                 rsx! {
-                    button {
-                        onclick: move |_| {
-                            list_toggle.set(!list_toggle.get());
-                        },
+                    button { onclick: move |_| list_toggle.set(!list_toggle.get()),
                         dioxus_material_icons::MaterialIcon {
                             name: "chevron_right",
                             color: "gray",
@@ -107,22 +97,39 @@ fn SidebarChapter(cx: Scope, link: &'static SummaryItem) -> Element {
                     }
                 }
             }
-            Link {
-                to: "/docs/0.4/en/{url.to_string_lossy()}",
-                "{link.name}"
-            }
+            Link { to: "/docs/0.4/en/{url.to_string_lossy()}", "{link.name}" }
             if show_chevron && show_dropdown {
                 rsx! {
                     ul { class: "ml-6 border-l border-gray-300",
-                        for nest in link.nested_items.iter().filter_map(|link| link.maybe_link()) {
-                            Link { to: "/docs/0.4/en/{nest.location.as_ref().unwrap().to_string_lossy()}",
-                                li { class: "py-1 dark:hover:bg-gray-800 rounded-md pl-2 ",
-                                    "{nest.name}"
-                                }
-                            }
+                        for nest in link.nested_items.iter() {
+                            LocationLink { chapter: nest }
                         }
                     }
                 }
+            }
+        }
+    }
+}
+
+#[inline_props]
+fn LocationLink(cx: Scope, chapter: &'static SummaryItem) -> Element {
+    let link = chapter.maybe_link()?;
+    let url = link.location.as_ref().unwrap();
+
+    let book_url = use_book_url(cx);
+
+    let is_current = book_url.starts_with(&url);
+
+    let current_class = if is_current {
+        "bg-gray-200 dark:bg-gray-800"
+    } else {
+        ""
+    };
+
+    render! {
+        Link { to: "/docs/0.4/en/{link.location.as_ref().unwrap().to_string_lossy()}",
+            li { class: "py-1 dark:hover:bg-gray-800 rounded-md pl-2 {current_class}",
+                "{link.name}"
             }
         }
     }

@@ -96,11 +96,12 @@ fn SidebarChapter(cx: Scope, link: &'static SummaryItem) -> Element {
                         }
                     }
                 }
+
             }
             Link { to: "/docs/0.4/en/{url.to_string_lossy()}", "{link.name}" }
             if show_chevron && show_dropdown {
                 rsx! {
-                    ul { class: "ml-6 border-l border-gray-300",
+                    ul { class: "ml-6 border-l border-gray-300 py-1",
                         for nest in link.nested_items.iter() {
                             LocationLink { chapter: nest }
                         }
@@ -113,22 +114,19 @@ fn SidebarChapter(cx: Scope, link: &'static SummaryItem) -> Element {
 
 #[inline_props]
 fn LocationLink(cx: Scope, chapter: &'static SummaryItem) -> Element {
+    let book_url = use_book_url(cx);
+
     let link = chapter.maybe_link()?;
     let url = link.location.as_ref().unwrap();
 
-    let book_url = use_book_url(cx);
-
-    let is_current = book_url.starts_with(&url);
-
-    let current_class = if is_current {
-        "bg-gray-200 dark:bg-gray-800"
-    } else {
-        ""
+    let current_class = match book_url.starts_with(&url) {
+        true => "bg-gray-200 dark:bg-gray-800",
+        false => "",
     };
 
     render! {
         Link { to: "/docs/0.4/en/{link.location.as_ref().unwrap().to_string_lossy()}",
-            li { class: "py-1 dark:hover:bg-gray-800 rounded-md pl-2 {current_class}",
+            li { class: "m-1 dark:hover:bg-gray-800 rounded-md pl-2 {current_class}",
                 "{link.name}"
             }
         }

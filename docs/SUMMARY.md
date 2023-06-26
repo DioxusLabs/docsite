@@ -2,16 +2,17 @@
 
 [Introduction](index.md)
 
+- [Getting Started](getting_started/index.md)
+  - [Desktop](getting_started/desktop.md)
+  - [Web](getting_started/web.md)
+  - [Server-Side Rendering](getting_started/ssr.md)
+  - [Fullstack](getting_started/fullstack.md)
+  - [Liveview](getting_started/liveview.md)
+  - [Terminal UI](getting_started/tui.md)
+  - [Mobile](getting_started/mobile.md)
+  - [Hot Reloading](getting_started/hot_reload.md)
+
 - [Guide](guide/index.md)
-  - [Getting Started](guide/getting_started/index.md)
-    - [Desktop](guide/getting_started/desktop.md)
-    - [Web](guide/getting_started/web.md)
-    - [Server-Side Rendering](guide/getting_started/ssr.md)
-    - [Fullstack](guide/getting_started/fullstack.md)
-    - [Liveview](guide/getting_started/liveview.md)
-    - [Terminal UI](guide/getting_started/tui.md)
-    - [Mobile](guide/getting_started/mobile.md)
-    - [Hot Reloading](guide/getting_started/hot_reload.md)
   - [Describing the UI](guide/describing_ui/index.md)
     - [Special Attributes](guide/describing_ui/special_attributes.md)
     - [Components](guide/describing_ui/components.md)
@@ -37,16 +38,17 @@
     - [Web](guide/publishing/web.md)
 
 ---
-- [Fullstack](fullstack/index.md)
-  - [Getting Started](fullstack/getting_started.md)
-  - [Communicating with the Server](fullstack/server_functions.md)
-
----
 - [Router](router/index.md)
     - [Getting Started](router/getting-started.md)
     - [Creating Our First Route](router/first-route.md)
     - [Building a Nest](router/building-a-nest.md)
     - [Redirection Perfection](router/redirection-perfection.md)
+
+
+---
+- [Fullstack](fullstack/index.md)
+  - [Getting Started](fullstack/getting_started.md)
+  - [Communicating with the Server](fullstack/server_functions.md)
 
 ---
 - [Reference](reference/index.md)

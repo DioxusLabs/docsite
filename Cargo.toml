@@ -29,8 +29,10 @@ autoexport = "0.1.0"
 dioxus-material-icons = "1.1.0"
 include_dir = "0.7.3"
 anyhow = "1.0.71"
-mdbook-shared = { path = "../../Projects/mdbook-live/mdbook-shared" }
-use-mdbook = { path = "../../Projects/mdbook-live/use-mdbook" }
+mdbook-shared = { git = "https://github.com/DioxusLabs/include_mdbook" }
+use-mdbook = { git = "https://github.com/dioxuslabs/include_mdbook" }
+# mdbook-shared = { path = "../../Projects/mdbook-live/mdbook-shared" }
+# use-mdbook = { path = "../../Projects/mdbook-live/use-mdbook" }
 
 [profile.release]
 opt-level = "s"

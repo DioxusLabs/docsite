@@ -50,22 +50,22 @@ use std::path::{Path, PathBuf};
 ///
 /// All other elements are unsupported and will be ignored at best or result in
 /// an error.
-pub fn parse_summary(summary: &str) -> Result<Summary> {
+pub fn parse_summary(summary: &str) -> Result<Summary<PathBuf>> {
     let parser = SummaryParser::new(summary);
     parser.parse()
 }
 
 /// The parsed `SUMMARY.md`, specifying how the book should be laid out.
 #[derive(Debug, Clone, Default, PartialEq, Serialize, Deserialize)]
-pub struct Summary {
+pub struct Summary<R> {
     /// An optional title for the `SUMMARY.md`, currently just ignored.
     pub title: Option<String>,
     /// Chapters before the main text (e.g. an introduction).
-    pub prefix_chapters: Vec<SummaryItem>,
+    pub prefix_chapters: Vec<SummaryItem<R>>,
     /// The main numbered chapters of the book, broken into one or more possibly named parts.
-    pub numbered_chapters: Vec<SummaryItem>,
+    pub numbered_chapters: Vec<SummaryItem<R>>,
     /// Items which come after the main document (e.g. a conclusion).
-    pub suffix_chapters: Vec<SummaryItem>,
+    pub suffix_chapters: Vec<SummaryItem<R>>,
 }
 
 /// A struct representing an entry in the `SUMMARY.md`, possibly with nested
@@ -73,35 +73,35 @@ pub struct Summary {
 ///
 /// This is roughly the equivalent of `[Some section](./path/to/file.md)`.
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
-pub struct Link {
+pub struct Link<R> {
     /// The name of the chapter.
     pub name: String,
     /// The location of the chapter's source file, taking the book's `src`
     /// directory as the root.
-    pub location: Option<PathBuf>,
+    pub location: Option<R>,
     /// The section number, if this chapter is in the numbered section.
     pub number: Option<SectionNumber>,
     /// Any nested items this chapter may contain.
-    pub nested_items: Vec<SummaryItem>,
+    pub nested_items: Vec<SummaryItem<R>>,
 }
 
-impl Link {
+impl<R> Link<R> {
     /// Create a new link with no nested items.
-    pub fn new<S: Into<String>, P: AsRef<Path>>(name: S, location: P) -> Link {
+    pub fn new<S: Into<String>, P: Into<R>>(name: S, location: P) -> Link<R> {
         Link {
             name: name.into(),
-            location: Some(location.as_ref().to_path_buf()),
+            location: Some(location.into()),
             number: None,
             nested_items: Vec::new(),
         }
     }
 }
 
-impl Default for Link {
+impl<R: Default> Default for Link<R> {
     fn default() -> Self {
         Link {
             name: String::new(),
-            location: Some(PathBuf::new()),
+            location: Some(R::default()),
             number: None,
             nested_items: Vec::new(),
         }
@@ -110,23 +110,23 @@ impl Default for Link {
 
 /// An item in `SUMMARY.md` which could be either a separator or a `Link`.
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
-pub enum SummaryItem {
+pub enum SummaryItem<R> {
     /// A link to a chapter.
-    Link(Link),
+    Link(Link<R>),
     /// A separator (`---`).
     Separator,
     /// A part title.
     PartTitle(String),
 }
 
-impl SummaryItem {
-    pub fn maybe_link_mut(&mut self) -> Option<&mut Link> {
+impl<R> SummaryItem<R> {
+    pub fn maybe_link_mut(&mut self) -> Option<&mut Link<R>> {
         match *self {
             SummaryItem::Link(ref mut l) => Some(l),
             _ => None,
         }
     }
-    pub fn maybe_link(&self) -> Option<&Link> {
+    pub fn maybe_link(&self) -> Option<&Link<R>> {
         match *self {
             SummaryItem::Link(ref l) => Some(l),
             _ => None,
@@ -134,8 +134,8 @@ impl SummaryItem {
     }
 }
 
-impl From<Link> for SummaryItem {
-    fn from(other: Link) -> SummaryItem {
+impl<R> From<Link<R>> for SummaryItem<R> {
+    fn from(other: Link<R>) -> SummaryItem<R> {
         SummaryItem::Link(other)
     }
 }
@@ -239,7 +239,7 @@ impl<'a> SummaryParser<'a> {
     }
 
     /// Parse the text the `SummaryParser` was created with.
-    fn parse(mut self) -> Result<Summary> {
+    fn parse(mut self) -> Result<Summary<PathBuf>> {
         let title = self.parse_title();
 
         let prefix_chapters = self
@@ -261,7 +261,7 @@ impl<'a> SummaryParser<'a> {
     }
 
     /// Parse the affix chapters.
-    fn parse_affix(&mut self, is_prefix: bool) -> Result<Vec<SummaryItem>> {
+    fn parse_affix(&mut self, is_prefix: bool) -> Result<Vec<SummaryItem<PathBuf>>> {
         let mut items = Vec::new();
         debug!(
             "Parsing {} items",
@@ -294,7 +294,7 @@ impl<'a> SummaryParser<'a> {
         Ok(items)
     }
 
-    fn parse_parts(&mut self) -> Result<Vec<SummaryItem>> {
+    fn parse_parts(&mut self) -> Result<Vec<SummaryItem<PathBuf>>> {
         let mut parts = vec![];
 
         // We want the section numbers to be continues through all parts.
@@ -340,7 +340,7 @@ impl<'a> SummaryParser<'a> {
     }
 
     /// Finishes parsing a link once the `Event::Start(Tag::Link(..))` has been opened.
-    fn parse_link(&mut self, href: String) -> Link {
+    fn parse_link(&mut self, href: String) -> Link<PathBuf> {
         let href = href.replace("%20", " ");
         let link_content = collect_events!(self.stream, end Tag::Link(..));
         let name = stringify_events(link_content);
@@ -364,7 +364,7 @@ impl<'a> SummaryParser<'a> {
         &mut self,
         root_items: &mut u32,
         root_number: &mut SectionNumber,
-    ) -> Result<Vec<SummaryItem>> {
+    ) -> Result<Vec<SummaryItem<PathBuf>>> {
         let mut items = Vec::new();
 
         // For the first iteration, we want to just skip any opening paragraph tags, as that just
@@ -449,7 +449,7 @@ impl<'a> SummaryParser<'a> {
         next
     }
 
-    fn parse_nested_numbered(&mut self, parent: &SectionNumber) -> Result<Vec<SummaryItem>> {
+    fn parse_nested_numbered(&mut self, parent: &SectionNumber) -> Result<Vec<SummaryItem<PathBuf>>> {
         debug!("Parsing numbered chapters at level {}", parent);
         let mut items = Vec::new();
 
@@ -488,7 +488,7 @@ impl<'a> SummaryParser<'a> {
         &mut self,
         parent: &SectionNumber,
         num_existing_items: usize,
-    ) -> Result<SummaryItem> {
+    ) -> Result<SummaryItem<PathBuf>> {
         loop {
             match self.next_event() {
                 Some(Event::Start(Tag::Paragraph)) => continue,
@@ -550,7 +550,7 @@ impl<'a> SummaryParser<'a> {
     }
 }
 
-fn update_section_numbers(sections: &mut [SummaryItem], level: usize, by: u32) {
+fn update_section_numbers<R>(sections: &mut [SummaryItem<R>], level: usize, by: u32) {
     for section in sections {
         if let SummaryItem::Link(ref mut link) = *section {
             if let Some(ref mut number) = link.number {
@@ -564,7 +564,7 @@ fn update_section_numbers(sections: &mut [SummaryItem], level: usize, by: u32) {
 
 /// Gets a pointer to the last `Link` in a list of `SummaryItem`s, and its
 /// index.
-fn get_last_link(links: &mut [SummaryItem]) -> Result<(usize, &mut Link)> {
+fn get_last_link<R>(links: &mut [SummaryItem<R>]) -> Result<(usize, &mut Link<R>)> {
     links
         .iter_mut()
         .enumerate()

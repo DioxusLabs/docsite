@@ -286,7 +286,7 @@ impl From<Chapter> for BookItem {
 /// The representation of a "chapter", usually mapping to a single file on
 /// disk however it may contain multiple sub-chapters.
 #[derive(Debug, Clone, Default, PartialEq, Serialize, Deserialize)]
-pub struct Chapter {
+pub struct Chapter<R> {
     /// The chapter's name.
     pub name: String,
     /// The chapter's contents.
@@ -295,28 +295,25 @@ pub struct Chapter {
     pub number: Option<SectionNumber>,
     /// Nested items.
     pub sub_items: Vec<BookItem>,
-    /// The chapter's location, relative to the `SUMMARY.md` file.
-    pub path: Option<PathBuf>,
-    /// The chapter's source file, relative to the `SUMMARY.md` file.
-    pub source_path: Option<PathBuf>,
+    /// The chapter's route
+    pub path: Option<R>,
     /// An ordered list of the names of each chapter above this one in the hierarchy.
     pub parent_names: Vec<String>,
 }
 
-impl Chapter {
+impl<R> Chapter<R> {
     /// Create a new chapter with the provided content.
-    pub fn new<P: Into<PathBuf>>(
+    pub fn new<P: Into<R>>(
         name: &str,
         content: String,
         p: P,
         parent_names: Vec<String>,
     ) -> Chapter {
-        let path: PathBuf = p.into();
+        let path: R = p.into();
         Chapter {
             name: name.to_string(),
             content,
             path: Some(path.clone()),
-            source_path: Some(path),
             parent_names,
             ..Default::default()
         }
@@ -329,7 +326,6 @@ impl Chapter {
             name: name.to_string(),
             content: String::new(),
             path: None,
-            source_path: None,
             parent_names,
             ..Default::default()
         }

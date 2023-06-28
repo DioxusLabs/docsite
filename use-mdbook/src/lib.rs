@@ -1,12 +1,13 @@
-use mdbook_shared::{MdBook, Summary};
-use serde::{Deserialize, Serialize};
-use std::{collections::HashMap, path::PathBuf};
+use std::path::PathBuf;
 
-pub use mdbook_macro::include_mdbook;
-use once_cell::sync::Lazy;
+use mdbook_shared::MdBook;
+pub use mdbook_shared;
 
-pub type LazyMdbook = Lazy<MdBook>;
+pub use mdbook_macro::*;
+pub use once_cell::sync::Lazy;
 
-pub fn static_load(contents: &'static str) -> MdBook {
+pub type LazyMdbook = Lazy<MdBook<PathBuf>>;
+
+pub fn static_load(contents: &'static str) -> MdBook<PathBuf> {
     serde_json::from_str(contents).unwrap()
 }

@@ -3,8 +3,8 @@ use serde::{Deserialize, Serialize};
 use std::{collections::HashMap, path::PathBuf};
 
 #[derive(Serialize, Deserialize, Debug)]
-pub struct MdBook {
-    pub summary: Summary,
+pub struct MdBook<R> {
+    pub summary: Summary<R>,
 
     // rendered pages to HTML
     pub pages: HashMap<PathBuf, Page>,
@@ -31,7 +31,7 @@ pub struct Section {
     pub id: String,
 }
 
-impl MdBook {
+impl MdBook<PathBuf> {
     pub fn new(mdbook_root: PathBuf) -> anyhow::Result<Self> {
         let buf = mdbook_root.join("SUMMARY.md").canonicalize()?;
 
@@ -62,7 +62,7 @@ impl MdBook {
         }
     }
 
-    fn populate_page(&mut self, mdbook_root: PathBuf, chapter: &SummaryItem) {
+    fn populate_page(&mut self, mdbook_root: PathBuf, chapter: &SummaryItem<PathBuf>) {
         let Some(link) = chapter.maybe_link() else { return };
 
         let url = link.location.as_ref().cloned().unwrap();
@@ -139,7 +139,9 @@ impl MdBook {
         let mut out = String::new();
         pulldown_cmark::html::push_html(&mut out, parser);
     }
+}
 
+impl<R: From<PathBuf>+Clone> MdBook<R> {
     fn get_page(&self, path: &PathBuf) -> Option<&Page> {
         self.pages.get(path)
     }

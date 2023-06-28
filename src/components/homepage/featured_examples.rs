@@ -97,7 +97,9 @@ fn FeaturedExample<'a>(cx: Scope<'a, FeaturedExampleProps<'a>>) -> Element {
                         h2 { class: "tracking-widest text-sm title-font font-medium text-indigo-500 mb-1",
                             "{subtitle}"
                         }
-                        h1 { class: "title-font text-lg font-medium text-gray-900 mb-3", "{title}" }
+                        h1 { class: "title-font text-lg font-medium text-gray-900 mb-3",
+                            "{title}"
+                        }
                         p { class: "leading-relaxed", "{description}" }
                     }
                 }

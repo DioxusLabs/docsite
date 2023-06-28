@@ -7,16 +7,12 @@ edition = "2018"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-# dioxus-router = { path = "../../dioxus/packages/router", features = ["web"] }
-# dioxus = { path = "../../dioxus/packages/dioxus" }
-# dioxus-web = { path = "../../dioxus/packages/web" }
-# dioxus-ssr = { path = "../../dioxus/packages/ssr" }
-# fermi = { path = "../../dioxus/packages/fermi" }
-dioxus-router = { version = "0.3", features = ["web"] }
-dioxus = { version = "0.3" }
-dioxus-web = { version = "0.3" }
-dioxus-ssr = { version = "0.3" }
-fermi = { version = "0.3" }
+dioxus-router = { path = "../dioxus/packages/router" }
+dioxus = { path = "../dioxus/packages/dioxus" }
+dioxus-web = { path = "../dioxus/packages/web", features = ["hydrate"], optional = true }
+dioxus-ssr = { path = "../dioxus/packages/ssr", optional = true }
+dioxus-fullstack = { path = "../dioxus/packages/fullstack", features = ["router"] }
+fermi = { path = "../dioxus/packages/fermi" }
 serde = { version = "1.0.163", features = ["derive"] }
 serde_json = "1.0.96"
 log = "0.4.17"
@@ -29,12 +25,21 @@ autoexport = "0.1.0"
 dioxus-material-icons = "1.1.0"
 include_dir = "0.7.3"
 anyhow = "1.0.71"
-mdbook-shared = { git = "https://github.com/DioxusLabs/include_mdbook" }
-use-mdbook = { git = "https://github.com/dioxuslabs/include_mdbook" }
-# mdbook-shared = { path = "../../Projects/mdbook-live/mdbook-shared" }
-# use-mdbook = { path = "../../Projects/mdbook-live/use-mdbook" }
+mdbook-shared = { path = "../include_mdbook/mdbook-shared" }
+use-mdbook = { path = "../include_mdbook/use-mdbook" }
+tokio = { version = "1.29.0", features = ["full"], optional = true }
+axum = { version = "0.6.12", optional = true }
+simple_logger = "4.2.0"
 
 [profile.release]
 opt-level = "s"
 lto = true
 codegen-units = 1
+
+[patch.crates-io]
+dioxus-core = { path = "../dioxus/packages/core" }
+
+[features]
+default = []
+web = ["dioxus-web", "dioxus-router/web"]
+ssr = ["dioxus-ssr", "dioxus-router/ssr", "tokio", "dioxus-fullstack/axum", "axum"]

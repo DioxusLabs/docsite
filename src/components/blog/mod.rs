@@ -1,6 +1,5 @@
-use crate::icons;
+use crate::*;
 use dioxus::prelude::*;
-use dioxus_router::Link;
 
 #[derive(PartialEq, Eq)]
 pub struct BlogPost {
@@ -8,7 +7,7 @@ pub struct BlogPost {
     pub date: &'static str,
     pub title: &'static str,
     pub description: &'static str,
-    pub link: &'static str,
+    pub link: Route,
     pub content: &'static str,
 }
 
@@ -18,9 +17,14 @@ pub const POST_TEMPLATE: BlogPost = BlogPost {
     title: "Making Dioxus (almost) as fast as SolidJS",
     description:
         "Using a new technique called subtree memoization, Dioxus is now almost as fast as SolidJS.",
-    link: "/blog/templates-diffing/",
+    link: Route::TemplatesDiffing {},
     content: include_str!("../../../posts/templates.html"),
 };
+
+#[inline_props]
+pub fn TemplatesDiffing(cx: Scope) -> Element {
+    render!{ SinglePost { post: POST_FULLTINME } }
+}
 
 pub const POST_FULLTINME: BlogPost = BlogPost {
     category: "Misc",
@@ -28,36 +32,56 @@ pub const POST_FULLTINME: BlogPost = BlogPost {
     title: "Going full time on Dioxus",
     description:
         "Dioxus is now my full time job! I'm so excited to be able to work on this full time.",
-    link: "/blog/going-fulltime/",
+    link: Route::GoingFulltime {},
     content: include_str!("../../../posts/fulltime.html"),
 };
+
+#[inline_props]
+pub fn GoingFulltime(cx: Scope) -> Element {
+    render!{ SinglePost { post: POST_FULLTINME } }
+}
 
 pub const POST_RELEASE_030: BlogPost = BlogPost {
     category: "Release Notes",
     date: "Feb 8 2023",
     title: "Announcing Dioxus 0.3",
     description: "The next big release of Dioxus is here! Templates, autoformatting, multiwindow support, and more!",
-    link: "/blog/release-030/",
+    link: Route::Release030 {},
     content: include_str!("../../../posts/release030.html"),
 };
+
+#[inline_props]
+pub fn Release030(cx: Scope) -> Element {
+    render!{ SinglePost { post: POST_RELEASE_030 } }
+}
 
 pub const POST_RELEASE_020: BlogPost = BlogPost {
     category: "Release Notes",
     date: "Mar 9 2022",
     title: "Announcing Dioxus 0.2",
     description: "Just over two months in, and we already have a ton of awesome changes to Dioxus!",
-    link: "/blog/release-020/",
+    link: Route::Release020 {},
     content: include_str!("../../../posts/release020.html"),
 };
+
+#[inline_props]
+pub fn Release020(cx: Scope) -> Element {
+    render!{ SinglePost { post: POST_RELEASE_020 } }
+}
 
 pub const POST_RELEASE_010: BlogPost = BlogPost {
     category: "Release Notes",
     date: "Jan 3 2022",
     title: "Announcing Dioxus 0.1",
     description: "After months of work, we're very excited to release the first version of Dioxus! Dioxus is a new library for building interactive user interfaces with Rust. It is built around a VirtualDOM, making it portable for the web, desktop, server, mobile, and more.",
-    link: "/blog/introducing-dioxus/",
+    link: Route::IntroducingDioxus {},
     content: include_str!("../../../posts/release.html"),
 };
+
+#[inline_props]
+pub fn IntroducingDioxus(cx: Scope) -> Element {
+    render!{ SinglePost { post: POST_RELEASE_010 } }
+}
 
 pub const POSTS: &[BlogPost] = &[
     POST_FULLTINME,
@@ -67,6 +91,7 @@ pub const POSTS: &[BlogPost] = &[
     POST_RELEASE_010,
 ];
 
+#[inline_props]
 pub fn BlogList(cx: Scope) -> Element {
     cx.render(rsx!(
         section { class: "text-gray-600 body-font overflow-hidden dark:bg-ideblack",
@@ -160,8 +185,10 @@ fn BlogPostItem(cx: Scope, post: &'static BlogPost, id: usize) -> Element {
                 h2 { class: "text-2xl font-medium text-gray-900 title-font mb-2 dark:text-white",
                     "{title}"
                 }
-                p { class: "leading-relaxed dark:text-white text-base dark:opacity-75", "{description}" }
-                Link { class: "text-indigo-500 inline-flex items-center mt-2", to: "{link}",
+                p { class: "leading-relaxed dark:text-white text-base dark:opacity-75",
+                    "{description}"
+                }
+                Link { class: "text-indigo-500 inline-flex items-center mt-2", target: link.clone(),
                     "Read more"
                     icons::ArrowRight {}
                 }

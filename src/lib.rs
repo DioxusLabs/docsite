@@ -1,7 +1,8 @@
 #![allow(non_snake_case, non_upper_case_globals)]
 
+use crate::components::blog::*;
 use dioxus::prelude::*;
-use dioxus_router::{Route, Router};
+use dioxus_router::prelude::*;
 
 macro_rules! export_items {
     (
@@ -34,51 +35,69 @@ pub mod components {
 }
 
 pub fn app(cx: Scope) -> Element {
+    render! {
+        Router {}
+    }
+}
+
+#[inline_props]
+fn HeaderFooter(cx: Scope) -> Element {
     use_init_atom_root(cx);
 
-    let show_nav = use_set(cx, SHOW_NAV);
-
-    cx.render(rsx! {
-        Router { onchange: move |_| show_nav(false),
-            dioxus_material_icons::MaterialIconStylesheet {}
-            Nav {}
-            Route { to: "/", Homepage {} }
-            Route { to: "/index.html", Homepage {} }
-
-
-
-            Route { to: "/platforms/", Homepage {} }
-            Route { to: "/platforms/web", Homepage {} }
-            Route { to: "/platforms/desktop", Homepage {} }
-            Route { to: "/platforms/liveview", Homepage {} }
-            Route { to: "/platforms/mobile", Homepage {} }
-            Route { to: "/platforms/ssr", Homepage {} }
-            Route { to: "/platforms/tui", Homepage {} }
-            Route { to: "/tutorials/:id", Tutorial {} }
-            // Route { to: "/tutorials/", Tutorials {} }
-
-            Route { to: "/blog", BlogList {} }
-            Route { to: "/blog/", BlogList {} }
-            Route { to: "/blog/going-fulltime", SinglePost { post: POST_FULLTINME } }
-            Route { to: "/blog/release-030", SinglePost { post: POST_RELEASE_030 } }
-            Route { to: "/blog/introducing-dioxus", SinglePost { post: POST_RELEASE_010 } }
-            Route { to: "/blog/release-020", SinglePost { post: POST_RELEASE_020 } }
-            Route { to: "/blog/templates-diffing/", SinglePost { post: POST_TEMPLATE } }
-
-
-            // hacky bs since the router doesn't support completely dynamic URLs right now...
-            Route { to: "/docs/", Learn {} }
-            Route { to: "/docs/0.4", Learn {} }
-            Route { to: "/docs/0.4/en/", Learn {} }
-            Route { to: "/docs/0.4/en/:a/", Learn {} }
-            Route { to: "/docs/0.4/en/:a/:b/", Learn {} }
-            Route { to: "/docs/0.4/en/:a/:b/:c", Learn {} }
-            Route { to: "/docs/0.4/en/:a/:b/:c/:d", Learn {} }
-            Route { to: "/docs/0.4/en/:a/:b/:c/:d/:e", Learn {} }
-            Route { to: "/docs/0.4/en/:a/:b/:c/:d/:e/:f", Learn {} }
-
-            Route { to: "", Err404 {} }
-        }
+    render !{
+        Nav {}
+        Outlet {}
         Footer {}
-    })
+    }
+}
+use docs::BookRoute;
+
+mod docs {
+    use dioxus::prelude::*;
+
+    use_mdbook::mdbook_router! {"./docs"}
+}
+
+#[derive(Clone, Routable, PartialEq, Eq)]
+pub enum Route {
+    #[layout(HeaderFooter)]
+        #[route("/")]
+        #[redirect("/platforms", || Route::Homepage {})]
+        #[redirect("/platforms/web", || Route::Homepage {})]
+        #[redirect("/platforms/desktop", || Route::Homepage {})]
+        #[redirect("/platforms/liveview", || Route::Homepage {})]
+        #[redirect("/platforms/mobile", || Route::Homepage {})]
+        #[redirect("/platforms/ssr", || Route::Homepage {})]
+        #[redirect("/platforms/tui", || Route::Homepage {})]
+        Homepage {},
+
+        #[route("/tutorials/:id")]
+        Tutorial { id: usize },
+
+        #[nest("/blog")]
+            #[route("/")]
+            BlogList {},
+            #[route("/going-fulltime")]
+            GoingFulltime {},
+            #[route("/release-030")]
+            Release030 {},
+            #[route("/release-020")]
+            Release020 {},
+            #[route("/introducing-dioxus")]
+            IntroducingDioxus {},
+            #[route("/templates-diffing/")]
+            TemplatesDiffing {},
+        #[end_nest]
+        
+        #[route("/:...segments")]
+        Err404 { segments: Vec<String> },
+        #[layout(Learn)]
+            #[child("/learn")]
+            Docs {
+                child: BookRoute
+            },
+}
+
+pub fn use_url(cx: &ScopeState) -> String {
+    use_route(cx).unwrap().to_string()
 }

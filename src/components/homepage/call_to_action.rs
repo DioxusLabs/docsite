@@ -1,5 +1,6 @@
 use crate::icons::FERROUS_LOGO;
 use dioxus::prelude::*;
+use crate::*;
 
 pub static CallToAction: Component<()> = |cx| {
     cx.render(rsx! {
@@ -10,9 +11,10 @@ pub static CallToAction: Component<()> = |cx| {
                         "Start building today, with Dioxus."
                     }
                     img { class: "h-12 mx-4", src: "{FERROUS_LOGO}" }
-                    a { href: "https://dioxuslabs.com/docs/0.3/guide/en/",
+                    Link {
+                        target: Route::Docs { child: BookRoute::GettingStartedIndex {} },
                         button { class: "flex-shrink-0 text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg mt-10 sm:mt-0",
-                            "Get started"
+                        "Get started"
                         }
                     }
                 }

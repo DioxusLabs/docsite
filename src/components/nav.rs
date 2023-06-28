@@ -1,6 +1,6 @@
 use dioxus::prelude::*;
 use dioxus_material_icons::{MaterialIcon, MaterialIconColor};
-use dioxus_router::Link;
+use crate::*;
 use fermi::{use_atom_state, use_read, Atom};
 
 pub static SHOW_NAV: Atom<bool> = |_| false;
@@ -17,8 +17,13 @@ pub fn Nav(cx: Scope) -> Element {
         header { class: "sticky top-0 z-30 bg-white shadow dark:text-gray-200 dark:bg-ideblack dark:border-b border-stone-600",
             div { class: "py-3 px-12 max-w-screen-3xl mx-auto flex items-center justify-between text-sm leading-6",
                 div { class: "flex z-50 flex-1",
-                    Link { to: "/", class: "flex title-font font-medium items-center text-gray-900",
-                        img { src: "https://avatars.githubusercontent.com/u/79236386?s=200&v=4", class: "h-5 w-auto" }
+                    Link {
+                        target: Route::Homepage {},
+                        class: "flex title-font font-medium items-center text-gray-900",
+                        img {
+                            src: "https://avatars.githubusercontent.com/u/79236386?s=200&v=4",
+                            class: "h-5 w-auto"
+                        }
                         span { class: "ml-3 text-xl dark:text-white font-mono", "Dioxus Labs" }
                     }
                 }
@@ -33,13 +38,13 @@ pub fn Nav(cx: Scope) -> Element {
                         div { class: "flex items-center border-l border-gray-200 ml-4 pl-4 dark:border-gray-800",
                             label { class: "sr-only", id: "headlessui-listbox-label-2", "Theme" }
                             Link {
-                                to: "https://discord.gg/XgGxMSkvUM"
+                                target: NavigationTarget::External("https://discord.gg/XgGxMSkvUM".into()),
                                 class: "block text-gray-400 hover:text-gray-500 dark:hover:text-gray-300",
                                 span { class: "sr-only", "Dioxus on Discord" }
                                 crate::icons::DiscordLogo {}
                             }
                             Link {
-                                to: "https://github.com/dioxuslabs/dioxus",
+                                target: NavigationTarget::External("https://github.com/dioxuslabs/dioxus".into()),
                                 class: "ml-4 block text-gray-400 hover:text-gray-500 dark:hover:text-gray-300",
                                 span { class: "sr-only", "Dioxus on GitHub" }
                                 crate::icons::Github2 {}
@@ -48,13 +53,13 @@ pub fn Nav(cx: Scope) -> Element {
                         div { class: "flex items-center border-l border-gray-200 ml-4 pl-6 dark:border-gray-800",
                             label { class: "sr-only", id: "headlessui-listbox-label-2", "Theme" }
                             Link {
-                                to: "",
+                                target: Route::Homepage {},
                                 class: "ml-[-3.8em] md:ml-0 md:py-2 md:px-3 bg-blue-500 ml-4 text-lg md:text-sm text-white rounded font-semibold",
                                 "DEPLOY"
                             }
                             if *logged_in {
                                 rsx! {
-                                    Link { to: "/profile",
+                                    Link { target: Route::Homepage {},
                                         img {
                                             src: "https://avatars.githubusercontent.com/u/10237910?s=40&v=4",
                                             class: "ml-4 h-10 rounded-full w-auto"
@@ -80,13 +85,13 @@ fn FullNav(cx: Scope) -> Element {
                 label { class: "sr-only", id: "headlessui-listbox-label-2", "Theme" }
                 a {
                     class: "block text-gray-400 hover:text-gray-500 dark:hover:text-gray-300",
-                    href: "https://discord.gg/XgGxMSkvUM",
+                    target: "https://discord.gg/XgGxMSkvUM",
                     span { class: "sr-only", "Dioxus on Discord" }
                     crate::icons::DiscordLogo {}
                 }
                 a {
                     class: "ml-6 block text-gray-400 hover:text-gray-500 dark:hover:text-gray-300",
-                    href: "https://github.com/dioxuslabs/dioxus",
+                    target: "https://github.com/dioxuslabs/dioxus",
                     span { class: "sr-only", "Dioxus on GitHub" }
                     crate::icons::Github2 {}
                 }
@@ -138,10 +143,10 @@ fn MobileNav(cx: Scope) -> Element {
     })
 }
 
-type LinkPairs<'a> = &'a [(&'a str, &'a str)];
-static LINKS: &[(&str, &str, LinkPairs)] = &[
-    ("Blog", "/blog", &[]),
-    ("Docs", "/docs/0.4/en", &[]),
+type LinkPairs<'a> = &'a [(Route, Route)];
+static LINKS: &[(&str, Route, LinkPairs)] = &[
+    ("Blog", Route::BlogList {}, &[]),
+    ("Docs", Route::Docs { child: BookRoute::GettingStartedIndex {} }, &[]),
     // ("Deploy", "/deploy", &[]),
 ];
 
@@ -150,13 +155,13 @@ fn LinkList(cx: Scope) -> Element {
     let hover = "hover:text-sky-500 dark:hover:text-sky-400";
     let hover_bg = "dark:hover:bg-gray-500 hover:bg-gray-200 rounded";
 
-    let links = LINKS.iter().copied().map(|(name, link, links)| {
+    let links = LINKS.iter().cloned().map(|(name, link, links)| {
         if links.is_empty() {
             rsx! {
                 li { key: "{link}",
                     Link {
                         class: "ml-[-3.8em] md:ml-0 md:py-2 md:px-2 {hover} {hover_bg} text-lg md:text-sm",
-                        to: "{link}",
+                        target: link,
                         "{name}"
                     }
                 }
@@ -167,16 +172,14 @@ fn LinkList(cx: Scope) -> Element {
                     span { class: "py-1 px-[0.25rem] md:px-2 text-lg md:text-sm {hover} {hover_bg} cursor-default",
                         "{name}"
                     }
-                    // Link { to: "{link}", class: "py-1 px-2 {hover} {hover_bg}", "{name}" }
-                    // Link { to: "{link}", class: "py-1 px-2 {hover} {hover_bg}", "{name}" }
+                    // Link { target: "{link}", class: "py-1 px-2 {hover} {hover_bg}", "{name}" }
+                    // Link { target: "{link}", class: "py-1 px-2 {hover} {hover_bg}", "{name}" }
                     nav { class: "md:dropdown-menu md:absolute h-auto md:-mt-64 md:group-hover:mt-0 md:opacity-0 md:group-hover:opacity-100 md:transition-opacity md:duration-250",
                         ul { class: "top-0 w-36 md:bg-white dark:md:bg-gray-800 md:shadow md:px-4 md:py-4 rounded",
-                            for (name, link) in links.iter() {
-                                Link {  to: "{link}", key: "{name}",
-                                    li { class: "rounded px-1 py-1 {hover} {hover_bg} text-base md:text-sm",
-                                        "{name}"
-                                    }
-                                }
+                            for (name , link) in links.iter() {
+                                Link { target: link.clone(), key: "{name}", li { class: "rounded px-1 py-1 {hover} {hover_bg} text-base md:text-sm",
+                                    "{name}"
+                                } }
                             }
                         }
                     }
@@ -194,20 +197,17 @@ fn Search(cx: Scope) -> Element {
     render! {
         div { class: "relative hidden sm:block md:w-full max-w-[40rem] xl:max-w-[40rem] 2xl:max-w-[40rem] mx-auto",
             // Pop up a modal
-            button { class: "bg-gray-100 rounded-lg px-3 py-3 w-full text-left text-gray-400 my-auto flex flex-row align-middle justify-between",
+            button {
+                // Pop up a modal
+                class: "bg-gray-100 rounded-lg px-3 py-3 w-full text-left text-gray-400 my-auto flex flex-row align-middle justify-between",
                 onclick: move |_| {
                     show_modal.set(true);
                 },
                 div { class: "h-full my-auto flex flex-row align-middle justify-between",
-                    MaterialIcon {
-                        name: "search",
-                        size: 24,
-                        color: MaterialIconColor::Dark,
-                    }
+                    MaterialIcon { name: "search", size: 24, color: MaterialIconColor::Dark }
                     span { class: "pl-2", "Search the docs" }
                 }
-                div {
-                    class: "border border-gray-300 rounded-lg p-1 text-xs text-gray-400",
+                div { class: "border border-gray-300 rounded-lg p-1 text-xs text-gray-400",
                     "⌘K"
                 }
             }
@@ -289,7 +289,7 @@ fn SearchResult(cx: Scope, crumb: &'static [&'static str]) -> Element {
 
     render! {
         li { class: "w-full mt-4 p-2 rounded hover:bg-gray-100 dark:hover:bg-ideblack transition-colors duration-200 ease-in-out",
-            Link { to: "https://google.com",
+            Link { target: NavigationTarget::External("https://google.com".into()),
                 div { class: "flex flex-col justify-between pb-1",
                     h2 { class: "font-semibold dark:text-white", "{title}" }
                     div { class: "font-mono text-xs text-gray-400",
@@ -314,7 +314,7 @@ fn SearchResult(cx: Scope, crumb: &'static [&'static str]) -> Element {
 // div { class: "py-4 px-12 max-w-screen-2xl mx-auto flex items-center justify-between font-semibold text-sm leading-6",
 //     // div { class: "py-4 flex items-center justify-between font-semibold text-sm leading-6 bg-white shadow dark:text-gray-200 dark:bg-black px-48",
 //     // div { class: "py-4 flex items-center justify-between font-semibold text-sm leading-6 bg-white shadow dark:text-gray-200 dark:bg-black px-4 sm:px-6 md:px-8",
-//     Link { class: "flex title-font font-medium items-center text-gray-900", to: "/",
+//     Link { class: "flex title-font font-medium items-center text-gray-900", target: "/",
 //         img {
 //             src: "https://avatars.githubusercontent.com/u/79236386?s=200&v=4",
 //             class: "h-5 w-auto"

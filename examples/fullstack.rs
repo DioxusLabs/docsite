@@ -3,7 +3,6 @@
 // cargo run --example fullstack --features ssr --release
 
 #[allow(unused)]
-
 use dioxus_docs_site::*;
 
 fn main() {

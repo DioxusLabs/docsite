@@ -10,3 +10,4 @@ Cargo.lock
 
 /pkg
 dist
+/static

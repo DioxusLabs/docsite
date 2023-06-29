@@ -76,7 +76,7 @@ fn SidebarChapter(cx: Scope, link: &'static SummaryItem<BookRoute>) -> Element {
     let list_toggle = use_state(cx, || false);
 
     // current route of the browser, trimmed to the book url
-    let book_url = use_url(cx);
+    let book_url = use_book(cx).to_string();
 
     // for instance, if the current page is /docs/0.4/en/learn/overview
     // then we want to show the dropdown for /docs/0.4/en/learn
@@ -111,7 +111,7 @@ fn SidebarChapter(cx: Scope, link: &'static SummaryItem<BookRoute>) -> Element {
 
 #[inline_props]
 fn LocationLink(cx: Scope, chapter: &'static SummaryItem<BookRoute>) -> Element {
-    let book_url = use_url(cx);
+    let book_url = use_book(cx).to_string();
 
     let link = chapter.maybe_link()?;
     let url = link.location.as_ref().unwrap();

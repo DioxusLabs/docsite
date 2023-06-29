@@ -44,13 +44,14 @@ pub fn app(cx: Scope) -> Element {
 fn HeaderFooter(cx: Scope) -> Element {
     use_init_atom_root(cx);
 
-    render !{
+    render! {
         Nav {}
         Outlet {}
         Footer {}
     }
 }
 use docs::BookRoute;
+use serde::{Deserialize, Serialize};
 
 mod docs {
     use dioxus::prelude::*;
@@ -58,44 +59,41 @@ mod docs {
     use_mdbook::mdbook_router! {"./docs"}
 }
 
-#[derive(Clone, Routable, PartialEq, Eq)]
+#[derive(Clone, Routable, PartialEq, Eq, Serialize, Deserialize)]
 pub enum Route {
     #[layout(HeaderFooter)]
-        #[route("/")]
-        #[redirect("/platforms", || Route::Homepage {})]
-        #[redirect("/platforms/web", || Route::Homepage {})]
-        #[redirect("/platforms/desktop", || Route::Homepage {})]
-        #[redirect("/platforms/liveview", || Route::Homepage {})]
-        #[redirect("/platforms/mobile", || Route::Homepage {})]
-        #[redirect("/platforms/ssr", || Route::Homepage {})]
-        #[redirect("/platforms/tui", || Route::Homepage {})]
-        Homepage {},
+    #[route("/")]
+    #[redirect("/platforms", || Route::Homepage {})]
+    #[redirect("/platforms/web", || Route::Homepage {})]
+    #[redirect("/platforms/desktop", || Route::Homepage {})]
+    #[redirect("/platforms/liveview", || Route::Homepage {})]
+    #[redirect("/platforms/mobile", || Route::Homepage {})]
+    #[redirect("/platforms/ssr", || Route::Homepage {})]
+    #[redirect("/platforms/tui", || Route::Homepage {})]
+    Homepage {},
 
-        #[route("/tutorials/:id")]
-        Tutorial { id: usize },
+    #[route("/tutorials/:id")]
+    Tutorial { id: usize },
 
-        #[nest("/blog")]
-            #[route("/")]
-            BlogList {},
-            #[route("/going-fulltime")]
-            GoingFulltime {},
-            #[route("/release-030")]
-            Release030 {},
-            #[route("/release-020")]
-            Release020 {},
-            #[route("/introducing-dioxus")]
-            IntroducingDioxus {},
-            #[route("/templates-diffing/")]
-            TemplatesDiffing {},
-        #[end_nest]
-        
-        #[route("/:...segments")]
-        Err404 { segments: Vec<String> },
-        #[layout(Learn)]
-            #[child("/learn")]
-            Docs {
-                child: BookRoute
-            },
+    #[nest("/blog")]
+    #[route("/")]
+    BlogList {},
+    #[route("/going-fulltime")]
+    GoingFulltime {},
+    #[route("/release-030")]
+    Release030 {},
+    #[route("/release-020")]
+    Release020 {},
+    #[route("/introducing-dioxus")]
+    IntroducingDioxus {},
+    #[route("/templates-diffing/")]
+    TemplatesDiffing {},
+    #[end_nest]
+    #[route("/:...segments")]
+    Err404 { segments: Vec<String> },
+    #[layout(Learn)]
+    #[child("/learn")]
+    Docs { child: BookRoute },
 }
 
 pub fn use_url(cx: &ScopeState) -> String {

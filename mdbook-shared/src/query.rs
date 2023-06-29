@@ -1,20 +1,24 @@
 use crate::*;
+use pulldown_cmark::{CowStr, Event, Tag};
 use serde::{Deserialize, Serialize};
-use std::{collections::HashMap, path::PathBuf};
+use std::{borrow::Borrow, collections::HashMap, hash::Hash, path::PathBuf};
 
 #[derive(Serialize, Deserialize, Debug)]
-pub struct MdBook<R> {
+pub struct MdBook<R>
+where
+    R: Hash + Eq,
+{
     pub summary: Summary<R>,
 
     // rendered pages to HTML
-    pub pages: HashMap<PathBuf, Page>,
+    pub pages: HashMap<R, Page<R>>,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
-pub struct Page {
+pub struct Page<R> {
     pub title: String,
 
-    pub url: PathBuf,
+    pub url: R,
 
     pub segments: Vec<String>,
 
@@ -78,23 +82,38 @@ impl MdBook<PathBuf> {
 
         let parser = pulldown_cmark::Parser::new(&body);
 
-        // let parser = parser.map(|event| {
-        //     //
+        let mut last_heading = None;
 
-        //     match event {
-        //         pulldown_cmark::Event::Start(_) => todo!(),
-        //         pulldown_cmark::Event::End(_) => todo!(),
-        //         pulldown_cmark::Event::Text(_) => todo!(),
-        //         pulldown_cmark::Event::Code(_) => todo!(),
-        //         pulldown_cmark::Event::Html(_) => todo!(),
-        //         pulldown_cmark::Event::FootnoteReference(_) => todo!(),
-        //         pulldown_cmark::Event::SoftBreak => todo!(),
-        //         pulldown_cmark::Event::HardBreak => todo!(),
-        //         pulldown_cmark::Event::Rule => todo!(),
-        //         pulldown_cmark::Event::TaskListMarker(_) => todo!(),
-        //     }
-        //     event
-        // });
+        let mut sections = Vec::new();
+
+        let parser = parser.filter_map(|event| match event {
+            Event::Start(Tag::Heading(level,..)) => {
+                last_heading = Some(level);
+                None
+            }
+            Event::Text(text) => {
+                if let Some(current_level) = &mut last_heading {
+                    let anchor = text
+                            .clone()
+                            .into_string()
+                            .trim()
+                            .to_lowercase()
+                            .replace(" ", "-");
+                    sections.push(Section {
+                        title: text.to_string(),
+                        id: anchor.clone(),
+                    });
+                    let event = Event::Html(CowStr::from(format!(
+                        r##"<{current_level} id="{anchor}"><a class="header" href="#{anchor}">{text}</a>"##,
+                    )))
+                    .into();
+                    last_heading = None;
+                    return event;
+                }
+                Some(Event::Text(text))
+            }
+            _ => Some(event),
+        });
 
         pulldown_cmark::html::push_html(&mut content, parser);
 
@@ -105,24 +124,7 @@ impl MdBook<PathBuf> {
                 segments: vec![],
                 url: url.to_owned(),
                 title: link.name.clone(),
-                sections: vec![
-                    Section {
-                        title: "Section 1".to_owned(),
-                        id: "section-1".to_owned(),
-                    },
-                    Section {
-                        title: "Section 2".to_owned(),
-                        id: "section-2".to_owned(),
-                    },
-                    Section {
-                        title: "Section 3".to_owned(),
-                        id: "section-3".to_owned(),
-                    },
-                    Section {
-                        title: "Section 4".to_owned(),
-                        id: "section-4".to_owned(),
-                    },
-                ],
+                sections,
             },
         );
 
@@ -141,8 +143,11 @@ impl MdBook<PathBuf> {
     }
 }
 
-impl<R: From<PathBuf>+Clone> MdBook<R> {
-    fn get_page(&self, path: &PathBuf) -> Option<&Page> {
+impl<R> MdBook<R>
+where
+    R: Hash + Eq,
+{
+    fn get_page(&self, path: &R) -> Option<&Page<R>> {
         self.pages.get(path)
     }
 }

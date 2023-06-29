@@ -1,17 +1,24 @@
 use std::fs::OpenOptions;
+use std::hash::Hash;
 use std::io::Write;
 use std::path::Path;
 use std::path::PathBuf;
 
+use convert_case::{Case, Casing};
 use mdbook_shared::MdBook;
+use proc_macro::TokenStream;
 use proc_macro2::Ident;
 use proc_macro2::Span;
 use proc_macro2::TokenStream as TokenStream2;
-use proc_macro::TokenStream;
 use quote::quote;
 use quote::ToTokens;
+use serde::de::DeserializeOwned;
+use serde::Serialize;
 use syn::LitStr;
-use convert_case::{Case, Casing};
+
+use crate::transform_book::write_book_with_routes;
+
+mod transform_book;
 
 #[proc_macro]
 pub fn include_mdbook(input: TokenStream) -> TokenStream {
@@ -36,11 +43,12 @@ fn write_book_err(err: anyhow::Error) -> TokenStream {
     quote! { compile_error!(#err) }.to_token_stream().into()
 }
 
-fn write_book(book: mdbook_shared::MdBook<PathBuf>) -> TokenStream {
-    let sum = serde_json::to_string(&book).unwrap();
+fn write_book<L: Serialize + Hash + Eq>(book: mdbook_shared::MdBook<L>) -> TokenStream {
+    let sum = postcard::to_allocvec(&book).unwrap();
+    let bytes = sum.iter().map(|b| quote!(#b));
 
     let out = quote! {
-        ::once_cell::sync::Lazy::new(|| ::use_mdbook::static_load(#sum))
+        ::once_cell::sync::Lazy::new(|| ::use_mdbook::static_load(&[#(#bytes),*]))
     };
 
     out.to_token_stream().into()
@@ -96,8 +104,10 @@ fn clear_assets_file(key: &str) -> std::io::Result<()> {
 }
 
 fn generate_router(book: mdbook_shared::MdBook<PathBuf>) -> TokenStream2 {
+    let mdbook = write_book_with_routes(&book);
+
     let book_pages = book.pages.values().map(|page| {
-        let name = title_to_ident(&page.url);
+        let name = path_to_route_variant(&page.url);
         let content = &page.content;
         // Rsx doesn't work very well in macros because the path for all the routes generated point to the same characters. We manulally expand rsx here to get around that issue.
         let template_name = format!("{}:0:0:0", page.url.to_string_lossy());
@@ -139,10 +149,31 @@ fn generate_router(book: mdbook_shared::MdBook<PathBuf>) -> TokenStream2 {
         }
     });
 
+    let default_impl = book
+        .pages
+        .values()
+        .min_by_key(|page| page.url.to_string_lossy().len())
+        .map(|page| {
+            let name = path_to_route_enum(&page.url);
+            quote! {
+                impl Default for BookRoute {
+                    fn default() -> Self {
+                        #name
+                    }
+                }
+            }
+        });
+
     let book_routes = book.pages.values().map(|page| {
-        let name = title_to_ident(&page.url);
-        let mut url = page.url.to_string_lossy().to_string();
-        if !url.starts_with("/"){
+        let name = path_to_route_variant(&page.url);
+        let route_without_extension = page.url.with_extension("");
+        // remove any trailing "index"
+        let route_without_extension = route_without_extension
+            .to_string_lossy()
+            .trim_end_matches("index")
+            .to_string();
+        let mut url = route_without_extension;
+        if !url.starts_with("/") {
             url = format!("/{}", url);
         }
         quote! {
@@ -151,8 +182,8 @@ fn generate_router(book: mdbook_shared::MdBook<PathBuf>) -> TokenStream2 {
         }
     });
 
-    let sections = book.pages.values().map(|page| {
-        let name = title_to_ident(&page.url);
+    let sections =book.pages.values().map(|page| {
+        let variant = path_to_route_enum(&page.url);
         let sections = page.sections.iter().map(|section| {
             let title = section.title.to_string();
             let id = section.id.to_string();
@@ -163,18 +194,18 @@ fn generate_router(book: mdbook_shared::MdBook<PathBuf>) -> TokenStream2 {
                 }
             }
         });
-        
+
         quote! {
-            sections.insert(BookRoute::#name {}, Box::new([#(#sections),*]) as Box<[use_mdbook::mdbook_shared::Section]>);
+            sections.insert(#variant, Box::new([#(#sections),*]) as Box<[use_mdbook::mdbook_shared::Section]>);
         }
     });
 
-    quote!{
+    quote! {
         #(
             #book_pages
         )*
 
-        #[derive(Clone, Copy, dioxus_router::prelude::Routable, PartialEq, Eq, Hash, Debug)]
+        #[derive(Clone, Copy, dioxus_router::prelude::Routable, PartialEq, Eq, Hash, Debug, serde::Serialize, serde::Deserialize)]
         pub enum BookRoute {
             #(#book_routes)*
         }
@@ -194,18 +225,35 @@ fn generate_router(book: mdbook_shared::MdBook<PathBuf>) -> TokenStream2 {
                 }
             }
         }
+
+        #default_impl
+
+        pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRoute>> = use_mdbook::Lazy::new(|| {
+            #mdbook
+        });
     }
 }
 
-fn title_to_ident(path: &Path) -> Ident {
+pub(crate) fn path_to_route_variant(path: &Path) -> Ident {
     let path_without_extension = path.with_extension("");
     let mut title = String::new();
     for segment in path_without_extension.components() {
         title.push(' ');
         title.push_str(&segment.as_os_str().to_string_lossy());
     }
-    let title_filtered_alphanumeric = title.chars()
+    let title_filtered_alphanumeric = title
+        .chars()
         .filter(|c| c.is_alphanumeric() || c.is_whitespace() || *c == '-' || *c == '_')
         .collect::<String>();
-    Ident::new(&title_filtered_alphanumeric.to_case(Case::UpperCamel), Span::call_site())
+    Ident::new(
+        &title_filtered_alphanumeric.to_case(Case::UpperCamel),
+        Span::call_site(),
+    )
+}
+
+pub(crate) fn path_to_route_enum(path: &Path) -> TokenStream2 {
+    let name = path_to_route_variant(&path);
+    quote! {
+        BookRoute::#name {}
+    }
 }

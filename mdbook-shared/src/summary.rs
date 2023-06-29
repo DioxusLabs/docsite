@@ -449,7 +449,10 @@ impl<'a> SummaryParser<'a> {
         next
     }
 
-    fn parse_nested_numbered(&mut self, parent: &SectionNumber) -> Result<Vec<SummaryItem<PathBuf>>> {
+    fn parse_nested_numbered(
+        &mut self,
+        parent: &SectionNumber,
+    ) -> Result<Vec<SummaryItem<PathBuf>>> {
         debug!("Parsing numbered chapters at level {}", parent);
         let mut items = Vec::new();
 

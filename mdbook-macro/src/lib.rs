@@ -91,17 +91,16 @@ fn generate_router(book: mdbook_shared::MdBook<PathBuf>) -> TokenStream2 {
         let template_name = format!("{}:0:0:0", page.url.to_string_lossy());
         let mut rsx = rsx::parse(page.url.clone(), &page.raw);
         // Force prism to rerun on route change
-        rsx.roots.push(dioxus_rsx::BodyNode::Element(
-            dioxus_rsx::Element {
+        rsx.roots
+            .push(dioxus_rsx::BodyNode::Element(dioxus_rsx::Element {
                 name: dioxus_rsx::ElementName::Ident(Ident::new("script", Span::call_site())),
                 attributes: vec![],
                 key: None,
-                children: vec![dioxus_rsx::BodyNode::Text(
-                    IfmtInput::new_static("Prism.highlightAll()")
-                )],
+                children: vec![dioxus_rsx::BodyNode::Text(IfmtInput::new_static(
+                    "Prism.highlightAll()",
+                ))],
                 brace: Default::default(),
-            },
-        ));
+            }));
         let rsx = rsx.render_with_location(template_name);
         quote! {
             #[dioxus::prelude::inline_props]

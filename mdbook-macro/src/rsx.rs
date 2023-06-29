@@ -1,12 +1,11 @@
 use std::{
     iter::Peekable,
     path::{Path, PathBuf},
-    vec,
 };
 
-use dioxus_rsx::{BodyNode, CallBody, Element, ElementAttrNamed, IfmtInput};
+use dioxus_rsx::{BodyNode, CallBody, Element, ElementAttrNamed, IfmtInput, Component};
 use pulldown_cmark::{Alignment, Event, Tag};
-use syn::{Ident, __private::Span};
+use syn::{Ident, __private::Span, parse_str,};
 
 pub fn parse(path: PathBuf, markdown: &str) -> CallBody {
     let mut parser = pulldown_cmark::Parser::new(markdown);
@@ -253,34 +252,41 @@ impl<'a, I: Iterator<Item = Event<'a>>> RsxMarkdownParser<'a, I> {
                 let class = match kind {
                     pulldown_cmark::CodeBlockKind::Indented => None,
                     pulldown_cmark::CodeBlockKind::Fenced(lang) => {
-                        (!lang.is_empty()).then(||format!("language-{lang}"))
+                        (!lang.is_empty()).then(|| format!("language-{lang}"))
                     },
                 };
                 let raw_code = self.take_code_or_text();
-                let code = transform_code_block(&self.path, raw_code);
-                let mut code_attrs = Vec::new();
-                if let Some(class) = class {
-                    code_attrs.push(dioxus_rsx::ElementAttrNamed {
-                        el_name: dioxus_rsx::ElementName::Ident(Ident::new("code", Span::call_site())),
-                        attr: dioxus_rsx::ElementAttr::AttrText {
-                            name: Ident::new("class", Span::call_site()),
-                            value: IfmtInput::new_static(&class),
-                        },
-                    });
+
+                if class.as_deref() == Some("language-inject-dioxus"){
+                    self.start_node(parse_str::<BodyNode>(&raw_code).unwrap());
                 }
-                self.start_node(BodyNode::Element(Element {
-                    name: dioxus_rsx::ElementName::Ident(Ident::new("pre", Span::call_site())),
-                    key: None,
-                    attributes: Vec::new(),
-                    children: vec![BodyNode::Element(Element {
-                        name: dioxus_rsx::ElementName::Ident(Ident::new("code", Span::call_site())),
+                else {
+                    let code = transform_code_block(&self.path, raw_code);
+                    let mut code_attrs = Vec::new();
+                    if let Some(class) = class {
+                        code_attrs.push(dioxus_rsx::ElementAttrNamed {
+                            el_name: dioxus_rsx::ElementName::Ident(Ident::new("code", Span::call_site())),
+                            attr: dioxus_rsx::ElementAttr::AttrText {
+                                name: Ident::new("class", Span::call_site()),
+                                value: IfmtInput::new_static(&class),
+                            },
+                        });
+                    }
+                    self.start_node(BodyNode::Element(Element {
+                        name: dioxus_rsx::ElementName::Ident(Ident::new("pre", Span::call_site())),
                         key: None,
-                        attributes: code_attrs,
-                        children: vec![BodyNode::Text(IfmtInput::new_static(&code))],
+                        attributes: Vec::new(),
+                        children: vec![BodyNode::Element(Element {
+                            name: dioxus_rsx::ElementName::Ident(Ident::new("code", Span::call_site())),
+                            key: None,
+                            attributes: code_attrs,
+                            children: vec![BodyNode::Text(IfmtInput::new_static(&code))],
+                            brace: Default::default(),
+                        })],
                         brace: Default::default(),
-                    })],
-                    brace: Default::default(),
-                }));
+                    }));
+                }
+
             }
             Tag::List(first) => {
                 let name = match first {
@@ -363,8 +369,10 @@ impl<'a, I: Iterator<Item = Event<'a>>> RsxMarkdownParser<'a, I> {
             })),
             Tag::Link(ty, dest, title) => {
                 let without_extension = dest.trim_end_matches(".md");
+                
                 let href = match ty {
                     pulldown_cmark::LinkType::Email => format!("mailto:{}", without_extension),
+                    
                     _ => without_extension.to_string(),
                 };
                 let name = Ident::new("a", Span::call_site());

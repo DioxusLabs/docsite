@@ -381,19 +381,19 @@ To help in building a Dom, native-core provides the State trait and a RealDom st
 Native Core cannot create all of the required methods for the State trait, but it can derive some of them. To implement the State trait, you must implement the following methods and let the `#[partial_derive_state]` macro handle the rest:
 
 ```rust, ignore
-{{#include ../../../examples/custom_renderer.rs:derive_state}}
+{{#include docs/examples/custom_renderer.rs:derive_state}}
 ```
 
 Lets take a look at how to implement the State trait for a simple renderer.
 
 ```rust
-{{#include ../../../examples/custom_renderer.rs:state_impl}}
+{{#include docs/examples/custom_renderer.rs:state_impl}}
 ```
 
 Now that we have our state, we can put it to use in our RealDom. We can update the RealDom with apply_mutations to update the structure of the dom (adding, removing, and changing properties of nodes) and then update_state to update the States for each of the nodes that changed.
 
 ```rust
-{{#include ../../../examples/custom_renderer.rs:rendering}}
+{{#include docs/examples/custom_renderer.rs:rendering}}
 ```
 
 ## Layout
@@ -405,7 +405,7 @@ For most platforms, the layout of the Elements will stay the same. The [layout_a
 To make it easier to implement text editing in rust renderers, `native-core` also contains a renderer-agnostic cursor system. The cursor can handle text editing, selection, and movement with common keyboard shortcuts integrated.
 
 ```rust
-{{#include ../../../examples/custom_renderer.rs:cursor}}
+{{#include docs/examples/custom_renderer.rs:cursor}}
 ```
 
 ## Conclusion

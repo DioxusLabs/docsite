@@ -53,7 +53,7 @@ cargo add dioxus-web
 Edit your `main.rs`:
 
 ```rust
-{{#include ../../../examples/hello_world_web.rs}}
+{{#include docs/examples/hello_world_web.rs}}
 ```
 
 And to serve our app:

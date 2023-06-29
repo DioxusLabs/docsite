@@ -19,7 +19,7 @@ navigation targets:
 If we need a link to an external page we can do it like this:
 
 ```rust, no_run
-{{#include ../../examples/external_link.rs:component}}
+{{#include docs/examples/external_link.rs:component}}
 ```
 
 [`External`]: https://docs.rs/dioxus-router-core/latest/dioxus_router/navigation/enum.NavigationTarget.html#variant.External

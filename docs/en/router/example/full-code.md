@@ -1,5 +1,5 @@
 # Full Code
 
 ```rust, no_run
-{{#include ../../examples/full_example.rs}}
+{{#include docs/examples/full_example.rs}}
 ```

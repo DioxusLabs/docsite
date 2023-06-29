@@ -14,7 +14,7 @@ forward buttons:
 > If you want to navigate through the history programmatically, take a look at
 > [`programmatic navigation`](./navigation/programmatic.md).
 
-```rust, no_run
+```rust
 {{#include docs/examples/history_buttons.rs:history_buttons}}
 ```
 

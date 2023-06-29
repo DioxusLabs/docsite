@@ -12,13 +12,13 @@ We want our navbar component to be rendered on several different pages on our si
 
 Let's create a new `NavBar` component:
 
-```rust, no_run
+```rust
 {{#include docs/examples/nested_routes.rs:nav}}
 ```
 
 Next, let's add our `NavBar` component as a layout to our Route enum:
 
-```rust, no_run
+```rust
 {{#include docs/examples/nested_routes.rs:router}}
 ```
 
@@ -35,7 +35,7 @@ Unlike a regular `<a>` tag, we can pass in our Route enum as the target. Because
 
 Let's add our links:
 
-```rust, no_run
+```rust
 {{#include docs/examples/links.rs:nav}}
 ```
 
@@ -64,26 +64,26 @@ URL parameter.
 
 First, let's create a layout component (similar to the navbar) that wraps the blog content. This allows us to add a heading that tells the user they are on the blog.
 
-```rust, no_run
+```rust
 {{#include docs/examples/dynamic_route.rs:blog}}
 ```
 
 Now we'll create another index component, that'll be displayed when no blog post
 is selected:
 
-```rust, no_run
+```rust
 {{#include docs/examples/dynamic_route.rs:blog_list}}
 ```
 
 We also need to create a component that displays an actual blog post. This component will accept the URL parameters as props:
 
-```rust, no_run
+```rust
 {{#include docs/examples/dynamic_route.rs:blog_post}}
 ```
 
 Finally, let's tell our router about those components:
 
-```rust, no_run
+```rust
 {{#include docs/examples/dynamic_route.rs:router}}
 ```
 

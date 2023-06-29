@@ -15,7 +15,7 @@ We can use the [`Navigator`] to trigger four different kinds of navigation:
 - `Go back` works like the browser's back button.
 - `Go forward` works like the browser's forward button.
 
-```rust, no_run
+```rust
 {{#include docs/examples/navigator.rs:nav}}
 ```
 

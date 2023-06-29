@@ -1,5 +1,5 @@
 # Full Code
 
-```rust, no_run
+```rust
 {{#include docs/examples/full_example.rs}}
 ```

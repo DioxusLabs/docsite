@@ -5,7 +5,7 @@ Layouts allow you to wrap all child routes in a component. This can be useful wh
 [`Outlet`] tells the router where to render content in layouts. In the following example,
 the Index will be rendered within the [`Outlet`].
 
-```rust, no_run
+```rust
 {{#include docs/examples/outlet.rs:outlet}}
 ```
 

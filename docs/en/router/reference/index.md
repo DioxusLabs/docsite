@@ -12,12 +12,12 @@ way, we can ensure that we have access to all its functionality everywhere.
 
 First, we define the router with the router macro:
 
-```rust, no_run
+```rust
 {{#include docs/examples/first_route.rs:router}}
 ```
 
 Then we render the router with the [`Router`] component.
 
-```rust, no_run
+```rust
 {{#include docs/examples/first_route.rs:app}}
 ```

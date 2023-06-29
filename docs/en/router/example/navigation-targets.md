@@ -18,7 +18,7 @@ navigation targets:
 
 If we need a link to an external page we can do it like this:
 
-```rust, no_run
+```rust
 {{#include docs/examples/external_link.rs:component}}
 ```
 

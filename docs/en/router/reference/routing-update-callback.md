@@ -20,6 +20,6 @@ initiated the navigation, was found as a redirect target, or was returned by the
 
 ## Code Example
 
-```rust, no_run
+```rust
 {{#include docs/examples/routing_update.rs:router}}
 ```

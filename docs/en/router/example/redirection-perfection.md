@@ -18,7 +18,7 @@ with the route parameters. The closure should return a route to redirect to.
 
 Let's add a redirect to our router enum:
 
-```rust, no_run
+```rust
 {{#include docs/examples/full_example.rs:router}}
 ```
 

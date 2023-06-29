@@ -21,7 +21,7 @@ However, we cannot do that when using the router for three reasons:
 To solve these problems, the router provides us with a [`Link`] component we can
 use like this:
 
-```rust, no_run
+```rust
 {{#include docs/examples/links.rs:nav}}
 ```
 

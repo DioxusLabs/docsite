@@ -9,7 +9,7 @@ The core of the Dioxus Router is the [`Routable`] macro and the [`Router`] compo
 
 First, we need an actual page to route to! Let's add a homepage component:
 
-```rust, no_run
+```rust
 {{#include docs/examples/first_route.rs:home}}
 ```
 
@@ -22,7 +22,7 @@ To start using Dioxus Router, we need to use the [`Routable`] macro.
 
 The [`Routable`] macro takes an enum with all of the possible routes in our application. Each variant of the enum represents a route and must be annotated with the [`route(path)`] attribute.
 
-```rust, no_run
+```rust
 {{#include docs/examples/first_route.rs:router}}
 ```
 
@@ -41,13 +41,13 @@ In our example, when a route doesn't exist Dioxus Router doesn't render anything
 
 First, we create a new `PageNotFound` component.
 
-```rust, no_run
+```rust
 {{#include docs/examples/catch_all.rs:fallback}}
 ```
 
 Next, register the route in the Route enum to match if all other routes fail.
 
-```rust, no_run
+```rust
 {{#include docs/examples/catch_all.rs:router}}
 ```
 

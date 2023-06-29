@@ -4,6 +4,7 @@ use std::path::Path;
 use std::path::PathBuf;
 
 use convert_case::{Case, Casing};
+use dioxus_rsx::IfmtInput;
 use mdbook_shared::MdBook;
 use proc_macro::TokenStream;
 use proc_macro2::Ident;
@@ -88,7 +89,20 @@ fn generate_router(book: mdbook_shared::MdBook<PathBuf>) -> TokenStream2 {
         let name = path_to_route_variant(&page.url);
         // Rsx doesn't work very well in macros because the path for all the routes generated point to the same characters. We manulally expand rsx here to get around that issue.
         let template_name = format!("{}:0:0:0", page.url.to_string_lossy());
-        let rsx = rsx::parse(page.url.clone(), &page.raw).render_with_location(template_name);
+        let mut rsx = rsx::parse(page.url.clone(), &page.raw);
+        // Force prism to rerun on route change
+        rsx.roots.push(dioxus_rsx::BodyNode::Element(
+            dioxus_rsx::Element {
+                name: dioxus_rsx::ElementName::Ident(Ident::new("script", Span::call_site())),
+                attributes: vec![],
+                key: None,
+                children: vec![dioxus_rsx::BodyNode::Text(
+                    IfmtInput::new_static("Prism.highlightAll()")
+                )],
+                brace: Default::default(),
+            },
+        ));
+        let rsx = rsx.render_with_location(template_name);
         quote! {
             #[dioxus::prelude::inline_props]
             pub fn #name(cx: dioxus::prelude::Scope) -> dioxus::prelude::Element {

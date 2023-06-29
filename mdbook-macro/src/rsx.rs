@@ -1,13 +1,12 @@
 use std::{
     iter::Peekable,
     path::{Path, PathBuf},
-    str::FromStr,
     vec,
 };
 
 use dioxus_rsx::{BodyNode, CallBody, Element, ElementAttrNamed, IfmtInput};
 use pulldown_cmark::{Alignment, Event, Tag};
-use syn::{Ident, __private::Span, parse_quote};
+use syn::{Ident, __private::Span};
 
 pub fn parse(path: PathBuf, markdown: &str) -> CallBody {
     let mut parser = pulldown_cmark::Parser::new(markdown);
@@ -474,7 +473,7 @@ fn transform_code_block(path: &Path, code_contents: String) -> String {
     output
 }
 
-fn resolve_extension(path: &Path, ext: &str) -> String {
+fn resolve_extension(_path: &Path, ext: &str) -> String {
     if let Some(file) = ext.strip_prefix("include") {
         let file = file.trim();
         let mut segment = None;
@@ -489,18 +488,23 @@ fn resolve_extension(path: &Path, ext: &str) -> String {
             // get the text between lines with ANCHOR: segment and ANCHOR_END: segment
             let mut lines = result.lines();
             let mut output = String::new();
-            let mut in_segment = false;
+            let mut in_segment: bool = false;
+            // normalize indentation to the first line
+            let mut first_line_indent = 0;
             while let Some(line) = lines.next() {
                 if let Some((_, remaining)) = line.split_once("ANCHOR:") {
                     if remaining.trim() == segment {
                         in_segment = true;
+                        first_line_indent = line.chars().take_while(|c| c.is_whitespace()).count();
                     }
                 } else if let Some((_, remaining)) = line.split_once("ANCHOR_END:") {
                     if remaining.trim() == segment {
                         in_segment = false;
                     }
                 } else if in_segment {
-                    output += line;
+                    for (_, char) in line.chars().enumerate().skip_while(|(i, c)| *i < first_line_indent && c.is_whitespace()) {
+                        output.push(char);
+                    }
                     output += "\n";
                 }
             }

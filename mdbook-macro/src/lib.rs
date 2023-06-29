@@ -76,7 +76,7 @@ fn clear_assets_file(key: &str) -> std::io::Result<()> {
         .truncate(true)
         .open(state_file)
     {
-        Ok(mut file) => return file.write_all("".as_bytes()),
+        Ok(mut file) => return file.write_all(&[]),
         Err(e) => Err(e),
     }
 }
@@ -88,7 +88,7 @@ fn generate_router(book: mdbook_shared::MdBook<PathBuf>) -> TokenStream2 {
         let name = path_to_route_variant(&page.url);
         // Rsx doesn't work very well in macros because the path for all the routes generated point to the same characters. We manulally expand rsx here to get around that issue.
         let template_name = format!("{}:0:0:0", page.url.to_string_lossy());
-        let rsx = rsx::parse(&page.raw).render_with_location(template_name);
+        let rsx = rsx::parse(page.url.clone(), &page.raw).render_with_location(template_name);
         quote! {
             #[dioxus::prelude::inline_props]
             pub fn #name(cx: dioxus::prelude::Scope) -> dioxus::prelude::Element {

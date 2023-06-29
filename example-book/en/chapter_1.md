@@ -48,19 +48,6 @@ dioxus-liveview = { version = "*", features = ["axum"] }
 tokio = { version = "1.15.0", features = ["full"] }
 ```
 
-Now, set up your Axum app to respond on an endpoint.
-
-
 ```rust
-{{#include ../../../examples/hello_world_liveview.rs:glue}}
+{{#include example-book/book.toml}}
 ```
-
-
-And then add our app component:
-
-```rust
-{{#include ../../../examples/hello_world_liveview.rs:app}}
-```
-
-And that's it!
-

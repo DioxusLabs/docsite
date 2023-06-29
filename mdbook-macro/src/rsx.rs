@@ -1,10 +1,15 @@
-use std::{iter::Peekable, str::FromStr, vec};
+use std::{
+    iter::Peekable,
+    path::{Path, PathBuf},
+    str::FromStr,
+    vec,
+};
 
 use dioxus_rsx::{BodyNode, CallBody, Element, ElementAttrNamed, IfmtInput};
 use pulldown_cmark::{Alignment, Event, Tag};
 use syn::{Ident, __private::Span, parse_quote};
 
-pub fn parse(markdown: &str) -> CallBody {
+pub fn parse(path: PathBuf, markdown: &str) -> CallBody {
     let mut parser = pulldown_cmark::Parser::new(markdown);
 
     let mut rsx_parser = RsxMarkdownParser {
@@ -13,6 +18,7 @@ pub fn parse(markdown: &str) -> CallBody {
         current_table: vec![],
         in_table_header: false,
         iter: parser.by_ref().peekable(),
+        path,
         phantom: std::marker::PhantomData,
     };
     rsx_parser.parse();
@@ -39,6 +45,8 @@ struct RsxMarkdownParser<'a, I: Iterator<Item = Event<'a>>> {
     in_table_header: bool,
 
     iter: Peekable<I>,
+
+    path: PathBuf,
 
     phantom: std::marker::PhantomData<&'a ()>,
 }
@@ -243,11 +251,28 @@ impl<'a, I: Iterator<Item = Event<'a>>> RsxMarkdownParser<'a, I> {
                 self.write_text();
             }
             Tag::CodeBlock(kind) => {
-                let code = self.take_code_or_text();
+                let class = match kind {
+                    pulldown_cmark::CodeBlockKind::Indented => None,
+                    pulldown_cmark::CodeBlockKind::Fenced(lang) => {
+                        (!lang.is_empty()).then(||format!("language-{lang}"))
+                    },
+                };
+                let raw_code = self.take_code_or_text();
+                let code = transform_code_block(&self.path, raw_code);
+                let mut code_attrs = Vec::new();
+                if let Some(class) = class {
+                    code_attrs.push(dioxus_rsx::ElementAttrNamed {
+                        el_name: dioxus_rsx::ElementName::Ident(Ident::new("code", Span::call_site())),
+                        attr: dioxus_rsx::ElementAttr::AttrText {
+                            name: Ident::new("class", Span::call_site()),
+                            value: IfmtInput::new_static(&class),
+                        },
+                    });
+                }
                 self.start_node(BodyNode::Element(Element {
                     name: dioxus_rsx::ElementName::Ident(Ident::new("code", Span::call_site())),
                     key: None,
-                    attributes: Vec::new(),
+                    attributes: code_attrs,
                     children: vec![BodyNode::Element(Element {
                         name: dioxus_rsx::ElementName::Ident(Ident::new("pre", Span::call_site())),
                         key: None,
@@ -432,5 +457,58 @@ impl<'a, I: Iterator<Item = Event<'a>>> RsxMarkdownParser<'a, I> {
 
     fn last_mut(&mut self) -> Option<&mut BodyNode> {
         self.element_stack.last_mut()
+    }
+}
+
+fn transform_code_block(path: &Path, code_contents: String) -> String {
+    let segments = code_contents.split("{{#");
+    let mut output = String::new();
+    for segment in segments {
+        if let Some((extension, after)) = segment.split_once("}}") {
+            output += &resolve_extension(path, extension);
+            output += after;
+        } else {
+            output += segment;
+        }
+    }
+    output
+}
+
+fn resolve_extension(path: &Path, ext: &str) -> String {
+    if let Some(file) = ext.strip_prefix("include") {
+        let file = file.trim();
+        let mut segment = None;
+        let file = if let Some((file, file_segment)) = file.split_once(":") {
+            segment = Some(file_segment);
+            file
+        } else {
+            file
+        };
+        let result = std::fs::read_to_string(file).unwrap();
+        if let Some(segment) = segment {
+            // get the text between lines with ANCHOR: segment and ANCHOR_END: segment
+            let mut lines = result.lines();
+            let mut output = String::new();
+            let mut in_segment = false;
+            while let Some(line) = lines.next() {
+                if let Some((_, remaining)) = line.split_once("ANCHOR:") {
+                    if remaining.trim() == segment {
+                        in_segment = true;
+                    }
+                } else if let Some((_, remaining)) = line.split_once("ANCHOR_END:") {
+                    if remaining.trim() == segment {
+                        in_segment = false;
+                    }
+                } else if in_segment {
+                    output += line;
+                    output += "\n";
+                }
+            }
+            output
+        } else {
+            result
+        }
+    } else {
+        todo!("Unknown extension: {}", ext);
     }
 }

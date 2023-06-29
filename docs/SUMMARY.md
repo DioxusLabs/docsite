@@ -39,11 +39,23 @@
 
 ---
 - [Router](router/index.md)
-    - [Getting Started](router/getting-started.md)
-    - [Creating Our First Route](router/first-route.md)
-    - [Building a Nest](router/building-a-nest.md)
-    - [Redirection Perfection](router/redirection-perfection.md)
-
+  - [Example Project](router/example/index.md)
+    - [Creating Our First Route](router/example/first-route.md)
+    - [Building a Nest](router/example/building-a-nest.md)
+    - [Navigation Targets](router/example/navigation-targets.md)
+    - [Redirection Perfection](router/example/redirection-perfection.md)
+    - [Full Code](router/example/full-code.md)
+  - [Reference](router/reference/index.md)
+    - [Adding the Router to Your Application](router/reference/index.md)
+    - [Defining Routes](router/reference/routes/index.md)
+      - [Nested Routes](router/reference/routes/nested.md)
+    - [Layouts](router/reference/layouts.md)
+    - [Navigation](router/reference/navigation/index.md)
+      - [Programmatic Navigation](router/reference/navigation/programmatic.md)
+    - [History Providers](router/reference/history-providers.md)
+    - [History Buttons](router/reference/history-buttons.md)
+    - [Static Generation](router/reference/static-generation.md)
+    - [Routing Update Callback](router/reference/routing-update-callback.md)
 
 ---
 - [Fullstack](fullstack/index.md)

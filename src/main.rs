@@ -25,7 +25,7 @@ fn main() {
                 .unwrap();
             });
         simple_logger::SimpleLogger::new()
-            .with_level(log::LevelFilter::Trace)
+            .with_level(log::LevelFilter::Warn)
             .init()
             .unwrap();
     }

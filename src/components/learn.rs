@@ -1,4 +1,5 @@
-use crate::docs::LAZY_BOOK;use std::path::PathBuf;
+use crate::docs::LAZY_BOOK;
+use std::path::PathBuf;
 
 use dioxus::prelude::*;
 use crate::*;
@@ -138,7 +139,7 @@ fn RightNav(cx: Scope) -> Element {
             right: "calc(40vw - 40.875rem)",
             h2 { class: "pb-4 font-semibold", "On this page" }
             ul { class: "",
-                for section in &page.sections() {
+                for section in page.sections().iter().filter(|s| s.level <= 2) {
                     li { class: "pb-2",
                         Link {
                             target: NavigationTarget::External("#".to_string() + &section.id),

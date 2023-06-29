@@ -12,7 +12,7 @@ Astute observers might have noticed that `Element` is actually a type alias for 
 
 ```rust
 fn App(cx: Scope) -> Element {
-    None
+	None
 }
 ```
 
@@ -22,8 +22,8 @@ This lets us add in some syntactic sugar for operations we think *shouldn't* fai
 
 ```rust
 fn App(cx: Scope) -> Element {
-    // immediately return "None"
-    let name = cx.use_hook(|_| Some("hi"))?;
+	// immediately return "None"
+	let name = cx.use_hook(|_| Some("hi"))?;
 }
 ```
 
@@ -33,16 +33,16 @@ Because Rust can't accept both Options and Results with the existing try infrast
 
 ```rust
 fn App(cx: Scope) -> Element {
-    // Convert Result to Option
-    let name = cx.use_hook(|_| "1.234").parse().ok()?;
+	// Convert Result to Option
+	let name = cx.use_hook(|_| "1.234").parse().ok()?;
 
 
-    // Early return
-    let count = cx.use_hook(|_| "1.234");
-    let val = match count.parse() {
-        Ok(val) => val
-        Err(err) => return cx.render(rsx!{ "Parsing failed" })
-    };
+	// Early return
+	let count = cx.use_hook(|_| "1.234");
+	let val = match count.parse() {
+		Ok(val) => val
+		Err(err) => return cx.render(rsx!{ "Parsing failed" })
+	};
 }
 ```
 
@@ -64,18 +64,18 @@ Whenever we perform an action that generates an error, we'll set that error stat
 
 ```rust
 fn Commandline(cx: Scope) -> Element {
-    let error = use_state(cx, || None);
+	let error = use_state(cx, || None);
 
-    cx.render(match *error {
-        Some(error) => rsx!(
-            h1 { "An error occured" }
-        )
-        None => rsx!(
-            input {
-                oninput: move |_| error.set(Some("bad thing happened!")),
-            }
-        )
-    })
+	cx.render(match *error {
+		Some(error) => rsx!(
+			h1 { "An error occured" }
+		)
+		None => rsx!(
+			input {
+				oninput: move |_| error.set(Some("bad thing happened!")),
+			}
+		)
+	})
 }
 ```
 
@@ -85,18 +85,18 @@ If you're dealing with a handful of components with minimal nesting, you can jus
 
 ```rust
 fn Commandline(cx: Scope) -> Element {
-    let error = use_state(cx, || None);
+	let error = use_state(cx, || None);
 
-    if let Some(error) = **error {
-        return cx.render(rsx!{ "An error occured" });
-    }
+	if let Some(error) = **error {
+		return cx.render(rsx!{ "An error occured" });
+	}
 
-    cx.render(rsx!{
-        Child { error: error.clone() }
-        Child { error: error.clone() }
-        Child { error: error.clone() }
-        Child { error: error.clone() }
-    })
+	cx.render(rsx!{
+		Child { error: error.clone() }
+		Child { error: error.clone() }
+		Child { error: error.clone() }
+		Child { error: error.clone() }
+	})
 }
 ```
 
@@ -113,9 +113,9 @@ At the "top" of our architecture, we're going to want to explicitly declare a va
 
 ```rust
 enum InputError {
-    None,
-    TooLong,
-    TooShort,
+	None,
+	TooLong,
+	TooShort,
 }
 
 static INPUT_ERROR: Atom<InputError> = |_| InputError::None;
@@ -125,13 +125,13 @@ Then, in our top level component, we want to explicitly handle the possible erro
 
 ```rust
 fn TopLevel(cx: Scope) -> Element {
-    let error = use_read(cx, INPUT_ERROR);
+	let error = use_read(cx, INPUT_ERROR);
 
-    match error {
-        TooLong => return cx.render(rsx!{ "FAILED: Too long!" }),
-        TooShort => return cx.render(rsx!{ "FAILED: Too Short!" }),
-        _ => {}
-    }
+	match error {
+		TooLong => return cx.render(rsx!{ "FAILED: Too long!" }),
+		TooShort => return cx.render(rsx!{ "FAILED: Too Short!" }),
+		_ => {}
+	}
 }
 ```
 
@@ -139,17 +139,17 @@ Now, whenever a downstream component has an error in its actions, it can simply 
 
 ```rust
 fn Commandline(cx: Scope) -> Element {
-    let set_error = use_set(cx, INPUT_ERROR);
+	let set_error = use_set(cx, INPUT_ERROR);
 
-    cx.render(rsx!{
-        input {
-            oninput: move |evt| {
-                if evt.value.len() > 20 {
-                    set_error(InputError::TooLong);
-                }
-            }
-        }
-    })
+	cx.render(rsx!{
+		input {
+			oninput: move |evt| {
+				if evt.value.len() > 20 {
+					set_error(InputError::TooLong);
+				}
+			}
+		}
+	})
 }
 ```
 

@@ -63,14 +63,14 @@ Edit your `lib.rs`:
 use dioxus::prelude::*;
 
 fn main() {
-    dioxus_desktop::launch(app);
+	dioxus_desktop::launch(app);
 }
 
 fn app(cx: Scope) -> Element {
-    cx.render(rsx!{
-        div {
-            "hello world!"
-        }
-    })
+	cx.render(rsx!{
+		div {
+			"hello world!"
+		}
+	})
 }
 ```

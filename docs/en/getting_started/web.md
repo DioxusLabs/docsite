@@ -53,11 +53,15 @@ cargo add dioxus-web
 Edit your `main.rs`:
 
 ```rust
-{{#include docs/examples/hello_world_web.rs}}
+{{#include src/doc_examples/hello_world_web.rs}}
 ```
 
 And to serve our app:
 
 ```bash
 dioxus serve
+```
+
+```inject-dioxus
+Test {}
 ```

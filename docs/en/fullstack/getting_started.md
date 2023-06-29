@@ -40,7 +40,7 @@ tokio = { version = "*", features = ["full"] }
 Now, set up your Axum app to serve the Dioxus app.
 
 ```rust
-{{#include docs/examples/server_basic.rs}}
+{{#include src/doc_examples/server_basic.rs}}
 ```
 
 Now, run your app with `cargo run` and open `http://localhost:8080` in your browser. You should see a server-side rendered page with a counter.
@@ -73,7 +73,7 @@ web = ["dioxus-web"]
 Next, we need to modify our `main.rs` to use either hydrate on the client or render on the server depending on the active features.
 
 ```rust
-{{#include docs/examples/hydration.rs}}
+{{#include src/doc_examples/hydration.rs}}
 ```
 
 Now, build your client-side bundle with `dioxus build --features web` and run your server with `cargo run --features ssr`. You should see the same page as before, but now you can interact with the buttons!
@@ -96,7 +96,7 @@ To do this, we must remove the serve_dioxus_application and replace it with a cu
 The only thing we need to change on the client is the props. `dioxus-fullstack` will automatically serialize the props it uses to server render the app and send them to the client. In the client section of `main.rs`, we need to add `get_root_props_from_document` to deserialize the props before we hydrate the app.
 
 ```rust
-{{#include docs/examples/hydration_props.rs}}
+{{#include src/doc_examples/hydration_props.rs}}
 ```
 
 Now, build your client-side bundle with `dioxus build --features web` and run your server with `cargo run --features ssr`. Navigate to `http://localhost:8080/1` and you should see the counter start at 1. Navigate to `http://localhost:8080/2` and you should see the counter start at 2.

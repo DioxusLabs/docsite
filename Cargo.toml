@@ -12,6 +12,11 @@ dioxus = { path = "../dioxus/packages/dioxus" }
 dioxus-web = { path = "../dioxus/packages/web", features = ["hydrate"], optional = true }
 dioxus-ssr = { path = "../dioxus/packages/ssr", optional = true }
 dioxus-fullstack = { path = "../dioxus/packages/fullstack", features = ["router"] }
+dioxus-tui = { path = "../dioxus/packages/dioxus-tui", optional = true }
+dioxus-desktop = { path = "../dioxus/packages/desktop", optional = true }
+dioxus-liveview = { path = "../dioxus/packages/liveview", optional = true }
+dioxus-native-core = { path = "../dioxus/packages/native-core", optional = true }
+dioxus-native-core-macro = { path = "../dioxus/packages/native-core-macro", optional = true }
 fermi = { path = "../dioxus/packages/fermi" }
 serde = { version = "1.0.163", features = ["derive"] }
 serde_json = "1.0.96"
@@ -30,6 +35,9 @@ use-mdbook = { path = "../include_mdbook/use-mdbook" }
 tokio = { version = "1.29.0", features = ["full"], optional = true }
 axum = { version = "0.6.12", optional = true }
 simple_logger = "4.2.0"
+shipyard = { version = "0.6.2", optional = true }
+reqwest = { version = "0.11.18", optional = true, features = ["json"] }
+gloo-storage = { version = "0.2.2", optional = true }
 
 [profile.release]
 opt-level = "s"
@@ -41,5 +49,6 @@ dioxus-core = { path = "../dioxus/packages/core" }
 
 [features]
 default = []
+doc_test = ["tokio", "ssr", "dioxus-web", "dioxus-router/web", "dioxus-tui", "dioxus-desktop", "dioxus-liveview", "dioxus-native-core", "dioxus-native-core-macro", "shipyard", "reqwest", "gloo-storage"]
 web = ["dioxus-web", "dioxus-router/web"]
 ssr = ["dioxus-ssr", "dioxus-router/ssr", "tokio", "dioxus-fullstack/axum", "axum"]

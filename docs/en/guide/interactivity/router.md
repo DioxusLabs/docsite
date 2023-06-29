@@ -27,13 +27,13 @@ Unlike other routers in the Rust ecosystem, our router is built declaratively. T
 
 ```rust
 rsx!{
-    // All of our routes will be rendered inside this Router component
-    Router {
-        // if the current location is "/home", render the Home component
-        Route { to: "/home", Home {} }
-        // if the current location is "/blog", render the Blog component
-        Route { to: "/blog", Blog {} }
-    }
+	// All of our routes will be rendered inside this Router component
+	Router {
+		// if the current location is "/home", render the Home component
+		Route { to: "/home", Home {} }
+		// if the current location is "/blog", render the Blog component
+		Route { to: "/blog", Blog {} }
+	}
 }
 ```
 
@@ -45,12 +45,12 @@ We can fix this one of two ways:
 
 ```rust
 rsx!{
-    Router {
-        Route { to: "/home", Home {} }
-        Route { to: "/blog", Blog {} }
-        //  if the current location doesn't match any of the above routes, render the NotFound component
-        Route { to: "", NotFound {} }
-    }
+	Router {
+		Route { to: "/home", Home {} }
+		Route { to: "/blog", Blog {} }
+		//  if the current location doesn't match any of the above routes, render the NotFound component
+		Route { to: "", NotFound {} }
+	}
 }
 ```
 
@@ -59,12 +59,12 @@ rsx!{
 
 ```rust
 rsx!{
-    Router {
-        Route { to: "/home", Home {} }
-        Route { to: "/blog", Blog {} }
-        //  if the current location doesn't match any of the above routes, redirect to "/home"
-        Redirect { from: "", to: "/home" }
-    }
+	Router {
+		Route { to: "/home", Home {} }
+		Route { to: "/blog", Blog {} }
+		//  if the current location doesn't match any of the above routes, redirect to "/home"
+		Redirect { from: "", to: "/home" }
+	}
 }
 ```
 
@@ -75,10 +75,10 @@ For our app to navigate these routes, we can provide clickable elements called L
 
 ```rust
 rsx!{
-    Link {
-        to: "/home",
-        "Go home!"
-    }
+	Link {
+		to: "/home",
+		"Go home!"
+	}
 }
 ```
 

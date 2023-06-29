@@ -11,13 +11,13 @@ To avoid repetition, you can encapsulate business logic based on existing hooks 
 For example, if many components need to access an `AppSettings` struct, you can create a "shortcut" hook:
 
 ```rust
-{{#include docs/examples/hooks_composed.rs:wrap_context}}
+{{#include src/doc_examples/hooks_composed.rs:wrap_context}}
 ```
 
 Or if you want to wrap a hook that persists reloads with the storage API, you can build on top of the use_ref hook to work with mutable state:
 
 ```rust
-{{#include docs/examples/hooks_composed.rs:use_storage}}
+{{#include src/doc_examples/hooks_composed.rs:use_storage}}
 ```
 
 ## Custom Hook Logic
@@ -35,7 +35,7 @@ Inside the initialization closure, you will typically make calls to other `cx` m
 Here is a simplified implementation of the `use_state` hook:
 
 ```rust
-{{#include docs/examples/hooks_custom_logic.rs:use_state}}
+{{#include src/doc_examples/hooks_custom_logic.rs:use_state}}
 ```
 
 - The `use_context` hook calls [`cx.consume_context`](https://docs.rs/dioxus/latest/dioxus/prelude/struct.ScopeState.html#method.consume_context) (which would be expensive to call on every render) to get some context from the scope
@@ -43,7 +43,7 @@ Here is a simplified implementation of the `use_state` hook:
 Here is an implementation of the `use_context` and `use_context_provider` hooks:
 
 ```rust
-{{#include docs/examples/hooks_custom_logic.rs:use_context}}
+{{#include src/doc_examples/hooks_custom_logic.rs:use_context}}
 ```
 
 ## Hook Anti-Patterns
@@ -55,22 +55,22 @@ When writing a custom hook, you should avoid the following anti-patterns:
 This version of use_state may seem more efficient, but it is not cloneable:
 
 ```rust
-{{#include docs/examples/hooks_anti_patterns.rs:non_clone_state}}
+{{#include src/doc_examples/hooks_anti_patterns.rs:non_clone_state}}
 ```
 
 If we try to use this hook in an async block, we will get a compile error:
 
 ```rust
 fn FutureComponent(cx: &ScopeState) -> Element {
-    let my_state = my_use_state(cx, || 0);
-    cx.spawn({
-        to_owned![my_state];
-        async move {
-            my_state.set(1);
-        }
-    });
+	let my_state = my_use_state(cx, || 0);
+	cx.spawn({
+		to_owned![my_state];
+		async move {
+			my_state.set(1);
+		}
+	});
 
-    todo!()
+	todo!()
 }
 ```
 
@@ -78,14 +78,14 @@ But with the original version, we can use it in an async block:
 
 ```rust
 fn FutureComponent(cx: &ScopeState) -> Element {
-    let my_state = use_state(cx, || 0);
-    cx.spawn({
-        to_owned![my_state];
-        async move {
-            my_state.set(1);
-        }
-    });
+	let my_state = use_state(cx, || 0);
+	cx.spawn({
+		to_owned![my_state];
+		async move {
+			my_state.set(1);
+		}
+	});
 
-    todo!()
+	todo!()
 }
 ```

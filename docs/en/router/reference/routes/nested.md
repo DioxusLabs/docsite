@@ -14,7 +14,7 @@ pattern:
 We might want to map this structure to these paths and components:
 
 ```plain
-/settings          -> Settings { GeneralSettings }
+/settings		  -> Settings { GeneralSettings }
 /settings/password -> Settings { PWSettings }
 /settings/privacy  -> Settings { PrivacySettings }
 ```
@@ -35,5 +35,5 @@ If you define a dynamic segment in a nest, it will be available to all child rou
 To finish a nest, we use the `#[end_nest]` attribute or the end of the enum.
 
 ```rust
-{{#include docs/examples/nest.rs:route}}
+{{#include src/doc_examples/nest.rs:route}}
 ```

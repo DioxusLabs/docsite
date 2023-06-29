@@ -6,7 +6,7 @@ Layouts allow you to wrap all child routes in a component. This can be useful wh
 the Index will be rendered within the [`Outlet`].
 
 ```rust
-{{#include docs/examples/outlet.rs:outlet}}
+{{#include src/doc_examples/outlet.rs:outlet}}
 ```
 
 The example above will output the following HTML (line breaks added for

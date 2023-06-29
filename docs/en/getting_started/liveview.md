@@ -52,14 +52,14 @@ Now, set up your Axum app to respond on an endpoint.
 
 
 ```rust
-{{#include docs/examples/hello_world_liveview.rs:glue}}
+{{#include src/doc_examples/hello_world_liveview.rs:glue}}
 ```
 
 
 And then add our app component:
 
 ```rust
-{{#include docs/examples/hello_world_liveview.rs:app}}
+{{#include src/doc_examples/hello_world_liveview.rs:app}}
 ```
 
 And that's it!

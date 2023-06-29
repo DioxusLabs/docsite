@@ -38,8 +38,8 @@ Add the following to your main function:
 
 ```rust
 fn main() {
-    hot_reload_init!();
-    // launch your application
+	hot_reload_init!();
+	// launch your application
 }
 ```
 

@@ -10,15 +10,15 @@ The `use_coroutine` hook allows you to create a coroutine. Most coroutines we wr
 
 ```rust
 fn app(cx: Scope) -> Element {
-    let ws: &UseCoroutine<()> = use_coroutine(cx, |rx| async move {
-        // Connect to some sort of service
-        let mut conn = connect_to_ws_server().await;
+	let ws: &UseCoroutine<()> = use_coroutine(cx, |rx| async move {
+		// Connect to some sort of service
+		let mut conn = connect_to_ws_server().await;
 
-        // Wait for data on the service
-        while let Some(msg) = conn.next().await {
-            // handle messages
-        }
-    });
+		// Wait for data on the service
+		while let Some(msg) = conn.next().await {
+			// handle messages
+		}
+	});
 }
 ```
 
@@ -28,23 +28,23 @@ However, if we want to temporarily disable the coroutine, we can "pause" it usin
 
 ```rust
 let sync: &UseCoroutine<()> = use_coroutine(cx, |rx| async move {
-    // code for syncing
+	// code for syncing
 });
 
 if sync.is_running() {
-    cx.render(rsx!{
-        button {
-            onclick: move |_| sync.pause(),
-            "Disable syncing"
-        }
-    })
+	cx.render(rsx!{
+		button {
+			onclick: move |_| sync.pause(),
+			"Disable syncing"
+		}
+	})
 } else {
-    cx.render(rsx!{
-        button {
-            onclick: move |_| sync.resume(),
-            "Enable syncing"
-        }
-    })
+	cx.render(rsx!{
+		button {
+			onclick: move |_| sync.resume(),
+			"Enable syncing"
+		}
+	})
 }
 ```
 
@@ -61,13 +61,13 @@ You can use [to_owned](https://doc.rust-lang.org/std/borrow/trait.ToOwned.html#t
 ```rust
 let sync_status = use_state(cx, || Status::Launching);
 let sync_task = use_coroutine(cx, |rx: UnboundedReceiver<SyncAction>| {
-    let sync_status = sync_status.to_owned();
-    async move {
-        loop {
-            delay_ms(1000).await;
-            sync_status.set(Status::Working);
-        }
-    }
+	let sync_status = sync_status.to_owned();
+	async move {
+		loop {
+			delay_ms(1000).await;
+			sync_status.set(Status::Working);
+		}
+	}
 })
 ```
 
@@ -77,10 +77,10 @@ To make this a bit less verbose, Dioxus exports the `to_owned!` macro which will
 let sync_status = use_state(cx, || Status::Launching);
 let load_status = use_state(cx, || Status::Launching);
 let sync_task = use_coroutine(cx, |rx: UnboundedReceiver<SyncAction>| {
-    to_owned![sync_status, load_status];
-    async move {
-        // ...
-    }
+	to_owned![sync_status, load_status];
+	async move {
+		// ...
+	}
 })
 ```
 
@@ -95,27 +95,27 @@ With Coroutines, we can centralize our async logic. The `rx` parameter is an Cha
 use futures_util::stream::StreamExt;
 
 enum ProfileUpdate {
-    SetUsername(String),
-    SetAge(i32)
+	SetUsername(String),
+	SetAge(i32)
 }
 
 let profile = use_coroutine(cx, |mut rx: UnboundedReciver<ProfileUpdate>| async move {
-    let mut server = connect_to_server().await;
+	let mut server = connect_to_server().await;
 
-    while let Ok(msg) = rx.next().await {
-        match msg {
-            ProfileUpdate::SetUsername(name) => server.update_username(name).await,
-            ProfileUpdate::SetAge(age) => server.update_age(age).await,
-        }
-    }
+	while let Ok(msg) = rx.next().await {
+		match msg {
+			ProfileUpdate::SetUsername(name) => server.update_username(name).await,
+			ProfileUpdate::SetAge(age) => server.update_age(age).await,
+		}
+	}
 });
 
 
 cx.render(rsx!{
-    button {
-        onclick: move |_| profile.send(ProfileUpdate::SetUsername("Bob".to_string())),
-        "Update username"
-    }
+	button {
+		onclick: move |_| profile.send(ProfileUpdate::SetUsername("Bob".to_string())),
+		"Update username"
+	}
 })
 ```
 
@@ -131,15 +131,15 @@ let editor = use_coroutine(cx, editor_service);
 let sync = use_coroutine(cx, sync_service);
 
 async fn profile_service(rx: UnboundedReceiver<ProfileCommand>) {
-    // do stuff
+	// do stuff
 }
 
 async fn sync_service(rx: UnboundedReceiver<SyncCommand>) {
-    // do stuff
+	// do stuff
 }
 
 async fn editor_service(rx: UnboundedReceiver<EditorCommand>) {
-    // do stuff
+	// do stuff
 }
 ```
 
@@ -149,21 +149,21 @@ We can combine coroutines with [Fermi](https://docs.rs/fermi/latest/fermi/index.
 static USERNAME: Atom<String> = |_| "default".to_string();
 
 fn app(cx: Scope) -> Element {
-    let atoms = use_atom_root(cx);
+	let atoms = use_atom_root(cx);
 
-    use_coroutine(cx, |rx| sync_service(rx, atoms.clone()));
+	use_coroutine(cx, |rx| sync_service(rx, atoms.clone()));
 
-    cx.render(rsx!{
-        Banner {}
-    })
+	cx.render(rsx!{
+		Banner {}
+	})
 }
 
 fn Banner(cx: Scope) -> Element {
-    let username = use_read(cx, USERNAME);
+	let username = use_read(cx, USERNAME);
 
-    cx.render(rsx!{
-        h1 { "Welcome back, {username}" }
-    })
+	cx.render(rsx!{
+		h1 { "Welcome back, {username}" }
+	})
 }
 ```
 
@@ -173,24 +173,24 @@ Now, in our sync service, we can structure our state however we want. We only ne
 use futures_util::stream::StreamExt;
 
 enum SyncAction {
-    SetUsername(String),
+	SetUsername(String),
 }
 
 async fn sync_service(mut rx: UnboundedReceiver<SyncAction>, atoms: AtomRoot) {
-    let username = atoms.write(USERNAME);
-    let errors = atoms.write(ERRORS);
+	let username = atoms.write(USERNAME);
+	let errors = atoms.write(ERRORS);
 
-    while let Ok(msg) = rx.next().await {
-        match msg {
-            SyncAction::SetUsername(name) => {
-                if set_name_on_server(&name).await.is_ok() {
-                    username.set(name);
-                } else {
-                    errors.make_mut().push("SetUsernameFailed");
-                }
-            }
-        }
-    }
+	while let Ok(msg) = rx.next().await {
+		match msg {
+			SyncAction::SetUsername(name) => {
+				if set_name_on_server(&name).await.is_ok() {
+					username.set(name);
+				} else {
+					errors.make_mut().push("SetUsernameFailed");
+				}
+			}
+		}
+	}
 }
 ```
 
@@ -200,8 +200,8 @@ Coroutine handles are automatically injected through the context API. You can us
 
 ```rust
 fn Child(cx: Scope) -> Element {
-    let sync_task = use_coroutine_handle::<SyncAction>(cx);
+	let sync_task = use_coroutine_handle::<SyncAction>(cx);
 
-    sync_task.send(SyncAction::SetUsername);
+	sync_task.send(SyncAction::SetUsername);
 }
 ```

@@ -21,5 +21,5 @@ initiated the navigation, was found as a redirect target, or was returned by the
 ## Code Example
 
 ```rust
-{{#include docs/examples/routing_update.rs:router}}
+{{#include src/doc_examples/routing_update.rs:router}}
 ```

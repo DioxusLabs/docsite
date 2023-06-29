@@ -7,7 +7,7 @@ This walkthrough will take you through the internals of the Hello World example 
 We start will a hello world program. This program renders a desktop app with the text "Hello World" in a webview.
 
 ```rust
-{{#include docs/examples/readme.rs}}
+{{#include src/doc_examples/readme.rs}}
 ```
 
 [![](https://mermaid.ink/img/pako:eNqNkT1vwyAQhv8KvSlR48HphtQtqjK0S6tuSBGBS0CxwcJHk8rxfy_YVqxKVdR3ug_u4YXrQHmNwOFQ-bMyMhB7fReOJbVxfwyyMSy0l7GSpW1ARda727ksUy5MuSyKgvBC5ULA1h5N8WK_kCkfHWHgrBuiXsBynrvdsY9E3u1iM_eyvFOVVadMnELOap-o1911JLPHZ1b-YqLTc3LjTt7WifTZMJPsPdx1ov3Z_ellfcdL8R8vmTy5eUqsTUpZ-vzZzjAEK6gx1NLqtJwuNwSQwRoF8BRqGU4ChOvTORnJf3w7BZxCxBXERkvCjZXpQTXwg6zaVEVtyYe3cdvD0vsf4bucgw?type=png)](https://mermaid.live/edit#pako:eNqNkT1vwyAQhv8KvSlR48HphtQtqjK0S6tuSBGBS0CxwcJHk8rxfy_YVqxKVdR3ug_u4YXrQHmNwOFQ-bMyMhB7fReOJbVxfwyyMSy0l7GSpW1ARda727ksUy5MuSyKgvBC5ULA1h5N8WK_kCkfHWHgrBuiXsBynrvdsY9E3u1iM_eyvFOVVadMnELOap-o1911JLPHZ1b-YqLTc3LjTt7WifTZMJPsPdx1ov3Z_ellfcdL8R8vmTy5eUqsTUpZ-vzZzjAEK6gx1NLqtJwuNwSQwRoF8BRqGU4ChOvTORnJf3w7BZxCxBXERkvCjZXpQTXwg6zaVEVtyYe3cdvD0vsf4bucgw)
@@ -17,7 +17,7 @@ We start will a hello world program. This program renders a desktop app with the
 Before the Rust compiler runs the program, it will expand all macros. Here is what the hello world example looks like expanded:
 
 ```rust
-{{#include docs/examples/readme_expanded.rs}}
+{{#include src/doc_examples/readme_expanded.rs}}
 ```
 
 The rsx macro separates the static parts of the rsx (the template) and the dynamic parts (the dynamic_nodes and dynamic_attributes).
@@ -42,23 +42,23 @@ The Virtual Dom roughly looks like this:
 
 ```rust
 pub struct VirtualDom {
-    // All the templates that have been created or set durring hot reloading
-    pub(crate) templates: FxHashMap<TemplateId, FxHashMap<usize, Template<'static>>>,
+	// All the templates that have been created or set durring hot reloading
+	pub(crate) templates: FxHashMap<TemplateId, FxHashMap<usize, Template<'static>>>,
 
-    // A slab of all the scopes that have been created
-    pub(crate) scopes: ScopeSlab,
+	// A slab of all the scopes that have been created
+	pub(crate) scopes: ScopeSlab,
 
-    // All scopes that have been marked as dirty
-    pub(crate) dirty_scopes: BTreeSet<DirtyScope>,
+	// All scopes that have been marked as dirty
+	pub(crate) dirty_scopes: BTreeSet<DirtyScope>,
 
-    // Every element is actually a dual reference - one to the template and the other to the dynamic node in that template
-    pub(crate) elements: Slab<ElementRef>,
+	// Every element is actually a dual reference - one to the template and the other to the dynamic node in that template
+	pub(crate) elements: Slab<ElementRef>,
 
-    // This receiver is used to receive messages from hooks about what scopes need to be marked as dirty
-    pub(crate) rx: futures_channel::mpsc::UnboundedReceiver<SchedulerMsg>,
+	// This receiver is used to receive messages from hooks about what scopes need to be marked as dirty
+	pub(crate) rx: futures_channel::mpsc::UnboundedReceiver<SchedulerMsg>,
 
-    // The changes queued up to be sent to the renderer
-    pub(crate) mutations: Mutations<'static>,
+	// The changes queued up to be sent to the renderer
+	pub(crate) mutations: Mutations<'static>,
 }
 ```
 

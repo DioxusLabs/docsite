@@ -27,22 +27,22 @@ The `Mutation` type is a serialized enum that represents an operation that shoul
 
 ```rust
 enum Mutation {
-    AppendChildren,
-    AssignId,
-    CreatePlaceholder,
-    CreateTextNode,
-    HydrateText,
-    LoadTemplate,
-    ReplaceWith,
-    ReplacePlaceholder,
-    InsertAfter,
-    InsertBefore,
-    SetAttribute,
-    SetText,
-    NewEventListener,
-    RemoveEventListener,
-    Remove,
-    PushRoot,
+	AppendChildren,
+	AssignId,
+	CreatePlaceholder,
+	CreateTextNode,
+	HydrateText,
+	LoadTemplate,
+	ReplaceWith,
+	ReplacePlaceholder,
+	InsertAfter,
+	InsertBefore,
+	SetAttribute,
+	SetText,
+	NewEventListener,
+	RemoveEventListener,
+	Remove,
+	PushRoot,
 }
 ```
 
@@ -70,33 +70,33 @@ The template will look something like this:
 
 ```rust
 Template {
-    // Some id that is unique for the entire project
-    name: "main.rs:1:1:0",
-    // The root nodes of the template
-    roots: &[
-        TemplateNode::Element {
-            tag: "h1",
-            namespace: None,
-            attrs: &[],
-            children: &[
-                TemplateNode::DynamicText {
-                    id: 0
-                },
-            ],
-        }
-    ],
-    // the path to each of the dynamic nodes
-    node_paths: &[
-        // the path to dynamic node with a id of 0
-        &[
-            // on the first root node
-            0,
-            // the first child of the root node
-            0,
-        ]
-    ],
-    // the path to each of the dynamic attributes
-    attr_paths: &'a [&'a [u8]],
+	// Some id that is unique for the entire project
+	name: "main.rs:1:1:0",
+	// The root nodes of the template
+	roots: &[
+		TemplateNode::Element {
+			tag: "h1",
+			namespace: None,
+			attrs: &[],
+			children: &[
+				TemplateNode::DynamicText {
+					id: 0
+				},
+			],
+		}
+	],
+	// the path to each of the dynamic nodes
+	node_paths: &[
+		// the path to dynamic node with a id of 0
+		&[
+			// on the first root node
+			0,
+			// the first child of the root node
+			0,
+		]
+	],
+	// the path to each of the dynamic attributes
+	attr_paths: &'a [&'a [u8]],
 }
 ```
 
@@ -121,10 +121,10 @@ When the renderer starts, it should contain the Root node on the stack and store
 ```rust
 instructions: []
 stack: [
-    RootNode,
+	RootNode,
 ]
 nodes: [
-    RootNode,
+	RootNode,
 ]
 ```
 
@@ -132,22 +132,22 @@ The first mutation is a `LoadTemplate` mutation. This tells the renderer to load
 
 ```rust
 instructions: [
-    LoadTemplate {
-        // the id of the template
-        name: "main.rs:1:1:0",
-        // the index of the root node in the template
-        index: 0,
-        // the id to store
-        id: ElementId(1),
-    }
+	LoadTemplate {
+		// the id of the template
+		name: "main.rs:1:1:0",
+		// the index of the root node in the template
+		index: 0,
+		// the id to store
+		id: ElementId(1),
+	}
 ]
 stack: [
-    RootNode,
-    <h1>""</h1>,
+	RootNode,
+	<h1>""</h1>,
 ]
 nodes: [
-    RootNode,
-    <h1>""</h1>,
+	RootNode,
+	<h1>""</h1>,
 ]
 ```
 
@@ -155,26 +155,26 @@ Next, Dioxus will create the dynamic text node. The diff algorithm decides that 
 
 ```rust
 instructions: [
-    LoadTemplate {
-        name: "main.rs:1:1:0",
-        index: 0,
-        id: ElementId(1),
-    },
-    HydrateText {
-        // the id to store the text node
-        id: ElementId(2),
-        // the text to set
-        text: "count: 0",
-    }
+	LoadTemplate {
+		name: "main.rs:1:1:0",
+		index: 0,
+		id: ElementId(1),
+	},
+	HydrateText {
+		// the id to store the text node
+		id: ElementId(2),
+		// the text to set
+		text: "count: 0",
+	}
 ]
 stack: [
-    RootNode,
-    <h1>"count: 0"</h1>,
+	RootNode,
+	<h1>"count: 0"</h1>,
 ]
 nodes: [
-    RootNode,
-    <h1>"count: 0"</h1>,
-    "count: 0",
+	RootNode,
+	<h1>"count: 0"</h1>,
+	"count: 0",
 ]
 ```
 
@@ -182,29 +182,29 @@ Remember, the h1 node is not attached to anything (it is unmounted) so Dioxus ne
 
 ```rust
 instructions: [
-    LoadTemplate {
-        name: "main.rs:1:1:0",
-        index: 0,
-        id: ElementId(1),
-    },
-    HydrateText {
-        id: ElementId(2),
-        text: "count: 0",
-    },
-    AppendChildren {
-        // the id of the parent node
-        id: ElementId(0),
-        // the number of nodes to pop off the stack and append
-        m: 1
-    }
+	LoadTemplate {
+		name: "main.rs:1:1:0",
+		index: 0,
+		id: ElementId(1),
+	},
+	HydrateText {
+		id: ElementId(2),
+		text: "count: 0",
+	},
+	AppendChildren {
+		// the id of the parent node
+		id: ElementId(0),
+		// the number of nodes to pop off the stack and append
+		m: 1
+	}
 ]
 stack: [
-    RootNode,
+	RootNode,
 ]
 nodes: [
-    RootNode,
-    <h1>"count: 0"</h1>,
-    "count: 0",
+	RootNode,
+	<h1>"count: 0"</h1>,
+	"count: 0",
 ]
 ```
 
@@ -231,29 +231,29 @@ The code for the WebSys implementation is straightforward, so we'll add it here 
 
 ```rust, ignore
 pub async fn run(&mut self) -> dioxus_core::error::Result<()> {
-    // Push the body element onto the WebsysDom's stack machine
-    let mut websys_dom = crate::new::WebsysDom::new(prepare_websys_dom());
-    websys_dom.stack.push(root_node);
+	// Push the body element onto the WebsysDom's stack machine
+	let mut websys_dom = crate::new::WebsysDom::new(prepare_websys_dom());
+	websys_dom.stack.push(root_node);
 
-    // Rebuild or hydrate the virtualdom
-    let mutations = self.internal_dom.rebuild();
-    websys_dom.apply_mutations(mutations);
+	// Rebuild or hydrate the virtualdom
+	let mutations = self.internal_dom.rebuild();
+	websys_dom.apply_mutations(mutations);
 
-    // Wait for updates from the real dom and progress the virtual dom
-    loop {
-        let user_input_future = websys_dom.wait_for_event();
-        let internal_event_future = self.internal_dom.wait_for_work();
+	// Wait for updates from the real dom and progress the virtual dom
+	loop {
+		let user_input_future = websys_dom.wait_for_event();
+		let internal_event_future = self.internal_dom.wait_for_work();
 
-        match select(user_input_future, internal_event_future).await {
-            Either::Left((_, _)) => {
-                let mutations = self.internal_dom.work_with_deadline(|| false);
-                websys_dom.apply_mutations(mutations);
-            },
-            Either::Right((event, _)) => websys_dom.handle_event(event),
-        }
+		match select(user_input_future, internal_event_future).await {
+			Either::Left((_, _)) => {
+				let mutations = self.internal_dom.work_with_deadline(|| false);
+				websys_dom.apply_mutations(mutations);
+			},
+			Either::Right((event, _)) => websys_dom.handle_event(event),
+		}
 
-        // render
-    }
+		// render
+	}
 }
 ```
 
@@ -261,31 +261,31 @@ It's important to decode what the real events are for your event system into Dio
 
 ```rust, ignore
 fn virtual_event_from_websys_event(event: &web_sys::Event) -> VirtualEvent {
-    match event.type_().as_str() {
-        "keydown" => {
-            let event: web_sys::KeyboardEvent = event.clone().dyn_into().unwrap();
-            UserEvent::KeyboardEvent(UserEvent {
-                scope_id: None,
-                priority: EventPriority::Medium,
-                name: "keydown",
-                // This should be whatever element is focused
-                element: Some(ElementId(0)),
-                data: Arc::new(KeyboardData{
-                    char_code: event.char_code(),
-                    key: event.key(),
-                    key_code: event.key_code(),
-                    alt_key: event.alt_key(),
-                    ctrl_key: event.ctrl_key(),
-                    meta_key: event.meta_key(),
-                    shift_key: event.shift_key(),
-                    location: event.location(),
-                    repeat: event.repeat(),
-                    which: event.which(),
-                })
-            })
-        }
-        _ => todo!()
-    }
+	match event.type_().as_str() {
+		"keydown" => {
+			let event: web_sys::KeyboardEvent = event.clone().dyn_into().unwrap();
+			UserEvent::KeyboardEvent(UserEvent {
+				scope_id: None,
+				priority: EventPriority::Medium,
+				name: "keydown",
+				// This should be whatever element is focused
+				element: Some(ElementId(0)),
+				data: Arc::new(KeyboardData{
+					char_code: event.char_code(),
+					key: event.key(),
+					key_code: event.key_code(),
+					alt_key: event.alt_key(),
+					ctrl_key: event.ctrl_key(),
+					meta_key: event.meta_key(),
+					shift_key: event.shift_key(),
+					location: event.location(),
+					repeat: event.repeat(),
+					which: event.which(),
+				})
+			})
+		}
+		_ => todo!()
+	}
 }
 ```
 
@@ -310,13 +310,13 @@ Before we start let's take a look at an example element we can render:
 
 ```rust
 cx.render(rsx!{
-    div{
-        color: "red",
-        p{
-            border: "1px solid black",
-            "hello world"
-        }
-    }
+	div{
+		color: "red",
+		p{
+			border: "1px solid black",
+			"hello world"
+		}
+	}
 })
 ```
 
@@ -328,72 +328,72 @@ In the following diagram arrows represent dataflow:
 
 [//]: # "%% mermaid flow chart"
 [//]: # "flowchart TB"
-[//]: # "    subgraph context"
-[//]: # "        text_width(text width)"
-[//]: # "    end"
-[//]: # "    subgraph state"
-[//]: # "        direction TB"
-[//]: # "        subgraph div state"
-[//]: # "            direction TB"
-[//]: # "            state1(state)---color1(color)"
-[//]: # "            linkStyle 0 stroke-width:10px;"
-[//]: # "            state1---border1(border)"
-[//]: # "            linkStyle 1 stroke-width:10px;"
-[//]: # "            text_width-.->layout_width1(layout width)"
-[//]: # "            linkStyle 2 stroke:#ff5500,stroke-width:4px;"
-[//]: # "            state1---layout_width1"
-[//]: # "            linkStyle 3 stroke-width:10px;"
-[//]: # "        end"
-[//]: # "        subgraph p state"
-[//]: # "            direction TB"
-[//]: # "            state2(state)---color2(color)"
-[//]: # "            linkStyle 4 stroke-width:10px;"
-[//]: # "            color1-.->color2"
-[//]: # "            linkStyle 5 stroke:#0000ff,stroke-width:4px;"
-[//]: # "            state2---border2(border)"
-[//]: # "            linkStyle 6 stroke-width:10px;"
-[//]: # "            text_width-.->layout_width2(layout width)"
-[//]: # "            linkStyle 7 stroke:#ff5500,stroke-width:4px;"
-[//]: # "            state2---layout_width2"
-[//]: # "            linkStyle 8 stroke-width:10px;"
-[//]: # "            layout_width2-.->layout_width1"
-[//]: # "            linkStyle 9 stroke:#00aa00,stroke-width:4px;"
-[//]: # "        end"
-[//]: # "        subgraph hello world state"
-[//]: # "            direction TB"
-[//]: # "            state3(state)---border3(border)"
-[//]: # "            linkStyle 10 stroke-width:10px;"
-[//]: # "            state3---color3(color)"
-[//]: # "            linkStyle 11 stroke-width:10px;"
-[//]: # "            color2-.->color3"
-[//]: # "            linkStyle 12 stroke:#0000ff,stroke-width:4px;"
-[//]: # "            text_width-.->layout_width3(layout width)"
-[//]: # "            linkStyle 13 stroke:#ff5500,stroke-width:4px;"
-[//]: # "            state3---layout_width3"
-[//]: # "            linkStyle 14 stroke-width:10px;"
-[//]: # "            layout_width3-.->layout_width2"
-[//]: # "            linkStyle 15 stroke:#00aa00,stroke-width:4px;"
-[//]: # "        end"
-[//]: # "    end"
+[//]: # "	subgraph context"
+[//]: # "		text_width(text width)"
+[//]: # "	end"
+[//]: # "	subgraph state"
+[//]: # "		direction TB"
+[//]: # "		subgraph div state"
+[//]: # "			direction TB"
+[//]: # "			state1(state)---color1(color)"
+[//]: # "			linkStyle 0 stroke-width:10px;"
+[//]: # "			state1---border1(border)"
+[//]: # "			linkStyle 1 stroke-width:10px;"
+[//]: # "			text_width-.->layout_width1(layout width)"
+[//]: # "			linkStyle 2 stroke:#ff5500,stroke-width:4px;"
+[//]: # "			state1---layout_width1"
+[//]: # "			linkStyle 3 stroke-width:10px;"
+[//]: # "		end"
+[//]: # "		subgraph p state"
+[//]: # "			direction TB"
+[//]: # "			state2(state)---color2(color)"
+[//]: # "			linkStyle 4 stroke-width:10px;"
+[//]: # "			color1-.->color2"
+[//]: # "			linkStyle 5 stroke:#0000ff,stroke-width:4px;"
+[//]: # "			state2---border2(border)"
+[//]: # "			linkStyle 6 stroke-width:10px;"
+[//]: # "			text_width-.->layout_width2(layout width)"
+[//]: # "			linkStyle 7 stroke:#ff5500,stroke-width:4px;"
+[//]: # "			state2---layout_width2"
+[//]: # "			linkStyle 8 stroke-width:10px;"
+[//]: # "			layout_width2-.->layout_width1"
+[//]: # "			linkStyle 9 stroke:#00aa00,stroke-width:4px;"
+[//]: # "		end"
+[//]: # "		subgraph hello world state"
+[//]: # "			direction TB"
+[//]: # "			state3(state)---border3(border)"
+[//]: # "			linkStyle 10 stroke-width:10px;"
+[//]: # "			state3---color3(color)"
+[//]: # "			linkStyle 11 stroke-width:10px;"
+[//]: # "			color2-.->color3"
+[//]: # "			linkStyle 12 stroke:#0000ff,stroke-width:4px;"
+[//]: # "			text_width-.->layout_width3(layout width)"
+[//]: # "			linkStyle 13 stroke:#ff5500,stroke-width:4px;"
+[//]: # "			state3---layout_width3"
+[//]: # "			linkStyle 14 stroke-width:10px;"
+[//]: # "			layout_width3-.->layout_width2"
+[//]: # "			linkStyle 15 stroke:#00aa00,stroke-width:4px;"
+[//]: # "		end"
+[//]: # "	end"
 
 To help in building a Dom, native-core provides the State trait and a RealDom struct. The State trait provides a way to describe how states in a node depend on other states in its relatives. By describing how to update a single node from its relations, native-core will derive a way to update the states of all nodes for you. Once you have a state you can provide it as a generic to RealDom. RealDom provides all of the methods to interact and update your new dom.
 
 Native Core cannot create all of the required methods for the State trait, but it can derive some of them. To implement the State trait, you must implement the following methods and let the `#[partial_derive_state]` macro handle the rest:
 
 ```rust, ignore
-{{#include docs/examples/custom_renderer.rs:derive_state}}
+{{#include src/doc_examples/custom_renderer.rs:derive_state}}
 ```
 
 Lets take a look at how to implement the State trait for a simple renderer.
 
 ```rust
-{{#include docs/examples/custom_renderer.rs:state_impl}}
+{{#include src/doc_examples/custom_renderer.rs:state_impl}}
 ```
 
 Now that we have our state, we can put it to use in our RealDom. We can update the RealDom with apply_mutations to update the structure of the dom (adding, removing, and changing properties of nodes) and then update_state to update the States for each of the nodes that changed.
 
 ```rust
-{{#include docs/examples/custom_renderer.rs:rendering}}
+{{#include src/doc_examples/custom_renderer.rs:rendering}}
 ```
 
 ## Layout
@@ -405,7 +405,7 @@ For most platforms, the layout of the Elements will stay the same. The [layout_a
 To make it easier to implement text editing in rust renderers, `native-core` also contains a renderer-agnostic cursor system. The cursor can handle text editing, selection, and movement with common keyboard shortcuts integrated.
 
 ```rust
-{{#include docs/examples/custom_renderer.rs:cursor}}
+{{#include src/doc_examples/custom_renderer.rs:cursor}}
 ```
 
 ## Conclusion

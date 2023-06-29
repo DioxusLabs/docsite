@@ -20,8 +20,11 @@ macro_rules! export_items {
 pub mod icons;
 pub mod sitemap;
 
+#[cfg(feature = "doc_test")]
+mod doc_examples;
+
 pub use components::*;
-use fermi::{use_init_atom_root, use_set};
+use fermi::{use_init_atom_root};
 pub mod components {
     export_items! {
         pub mod blog;
@@ -57,6 +60,20 @@ mod docs {
     use dioxus::prelude::*;
 
     use_mdbook::mdbook_router! {"./docs"}
+
+    fn Test(cx: Scope) -> Element {
+        let mut count = use_state(cx, || 0);
+
+        render! {
+            button {
+                onclick: move |_| count += 1,
+                "Increment"
+            }
+            div {
+                "Count: {count}"
+            }
+        }
+    }
 }
 
 #[derive(Clone, Routable, PartialEq, Eq, Serialize, Deserialize)]

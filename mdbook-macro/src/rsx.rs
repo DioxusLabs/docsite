@@ -270,13 +270,13 @@ impl<'a, I: Iterator<Item = Event<'a>>> RsxMarkdownParser<'a, I> {
                     });
                 }
                 self.start_node(BodyNode::Element(Element {
-                    name: dioxus_rsx::ElementName::Ident(Ident::new("code", Span::call_site())),
+                    name: dioxus_rsx::ElementName::Ident(Ident::new("pre", Span::call_site())),
                     key: None,
-                    attributes: code_attrs,
+                    attributes: Vec::new(),
                     children: vec![BodyNode::Element(Element {
-                        name: dioxus_rsx::ElementName::Ident(Ident::new("pre", Span::call_site())),
+                        name: dioxus_rsx::ElementName::Ident(Ident::new("code", Span::call_site())),
                         key: None,
-                        attributes: Vec::new(),
+                        attributes: code_attrs,
                         children: vec![BodyNode::Text(IfmtInput::new_static(&code))],
                         brace: Default::default(),
                     })],

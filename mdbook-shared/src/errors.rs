@@ -1,2 +1,2 @@
-pub(crate) use anyhow::{bail, ensure, Context};
+pub(crate) use anyhow::{bail, Context};
 pub use anyhow::{Error, Result};

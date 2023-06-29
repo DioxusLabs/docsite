@@ -3,7 +3,7 @@ use std::{
     path::{Path, PathBuf},
 };
 
-use dioxus_rsx::{BodyNode, CallBody, Component, Element, ElementAttrNamed, IfmtInput};
+use dioxus_rsx::{BodyNode, CallBody, Element, ElementAttrNamed, IfmtInput};
 use pulldown_cmark::{Alignment, Event, Tag};
 use syn::{Ident, __private::Span, parse_str};
 

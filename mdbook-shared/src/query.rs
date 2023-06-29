@@ -1,7 +1,7 @@
 use crate::*;
-use pulldown_cmark::{CowStr, Event, Tag};
+use pulldown_cmark::{Event, Tag};
 use serde::{Deserialize, Serialize};
-use std::{borrow::Borrow, collections::HashMap, hash::Hash, path::PathBuf};
+use std::{collections::HashMap, hash::Hash, path::PathBuf};
 
 #[derive(Debug)]
 pub struct MdBook<R>
@@ -129,7 +129,7 @@ impl MdBook<PathBuf> {
     }
 
     // Insert a page via its path, autofilling the segments and title
-    pub fn insert_page(&mut self, path: PathBuf, markdown: String) {
+    pub fn insert_page(&mut self, _path: PathBuf, markdown: String) {
         let parser = pulldown_cmark::Parser::new(&markdown);
         let mut out = String::new();
         pulldown_cmark::html::push_html(&mut out, parser);

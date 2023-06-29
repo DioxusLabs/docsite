@@ -1,4 +1,3 @@
-use std::path::Path;
 use std::path::PathBuf;
 
 use mdbook_shared::MdBook;
@@ -11,7 +10,6 @@ use quote::quote;
 use quote::ToTokens;
 
 use crate::path_to_route_enum;
-use crate::path_to_route_variant;
 
 /// Transforms the book to use enum routes instead of paths
 pub fn write_book_with_routes(book: &mdbook_shared::MdBook<PathBuf>) -> TokenStream {
@@ -147,8 +145,8 @@ fn write_page_with_routes(book: &mdbook_shared::Page<PathBuf>) -> TokenStream {
         title,
         url,
         segments,
-        content,
         sections,
+        raw,
     } = book;
 
     let segments = segments.iter().map(|segment| {
@@ -168,19 +166,20 @@ fn write_page_with_routes(book: &mdbook_shared::Page<PathBuf>) -> TokenStream {
             title: #title.to_string(),
             url: #url,
             segments: vec![#(#segments,)*],
-            content: #content.to_string(),
             sections: vec![#(#sections,)*],
+            raw: #raw.to_string()
         }
     }
 }
 
 fn write_section_with_routes(book: &mdbook_shared::Section) -> TokenStream {
-    let Section { title, id } = book;
+    let Section { title, id, level } = book;
 
     quote! {
         ::use_mdbook::mdbook_shared::Section {
             title: #title.to_string(),
             id: #id.to_string(),
+            level: #level,
         }
     }
 }

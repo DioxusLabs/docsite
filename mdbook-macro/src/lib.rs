@@ -1,5 +1,4 @@
 use std::fs::OpenOptions;
-use std::hash::Hash;
 use std::io::Write;
 use std::path::Path;
 use std::path::PathBuf;
@@ -12,22 +11,12 @@ use proc_macro2::Span;
 use proc_macro2::TokenStream as TokenStream2;
 use quote::quote;
 use quote::ToTokens;
-use serde::de::DeserializeOwned;
-use serde::Serialize;
 use syn::LitStr;
 
 use crate::transform_book::write_book_with_routes;
 
+mod rsx;
 mod transform_book;
-
-#[proc_macro]
-pub fn include_mdbook(input: TokenStream) -> TokenStream {
-    match syn::parse::<LitStr>(input).map(load_book_from_fs) {
-        Ok(Ok(book)) => write_book(book),
-        Ok(Err(err)) => write_book_err(err),
-        Err(err) => err.to_compile_error().into(),
-    }
-}
 
 #[proc_macro]
 pub fn mdbook_router(input: TokenStream) -> TokenStream {
@@ -41,17 +30,6 @@ pub fn mdbook_router(input: TokenStream) -> TokenStream {
 fn write_book_err(err: anyhow::Error) -> TokenStream {
     let err = err.to_string();
     quote! { compile_error!(#err) }.to_token_stream().into()
-}
-
-fn write_book<L: Serialize + Hash + Eq>(book: mdbook_shared::MdBook<L>) -> TokenStream {
-    let sum = postcard::to_allocvec(&book).unwrap();
-    let bytes = sum.iter().map(|b| quote!(#b));
-
-    let out = quote! {
-        ::once_cell::sync::Lazy::new(|| ::use_mdbook::static_load(&[#(#bytes),*]))
-    };
-
-    out.to_token_stream().into()
 }
 
 /// Load an mdbook from the filesystem using the target tokens
@@ -108,43 +86,14 @@ fn generate_router(book: mdbook_shared::MdBook<PathBuf>) -> TokenStream2 {
 
     let book_pages = book.pages.values().map(|page| {
         let name = path_to_route_variant(&page.url);
-        let content = &page.content;
         // Rsx doesn't work very well in macros because the path for all the routes generated point to the same characters. We manulally expand rsx here to get around that issue.
         let template_name = format!("{}:0:0:0", page.url.to_string_lossy());
+        let rsx = rsx::parse(&page.raw).render_with_location(template_name);
         quote! {
             #[dioxus::prelude::inline_props]
             pub fn #name(cx: dioxus::prelude::Scope) -> dioxus::prelude::Element {
                 use dioxus::prelude::*;
-                Some({
-                    let __cx = cx;
-                    static TEMPLATE: ::dioxus::core::Template = ::dioxus::core::Template {
-                        name: #template_name,
-                        roots: &[
-                            ::dioxus::core::TemplateNode::Element {
-                                tag: dioxus_elements::div::TAG_NAME,
-                                namespace: dioxus_elements::div::NAME_SPACE,
-                                attrs: &[
-                                    ::dioxus::core::TemplateAttribute::Static {
-                                        name: dioxus_elements::div::dangerous_inner_html.0,
-                                        namespace: dioxus_elements::div::dangerous_inner_html.1,
-                                        value: #content,
-                                    },
-                                ],
-                                children: &[],
-                            },
-                        ],
-                        node_paths: &[],
-                        attr_paths: &[],
-                    };
-                    ::dioxus::core::VNode {
-                        parent: None,
-                        key: None,
-                        template: std::cell::Cell::new(TEMPLATE),
-                        root_ids: Default::default(),
-                        dynamic_nodes: __cx.bump().alloc([]),
-                        dynamic_attrs: __cx.bump().alloc([]),
-                    }
-                })
+                cx.render(#rsx)
             }
         }
     });
@@ -187,10 +136,12 @@ fn generate_router(book: mdbook_shared::MdBook<PathBuf>) -> TokenStream2 {
         let sections = page.sections.iter().map(|section| {
             let title = section.title.to_string();
             let id = section.id.to_string();
+            let level = section.level;
             quote! {
                 use_mdbook::mdbook_shared::Section {
                     title: #title.to_string(),
                     id: #id.to_string(),
+                    level: #level,
                 }
             }
         });
@@ -201,10 +152,6 @@ fn generate_router(book: mdbook_shared::MdBook<PathBuf>) -> TokenStream2 {
     });
 
     quote! {
-        #(
-            #book_pages
-        )*
-
         #[derive(Clone, Copy, dioxus_router::prelude::Routable, PartialEq, Eq, Hash, Debug, serde::Serialize, serde::Deserialize)]
         pub enum BookRoute {
             #(#book_routes)*
@@ -231,6 +178,10 @@ fn generate_router(book: mdbook_shared::MdBook<PathBuf>) -> TokenStream2 {
         pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRoute>> = use_mdbook::Lazy::new(|| {
             #mdbook
         });
+
+        #(
+            #book_pages
+        )*
     }
 }
 

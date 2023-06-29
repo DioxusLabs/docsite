@@ -19,3 +19,5 @@ serde_json = "1.0.96"
 macro_state = "0.2.0"
 convert_case = "0.6.0"
 postcard = { version = "1.0.4", features = ["use-std"] }
+dioxus-rsx = { path = "../../dioxus/packages/rsx" }
+pulldown-cmark = "0.9.3"

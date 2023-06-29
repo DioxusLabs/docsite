@@ -3,7 +3,7 @@ use pulldown_cmark::{CowStr, Event, Tag};
 use serde::{Deserialize, Serialize};
 use std::{borrow::Borrow, collections::HashMap, hash::Hash, path::PathBuf};
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Debug)]
 pub struct MdBook<R>
 where
     R: Hash + Eq,
@@ -14,7 +14,7 @@ where
     pub pages: HashMap<R, Page<R>>,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Debug)]
 pub struct Page<R> {
     pub title: String,
 
@@ -22,8 +22,8 @@ pub struct Page<R> {
 
     pub segments: Vec<String>,
 
-    // rendered as HTML
-    pub content: String,
+    // the raw markdown
+    pub raw: String,
 
     // headers
     pub sections: Vec<Section>,
@@ -31,6 +31,7 @@ pub struct Page<R> {
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Section {
+    pub level: usize,
     pub title: String,
     pub id: String,
 }
@@ -78,7 +79,6 @@ impl MdBook<PathBuf> {
         };
 
         let body = std::fs::read_to_string(md_file).unwrap();
-        let mut content = String::new();
 
         let parser = pulldown_cmark::Parser::new(&body);
 
@@ -86,41 +86,34 @@ impl MdBook<PathBuf> {
 
         let mut sections = Vec::new();
 
-        let parser = parser.filter_map(|event| match event {
-            Event::Start(Tag::Heading(level,..)) => {
+        parser.for_each(|event| match event {
+            Event::Start(Tag::Heading(level, ..)) => {
                 last_heading = Some(level);
-                None
             }
             Event::Text(text) => {
                 if let Some(current_level) = &mut last_heading {
                     let anchor = text
-                            .clone()
-                            .into_string()
-                            .trim()
-                            .to_lowercase()
-                            .replace(" ", "-");
+                        .clone()
+                        .into_string()
+                        .trim()
+                        .to_lowercase()
+                        .replace(" ", "-");
                     sections.push(Section {
+                        level: *current_level as usize,
                         title: text.to_string(),
                         id: anchor.clone(),
                     });
-                    let event = Event::Html(CowStr::from(format!(
-                        r##"<{current_level} id="{anchor}"><a class="header" href="#{anchor}">{text}</a>"##,
-                    )))
-                    .into();
-                    last_heading = None;
-                    return event;
-                }
-                Some(Event::Text(text))
-            }
-            _ => Some(event),
-        });
 
-        pulldown_cmark::html::push_html(&mut content, parser);
+                    last_heading = None;
+                }
+            }
+            _ => {}
+        });
 
         self.pages.insert(
             url.to_owned(),
             Page {
-                content,
+                raw: body,
                 segments: vec![],
                 url: url.to_owned(),
                 title: link.name.clone(),

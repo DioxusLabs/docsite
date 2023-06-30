@@ -23,13 +23,29 @@ where
 
 impl<R: Hash + Eq + Clone> MdBook<R> {
     /// Get a page from the book
-    pub fn get_page(&self, id: PageId) -> &Page<R> {
-        &self.pages[id.0]
+    pub fn get_page(&self, id: impl PageIndex<R>) -> &Page<R> {
+        &self.pages[id.into_page_index(self).0]
     }
 
     /// Get the pages
     pub fn pages(&self) -> &Slab<Page<R>> {
         &self.pages
+    }
+}
+
+pub trait PageIndex<T: Hash + Eq> {
+    fn into_page_index(self, book: &MdBook<T>) -> PageId;
+}
+
+impl<T: Hash + Eq> PageIndex<T> for PageId {
+    fn into_page_index(self, _book: &MdBook<T>) -> PageId {
+        self
+    }
+}
+
+impl<T: Hash + Eq> PageIndex<T> for &T {
+    fn into_page_index(self, book: &MdBook<T>) -> PageId {
+        book.page_id_mapping.get(self).copied().unwrap()
     }
 }
 
@@ -162,5 +178,5 @@ impl MdBook<PathBuf> {
 }
 
 /// An id for a page
-#[derive(Debug, Deserialize, Serialize, Clone, Copy)]
+#[derive(Debug, Deserialize, Serialize, Clone, Copy, PartialEq)]
 pub struct PageId(pub usize);

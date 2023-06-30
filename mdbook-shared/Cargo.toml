@@ -17,4 +17,7 @@ stork-lib = { version = "1.6.0", features = ["build-v3"], default-features = fal
 bytes = { version = "1.3.0", features = ["serde"] }
 slab = "0.4.8"
 
+[target.'cfg(arch = "wasm32")'.dependencies]
+getrandom = { version = "0.2", features = ["js"] }
+
 [features]

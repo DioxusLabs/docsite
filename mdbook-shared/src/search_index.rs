@@ -27,7 +27,7 @@ impl SearchIndex {
             .unwrap()
             .bytes;
 
-            stork_lib::register_index("index", bytes.clone()).unwrap();
+        stork_lib::register_index("index", bytes.clone()).unwrap();
 
         Self { index: bytes }
     }
@@ -35,9 +35,7 @@ impl SearchIndex {
     pub fn from_bytes<T: Into<Bytes>>(bytes: T) -> Self {
         let bytes = bytes.into();
         stork_lib::register_index("index", bytes.clone()).unwrap();
-        Self {
-            index: bytes
-        }
+        Self { index: bytes }
     }
 
     pub fn to_bytes(self) -> Bytes {
@@ -53,31 +51,35 @@ impl SearchIndex {
                 .excerpts
                 .into_iter()
                 .map(|excerpt| Excerpt {
-                    inner: excerpt.text,
+                    text: excerpt.text,
                     score: excerpt.score,
                 })
                 .collect();
             results.push(SearchResult {
                 id,
                 excerpts,
+                title: result.entry.title,
                 score: result.score,
             })
         }
+
+        results.sort_by_key(|result| result.score);
 
         Ok(results)
     }
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct SearchResult {
     pub id: PageId,
+    pub title: String,
     pub excerpts: Vec<Excerpt>,
     pub score: usize,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct Excerpt {
-    pub inner: String,
+    pub text: String,
     pub score: usize,
 }
 

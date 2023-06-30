@@ -1,6 +1,7 @@
-use crate::{search_index::{Embedding, SearchIndex}, *};
+use crate::{search_index::SearchIndex, *};
 use pulldown_cmark::{Event, Tag};
 use serde::{Deserialize, Serialize};
+use slab::Slab;
 use std::{collections::HashMap, hash::Hash, path::PathBuf};
 
 #[derive(Debug)]
@@ -10,23 +11,29 @@ where
 {
     pub summary: Summary<R>,
 
+    // a mapping between urls and page ids
+    pub page_id_mapping: HashMap<R, PageId>,
+
     // rendered pages to HTML
-    pub pages: HashMap<R, Page<R>>,
+    pub pages: Slab<Page<R>>,
 
     // search index
-    pub search_index: Option<SearchIndex<R>>,
+    pub search_index: Option<SearchIndex>,
 }
 
 impl<R: Hash + Eq + Clone> MdBook<R> {
-    /// Build the search index for the book
-    pub fn build_search_index(&mut self) {
-        let search_index = SearchIndex::from_book(self);
+    /// Get a page from the book
+    pub fn get_page(&self, id: PageId) -> &Page<R> {
+        &self.pages[id.0]
+    }
 
-        self.search_index = Some(search_index);
+    /// Get the pages
+    pub fn pages(&self) -> &Slab<Page<R>> {
+        &self.pages
     }
 }
 
-#[derive(Debug)]
+#[derive(Debug, Serialize, Deserialize)]
 pub struct Page<R> {
     pub title: String,
 
@@ -40,7 +47,7 @@ pub struct Page<R> {
     // headers
     pub sections: Vec<Section>,
 
-    pub embedding: Embedding,
+    pub id: PageId,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
@@ -59,7 +66,8 @@ impl MdBook<PathBuf> {
 
         let mut book = Self {
             summary,
-            pages: HashMap::new(),
+            page_id_mapping: Default::default(),
+            pages: Default::default(),
             search_index: None,
         };
 
@@ -79,33 +87,6 @@ impl MdBook<PathBuf> {
 
         for chapter in chapters {
             self.populate_page(mdbook_root.clone(), chapter);
-        }
-
-        // create the embeddings
-        #[cfg(features = "build_embeddings")]
-        {
-            let model = crate::load_model::download();
-            for page in self.pages.values_mut() {
-                let inference_parameters = llm::InferenceParameters::default();
-                let new_embedding =
-                    get_embeddings(model.as_ref(), &inference_parameters, page.title);
-                let mut session = model.start_session(Default::default());
-                let mut output_request = llm::OutputRequest {
-                    all_logits: None,
-                    embeddings: Some(Vec::new()),
-                };
-                let _ = session.feed_prompt(
-                    model,
-                    inference_parameters,
-                    embed,
-                    &mut output_request,
-                    |_| Ok::<_, std::convert::Infallible>(llm::InferenceFeedback::Halt),
-                );
-
-                page.embedding = Embedding {
-                    vector: output_request.embeddings.unwrap(),
-                };
-            }
         }
     }
 
@@ -152,17 +133,18 @@ impl MdBook<PathBuf> {
             _ => {}
         });
 
-        self.pages.insert(
-            url.to_owned(),
-            Page {
-                raw: body,
-                segments: vec![],
-                url: url.to_owned(),
-                title: link.name.clone(),
-                sections,
-                embedding: Embedding::default(),
-            },
-        );
+        let entry = self.pages.vacant_entry();
+        let id = query::PageId(entry.key());
+        entry.insert(Page {
+            raw: body,
+            segments: vec![],
+            url: url.to_owned(),
+            title: link.name.clone(),
+            sections,
+            id,
+        });
+
+        self.page_id_mapping.insert(url.to_owned(), id);
 
         for nested in link.nested_items.iter() {
             self.populate_page(mdbook_root.clone(), &nested);
@@ -178,3 +160,7 @@ impl MdBook<PathBuf> {
         pulldown_cmark::html::push_html(&mut out, parser);
     }
 }
+
+/// An id for a page
+#[derive(Debug, Deserialize, Serialize, Clone, Copy)]
+pub struct PageId(pub usize);

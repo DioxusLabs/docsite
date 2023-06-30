@@ -22,7 +22,7 @@ mod transform_book;
 #[proc_macro]
 pub fn mdbook_router(input: TokenStream) -> TokenStream {
     match syn::parse::<LitStr>(input).map(load_book_from_fs) {
-        Ok(Ok(book)) => generate_router(book).into(),
+        Ok(Ok((path, book))) => generate_router(path, book).into(),
         Ok(Err(err)) => write_book_err(err),
         Err(err) => err.to_compile_error().into(),
     }
@@ -38,10 +38,11 @@ fn write_book_err(err: anyhow::Error) -> TokenStream {
 ///
 ///
 /// ```
-fn load_book_from_fs(input: LitStr) -> anyhow::Result<mdbook_shared::MdBook<PathBuf>> {
+fn load_book_from_fs(input: LitStr) -> anyhow::Result<(PathBuf, mdbook_shared::MdBook<PathBuf>)> {
     let user_dir = input.value().parse::<PathBuf>()?;
     let manifest_dir = PathBuf::from(std::env::var("CARGO_MANIFEST_DIR")?);
-    MdBook::new(manifest_dir.join(user_dir))
+    let path = manifest_dir.join(user_dir);
+    Ok((path.clone(), MdBook::new(path)?))
 }
 
 const STATE_DIR: &'static str = env!("DIOXUS_ASSET_DIR");
@@ -82,10 +83,10 @@ fn clear_assets_file(key: &str) -> std::io::Result<()> {
     }
 }
 
-fn generate_router(book: mdbook_shared::MdBook<PathBuf>) -> TokenStream2 {
-    let mdbook = write_book_with_routes(&book);
+fn generate_router(book_path: PathBuf, book: mdbook_shared::MdBook<PathBuf>) -> TokenStream2 {
+    let mdbook = write_book_with_routes(book_path, &book);
 
-    let book_pages = book.pages.values().map(|page| {
+    let book_pages = book.pages().iter().map(|(_, page)| {
         let name = path_to_route_variant(&page.url);
         // Rsx doesn't work very well in macros because the path for all the routes generated point to the same characters. We manulally expand rsx here to get around that issue.
         let template_name = format!("{}:0:0:0", page.url.to_string_lossy());
@@ -112,10 +113,10 @@ fn generate_router(book: mdbook_shared::MdBook<PathBuf>) -> TokenStream2 {
     });
 
     let default_impl = book
-        .pages
-        .values()
-        .min_by_key(|page| page.url.to_string_lossy().len())
-        .map(|page| {
+        .pages()
+        .iter()
+        .min_by_key(|(_, page)| page.url.to_string_lossy().len())
+        .map(|(_, page)| {
             let name = path_to_route_enum(&page.url);
             quote! {
                 impl Default for BookRoute {
@@ -126,7 +127,7 @@ fn generate_router(book: mdbook_shared::MdBook<PathBuf>) -> TokenStream2 {
             }
         });
 
-    let book_routes = book.pages.values().map(|page| {
+    let book_routes = book.pages().iter().map(|(_, page)| {
         let name = path_to_route_variant(&page.url);
         let route_without_extension = page.url.with_extension("");
         // remove any trailing "index"
@@ -144,7 +145,7 @@ fn generate_router(book: mdbook_shared::MdBook<PathBuf>) -> TokenStream2 {
         }
     });
 
-    let sections =book.pages.values().map(|page| {
+    let sections =book.pages().iter().map(|(_, page)| {
         let variant = path_to_route_enum(&page.url);
         let sections = page.sections.iter().map(|section| {
             let title = section.title.to_string();
@@ -189,9 +190,7 @@ fn generate_router(book: mdbook_shared::MdBook<PathBuf>) -> TokenStream2 {
         #default_impl
 
         pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRoute>> = use_mdbook::Lazy::new(|| {
-            let mut mdbook = #mdbook;
-            mdbook.build_search_index();
-            mdbook
+            #mdbook
         });
 
         #(

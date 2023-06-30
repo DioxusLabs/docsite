@@ -1,5 +1,6 @@
 use std::path::PathBuf;
 
+use mdbook_shared::search_index::SearchIndex;
 use mdbook_shared::MdBook;
 use mdbook_shared::Page;
 use mdbook_shared::Section;
@@ -12,25 +13,41 @@ use quote::ToTokens;
 use crate::path_to_route_enum;
 
 /// Transforms the book to use enum routes instead of paths
-pub fn write_book_with_routes(book: &mdbook_shared::MdBook<PathBuf>) -> TokenStream {
-    let MdBook { summary, pages, .. } = book;
+pub fn write_book_with_routes(
+    book_path: PathBuf,
+    book: &mdbook_shared::MdBook<PathBuf>,
+) -> TokenStream {
+    let index = SearchIndex::from_book(book_path, &book);
+    let index_bytes = index.to_bytes().into_iter().map(|b| {
+        quote! {
+            #b
+        }
+    });
+    let search_index = quote! {
+        &[#(#index_bytes),*] as &'static [u8]
+    };
+
+    let MdBook { summary, .. } = book;
     let summary = write_summary_with_routes(summary);
-    let pages = pages.iter().map(|(k, v)| {
-        let name = path_to_route_enum(&k);
+    let pages = book.pages().iter().map(|(id, v)| {
+        let name = path_to_route_enum(&v.url);
         let page = write_page_with_routes(v);
         quote! {
-            pages.insert(#name, #page);
+            pages.push((#id, #page));
+            page_id_mapping.insert(#name, ::use_mdbook::mdbook_shared::PageId(#id));
         }
     });
 
     let out = quote! {
         {
-            let mut pages = ::std::collections::HashMap::new();
+            let mut page_id_mapping = ::std::collections::HashMap::new();
+            let mut pages = Vec::new();
             #(#pages)*
             ::use_mdbook::mdbook_shared::MdBook {
                 summary: #summary,
-                pages,
-                search_index: None
+                pages: pages.into_iter().collect(),
+                page_id_mapping,
+                search_index: Some(::use_mdbook::mdbook_shared::search_index::SearchIndex::from_bytes(#search_index)),
             }
         }
     };
@@ -148,7 +165,7 @@ fn write_page_with_routes(book: &mdbook_shared::Page<PathBuf>) -> TokenStream {
         segments,
         sections,
         raw,
-        embedding
+        id,
     } = book;
 
     let segments = segments.iter().map(|segment| {
@@ -162,11 +179,7 @@ fn write_page_with_routes(book: &mdbook_shared::Page<PathBuf>) -> TokenStream {
         .map(|section| write_section_with_routes(section));
 
     let url = path_to_route_enum(&url);
-    let embedding = embedding.iter().map(|embed| {
-        quote! {
-            #embed()
-        }
-    });
+    let id = id.0;
 
     quote! {
         ::use_mdbook::mdbook_shared::Page {
@@ -175,7 +188,7 @@ fn write_page_with_routes(book: &mdbook_shared::Page<PathBuf>) -> TokenStream {
             segments: vec![#(#segments,)*],
             sections: vec![#(#sections,)*],
             raw: #raw.to_string(),
-            embedding: ::use_mdbook::mdbook_shared::search_index::Embedding::new(vec![#(#embedding,)*]),
+            id: ::use_mdbook::mdbook_shared::PageId(#id),
         }
     }
 }

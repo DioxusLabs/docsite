@@ -1,93 +1,156 @@
-use std::{fmt::Debug, hash::Hash, ops::Deref};
+use std::{collections::HashMap, fmt::Debug, path::PathBuf};
 
-use instant_distance::{Builder, HnswMap, Search};
+use bytes::Bytes;
 use serde::{Deserialize, Serialize};
+use stork_lib::{build_index, SearchError};
 
-use crate::MdBook;
+use crate::{MdBook, PageId};
 
-#[derive( Deserialize, Serialize)]
-pub struct SearchIndex<T> {
-    model: HnswMap<Embedding, T>,
+#[derive(Deserialize, Serialize)]
+pub struct SearchIndex {
+    index: Bytes,
 }
 
-impl<T> Debug for SearchIndex<T>{
+impl Debug for SearchIndex {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        f.debug_struct("SearchIndex")
-            .finish()
+        f.debug_struct("SearchIndex").finish()
     }
 }
 
-impl<T: Clone + PartialEq> SearchIndex<T> {
-    pub fn from_book(book: &MdBook<T>) -> Self where T: Hash+Eq{
-        let mut points = Vec::new();
-        let mut values = Vec::new();
+impl SearchIndex {
+    pub fn from_book(book_path: PathBuf, book: &MdBook<PathBuf>) -> Self {
+        let en_path = book_path.join("en");
+        let asset_format = Config::from_book(en_path.to_string_lossy().into(), book);
 
-        for (url, page) in &book.pages {
-            points.push(page.embedding.clone());
-            values.push(url.clone());
-        }
+        let toml = toml::to_string(&asset_format).unwrap();
+        let bytes = build_index(&stork_lib::Config::try_from(&*toml).unwrap())
+            .unwrap()
+            .bytes;
 
-        Self::new(points, values)
+            stork_lib::register_index("index", bytes.clone()).unwrap();
+
+        Self { index: bytes }
     }
 
-    pub fn new(points: Vec<Embedding>, values: Vec<T>) -> Self {
-        let points = points.into_iter().map(|e| e).collect();
-        let model = Builder::default().build(points, values);
-
-        SearchIndex { model }
-    }
-
-    pub fn get_closest(&self, embedding: Embedding, n: usize) -> Vec<T> {
-        let mut search = Search::default();
-        self.model
-            .search(&embedding, &mut search)
-            .take(n)
-            .map(|result| result.value.clone())
-            .collect()
-    }
-}
-
-impl instant_distance::Point for Embedding {
-    fn distance(&self, other: &Self) -> f32 {
-        1. - cosine_similarity(&self.vector, &other.vector)
-    }
-}
-
-fn cosine_similarity(v1: &[f32], v2: &[f32]) -> f32 {
-    let dot_product = dot(v1, v2);
-    let magnitude1 = magnitude(v1);
-    let magnitude2 = magnitude(v2);
-
-    dot_product / (magnitude1 * magnitude2)
-}
-
-fn dot(v1: &[f32], v2: &[f32]) -> f32 {
-    v1.iter().zip(v2.iter()).map(|(&x, &y)| x * y).sum()
-}
-
-fn magnitude(v: &[f32]) -> f32 {
-    v.iter().map(|&x| x * x).sum::<f32>().sqrt()
-}
-
-#[derive(Clone, Debug, Deserialize, Serialize, Default)]
-/// A document embedding for a page.
-pub struct Embedding {
-    vector: Vec<f32>,
-}
-
-
-impl Embedding{
-    pub fn new(vector: Vec<f32>) -> Self{
-        Self{
-            vector
+    pub fn from_bytes<T: Into<Bytes>>(bytes: T) -> Self {
+        let bytes = bytes.into();
+        stork_lib::register_index("index", bytes.clone()).unwrap();
+        Self {
+            index: bytes
         }
     }
+
+    pub fn to_bytes(self) -> Bytes {
+        self.index
+    }
+
+    pub fn search(&self, text: &str) -> Result<Vec<SearchResult>, SearchError> {
+        let output = stork_lib::search_from_cache("index", text)?;
+        let mut results = Vec::new();
+        for result in output.results {
+            let id = PageId(result.entry.url.parse().unwrap());
+            let excerpts = result
+                .excerpts
+                .into_iter()
+                .map(|excerpt| Excerpt {
+                    inner: excerpt.text,
+                    score: excerpt.score,
+                })
+                .collect();
+            results.push(SearchResult {
+                id,
+                excerpts,
+                score: result.score,
+            })
+        }
+
+        Ok(results)
+    }
 }
 
-impl Deref for Embedding {
-    type Target = Vec<f32>;
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct SearchResult {
+    pub id: PageId,
+    pub excerpts: Vec<Excerpt>,
+    pub score: usize,
+}
 
-    fn deref(&self) -> &Self::Target {
-        &self.vector
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct Excerpt {
+    pub inner: String,
+    pub score: usize,
+}
+
+#[derive(Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct Config {
+    pub input: InputConfig,
+}
+
+impl Config {
+    fn from_book(base_directory: String, book: &MdBook<PathBuf>) -> Self {
+        let mut files = Vec::new();
+        for (_, page) in book.pages() {
+            files.push(File {
+                path: page.url.to_string_lossy().to_string(),
+                url: { page.id.0.to_string() },
+                title: page.title.clone(),
+                fields: HashMap::new(),
+                explicit_source: None,
+            })
+        }
+
+        Self {
+            input: InputConfig {
+                base_directory,
+                url_prefix: "".into(),
+                html_selector: None,
+                files,
+                break_on_file_error: false,
+                minimum_indexed_substring_length: 3,
+                minimum_index_ideographic_substring_length: 1,
+            },
+        }
     }
+}
+
+#[derive(Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct InputConfig {
+    base_directory: String,
+    url_prefix: String,
+    html_selector: Option<String>,
+
+    files: Vec<File>,
+
+    break_on_file_error: bool,
+
+    minimum_indexed_substring_length: u8,
+
+    minimum_index_ideographic_substring_length: u8,
+}
+
+#[derive(Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
+struct File {
+    path: String,
+    url: String,
+    title: String,
+    #[serde(flatten, default)]
+    pub fields: HashMap<String, String>,
+    #[serde(flatten)]
+    pub explicit_source: Option<DataSource>,
+}
+
+#[derive(Serialize, Deserialize)]
+pub enum DataSource {
+    #[serde(rename = "contents")]
+    Contents(String),
+
+    #[serde(rename = "src_url")]
+    #[allow(clippy::upper_case_acronyms)]
+    URL(String),
+
+    #[serde(rename = "path")]
+    FilePath(String),
 }

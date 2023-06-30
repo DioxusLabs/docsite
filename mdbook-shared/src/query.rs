@@ -1,4 +1,4 @@
-use crate::*;
+use crate::{search_index::{Embedding, SearchIndex}, *};
 use pulldown_cmark::{Event, Tag};
 use serde::{Deserialize, Serialize};
 use std::{collections::HashMap, hash::Hash, path::PathBuf};
@@ -12,6 +12,18 @@ where
 
     // rendered pages to HTML
     pub pages: HashMap<R, Page<R>>,
+
+    // search index
+    pub search_index: Option<SearchIndex<R>>,
+}
+
+impl<R: Hash + Eq + Clone> MdBook<R> {
+    /// Build the search index for the book
+    pub fn build_search_index(&mut self) {
+        let search_index = SearchIndex::from_book(self);
+
+        self.search_index = Some(search_index);
+    }
 }
 
 #[derive(Debug)]
@@ -27,6 +39,8 @@ pub struct Page<R> {
 
     // headers
     pub sections: Vec<Section>,
+
+    pub embedding: Embedding,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
@@ -46,6 +60,7 @@ impl MdBook<PathBuf> {
         let mut book = Self {
             summary,
             pages: HashMap::new(),
+            search_index: None,
         };
 
         book.populate(mdbook_root);
@@ -64,6 +79,33 @@ impl MdBook<PathBuf> {
 
         for chapter in chapters {
             self.populate_page(mdbook_root.clone(), chapter);
+        }
+
+        // create the embeddings
+        #[cfg(features = "build_embeddings")]
+        {
+            let model = crate::load_model::download();
+            for page in self.pages.values_mut() {
+                let inference_parameters = llm::InferenceParameters::default();
+                let new_embedding =
+                    get_embeddings(model.as_ref(), &inference_parameters, page.title);
+                let mut session = model.start_session(Default::default());
+                let mut output_request = llm::OutputRequest {
+                    all_logits: None,
+                    embeddings: Some(Vec::new()),
+                };
+                let _ = session.feed_prompt(
+                    model,
+                    inference_parameters,
+                    embed,
+                    &mut output_request,
+                    |_| Ok::<_, std::convert::Infallible>(llm::InferenceFeedback::Halt),
+                );
+
+                page.embedding = Embedding {
+                    vector: output_request.embeddings.unwrap(),
+                };
+            }
         }
     }
 
@@ -118,6 +160,7 @@ impl MdBook<PathBuf> {
                 url: url.to_owned(),
                 title: link.name.clone(),
                 sections,
+                embedding: Embedding::default(),
             },
         );
 
@@ -133,14 +176,5 @@ impl MdBook<PathBuf> {
         let parser = pulldown_cmark::Parser::new(&markdown);
         let mut out = String::new();
         pulldown_cmark::html::push_html(&mut out, parser);
-    }
-}
-
-impl<R> MdBook<R>
-where
-    R: Hash + Eq,
-{
-    fn get_page(&self, path: &R) -> Option<&Page<R>> {
-        self.pages.get(path)
     }
 }

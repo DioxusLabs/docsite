@@ -13,7 +13,7 @@ use crate::path_to_route_enum;
 
 /// Transforms the book to use enum routes instead of paths
 pub fn write_book_with_routes(book: &mdbook_shared::MdBook<PathBuf>) -> TokenStream {
-    let MdBook { summary, pages } = book;
+    let MdBook { summary, pages, .. } = book;
     let summary = write_summary_with_routes(summary);
     let pages = pages.iter().map(|(k, v)| {
         let name = path_to_route_enum(&k);
@@ -29,7 +29,8 @@ pub fn write_book_with_routes(book: &mdbook_shared::MdBook<PathBuf>) -> TokenStr
             #(#pages)*
             ::use_mdbook::mdbook_shared::MdBook {
                 summary: #summary,
-                pages
+                pages,
+                search_index: None
             }
         }
     };
@@ -147,6 +148,7 @@ fn write_page_with_routes(book: &mdbook_shared::Page<PathBuf>) -> TokenStream {
         segments,
         sections,
         raw,
+        embedding
     } = book;
 
     let segments = segments.iter().map(|segment| {
@@ -160,6 +162,11 @@ fn write_page_with_routes(book: &mdbook_shared::Page<PathBuf>) -> TokenStream {
         .map(|section| write_section_with_routes(section));
 
     let url = path_to_route_enum(&url);
+    let embedding = embedding.iter().map(|embed| {
+        quote! {
+            #embed()
+        }
+    });
 
     quote! {
         ::use_mdbook::mdbook_shared::Page {
@@ -167,7 +174,8 @@ fn write_page_with_routes(book: &mdbook_shared::Page<PathBuf>) -> TokenStream {
             url: #url,
             segments: vec![#(#segments,)*],
             sections: vec![#(#sections,)*],
-            raw: #raw.to_string()
+            raw: #raw.to_string(),
+            embedding: ::use_mdbook::mdbook_shared::search_index::Embedding::new(vec![#(#embedding,)*]),
         }
     }
 }

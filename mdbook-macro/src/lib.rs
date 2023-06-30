@@ -189,7 +189,9 @@ fn generate_router(book: mdbook_shared::MdBook<PathBuf>) -> TokenStream2 {
         #default_impl
 
         pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRoute>> = use_mdbook::Lazy::new(|| {
-            #mdbook
+            let mut mdbook = #mdbook;
+            mdbook.build_search_index();
+            mdbook
         });
 
         #(

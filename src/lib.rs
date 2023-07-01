@@ -1,11 +1,11 @@
 #![allow(non_snake_case, non_upper_case_globals)]
 
 use crate::components::blog::*;
-use crate::docs::BookRoute;
 use dioxus::html::input_data::keyboard_types::{Key, Modifiers};
 use dioxus::prelude::*;
 use dioxus_router::prelude::*;
 use serde::{Deserialize, Serialize};
+pub use docs::BookRoute;
 
 macro_rules! export_items {
     (
@@ -67,6 +67,14 @@ mod docs {
     use_mdbook::mdbook_router! {"./docs"}
 }
 
+mod blog_posts {
+    use dioxus::prelude::*;
+
+    use_mdbook::mdbook_router! {"./blog"}
+}
+
+pub use blog_posts::BookRoute as BlogRoute;
+
 #[derive(Clone, Routable, PartialEq, Eq, Serialize, Deserialize)]
 #[rustfmt::skip]
 pub enum Route {
@@ -87,16 +95,10 @@ pub enum Route {
         #[nest("/blog")]
             #[route("/")]
             BlogList {},
-            #[route("/going-fulltime")]
-            GoingFulltime {},
-            #[route("/release-030")]
-            Release030 {},
-            #[route("/release-020")]
-            Release020 {},
-            #[route("/introducing-dioxus")]
-            IntroducingDioxus {},
-            #[route("/templates-diffing/")]
-            TemplatesDiffing {},
+            #[layout(BlogPost)]
+                #[child("/")]
+                Blog { child: BlogRoute },
+            #[end_layout]
         #[end_nest]
         #[route("/:...segments")]
         Err404 { segments: Vec<String> },

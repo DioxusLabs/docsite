@@ -23,7 +23,7 @@ pub fn Homepage(cx: Scope) -> Element {
             // JumpStart {}
             featured_examples::FeaturedExamples {}
 
-            crate::components::blog::RecentBlogPosts {}
+            crate::components::blog::BlogList {}
             Stats {}
 
             // ensure Prism is able to highlight all our code elements

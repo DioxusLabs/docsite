@@ -1,5 +1,4 @@
 use crate::docs::LAZY_BOOK;
-use std::path::PathBuf;
 
 use dioxus::prelude::*;
 use crate::*;
@@ -156,7 +155,6 @@ fn Content(cx: Scope) -> Element {
     render! {
         section { class: "text-gray-600 body-font overflow-hidden dark:bg-ideblack mx-auto container pt-12 pb-12 max-w-screen-md",
             div { class: "-my-8",
-                script { "Prism.highlightAll()" }
                 div { class: "flex w-full mb-20 flex-wrap list-none",
                     style {
                         ".markdown-body ul {{ list-style: disc; }}"
@@ -165,7 +163,6 @@ fn Content(cx: Scope) -> Element {
                     article { class: "markdown-body pt-1",
                         Outlet {}
                     }
-                    script { "Prism.highlightAll()" }
                 }
             }
         }

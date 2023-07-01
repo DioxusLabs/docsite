@@ -11,86 +11,6 @@ pub struct BlogPost {
     pub content: &'static str,
 }
 
-pub const POST_TEMPLATE: BlogPost = BlogPost {
-    category: "Tech",
-    date: "Dec 11, 2022",
-    title: "Making Dioxus (almost) as fast as SolidJS",
-    description:
-        "Using a new technique called subtree memoization, Dioxus is now almost as fast as SolidJS.",
-    link: Route::TemplatesDiffing {},
-    content: include_str!("../../../posts/templates.html"),
-};
-
-#[inline_props]
-pub fn TemplatesDiffing(cx: Scope) -> Element {
-    render!{ SinglePost { post: POST_FULLTINME } }
-}
-
-pub const POST_FULLTINME: BlogPost = BlogPost {
-    category: "Misc",
-    date: "May 5 2023",
-    title: "Going full time on Dioxus",
-    description:
-        "Dioxus is now my full time job! I'm so excited to be able to work on this full time.",
-    link: Route::GoingFulltime {},
-    content: include_str!("../../../posts/fulltime.html"),
-};
-
-#[inline_props]
-pub fn GoingFulltime(cx: Scope) -> Element {
-    render!{ SinglePost { post: POST_FULLTINME } }
-}
-
-pub const POST_RELEASE_030: BlogPost = BlogPost {
-    category: "Release Notes",
-    date: "Feb 8 2023",
-    title: "Announcing Dioxus 0.3",
-    description: "The next big release of Dioxus is here! Templates, autoformatting, multiwindow support, and more!",
-    link: Route::Release030 {},
-    content: include_str!("../../../posts/release030.html"),
-};
-
-#[inline_props]
-pub fn Release030(cx: Scope) -> Element {
-    render!{ SinglePost { post: POST_RELEASE_030 } }
-}
-
-pub const POST_RELEASE_020: BlogPost = BlogPost {
-    category: "Release Notes",
-    date: "Mar 9 2022",
-    title: "Announcing Dioxus 0.2",
-    description: "Just over two months in, and we already have a ton of awesome changes to Dioxus!",
-    link: Route::Release020 {},
-    content: include_str!("../../../posts/release020.html"),
-};
-
-#[inline_props]
-pub fn Release020(cx: Scope) -> Element {
-    render!{ SinglePost { post: POST_RELEASE_020 } }
-}
-
-pub const POST_RELEASE_010: BlogPost = BlogPost {
-    category: "Release Notes",
-    date: "Jan 3 2022",
-    title: "Announcing Dioxus 0.1",
-    description: "After months of work, we're very excited to release the first version of Dioxus! Dioxus is a new library for building interactive user interfaces with Rust. It is built around a VirtualDOM, making it portable for the web, desktop, server, mobile, and more.",
-    link: Route::IntroducingDioxus {},
-    content: include_str!("../../../posts/release.html"),
-};
-
-#[inline_props]
-pub fn IntroducingDioxus(cx: Scope) -> Element {
-    render!{ SinglePost { post: POST_RELEASE_010 } }
-}
-
-pub const POSTS: &[BlogPost] = &[
-    POST_FULLTINME,
-    POST_RELEASE_030,
-    POST_TEMPLATE,
-    POST_RELEASE_020,
-    POST_RELEASE_010,
-];
-
 #[inline_props]
 pub fn BlogList(cx: Scope) -> Element {
     cx.render(rsx!(
@@ -102,7 +22,7 @@ pub fn BlogList(cx: Scope) -> Element {
                     section { class: "body-font overflow-hidden dark:bg-ideblack",
                         div { class: "container px-6 mx-auto",
                             div { class: "-my-8 divide-y-2 divide-gray-100",
-                                POSTS.iter().enumerate().map(|(id, post)| rsx! { BlogPostItem { post: post, id: id } })
+                                BlogRoute::static_routes().into_iter().map(|route| rsx! { BlogPostItem { route: route } })
                             }
                         }
                     }
@@ -113,21 +33,21 @@ pub fn BlogList(cx: Scope) -> Element {
 }
 
 #[inline_props]
-pub fn SinglePost(cx: Scope, post: BlogPost) -> Element {
-    let BlogPost { content, .. } = post;
-
+pub fn BlogPost(cx: Scope) -> Element {
     cx.render(rsx! {
-        section { class: "text-gray-600 body-font overflow-hidden dark:bg-ideblack",
-            div { class: "container lg:px-20 xl:px-48 pt-12 pb-12 mx-auto",
-                div { class: "-my-8",
-                    script { "Prism.highlightAll()" }
-                    div { class: "flex w-full mb-20 flex-wrap list-none",
-                        style {
-                            ".markdown-body ul {{ list-style: disc; }}"
-                            ".markdown-body li {{ display: list-item; }}"
+        div { class: "w-full pt-12 text-sm dark:bg-ideblack", min_height: "100vh",
+            div { class: "max-w-screen-2xl flex flex-row justify-between mx-auto dark:text-white",
+                section { class: "text-gray-600 body-font overflow-hidden dark:bg-ideblack mx-auto container pt-12 pb-12 max-w-screen-md",
+                    div { class: "-my-8",
+                        div { class: "flex w-full mb-20 flex-wrap list-none",
+                            style {
+                                ".markdown-body ul {{ list-style: disc; }}"
+                                ".markdown-body li {{ display: list-item; }}"
+                            }
+                            article { class: "markdown-body pt-1",
+                                Outlet {}
+                            }
                         }
-                        article { class: "markdown-body", dangerous_inner_html: format_args!("{}", content) }
-                        script { "Prism.highlightAll()" }
                     }
                 }
             }
@@ -147,52 +67,26 @@ fn BlogHeader(cx: Scope) -> Element {
     ))
 }
 
-pub static RecentBlogPosts: Component<()> = |cx| {
-    cx.render(rsx! {
-        section { class: "body-font overflow-hidden dark:bg-ideblack",
-            div { class: "container px-6 lg:px-40 pt-24 pb-36 mx-auto max-w-screen-xl",
-                div { class: "flex flex-col w-full mb-10",
-                    h1 { class: "sm:text-3xl text-2xl font-medium title-font mb-4 dark:text-white font-mono",
-                        "Recent Blog Posts"
-                    }
-                }
-                div { class: "-my-8 divide-y-2 divide-gray-100",
-                    POSTS.iter().enumerate().map(|(id, post)| rsx!{ BlogPostItem { post: post, id: id } })
-                }
-            }
-        }
-    })
-};
-
 #[inline_props]
-fn BlogPostItem(cx: Scope, post: &'static BlogPost, id: usize) -> Element {
-    let BlogPost {
-        category,
-        date,
-        title,
-        description,
-        link,
-        ..
-    } = post;
+fn BlogPostItem(cx: Scope, route: BlogRoute) -> Element {
+    let page = route.page();
+    let title = &page.title;
+    let link = route.clone();
 
-    cx.render(rsx!(
+    render! {
         div { class: "py-8 flex flex-wrap md:flex-nowrap",
-            div { class: "md:w-32 md:mb-0 mb-6 flex-shrink-0 flex flex-col",
-                span { class: "font-semibold title-font text-gray-700 dark:text-white", "{category}" }
-                span { class: "mt-1 text-gray-500 text-sm", "{date}" }
-            }
+            // div { class: "md:w-32 md:mb-0 mb-6 flex-shrink-0 flex flex-col",
+            //     span { class: "mt-1 text-gray-500 text-sm", "{date}" }
+            // }
             div { class: "md:flex-grow",
                 h2 { class: "text-2xl font-medium text-gray-900 title-font mb-2 dark:text-white",
                     "{title}"
                 }
-                p { class: "leading-relaxed dark:text-white text-base dark:opacity-75",
-                    "{description}"
-                }
-                Link { class: "text-indigo-500 inline-flex items-center mt-2", target: link.clone(),
+                Link { class: "text-indigo-500 inline-flex items-center mt-2", target: Route::Blog { child: link.clone() },
                     "Read more"
                     icons::ArrowRight {}
                 }
             }
         }
-    ))
+    }
 }

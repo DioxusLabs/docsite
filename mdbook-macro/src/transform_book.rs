@@ -9,6 +9,9 @@ use mdbook_shared::SummaryItem;
 use proc_macro2::TokenStream;
 use quote::quote;
 use quote::ToTokens;
+use yazi::compress;
+use yazi::CompressionLevel;
+use yazi::Format;
 
 use crate::path_to_route_enum;
 
@@ -18,7 +21,8 @@ pub fn write_book_with_routes(
     book: &mdbook_shared::MdBook<PathBuf>,
 ) -> TokenStream {
     let index = SearchIndex::from_book(book_path, book);
-    let index_bytes = index.to_bytes().into_iter().map(|b| {
+    let compressed = compress(&index.to_bytes(), Format::Zlib, CompressionLevel::Default).unwrap();
+    let index_bytes = compressed.into_iter().map(|b| {
         quote! {
             #b
         }
@@ -47,7 +51,10 @@ pub fn write_book_with_routes(
                 summary: #summary,
                 pages: pages.into_iter().collect(),
                 page_id_mapping,
-                search_index: Some(::use_mdbook::mdbook_shared::search_index::SearchIndex::from_bytes(#search_index)),
+                search_index: Some({
+                    let (bytes, _) = ::use_mdbook::yazi::decompress(#search_index, ::use_mdbook::yazi::Format::Zlib).unwrap();
+                    ::use_mdbook::mdbook_shared::search_index::SearchIndex::from_bytes(bytes)
+                }),
             }
         }
     };
@@ -63,15 +70,9 @@ fn write_summary_with_routes(book: &mdbook_shared::Summary<PathBuf>) -> TokenStr
         suffix_chapters,
     } = book;
 
-    let prefix_chapters = prefix_chapters
-        .iter()
-        .map(write_summary_item_with_routes);
-    let numbered_chapters = numbered_chapters
-        .iter()
-        .map(write_summary_item_with_routes);
-    let suffix_chapters = suffix_chapters
-        .iter()
-        .map(write_summary_item_with_routes);
+    let prefix_chapters = prefix_chapters.iter().map(write_summary_item_with_routes);
+    let numbered_chapters = numbered_chapters.iter().map(write_summary_item_with_routes);
+    let suffix_chapters = suffix_chapters.iter().map(write_summary_item_with_routes);
     let title = match title {
         Some(title) => quote! { Some(#title.to_string()) },
         None => quote! { None },
@@ -131,9 +132,7 @@ fn write_link_with_routes(book: &mdbook_shared::Link<PathBuf>) -> TokenStream {
         None => quote! {None},
     };
 
-    let nested_items = nested_items
-        .iter()
-        .map(write_summary_item_with_routes);
+    let nested_items = nested_items.iter().map(write_summary_item_with_routes);
 
     quote! {
         ::use_mdbook::mdbook_shared::Link {
@@ -164,7 +163,7 @@ fn write_page_with_routes(book: &mdbook_shared::Page<PathBuf>) -> TokenStream {
         url,
         segments,
         sections,
-        raw,
+        raw: _,
         id,
     } = book;
 
@@ -174,9 +173,7 @@ fn write_page_with_routes(book: &mdbook_shared::Page<PathBuf>) -> TokenStream {
         }
     });
 
-    let sections = sections
-        .iter()
-        .map(write_section_with_routes);
+    let sections = sections.iter().map(write_section_with_routes);
 
     let url = path_to_route_enum(url);
     let id = id.0;
@@ -187,7 +184,7 @@ fn write_page_with_routes(book: &mdbook_shared::Page<PathBuf>) -> TokenStream {
             url: #url,
             segments: vec![#(#segments,)*],
             sections: vec![#(#sections,)*],
-            raw: #raw.to_string(),
+            raw: String::new(),
             id: ::use_mdbook::mdbook_shared::PageId(#id),
         }
     }

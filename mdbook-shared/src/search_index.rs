@@ -1,4 +1,4 @@
-use std::{collections::HashMap, fmt::Debug, path::PathBuf};
+use std::{collections::HashMap, fmt::Debug, path::PathBuf, sync::atomic::AtomicU32};
 
 use bytes::Bytes;
 use serde::{Deserialize, Serialize};
@@ -6,9 +6,16 @@ use stork_lib::{build_index, SearchError};
 
 use crate::{MdBook, PageId};
 
+static SEARCH_INDEX: AtomicU32 = AtomicU32::new(0);
+
+fn take_index() -> u32 {
+    SEARCH_INDEX.fetch_add(1, std::sync::atomic::Ordering::SeqCst)
+}
+
 #[derive(Deserialize, Serialize)]
 pub struct SearchIndex {
     index: Bytes,
+    id: u32,
 }
 
 impl Debug for SearchIndex {
@@ -27,15 +34,17 @@ impl SearchIndex {
             .unwrap()
             .bytes;
 
-        stork_lib::register_index("index", bytes.clone()).unwrap();
+        let id = take_index();
+        stork_lib::register_index(&format!("index_{id}"), bytes.clone()).unwrap();
 
-        Self { index: bytes }
+        Self { index: bytes, id }
     }
 
     pub fn from_bytes<T: Into<Bytes>>(bytes: T) -> Self {
         let bytes = bytes.into();
-        stork_lib::register_index("index", bytes.clone()).unwrap();
-        Self { index: bytes }
+        let id = take_index();
+        stork_lib::register_index(&format!("index_{id}"), bytes.clone()).unwrap();
+        Self { index: bytes, id }
     }
 
     pub fn to_bytes(self) -> Bytes {
@@ -66,10 +75,10 @@ impl SearchIndex {
                             }
                         }
                         // add the current segment as a plain text segment
-                        if !current_segment.is_empty(){
+                        if !current_segment.is_empty() {
                             segments.push(Segment {
                                 text: std::mem::take(&mut current_segment),
-                                highlighted:false
+                                highlighted: false,
                             });
                         }
                         let end = highlight_range.end;
@@ -82,10 +91,10 @@ impl SearchIndex {
                             }
                         }
                         // add the current segment as a highlighted segment
-                        if !current_segment.is_empty(){
+                        if !current_segment.is_empty() {
                             segments.push(Segment {
                                 text: std::mem::take(&mut current_segment),
-                                highlighted: true
+                                highlighted: true,
                             });
                         }
                     }

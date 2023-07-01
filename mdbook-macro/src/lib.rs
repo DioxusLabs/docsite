@@ -4,7 +4,6 @@ use std::path::Path;
 use std::path::PathBuf;
 
 use convert_case::{Case, Casing};
-use dioxus_rsx::IfmtInput;
 use mdbook_shared::MdBook;
 use proc_macro::TokenStream;
 use proc_macro2::Ident;
@@ -91,15 +90,12 @@ fn generate_router(book_path: PathBuf, book: mdbook_shared::MdBook<PathBuf>) -> 
         // Rsx doesn't work very well in macros because the path for all the routes generated point to the same characters. We manulally expand rsx here to get around that issue.
         let template_name = format!("{}:0:0:0", page.url.to_string_lossy());
         let mut rsx = rsx::parse(page.url.clone(), &page.raw);
-        // Force prism to rerun on route change
         rsx.roots
             .push(dioxus_rsx::BodyNode::Element(dioxus_rsx::Element {
                 name: dioxus_rsx::ElementName::Ident(Ident::new("script", Span::call_site())),
                 attributes: vec![],
                 key: None,
-                children: vec![dioxus_rsx::BodyNode::Text(IfmtInput::new_static(
-                    "Prism.highlightAll()",
-                ))],
+                children: vec![],
                 brace: Default::default(),
             }));
         let rsx = rsx.render_with_location(template_name);
@@ -145,23 +141,11 @@ fn generate_router(book_path: PathBuf, book: mdbook_shared::MdBook<PathBuf>) -> 
         }
     });
 
-    let sections =book.pages().iter().map(|(_, page)| {
+    let match_page_id = book.pages().iter().map(|(_, page)| {
+        let id = page.id.0;
         let variant = path_to_route_enum(&page.url);
-        let sections = page.sections.iter().map(|section| {
-            let title = section.title.to_string();
-            let id = section.id.to_string();
-            let level = section.level;
-            quote! {
-                use_mdbook::mdbook_shared::Section {
-                    title: #title.to_string(),
-                    id: #id.to_string(),
-                    level: #level,
-                }
-            }
-        });
-
         quote! {
-            sections.insert(#variant, Box::new([#(#sections),*]) as Box<[use_mdbook::mdbook_shared::Section]>);
+            #variant => use_mdbook::mdbook_shared::PageId(#id),
         }
     });
 
@@ -173,16 +157,18 @@ fn generate_router(book_path: PathBuf, book: mdbook_shared::MdBook<PathBuf>) -> 
 
         impl BookRoute {
             pub fn sections(&self) -> &[use_mdbook::mdbook_shared::Section] {
-                static SECTIONS: use_mdbook::Lazy<std::collections::HashMap<BookRoute, Box<[use_mdbook::mdbook_shared::Section]>>> = use_mdbook::Lazy::new(|| {
-                    let mut sections = std::collections::HashMap::new();
+                &self.page().sections
+            }
+
+            pub fn page(&self) -> &use_mdbook::mdbook_shared::Page<Self> {
+                LAZY_BOOK.get_page(self)
+            }
+
+            pub fn page_id(&self) -> use_mdbook::mdbook_shared::PageId {
+                match self {
                     #(
-                        #sections
+                        #match_page_id
                     )*
-                    sections
-                });
-                match SECTIONS.get(self) {
-                    Some(sections) => sections,
-                    None => &[],
                 }
             }
         }

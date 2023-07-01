@@ -21,3 +21,5 @@ convert_case = "0.6.0"
 postcard = { version = "1.0.4", features = ["use-std"] }
 dioxus-rsx = { path = "../../dioxus/packages/rsx" }
 pulldown-cmark = "0.9.3"
+syntect = "5.0"
+yazi = "0.1.5"

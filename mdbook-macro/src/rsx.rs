@@ -7,6 +7,9 @@ use dioxus_rsx::{BodyNode, CallBody, Element, ElementAttrNamed, IfmtInput};
 use pulldown_cmark::{Alignment, Event, Tag};
 use syn::{Ident, __private::Span, parse_str};
 
+use syntect::highlighting::ThemeSet;
+use syntect::parsing::SyntaxSet;
+
 pub fn parse(path: PathBuf, markdown: &str) -> CallBody {
     let mut parser = pulldown_cmark::Parser::new(markdown);
 
@@ -249,45 +252,41 @@ impl<'a, I: Iterator<Item = Event<'a>>> RsxMarkdownParser<'a, I> {
                 self.write_text();
             }
             Tag::CodeBlock(kind) => {
-                let class = match kind {
+                let lang = match kind {
                     pulldown_cmark::CodeBlockKind::Indented => None,
-                    pulldown_cmark::CodeBlockKind::Fenced(lang) => {
-                        (!lang.is_empty()).then(|| format!("language-{lang}"))
-                    }
+                    pulldown_cmark::CodeBlockKind::Fenced(lang) => (!lang.is_empty()).then(|| lang),
                 };
                 let raw_code = self.take_code_or_text();
 
-                if class.as_deref() == Some("language-inject-dioxus") {
+                if lang.as_deref() == Some("inject-dioxus") {
                     self.start_node(parse_str::<BodyNode>(&raw_code).unwrap());
                 } else {
                     let code = transform_code_block(&self.path, raw_code);
                     let mut code_attrs = Vec::new();
-                    if let Some(class) = class {
-                        code_attrs.push(dioxus_rsx::ElementAttrNamed {
-                            el_name: dioxus_rsx::ElementName::Ident(Ident::new(
-                                "code",
-                                Span::call_site(),
-                            )),
-                            attr: dioxus_rsx::ElementAttr::AttrText {
-                                name: Ident::new("class", Span::call_site()),
-                                value: IfmtInput::new_static(&class),
-                            },
-                        });
-                    }
+
+                    let ss = SyntaxSet::load_defaults_newlines();
+                    let ts = ThemeSet::load_defaults();
+
+                    let theme = &ts.themes["base16-ocean.dark"];
+                    let syntax = ss.find_syntax_by_extension("rs").unwrap();
+                    let html =
+                        syntect::html::highlighted_html_for_string(&code, &ss, &syntax, theme)
+                            .unwrap();
+                    code_attrs.push(dioxus_rsx::ElementAttrNamed {
+                        el_name: dioxus_rsx::ElementName::Ident(Ident::new(
+                            "div",
+                            Span::call_site(),
+                        )),
+                        attr: dioxus_rsx::ElementAttr::AttrText {
+                            name: Ident::new("dangerous_inner_html", Span::call_site()),
+                            value: IfmtInput::new_static(&html),
+                        },
+                    });
                     self.start_node(BodyNode::Element(Element {
-                        name: dioxus_rsx::ElementName::Ident(Ident::new("pre", Span::call_site())),
+                        name: dioxus_rsx::ElementName::Ident(Ident::new("div", Span::call_site())),
                         key: None,
-                        attributes: Vec::new(),
-                        children: vec![BodyNode::Element(Element {
-                            name: dioxus_rsx::ElementName::Ident(Ident::new(
-                                "code",
-                                Span::call_site(),
-                            )),
-                            key: None,
-                            attributes: code_attrs,
-                            children: vec![BodyNode::Text(IfmtInput::new_static(&code))],
-                            brace: Default::default(),
-                        })],
+                        attributes: code_attrs,
+                        children: vec![],
                         brace: Default::default(),
                     }));
                 }

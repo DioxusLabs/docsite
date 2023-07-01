@@ -6,7 +6,13 @@ This website is written with Dioxus, pre-generated with `dioxus_ssr`, and then r
 
 ## Development
 
-Using dioxus-cli:
+Run the following command in the root of the project to start the tailwind css compiler:
+
+```bash
+npx tailwindcss -i ./input.css -o ./public/tailwind.css --watch
+```
+
+Then build the application using the dioxus-cli:
 
 ```
 dioxus serve

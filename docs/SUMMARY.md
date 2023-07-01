@@ -46,7 +46,6 @@
 	- [Redirection Perfection](router/example/redirection-perfection.md)
 	- [Full Code](router/example/full-code.md)
   - [Reference](router/reference/index.md)
-	- [Adding the Router to Your Application](router/reference/index.md)
 	- [Defining Routes](router/reference/routes/index.md)
 	  - [Nested Routes](router/reference/routes/nested.md)
 	- [Layouts](router/reference/layouts.md)

@@ -2,7 +2,7 @@
 use dioxus::prelude::*;
 
 fn main() {
-	dioxus_desktop::launch(App);
+    dioxus_desktop::launch(App);
 }
 
 #[rustfmt::skip]
@@ -56,55 +56,55 @@ IntoComponent {
 // ANCHOR: OptionalProps
 #[derive(Props)]
 struct OptionalProps<'a> {
-	title: &'a str,
-	subtitle: Option<&'a str>,
+    title: &'a str,
+    subtitle: Option<&'a str>,
 }
 
 fn Title<'a>(cx: Scope<'a, OptionalProps>) -> Element<'a> {
-	cx.render(rsx!(h1{
-		"{cx.props.title}: ",
-		cx.props.subtitle.unwrap_or("No subtitle provided"),
-	}))
+    cx.render(rsx!(h1{
+        "{cx.props.title}: ",
+        cx.props.subtitle.unwrap_or("No subtitle provided"),
+    }))
 }
 // ANCHOR_END: OptionalProps
 
 // ANCHOR: ExplicitOption
 #[derive(Props)]
 struct ExplicitOptionProps<'a> {
-	title: &'a str,
-	#[props(!optional)]
-	subtitle: Option<&'a str>,
+    title: &'a str,
+    #[props(!optional)]
+    subtitle: Option<&'a str>,
 }
 
 fn ExplicitOption<'a>(cx: Scope<'a, ExplicitOptionProps>) -> Element<'a> {
-	cx.render(rsx!(h1 {
-		"{cx.props.title}: ",
-		cx.props.subtitle.unwrap_or("No subtitle provided"),
-	}))
+    cx.render(rsx!(h1 {
+        "{cx.props.title}: ",
+        cx.props.subtitle.unwrap_or("No subtitle provided"),
+    }))
 }
 // ANCHOR_END: ExplicitOption
 
 // ANCHOR: DefaultComponent
 #[derive(PartialEq, Props)]
 struct DefaultProps {
-	// default to 42 when not provided
-	#[props(default = 42)]
-	number: i64,
+    // default to 42 when not provided
+    #[props(default = 42)]
+    number: i64,
 }
 
 fn DefaultComponent(cx: Scope<DefaultProps>) -> Element {
-	cx.render(rsx!(h1 { "{cx.props.number}" }))
+    cx.render(rsx!(h1 { "{cx.props.number}" }))
 }
 // ANCHOR_END: DefaultComponent
 
 // ANCHOR: IntoComponent
 #[derive(PartialEq, Props)]
 struct IntoProps {
-	#[props(into)]
-	string: String,
+    #[props(into)]
+    string: String,
 }
 
 fn IntoComponent(cx: Scope<IntoProps>) -> Element {
-	cx.render(rsx!(h1 { "{cx.props.string}" }))
+    cx.render(rsx!(h1 { "{cx.props.string}" }))
 }
 // ANCHOR_END: IntoComponent

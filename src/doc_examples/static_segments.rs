@@ -16,12 +16,12 @@ enum Route {
 
 #[inline_props]
 fn Home(cx: Scope) -> Element {
-	todo!()
+    todo!()
 }
 
 #[inline_props]
 fn HelloWorld(cx: Scope) -> Element {
-	todo!()
+    todo!()
 }
 // ANCHOR_END: route
 

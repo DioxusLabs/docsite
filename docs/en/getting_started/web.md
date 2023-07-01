@@ -61,7 +61,3 @@ And to serve our app:
 ```bash
 dioxus serve
 ```
-
-```inject-dioxus
-Test {}
-```

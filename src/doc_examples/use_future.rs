@@ -3,13 +3,13 @@
 use dioxus::prelude::*;
 
 fn main() {
-	dioxus_desktop::launch(App);
+    dioxus_desktop::launch(App);
 }
 
 #[derive(serde::Deserialize, Debug)]
 struct ApiResponse {
-	#[serde(rename = "message")]
-	image_url: String,
+    #[serde(rename = "message")]
+    image_url: String,
 }
 
 #[rustfmt::skip]

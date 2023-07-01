@@ -4,7 +4,7 @@ use dioxus::prelude::*;
 use std::collections::HashMap;
 
 fn main() {
-	dioxus_desktop::launch(App);
+    dioxus_desktop::launch(App);
 }
 
 #[rustfmt::skip]

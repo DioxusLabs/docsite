@@ -203,5 +203,6 @@ fn use_book(cx: &ScopeState) -> BookRoute {
 }
 
 fn default_page() -> &'static Page<BookRoute> {
-    LAZY_BOOK.pages.get(&BookRoute::default()).unwrap()
+    let id = LAZY_BOOK.page_id_mapping.get(&BookRoute::default()).unwrap();
+    LAZY_BOOK.pages.get(id.0).unwrap()
 }

@@ -2,6 +2,7 @@ use dioxus::prelude::*;
 use dioxus_material_icons::{MaterialIcon, MaterialIconColor};
 use crate::*;
 use fermi::{use_atom_state, use_read, Atom};
+use dioxus::html::input_data::keyboard_types::{Key};
 
 pub static SHOW_NAV: Atom<bool> = |_| false;
 pub static SHOW_SEARCH: Atom<bool> = |_| false;
@@ -217,6 +218,8 @@ fn Search(cx: Scope) -> Element {
 
 fn SearchModal(cx: Scope) -> Element {
     let show_modal = use_atom_state(cx, SHOW_SEARCH);
+    let search_text = use_state(cx, String::new);
+    let results = crate::docs::LAZY_BOOK.search_index.as_ref().unwrap().search(&search_text.get());
 
     // when we search, we do a similar search to mdbook
     // This will bring up individual sections that reference the search term with the breadcrumb
@@ -230,6 +233,11 @@ fn SearchModal(cx: Scope) -> Element {
                     width: "100vw",
                     class: "fixed top-0 left-0 z-50 hidden md:block bg-gray-500 bg-opacity-50 overflow-y-hidden",
                     onclick: move |_| show_modal.set(false),
+                    onkeydown: move |evt| {
+                        if evt.key() == Key::Escape {
+                            show_modal.set(false);
+                        }
+                    },
 
                     // A little weird, but we're putting an empty div with a scaled height to buffer the top of the modal
                     div { class: "max-w-screen-md mx-auto h-full flex flex-col",
@@ -247,8 +255,15 @@ fn SearchModal(cx: Scope) -> Element {
                                         color: MaterialIconColor::Dark,
                                     }
                                     input {
+                                        oninput: move |evt| {
+                                            search_text.set(evt.value.clone());
+                                        },
+                                        onmounted: move |evt| {
+                                            evt.inner().set_focus(true);
+                                        },
                                         class: "flex-grow bg-transparent border-none outline-none text-xl pl-2 text-white",
                                         placeholder: "Search the docs",
+                                        value: "{search_text}",
                                     }
                                 }
                                 div {}
@@ -257,16 +272,21 @@ fn SearchModal(cx: Scope) -> Element {
                             // Results
                             div { class: "overflow-y-auto",
                                 ul {
-                                    SearchResult { crumb: &["Router", "Introduction"], }
-                                    SearchResult { crumb: &["Reference", "Styling", "TailwindCSS"], }
-                                    SearchResult { crumb: &["Reference", "Styling", "ChakraUI"], }
-                                    SearchResult { crumb: &["Reference", "Styling", "MaterialUi"], }
-                                    SearchResult { crumb: &["Reference", "Styling", "MaterialUi"], }
-                                    SearchResult { crumb: &["Reference", "Styling", "MaterialUi"], }
-                                    SearchResult { crumb: &["Reference", "Styling", "MaterialUi"], }
-                                    SearchResult { crumb: &["Reference", "Styling", "MaterialUi"], }
-                                    SearchResult { crumb: &["Reference", "Styling", "MaterialUi"], }
-                                    SearchResult { crumb: &["Reference", "Styling", "MaterialUi"], }
+                                    color: "white",
+                                    match results {
+                                        Ok(results) => {
+                                            rsx! {
+                                                for result in results {
+                                                    SearchResult { result: result }
+                                                }
+                                            }
+                                        }
+                                        Err(err) => {
+                                            rsx! {
+                                                div { class: "text-red-500", "{err}" }
+                                            }
+                                        }
+                                    }
                                 }
                             }
 
@@ -283,29 +303,36 @@ fn SearchModal(cx: Scope) -> Element {
 }
 
 #[inline_props]
-fn SearchResult(cx: Scope, crumb: &'static [&'static str]) -> Element {
-    let title = crumb.last()?;
-    let description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed vitae nisi eget nunc aliquam aliquet.";
+fn SearchResult(cx: Scope, result: mdbook_shared::search_index::SearchResult) -> Element {
+    let set_show_modal = fermi::use_set(cx, SHOW_SEARCH);
+    let title = &result.title;
+    let page = crate::docs::LAZY_BOOK.get_page(result.id);
+    let top_excerpt_segments = &result.excerpts.first().unwrap().text;
 
     render! {
         li { class: "w-full mt-4 p-2 rounded hover:bg-gray-100 dark:hover:bg-ideblack transition-colors duration-200 ease-in-out",
-            Link { target: NavigationTarget::External("https://google.com".into()),
+            Link {
+                target: Route::Docs { child: page.url.clone() },
+                onclick: move |_| {
+                    set_show_modal(false);
+                },
                 div { class: "flex flex-col justify-between pb-1",
                     h2 { class: "font-semibold dark:text-white", "{title}" }
-                    div { class: "font-mono text-xs text-gray-400",
-                        span { "/" }
-
-                        if crumb.len() > 1 {
+                }
+                p { class: "text-sm text-gray-500 dark:text-gray-300 pr-8",
+                    for segment in top_excerpt_segments {
+                        if segment.highlighted {
                             rsx! {
-                                for crumb in crumb.iter() {
-                                    span { "{crumb}" }
-                                    span { "/" }
-                                }
+                                span { class: "text-blue-500", "{segment.text}" }
+                            }
+                        }
+                        else {
+                            rsx! {
+                                span { "{segment.text}" }
                             }
                         }
                     }
                 }
-                p { class: "text-sm text-gray-500 dark:text-gray-300 pr-8", "{description}" }
             }
         }
     }

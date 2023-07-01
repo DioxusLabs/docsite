@@ -3,20 +3,20 @@
 use dioxus::prelude::*;
 
 fn main() {
-	dioxus_desktop::launch(App);
+    dioxus_desktop::launch(App);
 }
 
 pub fn App(cx: Scope) -> Element {
-	cx.render(rsx!(
-		Empty {},
-		Children {},
-		Fragments {},
-		Attributes {},
-		VariableAttributes {},
-		CustomAttributes {},
-		Formatting {},
-		Expression {},
-	))
+    cx.render(rsx!(
+        Empty {},
+        Children {},
+        Fragments {},
+        Attributes {},
+        VariableAttributes {},
+        CustomAttributes {},
+        Formatting {},
+        Expression {},
+    ))
 }
 
 #[rustfmt::skip]

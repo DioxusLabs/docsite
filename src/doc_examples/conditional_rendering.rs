@@ -3,17 +3,17 @@
 use dioxus::prelude::*;
 
 fn main() {
-	dioxus_desktop::launch(App);
+    dioxus_desktop::launch(App);
 }
 
 pub fn App(cx: Scope) -> Element {
-	let is_logged_in = use_state(cx, || false);
+    let is_logged_in = use_state(cx, || false);
 
-	cx.render(rsx!(LogIn {
-		is_logged_in: **is_logged_in,
-		on_log_in: |_| is_logged_in.set(true),
-		on_log_out: |_| is_logged_in.set(false),
-	}))
+    cx.render(rsx!(LogIn {
+        is_logged_in: **is_logged_in,
+        on_log_in: |_| is_logged_in.set(true),
+        on_log_out: |_| is_logged_in.set(false),
+    }))
 }
 
 #[inline_props]

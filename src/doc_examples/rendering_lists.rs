@@ -3,13 +3,13 @@
 use dioxus::prelude::*;
 
 fn main() {
-	dioxus_desktop::launch(App);
+    dioxus_desktop::launch(App);
 }
 
 #[derive(PartialEq, Clone)]
 struct Comment {
-	content: String,
-	id: usize,
+    content: String,
+    id: usize,
 }
 
 #[rustfmt::skip]
@@ -90,9 +90,9 @@ cx.render(rsx!(
 
 #[inline_props]
 fn CommentComponent(cx: Scope, comment: Comment) -> Element {
-	cx.render(rsx!(div {
-		"Comment by anon:",
-		p { "{comment.content}" }
-		button { "Reply" },
-	}))
+    cx.render(rsx!(div {
+        "Comment by anon:",
+        p { "{comment.content}" }
+        button { "Reply" },
+    }))
 }

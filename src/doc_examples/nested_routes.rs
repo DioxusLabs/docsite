@@ -19,47 +19,47 @@ enum Route {
 // ANCHOR: nav
 #[inline_props]
 fn NavBar(cx: Scope) -> Element {
-	render! {
-		nav {
-			ul {
-				li { "links" }
-			}
-		}
-		// The Outlet component will render child routes (In this case just the Home component) inside the Outlet component
-		Outlet {}
-	}
+    render! {
+        nav {
+            ul {
+                li { "links" }
+            }
+        }
+        // The Outlet component will render child routes (In this case just the Home component) inside the Outlet component
+        Outlet {}
+    }
 }
 // ANCHOR_END: nav
 
 // ANCHOR: app
 #[inline_props]
 fn App(cx: Scope) -> Element {
-	render! {
-		Router {}
-	}
+    render! {
+        Router {}
+    }
 }
 // ANCHOR_END: app
 
 // ANCHOR: home
 #[inline_props]
 fn Home(cx: Scope) -> Element {
-	render! {
-		h1 { "Welcome to the Dioxus Blog!" }
-	}
+    render! {
+        h1 { "Welcome to the Dioxus Blog!" }
+    }
 }
 // ANCHOR_END: home
 
 // ANCHOR: fallback
 #[inline_props]
 fn PageNotFound(cx: Scope, route: Vec<String>) -> Element {
-	render! {
-		h1 { "Page not found" }
-		p { "We are terribly sorry, but the page you requested doesn't exist." }
-		pre {
-			color: "red",
-			"log:\nattemped to navigate to: {route:?}"
-		}
-	}
+    render! {
+        h1 { "Page not found" }
+        p { "We are terribly sorry, but the page you requested doesn't exist." }
+        pre {
+            color: "red",
+            "log:\nattemped to navigate to: {route:?}"
+        }
+    }
 }
 // ANCHOR_END: fallback
 

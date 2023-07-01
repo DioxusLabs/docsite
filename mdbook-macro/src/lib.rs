@@ -45,7 +45,7 @@ fn load_book_from_fs(input: LitStr) -> anyhow::Result<(PathBuf, mdbook_shared::M
     Ok((path.clone(), MdBook::new(path)?))
 }
 
-const STATE_DIR: &'static str = env!("DIOXUS_ASSET_DIR");
+const STATE_DIR: &str = env!("DIOXUS_ASSET_DIR");
 
 /// Returns the path of the internal file that would be used to
 /// store state for the specified key, as a [PathBuf](std::path::PathBuf).
@@ -59,7 +59,7 @@ fn state_file_path(key: &str) -> PathBuf {
 }
 
 fn proc_append_state(key: &str, value: &str) -> std::io::Result<()> {
-    let value = format!("{}\n", value.replace("\n", "\\n"));
+    let value = format!("{}\n", value.replace('\n', "\\n"));
     let state_file = state_file_path(key);
     match OpenOptions::new()
         .append(true)
@@ -78,7 +78,7 @@ fn clear_assets_file(key: &str) -> std::io::Result<()> {
         .truncate(true)
         .open(state_file)
     {
-        Ok(mut file) => return file.write_all(&[]),
+        Ok(mut file) => file.write_all(&[]),
         Err(e) => Err(e),
     }
 }
@@ -136,7 +136,7 @@ fn generate_router(book_path: PathBuf, book: mdbook_shared::MdBook<PathBuf>) -> 
             .trim_end_matches("index")
             .to_string();
         let mut url = route_without_extension;
-        if !url.starts_with("/") {
+        if !url.starts_with('/') {
             url = format!("/{}", url);
         }
         quote! {
@@ -217,7 +217,7 @@ pub(crate) fn path_to_route_variant(path: &Path) -> Ident {
 }
 
 pub(crate) fn path_to_route_enum(path: &Path) -> TokenStream2 {
-    let name = path_to_route_variant(&path);
+    let name = path_to_route_variant(path);
     quote! {
         BookRoute::#name {}
     }

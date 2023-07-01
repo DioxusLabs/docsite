@@ -89,7 +89,7 @@ impl<'a, I: Iterator<Item = Event<'a>>> RsxMarkdownParser<'a, I> {
 
     fn write_checkbox(&mut self, checked: bool) {
         let input = Ident::new("input", Span::call_site());
-        let name = dioxus_rsx::ElementName::Ident(input.clone());
+        let name = dioxus_rsx::ElementName::Ident(input);
         self.create_node(BodyNode::Element(Element {
             name: name.clone(),
             key: None,
@@ -187,7 +187,7 @@ impl<'a, I: Iterator<Item = Event<'a>>> RsxMarkdownParser<'a, I> {
             }
             Tag::Heading(level, _, _) => {
                 let text = self.take_text();
-                let anchor = text.trim().to_lowercase().replace(" ", "-");
+                let anchor = text.trim().to_lowercase().replace(' ', "-");
                 let link_name = dioxus_rsx::ElementName::Ident(Ident::new("a", Span::call_site()));
                 let name = dioxus_rsx::ElementName::Ident(Ident::new(
                     match level {
@@ -211,7 +211,7 @@ impl<'a, I: Iterator<Item = Event<'a>>> RsxMarkdownParser<'a, I> {
                         },
                     }],
                     children: vec![BodyNode::Element(Element {
-                        name: link_name.clone(),
+                        name: link_name,
                         key: None,
                         attributes: vec![
                             dioxus_rsx::ElementAttrNamed {
@@ -222,7 +222,7 @@ impl<'a, I: Iterator<Item = Event<'a>>> RsxMarkdownParser<'a, I> {
                                 },
                             },
                             dioxus_rsx::ElementAttrNamed {
-                                el_name: name.clone(),
+                                el_name: name,
                                 attr: dioxus_rsx::ElementAttr::AttrText {
                                     name: Ident::new("href", Span::call_site()),
                                     value: IfmtInput::new_static(&format!(r##"#{anchor}"##)),
@@ -399,7 +399,7 @@ impl<'a, I: Iterator<Item = Event<'a>>> RsxMarkdownParser<'a, I> {
                 }
 
                 self.start_node(BodyNode::Element(Element {
-                    name: dioxus_rsx::ElementName::Ident(name.clone()),
+                    name: dioxus_rsx::ElementName::Ident(name),
                     key: None,
                     attributes,
                     children: Vec::new(),
@@ -422,7 +422,7 @@ impl<'a, I: Iterator<Item = Event<'a>>> RsxMarkdownParser<'a, I> {
                             },
                         },
                         dioxus_rsx::ElementAttrNamed {
-                            el_name: dioxus_rsx::ElementName::Ident(name.clone()),
+                            el_name: dioxus_rsx::ElementName::Ident(name),
                             attr: dioxus_rsx::ElementAttr::AttrText {
                                 name: Ident::new("title", Span::call_site()),
                                 value: IfmtInput::new_static(&title),
@@ -489,7 +489,7 @@ fn resolve_extension(_path: &Path, ext: &str) -> String {
     if let Some(file) = ext.strip_prefix("include") {
         let file = file.trim();
         let mut segment = None;
-        let file = if let Some((file, file_segment)) = file.split_once(":") {
+        let file = if let Some((file, file_segment)) = file.split_once(':') {
             segment = Some(file_segment);
             file
         } else {
@@ -498,12 +498,12 @@ fn resolve_extension(_path: &Path, ext: &str) -> String {
         let result = std::fs::read_to_string(file).unwrap();
         if let Some(segment) = segment {
             // get the text between lines with ANCHOR: segment and ANCHOR_END: segment
-            let mut lines = result.lines();
+            let lines = result.lines();
             let mut output = String::new();
             let mut in_segment: bool = false;
             // normalize indentation to the first line
             let mut first_line_indent = 0;
-            while let Some(line) = lines.next() {
+            for line in lines {
                 if let Some((_, remaining)) = line.split_once("ANCHOR:") {
                     if remaining.trim() == segment {
                         in_segment = true;

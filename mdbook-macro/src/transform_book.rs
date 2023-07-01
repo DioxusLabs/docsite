@@ -17,7 +17,7 @@ pub fn write_book_with_routes(
     book_path: PathBuf,
     book: &mdbook_shared::MdBook<PathBuf>,
 ) -> TokenStream {
-    let index = SearchIndex::from_book(book_path, &book);
+    let index = SearchIndex::from_book(book_path, book);
     let index_bytes = index.to_bytes().into_iter().map(|b| {
         quote! {
             #b
@@ -52,7 +52,7 @@ pub fn write_book_with_routes(
         }
     };
 
-    out.to_token_stream().into()
+    out.to_token_stream()
 }
 
 fn write_summary_with_routes(book: &mdbook_shared::Summary<PathBuf>) -> TokenStream {
@@ -65,13 +65,13 @@ fn write_summary_with_routes(book: &mdbook_shared::Summary<PathBuf>) -> TokenStr
 
     let prefix_chapters = prefix_chapters
         .iter()
-        .map(|chapter| write_summary_item_with_routes(chapter));
+        .map(write_summary_item_with_routes);
     let numbered_chapters = numbered_chapters
         .iter()
-        .map(|chapter| write_summary_item_with_routes(chapter));
+        .map(write_summary_item_with_routes);
     let suffix_chapters = suffix_chapters
         .iter()
-        .map(|chapter| write_summary_item_with_routes(chapter));
+        .map(write_summary_item_with_routes);
     let title = match title {
         Some(title) => quote! { Some(#title.to_string()) },
         None => quote! { None },
@@ -118,7 +118,7 @@ fn write_link_with_routes(book: &mdbook_shared::Link<PathBuf>) -> TokenStream {
 
     let location = match location {
         Some(loc) => {
-            let inner = path_to_route_enum(&loc);
+            let inner = path_to_route_enum(loc);
             quote! { Some(#inner) }
         }
         None => quote! { None },
@@ -133,7 +133,7 @@ fn write_link_with_routes(book: &mdbook_shared::Link<PathBuf>) -> TokenStream {
 
     let nested_items = nested_items
         .iter()
-        .map(|item| write_summary_item_with_routes(item));
+        .map(write_summary_item_with_routes);
 
     quote! {
         ::use_mdbook::mdbook_shared::Link {
@@ -176,9 +176,9 @@ fn write_page_with_routes(book: &mdbook_shared::Page<PathBuf>) -> TokenStream {
 
     let sections = sections
         .iter()
-        .map(|section| write_section_with_routes(section));
+        .map(write_section_with_routes);
 
-    let url = path_to_route_enum(&url);
+    let url = path_to_route_enum(url);
     let id = id.0;
 
     quote! {

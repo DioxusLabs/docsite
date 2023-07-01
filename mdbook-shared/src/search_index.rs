@@ -50,9 +50,49 @@ impl SearchIndex {
             let excerpts = result
                 .excerpts
                 .into_iter()
-                .map(|excerpt| Excerpt {
-                    text: excerpt.text,
-                    score: excerpt.score,
+                .map(|excerpt| {
+                    let mut segments = Vec::new();
+                    let mut char_index = 0;
+                    let mut chars = excerpt.text.chars();
+                    let mut current_segment = String::new();
+                    for highlight_range in excerpt.highlight_ranges {
+                        let start = highlight_range.beginning;
+                        while char_index < start.saturating_sub(1) {
+                            if let Some(c) = chars.next() {
+                                current_segment.push(c);
+                                char_index += 1;
+                            } else {
+                                break;
+                            }
+                        }
+                        // add the current segment as a plain text segment
+                        if !current_segment.is_empty(){
+                            segments.push(Segment {
+                                text: std::mem::take(&mut current_segment),
+                                highlighted:false
+                            });
+                        }
+                        let end = highlight_range.end;
+                        while char_index < end {
+                            if let Some(c) = chars.next() {
+                                current_segment.push(c);
+                                char_index += 1;
+                            } else {
+                                break;
+                            }
+                        }
+                        // add the current segment as a highlighted segment
+                        if !current_segment.is_empty(){
+                            segments.push(Segment {
+                                text: std::mem::take(&mut current_segment),
+                                highlighted: true
+                            });
+                        }
+                    }
+                    Excerpt {
+                        text: segments,
+                        score: excerpt.score,
+                    }
                 })
                 .collect();
             results.push(SearchResult {
@@ -63,7 +103,7 @@ impl SearchIndex {
             })
         }
 
-        results.sort_by_key(|result| result.score);
+        results.sort_by_key(|result| !result.score);
 
         Ok(results)
     }
@@ -79,8 +119,14 @@ pub struct SearchResult {
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct Excerpt {
-    pub text: String,
+    pub text: Vec<Segment>,
     pub score: usize,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
+pub struct Segment {
+    pub text: String,
+    pub highlighted: bool,
 }
 
 #[derive(Serialize, Deserialize)]

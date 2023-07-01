@@ -136,11 +136,11 @@ impl MdBook<PathBuf> {
                         .into_string()
                         .trim()
                         .to_lowercase()
-                        .replace(" ", "-");
+                        .replace(' ', "-");
                     sections.push(Section {
                         level: *current_level as usize,
                         title: text.to_string(),
-                        id: anchor.clone(),
+                        id: anchor,
                     });
 
                     last_heading = None;
@@ -160,10 +160,10 @@ impl MdBook<PathBuf> {
             id,
         });
 
-        self.page_id_mapping.insert(url.to_owned(), id);
+        self.page_id_mapping.insert(url, id);
 
         for nested in link.nested_items.iter() {
-            self.populate_page(mdbook_root.clone(), &nested);
+            self.populate_page(mdbook_root.clone(), nested);
         }
 
         // proc_append_state("mdbook", &link.name).unwrap();

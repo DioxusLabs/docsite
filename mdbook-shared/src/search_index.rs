@@ -52,7 +52,8 @@ impl SearchIndex {
     }
 
     pub fn search(&self, text: &str) -> Result<Vec<SearchResult>, SearchError> {
-        let output = stork_lib::search_from_cache("index", text)?;
+        let id = self.id;
+        let output = stork_lib::search_from_cache(&format!("index_{id}"), text)?;
         let mut results = Vec::new();
         for result in output.results {
             let id = PageId(result.entry.url.parse().unwrap());

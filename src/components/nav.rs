@@ -153,6 +153,7 @@ static LINKS: &[(&str, &str, LinkPairs)] = &[
             ("Router", "https://dioxuslabs.com/docs/0.3/router/"),
         ],
     ),
+    ("Awesome", "/awesome", &[]),
     // ("Tutorials", "/tutorials/", &[]),
     ("Blog", "/blog", &[]),
 ];

@@ -30,6 +30,7 @@ pub mod components {
         pub mod nav;
         pub mod notfound;
         pub mod tutorials;
+        pub mod awesome;
     }
 }
 
@@ -43,6 +44,7 @@ pub fn app(cx: Scope) -> Element {
             Nav {}
             Route { to: "/", Homepage {} }
             Route { to: "/index.html", Homepage {} }
+            Route { to: "/awesome", Awesome {}}
             Route { to: "/learn", Learn {} }
             Route { to: "/platforms/", Homepage {} }
             Route { to: "/platforms/web", Homepage {} }

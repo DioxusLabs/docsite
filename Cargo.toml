@@ -38,6 +38,8 @@ simple_logger = "4.2.0"
 shipyard = { version = "0.6.2", optional = true }
 reqwest = { version = "0.11.18", optional = true, features = ["json"] }
 gloo-storage = { version = "0.2.2", optional = true }
+web-sys = { version = "0.3.64", features = ["Document", "Window", "Event", "AddEventListenerOptions"] }
+slab = "0.4.8"
 
 [profile.release]
 lto = true

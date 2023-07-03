@@ -7,7 +7,10 @@ use dioxus_docs_site::*;
 
 fn main() {
     #[cfg(feature = "web")]
-    wasm_logger::init(wasm_logger::Config::new(log::Level::Debug));
+    {
+        std::panic::set_hook(Box::new(console_error_panic_hook::hook));
+        wasm_logger::init(wasm_logger::Config::new(log::Level::Debug));
+    }
     #[cfg(feature = "ssr")]
     {
         use dioxus_fullstack::prelude::*;

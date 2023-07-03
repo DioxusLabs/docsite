@@ -2,15 +2,13 @@ use dioxus::prelude::*;
 use dioxus_material_icons::{MaterialIcon, MaterialIconColor};
 use crate::*;
 use fermi::{use_atom_state, use_read, Atom};
-use dioxus::html::input_data::keyboard_types::{Key};
+use dioxus::html::input_data::keyboard_types::{Key, Code};
 
 pub static SHOW_NAV: Atom<bool> = |_| false;
 pub static SHOW_SEARCH: Atom<bool> = |_| false;
 pub static LOGGED_IN: Atom<bool> = |_| false;
 
 pub fn Nav(cx: Scope) -> Element {
-    let show = use_read(cx, SHOW_NAV);
-    let show_modal = use_read(cx, SHOW_SEARCH);
     let logged_in = use_read(cx, LOGGED_IN);
 
     cx.render(rsx! {
@@ -173,8 +171,6 @@ fn LinkList(cx: Scope) -> Element {
                     span { class: "py-1 px-[0.25rem] md:px-2 text-lg md:text-sm {hover} {hover_bg} cursor-default",
                         "{name}"
                     }
-                    // Link { target: "{link}", class: "py-1 px-2 {hover} {hover_bg}", "{name}" }
-                    // Link { target: "{link}", class: "py-1 px-2 {hover} {hover_bg}", "{name}" }
                     nav { class: "md:dropdown-menu md:absolute h-auto md:-mt-64 md:group-hover:mt-0 md:opacity-0 md:group-hover:opacity-100 md:transition-opacity md:duration-250",
                         ul { class: "top-0 w-36 md:bg-white dark:md:bg-gray-800 md:shadow md:px-4 md:py-4 rounded",
                             for (name , link) in links.iter() {
@@ -225,6 +221,13 @@ fn SearchModal(cx: Scope) -> Element {
     // This will bring up individual sections that reference the search term with the breadcrumb
     // entries are sorted by breadcrumb
 
+    crate::shortcut::use_shortcut(cx, Key::Escape, Modifiers::empty(), {
+        to_owned![show_modal];
+        move || {
+            show_modal.set(false);
+        }
+    });
+
     render! {
         if *show_modal.get() {
             rsx! {
@@ -233,11 +236,6 @@ fn SearchModal(cx: Scope) -> Element {
                     width: "100vw",
                     class: "fixed top-0 left-0 z-50 hidden md:block bg-gray-500 bg-opacity-50 overflow-y-hidden",
                     onclick: move |_| show_modal.set(false),
-                    onkeydown: move |evt| {
-                        if evt.key() == Key::Escape {
-                            show_modal.set(false);
-                        }
-                    },
 
                     // A little weird, but we're putting an empty div with a scaled height to buffer the top of the modal
                     div { class: "max-w-screen-md mx-auto h-full flex flex-col",

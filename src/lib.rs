@@ -1,11 +1,11 @@
 #![allow(non_snake_case, non_upper_case_globals)]
 
 use crate::components::blog::*;
-use dioxus::html::input_data::keyboard_types::{Key, Modifiers};
+use dioxus::html::input_data::keyboard_types::{ Key, Modifiers};
 use dioxus::prelude::*;
 use dioxus_router::prelude::*;
-use serde::{Deserialize, Serialize};
 pub use docs::BookRoute;
+use serde::{Deserialize, Serialize};
 
 macro_rules! export_items {
     (
@@ -22,6 +22,8 @@ macro_rules! export_items {
 
 pub mod icons;
 pub mod sitemap;
+
+pub mod shortcut;
 
 #[cfg(feature = "doc_test")]
 mod doc_examples;
@@ -44,16 +46,15 @@ pub mod components {
 fn HeaderFooter(cx: Scope) -> Element {
     use_init_atom_root(cx);
     let set_search = fermi::use_set(cx, SHOW_SEARCH);
+    shortcut::use_shortcut(cx, Key::Character("k".to_string()), Modifiers::CONTROL, {
+        to_owned![set_search];
+        move || {
+            set_search(true);
+        }
+    });
 
     render! {
         div {
-            onkeypress: move |e| {
-                if let Key::Character(key) = e.key() {
-                    if key.to_lowercase() == "k" && e.modifiers().contains(Modifiers::CONTROL) {
-                        set_search(true);
-                    }
-                }
-            },
             Nav {}
             Outlet {}
             Footer {}

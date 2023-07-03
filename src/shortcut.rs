@@ -1,11 +1,11 @@
 #![allow(unused)]
-use wasm_bindgen::JsCast;
 use dioxus::html::input_data::keyboard_types::{Key, Modifiers};
 use slab::Slab;
 use std::sync::{Arc, Mutex};
+use wasm_bindgen::JsCast;
 
 #[cfg(feature = "web")]
-static LISTENERS: once_cell::sync::Lazy<ShortcutHandler> = Lazy::new(||{
+static LISTENERS: once_cell::sync::Lazy<ShortcutHandler> = Lazy::new(|| {
     let callbacks = Arc::new(Mutex::new(Slab::new()));
     let callbacks2 = callbacks.clone();
 
@@ -19,13 +19,11 @@ static LISTENERS: once_cell::sync::Lazy<ShortcutHandler> = Lazy::new(||{
     });
     let window = web_sys::window().unwrap();
     let document = window.document().unwrap();
-        document
-            .add_event_listener_with_callback("keydown", cb.as_ref().unchecked_ref())
-            .unwrap();
+    document
+        .add_event_listener_with_callback("keydown", cb.as_ref().unchecked_ref())
+        .unwrap();
 
-    ShortcutHandler {
-        callbacks,
-    }
+    ShortcutHandler { callbacks }
 });
 
 struct ShortcutHandler {
@@ -48,19 +46,17 @@ pub fn use_shortcut(
     key: Key,
     modifiers: crate::Modifiers,
     mut handler: impl FnMut() + 'static,
-)  {
+) {
     #[cfg(feature = "web")]
     {
-        cx.use_hook(move || {
-            ShortcutHandle(LISTENERS.add(key, modifiers, Box::new(handler)))
-        });
+        cx.use_hook(move || ShortcutHandle(LISTENERS.add(key, modifiers, Box::new(handler))));
     }
 }
 
-struct ShortcutHandle (usize);
+struct ShortcutHandle(usize);
 
 impl Drop for ShortcutHandle {
-    fn drop(&mut self){
+    fn drop(&mut self) {
         #[cfg(feature = "web")]
         {
             LISTENERS.remove(self.0);

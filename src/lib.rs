@@ -1,7 +1,7 @@
 #![allow(non_snake_case, non_upper_case_globals)]
 
 use crate::components::blog::*;
-use dioxus::html::input_data::keyboard_types::{ Key, Modifiers};
+use dioxus::html::input_data::keyboard_types::{Key, Modifiers};
 use dioxus::prelude::*;
 use dioxus_router::prelude::*;
 pub use docs::BookRoute;

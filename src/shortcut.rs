@@ -5,7 +5,7 @@ use std::sync::{Arc, Mutex};
 use wasm_bindgen::JsCast;
 
 #[cfg(feature = "web")]
-static LISTENERS: once_cell::sync::Lazy<ShortcutHandler> = Lazy::new(|| {
+static LISTENERS: once_cell::sync::Lazy<ShortcutHandler> = once_cell::sync::Lazy::new(|| {
     let callbacks = Arc::new(Mutex::new(Slab::new()));
     let callbacks2 = callbacks.clone();
 

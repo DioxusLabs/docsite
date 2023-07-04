@@ -61,3 +61,11 @@ And to serve our app:
 ```bash
 dioxus serve
 ```
+
+If you open the browser and navigate to `127.0.0.1` you should see an app that looks like this:
+
+```inject-dioxus
+DemoFrame {
+    HelloWorldCounter {}
+}
+```

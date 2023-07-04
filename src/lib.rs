@@ -25,7 +25,6 @@ pub mod sitemap;
 
 pub mod shortcut;
 
-#[cfg(feature = "doc_test")]
 mod doc_examples;
 
 pub use components::*;
@@ -66,8 +65,19 @@ mod docs {
     use fermi::use_atom_state;
     use crate::components::*;
     use dioxus::prelude::*;
+    use crate::doc_examples::*;
 
     use_mdbook::mdbook_router! {"./docs"}
+
+    #[inline_props]
+    fn DemoFrame<'a>(cx: Scope<'a>, children: Element<'a>) -> Element {
+        render! {
+            div {
+                class: "bg-white rounded-md shadow-md p-4",
+                children
+            }
+        }
+    }
 
     fn LayoutsExplanation(cx: Scope) -> Element {
         let highlight_nav = use_atom_state(cx, HIGHLIGHT_NAV_LAYOUT);
@@ -76,47 +86,69 @@ mod docs {
 
         render! {
             pre {
+                onmouseenter: move |_| {
+                    highlight_nav.set(NavLayoutHighlighted(true));
+                    highlight_docs_nav.set(DocsLayoutHighlighted(true));
+                    highlight_docs_content.set(DocsContentHighlighted(true));
+                },
+                onmouseleave: move |_| {
+                    highlight_nav.set(NavLayoutHighlighted(false));
+                    highlight_docs_nav.set(DocsLayoutHighlighted(false));
+                    highlight_docs_content.set(DocsContentHighlighted(false));
+                },
                 span {
                     "#[derive(Clone, Routable, PartialEq, Eq, Serialize, Deserialize)]
-    #[rustfmt::skip]
-    pub enum Route {{\n\t"
+#[rustfmt::skip]
+pub enum Route {{\n\t"
                 }
                 span {
                     onmouseenter: move |_| {
                         highlight_nav.set(NavLayoutHighlighted(true));
+                        highlight_docs_nav.set(DocsLayoutHighlighted(false));
+                        highlight_docs_content.set(DocsContentHighlighted(false));
                     },
                     onmouseleave: move |_| {
-                        highlight_nav.set(NavLayoutHighlighted(false));
+                        highlight_nav.set(NavLayoutHighlighted(true));
+                        highlight_docs_nav.set(DocsLayoutHighlighted(true));
+                        highlight_docs_content.set(DocsContentHighlighted(true));
                     },
                     class: "border border-orange-600 rounded-md",
                     "#[layout(HeaderFooter)]"
                 }
                 span {
-                    "\n\t// ... other routes\n\t"
+                    "\n\t\t// ... other routes\n\t\t"
                 }
                 span {
                     onmouseenter: move |_| {
+                        highlight_nav.set(NavLayoutHighlighted(false));
                         highlight_docs_nav.set(DocsLayoutHighlighted(true));
+                        highlight_docs_content.set(DocsContentHighlighted(false));
                     },
                     onmouseleave: move |_| {
-                        highlight_docs_nav.set(DocsLayoutHighlighted(false));
+                        highlight_nav.set(NavLayoutHighlighted(true));
+                        highlight_docs_nav.set(DocsLayoutHighlighted(true));
+                        highlight_docs_content.set(DocsContentHighlighted(true));
                     },
                     class: "border border-green-600 rounded-md",
-                    r##"#[layout(Learn)]"##
+                    r##"#[layout(DocsSidebars)]"##
                 }
-                "\n\t\t"
+                "\n\t\t\t"
                 span {
                     onmouseenter: move |_| {
+                        highlight_nav.set(NavLayoutHighlighted(false));
+                        highlight_docs_nav.set(DocsLayoutHighlighted(false));
                         highlight_docs_content.set(DocsContentHighlighted(true));
                     },
                     onmouseleave: move |_| {
-                        highlight_docs_content.set(DocsContentHighlighted(false));
+                        highlight_nav.set(NavLayoutHighlighted(true));
+                        highlight_docs_nav.set(DocsLayoutHighlighted(true));
+                        highlight_docs_content.set(DocsContentHighlighted(true));
                     },
                     class: "border border-blue-600 rounded-md",
                     r##"#[route("/learn")]"##
                 }
                 span {
-                    "\n\t\tDocs {{}},\n}}"
+                    "\n\t\t\tDocs {{}},\n}}"
                 }
             }
         }

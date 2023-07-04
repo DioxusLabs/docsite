@@ -133,7 +133,7 @@ fn AvailablePlatforms(cx: Scope) -> Element {
                     center: render!("")
                 }
                 TriShow {
-                    to: Route::Docs { child: BookRoute::GettingStartedSsr {} },
+                    to: Route::Docs { child: BookRoute::GettingStartedFullstack {} },
                     title: "Fullstack Apps",
                     right: render!(
     "Pre-render on the server, and hydrate on the client. Perfect lighthouse scores and performance over 1000x better than Node and Python. Perfect for static site generation or fullstack apps."

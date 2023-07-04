@@ -2,29 +2,33 @@
 use dioxus::html::input_data::keyboard_types::{Key, Modifiers};
 use slab::Slab;
 use std::sync::{Arc, Mutex};
+use wasm_bindgen::closure::Closure;
 use wasm_bindgen::JsCast;
 
+use std::cell::RefCell;
 #[cfg(feature = "web")]
-static LISTENERS: once_cell::sync::Lazy<ShortcutHandler> = once_cell::sync::Lazy::new(|| {
-    let callbacks = Arc::new(Mutex::new(Slab::new()));
-    let callbacks2 = callbacks.clone();
+thread_local! {
+    static LISTENERS: ShortcutHandler = {
+        let callbacks:Arc<Mutex<Slab<(Key, Modifiers, Box<dyn FnMut() >)>>> = Arc::new(Mutex::new(Slab::new()));
+        let callbacks2 = callbacks.clone();
 
-    let cb = wasm_bindgen::closure::Closure::new(move |evt: web_sys::Event| {
-        let data = dioxus::prelude::KeyboardData::from(evt);
-        for (key, modifiers, callback) in callbacks2.lock().iter_mut() {
-            if data.code() == *key && data.modifiers() == *modifiers {
-                callback();
+        let cb: Closure<dyn FnMut(web_sys::Event)> = wasm_bindgen::closure::Closure::new(move |evt: web_sys::Event| {
+            let data = dioxus::prelude::KeyboardData::from(evt);
+            for (_, (key, modifiers, callback)) in callbacks2.lock().unwrap().iter_mut() {
+                if data.key() == *key && data.modifiers() == *modifiers {
+                    callback();
+                }
             }
-        }
-    });
-    let window = web_sys::window().unwrap();
-    let document = window.document().unwrap();
-    document
-        .add_event_listener_with_callback("keydown", cb.as_ref().unchecked_ref())
-        .unwrap();
+        });
+        let window = web_sys::window().unwrap();
+        let document = window.document().unwrap();
+        document
+            .add_event_listener_with_callback("keydown", cb.as_ref().unchecked_ref())
+            .unwrap();
 
-    ShortcutHandler { callbacks }
-});
+        ShortcutHandler { callbacks }
+    };
+}
 
 struct ShortcutHandler {
     callbacks: Arc<Mutex<Slab<(Key, Modifiers, Box<dyn FnMut()>)>>>,
@@ -49,7 +53,7 @@ pub fn use_shortcut(
 ) {
     #[cfg(feature = "web")]
     {
-        cx.use_hook(move || ShortcutHandle(LISTENERS.add(key, modifiers, Box::new(handler))));
+        cx.use_hook(move || ShortcutHandle(LISTENERS.with(|l| l.callbacks.lock().unwrap().insert((key, modifiers, Box::new(handler))))));
     }
 }
 
@@ -59,7 +63,7 @@ impl Drop for ShortcutHandle {
     fn drop(&mut self) {
         #[cfg(feature = "web")]
         {
-            LISTENERS.remove(self.0);
+            LISTENERS.with(|l| l.callbacks.lock().unwrap().remove(self.0));
         }
     }
 }

@@ -57,12 +57,23 @@
 	- [Routing Update Callback](router/reference/routing-update-callback.md)
 
 ---
-- [Fullstack](fullstack/index.md)
-  - [Getting Started](fullstack/getting_started.md)
-  - [Communicating with the Server](fullstack/server_functions.md)
-
----
-- [Reference](reference/index.md)
+- [Recipies](reference/index.md)
+  - [Platforms](reference/platforms/index.md)
+	- [Desktop](reference/platforms/desktop.md)
+	- [TUI](reference/platforms/tui.md)
+	- [Web](reference/platforms/web.md)
+	- [SSR](reference/platforms/ssr.md)
+	- [Liveview](reference/platforms/liveview.md)
+	- [Fullstack](reference/platforms/fullstack/index.md)
+		- [Server Functions](reference/platforms/fullstack/server_functions.md)
+  - [Integrations](reference/integrations/index.md)
+  	- [Auth](reference/integrations/auth.md)
+	- [Database](reference/integrations/database.md)
+	- [Logging](reference/integrations/logging.md)
+  - [State Managment](reference/state/index.md)
+    - [Local State](reference/state/local.md)
+	- [Global State](reference/state/global.md)
+	- [External State](reference/state/external.md)
   - [Custom Renderer](reference/custom_renderer.md)
 
 ---
@@ -71,3 +82,4 @@
   - [Walkthrough of Internals](contributing/walkthrough_readme.md)
   - [Guiding Principles](contributing/guiding_principles.md)
   - [Roadmap](contributing/roadmap.md)
+  - [Governence](contributing/governence.md)

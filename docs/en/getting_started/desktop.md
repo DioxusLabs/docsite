@@ -2,20 +2,20 @@
 
 Build a standalone native desktop app that looks and feels the same across operating systems.
 
-Apps built with Dioxus are typically <5mb in size and use existing system resources, so they won't hog extreme amounts of RAM or memory.
+Apps built with Dioxus Desktop use the system webview to render the page. This makes the final size of application much smaller than other webview renderers (typically under 5mb).
 
-Examples:
+Although desktop apps are rendered in a webview, your Rust code runs natively. This means that browser APIs are _not_ available, so rendering WebGL, Canvas, etc is not as easy as the Web. However, native system APIs _are_ accessible, so streaming, WebSockets, filesystem, etc are all easly accessable though system APIs.
+
+Dioxus Desktop is built off [Tauri](https://tauri.app/). Right now there are limited Dioxus abstractions over the menubar, event handling, etc. In some places you may need to leverage Tauri dirrectly – through [Wry](http://github.com/tauri-apps/wry/) and [Tao](http://github.com/tauri-apps/tao).
+
+> In the future, we plan to move to a custom web renderer-based DOM renderer with WGPU integrations ([Blitz](https://github.com/DioxusLabs/blitz)).
+
+## Examples
 
 - [File Explorer](https://github.com/DioxusLabs/example-projects/blob/master/file-explorer)
 - [WiFi Scanner](https://github.com/DioxusLabs/example-projects/blob/master/wifi-scanner)
 
 [![File ExplorerExample](https://raw.githubusercontent.com/DioxusLabs/example-projects/master/file-explorer/image.png)](https://github.com/DioxusLabs/example-projects/tree/master/file-explorer)
-
-## Support
-
-The desktop is a powerful target for Dioxus but is currently limited in capability when compared to the Web platform. Currently, desktop apps are rendered with the platform's WebView library, but your Rust code is running natively on a native thread. This means that browser APIs are _not_ available, so rendering WebGL, Canvas, etc is not as easy as the Web. However, native system APIs _are_ accessible, so streaming, WebSockets, filesystem, etc are all viable APIs. In the future, we plan to move to a custom web renderer-based DOM renderer with WGPU integrations.
-
-Dioxus Desktop is built off [Tauri](https://tauri.app/). Right now there aren't any Dioxus abstractions over the menubar, handling, etc, so you'll want to leverage Tauri – mostly [Wry](http://github.com/tauri-apps/wry/) and [Tao](http://github.com/tauri-apps/tao)) directly.
 
 # Getting started
 

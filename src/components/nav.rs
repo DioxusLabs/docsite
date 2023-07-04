@@ -140,7 +140,10 @@ static LINKS: &[(&str, &str, LinkPairs)] = &[
                 "https://github.com/DioxusLabs/dioxus/tree/master/packages/router",
             ),
             ("Taffy", "https://github.com/DioxusLabs/taffy"),
-            ("CLI", "https://github.com/DioxusLabs/cli"),
+            (
+                "CLI",
+                "https://github.com/DioxusLabs/dioxus/tree/master/packages/cli",
+            ),
         ],
     ),
     (

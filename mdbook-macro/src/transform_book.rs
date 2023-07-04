@@ -1,3 +1,4 @@
+use std::path::Path;
 use std::path::PathBuf;
 
 use mdbook_shared::search_index::SearchIndex;
@@ -20,7 +21,9 @@ pub fn write_book_with_routes(
     book_path: PathBuf,
     book: &mdbook_shared::MdBook<PathBuf>,
 ) -> TokenStream {
-    let index = SearchIndex::from_book(book_path, book);
+    let summary_path = book_path.join("SUMMARY.md");
+    let index_path = summary_path.to_string_lossy();
+    let index = SearchIndex::from_book(book_path.clone(), book);
     let compressed = compress(&index.to_bytes(), Format::Zlib, CompressionLevel::Default).unwrap();
     let index_bytes = compressed.into_iter().map(|b| {
         quote! {
@@ -35,7 +38,7 @@ pub fn write_book_with_routes(
     let summary = write_summary_with_routes(summary);
     let pages = book.pages().iter().map(|(id, v)| {
         let name = path_to_route_enum(&v.url);
-        let page = write_page_with_routes(v);
+        let page = write_page_with_routes(&book_path, v);
         quote! {
             pages.push((#id, #page));
             page_id_mapping.insert(#name, ::use_mdbook::mdbook_shared::PageId(#id));
@@ -44,6 +47,8 @@ pub fn write_book_with_routes(
 
     let out = quote! {
         {
+            // Let the compiler know that we care about the index file
+            const _: &[u8] = include_bytes!(#index_path);
             let mut page_id_mapping = ::std::collections::HashMap::new();
             let mut pages = Vec::new();
             #(#pages)*
@@ -157,7 +162,7 @@ fn write_number_with_routes(number: &mdbook_shared::SectionNumber) -> TokenStrea
     }
 }
 
-fn write_page_with_routes(book: &mdbook_shared::Page<PathBuf>) -> TokenStream {
+fn write_page_with_routes(book_path: &Path, book: &mdbook_shared::Page<PathBuf>) -> TokenStream {
     let Page {
         title,
         url,
@@ -175,17 +180,24 @@ fn write_page_with_routes(book: &mdbook_shared::Page<PathBuf>) -> TokenStream {
 
     let sections = sections.iter().map(write_section_with_routes);
 
-    let url = path_to_route_enum(url);
+    let path = url;
+    let url = path_to_route_enum(path);
+    let full_path = book_path.join("en").join(path);
+    let path_str = full_path.to_str().unwrap();
     let id = id.0;
 
     quote! {
-        ::use_mdbook::mdbook_shared::Page {
-            title: #title.to_string(),
-            url: #url,
-            segments: vec![#(#segments,)*],
-            sections: vec![#(#sections,)*],
-            raw: String::new(),
-            id: ::use_mdbook::mdbook_shared::PageId(#id),
+        {
+            // This lets the rust compile know that we read the file
+            const _: &[u8] = include_bytes!(#path_str);
+            ::use_mdbook::mdbook_shared::Page {
+                title: #title.to_string(),
+                url: #url,
+                segments: vec![#(#segments,)*],
+                sections: vec![#(#sections,)*],
+                raw: String::new(),
+                id: ::use_mdbook::mdbook_shared::PageId(#id),
+            }
         }
     }
 }

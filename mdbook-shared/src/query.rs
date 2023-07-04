@@ -1,4 +1,5 @@
 use crate::{search_index::SearchIndex, *};
+use anyhow::Ok;
 use pulldown_cmark::{Event, Tag};
 use serde::{Deserialize, Serialize};
 use slab::Slab;
@@ -87,12 +88,12 @@ impl MdBook<PathBuf> {
             search_index: None,
         };
 
-        book.populate(mdbook_root);
+        book.populate(mdbook_root)?;
 
         Ok(book)
     }
 
-    pub fn populate(&mut self, mdbook_root: PathBuf) {
+    pub fn populate(&mut self, mdbook_root: PathBuf) -> anyhow::Result<()> {
         let summary = self.summary.clone();
 
         let chapters = summary
@@ -102,20 +103,21 @@ impl MdBook<PathBuf> {
             .chain(summary.suffix_chapters.iter());
 
         for chapter in chapters {
-            self.populate_page(mdbook_root.clone(), chapter);
+            self.populate_page(mdbook_root.clone(), chapter)?;
         }
+
+        Ok(())
     }
 
-    fn populate_page(&mut self, mdbook_root: PathBuf, chapter: &SummaryItem<PathBuf>) {
-        let Some(link) = chapter.maybe_link() else { return };
+    fn populate_page(
+        &mut self,
+        mdbook_root: PathBuf,
+        chapter: &SummaryItem<PathBuf>,
+    ) -> anyhow::Result<()> {
+        let Some(link) = chapter.maybe_link() else { return Ok(()) };
 
         let url = link.location.as_ref().cloned().unwrap();
-        let md_file = mdbook_root.join("en").join(&url).canonicalize();
-
-        let md_file = match md_file {
-            Ok(f) => f,
-            Err(e) => panic!("Failed to include mdbook - invalid path: {}", e),
-        };
+        let md_file = mdbook_root.join("en").join(&url).canonicalize()?;
 
         let body = std::fs::read_to_string(md_file).unwrap();
 
@@ -163,10 +165,11 @@ impl MdBook<PathBuf> {
         self.page_id_mapping.insert(url, id);
 
         for nested in link.nested_items.iter() {
-            self.populate_page(mdbook_root.clone(), nested);
+            self.populate_page(mdbook_root.clone(), nested)?;
         }
 
         // proc_append_state("mdbook", &link.name).unwrap();
+        Ok(())
     }
 
     // Insert a page via its path, autofilling the segments and title

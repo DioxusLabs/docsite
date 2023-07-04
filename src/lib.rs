@@ -49,7 +49,7 @@ fn HeaderFooter(cx: Scope) -> Element {
     shortcut::use_shortcut(cx, Key::Character("k".to_string()), Modifiers::CONTROL, {
         to_owned![set_search];
         move || {
-            set_search(true);
+            set_search(components::nav::ShowSearch(true));
         }
     });
 
@@ -63,9 +63,64 @@ fn HeaderFooter(cx: Scope) -> Element {
 }
 
 mod docs {
+    use fermi::use_atom_state;
+    use crate::components::*;
     use dioxus::prelude::*;
 
     use_mdbook::mdbook_router! {"./docs"}
+
+    fn LayoutsExplanation(cx: Scope) -> Element {
+        let highlight_nav = use_atom_state(cx, HIGHLIGHT_NAV_LAYOUT);
+        let highlight_docs_nav = use_atom_state(cx, HIGHLIGHT_DOCS_LAYOUT);
+        let highlight_docs_content = use_atom_state(cx, HIGHLIGHT_DOCS_CONTENT);
+
+        render! {
+            pre {
+                span {
+                    "#[derive(Clone, Routable, PartialEq, Eq, Serialize, Deserialize)]
+    #[rustfmt::skip]
+    pub enum Route {{\n\t"
+                }
+                span {
+                    onmouseenter: move |_| {
+                        highlight_nav.set(NavLayoutHighlighted(true));
+                    },
+                    onmouseleave: move |_| {
+                        highlight_nav.set(NavLayoutHighlighted(false));
+                    },
+                    class: "border border-orange-600 rounded-md",
+                    "#[layout(HeaderFooter)]"
+                }
+                span {
+                    "\n\t// ... other routes\n\t"
+                }
+                span {
+                    onmouseenter: move |_| {
+                        highlight_docs_nav.set(DocsLayoutHighlighted(true));
+                    },
+                    onmouseleave: move |_| {
+                        highlight_docs_nav.set(DocsLayoutHighlighted(false));
+                    },
+                    class: "border border-green-600 rounded-md",
+                    r##"#[layout(Learn)]"##
+                }
+                "\n\t\t"
+                span {
+                    onmouseenter: move |_| {
+                        highlight_docs_content.set(DocsContentHighlighted(true));
+                    },
+                    onmouseleave: move |_| {
+                        highlight_docs_content.set(DocsContentHighlighted(false));
+                    },
+                    class: "border border-blue-600 rounded-md",
+                    r##"#[route("/learn")]"##
+                }
+                span {
+                    "\n\t\tDocs {{}},\n}}"
+                }
+            }
+        }
+    }
 }
 
 mod blog_posts {

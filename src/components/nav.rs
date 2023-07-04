@@ -4,17 +4,25 @@ use crate::*;
 use fermi::{use_atom_state, use_read, Atom};
 use dioxus::html::input_data::keyboard_types::{Key, Code};
 
-pub static SHOW_NAV: Atom<bool> = |_| false;
-pub static SHOW_SEARCH: Atom<bool> = |_| false;
-pub static LOGGED_IN: Atom<bool> = |_| false;
+pub struct NavLayoutHighlighted(pub bool);
+pub static HIGHLIGHT_NAV_LAYOUT: Atom<NavLayoutHighlighted> = |_| NavLayoutHighlighted(false);
+pub struct ShowNav(pub bool);
+pub static SHOW_NAV: Atom<ShowNav> = |_| ShowNav(false);
+pub struct ShowSearch(pub bool);
+pub static SHOW_SEARCH: Atom<ShowSearch> = |_| ShowSearch(false);
+pub struct LoggedIn(pub bool);
+pub static LOGGED_IN: Atom<LoggedIn> = |_| LoggedIn(false);
 
 pub fn Nav(cx: Scope) -> Element {
     let logged_in = use_read(cx, LOGGED_IN);
+    let highlighted = use_read(cx, HIGHLIGHT_NAV_LAYOUT);
+    let bg_color = if highlighted.0 { "border border-orange-600 rounded-md" } else { "" };
 
-    cx.render(rsx! {
+    render! {
         SearchModal {}
-        header { class: "sticky top-0 z-30 bg-white shadow dark:text-gray-200 dark:bg-ideblack dark:border-b border-stone-600",
-            div { class: "py-3 px-12 max-w-screen-3xl mx-auto flex items-center justify-between text-sm leading-6",
+        header {
+            class: "sticky top-0 z-30 shadow dark:text-gray-200 dark:border-b border-stone-600 dark:bg-ideblack bg-white",
+            div { class: "py-3 px-12 max-w-screen-3xl mx-auto flex items-center justify-between text-sm leading-6 {bg_color}",
                 div { class: "flex z-50 flex-1",
                     Link {
                         target: Route::Homepage {},
@@ -53,10 +61,10 @@ pub fn Nav(cx: Scope) -> Element {
                             label { class: "sr-only", id: "headlessui-listbox-label-2", "Theme" }
                             Link {
                                 target: Route::Homepage {},
-                                class: "ml-[-3.8em] md:ml-0 md:py-2 md:px-3 bg-blue-500 ml-4 text-lg md:text-sm text-white rounded font-semibold",
+                                class: "md:ml-0 md:py-2 md:px-3 bg-blue-500 ml-4 text-lg md:text-sm text-white rounded font-semibold",
                                 "DEPLOY"
                             }
-                            if *logged_in {
+                            if logged_in.0 {
                                 rsx! {
                                     Link { target: Route::Homepage {},
                                         img {
@@ -71,7 +79,7 @@ pub fn Nav(cx: Scope) -> Element {
                 }
             }
         }
-    })
+    }
 }
 
 fn FullNav(cx: Scope) -> Element {
@@ -125,7 +133,7 @@ fn MobileNav(cx: Scope) -> Element {
                 button {
                     class: "text-gray-500 w-8 h-8 flex items-center justify-center hover:text-gray-600 dark:text-gray-400 dark:hover:text-gray-300",
                     "type": "button",
-                    onclick: move |_| show.modify(|f| !f),
+                    onclick: move |_| show.modify(|f| ShowNav(!f.0)),
                     span { class: "sr-only", "Navigation" }
                     svg { width: "24", height: "24", "aria-hidden": "true", fill: "none",
                         path {
@@ -198,7 +206,7 @@ fn Search(cx: Scope) -> Element {
                 // Pop up a modal
                 class: "bg-gray-100 rounded-lg px-3 py-3 w-full text-left text-gray-400 my-auto flex flex-row align-middle justify-between",
                 onclick: move |_| {
-                    show_modal.set(true);
+                    show_modal.set(ShowSearch(true));
                 },
                 div { class: "h-full my-auto flex flex-row align-middle justify-between",
                     MaterialIcon { name: "search", size: 24, color: MaterialIconColor::Dark }
@@ -224,18 +232,18 @@ fn SearchModal(cx: Scope) -> Element {
     crate::shortcut::use_shortcut(cx, Key::Escape, Modifiers::empty(), {
         to_owned![show_modal];
         move || {
-            show_modal.set(false);
+            show_modal.set(ShowSearch(false));
         }
     });
 
     render! {
-        if *show_modal.get() {
+        if show_modal.get().0 {
             rsx! {
                 div {
                     height: "100vh",
                     width: "100vw",
                     class: "fixed top-0 left-0 z-50 hidden md:block bg-gray-500 bg-opacity-50 overflow-y-hidden",
-                    onclick: move |_| show_modal.set(false),
+                    onclick: move |_| show_modal.set(ShowSearch(false)),
 
                     // A little weird, but we're putting an empty div with a scaled height to buffer the top of the modal
                     div { class: "max-w-screen-md mx-auto h-full flex flex-col",
@@ -312,7 +320,7 @@ fn SearchResult(cx: Scope, result: mdbook_shared::search_index::SearchResult) ->
             Link {
                 target: Route::Docs { child: page.url.clone() },
                 onclick: move |_| {
-                    set_show_modal(false);
+                    set_show_modal(ShowSearch(false));
                 },
                 div { class: "flex flex-col justify-between pb-1",
                     h2 { class: "font-semibold dark:text-white", "{title}" }

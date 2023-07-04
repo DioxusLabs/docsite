@@ -4,6 +4,12 @@ use dioxus::prelude::*;
 use crate::*;
 use mdbook_shared::Page;
 use mdbook_shared::SummaryItem;
+use fermi::{use_read, Atom};
+
+pub struct DocsLayoutHighlighted(pub bool);
+pub static HIGHLIGHT_DOCS_LAYOUT: Atom<DocsLayoutHighlighted> = |_| DocsLayoutHighlighted(false);
+pub struct DocsContentHighlighted(pub bool);
+pub static HIGHLIGHT_DOCS_CONTENT: Atom<DocsContentHighlighted> = |_| DocsContentHighlighted(false);
 
 #[inline_props]
 pub fn Learn(cx: Scope) -> Element {
@@ -20,6 +26,8 @@ pub fn Learn(cx: Scope) -> Element {
 }
 
 fn LeftNav(cx: Scope) -> Element {
+    let highlighted = use_read(cx, HIGHLIGHT_DOCS_LAYOUT);
+    let extra_class = if highlighted.0 { "border border-green-600 rounded-md" } else { "" };
     let chapters = vec![
         &LAZY_BOOK.summary.prefix_chapters,
         &LAZY_BOOK.summary.numbered_chapters,
@@ -28,7 +36,7 @@ fn LeftNav(cx: Scope) -> Element {
 
     render! {
         // Now, pin the nav to the left
-        nav { class: "pl-6 z-20 text-base hidden md:block fixed top-0 pt-36 pb-16 pl-3.5 md:-ml-3.5 w-[calc(100%-1rem)] md:w-60 h-full max-h-screen md:text-[13px] text-navy content-start overflow-y-auto leading-5",
+        nav { class: "pl-6 z-20 text-base hidden md:block fixed top-0 pt-36 pb-16 md:-ml-3.5 w-[calc(100%-1rem)] md:w-60 h-full max-h-screen md:text-[13px] text-navy content-start overflow-y-auto leading-5 {extra_class}",
             // I like the idea of breadcrumbs, but they add a lot of visual noise, and like, who cares?
             // BreadCrumbs {}
             for chapter in chapters.into_iter().flatten().filter(|chapter| chapter.maybe_link().is_some()) {
@@ -130,11 +138,13 @@ fn LocationLink(cx: Scope, chapter: &'static SummaryItem<BookRoute>) -> Element 
 
 // Todo: wire this up to the sections of the current page and a scroll controller
 fn RightNav(cx: Scope) -> Element {
+    let highlighted = use_read(cx, HIGHLIGHT_DOCS_LAYOUT);
+    let extra_class = if highlighted.0 { "border border-green-600 rounded-md" } else { "" };
     let page = use_book(cx);
 
     render! {
         div {
-            class: "overflow-y-auto hidden xl:block fixed top-0 pt-36 pb-16 pl-3.5 -ml-3.5 w-60 h-full md:text-[13px] leading-5 text-navy docs-right-sidebar",
+            class: "overflow-y-auto hidden xl:block fixed top-0 pt-36 pb-16 pl-3.5 -ml-3.5 w-60 h-full md:text-[13px] leading-5 text-navy docs-right-sidebar {extra_class}",
             right: "calc(40vw - 40.875rem)",
             h2 { class: "pb-4 font-semibold", "On this page" }
             ul { class: "",
@@ -152,9 +162,12 @@ fn RightNav(cx: Scope) -> Element {
 }
 
 fn Content(cx: Scope) -> Element {
+    let highlighted = use_read(cx, HIGHLIGHT_DOCS_CONTENT);
+    let extra_class = if highlighted.0 { "border border-blue-600 rounded-md" } else { "" };
+
     render! {
         section { class: "text-gray-600 body-font overflow-hidden dark:bg-ideblack mx-auto container pt-12 pb-12 max-w-screen-md",
-            div { class: "-my-8",
+            div { class: "-py-8 {extra_class}",
                 div { class: "flex w-full mb-20 flex-wrap list-none",
                     style {
                         ".markdown-body ul {{ list-style: disc; }}"

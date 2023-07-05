@@ -5,13 +5,12 @@ fn main() {
     dioxus_desktop::launch(App);
 }
 
-#[rustfmt::skip]
 fn App(cx: Scope) -> Element {
-	// ANCHOR: prevent_default
-cx.render(rsx! {
-	input {
-		prevent_default: "oninput onclick",
-	}
-})
-	// ANCHOR_END: prevent_default
+    // ANCHOR: prevent_default
+    cx.render(rsx! {
+        input {
+            prevent_default: "oninput onclick",
+        }
+    })
+    // ANCHOR_END: prevent_default
 }

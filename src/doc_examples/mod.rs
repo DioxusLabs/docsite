@@ -46,6 +46,7 @@ mod external_link;
 mod first_route;
 #[cfg(feature = "doc_test")]
 mod full_example;
+mod hello_world;
 #[cfg(feature = "doc_test")]
 mod hello_world_desktop;
 #[cfg(feature = "doc_test")]
@@ -58,7 +59,6 @@ mod hello_world_tui;
 mod hello_world_tui_no_ctrl_c;
 #[cfg(feature = "doc_test")]
 mod hello_world_web;
-mod hello_world;
 pub use hello_world::*;
 #[cfg(feature = "doc_test")]
 mod history_buttons;

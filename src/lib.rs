@@ -8,16 +8,16 @@ pub use docs::BookRoute;
 use serde::{Deserialize, Serialize};
 
 macro_rules! export_items {
-    (
-        $(
-            pub mod $item:ident;
-        )*
-    ) => {
-        $(
-            pub mod $item;
-            pub use $item::*;
-        )*
-    };
+	(
+		$(
+			pub mod $item:ident;
+		)*
+	) => {
+		$(
+			pub mod $item;
+			pub use $item::*;
+		)*
+	};
 }
 
 pub mod icons;
@@ -62,10 +62,10 @@ fn HeaderFooter(cx: Scope) -> Element {
 }
 
 mod docs {
-    use fermi::use_atom_state;
     use crate::components::*;
-    use dioxus::prelude::*;
     use crate::doc_examples::*;
+    use dioxus::prelude::*;
+    use fermi::use_atom_state;
 
     use_mdbook::mdbook_router! {"./docs"}
 
@@ -166,33 +166,33 @@ pub use blog_posts::BookRoute as BlogRoute;
 #[derive(Clone, Routable, PartialEq, Eq, Serialize, Deserialize)]
 #[rustfmt::skip]
 pub enum Route {
-    #[layout(HeaderFooter)]
-        #[route("/")]
-        #[redirect("/platforms", || Route::Homepage {})]
-        #[redirect("/platforms/web", || Route::Homepage {})]
-        #[redirect("/platforms/desktop", || Route::Homepage {})]
-        #[redirect("/platforms/liveview", || Route::Homepage {})]
-        #[redirect("/platforms/mobile", || Route::Homepage {})]
-        #[redirect("/platforms/ssr", || Route::Homepage {})]
-        #[redirect("/platforms/tui", || Route::Homepage {})]
-        Homepage {},
+	#[layout(HeaderFooter)]
+		#[route("/")]
+		#[redirect("/platforms", || Route::Homepage {})]
+		#[redirect("/platforms/web", || Route::Homepage {})]
+		#[redirect("/platforms/desktop", || Route::Homepage {})]
+		#[redirect("/platforms/liveview", || Route::Homepage {})]
+		#[redirect("/platforms/mobile", || Route::Homepage {})]
+		#[redirect("/platforms/ssr", || Route::Homepage {})]
+		#[redirect("/platforms/tui", || Route::Homepage {})]
+		Homepage {},
 
-        #[route("/tutorials/:id")]
-        Tutorial { id: usize },
+		#[route("/tutorials/:id")]
+		Tutorial { id: usize },
 
-        #[nest("/blog")]
-            #[route("/")]
-            BlogList {},
-            #[layout(BlogPost)]
-                #[child("/")]
-                Blog { child: BlogRoute },
-            #[end_layout]
-        #[end_nest]
-        #[route("/:...segments")]
-        Err404 { segments: Vec<String> },
-        #[layout(Learn)]
-            #[child("/learn")]
-            Docs { child: BookRoute },
+		#[nest("/blog")]
+			#[route("/")]
+			BlogList {},
+			#[layout(BlogPost)]
+				#[child("/")]
+				Blog { child: BlogRoute },
+			#[end_layout]
+		#[end_nest]
+		#[route("/:...segments")]
+		Err404 { segments: Vec<String> },
+		#[layout(Learn)]
+			#[child("/learn")]
+			Docs { child: BookRoute },
 }
 
 pub fn use_url(cx: &ScopeState) -> String {
@@ -200,7 +200,7 @@ pub fn use_url(cx: &ScopeState) -> String {
 }
 
 pub fn app(cx: Scope) -> Element {
-    render!{
+    render! {
         Router {}
     }
 }

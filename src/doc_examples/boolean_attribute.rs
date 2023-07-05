@@ -5,14 +5,13 @@ fn main() {
     dioxus_desktop::launch(App);
 }
 
-#[rustfmt::skip]
 fn App(cx: Scope) -> Element {
-	// ANCHOR: boolean_attribute
-cx.render(rsx! {
-	div {
-		hidden: "false",
-		"hello"
-	}
-})
-	// ANCHOR_END: boolean_attribute
+    // ANCHOR: boolean_attribute
+    cx.render(rsx! {
+        div {
+            hidden: "false",
+            "hello"
+        }
+    })
+    // ANCHOR_END: boolean_attribute
 }

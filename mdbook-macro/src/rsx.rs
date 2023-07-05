@@ -523,6 +523,9 @@ fn resolve_extension(_path: &Path, ext: &str) -> String {
                     output += "\n";
                 }
             }
+            if output.ends_with("\n") {
+                output.pop();
+            }
             output
         } else {
             result

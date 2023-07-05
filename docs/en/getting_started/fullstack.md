@@ -102,3 +102,40 @@ The only thing we need to change on the client is the props. `dioxus-fullstack` 
 ```
 
 Now, build your client-side bundle with `dioxus build --features web` and run your server with `cargo run --features ssr`. Navigate to `http://localhost:8080/1` and you should see the counter start at 1. Navigate to `http://localhost:8080/2` and you should see the counter start at 2.
+
+## Hot Reload
+
+1. Hot reloading allows much faster iteration times inside of rsx calls by interpreting them and streaming the edits.
+2. It is useful when changing the styling/layout of a program, but will not help with changing the logic of a program.
+
+You can place the hot reload macro at the top of your main function in ssr mode to enable hot reloading on debug builds.
+
+For more information about hot reloading on native platforms and configuration options see the [dioxus-hot-reload](https://crates.io/crates/dioxus-hot-reload) crate.
+
+### Setup
+
+Add the following to your main function:
+
+```rust
+fn main() {
+    #[cfg(feature = "ssr")]
+	hot_reload_init!();
+	// launch your application
+}
+```
+
+### Usage
+
+1. Run:
+
+```bash
+cargo run --features ssr
+```
+
+2. Change some code within a rsx or render macro
+3. Save and watch the style change without recompiling
+
+### Limitations
+
+1. The interpreter can only use expressions that existed on the last full recompile. If you introduce a new variable or expression to the rsx call, it will require a full recompile to capture the expression.
+2. Components, Iterators, and some attributes can contain arbitrary rust code and will trigger a full recompile when changed.

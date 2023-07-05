@@ -10,7 +10,6 @@
   	- [Fullstack](getting_started/fullstack.md)
   - [Terminal UI](getting_started/tui.md)
   - [Mobile](getting_started/mobile.md)
-  - [Hot Reloading](getting_started/hot_reload.md)
 
 - [Guide](guide/index.md)
   - [Describing the UI](guide/describing_ui/index.md)

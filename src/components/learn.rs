@@ -171,6 +171,7 @@ fn Content(cx: Scope) -> Element {
                 div { class: "flex w-full mb-20 flex-wrap list-none",
                     style {
                         ".markdown-body ul {{ list-style: disc; }}"
+                        ".markdown-body ol {{ list-style: decimal; }}"
                         ".markdown-body li {{ display: list-item; }}"
                     }
                     article { class: "markdown-body pt-1",

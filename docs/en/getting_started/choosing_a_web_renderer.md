@@ -2,25 +2,13 @@
 
 Dioxus has three different renderers that target the web:
 
-- [dioxus-web](../getting_started/web.md) allows you to render your application to HTML with WASM on the client
-- [dioxus-liveview](../getting_started/liveview.md) allows you to render HTML generated on the server on the client with a websocket
-- [dioxus-fullstack](../getting_started/ssr.md) allows you to initially render static HTML on the server and then update that html from the client with WASM
+- [dioxus-web](../getting_started/web.md) allows you to render your application to HTML with [WebAssembaly](https://rustwasm.github.io/docs/book/) on the client
+- [dioxus-liveview](../getting_started/liveview.md) allows you to run your application on the server and render it to HTML on the client with a websocket
+- [dioxus-fullstack](../getting_started/ssr.md) allows you to initially render static HTML on the server and then update that HTML from the client with [WebAssembaly](https://rustwasm.github.io/docs/book/)
 
 Each approach has its tradeoffs:
 
-### Client-side (dioxus-web)
-
-- With Client side rendering, you send the entire content of your application to the client, and then the client generates all of the HTML of the page dynamically.
-
-- This means that the page will be blank until the JavaScript bundle has loaded and the application has initialized. This can result in **slower first render times and makes the page less SEO-friendly**.
-
-> SEO stands for Search Engine Optimization. It refers to the practice of making your website more likely to appear in search engine results. Search engines like Google and Bing use web crawlers to index the content of websites. Most of these crawlers are not able to run JavaScript, so they will not be able to index the content of your page if it is rendered client-side.
-
-- Client-side rendered applications need to use **weakly typed requests to communicate with the server**
-
-> Client-side rendering is a good starting point for most applications. It is well supported and makes it easy to communicate with the client/browser APIs
-
-### Liveview (dioxus-liveview)
+### Dioxus Liveview
 
 - Liveview rendering communicates with the server over a WebSocket connection. It essentially moves all of the work that Client-side rendering does to the server.
 
@@ -34,7 +22,23 @@ Each approach has its tradeoffs:
 
 > Liveview is a good fit for applications that already need to communicate with the server frequently (like real time collaborative apps), but don't need to communicate with as many client/browser APIs
 
-### Fullstack (dioxus-fullstack)
+[![](https://mermaid.ink/img/pako:eNplULFOw0AM_RXLc7Mw3sBQVUIMRYgKdcli5ZzkRHIuPl8QqvrvXJICRXiy3nt-9-6dsRHP6DAZGe8CdUpjNd3VEcpsVT4SK1TVPRxYJ1YHL_yeOdkqWMGF3w4U32Y6nSQmXvknMQYNXW8g7bfk2JPBg0g3MCTmdH1rJhenx2is1FiYri43wJ8or3O2H1Liv0w3hw724kMb2MMzdcUYNziyjhR8-f15Pq3Reh65RldWzy3lwWqs46VIKZscPmODzjTzBvPJ__aFrqUhFZR9MNH92uhS7OULYSF1lw?type=png)](https://mermaid.live/edit#pako:eNplULFOw0AM_RXLc7Mw3sBQVUIMRYgKdcli5ZzkRHIuPl8QqvrvXJICRXiy3nt-9-6dsRHP6DAZGe8CdUpjNd3VEcpsVT4SK1TVPRxYJ1YHL_yeOdkqWMGF3w4U32Y6nSQmXvknMQYNXW8g7bfk2JPBg0g3MCTmdH1rJhenx2is1FiYri43wJ8or3O2H1Liv0w3hw724kMb2MMzdcUYNziyjhR8-f15Pq3Reh65RldWzy3lwWqs46VIKZscPmODzjTzBvPJ__aFrqUhFZR9MNH92uhS7OULYSF1lw)
+
+### Dioxus Web
+
+- With Client side rendering, you send your application to the client, and then the client generates all of the HTML of the page dynamically.
+
+- This means that the page will be blank until the JavaScript bundle has loaded and the application has initialized. This can result in **slower first render times and poor SEO performance**.
+
+> SEO stands for Search Engine Optimization. It refers to the practice of making your website more likely to appear in search engine results. Search engines like Google and Bing use web crawlers to index the content of websites. Most of these crawlers are not able to run JavaScript, so they will not be able to index the content of your page if it is rendered client-side.
+
+- Client-side rendered applications need to use **weakly typed requests to communicate with the server**
+
+> Client-side rendering is a good starting point for most applications. It is well supported and makes it easy to communicate with the client/browser APIs
+
+[![](https://mermaid.ink/img/pako:eNpVkDFPwzAQhf-KdXOzMHpgqJAQAwytEIsXK35JLBJfez4Xoar_HSemQtzke9_z2e-u1HMAWcrqFU_Rj-KX7vLgkqm1F_7KENN1j-YIuUCsOeBckLUZmrjx_ezT54rziVNG42-sMBLHSQ0Pd8vH5NU8M48zTAby71sr3CYdkAIEoen37h-y5n3910tSiO81cqIdLZDFx1DDXNerjnTCAke2HgMGX2Z15NKtWn1RPn6nnqxKwY7KKfzFJzv4OVcVISrLa1vQtqfbDzd0ZKY?type=png)](https://mermaid.live/edit#pako:eNpVkDFPwzAQhf-KdXOzMHpgqJAQAwytEIsXK35JLBJfez4Xoar_HSemQtzke9_z2e-u1HMAWcrqFU_Rj-KX7vLgkqm1F_7KENN1j-YIuUCsOeBckLUZmrjx_ezT54rziVNG42-sMBLHSQ0Pd8vH5NU8M48zTAby71sr3CYdkAIEoen37h-y5n3910tSiO81cqIdLZDFx1DDXNerjnTCAke2HgMGX2Z15NKtWn1RPn6nnqxKwY7KKfzFJzv4OVcVISrLa1vQtqfbDzd0ZKY)
+
+### Dioxus Fullstack
 
 Fullstack rendering happens in two parts:
 1. The page is rendered on the server. This can include fetching any data you need to render the page.
@@ -54,3 +58,4 @@ This approach uses both the dioxus-web and dioxus-ssr crates. To integrate those
 
 There can be more complexity with fullstack applications because your code runs in two different places. Dioxus trys to midigate this with server functions and other helpers.
 
+[![](https://mermaid.ink/img/pako:eNpdkL1uwzAMhF9F4BwvHTV0KAIUHdohQdFFi2CdbQG2mFCUiyDIu9e2-hOUE3H34UDelVoOIEtZvWIffS9-auYHl8wyT8KfGWKa5tEcITPEmgPOBVkrUMXNPyAFCMJK5BOnjIq8scJI7Ac13N1RH4NX88zcjzAZyJX-8bfIl6QQ32qcv7PuhP-ANe_rpb8KJ9rRBJl8DMt71zXAkQ6Y4Mgua0Dny6iOXLotqC_Kx0tqyaoU7Kicwl8hZDs_5kVFiMryWivbmrt9AacxbGg?type=png)](https://mermaid.live/edit#pako:eNpdkL1uwzAMhF9F4BwvHTV0KAIUHdohQdFFi2CdbQG2mFCUiyDIu9e2-hOUE3H34UDelVoOIEtZvWIffS9-auYHl8wyT8KfGWKa5tEcITPEmgPOBVkrUMXNPyAFCMJK5BOnjIq8scJI7Ac13N1RH4NX88zcjzAZyJX-8bfIl6QQ32qcv7PuhP-ANe_rpb8KJ9rRBJl8DMt71zXAkQ6Y4Mgua0Dny6iOXLotqC_Kx0tqyaoU7Kicwl8hZDs_5kVFiMryWivbmrt9AacxbGg)

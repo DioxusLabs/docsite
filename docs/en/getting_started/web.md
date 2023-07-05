@@ -69,3 +69,33 @@ DemoFrame {
     HelloWorldCounter {}
 }
 ```
+
+
+## Hot Reload
+
+1. Hot reloading allows much faster iteration times inside of rsx calls by interpreting them and streaming the edits.
+2. It is useful when changing the styling/layout of a program, but will not help with changing the logic of a program.
+
+For the web renderer, you can use the dioxus cli to serve your application with hot reloading enabled.
+
+### Setup
+
+Install [dioxus-cli](https://github.com/DioxusLabs/cli).
+
+### Usage
+
+1. Run:
+
+```bash
+dioxus serve --hot-reload
+```
+
+2. Change some code within a rsx or render macro
+3. Open your localhost in a browser
+4. Save and watch the style change without recompiling
+
+
+### Limitations
+
+1. The interpreter can only use expressions that existed on the last full recompile. If you introduce a new variable or expression to the rsx call, it will require a full recompile to capture the expression.
+2. Components, Iterators, and some attributes can contain arbitrary rust code and will trigger a full recompile when changed.

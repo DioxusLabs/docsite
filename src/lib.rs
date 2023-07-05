@@ -198,3 +198,9 @@ pub enum Route {
 pub fn use_url(cx: &ScopeState) -> String {
     use_route(cx).unwrap().to_string()
 }
+
+pub fn app(cx: Scope) -> Element {
+    render!{
+        Router {}
+    }
+}

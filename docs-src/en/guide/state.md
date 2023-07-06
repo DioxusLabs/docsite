@@ -36,9 +36,13 @@ So far our components have had no state like a normal rust functions. To make ou
 
 You can create state in dioxus using hooks. Hooks are Rust functions that take a reference to `ScopeState` (in a component, you can pass `cx`), and provide you with functionality and state.
 
-We can use the `use_shared_state_provider` to create state in the root of our application that is available to all child components. We can then use the `use_shared_state` hook to read and modify that state in the `Preview` and `StoryListing` components.
+In this case, we will use the `use_shared_state_provider` and `use_shared_state` hooks:
 
-> Note: You should prefer local state hooks like use_state or use_ref when you only use state in one component. Because we use state in multiple components, we can use a [global state pattern](../cookbook/state/global.md)
+- You can provide a closure to `use_shared_state_provider` that determines the initial value of the shared state and provides the value to all child components
+- You can use the You can then use the `use_shared_state` hook to read and modify that state in the `Preview` and `StoryListing` components
+- When the value updates, `use_shared_state` will make the component re-render, and provides you with the new value
+
+> Note: You should prefer local state hooks like use_state or use_ref when you only use state in one component. Because we use state in multiple components, we can use a [global state pattern](../reference/interactivity/context.md)
 
 ```rust
 {{#include src/doc_examples/hackernews_state.rs:shared_state_app}}

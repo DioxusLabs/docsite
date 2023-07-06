@@ -100,6 +100,8 @@ mod outlet;
 mod query_segments;
 pub mod readme;
 #[cfg(feature = "doc_test")]
+mod use_coroutine;
+#[cfg(feature = "doc_test")]
 mod readme_expanded;
 pub mod rendering_lists;
 #[cfg(feature = "doc_test")]

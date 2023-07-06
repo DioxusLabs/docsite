@@ -67,7 +67,7 @@ mod docs {
     use dioxus_router::prelude::*;
     use fermi::use_atom_state;
 
-    use_mdbook::mdbook_router! {"./docs"}
+    use_mdbook::mdbook_router! {"./docs-src"}
 
     fn RouteDemoFrame<R: Routable>(cx: Scope) -> Element
     where

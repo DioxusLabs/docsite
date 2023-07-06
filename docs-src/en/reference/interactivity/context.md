@@ -63,4 +63,3 @@ For example, here's how we would implement the dark mode toggle, which both read
 ```rust
 {{#include src/doc_examples/meme_editor_dark_mode.rs:toggle}}
 ```
-

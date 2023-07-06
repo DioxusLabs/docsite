@@ -43,6 +43,7 @@ slab = "0.4.8"
 chrono = { version = "0.4.26", features = ["serde"] }
 futures = "0.3.28"
 async-recursion = "1.0.4"
+futures-util-preview = "0.2.2"
 
 [profile.release]
 lto = true

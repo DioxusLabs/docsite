@@ -63,7 +63,7 @@ const CARDS: &[(&str, &str)] = &[
 fn ProjectCards(cx: Scope) -> Element {
 	cx.render(rsx! {
 		section { class: "py-12",
-			div { class: "container mx-auto px-4 px-6 lg:px-64",
+			div { class: "container mx-auto px-6 lg:px-64",
 				div { class: "flex flex-wrap -mx-3",
 					CARDS.iter().map(|(title, description)| rsx! {
 						div { class: "w-full md:w-1/2 lg:w-1/3 px-3 mb-6 text-xs dark:text-white", key: "{title}",
@@ -173,7 +173,7 @@ fn TriShow<'a>(
 			TriPadding { last: last.unwrap_or_default(), center }
 			div { class: "grow basis-0 ",
 				Link { target: to.clone(),
-					div { class: "min-w-lg p-8 rounded max-w-screen-md hover:shadow-pop rounded-lg p-8",
+					div { class: "min-w-lg max-w-screen-md hover:shadow-pop rounded-lg p-8",
 						h2 { class: "text-2xl text-gray-800 font-semibold pb-2 dark:text-gray-100 ",
 							*title
 						}
@@ -351,7 +351,7 @@ fn Platform<'a>(
 			}
 
 			Link {
-				class: "min-w-lg mb-12 p-8 rounded max-w-screen-md hover:shadow-pop rounded-lg",
+				class: "min-w-lg mb-12 p-8 max-w-screen-md hover:shadow-pop rounded-lg",
 				target: to.clone(),
 				// div { class: "min-w-lg p-8 m-8 bg-slate-800 dark:bg-slate-900/70 dark:backdrop-blur dark:ring-1 dark:ring-inset dark:ring-white/10 rounded shadow-xl",
 				h2 { class: "text-2xl text-gray-800 font-semibold font-mono pb-2 dark:text-gray-100 ",

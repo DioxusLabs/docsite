@@ -45,7 +45,12 @@ We can then use the component like this:
 ```rust
 {{#include src/doc_examples/component_borrowed_props.rs:App}}
 ```
-![Screenshot: TitleCard component](./images/component_borrowed_props_screenshot.png)
+
+```inject-dioxus
+DemoFrame {
+    component_borrowed_props::App {}
+}
+```
 
 Borrowed props can be very useful, but they do not allow for memorization so they will *always* rerun when the parent scope is rerendered. Because of this Borrowed Props should be reserved for components that are cheap to rerun or places where cloning data is an issue. Using Borrowed Props everywhere will result in large parts of your app rerunning every interaction.
 

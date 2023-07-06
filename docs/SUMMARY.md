@@ -32,6 +32,7 @@
 	- [Routing](reference/interactivity/router.md)
   - [Async](reference/async/index.md)
 	- [UseFuture](reference/async/use_future.md)
+	- [Spawn](reference/async/spawn.md)
 
 ---
 - [Router](router/index.md)
@@ -73,7 +74,6 @@
 	- [External State](cookbook/state/external/index.md)
 		- [Use Coroutine](cookbook/state/external/use_coroutine.md)
 	- [Custom Hooks](cookbook/state/custom_hooks/index.md)
-		- [Spawn](cookbook/state/custom_hooks/spawn.md)
   - [Antipatterns](cookbook/antipatterns.md)
   - [Error Handling](cookbook/error_handling.md)
   - [Custom Renderer](cookbook/custom_renderer.md)

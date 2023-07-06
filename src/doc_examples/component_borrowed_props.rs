@@ -1,12 +1,8 @@
 #![allow(non_snake_case)]
 use dioxus::prelude::*;
 
-fn main() {
-    dioxus_desktop::launch(App);
-}
-
 // ANCHOR: App
-fn App(cx: Scope) -> Element {
+pub fn App(cx: Scope) -> Element {
     let hello = "Hello Dioxus!";
 
     cx.render(rsx!(TitleCard { title: hello }))

@@ -11,6 +11,11 @@ For example, to handle clicks on an element, we can specify an `onclick` handler
 ```rust
 {{#include src/doc_examples/event_click.rs:rsx}}
 ```
+```inject-dioxus
+DemoFrame {
+    event_click::App {}
+}
+```
 
 ## The `Event` object
 
@@ -45,6 +50,12 @@ In some instances, might want to avoid this default behavior. For this, you can 
 
 ```rust
 {{#include src/doc_examples/event_prevent_default.rs:prevent_default}}
+```
+
+```inject-dioxus
+DemoFrame {
+    event_prevent_default::App {}
+}
 ```
 
 Any event handlers will still be called.

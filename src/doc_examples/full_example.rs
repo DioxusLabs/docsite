@@ -3,13 +3,6 @@
 use dioxus::prelude::*;
 use dioxus_router::prelude::*;
 
-fn main() {
-    #[cfg(target_arch = "wasm32")]
-    dioxus_web::launch(App);
-    #[cfg(not(target_arch = "wasm32"))]
-    dioxus_desktop::launch(App);
-}
-
 // ANCHOR: router
 #[derive(Routable, Clone)]
 #[rustfmt::skip]
@@ -37,7 +30,7 @@ enum Route {
 }
 // ANCHOR_END: router
 
-fn App(cx: Scope) -> Element {
+pub fn App(cx: Scope) -> Element {
     render! {
         Router {}
     }

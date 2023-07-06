@@ -2,10 +2,6 @@
 
 use dioxus::prelude::*;
 
-fn main() {
-    dioxus_desktop::launch(App);
-}
-
 #[derive(PartialEq, Clone)]
 struct Comment {
     content: String,
@@ -39,7 +35,7 @@ pub fn App(cx: Scope) -> Element {
             },
             input {
                 value: "{comment_field}",
-                oninput: |event| comment_field.set(event.value.clone()),
+                oninput: move |event| comment_field.set(event.value.clone()),
             }
             input {
                 r#type: "submit",
@@ -69,7 +65,7 @@ pub fn AppForLoop(cx: Scope) -> Element {
             },
             input {
                 value: "{comment_field}",
-                oninput: |event| comment_field.set(event.value.clone()),
+                oninput: move |event| comment_field.set(event.value.clone()),
             }
             input {
                 r#type: "submit",

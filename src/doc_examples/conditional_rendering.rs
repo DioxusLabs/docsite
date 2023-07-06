@@ -2,17 +2,13 @@
 #![allow(non_snake_case)]
 use dioxus::prelude::*;
 
-fn main() {
-    dioxus_desktop::launch(App);
-}
-
 pub fn App(cx: Scope) -> Element {
     let is_logged_in = use_state(cx, || false);
 
     cx.render(rsx!(LogIn {
         is_logged_in: **is_logged_in,
-        on_log_in: |_| is_logged_in.set(true),
-        on_log_out: |_| is_logged_in.set(false),
+        on_log_in: move |_| is_logged_in.set(true),
+        on_log_out: move |_| is_logged_in.set(false),
     }))
 }
 
@@ -43,6 +39,16 @@ fn LogIn<'a>(
     // ANCHOR_END: if_else
 }
 
+pub fn LogInImprovedApp(cx: Scope) -> Element {
+    let is_logged_in = use_state(cx, || false);
+
+    cx.render(rsx!(LogInImproved {
+        is_logged_in: **is_logged_in,
+        on_log_in: move |_| is_logged_in.set(true),
+        on_log_out: move |_| is_logged_in.set(false),
+    }))
+}
+
 #[inline_props]
 fn LogInImproved<'a>(
     cx: Scope<'a>,
@@ -55,7 +61,7 @@ fn LogInImproved<'a>(
         // We only render the welcome message if we are logged in
         // You can use if statements in the middle of a render block to conditionally render elements
         if *is_logged_in {
-            // Notice the body of this if statment is rsx code, not an expression
+            // Notice the body of this if statement is rsx code, not an expression
             "Welcome!"
         }
         button {
@@ -76,6 +82,22 @@ fn LogInImproved<'a>(
         }
     })
     // ANCHOR_END: if_else_improved
+}
+
+pub fn LogInWarningApp(cx: Scope) -> Element {
+    let is_logged_in = use_state(cx, || false);
+
+    render! {
+        input {
+            r#type: "checkbox",
+            checked: **is_logged_in,
+            oninput: move |e| is_logged_in.set(e.inner().value == "on"),
+            "Logged In",
+        }
+        LogInWarning {
+            is_logged_in: **is_logged_in,
+        }
+    }
 }
 
 #[inline_props]

@@ -17,7 +17,11 @@ For example, you might have seen the counter example, in which state (a number) 
 ```rust
 {{#include src/doc_examples/hooks_counter.rs:component}}
 ```
-![Screenshot: counter app](./images/counter.png)
+```inject-dioxus
+DemoFrame {
+   hooks_counter::App {}
+}
+```
 
 Every time the component's state changes, it re-renders, and the component function is called, so you can describe what you want the new UI to look like. You don't have to worry about "changing" anything – just describe what you want in terms of the state, and Dioxus will take care of the rest!
 

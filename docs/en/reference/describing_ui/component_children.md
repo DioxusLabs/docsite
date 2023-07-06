@@ -29,3 +29,9 @@ This makes using the component much simpler: simply put the RSX inside the `{}` 
 ```rust
 {{#include src/doc_examples/component_children.rs:Clickable_usage}}
 ```
+
+```inject-dioxus
+DemoFrame {
+    component_children::App {}
+}
+```

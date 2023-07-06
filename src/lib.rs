@@ -64,9 +64,21 @@ mod docs {
     use crate::components::*;
     use crate::doc_examples::*;
     use dioxus::prelude::*;
+    use dioxus_router::prelude::*;
     use fermi::use_atom_state;
 
     use_mdbook::mdbook_router! {"./docs"}
+
+    fn RouteDemoFrame<R: Routable>(cx: Scope) -> Element
+    where
+        <R as std::str::FromStr>::Err: std::fmt::Display,
+    {
+        render! {
+            GenericRouter::<R> {
+                config: || RouterConfig::default().history(MemoryHistory::default()),
+            }
+        }
+    }
 
     #[inline_props]
     fn DemoFrame<'a>(cx: Scope<'a>, children: Element<'a>) -> Element {

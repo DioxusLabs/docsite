@@ -18,6 +18,11 @@ We can then render that result:
 {{#include src/doc_examples/use_future.rs:render}}
 ```
 
+```inject-dioxus
+DemoFrame {
+    use_future::App {}
+}
+```
 
 ## Restarting the Future
 

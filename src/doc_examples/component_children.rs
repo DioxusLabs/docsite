@@ -2,11 +2,7 @@
 #![allow(non_snake_case)]
 use dioxus::prelude::*;
 
-fn main() {
-    dioxus_desktop::launch(App);
-}
-
-fn App(cx: Scope) -> Element {
+pub fn App(cx: Scope) -> Element {
     // ANCHOR: Clickable_usage
     cx.render(rsx! {
         Clickable {

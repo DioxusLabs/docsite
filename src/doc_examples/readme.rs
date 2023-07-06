@@ -1,14 +1,6 @@
-//! Example: README.md showcase
-//!
-//! The example from the README.md.
-
 use dioxus::prelude::*;
 
-fn main() {
-    dioxus_desktop::launch(app);
-}
-
-fn app(cx: Scope) -> Element {
+pub fn App(cx: Scope) -> Element {
     let mut count = use_state(cx, || 0);
 
     cx.render(rsx! {

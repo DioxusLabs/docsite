@@ -9,6 +9,12 @@ To render different elements based on a condition, you could use an `if-else` st
 ```rust
 {{#include src/doc_examples/conditional_rendering.rs:if_else}}
 ```
+```inject-dioxus
+DemoFrame {
+  conditional_rendering::App {}
+}
+```
+
 
 > You could also use `match` statements, or any Rust function to conditionally render different things.
 
@@ -20,6 +26,11 @@ We can improve this example by splitting up the dynamic parts and inserting them
 
 ```rust
 {{#include src/doc_examples/conditional_rendering.rs:if_else_improved}}
+```
+```inject-dioxus
+DemoFrame {
+  conditional_rendering::LogInImprovedApp {}
+}
 ```
 
 ### Inspecting `Element` props
@@ -39,6 +50,12 @@ To render nothing, you can return `None` from a component. This is useful if you
 
 ```rust
 {{#include src/doc_examples/conditional_rendering.rs:conditional_none}}
+```
+
+```inject-dioxus
+DemoFrame {
+  conditional_rendering::LogInWarningApp {}
+}
 ```
 
 This works because the `Element` type is just an alias for `Option<VNode>`
@@ -61,6 +78,11 @@ Example: suppose you have a list of comments you want to render. Then, you can r
 ```rust
 {{#include src/doc_examples/rendering_lists.rs:render_list}}
 ```
+```inject-dioxus
+DemoFrame {
+  rendering_lists::App {}
+}
+```
 
 ### Inline for loops
 
@@ -68,6 +90,11 @@ Because of how common it is to render a list of items, Dioxus provides a shortha
 
 ```rust
 {{#include src/doc_examples/rendering_lists.rs:render_list_for_loop}}
+```
+```inject-dioxus
+DemoFrame {
+  rendering_lists::AppForLoop {}
+}
 ```
 
 ### The `key` Attribute

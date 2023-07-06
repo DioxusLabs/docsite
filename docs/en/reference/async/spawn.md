@@ -6,6 +6,12 @@ The `use_future` and `use_coroutine` hooks are useful if you want to uncondition
 {{#include src/doc_examples/spawn.rs:spawn}}
 ```
 
+```inject-dioxus
+DemoFrame {
+    spawn::App {}
+}
+```
+
 > Note: `spawn` will always spawn a *new* future. You most likely don't want to call it on every render.
 
 Calling `spawn` will give you a `JoinHandle` which lets you cancel or pause the future.

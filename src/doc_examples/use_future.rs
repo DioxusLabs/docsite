@@ -2,17 +2,13 @@
 
 use dioxus::prelude::*;
 
-fn main() {
-    dioxus_desktop::launch(App);
-}
-
 #[derive(serde::Deserialize, Debug)]
 struct ApiResponse {
     #[serde(rename = "message")]
     image_url: String,
 }
 
-fn App(cx: Scope) -> Element {
+pub fn App(cx: Scope) -> Element {
     // ANCHOR: use_future
     let future = use_future(cx, (), |_| async move {
         reqwest::get("https://dog.ceo/api/breeds/image/random")

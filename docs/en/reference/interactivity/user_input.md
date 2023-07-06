@@ -10,6 +10,12 @@ With controlled inputs, you are directly in charge of the state of the input. Th
 {{#include src/doc_examples/input_controlled.rs:component}}
 ```
 
+```inject-dioxus
+DemoFrame {
+    input_controlled::App {}
+}
+```
+
 Notice the flexibility – you can:
 - Also display the same contents in another element, and they will be in sync
 - Transform the input every time it is modified (e.g. to make sure it is upper case)
@@ -25,6 +31,11 @@ Since you don't necessarily have the current value of the uncontrolled input in 
 
 ```rust
 {{#include src/doc_examples/input_uncontrolled.rs:component}}
+```
+```inject-dioxus
+DemoFrame {
+    input_uncontrolled::App {}
+}
 ```
 ```
 Submitted! UiEvent { data: FormData { value: "", values: {"age": "very old", "date": "1966", "name": "Fred"} } }

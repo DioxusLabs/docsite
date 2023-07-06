@@ -300,7 +300,7 @@ impl<'a, I: Iterator<Item = Event<'a>>> RsxMarkdownParser<'a, I> {
                                 )),
                                 attr: dioxus_rsx::ElementAttr::AttrText {
                                     name: Ident::new("style", Span::call_site()),
-                                    value: IfmtInput::new_static("position: absolute; top: 0; right: 0; background: rgba(0, 0, 0, 0.5); color: white; border: 1px solid white; padding: 0.5em;"),
+                                    value: IfmtInput::new_static("position: absolute; top: 0; right: 0; background: rgba(0, 0, 0, 0.75); color: white; border: 1px solid white; padding: 0.25em;"),
                                 },
                             },
                             dioxus_rsx::ElementAttrNamed {

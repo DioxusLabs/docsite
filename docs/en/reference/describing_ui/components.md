@@ -15,13 +15,21 @@ A Component is responsible for some rendering task – typically, rendering an i
 ```rust
 {{#include src/doc_examples/components.rs:About}}
 ```
+```inject-dioxus
+DemoFrame {
+	components::About {}
+}
+```
 
 Then, you can render your component in another component, similarly to how elements are rendered:
 
 ```rust
 {{#include src/doc_examples/components.rs:App}}
 ```
-
-![Screenshot containing the About component twice](./images/screenshot_about_component.png)
+```inject-dioxus
+DemoFrame {
+	components::App {}
+}
+```
 
 > At this point, it might seem like components are nothing more than functions. However, as you learn more about the features of Dioxus, you'll see that they are actually more powerful!

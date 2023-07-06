@@ -12,13 +12,15 @@ Here, we use the `rsx!` macro to *declare* that we want a `div` element, contain
 
 ## RSX Features
 
-RSX is very similar to HTML in that it describes elements with attributes and children. Here's an empty `div` element in RSX, as well as the resulting HTML:
+RSX is very similar to HTML in that it describes elements with attributes and children. Here's an empty `div` element in RSX, as well as the resulting rendered page (To see the html you can right click on the rendered section and click inspect):
 
 ```rust
 {{#include src/doc_examples/rsx_overview.rs:empty}}
 ```
-```html
-<div></div>
+```inject-dioxus
+DemoFrame {
+	Empty {}
+}
 ```
 
 
@@ -28,8 +30,10 @@ Attributes (and [listeners](../interactivity/index.md)) modify the behavior or a
 ```rust
 {{#include src/doc_examples/rsx_overview.rs:attributes}}
 ```
-```html
-<a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" class="primary_button" autofocus="true" style="color: red"></a>
+```inject-dioxus
+DemoFrame {
+	Attributes {}
+}
 ```
 
 > Note: All attributes defined in `dioxus-html` follow the snake_case naming convention. They transform their `snake_case` names to HTML's `camelCase` attributes.
@@ -43,9 +47,10 @@ Dioxus has a pre-configured set of attributes that you can use. RSX is validated
 ```rust
 {{#include src/doc_examples/rsx_overview.rs:custom_attributes}}
 ```
-```html
-<b customAttribute="value">
-</b>
+```inject-dioxus
+DemoFrame {
+	CustomAttributes {}
+}
 ```
 
 ### Interpolation
@@ -55,12 +60,10 @@ Similarly to how you can [format](https://doc.rust-lang.org/rust-by-example/hell
 ```rust
 {{#include src/doc_examples/rsx_overview.rs:formatting}}
 ```
-```html
-<div class="country-es" position="(42, 0)">
-	<div>ES</div>
-	<div>42</div>
-	<div>{}</div>
-</div>
+```inject-dioxus
+DemoFrame {
+	Formatting {}
+}
 ```
 
 ### Children
@@ -70,12 +73,10 @@ To add children to an element, put them inside the `{}` brackets after all attri
 ```rust
 {{#include src/doc_examples/rsx_overview.rs:children}}
 ```
-```html
-<ol>
-	<li>First Item</li>
-	<li>Second Item</li>
-	<li>Third Item</li>
-</ol>
+```inject-dioxus
+DemoFrame {
+	Children {}
+}
 ```
 
 ### Fragments
@@ -86,9 +87,10 @@ You can render multiple elements at the top level of `rsx!` and they will be aut
 {{#include src/doc_examples/rsx_overview.rs:manyroots}}
 ```
 
-```html
-<p>First Item</p>
-<p>Second Item</p>
+```inject-dioxus
+DemoFrame {
+	ManyRoots {}
+}
 ```
 
 ### Expressions
@@ -98,8 +100,10 @@ You can include arbitrary Rust expressions as children within RSX that implement
 ```rust
 {{#include src/doc_examples/rsx_overview.rs:expression}}
 ```
-```html
-<span>DIOXUS0123456789</span>
+```inject-dioxus
+DemoFrame {
+	Expression {}
+}
 ```
 
 ### Loops
@@ -109,13 +113,10 @@ In addition to iterators you can also use for loops directly within RSX:
 ```rust
 {{#include src/doc_examples/rsx_overview.rs:loops}}
 ```
-```html
-<div>0</div>
-<div>1</div>
-<div>2</div>
-<div>0</div>
-<div>1</div>
-<div>2</div>
+```inject-dioxus
+DemoFrame {
+	Loops {}
+}
 ```
 
 ### If statements
@@ -125,6 +126,8 @@ You can also use if statements without an else branch within RSX:
 ```rust
 {{#include src/doc_examples/rsx_overview.rs:ifstatements}}
 ```
-```html
-<div>true</div>
+```inject-dioxus
+DemoFrame {
+	IfStatements {}
+}
 ```

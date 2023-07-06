@@ -20,7 +20,7 @@ For example, shipping a markdown-to-Dioxus converter might significantly bloat y
 
 ## Boolean Attributes
 
-Most attributes, when rendered, will be rendered exactly as the input you provided. However, some attributes are considered "boolean" attributes and just their presence determines whether they affect the output. For these attributes, a provided value of `"false"` will cause them to be removed from the target element.
+Most attributes, when rendered, will be rendered exactly as the input you provided. However, some attributes are considered "boolean" attributes and just their presence determines whether they affect the output. For these attributes, a provided value of `false` will cause them to be removed from the target element.
 
 So this RSX wouldn't actually render the `hidden` attribute:
 
@@ -60,4 +60,4 @@ Not all attributes work like this however. *Only the following attributes* have 
 - `selected`
 - `truespeed`
 
-For any other attributes, a value of `"false"` will be sent directly to the DOM.
+For any other attributes, a value of `false` will be sent directly to the DOM.

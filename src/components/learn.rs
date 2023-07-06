@@ -173,6 +173,7 @@ fn Content(cx: Scope) -> Element {
 						".markdown-body ul {{ list-style: disc; }}"
 						".markdown-body ol {{ list-style: decimal; }}"
 						".markdown-body li {{ display: list-item; }}"
+						".markdown-body button {{ display: inline-block; background-color: rgba(209, 213, 219, 0.3); border-radius: 0.25rem; padding: 0.25rem 0.5rem; border: 1px solid; margin: 0.25rem; }}"
 					}
 					article { class: "markdown-body pt-1",
 						Outlet {}

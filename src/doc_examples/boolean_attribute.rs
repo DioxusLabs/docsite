@@ -9,7 +9,7 @@ fn App(cx: Scope) -> Element {
     // ANCHOR: boolean_attribute
     cx.render(rsx! {
         div {
-            hidden: "false",
+            hidden: false,
             "hello"
         }
     })

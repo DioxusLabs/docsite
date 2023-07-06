@@ -20,8 +20,7 @@ mod component_element_props;
 mod component_owned_props;
 #[cfg(feature = "doc_test")]
 mod component_props_options;
-#[cfg(feature = "doc_test")]
-mod components;
+pub mod components;
 #[cfg(feature = "doc_test")]
 mod conditional_rendering;
 #[cfg(feature = "doc_test")]
@@ -46,6 +45,10 @@ mod external_link;
 mod first_route;
 #[cfg(feature = "doc_test")]
 mod full_example;
+pub mod hackernews_async;
+pub mod hackernews_complete;
+pub mod hackernews_post;
+pub mod hackernews_state;
 mod hello_world;
 #[cfg(feature = "doc_test")]
 mod hello_world_desktop;
@@ -70,8 +73,7 @@ mod hooks_anti_patterns;
 mod hooks_bad;
 #[cfg(feature = "doc_test")]
 mod hooks_composed;
-#[cfg(feature = "doc_test")]
-mod hooks_counter;
+pub mod hooks_counter;
 #[cfg(feature = "doc_test")]
 mod hooks_counter_two_state;
 #[cfg(feature = "doc_test")]
@@ -112,8 +114,8 @@ mod rendering_lists;
 mod router_cfg;
 #[cfg(feature = "doc_test")]
 mod routing_update;
-#[cfg(feature = "doc_test")]
 mod rsx_overview;
+pub use rsx_overview::*;
 #[cfg(feature = "doc_test")]
 mod server_basic;
 #[cfg(feature = "doc_test")]

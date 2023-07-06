@@ -1,6 +1,5 @@
 #![allow(non_snake_case, non_upper_case_globals)]
 
-use crate::components::blog::*;
 use dioxus::html::input_data::keyboard_types::{Key, Modifiers};
 use dioxus::prelude::*;
 use dioxus_router::prelude::*;
@@ -73,7 +72,8 @@ mod docs {
     fn DemoFrame<'a>(cx: Scope<'a>, children: Element<'a>) -> Element {
         render! {
             div {
-                class: "bg-white rounded-md shadow-md p-4",
+                class: "bg-white rounded-md shadow-md p-4 my-4 overflow-scroll text-black",
+                max_height: "50vh",
                 children
             }
         }

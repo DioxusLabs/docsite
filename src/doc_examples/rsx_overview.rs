@@ -1,10 +1,7 @@
 #![allow(non_snake_case)]
+#![allow(unused)]
 
 use dioxus::prelude::*;
-
-fn main() {
-    dioxus_desktop::launch(App);
-}
 
 pub fn App(cx: Scope) -> Element {
     cx.render(rsx!(
@@ -63,10 +60,10 @@ pub fn ManyRoots(cx: Scope) -> Element {
 
 pub fn Attributes(cx: Scope) -> Element {
     // ANCHOR: attributes
-    cx.render(rsx!(a {
-        href: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+    cx.render(rsx!(img {
+        src: "https://avatars.githubusercontent.com/u/79236386?s=200&v=4",
         class: "primary_button",
-        color: "red",
+        width: "10px"
     }))
     // ANCHOR_END: attributes
 }
@@ -85,8 +82,8 @@ pub fn VariableAttributes(cx: Scope) -> Element {
 
 pub fn CustomAttributes(cx: Scope) -> Element {
     // ANCHOR: custom_attributes
-    cx.render(rsx!(b {
-        "customAttribute": "value",
+    cx.render(rsx!(div {
+        "style": "width: 20px; height: 20px; background-color: red;",
     }))
     // ANCHOR_END: custom_attributes
 }
@@ -97,7 +94,8 @@ pub fn Formatting(cx: Scope) -> Element {
     let country = "es";
     cx.render(rsx!(div {
         class: "country-{country}",
-        "position": "{coordinates:?}",
+        left: "{coordinates.0:?}",
+        top: "{coordinates.1:?}",
         // arbitrary expressions are allowed,
         // as long as they don't contain `{}`
         div {

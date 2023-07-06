@@ -9,5 +9,5 @@ Cargo.lock
 !.vscode/extensions.json
 
 /pkg
-dist
+/docs
 /static

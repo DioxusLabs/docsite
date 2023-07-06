@@ -1,6 +1,6 @@
 # Interactivity
 
-In this chapter, we will add a preview that loads an article when you hover over a post.
+In this chapter, we will add a preview for an articles that you hover or focus.
 
 ## Creating a Preview
 
@@ -18,7 +18,7 @@ DemoFrame {
 
 ## Event Handlers
 
-Next, we need to detect when the user hovers over a section or focuses a link. We can use an [event listener](../reference/interactivity/event_handlers.md) to listen for a hover event.
+Next, we need to detect when the user hovers over a section or focuses a link. We can use an [event listener](../reference/interactivity/event_handlers.md) to listen for the hover and focus events.
 
 Event handlers are similar to regular attributes, but their name usually starts with `on`- and they accept closures as values. The closure will be called whenever the event it listens for is triggered. When an event is triggered, information about the event is passed to the closure though the [Event](https://docs.rs/dioxus/latest/dioxus/prelude/struct.Event.html) structure.
 
@@ -27,6 +27,8 @@ Let's create a [`onmouseenter`](https://docs.rs/dioxus/latest/dioxus/events/fn.o
 ```rust
 {{#include src/doc_examples/hackernews_state.rs:story_listing_listener}}
 ```
+
+> You can read more about Event Handlers in the [Event Handler reference](../reference/interactivity/event_handlers.md)
 
 ## State
 
@@ -56,9 +58,11 @@ DemoFrame {
 }
 ```
 
+> You can read more about Hooks in the [Hooks reference](../reference/interactivity/hooks.md)
+
 ### The Rules of Hooks
 
-Dioxus uses the order you call hooks to differentiate between hooks. Because the order you call hooks matters, you must follow certain rules when using hooks:
+Hooks are a powerful way to manage state in Dioxus, but there are some rules you need to follow to insure they work as expected. Dioxus uses the order you call hooks to differentiate between hooks. Because the order you call hooks matters, you must follow these rules:
 
 1. Hooks may be only used in components or other hooks (we'll get to that later)
 2. On every call to the component function

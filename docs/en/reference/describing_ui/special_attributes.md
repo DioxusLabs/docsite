@@ -13,6 +13,12 @@ For example, shipping a markdown-to-Dioxus converter might significantly bloat y
 {{#include src/doc_examples/dangerous_inner_html.rs:dangerous_inner_html}}
 ```
 
+```inject-dioxus
+DemoFrame {
+	dangerous_inner_html::App {}
+}
+```
+
 > Note! This attribute is called "dangerous_inner_html" because it is **dangerous** to pass it data you don't trust. If you're not careful, you can easily expose [cross-site scripting (XSS)](https://en.wikipedia.org/wiki/Cross-site_scripting) attacks to your users.
 >
 > If you're handling untrusted input, make sure to sanitize your HTML before passing it into `dangerous_inner_html` – or just pass it to a Text Element to escape any HTML tags.
@@ -27,8 +33,11 @@ So this RSX wouldn't actually render the `hidden` attribute:
 ```rust
 {{#include src/doc_examples/boolean_attribute.rs:boolean_attribute}}
 ```
-```html
-<div>hello</div>
+
+```inject-dioxus
+DemoFrame {
+	boolean_attribute::App {}
+}
 ```
 
 Not all attributes work like this however. *Only the following attributes* have this behavior:

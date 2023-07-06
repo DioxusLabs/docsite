@@ -1,6 +1,6 @@
 # Creating a Story
 
-This chapter will teach you how to create a [Component](../reference/describing_ui/components.md) that displays a preview for a post from hackernews.
+This chapter will teach you how to create a [Component](../reference/describing_ui/components.md) that displays a link to a post on hackernews.
 
 First, let's define how to display a post. Dioxus is a *declarative* framework. This means that instead of telling Dioxus what to do (e.g. to "create an element" or "set the color to red") we simply *declare* what we want the UI to look.
 
@@ -57,6 +57,8 @@ DemoFrame {
 }
 ```
 
+> You can read more about elements in the [element reference](../reference/describing_ui/index.md).
+
 ## Setting Attributes
 
 Next, let's add some padding around our post listing with an attribute.
@@ -76,6 +78,8 @@ DemoFrame {
 > Note: All attributes defined in [`dioxus-html`](https://docs.rs/dioxus-html/latest/dioxus_html/) follow the snake_case naming convention. They transform their `snake_case` names to HTML's `camelCase` attributes.
 
 > Note: Styles can be used directly outside of the `style:` attribute. In the above example, `color: "red"` is turned into `style="color: red"`.
+
+> You can read more about elements in the [attribute reference](../reference/describing_ui/index.md)
 
 ## Creating a Component
 
@@ -100,6 +104,8 @@ DemoFrame {
 	hackernews_post::story_v5::App {}
 }
 ```
+
+> You can read more about elements in the [component reference](../reference/describing_ui/components.md)
 
 ## Creating Props
 
@@ -127,6 +133,8 @@ DemoFrame {
 	hackernews_post::story_v6::App {}
 }
 ```
+
+> You can read more about Props in the [Props reference](../reference/describing_ui/component_props.md)
 
 ## Cleaning Up Our Interface
 

@@ -2,8 +2,7 @@
 
 #[cfg(feature = "doc_test")]
 mod anti_patterns;
-#[cfg(feature = "doc_test")]
-mod boolean_attribute;
+pub mod boolean_attribute;
 #[cfg(feature = "doc_test")]
 mod catch_all;
 #[cfg(feature = "doc_test")]
@@ -49,6 +48,7 @@ pub mod hackernews_async;
 pub mod hackernews_complete;
 pub mod hackernews_post;
 pub mod hackernews_state;
+pub mod dangerous_inner_html;
 mod hello_world;
 #[cfg(feature = "doc_test")]
 mod hello_world_desktop;

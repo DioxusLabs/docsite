@@ -387,6 +387,7 @@ fn StoryListing(cx: Scope, story: StoryItem) -> Element {
             position: "relative",
             onmouseenter: move |_event| {
                 // New
+                // If you return a future from an event handler, it will be run automatically
                 resolve_story(full_story.clone(), preview_state.clone(), *id)
             },
             div {

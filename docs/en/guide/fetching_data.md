@@ -4,7 +4,7 @@ In this chapter, we will fetch data from the hacker news API and use it to rende
 
 ## Defining the API
 
-First we need to create some utilities to fetch data from the hackernews API:
+First we need to create some utilities to fetch data from the hackernews API using [reqwest](https://docs.rs/reqwest/latest/reqwest/index.html):
 
 ```rust
 {{#include src/doc_examples/hackernews_async.rs:api}}
@@ -32,12 +32,17 @@ DemoFrame {
 }
 ```
 
+> You can read more about working with Async in Dioxus in the [Async reference](../reference/async/index.md)
+
 ## Lazily Fetching Data
 
 Finally, we will lazily fetch the comments on each post as the user hovers over the post.
 
 
-We need to revisit the code that handles hovering over an item. Instead of 
+We need to revisit the code that handles hovering over an item. Instead of passing an empty list of comments, we can fetch all the related comments when the user hovers over the item.
+
+
+We will cache the list of comments with a [use_ref](https://docs.rs/dioxus-hooks/latest/dioxus_hooks/fn.use_ref.html) hook. This hook allows you to store some state in a single component. When the user triggers fetching the comments we will check if the response has already been cached before fetching the data from the hackernews API.
 
 ```rust
 {{#include src/doc_examples/hackernews_async.rs:resolve_story}}

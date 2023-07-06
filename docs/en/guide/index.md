@@ -6,7 +6,7 @@ DemoFrame {
 }
 ```
 
-First, lets setup our dependancies. In addition to the dependancies you added in the [getting started](../getting_started/index.md) guide for your platform, we need to set up a few more dependancies to work with the hacker news API:
+First, lets setup our dependencies. In addition to the dependencies you added in the [getting started](../getting_started/index.md) guide for your platform, we need to set up a few more dependencies to work with the hacker news API:
 
 ```sh
 cargo add chrono --features serde

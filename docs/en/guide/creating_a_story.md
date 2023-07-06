@@ -1,6 +1,6 @@
 # Creating a Story
 
-This chapter will teach you how to create a [Componenent](../reference/describing_ui/components.md) that displays a preview for a post from hackernews.
+This chapter will teach you how to create a [Component](../reference/describing_ui/components.md) that displays a preview for a post from hackernews.
 
 First, let's define how to display a post. Dioxus is a *declarative* framework. This means that instead of telling Dioxus what to do (e.g. to "create an element" or "set the color to red") we simply *declare* what we want the UI to look.
 
@@ -45,7 +45,7 @@ DemoFrame {
 
 ## Creating Elements
 
-Next, let's wrap our post discription in a [`div`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/div). You can create HTML elements in Dioxus by putting a `{` after the element name and a `}` after the last child of the element:
+Next, let's wrap our post description in a [`div`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/div). You can create HTML elements in Dioxus by putting a `{` after the element name and a `}` after the last child of the element:
 
 ```rust
 {{#include src/doc_examples/hackernews_post.rs:story_v3}}
@@ -81,15 +81,15 @@ DemoFrame {
 
 Just like you wouldn't want to write a complex program in a single, long, `main` function, you shouldn't build a complex UI in a single `App` function. Instead, you should break down the functionality of an app in logical parts called components.
 
-A component is a Rust function, named in UpperCammelCase, that takes a `Scope` parameter and returns an `Element` describing the UI it wants to render. In fact, our `App` function is a component!
+A component is a Rust function, named in UpperCamelCase, that takes a `Scope` parameter and returns an `Element` describing the UI it wants to render. In fact, our `App` function is a component!
 
-Let's pull our story discription into a new component:
+Let's pull our story description into a new component:
 
 ```rust
 {{#include src/doc_examples/hackernews_post.rs:story_v5}}
 ```
 
-We can render our component like we would an element by puttin `{}`s after the component name. Let's modify our App component to render our new StoryListing component:
+We can render our component like we would an element by putting `{}`s after the component name. Let's modify our App component to render our new StoryListing component:
 
 ```rust
 {{#include src/doc_examples/hackernews_post.rs:app_v5}}
@@ -116,7 +116,7 @@ We will also define what a post is and include information for how to transform 
 {{#include src/doc_examples/hackernews_post.rs:story_v5}}
 ```
 
-Now, let's modify the App component to pass the story to our `StoryListing` componet like we would set an attribute on an element:
+Now, let's modify the App component to pass the story to our `StoryListing` component like we would set an attribute on an element:
 
 ```rust
 {{#include src/doc_examples/hackernews_post.rs:app_v6}}
@@ -130,7 +130,7 @@ DemoFrame {
 
 ## Cleaning Up Our Interface
 
-Finnally, by combining elements and attributes, we can make our post listing much more appealing:
+Finally, by combining elements and attributes, we can make our post listing much more appealing:
 
 Full code up to this point:
 

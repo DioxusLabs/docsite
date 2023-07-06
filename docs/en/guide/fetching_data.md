@@ -34,7 +34,7 @@ DemoFrame {
 
 ## Lazily Fetching Data
 
-Finnaly, we will lazily fetch data on each post as the user hovers over the post.
+Finally, we will lazily fetch the comments on each post as the user hovers over the post.
 
 
 We need to revisit the code that handles hovering over an item. Instead of 

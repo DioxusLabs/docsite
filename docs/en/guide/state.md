@@ -20,7 +20,7 @@ DemoFrame {
 
 Next, we need to detect when the user hovers over a section or focuses a link. We can use an [event listener](../reference/interactivity/event_handlers.md) to listen for a hover event.
 
-Event handlers are similar to regular attributes, but their name usually starts with `on`- and they accept closures as values. The closure will be called whenever the event it listens for is triggered. When an event is triggered, information about the event is passed to the closure though the [Event](https://docs.rs/dioxus/latest/dioxus/prelude/struct.Event.html) struture.
+Event handlers are similar to regular attributes, but their name usually starts with `on`- and they accept closures as values. The closure will be called whenever the event it listens for is triggered. When an event is triggered, information about the event is passed to the closure though the [Event](https://docs.rs/dioxus/latest/dioxus/prelude/struct.Event.html) structure.
 
 Let's create a [`onmouseenter`](https://docs.rs/dioxus/latest/dioxus/events/fn.onmouseenter.html) event listener in the `StoryListing` component:
 
@@ -34,7 +34,7 @@ So far our components have had no state like a normal rust functions. To make ou
 
 You can create state in dioxus using hooks. Hooks are Rust functions that take a reference to `ScopeState` (in a component, you can pass `cx`), and provide you with functionality and state.
 
-We can use the `use_shared_state_provider` to create state in the root of our application that is availible to all child components. We can then use the `use_shared_state` hook to read and modify that state in the `Preview` and `StoryListing` components.
+We can use the `use_shared_state_provider` to create state in the root of our application that is available to all child components. We can then use the `use_shared_state` hook to read and modify that state in the `Preview` and `StoryListing` components.
 
 > Note: You should prefer local state hooks like use_state or use_ref when you only use state in one component. Because we use state in multiple components, we can use a [global state pattern](../cookbook/state/global.md)
 

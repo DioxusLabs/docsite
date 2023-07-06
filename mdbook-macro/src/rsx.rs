@@ -1,11 +1,11 @@
 use std::{
     iter::Peekable,
-    path::{Path, PathBuf},
+    path::{Path, PathBuf}, vec,
 };
 
 use dioxus_rsx::{BodyNode, CallBody, Element, ElementAttrNamed, IfmtInput};
 use pulldown_cmark::{Alignment, Event, Tag};
-use syn::{Ident, __private::Span, parse_str};
+use syn::{Ident, __private::Span, parse_str, LitStr};
 
 use syntect::highlighting::ThemeSet;
 use syntect::parsing::SyntaxSet;
@@ -282,11 +282,61 @@ impl<'a, I: Iterator<Item = Event<'a>>> RsxMarkdownParser<'a, I> {
                             value: IfmtInput::new_static(&html),
                         },
                     });
-                    self.start_node(BodyNode::Element(Element {
+                    let code_node = BodyNode::Element(Element {
                         name: dioxus_rsx::ElementName::Ident(Ident::new("div", Span::call_site())),
                         key: None,
                         attributes: code_attrs,
                         children: vec![],
+                        brace: Default::default(),
+                    });
+                    let copy_node = BodyNode::Element(Element {
+                        name: dioxus_rsx::ElementName::Ident(Ident::new("button", Span::call_site())),
+                        key: None,
+                        attributes: vec![
+                            dioxus_rsx::ElementAttrNamed {
+                                el_name: dioxus_rsx::ElementName::Ident(Ident::new(
+                                    "button",
+                                    Span::call_site(),
+                                )),
+                                attr: dioxus_rsx::ElementAttr::AttrText {
+                                    name: Ident::new("style", Span::call_site()),
+                                    value: IfmtInput::new_static("position: absolute; top: 0; right: 0; background: rgba(0, 0, 0, 0.5); color: white; border: 1px solid white; padding: 0.5em;"),
+                                },
+                            },
+                            dioxus_rsx::ElementAttrNamed {
+                                el_name: dioxus_rsx::ElementName::Ident(Ident::new(
+                                    "button",
+                                    Span::call_site(),
+                                )),
+                                attr: dioxus_rsx::ElementAttr::CustomAttrText  {
+                                    name: LitStr::new("onclick", Span::call_site()),
+                                    value: IfmtInput::new_static(
+                                        r##"navigator.clipboard.writeText(this.previousElementSibling.innerText)"##,
+                                    ),
+                                },
+                            },
+                        ],
+                        children: vec![
+                            BodyNode::Text(IfmtInput::new_static("Copy"))
+                        ],
+                        brace: Default::default(),
+                    });
+                    self.start_node(BodyNode::Element(Element {
+                        name: dioxus_rsx::ElementName::Ident(Ident::new("div", Span::call_site())),
+                        key: None,
+                        attributes: vec![
+                            dioxus_rsx::ElementAttrNamed {
+                                el_name: dioxus_rsx::ElementName::Ident(Ident::new(
+                                    "button",
+                                    Span::call_site(),
+                                )),
+                                attr: dioxus_rsx::ElementAttr::AttrText {
+                                    name: Ident::new("style", Span::call_site()),
+                                    value: IfmtInput::new_static("position: relative;"),
+                                },
+                            },
+                        ],
+                        children: vec![code_node, copy_node],
                         brace: Default::default(),
                     }));
                 }

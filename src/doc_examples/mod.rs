@@ -4,6 +4,8 @@
 mod anti_patterns;
 pub mod boolean_attribute;
 #[cfg(feature = "doc_test")]
+mod custom_attributes;
+#[cfg(feature = "doc_test")]
 mod catch_all;
 #[cfg(feature = "doc_test")]
 mod catch_all_segments;

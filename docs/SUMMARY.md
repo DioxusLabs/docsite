@@ -57,7 +57,6 @@
   - [Platforms](cookbook/platforms/index.md)
 	- [Desktop](cookbook/platforms/desktop/index.md)
 		- [Publishing](cookbook/platforms/desktop/publishing.md)
-	- [TUI](cookbook/platforms/tui.md)
 	- [Web](cookbook/platforms/web/index.md)
 		- [Publishing](cookbook/platforms/web/publishing.md)
 	- [SSR](cookbook/platforms/ssr.md)

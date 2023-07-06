@@ -1,6 +1,6 @@
 # Communicating with the server
 
-`dixous-server` provides server functions that allow you to call an automatically generated API on the server from the client as if it were a local function.
+`dioxus-fullstack` provides server functions that allow you to call an automatically generated API on the server from the client as if it were a local function.
 
 To make a server function, simply add the `#[server(YourUniqueType)]` attribute to a function. The function must:
 

@@ -118,7 +118,7 @@ pub fn Awesome(cx: Scope) -> Element {
                     class: "dark:bg-ideblack w-full pb-96",
                     div {
                         class: "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 container mx-auto px-2 max-w-screen-1g",
-                        items.iter().map(|item| rsx!(AwesomeItem { item: item.clone() }))
+                        items.iter().map(|item| rsx!(AwesomeItem { key: "{item.name}", item: item.clone() }))
                     }
                 }
             ))

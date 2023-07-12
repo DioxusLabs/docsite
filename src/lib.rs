@@ -69,17 +69,6 @@ mod docs {
 
     use_mdbook::mdbook_router! {"./docs-src"}
 
-    fn RouteDemoFrame<R: Routable>(cx: Scope) -> Element
-    where
-        <R as std::str::FromStr>::Err: std::fmt::Display,
-    {
-        render! {
-            GenericRouter::<R> {
-                config: || RouterConfig::default().history(MemoryHistory::default()),
-            }
-        }
-    }
-
     #[inline_props]
     fn DemoFrame<'a>(cx: Scope<'a>, children: Element<'a>) -> Element {
         render! {

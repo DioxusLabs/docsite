@@ -23,7 +23,7 @@ fn main() {
 				axum::Server::bind(&addr)
 					.serve(
 						axum::Router::new()
-							// Serve the dist folder with the static javascript and WASM files created by the dixous CLI
+							// Serve the dist folder with the static javascript and WASM files created by the dioxus CLI
 							.serve_static_assets("./dist")
 							// Register server functions
 							.register_server_fns("")

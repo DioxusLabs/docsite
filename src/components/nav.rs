@@ -403,7 +403,7 @@ fn SearchResult(cx: Scope, result: mdbook_shared::search_index::SearchResult) ->
 //			 "https://github.com/DioxusLabs/dioxus/tree/master/packages/router",
 //		 ),
 //		 ("Taffy", "https://github.com/DioxusLabs/taffy"),
-//		 ("CLI", "https://github.com/DioxusLabs/cli"),
+//		 ("CLI", "https://github.com/DioxusLabs/dioxus/tree/master/packages/cli"),
 //	 ],
 // ),
 // ("Tutorials", "/tutorials/", &[]),

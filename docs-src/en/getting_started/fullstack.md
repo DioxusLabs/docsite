@@ -1,6 +1,6 @@
 # Fullstack
 
-> This guide assumes you read the [Web](web.md) getting started guide and installed the [Dioxus-cli](https://github.com/DioxusLabs/cli)
+> This guide assumes you read the [Web](web.md) getting started guide and installed the [Dioxus-cli](https://github.com/DioxusLabs/dioxus/tree/master/packages/cli)
 
 # Getting Started
 

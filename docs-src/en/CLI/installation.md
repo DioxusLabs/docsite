@@ -7,7 +7,7 @@ Choose any one of the methods below to install the Dioxus CLI:
 To get the most up to date bug fixes and features of the Dioxus CLI, you can install the development version from git.
 
 ```
-cargo install --git https://github.com/Dioxuslabs/cli
+cargo install --git https://github.com/DioxusLabs/dioxus/tree/master/packages/cli
 ```
 
 This will automatically download `Dioxus-CLI` source from github master branch,

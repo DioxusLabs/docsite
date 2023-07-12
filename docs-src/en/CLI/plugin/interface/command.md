@@ -15,7 +15,7 @@ you can use this function to run some command on the current system.
 local cmd = plugin.command
 
 manager.test = function ()
-    cmd.exec({"git", "clone", "https://github.com/DioxusLabs/cli-plugin-library"})
+    cmd.exec({"git", "clone", "https://github.com/DioxusLabs/dioxus/tree/master/packages/cli-plugin-library"})
 end
 ```
 > Warning: This function don't have exception catch.

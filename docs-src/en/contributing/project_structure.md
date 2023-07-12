@@ -47,4 +47,4 @@ There are many packages in the Dioxus organization. This document will help you 
 - [hot-reload](https://github.com/DioxusLabs/dioxus/tree/master/packages/hot-reload): Macro that uses the RSX crate to hot reload static parts of any rsx! macro. This macro works with any non-web renderer with an [integration](https://crates.io/crates/dioxus-hot-reload)
 - [autofmt](https://github.com/DioxusLabs/dioxus/tree/master/packages/autofmt): Formats RSX code
 - [rsx-rosetta](https://github.com/DioxusLabs/dioxus/tree/master/packages/RSX-rosetta): Handles conversion between HTML and RSX
-- [CLI](https://github.com/DioxusLabs/cli): A Command Line Interface and VSCode extension to assist with Dioxus usage
+- [CLI](https://github.com/DioxusLabs/dioxus/tree/master/packages/cli): A Command Line Interface and VSCode extension to assist with Dioxus usage

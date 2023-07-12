@@ -81,6 +81,24 @@
   - [Custom Renderer](cookbook/custom_renderer.md)
 
 ---
+- [CLI](CLI/index.md)
+	- [Installation](CLI/installation.md)
+	- [Create a Project](CLI/creating.md)
+	- [Configure Project](CLI/configure.md)
+	- [Commands](CLI/cmd/index.md)
+		- [Build](CLI/cmd/build.md)
+		- [Serve](CLI/cmd/serve.md)
+		- [Clean](CLI/cmd/clean.md)
+		- [Translate](CLI/cmd/translate.md)
+	- [Plugin Development](CLI/plugin/index.md)
+		- [API.Log](CLI/plugin/interface/log.md)
+		- [API.Command](CLI/plugin/interface/command.md)
+		- [API.OS](CLI/plugin/interface/os.md)
+		- [API.Directories](CLI/plugin/interface/dirs.md)
+		- [API.Network](CLI/plugin/interface/network.md)
+		- [API.Path](CLI/plugin/interface/path.md)
+
+---
 - [Contributing](contributing/index.md)
   - [Project Structure](contributing/project_structure.md)
   - [Walkthrough of Internals](contributing/walkthrough_readme.md)

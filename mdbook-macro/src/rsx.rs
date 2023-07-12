@@ -1,6 +1,7 @@
 use std::{
     iter::Peekable,
-    path::{Path, PathBuf}, vec,
+    path::{Path, PathBuf},
+    vec,
 };
 
 use dioxus_rsx::{BodyNode, CallBody, Element, ElementAttrNamed, IfmtInput};
@@ -324,18 +325,16 @@ impl<'a, I: Iterator<Item = Event<'a>>> RsxMarkdownParser<'a, I> {
                     self.start_node(BodyNode::Element(Element {
                         name: dioxus_rsx::ElementName::Ident(Ident::new("div", Span::call_site())),
                         key: None,
-                        attributes: vec![
-                            dioxus_rsx::ElementAttrNamed {
-                                el_name: dioxus_rsx::ElementName::Ident(Ident::new(
-                                    "button",
-                                    Span::call_site(),
-                                )),
-                                attr: dioxus_rsx::ElementAttr::AttrText {
-                                    name: Ident::new("style", Span::call_site()),
-                                    value: IfmtInput::new_static("position: relative;"),
-                                },
+                        attributes: vec![dioxus_rsx::ElementAttrNamed {
+                            el_name: dioxus_rsx::ElementName::Ident(Ident::new(
+                                "button",
+                                Span::call_site(),
+                            )),
+                            attr: dioxus_rsx::ElementAttr::AttrText {
+                                name: Ident::new("style", Span::call_site()),
+                                value: IfmtInput::new_static("position: relative;"),
                             },
-                        ],
+                        }],
                         children: vec![code_node, copy_node],
                         brace: Default::default(),
                     }));
@@ -524,8 +523,8 @@ fn transform_code_block(path: &Path, code_contents: String) -> String {
     let segments = code_contents.split("{{#");
     let mut output = String::new();
     for segment in segments {
-        if let Some((extension, after)) = segment.split_once("}}") {
-            output += &resolve_extension(path, extension);
+        if let Some(("include", after)) = segment.split_once("}}") {
+            output += &resolve_extension(path, "include");
             output += after;
         } else {
             output += segment;

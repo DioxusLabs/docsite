@@ -1,5 +1,3 @@
-use std::fs::OpenOptions;
-use std::io::Write;
 use std::path::Path;
 use std::path::PathBuf;
 
@@ -44,43 +42,43 @@ fn load_book_from_fs(input: LitStr) -> anyhow::Result<(PathBuf, mdbook_shared::M
     Ok((path.clone(), MdBook::new(path)?))
 }
 
-const STATE_DIR: &str = env!("DIOXUS_ASSET_DIR");
+// const STATE_DIR: &str = env!("DIOXUS_ASSET_DIR");
 
-/// Returns the path of the internal file that would be used to
-/// store state for the specified key, as a [PathBuf](std::path::PathBuf).
-/// You should never use this directly unless you know what you're doing.
-fn state_file_path(key: &str) -> PathBuf {
-    let filename = format!("mdbook_asset_{}", key);
-    let mut buf = PathBuf::new();
-    buf.push(STATE_DIR);
-    buf.push(filename.as_str());
-    buf
-}
+// /// Returns the path of the internal file that would be used to
+// /// store state for the specified key, as a [PathBuf](std::path::PathBuf).
+// /// You should never use this directly unless you know what you're doing.
+// fn state_file_path(key: &str) -> PathBuf {
+//     let filename = format!("mdbook_asset_{}", key);
+//     let mut buf = PathBuf::new();
+//     buf.push(STATE_DIR);
+//     buf.push(filename.as_str());
+//     buf
+// }
 
-fn proc_append_state(key: &str, value: &str) -> std::io::Result<()> {
-    let value = format!("{}\n", value.replace('\n', "\\n"));
-    let state_file = state_file_path(key);
-    match OpenOptions::new()
-        .append(true)
-        .create(true)
-        .open(state_file)
-    {
-        Ok(mut file) => return file.write_all(value.as_bytes()),
-        Err(e) => Err(e),
-    }
-}
+// fn proc_append_state(key: &str, value: &str) -> std::io::Result<()> {
+//     let value = format!("{}\n", value.replace('\n', "\\n"));
+//     let state_file = state_file_path(key);
+//     match OpenOptions::new()
+//         .append(true)
+//         .create(true)
+//         .open(state_file)
+//     {
+//         Ok(mut file) => return file.write_all(value.as_bytes()),
+//         Err(e) => Err(e),
+//     }
+// }
 
-fn clear_assets_file(key: &str) -> std::io::Result<()> {
-    let state_file = state_file_path(key);
-    match OpenOptions::new()
-        .write(true)
-        .truncate(true)
-        .open(state_file)
-    {
-        Ok(mut file) => file.write_all(&[]),
-        Err(e) => Err(e),
-    }
-}
+// fn clear_assets_file(key: &str) -> std::io::Result<()> {
+//     let state_file = state_file_path(key);
+//     match OpenOptions::new()
+//         .write(true)
+//         .truncate(true)
+//         .open(state_file)
+//     {
+//         Ok(mut file) => file.write_all(&[]),
+//         Err(e) => Err(e),
+//     }
+// }
 
 fn generate_router(book_path: PathBuf, book: mdbook_shared::MdBook<PathBuf>) -> TokenStream2 {
     let mdbook = write_book_with_routes(book_path, &book);

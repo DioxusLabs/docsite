@@ -1,12 +1,8 @@
 #![allow(non_snake_case)]
 use dioxus::prelude::*;
 
-fn main() {
-    dioxus_desktop::launch(App);
-}
-
 // ANCHOR: component
-fn App(cx: Scope) -> Element {
+pub fn App(cx: Scope) -> Element {
     let name = use_state(cx, || "bob".to_string());
 
     cx.render(rsx! {

@@ -4,10 +4,10 @@
 
 #[derive(Props, PartialEq)]
 struct PropBased {
-    name: String,
-    age: String,
+	name: String,
+	age: String,
 }
 
 fn Stateful(cx: Scope<PropBased>) -> Element {
-    render!("Hello {cx.name}, you are {cx.age} years old!")
+	render!("Hello {cx.name}, you are {cx.age} years old!")
 }

@@ -53,7 +53,14 @@ pub fn use_shortcut(
 ) {
     #[cfg(feature = "web")]
     {
-        cx.use_hook(move || ShortcutHandle(LISTENERS.with(|l| l.callbacks.lock().unwrap().insert((key, modifiers, Box::new(handler))))));
+        cx.use_hook(move || {
+            ShortcutHandle(LISTENERS.with(|l| {
+                l.callbacks
+                    .lock()
+                    .unwrap()
+                    .insert((key, modifiers, Box::new(handler)))
+            }))
+        });
     }
 }
 

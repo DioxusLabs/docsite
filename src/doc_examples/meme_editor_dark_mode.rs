@@ -11,39 +11,37 @@ fn main() {
 struct DarkMode(bool);
 // ANCHOR_END: DarkMode_struct
 
-#[rustfmt::skip]
 pub fn App(cx: Scope) -> Element {
-	// ANCHOR: context_provider
-use_shared_state_provider(cx, || DarkMode(false));
-	// ANCHOR_END: context_provider
+    // ANCHOR: context_provider
+    use_shared_state_provider(cx, || DarkMode(false));
+    // ANCHOR_END: context_provider
 
-	let is_dark_mode = use_is_dark_mode(cx);
+    let is_dark_mode = use_is_dark_mode(cx);
 
-	let wrapper_style = if is_dark_mode {
-		r"
+    let wrapper_style = if is_dark_mode {
+        r"
 			background: #222;
 			min-height: 100vh;
 		"
-	} else {
-		r""
-	};
+    } else {
+        r""
+    };
 
-	cx.render(rsx!(div {
-		style: "{wrapper_style}",
-		DarkModeToggle {},
-		MemeEditor {},
-	}))
+    cx.render(rsx!(div {
+        style: "{wrapper_style}",
+        DarkModeToggle {},
+        MemeEditor {},
+    }))
 }
 
-#[rustfmt::skip]
 pub fn use_is_dark_mode(cx: &ScopeState) -> bool {
-	// ANCHOR: use_context
-let dark_mode_context = use_shared_state::<DarkMode>(cx);
-	// ANCHOR_END: use_context
+    // ANCHOR: use_context
+    let dark_mode_context = use_shared_state::<DarkMode>(cx);
+    // ANCHOR_END: use_context
 
-	dark_mode_context
-		.map(|context| context.read().0)
-		.unwrap_or(false)
+    dark_mode_context
+        .map(|context| context.read().0)
+        .unwrap_or(false)
 }
 
 // ANCHOR: toggle

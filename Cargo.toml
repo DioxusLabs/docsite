@@ -36,10 +36,14 @@ tokio = { version = "1.29.0", features = ["full"], optional = true }
 axum = { version = "0.6.12", optional = true }
 simple_logger = "4.2.0"
 shipyard = { version = "0.6.2", optional = true }
-reqwest = { version = "0.11.18", optional = true, features = ["json"] }
+reqwest = { version = "0.11.18", features = ["json"] }
 gloo-storage = { version = "0.2.2", optional = true }
 web-sys = { version = "0.3.64", features = ["Document", "Window", "Event", "AddEventListenerOptions"] }
 slab = "0.4.8"
+chrono = { version = "0.4.26", features = ["serde"] }
+futures = "0.3.28"
+async-recursion = "1.0.4"
+futures-util-preview = "0.2.2"
 
 [profile.release]
 lto = true
@@ -54,6 +58,6 @@ dioxus = { git = "https://github.com/Demonthos/dioxus", branch = "router-typesaf
 
 [features]
 default = []
-doc_test = ["tokio", "ssr", "dioxus-web", "dioxus-router/web", "dioxus-tui", "dioxus-desktop", "dioxus-liveview", "dioxus-native-core", "dioxus-native-core-macro", "shipyard", "reqwest", "gloo-storage"]
+doc_test = ["tokio", "ssr", "dioxus-web", "dioxus-router/web", "dioxus-tui", "dioxus-desktop", "dioxus-liveview", "dioxus-native-core", "dioxus-native-core-macro", "shipyard", "gloo-storage"]
 web = ["dioxus-web", "dioxus-router/web"]
 ssr = ["dioxus-ssr", "dioxus-router/ssr", "tokio", "dioxus-fullstack/axum", "axum"]

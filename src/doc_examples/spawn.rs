@@ -2,11 +2,7 @@
 
 use dioxus::prelude::*;
 
-fn main() {
-    dioxus_desktop::launch(App);
-}
-
-fn App(cx: Scope) -> Element {
+pub fn App(cx: Scope) -> Element {
     // ANCHOR: spawn
     let logged_in = use_state(cx, || false);
 
@@ -16,18 +12,18 @@ fn App(cx: Scope) -> Element {
 
             async move {
                 let resp = reqwest::Client::new()
-                    .post("http://example.com/login")
+                    .get("http://example.com")
                     .send()
                     .await;
 
                 match resp {
                     Ok(_data) => {
-                        println!("Login successful!");
+                        log::info!("Login successful!");
                         logged_in.set(true);
                     }
                     Err(_err) => {
-                        println!(
-                            "Login failed - you need a login server running on localhost:8080."
+                        log::info!(
+                            "Login failed - you need a login server running on https://example.com."
                         )
                     }
                 }
@@ -38,12 +34,13 @@ fn App(cx: Scope) -> Element {
     cx.render(rsx! {
         button {
             onclick: log_in,
-            "Login",
+            "Logined in? {logged_in}",
         }
     })
     // ANCHOR_END: spawn
 }
 
+#[cfg(feature = "doc_test")]
 pub fn Tokio(cx: Scope) -> Element {
     let _ = || {
         // ANCHOR: tokio

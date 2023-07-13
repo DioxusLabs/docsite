@@ -5,21 +5,20 @@ fn main() {
     dioxus_desktop::launch(App);
 }
 
-#[rustfmt::skip]
 fn App(cx: Scope) -> Element {
-	// ANCHOR: rsx
-cx.render(rsx! {
-	div {
-		onclick: move |_event| {},
-		"outer",
-		button {
-			onclick: move |event| {
-				// now, outer won't be triggered
-				event.stop_propagation();
-			},
-			"inner"
-		}
-	}
-})
-	// ANCHOR_END: rsx
+    // ANCHOR: rsx
+    cx.render(rsx! {
+        div {
+            onclick: move |_event| {},
+            "outer",
+            button {
+                onclick: move |event| {
+                    // now, outer won't be triggered
+                    event.stop_propagation();
+                },
+                "inner"
+            }
+        }
+    })
+    // ANCHOR_END: rsx
 }

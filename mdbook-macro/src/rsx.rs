@@ -523,9 +523,11 @@ fn transform_code_block(path: &Path, code_contents: String) -> String {
     let segments = code_contents.split("{{#");
     let mut output = String::new();
     for segment in segments {
-        if let Some(("include", after)) = segment.split_once("}}") {
-            output += &resolve_extension(path, "include");
-            output += after;
+        if let Some((plugin, after)) = segment.split_once("}}") {
+            if plugin.starts_with("include") {
+                output += &resolve_extension(path, plugin);
+                output += after;
+            }
         } else {
             output += segment;
         }

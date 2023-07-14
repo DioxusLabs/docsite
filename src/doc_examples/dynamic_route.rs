@@ -21,7 +21,7 @@ enum Route {
 			#[layout(Blog)]
 			#[route("/")]
 			BlogList {},
-			#[route("/blog/:name")]
+			#[route("/post/:name")]
 			BlogPost { name: String },
 			#[end_layout]
 		#[end_nest]

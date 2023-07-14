@@ -7,7 +7,7 @@ use dioxus_router::prelude::*;
 #[rustfmt::skip]
 enum Route {
 	// segments that start with : are dynamic segments
-	#[route("/blog/:name")]
+	#[route("/post/:name")]
 	BlogPost {
 		// You must include dynamic segments in child variants
 		name: String,

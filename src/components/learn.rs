@@ -163,8 +163,8 @@ fn RightNav(cx: Scope) -> Element {
 			ul { class: "",
 				for section in page.sections().iter().filter(|s| s.level <= 2) {
 					li { class: "pb-2",
-						Link {
-							target: NavigationTarget::External("#".to_string() + &section.id),
+						a {
+							href: "#{section.id}",
 							"{section.title}"
 						}
 					}

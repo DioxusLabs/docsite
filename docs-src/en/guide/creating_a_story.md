@@ -18,7 +18,7 @@ DemoFrame {
 }
 ```
 
-> Because RSX mirrors HTML, you will need to know some html to use Dioxus.
+> RSX mirrors HTML. Because of this you will need to know some html to use Dioxus.
 > 
 > Here are some resources to help get you started learning HTML:
 > - [MDN HTML Guide](https://developer.mozilla.org/en-US/docs/Learn/HTML)
@@ -31,7 +31,7 @@ DemoFrame {
 
 ## Dynamic Text
 
-Let's expand our App component to include the story title, author, score, time posted, and number of comments. We can insert dynamic text in the render macro by inserting variables inside `{}`s (this works similarly to the formatting in the [println!](macro)):
+Let's expand our App component to include the story title, author, score, time posted, and number of comments. We can insert dynamic text in the render macro by inserting variables inside `{}`s (this works similarly to the formatting in the [println!](https://doc.rust-lang.org/std/macro.println.html) macro):
 
 ```rust
 {{#include src/doc_examples/hackernews_post.rs:story_v2}}

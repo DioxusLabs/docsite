@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Dioxus | An elegant GUI library for Rust</title>
+    <meta content="text/html;charset=utf-8" http-equiv="Content-Type" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta charset="UTF-8" />
+
+    <link rel="icon shortcut" type="image/png" href="/docsite/static/favicon.png" />
+
+    <!-- Social meta stuff -->
+    <!-- open graph -->
+    <meta
+      property="og:title"
+      content="Dioxus - Reliable Rust apps that run anywhere"
+    />
+
+    <meta property="og:type" content="website" />
+
+    <meta
+      property="og:description"
+      content="An elegant GUI library for Rust, inspired by React. Supports Web, Desktop, SSR, Liveview, and Mobile."
+    />
+
+    <meta property="og:url" content="https://dioxuslabs.com/" />
+
+    <meta
+      property="og:image"
+      content="https://dioxuslabs.com/static/opengraph.png"
+    />
+
+    <!-- twitter -->
+    <meta
+      name="twitter:title"
+      content="Dioxus - Reliable Rust apps that run anywhere"
+    />
+    <meta
+      name="twitter:description"
+      content="An elegant GUI library for Rust, inspired by React. Supports Web, Desktop, SSR, Liveview, and Mobile."
+    />
+    <meta
+      name="twitter:image"
+      content="https://dioxuslabs.com/static/opengraph.png"
+    />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <!-- icons -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
+
+    <!-- style stuff -->
+    <!-- <link data-trunk rel="css" href="/tailwind.css" /> -->
+    <link rel="stylesheet" href="/docsite/tailwind.css" />
+    <!-- <script src="https://cdn.tailwindcss.com"></script> -->
+    <!-- <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              ghmetal: "#24292f",
+              ghdarkmetal: "#161b22",
+              ideblack: "#0e1116",
+              // ideblack: "#0a0a0a",
+              // ideblack: "#0E1116",
+            },
+            fontFamily: {
+              sans: ["Inter var", "sans-serif"],
+            },
+            boxShadow: {
+              "3xl": "0 35px 60px -1ww5px rgba(0, 0, 0, 0.5)",
+              cutesy: "0px 0px 40px -5px rgba(255, 255, 255, 0.2)",
+              // cutesy: "0px 0px 30px -10px white",
+              // cutesy: "0px 0px 30px -10px red",
+              pop: "0px 0px 30px -10px rgba(0, 0, 0, 0.5)",
+            },
+          },
+        },
+
+        // "3xl": "0 35px 60px -1ww5px rgba(0, 0, 0, 0.5)",
+        // theme: {
+        //   extend: {
+        //     colors: {
+        //       clifford: "#da373d",
+        //     },
+        //   },
+        // },
+      };
+    </script> -->
+    <link rel="stylesheet" href="https://rsms.me/inter/inter.css" />
+
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.1.0/github-markdown.min.css"
+    />
+
+    <style>
+      .markdown-body {
+        box-sizing: border-box;
+        min-width: 200px;
+        max-width: 980px;
+        margin: 0 auto;
+        /* padding: 45px; */
+        list-style: disc;
+      }
+
+      @media (max-width: 767px) {
+        .markdown-body {
+          /* padding: 15px; */
+        }
+      }
+    </style>
+    <script src="/docsite/static/darktheme.js"></script>
+    <link rel="stylesheet" type="text/css" href="/docsite/static/prism/prism.css" />
+    
+  </head>
+
+  <body>
+    <div id="main"><div><pre></pre><header class="sticky top-0 z-30 shadow dark:text-gray-200 dark:border-b border-stone-600 dark:bg-ideblack bg-white"><div class="py-3 px-12 max-w-screen-3xl mx-auto flex items-center justify-between text-sm leading-6 "><div class="flex z-50 flex-1"><a href="/docsite/" dioxus-prevent-default="onclick" class="flex title-font font-medium items-center text-gray-900" id="" rel="" target=""><img src="https://avatars.githubusercontent.com/u/79236386?s=200&v=4" class="h-5 w-auto"/><span class="ml-3 text-xl dark:text-white font-mono">Dioxus Labs</span></a></div><div class="relative hidden sm:block md:w-full max-w-[40rem] xl:max-w-[40rem] 2xl:max-w-[40rem] mx-auto"><button class="bg-gray-100 rounded-lg px-3 py-3 w-full text-left text-gray-400 my-auto flex flex-row align-middle justify-between"><div class="h-full my-auto flex flex-row align-middle justify-between"><span class="material-icons material-icons-outlined material-icons-round material-icons-sharp material-icons-two-tone md-48" style="font-size: 24px; color: rgba(0, 0, 0, 0.54); user-select: none;"><!--#-->search<!--#--></span><span class="pl-2">Search the docs</span></div><div class="border border-gray-300 rounded-lg p-1 text-xs text-gray-400">CTRL + K</div></button></div><div class="hidden xl:flex flex-1 h-full justify-end"><div class="hidden md:flex items-center  font-semibold"><nav><ul class="flex items-center space-x-2"><li><a href="/docsite/blog/" dioxus-prevent-default="onclick" class="ml-[-3.8em] md:ml-0 md:py-2 md:px-2 hover:text-sky-500 dark:hover:text-sky-400 dark:hover:bg-gray-500 hover:bg-gray-200 rounded text-lg md:text-sm" id="" rel="" target=""><!--#-->Blog<!--#--></a></li><li><a href="/docsite/learn/getting_started/" dioxus-prevent-default="onclick" class="ml-[-3.8em] md:ml-0 md:py-2 md:px-2 hover:text-sky-500 dark:hover:text-sky-400 dark:hover:bg-gray-500 hover:bg-gray-200 rounded text-lg md:text-sm" id="" rel="" target=""><!--#-->Docs<!--#--></a></li></ul></nav><div class="flex items-center border-l border-gray-200 ml-4 pl-4 dark:border-gray-800"><label class="sr-only" id="headlessui-listbox-label-2">Theme</label><a href="https://discord.gg/XgGxMSkvUM" dioxus-prevent-default="" class="block text-gray-400 hover:text-gray-500 dark:hover:text-gray-300" id="" rel="noopener noreferrer" target=""><span class="sr-only">Dioxus on Discord</span><svg width="24" height="24" viewBox="0 -28.5 256 256" preserveAspectRatio="xMidYMid"><g><path d="M216.856339,16.5966031 C200.285002,8.84328665 182.566144,3.2084988 164.041564,0 C161.766523,4.11318106 159.108624,9.64549908 157.276099,14.0464379 C137.583995,11.0849896 118.072967,11.0849896 98.7430163,14.0464379 C96.9108417,9.64549908 94.1925838,4.11318106 91.8971895,0 C73.3526068,3.2084988 55.6133949,8.86399117 39.0420583,16.6376612 C5.61752293,67.146514 -3.4433191,116.400813 1.08711069,164.955721 C23.2560196,181.510915 44.7403634,191.567697 65.8621325,198.148576 C71.0772151,190.971126 75.7283628,183.341335 79.7352139,175.300261 C72.104019,172.400575 64.7949724,168.822202 57.8887866,164.667963 C59.7209612,163.310589 61.5131304,161.891452 63.2445898,160.431257 C105.36741,180.133187 151.134928,180.133187 192.754523,160.431257 C194.506336,161.891452 196.298154,163.310589 198.110326,164.667963 C191.183787,168.842556 183.854737,172.420929 176.223542,175.320965 C180.230393,183.341335 184.861538,190.991831 190.096624,198.16893 C211.238746,191.588051 232.743023,181.531619 254.911949,164.955721 C260.227747,108.668201 245.831087,59.8662432 216.856339,16.5966031 Z M85.4738752,135.09489 C72.8290281,135.09489 62.4592217,123.290155 62.4592217,108.914901 C62.4592217,94.5396472 72.607595,82.7145587 85.4738752,82.7145587 C98.3405064,82.7145587 108.709962,94.5189427 108.488529,108.914901 C108.508531,123.290155 98.3405064,135.09489 85.4738752,135.09489 Z M170.525237,135.09489 C157.88039,135.09489 147.510584,123.290155 147.510584,108.914901 C147.510584,94.5396472 157.658606,82.7145587 170.525237,82.7145587 C183.391518,82.7145587 193.761324,94.5189427 193.539891,108.914901 C193.539891,123.290155 183.391518,135.09489 170.525237,135.09489 Z" fill="currentColor" fill-rule="nonzero"></path></g></svg></a><a href="https://github.com/dioxuslabs/dioxus" dioxus-prevent-default="" class="ml-4 block text-gray-400 hover:text-gray-500 dark:hover:text-gray-300" id="" rel="noopener noreferrer" target=""><span class="sr-only">Dioxus on GitHub</span><svg class="w-5 h-5" viewBox="0 0 16 16" aria-hidden="true" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path></svg></a></div><div class="flex items-center border-l border-gray-200 ml-4 pl-6 dark:border-gray-800"><label class="sr-only" id="headlessui-listbox-label-2">Theme</label><a href="/docsite/" dioxus-prevent-default="onclick" class="md:ml-0 md:py-2 md:px-3 bg-blue-500 ml-4 text-lg md:text-sm text-white rounded font-semibold" id="" rel="" target="">DEPLOY</a><pre></pre></div></div></div></div></header><div class="w-full pt-12 text-sm dark:bg-ideblack" style="min-height:100vh;"><div class="max-w-screen-2xl flex flex-row justify-between mx-auto dark:text-white"><section class="text-gray-600 body-font overflow-hidden dark:bg-ideblack mx-auto container pt-12 pb-12 max-w-screen-md"><div class="-py-8 "><div class="flex w-full mb-20 flex-wrap list-none"><style>.markdown-body ul { list-style: disc; }.markdown-body ol { list-style: decimal; }.markdown-body li { display: list-item; }.markdown-body button { display: inline-block; background-color: rgba(209, 213, 219, 0.3); border-radius: 0.25rem; padding: 0.25rem 0.5rem; border: 1px solid; margin: 0.25rem; }</style><article class="markdown-body pt-1"><h1 id="walkthrough-of-the-hello-world-example-internals"><a class="header" href="#walkthrough-of-the-hello-world-example-internals">Walkthrough of the Hello World Example Internals</a></h1><p>This walkthrough will take you through the internals of the Hello World example program. It will explain how major parts of Dioxus internals interact with each other to take the readme example from a source file to a running application. This guide should serve as a high-level overview of the internals of Dioxus. It is not meant to be a comprehensive guide.</p><h2 id="the-source-file"><a class="header" href="#the-source-file">The Source File</a></h2><p>We start will a hello world program. This program renders a desktop app with the text &quot;Hello World&quot; in a webview.</p><div style="position: relative;"><div><pre style="background-color:#2b303b;">
+<span style="color:#b48ead;">use </span><span style="color:#c0c5ce;">dioxus::prelude::*;
+</span><span style="color:#c0c5ce;">
+</span><span style="color:#b48ead;">pub fn </span><span style="color:#8fa1b3;">App</span><span style="color:#c0c5ce;">(</span><span style="color:#bf616a;">cx</span><span style="color:#c0c5ce;">: Scope) -&gt; Element {
+</span><span style="color:#c0c5ce;">    </span><span style="color:#b48ead;">let mut</span><span style="color:#c0c5ce;"> count = </span><span style="color:#96b5b4;">use_state</span><span style="color:#c0c5ce;">(cx, || </span><span style="color:#d08770;">0</span><span style="color:#c0c5ce;">);
+</span><span style="color:#c0c5ce;">
+</span><span style="color:#c0c5ce;">    cx.</span><span style="color:#96b5b4;">render</span><span style="color:#c0c5ce;">(rsx! {
+</span><span style="color:#c0c5ce;">        h1 { &quot;</span><span style="color:#a3be8c;">High-Five counter: {count}</span><span style="color:#c0c5ce;">&quot; }
+</span><span style="color:#c0c5ce;">        button { onclick: </span><span style="color:#b48ead;">move </span><span style="color:#c0c5ce;">|_| count += </span><span style="color:#d08770;">1</span><span style="color:#c0c5ce;">, &quot;</span><span style="color:#a3be8c;">Up high!</span><span style="color:#c0c5ce;">&quot; }
+</span><span style="color:#c0c5ce;">        button { onclick: </span><span style="color:#b48ead;">move </span><span style="color:#c0c5ce;">|_| count -= </span><span style="color:#d08770;">1</span><span style="color:#c0c5ce;">, &quot;</span><span style="color:#a3be8c;">Down low!</span><span style="color:#c0c5ce;">&quot; }
+</span><span style="color:#c0c5ce;">    })
+</span><span style="color:#c0c5ce;">}
+</span><span style="color:#c0c5ce;">
+</span></pre>
+</div><button style="position: absolute; top: 0; right: 0; background: rgba(0, 0, 0, 0.75); color: white; border: 1px solid white; padding: 0.25em;" onclick="navigator.clipboard.writeText(this.previousElementSibling.innerText)">Copy</button></div><p><a href="https://mermaid.live/edit#pako:eNqNkT1vwyAQhv8KvSlR48HphtQtqjK0S6tuSBGBS0CxwcJHk8rxfy_YVqxKVdR3ug_u4YXrQHmNwOFQ-bMyMhB7fReOJbVxfwyyMSy0l7GSpW1ARda727ksUy5MuSyKgvBC5ULA1h5N8WK_kCkfHWHgrBuiXsBynrvdsY9E3u1iM_eyvFOVVadMnELOap-o1911JLPHZ1b-YqLTc3LjTt7WifTZMJPsPdx1ov3Z_ellfcdL8R8vmTy5eUqsTUpZ-vzZzjAEK6gx1NLqtJwuNwSQwRoF8BRqGU4ChOvTORnJf3w7BZxCxBXERkvCjZXpQTXwg6zaVEVtyYe3cdvD0vsf4bucgw"><img src="https://mermaid.ink/img/pako:eNqNkT1vwyAQhv8KvSlR48HphtQtqjK0S6tuSBGBS0CxwcJHk8rxfy_YVqxKVdR3ug_u4YXrQHmNwOFQ-bMyMhB7fReOJbVxfwyyMSy0l7GSpW1ARda727ksUy5MuSyKgvBC5ULA1h5N8WK_kCkfHWHgrBuiXsBynrvdsY9E3u1iM_eyvFOVVadMnELOap-o1911JLPHZ1b-YqLTc3LjTt7WifTZMJPsPdx1ov3Z_ellfcdL8R8vmTy5eUqsTUpZ-vzZzjAEK6gx1NLqtJwuNwSQwRoF8BRqGU4ChOvTORnJf3w7BZxCxBXERkvCjZXpQTXwg6zaVEVtyYe3cdvD0vsf4bucgw?type=png" title=""/></a></p><h2 id="the-rsx!-macro"><a class="header" href="#the-rsx!-macro">The rsx! Macro</a></h2><p>Before the Rust compiler runs the program, it will expand all macros. Here is what the hello world example looks like expanded:</p><div style="position: relative;"><div><pre style="background-color:#2b303b;">
+<span style="color:#b48ead;">use </span><span style="color:#c0c5ce;">dioxus::prelude::*;
+</span><span style="color:#c0c5ce;">
+</span><span style="color:#b48ead;">fn </span><span style="color:#8fa1b3;">main</span><span style="color:#c0c5ce;">() {
+</span><span style="color:#c0c5ce;">    dioxus_desktop::launch(app);
+</span><span style="color:#c0c5ce;">}
+</span><span style="color:#c0c5ce;">
+</span><span style="color:#b48ead;">fn </span><span style="color:#8fa1b3;">app</span><span style="color:#c0c5ce;">(</span><span style="color:#bf616a;">cx</span><span style="color:#c0c5ce;">: Scope) -&gt; Element {
+</span><span style="color:#c0c5ce;">    </span><span style="color:#b48ead;">let mut</span><span style="color:#c0c5ce;"> count = </span><span style="color:#96b5b4;">use_state</span><span style="color:#c0c5ce;">(cx, || </span><span style="color:#d08770;">0</span><span style="color:#c0c5ce;">);
+</span><span style="color:#c0c5ce;">
+</span><span style="color:#c0c5ce;">    cx.</span><span style="color:#96b5b4;">render</span><span style="color:#c0c5ce;">(
+</span><span style="color:#c0c5ce;">        </span><span style="color:#65737e;">// rsx expands to LazyNodes::new
+</span><span style="color:#c0c5ce;">        ::dioxus::core::LazyNodes::new(
+</span><span style="color:#c0c5ce;">            </span><span style="color:#b48ead;">move </span><span style="color:#c0c5ce;">|__cx: &amp;::dioxus::core::ScopeState| -&gt; ::dioxus::core::VNode {
+</span><span style="color:#c0c5ce;">                </span><span style="color:#65737e;">// The template is every static part of the rsx
+</span><span style="color:#c0c5ce;">                </span><span style="color:#b48ead;">static </span><span style="color:#d08770;">TEMPLATE</span><span style="color:#c0c5ce;">: ::dioxus::core::Template = ::dioxus::core::Template {
+</span><span style="color:#c0c5ce;">                    </span><span style="color:#65737e;">// This is the source location of the rsx that generated this template. This is used to make hot rsx reloading work. Hot rsx reloading just replaces the template with a new one generated from the rsx by the CLI.
+</span><span style="color:#c0c5ce;">                    name: &quot;</span><span style="color:#a3be8c;">examples</span><span style="color:#96b5b4;">\\</span><span style="color:#a3be8c;">readme.rs:14:15:250</span><span style="color:#c0c5ce;">&quot;,
+</span><span style="color:#c0c5ce;">                    </span><span style="color:#65737e;">// The root nodes are the top level nodes of the rsx
+</span><span style="color:#c0c5ce;">                    roots: &amp;[
+</span><span style="color:#c0c5ce;">                        </span><span style="color:#65737e;">// The h1 node
+</span><span style="color:#c0c5ce;">                        ::dioxus::core::TemplateNode::Element {
+</span><span style="color:#c0c5ce;">                            </span><span style="color:#65737e;">// Find the built in h1 tag in the dioxus_elements crate exported by the dioxus html crate
+</span><span style="color:#c0c5ce;">                            tag: dioxus_elements::h1::</span><span style="color:#d08770;">TAG_NAME</span><span style="color:#c0c5ce;">,
+</span><span style="color:#c0c5ce;">                            namespace: dioxus_elements::h1::</span><span style="color:#d08770;">NAME_SPACE</span><span style="color:#c0c5ce;">,
+</span><span style="color:#c0c5ce;">                            attrs: &amp;[],
+</span><span style="color:#c0c5ce;">                            </span><span style="color:#65737e;">// The children of the h1 node
+</span><span style="color:#c0c5ce;">                            children: &amp;[
+</span><span style="color:#c0c5ce;">                                </span><span style="color:#65737e;">// The dynamic count text node
+</span><span style="color:#c0c5ce;">                                </span><span style="color:#65737e;">// Any nodes that are dynamic have a dynamic placeholder with a unique index
+</span><span style="color:#c0c5ce;">                                ::dioxus::core::TemplateNode::DynamicText {
+</span><span style="color:#c0c5ce;">                                    </span><span style="color:#65737e;">// This index is used to find what element in `dynamic_nodes` to use instead of the placeholder
+</span><span style="color:#c0c5ce;">                                    id: </span><span style="color:#d08770;">0</span><span style="color:#b48ead;">usize</span><span style="color:#c0c5ce;">,
+</span><span style="color:#c0c5ce;">                                },
+</span><span style="color:#c0c5ce;">                            ],
+</span><span style="color:#c0c5ce;">                        },
+</span><span style="color:#c0c5ce;">                        </span><span style="color:#65737e;">// The up high button node
+</span><span style="color:#c0c5ce;">                        ::dioxus::core::TemplateNode::Element {
+</span><span style="color:#c0c5ce;">                            tag: dioxus_elements::button::</span><span style="color:#d08770;">TAG_NAME</span><span style="color:#c0c5ce;">,
+</span><span style="color:#c0c5ce;">                            namespace: dioxus_elements::button::</span><span style="color:#d08770;">NAME_SPACE</span><span style="color:#c0c5ce;">,
+</span><span style="color:#c0c5ce;">                            attrs: &amp;[
+</span><span style="color:#c0c5ce;">                                </span><span style="color:#65737e;">// The dynamic onclick listener attribute
+</span><span style="color:#c0c5ce;">                                </span><span style="color:#65737e;">// Any attributes that are dynamic have a dynamic placeholder with a unique index.
+</span><span style="color:#c0c5ce;">                                ::dioxus::core::TemplateAttribute::Dynamic {
+</span><span style="color:#c0c5ce;">                                    </span><span style="color:#65737e;">// Similar to dynamic nodes, dynamic attributes have a unique index used to find the attribute in `dynamic_attrs` to use instead of the placeholder
+</span><span style="color:#c0c5ce;">                                    id: </span><span style="color:#d08770;">0</span><span style="color:#b48ead;">usize</span><span style="color:#c0c5ce;">,
+</span><span style="color:#c0c5ce;">                                },
+</span><span style="color:#c0c5ce;">                            ],
+</span><span style="color:#c0c5ce;">                            children: &amp;[::dioxus::core::TemplateNode::Text { text: &quot;</span><span style="color:#a3be8c;">Up high!</span><span style="color:#c0c5ce;">&quot; }],
+</span><span style="color:#c0c5ce;">                        },
+</span><span style="color:#c0c5ce;">                        </span><span style="color:#65737e;">// The down low button node
+</span><span style="color:#c0c5ce;">                        ::dioxus::core::TemplateNode::Element {
+</span><span style="color:#c0c5ce;">                            tag: dioxus_elements::button::</span><span style="color:#d08770;">TAG_NAME</span><span style="color:#c0c5ce;">,
+</span><span style="color:#c0c5ce;">                            namespace: dioxus_elements::button::</span><span style="color:#d08770;">NAME_SPACE</span><span style="color:#c0c5ce;">,
+</span><span style="color:#c0c5ce;">                            attrs: &amp;[
+</span><span style="color:#c0c5ce;">                                </span><span style="color:#65737e;">// The dynamic onclick listener attribute
+</span><span style="color:#c0c5ce;">                                ::dioxus::core::TemplateAttribute::Dynamic { id: </span><span style="color:#d08770;">1</span><span style="color:#b48ead;">usize </span><span style="color:#c0c5ce;">},
+</span><span style="color:#c0c5ce;">                            ],
+</span><span style="color:#c0c5ce;">                            children: &amp;[::dioxus::core::TemplateNode::Text { text: &quot;</span><span style="color:#a3be8c;">Down low!</span><span style="color:#c0c5ce;">&quot; }],
+</span><span style="color:#c0c5ce;">                        },
+</span><span style="color:#c0c5ce;">                    ],
+</span><span style="color:#c0c5ce;">                    </span><span style="color:#65737e;">// Node paths is a list of paths to every dynamic node in the rsx
+</span><span style="color:#c0c5ce;">                    node_paths: &amp;[
+</span><span style="color:#c0c5ce;">                        </span><span style="color:#65737e;">// The first node path is the path to the dynamic node with an id of 0 (the count text node)
+</span><span style="color:#c0c5ce;">                        &amp;[
+</span><span style="color:#c0c5ce;">                            </span><span style="color:#65737e;">// Go to the index 0 root node
+</span><span style="color:#c0c5ce;">                            </span><span style="color:#d08770;">0</span><span style="color:#b48ead;">u8</span><span style="color:#c0c5ce;">, </span><span style="color:#65737e;">//
+</span><span style="color:#c0c5ce;">                            </span><span style="color:#65737e;">// Go to the first child of the root node
+</span><span style="color:#c0c5ce;">                            </span><span style="color:#d08770;">0</span><span style="color:#b48ead;">u8</span><span style="color:#c0c5ce;">,
+</span><span style="color:#c0c5ce;">                        ],
+</span><span style="color:#c0c5ce;">                    ],
+</span><span style="color:#c0c5ce;">                    </span><span style="color:#65737e;">// Attr paths is a list of paths to every dynamic attribute in the rsx
+</span><span style="color:#c0c5ce;">                    attr_paths: &amp;[
+</span><span style="color:#c0c5ce;">                        </span><span style="color:#65737e;">// The first attr path is the path to the dynamic attribute with an id of 0 (the up high button onclick listener)
+</span><span style="color:#c0c5ce;">                        &amp;[
+</span><span style="color:#c0c5ce;">                            </span><span style="color:#65737e;">// Go to the index 1 root node
+</span><span style="color:#c0c5ce;">                            </span><span style="color:#d08770;">1</span><span style="color:#b48ead;">u8</span><span style="color:#c0c5ce;">,
+</span><span style="color:#c0c5ce;">                        ],
+</span><span style="color:#c0c5ce;">                        </span><span style="color:#65737e;">// The second attr path is the path to the dynamic attribute with an id of 1 (the down low button onclick listener)
+</span><span style="color:#c0c5ce;">                        &amp;[
+</span><span style="color:#c0c5ce;">                            </span><span style="color:#65737e;">// Go to the index 2 root node
+</span><span style="color:#c0c5ce;">                            </span><span style="color:#d08770;">2</span><span style="color:#b48ead;">u8</span><span style="color:#c0c5ce;">,
+</span><span style="color:#c0c5ce;">                        ],
+</span><span style="color:#c0c5ce;">                    ],
+</span><span style="color:#c0c5ce;">                };
+</span><span style="color:#c0c5ce;">                </span><span style="color:#65737e;">// The VNode is a reference to the template with the dynamic parts of the rsx
+</span><span style="color:#c0c5ce;">                ::dioxus::core::VNode {
+</span><span style="color:#c0c5ce;">                    parent: None,
+</span><span style="color:#c0c5ce;">                    key: None,
+</span><span style="color:#c0c5ce;">                    </span><span style="color:#65737e;">// The static template this node will use. The template is stored in a Cell so it can be replaced with a new template when hot rsx reloading is enabled
+</span><span style="color:#c0c5ce;">                    template: std::cell::Cell::new(</span><span style="color:#d08770;">TEMPLATE</span><span style="color:#c0c5ce;">),
+</span><span style="color:#c0c5ce;">                    root_ids: Default::default(),
+</span><span style="color:#c0c5ce;">                    dynamic_nodes: __cx.</span><span style="color:#96b5b4;">bump</span><span style="color:#c0c5ce;">().</span><span style="color:#96b5b4;">alloc</span><span style="color:#c0c5ce;">([
+</span><span style="color:#c0c5ce;">                        </span><span style="color:#65737e;">// The dynamic count text node (dynamic node id 0)
+</span><span style="color:#c0c5ce;">                        __cx.</span><span style="color:#96b5b4;">text_node</span><span style="color:#c0c5ce;">(format_args!(&quot;</span><span style="color:#a3be8c;">High-Five counter: {0}</span><span style="color:#c0c5ce;">&quot;, count)),
+</span><span style="color:#c0c5ce;">                    ]),
+</span><span style="color:#c0c5ce;">                    dynamic_attrs: __cx.</span><span style="color:#96b5b4;">bump</span><span style="color:#c0c5ce;">().</span><span style="color:#96b5b4;">alloc</span><span style="color:#c0c5ce;">([
+</span><span style="color:#c0c5ce;">                        </span><span style="color:#65737e;">// The dynamic up high button onclick listener (dynamic attribute id 0)
+</span><span style="color:#c0c5ce;">                        dioxus_elements::events::onclick(__cx, </span><span style="color:#b48ead;">move </span><span style="color:#c0c5ce;">|_| count += </span><span style="color:#d08770;">1</span><span style="color:#c0c5ce;">),
+</span><span style="color:#c0c5ce;">                        </span><span style="color:#65737e;">// The dynamic down low button onclick listener (dynamic attribute id 1)
+</span><span style="color:#c0c5ce;">                        dioxus_elements::events::onclick(__cx, </span><span style="color:#b48ead;">move </span><span style="color:#c0c5ce;">|_| count -= </span><span style="color:#d08770;">1</span><span style="color:#c0c5ce;">),
+</span><span style="color:#c0c5ce;">                    ]),
+</span><span style="color:#c0c5ce;">                }
+</span><span style="color:#c0c5ce;">            },
+</span><span style="color:#c0c5ce;">        ),
+</span><span style="color:#c0c5ce;">    )
+</span><span style="color:#c0c5ce;">}
+</span><span style="color:#c0c5ce;">
+</span></pre>
+</div><button style="position: absolute; top: 0; right: 0; background: rgba(0, 0, 0, 0.75); color: white; border: 1px solid white; padding: 0.25em;" onclick="navigator.clipboard.writeText(this.previousElementSibling.innerText)">Copy</button></div><p>The rsx macro separates the static parts of the rsx (the template) and the dynamic parts (the dynamic_nodes and dynamic_attributes).</p><p>The static template only contains the parts of the rsx that cannot change at runtime with holes for the dynamic parts:</p><p><a href="https://mermaid.live/edit#pako:eNqdksFuwjAMhl8l8wkkKtFx65njdtm0E0GVSQKJoEmVOgKEeHecUrXStO0wn5Lf9u8vcm6ggjZQwf4UzspiJPH2Ib3g6NLuELG1oiMkp0TsLs9EDu2iUeSCH8tz2HJmy3lRFPrqsXGq9mxeLzcbCU6LZSUGXWRdwnY7tY7Tdoko-Dq1U64fODgiUfzJMeuOe7_ZGq-ny2jNhGQu9DqT8NUK6w72RcL8dxgdzv4PnHLAKf-Fk80HoBUDrfkqeBkTUd8EC2hMbNBpXtYtJySQNQ0PqPioMR4lSH_nOkwUPq9eQUUxmQWkViOZtUN-UwPVHk8dq0Y7CvH9uf3-E9wfrmuk1A"><img src="https://mermaid.ink/img/pako:eNqdksFuwjAMhl8l8wkkKtFx65njdtm0E0GVSQKJoEmVOgKEeHecUrXStO0wn5Lf9u8vcm6ggjZQwf4UzspiJPH2Ib3g6NLuELG1oiMkp0TsLs9EDu2iUeSCH8tz2HJmy3lRFPrqsXGq9mxeLzcbCU6LZSUGXWRdwnY7tY7Tdoko-Dq1U64fODgiUfzJMeuOe7_ZGq-ny2jNhGQu9DqT8NUK6w72RcL8dxgdzv4PnHLAKf-Fk80HoBUDrfkqeBkTUd8EC2hMbNBpXtYtJySQNQ0PqPioMR4lSH_nOkwUPq9eQUUxmQWkViOZtUN-UwPVHk8dq0Y7CvH9uf3-E9wfrmuk1A?type=png" title=""/></a></p><p>The dynamic_nodes and dynamic_attributes are the parts of the rsx that can change at runtime:</p><p><a href="https://mermaid.live/edit#pako:eNp1UcFOwzAM_RXLVzZpvUbighDiABfgtkxTlnirtSaZUgc0df130hZEEcwny35-79nu0EZHqHDfxA9bmyTw9KIDlGjz7pDMqQZ3DsazhVCQ7dQbwnEiKxwDvN3NqhN4O4C3q_VaIztYKXjkQ7184HcCG3MQSgq6Mes1bjbTPAV3RdqIJN5l-V__2_Fcf5iY68dgG7ZHBT4WD5ftZfIBN7dQ_Tj4w1B9MVTXGZa_GMYdcIGekjfsymW7oaFRavKkUZXUmXTUqENfcCZLfD0Hi0pSpgXmkzNC92zKATyqvWnaUiXHEtPz9KrxY_0nzYOPmA"><img src="https://mermaid.ink/img/pako:eNp1UcFOwzAM_RXLVzZpvUbighDiABfgtkxTlnirtSaZUgc0df130hZEEcwny35-79nu0EZHqHDfxA9bmyTw9KIDlGjz7pDMqQZ3DsazhVCQ7dQbwnEiKxwDvN3NqhN4O4C3q_VaIztYKXjkQ7184HcCG3MQSgq6Mes1bjbTPAV3RdqIJN5l-V__2_Fcf5iY68dgG7ZHBT4WD5ftZfIBN7dQ_Tj4w1B9MVTXGZa_GMYdcIGekjfsymW7oaFRavKkUZXUmXTUqENfcCZLfD0Hi0pSpgXmkzNC92zKATyqvWnaUiXHEtPz9KrxY_0nzYOPmA?type=png" title=""/></a></p><h2 id="launching-the-app"><a class="header" href="#launching-the-app">Launching the App</a></h2><p>The app is launched by calling the <code>launch</code> function with the root component. Internally, this function will create a new web view using <a href="https://docs.rs/wry/latest/wry/">wry</a> and create a virtual dom with the root component. This guide will not explain the renderer in-depth, but you can read more about it in the <a href="/guide/custom-renderer">custom renderer</a> section.</p><h2 id="the-virtual-dom"><a class="header" href="#the-virtual-dom">The Virtual DOM</a></h2><p>Before we dive into the initial render in the virtual dom, we need to discuss what the virtual dom is. The virtual dom is a representation of the dom that is used to diff the current dom from the new dom. This diff is then used to create a list of mutations that need to be applied to the dom.</p><p>The Virtual Dom roughly looks like this:</p><div style="position: relative;"><div><pre style="background-color:#2b303b;">
+<span style="color:#b48ead;">pub struct </span><span style="color:#c0c5ce;">VirtualDom {
+</span><span style="color:#c0c5ce;">	</span><span style="color:#65737e;">// All the templates that have been created or set durring hot reloading
+</span><span style="color:#c0c5ce;">	</span><span style="color:#b48ead;">pub</span><span style="color:#c0c5ce;">(crate) </span><span style="color:#bf616a;">templates</span><span style="color:#c0c5ce;">: FxHashMap&lt;TemplateId, FxHashMap&lt;</span><span style="color:#b48ead;">usize</span><span style="color:#c0c5ce;">, Template&lt;</span><span style="color:#b48ead;">&#39;static</span><span style="color:#c0c5ce;">&gt;&gt;&gt;,
+</span><span style="color:#c0c5ce;">
+</span><span style="color:#c0c5ce;">	</span><span style="color:#65737e;">// A slab of all the scopes that have been created
+</span><span style="color:#c0c5ce;">	</span><span style="color:#b48ead;">pub</span><span style="color:#c0c5ce;">(crate) </span><span style="color:#bf616a;">scopes</span><span style="color:#c0c5ce;">: ScopeSlab,
+</span><span style="color:#c0c5ce;">
+</span><span style="color:#c0c5ce;">	</span><span style="color:#65737e;">// All scopes that have been marked as dirty
+</span><span style="color:#c0c5ce;">	</span><span style="color:#b48ead;">pub</span><span style="color:#c0c5ce;">(crate) </span><span style="color:#bf616a;">dirty_scopes</span><span style="color:#c0c5ce;">: BTreeSet&lt;DirtyScope&gt;,
+</span><span style="color:#c0c5ce;">
+</span><span style="color:#c0c5ce;">	</span><span style="color:#65737e;">// Every element is actually a dual reference - one to the template and the other to the dynamic node in that template
+</span><span style="color:#c0c5ce;">	</span><span style="color:#b48ead;">pub</span><span style="color:#c0c5ce;">(crate) </span><span style="color:#bf616a;">elements</span><span style="color:#c0c5ce;">: Slab&lt;ElementRef&gt;,
+</span><span style="color:#c0c5ce;">
+</span><span style="color:#c0c5ce;">	</span><span style="color:#65737e;">// This receiver is used to receive messages from hooks about what scopes need to be marked as dirty
+</span><span style="color:#c0c5ce;">	</span><span style="color:#b48ead;">pub</span><span style="color:#c0c5ce;">(crate) </span><span style="color:#bf616a;">rx</span><span style="color:#c0c5ce;">: futures_channel::mpsc::UnboundedReceiver&lt;SchedulerMsg&gt;,
+</span><span style="color:#c0c5ce;">
+</span><span style="color:#c0c5ce;">	</span><span style="color:#65737e;">// The changes queued up to be sent to the renderer
+</span><span style="color:#c0c5ce;">	</span><span style="color:#b48ead;">pub</span><span style="color:#c0c5ce;">(crate) </span><span style="color:#bf616a;">mutations</span><span style="color:#c0c5ce;">: Mutations&lt;</span><span style="color:#b48ead;">&#39;static</span><span style="color:#c0c5ce;">&gt;,
+</span><span style="color:#c0c5ce;">}
+</span></pre>
+</div><button style="position: absolute; top: 0; right: 0; background: rgba(0, 0, 0, 0.75); color: white; border: 1px solid white; padding: 0.25em;" onclick="navigator.clipboard.writeText(this.previousElementSibling.innerText)">Copy</button></div><blockquote><p>What is a <a href="https://docs.rs/slab/latest/slab/">slab</a>?A slab acts like a hashmap with integer keys if you don&#x27;t care about the value of the keys. It is internally backed by a dense vector which makes it more efficient than a hashmap. When you insert a value into a slab, it returns an integer key that you can use to retrieve the value later.</p></blockquote><blockquote><p>How does Dioxus use slabs?Dioxus uses &quot;synchronized slabs&quot; to communicate between the renderer and the VDOM. When an node is created in the Virtual Dom, a ElementId is passed along with the mutation to the renderer to identify the node. These ids are used by the Virtual Dom to reference that nodes in future mutations like setting an attribute on a node or removing a node.When the renderer sends an event to the Virtual Dom, it sends the ElementId of the node that the event was triggered on. The Virtual Dom uses this id to find the node in the slab and then run the necessary event handlers.</p></blockquote><p>The virtual dom is a tree of scopes. A new scope is created for every component when it is first rendered and recycled when the component is unmounted.</p><p>Scopes serve three main purposes:</p><ol><li>They store the state of hooks used by the component</li><li>They store the state for the context API</li><li>They store the current and previous VNode that was rendered for diffing</li></ol><h3 id="the-initial-render"><a class="header" href="#the-initial-render">The Initial Render</a></h3><p>The root scope is created and rebuilt:</p><ol><li>The root component is run</li><li>The root component returns a VNode</li><li>Mutations for the VNode are created and added to the mutation list (this may involve creating new child components)</li><li>The VNode is stored in the root scope</li></ol><p>After the root scope is built, the mutations are sent to the renderer to be applied to the dom.</p><p>After the initial render, the root scope looks like this:</p><p><a href="https://mermaid.live/edit#pako:eNqtVE1P4zAQ_SuzPrWikRpWXCLtBRDisItWsOxhCaqM7RKricdyJrQV8N93QtvQNCkfEnOynydv3nxkHoVCbUQipjnOVSYDwc_L1AFbWd3dB-kzuEQkuFLoDUwDFkCZAek9nGDh0RlHK__atA1GkUUHf45f0YbppAqB_aOzIAvz-t7-chN_Y-1bw1WSJKsglIu2w9tktWXxIIuHURT5XCqTYa5NmDguw2R8c5MKq2GcgF46WTB_jafi9rZL0yi5q4jQTSrf9altO4okCn1Ratwyz55Qxuku2ITlTMgs6HCQimsPmb3PvqVi-L5gjXP3QcnxWnL8JZLrwGvR31n0KV-Bx6-r-oVkT_-3G1S-NQLbk9i8rj7udP2cixed2QcDCitHJiQw7ub3EVlNecrPjudG2-6soFO5VbMECmR9T5OnlUY4-AFxfw9aTFst3McU9TK1Otm6NEn_DubBYlX2_dglLXOz48FgwJmJ5lZTlhz6xWgNaFnyDgpymcARHO0W2a9J_l5w2wYXvHuGPcqaQ-rESBQmFNJq3nCPNZoK3l4sUSR81DLMUpG6Z_aTFeHV0imRUKjMSFReSzKnVnKGhUimMi8ZNdoShl-rlfmyOUfCS_cPcePz_B_Wl4pc"><img src="https://mermaid.ink/img/pako:eNqtVE1P4zAQ_SuzPrWikRpWXCLtBRDisItWsOxhCaqM7RKricdyJrQV8N93QtvQNCkfEnOynydv3nxkHoVCbUQipjnOVSYDwc_L1AFbWd3dB-kzuEQkuFLoDUwDFkCZAek9nGDh0RlHK__atA1GkUUHf45f0YbppAqB_aOzIAvz-t7-chN_Y-1bw1WSJKsglIu2w9tktWXxIIuHURT5XCqTYa5NmDguw2R8c5MKq2GcgF46WTB_jafi9rZL0yi5q4jQTSrf9altO4okCn1Ratwyz55Qxuku2ITlTMgs6HCQimsPmb3PvqVi-L5gjXP3QcnxWnL8JZLrwGvR31n0KV-Bx6-r-oVkT_-3G1S-NQLbk9i8rj7udP2cixed2QcDCitHJiQw7ub3EVlNecrPjudG2-6soFO5VbMECmR9T5OnlUY4-AFxfw9aTFst3McU9TK1Otm6NEn_DubBYlX2_dglLXOz48FgwJmJ5lZTlhz6xWgNaFnyDgpymcARHO0W2a9J_l5w2wYXvHuGPcqaQ-rESBQmFNJq3nCPNZoK3l4sUSR81DLMUpG6Z_aTFeHV0imRUKjMSFReSzKnVnKGhUimMi8ZNdoShl-rlfmyOUfCS_cPcePz_B_Wl4pc?type=png" title=""/></a></p><h3 id="waiting-for-events"><a class="header" href="#waiting-for-events">Waiting for Events</a></h3><p>The Virtual Dom will only ever rerender a scope if it is marked as dirty. Each hook is responsible for marking the scope as dirty if the state has changed. Hooks can mark a scope as dirty by sending a message to the Virtual Dom&#x27;s channel.</p><p>There are generally two ways a scope is marked as dirty:</p><ol><li>The renderer triggers an event: This causes an event listener to be called if needed which may mark a component as dirty</li><li>The renderer calls wait for work: This polls futures which may mark a component as dirty</li></ol><p>Once at least one scope is marked as dirty, the renderer can call <code>render_with_deadline</code> to diff the dirty scopes.</p><h3 id="diffing-scopes"><a class="header" href="#diffing-scopes">Diffing Scopes</a></h3><p>If the user clicked the &quot;up high&quot; button, the root scope would be marked as dirty by the use_state hook. Once the desktop renderer calls <code>render_with_deadline</code>, the root scope would be diffed.</p><p>To start the diffing process, the component is run. After the root component is run it will look like this:</p><p><a href="https://mermaid.live/edit#pako:eNrFVlFP2zAQ_iuen0BrpCaIl0i8AEJ72KQJtpcRFBnbJVYTn-U4tBXw33dpG5M2CetoBfdkny_ffb67fPIT5SAkjekkhxnPmHXk-3WiCVpZ3T9YZjJyDeDIDQcjycRCQVwmCTOGXEBhQEvtVvG1CWUldwo0-XX-6vVIF5W1GB9cWVbI1_PNL5v8jW3uPFbpmFOc2HK-GfA2WG1ZeJSFx0EQmJxxmUEupE01liEd394mVAkyjolYaFYgfu1P6N1dF8Yzua-cA51WphtTWzsLc872Zan9CnEGUkktuk6fFm_i5NxFRwn9bUimHrIvCT3-N2EBM70j5XBNOTwI5TrxmvQJkr7ELcHx67Jeggz0v92g8q0RaE-iP1193On6NyxecKUeJeFQaSdtTMLu_Xah5ctT_u94Nty2ZwU0zxWfxqQA5PecPq84kq9nfRw7SK0WDiEFZ4O37d34S_-08lFBVfb92KVb5HIrAp0WpjKYKeGyODLz0dohWIkaZNkiJqfkdLvIH6oRaTSoEmm0n06k0a5K0ZdpL61Io0Yt0nfpxc7UQ0_9cJrhyZ8syX-6brS706Mc489Vjja7fbWj3cxDqIdfJJqOaCFtwZTAV8hT7U0ovjBQRmiMS8HsNKGJfsE4Vjm4WWhOY2crOaKVEczJS8WwgAWNJywv0SuFcmB_rJ41y9fNiBqm_wA0MS9_AUuAiy0"><img src="https://mermaid.ink/img/pako:eNrFVlFP2zAQ_iuen0BrpCaIl0i8AEJ72KQJtpcRFBnbJVYTn-U4tBXw33dpG5M2CetoBfdkny_ffb67fPIT5SAkjekkhxnPmHXk-3WiCVpZ3T9YZjJyDeDIDQcjycRCQVwmCTOGXEBhQEvtVvG1CWUldwo0-XX-6vVIF5W1GB9cWVbI1_PNL5v8jW3uPFbpmFOc2HK-GfA2WG1ZeJSFx0EQmJxxmUEupE01liEd394mVAkyjolYaFYgfu1P6N1dF8Yzua-cA51WphtTWzsLc872Zan9CnEGUkktuk6fFm_i5NxFRwn9bUimHrIvCT3-N2EBM70j5XBNOTwI5TrxmvQJkr7ELcHx67Jeggz0v92g8q0RaE-iP1193On6NyxecKUeJeFQaSdtTMLu_Xah5ctT_u94Nty2ZwU0zxWfxqQA5PecPq84kq9nfRw7SK0WDiEFZ4O37d34S_-08lFBVfb92KVb5HIrAp0WpjKYKeGyODLz0dohWIkaZNkiJqfkdLvIH6oRaTSoEmm0n06k0a5K0ZdpL61Io0Yt0nfpxc7UQ0_9cJrhyZ8syX-6brS706Mc489Vjja7fbWj3cxDqIdfJJqOaCFtwZTAV8hT7U0ovjBQRmiMS8HsNKGJfsE4Vjm4WWhOY2crOaKVEczJS8WwgAWNJywv0SuFcmB_rJ41y9fNiBqm_wA0MS9_AUuAiy0?type=png" title=""/></a></p><p>Next, the Virtual Dom will compare the new VNode with the previous VNode and only update the parts of the tree that have changed.</p><p>When a component is re-rendered, the Virtual Dom will compare the new VNode with the previous VNode and only update the parts of the tree that have changed.</p><p>The diffing algorithm goes through the list of dynamic attributes and nodes and compares them to the previous VNode. If the attribute or node has changed, a mutation that describes the change is added to the mutation list.</p><p>Here is what the diffing algorithm looks like for the root scope (red lines indicate that a mutation was generated, and green lines indicate that no mutation was generated)</p><p><a href="https://mermaid.live/edit#pako:eNrFlFFPwjAQx7_KpT7Kko2Elya8qCE-aGLAJ5khpe1Yw9Zbug4k4He3OJjbGPig0T5t17tf_nf777aEo5CEkijBNY-ZsfAwDjW4kxfzhWFZDGNECxOOmYTIYAo2lsCyDG4xzVBLbcv8_RHKSG4V6orSIN0Wxrh8b2RYKr_uTyubd1W92GiWKg7aac6bOU3G803HbVk82xfP_Ok0JEqAT-FeLWJvpFYSOBbaSkMhCMnra5MgtfhWFrPWqHlhL2urT6atbU-oa0PNE8WXFFJ0-nazXakRroddGk9IwYEUnCd5w7Pddr5UTT8ZuVJY5F0fM7ebRLYyXNDgUnprJWxM-9lb7xAQLHe-M2xDYQCD9pD_2hez_kVn-P_rjLq6n3qjYv2iO5qz9DyvPdyv1ETp5eTTJ_7BGvQq8v1TVtl5jXUcRRcrqFh-dI4VtFlBN6t_ynLNkh5JpUmZEm5rbvfhkLiN6H4BQt2jYGYZklC_uzxWWJxsNCfUmkL2SJEJZuWdYs4cKaERS3IXlUJZNI_lGv7cxj2SMf2CeMx5_wBcbK19"><img src="https://mermaid.ink/img/pako:eNrFlFFPwjAQx7_KpT7Kko2Elya8qCE-aGLAJ5khpe1Yw9Zbug4k4He3OJjbGPig0T5t17tf_nf777aEo5CEkijBNY-ZsfAwDjW4kxfzhWFZDGNECxOOmYTIYAo2lsCyDG4xzVBLbcv8_RHKSG4V6orSIN0Wxrh8b2RYKr_uTyubd1W92GiWKg7aac6bOU3G803HbVk82xfP_Ok0JEqAT-FeLWJvpFYSOBbaSkMhCMnra5MgtfhWFrPWqHlhL2urT6atbU-oa0PNE8WXFFJ0-nazXakRroddGk9IwYEUnCd5w7Pddr5UTT8ZuVJY5F0fM7ebRLYyXNDgUnprJWxM-9lb7xAQLHe-M2xDYQCD9pD_2hez_kVn-P_rjLq6n3qjYv2iO5qz9DyvPdyv1ETp5eTTJ_7BGvQq8v1TVtl5jXUcRRcrqFh-dI4VtFlBN6t_ynLNkh5JpUmZEm5rbvfhkLiN6H4BQt2jYGYZklC_uzxWWJxsNCfUmkL2SJEJZuWdYs4cKaERS3IXlUJZNI_lGv7cxj2SMf2CeMx5_wBcbK19?type=png" title=""/></a></p><h2 id="conclusion"><a class="header" href="#conclusion">Conclusion</a></h2><p>This is only a brief overview of how the Virtual Dom works. There are several aspects not yet covered in this guide including how the Virtual Dom handles async-components, keyed diffing, and how it uses <a href="https://github.com/fitzgen/bumpalo">bump allocation</a> to efficiently allocate VNodes. If need more information about the Virtual Dom, you can read the code of the <a href="https://github.com/DioxusLabs/dioxus/tree/master/packages/core">core</a> crate or reach out to us on <a href="https://discord.gg/XgGxMSkvUM">Discord</a>.</p><script></script></article></div></div></section><nav class="pl-6 z-20 text-base hidden md:block fixed top-0 pt-36 pb-16 md:-ml-3.5 w-[calc(100%-1rem)] md:w-60 h-full max-h-screen md:text-[13px] text-navy content-start overflow-y-auto leading-5 "><div class="pb-4"><a href="/docsite/learn/" dioxus-prevent-default="onclick" class="" id="" rel="" target=""><h2 class="font-semibold"><!--#-->Introduction<!--#--></h2></a><ul class="pl-2"><pre></pre></ul></div><div class="pb-4"><a href="/docsite/learn/getting_started/" dioxus-prevent-default="onclick" class="" id="" rel="" target=""><h2 class="font-semibold"><!--#-->Getting Started<!--#--></h2></a><ul class="pl-2"><li class="pt-1"><button><span class="material-icons material-icons-outlined material-icons-round material-icons-sharp material-icons-two-tone md-48" style="font-size: inherit; color: gray; user-select: none;"><!--#-->chevron_right<!--#--></span></button><a href="/docsite/learn/getting_started/choosing_a_web_renderer" dioxus-prevent-default="onclick" class="" id="" rel="" target=""><!--#-->Choosing A Web Renderer<!--#--></a></li><pre></pre><a href="/docsite/learn/getting_started/desktop" dioxus-prevent-default="onclick" class="" id="" rel="" target=""><li class="m-1 dark:hover:bg-gray-800 rounded-md pl-2 "><!--#-->Desktop<!--#--></li></a><a href="/docsite/learn/getting_started/mobile" dioxus-prevent-default="onclick" class="" id="" rel="" target=""><li class="m-1 dark:hover:bg-gray-800 rounded-md pl-2 "><!--#-->Mobile<!--#--></li></a><a href="/docsite/learn/getting_started/tui" dioxus-prevent-default="onclick" class="" id="" rel="" target=""><li class="m-1 dark:hover:bg-gray-800 rounded-md pl-2 "><!--#-->Terminal UI<!--#--></li></a></ul></div><div class="pb-4"><a href="/docsite/learn/guide/" dioxus-prevent-default="onclick" class="" id="" rel="" target=""><h2 class="font-semibold"><!--#-->Guide<!--#--></h2></a><ul class="pl-2"><a href="/docsite/learn/guide/creating_a_story" dioxus-prevent-default="onclick" class="" id="" rel="" target=""><li class="m-1 dark:hover:bg-gray-800 rounded-md pl-2 "><!--#-->Creating a Story<!--#--></li></a><a href="/docsite/learn/guide/state" dioxus-prevent-default="onclick" class="" id="" rel="" target=""><li class="m-1 dark:hover:bg-gray-800 rounded-md pl-2 "><!--#-->State<!--#--></li></a><a href="/docsite/learn/guide/fetching_data" dioxus-prevent-default="onclick" class="" id="" rel="" target=""><li class="m-1 dark:hover:bg-gray-800 rounded-md pl-2 "><!--#-->Fetching data<!--#--></li></a><a href="/docsite/learn/guide/full_code" dioxus-prevent-default="onclick" class="" id="" rel="" target=""><li class="m-1 dark:hover:bg-gray-800 rounded-md pl-2 "><!--#-->Full Code<!--#--></li></a></ul></div><div class="pb-4"><a href="/docsite/learn/reference/" dioxus-prevent-default="onclick" class="" id="" rel="" target=""><h2 class="font-semibold"><!--#-->Reference<!--#--></h2></a><ul class="pl-2"><li class="pt-1"><button><span class="material-icons material-icons-outlined material-icons-round material-icons-sharp material-icons-two-tone md-48" style="font-size: inherit; color: gray; user-select: none;"><!--#-->chevron_right<!--#--></span></button><a href="/docsite/learn/reference/describing_ui/" dioxus-prevent-default="onclick" class="" id="" rel="" target=""><!--#-->Describing the UI<!--#--></a></li><pre></pre><li class="pt-1"><button><span class="material-icons material-icons-outlined material-icons-round material-icons-sharp material-icons-two-tone md-48" style="font-size: inherit; color: gray; user-select: none;"><!--#-->chevron_right<!--#--></span></button><a href="/docsite/learn/reference/interactivity/" dioxus-prevent-default="onclick" class="" id="" rel="" target=""><!--#-->Interactivity<!--#--></a></li><pre></pre><li class="pt-1"><button><span class="material-icons material-icons-outlined material-icons-round material-icons-sharp material-icons-two-tone md-48" style="font-size: inherit; color: gray; user-select: none;"><!--#-->chevron_right<!--#--></span></button><a href="/docsite/learn/reference/async/" dioxus-prevent-default="onclick" class="" id="" rel="" target=""><!--#-->Async<!--#--></a></li><pre></pre></ul></div><div class="pb-4"><a href="/docsite/learn/router/" dioxus-prevent-default="onclick" class="" id="" rel="" target=""><h2 class="font-semibold"><!--#-->Router<!--#--></h2></a><ul class="pl-2"><li class="pt-1"><button><span class="material-icons material-icons-outlined material-icons-round material-icons-sharp material-icons-two-tone md-48" style="font-size: inherit; color: gray; user-select: none;"><!--#-->chevron_right<!--#--></span></button><a href="/docsite/learn/router/example/" dioxus-prevent-default="onclick" class="" id="" rel="" target=""><!--#-->Example Project<!--#--></a></li><pre></pre><li class="pt-1"><button><span class="material-icons material-icons-outlined material-icons-round material-icons-sharp material-icons-two-tone md-48" style="font-size: inherit; color: gray; user-select: none;"><!--#-->chevron_right<!--#--></span></button><a href="/docsite/learn/router/reference/" dioxus-prevent-default="onclick" class="" id="" rel="" target=""><!--#-->Reference<!--#--></a></li><pre></pre></ul></div><div class="pb-4"><a href="/docsite/learn/cookbook/" dioxus-prevent-default="onclick" class="" id="" rel="" target=""><h2 class="font-semibold"><!--#-->Cookbook<!--#--></h2></a><ul class="pl-2"><li class="pt-1"><button><span class="material-icons material-icons-outlined material-icons-round material-icons-sharp material-icons-two-tone md-48" style="font-size: inherit; color: gray; user-select: none;"><!--#-->chevron_right<!--#--></span></button><a href="/docsite/learn/cookbook/platforms/" dioxus-prevent-default="onclick" class="" id="" rel="" target=""><!--#-->Platforms<!--#--></a></li><pre></pre><li class="pt-1"><button><span class="material-icons material-icons-outlined material-icons-round material-icons-sharp material-icons-two-tone md-48" style="font-size: inherit; color: gray; user-select: none;"><!--#-->chevron_right<!--#--></span></button><a href="/docsite/learn/cookbook/integrations/" dioxus-prevent-default="onclick" class="" id="" rel="" target=""><!--#-->Integrations<!--#--></a></li><pre></pre><li class="pt-1"><button><span class="material-icons material-icons-outlined material-icons-round material-icons-sharp material-icons-two-tone md-48" style="font-size: inherit; color: gray; user-select: none;"><!--#-->chevron_right<!--#--></span></button><a href="/docsite/learn/cookbook/state/" dioxus-prevent-default="onclick" class="" id="" rel="" target=""><!--#-->State Management<!--#--></a></li><pre></pre><a href="/docsite/learn/cookbook/antipatterns" dioxus-prevent-default="onclick" class="" id="" rel="" target=""><li class="m-1 dark:hover:bg-gray-800 rounded-md pl-2 "><!--#-->Anti-patterns<!--#--></li></a><a href="/docsite/learn/cookbook/error_handling" dioxus-prevent-default="onclick" class="" id="" rel="" target=""><li class="m-1 dark:hover:bg-gray-800 rounded-md pl-2 "><!--#-->Error Handling<!--#--></li></a><a href="/docsite/learn/cookbook/custom_renderer" dioxus-prevent-default="onclick" class="" id="" rel="" target=""><li class="m-1 dark:hover:bg-gray-800 rounded-md pl-2 "><!--#-->Custom Renderer<!--#--></li></a></ul></div><div class="pb-4"><a href="/docsite/learn/CLI/" dioxus-prevent-default="onclick" class="" id="" rel="" target=""><h2 class="font-semibold"><!--#-->CLI<!--#--></h2></a><ul class="pl-2"><a href="/docsite/learn/CLI/installation" dioxus-prevent-default="onclick" class="" id="" rel="" target=""><li class="m-1 dark:hover:bg-gray-800 rounded-md pl-2 "><!--#-->Installation<!--#--></li></a><a href="/docsite/learn/CLI/creating" dioxus-prevent-default="onclick" class="" id="" rel="" target=""><li class="m-1 dark:hover:bg-gray-800 rounded-md pl-2 "><!--#-->Create a Project<!--#--></li></a><a href="/docsite/learn/CLI/configure" dioxus-prevent-default="onclick" class="" id="" rel="" target=""><li class="m-1 dark:hover:bg-gray-800 rounded-md pl-2 "><!--#-->Configure Project<!--#--></li></a><li class="pt-1"><button><span class="material-icons material-icons-outlined material-icons-round material-icons-sharp material-icons-two-tone md-48" style="font-size: inherit; color: gray; user-select: none;"><!--#-->chevron_right<!--#--></span></button><a href="/docsite/learn/CLI/cmd/" dioxus-prevent-default="onclick" class="" id="" rel="" target=""><!--#-->Commands<!--#--></a></li><pre></pre><li class="pt-1"><button><span class="material-icons material-icons-outlined material-icons-round material-icons-sharp material-icons-two-tone md-48" style="font-size: inherit; color: gray; user-select: none;"><!--#-->chevron_right<!--#--></span></button><a href="/docsite/learn/CLI/plugin/" dioxus-prevent-default="onclick" class="" id="" rel="" target=""><!--#-->Plugin Development<!--#--></a></li><pre></pre></ul></div><div class="pb-4"><a href="/docsite/learn/contributing/" dioxus-prevent-default="onclick" class="" id="" rel="" target=""><h2 class="font-semibold"><!--#-->Contributing<!--#--></h2></a><ul class="pl-2"><a href="/docsite/learn/contributing/project_structure" dioxus-prevent-default="onclick" class="" id="" rel="" target=""><li class="m-1 dark:hover:bg-gray-800 rounded-md pl-2 "><!--#-->Project Structure<!--#--></li></a><a href="/docsite/learn/contributing/walkthrough_readme" dioxus-prevent-default="onclick" class="" id="" rel="" target=""><li class="m-1 dark:hover:bg-gray-800 rounded-md pl-2 bg-gray-200 dark:bg-gray-800"><!--#-->Walkthrough of Internals<!--#--></li></a><a href="/docsite/learn/contributing/guiding_principles" dioxus-prevent-default="onclick" class="" id="" rel="" target=""><li class="m-1 dark:hover:bg-gray-800 rounded-md pl-2 "><!--#-->Guiding Principles<!--#--></li></a><a href="/docsite/learn/contributing/roadmap" dioxus-prevent-default="onclick" class="" id="" rel="" target=""><li class="m-1 dark:hover:bg-gray-800 rounded-md pl-2 "><!--#-->Roadmap<!--#--></li></a><a href="/docsite/learn/contributing/governence" dioxus-prevent-default="onclick" class="" id="" rel="" target=""><li class="m-1 dark:hover:bg-gray-800 rounded-md pl-2 "><!--#-->Governence<!--#--></li></a></ul></div></nav><div class="overflow-y-auto hidden xl:block fixed top-0 pt-36 pb-16 pl-3.5 -ml-3.5 w-60 h-full md:text-[13px] leading-5 text-navy docs-right-sidebar " style="right:calc(40vw - 40.875rem);"><h2 class="pb-4 font-semibold">On this page</h2><ul class=""><li class="pb-2"><a href="#walkthrough-of-the-hello-world-example-internals" dioxus-prevent-default="" class="" id="" rel="noopener noreferrer" target=""><!--#-->Walkthrough of the Hello World Example Internals<!--#--></a></li><li class="pb-2"><a href="#the-source-file" dioxus-prevent-default="" class="" id="" rel="noopener noreferrer" target=""><!--#-->The Source File<!--#--></a></li><li class="pb-2"><a href="#the-rsx!-macro" dioxus-prevent-default="" class="" id="" rel="noopener noreferrer" target=""><!--#-->The rsx! Macro<!--#--></a></li><li class="pb-2"><a href="#launching-the-app" dioxus-prevent-default="" class="" id="" rel="noopener noreferrer" target=""><!--#-->Launching the App<!--#--></a></li><li class="pb-2"><a href="#the-virtual-dom" dioxus-prevent-default="" class="" id="" rel="noopener noreferrer" target=""><!--#-->The Virtual DOM<!--#--></a></li><li class="pb-2"><a href="#conclusion" dioxus-prevent-default="" class="" id="" rel="noopener noreferrer" target=""><!--#-->Conclusion<!--#--></a></li></ul></div></div></div><footer class="text-gray-400 bg-ghmetal body-font"><div class="container px-5 py-24 mx-auto flex md:items-center lg:items-start md:flex-row md:flex-nowrap flex-wrap flex-col"><div class="w-64 flex-shrink-0 md:mx-0 mx-auto text-center md:text-left"><a class="flex title-font font-medium items-center md:justify-start justify-center text-white"><img src="https://avatars.githubusercontent.com/u/79236386?s=200&v=4" class="h-8 w-auto"/><span class="ml-3 text-xl">Dioxus Labs</span></a><p class="mt-2 text-sm text-gray-500">An Open Source project dedicated to making Rust UI wonderful.</p></div><div class="flex-grow flex flex-wrap md:pl-20 -mb-10 md:mt-0 mt-10 md:text-left text-center"><div class="lg:w-1/4 md:w-1/2 w-full px-4"><h2 class="title-font font-medium text-white tracking-widest text-sm mb-3"><!--#-->Community<!--#--></h2><nav class="list-none mb-10"><li><a class="text-gray-400 hover:text-white" href="https://github.com/dioxuslabs"><!--#-->Github<!--#--></a></li><li><a class="text-gray-400 hover:text-white" href="https://twitter.com/dioxuslabs"><!--#-->Twitter<!--#--></a></li><li><a class="text-gray-400 hover:text-white" href="https://discord.gg/XgGxMSkvUM"><!--#-->Discord<!--#--></a></li></nav></div><div class="lg:w-1/4 md:w-1/2 w-full px-4"><h2 class="title-font font-medium text-white tracking-widest text-sm mb-3"><!--#-->Learning<!--#--></h2><nav class="list-none mb-10"><li><a class="text-gray-400 hover:text-white" href="https://docs.rs/dioxus"><!--#-->docs.rs<!--#--></a></li><li><a class="text-gray-400 hover:text-white" href="https://dioxuslabs.com/docs/0.3/guide/en"><!--#-->Guide<!--#--></a></li><li><a class="text-gray-400 hover:text-white" href="https://github.com/DioxusLabs/awesome-dioxus"><!--#-->Awesome List<!--#--></a></li></nav></div><div class="lg:w-1/4 md:w-1/2 w-full px-4"><h2 class="title-font font-medium text-white tracking-widest text-sm mb-3"><!--#-->Projects<!--#--></h2><nav class="list-none mb-10"><li><a class="text-gray-400 hover:text-white" href="https://github.com/DioxusLabs/dioxus"><!--#-->Dioxus<!--#--></a></li><li><a class="text-gray-400 hover:text-white" href="https://github.com/DioxusLabs/dioxus/tree/master/packages/cli"><!--#-->CLI<!--#--></a></li><li><a class="text-gray-400 hover:text-white" href="https://github.com/DioxusLabs/taffy"><!--#-->Taffy<!--#--></a></li></nav></div></div></div><div class="container mx-auto py-4 px-5 flex flex-wrap flex-col sm:flex-row"><p class="text-gray-400 text-sm text-center sm:text-left">© 2022 Dioxus Labs —<a class="text-gray-500 ml-1" rel="noopener noreferrer" href="https://twitter.com/dioxuslabs" target="_blank">@dioxuslabs</a></p></div></footer></div><meta hidden="true" id="dioxus-storage" data-serialized="AQ==" /><script>(function () {
+    const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+    const url = protocol + '//' + window.location.host + '/_dioxus/disconnect';
+    const poll_interval = 1000;
+    const reload_upon_connect = () => {
+        console.log('Disconnected from server. Attempting to reconnect...');
+        window.setTimeout(
+            () => {
+                // Try to reconnect to the websocket
+                const ws = new WebSocket(url);
+                ws.onopen = () => {
+                    // If we reconnect, reload the page
+                    window.location.reload();
+                }
+                // Otherwise, try again in a second
+                reload_upon_connect();
+            },
+            poll_interval);
+    };
+
+    // on initial page load connect to the disconnect ws
+    const ws = new WebSocket(url);
+    // if we disconnect, start polling
+    ws.onclose = reload_upon_connect;
+})()</script></div>
+    <!-- Note the usage of `type=module` here as this is an ES6 module -->
+    <script src="/docsite/static/prism/prism.js"></script>
+    <script type="module">
+      import init from "/docsite/assets/dioxus/docsite.js";
+      init("/docsite/assets/dioxus/docsite_bg.wasm").then((wasm) => {
+        if (wasm.__wbindgen_start == undefined) {
+          wasm.main();
+        }
+      });
+    </script>
+    
+  </body>
+</html>

@@ -213,7 +213,7 @@ fn Search(cx: Scope) -> Element {
 					span { class: "pl-2", "Search the docs" }
 				}
 				div { class: "border border-gray-300 rounded-lg p-1 text-xs text-gray-400",
-					"⌘K"
+					"CTRL + K"
 				}
 			}
 		}
@@ -228,13 +228,6 @@ fn SearchModal(cx: Scope) -> Element {
 	// when we search, we do a similar search to mdbook
 	// This will bring up individual sections that reference the search term with the breadcrumb
 	// entries are sorted by breadcrumb
-
-	crate::shortcut::use_shortcut(cx, Key::Escape, Modifiers::empty(), {
-		to_owned![show_modal];
-		move || {
-			show_modal.set(ShowSearch(false));
-		}
-	});
 
 	render! {
 		if show_modal.get().0 {
@@ -261,6 +254,11 @@ fn SearchModal(cx: Scope) -> Element {
 										color: MaterialIconColor::Dark,
 									}
 									input {
+										onkeydown: move |evt| {
+											if evt.inner().key() == Key::Escape {
+												show_modal.set(ShowSearch(false));
+											}
+										},
 										oninput: move |evt| {
 											search_text.set(evt.value.clone());
 										},

@@ -7,7 +7,14 @@ In this chapter, we will start utilizing Dioxus Router and add a homepage and a
 
 The core of the Dioxus Router is the [`Routable`] macro and the [`Router`] component.
 
-First, we need an actual page to route to! Let's add a homepage component:
+
+Routable is a trait for anything that can:
+- Be parsed from a URL
+- Be turned into a URL
+- Be rendered as to a Element
+
+
+Let's create a new router. First, we need an actual page to route to! Let's add a homepage component:
 
 ```rust
 {{#include src/doc_examples/first_route.rs:home}}

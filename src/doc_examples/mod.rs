@@ -74,8 +74,8 @@ pub mod hooks_counter;
 mod hooks_counter_two_state;
 #[cfg(feature = "doc_test")]
 mod hooks_custom_logic;
-#[cfg(feature = "doc_test")]
-mod hooks_use_ref;
+pub mod hooks_out_of_date;
+pub mod hooks_use_ref;
 #[cfg(feature = "doc_test")]
 mod hydration;
 #[cfg(feature = "doc_test")]
@@ -100,8 +100,6 @@ mod outlet;
 mod query_segments;
 pub mod readme;
 #[cfg(feature = "doc_test")]
-mod use_coroutine;
-#[cfg(feature = "doc_test")]
 mod readme_expanded;
 pub mod rendering_lists;
 #[cfg(feature = "doc_test")]
@@ -109,6 +107,8 @@ mod router_cfg;
 #[cfg(feature = "doc_test")]
 mod routing_update;
 mod rsx_overview;
+#[cfg(feature = "doc_test")]
+mod use_coroutine;
 pub use rsx_overview::*;
 #[cfg(feature = "doc_test")]
 mod server_basic;

@@ -63,7 +63,7 @@ fn SidebarSection(cx: Scope, chapter: &'static SummaryItem<BookRoute>) -> Elemen
 	let sections = link
 		.nested_items
 		.iter()
-		.filter_map(|link| render! { SidebarChapter { link: link } });
+		.filter_map(|chapter| render! { SidebarChapter { chapter: chapter } });
 
 	render! {
 		div { class: "pb-4",
@@ -78,8 +78,9 @@ fn SidebarSection(cx: Scope, chapter: &'static SummaryItem<BookRoute>) -> Elemen
 }
 
 #[inline_props]
-fn SidebarChapter(cx: Scope, link: &'static SummaryItem<BookRoute>) -> Element {
-	let link = link.maybe_link()?;
+fn SidebarChapter(cx: Scope, chapter: &'static SummaryItem<BookRoute>) -> Element {
+	let link = chapter.maybe_link()?;
+	log::info!("{link:?}");
 	let url = link.location.as_ref().unwrap();
 	let list_toggle = use_state(cx, || false);
 
@@ -103,12 +104,23 @@ fn SidebarChapter(cx: Scope, link: &'static SummaryItem<BookRoute>) -> Element {
 					}
 				}
 			}
-			Link { target: Route::Docs { child: url.clone() }, "{link.name}" }
+			if link.nested_items.is_empty() {
+				rsx! {
+					LocationLink {
+						chapter: chapter
+					}
+				}
+			}
+			else {
+				rsx! {
+					Link { target: Route::Docs { child: url.clone() }, "{link.name}" }
+				}
+			}
 			if show_chevron && show_dropdown {
 				rsx! {
 					ul { class: "ml-6 border-l border-gray-300 py-1",
-						for nest in link.nested_items.iter() {
-							LocationLink { chapter: nest }
+						for chapter in link.nested_items.iter() {
+							SidebarChapter { chapter: chapter }
 						}
 					}
 				}

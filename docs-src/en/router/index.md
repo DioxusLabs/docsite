@@ -1,6 +1,6 @@
 # Introduction
 
-> If you are not familiar with Dioxus itself, check out the [Dioxus book](https://dioxuslabs.com/docs/0.3/guide/en/) first.
+> If you are not familiar with Dioxus itself, check out the [Dioxus guide](../guide/index.md) first.
 
 Whether you are building a website, desktop app, or mobile app,
 splitting your app's views into "pages" can be an effective method for

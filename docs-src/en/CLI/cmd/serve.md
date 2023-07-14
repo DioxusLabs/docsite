@@ -41,7 +41,7 @@ dioxus serve --open
 
 ## RSX Hot Reloading
 
-You can add the `--hot-reload` flag to enable [rsx hot reloading](https://dioxuslabs.com/docs/0.3/guide/en/getting_started/hot_reload.html). This will allow you to reload some rsx changes without a full recompile:
+You can add the `--hot-reload` flag to enable rsx hot reloading. This will allow you to reload some rsx changes without a full recompile:
 
 ```
 dioxus serve --open

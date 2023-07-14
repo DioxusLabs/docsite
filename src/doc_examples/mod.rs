@@ -34,6 +34,10 @@ pub mod event_click;
 #[cfg(feature = "doc_test")]
 mod event_handler_prop;
 #[cfg(feature = "doc_test")]
+mod hook_test;
+#[cfg(feature = "doc_test")]
+mod component_test;
+#[cfg(feature = "doc_test")]
 mod event_nested;
 pub mod event_prevent_default;
 #[cfg(feature = "doc_test")]

@@ -70,8 +70,8 @@
 		- [Middleware](cookbook/platforms/fullstack/middleware.md)
 		- [Authentication](cookbook/platforms/fullstack/authentication.md)
   - [Integrations](cookbook/integrations/index.md)
-  	- [Auth](cookbook/integrations/auth.md)
-	- [Database](cookbook/integrations/database.md)
+  	<!-- - [Auth](cookbook/integrations/auth.md) -->
+	<!-- - [Database](cookbook/integrations/database.md) -->
 	- [Logging](cookbook/integrations/logging.md)
   - [State Management](cookbook/state/index.md)
 	- [External State](cookbook/state/external/index.md)

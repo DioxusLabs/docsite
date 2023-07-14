@@ -6,7 +6,7 @@ Hooks allow us to create state in our components. Hooks are Rust functions that 
 
 Dioxus provides many built in hooks, but if those hooks don't fit your specific use case, you also can [create your own hook](../../cookbook/state/custom_hooks/index.md)
 
-## `use_state` Hook
+## [`use_state`](https://docs.rs/dioxus-hooks/latest/dioxus_hooks/fn.use_state.html) Hook
 
 [`use_state`](https://docs.rs/dioxus/latest/dioxus/prelude/fn.use_state.html) is one of the simplest hooks.
 
@@ -35,6 +35,30 @@ You can use multiple hooks in the same component if you want:
 {{#include src/doc_examples/hooks_counter_two_state.rs:component}}
 ```
 ![Screenshot: app with two counters](./images/counter_two_state.png)
+
+### Out of Date UseState
+
+The value `UseState` dereferences to is only set when the use_state hook is called every render. This means that if you move the state into a future, or you write to the state and then immediately read the state, it may return a out of date value.
+
+```rust
+{{#include src/doc_examples/hooks_out_of_date.rs:component}}
+```
+```inject-dioxus
+DemoFrame {
+   hooks_out_of_date::App {}
+}
+```
+
+Instead of using deref to get the inner value from UseState, you can use the [`current`](https://docs.rs/dioxus-hooks/latest/dioxus_hooks/struct.UseState.html#method.current) function. This function will always returns the current value of the state.
+
+```rust
+{{#include src/doc_examples/hooks_out_of_date.rs:fixed}}
+```
+```inject-dioxus
+DemoFrame {
+   hooks_out_of_date::fixed::App {}
+}
+```
 
 ## Rules of Hooks
 
@@ -71,7 +95,7 @@ These rules mean that there are certain things you can't do with hooks:
 {{#include src/doc_examples/hooks_bad.rs:loop}}
 ```
 
-## `use_ref` Hook
+## [`use_ref`](https://docs.rs/dioxus-hooks/latest/dioxus_hooks/fn.use_ref.html) Hook
 
 `use_state` is great for tracking simple values. However, you may notice in the [`UseState` API](https://docs.rs/dioxus/latest/dioxus/hooks/struct.UseState.html) that the only way to modify its value is to replace it with something else (e.g., by calling `set`, or through one of the `+=`, `-=` operators). This works well when it is cheap to construct a value (such as any primitive). But what if you want to maintain more complex data in the components state?
 
@@ -83,6 +107,11 @@ Here's a simple example that keeps a list of events in a `use_ref`. We can acqui
 
 ```rust
 {{#include src/doc_examples/hooks_use_ref.rs:component}}
+```
+```inject-dioxus
+DemoFrame {
+   hooks_use_ref::App {}
+}
 ```
 
 > The return values of `use_state` and `use_ref` (`UseState` and `UseRef`, respectively) are in some ways similar to [`Cell`](https://doc.rust-lang.org/std/cell/) and [`RefCell`](https://doc.rust-lang.org/std/cell/struct.RefCell.html) – they provide interior mutability. However, these Dioxus wrappers also ensure that the component gets re-rendered whenever you change the state.

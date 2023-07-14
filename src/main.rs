@@ -16,7 +16,7 @@ fn main() {
         use dioxus_fullstack::prelude::*;
         use dioxus_router::prelude::*;
         simple_logger::SimpleLogger::new()
-            .with_level(log::LevelFilter::Warn)
+            .with_level(log::LevelFilter::Trace)
             .init()
             .unwrap();
         tokio::runtime::Runtime::new()

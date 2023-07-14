@@ -458,6 +458,7 @@ impl<'a, I: Iterator<Item = Event<'a>>> RsxMarkdownParser<'a, I> {
             }
             Tag::Image(_, dest, title) => {
                 let name = Ident::new("img", Span::call_site());
+                let alt = self.take_text();
                 self.start_node(BodyNode::Element(Element {
                     name: dioxus_rsx::ElementName::Ident(name.clone()),
                     key: None,
@@ -467,6 +468,13 @@ impl<'a, I: Iterator<Item = Event<'a>>> RsxMarkdownParser<'a, I> {
                             attr: dioxus_rsx::ElementAttr::AttrText {
                                 name: Ident::new("src", Span::call_site()),
                                 value: IfmtInput::new_static(&dest),
+                            },
+                        },
+                        dioxus_rsx::ElementAttrNamed {
+                            el_name: dioxus_rsx::ElementName::Ident(name.clone()),
+                            attr: dioxus_rsx::ElementAttr::AttrText {
+                                name: Ident::new("alt", Span::call_site()),
+                                value: IfmtInput::new_static(&alt),
                             },
                         },
                         dioxus_rsx::ElementAttrNamed {

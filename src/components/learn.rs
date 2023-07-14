@@ -164,7 +164,7 @@ fn RightNav(cx: Scope) -> Element {
 				for section in page.sections().iter().filter(|s| s.level <= 2) {
 					li { class: "pb-2",
 						a {
-							href: "#{section.id}",
+							href: "?phantom={section.id}#{section.id}",
 							"{section.title}"
 						}
 					}

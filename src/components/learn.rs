@@ -93,32 +93,35 @@ fn SidebarChapter(cx: Scope, chapter: &'static SummaryItem<BookRoute>) -> Elemen
 	let show_chevron = link.nested_items.len() > 0;
 
 	render! {
-		li { class: "pt-1",
-			if show_chevron {
-				rsx! {
-					button { onclick: move |_| list_toggle.set(!list_toggle.get()),
-						dioxus_material_icons::MaterialIcon {
-							name: "chevron_right",
-							color: "gray",
+		if link.nested_items.is_empty() {
+			rsx! {
+				LocationLink {
+					chapter: chapter
+				}
+			}
+		}
+		else {
+			rsx! {
+				li {
+					class: "pt-1",
+					if show_chevron {
+						rsx! {
+							button { onclick: move |_| list_toggle.set(!list_toggle.get()),
+								dioxus_material_icons::MaterialIcon {
+									name: "chevron_right",
+									color: "gray",
+								}
+							}
 						}
 					}
-				}
-			}
-			if link.nested_items.is_empty() {
-				rsx! {
-					LocationLink {
-						chapter: chapter
+					Link {
+						target: Route::Docs { child: url.clone() },
+						"{link.name}"
 					}
 				}
-			}
-			else {
-				rsx! {
-					Link { target: Route::Docs { child: url.clone() }, "{link.name}" }
-				}
-			}
-			if show_chevron && show_dropdown {
-				rsx! {
-					ul { class: "ml-6 border-l border-gray-300 py-1",
+				if show_chevron && show_dropdown {
+					rsx! {
+						ul { class: "ml-6 border-l border-gray-300 py-1",
 						for chapter in link.nested_items.iter() {
 							SidebarChapter { chapter: chapter }
 						}

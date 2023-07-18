@@ -7,7 +7,9 @@ pub fn App(cx: Scope) -> Element {
 	let mut count = use_state(cx, || 0);
 
 	// Increase the count
-	count += 1;
+	if *count == 0 {
+		count += 1;
+	}
 
 	cx.render(rsx!(
 		// This uses the deref value
@@ -23,7 +25,9 @@ pub mod fixed {
 		let mut count = use_state(cx, || 0);
 
 		// Increase the count
-		count += 1;
+		if *count == 0 {
+			count += 1;
+		}
 
 		cx.render(rsx!(
 			// Use .current to get the real current value

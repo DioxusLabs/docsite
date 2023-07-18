@@ -160,7 +160,9 @@
 </span><span style="color:#c0c5ce;">	</span><span style="color:#b48ead;">let mut</span><span style="color:#c0c5ce;"> count = </span><span style="color:#96b5b4;">use_state</span><span style="color:#c0c5ce;">(cx, || </span><span style="color:#d08770;">0</span><span style="color:#c0c5ce;">);
 </span><span style="color:#c0c5ce;">
 </span><span style="color:#c0c5ce;">	</span><span style="color:#65737e;">// Increase the count
-</span><span style="color:#c0c5ce;">	count += </span><span style="color:#d08770;">1</span><span style="color:#c0c5ce;">;
+</span><span style="color:#c0c5ce;">	</span><span style="color:#b48ead;">if </span><span style="color:#c0c5ce;">*count == </span><span style="color:#d08770;">0 </span><span style="color:#c0c5ce;">{
+</span><span style="color:#c0c5ce;">		count += </span><span style="color:#d08770;">1</span><span style="color:#c0c5ce;">;
+</span><span style="color:#c0c5ce;">	}
 </span><span style="color:#c0c5ce;">
 </span><span style="color:#c0c5ce;">	cx.</span><span style="color:#96b5b4;">render</span><span style="color:#c0c5ce;">(rsx!(
 </span><span style="color:#c0c5ce;">		</span><span style="color:#65737e;">// This uses the deref value
@@ -173,7 +175,9 @@
 </span><span style="color:#c0c5ce;">	</span><span style="color:#b48ead;">let mut</span><span style="color:#c0c5ce;"> count = </span><span style="color:#96b5b4;">use_state</span><span style="color:#c0c5ce;">(cx, || </span><span style="color:#d08770;">0</span><span style="color:#c0c5ce;">);
 </span><span style="color:#c0c5ce;">
 </span><span style="color:#c0c5ce;">	</span><span style="color:#65737e;">// Increase the count
-</span><span style="color:#c0c5ce;">	count += </span><span style="color:#d08770;">1</span><span style="color:#c0c5ce;">;
+</span><span style="color:#c0c5ce;">	</span><span style="color:#b48ead;">if </span><span style="color:#c0c5ce;">*count == </span><span style="color:#d08770;">0 </span><span style="color:#c0c5ce;">{
+</span><span style="color:#c0c5ce;">		count += </span><span style="color:#d08770;">1</span><span style="color:#c0c5ce;">;
+</span><span style="color:#c0c5ce;">	}
 </span><span style="color:#c0c5ce;">
 </span><span style="color:#c0c5ce;">	cx.</span><span style="color:#96b5b4;">render</span><span style="color:#c0c5ce;">(rsx!(
 </span><span style="color:#c0c5ce;">		</span><span style="color:#65737e;">// Use .current to get the real current value

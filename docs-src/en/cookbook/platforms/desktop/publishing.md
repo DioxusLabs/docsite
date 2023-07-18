@@ -55,7 +55,7 @@ Once you've ran `cargo-bundle --release`, your app should be accessible in
 
 For example, a macOS app would look like this:
 
-![Published App](static/images/publish.png)
+![Published App](/docsite/static/images/publish.png)
 
 Nice! And it's only 4.8 Mb – extremely lean!! Because Dioxus leverages your platform's native WebView, Dioxus apps are extremely memory efficient and won't waste your battery.
 

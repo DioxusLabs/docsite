@@ -157,7 +157,7 @@
 </span><span style="color:#c0c5ce;">	#[</span><span style="color:#bf616a;">route</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">/</span><span style="color:#c0c5ce;">&quot;)]
 </span><span style="color:#c0c5ce;">	Home {},
 </span><span style="color:#c0c5ce;">	</span><span style="color:#65737e;">// PageNotFound is a catch all route that will match any route and placing the matched segments in the route field
-</span><span style="color:#c0c5ce;">	#[</span><span style="color:#bf616a;">route</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">/:...route</span><span style="color:#c0c5ce;">&quot;)]
+</span><span style="color:#c0c5ce;">	#[</span><span style="color:#bf616a;">route</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">/:..route</span><span style="color:#c0c5ce;">&quot;)]
 </span><span style="color:#c0c5ce;">	PageNotFound { route: Vec&lt;String&gt; },
 </span><span style="color:#c0c5ce;">}
 </span></pre>

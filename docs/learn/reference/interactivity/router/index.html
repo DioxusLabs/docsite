@@ -135,7 +135,7 @@
 </span><span style="color:#c0c5ce;">	#[</span><span style="color:#bf616a;">route</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">/blog</span><span style="color:#c0c5ce;">&quot;)]
 </span><span style="color:#c0c5ce;">	Blog {}
 </span><span style="color:#c0c5ce;">	</span><span style="color:#65737e;">//  if the current location doesn&#39;t match any of the above routes, render the NotFound component
-</span><span style="color:#c0c5ce;">	#[</span><span style="color:#bf616a;">route</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">/:...segments</span><span style="color:#c0c5ce;">&quot;)]
+</span><span style="color:#c0c5ce;">	#[</span><span style="color:#bf616a;">route</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">/:..segments</span><span style="color:#c0c5ce;">&quot;)]
 </span><span style="color:#c0c5ce;">	NotFound { segments: Vec&lt;String&gt; }
 </span><span style="color:#c0c5ce;">}
 </span></pre>
@@ -148,7 +148,7 @@
 </span><span style="color:#c0c5ce;">	#[</span><span style="color:#bf616a;">route</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">/blog</span><span style="color:#c0c5ce;">&quot;)]
 </span><span style="color:#c0c5ce;">	Blog {}
 </span><span style="color:#c0c5ce;">	</span><span style="color:#65737e;">//  if the current location doesn&#39;t match any of the above routes, render the NotFound component
-</span><span style="color:#c0c5ce;">	#[</span><span style="color:#bf616a;">route</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">/:...segments</span><span style="color:#c0c5ce;">&quot;)]
+</span><span style="color:#c0c5ce;">	#[</span><span style="color:#bf616a;">route</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">/:..segments</span><span style="color:#c0c5ce;">&quot;)]
 </span><span style="color:#c0c5ce;">	NotFound { segments: Vec&lt;String&gt; }
 </span><span style="color:#c0c5ce;">}
 </span></pre>

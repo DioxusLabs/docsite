@@ -134,7 +134,7 @@
 </span><span style="color:#c0c5ce;">		#[</span><span style="color:#bf616a;">redirect</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">/</span><span style="color:#c0c5ce;">&quot;, || Route::BlogList {})]
 </span><span style="color:#c0c5ce;">		#[</span><span style="color:#bf616a;">redirect</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">/:name</span><span style="color:#c0c5ce;">&quot;, |name: String| Route::BlogPost { name })]
 </span><span style="color:#c0c5ce;">	#[</span><span style="color:#bf616a;">end_nest</span><span style="color:#c0c5ce;">]
-</span><span style="color:#c0c5ce;">	#[</span><span style="color:#bf616a;">route</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">/:...route</span><span style="color:#c0c5ce;">&quot;)]
+</span><span style="color:#c0c5ce;">	#[</span><span style="color:#bf616a;">route</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">/:..route</span><span style="color:#c0c5ce;">&quot;)]
 </span><span style="color:#c0c5ce;">	PageNotFound {
 </span><span style="color:#c0c5ce;">		route: Vec&lt;String&gt;,
 </span><span style="color:#c0c5ce;">	},

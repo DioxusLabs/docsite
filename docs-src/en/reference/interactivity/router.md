@@ -50,7 +50,7 @@ enum Route {
 	#[route("/blog")]
 	Blog {}
 	//  if the current location doesn't match any of the above routes, render the NotFound component
-	#[route("/:...segments")]
+	#[route("/:..segments")]
 	NotFound { segments: Vec<String> }
 }
 ```
@@ -67,7 +67,7 @@ enum Route {
 	#[route("/blog")]
 	Blog {}
 	//  if the current location doesn't match any of the above routes, render the NotFound component
-	#[route("/:...segments")]
+	#[route("/:..segments")]
 	NotFound { segments: Vec<String> }
 }
 ```

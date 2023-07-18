@@ -195,7 +195,7 @@ pub enum Route {
                 Docs { child: BookRoute },
             #[end_layout]
         #[end_nest]
-        #[route("/:...segments")]
+        #[route("/:..segments")]
         Err404 { segments: Vec<String> },
 }
 

@@ -60,8 +60,8 @@ pub fn FeaturedExamples(cx: Scope) -> Element {
 						subtitle: "Web",
 						description: "The classic performance benchmark for web frameworks. Dioxus ranks extraordinarily high!",
 						link: "https://github.com/DioxusLabs/example-projects/tree/master/jsframework-benchmark",
-						img_avif: "/docsite/jsbenchmark_cropped.avif",
-						img: "/docsite/jsbenchmark_cropped.png",
+						img_avif: "/docsite/static/jsbenchmark_cropped.avif",
+						img: "/docsite/static/jsbenchmark_cropped.png",
 						img_alt: ""
 					}
 				}

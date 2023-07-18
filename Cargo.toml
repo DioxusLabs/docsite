@@ -1,2 +1,2 @@
 [workspace]
-members = ["mdbook-macro", "use-mdbook", "mdbook-shared"]
+members = ["mdbook-macro", "use-mdbook", "mdbook-shared", "syntect-html"]

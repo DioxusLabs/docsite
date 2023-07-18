@@ -121,13 +121,13 @@ impl MdBook<PathBuf> {
         let Some(link) = chapter.maybe_link() else { return Ok(()) };
 
         let url = link.location.as_ref().cloned().unwrap();
-        let md_file = mdbook_root.join("en").join(&url).canonicalize().map_err(|e| {
-            anyhow::anyhow!(
-                "Failed to canonicalize file for page {:?}: {}",
-                url,
-                e
-            )
-        })?;
+        let md_file = mdbook_root
+            .join("en")
+            .join(&url)
+            .canonicalize()
+            .map_err(|e| {
+                anyhow::anyhow!("Failed to canonicalize file for page {:?}: {}", url, e)
+            })?;
 
         let body = std::fs::read_to_string(&md_file).map_err(|e| {
             anyhow::anyhow!(

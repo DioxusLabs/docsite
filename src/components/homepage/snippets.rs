@@ -81,7 +81,7 @@ pub fn Snippets(cx: Scope) -> Element {
 						rsx! {
 							div {
 								key: "{snippet.title}",
-								class: "w-full flex-auto flex min-h-0 {show}",
+								class: "w-full min-h-0 {show}",
 								dangerous_inner_html: "{snippet.html}"
 							}
 						}

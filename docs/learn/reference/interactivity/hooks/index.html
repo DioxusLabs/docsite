@@ -157,34 +157,38 @@
 <span style="color:#b48ead;">pub fn </span><span style="color:#8fa1b3;">App</span><span style="color:#c0c5ce;">(</span><span style="color:#bf616a;">cx</span><span style="color:#c0c5ce;">: Scope) -&gt; Element {
 </span><span style="color:#c0c5ce;">	</span><span style="color:#65737e;">// count will be initialized to 0 the first time the component is rendered
 </span><span style="color:#c0c5ce;">	</span><span style="color:#b48ead;">let mut</span><span style="color:#c0c5ce;"> count = </span><span style="color:#96b5b4;">use_state</span><span style="color:#c0c5ce;">(cx, || </span><span style="color:#d08770;">0</span><span style="color:#c0c5ce;">);
+</span><span style="color:#c0c5ce;">	</span><span style="color:#b48ead;">let</span><span style="color:#c0c5ce;"> first_count_read = </span><span style="color:#96b5b4;">use_state</span><span style="color:#c0c5ce;">(cx, || </span><span style="color:#d08770;">0</span><span style="color:#c0c5ce;">);
 </span><span style="color:#c0c5ce;">
 </span><span style="color:#c0c5ce;">	</span><span style="color:#65737e;">// Increase the count
 </span><span style="color:#c0c5ce;">	</span><span style="color:#b48ead;">if </span><span style="color:#c0c5ce;">*count == </span><span style="color:#d08770;">0 </span><span style="color:#c0c5ce;">{
 </span><span style="color:#c0c5ce;">		count += </span><span style="color:#d08770;">1</span><span style="color:#c0c5ce;">;
+</span><span style="color:#c0c5ce;">		first_count_read.</span><span style="color:#96b5b4;">set</span><span style="color:#c0c5ce;">(**count);
 </span><span style="color:#c0c5ce;">	}
 </span><span style="color:#c0c5ce;">
 </span><span style="color:#c0c5ce;">	cx.</span><span style="color:#96b5b4;">render</span><span style="color:#c0c5ce;">(rsx!(
 </span><span style="color:#c0c5ce;">		</span><span style="color:#65737e;">// This uses the deref value
-</span><span style="color:#c0c5ce;">		h1 { &quot;</span><span style="color:#a3be8c;">High-Five counter: {count}</span><span style="color:#c0c5ce;">&quot; }
+</span><span style="color:#c0c5ce;">		h1 { &quot;</span><span style="color:#a3be8c;">High-Five counter: {first_count_read}</span><span style="color:#c0c5ce;">&quot; }
 </span><span style="color:#c0c5ce;">	))
 </span><span style="color:#c0c5ce;">}
 </span></pre>
 </div><button style="position: absolute; top: 0; right: 0; background: rgba(0, 0, 0, 0.75); color: white; border: 1px solid white; padding: 0.25em;" onclick="navigator.clipboard.writeText(this.previousElementSibling.innerText)">Copy</button></div><div class="bg-white rounded-md shadow-md p-4 my-4 overflow-scroll text-black" style="max-height:50vh;"><h1><!--#-->High-Five counter: 0<!--#--></h1></div><p>Instead of using deref to get the inner value from UseState, you can use the <a href="https://docs.rs/dioxus-hooks/latest/dioxus_hooks/struct.UseState.html#method.current"><code>current</code></a> function. This function will always returns the current value of the state.</p><div style="position: relative;"><div><pre style="background-color:#2b303b;">
 <span style="color:#b48ead;">pub fn </span><span style="color:#8fa1b3;">App</span><span style="color:#c0c5ce;">(</span><span style="color:#bf616a;">cx</span><span style="color:#c0c5ce;">: Scope) -&gt; Element {
 </span><span style="color:#c0c5ce;">	</span><span style="color:#b48ead;">let mut</span><span style="color:#c0c5ce;"> count = </span><span style="color:#96b5b4;">use_state</span><span style="color:#c0c5ce;">(cx, || </span><span style="color:#d08770;">0</span><span style="color:#c0c5ce;">);
+</span><span style="color:#c0c5ce;">	</span><span style="color:#b48ead;">let</span><span style="color:#c0c5ce;"> first_count_read = </span><span style="color:#96b5b4;">use_state</span><span style="color:#c0c5ce;">(cx, || </span><span style="color:#d08770;">0</span><span style="color:#c0c5ce;">);
 </span><span style="color:#c0c5ce;">
 </span><span style="color:#c0c5ce;">	</span><span style="color:#65737e;">// Increase the count
 </span><span style="color:#c0c5ce;">	</span><span style="color:#b48ead;">if </span><span style="color:#c0c5ce;">*count == </span><span style="color:#d08770;">0 </span><span style="color:#c0c5ce;">{
 </span><span style="color:#c0c5ce;">		count += </span><span style="color:#d08770;">1</span><span style="color:#c0c5ce;">;
+</span><span style="color:#c0c5ce;">		first_count_read.</span><span style="color:#96b5b4;">set</span><span style="color:#c0c5ce;">(*count.</span><span style="color:#96b5b4;">current</span><span style="color:#c0c5ce;">());
 </span><span style="color:#c0c5ce;">	}
 </span><span style="color:#c0c5ce;">
 </span><span style="color:#c0c5ce;">	cx.</span><span style="color:#96b5b4;">render</span><span style="color:#c0c5ce;">(rsx!(
 </span><span style="color:#c0c5ce;">		</span><span style="color:#65737e;">// Use .current to get the real current value
-</span><span style="color:#c0c5ce;">		h1 { &quot;</span><span style="color:#a3be8c;">High-Five counter: {count.current()}</span><span style="color:#c0c5ce;">&quot; }
+</span><span style="color:#c0c5ce;">		h1 { &quot;</span><span style="color:#a3be8c;">High-Five counter: {first_count_read}</span><span style="color:#c0c5ce;">&quot; }
 </span><span style="color:#c0c5ce;">	))
 </span><span style="color:#c0c5ce;">}
 </span></pre>
-</div><button style="position: absolute; top: 0; right: 0; background: rgba(0, 0, 0, 0.75); color: white; border: 1px solid white; padding: 0.25em;" onclick="navigator.clipboard.writeText(this.previousElementSibling.innerText)">Copy</button></div><div class="bg-white rounded-md shadow-md p-4 my-4 overflow-scroll text-black" style="max-height:50vh;"><h1><!--#-->High-Five counter: 1<!--#--></h1></div><h2 id="rules-of-hooks"><a class="header" href="#rules-of-hooks">Rules of Hooks</a></h2><p>The above example might seem a bit magic, since Rust functions are typically not associated with state. Dioxus allows hooks to maintain state across renders through a reference to <code>ScopeState</code>, which is why you must pass <code>&amp;cx</code> to them.</p><p>But how can Dioxus differentiate between multiple hooks in the same component? As you saw in the second example, both <code>use_state</code> functions were called with the same parameters, so how come they can return different things when the counters are different?</p><div style="position: relative;"><div><pre style="background-color:#2b303b;">
+</div><button style="position: absolute; top: 0; right: 0; background: rgba(0, 0, 0, 0.75); color: white; border: 1px solid white; padding: 0.25em;" onclick="navigator.clipboard.writeText(this.previousElementSibling.innerText)">Copy</button></div><div class="bg-white rounded-md shadow-md p-4 my-4 overflow-scroll text-black" style="max-height:50vh;"><h1><!--#-->High-Five counter: 0<!--#--></h1></div><h2 id="rules-of-hooks"><a class="header" href="#rules-of-hooks">Rules of Hooks</a></h2><p>The above example might seem a bit magic, since Rust functions are typically not associated with state. Dioxus allows hooks to maintain state across renders through a reference to <code>ScopeState</code>, which is why you must pass <code>&amp;cx</code> to them.</p><p>But how can Dioxus differentiate between multiple hooks in the same component? As you saw in the second example, both <code>use_state</code> functions were called with the same parameters, so how come they can return different things when the counters are different?</p><div style="position: relative;"><div><pre style="background-color:#2b303b;">
 <span style="color:#b48ead;">let mut</span><span style="color:#c0c5ce;"> count_a = </span><span style="color:#96b5b4;">use_state</span><span style="color:#c0c5ce;">(cx, || </span><span style="color:#d08770;">0</span><span style="color:#c0c5ce;">);
 </span><span style="color:#b48ead;">let mut</span><span style="color:#c0c5ce;"> count_b = </span><span style="color:#96b5b4;">use_state</span><span style="color:#c0c5ce;">(cx, || </span><span style="color:#d08770;">0</span><span style="color:#c0c5ce;">);
 </span></pre>

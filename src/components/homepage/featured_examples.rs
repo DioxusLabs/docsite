@@ -100,7 +100,7 @@ fn FeaturedExample<'a>(cx: Scope<'a, FeaturedExampleProps<'a>>) -> Element {
 						source {
 							class: "w-full rounded-lg object-cover",
 							r#type: "image/avif",
-							"srcset": "/docsite/assets/rustacean-flat-gesture.png"
+							"srcset": "{img_avif}"
 						}
 						img {
 							class: "absolute inset-0 w-full h-full object-cover object-center",

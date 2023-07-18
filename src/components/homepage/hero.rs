@@ -1,5 +1,4 @@
 use crate::*;
-use dioxus::prelude::*;
 
 pub fn Hero(cx: Scope) -> Element {
 	cx.render(rsx! {

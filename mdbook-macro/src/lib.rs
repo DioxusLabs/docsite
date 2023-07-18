@@ -20,8 +20,12 @@ mod transform_book;
 pub fn mdbook_router(input: TokenStream) -> TokenStream {
     match syn::parse::<LitStr>(input).map(load_book_from_fs) {
         Ok(Ok((path, book))) => generate_router(path, book).into(),
-        Ok(Err(err)) => write_book_err(err),
-        Err(err) => err.to_compile_error().into(),
+        Ok(Err(err)) => {
+            write_book_err(err)
+        },
+        Err(err) => {
+            err.to_compile_error().into()
+        },
     }
 }
 
@@ -87,22 +91,29 @@ fn generate_router(book_path: PathBuf, book: mdbook_shared::MdBook<PathBuf>) -> 
         let name = path_to_route_variant(&page.url);
         // Rsx doesn't work very well in macros because the path for all the routes generated point to the same characters. We manulally expand rsx here to get around that issue.
         let template_name = format!("{}:0:0:0", page.url.to_string_lossy());
-        let mut rsx = rsx::parse(page.url.clone(), &page.raw);
-        rsx.roots
-            .push(dioxus_rsx::BodyNode::Element(dioxus_rsx::Element {
-                name: dioxus_rsx::ElementName::Ident(Ident::new("script", Span::call_site())),
-                attributes: vec![],
-                key: None,
-                children: vec![],
-                brace: Default::default(),
-            }));
-        let rsx = rsx.render_with_location(template_name);
-        quote! {
-            #[dioxus::prelude::inline_props]
-            pub fn #name(cx: dioxus::prelude::Scope) -> dioxus::prelude::Element {
-                use dioxus::prelude::*;
-                cx.render(#rsx)
+        match rsx::parse(page.url.clone(), &page.raw) {
+            Ok(mut rsx) => {
+                rsx.roots
+                    .push(dioxus_rsx::BodyNode::Element(dioxus_rsx::Element {
+                        name: dioxus_rsx::ElementName::Ident(Ident::new(
+                            "script",
+                            Span::call_site(),
+                        )),
+                        attributes: vec![],
+                        key: None,
+                        children: vec![],
+                        brace: Default::default(),
+                    }));
+                let rsx = rsx.render_with_location(template_name);
+                quote! {
+                    #[dioxus::prelude::inline_props]
+                    pub fn #name(cx: dioxus::prelude::Scope) -> dioxus::prelude::Element {
+                        use dioxus::prelude::*;
+                        cx.render(#rsx)
+                    }
+                }
             }
+            Err(err) => err.to_compile_error(),
         }
     });
 

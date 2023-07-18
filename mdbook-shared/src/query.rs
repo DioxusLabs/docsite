@@ -78,7 +78,11 @@ impl MdBook<PathBuf> {
     pub fn new(mdbook_root: PathBuf) -> anyhow::Result<Self> {
         let buf = mdbook_root.join("SUMMARY.md").canonicalize()?;
 
-        let summary = std::fs::read_to_string(buf)?;
+        let summary = std::fs::read_to_string(buf).map_err(|e| {
+            anyhow::anyhow!(
+                "Failed to read SUMMARY.md. Make sure you are running this command in the root of the book. {e}"
+            )
+        })?;
         let summary = parse_summary(&summary)?;
 
         let mut book = Self {
@@ -117,9 +121,22 @@ impl MdBook<PathBuf> {
         let Some(link) = chapter.maybe_link() else { return Ok(()) };
 
         let url = link.location.as_ref().cloned().unwrap();
-        let md_file = mdbook_root.join("en").join(&url).canonicalize()?;
+        let md_file = mdbook_root.join("en").join(&url).canonicalize().map_err(|e| {
+            anyhow::anyhow!(
+                "Failed to canonicalize file for page {:?}: {}",
+                url,
+                e
+            )
+        })?;
 
-        let body = std::fs::read_to_string(md_file).unwrap();
+        let body = std::fs::read_to_string(&md_file).map_err(|e| {
+            anyhow::anyhow!(
+                "Failed to read file {:?} for page {:?}: {}",
+                md_file,
+                url,
+                e
+            )
+        })?;
 
         let parser = pulldown_cmark::Parser::new(&body);
 

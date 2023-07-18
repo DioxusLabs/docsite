@@ -103,7 +103,12 @@ fn create_missing(src_dir: &Path, summary: &Summary) -> Result<()> {
 fn create_missing_link(filename: &Path, link: &Link) -> Result<()> {
     if let Some(parent) = filename.parent() {
         if !parent.exists() {
-            fs::create_dir_all(parent)?;
+            fs::create_dir_all(parent).map_err(|e| {
+                Error::from(format!(
+                    "Unable to create missing directory {:?}: {}",
+                    parent, e
+                ))
+            })?;
         }
     }
     debug!("Creating missing file {}", filename.display());

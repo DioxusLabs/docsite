@@ -11,7 +11,7 @@ use syn::{Ident, __private::Span, parse_str, LitStr};
 use syntect::highlighting::ThemeSet;
 use syntect::parsing::SyntaxSet;
 
-pub fn parse(path: PathBuf, markdown: &str) -> CallBody {
+pub fn parse(path: PathBuf, markdown: &str) -> syn::Result<CallBody> {
     let mut parser = pulldown_cmark::Parser::new(markdown);
 
     let mut rsx_parser = RsxMarkdownParser {
@@ -23,12 +23,12 @@ pub fn parse(path: PathBuf, markdown: &str) -> CallBody {
         path,
         phantom: std::marker::PhantomData,
     };
-    rsx_parser.parse();
+    rsx_parser.parse()?;
     while !rsx_parser.element_stack.is_empty() {
         rsx_parser.end_node();
     }
 
-    if rsx_parser.root_nodes.is_empty() {
+    Ok(if rsx_parser.root_nodes.is_empty() {
         CallBody {
             roots: vec![BodyNode::Text(IfmtInput::new_static(""))],
         }
@@ -36,7 +36,7 @@ pub fn parse(path: PathBuf, markdown: &str) -> CallBody {
         CallBody {
             roots: rsx_parser.root_nodes,
         }
-    }
+    })
 }
 
 struct RsxMarkdownParser<'a, I: Iterator<Item = Event<'a>>> {
@@ -54,16 +54,17 @@ struct RsxMarkdownParser<'a, I: Iterator<Item = Event<'a>>> {
 }
 
 impl<'a, I: Iterator<Item = Event<'a>>> RsxMarkdownParser<'a, I> {
-    fn parse(&mut self) {
+    fn parse(&mut self) -> syn::Result<()> {
         while let Some(event) = self.iter.next() {
-            self.parse_event(event);
+            self.parse_event(event)?;
         }
+        Ok(())
     }
 
-    fn parse_event(&mut self, event: Event) {
+    fn parse_event(&mut self, event: Event) -> syn::Result<()> {
         match event {
             pulldown_cmark::Event::Start(start) => {
-                self.start_element(start);
+                self.start_element(start)?;
             }
             pulldown_cmark::Event::End(_) => self.end_node(),
             pulldown_cmark::Event::Text(text) => {
@@ -89,6 +90,7 @@ impl<'a, I: Iterator<Item = Event<'a>>> RsxMarkdownParser<'a, I> {
                 self.write_checkbox(value);
             }
         }
+        Ok(())
     }
 
     fn write_checkbox(&mut self, checked: bool) {
@@ -177,7 +179,7 @@ impl<'a, I: Iterator<Item = Event<'a>>> RsxMarkdownParser<'a, I> {
         current_text
     }
 
-    fn start_element(&mut self, tag: Tag) {
+    fn start_element(&mut self, tag: Tag) -> syn::Result<()> {
         match tag {
             Tag::Paragraph => {
                 self.start_node(BodyNode::Element(Element {
@@ -262,7 +264,7 @@ impl<'a, I: Iterator<Item = Event<'a>>> RsxMarkdownParser<'a, I> {
                 if lang.as_deref() == Some("inject-dioxus") {
                     self.start_node(parse_str::<BodyNode>(&raw_code).unwrap());
                 } else {
-                    let code = transform_code_block(&self.path, raw_code);
+                    let code = transform_code_block(&self.path, raw_code)?;
                     let mut code_attrs = Vec::new();
 
                     let ss = SyntaxSet::load_defaults_newlines();
@@ -490,6 +492,7 @@ impl<'a, I: Iterator<Item = Event<'a>>> RsxMarkdownParser<'a, I> {
                 }));
             }
         }
+        Ok(())
     }
 
     fn start_node(&mut self, node: BodyNode) {
@@ -527,23 +530,23 @@ impl<'a, I: Iterator<Item = Event<'a>>> RsxMarkdownParser<'a, I> {
     }
 }
 
-fn transform_code_block(path: &Path, code_contents: String) -> String {
+fn transform_code_block(path: &Path, code_contents: String) -> syn::Result<String> {
     let segments = code_contents.split("{{#");
     let mut output = String::new();
     for segment in segments {
         if let Some((plugin, after)) = segment.split_once("}}") {
             if plugin.starts_with("include") {
-                output += &resolve_extension(path, plugin);
+                output += &resolve_extension(path, plugin)?;
                 output += after;
             }
         } else {
             output += segment;
         }
     }
-    output
+    Ok(output)
 }
 
-fn resolve_extension(_path: &Path, ext: &str) -> String {
+fn resolve_extension(_path: &Path, ext: &str) -> syn::Result<String> {
     if let Some(file) = ext.strip_prefix("include") {
         let file = file.trim();
         let mut segment = None;
@@ -553,7 +556,12 @@ fn resolve_extension(_path: &Path, ext: &str) -> String {
         } else {
             file
         };
-        let result = std::fs::read_to_string(file).unwrap();
+        let result = std::fs::read_to_string(file).map_err(|e| {
+            syn::Error::new(
+                Span::call_site(),
+                format!("Failed to read file {}: {}", file, e),
+            )
+        })?;
         if let Some(segment) = segment {
             // get the text between lines with ANCHOR: segment and ANCHOR_END: segment
             let lines = result.lines();
@@ -585,9 +593,9 @@ fn resolve_extension(_path: &Path, ext: &str) -> String {
             if output.ends_with("\n") {
                 output.pop();
             }
-            output
+            Ok(output)
         } else {
-            result
+            Ok(result)
         }
     } else {
         todo!("Unknown extension: {}", ext);

@@ -1,8 +1,8 @@
 // Build with:
 // dioxus build --release --features web
 // cargo run --features ssr --release
+#![allow(unused)]
 
-#[allow(unused)]
 use dioxus_docs_site::*;
 
 fn main() {

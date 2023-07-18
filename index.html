@@ -110,14 +110,12 @@
       }
     </style>
     <script src="/{base_path}/static/darktheme.js"></script>
-    <link rel="stylesheet" type="text/css" href="/{base_path}/static/prism/prism.css" />
     {style_include}
   </head>
 
   <body>
     <div id="main"></div>
     <!-- Note the usage of `type=module` here as this is an ES6 module -->
-    <script src="/{base_path}/static/prism/prism.js"></script>
     <script type="module">
       import init from "/{base_path}/assets/dioxus/{app_name}.js";
       init("/{base_path}/assets/dioxus/{app_name}_bg.wasm").then((wasm) => {

@@ -6,7 +6,7 @@ Hooks allow us to create state in our components. Hooks are Rust functions that 
 
 Dioxus provides many built in hooks, but if those hooks don't fit your specific use case, you also can [create your own hook](../../cookbook/state/custom_hooks/index.md)
 
-## [`use_state`](https://docs.rs/dioxus-hooks/latest/dioxus_hooks/fn.use_state.html) Hook
+## use_state Hook
 
 [`use_state`](https://docs.rs/dioxus/latest/dioxus/prelude/fn.use_state.html) is one of the simplest hooks.
 
@@ -105,7 +105,7 @@ These rules mean that there are certain things you can't do with hooks:
 {{#include src/doc_examples/hooks_bad.rs:loop}}
 ```
 
-## [`use_ref`](https://docs.rs/dioxus-hooks/latest/dioxus_hooks/fn.use_ref.html) Hook
+## use_ref Hook
 
 `use_state` is great for tracking simple values. However, you may notice in the [`UseState` API](https://docs.rs/dioxus/latest/dioxus/hooks/struct.UseState.html) that the only way to modify its value is to replace it with something else (e.g., by calling `set`, or through one of the `+=`, `-=` operators). This works well when it is cheap to construct a value (such as any primitive). But what if you want to maintain more complex data in the components state?
 

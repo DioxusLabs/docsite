@@ -1,37 +1,38 @@
+use syntect_html::syntect_html_fs;
 use dioxus::prelude::*;
 
 #[derive(PartialEq, Eq, Debug)]
 pub struct Snippet {
 	pub title: &'static str,
 	pub filename: &'static str,
-	pub code: &'static str,
+	pub html: &'static str,
 }
 
 pub static SNIPPETS: &[Snippet] = &[
 	Snippet {
 		title: "Hello world",
 		filename: "readme.rs",
-		code: include_str!("../../../snippets/readme.rs"),
+		html: syntect_html_fs!("./snippets/readme.rs"),
 	},
 	Snippet {
 		title: "Components",
 		filename: "components.rs",
-		code: include_str!("../../../snippets/components.rs"),
+		html: syntect_html_fs!("./snippets/components.rs"),
 	},
 	Snippet {
 		title: "Async",
 		filename: "async.rs",
-		code: include_str!("../../../snippets/async.rs"),
+		html: syntect_html_fs!("./snippets/async.rs"),
 	},
 	Snippet {
 		title: "Fetching",
 		filename: "fetching.rs",
-		code: include_str!("../../../snippets/fetching.rs"),
+		html: syntect_html_fs!("./snippets/fetching.rs"),
 	},
 	Snippet {
 		title: "Global State",
-		filename: "globalstate.rs",
-		code: include_str!("../../../snippets/fermi.rs"),
+		filename: "fermi.rs",
+		html: syntect_html_fs!("./snippets/fermi.rs"),
 	},
 ];
 
@@ -71,7 +72,6 @@ pub fn Snippets(cx: Scope) -> Element {
 
 				div {
 					SNIPPETS.iter().enumerate().map(|(id, snippet)| {
-						// We're working with prism here and need force it back into action occasionally
 						// Instead of hiding/showing, we just render all the code blocks at once and hide them with css instead
 						let show = match **selected_snippet {
 							a if a == id => "block",
@@ -79,7 +79,11 @@ pub fn Snippets(cx: Scope) -> Element {
 						};
 
 						rsx! {
-							div { key: "{snippet.title}", class: "w-full flex-auto flex min-h-0 {show}", div { class: "w-full flex-auto flex min-h-0 overflow-auto", div { class: "w-full relative flex-auto", pre { class: "flex min-h-full text-sm leading-6", code { class: "language-rust line-numbers", "{snippet.code}" } } } } }
+							div {
+								key: "{snippet.title}",
+								class: "w-full flex-auto flex min-h-0 {show}",
+								dangerous_inner_html: "{snippet.html}"
+							}
 						}
 					})
 				}

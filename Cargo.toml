@@ -30,6 +30,7 @@ autoexport = "0.1.0"
 dioxus-material-icons = "1.1.0"
 include_dir = "0.7.3"
 anyhow = "1.0.71"
+syntect-html = { git = "https://github.com/Demonthos/include_mdbook", branch = "router-intigration" }
 mdbook-shared = { git = "https://github.com/Demonthos/include_mdbook", branch = "router-intigration" }
 use-mdbook = { git = "https://github.com/Demonthos/include_mdbook", branch = "router-intigration" }
 tokio = { version = "1.29.0", features = ["full"], optional = true }

@@ -136,17 +136,17 @@
 </span><span style="color:#b48ead;">use </span><span style="color:#c0c5ce;">dioxus::prelude::*;
 </span><span style="color:#c0c5ce;">
 </span><span style="color:#b48ead;">fn </span><span style="color:#8fa1b3;">main</span><span style="color:#c0c5ce;">() {
-</span><span style="color:#c0c5ce;">    </span><span style="color:#65737e;">// launch the dioxus app in a webview
-</span><span style="color:#c0c5ce;">    dioxus_desktop::launch(App);
+</span><span style="color:#c0c5ce;">	</span><span style="color:#65737e;">// launch the dioxus app in a webview
+</span><span style="color:#c0c5ce;">	dioxus_desktop::launch(App);
 </span><span style="color:#c0c5ce;">}
 </span><span style="color:#c0c5ce;">
 </span><span style="color:#65737e;">// define a component that renders a div with the text &quot;Hello, world!&quot;
 </span><span style="color:#b48ead;">fn </span><span style="color:#8fa1b3;">App</span><span style="color:#c0c5ce;">(</span><span style="color:#bf616a;">cx</span><span style="color:#c0c5ce;">: Scope) -&gt; Element {
-</span><span style="color:#c0c5ce;">    cx.</span><span style="color:#96b5b4;">render</span><span style="color:#c0c5ce;">(rsx! {
-</span><span style="color:#c0c5ce;">        div {
-</span><span style="color:#c0c5ce;">            &quot;</span><span style="color:#a3be8c;">Hello, world!</span><span style="color:#c0c5ce;">&quot;
-</span><span style="color:#c0c5ce;">        }
-</span><span style="color:#c0c5ce;">    })
+</span><span style="color:#c0c5ce;">	cx.</span><span style="color:#96b5b4;">render</span><span style="color:#c0c5ce;">(rsx! {
+</span><span style="color:#c0c5ce;">		div {
+</span><span style="color:#c0c5ce;">			&quot;</span><span style="color:#a3be8c;">Hello, world!</span><span style="color:#c0c5ce;">&quot;
+</span><span style="color:#c0c5ce;">		}
+</span><span style="color:#c0c5ce;">	})
 </span><span style="color:#c0c5ce;">}
 </span></pre>
 </div><button style="position: absolute; top: 0; right: 0; background: rgba(0, 0, 0, 0.75); color: white; border: 1px solid white; padding: 0.25em;" onclick="navigator.clipboard.writeText(this.previousElementSibling.innerText)">Copy</button></div><h2 id="hot-reload"><a class="header" href="#hot-reload">Hot Reload</a></h2><ol><li>Hot reloading allows much faster iteration times inside of rsx calls by interpreting them and streaming the edits.</li><li>It is useful when changing the styling/layout of a program, but will not help with changing the logic of a program.</li></ol><p>You can place the hot reload macro at the top of your main function to enable hot reloading on debug builds.</p><p>For more information about hot reloading on native platforms and configuration options see the <a href="https://crates.io/crates/dioxus-hot-reload">dioxus-hot-reload</a> crate.</p><h3 id="setup"><a class="header" href="#setup">Setup</a></h3><p>Add the following to your main function:</p><div style="position: relative;"><div><pre style="background-color:#2b303b;">

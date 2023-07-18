@@ -140,30 +140,30 @@
 </span><span style="color:#c0c5ce;">
 </span><span style="color:#c0c5ce;">#[</span><span style="color:#bf616a;">tokio</span><span style="color:#c0c5ce;">::</span><span style="color:#bf616a;">main</span><span style="color:#c0c5ce;">]
 </span><span style="color:#c0c5ce;">async </span><span style="color:#b48ead;">fn </span><span style="color:#8fa1b3;">main</span><span style="color:#c0c5ce;">() {
-</span><span style="color:#c0c5ce;">    #[</span><span style="color:#bf616a;">cfg</span><span style="color:#c0c5ce;">(feature = &quot;</span><span style="color:#a3be8c;">ssr</span><span style="color:#c0c5ce;">&quot;)]
-</span><span style="color:#c0c5ce;">    {
-</span><span style="color:#c0c5ce;">        </span><span style="color:#b48ead;">use </span><span style="color:#c0c5ce;">dioxus_fullstack::prelude::*;
+</span><span style="color:#c0c5ce;">	#[</span><span style="color:#bf616a;">cfg</span><span style="color:#c0c5ce;">(feature = &quot;</span><span style="color:#a3be8c;">ssr</span><span style="color:#c0c5ce;">&quot;)]
+</span><span style="color:#c0c5ce;">	{
+</span><span style="color:#c0c5ce;">		</span><span style="color:#b48ead;">use </span><span style="color:#c0c5ce;">dioxus_fullstack::prelude::*;
 </span><span style="color:#c0c5ce;">
-</span><span style="color:#c0c5ce;">        </span><span style="color:#b48ead;">let</span><span style="color:#c0c5ce;"> addr = std::net::SocketAddr::from(([</span><span style="color:#d08770;">127</span><span style="color:#c0c5ce;">, </span><span style="color:#d08770;">0</span><span style="color:#c0c5ce;">, </span><span style="color:#d08770;">0</span><span style="color:#c0c5ce;">, </span><span style="color:#d08770;">1</span><span style="color:#c0c5ce;">], </span><span style="color:#d08770;">8080</span><span style="color:#c0c5ce;">));
-</span><span style="color:#c0c5ce;">        axum::Server::bind(&amp;addr)
-</span><span style="color:#c0c5ce;">            .</span><span style="color:#96b5b4;">serve</span><span style="color:#c0c5ce;">(
-</span><span style="color:#c0c5ce;">                axum::Router::new()
-</span><span style="color:#c0c5ce;">                    .</span><span style="color:#96b5b4;">serve_dioxus_application</span><span style="color:#c0c5ce;">(&quot;&quot;, ServeConfigBuilder::new(app, ()))
-</span><span style="color:#c0c5ce;">                    .</span><span style="color:#96b5b4;">into_make_service</span><span style="color:#c0c5ce;">(),
-</span><span style="color:#c0c5ce;">            )
-</span><span style="color:#c0c5ce;">            .await
-</span><span style="color:#c0c5ce;">            .</span><span style="color:#96b5b4;">unwrap</span><span style="color:#c0c5ce;">();
-</span><span style="color:#c0c5ce;">    }
+</span><span style="color:#c0c5ce;">		</span><span style="color:#b48ead;">let</span><span style="color:#c0c5ce;"> addr = std::net::SocketAddr::from(([</span><span style="color:#d08770;">127</span><span style="color:#c0c5ce;">, </span><span style="color:#d08770;">0</span><span style="color:#c0c5ce;">, </span><span style="color:#d08770;">0</span><span style="color:#c0c5ce;">, </span><span style="color:#d08770;">1</span><span style="color:#c0c5ce;">], </span><span style="color:#d08770;">8080</span><span style="color:#c0c5ce;">));
+</span><span style="color:#c0c5ce;">		axum::Server::bind(&amp;addr)
+</span><span style="color:#c0c5ce;">			.</span><span style="color:#96b5b4;">serve</span><span style="color:#c0c5ce;">(
+</span><span style="color:#c0c5ce;">				axum::Router::new()
+</span><span style="color:#c0c5ce;">					.</span><span style="color:#96b5b4;">serve_dioxus_application</span><span style="color:#c0c5ce;">(&quot;&quot;, ServeConfigBuilder::new(app, ()))
+</span><span style="color:#c0c5ce;">					.</span><span style="color:#96b5b4;">into_make_service</span><span style="color:#c0c5ce;">(),
+</span><span style="color:#c0c5ce;">			)
+</span><span style="color:#c0c5ce;">			.await
+</span><span style="color:#c0c5ce;">			.</span><span style="color:#96b5b4;">unwrap</span><span style="color:#c0c5ce;">();
+</span><span style="color:#c0c5ce;">	}
 </span><span style="color:#c0c5ce;">}
 </span><span style="color:#c0c5ce;">
 </span><span style="color:#b48ead;">fn </span><span style="color:#8fa1b3;">app</span><span style="color:#c0c5ce;">(</span><span style="color:#bf616a;">cx</span><span style="color:#c0c5ce;">: Scope) -&gt; Element {
-</span><span style="color:#c0c5ce;">    </span><span style="color:#b48ead;">let mut</span><span style="color:#c0c5ce;"> count = </span><span style="color:#96b5b4;">use_state</span><span style="color:#c0c5ce;">(cx, || </span><span style="color:#d08770;">0</span><span style="color:#c0c5ce;">);
+</span><span style="color:#c0c5ce;">	</span><span style="color:#b48ead;">let mut</span><span style="color:#c0c5ce;"> count = </span><span style="color:#96b5b4;">use_state</span><span style="color:#c0c5ce;">(cx, || </span><span style="color:#d08770;">0</span><span style="color:#c0c5ce;">);
 </span><span style="color:#c0c5ce;">
-</span><span style="color:#c0c5ce;">    cx.</span><span style="color:#96b5b4;">render</span><span style="color:#c0c5ce;">(rsx! {
-</span><span style="color:#c0c5ce;">        h1 { &quot;</span><span style="color:#a3be8c;">High-Five counter: {count}</span><span style="color:#c0c5ce;">&quot; }
-</span><span style="color:#c0c5ce;">        button { onclick: </span><span style="color:#b48ead;">move </span><span style="color:#c0c5ce;">|_| count += </span><span style="color:#d08770;">1</span><span style="color:#c0c5ce;">, &quot;</span><span style="color:#a3be8c;">Up high!</span><span style="color:#c0c5ce;">&quot; }
-</span><span style="color:#c0c5ce;">        button { onclick: </span><span style="color:#b48ead;">move </span><span style="color:#c0c5ce;">|_| count -= </span><span style="color:#d08770;">1</span><span style="color:#c0c5ce;">, &quot;</span><span style="color:#a3be8c;">Down low!</span><span style="color:#c0c5ce;">&quot; }
-</span><span style="color:#c0c5ce;">    })
+</span><span style="color:#c0c5ce;">	cx.</span><span style="color:#96b5b4;">render</span><span style="color:#c0c5ce;">(rsx! {
+</span><span style="color:#c0c5ce;">		h1 { &quot;</span><span style="color:#a3be8c;">High-Five counter: {count}</span><span style="color:#c0c5ce;">&quot; }
+</span><span style="color:#c0c5ce;">		button { onclick: </span><span style="color:#b48ead;">move </span><span style="color:#c0c5ce;">|_| count += </span><span style="color:#d08770;">1</span><span style="color:#c0c5ce;">, &quot;</span><span style="color:#a3be8c;">Up high!</span><span style="color:#c0c5ce;">&quot; }
+</span><span style="color:#c0c5ce;">		button { onclick: </span><span style="color:#b48ead;">move </span><span style="color:#c0c5ce;">|_| count -= </span><span style="color:#d08770;">1</span><span style="color:#c0c5ce;">, &quot;</span><span style="color:#a3be8c;">Down low!</span><span style="color:#c0c5ce;">&quot; }
+</span><span style="color:#c0c5ce;">	})
 </span><span style="color:#c0c5ce;">}
 </span><span style="color:#c0c5ce;">
 </span></pre>
@@ -190,35 +190,35 @@
 </span><span style="color:#b48ead;">use </span><span style="color:#c0c5ce;">dioxus::prelude::*;
 </span><span style="color:#c0c5ce;">
 </span><span style="color:#b48ead;">fn </span><span style="color:#8fa1b3;">main</span><span style="color:#c0c5ce;">() {
-</span><span style="color:#c0c5ce;">    #[</span><span style="color:#bf616a;">cfg</span><span style="color:#c0c5ce;">(feature = &quot;</span><span style="color:#a3be8c;">web</span><span style="color:#c0c5ce;">&quot;)]
-</span><span style="color:#c0c5ce;">    dioxus_web::launch_cfg(app, dioxus_web::Config::new().</span><span style="color:#96b5b4;">hydrate</span><span style="color:#c0c5ce;">(</span><span style="color:#d08770;">true</span><span style="color:#c0c5ce;">));
-</span><span style="color:#c0c5ce;">    #[</span><span style="color:#bf616a;">cfg</span><span style="color:#c0c5ce;">(feature = &quot;</span><span style="color:#a3be8c;">ssr</span><span style="color:#c0c5ce;">&quot;)]
-</span><span style="color:#c0c5ce;">    {
-</span><span style="color:#c0c5ce;">        </span><span style="color:#b48ead;">use </span><span style="color:#c0c5ce;">dioxus_fullstack::prelude::*;
-</span><span style="color:#c0c5ce;">        tokio::runtime::Runtime::new()
-</span><span style="color:#c0c5ce;">            .</span><span style="color:#96b5b4;">unwrap</span><span style="color:#c0c5ce;">()
-</span><span style="color:#c0c5ce;">            .</span><span style="color:#96b5b4;">block_on</span><span style="color:#c0c5ce;">(async </span><span style="color:#b48ead;">move </span><span style="color:#c0c5ce;">{
-</span><span style="color:#c0c5ce;">                </span><span style="color:#b48ead;">let</span><span style="color:#c0c5ce;"> addr = std::net::SocketAddr::from(([</span><span style="color:#d08770;">127</span><span style="color:#c0c5ce;">, </span><span style="color:#d08770;">0</span><span style="color:#c0c5ce;">, </span><span style="color:#d08770;">0</span><span style="color:#c0c5ce;">, </span><span style="color:#d08770;">1</span><span style="color:#c0c5ce;">], </span><span style="color:#d08770;">8080</span><span style="color:#c0c5ce;">));
-</span><span style="color:#c0c5ce;">                axum::Server::bind(&amp;addr)
-</span><span style="color:#c0c5ce;">                    .</span><span style="color:#96b5b4;">serve</span><span style="color:#c0c5ce;">(
-</span><span style="color:#c0c5ce;">                        axum::Router::new()
-</span><span style="color:#c0c5ce;">                            .</span><span style="color:#96b5b4;">serve_dioxus_application</span><span style="color:#c0c5ce;">(&quot;&quot;, ServeConfigBuilder::new(app, ()))
-</span><span style="color:#c0c5ce;">                            .</span><span style="color:#96b5b4;">into_make_service</span><span style="color:#c0c5ce;">(),
-</span><span style="color:#c0c5ce;">                    )
-</span><span style="color:#c0c5ce;">                    .await
-</span><span style="color:#c0c5ce;">                    .</span><span style="color:#96b5b4;">unwrap</span><span style="color:#c0c5ce;">();
-</span><span style="color:#c0c5ce;">            });
-</span><span style="color:#c0c5ce;">    }
+</span><span style="color:#c0c5ce;">	#[</span><span style="color:#bf616a;">cfg</span><span style="color:#c0c5ce;">(feature = &quot;</span><span style="color:#a3be8c;">web</span><span style="color:#c0c5ce;">&quot;)]
+</span><span style="color:#c0c5ce;">	dioxus_web::launch_cfg(app, dioxus_web::Config::new().</span><span style="color:#96b5b4;">hydrate</span><span style="color:#c0c5ce;">(</span><span style="color:#d08770;">true</span><span style="color:#c0c5ce;">));
+</span><span style="color:#c0c5ce;">	#[</span><span style="color:#bf616a;">cfg</span><span style="color:#c0c5ce;">(feature = &quot;</span><span style="color:#a3be8c;">ssr</span><span style="color:#c0c5ce;">&quot;)]
+</span><span style="color:#c0c5ce;">	{
+</span><span style="color:#c0c5ce;">		</span><span style="color:#b48ead;">use </span><span style="color:#c0c5ce;">dioxus_fullstack::prelude::*;
+</span><span style="color:#c0c5ce;">		tokio::runtime::Runtime::new()
+</span><span style="color:#c0c5ce;">			.</span><span style="color:#96b5b4;">unwrap</span><span style="color:#c0c5ce;">()
+</span><span style="color:#c0c5ce;">			.</span><span style="color:#96b5b4;">block_on</span><span style="color:#c0c5ce;">(async </span><span style="color:#b48ead;">move </span><span style="color:#c0c5ce;">{
+</span><span style="color:#c0c5ce;">				</span><span style="color:#b48ead;">let</span><span style="color:#c0c5ce;"> addr = std::net::SocketAddr::from(([</span><span style="color:#d08770;">127</span><span style="color:#c0c5ce;">, </span><span style="color:#d08770;">0</span><span style="color:#c0c5ce;">, </span><span style="color:#d08770;">0</span><span style="color:#c0c5ce;">, </span><span style="color:#d08770;">1</span><span style="color:#c0c5ce;">], </span><span style="color:#d08770;">8080</span><span style="color:#c0c5ce;">));
+</span><span style="color:#c0c5ce;">				axum::Server::bind(&amp;addr)
+</span><span style="color:#c0c5ce;">					.</span><span style="color:#96b5b4;">serve</span><span style="color:#c0c5ce;">(
+</span><span style="color:#c0c5ce;">						axum::Router::new()
+</span><span style="color:#c0c5ce;">							.</span><span style="color:#96b5b4;">serve_dioxus_application</span><span style="color:#c0c5ce;">(&quot;&quot;, ServeConfigBuilder::new(app, ()))
+</span><span style="color:#c0c5ce;">							.</span><span style="color:#96b5b4;">into_make_service</span><span style="color:#c0c5ce;">(),
+</span><span style="color:#c0c5ce;">					)
+</span><span style="color:#c0c5ce;">					.await
+</span><span style="color:#c0c5ce;">					.</span><span style="color:#96b5b4;">unwrap</span><span style="color:#c0c5ce;">();
+</span><span style="color:#c0c5ce;">			});
+</span><span style="color:#c0c5ce;">	}
 </span><span style="color:#c0c5ce;">}
 </span><span style="color:#c0c5ce;">
 </span><span style="color:#b48ead;">fn </span><span style="color:#8fa1b3;">app</span><span style="color:#c0c5ce;">(</span><span style="color:#bf616a;">cx</span><span style="color:#c0c5ce;">: Scope) -&gt; Element {
-</span><span style="color:#c0c5ce;">    </span><span style="color:#b48ead;">let mut</span><span style="color:#c0c5ce;"> count = </span><span style="color:#96b5b4;">use_state</span><span style="color:#c0c5ce;">(cx, || </span><span style="color:#d08770;">0</span><span style="color:#c0c5ce;">);
+</span><span style="color:#c0c5ce;">	</span><span style="color:#b48ead;">let mut</span><span style="color:#c0c5ce;"> count = </span><span style="color:#96b5b4;">use_state</span><span style="color:#c0c5ce;">(cx, || </span><span style="color:#d08770;">0</span><span style="color:#c0c5ce;">);
 </span><span style="color:#c0c5ce;">
-</span><span style="color:#c0c5ce;">    cx.</span><span style="color:#96b5b4;">render</span><span style="color:#c0c5ce;">(rsx! {
-</span><span style="color:#c0c5ce;">        h1 { &quot;</span><span style="color:#a3be8c;">High-Five counter: {count}</span><span style="color:#c0c5ce;">&quot; }
-</span><span style="color:#c0c5ce;">        button { onclick: </span><span style="color:#b48ead;">move </span><span style="color:#c0c5ce;">|_| count += </span><span style="color:#d08770;">1</span><span style="color:#c0c5ce;">, &quot;</span><span style="color:#a3be8c;">Up high!</span><span style="color:#c0c5ce;">&quot; }
-</span><span style="color:#c0c5ce;">        button { onclick: </span><span style="color:#b48ead;">move </span><span style="color:#c0c5ce;">|_| count -= </span><span style="color:#d08770;">1</span><span style="color:#c0c5ce;">, &quot;</span><span style="color:#a3be8c;">Down low!</span><span style="color:#c0c5ce;">&quot; }
-</span><span style="color:#c0c5ce;">    })
+</span><span style="color:#c0c5ce;">	cx.</span><span style="color:#96b5b4;">render</span><span style="color:#c0c5ce;">(rsx! {
+</span><span style="color:#c0c5ce;">		h1 { &quot;</span><span style="color:#a3be8c;">High-Five counter: {count}</span><span style="color:#c0c5ce;">&quot; }
+</span><span style="color:#c0c5ce;">		button { onclick: </span><span style="color:#b48ead;">move </span><span style="color:#c0c5ce;">|_| count += </span><span style="color:#d08770;">1</span><span style="color:#c0c5ce;">, &quot;</span><span style="color:#a3be8c;">Up high!</span><span style="color:#c0c5ce;">&quot; }
+</span><span style="color:#c0c5ce;">		button { onclick: </span><span style="color:#b48ead;">move </span><span style="color:#c0c5ce;">|_| count -= </span><span style="color:#d08770;">1</span><span style="color:#c0c5ce;">, &quot;</span><span style="color:#a3be8c;">Down low!</span><span style="color:#c0c5ce;">&quot; }
+</span><span style="color:#c0c5ce;">	})
 </span><span style="color:#c0c5ce;">}
 </span><span style="color:#c0c5ce;">
 </span></pre>
@@ -228,19 +228,19 @@
 </span><span style="color:#b48ead;">use </span><span style="color:#c0c5ce;">dioxus_fullstack::prelude::*;
 </span><span style="color:#c0c5ce;">
 </span><span style="color:#b48ead;">fn </span><span style="color:#8fa1b3;">main</span><span style="color:#c0c5ce;">() {
-</span><span style="color:#c0c5ce;">    #[</span><span style="color:#bf616a;">cfg</span><span style="color:#c0c5ce;">(feature = &quot;</span><span style="color:#a3be8c;">web</span><span style="color:#c0c5ce;">&quot;)]
-</span><span style="color:#c0c5ce;">    dioxus_web::launch_with_props(
-</span><span style="color:#c0c5ce;">        app,
-</span><span style="color:#c0c5ce;">        </span><span style="color:#65737e;">// Get the root props from the document
-</span><span style="color:#c0c5ce;">        </span><span style="color:#96b5b4;">get_root_props_from_document</span><span style="color:#c0c5ce;">().</span><span style="color:#96b5b4;">unwrap_or_default</span><span style="color:#c0c5ce;">(),
-</span><span style="color:#c0c5ce;">        dioxus_web::Config::new().</span><span style="color:#96b5b4;">hydrate</span><span style="color:#c0c5ce;">(</span><span style="color:#d08770;">true</span><span style="color:#c0c5ce;">),
-</span><span style="color:#c0c5ce;">    );
-</span><span style="color:#c0c5ce;">    #[</span><span style="color:#bf616a;">cfg</span><span style="color:#c0c5ce;">(feature = &quot;</span><span style="color:#a3be8c;">ssr</span><span style="color:#c0c5ce;">&quot;)]
-</span><span style="color:#c0c5ce;">    {
-</span><span style="color:#c0c5ce;">        </span><span style="color:#b48ead;">use </span><span style="color:#c0c5ce;">axum::extract::Path;
-</span><span style="color:#c0c5ce;">        </span><span style="color:#b48ead;">use </span><span style="color:#c0c5ce;">axum::extract::State;
-</span><span style="color:#c0c5ce;">        </span><span style="color:#b48ead;">use </span><span style="color:#c0c5ce;">axum::routing::get;
-</span><span style="color:#c0c5ce;">        tokio::runtime::Runtime::new()
+</span><span style="color:#c0c5ce;">	#[</span><span style="color:#bf616a;">cfg</span><span style="color:#c0c5ce;">(feature = &quot;</span><span style="color:#a3be8c;">web</span><span style="color:#c0c5ce;">&quot;)]
+</span><span style="color:#c0c5ce;">	dioxus_web::launch_with_props(
+</span><span style="color:#c0c5ce;">		app,
+</span><span style="color:#c0c5ce;">		</span><span style="color:#65737e;">// Get the root props from the document
+</span><span style="color:#c0c5ce;">		</span><span style="color:#96b5b4;">get_root_props_from_document</span><span style="color:#c0c5ce;">().</span><span style="color:#96b5b4;">unwrap_or_default</span><span style="color:#c0c5ce;">(),
+</span><span style="color:#c0c5ce;">		dioxus_web::Config::new().</span><span style="color:#96b5b4;">hydrate</span><span style="color:#c0c5ce;">(</span><span style="color:#d08770;">true</span><span style="color:#c0c5ce;">),
+</span><span style="color:#c0c5ce;">	);
+</span><span style="color:#c0c5ce;">	#[</span><span style="color:#bf616a;">cfg</span><span style="color:#c0c5ce;">(feature = &quot;</span><span style="color:#a3be8c;">ssr</span><span style="color:#c0c5ce;">&quot;)]
+</span><span style="color:#c0c5ce;">	{
+</span><span style="color:#c0c5ce;">		</span><span style="color:#b48ead;">use </span><span style="color:#c0c5ce;">axum::extract::Path;
+</span><span style="color:#c0c5ce;">		</span><span style="color:#b48ead;">use </span><span style="color:#c0c5ce;">axum::extract::State;
+</span><span style="color:#c0c5ce;">		</span><span style="color:#b48ead;">use </span><span style="color:#c0c5ce;">axum::routing::get;
+</span><span style="color:#c0c5ce;">		tokio::runtime::Runtime::new()
 </span><span style="color:#c0c5ce;">			.</span><span style="color:#96b5b4;">unwrap</span><span style="color:#c0c5ce;">()
 </span><span style="color:#c0c5ce;">			.</span><span style="color:#96b5b4;">block_on</span><span style="color:#c0c5ce;">(async </span><span style="color:#b48ead;">move </span><span style="color:#c0c5ce;">{
 </span><span style="color:#c0c5ce;">				</span><span style="color:#b48ead;">let</span><span style="color:#c0c5ce;"> addr = std::net::SocketAddr::from(([</span><span style="color:#d08770;">127</span><span style="color:#c0c5ce;">, </span><span style="color:#d08770;">0</span><span style="color:#c0c5ce;">, </span><span style="color:#d08770;">0</span><span style="color:#c0c5ce;">, </span><span style="color:#d08770;">1</span><span style="color:#c0c5ce;">], </span><span style="color:#d08770;">8080</span><span style="color:#c0c5ce;">));
@@ -285,17 +285,17 @@
 </span><span style="color:#c0c5ce;">					.await
 </span><span style="color:#c0c5ce;">					.</span><span style="color:#96b5b4;">unwrap</span><span style="color:#c0c5ce;">();
 </span><span style="color:#c0c5ce;">			});
-</span><span style="color:#c0c5ce;">    }
+</span><span style="color:#c0c5ce;">	}
 </span><span style="color:#c0c5ce;">}
 </span><span style="color:#c0c5ce;">
 </span><span style="color:#b48ead;">fn </span><span style="color:#8fa1b3;">app</span><span style="color:#c0c5ce;">(</span><span style="color:#bf616a;">cx</span><span style="color:#c0c5ce;">: Scope&lt;</span><span style="color:#b48ead;">usize</span><span style="color:#c0c5ce;">&gt;) -&gt; Element {
-</span><span style="color:#c0c5ce;">    </span><span style="color:#b48ead;">let mut</span><span style="color:#c0c5ce;"> count = </span><span style="color:#96b5b4;">use_state</span><span style="color:#c0c5ce;">(cx, || *cx.props);
+</span><span style="color:#c0c5ce;">	</span><span style="color:#b48ead;">let mut</span><span style="color:#c0c5ce;"> count = </span><span style="color:#96b5b4;">use_state</span><span style="color:#c0c5ce;">(cx, || *cx.props);
 </span><span style="color:#c0c5ce;">
-</span><span style="color:#c0c5ce;">    cx.</span><span style="color:#96b5b4;">render</span><span style="color:#c0c5ce;">(rsx! {
-</span><span style="color:#c0c5ce;">        h1 { &quot;</span><span style="color:#a3be8c;">High-Five counter: {count}</span><span style="color:#c0c5ce;">&quot; }
-</span><span style="color:#c0c5ce;">        button { onclick: </span><span style="color:#b48ead;">move </span><span style="color:#c0c5ce;">|_| count += </span><span style="color:#d08770;">1</span><span style="color:#c0c5ce;">, &quot;</span><span style="color:#a3be8c;">Up high!</span><span style="color:#c0c5ce;">&quot; }
-</span><span style="color:#c0c5ce;">        button { onclick: </span><span style="color:#b48ead;">move </span><span style="color:#c0c5ce;">|_| count -= </span><span style="color:#d08770;">1</span><span style="color:#c0c5ce;">, &quot;</span><span style="color:#a3be8c;">Down low!</span><span style="color:#c0c5ce;">&quot; }
-</span><span style="color:#c0c5ce;">    })
+</span><span style="color:#c0c5ce;">	cx.</span><span style="color:#96b5b4;">render</span><span style="color:#c0c5ce;">(rsx! {
+</span><span style="color:#c0c5ce;">		h1 { &quot;</span><span style="color:#a3be8c;">High-Five counter: {count}</span><span style="color:#c0c5ce;">&quot; }
+</span><span style="color:#c0c5ce;">		button { onclick: </span><span style="color:#b48ead;">move </span><span style="color:#c0c5ce;">|_| count += </span><span style="color:#d08770;">1</span><span style="color:#c0c5ce;">, &quot;</span><span style="color:#a3be8c;">Up high!</span><span style="color:#c0c5ce;">&quot; }
+</span><span style="color:#c0c5ce;">		button { onclick: </span><span style="color:#b48ead;">move </span><span style="color:#c0c5ce;">|_| count -= </span><span style="color:#d08770;">1</span><span style="color:#c0c5ce;">, &quot;</span><span style="color:#a3be8c;">Down low!</span><span style="color:#c0c5ce;">&quot; }
+</span><span style="color:#c0c5ce;">	})
 </span><span style="color:#c0c5ce;">}
 </span><span style="color:#c0c5ce;">
 </span></pre>

@@ -149,77 +149,77 @@
 </span><span style="color:#65737e;">// ANCHOR_END: router
 </span><span style="color:#c0c5ce;">
 </span><span style="color:#b48ead;">pub fn </span><span style="color:#8fa1b3;">App</span><span style="color:#c0c5ce;">(</span><span style="color:#bf616a;">cx</span><span style="color:#c0c5ce;">: Scope) -&gt; Element {
-</span><span style="color:#c0c5ce;">    render! {
-</span><span style="color:#c0c5ce;">        Router {}
-</span><span style="color:#c0c5ce;">    }
+</span><span style="color:#c0c5ce;">	render! {
+</span><span style="color:#c0c5ce;">		Router {}
+</span><span style="color:#c0c5ce;">	}
 </span><span style="color:#c0c5ce;">}
 </span><span style="color:#c0c5ce;">
 </span><span style="color:#c0c5ce;">#[</span><span style="color:#bf616a;">inline_props</span><span style="color:#c0c5ce;">]
 </span><span style="color:#b48ead;">fn </span><span style="color:#8fa1b3;">NavBar</span><span style="color:#c0c5ce;">(</span><span style="color:#bf616a;">cx</span><span style="color:#c0c5ce;">: Scope) -&gt; Element {
-</span><span style="color:#c0c5ce;">    render! {
-</span><span style="color:#c0c5ce;">        nav {
-</span><span style="color:#c0c5ce;">            ul {
-</span><span style="color:#c0c5ce;">                li { Link { target: Route::Home {}, &quot;</span><span style="color:#a3be8c;">Home</span><span style="color:#c0c5ce;">&quot; } }
-</span><span style="color:#c0c5ce;">                li { Link { target: Route::BlogList {}, &quot;</span><span style="color:#a3be8c;">Blog</span><span style="color:#c0c5ce;">&quot; } }
-</span><span style="color:#c0c5ce;">            }
-</span><span style="color:#c0c5ce;">        }
-</span><span style="color:#c0c5ce;">        Outlet {}
-</span><span style="color:#c0c5ce;">    }
+</span><span style="color:#c0c5ce;">	render! {
+</span><span style="color:#c0c5ce;">		nav {
+</span><span style="color:#c0c5ce;">			ul {
+</span><span style="color:#c0c5ce;">				li { Link { target: Route::Home {}, &quot;</span><span style="color:#a3be8c;">Home</span><span style="color:#c0c5ce;">&quot; } }
+</span><span style="color:#c0c5ce;">				li { Link { target: Route::BlogList {}, &quot;</span><span style="color:#a3be8c;">Blog</span><span style="color:#c0c5ce;">&quot; } }
+</span><span style="color:#c0c5ce;">			}
+</span><span style="color:#c0c5ce;">		}
+</span><span style="color:#c0c5ce;">		Outlet {}
+</span><span style="color:#c0c5ce;">	}
 </span><span style="color:#c0c5ce;">}
 </span><span style="color:#c0c5ce;">
 </span><span style="color:#c0c5ce;">#[</span><span style="color:#bf616a;">inline_props</span><span style="color:#c0c5ce;">]
 </span><span style="color:#b48ead;">fn </span><span style="color:#8fa1b3;">Home</span><span style="color:#c0c5ce;">(</span><span style="color:#bf616a;">cx</span><span style="color:#c0c5ce;">: Scope) -&gt; Element {
-</span><span style="color:#c0c5ce;">    render! {
-</span><span style="color:#c0c5ce;">        h1 { &quot;</span><span style="color:#a3be8c;">Welcome to the Dioxus Blog!</span><span style="color:#c0c5ce;">&quot; }
-</span><span style="color:#c0c5ce;">    }
+</span><span style="color:#c0c5ce;">	render! {
+</span><span style="color:#c0c5ce;">		h1 { &quot;</span><span style="color:#a3be8c;">Welcome to the Dioxus Blog!</span><span style="color:#c0c5ce;">&quot; }
+</span><span style="color:#c0c5ce;">	}
 </span><span style="color:#c0c5ce;">}
 </span><span style="color:#c0c5ce;">
 </span><span style="color:#c0c5ce;">#[</span><span style="color:#bf616a;">inline_props</span><span style="color:#c0c5ce;">]
 </span><span style="color:#b48ead;">fn </span><span style="color:#8fa1b3;">Blog</span><span style="color:#c0c5ce;">(</span><span style="color:#bf616a;">cx</span><span style="color:#c0c5ce;">: Scope) -&gt; Element {
-</span><span style="color:#c0c5ce;">    render! {
-</span><span style="color:#c0c5ce;">        h1 { &quot;</span><span style="color:#a3be8c;">Blog</span><span style="color:#c0c5ce;">&quot; }
-</span><span style="color:#c0c5ce;">        Outlet {}
-</span><span style="color:#c0c5ce;">    }
+</span><span style="color:#c0c5ce;">	render! {
+</span><span style="color:#c0c5ce;">		h1 { &quot;</span><span style="color:#a3be8c;">Blog</span><span style="color:#c0c5ce;">&quot; }
+</span><span style="color:#c0c5ce;">		Outlet {}
+</span><span style="color:#c0c5ce;">	}
 </span><span style="color:#c0c5ce;">}
 </span><span style="color:#c0c5ce;">
 </span><span style="color:#c0c5ce;">#[</span><span style="color:#bf616a;">inline_props</span><span style="color:#c0c5ce;">]
 </span><span style="color:#b48ead;">fn </span><span style="color:#8fa1b3;">BlogList</span><span style="color:#c0c5ce;">(</span><span style="color:#bf616a;">cx</span><span style="color:#c0c5ce;">: Scope) -&gt; Element {
-</span><span style="color:#c0c5ce;">    render! {
-</span><span style="color:#c0c5ce;">        h2 { &quot;</span><span style="color:#a3be8c;">Choose a post</span><span style="color:#c0c5ce;">&quot; }
-</span><span style="color:#c0c5ce;">        ul {
-</span><span style="color:#c0c5ce;">            li {
-</span><span style="color:#c0c5ce;">                Link {
-</span><span style="color:#c0c5ce;">                    target: Route::BlogPost { name: &quot;</span><span style="color:#a3be8c;">Blog post 1</span><span style="color:#c0c5ce;">&quot;.</span><span style="color:#96b5b4;">into</span><span style="color:#c0c5ce;">() },
-</span><span style="color:#c0c5ce;">                    &quot;</span><span style="color:#a3be8c;">Read the first blog post</span><span style="color:#c0c5ce;">&quot;
-</span><span style="color:#c0c5ce;">                }
-</span><span style="color:#c0c5ce;">            }
-</span><span style="color:#c0c5ce;">            li {
-</span><span style="color:#c0c5ce;">                Link {
-</span><span style="color:#c0c5ce;">                    target: Route::BlogPost { name: &quot;</span><span style="color:#a3be8c;">Blog post 2</span><span style="color:#c0c5ce;">&quot;.</span><span style="color:#96b5b4;">into</span><span style="color:#c0c5ce;">() },
-</span><span style="color:#c0c5ce;">                    &quot;</span><span style="color:#a3be8c;">Read the second blog post</span><span style="color:#c0c5ce;">&quot;
-</span><span style="color:#c0c5ce;">                }
-</span><span style="color:#c0c5ce;">            }
-</span><span style="color:#c0c5ce;">        }
-</span><span style="color:#c0c5ce;">    }
+</span><span style="color:#c0c5ce;">	render! {
+</span><span style="color:#c0c5ce;">		h2 { &quot;</span><span style="color:#a3be8c;">Choose a post</span><span style="color:#c0c5ce;">&quot; }
+</span><span style="color:#c0c5ce;">		ul {
+</span><span style="color:#c0c5ce;">			li {
+</span><span style="color:#c0c5ce;">				Link {
+</span><span style="color:#c0c5ce;">					target: Route::BlogPost { name: &quot;</span><span style="color:#a3be8c;">Blog post 1</span><span style="color:#c0c5ce;">&quot;.</span><span style="color:#96b5b4;">into</span><span style="color:#c0c5ce;">() },
+</span><span style="color:#c0c5ce;">					&quot;</span><span style="color:#a3be8c;">Read the first blog post</span><span style="color:#c0c5ce;">&quot;
+</span><span style="color:#c0c5ce;">				}
+</span><span style="color:#c0c5ce;">			}
+</span><span style="color:#c0c5ce;">			li {
+</span><span style="color:#c0c5ce;">				Link {
+</span><span style="color:#c0c5ce;">					target: Route::BlogPost { name: &quot;</span><span style="color:#a3be8c;">Blog post 2</span><span style="color:#c0c5ce;">&quot;.</span><span style="color:#96b5b4;">into</span><span style="color:#c0c5ce;">() },
+</span><span style="color:#c0c5ce;">					&quot;</span><span style="color:#a3be8c;">Read the second blog post</span><span style="color:#c0c5ce;">&quot;
+</span><span style="color:#c0c5ce;">				}
+</span><span style="color:#c0c5ce;">			}
+</span><span style="color:#c0c5ce;">		}
+</span><span style="color:#c0c5ce;">	}
 </span><span style="color:#c0c5ce;">}
 </span><span style="color:#c0c5ce;">
 </span><span style="color:#c0c5ce;">#[</span><span style="color:#bf616a;">inline_props</span><span style="color:#c0c5ce;">]
 </span><span style="color:#b48ead;">fn </span><span style="color:#8fa1b3;">BlogPost</span><span style="color:#c0c5ce;">(</span><span style="color:#bf616a;">cx</span><span style="color:#c0c5ce;">: Scope, </span><span style="color:#bf616a;">name</span><span style="color:#c0c5ce;">: String) -&gt; Element {
-</span><span style="color:#c0c5ce;">    render! {
-</span><span style="color:#c0c5ce;">        h2 { &quot;</span><span style="color:#a3be8c;">Blog Post: {name}</span><span style="color:#c0c5ce;">&quot;}
-</span><span style="color:#c0c5ce;">    }
+</span><span style="color:#c0c5ce;">	render! {
+</span><span style="color:#c0c5ce;">		h2 { &quot;</span><span style="color:#a3be8c;">Blog Post: {name}</span><span style="color:#c0c5ce;">&quot;}
+</span><span style="color:#c0c5ce;">	}
 </span><span style="color:#c0c5ce;">}
 </span><span style="color:#c0c5ce;">
 </span><span style="color:#c0c5ce;">#[</span><span style="color:#bf616a;">inline_props</span><span style="color:#c0c5ce;">]
 </span><span style="color:#b48ead;">fn </span><span style="color:#8fa1b3;">PageNotFound</span><span style="color:#c0c5ce;">(</span><span style="color:#bf616a;">cx</span><span style="color:#c0c5ce;">: Scope, </span><span style="color:#bf616a;">route</span><span style="color:#c0c5ce;">: Vec&lt;String&gt;) -&gt; Element {
-</span><span style="color:#c0c5ce;">    render! {
-</span><span style="color:#c0c5ce;">        h1 { &quot;</span><span style="color:#a3be8c;">Page not found</span><span style="color:#c0c5ce;">&quot; }
-</span><span style="color:#c0c5ce;">        p { &quot;</span><span style="color:#a3be8c;">We are terribly sorry, but the page you requested doesn&#39;t exist.</span><span style="color:#c0c5ce;">&quot; }
-</span><span style="color:#c0c5ce;">        pre {
-</span><span style="color:#c0c5ce;">            color: &quot;</span><span style="color:#a3be8c;">red</span><span style="color:#c0c5ce;">&quot;,
-</span><span style="color:#c0c5ce;">            &quot;</span><span style="color:#a3be8c;">log:</span><span style="color:#96b5b4;">\n</span><span style="color:#a3be8c;">attemped to navigate to: {route:?}</span><span style="color:#c0c5ce;">&quot;
-</span><span style="color:#c0c5ce;">        }
-</span><span style="color:#c0c5ce;">    }
+</span><span style="color:#c0c5ce;">	render! {
+</span><span style="color:#c0c5ce;">		h1 { &quot;</span><span style="color:#a3be8c;">Page not found</span><span style="color:#c0c5ce;">&quot; }
+</span><span style="color:#c0c5ce;">		p { &quot;</span><span style="color:#a3be8c;">We are terribly sorry, but the page you requested doesn&#39;t exist.</span><span style="color:#c0c5ce;">&quot; }
+</span><span style="color:#c0c5ce;">		pre {
+</span><span style="color:#c0c5ce;">			color: &quot;</span><span style="color:#a3be8c;">red</span><span style="color:#c0c5ce;">&quot;,
+</span><span style="color:#c0c5ce;">			&quot;</span><span style="color:#a3be8c;">log:</span><span style="color:#96b5b4;">\n</span><span style="color:#a3be8c;">attemped to navigate to: {route:?}</span><span style="color:#c0c5ce;">&quot;
+</span><span style="color:#c0c5ce;">		}
+</span><span style="color:#c0c5ce;">	}
 </span><span style="color:#c0c5ce;">}
 </span><span style="color:#c0c5ce;">
 </span></pre>

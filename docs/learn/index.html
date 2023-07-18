@@ -119,13 +119,13 @@
 <span style="color:#b48ead;">use </span><span style="color:#c0c5ce;">dioxus::prelude::*;
 </span><span style="color:#c0c5ce;">
 </span><span style="color:#b48ead;">pub fn </span><span style="color:#8fa1b3;">App</span><span style="color:#c0c5ce;">(</span><span style="color:#bf616a;">cx</span><span style="color:#c0c5ce;">: Scope) -&gt; Element {
-</span><span style="color:#c0c5ce;">    </span><span style="color:#b48ead;">let mut</span><span style="color:#c0c5ce;"> count = </span><span style="color:#96b5b4;">use_state</span><span style="color:#c0c5ce;">(cx, || </span><span style="color:#d08770;">0</span><span style="color:#c0c5ce;">);
+</span><span style="color:#c0c5ce;">	</span><span style="color:#b48ead;">let mut</span><span style="color:#c0c5ce;"> count = </span><span style="color:#96b5b4;">use_state</span><span style="color:#c0c5ce;">(cx, || </span><span style="color:#d08770;">0</span><span style="color:#c0c5ce;">);
 </span><span style="color:#c0c5ce;">
-</span><span style="color:#c0c5ce;">    cx.</span><span style="color:#96b5b4;">render</span><span style="color:#c0c5ce;">(rsx! {
-</span><span style="color:#c0c5ce;">        h1 { &quot;</span><span style="color:#a3be8c;">High-Five counter: {count}</span><span style="color:#c0c5ce;">&quot; }
-</span><span style="color:#c0c5ce;">        button { onclick: </span><span style="color:#b48ead;">move </span><span style="color:#c0c5ce;">|_| count += </span><span style="color:#d08770;">1</span><span style="color:#c0c5ce;">, &quot;</span><span style="color:#a3be8c;">Up high!</span><span style="color:#c0c5ce;">&quot; }
-</span><span style="color:#c0c5ce;">        button { onclick: </span><span style="color:#b48ead;">move </span><span style="color:#c0c5ce;">|_| count -= </span><span style="color:#d08770;">1</span><span style="color:#c0c5ce;">, &quot;</span><span style="color:#a3be8c;">Down low!</span><span style="color:#c0c5ce;">&quot; }
-</span><span style="color:#c0c5ce;">    })
+</span><span style="color:#c0c5ce;">	cx.</span><span style="color:#96b5b4;">render</span><span style="color:#c0c5ce;">(rsx! {
+</span><span style="color:#c0c5ce;">		h1 { &quot;</span><span style="color:#a3be8c;">High-Five counter: {count}</span><span style="color:#c0c5ce;">&quot; }
+</span><span style="color:#c0c5ce;">		button { onclick: </span><span style="color:#b48ead;">move </span><span style="color:#c0c5ce;">|_| count += </span><span style="color:#d08770;">1</span><span style="color:#c0c5ce;">, &quot;</span><span style="color:#a3be8c;">Up high!</span><span style="color:#c0c5ce;">&quot; }
+</span><span style="color:#c0c5ce;">		button { onclick: </span><span style="color:#b48ead;">move </span><span style="color:#c0c5ce;">|_| count -= </span><span style="color:#d08770;">1</span><span style="color:#c0c5ce;">, &quot;</span><span style="color:#a3be8c;">Down low!</span><span style="color:#c0c5ce;">&quot; }
+</span><span style="color:#c0c5ce;">	})
 </span><span style="color:#c0c5ce;">}
 </span><span style="color:#c0c5ce;">
 </span></pre>

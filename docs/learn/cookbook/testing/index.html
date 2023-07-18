@@ -123,30 +123,30 @@
 </span><span style="color:#c0c5ce;">
 </span><span style="color:#c0c5ce;">#[</span><span style="color:#bf616a;">test</span><span style="color:#c0c5ce;">]
 </span><span style="color:#b48ead;">fn </span><span style="color:#8fa1b3;">test</span><span style="color:#c0c5ce;">() {
-</span><span style="color:#c0c5ce;">    </span><span style="color:#96b5b4;">assert_rsx_eq</span><span style="color:#c0c5ce;">(rsx!{
-</span><span style="color:#c0c5ce;">        div {
-</span><span style="color:#c0c5ce;">            &quot;</span><span style="color:#a3be8c;">Hello world</span><span style="color:#c0c5ce;">&quot;
-</span><span style="color:#c0c5ce;">        }
-</span><span style="color:#c0c5ce;">        div {
-</span><span style="color:#c0c5ce;">            &quot;</span><span style="color:#a3be8c;">Hello world</span><span style="color:#c0c5ce;">&quot;
-</span><span style="color:#c0c5ce;">        }
-</span><span style="color:#c0c5ce;">    },
-</span><span style="color:#c0c5ce;">    rsx!{
-</span><span style="color:#c0c5ce;">        </span><span style="color:#b48ead;">for </span><span style="color:#c0c5ce;">_ in </span><span style="color:#d08770;">0</span><span style="color:#c0c5ce;">..</span><span style="color:#d08770;">2 </span><span style="color:#c0c5ce;">{
-</span><span style="color:#c0c5ce;">            div {
-</span><span style="color:#c0c5ce;">                &quot;</span><span style="color:#a3be8c;">Hello world</span><span style="color:#c0c5ce;">&quot;
-</span><span style="color:#c0c5ce;">            }
-</span><span style="color:#c0c5ce;">        }
-</span><span style="color:#c0c5ce;">    })
+</span><span style="color:#c0c5ce;">	</span><span style="color:#96b5b4;">assert_rsx_eq</span><span style="color:#c0c5ce;">(rsx!{
+</span><span style="color:#c0c5ce;">		div {
+</span><span style="color:#c0c5ce;">			&quot;</span><span style="color:#a3be8c;">Hello world</span><span style="color:#c0c5ce;">&quot;
+</span><span style="color:#c0c5ce;">		}
+</span><span style="color:#c0c5ce;">		div {
+</span><span style="color:#c0c5ce;">			&quot;</span><span style="color:#a3be8c;">Hello world</span><span style="color:#c0c5ce;">&quot;
+</span><span style="color:#c0c5ce;">		}
+</span><span style="color:#c0c5ce;">	},
+</span><span style="color:#c0c5ce;">	rsx!{
+</span><span style="color:#c0c5ce;">		</span><span style="color:#b48ead;">for </span><span style="color:#c0c5ce;">_ in </span><span style="color:#d08770;">0</span><span style="color:#c0c5ce;">..</span><span style="color:#d08770;">2 </span><span style="color:#c0c5ce;">{
+</span><span style="color:#c0c5ce;">			div {
+</span><span style="color:#c0c5ce;">				&quot;</span><span style="color:#a3be8c;">Hello world</span><span style="color:#c0c5ce;">&quot;
+</span><span style="color:#c0c5ce;">			}
+</span><span style="color:#c0c5ce;">		}
+</span><span style="color:#c0c5ce;">	})
 </span><span style="color:#c0c5ce;">}
 </span><span style="color:#c0c5ce;">
 </span><span style="color:#b48ead;">fn </span><span style="color:#8fa1b3;">assert_rsx_eq</span><span style="color:#c0c5ce;">(
-</span><span style="color:#c0c5ce;">    </span><span style="color:#bf616a;">first</span><span style="color:#c0c5ce;">: LazyNodes&lt;</span><span style="color:#b48ead;">&#39;static</span><span style="color:#c0c5ce;">, </span><span style="color:#b48ead;">&#39;static</span><span style="color:#c0c5ce;">&gt;,
-</span><span style="color:#c0c5ce;">    </span><span style="color:#bf616a;">second</span><span style="color:#c0c5ce;">: LazyNodes&lt;</span><span style="color:#b48ead;">&#39;static</span><span style="color:#c0c5ce;">, </span><span style="color:#b48ead;">&#39;static</span><span style="color:#c0c5ce;">&gt;
+</span><span style="color:#c0c5ce;">	</span><span style="color:#bf616a;">first</span><span style="color:#c0c5ce;">: LazyNodes&lt;</span><span style="color:#b48ead;">&#39;static</span><span style="color:#c0c5ce;">, </span><span style="color:#b48ead;">&#39;static</span><span style="color:#c0c5ce;">&gt;,
+</span><span style="color:#c0c5ce;">	</span><span style="color:#bf616a;">second</span><span style="color:#c0c5ce;">: LazyNodes&lt;</span><span style="color:#b48ead;">&#39;static</span><span style="color:#c0c5ce;">, </span><span style="color:#b48ead;">&#39;static</span><span style="color:#c0c5ce;">&gt;
 </span><span style="color:#c0c5ce;">) {
-</span><span style="color:#c0c5ce;">    </span><span style="color:#b48ead;">let</span><span style="color:#c0c5ce;"> first = dioxus_ssr::render_lazy(first);
-</span><span style="color:#c0c5ce;">    </span><span style="color:#b48ead;">let</span><span style="color:#c0c5ce;"> second = dioxus_ssr::render_lazy(second);
-</span><span style="color:#c0c5ce;">    pretty_assertions::assert_str_eq!(first, second);
+</span><span style="color:#c0c5ce;">	</span><span style="color:#b48ead;">let</span><span style="color:#c0c5ce;"> first = dioxus_ssr::render_lazy(first);
+</span><span style="color:#c0c5ce;">	</span><span style="color:#b48ead;">let</span><span style="color:#c0c5ce;"> second = dioxus_ssr::render_lazy(second);
+</span><span style="color:#c0c5ce;">	pretty_assertions::assert_str_eq!(first, second);
 </span><span style="color:#c0c5ce;">}
 </span><span style="color:#c0c5ce;">
 </span></pre>
@@ -158,97 +158,97 @@
 </span><span style="color:#c0c5ce;">
 </span><span style="color:#c0c5ce;">#[</span><span style="color:#bf616a;">test</span><span style="color:#c0c5ce;">]
 </span><span style="color:#b48ead;">fn </span><span style="color:#8fa1b3;">test</span><span style="color:#c0c5ce;">() {
-</span><span style="color:#c0c5ce;">    </span><span style="color:#96b5b4;">test_hook</span><span style="color:#c0c5ce;">(
-</span><span style="color:#c0c5ce;">        |</span><span style="color:#bf616a;">cx</span><span style="color:#c0c5ce;">| </span><span style="color:#96b5b4;">use_ref</span><span style="color:#c0c5ce;">(cx, || </span><span style="color:#d08770;">0</span><span style="color:#c0c5ce;">).</span><span style="color:#96b5b4;">clone</span><span style="color:#c0c5ce;">(),
-</span><span style="color:#c0c5ce;">        |</span><span style="color:#bf616a;">value</span><span style="color:#c0c5ce;">, </span><span style="color:#b48ead;">mut </span><span style="color:#bf616a;">proxy</span><span style="color:#c0c5ce;">| </span><span style="color:#b48ead;">match</span><span style="color:#c0c5ce;"> proxy.generation {
-</span><span style="color:#c0c5ce;">            </span><span style="color:#d08770;">0 </span><span style="color:#c0c5ce;">=&gt; {
-</span><span style="color:#c0c5ce;">                value.</span><span style="color:#96b5b4;">set</span><span style="color:#c0c5ce;">(</span><span style="color:#d08770;">1</span><span style="color:#c0c5ce;">);
-</span><span style="color:#c0c5ce;">            }
-</span><span style="color:#c0c5ce;">            </span><span style="color:#d08770;">1 </span><span style="color:#c0c5ce;">=&gt; {
-</span><span style="color:#c0c5ce;">                assert_eq!(*value.</span><span style="color:#96b5b4;">read</span><span style="color:#c0c5ce;">(), </span><span style="color:#d08770;">1</span><span style="color:#c0c5ce;">);
-</span><span style="color:#c0c5ce;">                value.</span><span style="color:#96b5b4;">set</span><span style="color:#c0c5ce;">(</span><span style="color:#d08770;">2</span><span style="color:#c0c5ce;">);
-</span><span style="color:#c0c5ce;">            }
-</span><span style="color:#c0c5ce;">            </span><span style="color:#d08770;">2 </span><span style="color:#c0c5ce;">=&gt; {
-</span><span style="color:#c0c5ce;">                proxy.</span><span style="color:#96b5b4;">rerun</span><span style="color:#c0c5ce;">();
-</span><span style="color:#c0c5ce;">            }
-</span><span style="color:#c0c5ce;">            </span><span style="color:#d08770;">3 </span><span style="color:#c0c5ce;">=&gt; {}
-</span><span style="color:#c0c5ce;">            _ =&gt; todo!(),
-</span><span style="color:#c0c5ce;">        },
-</span><span style="color:#c0c5ce;">        |</span><span style="color:#bf616a;">proxy</span><span style="color:#c0c5ce;">| assert_eq!(proxy.generation, </span><span style="color:#d08770;">4</span><span style="color:#c0c5ce;">),
-</span><span style="color:#c0c5ce;">    );
+</span><span style="color:#c0c5ce;">	</span><span style="color:#96b5b4;">test_hook</span><span style="color:#c0c5ce;">(
+</span><span style="color:#c0c5ce;">		|</span><span style="color:#bf616a;">cx</span><span style="color:#c0c5ce;">| </span><span style="color:#96b5b4;">use_ref</span><span style="color:#c0c5ce;">(cx, || </span><span style="color:#d08770;">0</span><span style="color:#c0c5ce;">).</span><span style="color:#96b5b4;">clone</span><span style="color:#c0c5ce;">(),
+</span><span style="color:#c0c5ce;">		|</span><span style="color:#bf616a;">value</span><span style="color:#c0c5ce;">, </span><span style="color:#b48ead;">mut </span><span style="color:#bf616a;">proxy</span><span style="color:#c0c5ce;">| </span><span style="color:#b48ead;">match</span><span style="color:#c0c5ce;"> proxy.generation {
+</span><span style="color:#c0c5ce;">			</span><span style="color:#d08770;">0 </span><span style="color:#c0c5ce;">=&gt; {
+</span><span style="color:#c0c5ce;">				value.</span><span style="color:#96b5b4;">set</span><span style="color:#c0c5ce;">(</span><span style="color:#d08770;">1</span><span style="color:#c0c5ce;">);
+</span><span style="color:#c0c5ce;">			}
+</span><span style="color:#c0c5ce;">			</span><span style="color:#d08770;">1 </span><span style="color:#c0c5ce;">=&gt; {
+</span><span style="color:#c0c5ce;">				assert_eq!(*value.</span><span style="color:#96b5b4;">read</span><span style="color:#c0c5ce;">(), </span><span style="color:#d08770;">1</span><span style="color:#c0c5ce;">);
+</span><span style="color:#c0c5ce;">				value.</span><span style="color:#96b5b4;">set</span><span style="color:#c0c5ce;">(</span><span style="color:#d08770;">2</span><span style="color:#c0c5ce;">);
+</span><span style="color:#c0c5ce;">			}
+</span><span style="color:#c0c5ce;">			</span><span style="color:#d08770;">2 </span><span style="color:#c0c5ce;">=&gt; {
+</span><span style="color:#c0c5ce;">				proxy.</span><span style="color:#96b5b4;">rerun</span><span style="color:#c0c5ce;">();
+</span><span style="color:#c0c5ce;">			}
+</span><span style="color:#c0c5ce;">			</span><span style="color:#d08770;">3 </span><span style="color:#c0c5ce;">=&gt; {}
+</span><span style="color:#c0c5ce;">			_ =&gt; todo!(),
+</span><span style="color:#c0c5ce;">		},
+</span><span style="color:#c0c5ce;">		|</span><span style="color:#bf616a;">proxy</span><span style="color:#c0c5ce;">| assert_eq!(proxy.generation, </span><span style="color:#d08770;">4</span><span style="color:#c0c5ce;">),
+</span><span style="color:#c0c5ce;">	);
 </span><span style="color:#c0c5ce;">}
 </span><span style="color:#c0c5ce;">
 </span><span style="color:#b48ead;">fn </span><span style="color:#8fa1b3;">test_hook</span><span style="color:#c0c5ce;">&lt;V: </span><span style="color:#b48ead;">&#39;static</span><span style="color:#c0c5ce;">&gt;(
-</span><span style="color:#c0c5ce;">    </span><span style="color:#bf616a;">initialize</span><span style="color:#c0c5ce;">: impl FnMut(&amp;</span><span style="color:#bf616a;">ScopeState</span><span style="color:#c0c5ce;">) -&gt; V + </span><span style="color:#b48ead;">&#39;static</span><span style="color:#c0c5ce;">,
-</span><span style="color:#c0c5ce;">    </span><span style="color:#bf616a;">check</span><span style="color:#c0c5ce;">: impl FnMut(</span><span style="color:#bf616a;">V</span><span style="color:#c0c5ce;">, </span><span style="color:#bf616a;">MockProxy</span><span style="color:#c0c5ce;">) + </span><span style="color:#b48ead;">&#39;static</span><span style="color:#c0c5ce;">,
-</span><span style="color:#c0c5ce;">    </span><span style="color:#b48ead;">mut </span><span style="color:#bf616a;">final_check</span><span style="color:#c0c5ce;">: impl FnMut(</span><span style="color:#bf616a;">MockProxy</span><span style="color:#c0c5ce;">) + </span><span style="color:#b48ead;">&#39;static</span><span style="color:#c0c5ce;">,
+</span><span style="color:#c0c5ce;">	</span><span style="color:#bf616a;">initialize</span><span style="color:#c0c5ce;">: impl FnMut(&amp;</span><span style="color:#bf616a;">ScopeState</span><span style="color:#c0c5ce;">) -&gt; V + </span><span style="color:#b48ead;">&#39;static</span><span style="color:#c0c5ce;">,
+</span><span style="color:#c0c5ce;">	</span><span style="color:#bf616a;">check</span><span style="color:#c0c5ce;">: impl FnMut(</span><span style="color:#bf616a;">V</span><span style="color:#c0c5ce;">, </span><span style="color:#bf616a;">MockProxy</span><span style="color:#c0c5ce;">) + </span><span style="color:#b48ead;">&#39;static</span><span style="color:#c0c5ce;">,
+</span><span style="color:#c0c5ce;">	</span><span style="color:#b48ead;">mut </span><span style="color:#bf616a;">final_check</span><span style="color:#c0c5ce;">: impl FnMut(</span><span style="color:#bf616a;">MockProxy</span><span style="color:#c0c5ce;">) + </span><span style="color:#b48ead;">&#39;static</span><span style="color:#c0c5ce;">,
 </span><span style="color:#c0c5ce;">) {
-</span><span style="color:#c0c5ce;">    #[</span><span style="color:#bf616a;">derive</span><span style="color:#c0c5ce;">(Props)]
-</span><span style="color:#c0c5ce;">    </span><span style="color:#b48ead;">struct </span><span style="color:#c0c5ce;">MockAppComponent&lt;
-</span><span style="color:#c0c5ce;">        I: FnMut(&amp;ScopeState) -&gt; V + </span><span style="color:#b48ead;">&#39;static</span><span style="color:#c0c5ce;">,
-</span><span style="color:#c0c5ce;">        C: FnMut(V, MockProxy) + </span><span style="color:#b48ead;">&#39;static</span><span style="color:#c0c5ce;">,
-</span><span style="color:#c0c5ce;">        V,
-</span><span style="color:#c0c5ce;">    &gt; {
-</span><span style="color:#c0c5ce;">        </span><span style="color:#bf616a;">hook</span><span style="color:#c0c5ce;">: RefCell&lt;I&gt;,
-</span><span style="color:#c0c5ce;">        </span><span style="color:#bf616a;">check</span><span style="color:#c0c5ce;">: RefCell&lt;C&gt;,
-</span><span style="color:#c0c5ce;">    }
+</span><span style="color:#c0c5ce;">	#[</span><span style="color:#bf616a;">derive</span><span style="color:#c0c5ce;">(Props)]
+</span><span style="color:#c0c5ce;">	</span><span style="color:#b48ead;">struct </span><span style="color:#c0c5ce;">MockAppComponent&lt;
+</span><span style="color:#c0c5ce;">		I: FnMut(&amp;ScopeState) -&gt; V + </span><span style="color:#b48ead;">&#39;static</span><span style="color:#c0c5ce;">,
+</span><span style="color:#c0c5ce;">		C: FnMut(V, MockProxy) + </span><span style="color:#b48ead;">&#39;static</span><span style="color:#c0c5ce;">,
+</span><span style="color:#c0c5ce;">		V,
+</span><span style="color:#c0c5ce;">	&gt; {
+</span><span style="color:#c0c5ce;">		</span><span style="color:#bf616a;">hook</span><span style="color:#c0c5ce;">: RefCell&lt;I&gt;,
+</span><span style="color:#c0c5ce;">		</span><span style="color:#bf616a;">check</span><span style="color:#c0c5ce;">: RefCell&lt;C&gt;,
+</span><span style="color:#c0c5ce;">	}
 </span><span style="color:#c0c5ce;">
-</span><span style="color:#c0c5ce;">    </span><span style="color:#b48ead;">impl</span><span style="color:#c0c5ce;">&lt;I: FnMut(&amp;ScopeState) -&gt; V, C: FnMut(V, MockProxy), V&gt; PartialEq
-</span><span style="color:#c0c5ce;">        for MockAppComponent&lt;I, C, V&gt;
-</span><span style="color:#c0c5ce;">    {
-</span><span style="color:#c0c5ce;">        </span><span style="color:#b48ead;">fn </span><span style="color:#8fa1b3;">eq</span><span style="color:#c0c5ce;">(&amp;</span><span style="color:#bf616a;">self</span><span style="color:#c0c5ce;">, _: &amp;</span><span style="color:#b48ead;">Self</span><span style="color:#c0c5ce;">) -&gt; </span><span style="color:#b48ead;">bool </span><span style="color:#c0c5ce;">{
-</span><span style="color:#c0c5ce;">            </span><span style="color:#d08770;">true
-</span><span style="color:#c0c5ce;">        }
-</span><span style="color:#c0c5ce;">    }
+</span><span style="color:#c0c5ce;">	</span><span style="color:#b48ead;">impl</span><span style="color:#c0c5ce;">&lt;I: FnMut(&amp;ScopeState) -&gt; V, C: FnMut(V, MockProxy), V&gt; PartialEq
+</span><span style="color:#c0c5ce;">		for MockAppComponent&lt;I, C, V&gt;
+</span><span style="color:#c0c5ce;">	{
+</span><span style="color:#c0c5ce;">		</span><span style="color:#b48ead;">fn </span><span style="color:#8fa1b3;">eq</span><span style="color:#c0c5ce;">(&amp;</span><span style="color:#bf616a;">self</span><span style="color:#c0c5ce;">, _: &amp;</span><span style="color:#b48ead;">Self</span><span style="color:#c0c5ce;">) -&gt; </span><span style="color:#b48ead;">bool </span><span style="color:#c0c5ce;">{
+</span><span style="color:#c0c5ce;">			</span><span style="color:#d08770;">true
+</span><span style="color:#c0c5ce;">		}
+</span><span style="color:#c0c5ce;">	}
 </span><span style="color:#c0c5ce;">
-</span><span style="color:#c0c5ce;">    </span><span style="color:#b48ead;">fn </span><span style="color:#8fa1b3;">mock_app</span><span style="color:#c0c5ce;">&lt;I: FnMut(&amp;ScopeState) -&gt; V, C: FnMut(V, MockProxy), V&gt;(
-</span><span style="color:#c0c5ce;">        </span><span style="color:#bf616a;">cx</span><span style="color:#c0c5ce;">: Scope&lt;MockAppComponent&lt;I, C, V&gt;&gt;,
-</span><span style="color:#c0c5ce;">    ) -&gt; Element {
-</span><span style="color:#c0c5ce;">        </span><span style="color:#b48ead;">let</span><span style="color:#c0c5ce;"> value = cx.props.hook.</span><span style="color:#96b5b4;">borrow_mut</span><span style="color:#c0c5ce;">()(cx);
+</span><span style="color:#c0c5ce;">	</span><span style="color:#b48ead;">fn </span><span style="color:#8fa1b3;">mock_app</span><span style="color:#c0c5ce;">&lt;I: FnMut(&amp;ScopeState) -&gt; V, C: FnMut(V, MockProxy), V&gt;(
+</span><span style="color:#c0c5ce;">		</span><span style="color:#bf616a;">cx</span><span style="color:#c0c5ce;">: Scope&lt;MockAppComponent&lt;I, C, V&gt;&gt;,
+</span><span style="color:#c0c5ce;">	) -&gt; Element {
+</span><span style="color:#c0c5ce;">		</span><span style="color:#b48ead;">let</span><span style="color:#c0c5ce;"> value = cx.props.hook.</span><span style="color:#96b5b4;">borrow_mut</span><span style="color:#c0c5ce;">()(cx);
 </span><span style="color:#c0c5ce;">
-</span><span style="color:#c0c5ce;">        cx.props.check.</span><span style="color:#96b5b4;">borrow_mut</span><span style="color:#c0c5ce;">()(value, MockProxy::new(cx));
+</span><span style="color:#c0c5ce;">		cx.props.check.</span><span style="color:#96b5b4;">borrow_mut</span><span style="color:#c0c5ce;">()(value, MockProxy::new(cx));
 </span><span style="color:#c0c5ce;">
-</span><span style="color:#c0c5ce;">        render! {
-</span><span style="color:#c0c5ce;">            div {}
-</span><span style="color:#c0c5ce;">        }
-</span><span style="color:#c0c5ce;">    }
+</span><span style="color:#c0c5ce;">		render! {
+</span><span style="color:#c0c5ce;">			div {}
+</span><span style="color:#c0c5ce;">		}
+</span><span style="color:#c0c5ce;">	}
 </span><span style="color:#c0c5ce;">
-</span><span style="color:#c0c5ce;">    </span><span style="color:#b48ead;">let mut</span><span style="color:#c0c5ce;"> vdom = VirtualDom::new_with_props(
-</span><span style="color:#c0c5ce;">        mock_app,
-</span><span style="color:#c0c5ce;">        MockAppComponent {
-</span><span style="color:#c0c5ce;">            hook: RefCell::new(initialize),
-</span><span style="color:#c0c5ce;">            check: RefCell::new(check),
-</span><span style="color:#c0c5ce;">        },
-</span><span style="color:#c0c5ce;">    );
+</span><span style="color:#c0c5ce;">	</span><span style="color:#b48ead;">let mut</span><span style="color:#c0c5ce;"> vdom = VirtualDom::new_with_props(
+</span><span style="color:#c0c5ce;">		mock_app,
+</span><span style="color:#c0c5ce;">		MockAppComponent {
+</span><span style="color:#c0c5ce;">			hook: RefCell::new(initialize),
+</span><span style="color:#c0c5ce;">			check: RefCell::new(check),
+</span><span style="color:#c0c5ce;">		},
+</span><span style="color:#c0c5ce;">	);
 </span><span style="color:#c0c5ce;">
-</span><span style="color:#c0c5ce;">    </span><span style="color:#b48ead;">let </span><span style="color:#c0c5ce;">_ = vdom.</span><span style="color:#96b5b4;">rebuild</span><span style="color:#c0c5ce;">();
+</span><span style="color:#c0c5ce;">	</span><span style="color:#b48ead;">let </span><span style="color:#c0c5ce;">_ = vdom.</span><span style="color:#96b5b4;">rebuild</span><span style="color:#c0c5ce;">();
 </span><span style="color:#c0c5ce;">
-</span><span style="color:#c0c5ce;">    </span><span style="color:#b48ead;">while</span><span style="color:#c0c5ce;"> vdom.</span><span style="color:#96b5b4;">wait_for_work</span><span style="color:#c0c5ce;">().</span><span style="color:#96b5b4;">now_or_never</span><span style="color:#c0c5ce;">().</span><span style="color:#96b5b4;">is_some</span><span style="color:#c0c5ce;">() {
-</span><span style="color:#c0c5ce;">        </span><span style="color:#b48ead;">let </span><span style="color:#c0c5ce;">_ = vdom.</span><span style="color:#96b5b4;">render_immediate</span><span style="color:#c0c5ce;">();
-</span><span style="color:#c0c5ce;">    }
+</span><span style="color:#c0c5ce;">	</span><span style="color:#b48ead;">while</span><span style="color:#c0c5ce;"> vdom.</span><span style="color:#96b5b4;">wait_for_work</span><span style="color:#c0c5ce;">().</span><span style="color:#96b5b4;">now_or_never</span><span style="color:#c0c5ce;">().</span><span style="color:#96b5b4;">is_some</span><span style="color:#c0c5ce;">() {
+</span><span style="color:#c0c5ce;">		</span><span style="color:#b48ead;">let </span><span style="color:#c0c5ce;">_ = vdom.</span><span style="color:#96b5b4;">render_immediate</span><span style="color:#c0c5ce;">();
+</span><span style="color:#c0c5ce;">	}
 </span><span style="color:#c0c5ce;">
-</span><span style="color:#c0c5ce;">    </span><span style="color:#96b5b4;">final_check</span><span style="color:#c0c5ce;">(MockProxy::new(vdom.</span><span style="color:#96b5b4;">base_scope</span><span style="color:#c0c5ce;">()));
+</span><span style="color:#c0c5ce;">	</span><span style="color:#96b5b4;">final_check</span><span style="color:#c0c5ce;">(MockProxy::new(vdom.</span><span style="color:#96b5b4;">base_scope</span><span style="color:#c0c5ce;">()));
 </span><span style="color:#c0c5ce;">}
 </span><span style="color:#c0c5ce;">
 </span><span style="color:#b48ead;">struct </span><span style="color:#c0c5ce;">MockProxy {
-</span><span style="color:#c0c5ce;">    </span><span style="color:#bf616a;">rerender</span><span style="color:#c0c5ce;">: Arc&lt;dyn Fn()&gt;,
-</span><span style="color:#c0c5ce;">    </span><span style="color:#b48ead;">pub </span><span style="color:#bf616a;">generation</span><span style="color:#c0c5ce;">: </span><span style="color:#b48ead;">usize</span><span style="color:#c0c5ce;">,
+</span><span style="color:#c0c5ce;">	</span><span style="color:#bf616a;">rerender</span><span style="color:#c0c5ce;">: Arc&lt;dyn Fn()&gt;,
+</span><span style="color:#c0c5ce;">	</span><span style="color:#b48ead;">pub </span><span style="color:#bf616a;">generation</span><span style="color:#c0c5ce;">: </span><span style="color:#b48ead;">usize</span><span style="color:#c0c5ce;">,
 </span><span style="color:#c0c5ce;">}
 </span><span style="color:#c0c5ce;">
 </span><span style="color:#b48ead;">impl </span><span style="color:#c0c5ce;">MockProxy {
-</span><span style="color:#c0c5ce;">    </span><span style="color:#b48ead;">fn </span><span style="color:#8fa1b3;">new</span><span style="color:#c0c5ce;">(</span><span style="color:#bf616a;">scope</span><span style="color:#c0c5ce;">: &amp;ScopeState) -&gt; </span><span style="color:#b48ead;">Self </span><span style="color:#c0c5ce;">{
-</span><span style="color:#c0c5ce;">        </span><span style="color:#b48ead;">let</span><span style="color:#c0c5ce;"> generation = scope.</span><span style="color:#96b5b4;">generation</span><span style="color:#c0c5ce;">();
-</span><span style="color:#c0c5ce;">        </span><span style="color:#b48ead;">let</span><span style="color:#c0c5ce;"> rerender = scope.</span><span style="color:#96b5b4;">schedule_update</span><span style="color:#c0c5ce;">();
+</span><span style="color:#c0c5ce;">	</span><span style="color:#b48ead;">fn </span><span style="color:#8fa1b3;">new</span><span style="color:#c0c5ce;">(</span><span style="color:#bf616a;">scope</span><span style="color:#c0c5ce;">: &amp;ScopeState) -&gt; </span><span style="color:#b48ead;">Self </span><span style="color:#c0c5ce;">{
+</span><span style="color:#c0c5ce;">		</span><span style="color:#b48ead;">let</span><span style="color:#c0c5ce;"> generation = scope.</span><span style="color:#96b5b4;">generation</span><span style="color:#c0c5ce;">();
+</span><span style="color:#c0c5ce;">		</span><span style="color:#b48ead;">let</span><span style="color:#c0c5ce;"> rerender = scope.</span><span style="color:#96b5b4;">schedule_update</span><span style="color:#c0c5ce;">();
 </span><span style="color:#c0c5ce;">
-</span><span style="color:#c0c5ce;">        </span><span style="color:#b48ead;">Self </span><span style="color:#c0c5ce;">{
-</span><span style="color:#c0c5ce;">            rerender,
-</span><span style="color:#c0c5ce;">            generation,
-</span><span style="color:#c0c5ce;">        }
-</span><span style="color:#c0c5ce;">    }
+</span><span style="color:#c0c5ce;">		</span><span style="color:#b48ead;">Self </span><span style="color:#c0c5ce;">{
+</span><span style="color:#c0c5ce;">			rerender,
+</span><span style="color:#c0c5ce;">			generation,
+</span><span style="color:#c0c5ce;">		}
+</span><span style="color:#c0c5ce;">	}
 </span><span style="color:#c0c5ce;">
-</span><span style="color:#c0c5ce;">    </span><span style="color:#b48ead;">pub fn </span><span style="color:#8fa1b3;">rerun</span><span style="color:#c0c5ce;">(&amp;</span><span style="color:#b48ead;">mut </span><span style="color:#bf616a;">self</span><span style="color:#c0c5ce;">) {
-</span><span style="color:#c0c5ce;">        (</span><span style="color:#bf616a;">self</span><span style="color:#c0c5ce;">.rerender)();
-</span><span style="color:#c0c5ce;">    }
+</span><span style="color:#c0c5ce;">	</span><span style="color:#b48ead;">pub fn </span><span style="color:#8fa1b3;">rerun</span><span style="color:#c0c5ce;">(&amp;</span><span style="color:#b48ead;">mut </span><span style="color:#bf616a;">self</span><span style="color:#c0c5ce;">) {
+</span><span style="color:#c0c5ce;">		(</span><span style="color:#bf616a;">self</span><span style="color:#c0c5ce;">.rerender)();
+</span><span style="color:#c0c5ce;">	}
 </span><span style="color:#c0c5ce;">}
 </span></pre>
 </div><button style="position: absolute; top: 0; right: 0; background: rgba(0, 0, 0, 0.75); color: white; border: 1px solid white; padding: 0.25em;" onclick="navigator.clipboard.writeText(this.previousElementSibling.innerText)">Copy</button></div><h2 id="end-to-end-testing"><a class="header" href="#end-to-end-testing">End to End Testing</a></h2><p>You can use <a href="https://playwright.dev/">Playwright</a> to create end to end tests for your dioxus application.</p><p>In your <code>playwright.config.js</code>, you will need to run cargo run or dioxus serve instead of the default build command. Here is a snippet from the end to end web example:</p><div style="position: relative;"><div><pre style="background-color:#2b303b;">

@@ -127,17 +127,17 @@
 </span><span style="color:#b48ead;">use </span><span style="color:#c0c5ce;">dioxus::prelude::*;
 </span><span style="color:#c0c5ce;">
 </span><span style="color:#b48ead;">fn </span><span style="color:#8fa1b3;">main</span><span style="color:#c0c5ce;">() {
-</span><span style="color:#c0c5ce;">    </span><span style="color:#65737e;">// launch the app in the terminal
-</span><span style="color:#c0c5ce;">    dioxus_tui::launch(App);
+</span><span style="color:#c0c5ce;">	</span><span style="color:#65737e;">// launch the app in the terminal
+</span><span style="color:#c0c5ce;">	dioxus_tui::launch(App);
 </span><span style="color:#c0c5ce;">}
 </span><span style="color:#c0c5ce;">
 </span><span style="color:#65737e;">// create a component that renders a div with the text &quot;Hello, world!&quot;
 </span><span style="color:#b48ead;">fn </span><span style="color:#8fa1b3;">App</span><span style="color:#c0c5ce;">(</span><span style="color:#bf616a;">cx</span><span style="color:#c0c5ce;">: Scope) -&gt; Element {
-</span><span style="color:#c0c5ce;">    cx.</span><span style="color:#96b5b4;">render</span><span style="color:#c0c5ce;">(rsx! {
-</span><span style="color:#c0c5ce;">        div {
-</span><span style="color:#c0c5ce;">            &quot;</span><span style="color:#a3be8c;">Hello, world!</span><span style="color:#c0c5ce;">&quot;
-</span><span style="color:#c0c5ce;">        }
-</span><span style="color:#c0c5ce;">    })
+</span><span style="color:#c0c5ce;">	cx.</span><span style="color:#96b5b4;">render</span><span style="color:#c0c5ce;">(rsx! {
+</span><span style="color:#c0c5ce;">		div {
+</span><span style="color:#c0c5ce;">			&quot;</span><span style="color:#a3be8c;">Hello, world!</span><span style="color:#c0c5ce;">&quot;
+</span><span style="color:#c0c5ce;">		}
+</span><span style="color:#c0c5ce;">	})
 </span><span style="color:#c0c5ce;">}
 </span><span style="color:#c0c5ce;">
 </span></pre>
@@ -153,33 +153,33 @@
 </span><span style="color:#b48ead;">use </span><span style="color:#c0c5ce;">dioxus_tui::TuiContext;
 </span><span style="color:#c0c5ce;">
 </span><span style="color:#b48ead;">fn </span><span style="color:#8fa1b3;">main</span><span style="color:#c0c5ce;">() {
-</span><span style="color:#c0c5ce;">    dioxus_tui::launch_cfg(
-</span><span style="color:#c0c5ce;">        App,
-</span><span style="color:#c0c5ce;">        dioxus_tui::Config::new()
-</span><span style="color:#c0c5ce;">            .</span><span style="color:#96b5b4;">without_ctrl_c_quit</span><span style="color:#c0c5ce;">()
-</span><span style="color:#c0c5ce;">            </span><span style="color:#65737e;">// Some older terminals only support 16 colors or ANSI colors
-</span><span style="color:#c0c5ce;">            </span><span style="color:#65737e;">// If your terminal is one of these, change this to BaseColors or ANSI
-</span><span style="color:#c0c5ce;">            .</span><span style="color:#96b5b4;">with_rendering_mode</span><span style="color:#c0c5ce;">(dioxus_tui::RenderingMode::Rgb),
-</span><span style="color:#c0c5ce;">    );
+</span><span style="color:#c0c5ce;">	dioxus_tui::launch_cfg(
+</span><span style="color:#c0c5ce;">		App,
+</span><span style="color:#c0c5ce;">		dioxus_tui::Config::new()
+</span><span style="color:#c0c5ce;">			.</span><span style="color:#96b5b4;">without_ctrl_c_quit</span><span style="color:#c0c5ce;">()
+</span><span style="color:#c0c5ce;">			</span><span style="color:#65737e;">// Some older terminals only support 16 colors or ANSI colors
+</span><span style="color:#c0c5ce;">			</span><span style="color:#65737e;">// If your terminal is one of these, change this to BaseColors or ANSI
+</span><span style="color:#c0c5ce;">			.</span><span style="color:#96b5b4;">with_rendering_mode</span><span style="color:#c0c5ce;">(dioxus_tui::RenderingMode::Rgb),
+</span><span style="color:#c0c5ce;">	);
 </span><span style="color:#c0c5ce;">}
 </span><span style="color:#c0c5ce;">
 </span><span style="color:#b48ead;">fn </span><span style="color:#8fa1b3;">App</span><span style="color:#c0c5ce;">(</span><span style="color:#bf616a;">cx</span><span style="color:#c0c5ce;">: Scope) -&gt; Element {
-</span><span style="color:#c0c5ce;">    </span><span style="color:#b48ead;">let</span><span style="color:#c0c5ce;"> tui_ctx: TuiContext = cx.</span><span style="color:#96b5b4;">consume_context</span><span style="color:#c0c5ce;">().</span><span style="color:#96b5b4;">unwrap</span><span style="color:#c0c5ce;">();
+</span><span style="color:#c0c5ce;">	</span><span style="color:#b48ead;">let</span><span style="color:#c0c5ce;"> tui_ctx: TuiContext = cx.</span><span style="color:#96b5b4;">consume_context</span><span style="color:#c0c5ce;">().</span><span style="color:#96b5b4;">unwrap</span><span style="color:#c0c5ce;">();
 </span><span style="color:#c0c5ce;">
-</span><span style="color:#c0c5ce;">    cx.</span><span style="color:#96b5b4;">render</span><span style="color:#c0c5ce;">(rsx! {
-</span><span style="color:#c0c5ce;">        div {
-</span><span style="color:#c0c5ce;">            width: &quot;</span><span style="color:#a3be8c;">100%</span><span style="color:#c0c5ce;">&quot;,
-</span><span style="color:#c0c5ce;">            height: &quot;</span><span style="color:#a3be8c;">10px</span><span style="color:#c0c5ce;">&quot;,
-</span><span style="color:#c0c5ce;">            background_color: &quot;</span><span style="color:#a3be8c;">red</span><span style="color:#c0c5ce;">&quot;,
-</span><span style="color:#c0c5ce;">            justify_content: &quot;</span><span style="color:#a3be8c;">center</span><span style="color:#c0c5ce;">&quot;,
-</span><span style="color:#c0c5ce;">            align_items: &quot;</span><span style="color:#a3be8c;">center</span><span style="color:#c0c5ce;">&quot;,
-</span><span style="color:#c0c5ce;">            onkeydown: </span><span style="color:#b48ead;">move </span><span style="color:#c0c5ce;">|k: KeyboardEvent| </span><span style="color:#b48ead;">if let </span><span style="color:#c0c5ce;">KeyCode::Q = k.key_code {
-</span><span style="color:#c0c5ce;">                tui_ctx.</span><span style="color:#96b5b4;">quit</span><span style="color:#c0c5ce;">();
-</span><span style="color:#c0c5ce;">            },
+</span><span style="color:#c0c5ce;">	cx.</span><span style="color:#96b5b4;">render</span><span style="color:#c0c5ce;">(rsx! {
+</span><span style="color:#c0c5ce;">		div {
+</span><span style="color:#c0c5ce;">			width: &quot;</span><span style="color:#a3be8c;">100%</span><span style="color:#c0c5ce;">&quot;,
+</span><span style="color:#c0c5ce;">			height: &quot;</span><span style="color:#a3be8c;">10px</span><span style="color:#c0c5ce;">&quot;,
+</span><span style="color:#c0c5ce;">			background_color: &quot;</span><span style="color:#a3be8c;">red</span><span style="color:#c0c5ce;">&quot;,
+</span><span style="color:#c0c5ce;">			justify_content: &quot;</span><span style="color:#a3be8c;">center</span><span style="color:#c0c5ce;">&quot;,
+</span><span style="color:#c0c5ce;">			align_items: &quot;</span><span style="color:#a3be8c;">center</span><span style="color:#c0c5ce;">&quot;,
+</span><span style="color:#c0c5ce;">			onkeydown: </span><span style="color:#b48ead;">move </span><span style="color:#c0c5ce;">|k: KeyboardEvent| </span><span style="color:#b48ead;">if let </span><span style="color:#c0c5ce;">KeyCode::Q = k.key_code {
+</span><span style="color:#c0c5ce;">				tui_ctx.</span><span style="color:#96b5b4;">quit</span><span style="color:#c0c5ce;">();
+</span><span style="color:#c0c5ce;">			},
 </span><span style="color:#c0c5ce;">
-</span><span style="color:#c0c5ce;">            &quot;</span><span style="color:#a3be8c;">Hello world!</span><span style="color:#c0c5ce;">&quot;
-</span><span style="color:#c0c5ce;">        }
-</span><span style="color:#c0c5ce;">    })
+</span><span style="color:#c0c5ce;">			&quot;</span><span style="color:#a3be8c;">Hello world!</span><span style="color:#c0c5ce;">&quot;
+</span><span style="color:#c0c5ce;">		}
+</span><span style="color:#c0c5ce;">	})
 </span><span style="color:#c0c5ce;">}
 </span><span style="color:#c0c5ce;">
 </span></pre>

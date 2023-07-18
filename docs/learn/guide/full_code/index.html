@@ -120,197 +120,197 @@
 </span><span style="color:#b48ead;">use </span><span style="color:#c0c5ce;">dioxus::prelude::*;
 </span><span style="color:#c0c5ce;">
 </span><span style="color:#b48ead;">pub fn </span><span style="color:#8fa1b3;">App</span><span style="color:#c0c5ce;">(</span><span style="color:#bf616a;">cx</span><span style="color:#c0c5ce;">: Scope) -&gt; Element {
-</span><span style="color:#c0c5ce;">    </span><span style="color:#96b5b4;">use_shared_state_provider</span><span style="color:#c0c5ce;">(cx, || PreviewState::Unset);
+</span><span style="color:#c0c5ce;">	</span><span style="color:#96b5b4;">use_shared_state_provider</span><span style="color:#c0c5ce;">(cx, || PreviewState::Unset);
 </span><span style="color:#c0c5ce;">
-</span><span style="color:#c0c5ce;">    cx.</span><span style="color:#96b5b4;">render</span><span style="color:#c0c5ce;">(rsx! {
-</span><span style="color:#c0c5ce;">        div {
-</span><span style="color:#c0c5ce;">            display: &quot;</span><span style="color:#a3be8c;">flex</span><span style="color:#c0c5ce;">&quot;,
-</span><span style="color:#c0c5ce;">            flex_direction: &quot;</span><span style="color:#a3be8c;">row</span><span style="color:#c0c5ce;">&quot;,
-</span><span style="color:#c0c5ce;">            width: &quot;</span><span style="color:#a3be8c;">100%</span><span style="color:#c0c5ce;">&quot;,
-</span><span style="color:#c0c5ce;">            div {
-</span><span style="color:#c0c5ce;">                width: &quot;</span><span style="color:#a3be8c;">50%</span><span style="color:#c0c5ce;">&quot;,
-</span><span style="color:#c0c5ce;">                Stories {}
-</span><span style="color:#c0c5ce;">            }
-</span><span style="color:#c0c5ce;">            div {
-</span><span style="color:#c0c5ce;">                width: &quot;</span><span style="color:#a3be8c;">50%</span><span style="color:#c0c5ce;">&quot;,
-</span><span style="color:#c0c5ce;">                Preview {}
-</span><span style="color:#c0c5ce;">            }
-</span><span style="color:#c0c5ce;">        }
-</span><span style="color:#c0c5ce;">    })
+</span><span style="color:#c0c5ce;">	cx.</span><span style="color:#96b5b4;">render</span><span style="color:#c0c5ce;">(rsx! {
+</span><span style="color:#c0c5ce;">		div {
+</span><span style="color:#c0c5ce;">			display: &quot;</span><span style="color:#a3be8c;">flex</span><span style="color:#c0c5ce;">&quot;,
+</span><span style="color:#c0c5ce;">			flex_direction: &quot;</span><span style="color:#a3be8c;">row</span><span style="color:#c0c5ce;">&quot;,
+</span><span style="color:#c0c5ce;">			width: &quot;</span><span style="color:#a3be8c;">100%</span><span style="color:#c0c5ce;">&quot;,
+</span><span style="color:#c0c5ce;">			div {
+</span><span style="color:#c0c5ce;">				width: &quot;</span><span style="color:#a3be8c;">50%</span><span style="color:#c0c5ce;">&quot;,
+</span><span style="color:#c0c5ce;">				Stories {}
+</span><span style="color:#c0c5ce;">			}
+</span><span style="color:#c0c5ce;">			div {
+</span><span style="color:#c0c5ce;">				width: &quot;</span><span style="color:#a3be8c;">50%</span><span style="color:#c0c5ce;">&quot;,
+</span><span style="color:#c0c5ce;">				Preview {}
+</span><span style="color:#c0c5ce;">			}
+</span><span style="color:#c0c5ce;">		}
+</span><span style="color:#c0c5ce;">	})
 </span><span style="color:#c0c5ce;">}
 </span><span style="color:#c0c5ce;">
 </span><span style="color:#b48ead;">fn </span><span style="color:#8fa1b3;">Stories</span><span style="color:#c0c5ce;">(</span><span style="color:#bf616a;">cx</span><span style="color:#c0c5ce;">: Scope) -&gt; Element {
-</span><span style="color:#c0c5ce;">    </span><span style="color:#b48ead;">let</span><span style="color:#c0c5ce;"> story = </span><span style="color:#96b5b4;">use_future</span><span style="color:#c0c5ce;">(&amp;cx, (), |_| </span><span style="color:#96b5b4;">get_stories</span><span style="color:#c0c5ce;">(</span><span style="color:#d08770;">10</span><span style="color:#c0c5ce;">));
+</span><span style="color:#c0c5ce;">	</span><span style="color:#b48ead;">let</span><span style="color:#c0c5ce;"> story = </span><span style="color:#96b5b4;">use_future</span><span style="color:#c0c5ce;">(&amp;cx, (), |_| </span><span style="color:#96b5b4;">get_stories</span><span style="color:#c0c5ce;">(</span><span style="color:#d08770;">10</span><span style="color:#c0c5ce;">));
 </span><span style="color:#c0c5ce;">
-</span><span style="color:#c0c5ce;">    </span><span style="color:#b48ead;">match</span><span style="color:#c0c5ce;"> story.</span><span style="color:#96b5b4;">value</span><span style="color:#c0c5ce;">() {
-</span><span style="color:#c0c5ce;">        Some(Ok(list)) =&gt; render! {
-</span><span style="color:#c0c5ce;">            div {
-</span><span style="color:#c0c5ce;">                </span><span style="color:#b48ead;">for</span><span style="color:#c0c5ce;"> story in list {
-</span><span style="color:#c0c5ce;">                    StoryListing { story: story.</span><span style="color:#96b5b4;">clone</span><span style="color:#c0c5ce;">() }
-</span><span style="color:#c0c5ce;">                }
-</span><span style="color:#c0c5ce;">            }
-</span><span style="color:#c0c5ce;">        },
-</span><span style="color:#c0c5ce;">        Some(Err(err)) =&gt; render! {&quot;</span><span style="color:#a3be8c;">An error occured while fetching stories {err}</span><span style="color:#c0c5ce;">&quot;},
-</span><span style="color:#c0c5ce;">        None =&gt; render! {&quot;</span><span style="color:#a3be8c;">Loading items</span><span style="color:#c0c5ce;">&quot;},
-</span><span style="color:#c0c5ce;">    }
+</span><span style="color:#c0c5ce;">	</span><span style="color:#b48ead;">match</span><span style="color:#c0c5ce;"> story.</span><span style="color:#96b5b4;">value</span><span style="color:#c0c5ce;">() {
+</span><span style="color:#c0c5ce;">		Some(Ok(list)) =&gt; render! {
+</span><span style="color:#c0c5ce;">			div {
+</span><span style="color:#c0c5ce;">				</span><span style="color:#b48ead;">for</span><span style="color:#c0c5ce;"> story in list {
+</span><span style="color:#c0c5ce;">					StoryListing { story: story.</span><span style="color:#96b5b4;">clone</span><span style="color:#c0c5ce;">() }
+</span><span style="color:#c0c5ce;">				}
+</span><span style="color:#c0c5ce;">			}
+</span><span style="color:#c0c5ce;">		},
+</span><span style="color:#c0c5ce;">		Some(Err(err)) =&gt; render! {&quot;</span><span style="color:#a3be8c;">An error occured while fetching stories {err}</span><span style="color:#c0c5ce;">&quot;},
+</span><span style="color:#c0c5ce;">		None =&gt; render! {&quot;</span><span style="color:#a3be8c;">Loading items</span><span style="color:#c0c5ce;">&quot;},
+</span><span style="color:#c0c5ce;">	}
 </span><span style="color:#c0c5ce;">}
 </span><span style="color:#c0c5ce;">
 </span><span style="color:#c0c5ce;">async </span><span style="color:#b48ead;">fn </span><span style="color:#8fa1b3;">resolve_story</span><span style="color:#c0c5ce;">(
-</span><span style="color:#c0c5ce;">    </span><span style="color:#bf616a;">full_story</span><span style="color:#c0c5ce;">: UseRef&lt;Option&lt;StoryPageData&gt;&gt;,
-</span><span style="color:#c0c5ce;">    </span><span style="color:#bf616a;">preview_state</span><span style="color:#c0c5ce;">: UseSharedState&lt;PreviewState&gt;,
-</span><span style="color:#c0c5ce;">    </span><span style="color:#bf616a;">story_id</span><span style="color:#c0c5ce;">: </span><span style="color:#b48ead;">i64</span><span style="color:#c0c5ce;">,
+</span><span style="color:#c0c5ce;">	</span><span style="color:#bf616a;">full_story</span><span style="color:#c0c5ce;">: UseRef&lt;Option&lt;StoryPageData&gt;&gt;,
+</span><span style="color:#c0c5ce;">	</span><span style="color:#bf616a;">preview_state</span><span style="color:#c0c5ce;">: UseSharedState&lt;PreviewState&gt;,
+</span><span style="color:#c0c5ce;">	</span><span style="color:#bf616a;">story_id</span><span style="color:#c0c5ce;">: </span><span style="color:#b48ead;">i64</span><span style="color:#c0c5ce;">,
 </span><span style="color:#c0c5ce;">) {
-</span><span style="color:#c0c5ce;">    </span><span style="color:#b48ead;">if let </span><span style="color:#c0c5ce;">Some(cached) = &amp;*full_story.</span><span style="color:#96b5b4;">read</span><span style="color:#c0c5ce;">() {
-</span><span style="color:#c0c5ce;">        *preview_state.</span><span style="color:#96b5b4;">write</span><span style="color:#c0c5ce;">() = PreviewState::Loaded(cached.</span><span style="color:#96b5b4;">clone</span><span style="color:#c0c5ce;">());
-</span><span style="color:#c0c5ce;">        </span><span style="color:#b48ead;">return</span><span style="color:#c0c5ce;">;
-</span><span style="color:#c0c5ce;">    }
+</span><span style="color:#c0c5ce;">	</span><span style="color:#b48ead;">if let </span><span style="color:#c0c5ce;">Some(cached) = &amp;*full_story.</span><span style="color:#96b5b4;">read</span><span style="color:#c0c5ce;">() {
+</span><span style="color:#c0c5ce;">		*preview_state.</span><span style="color:#96b5b4;">write</span><span style="color:#c0c5ce;">() = PreviewState::Loaded(cached.</span><span style="color:#96b5b4;">clone</span><span style="color:#c0c5ce;">());
+</span><span style="color:#c0c5ce;">		</span><span style="color:#b48ead;">return</span><span style="color:#c0c5ce;">;
+</span><span style="color:#c0c5ce;">	}
 </span><span style="color:#c0c5ce;">
-</span><span style="color:#c0c5ce;">    *preview_state.</span><span style="color:#96b5b4;">write</span><span style="color:#c0c5ce;">() = PreviewState::Loading;
-</span><span style="color:#c0c5ce;">    </span><span style="color:#b48ead;">if let </span><span style="color:#c0c5ce;">Ok(story) = </span><span style="color:#96b5b4;">get_story</span><span style="color:#c0c5ce;">(story_id).await {
-</span><span style="color:#c0c5ce;">        *preview_state.</span><span style="color:#96b5b4;">write</span><span style="color:#c0c5ce;">() = PreviewState::Loaded(story.</span><span style="color:#96b5b4;">clone</span><span style="color:#c0c5ce;">());
-</span><span style="color:#c0c5ce;">        *full_story.</span><span style="color:#96b5b4;">write</span><span style="color:#c0c5ce;">() = Some(story);
-</span><span style="color:#c0c5ce;">    }
+</span><span style="color:#c0c5ce;">	*preview_state.</span><span style="color:#96b5b4;">write</span><span style="color:#c0c5ce;">() = PreviewState::Loading;
+</span><span style="color:#c0c5ce;">	</span><span style="color:#b48ead;">if let </span><span style="color:#c0c5ce;">Ok(story) = </span><span style="color:#96b5b4;">get_story</span><span style="color:#c0c5ce;">(story_id).await {
+</span><span style="color:#c0c5ce;">		*preview_state.</span><span style="color:#96b5b4;">write</span><span style="color:#c0c5ce;">() = PreviewState::Loaded(story.</span><span style="color:#96b5b4;">clone</span><span style="color:#c0c5ce;">());
+</span><span style="color:#c0c5ce;">		*full_story.</span><span style="color:#96b5b4;">write</span><span style="color:#c0c5ce;">() = Some(story);
+</span><span style="color:#c0c5ce;">	}
 </span><span style="color:#c0c5ce;">}
 </span><span style="color:#c0c5ce;">
 </span><span style="color:#c0c5ce;">#[</span><span style="color:#bf616a;">inline_props</span><span style="color:#c0c5ce;">]
 </span><span style="color:#b48ead;">fn </span><span style="color:#8fa1b3;">StoryListing</span><span style="color:#c0c5ce;">(</span><span style="color:#bf616a;">cx</span><span style="color:#c0c5ce;">: Scope, </span><span style="color:#bf616a;">story</span><span style="color:#c0c5ce;">: StoryItem) -&gt; Element {
-</span><span style="color:#c0c5ce;">    </span><span style="color:#b48ead;">let</span><span style="color:#c0c5ce;"> preview_state = use_shared_state::&lt;PreviewState&gt;(cx).</span><span style="color:#96b5b4;">unwrap</span><span style="color:#c0c5ce;">();
-</span><span style="color:#c0c5ce;">    </span><span style="color:#b48ead;">let</span><span style="color:#c0c5ce;"> StoryItem {
-</span><span style="color:#c0c5ce;">        title,
-</span><span style="color:#c0c5ce;">        url,
-</span><span style="color:#c0c5ce;">        by,
-</span><span style="color:#c0c5ce;">        score,
-</span><span style="color:#c0c5ce;">        time,
-</span><span style="color:#c0c5ce;">        kids,
-</span><span style="color:#c0c5ce;">        id,
-</span><span style="color:#c0c5ce;">        ..
-</span><span style="color:#c0c5ce;">    } = story;
-</span><span style="color:#c0c5ce;">    </span><span style="color:#b48ead;">let</span><span style="color:#c0c5ce;"> full_story = </span><span style="color:#96b5b4;">use_ref</span><span style="color:#c0c5ce;">(cx, || None);
+</span><span style="color:#c0c5ce;">	</span><span style="color:#b48ead;">let</span><span style="color:#c0c5ce;"> preview_state = use_shared_state::&lt;PreviewState&gt;(cx).</span><span style="color:#96b5b4;">unwrap</span><span style="color:#c0c5ce;">();
+</span><span style="color:#c0c5ce;">	</span><span style="color:#b48ead;">let</span><span style="color:#c0c5ce;"> StoryItem {
+</span><span style="color:#c0c5ce;">		title,
+</span><span style="color:#c0c5ce;">		url,
+</span><span style="color:#c0c5ce;">		by,
+</span><span style="color:#c0c5ce;">		score,
+</span><span style="color:#c0c5ce;">		time,
+</span><span style="color:#c0c5ce;">		kids,
+</span><span style="color:#c0c5ce;">		id,
+</span><span style="color:#c0c5ce;">		..
+</span><span style="color:#c0c5ce;">	} = story;
+</span><span style="color:#c0c5ce;">	</span><span style="color:#b48ead;">let</span><span style="color:#c0c5ce;"> full_story = </span><span style="color:#96b5b4;">use_ref</span><span style="color:#c0c5ce;">(cx, || None);
 </span><span style="color:#c0c5ce;">
-</span><span style="color:#c0c5ce;">    </span><span style="color:#b48ead;">let</span><span style="color:#c0c5ce;"> url = url.</span><span style="color:#96b5b4;">as_deref</span><span style="color:#c0c5ce;">().</span><span style="color:#96b5b4;">unwrap_or_default</span><span style="color:#c0c5ce;">();
-</span><span style="color:#c0c5ce;">    </span><span style="color:#b48ead;">let</span><span style="color:#c0c5ce;"> hostname = url
-</span><span style="color:#c0c5ce;">        .</span><span style="color:#96b5b4;">trim_start_matches</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">https://</span><span style="color:#c0c5ce;">&quot;)
-</span><span style="color:#c0c5ce;">        .</span><span style="color:#96b5b4;">trim_start_matches</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">http://</span><span style="color:#c0c5ce;">&quot;)
-</span><span style="color:#c0c5ce;">        .</span><span style="color:#96b5b4;">trim_start_matches</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">www.</span><span style="color:#c0c5ce;">&quot;);
-</span><span style="color:#c0c5ce;">    </span><span style="color:#b48ead;">let</span><span style="color:#c0c5ce;"> score = format!(&quot;</span><span style="color:#d08770;">{score} {}</span><span style="color:#c0c5ce;">&quot;, </span><span style="color:#b48ead;">if </span><span style="color:#c0c5ce;">*score == </span><span style="color:#d08770;">1 </span><span style="color:#c0c5ce;">{ &quot;</span><span style="color:#a3be8c;"> point</span><span style="color:#c0c5ce;">&quot; } </span><span style="color:#b48ead;">else </span><span style="color:#c0c5ce;">{ &quot;</span><span style="color:#a3be8c;"> points</span><span style="color:#c0c5ce;">&quot; });
-</span><span style="color:#c0c5ce;">    </span><span style="color:#b48ead;">let</span><span style="color:#c0c5ce;"> comments = format!(
-</span><span style="color:#c0c5ce;">        &quot;</span><span style="color:#d08770;">{} {}</span><span style="color:#c0c5ce;">&quot;,
-</span><span style="color:#c0c5ce;">        kids.</span><span style="color:#96b5b4;">len</span><span style="color:#c0c5ce;">(),
-</span><span style="color:#c0c5ce;">        </span><span style="color:#b48ead;">if</span><span style="color:#c0c5ce;"> kids.</span><span style="color:#96b5b4;">len</span><span style="color:#c0c5ce;">() == </span><span style="color:#d08770;">1 </span><span style="color:#c0c5ce;">{
-</span><span style="color:#c0c5ce;">            &quot;</span><span style="color:#a3be8c;"> comment</span><span style="color:#c0c5ce;">&quot;
-</span><span style="color:#c0c5ce;">        } </span><span style="color:#b48ead;">else </span><span style="color:#c0c5ce;">{
-</span><span style="color:#c0c5ce;">            &quot;</span><span style="color:#a3be8c;"> comments</span><span style="color:#c0c5ce;">&quot;
-</span><span style="color:#c0c5ce;">        }
-</span><span style="color:#c0c5ce;">    );
-</span><span style="color:#c0c5ce;">    </span><span style="color:#b48ead;">let</span><span style="color:#c0c5ce;"> time = time.</span><span style="color:#96b5b4;">format</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">%D %l:%M %p</span><span style="color:#c0c5ce;">&quot;);
+</span><span style="color:#c0c5ce;">	</span><span style="color:#b48ead;">let</span><span style="color:#c0c5ce;"> url = url.</span><span style="color:#96b5b4;">as_deref</span><span style="color:#c0c5ce;">().</span><span style="color:#96b5b4;">unwrap_or_default</span><span style="color:#c0c5ce;">();
+</span><span style="color:#c0c5ce;">	</span><span style="color:#b48ead;">let</span><span style="color:#c0c5ce;"> hostname = url
+</span><span style="color:#c0c5ce;">		.</span><span style="color:#96b5b4;">trim_start_matches</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">https://</span><span style="color:#c0c5ce;">&quot;)
+</span><span style="color:#c0c5ce;">		.</span><span style="color:#96b5b4;">trim_start_matches</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">http://</span><span style="color:#c0c5ce;">&quot;)
+</span><span style="color:#c0c5ce;">		.</span><span style="color:#96b5b4;">trim_start_matches</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">www.</span><span style="color:#c0c5ce;">&quot;);
+</span><span style="color:#c0c5ce;">	</span><span style="color:#b48ead;">let</span><span style="color:#c0c5ce;"> score = format!(&quot;</span><span style="color:#d08770;">{score} {}</span><span style="color:#c0c5ce;">&quot;, </span><span style="color:#b48ead;">if </span><span style="color:#c0c5ce;">*score == </span><span style="color:#d08770;">1 </span><span style="color:#c0c5ce;">{ &quot;</span><span style="color:#a3be8c;"> point</span><span style="color:#c0c5ce;">&quot; } </span><span style="color:#b48ead;">else </span><span style="color:#c0c5ce;">{ &quot;</span><span style="color:#a3be8c;"> points</span><span style="color:#c0c5ce;">&quot; });
+</span><span style="color:#c0c5ce;">	</span><span style="color:#b48ead;">let</span><span style="color:#c0c5ce;"> comments = format!(
+</span><span style="color:#c0c5ce;">		&quot;</span><span style="color:#d08770;">{} {}</span><span style="color:#c0c5ce;">&quot;,
+</span><span style="color:#c0c5ce;">		kids.</span><span style="color:#96b5b4;">len</span><span style="color:#c0c5ce;">(),
+</span><span style="color:#c0c5ce;">		</span><span style="color:#b48ead;">if</span><span style="color:#c0c5ce;"> kids.</span><span style="color:#96b5b4;">len</span><span style="color:#c0c5ce;">() == </span><span style="color:#d08770;">1 </span><span style="color:#c0c5ce;">{
+</span><span style="color:#c0c5ce;">			&quot;</span><span style="color:#a3be8c;"> comment</span><span style="color:#c0c5ce;">&quot;
+</span><span style="color:#c0c5ce;">		} </span><span style="color:#b48ead;">else </span><span style="color:#c0c5ce;">{
+</span><span style="color:#c0c5ce;">			&quot;</span><span style="color:#a3be8c;"> comments</span><span style="color:#c0c5ce;">&quot;
+</span><span style="color:#c0c5ce;">		}
+</span><span style="color:#c0c5ce;">	);
+</span><span style="color:#c0c5ce;">	</span><span style="color:#b48ead;">let</span><span style="color:#c0c5ce;"> time = time.</span><span style="color:#96b5b4;">format</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">%D %l:%M %p</span><span style="color:#c0c5ce;">&quot;);
 </span><span style="color:#c0c5ce;">
-</span><span style="color:#c0c5ce;">    cx.</span><span style="color:#96b5b4;">render</span><span style="color:#c0c5ce;">(rsx! {
-</span><span style="color:#c0c5ce;">        div {
-</span><span style="color:#c0c5ce;">            padding: &quot;</span><span style="color:#a3be8c;">0.5rem</span><span style="color:#c0c5ce;">&quot;,
-</span><span style="color:#c0c5ce;">            position: &quot;</span><span style="color:#a3be8c;">relative</span><span style="color:#c0c5ce;">&quot;,
-</span><span style="color:#c0c5ce;">            onmouseenter: </span><span style="color:#b48ead;">move </span><span style="color:#c0c5ce;">|_event| {
-</span><span style="color:#c0c5ce;">                </span><span style="color:#96b5b4;">resolve_story</span><span style="color:#c0c5ce;">(full_story.</span><span style="color:#96b5b4;">clone</span><span style="color:#c0c5ce;">(), preview_state.</span><span style="color:#96b5b4;">clone</span><span style="color:#c0c5ce;">(), *id)
-</span><span style="color:#c0c5ce;">            },
-</span><span style="color:#c0c5ce;">            div {
-</span><span style="color:#c0c5ce;">                font_size: &quot;</span><span style="color:#a3be8c;">1.5rem</span><span style="color:#c0c5ce;">&quot;,
-</span><span style="color:#c0c5ce;">                a {
-</span><span style="color:#c0c5ce;">                    href: url,
-</span><span style="color:#c0c5ce;">                    onfocus: </span><span style="color:#b48ead;">move </span><span style="color:#c0c5ce;">|_event| {
-</span><span style="color:#c0c5ce;">                        </span><span style="color:#96b5b4;">resolve_story</span><span style="color:#c0c5ce;">(full_story.</span><span style="color:#96b5b4;">clone</span><span style="color:#c0c5ce;">(), preview_state.</span><span style="color:#96b5b4;">clone</span><span style="color:#c0c5ce;">(), *id)
-</span><span style="color:#c0c5ce;">                    },
-</span><span style="color:#c0c5ce;">                    &quot;</span><span style="color:#a3be8c;">{title}</span><span style="color:#c0c5ce;">&quot;
-</span><span style="color:#c0c5ce;">                }
-</span><span style="color:#c0c5ce;">                a {
-</span><span style="color:#c0c5ce;">                    color: &quot;</span><span style="color:#a3be8c;">gray</span><span style="color:#c0c5ce;">&quot;,
-</span><span style="color:#c0c5ce;">                    href: &quot;</span><span style="color:#a3be8c;">https://news.ycombinator.com/from?site={hostname}</span><span style="color:#c0c5ce;">&quot;,
-</span><span style="color:#c0c5ce;">                    text_decoration: &quot;</span><span style="color:#a3be8c;">none</span><span style="color:#c0c5ce;">&quot;,
-</span><span style="color:#c0c5ce;">                    &quot;</span><span style="color:#a3be8c;"> ({hostname})</span><span style="color:#c0c5ce;">&quot;
-</span><span style="color:#c0c5ce;">                }
-</span><span style="color:#c0c5ce;">            }
-</span><span style="color:#c0c5ce;">            div {
-</span><span style="color:#c0c5ce;">                display: &quot;</span><span style="color:#a3be8c;">flex</span><span style="color:#c0c5ce;">&quot;,
-</span><span style="color:#c0c5ce;">                flex_direction: &quot;</span><span style="color:#a3be8c;">row</span><span style="color:#c0c5ce;">&quot;,
-</span><span style="color:#c0c5ce;">                color: &quot;</span><span style="color:#a3be8c;">gray</span><span style="color:#c0c5ce;">&quot;,
-</span><span style="color:#c0c5ce;">                div {
-</span><span style="color:#c0c5ce;">                    &quot;</span><span style="color:#a3be8c;">{score}</span><span style="color:#c0c5ce;">&quot;
-</span><span style="color:#c0c5ce;">                }
-</span><span style="color:#c0c5ce;">                div {
-</span><span style="color:#c0c5ce;">                    padding_left: &quot;</span><span style="color:#a3be8c;">0.5rem</span><span style="color:#c0c5ce;">&quot;,
-</span><span style="color:#c0c5ce;">                    &quot;</span><span style="color:#a3be8c;">by {by}</span><span style="color:#c0c5ce;">&quot;
-</span><span style="color:#c0c5ce;">                }
-</span><span style="color:#c0c5ce;">                div {
-</span><span style="color:#c0c5ce;">                    padding_left: &quot;</span><span style="color:#a3be8c;">0.5rem</span><span style="color:#c0c5ce;">&quot;,
-</span><span style="color:#c0c5ce;">                    &quot;</span><span style="color:#a3be8c;">{time}</span><span style="color:#c0c5ce;">&quot;
-</span><span style="color:#c0c5ce;">                }
-</span><span style="color:#c0c5ce;">                div {
-</span><span style="color:#c0c5ce;">                    padding_left: &quot;</span><span style="color:#a3be8c;">0.5rem</span><span style="color:#c0c5ce;">&quot;,
-</span><span style="color:#c0c5ce;">                    &quot;</span><span style="color:#a3be8c;">{comments}</span><span style="color:#c0c5ce;">&quot;
-</span><span style="color:#c0c5ce;">                }
-</span><span style="color:#c0c5ce;">            }
-</span><span style="color:#c0c5ce;">        }
-</span><span style="color:#c0c5ce;">    })
+</span><span style="color:#c0c5ce;">	cx.</span><span style="color:#96b5b4;">render</span><span style="color:#c0c5ce;">(rsx! {
+</span><span style="color:#c0c5ce;">		div {
+</span><span style="color:#c0c5ce;">			padding: &quot;</span><span style="color:#a3be8c;">0.5rem</span><span style="color:#c0c5ce;">&quot;,
+</span><span style="color:#c0c5ce;">			position: &quot;</span><span style="color:#a3be8c;">relative</span><span style="color:#c0c5ce;">&quot;,
+</span><span style="color:#c0c5ce;">			onmouseenter: </span><span style="color:#b48ead;">move </span><span style="color:#c0c5ce;">|_event| {
+</span><span style="color:#c0c5ce;">				</span><span style="color:#96b5b4;">resolve_story</span><span style="color:#c0c5ce;">(full_story.</span><span style="color:#96b5b4;">clone</span><span style="color:#c0c5ce;">(), preview_state.</span><span style="color:#96b5b4;">clone</span><span style="color:#c0c5ce;">(), *id)
+</span><span style="color:#c0c5ce;">			},
+</span><span style="color:#c0c5ce;">			div {
+</span><span style="color:#c0c5ce;">				font_size: &quot;</span><span style="color:#a3be8c;">1.5rem</span><span style="color:#c0c5ce;">&quot;,
+</span><span style="color:#c0c5ce;">				a {
+</span><span style="color:#c0c5ce;">					href: url,
+</span><span style="color:#c0c5ce;">					onfocus: </span><span style="color:#b48ead;">move </span><span style="color:#c0c5ce;">|_event| {
+</span><span style="color:#c0c5ce;">						</span><span style="color:#96b5b4;">resolve_story</span><span style="color:#c0c5ce;">(full_story.</span><span style="color:#96b5b4;">clone</span><span style="color:#c0c5ce;">(), preview_state.</span><span style="color:#96b5b4;">clone</span><span style="color:#c0c5ce;">(), *id)
+</span><span style="color:#c0c5ce;">					},
+</span><span style="color:#c0c5ce;">					&quot;</span><span style="color:#a3be8c;">{title}</span><span style="color:#c0c5ce;">&quot;
+</span><span style="color:#c0c5ce;">				}
+</span><span style="color:#c0c5ce;">				a {
+</span><span style="color:#c0c5ce;">					color: &quot;</span><span style="color:#a3be8c;">gray</span><span style="color:#c0c5ce;">&quot;,
+</span><span style="color:#c0c5ce;">					href: &quot;</span><span style="color:#a3be8c;">https://news.ycombinator.com/from?site={hostname}</span><span style="color:#c0c5ce;">&quot;,
+</span><span style="color:#c0c5ce;">					text_decoration: &quot;</span><span style="color:#a3be8c;">none</span><span style="color:#c0c5ce;">&quot;,
+</span><span style="color:#c0c5ce;">					&quot;</span><span style="color:#a3be8c;"> ({hostname})</span><span style="color:#c0c5ce;">&quot;
+</span><span style="color:#c0c5ce;">				}
+</span><span style="color:#c0c5ce;">			}
+</span><span style="color:#c0c5ce;">			div {
+</span><span style="color:#c0c5ce;">				display: &quot;</span><span style="color:#a3be8c;">flex</span><span style="color:#c0c5ce;">&quot;,
+</span><span style="color:#c0c5ce;">				flex_direction: &quot;</span><span style="color:#a3be8c;">row</span><span style="color:#c0c5ce;">&quot;,
+</span><span style="color:#c0c5ce;">				color: &quot;</span><span style="color:#a3be8c;">gray</span><span style="color:#c0c5ce;">&quot;,
+</span><span style="color:#c0c5ce;">				div {
+</span><span style="color:#c0c5ce;">					&quot;</span><span style="color:#a3be8c;">{score}</span><span style="color:#c0c5ce;">&quot;
+</span><span style="color:#c0c5ce;">				}
+</span><span style="color:#c0c5ce;">				div {
+</span><span style="color:#c0c5ce;">					padding_left: &quot;</span><span style="color:#a3be8c;">0.5rem</span><span style="color:#c0c5ce;">&quot;,
+</span><span style="color:#c0c5ce;">					&quot;</span><span style="color:#a3be8c;">by {by}</span><span style="color:#c0c5ce;">&quot;
+</span><span style="color:#c0c5ce;">				}
+</span><span style="color:#c0c5ce;">				div {
+</span><span style="color:#c0c5ce;">					padding_left: &quot;</span><span style="color:#a3be8c;">0.5rem</span><span style="color:#c0c5ce;">&quot;,
+</span><span style="color:#c0c5ce;">					&quot;</span><span style="color:#a3be8c;">{time}</span><span style="color:#c0c5ce;">&quot;
+</span><span style="color:#c0c5ce;">				}
+</span><span style="color:#c0c5ce;">				div {
+</span><span style="color:#c0c5ce;">					padding_left: &quot;</span><span style="color:#a3be8c;">0.5rem</span><span style="color:#c0c5ce;">&quot;,
+</span><span style="color:#c0c5ce;">					&quot;</span><span style="color:#a3be8c;">{comments}</span><span style="color:#c0c5ce;">&quot;
+</span><span style="color:#c0c5ce;">				}
+</span><span style="color:#c0c5ce;">			}
+</span><span style="color:#c0c5ce;">		}
+</span><span style="color:#c0c5ce;">	})
 </span><span style="color:#c0c5ce;">}
 </span><span style="color:#c0c5ce;">
 </span><span style="color:#c0c5ce;">#[</span><span style="color:#bf616a;">derive</span><span style="color:#c0c5ce;">(Clone, Debug)]
 </span><span style="color:#b48ead;">enum </span><span style="color:#c0c5ce;">PreviewState {
-</span><span style="color:#c0c5ce;">    Unset,
-</span><span style="color:#c0c5ce;">    Loading,
-</span><span style="color:#c0c5ce;">    Loaded(StoryPageData),
+</span><span style="color:#c0c5ce;">	Unset,
+</span><span style="color:#c0c5ce;">	Loading,
+</span><span style="color:#c0c5ce;">	Loaded(StoryPageData),
 </span><span style="color:#c0c5ce;">}
 </span><span style="color:#c0c5ce;">
 </span><span style="color:#b48ead;">fn </span><span style="color:#8fa1b3;">Preview</span><span style="color:#c0c5ce;">(</span><span style="color:#bf616a;">cx</span><span style="color:#c0c5ce;">: Scope) -&gt; Element {
-</span><span style="color:#c0c5ce;">    </span><span style="color:#b48ead;">let</span><span style="color:#c0c5ce;"> preview_state = use_shared_state::&lt;PreviewState&gt;(cx)?;
+</span><span style="color:#c0c5ce;">	</span><span style="color:#b48ead;">let</span><span style="color:#c0c5ce;"> preview_state = use_shared_state::&lt;PreviewState&gt;(cx)?;
 </span><span style="color:#c0c5ce;">
-</span><span style="color:#c0c5ce;">    </span><span style="color:#b48ead;">match </span><span style="color:#c0c5ce;">&amp;*preview_state.</span><span style="color:#96b5b4;">read</span><span style="color:#c0c5ce;">() {
-</span><span style="color:#c0c5ce;">        PreviewState::Unset =&gt; render! {
-</span><span style="color:#c0c5ce;">            &quot;</span><span style="color:#a3be8c;">Hover over a story to preview it here</span><span style="color:#c0c5ce;">&quot;
-</span><span style="color:#c0c5ce;">        },
-</span><span style="color:#c0c5ce;">        PreviewState::Loading =&gt; render! {
-</span><span style="color:#c0c5ce;">            &quot;</span><span style="color:#a3be8c;">Loading...</span><span style="color:#c0c5ce;">&quot;
-</span><span style="color:#c0c5ce;">        },
-</span><span style="color:#c0c5ce;">        PreviewState::Loaded(story) =&gt; {
-</span><span style="color:#c0c5ce;">            </span><span style="color:#b48ead;">let</span><span style="color:#c0c5ce;"> title = &amp;story.item.title;
-</span><span style="color:#c0c5ce;">            </span><span style="color:#b48ead;">let</span><span style="color:#c0c5ce;"> url = story.item.url.</span><span style="color:#96b5b4;">as_deref</span><span style="color:#c0c5ce;">().</span><span style="color:#96b5b4;">unwrap_or_default</span><span style="color:#c0c5ce;">();
-</span><span style="color:#c0c5ce;">            </span><span style="color:#b48ead;">let</span><span style="color:#c0c5ce;"> text = story.item.text.</span><span style="color:#96b5b4;">as_deref</span><span style="color:#c0c5ce;">().</span><span style="color:#96b5b4;">unwrap_or_default</span><span style="color:#c0c5ce;">();
-</span><span style="color:#c0c5ce;">            render! {
-</span><span style="color:#c0c5ce;">                div {
-</span><span style="color:#c0c5ce;">                    padding: &quot;</span><span style="color:#a3be8c;">0.5rem</span><span style="color:#c0c5ce;">&quot;,
-</span><span style="color:#c0c5ce;">                    div {
-</span><span style="color:#c0c5ce;">                        font_size: &quot;</span><span style="color:#a3be8c;">1.5rem</span><span style="color:#c0c5ce;">&quot;,
-</span><span style="color:#c0c5ce;">                        a {
-</span><span style="color:#c0c5ce;">                            href: &quot;</span><span style="color:#a3be8c;">{url}</span><span style="color:#c0c5ce;">&quot;,
-</span><span style="color:#c0c5ce;">                            &quot;</span><span style="color:#a3be8c;">{title}</span><span style="color:#c0c5ce;">&quot;
-</span><span style="color:#c0c5ce;">                        }
-</span><span style="color:#c0c5ce;">                    }
-</span><span style="color:#c0c5ce;">                    div {
-</span><span style="color:#c0c5ce;">                        dangerous_inner_html: &quot;</span><span style="color:#a3be8c;">{text}</span><span style="color:#c0c5ce;">&quot;,
-</span><span style="color:#c0c5ce;">                    }
-</span><span style="color:#c0c5ce;">                    </span><span style="color:#b48ead;">for</span><span style="color:#c0c5ce;"> comment in &amp;story.comments {
-</span><span style="color:#c0c5ce;">                        Comment { comment: comment.</span><span style="color:#96b5b4;">clone</span><span style="color:#c0c5ce;">() }
-</span><span style="color:#c0c5ce;">                    }
-</span><span style="color:#c0c5ce;">                }
-</span><span style="color:#c0c5ce;">            }
-</span><span style="color:#c0c5ce;">        }
-</span><span style="color:#c0c5ce;">    }
+</span><span style="color:#c0c5ce;">	</span><span style="color:#b48ead;">match </span><span style="color:#c0c5ce;">&amp;*preview_state.</span><span style="color:#96b5b4;">read</span><span style="color:#c0c5ce;">() {
+</span><span style="color:#c0c5ce;">		PreviewState::Unset =&gt; render! {
+</span><span style="color:#c0c5ce;">			&quot;</span><span style="color:#a3be8c;">Hover over a story to preview it here</span><span style="color:#c0c5ce;">&quot;
+</span><span style="color:#c0c5ce;">		},
+</span><span style="color:#c0c5ce;">		PreviewState::Loading =&gt; render! {
+</span><span style="color:#c0c5ce;">			&quot;</span><span style="color:#a3be8c;">Loading...</span><span style="color:#c0c5ce;">&quot;
+</span><span style="color:#c0c5ce;">		},
+</span><span style="color:#c0c5ce;">		PreviewState::Loaded(story) =&gt; {
+</span><span style="color:#c0c5ce;">			</span><span style="color:#b48ead;">let</span><span style="color:#c0c5ce;"> title = &amp;story.item.title;
+</span><span style="color:#c0c5ce;">			</span><span style="color:#b48ead;">let</span><span style="color:#c0c5ce;"> url = story.item.url.</span><span style="color:#96b5b4;">as_deref</span><span style="color:#c0c5ce;">().</span><span style="color:#96b5b4;">unwrap_or_default</span><span style="color:#c0c5ce;">();
+</span><span style="color:#c0c5ce;">			</span><span style="color:#b48ead;">let</span><span style="color:#c0c5ce;"> text = story.item.text.</span><span style="color:#96b5b4;">as_deref</span><span style="color:#c0c5ce;">().</span><span style="color:#96b5b4;">unwrap_or_default</span><span style="color:#c0c5ce;">();
+</span><span style="color:#c0c5ce;">			render! {
+</span><span style="color:#c0c5ce;">				div {
+</span><span style="color:#c0c5ce;">					padding: &quot;</span><span style="color:#a3be8c;">0.5rem</span><span style="color:#c0c5ce;">&quot;,
+</span><span style="color:#c0c5ce;">					div {
+</span><span style="color:#c0c5ce;">						font_size: &quot;</span><span style="color:#a3be8c;">1.5rem</span><span style="color:#c0c5ce;">&quot;,
+</span><span style="color:#c0c5ce;">						a {
+</span><span style="color:#c0c5ce;">							href: &quot;</span><span style="color:#a3be8c;">{url}</span><span style="color:#c0c5ce;">&quot;,
+</span><span style="color:#c0c5ce;">							&quot;</span><span style="color:#a3be8c;">{title}</span><span style="color:#c0c5ce;">&quot;
+</span><span style="color:#c0c5ce;">						}
+</span><span style="color:#c0c5ce;">					}
+</span><span style="color:#c0c5ce;">					div {
+</span><span style="color:#c0c5ce;">						dangerous_inner_html: &quot;</span><span style="color:#a3be8c;">{text}</span><span style="color:#c0c5ce;">&quot;,
+</span><span style="color:#c0c5ce;">					}
+</span><span style="color:#c0c5ce;">					</span><span style="color:#b48ead;">for</span><span style="color:#c0c5ce;"> comment in &amp;story.comments {
+</span><span style="color:#c0c5ce;">						Comment { comment: comment.</span><span style="color:#96b5b4;">clone</span><span style="color:#c0c5ce;">() }
+</span><span style="color:#c0c5ce;">					}
+</span><span style="color:#c0c5ce;">				}
+</span><span style="color:#c0c5ce;">			}
+</span><span style="color:#c0c5ce;">		}
+</span><span style="color:#c0c5ce;">	}
 </span><span style="color:#c0c5ce;">}
 </span><span style="color:#c0c5ce;">
 </span><span style="color:#c0c5ce;">#[</span><span style="color:#bf616a;">inline_props</span><span style="color:#c0c5ce;">]
 </span><span style="color:#b48ead;">fn </span><span style="color:#8fa1b3;">Comment</span><span style="color:#c0c5ce;">(</span><span style="color:#bf616a;">cx</span><span style="color:#c0c5ce;">: Scope, </span><span style="color:#bf616a;">comment</span><span style="color:#c0c5ce;">: Comment) -&gt; Element&lt;</span><span style="color:#b48ead;">&#39;a</span><span style="color:#c0c5ce;">&gt; {
-</span><span style="color:#c0c5ce;">    render! {
-</span><span style="color:#c0c5ce;">        div {
-</span><span style="color:#c0c5ce;">            padding: &quot;</span><span style="color:#a3be8c;">0.5rem</span><span style="color:#c0c5ce;">&quot;,
-</span><span style="color:#c0c5ce;">            div {
-</span><span style="color:#c0c5ce;">                color: &quot;</span><span style="color:#a3be8c;">gray</span><span style="color:#c0c5ce;">&quot;,
-</span><span style="color:#c0c5ce;">                &quot;</span><span style="color:#a3be8c;">by {comment.by}</span><span style="color:#c0c5ce;">&quot;
-</span><span style="color:#c0c5ce;">            }
-</span><span style="color:#c0c5ce;">            div {
-</span><span style="color:#c0c5ce;">                dangerous_inner_html: &quot;</span><span style="color:#a3be8c;">{comment.text}</span><span style="color:#c0c5ce;">&quot;
-</span><span style="color:#c0c5ce;">            }
-</span><span style="color:#c0c5ce;">            </span><span style="color:#b48ead;">for</span><span style="color:#c0c5ce;"> kid in &amp;comment.sub_comments {
-</span><span style="color:#c0c5ce;">                Comment { comment: kid.</span><span style="color:#96b5b4;">clone</span><span style="color:#c0c5ce;">() }
-</span><span style="color:#c0c5ce;">            }
-</span><span style="color:#c0c5ce;">        }
-</span><span style="color:#c0c5ce;">    }
+</span><span style="color:#c0c5ce;">	render! {
+</span><span style="color:#c0c5ce;">		div {
+</span><span style="color:#c0c5ce;">			padding: &quot;</span><span style="color:#a3be8c;">0.5rem</span><span style="color:#c0c5ce;">&quot;,
+</span><span style="color:#c0c5ce;">			div {
+</span><span style="color:#c0c5ce;">				color: &quot;</span><span style="color:#a3be8c;">gray</span><span style="color:#c0c5ce;">&quot;,
+</span><span style="color:#c0c5ce;">				&quot;</span><span style="color:#a3be8c;">by {comment.by}</span><span style="color:#c0c5ce;">&quot;
+</span><span style="color:#c0c5ce;">			}
+</span><span style="color:#c0c5ce;">			div {
+</span><span style="color:#c0c5ce;">				dangerous_inner_html: &quot;</span><span style="color:#a3be8c;">{comment.text}</span><span style="color:#c0c5ce;">&quot;
+</span><span style="color:#c0c5ce;">			}
+</span><span style="color:#c0c5ce;">			</span><span style="color:#b48ead;">for</span><span style="color:#c0c5ce;"> kid in &amp;comment.sub_comments {
+</span><span style="color:#c0c5ce;">				Comment { comment: kid.</span><span style="color:#96b5b4;">clone</span><span style="color:#c0c5ce;">() }
+</span><span style="color:#c0c5ce;">			}
+</span><span style="color:#c0c5ce;">		}
+</span><span style="color:#c0c5ce;">	}
 </span><span style="color:#c0c5ce;">}
 </span><span style="color:#c0c5ce;">
 </span><span style="color:#65737e;">// Define the Hackernews API and types
@@ -324,102 +324,102 @@
 </span><span style="color:#b48ead;">const </span><span style="color:#d08770;">COMMENT_DEPTH</span><span style="color:#c0c5ce;">: </span><span style="color:#b48ead;">i64 </span><span style="color:#c0c5ce;">= </span><span style="color:#d08770;">2</span><span style="color:#c0c5ce;">;
 </span><span style="color:#c0c5ce;">
 </span><span style="color:#b48ead;">pub</span><span style="color:#c0c5ce;"> async </span><span style="color:#b48ead;">fn </span><span style="color:#8fa1b3;">get_story_preview</span><span style="color:#c0c5ce;">(</span><span style="color:#bf616a;">id</span><span style="color:#c0c5ce;">: </span><span style="color:#b48ead;">i64</span><span style="color:#c0c5ce;">) -&gt; Result&lt;StoryItem, reqwest::Error&gt; {
-</span><span style="color:#c0c5ce;">    </span><span style="color:#b48ead;">let</span><span style="color:#c0c5ce;"> url = format!(&quot;</span><span style="color:#d08770;">{}</span><span style="color:#a3be8c;">item/</span><span style="color:#d08770;">{}</span><span style="color:#a3be8c;">.json</span><span style="color:#c0c5ce;">&quot;, </span><span style="color:#d08770;">BASE_API_URL</span><span style="color:#c0c5ce;">, id);
-</span><span style="color:#c0c5ce;">    Ok(reqwest::get(&amp;url).await?.</span><span style="color:#96b5b4;">json</span><span style="color:#c0c5ce;">().await?)
+</span><span style="color:#c0c5ce;">	</span><span style="color:#b48ead;">let</span><span style="color:#c0c5ce;"> url = format!(&quot;</span><span style="color:#d08770;">{}</span><span style="color:#a3be8c;">item/</span><span style="color:#d08770;">{}</span><span style="color:#a3be8c;">.json</span><span style="color:#c0c5ce;">&quot;, </span><span style="color:#d08770;">BASE_API_URL</span><span style="color:#c0c5ce;">, id);
+</span><span style="color:#c0c5ce;">	Ok(reqwest::get(&amp;url).await?.</span><span style="color:#96b5b4;">json</span><span style="color:#c0c5ce;">().await?)
 </span><span style="color:#c0c5ce;">}
 </span><span style="color:#c0c5ce;">
 </span><span style="color:#b48ead;">pub</span><span style="color:#c0c5ce;"> async </span><span style="color:#b48ead;">fn </span><span style="color:#8fa1b3;">get_stories</span><span style="color:#c0c5ce;">(</span><span style="color:#bf616a;">count</span><span style="color:#c0c5ce;">: </span><span style="color:#b48ead;">usize</span><span style="color:#c0c5ce;">) -&gt; Result&lt;Vec&lt;StoryItem&gt;, reqwest::Error&gt; {
-</span><span style="color:#c0c5ce;">    </span><span style="color:#b48ead;">let</span><span style="color:#c0c5ce;"> url = format!(&quot;</span><span style="color:#d08770;">{}</span><span style="color:#a3be8c;">topstories.json</span><span style="color:#c0c5ce;">&quot;, </span><span style="color:#d08770;">BASE_API_URL</span><span style="color:#c0c5ce;">);
-</span><span style="color:#c0c5ce;">    </span><span style="color:#b48ead;">let</span><span style="color:#c0c5ce;"> stories_ids = reqwest::get(&amp;url).await?.json::&lt;Vec&lt;</span><span style="color:#b48ead;">i64</span><span style="color:#c0c5ce;">&gt;&gt;().await?;
+</span><span style="color:#c0c5ce;">	</span><span style="color:#b48ead;">let</span><span style="color:#c0c5ce;"> url = format!(&quot;</span><span style="color:#d08770;">{}</span><span style="color:#a3be8c;">topstories.json</span><span style="color:#c0c5ce;">&quot;, </span><span style="color:#d08770;">BASE_API_URL</span><span style="color:#c0c5ce;">);
+</span><span style="color:#c0c5ce;">	</span><span style="color:#b48ead;">let</span><span style="color:#c0c5ce;"> stories_ids = reqwest::get(&amp;url).await?.json::&lt;Vec&lt;</span><span style="color:#b48ead;">i64</span><span style="color:#c0c5ce;">&gt;&gt;().await?;
 </span><span style="color:#c0c5ce;">
-</span><span style="color:#c0c5ce;">    </span><span style="color:#b48ead;">let</span><span style="color:#c0c5ce;"> story_futures = stories_ids[..</span><span style="color:#b48ead;">usize</span><span style="color:#c0c5ce;">::min(stories_ids.</span><span style="color:#96b5b4;">len</span><span style="color:#c0c5ce;">(), count)]
-</span><span style="color:#c0c5ce;">        .</span><span style="color:#96b5b4;">iter</span><span style="color:#c0c5ce;">()
-</span><span style="color:#c0c5ce;">        .</span><span style="color:#96b5b4;">map</span><span style="color:#c0c5ce;">(|&amp;</span><span style="color:#bf616a;">story_id</span><span style="color:#c0c5ce;">| </span><span style="color:#96b5b4;">get_story_preview</span><span style="color:#c0c5ce;">(story_id));
-</span><span style="color:#c0c5ce;">    Ok(</span><span style="color:#96b5b4;">join_all</span><span style="color:#c0c5ce;">(story_futures)
-</span><span style="color:#c0c5ce;">        .await
-</span><span style="color:#c0c5ce;">        .</span><span style="color:#96b5b4;">into_iter</span><span style="color:#c0c5ce;">()
-</span><span style="color:#c0c5ce;">        .</span><span style="color:#96b5b4;">filter_map</span><span style="color:#c0c5ce;">(|</span><span style="color:#bf616a;">story</span><span style="color:#c0c5ce;">| story.</span><span style="color:#96b5b4;">ok</span><span style="color:#c0c5ce;">())
-</span><span style="color:#c0c5ce;">        .</span><span style="color:#96b5b4;">collect</span><span style="color:#c0c5ce;">())
+</span><span style="color:#c0c5ce;">	</span><span style="color:#b48ead;">let</span><span style="color:#c0c5ce;"> story_futures = stories_ids[..</span><span style="color:#b48ead;">usize</span><span style="color:#c0c5ce;">::min(stories_ids.</span><span style="color:#96b5b4;">len</span><span style="color:#c0c5ce;">(), count)]
+</span><span style="color:#c0c5ce;">		.</span><span style="color:#96b5b4;">iter</span><span style="color:#c0c5ce;">()
+</span><span style="color:#c0c5ce;">		.</span><span style="color:#96b5b4;">map</span><span style="color:#c0c5ce;">(|&amp;</span><span style="color:#bf616a;">story_id</span><span style="color:#c0c5ce;">| </span><span style="color:#96b5b4;">get_story_preview</span><span style="color:#c0c5ce;">(story_id));
+</span><span style="color:#c0c5ce;">	Ok(</span><span style="color:#96b5b4;">join_all</span><span style="color:#c0c5ce;">(story_futures)
+</span><span style="color:#c0c5ce;">		.await
+</span><span style="color:#c0c5ce;">		.</span><span style="color:#96b5b4;">into_iter</span><span style="color:#c0c5ce;">()
+</span><span style="color:#c0c5ce;">		.</span><span style="color:#96b5b4;">filter_map</span><span style="color:#c0c5ce;">(|</span><span style="color:#bf616a;">story</span><span style="color:#c0c5ce;">| story.</span><span style="color:#96b5b4;">ok</span><span style="color:#c0c5ce;">())
+</span><span style="color:#c0c5ce;">		.</span><span style="color:#96b5b4;">collect</span><span style="color:#c0c5ce;">())
 </span><span style="color:#c0c5ce;">}
 </span><span style="color:#c0c5ce;">
 </span><span style="color:#c0c5ce;">#[</span><span style="color:#bf616a;">derive</span><span style="color:#c0c5ce;">(Clone, Debug, PartialEq, Serialize, Deserialize)]
 </span><span style="color:#b48ead;">pub struct </span><span style="color:#c0c5ce;">StoryPageData {
-</span><span style="color:#c0c5ce;">    #[serde(flatten)]
-</span><span style="color:#c0c5ce;">    </span><span style="color:#b48ead;">pub </span><span style="color:#bf616a;">item</span><span style="color:#c0c5ce;">: StoryItem,
-</span><span style="color:#c0c5ce;">    #[serde(default)]
-</span><span style="color:#c0c5ce;">    </span><span style="color:#b48ead;">pub </span><span style="color:#bf616a;">comments</span><span style="color:#c0c5ce;">: Vec&lt;Comment&gt;,
+</span><span style="color:#c0c5ce;">	#[serde(flatten)]
+</span><span style="color:#c0c5ce;">	</span><span style="color:#b48ead;">pub </span><span style="color:#bf616a;">item</span><span style="color:#c0c5ce;">: StoryItem,
+</span><span style="color:#c0c5ce;">	#[serde(default)]
+</span><span style="color:#c0c5ce;">	</span><span style="color:#b48ead;">pub </span><span style="color:#bf616a;">comments</span><span style="color:#c0c5ce;">: Vec&lt;Comment&gt;,
 </span><span style="color:#c0c5ce;">}
 </span><span style="color:#c0c5ce;">
 </span><span style="color:#c0c5ce;">#[</span><span style="color:#bf616a;">derive</span><span style="color:#c0c5ce;">(Clone, Debug, PartialEq, Serialize, Deserialize)]
 </span><span style="color:#b48ead;">pub struct </span><span style="color:#c0c5ce;">Comment {
-</span><span style="color:#c0c5ce;">    </span><span style="color:#b48ead;">pub </span><span style="color:#bf616a;">id</span><span style="color:#c0c5ce;">: </span><span style="color:#b48ead;">i64</span><span style="color:#c0c5ce;">,
-</span><span style="color:#c0c5ce;">    </span><span style="color:#65737e;">/// there will be no by field if the comment was deleted
-</span><span style="color:#c0c5ce;">    #[serde(default)]
-</span><span style="color:#c0c5ce;">    </span><span style="color:#b48ead;">pub </span><span style="color:#bf616a;">by</span><span style="color:#c0c5ce;">: String,
-</span><span style="color:#c0c5ce;">    #[serde(default)]
-</span><span style="color:#c0c5ce;">    </span><span style="color:#b48ead;">pub </span><span style="color:#bf616a;">text</span><span style="color:#c0c5ce;">: String,
-</span><span style="color:#c0c5ce;">    #[serde(with = &quot;</span><span style="color:#bf616a;">chrono</span><span style="color:#c0c5ce;">::serde::ts_seconds&quot;)]
-</span><span style="color:#c0c5ce;">    pub time: DateTime&lt;Utc&gt;,
-</span><span style="color:#c0c5ce;">    #[serde(default)]
-</span><span style="color:#c0c5ce;">    </span><span style="color:#b48ead;">pub </span><span style="color:#bf616a;">kids</span><span style="color:#c0c5ce;">: Vec&lt;</span><span style="color:#b48ead;">i64</span><span style="color:#c0c5ce;">&gt;,
-</span><span style="color:#c0c5ce;">    #[serde(default)]
-</span><span style="color:#c0c5ce;">    </span><span style="color:#b48ead;">pub </span><span style="color:#bf616a;">sub_comments</span><span style="color:#c0c5ce;">: Vec&lt;Comment&gt;,
-</span><span style="color:#c0c5ce;">    </span><span style="color:#b48ead;">pub</span><span style="color:#c0c5ce;"> r#</span><span style="color:#bf616a;">type</span><span style="color:#c0c5ce;">: String,
+</span><span style="color:#c0c5ce;">	</span><span style="color:#b48ead;">pub </span><span style="color:#bf616a;">id</span><span style="color:#c0c5ce;">: </span><span style="color:#b48ead;">i64</span><span style="color:#c0c5ce;">,
+</span><span style="color:#c0c5ce;">	</span><span style="color:#65737e;">/// there will be no by field if the comment was deleted
+</span><span style="color:#c0c5ce;">	#[serde(default)]
+</span><span style="color:#c0c5ce;">	</span><span style="color:#b48ead;">pub </span><span style="color:#bf616a;">by</span><span style="color:#c0c5ce;">: String,
+</span><span style="color:#c0c5ce;">	#[serde(default)]
+</span><span style="color:#c0c5ce;">	</span><span style="color:#b48ead;">pub </span><span style="color:#bf616a;">text</span><span style="color:#c0c5ce;">: String,
+</span><span style="color:#c0c5ce;">	#[serde(with = &quot;</span><span style="color:#bf616a;">chrono</span><span style="color:#c0c5ce;">::serde::ts_seconds&quot;)]
+</span><span style="color:#c0c5ce;">	pub time: DateTime&lt;Utc&gt;,
+</span><span style="color:#c0c5ce;">	#[serde(default)]
+</span><span style="color:#c0c5ce;">	</span><span style="color:#b48ead;">pub </span><span style="color:#bf616a;">kids</span><span style="color:#c0c5ce;">: Vec&lt;</span><span style="color:#b48ead;">i64</span><span style="color:#c0c5ce;">&gt;,
+</span><span style="color:#c0c5ce;">	#[serde(default)]
+</span><span style="color:#c0c5ce;">	</span><span style="color:#b48ead;">pub </span><span style="color:#bf616a;">sub_comments</span><span style="color:#c0c5ce;">: Vec&lt;Comment&gt;,
+</span><span style="color:#c0c5ce;">	</span><span style="color:#b48ead;">pub</span><span style="color:#c0c5ce;"> r#</span><span style="color:#bf616a;">type</span><span style="color:#c0c5ce;">: String,
 </span><span style="color:#c0c5ce;">}
 </span><span style="color:#c0c5ce;">
 </span><span style="color:#c0c5ce;">#[</span><span style="color:#bf616a;">derive</span><span style="color:#c0c5ce;">(Clone, Debug, PartialEq, Serialize, Deserialize)]
 </span><span style="color:#b48ead;">pub struct </span><span style="color:#c0c5ce;">StoryItem {
-</span><span style="color:#c0c5ce;">    </span><span style="color:#b48ead;">pub </span><span style="color:#bf616a;">id</span><span style="color:#c0c5ce;">: </span><span style="color:#b48ead;">i64</span><span style="color:#c0c5ce;">,
-</span><span style="color:#c0c5ce;">    </span><span style="color:#b48ead;">pub </span><span style="color:#bf616a;">title</span><span style="color:#c0c5ce;">: String,
-</span><span style="color:#c0c5ce;">    </span><span style="color:#b48ead;">pub </span><span style="color:#bf616a;">url</span><span style="color:#c0c5ce;">: Option&lt;String&gt;,
-</span><span style="color:#c0c5ce;">    </span><span style="color:#b48ead;">pub </span><span style="color:#bf616a;">text</span><span style="color:#c0c5ce;">: Option&lt;String&gt;,
-</span><span style="color:#c0c5ce;">    #[serde(default)]
-</span><span style="color:#c0c5ce;">    </span><span style="color:#b48ead;">pub </span><span style="color:#bf616a;">by</span><span style="color:#c0c5ce;">: String,
-</span><span style="color:#c0c5ce;">    #[serde(default)]
-</span><span style="color:#c0c5ce;">    </span><span style="color:#b48ead;">pub </span><span style="color:#bf616a;">score</span><span style="color:#c0c5ce;">: </span><span style="color:#b48ead;">i64</span><span style="color:#c0c5ce;">,
-</span><span style="color:#c0c5ce;">    #[serde(default)]
-</span><span style="color:#c0c5ce;">    </span><span style="color:#b48ead;">pub </span><span style="color:#bf616a;">descendants</span><span style="color:#c0c5ce;">: </span><span style="color:#b48ead;">i64</span><span style="color:#c0c5ce;">,
-</span><span style="color:#c0c5ce;">    #[serde(with = &quot;</span><span style="color:#bf616a;">chrono</span><span style="color:#c0c5ce;">::serde::ts_seconds&quot;)]
-</span><span style="color:#c0c5ce;">    pub time: DateTime&lt;Utc&gt;,
-</span><span style="color:#c0c5ce;">    #[serde(default)]
-</span><span style="color:#c0c5ce;">    </span><span style="color:#b48ead;">pub </span><span style="color:#bf616a;">kids</span><span style="color:#c0c5ce;">: Vec&lt;</span><span style="color:#b48ead;">i64</span><span style="color:#c0c5ce;">&gt;,
-</span><span style="color:#c0c5ce;">    </span><span style="color:#b48ead;">pub</span><span style="color:#c0c5ce;"> r#</span><span style="color:#bf616a;">type</span><span style="color:#c0c5ce;">: String,
+</span><span style="color:#c0c5ce;">	</span><span style="color:#b48ead;">pub </span><span style="color:#bf616a;">id</span><span style="color:#c0c5ce;">: </span><span style="color:#b48ead;">i64</span><span style="color:#c0c5ce;">,
+</span><span style="color:#c0c5ce;">	</span><span style="color:#b48ead;">pub </span><span style="color:#bf616a;">title</span><span style="color:#c0c5ce;">: String,
+</span><span style="color:#c0c5ce;">	</span><span style="color:#b48ead;">pub </span><span style="color:#bf616a;">url</span><span style="color:#c0c5ce;">: Option&lt;String&gt;,
+</span><span style="color:#c0c5ce;">	</span><span style="color:#b48ead;">pub </span><span style="color:#bf616a;">text</span><span style="color:#c0c5ce;">: Option&lt;String&gt;,
+</span><span style="color:#c0c5ce;">	#[serde(default)]
+</span><span style="color:#c0c5ce;">	</span><span style="color:#b48ead;">pub </span><span style="color:#bf616a;">by</span><span style="color:#c0c5ce;">: String,
+</span><span style="color:#c0c5ce;">	#[serde(default)]
+</span><span style="color:#c0c5ce;">	</span><span style="color:#b48ead;">pub </span><span style="color:#bf616a;">score</span><span style="color:#c0c5ce;">: </span><span style="color:#b48ead;">i64</span><span style="color:#c0c5ce;">,
+</span><span style="color:#c0c5ce;">	#[serde(default)]
+</span><span style="color:#c0c5ce;">	</span><span style="color:#b48ead;">pub </span><span style="color:#bf616a;">descendants</span><span style="color:#c0c5ce;">: </span><span style="color:#b48ead;">i64</span><span style="color:#c0c5ce;">,
+</span><span style="color:#c0c5ce;">	#[serde(with = &quot;</span><span style="color:#bf616a;">chrono</span><span style="color:#c0c5ce;">::serde::ts_seconds&quot;)]
+</span><span style="color:#c0c5ce;">	pub time: DateTime&lt;Utc&gt;,
+</span><span style="color:#c0c5ce;">	#[serde(default)]
+</span><span style="color:#c0c5ce;">	</span><span style="color:#b48ead;">pub </span><span style="color:#bf616a;">kids</span><span style="color:#c0c5ce;">: Vec&lt;</span><span style="color:#b48ead;">i64</span><span style="color:#c0c5ce;">&gt;,
+</span><span style="color:#c0c5ce;">	</span><span style="color:#b48ead;">pub</span><span style="color:#c0c5ce;"> r#</span><span style="color:#bf616a;">type</span><span style="color:#c0c5ce;">: String,
 </span><span style="color:#c0c5ce;">}
 </span><span style="color:#c0c5ce;">
 </span><span style="color:#b48ead;">pub</span><span style="color:#c0c5ce;"> async </span><span style="color:#b48ead;">fn </span><span style="color:#8fa1b3;">get_story</span><span style="color:#c0c5ce;">(</span><span style="color:#bf616a;">id</span><span style="color:#c0c5ce;">: </span><span style="color:#b48ead;">i64</span><span style="color:#c0c5ce;">) -&gt; Result&lt;StoryPageData, reqwest::Error&gt; {
-</span><span style="color:#c0c5ce;">    </span><span style="color:#b48ead;">let</span><span style="color:#c0c5ce;"> url = format!(&quot;</span><span style="color:#d08770;">{}{}{}</span><span style="color:#a3be8c;">.json</span><span style="color:#c0c5ce;">&quot;, </span><span style="color:#d08770;">BASE_API_URL</span><span style="color:#c0c5ce;">, </span><span style="color:#d08770;">ITEM_API</span><span style="color:#c0c5ce;">, id);
-</span><span style="color:#c0c5ce;">    </span><span style="color:#b48ead;">let mut</span><span style="color:#c0c5ce;"> story = reqwest::get(&amp;url).await?.json::&lt;StoryPageData&gt;().await?;
-</span><span style="color:#c0c5ce;">    </span><span style="color:#b48ead;">let</span><span style="color:#c0c5ce;"> comment_futures = story.item.kids.</span><span style="color:#96b5b4;">iter</span><span style="color:#c0c5ce;">().</span><span style="color:#96b5b4;">map</span><span style="color:#c0c5ce;">(|&amp;</span><span style="color:#bf616a;">id</span><span style="color:#c0c5ce;">| </span><span style="color:#96b5b4;">get_comment</span><span style="color:#c0c5ce;">(id));
-</span><span style="color:#c0c5ce;">    </span><span style="color:#b48ead;">let</span><span style="color:#c0c5ce;"> comments = </span><span style="color:#96b5b4;">join_all</span><span style="color:#c0c5ce;">(comment_futures)
-</span><span style="color:#c0c5ce;">        .await
-</span><span style="color:#c0c5ce;">        .</span><span style="color:#96b5b4;">into_iter</span><span style="color:#c0c5ce;">()
-</span><span style="color:#c0c5ce;">        .</span><span style="color:#96b5b4;">filter_map</span><span style="color:#c0c5ce;">(|</span><span style="color:#bf616a;">c</span><span style="color:#c0c5ce;">| c.</span><span style="color:#96b5b4;">ok</span><span style="color:#c0c5ce;">())
-</span><span style="color:#c0c5ce;">        .</span><span style="color:#96b5b4;">collect</span><span style="color:#c0c5ce;">();
+</span><span style="color:#c0c5ce;">	</span><span style="color:#b48ead;">let</span><span style="color:#c0c5ce;"> url = format!(&quot;</span><span style="color:#d08770;">{}{}{}</span><span style="color:#a3be8c;">.json</span><span style="color:#c0c5ce;">&quot;, </span><span style="color:#d08770;">BASE_API_URL</span><span style="color:#c0c5ce;">, </span><span style="color:#d08770;">ITEM_API</span><span style="color:#c0c5ce;">, id);
+</span><span style="color:#c0c5ce;">	</span><span style="color:#b48ead;">let mut</span><span style="color:#c0c5ce;"> story = reqwest::get(&amp;url).await?.json::&lt;StoryPageData&gt;().await?;
+</span><span style="color:#c0c5ce;">	</span><span style="color:#b48ead;">let</span><span style="color:#c0c5ce;"> comment_futures = story.item.kids.</span><span style="color:#96b5b4;">iter</span><span style="color:#c0c5ce;">().</span><span style="color:#96b5b4;">map</span><span style="color:#c0c5ce;">(|&amp;</span><span style="color:#bf616a;">id</span><span style="color:#c0c5ce;">| </span><span style="color:#96b5b4;">get_comment</span><span style="color:#c0c5ce;">(id));
+</span><span style="color:#c0c5ce;">	</span><span style="color:#b48ead;">let</span><span style="color:#c0c5ce;"> comments = </span><span style="color:#96b5b4;">join_all</span><span style="color:#c0c5ce;">(comment_futures)
+</span><span style="color:#c0c5ce;">		.await
+</span><span style="color:#c0c5ce;">		.</span><span style="color:#96b5b4;">into_iter</span><span style="color:#c0c5ce;">()
+</span><span style="color:#c0c5ce;">		.</span><span style="color:#96b5b4;">filter_map</span><span style="color:#c0c5ce;">(|</span><span style="color:#bf616a;">c</span><span style="color:#c0c5ce;">| c.</span><span style="color:#96b5b4;">ok</span><span style="color:#c0c5ce;">())
+</span><span style="color:#c0c5ce;">		.</span><span style="color:#96b5b4;">collect</span><span style="color:#c0c5ce;">();
 </span><span style="color:#c0c5ce;">
-</span><span style="color:#c0c5ce;">    story.comments = comments;
-</span><span style="color:#c0c5ce;">    Ok(story)
+</span><span style="color:#c0c5ce;">	story.comments = comments;
+</span><span style="color:#c0c5ce;">	Ok(story)
 </span><span style="color:#c0c5ce;">}
 </span><span style="color:#c0c5ce;">
 </span><span style="color:#c0c5ce;">#[</span><span style="color:#bf616a;">async_recursion</span><span style="color:#c0c5ce;">::</span><span style="color:#bf616a;">async_recursion</span><span style="color:#c0c5ce;">(?Send)]
 </span><span style="color:#b48ead;">pub</span><span style="color:#c0c5ce;"> async </span><span style="color:#b48ead;">fn </span><span style="color:#8fa1b3;">get_comment_with_depth</span><span style="color:#c0c5ce;">(</span><span style="color:#bf616a;">id</span><span style="color:#c0c5ce;">: </span><span style="color:#b48ead;">i64</span><span style="color:#c0c5ce;">, </span><span style="color:#bf616a;">depth</span><span style="color:#c0c5ce;">: </span><span style="color:#b48ead;">i64</span><span style="color:#c0c5ce;">) -&gt; Result&lt;Comment, reqwest::Error&gt; {
-</span><span style="color:#c0c5ce;">    </span><span style="color:#b48ead;">let</span><span style="color:#c0c5ce;"> url = format!(&quot;</span><span style="color:#d08770;">{}{}{}</span><span style="color:#a3be8c;">.json</span><span style="color:#c0c5ce;">&quot;, </span><span style="color:#d08770;">BASE_API_URL</span><span style="color:#c0c5ce;">, </span><span style="color:#d08770;">ITEM_API</span><span style="color:#c0c5ce;">, id);
-</span><span style="color:#c0c5ce;">    </span><span style="color:#b48ead;">let mut</span><span style="color:#c0c5ce;"> comment = reqwest::get(&amp;url).await?.json::&lt;Comment&gt;().await?;
-</span><span style="color:#c0c5ce;">    </span><span style="color:#b48ead;">if</span><span style="color:#c0c5ce;"> depth &gt; </span><span style="color:#d08770;">0 </span><span style="color:#c0c5ce;">{
-</span><span style="color:#c0c5ce;">        </span><span style="color:#b48ead;">let</span><span style="color:#c0c5ce;"> sub_comments_futures = comment
-</span><span style="color:#c0c5ce;">            .kids
-</span><span style="color:#c0c5ce;">            .</span><span style="color:#96b5b4;">iter</span><span style="color:#c0c5ce;">()
-</span><span style="color:#c0c5ce;">            .</span><span style="color:#96b5b4;">map</span><span style="color:#c0c5ce;">(|</span><span style="color:#bf616a;">story_id</span><span style="color:#c0c5ce;">| </span><span style="color:#96b5b4;">get_comment_with_depth</span><span style="color:#c0c5ce;">(*story_id, depth - </span><span style="color:#d08770;">1</span><span style="color:#c0c5ce;">));
-</span><span style="color:#c0c5ce;">        comment.sub_comments = </span><span style="color:#96b5b4;">join_all</span><span style="color:#c0c5ce;">(sub_comments_futures)
-</span><span style="color:#c0c5ce;">            .await
-</span><span style="color:#c0c5ce;">            .</span><span style="color:#96b5b4;">into_iter</span><span style="color:#c0c5ce;">()
-</span><span style="color:#c0c5ce;">            .</span><span style="color:#96b5b4;">filter_map</span><span style="color:#c0c5ce;">(|</span><span style="color:#bf616a;">c</span><span style="color:#c0c5ce;">| c.</span><span style="color:#96b5b4;">ok</span><span style="color:#c0c5ce;">())
-</span><span style="color:#c0c5ce;">            .</span><span style="color:#96b5b4;">collect</span><span style="color:#c0c5ce;">();
-</span><span style="color:#c0c5ce;">    }
-</span><span style="color:#c0c5ce;">    Ok(comment)
+</span><span style="color:#c0c5ce;">	</span><span style="color:#b48ead;">let</span><span style="color:#c0c5ce;"> url = format!(&quot;</span><span style="color:#d08770;">{}{}{}</span><span style="color:#a3be8c;">.json</span><span style="color:#c0c5ce;">&quot;, </span><span style="color:#d08770;">BASE_API_URL</span><span style="color:#c0c5ce;">, </span><span style="color:#d08770;">ITEM_API</span><span style="color:#c0c5ce;">, id);
+</span><span style="color:#c0c5ce;">	</span><span style="color:#b48ead;">let mut</span><span style="color:#c0c5ce;"> comment = reqwest::get(&amp;url).await?.json::&lt;Comment&gt;().await?;
+</span><span style="color:#c0c5ce;">	</span><span style="color:#b48ead;">if</span><span style="color:#c0c5ce;"> depth &gt; </span><span style="color:#d08770;">0 </span><span style="color:#c0c5ce;">{
+</span><span style="color:#c0c5ce;">		</span><span style="color:#b48ead;">let</span><span style="color:#c0c5ce;"> sub_comments_futures = comment
+</span><span style="color:#c0c5ce;">			.kids
+</span><span style="color:#c0c5ce;">			.</span><span style="color:#96b5b4;">iter</span><span style="color:#c0c5ce;">()
+</span><span style="color:#c0c5ce;">			.</span><span style="color:#96b5b4;">map</span><span style="color:#c0c5ce;">(|</span><span style="color:#bf616a;">story_id</span><span style="color:#c0c5ce;">| </span><span style="color:#96b5b4;">get_comment_with_depth</span><span style="color:#c0c5ce;">(*story_id, depth - </span><span style="color:#d08770;">1</span><span style="color:#c0c5ce;">));
+</span><span style="color:#c0c5ce;">		comment.sub_comments = </span><span style="color:#96b5b4;">join_all</span><span style="color:#c0c5ce;">(sub_comments_futures)
+</span><span style="color:#c0c5ce;">			.await
+</span><span style="color:#c0c5ce;">			.</span><span style="color:#96b5b4;">into_iter</span><span style="color:#c0c5ce;">()
+</span><span style="color:#c0c5ce;">			.</span><span style="color:#96b5b4;">filter_map</span><span style="color:#c0c5ce;">(|</span><span style="color:#bf616a;">c</span><span style="color:#c0c5ce;">| c.</span><span style="color:#96b5b4;">ok</span><span style="color:#c0c5ce;">())
+</span><span style="color:#c0c5ce;">			.</span><span style="color:#96b5b4;">collect</span><span style="color:#c0c5ce;">();
+</span><span style="color:#c0c5ce;">	}
+</span><span style="color:#c0c5ce;">	Ok(comment)
 </span><span style="color:#c0c5ce;">}
 </span><span style="color:#c0c5ce;">
 </span><span style="color:#b48ead;">pub</span><span style="color:#c0c5ce;"> async </span><span style="color:#b48ead;">fn </span><span style="color:#8fa1b3;">get_comment</span><span style="color:#c0c5ce;">(</span><span style="color:#bf616a;">comment_id</span><span style="color:#c0c5ce;">: </span><span style="color:#b48ead;">i64</span><span style="color:#c0c5ce;">) -&gt; Result&lt;Comment, reqwest::Error&gt; {
-</span><span style="color:#c0c5ce;">    </span><span style="color:#96b5b4;">get_comment_with_depth</span><span style="color:#c0c5ce;">(comment_id, </span><span style="color:#d08770;">COMMENT_DEPTH</span><span style="color:#c0c5ce;">).await
+</span><span style="color:#c0c5ce;">	</span><span style="color:#96b5b4;">get_comment_with_depth</span><span style="color:#c0c5ce;">(comment_id, </span><span style="color:#d08770;">COMMENT_DEPTH</span><span style="color:#c0c5ce;">).await
 </span><span style="color:#c0c5ce;">}
 </span><span style="color:#c0c5ce;">
 </span></pre>

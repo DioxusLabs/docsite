@@ -137,17 +137,17 @@
 </div><button style="position: absolute; top: 0; right: 0; background: rgba(0, 0, 0, 0.75); color: white; border: 1px solid white; padding: 0.25em;" onclick="navigator.clipboard.writeText(this.previousElementSibling.innerText)">Copy</button></div><p>Now, set up your Axum app to respond on an endpoint.</p><div style="position: relative;"><div><pre style="background-color:#2b303b;">
 <span style="color:#c0c5ce;">#[</span><span style="color:#bf616a;">tokio</span><span style="color:#c0c5ce;">::</span><span style="color:#bf616a;">main</span><span style="color:#c0c5ce;">]
 </span><span style="color:#c0c5ce;">async </span><span style="color:#b48ead;">fn </span><span style="color:#8fa1b3;">main</span><span style="color:#c0c5ce;">() {
-</span><span style="color:#c0c5ce;">    </span><span style="color:#b48ead;">let</span><span style="color:#c0c5ce;"> addr: std::net::SocketAddr = ([</span><span style="color:#d08770;">127</span><span style="color:#c0c5ce;">, </span><span style="color:#d08770;">0</span><span style="color:#c0c5ce;">, </span><span style="color:#d08770;">0</span><span style="color:#c0c5ce;">, </span><span style="color:#d08770;">1</span><span style="color:#c0c5ce;">], </span><span style="color:#d08770;">3030</span><span style="color:#c0c5ce;">).</span><span style="color:#96b5b4;">into</span><span style="color:#c0c5ce;">();
+</span><span style="color:#c0c5ce;">	</span><span style="color:#b48ead;">let</span><span style="color:#c0c5ce;"> addr: std::net::SocketAddr = ([</span><span style="color:#d08770;">127</span><span style="color:#c0c5ce;">, </span><span style="color:#d08770;">0</span><span style="color:#c0c5ce;">, </span><span style="color:#d08770;">0</span><span style="color:#c0c5ce;">, </span><span style="color:#d08770;">1</span><span style="color:#c0c5ce;">], </span><span style="color:#d08770;">3030</span><span style="color:#c0c5ce;">).</span><span style="color:#96b5b4;">into</span><span style="color:#c0c5ce;">();
 </span><span style="color:#c0c5ce;">
-</span><span style="color:#c0c5ce;">    </span><span style="color:#b48ead;">let</span><span style="color:#c0c5ce;"> view = dioxus_liveview::LiveViewPool::new();
+</span><span style="color:#c0c5ce;">	</span><span style="color:#b48ead;">let</span><span style="color:#c0c5ce;"> view = dioxus_liveview::LiveViewPool::new();
 </span><span style="color:#c0c5ce;">
-</span><span style="color:#c0c5ce;">    </span><span style="color:#b48ead;">let</span><span style="color:#c0c5ce;"> app = Router::new()
-</span><span style="color:#c0c5ce;">        </span><span style="color:#65737e;">// The root route contains the glue code to connect to the WebSocket
-</span><span style="color:#c0c5ce;">        .</span><span style="color:#96b5b4;">route</span><span style="color:#c0c5ce;">(
-</span><span style="color:#c0c5ce;">            &quot;</span><span style="color:#a3be8c;">/</span><span style="color:#c0c5ce;">&quot;,
-</span><span style="color:#c0c5ce;">            </span><span style="color:#96b5b4;">get</span><span style="color:#c0c5ce;">(</span><span style="color:#b48ead;">move </span><span style="color:#c0c5ce;">|| async </span><span style="color:#b48ead;">move </span><span style="color:#c0c5ce;">{
-</span><span style="color:#c0c5ce;">                Html(format!(
-</span><span style="color:#c0c5ce;">                    </span><span style="color:#b48ead;">r</span><span style="color:#c0c5ce;">#</span><span style="color:#a3be8c;">&quot;
+</span><span style="color:#c0c5ce;">	</span><span style="color:#b48ead;">let</span><span style="color:#c0c5ce;"> app = Router::new()
+</span><span style="color:#c0c5ce;">		</span><span style="color:#65737e;">// The root route contains the glue code to connect to the WebSocket
+</span><span style="color:#c0c5ce;">		.</span><span style="color:#96b5b4;">route</span><span style="color:#c0c5ce;">(
+</span><span style="color:#c0c5ce;">			&quot;</span><span style="color:#a3be8c;">/</span><span style="color:#c0c5ce;">&quot;,
+</span><span style="color:#c0c5ce;">			</span><span style="color:#96b5b4;">get</span><span style="color:#c0c5ce;">(</span><span style="color:#b48ead;">move </span><span style="color:#c0c5ce;">|| async </span><span style="color:#b48ead;">move </span><span style="color:#c0c5ce;">{
+</span><span style="color:#c0c5ce;">				Html(format!(
+</span><span style="color:#c0c5ce;">					</span><span style="color:#b48ead;">r</span><span style="color:#c0c5ce;">#</span><span style="color:#a3be8c;">&quot;
 </span><span style="color:#a3be8c;">				&lt;!DOCTYPE html&gt;
 </span><span style="color:#a3be8c;">				&lt;html&gt;
 </span><span style="color:#a3be8c;">				&lt;head&gt; &lt;title&gt;Dioxus LiveView with Axum&lt;/title&gt;  &lt;/head&gt;
@@ -155,37 +155,37 @@
 </span><span style="color:#a3be8c;">				</span><span style="color:#d08770;">{glue}
 </span><span style="color:#a3be8c;">				&lt;/html&gt;
 </span><span style="color:#a3be8c;">				</span><span style="color:#c0c5ce;">&quot;#,
-</span><span style="color:#c0c5ce;">                    </span><span style="color:#65737e;">// Create the glue code to connect to the WebSocket on the &quot;/ws&quot; route
-</span><span style="color:#c0c5ce;">                    glue = dioxus_liveview::interpreter_glue(&amp;format!(&quot;</span><span style="color:#a3be8c;">ws://</span><span style="color:#d08770;">{addr}</span><span style="color:#a3be8c;">/ws</span><span style="color:#c0c5ce;">&quot;))
-</span><span style="color:#c0c5ce;">                ))
-</span><span style="color:#c0c5ce;">            }),
-</span><span style="color:#c0c5ce;">        )
-</span><span style="color:#c0c5ce;">        </span><span style="color:#65737e;">// The WebSocket route is what Dioxus uses to communicate with the browser
-</span><span style="color:#c0c5ce;">        .</span><span style="color:#96b5b4;">route</span><span style="color:#c0c5ce;">(
-</span><span style="color:#c0c5ce;">            &quot;</span><span style="color:#a3be8c;">/ws</span><span style="color:#c0c5ce;">&quot;,
-</span><span style="color:#c0c5ce;">            </span><span style="color:#96b5b4;">get</span><span style="color:#c0c5ce;">(</span><span style="color:#b48ead;">move </span><span style="color:#c0c5ce;">|ws: WebSocketUpgrade| async </span><span style="color:#b48ead;">move </span><span style="color:#c0c5ce;">{
-</span><span style="color:#c0c5ce;">                ws.</span><span style="color:#96b5b4;">on_upgrade</span><span style="color:#c0c5ce;">(</span><span style="color:#b48ead;">move </span><span style="color:#c0c5ce;">|socket| async </span><span style="color:#b48ead;">move </span><span style="color:#c0c5ce;">{
-</span><span style="color:#c0c5ce;">                    </span><span style="color:#65737e;">// When the WebSocket is upgraded, launch the LiveView with the app component
-</span><span style="color:#c0c5ce;">                    _ = view.</span><span style="color:#96b5b4;">launch</span><span style="color:#c0c5ce;">(dioxus_liveview::axum_socket(socket), app).await;
-</span><span style="color:#c0c5ce;">                })
-</span><span style="color:#c0c5ce;">            }),
-</span><span style="color:#c0c5ce;">        );
+</span><span style="color:#c0c5ce;">					</span><span style="color:#65737e;">// Create the glue code to connect to the WebSocket on the &quot;/ws&quot; route
+</span><span style="color:#c0c5ce;">					glue = dioxus_liveview::interpreter_glue(&amp;format!(&quot;</span><span style="color:#a3be8c;">ws://</span><span style="color:#d08770;">{addr}</span><span style="color:#a3be8c;">/ws</span><span style="color:#c0c5ce;">&quot;))
+</span><span style="color:#c0c5ce;">				))
+</span><span style="color:#c0c5ce;">			}),
+</span><span style="color:#c0c5ce;">		)
+</span><span style="color:#c0c5ce;">		</span><span style="color:#65737e;">// The WebSocket route is what Dioxus uses to communicate with the browser
+</span><span style="color:#c0c5ce;">		.</span><span style="color:#96b5b4;">route</span><span style="color:#c0c5ce;">(
+</span><span style="color:#c0c5ce;">			&quot;</span><span style="color:#a3be8c;">/ws</span><span style="color:#c0c5ce;">&quot;,
+</span><span style="color:#c0c5ce;">			</span><span style="color:#96b5b4;">get</span><span style="color:#c0c5ce;">(</span><span style="color:#b48ead;">move </span><span style="color:#c0c5ce;">|ws: WebSocketUpgrade| async </span><span style="color:#b48ead;">move </span><span style="color:#c0c5ce;">{
+</span><span style="color:#c0c5ce;">				ws.</span><span style="color:#96b5b4;">on_upgrade</span><span style="color:#c0c5ce;">(</span><span style="color:#b48ead;">move </span><span style="color:#c0c5ce;">|socket| async </span><span style="color:#b48ead;">move </span><span style="color:#c0c5ce;">{
+</span><span style="color:#c0c5ce;">					</span><span style="color:#65737e;">// When the WebSocket is upgraded, launch the LiveView with the app component
+</span><span style="color:#c0c5ce;">					_ = view.</span><span style="color:#96b5b4;">launch</span><span style="color:#c0c5ce;">(dioxus_liveview::axum_socket(socket), app).await;
+</span><span style="color:#c0c5ce;">				})
+</span><span style="color:#c0c5ce;">			}),
+</span><span style="color:#c0c5ce;">		);
 </span><span style="color:#c0c5ce;">
-</span><span style="color:#c0c5ce;">    println!(&quot;</span><span style="color:#a3be8c;">Listening on http://</span><span style="color:#d08770;">{addr}</span><span style="color:#c0c5ce;">&quot;);
+</span><span style="color:#c0c5ce;">	println!(&quot;</span><span style="color:#a3be8c;">Listening on http://</span><span style="color:#d08770;">{addr}</span><span style="color:#c0c5ce;">&quot;);
 </span><span style="color:#c0c5ce;">
-</span><span style="color:#c0c5ce;">    axum::Server::bind(&amp;addr.</span><span style="color:#96b5b4;">to_string</span><span style="color:#c0c5ce;">().</span><span style="color:#96b5b4;">parse</span><span style="color:#c0c5ce;">().</span><span style="color:#96b5b4;">unwrap</span><span style="color:#c0c5ce;">())
-</span><span style="color:#c0c5ce;">        .</span><span style="color:#96b5b4;">serve</span><span style="color:#c0c5ce;">(app.</span><span style="color:#96b5b4;">into_make_service</span><span style="color:#c0c5ce;">())
-</span><span style="color:#c0c5ce;">        .await
-</span><span style="color:#c0c5ce;">        .</span><span style="color:#96b5b4;">unwrap</span><span style="color:#c0c5ce;">();
+</span><span style="color:#c0c5ce;">	axum::Server::bind(&amp;addr.</span><span style="color:#96b5b4;">to_string</span><span style="color:#c0c5ce;">().</span><span style="color:#96b5b4;">parse</span><span style="color:#c0c5ce;">().</span><span style="color:#96b5b4;">unwrap</span><span style="color:#c0c5ce;">())
+</span><span style="color:#c0c5ce;">		.</span><span style="color:#96b5b4;">serve</span><span style="color:#c0c5ce;">(app.</span><span style="color:#96b5b4;">into_make_service</span><span style="color:#c0c5ce;">())
+</span><span style="color:#c0c5ce;">		.await
+</span><span style="color:#c0c5ce;">		.</span><span style="color:#96b5b4;">unwrap</span><span style="color:#c0c5ce;">();
 </span><span style="color:#c0c5ce;">}
 </span></pre>
 </div><button style="position: absolute; top: 0; right: 0; background: rgba(0, 0, 0, 0.75); color: white; border: 1px solid white; padding: 0.25em;" onclick="navigator.clipboard.writeText(this.previousElementSibling.innerText)">Copy</button></div><p>And then add our app component:</p><div style="position: relative;"><div><pre style="background-color:#2b303b;">
 <span style="color:#b48ead;">fn </span><span style="color:#8fa1b3;">app</span><span style="color:#c0c5ce;">(</span><span style="color:#bf616a;">cx</span><span style="color:#c0c5ce;">: Scope) -&gt; Element {
-</span><span style="color:#c0c5ce;">    cx.</span><span style="color:#96b5b4;">render</span><span style="color:#c0c5ce;">(rsx! {
-</span><span style="color:#c0c5ce;">        div {
-</span><span style="color:#c0c5ce;">            &quot;</span><span style="color:#a3be8c;">Hello, world!</span><span style="color:#c0c5ce;">&quot;
-</span><span style="color:#c0c5ce;">        }
-</span><span style="color:#c0c5ce;">    })
+</span><span style="color:#c0c5ce;">	cx.</span><span style="color:#96b5b4;">render</span><span style="color:#c0c5ce;">(rsx! {
+</span><span style="color:#c0c5ce;">		div {
+</span><span style="color:#c0c5ce;">			&quot;</span><span style="color:#a3be8c;">Hello, world!</span><span style="color:#c0c5ce;">&quot;
+</span><span style="color:#c0c5ce;">		}
+</span><span style="color:#c0c5ce;">	})
 </span><span style="color:#c0c5ce;">}
 </span></pre>
 </div><button style="position: absolute; top: 0; right: 0; background: rgba(0, 0, 0, 0.75); color: white; border: 1px solid white; padding: 0.25em;" onclick="navigator.clipboard.writeText(this.previousElementSibling.innerText)">Copy</button></div><p>And that&#x27;s it!</p><h2 id="hot-reload"><a class="header" href="#hot-reload">Hot Reload</a></h2><ol><li>Hot reloading allows much faster iteration times inside of rsx calls by interpreting them and streaming the edits.</li><li>It is useful when changing the styling/layout of a program, but will not help with changing the logic of a program.</li></ol><p>You can place the hot reload macro at the top of your main function to enable hot reloading on debug builds.</p><p>For more information about hot reloading on native platforms and configuration options see the <a href="https://crates.io/crates/dioxus-hot-reload">dioxus-hot-reload</a> crate.</p><h3 id="setup"><a class="header" href="#setup">Setup</a></h3><p>Add the following to your main function:</p><div style="position: relative;"><div><pre style="background-color:#2b303b;">

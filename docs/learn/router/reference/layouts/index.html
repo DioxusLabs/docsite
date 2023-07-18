@@ -134,19 +134,19 @@ pub enum Route {
 </span><span style="color:#c0c5ce;">
 </span><span style="color:#c0c5ce;">#[</span><span style="color:#bf616a;">inline_props</span><span style="color:#c0c5ce;">]
 </span><span style="color:#b48ead;">fn </span><span style="color:#8fa1b3;">Wrapper</span><span style="color:#c0c5ce;">(</span><span style="color:#bf616a;">cx</span><span style="color:#c0c5ce;">: Scope) -&gt; Element {
-</span><span style="color:#c0c5ce;">    render! {
-</span><span style="color:#c0c5ce;">        header { &quot;</span><span style="color:#a3be8c;">header</span><span style="color:#c0c5ce;">&quot; }
-</span><span style="color:#c0c5ce;">        </span><span style="color:#65737e;">// The index route will be rendered here
-</span><span style="color:#c0c5ce;">        Outlet { }
-</span><span style="color:#c0c5ce;">        footer { &quot;</span><span style="color:#a3be8c;">footer</span><span style="color:#c0c5ce;">&quot; }
-</span><span style="color:#c0c5ce;">    }
+</span><span style="color:#c0c5ce;">	render! {
+</span><span style="color:#c0c5ce;">		header { &quot;</span><span style="color:#a3be8c;">header</span><span style="color:#c0c5ce;">&quot; }
+</span><span style="color:#c0c5ce;">		</span><span style="color:#65737e;">// The index route will be rendered here
+</span><span style="color:#c0c5ce;">		Outlet { }
+</span><span style="color:#c0c5ce;">		footer { &quot;</span><span style="color:#a3be8c;">footer</span><span style="color:#c0c5ce;">&quot; }
+</span><span style="color:#c0c5ce;">	}
 </span><span style="color:#c0c5ce;">}
 </span><span style="color:#c0c5ce;">
 </span><span style="color:#c0c5ce;">#[</span><span style="color:#bf616a;">inline_props</span><span style="color:#c0c5ce;">]
 </span><span style="color:#b48ead;">fn </span><span style="color:#8fa1b3;">Index</span><span style="color:#c0c5ce;">(</span><span style="color:#bf616a;">cx</span><span style="color:#c0c5ce;">: Scope) -&gt; Element {
-</span><span style="color:#c0c5ce;">    render! {
-</span><span style="color:#c0c5ce;">        h1 { &quot;</span><span style="color:#a3be8c;">Index</span><span style="color:#c0c5ce;">&quot; }
-</span><span style="color:#c0c5ce;">    }
+</span><span style="color:#c0c5ce;">	render! {
+</span><span style="color:#c0c5ce;">		h1 { &quot;</span><span style="color:#a3be8c;">Index</span><span style="color:#c0c5ce;">&quot; }
+</span><span style="color:#c0c5ce;">	}
 </span><span style="color:#c0c5ce;">}
 </span></pre>
 </div><button style="position: absolute; top: 0; right: 0; background: rgba(0, 0, 0, 0.75); color: white; border: 1px solid white; padding: 0.25em;" onclick="navigator.clipboard.writeText(this.previousElementSibling.innerText)">Copy</button></div><p>The example above will output the following HTML (line breaks added forreadability):</p><div style="position: relative;"><div><pre style="background-color:#2b303b;">

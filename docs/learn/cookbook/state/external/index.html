@@ -120,35 +120,35 @@
 </span><span style="color:#b48ead;">use </span><span style="color:#c0c5ce;">futures::StreamExt;
 </span><span style="color:#b48ead;">let</span><span style="color:#c0c5ce;"> response_state = </span><span style="color:#96b5b4;">use_state</span><span style="color:#c0c5ce;">(cx, || None);
 </span><span style="color:#b48ead;">let</span><span style="color:#c0c5ce;"> tx = </span><span style="color:#96b5b4;">use_coroutine</span><span style="color:#c0c5ce;">(cx, |</span><span style="color:#b48ead;">mut </span><span style="color:#bf616a;">rx</span><span style="color:#c0c5ce;">| {
-</span><span style="color:#c0c5ce;">    to_owned![response_state];
-</span><span style="color:#c0c5ce;">    async </span><span style="color:#b48ead;">move </span><span style="color:#c0c5ce;">{
-</span><span style="color:#c0c5ce;">        </span><span style="color:#65737e;">// Define your state before the loop
-</span><span style="color:#c0c5ce;">        </span><span style="color:#b48ead;">let mut</span><span style="color:#c0c5ce;"> state = reqwest::Client::new();
-</span><span style="color:#c0c5ce;">        </span><span style="color:#b48ead;">let mut</span><span style="color:#c0c5ce;"> cache: HashMap&lt;String, String&gt; = HashMap::new();
-</span><span style="color:#c0c5ce;">        </span><span style="color:#b48ead;">loop </span><span style="color:#c0c5ce;">{
-</span><span style="color:#c0c5ce;">            </span><span style="color:#65737e;">// Loop and wait for the next message
-</span><span style="color:#c0c5ce;">            </span><span style="color:#b48ead;">if let </span><span style="color:#c0c5ce;">Some(request) = rx.</span><span style="color:#96b5b4;">next</span><span style="color:#c0c5ce;">().await {
-</span><span style="color:#c0c5ce;">                </span><span style="color:#65737e;">// Resolve the message
-</span><span style="color:#c0c5ce;">                </span><span style="color:#b48ead;">let</span><span style="color:#c0c5ce;"> response = </span><span style="color:#b48ead;">if let </span><span style="color:#c0c5ce;">Some(response) = cache.</span><span style="color:#96b5b4;">get</span><span style="color:#c0c5ce;">(&amp;request) {
-</span><span style="color:#c0c5ce;">                    response.</span><span style="color:#96b5b4;">clone</span><span style="color:#c0c5ce;">()
-</span><span style="color:#c0c5ce;">                } </span><span style="color:#b48ead;">else </span><span style="color:#c0c5ce;">{
-</span><span style="color:#c0c5ce;">                    </span><span style="color:#b48ead;">let</span><span style="color:#c0c5ce;"> response = state
-</span><span style="color:#c0c5ce;">                        .</span><span style="color:#96b5b4;">get</span><span style="color:#c0c5ce;">(&amp;request)
-</span><span style="color:#c0c5ce;">                        .</span><span style="color:#96b5b4;">send</span><span style="color:#c0c5ce;">()
-</span><span style="color:#c0c5ce;">                        .await
-</span><span style="color:#c0c5ce;">                        .</span><span style="color:#96b5b4;">unwrap</span><span style="color:#c0c5ce;">()
-</span><span style="color:#c0c5ce;">                        .</span><span style="color:#96b5b4;">text</span><span style="color:#c0c5ce;">()
-</span><span style="color:#c0c5ce;">                        .await
-</span><span style="color:#c0c5ce;">                        .</span><span style="color:#96b5b4;">unwrap</span><span style="color:#c0c5ce;">();
-</span><span style="color:#c0c5ce;">                    cache.</span><span style="color:#96b5b4;">insert</span><span style="color:#c0c5ce;">(request, response.</span><span style="color:#96b5b4;">clone</span><span style="color:#c0c5ce;">());
-</span><span style="color:#c0c5ce;">                    response
-</span><span style="color:#c0c5ce;">                };
-</span><span style="color:#c0c5ce;">                response_state.</span><span style="color:#96b5b4;">set</span><span style="color:#c0c5ce;">(Some(response));
-</span><span style="color:#c0c5ce;">            } </span><span style="color:#b48ead;">else </span><span style="color:#c0c5ce;">{
-</span><span style="color:#c0c5ce;">                </span><span style="color:#b48ead;">break</span><span style="color:#c0c5ce;">;
-</span><span style="color:#c0c5ce;">            }
-</span><span style="color:#c0c5ce;">        }
-</span><span style="color:#c0c5ce;">    }
+</span><span style="color:#c0c5ce;">	to_owned![response_state];
+</span><span style="color:#c0c5ce;">	async </span><span style="color:#b48ead;">move </span><span style="color:#c0c5ce;">{
+</span><span style="color:#c0c5ce;">		</span><span style="color:#65737e;">// Define your state before the loop
+</span><span style="color:#c0c5ce;">		</span><span style="color:#b48ead;">let mut</span><span style="color:#c0c5ce;"> state = reqwest::Client::new();
+</span><span style="color:#c0c5ce;">		</span><span style="color:#b48ead;">let mut</span><span style="color:#c0c5ce;"> cache: HashMap&lt;String, String&gt; = HashMap::new();
+</span><span style="color:#c0c5ce;">		</span><span style="color:#b48ead;">loop </span><span style="color:#c0c5ce;">{
+</span><span style="color:#c0c5ce;">			</span><span style="color:#65737e;">// Loop and wait for the next message
+</span><span style="color:#c0c5ce;">			</span><span style="color:#b48ead;">if let </span><span style="color:#c0c5ce;">Some(request) = rx.</span><span style="color:#96b5b4;">next</span><span style="color:#c0c5ce;">().await {
+</span><span style="color:#c0c5ce;">				</span><span style="color:#65737e;">// Resolve the message
+</span><span style="color:#c0c5ce;">				</span><span style="color:#b48ead;">let</span><span style="color:#c0c5ce;"> response = </span><span style="color:#b48ead;">if let </span><span style="color:#c0c5ce;">Some(response) = cache.</span><span style="color:#96b5b4;">get</span><span style="color:#c0c5ce;">(&amp;request) {
+</span><span style="color:#c0c5ce;">					response.</span><span style="color:#96b5b4;">clone</span><span style="color:#c0c5ce;">()
+</span><span style="color:#c0c5ce;">				} </span><span style="color:#b48ead;">else </span><span style="color:#c0c5ce;">{
+</span><span style="color:#c0c5ce;">					</span><span style="color:#b48ead;">let</span><span style="color:#c0c5ce;"> response = state
+</span><span style="color:#c0c5ce;">						.</span><span style="color:#96b5b4;">get</span><span style="color:#c0c5ce;">(&amp;request)
+</span><span style="color:#c0c5ce;">						.</span><span style="color:#96b5b4;">send</span><span style="color:#c0c5ce;">()
+</span><span style="color:#c0c5ce;">						.await
+</span><span style="color:#c0c5ce;">						.</span><span style="color:#96b5b4;">unwrap</span><span style="color:#c0c5ce;">()
+</span><span style="color:#c0c5ce;">						.</span><span style="color:#96b5b4;">text</span><span style="color:#c0c5ce;">()
+</span><span style="color:#c0c5ce;">						.await
+</span><span style="color:#c0c5ce;">						.</span><span style="color:#96b5b4;">unwrap</span><span style="color:#c0c5ce;">();
+</span><span style="color:#c0c5ce;">					cache.</span><span style="color:#96b5b4;">insert</span><span style="color:#c0c5ce;">(request, response.</span><span style="color:#96b5b4;">clone</span><span style="color:#c0c5ce;">());
+</span><span style="color:#c0c5ce;">					response
+</span><span style="color:#c0c5ce;">				};
+</span><span style="color:#c0c5ce;">				response_state.</span><span style="color:#96b5b4;">set</span><span style="color:#c0c5ce;">(Some(response));
+</span><span style="color:#c0c5ce;">			} </span><span style="color:#b48ead;">else </span><span style="color:#c0c5ce;">{
+</span><span style="color:#c0c5ce;">				</span><span style="color:#b48ead;">break</span><span style="color:#c0c5ce;">;
+</span><span style="color:#c0c5ce;">			}
+</span><span style="color:#c0c5ce;">		}
+</span><span style="color:#c0c5ce;">	}
 </span><span style="color:#c0c5ce;">});
 </span><span style="color:#65737e;">// Send a message to the coroutine
 </span><span style="color:#c0c5ce;">tx.</span><span style="color:#96b5b4;">send</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">https://example.com</span><span style="color:#c0c5ce;">&quot;.</span><span style="color:#96b5b4;">to_string</span><span style="color:#c0c5ce;">());

@@ -119,13 +119,13 @@
 <span style="color:#b48ead;">use </span><span style="color:#c0c5ce;">dioxus::prelude::*;
 </span><span style="color:#c0c5ce;">
 </span><span style="color:#b48ead;">pub fn </span><span style="color:#8fa1b3;">App</span><span style="color:#c0c5ce;">(</span><span style="color:#bf616a;">cx</span><span style="color:#c0c5ce;">: Scope) -&gt; Element {
-</span><span style="color:#c0c5ce;">    </span><span style="color:#b48ead;">let mut</span><span style="color:#c0c5ce;"> count = </span><span style="color:#96b5b4;">use_state</span><span style="color:#c0c5ce;">(cx, || </span><span style="color:#d08770;">0</span><span style="color:#c0c5ce;">);
+</span><span style="color:#c0c5ce;">	</span><span style="color:#b48ead;">let mut</span><span style="color:#c0c5ce;"> count = </span><span style="color:#96b5b4;">use_state</span><span style="color:#c0c5ce;">(cx, || </span><span style="color:#d08770;">0</span><span style="color:#c0c5ce;">);
 </span><span style="color:#c0c5ce;">
-</span><span style="color:#c0c5ce;">    cx.</span><span style="color:#96b5b4;">render</span><span style="color:#c0c5ce;">(rsx! {
-</span><span style="color:#c0c5ce;">        h1 { &quot;</span><span style="color:#a3be8c;">High-Five counter: {count}</span><span style="color:#c0c5ce;">&quot; }
-</span><span style="color:#c0c5ce;">        button { onclick: </span><span style="color:#b48ead;">move </span><span style="color:#c0c5ce;">|_| count += </span><span style="color:#d08770;">1</span><span style="color:#c0c5ce;">, &quot;</span><span style="color:#a3be8c;">Up high!</span><span style="color:#c0c5ce;">&quot; }
-</span><span style="color:#c0c5ce;">        button { onclick: </span><span style="color:#b48ead;">move </span><span style="color:#c0c5ce;">|_| count -= </span><span style="color:#d08770;">1</span><span style="color:#c0c5ce;">, &quot;</span><span style="color:#a3be8c;">Down low!</span><span style="color:#c0c5ce;">&quot; }
-</span><span style="color:#c0c5ce;">    })
+</span><span style="color:#c0c5ce;">	cx.</span><span style="color:#96b5b4;">render</span><span style="color:#c0c5ce;">(rsx! {
+</span><span style="color:#c0c5ce;">		h1 { &quot;</span><span style="color:#a3be8c;">High-Five counter: {count}</span><span style="color:#c0c5ce;">&quot; }
+</span><span style="color:#c0c5ce;">		button { onclick: </span><span style="color:#b48ead;">move </span><span style="color:#c0c5ce;">|_| count += </span><span style="color:#d08770;">1</span><span style="color:#c0c5ce;">, &quot;</span><span style="color:#a3be8c;">Up high!</span><span style="color:#c0c5ce;">&quot; }
+</span><span style="color:#c0c5ce;">		button { onclick: </span><span style="color:#b48ead;">move </span><span style="color:#c0c5ce;">|_| count -= </span><span style="color:#d08770;">1</span><span style="color:#c0c5ce;">, &quot;</span><span style="color:#a3be8c;">Down low!</span><span style="color:#c0c5ce;">&quot; }
+</span><span style="color:#c0c5ce;">	})
 </span><span style="color:#c0c5ce;">}
 </span><span style="color:#c0c5ce;">
 </span></pre>
@@ -133,108 +133,108 @@
 <span style="color:#b48ead;">use </span><span style="color:#c0c5ce;">dioxus::prelude::*;
 </span><span style="color:#c0c5ce;">
 </span><span style="color:#b48ead;">fn </span><span style="color:#8fa1b3;">main</span><span style="color:#c0c5ce;">() {
-</span><span style="color:#c0c5ce;">    dioxus_desktop::launch(app);
+</span><span style="color:#c0c5ce;">	dioxus_desktop::launch(app);
 </span><span style="color:#c0c5ce;">}
 </span><span style="color:#c0c5ce;">
 </span><span style="color:#b48ead;">fn </span><span style="color:#8fa1b3;">app</span><span style="color:#c0c5ce;">(</span><span style="color:#bf616a;">cx</span><span style="color:#c0c5ce;">: Scope) -&gt; Element {
-</span><span style="color:#c0c5ce;">    </span><span style="color:#b48ead;">let mut</span><span style="color:#c0c5ce;"> count = </span><span style="color:#96b5b4;">use_state</span><span style="color:#c0c5ce;">(cx, || </span><span style="color:#d08770;">0</span><span style="color:#c0c5ce;">);
+</span><span style="color:#c0c5ce;">	</span><span style="color:#b48ead;">let mut</span><span style="color:#c0c5ce;"> count = </span><span style="color:#96b5b4;">use_state</span><span style="color:#c0c5ce;">(cx, || </span><span style="color:#d08770;">0</span><span style="color:#c0c5ce;">);
 </span><span style="color:#c0c5ce;">
-</span><span style="color:#c0c5ce;">    cx.</span><span style="color:#96b5b4;">render</span><span style="color:#c0c5ce;">(
-</span><span style="color:#c0c5ce;">        </span><span style="color:#65737e;">// rsx expands to LazyNodes::new
-</span><span style="color:#c0c5ce;">        ::dioxus::core::LazyNodes::new(
-</span><span style="color:#c0c5ce;">            </span><span style="color:#b48ead;">move </span><span style="color:#c0c5ce;">|__cx: &amp;::dioxus::core::ScopeState| -&gt; ::dioxus::core::VNode {
-</span><span style="color:#c0c5ce;">                </span><span style="color:#65737e;">// The template is every static part of the rsx
-</span><span style="color:#c0c5ce;">                </span><span style="color:#b48ead;">static </span><span style="color:#d08770;">TEMPLATE</span><span style="color:#c0c5ce;">: ::dioxus::core::Template = ::dioxus::core::Template {
-</span><span style="color:#c0c5ce;">                    </span><span style="color:#65737e;">// This is the source location of the rsx that generated this template. This is used to make hot rsx reloading work. Hot rsx reloading just replaces the template with a new one generated from the rsx by the CLI.
-</span><span style="color:#c0c5ce;">                    name: &quot;</span><span style="color:#a3be8c;">examples</span><span style="color:#96b5b4;">\\</span><span style="color:#a3be8c;">readme.rs:14:15:250</span><span style="color:#c0c5ce;">&quot;,
-</span><span style="color:#c0c5ce;">                    </span><span style="color:#65737e;">// The root nodes are the top level nodes of the rsx
-</span><span style="color:#c0c5ce;">                    roots: &amp;[
-</span><span style="color:#c0c5ce;">                        </span><span style="color:#65737e;">// The h1 node
-</span><span style="color:#c0c5ce;">                        ::dioxus::core::TemplateNode::Element {
-</span><span style="color:#c0c5ce;">                            </span><span style="color:#65737e;">// Find the built in h1 tag in the dioxus_elements crate exported by the dioxus html crate
-</span><span style="color:#c0c5ce;">                            tag: dioxus_elements::h1::</span><span style="color:#d08770;">TAG_NAME</span><span style="color:#c0c5ce;">,
-</span><span style="color:#c0c5ce;">                            namespace: dioxus_elements::h1::</span><span style="color:#d08770;">NAME_SPACE</span><span style="color:#c0c5ce;">,
-</span><span style="color:#c0c5ce;">                            attrs: &amp;[],
-</span><span style="color:#c0c5ce;">                            </span><span style="color:#65737e;">// The children of the h1 node
-</span><span style="color:#c0c5ce;">                            children: &amp;[
-</span><span style="color:#c0c5ce;">                                </span><span style="color:#65737e;">// The dynamic count text node
-</span><span style="color:#c0c5ce;">                                </span><span style="color:#65737e;">// Any nodes that are dynamic have a dynamic placeholder with a unique index
-</span><span style="color:#c0c5ce;">                                ::dioxus::core::TemplateNode::DynamicText {
-</span><span style="color:#c0c5ce;">                                    </span><span style="color:#65737e;">// This index is used to find what element in `dynamic_nodes` to use instead of the placeholder
-</span><span style="color:#c0c5ce;">                                    id: </span><span style="color:#d08770;">0</span><span style="color:#b48ead;">usize</span><span style="color:#c0c5ce;">,
-</span><span style="color:#c0c5ce;">                                },
-</span><span style="color:#c0c5ce;">                            ],
-</span><span style="color:#c0c5ce;">                        },
-</span><span style="color:#c0c5ce;">                        </span><span style="color:#65737e;">// The up high button node
-</span><span style="color:#c0c5ce;">                        ::dioxus::core::TemplateNode::Element {
-</span><span style="color:#c0c5ce;">                            tag: dioxus_elements::button::</span><span style="color:#d08770;">TAG_NAME</span><span style="color:#c0c5ce;">,
-</span><span style="color:#c0c5ce;">                            namespace: dioxus_elements::button::</span><span style="color:#d08770;">NAME_SPACE</span><span style="color:#c0c5ce;">,
-</span><span style="color:#c0c5ce;">                            attrs: &amp;[
-</span><span style="color:#c0c5ce;">                                </span><span style="color:#65737e;">// The dynamic onclick listener attribute
-</span><span style="color:#c0c5ce;">                                </span><span style="color:#65737e;">// Any attributes that are dynamic have a dynamic placeholder with a unique index.
-</span><span style="color:#c0c5ce;">                                ::dioxus::core::TemplateAttribute::Dynamic {
-</span><span style="color:#c0c5ce;">                                    </span><span style="color:#65737e;">// Similar to dynamic nodes, dynamic attributes have a unique index used to find the attribute in `dynamic_attrs` to use instead of the placeholder
-</span><span style="color:#c0c5ce;">                                    id: </span><span style="color:#d08770;">0</span><span style="color:#b48ead;">usize</span><span style="color:#c0c5ce;">,
-</span><span style="color:#c0c5ce;">                                },
-</span><span style="color:#c0c5ce;">                            ],
-</span><span style="color:#c0c5ce;">                            children: &amp;[::dioxus::core::TemplateNode::Text { text: &quot;</span><span style="color:#a3be8c;">Up high!</span><span style="color:#c0c5ce;">&quot; }],
-</span><span style="color:#c0c5ce;">                        },
-</span><span style="color:#c0c5ce;">                        </span><span style="color:#65737e;">// The down low button node
-</span><span style="color:#c0c5ce;">                        ::dioxus::core::TemplateNode::Element {
-</span><span style="color:#c0c5ce;">                            tag: dioxus_elements::button::</span><span style="color:#d08770;">TAG_NAME</span><span style="color:#c0c5ce;">,
-</span><span style="color:#c0c5ce;">                            namespace: dioxus_elements::button::</span><span style="color:#d08770;">NAME_SPACE</span><span style="color:#c0c5ce;">,
-</span><span style="color:#c0c5ce;">                            attrs: &amp;[
-</span><span style="color:#c0c5ce;">                                </span><span style="color:#65737e;">// The dynamic onclick listener attribute
-</span><span style="color:#c0c5ce;">                                ::dioxus::core::TemplateAttribute::Dynamic { id: </span><span style="color:#d08770;">1</span><span style="color:#b48ead;">usize </span><span style="color:#c0c5ce;">},
-</span><span style="color:#c0c5ce;">                            ],
-</span><span style="color:#c0c5ce;">                            children: &amp;[::dioxus::core::TemplateNode::Text { text: &quot;</span><span style="color:#a3be8c;">Down low!</span><span style="color:#c0c5ce;">&quot; }],
-</span><span style="color:#c0c5ce;">                        },
-</span><span style="color:#c0c5ce;">                    ],
-</span><span style="color:#c0c5ce;">                    </span><span style="color:#65737e;">// Node paths is a list of paths to every dynamic node in the rsx
-</span><span style="color:#c0c5ce;">                    node_paths: &amp;[
-</span><span style="color:#c0c5ce;">                        </span><span style="color:#65737e;">// The first node path is the path to the dynamic node with an id of 0 (the count text node)
-</span><span style="color:#c0c5ce;">                        &amp;[
-</span><span style="color:#c0c5ce;">                            </span><span style="color:#65737e;">// Go to the index 0 root node
-</span><span style="color:#c0c5ce;">                            </span><span style="color:#d08770;">0</span><span style="color:#b48ead;">u8</span><span style="color:#c0c5ce;">, </span><span style="color:#65737e;">//
-</span><span style="color:#c0c5ce;">                            </span><span style="color:#65737e;">// Go to the first child of the root node
-</span><span style="color:#c0c5ce;">                            </span><span style="color:#d08770;">0</span><span style="color:#b48ead;">u8</span><span style="color:#c0c5ce;">,
-</span><span style="color:#c0c5ce;">                        ],
-</span><span style="color:#c0c5ce;">                    ],
-</span><span style="color:#c0c5ce;">                    </span><span style="color:#65737e;">// Attr paths is a list of paths to every dynamic attribute in the rsx
-</span><span style="color:#c0c5ce;">                    attr_paths: &amp;[
-</span><span style="color:#c0c5ce;">                        </span><span style="color:#65737e;">// The first attr path is the path to the dynamic attribute with an id of 0 (the up high button onclick listener)
-</span><span style="color:#c0c5ce;">                        &amp;[
-</span><span style="color:#c0c5ce;">                            </span><span style="color:#65737e;">// Go to the index 1 root node
-</span><span style="color:#c0c5ce;">                            </span><span style="color:#d08770;">1</span><span style="color:#b48ead;">u8</span><span style="color:#c0c5ce;">,
-</span><span style="color:#c0c5ce;">                        ],
-</span><span style="color:#c0c5ce;">                        </span><span style="color:#65737e;">// The second attr path is the path to the dynamic attribute with an id of 1 (the down low button onclick listener)
-</span><span style="color:#c0c5ce;">                        &amp;[
-</span><span style="color:#c0c5ce;">                            </span><span style="color:#65737e;">// Go to the index 2 root node
-</span><span style="color:#c0c5ce;">                            </span><span style="color:#d08770;">2</span><span style="color:#b48ead;">u8</span><span style="color:#c0c5ce;">,
-</span><span style="color:#c0c5ce;">                        ],
-</span><span style="color:#c0c5ce;">                    ],
-</span><span style="color:#c0c5ce;">                };
-</span><span style="color:#c0c5ce;">                </span><span style="color:#65737e;">// The VNode is a reference to the template with the dynamic parts of the rsx
-</span><span style="color:#c0c5ce;">                ::dioxus::core::VNode {
-</span><span style="color:#c0c5ce;">                    parent: None,
-</span><span style="color:#c0c5ce;">                    key: None,
-</span><span style="color:#c0c5ce;">                    </span><span style="color:#65737e;">// The static template this node will use. The template is stored in a Cell so it can be replaced with a new template when hot rsx reloading is enabled
-</span><span style="color:#c0c5ce;">                    template: std::cell::Cell::new(</span><span style="color:#d08770;">TEMPLATE</span><span style="color:#c0c5ce;">),
-</span><span style="color:#c0c5ce;">                    root_ids: Default::default(),
-</span><span style="color:#c0c5ce;">                    dynamic_nodes: __cx.</span><span style="color:#96b5b4;">bump</span><span style="color:#c0c5ce;">().</span><span style="color:#96b5b4;">alloc</span><span style="color:#c0c5ce;">([
-</span><span style="color:#c0c5ce;">                        </span><span style="color:#65737e;">// The dynamic count text node (dynamic node id 0)
-</span><span style="color:#c0c5ce;">                        __cx.</span><span style="color:#96b5b4;">text_node</span><span style="color:#c0c5ce;">(format_args!(&quot;</span><span style="color:#a3be8c;">High-Five counter: {0}</span><span style="color:#c0c5ce;">&quot;, count)),
-</span><span style="color:#c0c5ce;">                    ]),
-</span><span style="color:#c0c5ce;">                    dynamic_attrs: __cx.</span><span style="color:#96b5b4;">bump</span><span style="color:#c0c5ce;">().</span><span style="color:#96b5b4;">alloc</span><span style="color:#c0c5ce;">([
-</span><span style="color:#c0c5ce;">                        </span><span style="color:#65737e;">// The dynamic up high button onclick listener (dynamic attribute id 0)
-</span><span style="color:#c0c5ce;">                        dioxus_elements::events::onclick(__cx, </span><span style="color:#b48ead;">move </span><span style="color:#c0c5ce;">|_| count += </span><span style="color:#d08770;">1</span><span style="color:#c0c5ce;">),
-</span><span style="color:#c0c5ce;">                        </span><span style="color:#65737e;">// The dynamic down low button onclick listener (dynamic attribute id 1)
-</span><span style="color:#c0c5ce;">                        dioxus_elements::events::onclick(__cx, </span><span style="color:#b48ead;">move </span><span style="color:#c0c5ce;">|_| count -= </span><span style="color:#d08770;">1</span><span style="color:#c0c5ce;">),
-</span><span style="color:#c0c5ce;">                    ]),
-</span><span style="color:#c0c5ce;">                }
-</span><span style="color:#c0c5ce;">            },
-</span><span style="color:#c0c5ce;">        ),
-</span><span style="color:#c0c5ce;">    )
+</span><span style="color:#c0c5ce;">	cx.</span><span style="color:#96b5b4;">render</span><span style="color:#c0c5ce;">(
+</span><span style="color:#c0c5ce;">		</span><span style="color:#65737e;">// rsx expands to LazyNodes::new
+</span><span style="color:#c0c5ce;">		::dioxus::core::LazyNodes::new(
+</span><span style="color:#c0c5ce;">			</span><span style="color:#b48ead;">move </span><span style="color:#c0c5ce;">|__cx: &amp;::dioxus::core::ScopeState| -&gt; ::dioxus::core::VNode {
+</span><span style="color:#c0c5ce;">				</span><span style="color:#65737e;">// The template is every static part of the rsx
+</span><span style="color:#c0c5ce;">				</span><span style="color:#b48ead;">static </span><span style="color:#d08770;">TEMPLATE</span><span style="color:#c0c5ce;">: ::dioxus::core::Template = ::dioxus::core::Template {
+</span><span style="color:#c0c5ce;">					</span><span style="color:#65737e;">// This is the source location of the rsx that generated this template. This is used to make hot rsx reloading work. Hot rsx reloading just replaces the template with a new one generated from the rsx by the CLI.
+</span><span style="color:#c0c5ce;">					name: &quot;</span><span style="color:#a3be8c;">examples</span><span style="color:#96b5b4;">\\</span><span style="color:#a3be8c;">readme.rs:14:15:250</span><span style="color:#c0c5ce;">&quot;,
+</span><span style="color:#c0c5ce;">					</span><span style="color:#65737e;">// The root nodes are the top level nodes of the rsx
+</span><span style="color:#c0c5ce;">					roots: &amp;[
+</span><span style="color:#c0c5ce;">						</span><span style="color:#65737e;">// The h1 node
+</span><span style="color:#c0c5ce;">						::dioxus::core::TemplateNode::Element {
+</span><span style="color:#c0c5ce;">							</span><span style="color:#65737e;">// Find the built in h1 tag in the dioxus_elements crate exported by the dioxus html crate
+</span><span style="color:#c0c5ce;">							tag: dioxus_elements::h1::</span><span style="color:#d08770;">TAG_NAME</span><span style="color:#c0c5ce;">,
+</span><span style="color:#c0c5ce;">							namespace: dioxus_elements::h1::</span><span style="color:#d08770;">NAME_SPACE</span><span style="color:#c0c5ce;">,
+</span><span style="color:#c0c5ce;">							attrs: &amp;[],
+</span><span style="color:#c0c5ce;">							</span><span style="color:#65737e;">// The children of the h1 node
+</span><span style="color:#c0c5ce;">							children: &amp;[
+</span><span style="color:#c0c5ce;">								</span><span style="color:#65737e;">// The dynamic count text node
+</span><span style="color:#c0c5ce;">								</span><span style="color:#65737e;">// Any nodes that are dynamic have a dynamic placeholder with a unique index
+</span><span style="color:#c0c5ce;">								::dioxus::core::TemplateNode::DynamicText {
+</span><span style="color:#c0c5ce;">									</span><span style="color:#65737e;">// This index is used to find what element in `dynamic_nodes` to use instead of the placeholder
+</span><span style="color:#c0c5ce;">									id: </span><span style="color:#d08770;">0</span><span style="color:#b48ead;">usize</span><span style="color:#c0c5ce;">,
+</span><span style="color:#c0c5ce;">								},
+</span><span style="color:#c0c5ce;">							],
+</span><span style="color:#c0c5ce;">						},
+</span><span style="color:#c0c5ce;">						</span><span style="color:#65737e;">// The up high button node
+</span><span style="color:#c0c5ce;">						::dioxus::core::TemplateNode::Element {
+</span><span style="color:#c0c5ce;">							tag: dioxus_elements::button::</span><span style="color:#d08770;">TAG_NAME</span><span style="color:#c0c5ce;">,
+</span><span style="color:#c0c5ce;">							namespace: dioxus_elements::button::</span><span style="color:#d08770;">NAME_SPACE</span><span style="color:#c0c5ce;">,
+</span><span style="color:#c0c5ce;">							attrs: &amp;[
+</span><span style="color:#c0c5ce;">								</span><span style="color:#65737e;">// The dynamic onclick listener attribute
+</span><span style="color:#c0c5ce;">								</span><span style="color:#65737e;">// Any attributes that are dynamic have a dynamic placeholder with a unique index.
+</span><span style="color:#c0c5ce;">								::dioxus::core::TemplateAttribute::Dynamic {
+</span><span style="color:#c0c5ce;">									</span><span style="color:#65737e;">// Similar to dynamic nodes, dynamic attributes have a unique index used to find the attribute in `dynamic_attrs` to use instead of the placeholder
+</span><span style="color:#c0c5ce;">									id: </span><span style="color:#d08770;">0</span><span style="color:#b48ead;">usize</span><span style="color:#c0c5ce;">,
+</span><span style="color:#c0c5ce;">								},
+</span><span style="color:#c0c5ce;">							],
+</span><span style="color:#c0c5ce;">							children: &amp;[::dioxus::core::TemplateNode::Text { text: &quot;</span><span style="color:#a3be8c;">Up high!</span><span style="color:#c0c5ce;">&quot; }],
+</span><span style="color:#c0c5ce;">						},
+</span><span style="color:#c0c5ce;">						</span><span style="color:#65737e;">// The down low button node
+</span><span style="color:#c0c5ce;">						::dioxus::core::TemplateNode::Element {
+</span><span style="color:#c0c5ce;">							tag: dioxus_elements::button::</span><span style="color:#d08770;">TAG_NAME</span><span style="color:#c0c5ce;">,
+</span><span style="color:#c0c5ce;">							namespace: dioxus_elements::button::</span><span style="color:#d08770;">NAME_SPACE</span><span style="color:#c0c5ce;">,
+</span><span style="color:#c0c5ce;">							attrs: &amp;[
+</span><span style="color:#c0c5ce;">								</span><span style="color:#65737e;">// The dynamic onclick listener attribute
+</span><span style="color:#c0c5ce;">								::dioxus::core::TemplateAttribute::Dynamic { id: </span><span style="color:#d08770;">1</span><span style="color:#b48ead;">usize </span><span style="color:#c0c5ce;">},
+</span><span style="color:#c0c5ce;">							],
+</span><span style="color:#c0c5ce;">							children: &amp;[::dioxus::core::TemplateNode::Text { text: &quot;</span><span style="color:#a3be8c;">Down low!</span><span style="color:#c0c5ce;">&quot; }],
+</span><span style="color:#c0c5ce;">						},
+</span><span style="color:#c0c5ce;">					],
+</span><span style="color:#c0c5ce;">					</span><span style="color:#65737e;">// Node paths is a list of paths to every dynamic node in the rsx
+</span><span style="color:#c0c5ce;">					node_paths: &amp;[
+</span><span style="color:#c0c5ce;">						</span><span style="color:#65737e;">// The first node path is the path to the dynamic node with an id of 0 (the count text node)
+</span><span style="color:#c0c5ce;">						&amp;[
+</span><span style="color:#c0c5ce;">							</span><span style="color:#65737e;">// Go to the index 0 root node
+</span><span style="color:#c0c5ce;">							</span><span style="color:#d08770;">0</span><span style="color:#b48ead;">u8</span><span style="color:#c0c5ce;">, </span><span style="color:#65737e;">//
+</span><span style="color:#c0c5ce;">							</span><span style="color:#65737e;">// Go to the first child of the root node
+</span><span style="color:#c0c5ce;">							</span><span style="color:#d08770;">0</span><span style="color:#b48ead;">u8</span><span style="color:#c0c5ce;">,
+</span><span style="color:#c0c5ce;">						],
+</span><span style="color:#c0c5ce;">					],
+</span><span style="color:#c0c5ce;">					</span><span style="color:#65737e;">// Attr paths is a list of paths to every dynamic attribute in the rsx
+</span><span style="color:#c0c5ce;">					attr_paths: &amp;[
+</span><span style="color:#c0c5ce;">						</span><span style="color:#65737e;">// The first attr path is the path to the dynamic attribute with an id of 0 (the up high button onclick listener)
+</span><span style="color:#c0c5ce;">						&amp;[
+</span><span style="color:#c0c5ce;">							</span><span style="color:#65737e;">// Go to the index 1 root node
+</span><span style="color:#c0c5ce;">							</span><span style="color:#d08770;">1</span><span style="color:#b48ead;">u8</span><span style="color:#c0c5ce;">,
+</span><span style="color:#c0c5ce;">						],
+</span><span style="color:#c0c5ce;">						</span><span style="color:#65737e;">// The second attr path is the path to the dynamic attribute with an id of 1 (the down low button onclick listener)
+</span><span style="color:#c0c5ce;">						&amp;[
+</span><span style="color:#c0c5ce;">							</span><span style="color:#65737e;">// Go to the index 2 root node
+</span><span style="color:#c0c5ce;">							</span><span style="color:#d08770;">2</span><span style="color:#b48ead;">u8</span><span style="color:#c0c5ce;">,
+</span><span style="color:#c0c5ce;">						],
+</span><span style="color:#c0c5ce;">					],
+</span><span style="color:#c0c5ce;">				};
+</span><span style="color:#c0c5ce;">				</span><span style="color:#65737e;">// The VNode is a reference to the template with the dynamic parts of the rsx
+</span><span style="color:#c0c5ce;">				::dioxus::core::VNode {
+</span><span style="color:#c0c5ce;">					parent: None,
+</span><span style="color:#c0c5ce;">					key: None,
+</span><span style="color:#c0c5ce;">					</span><span style="color:#65737e;">// The static template this node will use. The template is stored in a Cell so it can be replaced with a new template when hot rsx reloading is enabled
+</span><span style="color:#c0c5ce;">					template: std::cell::Cell::new(</span><span style="color:#d08770;">TEMPLATE</span><span style="color:#c0c5ce;">),
+</span><span style="color:#c0c5ce;">					root_ids: Default::default(),
+</span><span style="color:#c0c5ce;">					dynamic_nodes: __cx.</span><span style="color:#96b5b4;">bump</span><span style="color:#c0c5ce;">().</span><span style="color:#96b5b4;">alloc</span><span style="color:#c0c5ce;">([
+</span><span style="color:#c0c5ce;">						</span><span style="color:#65737e;">// The dynamic count text node (dynamic node id 0)
+</span><span style="color:#c0c5ce;">						__cx.</span><span style="color:#96b5b4;">text_node</span><span style="color:#c0c5ce;">(format_args!(&quot;</span><span style="color:#a3be8c;">High-Five counter: {0}</span><span style="color:#c0c5ce;">&quot;, count)),
+</span><span style="color:#c0c5ce;">					]),
+</span><span style="color:#c0c5ce;">					dynamic_attrs: __cx.</span><span style="color:#96b5b4;">bump</span><span style="color:#c0c5ce;">().</span><span style="color:#96b5b4;">alloc</span><span style="color:#c0c5ce;">([
+</span><span style="color:#c0c5ce;">						</span><span style="color:#65737e;">// The dynamic up high button onclick listener (dynamic attribute id 0)
+</span><span style="color:#c0c5ce;">						dioxus_elements::events::onclick(__cx, </span><span style="color:#b48ead;">move </span><span style="color:#c0c5ce;">|_| count += </span><span style="color:#d08770;">1</span><span style="color:#c0c5ce;">),
+</span><span style="color:#c0c5ce;">						</span><span style="color:#65737e;">// The dynamic down low button onclick listener (dynamic attribute id 1)
+</span><span style="color:#c0c5ce;">						dioxus_elements::events::onclick(__cx, </span><span style="color:#b48ead;">move </span><span style="color:#c0c5ce;">|_| count -= </span><span style="color:#d08770;">1</span><span style="color:#c0c5ce;">),
+</span><span style="color:#c0c5ce;">					]),
+</span><span style="color:#c0c5ce;">				}
+</span><span style="color:#c0c5ce;">			},
+</span><span style="color:#c0c5ce;">		),
+</span><span style="color:#c0c5ce;">	)
 </span><span style="color:#c0c5ce;">}
 </span><span style="color:#c0c5ce;">
 </span></pre>

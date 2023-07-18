@@ -43,6 +43,10 @@ pub mod event_prevent_default;
 #[cfg(feature = "doc_test")]
 mod external_link;
 #[cfg(feature = "doc_test")]
+mod server_data_fetch;
+#[cfg(feature = "doc_test")]
+mod server_data_prefetch;
+#[cfg(feature = "doc_test")]
 mod first_route;
 pub mod full_example;
 pub mod hackernews_async;

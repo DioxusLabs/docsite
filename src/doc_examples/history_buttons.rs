@@ -11,19 +11,19 @@ enum Route {
 
 #[inline_props]
 fn Home(cx: Scope) -> Element {
-    todo!()
+	todo!()
 }
 
 // ANCHOR: history_buttons
 fn HistoryNavigation(cx: Scope) -> Element {
-    render! {
-        GoBackButton {
-            "Back to the Past"
-        }
-        GoForwardButton {
-            "Back to the Future" /* You see what I did there? 😉 */
-        }
-    }
+	render! {
+		GoBackButton {
+			"Back to the Past"
+		}
+		GoForwardButton {
+			"Back to the Future" /* You see what I did there? 😉 */
+		}
+	}
 }
 // ANCHOR_END: history_buttons
 

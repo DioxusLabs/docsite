@@ -17,7 +17,7 @@ enum Route {
 // Components must contain the same catch all segments as their corresponding variant
 #[inline_props]
 fn BlogPost(cx: Scope, segments: Vec<String>) -> Element {
-    todo!()
+	todo!()
 }
 // ANCHOR_END: route
 

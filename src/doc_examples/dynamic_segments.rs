@@ -23,12 +23,12 @@ enum Route {
 // Components must contain the same dynamic segments as their corresponding variant
 #[inline_props]
 fn BlogPost(cx: Scope, name: String) -> Element {
-    todo!()
+	todo!()
 }
 
 #[inline_props]
 fn Document(cx: Scope, id: usize) -> Element {
-    todo!()
+	todo!()
 }
 // ANCHOR_END: route
 

@@ -3,9 +3,9 @@
 use dioxus::prelude::*;
 
 pub fn HelloWorldCounter(cx: Scope) -> Element {
-    cx.render(rsx! {
-        div {
-            "Hello, world!"
-        }
-    })
+	cx.render(rsx! {
+		div {
+			"Hello, world!"
+		}
+	})
 }

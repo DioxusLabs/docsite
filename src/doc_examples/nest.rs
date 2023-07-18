@@ -28,12 +28,12 @@ enum Route {
 
 #[inline_props]
 fn BlogPost(cx: Scope, id: usize) -> Element {
-    todo!()
+	todo!()
 }
 
 #[inline_props]
 fn PostId(cx: Scope, id: usize) -> Element {
-    todo!()
+	todo!()
 }
 // ANCHOR_END: route
 

@@ -17,7 +17,7 @@ enum Route {
 // Components must contain the same query segments as their corresponding variant
 #[inline_props]
 fn BlogPost(cx: Scope, name: String) -> Element {
-    todo!()
+	todo!()
 }
 // ANCHOR_END: route
 

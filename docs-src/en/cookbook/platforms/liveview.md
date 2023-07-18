@@ -2,15 +2,6 @@
 
 This guide will cover concepts specific to the Dioxus liveview renderer.
 
-## Running Javascript
-
-Dioxus provides some ergonomic wrappers over the browser API, but in some cases you may need to access parts of the browser API Dioxus does not expose. 
-
-
-For these cases, Dioxus desktop exposes the use_eval hook
-
-// TODO: write this once https://github.com/DioxusLabs/dioxus/pull/1080 and https://github.com/DioxusLabs/dioxus/pull/1056 is merged
-
 ## Router Integration
 
 Currently, the Dioxus router does not integrate with the browser history in the liveview renderer. If you are interested in contributing this feature to Dioxus this issue is tracked [here](https://github.com/DioxusLabs/dioxus/issues/1038).

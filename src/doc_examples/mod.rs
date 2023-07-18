@@ -38,6 +38,8 @@ mod hook_test;
 #[cfg(feature = "doc_test")]
 mod component_test;
 #[cfg(feature = "doc_test")]
+mod eval;
+#[cfg(feature = "doc_test")]
 mod event_nested;
 pub mod event_prevent_default;
 #[cfg(feature = "doc_test")]

@@ -25,7 +25,7 @@ pub fn FeaturedExamples(cx: Scope) -> Element {
 						description: "A complex website leveraging Tailwind, global state, animations, pre-rendering, and project structure.",
 						link: "https://github.com/DioxusLabs/example-projects/tree/master/ecommerce-site",
 						img_avif: "/docsite/static/marketplace_cropped.avif",
-						img: "/docsite/static/marktplace_cropped.png",
+						img: "/docsite/static/marketplace_cropped.png",
 						img_alt: ""
 					}
 					FeaturedExample {

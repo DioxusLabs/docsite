@@ -80,8 +80,7 @@ mod hooks_bad;
 #[cfg(feature = "doc_test")]
 mod hooks_composed;
 pub mod hooks_counter;
-#[cfg(feature = "doc_test")]
-mod hooks_counter_two_state;
+pub mod hooks_counter_two_state;
 #[cfg(feature = "doc_test")]
 mod hooks_custom_logic;
 pub mod hooks_out_of_date;

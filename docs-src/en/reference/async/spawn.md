@@ -12,7 +12,7 @@ DemoFrame {
 }
 ```
 
-> Note: `spawn` will always spawn a *new* future. You most likely don't want to call it on every render.
+> Note: `spawn` will always spawn a _new_ future. You most likely don't want to call it on every render.
 
 Calling `spawn` will give you a `JoinHandle` which lets you cancel or pause the future.
 

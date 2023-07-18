@@ -224,22 +224,22 @@
 </span><span style="color:#b48ead;">use </span><span style="color:#c0c5ce;">dioxus_fullstack::prelude::*;
 </span><span style="color:#c0c5ce;">
 </span><span style="color:#b48ead;">fn </span><span style="color:#8fa1b3;">main</span><span style="color:#c0c5ce;">() {
-</span><span style="color:#c0c5ce;">    launch!(@([</span><span style="color:#d08770;">127</span><span style="color:#c0c5ce;">, </span><span style="color:#d08770;">0</span><span style="color:#c0c5ce;">, </span><span style="color:#d08770;">0</span><span style="color:#c0c5ce;">, </span><span style="color:#d08770;">1</span><span style="color:#c0c5ce;">], </span><span style="color:#d08770;">8080</span><span style="color:#c0c5ce;">), app, {});
+</span><span style="color:#c0c5ce;">	launch!(@([</span><span style="color:#d08770;">127</span><span style="color:#c0c5ce;">, </span><span style="color:#d08770;">0</span><span style="color:#c0c5ce;">, </span><span style="color:#d08770;">0</span><span style="color:#c0c5ce;">, </span><span style="color:#d08770;">1</span><span style="color:#c0c5ce;">], </span><span style="color:#d08770;">8080</span><span style="color:#c0c5ce;">), app, {});
 </span><span style="color:#c0c5ce;">}
 </span><span style="color:#c0c5ce;">
 </span><span style="color:#b48ead;">fn </span><span style="color:#8fa1b3;">app</span><span style="color:#c0c5ce;">(</span><span style="color:#bf616a;">cx</span><span style="color:#c0c5ce;">: Scope) -&gt; Element {
-</span><span style="color:#c0c5ce;">    </span><span style="color:#b48ead;">let mut</span><span style="color:#c0c5ce;"> count = </span><span style="color:#96b5b4;">use_future</span><span style="color:#c0c5ce;">(cx, (), |_| async { </span><span style="color:#96b5b4;">get_server_data</span><span style="color:#c0c5ce;">().await });
+</span><span style="color:#c0c5ce;">	</span><span style="color:#b48ead;">let mut</span><span style="color:#c0c5ce;"> count = </span><span style="color:#96b5b4;">use_future</span><span style="color:#c0c5ce;">(cx, (), |_| async { </span><span style="color:#96b5b4;">get_server_data</span><span style="color:#c0c5ce;">().await });
 </span><span style="color:#c0c5ce;">
-</span><span style="color:#c0c5ce;">    cx.</span><span style="color:#96b5b4;">render</span><span style="color:#c0c5ce;">(rsx! {
-</span><span style="color:#c0c5ce;">        &quot;</span><span style="color:#a3be8c;">server data is {count.value():?}</span><span style="color:#c0c5ce;">&quot;
-</span><span style="color:#c0c5ce;">    })
+</span><span style="color:#c0c5ce;">	cx.</span><span style="color:#96b5b4;">render</span><span style="color:#c0c5ce;">(rsx! {
+</span><span style="color:#c0c5ce;">		&quot;</span><span style="color:#a3be8c;">server data is {count.value():?}</span><span style="color:#c0c5ce;">&quot;
+</span><span style="color:#c0c5ce;">	})
 </span><span style="color:#c0c5ce;">}
 </span><span style="color:#c0c5ce;">
 </span><span style="color:#c0c5ce;">#[</span><span style="color:#bf616a;">server</span><span style="color:#c0c5ce;">(GetServerData)]
 </span><span style="color:#c0c5ce;">async </span><span style="color:#b48ead;">fn </span><span style="color:#8fa1b3;">get_server_data</span><span style="color:#c0c5ce;">() -&gt; Result&lt;String, ServerFnError&gt; {
-</span><span style="color:#c0c5ce;">    </span><span style="color:#65737e;">// Access a database
-</span><span style="color:#c0c5ce;">    tokio::time::sleep(std::time::Duration::from_millis(</span><span style="color:#d08770;">100</span><span style="color:#c0c5ce;">)).await;
-</span><span style="color:#c0c5ce;">    Ok(&quot;</span><span style="color:#a3be8c;">Hello from the server!</span><span style="color:#c0c5ce;">&quot;.</span><span style="color:#96b5b4;">to_string</span><span style="color:#c0c5ce;">())
+</span><span style="color:#c0c5ce;">	</span><span style="color:#65737e;">// Access a database
+</span><span style="color:#c0c5ce;">	tokio::time::sleep(std::time::Duration::from_millis(</span><span style="color:#d08770;">100</span><span style="color:#c0c5ce;">)).await;
+</span><span style="color:#c0c5ce;">	Ok(&quot;</span><span style="color:#a3be8c;">Hello from the server!</span><span style="color:#c0c5ce;">&quot;.</span><span style="color:#96b5b4;">to_string</span><span style="color:#c0c5ce;">())
 </span><span style="color:#c0c5ce;">}
 </span><span style="color:#c0c5ce;">
 </span></pre>
@@ -250,28 +250,28 @@
 </span><span style="color:#b48ead;">use </span><span style="color:#c0c5ce;">dioxus_fullstack::prelude::*;
 </span><span style="color:#c0c5ce;">
 </span><span style="color:#b48ead;">fn </span><span style="color:#8fa1b3;">main</span><span style="color:#c0c5ce;">() {
-</span><span style="color:#c0c5ce;">    launch!(@([</span><span style="color:#d08770;">127</span><span style="color:#c0c5ce;">, </span><span style="color:#d08770;">0</span><span style="color:#c0c5ce;">, </span><span style="color:#d08770;">0</span><span style="color:#c0c5ce;">, </span><span style="color:#d08770;">1</span><span style="color:#c0c5ce;">], </span><span style="color:#d08770;">8080</span><span style="color:#c0c5ce;">), app, {});
+</span><span style="color:#c0c5ce;">	launch!(@([</span><span style="color:#d08770;">127</span><span style="color:#c0c5ce;">, </span><span style="color:#d08770;">0</span><span style="color:#c0c5ce;">, </span><span style="color:#d08770;">0</span><span style="color:#c0c5ce;">, </span><span style="color:#d08770;">1</span><span style="color:#c0c5ce;">], </span><span style="color:#d08770;">8080</span><span style="color:#c0c5ce;">), app, {});
 </span><span style="color:#c0c5ce;">}
 </span><span style="color:#c0c5ce;">
 </span><span style="color:#b48ead;">fn </span><span style="color:#8fa1b3;">app</span><span style="color:#c0c5ce;">(</span><span style="color:#bf616a;">cx</span><span style="color:#c0c5ce;">: Scope) -&gt; Element {
-</span><span style="color:#c0c5ce;">    render! {
-</span><span style="color:#c0c5ce;">        Comp {}
-</span><span style="color:#c0c5ce;">    }
+</span><span style="color:#c0c5ce;">	render! {
+</span><span style="color:#c0c5ce;">		Comp {}
+</span><span style="color:#c0c5ce;">	}
 </span><span style="color:#c0c5ce;">}
 </span><span style="color:#c0c5ce;">
 </span><span style="color:#b48ead;">fn </span><span style="color:#8fa1b3;">Comp</span><span style="color:#c0c5ce;">(</span><span style="color:#bf616a;">cx</span><span style="color:#c0c5ce;">: Scope) -&gt; Element {
-</span><span style="color:#c0c5ce;">    </span><span style="color:#b48ead;">let mut</span><span style="color:#c0c5ce;"> count = </span><span style="color:#96b5b4;">use_server_future</span><span style="color:#c0c5ce;">(cx, (), |_| async { </span><span style="color:#96b5b4;">get_server_data</span><span style="color:#c0c5ce;">().await })?;
+</span><span style="color:#c0c5ce;">	</span><span style="color:#b48ead;">let mut</span><span style="color:#c0c5ce;"> count = </span><span style="color:#96b5b4;">use_server_future</span><span style="color:#c0c5ce;">(cx, (), |_| async { </span><span style="color:#96b5b4;">get_server_data</span><span style="color:#c0c5ce;">().await })?;
 </span><span style="color:#c0c5ce;">
-</span><span style="color:#c0c5ce;">    cx.</span><span style="color:#96b5b4;">render</span><span style="color:#c0c5ce;">(rsx! {
-</span><span style="color:#c0c5ce;">        &quot;</span><span style="color:#a3be8c;">server data is {count.value():?}</span><span style="color:#c0c5ce;">&quot;
-</span><span style="color:#c0c5ce;">    })
+</span><span style="color:#c0c5ce;">	cx.</span><span style="color:#96b5b4;">render</span><span style="color:#c0c5ce;">(rsx! {
+</span><span style="color:#c0c5ce;">		&quot;</span><span style="color:#a3be8c;">server data is {count.value():?}</span><span style="color:#c0c5ce;">&quot;
+</span><span style="color:#c0c5ce;">	})
 </span><span style="color:#c0c5ce;">}
 </span><span style="color:#c0c5ce;">
 </span><span style="color:#c0c5ce;">#[</span><span style="color:#bf616a;">server</span><span style="color:#c0c5ce;">(GetServerData)]
 </span><span style="color:#c0c5ce;">async </span><span style="color:#b48ead;">fn </span><span style="color:#8fa1b3;">get_server_data</span><span style="color:#c0c5ce;">() -&gt; Result&lt;String, ServerFnError&gt; {
-</span><span style="color:#c0c5ce;">    </span><span style="color:#65737e;">// Access a database
-</span><span style="color:#c0c5ce;">    tokio::time::sleep(std::time::Duration::from_millis(</span><span style="color:#d08770;">100</span><span style="color:#c0c5ce;">)).await;
-</span><span style="color:#c0c5ce;">    Ok(&quot;</span><span style="color:#a3be8c;">Hello from the server!</span><span style="color:#c0c5ce;">&quot;.</span><span style="color:#96b5b4;">to_string</span><span style="color:#c0c5ce;">())
+</span><span style="color:#c0c5ce;">	</span><span style="color:#65737e;">// Access a database
+</span><span style="color:#c0c5ce;">	tokio::time::sleep(std::time::Duration::from_millis(</span><span style="color:#d08770;">100</span><span style="color:#c0c5ce;">)).await;
+</span><span style="color:#c0c5ce;">	Ok(&quot;</span><span style="color:#a3be8c;">Hello from the server!</span><span style="color:#c0c5ce;">&quot;.</span><span style="color:#96b5b4;">to_string</span><span style="color:#c0c5ce;">())
 </span><span style="color:#c0c5ce;">}
 </span><span style="color:#c0c5ce;">
 </span></pre>

@@ -43,7 +43,7 @@ pub mod components {
 #[inline_props]
 fn HeaderFooter(cx: Scope) -> Element {
     use_init_atom_root(cx);
-    let set_search = fermi::use_set(cx, SHOW_SEARCH);
+    let set_search = fermi::use_set(cx, &SHOW_SEARCH);
     shortcut::use_shortcut(cx, Key::Character("k".to_string()), Modifiers::CONTROL, {
         to_owned![set_search];
         move || {
@@ -81,9 +81,9 @@ mod docs {
     }
 
     fn LayoutsExplanation(cx: Scope) -> Element {
-        let highlight_nav = use_atom_state(cx, HIGHLIGHT_NAV_LAYOUT);
-        let highlight_docs_nav = use_atom_state(cx, HIGHLIGHT_DOCS_LAYOUT);
-        let highlight_docs_content = use_atom_state(cx, HIGHLIGHT_DOCS_CONTENT);
+        let highlight_nav = use_atom_state(cx, &HIGHLIGHT_NAV_LAYOUT);
+        let highlight_docs_nav = use_atom_state(cx, &HIGHLIGHT_DOCS_LAYOUT);
+        let highlight_docs_content = use_atom_state(cx, &HIGHLIGHT_DOCS_CONTENT);
 
         render! {
             pre {

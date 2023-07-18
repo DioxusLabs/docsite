@@ -24,10 +24,15 @@ pub fn Err404(cx: Scope, segments: Vec<String>) -> Element {
 					}
 				}
 				div { class: "max-w-4xl h-64 md:h-96 mx-auto",
-					img {
-						class: "w-full rounded-lg object-cover",
-						src: "https://rustacean.net/assets/rustacean-flat-gesture.png",
-						alt: ""
+					picture {
+						source {
+							r#type: "image/avif",
+							"srcset": "/assets/rustacean-flat-gesture.png"
+						}
+						img {
+							class: "w-full rounded-lg object-cover",
+							src: "https://rustacean.net/assets/rustacean-flat-gesture.png"
+						}
 					}
 				}
 			}

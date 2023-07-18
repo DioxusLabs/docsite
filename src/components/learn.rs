@@ -7,9 +7,9 @@ use mdbook_shared::SummaryItem;
 use fermi::{use_read, Atom};
 
 pub struct DocsLayoutHighlighted(pub bool);
-pub static HIGHLIGHT_DOCS_LAYOUT: Atom<DocsLayoutHighlighted> = |_| DocsLayoutHighlighted(false);
+pub static HIGHLIGHT_DOCS_LAYOUT: Atom<DocsLayoutHighlighted> = Atom(|_| DocsLayoutHighlighted(false));
 pub struct DocsContentHighlighted(pub bool);
-pub static HIGHLIGHT_DOCS_CONTENT: Atom<DocsContentHighlighted> = |_| DocsContentHighlighted(false);
+pub static HIGHLIGHT_DOCS_CONTENT: Atom<DocsContentHighlighted> = Atom(|_| DocsContentHighlighted(false));
 
 #[inline_props]
 pub fn Learn(cx: Scope) -> Element {
@@ -26,7 +26,7 @@ pub fn Learn(cx: Scope) -> Element {
 }
 
 fn LeftNav(cx: Scope) -> Element {
-	let highlighted = use_read(cx, HIGHLIGHT_DOCS_LAYOUT);
+	let highlighted = use_read(cx, &HIGHLIGHT_DOCS_LAYOUT);
 	let extra_class = if highlighted.0 { "border border-green-600 rounded-md" } else { "" };
 	let chapters = vec![
 		&LAZY_BOOK.summary.prefix_chapters,
@@ -151,7 +151,7 @@ fn LocationLink(cx: Scope, chapter: &'static SummaryItem<BookRoute>) -> Element 
 
 // Todo: wire this up to the sections of the current page and a scroll controller
 fn RightNav(cx: Scope) -> Element {
-	let highlighted = use_read(cx, HIGHLIGHT_DOCS_LAYOUT);
+	let highlighted = use_read(cx, &HIGHLIGHT_DOCS_LAYOUT);
 	let extra_class = if highlighted.0 { "border border-green-600 rounded-md" } else { "" };
 	let page = use_book(cx);
 
@@ -175,7 +175,7 @@ fn RightNav(cx: Scope) -> Element {
 }
 
 fn Content(cx: Scope) -> Element {
-	let highlighted = use_read(cx, HIGHLIGHT_DOCS_CONTENT);
+	let highlighted = use_read(cx, &HIGHLIGHT_DOCS_CONTENT);
 	let extra_class = if highlighted.0 { "border border-blue-600 rounded-md" } else { "" };
 
 	render! {

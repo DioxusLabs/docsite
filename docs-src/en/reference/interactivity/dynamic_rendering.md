@@ -6,7 +6,7 @@ Sometimes you want to render different things depending on the state/props. With
 
 To render different elements based on a condition, you could use an `if-else` statement:
 
-```rust
+```rust, no_run
 {{#include src/doc_examples/conditional_rendering.rs:if_else}}
 ```
 ```inject-dioxus
@@ -14,7 +14,6 @@ DemoFrame {
   conditional_rendering::App {}
 }
 ```
-
 
 > You could also use `match` statements, or any Rust function to conditionally render different things.
 
@@ -24,7 +23,7 @@ You may have noticed some repeated code in the `if-else` example above. Repeatin
 
 We can improve this example by splitting up the dynamic parts and inserting them where they are needed.
 
-```rust
+```rust, no_run
 {{#include src/doc_examples/conditional_rendering.rs:if_else_improved}}
 ```
 ```inject-dioxus
@@ -37,18 +36,17 @@ DemoFrame {
 
 Since `Element` is a `Option<VNode>`, components accepting `Element` as a prop can inspect its contents, and render different things based on that. Example:
 
-```rust
+```rust, no_run
 {{#include src/doc_examples/component_children_inspect.rs:Clickable}}
 ```
 
 You can't mutate the `Element`, but if you need a modified version of it, you can construct a new one based on its attributes/children/etc.
 
-
 ## Rendering Nothing
 
 To render nothing, you can return `None` from a component. This is useful if you want to conditionally hide something:
 
-```rust
+```rust, no_run
 {{#include src/doc_examples/conditional_rendering.rs:conditional_none}}
 ```
 
@@ -75,7 +73,7 @@ For this, Dioxus accepts iterators that produce `Element`s. So we need to:
 
 Example: suppose you have a list of comments you want to render. Then, you can render them like this:
 
-```rust
+```rust, no_run
 {{#include src/doc_examples/rendering_lists.rs:render_list}}
 ```
 ```inject-dioxus
@@ -86,9 +84,9 @@ DemoFrame {
 
 ### Inline for loops
 
-Because of how common it is to render a list of items, Dioxus provides a shorthand for this. Instead of using `.iter, `.map`, and `rsx`, you can use a `for` loop with a body of rsx code:
+Because of how common it is to render a list of items, Dioxus provides a shorthand for this. Instead of using `.iter`, `.map`, and `rsx`, you can use a `for` loop with a body of rsx code:
 
-```rust
+```rust, no_run
 {{#include src/doc_examples/rendering_lists.rs:render_list_for_loop}}
 ```
 ```inject-dioxus

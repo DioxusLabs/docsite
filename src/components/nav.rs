@@ -5,17 +5,17 @@ use fermi::{use_atom_state, use_read, Atom};
 use dioxus::html::input_data::keyboard_types::{Key, Code};
 
 pub struct NavLayoutHighlighted(pub bool);
-pub static HIGHLIGHT_NAV_LAYOUT: Atom<NavLayoutHighlighted> = |_| NavLayoutHighlighted(false);
+pub static HIGHLIGHT_NAV_LAYOUT: Atom<NavLayoutHighlighted> = Atom(|_| NavLayoutHighlighted(false));
 pub struct ShowNav(pub bool);
-pub static SHOW_NAV: Atom<ShowNav> = |_| ShowNav(false);
+pub static SHOW_NAV: Atom<ShowNav> = Atom(|_| ShowNav(false));
 pub struct ShowSearch(pub bool);
-pub static SHOW_SEARCH: Atom<ShowSearch> = |_| ShowSearch(false);
+pub static SHOW_SEARCH: Atom<ShowSearch> = Atom(|_| ShowSearch(false));
 pub struct LoggedIn(pub bool);
-pub static LOGGED_IN: Atom<LoggedIn> = |_| LoggedIn(false);
+pub static LOGGED_IN: Atom<LoggedIn> = Atom(|_| LoggedIn(false));
 
 pub fn Nav(cx: Scope) -> Element {
-	let logged_in = use_read(cx, LOGGED_IN);
-	let highlighted = use_read(cx, HIGHLIGHT_NAV_LAYOUT);
+	let logged_in = use_read(cx, &LOGGED_IN);
+	let highlighted = use_read(cx, &HIGHLIGHT_NAV_LAYOUT);
 	let bg_color = if highlighted.0 { "border border-orange-600 rounded-md" } else { "" };
 
 	render! {
@@ -108,7 +108,7 @@ fn FullNav(cx: Scope) -> Element {
 }
 
 fn MobileNav(cx: Scope) -> Element {
-	let show = use_atom_state(cx, SHOW_NAV);
+	let show = use_atom_state(cx, &SHOW_NAV);
 
 	cx.render(rsx! {
 		div { class: "flex items-center",
@@ -197,7 +197,7 @@ fn LinkList(cx: Scope) -> Element {
 }
 
 fn Search(cx: Scope) -> Element {
-	let show_modal = use_atom_state(cx, SHOW_SEARCH);
+	let show_modal = use_atom_state(cx, &SHOW_SEARCH);
 
 	render! {
 		div { class: "relative hidden sm:block md:w-full max-w-[40rem] xl:max-w-[40rem] 2xl:max-w-[40rem] mx-auto",
@@ -221,7 +221,7 @@ fn Search(cx: Scope) -> Element {
 }
 
 fn SearchModal(cx: Scope) -> Element {
-	let show_modal = use_atom_state(cx, SHOW_SEARCH);
+	let show_modal = use_atom_state(cx, &SHOW_SEARCH);
 	let search_text = use_state(cx, String::new);
 	let results = crate::docs::LAZY_BOOK.search_index.as_ref().unwrap().search(&search_text.get());
 
@@ -308,7 +308,7 @@ fn SearchModal(cx: Scope) -> Element {
 
 #[inline_props]
 fn SearchResult(cx: Scope, result: mdbook_shared::search_index::SearchResult) -> Element {
-	let set_show_modal = fermi::use_set(cx, SHOW_SEARCH);
+	let set_show_modal = fermi::use_set(cx, &SHOW_SEARCH);
 	let title = &result.title;
 	let page = crate::docs::LAZY_BOOK.get_page(result.id);
 	let top_excerpt_segments = &result.excerpts.first().unwrap().text;

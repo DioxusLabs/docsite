@@ -119,45 +119,45 @@
 <span style="color:#b48ead;">use </span><span style="color:#c0c5ce;">dioxus::prelude::*;
 </span><span style="color:#c0c5ce;">
 </span><span style="color:#b48ead;">fn </span><span style="color:#8fa1b3;">main</span><span style="color:#c0c5ce;">() {
-</span><span style="color:#c0c5ce;">    dioxus_desktop::launch(app);
+</span><span style="color:#c0c5ce;">	dioxus_desktop::launch(app);
 </span><span style="color:#c0c5ce;">}
 </span><span style="color:#c0c5ce;">
 </span><span style="color:#b48ead;">fn </span><span style="color:#8fa1b3;">app</span><span style="color:#c0c5ce;">(</span><span style="color:#bf616a;">cx</span><span style="color:#c0c5ce;">: Scope) -&gt; Element {
-</span><span style="color:#c0c5ce;">    </span><span style="color:#65737e;">// Use eval returns a function that can spawn eval instances
-</span><span style="color:#c0c5ce;">    </span><span style="color:#b48ead;">let</span><span style="color:#c0c5ce;"> create_eval = </span><span style="color:#96b5b4;">use_eval</span><span style="color:#c0c5ce;">(cx);
+</span><span style="color:#c0c5ce;">	</span><span style="color:#65737e;">// Use eval returns a function that can spawn eval instances
+</span><span style="color:#c0c5ce;">	</span><span style="color:#b48ead;">let</span><span style="color:#c0c5ce;"> create_eval = </span><span style="color:#96b5b4;">use_eval</span><span style="color:#c0c5ce;">(cx);
 </span><span style="color:#c0c5ce;">
-</span><span style="color:#c0c5ce;">    </span><span style="color:#65737e;">// You can create as many eval instances as you want
-</span><span style="color:#c0c5ce;">    </span><span style="color:#b48ead;">let mut</span><span style="color:#c0c5ce;"> eval = </span><span style="color:#96b5b4;">create_eval</span><span style="color:#c0c5ce;">(
-</span><span style="color:#c0c5ce;">        </span><span style="color:#b48ead;">r</span><span style="color:#c0c5ce;">#</span><span style="color:#a3be8c;">&quot;
-</span><span style="color:#a3be8c;">        // You can send messages from JavaScript to Rust with the dioxus.send function
-</span><span style="color:#a3be8c;">        dioxus.send(&quot;Hi from JS!&quot;);
-</span><span style="color:#a3be8c;">        // You can receive messages from Rust to JavaScript with the dioxus.recv function
-</span><span style="color:#a3be8c;">        let msg = await dioxus.recv();
-</span><span style="color:#a3be8c;">        console.log(msg);
-</span><span style="color:#a3be8c;">        </span><span style="color:#c0c5ce;">&quot;#,
-</span><span style="color:#c0c5ce;">    );
+</span><span style="color:#c0c5ce;">	</span><span style="color:#65737e;">// You can create as many eval instances as you want
+</span><span style="color:#c0c5ce;">	</span><span style="color:#b48ead;">let mut</span><span style="color:#c0c5ce;"> eval = </span><span style="color:#96b5b4;">create_eval</span><span style="color:#c0c5ce;">(
+</span><span style="color:#c0c5ce;">		</span><span style="color:#b48ead;">r</span><span style="color:#c0c5ce;">#</span><span style="color:#a3be8c;">&quot;
+</span><span style="color:#a3be8c;">		// You can send messages from JavaScript to Rust with the dioxus.send function
+</span><span style="color:#a3be8c;">		dioxus.send(&quot;Hi from JS!&quot;);
+</span><span style="color:#a3be8c;">		// You can receive messages from Rust to JavaScript with the dioxus.recv function
+</span><span style="color:#a3be8c;">		let msg = await dioxus.recv();
+</span><span style="color:#a3be8c;">		console.log(msg);
+</span><span style="color:#a3be8c;">		</span><span style="color:#c0c5ce;">&quot;#,
+</span><span style="color:#c0c5ce;">	);
 </span><span style="color:#c0c5ce;">
-</span><span style="color:#c0c5ce;">    </span><span style="color:#65737e;">// You can run the eval instance with the run method
-</span><span style="color:#c0c5ce;">    eval.</span><span style="color:#96b5b4;">run</span><span style="color:#c0c5ce;">().</span><span style="color:#96b5b4;">unwrap</span><span style="color:#c0c5ce;">();
-</span><span style="color:#c0c5ce;">    </span><span style="color:#65737e;">// You can send messages to JavaScript with the send method
-</span><span style="color:#c0c5ce;">    eval.</span><span style="color:#96b5b4;">send</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">Hi from Rust!</span><span style="color:#c0c5ce;">&quot;.</span><span style="color:#96b5b4;">into</span><span style="color:#c0c5ce;">()).</span><span style="color:#96b5b4;">unwrap</span><span style="color:#c0c5ce;">();
+</span><span style="color:#c0c5ce;">	</span><span style="color:#65737e;">// You can run the eval instance with the run method
+</span><span style="color:#c0c5ce;">	eval.</span><span style="color:#96b5b4;">run</span><span style="color:#c0c5ce;">().</span><span style="color:#96b5b4;">unwrap</span><span style="color:#c0c5ce;">();
+</span><span style="color:#c0c5ce;">	</span><span style="color:#65737e;">// You can send messages to JavaScript with the send method
+</span><span style="color:#c0c5ce;">	eval.</span><span style="color:#96b5b4;">send</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">Hi from Rust!</span><span style="color:#c0c5ce;">&quot;.</span><span style="color:#96b5b4;">into</span><span style="color:#c0c5ce;">()).</span><span style="color:#96b5b4;">unwrap</span><span style="color:#c0c5ce;">();
 </span><span style="color:#c0c5ce;">
-</span><span style="color:#c0c5ce;">    </span><span style="color:#b48ead;">let</span><span style="color:#c0c5ce;"> future = </span><span style="color:#96b5b4;">use_future</span><span style="color:#c0c5ce;">(cx, (), |_| {
-</span><span style="color:#c0c5ce;">        to_owned![eval];
-</span><span style="color:#c0c5ce;">        async </span><span style="color:#b48ead;">move </span><span style="color:#c0c5ce;">{
-</span><span style="color:#c0c5ce;">            </span><span style="color:#65737e;">// You can receive any message from JavaScript with the recv method
-</span><span style="color:#c0c5ce;">            eval.</span><span style="color:#96b5b4;">recv</span><span style="color:#c0c5ce;">().await.</span><span style="color:#96b5b4;">unwrap</span><span style="color:#c0c5ce;">()
-</span><span style="color:#c0c5ce;">        }
-</span><span style="color:#c0c5ce;">    });
+</span><span style="color:#c0c5ce;">	</span><span style="color:#b48ead;">let</span><span style="color:#c0c5ce;"> future = </span><span style="color:#96b5b4;">use_future</span><span style="color:#c0c5ce;">(cx, (), |_| {
+</span><span style="color:#c0c5ce;">		to_owned![eval];
+</span><span style="color:#c0c5ce;">		async </span><span style="color:#b48ead;">move </span><span style="color:#c0c5ce;">{
+</span><span style="color:#c0c5ce;">			</span><span style="color:#65737e;">// You can receive any message from JavaScript with the recv method
+</span><span style="color:#c0c5ce;">			eval.</span><span style="color:#96b5b4;">recv</span><span style="color:#c0c5ce;">().await.</span><span style="color:#96b5b4;">unwrap</span><span style="color:#c0c5ce;">()
+</span><span style="color:#c0c5ce;">		}
+</span><span style="color:#c0c5ce;">	});
 </span><span style="color:#c0c5ce;">
-</span><span style="color:#c0c5ce;">    </span><span style="color:#b48ead;">match</span><span style="color:#c0c5ce;"> future.</span><span style="color:#96b5b4;">value</span><span style="color:#c0c5ce;">() {
-</span><span style="color:#c0c5ce;">        Some(v) =&gt; cx.</span><span style="color:#96b5b4;">render</span><span style="color:#c0c5ce;">(rsx!(
-</span><span style="color:#c0c5ce;">            p { &quot;</span><span style="color:#a3be8c;">{v}</span><span style="color:#c0c5ce;">&quot; }
-</span><span style="color:#c0c5ce;">        )),
-</span><span style="color:#c0c5ce;">        _ =&gt; cx.</span><span style="color:#96b5b4;">render</span><span style="color:#c0c5ce;">(rsx!(
-</span><span style="color:#c0c5ce;">            p { &quot;</span><span style="color:#a3be8c;">hello</span><span style="color:#c0c5ce;">&quot; }
-</span><span style="color:#c0c5ce;">        )),
-</span><span style="color:#c0c5ce;">    }
+</span><span style="color:#c0c5ce;">	</span><span style="color:#b48ead;">match</span><span style="color:#c0c5ce;"> future.</span><span style="color:#96b5b4;">value</span><span style="color:#c0c5ce;">() {
+</span><span style="color:#c0c5ce;">		Some(v) =&gt; cx.</span><span style="color:#96b5b4;">render</span><span style="color:#c0c5ce;">(rsx!(
+</span><span style="color:#c0c5ce;">			p { &quot;</span><span style="color:#a3be8c;">{v}</span><span style="color:#c0c5ce;">&quot; }
+</span><span style="color:#c0c5ce;">		)),
+</span><span style="color:#c0c5ce;">		_ =&gt; cx.</span><span style="color:#96b5b4;">render</span><span style="color:#c0c5ce;">(rsx!(
+</span><span style="color:#c0c5ce;">			p { &quot;</span><span style="color:#a3be8c;">hello</span><span style="color:#c0c5ce;">&quot; }
+</span><span style="color:#c0c5ce;">		)),
+</span><span style="color:#c0c5ce;">	}
 </span><span style="color:#c0c5ce;">}
 </span><span style="color:#c0c5ce;">
 </span></pre>

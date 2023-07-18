@@ -14,7 +14,7 @@ Only Component and Fragment nodes are susceptible to this issue. Dioxus mitigate
 
 ## Incorrect Iterator Keys
 
-As described in the [dynamic rendering chapter](../interactivity/dynamic_rendering.md#the-key-attribute), list items must have unique keys that are associated with the same items across renders. This helps Dioxus associate state with the contained components and ensures good diffing performance. Do not omit keys, unless you know that the list will never change.
+As described in the [dynamic rendering chapter](../reference/interactivity/dynamic_rendering.md#the-key-attribute), list items must have unique keys that are associated with the same items across renders. This helps Dioxus associate state with the contained components and ensures good diffing performance. Do not omit keys, unless you know that the list will never change.
 
 ```rust
 {{#include src/doc_examples/anti_patterns.rs:iter_keys}}

@@ -1,12 +1,8 @@
 #![allow(non_snake_case)]
 use dioxus::prelude::*;
 
-fn main() {
-	dioxus_desktop::launch(App);
-}
-
 // ANCHOR: component
-fn App(cx: Scope) -> Element {
+pub fn App(cx: Scope) -> Element {
 	// ANCHOR: use_state_calls
 	let mut count_a = use_state(cx, || 0);
 	let mut count_b = use_state(cx, || 0);

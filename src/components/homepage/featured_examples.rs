@@ -17,7 +17,7 @@ pub fn FeaturedExamples(cx: Scope) -> Element {
 						link: "https://github.com/DioxusLabs/example-projects/tree/master/todomvc",
 						img_avif: "/docsite/static/todos_cropped.avif",
 						img: "/docsite/static/todos_cropped.png",
-						img_alt: ""
+						img_alt: "TodoMVC"
 					}
 					FeaturedExample {
 						title: "E-Commerce Site",
@@ -26,7 +26,7 @@ pub fn FeaturedExamples(cx: Scope) -> Element {
 						link: "https://github.com/DioxusLabs/example-projects/tree/master/ecommerce-site",
 						img_avif: "/docsite/static/marketplace_cropped.avif",
 						img: "/docsite/static/marketplace_cropped.png",
-						img_alt: ""
+						img_alt: "E-Commerce Site"
 					}
 					FeaturedExample {
 						title: "File Explorer",
@@ -35,7 +35,7 @@ pub fn FeaturedExamples(cx: Scope) -> Element {
 						link: "https://github.com/DioxusLabs/example-projects/tree/master/file-explorer",
 						img_avif: "/docsite/static/file_explorer.avif",
 						img: "/docsite/static/file_explorer.png",
-						img_alt: ""
+						img_alt: "File Explorer"
 					}
 					FeaturedExample {
 						title: "WiFi Scanner",
@@ -44,7 +44,7 @@ pub fn FeaturedExamples(cx: Scope) -> Element {
 						link: "https://github.com/DioxusLabs/example-projects/tree/master/wifi-scanner",
 						img_avif: "/docsite/static/scanner.avif",
 						img: "/docsite/static/scanner.png",
-						img_alt: ""
+						img_alt: "Wifi Scanner"
 					}
 					FeaturedExample {
 						title: "Documentation Site",
@@ -53,7 +53,7 @@ pub fn FeaturedExamples(cx: Scope) -> Element {
 						link: "https://github.com/DioxusLabs/docsite",
 						img_avif: "/docsite/static/docsite_cropped.avif",
 						img: "/docsite/static/docsite_cropped.png",
-						img_alt: ""
+						img_alt: "The documentation site you're currently viewing"
 					}
 					FeaturedExample {
 						title: "JS Benchmark",
@@ -62,7 +62,7 @@ pub fn FeaturedExamples(cx: Scope) -> Element {
 						link: "https://github.com/DioxusLabs/example-projects/tree/master/jsframework-benchmark",
 						img_avif: "/docsite/static/jsbenchmark_cropped.avif",
 						img: "/docsite/static/jsbenchmark_cropped.png",
-						img_alt: ""
+						img_alt: "Javascript Framework Benchmark"
 					}
 				}
 			}

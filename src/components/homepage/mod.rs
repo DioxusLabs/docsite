@@ -297,7 +297,8 @@ fn Stats(cx: Scope) -> Element {
 			a { href: "https://github.com/dioxuslabs/dioxus/graphs/contributors",
 				img {
 					src: "https://contrib.rocks/image?repo=dioxuslabs/dioxus&max=52&columns=13",
-					class: "mx-auto pb-12"
+					class: "mx-auto pb-12",
+					alt: "Dioxus Contributors"
 				}
 			}
 		}

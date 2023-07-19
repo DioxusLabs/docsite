@@ -56,9 +56,11 @@ pub static Footer: Component<()> = |cx| {
 			div { class: "container px-5 py-24 mx-auto flex md:items-center lg:items-start md:flex-row md:flex-nowrap flex-wrap flex-col",
 				div { class: "w-64 flex-shrink-0 md:mx-0 mx-auto text-center md:text-left",
 					a { class: "flex title-font font-medium items-center md:justify-start justify-center text-white",
+						href: "https://github.com/DioxusLabs/dioxus",
 						img {
 							src: "https://avatars.githubusercontent.com/u/79236386?s=200&v=4",
-							class: "h-8 w-auto"
+							class: "h-8 w-auto",
+							alt: "Dioxus Labs Icon"
 						}
 						span { class: "ml-3 text-xl", "Dioxus Labs" }
 					}

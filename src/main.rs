@@ -8,7 +8,7 @@ use dioxus_docs_site::*;
 fn main() {
     #[cfg(feature = "web")]
     {
-        wasm_logger::init(wasm_logger::Config::new(log::Level::Trace));
+        wasm_logger::init(wasm_logger::Config::new(log::Level::Warn));
         std::panic::set_hook(Box::new(console_error_panic_hook::hook));
     }
     #[cfg(feature = "prebuild")]

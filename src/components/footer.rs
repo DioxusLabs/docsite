@@ -38,14 +38,16 @@ pub static Footer: Component<()> = |cx| {
 					"{name}"
 				}
 				nav { class: "list-none mb-10",
-					links.iter().map(|f| rsx!{
-						li { key: "{f.0}",
-							a { class: "text-gray-400 hover:text-white",
-								href: "{f.1}",
-								"{f.0}"
+					ul {
+						links.iter().map(|f| rsx!{
+							li { key: "{f.0}",
+								a { class: "text-gray-400 hover:text-white",
+									href: "{f.1}",
+									"{f.0}"
+								}
 							}
-						}
-					})
+						})
+					}
 				}
 			}
 		}

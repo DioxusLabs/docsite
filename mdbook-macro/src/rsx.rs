@@ -5,14 +5,17 @@ use std::{
 };
 
 use dioxus_rsx::{BodyNode, CallBody, Element, ElementAttrNamed, IfmtInput};
-use pulldown_cmark::{Alignment, Event, Tag};
+use pulldown_cmark::{Alignment, Event, Tag, Options, Parser};
 use syn::{Ident, __private::Span, parse_str, LitStr};
 
 use syntect::highlighting::ThemeSet;
 use syntect::parsing::SyntaxSet;
 
 pub fn parse(path: PathBuf, markdown: &str) -> syn::Result<CallBody> {
-    let mut parser = pulldown_cmark::Parser::new(markdown);
+    let mut options = Options::empty();
+    options.insert(Options::ENABLE_STRIKETHROUGH);
+    options.insert(Options::ENABLE_TABLES);
+    let mut parser = Parser::new_ext(markdown, options);
 
     let mut rsx_parser = RsxMarkdownParser {
         element_stack: vec![],

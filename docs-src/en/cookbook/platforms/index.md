@@ -1,3 +1,5 @@
+# Platforms
+
 This guide contains information about utilities specific to each Dioxus renderer.
 
 If you haven't set up your project, you may want to read the [getting started](../../getting_started/index.md) for your platform first.

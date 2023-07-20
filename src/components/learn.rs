@@ -26,8 +26,10 @@ pub fn Learn(cx: Scope) -> Element {
 }
 
 fn LeftNav(cx: Scope) -> Element {
+	let show_sidebar = use_state(cx, || false);
 	let highlighted = use_read(cx, &HIGHLIGHT_DOCS_LAYOUT);
 	let extra_class = if highlighted.0 { "border border-green-600 rounded-md" } else { "" };
+	let hidden = if **show_sidebar { "" } else { "hidden" };
 	let chapters = vec![
 		&LAZY_BOOK.summary.prefix_chapters,
 		&LAZY_BOOK.summary.numbered_chapters,
@@ -36,7 +38,12 @@ fn LeftNav(cx: Scope) -> Element {
 
 	render! {
 		// Now, pin the nav to the left
-		nav { class: "pl-6 z-20 text-base hidden md:block fixed top-0 pt-36 pb-16 md:-ml-3.5 w-[calc(100%-1rem)] md:w-60 h-full max-h-screen md:text-[13px] text-navy content-start overflow-y-auto leading-5 {extra_class}",
+		button {
+			class: "md:hidden w-8 h-8 mt-20 fixed top-0 left-0 p-1 text-lg z-[100]",
+			onclick: move |_| show_sidebar.modify(|f| !f),
+			"☰"
+		}
+		nav { class: "bg-white dark:bg-ideblack md:bg-inherit pl-6 z-20 text-base md:block fixed top-0 pt-36 pb-16 md:-ml-3.5 w-[calc(100%-1rem)] md:w-60 h-full max-h-screen md:text-[13px] text-navy content-start overflow-y-auto leading-5 {extra_class} {hidden}",
 			// I like the idea of breadcrumbs, but they add a lot of visual noise, and like, who cares?
 			// BreadCrumbs {}
 			for chapter in chapters.into_iter().flatten().filter(|chapter| chapter.maybe_link().is_some()) {

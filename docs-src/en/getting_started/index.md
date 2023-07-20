@@ -26,7 +26,7 @@ We've put a lot of care into making Dioxus syntax familiar and easy to understan
 
 Dioxus supports multiple platforms. Choose the platform you want to target below to get platform-specific setup instructions:
 
-- [Web](choosing_a_web_renderer.md)
+- [Web](web/choosing_a_web_renderer.md)
   - [Client Side](web.md): runs in the browser through WebAssembly
   - [Liveview](liveview.md): runs on the server, renders in the browser using WebSockets
   - [Fullstack](fullstack.md): renders to HTML text on the server and hydrates it on the client

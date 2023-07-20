@@ -1,7 +1,6 @@
 use std::path::Path;
 use std::path::PathBuf;
 
-use mdbook_shared::search_index::SearchIndex;
 use mdbook_shared::MdBook;
 use mdbook_shared::Page;
 use mdbook_shared::Section;
@@ -10,9 +9,6 @@ use mdbook_shared::SummaryItem;
 use proc_macro2::TokenStream;
 use quote::quote;
 use quote::ToTokens;
-use yazi::compress;
-use yazi::CompressionLevel;
-use yazi::Format;
 
 use crate::path_to_route_enum;
 
@@ -23,17 +19,7 @@ pub fn write_book_with_routes(
 ) -> TokenStream {
     let summary_path = book_path.join("SUMMARY.md");
     let index_path = summary_path.to_string_lossy();
-    let index = SearchIndex::from_book(book_path.clone(), book);
-    let compressed = compress(&index.to_bytes(), Format::Zlib, CompressionLevel::Default).unwrap();
-    let index_bytes = compressed.into_iter().map(|b| {
-        quote! {
-            #b
-        }
-    });
-    let search_index = quote! {
-        &[#(#index_bytes),*] as &'static [u8]
-    };
-
+    
     let MdBook { summary, .. } = book;
     let summary = write_summary_with_routes(summary);
     let pages = book.pages().iter().map(|(id, v)| {
@@ -56,10 +42,6 @@ pub fn write_book_with_routes(
                 summary: #summary,
                 pages: pages.into_iter().collect(),
                 page_id_mapping,
-                search_index: Some({
-                    let (bytes, _) = ::use_mdbook::yazi::decompress(#search_index, ::use_mdbook::yazi::Format::Zlib).unwrap();
-                    ::use_mdbook::mdbook_shared::search_index::SearchIndex::from_bytes(bytes)
-                }),
             }
         }
     };

@@ -1,4 +1,4 @@
-use crate::{search_index::SearchIndex, *};
+use crate::*;
 use anyhow::Ok;
 use pulldown_cmark::{Event, Tag};
 use serde::{Deserialize, Serialize};
@@ -17,9 +17,6 @@ where
 
     // rendered pages to HTML
     pub pages: Slab<Page<R>>,
-
-    // search index
-    pub search_index: Option<SearchIndex>,
 }
 
 impl<R: Hash + Eq + Clone> MdBook<R> {
@@ -89,7 +86,6 @@ impl MdBook<PathBuf> {
             summary,
             page_id_mapping: Default::default(),
             pages: Default::default(),
-            search_index: None,
         };
 
         book.populate(mdbook_root)?;
@@ -118,7 +114,9 @@ impl MdBook<PathBuf> {
         mdbook_root: PathBuf,
         chapter: &SummaryItem<PathBuf>,
     ) -> anyhow::Result<()> {
-        let Some(link) = chapter.maybe_link() else { return Ok(()) };
+        let Some(link) = chapter.maybe_link() else {
+            return Ok(());
+        };
 
         let url = link.location.as_ref().cloned().unwrap();
         let md_file = mdbook_root

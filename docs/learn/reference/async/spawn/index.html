@@ -100,7 +100,7 @@
         box-sizing: border-box;
         min-width: 200px;
         max-width: 980px;
-        margin: 0 auto;
+        margin: 0 10%;
         /* padding: 45px; */
         list-style: disc;
       }
@@ -151,7 +151,7 @@
 </span><span style="color:#c0c5ce;">	}
 </span><span style="color:#c0c5ce;">})
 </span></pre>
-</div><button style="position: absolute; top: 0; right: 0; background: rgba(0, 0, 0, 0.75); color: white; border: 1px solid white; padding: 0.25em;" onclick="navigator.clipboard.writeText(this.previousElementSibling.innerText)">Copy</button></div><div class="bg-white rounded-md shadow-md p-4 my-4 overflow-scroll text-black" style="max-height:50vh;"><button><!--#-->Logined in? false<!--#--></button></div><blockquote><p>Note: <code>spawn</code> will always spawn a <em>new</em> future. You most likely don&#x27;t want to call it on every render.</p></blockquote><p>Calling <code>spawn</code> will give you a <code>JoinHandle</code> which lets you cancel or pause the future.</p><h2 id="spawning-tokio-tasks"><a class="header" href="#spawning-tokio-tasks">Spawning Tokio Tasks</a></h2><p>Sometimes, you might want to spawn a background task that needs multiple threads or talk to hardware that might block your app code. In these cases, we can directly spawn a Tokio task from our future. For Dioxus-Desktop, your task will be spawned onto Tokio&#x27;s Multithreaded runtime:</p><div style="position: relative;"><div><pre style="background-color:#2b303b;">
+</div><button style="position: absolute; top: 0; right: 0; background: rgba(0, 0, 0, 0.75); color: white; border: 1px solid white; padding: 0.25em;" onclick="navigator.clipboard.writeText(this.previousElementSibling.innerText)">Copy</button></div><div class="bg-white rounded-md shadow-md p-4 my-4 overflow-scroll text-black" style="max-height:50vh;"><style>div { all: revert; }input { all: revert; }form { all: revert; }</style><button><!--#-->Logined in? false<!--#--></button></div><blockquote><p>Note: <code>spawn</code> will always spawn a <em>new</em> future. You most likely don&#x27;t want to call it on every render.</p></blockquote><p>Calling <code>spawn</code> will give you a <code>JoinHandle</code> which lets you cancel or pause the future.</p><h2 id="spawning-tokio-tasks"><a class="header" href="#spawning-tokio-tasks">Spawning Tokio Tasks</a></h2><p>Sometimes, you might want to spawn a background task that needs multiple threads or talk to hardware that might block your app code. In these cases, we can directly spawn a Tokio task from our future. For Dioxus-Desktop, your task will be spawned onto Tokio&#x27;s Multithreaded runtime:</p><div style="position: relative;"><div><pre style="background-color:#2b303b;">
 <span style="color:#c0c5ce;">cx.</span><span style="color:#96b5b4;">spawn</span><span style="color:#c0c5ce;">(async {
 </span><span style="color:#c0c5ce;">	</span><span style="color:#b48ead;">let </span><span style="color:#c0c5ce;">_ = tokio::spawn(async {}).await;
 </span><span style="color:#c0c5ce;">

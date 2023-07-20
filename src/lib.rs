@@ -75,6 +75,11 @@ mod docs {
 			div {
 				class: "bg-white rounded-md shadow-md p-4 my-4 overflow-scroll text-black",
 				max_height: "50vh",
+				style {
+					"div {{ all: revert; }}"
+					"input {{ all: revert; }}"
+					"form {{ all: revert; }}"
+				}
 				children
 			}
 		}

@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Dioxus | An elegant GUI library for Rust</title>
+    <meta content="text/html;charset=utf-8" http-equiv="Content-Type" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta charset="UTF-8" />
+
+    <link rel="icon shortcut" type="image/png" href="/docsite/static/favicon.png" />
+
+    <meta name="description" content="An elegant GUI library for Rust, inspired by React. Supports Web, Desktop, SSR, Liveview, and Mobile.">
+
+    <!-- Social meta stuff -->
+    <!-- open graph -->
+    <meta
+      property="og:title"
+      content="Dioxus - Reliable Rust apps that run anywhere"
+    />
+
+    <meta property="og:type" content="website" />
+
+    <meta
+      property="og:description"
+      content="An elegant GUI library for Rust, inspired by React. Supports Web, Desktop, SSR, Liveview, and Mobile."
+    />
+
+    <meta property="og:url" content="https://dioxuslabs.com/" />
+
+    <meta
+      property="og:image"
+      content="https://dioxuslabs.com/static/opengraph.png"
+    />
+
+    <!-- twitter -->
+    <meta
+      name="twitter:title"
+      content="Dioxus - Reliable Rust apps that run anywhere"
+    />
+    <meta
+      name="twitter:description"
+      content="An elegant GUI library for Rust, inspired by React. Supports Web, Desktop, SSR, Liveview, and Mobile."
+    />
+    <meta
+      name="twitter:image"
+      content="https://dioxuslabs.com/static/opengraph.png"
+    />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <!-- icons -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
+
+    <!-- style stuff -->
+    <!-- <link data-trunk rel="css" href="/tailwind.css" /> -->
+    <link rel="stylesheet" href="/docsite/tailwind.css" />
+    <!-- <script src="https://cdn.tailwindcss.com"></script> -->
+    <!-- <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              ghmetal: "#24292f",
+              ghdarkmetal: "#161b22",
+              ideblack: "#0e1116",
+              // ideblack: "#0a0a0a",
+              // ideblack: "#0E1116",
+            },
+            fontFamily: {
+              sans: ["Inter var", "sans-serif"],
+            },
+            boxShadow: {
+              "3xl": "0 35px 60px -1ww5px rgba(0, 0, 0, 0.5)",
+              cutesy: "0px 0px 40px -5px rgba(255, 255, 255, 0.2)",
+              // cutesy: "0px 0px 30px -10px white",
+              // cutesy: "0px 0px 30px -10px red",
+              pop: "0px 0px 30px -10px rgba(0, 0, 0, 0.5)",
+            },
+          },
+        },
+
+        // "3xl": "0 35px 60px -1ww5px rgba(0, 0, 0, 0.5)",
+        // theme: {
+        //   extend: {
+        //     colors: {
+        //       clifford: "#da373d",
+        //     },
+        //   },
+        // },
+      };
+    </script> -->
+    <link rel="stylesheet" href="https://rsms.me/inter/inter.css" />
+
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.1.0/github-markdown.min.css"
+    />
+
+    <style>
+      .markdown-body {
+        box-sizing: border-box;
+        min-width: 200px;
+        max-width: 980px;
+        margin: 0 auto;
+        /* padding: 45px; */
+        list-style: disc;
+      }
+
+      @media (max-width: 767px) {
+        .markdown-body {
+          /* padding: 15px; */
+        }
+      }
+    </style>
+    <script src="/docsite/static/darktheme.js"></script>
+    
+  </head>
+
+  <body>
+    <div id="main"><div><pre></pre><header class="sticky top-0 z-30 shadow dark:text-gray-200 dark:border-b border-stone-600 dark:bg-ideblack bg-white"><div class="py-3 px-12 max-w-screen-3xl mx-auto flex items-center justify-between text-sm leading-6 "><div class="flex z-50 flex-1"><a href="/docsite/" dioxus-prevent-default="onclick" class="flex title-font font-medium items-center text-gray-900" id="" rel="" target=""><img src="https://avatars.githubusercontent.com/u/79236386?s=200&v=4" class="h-5 w-auto"/><span class="ml-3 text-xl dark:text-white font-mono">Dioxus Labs</span></a></div><div class="relative hidden sm:block md:w-full max-w-[40rem] xl:max-w-[40rem] 2xl:max-w-[40rem] mx-auto"><button class="bg-gray-100 rounded-lg px-3 py-3 w-full text-left text-gray-400 my-auto flex flex-row align-middle justify-between"><div class="h-full my-auto flex flex-row align-middle justify-between"><span class="material-icons material-icons-outlined material-icons-round material-icons-sharp material-icons-two-tone md-48" style="font-size: 24px; color: rgba(0, 0, 0, 0.54); user-select: none;"><!--#-->search<!--#--></span><span class="pl-2">Search the docs</span></div><div class="border border-gray-300 rounded-lg p-1 text-xs text-gray-400">CTRL + K</div></button></div><div class="hidden xl:flex flex-1 h-full justify-end"><div class="hidden md:flex items-center  font-semibold"><nav><ul class="flex items-center space-x-2"><li><a href="/docsite/blog/" dioxus-prevent-default="onclick" class="ml-[-3.8em] md:ml-0 md:py-2 md:px-2 hover:text-sky-500 dark:hover:text-sky-400 dark:hover:bg-gray-500 hover:bg-gray-200 rounded text-lg md:text-sm" id="" rel="" target=""><!--#-->Blog<!--#--></a></li><li><a href="/docsite/learn/getting_started/" dioxus-prevent-default="onclick" class="ml-[-3.8em] md:ml-0 md:py-2 md:px-2 hover:text-sky-500 dark:hover:text-sky-400 dark:hover:bg-gray-500 hover:bg-gray-200 rounded text-lg md:text-sm" id="" rel="" target=""><!--#-->Docs<!--#--></a></li></ul></nav><div class="flex items-center border-l border-gray-200 ml-4 pl-4 dark:border-gray-800"><label class="sr-only" id="headlessui-listbox-label-2">Theme</label><a href="https://discord.gg/XgGxMSkvUM" dioxus-prevent-default="" class="block text-gray-400 hover:text-gray-500 dark:hover:text-gray-300" id="" rel="noopener noreferrer" target=""><span class="sr-only">Dioxus on Discord</span><svg width="24" height="24" viewBox="0 -28.5 256 256" preserveAspectRatio="xMidYMid"><g><path d="M216.856339,16.5966031 C200.285002,8.84328665 182.566144,3.2084988 164.041564,0 C161.766523,4.11318106 159.108624,9.64549908 157.276099,14.0464379 C137.583995,11.0849896 118.072967,11.0849896 98.7430163,14.0464379 C96.9108417,9.64549908 94.1925838,4.11318106 91.8971895,0 C73.3526068,3.2084988 55.6133949,8.86399117 39.0420583,16.6376612 C5.61752293,67.146514 -3.4433191,116.400813 1.08711069,164.955721 C23.2560196,181.510915 44.7403634,191.567697 65.8621325,198.148576 C71.0772151,190.971126 75.7283628,183.341335 79.7352139,175.300261 C72.104019,172.400575 64.7949724,168.822202 57.8887866,164.667963 C59.7209612,163.310589 61.5131304,161.891452 63.2445898,160.431257 C105.36741,180.133187 151.134928,180.133187 192.754523,160.431257 C194.506336,161.891452 196.298154,163.310589 198.110326,164.667963 C191.183787,168.842556 183.854737,172.420929 176.223542,175.320965 C180.230393,183.341335 184.861538,190.991831 190.096624,198.16893 C211.238746,191.588051 232.743023,181.531619 254.911949,164.955721 C260.227747,108.668201 245.831087,59.8662432 216.856339,16.5966031 Z M85.4738752,135.09489 C72.8290281,135.09489 62.4592217,123.290155 62.4592217,108.914901 C62.4592217,94.5396472 72.607595,82.7145587 85.4738752,82.7145587 C98.3405064,82.7145587 108.709962,94.5189427 108.488529,108.914901 C108.508531,123.290155 98.3405064,135.09489 85.4738752,135.09489 Z M170.525237,135.09489 C157.88039,135.09489 147.510584,123.290155 147.510584,108.914901 C147.510584,94.5396472 157.658606,82.7145587 170.525237,82.7145587 C183.391518,82.7145587 193.761324,94.5189427 193.539891,108.914901 C193.539891,123.290155 183.391518,135.09489 170.525237,135.09489 Z" fill="currentColor" fill-rule="nonzero"></path></g></svg></a><a href="https://github.com/dioxuslabs/dioxus" dioxus-prevent-default="" class="ml-4 block text-gray-400 hover:text-gray-500 dark:hover:text-gray-300" id="" rel="noopener noreferrer" target=""><span class="sr-only">Dioxus on GitHub</span><svg class="w-5 h-5" viewBox="0 0 16 16" aria-hidden="true" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path></svg></a></div><div class="flex items-center border-l border-gray-200 ml-4 pl-6 dark:border-gray-800"><label class="sr-only" id="headlessui-listbox-label-2">Theme</label><a href="/docsite/" dioxus-prevent-default="onclick" class="md:ml-0 md:py-2 md:px-3 bg-blue-500 ml-4 text-lg md:text-sm text-white rounded font-semibold" id="" rel="" target="">DEPLOY</a><pre></pre></div></div></div></div></header><section class="text-gray-600 body-font overflow-hidden dark:bg-ideblack"><div class="container lg:px-20 xl:px-48 pt-12 pb-12 mx-auto"><div class="-my-8"><script>Prism.highlightAll()</script><div class="flex w-full mb-20 flex-wrap list-none"><style>.markdown-body ul { list-style: disc; }.markdown-body li { display: list-item; }</style><article class="markdown-body"><h1 id="making-dioxus-almost-as-fast-as-solidjs">Making Dioxus (almost) as fast as SolidJS</h1>
+<p><a href="https://github.com/dioxuslabs/dioxus">Dioxus</a> is a UI library for Rust that makes it easy to target almost any platform with the same React-like codebase. You can build apps for WASM, desktop, mobile, TUI, static-sites, SSR, LiveView, and more.</p>
+<hr>
+<p>In preparation for the next big release of Dioxus, one of the lead contributors, Demonthos, added a long-awaited feature: <strong>subtree memoization</strong>.</p>
+<p>Subtree memoization reduces the overall work that Dioxus needs to do to get your desired UI state to the screen by several orders of magnitude. In fact, it’s so fast, that it pushes Dioxus to the leading edge of performance for web frameworks, on par with the likes of SolidJS, even beating out signal-based Rust libraries like Sycamore 0.8 and Leptos 0.0.3.</p>
+<p><img src="https://i.imgur.com/9rbAXP9.png"></p>
+<p>There’s obviously still some room to grow as WASM-based UI libraries face unique challenges compared to their JavaScript counterparts. Ultimately, we hope that this update demonstrates what’s really possible with the current React paradigm.</p>
+<p>And, of course, we need to mention that benchmarks never give a truly clear insight into how performant a library is, especially as an app scales. It’s definitely reasonable to believe that as an app grows in size, any other library might come out ahead. You shouldn’t make a decision on the framework for your next project just because it’s slightly more or less performant than any other library based on entirely arbitrary benchmarks.</p>
+<p><img src="https://i.imgur.com/Mfu8QOX.png"></p>
+<p>Anyways…</p>
+<h2 id="dioxus-shares-react-s-dna">Dioxus shares React’s DNA</h2>
+
+<p>As eloquently put by the creator of Svelte, the <a href="https://svelte.dev/blog/virtual-dom-is-pure-overhead">“Virtual DOM is pure overhead”</a>. So, why does Dioxus continue to share the React DNA if it’s ultimately just frivolous work?</p>
+<p>Well, we still love React, despite its warts, footguns, and idiosyncrasies.</p>
+<ul>
+<li>React is just JavaScript, no magic compilation needed.</li>
+<li>Components are just tiny event loops with mostly predictable re-renders.</li>
+<li>React’s paradigm maps extremely well into Rust.</li>
+</ul>
+<p>The final point is arguably the most important: React’s functional model maps well into Rust’s lifetime system. Any value provided to the component through <code>use_hook</code> is bounded by the lifetime of the <code>Scope</code> itself. <code>Scope</code> can be shared into any handler - like <code>onclick</code> in the following example. Since <code>value</code> shares a lifetime with <code>Scope</code>, it can be modified directly within element callbacks.</p>
+<pre><code class="lang-rust">fn app(cx: <span class="hljs-keyword">Scope</span>) -&gt; Element {
+    <span class="hljs-keyword">let</span> value: &amp;mut u32 = cx.use_hook(|<span class="hljs-type">| 0</span>);
+
+    cx.render(rsx!(
+        button { onclick: <span class="hljs-built_in">move</span> |<span class="hljs-type">_</span>| <span class="hljs-type">value</span> += <span class="hljs-number">1</span>, <span class="hljs-string">"Increment"</span> }
+    ))
+}
+</code></pre>
+<p>This clean mapping of React’s paradigms into Rust makes it possible for Dioxus to achieve excellent developer experience.</p>
+<ul>
+<li>Components are just regular functions.</li>
+<li>The foundational <code>use_hook</code> provides a direct mutable reference to a value.</li>
+<li>Values created with the Scope’s lifetime can be passed directly into children, unlike nearly all non-signal-based libraries.</li>
+</ul>
+<pre><code class="lang-rust"><span class="hljs-keyword">let</span> doc = use_document_builder(cx);
+
+rsx! {
+    Doc { document: doc }
+}
+
+<span class="hljs-meta">#[inline_props]</span>
+<span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">Doc</span></span>&lt;<span class="hljs-symbol">'a</span>&gt;(cx: Scope&lt;<span class="hljs-symbol">'a</span>&gt;, document: &amp;<span class="hljs-symbol">'a</span> SomeBigDocument) -&gt; Element {
+    <span class="hljs-comment">// document is passed from a parent by reference!</span>
+    <span class="hljs-comment">// no smart pointers required!</span>
+}
+</code></pre>
+<p>All in all, we’ve learned to love lifetimes rather than fear them. But for all the good of React, we’re still stuck with the bad.</p>
+<h2 id="overcoming-the-warts-of-react">Overcoming the warts of React</h2>
+
+<p>One of the biggest issues React has is the need to recreate entire chunks of the virtual DOM between renders. If you’re not aware, in React, your JSX markup is converted directly to <code>React.createElement</code> calls.</p>
+<pre><code class="lang-jsx"><span class="hljs-comment">// This markup</span>
+&lt;div <span class="hljs-class"><span class="hljs-keyword">class</span>="<span class="hljs-title">abc</span>"&gt; <span class="hljs-title">Hello</span> <span class="hljs-title">world</span> &lt;<span class="hljs-type">/div</span>&gt;</span>
+
+<span class="hljs-comment">// becomes these calls</span>
+React.createElement(div, { <span class="hljs-class"><span class="hljs-keyword">class</span>: <span class="hljs-type">"abc" }</span>, <span class="hljs-type">[React.createText</span></span>(<span class="hljs-string">"hello world"</span>)]);
+</code></pre>
+<p>This means for every new element in your tree, the transpiled JS is allocating several objects, arrays, and complex structures between <em>every</em> render. There’s no wonder why React isn’t on the top of the performance charts! In Rust, it’s generally not best practice to generate so many heap-allocated objects.</p>
+<p>Heck, there was even a very popular reddit post talking about this problem.</p>
+<p><a href="https://www.reddit.com/r/rust/comments/yd9ngs/worried_about_modern_rust_gui_libraries/">“Worried about “modern” Rust GUI libraries”</a></p>
+<p>In Dioxus, we noticed this early on and decided to see if we could reuse all the heap allocations instead of just tossing them out. Inspired by the work on Dodrio, Dioxus is implemented using a bump allocator and double-buffering, just like many high-performance GPU APIs.</p>
+<p>When you create a div, or a piece of text, or anything in Dioxus, it simply gets allocated inside a bump arena that gets reset when diffed. No cleanup, no extra heap allocations, just steady-state reuse of pre-allocated memory.</p>
+<p><img src="https://i.imgur.com/PYtTb6I.png"></p>
+<p>This is fast. Really fast. And when coupled with automatic component memoization, it’s really easy to write Dioxus apps that are memory efficient and faster than React.</p>
+<p>Great, case-closed, that’s it, right?</p>
+<p>Well, no. Dioxus still wasn’t nearly as fast as Svelte, Sycamore, SolidJS, or even InfernoJS. We’ve optimized a bunch of tiny things, like string caching, batched DOM manipulations, faster PartialEq, diffing, and pretty much everything you could think of.</p>
+<p>Except, we’re creating new objects, still in the heap, and doing a lot of diffing work. In the words of the creator of Svelte,</p>
+<blockquote>
+<p>But you know what would be even faster? <em>Not doing that.</em></p>
+</blockquote>
+<h2 id="making-dioxus-faster-by-doing-less-work">Making Dioxus faster by doing less work</h2>
+
+<p>To really make Dioxus faster, we need to make it do less work - or, at the very least, less work at runtime. SolidJS does this by thrusting you into this world of signals. We love signals! They might even come to Dioxus at some point (aka Preact signals). But, in the world where we still care about providing <code>&amp;mut T</code> from <code>use_hook</code> , we need to find a new solution that doesn’t require rewriting your React apps to use signals.</p>
+<p>Well, we’re working in Rust, we’ve got const, macros, custom PartialEq… let’s see if we can move some of this work to compile time.</p>
+<p>To build a Dioxus app, you pretty much have to use the <code>rsx!</code> proc macro. We unfortunately don’t support a builder API or alternatives. There’s a lot of good reasons to do this: performance, forward compatibility, tooling, ergonomics, etc.</p>
+<p>A block of <code>rsx!</code> might look like this:</p>
+<pre><code class="lang-rust">rsx! {
+    div {
+        h1 {<span class="hljs-string">"Glorious Counter"</span>}
+        p { <span class="hljs-string">"Count: {val}"</span> }
+        button { onclick: <span class="hljs-built_in">move</span> |<span class="hljs-type">_</span>| <span class="hljs-type">val</span> += <span class="hljs-number">1</span>, <span class="hljs-string">"Increment"</span> }
+        button { onclick: <span class="hljs-built_in">move</span> |<span class="hljs-type">_</span>| <span class="hljs-type">val</span> -= <span class="hljs-number">1</span>, <span class="hljs-string">"Decrement"</span> }
+    }
+}
+</code></pre>
+<p>If you look closely, you’ll notice that the entire tree is declared within the macro. There aren’t elements being created at runtime time, except for the dynamic text within the paragraph element. In React, you’d have to create every element from scratch, one-by-one, every time. But in Dioxus, we can do better.</p>
+<p>The new technique Dioxus uses is to split each <code>rsx!</code> call into a static <code>Template</code> and a list of dynamic nodes. For the above <code>rsx!</code> call, this might look like</p>
+<pre><code class="lang-rust">static THIS_TEMPLATE: Template = <span class="hljs-class">Template </span>{ <span class="hljs-comment">/* */</span> };
+
+<span class="hljs-class">VNode </span>{
+<span class="hljs-symbol">    template:</span> THIS_TEMPLATE,
+<span class="hljs-symbol">    dynamic_nodes:</span> [
+        Text(format_args!(<span class="hljs-string">"Count: {val}"</span>)
+    ]
+}
+</code></pre>
+<p>Now, on every render, we only create the single dynamic node. When we go to diff the VNode, we only need to diff that one text node too. So now, instead of 11 comparisons (9 elements and 2 attributes) we have one comparison. Diffing this template takes 90% less time than before! This is a huge win! Our app can be 10x bigger for the same diffing cost. And the results speak for themselves. Combined with the integration of <a href="https://crates.io/crates/sledgehammer">Sledgehammer</a>, Dioxus is pushing the limits of what the React model can reasonably achieve.</p>
+<p><img src="https://i.imgur.com/9rbAXP9.png"></p>
+<p>The React team also agrees that React can be better. That’s why they’ve started working on an experimental compiler for React.</p>
+<p><a href="https://reactjs.org/blog/2022/06/15/react-labs-what-we-have-been-working-on-june-2022.html">https://reactjs.org/blog/2022/06/15/react-labs-what-we-have-been-working-on-june-2022.html</a></p>
+<p>The plan here is to cache these elements and only update them when variables inside the <em>component</em> change. However, React-Forget still doesn’t fix the underlying issue of node creation, memory usage, or anything of the other things compile-time memoization achieves.</p>
+<h2 id="taking-it-a-step-further">Taking it a step further</h2>
+
+<p>Templates make diffing the tree faster, but they can also make building the UI faster too. Both SolidJS and LitHTML take advantage of this hack to achieve fantastic performance.</p>
+<p>With support from the renderer, Dioxus can actually serialize these parsed RSX templates and let the renderer do all the caching.</p>
+<p>Before, if we wanted to assemble a tree of nodes from an iterator, we’d have to do a ton of tedious work, creating each list item part by part.</p>
+<pre><code class="lang-rust"><span class="hljs-comment">// This tree</span>
+<span class="hljs-class">ul </span>{
+    (<span class="hljs-number">0.</span>.len).map(|id| rsx!{
+        <span class="hljs-class">li </span>{
+            <span class="hljs-class">h3 </span>{ <span class="hljs-string">"user"</span> }
+            <span class="hljs-class">div </span>{ <span class="hljs-string">"hello {id}"</span> }
+        }
+    })
+}
+
+<span class="hljs-comment">// item one...</span>
+<span class="hljs-symbol">Edit:</span>:CreateElement(<span class="hljs-string">"li"</span>)
+<span class="hljs-symbol">Edit:</span>:CreateElement(<span class="hljs-string">"h3"</span>)
+<span class="hljs-symbol">Edit:</span>:CreateText(<span class="hljs-string">"user"</span>)
+<span class="hljs-symbol">Edit:</span>:ApendChildren(<span class="hljs-number">1</span>)
+<span class="hljs-symbol">Edit:</span>:CreateElement(<span class="hljs-string">"div"</span>)
+<span class="hljs-symbol">Edit:</span>:CreateText(<span class="hljs-string">"hello 0"</span>, <span class="hljs-number">2</span>)
+<span class="hljs-symbol">Edit:</span>:ApendChildren(<span class="hljs-number">1</span>)
+<span class="hljs-symbol">Edit:</span>:ApendChildren(<span class="hljs-number">2</span>)
+
+<span class="hljs-comment">// item two...</span>
+<span class="hljs-symbol">Edit:</span>:CreateElement(<span class="hljs-string">"li"</span>)
+<span class="hljs-symbol">Edit:</span>:CreateElement(<span class="hljs-string">"h3"</span>)
+<span class="hljs-symbol">Edit:</span>:CreateText(<span class="hljs-string">"user"</span>)
+<span class="hljs-symbol">Edit:</span>:ApendChildren(<span class="hljs-number">1</span>)
+<span class="hljs-symbol">Edit:</span>:CreateElement(<span class="hljs-string">"div"</span>)
+<span class="hljs-symbol">Edit:</span>:CreateText(<span class="hljs-string">"hello 0"</span>, <span class="hljs-number">2</span>)
+<span class="hljs-symbol">Edit:</span>:ApendChildren(<span class="hljs-number">1</span>)
+<span class="hljs-symbol">Edit:</span>:ApendChildren(<span class="hljs-number">2</span>)
+
+<span class="hljs-comment">// and so on until we attach all the li to the ul</span>
+<span class="hljs-symbol">Edit:</span>:AppendChildren(len)
+</code></pre>
+<p>With templates, we can serialize the tree and pass it to the renderer:</p>
+<pre><code class="lang-rust">static TEMPLATE_HTML = "<span class="hljs-tag">&lt;<span class="hljs-name">li</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">h3</span>&gt;</span>user<span class="hljs-tag">&lt;/<span class="hljs-name">h3</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>hello _id_<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>";
+
+Edit::SaveTemplate("demo.rs:5:1", TEMPLATE_HTML);
+</code></pre>
+<p>Now, whenever we create the list elements, it’s as simple as cloning some nodes that already exist and precisely modifying just a small part</p>
+<pre><code class="lang-rust">Edit::LoadTemplate(<span class="hljs-string">"demo.rs:5:1"</span>);
+Edit::HydateText(<span class="hljs-number">0</span>, <span class="hljs-string">"hello 0"</span>);
+</code></pre>
+<p>For the tiny case we’re showing here, the benefit might seem limited. However, for real-world apps with lots of elements, custom styles, and all sorts of extra metadata, this caching system is immensely powerful and extremely performant.</p>
+<h2 id="what-does-this-enable-">What does this enable?</h2>
+
+<p>Now that we’re working with the mindset of templates, we can start to build new functionality previously locked behind the old model.</p>
+<h3 id="hot-reloading">Hot Reloading</h3>
+
+<p>One amazing feature added to Dioxus using the new template model is hot reloading. You can now modify your running Dioxus app without recompiling, provided you add, remove, or modify elements inside of <code>rsx!</code> . This mechanism works for <em>any</em> renderer too, since each renderer has to implement the same protocol to manage edits.</p>
+<p><video autoplay playsinline muted src="https://i.imgur.com/PSJdqKO.mp4"></video></p>
+<p>Not only can templates be cached inside of a renderer, they can be modified after-the-fact. The renderer is smart enough to track down the instance of every template node on the page and apply the same patches.</p>
+<h3 id="performant-liveview">Performant LiveView</h3>
+
+<p>Another addition to Diouxs 0.3 is the new LiveView renderer. Much like its counterpart Phoenix LiveView, Dioxus LiveView enables entirely server-rendered apps and components while shipping minimal JS to the client. In the Liveview model, minimizing latency and bandwidth is crucial to keeping apps snappy, especially for lower-end clients.</p>
+<p><img src="https://i.imgur.com/nJOX4cw.jpg" alt="Elixir LiveView"></p>
+<p>Now, instead of sending hundreds or thousands of edits to the client to render things like lists and complex markup, Dioxus packages all the templates the client will use inside of the HTML shipped to the client. A sample HTML document that might be sent from the server to the client may look like this:</p>
+<pre><code class="lang-html"><span class="hljs-tag">&lt;<span class="hljs-name">head</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">template</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"demo.rs:123:456"</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">li</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">h3</span>&gt;</span>user<span class="hljs-tag">&lt;/<span class="hljs-name">h3</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>hello _id_<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">template</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">head</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"main"</span>&gt;</span>
+        <span class="hljs-comment">&lt;!-- pre-rendered page --&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span>
+</code></pre>
+<p>Notice how the templates are collected during SSR and inserted into the header. The only edits sent over the network from the server to the client are commands to create/remove template nodes and to precisely modify just the nodes that changed. Fast, simple, and scalable!</p>
+<h2 id="faster-server-side-rendering-ssr-">Faster Server-Side-Rendering (SSR)</h2>
+
+<p>The other technique that SolidJS uses to achieve faster SSR performance is combining pre-rendered portions of templates together through string concatenation. Since the template is known at compile time, we can break it up into smaller chunks and just stitch them together during rendering. No need to build and traverse huge element trees!</p>
+<pre><code class="lang-rust"><span class="hljs-comment">// Cached template segements:</span>
+
+<span class="hljs-function"><span class="hljs-title">PreRendered</span><span class="hljs-params">(<span class="hljs-string">"&lt;div class=\"asdasdasd\" class=\"asdasdasd\""</span>.into()</span></span>,),
+<span class="hljs-function"><span class="hljs-title">Attr</span><span class="hljs-params">(<span class="hljs-number">0</span>,)</span></span>,
+<span class="hljs-function"><span class="hljs-title">PreRendered</span><span class="hljs-params">(<span class="hljs-string">"&gt;Hello world 1 --&gt;"</span>.into()</span></span>,),
+<span class="hljs-function"><span class="hljs-title">Node</span><span class="hljs-params">(<span class="hljs-number">0</span>,)</span></span>,
+PreRendered(
+    <span class="hljs-string">"&lt;-- Hello world 2&lt;div&gt;nest 1&lt;/div&gt;&lt;div&gt;&lt;/div&gt;&lt;div&gt;nest 2&lt;/div&gt;"</span>.into(),
+),
+<span class="hljs-function"><span class="hljs-title">Node</span><span class="hljs-params">(<span class="hljs-number">1</span>,)</span></span>,
+<span class="hljs-function"><span class="hljs-title">Node</span><span class="hljs-params">(<span class="hljs-number">2</span>,)</span></span>,
+<span class="hljs-function"><span class="hljs-title">PreRendered</span><span class="hljs-params">(<span class="hljs-string">"&lt;/div&gt;"</span>.into()</span></span>,)
+</code></pre>
+<h2 id="disclaimer">Disclaimer</h2>
+
+<p>Even with all the innovations here, it’s still very important to remember that Dioxus still takes after React. No matter how many tweaks, optimizations, and improvements we make to Dioxus, you can still shoot yourself in the foot with the classic React footguns.</p>
+<p>These include</p>
+<ul>
+<li>Unkeyed lists</li>
+<li>Poor use of memoization and comparisons</li>
+<li>Misuse of use_effect</li>
+<li>“God components” that do everything</li>
+</ul>
+<p>and a whole host of other issues that you might not find in frameworks like Solid and Sycamore.</p>
+<p>That being said, since Dioxus relies on a VirtualDom, it can be used as the primary state system for any renderer. And we have a ton of options for renderers:</p>
+<ul>
+<li>Desktop (webview)</li>
+<li>Mobile (webview)</li>
+<li>Web</li>
+<li>TUI</li>
+<li>Skia</li>
+<li>LiveView</li>
+<li>Blitz (WGPU)</li>
+<li>SSR + Hydration</li>
+<li>Static site generation</li>
+<li>VR/AR (coming soon!)</li>
+</ul>
+<p>Note that all this work is being done for Dioxus 0.3 and hasn’t yet been released as a major version. We’re still dogfooding these changes to make sure no new bugs have slipped through. If you want these changes released sooner rather than later, feel free to build something with <code>master</code> and let us know!</p>
+<ul>
+<li><a href="https://discord.gg/XgGxMSkvUM">Discord</a></li>
+<li><a href="https://github.com/dioxuslabs/dioxus">Github</a></li>
+<li><a href="https://www.reddit.com/r/rust/comments/zls556/making_dioxus_almost_as_fast_as_solidjs/">r/rust Post</a></li>
+</ul>
+</article><script>Prism.highlightAll()</script></div></div></div></section><footer class="text-gray-400 bg-ghmetal body-font"><div class="container px-5 py-24 mx-auto flex md:items-center lg:items-start md:flex-row md:flex-nowrap flex-wrap flex-col"><div class="w-64 flex-shrink-0 md:mx-0 mx-auto text-center md:text-left"><a class="flex title-font font-medium items-center md:justify-start justify-center text-white" href="https://github.com/DioxusLabs/dioxus"><img src="https://avatars.githubusercontent.com/u/79236386?s=200&v=4" class="h-8 w-auto" alt="Dioxus Labs Icon"/><span class="ml-3 text-xl">Dioxus Labs</span></a><p class="mt-2 text-sm text-gray-500">An Open Source project dedicated to making Rust UI wonderful.</p></div><div class="flex-grow flex flex-wrap md:pl-20 -mb-10 md:mt-0 mt-10 md:text-left text-center"><div class="lg:w-1/4 md:w-1/2 w-full px-4"><h2 class="title-font font-medium text-white tracking-widest text-sm mb-3"><!--#-->Community<!--#--></h2><nav class="list-none mb-10"><ul><li><a class="text-gray-400 hover:text-white" href="https://github.com/dioxuslabs"><!--#-->Github<!--#--></a></li><li><a class="text-gray-400 hover:text-white" href="https://twitter.com/dioxuslabs"><!--#-->Twitter<!--#--></a></li><li><a class="text-gray-400 hover:text-white" href="https://discord.gg/XgGxMSkvUM"><!--#-->Discord<!--#--></a></li></ul></nav></div><div class="lg:w-1/4 md:w-1/2 w-full px-4"><h2 class="title-font font-medium text-white tracking-widest text-sm mb-3"><!--#-->Learning<!--#--></h2><nav class="list-none mb-10"><ul><li><a class="text-gray-400 hover:text-white" href="https://docs.rs/dioxus"><!--#-->docs.rs<!--#--></a></li><li><a class="text-gray-400 hover:text-white" href="/docs/0.3/guide/en"><!--#-->Guide<!--#--></a></li><li><a class="text-gray-400 hover:text-white" href="https://github.com/DioxusLabs/awesome-dioxus"><!--#-->Awesome List<!--#--></a></li></ul></nav></div><div class="lg:w-1/4 md:w-1/2 w-full px-4"><h2 class="title-font font-medium text-white tracking-widest text-sm mb-3"><!--#-->Projects<!--#--></h2><nav class="list-none mb-10"><ul><li><a class="text-gray-400 hover:text-white" href="https://github.com/DioxusLabs/dioxus"><!--#-->Dioxus<!--#--></a></li><li><a class="text-gray-400 hover:text-white" href="https://github.com/DioxusLabs/dioxus/tree/master/packages/cli"><!--#-->CLI<!--#--></a></li><li><a class="text-gray-400 hover:text-white" href="https://github.com/DioxusLabs/taffy"><!--#-->Taffy<!--#--></a></li></ul></nav></div></div></div><div class="container mx-auto py-4 px-5 flex flex-wrap flex-col sm:flex-row"><p class="text-gray-400 text-sm text-center sm:text-left">© 2022 Dioxus Labs —<a class="text-gray-500 ml-1" rel="noopener noreferrer" href="https://twitter.com/dioxuslabs" target="_blank">@dioxuslabs</a></p></div></footer></div><meta hidden="true" id="dioxus-storage" data-serialized="AQ==" /></div>
+    <!-- Note the usage of `type=module` here as this is an ES6 module -->
+    <script type="module">
+      import init from "/docsite/assets/dioxus/docsite.js";
+      init("/docsite/assets/dioxus/docsite_bg.wasm").then((wasm) => {
+        if (wasm.__wbindgen_start == undefined) {
+          wasm.main();
+        }
+      });
+    </script>
+    
+  </body>
+</html>

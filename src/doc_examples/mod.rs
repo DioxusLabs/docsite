@@ -13,8 +13,7 @@ pub mod component_children;
 mod component_children_inspect;
 #[cfg(feature = "doc_test")]
 mod component_element_props;
-#[cfg(feature = "doc_test")]
-mod component_owned_props;
+pub mod component_owned_props;
 #[cfg(feature = "doc_test")]
 mod component_props_options;
 pub mod components;

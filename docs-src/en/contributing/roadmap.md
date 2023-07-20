@@ -20,45 +20,45 @@ Generally, here's the status of each platform:
 
 ---
 
-| Feature				   | Status | Description														  |
-| ------------------------- | ------ | -------------------------------------------------------------------- |
-| Conditional Rendering	 | ✅	 | if/then to hide/show component									   |
-| Map, Iterator			 | ✅	 | map/filter/reduce to produce rsx!									|
-| Keyed Components		  | ✅	 | advanced diffing with keys										   |
-| Web					   | ✅	 | renderer for web browser											 |
-| Desktop (webview)		 | ✅	 | renderer for desktop												 |
-| Shared State (Context)	| ✅	 | share state through the tree										 |
-| Hooks					 | ✅	 | memory cells in components										   |
-| SSR					   | ✅	 | render directly to string											|
-| Component Children		| ✅	 | cx.children() as a list of nodes									 |
-| Headless components	   | ✅	 | components that don't return real elements						   |
-| Fragments				 | ✅	 | multiple elements without a real root								|
-| Manual Props			  | ✅	 | Manually pass in props with spread syntax							|
-| Controlled Inputs		 | ✅	 | stateful wrappers around inputs									  |
-| CSS/Inline Styles		 | ✅	 | syntax for inline styles/attribute groups							|
-| Custom elements		   | ✅	 | Define new element primitives										|
-| Suspense				  | ✅	 | schedule future render from future/promise						   |
-| Integrated error handling | ✅	 | Gracefully handle errors with ? syntax							   |
-| NodeRef				   | ✅	 | gain direct access to nodes										  |
-| Re-hydration			  | ✅	 | Pre-render to HTML to speed up first contentful paint				|
-| Jank-Free Rendering	   | ✅	 | Large diffs are segmented across frames for silky-smooth transitions |
-| Effects				   | ✅	 | Run effects after a component has been committed to render		   |
-| Portals				   | 🛠	  | Render nodes outside of the traditional tree structure			   |
-| Cooperative Scheduling	| 🛠	  | Prioritize important events over non-important events				|
-| Server Components		 | 🛠	  | Hybrid components for SPA and Server								 |
-| Bundle Splitting		  | 👀	 | Efficiently and asynchronously load the app						  |
-| Lazy Components		   | 👀	 | Dynamically load the new components as the page is loaded			|
-| 1st class global state	| ✅	 | redux/recoil/mobx on top of context								  |
-| Runs natively			 | ✅	 | runs as a portable binary w/o a runtime (Node)					   |
-| Subtree Memoization	   | ✅	 | skip diffing static element subtrees								 |
-| High-efficiency templates | ✅	 | rsx! calls are translated to templates on the DOM's side			 |
-| Compile-time correct	  | ✅	 | Throw errors on invalid template layouts							 |
-| Heuristic Engine		  | ✅	 | track component memory usage to minimize future allocations		  |
-| Fine-grained reactivity   | 👀	 | Skip diffing for fine-grain updates								  |
+| Feature                   | Status | Description                                                          |
+|---------------------------|--------|----------------------------------------------------------------------|
+| Conditional Rendering     | x      | if/then to hide/show component                                       |
+| Map, Iterator             | x      | map/filter/reduce to produce rsx!                                    |
+| Keyed Components          | x      | advanced diffing with keys                                           |
+| Web                       | x      | renderer for web browser                                             |
+| Desktop (webview)         | x      | renderer for desktop                                                 |
+| Shared State (Context)    | x      | share state through the tree                                         |
+| Hooks                     | x      | memory cells in components                                           |
+| SSR                       | x      | render directly to string                                            |
+| Component Children        | x      | cx.children() as a list of nodes                                     |
+| Headless components       | x      | components that don't return real elements                           |
+| Fragments                 | x      | multiple elements without a real root                                |
+| Manual Props              | x      | Manually pass in props with spread syntax                            |
+| Controlled Inputs         | x      | stateful wrappers around inputs                                      |
+| CSS/Inline Styles         | x      | syntax for inline styles/attribute groups                            |
+| Custom elements           | x      | Define new element primitives                                        |
+| Suspense                  | x      | schedule future render from future/promise                           |
+| Integrated error handling | x      | Gracefully handle errors with ? syntax                               |
+| NodeRef                   | x      | gain direct access to nodes                                          |
+| Re-hydration              | x      | Pre-render to HTML to speed up first contentful paint                |
+| Jank-Free Rendering       | x      | Large diffs are segmented across frames for silky-smooth transitions |
+| Effects                   | x      | Run effects after a component has been committed to render           |
+| Portals                   | *      | Render nodes outside of the traditional tree structure               |
+| Cooperative Scheduling    | *      | Prioritize important events over non-important events                |
+| Server Components         | *      | Hybrid components for SPA and Server                                 |
+| Bundle Splitting          | i      | Efficiently and asynchronously load the app                          |
+| Lazy Components           | i      | Dynamically load the new components as the page is loaded            |
+| 1st class global state    | x      | redux/recoil/mobx on top of context                                  |
+| Runs natively             | x      | runs as a portable binary w/o a runtime (Node)                       |
+| Subtree Memoization       | x      | skip diffing static element subtrees                                 |
+| High-efficiency templates | x      | rsx! calls are translated to templates on the DOM's side             |
+| Compile-time correct      | x      | Throw errors on invalid template layouts                             |
+| Heuristic Engine          | x      | track component memory usage to minimize future allocations          |
+| Fine-grained reactivity   | i      | Skip diffing for fine-grain updates                                  |
 
-- ✅ = implemented and working
-- 🛠 = actively being worked on
-- 👀 = not yet implemented or being worked on
+- x = implemented and working
+- * = actively being worked on
+- i = not yet implemented or being worked on
 
 ## Roadmap
 

@@ -29,7 +29,11 @@ You can then pass prop values to the component the same way you would pass attri
 {{#include src/doc_examples/component_owned_props.rs:App}}
 ```
 
-![Screenshot: Likes component](./images/component_owned_props_screenshot.png)
+```inject-dioxus
+DemoFrame {
+    component_owned_props::App {}
+}
+```
 
 ### Borrowed Props
 

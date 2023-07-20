@@ -7,17 +7,17 @@ edition = "2018"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-dioxus-router = { git = "https://github.com/Demonthos/dioxus", branch = "router-typesafe" }
-dioxus = { git = "https://github.com/Demonthos/dioxus", branch = "router-typesafe" }
-dioxus-web = { git = "https://github.com/Demonthos/dioxus", branch = "router-typesafe", features = ["hydrate"], optional = true }
-dioxus-ssr = { git = "https://github.com/Demonthos/dioxus", branch = "router-typesafe", optional = true }
-dioxus-fullstack = { git = "https://github.com/Demonthos/dioxus", branch = "router-typesafe", features = ["router"] }
-dioxus-tui = { git = "https://github.com/Demonthos/dioxus", branch = "router-typesafe", optional = true }
-dioxus-desktop = { git = "https://github.com/Demonthos/dioxus", branch = "router-typesafe", optional = true }
-dioxus-liveview = { git = "https://github.com/Demonthos/dioxus", branch = "router-typesafe", optional = true }
-dioxus-native-core = { git = "https://github.com/Demonthos/dioxus", branch = "router-typesafe", optional = true }
-dioxus-native-core-macro = { git = "https://github.com/Demonthos/dioxus", branch = "router-typesafe", optional = true }
-fermi = { git = "https://github.com/Demonthos/dioxus", branch = "router-typesafe" }
+dioxus-router = { git = "https://github.com/DioxusLabs/dioxus" }
+dioxus = { git = "https://github.com/DioxusLabs/dioxus" }
+dioxus-web = { git = "https://github.com/DioxusLabs/dioxus", features = ["hydrate"], optional = true }
+dioxus-ssr = { git = "https://github.com/DioxusLabs/dioxus", optional = true }
+dioxus-fullstack = { git = "https://github.com/DioxusLabs/dioxus", features = ["router"] }
+dioxus-tui = { git = "https://github.com/DioxusLabs/dioxus", optional = true }
+dioxus-desktop = { git = "https://github.com/DioxusLabs/dioxus", optional = true }
+dioxus-liveview = { git = "https://github.com/DioxusLabs/dioxus", optional = true }
+dioxus-native-core = { git = "https://github.com/DioxusLabs/dioxus", optional = true }
+dioxus-native-core-macro = { git = "https://github.com/DioxusLabs/dioxus", optional = true }
+fermi = { git = "https://github.com/DioxusLabs/dioxus" }
 serde = { version = "1.0.163", features = ["derive"] }
 serde_json = "1.0.96"
 log = "0.4.17"
@@ -30,9 +30,9 @@ autoexport = "0.1.0"
 dioxus-material-icons = "1.1.0"
 include_dir = "0.7.3"
 anyhow = "1.0.71"
-syntect-html = { git = "https://github.com/Demonthos/include_mdbook", branch = "router-intigration" }
-mdbook-shared = { git = "https://github.com/Demonthos/include_mdbook", branch = "router-intigration" }
-use-mdbook = { git = "https://github.com/Demonthos/include_mdbook", branch = "router-intigration" }
+syntect-html = { path = "/Users/evanalmloff/Desktop/Github/include_mdbook/syntect-html" }
+mdbook-shared = { path = "/Users/evanalmloff/Desktop/Github/include_mdbook/mdbook-shared" }
+use-mdbook = { path = "/Users/evanalmloff/Desktop/Github/include_mdbook/use-mdbook" }
 tokio = { version = "1.29.0", features = ["full"], optional = true }
 axum = { version = "0.6.12", optional = true }
 simple_logger = "4.2.0"
@@ -54,9 +54,9 @@ opt-level = 'z'
 strip = "debuginfo"
 
 [patch.crates-io]
-dioxus-core = { git = "https://github.com/Demonthos/dioxus", branch = "router-typesafe" }
-dioxus-rsx = { git = "https://github.com/Demonthos/dioxus", branch = "router-typesafe" }
-dioxus = { git = "https://github.com/Demonthos/dioxus", branch = "router-typesafe" }
+dioxus-core = { git = "https://github.com/DioxusLabs/dioxus" }
+dioxus-rsx = { git = "https://github.com/DioxusLabs/dioxus" }
+dioxus = { git = "https://github.com/DioxusLabs/dioxus" }
 
 [features]
 default = []

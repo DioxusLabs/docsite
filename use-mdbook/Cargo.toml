@@ -17,4 +17,5 @@ yazi = "0.1.5"
 
 [dev-dependencies]
 dioxus = { git = "https://github.com/dioxuslabs/dioxus" }
-dioxus-router = { git = "https://github.com/dioxuslabs/dioxus" }
+dioxus-router = { git = "https://github.com/dioxuslabs/dioxus", features = ["ssr"] }
+tokio = { version = "*", features = ["full"] }

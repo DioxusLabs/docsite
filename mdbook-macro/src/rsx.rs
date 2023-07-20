@@ -5,7 +5,7 @@ use std::{
 };
 
 use dioxus_rsx::{BodyNode, CallBody, Element, ElementAttrNamed, IfmtInput};
-use pulldown_cmark::{Alignment, Event, Tag, Options, Parser};
+use pulldown_cmark::{Alignment, Event, Options, Parser, Tag};
 use syn::{Ident, __private::Span, parse_str, LitStr};
 
 use syntect::highlighting::ThemeSet;
@@ -196,7 +196,16 @@ impl<'a, I: Iterator<Item = Event<'a>>> RsxMarkdownParser<'a, I> {
             }
             Tag::Heading(level, _, _) => {
                 let text = self.take_text();
-                let anchor = text.trim().to_lowercase().replace(' ', "-");
+                let anchor: String = text
+                    .trim()
+                    .to_lowercase()
+                    .chars()
+                    .filter_map(|char| match char {
+                        '-' | 'a'..='z' | '0'..='9' => Some(char),
+                        ' ' | '_' => Some('-'),
+                        _ => None,
+                    })
+                    .collect();
                 let link_name = dioxus_rsx::ElementName::Ident(Ident::new("a", Span::call_site()));
                 let name = dioxus_rsx::ElementName::Ident(Ident::new(
                     match level {

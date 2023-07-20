@@ -82,12 +82,20 @@ impl Parse for CodeBlockFs {
             .unwrap_or_else(|_| LitStr::new("base16-ocean.dark", Span::call_site()));
         let theme = theme.value();
 
-        let path  = PathBuf::from(std::env::var("CARGO_MANIFEST_DIR").map_err(|_|{
-            syn::Error::new(Span::call_site(), "CARGO_MANIFEST_DIR not found")
-        })?);
+        let path = PathBuf::from(
+            std::env::var("CARGO_MANIFEST_DIR")
+                .map_err(|_| syn::Error::new(Span::call_site(), "CARGO_MANIFEST_DIR not found"))?,
+        );
         let path = path.join(&code_path);
-        let code = std::fs::read_to_string(&path).map_err(|err|{
-            syn::Error::new(Span::call_site(), format!("Error while reading file: {} while reading {}", err, path.display()))
+        let code = std::fs::read_to_string(&path).map_err(|err| {
+            syn::Error::new(
+                Span::call_site(),
+                format!(
+                    "Error while reading file: {} while reading {}",
+                    err,
+                    path.display()
+                ),
+            )
         })?;
         let extension = path.extension();
         let extension = &*extension.unwrap().to_string_lossy();

@@ -102,51 +102,49 @@ fn AvailablePlatforms(cx: Scope) -> Element {
             div { class: "max-w-screen-lg mx-auto pb-8 px-2 md:px-16 dark:text-white",
                 // div { class: "max-w-screen-xl mx-auto pb-64 px-16 dark:text-white",
                 TriShow {
-                    left: render!(""),
-                    center: render!(""),
+                    left: None,
+                    center: None,
                     right: render!(
-    "Build for the web using Rust and WebAssembly. As fast as SolidJS and more robust than React. Integrated hot reloading for instant iterations."
-),
+                        "Build for the web using Rust and WebAssembly. As fast as SolidJS and more robust than React. Integrated hot reloading for instant iterations."
+                    ),
                     to: Route::Docs { child: BookRoute::GettingStartedWebWasm {} },
                     title: "Web with WASM"
                 }
                 TriShow {
-                    left: render!(""),
-                    center: render!(""),
+                    left: None,
+                    center: None,
                     right: render!(
-    "Lightweight (<2mb) desktop and mobile apps with zero configuration. Choose between WebView or WGPU-enabled renderers. Runs on macOS, Windows, Linux, iOS, and Android."
-),
-                    to: Route::Docs { child: BookRoute::GettingStartedDesktop {
-}},
+                        "Lightweight (<2mb) desktop and mobile apps with zero configuration. Choose between WebView or WGPU-enabled renderers. Runs on macOS, Windows, Linux, iOS, and Android."
+                    ),
+                    to: Route::Docs { child: BookRoute::GettingStartedDesktop {}},
                     title: "Desktop and Mobile"
                 }
                 TriShow {
                     to: Route::Docs { child: BookRoute::GettingStartedTui {} },
                     title: "Terminal User Interfaces",
                     right: render!(
-    "Quickly convert any CLI tool to a beautiful interactive user interface with just a few lines of code. Runs anywhere with a terminal."
-),
-                    left: render!(""),
-                    center: render!("")
+                        "Quickly convert any CLI tool to a beautiful interactive user interface with just a few lines of code. Runs anywhere with a terminal."
+                    ),
+                    left: None,
+                    center: None
                 }
                 TriShow {
                     to: Route::Docs { child: BookRoute::GettingStartedWebFullstack {} },
                     title: "Fullstack Apps",
                     right: render!(
-    "Pre-render on the server, and hydrate on the client. Perfect lighthouse scores and performance over 1000x better than Node and Python. Perfect for static site generation or fullstack apps."
-),
-                    left: render!(""),
-                    center: render!("")
+                        "Pre-render on the server, and hydrate on the client. Perfect lighthouse scores and performance over 1000x better than Node and Python. Perfect for static site generation or fullstack apps."
+                    ),
+                    left: None,
+                    center: None
                 }
                 TriShow {
-                    to: Route::Docs { child: BookRoute::GettingStartedWebLiveview {
-}},
+                    to: Route::Docs { child: BookRoute::GettingStartedWebLiveview {}},
                     title: "LiveView and LiveComponents",
                     right: render!(
-    "Render your app entirely on the server. Zero backend configuration capable of handling thousands of active clients. Integrates with Axum, Warp, Salvo, and Tokamak.",
-),
-                    left: render!(""),
-                    center: render!(""),
+                        "Render your app entirely on the server. Zero backend configuration capable of handling thousands of active clients. Integrates with Axum, Warp, Salvo, and Tokamak.",
+                    ),
+                    left: None,
+                    center: None,
                     last: true
                 }
             }

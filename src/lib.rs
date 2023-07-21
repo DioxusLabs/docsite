@@ -29,136 +29,136 @@ mod doc_examples;
 pub use components::*;
 use fermi::use_init_atom_root;
 pub mod components {
-	export_items! {
-		pub mod blog;
-		pub mod footer;
-		pub mod homepage;
-		pub mod learn;
-		pub mod nav;
-		pub mod notfound;
-		pub mod tutorials;
-	}
+    export_items! {
+        pub mod blog;
+        pub mod footer;
+        pub mod homepage;
+        pub mod learn;
+        pub mod nav;
+        pub mod notfound;
+        pub mod tutorials;
+    }
 }
 
 #[inline_props]
 fn HeaderFooter(cx: Scope) -> Element {
-	use_init_atom_root(cx);
-	let set_search = fermi::use_set(cx, &SHOW_SEARCH);
-	shortcut::use_shortcut(cx, Key::Character("k".to_string()), Modifiers::CONTROL, {
-		to_owned![set_search];
-		move || {
-			set_search(components::nav::ShowSearch(true));
-		}
-	});
+    use_init_atom_root(cx);
+    let set_search = fermi::use_set(cx, &SHOW_SEARCH);
+    shortcut::use_shortcut(cx, Key::Character("k".to_string()), Modifiers::CONTROL, {
+        to_owned![set_search];
+        move || {
+            set_search(components::nav::ShowSearch(true));
+        }
+    });
 
-	render! {
-		div {
-			Nav {}
-			Outlet {}
-			Footer {}
-		}
-	}
+    render! {
+        div {
+            Nav {}
+            Outlet {}
+            Footer {}
+        }
+    }
 }
 
 mod docs {
-	use crate::components::*;
-	use crate::doc_examples::*;
-	use dioxus::prelude::*;
-	use dioxus_router::prelude::*;
-	use fermi::use_atom_state;
+    use crate::components::*;
+    use crate::doc_examples::*;
+    use dioxus::prelude::*;
+    use dioxus_router::prelude::*;
+    use fermi::use_atom_state;
 
-	use_mdbook::mdbook_router! {"./docs-src"}
+    use_mdbook::mdbook_router! {"./docs-src"}
 
-	#[inline_props]
-	fn DemoFrame<'a>(cx: Scope<'a>, children: Element<'a>) -> Element {
-		render! {
-			div {
-				class: "bg-white rounded-md shadow-md p-4 my-4 overflow-scroll text-black",
-				max_height: "50vh",
-				style {
-					"div {{ all: revert; }}"
-					"input {{ all: revert; }}"
-					"form {{ all: revert; }}"
-				}
-				children
-			}
-		}
-	}
+    #[inline_props]
+    fn DemoFrame<'a>(cx: Scope<'a>, children: Element<'a>) -> Element {
+        render! {
+            div {
+                class: "bg-white rounded-md shadow-md p-4 my-4 overflow-scroll text-black",
+                max_height: "50vh",
+                style {
+                    "div {{ all: revert; }}"
+                    "input {{ all: revert; }}"
+                    "form {{ all: revert; }}"
+                }
+                children
+            }
+        }
+    }
 
-	fn LayoutsExplanation(cx: Scope) -> Element {
-		let highlight_nav = use_atom_state(cx, &HIGHLIGHT_NAV_LAYOUT);
-		let highlight_docs_nav = use_atom_state(cx, &HIGHLIGHT_DOCS_LAYOUT);
-		let highlight_docs_content = use_atom_state(cx, &HIGHLIGHT_DOCS_CONTENT);
+    fn LayoutsExplanation(cx: Scope) -> Element {
+        let highlight_nav = use_atom_state(cx, &HIGHLIGHT_NAV_LAYOUT);
+        let highlight_docs_nav = use_atom_state(cx, &HIGHLIGHT_DOCS_LAYOUT);
+        let highlight_docs_content = use_atom_state(cx, &HIGHLIGHT_DOCS_CONTENT);
 
-		render! {
-			pre {
-				onmouseenter: move |_| {
-					highlight_nav.set(NavLayoutHighlighted(true));
-					highlight_docs_nav.set(DocsLayoutHighlighted(true));
-					highlight_docs_content.set(DocsContentHighlighted(true));
-				},
-				onmouseleave: move |_| {
-					highlight_nav.set(NavLayoutHighlighted(false));
-					highlight_docs_nav.set(DocsLayoutHighlighted(false));
-					highlight_docs_content.set(DocsContentHighlighted(false));
-				},
-				span {
-					"#[derive(Clone, Routable, PartialEq, Eq, Serialize, Deserialize)]
+        render! {
+            pre {
+                onmouseenter: move |_| {
+                    highlight_nav.set(NavLayoutHighlighted(true));
+                    highlight_docs_nav.set(DocsLayoutHighlighted(true));
+                    highlight_docs_content.set(DocsContentHighlighted(true));
+                },
+                onmouseleave: move |_| {
+                    highlight_nav.set(NavLayoutHighlighted(false));
+                    highlight_docs_nav.set(DocsLayoutHighlighted(false));
+                    highlight_docs_content.set(DocsContentHighlighted(false));
+                },
+                span {
+                    "#[derive(Clone, Routable, PartialEq, Eq, Serialize, Deserialize)]
 #[rustfmt::skip]
 pub enum Route {{\n\t"
-				}
-				span {
-					onmouseenter: move |_| {
-						highlight_nav.set(NavLayoutHighlighted(true));
-						highlight_docs_nav.set(DocsLayoutHighlighted(false));
-						highlight_docs_content.set(DocsContentHighlighted(false));
-					},
-					onmouseleave: move |_| {
-						highlight_nav.set(NavLayoutHighlighted(true));
-						highlight_docs_nav.set(DocsLayoutHighlighted(true));
-						highlight_docs_content.set(DocsContentHighlighted(true));
-					},
-					class: "border border-orange-600 rounded-md",
-					"#[layout(HeaderFooter)]"
-				}
-				span {
-					"\n\t\t// ... other routes\n\t\t"
-				}
-				span {
-					onmouseenter: move |_| {
-						highlight_nav.set(NavLayoutHighlighted(false));
-						highlight_docs_nav.set(DocsLayoutHighlighted(true));
-						highlight_docs_content.set(DocsContentHighlighted(false));
-					},
-					onmouseleave: move |_| {
-						highlight_nav.set(NavLayoutHighlighted(true));
-						highlight_docs_nav.set(DocsLayoutHighlighted(true));
-						highlight_docs_content.set(DocsContentHighlighted(true));
-					},
-					class: "border border-green-600 rounded-md",
-					r##"#[layout(DocsSidebars)]"##
-				}
-				"\n\t\t\t"
-				span {
-					onmouseenter: move |_| {
-						highlight_nav.set(NavLayoutHighlighted(false));
-						highlight_docs_nav.set(DocsLayoutHighlighted(false));
-						highlight_docs_content.set(DocsContentHighlighted(true));
-					},
-					onmouseleave: move |_| {
-						highlight_nav.set(NavLayoutHighlighted(true));
-						highlight_docs_nav.set(DocsLayoutHighlighted(true));
-						highlight_docs_content.set(DocsContentHighlighted(true));
-					},
-					class: "border border-blue-600 rounded-md",
-					r##"#[route("/learn")]"##
-				}
-				span {
-					"\n\t\t\tDocs {{}},\n}}"
-				}
-			}
-		}
-	}
+                }
+                span {
+                    onmouseenter: move |_| {
+                        highlight_nav.set(NavLayoutHighlighted(true));
+                        highlight_docs_nav.set(DocsLayoutHighlighted(false));
+                        highlight_docs_content.set(DocsContentHighlighted(false));
+                    },
+                    onmouseleave: move |_| {
+                        highlight_nav.set(NavLayoutHighlighted(true));
+                        highlight_docs_nav.set(DocsLayoutHighlighted(true));
+                        highlight_docs_content.set(DocsContentHighlighted(true));
+                    },
+                    class: "border border-orange-600 rounded-md",
+                    "#[layout(HeaderFooter)]"
+                }
+                span {
+                    "\n\t\t// ... other routes\n\t\t"
+                }
+                span {
+                    onmouseenter: move |_| {
+                        highlight_nav.set(NavLayoutHighlighted(false));
+                        highlight_docs_nav.set(DocsLayoutHighlighted(true));
+                        highlight_docs_content.set(DocsContentHighlighted(false));
+                    },
+                    onmouseleave: move |_| {
+                        highlight_nav.set(NavLayoutHighlighted(true));
+                        highlight_docs_nav.set(DocsLayoutHighlighted(true));
+                        highlight_docs_content.set(DocsContentHighlighted(true));
+                    },
+                    class: "border border-green-600 rounded-md",
+                    r##"#[layout(DocsSidebars)]"##
+                }
+                "\n\t\t\t"
+                span {
+                    onmouseenter: move |_| {
+                        highlight_nav.set(NavLayoutHighlighted(false));
+                        highlight_docs_nav.set(DocsLayoutHighlighted(false));
+                        highlight_docs_content.set(DocsContentHighlighted(true));
+                    },
+                    onmouseleave: move |_| {
+                        highlight_nav.set(NavLayoutHighlighted(true));
+                        highlight_docs_nav.set(DocsLayoutHighlighted(true));
+                        highlight_docs_content.set(DocsContentHighlighted(true));
+                    },
+                    class: "border border-blue-600 rounded-md",
+                    r##"#[route("/learn")]"##
+                }
+                span {
+                    "\n\t\t\tDocs {{}},\n}}"
+                }
+            }
+        }
+    }
 }
 
 #[derive(Clone, Routable, PartialEq, Eq, Serialize, Deserialize)]
@@ -195,11 +195,15 @@ pub enum Route {
 }
 
 pub fn use_url(cx: &ScopeState) -> String {
-	use_route(cx).unwrap().to_string()
+    use_route(cx).unwrap().to_string()
 }
 
 pub fn app(cx: Scope) -> Element {
-	render! {
-		Router {}
-	}
+    render! {
+        Router {}
+    }
 }
+
+static SEARCH_INDEX: dioxus_search::LazySearchIndex<Route> = dioxus_search::load_search_index! {
+    "search"
+};

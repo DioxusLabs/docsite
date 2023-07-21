@@ -33,6 +33,9 @@ anyhow = "1.0.71"
 syntect-html = { path = "/Users/evanalmloff/Desktop/Github/include_mdbook/syntect-html" }
 mdbook-shared = { path = "/Users/evanalmloff/Desktop/Github/include_mdbook/mdbook-shared" }
 use-mdbook = { path = "/Users/evanalmloff/Desktop/Github/include_mdbook/use-mdbook" }
+
+dioxus-search = { path = "/Users/evanalmloff/Desktop/Github/dioxus-search" }
+
 tokio = { version = "1.29.0", features = ["full"], optional = true }
 axum = { version = "0.6.12", optional = true }
 simple_logger = "4.2.0"

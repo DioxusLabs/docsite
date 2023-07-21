@@ -223,7 +223,7 @@ fn Search(cx: Scope) -> Element {
 fn SearchModal(cx: Scope) -> Element {
 	let show_modal = use_atom_state(cx, &SHOW_SEARCH);
 	let search_text = use_state(cx, String::new);
-	let results = crate::docs::LAZY_BOOK.search_index.as_ref().unwrap().search(&search_text.get());
+	let results = SEARCH_INDEX.search(&search_text.get());
 
 	// when we search, we do a similar search to mdbook
 	// This will bring up individual sections that reference the search term with the breadcrumb
@@ -307,16 +307,16 @@ fn SearchModal(cx: Scope) -> Element {
 }
 
 #[inline_props]
-fn SearchResult(cx: Scope, result: mdbook_shared::search_index::SearchResult) -> Element {
+fn SearchResult(cx: Scope, result: dioxus_search::SearchResult<Route>) -> Element {
 	let set_show_modal = fermi::use_set(cx, &SHOW_SEARCH);
 	let title = &result.title;
-	let page = crate::docs::LAZY_BOOK.get_page(result.id);
+	let route = &result.route;
 	let top_excerpt_segments = &result.excerpts.first().unwrap().text;
 
 	render! {
 		li { class: "w-full mt-4 p-2 rounded hover:bg-gray-100 dark:hover:bg-ideblack transition-colors duration-200 ease-in-out",
 			Link {
-				target: Route::Docs { child: page.url.clone() },
+				target: route.clone(),
 				onclick: move |_| {
 					set_show_modal(ShowSearch(false));
 				},

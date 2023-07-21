@@ -3,15 +3,15 @@
 use dioxus::prelude::*;
 
 fn main() {
-	// launch the app in the terminal
-	dioxus_tui::launch(App);
+    // launch the app in the terminal
+    dioxus_tui::launch(App);
 }
 
 // create a component that renders a div with the text "Hello, world!"
 fn App(cx: Scope) -> Element {
-	cx.render(rsx! {
-		div {
-			"Hello, world!"
-		}
-	})
+    cx.render(rsx! {
+        div {
+            "Hello, world!"
+        }
+    })
 }

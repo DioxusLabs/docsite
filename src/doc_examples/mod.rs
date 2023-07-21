@@ -16,6 +16,8 @@ mod component_element_props;
 pub mod component_owned_props;
 #[cfg(feature = "doc_test")]
 mod component_props_options;
+#[cfg(feature = "doc_test")]
+mod component_test;
 pub mod components;
 pub mod conditional_rendering;
 #[cfg(feature = "doc_test")]
@@ -29,24 +31,16 @@ pub mod dangerous_inner_html;
 mod dynamic_route;
 #[cfg(feature = "doc_test")]
 mod dynamic_segments;
+#[cfg(feature = "doc_test")]
+mod eval;
 pub mod event_click;
 #[cfg(feature = "doc_test")]
 mod event_handler_prop;
-#[cfg(feature = "doc_test")]
-mod hook_test;
-#[cfg(feature = "doc_test")]
-mod component_test;
-#[cfg(feature = "doc_test")]
-mod eval;
 #[cfg(feature = "doc_test")]
 mod event_nested;
 pub mod event_prevent_default;
 #[cfg(feature = "doc_test")]
 mod external_link;
-#[cfg(feature = "doc_test")]
-mod server_data_fetch;
-#[cfg(feature = "doc_test")]
-mod server_data_prefetch;
 #[cfg(feature = "doc_test")]
 mod first_route;
 pub mod full_example;
@@ -67,6 +61,12 @@ mod hello_world_tui;
 mod hello_world_tui_no_ctrl_c;
 #[cfg(feature = "doc_test")]
 mod hello_world_web;
+#[cfg(feature = "doc_test")]
+mod hook_test;
+#[cfg(feature = "doc_test")]
+mod server_data_fetch;
+#[cfg(feature = "doc_test")]
+mod server_data_prefetch;
 pub use hello_world::*;
 #[cfg(feature = "doc_test")]
 mod history_buttons;

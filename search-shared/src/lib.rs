@@ -272,7 +272,9 @@ impl Config {
             if let Ok(route) = R::from_str(&route) {
                 let url = route.to_string();
                 if let Some(path) = mapping.map_route(route) {
-                    let absolute_path = base_directory.join(&path);
+                    let path = &path.strip_prefix("/").unwrap_or(&path);
+                    let absolute_path = base_directory.join(path);
+                    log::trace!("Adding {:?} to search index", absolute_path);
                     match std::fs::read_to_string(&absolute_path) {
                         Ok(contents) => {
                             let document = Html::parse_document(&contents);
@@ -303,7 +305,7 @@ impl Config {
                             })
                         }
                         Err(err) => {
-                            log::error!("Error reading file: {:?}: {}", path, err);
+                            log::error!("Error reading file: {:?}: {}", absolute_path, err);
                         }
                     }
                 }

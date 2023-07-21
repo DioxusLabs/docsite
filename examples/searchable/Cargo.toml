@@ -1,0 +1,23 @@
+[package]
+name = "searchable"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+dioxus = { git = "https://github.com/demonthos/dioxus", branch = "many-fixes" }
+dioxus-web = { git = "https://github.com/demonthos/dioxus", branch = "many-fixes", features = ["hydrate"] }
+dioxus-router = { git = "https://github.com/demonthos/dioxus", branch = "many-fixes" }
+dioxus-fullstack = { git = "https://github.com/demonthos/dioxus", branch = "many-fixes", features = ["router"] }
+dioxus-search = { path = "../../" }
+axum = { version = "0.6.12", optional = true }
+serde = { version = "1.0.174", features = ["derive"] }
+getrandom = { version = "0.2" }
+tokio = { version = "1.29.1", features = ["full"], optional = true }
+simple_logger = "4.2.0"
+log = "0.4.19"
+
+[features]
+web = ["getrandom/js"]
+ssr = ["dioxus-fullstack/axum", "tokio", "axum"]

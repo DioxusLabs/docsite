@@ -32,6 +32,7 @@ fn generate_search_index(id: LitStr) -> TokenStream {
         }.into()
     } else {
         // create a blank index file
+        std::fs::create_dir_all(index_path.parent().unwrap()).unwrap();
         std::fs::write(&index_path, vec![]).unwrap();
         println!("It looks like you haven't built the index yet, so we created an empty index file at {:?}", index_path);
         quote! {

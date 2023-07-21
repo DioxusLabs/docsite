@@ -22,4 +22,4 @@ dioxus-search-shared = { path = "search-shared" }
 getrandom = { version = "0.2", features = ["js"] }
 
 [workspace]
-members = ["search-macro", "search-shared"]
+members = ["search-macro", "search-shared", "examples/searchable"]

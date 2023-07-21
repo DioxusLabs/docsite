@@ -213,7 +213,7 @@ fn Search(cx: Scope) -> Element {
                     span { class: "pl-2", "Search the docs" }
                 }
                 div { class: "border border-gray-300 rounded-lg p-1 text-xs text-gray-400",
-                    "CTRL + K"
+                    "CONTROL + /"
                 }
             }
         }

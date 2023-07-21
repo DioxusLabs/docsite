@@ -44,7 +44,7 @@ pub mod components {
 fn HeaderFooter(cx: Scope) -> Element {
     use_init_atom_root(cx);
     let set_search = fermi::use_set(cx, &SHOW_SEARCH);
-    shortcut::use_shortcut(cx, Key::Character("k".to_string()), Modifiers::CONTROL, {
+    shortcut::use_shortcut(cx, Key::Character("/".to_string()), Modifiers::CONTROL, {
         to_owned![set_search];
         move || {
             set_search(components::nav::ShowSearch(true));
@@ -165,7 +165,7 @@ pub enum Route {{\n\t"
 #[rustfmt::skip]
 pub enum Route {
     #[layout(HeaderFooter)]
-        // #[nest("/docsite")]
+        #[nest("/docsite")]
             #[route("/")]
             #[redirect("/platforms", || Route::Homepage {})]
             #[redirect("/platforms/web", || Route::Homepage {})]

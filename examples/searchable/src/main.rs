@@ -1,12 +1,12 @@
 // Run with:
 // dx build --release --features web
 // cargo run --release --features ssr
-// 
+//
 // Note: The first time you run the build, the search index will be empty. You need to rebuild the build again to fill the search index.
 
 use dioxus::prelude::*;
-use dioxus_router::prelude::*;
 use dioxus_fullstack::prelude::*;
+use dioxus_router::prelude::*;
 
 fn main() {
     #[cfg(feature = "ssr")]
@@ -18,9 +18,7 @@ fn main() {
                     &ServeConfigBuilder::new_with_router(
                         dioxus_fullstack::router::FullstackRouterConfig::<Route>::default(),
                     )
-                    .incremental(
-                        IncrementalRendererConfig::default()
-                    )
+                    .incremental(IncrementalRendererConfig::default())
                     .build(),
                 )
                 .await
@@ -30,7 +28,7 @@ fn main() {
 
         dioxus_search::SearchIndex::<Route>::create(
             "searchable",
-            dioxus_search::BaseDirectoryMapping::new("./static")
+            dioxus_search::BaseDirectoryMapping::new("./static"),
         );
     }
 
@@ -61,8 +59,8 @@ pub enum Route {
 fn Homepage(cx: Scope) -> Element {
     let search_text = use_state(cx, String::new);
     let results = SEARCH_INDEX.search(&search_text.get());
-    
-    render!{
+
+    render! {
         input {
             oninput: move |e| {
                 search_text.set(e.value.clone());

@@ -19,7 +19,7 @@ pub fn write_book_with_routes(
 ) -> TokenStream {
     let summary_path = book_path.join("SUMMARY.md");
     let index_path = summary_path.to_string_lossy();
-    
+
     let MdBook { summary, .. } = book;
     let summary = write_summary_with_routes(summary);
     let pages = book.pages().iter().map(|(id, v)| {

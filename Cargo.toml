@@ -33,7 +33,6 @@ anyhow = "1.0.71"
 syntect-html = { path = "/Users/evanalmloff/Desktop/Github/include_mdbook/syntect-html" }
 mdbook-shared = { path = "/Users/evanalmloff/Desktop/Github/include_mdbook/mdbook-shared" }
 use-mdbook = { path = "/Users/evanalmloff/Desktop/Github/include_mdbook/use-mdbook" }
-reqwest = { version = "0.11.18", features = ["json"] }
 
 dioxus-search = { path = "/Users/evanalmloff/Desktop/Github/dioxus-search" }
 

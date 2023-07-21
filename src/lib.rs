@@ -184,6 +184,14 @@ pub enum Route {
 				BlogList {},
 				#[route("/templates-diffing")]
 				PostTemplate {},
+                #[route("/going-fulltime")]
+				PostFulltime {},
+                #[route("/release-030")]
+				PostRelease030 {},
+                #[route("/release-020")]
+				PostRelease020 {},
+                #[route("/introducing-dioxus")]
+                PostRelease010 {},
 			#[end_nest]
 			#[layout(Learn)]
 				#[child("/learn")]

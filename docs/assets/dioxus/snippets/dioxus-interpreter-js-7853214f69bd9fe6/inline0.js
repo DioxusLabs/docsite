@@ -163,31 +163,7 @@ let m,p,ls,d,t,op,i,e,z,metaflags;
       function truthy(val) {
         return val === "true" || val === true;
       }
-    const ns_cache = [];
-                    let ns_cache_tmp1, ns_cache_tmp2;
-                    function get_ns_cache() {
-                        ns_cache_tmp2 = u8buf[u8bufp++];
-                        if(ns_cache_tmp2 & 128){
-                            ns_cache_tmp1=s.substring(sp,sp+=u8buf[u8bufp++]);
-                            ns_cache[ns_cache_tmp2&4294967167]=ns_cache_tmp1;
-                            return ns_cache_tmp1;
-                        }
-                        else{
-                            return ns_cache[ns_cache_tmp2&4294967167];
-                        }
-                    }let u8buf,u8bufp;let s = "";let lsp,sp,sl; let c = new TextDecoder();let u32buf,u32bufp;const attr = [];
-                    let attr_tmp1, attr_tmp2;
-                    function get_attr() {
-                        attr_tmp2 = u8buf[u8bufp++];
-                        if(attr_tmp2 & 128){
-                            attr_tmp1=s.substring(sp,sp+=u8buf[u8bufp++]);
-                            attr[attr_tmp2&4294967167]=attr_tmp1;
-                            return attr_tmp1;
-                        }
-                        else{
-                            return attr[attr_tmp2&4294967167];
-                        }
-                    }const evt = [];
+    let u32buf,u32bufp;let u8buf,u8bufp;const evt = [];
                     let evt_tmp1, evt_tmp2;
                     function get_evt() {
                         evt_tmp2 = u8buf[u8bufp++];
@@ -199,8 +175,32 @@ let m,p,ls,d,t,op,i,e,z,metaflags;
                         else{
                             return evt[evt_tmp2&4294967167];
                         }
-                    }
-            let id,ptr,len,ns,value,bubbles,event_name,field;
+                    }const ns_cache = [];
+                    let ns_cache_tmp1, ns_cache_tmp2;
+                    function get_ns_cache() {
+                        ns_cache_tmp2 = u8buf[u8bufp++];
+                        if(ns_cache_tmp2 & 128){
+                            ns_cache_tmp1=s.substring(sp,sp+=u8buf[u8bufp++]);
+                            ns_cache[ns_cache_tmp2&4294967167]=ns_cache_tmp1;
+                            return ns_cache_tmp1;
+                        }
+                        else{
+                            return ns_cache[ns_cache_tmp2&4294967167];
+                        }
+                    }const attr = [];
+                    let attr_tmp1, attr_tmp2;
+                    function get_attr() {
+                        attr_tmp2 = u8buf[u8bufp++];
+                        if(attr_tmp2 & 128){
+                            attr_tmp1=s.substring(sp,sp+=u8buf[u8bufp++]);
+                            attr[attr_tmp2&4294967167]=attr_tmp1;
+                            return attr_tmp1;
+                        }
+                        else{
+                            return attr[attr_tmp2&4294967167];
+                        }
+                    }let s = "";let lsp,sp,sl; let c = new TextDecoder();
+            let field,event_name,id,value,ptr,len,ns,bubbles;
             export function create(r){
                 d=r;
             }
@@ -213,7 +213,10 @@ let m,p,ls,d,t,op,i,e,z,metaflags;
                     ls=m.getUint32(d+12*4,true);
                 }
                 p=ls;
-                if ((metaflags>>>5)&1){
+                if ((metaflags>>>3)&1){
+                u32buf=new Uint32Array(m.buffer,m.getUint32(d+3*4,true))
+            }
+            u32bufp=0;if ((metaflags>>>5)&1){
                 u8buf=new Uint8Array(m.buffer,m.getUint32(d+5*4,true))
             }
             u8bufp=0;if (metaflags&1){
@@ -242,33 +245,39 @@ let m,p,ls,d,t,op,i,e,z,metaflags;
                     s = c.decode(new DataView(m.buffer, lsp, sl));
                 }
             }
-            sp=0;if ((metaflags>>>3)&1){
-                u32buf=new Uint32Array(m.buffer,m.getUint32(d+3*4,true))
-            }
-            u32bufp=0;
+            sp=0;
                 for(;;){
                     op=m.getUint32(p,true);
                     p+=4;
                     z=0;
                     while(z++<4){
                         switch(op&255){
-                            case 0:{AppendChildren(root, stack.length-1);}break;case 1:{stack.push(nodes[u32buf[u32bufp++]]);}break;case 2:{AppendChildren(u32buf[u32bufp++], u32buf[u32bufp++]);}break;case 3:{stack.pop();}break;case 4:{root = nodes[u32buf[u32bufp++]]; els = stack.splice(stack.length-u32buf[u32bufp++]); if (root.listening) { listeners.removeAllNonBubbling(root); } root.replaceWith(...els);}break;case 5:{nodes[u32buf[u32bufp++]].after(...stack.splice(stack.length-u32buf[u32bufp++]));}break;case 6:{nodes[u32buf[u32bufp++]].before(...stack.splice(stack.length-u32buf[u32bufp++]));}break;case 7:{node = nodes[u32buf[u32bufp++]]; if (node !== undefined) { if (node.listening) { listeners.removeAllNonBubbling(node); } node.remove(); }}break;case 8:{stack.push(document.createTextNode(s.substring(sp,sp+=u32buf[u32bufp++])));}break;case 9:{node = document.createTextNode(s.substring(sp,sp+=u32buf[u32bufp++])); nodes[u32buf[u32bufp++]] = node; stack.push(node);}break;case 10:{node = document.createElement('pre'); node.hidden = true; stack.push(node); nodes[u32buf[u32bufp++]] = node;}break;case 11:event_name=get_evt();id=u32buf[u32bufp++];bubbles=u8buf[u8bufp++];node = nodes[id]; if(node.listening){node.listening += 1;}else{node.listening = 1;} node.setAttribute('data-dioxus-id', `${id}`); listeners.create(event_name, node, bubbles);break;case 12:{node = nodes[u32buf[u32bufp++]]; node.listening -= 1; node.removeAttribute('data-dioxus-id'); listeners.remove(node, get_evt(), u8buf[u8bufp++]);}break;case 13:{nodes[u32buf[u32bufp++]].textContent = s.substring(sp,sp+=u32buf[u32bufp++]);}break;case 14:{node = nodes[u32buf[u32bufp++]]; SetAttributeInner(node, get_attr(), s.substring(sp,sp+=u32buf[u32bufp++]), get_ns_cache());}break;case 15:id=u32buf[u32bufp++];field=get_attr();ns=get_ns_cache();{name = field;
-        node = nodes[id];
-        if (ns == "style") {
-            node.style.removeProperty(name);
-        } else if (ns !== null && ns !== undefined && ns !== "") {
-            node.removeAttributeNS(ns, name);
-        } else if (name === "value") {
-            node.value = "";
-        } else if (name === "checked") {
-            node.checked = false;
-        } else if (name === "selected") {
-            node.selected = false;
-        } else if (name === "dangerous_inner_html") {
-            node.innerHTML = "";
-        } else {
-            node.removeAttribute(name);
-        }}break;case 16:{nodes[u32buf[u32bufp++]] = LoadChild(u32buf[u32bufp++], u8buf[u8bufp++]);}break;case 17:ptr=u32buf[u32bufp++];len=u8buf[u8bufp++];value=s.substring(sp,sp+=u32buf[u32bufp++]);id=u32buf[u32bufp++];{
+                            case 0:{AppendChildren(root, stack.length-1);}break;case 1:{stack.push(nodes[u32buf[u32bufp++]]);}break;case 2:{AppendChildren(u32buf[u32bufp++], u32buf[u32bufp++]);}break;case 3:{stack.pop();}break;case 4:{root = nodes[u32buf[u32bufp++]]; els = stack.splice(stack.length-u32buf[u32bufp++]); if (root.listening) { listeners.removeAllNonBubbling(root); } root.replaceWith(...els);}break;case 5:{nodes[u32buf[u32bufp++]].after(...stack.splice(stack.length-u32buf[u32bufp++]));}break;case 6:{nodes[u32buf[u32bufp++]].before(...stack.splice(stack.length-u32buf[u32bufp++]));}break;case 7:{node = nodes[u32buf[u32bufp++]]; if (node !== undefined) { if (node.listening) { listeners.removeAllNonBubbling(node); } node.remove(); }}break;case 8:{stack.push(document.createTextNode(s.substring(sp,sp+=u32buf[u32bufp++])));}break;case 9:{node = document.createTextNode(s.substring(sp,sp+=u32buf[u32bufp++])); nodes[u32buf[u32bufp++]] = node; stack.push(node);}break;case 10:{node = document.createElement('pre'); node.hidden = true; stack.push(node); nodes[u32buf[u32bufp++]] = node;}break;case 11:event_name=get_evt();id=u32buf[u32bufp++];bubbles=u8buf[u8bufp++];node = nodes[id]; if(node.listening){node.listening += 1;}else{node.listening = 1;} node.setAttribute('data-dioxus-id', `${id}`); listeners.create(event_name, node, bubbles);break;case 12:{node = nodes[u32buf[u32bufp++]]; node.listening -= 1; node.removeAttribute('data-dioxus-id'); listeners.remove(node, get_evt(), u8buf[u8bufp++]);}break;case 13:{nodes[u32buf[u32bufp++]].textContent = s.substring(sp,sp+=u32buf[u32bufp++]);}break;case 14:{node = nodes[u32buf[u32bufp++]]; SetAttributeInner(node, get_attr(), s.substring(sp,sp+=u32buf[u32bufp++]), get_ns_cache());}break;case 15:id=u32buf[u32bufp++];field=get_attr();ns=get_ns_cache();{
+            node = nodes[id];
+            if (!ns) {
+                switch (field) {
+                    case "value":
+                        node.value = "";
+                        break;
+                    case "checked":
+                        node.checked = false;
+                        break;
+                    case "selected":
+                        node.selected = false;
+                        break;
+                    case "dangerous_inner_html":
+                        node.innerHTML = "";
+                        break;
+                    default:
+                        node.removeAttribute(field);
+                        break;
+                }
+            } else if (ns == "style") {
+                node.style.removeProperty(name);
+            } else {
+                node.removeAttributeNS(ns, field);
+            }
+        }break;case 16:{nodes[u32buf[u32bufp++]] = LoadChild(u32buf[u32bufp++], u8buf[u8bufp++]);}break;case 17:ptr=u32buf[u32bufp++];len=u8buf[u8bufp++];value=s.substring(sp,sp+=u32buf[u32bufp++]);id=u32buf[u32bufp++];{
             node = LoadChild(ptr, len);
             if (node.nodeType == Node.TEXT_NODE) {
                 node.textContent = value;

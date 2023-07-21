@@ -398,7 +398,9 @@ fn StoryListing(cx: Scope, story: StoryItem) -> Element {
                         // New
                         resolve_story(full_story.clone(), preview_state.clone(), *id)
                     },
-                    // ANCHOR: resolve_story
+                    // ...
+                    
+                    // ANCHOR_END: resolve_story
                     "{title}"
                 }
                 a {

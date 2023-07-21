@@ -37,6 +37,7 @@ pub mod components {
         pub mod nav;
         pub mod notfound;
         pub mod tutorials;
+        pub mod awesome;
     }
 }
 
@@ -175,6 +176,9 @@ pub enum Route {
             #[redirect("/platforms/ssr", || Route::Homepage {})]
             #[redirect("/platforms/tui", || Route::Homepage {})]
             Homepage {},
+
+            #[route("/awesome")]
+            Awesome {},
 
             #[route("/tutorials/:id")]
             Tutorial { id: usize },

@@ -7,7 +7,7 @@ use std::{
 
 use bytes::Bytes;
 use dioxus_router::routable::Routable;
-use scraper::{Selector, Html};
+use scraper::{Html, Selector};
 use serde::{Deserialize, Serialize};
 use stork_lib::{build_index, SearchError};
 
@@ -118,7 +118,7 @@ where
 
         let target_dir = std::env::var("CARGO_MANIFEST_DIR").unwrap_or_else(|_| ".".into());
 
-        let path = format!("{}/dioxus_index/index_{}.bin", target_dir, myself.name);
+        let path = format!("{}/dioxus_search/index_{}.bin", target_dir, myself.name);
         std::fs::create_dir_all(std::path::Path::new(&path).parent().unwrap()).unwrap();
         let compressed = yazi::compress(
             &myself.index,
@@ -250,7 +250,9 @@ impl Config {
         let mut files = Vec::new();
         let base_directory = mapping.base_directory();
 
-        'o: for segments in R::SITE_MAP.iter().flat_map(|segs| segs.flatten()) {
+        // Collect all the routes
+        let mut static_routes = std::collections::HashSet::new();
+        for segments in R::SITE_MAP.iter().flat_map(|segs| segs.flatten()) {
             let mut route = String::new();
             for seg in segments {
                 match seg {
@@ -260,34 +262,37 @@ impl Config {
                     }
                     dioxus_router::routable::SegmentType::Child => {}
                     dioxus_router::routable::SegmentType::CatchAll(_)
-                    | dioxus_router::routable::SegmentType::Dynamic(_) => continue 'o,
+                    | dioxus_router::routable::SegmentType::Dynamic(_) => continue,
                 }
             }
+            static_routes.insert(route);
+        }
+        // Add the routes to the index
+        for route in static_routes {
             if let Ok(route) = R::from_str(&route) {
                 let url = route.to_string();
                 if let Some(path) = mapping.map_route(route) {
-                    match std::fs::read_to_string(&path){
+                    let absolute_path = base_directory.join(&path);
+                    match std::fs::read_to_string(&absolute_path) {
                         Ok(contents) => {
                             let document = Html::parse_document(&contents);
                             let title = document
-                                .select(&Selector::parse("title").unwrap())
+                                .select(&Selector::parse("h1").unwrap())
                                 .next()
                                 .map(|title| title.text().collect::<String>())
-                                .unwrap_or_else(|| 
-                                {
+                                .unwrap_or_else(|| {
                                     document
-                                    .select(&Selector::parse("h1").unwrap())
-                                    .next()
-                                    .map(|title| title.text().collect::<String>())
-                                    .unwrap_or_else(|| 
-                                    {
-                                        let mut title = String::new();
-                                        for segment in path.iter() {
-                                            title.push_str(&segment.to_string_lossy());
-                                            title.push(' ');
-                                        }
-                                        title
-                                    })   
+                                        .select(&Selector::parse("title").unwrap())
+                                        .next()
+                                        .map(|title| title.text().collect::<String>())
+                                        .unwrap_or_else(|| {
+                                            let mut title = String::new();
+                                            for segment in path.iter() {
+                                                title.push_str(&segment.to_string_lossy());
+                                                title.push(' ');
+                                            }
+                                            title
+                                        })
                                 });
                             files.push(File {
                                 path: path.to_string_lossy().into(),

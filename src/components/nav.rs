@@ -23,7 +23,7 @@ pub fn Nav(cx: Scope) -> Element {
         header {
             class: "sticky top-0 z-30 shadow dark:text-gray-200 dark:border-b border-stone-600 dark:bg-ideblack bg-white",
             div { class: "py-3 px-12 max-w-screen-3xl mx-auto flex items-center justify-between text-sm leading-6 {bg_color}",
-                div { class: "flex z-50 flex-1",
+                div { class: "flex z-50 mr-2",
                     Link {
                         target: Route::Homepage {},
                         class: "flex title-font font-medium items-center text-gray-900",
@@ -37,8 +37,8 @@ pub fn Nav(cx: Scope) -> Element {
 
                 Search {}
 
-                div { class: "hidden xl:flex flex-1 h-full justify-end",
-                    div { class: "hidden md:flex items-center  font-semibold",
+                div { class: "hidden xl:flex h-full justify-end ml-2",
+                    div { class: "hidden md:flex items-center font-semibold",
                         nav {
                             ul { class: "flex items-center space-x-2", LinkList {} }
                         }

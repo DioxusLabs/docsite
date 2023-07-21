@@ -9,7 +9,7 @@ use std::cell::RefCell;
 #[cfg(feature = "web")]
 thread_local! {
     static LISTENERS: ShortcutHandler = {
-        let callbacks: Arc<Mutex<Slab<(Key, Modifiers, Box<dyn FnMut() >)>>> = Arc::new(Mutex::new(Slab::new()));
+        let callbacks: ShortcutCallbacks = Arc::new(Mutex::new(Slab::new()));
         let callbacks2 = callbacks.clone();
 
         let cb: Closure<dyn FnMut(web_sys::Event)> = wasm_bindgen::closure::Closure::new(move |evt: web_sys::Event| {
@@ -31,8 +31,10 @@ thread_local! {
     };
 }
 
+type ShortcutCallbacks = Arc<Mutex<Slab<(Key, Modifiers, Box<dyn FnMut()>)>>>;
+
 struct ShortcutHandler {
-    callbacks: Arc<Mutex<Slab<(Key, Modifiers, Box<dyn FnMut()>)>>>,
+    callbacks: ShortcutCallbacks,
 }
 
 impl ShortcutHandler {

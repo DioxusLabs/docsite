@@ -132,7 +132,7 @@ pub fn BlogList(cx: Scope) -> Element {
                     section { class: "body-font overflow-hidden dark:bg-ideblack",
                         div { class: "container px-6 mx-auto",
                             div { class: "-my-8 divide-y-2 divide-gray-100",
-                                POSTS.iter().enumerate().map(|(id, post)| rsx! { BlogPostItem { post: post, id: id } })
+                                POSTS.iter().map(|post| rsx! { BlogPostItem { post: post } })
                             }
                         }
                     }
@@ -196,7 +196,7 @@ pub static RecentBlogPosts: Component<()> = |cx| {
                     }
                 }
                 div { class: "-my-8 divide-y-2 divide-gray-100",
-                    POSTS.iter().enumerate().map(|(id, post)| rsx!{ BlogPostItem { post: post, id: id } })
+                    POSTS.iter().map(|post| rsx!{ BlogPostItem { post: post } })
                 }
             }
         }
@@ -204,7 +204,7 @@ pub static RecentBlogPosts: Component<()> = |cx| {
 };
 
 #[inline_props]
-fn BlogPostItem(cx: Scope, post: &'static BlogPost, id: usize) -> Element {
+fn BlogPostItem(cx: Scope, post: &'static BlogPost) -> Element {
     let BlogPost {
         category,
         date,

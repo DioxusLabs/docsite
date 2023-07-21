@@ -14,7 +14,7 @@ const COMMENT_DEPTH: i64 = 2;
 
 pub async fn get_story_preview(id: i64) -> Result<StoryItem, reqwest::Error> {
     let url = format!("{}item/{}.json", BASE_API_URL, id);
-    Ok(reqwest::get(&url).await?.json().await?)
+    reqwest::get(&url).await?.json().await
 }
 
 pub async fn get_stories(count: usize) -> Result<Vec<StoryItem>, reqwest::Error> {
@@ -279,7 +279,7 @@ pub mod fetch {
     // ANCHOR: use_future
     fn Stories(cx: Scope) -> Element {
         // Fetch the top 10 stories on Hackernews
-        let stories = use_future(&cx, (), |_| get_stories(10));
+        let stories = use_future(cx, (), |_| get_stories(10));
 
         // check if the future is resolved
         match stories.value() {
@@ -399,7 +399,7 @@ fn StoryListing(cx: Scope, story: StoryItem) -> Element {
                         resolve_story(full_story.clone(), preview_state.clone(), *id)
                     },
                     // ...
-                    
+
                     // ANCHOR_END: resolve_story
                     "{title}"
                 }
@@ -497,7 +497,7 @@ fn Comment(cx: Scope, comment: Comment) -> Element<'a> {
 }
 
 fn Stories(cx: Scope) -> Element {
-    let story = use_future(&cx, (), |_| get_stories(10));
+    let story = use_future(cx, (), |_| get_stories(10));
 
     match story.value() {
         Some(Ok(list)) => render! {

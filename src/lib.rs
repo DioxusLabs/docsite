@@ -1,4 +1,4 @@
-#![allow(non_snake_case, non_upper_case_globals)]
+#![allow(non_snake_case, non_upper_case_globals, unused)]
 
 use dioxus::html::input_data::keyboard_types::{Key, Modifiers};
 use dioxus::prelude::*;
@@ -65,7 +65,6 @@ mod docs {
     use crate::components::*;
     use crate::doc_examples::*;
     use dioxus::prelude::*;
-    use dioxus_router::prelude::*;
     use fermi::use_atom_state;
 
     use_mdbook::mdbook_router! {"./docs-src"}

@@ -22,7 +22,7 @@ pub fn App(cx: Scope) -> Element {
 }
 
 fn Stories(cx: Scope) -> Element {
-    let story = use_future(&cx, (), |_| get_stories(10));
+    let story = use_future(cx, (), |_| get_stories(10));
 
     match story.value() {
         Some(Ok(list)) => render! {
@@ -210,7 +210,7 @@ const COMMENT_DEPTH: i64 = 2;
 pub async fn get_story_preview(id: i64) -> Result<StoryItem, reqwest::Error> {
     let url = format!("{}item/{}.json", BASE_API_URL, id);
     log::info!("Fetching story {}", id);
-    Ok(reqwest::get(&url).await?.json().await?)
+    reqwest::get(&url).await?.json().await
 }
 
 pub async fn get_stories(count: usize) -> Result<Vec<StoryItem>, reqwest::Error> {

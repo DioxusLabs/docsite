@@ -2,7 +2,7 @@ use dioxus::prelude::*;
 use dioxus_material_icons::{MaterialIcon, MaterialIconColor};
 use crate::*;
 use fermi::{use_atom_state, use_read, Atom};
-use dioxus::html::input_data::keyboard_types::{Key, Code};
+use dioxus::html::input_data::keyboard_types::Key;
 
 pub struct NavLayoutHighlighted(pub bool);
 pub static HIGHLIGHT_NAV_LAYOUT: Atom<NavLayoutHighlighted> = Atom(|_| NavLayoutHighlighted(false));
@@ -232,7 +232,7 @@ fn Search(cx: Scope) -> Element {
 fn SearchModal(cx: Scope) -> Element {
     let show_modal = use_atom_state(cx, &SHOW_SEARCH);
     let search_text = use_state(cx, String::new);
-    let results = SEARCH_INDEX.search(&search_text.get());
+    let results = SEARCH_INDEX.search(search_text.get());
 
     // when we search, we do a similar search to mdbook
     // This will bring up individual sections that reference the search term with the breadcrumb

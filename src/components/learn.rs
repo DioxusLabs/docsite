@@ -70,13 +70,13 @@ fn SidebarSection(cx: Scope, chapter: &'static SummaryItem<BookRoute>) -> Elemen
     let sections = link
         .nested_items
         .iter()
-        .filter_map(|chapter| render! { SidebarChapter { chapter: chapter } });
+        .map(|chapter| render! { SidebarChapter { chapter: chapter } });
 
     render! {
         div { class: "pb-4",
             if let Some(url) = &link.location {
                 rsx! {
-                    Link { target: Route::Docs { child: url.clone() }, h2 { class: "font-semibold", "{link.name}" } }
+                    Link { target: Route::Docs { child: *url }, h2 { class: "font-semibold", "{link.name}" } }
                 }
             }
             ul { class: "pl-2", sections }
@@ -96,7 +96,7 @@ fn SidebarChapter(cx: Scope, chapter: &'static SummaryItem<BookRoute>) -> Elemen
     // for instance, if the current page is /docs/0.4/en/learn/overview
     // then we want to show the dropdown for /docs/0.4/en/learn
     let show_dropdown = *list_toggle.get() || book_url.starts_with(&*url.to_string());
-    let show_chevron = link.nested_items.len() > 0;
+    let show_chevron = link.nested_items.is_empty();
 
     if link.nested_items.is_empty() {
         render! {
@@ -120,7 +120,7 @@ fn SidebarChapter(cx: Scope, chapter: &'static SummaryItem<BookRoute>) -> Elemen
                     }
                 }
                 Link {
-                    target: Route::Docs { child: url.clone() },
+                    target: Route::Docs { child: *url },
                     "{link.name}"
                 }
             }
@@ -150,7 +150,7 @@ fn LocationLink(cx: Scope, chapter: &'static SummaryItem<BookRoute>) -> Element 
     };
 
     render! {
-        Link { target: Route::Docs { child: url.clone() },
+        Link { target: Route::Docs { child: *url },
             li { class: "m-1 dark:hover:bg-gray-800 rounded-md pl-2 {current_class}", "{link.name}" }
         }
     }
@@ -210,7 +210,7 @@ fn BreadCrumbs(cx: Scope) -> Element {
 
     render! {
         h2 { class: "font-semibold pb-4",
-            for segment in route.to_string().split("/").skip(3).filter(|f| !f.is_empty()) {
+            for segment in route.to_string().split('/').skip(3).filter(|f| !f.is_empty()) {
                 rsx! {
                     if segment != "index" {
                         rsx! {

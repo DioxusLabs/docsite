@@ -17,7 +17,7 @@ pub static Footer: Component<()> = |cx| {
                 ("Guide", "/docs/0.3/guide/en"),
                 (
                     "Awesome",
-                    "/awesome",
+                    "/docsite/awesome",
                 ),
             ],
         ),

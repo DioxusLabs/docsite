@@ -153,63 +153,13 @@ fn MobileNav(cx: Scope) -> Element {
 type LinkPairs<'a> = &'a [(&'a str, &'a str)];
 static LINKS: &[(&str, &str, LinkPairs)] = &[
     (
-        "Platforms",
-        "/platforms",
-        &[
-            (
-                "Web",
-                "https://dioxuslabs.com/docs/0.3/guide/en/getting_started/web",
-            ),
-            (
-                "Desktop",
-                "https://dioxuslabs.com/docs/0.3/guide/en/getting_started/desktop",
-            ),
-            (
-                "Mobile",
-                "https://dioxuslabs.com/docs/0.3/guide/en/getting_started/mobile",
-            ),
-            (
-                "SSR",
-                "https://dioxuslabs.com/docs/0.3/guide/en/getting_started/ssr",
-            ),
-            (
-                "TUI",
-                "https://github.com/DioxusLabs/dioxus/tree/master/packages/dioxus-tui",
-            ),
-        ],
-    ),
-    (
-        "Projects",
-        "https://github.com/dioxuslabs",
-        &[
-            (
-                "Fermi",
-                "https://github.com/DioxusLabs/dioxus/tree/master/packages/fermi",
-            ),
-            (
-                "Router",
-                "https://github.com/DioxusLabs/dioxus/tree/master/packages/router",
-            ),
-            ("Taffy", "https://github.com/DioxusLabs/taffy"),
-            (
-                "CLI",
-                "https://github.com/DioxusLabs/dioxus/tree/master/packages/cli",
-            ),
-        ],
-    ),
-    (
         "Docs",
-        "/learn/",
-        &[
-            ("Guide", "https://dioxuslabs.com/docs/0.3/guide/en/"),
-            // ("Advanced", "https://dioxuslabs.com/docs/0.3/reference/"),
-            // ("Reference", "https://dioxuslabs.com/docs/0.3/reference/"),
-            ("Router", "https://dioxuslabs.com/docs/0.3/router/"),
-        ],
+        "/docsite/learn/",
+        &[],
     ),
-    ("Awesome", "/awesome", &[]),
+    ("Awesome", "/docsite/awesome", &[]),
     // ("Tutorials", "/tutorials/", &[]),
-    ("Blog", "/blog", &[]),
+    ("Blog", "/docsite/blog", &[]),
 ];
 
 #[inline_props]
@@ -272,7 +222,7 @@ fn Search(cx: Scope) -> Element {
                     span { class: "pl-2", "Search the docs" }
                 }
                 div { class: "border border-gray-300 rounded-lg p-1 text-xs text-gray-400",
-                    "CONTROL + /"
+                    "CTRL + /"
                 }
             }
         }

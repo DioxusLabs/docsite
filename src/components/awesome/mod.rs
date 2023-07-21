@@ -75,8 +75,6 @@ pub fn Awesome(cx: Scope) -> Element {
         Ok(items)
     });
 
-
-
     let search = use_state(cx, || "".to_string());
 
     match items.value() {
@@ -90,7 +88,7 @@ pub fn Awesome(cx: Scope) -> Element {
                     class: "dark:bg-ideblack w-full pt-24 pb-10",
                     div {
                         class: "container mx-auto max-w-screen-1g text-center",
-                        p {
+                        h1 {
                             class: "text-[3.3em] font-bold tracking-tight dark:text-white text-ghdarkmetal mb-2 px-2",
                             "Awesome stuff for Dioxus"
                         }

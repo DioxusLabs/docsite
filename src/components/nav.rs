@@ -249,8 +249,7 @@ fn SearchModal(cx: Scope) -> Element {
 
                     // A little weird, but we're putting an empty div with a scaled height to buffer the top of the modal
                     div { class: "max-w-screen-md mx-auto h-full flex flex-col",
-                        onclick: move |evt| evt.stop_propagation(),
-                        div { class: "h-30" }
+                    div { class: "h-30" }
 
                         // The actual modal
                         div { class: "bg-white dark:bg-ideblack p-6 rounded-2xl m-8 max-h-[calc(100%-8rem)] overflow-y-auto",
@@ -263,6 +262,7 @@ fn SearchModal(cx: Scope) -> Element {
                                         color: MaterialIconColor::Dark,
                                     }
                                     input {
+                                        onclick: move |evt| evt.stop_propagation(),
                                         onkeydown: move |evt| {
                                             if evt.inner().key() == Key::Escape {
                                                 show_modal.set(ShowSearch(false));

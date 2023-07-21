@@ -6,9 +6,9 @@ use dioxus_router::prelude::*;
 #[derive(Routable, Clone)]
 #[rustfmt::skip]
 enum Route {
-	#[layout(Wrapper)]
-		#[route("/")]
-		Index {},
+    #[layout(Wrapper)]
+        #[route("/")]
+        Index {},
 }
 
 #[inline_props]

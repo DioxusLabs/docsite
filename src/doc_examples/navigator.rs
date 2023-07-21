@@ -5,10 +5,10 @@ use dioxus_router::prelude::*;
 #[derive(Routable, Clone)]
 #[rustfmt::skip]
 enum Route {
-	#[route("/")]
-	Home {},
-	#[route("/:..route")]
-	PageNotFound { route: Vec<String> },
+    #[route("/")]
+    Home {},
+    #[route("/:..route")]
+    PageNotFound { route: Vec<String> },
 }
 
 #[inline_props]

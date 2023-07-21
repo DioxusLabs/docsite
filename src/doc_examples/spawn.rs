@@ -23,8 +23,8 @@ pub fn App(cx: Scope) -> Element {
                     }
                     Err(_err) => {
                         log::info!(
-							"Login failed - you need a login server running on https://example.com."
-						)
+                            "Login failed - you need a login server running on https://example.com."
+                        )
                     }
                 }
             }

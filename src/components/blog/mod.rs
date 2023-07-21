@@ -27,11 +27,11 @@ pub const POST_TEMPLATE: BlogPost = BlogPost {
 
 #[inline_props]
 pub fn PostTemplate(cx: Scope) -> Element {
-	render! {
-		SinglePost {
-			post: POST_TEMPLATE,
-		}
-	}
+    render! {
+        SinglePost {
+            post: POST_TEMPLATE,
+        }
+    }
 }
 
 pub const POST_FULLTINME: BlogPost = BlogPost {
@@ -48,11 +48,11 @@ pub const POST_FULLTINME: BlogPost = BlogPost {
 
 #[inline_props]
 pub fn PostFulltime(cx: Scope) -> Element {
-	render! {
-		SinglePost {
-			post: POST_FULLTINME,
-		}
-	}
+    render! {
+        SinglePost {
+            post: POST_FULLTINME,
+        }
+    }
 }
 
 pub const POST_RELEASE_030: BlogPost = BlogPost {
@@ -68,11 +68,11 @@ pub const POST_RELEASE_030: BlogPost = BlogPost {
 
 #[inline_props]
 pub fn PostRelease030(cx: Scope) -> Element {
-	render! {
-		SinglePost {
-			post: POST_RELEASE_030,
-		}
-	}
+    render! {
+        SinglePost {
+            post: POST_RELEASE_030,
+        }
+    }
 }
 
 pub const POST_RELEASE_020: BlogPost = BlogPost {
@@ -88,11 +88,11 @@ pub const POST_RELEASE_020: BlogPost = BlogPost {
 
 #[inline_props]
 pub fn PostRelease020(cx: Scope) -> Element {
-	render! {
-		SinglePost {
-			post: POST_RELEASE_020,
-		}
-	}
+    render! {
+        SinglePost {
+            post: POST_RELEASE_020,
+        }
+    }
 }
 
 pub const POST_RELEASE_010: BlogPost = BlogPost {
@@ -106,11 +106,11 @@ pub const POST_RELEASE_010: BlogPost = BlogPost {
 
 #[inline_props]
 pub fn PostRelease010(cx: Scope) -> Element {
-	render! {
-		SinglePost {
-			post: POST_RELEASE_010,
-		}
-	}
+    render! {
+        SinglePost {
+            post: POST_RELEASE_010,
+        }
+    }
 }
 
 pub const POSTS: &[BlogPost] = &[

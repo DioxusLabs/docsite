@@ -19,9 +19,9 @@ pub fn App(cx: Scope) -> Element {
 pub fn Empty(cx: Scope) -> Element {
     // ANCHOR: empty
     cx.render(rsx!(div {
-		// attributes / listeners
-		// children
-	}))
+        // attributes / listeners
+        // children
+    }))
     // ANCHOR_END: empty
 }
 

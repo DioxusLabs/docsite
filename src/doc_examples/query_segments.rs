@@ -6,12 +6,12 @@ use dioxus_router::prelude::*;
 #[derive(Routable, Clone)]
 #[rustfmt::skip]
 enum Route {
-	// segments that start with ?: are query segments
-	#[route("/blog?:name")]
-	BlogPost {
-		// You must include query segments in child variants
-		name: String,
-	},
+    // segments that start with ?: are query segments
+    #[route("/blog?:name")]
+    BlogPost {
+        // You must include query segments in child variants
+        name: String,
+    },
 }
 
 // Components must contain the same query segments as their corresponding variant

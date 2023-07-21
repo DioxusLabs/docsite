@@ -7,17 +7,17 @@ edition = "2018"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-dioxus-router = { git = "https://github.com/demonthos/dioxus", branch = "fix-static-hydrated" }
-dioxus = { git = "https://github.com/demonthos/dioxus", branch = "fix-static-hydrated" }
-dioxus-web = { git = "https://github.com/demonthos/dioxus", branch = "fix-static-hydrated", features = ["hydrate"], optional = true }
-dioxus-ssr = { git = "https://github.com/demonthos/dioxus", branch = "fix-static-hydrated", optional = true }
-dioxus-fullstack = { git = "https://github.com/demonthos/dioxus", branch = "fix-static-hydrated", features = ["router"] }
-dioxus-tui = { git = "https://github.com/demonthos/dioxus", branch = "fix-static-hydrated", optional = true }
-dioxus-desktop = { git = "https://github.com/demonthos/dioxus", branch = "fix-static-hydrated", optional = true }
-dioxus-liveview = { git = "https://github.com/demonthos/dioxus", branch = "fix-static-hydrated", optional = true }
-dioxus-native-core = { git = "https://github.com/demonthos/dioxus", branch = "fix-static-hydrated", optional = true }
-dioxus-native-core-macro = { git = "https://github.com/demonthos/dioxus", branch = "fix-static-hydrated", optional = true }
-fermi = { git = "https://github.com/demonthos/dioxus", branch = "fix-static-hydrated" }
+dioxus-router = { git = "https://github.com/demonthos/dioxus", branch = "many-fixes" }
+dioxus = { git = "https://github.com/demonthos/dioxus", branch = "many-fixes" }
+dioxus-web = { git = "https://github.com/demonthos/dioxus", branch = "many-fixes", features = ["hydrate"], optional = true }
+dioxus-ssr = { git = "https://github.com/demonthos/dioxus", branch = "many-fixes", optional = true }
+dioxus-fullstack = { git = "https://github.com/demonthos/dioxus", branch = "many-fixes", features = ["router"] }
+dioxus-tui = { git = "https://github.com/demonthos/dioxus", branch = "many-fixes", optional = true }
+dioxus-desktop = { git = "https://github.com/demonthos/dioxus", branch = "many-fixes", optional = true }
+dioxus-liveview = { git = "https://github.com/demonthos/dioxus", branch = "many-fixes", optional = true }
+dioxus-native-core = { git = "https://github.com/demonthos/dioxus", branch = "many-fixes", optional = true }
+dioxus-native-core-macro = { git = "https://github.com/demonthos/dioxus", branch = "many-fixes", optional = true }
+fermi = { git = "https://github.com/demonthos/dioxus", branch = "many-fixes" }
 serde = { version = "1.0.163", features = ["derive"] }
 serde_json = "1.0.96"
 log = "0.4.17"
@@ -57,9 +57,9 @@ opt-level = 'z'
 strip = "debuginfo"
 
 [patch.crates-io]
-dioxus-core = { git = "https://github.com/demonthos/dioxus", branch = "fix-static-hydrated" }
-dioxus-rsx = { git = "https://github.com/demonthos/dioxus", branch = "fix-static-hydrated" }
-dioxus = { git = "https://github.com/demonthos/dioxus", branch = "fix-static-hydrated" }
+dioxus-core = { git = "https://github.com/demonthos/dioxus", branch = "many-fixes" }
+dioxus-rsx = { git = "https://github.com/demonthos/dioxus", branch = "many-fixes" }
+dioxus = { git = "https://github.com/demonthos/dioxus", branch = "many-fixes" }
 
 [features]
 default = []

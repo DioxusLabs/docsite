@@ -17,8 +17,8 @@ fn App(cx: Scope) -> Element {
     },
     // Providing an Option explicitly won't compile though:
     // Title {
-    //	 title: "Some Title",
-    //	 subtitle: None,
+    //     title: "Some Title",
+    //     subtitle: None,
     // },
             // ANCHOR_END: OptionalProps_usage
 
@@ -33,7 +33,7 @@ fn App(cx: Scope) -> Element {
     },
     // This won't compile:
     // ExplicitOption {
-    //	 title: "Some Title",
+    //     title: "Some Title",
     // },
             // ANCHOR_END: ExplicitOption_usage
 

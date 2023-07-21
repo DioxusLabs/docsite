@@ -7,16 +7,16 @@ pub use docs::BookRoute;
 use serde::{Deserialize, Serialize};
 
 macro_rules! export_items {
-	(
-		$(
-			pub mod $item:ident;
-		)*
-	) => {
-		$(
-			pub mod $item;
-			pub use $item::*;
-		)*
-	};
+    (
+        $(
+            pub mod $item:ident;
+        )*
+    ) => {
+        $(
+            pub mod $item;
+            pub use $item::*;
+        )*
+    };
 }
 
 pub mod icons;
@@ -164,42 +164,42 @@ pub enum Route {{\n\t"
 #[derive(Clone, Routable, PartialEq, Eq, Serialize, Deserialize)]
 #[rustfmt::skip]
 pub enum Route {
-	#[layout(HeaderFooter)]
-		#[nest("/docsite")]
-			#[route("/")]
-			#[redirect("/platforms", || Route::Homepage {})]
-			#[redirect("/platforms/web", || Route::Homepage {})]
-			#[redirect("/platforms/desktop", || Route::Homepage {})]
-			#[redirect("/platforms/liveview", || Route::Homepage {})]
-			#[redirect("/platforms/mobile", || Route::Homepage {})]
-			#[redirect("/platforms/ssr", || Route::Homepage {})]
-			#[redirect("/platforms/tui", || Route::Homepage {})]
-			Homepage {},
+    #[layout(HeaderFooter)]
+        // #[nest("/docsite")]
+            #[route("/")]
+            #[redirect("/platforms", || Route::Homepage {})]
+            #[redirect("/platforms/web", || Route::Homepage {})]
+            #[redirect("/platforms/desktop", || Route::Homepage {})]
+            #[redirect("/platforms/liveview", || Route::Homepage {})]
+            #[redirect("/platforms/mobile", || Route::Homepage {})]
+            #[redirect("/platforms/ssr", || Route::Homepage {})]
+            #[redirect("/platforms/tui", || Route::Homepage {})]
+            Homepage {},
 
-			#[route("/tutorials/:id")]
-			Tutorial { id: usize },
+            #[route("/tutorials/:id")]
+            Tutorial { id: usize },
 
-			#[nest("/blog")]
-				#[route("/")]
-				BlogList {},
-				#[route("/templates-diffing")]
-				PostTemplate {},
+            #[nest("/blog")]
+                #[route("/")]
+                BlogList {},
+                #[route("/templates-diffing")]
+                PostTemplate {},
                 #[route("/going-fulltime")]
-				PostFulltime {},
+                PostFulltime {},
                 #[route("/release-030")]
-				PostRelease030 {},
+                PostRelease030 {},
                 #[route("/release-020")]
-				PostRelease020 {},
+                PostRelease020 {},
                 #[route("/introducing-dioxus")]
                 PostRelease010 {},
-			#[end_nest]
-			#[layout(Learn)]
-				#[child("/learn")]
-				Docs { child: BookRoute },
-			#[end_layout]
-		#[end_nest]
-		#[route("/:..segments")]
-		Err404 { segments: Vec<String> },
+            #[end_nest]
+            #[layout(Learn)]
+                #[child("/learn")]
+                Docs { child: BookRoute },
+            #[end_layout]
+        #[end_nest]
+        #[route("/:..segments")]
+        Err404 { segments: Vec<String> },
 }
 
 pub fn use_url(cx: &ScopeState) -> String {

@@ -14,22 +14,22 @@ fn main() {
 #[derive(Routable, Clone)]
 #[rustfmt::skip]
 enum Route {
-	#[layout(NavBar)]
-		#[route("/")]
-		Home {},
-		#[nest("/blog")]
-			#[layout(Blog)]
-			#[route("/")]
-			BlogList {},
-			#[route("/post/:name")]
-			BlogPost { name: String },
-			#[end_layout]
-		#[end_nest]
-	#[end_layout]
-	#[route("/:..route")]
-	PageNotFound {
-		route: Vec<String>,
-	},
+    #[layout(NavBar)]
+        #[route("/")]
+        Home {},
+        #[nest("/blog")]
+            #[layout(Blog)]
+            #[route("/")]
+            BlogList {},
+            #[route("/post/:name")]
+            BlogPost { name: String },
+            #[end_layout]
+        #[end_nest]
+    #[end_layout]
+    #[route("/:..route")]
+    PageNotFound {
+        route: Vec<String>,
+    },
 }
 // ANCHOR_END: router
 

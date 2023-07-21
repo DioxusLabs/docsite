@@ -42,6 +42,7 @@ async fn resolve_story(
     preview_state: UseSharedState<PreviewState>,
     story_id: i64,
 ) {
+    log::info!("Resolving story {}", story_id);
     if let Some(cached) = &*full_story.read() {
         *preview_state.write() = PreviewState::Loaded(cached.clone());
         return;
@@ -49,6 +50,7 @@ async fn resolve_story(
 
     *preview_state.write() = PreviewState::Loading;
     if let Ok(story) = get_story(story_id).await {
+        log::info!("Resolved story {}", story_id);
         *preview_state.write() = PreviewState::Loaded(story.clone());
         *full_story.write() = Some(story);
     }
@@ -207,12 +209,14 @@ const COMMENT_DEPTH: i64 = 2;
 
 pub async fn get_story_preview(id: i64) -> Result<StoryItem, reqwest::Error> {
     let url = format!("{}item/{}.json", BASE_API_URL, id);
+    log::info!("Fetching story {}", id);
     Ok(reqwest::get(&url).await?.json().await?)
 }
 
 pub async fn get_stories(count: usize) -> Result<Vec<StoryItem>, reqwest::Error> {
     let url = format!("{}topstories.json", BASE_API_URL);
-    let stories_ids = reqwest::get(&url).await?.json::<Vec<i64>>().await?;
+    let stories_ids = &reqwest::get(&url).await?.json::<Vec<i64>>().await?[..count];
+    log::info!("Fetching {} stories", stories_ids.len());
 
     let story_futures = stories_ids[..usize::min(stories_ids.len(), count)]
         .iter()

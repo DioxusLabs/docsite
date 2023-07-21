@@ -6,13 +6,13 @@ use dioxus_router::prelude::*;
 #[derive(Routable, Clone)]
 #[rustfmt::skip]
 enum Route {
-	// All routes under the NavBar layout will be rendered inside of the NavBar Outlet
-	#[layout(NavBar)]
-		#[route("/")]
-		Home {},
-	#[end_layout]
-	#[route("/:..route")]
-	PageNotFound { route: Vec<String> },
+    // All routes under the NavBar layout will be rendered inside of the NavBar Outlet
+    #[layout(NavBar)]
+        #[route("/")]
+        Home {},
+    #[end_layout]
+    #[route("/:..route")]
+    PageNotFound { route: Vec<String> },
 }
 // ANCHOR_END: router
 

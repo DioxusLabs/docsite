@@ -19,7 +19,7 @@ pub async fn get_story_preview(id: i64) -> Result<StoryItem, reqwest::Error> {
 
 pub async fn get_stories(count: usize) -> Result<Vec<StoryItem>, reqwest::Error> {
     let url = format!("{}topstories.json", BASE_API_URL);
-    let stories_ids = reqwest::get(&url).await?.json::<Vec<i64>>().await?;
+    let stories_ids = &reqwest::get(&url).await?.json::<Vec<i64>>().await?[..count];
 
     let story_futures = stories_ids[..usize::min(stories_ids.len(), count)]
         .iter()

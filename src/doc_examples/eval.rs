@@ -11,12 +11,12 @@ fn app(cx: Scope) -> Element {
     // You can create as many eval instances as you want
     let mut eval = create_eval(
         r#"
-		// You can send messages from JavaScript to Rust with the dioxus.send function
-		dioxus.send("Hi from JS!");
-		// You can receive messages from Rust to JavaScript with the dioxus.recv function
-		let msg = await dioxus.recv();
-		console.log(msg);
-		"#,
+        // You can send messages from JavaScript to Rust with the dioxus.send function
+        dioxus.send("Hi from JS!");
+        // You can receive messages from Rust to JavaScript with the dioxus.recv function
+        let msg = await dioxus.recv();
+        console.log(msg);
+        "#,
     );
 
     // You can run the eval instance with the run method

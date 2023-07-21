@@ -16,13 +16,13 @@ async fn main() {
             get(move || async move {
                 Html(format!(
                     r#"
-				<!DOCTYPE html>
-				<html>
-				<head> <title>Dioxus LiveView with Axum</title>  </head>
-				<body> <div id="main"></div> </body>
-				{glue}
-				</html>
-				"#,
+                <!DOCTYPE html>
+                <html>
+                <head> <title>Dioxus LiveView with Axum</title>  </head>
+                <body> <div id="main"></div> </body>
+                {glue}
+                </html>
+                "#,
                     // Create the glue code to connect to the WebSocket on the "/ws" route
                     glue = dioxus_liveview::interpreter_glue(&format!("ws://{addr}/ws"))
                 ))

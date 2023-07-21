@@ -20,9 +20,9 @@ pub fn App(cx: Scope) -> Element {
 
     let wrapper_style = if is_dark_mode {
         r"
-			background: #222;
-			min-height: 100vh;
-		"
+            background: #222;
+            min-height: 100vh;
+        "
     } else {
         r""
     };
@@ -74,12 +74,12 @@ fn MemeEditor(cx: Scope) -> Element {
     let heading_style = if is_dark_mode { "color: white" } else { "" };
 
     let container_style = r"
-		display: flex;
-		flex-direction: column;
-		gap: 16px;
-		margin: 0 auto;
-		width: fit-content;
-	";
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        margin: 0 auto;
+        width: fit-content;
+    ";
 
     let caption = use_state(cx, || "me waiting for my rust code to compile".to_string());
 
@@ -106,24 +106,24 @@ fn MemeEditor(cx: Scope) -> Element {
 #[inline_props]
 fn Meme<'a>(cx: Scope<'a>, caption: &'a str) -> Element<'a> {
     let container_style = r"
-		position: relative;
-		width: fit-content;
-	";
+        position: relative;
+        width: fit-content;
+    ";
 
     let caption_container_style = r"
-		position: absolute;
-		bottom: 0;
-		left: 0;
-		right: 0;
-		padding: 16px 8px;
-	";
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        padding: 16px 8px;
+    ";
 
     let caption_style = r"
-		font-size: 32px;
-		margin: 0;
-		color: white;
-		text-align: center;
-	";
+        font-size: 32px;
+        margin: 0;
+        color: white;
+        text-align: center;
+    ";
 
     cx.render(rsx!(
         div {
@@ -155,22 +155,22 @@ fn CaptionEditor<'a>(
 
     let colors = if is_dark_mode {
         r"
-			background: cornflowerblue;
-			color: white;
-		"
+            background: cornflowerblue;
+            color: white;
+        "
     } else {
         r"
-			background: #def;
-			color: black;
-		"
+            background: #def;
+            color: black;
+        "
     };
 
     let input_style = r"
-		border: none;
-		padding: 8px 16px;
-		margin: 0;
-		border-radius: 4px;
-	";
+        border: none;
+        padding: 8px 16px;
+        margin: 0;
+        border-radius: 4px;
+    ";
 
     cx.render(rsx!(input {
         style: "{input_style}{colors}",

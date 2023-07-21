@@ -5,8 +5,8 @@ use dioxus_router::prelude::*;
 #[derive(Routable, Clone)]
 #[rustfmt::skip]
 enum Route {
-	#[route("/")]
-	Home {},
+    #[route("/")]
+    Home {},
 }
 
 #[inline_props]

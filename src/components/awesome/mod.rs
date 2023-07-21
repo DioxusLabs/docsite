@@ -1,6 +1,6 @@
 use dioxus::prelude::*;
-use dioxus_router::Link;
 use wasm_bindgen::prelude::wasm_bindgen;
+use crate::*;
 
 const ITEM_LIST_LINK: &str = "https://raw.githubusercontent.com/DioxusLabs/awesome-dioxus/master/awesome.json";
 const STAR_CACHE_NAME: &str = "STARS-";
@@ -59,6 +59,7 @@ struct StarsResponse {
     stargazers_count: u64,
 }
 
+#[inline_props]
 pub fn Awesome(cx: Scope) -> Element {
     let items = use_future(cx, (), |_| async move {
         let req = match reqwest::get(ITEM_LIST_LINK).await {
@@ -160,7 +161,6 @@ pub fn Awesome(cx: Scope) -> Element {
 
 #[inline_props]
 fn AwesomeItem(cx: Scope, item: Item) -> Element {
-
     let is_github = item.github.is_some();
     let username = item.github.clone().unwrap_or(GithubInfo::default()).username;
     let repo = item.github.clone().unwrap_or(GithubInfo::default()).repo;
@@ -208,7 +208,7 @@ fn AwesomeItem(cx: Scope, item: Item) -> Element {
     let display_category = item.category.to_string();
     cx.render(rsx!(
         Link {
-            to: "{link}",
+            target: NavigationTarget::External(link),
             div {
                 class: "flex flex-col h-full p-3 rounded hover:-translate-y-2 transition-transform duration-300",
                 background_color: "#24292f",

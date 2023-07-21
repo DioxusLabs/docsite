@@ -223,7 +223,7 @@ fn LinkList(cx: Scope) -> Element {
                 li { key: "{link}",
                     Link {
                         class: "ml-[-3.8em] md:ml-0 md:py-2 md:px-2 {hover} {hover_bg} text-lg md:text-sm",
-                        target: link,
+                        target: NavigationTarget::External(link.to_string()),
                         "{name}"
                     }
                 }
@@ -237,9 +237,13 @@ fn LinkList(cx: Scope) -> Element {
                     nav { class: "md:dropdown-menu md:absolute h-auto md:-mt-64 md:group-hover:mt-0 md:opacity-0 md:group-hover:opacity-100 md:transition-opacity md:duration-250",
                         ul { class: "top-0 w-36 md:bg-white dark:md:bg-gray-800 md:shadow md:px-4 md:py-4 rounded",
                             for (name , link) in links.iter() {
-                                Link { target: link.clone(), key: "{name}", li { class: "rounded px-1 py-1 {hover} {hover_bg} text-base md:text-sm",
-                                    "{name}"
-                                } }
+                                Link {
+                                    target: NavigationTarget::External(link.to_string()), key: "{name}",
+                                    li {
+                                        class: "rounded px-1 py-1 {hover} {hover_bg} text-base md:text-sm",
+                                        "{name}"
+                                    }
+                                }
                             }
                         }
                     }

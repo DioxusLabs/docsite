@@ -39,7 +39,7 @@ fn LeftNav(cx: Scope) -> Element {
     render! {
         // Now, pin the nav to the left
         button {
-            class: "lg:hidden w-8 h-8 mt-[58px] md:mt-20 fixed top-0 left-0 p-1 text-lg z-[100]",
+            class: "lg:hidden w-8 h-8 mt-[58px] sm:mt-20 fixed top-0 left-0 p-1 text-lg z-[100]",
             onclick: move |_| show_sidebar.modify(|f| !f),
             "☰"
         }

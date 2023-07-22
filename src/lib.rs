@@ -161,7 +161,7 @@ pub enum Route {{\n\t"
     }
 }
 
-#[derive(Clone, Routable, PartialEq, Eq, Serialize, Deserialize)]
+#[derive(Clone, Routable, PartialEq, Eq, Serialize, Deserialize, Debug)]
 #[rustfmt::skip]
 pub enum Route {
     #[layout(HeaderFooter)]

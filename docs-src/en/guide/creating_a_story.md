@@ -119,7 +119,7 @@ Currently, our `StoryListing` component always renders the same story. We can mo
 We will also define what a post is and include information for how to transform our post to and from a different format using [serde](https://serde.rs). This will be used with the hackernews API in a later chapter:
 
 ```rust
-{{#include src/doc_examples/hackernews_post.rs:story_v5}}
+{{#include src/doc_examples/hackernews_post.rs:story_v6}}
 ```
 
 Now, let's modify the App component to pass the story to our `StoryListing` component like we would set an attribute on an element:

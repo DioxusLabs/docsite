@@ -8,7 +8,7 @@ website with a blog, homepage, and more!
 > Check out the [Dioxus book](https://dioxuslabs.com/docs/0.3/guide/en/) to get started.
 
 > Make sure to add Dioxus Router as a dependency, as explained in the
-> [introduction](../index.md).
+> [introduction](./index.md).
 
 ## You'll learn how to
 

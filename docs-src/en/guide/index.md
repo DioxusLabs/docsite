@@ -6,10 +6,10 @@ DemoFrame {
 }
 ```
 
-This guide serves a very brief overview of Dioxus. Throughout the guide, there will be links to the [reference](../reference/index.md) with more details about specific concepts.
+This guide serves a very brief overview of Dioxus. Throughout the guide, there will be links to the [reference](reference/index.md) with more details about specific concepts.
 
 
-First, lets setup our dependencies. In addition to the dependencies you added in the [getting started](../getting_started/index.md) guide for your platform, we need to set up a few more dependencies to work with the hacker news API:
+First, lets setup our dependencies. In addition to the dependencies you added in the [getting started](getting_started/index.md) guide for your platform, we need to set up a few more dependencies to work with the hacker news API:
 
 ```sh
 cargo add chrono --features serde

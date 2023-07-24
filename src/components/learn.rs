@@ -96,27 +96,16 @@ fn SidebarChapter(cx: Scope, chapter: &'static SummaryItem<BookRoute>) -> Elemen
     // for instance, if the current page is /docs/0.4/en/learn/overview
     // then we want to show the dropdown for /docs/0.4/en/learn
     let show_dropdown = *list_toggle.get() || book_url.starts_with(&*url.to_string());
-    let show_chevron = link.nested_items.is_empty();
+    let show_chevron = !link.nested_items.is_empty();
 
-    if link.nested_items.is_empty() {
-        render! {
-            LocationLink {
-                chapter: chapter
-            }
-        }
-    }
-    else {
+    if show_chevron {
         render! {
             li {
                 class: "pt-1",
-                if show_chevron {
-                    rsx! {
-                        button { onclick: move |_| list_toggle.set(!list_toggle.get()),
-                            dioxus_material_icons::MaterialIcon {
-                                name: "chevron_right",
-                                color: "gray",
-                            }
-                        }
+                button { onclick: move |_| list_toggle.set(!list_toggle.get()),
+                    dioxus_material_icons::MaterialIcon {
+                        name: "chevron_right",
+                        color: "gray",
                     }
                 }
                 Link {
@@ -124,7 +113,7 @@ fn SidebarChapter(cx: Scope, chapter: &'static SummaryItem<BookRoute>) -> Elemen
                     "{link.name}"
                 }
             }
-            if show_chevron && show_dropdown {
+            if show_dropdown {
                 rsx! {
                     ul { class: "ml-6 border-l border-gray-300 py-1",
                         for chapter in link.nested_items.iter() {
@@ -132,6 +121,13 @@ fn SidebarChapter(cx: Scope, chapter: &'static SummaryItem<BookRoute>) -> Elemen
                         }
                     }
                 }
+            }
+        }
+    }
+    else {
+        render! {
+            LocationLink {
+                chapter: chapter
             }
         }
     }

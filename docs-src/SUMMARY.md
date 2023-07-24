@@ -3,7 +3,7 @@
 [Introduction](index.md)
 
 - [Getting Started](getting_started/index.md)
-  - [Choosing A Web Renderer](getting_started/web/choosing_a_web_renderer.md)
+  - [Choosing A Web Renderer](getting_started/web/index.md)
   	- [Web](getting_started/web/wasm.md)
   	- [Liveview](getting_started/web/liveview.md)
   	- [Fullstack](getting_started/web/fullstack.md)

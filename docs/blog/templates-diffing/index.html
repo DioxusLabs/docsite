@@ -243,21 +243,21 @@ React.createElement(div, { <span class="hljs-class"><span class="hljs-keyword">c
 <span class="hljs-symbol">Edit:</span>:CreateElement(<span class="hljs-string">"li"</span>)
 <span class="hljs-symbol">Edit:</span>:CreateElement(<span class="hljs-string">"h3"</span>)
 <span class="hljs-symbol">Edit:</span>:CreateText(<span class="hljs-string">"user"</span>)
-<span class="hljs-symbol">Edit:</span>:ApendChildren(<span class="hljs-number">1</span>)
+<span class="hljs-symbol">Edit:</span>:AppendChildren(<span class="hljs-number">1</span>)
 <span class="hljs-symbol">Edit:</span>:CreateElement(<span class="hljs-string">"div"</span>)
 <span class="hljs-symbol">Edit:</span>:CreateText(<span class="hljs-string">"hello 0"</span>, <span class="hljs-number">2</span>)
-<span class="hljs-symbol">Edit:</span>:ApendChildren(<span class="hljs-number">1</span>)
-<span class="hljs-symbol">Edit:</span>:ApendChildren(<span class="hljs-number">2</span>)
+<span class="hljs-symbol">Edit:</span>:AppendChildren(<span class="hljs-number">1</span>)
+<span class="hljs-symbol">Edit:</span>:AppendChildren(<span class="hljs-number">2</span>)
 
 <span class="hljs-comment">// item two...</span>
 <span class="hljs-symbol">Edit:</span>:CreateElement(<span class="hljs-string">"li"</span>)
 <span class="hljs-symbol">Edit:</span>:CreateElement(<span class="hljs-string">"h3"</span>)
 <span class="hljs-symbol">Edit:</span>:CreateText(<span class="hljs-string">"user"</span>)
-<span class="hljs-symbol">Edit:</span>:ApendChildren(<span class="hljs-number">1</span>)
+<span class="hljs-symbol">Edit:</span>:AppendChildren(<span class="hljs-number">1</span>)
 <span class="hljs-symbol">Edit:</span>:CreateElement(<span class="hljs-string">"div"</span>)
 <span class="hljs-symbol">Edit:</span>:CreateText(<span class="hljs-string">"hello 0"</span>, <span class="hljs-number">2</span>)
-<span class="hljs-symbol">Edit:</span>:ApendChildren(<span class="hljs-number">1</span>)
-<span class="hljs-symbol">Edit:</span>:ApendChildren(<span class="hljs-number">2</span>)
+<span class="hljs-symbol">Edit:</span>:AppendChildren(<span class="hljs-number">1</span>)
+<span class="hljs-symbol">Edit:</span>:AppendChildren(<span class="hljs-number">2</span>)
 
 <span class="hljs-comment">// and so on until we attach all the li to the ul</span>
 <span class="hljs-symbol">Edit:</span>:AppendChildren(len)
@@ -303,7 +303,7 @@ Edit::HydateText(<span class="hljs-number">0</span>, <span class="hljs-string">"
 <h2 id="faster-server-side-rendering-ssr-">Faster Server-Side-Rendering (SSR)</h2>
 
 <p>The other technique that SolidJS uses to achieve faster SSR performance is combining pre-rendered portions of templates together through string concatenation. Since the template is known at compile time, we can break it up into smaller chunks and just stitch them together during rendering. No need to build and traverse huge element trees!</p>
-<pre><code class="lang-rust"><span class="hljs-comment">// Cached template segements:</span>
+<pre><code class="lang-rust"><span class="hljs-comment">// Cached template segments:</span>
 
 <span class="hljs-function"><span class="hljs-title">PreRendered</span><span class="hljs-params">(<span class="hljs-string">"&lt;div class=\"asdasdasd\" class=\"asdasdasd\""</span>.into()</span></span>,),
 <span class="hljs-function"><span class="hljs-title">Attr</span><span class="hljs-params">(<span class="hljs-number">0</span>,)</span></span>,

@@ -26,7 +26,7 @@ DemoFrame {
 
 ### Attributes
 
-Attributes (and [listeners](../interactivity/index.md)) modify the behavior or appearance of the element they are attached to. They are specified inside the `{}` brackets, using the `name: value` syntax. You can provide the value as a literal in the RSX:
+Attributes (and [listeners](interactivity/index.md)) modify the behavior or appearance of the element they are attached to. They are specified inside the `{}` brackets, using the `name: value` syntax. You can provide the value as a literal in the RSX:
 
 ```rust, no_run
 {{#include src/doc_examples/rsx_overview.rs:attributes}}

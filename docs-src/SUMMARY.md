@@ -108,3 +108,8 @@
   - [Guiding Principles](contributing/guiding_principles.md)
   - [Roadmap](contributing/roadmap.md)
   - [Governence](contributing/governence.md)
+
+---
+- [Migration](migration/index.md)
+  - [Router](migration/router.md)
+  - [Hot Reload](migration/hot_reload.md)

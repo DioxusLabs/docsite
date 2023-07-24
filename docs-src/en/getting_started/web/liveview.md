@@ -70,27 +70,16 @@ And that's it!
 1. Hot reloading allows much faster iteration times inside of rsx calls by interpreting them and streaming the edits.
 2. It is useful when changing the styling/layout of a program, but will not help with changing the logic of a program.
 
-You can place the hot reload macro at the top of your main function to enable hot reloading on debug builds.
-
-For more information about hot reloading on native platforms and configuration options see the [dioxus-hot-reload](https://crates.io/crates/dioxus-hot-reload) crate.
-
 ### Setup
 
-Add the following to your main function:
-
-```rust
-fn main() {
-	hot_reload_init!();
-	// launch your application
-}
-```
+Install [dioxus-cli](https://github.com/DioxusLabs/dioxus/tree/master/packages/cli).
 
 ### Usage
 
 1. Run:
 
 ```bash
-cargo run
+dioxus serve --hot-reload --platform desktop
 ```
 
 2. Change some code within a rsx or render macro

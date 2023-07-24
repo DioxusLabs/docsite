@@ -135,7 +135,6 @@ fn generate_router(book_path: PathBuf, book: mdbook_shared::MdBook<PathBuf>) -> 
         // remove any trailing "index"
         let route_without_extension = route_without_extension
             .to_string_lossy()
-            .trim_end_matches("index")
             .to_string();
         let mut url = route_without_extension;
         if !url.starts_with('/') {

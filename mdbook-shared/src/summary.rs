@@ -6,7 +6,7 @@ use serde::{Deserialize, Serialize};
 use std::fmt::{self, Display, Formatter};
 use std::iter::FromIterator;
 use std::ops::{Deref, DerefMut};
-use std::path::PathBuf;
+use std::path::{self, PathBuf};
 
 /// Parse the text from a `SUMMARY.md` file into a sort of "recipe" to be
 /// used when loading a book from disk.a
@@ -282,7 +282,7 @@ impl<'a> SummaryParser<'a> {
                     }
                 }
                 Some(Event::Start(Tag::Link(_type, href, _title))) => {
-                    let link = self.parse_link(href.to_string());
+                    let link = self.parse_link(href.to_string())?;
                     items.push(SummaryItem::Link(link));
                 }
                 Some(Event::Rule) => items.push(SummaryItem::Separator),
@@ -340,7 +340,7 @@ impl<'a> SummaryParser<'a> {
     }
 
     /// Finishes parsing a link once the `Event::Start(Tag::Link(..))` has been opened.
-    fn parse_link(&mut self, href: String) -> Link<PathBuf> {
+    fn parse_link(&mut self, href: String) -> Result<Link<PathBuf>> {
         let href = href.replace("%20", " ");
         let link_content = collect_events!(self.stream, end Tag::Link(..));
         let name = stringify_events(link_content);
@@ -348,15 +348,19 @@ impl<'a> SummaryParser<'a> {
         let path = if href.is_empty() {
             None
         } else {
-            Some(PathBuf::from(href))
+            let path_buf = PathBuf::from(href);
+            if !path_buf.exists() {
+                return Err(anyhow::anyhow!("The path {:?} does not exist", path_buf));
+            }
+            Some(path_buf)
         };
 
-        Link {
+        Ok(Link {
             name,
             location: path,
             number: None,
             nested_items: Vec::new(),
-        }
+        })
     }
 
     /// Parse the numbered chapters.
@@ -496,7 +500,7 @@ impl<'a> SummaryParser<'a> {
             match self.next_event() {
                 Some(Event::Start(Tag::Paragraph)) => continue,
                 Some(Event::Start(Tag::Link(_type, href, _title))) => {
-                    let mut link = self.parse_link(href.to_string());
+                    let mut link = self.parse_link(href.to_string())?;
 
                     let mut number = parent.clone();
                     number.0.push(num_existing_items as u32 + 1);

@@ -80,7 +80,7 @@ impl MdBook<PathBuf> {
                 "Failed to read SUMMARY.md. Make sure you are running this command in the root of the book. {e}"
             )
         })?;
-        let summary = parse_summary(&summary)?;
+        let summary = parse_summary(&mdbook_root, &summary)?;
 
         let mut book = Self {
             summary,

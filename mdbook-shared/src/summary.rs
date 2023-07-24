@@ -6,7 +6,7 @@ use serde::{Deserialize, Serialize};
 use std::fmt::{self, Display, Formatter};
 use std::iter::FromIterator;
 use std::ops::{Deref, DerefMut};
-use std::path::{self, PathBuf};
+use std::path::{Path, PathBuf};
 
 /// Parse the text from a `SUMMARY.md` file into a sort of "recipe" to be
 /// used when loading a book from disk.a
@@ -50,8 +50,8 @@ use std::path::{self, PathBuf};
 ///
 /// All other elements are unsupported and will be ignored at best or result in
 /// an error.
-pub fn parse_summary(summary: &str) -> Result<Summary<PathBuf>> {
-    let parser = SummaryParser::new(summary);
+pub fn parse_summary(path: &Path, summary: &str) -> Result<Summary<PathBuf>> {
+    let parser = SummaryParser::new(Some(path), summary);
     parser.parse()
 }
 
@@ -168,6 +168,7 @@ impl<R> From<Link<R>> for SummaryItem<R> {
 /// > **Note:** the `TEXT` terminal is "normal" text, and should (roughly)
 /// > match the following regex: "[^<>\n[]]+".
 struct SummaryParser<'a> {
+    src_path: Option<&'a Path>,
     src: &'a str,
     stream: pulldown_cmark::OffsetIter<'a, 'a>,
     offset: usize,
@@ -216,10 +217,11 @@ macro_rules! collect_events {
 }
 
 impl<'a> SummaryParser<'a> {
-    fn new(text: &str) -> SummaryParser<'_> {
+    fn new(path: Option<&'a Path>, text: &'a str) -> SummaryParser<'a> {
         let pulldown_parser = pulldown_cmark::Parser::new(text).into_offset_iter();
 
         SummaryParser {
+            src_path: path,
             src: text,
             stream: pulldown_parser,
             offset: 0,
@@ -242,15 +244,15 @@ impl<'a> SummaryParser<'a> {
     fn parse(mut self) -> Result<Summary<PathBuf>> {
         let title = self.parse_title();
 
-        let prefix_chapters = self
-            .parse_affix(true)
-            .with_context(|| "There was an error parsing the prefix chapters")?;
-        let numbered_chapters = self
-            .parse_parts()
-            .with_context(|| "There was an error parsing the numbered chapters")?;
-        let suffix_chapters = self
-            .parse_affix(false)
-            .with_context(|| "There was an error parsing the suffix chapters")?;
+        let prefix_chapters = self.parse_affix(true).map_err(|err| {
+            anyhow::anyhow!("There was an error parsing the prefix chapters: {err}")
+        })?;
+        let numbered_chapters = self.parse_parts().map_err(|err| {
+            anyhow::anyhow!("There was an error parsing the numbered chapters: {err}")
+        })?;
+        let suffix_chapters = self.parse_affix(false).map_err(|err| {
+            anyhow::anyhow!("There was an error parsing the suffix chapters: {err}")
+        })?;
 
         Ok(Summary {
             title,
@@ -328,7 +330,9 @@ impl<'a> SummaryParser<'a> {
             // Parse the rest of the part.
             let numbered_chapters = self
                 .parse_numbered(&mut root_items, &mut root_number)
-                .with_context(|| "There was an error parsing the numbered chapters")?;
+                .map_err(|err| {
+                    anyhow::anyhow!("There was an error parsing the numbered chapters: {err}")
+                })?;
 
             if let Some(title) = title {
                 parts.push(SummaryItem::PartTitle(title));
@@ -348,9 +352,16 @@ impl<'a> SummaryParser<'a> {
         let path = if href.is_empty() {
             None
         } else {
-            let path_buf = PathBuf::from(href);
-            if !path_buf.exists() {
-                return Err(anyhow::anyhow!("The path {:?} does not exist", path_buf));
+            let path_buf = PathBuf::from(href.clone());
+            if let Some(src_path) = self.src_path {
+                // check if it under the en directory
+                let full_path = PathBuf::from(&src_path).join("en").join(&path_buf);
+                if !full_path.exists() {
+                    return Err(anyhow::anyhow!(
+                        "The path {:?} does not exist (created from {href})",
+                        full_path
+                    ));
+                }
             }
             Some(path_buf)
         };
@@ -656,7 +667,7 @@ mod tests {
         let src = "# Summary";
         let should_be = String::from("Summary");
 
-        let mut parser = SummaryParser::new(src);
+        let mut parser = SummaryParser::new(None, src);
         let got = parser.parse_title().unwrap();
 
         assert_eq!(got, should_be);
@@ -667,7 +678,7 @@ mod tests {
         let src = "# My **Awesome** Summary";
         let should_be = String::from("My Awesome Summary");
 
-        let mut parser = SummaryParser::new(src);
+        let mut parser = SummaryParser::new(None, src);
         let got = parser.parse_title().unwrap();
 
         assert_eq!(got, should_be);
@@ -687,7 +698,7 @@ mod tests {
     #[test]
     fn parse_some_prefix_items() {
         let src = "[First](./first.md)\n[Second](./second.md)\n";
-        let mut parser = SummaryParser::new(src);
+        let mut parser = SummaryParser::new(None, src);
 
         let should_be = vec![
             SummaryItem::Link(Link {
@@ -710,7 +721,7 @@ mod tests {
     #[test]
     fn parse_prefix_items_with_a_separator() {
         let src = "[First](./first.md)\n\n---\n\n[Second](./second.md)\n";
-        let mut parser = SummaryParser::new(src);
+        let mut parser = SummaryParser::new(None, src);
 
         let got = parser.parse_affix(true).unwrap();
 
@@ -721,7 +732,7 @@ mod tests {
     #[test]
     fn suffix_items_cannot_be_followed_by_a_list() {
         let src = "[First](./first.md)\n- [Second](./second.md)\n";
-        let mut parser = SummaryParser::new(src);
+        let mut parser = SummaryParser::new(None, src);
 
         let got = parser.parse_affix(false);
 
@@ -737,7 +748,7 @@ mod tests {
             ..Default::default()
         };
 
-        let mut parser = SummaryParser::new(src);
+        let mut parser = SummaryParser::new(None, src);
         let _ = parser.stream.next(); // Discard opening paragraph
 
         let href = match parser.stream.next() {
@@ -745,7 +756,7 @@ mod tests {
             other => panic!("Unreachable, {:?}", other),
         };
 
-        let got = parser.parse_link(href);
+        let got = parser.parse_link(href).unwrap();
         assert_eq!(got, should_be);
     }
 
@@ -760,7 +771,7 @@ mod tests {
         };
         let should_be = vec![SummaryItem::Link(link)];
 
-        let mut parser = SummaryParser::new(src);
+        let mut parser = SummaryParser::new(None, src);
         let got = parser
             .parse_numbered(&mut 0, &mut SectionNumber::default())
             .unwrap();
@@ -792,7 +803,7 @@ mod tests {
             }),
         ];
 
-        let mut parser = SummaryParser::new(src);
+        let mut parser = SummaryParser::new(None, src);
         let got = parser
             .parse_numbered(&mut 0, &mut SectionNumber::default())
             .unwrap();
@@ -819,7 +830,7 @@ mod tests {
             }),
         ];
 
-        let mut parser = SummaryParser::new(src);
+        let mut parser = SummaryParser::new(None, src);
         let got = parser
             .parse_numbered(&mut 0, &mut SectionNumber::default())
             .unwrap();
@@ -859,7 +870,7 @@ mod tests {
             }),
         ];
 
-        let mut parser = SummaryParser::new(src);
+        let mut parser = SummaryParser::new(None, src);
         let got = parser.parse_parts().unwrap();
 
         assert_eq!(got, should_be);
@@ -887,7 +898,7 @@ mod tests {
             }),
         ];
 
-        let mut parser = SummaryParser::new(src);
+        let mut parser = SummaryParser::new(None, src);
         let got = parser
             .parse_numbered(&mut 0, &mut SectionNumber::default())
             .unwrap();
@@ -898,7 +909,7 @@ mod tests {
     #[test]
     fn an_empty_link_location_is_a_draft_chapter() {
         let src = "- [Empty]()\n";
-        let mut parser = SummaryParser::new(src);
+        let mut parser = SummaryParser::new(None, src);
 
         let got = parser.parse_numbered(&mut 0, &mut SectionNumber::default());
         let should_be = vec![SummaryItem::Link(Link {
@@ -941,7 +952,7 @@ mod tests {
             }),
         ];
 
-        let mut parser = SummaryParser::new(src);
+        let mut parser = SummaryParser::new(None, src);
         let got = parser
             .parse_numbered(&mut 0, &mut SectionNumber::default())
             .unwrap();
@@ -961,7 +972,7 @@ mod tests {
             nested_items: Vec::new(),
         })];
 
-        let mut parser = SummaryParser::new(src);
+        let mut parser = SummaryParser::new(None, src);
         let got = parser
             .parse_numbered(&mut 0, &mut SectionNumber::default())
             .unwrap();
@@ -986,7 +997,7 @@ mod tests {
                 nested_items: Vec::new(),
             }),
         ];
-        let mut parser = SummaryParser::new(src);
+        let mut parser = SummaryParser::new(None, src);
         let got = parser
             .parse_numbered(&mut 0, &mut SectionNumber::default())
             .unwrap();
@@ -1035,7 +1046,7 @@ mod tests {
 [Appendix B - Local](appendix-02.md)
 "#;
 
-        let mut parser = SummaryParser::new(src);
+        let mut parser = SummaryParser::new(None, src);
 
         // ---- Title ----
         let title = parser.parse_title();

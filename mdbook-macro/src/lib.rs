@@ -27,6 +27,7 @@ pub fn mdbook_router(input: TokenStream) -> TokenStream {
 
 fn write_book_err(err: anyhow::Error) -> TokenStream {
     let err = err.to_string();
+    println!("{}", err);
     quote! { compile_error!(#err) }.to_token_stream().into()
 }
 

@@ -67,7 +67,7 @@ mod docs {
     use dioxus::prelude::*;
     use fermi::use_atom_state;
 
-    use_mdbook::mdbook_router! {"./docs-src"}
+    use_mdbook::mdbook_router! {"docs-src"}
 
     #[inline_props]
     fn DemoFrame<'a>(cx: Scope<'a>, children: Element<'a>) -> Element {

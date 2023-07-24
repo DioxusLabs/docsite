@@ -43,5 +43,5 @@ You can use the `example` option to select a example to build:
 
 ```
 # build the `test` example
-dioxus build --exmaple test
+dioxus build --example test
 ```

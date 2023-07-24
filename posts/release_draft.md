@@ -450,7 +450,7 @@ Using Dioxus on mobile is easy:
 dioxus::mobile::launch(App, |cfg| cfg);
 ```
 
-However, be warned that mobile is considered very experimental and there will likely be quirks. Dioxus is leveraging work done by the Tauri team to enable mobile support, and mobile support isn't technically complete in Tauri - yet. iOS should be supported out of the box, but Android support will take custom some boilerplate that hasn't been figured out completey.
+However, be warned that mobile is considered very experimental and there will likely be quirks. Dioxus is leveraging work done by the Tauri team to enable mobile support, and mobile support isn't technically complete in Tauri - yet. iOS should be supported out of the box, but Android support will take custom some boilerplate that hasn't been figured out completely.
 
 
 ## FAQ:

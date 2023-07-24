@@ -34,4 +34,4 @@ Dioxus supports multiple platforms. Choose the platform you want to target below
 - [Mobile](mobile.md): runs in a web view on mobile
 - [Terminal UI](tui.md): renders text-based graphics in the terminal
 
-> More information on any platform you choose is availible in the [Platforms](../reference/platforms/index.md) section of the reference
+> More information on any platform you choose is available in the [Platforms](../reference/platforms/index.md) section of the reference

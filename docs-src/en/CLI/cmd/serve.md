@@ -28,7 +28,7 @@ You can use the `example` option to serve a example:
 
 ```
 # serve the `test` example
-dioxus serve --exmaple test
+dioxus serve --example test
 ```
 
 ## Open Browser

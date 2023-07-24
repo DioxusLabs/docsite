@@ -1,8 +1,8 @@
 ## Publishing with Github Pages
 
-You can use Dioxus fullstack to pre-render your application and then hydrate it on the client. This works well with pages hosted staticly on providers like Github Pages. In fact, the official Dioxus site uses this approach.
+You can use Dioxus fullstack to pre-render your application and then hydrate it on the client. This works well with pages hosted statically on providers like Github Pages. In fact, the official Dioxus site uses this approach.
 
-You can set up your application to staticly generate all static pages:
+You can set up your application to statically generate all static pages:
 
 ```rust
 {{#include src/doc_examples/fullstack_static.rs}}

@@ -29,27 +29,27 @@ fn main() {
                             .register_server_fns("")
                             // Connect to the hot reload server in debug mode
                             .connect_hot_reload()
-                            // Render the application. This will serialize the root props (the intial count) into the HTML
+                            // Render the application. This will serialize the root props (the initial count) into the HTML
                             .route(
                                 "/",
-                                get(move |Path(intial_count): Path<usize>, State(ssr_state): State<SSRState>| async move { axum::body::Full::from(
+                                get(move |Path(initial_count): Path<usize>, State(ssr_state): State<SSRState>| async move { axum::body::Full::from(
                                     ssr_state.render(
                                         &ServeConfigBuilder::new(
                                             app,
-                                            intial_count,
+                                            initial_count,
                                         )
                                         .build(),
                                     )
                                 )}),
                             )
-                            // Render the application with a different intial count
+                            // Render the application with a different initial count
                             .route(
                                 "/:initial_count",
-                                get(move |Path(intial_count): Path<usize>, State(ssr_state): State<SSRState>| async move { axum::body::Full::from(
+                                get(move |Path(initial_count): Path<usize>, State(ssr_state): State<SSRState>| async move { axum::body::Full::from(
                                     ssr_state.render(
                                         &ServeConfigBuilder::new(
                                             app,
-                                            intial_count,
+                                            initial_count,
                                         )
                                         .build(),
                                     )

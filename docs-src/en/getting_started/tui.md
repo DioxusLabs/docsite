@@ -18,7 +18,7 @@ TUI support is currently quite experimental. But, if you're willing to venture i
 
 ## Getting Set up
 
-Start by making a new package and adding Dioxus and the TUI renderer as dependancies.
+Start by making a new package and adding Dioxus and the TUI renderer as dependencies.
 
 ```shell
 cargo new --bin demo

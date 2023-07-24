@@ -57,7 +57,7 @@ Configeration specific to web applications:
    # HTML title tag content
    title = "dioxus app | ⛺"
    ```
-2. ***base_path*** - The base path to build the appliation for serving at. This can be useful when serving your application in a subdirectory under a domain. For example when building a site to be served on github pages.
+2. ***base_path*** - The base path to build the application for serving at. This can be useful when serving your application in a subdirectory under a domain. For example when building a site to be served on github pages.
    ```
    # The application will be served at domain.com/my_application/, so we need to modify the base_path to the path where the application will be served
    base_path = "my_application"
@@ -76,7 +76,7 @@ Configeration related to the development server:
    ```
    reload_html = true
    ```
-2. ***watch_path*** - The files & directories to moniter for changes
+2. ***watch_path*** - The files & directories to monitor for changes
    ```
    watch_path = ["src", "public"]
    ```
@@ -141,7 +141,7 @@ Configeration related to static resources your application uses in development:
 
 ### Web.Proxy
 
-Configeration related to any proxies your application requires durring development. Proxies will forward requests to a new service
+Configeration related to any proxies your application requires during development. Proxies will forward requests to a new service
 
 ```
 [web.proxy]

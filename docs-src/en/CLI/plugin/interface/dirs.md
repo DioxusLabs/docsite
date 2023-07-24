@@ -14,7 +14,7 @@ local path = plugin.dirs.plugin_dir()
 
 ### bin_dir() -> string
 
-You can get plugin **bin** direcotry path
+You can get plugin **bin** directory path
 
 Sometime you need install some binary file like `tailwind-cli` & `sass-cli` to help your plugin work, then you should put binary file in this directory.
 
@@ -25,7 +25,7 @@ local path = plugin.dirs.bin_dir()
 
 ### temp_dir() -> string
 
-You can get plugin **temp** direcotry path
+You can get plugin **temp** directory path
 
 Just put some temporary file in this directory.
 

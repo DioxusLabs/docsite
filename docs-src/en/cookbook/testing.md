@@ -31,7 +31,7 @@ In your `playwright.config.js`, you will need to run cargo run or dioxus serve i
 //...
 webServer: [
     {
-        cwd: path.join(process.cwd(), 'playwrite-tests', 'web'),
+        cwd: path.join(process.cwd(), 'playwright-tests', 'web'),
         command: 'dioxus serve',
         port: 8080,
         timeout: 10 * 60 * 1000,

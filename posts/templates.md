@@ -166,21 +166,21 @@ ul {
 Edit::CreateElement("li")
 Edit::CreateElement("h3")
 Edit::CreateText("user")
-Edit::ApendChildren(1)
+Edit::AppendChildren(1)
 Edit::CreateElement("div")
 Edit::CreateText("hello 0", 2)
-Edit::ApendChildren(1)
-Edit::ApendChildren(2)
+Edit::AppendChildren(1)
+Edit::AppendChildren(2)
 
 // item two...
 Edit::CreateElement("li")
 Edit::CreateElement("h3")
 Edit::CreateText("user")
-Edit::ApendChildren(1)
+Edit::AppendChildren(1)
 Edit::CreateElement("div")
 Edit::CreateText("hello 0", 2)
-Edit::ApendChildren(1)
-Edit::ApendChildren(2)
+Edit::AppendChildren(1)
+Edit::AppendChildren(2)
 
 // and so on until we attach all the li to the ul
 Edit::AppendChildren(len)
@@ -246,7 +246,7 @@ Notice how the templates are collected during SSR and inserted into the header. 
 The other technique that SolidJS uses to achieve faster SSR performance is combining pre-rendered portions of templates together through string concatenation. Since the template is known at compile time, we can break it up into smaller chunks and just stitch them together during rendering. No need to build and traverse huge element trees!
 
 ```rust
-// Cached template segements:
+// Cached template segments:
 
 PreRendered("<div class=\"asdasdasd\" class=\"asdasdasd\"".into(),),
 Attr(0,),

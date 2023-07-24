@@ -98,7 +98,7 @@ enum ProfileUpdate {
     SetAge(i32)
 }
 
-let profile = use_coroutine(cx, |mut rx: UnboundedReciver<ProfileUpdate>| async move {
+let profile = use_coroutine(cx, |mut rx: UnboundedReceiver<ProfileUpdate>| async move {
     let mut server = connect_to_server().await;
 
     while let Ok(msg) = rx.next().await {

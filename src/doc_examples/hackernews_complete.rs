@@ -32,7 +32,7 @@ fn Stories(cx: Scope) -> Element {
                 }
             }
         },
-        Some(Err(err)) => render! {"An error occured while fetching stories {err}"},
+        Some(Err(err)) => render! {"An error occurred while fetching stories {err}"},
         None => render! {"Loading items"},
     }
 }

@@ -297,7 +297,7 @@ pub mod fetch {
             }
             Some(Err(err)) => {
                 // if there was an error, render the error
-                render! {"An error occured while fetching stories {err}"}
+                render! {"An error occurred while fetching stories {err}"}
             }
             None => {
                 // if the future is not resolved yet, render a loading message
@@ -507,7 +507,7 @@ fn Stories(cx: Scope) -> Element {
                 }
             }
         },
-        Some(Err(err)) => render! {"An error occured while fetching stories {err}"},
+        Some(Err(err)) => render! {"An error occurred while fetching stories {err}"},
         None => render! {"Loading items"},
     }
 }

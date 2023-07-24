@@ -4,9 +4,9 @@ Build a standalone native desktop app that looks and feels the same across opera
 
 Apps built with Dioxus Desktop use the system webview to render the page. This makes the final size of application much smaller than other webview renderers (typically under 5mb).
 
-Although desktop apps are rendered in a webview, your Rust code runs natively. This means that browser APIs are _not_ available, so rendering WebGL, Canvas, etc is not as easy as the Web. However, native system APIs _are_ accessible, so streaming, WebSockets, filesystem, etc are all easly accessable though system APIs.
+Although desktop apps are rendered in a webview, your Rust code runs natively. This means that browser APIs are _not_ available, so rendering WebGL, Canvas, etc is not as easy as the Web. However, native system APIs _are_ accessible, so streaming, WebSockets, filesystem, etc are all easily accessible though system APIs.
 
-Dioxus Desktop is built off [Tauri](https://tauri.app/). Right now there are limited Dioxus abstractions over the menubar, event handling, etc. In some places you may need to leverage Tauri dirrectly – through [Wry](http://github.com/tauri-apps/wry/) and [Tao](http://github.com/tauri-apps/tao).
+Dioxus Desktop is built off [Tauri](https://tauri.app/). Right now there are limited Dioxus abstractions over the menubar, event handling, etc. In some places you may need to leverage Tauri directly – through [Wry](http://github.com/tauri-apps/wry/) and [Tao](http://github.com/tauri-apps/tao).
 
 > In the future, we plan to move to a custom web renderer-based DOM renderer with WGPU integrations ([Blitz](https://github.com/DioxusLabs/blitz)).
 
@@ -21,7 +21,7 @@ Dioxus Desktop is built off [Tauri](https://tauri.app/). Right now there are lim
 
 ## Platform-Specific Dependencies
 
-Dioxus desktop renders through a web view. Depending on your platform, you might need to install some dependancies.
+Dioxus desktop renders through a web view. Depending on your platform, you might need to install some dependencies.
 
 ### Windows
 

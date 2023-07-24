@@ -130,7 +130,7 @@ pub fn Awesome(cx: Scope) -> Element {
                         class: "container mx-auto max-w-screen-1g text-center",
                         p {
                             class: "text-[3.3em] font-bold tracking-tight dark:text-white text-ghdarkmetal mb-2 px-2",
-                            "It seems a not-so-awesome error occured. 🙁"
+                            "It seems a not-so-awesome error occurred. 🙁"
                         }
                         p {
                             class: "mx-auto text-sm dark:text-gray-500 pb-10 px-2",

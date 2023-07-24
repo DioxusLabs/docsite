@@ -55,14 +55,14 @@ First, modify your `Cargo.toml` to include two features, one for the server call
 
 ```toml
 [dependencies]
-# Common dependancies
+# Common dependencies
 dioxus = { version = "*" }
 dioxus-fullstack = { version = "*" }
 
-# Web dependancies
+# Web dependencies
 dioxus-web = { version = "*", features=["hydrate"], optional = true }
 
-# Server dependancies
+# Server dependencies
 axum = { version = "0.6.12", optional = true }
 tokio = { version = "1.27.0", features = ["full"], optional = true }
 
@@ -80,7 +80,7 @@ Next, we need to modify our `main.rs` to use either hydrate on the client or ren
 
 Now, build your client-side bundle with `dioxus build --features web` and run your server with `cargo run --features ssr`. You should see the same page as before, but now you can interact with the buttons!
 
-## Sycronizing props between the server and client
+## Synchronizing props between the server and client
 
 Let's make the initial count of the counter dynamic based on the current page.
 

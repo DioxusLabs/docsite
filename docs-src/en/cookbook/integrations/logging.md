@@ -123,7 +123,7 @@ WASM Logger also uses the [web-sys](https://crates.io/crates/web-sys) crate to o
 For more information, visit wasm-logger's [docs](https://docs.rs/wasm-logger/latest/wasm_logger/).
 
 ## Android
-[Android Logger](https://crates.io/crates/android_logger) is a logging interface that can be used when targetting Android. Android Logger runs whenever an event `native_activity_create` is called by the Android system:
+[Android Logger](https://crates.io/crates/android_logger) is a logging interface that can be used when targeting Android. Android Logger runs whenever an event `native_activity_create` is called by the Android system:
 ```rs
 use log::LevelFilter;
 use android_logger::Config;

@@ -83,7 +83,7 @@ fn app(cx: Scope) -> Element {
 
 ## TUI Input Widgets
 
-Up to this point, Dioxus rendered into the terminal using just static elements. Now, with the release of Dioxus 0.3, we’re shipping a collection of input widgets for common utilities like buttons, sliders, text inputs, checboxes, and more. These same widgets provide a basis of functionality for the native renderers we mention below.
+Up to this point, Dioxus rendered into the terminal using just static elements. Now, with the release of Dioxus 0.3, we’re shipping a collection of input widgets for common utilities like buttons, sliders, text inputs, checkboxes, and more. These same widgets provide a basis of functionality for the native renderers we mention below.
 
 [tuiinputs.mp4](Dioxus%200%203%20-%20Templates,%20Hot%20Reloading,%20LiveView,%20a%2041efa87bc9d8464b88c75d6eb62e21b5/tuiinputs.mp4)
 

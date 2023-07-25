@@ -133,14 +133,12 @@ fn generate_router(book_path: PathBuf, book: mdbook_shared::MdBook<PathBuf>) -> 
         let name = path_to_route_variant(&page.url);
         let route_without_extension = page.url.with_extension("");
         // remove any trailing "index"
-        let route_without_extension = route_without_extension
-            .to_string_lossy()
-            .to_string();
+        let route_without_extension = route_without_extension.to_string_lossy().to_string();
         let mut url = route_without_extension;
         if let Some(stripped) = url.strip_suffix("index") {
             url = stripped.to_string();
         }
-        if let Some(stripped) = url.strip_suffix('/'){
+        if let Some(stripped) = url.strip_suffix('/') {
             url = stripped.to_string();
         }
         if !url.starts_with('/') {

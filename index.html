@@ -6,9 +6,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta charset="UTF-8" />
 
-    <link rel="icon shortcut" type="image/png" href="/{base_path}/static/favicon.png" />
-
     <meta name="description" content="An elegant GUI library for Rust, inspired by React. Supports Web, Desktop, SSR, Liveview, and Mobile.">
+
+    <link rel="icon shortcut" type="image/png" href="static/favicon.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100;400;600&display=swap" rel="stylesheet">
+
 
     <!-- Social meta stuff -->
     <!-- open graph -->
@@ -73,7 +77,8 @@
               // ideblack: "#0E1116",
             },
             fontFamily: {
-              sans: ["Inter var", "sans-serif"],
+              sans: ["Lexend", "sans-serif"],
+              // sans: ["Inter var", "sans-serif"],
             },
             boxShadow: {
               "3xl": "0 35px 60px -1ww5px rgba(0, 0, 0, 0.5)",
@@ -112,6 +117,9 @@
         /* padding: 45px; */
         list-style: disc;
       }
+      /* body {
+        font-family: 'Lexend', sans-serif;
+      } */
 
       @media (max-width: 767px) {
         .markdown-body {

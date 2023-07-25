@@ -85,10 +85,10 @@ fn ProjectCards(cx: Scope) -> Element {
 
 fn AvailablePlatforms(cx: Scope) -> Element {
     cx.render(rsx! {
-        section { class: "pt-36 w-full dark:bg-ideblack",
+        section { class: "w-full dark:bg-ideblack",
             div { class: "container mx-auto max-w-screen-lg",
                 div { class: "relative overflow-x-hidden",
-                    div { class: "flex flex-col items-center justify-center text-center max-w-screen-lg mx-auto pb-20",
+                    div { class: "flex flex-col items-center justify-center text-center max-w-screen-lg mx-auto pb-4",
                         h1 { class: "text-[3.3em] font-bold tracking-tight dark:text-white text-ghdarkmetal pb-4 mb-4 ",
                             "One codebase, every platform."
                         }
@@ -283,14 +283,14 @@ fn Stats(cx: Scope) -> Element {
                     }
                 }
             }
-            // div { class: "w-full mx-auto dark:bg-[#111111] border-t border-b border-[#444]",
-            //     div { class: "flex flex-row max-w-screen-xl mx-auto py-6",
-            //         StatsItem { major: "5k", minor: "Stars" }
-            //         StatsItem { major: "17k", minor: "Downloads" }
-            //         StatsItem { major: "56", minor: "Contributors" }
-            //         StatsItem { major: "300+", minor: "Communtiy Projects", last: true }
-            //     }
-            // }
+            div { class: "w-full mx-auto dark:bg-[#111111] border-t border-b border-[#444] mb-12",
+                div { class: "flex flex-row max-w-screen-xl mx-auto",
+                    StatsItem { major: "10k", minor: "Stars" }
+                    StatsItem { major: "63k", minor: "Downloads" }
+                    StatsItem { major: "136", minor: "Contributors" }
+                    StatsItem { major: "873", minor: "Communtiy Projects", last: true }
+                }
+            }
 
             a { href: "https://github.com/dioxuslabs/dioxus/graphs/contributors",
                 img {

@@ -46,8 +46,35 @@ fn LeftNav(cx: Scope) -> Element {
         nav { class: "bg-white dark:bg-ideblack lg:bg-inherit pl-6 z-20 text-base lg:block fixed top-0 pt-36 pb-16 md:-ml-3.5 w-[calc(100%-1rem)] md:w-60 h-full max-h-screen md:text-[13px] text-navy content-start overflow-y-auto leading-5 {extra_class} {hidden}",
             // I like the idea of breadcrumbs, but they add a lot of visual noise, and like, who cares?
             // BreadCrumbs {}
+
+            DocVersionNav {}
+
             for chapter in chapters.into_iter().flatten().filter(|chapter| chapter.maybe_link().is_some()) {
                 SidebarSection { chapter: chapter }
+            }
+        }
+    }
+}
+
+/// Navigate between doc versions
+fn DocVersionNav(cx: Scope) -> Element {
+    let navigator = use_navigator(cx);
+
+    render! {
+        div { class: "pb-4",
+            ul { class: "pl-2",
+                li { class: "m-1 rounded-md pl-2 hover:bg-gray-200 hover:dark:bg-gray-800",
+                    button {
+                        onclick: move |_| {
+                            let _ = navigator.push("/docsite/learn/0.3");
+                        },
+                        dioxus_material_icons::MaterialIcon {
+                            name: "chevron_left",
+                            color: "gray",
+                        }
+                        "0.3"
+                    }
+                }
             }
         }
     }
@@ -101,7 +128,7 @@ fn SidebarChapter(cx: Scope, chapter: &'static SummaryItem<BookRoute>) -> Elemen
     if show_chevron {
         render! {
             li {
-                class: "pt-1 hover:bg-gray-200 hover:dark:bg-gray-800",
+                class: "m-1 rounded-md pl-2 hover:bg-gray-200 hover:dark:bg-gray-800",
                 button { onclick: move |_| list_toggle.set(!list_toggle.get()),
                     dioxus_material_icons::MaterialIcon {
                         name: "chevron_right",
@@ -147,7 +174,7 @@ fn LocationLink(cx: Scope, chapter: &'static SummaryItem<BookRoute>) -> Element 
 
     render! {
         Link { to: Route::Docs { child: *url },
-            li { class: "m-1 dark:hover:bg-gray-800 rounded-md pl-2 {current_class} hover:bg-gray-200 hover:dark:bg-gray-800", "{link.name}" }
+            li { class: "m-1 rounded-md pl-2 hover:bg-gray-200 hover:dark:bg-gray-800 {current_class}", "{link.name}" }
         }
     }
 }

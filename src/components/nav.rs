@@ -1,8 +1,8 @@
+use crate::*;
+use dioxus::html::input_data::keyboard_types::Key;
 use dioxus::prelude::*;
 use dioxus_material_icons::{MaterialIcon, MaterialIconColor};
-use crate::*;
 use fermi::{use_atom_state, use_read, Atom};
-use dioxus::html::input_data::keyboard_types::Key;
 
 pub struct NavLayoutHighlighted(pub bool);
 pub static HIGHLIGHT_NAV_LAYOUT: Atom<NavLayoutHighlighted> = Atom(|_| NavLayoutHighlighted(false));
@@ -16,7 +16,11 @@ pub static LOGGED_IN: Atom<LoggedIn> = Atom(|_| LoggedIn(false));
 pub fn Nav(cx: Scope) -> Element {
     let logged_in = use_read(cx, &LOGGED_IN);
     let highlighted = use_read(cx, &HIGHLIGHT_NAV_LAYOUT);
-    let bg_color = if highlighted.0 { "border border-orange-600 rounded-md" } else { "" };
+    let bg_color = if highlighted.0 {
+        "border border-orange-600 rounded-md"
+    } else {
+        ""
+    };
 
     render! {
         SearchModal {}
@@ -31,7 +35,7 @@ pub fn Nav(cx: Scope) -> Element {
 
                 Search {}
 
-                div { class: "hidden xl:flex h-full justify-end ml-2",
+                div { class: "hidden xl:flex h-full justify-end ml-2 flex-1",
                     div { class: "hidden md:flex items-center font-semibold",
                         nav {
                             ul { class: "flex items-center space-x-2", LinkList {} }
@@ -146,11 +150,7 @@ fn MobileNav(cx: Scope) -> Element {
 
 type LinkPairs<'a> = &'a [(&'a str, &'a str)];
 static LINKS: &[(&str, &str, LinkPairs)] = &[
-    (
-        "Docs",
-        "/docsite/learn/0.4/",
-        &[],
-    ),
+    ("Docs", "/docsite/learn/0.4/", &[]),
     ("Awesome", "/docsite/awesome", &[]),
     // ("Tutorials", "/tutorials/", &[]),
     ("Blog", "/docsite/blog", &[]),
@@ -203,7 +203,7 @@ fn Search(cx: Scope) -> Element {
     let show_modal = use_atom_state(cx, &SHOW_SEARCH);
 
     render! {
-        div { class: "relative hidden sm:block md:w-full max-w-[30rem] xl:max-w-[30rem] 2xl:max-w-[30rem] mx-auto",
+        div { class: "relative hidden sm:block md:w-full max-w-[30rem] xl:max-w-[30rem] 2xl:max-w-[30rem] mx-auto flex-1",
             // Pop up a modal
             button {
                 // Pop up a modal

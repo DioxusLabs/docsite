@@ -2,9 +2,9 @@
 
 Dioxus has three different renderers that target the web:
 
-- [dioxus-web](./wasm.md) allows you to render your application to HTML with [WebAssembaly](https://rustwasm.github.io/docs/book/) on the client
-- [dioxus-liveview](./liveview.md) allows you to run your application on the server and render it to HTML on the client with a websocket
-- [dioxus-fullstack](./fullstack.md) allows you to initially render static HTML on the server and then update that HTML from the client with [WebAssembaly](https://rustwasm.github.io/docs/book/)
+- [dioxus-web](wasm.md) allows you to render your application to HTML with [WebAssembaly](https://rustwasm.github.io/docs/book/) on the client
+- [dioxus-liveview](liveview.md) allows you to run your application on the server and render it to HTML on the client with a websocket
+- [dioxus-fullstack](fullstack.md) allows you to initially render static HTML on the server and then update that HTML from the client with [WebAssembaly](https://rustwasm.github.io/docs/book/)
 
 Each approach has its tradeoffs:
 
@@ -52,7 +52,7 @@ Because the page is initially rendered on the server, the page will be fully ren
 - **Access to the client/browser APIs**
 - **Fast interactivity**
 
-Finally, we can use [server functions](server_functions.md) to communicate with the server in a type-safe way.
+Finally, we can use [server functions](../cookbook/platforms/fullstack/server_functions.mdserver_functions.md) to communicate with the server in a type-safe way.
 
 This approach uses both the dioxus-web and dioxus-ssr crates. To integrate those two packages and `axum`, `warp`, or `salvo`, Dioxus provides the `dioxus-fullstack` crate.
 

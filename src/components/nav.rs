@@ -246,9 +246,9 @@ fn SearchModal(cx: Scope) -> Element {
                     div { class: "h-30" }
 
                         // The actual modal
-                        div { class: "bg-white dark:bg-ideblack p-6 rounded-2xl m-8 max-h-[calc(100%-8rem)] overflow-y-auto",
+                        div { class: "bg-white dark:bg-ideblack p-6 rounded-2xl m-8 max-h-[calc(100%-8rem)] overflow-y-auto  text-gray-800 dark:text-gray-100",
                             // Search input
-                            div { class: "flex flex-row flex-grow border-b border-gray-300 pb-4 text-gray-500 dark:text-gray-300",
+                            div { class: "flex flex-row flex-grow border-b border-gray-300 pb-4",
                                 div { class: "my-auto flex flex-row",
                                     MaterialIcon {
                                         name: "search",
@@ -279,7 +279,6 @@ fn SearchModal(cx: Scope) -> Element {
                             // Results
                             div { class: "overflow-y-auto",
                                 ul {
-                                    color: "white",
                                     match results {
                                         Ok(results) => {
                                             rsx! {
@@ -326,7 +325,7 @@ fn SearchResult(cx: Scope, result: dioxus_search::SearchResult<Route>) -> Elemen
                 div { class: "flex flex-col justify-between pb-1",
                     h2 { class: "font-semibold dark:text-white", "{title}" }
                 }
-                p { class: "text-sm text-gray-500 dark:text-gray-300 pr-8",
+                p { class: "text-sm pr-8 text-gray-500 dark:text-gray-300",
                     for segment in top_excerpt_segments {
                         if segment.highlighted {
                             rsx! {

@@ -198,14 +198,16 @@ pub enum Route {
             #[end_nest]
             
             #[layout(Learn)]
-                #[redirect("/learn", || Route::Docs { child: BookRoute::Index {} })]
+                #[nest("/learn")]
+                    #[redirect("/", || Route::Docs { child: BookRoute::Index {} })]
 
-                #[route("/learn/0.3/:..segments")]
-                DocsO3 {
-                    segments: Vec<String>
-                },
-                #[child("/learn/0.4")]
-                Docs { child: BookRoute },
+                    #[route("/0.3/:..segments")]
+                    DocsO3 {
+                        segments: Vec<String>
+                    },
+                    #[child("/0.4")]
+                    Docs { child: BookRoute },
+                #[end_nest]
             #[end_layout]
         #[end_nest]
         #[redirect("/docs/0.3/:..segments", |segments: Vec<String>| Route::DocsO3 { segments: segments })]

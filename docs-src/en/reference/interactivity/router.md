@@ -79,7 +79,7 @@ For our app to navigate these routes, we can provide clickable elements called L
 ```rust
 rsx!{
 	Link {
-		target: Route::Home {},
+		to: Route::Home {},
 		"Go home!"
 	}
 }

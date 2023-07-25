@@ -49,7 +49,7 @@ enum Route {
 #[inline_props]
 fn Blog(cx: Scope) -> Element {
     render! {
-        Link { target: Route::Home {}, "Go to counter" }
+        Link { to: Route::Home {}, "Go to counter" }
         table {
             tbody {
                 for _ in 0..100 {
@@ -71,7 +71,7 @@ fn Home(cx: Scope) -> Element {
 
     cx.render(rsx! {
         Link {
-            target: Route::Blog {},
+            to: Route::Blog {},
             "Go to blog"
         }
         div {

@@ -76,7 +76,7 @@ fn SidebarSection(cx: Scope, chapter: &'static SummaryItem<BookRoute>) -> Elemen
         div { class: "pb-4",
             if let Some(url) = &link.location {
                 rsx! {
-                    Link { target: Route::Docs { child: *url }, h2 { class: "font-semibold", "{link.name}" } }
+                    Link { to: Route::Docs { child: *url }, h2 { class: "font-semibold", "{link.name}" } }
                 }
             }
             ul { class: "pl-2", sections }
@@ -109,7 +109,7 @@ fn SidebarChapter(cx: Scope, chapter: &'static SummaryItem<BookRoute>) -> Elemen
                     }
                 }
                 Link {
-                    target: Route::Docs { child: *url },
+                    to: Route::Docs { child: *url },
                     "{link.name}"
                 }
             }
@@ -146,7 +146,7 @@ fn LocationLink(cx: Scope, chapter: &'static SummaryItem<BookRoute>) -> Element 
     };
 
     render! {
-        Link { target: Route::Docs { child: *url },
+        Link { to: Route::Docs { child: *url },
             li { class: "m-1 dark:hover:bg-gray-800 rounded-md pl-2 {current_class}", "{link.name}" }
         }
     }
@@ -210,7 +210,7 @@ fn BreadCrumbs(cx: Scope) -> Element {
                 rsx! {
                     if segment != "index" {
                         rsx! {
-                            Link { target: Route::Homepage {}, class: "text-blue-600", "{segment}" }
+                            Link { to: Route::Homepage {}, class: "text-blue-600", "{segment}" }
                             " / "
                         }
                     }

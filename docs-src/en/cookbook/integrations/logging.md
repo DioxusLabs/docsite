@@ -2,8 +2,7 @@
 Dioxus has a wide range of supported platforms, each with their own logging requirements. We'll discuss the different options available to you.
 
 #### The Log Crate
-The [Log](https://crates.io/crates/log) crate is the most universally recognized logging facade in Rust. 
-It is also the easiest to work with in Dioxus; therefore we will be focusing on loggers that work with this crate.
+The [Log](https://crates.io/crates/log) crate is the most universally recognized logging facade in Rust. It is also the easiest to work with in Dioxus; therefore we will be focusing on loggers that work with this crate.
 
 The log crate provides a variety of simple `println`-like macros with varying levels of severity. 
 The available macros are as follows with the highest severity on the bottom:
@@ -16,8 +15,7 @@ fn main() {
     log::error!("error");
 }
 ```
-All the loggers provided on this page are, besides configuration and initialization, interfaced using these macros. 
-Often you will also utilize the log crate's `LevelFilter` enum. This enum usually represents the lowest log severity you want your application to emit and can be loaded from a configuration file, environment variable, or other.
+All the loggers provided on this page are, besides configuration and initialization, interfaced using these macros. Often you will also utilize the log crate's `LevelFilter` enum. This enum usually represents the lowest log severity you want your application to emit and can be loaded from a configuration file, environment variable, or other.
 
 For more information, visit log crate's [docs](https://docs.rs/log/latest/log/).
 
@@ -80,7 +78,9 @@ Dioxus Logger is the preferred logger to use with Dioxus if it suites your needs
 For more information, visit Dioxus Logger's [docs](https://docs.rs/dioxus-logger/latest/dioxus_logger/).
 
 ## Desktop and Server
-For Dioxus' desktop and server targets, you can generally use the logger of your choice. 
+For Dioxus' desktop and server targets, you can generally use the logger of your choice.
+
+
 Some popular options are:
 - [env_logger](https://crates.io/crates/env_logger)
 - [simple_logger](https://crates.io/crates/simple_logger)

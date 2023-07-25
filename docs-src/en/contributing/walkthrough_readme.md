@@ -2,6 +2,11 @@
 
 This walkthrough will take you through the internals of the Hello World example program. It will explain how major parts of Dioxus internals interact with each other to take the readme example from a source file to a running application. This guide should serve as a high-level overview of the internals of Dioxus. It is not meant to be a comprehensive guide.
 
+
+The core crate roughly works like this:
+
+![](https://mermaid.ink/img/pako:eNqNk01v2zAMhv8KocsuTQ876lCgWAb0sGDD0mMAg7PoWogsBvpwWhT976MlJ3OKbKtOEvmIfEWRr6plQ0qrmDDR2uJTwGE1ft55kBXIGwqNHQYyVvywWt3BA3rjKGj4gs5BX0-V_1n4QtUthW_Mh6WzWgryg537OpJPsQJ_zsX9PrmG0fBwWxM2NIH1nmdRFuxTn4C7K4mn9djTpYAjWsnTcQBaSJiWxIcULEVILCIiu5Egyf3RhpTRwfr75tOC73LKggGmQkUcBLcDVUJyFoF_qcEkoxEVzZHDvjIXpnOhtm1PJp8rvcGw37Z8oPu4FlkvhVvbrivGypyP_3dWXRo2WdrAsp-fN391Qd5n1BBnSU0-GDy9sHyGo678xcOyOU7fMHcMHINNtcgIPfP-Wr2WAu6NeeRzGTS0z7fxgEd_7T3_Zi8b5kp1T1IxvvgWfjlu9x-SexHqo1VTN2qgMKA1MoavU6CdkkaSBlJatoY6zC7t1M6_CYo58VZUKZ1CphtVo8yDq3SHLopVJiZx2NTRLhP-9htxEk8q?type=png)
+
 ## The Source File
 
 We start will a hello world program. This program renders a desktop app with the text "Hello World" in a webview.

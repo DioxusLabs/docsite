@@ -2,9 +2,7 @@
 
 > If you are not familiar with Dioxus itself, check out the [Dioxus guide](guide/index.md) first.
 
-Whether you are building a website, desktop app, or mobile app,
-splitting your app's views into "pages" can be an effective method for
-organization and maintainability.
+Whether you are building a website, desktop app, or mobile app, splitting your app's views into "pages" can be an effective method for organization and maintainability.
 
 For this purpose, Dioxus provides a router. Use the `cargo add` command to add the dependency:
 

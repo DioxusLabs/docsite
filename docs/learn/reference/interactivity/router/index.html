@@ -165,7 +165,7 @@
 </div><button style="position: absolute; top: 0; right: 0; background: rgba(0, 0, 0, 0.75); color: white; border: 1px solid white; padding: 0.25em;" onclick="navigator.clipboard.writeText(this.previousElementSibling.innerText)">Copy</button></div><h2 id="links"><a class="header" href="#links">Links</a></h2><p>For our app to navigate these routes, we can provide clickable elements called Links. These simply wrap <code>&lt;a&gt;</code> elements that, when clicked, navigate the app to the given location. Because our route is an enum of valid routes, if you try to link to a page that doesn&#x27;t exist, you will get a compiler error.</p><div style="position: relative;"><div><pre style="background-color:#2b303b;">
 <span style="color:#c0c5ce;">rsx!{
 </span><span style="color:#c0c5ce;">	Link {
-</span><span style="color:#c0c5ce;">		target: Route::Home {},
+</span><span style="color:#c0c5ce;">		to: Route::Home {},
 </span><span style="color:#c0c5ce;">		&quot;</span><span style="color:#a3be8c;">Go home!</span><span style="color:#c0c5ce;">&quot;
 </span><span style="color:#c0c5ce;">	}
 </span><span style="color:#c0c5ce;">}

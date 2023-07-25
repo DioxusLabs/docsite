@@ -25,7 +25,7 @@ pub fn Nav(cx: Scope) -> Element {
             div { class: "py-3 px-12 max-w-screen-3xl mx-auto flex items-center justify-between text-sm leading-6 {bg_color}",
                 div { class: "flex z-50 mr-2",
                     Link {
-                        target: Route::Homepage {},
+                        to: Route::Homepage {},
                         class: "flex title-font font-medium items-center text-gray-900",
                         img {
                             src: "https://avatars.githubusercontent.com/u/79236386?s=200&v=4",
@@ -45,13 +45,13 @@ pub fn Nav(cx: Scope) -> Element {
                         div { class: "flex items-center border-l border-gray-200 ml-4 pl-4 dark:border-gray-800",
                             label { class: "sr-only", id: "headlessui-listbox-label-2", "Theme" }
                             Link {
-                                target: NavigationTarget::External("https://discord.gg/XgGxMSkvUM".into()),
+                                to: NavigationTarget::External("https://discord.gg/XgGxMSkvUM".into()),
                                 class: "block text-gray-400 hover:text-gray-500 dark:hover:text-gray-300",
                                 span { class: "sr-only", "Dioxus on Discord" }
                                 crate::icons::DiscordLogo {}
                             }
                             Link {
-                                target: NavigationTarget::External("https://github.com/dioxuslabs/dioxus".into()),
+                                to: NavigationTarget::External("https://github.com/dioxuslabs/dioxus".into()),
                                 class: "ml-4 block text-gray-400 hover:text-gray-500 dark:hover:text-gray-300",
                                 span { class: "sr-only", "Dioxus on GitHub" }
                                 crate::icons::Github2 {}
@@ -60,13 +60,13 @@ pub fn Nav(cx: Scope) -> Element {
                         div { class: "flex items-center border-l border-gray-200 ml-4 pl-6 dark:border-gray-800",
                             label { class: "sr-only", id: "headlessui-listbox-label-2", "Theme" }
                             Link {
-                                target: Route::Homepage {},
+                                to: Route::Homepage {},
                                 class: "md:ml-0 md:py-2 md:px-3 bg-blue-500 ml-4 text-lg md:text-sm text-white rounded font-semibold",
                                 "DEPLOY"
                             }
                             if logged_in.0 {
                                 rsx! {
-                                    Link { target: Route::Homepage {},
+                                    Link { to: Route::Homepage {},
                                         img {
                                             src: "https://avatars.githubusercontent.com/u/10237910?s=40&v=4",
                                             class: "ml-4 h-10 rounded-full w-auto"
@@ -173,7 +173,7 @@ fn LinkList(cx: Scope) -> Element {
                 li { key: "{link}",
                     Link {
                         class: "ml-[-3.8em] md:ml-0 md:py-2 md:px-2 {hover} {hover_bg} text-lg md:text-sm",
-                        target: NavigationTarget::External(link.to_string()),
+                        to: NavigationTarget::External(link.to_string()),
                         "{name}"
                     }
                 }
@@ -188,7 +188,7 @@ fn LinkList(cx: Scope) -> Element {
                         ul { class: "top-0 w-36 md:bg-white dark:md:bg-gray-800 md:shadow md:px-4 md:py-4 rounded",
                             for (name , link) in links.iter() {
                                 Link {
-                                    target: NavigationTarget::External(link.to_string()), key: "{name}",
+                                    to: NavigationTarget::External(link.to_string()), key: "{name}",
                                     li {
                                         class: "rounded px-1 py-1 {hover} {hover_bg} text-base md:text-sm",
                                         "{name}"
@@ -327,7 +327,7 @@ fn SearchResult(cx: Scope, result: dioxus_search::SearchResult<Route>) -> Elemen
     render! {
         li { class: "w-full mt-4 p-2 rounded hover:bg-gray-100 dark:hover:bg-ideblack transition-colors duration-200 ease-in-out",
             Link {
-                target: route.clone(),
+                to: route.clone(),
                 onclick: move |_| {
                     set_show_modal(ShowSearch(false));
                 },
@@ -356,7 +356,7 @@ fn SearchResult(cx: Scope, result: dioxus_search::SearchResult<Route>) -> Elemen
 // div { class: "py-4 px-12 max-w-screen-2xl mx-auto flex items-center justify-between font-semibold text-sm leading-6",
 //     // div { class: "py-4 flex items-center justify-between font-semibold text-sm leading-6 bg-white shadow dark:text-gray-200 dark:bg-black px-48",
 //     // div { class: "py-4 flex items-center justify-between font-semibold text-sm leading-6 bg-white shadow dark:text-gray-200 dark:bg-black px-4 sm:px-6 md:px-8",
-//     Link { class: "flex title-font font-medium items-center text-gray-900", target: "/",
+//     Link { class: "flex title-font font-medium items-center text-gray-900", to: "/",
 //         img {
 //             src: "https://avatars.githubusercontent.com/u/79236386?s=200&v=4",
 //             class: "h-5 w-auto"

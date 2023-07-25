@@ -12,7 +12,7 @@ pub static CallToAction: Component<()> = |cx| {
                     }
                     img { class: "h-12 mx-4", src: "{FERROUS_LOGO}" }
                     Link {
-                        target: Route::Docs { child: BookRoute::GettingStartedIndex {} },
+                        to: Route::Docs { child: BookRoute::GettingStartedIndex {} },
                         button { class: "flex-shrink-0 text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg mt-10 sm:mt-0",
                         "Get started"
                         }

@@ -71,7 +71,7 @@ fn TutorialPreview(cx: Scope, id: usize) -> Element {
 
     cx.render(rsx! {
         li { class: "pb-4 border-b border-gray-200 dark:border-gray-500",
-            Link { target: Route::Tutorial { id: *id },
+            Link { to: Route::Tutorial { id: *id },
                 div { class: "rounded p-4 shadow",
                     div { class: "flex justify-between",
                         h2 { class: "text-lg font-bold", tutorial.title }

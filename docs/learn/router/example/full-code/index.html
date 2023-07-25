@@ -168,8 +168,8 @@
 </span><span style="color:#c0c5ce;">    render! {
 </span><span style="color:#c0c5ce;">        nav {
 </span><span style="color:#c0c5ce;">            ul {
-</span><span style="color:#c0c5ce;">                li { Link { target: Route::Home {}, &quot;</span><span style="color:#a3be8c;">Home</span><span style="color:#c0c5ce;">&quot; } }
-</span><span style="color:#c0c5ce;">                li { Link { target: Route::BlogList {}, &quot;</span><span style="color:#a3be8c;">Blog</span><span style="color:#c0c5ce;">&quot; } }
+</span><span style="color:#c0c5ce;">                li { Link { to: Route::Home {}, &quot;</span><span style="color:#a3be8c;">Home</span><span style="color:#c0c5ce;">&quot; } }
+</span><span style="color:#c0c5ce;">                li { Link { to: Route::BlogList {}, &quot;</span><span style="color:#a3be8c;">Blog</span><span style="color:#c0c5ce;">&quot; } }
 </span><span style="color:#c0c5ce;">            }
 </span><span style="color:#c0c5ce;">        }
 </span><span style="color:#c0c5ce;">        Outlet {}
@@ -198,13 +198,13 @@
 </span><span style="color:#c0c5ce;">        ul {
 </span><span style="color:#c0c5ce;">            li {
 </span><span style="color:#c0c5ce;">                Link {
-</span><span style="color:#c0c5ce;">                    target: Route::BlogPost { name: &quot;</span><span style="color:#a3be8c;">Blog post 1</span><span style="color:#c0c5ce;">&quot;.</span><span style="color:#96b5b4;">into</span><span style="color:#c0c5ce;">() },
+</span><span style="color:#c0c5ce;">                    to: Route::BlogPost { name: &quot;</span><span style="color:#a3be8c;">Blog post 1</span><span style="color:#c0c5ce;">&quot;.</span><span style="color:#96b5b4;">into</span><span style="color:#c0c5ce;">() },
 </span><span style="color:#c0c5ce;">                    &quot;</span><span style="color:#a3be8c;">Read the first blog post</span><span style="color:#c0c5ce;">&quot;
 </span><span style="color:#c0c5ce;">                }
 </span><span style="color:#c0c5ce;">            }
 </span><span style="color:#c0c5ce;">            li {
 </span><span style="color:#c0c5ce;">                Link {
-</span><span style="color:#c0c5ce;">                    target: Route::BlogPost { name: &quot;</span><span style="color:#a3be8c;">Blog post 2</span><span style="color:#c0c5ce;">&quot;.</span><span style="color:#96b5b4;">into</span><span style="color:#c0c5ce;">() },
+</span><span style="color:#c0c5ce;">                    to: Route::BlogPost { name: &quot;</span><span style="color:#a3be8c;">Blog post 2</span><span style="color:#c0c5ce;">&quot;.</span><span style="color:#96b5b4;">into</span><span style="color:#c0c5ce;">() },
 </span><span style="color:#c0c5ce;">                    &quot;</span><span style="color:#a3be8c;">Read the second blog post</span><span style="color:#c0c5ce;">&quot;
 </span><span style="color:#c0c5ce;">                }
 </span><span style="color:#c0c5ce;">            }

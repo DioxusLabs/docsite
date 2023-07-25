@@ -70,7 +70,7 @@ fn ProjectCards(cx: Scope) -> Element {
                                     p { class: "text-base text-gray-500 pb-4", "{description}" }
                                     Link {
                                         class: "bg-gray-900 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 focus:ring-offset-gray-50 text-white font-semibold h-12 px-6 rounded-lg flex items-center justify-center sm:w-auto dark:bg-sky-500 dark:highlight-white/20 dark:hover:bg-sky-400",
-                                        target: Route::Docs { child: BookRoute::GettingStartedIndex {} },
+                                        to: Route::Docs { child: BookRoute::GettingStartedIndex {} },
                                         "Get started"
                                     }
                                 }
@@ -167,7 +167,7 @@ fn TriShow<'a>(
             // div { class: "grow basis-0", left }
             TriPadding { last: last.unwrap_or_default(), center }
             div { class: "grow basis-0 ",
-                Link { target: to.clone(),
+                Link { to: to.clone(),
                     div { class: "min-w-lg max-w-screen-md hover:shadow-pop rounded-lg p-8",
                         h2 { class: "text-2xl text-gray-800 font-semibold pb-2 dark:text-gray-100 ",
                             *title
@@ -348,7 +348,7 @@ fn Platform<'a>(
 
             Link {
                 class: "min-w-lg mb-12 p-8 max-w-screen-md hover:shadow-pop rounded-lg",
-                target: to.clone(),
+                to: to.clone(),
                 // div { class: "min-w-lg p-8 m-8 bg-slate-800 dark:bg-slate-900/70 dark:backdrop-blur dark:ring-1 dark:ring-inset dark:ring-white/10 rounded shadow-xl",
                 h2 { class: "text-2xl text-gray-800 font-semibold font-mono pb-2 dark:text-gray-100 ",
                     *name

@@ -15,7 +15,7 @@ pub fn Nav(cx: Scope) -> Element {
     cx.render(rsx! {
         SearchModal {}
         header { class: "sticky top-0 z-30 bg-white shadow dark:text-gray-200 dark:bg-ideblack dark:border-b border-stone-600",
-            div { class: "py-3 px-12 max-w-screen-3xl mx-auto flex items-center justify-between text-sm leading-6",
+            div { class: "py-3 px-12 max-w-screen-2xl mx-auto flex items-center justify-between text-sm leading-6",
                 div { class: "flex z-50 flex-1",
                     Link { to: "/", class: "flex title-font font-medium items-center text-gray-900",
                         img { src: "https://avatars.githubusercontent.com/u/79236386?s=200&v=4", class: "h-5 w-auto" }
@@ -192,7 +192,7 @@ fn Search(cx: Scope) -> Element {
     let show_modal = use_atom_state(cx, SHOW_SEARCH);
 
     render! {
-        div { class: "relative hidden sm:block md:w-full max-w-[40rem] xl:max-w-[40rem] 2xl:max-w-[40rem] mx-auto",
+        div { class: "relative hidden sm:block md:w-full max-w-[30rem] xl:max-w-[30rem] 2xl:max-w-[30rem] mx-auto",
             // Pop up a modal
             button { class: "bg-gray-100 rounded-lg px-3 py-3 w-full text-left text-gray-400 my-auto flex flex-row align-middle justify-between",
                 onclick: move |_| {

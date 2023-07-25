@@ -1,33 +1,52 @@
 use crate::icons;
 use dioxus::prelude::*;
+use dioxus_router::Link;
 
 pub fn Hero(cx: Scope) -> Element {
     cx.render(rsx! {
         section { class: "w-full dark:bg-ideblack",
-            div { class: "flex flex-wrap items-center pb-12 px-3 md:px-12 max-w-screen-2xl mx-auto text-center md:text-left",
-                div { class: "relative w-full md:w-1/2 mx-4 sm:mx-auto pt-5 sm:pt-24 lg:pt-24 text-gray-600",
-                    h1 { class: "text-[5em] md:text-[8em] font-mono dark:text-white text-ghdarkmetal",
-                        "Dioxus"
-                    }
-                    h1 { class: "text-xl md:text-3xl tracking-tight dark:text-white font-mono text-ghdarkmetal flex flex-row",
-                        "User interfaces that run anywhere. 🦀"
+            div { class: "flex flex-wrap items-center pb-12 px-3 md:px-12 max-w-screen-2xl mx-auto text-center h-screen",
+                div { class: "relative w-full mx-4 sm:mx-auto text-gray-600",
+                    div { class: "text-[3em] md:text-[5em] font-semibold dark:text-white text-ghdarkmetal font-sans py-12 flex flex-col",
+                        span {"Fullstack, crossplatform,"}
+                        span {"lightning fast, fully typed." }
                     }
 
-                    h3 { class: "text-md md:text-xl tracking-tight dark:text-white font-thin font-mono text-ghdarkmetal pt-4",
-                        "Written in Rust, inspired by React"
+                    h3 { class: "text-[2em] dark:text-white font-extralight text-ghdarkmetal pt-4 max-w-screen-md mx-auto",
+                        "Dioxus is Rust library for building apps that run on desktop, web, mobile, and more."
                     }
 
-                    div { class: "mt-6 sm:mt-10 flex space-x-6 text-sm",
-                        a {
-                            class: "bg-gray-900 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 focus:ring-offset-gray-50 text-white font-semibold h-12 px-6 rounded-lg w-full flex items-center justify-center md:w-auto dark:bg-sky-500 dark:highlight-white/20 dark:hover:bg-sky-400",
-                            href: "https://dioxuslabs.com/docs/0.3/guide/en/",
-                            "Get started"
+                    div { class: "pt-12 text-white text-[1.2em] font-sans font-bold flex flex-row justify-center space-x-4",
+                        Link { to: "", class: "bg-red-600 py-2 px-8", "Quickstart" }
+                        Link { to: "", class: "bg-blue-500 py-2 px-8", "Read the docs" }
+                    }
+
+                    div { class: "max-screen-2xl mx-auto pt-36",
+                        h1 { class: "text-md", "Trusted by top companies"}
+                        div {
+                            class: "pt-4 flex flex-row justify-center space-x-12",
+                            img {
+                                src: "static/futurewei_bw.png",
+                                class: "h-12 bg-black p-2"
+                            }
+                            img {
+                                src: "static/airbuslogo.svg",
+                                class: "h-12 bg-black p-2"
+                            }
+                            img {
+                                src: "static/ESA_logo.svg",
+                                class: "h-12 bg-black p-2"
+                            }
+                            img {
+                                src: "static/yclogo.svg",
+                                class: "h-12 bg-black p-2"
+                            }
+                            img {
+                                src: "static/satellite.webp",
+                                class: "h-12 bg-black p-2"
+                            }
                         }
-                        SaveClipboard {}
                     }
-                }
-                div { class: "w-full md:w-1/2 px-4 flex flex-col pt-5 sm:pt-24 lg:pt-24 justify-end",
-                    AnimatedIcon {}
                 }
             }
         }

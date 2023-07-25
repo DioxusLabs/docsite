@@ -69,6 +69,7 @@
 		- [Extractors](cookbook/platforms/fullstack/extractors.md)
 		- [Middleware](cookbook/platforms/fullstack/middleware.md)
 		- [Authentication](cookbook/platforms/fullstack/authentication.md)
+		- [Routing](cookbook/platforms/fullstack/routing.md)
   - [Integrations](cookbook/integrations/index.md)
   	<!-- - [Auth](cookbook/integrations/auth.md) -->
 	<!-- - [Database](cookbook/integrations/database.md) -->

@@ -85,7 +85,7 @@ pub mod hooks_use_ref;
 #[cfg(feature = "doc_test")]
 mod hydration;
 #[cfg(feature = "doc_test")]
-mod hydration_props;
+mod server_router;
 pub mod input_controlled;
 pub mod input_uncontrolled;
 #[cfg(feature = "doc_test")]
@@ -118,10 +118,6 @@ mod use_coroutine;
 pub use rsx_overview::*;
 #[cfg(feature = "doc_test")]
 mod server_basic;
-#[cfg(feature = "doc_test")]
-mod server_context;
-#[cfg(feature = "doc_test")]
-mod server_context_state;
 #[cfg(feature = "doc_test")]
 mod server_function;
 pub mod spawn;

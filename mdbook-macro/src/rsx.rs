@@ -435,11 +435,22 @@ impl<'a, I: Iterator<Item = Event<'a>>> RsxMarkdownParser<'a, I> {
             })),
             Tag::Link(ty, dest, title) => {
                 let without_extension = dest.trim_end_matches(".md");
+                let without_index = without_extension.trim_end_matches("/index");
 
                 let href = match ty {
-                    pulldown_cmark::LinkType::Email => format!("mailto:{}", without_extension),
-
-                    _ => without_extension.to_string(),
+                    pulldown_cmark::LinkType::Email => format!("mailto:{}", without_index),
+                    _ => {
+                        // If this route ends with index.md, we need to prefix any routes relative to it with /route
+                        if self.path.ends_with("index.md") {
+                            if let Some(last_self_segment) = self.path.parent().and_then(|p| p.file_name()) {
+                                format!("{}/{}", last_self_segment.to_string_lossy(), without_index)
+                            } else {
+                                without_index.to_string()
+                            }
+                        } else {
+                            without_index.to_string()
+                        }
+                    },
                 };
                 let name = Ident::new("a", Span::call_site());
                 let mut attributes = vec![dioxus_rsx::ElementAttrNamed {

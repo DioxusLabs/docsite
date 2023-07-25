@@ -140,6 +140,9 @@ fn generate_router(book_path: PathBuf, book: mdbook_shared::MdBook<PathBuf>) -> 
         if !url.starts_with('/') {
             url = format!("/{}", url);
         }
+        if let Some(stripped) = url.strip_suffix("/index") {
+            url = stripped.to_string();
+        }
         quote! {
             #[route(#url)]
             #name {},

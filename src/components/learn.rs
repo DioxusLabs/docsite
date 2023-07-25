@@ -101,7 +101,7 @@ fn SidebarChapter(cx: Scope, chapter: &'static SummaryItem<BookRoute>) -> Elemen
     if show_chevron {
         render! {
             li {
-                class: "pt-1",
+                class: "pt-1 hover:bg-gray-200 hover:dark:bg-gray-800",
                 button { onclick: move |_| list_toggle.set(!list_toggle.get()),
                     dioxus_material_icons::MaterialIcon {
                         name: "chevron_right",
@@ -147,7 +147,7 @@ fn LocationLink(cx: Scope, chapter: &'static SummaryItem<BookRoute>) -> Element 
 
     render! {
         Link { to: Route::Docs { child: *url },
-            li { class: "m-1 dark:hover:bg-gray-800 rounded-md pl-2 {current_class}", "{link.name}" }
+            li { class: "m-1 dark:hover:bg-gray-800 rounded-md pl-2 {current_class} hover:bg-gray-200 hover:dark:bg-gray-800", "{link.name}" }
         }
     }
 }
@@ -233,4 +233,12 @@ fn use_book(cx: &ScopeState) -> BookRoute {
 fn default_page() -> &'static Page<BookRoute> {
     let id = LAZY_BOOK.page_id_mapping.get(&BookRoute::default()).unwrap();
     LAZY_BOOK.pages.get(id.0).unwrap()
+}
+
+#[inline_props]
+pub fn DocsO3(cx: Scope, segments: Vec<String>) -> Element {
+    let navigator = use_navigator(cx);
+    let route = use_route(cx).unwrap();
+    navigator.push(NavigationTarget::External(route.to_string()));
+    None
 }

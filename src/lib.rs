@@ -196,11 +196,20 @@ pub enum Route {
                 #[route("/introducing-dioxus")]
                 PostRelease010 {},
             #[end_nest]
+            
             #[layout(Learn)]
-                #[child("/learn")]
+                #[redirect("/learn", || Route::Docs { child: BookRoute::Index {} })]
+
+                #[route("/learn/0.3/:..segments")]
+                DocsO3 {
+                    segments: Vec<String>
+                },
+                #[child("/learn/0.4")]
                 Docs { child: BookRoute },
             #[end_layout]
         #[end_nest]
+        #[redirect("/docs/0.3/:..segments", |segments: Vec<String>| Route::DocsO3 { segments: segments })]
+        #[redirect("/docs/:.._segments", |_segments: Vec<String>| Route::Docs { child: BookRoute::Index {} })]
         #[route("/:..segments")]
         Err404 { segments: Vec<String> },
 }

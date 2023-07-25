@@ -113,6 +113,7 @@ pub enum Route {
         #[redirect("/docs/0.3/:..segments", |segments: Vec<String>| Route::DocsO3 { segments: segments })]
         #[redirect("/docs/:.._segments", |_segments: Vec<String>| Route::Docs { child: BookRoute::Index {} })]
         #[route("/:..segments")]
+        #[route("/:..segments")]
         Err404 { segments: Vec<String> },
 }
 

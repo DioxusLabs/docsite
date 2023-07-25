@@ -248,7 +248,7 @@ fn SearchModal(cx: Scope) -> Element {
                         // The actual modal
                         div { class: "bg-white dark:bg-ideblack p-6 rounded-2xl m-8 max-h-[calc(100%-8rem)] overflow-y-auto",
                             // Search input
-                            div { class: "flex flex-row flex-grow border-b border-gray-300 pb-4",
+                            div { class: "flex flex-row flex-grow border-b border-gray-300 pb-4 text-gray-500 dark:text-gray-300",
                                 div { class: "my-auto flex flex-row",
                                     MaterialIcon {
                                         name: "search",
@@ -315,8 +315,6 @@ fn SearchResult(cx: Scope, result: dioxus_search::SearchResult<Route>) -> Elemen
     let title = &result.title;
     let route = &result.route;
     let top_excerpt_segments = &result.excerpts.first().unwrap().text;
-    log::info!("route: {}", route);
-    log::info!("route: {:?}", route);
 
     render! {
         li { class: "w-full mt-4 p-2 rounded hover:bg-gray-100 dark:hover:bg-ideblack transition-colors duration-200 ease-in-out",

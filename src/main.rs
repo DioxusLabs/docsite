@@ -4,6 +4,7 @@
 #![allow(unused)]
 
 use dioxus_docs_site::*;
+use dioxus_router::routable::Routable;
 
 fn main() {
     #[cfg(feature = "web")]

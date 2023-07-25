@@ -61,13 +61,79 @@ fn HeaderFooter(cx: Scope) -> Element {
     }
 }
 
+#[derive(Clone, Routable, PartialEq, Eq, Serialize, Deserialize, Debug)]
+#[rustfmt::skip]
+pub enum Route {
+    #[layout(HeaderFooter)]
+        #[nest("/docsite")]
+            #[route("/")]
+            #[redirect("/platforms", || Route::Homepage {})]
+            #[redirect("/platforms/web", || Route::Homepage {})]
+            #[redirect("/platforms/desktop", || Route::Homepage {})]
+            #[redirect("/platforms/liveview", || Route::Homepage {})]
+            #[redirect("/platforms/mobile", || Route::Homepage {})]
+            #[redirect("/platforms/ssr", || Route::Homepage {})]
+            #[redirect("/platforms/tui", || Route::Homepage {})]
+            Homepage {},
+
+            #[route("/awesome")]
+            Awesome {},
+
+            #[route("/tutorials/:id")]
+            Tutorial { id: usize },
+
+            #[nest("/blog")]
+                #[route("/")]
+                BlogList {},
+                #[route("/templates-diffing")]
+                PostTemplate {},
+                #[route("/going-fulltime")]
+                PostFulltime {},
+                #[route("/release-030")]
+                PostRelease030 {},
+                #[route("/release-020")]
+                PostRelease020 {},
+                #[route("/introducing-dioxus")]
+                PostRelease010 {},
+            #[end_nest]
+            
+            #[layout(Learn)]
+                #[nest("/learn")]
+                    #[redirect("/", || Route::Docs { child: BookRoute::Index {} })]
+
+                    #[route("/0.3/:..segments")]
+                    DocsO3 {
+                        segments: Vec<String>
+                    },
+                    #[child("/0.4")]
+                    Docs { child: BookRoute },
+                #[end_nest]
+            #[end_layout]
+        #[end_nest]
+        #[redirect("/docs/0.3/:..segments", |segments: Vec<String>| Route::DocsO3 { segments: segments })]
+        #[redirect("/docs/:.._segments", |_segments: Vec<String>| Route::Docs { child: BookRoute::Index {} })]
+        #[route("/:..segments")]
+        Err404 { segments: Vec<String> },
+}
+
+pub fn use_url(cx: &ScopeState) -> String {
+    use_route(cx).unwrap().to_string()
+}
+
+pub fn app(cx: Scope) -> Element {
+    render! {
+        Router {}
+    }
+}
+
+static SEARCH_INDEX: dioxus_search::LazySearchIndex<Route> = dioxus_search::load_search_index! {
+    "search"
+};
 mod docs {
     use crate::components::*;
     use crate::doc_examples::*;
     use dioxus::prelude::*;
     use fermi::use_atom_state;
-
-    use_mdbook::mdbook_router! {"docs-src"}
 
     #[inline_props]
     fn DemoFrame<'a>(cx: Scope<'a>, children: Element<'a>) -> Element {
@@ -159,73 +225,6 @@ pub enum Route {{\n\t"
             }
         }
     }
+
+    use_mdbook::mdbook_router! {"docs-src/0.4"}
 }
-
-#[derive(Clone, Routable, PartialEq, Eq, Serialize, Deserialize, Debug)]
-#[rustfmt::skip]
-pub enum Route {
-    #[layout(HeaderFooter)]
-        #[nest("/docsite")]
-            #[route("/")]
-            #[redirect("/platforms", || Route::Homepage {})]
-            #[redirect("/platforms/web", || Route::Homepage {})]
-            #[redirect("/platforms/desktop", || Route::Homepage {})]
-            #[redirect("/platforms/liveview", || Route::Homepage {})]
-            #[redirect("/platforms/mobile", || Route::Homepage {})]
-            #[redirect("/platforms/ssr", || Route::Homepage {})]
-            #[redirect("/platforms/tui", || Route::Homepage {})]
-            Homepage {},
-
-            #[route("/awesome")]
-            Awesome {},
-
-            #[route("/tutorials/:id")]
-            Tutorial { id: usize },
-
-            #[nest("/blog")]
-                #[route("/")]
-                BlogList {},
-                #[route("/templates-diffing")]
-                PostTemplate {},
-                #[route("/going-fulltime")]
-                PostFulltime {},
-                #[route("/release-030")]
-                PostRelease030 {},
-                #[route("/release-020")]
-                PostRelease020 {},
-                #[route("/introducing-dioxus")]
-                PostRelease010 {},
-            #[end_nest]
-            
-            #[layout(Learn)]
-                #[nest("/learn")]
-                    #[redirect("/", || Route::Docs { child: BookRoute::Index {} })]
-
-                    #[route("/0.3/:..segments")]
-                    DocsO3 {
-                        segments: Vec<String>
-                    },
-                    #[child("/0.4")]
-                    Docs { child: BookRoute },
-                #[end_nest]
-            #[end_layout]
-        #[end_nest]
-        #[redirect("/docs/0.3/:..segments", |segments: Vec<String>| Route::DocsO3 { segments: segments })]
-        #[redirect("/docs/:.._segments", |_segments: Vec<String>| Route::Docs { child: BookRoute::Index {} })]
-        #[route("/:..segments")]
-        Err404 { segments: Vec<String> },
-}
-
-pub fn use_url(cx: &ScopeState) -> String {
-    use_route(cx).unwrap().to_string()
-}
-
-pub fn app(cx: Scope) -> Element {
-    render! {
-        Router {}
-    }
-}
-
-static SEARCH_INDEX: dioxus_search::LazySearchIndex<Route> = dioxus_search::load_search_index! {
-    "search"
-};

@@ -34,6 +34,8 @@ fn main() {
                                 "/",
                                 get(move |State(ssr_state): State<SSRState>| async move { axum::body::Full::from(
                                     ssr_state.render(
+                                        "/".to_string(),
+                                        Default::default(),
                                         &ServeConfigBuilder::new(
                                             app,
                                             0,
@@ -47,6 +49,8 @@ fn main() {
                                 "/:initial_count",
                                 get(move |Path(initial_count): Path<usize>, State(ssr_state): State<SSRState>| async move { axum::body::Full::from(
                                     ssr_state.render(
+                                        format!("/{}", initial_count),
+                                        Default::default(),
                                         &ServeConfigBuilder::new(
                                             app,
                                             initial_count,

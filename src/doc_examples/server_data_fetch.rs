@@ -15,7 +15,7 @@ fn app(cx: Scope) -> Element {
     })
 }
 
-#[server(GetServerData)]
+#[server]
 async fn get_server_data() -> Result<String, ServerFnError> {
     // Access a database
     tokio::time::sleep(std::time::Duration::from_millis(100)).await;

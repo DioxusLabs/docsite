@@ -24,8 +24,6 @@ pub mod conditional_rendering;
 mod custom_assets;
 #[cfg(feature = "doc_test")]
 mod custom_renderer;
-#[cfg(feature = "doc_test")]
-mod dangerous_inner_html;
 pub mod dangerous_inner_html;
 #[cfg(feature = "doc_test")]
 mod dynamic_route;

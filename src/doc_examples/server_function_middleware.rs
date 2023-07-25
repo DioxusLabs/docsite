@@ -2,7 +2,7 @@
 use dioxus_fullstack::prelude::*;
 
 // ANCHOR: server_function_middleware
-#[server(LogUserAgent)]
+#[server]
 // Add a timeout middleware to the server function that will return an error if the function takes longer than 1 second to execute
 #[middleware(tower_http::timeout::TimeoutLayer::new(std::time::Duration::from_secs(1)))]
 pub async fn timeout() -> Result<(), ServerFnError> {

@@ -83,14 +83,18 @@ fn main() {
         use axum::routing::get;
 
         tokio::runtime::Runtime::new()
-                .unwrap()
-                .block_on(async move {
-
-        dioxus_fullstack::launch::launch_server(([127, 0, 0, 1], 8080).into(), dioxus_fullstack::prelude::ServeConfigBuilder::new_with_router(
-            dioxus_fullstack::router::FullstackRouterConfig::<Route>::default(),
-        )
-        .assets_path("docs")
-        .incremental(dioxus_fullstack::prelude::IncrementalRendererConfig::default()).into()).await;
-                })
+            .unwrap()
+            .block_on(async move {
+                dioxus_fullstack::launch::launch_server(
+                    ([127, 0, 0, 1], 8080).into(),
+                    dioxus_fullstack::prelude::ServeConfigBuilder::new_with_router(
+                        dioxus_fullstack::router::FullstackRouterConfig::<Route>::default(),
+                    )
+                    .assets_path("docs")
+                    .incremental(dioxus_fullstack::prelude::IncrementalRendererConfig::default())
+                    .into(),
+                )
+                .await;
+            })
     }
 }

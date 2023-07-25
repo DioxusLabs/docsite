@@ -252,7 +252,7 @@
 </span><span style="color:#c0c5ce;">    })
 </span><span style="color:#c0c5ce;">}
 </span><span style="color:#c0c5ce;">
-</span><span style="color:#c0c5ce;">#[</span><span style="color:#bf616a;">server</span><span style="color:#c0c5ce;">(GetServerData)]
+</span><span style="color:#c0c5ce;">#[</span><span style="color:#bf616a;">server</span><span style="color:#c0c5ce;">]
 </span><span style="color:#c0c5ce;">async </span><span style="color:#b48ead;">fn </span><span style="color:#8fa1b3;">get_server_data</span><span style="color:#c0c5ce;">() -&gt; Result&lt;String, ServerFnError&gt; {
 </span><span style="color:#c0c5ce;">    </span><span style="color:#65737e;">// Access a database
 </span><span style="color:#c0c5ce;">    tokio::time::sleep(std::time::Duration::from_millis(</span><span style="color:#d08770;">100</span><span style="color:#c0c5ce;">)).await;
@@ -271,12 +271,6 @@
 </span><span style="color:#c0c5ce;">}
 </span><span style="color:#c0c5ce;">
 </span><span style="color:#b48ead;">fn </span><span style="color:#8fa1b3;">app</span><span style="color:#c0c5ce;">(</span><span style="color:#bf616a;">cx</span><span style="color:#c0c5ce;">: Scope) -&gt; Element {
-</span><span style="color:#c0c5ce;">    render! {
-</span><span style="color:#c0c5ce;">        Comp {}
-</span><span style="color:#c0c5ce;">    }
-</span><span style="color:#c0c5ce;">}
-</span><span style="color:#c0c5ce;">
-</span><span style="color:#b48ead;">fn </span><span style="color:#8fa1b3;">Comp</span><span style="color:#c0c5ce;">(</span><span style="color:#bf616a;">cx</span><span style="color:#c0c5ce;">: Scope) -&gt; Element {
 </span><span style="color:#c0c5ce;">    </span><span style="color:#b48ead;">let mut</span><span style="color:#c0c5ce;"> count = </span><span style="color:#96b5b4;">use_server_future</span><span style="color:#c0c5ce;">(cx, (), |_| async { </span><span style="color:#96b5b4;">get_server_data</span><span style="color:#c0c5ce;">().await })?;
 </span><span style="color:#c0c5ce;">
 </span><span style="color:#c0c5ce;">    cx.</span><span style="color:#96b5b4;">render</span><span style="color:#c0c5ce;">(rsx! {

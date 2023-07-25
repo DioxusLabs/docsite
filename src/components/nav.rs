@@ -268,7 +268,7 @@ fn SearchModal(cx: Scope) -> Element {
                                         onmounted: move |evt| {
                                             evt.inner().set_focus(true);
                                         },
-                                        class: "flex-grow bg-transparent border-none outline-none text-xl pl-2 text-white",
+                                        class: "flex-grow bg-transparent border-none outline-none text-xl pl-2",
                                         placeholder: "Search the docs",
                                         value: "{search_text}",
                                     }

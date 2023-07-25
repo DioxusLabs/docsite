@@ -66,7 +66,7 @@ fn DocVersionNav(cx: Scope) -> Element {
                 li { class: "m-1 rounded-md pl-2 hover:bg-gray-200 hover:dark:bg-gray-800",
                     button {
                         onclick: move |_| {
-                            let _ = navigator.push("/docsite/learn/0.3");
+                            let _ = navigator.push("/docsite/learn/0.3/guide/en");
                         },
                         dioxus_material_icons::MaterialIcon {
                             name: "chevron_left",

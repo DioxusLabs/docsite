@@ -4,6 +4,7 @@
 #![allow(unused)]
 
 use dioxus_docs_site::*;
+use dioxus_fullstack::prelude::*;
 use dioxus_router::routable::Routable;
 
 fn main() {
@@ -68,13 +69,28 @@ fn main() {
         return;
     }
 
-    dioxus_fullstack::launch_router!(@([127, 0, 0, 1], 8080), Route, {
-        serve_cfg: {
-            dioxus_fullstack::prelude::ServeConfigBuilder::new_with_router(
-                dioxus_fullstack::router::FullstackRouterConfig::<Route>::default(),
-            )
-            .assets_path("docs")
-            .incremental(dioxus_fullstack::prelude::IncrementalRendererConfig::default())
-        },
-    });
+    #[cfg(feature = "web")]
+    dioxus_web::launch_with_props(
+        app,
+        // Get the root props from the document
+        get_root_props_from_document().unwrap_or_default(),
+        dioxus_web::Config::new().hydrate(true),
+    );
+    #[cfg(feature = "ssr")]
+    {
+        use axum::extract::Path;
+        use axum::extract::State;
+        use axum::routing::get;
+
+        tokio::runtime::Runtime::new()
+                .unwrap()
+                .block_on(async move {
+
+        dioxus_fullstack::launch::launch_server(([127, 0, 0, 1], 8080).into(), dioxus_fullstack::prelude::ServeConfigBuilder::new_with_router(
+            dioxus_fullstack::router::FullstackRouterConfig::<Route>::default(),
+        )
+        .assets_path("docs")
+        .incremental(dioxus_fullstack::prelude::IncrementalRendererConfig::default()).into()).await;
+                })
+    }
 }

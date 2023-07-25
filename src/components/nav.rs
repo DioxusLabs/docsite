@@ -246,7 +246,7 @@ fn SearchModal(cx: Scope) -> Element {
                     div { class: "h-30" }
 
                         // The actual modal
-                        div { class: "bg-white dark:bg-ideblack p-6 rounded-2xl m-8 max-h-[calc(100%-8rem)] overflow-y-auto  text-gray-800 dark:text-gray-100",
+                        div { class: "bg-white dark:bg-ideblack p-6 rounded-2xl m-8 max-h-[calc(100%-8rem)] overflow-y-auto text-gray-800 dark:text-gray-100",
                             // Search input
                             div { class: "flex flex-row flex-grow border-b border-gray-300 pb-4",
                                 div { class: "my-auto flex flex-row",
@@ -268,7 +268,7 @@ fn SearchModal(cx: Scope) -> Element {
                                         onmounted: move |evt| {
                                             evt.inner().set_focus(true);
                                         },
-                                        class: "flex-grow bg-transparent border-none outline-none text-xl pl-2",
+                                        class: "flex-grow bg-transparent border-none outline-none text-xl pl-2 text-gray-800 dark:text-gray-100",
                                         placeholder: "Search the docs",
                                         value: "{search_text}",
                                     }

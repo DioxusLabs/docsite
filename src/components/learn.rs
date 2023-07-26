@@ -1,6 +1,7 @@
 use crate::docs::LAZY_BOOK;
-
+use dioxus_material_icons::MaterialIcon;
 use dioxus::prelude::*;
+use dioxus_material_icons::MaterialIconColor;
 use crate::*;
 use mdbook_shared::Page;
 use mdbook_shared::SummaryItem;
@@ -39,11 +40,11 @@ fn LeftNav(cx: Scope) -> Element {
     render! {
         // Now, pin the nav to the left
         button {
-            class: "lg:hidden w-8 h-8 mt-[58px] sm:mt-20 fixed top-0 left-0 p-1 text-lg z-[100]",
+            class: "lg:hidden my-3 h-10 flex items-center fixed top-0 left-0 p-1 text-lg z-[100]",
             onclick: move |_| show_sidebar.modify(|f| !f),
-            "☰"
+            MaterialIcon { name: "menu", size: 24, color: MaterialIconColor::Dark }
         }
-        nav { class: "bg-white dark:bg-ideblack lg:bg-inherit pl-6 z-20 text-base lg:block fixed top-0 pt-36 pb-16 md:-ml-3.5 w-[calc(100%-1rem)] md:w-60 h-full max-h-screen md:text-[13px] text-navy content-start overflow-y-auto leading-5 {extra_class} {hidden}",
+        nav { class: "bg-white dark:bg-ideblack lg:bg-inherit pl-6 z-20 text-base lg:block fixed top-0 pt-36 pb-16 lg:-ml-3.5 w-[calc(100%-1rem)] lg:w-60 h-full max-h-screen lg:text-[13px] text-navy content-start overflow-y-auto leading-5 {extra_class} {hidden}",
             // I like the idea of breadcrumbs, but they add a lot of visual noise, and like, who cares?
             // BreadCrumbs {}
 
@@ -182,6 +183,7 @@ fn RightNav(cx: Scope) -> Element {
     let highlighted = use_read(cx, &HIGHLIGHT_DOCS_LAYOUT);
     let extra_class = if highlighted.0 { "border border-green-600 rounded-md" } else { "" };
     let page = use_book(cx);
+    let padding_map = ["pl-2", "pl-4", "pl-6", "pl-8", "pl-10"];
 
     render! {
         div {
@@ -189,8 +191,8 @@ fn RightNav(cx: Scope) -> Element {
             right: "calc(40vw - 40.875rem)",
             h2 { class: "pb-4 font-semibold", "On this page" }
             ul { class: "",
-                for section in page.sections().iter().filter(|s| s.level <= 2) {
-                    li { class: "pb-2",
+                for section in page.sections() {
+                    li { class: "pb-2 {padding_map[section.level-1]}",
                         a {
                             href: "?phantom={section.id}#{section.id}",
                             "{section.title}"

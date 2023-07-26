@@ -203,19 +203,19 @@ fn Search(cx: Scope) -> Element {
     let show_modal = use_atom_state(cx, &SHOW_SEARCH);
 
     render! {
-        div { class: "relative hidden sm:block md:w-full max-w-[30rem] xl:max-w-[30rem] 2xl:max-w-[30rem] mx-auto flex-1",
+        div { class: "relative md:w-full max-w-[30rem] xl:max-w-[30rem] 2xl:max-w-[30rem] sm:mx-auto sm:flex-1",
             // Pop up a modal
             button {
                 // Pop up a modal
-                class: "bg-gray-100 rounded-lg px-3 py-3 w-full text-left text-gray-400 my-auto flex flex-row align-middle justify-between",
+                class: "bg-gray-100 rounded-lg px-3 py-3 sm:w-full text-left text-gray-400 my-auto sm:flex sm:flex-row sm:align-middle sm:justify-between",
                 onclick: move |_| {
                     show_modal.set(ShowSearch(true));
                 },
                 div { class: "h-full my-auto flex flex-row align-middle justify-between",
                     MaterialIcon { name: "search", size: 24, color: MaterialIconColor::Dark }
-                    span { class: "pl-2", "Search the docs" }
+                    span { class: "hidden sm:block pl-2", "Search the docs" }
                 }
-                div { class: "border border-gray-300 rounded-lg p-1 text-xs text-gray-400",
+                div { class: "hidden sm:block border border-gray-300 rounded-lg p-1 text-xs text-gray-400",
                     "CTRL + /"
                 }
             }
@@ -238,7 +238,7 @@ fn SearchModal(cx: Scope) -> Element {
                 div {
                     height: "100vh",
                     width: "100vw",
-                    class: "fixed top-0 left-0 z-50 hidden md:block bg-gray-500 bg-opacity-50 overflow-y-hidden",
+                    class: "fixed top-0 left-0 z-50 block bg-gray-500 bg-opacity-50 overflow-y-hidden",
                     onclick: move |_| show_modal.set(ShowSearch(false)),
 
                     // A little weird, but we're putting an empty div with a scaled height to buffer the top of the modal
@@ -246,7 +246,7 @@ fn SearchModal(cx: Scope) -> Element {
                     div { class: "h-30" }
 
                         // The actual modal
-                        div { class: "bg-white dark:bg-ideblack p-6 rounded-2xl m-8 max-h-[calc(100%-8rem)] overflow-y-auto text-gray-800 dark:text-gray-100",
+                        div { class: "bg-white dark:bg-ideblack p-2 md:p-6 rounded-2xl m-2 md:m-8 max-h-[calc(100%-8rem)] overflow-y-auto text-gray-800 dark:text-gray-100",
                             // Search input
                             div { class: "flex flex-row flex-grow border-b border-gray-300 pb-4",
                                 div { class: "my-auto flex flex-row",

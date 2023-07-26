@@ -33,7 +33,8 @@ fn main() {
                         IncrementalRendererConfig::default()
                             .static_dir("docs")
                             .map_path(|route| {
-                                let mut path = std::path::PathBuf::from("./docs");
+                                let mut path = std::env::current_dir().unwrap();
+                                path.push("docs");
                                 for (i, segment) in route.split('/').enumerate() {
                                     if (1, "docsite") == (i, segment) {
                                         continue;

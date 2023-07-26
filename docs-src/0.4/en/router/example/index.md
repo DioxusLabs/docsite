@@ -8,7 +8,7 @@ website with a blog, homepage, and more!
 > Check out the [Dioxus book](https://dioxuslabs.com/docs/0.3/guide/en/) to get started.
 
 > Make sure to add Dioxus Router as a dependency, as explained in the
-> [introduction](./index.md).
+> [introduction](../index.md).
 
 ## You'll learn how to
 
@@ -25,4 +25,4 @@ website with a blog, homepage, and more!
 > a single file, this is not the recommended way of doing things with a real
 > application.
 
-You can find the complete application in the [full code](./full-code.md) chapter.
+You can find the complete application in the [full code](full-code.md) chapter.

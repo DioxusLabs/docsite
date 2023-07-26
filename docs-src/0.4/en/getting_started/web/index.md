@@ -52,10 +52,10 @@ Because the page is initially rendered on the server, the page will be fully ren
 - **Access to the client/browser APIs**
 - **Fast interactivity**
 
-Finally, we can use [server functions](../cookbook/platforms/fullstack/server_functions.mdserver_functions.md) to communicate with the server in a type-safe way.
+Finally, we can use [server functions](../../cookbook/platforms/fullstack/server_functions.md) to communicate with the server in a type-safe way.
 
 This approach uses both the dioxus-web and dioxus-ssr crates. To integrate those two packages and `axum`, `warp`, or `salvo`, Dioxus provides the `dioxus-fullstack` crate.
 
-There can be more complexity with fullstack applications because your code runs in two different places. Dioxus tries to midigate this with server functions and other helpers.
+There can be more complexity with fullstack applications because your code runs in two different places. Dioxus tries to mitigate this with server functions and other helpers.
 
 [![](https://mermaid.ink/img/pako:eNpdkL1uwzAMhF9F4BwvHTV0KAIUHdohQdFFi2CdbQG2mFCUiyDIu9e2-hOUE3H34UDelVoOIEtZvWIffS9-auYHl8wyT8KfGWKa5tEcITPEmgPOBVkrUMXNPyAFCMJK5BOnjIq8scJI7Ac13N1RH4NX88zcjzAZyJX-8bfIl6QQ32qcv7PuhP-ANe_rpb8KJ9rRBJl8DMt71zXAkQ6Y4Mgua0Dny6iOXLotqC_Kx0tqyaoU7Kicwl8hZDs_5kVFiMryWivbmrt9AacxbGg?type=png)](https://mermaid.live/edit#pako:eNpdkL1uwzAMhF9F4BwvHTV0KAIUHdohQdFFi2CdbQG2mFCUiyDIu9e2-hOUE3H34UDelVoOIEtZvWIffS9-auYHl8wyT8KfGWKa5tEcITPEmgPOBVkrUMXNPyAFCMJK5BOnjIq8scJI7Ac13N1RH4NX88zcjzAZyJX-8bfIl6QQ32qcv7PuhP-ANe_rpb8KJ9rRBJl8DMt71zXAkQ6Y4Mgua0Dny6iOXLotqC_Kx0tqyaoU7Kicwl8hZDs_5kVFiMryWivbmrt9AacxbGg)

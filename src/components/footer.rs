@@ -1,6 +1,15 @@
 use dioxus::prelude::*;
+use fermi::use_read;
+use crate::HIGHLIGHT_NAV_LAYOUT;
 
-pub static Footer: Component<()> = |cx| {
+pub fn Footer(cx: Scope) -> Element {
+    let highlighted = use_read(cx, &HIGHLIGHT_NAV_LAYOUT);
+    let bg_color = if highlighted.0 {
+        "border border-orange-600 rounded-md"
+    } else {
+        ""
+    };
+
     let categories = [
         (
             "Community",
@@ -57,7 +66,7 @@ pub static Footer: Component<()> = |cx| {
     });
 
     cx.render(rsx! {
-        footer { class: "sticky z-30 text-gray-400 bg-ghmetal body-font",
+        footer { class: "sticky z-30 text-gray-400 bg-ghmetal body-font {bg_color}",
             div { class: "container px-5 py-24 mx-auto flex md:items-center lg:items-start md:flex-row md:flex-nowrap flex-wrap flex-col",
                 div { class: "w-64 flex-shrink-0 md:mx-0 mx-auto text-center md:text-left",
                     a { class: "flex title-font font-medium items-center md:justify-start justify-center text-white",
@@ -91,4 +100,4 @@ pub static Footer: Component<()> = |cx| {
             }
         }
     })
-};
+}

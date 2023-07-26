@@ -84,8 +84,6 @@ pub mod hooks_out_of_date;
 pub mod hooks_use_ref;
 #[cfg(feature = "doc_test")]
 mod hydration;
-#[cfg(feature = "doc_test")]
-mod server_router;
 pub mod input_controlled;
 pub mod input_uncontrolled;
 #[cfg(feature = "doc_test")]
@@ -113,6 +111,8 @@ mod router_cfg;
 #[cfg(feature = "doc_test")]
 mod routing_update;
 mod rsx_overview;
+#[cfg(feature = "doc_test")]
+mod server_router;
 #[cfg(feature = "doc_test")]
 mod use_coroutine;
 pub use rsx_overview::*;

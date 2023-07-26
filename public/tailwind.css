@@ -693,6 +693,11 @@ video {
   margin-right: auto;
 }
 
+.my-3 {
+  margin-top: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
 .my-4 {
   margin-top: 1rem;
   margin-bottom: 1rem;
@@ -701,11 +706,6 @@ video {
 .my-auto {
   margin-top: auto;
   margin-bottom: auto;
-}
-
-.my-3 {
-  margin-top: 0.75rem;
-  margin-bottom: 0.75rem;
 }
 
 .-mb-10 {
@@ -822,10 +822,6 @@ video {
 
 .mt-4 {
   margin-top: 1rem;
-}
-
-.mt-\[58px\] {
-  margin-top: 58px;
 }
 
 .mt-auto {
@@ -1955,10 +1951,6 @@ video {
   outline-offset: 2px;
 }
 
-.outline {
-  outline-style: solid;
-}
-
 .invert {
   --tw-invert: invert(100%);
   filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
@@ -2287,10 +2279,6 @@ video {
     margin-top: 0px;
   }
 
-  .sm\:mt-20 {
-    margin-top: 5rem;
-  }
-
   .sm\:block {
     display: block;
   }
@@ -2305,10 +2293,6 @@ video {
 
   .sm\:h-8 {
     height: 2rem;
-  }
-
-  .sm\:h-\[62px\] {
-    height: 62px;
   }
 
   .sm\:max-h-\[none\] {
@@ -2347,11 +2331,6 @@ video {
 
   .sm\:rounded-xl {
     border-radius: 0.75rem;
-  }
-
-  .sm\:bg-gray-100 {
-    --tw-bg-opacity: 1;
-    background-color: rgb(243 244 246 / var(--tw-bg-opacity));
   }
 
   .sm\:px-6 {
@@ -2393,14 +2372,6 @@ video {
   .md\:mx-0 {
     margin-left: 0px;
     margin-right: 0px;
-  }
-
-  .md\:-ml-3 {
-    margin-left: -0.75rem;
-  }
-
-  .md\:-ml-3\.5 {
-    margin-left: -0.875rem;
   }
 
   .md\:-mt-64 {
@@ -2496,10 +2467,6 @@ video {
   .md\:bg-white {
     --tw-bg-opacity: 1;
     background-color: rgb(255 255 255 / var(--tw-bg-opacity));
-  }
-
-  .md\:bg-inherit {
-    background-color: inherit;
   }
 
   .md\:p-6 {
@@ -2624,6 +2591,14 @@ video {
     margin-right: auto;
   }
 
+  .lg\:-ml-3 {
+    margin-left: -0.75rem;
+  }
+
+  .lg\:-ml-3\.5 {
+    margin-left: -0.875rem;
+  }
+
   .lg\:mt-0 {
     margin-top: 0px;
   }
@@ -2709,6 +2684,10 @@ video {
   .lg\:text-6xl {
     font-size: 3.75rem;
     line-height: 1;
+  }
+
+  .lg\:text-\[13px\] {
+    font-size: 13px;
   }
 
   .lg\:text-xl {

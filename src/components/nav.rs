@@ -12,6 +12,7 @@ pub struct ShowSearch(pub bool);
 pub static SHOW_SEARCH: Atom<ShowSearch> = Atom(|_| ShowSearch(false));
 pub struct LoggedIn(pub bool);
 pub static LOGGED_IN: Atom<LoggedIn> = Atom(|_| LoggedIn(false));
+pub static SHOW_DOCS_NAV: Atom<bool> = Atom(|_| false);
 
 pub fn Nav(cx: Scope) -> Element {
     let logged_in = use_read(cx, &LOGGED_IN);
@@ -21,10 +22,18 @@ pub fn Nav(cx: Scope) -> Element {
     } else {
         ""
     };
+    let show_docs_nav = use_read(cx, &SHOW_DOCS_NAV);
+    let sidebar_class = if *show_docs_nav { "" } else { "hidden" };
+    let show_sidebar = use_atom_state(cx, &SHOW_SIDEBAR);
 
     render! {
         SearchModal {}
-        header { class: "sticky top-0 z-30 bg-white shadow dark:text-gray-200 dark:bg-ideblack dark:border-b border-stone-600",
+        header { class: "sticky top-0 z-30 bg-white shadow dark:text-gray-200 dark:bg-ideblack dark:border-b border-stone-600 {bg_color}",
+            button {
+                class: "bg-gray-100 rounded-lg p-2 lg:hidden my-3 h-10 flex items-center fixed top-0 left-0 text-lg z-[100] {sidebar_class}",
+                onclick: move |_| show_sidebar.set(!**show_sidebar),
+                MaterialIcon { name: "menu", size: 24, color: MaterialIconColor::Dark }
+            }
             div { class: "py-3 px-12 max-w-screen-2xl mx-auto flex items-center justify-between text-sm leading-6",
                 div { class: "flex z-50 flex-1",
                     Link { to: Route::Homepage {}, class: "flex title-font font-medium items-center text-gray-900",

@@ -5,10 +5,12 @@ use dioxus_material_icons::MaterialIconColor;
 use crate::*;
 use mdbook_shared::Page;
 use mdbook_shared::SummaryItem;
-use fermi::{use_read, Atom};
+use fermi::use_atom_state;
+use fermi::{use_read, Atom, };
 
 pub struct DocsLayoutHighlighted(pub bool);
 pub static HIGHLIGHT_DOCS_LAYOUT: Atom<DocsLayoutHighlighted> = Atom(|_| DocsLayoutHighlighted(false));
+pub static SHOW_SIDEBAR: Atom<bool> = Atom(|_| false);
 pub struct DocsContentHighlighted(pub bool);
 pub static HIGHLIGHT_DOCS_CONTENT: Atom<DocsContentHighlighted> = Atom(|_| DocsContentHighlighted(false));
 
@@ -27,7 +29,7 @@ pub fn Learn(cx: Scope) -> Element {
 }
 
 fn LeftNav(cx: Scope) -> Element {
-    let show_sidebar = use_state(cx, || false);
+    let show_sidebar = use_atom_state(cx, &SHOW_SIDEBAR);
     let highlighted = use_read(cx, &HIGHLIGHT_DOCS_LAYOUT);
     let extra_class = if highlighted.0 { "border border-green-600 rounded-md" } else { "" };
     let hidden = if **show_sidebar { "" } else { "hidden" };
@@ -39,12 +41,7 @@ fn LeftNav(cx: Scope) -> Element {
 
     render! {
         // Now, pin the nav to the left
-        button {
-            class: "lg:hidden my-3 h-10 flex items-center fixed top-0 left-0 p-1 text-lg z-[100]",
-            onclick: move |_| show_sidebar.modify(|f| !f),
-            MaterialIcon { name: "menu", size: 24, color: MaterialIconColor::Dark }
-        }
-        nav { class: "bg-white dark:bg-ideblack lg:bg-inherit pl-6 z-20 text-base lg:block fixed top-0 pt-36 pb-16 lg:-ml-3.5 w-[calc(100%-1rem)] lg:w-60 h-full max-h-screen lg:text-[13px] text-navy content-start overflow-y-auto leading-5 {extra_class} {hidden}",
+        nav { class: "bg-white dark:bg-ideblack lg:bg-inherit pl-6 z-20 text-base lg:block fixed top-0 pt-36 pb-16 lg:-ml-3.5 w-[calc(100%-1rem)] md:w-60 h-full max-h-screen lg:text-[13px] text-navy content-start overflow-y-auto leading-5 {extra_class} {hidden}",
             // I like the idea of breadcrumbs, but they add a lot of visual noise, and like, who cares?
             // BreadCrumbs {}
 

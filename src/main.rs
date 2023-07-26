@@ -40,7 +40,7 @@ fn main() {
                                     }
                                     path.push(segment);
                                 }
-                                path
+                                dbg!(path)
                             }),
                     )
                     .build(),

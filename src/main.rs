@@ -41,7 +41,8 @@ fn main() {
                                     }
                                     path.push(segment);
                                 }
-                                dbg!(path)
+                                println!("build: {path:?}");
+                                path
                             }),
                     )
                     .build(),

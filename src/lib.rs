@@ -65,7 +65,7 @@ fn HeaderFooter(cx: Scope) -> Element {
 #[rustfmt::skip]
 pub enum Route {
     #[layout(HeaderFooter)]
-        // #[nest("/docsite")]
+        #[nest("/docsite")]
             #[route("/")]
             #[redirect("/platforms", || Route::Homepage {})]
             #[redirect("/platforms/web", || Route::Homepage {})]

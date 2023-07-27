@@ -140,12 +140,12 @@ mod docs {
     fn DemoFrame<'a>(cx: Scope<'a>, children: Element<'a>) -> Element {
         render! {
             div {
-                class: "bg-white rounded-md shadow-md p-4 my-4 overflow-scroll text-black",
+                class: "bg-white rounded-md shadow-md p-4 my-4 overflow-scroll text-black dioxus-demo",
                 max_height: "50vh",
                 style {
-                    "div {{ all: revert; }}"
-                    "input {{ all: revert; }}"
-                    "form {{ all: revert; }}"
+                    ".dioxus-demo div {{ all: revert; }}"
+                    ".dioxus-demo input {{ all: revert; }}"
+                    ".dioxus-demo form {{ all: revert; }}"
                 }
                 children
             }

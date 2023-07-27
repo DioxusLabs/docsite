@@ -1,22 +1,9 @@
 #![allow(non_snake_case, unused)]
 use dioxus::prelude::*;
+use dioxus_fullstack::prelude::*;
 
-#[tokio::main]
-async fn main() {
-    #[cfg(feature = "ssr")]
-    {
-        use dioxus_fullstack::prelude::*;
-
-        let addr = std::net::SocketAddr::from(([127, 0, 0, 1], 8080));
-        axum::Server::bind(&addr)
-            .serve(
-                axum::Router::new()
-                    .serve_dioxus_application("", ServeConfigBuilder::new(app, ()))
-                    .into_make_service(),
-            )
-            .await
-            .unwrap();
-    }
+fn main() {
+    launch!(@([127, 0, 0, 1], 8080), app, {});
 }
 
 fn app(cx: Scope) -> Element {

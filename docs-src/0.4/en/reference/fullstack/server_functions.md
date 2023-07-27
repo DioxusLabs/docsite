@@ -52,3 +52,9 @@ Let's change our data fetching to use `use_server_future`:
 > Notice the `?` after `use_server_future`. This is what tells Dioxus fullstack to wait for the future to resolve before continuing rendering. If you want to not wait for a specific future, you can just remove the ? and deal with the `Option` manually.
 
 Now when you load the page, you should see `server data is Ok("Hello from the server!")`. No need to wait for the `WASM` to load or wait for the request to finish!
+
+```inject-dioxus
+SandBoxFrame {
+	url: "https://codesandbox.io/p/sandbox/dioxus-fullstack-server-future-64vk22"
+}
+```

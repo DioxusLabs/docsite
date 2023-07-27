@@ -137,6 +137,19 @@ mod docs {
     use fermi::use_atom_state;
 
     #[inline_props]
+    fn SandBoxFrame<'a>(cx: Scope<'a>, url: &'a str) -> Element<'a> {
+        render! {
+            iframe {
+                style: "border: 1px solid rgba(0, 0, 0, 0.1);border-radius:2px;",
+                width: "800",
+                height: "450",
+                src: "{url}?embed=1",
+                "allowfullscreen": true,
+            }
+        }
+    }
+
+    #[inline_props]
     fn DemoFrame<'a>(cx: Scope<'a>, children: Element<'a>) -> Element {
         render! {
             div {

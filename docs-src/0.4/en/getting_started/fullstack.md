@@ -47,6 +47,12 @@ Now, set up your Axum app to serve the Dioxus app.
 
 Now, run your app with `cargo run` and open `http://localhost:8080` in your browser. You should see a server-side rendered page with a counter.
 
+```inject-dioxus
+SandBoxFrame {
+	url: "https://codesandbox.io/p/sandbox/dioxus-fullstack-2nwsrz"
+}
+```
+
 ## Hot Reload
 
 1. Hot reloading allows much faster iteration times inside of rsx calls by interpreting them and streaming the edits.

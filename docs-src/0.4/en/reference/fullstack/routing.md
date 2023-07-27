@@ -5,3 +5,9 @@ You can easily integrate your fullstack application with a client side router us
 ```rust
 {{#include src/doc_examples/server_router.rs}}
 ```
+
+```inject-dioxus
+SandBoxFrame {
+	url: "https://codesandbox.io/p/sandbox/dioxus-fullstack-router-s75v5q"
+}
+```

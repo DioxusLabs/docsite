@@ -16,6 +16,13 @@ pub static HIGHLIGHT_DOCS_CONTENT: Atom<DocsContentHighlighted> = Atom(|_| DocsC
 
 #[inline_props]
 pub fn Learn(cx: Scope) -> Element {
+    let show_sidebar_button = use_atom_state(cx, &SHOW_DOCS_NAV);
+    cx.use_hook(|| show_sidebar_button.set(true));
+    use_on_unmount(cx, {
+        to_owned![show_sidebar_button];
+        move || show_sidebar_button.set(false)
+    });
+
     cx.render(rsx! {
         div { class: "w-full pt-12 text-sm dark:bg-ideblack", min_height: "100vh",
             // do a typical three-column flex layout with a single centered then pin the nav items on top
@@ -63,7 +70,7 @@ fn DocVersionNav(cx: Scope) -> Element {
             ul { class: "pl-2",
                 li { class: "m-1 rounded-md pl-2 hover:bg-gray-200 hover:dark:bg-gray-800",
                     Link {
-                        to: NavigationTarget::External("/docsite/learn/0.3/guide/en".into()),
+                        to: NavigationTarget::External("/learn/0.3/guide/en".into()),
                         dioxus_material_icons::MaterialIcon {
                             name: "chevron_left",
                             color: "gray",

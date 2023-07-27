@@ -57,7 +57,7 @@ DemoFrame {
 }
 ```
 
-> You can read more about elements in the [element reference](../reference/index.md).
+> You can read more about elements in the [rsx reference](../reference/rsx.md).
 
 ## Setting Attributes
 
@@ -79,7 +79,7 @@ DemoFrame {
 
 > Note: Styles can be used directly outside of the `style:` attribute. In the above example, `color: "red"` is turned into `style="color: red"`.
 
-> You can read more about elements in the [attribute reference](../reference/index.md)
+> You can read more about elements in the [attribute reference](../reference/rsx.md)
 
 ## Creating a Component
 

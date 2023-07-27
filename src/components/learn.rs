@@ -192,7 +192,7 @@ fn RightNav(cx: Scope) -> Element {
     render! {
         div {
             class: "overflow-y-auto hidden xl:block fixed top-0 pt-36 pb-16 pl-3.5 -ml-3.5 w-60 h-full md:text-[13px] leading-5 text-navy docs-right-sidebar {extra_class}",
-            right: "calc(40vw - 40.875rem)",
+            left: "calc(100vw - 15rem)",
             h2 { class: "pb-4 font-semibold", "On this page" }
             ul { class: "",
                 for section in page.sections() {

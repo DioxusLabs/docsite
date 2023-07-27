@@ -3,7 +3,7 @@ use crate::*;
 pub fn Hero(cx: Scope) -> Element {
     cx.render(rsx! {
         section { class: "w-full dark:bg-ideblack",
-            div { class: "flex flex-wrap items-center pb-12 px-3 md:px-12 max-w-screen-2xl mx-auto text-center h-screen",
+            div { class: "flex flex-wrap items-center pb-12 px-3 md:px-12 max-w-screen-2xl mx-auto text-center",
                 div { class: "relative w-full mx-4 sm:mx-auto text-gray-600",
                     div { class: "text-[3em] md:text-[5em] font-semibold dark:text-white text-ghdarkmetal font-sans py-12 flex flex-col",
                         span {"Fullstack, crossplatform,"}
@@ -22,26 +22,36 @@ pub fn Hero(cx: Scope) -> Element {
                     div { class: "max-screen-2xl mx-auto pt-36",
                         h1 { class: "text-md", "Trusted by top companies"}
                         div {
-                            class: "pt-4 flex flex-row justify-center space-x-12",
-                            img {
-                                src: "static/futurewei_bw.png",
-                                class: "h-12 bg-black p-2"
+                            class: "pt-4 flex flex-row flex-wrap justify-center",
+                            div {
+                                class: "h-12 w-40 bg-black p-2 m-4 flex justify-center items-center",
+                                img {
+                                    src: "static/futurewei_bw.png",
+                                }
                             }
-                            img {
-                                src: "static/airbuslogo.svg",
-                                class: "h-12 bg-black p-2"
+                            div {
+                                class: "h-12 w-40 bg-black p-2 m-4 flex justify-center items-center",
+                                img {
+                                    src: "static/airbuslogo.svg",
+                                }
                             }
-                            img {
-                                src: "static/ESA_logo.svg",
-                                class: "h-12 bg-black p-2"
+                            div {
+                                class: "h-12 w-40 bg-black p-2 m-4 flex justify-center items-center",
+                                img {
+                                    src: "static/ESA_logo.svg",
+                                }
                             }
-                            img {
-                                src: "static/yclogo.svg",
-                                class: "h-12 bg-black p-2"
+                            div {
+                                class: "h-12 w-40 bg-black p-2 m-4 flex justify-center items-center",
+                                img {
+                                    src: "static/yclogo.svg",
+                                }
                             }
-                            img {
-                                src: "static/satellite.webp",
-                                class: "h-12 bg-black p-2"
+                            div {
+                                class: "h-12 w-40 bg-black p-2 m-4 flex justify-center items-center",
+                                img {
+                                    src: "static/satellite.webp",
+                                }
                             }
                         }
                     }

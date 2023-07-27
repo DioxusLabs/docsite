@@ -17,8 +17,10 @@ pub fn Homepage(cx: Scope) -> Element {
 
     cx.render(rsx! {
         div {
-            hero::Hero {}
-            AvailablePlatforms {}
+            section { class: "w-full dark:bg-ideblack",
+                hero::Hero {}
+                AvailablePlatforms {}
+            }
             // DeveloperExperience {}
             // JumpStart {}
             featured_examples::FeaturedExamples {}
@@ -283,12 +285,12 @@ fn Stats(cx: Scope) -> Element {
                     }
                 }
             }
-            div { class: "w-full mx-auto dark:bg-[#111111] border-t border-b border-[#444] mb-12",
-                div { class: "flex flex-row max-w-screen-xl mx-auto",
+            div { class: "w-full mx-auto dark:bg-[#111111] border-t border-b mb-12",
+                div { class: "grid grid-cols-2 grid-rows-2 sm:grid-cols-4 sm:grid-rows-1",
                     StatsItem { major: "10k", minor: "Stars" }
                     StatsItem { major: "63k", minor: "Downloads" }
                     StatsItem { major: "136", minor: "Contributors" }
-                    StatsItem { major: "873", minor: "Communtiy Projects", last: true }
+                    StatsItem { major: "873", minor: "Communtiy Projects" }
                 }
             }
 
@@ -304,13 +306,9 @@ fn Stats(cx: Scope) -> Element {
 }
 
 #[inline_props]
-fn StatsItem(cx: Scope, major: &'static str, minor: &'static str, last: Option<bool>) -> Element {
-    let border_right = match *last {
-        Some(true) => "",
-        _ => "border-r border-[#444]",
-    };
+fn StatsItem(cx: Scope, major: &'static str, minor: &'static str) -> Element {
     render! {
-        div { class: "w-1/4 text-center {border_right} py-6",
+        div { class: "text-center py-6 border border-[#444]",
             div { class: "text-6xl font-bold text-gray-800 dark:text-gray-100", *major }
             div { class: "text-xl text-gray-600 dark:text-gray-400", *minor }
         }
@@ -376,12 +374,12 @@ fn JumpStart(cx: Scope) -> Element {
                     }
                 }
             }
-            div { class: "w-full mx-auto",
-                div { class: "flex flex-row max-w-screen-xl mx-auto py-6",
-                    StatsItem { major: "5k", minor: "Stars" }
-                    StatsItem { major: "17k", minor: "Downloads" }
-                    StatsItem { major: "56", minor: "Contributors" }
-                    StatsItem { major: "300+", minor: "Communtiy Projects", last: true }
+            div { class: "w-full mx-auto dark:bg-[#111111] border-t border-b mb-12",
+                div { class: "grid grid-cols-2 grid-rows-2 sm:grid-cols-4 sm:grid-rows-1",
+                    StatsItem { major: "10k", minor: "Stars" }
+                    StatsItem { major: "63k", minor: "Downloads" }
+                    StatsItem { major: "136", minor: "Contributors" }
+                    StatsItem { major: "873", minor: "Communtiy Projects" }
                 }
             }
         }

@@ -29,12 +29,12 @@ pub fn Nav(cx: Scope) -> Element {
     render! {
         SearchModal {}
         header { class: "sticky top-0 z-30 bg-white shadow dark:text-gray-200 dark:bg-ideblack dark:border-b border-stone-600 {bg_color}",
-            button {
-                class: "bg-gray-100 rounded-lg p-2 lg:hidden my-3 h-10 flex items-center fixed top-0 left-0 text-lg z-[100] {sidebar_class}",
-                onclick: move |_| show_sidebar.set(!**show_sidebar),
-                MaterialIcon { name: "menu", size: 24, color: MaterialIconColor::Dark }
-            }
             div { class: "py-3 px-12 max-w-screen-2xl mx-auto flex items-center justify-between text-sm leading-6",
+                button {
+                    class: "bg-gray-100 rounded-lg p-2 pl-2 lg:hidden my-3 h-10 flex items-center text-lg z-[100] {sidebar_class}",
+                    onclick: move |_| show_sidebar.set(!**show_sidebar),
+                    MaterialIcon { name: "menu", size: 24, color: MaterialIconColor::Dark }
+                }
                 div { class: "flex z-50 flex-1",
                     Link { to: Route::Homepage {}, class: "flex title-font font-medium items-center text-gray-900",
                         img { src: "https://avatars.githubusercontent.com/u/79236386?s=200&v=4", class: "h-5 w-auto" }

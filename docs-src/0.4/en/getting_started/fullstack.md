@@ -49,7 +49,7 @@ Now, run your app with `cargo run` and open `http://localhost:8080` in your brow
 
 ```inject-dioxus
 SandBoxFrame {
-	url: "https://codesandbox.io/p/sandbox/dioxus-fullstack-2nwsrz"
+	url: "https://codesandbox.io/p/sandbox/dioxus-fullstack-2nwsrz?file=%2Fsrc%2Fmain.rs%3A5%2C1"
 }
 ```
 

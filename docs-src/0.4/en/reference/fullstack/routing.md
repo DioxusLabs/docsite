@@ -8,6 +8,6 @@ You can easily integrate your fullstack application with a client side router us
 
 ```inject-dioxus
 SandBoxFrame {
-	url: "https://codesandbox.io/p/sandbox/dioxus-fullstack-router-s75v5q"
+	url: "https://codesandbox.io/p/sandbox/dioxus-fullstack-router-s75v5q?file=%2Fsrc%2Fmain.rs%3A7%2C1"
 }
 ```

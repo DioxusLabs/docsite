@@ -59,7 +59,7 @@ Edit your `main.rs`:
 And to serve our app:
 
 ```bash
-dioxus serve
+dx serve
 ```
 
 If you open the browser and navigate to `127.0.0.1` you should see an app that looks like this:
@@ -87,7 +87,7 @@ Install [dioxus-cli](https://github.com/DioxusLabs/dioxus/tree/master/packages/c
 1. Run:
 
 ```bash
-dioxus serve --hot-reload
+dx serve --hot-reload
 ```
 
 2. Change some code within a rsx or render macro

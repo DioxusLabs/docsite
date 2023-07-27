@@ -131,7 +131,7 @@ fn SidebarChapter(cx: Scope, chapter: &'static SummaryItem<BookRoute>) -> Elemen
     if show_chevron {
         render! {
             li {
-                class: "m-1 rounded-md pl-2 hover:bg-gray-200 hover:dark:bg-gray-800",
+                class: "m-1 rounded-md ml-[-1px] hover:bg-gray-200 hover:dark:bg-gray-800",
                 button { onclick: move |_| list_toggle.set(!list_toggle.get()),
                     dioxus_material_icons::MaterialIcon {
                         name: "chevron_right",

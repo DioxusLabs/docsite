@@ -107,7 +107,7 @@ fn AvailablePlatforms(cx: Scope) -> Element {
                     right: render!(
                         "Build for the web using Rust and WebAssembly. As fast as SolidJS and more robust than React. Integrated hot reloading for instant iterations."
                     ),
-                    to: Route::Docs { child: BookRoute::GettingStartedWebWasm {} },
+                    to: Route::Docs { child: BookRoute::GettingStartedWasm {} },
                     title: "Web with WASM"
                 }
                 TriShow {
@@ -129,7 +129,7 @@ fn AvailablePlatforms(cx: Scope) -> Element {
                     center: None
                 }
                 TriShow {
-                    to: Route::Docs { child: BookRoute::GettingStartedWebFullstack {} },
+                    to: Route::Docs { child: BookRoute::GettingStartedFullstack {} },
                     title: "Fullstack Apps",
                     right: render!(
                         "Pre-render on the server, and hydrate on the client. Perfect lighthouse scores and performance over 1000x better than Node and Python. Perfect for static site generation or fullstack apps."
@@ -138,7 +138,7 @@ fn AvailablePlatforms(cx: Scope) -> Element {
                     center: None
                 }
                 TriShow {
-                    to: Route::Docs { child: BookRoute::GettingStartedWebLiveview {}},
+                    to: Route::Docs { child: BookRoute::GettingStartedLiveview {}},
                     title: "LiveView and LiveComponents",
                     right: render!(
                         "Render your app entirely on the server. Zero backend configuration capable of handling thousands of active clients. Integrates with Axum, Warp, Salvo, and Tokamak.",

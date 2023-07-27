@@ -71,7 +71,7 @@ fn main() {
 1. Run:
 
 ```bash
-dioxus build --features web
+dx build --features web
 dioxus run --features ssr --hot-reload
 ```
 

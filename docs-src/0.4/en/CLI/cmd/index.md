@@ -16,6 +16,7 @@ OPTIONS:
     -v            Enable verbose logging
 
 SUBCOMMANDS:
+    bundle       Bundle the Rust desktop app and all of its assets
     build        Build the Dioxus application and all of its assets
     clean        Clean output artifacts
     config       Dioxus config file controls

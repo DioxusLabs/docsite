@@ -22,7 +22,7 @@ Then build your app and publish it to Github:
 - Make sure GitHub Pages is set up for your repo to publish any static files in the docs directory
 - Build your app with:
 ```sh
-dioxus build --release --features web
+dx build --release --features web
 cargo run --features ssr
 ```
 - Add and commit with git

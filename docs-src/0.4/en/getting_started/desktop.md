@@ -90,7 +90,7 @@ Install [dioxus-cli](https://github.com/DioxusLabs/dioxus/tree/master/packages/c
 1. Run:
 
 ```bash
-dioxus serve --hot-reload --platform desktop
+dx serve --hot-reload --platform desktop
 ```
 
 2. Change some code within a rsx or render macro

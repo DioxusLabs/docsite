@@ -32,7 +32,7 @@ DemoFrame {
 }
 ```
 
-> You can read more about working with Async in Dioxus in the [Async reference](../reference/async/index.md)
+> You can read more about working with Async in Dioxus in the [Async reference](../reference/index.md)
 
 ## Lazily Fetching Data
 

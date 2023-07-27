@@ -6,7 +6,7 @@ Like regular futures, code in a coroutine will run until the next `await` point 
 
 ## `use_coroutine`
 
-The `use_coroutine` hook allows you to create a coroutine. Most coroutines we write will be polling loops using async/await.
+The `use_coroutine` hook allows you to create a coroutine. Most coroutines we write will be polling loops using await.
 
 ```rust, no_run
 fn app(cx: Scope) -> Element {

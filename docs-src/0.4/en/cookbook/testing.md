@@ -25,14 +25,14 @@ Dioxus does not currently have a full hook testing library, but you can build a 
 
 You can use [Playwright](https://playwright.dev/) to create end to end tests for your dioxus application.
 
-In your `playwright.config.js`, you will need to run cargo run or dioxus serve instead of the default build command. Here is a snippet from the end to end web example:
+In your `playwright.config.js`, you will need to run cargo run or dx serve instead of the default build command. Here is a snippet from the end to end web example:
 
 ```js
 //...
 webServer: [
     {
         cwd: path.join(process.cwd(), 'playwright-tests', 'web'),
-        command: 'dioxus serve',
+        command: 'dx serve',
         port: 8080,
         timeout: 10 * 60 * 1000,
         reuseExistingServer: !process.env.CI,

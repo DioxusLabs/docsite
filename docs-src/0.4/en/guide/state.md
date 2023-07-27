@@ -18,7 +18,7 @@ DemoFrame {
 
 ## Event Handlers
 
-Next, we need to detect when the user hovers over a section or focuses a link. We can use an [event listener](../reference/interactivity/event_handlers.md) to listen for the hover and focus events.
+Next, we need to detect when the user hovers over a section or focuses a link. We can use an [event listener](../reference/event_handlers.md) to listen for the hover and focus events.
 
 Event handlers are similar to regular attributes, but their name usually starts with `on`- and they accept closures as values. The closure will be called whenever the event it listens for is triggered. When an event is triggered, information about the event is passed to the closure though the [Event](https://docs.rs/dioxus/latest/dioxus/prelude/struct.Event.html) structure.
 
@@ -28,7 +28,7 @@ Let's create a [`onmouseenter`](https://docs.rs/dioxus/latest/dioxus/events/fn.o
 {{#include src/doc_examples/hackernews_state.rs:story_listing_listener}}
 ```
 
-> You can read more about Event Handlers in the [Event Handler reference](../reference/interactivity/event_handlers.md)
+> You can read more about Event Handlers in the [Event Handler reference](../reference/event_handlers.md)
 
 ## State
 
@@ -42,7 +42,7 @@ In this case, we will use the `use_shared_state_provider` and `use_shared_state`
 - You can use the You can then use the `use_shared_state` hook to read and modify that state in the `Preview` and `StoryListing` components
 - When the value updates, `use_shared_state` will make the component re-render, and provides you with the new value
 
-> Note: You should prefer local state hooks like use_state or use_ref when you only use state in one component. Because we use state in multiple components, we can use a [global state pattern](../reference/interactivity/context.md)
+> Note: You should prefer local state hooks like use_state or use_ref when you only use state in one component. Because we use state in multiple components, we can use a [global state pattern](../reference/context.md)
 
 ```rust
 {{#include src/doc_examples/hackernews_state.rs:shared_state_app}}
@@ -62,7 +62,7 @@ DemoFrame {
 }
 ```
 
-> You can read more about Hooks in the [Hooks reference](../reference/interactivity/hooks.md)
+> You can read more about Hooks in the [Hooks reference](../reference/hooks.md)
 
 ### The Rules of Hooks
 

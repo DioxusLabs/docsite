@@ -52,7 +52,7 @@ Because the page is initially rendered on the server, the page will be fully ren
 - **Access to the client/browser APIs**
 - **Fast interactivity**
 
-Finally, we can use [server functions](../../cookbook/platforms/fullstack/server_functions.md) to communicate with the server in a type-safe way.
+Finally, we can use [server functions](../../cookbook/fullstack/server_functions.md) to communicate with the server in a type-safe way.
 
 This approach uses both the dioxus-web and dioxus-ssr crates. To integrate those two packages and `axum`, `warp`, or `salvo`, Dioxus provides the `dioxus-fullstack` crate.
 

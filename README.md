@@ -20,7 +20,7 @@ cargo install dioxus-cli
 
 With [dioxus] installed, you can use it to build and serve the documentation on your local system;
 ```console
-dioxus serve --example spa --features web
+dx serve --example spa --features web
 ```
 
 this will start a local server that will be available on [localhost](http://localhost:3000) and will automatically build and re-build the documentation when it changes.

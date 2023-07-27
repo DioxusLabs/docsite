@@ -8,5 +8,4 @@ There are a few different sections in the cookbook:
 - [Error Handling](error_handling.md) discusses best around about error handling in Dioxus
 - [Custom Renderer](custom_renderer.md) walks through the process of building a custom renderer for Dioxus
 - [State](state/index.md) discusses patterns around managing local, global, and external state in Dioxus
-- [Platforms](platforms/index.md) talks about different platform specific recipes for common problems like running Javascript
 - [Integrations](integrations/index.md) contains walkthroughs about integrating with external libraries 

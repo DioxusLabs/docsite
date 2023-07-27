@@ -26,12 +26,12 @@ We've put a lot of care into making Dioxus syntax familiar and easy to understan
 
 Dioxus supports multiple platforms. Choose the platform you want to target below to get platform-specific setup instructions:
 
-- [Web](web/index.md)
-  - [Client Side](web/wasm.md): runs in the browser through WebAssembly
-  - [Liveview](web/liveview.md): runs on the server, renders in the browser using WebSockets
-  - [Fullstack](web/fullstack.md): renders to HTML text on the server and hydrates it on the client
+- [Choosing a Web Renderer](choosing_a_web_renderer.md)
+- [Client Side](wasm.md): runs in the browser through WebAssembly
+- [Liveview](liveview.md): runs on the server, renders in the browser using WebSockets
+- [Fullstack](fullstack.md): renders to HTML text on the server and hydrates it on the client
 - [Desktop](desktop.md): runs in a web view on desktop
 - [Mobile](mobile.md): runs in a web view on mobile
 - [Terminal UI](tui.md): renders text-based graphics in the terminal
 
-> More information on any platform you choose is available in the [Platforms](../reference/platforms/index.md) section of the reference
+> More information on any platform you choose is available in the section of the same name in the [Reference](../reference/index.md)

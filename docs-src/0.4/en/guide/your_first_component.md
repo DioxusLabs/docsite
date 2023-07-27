@@ -1,6 +1,6 @@
-# Creating a Story
+# Your First Component
 
-This chapter will teach you how to create a [Component](../reference/describing_ui/components.md) that displays a link to a post on hackernews.
+This chapter will teach you how to create a [Component](../reference/components.md) that displays a link to a post on hackernews.
 
 First, let's define how to display a post. Dioxus is a *declarative* framework. This means that instead of telling Dioxus what to do (e.g. to "create an element" or "set the color to red") we simply *declare* what we want the UI to look.
 
@@ -57,13 +57,13 @@ DemoFrame {
 }
 ```
 
-> You can read more about elements in the [element reference](../reference/describing_ui/index.md).
+> You can read more about elements in the [element reference](../reference/index.md).
 
 ## Setting Attributes
 
 Next, let's add some padding around our post listing with an attribute.
 
-Attributes (and [listeners](../reference/interactivity/event_handlers.md)) modify the behavior or appearance of the element they are attached to. They are specified inside the `{}` brackets before any children, using the `name: value` syntax. You can format the text in the attribute as you would with a text node:
+Attributes (and [listeners](../reference/event_handlers.md)) modify the behavior or appearance of the element they are attached to. They are specified inside the `{}` brackets before any children, using the `name: value` syntax. You can format the text in the attribute as you would with a text node:
 
 ```rust
 {{#include src/doc_examples/hackernews_post.rs:story_v4}}
@@ -79,7 +79,7 @@ DemoFrame {
 
 > Note: Styles can be used directly outside of the `style:` attribute. In the above example, `color: "red"` is turned into `style="color: red"`.
 
-> You can read more about elements in the [attribute reference](../reference/describing_ui/index.md)
+> You can read more about elements in the [attribute reference](../reference/index.md)
 
 ## Creating a Component
 
@@ -105,7 +105,7 @@ DemoFrame {
 }
 ```
 
-> You can read more about elements in the [component reference](../reference/describing_ui/components.md)
+> You can read more about elements in the [component reference](../reference/components.md)
 
 ## Creating Props
 
@@ -134,7 +134,7 @@ DemoFrame {
 }
 ```
 
-> You can read more about Props in the [Props reference](../reference/describing_ui/component_props.md)
+> You can read more about Props in the [Props reference](../reference/component_props.md)
 
 ## Cleaning Up Our Interface
 

@@ -828,6 +828,14 @@ video {
   margin-top: auto;
 }
 
+.ml-\[-5px\] {
+  margin-left: -5px;
+}
+
+.ml-\[-1px\] {
+  margin-left: -1px;
+}
+
 .block {
   display: block;
 }
@@ -1687,6 +1695,10 @@ video {
 
 .pt-5 {
   padding-top: 1.25rem;
+}
+
+.pl-\[-5px\] {
+  padding-left: -5px;
 }
 
 .text-left {

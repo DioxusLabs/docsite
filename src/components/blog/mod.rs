@@ -225,7 +225,7 @@ fn BlogPostItem(cx: Scope, post: &'static BlogPost) -> Element {
                     "{title}"
                 }
                 p { class: "leading-relaxed dark:text-white text-base dark:opacity-75", "{description}" }
-                Link { class: "text-indigo-500 inline-flex items-center mt-4", to: NavigationTarget::External(link.to_string()),
+                Link { class: "text-indigo-500 inline-flex items-center mt-4", to: *link,
                     "Read more"
                     icons::ArrowRight {}
                 }

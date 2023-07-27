@@ -31,7 +31,7 @@ fn Index(cx: Scope) -> Element {
 
 fn App(cx: Scope) -> Element {
     render! {
-        Router {}
+        Router::<Route> {}
     }
 }
 

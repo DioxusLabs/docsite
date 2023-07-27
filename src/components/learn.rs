@@ -70,7 +70,7 @@ fn DocVersionNav(cx: Scope) -> Element {
             ul { class: "pl-2",
                 li { class: "m-1 rounded-md pl-2 hover:bg-gray-200 hover:dark:bg-gray-800",
                     Link {
-                        to: NavigationTarget::External("/learn/0.3/guide/en".into()),
+                        to: "/learn/0.3/guide/en",
                         dioxus_material_icons::MaterialIcon {
                             name: "chevron_left",
                             color: "gray",
@@ -223,7 +223,7 @@ fn Content(cx: Scope) -> Element {
                         ".markdown-body button {{ display: inline-block; background-color: rgba(209, 213, 219, 0.3); border-radius: 0.25rem; padding: 0.25rem 0.5rem; border: 1px solid; margin: 0.25rem; }}"
                     }
                     article { class: "markdown-body pt-1",
-                        Outlet {}
+                        Outlet::<Route> {}
                     }
                 }
             }
@@ -233,7 +233,7 @@ fn Content(cx: Scope) -> Element {
 
 fn BreadCrumbs(cx: Scope) -> Element {
     // parse out the route after the version and language
-    let route = use_route(cx)?;
+    let route: Route = use_route(cx)?;
 
     render! {
         h2 { class: "font-semibold pb-4",
@@ -269,7 +269,7 @@ fn default_page() -> &'static Page<BookRoute> {
 #[inline_props]
 pub fn DocsO3(cx: Scope, segments: Vec<String>) -> Element {
     let navigator = use_navigator(cx);
-    let route = use_route(cx).unwrap();
-    navigator.push(NavigationTarget::External(route.to_string()));
+    let route: Route = use_route(cx).unwrap();
+    navigator.push(route);
     None
 }

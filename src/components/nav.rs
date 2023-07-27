@@ -52,13 +52,13 @@ pub fn Nav(cx: Scope) -> Element {
                         div { class: "flex items-center border-l border-gray-200 ml-4 pl-4 dark:border-gray-800",
                             label { class: "sr-only", id: "headlessui-listbox-label-2", "Theme" }
                             Link {
-                                to: NavigationTarget::External("https://discord.gg/XgGxMSkvUM".into()),
+                                to: "https://discord.gg/XgGxMSkvUM",
                                 class: "block text-gray-400 hover:text-gray-500 dark:hover:text-gray-300",
                                 span { class: "sr-only", "Dioxus on Discord" }
                                 crate::icons::DiscordLogo {}
                             }
                             Link {
-                                to: NavigationTarget::External("https://github.com/dioxuslabs/dioxus".into()),
+                                to: "https://github.com/dioxuslabs/dioxus",
                                 class: "ml-4 block text-gray-400 hover:text-gray-500 dark:hover:text-gray-300",
                                 span { class: "sr-only", "Dioxus on GitHub" }
                                 crate::icons::Github2 {}
@@ -176,7 +176,7 @@ fn LinkList(cx: Scope) -> Element {
                 li { key: "{link}",
                     Link {
                         class: "ml-[-3.8em] md:ml-0 md:py-2 md:px-2 {hover} {hover_bg} text-lg md:text-sm",
-                        to: NavigationTarget::External(link.to_string()),
+                        to: link,
                         "{name}"
                     }
                 }
@@ -191,7 +191,7 @@ fn LinkList(cx: Scope) -> Element {
                         ul { class: "top-0 w-36 md:bg-white dark:md:bg-gray-800 md:shadow md:px-4 md:py-4 rounded",
                             for (name , link) in links.iter() {
                                 Link {
-                                    to: NavigationTarget::External(link.to_string()), key: "{name}",
+                                    to: *link, key: "{name}",
                                     li {
                                         class: "rounded px-1 py-1 {hover} {hover_bg} text-base md:text-sm",
                                         "{name}"

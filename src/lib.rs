@@ -55,7 +55,7 @@ fn HeaderFooter(cx: Scope) -> Element {
     render! {
         div {
             Nav {}
-            Outlet {}
+            Outlet::<Route> {}
             Footer {}
         }
     }
@@ -118,12 +118,12 @@ pub enum Route {
 }
 
 pub fn use_url(cx: &ScopeState) -> String {
-    use_route(cx).unwrap().to_string()
+    use_route::<Route>(cx).unwrap().to_string()
 }
 
 pub fn app(cx: Scope) -> Element {
     render! {
-        Router {}
+        Router::<Route> {}
     }
 }
 

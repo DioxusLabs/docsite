@@ -4,7 +4,7 @@ use dioxus::prelude::*;
 use dioxus_fullstack::prelude::*;
 
 fn main() {
-    launch!(@([127, 0, 0, 1], 8080), app, {});
+    LaunchBuilder::new(app).launch();
 }
 
 fn app(cx: Scope) -> Element {

@@ -4,9 +4,13 @@ use dioxus::prelude::*;
 use dioxus_fullstack::prelude::*;
 
 fn main() {
-    launch!(@([127, 0, 0, 1], 8080), App, {
-        incremental: IncrementalRendererConfig::default().invalidate_after(std::time::Duration::from_secs(120)),
-    });
+    let config = LaunchBuilder::<FullstackRouterConfig<Route>>::router();
+    #[cfg(feature = "ssr")]
+    let config = config.incremental(
+        IncrementalRendererConfig::default().invalidate_after(std::time::Duration::from_secs(120)),
+    );
+
+    config.launch();
 }
 
 fn App(cx: Scope) -> Element {

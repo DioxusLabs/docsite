@@ -4,7 +4,7 @@ In this chapter, we will learn how to add the router to our app. By itself, this
 is not very useful. However, it is a prerequisite for all the functionality
 described in the other chapters.
 
-> Make sure you added the `dioxus-router` dependency as explained in the
+> Make sure you added the `dioxus-router` dependancy as explained in the
 > [introduction](../index.md).
 
 In most cases, we want to add the router to the root component of our app. This

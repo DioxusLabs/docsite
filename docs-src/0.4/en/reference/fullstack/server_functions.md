@@ -12,7 +12,7 @@ You must call `register` on the type you passed into the server macro in your ma
 
 Let's continue building on the app we made in the [getting started](../../../getting_startedw/web/fullstack.md) guide. We will add a server function to our app that allows us to double the count on the server.
 
-First, add serde as a dependency:
+First, add serde as a dependancy:
 
 ```shell
 cargo add serde

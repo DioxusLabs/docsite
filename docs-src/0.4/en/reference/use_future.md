@@ -33,5 +33,5 @@ The `UseFuture` handle provides a `restart` method. It can be used to execute th
 Often, you will need to run the future again every time some value (e.g. a prop) changes. Rather than calling `restart` manually, you can provide a tuple of "dependencies" to the hook. It will automatically re-run the future when any of those dependencies change. Example:
 
 ```rust, no_run
-{{#include src/doc_examples/use_future.rs:dependency}}
+{{#include src/doc_examples/use_future.rs:dependancy}}
 ```

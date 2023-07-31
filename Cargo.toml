@@ -14,7 +14,7 @@ dioxus-ssr = { git = "https://github.com/dioxuslabs/dioxus", optional = true }
 dioxus-fullstack = { git = "https://github.com/dioxuslabs/dioxus", features = ["router"] }
 dioxus-tui = { git = "https://github.com/dioxuslabs/dioxus", optional = true }
 dioxus-desktop = { git = "https://github.com/dioxuslabs/dioxus", optional = true }
-dioxus-liveview = { git = "https://github.com/dioxuslabs/dioxus", optional = true }
+dioxus-liveview = { git = "https://github.com/dioxuslabs/dioxus", features = ["axum"], optional = true }
 dioxus-native-core = { git = "https://github.com/dioxuslabs/dioxus", optional = true }
 dioxus-native-core-macro = { git = "https://github.com/dioxuslabs/dioxus", optional = true }
 fermi = { git = "https://github.com/dioxuslabs/dioxus" }

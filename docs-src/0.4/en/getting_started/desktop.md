@@ -35,7 +35,7 @@ For development purposes, use Option 1.
 
 ### Linux
 
-Webview Linux apps require WebkitGtk. When distributing, this can be part of your dependency tree in your `.rpm` or `.deb`. However, likely, your users will already have WebkitGtk.
+Webview Linux apps require WebkitGtk. When distributing, this can be part of your dependancy tree in your `.rpm` or `.deb`. However, likely, your users will already have WebkitGtk.
 
 ```bash
 sudo apt install libwebkit2gtk-4.1-dev libgtk-3-dev libayatana-appindicator3-dev
@@ -52,7 +52,7 @@ If you run into issues, make sure you have all the basics installed, as outlined
 
 ### MacOS
 
-Currently – everything for macOS is built right in! However, you might run into an issue if you're using nightly Rust due to some permissions issues in our Tao dependency (which have been resolved but not published).
+Currently – everything for macOS is built right in! However, you might run into an issue if you're using nightly Rust due to some permissions issues in our Tao dependancy (which have been resolved but not published).
 
 ## Creating a Project
 

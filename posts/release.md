@@ -174,7 +174,7 @@ $ cargo init dioxus_example
 $ cd dioxus_example
 ```
 
-We then add a dependency on Dioxus to the `Cargo.toml` file, with the "desktop" feature enabled:
+We then add a dependancy on Dioxus to the `Cargo.toml` file, with the "desktop" feature enabled:
 
 ```rust
 [dependencies]

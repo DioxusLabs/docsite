@@ -8,7 +8,7 @@ Previously, you defined your route with components:
 
 ```rust
 rsx! {
-    Router {
+    Router::<Route> {
         Route { to: "/home", Home {} }
         Route { to: "/blog", Blog {} }
         // BlogPost has a dynamic id

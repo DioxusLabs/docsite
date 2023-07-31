@@ -16,7 +16,7 @@ fn Wrapper(cx: Scope) -> Element {
     render! {
         header { "header" }
         // The index route will be rendered here
-        Outlet { }
+        Outlet::<Route> { }
         footer { "footer" }
     }
 }

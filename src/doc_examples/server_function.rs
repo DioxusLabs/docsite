@@ -4,7 +4,7 @@ use dioxus::prelude::*;
 use dioxus_fullstack::prelude::*;
 
 fn main() {
-    let config = LaunchBuilder::<FullstackRouterConfig<Route>>::router();
+    let config = LaunchBuilder::new(App);
     #[cfg(feature = "ssr")]
     let config = config.incremental(
         IncrementalRendererConfig::default().invalidate_after(std::time::Duration::from_secs(120)),

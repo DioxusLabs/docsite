@@ -61,7 +61,7 @@ The available variables are:
 
 #### Timestamps
 
-Another feature of Dioxus Logger is the ability to include timestamps with your logs. By default, this feature is disabled and has to be enabled by adding `timestamp` to your features section of the `dioxus-logger` dependency:
+Another feature of Dioxus Logger is the ability to include timestamps with your logs. By default, this feature is disabled and has to be enabled by adding `timestamp` to your features section of the `dioxus-logger` dependancy:
 ```toml
 dioxus-logger = { version = "*", features = ["timestamp"] }
 ```

@@ -32,7 +32,7 @@ fn NavBar(cx: Scope) -> Element {
                 }
             }
         }
-        Outlet {}
+        Outlet::<Route> {}
     }
 }
 // ANCHOR_END: nav

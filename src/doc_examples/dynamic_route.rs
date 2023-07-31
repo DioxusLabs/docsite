@@ -48,7 +48,7 @@ fn NavBar(cx: Scope) -> Element {
                 li { Link { to: Route::BlogList {}, "Blog" } }
             }
         }
-        Outlet {}
+        Outlet::<Route> {}
     }
 }
 
@@ -64,7 +64,7 @@ fn Home(cx: Scope) -> Element {
 fn Blog(cx: Scope) -> Element {
     render! {
         h1 { "Blog" }
-        Outlet {}
+        Outlet::<Route> {}
     }
 }
 // ANCHOR_END: blog

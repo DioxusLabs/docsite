@@ -113,7 +113,7 @@ enum Route {
 fn App(cx: Scope) -> Element {
     render! {
         h1 { "App" }
-        Router {}
+        Router::<Route> {}
     }
 }
 

@@ -159,10 +159,10 @@ fn MobileNav(cx: Scope) -> Element {
 
 type LinkPairs<'a> = &'a [(&'a str, &'a str)];
 static LINKS: &[(&str, &str, LinkPairs)] = &[
-    ("Docs", "/docsite/learn/0.4/", &[]),
-    ("Awesome", "/docsite/awesome", &[]),
+    ("Docs", "/learn/0.4/", &[]),
+    ("Awesome", "/awesome", &[]),
     // ("Tutorials", "/tutorials/", &[]),
-    ("Blog", "/docsite/blog", &[]),
+    ("Blog", "/blog", &[]),
 ];
 
 #[inline_props]

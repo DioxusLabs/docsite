@@ -36,9 +36,6 @@ fn main() {
                                 let mut path = std::env::current_dir().unwrap();
                                 path.push("docs");
                                 for (i, segment) in route.split('/').enumerate() {
-                                    if (1, "docsite") == (i, segment) {
-                                        continue;
-                                    }
                                     path.push(segment);
                                 }
                                 println!("build: {path:?}");
@@ -59,9 +56,6 @@ fn main() {
                     let route = route.to_string();
                     let mut path = std::path::PathBuf::new();
                     for (i, segment) in route.split('/').enumerate() {
-                        if (1, "docsite") == (i, segment) {
-                            continue;
-                        }
                         path.push(segment);
                     }
                     Some(path.join("index.html"))

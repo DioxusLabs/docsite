@@ -19,9 +19,7 @@ pub const POST_TEMPLATE: BlogPost = BlogPost {
     title: "Making Dioxus (almost) as fast as SolidJS",
     description:
         "Using a new technique called subtree memoization, Dioxus is now almost as fast as SolidJS.",
-        link: "/docsite/blog/templates-diffing/",
-        // TODO: revert to this link before publishing
-    // link: "/blog/templates-diffing/",
+    link: "/blog/templates-diffing/",
     content: include_str!("../../../posts/templates.html"),
 };
 
@@ -40,9 +38,7 @@ pub const POST_FULLTINME: BlogPost = BlogPost {
     title: "Going full time on Dioxus",
     description:
         "Dioxus is now my full time job! I'm so excited to be able to work on this full time.",
-    link: "/docsite/blog/going-fulltime/",
-    // TODO: revert to this link before publishing
-    // link: "/blog/going-fulltime/",
+    link: "/blog/going-fulltime/",
     content: include_str!("../../../posts/fulltime.html"),
 };
 
@@ -60,9 +56,7 @@ pub const POST_RELEASE_030: BlogPost = BlogPost {
     date: "Feb 8 2023",
     title: "Announcing Dioxus 0.3",
     description: "The next big release of Dioxus is here! Templates, autoformatting, multiwindow support, and more!",
-    link: "/docsite/blog/release-030/",
-    // TODO: revert to this link before publishing
-    // link: "/blog/release-030/",
+    link: "/blog/release-030/",
     content: include_str!("../../../posts/release030.html"),
 };
 
@@ -80,9 +74,7 @@ pub const POST_RELEASE_020: BlogPost = BlogPost {
     date: "Mar 9 2022",
     title: "Announcing Dioxus 0.2",
     description: "Just over two months in, and we already have a ton of awesome changes to Dioxus!",
-    link: "/docsite/blog/release-020/",
-    // TODO: revert to this link before publishing
-    // link: "/blog/release-020/",
+    link: "/blog/release-020/",
     content: include_str!("../../../posts/release020.html"),
 };
 

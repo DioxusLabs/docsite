@@ -65,56 +65,55 @@ fn HeaderFooter(cx: Scope) -> Element {
 #[rustfmt::skip]
 pub enum Route {
     #[layout(HeaderFooter)]
-        #[nest("/docsite")]
+        #[route("/")]
+        #[redirect("/platforms", || Route::Homepage {})]
+        #[redirect("/platforms/web", || Route::Homepage {})]
+        #[redirect("/platforms/desktop", || Route::Homepage {})]
+        #[redirect("/platforms/liveview", || Route::Homepage {})]
+        #[redirect("/platforms/mobile", || Route::Homepage {})]
+        #[redirect("/platforms/ssr", || Route::Homepage {})]
+        #[redirect("/platforms/tui", || Route::Homepage {})]
+        Homepage {},
+
+        #[route("/awesome")]
+        Awesome {},
+
+        #[route("/tutorials/:id")]
+        Tutorial { id: usize },
+
+        #[nest("/blog")]
             #[route("/")]
-            #[redirect("/platforms", || Route::Homepage {})]
-            #[redirect("/platforms/web", || Route::Homepage {})]
-            #[redirect("/platforms/desktop", || Route::Homepage {})]
-            #[redirect("/platforms/liveview", || Route::Homepage {})]
-            #[redirect("/platforms/mobile", || Route::Homepage {})]
-            #[redirect("/platforms/ssr", || Route::Homepage {})]
-            #[redirect("/platforms/tui", || Route::Homepage {})]
-            Homepage {},
-
-            #[route("/awesome")]
-            Awesome {},
-
-            #[route("/tutorials/:id")]
-            Tutorial { id: usize },
-
-            #[nest("/blog")]
-                #[route("/")]
-                BlogList {},
-                #[route("/templates-diffing")]
-                PostTemplate {},
-                #[route("/going-fulltime")]
-                PostFulltime {},
-                #[route("/release-030")]
-                PostRelease030 {},
-                #[route("/release-020")]
-                PostRelease020 {},
-                #[route("/introducing-dioxus")]
-                PostRelease010 {},
-            #[end_nest]
-            
-            #[layout(Learn)]
-                #[nest("/learn")]
-                    #[redirect("/", || Route::Docs { child: BookRoute::Index {} })]
-
-                    #[route("/0.3/:..segments")]
-                    DocsO3 {
-                        segments: Vec<String>
-                    },
-                    #[child("/0.4")]
-                    Docs { child: BookRoute },
-                #[end_nest]
-            #[end_layout]
+            BlogList {},
+            #[route("/templates-diffing")]
+            PostTemplate {},
+            #[route("/going-fulltime")]
+            PostFulltime {},
+            #[route("/release-030")]
+            PostRelease030 {},
+            #[route("/release-020")]
+            PostRelease020 {},
+            #[route("/introducing-dioxus")]
+            PostRelease010 {},
         #[end_nest]
-        #[redirect("/docs/0.3/:..segments", |segments: Vec<String>| Route::DocsO3 { segments: segments })]
-        #[redirect("/docs/:.._segments", |_segments: Vec<String>| Route::Docs { child: BookRoute::Index {} })]
-        #[route("/:..segments")]
-        #[route("/:..segments")]
-        Err404 { segments: Vec<String> },
+        
+        #[layout(Learn)]
+            #[nest("/learn")]
+                #[redirect("/", || Route::Docs { child: BookRoute::Index {} })]
+
+                #[route("/0.3/:..segments")]
+                DocsO3 {
+                    segments: Vec<String>
+                },
+                #[child("/0.4")]
+                Docs { child: BookRoute },
+            #[end_nest]
+        #[end_layout]
+    #[end_nest]
+    #[redirect("/docs/0.3/:..segments", |segments: Vec<String>| Route::DocsO3 { segments: segments })]
+    #[redirect("/docs/:.._segments", |_segments: Vec<String>| Route::Docs { child: BookRoute::Index {} })]
+    #[route("/:..segments")]
+    #[route("/:..segments")]
+    Err404 { segments: Vec<String> },
 }
 
 pub fn use_url(cx: &ScopeState) -> String {

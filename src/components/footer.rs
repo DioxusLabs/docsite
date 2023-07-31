@@ -26,7 +26,7 @@ pub fn Footer(cx: Scope) -> Element {
                 ("Guide", "/learn/0.4/guide"),
                 (
                     "Awesome",
-                    "/docsite/awesome",
+                    "/awesome",
                 ),
             ],
         ),

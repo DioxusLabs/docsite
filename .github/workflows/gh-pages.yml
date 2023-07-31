@@ -26,7 +26,7 @@ jobs:
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@v4.2.3
         with:
-          branch: docs # The branch the action should deploy to.
+          branch: gh-pages # The branch the action should deploy to.
           folder: docs # The folder the action should deploy.
-          target-folder: docs
+          target-folder: .
           clean: false # don't scrub docs

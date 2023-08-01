@@ -70,7 +70,7 @@ fn DocVersionNav(cx: Scope) -> Element {
             ul { class: "pl-2",
                 li { class: "m-1 rounded-md pl-2 hover:bg-gray-200 hover:dark:bg-gray-800",
                     Link {
-                        to: "/learn/0.3/guide/en",
+                        to: NavigationTarget::<Route>::External("/learn/0.3/guide/en".into()),
                         dioxus_material_icons::MaterialIcon {
                             name: "chevron_left",
                             color: "gray",

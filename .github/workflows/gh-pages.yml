@@ -20,8 +20,11 @@ jobs:
           override: true
           target: wasm32-unknown-unknown
       - uses: Swatinem/rust-cache@v1
-      - name: Install CLI
-        run: cargo install --git https://github.com/DioxusLabs/dioxus dioxus-cli
+      - uses: actions-rs/install@v0.1
+        with:
+          crate: dioxus-cli
+          version: latest
+          use-tool-cache: true
       - uses: actions/checkout@v2
       - name: Build
         run: dx build --release --features web && cargo run --release --features prebuild && cp docs/index.html docs/404.html

@@ -258,7 +258,7 @@ impl Config {
         // Collect all the routes
         let mut static_routes = std::collections::HashSet::new();
         for segments in R::SITE_MAP.iter().flat_map(|segs| segs.flatten()) {
-            let mut route = String::new();
+            let mut route = String::from("/");
             for seg in segments {
                 match seg {
                     dioxus_router::routable::SegmentType::Static(segment) => {

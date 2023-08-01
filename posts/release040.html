@@ -276,7 +276,13 @@ fn HeaderFooterNav(cx: Scope) -&gt; <span class="hljs-class">Element </span>{
 <p>We also moved the <code>awesome</code> dioxus page from GitHub to the docsite, so you can explore the various crates that other developers have submitted as “awesome.”</p>
 <p><img src="/static/landing_5.png" alt="Screenshot of new doc site awesome page"></p>
 <p>The new docs leverage many of the amazing new features from the router, including:</p>
-<p>-</p>
+<ul>
+<li><a href="https://dioxuslabs.com/learn/0.4/router/reference/static-generation">Static Generation</a></li>
+<li><a href="https://docs.rs/dioxus-router/latest/dioxus_router/routable/trait.Routable.html#associatedconstant.SITE_MAP">Site Map generation</a></li>
+<li><a href="https://github.com/DioxusLabs/dioxus-search">Dioxus Search</a></li>
+<li><a href="https://github.com/DioxusLabs/include_mdbook">Dioxus include_md</a></li>
+<li><a href="https://dioxuslabs.com/learn/0.4/router/reference/layouts">Layouts</a></li>
+</ul>
 <h2 id="android-support-ios-fixes-getting-started-guide-for-mobile">Android Support, iOS fixes, Getting Started Guide for Mobile</h2>
 <p>To date, Dioxus has provided first-party support for mobile via iOS, but our Android support has been rather spotty and untested. In this release, we finally added iOS and Android testing to our suite of continuous integration. To round off mobile support, we’ve added a <a href="https://dioxuslabs.com/learn/0.4/getting_started/mobile">mobile-specific getting started guide</a> with a walkthrough on setting up platform-specific dependencies, handling basic cross-compilation, and booting up a mobile simulator. We’ve also fixed some bugs in upstream libraries like Tauri’s Tao which gives Dioxus its window-creation capabilities.</p>
 <p>iOS Demo:</p>

@@ -38,6 +38,7 @@ pub mod components {
         pub mod notfound;
         pub mod tutorials;
         pub mod awesome;
+        pub mod deploy;
     }
 }
 
@@ -77,6 +78,9 @@ pub enum Route {
 
         #[route("/awesome")]
         Awesome {},
+
+        #[route("/deploy")]
+        Deploy {},
 
         #[route("/tutorials/:id")]
         Tutorial { id: usize },

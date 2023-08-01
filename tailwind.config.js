@@ -12,7 +12,8 @@ module.exports = {
         // ideblack: "#0E1116",
       },
       fontFamily: {
-        sans: ["Inter var", "sans-serif"],
+        sans: ["Lexend", "sans-serif"],
+        // sans: ["Inter var", "sans-serif"],
       },
       boxShadow: {
         "3xl": "0 35px 60px -1ww5px rgba(0, 0, 0, 0.5)",

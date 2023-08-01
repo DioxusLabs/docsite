@@ -72,7 +72,7 @@ dioxus-core = { git = "https://github.com/dioxuslabs/dioxus", version = "0.4.0" 
 dioxus-html = { git = "https://github.com/dioxuslabs/dioxus", version = "0.4.0" }
 dioxus-rsx = { git = "https://github.com/dioxuslabs/dioxus", version = "0.4.0" }
 dioxus = { git = "https://github.com/dioxuslabs/dioxus", version = "0.4.0" }
-dioxus-router = { git = "https://github.com/demonthos/dioxus" }
+dioxus-router = { git = "https://github.com/dioxuslabs/dioxus", version = "0.4.0" }
 
 [features]
 default = []

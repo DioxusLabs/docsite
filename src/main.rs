@@ -15,10 +15,13 @@ fn main() {
     }
     #[cfg(feature = "prebuild")]
     {
+        use log::LevelFilter;
         use dioxus_fullstack::prelude::*;
         use dioxus_router::prelude::*;
         simple_logger::SimpleLogger::new()
-            .with_level(log::LevelFilter::Info)
+            .with_level(LevelFilter::Info)
+            .with_module_level("dioxus_search_macro", LevelFilter::Trace)
+            .with_module_level("dioxus_search_shared", LevelFilter::Trace)
             .init()
             .unwrap();
         tokio::runtime::Runtime::new()

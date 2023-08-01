@@ -291,9 +291,36 @@ fn SearchModal(cx: Scope) -> Element {
                                 ul {
                                     match results {
                                         Ok(results) => {
-                                            rsx! {
-                                                for result in results {
-                                                    SearchResult { result: result }
+                                            if results.is_empty() {
+                                                rsx! {
+                                                    div {
+                                                        class: "text-center text-xlg p-4",
+                                                        "No results found"
+                                                        div {
+                                                            class: "dark:text-white text-left text-lg p-4",
+                                                            "Try searching for:"
+                                                            ul {
+                                                                for search in ["Fullstack", "Typesafe Routing", "Authentication"] {
+                                                                    li {
+                                                                        button {
+                                                                            class: "underline p-4",
+                                                                            onclick: move |_| {
+                                                                                search_text.set(search.to_string());
+                                                                            },
+                                                                            "{search}"
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                            else {
+                                                rsx! {
+                                                    for result in results {
+                                                        SearchResult { result: result }
+                                                    }
                                                 }
                                             }
                                         }

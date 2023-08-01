@@ -51,8 +51,8 @@ pub fn FeaturedExamples(cx: Scope) -> Element {
                         subtitle: "SSR",
                         description: "This very site is written in Dioxus, pre-rendered with SSR, and rehydrated with Dioxus-Web!",
                         link: "https://github.com/DioxusLabs/docsite",
-                        img_avif: "/static_cropped.avif",
-                        img: "/static_cropped.png",
+                        img_avif: "/static/docsite_cropped.avif",
+                        img: "/static/docsite_cropped.png",
                         img_alt: "The documentation site you're currently viewing"
                     }
                     FeaturedExample {

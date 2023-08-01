@@ -248,7 +248,10 @@ pub struct Config {
 }
 
 impl Config {
-    fn from_route<R: Routable>(mapping: impl SearchIndexMapping<R>) -> Self {
+    fn from_route<R: Routable>(mapping: impl SearchIndexMapping<R>) -> Self
+    where
+        <R as FromStr>::Err: Display,
+    {
         let mut files = Vec::new();
         let base_directory = mapping.base_directory();
 
@@ -272,44 +275,49 @@ impl Config {
         // Add the routes to the index
         for route in static_routes {
             let url = route;
-            if let Ok(route) = R::from_str(&url) {
-                if let Some(path) = mapping.map_route(route) {
-                    let path = &path.strip_prefix("/").unwrap_or(&path);
-                    let absolute_path = base_directory.join(path);
-                    log::trace!("Adding {:?} to search index", absolute_path);
-                    match std::fs::read_to_string(&absolute_path) {
-                        Ok(contents) => {
-                            let document = Html::parse_document(&contents);
-                            let title = document
-                                .select(&Selector::parse("h1").unwrap())
-                                .next()
-                                .map(|title| title.text().collect::<String>())
-                                .unwrap_or_else(|| {
-                                    document
-                                        .select(&Selector::parse("title").unwrap())
-                                        .next()
-                                        .map(|title| title.text().collect::<String>())
-                                        .unwrap_or_else(|| {
-                                            let mut title = String::new();
-                                            for segment in path.iter() {
-                                                title.push_str(&segment.to_string_lossy());
-                                                title.push(' ');
-                                            }
-                                            title
-                                        })
-                                });
-                            files.push(File {
-                                path: path.to_string_lossy().into(),
-                                url,
-                                title,
-                                fields: HashMap::new(),
-                                explicit_source: None,
-                            })
-                        }
-                        Err(err) => {
-                            log::error!("Error reading file: {:?}: {}", absolute_path, err);
+            match R::from_str(&url) {
+                Ok(route) => {
+                    if let Some(path) = mapping.map_route(route) {
+                        let path = &path.strip_prefix("/").unwrap_or(&path);
+                        let absolute_path = base_directory.join(path);
+                        log::trace!("Adding {:?} to search index", absolute_path);
+                        match std::fs::read_to_string(&absolute_path) {
+                            Ok(contents) => {
+                                let document = Html::parse_document(&contents);
+                                let title = document
+                                    .select(&Selector::parse("h1").unwrap())
+                                    .next()
+                                    .map(|title| title.text().collect::<String>())
+                                    .unwrap_or_else(|| {
+                                        document
+                                            .select(&Selector::parse("title").unwrap())
+                                            .next()
+                                            .map(|title| title.text().collect::<String>())
+                                            .unwrap_or_else(|| {
+                                                let mut title = String::new();
+                                                for segment in path.iter() {
+                                                    title.push_str(&segment.to_string_lossy());
+                                                    title.push(' ');
+                                                }
+                                                title
+                                            })
+                                    });
+                                files.push(File {
+                                    path: path.to_string_lossy().into(),
+                                    url,
+                                    title,
+                                    fields: HashMap::new(),
+                                    explicit_source: None,
+                                })
+                            }
+                            Err(err) => {
+                                log::error!("Error reading file: {:?}: {}", absolute_path, err);
+                            }
                         }
                     }
+                }
+                Err(err) => {
+                    log::error!("Failed to parse url ({}): {err}", url);
                 }
             }
         }

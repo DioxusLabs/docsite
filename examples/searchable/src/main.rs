@@ -11,6 +11,13 @@ use dioxus_router::prelude::*;
 fn main() {
     #[cfg(feature = "ssr")]
     {
+        use log::LevelFilter;
+        simple_logger::SimpleLogger::new()
+            .with_level(LevelFilter::Info)
+            .with_module_level("dioxus_search_macro", LevelFilter::Trace)
+            .with_module_level("dioxus_search_shared", LevelFilter::Trace)
+            .init()
+            .unwrap();
         tokio::runtime::Runtime::new()
             .unwrap()
             .block_on(async move {
@@ -30,6 +37,7 @@ fn main() {
             "searchable",
             dioxus_search::BaseDirectoryMapping::new("./static"),
         );
+        println!("finished creating search index");
     }
 
     dioxus_fullstack::launch_router!(@([127, 0, 0, 1], 8080), Route, {
@@ -71,7 +79,7 @@ fn Homepage(cx: Scope) -> Element {
             for result in results.map(|i| i.into_iter()).ok().into_iter().flatten() {
                 li {
                     Link {
-                        target: result.route.clone(),
+                        to: result.route.clone(),
                         "{result:#?}"
                     }
                 }

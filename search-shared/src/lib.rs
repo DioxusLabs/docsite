@@ -152,65 +152,67 @@ where
         let output = stork_lib::search_from_cache(&format!("index_{id}"), text)?;
         let mut results = Vec::new();
         for result in output.results {
-            let route = result
-                .entry
-                .url
-                .parse()
-                .unwrap_or_else(|err| panic!("{err}"));
-            let excerpts = result
-                .excerpts
-                .into_iter()
-                .map(|excerpt| {
-                    let mut segments = Vec::new();
-                    let mut char_index = 0;
-                    let mut chars = excerpt.text.chars();
-                    let mut current_segment = String::new();
-                    for highlight_range in excerpt.highlight_ranges {
-                        let start = highlight_range.beginning;
-                        while char_index < start.saturating_sub(1) {
-                            if let Some(c) = chars.next() {
-                                current_segment.push(c);
-                                char_index += 1;
-                            } else {
-                                break;
+            match result.entry.url.parse() {
+                Ok(route) => {
+                    let excerpts = result
+                        .excerpts
+                        .into_iter()
+                        .map(|excerpt| {
+                            let mut segments = Vec::new();
+                            let mut char_index = 0;
+                            let mut chars = excerpt.text.chars();
+                            let mut current_segment = String::new();
+                            for highlight_range in excerpt.highlight_ranges {
+                                let start = highlight_range.beginning;
+                                while char_index < start.saturating_sub(1) {
+                                    if let Some(c) = chars.next() {
+                                        current_segment.push(c);
+                                        char_index += 1;
+                                    } else {
+                                        break;
+                                    }
+                                }
+                                // add the current segment as a plain text segment
+                                if !current_segment.is_empty() {
+                                    segments.push(Segment {
+                                        text: std::mem::take(&mut current_segment),
+                                        highlighted: false,
+                                    });
+                                }
+                                let end = highlight_range.end;
+                                while char_index < end {
+                                    if let Some(c) = chars.next() {
+                                        current_segment.push(c);
+                                        char_index += 1;
+                                    } else {
+                                        break;
+                                    }
+                                }
+                                // add the current segment as a highlighted segment
+                                if !current_segment.is_empty() {
+                                    segments.push(Segment {
+                                        text: std::mem::take(&mut current_segment),
+                                        highlighted: true,
+                                    });
+                                }
                             }
-                        }
-                        // add the current segment as a plain text segment
-                        if !current_segment.is_empty() {
-                            segments.push(Segment {
-                                text: std::mem::take(&mut current_segment),
-                                highlighted: false,
-                            });
-                        }
-                        let end = highlight_range.end;
-                        while char_index < end {
-                            if let Some(c) = chars.next() {
-                                current_segment.push(c);
-                                char_index += 1;
-                            } else {
-                                break;
+                            Excerpt {
+                                text: segments,
+                                score: excerpt.score,
                             }
-                        }
-                        // add the current segment as a highlighted segment
-                        if !current_segment.is_empty() {
-                            segments.push(Segment {
-                                text: std::mem::take(&mut current_segment),
-                                highlighted: true,
-                            });
-                        }
-                    }
-                    Excerpt {
-                        text: segments,
-                        score: excerpt.score,
-                    }
-                })
-                .collect();
-            results.push(SearchResult {
-                route,
-                excerpts,
-                title: result.entry.title,
-                score: result.score,
-            })
+                        })
+                        .collect();
+                    results.push(SearchResult {
+                        route,
+                        excerpts,
+                        title: result.entry.title,
+                        score: result.score,
+                    })
+                }
+                Err(err) => {
+                    log::error!("Failed to parse url ({}): {err}", result.entry.url);
+                }
+            }
         }
 
         results.sort_by_key(|result| !result.score);
@@ -269,8 +271,8 @@ impl Config {
         }
         // Add the routes to the index
         for route in static_routes {
-            if let Ok(route) = R::from_str(&route) {
-                let url = route.to_string();
+            let url = route;
+            if let Ok(route) = R::from_str(&url) {
                 if let Some(path) = mapping.map_route(route) {
                     let path = &path.strip_prefix("/").unwrap_or(&path);
                     let absolute_path = base_directory.join(path);

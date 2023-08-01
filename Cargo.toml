@@ -67,6 +67,14 @@ pretty_assertions = { version = "1.4.0", optional = true }
 opt-level = 'z'
 strip = "debuginfo"
 
+[profile.dev.build-override]
+opt-level = 2
+codegen-units = 256
+
+[profile.release.build-override]
+opt-level = 2
+codegen-units = 256
+
 [patch.crates-io]
 dioxus-core = { git = "https://github.com/dioxuslabs/dioxus", version = "0.4.0" }
 dioxus-html = { git = "https://github.com/dioxuslabs/dioxus", version = "0.4.0" }

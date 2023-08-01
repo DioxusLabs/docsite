@@ -1,6 +1,7 @@
 use crate::icons;
 use dioxus::prelude::*;
-use dioxus_router::Link;
+use crate::Link;
+use dioxus_router::prelude::*;
 
 #[derive(PartialEq, Eq)]
 pub struct BlogPost {
@@ -22,6 +23,15 @@ pub const POST_TEMPLATE: BlogPost = BlogPost {
     content: include_str!("../../../posts/templates.html"),
 };
 
+#[inline_props]
+pub fn PostTemplate(cx: Scope) -> Element {
+    render! {
+        SinglePost {
+            post: POST_TEMPLATE,
+        }
+    }
+}
+
 pub const POST_FULLTINME: BlogPost = BlogPost {
     category: "Misc",
     date: "May 5 2023",
@@ -32,6 +42,15 @@ pub const POST_FULLTINME: BlogPost = BlogPost {
     content: include_str!("../../../posts/fulltime.html"),
 };
 
+#[inline_props]
+pub fn PostFulltime(cx: Scope) -> Element {
+    render! {
+        SinglePost {
+            post: POST_FULLTINME,
+        }
+    }
+}
+
 pub const POST_RELEASE_030: BlogPost = BlogPost {
     category: "Release Notes",
     date: "Feb 8 2023",
@@ -40,6 +59,15 @@ pub const POST_RELEASE_030: BlogPost = BlogPost {
     link: "/blog/release-030/",
     content: include_str!("../../../posts/release030.html"),
 };
+
+#[inline_props]
+pub fn PostRelease030(cx: Scope) -> Element {
+    render! {
+        SinglePost {
+            post: POST_RELEASE_030,
+        }
+    }
+}
 
 pub const POST_RELEASE_020: BlogPost = BlogPost {
     category: "Release Notes",
@@ -50,6 +78,15 @@ pub const POST_RELEASE_020: BlogPost = BlogPost {
     content: include_str!("../../../posts/release020.html"),
 };
 
+#[inline_props]
+pub fn PostRelease020(cx: Scope) -> Element {
+    render! {
+        SinglePost {
+            post: POST_RELEASE_020,
+        }
+    }
+}
+
 pub const POST_RELEASE_010: BlogPost = BlogPost {
     category: "Release Notes",
     date: "Jan 3 2022",
@@ -59,6 +96,15 @@ pub const POST_RELEASE_010: BlogPost = BlogPost {
     content: include_str!("../../../posts/release.html"),
 };
 
+#[inline_props]
+pub fn PostRelease010(cx: Scope) -> Element {
+    render! {
+        SinglePost {
+            post: POST_RELEASE_010,
+        }
+    }
+}
+
 pub const POSTS: &[BlogPost] = &[
     POST_FULLTINME,
     POST_RELEASE_030,
@@ -67,6 +113,7 @@ pub const POSTS: &[BlogPost] = &[
     POST_RELEASE_010,
 ];
 
+#[inline_props]
 pub fn BlogList(cx: Scope) -> Element {
     cx.render(rsx!(
         section { class: "text-gray-600 body-font overflow-hidden dark:bg-ideblack",
@@ -77,7 +124,7 @@ pub fn BlogList(cx: Scope) -> Element {
                     section { class: "body-font overflow-hidden dark:bg-ideblack",
                         div { class: "container px-6 mx-auto",
                             div { class: "-my-8 divide-y-2 divide-gray-100",
-                                POSTS.iter().enumerate().map(|(id, post)| rsx! { BlogPostItem { post: post, id: id } })
+                                POSTS.iter().map(|post| rsx! { BlogPostItem { post: post } })
                             }
                         }
                     }
@@ -136,12 +183,12 @@ pub static RecentBlogPosts: Component<()> = |cx| {
         section { class: "body-font overflow-hidden dark:bg-ideblack",
             div { class: "container px-6 lg:px-40 pt-24 pb-36 mx-auto max-w-screen-xl",
                 div { class: "flex flex-col w-full mb-10",
-                    h1 { class: "sm:text-3xl text-2xl font-medium title-font mb-4 dark:text-white font-mono",
+                    h1 { class: "sm:text-3xl text-2xl font-medium title-font mb-4 dark:text-white",
                         "Recent Blog Posts"
                     }
                 }
                 div { class: "-my-8 divide-y-2 divide-gray-100",
-                    POSTS.iter().enumerate().map(|(id, post)| rsx!{ BlogPostItem { post: post, id: id } })
+                    POSTS.iter().map(|post| rsx!{ BlogPostItem { post: post } })
                 }
             }
         }
@@ -149,7 +196,7 @@ pub static RecentBlogPosts: Component<()> = |cx| {
 };
 
 #[inline_props]
-fn BlogPostItem(cx: Scope, post: &'static BlogPost, id: usize) -> Element {
+fn BlogPostItem(cx: Scope, post: &'static BlogPost) -> Element {
     let BlogPost {
         category,
         date,
@@ -170,7 +217,7 @@ fn BlogPostItem(cx: Scope, post: &'static BlogPost, id: usize) -> Element {
                     "{title}"
                 }
                 p { class: "leading-relaxed dark:text-white text-base dark:opacity-75", "{description}" }
-                Link { class: "text-indigo-500 inline-flex items-center mt-4", to: "{link}",
+                Link { class: "text-indigo-500 inline-flex items-center mt-4", to: *link,
                     "Read more"
                     icons::ArrowRight {}
                 }

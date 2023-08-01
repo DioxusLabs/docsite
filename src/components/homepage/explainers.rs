@@ -115,7 +115,7 @@ pub fn Explainers(cx: Scope) -> Element {
 //         }
 //     },
 //     content: render! {
-//         p { class: "mb-6", "Dioxus apps are built declaritively with an ergonomic JSX-like syntax. Reusability is achieved through functional hooks and encapsulated components." }
+//         p { class: "mb-6", "Dioxus apps are built declaratively with an ergonomic JSX-like syntax. Reusability is achieved through functional hooks and encapsulated components." }
 //         p { class: "mb-3",
 //             strong { class: "font-bold", "Know React? You already know Dioxus." }
 //             " Dioxus borrows the same concepts like hooks, components, elements, context, suspense, and more."
@@ -162,7 +162,7 @@ pub fn Explainers(cx: Scope) -> Element {
 //     },
 //     content: render!{
 //         p { class: "mb-6",
-//             "Dioxus apps are built declaritively with an ergonomic JSX-like syntax. Reusability is achieved through functional hooks and encapsulated components."
+//             "Dioxus apps are built declaratively with an ergonomic JSX-like syntax. Reusability is achieved through functional hooks and encapsulated components."
 //         }
 
 //         p { class: "mb-3",
@@ -180,7 +180,7 @@ pub fn Explainers(cx: Scope) -> Element {
 //     },
 //     content: render!{
 //         p { class: "mb-6",
-//             "Dioxus apps are built declaritively with an ergonomic JSX-like syntax. Reusability is achieved through functional hooks and encapsulated components."
+//             "Dioxus apps are built declaratively with an ergonomic JSX-like syntax. Reusability is achieved through functional hooks and encapsulated components."
 //         }
 
 //         p { class: "mb-3",
@@ -198,7 +198,7 @@ pub fn Explainers(cx: Scope) -> Element {
 //     },
 //     content: render!{
 //         p { class: "mb-6",
-//             "Dioxus apps are built declaritively with an ergonomic JSX-like syntax. Reusability is achieved through functional hooks and encapsulated components."
+//             "Dioxus apps are built declaratively with an ergonomic JSX-like syntax. Reusability is achieved through functional hooks and encapsulated components."
 //         }
 
 //         p { class: "mb-3",

@@ -9,4 +9,5 @@ Cargo.lock
 !.vscode/extensions.json
 
 /pkg
-dist
+/static
+/docs/learn/0.3

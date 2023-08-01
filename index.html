@@ -1,12 +1,18 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
     <title>{app_title}</title>
     <meta content="text/html;charset=utf-8" http-equiv="Content-Type" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta charset="UTF-8" />
 
+    <meta name="description" content="An elegant GUI library for Rust, inspired by React. Supports Web, Desktop, SSR, Liveview, and Mobile.">
+
     <link rel="icon shortcut" type="image/png" href="static/favicon.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100;400;600&display=swap" rel="stylesheet">
+
 
     <!-- Social meta stuff -->
     <!-- open graph -->
@@ -44,6 +50,8 @@
     />
     <meta name="twitter:card" content="summary_large_image" />
 
+    <!-- icons -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-EBE72MVZ1B"></script>
     <script>
@@ -54,11 +62,10 @@
     </script>
 
     <!-- style stuff -->
-    <!-- <script src="https://cdn.tailwindcss.com"></script> -->
     <!-- <link data-trunk rel="css" href="/tailwind.css" /> -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://rsms.me/inter/inter.css" />
-    <script>
+    <link rel="stylesheet" href="/{base_path}/tailwind.css" />
+    <!-- <script src="https://cdn.tailwindcss.com"></script> -->
+    <!-- <script>
       tailwind.config = {
         theme: {
           extend: {
@@ -70,7 +77,8 @@
               // ideblack: "#0E1116",
             },
             fontFamily: {
-              sans: ["Inter var", "sans-serif"],
+              sans: ["Lexend", "sans-serif"],
+              // sans: ["Inter var", "sans-serif"],
             },
             boxShadow: {
               "3xl": "0 35px 60px -1ww5px rgba(0, 0, 0, 0.5)",
@@ -91,7 +99,8 @@
         //   },
         // },
       };
-    </script>
+    </script> -->
+    <link rel="stylesheet" href="https://rsms.me/inter/inter.css" />
 
     <link
       rel="stylesheet"
@@ -104,26 +113,27 @@
         box-sizing: border-box;
         min-width: 200px;
         max-width: 980px;
-        margin: 0 auto;
-        padding: 45px;
+        margin: 0 10%;
+        /* padding: 45px; */
         list-style: disc;
       }
+      /* body {
+        font-family: 'Lexend', sans-serif;
+      } */
 
       @media (max-width: 767px) {
         .markdown-body {
-          padding: 15px;
+          /* padding: 15px; */
         }
       }
     </style>
-    <script src="/static/darktheme.js"></script>
-    <link rel="stylesheet" type="text/css" href="/static/prism/prism.css" />
+    <script src="/{base_path}/static/darktheme.js"></script>
     {style_include}
   </head>
 
   <body>
     <div id="main"></div>
     <!-- Note the usage of `type=module` here as this is an ES6 module -->
-    <script src="/static/prism/prism.js"></script>
     <script type="module">
       import init from "/{base_path}/assets/dioxus/{app_name}.js";
       init("/{base_path}/assets/dioxus/{app_name}_bg.wasm").then((wasm) => {

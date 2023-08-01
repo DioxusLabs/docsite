@@ -1,33 +1,60 @@
-use crate::icons;
-use dioxus::prelude::*;
+use crate::*;
 
 pub fn Hero(cx: Scope) -> Element {
     cx.render(rsx! {
-        section { class: "w-full dark:bg-ideblack",
-            div { class: "flex flex-wrap items-center pb-12 px-3 md:px-12 max-w-screen-2xl mx-auto text-center md:text-left",
-                div { class: "relative w-full md:w-1/2 mx-4 sm:mx-auto pt-5 sm:pt-24 lg:pt-24 text-gray-600",
-                    h1 { class: "text-[5em] md:text-[8em] font-mono dark:text-white text-ghdarkmetal",
-                        "Dioxus"
-                    }
-                    h1 { class: "text-xl md:text-3xl tracking-tight dark:text-white font-mono text-ghdarkmetal flex flex-row",
-                        "User interfaces that run anywhere. 🦀"
+        section { class: "w-full dark:bg-ideblack h-fit md:h-screen",
+            div { class: "flex flex-wrap items-center pb-12 px-3 md:px-12 max-w-screen-2xl mx-auto text-center",
+                div { class: "relative w-full mx-4 sm:mx-auto text-gray-600",
+                    div { class: "text-[3em] md:text-[5em] font-semibold dark:text-white text-ghdarkmetal font-sans py-12 flex flex-col",
+                        span {"Fullstack, crossplatform,"}
+                        span {"lightning fast, fully typed." }
                     }
 
-                    h3 { class: "text-md md:text-xl tracking-tight dark:text-white font-thin font-mono text-ghdarkmetal pt-4",
-                        "Written in Rust, inspired by React"
+                    h3 { class: "text-[2em] dark:text-white font-extralight text-ghdarkmetal pt-4 max-w-screen-md mx-auto",
+                        "Dioxus is Rust library for building apps that run on desktop, web, mobile, and more."
                     }
 
-                    div { class: "mt-6 sm:mt-10 flex space-x-6 text-sm",
-                        a {
-                            class: "bg-gray-900 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 focus:ring-offset-gray-50 text-white font-semibold h-12 px-6 rounded-lg w-full flex items-center justify-center md:w-auto dark:bg-sky-500 dark:highlight-white/20 dark:hover:bg-sky-400",
-                            href: "https://dioxuslabs.com/docs/0.3/guide/en/",
-                            "Get started"
+                    div { class: "pt-12 text-white text-[1.2em] font-sans font-bold flex flex-row justify-center space-x-4",
+                        Link { to: Route::Docs { child: BookRoute::GettingStartedIndex {} }, class: "bg-red-600 py-2 px-8", "Quickstart" }
+                        Link { to: Route::Docs { child: BookRoute::ReferenceIndex {} }, class: "bg-blue-500 py-2 px-8", "Read the docs" }
+                    }
+
+                    div { class: "max-screen-2xl mx-auto pt-36",
+                        h1 { class: "text-md", "Trusted by top companies"}
+                        div {
+                            class: "pt-4 flex flex-row flex-wrap justify-center",
+                            div {
+                                class: "h-12 w-40 bg-black p-2 m-4 flex justify-center items-center",
+                                img {
+                                    src: "static/futurewei_bw.png",
+                                }
+                            }
+                            div {
+                                class: "h-12 w-40 bg-black p-2 m-4 flex justify-center items-center",
+                                img {
+                                    src: "static/airbuslogo.svg",
+                                }
+                            }
+                            div {
+                                class: "h-12 w-40 bg-black p-2 m-4 flex justify-center items-center",
+                                img {
+                                    src: "static/ESA_logo.svg",
+                                }
+                            }
+                            div {
+                                class: "h-12 w-40 bg-black p-2 m-4 flex justify-center items-center",
+                                img {
+                                    src: "static/yclogo.svg",
+                                }
+                            }
+                            div {
+                                class: "h-12 w-40 bg-black p-2 m-4 flex justify-center items-center",
+                                img {
+                                    src: "static/satellite.webp",
+                                }
+                            }
                         }
-                        SaveClipboard {}
                     }
-                }
-                div { class: "w-full md:w-1/2 px-4 flex flex-col pt-5 sm:pt-24 lg:pt-24 justify-end",
-                    AnimatedIcon {}
                 }
             }
         }
@@ -43,7 +70,7 @@ fn SaveClipboard(cx: Scope) -> Element {
     // might want to do the same thing in rust so we can display a selected state
     cx.render(rsx! {
         button {
-            class: "w-full sm:w-auto flex-none bg-gray-50 text-gray-400 hover:text-gray-900 font-mono leading-6 py-3 sm:px-6 border border-gray-200 rounded-xl flex items-center justify-center space-x-2 sm:space-x-4 focus:ring-2 focus:ring-offset-2 focus:ring-offset-white focus:ring-gray-300 focus:outline-none transition-colors duration-200 hidden md:flex",
+            class: "w-full sm:w-auto flex-none bg-gray-50 text-gray-400 hover:text-gray-900 font-mono leading-6 py-3 sm:px-6 border border-gray-200 rounded-xl items-center justify-center space-x-2 sm:space-x-4 focus:ring-2 focus:ring-offset-2 focus:ring-offset-white focus:ring-gray-300 focus:outline-none transition-colors duration-200 hidden md:flex",
             "onclick": "{ADD_TO_CLIPBOARD}",
             "type": "button",
             onclick: move |_| saved.set(true),

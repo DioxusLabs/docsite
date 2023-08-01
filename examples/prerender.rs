@@ -1,17 +1,43 @@
-//! Pre-render the page so it loads faster.
-//! In SPA, we have hydration enabled so we can pick up from the pre-rendered page.
+//! Run with:
+//!
+//! ```sh
+//! dioxus build --features web --release --example prerender
+//! cargo run --features ssr --example prerender
+//! ```
 
-use std::io::Write;
-
+#![allow(non_snake_case, unused)]
 use dioxus::prelude::*;
-use dioxus_docs_site::app;
+use dioxus_docs_site::*;
+use dioxus_fullstack::{launch, prelude::*};
+use dioxus_router::prelude::*;
+use serde::{Deserialize, Serialize};
 
-fn main() {
-    let mut dom = VirtualDom::new_with_props(app, ());
-    dom.rebuild();
-
-    let out = dioxus::ssr::render_vdom_cfg(&dom, |c| c.pre_render(true));
-
-    let mut file = std::fs::File::create("prerender.html").unwrap();
-    file.write_all(out.as_bytes()).unwrap();
+// Generate all routes and output them to the docs path
+#[cfg(feature = "ssr")]
+#[tokio::main]
+async fn main() {
+    pre_cache_static_routes_with_props(
+        &ServeConfigBuilder::new_with_router(dioxus_fullstack::router::FullstackRouterConfig::<
+            Route,
+        >::default())
+        .assets_path("docs")
+        .incremental(IncrementalRendererConfig::default().static_dir("docs"))
+        .build(),
+    )
+    .await
+    .unwrap();
 }
+
+// Hydrate the page
+#[cfg(feature = "web")]
+fn main() {
+    dioxus_web::launch_with_props(
+        dioxus_fullstack::router::RouteWithCfg::<Route>,
+        dioxus_fullstack::prelude::get_root_props_from_document()
+            .expect("Failed to get root props from document"),
+        dioxus_web::Config::default().hydrate(true),
+    );
+}
+
+#[cfg(not(any(feature = "web", feature = "ssr")))]
+fn main() {}

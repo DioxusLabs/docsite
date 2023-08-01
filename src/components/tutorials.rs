@@ -1,5 +1,5 @@
 use dioxus::prelude::*;
-use dioxus_router::{use_route, Link};
+use crate::*;
 
 struct Tutorial {
     title: &'static str,
@@ -71,7 +71,7 @@ fn TutorialPreview(cx: Scope, id: usize) -> Element {
 
     cx.render(rsx! {
         li { class: "pb-4 border-b border-gray-200 dark:border-gray-500",
-            Link { to: "/tutorials/{id}",
+            Link { to: Route::Tutorial { id: *id },
                 div { class: "rounded p-4 shadow",
                     div { class: "flex justify-between",
                         h2 { class: "text-lg font-bold", tutorial.title }
@@ -88,10 +88,9 @@ fn TutorialPreview(cx: Scope, id: usize) -> Element {
     })
 }
 
-pub fn Tutorial(cx: Scope) -> Element {
-    let tutorial = use_route(cx)
-        .parse_segment_or_404::<usize>("id")
-        .and_then(|f| TUTORIALS.get(f))?;
+#[inline_props]
+pub fn Tutorial(cx: Scope, id: usize) -> Element {
+    let tutorial = TUTORIALS.get(*id)?;
 
     render!(
         div {

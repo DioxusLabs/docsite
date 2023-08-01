@@ -8,7 +8,7 @@ fn Tasks(cx: Scope, id: Uuid) -> Element {
 
     cx.render(match content.value() {
         Some(Ok(data)) => rsx! { pre { "Your data: {data}" } },
-        Some(Err(e)) => rsx! {"An error loading the resource occured."},
+        Some(Err(e)) => rsx! {"An error loading the resource occurred."},
         None => rsx! { pre { "Loading..." } },
     })
 }

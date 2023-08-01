@@ -206,7 +206,7 @@ fn AwesomeItem(cx: Scope, item: Item) -> Element {
     let display_category = item.category.to_string();
     cx.render(rsx!(
         Link {
-            to: link,
+            to: NavigationTarget::<Route>::External(link),
             div {
                 class: "flex flex-col h-full p-3 rounded hover:-translate-y-2 transition-transform duration-300",
                 background_color: "#24292f",

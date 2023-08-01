@@ -17,9 +17,10 @@ fn app(cx: Scope) -> Element {
         let msg = await dioxus.recv();
         console.log(msg);
         "#,
-    ).unwrap();
+    )
+    .unwrap();
 
-   // You can send messages to JavaScript with the send method
+    // You can send messages to JavaScript with the send method
     eval.send("Hi from Rust!".into()).unwrap();
 
     let future = use_future(cx, (), |_| {

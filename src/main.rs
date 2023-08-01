@@ -78,8 +78,12 @@ fn main() {
         use axum::extract::State;
         use axum::routing::get;
 
-        LaunchBuilder::<FullstackRouterConfig::<Route>>::router()
-            .incremental(dioxus_fullstack::prelude::IncrementalRendererConfig::default())
+        LaunchBuilder::<FullstackRouterConfig<Route>>::router()
+            .server_cfg(
+                ServeConfigBuilder::new(dioxus_fullstack::router::RouteWithCfg::<Route>, Default::default())
+                    .incremental(dioxus_fullstack::prelude::IncrementalRendererConfig::default())
+                    .assets_path("docs"),
+            )
             .launch();
     }
 }

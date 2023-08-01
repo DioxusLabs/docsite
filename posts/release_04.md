@@ -507,8 +507,6 @@ So far, the CLI has supported useful commands like `dx fmt` , `dx build` , `dx s
 
 ![A bundled app on macos](/static/bundle.png)
 
-![A bundled app running](/static/bundle_app.png)
-
 This is a great place for new contributors to help flesh out the ecosystem!
 
 ## Dioxus-Check

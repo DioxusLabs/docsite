@@ -1,4 +1,17 @@
 <h1 id="dioxus-0-4-server-functions-suspense-enum-router-overhauled-docs-bundler-android-support-and-more">Dioxus 0.4: Server Functions, Suspense, Enum Router, Overhauled Docs, Bundler, Android Support, and more</h1>
+<blockquote>
+<p>Aug 1, 2023</p>
+<p>
+    <a href="https://github.com/jkelleyrtp">@jkelleyrtp</a>,
+    <a href="https://github.com/demonthos">@demonthos</a>
+</p>
+<p>
+    Thanks to <a href="https://github.com/tefiledo">@tefiledo</a>
+    <a href="https://github.com/marc2332">@marc2332</a>
+    <a href="https://github.com/DogeDark">@DogeDark</a>
+</p>
+</blockquote>
+
 <p>Welcome back, get your snacks, Dioxus 0.4 just dropped.</p>
 <p>If you’re new here: Dioxus (dye•ox•us) is a library for building React-like user interface in Rust. Dioxus supports a ton of targets: web, desktop, mobile, TUI, and more.</p>
 <p>Dioxus 0.4 is adding support for the next frontier: the server backend.</p>
@@ -277,7 +290,7 @@ fn HeaderFooterNav(cx: Scope) -&gt; <span class="hljs-class">Element </span>{
 <li>Closing the last window doesn’t kill the app</li>
 <li>Closing the last window simply hides the window (so the window can be cmd-tabbed back)</li>
 </ul>
-<p><video src="https://i.imgur.com/m4wJ6gN.mp4" alt="window_close.mov"></p>
+<p><video controls autoplay muted src="https://i.imgur.com/m4wJ6gN.mp4" alt="window_close.mov"></p>
 <h2 id="bidirectional-eval">Bidirectional Eval</h2>
 <p>The use_eval hook allows you to run snippets of Javascript in your Dioxus application when needed. @doge has made some improvements that make this hook has significantly more powerful. The new version of the hook is compatible between the desktop, web, and Liveview renderers. It also allows you to send messages to and from Javascript asynchronously. This makes it possible to listen for Javascript events that Dioxus doesn’t officially support like the intersection observer API.</p>
 <pre><code class="lang-rust"><span class="hljs-keyword">use</span> dioxus::prelude::*;
@@ -359,7 +372,7 @@ fn HeaderFooterNav(cx: Scope) -&gt; <span class="hljs-class">Element </span>{
     ))
 }
 </code></pre>
-<p><video src="https://i.imgur.com/yp7GyIf.mp4" alt="Scroll demo"></p>
+<p><video controls autoplay muted src="https://i.imgur.com/yp7GyIf.mp4" alt="Scroll demo"></p>
 <h2 id="renaming-dioxus-cli-to-dx">Renaming dioxus-cli to dx</h2>
 <p>We made a small tweak to the CLI this release to rename the CLI from <code>dioxus</code> to <code>dx</code>. This is a tiny change but has a few benefits:</p>
 <ul>
@@ -372,11 +385,10 @@ fn HeaderFooterNav(cx: Scope) -&gt; <span class="hljs-class">Element </span>{
 </code></pre>
 <h2 id="hot-reloading-for-desktop">Hot Reloading for Desktop</h2>
 <p>Yet another small tweak the CLI: you can now use <code>dx serve</code> on desktop apps with hot reloading enabled! Using the same hot reloading engine that powers web, <code>dx serve</code> can now modify your currently-running desktop without causing a full rebuild. In the event that we can’t hot reload a particular change, then <code>dx serve</code> will shutdown the app and restart it with the new changes applied.</p>
-<p><video src="https://i.imgur.com/ML93XtT.mp4" alt="Hotreloading on desktop"></p>
+<p><video controls autoplay muted src="https://i.imgur.com/ML93XtT.mp4" alt="Hotreloading on desktop"></p>
 <h2 id="dioxus-bundle">Dioxus-Bundle</h2>
 <p>So far, the CLI has supported useful commands like <code>dx fmt</code> , <code>dx build</code> , <code>dx serve</code> . Until date, we haven’t provided a command to build a final distributable image of your app. In 0.4, we’re incorporating cargo-bundle support into the Dioxus CLI. Now, from the Dioxus CLI, you can bundle your app using the same configuration options as the Tauri bundler, making it easy to migrate existing projects over. <code>dx bundle</code> supports bundling apps for macOS, iOS, Windows, and Linux (.deb, .rpm).</p>
 <p><img src="/static/bundle.png" alt="A bundled app on macos"></p>
-<p><img src="/static/bundle_app.png" alt="A bundled app running"></p>
 <p>This is a great place for new contributors to help flesh out the ecosystem!</p>
 <h2 id="dioxus-check">Dioxus-Check</h2>
 <p>The Dioxus CLI has a new helper command: <code>dx check</code>. Thanks to the work from community member @eventualbuddha, <code>dx check</code> will now identify and help mitigate issues like hooks being called inside conditionals and loops.</p>

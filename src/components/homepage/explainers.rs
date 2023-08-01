@@ -21,7 +21,7 @@ pub fn Explainer<'a>(
 
     let mut left = rsx! {
         div { class: "relative w-1/2 {align} max-w-md leading-8",
-            h2 { class: "mb-6 text-3xl leading-tight md:text-4xl md:leading-tight lg:text-3xl lg:leading-tight font-heading font-mono font-bold",
+            h2 { class: "mb-6 text-3xl leading-tight md:text-4xl md:leading-tight lg:text-3xl lg:leading-tight font-heading font-sans font-bold",
                 "{title}"
             }
             content
@@ -57,7 +57,7 @@ pub fn Explainers(cx: Scope) -> Element {
         section { class: "dark:text-white py-16 border-t font-light",
             div { class: "max-w-screen-xl mx-auto flex flex-wrap items-center",
                 div { class: "w-1/2 relative bg-red",
-                    h2 { class: "mb-6 text-3xl leading-tight md:text-4xl md:leading-tight lg:text-3xl lg:leading-tight font-heading font-mono font-bold",
+                    h2 { class: "mb-6 text-3xl leading-tight md:text-4xl md:leading-tight lg:text-3xl lg:leading-tight font-heading font-sans font-bold",
                         "Inspired by React, made for Rust"
                     }
                     p { class: "mb-6",
@@ -81,7 +81,7 @@ pub fn Explainers(cx: Scope) -> Element {
 
             div { class: "max-w-screen-xl mx-auto flex flex-wrap items-center",
                 div { class: "w-1/2 relative bg-red",
-                    h2 { class: "mb-6 text-3xl leading-tight md:text-4xl md:leading-tight lg:text-3xl lg:leading-tight font-heading font-mono font-bold",
+                    h2 { class: "mb-6 text-3xl leading-tight md:text-4xl md:leading-tight lg:text-3xl lg:leading-tight font-heading font-sans font-bold",
                         "Inspired by React, made for Rust"
                     }
                     p { class: "mb-6",

@@ -10,7 +10,7 @@ use dioxus_router::routable::Routable;
 fn main() {
     #[cfg(feature = "web")]
     {
-        wasm_logger::init(wasm_logger::Config::new(log::Level::Info));
+        wasm_logger::init(wasm_logger::Config::new(log::Level::Trace));
         std::panic::set_hook(Box::new(console_error_panic_hook::hook));
     }
     #[cfg(feature = "prebuild")]

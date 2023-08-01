@@ -1,5 +1,5 @@
-use dioxus::prelude::*;
 use crate::*;
+use dioxus::prelude::*;
 
 pub mod call_to_action;
 pub mod explainers;
@@ -10,21 +10,13 @@ pub mod value_add;
 
 #[inline_props]
 pub fn Homepage(cx: Scope) -> Element {
-    // value_add::ValueAdd {}
-    // Projecchildren: right}
-    // explainers::Explainers {}
-    // snippets::Snippets {}
-
     cx.render(rsx! {
         div {
             section { class: "w-full dark:bg-ideblack",
                 hero::Hero {}
                 AvailablePlatforms {}
             }
-            // DeveloperExperience {}
-            // JumpStart {}
             featured_examples::FeaturedExamples {}
-
             crate::components::blog::BlogList {}
             Stats {}
         }
@@ -68,7 +60,7 @@ fn ProjectCards(cx: Scope) -> Element {
                         div { class: "w-full md:w-1/2 lg:w-1/3 px-3 mb-6 text-xs dark:text-white", key: "{title}",
                             div { class: "p-6 md:p-8 h-full rounded shadow-white hover:shadow-xl hover:border-transparent cursor-pointer",
                                 div {
-                                    h3 { class: "mb-4 text-2xl font-semibold font-heading font-mono", "{title}" }
+                                    h3 { class: "mb-4 text-2xl font-semibold font-heading font-sans", "{title}" }
                                     p { class: "text-base text-gray-500 pb-4", "{description}" }
                                     Link {
                                         class: "bg-gray-900 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 focus:ring-offset-gray-50 text-white font-semibold h-12 px-6 rounded-lg flex items-center justify-center sm:w-auto dark:bg-sky-500 dark:highlight-white/20 dark:hover:bg-sky-400",
@@ -107,44 +99,57 @@ fn AvailablePlatforms(cx: Scope) -> Element {
                     left: None,
                     center: None,
                     right: render!(
-                        "Build for the web using Rust and WebAssembly. As fast as SolidJS and more robust than React. Integrated hot reloading for instant iterations."
-                    ),
-                    to: Route::Docs { child: BookRoute::GettingStartedWasm {} },
+    "Build for the web using Rust and WebAssembly. As fast as SolidJS and more robust than React. Integrated hot reloading for instant iterations."
+),
+                    to: Route::Docs {
+    child: BookRoute::GettingStartedWasm {},
+},
                     title: "Web with WASM"
                 }
                 TriShow {
                     left: None,
                     center: None,
                     right: render!(
-                        "Lightweight (<2mb) desktop and mobile apps with zero configuration. Choose between WebView or WGPU-enabled renderers. Runs on macOS, Windows, Linux, iOS, and Android."
-                    ),
-                    to: Route::Docs { child: BookRoute::GettingStartedDesktop {}},
+    "Lightweight (<2mb) desktop and mobile apps with zero configuration. Choose between WebView or WGPU-enabled renderers. Runs on macOS, Windows, Linux, iOS, and Android."
+),
+                    to: Route::Docs {
+    child: BookRoute::GettingStartedDesktop {
+    },
+},
                     title: "Desktop and Mobile"
                 }
                 TriShow {
-                    to: Route::Docs { child: BookRoute::GettingStartedTui {} },
+                    to: Route::Docs {
+    child: BookRoute::GettingStartedTui {},
+},
                     title: "Terminal User Interfaces",
                     right: render!(
-                        "Quickly convert any CLI tool to a beautiful interactive user interface with just a few lines of code. Runs anywhere with a terminal."
-                    ),
+    "Quickly convert any CLI tool to a beautiful interactive user interface with just a few lines of code. Runs anywhere with a terminal."
+),
                     left: None,
                     center: None
                 }
                 TriShow {
-                    to: Route::Docs { child: BookRoute::GettingStartedFullstack {} },
+                    to: Route::Docs {
+    child: BookRoute::GettingStartedFullstack {
+    },
+},
                     title: "Fullstack Apps",
                     right: render!(
-                        "Pre-render on the server, and hydrate on the client. Perfect lighthouse scores and performance over 1000x better than Node and Python. Perfect for static site generation or fullstack apps."
-                    ),
+    "Pre-render on the server, and hydrate on the client. Perfect lighthouse scores and performance over 1000x better than Node and Python. Perfect for static site generation or fullstack apps."
+),
                     left: None,
                     center: None
                 }
                 TriShow {
-                    to: Route::Docs { child: BookRoute::GettingStartedLiveview {}},
+                    to: Route::Docs {
+    child: BookRoute::GettingStartedLiveview {
+    },
+},
                     title: "LiveView and LiveComponents",
                     right: render!(
-                        "Render your app entirely on the server. Zero backend configuration capable of handling thousands of active clients. Integrates with Axum, Warp, Salvo, and Tokamak.",
-                    ),
+    "Render your app entirely on the server. Zero backend configuration capable of handling thousands of active clients. Integrates with Axum, Warp, Salvo, and Tokamak.",
+),
                     left: None,
                     center: None,
                     last: true
@@ -309,7 +314,7 @@ fn Stats(cx: Scope) -> Element {
 fn StatsItem(cx: Scope, major: &'static str, minor: &'static str) -> Element {
     render! {
         div { class: "text-center py-6 border border-[#444]",
-            div { class: "text-6xl font-bold text-gray-800 dark:text-gray-100", *major }
+            div { class: "text-5xl font-bold text-gray-800 dark:text-gray-100", *major }
             div { class: "text-xl text-gray-600 dark:text-gray-400", *minor }
         }
     }

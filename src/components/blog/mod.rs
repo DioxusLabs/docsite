@@ -111,11 +111,13 @@ pub const POSTS: &[BlogPost] = &[
 #[inline_props]
 pub fn BlogList(cx: Scope) -> Element {
     cx.render(rsx!(
-        section { class: "text-gray-600 body-font overflow-hidden dark:bg-ideblack",
-            div { class: "container lg:px-48 pt-12 pb-12 mx-auto",
+        section { class: "body-font overflow-hidden dark:bg-ideblack",
+            div { class: "container max-w-screen-lg pt-12 pb-12 mx-auto",
                 div { class: "-my-8 px-8 pb-12",
                     // Header
-                    BlogHeader {}
+                    h2 { class: "mb-8 md:mb-16 sm:text-3xl text-2xl font-medium title-font font-sans",
+                        "Recent Blog Posts"
+                    }
                     section { class: "body-font overflow-hidden dark:bg-ideblack",
                         div { class: "container px-6 mx-auto",
                             div { class: "-my-8 divide-y-2 divide-gray-100",
@@ -141,7 +143,8 @@ pub fn SinglePost(cx: Scope, post: BlogPost) -> Element {
                     style {
                         ".markdown-body ul {{ list-style: disc; }}"
                         ".markdown-body li {{ display: list-item; }}"
-                        ".markdown-body img {{ max-height: 500px; margin-left: auto; margin-right: auto; }}"
+                        ".markdown-body img {{ max-height: 500px; margin-left: auto; margin-right: auto; padding-left: 4px; padding-right: 4px; }}"
+                        ".markdown-body .highlight pre, .markdown-body pre {{ background-color: #1e1e1e }}"
                     }
                     article { class: "markdown-body", dangerous_inner_html: format_args!("{}", content) }
                     script { "Prism.highlightAll()" }
@@ -156,7 +159,7 @@ fn BlogHeader(cx: Scope) -> Element {
         section { class: "py-20",
             div { class: "container px-4 mx-auto dark:text-white",
 
-                h2 { class: "mb-8 md:mb-16 text-5xl lg:text-6xl font-semibold font-heading font-mono",
+                h2 { class: "mb-8 md:mb-16 text-5xl lg:text-6xl font-semibold font-heading font-sans",
                     "Dioxus Official Blog"
                 }
 

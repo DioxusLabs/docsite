@@ -1,6 +1,6 @@
 use crate::icons;
-use dioxus::prelude::*;
 use crate::Link;
+use dioxus::prelude::*;
 use dioxus_router::prelude::*;
 
 #[derive(PartialEq, Eq)]
@@ -25,11 +25,7 @@ pub const POST_TEMPLATE: BlogPost = BlogPost {
 
 #[inline_props]
 pub fn PostTemplate(cx: Scope) -> Element {
-    render! {
-        SinglePost {
-            post: POST_TEMPLATE,
-        }
-    }
+    render! { SinglePost { post: POST_TEMPLATE } }
 }
 
 pub const POST_FULLTINME: BlogPost = BlogPost {
@@ -44,11 +40,21 @@ pub const POST_FULLTINME: BlogPost = BlogPost {
 
 #[inline_props]
 pub fn PostFulltime(cx: Scope) -> Element {
-    render! {
-        SinglePost {
-            post: POST_FULLTINME,
-        }
-    }
+    render! { SinglePost { post: POST_FULLTINME } }
+}
+
+pub const POST_RELEASE_040: BlogPost = BlogPost {
+    category: "Release Notes",
+    date: "Aug 1 2023",
+    title: "Announcing Dioxus 0.4",
+    description: "An overhauled router, fullstack, desktop hotreloading, and more!",
+    link: "/blog/release-040/",
+    content: include_str!("../../../posts/release040.html"),
+};
+
+#[inline_props]
+pub fn PostRelease040(cx: Scope) -> Element {
+    render! { SinglePost { post: POST_RELEASE_040 } }
 }
 
 pub const POST_RELEASE_030: BlogPost = BlogPost {
@@ -62,11 +68,7 @@ pub const POST_RELEASE_030: BlogPost = BlogPost {
 
 #[inline_props]
 pub fn PostRelease030(cx: Scope) -> Element {
-    render! {
-        SinglePost {
-            post: POST_RELEASE_030,
-        }
-    }
+    render! { SinglePost { post: POST_RELEASE_030 } }
 }
 
 pub const POST_RELEASE_020: BlogPost = BlogPost {
@@ -80,11 +82,7 @@ pub const POST_RELEASE_020: BlogPost = BlogPost {
 
 #[inline_props]
 pub fn PostRelease020(cx: Scope) -> Element {
-    render! {
-        SinglePost {
-            post: POST_RELEASE_020,
-        }
-    }
+    render! { SinglePost { post: POST_RELEASE_020 } }
 }
 
 pub const POST_RELEASE_010: BlogPost = BlogPost {
@@ -98,14 +96,11 @@ pub const POST_RELEASE_010: BlogPost = BlogPost {
 
 #[inline_props]
 pub fn PostRelease010(cx: Scope) -> Element {
-    render! {
-        SinglePost {
-            post: POST_RELEASE_010,
-        }
-    }
+    render! { SinglePost { post: POST_RELEASE_010 } }
 }
 
 pub const POSTS: &[BlogPost] = &[
+    POST_RELEASE_040,
     POST_FULLTINME,
     POST_RELEASE_030,
     POST_TEMPLATE,
@@ -141,16 +136,15 @@ pub fn SinglePost(cx: Scope, post: BlogPost) -> Element {
     cx.render(rsx! {
         section { class: "text-gray-600 body-font overflow-hidden dark:bg-ideblack",
             div { class: "container lg:px-20 xl:px-48 pt-12 pb-12 mx-auto",
-                div { class: "-my-8",
-                    script { "Prism.highlightAll()" }
-                    div { class: "flex w-full mb-20 flex-wrap list-none",
-                        style {
-                            ".markdown-body ul {{ list-style: disc; }}"
-                            ".markdown-body li {{ display: list-item; }}"
-                        }
-                        article { class: "markdown-body", dangerous_inner_html: format_args!("{}", content) }
-                        script { "Prism.highlightAll()" }
+                script { "Prism.highlightAll()" }
+                div { class: "flex w-full mb-20 flex-wrap list-none",
+                    style {
+                        ".markdown-body ul {{ list-style: disc; }}"
+                        ".markdown-body li {{ display: list-item; }}"
+                        ".markdown-body img {{ max-height: 500px; margin-left: auto; margin-right: auto; }}"
                     }
+                    article { class: "markdown-body", dangerous_inner_html: format_args!("{}", content) }
+                    script { "Prism.highlightAll()" }
                 }
             }
         }
@@ -216,7 +210,9 @@ fn BlogPostItem(cx: Scope, post: &'static BlogPost) -> Element {
                 h2 { class: "text-2xl font-medium text-gray-900 title-font mb-2 dark:text-white",
                     "{title}"
                 }
-                p { class: "leading-relaxed dark:text-white text-base dark:opacity-75", "{description}" }
+                p { class: "leading-relaxed dark:text-white text-base dark:opacity-75",
+                    "{description}"
+                }
                 Link { class: "text-indigo-500 inline-flex items-center mt-4", to: *link,
                     "Read more"
                     icons::ArrowRight {}

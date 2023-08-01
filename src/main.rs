@@ -80,9 +80,12 @@ fn main() {
 
         LaunchBuilder::<FullstackRouterConfig<Route>>::router()
             .server_cfg(
-                ServeConfigBuilder::new(dioxus_fullstack::router::RouteWithCfg::<Route>, Default::default())
-                    .incremental(dioxus_fullstack::prelude::IncrementalRendererConfig::default())
-                    .assets_path("docs"),
+                ServeConfigBuilder::new(
+                    dioxus_fullstack::router::RouteWithCfg::<Route>,
+                    Default::default(),
+                )
+                .incremental(dioxus_fullstack::prelude::IncrementalRendererConfig::default())
+                .assets_path("docs"),
             )
             .launch();
     }

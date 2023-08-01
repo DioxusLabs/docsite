@@ -1,18 +1,20 @@
 use crate::docs::LAZY_BOOK;
-use dioxus_material_icons::MaterialIcon;
-use dioxus::prelude::*;
-use dioxus_material_icons::MaterialIconColor;
 use crate::*;
+use dioxus::prelude::*;
+use dioxus_material_icons::MaterialIcon;
+use dioxus_material_icons::MaterialIconColor;
+use fermi::use_atom_state;
+use fermi::{use_read, Atom};
 use mdbook_shared::Page;
 use mdbook_shared::SummaryItem;
-use fermi::use_atom_state;
-use fermi::{use_read, Atom, };
 
 pub struct DocsLayoutHighlighted(pub bool);
-pub static HIGHLIGHT_DOCS_LAYOUT: Atom<DocsLayoutHighlighted> = Atom(|_| DocsLayoutHighlighted(false));
+pub static HIGHLIGHT_DOCS_LAYOUT: Atom<DocsLayoutHighlighted> =
+    Atom(|_| DocsLayoutHighlighted(false));
 pub static SHOW_SIDEBAR: Atom<bool> = Atom(|_| false);
 pub struct DocsContentHighlighted(pub bool);
-pub static HIGHLIGHT_DOCS_CONTENT: Atom<DocsContentHighlighted> = Atom(|_| DocsContentHighlighted(false));
+pub static HIGHLIGHT_DOCS_CONTENT: Atom<DocsContentHighlighted> =
+    Atom(|_| DocsContentHighlighted(false));
 
 #[inline_props]
 pub fn Learn(cx: Scope) -> Element {
@@ -38,7 +40,11 @@ pub fn Learn(cx: Scope) -> Element {
 fn LeftNav(cx: Scope) -> Element {
     let show_sidebar = use_atom_state(cx, &SHOW_SIDEBAR);
     let highlighted = use_read(cx, &HIGHLIGHT_DOCS_LAYOUT);
-    let extra_class = if highlighted.0 { "border border-green-600 rounded-md" } else { "" };
+    let extra_class = if highlighted.0 {
+        "border border-green-600 rounded-md"
+    } else {
+        ""
+    };
     let hidden = if **show_sidebar { "" } else { "hidden" };
     let chapters = vec![
         &LAZY_BOOK.summary.prefix_chapters,
@@ -51,8 +57,6 @@ fn LeftNav(cx: Scope) -> Element {
         nav { class: "bg-white dark:bg-ideblack lg:bg-inherit pl-6 z-20 text-base lg:block fixed top-0 pt-36 pb-16 lg:-ml-3.5 w-[calc(100%-1rem)] md:w-60 h-screen max-h-screen lg:text-[13px] text-navy content-start overflow-y-auto leading-5 {extra_class} {hidden}",
             // I like the idea of breadcrumbs, but they add a lot of visual noise, and like, who cares?
             // BreadCrumbs {}
-
-            DocVersionNav {}
 
             for chapter in chapters.into_iter().flatten().filter(|chapter| chapter.maybe_link().is_some()) {
                 SidebarSection { chapter: chapter }
@@ -69,12 +73,8 @@ fn DocVersionNav(cx: Scope) -> Element {
         div { class: "pb-4",
             ul { class: "pl-2",
                 li { class: "m-1 rounded-md pl-2 hover:bg-gray-200 hover:dark:bg-gray-800",
-                    Link {
-                        to: "/learn/0.3/guide/en",
-                        dioxus_material_icons::MaterialIcon {
-                            name: "chevron_left",
-                            color: "gray",
-                        }
+                    Link { to: "/learn/0.3/guide/en",
+                        dioxus_material_icons::MaterialIcon { name: "chevron_left", color: "gray" }
                         "0.3"
                     }
                 }
@@ -130,18 +130,11 @@ fn SidebarChapter(cx: Scope, chapter: &'static SummaryItem<BookRoute>) -> Elemen
 
     if show_chevron {
         render! {
-            li {
-                class: "m-1 rounded-md ml-[-1px] hover:bg-gray-200 hover:dark:bg-gray-800",
+            li { class: "m-1 rounded-md ml-[-1px] hover:bg-gray-200 hover:dark:bg-gray-800",
                 button { onclick: move |_| list_toggle.set(!list_toggle.get()),
-                    dioxus_material_icons::MaterialIcon {
-                        name: "chevron_right",
-                        color: "gray",
-                    }
+                    dioxus_material_icons::MaterialIcon { name: "chevron_right", color: "gray" }
                 }
-                Link {
-                    to: Route::Docs { child: *url },
-                    "{link.name}"
-                }
+                Link { to: Route::Docs { child: *url }, "{link.name}" }
             }
             if show_dropdown {
                 rsx! {
@@ -153,13 +146,8 @@ fn SidebarChapter(cx: Scope, chapter: &'static SummaryItem<BookRoute>) -> Elemen
                 }
             }
         }
-    }
-    else {
-        render! {
-            LocationLink {
-                chapter: chapter
-            }
-        }
+    } else {
+        render! { LocationLink { chapter: chapter } }
     }
 }
 
@@ -177,7 +165,9 @@ fn LocationLink(cx: Scope, chapter: &'static SummaryItem<BookRoute>) -> Element 
 
     render! {
         Link { to: Route::Docs { child: *url },
-            li { class: "m-1 rounded-md pl-2 hover:bg-gray-200 hover:dark:bg-gray-800 {current_class}", "{link.name}" }
+            li { class: "m-1 rounded-md pl-2 hover:bg-gray-200 hover:dark:bg-gray-800 {current_class}",
+                "{link.name}"
+            }
         }
     }
 }
@@ -185,7 +175,11 @@ fn LocationLink(cx: Scope, chapter: &'static SummaryItem<BookRoute>) -> Element 
 // Todo: wire this up to the sections of the current page and a scroll controller
 fn RightNav(cx: Scope) -> Element {
     let highlighted = use_read(cx, &HIGHLIGHT_DOCS_LAYOUT);
-    let extra_class = if highlighted.0 { "border border-green-600 rounded-md" } else { "" };
+    let extra_class = if highlighted.0 {
+        "border border-green-600 rounded-md"
+    } else {
+        ""
+    };
     let page = use_book(cx);
     let padding_map = ["pl-2", "pl-4", "pl-6", "pl-8", "pl-10"];
 
@@ -197,23 +191,26 @@ fn RightNav(cx: Scope) -> Element {
             ul { class: "",
                 for section in page.sections() {
                     li { class: "pb-2 {padding_map[section.level-1]}",
-                        a {
-                            href: "?phantom={section.id}#{section.id}",
-                            "{section.title}"
-                        }
+                        a { href: "?phantom={section.id}#{section.id}", "{section.title}" }
                     }
                 }
             }
+            h2 { class: "py-4 font-semibold", "Go to version" }
+            DocVersionNav {}
         }
     }
 }
 
 fn Content(cx: Scope) -> Element {
     let highlighted = use_read(cx, &HIGHLIGHT_DOCS_CONTENT);
-    let extra_class = if highlighted.0 { "border border-blue-600 rounded-md" } else { "" };
+    let extra_class = if highlighted.0 {
+        "border border-blue-600 rounded-md"
+    } else {
+        ""
+    };
 
     render! {
-        section { class: "text-gray-600 body-font overflow-hidden dark:bg-ideblack mx-auto container pt-12 pb-12 max-w-screen-md",
+        section { class: "text-gray-600 body-font overflow-hidden dark:bg-ideblack mx-auto container pt-6 pb-12 max-w-screen-lg",
             div { class: "-py-8 {extra_class}",
                 div { class: "flex w-full mb-20 flex-wrap list-none",
                     style {
@@ -223,9 +220,7 @@ fn Content(cx: Scope) -> Element {
                         ".markdown-body button {{ display: inline-block; background-color: rgba(209, 213, 219, 0.3); border-radius: 0.25rem; padding: 0.25rem 0.5rem; border: 1px solid; margin: 0.25rem; }}"
                         ".markdown-body .header {{ color: inherit }}"
                     }
-                    article { class: "markdown-body pt-1",
-                        Outlet::<Route> {}
-                    }
+                    article { class: "markdown-body pt-1", Outlet::<Route> {} }
                 }
             }
         }
@@ -263,7 +258,10 @@ fn use_book(cx: &ScopeState) -> BookRoute {
 }
 
 fn default_page() -> &'static Page<BookRoute> {
-    let id = LAZY_BOOK.page_id_mapping.get(&BookRoute::default()).unwrap();
+    let id = LAZY_BOOK
+        .page_id_mapping
+        .get(&BookRoute::default())
+        .unwrap();
     LAZY_BOOK.pages.get(id.0).unwrap()
 }
 

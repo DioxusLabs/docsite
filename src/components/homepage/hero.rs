@@ -2,12 +2,12 @@ use crate::*;
 
 pub fn Hero(cx: Scope) -> Element {
     cx.render(rsx! {
-        section { class: "w-full dark:bg-ideblack h-fit md:h-screen",
-            div { class: "flex flex-wrap items-center pb-12 px-3 md:px-12 max-w-screen-2xl mx-auto text-center",
+        section { class: "w-full dark:bg-ideblack h-screen",
+            div { class: "flex flex-wrap items-center pb-12 px-3 md:px-12 max-w-screen-2xl mx-auto text-center my-auto h-full",
                 div { class: "relative w-full mx-4 sm:mx-auto text-gray-600",
                     div { class: "text-[3em] md:text-[5em] font-semibold dark:text-white text-ghdarkmetal font-sans py-12 flex flex-col",
-                        span {"Fullstack, crossplatform,"}
-                        span {"lightning fast, fully typed." }
+                        span { "Fullstack, crossplatform," }
+                        span { "lightning fast, fully typed." }
                     }
 
                     h3 { class: "text-[2em] dark:text-white font-extralight text-ghdarkmetal pt-4 max-w-screen-md mx-auto",
@@ -15,43 +15,39 @@ pub fn Hero(cx: Scope) -> Element {
                     }
 
                     div { class: "pt-12 text-white text-[1.2em] font-sans font-bold flex flex-row justify-center space-x-4",
-                        Link { to: Route::Docs { child: BookRoute::GettingStartedIndex {} }, class: "bg-red-600 py-2 px-8", "Quickstart" }
-                        Link { to: Route::Docs { child: BookRoute::ReferenceIndex {} }, class: "bg-blue-500 py-2 px-8", "Read the docs" }
+                        Link {
+                            to: Route::Docs {
+    child: BookRoute::GettingStartedIndex {},
+},
+                            class: "bg-red-600 py-2 px-8",
+                            "Quickstart"
+                        }
+                        Link {
+                            to: Route::Docs {
+    child: BookRoute::ReferenceIndex {},
+},
+                            class: "bg-blue-500 py-2 px-8",
+                            "Read the docs"
+                        }
                     }
 
-                    div { class: "max-screen-2xl mx-auto pt-36",
-                        h1 { class: "text-md", "Trusted by top companies"}
-                        div {
-                            class: "pt-4 flex flex-row flex-wrap justify-center",
-                            div {
-                                class: "h-12 w-40 bg-black p-2 m-4 flex justify-center items-center",
-                                img {
-                                    src: "static/futurewei_bw.png",
-                                }
+                    div { class: "max-w-screen-2xl mx-auto pt-36",
+                        h1 { class: "text-md", "Trusted by top companies" }
+                        div { class: "pt-4 flex flex-row flex-wrap justify-center",
+                            div { class: "h-12 w-40 bg-black p-2 m-4 flex justify-center items-center",
+                                img { src: "static/futurewei_bw.png" }
                             }
-                            div {
-                                class: "h-12 w-40 bg-black p-2 m-4 flex justify-center items-center",
-                                img {
-                                    src: "static/airbuslogo.svg",
-                                }
+                            div { class: "h-12 w-40 bg-black p-2 m-4 flex justify-center items-center",
+                                img { src: "static/airbuslogo.svg" }
                             }
-                            div {
-                                class: "h-12 w-40 bg-black p-2 m-4 flex justify-center items-center",
-                                img {
-                                    src: "static/ESA_logo.svg",
-                                }
+                            div { class: "h-12 w-40 bg-black p-2 m-4 flex justify-center items-center",
+                                img { src: "static/ESA_logo.svg" }
                             }
-                            div {
-                                class: "h-12 w-40 bg-black p-2 m-4 flex justify-center items-center",
-                                img {
-                                    src: "static/yclogo.svg",
-                                }
+                            div { class: "h-12 w-40 bg-black p-2 m-4 flex justify-center items-center",
+                                img { src: "static/yclogo.svg" }
                             }
-                            div {
-                                class: "h-12 w-40 bg-black p-2 m-4 flex justify-center items-center",
-                                img {
-                                    src: "static/satellite.webp",
-                                }
+                            div { class: "h-12 w-40 bg-black p-2 m-4 flex justify-center items-center",
+                                img { src: "static/satellite.webp" }
                             }
                         }
                     }

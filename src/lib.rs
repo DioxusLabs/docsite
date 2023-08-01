@@ -88,6 +88,8 @@ pub enum Route {
             PostTemplate {},
             #[route("/going-fulltime")]
             PostFulltime {},
+            #[route("/release-040")]
+            PostRelease040 {},
             #[route("/release-030")]
             PostRelease030 {},
             #[route("/release-020")]
@@ -95,7 +97,7 @@ pub enum Route {
             #[route("/introducing-dioxus")]
             PostRelease010 {},
         #[end_nest]
-        
+
         #[layout(Learn)]
             #[nest("/learn")]
                 #[redirect("/", || Route::Docs { child: BookRoute::Index {} })]
@@ -121,9 +123,7 @@ pub fn use_url(cx: &ScopeState) -> String {
 }
 
 pub fn app(cx: Scope) -> Element {
-    render! {
-        Router::<Route> {}
-    }
+    render! { Router::<Route> {} }
 }
 
 static SEARCH_INDEX: dioxus_search::LazySearchIndex<Route> = dioxus_search::load_search_index! {
@@ -143,7 +143,7 @@ mod docs {
                 width: "800",
                 height: "450",
                 src: "{url}?embed=1",
-                "allowfullscreen": true,
+                "allowfullscreen": true
             }
         }
     }
@@ -200,9 +200,7 @@ pub enum Route {{\n\t"
                     class: "border border-orange-600 rounded-md",
                     "#[layout(HeaderFooter)]"
                 }
-                span {
-                    "\n\t\t// ... other routes\n\t\t"
-                }
+                span { "\n\t\t// ... other routes\n\t\t" }
                 span {
                     onmouseenter: move |_| {
                         highlight_nav.set(NavLayoutHighlighted(false));
@@ -232,9 +230,7 @@ pub enum Route {{\n\t"
                     class: "border border-blue-600 rounded-md",
                     r##"#[route("/learn")]"##
                 }
-                span {
-                    "\n\t\t\tDocs {{}},\n}}"
-                }
+                span { "\n\t\t\tDocs {{}},\n}}" }
             }
         }
     }

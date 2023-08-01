@@ -9,12 +9,18 @@ edition = "2018"
 [dependencies]
 dioxus-router = { git = "https://github.com/dioxuslabs/dioxus" }
 dioxus = { git = "https://github.com/dioxuslabs/dioxus" }
-dioxus-web = { git = "https://github.com/dioxuslabs/dioxus", features = ["hydrate"], optional = true }
+dioxus-web = { git = "https://github.com/dioxuslabs/dioxus", features = [
+    "hydrate",
+], optional = true }
 dioxus-ssr = { git = "https://github.com/dioxuslabs/dioxus", optional = true }
-dioxus-fullstack = { git = "https://github.com/dioxuslabs/dioxus", features = ["router"] }
+dioxus-fullstack = { git = "https://github.com/dioxuslabs/dioxus", features = [
+    "router",
+] }
 dioxus-tui = { git = "https://github.com/dioxuslabs/dioxus", optional = true }
 dioxus-desktop = { git = "https://github.com/dioxuslabs/dioxus", optional = true }
-dioxus-liveview = { git = "https://github.com/dioxuslabs/dioxus", features = ["axum"], optional = true }
+dioxus-liveview = { git = "https://github.com/dioxuslabs/dioxus", features = [
+    "axum",
+], optional = true }
 dioxus-native-core = { git = "https://github.com/dioxuslabs/dioxus", optional = true }
 dioxus-native-core-macro = { git = "https://github.com/dioxuslabs/dioxus", optional = true }
 fermi = { git = "https://github.com/dioxuslabs/dioxus" }
@@ -27,7 +33,7 @@ once_cell = "1.17.1"
 console_error_panic_hook = "0.1.7"
 gloo-history = "0.1.3"
 autoexport = "0.1.0"
-dioxus-material-icons = "1.1.0"
+dioxus-material-icons = { git = "https://github.com/jkelleyrtp/dioxus-material-icons.git", branch = "jk/bump-release" }
 include_dir = "0.7.3"
 anyhow = "1.0.71"
 syntect-html = { git = "https://github.com/demonthos/include_mdbook", branch = "router-intigration" }
@@ -42,7 +48,12 @@ simple_logger = "4.2.0"
 shipyard = { version = "0.6.2", optional = true }
 reqwest = { version = "0.11.18", features = ["json"] }
 gloo-storage = { version = "0.2.2", optional = true }
-web-sys = { version = "0.3.64", features = ["Document", "Window", "Event", "AddEventListenerOptions"] }
+web-sys = { version = "0.3.64", features = [
+    "Document",
+    "Window",
+    "Event",
+    "AddEventListenerOptions",
+] }
 slab = "0.4.8"
 chrono = { version = "0.4.26", features = ["serde"] }
 futures = "0.3.28"
@@ -57,13 +68,33 @@ opt-level = 'z'
 strip = "debuginfo"
 
 [patch.crates-io]
-dioxus-core = { git = "https://github.com/dioxuslabs/dioxus" }
-dioxus-rsx = { git = "https://github.com/dioxuslabs/dioxus" }
-dioxus = { git = "https://github.com/dioxuslabs/dioxus" }
+dioxus-core = { git = "https://github.com/dioxuslabs/dioxus", version = "0.4.0" }
+dioxus-html = { git = "https://github.com/dioxuslabs/dioxus", version = "0.4.0" }
+dioxus-rsx = { git = "https://github.com/dioxuslabs/dioxus", version = "0.4.0" }
+dioxus = { git = "https://github.com/dioxuslabs/dioxus", version = "0.4.0" }
 
 [features]
 default = []
-doc_test = ["tokio", "ssr", "dioxus-web", "dioxus-router/web", "dioxus-tui", "dioxus-desktop", "dioxus-liveview", "dioxus-native-core", "dioxus-native-core-macro", "shipyard", "gloo-storage", "pretty_assertions"]
+doc_test = [
+    "tokio",
+    "ssr",
+    "dioxus-web",
+    "dioxus-router/web",
+    "dioxus-tui",
+    "dioxus-desktop",
+    "dioxus-liveview",
+    "dioxus-native-core",
+    "dioxus-native-core-macro",
+    "shipyard",
+    "gloo-storage",
+    "pretty_assertions",
+]
 web = ["dioxus-web", "dioxus-router/web"]
-ssr = ["dioxus-ssr", "dioxus-router/ssr", "tokio", "dioxus-fullstack/axum", "axum"]
+ssr = [
+    "dioxus-ssr",
+    "dioxus-router/ssr",
+    "tokio",
+    "dioxus-fullstack/axum",
+    "axum",
+]
 prebuild = ["ssr"]

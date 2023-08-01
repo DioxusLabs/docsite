@@ -7,6 +7,7 @@ pub fn App(cx: Scope) -> Element {
         a {
             href: "https://example.com",
             prevent_default: "onclick",
+            onclick: |_| log::info!("link clicked"),
             "example.com",
         }
     })

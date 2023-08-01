@@ -73,7 +73,7 @@ fn DocVersionNav(cx: Scope) -> Element {
         div { class: "pb-4",
             ul { class: "pl-2",
                 li { class: "m-1 rounded-md pl-2 hover:bg-gray-200 hover:dark:bg-gray-800",
-                    a { href: "/learn/0.3/guide/en",
+                    a { href: "/learn/0.3",
                         dioxus_material_icons::MaterialIcon { name: "chevron_left", color: "gray" }
                         "0.3"
                     }

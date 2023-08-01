@@ -115,7 +115,7 @@ pub fn BlogList(cx: Scope) -> Element {
             div { class: "container max-w-screen-lg pt-12 pb-12 mx-auto",
                 div { class: "-my-8 px-8 pb-12",
                     // Header
-                    h2 { class: "mb-8 md:mb-16 sm:text-3xl text-2xl font-medium title-font font-sans",
+                    h2 { class: "dark:text-white mb-8 md:mb-16 sm:text-3xl text-2xl font-medium title-font font-sans",
                         "Recent Blog Posts"
                     }
                     section { class: "body-font overflow-hidden dark:bg-ideblack",

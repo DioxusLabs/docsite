@@ -15,9 +15,9 @@ fn main() {
     }
     #[cfg(feature = "prebuild")]
     {
-        use log::LevelFilter;
         use dioxus_fullstack::prelude::*;
         use dioxus_router::prelude::*;
+        use log::LevelFilter;
         simple_logger::SimpleLogger::new()
             .with_level(LevelFilter::Info)
             .with_module_level("dioxus_search_macro", LevelFilter::Trace)

@@ -238,7 +238,11 @@ fn SearchModal(cx: Scope) -> Element {
     let search_text = use_state(cx, String::new);
     let results = use_ref(cx, || SEARCH_INDEX.search(search_text.get()));
     
-    let last_key_press = use_ref(cx, || js_sys::Date::now());
+    let last_key_press = use_ref(cx, || {
+        #[cfg(not(target_arch = "wasm32"))]
+        return 0.;
+        js_sys::Date::now()
+    });
     use_future!(cx, |search_text| {
         to_owned![last_key_press, results];
         async move {

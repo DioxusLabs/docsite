@@ -236,7 +236,23 @@ fn Search(cx: Scope) -> Element {
 fn SearchModal(cx: Scope) -> Element {
     let show_modal = use_atom_state(cx, &SHOW_SEARCH);
     let search_text = use_state(cx, String::new);
-    let results = SEARCH_INDEX.search(search_text.get());
+    let results = use_ref(cx, || SEARCH_INDEX.search(search_text.get()));
+    
+    let last_key_press = use_ref(cx, || js_sys::Date::now());
+    use_future!(cx, |search_text| {
+        to_owned![last_key_press, results];
+        async move {
+            // debounce the search
+            if *last_key_press.read() - js_sys::Date::now() > 100. {
+                results.set(SEARCH_INDEX.search(&*search_text.current()));
+                last_key_press.set(js_sys::Date::now());
+            }
+            else {
+                gloo_timers::future::TimeoutFuture::new(100).await;
+                results.set(SEARCH_INDEX.search(&*search_text.current()));
+            }
+        }
+    });
 
     // when we search, we do a similar search to mdbook
     // This will bring up individual sections that reference the search term with the breadcrumb
@@ -289,7 +305,7 @@ fn SearchModal(cx: Scope) -> Element {
                             // Results
                             div { class: "overflow-y-auto",
                                 ul {
-                                    match results {
+                                    match &*results.read() {
                                         Ok(results) => {
                                             if results.is_empty() {
                                                 rsx! {
@@ -319,7 +335,7 @@ fn SearchModal(cx: Scope) -> Element {
                                             else {
                                                 rsx! {
                                                     for result in results {
-                                                        SearchResult { result: result }
+                                                        SearchResult { result: result.clone() }
                                                     }
                                                 }
                                             }

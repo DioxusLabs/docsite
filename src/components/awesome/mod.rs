@@ -127,7 +127,7 @@ pub fn Awesome(cx: Scope) -> Element {
                 section {
                     class: "dark:bg-ideblack w-full pt-24 pb-96",
                     div {
-                        class: "container mx-auto max-w-screen-1g text-center",
+                        class: "container mx-auto max-w-screen-1g text-center animate-fadein-medium",
                         p {
                             class: "text-[3.3em] font-bold tracking-tight dark:text-white text-ghdarkmetal mb-2 px-2",
                             "It seems a not-so-awesome error occurred. 🙁"
@@ -145,7 +145,7 @@ pub fn Awesome(cx: Scope) -> Element {
                 section {
                     class: "dark:bg-ideblack w-full pt-24 pb-96",
                     div {
-                        class: "container mx-auto max-w-screen-1g text-center",
+                        class: "container mx-auto max-w-screen-1g text-center animate-fadein-medium",
                         p {
                             class: "text-[3.3em] font-bold tracking-tight dark:text-white text-ghdarkmetal mb-2 px-2",
                             "That's weird. There isn't anything awesome to show. 🙁"

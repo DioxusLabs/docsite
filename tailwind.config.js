@@ -22,6 +22,15 @@ module.exports = {
         // cutesy: "0px 0px 30px -10px red",
         pop: "0px 0px 30px -10px rgba(0, 0, 0, 0.5)",
       },
+      keyframes: {
+        fadein: {
+          'from': { opacity: '0' },
+          'to': { opacity: '1' },
+        }
+      },
+      animation: {
+        'fadein-medium': 'fadein 500ms ease-in-out forwards',
+      },
     },
   },
   plugins: [],

@@ -1,6 +1,6 @@
 # Fullstack
 
-> This guide assumes you read the [Web](web.md) getting started guide and installed the [Dioxus-cli](https://github.com/DioxusLabs/dioxus/tree/master/packages/cli)
+> This guide assumes you read the [Web](wasm.md) getting started guide and installed the [Dioxus-cli](https://github.com/DioxusLabs/dioxus/tree/master/packages/cli)
 
 # Getting Started
 
@@ -45,7 +45,14 @@ Now, set up your Axum app to serve the Dioxus app.
 {{#include src/doc_examples/server_basic.rs}}
 ```
 
-Now, run your app with `cargo run` and open `http://localhost:8080` in your browser. You should see a server-side rendered page with a counter.
+Now, run your app with:
+
+```
+dx build --features web
+dx serve --features ssr
+```
+
+Finally, open `http://localhost:8080` in your browser. You should see a server-side rendered page with a counter.
 
 ```inject-dioxus
 SandBoxFrame {
@@ -62,15 +69,6 @@ You can place the hot reload macro at the top of your main function in ssr mode 
 
 For more information about hot reloading on native platforms and configuration options see the [dioxus-hot-reload](https://crates.io/crates/dioxus-hot-reload) crate.
 
-### Setup
-
-Add the following to your main function:
-
-```rust
-fn main() {
-	// launch your application
-}
-```
 
 ### Usage
 
@@ -78,7 +76,7 @@ fn main() {
 
 ```bash
 dx build --features web
-dioxus run --features ssr --hot-reload
+dx serve --features ssr --hot-reload
 ```
 
 2. Change some code within a rsx or render macro

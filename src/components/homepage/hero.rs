@@ -2,7 +2,7 @@ use crate::*;
 
 pub fn Hero(cx: Scope) -> Element {
     cx.render(rsx! {
-        section { class: "w-full dark:bg-ideblack h-screen",
+        section { class: "w-full dark:bg-ideblack [@media(min-height:1080px)]:h-screen",
             div { class: "flex flex-wrap items-center pb-12 px-3 md:px-12 max-w-screen-2xl mx-auto text-center my-auto h-full",
                 div { class: "relative w-full mx-4 sm:mx-auto text-gray-600",
                     div { class: "text-[3em] md:text-[5em] font-semibold dark:text-white text-ghdarkmetal font-sans py-12 flex flex-col",

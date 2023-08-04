@@ -2,7 +2,7 @@
 
 This chapter will teach you how to create a [Component](../reference/components.md) that displays a link to a post on hackernews.
 
-First, let's define how to display a post. Dioxus is a *declarative* framework. This means that instead of telling Dioxus what to do (e.g. to "create an element" or "set the color to red") we simply *declare* what we want the UI to look.
+First, let's define how to display a post. Dioxus is a *declarative* framework. This means that instead of telling Dioxus what to do (e.g. to "create an element" or "set the color to red") we simply *declare* how we want the UI to look.
 
 To declare what you want your UI to look like, you will need to use the `rsx` macro. Let's modify the rsx macro in the `App` function from the [getting started](../getting_started/index.md) to show information about our story:
 
@@ -31,7 +31,7 @@ DemoFrame {
 
 ## Dynamic Text
 
-Let's expand our App component to include the story title, author, score, time posted, and number of comments. We can insert dynamic text in the render macro by inserting variables inside `{}`s (this works similarly to the formatting in the [println!](https://doc.rust-lang.org/std/macro.println.html) macro):
+Let's expand our `App` component to include the story title, author, score, time posted, and number of comments. We can insert dynamic text in the render macro by inserting variables inside `{}`s (this works similarly to the formatting in the [println!](https://doc.rust-lang.org/std/macro.println.html) macro):
 
 ```rust
 {{#include src/doc_examples/hackernews_post.rs:story_v2}}
@@ -93,7 +93,7 @@ Let's pull our story description into a new component:
 {{#include src/doc_examples/hackernews_post.rs:story_v5}}
 ```
 
-We can render our component like we would an element by putting `{}`s after the component name. Let's modify our App component to render our new StoryListing component:
+We can render our component like we would an element by putting `{}`s after the component name. Let's modify our `App` component to render our new StoryListing component:
 
 ```rust
 {{#include src/doc_examples/hackernews_post.rs:app_v5}}
@@ -122,7 +122,7 @@ We will also define what a post is and include information for how to transform 
 {{#include src/doc_examples/hackernews_post.rs:story_v6}}
 ```
 
-Now, let's modify the App component to pass the story to our `StoryListing` component like we would set an attribute on an element:
+Now, let's modify the `App` component to pass the story to our `StoryListing` component like we would set an attribute on an element:
 
 ```rust
 {{#include src/doc_examples/hackernews_post.rs:app_v6}}

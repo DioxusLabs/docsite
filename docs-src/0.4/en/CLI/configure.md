@@ -114,7 +114,7 @@ Only include resources at `Dev` mode.
    ```
 2. **_script_** - include some script(JS) file into html.
    ```
-   style = [
+   script = [
        # include from public_dir.
        "./assets/index.js",
        # or some asset from online cdn.

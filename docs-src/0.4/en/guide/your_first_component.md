@@ -2,7 +2,7 @@
 
 This chapter will teach you how to create a [Component](../reference/components.md) that displays a link to a post on hackernews.
 
-First, let's define how to display a post. Dioxus is a *declarative* framework. This means that instead of telling Dioxus what to do (e.g. to "create an element" or "set the color to red") we simply *declare* what we want the UI to look.
+First, let's define how to display a post. Dioxus is a *declarative* framework. This means that instead of telling Dioxus what to do (e.g. to "create an element" or "set the color to red") we simply *declare* how we want the UI to look.
 
 To declare what you want your UI to look like, you will need to use the `rsx` macro. Let's modify the rsx macro in the `App` function from the [getting started](../getting_started/index.md) to show information about our story:
 

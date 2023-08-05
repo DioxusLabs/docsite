@@ -11,7 +11,7 @@ pub fn Hero(cx: Scope) -> Element {
                     }
 
                     h3 { class: "text-[2em] dark:text-white font-extralight text-ghdarkmetal pt-4 max-w-screen-md mx-auto",
-                        "Dioxus is Rust library for building apps that run on desktop, web, mobile, and more."
+                        "Dioxus is a Rust library for building apps that run on desktop, web, mobile, and more."
                     }
 
                     div { class: "pt-12 text-white text-[1.2em] font-sans font-bold flex flex-row justify-center space-x-4",

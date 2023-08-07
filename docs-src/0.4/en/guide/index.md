@@ -16,7 +16,6 @@ cargo add chrono --features serde
 cargo add futures
 cargo add reqwest
 cargo add serde --features derive
-cargo add serde --features derive
 cargo add serde_json
 cargo add async_recursion
 ```

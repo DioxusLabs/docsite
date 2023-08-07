@@ -1,9 +1,28 @@
-name: github pages
+name: check examples
 
 on:
   push:
     branches:
       - master
+    paths:
+      - examples/**
+      - docs_src/**
+      - src/**
+      - .github/**
+      - lib.rs
+      - Cargo.toml
+
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+    branches:
+      - master
+    paths:
+      - examples/**
+      - docs_src/**
+      - src/**
+      - .github/**
+      - lib.rs
+      - Cargo.toml
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}

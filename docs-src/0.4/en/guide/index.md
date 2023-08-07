@@ -14,8 +14,7 @@ First, lets setup our dependencies. In addition to the dependencies you added in
 ```sh
 cargo add chrono --features serde
 cargo add futures
-cargo add reqwest
-cargo add serde --features derive
+cargo add reqwest --features json
 cargo add serde --features derive
 cargo add serde_json
 cargo add async_recursion

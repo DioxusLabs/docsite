@@ -27,7 +27,7 @@ pub fn Err404(cx: Scope, segments: Vec<String>) -> Element {
                     picture {
                         source {
                             r#type: "image/avif",
-                            "srcset": "https://rustacean.net/assets/rustacean-flat-gesture.png"
+                            "srcset": "/static/rustacean-flat-gesture.avif"
                         }
                         img {
                             class: "w-full rounded-lg object-cover",

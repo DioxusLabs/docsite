@@ -114,7 +114,7 @@ impl State for TextColor {
             Some("red") => TextColor { r: 255, g: 0, b: 0 },
             Some("green") => TextColor { r: 0, g: 255, b: 0 },
             Some("blue") => TextColor { r: 0, g: 0, b: 255 },
-            Some(color) => panic!("unknown color {color}"),
+            Some(color) => panic!("unknown color {}", "red"),
             // otherwise check if the node has a parent and inherit that color
             None => match parent {
                 Some((parent,)) => *parent,

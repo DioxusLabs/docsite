@@ -27,8 +27,8 @@ use dioxus::prelude::*;
 enum Route {
     #[route("/home")]
     // This route will render the Home component with the HomeProps props. (make sure you have the props imported)
-    // You can modify the props by passing extra arguments to the macro:
-    // #[route("/home", Comp, CompProps)]
+    // You can modify the props by passing extra arguments to the macro. For example, if you want the Home variant to render a component called Homepage, you could use:
+    // #[route("/home", Homepage)]
     Home {},
     #[route("/blog")]
     Blog {},

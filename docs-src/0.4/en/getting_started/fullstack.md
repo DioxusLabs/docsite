@@ -33,10 +33,13 @@ Your dependencies should look roughly like this:
 
 ```toml
 [dependencies]
-axum = "*"
 dioxus = { version = "*" }
-dioxus-fullstack = { version = "*", features = ["axum", "ssr"] }
-tokio = { version = "*", features = ["full"] }
+dioxus-fullstack = { version = "*" }
+
+[features]
+default = []
+ssr = ["dioxus-fullstack/axum"]
+web = ["dioxus-fullstack/web"]
 ```
 
 Now, set up your Axum app to serve the Dioxus app.
@@ -48,8 +51,8 @@ Now, set up your Axum app to serve the Dioxus app.
 Now, run your app with:
 
 ```
-dx build --features web
-dx serve --features ssr
+dx build --features web --release
+cargo run --features ssr --release
 ```
 
 Finally, open `http://localhost:8080` in your browser. You should see a server-side rendered page with a counter.
@@ -76,7 +79,7 @@ For more information about hot reloading on native platforms and configuration o
 
 ```bash
 dx build --features web
-dx serve --features ssr --hot-reload
+dx serve --features ssr --hot-reload --platform desktop
 ```
 
 2. Change some code within a rsx or render macro

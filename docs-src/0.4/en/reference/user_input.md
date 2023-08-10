@@ -41,3 +41,21 @@ DemoFrame {
 ```
 Submitted! UiEvent { data: FormData { value: "", values: {"age": "very old", "date": "1966", "name": "Fred"} } }
 ```
+
+## Handling files
+You can insert a file picker by using an input component e.g. `input {"type":"file"}`. This component supports the `multiple` attribute, to let you pick more files at the same time. You can select an entire folder by adding the `webkitdirectory` attribute: beware that, even if it's currently accepted in major browsers, it is not part of the HTML standard and may break in the future.
+
+Pay attention that `type` is a Rust keyword, so when specifying the type of the input field, you have to write it as `r#type:"file"` or as a string as in `"type":"file"`.
+
+Extracting the selected files is a bit different compared to how you're used to do in Javascript.
+The `FormData` struct in the fired event contains an additional hidden field named `FileEngine`. This struct lets you fetch the filenames selected by the user. The example saves the filenames of the selected files to a `Vec`:
+
+```rust, no_run
+{{#include src/doc_examples/input_fileengine.rs:component}}
+```
+
+If you're planning to read the file content, make sure to do it asynchronously, in order to not freeze the UI in the meantime. This example loads the content of the selected files in an async closure.
+
+```rust, no_run
+{{#include src/doc_examples/input_fileengine_async.rs:component}}
+```

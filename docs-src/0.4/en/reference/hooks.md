@@ -4,7 +4,7 @@ So far our components have had no state like a normal rust functions. However, i
 
 Hooks allow us to create state in our components. Hooks are Rust functions that take a reference to [`ScopeState`](https://docs.rs/dioxus/latest/dioxus/prelude/struct.ScopeState.html) (in a component, you can pass `cx`), and provide you with functionality and state.
 
-Dioxus provides many built in hooks, but if those hooks don't fit your specific use case, you also can [create your own hook](../../cookbook/state/custom_hooks/index.md)
+Dioxus provides many built in hooks, but if those hooks don't fit your specific use case, you also can [create your own hook](../cookbook/state/custom_hooks/index.md)
 
 ## use_state Hook
 

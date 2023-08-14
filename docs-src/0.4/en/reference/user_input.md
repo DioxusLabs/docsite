@@ -43,18 +43,21 @@ Submitted! UiEvent { data: FormData { value: "", values: {"age": "very old", "da
 ```
 
 ## Handling files
-You can insert a file picker by using an input component e.g. `input {"type":"file"}`. This component supports the `multiple` attribute, to let you pick more files at the same time. You can select an entire folder by adding the `webkitdirectory` attribute: beware that, even if it's currently accepted in major browsers, it is not part of the HTML standard and may break in the future.
+You can insert a file picker by using an input element e.g. `input {"type":"file"}`. This element supports the `multiple` attribute, to let you pick more files at the same time. You can select an entire folder by adding the `directory` attribute.
 
-Pay attention that `type` is a Rust keyword, so when specifying the type of the input field, you have to write it as `r#type:"file"` or as a string as in `"type":"file"`.
+> Dioxus will map this attribute to browser specific attributes. Because there is no standardized way to allow multiple files to be uploaded.
 
-Extracting the selected files is a bit different compared to how you're used to do in Javascript.
-The `FormData` struct in the fired event contains an additional hidden field named `files`. This field contains a `FileEngine` struct which lets you fetch the filenames selected by the user. The example saves the filenames of the selected files to a `Vec`:
+`type` is a Rust keyword, so when specifying the type of the input field, you have to write it as `r#type:"file"`.
+
+Extracting the selected files is a bit different from what you may typically use in Javascript.
+
+The `FormData` event contains a `files` field with data about the uploaded files. This field has a `FileEngine` struct which lets you fetch the filenames selected by the user. This example saves the filenames of the selected files to a `Vec`:
 
 ```rust, no_run
 {{#include src/doc_examples/input_fileengine.rs:component}}
 ```
 
-If you're planning to read the file content, make sure to do it asynchronously, in order to not freeze the UI in the meantime. This example loads the content of the selected files in an async closure.
+If you're planning to read the file content, you need to do it asynchronously, to keep the rest of the UI interactive. This example loads the content of the selected files in an async closure:
 
 ```rust, no_run
 {{#include src/doc_examples/input_fileengine_async.rs:component}}

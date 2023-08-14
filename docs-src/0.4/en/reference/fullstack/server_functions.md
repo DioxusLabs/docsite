@@ -55,6 +55,6 @@ Now when you load the page, you should see `server data is Ok("Hello from the se
 
 ```inject-dioxus
 SandBoxFrame {
-	url: "https://codesandbox.io/p/sandbox/dioxus-fullstack-server-future-64vk22?file=%2Fsrc%2Fmain.rs%3A6%2C1"
+	url: "https://codesandbox.io/p/sandbox/dioxus-fullstack-server-future-qwpp4p?file=/src/main.rs:3,24"
 }
 ```

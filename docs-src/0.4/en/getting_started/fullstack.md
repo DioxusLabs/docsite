@@ -22,11 +22,13 @@ cargo add dioxus
 cargo add dioxus-fullstack --features axum
 ```
 
-Next, add all the Axum dependencies. This will be different if you're using a different Web Framework
+Next, set up features for the server (`ssr`) and the client (`web`):
 
-```shell
-cargo add tokio --features full
-cargo add axum
+```toml
+[features]
+default = []
+ssr = ["dioxus-fullstack/axum"]
+web = ["dioxus-fullstack/web"]
 ```
 
 Your dependencies should look roughly like this:

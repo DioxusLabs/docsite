@@ -7,23 +7,23 @@ edition = "2018"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-dioxus-router = { git = "https://github.com/dioxuslabs/dioxus" }
-dioxus = { git = "https://github.com/dioxuslabs/dioxus" }
-dioxus-web = { git = "https://github.com/dioxuslabs/dioxus", features = [
+dioxus-router = { version = "0.4" }
+dioxus = { version = "0.4" }
+dioxus-web = { version = "0.4", features = [
     "hydrate",
 ], optional = true }
-dioxus-ssr = { git = "https://github.com/dioxuslabs/dioxus", optional = true }
-dioxus-fullstack = { git = "https://github.com/dioxuslabs/dioxus", features = [
+dioxus-ssr = { version = "0.4", optional = true }
+dioxus-fullstack = { version = "0.4", features = [
     "router",
 ] }
-dioxus-tui = { git = "https://github.com/dioxuslabs/dioxus", optional = true }
-dioxus-desktop = { git = "https://github.com/dioxuslabs/dioxus", optional = true }
-dioxus-liveview = { git = "https://github.com/dioxuslabs/dioxus", features = [
+dioxus-tui = { version = "0.4", optional = true }
+dioxus-desktop = { version = "0.4", optional = true }
+dioxus-liveview = { version = "0.4", features = [
     "axum",
 ], optional = true }
-dioxus-native-core = { git = "https://github.com/dioxuslabs/dioxus", optional = true }
-dioxus-native-core-macro = { git = "https://github.com/dioxuslabs/dioxus", optional = true }
-fermi = { git = "https://github.com/dioxuslabs/dioxus" }
+dioxus-native-core = { version = "0.4", optional = true }
+dioxus-native-core-macro = { version = "0.4", optional = true }
+fermi = { version = "0.4" }
 serde = { version = "1.0.163", features = ["derive"] }
 serde_json = "1.0.96"
 log = "0.4.17"
@@ -76,13 +76,6 @@ codegen-units = 256
 [profile.release.build-override]
 opt-level = 2
 codegen-units = 256
-
-[patch.crates-io]
-dioxus-core = { git = "https://github.com/dioxuslabs/dioxus", version = "0.4.0" }
-dioxus-html = { git = "https://github.com/dioxuslabs/dioxus", version = "0.4.0" }
-dioxus-rsx = { git = "https://github.com/dioxuslabs/dioxus", version = "0.4.0" }
-dioxus = { git = "https://github.com/dioxuslabs/dioxus", version = "0.4.0" }
-dioxus-router = { git = "https://github.com/dioxuslabs/dioxus", version = "0.4.0" }
 
 [features]
 default = []

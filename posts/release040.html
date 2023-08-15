@@ -37,10 +37,10 @@
 <h2 id="server-functions">Server Functions</h2>
 <p>These days, every cool UI library has some sort of backend framework to do server stuff. This could be interacting with a database, uploading files, working with websockets, you name it. With Dioxus 0.4, we’re adding our first backend solution: Server Functions.</p>
 <p>Server Functions are functions annotated with the <code>server</code> procedural macro that generates an RPC client and server for your app. With a single function declaration, you get both the server endpoint <em>and</em> the client required to interact with the endpoint.</p>
-<p>For example, take this simple Server Function. We’re using the awesome <a href="https://github.com/trevyn/turbosql">turbosql</a> crate by <a href="https://github.com/trevyn">treyvn</a> to interact with a sqlite database to load a person’s username.</p>
+<p>For example, take this simple Server Function. We’re using the awesome <a href="https://github.com/trevyn/turbosql">turbosql</a> crate by <a href="https://github.com/trevyn">trevyn</a> to interact with a sqlite database to load a person’s username.</p>
 <pre><code class="lang-rust"><span class="hljs-meta">#[server]</span>
 async <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">get_username</span></span>() -&gt; <span class="hljs-built_in">Result</span>&lt;<span class="hljs-built_in">String</span>&gt; {
-    <span class="hljs-comment">// Using turobsql to extract some data from the DB</span>
+    <span class="hljs-comment">// Using turbosql to extract some data from the DB</span>
     <span class="hljs-literal">Ok</span>(<span class="hljs-built_in">select!</span>(<span class="hljs-built_in">String</span> <span class="hljs-string">"SELECT name FROM person"</span>)?)
 }
 </code></pre>

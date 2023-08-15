@@ -46,12 +46,12 @@ These days, every cool UI library has some sort of backend framework to do serve
 
 Server Functions are functions annotated with the `server` procedural macro that generates an RPC client and server for your app. With a single function declaration, you get both the server endpoint *and* the client required to interact with the endpoint.
 
-For example, take this simple Server Function. We’re using the awesome [turbosql](https://github.com/trevyn/turbosql) crate by [treyvn](https://github.com/trevyn) to interact with a sqlite database to load a person’s username.
+For example, take this simple Server Function. We’re using the awesome [turbosql](https://github.com/trevyn/turbosql) crate by [trevyn](https://github.com/trevyn) to interact with a sqlite database to load a person’s username.
 
 ```rust
 #[server]
 async fn get_username() -> Result<String> {
-	// Using turobsql to extract some data from the DB
+	// Using turbosql to extract some data from the DB
 	Ok(select!(String "SELECT name FROM person")?)
 }
 ```

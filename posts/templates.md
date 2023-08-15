@@ -217,7 +217,7 @@ Not only can templates be cached inside of a renderer, they can be modified afte
 
 ### Performant LiveView
 
-Another addition to Diouxs 0.3 is the new LiveView renderer. Much like its counterpart Phoenix LiveView, Dioxus LiveView enables entirely server-rendered apps and components while shipping minimal JS to the client. In the Liveview model, minimizing latency and bandwidth is crucial to keeping apps snappy, especially for lower-end clients.
+Another addition to Dioxus 0.3 is the new LiveView renderer. Much like its counterpart Phoenix LiveView, Dioxus LiveView enables entirely server-rendered apps and components while shipping minimal JS to the client. In the Liveview model, minimizing latency and bandwidth is crucial to keeping apps snappy, especially for lower-end clients.
 
 ![ElixirLivewview.jpg](Making%20Dioxus%20(almost)%20as%20fast%20as%20SolidJS%20baea0d5b4e614351ac8e3d4fc4240d04/ElixirLivewview.jpg)
 

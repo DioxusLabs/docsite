@@ -156,7 +156,7 @@ Edit::HydateText(<span class="hljs-number">0</span>, <span class="hljs-string">"
 <p>Not only can templates be cached inside of a renderer, they can be modified after-the-fact. The renderer is smart enough to track down the instance of every template node on the page and apply the same patches.</p>
 <h3 id="performant-liveview">Performant LiveView</h3>
 
-<p>Another addition to Diouxs 0.3 is the new LiveView renderer. Much like its counterpart Phoenix LiveView, Dioxus LiveView enables entirely server-rendered apps and components while shipping minimal JS to the client. In the Liveview model, minimizing latency and bandwidth is crucial to keeping apps snappy, especially for lower-end clients.</p>
+<p>Another addition to Dioxus 0.3 is the new LiveView renderer. Much like its counterpart Phoenix LiveView, Dioxus LiveView enables entirely server-rendered apps and components while shipping minimal JS to the client. In the Liveview model, minimizing latency and bandwidth is crucial to keeping apps snappy, especially for lower-end clients.</p>
 <p><img src="https://i.imgur.com/nJOX4cw.jpg" alt="Elixir LiveView"></p>
 <p>Now, instead of sending hundreds or thousands of edits to the client to render things like lists and complex markup, Dioxus packages all the templates the client will use inside of the HTML shipped to the client. A sample HTML document that might be sent from the server to the client may look like this:</p>
 <pre><code class="lang-html"><span class="hljs-tag">&lt;<span class="hljs-name">head</span>&gt;</span>

@@ -45,7 +45,7 @@ Submitted! UiEvent { data: FormData { value: "", values: {"age": "very old", "da
 ## Handling files
 You can insert a file picker by using an input element e.g. `input {"type":"file"}`. This element supports the `multiple` attribute, to let you pick more files at the same time. You can select an entire folder by adding the `directory` attribute.
 
-> Dioxus will map this attribute to browser specific attributes. Because there is no standardized way to allow multiple files to be uploaded.
+> Dioxus will map this attribute to browser specific attributes. Because there is no standardized way to allow a directory to be selected.
 
 `type` is a Rust keyword, so when specifying the type of the input field, you have to write it as `r#type:"file"`.
 

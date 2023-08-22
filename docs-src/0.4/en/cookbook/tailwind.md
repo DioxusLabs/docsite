@@ -80,6 +80,9 @@ One popular option for styling your Dioxus application is [Tailwind](https://tai
     # which files or dirs will be watcher monitoring
     watch_path = ["src", "public"]
 
+    # uncomment line below if using Router
+    # index_on_404 = true
+
     # include `assets` in web platform
     [web.resource]
 

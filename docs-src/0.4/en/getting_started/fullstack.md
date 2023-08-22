@@ -19,7 +19,7 @@ Add `dioxus` and `dioxus-fullstack` as dependencies:
 
 ```shell
 cargo add dioxus
-cargo add dioxus-fullstack --features axum
+cargo add dioxus-fullstack
 ```
 
 Next, set up features for the server (`ssr`) and the client (`web`):

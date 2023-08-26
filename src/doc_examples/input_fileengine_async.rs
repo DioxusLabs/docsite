@@ -7,13 +7,10 @@ pub fn App(cx: Scope) -> Element {
 
     cx.render(rsx! {
         input {
-            // we tell the component what to render
-            value: "{name}",
-            // tell the input to pick a file
             r#type:"file",
-            // list the accepted extensions
             accept: ".txt, .rs",
             multiple: true,
+            // ANCHOR: onchange_event
             onchange: |evt| {
                 // A helper macro to use hooks in async environments
                 to_owned![files_uploaded];
@@ -30,6 +27,7 @@ pub fn App(cx: Scope) -> Element {
                     }
                 }
             }
+            // ANCHOR_END: onchange_event
         }
     })
 }

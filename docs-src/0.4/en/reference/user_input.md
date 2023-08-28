@@ -41,3 +41,28 @@ DemoFrame {
 ```
 Submitted! UiEvent { data: FormData { value: "", values: {"age": "very old", "date": "1966", "name": "Fred"} } }
 ```
+
+## Handling files
+You can insert a file picker by using an input element of type `file`. This element supports the `multiple` attribute, to let you pick more files at the same time. You can select a folder by adding the `directory` attribute: Dioxus will map this attribute to browser specific attributes, because there is no standardized way to allow a directory to be selected.
+
+`type` is a Rust keyword, so when specifying the type of the input field, you have to write it as `r#type:"file"`.
+
+Extracting the selected files is a bit different from what you may typically use in Javascript.
+
+The `FormData` event contains a `files` field with data about the uploaded files. This field contains a `FileEngine` struct which lets you fetch the filenames selected by the user. This example saves the filenames of the selected files to a `Vec`:
+
+```rust, no_run
+{{#include src/doc_examples/input_fileengine.rs:component}}
+```
+
+If you're planning to read the file content, you need to do it asynchronously, to keep the rest of the UI interactive. This example event handler loads the content of the selected files in an async closure:
+
+```rust, no_run
+{{#include src/doc_examples/input_fileengine_async.rs:onchange_event}}
+```
+
+Lastly, this example shows you how to select a folder, by setting the `directory` attribute to `true`.
+
+```rust, no_run
+{{#include src/doc_examples/input_fileengine_folder.rs:rsx}}
+```

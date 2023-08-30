@@ -1,219 +1,176 @@
 # Configure Project
 
-This chapter will introduce `Dioxus.toml` and anatomy the config file.
+This chapter will teach you how to configure the CLI with the `Dioxus.toml` file.
+There's an [example](#config-example) which has comments to describe individual keys.
+You can copy that or view this documentation for a more complete learning experience.
+
+"🔒" indicates a mandatory item.
+Some headers are mandatory, but none of the keys inside them are.
+In that case, you only need to include the header, but no keys.
+It might look weird, but it's normal.
 
 ## Structure
 
-We use `toml` to define some info for `dioxus` project.
+Each header has its TOML form directly under it.
 
-### Application
+### Application 🔒
 
-1. **_name_** - project name & title
-2. **_default_platform_** - which platform target for this project.
+```toml
+[application]
+```
+
+Application-wide configuration. Applies to both web and desktop.
+
+* **name** 🔒 - Project name & title.
+   ```toml
+   name = "my_project"
    ```
-   # current support: web, desktop
-   # default: web
+* **default_platform** 🔒 - The platform this project targets
+   ```toml
+   # Currently supported platforms: web, desktop
    default_platform = "web"
    ```
-   change this to `desktop`, the `dx build & serve` will default build desktop app.
-3. **_out_dir_** - which directory to put the output file; use `dx build & service`, the output will put at this directory, and the `assets` will be also copy to here.
-   ```
-   out_dir = "dist"
-   ```
-4. **_asset_dir_** - which direcotry to put your `static, assets` file, cli will automatic copy all file to `out_dir`, so you can put some resource file in there, like `CSS, JS, Image` file.
-   ```
+* **out_dir** - The directory to place the build artifacts from `dx build` or `dx serve` into. This is also where the `assets` directory will be copied into.
+    ```toml
+    out_dir = "dist"
+    ```
+* **asset_dir** - The directory with your static assets. The CLI will automatically copy these assets into the **out_dir** after a build/serve.
+   ```toml
    asset_dir = "public"
    ```
-
-### Application.Tools
-
-You can combine different tools with `dioxus`.
-
-1. **_binaryen_** - Use the `binaryen` tooling suite.
-   ```
-   # current support: wasm-opt
-   # default: web
-   binaryen = { wasm_opt = true }
-   ```
-   Use the `wasm_opt = true` key/pair value to activate optimization with wasm-opt.
-   When building on `release` profile, Dioxus will run `wasm_opt` with `-Oz` option.
-2. **_tailwindcss_** - Use the `tailwindcss` standalone binary to generate a Tailwind CSS bundle file.
-
-   ```
-   tailwindcss = { input = "main.css", config = "tailwind.config.js" }
+* **sub_package** - The sub package in the workspace to build by default.
+   ```toml
+   sub_package = "my-crate"
    ```
 
-   You can set two optional keys :
+### Web.App 🔒
 
-   - input: path of the input CSS file (default value is "public/tailwind.css")
-   - config: path to the config file for Tailwind (default value is "src/tailwind.config.js")
+```toml
+[web.app]
+```
 
-   When building on `release` profile, Dioxus will run `tailwindcss` with the `--minify` option.
+Web-specific configuration.
 
-   Note : Dioxus will automatically include the generated tailwind file in the `index.html`
-
-### Web.App
-
-Web platform application config:
-
-1. **_title_** - this value will display on the web page title. like `<title></title>` tag.
-   ```
+* **title** - The title of the web page.
+   ```toml
    # HTML title tag content
-   title = "dioxus app | ⛺"
+   title = "project_name"
+   ```
+* **base_path** - The base path to build the application for serving at. This can be useful when serving your application in a subdirectory under a domain. For example, when building a site to be served on GitHub Pages.
+   ```toml
+   # The application will be served at domain.com/my_application/, so we need to modify the base_path to the path where the application will be served
+   base_path = "my_application"
    ```
 
-### Web.Watcher
+### Web.Watcher ✍
 
-Web platform `dev-server` watcher config:
+```toml
+[web.watcher]
+```
 
-1. **_reload_html_** - a boolean value; when watcher trigger, regenerate `index.html` file.
-   ```
-   # when watcher trigger, regenerate the `index.html`
+Development server configuration.
+
+* **reload_html** - If this is true, the cli will rebuild the index.html file every time the application is rebuilt
+   ```toml
    reload_html = true
    ```
-2. **_watch_path_** - which files & directories will be watcher monitoring.
-   ```
+* **watch_path** - The files & directories to monitor for changes
+   ```toml
    watch_path = ["src", "public"]
    ```
 
-### Web.Resource
-
-Include some `CSS Javascript` resources into html file.
-
-1. **_style_** - include some style(CSS) file into html.
+* **index_on_404** - If enabled, Dioxus will serve the root page when a route is not found.
+   *This is needed when serving an application that uses the router*.
+   However, when serving your app using something else than Dioxus (e.g. GitHub Pages), you will have to check how to configure it on that platform.
+   In GitHub Pages, you can make a copy of `index.html` named `404.html` in the same directory.
+   ```toml
+   index_on_404 = true
    ```
+
+### Web.Resource 🔒
+
+```toml
+[web.resource]
+```
+
+Static resource configuration.
+
+* **style** - CSS files to include in your application.
+   ```toml
    style = [
-      # include from public_dir.
+      # Include from public_dir.
       "./assets/style.css",
-      # or some asset from online cdn.
+      # Or some asset from online cdn.
       "https://cdn.jsdelivr.net/npm/bootstrap/dist/css/bootstrap.css"
    ]
    ```
-2. **_script_** - include some script(JS) file into html.
-   ```
-   style = [
-       # include from public_dir.
-       "./assets/index.js",
-       # or some asset from online cdn.
-       "https://cdn.jsdelivr.net/npm/bootstrap/dist/js/bootstrap.js"
-   ]
+
+* **script** - JavaScript files to include in your application.
+    ```toml
+    script = [
+        # Include from asset_dir.
+        "./public/index.js",
+        # Or from an online CDN.
+        "https://cdn.jsdelivr.net/npm/bootstrap/dist/js/bootstrap.js"
+    ]
    ```
 
-### Web.Resource.Dev
+### Web.Resource.Dev 🔒
 
-Only include resources at `Dev` mode.
+```toml
+[web.resource.dev]
+```
 
-1. **_style_** - include some style(CSS) file into html.
-   ```
-   style = [
-      # include from public_dir.
-      "./assets/style.css",
-      # or some asset from online cdn.
-      "https://cdn.jsdelivr.net/npm/bootstrap/dist/css/bootstrap.css"
-   ]
-   ```
-2. **_script_** - include some script(JS) file into html.
-   ```
-   script = [
-       # include from public_dir.
-       "./assets/index.js",
-       # or some asset from online cdn.
-       "https://cdn.jsdelivr.net/npm/bootstrap/dist/js/bootstrap.js"
-   ]
-   ```
+This is the same as [`[web.resource]`](#webresource-), but it only works in development servers.
+For example, if you want to include a file in a `dx serve` server, but not a `dx serve --release` server, put it here.
 
 ### Web.Proxy
 
-Proxy requests matching a path to a backend server.
+```toml
+[[web.proxy]]
+```
 
-1. **_backend_** - the URL to the backend server.
-   ```
+Configuration related to any proxies your application requires during development. Proxies will forward requests to a new service.
+
+* **backend** - The URL to the server to proxy. The CLI will forward any requests under the backend relative route to the backend instead of returning 404
+   ```toml
    backend = "http://localhost:8000/api/"
    ```
-   This will cause any requests made to the dev server with prefix /api/ to be redirected to the backend server at http://localhost:8000. The path and query parameters will be passed on as-is (path rewriting is not currently supported).
-
-### Bundle
-
-Information to include in the bundled output.
-
-1. **_identifier_** - a string value; the identifier of the bundle.
-   ```
-   identifier = "com.dioxus.app"
-   ```
-2. **_publisher_** - a string value; the publisher of the bundle.
-   ```
-   publisher = "dioxus"
-   ```
-3. **_icon_** - a list of strings; the icons for the bundle.
-
-   ```
-   icon = ["assets/icon.png"]
-   ```
-
-4. **_resources_** - a list of glob patterns; resources to include in the bundle.
-
-   ```
-   resources = ["assets/*"]
-   ```
-
-5. **_copyright_** - a string value; the copyright of the bundle.
-
-   ```
-   copyright = "Copyright (c) Jane Doe 2016. All rights reserved."
-   ```
-
-6. **_category_** - a string value; the category of the bundle. one of these values: `Business`, `Developer Tool`, `Education`, `Entertainment`, `Finance`, `Game`, `Action Game`, `Adventure Game`, `Arcade Game`, `Board Game`, `Card Game`, `Casino Game`, `Dice Game`, `Educational Game`, `Family Game`, `Kids Game`, `Music Game`, `Puzzle Game`, `Racing Game`, `Role-Playing Game`, `Simulation Game`, `Sports Game`, `Strategy Game`, `Trivia Game`, `Word Game`, `Graphics and Design`, `Healthcare and Fitness`, `Lifestyle`, `Medical`, `Music`, `News`, `Photography`, `Productivity`, `Reference`, `Social Networking`, `Sports`, `Travel`, `Utility`, `Video`, `Weather`,
-
-   ```
-   category = "Business"
-   ```
-
-7. **_short_description_** - a string value; the short description of the bundle.
-
-   ```
-   short_description = "A short description of the bundle."
-   ```
-
-8. **_long_description_** - a string value; the long description of the bundle.
-
-   ```
-   long_description = """
-   A long description of the bundle.
-   """
-   ```
+   This will cause any requests made to the dev server with prefix /api/ to be redirected to the backend server at http://localhost:8000. The path and query parameters will be passed on as-is (path rewriting is currently not supported).
 
 ## Config example
+
+This includes all fields, mandatory or not.
 
 ```toml
 [application]
 
-# App (Project) Name
-name = "{{project-name}}"
+# App name
+name = "project_name"
 
-# Dioxus App Default Platform
-# desktop, web, mobile, ssr
+# The Dioxus platform to default to
 default_platform = "web"
 
-# `build` & `serve` dist path
+# `build` & `serve` output path
 out_dir = "dist"
 
-# resource (public) file folder
+# The static resource path
 asset_dir = "public"
 
 [web.app]
 
 # HTML title tag content
-title = "dioxus | ⛺"
+title = "project_name"
 
 [web.watcher]
 
-# when watcher trigger, regenerate the `index.html`
+# When watcher is triggered, regenerate the `index.html`
 reload_html = true
 
-# which files or dirs will be watcher monitoring
+# Which files or dirs will be monitored
 watch_path = ["src", "public"]
 
-# include `assets` in web platform
+# Include style or script assets
 [web.resource]
 
 # CSS style file
@@ -224,42 +181,14 @@ script = []
 
 [web.resource.dev]
 
-# serve: [dev-server] only
+# Same as [web.resource], but for development servers
 
 # CSS style file
 style = []
 
-# Javascript code file
+# JavaScript files
 script = []
 
 [[web.proxy]]
 backend = "http://localhost:8000/api/"
-
-[bundle]
-
-# Bundle identifier
-identifier = "com.dioxus.app"
-
-# Bundle publisher
-publisher = "dioxus"
-
-# Bundle icon. On windows, the icon file will default to `icons/icon.ico`
-icon = ["assets/icon.png"]
-
-# Bundle resources
-resources = ["assets/*"]
-
-# Bundle copyright
-copyright = "Copyright (c) Jane Doe 2016. All rights reserved."
-
-# Bundle category
-category = "Business"
-
-# Bundle short description
-short_description = "A short description of the bundle."
-
-# Bundle long description
-long_description = """
-A long description of the bundle.
-"""
 ```

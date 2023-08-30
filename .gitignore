@@ -8,6 +8,8 @@ Cargo.lock
 !.vscode/launch.json
 !.vscode/extensions.json
 
+.idea
+
 /pkg
 /static
 /docs/learn/0.3

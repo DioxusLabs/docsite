@@ -81,18 +81,15 @@
 	- [Installation](CLI/installation.md)
 	- [Create a Project](CLI/creating.md)
 	- [Configure Project](CLI/configure.md)
-	- [Commands](CLI/cmd/index.md)
-		- [Build](CLI/cmd/build.md)
-		- [Serve](CLI/cmd/serve.md)
-		- [Clean](CLI/cmd/clean.md)
-		- [Translate](CLI/cmd/translate.md)
-	- [Plugin Development](CLI/plugin/index.md)
+<!-- Plugins are probably going to be using WASI, not lua. That makes this documentation outdated.
+    - [Plugin Development](CLI/plugin/index.md)
 		- [API.Log](CLI/plugin/interface/log.md)
 		- [API.Command](CLI/plugin/interface/command.md)
 		- [API.OS](CLI/plugin/interface/os.md)
 		- [API.Directories](CLI/plugin/interface/dirs.md)
 		- [API.Network](CLI/plugin/interface/network.md)
 		- [API.Path](CLI/plugin/interface/path.md)
+-->
 
 ---
 - [Contributing](contributing/index.md)
@@ -100,7 +97,7 @@
   - [Walkthrough of Internals](contributing/walkthrough_readme.md)
   - [Guiding Principles](contributing/guiding_principles.md)
   - [Roadmap](contributing/roadmap.md)
-  - [Governence](contributing/governence.md)
+<!-- Empty file. TODO: Uncomment when the file is finished. - [Governance](contributing/governance.md) -->
 
 ---
 - [Migration](migration/index.md)

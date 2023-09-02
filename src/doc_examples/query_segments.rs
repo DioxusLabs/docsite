@@ -62,5 +62,4 @@ fn App(cx: Scope) -> Element {
     render! { Router::<Route>{} }
 }
 
-fn main() {
-}
+fn main() {}

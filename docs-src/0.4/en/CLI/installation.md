@@ -3,7 +3,7 @@
 ## Install the stable version (recommended)
 
 ```
-cargo install dioxus-cli
+cargo install dioxus-cli --locked
 ```
 
 ## Install the latest development build through git

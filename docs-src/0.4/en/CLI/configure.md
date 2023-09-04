@@ -62,7 +62,7 @@ Web-specific configuration.
    base_path = "my_application"
    ```
 
-### Web.Watcher ✍
+### Web.Watcher 🔒
 
 ```toml
 [web.watcher]

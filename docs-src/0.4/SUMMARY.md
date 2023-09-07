@@ -22,7 +22,7 @@
   - [RSX](reference/rsx.md)
   - [Components](reference/components.md)
   - [Props](reference/component_props.md)
-  - [Event Listeners](reference/event_handlers.md)
+  - [Event Handlers](reference/event_handlers.md)
   - [Hooks](reference/hooks.md)
   - [User Input](reference/user_input.md)
   - [Context](reference/context.md)

@@ -4,16 +4,16 @@ Once you have the Dioxus CLI installed, you can use it to create your own projec
 
 ## Initializing a project
 
-First, run the `dx create hello-dioxus` command to create a new project.
+First, run the `dx create` command to create a new project.
 
 > It clones this [template](https://github.com/DioxusLabs/dioxus-template), which is used for web apps.
 >
 > You can create your project from a different template by passing the `template` argument:
 > ```
-> dx create hello-dioxus --template gh:dioxuslabs/dioxus-template
+> dx create --template gh:dioxuslabs/dioxus-template
 > ```
 
-Next, navigate into your new project using `cd hello-dioxus`, or simply opening it in an IDE.
+Next, navigate into your new project using `cd project-name`, or simply opening it in an IDE.
 
 > Make sure the WASM target is installed before running the projects.
 > You can install the WASM target for rust using rustup:

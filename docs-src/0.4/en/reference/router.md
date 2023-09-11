@@ -62,7 +62,7 @@ enum Route {
 enum Route {
 	#[route("/home")]
 	//  if the current location doesn't match any of the above routes, redirect to "/home"
-	#[redirect("/:...segments", |segments: Vec<String>| Route::Home {})]
+	#[redirect("/:..segments", |segments: Vec<String>| Route::Home {})]
 	Home {}
 	#[route("/blog")]
 	Blog {}

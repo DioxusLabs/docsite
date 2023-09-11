@@ -6,7 +6,7 @@ use dioxus_router::prelude::*;
 #[derive(Routable, Clone)]
 #[rustfmt::skip]
 enum Route {
-    // segments that start with :... are catch all segments
+    // segments that start with :.. are catch all segments
     #[route("/blog/:..segments")]
     BlogPost {
         // You must include catch all segment in child variants

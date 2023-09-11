@@ -40,7 +40,7 @@ The segment can be of any type that implements `FromStr`.
 
 ## Catch All Segments
 
-Catch All segments are in the form of `:...name` where `name` is the name of the field in the route variant. If the segments are parsed successfully then the route matches, otherwise the matching continues.
+Catch All segments are in the form of `:..name` where `name` is the name of the field in the route variant. If the segments are parsed successfully then the route matches, otherwise the matching continues.
 
 The segment can be of any type that implements `FromSegments`. (Vec<String> implements this by default)
 

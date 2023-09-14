@@ -1,7 +1,7 @@
-#![allow(non_snake_case)]
 use dioxus::prelude::*;
 
 // ANCHOR: component
+#[component]
 pub fn App(cx: Scope) -> Element {
     // ANCHOR: use_state_calls
     let mut count_a = use_state(cx, || 0);

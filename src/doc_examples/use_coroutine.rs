@@ -1,7 +1,8 @@
-#![allow(non_snake_case, unused)]
+#![allow(unused)]
 use dioxus::prelude::*;
 use std::collections::HashMap;
 
+#[component]
 pub fn App(cx: Scope) -> Element {
     // ANCHOR: use_coroutine
     // import futures::StreamExt to use the next() method

@@ -145,7 +145,8 @@ We can combine coroutines with [Fermi](https://docs.rs/fermi/latest/fermi/index.
 ```rust, no_run
 static USERNAME: Atom<String> = Atom(|_| "default".to_string());
 
-fn app(cx: Scope) -> Element {
+#[component]
+fn App(cx: Scope) -> Element {
     let atoms = use_atom_root(cx);
 
     use_coroutine(cx, |rx| sync_service(rx, atoms.clone()));
@@ -155,6 +156,7 @@ fn app(cx: Scope) -> Element {
     })
 }
 
+#[component]
 fn Banner(cx: Scope) -> Element {
     let username = use_read(cx, &USERNAME);
 

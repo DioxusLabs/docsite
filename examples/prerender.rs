@@ -5,7 +5,7 @@
 //! cargo run --features ssr --example prerender
 //! ```
 
-#![allow(non_snake_case, unused)]
+#![allow(unused)]
 use dioxus::prelude::*;
 use dioxus_docs_site::*;
 use dioxus_fullstack::{launch, prelude::*};

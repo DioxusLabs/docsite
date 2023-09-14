@@ -1,13 +1,14 @@
-#![allow(non_snake_case, unused)]
+#![allow(unused)]
 
 use dioxus::prelude::*;
 use dioxus_fullstack::prelude::*;
 
 fn main() {
-    LaunchBuilder::new(app).launch();
+    LaunchBuilder::new(App).launch();
 }
 
-fn app(cx: Scope) -> Element {
+#[component]
+fn App(cx: Scope) -> Element {
     let mut count = use_future(cx, (), |_| async { get_server_data().await });
 
     cx.render(rsx! {

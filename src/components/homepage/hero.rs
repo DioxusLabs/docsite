@@ -59,6 +59,7 @@ pub fn Hero(cx: Scope) -> Element {
 
 static ADD_TO_CLIPBOARD: &str = r#"navigator.clipboard.writeText("cargo add dioxus")"#;
 
+#[component]
 fn SaveClipboard(cx: Scope) -> Element {
     let saved = use_state(cx, || false);
 
@@ -79,6 +80,7 @@ fn SaveClipboard(cx: Scope) -> Element {
     })
 }
 
+#[component]
 fn AnimatedIcon(cx: Scope) -> Element {
     let dark = include_str!("../../../public/static/multiplatform-dark.svg");
     let light = include_str!("../../../public/static/multiplatform-light.svg");

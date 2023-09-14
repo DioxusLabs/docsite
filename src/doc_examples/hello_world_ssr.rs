@@ -1,9 +1,7 @@
 #![allow(unused)]
-#![allow(non_snake_case)]
 // ANCHOR: all
 
 // ANCHOR: main
-#![allow(non_snake_case)]
 use axum::{response::Html, routing::get, Router};
 // import the prelude to get access to the `rsx!` macro and the `Scope` and `Element` types
 use dioxus::prelude::*;

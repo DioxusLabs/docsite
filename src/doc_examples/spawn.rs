@@ -1,7 +1,8 @@
-#![allow(non_snake_case, unused)]
+#![allow(unused)]
 
 use dioxus::prelude::*;
 
+#[component]
 pub fn App(cx: Scope) -> Element {
     // ANCHOR: spawn
     let logged_in = use_state(cx, || false);
@@ -41,6 +42,7 @@ pub fn App(cx: Scope) -> Element {
 }
 
 #[cfg(feature = "doc_test")]
+#[component]
 pub fn Tokio(cx: Scope) -> Element {
     let _ = || {
         // ANCHOR: tokio
@@ -58,6 +60,7 @@ pub fn Tokio(cx: Scope) -> Element {
     cx.render(rsx!(()))
 }
 
+#[component]
 pub fn ToOwnedMacro(cx: Scope) -> Element {
     let count = use_state(cx, || 0);
     let age = use_state(cx, || 0);

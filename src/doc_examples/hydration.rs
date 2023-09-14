@@ -1,9 +1,9 @@
-#![allow(non_snake_case, unused)]
+#![allow(unused)]
 use dioxus::prelude::*;
 
 fn main() {
     #[cfg(feature = "web")]
-    dioxus_web::launch_cfg(app, dioxus_web::Config::new().hydrate(true));
+    dioxus_web::launch_cfg(App, dioxus_web::Config::new().hydrate(true));
     #[cfg(feature = "ssr")]
     {
         use dioxus_fullstack::prelude::*;
@@ -14,7 +14,7 @@ fn main() {
                 axum::Server::bind(&addr)
                     .serve(
                         axum::Router::new()
-                            .serve_dioxus_application("", ServeConfigBuilder::new(app, ()))
+                            .serve_dioxus_application("", ServeConfigBuilder::new(App, ()))
                             .into_make_service(),
                     )
                     .await
@@ -23,7 +23,8 @@ fn main() {
     }
 }
 
-fn app(cx: Scope) -> Element {
+#[component]
+fn App(cx: Scope) -> Element {
     let mut count = use_state(cx, || 0);
 
     cx.render(rsx! {

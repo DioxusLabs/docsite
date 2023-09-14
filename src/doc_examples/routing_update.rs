@@ -1,4 +1,4 @@
-#![allow(non_snake_case, unused)]
+#![allow(unused)]
 use dioxus::prelude::*;
 use dioxus_router::prelude::*;
 
@@ -11,21 +11,22 @@ enum Route {
     Home {},
 }
 
-#[inline_props]
+#[component]
 fn Home(cx: Scope) -> Element {
     render! {
         p { "Home" }
     }
 }
 
-#[inline_props]
+#[component]
 fn Index(cx: Scope) -> Element {
     render! {
         p { "Index" }
     }
 }
 
-fn app(cx: Scope) -> Element {
+#[component]
+fn App(cx: Scope) -> Element {
     render! {
         Router::<Route> {
             config: || RouterConfig::default().on_update(|state|{

@@ -1,4 +1,3 @@
-#![allow(non_snake_case)]
 use dioxus::prelude::*;
 use dioxus_router::prelude::*;
 
@@ -14,12 +13,12 @@ enum Route {
     HelloWorld {},
 }
 
-#[inline_props]
+#[component]
 fn Home(cx: Scope) -> Element {
     todo!()
 }
 
-#[inline_props]
+#[component]
 fn HelloWorld(cx: Scope) -> Element {
     todo!()
 }

@@ -1,4 +1,4 @@
-#![allow(non_snake_case, unused)]
+#![allow(unused)]
 
 use dioxus::prelude::*;
 
@@ -8,6 +8,7 @@ struct ApiResponse {
     image_url: String,
 }
 
+#[component]
 pub fn App(cx: Scope) -> Element {
     // ANCHOR: use_future
     let future = use_future(cx, (), |_| async move {
@@ -40,7 +41,7 @@ pub fn App(cx: Scope) -> Element {
     // ANCHOR_END: render
 }
 
-#[inline_props]
+#[component]
 fn RandomDog(cx: Scope, breed: String) -> Element {
     // ANCHOR: dependancy
     let future = use_future(cx, (breed,), |(breed,)| async move {

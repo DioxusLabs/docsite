@@ -2,6 +2,7 @@
 #![allow(non_snake_case)]
 use dioxus::prelude::*;
 
+#[component]
 pub fn App(cx: Scope) -> Element {
     // ANCHOR: Clickable_usage
     cx.render(rsx! {
@@ -20,6 +21,7 @@ struct ClickableProps<'a> {
     children: Element<'a>,
 }
 
+#[component]
 fn Clickable<'a>(cx: Scope<'a, ClickableProps<'a>>) -> Element {
     cx.render(rsx!(
         a {

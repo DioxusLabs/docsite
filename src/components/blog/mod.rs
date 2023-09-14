@@ -23,7 +23,7 @@ pub const POST_TEMPLATE: BlogPost = BlogPost {
     content: include_str!("../../../posts/templates.html"),
 };
 
-#[inline_props]
+#[component]
 pub fn PostTemplate(cx: Scope) -> Element {
     render! { SinglePost { post: POST_TEMPLATE } }
 }
@@ -38,7 +38,7 @@ pub const POST_FULLTINME: BlogPost = BlogPost {
     content: include_str!("../../../posts/fulltime.html"),
 };
 
-#[inline_props]
+#[component]
 pub fn PostFulltime(cx: Scope) -> Element {
     render! { SinglePost { post: POST_FULLTINME } }
 }
@@ -52,7 +52,7 @@ pub const POST_RELEASE_040: BlogPost = BlogPost {
     content: include_str!("../../../posts/release040.html"),
 };
 
-#[inline_props]
+#[component]
 pub fn PostRelease040(cx: Scope) -> Element {
     render! { SinglePost { post: POST_RELEASE_040 } }
 }
@@ -66,7 +66,7 @@ pub const POST_RELEASE_030: BlogPost = BlogPost {
     content: include_str!("../../../posts/release030.html"),
 };
 
-#[inline_props]
+#[component]
 pub fn PostRelease030(cx: Scope) -> Element {
     render! { SinglePost { post: POST_RELEASE_030 } }
 }
@@ -80,7 +80,7 @@ pub const POST_RELEASE_020: BlogPost = BlogPost {
     content: include_str!("../../../posts/release020.html"),
 };
 
-#[inline_props]
+#[component]
 pub fn PostRelease020(cx: Scope) -> Element {
     render! { SinglePost { post: POST_RELEASE_020 } }
 }
@@ -94,7 +94,7 @@ pub const POST_RELEASE_010: BlogPost = BlogPost {
     content: include_str!("../../../posts/release.html"),
 };
 
-#[inline_props]
+#[component]
 pub fn PostRelease010(cx: Scope) -> Element {
     render! { SinglePost { post: POST_RELEASE_010 } }
 }
@@ -108,7 +108,7 @@ pub const POSTS: &[BlogPost] = &[
     POST_RELEASE_010,
 ];
 
-#[inline_props]
+#[component]
 pub fn BlogList(cx: Scope) -> Element {
     cx.render(rsx!(
         section { class: "body-font overflow-hidden dark:bg-ideblack",
@@ -131,7 +131,7 @@ pub fn BlogList(cx: Scope) -> Element {
     ))
 }
 
-#[inline_props]
+#[component]
 pub fn SinglePost(cx: Scope, post: BlogPost) -> Element {
     let BlogPost { content, .. } = post;
 
@@ -154,6 +154,7 @@ pub fn SinglePost(cx: Scope, post: BlogPost) -> Element {
     })
 }
 
+#[component]
 fn BlogHeader(cx: Scope) -> Element {
     cx.render(rsx!(
         section { class: "py-20",
@@ -192,7 +193,7 @@ pub static RecentBlogPosts: Component<()> = |cx| {
     })
 };
 
-#[inline_props]
+#[component]
 fn BlogPostItem(cx: Scope, post: &'static BlogPost) -> Element {
     let BlogPost {
         category,

@@ -16,7 +16,7 @@ pub struct DocsContentHighlighted(pub bool);
 pub static HIGHLIGHT_DOCS_CONTENT: Atom<DocsContentHighlighted> =
     Atom(|_| DocsContentHighlighted(false));
 
-#[inline_props]
+#[component]
 pub fn Learn(cx: Scope) -> Element {
     let show_sidebar_button = use_atom_state(cx, &SHOW_DOCS_NAV);
     cx.use_hook(|| show_sidebar_button.set(true));
@@ -37,6 +37,7 @@ pub fn Learn(cx: Scope) -> Element {
     })
 }
 
+#[component]
 fn LeftNav(cx: Scope) -> Element {
     let show_sidebar = use_atom_state(cx, &SHOW_SIDEBAR);
     let highlighted = use_read(cx, &HIGHLIGHT_DOCS_LAYOUT);
@@ -66,6 +67,7 @@ fn LeftNav(cx: Scope) -> Element {
 }
 
 /// Navigate between doc versions
+#[component]
 fn DocVersionNav(cx: Scope) -> Element {
     let navigator = use_navigator(cx);
 
@@ -93,7 +95,7 @@ fn DocVersionNav(cx: Scope) -> Element {
 /// - page
 ///
 /// This renders a single section
-#[inline_props]
+#[component]
 fn SidebarSection(cx: Scope, chapter: &'static SummaryItem<BookRoute>) -> Element {
     let link = chapter.maybe_link()?;
 
@@ -114,7 +116,7 @@ fn SidebarSection(cx: Scope, chapter: &'static SummaryItem<BookRoute>) -> Elemen
     }
 }
 
-#[inline_props]
+#[component]
 fn SidebarChapter(cx: Scope, chapter: &'static SummaryItem<BookRoute>) -> Element {
     let link = chapter.maybe_link()?;
     let url = link.location.as_ref().unwrap();
@@ -151,7 +153,7 @@ fn SidebarChapter(cx: Scope, chapter: &'static SummaryItem<BookRoute>) -> Elemen
     }
 }
 
-#[inline_props]
+#[component]
 fn LocationLink(cx: Scope, chapter: &'static SummaryItem<BookRoute>) -> Element {
     let book_url = use_book(cx).to_string();
 
@@ -173,6 +175,7 @@ fn LocationLink(cx: Scope, chapter: &'static SummaryItem<BookRoute>) -> Element 
 }
 
 // Todo: wire this up to the sections of the current page and a scroll controller
+#[component]
 fn RightNav(cx: Scope) -> Element {
     let highlighted = use_read(cx, &HIGHLIGHT_DOCS_LAYOUT);
     let extra_class = if highlighted.0 {
@@ -201,6 +204,7 @@ fn RightNav(cx: Scope) -> Element {
     }
 }
 
+#[component]
 fn Content(cx: Scope) -> Element {
     let highlighted = use_read(cx, &HIGHLIGHT_DOCS_CONTENT);
     let extra_class = if highlighted.0 {
@@ -227,6 +231,7 @@ fn Content(cx: Scope) -> Element {
     }
 }
 
+#[component]
 fn BreadCrumbs(cx: Scope) -> Element {
     // parse out the route after the version and language
     let route: Route = use_route(cx)?;
@@ -265,7 +270,7 @@ fn default_page() -> &'static Page<BookRoute> {
     LAZY_BOOK.pages.get(id.0).unwrap()
 }
 
-#[inline_props]
+#[component]
 pub fn DocsO3(cx: Scope, segments: Vec<String>) -> Element {
     let navigator = use_navigator(cx);
     let route: Route = use_route(cx).unwrap();

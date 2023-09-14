@@ -1,7 +1,7 @@
-#![allow(non_snake_case)]
 use dioxus::prelude::*;
 
 // ANCHOR: App
+#[component]
 pub fn App(cx: Scope) -> Element {
     cx.render(rsx! {
         About {},
@@ -11,6 +11,7 @@ pub fn App(cx: Scope) -> Element {
 // ANCHOR_END: App
 
 // ANCHOR: About
+#[component]
 pub fn About(cx: Scope) -> Element {
     cx.render(rsx!(p {
         b {"Dioxus Labs"}

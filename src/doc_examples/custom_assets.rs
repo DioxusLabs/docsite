@@ -4,7 +4,8 @@ fn main() {
     dioxus_desktop::launch(app);
 }
 
-fn app(cx: Scope) -> Element {
+#[component]
+fn App(cx: Scope) -> Element {
     cx.render(rsx! {
         div {
             img { src: "examples/assets/logo.png" }

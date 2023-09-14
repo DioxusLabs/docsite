@@ -119,11 +119,11 @@ Then, you can use it so:
 {{#include src/doc_examples/component_props_options.rs:IntoComponent_usage}}
 ```
 
-## The `inline_props` macro
+## Deriving props from arguments
 
-So far, every Component function we've seen had a corresponding ComponentProps struct to pass in props. This was quite verbose... Wouldn't it be nice to have props as simple function arguments? Then we wouldn't need to define a Props struct, and instead of typing `cx.props.whatever`, we could just use `whatever` directly!
+So far, every component function we've seen had a corresponding ComponentProps struct to pass in props. This was quite verbose... Wouldn't it be nice to have props as simple function arguments? Then we wouldn't need to define a Props struct, and instead of typing `cx.props.whatever`, we could just use `whatever` directly!
 
-`inline_props` allows you to do just that. Instead of typing the "full" version:
+`#[component]` allows you to do that as well! Instead of typing the "full" version:
 
 ```rust, no_run
 #[derive(Props, PartialEq)]
@@ -131,6 +131,7 @@ struct TitleCardProps {
     title: String,
 }
 
+#[component]
 fn TitleCard(cx: Scope<TitleCardProps>) -> Element {
     cx.render(rsx!{
         h1 { "{cx.props.title}" }
@@ -138,10 +139,10 @@ fn TitleCard(cx: Scope<TitleCardProps>) -> Element {
 }
 ```
 
-...you can define a function that accepts props as arguments. Then, just annotate it with `#[inline_props]`, and the macro will turn it into a regular Component for you:
+...you can define a function that accepts props as arguments. Then, `#[component]`, will turn it into a regular component for you:
 
 ```rust, no_run
-#[inline_props]
+#[component]
 fn TitleCard(cx: Scope, title: String) -> Element {
     cx.render(rsx!{
         h1 { "{title}" }
@@ -149,7 +150,7 @@ fn TitleCard(cx: Scope, title: String) -> Element {
 }
 ```
 
-> While the new Component is shorter and easier to read, this macro should not be used by library authors since you have less control over Prop documentation.
+> While the new component is shorter and easier to read, this macro should not be used by library authors since you have less control over Prop documentation.
 
 ## Component Children
 

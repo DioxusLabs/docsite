@@ -1,11 +1,12 @@
 // ANCHOR: all
-#![allow(non_snake_case, unused)]
+#![allow(unused)]
 use dioxus::prelude::*;
 
 fn main() {
     dioxus_desktop::launch(App);
 }
 
+#[component]
 fn App(cx: Scope) -> Element {
     // ANCHOR: Clickable_usage
     cx.render(rsx! {
@@ -24,6 +25,7 @@ struct ClickableProps<'a> {
 }
 
 // ANCHOR: Clickable
+#[component]
 fn Clickable<'a>(cx: Scope<'a, ClickableProps<'a>>) -> Element {
     match cx.props.children {
         Some(VNode { dynamic_nodes, .. }) => {

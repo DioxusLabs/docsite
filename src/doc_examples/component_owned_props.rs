@@ -1,7 +1,7 @@
-#![allow(non_snake_case)]
 use dioxus::prelude::*;
 
 // ANCHOR: App
+#[component]
 pub fn App(cx: Scope) -> Element {
     cx.render(rsx! {
         Likes {
@@ -18,6 +18,7 @@ struct LikesProps {
     score: i32,
 }
 
+#[component]
 fn Likes(cx: Scope<LikesProps>) -> Element {
     cx.render(rsx! {
         div {

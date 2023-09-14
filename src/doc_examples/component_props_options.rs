@@ -1,10 +1,10 @@
-#![allow(non_snake_case)]
 use dioxus::prelude::*;
 
 fn main() {
     dioxus_desktop::launch(App);
 }
 
+#[component]
 fn App(cx: Scope) -> Element {
     cx.render(rsx! {
             // ANCHOR: OptionalProps_usage
@@ -59,6 +59,7 @@ struct OptionalProps<'a> {
     subtitle: Option<&'a str>,
 }
 
+#[component]
 fn Title<'a>(cx: Scope<'a, OptionalProps>) -> Element<'a> {
     cx.render(rsx!(h1{
         "{cx.props.title}: ",
@@ -75,6 +76,7 @@ struct ExplicitOptionProps<'a> {
     subtitle: Option<&'a str>,
 }
 
+#[component]
 fn ExplicitOption<'a>(cx: Scope<'a, ExplicitOptionProps>) -> Element<'a> {
     cx.render(rsx!(h1 {
         "{cx.props.title}: ",
@@ -91,6 +93,7 @@ struct DefaultProps {
     number: i64,
 }
 
+#[component]
 fn DefaultComponent(cx: Scope<DefaultProps>) -> Element {
     cx.render(rsx!(h1 { "{cx.props.number}" }))
 }
@@ -103,6 +106,7 @@ struct IntoProps {
     string: String,
 }
 
+#[component]
 fn IntoComponent(cx: Scope<IntoProps>) -> Element {
     cx.render(rsx!(h1 { "{cx.props.string}" }))
 }

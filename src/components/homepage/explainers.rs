@@ -1,6 +1,6 @@
 use dioxus::prelude::*;
 
-#[inline_props]
+#[component]
 pub fn Explainer<'a>(
     cx: Scope<'a>,
     invert: bool,
@@ -52,6 +52,7 @@ Content
 6. Investing in the ecosystem
 
 */
+#[component]
 pub fn Explainers(cx: Scope) -> Element {
     render! {
         section { class: "dark:text-white py-16 border-t font-light",

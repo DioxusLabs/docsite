@@ -1,4 +1,4 @@
-#![allow(non_snake_case, unused)]
+#![allow(unused)]
 use dioxus::prelude::*;
 use dioxus_router::prelude::*;
 
@@ -9,12 +9,13 @@ enum Route {
     Home {},
 }
 
-#[inline_props]
+#[component]
 fn Home(cx: Scope) -> Element {
     todo!()
 }
 
 // ANCHOR: history_buttons
+#[component]
 fn HistoryNavigation(cx: Scope) -> Element {
     render! {
         GoBackButton {

@@ -1,4 +1,3 @@
-#![allow(non_snake_case)]
 use chrono::{DateTime, Utc};
 use dioxus::prelude::*;
 use serde::{Deserialize, Serialize};
@@ -117,6 +116,7 @@ pub mod fetch {
     use super::{get_comment, get_stories, get_story, PreviewState, StoryItem, StoryPageData};
     use dioxus::prelude::*;
 
+    #[component]
     pub fn App(cx: Scope) -> Element {
         use_shared_state_provider(cx, || PreviewState::Unset);
 
@@ -137,7 +137,7 @@ pub mod fetch {
         })
     }
 
-    #[inline_props]
+    #[component]
     fn StoryListing(cx: Scope, story: StoryItem) -> Element {
         let preview_state = use_shared_state::<PreviewState>(cx).unwrap();
         let StoryItem {
@@ -221,6 +221,7 @@ pub mod fetch {
         })
     }
 
+    #[component]
     fn Preview(cx: Scope) -> Element {
         let preview_state = use_shared_state::<PreviewState>(cx)?;
 
@@ -257,8 +258,8 @@ pub mod fetch {
         }
     }
 
-    #[inline_props]
-    fn Comment(cx: Scope, comment: super::Comment) -> Element<'a> {
+    #[component]
+    fn Comment(cx: Scope, comment: super::Comment) -> Element {
         render! {
             div {
                 padding: "0.5rem",
@@ -277,6 +278,7 @@ pub mod fetch {
     }
 
     // ANCHOR: use_future
+    #[component]
     fn Stories(cx: Scope) -> Element {
         // Fetch the top 10 stories on Hackernews
         let stories = use_future(cx, (), |_| get_stories(10));
@@ -310,6 +312,7 @@ pub mod fetch {
 
 use dioxus::prelude::*;
 
+#[component]
 pub fn App(cx: Scope) -> Element {
     use_shared_state_provider(cx, || PreviewState::Unset);
 
@@ -349,7 +352,7 @@ async fn resolve_story(
     }
 }
 
-#[inline_props]
+#[component]
 fn StoryListing(cx: Scope, story: StoryItem) -> Element {
     let preview_state = use_shared_state::<PreviewState>(cx).unwrap();
     let StoryItem {
@@ -441,6 +444,7 @@ enum PreviewState {
     Loaded(StoryPageData),
 }
 
+#[component]
 fn Preview(cx: Scope) -> Element {
     let preview_state = use_shared_state::<PreviewState>(cx)?;
 
@@ -477,8 +481,8 @@ fn Preview(cx: Scope) -> Element {
     }
 }
 
-#[inline_props]
-fn Comment(cx: Scope, comment: Comment) -> Element<'a> {
+#[component]
+fn Comment(cx: Scope, comment: Comment) -> Element {
     render! {
         div {
             padding: "0.5rem",
@@ -496,6 +500,7 @@ fn Comment(cx: Scope, comment: Comment) -> Element<'a> {
     }
 }
 
+#[component]
 fn Stories(cx: Scope) -> Element {
     let story = use_future(cx, (), |_| get_stories(10));
 

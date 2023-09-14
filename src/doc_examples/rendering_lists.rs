@@ -1,5 +1,3 @@
-#![allow(non_snake_case)]
-
 use dioxus::prelude::*;
 
 #[derive(PartialEq, Clone)]
@@ -8,6 +6,7 @@ struct Comment {
     id: usize,
 }
 
+#[component]
 pub fn App(cx: Scope) -> Element {
     // ANCHOR: render_list
     let comment_field = use_state(cx, String::new);
@@ -46,6 +45,7 @@ pub fn App(cx: Scope) -> Element {
     // ANCHOR_END: render_list
 }
 
+#[component]
 pub fn AppForLoop(cx: Scope) -> Element {
     // ANCHOR: render_list_for_loop
     let comment_field = use_state(cx, String::new);
@@ -82,7 +82,7 @@ pub fn AppForLoop(cx: Scope) -> Element {
     // ANCHOR_END: render_list_for_loop
 }
 
-#[inline_props]
+#[component]
 fn CommentComponent(cx: Scope, comment: Comment) -> Element {
     cx.render(rsx!(div {
         "Comment by anon:",

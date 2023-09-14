@@ -5,6 +5,7 @@ pub mod app_v1 {
     use super::*;
 
     // ANCHOR: app_v1
+    #[component]
     pub fn App(cx: Scope) -> Element {
         cx.render(rsx! {
             div {
@@ -24,6 +25,7 @@ pub mod app_v1 {
     }
 
     // New
+    #[component]
     fn Stories(cx: Scope) -> Element {
         render! {
             StoryListing {
@@ -52,6 +54,7 @@ pub mod app_v1 {
     }
 
     // New
+    #[component]
     fn Preview(cx: Scope) -> Element {
         let preview_state = PreviewState::Unset;
         match preview_state {
@@ -88,7 +91,7 @@ pub mod app_v1 {
     }
     // ANCHOR_END: app_v1
 
-    #[inline_props]
+    #[component]
     fn StoryListing(cx: Scope, story: StoryItem) -> Element {
         let StoryItem {
             title,
@@ -162,6 +165,7 @@ pub mod app_v1 {
 mod story_listing_listener {
     use super::*;
 
+    #[component]
     pub fn App(cx: Scope) -> Element {
         use_shared_state_provider(cx, || PreviewState::Unset);
 
@@ -182,6 +186,7 @@ mod story_listing_listener {
         })
     }
 
+    #[component]
     fn Stories(cx: Scope) -> Element {
         render! {
             StoryListing {
@@ -208,6 +213,7 @@ mod story_listing_listener {
         Loaded(StoryPageData),
     }
 
+    #[component]
     fn Preview(cx: Scope) -> Element {
         let preview_state = PreviewState::Unset;
 
@@ -244,7 +250,7 @@ mod story_listing_listener {
         }
     }
 
-    #[inline_props]
+    #[component]
     fn StoryListing(cx: Scope, story: StoryItem) -> Element {
         let StoryItem {
             title,
@@ -324,6 +330,7 @@ mod story_listing_listener {
 }
 
 // ANCHOR: shared_state_app
+#[component]
 pub fn App(cx: Scope) -> Element {
     use_shared_state_provider(cx, || PreviewState::Unset);
     // ANCHOR_END: shared_state_app
@@ -345,7 +352,7 @@ pub fn App(cx: Scope) -> Element {
 }
 
 // ANCHOR: shared_state_stories
-#[inline_props]
+#[component]
 fn StoryListing(cx: Scope, story: StoryItem) -> Element {
     // New
     let preview_state = use_shared_state::<PreviewState>(cx).unwrap();
@@ -435,6 +442,7 @@ fn StoryListing(cx: Scope, story: StoryItem) -> Element {
 }
 
 // ANCHOR: shared_state_preview
+#[component]
 fn Preview(cx: Scope) -> Element {
     // New
     let preview_state = use_shared_state::<PreviewState>(cx)?;
@@ -481,6 +489,7 @@ enum PreviewState {
     Loaded(StoryPageData),
 }
 
+#[component]
 fn Stories(cx: Scope) -> Element {
     render! {
         StoryListing {
@@ -500,8 +509,8 @@ fn Stories(cx: Scope) -> Element {
     }
 }
 
-#[inline_props]
-fn Comment(cx: Scope, comment: Comment) -> Element<'a> {
+#[component]
+fn Comment(cx: Scope, comment: Comment) -> Element {
     render! {
         div {
             padding: "0.5rem",

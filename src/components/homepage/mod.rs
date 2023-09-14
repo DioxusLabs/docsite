@@ -8,7 +8,7 @@ pub mod hero;
 pub mod snippets;
 pub mod value_add;
 
-#[inline_props]
+#[component]
 pub fn Homepage(cx: Scope) -> Element {
     cx.render(rsx! {
         div {
@@ -51,6 +51,7 @@ const CARDS: &[(&str, &str)] = &[
     ),
 ];
 
+#[component]
 fn ProjectCards(cx: Scope) -> Element {
     cx.render(rsx! {
         section { class: "py-12",
@@ -77,6 +78,7 @@ fn ProjectCards(cx: Scope) -> Element {
     })
 }
 
+#[component]
 fn AvailablePlatforms(cx: Scope) -> Element {
     cx.render(rsx! {
         section { class: "w-full dark:bg-ideblack",
@@ -159,7 +161,7 @@ fn AvailablePlatforms(cx: Scope) -> Element {
     })
 }
 
-#[inline_props]
+#[component]
 fn TriShow<'a>(
     cx: Scope<'a>,
     left: Element<'a>,
@@ -187,7 +189,7 @@ fn TriShow<'a>(
     }
 }
 
-#[inline_props]
+#[component]
 fn TriPadding<'a>(cx: Scope<'a>, children: Element<'a>, last: bool) -> Element {
     render!(
         div { class: "flex flex-col items-center",
@@ -201,7 +203,7 @@ fn TriPadding<'a>(cx: Scope<'a>, children: Element<'a>, last: bool) -> Element {
     )
 }
 
-#[inline_props]
+#[component]
 fn DeveloperExperience(cx: Scope) -> Element {
     render! (
         section { class: "pt-36 w-full dark:bg-ideblack dark:text-white",
@@ -243,7 +245,7 @@ fn DeveloperExperience(cx: Scope) -> Element {
     )
 }
 
-#[inline_props]
+#[component]
 fn ExperienceText(cx: Scope, title: &'static str, content: &'static str) -> Element {
     render!(
         div { class: "pb-12",
@@ -255,6 +257,7 @@ fn ExperienceText(cx: Scope, title: &'static str, content: &'static str) -> Elem
     )
 }
 
+#[component]
 fn IconSplit(cx: Scope) -> Element {
     cx.render(rsx! {
         svg {
@@ -274,6 +277,7 @@ fn IconSplit(cx: Scope) -> Element {
     })
 }
 
+#[component]
 fn Stats(cx: Scope) -> Element {
     cx.render(rsx! {
         section { class: "pb-24 w-full dark:bg-ideblack",
@@ -310,7 +314,7 @@ fn Stats(cx: Scope) -> Element {
     })
 }
 
-#[inline_props]
+#[component]
 fn StatsItem(cx: Scope, major: &'static str, minor: &'static str) -> Element {
     render! {
         div { class: "text-center py-6 border border-[#444]",
@@ -320,7 +324,7 @@ fn StatsItem(cx: Scope, major: &'static str, minor: &'static str) -> Element {
     }
 }
 
-#[inline_props]
+#[component]
 fn Platform<'a>(
     cx: Scope<'a>,
     name: &'static str,
@@ -363,6 +367,7 @@ fn Platform<'a>(
     })
 }
 
+#[component]
 fn JumpStart(cx: Scope) -> Element {
     render! {
         section { class: "pt-36 w-full dark:bg-ideblack",

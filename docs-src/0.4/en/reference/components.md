@@ -2,13 +2,13 @@
 
 Just like you wouldn't want to write a complex program in a single, long, `main` function, you shouldn't build a complex UI in a single `App` function. Instead, you should break down the functionality of an app in logical parts called components.
 
-A component is a Rust function, named in UpperCammelCase, that takes a `Scope` parameter and returns an `Element` describing the UI it wants to render. In fact, our `App` function is a component!
+A component is a Rust function, named in UpperCamelCase, that takes a `Scope` parameter and returns an `Element` describing the UI it wants to render. In fact, our `App` function is a component!
 
 ```rust, no_run
 {{#include src/doc_examples/hello_world_desktop.rs:component}}
 ```
 
-> You'll probably want to add `#![allow(non_snake_case)]` to the top of your crate to avoid warnings about UpperCammelCase component names
+> `#[component]` is not strictly necessary, but it makes creating components easier. For example, you won't be warned about using UpperCamelCase for functions.
 
 A Component is responsible for some rendering task – typically, rendering an isolated part of the user interface. For example, you could have an `About` component that renders a short description of Dioxus Labs:
 

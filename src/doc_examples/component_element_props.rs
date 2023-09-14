@@ -1,11 +1,11 @@
 // ANCHOR: all
-#![allow(non_snake_case)]
 use dioxus::prelude::*;
 
 fn main() {
     dioxus_desktop::launch(App);
 }
 
+#[component]
 fn App(cx: Scope) -> Element {
     // ANCHOR: Clickable_usage
     cx.render(rsx! {
@@ -24,6 +24,7 @@ struct ClickableProps<'a> {
     body: Element<'a>,
 }
 
+#[component]
 fn Clickable<'a>(cx: Scope<'a, ClickableProps<'a>>) -> Element {
     cx.render(rsx!(
         a {

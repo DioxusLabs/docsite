@@ -1,4 +1,3 @@
-#![allow(non_snake_case)]
 use dioxus::prelude::*;
 use dioxus_router::prelude::*;
 
@@ -17,7 +16,7 @@ enum Route {
 // ANCHOR_END: router
 
 // ANCHOR: nav
-#[inline_props]
+#[component]
 fn NavBar(cx: Scope) -> Element {
     render! {
         nav {
@@ -38,7 +37,7 @@ fn NavBar(cx: Scope) -> Element {
 // ANCHOR_END: nav
 
 // ANCHOR: app
-#[inline_props]
+#[component]
 fn App(cx: Scope) -> Element {
     render! {
         Router::<Route> {}
@@ -47,7 +46,7 @@ fn App(cx: Scope) -> Element {
 // ANCHOR_END: app
 
 // ANCHOR: home
-#[inline_props]
+#[component]
 fn Home(cx: Scope) -> Element {
     render! {
         h1 { "Welcome to the Dioxus Blog!" }
@@ -56,7 +55,7 @@ fn Home(cx: Scope) -> Element {
 // ANCHOR_END: home
 
 // ANCHOR: fallback
-#[inline_props]
+#[component]
 fn PageNotFound(cx: Scope, route: Vec<String>) -> Element {
     render! {
         h1 { "Page not found" }

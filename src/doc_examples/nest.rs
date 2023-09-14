@@ -1,4 +1,4 @@
-#![allow(non_snake_case, unused)]
+#![allow(unused)]
 use dioxus::prelude::*;
 use dioxus_router::prelude::*;
 
@@ -26,12 +26,12 @@ enum Route {
     // Or nests are ended automatically at the end of the enum
 }
 
-#[inline_props]
+#[component]
 fn BlogPost(cx: Scope, id: usize) -> Element {
     todo!()
 }
 
-#[inline_props]
+#[component]
 fn PostId(cx: Scope, id: usize) -> Element {
     todo!()
 }

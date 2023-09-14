@@ -1,4 +1,4 @@
-#![allow(non_snake_case, unused)]
+#![allow(unused)]
 
 //! This example shows what *not* to do
 
@@ -8,6 +8,7 @@ use dioxus::prelude::*;
 
 fn main() {}
 
+#[component]
 fn AntipatternNestedFragments(cx: Scope<()>) -> Element {
     // ANCHOR: nested_fragments
     // ❌ Don't unnecessarily nest fragments
@@ -37,6 +38,7 @@ struct NoKeysProps {
     data: HashMap<u32, String>,
 }
 
+#[component]
 fn AntipatternNoKeys(cx: Scope<NoKeysProps>) -> Element {
     // ANCHOR: iter_keys
     let data: &HashMap<_, _> = &cx.props.data;

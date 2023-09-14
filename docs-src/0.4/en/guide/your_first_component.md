@@ -10,6 +10,8 @@ To declare what you want your UI to look like, you will need to use the `rsx` ma
 {{#include src/doc_examples/hackernews_post.rs:story_v1}}
 ```
 
+> `render!` is equivalent to `cx.render(rsx! {})`.
+
 If you run your application you should see something like this:
 
 ```inject-dioxus
@@ -18,7 +20,7 @@ DemoFrame {
 }
 ```
 
-> RSX mirrors HTML. Because of this you will need to know some html to use Dioxus.
+> RSX mirrors HTML. Because of this, you will need to know some html to use Dioxus.
 > 
 > Here are some resources to help get you started learning HTML:
 > - [MDN HTML Guide](https://developer.mozilla.org/en-US/docs/Learn/HTML)
@@ -111,7 +113,7 @@ DemoFrame {
 
 Just like you can pass arguments to a function or attributes to an element, you can pass props to a component that customize its behavior!
 
-We can define arguments that components can take when they are rendered (called `Props`) by adding the `#[inline_props]` macro before our function definition and adding extra function arguments.
+We can define arguments that components can take when they are rendered (called `Props`) by adding the `#[component]` macro before our function definition and adding extra function arguments.
 
 Currently, our `StoryListing` component always renders the same story. We can modify it to accept a story to render as a prop.
 

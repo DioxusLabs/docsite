@@ -14,6 +14,7 @@ pub struct LoggedIn(pub bool);
 pub static LOGGED_IN: Atom<LoggedIn> = Atom(|_| LoggedIn(false));
 pub static SHOW_DOCS_NAV: Atom<bool> = Atom(|_| false);
 
+#[component]
 pub fn Nav(cx: Scope) -> Element {
     let logged_in = use_read(cx, &LOGGED_IN);
     let highlighted = use_read(cx, &HIGHLIGHT_NAV_LAYOUT);
@@ -94,6 +95,7 @@ pub fn Nav(cx: Scope) -> Element {
     }
 }
 
+#[component]
 fn FullNav(cx: Scope) -> Element {
     cx.render(rsx! {
         div { class: "hidden md:flex items-center",
@@ -119,6 +121,7 @@ fn FullNav(cx: Scope) -> Element {
     })
 }
 
+#[component]
 fn MobileNav(cx: Scope) -> Element {
     let show = use_atom_state(cx, &SHOW_NAV);
 
@@ -170,7 +173,7 @@ static LINKS: &[(&str, &str, LinkPairs)] = &[
     ("Blog", "/blog", &[]),
 ];
 
-#[inline_props]
+#[component]
 fn LinkList(cx: Scope) -> Element {
     let hover = "hover:text-sky-500 dark:hover:text-sky-400";
     let hover_bg = "dark:hover:bg-gray-500 hover:bg-gray-200 rounded";
@@ -209,6 +212,7 @@ fn LinkList(cx: Scope) -> Element {
     cx.render(rsx! {links})
 }
 
+#[component]
 fn Search(cx: Scope) -> Element {
     let show_modal = use_atom_state(cx, &SHOW_SEARCH);
 
@@ -233,6 +237,7 @@ fn Search(cx: Scope) -> Element {
     }
 }
 
+#[component]
 fn SearchModal(cx: Scope) -> Element {
     let show_modal = use_atom_state(cx, &SHOW_SEARCH);
     let search_text = use_state(cx, String::new);
@@ -365,7 +370,7 @@ fn SearchModal(cx: Scope) -> Element {
     }
 }
 
-#[inline_props]
+#[component]
 fn SearchResult(cx: Scope, result: dioxus_search::SearchResult<Route>) -> Element {
     let set_show_modal = fermi::use_set(cx, &SHOW_SEARCH);
     let title = &result.title;

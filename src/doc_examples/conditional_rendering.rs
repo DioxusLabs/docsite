@@ -1,7 +1,7 @@
 #![allow(unused)]
-#![allow(non_snake_case)]
 use dioxus::prelude::*;
 
+#[component]
 pub fn App(cx: Scope) -> Element {
     let is_logged_in = use_state(cx, || false);
 
@@ -12,7 +12,7 @@ pub fn App(cx: Scope) -> Element {
     }))
 }
 
-#[inline_props]
+#[component]
 fn LogIn<'a>(
     cx: Scope<'a>,
     is_logged_in: bool,
@@ -39,6 +39,7 @@ fn LogIn<'a>(
     // ANCHOR_END: if_else
 }
 
+#[component]
 pub fn LogInImprovedApp(cx: Scope) -> Element {
     let is_logged_in = use_state(cx, || false);
 
@@ -49,7 +50,7 @@ pub fn LogInImprovedApp(cx: Scope) -> Element {
     }))
 }
 
-#[inline_props]
+#[component]
 fn LogInImproved<'a>(
     cx: Scope<'a>,
     is_logged_in: bool,
@@ -84,6 +85,7 @@ fn LogInImproved<'a>(
     // ANCHOR_END: if_else_improved
 }
 
+#[component]
 pub fn LogInWarningApp(cx: Scope) -> Element {
     let is_logged_in = use_state(cx, || false);
 
@@ -100,7 +102,7 @@ pub fn LogInWarningApp(cx: Scope) -> Element {
     }
 }
 
-#[inline_props]
+#[component]
 fn LogInWarning(cx: Scope, is_logged_in: bool) -> Element {
     // ANCHOR: conditional_none
     if *is_logged_in {

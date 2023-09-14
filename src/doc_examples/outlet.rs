@@ -1,4 +1,3 @@
-#![allow(non_snake_case)]
 use dioxus::prelude::*;
 use dioxus_router::prelude::*;
 
@@ -11,7 +10,7 @@ enum Route {
         Index {},
 }
 
-#[inline_props]
+#[component]
 fn Wrapper(cx: Scope) -> Element {
     render! {
         header { "header" }
@@ -21,7 +20,7 @@ fn Wrapper(cx: Scope) -> Element {
     }
 }
 
-#[inline_props]
+#[component]
 fn Index(cx: Scope) -> Element {
     render! {
         h1 { "Index" }
@@ -29,6 +28,7 @@ fn Index(cx: Scope) -> Element {
 }
 // ANCHOR_END: outlet
 
+#[component]
 fn App(cx: Scope) -> Element {
     render! {
         Router::<Route> {}

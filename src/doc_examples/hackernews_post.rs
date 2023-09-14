@@ -1,4 +1,3 @@
-#![allow(non_snake_case)]
 use chrono::{DateTime, Utc};
 use dioxus::prelude::*;
 use futures::future::join_all;
@@ -8,6 +7,7 @@ pub mod story_v1 {
     use super::*;
 
     // ANCHOR: story_v1
+    #[component]
     pub fn App(cx: Scope) -> Element {
         render! {
             "story"
@@ -20,6 +20,7 @@ pub mod story_v2 {
     use dioxus::prelude::*;
 
     // ANCHOR: story_v2
+    #[component]
     pub fn App(cx: Scope) -> Element {
         let title = "title";
         let by = "author";
@@ -38,6 +39,7 @@ pub mod story_v3 {
     use dioxus::prelude::*;
 
     // ANCHOR: story_v3
+    #[component]
     pub fn App(cx: Scope) -> Element {
         let title = "title";
         let by = "author";
@@ -58,6 +60,7 @@ pub mod story_v4 {
     use dioxus::prelude::*;
 
     // ANCHOR: story_v4
+    #[component]
     pub fn App(cx: Scope) -> Element {
         let title = "title";
         let by = "author";
@@ -80,6 +83,7 @@ pub mod story_v5 {
     use dioxus::prelude::*;
 
     // ANCHOR: app_v5
+    #[component]
     pub fn App(cx: Scope) -> Element {
         render! {
             StoryListing {
@@ -90,6 +94,7 @@ pub mod story_v5 {
     // ANCHOR_END: app_v5
 
     // ANCHOR: story_v5
+    #[component]
     fn StoryListing(cx: Scope) -> Element {
         let title = "title";
         let by = "author";
@@ -112,6 +117,7 @@ pub mod story_v6 {
     use dioxus::prelude::*;
 
     // ANCHOR: app_v6
+    #[component]
     pub fn App(cx: Scope) -> Element {
         render! {
             StoryListing {
@@ -181,7 +187,7 @@ pub mod story_v6 {
         pub r#type: String,
     }
 
-    #[inline_props]
+    #[component]
     fn StoryListing(cx: Scope, story: StoryItem) -> Element {
         let StoryItem {
             title,
@@ -257,6 +263,7 @@ pub mod story_final {
         pub r#type: String,
     }
 
+    #[component]
     pub fn App(cx: Scope) -> Element {
         render! {
             StoryListing {
@@ -276,7 +283,7 @@ pub mod story_final {
         }
     }
 
-    #[inline_props]
+    #[component]
     fn StoryListing(cx: Scope, story: StoryItem) -> Element {
         let StoryItem {
             title,

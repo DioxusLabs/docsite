@@ -1,6 +1,6 @@
-#![allow(non_snake_case)]
 use dioxus::prelude::*;
 
+#[component]
 pub fn App(cx: Scope) -> Element {
     // ANCHOR: dangerous_inner_html
     // this should come from a trusted source

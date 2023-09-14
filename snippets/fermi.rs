@@ -4,6 +4,7 @@
 static COUNT: fermi::Atom<i32> = |_| 0;
 
 // Read it anywhere
+#[component]
 fn Read(cx: Scope) -> Element {
     let count = fermi::use_read(cx, &|| COUNT);
 
@@ -11,12 +12,14 @@ fn Read(cx: Scope) -> Element {
 }
 
 // Or write to it from anywhere
+#[component]
 fn Increment(cx: Scope) -> Element {
     let mut count = fermi::use_atom_state(cx, &COUNT);
 
     render!( button { onclick: move |_| count += 1 , "Increment" } )
 }
 
+#[component]
 fn App(cx: Scope) -> Element {
     //Initialize the atom root - this is what keeps track of your atoms
     fermi::use_init_atom_root(cx);

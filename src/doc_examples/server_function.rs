@@ -1,5 +1,3 @@
-#![allow(non_snake_case)]
-
 use dioxus::prelude::*;
 use dioxus_fullstack::prelude::*;
 
@@ -13,6 +11,7 @@ fn main() {
     config.launch();
 }
 
+#[component]
 fn App(cx: Scope) -> Element {
     let mut count = use_state(cx, || 0);
 

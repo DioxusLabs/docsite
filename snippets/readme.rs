@@ -1,6 +1,7 @@
 //! Simple, familiar, React-like syntax
 
-fn app(cx: Scope) -> Element {
+#[component]
+fn App(cx: Scope) -> Element {
     let mut count = use_state(cx, || 0);
 
     render!(

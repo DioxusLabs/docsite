@@ -1,5 +1,6 @@
 //! Easily integrate async Rust code into your components.
 
+#[component]
 fn Tasks(cx: Scope) -> Element {
     let count = use_state(cx, || 0);
 

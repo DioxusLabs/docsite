@@ -1,10 +1,11 @@
 use dioxus::prelude::*;
 
 fn main() {
-    dioxus_desktop::launch(app);
+    dioxus_desktop::launch(App);
 }
 
-fn app(cx: Scope) -> Element {
+#[component]
+fn App(cx: Scope) -> Element {
     // Use eval returns a function that can spawn eval instances
     let create_eval = use_eval(cx);
 

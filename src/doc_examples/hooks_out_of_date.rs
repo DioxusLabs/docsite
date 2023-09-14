@@ -1,7 +1,7 @@
-#![allow(non_snake_case)]
 use dioxus::prelude::*;
 
 // ANCHOR: component
+#[component]
 pub fn App(cx: Scope) -> Element {
     // count will be initialized to 0 the first time the component is rendered
     let mut count = use_state(cx, || 0);

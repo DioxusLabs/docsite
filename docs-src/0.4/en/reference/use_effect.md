@@ -35,7 +35,8 @@ fn Profile(cx: Scope, id: usize) -> Element {
     )
 }
 
-fn app(cx: Scope) -> Element {
+#[component]
+fn App(cx: Scope) -> Element {
     render!(Profile { id: 0 })
 }
 ```

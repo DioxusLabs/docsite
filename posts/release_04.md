@@ -237,12 +237,14 @@ enum Route {
 }
 
 // 2. Make sure we have a component in scope that matches the enum variant
+#[component]
 fn Homepage(cx: Scope) -> Element {
 	render! { "Welcome home!" }
 }
 
 // 3. Now render our app, using the Router and Route
-fn app(cx: Scope) -> Element {
+#[component]
+fn App(cx: Scope) -> Element {
 	render! { Router::<Route> {} }
 }
 ```

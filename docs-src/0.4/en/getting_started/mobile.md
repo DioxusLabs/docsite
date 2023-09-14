@@ -114,7 +114,7 @@ pub fn main() -> Result<()> {
     // Right now we're going through dioxus-desktop but we'd like to go through dioxus-mobile
     // That will seed the index.html with some fixes that prevent the page from scrolling/zooming etc
     dioxus_desktop::launch_cfg(
-        app,
+        App,
         // Note that we have to disable the viewport goofiness of the browser.
         // Dioxus_mobile should do this for us
         Config::default().with_custom_index(r#"<!DOCTYPE html>
@@ -135,7 +135,8 @@ pub fn main() -> Result<()> {
     Ok(())
 }
 
-fn app(cx: Scope) -> Element {
+#[component]
+fn App(cx: Scope) -> Element {
     let items = cx.use_hook(|| vec![1, 2, 3]);
 
     log::debug!("Hello from the app");

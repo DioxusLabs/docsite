@@ -1,11 +1,10 @@
-#![allow(non_snake_case)]
-
 use dioxus::prelude::*;
 
 fn main() {
     dioxus_desktop::launch(App);
 }
 
+#[component]
 fn App(cx: Scope) -> Element {
     // ANCHOR: usage
     cx.render(rsx! {
@@ -22,6 +21,7 @@ pub struct FancyButtonProps<'a> {
     on_click: EventHandler<'a, MouseEvent>,
 }
 
+#[component]
 pub fn FancyButton<'a>(cx: Scope<'a, FancyButtonProps<'a>>) -> Element<'a> {
     cx.render(rsx!(button {
         class: "fancy-button",

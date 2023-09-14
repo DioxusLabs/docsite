@@ -33,8 +33,8 @@ async fn main() {
             "/ws",
             get(move |ws: WebSocketUpgrade| async move {
                 ws.on_upgrade(move |socket| async move {
-                    // When the WebSocket is upgraded, launch the LiveView with the app component
-                    _ = view.launch(dioxus_liveview::axum_socket(socket), app).await;
+                    // When the WebSocket is upgraded, launch the LiveView with the App component
+                    _ = view.launch(dioxus_liveview::axum_socket(socket), App).await;
                 })
             }),
         );
@@ -49,7 +49,8 @@ async fn main() {
 // ANCHOR_END: glue
 
 // ANCHOR: app
-fn app(cx: Scope) -> Element {
+#[component]
+fn App(cx: Scope) -> Element {
     cx.render(rsx! {
         div {
             "Hello, world!"

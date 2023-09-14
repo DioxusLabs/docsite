@@ -1,8 +1,8 @@
-#![allow(non_snake_case)]
 #![allow(unused)]
 
 use dioxus::prelude::*;
 
+#[component]
 pub fn App(cx: Scope) -> Element {
     cx.render(rsx!(
         Empty {},
@@ -16,6 +16,7 @@ pub fn App(cx: Scope) -> Element {
     ))
 }
 
+#[component]
 pub fn Empty(cx: Scope) -> Element {
     // ANCHOR: empty
     cx.render(rsx!(div {
@@ -25,6 +26,7 @@ pub fn Empty(cx: Scope) -> Element {
     // ANCHOR_END: empty
 }
 
+#[component]
 pub fn Children(cx: Scope) -> Element {
     // ANCHOR: children
     cx.render(rsx!(ol {
@@ -35,6 +37,7 @@ pub fn Children(cx: Scope) -> Element {
     // ANCHOR_END: children
 }
 
+#[component]
 pub fn Fragments(cx: Scope) -> Element {
     // ANCHOR: fragments
     cx.render(rsx!(
@@ -49,6 +52,7 @@ pub fn Fragments(cx: Scope) -> Element {
     // ANCHOR_END: fragments
 }
 
+#[component]
 pub fn ManyRoots(cx: Scope) -> Element {
     // ANCHOR: manyroots
     cx.render(rsx!(
@@ -58,6 +62,7 @@ pub fn ManyRoots(cx: Scope) -> Element {
     // ANCHOR_END: manyroots
 }
 
+#[component]
 pub fn Attributes(cx: Scope) -> Element {
     // ANCHOR: attributes
     cx.render(rsx!(img {
@@ -68,6 +73,7 @@ pub fn Attributes(cx: Scope) -> Element {
     // ANCHOR_END: attributes
 }
 
+#[component]
 pub fn VariableAttributes(cx: Scope) -> Element {
     // ANCHOR: variable_attributes
     let written_in_rust = true;
@@ -80,6 +86,7 @@ pub fn VariableAttributes(cx: Scope) -> Element {
     // ANCHOR_END: variable_attributes
 }
 
+#[component]
 pub fn CustomAttributes(cx: Scope) -> Element {
     // ANCHOR: custom_attributes
     cx.render(rsx!(div {
@@ -88,6 +95,7 @@ pub fn CustomAttributes(cx: Scope) -> Element {
     // ANCHOR_END: custom_attributes
 }
 
+#[component]
 pub fn Formatting(cx: Scope) -> Element {
     // ANCHOR: formatting
     let coordinates = (42, 0);
@@ -112,6 +120,7 @@ pub fn Formatting(cx: Scope) -> Element {
     // ANCHOR_END: formatting
 }
 
+#[component]
 pub fn Expression(cx: Scope) -> Element {
     // ANCHOR: expression
     let text = "Dioxus";
@@ -123,6 +132,7 @@ pub fn Expression(cx: Scope) -> Element {
     // ANCHOR_END: expression
 }
 
+#[component]
 pub fn Loops(cx: Scope) -> Element {
     // ANCHOR: loops
     cx.render(rsx! {
@@ -144,6 +154,7 @@ pub fn Loops(cx: Scope) -> Element {
     // ANCHOR_END: loops
 }
 
+#[component]
 pub fn IfStatements(cx: Scope) -> Element {
     // ANCHOR: ifstatements
     cx.render(rsx! {

@@ -1,5 +1,3 @@
-#![allow(non_snake_case)]
-
 use dioxus::prelude::*;
 use std::collections::HashMap;
 
@@ -7,6 +5,7 @@ fn main() {
     dioxus_desktop::launch(App);
 }
 
+#[component]
 fn App(cx: Scope) -> Element {
     let you_are_happy = true;
     let you_know_it = false;

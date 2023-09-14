@@ -1,7 +1,7 @@
-#![allow(non_snake_case)]
 use dioxus::prelude::*;
 
 // ANCHOR: component
+#[component]
 pub fn App(cx: Scope) -> Element {
     cx.render(rsx! {
         form {

@@ -19,33 +19,59 @@ If you've fixed [an open issue](https://github.com/DioxusLabs/dioxus/issues), fe
 All pull requests (including those made by a team member) must be approved by at least one other team member.
 Larger, more nuanced decisions about design, architecture, breaking changes, trade-offs, etc. are made by team consensus.
 
-## Tools
+## Before you contribute
 
-The following tools can be helpful when developing Dioxus. Many of these tools are used in the CI pipeline. Running them locally before submitting a PR instead of waiting for CI can save time.
+You might be surprised that a lot of checks fail when making your first PR.
+That's why you should first run these commands before contributing, and it will save you *lots* of time, because the
+GitHub CI is much slower at executing all of these than your PC.
 
-- All code is tested with [cargo test](https://doc.rust-lang.org/cargo/commands/cargo-test.html)
+- Format code with [rustfmt](https://github.com/rust-lang/rustfmt):
 
 ```sh
 cargo fmt --all
 ```
 
-- All code is formatted with [rustfmt](https://github.com/rust-lang/rustfmt)
+- Check all code [cargo check](https://doc.rust-lang.org/cargo/commands/cargo-check.html):
 
 ```sh
 cargo check --workspace --examples --tests
 ```
 
-- All code is linted with [Clippy](https://doc.rust-lang.org/clippy/)
+- Check if [Clippy](https://doc.rust-lang.org/clippy/) generates any warnings. Please fix these!
 
 ```sh
 cargo clippy --workspace --examples --tests -- -D warnings
 ```
 
-- Crates that use unsafe are checked for undefined behavior with [MIRI](https://github.com/rust-lang/miri). MIRI can be helpful to debug what unsafe code is causing issues. Only code that does not interact with system calls can be checked with MIRI. Currently, this is used for the two MIRI tests in `dioxus-core` and `dioxus-native-core`.
+- Test all code with [cargo-test](https://doc.rust-lang.org/cargo/commands/cargo-test.html):
+
+```sh
+cargo test --all --tests
+```
+
+- More tests, this time with [cargo-make](https://sagiegurari.github.io/cargo-make/). Here are all steps, including installation:
+
+```sh
+cargo install --force cargo-make
+cargo make tests
+```
+
+<!-- Playwright doesn't work on my PC despite using the exact same commands as in playwright.yml.
+Perhaps someone can enlighten me as to why?
+- Test with Playwright. This tests the UI itself, right in a browser. Here are all steps, including installation:
+
+```sh
+cd playwright-tests # Make sure you navigate to this directory first!
+npm ci
+npm install -D @playwright/test
+npx playwright install --with-deps
+npx playwright test
+```
+--?
+
+- Test unsafe crates with [MIRI](https://github.com/rust-lang/miri). Currently, this is used for the two MIRI tests in `dioxus-core` and `dioxus-native-core`:
 
 ```sh
 cargo miri test --package dioxus-core --test miri_stress
 cargo miri test --package dioxus-native-core --test miri_native
 ```
-
-- [Rust analyzer](https://rust-analyzer.github.io/) can be very helpful for quick feedback in your IDE.

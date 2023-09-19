@@ -9,6 +9,82 @@ Some headers are mandatory, but none of the keys inside them are.
 In that case, you only need to include the header, but no keys.
 It might look weird, but it's normal.
 
+## Desktop and TUI
+
+For the desktop and TUI (terminal user interface) renderers, 
+Dioxus bundles your app using `dx bundle` and the [tauri-bundler](https://docs.rs/crate/tauri-bundler/latest).
+
+Tauri uses a JSON file for the configuration, but Dioxus uses TOML. So this:
+```json
+{
+  "package": {
+    "productName": "Your Awesome App",
+    "version": "0.1.0"
+  },
+  "tauri": {
+    "bundle": {
+      "active": true,
+      "identifier": "com.my.app",
+      "shortDescription": "",
+      "longDescription": "",
+      "copyright": "Copyright (c) You 2021. All rights reserved.",
+      "icon": [
+        "icons/32x32.png",
+        "icons/128x128.png",
+        "icons/128x128@2x.png",
+        "icons/icon.icns",
+        "icons/icon.ico"
+      ],
+      "resources": ["./assets/**/*.png"],
+      "deb": {
+        "depends": ["debian-dependency1", "debian-dependency2"]
+      },
+      "macOS": {
+        "frameworks": [],
+        "minimumSystemVersion": "10.11",
+        "license": "./LICENSE"
+      },
+      "externalBin": ["./sidecar-app"]
+    }
+  }
+}
+```
+
+becomes this (we remove the `tauri`):
+
+```toml
+[package]
+productName = "Your Awesome App"
+version = "0.1.0"
+
+[bundle]
+active = true
+identifier = "com.my.app"
+shortDescription = ""
+longDescription = ""
+copyright = "Copyright (c) You 2021. All rights reserved."
+icon = [
+  "icons/32x32.png",
+  "icons/128x128.png",
+  "icons/128x128@2x.png",
+  "icons/icon.icns",
+  "icons/icon.ico"
+]
+resources = [ "./assets/**/*.png" ]
+externalBin = [ "./sidecar-app" ]
+
+[bundle.deb]
+depends = [ "debian-dependency1", "debian-dependency2" ]
+
+[bundle.macOS]
+frameworks = [ ]
+minimumSystemVersion = "10.11"
+license = "./LICENSE"
+```
+
+You can check out the [tauri-bundler docs.rs](https://docs.rs/tauri-bundler/latest/tauri_bundler/bundle/index.html). 
+This covers all the different values. Keep in mind that `FooSettings` becomes just `foo`.
+
 ## Structure
 
 Each header has its TOML form directly under it.

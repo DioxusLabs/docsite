@@ -56,18 +56,15 @@ cargo install --force cargo-make
 cargo make tests
 ```
 
-<!-- Playwright doesn't work on my PC despite using the exact same commands as in playwright.yml.
-Perhaps someone can enlighten me as to why?
 - Test with Playwright. This tests the UI itself, right in a browser. Here are all steps, including installation:
 
 ```sh
-cd playwright-tests # Make sure you navigate to this directory first!
+cd playwright-tests
 npm ci
 npm install -D @playwright/test
 npx playwright install --with-deps
 npx playwright test
 ```
---?
 
 - Test unsafe crates with [MIRI](https://github.com/rust-lang/miri). Currently, this is used for the two MIRI tests in `dioxus-core` and `dioxus-native-core`:
 

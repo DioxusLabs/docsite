@@ -56,7 +56,15 @@ cargo install --force cargo-make
 cargo make tests
 ```
 
+- Test unsafe crates with [MIRI](https://github.com/rust-lang/miri). Currently, this is used for the two MIRI tests in `dioxus-core` and `dioxus-native-core`:
+
+```sh
+cargo miri test --package dioxus-core --test miri_stress
+cargo miri test --package dioxus-native-core --test miri_native
+```
+
 - Test with Playwright. This tests the UI itself, right in a browser. Here are all steps, including installation:
+  **Disclaimer: This might inexplicably fail on your machine without it being your fault.** Make that PR anyway!
 
 ```sh
 cd playwright-tests
@@ -64,11 +72,4 @@ npm ci
 npm install -D @playwright/test
 npx playwright install --with-deps
 npx playwright test
-```
-
-- Test unsafe crates with [MIRI](https://github.com/rust-lang/miri). Currently, this is used for the two MIRI tests in `dioxus-core` and `dioxus-native-core`:
-
-```sh
-cargo miri test --package dioxus-core --test miri_stress
-cargo miri test --package dioxus-native-core --test miri_native
 ```

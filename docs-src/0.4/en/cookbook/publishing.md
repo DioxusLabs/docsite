@@ -43,7 +43,7 @@ To install, simply run
 
 To bundle your application you can simply run `dx bundle --release` to produce a final app with all the optimizations and assets builtin.
 
-Once you've ran `cargo-bundle --release`, your app should be accessible in
+Once you've ran `dx bundle --release`, your app should be accessible in
 
 `dist/bundle/`.
 

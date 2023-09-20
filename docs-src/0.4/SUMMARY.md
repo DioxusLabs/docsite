@@ -64,15 +64,16 @@
 ---
 - [Cookbook](cookbook/index.md)
   - [Publishing](cookbook/publishing.md)
+  - [Anti-patterns](cookbook/antipatterns.md)
+  - [Error Handling](cookbook/error_handling.md)
   - [Integrations](cookbook/integrations/index.md)
     - [Logging](cookbook/integrations/logging.md)
     - [Internationalization](cookbook/integrations/internationalization.md)
   - [State Management](cookbook/state/index.md)
     - [External State](cookbook/state/external/index.md)
     - [Custom Hooks](cookbook/state/custom_hooks/index.md)
-  - [Anti-patterns](cookbook/antipatterns.md)
-  - [Error Handling](cookbook/error_handling.md)
   - [Testing](cookbook/testing.md)
+  - [Examples](cookbook/examples.md)
   - [Tailwind](cookbook/tailwind.md)
   - [Custom Renderer](cookbook/custom_renderer.md)
 

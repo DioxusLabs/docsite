@@ -16,6 +16,13 @@ pub struct DocsContentHighlighted(pub bool);
 pub static HIGHLIGHT_DOCS_CONTENT: Atom<DocsContentHighlighted> =
     Atom(|_| DocsContentHighlighted(false));
 
+/// The Markdown file path needs to be appended to this, including the first slash!
+const GITHUB_API_URL: &str = "https://api.github.com/repos/DioxusLabs/docsite/contents/docs-src/0.4/en";
+/// Use this URL while loading the file-specific URL.
+const GITHUB_EDIT_PAGE_FALLBACK_URL: &str = "https://github.com/DioxusLabs/docsite";
+/// The Markdown file path needs to be appended to this, including the first slash!
+const GITHUB_EDIT_PAGE_EDIT_URL: &str = "https://github.com/DioxusLabs/docsite/edit/master/docs-src/0.4/en";
+
 #[inline_props]
 pub fn Learn(cx: Scope) -> Element {
     let show_sidebar_button = use_atom_state(cx, &SHOW_DOCS_NAV);
@@ -182,6 +189,21 @@ fn RightNav(cx: Scope) -> Element {
     };
     let page = use_book(cx);
     let padding_map = ["pl-2", "pl-4", "pl-6", "pl-8", "pl-10"];
+    let page_url = page.to_string();
+
+    // This is the URL for the file if that file is not a directory that uses /index.md
+    // page_url starts with '/', so we don't need to worry about that
+    let github_api_url = format!("{GITHUB_API_URL}{page_url}.md");
+
+    let edit_github_url = use_future(cx, &page_url, |page_url| async move {
+        // If the file is not found, that means that we have to use /index.md
+        if reqwest::get(github_api_url).await.unwrap().status() == reqwest::StatusCode::NOT_FOUND {
+            format!("{GITHUB_EDIT_PAGE_EDIT_URL}{page_url}/index.md")
+        } else {
+            format!("{GITHUB_EDIT_PAGE_EDIT_URL}{page_url}.md")
+        }
+    });
+    // That might be a naive approach, but it's the easiest
 
     render! {
         div {
@@ -193,6 +215,12 @@ fn RightNav(cx: Scope) -> Element {
                     li { class: "pb-2 {padding_map[section.level-1]}",
                         a { href: "?phantom={section.id}#{section.id}", "{section.title}" }
                     }
+                }
+            }
+            h2 { class: "py-4 font-semibold",
+                match edit_github_url.value() {
+                    Some(url) => rsx!(a { href: "{url}", "Edit this page!" }),
+                    None => rsx!(a { href: "{GITHUB_EDIT_PAGE_FALLBACK_URL}", "Edit this page!" })
                 }
             }
             h2 { class: "py-4 font-semibold", "Go to version" }

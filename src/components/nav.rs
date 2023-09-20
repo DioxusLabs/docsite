@@ -248,12 +248,12 @@ fn SearchModal(cx: Scope) -> Element {
         async move {
             // debounce the search
             if *last_key_press.read() - js_sys::Date::now() > 100. {
-                results.set(SEARCH_INDEX.search(&*search_text.current()));
+                results.set(SEARCH_INDEX.search(&search_text.current()));
                 last_key_press.set(js_sys::Date::now());
             }
             else {
                 gloo_timers::future::TimeoutFuture::new(100).await;
-                results.set(SEARCH_INDEX.search(&*search_text.current()));
+                results.set(SEARCH_INDEX.search(&search_text.current()));
             }
         }
     });

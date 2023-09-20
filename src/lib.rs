@@ -115,7 +115,7 @@ pub enum Route {
             #[end_nest]
         #[end_layout]
     #[end_nest]
-    #[redirect("/docs/0.3/:..segments", |segments: Vec<String>| Route::DocsO3 { segments: segments })]
+    #[redirect("/docs/0.3/:..segments", |segments: Vec<String>| Route::DocsO3 { segments })]
     #[redirect("/docs/:.._segments", |_segments: Vec<String>| Route::Docs { child: BookRoute::Index {} })]
     #[route("/:..segments")]
     #[route("/:..segments")]

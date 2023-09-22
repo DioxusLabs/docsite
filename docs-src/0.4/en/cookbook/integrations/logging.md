@@ -57,13 +57,13 @@ The available variables are:
 - LEVEL     - The `LevelFilter` of the emitted log.
 - PATH      - The file path of where the log was emitted, or the crate name.
 - ARGS      - The arguments passed through the log macro.
-- TIMESTAMP - A timestamp of when the log was emitted. (Requires `timestamp` feature)
+- TIMESTAMP - A timestamp of when the log was emitted. (Requires `timestamps` feature)
 
 #### Timestamps
 
-Another feature of Dioxus Logger is the ability to include timestamps with your logs. By default, this feature is disabled and has to be enabled by adding `timestamp` to your features section of the `dioxus-logger` dependancy:
+Another feature of Dioxus Logger is the ability to include timestamps with your logs. By default, this feature is disabled and has to be enabled by adding `timestamps` to your features section of the `dioxus-logger` dependancy:
 ```toml
-dioxus-logger = { version = "*", features = ["timestamp"] }
+dioxus-logger = { version = "*", features = ["timestamps"] }
 ```
 
 By enabling this feature, you gain access to the `TIMESTAMP` format variable.

@@ -30,10 +30,10 @@ Unlike other routers in the Rust ecosystem, our router is built declaratively at
 enum Route {
 	// if the current location is "/home", render the Home component
 	#[route("/home")]
-	Home {}
+	Home {},
 	// if the current location is "/blog", render the Blog component
 	#[route("/blog")]
-	Blog {}
+	Blog {},
 }
 ```
 
@@ -46,12 +46,12 @@ We can fix this one of two ways:
 ```rust
 enum Route {
 	#[route("/home")]
-	Home {}
+	Home {},
 	#[route("/blog")]
-	Blog {}
+	Blog {},
 	//  if the current location doesn't match any of the above routes, render the NotFound component
 	#[route("/:..segments")]
-	NotFound { segments: Vec<String> }
+	NotFound { segments: Vec<String> },
 }
 ```
 
@@ -63,12 +63,12 @@ enum Route {
 	#[route("/home")]
 	//  if the current location doesn't match any of the above routes, redirect to "/home"
 	#[redirect("/:..segments", |segments: Vec<String>| Route::Home {})]
-	Home {}
+	Home {},
 	#[route("/blog")]
-	Blog {}
+	Blog {},
 	//  if the current location doesn't match any of the above routes, render the NotFound component
 	#[route("/:..segments")]
-	NotFound { segments: Vec<String> }
+	NotFound { segments: Vec<String> },
 }
 ```
 
@@ -87,4 +87,4 @@ rsx!{
 
 ## More reading
 
-This page is just a very brief overview of the router. For more information, check out [the router book](../../router/index.md) or some of [the router examples](https://github.com/DioxusLabs/dioxus/blob/master/examples/router.rs).
+This page is just a very brief overview of the router. For more information, check out [the router reference](../router/index.md) or some of [the router examples](https://github.com/DioxusLabs/dioxus/blob/master/examples/router.rs).

@@ -87,4 +87,4 @@ rsx!{
 
 ## More reading
 
-This page is just a very brief overview of the router. For more information, check out [the router book](../router/index.md) or some of [the router examples](https://github.com/DioxusLabs/dioxus/blob/master/examples/router.rs).
+This page is just a very brief overview of the router. For more information, check out the [router book](../router/index.md) or some of the [router examples](https://github.com/DioxusLabs/dioxus/blob/master/examples/router.rs).

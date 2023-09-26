@@ -6,6 +6,8 @@
 cargo install dioxus-cli --locked
 ```
 
+If you get an OpenSSL error on installation, ensure the dependencies listed [here](https://docs.rs/openssl/latest/openssl/#automatic) are installed.
+
 ## Install the latest development build through git
 
 To get the latest bug fixes and features, you can install the development version from git.

@@ -121,7 +121,7 @@ Let's talk about how you can improve your Dioxus code to be more performant.
 It's important to minimize the number of dynamic parts in your `rsx`, like conditional rendering.
 When Dioxus is rendering your component, it will skip parts that are the same as the last render.
 That means that if you keep dynamic rendering to a minimum, your app will speed up, and quite a bit if it's not just hello world.
-To see an example of this, check out [Dynamic Rendering](../reference/dynamic_rendering.md?phantom=improving-the#improving-the).
+To see an example of this, check out [Dynamic Rendering](../reference/dynamic_rendering.md).
 
 Also check out [Anti-patterns](antipatterns.md) for patterns that you should avoid.
 Obviously, not all of them are just about performance, but some of them are.

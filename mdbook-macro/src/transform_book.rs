@@ -19,7 +19,7 @@ pub fn write_book_with_routes(
     book_path: PathBuf,
     book: &mdbook_shared::MdBook<PathBuf>,
 ) -> TokenStream {
-    let summary_path = get_summary_path(&book_path);
+    let summary_path = get_summary_path(&book_path).expect("SUMMARY.md path not found");
     let index_path = summary_path.to_string_lossy();
 
     let MdBook { summary, .. } = book;
@@ -166,7 +166,9 @@ fn write_page_with_routes(book_path: &Path, book: &mdbook_shared::Page<PathBuf>)
 
     let path = url;
     let url = path_to_route_enum(path);
-    let full_path = get_book_content_path(book_path).join(path);
+    let full_path = get_book_content_path(book_path)
+        .expect("No book content path found")
+        .join(path);
     let path_str = full_path.to_str().unwrap();
     let id = id.0;
 

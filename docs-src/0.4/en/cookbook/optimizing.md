@@ -6,7 +6,7 @@ You might have noticed that Dioxus binaries are pretty big.
 The WASM binary of a [TodoMVC app](https://github.com/tigerros/dioxus-todo-app) weighs in at 2.36mb!
 Don't worry; we can get it down to a much more manageable 234kb.
 This will get obviously lower over time.
-For example, the new [signals](https://github.com/DioxusLabs/dioxus/tree/master/packages/signals) will reduce the binary size of a hello world app to less than 100kb (with unstable features).
+For example, the new [event system](https://github.com/DioxusLabs/dioxus/pull/1402) will reduce the binary size of a hello world app to less than 100kb (with unstable features).
 
 We will also discuss ways to optimize your app for increased speed.
 

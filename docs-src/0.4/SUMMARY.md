@@ -76,6 +76,7 @@
   - [Examples](cookbook/examples.md)
   - [Tailwind](cookbook/tailwind.md)
   - [Custom Renderer](cookbook/custom_renderer.md)
+  - [Optimizing](cookbook/optimizing.md)
 
 ---
 - [CLI](CLI/index.md)

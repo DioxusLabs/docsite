@@ -1,4 +1,3 @@
-mod search_index;
 mod summary;
 pub use summary::*;
 

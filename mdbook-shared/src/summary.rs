@@ -1,4 +1,4 @@
-use crate::errors::*;
+use crate::{errors::*, get_book_content_path};
 use log::{debug, trace, warn};
 use memchr::{self, Memchr};
 use pulldown_cmark::{self, Event, HeadingLevel, Tag};
@@ -7,6 +7,19 @@ use std::fmt::{self, Display, Formatter};
 use std::iter::FromIterator;
 use std::ops::{Deref, DerefMut};
 use std::path::{Path, PathBuf};
+
+pub fn get_summary_path(mdbook_root: impl AsRef<Path>) -> Option<PathBuf> {
+    let mdbook_root = mdbook_root.as_ref();
+    let path = mdbook_root.join("SUMMARY.md");
+    if path.exists() {
+        return Some(path);
+    }
+    let path = mdbook_root.join("src").join("SUMMARY.md");
+    if path.exists() {
+        return Some(path);
+    }
+    None
+}
 
 /// Parse the text from a `SUMMARY.md` file into a sort of "recipe" to be
 /// used when loading a book from disk.a
@@ -355,7 +368,9 @@ impl<'a> SummaryParser<'a> {
             let path_buf = PathBuf::from(href.clone());
             if let Some(src_path) = self.src_path {
                 // check if it under the en directory
-                let full_path = PathBuf::from(&src_path).join("en").join(&path_buf);
+                let full_path = get_book_content_path(PathBuf::from(&src_path))
+                    .unwrap()
+                    .join(&path_buf);
                 if !full_path.exists() {
                     return Err(anyhow::anyhow!(
                         "The path {:?} does not exist (created from {href})",

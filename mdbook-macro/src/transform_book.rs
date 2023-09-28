@@ -11,13 +11,15 @@ use quote::quote;
 use quote::ToTokens;
 
 use crate::path_to_route_enum;
+use mdbook_shared::get_book_content_path;
+use mdbook_shared::get_summary_path;
 
 /// Transforms the book to use enum routes instead of paths
 pub fn write_book_with_routes(
     book_path: PathBuf,
     book: &mdbook_shared::MdBook<PathBuf>,
 ) -> TokenStream {
-    let summary_path = book_path.join("SUMMARY.md");
+    let summary_path = get_summary_path(&book_path);
     let index_path = summary_path.to_string_lossy();
 
     let MdBook { summary, .. } = book;
@@ -164,7 +166,7 @@ fn write_page_with_routes(book_path: &Path, book: &mdbook_shared::Page<PathBuf>)
 
     let path = url;
     let url = path_to_route_enum(path);
-    let full_path = book_path.join("en").join(path);
+    let full_path = get_book_content_path(book_path).join(path);
     let path_str = full_path.to_str().unwrap();
     let id = id.0;
 

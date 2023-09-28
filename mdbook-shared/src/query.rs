@@ -1,9 +1,13 @@
 use crate::*;
-use anyhow::Ok;
+use anyhow::{Context, Ok};
 use pulldown_cmark::{Event, Tag};
 use serde::{Deserialize, Serialize};
 use slab::Slab;
-use std::{collections::HashMap, hash::Hash, path::PathBuf};
+use std::{
+    collections::HashMap,
+    hash::Hash,
+    path::{Path, PathBuf},
+};
 
 #[derive(Debug)]
 pub struct MdBook<R>
@@ -47,6 +51,19 @@ impl<T: Hash + Eq> PageIndex<T> for &T {
     }
 }
 
+pub fn get_book_content_path(mdbook_root: impl AsRef<Path>) -> Option<PathBuf> {
+    let mdbook_root = mdbook_root.as_ref();
+    let path = mdbook_root.join("en");
+    if path.exists() {
+        return Some(path);
+    }
+    let path = mdbook_root.join("src");
+    if path.exists() {
+        return Some(path);
+    }
+    None
+}
+
 #[derive(Debug, Serialize, Deserialize)]
 pub struct Page<R> {
     pub title: String,
@@ -73,7 +90,9 @@ pub struct Section {
 
 impl MdBook<PathBuf> {
     pub fn new(mdbook_root: PathBuf) -> anyhow::Result<Self> {
-        let buf = mdbook_root.join("SUMMARY.md").canonicalize()?;
+        let buf = get_summary_path(&mdbook_root)
+            .context("No SUMMARY.md found")?
+            .canonicalize()?;
 
         let summary = std::fs::read_to_string(buf).map_err(|e| {
             anyhow::anyhow!(
@@ -119,8 +138,8 @@ impl MdBook<PathBuf> {
         };
 
         let url = link.location.as_ref().cloned().unwrap();
-        let md_file = mdbook_root
-            .join("en")
+        let md_file = get_book_content_path(&mdbook_root)
+            .context("No book content found")?
             .join(&url)
             .canonicalize()
             .map_err(|e| {

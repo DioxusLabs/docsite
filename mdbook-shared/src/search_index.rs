@@ -4,7 +4,7 @@ use bytes::Bytes;
 use serde::{Deserialize, Serialize};
 use stork_lib::{build_index, SearchError};
 
-use crate::{MdBook, PageId};
+use crate::{get_book_content_path, MdBook, PageId};
 
 static SEARCH_INDEX: AtomicU32 = AtomicU32::new(0);
 
@@ -26,7 +26,7 @@ impl Debug for SearchIndex {
 
 impl SearchIndex {
     pub fn from_book(book_path: PathBuf, book: &MdBook<PathBuf>) -> Self {
-        let en_path = book_path.join("en");
+        let en_path = get_book_content_path(book_path).unwrap();
         let asset_format = Config::from_book(en_path.to_string_lossy().into(), book);
 
         let toml = toml::to_string(&asset_format).unwrap();

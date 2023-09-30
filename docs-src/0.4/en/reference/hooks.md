@@ -4,7 +4,7 @@ So far our components have had no state like a normal rust functions. However, i
 
 Hooks allow us to create state in our components. Hooks are Rust functions that take a reference to [`ScopeState`](https://docs.rs/dioxus/latest/dioxus/prelude/struct.ScopeState.html) (in a component, you can pass `cx`), and provide you with functionality and state.
 
-Dioxus provides many built in hooks, but if those hooks don't fit your specific use case, you also can [create your own hook](../cookbook/state/custom_hooks/index.md)
+Dioxus provides many built-in hooks, but if those hooks don't fit your specific use case, you also can [create your own hook](../cookbook/state/custom_hooks/index.md)
 
 ## use_state Hook
 
@@ -12,8 +12,9 @@ Dioxus provides many built in hooks, but if those hooks don't fit your specific 
 
 - You provide a closure that determines the initial value: `let mut count = use_state(cx, || 0);`
 - `use_state` gives you the current value, and a way to update it by setting it to something else
-- When the value updates, `use_state` makes the component re-render (along with any other component
-  that references it), and then provides you with the new value.
+- When the value updates, `use_state` makes the component re-render 
+  (along with any other component that references it), 
+  and then provides you with the new value.
 
 For example, you might have seen the counter example, in which state (a number) is tracked using the `use_state` hook:
 
@@ -127,13 +128,15 @@ DemoFrame {
 }
 ```
 
+
+
 > The return values of `use_state` and `use_ref` (
-> [`UseState`](https://docs.rs/dioxus/latest/dioxus/prelude/struct.UseState.html) and
-> [`UseRef`](https://docs.rs/dioxus/latest/dioxus/prelude/struct.UseRef.html), respectively) are in
-> some ways similar to [`Cell`](https://doc.rust-lang.org/std/cell/) and
-> [`RefCell`](https://doc.rust-lang.org/std/cell/struct.RefCell.html) – they provide interior
-> mutability. However, these Dioxus wrappers also ensure that the component gets re-rendered
-> whenever you change the state.
+> &nbsp;[`UseState`](https://docs.rs/dioxus/latest/dioxus/prelude/struct.UseState.html) and
+> &nbsp;[`UseRef`](https://docs.rs/dioxus/latest/dioxus/prelude/struct.UseRef.html), respectively) are in
+> &nbsp;some ways similar to [`Cell`](https://doc.rust-lang.org/std/cell/) and
+> &nbsp;[`RefCell`](https://doc.rust-lang.org/std/cell/struct.RefCell.html) – they provide interior
+> &nbsp;mutability. However, these Dioxus wrappers also ensure that the component gets re-rendered
+> &nbsp;whenever you change the state.
 
 
 ## Additional Resources

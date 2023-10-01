@@ -13,3 +13,4 @@ There are a few different sections in the cookbook:
 - [Examples](examples.md) is a curated list of delightful recipes that demonstrate the various ways of using Dioxus ingredients.
 - [Tailwind](tailwind.md) reveals the secrets of combining your Tailwind and Dioxus ingredients into a complete meal. You will also learn about using other NPM ingredients (packages) with Dioxus.
 - In the [Custom Renderer](custom_renderer.md) section, we embark on a cooking adventure, inventing new ways to cook with Dioxus!
+- [Optimizing](optimizing.md) will show you how to maximize the quality of your ingredients.

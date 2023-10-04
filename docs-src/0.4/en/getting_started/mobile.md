@@ -85,10 +85,10 @@ cargo new dioxus-mobile-test
 cd dioxus-mobile-test
 ```
 
-Next, we can use `tauri-mobile` to create a project for mobile:
+Next, we can use `cargo-mobile2` to create a project for mobile:
 
 ```shell
-cargo install --git https://github.com/tauri-apps/tauri-mobile
+cargo install --git https://github.com/tauri-apps/cargo-mobile2
 cargo mobile init
 ```
 

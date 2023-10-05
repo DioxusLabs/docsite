@@ -86,6 +86,27 @@ pub mod app_v1 {
             }
         }
     }
+
+    // NEW
+    #[inline_props]
+    fn Comment(cx: Scope, comment: Comment) -> Element<'a> {
+        render! {
+            div {
+                padding: "0.5rem",
+                div {
+                    color: "gray",
+                    "by {comment.by}"
+                }
+                div {
+                    dangerous_inner_html: "{comment.text}"
+                }
+                for kid in &comment.sub_comments {
+                    Comment { comment: kid.clone() }
+                }
+            }
+        }
+    }
+
     // ANCHOR_END: app_v1
 
     #[inline_props]

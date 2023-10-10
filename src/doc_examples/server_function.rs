@@ -36,7 +36,7 @@ fn App(cx: Scope) -> Element {
 }
 
 #[server]
-async fn double_server(number: usize) -> Result<usize, ServerFnError> {
+async fn double_server(number: i32) -> Result<i32, ServerFnError> {
     // Perform some expensive computation or access a database on the server
     tokio::time::sleep(std::time::Duration::from_secs(1)).await;
     let result = number * 2;

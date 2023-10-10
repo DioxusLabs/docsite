@@ -77,7 +77,7 @@ enum Route {
 For our app to navigate these routes, we can provide clickable elements called Links. These simply wrap `<a>` elements that, when clicked, navigate the app to the given location. Because our route is an enum of valid routes, if you try to link to a page that doesn't exist, you will get a compiler error.
 
 ```rust
-rsx!{
+rsx! {
 	Link {
 		to: Route::Home {},
 		"Go home!"

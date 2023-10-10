@@ -13,3 +13,7 @@ To statically render pages, we need to flatten the route tree and generate a fil
 ```rust
 {{#include src/doc_examples/static_generation.rs}}
 ```
+
+## Example
+
+- [examples/static-hydrated](https://github.com/DioxusLabs/dioxus/tree/master/packages%2Ffullstack%2Fexamples%2Fstatic-hydrated)

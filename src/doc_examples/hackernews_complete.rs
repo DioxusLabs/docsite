@@ -206,7 +206,7 @@ pub static USER_API: &str = "user/";
 const COMMENT_DEPTH: i64 = 2;
 
 pub async fn get_story_preview(id: i64) -> Result<StoryItem, reqwest::Error> {
-    let url = format!("{}item/{}.json", BASE_API_URL, id);
+    let url = format!("{}{}{}.json", BASE_API_URL, ITEM_API, id);
     reqwest::get(&url).await?.json().await
 }
 

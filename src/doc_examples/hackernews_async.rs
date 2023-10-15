@@ -362,6 +362,7 @@ fn StoryListing(cx: Scope, story: StoryItem) -> Element {
         id,
         ..
     } = story;
+    // New
     let full_story = use_ref(cx, || None);
 
     let url = url.as_deref().unwrap_or_default();

@@ -70,18 +70,18 @@ SandBoxFrame {
 1. Hot reloading allows much faster iteration times inside of rsx calls by interpreting them and streaming the edits.
 2. It is useful when changing the styling/layout of a program, but will not help with changing the logic of a program.
 
-You can place the hot reload macro at the top of your main function in ssr mode to enable hot reloading on debug builds.
+Hot reloading for fullstack is only supported on the git version of the Dioxus CLI. To use it, you must install the git version of CLI:
 
-For more information about hot reloading on native platforms and configuration options see the [dioxus-hot-reload](https://crates.io/crates/dioxus-hot-reload) crate.
-
+```bash
+cargo install --git https://github.com/DioxusLabs/dioxus dioxus-cli
+```
 
 ### Usage
 
 1. Run:
 
 ```bash
-dx build --features web
-dx serve --features ssr --hot-reload --platform desktop
+dx serve --hot-reload --platform fullstack
 ```
 
 2. Change some code within a rsx or render macro

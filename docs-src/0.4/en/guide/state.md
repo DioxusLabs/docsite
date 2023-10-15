@@ -1,6 +1,6 @@
 # Interactivity
 
-In this chapter, we will add a preview for an articles that you hover or focus.
+In this chapter, we will add a preview for articles you hover over or links you focus on.
 
 ## Creating a Preview
 

@@ -13,7 +13,7 @@ pub static USER_API: &str = "user/";
 const COMMENT_DEPTH: i64 = 2;
 
 pub async fn get_story_preview(id: i64) -> Result<StoryItem, reqwest::Error> {
-    let url = format!("{}item/{}.json", BASE_API_URL, id);
+    let url = format!("{}{}{}.json", BASE_API_URL, ITEM_API, id);
     reqwest::get(&url).await?.json().await
 }
 
@@ -362,6 +362,7 @@ fn StoryListing(cx: Scope, story: StoryItem) -> Element {
         id,
         ..
     } = story;
+    // New
     let full_story = use_ref(cx, || None);
 
     let url = url.as_deref().unwrap_or_default();

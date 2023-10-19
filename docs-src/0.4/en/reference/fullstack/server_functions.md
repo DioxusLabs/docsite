@@ -58,3 +58,41 @@ SandBoxFrame {
 	url: "https://codesandbox.io/p/sandbox/dioxus-fullstack-server-future-qwpp4p?file=/src/main.rs:3,24"
 }
 ```
+
+
+## Running the client with dioxus-desktop
+
+While the project presented so far makes a web browser interact with the server, it's possible to make a desktop program interact with the server in a similar fashion.
+
+As per the example on [Github](https://github.com/DioxusLabs/dioxus/tree/master/packages/fullstack/examples/axum-desktop), we need to make two binary targets, one for the desktop program (the `client.rs` file), one for the server (the `server.rs` file). The client app and the server functions are written in a common `lib.rs` file, shared by the two binaries.
+
+Each of the binary targets has a slightly different build configuration, as they include additional dependencies or features.
+Have a look at the Cargo.toml for more information.
+- the client.rs has to be run with the `desktop` feature, so that the optional `dioxus-desktop` dependency is included
+- the server.rs has to be run with the `ssr` features; this will generate the server part of the server functions and will include the `axum` dependency to run as a server.
+
+### Client code
+
+The client file is pretty straightforward. You only need to set the server url in the client code, so it knows where to send the network requests. Then, dioxus_desktop launches the app.
+
+In order ot ease development, the example project sends requests to `localhost:8080` which is the address where the local server is run. Remember to set the correct url when you will run it in production.
+
+
+### Server code
+
+In the server code, first you have to set the network address where the server will listen to.
+
+Afterwards, you have to register the types declared in the server function macros into the axum server.
+For instance, consider this server function:
+```rust
+#[server(GetServerData)]
+async fn get_server_data() -> Result<String, ServerFnError> {
+    Ok("Hello from the server!".to_string())
+}
+```
+The `GetServerData` type has to be registered in the axum server, which will add the corresponding route to the server.
+```rust
+let _ = GetServerData::register_explicit();
+```
+
+Finally, the server is started and it begins serving data.

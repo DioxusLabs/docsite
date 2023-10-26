@@ -85,14 +85,12 @@ In the server code, first you have to set the network address where the server w
 Afterwards, you have to register the types declared in the server function macros into the axum server.
 For instance, consider this server function:
 ```rust
-#[server(GetServerData)]
-async fn get_server_data() -> Result<String, ServerFnError> {
-    Ok("Hello from the server!".to_string())
-}
+{{#include src/doc_examples/server_function_desktop_client.rs:server_function}}
 ```
+
 The `GetServerData` type has to be registered in the axum server, which will add the corresponding route to the server.
 ```rust
-let _ = GetServerData::register_explicit();
+{{#include src/doc_examples/server_function_desktop_client.rs:function_registration}}
 ```
 
 Finally, the server is started and it begins serving data.

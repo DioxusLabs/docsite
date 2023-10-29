@@ -90,6 +90,9 @@ In order ot ease development, the example project sends requests to `localhost:8
 ### Server code
 
 In the server code, first you have to set the network address and port where the server will listen to.
+```rust
+{{#include src/doc_examples/server_function_desktop_client.rs:server_url}}
+```
 
 Afterwards, you have to register the types declared in the server function macros into the axum server.
 For instance, consider this server function:

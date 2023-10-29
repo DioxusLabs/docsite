@@ -14,7 +14,9 @@ use dioxus_fullstack::prelude::*;
 
 #[tokio::main]
 async fn main() {
+    // ANCHOR: server_url
     let addr = std::net::SocketAddr::from(([127, 0, 0, 1], 8080));
+    // ANCHOR_END: server_url
 
     // ANCHOR: function_registration
     let _ = GetServerData::register_explicit();

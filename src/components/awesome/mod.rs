@@ -3,7 +3,7 @@ use dioxus::prelude::*;
 use wasm_bindgen::prelude::wasm_bindgen;
 use crate::*;
 
-const ITEM_LIST_LINK: &str = "https://raw.githubusercontent.com/tigerros/awesome-dioxus/patch-1/awesome.json";
+const ITEM_LIST_LINK: &str = "https://raw.githubusercontent.com/DioxusLabs/awesome-dioxus/master/awesome.json";
 const STAR_CACHE_NAME: &str = "STARS-";
 
 #[derive(Props, Clone, serde::Deserialize, PartialEq)]

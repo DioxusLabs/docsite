@@ -66,10 +66,19 @@ While the project presented so far makes a web browser interact with the server,
 
 As per the example on [Github](https://github.com/DioxusLabs/dioxus/tree/master/packages/fullstack/examples/axum-desktop), we need to make two binary targets, one for the desktop program (the `client.rs` file), one for the server (the `server.rs` file). The client app and the server functions are written in a common `lib.rs` file, shared by the two binaries.
 
-Each of the binary targets has a slightly different build configuration, as they include additional dependencies or features.
+Each of the binary targets has a slightly different build configuration, as they include additional dependencies or features. 
 Have a look at the Cargo.toml for more information.
 - the client.rs has to be run with the `desktop` feature, so that the optional `dioxus-desktop` dependency is included
 - the server.rs has to be run with the `ssr` features; this will generate the server part of the server functions and will include the `axum` dependency to run as a server.
+
+This means you can run the server executable with:
+```bash
+cargo run --bin server --features ssr
+```
+and the client desktop executable with:
+```bash
+cargo run --bin client --features desktop
+```
 
 ### Client code
 
@@ -80,7 +89,7 @@ In order ot ease development, the example project sends requests to `localhost:8
 
 ### Server code
 
-In the server code, first you have to set the network address where the server will listen to.
+In the server code, first you have to set the network address and port where the server will listen to.
 
 Afterwards, you have to register the types declared in the server function macros into the axum server.
 For instance, consider this server function:

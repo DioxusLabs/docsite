@@ -37,7 +37,7 @@ The first thing we'll do is install the [dioxus-cli](https://github.com/DioxusLa
 
 To install, simply run
 
-`cargo install dioxus-cli --locked`
+`cargo install dioxus-cli`
 
 ## Building
 

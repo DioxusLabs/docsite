@@ -14,7 +14,7 @@ npx tailwindcss -i ./input.css -o ./public/tailwind.css --watch
 
 The documentation can be edited using any text editor. Most commonly used editors support syntax highlighting for the `markdown` format. To view your changes you can install the [dioxus-cli] tool locally, assuming you already have a working `Rust` setup;
 ```console
-cargo install dioxus-cli --locked
+cargo install dioxus-cli
 ```
 
 With [dioxus] installed, you can use it to build and serve the documentation on your local system;

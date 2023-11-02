@@ -490,7 +490,7 @@ We made a small tweak to the CLI this release to rename the CLI from `dioxus` to
 To install the new CLI, use the same old instructions:
 
 ```rust
-cargo install dioxus-cli --locked --force
+cargo install dioxus-cli --force
 ```
 
 ## Hot Reloading for Desktop

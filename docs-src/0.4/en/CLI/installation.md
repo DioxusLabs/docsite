@@ -3,7 +3,7 @@
 ## Install the stable version (recommended)
 
 ```
-cargo install dioxus-cli --locked
+cargo install dioxus-cli
 ```
 
 If you get an OpenSSL error on installation, ensure the dependencies listed [here](https://docs.rs/openssl/latest/openssl/#automatic) are installed.

@@ -16,7 +16,6 @@ enum Route {
 // ANCHOR_END: router
 
 // ANCHOR: app
-#[inline_props]
 fn App(cx: Scope) -> Element {
     render! {
         Router::<Route> {}

@@ -90,7 +90,7 @@ This is where we will be testing the features of the forked
  cargo new --bin demo
 ```
 
-- Add the dioxus dependencies for your rust crate (new/existing):
+- Add the dioxus dependencies for your rust crate (new/existing) in cargo.toml:
 
 ```sh
   dioxus = { path = "<path to forked dioxus project>/dioxus/packages/dioxus/" }
@@ -101,5 +101,9 @@ This is where we will be testing the features of the forked
 This above example is for dioxus-web. To know about the dependencies for different web-renderer visit [here](https://dioxuslabs.com/learn/0.4/getting_started/choosing_a_web_renderer).
 
 - Run and test your feature
+
+```sh
+dx serve
+```
 
 If this is your first time with dioxus, please read [this](https://dioxuslabs.com/learn/0.4/getting_started/wasm) to get familiar with dioxus-web.

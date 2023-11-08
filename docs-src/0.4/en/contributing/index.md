@@ -73,3 +73,33 @@ npm install -D @playwright/test
 npx playwright install --with-deps
 npx playwright test
 ```
+
+## How to test dioxus with local crate
+If you are developing a feature, you should test it in your local setup before raising a PR. This process makes sure you are aware of your code functionality before being reviewed by peers.
+
+- Fork the following github repo (DioxusLabs/dioxus):
+
+`https://github.com/DioxusLabs/dioxus`
+
+- Create a new or use an existing rust crate:
+This is where we will be testing the features of the forked
+
+```sh
+// ignore this step if you will use an existing rust crate.
+
+ cargo new --bin demo
+```
+
+- Add the dioxus dependencies for your rust crate (new/existing):
+
+```sh
+  dioxus = { path = "<path to forked dioxus project>/dioxus/packages/dioxus/" }
+
+  dioxus-web = { path = "<path to forked dioxus project>/dioxus/packages/web/" }
+```
+
+This above example is for dioxus-web. To know about the dependencies for different web-renderer visit [here](https://dioxuslabs.com/learn/0.4/getting_started/choosing_a_web_renderer).
+
+- Run and test your feature
+
+If this is your first time with dioxus, please read [this](https://dioxuslabs.com/learn/0.4/getting_started/wasm) to get familiar with dioxus-web.

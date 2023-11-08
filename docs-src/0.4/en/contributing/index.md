@@ -81,24 +81,22 @@ If you are developing a feature, you should test it in your local setup before r
 
 `https://github.com/DioxusLabs/dioxus`
 
-- Create a new or use an existing rust crate:
+- Create a new or use an existing rust crate (ignore this step if you will use an existing rust crate):
 This is where we will be testing the features of the forked
 
 ```sh
-// ignore this step if you will use an existing rust crate.
-
- cargo new --bin demo
+cargo new --bin demo
 ```
 
 - Add the dioxus dependencies for your rust crate (new/existing) in cargo.toml:
 
-```sh
-  dioxus = { path = "<path to forked dioxus project>/dioxus/packages/dioxus/" }
+```toml
+dioxus = { path = "<path to forked dioxus project>/dioxus/packages/dioxus/" }
 
-  dioxus-web = { path = "<path to forked dioxus project>/dioxus/packages/web/" }
+dioxus-web = { path = "<path to forked dioxus project>/dioxus/packages/web/" }
 ```
 
-This above example is for dioxus-web. To know about the dependencies for different web-renderer visit [here](https://dioxuslabs.com/learn/0.4/getting_started/choosing_a_web_renderer).
+This above example is for dioxus-web. To know about the dependencies for different renderer visit [here](https://dioxuslabs.com/learn/0.4/getting_started).
 
 - Run and test your feature
 
@@ -106,4 +104,4 @@ This above example is for dioxus-web. To know about the dependencies for differe
 dx serve
 ```
 
-If this is your first time with dioxus, please read [this](https://dioxuslabs.com/learn/0.4/getting_started/wasm) to get familiar with dioxus-web.
+If this is your first time with dioxus, please read [the guide](https://dioxuslabs.com/learn/0.4/guide) to get familiar with dioxus.

@@ -10,12 +10,12 @@ Dioxus Desktop is built off [Tauri](https://tauri.app/). Right now there are lim
 
 > In the future, we plan to move to a custom web renderer-based DOM renderer with WGPU integrations ([Blitz](https://github.com/DioxusLabs/blitz)).
 
-# Examples
+## Examples
 
-- [File explorer](https://github.com/DioxusLabs/example-projects/blob/master/file-explorer)
-- [WiFi scanner](https://github.com/DioxusLabs/example-projects/blob/master/wifi-scanner)
+- [File Explorer](https://github.com/DioxusLabs/example-projects/blob/master/file-explorer)
+- [WiFi Scanner](https://github.com/DioxusLabs/example-projects/blob/master/wifi-scanner)
 
-[![File explorer screenshot](https://raw.githubusercontent.com/DioxusLabs/example-projects/master/file-explorer/image.png)](https://github.com/DioxusLabs/example-projects/tree/master/file-explorer)
+[![File Explorer screenshot](https://raw.githubusercontent.com/DioxusLabs/example-projects/master/file-explorer/image.png)](https://github.com/DioxusLabs/example-projects/tree/master/file-explorer)
 
 Here's a [query](https://github.com/search?q=repo%3ADioxusLabs%2Fdioxus+path%3A%2F%5Eexamples%5C%2F%2F+%22use+dioxus_desktop%22&type=code) for the main repo to find examples which use `dioxus_desktop` (might not be 100% acurrate).
 

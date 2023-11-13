@@ -30,6 +30,14 @@ Dioxus desktop app uses your operating system's WebView library, so it's portabl
 
 In this section, we'll cover how to bundle your app for macOS, Windows, and Linux.
 
+## Preparing your application for bundling
+
+Depending on your platform, you may need to add some additional code to your `main.rs` file to make sure your app is ready for bundling. On windows you'll need to add the `#![windows_subsystem = "windows"]` attribute to your `main.rs` file to hide the terminal window that pops up when you run your app.
+
+```rust
+#![windows_subsystem = "windows"]
+```
+
 ## Install `dioxus CLI`
 
 

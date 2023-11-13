@@ -15,7 +15,9 @@ Dioxus desktop is built off [Tauri](https://tauri.app/). Right now there are lim
 - [File Explorer](https://github.com/DioxusLabs/example-projects/blob/master/file-explorer)
 - [WiFi Scanner](https://github.com/DioxusLabs/example-projects/blob/master/wifi-scanner)
 
-[![File ExplorerExample](https://raw.githubusercontent.com/DioxusLabs/example-projects/master/file-explorer/image.png)](https://github.com/DioxusLabs/example-projects/tree/master/file-explorer)
+[![File Explorer screenshot](https://raw.githubusercontent.com/DioxusLabs/example-projects/master/file-explorer/image.png)](https://github.com/DioxusLabs/example-projects/tree/master/file-explorer)
+
+Here's a [query](https://github.com/search?q=repo%3ADioxusLabs%2Fdioxus+path%3A%2F%5Eexamples%5C%2F%2F+%22use+dioxus_desktop%22&type=code) for the main repo to find examples which use `dioxus_desktop` (might not be 100% acurrate).
 
 # Getting started
 

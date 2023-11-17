@@ -10,8 +10,8 @@ Dioxus provides many built-in hooks, but if those hooks don't fit your specific 
 
 [`use_state`](https://docs.rs/dioxus/latest/dioxus/prelude/fn.use_state.html) is one of the simplest hooks.
 
-- You provide a closure that determines the initial value: `let mut count = use_state(cx, || 0);`
-- `use_state` gives you the current value and a way to update it by setting it to something else
+- You provide a closure that determines the initial value: `let mut count = use_state(cx, || 0);`.
+- `use_state` gives you the current value and a way to update it by setting it to something else.
 - When the value updates, `use_state` makes the component re-render (along with any other component
   that references it), and then provides you with the new value.
 
@@ -79,7 +79,7 @@ But how can Dioxus differentiate between multiple hooks in the same component? A
 This is only possible because the two hooks are always called in the same order, so Dioxus knows which is which. Because the order you call hooks matters, you must follow certain rules when using hooks:
 
 1. Hooks may be only used in components or other hooks (we'll get to that later).
-2. On every call to a component function
+2. On every call to a component function.
 3. The same hooks must be called (except in the case of early returns, as explained later in the [Error Handling chapter](../../cookbook/error_handling.md)).
 4. In the same order.
 5. Hook names should start with `use_` so you don't accidentally confuse them with regular

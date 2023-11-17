@@ -32,10 +32,18 @@ In this section, we'll cover how to bundle your app for macOS, Windows, and Linu
 
 ## Preparing your application for bundling
 
-Depending on your platform, you may need to add some additional code to your `main.rs` file to make sure your app is ready for bundling. On windows you'll need to add the `#![windows_subsystem = "windows"]` attribute to your `main.rs` file to hide the terminal window that pops up when you run your app.
+Depending on your platform, you may need to add some additional code to your `main.rs` file to make sure your app is ready for bundling. On Windows, you'll need to add the `#![windows_subsystem = "windows"]` attribute to your `main.rs` file to hide the terminal window that pops up when you run your app. **If you're developing on Windows, only use this when bundling.** It will disable the terminal, so you will not get logs of any kind. You can gate it behind a feature, like so:
+
+```toml
+# Cargo.toml
+[features]
+bundle = []
+```
+
+And then your `main.rs`:
 
 ```rust
-#![windows_subsystem = "windows"]
+#![cfg_attr(feature = "bundle", windows_subsystem = "windows")]
 ```
 
 ## Install `dioxus CLI`

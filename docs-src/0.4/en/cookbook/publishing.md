@@ -2,8 +2,7 @@
 
 After you have build your application, you will need to publish it somewhere. This reference will outline different methods of publishing your desktop or web application.
 
-## WEB: Publishing with Github Pages
-To build our app and publish it to Github:
+## Web: Publishing with GitHub Pages
 
 Edit your `Dioxus.toml` to point your `out_dir` to the `docs` folder and the `base_path` to the name of your repo:
 
@@ -24,7 +23,7 @@ dx build --release
 - Add and commit with git
 - Push to GitHub
 
-## DESKTOP: Creating an Installer
+## Desktop: Creating an installer
 
 Dioxus desktop app uses your operating system's WebView library, so it's portable to be distributed for other platforms.
 
@@ -48,7 +47,6 @@ And then your `main.rs`:
 
 ## Install `dioxus CLI`
 
-
 The first thing we'll do is install the [dioxus-cli](https://github.com/DioxusLabs/dioxus/tree/master/packages/cli). This extension to cargo will make it very easy to package our app for the various platforms.
 
 To install, simply run
@@ -57,11 +55,9 @@ To install, simply run
 
 ## Building
 
-To bundle your application you can simply run `dx bundle --release` to produce a final app with all the optimizations and assets builtin.
+To bundle your application you can simply run `dx bundle --release` (also add `--features bundle` if you're using that, see the [this](#preparing-your-application-for-bundling) for more) to produce a final app with all the optimizations and assets builtin.
 
-Once you've ran `dx bundle --release`, your app should be accessible in
-
-`dist/bundle/`.
+Once you've ran the command, your app should be accessible in `dist/bundle/`.
 
 For example, a macOS app would look like this:
 

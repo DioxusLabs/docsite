@@ -32,9 +32,10 @@ In this section, we'll cover how to bundle your app for macOS, Windows, and Linu
 
 ## Preparing your application for bundling
 
-Depending on your platform, you may need to add some additional code to your `main.rs` file to make sure your app is ready for bundling. On windows you'll need to add the `#![windows_subsystem = "windows"]` attribute to your `main.rs` file to hide the terminal window that pops up when you run your app.
+Depending on your platform, you may need to add some additional code to your `main.rs` file to make sure your app is ready for bundling. On windows you'll need to add the `#![windows_subsystem = "windows"]` attribute to your `main.rs` file to hide the terminal window that pops up when you run your app. **This will disable all logging and panics in your terminal. Only enable this when you are ready to bundle**
 
 ```rust
+// Include your feature flag of choice if you want to conditionally disable logging/panics
 #![windows_subsystem = "windows"]
 ```
 

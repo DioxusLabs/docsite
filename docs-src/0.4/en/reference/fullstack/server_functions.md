@@ -62,16 +62,16 @@ SandBoxFrame {
 
 ## Running the client with dioxus-desktop
 
-While the project presented so far makes a web browser interact with the server, it's possible to make a desktop program interact with the server in a similar fashion.
+The project presented so far makes a web browser interact with the server, but it is also possible to make a desktop program interact with the server in a similar fashion. (The full example code is available in the [Dioxus repo](https://github.com/DioxusLabs/dioxus/tree/master/packages/fullstack/examples/axum-desktop))
 
-As per the example on [Github](https://github.com/DioxusLabs/dioxus/tree/master/packages/fullstack/examples/axum-desktop), we need to make two binary targets, one for the desktop program (the `client.rs` file), one for the server (the `server.rs` file). The client app and the server functions are written in a common `lib.rs` file, shared by the two binaries.
+First, we need to make two binary targets, one for the desktop program (the `client.rs` file), one for the server (the `server.rs` file). The client app and the server functions are written in a shared `lib.rs` file.
 
-Each of the binary targets has a slightly different build configuration, as they include additional dependencies or features. 
-Have a look at the Cargo.toml for more information.
+The desktop and server targets have slightly different build configuration to enable additional dependencies or features. 
+The Cargo.toml in the full example has more information, but the main points are:
 - the client.rs has to be run with the `desktop` feature, so that the optional `dioxus-desktop` dependency is included
 - the server.rs has to be run with the `ssr` features; this will generate the server part of the server functions and will include the `axum` dependency to run as a server.
 
-This means you can run the server executable with:
+Once you create your project, you can run the server executable with:
 ```bash
 cargo run --bin server --features ssr
 ```
@@ -84,7 +84,7 @@ cargo run --bin client --features desktop
 
 The client file is pretty straightforward. You only need to set the server url in the client code, so it knows where to send the network requests. Then, dioxus_desktop launches the app.
 
-In order ot ease development, the example project sends requests to `localhost:8080` which is the address where the local server is run. Remember to set the correct url when you will run it in production.
+For development, the example project runs the server on `localhost:8080`. **Before you release remember to update the url to your production url.**
 
 
 ### Server code
@@ -94,8 +94,8 @@ In the server code, first you have to set the network address and port where the
 {{#include src/doc_examples/server_function_desktop_client.rs:server_url}}
 ```
 
-Afterwards, you have to register the types declared in the server function macros into the axum server.
-For instance, consider this server function:
+Then, you have to register the types declared in the server function macros into the axum server.
+For example, consider this server function:
 ```rust
 {{#include src/doc_examples/server_function_desktop_client.rs:server_function}}
 ```
@@ -105,4 +105,4 @@ The `GetServerData` type has to be registered in the axum server, which will add
 {{#include src/doc_examples/server_function_desktop_client.rs:function_registration}}
 ```
 
-Finally, the server is started and it begins serving data.
+Finally, the server is started and it begins responding to requests.

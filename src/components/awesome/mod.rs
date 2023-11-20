@@ -203,7 +203,7 @@ pub fn Awesome(cx: Scope) -> Element {
                         class: "container mx-auto max-w-screen-1g text-center animate-fadein-medium",
                         p {
                             class: "text-[3.3em] font-bold tracking-tight dark:text-white text-ghdarkmetal mb-2 px-2",
-                            "That's weird. There isn't anything awesome to show. 🙁"
+                            "Loading..."
                         }
                     }
                 }

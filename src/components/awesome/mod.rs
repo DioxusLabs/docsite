@@ -109,6 +109,12 @@ pub fn Awesome(cx: Scope) -> Element {
                             "Everything you'll need to build awesome Dioxus apps. Also check out "
                             b { Link { to: "#made-with-dioxus", "Made with Dioxus" } } "!"
                         }
+                        p {
+                            class: "mx-auto text-xl text-gray-600 dark:text-gray-400 pb-10 px-2 max-w-screen-sm",
+                            "To submit your project, make a pull request in the "
+                            b { Link { to: "https://github.com/DioxusLabs/awesome-dioxus", "awesome-dioxus" } }
+                            " repo."
+                        }
                     }
                     div {
                         class: "container mx-auto",
@@ -282,7 +288,6 @@ fn AwesomeItem(cx: Scope, item: Item) -> Element {
                         "{stars}"
                     }
                 }
-                
             }
         }
     ))

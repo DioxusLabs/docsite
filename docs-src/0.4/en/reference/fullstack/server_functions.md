@@ -58,3 +58,51 @@ SandBoxFrame {
 	url: "https://codesandbox.io/p/sandbox/dioxus-fullstack-server-future-qwpp4p?file=/src/main.rs:3,24"
 }
 ```
+
+
+## Running the client with dioxus-desktop
+
+The project presented so far makes a web browser interact with the server, but it is also possible to make a desktop program interact with the server in a similar fashion. (The full example code is available in the [Dioxus repo](https://github.com/DioxusLabs/dioxus/tree/master/packages/fullstack/examples/axum-desktop))
+
+First, we need to make two binary targets, one for the desktop program (the `client.rs` file), one for the server (the `server.rs` file). The client app and the server functions are written in a shared `lib.rs` file.
+
+The desktop and server targets have slightly different build configuration to enable additional dependencies or features. 
+The Cargo.toml in the full example has more information, but the main points are:
+- the client.rs has to be run with the `desktop` feature, so that the optional `dioxus-desktop` dependency is included
+- the server.rs has to be run with the `ssr` features; this will generate the server part of the server functions and will include the `axum` dependency to run as a server.
+
+Once you create your project, you can run the server executable with:
+```bash
+cargo run --bin server --features ssr
+```
+and the client desktop executable with:
+```bash
+cargo run --bin client --features desktop
+```
+
+### Client code
+
+The client file is pretty straightforward. You only need to set the server url in the client code, so it knows where to send the network requests. Then, dioxus_desktop launches the app.
+
+For development, the example project runs the server on `localhost:8080`. **Before you release remember to update the url to your production url.**
+
+
+### Server code
+
+In the server code, first you have to set the network address and port where the server will listen to.
+```rust
+{{#include src/doc_examples/server_function_desktop_client.rs:server_url}}
+```
+
+Then, you have to register the types declared in the server function macros into the axum server.
+For example, consider this server function:
+```rust
+{{#include src/doc_examples/server_function_desktop_client.rs:server_function}}
+```
+
+The `GetServerData` type has to be registered in the axum server, which will add the corresponding route to the server.
+```rust
+{{#include src/doc_examples/server_function_desktop_client.rs:function_registration}}
+```
+
+Finally, the server is started and it begins responding to requests.

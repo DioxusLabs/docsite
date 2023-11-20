@@ -1,3 +1,4 @@
+use std::fmt::{Display, Formatter};
 use dioxus::prelude::*;
 use wasm_bindgen::prelude::wasm_bindgen;
 use crate::*;
@@ -9,6 +10,7 @@ const STAR_CACHE_NAME: &str = "STARS-";
 struct Item {
     name: String,
     description: String,
+    r#type: AwesomeType,
     category: Category,
     
     /// Option GitHub Information
@@ -20,6 +22,12 @@ struct Item {
     link: Option<String>,
 }
 
+#[derive(Clone, serde::Deserialize, PartialEq)]
+enum AwesomeType {
+    Awesome,
+    MadeWith
+}
+
 #[derive(Default, Clone, serde::Deserialize, PartialEq)]
 struct GithubInfo {
     username: String,
@@ -28,6 +36,7 @@ struct GithubInfo {
 
 #[derive(Clone, serde::Deserialize, PartialEq)]
 enum Category {
+    Misc,
     Util,
     Logging,
     Components,
@@ -35,12 +44,14 @@ enum Category {
     Styling,
     Deployment,
     Renderer,
-    Misc,
+    /// This is not actually displayed
+    App,
 }
 
-impl ToString for Category {
-    fn to_string(&self) -> String {
-        let result = match self{
+impl Display for Category {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        let converted = match self {
+            Self::Misc => "📎 Misc",
             Self::Util => "🧰 Util",
             Self::Logging => "📡 Logging",
             Self::Components => "📦 Components",
@@ -48,9 +59,10 @@ impl ToString for Category {
             Self::Styling => "🎨 Styling",
             Self::Deployment => "⚙️ Deployment",
             Self::Renderer => "🎥 Renderer",
-            Self::Misc => "📎 Misc"
+            Self::App => "🚀 App",
         };
-        result.to_string()
+
+        write!(f, "{converted}")
     }
 }
 
@@ -94,7 +106,8 @@ pub fn Awesome(cx: Scope) -> Element {
                         }
                         p {
                             class: "mx-auto text-xl text-gray-600 dark:text-gray-400 pb-10 px-2 max-w-screen-sm",
-                            "Everything you'll need to build awesome Dioxus apps."
+                            "Everything you'll need to build awesome Dioxus apps. Also check out "
+                            b { Link { to: "#made-with-dioxus", "Made with Dioxus" } } "!"
                         }
                     }
                     div {
@@ -114,10 +127,46 @@ pub fn Awesome(cx: Scope) -> Element {
                 }
         
                 section {
-                    class: "dark:bg-ideblack w-full pb-96",
+                    class: "dark:bg-ideblack w-full pb-24",
                     div {
                         class: "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 container mx-auto px-2 max-w-screen-1g",
-                        items.iter().map(|item| rsx!(AwesomeItem { key: "{item.name}", item: item.clone() }))
+                        items.iter().filter_map(|item| {
+                            if let AwesomeType::Awesome = item.r#type {
+                                Some(rsx!(AwesomeItem { key: "{item.name}", item: item.clone() }))
+                            } else {
+                                None
+                            }
+                        })
+                    }
+                }
+
+                section {
+                    class: "dark:bg-ideblack w-full pb-10",
+                    div {
+                        class: "container mx-auto max-w-screen-1g text-center",
+                        h1 {
+                            class: "text-[3.3em] font-bold tracking-tight dark:text-white text-ghdarkmetal mb-2 px-2",
+                            id: "made-with-dioxus",
+                            "Made with Dioxus"
+                        }
+                        p {
+                            class: "mx-auto text-xl text-gray-600 dark:text-gray-400 pb-10 px-2 max-w-screen-sm",
+                            "Real world uses of Dioxus."
+                        }
+                    }
+                }
+
+                section {
+                    class: "dark:bg-ideblack w-full pb-24",
+                    div {
+                        class: "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 container mx-auto px-2 max-w-screen-1g",
+                        items.iter().filter_map(|item| {
+                            if let AwesomeType::MadeWith = item.r#type {
+                                Some(rsx!(AwesomeItem { key: "{item.name}", item: item.clone() }))
+                            } else {
+                                None
+                            }
+                        })
                     }
                 }
             ))
@@ -202,8 +251,6 @@ fn AwesomeItem(cx: Scope, item: Item) -> Element {
         }
     };
 
-    // Get the category to display
-    let display_category = item.category.to_string();
     cx.render(rsx!(
         Link {
             to: NavigationTarget::<Route>::External(link),
@@ -222,9 +269,13 @@ fn AwesomeItem(cx: Scope, item: Item) -> Element {
                 }
                 div {
                     class: "mt-auto pt-4 flex",
-                    p {
-                        class: "text-gray-300 font-bold",
-                        "{display_category}"
+                    if Category::App != item.category {
+                        rsx! {
+                            p {
+                                class: "text-gray-300 font-bold",
+                                "{item.category}"
+                            }
+                        }
                     }
                     p {
                         class: "ml-auto text-gray-300 font-bold",

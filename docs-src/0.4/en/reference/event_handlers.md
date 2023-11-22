@@ -77,5 +77,11 @@ Then, you can use it like any other handler:
 ```
 
 > Note: just like any other attribute, you can name the handlers anything you want! Though they must start with `on`, for the prop to be automatically turned into an `EventHandler` at the call site.
->
-> You can also put custom data in the event, rather than e.g. `MouseData`
+
+## Custom Data
+
+Event Handlers are generic over any type, so you can pass in any data you want to them, e.g:
+
+```rust, no_run
+{{#include src/doc_examples/event_handler_prop.rs:custom_data}}
+```

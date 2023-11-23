@@ -118,7 +118,7 @@ cx.render(rsx!{
 })
 ```
 
-> Note: In order to use/run the `rx.next().await` statement you will need to extend the [`Stream`] trait (used by [`UnboundedReceiver`]) by adding 'futures_util' as a dependancy to your project and adding the `use futures_util::stream::StreamExt;`.
+> Note: In order to use/run the `rx.next().await` statement you will need to extend the [`Stream`] trait (used by [`UnboundedReceiver`]) by adding 'futures_util' as a dependency to your project and adding the `use futures_util::stream::StreamExt;`.
 
 For sufficiently complex apps, we could build a bunch of different useful "services" that loop on channels to update the app.
 

@@ -35,11 +35,11 @@ pub fn FancyButton<'a>(cx: Scope<'a, FancyButtonProps<'a>>) -> Element<'a> {
 struct ComplexData(i32);
 
 #[derive(Props)]
-pub struct FancyButtonProps<'a> {
+pub struct CustomFancyButtonProps<'a> {
     on_click: EventHandler<'a, ComplexData>,
 }
 
-pub fn FancyButton<'a>(cx: Scope<'a, FancyButtonProps<'a>>) -> Element<'a> {
+pub fn CustomFancyButton<'a>(cx: Scope<'a, CustomFancyButtonProps<'a>>) -> Element<'a> {
     cx.render(rsx!(button {
         class: "fancy-button",
         onclick: move |_| cx.props.on_click.call(ComplexData(0)),

@@ -7,7 +7,7 @@ website with a blog, homepage, and more!
 > To follow along with the router example, you'll need a working Dioxus app.
 > Check out the [Dioxus book](https://dioxuslabs.com/docs/0.3/guide/en/) to get started.
 
-> Make sure to add Dioxus Router as a dependancy, as explained in the
+> Make sure to add Dioxus Router as a dependency, as explained in the
 > [introduction](../index.md).
 
 ## You'll learn how to

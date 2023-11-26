@@ -145,6 +145,6 @@ One popular option for styling your Dioxus application is [Tailwind](https://tai
   ```
 - Launch the dioxus desktop app:
 
-```bash
-cargo run
-```
+  ```bash
+  cargo run
+  ```

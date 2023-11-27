@@ -57,7 +57,7 @@ Generally, here's the status of each platform:
 | Fine-grained reactivity   | i      | Skip diffing for fine-grain updates                                  |
 
 - x = implemented and working
-- * = actively being worked on
+- \* = actively being worked on
 - i = not yet implemented or being worked on
 
 ## Roadmap

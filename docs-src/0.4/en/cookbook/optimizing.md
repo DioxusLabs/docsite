@@ -32,6 +32,20 @@ Using the [Dioxus CLI](https://dioxuslabs.com/learn/0.4/CLI) or [Trunk](https://
 - Dioxus CLI: `dx build --release`
 - Trunk: `trunk build --release`
 
+## UPX
+
+If you're not targeting web, you can use the [UPX](https://github.com/upx/upx) CLI tool to compress your executables.
+
+Setup:
+
+- Download a [release](https://github.com/upx/upx/releases) and extract the directory inside to a sensible location.
+- Add the executable located in the directory to your path variable.
+
+You can run `upx --help` to get the CLI options, but you should also view `upx-doc.html` for more detailed information.
+It's included in the extracted directory.
+
+An example command might be: `upx --best -o target/release/compressed.exe target/release/your-executable.exe`.
+
 ## Build configuration
 
 *Note: Settings defined in `.cargo/config.toml` will override settings in `Cargo.toml`.*

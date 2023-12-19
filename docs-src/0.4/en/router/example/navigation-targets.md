@@ -22,6 +22,6 @@ If we need a link to an external page we can do it like this:
 {{#include src/doc_examples/external_link.rs:component}}
 ```
 
-[`External`]: https://docs.rs/dioxus-router-core/latest/dioxus_router/navigation/enum.NavigationTarget.html#variant.External
-[`Internal`]: https://docs.rs/dioxus-router-core/latest/dioxus_router/navigation/enum.NavigationTarget.html#variant.Internal
-[`NavigationTarget`]: https://docs.rs/dioxus-router-core/latest/dioxus_router/navigation/enum.NavigationTarget.html
+[`External`]: https://docs.rs/dioxus-router/latest/dioxus_router/navigation/enum.NavigationTarget.html#variant.External
+[`Internal`]: https://docs.rs/dioxus-router/latest/dioxus_router/navigation/enum.NavigationTarget.html#variant.Internal
+[`NavigationTarget`]: https://docs.rs/dioxus-router/latest/dioxus_router/navigation/enum.NavigationTarget.html

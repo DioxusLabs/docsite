@@ -1,6 +1,6 @@
 //! Encapsulate state in components.
 //!
-//! Use structs or autodderive props with `#[inline_props]`
+//! Use structs or autodderive props with `#[component]`
 
 #[derive(Props, PartialEq)]
 struct PropBased {

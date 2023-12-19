@@ -53,7 +53,7 @@ rsx! {
 	Doc { document: doc }
 }
 
-#[inline_props]
+#[component]
 fn Doc<'a>(cx: Scope<'a>, document: &'a SomeBigDocument) -> Element {
 	// document is passed from a parent by reference!
 	// no smart pointers required!

@@ -118,9 +118,9 @@
 }
 </code></pre>
 <h2 id="inline-props-macro">Inline Props Macro</h2>
-<p>For internal components, explicitly declaring props structs can become tedious. That&#39;s why we&#39;ve built the new <code>inline_props</code> macro. This macro lets you inline your props definition right into your component function arguments.</p>
-<p>Simply add the <code>inline_props</code> macro to your component:</p>
-<pre><code class="lang-rust"><span class="hljs-meta">#[inline_props]</span>
+<p>For internal components, explicitly declaring props structs can become tedious. That&#39;s why we&#39;ve built the new <code>component</code> macro. This macro lets you inline your props definition right into your component function arguments.</p>
+<p>Simply add the <code>component</code> macro to your component:</p>
+<pre><code class="lang-rust"><span class="hljs-meta">#[component]</span>
 fn Child<span class="hljs-params">&lt;'a&gt;</span>(
 <span class="hljs-symbol">    cx:</span> Scope,
 <span class="hljs-symbol">    name:</span> String,

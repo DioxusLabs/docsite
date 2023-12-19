@@ -11,7 +11,7 @@ enum Route {
     PageNotFound { route: Vec<String> },
 }
 
-#[inline_props]
+#[component]
 fn App(cx: Scope) -> Element {
     render! {
         Router::<Route> {}
@@ -19,7 +19,7 @@ fn App(cx: Scope) -> Element {
 }
 
 // ANCHOR: nav
-#[inline_props]
+#[component]
 fn Home(cx: Scope) -> Element {
     let nav = use_navigator(cx);
 
@@ -41,7 +41,7 @@ fn Home(cx: Scope) -> Element {
 }
 // ANCHOR_END: nav
 
-#[inline_props]
+#[component]
 fn PageNotFound(cx: Scope, route: Vec<String>) -> Element {
     render! {
         h1 { "Page not found" }

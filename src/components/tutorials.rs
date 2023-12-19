@@ -65,7 +65,7 @@ pub fn Tutorials(cx: Scope) -> Element {
     })
 }
 
-#[inline_props]
+#[component]
 fn TutorialPreview(cx: Scope, id: usize) -> Element {
     let tutorial = &TUTORIALS[*id];
 
@@ -88,7 +88,7 @@ fn TutorialPreview(cx: Scope, id: usize) -> Element {
     })
 }
 
-#[inline_props]
+#[component]
 pub fn Tutorial(cx: Scope, id: usize) -> Element {
     let tutorial = TUTORIALS.get(*id)?;
 

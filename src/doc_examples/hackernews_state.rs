@@ -88,7 +88,7 @@ pub mod app_v1 {
     }
 
     // NEW
-    #[inline_props]
+    #[component]
     fn Comment(cx: Scope, comment: Comment) -> Element<'a> {
         render! {
             div {
@@ -109,7 +109,7 @@ pub mod app_v1 {
 
     // ANCHOR_END: app_v1
 
-    #[inline_props]
+    #[component]
     fn StoryListing(cx: Scope, story: StoryItem) -> Element {
         let StoryItem {
             title,
@@ -265,7 +265,7 @@ mod story_listing_listener {
         }
     }
 
-    #[inline_props]
+    #[component]
     fn StoryListing(cx: Scope, story: StoryItem) -> Element {
         let StoryItem {
             title,
@@ -366,7 +366,7 @@ pub fn App(cx: Scope) -> Element {
 }
 
 // ANCHOR: shared_state_stories
-#[inline_props]
+#[component]
 fn StoryListing(cx: Scope, story: StoryItem) -> Element {
     // New
     let preview_state = use_shared_state::<PreviewState>(cx).unwrap();
@@ -521,7 +521,7 @@ fn Stories(cx: Scope) -> Element {
     }
 }
 
-#[inline_props]
+#[component]
 fn Comment(cx: Scope, comment: Comment) -> Element<'a> {
     render! {
         div {

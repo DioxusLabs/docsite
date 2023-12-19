@@ -42,7 +42,7 @@ pub mod components {
     }
 }
 
-#[inline_props]
+#[component]
 fn HeaderFooter(cx: Scope) -> Element {
     use_init_atom_root(cx);
     let set_search = fermi::use_set(cx, &SHOW_SEARCH);
@@ -139,7 +139,7 @@ mod docs {
     use dioxus::prelude::*;
     use fermi::use_atom_state;
 
-    #[inline_props]
+    #[component]
     fn SandBoxFrame<'a>(cx: Scope<'a>, url: &'a str) -> Element<'a> {
         render! {
             iframe {
@@ -152,7 +152,7 @@ mod docs {
         }
     }
 
-    #[inline_props]
+    #[component]
     fn DemoFrame<'a>(cx: Scope<'a>, children: Element<'a>) -> Element {
         render! {
             div {

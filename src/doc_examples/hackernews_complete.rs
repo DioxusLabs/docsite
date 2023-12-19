@@ -54,7 +54,7 @@ async fn resolve_story(
     }
 }
 
-#[inline_props]
+#[component]
 fn StoryListing(cx: Scope, story: StoryItem) -> Element {
     let preview_state = use_shared_state::<PreviewState>(cx).unwrap();
     let StoryItem {
@@ -176,7 +176,7 @@ fn Preview(cx: Scope) -> Element {
     }
 }
 
-#[inline_props]
+#[component]
 fn Comment(cx: Scope, comment: Comment) -> Element<'a> {
     render! {
         div {

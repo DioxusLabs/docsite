@@ -2,7 +2,7 @@
 //!
 //! Automatically tracks dependencies and caches results
 
-#[inline_props]
+#[component]
 fn Tasks(cx: Scope, id: Uuid) -> Element {
     let content = use_fetch!(cx, "https://my.app.com/item/{id}");
 

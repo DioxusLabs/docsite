@@ -71,7 +71,7 @@ struct StarsResponse {
     stargazers_count: u64,
 }
 
-#[inline_props]
+#[component]
 pub fn Awesome(cx: Scope) -> Element {
     let items = use_future(cx, (), |_| async move {
         let req = match reqwest::get(ITEM_LIST_LINK).await {
@@ -212,7 +212,7 @@ pub fn Awesome(cx: Scope) -> Element {
     }
 }
 
-#[inline_props]
+#[component]
 fn AwesomeItem(cx: Scope, item: Item) -> Element {
     let is_github = item.github.is_some();
     let username = item.github.clone().unwrap_or(GithubInfo::default()).username;

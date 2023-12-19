@@ -11,7 +11,7 @@ enum Route {
         Index {},
 }
 
-#[inline_props]
+#[component]
 fn Wrapper(cx: Scope) -> Element {
     render! {
         header { "header" }
@@ -21,7 +21,7 @@ fn Wrapper(cx: Scope) -> Element {
     }
 }
 
-#[inline_props]
+#[component]
 fn Index(cx: Scope) -> Element {
     render! {
         h1 { "Index" }

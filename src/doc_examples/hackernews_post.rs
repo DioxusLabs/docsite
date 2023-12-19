@@ -181,7 +181,7 @@ pub mod story_v6 {
         pub r#type: String,
     }
 
-    #[inline_props]
+    #[component]
     fn StoryListing(cx: Scope, story: StoryItem) -> Element {
         let StoryItem {
             title,
@@ -276,7 +276,7 @@ pub mod story_final {
         }
     }
 
-    #[inline_props]
+    #[component]
     fn StoryListing(cx: Scope, story: StoryItem) -> Element {
         let StoryItem {
             title,

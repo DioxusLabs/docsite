@@ -170,7 +170,7 @@ static LINKS: &[(&str, &str, LinkPairs)] = &[
     ("Blog", "/blog", &[]),
 ];
 
-#[inline_props]
+#[component]
 fn LinkList(cx: Scope) -> Element {
     let hover = "hover:text-sky-500 dark:hover:text-sky-400";
     let hover_bg = "dark:hover:bg-gray-500 hover:bg-gray-200 rounded";
@@ -365,7 +365,7 @@ fn SearchModal(cx: Scope) -> Element {
     }
 }
 
-#[inline_props]
+#[component]
 fn SearchResult(cx: Scope, result: dioxus_search::SearchResult<Route>) -> Element {
     let set_show_modal = fermi::use_set(cx, &SHOW_SEARCH);
     let title = &result.title;

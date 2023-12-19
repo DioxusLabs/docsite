@@ -49,10 +49,10 @@ struct CheckboxProps {
 
 ## The inline props macro
 
-In the spirit of improving props declaration, we've released the `inline_props` macro. This makes it faster to build components without needing to explicitly declare a props struct.
+In the spirit of improving props declaration, we've released the `component` macro. This makes it faster to build components without needing to explicitly declare a props struct.
 
 ```rust
-#[inline_props]
+#[component]
 fn Checkbox(cx: Scope, enabled: bool, name: &'static str) -> Element {
     cx.render(rsx!{
         h1 { "Hello, {name}" }

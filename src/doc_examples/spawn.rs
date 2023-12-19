@@ -4,26 +4,26 @@ use dioxus::prelude::*;
 
 pub fn App(cx: Scope) -> Element {
     // ANCHOR: spawn
-    let logged_in = use_state(cx, || false);
+    let response = use_state(cx, || String::from("..."));
 
     let log_in = move |_| {
         cx.spawn({
-            let logged_in = logged_in.to_owned();
+            to_owned![response];
 
             async move {
                 let resp = reqwest::Client::new()
-                    .get("http://example.com")
+                    .get("https://dioxuslabs.com")
                     .send()
                     .await;
 
                 match resp {
                     Ok(_data) => {
-                        log::info!("Login successful!");
-                        logged_in.set(true);
+                        log::info!("dioxuslabs.com responded!");
+                        response.set("dioxuslabs.com responded!".into());
                     }
-                    Err(_err) => {
+                    Err(err) => {
                         log::info!(
-                            "Login failed - you need a login server running on https://example.com."
+                            "Request failed with error: {err:?}"
                         )
                     }
                 }
@@ -31,12 +31,12 @@ pub fn App(cx: Scope) -> Element {
         });
     };
 
-    cx.render(rsx! {
+    render! {
         button {
             onclick: log_in,
-            "Logined in? {logged_in}",
+            "Response: {response}",
         }
-    })
+    }
     // ANCHOR_END: spawn
 }
 

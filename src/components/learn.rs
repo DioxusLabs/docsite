@@ -238,7 +238,7 @@ fn Content(cx: Scope) -> Element {
     };
 
     render! {
-        section { class: "text-gray-600 body-font overflow-hidden dark:bg-ideblack mx-auto container pt-6 pb-12 max-w-screen-lg",
+        section { class: "text-gray-600 body-font overflow-hidden dark:bg-ideblack lg:ml-[13rem] container pt-6 pb-12 max-w-screen-lg",
             div { class: "-py-8 {extra_class}",
                 div { class: "flex w-full mb-20 flex-wrap list-none",
                     style {

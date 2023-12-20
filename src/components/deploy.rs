@@ -30,7 +30,7 @@ pub fn Deploy(cx: Scope) -> Element {
                 }
             }
             div { class: "max-w-screen-lg mx-auto px-4 py-16 flex flex-col  md:flex-row justify-center ",
-                div { class: "max-w-lg bg-gray-100 flex-1 mx-4 my-4 p-8 rounded-lg shadow-xl mx-auto text-center",
+                div { class: "max-w-lg bg-gray-100 flex-1 my-4 p-8 rounded-lg shadow-xl mx-auto text-center",
                     h1 { class: "text-3xl pb-4", "Build" }
                     p { class: "text-gray-500 font-light1 border-b border-gray-200 pb-4",
                         "Iterate on your app with first-class tooling designed for the Dioxus ecosystem. "
@@ -43,7 +43,7 @@ pub fn Deploy(cx: Scope) -> Element {
                         li { class: "pb-4", "💪 Powerful devtools" }
                     }
                 }
-                div { class: "max-w-lg bg-gray-100 flex-1 mx-4 my-4 p-8 rounded-lg shadow-xl mx-auto text-center",
+                div { class: "max-w-lg bg-gray-100 flex-1 my-4 p-8 rounded-lg shadow-xl mx-auto text-center",
                     h1 { class: "text-3xl pb-4", "Deploy" }
                     p { class: "text-gray-500 font-light1 border-b border-gray-200 pb-4",
                         "Iterate on your app with first-class tooling designed for the Dioxus ecosystem. "
@@ -56,7 +56,7 @@ pub fn Deploy(cx: Scope) -> Element {
                         li { class: "pb-4", "🧯 Automated backups" }
                     }
                 }
-                div { class: "max-w-lg bg-gray-100 flex-1 mx-4 my-4 p-8 rounded-lg shadow-xl mx-auto text-center",
+                div { class: "max-w-lg bg-gray-100 flex-1 my-4 p-8 rounded-lg shadow-xl mx-auto text-center",
                     h1 { class: "text-3xl pb-4", "Scale" }
                     p { class: "text-gray-500 font-light1 border-b border-gray-200 pb-4",
                         "Monitor your app, track down bugs, and grow to as big or as small as you need."

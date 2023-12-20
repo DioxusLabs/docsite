@@ -237,7 +237,7 @@ fn SearchModal(cx: Scope) -> Element {
     let show_modal = use_atom_state(cx, &SHOW_SEARCH);
     let search_text = use_state(cx, String::new);
     let results = use_ref(cx, || SEARCH_INDEX.search(search_text.get()));
-    
+
     let last_key_press = use_ref(cx, || {
         #[cfg(not(target_arch = "wasm32"))]
         return 0.;

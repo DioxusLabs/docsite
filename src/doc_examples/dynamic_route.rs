@@ -39,7 +39,7 @@ fn App(cx: Scope) -> Element {
     }
 }
 
-#[inline_props]
+#[component]
 fn NavBar(cx: Scope) -> Element {
     render! {
         nav {
@@ -52,7 +52,7 @@ fn NavBar(cx: Scope) -> Element {
     }
 }
 
-#[inline_props]
+#[component]
 fn Home(cx: Scope) -> Element {
     render! {
         h1 { "Welcome to the Dioxus Blog!" }
@@ -60,7 +60,7 @@ fn Home(cx: Scope) -> Element {
 }
 
 // ANCHOR: blog
-#[inline_props]
+#[component]
 fn Blog(cx: Scope) -> Element {
     render! {
         h1 { "Blog" }
@@ -70,7 +70,7 @@ fn Blog(cx: Scope) -> Element {
 // ANCHOR_END: blog
 
 // ANCHOR: blog_list
-#[inline_props]
+#[component]
 fn BlogList(cx: Scope) -> Element {
     render! {
         h2 { "Choose a post" }
@@ -94,7 +94,7 @@ fn BlogList(cx: Scope) -> Element {
 
 // ANCHOR: blog_post
 // The name prop comes from the /:name route segment
-#[inline_props]
+#[component]
 fn BlogPost(cx: Scope, name: String) -> Element {
     render! {
         h2 { "Blog Post: {name}"}
@@ -102,7 +102,7 @@ fn BlogPost(cx: Scope, name: String) -> Element {
 }
 // ANCHOR_END: blog_post
 
-#[inline_props]
+#[component]
 fn PageNotFound(cx: Scope, route: Vec<String>) -> Element {
     render! {
         h1 { "Page not found" }

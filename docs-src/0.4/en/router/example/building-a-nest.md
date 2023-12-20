@@ -96,4 +96,4 @@ functionality to build the blog portion of our application. In the next chapter,
 we will go over how navigation targets (like the one we passed to our links)
 work.
 
-[`Link`]: https://docs.rs/dioxus-router/latest/dioxus_router/prelude/fn.GenericLink<R>.html
+[`Link`]: https://docs.rs/dioxus-router/latest/dioxus_router/components/fn.Link.html

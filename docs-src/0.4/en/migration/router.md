@@ -39,17 +39,17 @@ enum Route {
     }
 }
 
-#[inline_props]
+#[component]
 fn Home(cx: Scope) -> Element {
     todo!()
 }
 
-#[inline_props]
+#[component]
 fn Blog(cx: Scope) -> Element {
     todo!()
 }
 
-#[inline_props]
+#[component]
 fn BlogPost(cx: Scope, id: usize) -> Element {
     // Note that you have access to id here in a type safe way without calling any extra functions!
     todo!()
@@ -117,7 +117,7 @@ fn App(cx: Scope) -> Element {
     }
 }
 
-#[inline_props]
+#[component]
 fn Index(cx: Scope) -> Element {
     // Read from (and subscribe to the current route)
     let path = use_route(&cx).unwrap();

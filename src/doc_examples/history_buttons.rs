@@ -9,7 +9,7 @@ enum Route {
     Home {},
 }
 
-#[inline_props]
+#[component]
 fn Home(cx: Scope) -> Element {
     todo!()
 }

@@ -61,7 +61,7 @@ fn LeftNav(cx: Scope) -> Element {
 
     render! {
         // Now, pin the nav to the left
-        nav { class: "bg-white dark:bg-ideblack xl:bg-inherit pl-6 z-20 text-base xl:block fixed top-0 pt-36 pb-16 lg:-ml-3.5 w-[calc(100%-1rem)] md:w-60 h-screen max-h-screen lg:text-[13px] text-navy content-start overflow-y-auto leading-5 {extra_class} {hidden}",
+        nav { class: "bg-white dark:bg-ideblack lg:bg-inherit pl-6 z-20 text-base lg:block fixed top-0 pt-36 pb-16 lg:-ml-3.5 w-[calc(100%-1rem)] md:w-60 h-screen max-h-screen lg:text-[13px] text-navy content-start overflow-y-auto leading-5 {extra_class} {hidden}",
             // I like the idea of breadcrumbs, but they add a lot of visual noise, and like, who cares?
             // BreadCrumbs {}
 
@@ -238,7 +238,7 @@ fn Content(cx: Scope) -> Element {
     };
 
     render! {
-        section { class: "text-gray-600 body-font overflow-hidden dark:bg-ideblack mx-auto container pt-6 pb-12 max-w-screen-lg",
+        section { class: "text-gray-600 body-font overflow-hidden dark:bg-ideblack lg:ml-[13rem] container pt-6 pb-12 max-w-screen-lg",
             div { class: "-py-8 {extra_class}",
                 div { class: "flex w-full mb-20 flex-wrap list-none",
                     style {

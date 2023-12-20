@@ -38,7 +38,7 @@ rsx! {
     Doc { document: doc }
 }
 
-<span class="hljs-meta">#[inline_props]</span>
+<span class="hljs-meta">#[component]</span>
 <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">Doc</span></span>&lt;<span class="hljs-symbol">'a</span>&gt;(cx: Scope&lt;<span class="hljs-symbol">'a</span>&gt;, document: &amp;<span class="hljs-symbol">'a</span> SomeBigDocument) -&gt; Element {
     <span class="hljs-comment">// document is passed from a parent by reference!</span>
     <span class="hljs-comment">// no smart pointers required!</span>

@@ -50,7 +50,7 @@ impl FromQuery for BlogQuerySegments {
     }
 }
 
-#[inline_props]
+#[component]
 fn BlogPost(cx: Scope, query_params: BlogQuerySegments) -> Element {
     render! {
         div{"This is your blogpost with a query segment:"}

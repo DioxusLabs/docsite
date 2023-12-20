@@ -82,7 +82,7 @@ pub fn AppForLoop(cx: Scope) -> Element {
     // ANCHOR_END: render_list_for_loop
 }
 
-#[inline_props]
+#[component]
 fn CommentComponent(cx: Scope, comment: Comment) -> Element {
     cx.render(rsx!(div {
         "Comment by anon:",

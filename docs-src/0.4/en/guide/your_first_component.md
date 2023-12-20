@@ -111,7 +111,7 @@ DemoFrame {
 
 Just like you can pass arguments to a function or attributes to an element, you can pass props to a component that customize its behavior!
 
-We can define arguments that components can take when they are rendered (called `Props`) by adding the `#[inline_props]` macro before our function definition and adding extra function arguments.
+We can define arguments that components can take when they are rendered (called `Props`) by adding the `#[component]` macro before our function definition and adding extra function arguments.
 
 Currently, our `StoryListing` component always renders the same story. We can modify it to accept a story to render as a prop.
 

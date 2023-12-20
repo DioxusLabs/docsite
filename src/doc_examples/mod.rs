@@ -65,6 +65,8 @@ mod hook_test;
 mod server_data_fetch;
 #[cfg(feature = "doc_test")]
 mod server_data_prefetch;
+#[cfg(feature = "doc_test")]
+mod use_coroutine_reference;
 pub use hello_world::*;
 #[cfg(feature = "doc_test")]
 mod history_buttons;

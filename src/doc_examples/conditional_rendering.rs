@@ -12,7 +12,7 @@ pub fn App(cx: Scope) -> Element {
     }))
 }
 
-#[inline_props]
+#[component]
 fn LogIn<'a>(
     cx: Scope<'a>,
     is_logged_in: bool,
@@ -49,7 +49,7 @@ pub fn LogInImprovedApp(cx: Scope) -> Element {
     }))
 }
 
-#[inline_props]
+#[component]
 fn LogInImproved<'a>(
     cx: Scope<'a>,
     is_logged_in: bool,
@@ -100,7 +100,7 @@ pub fn LogInWarningApp(cx: Scope) -> Element {
     }
 }
 
-#[inline_props]
+#[component]
 fn LogInWarning(cx: Scope, is_logged_in: bool) -> Element {
     // ANCHOR: conditional_none
     if *is_logged_in {

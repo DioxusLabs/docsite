@@ -17,11 +17,13 @@ pub static HIGHLIGHT_DOCS_CONTENT: Atom<DocsContentHighlighted> =
     Atom(|_| DocsContentHighlighted(false));
 
 /// The Markdown file path needs to be appended to this, including the first slash!
-const GITHUB_API_URL: &str = "https://api.github.com/repos/DioxusLabs/docsite/contents/docs-src/0.4/en";
+const GITHUB_API_URL: &str =
+    "https://api.github.com/repos/DioxusLabs/docsite/contents/docs-src/0.4/en";
 /// Use this URL while loading the file-specific URL.
 const GITHUB_EDIT_PAGE_FALLBACK_URL: &str = "https://github.com/DioxusLabs/docsite";
 /// The Markdown file path needs to be appended to this, including the first slash!
-const GITHUB_EDIT_PAGE_EDIT_URL: &str = "https://github.com/DioxusLabs/docsite/edit/master/docs-src/0.4/en";
+const GITHUB_EDIT_PAGE_EDIT_URL: &str =
+    "https://github.com/DioxusLabs/docsite/edit/master/docs-src/0.4/en";
 
 #[inline_props]
 pub fn Learn(cx: Scope) -> Element {
@@ -61,7 +63,7 @@ fn LeftNav(cx: Scope) -> Element {
 
     render! {
         // Now, pin the nav to the left
-        nav { class: "bg-white dark:bg-ideblack lg:bg-inherit pl-6 z-20 text-base lg:block fixed top-0 pt-36 pb-16 lg:-ml-3.5 w-[calc(100%-1rem)] md:w-60 h-screen max-h-screen lg:text-[13px] text-navy content-start overflow-y-auto leading-5 {extra_class} {hidden}",
+        nav { class: "bg-white dark:bg-ideblack xl:bg-inherit pl-6 z-20 text-base xl:block fixed top-0 pt-36 pb-16 lg:-ml-3.5 w-[calc(100%-1rem)] md:w-60 h-screen max-h-screen lg:text-[13px] text-navy content-start overflow-y-auto leading-5 {extra_class} {hidden}",
             // I like the idea of breadcrumbs, but they add a lot of visual noise, and like, who cares?
             // BreadCrumbs {}
 

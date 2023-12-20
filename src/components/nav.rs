@@ -31,7 +31,7 @@ pub fn Nav(cx: Scope) -> Element {
         header { class: "sticky top-0 z-30 bg-white shadow dark:text-gray-200 dark:bg-ideblack dark:border-b border-stone-600 {bg_color}",
             div { class: "py-3 px-12 max-w-screen-2xl mx-auto flex items-center justify-between text-sm leading-6",
                 button {
-                    class: "bg-gray-100 rounded-lg p-2 mr-4 lg:hidden my-3 h-10 flex items-center text-lg z-[100] {sidebar_class}",
+                    class: "bg-gray-100 rounded-lg p-2 mr-4 xl:hidden my-3 h-10 flex items-center text-lg z-[100] {sidebar_class}",
                     onclick: move |_| show_sidebar.set(!**show_sidebar),
                     MaterialIcon { name: "menu", size: 24, color: MaterialIconColor::Dark }
                 }
@@ -237,7 +237,7 @@ fn SearchModal(cx: Scope) -> Element {
     let show_modal = use_atom_state(cx, &SHOW_SEARCH);
     let search_text = use_state(cx, String::new);
     let results = use_ref(cx, || SEARCH_INDEX.search(search_text.get()));
-    
+
     let last_key_press = use_ref(cx, || {
         #[cfg(not(target_arch = "wasm32"))]
         return 0.;
@@ -250,8 +250,7 @@ fn SearchModal(cx: Scope) -> Element {
             if *last_key_press.read() - js_sys::Date::now() > 100. {
                 results.set(SEARCH_INDEX.search(&search_text.current()));
                 last_key_press.set(js_sys::Date::now());
-            }
-            else {
+            } else {
                 gloo_timers::future::TimeoutFuture::new(100).await;
                 results.set(SEARCH_INDEX.search(&search_text.current()));
             }

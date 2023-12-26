@@ -8,7 +8,7 @@ pub fn App(cx: Scope) -> Element {
     cx.render(rsx! {
         input {
             r#type:"file",
-            accept: ".txt, .rs",
+            accept: ".txt,.rs",
             multiple: true,
             // ANCHOR: onchange_event
             onchange: |evt| {

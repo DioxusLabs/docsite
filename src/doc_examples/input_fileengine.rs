@@ -10,7 +10,7 @@ pub fn App(cx: Scope) -> Element {
             // tell the input to pick a file
             r#type:"file",
             // list the accepted extensions
-            accept: ".txt, .rs",
+            accept: ".txt,.rs",
             // pick multiple files
             multiple: true,
             onchange: |evt| {

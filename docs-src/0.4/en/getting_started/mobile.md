@@ -109,7 +109,7 @@ Finally, we need to add a component to renderer. Modify your main function:
 use dioxus::prelude::*;
 
 pub fn main() -> Result<()> {
-    init_logging();
+    // init_logging();
 
     // Right now we're going through dioxus-desktop but we'd like to go through dioxus-mobile
     // That will seed the index.html with some fixes that prevent the page from scrolling/zooming etc
@@ -117,7 +117,7 @@ pub fn main() -> Result<()> {
         app,
         // Note that we have to disable the viewport goofiness of the browser.
         // Dioxus_mobile should do this for us
-        Config::default().with_custom_index(r#"<!DOCTYPE html>
+        dioxus_desktop::Config::default().with_custom_index(r#"<!DOCTYPE html>
         <html>
           <head>
             <title>Dioxus app</title>

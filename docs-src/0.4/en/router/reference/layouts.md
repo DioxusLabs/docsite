@@ -25,3 +25,13 @@ readability):
 <h1>Index</h1>
 <footer>footer</footer>
 ```
+
+## Layouts with dynamic segments
+
+You can combine layouts with [nested routes](./routes/nested.md) to create dynamic layouts with content that changes based on the current route.
+
+Just like routes, layouts components must accept a prop for each dynamic segment in the route. For example, if you have a route with a dynamic segment like `/:name`, your layout component must accept a `name` prop:
+
+```rust
+{{#include src/doc_examples/outlet.rs:outlet_with_params}}
+```

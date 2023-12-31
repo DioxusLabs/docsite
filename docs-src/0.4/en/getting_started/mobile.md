@@ -5,7 +5,6 @@ Build a mobile app with Dioxus!
 Example: [Todo App](https://github.com/DioxusLabs/example-projects/blob/master/ios_demo)
 
 ## Support
-
 Mobile is currently the least-supported renderer target for Dioxus. Mobile apps are rendered with either the platform's WebView or experimentally with [WGPU](https://github.com/DioxusLabs/blitz). WebView doesn't support animations, transparency, and native widgets.
 
 
@@ -81,7 +80,7 @@ To develop on IOS, you will need to [install XCode](https://apps.apple.com/us/ap
 First, we need to create a rust project:
 
 ```sh
-cargo new dioxus-mobile-test
+cargo new dioxus-mobile-test --lib
 cd dioxus-mobile-test
 ```
 
@@ -96,14 +95,20 @@ When you run `cargo mobile init`, you will be asked a series of questions about 
 
 > You may also be asked to input your team ID for IOS. You can find your team id [here](https://developer.apple.com/help/account/manage-your-team/locate-your-team-id/) or create a team id by creating a developer account [here](https://developer.apple.com/help/account/get-started/about-your-developer-account)
 
-Next, we need to modify our dependencies to include dioxus:
+Next, we need to modify our dependencies to include dioxus and ensure the right version of wry is installed. Change the `[dependencies]` section of your `Cargo.toml`:
 
-```sh
-cargo add dioxus
-cargo add dioxus-desktop --no-default-features --features tokio_runtime
+```toml
+[dependencies]
+anyhow = "1.0.56"
+log = "0.4.11"
+dioxus = { git = "https://github.com/ealmloff/dioxus", branch = "bump-wry", version = "0.4.2" }
+dioxus-desktop = { git = "https://github.com/ealmloff/dioxus", branch = "bump-wry", version = "0.4.2", default-features = false, features = ["tokio_runtime"] }
+wry = "0.34.0"
 ```
 
-Finally, we need to add a component to renderer. Modify your main function:
+> Note: There is a bug in the older version of wry that is used by default in cargo-mobile2 and dioxus. We need to use the latest version of wry and an unpublished branch of dioxus that uses the latest version of wry. This will be fixed in the future. See [this issue](https://github.com/DioxusLabs/dioxus/issues/1158) for more details.
+
+Finally, we need to add a component to renderer. Replace the main function in your `lib.rs` file with this code:
 
 ```rust
 use dioxus::prelude::*;
@@ -134,7 +139,7 @@ pub fn main() -> Result<()> {
 }
 
 fn app(cx: Scope) -> Element {
-    let items = cx.use_hook(|| vec![1, 2, 3]);
+    let items = use_ref(cx, || vec![1, 2, 3]);
 
     log::debug!("Hello from the app");
 
@@ -145,13 +150,112 @@ fn app(cx: Scope) -> Element {
                 button {
                     onclick: move|_| {
                         println!("Clicked!");
-                        items.push(items.len());
-                        cx.needs_update_any(ScopeId(0));
+                        items.write().push(0);
                         println!("Requested update");
                     },
                     "Add item"
                 }
-                for item in items.iter() {
+                for item in items.read().iter() {
+                    div { "- {item}" }
+                }
+            }
+        }
+    }
+}
+```
+
+You complete `lib.rs` should now look something like this (with some slightly different names in the generated code):
+
+```rust
+use anyhow::Result;
+#[cfg(target_os = "android")]
+use wry::android_binding;
+
+#[cfg(target_os = "android")]
+fn init_logging() {
+    android_logger::init_once(
+        android_logger::Config::default()
+            .with_min_level(log::Level::Trace)
+            .with_tag("dioxus-mobile-test"), // This name may be different for your application
+    );
+}
+
+#[cfg(not(target_os = "android"))]
+fn init_logging() {
+    env_logger::init();
+}
+
+#[cfg(any(target_os = "android", target_os = "ios"))]
+fn stop_unwind<F: FnOnce() -> T, T>(f: F) -> T {
+    match std::panic::catch_unwind(std::panic::AssertUnwindSafe(f)) {
+        Ok(t) => t,
+        Err(err) => {
+            eprintln!("attempt to unwind out of `rust` with err: {:?}", err);
+            std::process::abort()
+        }
+    }
+}
+
+#[cfg(any(target_os = "android", target_os = "ios"))]
+fn _start_app() {
+    stop_unwind(|| main().unwrap());
+}
+
+#[no_mangle]
+#[inline(never)]
+#[cfg(any(target_os = "android", target_os = "ios"))]
+pub extern "C" fn start_app() {
+    #[cfg(target_os = "android")]
+    android_binding!(com_example, dioxus_mobile_test, _start_app); // This code may be different for your application
+    #[cfg(target_os = "ios")]
+    _start_app()
+}
+
+use dioxus::prelude::*;
+
+pub fn main() -> Result<()> {
+    // Right now we're going through dioxus-desktop but we'd like to go through dioxus-mobile
+    // That will seed the index.html with some fixes that prevent the page from scrolling/zooming etc
+    dioxus_desktop::launch_cfg(
+        app,
+        // Note that we have to disable the viewport goofiness of the browser.
+        // Dioxus_mobile should do this for us
+        dioxus_desktop::Config::default().with_custom_index(r#"<!DOCTYPE html>
+        <html>
+          <head>
+            <title>Dioxus app</title>
+            <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+            <!-- CUSTOM HEAD -->
+          </head>
+          <body>
+            <div id="main"></div>
+            <!-- MODULE LOADER -->
+          </body>
+        </html>
+       "#.into()),
+    );
+
+    Ok(())
+}
+
+fn app(cx: Scope) -> Element {
+    let items = use_ref(cx, || vec![1, 2, 3]);
+
+    log::debug!("Hello from the app");
+
+    render! {
+        div {
+            h1 { "Hello, Mobile"}
+            div { margin_left: "auto", margin_right: "auto", width: "200px", padding: "10px", border: "1px solid black",
+                button {
+                    onclick: move|_| {
+                        println!("Clicked!");
+                        items.write().push(0);
+                        println!("Requested update");
+                    },
+                    "Add item"
+                }
+                for item in items.read().iter() {
                     div { "- {item}" }
                 }
             }
@@ -188,7 +292,10 @@ Note that clicking play doesn't cause a new build, so you'll need to keep rebuil
 ### Android
 
 To build your project on Android you can run:
-`cargo android build`
+
+```sh
+cargo android build
+```
 
 Next, open Android studio:
 ```sh

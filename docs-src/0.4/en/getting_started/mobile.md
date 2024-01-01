@@ -150,7 +150,9 @@ fn app(cx: Scope) -> Element {
                 button {
                     onclick: move|_| {
                         println!("Clicked!");
-                        items.write().push(0);
+                        let mut items_mut = items.write();
+                        let new_item = items_mut.len() + 1;
+                        items_mut.push(new_item);
                         println!("Requested update");
                     },
                     "Add item"
@@ -250,7 +252,9 @@ fn app(cx: Scope) -> Element {
                 button {
                     onclick: move|_| {
                         println!("Clicked!");
-                        items.write().push(0);
+                        let mut items_mut = items.write();
+                        let new_item = items_mut.len() + 1;
+                        items_mut.push(new_item);
                         println!("Requested update");
                     },
                     "Add item"

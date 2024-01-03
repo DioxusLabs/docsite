@@ -16,7 +16,6 @@ enum Route {
 // ANCHOR_END: router
 
 // ANCHOR: app
-#[inline_props]
 fn App(cx: Scope) -> Element {
     render! {
         Router::<Route> {}
@@ -25,7 +24,7 @@ fn App(cx: Scope) -> Element {
 // ANCHOR_END: app
 
 // ANCHOR: home
-#[inline_props]
+#[component]
 fn Home(cx: Scope) -> Element {
     render! {
         h1 { "Welcome to the Dioxus Blog!" }

@@ -10,13 +10,13 @@ pub fn App(cx: Scope) -> Element {
             // tell the input to pick a file
             r#type:"file",
             // list the accepted extensions
-            accept: ".txt, .rs",
+            accept: ".txt,.rs",
             // pick multiple files
             multiple: true,
-            onchange: |evt| {
+            onchange: move |evt| {
                 if let Some(file_engine) = &evt.files {
                     let files = file_engine.files();
-                    for file_name in &files {
+                    for file_name in files {
                         filenames.write().push(file_name);
                     }
                 }

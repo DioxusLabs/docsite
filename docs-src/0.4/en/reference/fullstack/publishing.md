@@ -14,6 +14,8 @@ Next, edit your `Dioxus.toml` to point your `out_dir` to the `docs` folder and t
 [application]
 # ...
 out_dir = "docs"
+
+[web.app]
 base_path = "your_repo"
 ```
 

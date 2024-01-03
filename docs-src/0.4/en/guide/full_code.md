@@ -1,6 +1,7 @@
 # Conclusion
 
-Well done! You've completed the Dioxus guide and built a hackernews application in Dioxus.
+Well done! You've completed the Dioxus guide and built a hackernews application in Dioxus. 
+
 To continue your journey, you can attempt a challenge listed below, or look at the [Dioxus reference](../reference/index.md).
 
 ## Challenges

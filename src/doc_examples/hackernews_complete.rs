@@ -54,7 +54,7 @@ async fn resolve_story(
     }
 }
 
-#[inline_props]
+#[component]
 fn StoryListing(cx: Scope, story: StoryItem) -> Element {
     let preview_state = use_shared_state::<PreviewState>(cx).unwrap();
     let StoryItem {
@@ -176,7 +176,7 @@ fn Preview(cx: Scope) -> Element {
     }
 }
 
-#[inline_props]
+#[component]
 fn Comment(cx: Scope, comment: Comment) -> Element<'a> {
     render! {
         div {
@@ -206,7 +206,7 @@ pub static USER_API: &str = "user/";
 const COMMENT_DEPTH: i64 = 2;
 
 pub async fn get_story_preview(id: i64) -> Result<StoryItem, reqwest::Error> {
-    let url = format!("{}item/{}.json", BASE_API_URL, id);
+    let url = format!("{}{}{}.json", BASE_API_URL, ITEM_API, id);
     reqwest::get(&url).await?.json().await
 }
 

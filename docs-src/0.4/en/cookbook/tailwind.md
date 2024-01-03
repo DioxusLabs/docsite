@@ -25,7 +25,7 @@ One popular option for styling your Dioxus application is [Tailwind](https://tai
 
 5. Edit the `tailwind.config.js` file to include rust files:
 
-    ```json
+    ```js
     module.exports = {
         mode: "all",
         content: [
@@ -135,8 +135,16 @@ One popular option for styling your Dioxus application is [Tailwind](https://tai
 
 ### Desktop
 
+- Add a custom head pointing to the generated tailwind CSS file in your `main`. It looks like:
+
+  ```rust
+  dioxus_desktop::launch_cfg(
+    App,
+    dioxus_desktop::Config::new()
+      .with_custom_head(r#"<link rel="stylesheet" href="public/tailwind.css">"#.to_string()))
+  ```
 - Launch the dioxus desktop app:
 
-    ```bash
-    cargo run
-    ```
+  ```bash
+  cargo run
+  ```

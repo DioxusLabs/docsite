@@ -40,7 +40,7 @@ pub fn App(cx: Scope) -> Element {
     // ANCHOR_END: render
 }
 
-#[inline_props]
+#[component]
 fn RandomDog(cx: Scope, breed: String) -> Element {
     // ANCHOR: dependancy
     let future = use_future(cx, (breed,), |(breed,)| async move {

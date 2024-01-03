@@ -1,8 +1,8 @@
 // ANCHOR: all
+// ANCHOR: glue
 use axum::{extract::ws::WebSocketUpgrade, response::Html, routing::get, Router};
 use dioxus::prelude::*;
 
-// ANCHOR: glue
 #[tokio::main]
 async fn main() {
     let addr: std::net::SocketAddr = ([127, 0, 0, 1], 3030).into();

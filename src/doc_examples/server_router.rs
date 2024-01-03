@@ -27,7 +27,7 @@ enum Route {
     Blog { id: i32 },
 }
 
-#[inline_props]
+#[component]
 fn Blog(cx: Scope, id: i32) -> Element {
     render! {
         Link { to: Route::Home {}, "Go to counter" }
@@ -45,7 +45,7 @@ fn Blog(cx: Scope, id: i32) -> Element {
     }
 }
 
-#[inline_props]
+#[component]
 fn Home(cx: Scope) -> Element {
     let mut count = use_state(cx, || 0);
     let text = use_state(cx, || "...".to_string());

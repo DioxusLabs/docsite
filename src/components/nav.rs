@@ -170,7 +170,7 @@ static LINKS: &[(&str, &str, LinkPairs)] = &[
     ("Blog", "/blog", &[]),
 ];
 
-#[inline_props]
+#[component]
 fn LinkList(cx: Scope) -> Element {
     let hover = "hover:text-sky-500 dark:hover:text-sky-400";
     let hover_bg = "dark:hover:bg-gray-500 hover:bg-gray-200 rounded";
@@ -237,7 +237,7 @@ fn SearchModal(cx: Scope) -> Element {
     let show_modal = use_atom_state(cx, &SHOW_SEARCH);
     let search_text = use_state(cx, String::new);
     let results = use_ref(cx, || SEARCH_INDEX.search(search_text.get()));
-    
+
     let last_key_press = use_ref(cx, || {
         #[cfg(not(target_arch = "wasm32"))]
         return 0.;
@@ -365,7 +365,7 @@ fn SearchModal(cx: Scope) -> Element {
     }
 }
 
-#[inline_props]
+#[component]
 fn SearchResult(cx: Scope, result: dioxus_search::SearchResult<Route>) -> Element {
     let set_show_modal = fermi::use_set(cx, &SHOW_SEARCH);
     let title = &result.title;

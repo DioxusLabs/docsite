@@ -19,9 +19,7 @@ fn main() {
         use dioxus_router::prelude::*;
         use log::LevelFilter;
         simple_logger::SimpleLogger::new()
-            .with_level(LevelFilter::Info)
-            .with_module_level("dioxus_search_macro", LevelFilter::Trace)
-            .with_module_level("dioxus_search_shared", LevelFilter::Trace)
+            .with_level(LevelFilter::Trace)
             .init()
             .unwrap();
         tokio::runtime::Runtime::new()

@@ -20,7 +20,7 @@ RSX is very similar to HTML in that it describes elements with attributes and ch
 
 ```inject-dioxus
 DemoFrame {
-	Empty {}
+	rsx_overview::Empty {}
 }
 ```
 
@@ -34,7 +34,7 @@ Attributes (and [event handlers](event_handlers.md)) modify the behavior or appe
 
 ```inject-dioxus
 DemoFrame {
-	Attributes {}
+	rsx_overview::Attributes {}
 }
 ```
 
@@ -52,7 +52,7 @@ Dioxus has a pre-configured set of attributes that you can use. RSX is validated
 
 ```inject-dioxus
 DemoFrame {
-	CustomAttributes {}
+	rsx_overview::CustomAttributes {}
 }
 ```
 
@@ -136,7 +136,7 @@ Similarly to how you can [format](https://doc.rust-lang.org/rust-by-example/hell
 
 ```inject-dioxus
 DemoFrame {
-	Formatting {}
+	rsx_overview::Formatting {}
 }
 ```
 
@@ -150,7 +150,7 @@ To add children to an element, put them inside the `{}` brackets after all attri
 
 ```inject-dioxus
 DemoFrame {
-	Children {}
+	rsx_overview::Children {}
 }
 ```
 
@@ -164,7 +164,7 @@ You can render multiple elements at the top level of `rsx!` and they will be aut
 
 ```inject-dioxus
 DemoFrame {
-	ManyRoots {}
+	rsx_overview::ManyRoots {}
 }
 ```
 
@@ -178,7 +178,7 @@ You can include arbitrary Rust expressions as children within RSX that implement
 
 ```inject-dioxus
 DemoFrame {
-	Expression {}
+	rsx_overview::Expression {}
 }
 ```
 
@@ -192,7 +192,7 @@ In addition to iterators you can also use for loops directly within RSX:
 
 ```inject-dioxus
 DemoFrame {
-	Loops {}
+	rsx_overview::Loops {}
 }
 ```
 
@@ -206,6 +206,6 @@ You can also use if statements without an else branch within RSX:
 
 ```inject-dioxus
 DemoFrame {
-	IfStatements {}
+	rsx_overview::IfStatements {}
 }
 ```

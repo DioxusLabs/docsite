@@ -49,7 +49,7 @@ async fn main() {
     .unwrap();
 }
 
-#[inline_props]
+#[component]
 fn Blog(cx: Scope) -> Element {
     render! {
         div {
@@ -58,7 +58,7 @@ fn Blog(cx: Scope) -> Element {
     }
 }
 
-#[inline_props]
+#[component]
 fn Post(cx: Scope, id: usize) -> Element {
     render! {
         div {
@@ -67,7 +67,7 @@ fn Post(cx: Scope, id: usize) -> Element {
     }
 }
 
-#[inline_props]
+#[component]
 fn PostHome(cx: Scope) -> Element {
     render! {
         div {
@@ -76,7 +76,7 @@ fn PostHome(cx: Scope) -> Element {
     }
 }
 
-#[inline_props]
+#[component]
 fn Home(cx: Scope) -> Element {
     render! {
         div {

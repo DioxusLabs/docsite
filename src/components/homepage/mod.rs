@@ -8,7 +8,7 @@ pub mod hero;
 pub mod snippets;
 pub mod value_add;
 
-#[inline_props]
+#[component]
 pub fn Homepage(cx: Scope) -> Element {
     cx.render(rsx! {
         div {
@@ -159,7 +159,7 @@ fn AvailablePlatforms(cx: Scope) -> Element {
     })
 }
 
-#[inline_props]
+#[component]
 fn TriShow<'a>(
     cx: Scope<'a>,
     left: Element<'a>,
@@ -187,7 +187,7 @@ fn TriShow<'a>(
     }
 }
 
-#[inline_props]
+#[component]
 fn TriPadding<'a>(cx: Scope<'a>, children: Element<'a>, last: bool) -> Element {
     render!(
         div { class: "flex flex-col items-center",
@@ -201,7 +201,7 @@ fn TriPadding<'a>(cx: Scope<'a>, children: Element<'a>, last: bool) -> Element {
     )
 }
 
-#[inline_props]
+#[component]
 fn DeveloperExperience(cx: Scope) -> Element {
     render! (
         section { class: "pt-36 w-full dark:bg-ideblack dark:text-white",
@@ -243,7 +243,7 @@ fn DeveloperExperience(cx: Scope) -> Element {
     )
 }
 
-#[inline_props]
+#[component]
 fn ExperienceText(cx: Scope, title: &'static str, content: &'static str) -> Element {
     render!(
         div { class: "pb-12",
@@ -295,7 +295,7 @@ fn Stats(cx: Scope) -> Element {
                     StatsItem { major: "10k", minor: "Stars" }
                     StatsItem { major: "63k", minor: "Downloads" }
                     StatsItem { major: "136", minor: "Contributors" }
-                    StatsItem { major: "873", minor: "Communtiy Projects" }
+                    StatsItem { major: "873", minor: "Community Projects" }
                 }
             }
 
@@ -310,7 +310,7 @@ fn Stats(cx: Scope) -> Element {
     })
 }
 
-#[inline_props]
+#[component]
 fn StatsItem(cx: Scope, major: &'static str, minor: &'static str) -> Element {
     render! {
         div { class: "text-center py-6 border border-[#444]",
@@ -320,7 +320,7 @@ fn StatsItem(cx: Scope, major: &'static str, minor: &'static str) -> Element {
     }
 }
 
-#[inline_props]
+#[component]
 fn Platform<'a>(
     cx: Scope<'a>,
     name: &'static str,
@@ -384,7 +384,7 @@ fn JumpStart(cx: Scope) -> Element {
                     StatsItem { major: "10k", minor: "Stars" }
                     StatsItem { major: "63k", minor: "Downloads" }
                     StatsItem { major: "136", minor: "Contributors" }
-                    StatsItem { major: "873", minor: "Communtiy Projects" }
+                    StatsItem { major: "873", minor: "Community Projects" }
                 }
             }
         }

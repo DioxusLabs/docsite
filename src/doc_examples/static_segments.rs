@@ -14,12 +14,12 @@ enum Route {
     HelloWorld {},
 }
 
-#[inline_props]
+#[component]
 fn Home(cx: Scope) -> Element {
     todo!()
 }
 
-#[inline_props]
+#[component]
 fn HelloWorld(cx: Scope) -> Element {
     todo!()
 }

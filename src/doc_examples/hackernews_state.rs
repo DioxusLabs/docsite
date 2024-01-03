@@ -86,9 +86,30 @@ pub mod app_v1 {
             }
         }
     }
+
+    // NEW
+    #[component]
+    fn Comment(cx: Scope, comment: Comment) -> Element<'a> {
+        render! {
+            div {
+                padding: "0.5rem",
+                div {
+                    color: "gray",
+                    "by {comment.by}"
+                }
+                div {
+                    dangerous_inner_html: "{comment.text}"
+                }
+                for kid in &comment.sub_comments {
+                    Comment { comment: kid.clone() }
+                }
+            }
+        }
+    }
+
     // ANCHOR_END: app_v1
 
-    #[inline_props]
+    #[component]
     fn StoryListing(cx: Scope, story: StoryItem) -> Element {
         let StoryItem {
             title,
@@ -244,7 +265,7 @@ mod story_listing_listener {
         }
     }
 
-    #[inline_props]
+    #[component]
     fn StoryListing(cx: Scope, story: StoryItem) -> Element {
         let StoryItem {
             title,
@@ -345,7 +366,7 @@ pub fn App(cx: Scope) -> Element {
 }
 
 // ANCHOR: shared_state_stories
-#[inline_props]
+#[component]
 fn StoryListing(cx: Scope, story: StoryItem) -> Element {
     // New
     let preview_state = use_shared_state::<PreviewState>(cx).unwrap();
@@ -500,7 +521,7 @@ fn Stories(cx: Scope) -> Element {
     }
 }
 
-#[inline_props]
+#[component]
 fn Comment(cx: Scope, comment: Comment) -> Element<'a> {
     render! {
         div {

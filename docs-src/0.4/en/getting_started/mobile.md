@@ -85,10 +85,10 @@ cargo new dioxus-mobile-test
 cd dioxus-mobile-test
 ```
 
-Next, we can use `tauri-mobile` to create a project for mobile:
+Next, we can use `cargo-mobile2` to create a project for mobile:
 
 ```shell
-cargo install --git https://github.com/tauri-apps/tauri-mobile
+cargo install --git https://github.com/tauri-apps/cargo-mobile2
 cargo mobile init
 ```
 
@@ -109,15 +109,13 @@ Finally, we need to add a component to renderer. Modify your main function:
 use dioxus::prelude::*;
 
 pub fn main() -> Result<()> {
-    init_logging();
-
     // Right now we're going through dioxus-desktop but we'd like to go through dioxus-mobile
     // That will seed the index.html with some fixes that prevent the page from scrolling/zooming etc
     dioxus_desktop::launch_cfg(
         app,
         // Note that we have to disable the viewport goofiness of the browser.
         // Dioxus_mobile should do this for us
-        Config::default().with_custom_index(r#"<!DOCTYPE html>
+        dioxus_desktop::Config::default().with_custom_index(r#"<!DOCTYPE html>
         <html>
           <head>
             <title>Dioxus app</title>

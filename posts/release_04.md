@@ -257,7 +257,7 @@ enum Route {
 	BlogPost { post: String },
 }
 
-#[inline_props]
+#[component]
 fn BlogPost(cx: Scope, post: String) {
 	render!{ "Currently viewing: {post}" }
 }
@@ -490,7 +490,7 @@ We made a small tweak to the CLI this release to rename the CLI from `dioxus` to
 To install the new CLI, use the same old instructions:
 
 ```rust
-cargo install dioxus-cli --locked --force
+cargo install dioxus-cli --force
 ```
 
 ## Hot Reloading for Desktop
@@ -537,7 +537,7 @@ The extension is a great place for new contributors to dive into the Dioxus code
 - Several SSR and Hydration bugs were fixed including escaping text, and
 - We have improved testing around Dioxus. We have added end to end tests for each platform and fuzzing tests for core libraries.
 - Fix the provide context docs
-- Fix trait bounds on generics with inline_props
+- Fix trait bounds on generics with component
 - Fix hot reloading in a workspace
 - Fix anchor link for block-level elements
 - Fix Guide link in README

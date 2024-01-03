@@ -1,6 +1,6 @@
 # Interactivity
 
-In this chapter, we will add a preview for an articles that you hover or focus.
+In this chapter, we will add a preview for articles you hover over or links you focus on.
 
 ## Creating a Preview
 
@@ -32,7 +32,7 @@ Let's create a [`onmouseenter`](https://docs.rs/dioxus/latest/dioxus/events/fn.o
 
 ## State
 
-So far our components have had no state like a normal rust functions. To make our application change when we hover over a link we need state to store the currently hovered link in the root of the application.
+So far our components have had no state like normal rust functions. To make our application change when we hover over a link we need state to store the currently hovered link in the root of the application.
 
 You can create state in dioxus using hooks. Hooks are Rust functions that take a reference to `ScopeState` (in a component, you can pass `cx`), and provide you with functionality and state.
 

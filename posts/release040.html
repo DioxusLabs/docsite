@@ -200,7 +200,7 @@ enum <span class="hljs-class">Route </span>{
     BlogPost { post: <span class="hljs-built_in">String</span> },
 }
 
-<span class="hljs-meta">#[inline_props]</span>
+<span class="hljs-meta">#[component]</span>
 <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">BlogPost</span></span>(cx: Scope, post: <span class="hljs-built_in">String</span>) {
     render!{ <span class="hljs-string">"Currently viewing: {post}"</span> }
 }
@@ -414,7 +414,7 @@ fn HeaderFooterNav(cx: Scope) -&gt; <span class="hljs-class">Element </span>{
 <li>Several SSR and Hydration bugs were fixed including escaping text, and</li>
 <li>We have improved testing around Dioxus. We have added end to end tests for each platform and fuzzing tests for core libraries.</li>
 <li>Fix the provide context docs</li>
-<li>Fix trait bounds on generics with inline_props</li>
+<li>Fix trait bounds on generics with component</li>
 <li>Fix hot reloading in a workspace</li>
 <li>Fix anchor link for block-level elements</li>
 <li>Fix Guide link in README</li>

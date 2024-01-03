@@ -23,11 +23,11 @@ const GITHUB_EDIT_PAGE_FALLBACK_URL: &str = "https://github.com/DioxusLabs/docsi
 /// The Markdown file path needs to be appended to this, including the first slash!
 const GITHUB_EDIT_PAGE_EDIT_URL: &str = "https://github.com/DioxusLabs/docsite/edit/master/docs-src/0.4/en";
 
-#[inline_props]
+#[component]
 pub fn Learn(cx: Scope) -> Element {
     let show_sidebar_button = use_atom_state(cx, &SHOW_DOCS_NAV);
     cx.use_hook(|| show_sidebar_button.set(true));
-    use_on_unmount(cx, {
+    use_on_destroy(cx, {
         to_owned![show_sidebar_button];
         move || show_sidebar_button.set(false)
     });
@@ -100,7 +100,7 @@ fn DocVersionNav(cx: Scope) -> Element {
 /// - page
 ///
 /// This renders a single section
-#[inline_props]
+#[component]
 fn SidebarSection(cx: Scope, chapter: &'static SummaryItem<BookRoute>) -> Element {
     let link = chapter.maybe_link()?;
 
@@ -121,7 +121,7 @@ fn SidebarSection(cx: Scope, chapter: &'static SummaryItem<BookRoute>) -> Elemen
     }
 }
 
-#[inline_props]
+#[component]
 fn SidebarChapter(cx: Scope, chapter: &'static SummaryItem<BookRoute>) -> Element {
     let link = chapter.maybe_link()?;
     let url = link.location.as_ref().unwrap();
@@ -158,7 +158,7 @@ fn SidebarChapter(cx: Scope, chapter: &'static SummaryItem<BookRoute>) -> Elemen
     }
 }
 
-#[inline_props]
+#[component]
 fn LocationLink(cx: Scope, chapter: &'static SummaryItem<BookRoute>) -> Element {
     let book_url = use_book(cx).to_string();
 
@@ -238,7 +238,7 @@ fn Content(cx: Scope) -> Element {
     };
 
     render! {
-        section { class: "text-gray-600 body-font overflow-hidden dark:bg-ideblack mx-auto container pt-6 pb-12 max-w-screen-lg",
+        section { class: "text-gray-600 body-font overflow-hidden dark:bg-ideblack lg:ml-[13rem] container pt-6 pb-12 max-w-screen-lg",
             div { class: "-py-8 {extra_class}",
                 div { class: "flex w-full mb-20 flex-wrap list-none",
                     style {
@@ -293,7 +293,7 @@ fn default_page() -> &'static Page<BookRoute> {
     LAZY_BOOK.pages.get(id.0).unwrap()
 }
 
-#[inline_props]
+#[component]
 pub fn DocsO3(cx: Scope, segments: Vec<String>) -> Element {
     let navigator = use_navigator(cx);
     let route: Route = use_route(cx).unwrap();

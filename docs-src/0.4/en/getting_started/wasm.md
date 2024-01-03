@@ -17,7 +17,7 @@ Examples:
 
 The Web is the best-supported target platform for Dioxus.
 
-- Because your app will be compiled to WASM you have access to browser APIs through [wasm-bingen](https://rustwasm.github.io/docs/wasm-bindgen/introduction.html).
+- Because your app will be compiled to WASM you have access to browser APIs through [wasm-bindgen](https://rustwasm.github.io/docs/wasm-bindgen/introduction.html).
 - Dioxus provides hydration to resume apps that are rendered on the server. See the [fullstack](fullstack.md) getting started guide for more information.
 
 ## Tooling
@@ -25,7 +25,7 @@ The Web is the best-supported target platform for Dioxus.
 To develop your Dioxus app for the web, you'll need a tool to build and serve your assets. We recommend using [dioxus-cli](https://github.com/DioxusLabs/dioxus/tree/master/packages/cli) which includes a build system, Wasm optimization, a dev server, and support hot reloading:
 
 ```shell
-cargo install dioxus-cli --locked
+cargo install dioxus-cli
 ```
 
 Make sure the `wasm32-unknown-unknown` target for rust is installed:
@@ -66,7 +66,7 @@ If you open the browser and navigate to `127.0.0.1` you should see an app that l
 
 ```inject-dioxus
 DemoFrame {
-    HelloWorldCounter {}
+    hello_world::HelloWorldCounter {}
 }
 ```
 

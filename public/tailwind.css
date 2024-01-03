@@ -837,6 +837,22 @@ video {
   margin-top: auto;
 }
 
+.ml-\[em\] {
+  margin-left: em;
+}
+
+.ml-\[12em\] {
+  margin-left: 12em;
+}
+
+.ml-40 {
+  margin-left: 10rem;
+}
+
+.ml-\[13rem\] {
+  margin-left: 13rem;
+}
+
 .block {
   display: block;
 }
@@ -2292,6 +2308,12 @@ video {
   }
 }
 
+@media (min-width: 320px) {
+  .min-\[320px\]\:bg-inherit {
+    background-color: inherit;
+  }
+}
+
 @media (min-width: 640px) {
   .sm\:-m-4 {
     margin: -1rem;
@@ -2643,6 +2665,10 @@ video {
     margin-top: 0px;
   }
 
+  .lg\:ml-\[13rem\] {
+    margin-left: 13rem;
+  }
+
   .lg\:block {
     display: block;
   }
@@ -2739,9 +2765,24 @@ video {
   }
 }
 
+@media (min-width: 1220px) {
+  .min-\[1220px\]\:bg-inherit {
+    background-color: inherit;
+  }
+}
+
 @media (min-width: 1280px) {
   .xl\:col-span-6 {
     grid-column: span 6 / span 6;
+  }
+
+  .xl\:mx-auto {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .xl\:ml-\[13rem\] {
+    margin-left: 13rem;
   }
 
   .xl\:block {
@@ -2750,6 +2791,10 @@ video {
 
   .xl\:flex {
     display: flex;
+  }
+
+  .xl\:hidden {
+    display: none;
   }
 
   .xl\:h-\[31\.625rem\] {
@@ -2762,6 +2807,10 @@ video {
 
   .xl\:grid-cols-4 {
     grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .xl\:bg-inherit {
+    background-color: inherit;
   }
 
   .xl\:px-48 {

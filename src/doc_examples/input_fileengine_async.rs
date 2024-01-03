@@ -8,10 +8,10 @@ pub fn App(cx: Scope) -> Element {
     cx.render(rsx! {
         input {
             r#type:"file",
-            accept: ".txt, .rs",
+            accept: ".txt,.rs",
             multiple: true,
             // ANCHOR: onchange_event
-            onchange: |evt| {
+            onchange: move |evt| {
                 // A helper macro to use hooks in async environments
                 to_owned![files_uploaded];
                 async move {

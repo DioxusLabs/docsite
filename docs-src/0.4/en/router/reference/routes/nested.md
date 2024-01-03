@@ -27,8 +27,8 @@ To nest routes, we use the `#[nest("path")]` and `#[end_nest]` attributes.
 
 The path in nest must not:
 
-1. Contain a [Catch All Segment](./index.md#catch-all-segments)
-2. Contain a [Query Segment](./index.md#query-segments)
+1. Contain a [Catch All Segment](./#catch-all-segments)
+2. Contain a [Query Segment](./#query-segments)
 
 If you define a dynamic segment in a nest, it will be available to all child routes and layouts.
 

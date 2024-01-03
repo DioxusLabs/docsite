@@ -21,7 +21,7 @@ Make sure you have Rust and Cargo installed, and then create a new project:
 
 ```shell
 cargo new --bin demo
-cd app
+cd demo
 ```
 
 Add Dioxus and the liveview renderer with the Axum feature as dependencies:

@@ -33,3 +33,15 @@ DemoFrame {
 ```
 
 > At this point, it might seem like components are nothing more than functions. However, as you learn more about the features of Dioxus, you'll see that they are actually more powerful!
+
+## Reactivity and re-renders
+
+So far, the examples shown only produce static output: the component function is run once for every time we wish to render the component, and that's it.
+
+However, components in Dioxus are "reactive", meaning that - as much as possible - they will automatically re-render whenever there is a possible change in the data that was used to run the function.
+
+The `Element` type returned by the function is a single description of how the UI must look at a given point in time.
+Hence, whenever the UI needs to change - because data changes somewhere - we must provide a new, updated description of the UI. This is why the component function will likely be called many times!
+
+You should avoid expensive computations within it.
+Dioxus uses a technique called "memoization" to prevent excessive re-computations of the same data; you will learn more about this, as well as the lifetimes involed, in the chapters on [props](../component_props) and [hooks](../hooks).

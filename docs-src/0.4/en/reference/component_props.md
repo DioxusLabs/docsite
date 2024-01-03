@@ -35,6 +35,19 @@ DemoFrame {
 }
 ```
 
+
+#### Lifetimes and memoization
+
+Since components are described as functions (especially with the `component` macro below), one might expect that the function simply directly receives the data sent into it.
+
+Hence, if the Props struct contains data a member `foo: Foo`, you might expect that `scope.props.foo` is of type `Foo`; however, it is actually a reference `&Foo`!
+
+This is because, as we mentioned before, the function may in fact be called many times!
+Instead, the `Scope` of the component owns the properties, and the function borrows the properties from here.
+This way, the data remains in-memory between component re-renders, and can be used for a technique called "memoization", which means that the data held in the scope can be compared against new data (hence why prop members must implement `PartialEq`); if both are identical, the component does not re-render, and we avoid unecessary computation!
+
+This is in contrast to Elm-like architectures, whereby the `view` function takes global state as input, and recomputes the entire UI from scratch every time; this allows Dioxus to be significantly more efficient.
+
 ### Borrowed Props
 
 Owned props work well if your props are easy to copy around – like a single number. But what if we need to pass a larger data type, like a String from an `App` Component to a `TitleCard` subcomponent? A naive solution might be to [`.clone()`](https://doc.rust-lang.org/std/clone/trait.Clone.html) the String, creating a copy of it for the subcomponent – but this would be inefficient, especially for larger Strings.
@@ -150,6 +163,10 @@ fn TitleCard(cx: Scope, title: String) -> Element {
 ```
 
 > While the new Component is shorter and easier to read, this macro should not be used by library authors since you have less control over Prop documentation.
+
+As we mentioned previoisly in the part about lifetimes and memoization, the update function borrows from the props struct; as the `#[component]` is only a shorthand way of defining a component function and a Props struct in one go, this does not change.
+
+In the `TitleCard` example, the type of `title` is atually `title: &String`, as it is borrowed from the component scope!
 
 ## Component Children
 

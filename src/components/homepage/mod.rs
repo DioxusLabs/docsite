@@ -295,7 +295,7 @@ fn Stats(cx: Scope) -> Element {
                     StatsItem { major: "10k", minor: "Stars" }
                     StatsItem { major: "63k", minor: "Downloads" }
                     StatsItem { major: "136", minor: "Contributors" }
-                    StatsItem { major: "873", minor: "Communtiy Projects" }
+                    StatsItem { major: "873", minor: "Community Projects" }
                 }
             }
 
@@ -384,7 +384,7 @@ fn JumpStart(cx: Scope) -> Element {
                     StatsItem { major: "10k", minor: "Stars" }
                     StatsItem { major: "63k", minor: "Downloads" }
                     StatsItem { major: "136", minor: "Contributors" }
-                    StatsItem { major: "873", minor: "Communtiy Projects" }
+                    StatsItem { major: "873", minor: "Community Projects" }
                 }
             }
         }

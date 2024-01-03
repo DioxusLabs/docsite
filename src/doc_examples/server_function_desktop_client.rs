@@ -9,7 +9,6 @@ async fn get_server_data() -> Result<String, ServerFnError> {
 // ANCHOR_END: server_function
 
 
-use axum_desktop::*;
 use dioxus_fullstack::prelude::*;
 
 #[tokio::main]

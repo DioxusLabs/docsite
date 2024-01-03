@@ -13,7 +13,7 @@ pub fn App(cx: Scope) -> Element {
             onchange: |evt| {
                 if let Some(file_engine) = &evt.files {
                     let files = file_engine.files();
-                    for file_name in &files {
+                    for file_name in files {
                         println!("{}", file_name);
                         // Do something with the folder path
                     }

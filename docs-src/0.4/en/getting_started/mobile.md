@@ -99,14 +99,14 @@ Next, we need to modify our dependencies to include dioxus and ensure the right 
 
 ```toml
 [dependencies]
-anyhow = "1.0.56"
+anyhow = "1.0.56"br
 log = "0.4.11"
-dioxus = { git = "https://github.com/ealmloff/dioxus", branch = "bump-wry", version = "0.4.2" }
-dioxus-desktop = { git = "https://github.com/ealmloff/dioxus", branch = "bump-wry", version = "0.4.2", default-features = false, features = ["tokio_runtime"] }
+dioxus = { git = "https://github.com/dioxuslabs/dioxus", version = "0.4.2" }
+dioxus-desktop = { git = "https://github.com/dioxuslabs/dioxus", version = "0.4.2", default-features = false, features = ["tokio_runtime"] }
 wry = "0.34.0"
 ```
 
-> Note: There is a bug in the older version of wry that is used by default in cargo-mobile2 and dioxus. We need to use the latest version of wry and an unpublished branch of dioxus that uses the latest version of wry. This will be fixed in the future. See [this issue](https://github.com/DioxusLabs/dioxus/issues/1158) for more details.
+> Note: There is a bug in the older version of wry that is used by default in cargo-mobile2 and dioxus. We need to use the latest version of wry and the unpublished version of dioxus that uses the latest version of wry. This will be fixed in the future. See [this issue](https://github.com/DioxusLabs/dioxus/issues/1158) for more details.
 
 Finally, we need to add a component to renderer. Replace the main function in your `lib.rs` file with this code:
 

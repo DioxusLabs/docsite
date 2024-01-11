@@ -16,11 +16,11 @@ Each approach has its tradeoffs:
 
 - Each interaction also requires a message to be sent to the server and back which can cause **issues with latency**.
 
-- Because Liveview uses a websocket to render, the page will be blank until the WebSocket connection has been established and the first renderer has been sent form the websocket. Just like with client side rendering, this can make the page **less SEO-friendly**.
+- Because Liveview uses a websocket to render, the page will be blank until the WebSocket connection has been established and the first renderer has been sent from the websocket. Just like with client side rendering, this can make the page **less SEO-friendly**.
 
 - Because the page is rendered on the server and the page is sent to the client piece by piece, you never need to send the entire application to the client. The initial load time can be faster than client-side rendering with large applications because Liveview only needs to send a constant small websocket script regardless of the size of the application.
 
-> Liveview is a good fit for applications that already need to communicate with the server frequently (like real time collaborative apps), but don't need to communicate with as many client/browser APIs
+> Liveview is a good fit for applications that already need to communicate with the server frequently (like real time collaborative apps), but don't need to communicate with as many client/browser APIs.
 
 [![](https://mermaid.ink/img/pako:eNplULFOw0AM_RXLc7Mw3sBQVUIMRYgKdcli5ZzkRHIuPl8QqvrvXJICRXiy3nt-9-6dsRHP6DAZGe8CdUpjNd3VEcpsVT4SK1TVPRxYJ1YHL_yeOdkqWMGF3w4U32Y6nSQmXvknMQYNXW8g7bfk2JPBg0g3MCTmdH1rJhenx2is1FiYri43wJ8or3O2H1Liv0w3hw724kMb2MMzdcUYNziyjhR8-f15Pq3Reh65RldWzy3lwWqs46VIKZscPmODzjTzBvPJ__aFrqUhFZR9MNH92uhS7OULYSF1lw?type=png)](https://mermaid.live/edit#pako:eNplULFOw0AM_RXLc7Mw3sBQVUIMRYgKdcli5ZzkRHIuPl8QqvrvXJICRXiy3nt-9-6dsRHP6DAZGe8CdUpjNd3VEcpsVT4SK1TVPRxYJ1YHL_yeOdkqWMGF3w4U32Y6nSQmXvknMQYNXW8g7bfk2JPBg0g3MCTmdH1rJhenx2is1FiYri43wJ8or3O2H1Liv0w3hw724kMb2MMzdcUYNziyjhR8-f15Pq3Reh65RldWzy3lwWqs46VIKZscPmODzjTzBvPJ__aFrqUhFZR9MNH92uhS7OULYSF1lw)
 
@@ -32,9 +32,9 @@ Each approach has its tradeoffs:
 
 > SEO stands for Search Engine Optimization. It refers to the practice of making your website more likely to appear in search engine results. Search engines like Google and Bing use web crawlers to index the content of websites. Most of these crawlers are not able to run JavaScript, so they will not be able to index the content of your page if it is rendered client-side.
 
-- Client-side rendered applications need to use **weakly typed requests to communicate with the server**
+- Client-side rendered applications need to use **weakly typed requests to communicate with the server**.
 
-> Client-side rendering is a good starting point for most applications. It is well supported and makes it easy to communicate with the client/browser APIs
+> Client-side rendering is a good starting point for most applications. It is well supported and makes it easy to communicate with the client/browser APIs.
 
 [![](https://mermaid.ink/img/pako:eNpVkDFPwzAQhf-KdXOzMHpgqJAQAwytEIsXK35JLBJfez4Xoar_HSemQtzke9_z2e-u1HMAWcrqFU_Rj-KX7vLgkqm1F_7KENN1j-YIuUCsOeBckLUZmrjx_ezT54rziVNG42-sMBLHSQ0Pd8vH5NU8M48zTAby71sr3CYdkAIEoen37h-y5n3910tSiO81cqIdLZDFx1DDXNerjnTCAke2HgMGX2Z15NKtWn1RPn6nnqxKwY7KKfzFJzv4OVcVISrLa1vQtqfbDzd0ZKY?type=png)](https://mermaid.live/edit#pako:eNpVkDFPwzAQhf-KdXOzMHpgqJAQAwytEIsXK35JLBJfez4Xoar_HSemQtzke9_z2e-u1HMAWcrqFU_Rj-KX7vLgkqm1F_7KENN1j-YIuUCsOeBckLUZmrjx_ezT54rziVNG42-sMBLHSQ0Pd8vH5NU8M48zTAby71sr3CYdkAIEoen37h-y5n3910tSiO81cqIdLZDFx1DDXNerjnTCAke2HgMGX2Z15NKtWn1RPn6nnqxKwY7KKfzFJzv4OVcVISrLa1vQtqfbDzd0ZKY)
 
@@ -42,7 +42,7 @@ Each approach has its tradeoffs:
 
 Fullstack rendering happens in two parts:
 1. The page is rendered on the server. This can include fetching any data you need to render the page.
-2. The page is hydrated on the client. (Hydration is just taking the page from the server and adding all of the event listeners Dioxus needs on the client). Any updates to the page happen on the client after this point.
+2. The page is hydrated on the client. (Hydration is taking the HTML page from the server and adding all of the event listeners Dioxus needs on the client). Any updates to the page happen on the client after this point.
 
 Because the page is initially rendered on the server, the page will be fully rendered when it is sent to the client. This results in a faster first render time and makes the page more SEO-friendly.
 

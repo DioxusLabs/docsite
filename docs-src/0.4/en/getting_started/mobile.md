@@ -99,7 +99,7 @@ Next, we need to modify our dependencies to include dioxus and ensure the right 
 
 ```toml
 [dependencies]
-anyhow = "1.0.56"br
+anyhow = "1.0.56"
 log = "0.4.11"
 dioxus = { git = "https://github.com/dioxuslabs/dioxus", version = "0.4.2" }
 dioxus-desktop = { git = "https://github.com/dioxuslabs/dioxus", version = "0.4.2", default-features = false, features = ["tokio_runtime"] }

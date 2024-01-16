@@ -1,13 +1,8 @@
 # Configure Project
 
-This chapter will teach you how to configure the CLI with the `Dioxus.toml` file.
-There's an [example](#config-example) which has comments to describe individual keys.
-You can copy that or view this documentation for a more complete learning experience.
+This chapter will teach you how to configure the CLI with the `Dioxus.toml` file. There's an [example](#config-example) which has comments to describe individual keys. You can copy that or view this documentation for a more complete learning experience.
 
-"🔒" indicates a mandatory item.
-Some headers are mandatory, but none of the keys inside them are.
-In that case, you only need to include the header, but no keys.
-It might look weird, but it's normal.
+"🔒" indicates a mandatory item. Some headers are mandatory, but none of the keys inside them are. In that case, you only need to include the header, but no keys. It might look weird, but it's normal.
 
 ## Structure
 
@@ -80,9 +75,7 @@ Development server configuration.
    ```
 
 * **index_on_404** - If enabled, Dioxus will serve the root page when a route is not found.
-   *This is needed when serving an application that uses the router*.
-   However, when serving your app using something else than Dioxus (e.g. GitHub Pages), you will have to check how to configure it on that platform.
-   In GitHub Pages, you can make a copy of `index.html` named `404.html` in the same directory.
+   *This is needed when serving an application that uses the router*. However, when serving your app using something else than Dioxus (e.g. GitHub Pages), you will have to check how to configure it on that platform. In GitHub Pages, you can make a copy of `index.html` named `404.html` in the same directory.
    ```toml
    index_on_404 = true
    ```
@@ -121,8 +114,7 @@ Static resource configuration.
 [web.resource.dev]
 ```
 
-This is the same as [`[web.resource]`](#webresource-), but it only works in development servers.
-For example, if you want to include a file in a `dx serve` server, but not a `dx serve --release` server, put it here.
+This is the same as [`[web.resource]`](#webresource-), but it only works in development servers. For example, if you want to include a file in a `dx serve` server, but not a `dx serve --release` server, put it here.
 
 ### Web.Proxy
 

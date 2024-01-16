@@ -21,5 +21,4 @@ Next, navigate into your new project using `cd project-name`, or simply opening 
 > rustup target add wasm32-unknown-unknown
 > ```
 
-Finally, serve your project with `dx serve`!
-The CLI will tell you the address it is serving on, along with additional info such as code warnings.
+Finally, serve your project with `dx serve`! The CLI will tell you the address it is serving on, along with additional info such as code warnings.

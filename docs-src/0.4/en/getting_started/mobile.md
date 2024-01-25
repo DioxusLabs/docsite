@@ -164,27 +164,6 @@ fn app(cx: Scope) -> Element {
 
 From there, you'll want to get a build of the crate using whichever platform you're targeting (simulator or actual hardware). For now, we'll just stick with the simulator
 
-### IOS
-
-To build your project for IOS, you can run:
-```sh
-cargo build --target aarch64-apple-ios-sim
-```
-
-Next, open XCode (this might take awhile if you've never opened XCode before):
-```sh
-cargo apple open
-```
-
-This will open XCode with this particular project.
-
-From there, just click the "play" button with the right target and the app should be running!
-
-![ios_demo](/static/IOS-dioxus-demo.png)
-
-Note that clicking play doesn't cause a new build, so you'll need to keep rebuilding the app between changes. The tooling here is very young, so please be patient. If you want to contribute to make things easier, please do! We'll be happy to help.
-
-
 ### Android
 
 To build your project on Android you can run:
@@ -221,3 +200,24 @@ cargo android run
 > - https://developer.android.com/ndk/guides
 > - https://developer.android.com/studio/projects/install-ndk
 > - https://source.android.com/docs/setup/build/rust/building-rust-modules/overview
+
+### IOS
+
+To build your project for IOS, you can run:
+```sh
+cargo build --target aarch64-apple-ios-sim
+```
+
+Next, open XCode (this might take awhile if you've never opened XCode before):
+```sh
+cargo apple open
+```
+
+This will open XCode with this particular project.
+
+From there, just click the "play" button with the right target and the app should be running!
+
+![ios_demo](/static/IOS-dioxus-demo.png)
+
+Note that clicking play doesn't cause a new build, so you'll need to keep rebuilding the app between changes. The tooling here is very young, so please be patient. If you want to contribute to make things easier, please do! We'll be happy to help.
+

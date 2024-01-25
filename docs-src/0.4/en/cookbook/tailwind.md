@@ -87,7 +87,7 @@ One popular option for styling your Dioxus application is [Tailwind](https://tai
     [web.resource]
 
     # CSS style file
-    style = ["tailwind.css"]
+    style = ["/tailwind.css"]
 
     # Javascript code file
     script = []

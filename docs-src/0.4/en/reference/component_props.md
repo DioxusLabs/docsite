@@ -145,7 +145,7 @@ fn TitleCard(props: TitleCardProps) -> Element {
 fn TitleCard(title: String) -> Element {
     rsx!{
         h1 { "{title}" }
-    })
+    }
 }
 ```
 

@@ -27,10 +27,10 @@ fn main() {
 	dioxus::desktop::launch(app)
 }
 
-fn app() -> Element {
-    let mut count = use_state(|| 0);
+fn app(cx: Scope) -> Element {
+    let mut count = use_state(&cx, || 0);
 
-    rsx! {
+    cx.render(rsx! {
         h1 { "Count: {count}" }
         button { onclick: move |_| count += 1, "+" }
         button { onclick: move |_| count -= 1, "-" }
@@ -138,8 +138,8 @@ struct CardProps {
 }
 
 static Card: Component<CardProps> = |cx| {
-	let mut count = use_state(|| 0);
-	rsx!(
+	let mut count = use_state(&cx, || 0);
+	cx.render(rsx!(
 		aside {
 			h2 { "{cx.props.title}" }
 			p { "{cx.props.paragraph}" }
@@ -190,10 +190,10 @@ fn main() {
 	dioxus::desktop::launch(app)
 }
 
-fn app() -> Element {
-    let mut count = use_state(|| 0);
+fn app(cx: Scope) -> Element {
+    let mut count = use_state(&cx, || 0);
 
-    rsx! {
+    cx.render(rsx! {
         h1 { "Count: {count}" }
         button { onclick: move |_| count += 1, "+" }
         button { onclick: move |_| count -= 1, "-" }
@@ -258,7 +258,7 @@ div()
 Dioxus understands the lifetimes of data borrowed from `Scope`, so you can safely return any borrowed data without declaring explicit captures. Hook handles all implement `Copy` so they can be shared between listeners without any ceremony.
 
 ```rust
-let name = use_state(|| "asd");
+let name = use_state(&cx, || "asd");
 rsx! {
 	div {
 		button { onclick: move |_| name.set("abc") }
@@ -271,9 +271,9 @@ rsx! {
 Because we know the lifetime of your handlers, we can also expose this to children. No other Rust frameworks let us share borrowed state through the tree, forcing use of Rc/Arc everywhere. With Dioxus, all the Rc/Arc magic is tucked away in hooks, and just beautiful borrowed interfaces are exposed to your code. You don't need to know how Rc/RefCell work to build a competent Dioxus app.
 
 ```rust
-fn app() -> Element {
-	let name = use_state(|| "asd");
-	rsx!{
+fn app(cx: Scope) -> Element {
+	let name = use_state(&cx, || "asd");
+	cx.render(rsx!{
 		Button { name: name }
 	})
 }
@@ -283,8 +283,8 @@ struct ButtonProps<'a> {
 	name: UseState<'a, &'static str>
 }
 
-fn Button<'a>( Childprops<'a>>) -> Element {
-	rsx!{
+fn Button<'a>(cx: Scope<'a, Childprops<'a>>) -> Element {
+	cx.render(rsx!{
 		button {
 			onclick: move |_| cx.props.name.set("bob")
 		}

@@ -31,10 +31,10 @@ Well, we still love React, despite its warts, footguns, and idiosyncrasies.
 The final point is arguably the most important: React’s functional model maps well into Rust’s lifetime system. Any value provided to the component through `use_hook` is bounded by the lifetime of the `Scope` itself. `Scope` can be shared into any handler - like `onclick` in the following example. Since `value` shares a lifetime with `Scope`, it can be modified directly within element callbacks.
 
 ```rust
-fn app() -> Element {
+fn app(cx: Scope) -> Element {
 		let value: &mut u32 = cx.use_hook(|| 0);
 
-    rsx!(
+    cx.render(rsx!(
         button { onclick: move |_| value += 1, "Increment" }
     ))
 }
@@ -47,14 +47,14 @@ This clean mapping of React’s paradigms into Rust makes it possible for Dioxus
 - Values created with the Scope’s lifetime can be passed directly into children, unlike nearly all non-signal-based libraries.
 
 ```rust
-let doc = use_document_builder();
+let doc = use_document_builder(cx);
 
 rsx! {
 	Doc { document: doc }
 }
 
 #[component]
-fn Doc<'a>( document: &'a SomeBigDocument) -> Element {
+fn Doc<'a>(cx: Scope<'a>, document: &'a SomeBigDocument) -> Element {
 	// document is passed from a parent by reference!
 	// no smart pointers required!
 }

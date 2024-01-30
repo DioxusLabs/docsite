@@ -21,10 +21,10 @@
     dioxus::desktop::launch(app)
 }
 
-<span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">app</span></span>() -&gt; Element {
+<span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">app</span></span>(cx: Scope) -&gt; Element {
     <span class="hljs-keyword">let</span> <span class="hljs-keyword">mut</span> count = use_state(&amp;cx, || <span class="hljs-number">0</span>);
 
-    rsx! {
+    cx.render(rsx! {
         h1 { <span class="hljs-string">"Count: {count}"</span> }
         button { onclick: <span class="hljs-keyword">move</span> |_| count += <span class="hljs-number">1</span>, <span class="hljs-string">"+"</span> }
         button { onclick: <span class="hljs-keyword">move</span> |_| count -= <span class="hljs-number">1</span>, <span class="hljs-string">"-"</span> }
@@ -121,7 +121,7 @@ struct <span class="hljs-class">CardProps </span>{
 
 static Card: Component<span class="hljs-params">&lt;CardProps&gt;</span> = |cx| {
     let mut count = use_state(<span class="hljs-variable">&amp;cx</span>, || <span class="hljs-number">0</span>);
-    rsx!(
+    cx.render(rsx!(
         <span class="hljs-class">aside </span>{
             <span class="hljs-class">h2 </span>{ <span class="hljs-string">"{cx.props.title}"</span> }
             <span class="hljs-class">p </span>{ <span class="hljs-string">"{cx.props.paragraph}"</span> }
@@ -159,10 +159,10 @@ static Card: Component<span class="hljs-params">&lt;CardProps&gt;</span> = |cx| 
     dioxus::desktop::launch(app)
 }
 
-<span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">app</span></span>() -&gt; Element {
+<span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">app</span></span>(cx: Scope) -&gt; Element {
     <span class="hljs-keyword">let</span> <span class="hljs-keyword">mut</span> count = use_state(&amp;cx, || <span class="hljs-number">0</span>);
 
-    rsx! {
+    cx.render(rsx! {
         h1 { <span class="hljs-string">"Count: {count}"</span> }
         button { onclick: <span class="hljs-keyword">move</span> |_| count += <span class="hljs-number">1</span>, <span class="hljs-string">"+"</span> }
         button { onclick: <span class="hljs-keyword">move</span> |_| count -= <span class="hljs-number">1</span>, <span class="hljs-string">"-"</span> }
@@ -222,9 +222,9 @@ rsx! {
 </code></pre>
 <p>Because we know the lifetime of your handlers, we can also expose this to children. No other Rust frameworks let us share borrowed state through the tree, forcing use of Rc/Arc everywhere. With Dioxus, all the Rc/Arc magic is tucked away in hooks, and
     just beautiful borrowed interfaces are exposed to your code. You don&#39;t need to know how Rc/RefCell work to build a competent Dioxus app.</p>
-<pre><code class="lang-rust"><span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">app</span></span>() -&gt; Element {
+<pre><code class="lang-rust"><span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">app</span></span>(cx: Scope) -&gt; Element {
     <span class="hljs-keyword">let</span> name = use_state(&amp;cx, || <span class="hljs-string">"asd"</span>);
-    rsx!{
+    cx.render(rsx!{
         Button { name: name }
     })
 }
@@ -234,8 +234,8 @@ rsx! {
     name: UseState&lt;<span class="hljs-symbol">'a</span>, &amp;<span class="hljs-symbol">'static</span> <span class="hljs-keyword">str</span>&gt;
 }
 
-<span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">Button</span></span>&lt;<span class="hljs-symbol">'a</span>&gt;(&lt;<span class="hljs-symbol">'a</span>, Childprops&lt;<span class="hljs-symbol">'a</span>&gt;&gt;) -&gt; Element {
-    rsx!{
+<span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">Button</span></span>&lt;<span class="hljs-symbol">'a</span>&gt;(cx: Scope&lt;<span class="hljs-symbol">'a</span>, Childprops&lt;<span class="hljs-symbol">'a</span>&gt;&gt;) -&gt; Element {
+    cx.render(rsx!{
         button {
             onclick: <span class="hljs-keyword">move</span> |_| cx.props.name.set(<span class="hljs-string">"bob"</span>)
         }

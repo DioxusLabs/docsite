@@ -21,7 +21,7 @@
 <pre><code class="lang-rust">fn app(cx: <span class="hljs-keyword">Scope</span>) -&gt; Element {
     <span class="hljs-keyword">let</span> value: &amp;mut u32 = cx.use_hook(|<span class="hljs-type">| 0</span>);
 
-    rsx!(
+    cx.render(rsx!(
         button { onclick: <span class="hljs-built_in">move</span> |<span class="hljs-type">_</span>| <span class="hljs-type">value</span> += <span class="hljs-number">1</span>, <span class="hljs-string">"Increment"</span> }
     ))
 }
@@ -32,14 +32,14 @@
 <li>The foundational <code>use_hook</code> provides a direct mutable reference to a value.</li>
 <li>Values created with the Scope’s lifetime can be passed directly into children, unlike nearly all non-signal-based libraries.</li>
 </ul>
-<pre><code class="lang-rust"><span class="hljs-keyword">let</span> doc = use_document_builder();
+<pre><code class="lang-rust"><span class="hljs-keyword">let</span> doc = use_document_builder(cx);
 
 rsx! {
     Doc { document: doc }
 }
 
 <span class="hljs-meta">#[component]</span>
-<span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">Doc</span></span>&lt;<span class="hljs-symbol">'a</span>&gt;(&lt;<span class="hljs-symbol">'a</span>&gt;, document: &amp;<span class="hljs-symbol">'a</span> SomeBigDocument) -&gt; Element {
+<span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">Doc</span></span>&lt;<span class="hljs-symbol">'a</span>&gt;(cx: Scope&lt;<span class="hljs-symbol">'a</span>&gt;, document: &amp;<span class="hljs-symbol">'a</span> SomeBigDocument) -&gt; Element {
     <span class="hljs-comment">// document is passed from a parent by reference!</span>
     <span class="hljs-comment">// no smart pointers required!</span>
 }

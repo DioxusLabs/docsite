@@ -70,10 +70,10 @@ async fn main() {
         .await;
 }
 
-fn app() -> Element {
-		let posts = use_db_query(RECENT_POSTS);
+fn app(cx: Scope) -> Element {
+		let posts = use_db_query(cx, RECENT_POSTS);
 
-		rsx! {
+		render! {
 				for post in posts {
 						Post { key: "{post.id}", data: post }
 				}

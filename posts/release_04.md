@@ -117,7 +117,7 @@ fn Username() -> Element {
 		return cx.suspend();
 	}
 
-	render! { "Username: {username}")
+	rsx! { "Username: {username}")
 }
 ```
 
@@ -129,7 +129,7 @@ fn Dashboard() -> Element {
     // use_server_future will persist the result of this call during SSR
     let ip = use_server_future((), |_| get_server_ip())?;
 
-    render!{ "The edge node is {ip}" }
+    rsx!{ "The edge node is {ip}" }
 }
 
 // When used on the server, this is just a simple function call
@@ -169,7 +169,7 @@ In the beginning we opted for simplicity and flexibility. The old router let you
 
 ```rust
 pub fn app() -> Element {
-    render! {
+    rsx! {
         Router {
             Nav {}
             Route { to: "/", Homepage {} }
@@ -221,7 +221,7 @@ To render the new router, pass in your app’s Route enum as the generic type in
 
 ```rust
 fn app() -> Element {
-	render! { Router::<Route> {} }
+	rsx! { Router::<Route> {} }
 }
 ```
 
@@ -238,12 +238,12 @@ enum Route {
 
 // 2. Make sure we have a component in scope that matches the enum variant
 fn Homepage() -> Element {
-	render! { "Welcome home!" }
+	rsx! { "Welcome home!" }
 }
 
 // 3. Now render our app, using the Router and Route
 fn app() -> Element {
-	render! { Router::<Route> {} }
+	rsx! { Router::<Route> {} }
 }
 ```
 
@@ -259,7 +259,7 @@ enum Route {
 
 #[component]
 fn BlogPost(post: String) {
-	render!{ "Currently viewing: {post}" }
+	rsx!{ "Currently viewing: {post}" }
 }
 
 ```
@@ -279,7 +279,7 @@ Another exciting feature is layouts. We’re borrowing this concept from popular
 
 ```rust
 fn Home() -> Element {
-	render! {
+	rsx! {
 		Header {}
 		Navbar {}
 		div { "actual home content" }
@@ -288,7 +288,7 @@ fn Home() -> Element {
 }
 
 fn Blog() -> Element {
-	render! {
+	rsx! {
 		Header {}
 		Navbar {}
 		div { "actual blog content" }
@@ -312,7 +312,7 @@ enum Route {
 
 // Wrap the rendered content of the Router with a header, navbar, and footer
 fn HeaderFooterNav() -> Element {
-	render! {
+	rsx! {
 		Header {}
 		Navbar {}
 		Outlet::<Route> {}
@@ -426,7 +426,7 @@ fn app() -> Element {
         }
     });
 
-    render!{ "{future.value():?}" }
+    rsx!{ "{future.value():?}" }
 }
 ```
 
@@ -450,7 +450,7 @@ fn main() {
 fn app() -> Element {
     let header_element = use_state(|| None);
 
-    cx.render(rsx!(
+    rsx!(
         div {
             h1 {
                 onmounted: move |cx| {

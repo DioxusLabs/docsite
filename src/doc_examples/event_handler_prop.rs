@@ -8,26 +8,26 @@ fn main() {
 
 fn App() -> Element {
     // ANCHOR: usage
-    cx.render(rsx! {
+    rsx! {
         FancyButton {
             on_click: move |event| println!("Clicked! {event:?}")
         }
-    })
+    }
     // ANCHOR_END: usage
 }
 
 // ANCHOR: component_with_handler
 #[derive(Props)]
-pub struct FancyButtonProps<'a> {
-    on_click: EventHandler<'a, MouseEvent>,
+pub struct FancyButtonProps {
+    on_click: EventHandler<MouseEvent>,
 }
 
-pub fn FancyButton<'a>( FancyButtonProps<'a>>) -> Element<'a> {
-    cx.render(rsx!(button {
+pub fn FancyButton(props: FancyButtonProps) -> Element {
+    rsx!(button {
         class: "fancy-button",
-        onclick: move |evt| cx.props.on_click.call(evt),
+        onclick: move |evt| props.on_click.call(evt),
         "click me pls."
-    }))
+    })
 }
 // ANCHOR_END: component_with_handler
 
@@ -35,15 +35,15 @@ pub fn FancyButton<'a>( FancyButtonProps<'a>>) -> Element<'a> {
 struct ComplexData(i32);
 
 #[derive(Props)]
-pub struct CustomFancyButtonProps<'a> {
-    on_click: EventHandler<'a, ComplexData>,
+pub struct CustomFancyButtonProps {
+    on_click: EventHandler<ComplexData>,
 }
 
-pub fn CustomFancyButton<'a>( CustomFancyButtonProps<'a>>) -> Element<'a> {
-    cx.render(rsx!(button {
+pub fn CustomFancyButton(props: CustomFancyButtonProps) -> Element {
+    rsx!(button {
         class: "fancy-button",
-        onclick: move |_| cx.props.on_click.call(ComplexData(0)),
+        onclick: move |_| props.on_click.call(ComplexData(0)),
         "click me pls."
-    }))
+    })
 }
 // ANCHOR_END: custom_data

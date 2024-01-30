@@ -32,11 +32,11 @@ fn app() -> Element {
     });
 
     match future.value() {
-        Some(v) => cx.render(rsx!(
+        Some(v) => rsx!(
             p { "{v}" }
-        )),
-        _ => cx.render(rsx!(
+        ),
+        _ => rsx!(
             p { "hello" }
-        )),
+        ),
     }
 }

@@ -138,7 +138,7 @@ fn app() -> Element {
 
     log::debug!("Hello from the app");
 
-    render! {
+    rsx! {
         div {
             h1 { "Hello, Mobile"}
             div { margin_left: "auto", margin_right: "auto", width: "200px", padding: "10px", border: "1px solid black",

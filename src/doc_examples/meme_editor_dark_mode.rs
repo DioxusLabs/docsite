@@ -27,11 +27,11 @@ pub fn App() -> Element {
         r""
     };
 
-    cx.render(rsx!(div {
+    rsx!(div {
         style: "{wrapper_style}",
         DarkModeToggle {},
         MemeEditor {},
-    }))
+    })
 }
 
 pub fn use_is_dark_mode() -> bool {
@@ -54,7 +54,7 @@ pub fn DarkModeToggle() -> Element {
         ""
     };
 
-    cx.render(rsx!(label {
+    rsx!(label {
         style: "{style}",
         "Dark Mode",
         input {
@@ -64,7 +64,7 @@ pub fn DarkModeToggle() -> Element {
                 dark_mode.write().0 = is_enabled;
             },
         },
-    }))
+    })
 }
 // ANCHOR_END: toggle
 
@@ -83,7 +83,7 @@ fn MemeEditor() -> Element {
 
     let caption = use_state(|| "me waiting for my rust code to compile".to_string());
 
-    cx.render(rsx! {
+    rsx! {
         div {
             style: "{container_style}",
             h1 {
@@ -98,7 +98,7 @@ fn MemeEditor() -> Element {
                 on_input: move |event: FormEvent| {caption.set(event.value.clone());},
             },
         }
-    })
+    }
 }
 // ANCHOR_END: meme_editor
 
@@ -125,7 +125,7 @@ fn Meme<'a>( caption: &'a str) -> Element<'a> {
         text-align: center;
     ";
 
-    cx.render(rsx!(
+    rsx!(
         div {
             style: "{container_style}",
             img {
@@ -140,17 +140,16 @@ fn Meme<'a>( caption: &'a str) -> Element<'a> {
                 }
             }
         }
-    ))
+    )
 }
 // ANCHOR_END: meme_component
 
 // ANCHOR: caption_editor
 #[component]
-fn CaptionEditor<'a>(
-    <'a>,
-    caption: &'a str,
-    on_input: EventHandler<'a, FormEvent>,
-) -> Element<'a> {
+fn CaptionEditor(
+    caption: String,
+    on_input: EventHandler<FormEvent>,
+) -> Element {
     let is_dark_mode = use_is_dark_mode();
 
     let colors = if is_dark_mode {
@@ -172,11 +171,11 @@ fn CaptionEditor<'a>(
         border-radius: 4px;
     ";
 
-    cx.render(rsx!(input {
+    rsx!(input {
         style: "{input_style}{colors}",
         value: "{caption}",
         oninput: move |event| on_input.call(event),
-    }))
+    })
 }
 // ANCHOR_END: caption_editor
 

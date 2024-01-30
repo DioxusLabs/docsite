@@ -34,7 +34,7 @@ The final point is arguably the most important: React’s functional model maps 
 fn app() -> Element {
 		let value: &mut u32 = cx.use_hook(|| 0);
 
-    cx.render(rsx!(
+    rsx!(
         button { onclick: move |_| value += 1, "Increment" }
     ))
 }

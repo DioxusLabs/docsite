@@ -4,7 +4,7 @@ use dioxus::prelude::*;
 // ANCHOR: component
 pub fn App() -> Element {
     let filenames: &UseRef<Vec<String>> = use_ref(Vec::new);
-    cx.render(rsx! {
+    rsx! {
         // ANCHOR: rsx
         input {
             r#type:"file",
@@ -21,6 +21,6 @@ pub fn App() -> Element {
             }
         }
         // ANCHOR_END: rsx
-    })
+    }
 }
 // ANCHOR_END: component

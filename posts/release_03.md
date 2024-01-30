@@ -73,7 +73,7 @@ async fn main() {
 fn app() -> Element {
 		let posts = use_db_query(RECENT_POSTS);
 
-		render! {
+		rsx! {
 				for post in posts {
 						Post { key: "{post.id}", data: post }
 				}

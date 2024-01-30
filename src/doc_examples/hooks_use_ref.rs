@@ -5,7 +5,7 @@ use dioxus::prelude::*;
 pub fn App() -> Element {
     let list = use_ref(Vec::new);
 
-    cx.render(rsx!(
+    rsx!(
         p { "Current list: {list.read():?}" }
         button {
             onclick: move |event| {
@@ -13,6 +13,6 @@ pub fn App() -> Element {
             },
             "Click me!"
         }
-    ))
+    )
 }
 // ANCHOR_END: component

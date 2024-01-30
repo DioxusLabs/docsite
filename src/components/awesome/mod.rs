@@ -73,7 +73,7 @@ struct StarsResponse {
 
 #[component]
 pub fn Awesome() -> Element {
-    let items = use_future((), |_| async move {
+    let items = use_resource(|| async move {
         let req = match reqwest::get(ITEM_LIST_LINK).await {
             Ok(r) => r,
             Err(e) => return Err(e.to_string()),
@@ -95,7 +95,7 @@ pub fn Awesome() -> Element {
             items.sort_by(|a, b| b.category.to_string().to_lowercase().cmp(&a.category.to_string().to_lowercase()));
             let items: Vec<Item> = items.into_iter().filter(|i| i.name.to_lowercase().contains(&search.get().to_lowercase())).collect();
 
-            cx.render(rsx!(
+            rsx!(
                 section {
                     class: "dark:bg-ideblack w-full pt-24 pb-10",
                     div {
@@ -175,10 +175,10 @@ pub fn Awesome() -> Element {
                         })
                     }
                 }
-            ))
+            )
         }
         Some(Err(e)) => {
-            cx.render(rsx!(
+            rsx!(
                 section {
                     class: "dark:bg-ideblack w-full pt-24 pb-96",
                     div {
@@ -193,10 +193,10 @@ pub fn Awesome() -> Element {
                         }
                     }
                 }
-            ))
+            )
         }
         None => {
-            cx.render(rsx!(
+            rsx!(
                 section {
                     class: "dark:bg-ideblack w-full pt-24 pb-96",
                     div {
@@ -207,7 +207,7 @@ pub fn Awesome() -> Element {
                         }
                     }
                 }
-            ))
+            )
         }
     }
 }
@@ -218,7 +218,7 @@ fn AwesomeItem(item: Item) -> Element {
     let username = item.github.clone().unwrap_or(GithubInfo::default()).username;
     let repo = item.github.clone().unwrap_or(GithubInfo::default()).repo;
 
-    let stars = use_future((), |_| async move {
+    let stars = use_resource(|| async move {
         if is_github {
             // Check cache
             if let Some(stars) = get_stars(format!("{}{}/{}", STAR_CACHE_NAME, username, repo)) {
@@ -257,7 +257,7 @@ fn AwesomeItem(item: Item) -> Element {
         }
     };
 
-    cx.render(rsx!(
+    rsx!(
         Link {
             to: NavigationTarget::<Route>::External(link),
             div {
@@ -290,7 +290,7 @@ fn AwesomeItem(item: Item) -> Element {
                 }
             }
         }
-    ))
+    )
 }
 
 #[wasm_bindgen(module = "/src/components/awesome/storage.js")]

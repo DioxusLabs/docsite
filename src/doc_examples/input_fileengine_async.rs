@@ -5,7 +5,7 @@ use dioxus::prelude::*;
 pub fn App() -> Element {
     let files_uploaded: &UseRef<Vec<String>> = use_ref(Vec::new);
 
-    cx.render(rsx! {
+    rsx! {
         input {
             r#type:"file",
             accept: ".txt,.rs",
@@ -29,6 +29,6 @@ pub fn App() -> Element {
             }
             // ANCHOR_END: onchange_event
         }
-    })
+    }
 }
 // ANCHOR_END: component

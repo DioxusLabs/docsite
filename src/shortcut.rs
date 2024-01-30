@@ -1,5 +1,7 @@
 #![allow(unused)]
+use dioxus::hooks::use_on_unmount;
 use dioxus::html::input_data::keyboard_types::{Key, Modifiers};
+use dioxus::prelude::use_drop;
 use slab::Slab;
 use std::sync::{Arc, Mutex};
 use wasm_bindgen::closure::Closure;
@@ -48,32 +50,19 @@ impl ShortcutHandler {
 }
 
 /// Create a global shortcut that will be removed when the component is unmounted
-pub fn use_shortcut(
-    cx: &dioxus::prelude::ScopeState,
-    key: Key,
-    modifiers: crate::Modifiers,
-    mut handler: impl FnMut() + 'static,
-) {
+pub fn use_shortcut(key: Key, modifiers: crate::Modifiers, mut handler: impl FnMut() + 'static) {
     #[cfg(feature = "web")]
     {
-        cx.use_hook(move || {
-            ShortcutHandle(LISTENERS.with(|l| {
+        let id = use_hook(move || {
+            LISTENERS.with(|l| {
                 l.callbacks
                     .lock()
                     .unwrap()
                     .insert((key, modifiers, Box::new(handler)))
-            }))
+            })
         });
-    }
-}
-
-struct ShortcutHandle(usize);
-
-impl Drop for ShortcutHandle {
-    fn drop(&mut self) {
-        #[cfg(feature = "web")]
-        {
-            LISTENERS.with(|l| l.callbacks.lock().unwrap().remove(self.0));
-        }
+        use_drop(|| {
+            LISTENERS.with(|l| l.callbacks.lock().unwrap().remove(id));
+        })
     }
 }

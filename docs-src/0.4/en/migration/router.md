@@ -65,7 +65,7 @@ use dioxus::prelude::*;
 use dioxus_router::prelude::*;
 
 fn Component() -> Element {
-    render! {
+    rsx! {
         Link {
             to: Route::BlogPost { id: 123 },
             "blog post"
@@ -83,7 +83,7 @@ use dioxus::prelude::*;
 use dioxus_router::prelude::*;
 
 fn Component() -> Element {
-    render! {
+    rsx! {
         Link {
             to: "https://google.com",
             "google"
@@ -111,7 +111,7 @@ enum Route {
 }
 
 fn App() -> Element {
-    render! {
+    rsx! {
         h1 { "App" }
         Router::<Route> {}
     }
@@ -121,7 +121,7 @@ fn App() -> Element {
 fn Index() -> Element {
     // Read from (and subscribe to the current route)
     let path = use_route(&cx).unwrap();
-    render! {
+    rsx! {
         h2 { "Current Path" }
         p { "{path}" }
     }

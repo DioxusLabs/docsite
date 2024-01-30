@@ -5,9 +5,9 @@ fn main() {
 }
 
 fn app() -> Element {
-    cx.render(rsx! {
+    rsx! {
         div {
             img { src: "examples/assets/logo.png" }
         }
-    })
+    }
 }

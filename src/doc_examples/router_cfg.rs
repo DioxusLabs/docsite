@@ -17,7 +17,7 @@ enum Route {
 // ANCHOR: app
 #[component]
 fn App() -> Element {
-    render! {
+    rsx! {
         Router::<Route> {
             config: || RouterConfig::default().history(WebHistory::default())
         }
@@ -28,7 +28,7 @@ fn App() -> Element {
 // ANCHOR: home
 #[component]
 fn Home() -> Element {
-    render! {
+    rsx! {
         h1 { "Welcome to the Dioxus Blog!" }
     }
 }

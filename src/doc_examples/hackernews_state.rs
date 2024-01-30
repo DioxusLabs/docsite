@@ -6,7 +6,7 @@ pub mod app_v1 {
 
     // ANCHOR: app_v1
     pub fn App() -> Element {
-        cx.render(rsx! {
+        rsx! {
             div {
                 display: "flex",
                 flex_direction: "row",
@@ -20,12 +20,12 @@ pub mod app_v1 {
                     Preview {}
                 }
             }
-        })
+        }
     }
 
     // New
     fn Stories() -> Element {
-        render! {
+        rsx! {
             StoryListing {
                 story: StoryItem {
                     id: 0,
@@ -55,17 +55,17 @@ pub mod app_v1 {
     fn Preview() -> Element {
         let preview_state = PreviewState::Unset;
         match preview_state {
-            PreviewState::Unset => render! {
+            PreviewState::Unset => rsx! {
                 "Hover over a story to preview it here"
             },
-            PreviewState::Loading => render! {
+            PreviewState::Loading => rsx! {
                 "Loading..."
             },
             PreviewState::Loaded(story) => {
                 let title = &story.item.title;
                 let url = story.item.url.as_deref().unwrap_or_default();
                 let text = story.item.text.as_deref().unwrap_or_default();
-                render! {
+                rsx! {
                     div {
                         padding: "0.5rem",
                         div {
@@ -90,7 +90,7 @@ pub mod app_v1 {
     // NEW
     #[component]
     fn Comment(comment: Comment) -> Element<'a> {
-        render! {
+        rsx! {
             div {
                 padding: "0.5rem",
                 div {
@@ -138,7 +138,7 @@ pub mod app_v1 {
         );
         let time = time.format("%D %l:%M %p");
 
-        cx.render(rsx! {
+        rsx! {
             div {
                 padding: "0.5rem",
                 position: "relative",
@@ -176,7 +176,7 @@ pub mod app_v1 {
                     }
                 }
             }
-        })
+        }
     }
 }
 
@@ -186,7 +186,7 @@ mod story_listing_listener {
     pub fn App() -> Element {
         use_shared_state_provider(|| PreviewState::Unset);
 
-        cx.render(rsx! {
+        rsx! {
             div {
                 display: "flex",
                 flex_direction: "row",
@@ -200,11 +200,11 @@ mod story_listing_listener {
                     Preview {}
                 }
             }
-        })
+        }
     }
 
     fn Stories() -> Element {
-        render! {
+        rsx! {
             StoryListing {
                 story: StoryItem {
                     id: 0,
@@ -233,17 +233,17 @@ mod story_listing_listener {
         let preview_state = PreviewState::Unset;
 
         match preview_state {
-            PreviewState::Unset => render! {
+            PreviewState::Unset => rsx! {
                 "Hover over a story to preview it here"
             },
-            PreviewState::Loading => render! {
+            PreviewState::Loading => rsx! {
                 "Loading..."
             },
             PreviewState::Loaded(story) => {
                 let title = &story.item.title;
                 let url = story.item.url.as_deref().unwrap_or_default();
                 let text = story.item.text.as_deref().unwrap_or_default();
-                render! {
+                rsx! {
                     div {
                         padding: "0.5rem",
                         div {
@@ -295,7 +295,7 @@ mod story_listing_listener {
         let time = time.format("%D %l:%M %p");
 
         // ANCHOR: story_listing_listener
-        cx.render(rsx! {
+        rsx! {
             div {
                 padding: "0.5rem",
                 position: "relative",
@@ -339,7 +339,7 @@ mod story_listing_listener {
                     }
                 }
             }
-        })
+        }
         // ANCHOR_END: story_listing_listener
     }
 }
@@ -348,7 +348,7 @@ mod story_listing_listener {
 pub fn App() -> Element {
     use_shared_state_provider(|| PreviewState::Unset);
     // ANCHOR_END: shared_state_app
-    cx.render(rsx! {
+    rsx! {
         div {
             display: "flex",
             flex_direction: "row",
@@ -362,7 +362,7 @@ pub fn App() -> Element {
                 Preview {}
             }
         }
-    })
+    }
 }
 
 // ANCHOR: shared_state_stories
@@ -397,7 +397,7 @@ fn StoryListing(story: StoryItem) -> Element {
     );
     let time = time.format("%D %l:%M %p");
 
-    cx.render(rsx! {
+    rsx! {
         div {
             padding: "0.5rem",
             position: "relative",
@@ -452,7 +452,7 @@ fn StoryListing(story: StoryItem) -> Element {
                 }
             }
         }
-    })
+    }
 }
 
 // ANCHOR: shared_state_preview
@@ -463,17 +463,17 @@ fn Preview() -> Element {
     // New
     match &*preview_state.read() {
         // ANCHOR_END: shared_state_preview
-        PreviewState::Unset => render! {
+        PreviewState::Unset => rsx! {
             "Hover over a story to preview it here"
         },
-        PreviewState::Loading => render! {
+        PreviewState::Loading => rsx! {
             "Loading..."
         },
         PreviewState::Loaded(story) => {
             let title = &story.item.title;
             let url = story.item.url.as_deref().unwrap_or_default();
             let text = story.item.text.as_deref().unwrap_or_default();
-            render! {
+            rsx! {
                 div {
                     padding: "0.5rem",
                     div {
@@ -503,7 +503,7 @@ enum PreviewState {
 }
 
 fn Stories() -> Element {
-    render! {
+    rsx! {
         StoryListing {
             story: StoryItem {
                 id: 0,
@@ -523,7 +523,7 @@ fn Stories() -> Element {
 
 #[component]
 fn Comment(comment: Comment) -> Element<'a> {
-    render! {
+    rsx! {
         div {
             padding: "0.5rem",
             div {

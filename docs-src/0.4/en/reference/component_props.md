@@ -132,7 +132,7 @@ struct TitleCardProps {
 }
 
 fn TitleCard(<TitleCardProps>) -> Element {
-    cx.render(rsx!{
+    rsx!{
         h1 { "{cx.props.title}" }
     })
 }
@@ -143,7 +143,7 @@ fn TitleCard(<TitleCardProps>) -> Element {
 ```rust, no_run
 #[component]
 fn TitleCard(title: String) -> Element {
-    cx.render(rsx!{
+    rsx!{
         h1 { "{title}" }
     })
 }
@@ -159,7 +159,7 @@ In some cases, you may wish to create a component that acts as a container for s
 {{#include src/doc_examples/component_element_props.rs:Clickable}}
 ```
 
-Then, when rendering the component, you can pass in the output of `cx.render(rsx!(...))`:
+Then, when rendering the component, you can pass in the output of `rsx!(...))`:
 
 ```rust, no_run
 {{#include src/doc_examples/component_element_props.rs:Clickable_usage}}

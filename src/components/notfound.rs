@@ -4,7 +4,7 @@ use crate::*;
 #[allow(unused)]
 #[component]
 pub fn Err404(segments: Vec<String>) -> Element {
-    cx.render(rsx!(
+    rsx!(
         section { class: "py-20",
             div { class: "container px-4 mx-auto",
                 div { class: "mb-12 text-center",
@@ -37,5 +37,5 @@ pub fn Err404(segments: Vec<String>) -> Element {
                 }
             }
         }
-    ))
+    )
 }

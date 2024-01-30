@@ -19,7 +19,7 @@ fn MemeEditor() -> Element {
 
     let caption = use_state(|| "me waiting for my rust code to compile".to_string());
 
-    cx.render(rsx! {
+    rsx! {
         div {
             style: "{container_style}",
             h1 { "Meme Editor" },
@@ -31,7 +31,7 @@ fn MemeEditor() -> Element {
                 on_input: move |event: FormEvent| {caption.set(event.value.clone());},
             },
         }
-    })
+    }
 }
 // ANCHOR_END: meme_editor
 
@@ -58,7 +58,7 @@ fn Meme<'a>( caption: &'a str) -> Element<'a> {
         text-align: center;
     ";
 
-    cx.render(rsx!(
+    rsx!(
         div {
             style: "{container_style}",
             img {
@@ -73,17 +73,16 @@ fn Meme<'a>( caption: &'a str) -> Element<'a> {
                 }
             }
         }
-    ))
+    )
 }
 // ANCHOR_END: meme_component
 
 // ANCHOR: caption_editor
 #[component]
-fn CaptionEditor<'a>(
-    <'a>,
-    caption: &'a str,
-    on_input: EventHandler<'a, FormEvent>,
-) -> Element<'a> {
+fn CaptionEditor(
+    caption: String,
+    on_input: EventHandler<FormEvent>,
+) -> Element {
     let input_style = r"
         border: none;
         background: cornflowerblue;
@@ -93,11 +92,11 @@ fn CaptionEditor<'a>(
         color: white;
     ";
 
-    cx.render(rsx!(input {
+    rsx!(input {
         style: "{input_style}",
         value: "{caption}",
         oninput: move |event| on_input.call(event),
-    }))
+    })
 }
 // ANCHOR_END: caption_editor
 

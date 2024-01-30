@@ -5,13 +5,13 @@ use dioxus::prelude::*;
 pub fn App() -> Element {
     let name = use_state(|| "bob".to_string());
 
-    cx.render(rsx! {
+    rsx! {
         input {
             // we tell the component what to render
             value: "{name}",
             // and what to do when the value changes
             oninput: move |evt| name.set(evt.value.clone()),
         }
-    })
+    }
 }
 // ANCHOR_END: component

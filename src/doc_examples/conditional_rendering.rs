@@ -5,36 +5,31 @@ use dioxus::prelude::*;
 pub fn App() -> Element {
     let is_logged_in = use_state(|| false);
 
-    cx.render(rsx!(LogIn {
+    rsx!(LogIn {
         is_logged_in: **is_logged_in,
         on_log_in: move |_| is_logged_in.set(true),
         on_log_out: move |_| is_logged_in.set(false),
-    }))
+    })
 }
 
 #[component]
-fn LogIn<'a>(
-    <'a>,
-    is_logged_in: bool,
-    on_log_in: EventHandler<'a>,
-    on_log_out: EventHandler<'a>,
-) -> Element<'a> {
+fn LogIn(is_logged_in: bool, on_log_in: EventHandler, on_log_out: EventHandler) -> Element {
     // ANCHOR: if_else
     if *is_logged_in {
-        cx.render(rsx! {
+        rsx! {
             "Welcome!"
             button {
                 onclick: move |_| on_log_out.call(()),
                 "Log Out",
             }
-        })
+        }
     } else {
-        cx.render(rsx! {
+        rsx! {
             button {
                 onclick: move |_| on_log_in.call(()),
                 "Log In",
             }
-        })
+        }
     }
     // ANCHOR_END: if_else
 }
@@ -42,22 +37,17 @@ fn LogIn<'a>(
 pub fn LogInImprovedApp() -> Element {
     let is_logged_in = use_state(|| false);
 
-    cx.render(rsx!(LogInImproved {
+    rsx!(LogInImproved {
         is_logged_in: **is_logged_in,
         on_log_in: move |_| is_logged_in.set(true),
         on_log_out: move |_| is_logged_in.set(false),
-    }))
+    })
 }
 
 #[component]
-fn LogInImproved<'a>(
-    <'a>,
-    is_logged_in: bool,
-    on_log_in: EventHandler<'a>,
-    on_log_out: EventHandler<'a>,
-) -> Element<'a> {
+fn LogInImproved(is_logged_in: bool, on_log_in: EventHandler, on_log_out: EventHandler) -> Element {
     // ANCHOR: if_else_improved
-    cx.render(rsx! {
+    rsx! {
         // We only render the welcome message if we are logged in
         // You can use if statements in the middle of a render block to conditionally render elements
         if *is_logged_in {
@@ -80,14 +70,14 @@ fn LogInImproved<'a>(
                 "Log In"
             }
         }
-    })
+    }
     // ANCHOR_END: if_else_improved
 }
 
 pub fn LogInWarningApp() -> Element {
     let is_logged_in = use_state(|| false);
 
-    render! {
+    rsx! {
         input {
             r#type: "checkbox",
             checked: **is_logged_in,
@@ -107,10 +97,10 @@ fn LogInWarning(is_logged_in: bool) -> Element {
         return None;
     }
 
-    cx.render(rsx! {
+    rsx! {
         a {
             "You must be logged in to comment"
         }
-    })
+    }
     // ANCHOR_END: conditional_none
 }

@@ -48,7 +48,7 @@ enum Route {
 
 #[component]
 fn Blog() -> Element {
-    render! {
+    rsx! {
         Link { to: Route::Home {}, "Go to counter" }
         table {
             tbody {
@@ -69,7 +69,7 @@ fn Home() -> Element {
     let mut count = use_state(|| 0);
     let text = use_state(|| "...".to_string());
 
-    cx.render(rsx! {
+    rsx! {
         Link {
             to: Route::Blog {},
             "Go to blog"
@@ -79,5 +79,5 @@ fn Home() -> Element {
             button { onclick: move |_| count += 1, "Up high!" }
             button { onclick: move |_| count -= 1, "Down low!" }
         }
-    })
+    }
 }

@@ -21,7 +21,7 @@
 <pre><code class="lang-rust">fn app(cx: <span class="hljs-keyword">Scope</span>) -&gt; Element {
     <span class="hljs-keyword">let</span> value: &amp;mut u32 = cx.use_hook(|<span class="hljs-type">| 0</span>);
 
-    cx.render(rsx!(
+    rsx!(
         button { onclick: <span class="hljs-built_in">move</span> |<span class="hljs-type">_</span>| <span class="hljs-type">value</span> += <span class="hljs-number">1</span>, <span class="hljs-string">"Increment"</span> }
     ))
 }

@@ -26,7 +26,7 @@ pub fn Nav() -> Element {
     let sidebar_class = if *show_docs_nav { "" } else { "hidden" };
     let show_sidebar = use_atom_state(&SHOW_SIDEBAR);
 
-    render! {
+    rsx! {
         SearchModal {}
         header { class: "sticky top-0 z-30 bg-white shadow dark:text-gray-200 dark:bg-ideblack dark:border-b border-stone-600 {bg_color}",
             div { class: "py-3 px-12 max-w-screen-2xl mx-auto flex items-center justify-between text-sm leading-6",
@@ -95,7 +95,7 @@ pub fn Nav() -> Element {
 }
 
 fn FullNav() -> Element {
-    cx.render(rsx! {
+    rsx! {
         div { class: "hidden md:flex items-center",
             nav {
                 ul { class: "flex items-center space-x-2", LinkList {} }
@@ -116,13 +116,13 @@ fn FullNav() -> Element {
                 }
             }
         }
-    })
+    }
 }
 
 fn MobileNav() -> Element {
     let show = use_atom_state(&SHOW_NAV);
 
-    cx.render(rsx! {
+    rsx! {
         div { class: "flex items-center",
             button {
                 class: "text-gray-500 hover:text-gray-600 w-8 h-8 -my-1 flex items-center justify-center md:hidden dark:hover:text-gray-300",
@@ -159,7 +159,7 @@ fn MobileNav() -> Element {
                 }
             }
         }
-    })
+    }
 }
 
 type LinkPairs<'a> = &'a [(&'a str, &'a str)];
@@ -206,13 +206,13 @@ fn LinkList() -> Element {
         }
     });
 
-    cx.render(rsx! {links})
+    rsx! {{links}}
 }
 
 fn Search() -> Element {
     let show_modal = use_atom_state(&SHOW_SEARCH);
 
-    render! {
+    rsx! {
         div { class: "relative md:w-full max-w-[30rem] xl:max-w-[30rem] 2xl:max-w-[30rem] sm:mx-auto sm:flex-1",
             // Pop up a modal
             button {
@@ -262,7 +262,7 @@ fn SearchModal() -> Element {
     // This will bring up individual sections that reference the search term with the breadcrumb
     // entries are sorted by breadcrumb
 
-    render! {
+    rsx! {
         if show_modal.get().0 {
             rsx! {
                 div {
@@ -372,7 +372,7 @@ fn SearchResult(result: dioxus_search::SearchResult<Route>) -> Element {
     let route = &result.route;
     let top_excerpt_segments = &result.excerpts.first().unwrap().text;
 
-    render! {
+    rsx! {
         li { class: "w-full mt-4 p-2 rounded hover:bg-gray-100 dark:hover:bg-ideblack transition-colors duration-200 ease-in-out",
             Link {
                 to: route.clone(),

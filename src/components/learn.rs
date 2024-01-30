@@ -32,7 +32,7 @@ pub fn Learn() -> Element {
         move || show_sidebar_button.set(false)
     });
 
-    cx.render(rsx! {
+    rsx! {
         div { class: "w-full pt-12 text-sm dark:bg-ideblack", min_height: "100vh",
             // do a typical three-column flex layout with a single centered then pin the nav items on top
             div { class: "max-w-screen-2xl flex flex-row justify-between mx-auto dark:text-white",
@@ -41,7 +41,7 @@ pub fn Learn() -> Element {
                 RightNav {}
             }
         }
-    })
+    }
 }
 
 fn LeftNav() -> Element {
@@ -59,7 +59,7 @@ fn LeftNav() -> Element {
         &LAZY_BOOK.summary.suffix_chapters,
     ];
 
-    render! {
+    rsx! {
         // Now, pin the nav to the left
         nav { class: "bg-white dark:bg-ideblack lg:bg-inherit pl-6 z-20 text-base lg:block fixed top-0 pt-36 pb-16 lg:-ml-3.5 w-[calc(100%-1rem)] md:w-60 h-screen max-h-screen lg:text-[13px] text-navy content-start overflow-y-auto leading-5 {extra_class} {hidden}",
             // I like the idea of breadcrumbs, but they add a lot of visual noise, and like, who cares?
@@ -76,7 +76,7 @@ fn LeftNav() -> Element {
 fn DocVersionNav() -> Element {
     let navigator = use_navigator();
 
-    render! {
+    rsx! {
         div { class: "pb-4",
             ul { class: "pl-2",
                 li { class: "m-1 rounded-md pl-2 hover:bg-gray-200 hover:dark:bg-gray-800",
@@ -107,9 +107,9 @@ fn SidebarSection(chapter: &'static SummaryItem<BookRoute>) -> Element {
     let sections = link
         .nested_items
         .iter()
-        .map(|chapter| render! { SidebarChapter { chapter: chapter } });
+        .map(|chapter| rsx! { SidebarChapter { chapter: chapter } });
 
-    render! {
+    rsx! {
         div { class: "pb-4",
             if let Some(url) = &link.location {
                 rsx! {
@@ -136,7 +136,7 @@ fn SidebarChapter(chapter: &'static SummaryItem<BookRoute>) -> Element {
     let show_chevron = !link.nested_items.is_empty();
 
     if show_chevron {
-        render! {
+        rsx! {
             li { class: "m-1 rounded-md ml-[-1px] hover:bg-gray-200 hover:dark:bg-gray-800",
                 button { onclick: move |_| list_toggle.set(!list_toggle.get()),
                     dioxus_material_icons::MaterialIcon { name: "chevron_right", color: "gray" }
@@ -154,7 +154,7 @@ fn SidebarChapter(chapter: &'static SummaryItem<BookRoute>) -> Element {
             }
         }
     } else {
-        render! { LocationLink { chapter: chapter } }
+        rsx! { LocationLink { chapter: chapter } }
     }
 }
 
@@ -170,7 +170,7 @@ fn LocationLink(chapter: &'static SummaryItem<BookRoute>) -> Element {
         false => "",
     };
 
-    render! {
+    rsx! {
         Link { to: Route::Docs { child: *url },
             li { class: "m-1 rounded-md pl-2 hover:bg-gray-200 hover:dark:bg-gray-800 {current_class}",
                 "{link.name}"
@@ -205,7 +205,7 @@ fn RightNav() -> Element {
     });
     // That might be a naive approach, but it's the easiest
 
-    render! {
+    rsx! {
         div {
             class: "overflow-y-auto hidden xl:block fixed top-0 pt-36 pb-16 pl-3.5 -ml-3.5 w-60 h-full md:text-[13px] leading-5 text-navy docs-right-sidebar {extra_class}",
             left: "calc(100vw - 15rem)",
@@ -237,7 +237,7 @@ fn Content() -> Element {
         ""
     };
 
-    render! {
+    rsx! {
         section { class: "text-gray-600 body-font overflow-hidden dark:bg-ideblack lg:ml-[13rem] container pt-6 pb-12 max-w-screen-lg",
             div { class: "-py-8 {extra_class}",
                 div { class: "flex w-full mb-20 flex-wrap list-none",
@@ -259,7 +259,7 @@ fn BreadCrumbs() -> Element {
     // parse out the route after the version and language
     let route: Route = use_route()?;
 
-    render! {
+    rsx! {
         h2 { class: "font-semibold pb-4",
             for segment in route.to_string().split('/').skip(3).filter(|f| !f.is_empty()) {
                 rsx! {

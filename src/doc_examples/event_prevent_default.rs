@@ -3,13 +3,13 @@ use dioxus::prelude::*;
 
 pub fn App() -> Element {
     // ANCHOR: prevent_default
-    cx.render(rsx! {
+    rsx! {
         a {
             href: "https://example.com",
             prevent_default: "onclick",
             onclick: |_| log::info!("link clicked"),
             "example.com",
         }
-    })
+    }
     // ANCHOR_END: prevent_default
 }

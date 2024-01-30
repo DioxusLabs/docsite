@@ -49,13 +49,13 @@ fn test_hook<V: 'static>(
     }
 
     fn mock_app<I: FnMut(&ScopeState) -> V, C: FnMut(V, MockProxy), V>(
-        <MockAppComponent<I, C, V>>,
+        props: MockAppComponent<I, C, V>
     ) -> Element {
-        let value = cx.props.hook.borrow_mut()(cx);
+        let value = props.hook.borrow_mut()(cx);
 
-        cx.props.check.borrow_mut()(value, MockProxy::new(cx));
+        props.check.borrow_mut()(value, MockProxy::new(cx));
 
-        render! {
+        rsx! {
             div {}
         }
     }

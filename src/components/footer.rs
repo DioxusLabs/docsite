@@ -65,7 +65,7 @@ pub fn Footer() -> Element {
         }
     });
 
-    cx.render(rsx! {
+    rsx! {
         footer { class: "sticky z-30 text-gray-400 bg-ghmetal body-font {bg_color}",
             div { class: "container px-5 py-24 mx-auto flex md:items-center lg:items-start md:flex-row md:flex-nowrap flex-wrap flex-col",
                 div { class: "w-64 flex-shrink-0 md:mx-0 mx-auto text-center md:text-left",
@@ -99,5 +99,5 @@ pub fn Footer() -> Element {
                 }
             }
         }
-    })
+    }
 }

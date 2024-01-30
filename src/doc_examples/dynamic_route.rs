@@ -34,14 +34,14 @@ enum Route {
 // ANCHOR_END: router
 
 fn App() -> Element {
-    render! {
+    rsx! {
         Router::<Route> {}
     }
 }
 
 #[component]
 fn NavBar() -> Element {
-    render! {
+    rsx! {
         nav {
             ul {
                 li { Link { to: Route::Home {}, "Home" } }
@@ -54,7 +54,7 @@ fn NavBar() -> Element {
 
 #[component]
 fn Home() -> Element {
-    render! {
+    rsx! {
         h1 { "Welcome to the Dioxus Blog!" }
     }
 }
@@ -62,7 +62,7 @@ fn Home() -> Element {
 // ANCHOR: blog
 #[component]
 fn Blog() -> Element {
-    render! {
+    rsx! {
         h1 { "Blog" }
         Outlet::<Route> {}
     }
@@ -72,7 +72,7 @@ fn Blog() -> Element {
 // ANCHOR: blog_list
 #[component]
 fn BlogList() -> Element {
-    render! {
+    rsx! {
         h2 { "Choose a post" }
         ul {
             li {
@@ -96,7 +96,7 @@ fn BlogList() -> Element {
 // The name prop comes from the /:name route segment
 #[component]
 fn BlogPost(name: String) -> Element {
-    render! {
+    rsx! {
         h2 { "Blog Post: {name}"}
     }
 }
@@ -104,7 +104,7 @@ fn BlogPost(name: String) -> Element {
 
 #[component]
 fn PageNotFound(route: Vec<String>) -> Element {
-    render! {
+    rsx! {
         h1 { "Page not found" }
         p { "We are terribly sorry, but the page you requested doesn't exist." }
         pre {

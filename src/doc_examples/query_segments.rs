@@ -52,14 +52,14 @@ impl FromQuery for BlogQuerySegments {
 
 #[component]
 fn BlogPost(query_params: BlogQuerySegments) -> Element {
-    render! {
+    rsx! {
         div{"This is your blogpost with a query segment:"}
         div{format!("{:?}", query_params)}
     }
 }
 
 fn App() -> Element {
-    render! { Router::<Route>{} }
+    rsx! { Router::<Route>{} }
 }
 
 fn main() {}

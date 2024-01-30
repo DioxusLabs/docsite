@@ -3,11 +3,11 @@ use dioxus::prelude::*;
 
 // ANCHOR: App
 pub fn App() -> Element {
-    cx.render(rsx! {
+    rsx! {
         Likes {
             score: 42,
         },
-    })
+    }
 }
 // ANCHOR_END: App
 
@@ -18,13 +18,13 @@ struct LikesProps {
     score: i32,
 }
 
-fn Likes(<LikesProps>) -> Element {
-    cx.render(rsx! {
+fn Likes(props: LikesProps) -> Element {
+    rsx! {
         div {
             "This post has ",
             b { "{cx.props.score}" },
             " likes"
         }
-    })
+    }
 }
 // ANCHOR_END: Likes

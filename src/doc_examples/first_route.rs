@@ -17,7 +17,7 @@ enum Route {
 
 // ANCHOR: app
 fn App() -> Element {
-    render! {
+    rsx! {
         Router::<Route> {}
     }
 }
@@ -26,7 +26,7 @@ fn App() -> Element {
 // ANCHOR: home
 #[component]
 fn Home() -> Element {
-    render! {
+    rsx! {
         h1 { "Welcome to the Dioxus Blog!" }
     }
 }

@@ -120,7 +120,7 @@ pub mod fetch {
     pub fn App() -> Element {
         use_shared_state_provider(|| PreviewState::Unset);
 
-        cx.render(rsx! {
+        rsx! {
             div {
                 display: "flex",
                 flex_direction: "row",
@@ -134,7 +134,7 @@ pub mod fetch {
                     Preview {}
                 }
             }
-        })
+        }
     }
 
     #[component]
@@ -168,7 +168,7 @@ pub mod fetch {
         );
         let time = time.format("%D %l:%M %p");
 
-        cx.render(rsx! {
+        rsx! {
             div {
                 padding: "0.5rem",
                 position: "relative",
@@ -218,24 +218,24 @@ pub mod fetch {
                     }
                 }
             }
-        })
+        }
     }
 
     fn Preview() -> Element {
         let preview_state = use_shared_state::<PreviewState>(cx)?;
 
         match &*preview_state.read() {
-            PreviewState::Unset => render! {
+            PreviewState::Unset => rsx! {
                 "Hover over a story to preview it here"
             },
-            PreviewState::Loading => render! {
+            PreviewState::Loading => rsx! {
                 "Loading..."
             },
             PreviewState::Loaded(story) => {
                 let title = &story.item.title;
                 let url = story.item.url.as_deref().unwrap_or_default();
                 let text = story.item.text.as_deref().unwrap_or_default();
-                render! {
+                rsx! {
                     div {
                         padding: "0.5rem",
                         div {
@@ -259,7 +259,7 @@ pub mod fetch {
 
     #[component]
     fn Comment(comment: super::Comment) -> Element<'a> {
-        render! {
+        rsx! {
             div {
                 padding: "0.5rem",
                 div {
@@ -279,13 +279,13 @@ pub mod fetch {
     // ANCHOR: use_future
     fn Stories() -> Element {
         // Fetch the top 10 stories on Hackernews
-        let stories = use_future((), |_| get_stories(10));
+        let stories = use_future(|| get_stories(10));
 
         // check if the future is resolved
         match stories.value() {
             Some(Ok(list)) => {
                 // if it is, render the stories
-                render! {
+                rsx! {
                     div {
                         // iterate over the stories with a for loop
                         for story in list {
@@ -297,11 +297,11 @@ pub mod fetch {
             }
             Some(Err(err)) => {
                 // if there was an error, render the error
-                render! {"An error occurred while fetching stories {err}"}
+                rsx! {"An error occurred while fetching stories {err}"}
             }
             None => {
                 // if the future is not resolved yet, render a loading message
-                render! {"Loading items"}
+                rsx! {"Loading items"}
             }
         }
     }
@@ -313,7 +313,7 @@ use dioxus::prelude::*;
 pub fn App() -> Element {
     use_shared_state_provider(|| PreviewState::Unset);
 
-    cx.render(rsx! {
+    rsx! {
         div {
             display: "flex",
             flex_direction: "row",
@@ -327,7 +327,7 @@ pub fn App() -> Element {
                 Preview {}
             }
         }
-    })
+    }
 }
 
 // ANCHOR: resolve_story
@@ -382,7 +382,7 @@ fn StoryListing(story: StoryItem) -> Element {
     );
     let time = time.format("%D %l:%M %p");
 
-    cx.render(rsx! {
+    rsx! {
         div {
             padding: "0.5rem",
             position: "relative",
@@ -432,7 +432,7 @@ fn StoryListing(story: StoryItem) -> Element {
                 }
             }
         }
-    })
+    }
 }
 
 #[derive(Clone, Debug)]
@@ -446,17 +446,17 @@ fn Preview() -> Element {
     let preview_state = use_shared_state::<PreviewState>(cx)?;
 
     match &*preview_state.read() {
-        PreviewState::Unset => render! {
+        PreviewState::Unset => rsx! {
             "Hover over a story to preview it here"
         },
-        PreviewState::Loading => render! {
+        PreviewState::Loading => rsx! {
             "Loading..."
         },
         PreviewState::Loaded(story) => {
             let title = &story.item.title;
             let url = story.item.url.as_deref().unwrap_or_default();
             let text = story.item.text.as_deref().unwrap_or_default();
-            render! {
+            rsx! {
                 div {
                     padding: "0.5rem",
                     div {
@@ -480,7 +480,7 @@ fn Preview() -> Element {
 
 #[component]
 fn Comment(comment: Comment) -> Element<'a> {
-    render! {
+    rsx! {
         div {
             padding: "0.5rem",
             div {
@@ -498,17 +498,17 @@ fn Comment(comment: Comment) -> Element<'a> {
 }
 
 fn Stories() -> Element {
-    let story = use_future((), |_| get_stories(10));
+    let story = use_future(|| get_stories(10));
 
     match story.value() {
-        Some(Ok(list)) => render! {
+        Some(Ok(list)) => rsx! {
             div {
                 for story in list {
                     StoryListing { story: story.clone() }
                 }
             }
         },
-        Some(Err(err)) => render! {"An error occurred while fetching stories {err}"},
-        None => render! {"Loading items"},
+        Some(Err(err)) => rsx! {"An error occurred while fetching stories {err}"},
+        None => rsx! {"Loading items"},
     }
 }

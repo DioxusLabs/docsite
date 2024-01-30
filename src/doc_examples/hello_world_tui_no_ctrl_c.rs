@@ -19,7 +19,7 @@ fn main() {
 fn App() -> Element {
     let tui_ctx: TuiContext = cx.consume_context().unwrap();
 
-    cx.render(rsx! {
+    rsx! {
         div {
             width: "100%",
             height: "10px",

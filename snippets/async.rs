@@ -13,5 +13,5 @@ fn Tasks() -> Element {
         }
     });
 
-    render!( pre { "Count: {count}" } )
+    rsx!( pre { "Count: {count}" } )
 }

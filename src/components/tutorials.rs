@@ -34,7 +34,7 @@ static TUTORIALS: &[Tutorial] = &[
 ];
 
 pub fn Tutorials() -> Element {
-    cx.render(rsx! {
+    rsx! {
         div { class: "dark:bg-ideblack dark:text-white",
             div { class: "max-w-screen-lg mx-auto",
                 section { class: "py-10",
@@ -62,14 +62,14 @@ pub fn Tutorials() -> Element {
                 }
             }
         }
-    })
+    }
 }
 
 #[component]
 fn TutorialPreview(id: usize) -> Element {
     let tutorial = &TUTORIALS[*id];
 
-    cx.render(rsx! {
+    rsx! {
         li { class: "pb-4 border-b border-gray-200 dark:border-gray-500",
             Link { to: Route::Tutorial { id: *id },
                 div { class: "rounded p-4 shadow",
@@ -85,14 +85,14 @@ fn TutorialPreview(id: usize) -> Element {
                 }
             }
         }
-    })
+    }
 }
 
 #[component]
 pub fn Tutorial(id: usize) -> Element {
     let tutorial = TUTORIALS.get(*id)?;
 
-    render!(
+    rsx!(
         div {
             h1 { tutorial.title }
             h3 { tutorial.author }

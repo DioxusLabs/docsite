@@ -3,11 +3,11 @@ use dioxus::prelude::*;
 
 pub fn App() -> Element {
     // ANCHOR: rsx
-    cx.render(rsx! {
+    rsx! {
         button {
             onclick: move |event| log::info!("Clicked! Event: {event:?}"),
             "click me!"
         }
-    })
+    }
     // ANCHOR_END: rsx
 }

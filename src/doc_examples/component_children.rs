@@ -4,29 +4,29 @@ use dioxus::prelude::*;
 
 pub fn App() -> Element {
     // ANCHOR: Clickable_usage
-    cx.render(rsx! {
+    rsx! {
         Clickable {
             href: "https://www.youtube.com/watch?v=C-M2hs3sXGo",
             "How to " i {"not"} " be seen"
         }
-    })
+    }
     // ANCHOR_END: Clickable_usage
 }
 
 // ANCHOR: Clickable
 #[derive(Props)]
-struct ClickableProps<'a> {
-    href: &'a str,
-    children: Element<'a>,
+struct ClickableProps {
+    href: String,
+    children: Element,
 }
 
-fn Clickable<'a>( ClickableProps<'a>>) -> Element {
-    cx.render(rsx!(
+fn Clickable(props: ClickableProps) -> Element {
+    rsx!(
         a {
-            href: "{cx.props.href}",
+            href: "{props.href}",
             class: "fancy-button",
             &cx.props.children
         }
-    ))
+    )
 }
 // ANCHOR_END: Clickable

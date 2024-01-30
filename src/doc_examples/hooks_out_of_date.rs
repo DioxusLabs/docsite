@@ -13,10 +13,10 @@ pub fn App() -> Element {
         first_count_read.set(**count);
     }
 
-    cx.render(rsx!(
+    rsx!(
         // This uses the deref value
         h1 { "High-Five counter: {first_count_read}" }
-    ))
+    )
 }
 // ANCHOR_END: component
 
@@ -33,10 +33,10 @@ pub mod fixed {
             first_count_read.set(*count.current());
         }
 
-        cx.render(rsx!(
+        rsx!(
             // Use .current to get the real current value
             h1 { "High-Five counter: {first_count_read}" }
-        ))
+        )
     }
     // ANCHOR_END: fixed
 }

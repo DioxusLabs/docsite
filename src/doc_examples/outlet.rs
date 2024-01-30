@@ -13,7 +13,7 @@ enum Route {
 
 #[component]
 fn Wrapper() -> Element {
-    render! {
+    rsx! {
         header { "header" }
         // The index route will be rendered here
         Outlet::<Route> { }
@@ -23,14 +23,14 @@ fn Wrapper() -> Element {
 
 #[component]
 fn Index() -> Element {
-    render! {
+    rsx! {
         h1 { "Index" }
     }
 }
 // ANCHOR_END: outlet
 
 fn App() -> Element {
-    render! {
+    rsx! {
         Router::<Route> {}
     }
 }
@@ -63,7 +63,7 @@ mod with_props {
 
     #[component]
     fn Wrapper(name: String) -> Element {
-        render! {
+        rsx! {
             header { "Welcome {name}!" }
             // The index route will be rendered here
             Outlet::<Route> { }
@@ -73,14 +73,14 @@ mod with_props {
 
     #[component]
     fn Index(name: String) -> Element {
-        render! {
+        rsx! {
             h1 { "This is a homepage for {name}" }
         }
     }
     // ANCHOR_END: outlet_with_params
 
     fn App() -> Element {
-        render! {
+        rsx! {
             Router::<Route> {}
         }
     }
@@ -115,7 +115,7 @@ mod use_route {
     #[component]
     fn Wrapper() -> Element {
         let full_route = use_route::<Route>(cx).unwrap();
-        render! {
+        rsx! {
             header { "Welcome to {full_route}!" }
             // The index route will be rendered here
             Outlet::<Route> { }
@@ -125,14 +125,14 @@ mod use_route {
 
     #[component]
     fn Index(name: String) -> Element {
-        render! {
+        rsx! {
             h1 { "This is a homepage for {name}" }
         }
     }
     // ANCHOR_END: outlet_route
 
     fn App() -> Element {
-        render! {
+        rsx! {
             Router::<Route> {}
         }
     }

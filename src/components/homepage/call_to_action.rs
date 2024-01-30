@@ -3,7 +3,7 @@ use dioxus::prelude::*;
 use crate::*;
 
 pub static CallToAction: Component<()> = |cx| {
-    cx.render(rsx! {
+    rsx! {
         section { class: "text-gray-400 bg-ideblack body-font",
             div { class: "container px-5 py-12 mx-auto",
                 div { class: "lg:w-2/3 flex flex-col sm:flex-row items-start mx-auto",
@@ -20,5 +20,5 @@ pub static CallToAction: Component<()> = |cx| {
                 }
             }
         }
-    })
+    }
 };

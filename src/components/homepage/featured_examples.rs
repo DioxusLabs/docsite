@@ -1,7 +1,7 @@
 use dioxus::prelude::*;
 
 pub fn FeaturedExamples() -> Element {
-    cx.render(rsx! {
+    rsx! {
         section { class: "body-font w-full dark:bg-ideblack",
             div { class: "container px-6 max-w-screen-lg py-24 mx-auto",
                 div { class: "flex flex-col w-full mb-10",
@@ -67,21 +67,21 @@ pub fn FeaturedExamples() -> Element {
                 }
             }
         }
-    })
+    }
 }
 
 #[derive(PartialEq, Props)]
-struct FeaturedExampleProps<'a> {
-    title: &'a str,
-    subtitle: &'a str,
-    description: &'a str,
-    link: &'a str,
-    img_avif: &'a str,
-    img: &'a str,
-    img_alt: &'a str,
+struct FeaturedExampleProps {
+    title: String,
+    subtitle: String,
+    description: String,
+    link: String,
+    img_avif: String,
+    img: String,
+    img_alt: String,
 }
 
-fn FeaturedExample<'a>( FeaturedExampleProps<'a>>) -> Element {
+fn FeaturedExample(props: FeaturedExampleProps) -> Element {
     let FeaturedExampleProps {
         subtitle,
         title,
@@ -92,7 +92,7 @@ fn FeaturedExample<'a>( FeaturedExampleProps<'a>>) -> Element {
         img_alt,
     } = cx.props;
 
-    cx.render(rsx!{
+    rsx!{
         div { class: "lg:w-1/3 sm:w-1/2 p-4",
             a { href: "{link}",
                 div { class: "flex relative",
@@ -120,5 +120,5 @@ fn FeaturedExample<'a>( FeaturedExampleProps<'a>>) -> Element {
                 }
             }
         }
-    })
+    }
 }

@@ -17,7 +17,7 @@ Because of this, with the liveview renderer you need to be very deliberate about
 To get around this issue you can inject bits of javascript in your liveview application. If you use a raw attribute as a listener, you can inject some javascript that will be run when the event is triggered:
 
 ```rust
-render! {
+rsx! {
     div {
         input {
             "oninput": "console.log('input changed!')"

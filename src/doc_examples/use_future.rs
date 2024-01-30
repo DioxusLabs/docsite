@@ -10,7 +10,7 @@ struct ApiResponse {
 
 pub fn App() -> Element {
     // ANCHOR: use_future
-    let future = use_future((), |_| async move {
+    let future = use_resource(|| async move {
         reqwest::get("https://dog.ceo/api/breeds/image/random")
             .await
             .unwrap()
@@ -20,7 +20,7 @@ pub fn App() -> Element {
     // ANCHOR_END: use_future
 
     // ANCHOR: render
-    cx.render(match future.value() {
+    match future.value() {
         Some(Ok(response)) => rsx! {
             button {
                 onclick: move |_| future.restart(),
@@ -36,14 +36,14 @@ pub fn App() -> Element {
         },
         Some(Err(_)) => rsx! { div { "Loading dogs failed" } },
         None => rsx! { div { "Loading dogs..." } },
-    })
+    }
     // ANCHOR_END: render
 }
 
 #[component]
-fn RandomDog(breed: String) -> Element {
+fn RandomDog(breed: ReadOnlySignal<String>) -> Element {
     // ANCHOR: dependancy
-    let future = use_future((breed,), |(breed,)| async move {
+    let future = use_future(move || async move {
         reqwest::get(format!("https://dog.ceo/api/breed/{breed}/images/random"))
             .await
             .unwrap()
@@ -52,5 +52,5 @@ fn RandomDog(breed: String) -> Element {
     });
     // ANCHOR_END: dependancy
 
-    cx.render(rsx!(()))
+    None
 }

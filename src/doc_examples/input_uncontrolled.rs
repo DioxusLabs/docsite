@@ -3,7 +3,7 @@ use dioxus::prelude::*;
 
 // ANCHOR: component
 pub fn App() -> Element {
-    cx.render(rsx! {
+    rsx! {
         form {
             onsubmit: move |event| {
                 log::info!("Submitted! {event:?}")
@@ -13,6 +13,6 @@ pub fn App() -> Element {
             input { name: "date", },
             input { r#type: "submit", },
         }
-    })
+    }
 }
 // ANCHOR_END: component

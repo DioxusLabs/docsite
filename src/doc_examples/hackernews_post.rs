@@ -9,7 +9,7 @@ pub mod story_v1 {
 
     // ANCHOR: story_v1
     pub fn App() -> Element {
-        render! {
+        rsx! {
             "story"
         }
     }
@@ -27,7 +27,7 @@ pub mod story_v2 {
         let time = chrono::Utc::now();
         let comments = "comments";
 
-        render! {
+        rsx! {
             "{title} by {by} ({score}) {time} {comments}"
         }
     }
@@ -45,7 +45,7 @@ pub mod story_v3 {
         let time = chrono::Utc::now();
         let comments = "comments";
 
-        render! {
+        rsx! {
             div {
                 "{title} by {by} ({score}) {time} {comments}"
             }
@@ -65,7 +65,7 @@ pub mod story_v4 {
         let time = chrono::Utc::now();
         let comments = "comments";
 
-        render! {
+        rsx! {
             div {
                 padding: "0.5rem",
                 position: "relative",
@@ -81,7 +81,7 @@ pub mod story_v5 {
 
     // ANCHOR: app_v5
     pub fn App() -> Element {
-        render! {
+        rsx! {
             StoryListing {
 
             }
@@ -97,7 +97,7 @@ pub mod story_v5 {
         let time = chrono::Utc::now();
         let comments = "comments";
 
-        render! {
+        rsx! {
             div {
                 padding: "0.5rem",
                 position: "relative",
@@ -113,7 +113,7 @@ pub mod story_v6 {
 
     // ANCHOR: app_v6
     pub fn App() -> Element {
-        render! {
+        rsx! {
             StoryListing {
                 story: StoryItem {
                     id: 0,
@@ -194,7 +194,7 @@ pub mod story_v6 {
 
         let comments = kids.len();
 
-        render! {
+        rsx! {
             div {
                 padding: "0.5rem",
                 position: "relative",
@@ -258,7 +258,7 @@ pub mod story_final {
     }
 
     pub fn App() -> Element {
-        render! {
+        rsx! {
             StoryListing {
                 story: StoryItem {
                     id: 0,
@@ -306,7 +306,7 @@ pub mod story_final {
         );
         let time = time.format("%D %l:%M %p");
 
-        cx.render(rsx! {
+        rsx! {
             div {
                 padding: "0.5rem",
                 position: "relative",
@@ -344,7 +344,7 @@ pub mod story_final {
                     }
                 }
             }
-        })
+        }
     }
     // ANCHOR_END: story_final
 }

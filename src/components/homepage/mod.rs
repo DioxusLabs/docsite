@@ -10,7 +10,7 @@ pub mod value_add;
 
 #[component]
 pub fn Homepage() -> Element {
-    cx.render(rsx! {
+    rsx! {
         div {
             section { class: "w-full dark:bg-ideblack",
                 hero::Hero {}
@@ -21,7 +21,7 @@ pub fn Homepage() -> Element {
             Stats {}
         }
         call_to_action::CallToAction {}
-    })
+    }
 }
 
 const CARDS: &[(&str, &str)] = &[
@@ -52,7 +52,7 @@ const CARDS: &[(&str, &str)] = &[
 ];
 
 fn ProjectCards() -> Element {
-    cx.render(rsx! {
+    rsx! {
         section { class: "py-12",
             div { class: "container mx-auto px-6 lg:px-64",
                 div { class: "flex flex-wrap -mx-3",
@@ -74,11 +74,11 @@ fn ProjectCards() -> Element {
                 }
             }
         }
-    })
+    }
 }
 
 fn AvailablePlatforms() -> Element {
-    cx.render(rsx! {
+    rsx! {
         section { class: "w-full dark:bg-ideblack",
             div { class: "container mx-auto max-w-screen-lg",
                 div { class: "relative overflow-x-hidden",
@@ -98,7 +98,7 @@ fn AvailablePlatforms() -> Element {
                 TriShow {
                     left: None,
                     center: None,
-                    right: render!(
+                    right: rsx!(
     "Build for the web using Rust and WebAssembly. As fast as SolidJS and more robust than React. Integrated hot reloading for instant iterations."
 ),
                     to: Route::Docs {
@@ -109,7 +109,7 @@ fn AvailablePlatforms() -> Element {
                 TriShow {
                     left: None,
                     center: None,
-                    right: render!(
+                    right: rsx!(
     "Lightweight (<2mb) desktop and mobile apps with zero configuration. Choose between WebView or WGPU-enabled renderers. Runs on macOS, Windows, Linux, iOS, and Android."
 ),
                     to: Route::Docs {
@@ -123,7 +123,7 @@ fn AvailablePlatforms() -> Element {
     child: BookRoute::GettingStartedTui {},
 },
                     title: "Terminal User Interfaces",
-                    right: render!(
+                    right: rsx!(
     "Quickly convert any CLI tool to a beautiful interactive user interface with just a few lines of code. Runs anywhere with a terminal."
 ),
                     left: None,
@@ -135,7 +135,7 @@ fn AvailablePlatforms() -> Element {
     },
 },
                     title: "Fullstack Apps",
-                    right: render!(
+                    right: rsx!(
     "Pre-render on the server, and hydrate on the client. Perfect lighthouse scores and performance over 1000x better than Node and Python. Perfect for static site generation or fullstack apps."
 ),
                     left: None,
@@ -147,7 +147,7 @@ fn AvailablePlatforms() -> Element {
     },
 },
                     title: "LiveView and LiveComponents",
-                    right: render!(
+                    right: rsx!(
     "Render your app entirely on the server. Zero backend configuration capable of handling thousands of active clients. Integrates with Axum, Warp, Salvo, and Tokamak.",
 ),
                     left: None,
@@ -156,20 +156,19 @@ fn AvailablePlatforms() -> Element {
                 }
             }
         }
-    })
+    }
 }
 
 #[component]
-fn TriShow<'a>(
-    <'a>,
-    left: Element<'a>,
-    center: Element<'a>,
-    right: Element<'a>,
+fn TriShow(
+    left: Element,
+    center: Element,
+    right: Element,
     title: &'static str,
     to: Route,
     last: Option<bool>,
 ) -> Element {
-    render! {
+    rsx! {
         div { class: "w-full flex flex-row justify-center max-w-screen-lg",
             // div { class: "grow basis-0", left }
             TriPadding { last: last.unwrap_or_default(), center }
@@ -189,7 +188,7 @@ fn TriShow<'a>(
 
 #[component]
 fn TriPadding<'a>( children: Element<'a>, last: bool) -> Element {
-    render!(
+    rsx!(
         div { class: "flex flex-col items-center",
             div { class: "w-0 h-10 border-dashed border border-[#444]" }
             IconSplit {}
@@ -203,7 +202,7 @@ fn TriPadding<'a>( children: Element<'a>, last: bool) -> Element {
 
 #[component]
 fn DeveloperExperience() -> Element {
-    render! (
+    rsx! (
         section { class: "pt-36 w-full dark:bg-ideblack dark:text-white",
             div { class: "container mx-auto max-w-screen-2xl",
                 div { class: "relative",
@@ -245,7 +244,7 @@ fn DeveloperExperience() -> Element {
 
 #[component]
 fn ExperienceText(title: &'static str, content: &'static str) -> Element {
-    render!(
+    rsx!(
         div { class: "pb-12",
             h3 { class: "text-2xl text-gray-800 font-semibold pb-2 dark:text-gray-100 ",
                 *title
@@ -256,7 +255,7 @@ fn ExperienceText(title: &'static str, content: &'static str) -> Element {
 }
 
 fn IconSplit() -> Element {
-    cx.render(rsx! {
+    rsx! {
         svg {
             class: "mx-auto fill-[#444] dark:fill-white",
             version: "1.1",
@@ -271,11 +270,11 @@ fn IconSplit() -> Element {
                 d: "M15.5 11.75a3.5 3.5 0 11-7 0 3.5 3.5 0 017 0zm1.444-.75a5.001 5.001 0 00-9.888 0H2.75a.75.75 0 100 1.5h4.306a5.001 5.001 0 009.888 0h4.306a.75.75 0 100-1.5h-4.306z"
             }
         }
-    })
+    }
 }
 
 fn Stats() -> Element {
-    cx.render(rsx! {
+    rsx! {
         section { class: "pb-24 w-full dark:bg-ideblack",
             div { class: "container mx-auto max-w-screen-lg",
                 div { class: "relative ",
@@ -307,12 +306,12 @@ fn Stats() -> Element {
                 }
             }
         }
-    })
+    }
 }
 
 #[component]
 fn StatsItem(major: &'static str, minor: &'static str) -> Element {
-    render! {
+    rsx! {
         div { class: "text-center py-6 border border-[#444]",
             div { class: "text-5xl font-bold text-gray-800 dark:text-gray-100", *major }
             div { class: "text-xl text-gray-600 dark:text-gray-400", *minor }
@@ -321,17 +320,16 @@ fn StatsItem(major: &'static str, minor: &'static str) -> Element {
 }
 
 #[component]
-fn Platform<'a>(
-    <'a>,
+fn Platform(
     name: &'static str,
     content: &'static str,
-    children: Element<'a>,
+    children: Element,
     to: Route,
     last: Option<bool>,
 ) -> Element {
     let last = last.unwrap_or_default();
 
-    cx.render(rsx! {
+    rsx! {
         li { class: "text-lg text-gray-600 dark:text-gray-600 flex flex-row",
             div { class: "w-8",
                 div { class: "flex flex-col h-full mx-auto",
@@ -360,11 +358,11 @@ fn Platform<'a>(
                 children
             }
         }
-    })
+    }
 }
 
 fn JumpStart() -> Element {
-    render! {
+    rsx! {
         section { class: "pt-36 w-full dark:bg-ideblack",
             div { class: "container mx-auto max-w-screen-lg",
                 div { class: "relative ",

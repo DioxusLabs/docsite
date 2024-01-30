@@ -30,12 +30,12 @@ fn Profile(id: usize) -> Element {
 
     let name = name.get().clone().unwrap_or("Loading...".to_string());
 
-    render!(
+    rsx!(
         p { "{name}" }
     )
 }
 
 fn app() -> Element {
-    render!(Profile { id: 0 })
+    rsx!(Profile { id: 0 })
 }
 ```

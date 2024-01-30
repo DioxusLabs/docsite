@@ -39,7 +39,7 @@ pub static SNIPPETS: &[Snippet] = &[
 pub fn Snippets() -> Element {
     let selected_snippet = use_state(|| 0);
 
-    cx.render(rsx! {
+    rsx! {
         section { class: "dark:text-white mt-4 -mx-4 sm:mx-0 lg:mt-0 lg:col-span-7 xl:col-span-6",
             div { class: "relative overflow-hidden min-h-0 flex-auto flex-col flex bg-ghmetal max-h-[60vh] sm:max-h-[none] sm:rounded-xl dark:backdrop-blur border border-neutral-500/30 shadow-cutesy",
                 div { class: "flex-none overflow-auto whitespace-nowrap flex relative min-w-full bg-ghdarkmetal pt-3 px-3",
@@ -90,7 +90,7 @@ pub fn Snippets() -> Element {
                 }
             }
         }
-    })
+    }
 }
 
 // div { class: "relative overflow-hidden flex bg-neutral-800 max-h-[60vh] sm:max-h-[none] sm:rounded-xl dark:bg-neutral-900/70 dark:backdrop-blur dark:ring-1 dark:ring-inset dark:ring-white/10 shadow-3xl",

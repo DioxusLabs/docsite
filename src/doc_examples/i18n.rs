@@ -33,7 +33,7 @@ fn Body() -> Element {
     let change_to_english = move |_| i18.set_language("en-US".parse().unwrap());
     let change_to_spanish = move |_| i18.set_language("es-ES".parse().unwrap());
 
-    render!(
+    rsx!(
         button {
             onclick: change_to_english,
             label {
@@ -63,5 +63,5 @@ fn app() -> Element {
         },
     );
 
-    render!(Body {})
+    rsx!(Body {})
 }

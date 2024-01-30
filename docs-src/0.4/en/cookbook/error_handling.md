@@ -66,7 +66,7 @@ Whenever we perform an action that generates an error, we'll set that error stat
 fn Commandline() -> Element {
 	let error = use_state(|| None);
 
-	cx.render(match *error {
+	match *error {
 		Some(error) => rsx!(
 			h1 { "An error occurred" }
 		)

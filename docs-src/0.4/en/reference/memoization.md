@@ -9,11 +9,11 @@ fn Calculator(number: usize) -> Element {
         // This will only be calculated when `number` has changed.
         number * 100
     });
-    render!(
+    rsx!(
         p { "{bigger_number}" }
     )
 }
 fn app() -> Element {
-    render!(Calculator { number: 0 })
+    rsx!(Calculator { number: 0 })
 }
 ```

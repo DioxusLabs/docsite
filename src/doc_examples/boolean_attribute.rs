@@ -3,11 +3,11 @@ use dioxus::prelude::*;
 
 pub fn App() -> Element {
     // ANCHOR: boolean_attribute
-    cx.render(rsx! {
+    rsx! {
         div {
             hidden: false,
             "hello"
         }
-    })
+    }
     // ANCHOR_END: boolean_attribute
 }

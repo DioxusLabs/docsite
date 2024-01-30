@@ -22,7 +22,7 @@ pub fn App() -> Element {
         })
     });
 
-    cx.render(rsx!(
+    rsx!(
         form {
             onsubmit: move |_| {
                 comments.write().push(Comment {
@@ -41,8 +41,8 @@ pub fn App() -> Element {
                 r#type: "submit",
             }
         },
-        comments_rendered,
-    ))
+        {comments_rendered}
+    )
     // ANCHOR_END: render_list
 }
 
@@ -52,7 +52,7 @@ pub fn AppForLoop() -> Element {
     let mut next_id = use_state(|| 0);
     let comments = use_ref(Vec::<Comment>::new);
 
-    cx.render(rsx!(
+    rsx!(
         form {
             onsubmit: move |_| {
                 comments.write().push(Comment {
@@ -78,15 +78,15 @@ pub fn AppForLoop() -> Element {
                 comment: comment.clone(),
             }
         }
-    ))
+    )
     // ANCHOR_END: render_list_for_loop
 }
 
 #[component]
 fn CommentComponent(comment: Comment) -> Element {
-    cx.render(rsx!(div {
+    rsx!(div {
         "Comment by anon:",
         p { "{comment.content}" }
         button { "Reply" },
-    }))
+    })
 }

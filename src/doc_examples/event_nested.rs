@@ -7,7 +7,7 @@ fn main() {
 
 fn App() -> Element {
     // ANCHOR: rsx
-    cx.render(rsx! {
+    rsx! {
         div {
             onclick: move |_event| {},
             "outer",
@@ -19,6 +19,6 @@ fn App() -> Element {
                 "inner"
             }
         }
-    })
+    }
     // ANCHOR_END: rsx
 }

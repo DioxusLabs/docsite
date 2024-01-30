@@ -50,7 +50,7 @@ async fn main() {
 
 // ANCHOR: app
 fn app() -> Element {
-    cx.render(rsx! {
+    rsx! {
         div {
             "Hello, world!"
         }

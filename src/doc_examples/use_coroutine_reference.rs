@@ -84,12 +84,12 @@ fn send() -> Element {
         }
     });
 
-    cx.render(rsx! {
+    rsx! {
         button {
             onclick: move |_| profile.send(ProfileUpdate::SetUsername("Bob".to_string())),
             "Update username"
         }
-    })
+    }
     // ANCHOR_END: send
 }
 
@@ -128,17 +128,17 @@ fn fermi() {
 
         use_coroutine(|rx| sync_service(rx, atoms.clone()));
 
-        cx.render(rsx! {
+        rsx! {
             Banner {}
-        })
+        }
     }
 
     fn Banner() -> Element {
         let username = use_read(&USERNAME);
 
-        cx.render(rsx! {
+        rsx! {
             h1 { "Welcome back, {username}" }
-        })
+        }
     }
     // ANCHOR_END: fermi
 }

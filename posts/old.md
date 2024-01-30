@@ -123,7 +123,7 @@ const App: FC<()> = |cx| {
 		    Err(_) => rsx!(in cx, div { "No doggos for you :(" }),
 		});
 
-    cx.render(rsx!(
+    rsx!(
         h1 {"Waiting for a doggo..."}
         {doggo}
     ))
@@ -259,7 +259,7 @@ Frankly, the type of code used to write UI is not that complex. When dealing wit
 // The Rust-Dioxus version
 fn App(cx: Context, props: &()) -> Element {
     let mut count = use_state(|| 0);
-    cx.render(rsx!{
+    rsx!{
         h1 { "Count: {count}" }
         button { onclick: move |_| count += 1, "+" }
         button { onclick: move |_| count -= 1, "-" }

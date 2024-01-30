@@ -53,7 +53,7 @@ fn HeaderFooter() -> Element {
         }
     });
 
-    render! {
+    rsx! {
         div {
             Nav {}
             Outlet::<Route> {}
@@ -123,11 +123,11 @@ pub enum Route {
 }
 
 pub fn use_url() -> String {
-    use_route::<Route>(cx).unwrap().to_string()
+    use_route::<Route>().unwrap().to_string()
 }
 
 pub fn app() -> Element {
-    render! { Router::<Route> {} }
+    rsx! { Router::<Route> {} }
 }
 
 static SEARCH_INDEX: dioxus_search::LazySearchIndex<Route> = dioxus_search::load_search_index! {
@@ -140,8 +140,8 @@ mod docs {
     use fermi::use_atom_state;
 
     #[component]
-    fn SandBoxFrame<'a>( url: &'a str) -> Element<'a> {
-        render! {
+    fn SandBoxFrame<'a>(url: &'a str) -> Element<'a> {
+        rsx! {
             iframe {
                 style: "border: 1px solid rgba(0, 0, 0, 0.1);border-radius:2px;",
                 width: "800",
@@ -153,8 +153,8 @@ mod docs {
     }
 
     #[component]
-    fn DemoFrame<'a>( children: Element<'a>) -> Element {
-        render! {
+    fn DemoFrame<'a>(children: Element<'a>) -> Element {
+        rsx! {
             div {
                 class: "bg-white rounded-md shadow-md p-4 my-4 overflow-scroll text-black dioxus-demo",
                 max_height: "50vh",
@@ -173,7 +173,7 @@ mod docs {
         let highlight_docs_nav = use_atom_state(&HIGHLIGHT_DOCS_LAYOUT);
         let highlight_docs_content = use_atom_state(&HIGHLIGHT_DOCS_CONTENT);
 
-        render! {
+        rsx! {
             pre {
                 onmouseenter: move |_| {
                     highlight_nav.set(NavLayoutHighlighted(true));

@@ -25,7 +25,7 @@
 <pre><code class="lang-rust">fn app(cx: <span class="hljs-keyword">Scope</span>) -&gt; Element {
     <span class="hljs-keyword">let</span> mut count = use_state(&amp;cx, |<span class="hljs-type">| 0</span>);
 
-    cx.render(rsx! {
+    rsx! {
         h1 { <span class="hljs-string">"Count: {count}"</span> }
         button { onclick: <span class="hljs-built_in">move</span> |<span class="hljs-type">_</span>| <span class="hljs-type">count</span> += <span class="hljs-number">1</span>, <span class="hljs-string">"+"</span> }
         button { onclick: <span class="hljs-built_in">move</span> |<span class="hljs-type">_</span>| <span class="hljs-type">count</span> -= <span class="hljs-number">1</span>, <span class="hljs-string">"-"</span> }
@@ -83,7 +83,7 @@
     <span class="hljs-keyword">let</span> post = use_route(&amp;cx).segment(<span class="hljs-string">"post"</span>)?;
     <span class="hljs-keyword">let</span> query = use_route(&amp;cx).query::&lt;Query&gt;()?;
 
-    cx.render(rsx!{
+    rsx!{
         <span class="hljs-string">"Viewing post {post}"</span>
         <span class="hljs-string">"Name selected: {query}"</span>
     })
@@ -100,7 +100,7 @@
 <span class="hljs-comment">// Read the value from anywhere in the app, subscribing to any changes</span>
 <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">app</span></span>() -&gt; Element {
     <span class="hljs-keyword">let</span> title = use_read(&amp;cx, TITLE);
-    cx.render(rsx!{
+    rsx!{
         h1 { <span class="hljs-string">"{title}"</span> }
         Child {}
     })
@@ -109,7 +109,7 @@
 <span class="hljs-comment">// Set the value from anywhere in the app</span>
 <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">Child</span></span>() -&gt; Element {
     <span class="hljs-keyword">let</span> set_title = use_set(&amp;cx, TITLE);
-    cx.render(rsx!{
+    rsx!{
         button {
             onclick: <span class="hljs-keyword">move</span> |_| set_title(<span class="hljs-string">"goodbye"</span>),
             <span class="hljs-string">"Say goodbye"</span>
@@ -127,7 +127,7 @@ fn Child<span class="hljs-params">&lt;'a&gt;</span>(
 <span class="hljs-symbol">    age:</span> String,
 <span class="hljs-symbol">    onclick:</span> EventHandler<span class="hljs-params">&lt;'a, ClickEvent&gt;</span>
 ) -&gt; <span class="hljs-class">Element </span>{
-    cx.render(rsx!{
+    rsx!{
         <span class="hljs-class">button </span>{
             <span class="hljs-string">"Hello, {name}"</span>
             <span class="hljs-string">"You are {age} years old"</span>
@@ -206,7 +206,7 @@ The VSCode extension is really easy to contribute to and has tons of potential. 
             .await
     });
 
-    cx.render(<span class="hljs-keyword">match</span> dog_request.value() {
+    <span class="hljs-keyword">match</span> dog_request.value() {
         <span class="hljs-literal">Some</span>(<span class="hljs-literal">Ok</span>(url)) =&gt; rsx!{ img { url: <span class="hljs-string">"{url}"</span> } },
         <span class="hljs-literal">Some</span>(<span class="hljs-literal">Err</span>(url)) =&gt; rsx!{ span { <span class="hljs-string">"Loading dog failed"</span> }  },
         <span class="hljs-literal">None</span> =&gt; rsx!{ <span class="hljs-string">"Loading dog..."</span> }
@@ -224,7 +224,7 @@ The VSCode extension is really easy to contribute to and has tons of potential. 
         }
     });
 
-    cx.render(rsx!{
+    rsx!{
         button {
             onclick: <span class="hljs-keyword">move</span> |_| sync_task.send(SyncAction::Username(<span class="hljs-string">"Bob"</span>)),
             <span class="hljs-string">"Click to sync your username to the server"</span>

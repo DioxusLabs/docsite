@@ -1,7 +1,7 @@
 use crate::*;
 
 pub fn Hero() -> Element {
-    cx.render(rsx! {
+    rsx! {
         section { class: "w-full dark:bg-ideblack [@media(min-height:1080px)]:h-screen",
             div { class: "flex flex-wrap items-center pb-12 px-3 md:px-12 max-w-screen-2xl mx-auto text-center my-auto h-full",
                 div { class: "relative w-full mx-4 sm:mx-auto text-gray-600",
@@ -54,7 +54,7 @@ pub fn Hero() -> Element {
                 }
             }
         }
-    })
+    }
 }
 
 static ADD_TO_CLIPBOARD: &str = r#"navigator.clipboard.writeText("cargo add dioxus")"#;
@@ -64,7 +64,7 @@ fn SaveClipboard() -> Element {
 
     // funny that we can just default to some javascript like this
     // might want to do the same thing in rust so we can display a selected state
-    cx.render(rsx! {
+    rsx! {
         button {
             class: "w-full sm:w-auto flex-none bg-gray-50 text-gray-400 hover:text-gray-900 font-mono leading-6 py-3 sm:px-6 border border-gray-200 rounded-xl items-center justify-center space-x-2 sm:space-x-4 focus:ring-2 focus:ring-offset-2 focus:ring-offset-white focus:ring-gray-300 focus:outline-none transition-colors duration-200 hidden md:flex",
             "onclick": "{ADD_TO_CLIPBOARD}",
@@ -76,17 +76,17 @@ fn SaveClipboard() -> Element {
                 "add dioxus"
             }
         }
-    })
+    }
 }
 
 fn AnimatedIcon() -> Element {
     let dark = include_str!("../../../public/static/multiplatform-dark.svg");
     let light = include_str!("../../../public/static/multiplatform-light.svg");
 
-    cx.render(rsx! {
+    rsx! {
         div {
             div { class: "dark:hidden", dangerous_inner_html: "{dark}" }
             div { class: "hidden dark:block", dangerous_inner_html: "{light}" }
         }
-    })
+    }
 }

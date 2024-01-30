@@ -22,16 +22,14 @@ pub fn App() -> Element {
                         response.set("dioxuslabs.com responded!".into());
                     }
                     Err(err) => {
-                        log::info!(
-                            "Request failed with error: {err:?}"
-                        )
+                        log::info!("Request failed with error: {err:?}")
                     }
                 }
             }
         });
     };
 
-    render! {
+    rsx! {
         button {
             onclick: log_in,
             "Response: {response}",
@@ -55,7 +53,7 @@ pub fn Tokio() -> Element {
         // ANCHOR_END: tokio
     };
 
-    cx.render(rsx!(()))
+    rsx!(())
 }
 
 pub fn ToOwnedMacro() -> Element {
@@ -77,5 +75,5 @@ pub fn ToOwnedMacro() -> Element {
         // ANCHOR_END: to_owned_macro
     };
 
-    cx.render(rsx!(()))
+    rsx!(())
 }

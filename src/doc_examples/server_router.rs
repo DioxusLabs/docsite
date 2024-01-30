@@ -29,7 +29,7 @@ enum Route {
 
 #[component]
 fn Blog(id: i32) -> Element {
-    render! {
+    rsx! {
         Link { to: Route::Home {}, "Go to counter" }
         table {
             tbody {
@@ -50,7 +50,7 @@ fn Home() -> Element {
     let mut count = use_state(|| 0);
     let text = use_state(|| "...".to_string());
 
-    cx.render(rsx! {
+    rsx! {
         Link {
             to: Route::Blog {
                 id: *count.get()
@@ -76,7 +76,7 @@ fn Home() -> Element {
             }
             "Server said: {text}"
         }
-    })
+    }
 }
 
 #[server(PostServerData)]

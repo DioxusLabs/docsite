@@ -51,7 +51,7 @@ async fn main() {
 
 #[component]
 fn Blog() -> Element {
-    render! {
+    rsx! {
         div {
             "Blog"
         }
@@ -60,7 +60,7 @@ fn Blog() -> Element {
 
 #[component]
 fn Post(id: usize) -> Element {
-    render! {
+    rsx! {
         div {
             "PostId: {id}"
         }
@@ -69,7 +69,7 @@ fn Post(id: usize) -> Element {
 
 #[component]
 fn PostHome() -> Element {
-    render! {
+    rsx! {
         div {
             "Post"
         }
@@ -78,7 +78,7 @@ fn PostHome() -> Element {
 
 #[component]
 fn Home() -> Element {
-    render! {
+    rsx! {
         div {
             "Home"
         }

@@ -30,7 +30,7 @@ fn main() {
 fn app() -> Element {
     let mut count = use_state(|| 0);
 
-    cx.render(rsx! {
+    rsx! {
         h1 { "Count: {count}" }
         button { onclick: move |_| count += 1, "+" }
         button { onclick: move |_| count -= 1, "-" }
@@ -139,7 +139,7 @@ struct CardProps {
 
 static Card: Component<CardProps> = |cx| {
 	let mut count = use_state(|| 0);
-	cx.render(rsx!(
+	rsx!(
 		aside {
 			h2 { "{cx.props.title}" }
 			p { "{cx.props.paragraph}" }
@@ -193,7 +193,7 @@ fn main() {
 fn app() -> Element {
     let mut count = use_state(|| 0);
 
-    cx.render(rsx! {
+    rsx! {
         h1 { "Count: {count}" }
         button { onclick: move |_| count += 1, "+" }
         button { onclick: move |_| count -= 1, "-" }
@@ -273,7 +273,7 @@ Because we know the lifetime of your handlers, we can also expose this to childr
 ```rust
 fn app() -> Element {
 	let name = use_state(|| "asd");
-	cx.render(rsx!{
+	rsx!{
 		Button { name: name }
 	})
 }
@@ -284,7 +284,7 @@ struct ButtonProps<'a> {
 }
 
 fn Button<'a>( Childprops<'a>>) -> Element {
-	cx.render(rsx!{
+	rsx!{
 		button {
 			onclick: move |_| cx.props.name.set("bob")
 		}

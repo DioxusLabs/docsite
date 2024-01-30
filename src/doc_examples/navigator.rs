@@ -13,7 +13,7 @@ enum Route {
 
 #[component]
 fn App() -> Element {
-    render! {
+    rsx! {
         Router::<Route> {}
     }
 }
@@ -35,7 +35,7 @@ fn Home() -> Element {
     // go forward
     nav.go_forward();
 
-    render! {
+    rsx! {
         h1 { "Welcome to the Dioxus Blog!" }
     }
 }
@@ -43,7 +43,7 @@ fn Home() -> Element {
 
 #[component]
 fn PageNotFound(route: Vec<String>) -> Element {
-    render! {
+    rsx! {
         h1 { "Page not found" }
         p { "We are terribly sorry, but the page you requested doesn't exist." }
         pre {

@@ -180,12 +180,12 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             }
         });
 
-        cx.render(rsx! {
+        rsx! {
             div{
                 color: "red",
                 "{count}"
             }
-        })
+        }
     }
 
     // create the vdom, the real_dom, and the binding layer between them

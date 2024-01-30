@@ -13,7 +13,7 @@ static IconsSet: &[Component<()>; 8] = &[
 ];
 
 pub fn ValueAdd() -> Element {
-    cx.render(rsx! {
+    rsx! {
         section { class: "text-gray-600 body-font",
             div { class: "container mx-auto py-12 px-6 lg:px-40",
                 div { class: "flex flex-wrap sm:-m-4 -mx-4 -mb-10 -mt-4 md:space-y-0 space-y-6 ",
@@ -41,5 +41,5 @@ pub fn ValueAdd() -> Element {
                 }
             }
         }
-    })
+    }
 }

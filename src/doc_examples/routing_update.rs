@@ -13,20 +13,20 @@ enum Route {
 
 #[component]
 fn Home() -> Element {
-    render! {
+    rsx! {
         p { "Home" }
     }
 }
 
 #[component]
 fn Index() -> Element {
-    render! {
+    rsx! {
         p { "Index" }
     }
 }
 
 fn app() -> Element {
-    render! {
+    rsx! {
         Router::<Route> {
             config: || RouterConfig::default().on_update(|state|{
                 (state.current() == Route::Index {}).then_some(

@@ -91,16 +91,13 @@ fn generate_router(book_path: PathBuf, book: mdbook_shared::MdBook<PathBuf>) -> 
         match rsx::parse(page.url.clone(), &page.raw) {
             Ok(mut rsx) => {
                 rsx.roots
-                    .push(dioxus_rsx::BodyNode::Element(dioxus_rsx::Element {
-                        name: dioxus_rsx::ElementName::Ident(Ident::new(
-                            "script",
-                            Span::call_site(),
-                        )),
-                        attributes: vec![],
-                        key: None,
-                        children: vec![],
-                        brace: Default::default(),
-                    }));
+                    .push(dioxus_rsx::BodyNode::Element(dioxus_rsx::Element::new(
+                        None,
+                        dioxus_rsx::ElementName::Ident(Ident::new("script", Span::call_site())),
+                        vec![],
+                        vec![],
+                        Default::default(),
+                    )));
                 let rsx = rsx.render_with_location(template_name);
                 quote! {
                     #[component(no_case_check)]

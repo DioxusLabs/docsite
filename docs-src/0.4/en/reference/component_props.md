@@ -131,9 +131,9 @@ struct TitleCardProps {
     title: String,
 }
 
-fn TitleCard(<TitleCardProps>) -> Element {
+fn TitleCard(props: TitleCardProps) -> Element {
     rsx!{
-        h1 { "{cx.props.title}" }
+        h1 { "{props.title}" }
     })
 }
 ```

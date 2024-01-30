@@ -1,10 +1,8 @@
 use dioxus::prelude::*;
-use fermi::use_read;
 use crate::HIGHLIGHT_NAV_LAYOUT;
 
 pub fn Footer() -> Element {
-    let highlighted = use_read(&HIGHLIGHT_NAV_LAYOUT);
-    let bg_color = if highlighted.0 {
+    let bg_color = if HIGHLIGHT_NAV_LAYOUT() {
         "border border-orange-600 rounded-md"
     } else {
         ""
@@ -51,14 +49,14 @@ pub fn Footer() -> Element {
                 }
                 nav { class: "list-none mb-10",
                     ul {
-                        links.iter().map(|f| rsx!{
+                        for f in links.iter() {
                             li { key: "{f.0}",
                                 a { class: "text-gray-400 hover:text-white",
                                     href: "{f.1}",
                                     "{f.0}"
                                 }
                             }
-                        })
+                        }
                     }
                 }
             }

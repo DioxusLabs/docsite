@@ -136,13 +136,13 @@ pub fn Awesome() -> Element {
                     class: "dark:bg-ideblack w-full pb-24",
                     div {
                         class: "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 container mx-auto px-2 max-w-screen-1g",
-                        items.iter().filter_map(|item| {
+                        {items.iter().filter_map(|item| {
                             if let AwesomeType::Awesome = item.r#type {
                                 Some(rsx!(AwesomeItem { key: "{item.name}", item: item.clone() }))
                             } else {
                                 None
                             }
-                        })
+                        })}
                     }
                 }
 
@@ -276,11 +276,9 @@ fn AwesomeItem(item: Item) -> Element {
                 div {
                     class: "mt-auto pt-4 flex",
                     if Category::App != item.category {
-                        rsx! {
-                            p {
-                                class: "text-gray-300 font-bold",
-                                "{item.category}"
-                            }
+                        p {
+                            class: "text-gray-300 font-bold",
+                            "{item.category}"
                         }
                     }
                     p {

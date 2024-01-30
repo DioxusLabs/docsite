@@ -27,7 +27,6 @@ pub mod shortcut;
 mod doc_examples;
 
 pub use components::*;
-use fermi::use_init_atom_root;
 pub mod components {
     export_items! {
         pub mod blog;
@@ -44,12 +43,9 @@ pub mod components {
 
 #[component]
 fn HeaderFooter() -> Element {
-    use_init_atom_root();
-    let set_search = fermi::use_set(&SHOW_SEARCH);
     shortcut::use_shortcut(Key::Character("/".to_string()), Modifiers::CONTROL, {
-        to_owned![set_search];
         move || {
-            set_search(components::nav::ShowSearch(true));
+            SHOW_SEARCH.set(components::nav::true);
         }
     });
 
@@ -137,10 +133,9 @@ mod docs {
     use crate::components::*;
     use crate::doc_examples::*;
     use dioxus::prelude::*;
-    use fermi::use_atom_state;
 
     #[component]
-    fn SandBoxFrame<'a>(url: &'a str) -> Element<'a> {
+    fn SandBoxFrame(url: String) -> Element {
         rsx! {
             iframe {
                 style: "border: 1px solid rgba(0, 0, 0, 0.1);border-radius:2px;",
@@ -153,7 +148,7 @@ mod docs {
     }
 
     #[component]
-    fn DemoFrame<'a>(children: Element<'a>) -> Element {
+    fn DemoFrame(children: Element) -> Element {
         rsx! {
             div {
                 class: "bg-white rounded-md shadow-md p-4 my-4 overflow-scroll text-black dioxus-demo",
@@ -163,7 +158,7 @@ mod docs {
                     ".dioxus-demo input {{ all: revert; }}"
                     ".dioxus-demo form {{ all: revert; }}"
                 }
-                children
+                {children}
             }
         }
     }
@@ -176,12 +171,12 @@ mod docs {
         rsx! {
             pre {
                 onmouseenter: move |_| {
-                    highlight_nav.set(NavLayoutHighlighted(true));
+                    highlight_nav.set(true);
                     highlight_docs_nav.set(DocsLayoutHighlighted(true));
                     highlight_docs_content.set(DocsContentHighlighted(true));
                 },
                 onmouseleave: move |_| {
-                    highlight_nav.set(NavLayoutHighlighted(false));
+                    highlight_nav.set(false);
                     highlight_docs_nav.set(DocsLayoutHighlighted(false));
                     highlight_docs_content.set(DocsContentHighlighted(false));
                 },
@@ -192,12 +187,12 @@ pub enum Route {{\n\t"
                 }
                 span {
                     onmouseenter: move |_| {
-                        highlight_nav.set(NavLayoutHighlighted(true));
+                        highlight_nav.set(true);
                         highlight_docs_nav.set(DocsLayoutHighlighted(false));
                         highlight_docs_content.set(DocsContentHighlighted(false));
                     },
                     onmouseleave: move |_| {
-                        highlight_nav.set(NavLayoutHighlighted(true));
+                        highlight_nav.set(true);
                         highlight_docs_nav.set(DocsLayoutHighlighted(true));
                         highlight_docs_content.set(DocsContentHighlighted(true));
                     },
@@ -207,12 +202,12 @@ pub enum Route {{\n\t"
                 span { "\n\t\t// ... other routes\n\t\t" }
                 span {
                     onmouseenter: move |_| {
-                        highlight_nav.set(NavLayoutHighlighted(false));
+                        highlight_nav.set(false);
                         highlight_docs_nav.set(DocsLayoutHighlighted(true));
                         highlight_docs_content.set(DocsContentHighlighted(false));
                     },
                     onmouseleave: move |_| {
-                        highlight_nav.set(NavLayoutHighlighted(true));
+                        highlight_nav.set(true);
                         highlight_docs_nav.set(DocsLayoutHighlighted(true));
                         highlight_docs_content.set(DocsContentHighlighted(true));
                     },
@@ -222,12 +217,12 @@ pub enum Route {{\n\t"
                 "\n\t\t\t"
                 span {
                     onmouseenter: move |_| {
-                        highlight_nav.set(NavLayoutHighlighted(false));
+                        highlight_nav.set(false);
                         highlight_docs_nav.set(DocsLayoutHighlighted(false));
                         highlight_docs_content.set(DocsContentHighlighted(true));
                     },
                     onmouseleave: move |_| {
-                        highlight_nav.set(NavLayoutHighlighted(true));
+                        highlight_nav.set(true);
                         highlight_docs_nav.set(DocsLayoutHighlighted(true));
                         highlight_docs_content.set(DocsContentHighlighted(true));
                     },

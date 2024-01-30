@@ -70,7 +70,7 @@ pub fn FeaturedExamples() -> Element {
     }
 }
 
-#[derive(PartialEq, Props)]
+#[derive(PartialEq, Props, Clone)]
 struct FeaturedExampleProps {
     title: String,
     subtitle: String,

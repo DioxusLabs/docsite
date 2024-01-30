@@ -1,6 +1,6 @@
 # Spawning Futures
 
-The `use_future` and `use_coroutine` hooks are useful if you want to unconditionally spawn the future. Sometimes, though, you'll want to only spawn a future in response to an event, such as a mouse click. For example, suppose you need to send a request when the user clicks a "log in" button. For this, you can use `cx.spawn`:
+The `use_future` and `use_coroutine` hooks are useful if you want to unconditionally spawn the future. Sometimes, though, you'll want to only spawn a future in response to an event, such as a mouse click. For example, suppose you need to send a request when the user clicks a "log in" button. For this, you can use `spawn`:
 
 ```rust
 {{#include src/doc_examples/spawn.rs:spawn}}

@@ -134,7 +134,7 @@ pub fn main() -> Result<()> {
 }
 
 fn app() -> Element {
-    let items = cx.use_hook(|| vec![1, 2, 3]);
+    let items = use_hook(|| vec![1, 2, 3]);
 
     log::debug!("Hello from the app");
 

@@ -7,7 +7,7 @@ pub fn App() -> Element {
     let response = use_signal(|| String::from("..."));
 
     let log_in = move |_| {
-        cx.spawn({
+        spawn({
             to_owned![response];
 
             async move {

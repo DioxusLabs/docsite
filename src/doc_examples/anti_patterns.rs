@@ -32,7 +32,7 @@ fn AntipatternNestedFragments() -> Element {
     // ANCHOR_END: nested_fragments
 }
 
-#[derive(PartialEq, Props)]
+#[derive(PartialEq, Props, Clone)]
 struct NoKeysProps {
     data: HashMap<u32, String>,
 }

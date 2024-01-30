@@ -16,7 +16,7 @@ struct UseState<T> {
 }
 
 fn my_use_signal<T: 'static>(cx: &ScopeState, init: impl FnOnce() -> T) -> &UseState<T> {
-    cx.use_hook(|| {
+    use_hook(|| {
         // The update function will trigger a re-render in the component cx is attached to
         let update = cx.schedule_update();
         // Create the initial state
@@ -42,11 +42,11 @@ impl<T: Clone> UseState<T> {
 
 // ANCHOR: use_context
 pub fn use_context<T: 'static + Clone>(cx: &ScopeState) -> Option<&T> {
-    cx.use_hook(|| cx.consume_context::<T>()).as_ref()
+    use_hook(|| cx.consume_context::<T>()).as_ref()
 }
 
 pub fn use_context_provider<T: 'static + Clone>(cx: &ScopeState, f: impl FnOnce() -> T) -> &T {
-    cx.use_hook(|| {
+    use_hook(|| {
         let val = f();
         // Provide the context state to the scope
         cx.provide_context(val.clone());

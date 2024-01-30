@@ -56,7 +56,7 @@ fn ProjectCards() -> Element {
         section { class: "py-12",
             div { class: "container mx-auto px-6 lg:px-64",
                 div { class: "flex flex-wrap -mx-3",
-                    CARDS.iter().map(|(title, description)| rsx! {
+                    for (title, description) in CARDS.iter() {
                         div { class: "w-full md:w-1/2 lg:w-1/3 px-3 mb-6 text-xs dark:text-white", key: "{title}",
                             div { class: "p-6 md:p-8 h-full rounded shadow-white hover:shadow-xl hover:border-transparent cursor-pointer",
                                 div {
@@ -70,7 +70,7 @@ fn ProjectCards() -> Element {
                                 }
                             }
                         }
-                    })
+                    }
                 }
             }
         }
@@ -176,7 +176,7 @@ fn TriShow(
                 Link { to: to.clone(),
                     div { class: "min-w-lg max-w-screen-md hover:shadow-pop rounded-lg p-8",
                         h2 { class: "text-2xl text-gray-800 font-semibold pb-2 dark:text-gray-100 ",
-                            *title
+                            "{title}"
                         }
                         right
                     }
@@ -187,7 +187,7 @@ fn TriShow(
 }
 
 #[component]
-fn TriPadding<'a>( children: Element<'a>, last: bool) -> Element {
+fn TriPadding<'a>( children: Element, last: bool) -> Element {
     rsx!(
         div { class: "flex flex-col items-center",
             div { class: "w-0 h-10 border-dashed border border-[#444]" }

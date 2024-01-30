@@ -8,7 +8,7 @@ struct AppSettings {}
 
 // ANCHOR: wrap_context
 fn use_settings() -> &UseSharedState<AppSettings> {
-    use_shared_state::<AppSettings>(cx).expect("App settings not provided")
+    consume_context::<AppSettings>().expect("App settings not provided")
 }
 // ANCHOR_END: wrap_context
 
@@ -35,7 +35,7 @@ pub fn use_persistent<T: Serialize + DeserializeOwned + Default + 'static>(
 
     // Wrap the state in a new struct with a custom API
     // Note: We use use_hook here so that this hook is easier to use in closures in the rsx. Any values with the same lifetime as the ScopeState can be used in the closure without cloning.
-    cx.use_hook(|| UsePersistent {
+    use_hook(|| UsePersistent {
         inner: state.clone(),
     })
 }

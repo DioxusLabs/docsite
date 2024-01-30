@@ -18,9 +18,9 @@ fn App() -> Element {
 }
 
 #[derive(Props)]
-struct ClickableProps<'a> {
-    href: &'a str,
-    children: Element<'a>,
+struct ClickableProps {
+    href: String,
+    children: Element,
 }
 
 // ANCHOR: Clickable

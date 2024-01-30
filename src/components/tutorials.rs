@@ -94,8 +94,8 @@ pub fn Tutorial(id: usize) -> Element {
 
     rsx!(
         div {
-            h1 { tutorial.title }
-            h3 { tutorial.author }
+            h1 { "{tutorial.title}" }
+            h3 { "{tutorial.author}" }
             ul {
                 for tag in tutorial.tags {
                     li { *tag }

@@ -54,9 +54,9 @@ fn App() -> Element {
 
 // ANCHOR: OptionalProps
 #[derive(Props)]
-struct OptionalProps<'a> {
-    title: &'a str,
-    subtitle: Option<&'a str>,
+struct OptionalProps {
+    title: String,
+    subtitle: Option<String>,
 }
 
 fn Title(props: OptionalProps) -> Element {
@@ -69,10 +69,10 @@ fn Title(props: OptionalProps) -> Element {
 
 // ANCHOR: ExplicitOption
 #[derive(Props)]
-struct ExplicitOptionProps<'a> {
-    title: &'a str,
+struct ExplicitOptionProps {
+    title: String,
     #[props(!optional)]
-    subtitle: Option<&'a str>,
+    subtitle: Option<String>,
 }
 
 fn ExplicitOption(props: ExplicitOptionProps) -> Element {
@@ -84,7 +84,7 @@ fn ExplicitOption(props: ExplicitOptionProps) -> Element {
 // ANCHOR_END: ExplicitOption
 
 // ANCHOR: DefaultComponent
-#[derive(PartialEq, Props)]
+#[derive(PartialEq, Props, Clone)]
 struct DefaultProps {
     // default to 42 when not provided
     #[props(default = 42)]
@@ -97,7 +97,7 @@ fn DefaultComponent(props: DefaultProps) -> Element {
 // ANCHOR_END: DefaultComponent
 
 // ANCHOR: IntoComponent
-#[derive(PartialEq, Props)]
+#[derive(PartialEq, Props, Clone)]
 struct IntoProps {
     #[props(into)]
     string: String,

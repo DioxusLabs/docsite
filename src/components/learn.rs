@@ -3,8 +3,6 @@ use crate::*;
 use dioxus::prelude::*;
 use dioxus_material_icons::MaterialIcon;
 use dioxus_material_icons::MaterialIconColor;
-use fermi::use_atom_state;
-use fermi::{use_read, Atom};
 use mdbook_shared::Page;
 use mdbook_shared::SummaryItem;
 
@@ -26,7 +24,7 @@ const GITHUB_EDIT_PAGE_EDIT_URL: &str = "https://github.com/DioxusLabs/docsite/e
 #[component]
 pub fn Learn() -> Element {
     let show_sidebar_button = use_atom_state(&SHOW_DOCS_NAV);
-    cx.use_hook(|| show_sidebar_button.set(true));
+    use_hook(|| show_sidebar_button.set(true));
     use_drop({
         to_owned![show_sidebar_button];
         move || show_sidebar_button.set(false)
@@ -112,9 +110,7 @@ fn SidebarSection(chapter: &'static SummaryItem<BookRoute>) -> Element {
     rsx! {
         div { class: "pb-4",
             if let Some(url) = &link.location {
-                rsx! {
-                    Link { to: Route::Docs { child: *url }, h2 { class: "font-semibold", "{link.name}" } }
-                }
+                Link { to: Route::Docs { child: *url }, h2 { class: "font-semibold", "{link.name}" } }
             }
             ul { class: "pl-2", sections }
         }
@@ -144,11 +140,9 @@ fn SidebarChapter(chapter: &'static SummaryItem<BookRoute>) -> Element {
                 Link { to: Route::Docs { child: *url }, "{link.name}" }
             }
             if show_dropdown {
-                rsx! {
-                    ul { class: "ml-6 border-l border-gray-300 py-1",
-                        for chapter in link.nested_items.iter() {
-                            SidebarChapter { chapter: chapter }
-                        }
+                ul { class: "ml-6 border-l border-gray-300 py-1",
+                    for chapter in link.nested_items.iter() {
+                        SidebarChapter { chapter: chapter }
                     }
                 }
             }
@@ -262,13 +256,9 @@ fn BreadCrumbs() -> Element {
     rsx! {
         h2 { class: "font-semibold pb-4",
             for segment in route.to_string().split('/').skip(3).filter(|f| !f.is_empty()) {
-                rsx! {
-                    if segment != "index" {
-                        rsx! {
-                            Link { to: Route::Homepage {}, class: "text-blue-600", "{segment}" }
-                            " / "
-                        }
-                    }
+                if segment != "index" {
+                    Link { to: Route::Homepage {}, class: "text-blue-600", "{segment}" }
+                    " / "
                 }
             }
         }

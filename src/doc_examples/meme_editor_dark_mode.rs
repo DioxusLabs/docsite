@@ -13,7 +13,7 @@ struct DarkMode(bool);
 
 pub fn App() -> Element {
     // ANCHOR: context_provider
-    use_shared_state_provider(|| DarkMode(false));
+    use_hook(|| provide_context(DarkMode(false)));
     // ANCHOR_END: context_provider
 
     let is_dark_mode = use_is_dark_mode();
@@ -36,7 +36,7 @@ pub fn App() -> Element {
 
 pub fn use_is_dark_mode() -> bool {
     // ANCHOR: use_context
-    let dark_mode_context = use_shared_state::<DarkMode>(cx);
+    let dark_mode_context = consume_context::<DarkMode>();
     // ANCHOR_END: use_context
 
     dark_mode_context
@@ -46,7 +46,7 @@ pub fn use_is_dark_mode() -> bool {
 
 // ANCHOR: toggle
 pub fn DarkModeToggle() -> Element {
-    let dark_mode = use_shared_state::<DarkMode>(cx).unwrap();
+    let dark_mode = consume_context::<DarkMode>().unwrap();
 
     let style = if dark_mode.read().0 {
         "color:white"
@@ -104,7 +104,7 @@ fn MemeEditor() -> Element {
 
 // ANCHOR: meme_component
 #[component]
-fn Meme<'a>( caption: &'a str) -> Element<'a> {
+fn Meme(caption: String) -> Element {
     let container_style = r"
         position: relative;
         width: fit-content;

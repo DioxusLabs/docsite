@@ -1,6 +1,5 @@
 #![allow(non_snake_case, unused)]
 use dioxus::prelude::*;
-use fermi::{use_atom_root, use_read, Atom, AtomRoot};
 use futures::Stream;
 use std::rc::Rc;
 use tokio::time::Duration;
@@ -148,7 +147,6 @@ fn fermi_continued() {
         Ok(())
     }
     // ANCHOR: fermi_continued
-    use fermi::{Atom, AtomRoot, Readable, Writable};
     use futures_util::StreamExt;
 
     static USERNAME: &Atom<String> = &Atom(|_| "default".to_string());

@@ -13,7 +13,7 @@ pub fn App() -> Element {
 
 // ANCHOR: Likes
 // Remember: Owned props must implement `PartialEq`!
-#[derive(PartialEq, Props)]
+#[derive(PartialEq, Props, Clone)]
 struct LikesProps {
     score: i32,
 }

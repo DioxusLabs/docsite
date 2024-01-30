@@ -37,7 +37,7 @@ fn MemeEditor() -> Element {
 
 // ANCHOR: meme_component
 #[component]
-fn Meme<'a>( caption: &'a str) -> Element<'a> {
+fn Meme(caption: String) -> Element {
     let container_style = r#"
         position: relative;
         width: fit-content;

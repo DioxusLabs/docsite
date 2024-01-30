@@ -118,7 +118,7 @@ pub mod fetch {
     use dioxus::prelude::*;
 
     pub fn App() -> Element {
-        use_shared_state_provider(|| PreviewState::Unset);
+        use_hook(|| provide_context(PreviewState::Unset));
 
         rsx! {
             div {
@@ -139,7 +139,7 @@ pub mod fetch {
 
     #[component]
     fn StoryListing(story: StoryItem) -> Element {
-        let preview_state = use_shared_state::<PreviewState>(cx).unwrap();
+        let preview_state = consume_context::<PreviewState>().unwrap();
         let StoryItem {
             title,
             url,
@@ -222,7 +222,7 @@ pub mod fetch {
     }
 
     fn Preview() -> Element {
-        let preview_state = use_shared_state::<PreviewState>(cx)?;
+        let preview_state = consume_context::<PreviewState>()?;
 
         match &*preview_state.read() {
             PreviewState::Unset => rsx! {
@@ -258,7 +258,7 @@ pub mod fetch {
     }
 
     #[component]
-    fn Comment(comment: super::Comment) -> Element<'a> {
+    fn Comment(comment: super::Comment) -> Element {
         rsx! {
             div {
                 padding: "0.5rem",
@@ -311,7 +311,7 @@ pub mod fetch {
 use dioxus::prelude::*;
 
 pub fn App() -> Element {
-    use_shared_state_provider(|| PreviewState::Unset);
+    use_hook(|| provide_context(PreviewState::Unset));
 
     rsx! {
         div {
@@ -351,7 +351,7 @@ async fn resolve_story(
 
 #[component]
 fn StoryListing(story: StoryItem) -> Element {
-    let preview_state = use_shared_state::<PreviewState>(cx).unwrap();
+    let preview_state = consume_context::<PreviewState>().unwrap();
     let StoryItem {
         title,
         url,
@@ -443,7 +443,7 @@ enum PreviewState {
 }
 
 fn Preview() -> Element {
-    let preview_state = use_shared_state::<PreviewState>(cx)?;
+    let preview_state = consume_context::<PreviewState>()?;
 
     match &*preview_state.read() {
         PreviewState::Unset => rsx! {
@@ -479,7 +479,7 @@ fn Preview() -> Element {
 }
 
 #[component]
-fn Comment(comment: Comment) -> Element<'a> {
+fn Comment(comment: Comment) -> Element {
     rsx! {
         div {
             padding: "0.5rem",

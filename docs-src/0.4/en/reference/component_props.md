@@ -165,7 +165,7 @@ Then, when rendering the component, you can pass in the output of `rsx!(...))`:
 {{#include src/doc_examples/component_element_props.rs:Clickable_usage}}
 ```
 
-> Note: Since `Element<'a>` is a borrowed prop, there will be no memoization.
+> Note: Since `Element` is a borrowed prop, there will be no memoization.
 
 > Warning: While it may compile, do not include the same `Element` more than once in the RSX. The resulting behavior is unspecified.
 

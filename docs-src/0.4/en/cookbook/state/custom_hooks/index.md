@@ -22,7 +22,7 @@ Or if you want to wrap a hook that persists reloads with the storage API, you ca
 
 ## Custom Hook Logic
 
-You can use [`cx.use_hook`](https://docs.rs/dioxus/latest/dioxus/prelude/struct.ScopeState.html#method.use_hook) to build your own hooks. In fact, this is what all the standard hooks are built on!
+You can use [`use_hook`](https://docs.rs/dioxus/latest/dioxus/prelude/struct.ScopeState.html#method.use_hook) to build your own hooks. In fact, this is what all the standard hooks are built on!
 
 `use_hook` accepts a single closure for initializing the hook. It will be only run the first time the component is rendered. The return value of that closure will be used as the value of the hook – Dioxus will take it, and store it for as long as the component is alive. On every render (not just the first one!), you will get a reference to this value.
 
@@ -63,7 +63,7 @@ If we try to use this hook in an async block, we will get a compile error:
 ```rust
 fn FutureComponent(cx: &ScopeState) -> Element {
 	let my_state = my_use_signal(|| 0);
-	cx.spawn({
+	spawn({
 		to_owned![my_state];
 		async move {
 			my_state.set(1);
@@ -79,7 +79,7 @@ But with the original version, we can use it in an async block:
 ```rust
 fn FutureComponent(cx: &ScopeState) -> Element {
 	let my_state = use_signal(|| 0);
-	cx.spawn({
+	spawn({
 		to_owned![my_state];
 		async move {
 			my_state.set(1);

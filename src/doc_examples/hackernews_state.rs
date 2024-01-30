@@ -89,7 +89,7 @@ pub mod app_v1 {
 
     // NEW
     #[component]
-    fn Comment(comment: Comment) -> Element<'a> {
+    fn Comment(comment: Comment) -> Element {
         rsx! {
             div {
                 padding: "0.5rem",
@@ -184,7 +184,7 @@ mod story_listing_listener {
     use super::*;
 
     pub fn App() -> Element {
-        use_shared_state_provider(|| PreviewState::Unset);
+        use_hook(|| provide_context(PreviewState::Unset));
 
         rsx! {
             div {
@@ -346,7 +346,7 @@ mod story_listing_listener {
 
 // ANCHOR: shared_state_app
 pub fn App() -> Element {
-    use_shared_state_provider(|| PreviewState::Unset);
+    use_hook(|| provide_context(PreviewState::Unset));
     // ANCHOR_END: shared_state_app
     rsx! {
         div {
@@ -369,7 +369,7 @@ pub fn App() -> Element {
 #[component]
 fn StoryListing(story: StoryItem) -> Element {
     // New
-    let preview_state = use_shared_state::<PreviewState>(cx).unwrap();
+    let preview_state = consume_context::<PreviewState>().unwrap();
     let StoryItem {
         title,
         url,
@@ -458,7 +458,7 @@ fn StoryListing(story: StoryItem) -> Element {
 // ANCHOR: shared_state_preview
 fn Preview() -> Element {
     // New
-    let preview_state = use_shared_state::<PreviewState>(cx)?;
+    let preview_state = consume_context::<PreviewState>()?;
 
     // New
     match &*preview_state.read() {
@@ -522,7 +522,7 @@ fn Stories() -> Element {
 }
 
 #[component]
-fn Comment(comment: Comment) -> Element<'a> {
+fn Comment(comment: Comment) -> Element {
     rsx! {
         div {
             padding: "0.5rem",

@@ -8,9 +8,6 @@ use dioxus_router::prelude::*;
 enum Route {
     // The home page is at the / route
     #[route("/")]
-    // If the name of the component and variant are the same you can omit the component and props name
-    // If they are different you can specify them like this:
-    // #[route("/", ComponentName, PropsName)]
     Home {},
 }
 // ANCHOR_END: router

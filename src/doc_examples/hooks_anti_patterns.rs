@@ -18,7 +18,7 @@ fn my_use_signal<T: 'static>(cx: &ScopeState, init: impl FnOnce() -> T) -> UseSt
     // The update function will trigger a re-render in the component cx is attached to
     let update = cx.schedule_update();
     // Create the initial state
-    let value = cx.use_hook(|| RefCell::new(init()));
+    let value = use_hook(|| RefCell::new(init()));
 
     UseState { value, update }
 }

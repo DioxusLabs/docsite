@@ -23,7 +23,7 @@ This lets us add in some syntactic sugar for operations we think *shouldn't* fai
 ```rust
 fn App() -> Element {
 	// immediately return "None"
-	let name = cx.use_hook(|_| Some("hi"))?;
+	let name = use_hook(|_| Some("hi"))?;
 }
 ```
 
@@ -34,11 +34,11 @@ Because Rust can't accept both Options and Results with the existing try infrast
 ```rust
 fn App() -> Element {
 	// Convert Result to Option
-	let name = cx.use_hook(|_| "1.234").parse().ok()?;
+	let name = use_hook(|_| "1.234").parse().ok()?;
 
 
 	// Early return
-	let count = cx.use_hook(|_| "1.234");
+	let count = use_hook(|_| "1.234");
 	let val = match count.parse() {
 		Ok(val) => val
 		Err(err) => return rsx!{ "Parsing failed" }

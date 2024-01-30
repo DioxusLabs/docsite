@@ -23,7 +23,7 @@ pub fn Explainer(
             h2 { class: "mb-6 text-3xl leading-tight md:text-4xl md:leading-tight lg:text-3xl lg:leading-tight font-heading font-sans font-bold",
                 "{title}"
             }
-            content
+            {content}
         }
     };
 
@@ -71,7 +71,7 @@ pub fn Explainers() -> Element {
                     div { class: "w-full relative flex-auto bg-slate-800 dark:bg-slate-900/70 dark:backdrop-blur dark:ring-1 dark:ring-inset dark:ring-white/10 rounded",
                         pre { class: "flex min-h-full text-sm leading-6",
                             code { class: "language-rust line-numbers rounded",
-                                include_str!("../../../snippets/homepage.rs")
+                                {include_str!("../../../snippets/homepage.rs")}
                             }
                         }
                     }

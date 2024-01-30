@@ -2,17 +2,12 @@ use crate::*;
 use dioxus::html::input_data::keyboard_types::Key;
 use dioxus::prelude::*;
 use dioxus_material_icons::{MaterialIcon, MaterialIconColor};
-use fermi::{use_atom_state, use_read, Atom};
 
-pub struct NavLayoutHighlighted(pub bool);
-pub static HIGHLIGHT_NAV_LAYOUT: Atom<NavLayoutHighlighted> = Atom(|_| NavLayoutHighlighted(false));
-pub struct ShowNav(pub bool);
-pub static SHOW_NAV: Atom<ShowNav> = Atom(|_| ShowNav(false));
-pub struct ShowSearch(pub bool);
-pub static SHOW_SEARCH: Atom<ShowSearch> = Atom(|_| ShowSearch(false));
-pub struct LoggedIn(pub bool);
-pub static LOGGED_IN: Atom<LoggedIn> = Atom(|_| LoggedIn(false));
-pub static SHOW_DOCS_NAV: Atom<bool> = Atom(|_| false);
+pub static HIGHLIGHT_NAV_LAYOUT: GlobalSignal<bool> = Signal::global(|| false);
+pub static SHOW_NAV: GlobalSignal<bool> = Signal::global(|| false);
+pub static SHOW_SEARCH: GlobalSignal<bool> = Signal::global(|| false);
+pub static LOGGED_IN: GlobalSignal<bool> = Signal::global(|| false);
+pub static SHOW_DOCS_NAV: GlobalSignal<bool> = Signal::global(|| false);
 
 pub fn Nav() -> Element {
     let logged_in = use_read(&LOGGED_IN);
@@ -24,7 +19,6 @@ pub fn Nav() -> Element {
     };
     let show_docs_nav = use_read(&SHOW_DOCS_NAV);
     let sidebar_class = if *show_docs_nav { "" } else { "hidden" };
-    let show_sidebar = use_atom_state(&SHOW_SIDEBAR);
 
     rsx! {
         SearchModal {}
@@ -32,7 +26,10 @@ pub fn Nav() -> Element {
             div { class: "py-3 px-12 max-w-screen-2xl mx-auto flex items-center justify-between text-sm leading-6",
                 button {
                     class: "bg-gray-100 rounded-lg p-2 mr-4 lg:hidden my-3 h-10 flex items-center text-lg z-[100] {sidebar_class}",
-                    onclick: move |_| show_sidebar.set(!**show_sidebar),
+                    onclick: move |_| {
+                        let mut sidebar = SHOW_SIDEBAR.write();
+                        *sidebar = !*sidebar;
+                    },
                     MaterialIcon { name: "menu", size: 24, color: MaterialIconColor::Dark }
                 }
                 div { class: "flex z-50 flex-1",
@@ -77,12 +74,10 @@ pub fn Nav() -> Element {
                                 "DEPLOY"
                             }
                             if logged_in.0 {
-                                rsx! {
-                                    Link { to: Route::Homepage {},
-                                        img {
-                                            src: "https://avatars.githubusercontent.com/u/10237910?s=40&v=4",
-                                            class: "ml-4 h-10 rounded-full w-auto"
-                                        }
+                                Link { to: Route::Homepage {},
+                                    img {
+                                        src: "https://avatars.githubusercontent.com/u/10237910?s=40&v=4",
+                                        class: "ml-4 h-10 rounded-full w-auto"
                                     }
                                 }
                             }
@@ -120,8 +115,6 @@ fn FullNav() -> Element {
 }
 
 fn MobileNav() -> Element {
-    let show = use_atom_state(&SHOW_NAV);
-
     rsx! {
         div { class: "flex items-center",
             button {
@@ -145,7 +138,7 @@ fn MobileNav() -> Element {
                 button {
                     class: "text-gray-500 w-8 h-8 flex items-center justify-center hover:text-gray-600 dark:text-gray-400 dark:hover:text-gray-300",
                     "type": "button",
-                    onclick: move |_| show.modify(|f| ShowNav(!f.0)),
+                    onclick: move |_| SHOW_NAV.modify(|f| !f.0),
                     span { class: "sr-only", "Navigation" }
                     svg { width: "24", height: "24", "aria-hidden": "true", fill: "none",
                         path {
@@ -210,8 +203,6 @@ fn LinkList() -> Element {
 }
 
 fn Search() -> Element {
-    let show_modal = use_atom_state(&SHOW_SEARCH);
-
     rsx! {
         div { class: "relative md:w-full max-w-[30rem] xl:max-w-[30rem] 2xl:max-w-[30rem] sm:mx-auto sm:flex-1",
             // Pop up a modal
@@ -219,7 +210,7 @@ fn Search() -> Element {
                 // Pop up a modal
                 class: "bg-gray-100 rounded-lg px-3 py-3 sm:w-full text-left text-gray-400 my-auto sm:flex sm:flex-row sm:align-middle sm:justify-between",
                 onclick: move |_| {
-                    show_modal.set(ShowSearch(true));
+                    SHOW_SEARCH.set(true);
                 },
                 div { class: "h-full my-auto flex flex-row align-middle justify-between",
                     MaterialIcon { name: "search", size: 24, color: MaterialIconColor::Dark }
@@ -234,7 +225,6 @@ fn Search() -> Element {
 }
 
 fn SearchModal() -> Element {
-    let show_modal = use_atom_state(&SHOW_SEARCH);
     let search_text = use_signal(String::new);
     let results = use_signal(|| SEARCH_INDEX.search(search_text.get()));
 
@@ -243,7 +233,7 @@ fn SearchModal() -> Element {
         return 0.;
         js_sys::Date::now()
     });
-    use_future!(cx, |search_text| {
+    use_resource(|| {
         to_owned![last_key_press, results];
         async move {
             // debounce the search
@@ -263,72 +253,70 @@ fn SearchModal() -> Element {
     // entries are sorted by breadcrumb
 
     rsx! {
-        if show_modal.get().0 {
-            rsx! {
-                div {
-                    height: "100vh",
-                    width: "100vw",
-                    class: "fixed top-0 left-0 z-50 block bg-gray-500 bg-opacity-50 overflow-y-hidden",
-                    onclick: move |_| show_modal.set(ShowSearch(false)),
+        if SHOW_SEARCH() {
+            div {
+                height: "100vh",
+                width: "100vw",
+                class: "fixed top-0 left-0 z-50 block bg-gray-500 bg-opacity-50 overflow-y-hidden",
+                onclick: move |_| SHOW_SEARCH.set(false),
 
-                    // A little weird, but we're putting an empty div with a scaled height to buffer the top of the modal
-                    div { class: "max-w-screen-md mx-auto h-full flex flex-col",
-                    div { class: "h-30" }
+                // A little weird, but we're putting an empty div with a scaled height to buffer the top of the modal
+                div { class: "max-w-screen-md mx-auto h-full flex flex-col",
+                div { class: "h-30" }
 
-                        // The actual modal
-                        div { class: "bg-white dark:bg-ideblack p-2 md:p-6 rounded-2xl m-2 md:m-8 max-h-[calc(100%-8rem)] overflow-y-auto text-gray-800 dark:text-gray-100",
-                            // Search input
-                            div { class: "flex flex-row flex-grow border-b border-gray-300 pb-4",
-                                div { class: "my-auto flex flex-row",
-                                    MaterialIcon {
-                                        name: "search",
-                                        size: 40,
-                                        color: MaterialIconColor::Dark,
-                                    }
-                                    input {
-                                        onclick: move |evt| evt.stop_propagation(),
-                                        onkeydown: move |evt| {
-                                            if evt.inner().key() == Key::Escape {
-                                                show_modal.set(ShowSearch(false));
-                                            }
-                                        },
-                                        oninput: move |evt| {
-                                            search_text.set(evt.value.clone());
-                                        },
-                                        onmounted: move |evt| {
-                                            evt.inner().set_focus(true);
-                                        },
-                                        class: "flex-grow bg-transparent border-none outline-none text-xl pl-2 text-gray-800 dark:text-gray-100",
-                                        placeholder: "Search the docs",
-                                        value: "{search_text}",
-                                    }
+                    // The actual modal
+                    div { class: "bg-white dark:bg-ideblack p-2 md:p-6 rounded-2xl m-2 md:m-8 max-h-[calc(100%-8rem)] overflow-y-auto text-gray-800 dark:text-gray-100",
+                        // Search input
+                        div { class: "flex flex-row flex-grow border-b border-gray-300 pb-4",
+                            div { class: "my-auto flex flex-row",
+                                MaterialIcon {
+                                    name: "search",
+                                    size: 40,
+                                    color: MaterialIconColor::Dark,
                                 }
-                                div {}
+                                input {
+                                    onclick: move |evt| evt.stop_propagation(),
+                                    onkeydown: move |evt| {
+                                        if evt.inner().key() == Key::Escape {
+                                            show_modal.set(false);
+                                        }
+                                    },
+                                    oninput: move |evt| {
+                                        search_text.set(evt.value.clone());
+                                    },
+                                    onmounted: move |evt| {
+                                        evt.inner().set_focus(true);
+                                    },
+                                    class: "flex-grow bg-transparent border-none outline-none text-xl pl-2 text-gray-800 dark:text-gray-100",
+                                    placeholder: "Search the docs",
+                                    value: "{search_text}",
+                                }
                             }
+                            div {}
+                        }
 
-                            // Results
-                            div { class: "overflow-y-auto",
-                                ul {
-                                    match &*results.read() {
-                                        Ok(results) => {
-                                            if results.is_empty() {
-                                                rsx! {
+                        // Results
+                        div { class: "overflow-y-auto",
+                            ul {
+                                match &*results.read() {
+                                    Ok(results) => {
+                                        if results.is_empty() {
+                                            rsx! {
+                                                div {
+                                                    class: "text-center text-xlg p-4",
+                                                    "No results found"
                                                     div {
-                                                        class: "text-center text-xlg p-4",
-                                                        "No results found"
-                                                        div {
-                                                            class: "dark:text-white text-left text-lg p-4",
-                                                            "Try searching for:"
-                                                            ul {
-                                                                for search in ["Fullstack", "Typesafe Routing", "Authentication"] {
-                                                                    li {
-                                                                        button {
-                                                                            class: "underline p-4",
-                                                                            onclick: move |_| {
-                                                                                search_text.set(search.to_string());
-                                                                            },
-                                                                            "{search}"
-                                                                        }
+                                                        class: "dark:text-white text-left text-lg p-4",
+                                                        "Try searching for:"
+                                                        ul {
+                                                            for search in ["Fullstack", "Typesafe Routing", "Authentication"] {
+                                                                li {
+                                                                    button {
+                                                                        class: "underline p-4",
+                                                                        onclick: move |_| {
+                                                                            search_text.set(search.to_string());
+                                                                        },
+                                                                        "{search}"
                                                                     }
                                                                 }
                                                             }
@@ -336,27 +324,27 @@ fn SearchModal() -> Element {
                                                     }
                                                 }
                                             }
-                                            else {
-                                                rsx! {
-                                                    for result in results {
-                                                        SearchResult { result: result.clone() }
-                                                    }
+                                        }
+                                        else {
+                                            rsx! {
+                                                for result in results {
+                                                    SearchResult { result: result.clone() }
                                                 }
                                             }
                                         }
-                                        Err(err) => {
-                                            rsx! {
-                                                div { class: "text-red-500", "{err}" }
-                                            }
+                                    }
+                                    Err(err) => {
+                                        rsx! {
+                                            div { class: "text-red-500", "{err}" }
                                         }
                                     }
                                 }
                             }
+                        }
 
-                            //
-                            div {
+                        //
+                        div {
 
-                            }
                         }
                     }
                 }
@@ -367,7 +355,6 @@ fn SearchModal() -> Element {
 
 #[component]
 fn SearchResult(result: dioxus_search::SearchResult<Route>) -> Element {
-    let set_show_modal = fermi::use_set(&SHOW_SEARCH);
     let title = &result.title;
     let route = &result.route;
     let top_excerpt_segments = &result.excerpts.first().unwrap().text;
@@ -377,7 +364,7 @@ fn SearchResult(result: dioxus_search::SearchResult<Route>) -> Element {
             Link {
                 to: route.clone(),
                 onclick: move |_| {
-                    set_show_modal(ShowSearch(false));
+                    SHOW_SEARCH.set(false);
                 },
                 div { class: "flex flex-col justify-between pb-1",
                     h2 { class: "font-semibold dark:text-white", "{title}" }
@@ -385,14 +372,10 @@ fn SearchResult(result: dioxus_search::SearchResult<Route>) -> Element {
                 p { class: "text-sm pr-8 text-gray-500 dark:text-gray-300",
                     for segment in top_excerpt_segments {
                         if segment.highlighted {
-                            rsx! {
-                                span { class: "text-blue-500", "{segment.text}" }
-                            }
+                            span { class: "text-blue-500", "{segment.text}" }
                         }
                         else {
-                            rsx! {
-                                span { "{segment.text}" }
-                            }
+                            span { "{segment.text}" }
                         }
                     }
                 }

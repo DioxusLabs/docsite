@@ -4,7 +4,7 @@ Often, multiple components need to access the same state. Depending on your need
 
 ## Lifting State
 
-One approach to share state between components is to "lift" it up to the nearest common ancestor. This means putting the `use_state` hook in a parent component, and passing the needed values down as props.
+One approach to share state between components is to "lift" it up to the nearest common ancestor. This means putting the `use_signal` hook in a parent component, and passing the needed values down as props.
 
 Suppose we want to build a meme editor. We want to have an input to edit the meme caption, but also a preview of the meme with the caption. Logically, the meme and the input are 2 separate components, but they need access to the same state (the current caption).
 
@@ -16,7 +16,7 @@ We start with a `Meme` component, responsible for rendering a meme with a given 
 {{#include src/doc_examples/meme_editor.rs:meme_component}}
 ```
 
-> Note that the `Meme` component is unaware where the caption is coming from – it could be stored in `use_state`, `use_ref`, or a constant. This ensures that it is very reusable – the same component can be used for a meme gallery without any changes!
+> Note that the `Meme` component is unaware where the caption is coming from – it could be stored in `use_signal`, `use_signal`, or a constant. This ensures that it is very reusable – the same component can be used for a meme gallery without any changes!
 
 We also create a caption editor, completely decoupled from the meme. The caption editor must not store the caption itself – otherwise, how will we provide it to the `Meme` component? Instead, it should accept the current caption as a prop, as well as an event handler to delegate input events to:
 
@@ -40,9 +40,9 @@ Suppose now that we want to implement a dark mode toggle for our app. To achieve
 
 > Note: we're choosing this approach for the sake of an example. There are better ways to implement dark mode (e.g. using CSS variables). Let's pretend CSS variables don't exist – welcome to 2013!
 
-Now, we could write another `use_state` in the top component, and pass `is_dark_mode` down to every component through props. But think about what will happen as the app grows in complexity – almost every component that renders any CSS is going to need to know if dark mode is enabled or not – so they'll all need the same dark mode prop. And every parent component will need to pass it down to them. Imagine how messy and verbose that would get, especially if we had components several levels deep!
+Now, we could write another `use_signal` in the top component, and pass `is_dark_mode` down to every component through props. But think about what will happen as the app grows in complexity – almost every component that renders any CSS is going to need to know if dark mode is enabled or not – so they'll all need the same dark mode prop. And every parent component will need to pass it down to them. Imagine how messy and verbose that would get, especially if we had components several levels deep!
 
-Dioxus offers a better solution than this "prop drilling" – providing context. The [`use_shared_state_provider`](https://docs.rs/dioxus-hooks/latest/dioxus_hooks/fn.use_shared_state_provider.html) hook is similar to `use_ref`, but it makes it available through [`use_shared_state`](https://docs.rs/dioxus-hooks/latest/dioxus_hooks/fn.use_shared_state.html) for all children components.
+Dioxus offers a better solution than this "prop drilling" – providing context. The [`use_shared_state_provider`](https://docs.rs/dioxus-hooks/latest/dioxus_hooks/fn.use_shared_state_provider.html) hook is similar to `use_signal`, but it makes it available through [`use_shared_state`](https://docs.rs/dioxus-hooks/latest/dioxus_hooks/fn.use_shared_state.html) for all children components.
 
 First, we have to create a struct for our dark mode configuration:
 

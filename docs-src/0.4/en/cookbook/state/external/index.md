@@ -18,4 +18,4 @@ You can store your state inside the coroutine async block and communicate with t
 If you have some reactive state (state that is rendered), that you want to modify from another thread, you can use the [use_rw](https://github.com/DioxusLabs/dioxus-std/blob/master/src/utils/rw/use_rw.rs) hook in the [dioxus-std](https://github.com/DioxusLabs/dioxus-std) crate. 
 
 
-The use_rw hook works like the use_ref hook, but it is Send + Sync which makes it possible to move the hook into another thread.
+The use_rw hook works like the use_signal hook, but it is Send + Sync which makes it possible to move the hook into another thread.

@@ -3,7 +3,7 @@ use dioxus::prelude::*;
 
 // ANCHOR: component
 pub fn App() -> Element {
-    let name = use_state(|| "bob".to_string());
+    let name = use_signal(|| "bob".to_string());
 
     rsx! {
         input {

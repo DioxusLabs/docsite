@@ -6,7 +6,7 @@ use dioxus::prelude::*;
 #[test]
 fn test() {
     test_hook(
-        |cx| use_ref(|| 0).clone(),
+        |cx| use_signal(|| 0).clone(),
         |value, mut proxy| match proxy.generation {
             0 => {
                 value.set(1);

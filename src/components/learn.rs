@@ -27,7 +27,7 @@ const GITHUB_EDIT_PAGE_EDIT_URL: &str = "https://github.com/DioxusLabs/docsite/e
 pub fn Learn() -> Element {
     let show_sidebar_button = use_atom_state(&SHOW_DOCS_NAV);
     cx.use_hook(|| show_sidebar_button.set(true));
-    use_on_destroy({
+    use_drop({
         to_owned![show_sidebar_button];
         move || show_sidebar_button.set(false)
     });
@@ -125,7 +125,7 @@ fn SidebarSection(chapter: &'static SummaryItem<BookRoute>) -> Element {
 fn SidebarChapter(chapter: &'static SummaryItem<BookRoute>) -> Element {
     let link = chapter.maybe_link()?;
     let url = link.location.as_ref().unwrap();
-    let list_toggle = use_state(|| false);
+    let list_toggle = use_signal(|| false);
 
     // current route of the browser, trimmed to the book url
     let book_url = use_book().to_string();

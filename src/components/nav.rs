@@ -235,10 +235,10 @@ fn Search() -> Element {
 
 fn SearchModal() -> Element {
     let show_modal = use_atom_state(&SHOW_SEARCH);
-    let search_text = use_state(String::new);
-    let results = use_ref(|| SEARCH_INDEX.search(search_text.get()));
+    let search_text = use_signal(String::new);
+    let results = use_signal(|| SEARCH_INDEX.search(search_text.get()));
 
-    let last_key_press = use_ref(|| {
+    let last_key_press = use_signal(|| {
         #[cfg(not(target_arch = "wasm32"))]
         return 0.;
         js_sys::Date::now()

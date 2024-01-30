@@ -56,7 +56,7 @@ The next "best" way of handling errors in Dioxus is to match on the error locall
 To do this, we simply have an error state built into our component:
 
 ```rust
-let err = use_state(|| None);
+let err = use_signal(|| None);
 ```
 
 Whenever we perform an action that generates an error, we'll set that error state. We can then match on the error in a number of ways (early return, return Element, etc).
@@ -64,7 +64,7 @@ Whenever we perform an action that generates an error, we'll set that error stat
 
 ```rust
 fn Commandline() -> Element {
-	let error = use_state(|| None);
+	let error = use_signal(|| None);
 
 	match *error {
 		Some(error) => rsx!(
@@ -85,7 +85,7 @@ If you're dealing with a handful of components with minimal nesting, you can jus
 
 ```rust
 fn Commandline() -> Element {
-	let error = use_state(|| None);
+	let error = use_signal(|| None);
 
 	if let Some(error) = **error {
 		return rsx!{ "An error occurred" };

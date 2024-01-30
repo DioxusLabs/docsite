@@ -1,5 +1,5 @@
 #![allow(unused)]
-use dioxus::hooks::use_on_unmount;
+use dioxus::hooks::use_drop;
 use dioxus::html::input_data::keyboard_types::{Key, Modifiers};
 use dioxus::prelude::use_drop;
 use slab::Slab;

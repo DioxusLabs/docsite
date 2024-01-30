@@ -42,7 +42,7 @@ In this case, we will use the `use_shared_state_provider` and `use_shared_state`
 - You can then use the `use_shared_state` hook to read and modify that state in the `Preview` and `StoryListing` components
 - When the value updates, `use_shared_state` will make the component re-render, and provides you with the new value
 
-> Note: You should prefer local state hooks like use_state or use_ref when you only use state in one component. Because we use state in multiple components, we can use a [global state pattern](../reference/context.md)
+> Note: You should prefer local state hooks like use_signal or use_signal when you only use state in one component. Because we use state in multiple components, we can use a [global state pattern](../reference/context.md)
 
 ```rust
 {{#include src/doc_examples/hackernews_state.rs:shared_state_app}}

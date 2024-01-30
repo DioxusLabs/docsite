@@ -3,7 +3,7 @@
 use dioxus::prelude::*;
 
 pub fn App() -> Element {
-    let is_logged_in = use_state(|| false);
+    let is_logged_in = use_signal(|| false);
 
     rsx!(LogIn {
         is_logged_in: **is_logged_in,
@@ -35,7 +35,7 @@ fn LogIn(is_logged_in: bool, on_log_in: EventHandler, on_log_out: EventHandler) 
 }
 
 pub fn LogInImprovedApp() -> Element {
-    let is_logged_in = use_state(|| false);
+    let is_logged_in = use_signal(|| false);
 
     rsx!(LogInImproved {
         is_logged_in: **is_logged_in,
@@ -75,7 +75,7 @@ fn LogInImproved(is_logged_in: bool, on_log_in: EventHandler, on_log_out: EventH
 }
 
 pub fn LogInWarningApp() -> Element {
-    let is_logged_in = use_state(|| false);
+    let is_logged_in = use_signal(|| false);
 
     rsx! {
         input {

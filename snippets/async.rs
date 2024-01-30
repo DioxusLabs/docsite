@@ -1,7 +1,7 @@
 //! Easily integrate async Rust code into your components.
 
 fn Tasks() -> Element {
-    let count = use_state(|| 0);
+    let count = use_signal(|| 0);
 
     use_coroutine(|_| {
         to_owned![count];

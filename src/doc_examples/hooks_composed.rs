@@ -25,8 +25,8 @@ pub fn use_persistent<T: Serialize + DeserializeOwned + Default + 'static>(
     // A function that returns the initial value if the storage entry is empty
     init: impl FnOnce() -> T,
 ) -> &UsePersistent<T> {
-    // Use the use_ref hook to create a mutable state for the storage entry
-    let state = use_ref(move || {
+    // Use the use_signal hook to create a mutable state for the storage entry
+    let state = use_signal(move || {
         // This closure will run when the hook is created
         let key = key.to_string();
         let value = LocalStorage::get(key.as_str()).ok().unwrap_or_else(init);

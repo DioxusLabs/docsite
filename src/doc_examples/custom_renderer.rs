@@ -171,7 +171,7 @@ impl State for Border {
 // ANCHOR: rendering
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     fn app() -> Element {
-        let count = use_state(|| 0);
+        let count = use_signal(|| 0);
 
         use_future((count,), |(count,)| async move {
             loop {

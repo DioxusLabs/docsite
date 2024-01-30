@@ -4,7 +4,7 @@ use dioxus::prelude::*;
 // ANCHOR: component
 pub fn App() -> Element {
     // ANCHOR: rsx
-    let filenames: &UseRef<Vec<String>> = use_ref(Vec::new);
+    let filenames: &UseRef<Vec<String>> = use_signal(Vec::new);
     rsx! {
         input {
             // tell the input to pick a file

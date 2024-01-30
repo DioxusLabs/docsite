@@ -24,7 +24,7 @@ fn main() {
 }
 
 fn app() -> Element {
-    let mut count = use_state(|| 0);
+    let mut count = use_signal(|| 0);
 
     rsx! {
         h1 { "High-Five counter: {count}" }

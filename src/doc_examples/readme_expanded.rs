@@ -5,7 +5,7 @@ fn main() {
 }
 
 fn app() -> Element {
-    let mut count = use_state(|| 0);
+    let mut count = use_signal(|| 0);
 
     // rsx expands to VNode::new
     {

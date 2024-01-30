@@ -11,7 +11,7 @@ You can make the callback re-run when some value changes. For example, you might
 ```rust, no_run
 #[component]
 fn Profile(id: usize) -> Element {
-    let name = use_state(|| None);
+    let name = use_signal(|| None);
 
     // Only fetch the user data when the id changes.
     use_effect((id,), |(id,)| {

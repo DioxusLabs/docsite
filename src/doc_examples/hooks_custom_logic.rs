@@ -4,7 +4,7 @@ use dioxus::prelude::*;
 
 fn main() {}
 
-// ANCHOR: use_state
+// ANCHOR: use_signal
 use std::cell::RefCell;
 use std::rc::Rc;
 use std::sync::Arc;
@@ -15,7 +15,7 @@ struct UseState<T> {
     update: Arc<dyn Fn()>,
 }
 
-fn my_use_state<T: 'static>(cx: &ScopeState, init: impl FnOnce() -> T) -> &UseState<T> {
+fn my_use_signal<T: 'static>(cx: &ScopeState, init: impl FnOnce() -> T) -> &UseState<T> {
     cx.use_hook(|| {
         // The update function will trigger a re-render in the component cx is attached to
         let update = cx.schedule_update();
@@ -38,7 +38,7 @@ impl<T: Clone> UseState<T> {
         (self.update)();
     }
 }
-// ANCHOR_END: use_state
+// ANCHOR_END: use_signal
 
 // ANCHOR: use_context
 pub fn use_context<T: 'static + Clone>(cx: &ScopeState) -> Option<&T> {

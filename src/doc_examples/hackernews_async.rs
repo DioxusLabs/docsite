@@ -363,7 +363,7 @@ fn StoryListing(story: StoryItem) -> Element {
         ..
     } = story;
     // New
-    let full_story = use_ref(|| None);
+    let full_story = use_signal(|| None);
 
     let url = url.as_deref().unwrap_or_default();
     let hostname = url

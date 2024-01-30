@@ -14,7 +14,7 @@ struct UseState<'a, T> {
     update: Arc<dyn Fn()>,
 }
 
-fn my_use_state<T: 'static>(cx: &ScopeState, init: impl FnOnce() -> T) -> UseState<T> {
+fn my_use_signal<T: 'static>(cx: &ScopeState, init: impl FnOnce() -> T) -> UseState<T> {
     // The update function will trigger a re-render in the component cx is attached to
     let update = cx.schedule_update();
     // Create the initial state

@@ -10,9 +10,9 @@ struct Comment {
 
 pub fn App() -> Element {
     // ANCHOR: render_list
-    let comment_field = use_state(String::new);
-    let mut next_id = use_state(|| 0);
-    let comments = use_ref(Vec::<Comment>::new);
+    let comment_field = use_signal(String::new);
+    let mut next_id = use_signal(|| 0);
+    let comments = use_signal(Vec::<Comment>::new);
 
     let comments_lock = comments.read();
     let comments_rendered = comments_lock.iter().map(|comment| {
@@ -48,9 +48,9 @@ pub fn App() -> Element {
 
 pub fn AppForLoop() -> Element {
     // ANCHOR: render_list_for_loop
-    let comment_field = use_state(String::new);
-    let mut next_id = use_state(|| 0);
-    let comments = use_ref(Vec::<Comment>::new);
+    let comment_field = use_signal(String::new);
+    let mut next_id = use_signal(|| 0);
+    let comments = use_signal(Vec::<Comment>::new);
 
     rsx!(
         form {

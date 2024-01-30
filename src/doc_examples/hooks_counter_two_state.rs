@@ -3,10 +3,10 @@ use dioxus::prelude::*;
 
 // ANCHOR: component
 pub fn App() -> Element {
-    // ANCHOR: use_state_calls
-    let mut count_a = use_state(|| 0);
-    let mut count_b = use_state(|| 0);
-    // ANCHOR_END: use_state_calls
+    // ANCHOR: use_signal_calls
+    let mut count_a = use_signal(|| 0);
+    let mut count_b = use_signal(|| 0);
+    // ANCHOR_END: use_signal_calls
 
     rsx!(
         h1 { "Counter_a: {count_a}" }

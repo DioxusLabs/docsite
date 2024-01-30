@@ -17,7 +17,7 @@ fn MemeEditor() -> Element {
         width: fit-content;
     ";
 
-    let caption = use_state(|| "me waiting for my rust code to compile".to_string());
+    let caption = use_signal(|| "me waiting for my rust code to compile".to_string());
 
     rsx! {
         div {

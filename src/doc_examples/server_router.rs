@@ -47,8 +47,8 @@ fn Blog(id: i32) -> Element {
 
 #[component]
 fn Home() -> Element {
-    let mut count = use_state(|| 0);
-    let text = use_state(|| "...".to_string());
+    let mut count = use_signal(|| 0);
+    let text = use_signal(|| "...".to_string());
 
     rsx! {
         Link {

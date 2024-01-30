@@ -87,7 +87,7 @@ pub fn Awesome() -> Element {
         Ok(items)
     });
 
-    let search = use_state(|| "".to_string());
+    let search = use_signal(|| "".to_string());
 
     match items.value() {
         Some(Ok(items)) => {

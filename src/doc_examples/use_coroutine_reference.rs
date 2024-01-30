@@ -32,7 +32,7 @@ fn to_owned() {
     }
     enum SyncAction {}
     // ANCHOR: to_owned
-    let sync_status = use_state(|| Status::Launching);
+    let sync_status = use_signal(|| Status::Launching);
     let sync_task = use_coroutine(|rx: UnboundedReceiver<SyncAction>| {
         let sync_status = sync_status.to_owned();
         async move {
@@ -45,8 +45,8 @@ fn to_owned() {
     // ANCHOR_END: to_owned
 
     // ANCHOR: to_owned_continued
-    let sync_status = use_state(|| Status::Launching);
-    let load_status = use_state(|| Status::Launching);
+    let sync_status = use_signal(|| Status::Launching);
+    let load_status = use_signal(|| Status::Launching);
     let sync_task = use_coroutine(|rx: UnboundedReceiver<SyncAction>| {
         to_owned![sync_status, load_status];
         async move {

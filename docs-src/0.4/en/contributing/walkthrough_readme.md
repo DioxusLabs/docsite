@@ -116,7 +116,7 @@ Once at least one `Scope` is marked as dirty, the renderer can call [`render_wit
 
 ### Diffing Scopes
 
-When a user clicks the "up high" button, the root `Scope` will be marked as dirty by the `use_state` hook. The desktop renderer will then call `render_with_deadline`, which will diff the root `Scope`.
+When a user clicks the "up high" button, the root `Scope` will be marked as dirty by the `use_signal` hook. The desktop renderer will then call `render_with_deadline`, which will diff the root `Scope`.
 
 To start the diffing process, the component function is run. After the root component is run it, the root `Scope` will look like this:
 

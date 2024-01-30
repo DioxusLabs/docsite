@@ -4,7 +4,7 @@ use dioxus::prelude::*;
 // ANCHOR: component
 pub fn App() -> Element {
     // count will be initialized to 0 the first time the component is rendered
-    let mut count = use_state(|| 0);
+    let mut count = use_signal(|| 0);
 
     rsx!(
         h1 { "High-Five counter: {count}" }

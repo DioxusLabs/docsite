@@ -6,7 +6,7 @@ pub fn App() -> Element {
     // ANCHOR: use_coroutine
     // import futures::StreamExt to use the next() method
     use futures::StreamExt;
-    let response_state = use_state(|| None);
+    let response_state = use_signal(|| None);
     let tx = use_coroutine(|mut rx| {
         to_owned![response_state];
         async move {

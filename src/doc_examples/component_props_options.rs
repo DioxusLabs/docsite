@@ -61,8 +61,8 @@ struct OptionalProps<'a> {
 
 fn Title(props: OptionalProps) -> Element {
     rsx!(h1{
-        "{cx.props.title}: ",
-        cx.props.subtitle.unwrap_or("No subtitle provided"),
+        "{props.title}: ",
+        props.subtitle.unwrap_or("No subtitle provided"),
     })
 }
 // ANCHOR_END: OptionalProps
@@ -77,8 +77,8 @@ struct ExplicitOptionProps<'a> {
 
 fn ExplicitOption(props: ExplicitOptionProps) -> Element {
     rsx!(h1 {
-        "{cx.props.title}: ",
-        cx.props.subtitle.unwrap_or("No subtitle provided"),
+        "{props.title}: ",
+        props.subtitle.unwrap_or("No subtitle provided"),
     })
 }
 // ANCHOR_END: ExplicitOption
@@ -92,7 +92,7 @@ struct DefaultProps {
 }
 
 fn DefaultComponent(props: DefaultProps) -> Element {
-    rsx!(h1 { "{cx.props.number}" })
+    rsx!(h1 { "{props.number}" })
 }
 // ANCHOR_END: DefaultComponent
 
@@ -104,6 +104,6 @@ struct IntoProps {
 }
 
 fn IntoComponent(props: IntoProps) -> Element {
-    rsx!(h1 { "{cx.props.string}" })
+    rsx!(h1 { "{props.string}" })
 }
 // ANCHOR_END: IntoComponent

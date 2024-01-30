@@ -22,7 +22,7 @@ fn Likes(props: LikesProps) -> Element {
     rsx! {
         div {
             "This post has ",
-            b { "{cx.props.score}" },
+            b { "{props.score}" },
             " likes"
         }
     }

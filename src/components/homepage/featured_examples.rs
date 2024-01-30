@@ -90,7 +90,7 @@ fn FeaturedExample(props: FeaturedExampleProps) -> Element {
         img_avif,
         img,
         img_alt,
-    } = cx.props;
+    } = props;
 
     rsx!{
         div { class: "lg:w-1/3 sm:w-1/2 p-4",

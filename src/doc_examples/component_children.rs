@@ -25,7 +25,7 @@ fn Clickable(props: ClickableProps) -> Element {
         a {
             href: "{props.href}",
             class: "fancy-button",
-            &cx.props.children
+            {props.children}
         }
     )
 }

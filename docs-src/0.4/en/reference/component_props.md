@@ -4,7 +4,7 @@ Just like you can pass arguments to a function or attributes to an element, you 
 
 ## `#[derive(Props)]`
 
-Component props are a single struct annotated with `#[derive(Props)]`. For a component to accept props, the type of its argument must be `Scope<YourPropsStruct>`. Then, you can access the value of the props using `cx.props`.
+Component props are a single struct annotated with `#[derive(Props)]`. For a component to accept props, the type of its argument must be `Scope<YourPropsStruct>`. Then, you can access the value of the props using `props`.
 
 There are 2 flavors of Props structs:
 
@@ -121,12 +121,12 @@ Then, you can use it so:
 
 ## The `component` macro
 
-So far, every Component function we've seen had a corresponding ComponentProps struct to pass in props. This was quite verbose... Wouldn't it be nice to have props as simple function arguments? Then we wouldn't need to define a Props struct, and instead of typing `cx.props.whatever`, we could just use `whatever` directly!
+So far, every Component function we've seen had a corresponding ComponentProps struct to pass in props. This was quite verbose... Wouldn't it be nice to have props as simple function arguments? Then we wouldn't need to define a Props struct, and instead of typing `props.whatever`, we could just use `whatever` directly!
 
 `component` allows you to do just that. Instead of typing the "full" version:
 
 ```rust, no_run
-#[derive(Props, PartialEq)]
+#[derive(Props, Clone, PartialEq)]
 struct TitleCardProps {
     title: String,
 }

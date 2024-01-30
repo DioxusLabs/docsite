@@ -103,7 +103,7 @@ fn generate_router(book_path: PathBuf, book: mdbook_shared::MdBook<PathBuf>) -> 
                     }));
                 let rsx = rsx.render_with_location(template_name);
                 quote! {
-                    #[dioxus::prelude::component(no_case_check)]
+                    #[component(no_case_check)]
                     pub fn #name(cx: dioxus::prelude::Scope) -> dioxus::prelude::Element {
                         use dioxus::prelude::*;
                         cx.render(#rsx)

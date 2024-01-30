@@ -83,6 +83,7 @@
 	- [Installation](CLI/installation.md)
 	- [Create a Project](CLI/creating.md)
 	- [Configure Project](CLI/configure.md)
+  - [Translate HTML](CLI/translate.md)
 <!-- Plugins are probably going to be using WASI, not lua. That makes this documentation outdated.
     - [Plugin Development](CLI/plugin/index.md)
 		- [API.Log](CLI/plugin/interface/log.md)

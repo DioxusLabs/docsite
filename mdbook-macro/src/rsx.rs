@@ -276,7 +276,7 @@ impl<'a, I: Iterator<Item = Event<'a>>> RsxMarkdownParser<'a, I> {
             Tag::CodeBlock(kind) => {
                 let lang = match kind {
                     pulldown_cmark::CodeBlockKind::Indented => None,
-                    pulldown_cmark::CodeBlockKind::Fenced(lang) => (!lang.is_empty()).then(|| lang),
+                    pulldown_cmark::CodeBlockKind::Fenced(lang) => (!lang.is_empty()).then_some(lang),
                 };
                 let raw_code = self.take_code_or_text();
 
@@ -292,7 +292,7 @@ impl<'a, I: Iterator<Item = Event<'a>>> RsxMarkdownParser<'a, I> {
                     let theme = &ts.themes["base16-ocean.dark"];
                     let syntax = ss.find_syntax_by_extension("rs").unwrap();
                     let html =
-                        syntect::html::highlighted_html_for_string(&code, &ss, &syntax, theme)
+                        syntect::html::highlighted_html_for_string(&code, &ss, syntax, theme)
                             .unwrap();
                     code_attrs.push(AttributeType::Named(dioxus_rsx::ElementAttrNamed {
                         el_name: dioxus_rsx::ElementName::Ident(Ident::new(
@@ -649,7 +649,7 @@ fn resolve_extension(_path: &Path, ext: &str) -> syn::Result<String> {
                     output += "\n";
                 }
             }
-            if output.ends_with("\n") {
+            if output.ends_with('\n') {
                 output.pop();
             }
             Ok(output)

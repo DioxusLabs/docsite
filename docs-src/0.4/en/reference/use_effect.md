@@ -10,11 +10,11 @@ You can make the callback re-run when some value changes. For example, you might
 
 ```rust, no_run
 #[component]
-fn Profile(cx: Scope, id: usize) -> Element {
-    let name = use_state(cx, || None);
+fn Profile(id: usize) -> Element {
+    let name = use_state(|| None);
 
     // Only fetch the user data when the id changes.
-    use_effect(cx, (id,), |(id,)| {
+    use_effect((id,), |(id,)| {
         to_owned![name];
         async move {
             let user = fetch_user(id).await;
@@ -24,7 +24,7 @@ fn Profile(cx: Scope, id: usize) -> Element {
 
     // Because the dependencies are empty, this will only run once.
     // An empty tuple is always equal to an empty tuple.
-    use_effect(cx, (), |()| async move {
+    use_effect((), |()| async move {
         println!("Hello, World!");
     });
 
@@ -35,7 +35,7 @@ fn Profile(cx: Scope, id: usize) -> Element {
     )
 }
 
-fn app(cx: Scope) -> Element {
+fn app() -> Element {
     render!(Profile { id: 0 })
 }
 ```

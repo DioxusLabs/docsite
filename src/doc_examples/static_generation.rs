@@ -50,7 +50,7 @@ async fn main() {
 }
 
 #[component]
-fn Blog(cx: Scope) -> Element {
+fn Blog() -> Element {
     render! {
         div {
             "Blog"
@@ -59,7 +59,7 @@ fn Blog(cx: Scope) -> Element {
 }
 
 #[component]
-fn Post(cx: Scope, id: usize) -> Element {
+fn Post(id: usize) -> Element {
     render! {
         div {
             "PostId: {id}"
@@ -68,7 +68,7 @@ fn Post(cx: Scope, id: usize) -> Element {
 }
 
 #[component]
-fn PostHome(cx: Scope) -> Element {
+fn PostHome() -> Element {
     render! {
         div {
             "Post"
@@ -77,7 +77,7 @@ fn PostHome(cx: Scope) -> Element {
 }
 
 #[component]
-fn Home(cx: Scope) -> Element {
+fn Home() -> Element {
     render! {
         div {
             "Home"

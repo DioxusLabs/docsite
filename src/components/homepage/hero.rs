@@ -1,6 +1,6 @@
 use crate::*;
 
-pub fn Hero(cx: Scope) -> Element {
+pub fn Hero() -> Element {
     cx.render(rsx! {
         section { class: "w-full dark:bg-ideblack [@media(min-height:1080px)]:h-screen",
             div { class: "flex flex-wrap items-center pb-12 px-3 md:px-12 max-w-screen-2xl mx-auto text-center my-auto h-full",
@@ -59,8 +59,8 @@ pub fn Hero(cx: Scope) -> Element {
 
 static ADD_TO_CLIPBOARD: &str = r#"navigator.clipboard.writeText("cargo add dioxus")"#;
 
-fn SaveClipboard(cx: Scope) -> Element {
-    let saved = use_state(cx, || false);
+fn SaveClipboard() -> Element {
+    let saved = use_state(|| false);
 
     // funny that we can just default to some javascript like this
     // might want to do the same thing in rust so we can display a selected state
@@ -79,7 +79,7 @@ fn SaveClipboard(cx: Scope) -> Element {
     })
 }
 
-fn AnimatedIcon(cx: Scope) -> Element {
+fn AnimatedIcon() -> Element {
     let dark = include_str!("../../../public/static/multiplatform-dark.svg");
     let light = include_str!("../../../public/static/multiplatform-light.svg");
 

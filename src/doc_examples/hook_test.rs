@@ -6,7 +6,7 @@ use dioxus::prelude::*;
 #[test]
 fn test() {
     test_hook(
-        |cx| use_ref(cx, || 0).clone(),
+        |cx| use_ref(|| 0).clone(),
         |value, mut proxy| match proxy.generation {
             0 => {
                 value.set(1);
@@ -49,7 +49,7 @@ fn test_hook<V: 'static>(
     }
 
     fn mock_app<I: FnMut(&ScopeState) -> V, C: FnMut(V, MockProxy), V>(
-        cx: Scope<MockAppComponent<I, C, V>>,
+        <MockAppComponent<I, C, V>>,
     ) -> Element {
         let value = cx.props.hook.borrow_mut()(cx);
 

@@ -49,7 +49,7 @@ async fn main() {
 // ANCHOR_END: glue
 
 // ANCHOR: app
-fn app(cx: Scope) -> Element {
+fn app() -> Element {
     cx.render(rsx! {
         div {
             "Hello, world!"

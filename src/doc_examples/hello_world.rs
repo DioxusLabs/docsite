@@ -2,7 +2,7 @@
 
 use dioxus::prelude::*;
 
-pub fn HelloWorldCounter(cx: Scope) -> Element {
+pub fn HelloWorldCounter() -> Element {
     cx.render(rsx! {
         div {
             "Hello, world!"

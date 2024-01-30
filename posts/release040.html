@@ -78,8 +78,8 @@ async <span class="hljs-function"><span class="hljs-keyword">fn</span> <span cla
 <p>One feature that has been missing in Dioxus since its release is the ability to wait for futures to complete before generating the final server-side-rendered HTML. Before, the expectation was that you’d load any data <em>ahead of time,</em> and pass in the data via Root Props. We quickly learned this caused issues with scalability: you might not want to fetch every piece of props depending on the route.</p>
 <p><img src="/static/old_fetch.png" alt="Diagram of how SSR data used to be fetched"></p>
 <p>To solve this, we’re adding future-compatible <code>Suspense</code> - now integrated with Dioxus Fullstack and Server Functions.  Suspense is freely available to components via the <code>cx.suspend()</code> method. Calling <code>suspend</code> will tell Dioxus that this particular component is blocking the completion of the final render due to a pending future. The most basic usage of Suspense is pausing rendering until a data fetch has been completed:</p>
-<pre><code class="lang-rust"><span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">Username</span></span>(cx: Scope) -&gt; Element {
-    <span class="hljs-keyword">let</span> username = use_future(cx, (), |_| get_username());
+<pre><code class="lang-rust"><span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">Username</span></span>() -&gt; Element {
+    <span class="hljs-keyword">let</span> username = use_future((), |_| get_username());
 
     <span class="hljs-comment">// Try to extract the current value of the future</span>
     <span class="hljs-keyword">let</span> <span class="hljs-literal">Some</span>(username) = username.value() <span class="hljs-keyword">else</span> {
@@ -93,9 +93,9 @@ async <span class="hljs-function"><span class="hljs-keyword">fn</span> <span cla
 </code></pre>
 <p>Now, we can do datafetching <em>inside</em> components, greatly simplifying our project structure. With the new <code>use_server_future</code> hook, we can persist the result of the fetch between server render and client render, allowing hydration to work seamlessly.</p>
 <pre><code class="lang-rust">
-<span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">Dashboard</span></span>(cx: Scope) -&gt; Element {
+<span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">Dashboard</span></span>() -&gt; Element {
     <span class="hljs-comment">// use_server_future will persist the result of this call during SSR</span>
-    <span class="hljs-keyword">let</span> ip = use_server_future(cx, (), |_| get_server_ip())?;
+    <span class="hljs-keyword">let</span> ip = use_server_future((), |_| get_server_ip())?;
 
     render!{ <span class="hljs-string">"The edge node is {ip}"</span> }
 }
@@ -124,7 +124,7 @@ async <span class="hljs-function"><span class="hljs-keyword">fn</span> <span cla
 <h2 id="enum-router">Enum Router</h2>
 <p>Since the initial release of Dioxus, we’ve had a very simple App Router, inspired by the older versions of React Router. Most UI toolkits these days provide a Router object that interacts with the browser’s router, and to date, Dioxus’ router has been pretty simple.</p>
 <p>In the beginning we opted for simplicity and flexibility. The old router let you create route trees with just components. This router was easy to add new routes to and easy to compose.</p>
-<pre><code class="lang-rust">pub fn app(cx: Scope) -&gt; Element {
+<pre><code class="lang-rust">pub fn app() -&gt; Element {
     render! {
         Router {
             Nav {}
@@ -183,12 +183,12 @@ enum <span class="hljs-class">Route </span>{
 }
 
 <span class="hljs-comment">// 2. Make sure we have a component in scope that matches the enum variant</span>
-<span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">Homepage</span></span>(cx: Scope) -&gt; Element {
+<span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">Homepage</span></span>() -&gt; Element {
     render! { <span class="hljs-string">"Welcome home!"</span> }
 }
 
 <span class="hljs-comment">// 3. Now render our app, using the Router and Route</span>
-<span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">app</span></span>(cx: Scope) -&gt; Element {
+<span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">app</span></span>() -&gt; Element {
     render! { Router::&lt;Route&gt; {} }
 }
 </code></pre>
@@ -201,7 +201,7 @@ enum <span class="hljs-class">Route </span>{
 }
 
 <span class="hljs-meta">#[component]</span>
-<span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">BlogPost</span></span>(cx: Scope, post: <span class="hljs-built_in">String</span>) {
+<span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">BlogPost</span></span>(post: <span class="hljs-built_in">String</span>) {
     render!{ <span class="hljs-string">"Currently viewing: {post}"</span> }
 }
 </code></pre>
@@ -214,7 +214,7 @@ enum <span class="hljs-class">Route </span>{
 }
 </code></pre>
 <p>Another exciting feature is layouts. We’re borrowing this concept from popular frameworks like Remix and Next.JS. Layouts make it easy to wrap Route components together in a shared set of components. A common use case is wrapping your app in a Header, Footer, or Navbar. Without layouts, you’d have a lot of code duplication</p>
-<pre><code class="lang-rust">fn Home(cx: Scope) -&gt; Element {
+<pre><code class="lang-rust">fn Home() -&gt; Element {
     render! {
         Header {}
         Navbar {}
@@ -223,7 +223,7 @@ enum <span class="hljs-class">Route </span>{
     }
 }
 
-fn Blog(cx: Scope) -&gt; Element {
+fn Blog() -&gt; Element {
     render! {
         Header {}
         Navbar {}
@@ -244,7 +244,7 @@ enum <span class="hljs-class">Route </span>{
 }
 
 <span class="hljs-comment">// Wrap the rendered content of the Router with a header, navbar, and footer</span>
-fn HeaderFooterNav(cx: Scope) -&gt; <span class="hljs-class">Element </span>{
+fn HeaderFooterNav() -&gt; <span class="hljs-class">Element </span>{
     render! {
         <span class="hljs-class">Header </span>{}
         <span class="hljs-class">Navbar </span>{}
@@ -305,10 +305,10 @@ fn HeaderFooterNav(cx: Scope) -&gt; <span class="hljs-class">Element </span>{
     dioxus_desktop::launch(app);
 }
 
-<span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">app</span></span>(cx: Scope) -&gt; Element {
-    <span class="hljs-keyword">let</span> eval = use_eval(cx);
+<span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">app</span></span>() -&gt; Element {
+    <span class="hljs-keyword">let</span> eval = use_eval();
 
-    <span class="hljs-keyword">let</span> future = use_future(cx, (), |_| {
+    <span class="hljs-keyword">let</span> future = use_future((), |_| {
         to_owned![eval];
         async <span class="hljs-keyword">move</span> {
             <span class="hljs-comment">// Eval some javascript</span>
@@ -350,8 +350,8 @@ fn HeaderFooterNav(cx: Scope) -&gt; <span class="hljs-class">Element </span>{
     dioxus_desktop::launch(app);
 }
 
-<span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">app</span></span>(cx: Scope) -&gt; Element {
-    <span class="hljs-keyword">let</span> header_element = use_state(cx, || <span class="hljs-literal">None</span>);
+<span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">app</span></span>() -&gt; Element {
+    <span class="hljs-keyword">let</span> header_element = use_state(|| <span class="hljs-literal">None</span>);
 
     cx.render(rsx!(
         div {

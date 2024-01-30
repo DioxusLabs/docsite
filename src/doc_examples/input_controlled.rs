@@ -2,8 +2,8 @@
 use dioxus::prelude::*;
 
 // ANCHOR: component
-pub fn App(cx: Scope) -> Element {
-    let name = use_state(cx, || "bob".to_string());
+pub fn App() -> Element {
+    let name = use_state(|| "bob".to_string());
 
     cx.render(rsx! {
         input {

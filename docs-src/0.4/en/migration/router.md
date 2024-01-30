@@ -40,17 +40,17 @@ enum Route {
 }
 
 #[component]
-fn Home(cx: Scope) -> Element {
+fn Home() -> Element {
     todo!()
 }
 
 #[component]
-fn Blog(cx: Scope) -> Element {
+fn Blog() -> Element {
     todo!()
 }
 
 #[component]
-fn BlogPost(cx: Scope, id: usize) -> Element {
+fn BlogPost(id: usize) -> Element {
     // Note that you have access to id here in a type safe way without calling any extra functions!
     todo!()
 }
@@ -64,7 +64,7 @@ Now that routes are enums, you should use the enum as the route in Links. If you
 use dioxus::prelude::*;
 use dioxus_router::prelude::*;
 
-fn Component(cx: Scope) -> Element {
+fn Component() -> Element {
     render! {
         Link {
             to: Route::BlogPost { id: 123 },
@@ -82,7 +82,7 @@ To link to external routes, you can use a string:
 use dioxus::prelude::*;
 use dioxus_router::prelude::*;
 
-fn Component(cx: Scope) -> Element {
+fn Component() -> Element {
     render! {
         Link {
             to: "https://google.com",
@@ -110,7 +110,7 @@ enum Route {
     Index {},
 }
 
-fn App(cx: Scope) -> Element {
+fn App() -> Element {
     render! {
         h1 { "App" }
         Router::<Route> {}
@@ -118,7 +118,7 @@ fn App(cx: Scope) -> Element {
 }
 
 #[component]
-fn Index(cx: Scope) -> Element {
+fn Index() -> Element {
     // Read from (and subscribe to the current route)
     let path = use_route(&cx).unwrap();
     render! {

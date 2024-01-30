@@ -11,12 +11,12 @@ fn main() {
 struct DarkMode(bool);
 // ANCHOR_END: DarkMode_struct
 
-pub fn App(cx: Scope) -> Element {
+pub fn App() -> Element {
     // ANCHOR: context_provider
-    use_shared_state_provider(cx, || DarkMode(false));
+    use_shared_state_provider(|| DarkMode(false));
     // ANCHOR_END: context_provider
 
-    let is_dark_mode = use_is_dark_mode(cx);
+    let is_dark_mode = use_is_dark_mode();
 
     let wrapper_style = if is_dark_mode {
         r"
@@ -34,7 +34,7 @@ pub fn App(cx: Scope) -> Element {
     }))
 }
 
-pub fn use_is_dark_mode(cx: &ScopeState) -> bool {
+pub fn use_is_dark_mode() -> bool {
     // ANCHOR: use_context
     let dark_mode_context = use_shared_state::<DarkMode>(cx);
     // ANCHOR_END: use_context
@@ -45,7 +45,7 @@ pub fn use_is_dark_mode(cx: &ScopeState) -> bool {
 }
 
 // ANCHOR: toggle
-pub fn DarkModeToggle(cx: Scope) -> Element {
+pub fn DarkModeToggle() -> Element {
     let dark_mode = use_shared_state::<DarkMode>(cx).unwrap();
 
     let style = if dark_mode.read().0 {
@@ -69,8 +69,8 @@ pub fn DarkModeToggle(cx: Scope) -> Element {
 // ANCHOR_END: toggle
 
 // ANCHOR: meme_editor
-fn MemeEditor(cx: Scope) -> Element {
-    let is_dark_mode = use_is_dark_mode(cx);
+fn MemeEditor() -> Element {
+    let is_dark_mode = use_is_dark_mode();
     let heading_style = if is_dark_mode { "color: white" } else { "" };
 
     let container_style = r"
@@ -81,7 +81,7 @@ fn MemeEditor(cx: Scope) -> Element {
         width: fit-content;
     ";
 
-    let caption = use_state(cx, || "me waiting for my rust code to compile".to_string());
+    let caption = use_state(|| "me waiting for my rust code to compile".to_string());
 
     cx.render(rsx! {
         div {
@@ -104,7 +104,7 @@ fn MemeEditor(cx: Scope) -> Element {
 
 // ANCHOR: meme_component
 #[component]
-fn Meme<'a>(cx: Scope<'a>, caption: &'a str) -> Element<'a> {
+fn Meme<'a>( caption: &'a str) -> Element<'a> {
     let container_style = r"
         position: relative;
         width: fit-content;
@@ -147,11 +147,11 @@ fn Meme<'a>(cx: Scope<'a>, caption: &'a str) -> Element<'a> {
 // ANCHOR: caption_editor
 #[component]
 fn CaptionEditor<'a>(
-    cx: Scope<'a>,
+    <'a>,
     caption: &'a str,
     on_input: EventHandler<'a, FormEvent>,
 ) -> Element<'a> {
-    let is_dark_mode = use_is_dark_mode(cx);
+    let is_dark_mode = use_is_dark_mode();
 
     let colors = if is_dark_mode {
         r"

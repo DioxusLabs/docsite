@@ -8,7 +8,7 @@ pub mod story_v1 {
     use super::*;
 
     // ANCHOR: story_v1
-    pub fn App(cx: Scope) -> Element {
+    pub fn App() -> Element {
         render! {
             "story"
         }
@@ -20,7 +20,7 @@ pub mod story_v2 {
     use dioxus::prelude::*;
 
     // ANCHOR: story_v2
-    pub fn App(cx: Scope) -> Element {
+    pub fn App() -> Element {
         let title = "title";
         let by = "author";
         let score = 0;
@@ -38,7 +38,7 @@ pub mod story_v3 {
     use dioxus::prelude::*;
 
     // ANCHOR: story_v3
-    pub fn App(cx: Scope) -> Element {
+    pub fn App() -> Element {
         let title = "title";
         let by = "author";
         let score = 0;
@@ -58,7 +58,7 @@ pub mod story_v4 {
     use dioxus::prelude::*;
 
     // ANCHOR: story_v4
-    pub fn App(cx: Scope) -> Element {
+    pub fn App() -> Element {
         let title = "title";
         let by = "author";
         let score = 0;
@@ -80,7 +80,7 @@ pub mod story_v5 {
     use dioxus::prelude::*;
 
     // ANCHOR: app_v5
-    pub fn App(cx: Scope) -> Element {
+    pub fn App() -> Element {
         render! {
             StoryListing {
 
@@ -90,7 +90,7 @@ pub mod story_v5 {
     // ANCHOR_END: app_v5
 
     // ANCHOR: story_v5
-    fn StoryListing(cx: Scope) -> Element {
+    fn StoryListing() -> Element {
         let title = "title";
         let by = "author";
         let score = 0;
@@ -112,7 +112,7 @@ pub mod story_v6 {
     use dioxus::prelude::*;
 
     // ANCHOR: app_v6
-    pub fn App(cx: Scope) -> Element {
+    pub fn App() -> Element {
         render! {
             StoryListing {
                 story: StoryItem {
@@ -182,7 +182,7 @@ pub mod story_v6 {
     }
 
     #[component]
-    fn StoryListing(cx: Scope, story: StoryItem) -> Element {
+    fn StoryListing(story: StoryItem) -> Element {
         let StoryItem {
             title,
             by,
@@ -257,7 +257,7 @@ pub mod story_final {
         pub r#type: String,
     }
 
-    pub fn App(cx: Scope) -> Element {
+    pub fn App() -> Element {
         render! {
             StoryListing {
                 story: StoryItem {
@@ -277,7 +277,7 @@ pub mod story_final {
     }
 
     #[component]
-    fn StoryListing(cx: Scope, story: StoryItem) -> Element {
+    fn StoryListing(story: StoryItem) -> Element {
         let StoryItem {
             title,
             url,

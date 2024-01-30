@@ -2,9 +2,9 @@
 use dioxus::prelude::*;
 
 // ANCHOR: component
-pub fn App(cx: Scope) -> Element {
+pub fn App() -> Element {
     // count will be initialized to 0 the first time the component is rendered
-    let mut count = use_state(cx, || 0);
+    let mut count = use_state(|| 0);
 
     cx.render(rsx!(
         h1 { "High-Five counter: {count}" }

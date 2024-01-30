@@ -7,7 +7,7 @@ fn main() {}
 struct AppSettings {}
 
 // ANCHOR: wrap_context
-fn use_settings(cx: &ScopeState) -> &UseSharedState<AppSettings> {
+fn use_settings() -> &UseSharedState<AppSettings> {
     use_shared_state::<AppSettings>(cx).expect("App settings not provided")
 }
 // ANCHOR_END: wrap_context
@@ -26,7 +26,7 @@ pub fn use_persistent<T: Serialize + DeserializeOwned + Default + 'static>(
     init: impl FnOnce() -> T,
 ) -> &UsePersistent<T> {
     // Use the use_ref hook to create a mutable state for the storage entry
-    let state = use_ref(cx, move || {
+    let state = use_ref(move || {
         // This closure will run when the hook is created
         let key = key.to_string();
         let value = LocalStorage::get(key.as_str()).ok().unwrap_or_else(init);

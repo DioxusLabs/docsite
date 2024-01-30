@@ -2,12 +2,12 @@
 use dioxus::prelude::*;
 use std::collections::HashMap;
 
-pub fn App(cx: Scope) -> Element {
+pub fn App() -> Element {
     // ANCHOR: use_coroutine
     // import futures::StreamExt to use the next() method
     use futures::StreamExt;
-    let response_state = use_state(cx, || None);
-    let tx = use_coroutine(cx, |mut rx| {
+    let response_state = use_state(|| None);
+    let tx = use_coroutine(|mut rx| {
         to_owned![response_state];
         async move {
             // Define your state before the loop

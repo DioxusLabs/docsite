@@ -132,8 +132,8 @@
         .await;
 }
 
-fn app(cx: Scope) -&gt; Element {
-        let posts = use_db_query(cx, RECENT_POSTS);
+fn app() -&gt; Element {
+        let posts = use_db_query(RECENT_POSTS);
 
         render! {
                 <span class="hljs-keyword">for</span> post in posts {

@@ -15,12 +15,12 @@ enum Route {
 }
 
 #[component]
-fn Home(cx: Scope) -> Element {
+fn Home() -> Element {
     todo!()
 }
 
 #[component]
-fn HelloWorld(cx: Scope) -> Element {
+fn HelloWorld() -> Element {
     todo!()
 }
 // ANCHOR_END: route

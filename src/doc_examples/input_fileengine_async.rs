@@ -2,8 +2,8 @@
 use dioxus::prelude::*;
 
 // ANCHOR: component
-pub fn App(cx: Scope) -> Element {
-    let files_uploaded: &UseRef<Vec<String>> = use_ref(cx, Vec::new);
+pub fn App() -> Element {
+    let files_uploaded: &UseRef<Vec<String>> = use_ref(Vec::new);
 
     cx.render(rsx! {
         input {

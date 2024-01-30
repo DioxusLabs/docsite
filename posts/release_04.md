@@ -107,8 +107,8 @@ One feature that has been missing in Dioxus since its release is the ability to 
 To solve this, we’re adding future-compatible `Suspense` - now integrated with Dioxus Fullstack and Server Functions.  Suspense is freely available to components via the `cx.suspend()` method. Calling `suspend` will tell Dioxus that this particular component is blocking the completion of the final render due to a pending future. The most basic usage of Suspense is pausing rendering until a data fetch has been completed:
 
 ```rust
-fn Username(cx: Scope) -> Element {
-	let username = use_future(cx, (), |_| get_username());
+fn Username() -> Element {
+	let username = use_future((), |_| get_username());
 
 	// Try to extract the current value of the future
 	let Some(username) = username.value() else {
@@ -125,9 +125,9 @@ Now, we can do datafetching *inside* components, greatly simplifying our project
 
 ```rust
 
-fn Dashboard(cx: Scope) -> Element {
+fn Dashboard() -> Element {
     // use_server_future will persist the result of this call during SSR
-    let ip = use_server_future(cx, (), |_| get_server_ip())?;
+    let ip = use_server_future((), |_| get_server_ip())?;
 
     render!{ "The edge node is {ip}" }
 }
@@ -168,7 +168,7 @@ Since the initial release of Dioxus, we’ve had a very simple App Router, inspi
 In the beginning we opted for simplicity and flexibility. The old router let you create route trees with just components. This router was easy to add new routes to and easy to compose.
 
 ```rust
-pub fn app(cx: Scope) -> Element {
+pub fn app() -> Element {
     render! {
         Router {
             Nav {}
@@ -220,7 +220,7 @@ enum Route {
 To render the new router, pass in your app’s Route enum as the generic type in the Router, and Dioxus will render the right component, given that the enum variant.
 
 ```rust
-fn app(cx: Scope) -> Element {
+fn app() -> Element {
 	render! { Router::<Route> {} }
 }
 ```
@@ -237,12 +237,12 @@ enum Route {
 }
 
 // 2. Make sure we have a component in scope that matches the enum variant
-fn Homepage(cx: Scope) -> Element {
+fn Homepage() -> Element {
 	render! { "Welcome home!" }
 }
 
 // 3. Now render our app, using the Router and Route
-fn app(cx: Scope) -> Element {
+fn app() -> Element {
 	render! { Router::<Route> {} }
 }
 ```
@@ -258,7 +258,7 @@ enum Route {
 }
 
 #[component]
-fn BlogPost(cx: Scope, post: String) {
+fn BlogPost(post: String) {
 	render!{ "Currently viewing: {post}" }
 }
 
@@ -278,7 +278,7 @@ enum Route {
 Another exciting feature is layouts. We’re borrowing this concept from popular frameworks like Remix and Next.JS. Layouts make it easy to wrap Route components together in a shared set of components. A common use case is wrapping your app in a Header, Footer, or Navbar. Without layouts, you’d have a lot of code duplication
 
 ```rust
-fn Home(cx: Scope) -> Element {
+fn Home() -> Element {
 	render! {
 		Header {}
 		Navbar {}
@@ -287,7 +287,7 @@ fn Home(cx: Scope) -> Element {
 	}
 }
 
-fn Blog(cx: Scope) -> Element {
+fn Blog() -> Element {
 	render! {
 		Header {}
 		Navbar {}
@@ -311,7 +311,7 @@ enum Route {
 }
 
 // Wrap the rendered content of the Router with a header, navbar, and footer
-fn HeaderFooterNav(cx: Scope) -> Element {
+fn HeaderFooterNav() -> Element {
 	render! {
 		Header {}
 		Navbar {}
@@ -398,10 +398,10 @@ fn main() {
     dioxus_desktop::launch(app);
 }
 
-fn app(cx: Scope) -> Element {
-    let eval = use_eval(cx);
+fn app() -> Element {
+    let eval = use_eval();
 
-    let future = use_future(cx, (), |_| {
+    let future = use_future((), |_| {
         to_owned![eval];
         async move {
             // Eval some javascript
@@ -447,8 +447,8 @@ fn main() {
     dioxus_desktop::launch(app);
 }
 
-fn app(cx: Scope) -> Element {
-    let header_element = use_state(cx, || None);
+fn app() -> Element {
+    let header_element = use_state(|| None);
 
     cx.render(rsx!(
         div {

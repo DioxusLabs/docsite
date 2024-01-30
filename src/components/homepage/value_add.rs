@@ -12,7 +12,7 @@ static IconsSet: &[Component<()>; 8] = &[
     icons::Icon2,
 ];
 
-pub fn ValueAdd(cx: Scope) -> Element {
+pub fn ValueAdd() -> Element {
     cx.render(rsx! {
         section { class: "text-gray-600 body-font",
             div { class: "container mx-auto py-12 px-6 lg:px-40",

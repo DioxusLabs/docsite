@@ -1,7 +1,7 @@
 #![allow(non_snake_case)]
 use dioxus::prelude::*;
 
-pub fn App(cx: Scope) -> Element {
+pub fn App() -> Element {
     // ANCHOR: dangerous_inner_html
     // this should come from a trusted source
     let contents = "live <b>dangerously</b>";

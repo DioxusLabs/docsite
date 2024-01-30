@@ -10,7 +10,7 @@ enum Route {
 
 // ANCHOR: app
 #[component]
-fn App(cx: Scope) -> Element {
+fn App() -> Element {
     render! {
         Router::<Route> {
             config: || RouterConfig::default().history(WebHistory::default())
@@ -20,7 +20,7 @@ fn App(cx: Scope) -> Element {
 // ANCHOR_END: app
 
 #[component]
-fn Home(cx: Scope) -> Element {
+fn Home() -> Element {
     render! {
         h1 { "Welcome to the Dioxus Blog!" }
     }

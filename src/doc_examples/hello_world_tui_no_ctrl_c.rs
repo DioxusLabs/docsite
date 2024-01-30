@@ -16,7 +16,7 @@ fn main() {
     );
 }
 
-fn App(cx: Scope) -> Element {
+fn App() -> Element {
     let tui_ctx: TuiContext = cx.consume_context().unwrap();
 
     cx.render(rsx! {

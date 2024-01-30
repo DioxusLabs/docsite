@@ -1,6 +1,6 @@
 use dioxus::prelude::*;
 
-pub fn FeaturedExamples(cx: Scope) -> Element {
+pub fn FeaturedExamples() -> Element {
     cx.render(rsx! {
         section { class: "body-font w-full dark:bg-ideblack",
             div { class: "container px-6 max-w-screen-lg py-24 mx-auto",
@@ -81,7 +81,7 @@ struct FeaturedExampleProps<'a> {
     img_alt: &'a str,
 }
 
-fn FeaturedExample<'a>(cx: Scope<'a, FeaturedExampleProps<'a>>) -> Element {
+fn FeaturedExample<'a>( FeaturedExampleProps<'a>>) -> Element {
     let FeaturedExampleProps {
         subtitle,
         title,

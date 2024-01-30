@@ -2,7 +2,7 @@
 use dioxus::prelude::*;
 
 // ANCHOR: App
-pub fn App(cx: Scope) -> Element {
+pub fn App() -> Element {
     let hello = "Hello Dioxus!";
 
     cx.render(rsx!(TitleCard { title: hello }))
@@ -12,12 +12,12 @@ pub fn App(cx: Scope) -> Element {
 // ANCHOR: TitleCard
 #[derive(Props)]
 struct TitleCardProps<'a> {
-    title: &'a str,
+    title: String,
 }
 
-fn TitleCard<'a>(cx: Scope<'a, TitleCardProps<'a>>) -> Element {
+fn TitleCard(props: TitleCardProps) -> Element {
     cx.render(rsx! {
-        h1 { "{cx.props.title}" }
+        h1 { "{props.title}" }
     })
 }
 // ANCHOR_END: TitleCard

@@ -10,14 +10,14 @@ enum Route {
 }
 
 #[component]
-fn Home(cx: Scope) -> Element {
+fn Home() -> Element {
     todo!()
 }
 
 fn main() {}
 
 // ANCHOR: component
-fn GoToDioxus(cx: Scope) -> Element {
+fn GoToDioxus() -> Element {
     render! {
         Link {
             to: "https://dioxuslabs.com",

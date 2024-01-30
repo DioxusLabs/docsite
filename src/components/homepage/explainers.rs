@@ -2,7 +2,7 @@ use dioxus::prelude::*;
 
 #[component]
 pub fn Explainer<'a>(
-    cx: Scope<'a>,
+    <'a>,
     invert: bool,
     title: &'static str,
     content: Element<'a>,
@@ -52,7 +52,7 @@ Content
 6. Investing in the ecosystem
 
 */
-pub fn Explainers(cx: Scope) -> Element {
+pub fn Explainers() -> Element {
     render! {
         section { class: "dark:text-white py-16 border-t font-light",
             div { class: "max-w-screen-xl mx-auto flex flex-wrap items-center",

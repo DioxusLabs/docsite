@@ -8,7 +8,7 @@ use dioxus::prelude::*;
 
 fn main() {}
 
-fn AntipatternNestedFragments(cx: Scope<()>) -> Element {
+fn AntipatternNestedFragments(<()>) -> Element {
     // ANCHOR: nested_fragments
     // ❌ Don't unnecessarily nest fragments
     let _ = cx.render(rsx!(
@@ -37,7 +37,7 @@ struct NoKeysProps {
     data: HashMap<u32, String>,
 }
 
-fn AntipatternNoKeys(cx: Scope<NoKeysProps>) -> Element {
+fn AntipatternNoKeys(<NoKeysProps>) -> Element {
     // ANCHOR: iter_keys
     let data: &HashMap<_, _> = &cx.props.data;
 

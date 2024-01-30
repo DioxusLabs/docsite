@@ -33,7 +33,7 @@ static TUTORIALS: &[Tutorial] = &[
     },
 ];
 
-pub fn Tutorials(cx: Scope) -> Element {
+pub fn Tutorials() -> Element {
     cx.render(rsx! {
         div { class: "dark:bg-ideblack dark:text-white",
             div { class: "max-w-screen-lg mx-auto",
@@ -66,7 +66,7 @@ pub fn Tutorials(cx: Scope) -> Element {
 }
 
 #[component]
-fn TutorialPreview(cx: Scope, id: usize) -> Element {
+fn TutorialPreview(id: usize) -> Element {
     let tutorial = &TUTORIALS[*id];
 
     cx.render(rsx! {
@@ -89,7 +89,7 @@ fn TutorialPreview(cx: Scope, id: usize) -> Element {
 }
 
 #[component]
-pub fn Tutorial(cx: Scope, id: usize) -> Element {
+pub fn Tutorial(id: usize) -> Element {
     let tutorial = TUTORIALS.get(*id)?;
 
     render!(

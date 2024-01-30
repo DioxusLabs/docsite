@@ -2,8 +2,8 @@
 #![allow(non_snake_case)]
 use dioxus::prelude::*;
 
-pub fn App(cx: Scope) -> Element {
-    let is_logged_in = use_state(cx, || false);
+pub fn App() -> Element {
+    let is_logged_in = use_state(|| false);
 
     cx.render(rsx!(LogIn {
         is_logged_in: **is_logged_in,
@@ -14,7 +14,7 @@ pub fn App(cx: Scope) -> Element {
 
 #[component]
 fn LogIn<'a>(
-    cx: Scope<'a>,
+    <'a>,
     is_logged_in: bool,
     on_log_in: EventHandler<'a>,
     on_log_out: EventHandler<'a>,
@@ -39,8 +39,8 @@ fn LogIn<'a>(
     // ANCHOR_END: if_else
 }
 
-pub fn LogInImprovedApp(cx: Scope) -> Element {
-    let is_logged_in = use_state(cx, || false);
+pub fn LogInImprovedApp() -> Element {
+    let is_logged_in = use_state(|| false);
 
     cx.render(rsx!(LogInImproved {
         is_logged_in: **is_logged_in,
@@ -51,7 +51,7 @@ pub fn LogInImprovedApp(cx: Scope) -> Element {
 
 #[component]
 fn LogInImproved<'a>(
-    cx: Scope<'a>,
+    <'a>,
     is_logged_in: bool,
     on_log_in: EventHandler<'a>,
     on_log_out: EventHandler<'a>,
@@ -84,8 +84,8 @@ fn LogInImproved<'a>(
     // ANCHOR_END: if_else_improved
 }
 
-pub fn LogInWarningApp(cx: Scope) -> Element {
-    let is_logged_in = use_state(cx, || false);
+pub fn LogInWarningApp() -> Element {
+    let is_logged_in = use_state(|| false);
 
     render! {
         input {
@@ -101,7 +101,7 @@ pub fn LogInWarningApp(cx: Scope) -> Element {
 }
 
 #[component]
-fn LogInWarning(cx: Scope, is_logged_in: bool) -> Element {
+fn LogInWarning(is_logged_in: bool) -> Element {
     // ANCHOR: conditional_none
     if *is_logged_in {
         return None;

@@ -9,7 +9,7 @@ pub mod snippets;
 pub mod value_add;
 
 #[component]
-pub fn Homepage(cx: Scope) -> Element {
+pub fn Homepage() -> Element {
     cx.render(rsx! {
         div {
             section { class: "w-full dark:bg-ideblack",
@@ -51,7 +51,7 @@ const CARDS: &[(&str, &str)] = &[
     ),
 ];
 
-fn ProjectCards(cx: Scope) -> Element {
+fn ProjectCards() -> Element {
     cx.render(rsx! {
         section { class: "py-12",
             div { class: "container mx-auto px-6 lg:px-64",
@@ -77,7 +77,7 @@ fn ProjectCards(cx: Scope) -> Element {
     })
 }
 
-fn AvailablePlatforms(cx: Scope) -> Element {
+fn AvailablePlatforms() -> Element {
     cx.render(rsx! {
         section { class: "w-full dark:bg-ideblack",
             div { class: "container mx-auto max-w-screen-lg",
@@ -161,7 +161,7 @@ fn AvailablePlatforms(cx: Scope) -> Element {
 
 #[component]
 fn TriShow<'a>(
-    cx: Scope<'a>,
+    <'a>,
     left: Element<'a>,
     center: Element<'a>,
     right: Element<'a>,
@@ -188,7 +188,7 @@ fn TriShow<'a>(
 }
 
 #[component]
-fn TriPadding<'a>(cx: Scope<'a>, children: Element<'a>, last: bool) -> Element {
+fn TriPadding<'a>( children: Element<'a>, last: bool) -> Element {
     render!(
         div { class: "flex flex-col items-center",
             div { class: "w-0 h-10 border-dashed border border-[#444]" }
@@ -202,7 +202,7 @@ fn TriPadding<'a>(cx: Scope<'a>, children: Element<'a>, last: bool) -> Element {
 }
 
 #[component]
-fn DeveloperExperience(cx: Scope) -> Element {
+fn DeveloperExperience() -> Element {
     render! (
         section { class: "pt-36 w-full dark:bg-ideblack dark:text-white",
             div { class: "container mx-auto max-w-screen-2xl",
@@ -244,7 +244,7 @@ fn DeveloperExperience(cx: Scope) -> Element {
 }
 
 #[component]
-fn ExperienceText(cx: Scope, title: &'static str, content: &'static str) -> Element {
+fn ExperienceText(title: &'static str, content: &'static str) -> Element {
     render!(
         div { class: "pb-12",
             h3 { class: "text-2xl text-gray-800 font-semibold pb-2 dark:text-gray-100 ",
@@ -255,7 +255,7 @@ fn ExperienceText(cx: Scope, title: &'static str, content: &'static str) -> Elem
     )
 }
 
-fn IconSplit(cx: Scope) -> Element {
+fn IconSplit() -> Element {
     cx.render(rsx! {
         svg {
             class: "mx-auto fill-[#444] dark:fill-white",
@@ -274,7 +274,7 @@ fn IconSplit(cx: Scope) -> Element {
     })
 }
 
-fn Stats(cx: Scope) -> Element {
+fn Stats() -> Element {
     cx.render(rsx! {
         section { class: "pb-24 w-full dark:bg-ideblack",
             div { class: "container mx-auto max-w-screen-lg",
@@ -311,7 +311,7 @@ fn Stats(cx: Scope) -> Element {
 }
 
 #[component]
-fn StatsItem(cx: Scope, major: &'static str, minor: &'static str) -> Element {
+fn StatsItem(major: &'static str, minor: &'static str) -> Element {
     render! {
         div { class: "text-center py-6 border border-[#444]",
             div { class: "text-5xl font-bold text-gray-800 dark:text-gray-100", *major }
@@ -322,7 +322,7 @@ fn StatsItem(cx: Scope, major: &'static str, minor: &'static str) -> Element {
 
 #[component]
 fn Platform<'a>(
-    cx: Scope<'a>,
+    <'a>,
     name: &'static str,
     content: &'static str,
     children: Element<'a>,
@@ -363,7 +363,7 @@ fn Platform<'a>(
     })
 }
 
-fn JumpStart(cx: Scope) -> Element {
+fn JumpStart() -> Element {
     render! {
         section { class: "pt-36 w-full dark:bg-ideblack",
             div { class: "container mx-auto max-w-screen-lg",

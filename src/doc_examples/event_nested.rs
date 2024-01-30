@@ -5,7 +5,7 @@ fn main() {
     dioxus_desktop::launch(App);
 }
 
-fn App(cx: Scope) -> Element {
+fn App() -> Element {
     // ANCHOR: rsx
     cx.render(rsx! {
         div {

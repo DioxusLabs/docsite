@@ -11,7 +11,7 @@ However, we haven't talked about error handling at all in this guide! In this ch
 Astute observers might have noticed that `Element` is actually a type alias for `Option<VNode>`. You don't need to know what a `VNode` is, but it's important to recognize that we could actually return nothing at all:
 
 ```rust
-fn App(cx: Scope) -> Element {
+fn App() -> Element {
 	None
 }
 ```
@@ -21,7 +21,7 @@ This lets us add in some syntactic sugar for operations we think *shouldn't* fai
 > The nature of `Option<VNode>` might change in the future as the `try` trait gets upgraded.
 
 ```rust
-fn App(cx: Scope) -> Element {
+fn App() -> Element {
 	// immediately return "None"
 	let name = cx.use_hook(|_| Some("hi"))?;
 }
@@ -32,7 +32,7 @@ fn App(cx: Scope) -> Element {
 Because Rust can't accept both Options and Results with the existing try infrastructure, you'll need to manually handle Results. This can be done by converting them into Options or by explicitly handling them.
 
 ```rust
-fn App(cx: Scope) -> Element {
+fn App() -> Element {
 	// Convert Result to Option
 	let name = cx.use_hook(|_| "1.234").parse().ok()?;
 
@@ -41,7 +41,7 @@ fn App(cx: Scope) -> Element {
 	let count = cx.use_hook(|_| "1.234");
 	let val = match count.parse() {
 		Ok(val) => val
-		Err(err) => return cx.render(rsx!{ "Parsing failed" })
+		Err(err) => return rsx!{ "Parsing failed" }
 	};
 }
 ```
@@ -56,15 +56,15 @@ The next "best" way of handling errors in Dioxus is to match on the error locall
 To do this, we simply have an error state built into our component:
 
 ```rust
-let err = use_state(cx, || None);
+let err = use_state(|| None);
 ```
 
 Whenever we perform an action that generates an error, we'll set that error state. We can then match on the error in a number of ways (early return, return Element, etc).
 
 
 ```rust
-fn Commandline(cx: Scope) -> Element {
-	let error = use_state(cx, || None);
+fn Commandline() -> Element {
+	let error = use_state(|| None);
 
 	cx.render(match *error {
 		Some(error) => rsx!(
@@ -84,19 +84,19 @@ fn Commandline(cx: Scope) -> Element {
 If you're dealing with a handful of components with minimal nesting, you can just pass the error handle into child components.
 
 ```rust
-fn Commandline(cx: Scope) -> Element {
-	let error = use_state(cx, || None);
+fn Commandline() -> Element {
+	let error = use_state(|| None);
 
 	if let Some(error) = **error {
-		return cx.render(rsx!{ "An error occurred" });
+		return rsx!{ "An error occurred" };
 	}
 
-	cx.render(rsx!{
+	rsx!{
 		Child { error: error.clone() }
 		Child { error: error.clone() }
 		Child { error: error.clone() }
 		Child { error: error.clone() }
-	})
+	}
 }
 ```
 
@@ -124,24 +124,26 @@ static INPUT_ERROR: Atom<InputError> = |_| InputError::None;
 Then, in our top level component, we want to explicitly handle the possible error state for this part of the tree.
 
 ```rust
-fn TopLevel(cx: Scope) -> Element {
-	let error = use_read(cx, INPUT_ERROR);
+fn TopLevel() -> Element {
+	let error = use_read(INPUT_ERROR);
 
 	match error {
-		TooLong => return cx.render(rsx!{ "FAILED: Too long!" }),
-		TooShort => return cx.render(rsx!{ "FAILED: Too Short!" }),
+		TooLong => return rsx!{ "FAILED: Too long!" },
+		TooShort => return rsx!{ "FAILED: Too Short!" },
 		_ => {}
 	}
+
+	todo!()
 }
 ```
 
 Now, whenever a downstream component has an error in its actions, it can simply just set its own error state:
 
 ```rust
-fn Commandline(cx: Scope) -> Element {
-	let set_error = use_set(cx, INPUT_ERROR);
+fn Commandline() -> Element {
+	let set_error = use_set(INPUT_ERROR);
 
-	cx.render(rsx!{
+	rsx!{
 		input {
 			oninput: move |evt| {
 				if evt.value.len() > 20 {
@@ -149,7 +151,7 @@ fn Commandline(cx: Scope) -> Element {
 				}
 			}
 		}
-	})
+	}
 }
 ```
 

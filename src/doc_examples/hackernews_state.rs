@@ -5,7 +5,7 @@ pub mod app_v1 {
     use super::*;
 
     // ANCHOR: app_v1
-    pub fn App(cx: Scope) -> Element {
+    pub fn App() -> Element {
         cx.render(rsx! {
             div {
                 display: "flex",
@@ -24,7 +24,7 @@ pub mod app_v1 {
     }
 
     // New
-    fn Stories(cx: Scope) -> Element {
+    fn Stories() -> Element {
         render! {
             StoryListing {
                 story: StoryItem {
@@ -52,7 +52,7 @@ pub mod app_v1 {
     }
 
     // New
-    fn Preview(cx: Scope) -> Element {
+    fn Preview() -> Element {
         let preview_state = PreviewState::Unset;
         match preview_state {
             PreviewState::Unset => render! {
@@ -89,7 +89,7 @@ pub mod app_v1 {
 
     // NEW
     #[component]
-    fn Comment(cx: Scope, comment: Comment) -> Element<'a> {
+    fn Comment(comment: Comment) -> Element<'a> {
         render! {
             div {
                 padding: "0.5rem",
@@ -110,7 +110,7 @@ pub mod app_v1 {
     // ANCHOR_END: app_v1
 
     #[component]
-    fn StoryListing(cx: Scope, story: StoryItem) -> Element {
+    fn StoryListing(story: StoryItem) -> Element {
         let StoryItem {
             title,
             url,
@@ -183,8 +183,8 @@ pub mod app_v1 {
 mod story_listing_listener {
     use super::*;
 
-    pub fn App(cx: Scope) -> Element {
-        use_shared_state_provider(cx, || PreviewState::Unset);
+    pub fn App() -> Element {
+        use_shared_state_provider(|| PreviewState::Unset);
 
         cx.render(rsx! {
             div {
@@ -203,7 +203,7 @@ mod story_listing_listener {
         })
     }
 
-    fn Stories(cx: Scope) -> Element {
+    fn Stories() -> Element {
         render! {
             StoryListing {
                 story: StoryItem {
@@ -229,7 +229,7 @@ mod story_listing_listener {
         Loaded(StoryPageData),
     }
 
-    fn Preview(cx: Scope) -> Element {
+    fn Preview() -> Element {
         let preview_state = PreviewState::Unset;
 
         match preview_state {
@@ -266,7 +266,7 @@ mod story_listing_listener {
     }
 
     #[component]
-    fn StoryListing(cx: Scope, story: StoryItem) -> Element {
+    fn StoryListing(story: StoryItem) -> Element {
         let StoryItem {
             title,
             url,
@@ -345,8 +345,8 @@ mod story_listing_listener {
 }
 
 // ANCHOR: shared_state_app
-pub fn App(cx: Scope) -> Element {
-    use_shared_state_provider(cx, || PreviewState::Unset);
+pub fn App() -> Element {
+    use_shared_state_provider(|| PreviewState::Unset);
     // ANCHOR_END: shared_state_app
     cx.render(rsx! {
         div {
@@ -367,7 +367,7 @@ pub fn App(cx: Scope) -> Element {
 
 // ANCHOR: shared_state_stories
 #[component]
-fn StoryListing(cx: Scope, story: StoryItem) -> Element {
+fn StoryListing(story: StoryItem) -> Element {
     // New
     let preview_state = use_shared_state::<PreviewState>(cx).unwrap();
     let StoryItem {
@@ -456,7 +456,7 @@ fn StoryListing(cx: Scope, story: StoryItem) -> Element {
 }
 
 // ANCHOR: shared_state_preview
-fn Preview(cx: Scope) -> Element {
+fn Preview() -> Element {
     // New
     let preview_state = use_shared_state::<PreviewState>(cx)?;
 
@@ -502,7 +502,7 @@ enum PreviewState {
     Loaded(StoryPageData),
 }
 
-fn Stories(cx: Scope) -> Element {
+fn Stories() -> Element {
     render! {
         StoryListing {
             story: StoryItem {
@@ -522,7 +522,7 @@ fn Stories(cx: Scope) -> Element {
 }
 
 #[component]
-fn Comment(cx: Scope, comment: Comment) -> Element<'a> {
+fn Comment(comment: Comment) -> Element<'a> {
     render! {
         div {
             padding: "0.5rem",

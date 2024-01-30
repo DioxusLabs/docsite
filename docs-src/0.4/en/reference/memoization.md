@@ -4,8 +4,8 @@
 
 ```rust, no_run
 #[component]
-fn Calculator(cx: Scope, number: usize) -> Element {
-    let bigger_number = use_memo(cx, (number,), |(number,)| {
+fn Calculator(number: usize) -> Element {
+    let bigger_number = use_memo((number,), |(number,)| {
         // This will only be calculated when `number` has changed.
         number * 100
     });
@@ -13,7 +13,7 @@ fn Calculator(cx: Scope, number: usize) -> Element {
         p { "{bigger_number}" }
     )
 }
-fn app(cx: Scope) -> Element {
+fn app() -> Element {
     render!(Calculator { number: 0 })
 }
 ```

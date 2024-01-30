@@ -70,8 +70,8 @@ async fn main() {
         .await;
 }
 
-fn app(cx: Scope) -> Element {
-		let posts = use_db_query(cx, RECENT_POSTS);
+fn app() -> Element {
+		let posts = use_db_query(RECENT_POSTS);
 
 		render! {
 				for post in posts {

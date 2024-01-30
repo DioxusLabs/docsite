@@ -7,8 +7,8 @@ fn main() {
     LaunchBuilder::new(app).launch();
 }
 
-fn app(cx: Scope) -> Element {
-    let mut count = use_server_future(cx, (), |_| async { get_server_data().await })?;
+fn app() -> Element {
+    let mut count = use_server_future((), |_| async { get_server_data().await })?;
 
     cx.render(rsx! {
         "server data is {count.value():?}"

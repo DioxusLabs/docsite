@@ -27,8 +27,8 @@ static ES_ES: &str = r#"{
 }"#;
 
 #[allow(non_snake_case)]
-fn Body(cx: Scope) -> Element {
-    let i18 = use_i18(cx);
+fn Body() -> Element {
+    let i18 = use_i18();
 
     let change_to_english = move |_| i18.set_language("en-US".parse().unwrap());
     let change_to_spanish = move |_| i18.set_language("es-ES".parse().unwrap());
@@ -51,7 +51,7 @@ fn Body(cx: Scope) -> Element {
     )
 }
 
-fn app(cx: Scope) -> Element {
+fn app() -> Element {
     use_init_i18n(
         cx,
         "en-US".parse().unwrap(),

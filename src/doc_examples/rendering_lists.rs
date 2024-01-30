@@ -8,11 +8,11 @@ struct Comment {
     id: usize,
 }
 
-pub fn App(cx: Scope) -> Element {
+pub fn App() -> Element {
     // ANCHOR: render_list
-    let comment_field = use_state(cx, String::new);
-    let mut next_id = use_state(cx, || 0);
-    let comments = use_ref(cx, Vec::<Comment>::new);
+    let comment_field = use_state(String::new);
+    let mut next_id = use_state(|| 0);
+    let comments = use_ref(Vec::<Comment>::new);
 
     let comments_lock = comments.read();
     let comments_rendered = comments_lock.iter().map(|comment| {
@@ -46,11 +46,11 @@ pub fn App(cx: Scope) -> Element {
     // ANCHOR_END: render_list
 }
 
-pub fn AppForLoop(cx: Scope) -> Element {
+pub fn AppForLoop() -> Element {
     // ANCHOR: render_list_for_loop
-    let comment_field = use_state(cx, String::new);
-    let mut next_id = use_state(cx, || 0);
-    let comments = use_ref(cx, Vec::<Comment>::new);
+    let comment_field = use_state(String::new);
+    let mut next_id = use_state(|| 0);
+    let comments = use_ref(Vec::<Comment>::new);
 
     cx.render(rsx!(
         form {
@@ -83,7 +83,7 @@ pub fn AppForLoop(cx: Scope) -> Element {
 }
 
 #[component]
-fn CommentComponent(cx: Scope, comment: Comment) -> Element {
+fn CommentComponent(comment: Comment) -> Element {
     cx.render(rsx!(div {
         "Comment by anon:",
         p { "{comment.content}" }

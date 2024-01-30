@@ -6,7 +6,7 @@ fn main() {
     dioxus_desktop::launch(App);
 }
 
-fn App(cx: Scope) -> Element {
+fn App() -> Element {
     // ANCHOR: Clickable_usage
     cx.render(rsx! {
         Clickable {
@@ -24,7 +24,7 @@ struct ClickableProps<'a> {
 }
 
 // ANCHOR: Clickable
-fn Clickable<'a>(cx: Scope<'a, ClickableProps<'a>>) -> Element {
+fn Clickable<'a>( ClickableProps<'a>>) -> Element {
     match cx.props.children {
         Some(VNode { dynamic_nodes, .. }) => {
             todo!("render some stuff")

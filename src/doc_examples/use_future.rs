@@ -8,9 +8,9 @@ struct ApiResponse {
     image_url: String,
 }
 
-pub fn App(cx: Scope) -> Element {
+pub fn App() -> Element {
     // ANCHOR: use_future
-    let future = use_future(cx, (), |_| async move {
+    let future = use_future((), |_| async move {
         reqwest::get("https://dog.ceo/api/breeds/image/random")
             .await
             .unwrap()
@@ -41,9 +41,9 @@ pub fn App(cx: Scope) -> Element {
 }
 
 #[component]
-fn RandomDog(cx: Scope, breed: String) -> Element {
+fn RandomDog(breed: String) -> Element {
     // ANCHOR: dependancy
-    let future = use_future(cx, (breed,), |(breed,)| async move {
+    let future = use_future((breed,), |(breed,)| async move {
         reqwest::get(format!("https://dog.ceo/api/breed/{breed}/images/random"))
             .await
             .unwrap()

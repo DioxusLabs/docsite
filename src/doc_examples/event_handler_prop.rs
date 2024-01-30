@@ -6,7 +6,7 @@ fn main() {
     dioxus_desktop::launch(App);
 }
 
-fn App(cx: Scope) -> Element {
+fn App() -> Element {
     // ANCHOR: usage
     cx.render(rsx! {
         FancyButton {
@@ -22,7 +22,7 @@ pub struct FancyButtonProps<'a> {
     on_click: EventHandler<'a, MouseEvent>,
 }
 
-pub fn FancyButton<'a>(cx: Scope<'a, FancyButtonProps<'a>>) -> Element<'a> {
+pub fn FancyButton<'a>( FancyButtonProps<'a>>) -> Element<'a> {
     cx.render(rsx!(button {
         class: "fancy-button",
         onclick: move |evt| cx.props.on_click.call(evt),
@@ -39,7 +39,7 @@ pub struct CustomFancyButtonProps<'a> {
     on_click: EventHandler<'a, ComplexData>,
 }
 
-pub fn CustomFancyButton<'a>(cx: Scope<'a, CustomFancyButtonProps<'a>>) -> Element<'a> {
+pub fn CustomFancyButton<'a>( CustomFancyButtonProps<'a>>) -> Element<'a> {
     cx.render(rsx!(button {
         class: "fancy-button",
         onclick: move |_| cx.props.on_click.call(ComplexData(0)),

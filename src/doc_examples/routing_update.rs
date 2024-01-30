@@ -12,20 +12,20 @@ enum Route {
 }
 
 #[component]
-fn Home(cx: Scope) -> Element {
+fn Home() -> Element {
     render! {
         p { "Home" }
     }
 }
 
 #[component]
-fn Index(cx: Scope) -> Element {
+fn Index() -> Element {
     render! {
         p { "Index" }
     }
 }
 
-fn app(cx: Scope) -> Element {
+fn app() -> Element {
     render! {
         Router::<Route> {
             config: || RouterConfig::default().on_update(|state|{

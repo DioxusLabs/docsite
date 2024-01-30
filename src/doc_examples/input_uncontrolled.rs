@@ -2,7 +2,7 @@
 use dioxus::prelude::*;
 
 // ANCHOR: component
-pub fn App(cx: Scope) -> Element {
+pub fn App() -> Element {
     cx.render(rsx! {
         form {
             onsubmit: move |event| {

@@ -51,14 +51,14 @@ impl FromQuery for BlogQuerySegments {
 }
 
 #[component]
-fn BlogPost(cx: Scope, query_params: BlogQuerySegments) -> Element {
+fn BlogPost(query_params: BlogQuerySegments) -> Element {
     render! {
         div{"This is your blogpost with a query segment:"}
         div{format!("{:?}", query_params)}
     }
 }
 
-fn App(cx: Scope) -> Element {
+fn App() -> Element {
     render! { Router::<Route>{} }
 }
 

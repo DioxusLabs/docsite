@@ -18,7 +18,7 @@ enum Route {
 
 // ANCHOR: nav
 #[component]
-fn NavBar(cx: Scope) -> Element {
+fn NavBar() -> Element {
     render! {
         nav {
             ul {
@@ -39,7 +39,7 @@ fn NavBar(cx: Scope) -> Element {
 
 // ANCHOR: app
 #[component]
-fn App(cx: Scope) -> Element {
+fn App() -> Element {
     render! {
         Router::<Route> {}
     }
@@ -48,7 +48,7 @@ fn App(cx: Scope) -> Element {
 
 // ANCHOR: home
 #[component]
-fn Home(cx: Scope) -> Element {
+fn Home() -> Element {
     render! {
         h1 { "Welcome to the Dioxus Blog!" }
     }
@@ -57,7 +57,7 @@ fn Home(cx: Scope) -> Element {
 
 // ANCHOR: fallback
 #[component]
-fn PageNotFound(cx: Scope, route: Vec<String>) -> Element {
+fn PageNotFound(route: Vec<String>) -> Element {
     render! {
         h1 { "Page not found" }
         p { "We are terribly sorry, but the page you requested doesn't exist." }

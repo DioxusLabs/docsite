@@ -131,7 +131,7 @@ struct TitleCardProps {
     title: String,
 }
 
-fn TitleCard(cx: Scope<TitleCardProps>) -> Element {
+fn TitleCard(<TitleCardProps>) -> Element {
     cx.render(rsx!{
         h1 { "{cx.props.title}" }
     })
@@ -142,7 +142,7 @@ fn TitleCard(cx: Scope<TitleCardProps>) -> Element {
 
 ```rust, no_run
 #[component]
-fn TitleCard(cx: Scope, title: String) -> Element {
+fn TitleCard(title: String) -> Element {
     cx.render(rsx!{
         h1 { "{title}" }
     })

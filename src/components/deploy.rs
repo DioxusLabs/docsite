@@ -1,6 +1,6 @@
 use dioxus::prelude::*;
 
-pub fn Deploy(cx: Scope) -> Element {
+pub fn Deploy() -> Element {
     render! {
         section { class: "max-w-screen-2xl mx-auto px-4 py-16 my-8",
             div { class: "max-w-screen-md mx-auto border-b py-8 ",

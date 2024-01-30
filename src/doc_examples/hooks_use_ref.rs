@@ -2,8 +2,8 @@
 use dioxus::prelude::*;
 
 // ANCHOR: component
-pub fn App(cx: Scope) -> Element {
-    let list = use_ref(cx, Vec::new);
+pub fn App() -> Element {
+    let list = use_ref(Vec::new);
 
     cx.render(rsx!(
         p { "Current list: {list.read():?}" }

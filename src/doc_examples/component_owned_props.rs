@@ -2,7 +2,7 @@
 use dioxus::prelude::*;
 
 // ANCHOR: App
-pub fn App(cx: Scope) -> Element {
+pub fn App() -> Element {
     cx.render(rsx! {
         Likes {
             score: 42,
@@ -18,7 +18,7 @@ struct LikesProps {
     score: i32,
 }
 
-fn Likes(cx: Scope<LikesProps>) -> Element {
+fn Likes(<LikesProps>) -> Element {
     cx.render(rsx! {
         div {
             "This post has ",

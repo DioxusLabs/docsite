@@ -4,7 +4,7 @@
 //!  
 
 // Parse a snippet into
-pub fn markdown_to_snippet<'a, P>(cx: Scope<'a, P>, text: &str) -> Vec<VNode<'a>> {
+pub fn markdown_to_snippet<'a, P>( P>, text: &str) -> Vec<VNode<'a>> {
     let snips = Vec::new();
     use pulldown_cmark::{Options, Parser};
     let mut options = Options::empty();

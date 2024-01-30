@@ -2,10 +2,10 @@
 use dioxus::prelude::*;
 
 // ANCHOR: component
-pub fn App(cx: Scope) -> Element {
+pub fn App() -> Element {
     // ANCHOR: use_state_calls
-    let mut count_a = use_state(cx, || 0);
-    let mut count_b = use_state(cx, || 0);
+    let mut count_a = use_state(|| 0);
+    let mut count_b = use_state(|| 0);
     // ANCHOR_END: use_state_calls
 
     cx.render(rsx!(

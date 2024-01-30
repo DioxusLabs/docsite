@@ -79,7 +79,7 @@
 <pre><code class="lang-rust"><span class="hljs-meta">#[derive(Deserialize)]</span>
 <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">Query</span></span> { name: <span class="hljs-built_in">String</span> }
 
-<span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">BlogPost</span></span>(cx: Scope) -&gt; Element {
+<span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">BlogPost</span></span>() -&gt; Element {
     <span class="hljs-keyword">let</span> post = use_route(&amp;cx).segment(<span class="hljs-string">"post"</span>)?;
     <span class="hljs-keyword">let</span> query = use_route(&amp;cx).query::&lt;Query&gt;()?;
 
@@ -98,7 +98,7 @@
 <span class="hljs-keyword">static</span> TITLE: Atom&lt;&amp;<span class="hljs-keyword">str</span>&gt; = |_| <span class="hljs-string">"Hello"</span>;
 
 <span class="hljs-comment">// Read the value from anywhere in the app, subscribing to any changes</span>
-<span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">app</span></span>(cx: Scope) -&gt; Element {
+<span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">app</span></span>() -&gt; Element {
     <span class="hljs-keyword">let</span> title = use_read(&amp;cx, TITLE);
     cx.render(rsx!{
         h1 { <span class="hljs-string">"{title}"</span> }
@@ -107,7 +107,7 @@
 }
 
 <span class="hljs-comment">// Set the value from anywhere in the app</span>
-<span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">Child</span></span>(cx: Scope) -&gt; Element {
+<span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">Child</span></span>() -&gt; Element {
     <span class="hljs-keyword">let</span> set_title = use_set(&amp;cx, TITLE);
     cx.render(rsx!{
         button {
@@ -197,7 +197,7 @@ The VSCode extension is really easy to contribute to and has tons of potential. 
 <h2 id="async-improvements">Async Improvements</h2>
 <p>Working with async isn&#39;t the easiest part of Rust. To help improve things, we&#39;ve upgraded async support across the board in Dioxus.</p>
 <p>First, we upgraded the <code>use_future</code> hook. It now supports dependencies, which let you regenerate a future on the fly as its computed values change. It&#39;s never been easier to add datafetching to your Rust Web Apps:</p>
-<pre><code class="lang-rust"><span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">RenderDog</span></span>(cx: Scope, breed: <span class="hljs-built_in">String</span>) -&gt; Element {
+<pre><code class="lang-rust"><span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">RenderDog</span></span>(breed: <span class="hljs-built_in">String</span>) -&gt; Element {
     <span class="hljs-keyword">let</span> dog_request = use_future(&amp;cx, (breed,), |(breed,)| async <span class="hljs-keyword">move</span> {
         reqwest::get(<span class="hljs-built_in">format!</span>(<span class="hljs-string">"https://dog.ceo/api/breed/{}/images/random"</span>, breed))
             .await
@@ -214,7 +214,7 @@ The VSCode extension is really easy to contribute to and has tons of potential. 
 }
 </code></pre>
 <p>Additionally, we added better support for coroutines. You can now start, stop, resume, and message with asynchronous tasks. The coroutine is automatically exposed to the rest of your app via the Context API. For the vast majority of apps, Coroutines can satisfy all of your state management needs:</p>
-<pre><code class="lang-rust"><span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">App</span></span>(cx: Scope) -&gt; Element {
+<pre><code class="lang-rust"><span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">App</span></span>() -&gt; Element {
     <span class="hljs-keyword">let</span> sync_task = use_coroutine(&amp;cx, |rx| async <span class="hljs-keyword">move</span> {
         connect_to_server().await;
         <span class="hljs-keyword">let</span> state = MyState::new();

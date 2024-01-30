@@ -6,7 +6,7 @@ fn main() {
     dioxus_desktop::launch(App);
 }
 
-fn App(cx: Scope) -> Element {
+fn App() -> Element {
     // ANCHOR: Clickable_usage
     cx.render(rsx! {
         Clickable {
@@ -24,7 +24,7 @@ struct ClickableProps<'a> {
     body: Element<'a>,
 }
 
-fn Clickable<'a>(cx: Scope<'a, ClickableProps<'a>>) -> Element {
+fn Clickable<'a>( ClickableProps<'a>>) -> Element {
     cx.render(rsx!(
         a {
             href: "{cx.props.href}",

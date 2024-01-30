@@ -24,10 +24,10 @@ const GITHUB_EDIT_PAGE_FALLBACK_URL: &str = "https://github.com/DioxusLabs/docsi
 const GITHUB_EDIT_PAGE_EDIT_URL: &str = "https://github.com/DioxusLabs/docsite/edit/master/docs-src/0.4/en";
 
 #[component]
-pub fn Learn(cx: Scope) -> Element {
-    let show_sidebar_button = use_atom_state(cx, &SHOW_DOCS_NAV);
+pub fn Learn() -> Element {
+    let show_sidebar_button = use_atom_state(&SHOW_DOCS_NAV);
     cx.use_hook(|| show_sidebar_button.set(true));
-    use_on_destroy(cx, {
+    use_on_destroy({
         to_owned![show_sidebar_button];
         move || show_sidebar_button.set(false)
     });
@@ -44,9 +44,9 @@ pub fn Learn(cx: Scope) -> Element {
     })
 }
 
-fn LeftNav(cx: Scope) -> Element {
-    let show_sidebar = use_atom_state(cx, &SHOW_SIDEBAR);
-    let highlighted = use_read(cx, &HIGHLIGHT_DOCS_LAYOUT);
+fn LeftNav() -> Element {
+    let show_sidebar = use_atom_state(&SHOW_SIDEBAR);
+    let highlighted = use_read(&HIGHLIGHT_DOCS_LAYOUT);
     let extra_class = if highlighted.0 {
         "border border-green-600 rounded-md"
     } else {
@@ -73,8 +73,8 @@ fn LeftNav(cx: Scope) -> Element {
 }
 
 /// Navigate between doc versions
-fn DocVersionNav(cx: Scope) -> Element {
-    let navigator = use_navigator(cx);
+fn DocVersionNav() -> Element {
+    let navigator = use_navigator();
 
     render! {
         div { class: "pb-4",
@@ -101,7 +101,7 @@ fn DocVersionNav(cx: Scope) -> Element {
 ///
 /// This renders a single section
 #[component]
-fn SidebarSection(cx: Scope, chapter: &'static SummaryItem<BookRoute>) -> Element {
+fn SidebarSection(chapter: &'static SummaryItem<BookRoute>) -> Element {
     let link = chapter.maybe_link()?;
 
     let sections = link
@@ -122,13 +122,13 @@ fn SidebarSection(cx: Scope, chapter: &'static SummaryItem<BookRoute>) -> Elemen
 }
 
 #[component]
-fn SidebarChapter(cx: Scope, chapter: &'static SummaryItem<BookRoute>) -> Element {
+fn SidebarChapter(chapter: &'static SummaryItem<BookRoute>) -> Element {
     let link = chapter.maybe_link()?;
     let url = link.location.as_ref().unwrap();
-    let list_toggle = use_state(cx, || false);
+    let list_toggle = use_state(|| false);
 
     // current route of the browser, trimmed to the book url
-    let book_url = use_book(cx).to_string();
+    let book_url = use_book().to_string();
 
     // for instance, if the current page is /docs/0.4/en/learn/overview
     // then we want to show the dropdown for /docs/0.4/en/learn
@@ -159,8 +159,8 @@ fn SidebarChapter(cx: Scope, chapter: &'static SummaryItem<BookRoute>) -> Elemen
 }
 
 #[component]
-fn LocationLink(cx: Scope, chapter: &'static SummaryItem<BookRoute>) -> Element {
-    let book_url = use_book(cx).to_string();
+fn LocationLink(chapter: &'static SummaryItem<BookRoute>) -> Element {
+    let book_url = use_book().to_string();
 
     let link = chapter.maybe_link()?;
     let url = link.location.as_ref().unwrap();
@@ -180,14 +180,14 @@ fn LocationLink(cx: Scope, chapter: &'static SummaryItem<BookRoute>) -> Element 
 }
 
 // Todo: wire this up to the sections of the current page and a scroll controller
-fn RightNav(cx: Scope) -> Element {
-    let highlighted = use_read(cx, &HIGHLIGHT_DOCS_LAYOUT);
+fn RightNav() -> Element {
+    let highlighted = use_read(&HIGHLIGHT_DOCS_LAYOUT);
     let extra_class = if highlighted.0 {
         "border border-green-600 rounded-md"
     } else {
         ""
     };
-    let page = use_book(cx);
+    let page = use_book();
     let padding_map = ["pl-2", "pl-4", "pl-6", "pl-8", "pl-10"];
     let page_url = page.to_string();
 
@@ -195,7 +195,7 @@ fn RightNav(cx: Scope) -> Element {
     // page_url starts with '/', so we don't need to worry about that
     let github_api_url = format!("{GITHUB_API_URL}{page_url}.md");
 
-    let edit_github_url = use_future(cx, &page_url, |page_url| async move {
+    let edit_github_url = use_future(&page_url, |page_url| async move {
         // If the file is not found, that means that we have to use /index.md
         if reqwest::get(github_api_url).await.unwrap().status() == reqwest::StatusCode::NOT_FOUND {
             format!("{GITHUB_EDIT_PAGE_EDIT_URL}{page_url}/index.md")
@@ -229,8 +229,8 @@ fn RightNav(cx: Scope) -> Element {
     }
 }
 
-fn Content(cx: Scope) -> Element {
-    let highlighted = use_read(cx, &HIGHLIGHT_DOCS_CONTENT);
+fn Content() -> Element {
+    let highlighted = use_read(&HIGHLIGHT_DOCS_CONTENT);
     let extra_class = if highlighted.0 {
         "border border-blue-600 rounded-md"
     } else {
@@ -255,9 +255,9 @@ fn Content(cx: Scope) -> Element {
     }
 }
 
-fn BreadCrumbs(cx: Scope) -> Element {
+fn BreadCrumbs() -> Element {
     // parse out the route after the version and language
-    let route: Route = use_route(cx)?;
+    let route: Route = use_route()?;
 
     render! {
         h2 { class: "font-semibold pb-4",
@@ -277,8 +277,8 @@ fn BreadCrumbs(cx: Scope) -> Element {
 
 /// Get the book URL from the current URL
 /// Ignores language and version (for now)
-fn use_book(cx: &ScopeState) -> BookRoute {
-    let route = use_route(cx).unwrap();
+fn use_book() -> BookRoute {
+    let route = use_route().unwrap();
     match route {
         Route::Docs { child } => child,
         _ => unreachable!(),
@@ -294,9 +294,9 @@ fn default_page() -> &'static Page<BookRoute> {
 }
 
 #[component]
-pub fn DocsO3(cx: Scope, segments: Vec<String>) -> Element {
-    let navigator = use_navigator(cx);
-    let route: Route = use_route(cx).unwrap();
+pub fn DocsO3(segments: Vec<String>) -> Element {
+    let navigator = use_navigator();
+    let route: Route = use_route().unwrap();
     navigator.push(route);
     None
 }

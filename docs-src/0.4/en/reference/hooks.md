@@ -10,7 +10,7 @@ Dioxus provides many built-in hooks, but if those hooks don't fit your specific 
 
 [`use_state`](https://docs.rs/dioxus/latest/dioxus/prelude/fn.use_state.html) is one of the simplest hooks.
 
-- You provide a closure that determines the initial value: `let mut count = use_state(cx, || 0);`
+- You provide a closure that determines the initial value: `let mut count = use_state(|| 0);`
 - `use_state` gives you the current value, and a way to update it by setting it to something else
 - When the value updates, `use_state` makes the component re-render (along with any other component that references it), and then provides you with the new value.
 

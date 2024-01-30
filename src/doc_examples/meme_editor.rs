@@ -8,7 +8,7 @@ fn main() {
 }
 
 // ANCHOR: meme_editor
-fn MemeEditor(cx: Scope) -> Element {
+fn MemeEditor() -> Element {
     let container_style = r"
         display: flex;
         flex-direction: column;
@@ -17,7 +17,7 @@ fn MemeEditor(cx: Scope) -> Element {
         width: fit-content;
     ";
 
-    let caption = use_state(cx, || "me waiting for my rust code to compile".to_string());
+    let caption = use_state(|| "me waiting for my rust code to compile".to_string());
 
     cx.render(rsx! {
         div {
@@ -37,7 +37,7 @@ fn MemeEditor(cx: Scope) -> Element {
 
 // ANCHOR: meme_component
 #[component]
-fn Meme<'a>(cx: Scope<'a>, caption: &'a str) -> Element<'a> {
+fn Meme<'a>( caption: &'a str) -> Element<'a> {
     let container_style = r#"
         position: relative;
         width: fit-content;
@@ -80,7 +80,7 @@ fn Meme<'a>(cx: Scope<'a>, caption: &'a str) -> Element<'a> {
 // ANCHOR: caption_editor
 #[component]
 fn CaptionEditor<'a>(
-    cx: Scope<'a>,
+    <'a>,
     caption: &'a str,
     on_input: EventHandler<'a, FormEvent>,
 ) -> Element<'a> {

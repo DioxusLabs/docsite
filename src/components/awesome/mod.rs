@@ -72,8 +72,8 @@ struct StarsResponse {
 }
 
 #[component]
-pub fn Awesome(cx: Scope) -> Element {
-    let items = use_future(cx, (), |_| async move {
+pub fn Awesome() -> Element {
+    let items = use_future((), |_| async move {
         let req = match reqwest::get(ITEM_LIST_LINK).await {
             Ok(r) => r,
             Err(e) => return Err(e.to_string()),
@@ -87,7 +87,7 @@ pub fn Awesome(cx: Scope) -> Element {
         Ok(items)
     });
 
-    let search = use_state(cx, || "".to_string());
+    let search = use_state(|| "".to_string());
 
     match items.value() {
         Some(Ok(items)) => {
@@ -213,12 +213,12 @@ pub fn Awesome(cx: Scope) -> Element {
 }
 
 #[component]
-fn AwesomeItem(cx: Scope, item: Item) -> Element {
+fn AwesomeItem(item: Item) -> Element {
     let is_github = item.github.is_some();
     let username = item.github.clone().unwrap_or(GithubInfo::default()).username;
     let repo = item.github.clone().unwrap_or(GithubInfo::default()).repo;
 
-    let stars = use_future(cx, (), |_| async move {
+    let stars = use_future((), |_| async move {
         if is_github {
             // Check cache
             if let Some(stars) = get_stars(format!("{}{}/{}", STAR_CACHE_NAME, username, repo)) {

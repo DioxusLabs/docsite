@@ -24,7 +24,7 @@ pub const POST_TEMPLATE: BlogPost = BlogPost {
 };
 
 #[component]
-pub fn PostTemplate(cx: Scope) -> Element {
+pub fn PostTemplate() -> Element {
     render! { SinglePost { post: POST_TEMPLATE } }
 }
 
@@ -39,7 +39,7 @@ pub const POST_FULLTINME: BlogPost = BlogPost {
 };
 
 #[component]
-pub fn PostFulltime(cx: Scope) -> Element {
+pub fn PostFulltime() -> Element {
     render! { SinglePost { post: POST_FULLTINME } }
 }
 
@@ -53,7 +53,7 @@ pub const POST_RELEASE_040: BlogPost = BlogPost {
 };
 
 #[component]
-pub fn PostRelease040(cx: Scope) -> Element {
+pub fn PostRelease040() -> Element {
     render! { SinglePost { post: POST_RELEASE_040 } }
 }
 
@@ -67,7 +67,7 @@ pub const POST_RELEASE_030: BlogPost = BlogPost {
 };
 
 #[component]
-pub fn PostRelease030(cx: Scope) -> Element {
+pub fn PostRelease030() -> Element {
     render! { SinglePost { post: POST_RELEASE_030 } }
 }
 
@@ -81,7 +81,7 @@ pub const POST_RELEASE_020: BlogPost = BlogPost {
 };
 
 #[component]
-pub fn PostRelease020(cx: Scope) -> Element {
+pub fn PostRelease020() -> Element {
     render! { SinglePost { post: POST_RELEASE_020 } }
 }
 
@@ -95,7 +95,7 @@ pub const POST_RELEASE_010: BlogPost = BlogPost {
 };
 
 #[component]
-pub fn PostRelease010(cx: Scope) -> Element {
+pub fn PostRelease010() -> Element {
     render! { SinglePost { post: POST_RELEASE_010 } }
 }
 
@@ -109,7 +109,7 @@ pub const POSTS: &[BlogPost] = &[
 ];
 
 #[component]
-pub fn BlogList(cx: Scope) -> Element {
+pub fn BlogList() -> Element {
     cx.render(rsx!(
         section { class: "body-font overflow-hidden dark:bg-ideblack",
             div { class: "container max-w-screen-lg pt-12 pb-12 mx-auto",
@@ -132,7 +132,7 @@ pub fn BlogList(cx: Scope) -> Element {
 }
 
 #[component]
-pub fn SinglePost(cx: Scope, post: BlogPost) -> Element {
+pub fn SinglePost(post: BlogPost) -> Element {
     let BlogPost { content, .. } = post;
 
     cx.render(rsx! {
@@ -154,7 +154,7 @@ pub fn SinglePost(cx: Scope, post: BlogPost) -> Element {
     })
 }
 
-fn BlogHeader(cx: Scope) -> Element {
+fn BlogHeader() -> Element {
     cx.render(rsx!(
         section { class: "py-20",
             div { class: "container px-4 mx-auto dark:text-white",
@@ -193,7 +193,7 @@ pub static RecentBlogPosts: Component<()> = |cx| {
 };
 
 #[component]
-fn BlogPostItem(cx: Scope, post: &'static BlogPost) -> Element {
+fn BlogPostItem(post: &'static BlogPost) -> Element {
     let BlogPost {
         category,
         date,

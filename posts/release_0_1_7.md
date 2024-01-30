@@ -53,7 +53,7 @@ In the spirit of improving props declaration, we've released the `component` mac
 
 ```rust
 #[component]
-fn Checkbox(cx: Scope, enabled: bool, name: &'static str) -> Element {
+fn Checkbox(enabled: bool, name: &'static str) -> Element {
     cx.render(rsx!{
         h1 { "Hello, {name}" }
         p { "Are you enabled?, {enabled}" }
@@ -68,7 +68,7 @@ We've added a new router in the spirit of [React Router](http://reactrouter.com)
 Routes are declared 
 
 ```rust
-fn app(cx: Scope) -> Element {
+fn app() -> Element {
     cx.render(rsx! {
         Router {
             ul {
@@ -90,7 +90,7 @@ fn app(cx: Scope) -> Element {
     })
 }
 
-fn BlogPost(cx: Scope) -> Element {
+fn BlogPost() -> Element {
     let post = dioxus::router::use_route(&cx).last_segment()?;
 
     cx.render(rsx! {
@@ -101,7 +101,7 @@ fn BlogPost(cx: Scope) -> Element {
     })
 }
 
-fn User(cx: Scope) -> Element {
+fn User() -> Element {
     let post = dioxus::router::use_route(&cx).last_segment()?;
     let bold = dioxus::router::use_route(&cx).param::<bool>("bold");
 

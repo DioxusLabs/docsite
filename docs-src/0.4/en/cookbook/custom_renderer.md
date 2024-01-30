@@ -309,7 +309,7 @@ Let's build a toy renderer with borders, size, and text color.
 Before we start let's take a look at an example element we can render:
 
 ```rust
-cx.render(rsx!{
+rsx!{
 	div{
 		color: "red",
 		p{
@@ -317,7 +317,7 @@ cx.render(rsx!{
 			"hello world"
 		}
 	}
-})
+}
 ```
 
 In this tree, the color depends on the parent's color. The layout depends on the children's layout, the current text, and the text size. The border depends on only the current node.

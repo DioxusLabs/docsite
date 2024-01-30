@@ -2,9 +2,9 @@
 
 use dioxus::prelude::*;
 
-pub fn App(cx: Scope) -> Element {
+pub fn App() -> Element {
     // ANCHOR: spawn
-    let response = use_state(cx, || String::from("..."));
+    let response = use_state(|| String::from("..."));
 
     let log_in = move |_| {
         cx.spawn({
@@ -41,7 +41,7 @@ pub fn App(cx: Scope) -> Element {
 }
 
 #[cfg(feature = "doc_test")]
-pub fn Tokio(cx: Scope) -> Element {
+pub fn Tokio() -> Element {
     let _ = || {
         // ANCHOR: tokio
         cx.spawn(async {
@@ -58,11 +58,11 @@ pub fn Tokio(cx: Scope) -> Element {
     cx.render(rsx!(()))
 }
 
-pub fn ToOwnedMacro(cx: Scope) -> Element {
-    let count = use_state(cx, || 0);
-    let age = use_state(cx, || 0);
-    let name = use_state(cx, || 0);
-    let description = use_state(cx, || 0);
+pub fn ToOwnedMacro() -> Element {
+    let count = use_state(|| 0);
+    let age = use_state(|| 0);
+    let name = use_state(|| 0);
+    let description = use_state(|| 0);
 
     let _ = || {
         // ANCHOR: to_owned_macro

@@ -12,7 +12,7 @@ enum Route {
 }
 
 #[component]
-fn App(cx: Scope) -> Element {
+fn App() -> Element {
     render! {
         Router::<Route> {}
     }
@@ -20,8 +20,8 @@ fn App(cx: Scope) -> Element {
 
 // ANCHOR: nav
 #[component]
-fn Home(cx: Scope) -> Element {
-    let nav = use_navigator(cx);
+fn Home() -> Element {
+    let nav = use_navigator();
 
     // push
     nav.push(Route::PageNotFound { route: vec![] });
@@ -42,7 +42,7 @@ fn Home(cx: Scope) -> Element {
 // ANCHOR_END: nav
 
 #[component]
-fn PageNotFound(cx: Scope, route: Vec<String>) -> Element {
+fn PageNotFound(route: Vec<String>) -> Element {
     render! {
         h1 { "Page not found" }
         p { "We are terribly sorry, but the page you requested doesn't exist." }

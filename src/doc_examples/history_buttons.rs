@@ -10,12 +10,12 @@ enum Route {
 }
 
 #[component]
-fn Home(cx: Scope) -> Element {
+fn Home() -> Element {
     todo!()
 }
 
 // ANCHOR: history_buttons
-fn HistoryNavigation(cx: Scope) -> Element {
+fn HistoryNavigation() -> Element {
     render! {
         GoBackButton {
             "Back to the Past"

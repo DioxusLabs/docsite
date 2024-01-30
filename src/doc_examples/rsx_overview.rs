@@ -3,7 +3,7 @@
 
 use dioxus::prelude::*;
 
-pub fn App(cx: Scope) -> Element {
+pub fn App() -> Element {
     cx.render(rsx!(
         Empty {},
         Children {},
@@ -16,7 +16,7 @@ pub fn App(cx: Scope) -> Element {
     ))
 }
 
-pub fn Empty(cx: Scope) -> Element {
+pub fn Empty() -> Element {
     // ANCHOR: empty
     cx.render(rsx!(div {
         // attributes / listeners
@@ -25,7 +25,7 @@ pub fn Empty(cx: Scope) -> Element {
     // ANCHOR_END: empty
 }
 
-pub fn Children(cx: Scope) -> Element {
+pub fn Children() -> Element {
     // ANCHOR: children
     cx.render(rsx!(ol {
         li {"First Item"}
@@ -35,7 +35,7 @@ pub fn Children(cx: Scope) -> Element {
     // ANCHOR_END: children
 }
 
-pub fn Fragments(cx: Scope) -> Element {
+pub fn Fragments() -> Element {
     // ANCHOR: fragments
     cx.render(rsx!(
         p {"First Item"},
@@ -49,7 +49,7 @@ pub fn Fragments(cx: Scope) -> Element {
     // ANCHOR_END: fragments
 }
 
-pub fn ManyRoots(cx: Scope) -> Element {
+pub fn ManyRoots() -> Element {
     // ANCHOR: manyroots
     cx.render(rsx!(
         p {"First Item"},
@@ -58,7 +58,7 @@ pub fn ManyRoots(cx: Scope) -> Element {
     // ANCHOR_END: manyroots
 }
 
-pub fn Attributes(cx: Scope) -> Element {
+pub fn Attributes() -> Element {
     // ANCHOR: attributes
     cx.render(rsx!(img {
         src: "https://avatars.githubusercontent.com/u/79236386?s=200&v=4",
@@ -68,7 +68,7 @@ pub fn Attributes(cx: Scope) -> Element {
     // ANCHOR_END: attributes
 }
 
-pub fn VariableAttributes(cx: Scope) -> Element {
+pub fn VariableAttributes() -> Element {
     // ANCHOR: variable_attributes
     let written_in_rust = true;
     let button_type = "button";
@@ -80,7 +80,7 @@ pub fn VariableAttributes(cx: Scope) -> Element {
     // ANCHOR_END: variable_attributes
 }
 
-pub fn CustomAttributes(cx: Scope) -> Element {
+pub fn CustomAttributes() -> Element {
     // ANCHOR: custom_attributes
     cx.render(rsx!(div {
         "style": "width: 20px; height: 20px; background-color: red;",
@@ -88,7 +88,7 @@ pub fn CustomAttributes(cx: Scope) -> Element {
     // ANCHOR_END: custom_attributes
 }
 
-pub fn Formatting(cx: Scope) -> Element {
+pub fn Formatting() -> Element {
     // ANCHOR: formatting
     let coordinates = (42, 0);
     let country = "es";
@@ -112,7 +112,7 @@ pub fn Formatting(cx: Scope) -> Element {
     // ANCHOR_END: formatting
 }
 
-pub fn Expression(cx: Scope) -> Element {
+pub fn Expression() -> Element {
     // ANCHOR: expression
     let text = "Dioxus";
     cx.render(rsx!(span {
@@ -123,7 +123,7 @@ pub fn Expression(cx: Scope) -> Element {
     // ANCHOR_END: expression
 }
 
-pub fn Loops(cx: Scope) -> Element {
+pub fn Loops() -> Element {
     // ANCHOR: loops
     cx.render(rsx! {
         // use a for loop where the body itself is RSX
@@ -144,7 +144,7 @@ pub fn Loops(cx: Scope) -> Element {
     // ANCHOR_END: loops
 }
 
-pub fn IfStatements(cx: Scope) -> Element {
+pub fn IfStatements() -> Element {
     // ANCHOR: ifstatements
     cx.render(rsx! {
         // use if statements without an else

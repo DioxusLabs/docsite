@@ -3,7 +3,7 @@ use crate::*;
 
 #[allow(unused)]
 #[component]
-pub fn Err404(cx: Scope, segments: Vec<String>) -> Element {
+pub fn Err404(segments: Vec<String>) -> Element {
     cx.render(rsx!(
         section { class: "py-20",
             div { class: "container px-4 mx-auto",

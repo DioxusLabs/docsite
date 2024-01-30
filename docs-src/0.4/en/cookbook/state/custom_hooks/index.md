@@ -62,7 +62,7 @@ If we try to use this hook in an async block, we will get a compile error:
 
 ```rust
 fn FutureComponent(cx: &ScopeState) -> Element {
-	let my_state = my_use_state(cx, || 0);
+	let my_state = my_use_state(|| 0);
 	cx.spawn({
 		to_owned![my_state];
 		async move {
@@ -78,7 +78,7 @@ But with the original version, we can use it in an async block:
 
 ```rust
 fn FutureComponent(cx: &ScopeState) -> Element {
-	let my_state = use_state(cx, || 0);
+	let my_state = use_state(|| 0);
 	cx.spawn({
 		to_owned![my_state];
 		async move {

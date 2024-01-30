@@ -2,8 +2,8 @@ use dioxus::prelude::*;
 use fermi::use_read;
 use crate::HIGHLIGHT_NAV_LAYOUT;
 
-pub fn Footer(cx: Scope) -> Element {
-    let highlighted = use_read(cx, &HIGHLIGHT_NAV_LAYOUT);
+pub fn Footer() -> Element {
+    let highlighted = use_read(&HIGHLIGHT_NAV_LAYOUT);
     let bg_color = if highlighted.0 {
         "border border-orange-600 rounded-md"
     } else {

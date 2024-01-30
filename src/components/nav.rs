@@ -14,17 +14,17 @@ pub struct LoggedIn(pub bool);
 pub static LOGGED_IN: Atom<LoggedIn> = Atom(|_| LoggedIn(false));
 pub static SHOW_DOCS_NAV: Atom<bool> = Atom(|_| false);
 
-pub fn Nav(cx: Scope) -> Element {
-    let logged_in = use_read(cx, &LOGGED_IN);
-    let highlighted = use_read(cx, &HIGHLIGHT_NAV_LAYOUT);
+pub fn Nav() -> Element {
+    let logged_in = use_read(&LOGGED_IN);
+    let highlighted = use_read(&HIGHLIGHT_NAV_LAYOUT);
     let bg_color = if highlighted.0 {
         "border border-orange-600 rounded-md"
     } else {
         ""
     };
-    let show_docs_nav = use_read(cx, &SHOW_DOCS_NAV);
+    let show_docs_nav = use_read(&SHOW_DOCS_NAV);
     let sidebar_class = if *show_docs_nav { "" } else { "hidden" };
-    let show_sidebar = use_atom_state(cx, &SHOW_SIDEBAR);
+    let show_sidebar = use_atom_state(&SHOW_SIDEBAR);
 
     render! {
         SearchModal {}
@@ -94,7 +94,7 @@ pub fn Nav(cx: Scope) -> Element {
     }
 }
 
-fn FullNav(cx: Scope) -> Element {
+fn FullNav() -> Element {
     cx.render(rsx! {
         div { class: "hidden md:flex items-center",
             nav {
@@ -119,8 +119,8 @@ fn FullNav(cx: Scope) -> Element {
     })
 }
 
-fn MobileNav(cx: Scope) -> Element {
-    let show = use_atom_state(cx, &SHOW_NAV);
+fn MobileNav() -> Element {
+    let show = use_atom_state(&SHOW_NAV);
 
     cx.render(rsx! {
         div { class: "flex items-center",
@@ -171,7 +171,7 @@ static LINKS: &[(&str, &str, LinkPairs)] = &[
 ];
 
 #[component]
-fn LinkList(cx: Scope) -> Element {
+fn LinkList() -> Element {
     let hover = "hover:text-sky-500 dark:hover:text-sky-400";
     let hover_bg = "dark:hover:bg-gray-500 hover:bg-gray-200 rounded";
 
@@ -209,8 +209,8 @@ fn LinkList(cx: Scope) -> Element {
     cx.render(rsx! {links})
 }
 
-fn Search(cx: Scope) -> Element {
-    let show_modal = use_atom_state(cx, &SHOW_SEARCH);
+fn Search() -> Element {
+    let show_modal = use_atom_state(&SHOW_SEARCH);
 
     render! {
         div { class: "relative md:w-full max-w-[30rem] xl:max-w-[30rem] 2xl:max-w-[30rem] sm:mx-auto sm:flex-1",
@@ -233,12 +233,12 @@ fn Search(cx: Scope) -> Element {
     }
 }
 
-fn SearchModal(cx: Scope) -> Element {
-    let show_modal = use_atom_state(cx, &SHOW_SEARCH);
-    let search_text = use_state(cx, String::new);
-    let results = use_ref(cx, || SEARCH_INDEX.search(search_text.get()));
+fn SearchModal() -> Element {
+    let show_modal = use_atom_state(&SHOW_SEARCH);
+    let search_text = use_state(String::new);
+    let results = use_ref(|| SEARCH_INDEX.search(search_text.get()));
 
-    let last_key_press = use_ref(cx, || {
+    let last_key_press = use_ref(|| {
         #[cfg(not(target_arch = "wasm32"))]
         return 0.;
         js_sys::Date::now()
@@ -366,8 +366,8 @@ fn SearchModal(cx: Scope) -> Element {
 }
 
 #[component]
-fn SearchResult(cx: Scope, result: dioxus_search::SearchResult<Route>) -> Element {
-    let set_show_modal = fermi::use_set(cx, &SHOW_SEARCH);
+fn SearchResult(result: dioxus_search::SearchResult<Route>) -> Element {
+    let set_show_modal = fermi::use_set(&SHOW_SEARCH);
     let title = &result.title;
     let route = &result.route;
     let top_excerpt_segments = &result.excerpts.first().unwrap().text;

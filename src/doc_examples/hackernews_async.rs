@@ -117,8 +117,8 @@ pub mod fetch {
     use super::{get_comment, get_stories, get_story, PreviewState, StoryItem, StoryPageData};
     use dioxus::prelude::*;
 
-    pub fn App(cx: Scope) -> Element {
-        use_shared_state_provider(cx, || PreviewState::Unset);
+    pub fn App() -> Element {
+        use_shared_state_provider(|| PreviewState::Unset);
 
         cx.render(rsx! {
             div {
@@ -138,7 +138,7 @@ pub mod fetch {
     }
 
     #[component]
-    fn StoryListing(cx: Scope, story: StoryItem) -> Element {
+    fn StoryListing(story: StoryItem) -> Element {
         let preview_state = use_shared_state::<PreviewState>(cx).unwrap();
         let StoryItem {
             title,
@@ -221,7 +221,7 @@ pub mod fetch {
         })
     }
 
-    fn Preview(cx: Scope) -> Element {
+    fn Preview() -> Element {
         let preview_state = use_shared_state::<PreviewState>(cx)?;
 
         match &*preview_state.read() {
@@ -258,7 +258,7 @@ pub mod fetch {
     }
 
     #[component]
-    fn Comment(cx: Scope, comment: super::Comment) -> Element<'a> {
+    fn Comment(comment: super::Comment) -> Element<'a> {
         render! {
             div {
                 padding: "0.5rem",
@@ -277,9 +277,9 @@ pub mod fetch {
     }
 
     // ANCHOR: use_future
-    fn Stories(cx: Scope) -> Element {
+    fn Stories() -> Element {
         // Fetch the top 10 stories on Hackernews
-        let stories = use_future(cx, (), |_| get_stories(10));
+        let stories = use_future((), |_| get_stories(10));
 
         // check if the future is resolved
         match stories.value() {
@@ -310,8 +310,8 @@ pub mod fetch {
 
 use dioxus::prelude::*;
 
-pub fn App(cx: Scope) -> Element {
-    use_shared_state_provider(cx, || PreviewState::Unset);
+pub fn App() -> Element {
+    use_shared_state_provider(|| PreviewState::Unset);
 
     cx.render(rsx! {
         div {
@@ -350,7 +350,7 @@ async fn resolve_story(
 }
 
 #[component]
-fn StoryListing(cx: Scope, story: StoryItem) -> Element {
+fn StoryListing(story: StoryItem) -> Element {
     let preview_state = use_shared_state::<PreviewState>(cx).unwrap();
     let StoryItem {
         title,
@@ -363,7 +363,7 @@ fn StoryListing(cx: Scope, story: StoryItem) -> Element {
         ..
     } = story;
     // New
-    let full_story = use_ref(cx, || None);
+    let full_story = use_ref(|| None);
 
     let url = url.as_deref().unwrap_or_default();
     let hostname = url
@@ -442,7 +442,7 @@ enum PreviewState {
     Loaded(StoryPageData),
 }
 
-fn Preview(cx: Scope) -> Element {
+fn Preview() -> Element {
     let preview_state = use_shared_state::<PreviewState>(cx)?;
 
     match &*preview_state.read() {
@@ -479,7 +479,7 @@ fn Preview(cx: Scope) -> Element {
 }
 
 #[component]
-fn Comment(cx: Scope, comment: Comment) -> Element<'a> {
+fn Comment(comment: Comment) -> Element<'a> {
     render! {
         div {
             padding: "0.5rem",
@@ -497,8 +497,8 @@ fn Comment(cx: Scope, comment: Comment) -> Element<'a> {
     }
 }
 
-fn Stories(cx: Scope) -> Element {
-    let story = use_future(cx, (), |_| get_stories(10));
+fn Stories() -> Element {
+    let story = use_future((), |_| get_stories(10));
 
     match story.value() {
         Some(Ok(list)) => render! {

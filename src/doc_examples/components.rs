@@ -2,7 +2,7 @@
 use dioxus::prelude::*;
 
 // ANCHOR: App
-pub fn App(cx: Scope) -> Element {
+pub fn App() -> Element {
     cx.render(rsx! {
         About {},
         About {},
@@ -11,7 +11,7 @@ pub fn App(cx: Scope) -> Element {
 // ANCHOR_END: App
 
 // ANCHOR: About
-pub fn About(cx: Scope) -> Element {
+pub fn About() -> Element {
     cx.render(rsx!(p {
         b {"Dioxus Labs"}
         " An Open Source project dedicated to making Rust UI wonderful."

@@ -8,6 +8,6 @@ struct PropBased {
     age: String,
 }
 
-fn Stateful(cx: Scope<PropBased>) -> Element {
+fn Stateful(<PropBased>) -> Element {
     render!("Hello {cx.name}, you are {cx.age} years old!")
 }

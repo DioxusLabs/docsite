@@ -4,9 +4,9 @@ fn main() {
     dioxus_desktop::launch(app);
 }
 
-fn app(cx: Scope) -> Element {
+fn app() -> Element {
     // Use eval returns a function that can spawn eval instances
-    let create_eval = use_eval(cx);
+    let create_eval = use_eval();
 
     // You can create as many eval instances as you want
     let mut eval = create_eval(
@@ -23,7 +23,7 @@ fn app(cx: Scope) -> Element {
     // You can send messages to JavaScript with the send method
     eval.send("Hi from Rust!".into()).unwrap();
 
-    let future = use_future(cx, (), |_| {
+    let future = use_future((), |_| {
         to_owned![eval];
         async move {
             // You can receive any message from JavaScript with the recv method

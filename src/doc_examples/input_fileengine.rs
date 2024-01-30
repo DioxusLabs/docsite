@@ -2,9 +2,9 @@
 use dioxus::prelude::*;
 
 // ANCHOR: component
-pub fn App(cx: Scope) -> Element {
+pub fn App() -> Element {
     // ANCHOR: rsx
-    let filenames: &UseRef<Vec<String>> = use_ref(cx, Vec::new);
+    let filenames: &UseRef<Vec<String>> = use_ref(Vec::new);
     cx.render(rsx! {
         input {
             // tell the input to pick a file

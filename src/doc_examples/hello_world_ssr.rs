@@ -37,7 +37,7 @@ async fn app_endpoint() -> Html<String> {
 // ANCHOR: second_endpoint
 async fn second_app_endpoint() -> Html<String> {
     // create a component that renders a div with the text "hello world"
-    fn app(cx: Scope) -> Element {
+    fn app() -> Element {
         cx.render(rsx!(div { "hello world" }))
     }
     // create a VirtualDom with the app component
@@ -52,7 +52,7 @@ async fn second_app_endpoint() -> Html<String> {
 
 // ANCHOR: component
 // define a component that renders a div with the text "Hello, world!"
-fn App(cx: Scope) -> Element {
+fn App() -> Element {
     cx.render(rsx! {
         div {
             "Hello, world!"

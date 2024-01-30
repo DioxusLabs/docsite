@@ -1,7 +1,7 @@
 //! Simple, familiar, React-like syntax
 
-fn app(cx: Scope) -> Element {
-    let mut count = use_state(cx, || 0);
+fn app() -> Element {
+    let mut count = use_state(|| 0);
 
     render!(
         h1 { "High-Five counter: {count}" }

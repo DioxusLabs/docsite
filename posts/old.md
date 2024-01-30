@@ -51,7 +51,7 @@ To make components with props that borrow data, we need to use the regular funct
 struct ChildProps<'a> {
 		name: &'a str
 }
-fn Child<'a>(cx: Scope<'a, ChildProps>) -> Element<'a> {
+fn Child<'a>( ChildProps>) -> Element<'a> {
 		rsx!(cx, div {"Hello, {cx.name}"})
 }
 ```
@@ -116,7 +116,7 @@ struct DogApi {
 const ENDPOINT: &str = "https://dog.ceo/api/breeds/image/random";
 
 const App: FC<()> = |cx| {
-		let req = use_ref(cx, surf::get(ENDPOINT).recv_json::<DogApi>());
+		let req = use_ref(surf::get(ENDPOINT).recv_json::<DogApi>());
 
 		let doggo = cx.suspend(req, |cx, res| match res {
 	      Ok(res) => rsx!(in cx, img { src: "{res.message}" }),
@@ -140,7 +140,7 @@ Rust’s async story, while young, does have several highlights. Every future in
 
 ```rust
 static App: FC<()> = |cx| {
-	let websocket_coroutine = use_task(cx, async move {
+	let websocket_coroutine = use_task(async move {
 			let mut socket = connect_to_websocket().await.unwrap();
 			while let Some(msg) = socket.recv().await {
 					// update our global state
@@ -216,17 +216,17 @@ In Recoil, shared state is declared with an "Atom" or "AtomFamily". From there, 
 static COUNT: Atom<u32> = |_| 0;
 
 static Incr: FC<()> = |cx| {
-    let mut count = use_write(cx, COUNT);
+    let mut count = use_write(COUNT);
     rsx!(in cx, button { onclick: move |_| count += 1, "increment" })
 };
 
 static Decr: FC<()> = |cx| {
-    let mut count = use_write(cx, COUNT);
+    let mut count = use_write(COUNT);
     rsx!(in cx, button { onclick: move |_| count -= 1, "decrement" })
 };
 
 static App: FC<()> = |cx| {
-    let count = use_read(cx, COUNT);
+    let count = use_read(COUNT);
     rsx!(in cx, "Count is {count}", Incr {}, Decr {})
 };
 ```
@@ -258,7 +258,7 @@ Frankly, the type of code used to write UI is not that complex. When dealing wit
 ```rust
 // The Rust-Dioxus version
 fn App(cx: Context, props: &()) -> Element {
-    let mut count = use_state(&cx, || 0);
+    let mut count = use_state(|| 0);
     cx.render(rsx!{
         h1 { "Count: {count}" }
         button { onclick: move |_| count += 1, "+" }

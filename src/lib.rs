@@ -43,10 +43,10 @@ pub mod components {
 }
 
 #[component]
-fn HeaderFooter(cx: Scope) -> Element {
-    use_init_atom_root(cx);
-    let set_search = fermi::use_set(cx, &SHOW_SEARCH);
-    shortcut::use_shortcut(cx, Key::Character("/".to_string()), Modifiers::CONTROL, {
+fn HeaderFooter() -> Element {
+    use_init_atom_root();
+    let set_search = fermi::use_set(&SHOW_SEARCH);
+    shortcut::use_shortcut(Key::Character("/".to_string()), Modifiers::CONTROL, {
         to_owned![set_search];
         move || {
             set_search(components::nav::ShowSearch(true));
@@ -122,11 +122,11 @@ pub enum Route {
     Err404 { segments: Vec<String> },
 }
 
-pub fn use_url(cx: &ScopeState) -> String {
+pub fn use_url() -> String {
     use_route::<Route>(cx).unwrap().to_string()
 }
 
-pub fn app(cx: Scope) -> Element {
+pub fn app() -> Element {
     render! { Router::<Route> {} }
 }
 
@@ -140,7 +140,7 @@ mod docs {
     use fermi::use_atom_state;
 
     #[component]
-    fn SandBoxFrame<'a>(cx: Scope<'a>, url: &'a str) -> Element<'a> {
+    fn SandBoxFrame<'a>( url: &'a str) -> Element<'a> {
         render! {
             iframe {
                 style: "border: 1px solid rgba(0, 0, 0, 0.1);border-radius:2px;",
@@ -153,7 +153,7 @@ mod docs {
     }
 
     #[component]
-    fn DemoFrame<'a>(cx: Scope<'a>, children: Element<'a>) -> Element {
+    fn DemoFrame<'a>( children: Element<'a>) -> Element {
         render! {
             div {
                 class: "bg-white rounded-md shadow-md p-4 my-4 overflow-scroll text-black dioxus-demo",
@@ -168,10 +168,10 @@ mod docs {
         }
     }
 
-    fn LayoutsExplanation(cx: Scope) -> Element {
-        let highlight_nav = use_atom_state(cx, &HIGHLIGHT_NAV_LAYOUT);
-        let highlight_docs_nav = use_atom_state(cx, &HIGHLIGHT_DOCS_LAYOUT);
-        let highlight_docs_content = use_atom_state(cx, &HIGHLIGHT_DOCS_CONTENT);
+    fn LayoutsExplanation() -> Element {
+        let highlight_nav = use_atom_state(&HIGHLIGHT_NAV_LAYOUT);
+        let highlight_docs_nav = use_atom_state(&HIGHLIGHT_DOCS_LAYOUT);
+        let highlight_docs_content = use_atom_state(&HIGHLIGHT_DOCS_CONTENT);
 
         render! {
             pre {

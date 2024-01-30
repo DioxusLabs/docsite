@@ -1,8 +1,8 @@
 #![allow(non_snake_case)]
 use dioxus::prelude::*;
 
-pub fn App(cx: Scope) -> Element {
-    use_shared_state_provider(cx, || PreviewState::Unset);
+pub fn App() -> Element {
+    use_shared_state_provider(|| PreviewState::Unset);
 
     cx.render(rsx! {
         div {
@@ -21,8 +21,8 @@ pub fn App(cx: Scope) -> Element {
     })
 }
 
-fn Stories(cx: Scope) -> Element {
-    let story = use_future(cx, (), |_| get_stories(10));
+fn Stories() -> Element {
+    let story = use_future((), |_| get_stories(10));
 
     match story.value() {
         Some(Ok(list)) => render! {
@@ -55,7 +55,7 @@ async fn resolve_story(
 }
 
 #[component]
-fn StoryListing(cx: Scope, story: StoryItem) -> Element {
+fn StoryListing(story: StoryItem) -> Element {
     let preview_state = use_shared_state::<PreviewState>(cx).unwrap();
     let StoryItem {
         title,
@@ -67,7 +67,7 @@ fn StoryListing(cx: Scope, story: StoryItem) -> Element {
         id,
         ..
     } = story;
-    let full_story = use_ref(cx, || None);
+    let full_story = use_ref(|| None);
 
     let url = url.as_deref().unwrap_or_default();
     let hostname = url
@@ -140,7 +140,7 @@ enum PreviewState {
     Loaded(StoryPageData),
 }
 
-fn Preview(cx: Scope) -> Element {
+fn Preview() -> Element {
     let preview_state = use_shared_state::<PreviewState>(cx)?;
 
     match &*preview_state.read() {
@@ -177,7 +177,7 @@ fn Preview(cx: Scope) -> Element {
 }
 
 #[component]
-fn Comment(cx: Scope, comment: Comment) -> Element<'a> {
+fn Comment(comment: Comment) -> Element<'a> {
     render! {
         div {
             padding: "0.5rem",

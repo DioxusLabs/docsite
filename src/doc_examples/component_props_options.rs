@@ -5,7 +5,7 @@ fn main() {
     dioxus_desktop::launch(App);
 }
 
-fn App(cx: Scope) -> Element {
+fn App() -> Element {
     cx.render(rsx! {
             // ANCHOR: OptionalProps_usage
     Title {
@@ -59,7 +59,7 @@ struct OptionalProps<'a> {
     subtitle: Option<&'a str>,
 }
 
-fn Title<'a>(cx: Scope<'a, OptionalProps>) -> Element<'a> {
+fn Title<'a>( OptionalProps>) -> Element<'a> {
     cx.render(rsx!(h1{
         "{cx.props.title}: ",
         cx.props.subtitle.unwrap_or("No subtitle provided"),
@@ -75,7 +75,7 @@ struct ExplicitOptionProps<'a> {
     subtitle: Option<&'a str>,
 }
 
-fn ExplicitOption<'a>(cx: Scope<'a, ExplicitOptionProps>) -> Element<'a> {
+fn ExplicitOption<'a>( ExplicitOptionProps>) -> Element<'a> {
     cx.render(rsx!(h1 {
         "{cx.props.title}: ",
         cx.props.subtitle.unwrap_or("No subtitle provided"),
@@ -91,7 +91,7 @@ struct DefaultProps {
     number: i64,
 }
 
-fn DefaultComponent(cx: Scope<DefaultProps>) -> Element {
+fn DefaultComponent(<DefaultProps>) -> Element {
     cx.render(rsx!(h1 { "{cx.props.number}" }))
 }
 // ANCHOR_END: DefaultComponent
@@ -103,7 +103,7 @@ struct IntoProps {
     string: String,
 }
 
-fn IntoComponent(cx: Scope<IntoProps>) -> Element {
+fn IntoComponent(<IntoProps>) -> Element {
     cx.render(rsx!(h1 { "{cx.props.string}" }))
 }
 // ANCHOR_END: IntoComponent

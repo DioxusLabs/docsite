@@ -2,7 +2,7 @@
 use dioxus::prelude::*;
 
 pub fn App() -> Element {
-    use_hook(|| provide_context(PreviewState::Unset));
+    use_hook(|| provide_context(Signal::new(PreviewState::Unset)));
 
     rsx! {
         div {

@@ -49,7 +49,7 @@ pub fn use_context_provider<T: 'static + Clone>(cx: &ScopeState, f: impl FnOnce(
     use_hook(|| {
         let val = f();
         // Provide the context state to the scope
-        cx.provide_context(val.clone());
+        provide_context(val.clone());
         val
     })
 }

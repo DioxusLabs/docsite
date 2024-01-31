@@ -45,23 +45,17 @@ pub fn Snippets() -> Element {
                 div { class: "flex-none overflow-auto whitespace-nowrap flex relative min-w-full bg-ghdarkmetal pt-3 px-3",
                     ul { class: "flex text-sm leading-6 text-gray-100",
                         for (id, snippet) in SNIPPETS.iter().enumerate() {
-                            let selected = **selected_snippet == id;
-
-                            let bg_selected = match selected {
-                                true => "bg-ghmetal border-neutral-500/30 border text-white border-b-0",
-                                false => "bg-ghdarkmetal",
-                            };
-
-                            rsx! {
-                                li { class: "flex-none",
-                                    button { class: "relative py-2 px-4 rounded-t-md {bg_selected}", r#type: "button", onclick: move |_| selected_snippet.set(id),
-                                        "{snippet.filename}"
-                                        if selected {
-                                            Some(rsx!{ span { class: "absolute z-10 bottom-0 inset-x-0 h-2 bg-ghmetal" } })
-                                            // Some(rsx!{ span { class: "absolute z-10 bottom-0 inset-x-3 h-px bg-ghmetal" } })
-                                        } else {
-                                            None
-                                        }
+                            li { class: "flex-none",
+                                button {
+                                    class: "relative py-2 px-4 rounded-t-md",
+                                    class: match selected_snippet == id {
+                                        true => "bg-ghmetal border-neutral-500/30 border text-white border-b-0",
+                                        false => "bg-ghdarkmetal",
+                                    },
+                                    r#type: "button", onclick: move |_| selected_snippet.set(id),
+                                    "{snippet.filename}"
+                                    if selected_snippet == id {
+                                        span { class: "absolute z-10 bottom-0 inset-x-0 h-2 bg-ghmetal" }
                                     }
                                 }
                             }
@@ -71,22 +65,19 @@ pub fn Snippets() -> Element {
                 }
 
                 div {
-                    SNIPPETS.iter().enumerate().map(|(id, snippet)| {
-                        // Instead of hiding/showing, we just render all the code blocks at once and hide them with css instead
-                        let show = match **selected_snippet {
-                            a if a == id => "block",
-                            _ => "hidden"
-                        };
-
-                        rsx! {
-                            div {
-                                key: "{snippet.title}",
-                                class: "w-full min-h-0 p-4 {show}",
-                                background_color: "#2b303b",
-                                dangerous_inner_html: "{snippet.html}"
-                            }
+                    for (id, snippet) in SNIPPETS.iter().enumerate() {
+                        div {
+                            key: "{snippet.title}",
+                            class: "w-full min-h-0 p-4",
+                            // Instead of hiding/showing, we just render all the code blocks at once and hide them with css instead
+                            class: match selected_snippet() {
+                                a if a == id => "block",
+                                _ => "hidden"
+                            },
+                            background_color: "#2b303b",
+                            dangerous_inner_html: "{snippet.html}"
                         }
-                    })
+                    }
                 }
             }
         }

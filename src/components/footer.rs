@@ -81,7 +81,7 @@ pub fn Footer() -> Element {
                     }
                 }
                 div { class: "flex-grow flex flex-wrap md:pl-20 -mb-10 md:mt-0 mt-10 md:text-left text-center",
-                    categories
+                    {categories}
                 }
             }
             div { class: "container mx-auto py-4 px-5 flex flex-wrap flex-col sm:flex-row",

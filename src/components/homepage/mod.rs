@@ -171,8 +171,8 @@ fn TriShow(
     rsx! {
         div { class: "w-full flex flex-row justify-center max-w-screen-lg",
             // div { class: "grow basis-0", left }
-            TriPadding { last: last.unwrap_or_default(), center }
-            div { class: "grow basis-0 ",
+            TriPadding { last: last.unwrap_or_default(), {center} }
+            div { class: "grow basis-0",
                 Link { to: to.clone(),
                     div { class: "min-w-lg max-w-screen-md hover:shadow-pop rounded-lg p-8",
                         h2 { class: "text-2xl text-gray-800 font-semibold pb-2 dark:text-gray-100 ",
@@ -313,8 +313,8 @@ fn Stats() -> Element {
 fn StatsItem(major: &'static str, minor: &'static str) -> Element {
     rsx! {
         div { class: "text-center py-6 border border-[#444]",
-            div { class: "text-5xl font-bold text-gray-800 dark:text-gray-100", *major }
-            div { class: "text-xl text-gray-600 dark:text-gray-400", *minor }
+            div { class: "text-5xl font-bold text-gray-800 dark:text-gray-100", {major} }
+            div { class: "text-xl text-gray-600 dark:text-gray-400", {minor} }
         }
     }
 }
@@ -340,9 +340,7 @@ fn Platform(
                     }
                     div { class: "mx-auto w-full", IconSplit {} }
                     if !last {
-                        Some(rsx!{ div { class: "bg-ghmetal dark:bg-white w-1 h-full mx-auto" } })
-                    } else {
-                        None
+                        div { class: "bg-ghmetal dark:bg-white w-1 h-full mx-auto" }
                     }
                 }
             }
@@ -352,10 +350,10 @@ fn Platform(
                 to: to.clone(),
                 // div { class: "min-w-lg p-8 m-8 bg-slate-800 dark:bg-slate-900/70 dark:backdrop-blur dark:ring-1 dark:ring-inset dark:ring-white/10 rounded shadow-xl",
                 h2 { class: "text-2xl text-gray-800 font-semibold font-mono pb-2 dark:text-gray-100 ",
-                    *name
+                    {name}
                 }
-                p { class: "text-md text-gray-500 dark:text-gray-400", *content }
-                children
+                p { class: "text-md text-gray-500 dark:text-gray-400", {content} }
+                {children}
             }
         }
     }

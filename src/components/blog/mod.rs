@@ -3,7 +3,7 @@ use crate::Link;
 use dioxus::prelude::*;
 use dioxus_router::prelude::*;
 
-#[derive(PartialEq, Eq)]
+#[derive(PartialEq, Eq, Clone, Copy)]
 pub struct BlogPost {
     category: &'static str,
     date: &'static str,

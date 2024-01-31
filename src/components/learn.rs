@@ -73,7 +73,7 @@ fn DocVersionNav() -> Element {
             ul { class: "pl-2",
                 li { class: "m-1 rounded-md pl-2 hover:bg-gray-200 hover:dark:bg-gray-800",
                     a { href: "/learn/0.3",
-                        dioxus_material_icons::MaterialIcon { name: "chevron_left", color: "gray" }
+                        dioxus_material_icons::MaterialIcon { name: "chevron_left", color: MaterialIconColor::Custom("gray".to_string()) }
                         "0.3"
                     }
                 }
@@ -106,7 +106,7 @@ fn SidebarSection(chapter: &'static SummaryItem<BookRoute>) -> Element {
             if let Some(url) = &link.location {
                 Link { to: Route::Docs { child: *url }, h2 { class: "font-semibold", "{link.name}" } }
             }
-            ul { class: "pl-2", sections }
+            ul { class: "pl-2", {sections} }
         }
     }
 }
@@ -122,14 +122,14 @@ fn SidebarChapter(chapter: &'static SummaryItem<BookRoute>) -> Element {
 
     // for instance, if the current page is /docs/0.4/en/learn/overview
     // then we want to show the dropdown for /docs/0.4/en/learn
-    let show_dropdown = *list_toggle.get() || book_url.starts_with(&*url.to_string());
+    let show_dropdown = list_toggle() || book_url.starts_with(&*url.to_string());
     let show_chevron = !link.nested_items.is_empty();
 
     if show_chevron {
         rsx! {
             li { class: "m-1 rounded-md ml-[-1px] hover:bg-gray-200 hover:dark:bg-gray-800",
-                button { onclick: move |_| list_toggle.set(!list_toggle.get()),
-                    dioxus_material_icons::MaterialIcon { name: "chevron_right", color: "gray" }
+                button { onclick: move |_| list_toggle.toggle(),
+                    dioxus_material_icons::MaterialIcon { name: "chevron_right", color: MaterialIconColor::Custom("gray".to_string()) }
                 }
                 Link { to: Route::Docs { child: *url }, "{link.name}" }
             }
@@ -205,7 +205,7 @@ fn RightNav() -> Element {
                 }
             }
             h2 { class: "py-4 font-semibold",
-                match edit_github_url.value() {
+                match edit_github_url.value().cloned() {
                     Some(url) => rsx!(a { href: "{url}", "Edit this page!" }),
                     None => rsx!(a { href: "{GITHUB_EDIT_PAGE_FALLBACK_URL}", "Edit this page!" })
                 }

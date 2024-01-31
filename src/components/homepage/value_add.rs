@@ -1,3 +1,5 @@
+use crate::dioxus_core::DynamicNode;
+use crate::dioxus_core::VComponent;
 use crate::icons;
 use dioxus::prelude::*;
 
@@ -30,7 +32,7 @@ pub fn ValueAdd() -> Element {
                 div { class: "flex flex-wrap sm:-m-4 -mx-4 -mb-10 -mt-4 md:space-y-0 space-y-6 ",
                     for (idx, (title, content)) in FEATURES.iter().enumerate() {
                         div { class: "p-4 md:w-1/4 flex", key: "{title}",
-                            div { class: "flex-grow lg:pl-6", {VComponent::new(IconsSet[idx], (), title)},
+                            div { class: "flex-grow lg:pl-6", {DynamicNode::Component(VComponent::new(IconsSet[idx], (), title))},
                                 a { href: "#",
                                     h2 { class: "dark:text-white text-gray-800 text-lg title-font font-medium mb-2", "{title}" }
                                 }

@@ -137,7 +137,7 @@ fn MobileNav() -> Element {
                     "type": "button",
                     onclick: move |_| {
                         let mut nav = SHOW_NAV.write();
-                        nav  = !*nav;
+                        *nav = !*nav;
                     },
                     span { class: "sr-only", "Navigation" }
                     svg { width: "24", height: "24", "aria-hidden": "true", fill: "none",
@@ -278,7 +278,7 @@ fn SearchModal() -> Element {
                                     onclick: move |evt| evt.stop_propagation(),
                                     onkeydown: move |evt| {
                                         if evt.inner().key() == Key::Escape {
-                                            show_modal.set(false);
+                                            SHOW_SEARCH.set(false);
                                         }
                                     },
                                     oninput: move |evt| {

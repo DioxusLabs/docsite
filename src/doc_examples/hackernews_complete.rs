@@ -38,8 +38,8 @@ fn Stories() -> Element {
 }
 
 async fn resolve_story(
-    full_story: UseRef<Option<StoryPageData>>,
-    preview_state: UseSharedState<PreviewState>,
+    full_story: Signal<Option<StoryPageData>>,
+    preview_state: Signal<PreviewState>,
     story_id: i64,
 ) {
     if let Some(cached) = &*full_story.read() {

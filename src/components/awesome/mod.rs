@@ -89,11 +89,11 @@ pub fn Awesome() -> Element {
 
     let search = use_signal(|| "".to_string());
 
-    match items.value() {
+    match &*items.value().read() {
         Some(Ok(items)) => {
             to_owned![items];
             items.sort_by(|a, b| b.category.to_string().to_lowercase().cmp(&a.category.to_string().to_lowercase()));
-            let items: Vec<Item> = items.into_iter().filter(|i| i.name.to_lowercase().contains(&search.get().to_lowercase())).collect();
+            let items: Vec<Item> = items.into_iter().filter(|i| i.name.to_lowercase().contains(&search.read().to_lowercase())).collect();
 
             rsx!(
                 section {
@@ -126,7 +126,7 @@ pub fn Awesome() -> Element {
                                 background_color: "#24292f",
                                 placeholder: "Looking for something specific?",
                                 value: "{search}",
-                                oninput: move |evt| search.set(evt.value.clone()),
+                                oninput: move |evt| search.set(evt.value()),
                             }
                         }
                     }
@@ -168,9 +168,7 @@ pub fn Awesome() -> Element {
                         class: "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 container mx-auto px-2 max-w-screen-1g",
                         for item in items.iter() {
                             if let AwesomeType::MadeWith = item.r#type {
-                                Some(rsx!(AwesomeItem { key: "{item.name}", item: item.clone() }))
-                            } else {
-                                None
+                                AwesomeItem { key: "{item.name}", item: item.clone() }
                             }
                         }
                     }
@@ -240,7 +238,7 @@ fn AwesomeItem(item: Item) -> Element {
     });
 
     // Format stars text
-    let stars = match stars.value() {
+    let stars = match &*stars.value().read() {
         Some(Some(v)) => format!("{} ⭐", v),
         _ => "N/A ⭐".to_string(),
     };

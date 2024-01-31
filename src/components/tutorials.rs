@@ -67,11 +67,11 @@ pub fn Tutorials() -> Element {
 
 #[component]
 fn TutorialPreview(id: usize) -> Element {
-    let tutorial = &TUTORIALS[*id];
+    let tutorial = &TUTORIALS[id];
 
     rsx! {
         li { class: "pb-4 border-b border-gray-200 dark:border-gray-500",
-            Link { to: Route::Tutorial { id: *id },
+            Link { to: Route::Tutorial { id },
                 div { class: "rounded p-4 shadow",
                     div { class: "flex justify-between",
                         h2 { class: "text-lg font-bold", "{tutorial.title}" }
@@ -90,7 +90,7 @@ fn TutorialPreview(id: usize) -> Element {
 
 #[component]
 pub fn Tutorial(id: usize) -> Element {
-    let tutorial = TUTORIALS.get(*id)?;
+    let tutorial = TUTORIALS.get(id)?;
 
     rsx!(
         div {

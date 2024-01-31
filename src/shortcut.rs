@@ -1,6 +1,6 @@
 #![allow(unused)]
 use dioxus::html::input_data::keyboard_types::{Key, Modifiers};
-use dioxus::prelude::use_drop;
+use dioxus::prelude::*;
 use slab::Slab;
 use std::sync::{Arc, Mutex};
 use wasm_bindgen::closure::Closure;
@@ -60,7 +60,7 @@ pub fn use_shortcut(key: Key, modifiers: crate::Modifiers, mut handler: impl FnM
                     .insert((key, modifiers, Box::new(handler)))
             })
         });
-        use_drop(|| {
+        use_drop(move || {
             LISTENERS.with(|l| l.callbacks.lock().unwrap().remove(id));
         })
     }

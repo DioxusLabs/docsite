@@ -10,7 +10,7 @@ edition = "2018"
 dioxus-router = { version = "0.4", features = [
     "fullstack",
 ] }
-dioxus = { version = "0.4" }
+dioxus = { git = "https://github.com/ealmloff/dioxus", branch = "breaking", features = ["fullstack"] }
 dioxus-web = { version = "0.4", features = [
     "hydrate",
 ], optional = true }
@@ -88,8 +88,8 @@ dioxus-native-core-macro = { git = "https://github.com/ealmloff/dioxus", branch 
 
 
 [profile.release]
-# lto = true
-# codegen-units = 1
+lto = true
+codegen-units = 1
 opt-level = 'z'
 strip = "debuginfo"
 
@@ -105,7 +105,7 @@ codegen-units = 256
 default = []
 doc_test = [
     "tokio",
-    "ssr",
+    "server",
     "dioxus-web",
     "dioxus-router/web",
     "dioxus-tui",
@@ -119,12 +119,13 @@ doc_test = [
     "tower-http",
     "dioxus-std",
 ]
-web = ["dioxus-web", "dioxus-router/web", "dioxus-fullstack/web"]
-ssr = [
+web = ["dioxus-web", "dioxus/web", "dioxus-router/web", "dioxus-fullstack/web"]
+server = [
+    "dioxus/axum",
     "dioxus-ssr",
     "dioxus-router/ssr",
     "tokio",
     "dioxus-fullstack/axum",
     "axum",
 ]
-prebuild = ["ssr"]
+prebuild = ["server"]

@@ -4,6 +4,7 @@
 #![allow(unused)]
 
 use dioxus_docs_site::*;
+use dioxus::prelude::*;
 use dioxus_fullstack::prelude::*;
 use dioxus_router::routable::Routable;
 
@@ -66,28 +67,6 @@ fn main() {
         return;
     }
 
-    #[cfg(feature = "web")]
-    dioxus_web::launch_with_props(
-        app,
-        // Get the root props from the document
-        get_root_props_from_document().unwrap_or_default(),
-        dioxus_web::Config::new().hydrate(true),
-    );
-    #[cfg(feature = "ssr")]
-    {
-        use axum::extract::Path;
-        use axum::extract::State;
-        use axum::routing::get;
-
-        LaunchBuilder::<FullstackRouterConfig<Route>>::router()
-            .server_cfg(
-                ServeConfigBuilder::new(
-                    dioxus_fullstack::router::RouteWithCfg::<Route>,
-                    Default::default(),
-                )
-                .incremental(dioxus_fullstack::prelude::IncrementalRendererConfig::default())
-                .assets_path("docs"),
-            )
-            .launch();
-    }
+    #[cfg(not(feature = "prebuild"))]
+    launch(app);
 }

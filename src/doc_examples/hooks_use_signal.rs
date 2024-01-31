@@ -3,7 +3,7 @@ use dioxus::prelude::*;
 
 // ANCHOR: component
 pub fn App() -> Element {
-    let list = use_signal(Vec::new);
+    let mut list = use_signal(Vec::new);
 
     rsx!(
         p { "Current list: {list.read():?}" }

@@ -24,8 +24,8 @@ fn test() {
     )
 }
 
-fn assert_rsx_eq(first: LazyNodes<'static, 'static>, second: LazyNodes<'static, 'static>) {
-    let first = dioxus_ssr::render_lazy(first);
-    let second = dioxus_ssr::render_lazy(second);
+fn assert_rsx_eq(first: Element, second: Element) {
+    let first = dioxus_ssr::render_element(first);
+    let second = dioxus_ssr::render_element(second);
     pretty_assertions::assert_str_eq!(first, second);
 }

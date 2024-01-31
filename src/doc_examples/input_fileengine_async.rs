@@ -3,7 +3,7 @@ use dioxus::prelude::*;
 
 // ANCHOR: component
 pub fn App() -> Element {
-    let files_uploaded: &UseRef<Vec<String>> = use_signal(Vec::new);
+    let files_uploaded: &Signal<Vec<String>> = use_signal(Vec::new);
 
     rsx! {
         input {

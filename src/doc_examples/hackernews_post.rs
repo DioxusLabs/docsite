@@ -294,7 +294,7 @@ pub mod story_final {
             .trim_start_matches("https://")
             .trim_start_matches("http://")
             .trim_start_matches("www.");
-        let score = format!("{score} {}", if *score == 1 { " point" } else { " points" });
+        let score = format!("{score} {}", if score == 1 { " point" } else { " points" });
         let comments = format!(
             "{} {}",
             kids.len(),

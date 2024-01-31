@@ -10,7 +10,7 @@ struct ApiResponse {
 
 pub fn App() -> Element {
     // ANCHOR: use_future
-    let future = use_resource(|| async move {
+    let future = use_resource(move || async move {
         reqwest::get("https://dog.ceo/api/breeds/image/random")
             .await
             .unwrap()
@@ -20,7 +20,7 @@ pub fn App() -> Element {
     // ANCHOR_END: use_future
 
     // ANCHOR: render
-    match future.value() {
+    match &*future.value().read() {
         Some(Ok(response)) => rsx! {
             button {
                 onclick: move |_| future.restart(),

@@ -16,9 +16,9 @@ For many services, a simple async loop will handle the majority of use cases.
 
 ## Yielding Values
 
-To yield values from a coroutine, simply bring in a `UseState` handle and set the value whenever your coroutine completes its work.
+To yield values from a coroutine, simply bring in a `Signal` handle and set the value whenever your coroutine completes its work.
 
-The future must be `'static` – so any values captured by the task cannot carry any references to `cx`, such as a `UseState`.
+The future must be `'static` – so any values captured by the task cannot carry any references to `cx`, such as a `Signal`.
 
 You can use [to_owned](https://doc.rust-lang.org/std/borrow/trait.ToOwned.html#tymethod.to_owned) to create a clone of the hook handle which can be moved into the async closure.
 

@@ -45,7 +45,7 @@ pub mod components {
 fn HeaderFooter() -> Element {
     shortcut::use_shortcut(Key::Character("/".to_string()), Modifiers::CONTROL, {
         move || {
-            SHOW_SEARCH.set(true);
+            *SHOW_SEARCH.write() = true;
         }
     });
 
@@ -119,7 +119,7 @@ pub enum Route {
 }
 
 pub fn use_url() -> String {
-    use_route::<Route>().unwrap().to_string()
+    use_route::<Route>().to_string()
 }
 
 pub fn app() -> Element {
@@ -164,18 +164,17 @@ mod docs {
     }
 
     fn LayoutsExplanation() -> Element {
-
         rsx! {
             pre {
                 onmouseenter: move |_| {
-                    HIGHLIGHT_NAV_LAYOUT.set(true);
-                    HIGHLIGHT_DOCS_LAYOUT.set(true);
-                    HIGHLIGHT_DOCS_CONTENT.set(true);
+                    *HIGHLIGHT_NAV_LAYOUT.write() = true;
+                    *HIGHLIGHT_DOCS_LAYOUT.write() = true;
+                    *HIGHLIGHT_DOCS_CONTENT.write() = true;
                 },
                 onmouseleave: move |_| {
-                    HIGHLIGHT_NAV_LAYOUT.set(false);
-                    HIGHLIGHT_DOCS_LAYOUT.set(false);
-                    HIGHLIGHT_DOCS_CONTENT.set(false);
+                    *HIGHLIGHT_NAV_LAYOUT.write() = false;
+                    *HIGHLIGHT_DOCS_LAYOUT.write() = false;
+                    *HIGHLIGHT_DOCS_CONTENT.write() = false;
                 },
                 span {
                     "#[derive(Clone, Routable, PartialEq, Eq, Serialize, Deserialize)]
@@ -184,14 +183,14 @@ pub enum Route {{\n\t"
                 }
                 span {
                     onmouseenter: move |_| {
-                        HIGHLIGHT_NAV_LAYOUT.set(true);
-                        HIGHLIGHT_DOCS_LAYOUT.set(false);
-                        HIGHLIGHT_DOCS_CONTENT.set(false);
+                        *HIGHLIGHT_NAV_LAYOUT.write() = true;
+                        *HIGHLIGHT_DOCS_LAYOUT.write() = false;
+                        *HIGHLIGHT_DOCS_CONTENT.write() = false;
                     },
                     onmouseleave: move |_| {
-                        HIGHLIGHT_NAV_LAYOUT.set(true);
-                        HIGHLIGHT_DOCS_LAYOUT.set(true);
-                        HIGHLIGHT_DOCS_CONTENT.set(true);
+                        *HIGHLIGHT_NAV_LAYOUT.write() = true;
+                        *HIGHLIGHT_DOCS_LAYOUT.write() = true;
+                        *HIGHLIGHT_DOCS_CONTENT.write() = true;
                     },
                     class: "border border-orange-600 rounded-md",
                     "#[layout(HeaderFooter)]"
@@ -199,14 +198,14 @@ pub enum Route {{\n\t"
                 span { "\n\t\t// ... other routes\n\t\t" }
                 span {
                     onmouseenter: move |_| {
-                        HIGHLIGHT_NAV_LAYOUT.set(false);
-                        HIGHLIGHT_DOCS_LAYOUT.set(true);
-                        HIGHLIGHT_DOCS_CONTENT.set(false);
+                        *HIGHLIGHT_DOCS_LAYOUT.write() = true;
+                        *HIGHLIGHT_NAV_LAYOUT.write() = false;
+                        *HIGHLIGHT_DOCS_CONTENT.write() = false;
                     },
                     onmouseleave: move |_| {
-                        HIGHLIGHT_NAV_LAYOUT.set(true);
-                        HIGHLIGHT_DOCS_LAYOUT.set(true);
-                        HIGHLIGHT_DOCS_CONTENT.set(true);
+                        *HIGHLIGHT_NAV_LAYOUT.write() = true;
+                        *HIGHLIGHT_DOCS_LAYOUT.write() = true;
+                        *HIGHLIGHT_DOCS_CONTENT.write() = true;
                     },
                     class: "border border-green-600 rounded-md",
                     r##"#[layout(DocsSidebars)]"##
@@ -214,14 +213,14 @@ pub enum Route {{\n\t"
                 "\n\t\t\t"
                 span {
                     onmouseenter: move |_| {
-                        HIGHLIGHT_NAV_LAYOUT.set(false);
-                        HIGHLIGHT_DOCS_LAYOUT.set(false);
-                        HIGHLIGHT_DOCS_CONTENT.set(true);
+                        *HIGHLIGHT_NAV_LAYOUT.write() = false;
+                        *HIGHLIGHT_DOCS_LAYOUT.write() = false;
+                        *HIGHLIGHT_DOCS_CONTENT.write() = true;
                     },
                     onmouseleave: move |_| {
-                        HIGHLIGHT_NAV_LAYOUT.set(true);
-                        HIGHLIGHT_DOCS_LAYOUT.set(true);
-                        HIGHLIGHT_DOCS_CONTENT.set(true);
+                        *HIGHLIGHT_NAV_LAYOUT.write() = true;
+                        *HIGHLIGHT_DOCS_LAYOUT.write() = true;
+                        *HIGHLIGHT_DOCS_CONTENT.write() = true;
                     },
                     class: "border border-blue-600 rounded-md",
                     r##"#[route("/learn")]"##

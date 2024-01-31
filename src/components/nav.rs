@@ -210,7 +210,7 @@ fn Search() -> Element {
                 // Pop up a modal
                 class: "bg-gray-100 rounded-lg px-3 py-3 sm:w-full text-left text-gray-400 my-auto sm:flex sm:flex-row sm:align-middle sm:justify-between",
                 onclick: move |_| {
-                    SHOW_SEARCH.set(true);
+                    *SHOW_SEARCH.write() = true;
                 },
                 div { class: "h-full my-auto flex flex-row align-middle justify-between",
                     MaterialIcon { name: "search", size: 24, color: MaterialIconColor::Dark }
@@ -225,7 +225,7 @@ fn Search() -> Element {
 }
 
 fn SearchModal() -> Element {
-    let search_text = use_signal(String::new);
+    let mut search_text = use_signal(String::new);
     let results = use_signal(|| SEARCH_INDEX.search(&search_text.read()));
 
     let last_key_press = use_signal(|| {
@@ -233,7 +233,7 @@ fn SearchModal() -> Element {
         return 0.;
         js_sys::Date::now()
     });
-    use_resource(|| {
+    use_resource(move || {
         to_owned![last_key_press, results];
         async move {
             // debounce the search
@@ -258,7 +258,7 @@ fn SearchModal() -> Element {
                 height: "100vh",
                 width: "100vw",
                 class: "fixed top-0 left-0 z-50 block bg-gray-500 bg-opacity-50 overflow-y-hidden",
-                onclick: move |_| SHOW_SEARCH.set(false),
+                onclick: move |_| *SHOW_SEARCH.write() = false,
 
                 // A little weird, but we're putting an empty div with a scaled height to buffer the top of the modal
                 div { class: "max-w-screen-md mx-auto h-full flex flex-col",
@@ -278,7 +278,7 @@ fn SearchModal() -> Element {
                                     onclick: move |evt| evt.stop_propagation(),
                                     onkeydown: move |evt| {
                                         if evt.inner().key() == Key::Escape {
-                                            SHOW_SEARCH.set(false);
+                                            *SHOW_SEARCH.write() = false;
                                         }
                                     },
                                     oninput: move |evt| {
@@ -364,7 +364,7 @@ fn SearchResult(result: dioxus_search::SearchResult<Route>) -> Element {
             Link {
                 to: route.clone(),
                 onclick: move |_| {
-                    SHOW_SEARCH.set(false);
+                    *SHOW_SEARCH.write() = false;
                 },
                 div { class: "flex flex-col justify-between pb-1",
                     h2 { class: "font-semibold dark:text-white", "{title}" }

@@ -34,7 +34,7 @@ struct GithubInfo {
     repo: String,
 }
 
-#[derive(Clone, serde::Deserialize, PartialEq)]
+#[derive(Clone, Copy, serde::Deserialize, PartialEq)]
 enum Category {
     Misc,
     Util,
@@ -73,7 +73,7 @@ struct StarsResponse {
 
 #[component]
 pub fn Awesome() -> Element {
-    let items = use_resource(|| async move {
+    let items = use_resource(move || async move {
         let req = match reqwest::get(ITEM_LIST_LINK).await {
             Ok(r) => r,
             Err(e) => return Err(e.to_string()),
@@ -87,7 +87,7 @@ pub fn Awesome() -> Element {
         Ok(items)
     });
 
-    let search = use_signal(|| "".to_string());
+    let mut search = use_signal(|| "".to_string());
 
     match &*items.value().read() {
         Some(Ok(items)) => {
@@ -211,37 +211,41 @@ pub fn Awesome() -> Element {
 }
 
 #[component]
-fn AwesomeItem(item: Item) -> Element {
-    let is_github = item.github.is_some();
-    let username = item.github.clone().unwrap_or(GithubInfo::default()).username;
-    let repo = item.github.clone().unwrap_or(GithubInfo::default()).repo;
+fn AwesomeItem(item: ReadOnlySignal<Item>) -> Element {
+    let stars = use_resource(move || {
+        async move {
+            let item = item.read();
+            let is_github = item.github.is_some();
+            let username = item.github.clone().unwrap_or(GithubInfo::default()).username;
+            let repo = item.github.clone().unwrap_or(GithubInfo::default()).repo;
+            if is_github {
+                // Check cache
+                if let Some(stars) = get_stars(format!("{}{}/{}", STAR_CACHE_NAME, username, repo)) {
+                    return Some(stars);
+                }
 
-    let stars = use_resource(|| async move {
-        if is_github {
-            // Check cache
-            if let Some(stars) = get_stars(format!("{}{}/{}", STAR_CACHE_NAME, username, repo)) {
-                return Some(stars);
-            }
-
-            // Not in cache or expired, lets get from github
-            if let Ok(req) = reqwest::get(format!("https://api.github.com/repos/{username}/{repo}")).await {
-                if let Ok(res) = req.json::<StarsResponse>().await {
-                    // Add to cache
-                    
-                    set_stars(format!("{}{}/{}", STAR_CACHE_NAME, username, repo), res.stargazers_count as usize);
-                    return Some(res.stargazers_count as usize);
+                // Not in cache or expired, lets get from github
+                if let Ok(req) = reqwest::get(format!("https://api.github.com/repos/{username}/{repo}")).await {
+                    if let Ok(res) = req.json::<StarsResponse>().await {
+                        // Add to cache
+                        
+                        set_stars(format!("{}{}/{}", STAR_CACHE_NAME, username, repo), res.stargazers_count as usize);
+                        return Some(res.stargazers_count as usize);
+                    }
                 }
             }
+
+            None
         }
-
-        None
     });
-
+    
     // Format stars text
     let stars = match &*stars.value().read() {
         Some(Some(v)) => format!("{} ⭐", v),
         _ => "N/A ⭐".to_string(),
     };
+
+    let item = item.read();
 
     // Figure out what link to use
     let link = match &item.link {

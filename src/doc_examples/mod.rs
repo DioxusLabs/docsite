@@ -36,8 +36,6 @@ pub mod hooks_counter;
 #[cfg(not(feature = "doc_test"))]
 pub mod hooks_counter_two_state;
 #[cfg(not(feature = "doc_test"))]
-pub mod hooks_out_of_date;
-#[cfg(not(feature = "doc_test"))]
 pub mod hooks_use_signal;
 #[cfg(not(feature = "doc_test"))]
 pub mod input_controlled;

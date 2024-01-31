@@ -22,9 +22,9 @@ pub fn App() -> Element {
 }
 
 fn Stories() -> Element {
-    let story = use_future(|| get_stories(10));
+    let story = use_resource(move || get_stories(10));
 
-    match story.value() {
+    match &*story.value().read() {
         Some(Ok(list)) => rsx! {
             div {
                 for story in list {
@@ -38,8 +38,8 @@ fn Stories() -> Element {
 }
 
 async fn resolve_story(
-    full_story: Signal<Option<StoryPageData>>,
-    preview_state: Signal<PreviewState>,
+    mut full_story: Signal<Option<StoryPageData>>,
+    mut preview_state: Signal<PreviewState>,
     story_id: i64,
 ) {
     if let Some(cached) = &*full_story.read() {
@@ -56,7 +56,7 @@ async fn resolve_story(
 
 #[component]
 fn StoryListing(story: StoryItem) -> Element {
-    let preview_state = consume_context::<PreviewState>().unwrap();
+    let preview_state = consume_context::<Signal<PreviewState>>();
     let StoryItem {
         title,
         url,
@@ -74,7 +74,7 @@ fn StoryListing(story: StoryItem) -> Element {
         .trim_start_matches("https://")
         .trim_start_matches("http://")
         .trim_start_matches("www.");
-    let score = format!("{score} {}", if *score == 1 { " point" } else { " points" });
+    let score = format!("{score} {}", if score == 1 { " point" } else { " points" });
     let comments = format!(
         "{} {}",
         kids.len(),
@@ -91,14 +91,14 @@ fn StoryListing(story: StoryItem) -> Element {
             padding: "0.5rem",
             position: "relative",
             onmouseenter: move |_event| {
-                resolve_story(full_story.clone(), preview_state.clone(), *id)
+                resolve_story(full_story, preview_state, id)
             },
             div {
                 font_size: "1.5rem",
                 a {
                     href: url,
                     onfocus: move |_event| {
-                        resolve_story(full_story.clone(), preview_state.clone(), *id)
+                        resolve_story(full_story, preview_state, id)
                     },
                     "{title}"
                 }
@@ -141,7 +141,7 @@ enum PreviewState {
 }
 
 fn Preview() -> Element {
-    let preview_state = consume_context::<PreviewState>()?;
+    let preview_state = consume_context::<Signal<PreviewState>>();
 
     match &*preview_state.read() {
         PreviewState::Unset => rsx! {

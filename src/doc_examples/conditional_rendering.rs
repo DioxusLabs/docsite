@@ -3,10 +3,10 @@
 use dioxus::prelude::*;
 
 pub fn App() -> Element {
-    let is_logged_in = use_signal(|| false);
+    let mut is_logged_in = use_signal(|| false);
 
     rsx!(LogIn {
-        is_logged_in: **is_logged_in,
+        is_logged_in: is_logged_in(),
         on_log_in: move |_| is_logged_in.set(true),
         on_log_out: move |_| is_logged_in.set(false),
     })
@@ -15,7 +15,7 @@ pub fn App() -> Element {
 #[component]
 fn LogIn(is_logged_in: bool, on_log_in: EventHandler, on_log_out: EventHandler) -> Element {
     // ANCHOR: if_else
-    if *is_logged_in {
+    if is_logged_in {
         rsx! {
             "Welcome!"
             button {
@@ -35,10 +35,10 @@ fn LogIn(is_logged_in: bool, on_log_in: EventHandler, on_log_out: EventHandler) 
 }
 
 pub fn LogInImprovedApp() -> Element {
-    let is_logged_in = use_signal(|| false);
+    let mut is_logged_in = use_signal(|| false);
 
     rsx!(LogInImproved {
-        is_logged_in: **is_logged_in,
+        is_logged_in: is_logged_in(),
         on_log_in: move |_| is_logged_in.set(true),
         on_log_out: move |_| is_logged_in.set(false),
     })
@@ -50,19 +50,19 @@ fn LogInImproved(is_logged_in: bool, on_log_in: EventHandler, on_log_out: EventH
     rsx! {
         // We only render the welcome message if we are logged in
         // You can use if statements in the middle of a render block to conditionally render elements
-        if *is_logged_in {
+        if is_logged_in {
             // Notice the body of this if statement is rsx code, not an expression
             "Welcome!"
         }
         button {
             // depending on the value of `is_logged_in`, we will call a different event handler
-            onclick: move |_| if *is_logged_in {
+            onclick: move |_| if is_logged_in {
                 on_log_in.call(())
             }
             else{
                 on_log_out.call(())
             },
-            if *is_logged_in {
+            if is_logged_in {
                 // if we are logged in, the button should say "Log Out"
                 "Log Out"
             } else {
@@ -75,17 +75,17 @@ fn LogInImproved(is_logged_in: bool, on_log_in: EventHandler, on_log_out: EventH
 }
 
 pub fn LogInWarningApp() -> Element {
-    let is_logged_in = use_signal(|| false);
+    let mut is_logged_in = use_signal(|| false);
 
     rsx! {
         input {
             r#type: "checkbox",
-            checked: **is_logged_in,
-            oninput: move |e| is_logged_in.set(e.inner().value == "on"),
+            checked: is_logged_in(),
+            oninput: move |event| is_logged_in.set(event.value() == "on"),
             "Logged In",
         }
         LogInWarning {
-            is_logged_in: **is_logged_in,
+            is_logged_in: is_logged_in(),
         }
     }
 }
@@ -93,7 +93,7 @@ pub fn LogInWarningApp() -> Element {
 #[component]
 fn LogInWarning(is_logged_in: bool) -> Element {
     // ANCHOR: conditional_none
-    if *is_logged_in {
+    if is_logged_in {
         return None;
     }
 

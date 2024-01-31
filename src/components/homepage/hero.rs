@@ -60,7 +60,7 @@ pub fn Hero() -> Element {
 static ADD_TO_CLIPBOARD: &str = r#"navigator.clipboard.writeText("cargo add dioxus")"#;
 
 fn SaveClipboard() -> Element {
-    let saved = use_signal(|| false);
+    let mut saved = use_signal(|| false);
 
     // funny that we can just default to some javascript like this
     // might want to do the same thing in rust so we can display a selected state

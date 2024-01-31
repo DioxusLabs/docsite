@@ -21,10 +21,10 @@ const GITHUB_EDIT_PAGE_EDIT_URL: &str = "https://github.com/DioxusLabs/docsite/e
 
 #[component]
 pub fn Learn() -> Element {
-    use_hook(|| SHOW_DOCS_NAV.set(true));
-    use_drop({
-        move || SHOW_DOCS_NAV.set(false)
-    });
+    use_hook(|| *SHOW_DOCS_NAV.write() = true);
+    use_drop(
+        || *SHOW_DOCS_NAV.write() = false
+    );
 
     rsx! {
         div { class: "w-full pt-12 text-sm dark:bg-ideblack", min_height: "100vh",
@@ -115,7 +115,7 @@ fn SidebarSection(chapter: &'static SummaryItem<BookRoute>) -> Element {
 fn SidebarChapter(chapter: &'static SummaryItem<BookRoute>) -> Element {
     let link = chapter.maybe_link()?;
     let url = link.location.as_ref().unwrap();
-    let list_toggle = use_signal(|| false);
+    let mut list_toggle = use_signal(|| false);
 
     // current route of the browser, trimmed to the book url
     let book_url = use_book().to_string();
@@ -176,13 +176,12 @@ fn RightNav() -> Element {
     };
     let page = use_book();
     let padding_map = ["pl-2", "pl-4", "pl-6", "pl-8", "pl-10"];
-    let page_url = use_memo(|| page.to_string());
+    let page_url = use_memo(move || page.to_string());
 
-    // This is the URL for the file if that file is not a directory that uses /index.md
-    // page_url starts with '/', so we don't need to worry about that
-    let github_api_url = format!("{GITHUB_API_URL}{page_url}.md");
-
-    let edit_github_url = use_resource(|| async move {
+    let edit_github_url = use_resource(move || async move {
+        // This is the URL for the file if that file is not a directory that uses /index.md
+        // page_url starts with '/', so we don't need to worry about that
+        let github_api_url = format!("{GITHUB_API_URL}{page_url}.md");
         // If the file is not found, that means that we have to use /index.md
         if reqwest::get(github_api_url).await.unwrap().status() == reqwest::StatusCode::NOT_FOUND {
             format!("{GITHUB_EDIT_PAGE_EDIT_URL}{page_url}/index.md")
@@ -243,7 +242,7 @@ fn Content() -> Element {
 
 fn BreadCrumbs() -> Element {
     // parse out the route after the version and language
-    let route: Route = use_route()?;
+    let route: Route = use_route();
 
     rsx! {
         h2 { class: "font-semibold pb-4",
@@ -260,7 +259,7 @@ fn BreadCrumbs() -> Element {
 /// Get the book URL from the current URL
 /// Ignores language and version (for now)
 fn use_book() -> BookRoute {
-    let route = use_route().unwrap();
+    let route = use_route();
     match route {
         Route::Docs { child } => child,
         _ => unreachable!(),
@@ -278,7 +277,7 @@ fn default_page() -> &'static Page<BookRoute> {
 #[component]
 pub fn DocsO3(segments: Vec<String>) -> Element {
     let navigator = use_navigator();
-    let route: Route = use_route().unwrap();
+    let route: Route = use_route();
     navigator.push(route);
     None
 }

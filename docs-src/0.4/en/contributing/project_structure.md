@@ -17,7 +17,7 @@ There are many packages in the Dioxus organization. This document will help you 
 ## State Management/Hooks
 
 - [Hooks](https://github.com/DioxusLabs/dioxus/tree/master/packages/hooks): A collection of common hooks for Dioxus applications
-- [Signals](https://github.com/DioxusLabs/dioxus/tree/master/packages/signals): A experimental state management library for Dioxus applications. This currently contains a `Copy` version of UseRef
+- [Signals](https://github.com/DioxusLabs/dioxus/tree/master/packages/signals): A experimental state management library for Dioxus applications. This currently contains a `Copy` version of Signal
 - [Dioxus STD](https://github.com/DioxusLabs/dioxus-std): A collection of platform agnostic hooks to interact with system interfaces (The clipboard, camera, etc.).
 - [Fermi](https://github.com/DioxusLabs/dioxus/tree/master/packages/fermi): A global state management library for Dioxus applications.
 - [Router](https://github.com/DioxusLabs/dioxus/tree/master/packages/router): A client-side router for Dioxus applications

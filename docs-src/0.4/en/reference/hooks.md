@@ -28,7 +28,7 @@ DemoFrame {
 
 Every time the component's state changes, it re-renders, and the component function is called, so you can describe what you want the new UI to look like. You don't have to worry about "changing" anything – describe what you want in terms of the state, and Dioxus will take care of the rest!
 
-> `use_signal` returns your value wrapped in a smart pointer of type [`UseState`](https://docs.rs/dioxus/latest/dioxus/prelude/struct.UseState.html). This is why you can both read the value and update it, even within an event handler.
+> `use_signal` returns your value wrapped in a smart pointer of type [`Signal`](https://docs.rs/dioxus/latest/dioxus/prelude/struct.Signal.html). This is why you can both read the value and update it, even within an event handler.
 
 You can use multiple hooks in the same component if you want:
 
@@ -39,30 +39,6 @@ You can use multiple hooks in the same component if you want:
 ```inject-dioxus
 DemoFrame {
   hooks_counter_two_state::App {}
-}
-```
-
-### Out-of-date UseState
-
-The value `UseState` dereferences to is only set when the use_signal hook is called every render. This means that if you move the state into a future, or you write to the state and then immediately read the state, it may return an out-of-date value.
-
-```rust
-{{#include src/doc_examples/hooks_out_of_date.rs:component}}
-```
-```inject-dioxus
-DemoFrame {
-   hooks_out_of_date::App {}
-}
-```
-
-Instead of using deref to get the inner value from UseState, you can use the [`current`](https://docs.rs/dioxus/latest/dioxus/prelude/struct.UseState.html#method.current) function. This function will always return the current value of the state.
-
-```rust
-{{#include src/doc_examples/hooks_out_of_date.rs:fixed}}
-```
-```inject-dioxus
-DemoFrame {
-   hooks_out_of_date::fixed::App {}
 }
 ```
 
@@ -107,7 +83,7 @@ These rules mean that there are certain things you can't do with hooks:
 
 ## use_signal hook
 
-`use_signal` is great for tracking simple values. However, in the [`UseState` API](https://docs.rs/dioxus/latest/dioxus/hooks/struct.UseState.html), you may notice that the only way to modify its value is to replace it with something else (e.g., by calling `set`, or through one of the `+=`, `-=` operators). This works well when it is cheap to construct a value (such as any primitive). But what if you want to maintain more complex data in the component's state?
+`use_signal` is great for tracking simple values. However, in the [`Signal` API](https://docs.rs/dioxus/latest/dioxus/hooks/struct.Signal.html), you may notice that the only way to modify its value is to replace it with something else (e.g., by calling `set`, or through one of the `+=`, `-=` operators). This works well when it is cheap to construct a value (such as any primitive). But what if you want to maintain more complex data in the component's state?
 
 For example, suppose we want to maintain a `Vec` of values. If we stored it with `use_signal`, the
 only way to add a new value to the list would be to copy the existing `Vec`, add our value to it,
@@ -130,8 +106,8 @@ DemoFrame {
 
 
 > The return values of `use_signal` and `use_signal` (
-> &nbsp;[`UseState`](https://docs.rs/dioxus/latest/dioxus/prelude/struct.UseState.html) and
-> &nbsp;[`UseRef`](https://docs.rs/dioxus/latest/dioxus/prelude/struct.UseRef.html), respectively) are in
+> &nbsp;[`Signal`](https://docs.rs/dioxus/latest/dioxus/prelude/struct.Signal.html) and
+> &nbsp;[`Signal`](https://docs.rs/dioxus/latest/dioxus/prelude/struct.Signal.html), respectively) are in
 > &nbsp;some ways similar to [`Cell`](https://doc.rust-lang.org/std/cell/) and
 > &nbsp;[`RefCell`](https://doc.rust-lang.org/std/cell/struct.RefCell.html) – they provide interior
 > &nbsp;mutability. However, these Dioxus wrappers also ensure that the component gets re-rendered

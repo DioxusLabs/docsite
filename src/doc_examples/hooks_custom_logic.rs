@@ -10,23 +10,23 @@ use std::rc::Rc;
 use std::sync::Arc;
 
 #[derive(Clone)]
-struct UseState<T> {
+struct Signal<T> {
     value: Rc<RefCell<T>>,
     update: Arc<dyn Fn()>,
 }
 
-fn my_use_signal<T: 'static>(cx: &ScopeState, init: impl FnOnce() -> T) -> &UseState<T> {
+fn my_use_signal<T: 'static>(cx: &ScopeState, init: impl FnOnce() -> T) -> &Signal<T> {
     use_hook(|| {
         // The update function will trigger a re-render in the component cx is attached to
         let update = cx.schedule_update();
         // Create the initial state
         let value = Rc::new(RefCell::new(init()));
 
-        UseState { value, update }
+        Signal { value, update }
     })
 }
 
-impl<T: Clone> UseState<T> {
+impl<T: Clone> Signal<T> {
     fn get(&self) -> T {
         self.value.borrow().clone()
     }

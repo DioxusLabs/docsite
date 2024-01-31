@@ -126,7 +126,7 @@ pub mod app_v1 {
             .trim_start_matches("https://")
             .trim_start_matches("http://")
             .trim_start_matches("www.");
-        let score = format!("{score} {}", if *score == 1 { " point" } else { " points" });
+        let score = format!("{score} {}", if score == 1 { " point" } else { " points" });
         let comments = format!(
             "{} {}",
             kids.len(),
@@ -282,7 +282,7 @@ mod story_listing_listener {
             .trim_start_matches("https://")
             .trim_start_matches("http://")
             .trim_start_matches("www.");
-        let score = format!("{score} {}", if *score == 1 { " point" } else { " points" });
+        let score = format!("{score} {}", if score == 1 { " point" } else { " points" });
         let comments = format!(
             "{} {}",
             kids.len(),
@@ -346,7 +346,7 @@ mod story_listing_listener {
 
 // ANCHOR: shared_state_app
 pub fn App() -> Element {
-    use_hook(|| provide_context(PreviewState::Unset));
+    use_hook(|| provide_context(Signal::new(PreviewState::Unset)));
     // ANCHOR_END: shared_state_app
     rsx! {
         div {
@@ -369,7 +369,7 @@ pub fn App() -> Element {
 #[component]
 fn StoryListing(story: StoryItem) -> Element {
     // New
-    let preview_state = consume_context::<PreviewState>().unwrap();
+    let preview_state = consume_context::<Signal<PreviewState>>();
     let StoryItem {
         title,
         url,
@@ -385,7 +385,7 @@ fn StoryListing(story: StoryItem) -> Element {
         .trim_start_matches("https://")
         .trim_start_matches("http://")
         .trim_start_matches("www.");
-    let score = format!("{score} {}", if *score == 1 { " point" } else { " points" });
+    let score = format!("{score} {}", if score == 1 { " point" } else { " points" });
     let comments = format!(
         "{} {}",
         kids.len(),
@@ -405,7 +405,7 @@ fn StoryListing(story: StoryItem) -> Element {
                 // NEW
                 // set the preview state to this story
                 *preview_state.write() = PreviewState::Loaded(StoryPageData {
-                    item: story.clone(),
+                    item: todo!("fix me"),
                     comments: vec![],
                 });
             },
@@ -417,7 +417,7 @@ fn StoryListing(story: StoryItem) -> Element {
                         // NEW
                         // set the preview state to this story
                         *preview_state.write() = PreviewState::Loaded(StoryPageData {
-                            item: story.clone(),
+                            item: todo!("fix me"),
                             comments: vec![],
                         });
                     },
@@ -458,7 +458,7 @@ fn StoryListing(story: StoryItem) -> Element {
 // ANCHOR: shared_state_preview
 fn Preview() -> Element {
     // New
-    let preview_state = consume_context::<PreviewState>()?;
+    let preview_state = consume_context::<Signal<PreviewState>>();
 
     // New
     match &*preview_state.read() {

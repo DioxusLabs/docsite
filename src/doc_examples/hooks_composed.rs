@@ -7,7 +7,7 @@ fn main() {}
 struct AppSettings {}
 
 // ANCHOR: wrap_context
-fn use_settings() -> &UseSharedState<AppSettings> {
+fn use_settings() -> &Signal<AppSettings> {
     consume_context::<AppSettings>().expect("App settings not provided")
 }
 // ANCHOR_END: wrap_context
@@ -47,7 +47,7 @@ struct StorageEntry<T> {
 
 /// Storage that persists across application reloads
 pub struct UsePersistent<T: 'static> {
-    inner: UseRef<StorageEntry<T>>,
+    inner: Signal<StorageEntry<T>>,
 }
 
 impl<T: Serialize + DeserializeOwned + Clone + 'static> UsePersistent<T> {

@@ -10,6 +10,6 @@ struct PropBased {
     age: String,
 }
 
-fn Stateful(<PropBased>) -> Element {
+fn Stateful(props: PropBased) -> Element {
     rsx!("Hello {props.name}, you are {props.age} years old!")
 }

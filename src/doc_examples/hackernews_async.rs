@@ -139,7 +139,7 @@ pub mod fetch {
 
     #[component]
     fn StoryListing(story: StoryItem) -> Element {
-        let preview_state = consume_context::<PreviewState>().unwrap();
+        let preview_state = consume_context::<Signal<PreviewState>>();
         let StoryItem {
             title,
             url,
@@ -156,7 +156,7 @@ pub mod fetch {
             .trim_start_matches("https://")
             .trim_start_matches("http://")
             .trim_start_matches("www.");
-        let score = format!("{score} {}", if *score == 1 { " point" } else { " points" });
+        let score = format!("{score} {}", if score == 1 { " point" } else { " points" });
         let comments = format!(
             "{} {}",
             kids.len(),
@@ -174,7 +174,7 @@ pub mod fetch {
                 position: "relative",
                 onmouseenter: move |_event| {
                     *preview_state.write() = PreviewState::Loaded(StoryPageData {
-                        item: story.clone(),
+                        item: todo!("fix me"),
                         comments: vec![],
                     });
                 },
@@ -184,7 +184,7 @@ pub mod fetch {
                         href: url,
                         onfocus: move |_event| {
                             *preview_state.write() = PreviewState::Loaded(StoryPageData {
-                                item: story.clone(),
+                                item: todo!("fix me"),
                                 comments: vec![],
                             });
                         },
@@ -222,7 +222,7 @@ pub mod fetch {
     }
 
     fn Preview() -> Element {
-        let preview_state = consume_context::<PreviewState>()?;
+        let preview_state = consume_context::<Signal<PreviewState>>();
 
         match &*preview_state.read() {
             PreviewState::Unset => rsx! {
@@ -279,10 +279,10 @@ pub mod fetch {
     // ANCHOR: use_future
     fn Stories() -> Element {
         // Fetch the top 10 stories on Hackernews
-        let stories = use_future(|| get_stories(10));
+        let stories = use_resource(move || get_stories(10));
 
         // check if the future is resolved
-        match stories.value() {
+        match &*stories.value().read() {
             Some(Ok(list)) => {
                 // if it is, render the stories
                 rsx! {
@@ -333,8 +333,8 @@ pub fn App() -> Element {
 // ANCHOR: resolve_story
 // New
 async fn resolve_story(
-    full_story: UseRef<Option<StoryPageData>>,
-    preview_state: UseSharedState<PreviewState>,
+    mut full_story: Signal<Option<StoryPageData>>,
+    mut preview_state: Signal<PreviewState>,
     story_id: i64,
 ) {
     if let Some(cached) = &*full_story.read() {
@@ -351,7 +351,7 @@ async fn resolve_story(
 
 #[component]
 fn StoryListing(story: StoryItem) -> Element {
-    let preview_state = consume_context::<PreviewState>().unwrap();
+    let preview_state = consume_context::<Signal<PreviewState>>();
     let StoryItem {
         title,
         url,
@@ -370,7 +370,7 @@ fn StoryListing(story: StoryItem) -> Element {
         .trim_start_matches("https://")
         .trim_start_matches("http://")
         .trim_start_matches("www.");
-    let score = format!("{score} {}", if *score == 1 { " point" } else { " points" });
+    let score = format!("{score} {}", if score == 1 { " point" } else { " points" });
     let comments = format!(
         "{} {}",
         kids.len(),
@@ -389,7 +389,7 @@ fn StoryListing(story: StoryItem) -> Element {
             onmouseenter: move |_event| {
                 // New
                 // If you return a future from an event handler, it will be run automatically
-                resolve_story(full_story.clone(), preview_state.clone(), *id)
+                resolve_story(full_story.clone(), preview_state.clone(), id)
             },
             div {
                 font_size: "1.5rem",
@@ -397,7 +397,7 @@ fn StoryListing(story: StoryItem) -> Element {
                     href: url,
                     onfocus: move |_event| {
                         // New
-                        resolve_story(full_story.clone(), preview_state.clone(), *id)
+                        resolve_story(full_story.clone(), preview_state.clone(), id)
                     },
                     // ...
 
@@ -443,7 +443,7 @@ enum PreviewState {
 }
 
 fn Preview() -> Element {
-    let preview_state = consume_context::<PreviewState>()?;
+    let preview_state = consume_context::<Signal<PreviewState>>();
 
     match &*preview_state.read() {
         PreviewState::Unset => rsx! {
@@ -498,9 +498,9 @@ fn Comment(comment: Comment) -> Element {
 }
 
 fn Stories() -> Element {
-    let story = use_future(|| get_stories(10));
+    let story = use_resource(move || get_stories(10));
 
-    match story.value() {
+    match &*story.value().read() {
         Some(Ok(list)) => rsx! {
             div {
                 for story in list {

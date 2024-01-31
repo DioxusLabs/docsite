@@ -10,5 +10,5 @@ fn Tasks(id: Uuid) -> Element {
         Some(Ok(data)) => rsx! { pre { "Your data: {data}" } },
         Some(Err(e)) => rsx! {"An error loading the resource occurred."},
         None => rsx! { pre { "Loading..." } },
-    })
+    }
 }

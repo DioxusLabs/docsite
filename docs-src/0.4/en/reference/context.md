@@ -62,7 +62,7 @@ As a result, any child component of `App` (direct or not), can access the `DarkM
 {{#include src/doc_examples/meme_editor_dark_mode.rs:use_context}}
 ```
 
-> `use_shared_state` returns `Option<UseSharedState<DarkMode>>` here. If the context has been provided, the value is `Some(UseSharedState<DarkMode>)`, which you can call `.read` or `.write` on, similarly to `UseRef`. Otherwise, the value is `None`.
+> `use_shared_state` returns `Option<Signal<DarkMode>>` here. If the context has been provided, the value is `Some(Signal<DarkMode>)`, which you can call `.read` or `.write` on, similarly to `Signal`. Otherwise, the value is `None`.
 
 For example, here's how we would implement the dark mode toggle, which both reads the context (to determine what color it should render) and writes to it (to toggle dark mode):
 

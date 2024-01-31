@@ -10,9 +10,9 @@ struct Comment {
 
 pub fn App() -> Element {
     // ANCHOR: render_list
-    let comment_field = use_signal(String::new);
+    let mut comment_field = use_signal(String::new);
     let mut next_id = use_signal(|| 0);
-    let comments = use_signal(Vec::<Comment>::new);
+    let mut comments = use_signal(Vec::<Comment>::new);
 
     let comments_lock = comments.read();
     let comments_rendered = comments_lock.iter().map(|comment| {
@@ -26,8 +26,8 @@ pub fn App() -> Element {
         form {
             onsubmit: move |_| {
                 comments.write().push(Comment {
-                    content: comment_field.get().clone(),
-                    id: *next_id.get(),
+                    content: comment_field(),
+                    id: next_id(),
                 });
                 next_id += 1;
 
@@ -35,7 +35,7 @@ pub fn App() -> Element {
             },
             input {
                 value: "{comment_field}",
-                oninput: move |event| comment_field.set(event.value.clone()),
+                oninput: move |event| comment_field.set(event.value()),
             }
             input {
                 r#type: "submit",
@@ -48,16 +48,16 @@ pub fn App() -> Element {
 
 pub fn AppForLoop() -> Element {
     // ANCHOR: render_list_for_loop
-    let comment_field = use_signal(String::new);
+    let mut comment_field = use_signal(String::new);
     let mut next_id = use_signal(|| 0);
-    let comments = use_signal(Vec::<Comment>::new);
+    let mut comments = use_signal(Vec::<Comment>::new);
 
     rsx!(
         form {
             onsubmit: move |_| {
                 comments.write().push(Comment {
-                    content: comment_field.get().clone(),
-                    id: *next_id.get(),
+                    content: comment_field(),
+                    id: next_id(),
                 });
                 next_id += 1;
 
@@ -65,7 +65,7 @@ pub fn AppForLoop() -> Element {
             },
             input {
                 value: "{comment_field}",
-                oninput: move |event| comment_field.set(event.value.clone()),
+                oninput: move |event| comment_field.set(event.value()),
             }
             input {
                 r#type: "submit",

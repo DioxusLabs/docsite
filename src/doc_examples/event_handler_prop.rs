@@ -17,7 +17,7 @@ fn App() -> Element {
 }
 
 // ANCHOR: component_with_handler
-#[derive(Props)]
+#[derive(PartialEq, Clone, Props)]
 pub struct FancyButtonProps {
     on_click: EventHandler<MouseEvent>,
 }
@@ -34,7 +34,7 @@ pub fn FancyButton(props: FancyButtonProps) -> Element {
 // ANCHOR: custom_data
 struct ComplexData(i32);
 
-#[derive(Props)]
+#[derive(PartialEq, Clone, Props)]
 pub struct CustomFancyButtonProps {
     on_click: EventHandler<ComplexData>,
 }

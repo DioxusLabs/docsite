@@ -6,13 +6,11 @@ use dioxus_material_icons::MaterialIconColor;
 use mdbook_shared::Page;
 use mdbook_shared::SummaryItem;
 
-pub struct DocsLayoutHighlighted(pub bool);
-pub static HIGHLIGHT_DOCS_LAYOUT: Atom<DocsLayoutHighlighted> =
-    Atom(|_| DocsLayoutHighlighted(false));
-pub static SHOW_SIDEBAR: Atom<bool> = Atom(|_| false);
-pub struct DocsContentHighlighted(pub bool);
-pub static HIGHLIGHT_DOCS_CONTENT: Atom<DocsContentHighlighted> =
-    Atom(|_| DocsContentHighlighted(false));
+pub static HIGHLIGHT_DOCS_LAYOUT: GlobalSignal<bool> =
+Signal::global(|| false);
+pub static SHOW_SIDEBAR: GlobalSignal<bool> = Signal::global(|| false);
+pub static HIGHLIGHT_DOCS_CONTENT: GlobalSignal<bool> =
+Signal::global(|| false);
 
 /// The Markdown file path needs to be appended to this, including the first slash!
 const GITHUB_API_URL: &str = "https://api.github.com/repos/DioxusLabs/docsite/contents/docs-src/0.4/en";
@@ -23,11 +21,9 @@ const GITHUB_EDIT_PAGE_EDIT_URL: &str = "https://github.com/DioxusLabs/docsite/e
 
 #[component]
 pub fn Learn() -> Element {
-    let show_sidebar_button = use_atom_state(&SHOW_DOCS_NAV);
-    use_hook(|| show_sidebar_button.set(true));
+    use_hook(|| SHOW_DOCS_NAV.set(true));
     use_drop({
-        to_owned![show_sidebar_button];
-        move || show_sidebar_button.set(false)
+        move || SHOW_DOCS_NAV.set(false)
     });
 
     rsx! {
@@ -43,14 +39,12 @@ pub fn Learn() -> Element {
 }
 
 fn LeftNav() -> Element {
-    let show_sidebar = use_atom_state(&SHOW_SIDEBAR);
-    let highlighted = use_read(&HIGHLIGHT_DOCS_LAYOUT);
-    let extra_class = if highlighted.0 {
+    let extra_class = if HIGHLIGHT_DOCS_LAYOUT() {
         "border border-green-600 rounded-md"
     } else {
         ""
     };
-    let hidden = if **show_sidebar { "" } else { "hidden" };
+    let hidden = if SHOW_SIDEBAR() { "" } else { "hidden" };
     let chapters = vec![
         &LAZY_BOOK.summary.prefix_chapters,
         &LAZY_BOOK.summary.numbered_chapters,
@@ -175,21 +169,20 @@ fn LocationLink(chapter: &'static SummaryItem<BookRoute>) -> Element {
 
 // Todo: wire this up to the sections of the current page and a scroll controller
 fn RightNav() -> Element {
-    let highlighted = use_read(&HIGHLIGHT_DOCS_LAYOUT);
-    let extra_class = if highlighted.0 {
+    let extra_class = if HIGHLIGHT_DOCS_LAYOUT() {
         "border border-green-600 rounded-md"
     } else {
         ""
     };
     let page = use_book();
     let padding_map = ["pl-2", "pl-4", "pl-6", "pl-8", "pl-10"];
-    let page_url = page.to_string();
+    let page_url = use_memo(|| page.to_string());
 
     // This is the URL for the file if that file is not a directory that uses /index.md
     // page_url starts with '/', so we don't need to worry about that
     let github_api_url = format!("{GITHUB_API_URL}{page_url}.md");
 
-    let edit_github_url = use_future(&page_url, |page_url| async move {
+    let edit_github_url = use_resource(|| async move {
         // If the file is not found, that means that we have to use /index.md
         if reqwest::get(github_api_url).await.unwrap().status() == reqwest::StatusCode::NOT_FOUND {
             format!("{GITHUB_EDIT_PAGE_EDIT_URL}{page_url}/index.md")
@@ -224,8 +217,7 @@ fn RightNav() -> Element {
 }
 
 fn Content() -> Element {
-    let highlighted = use_read(&HIGHLIGHT_DOCS_CONTENT);
-    let extra_class = if highlighted.0 {
+    let extra_class = if HIGHLIGHT_DOCS_CONTENT() {
         "border border-blue-600 rounded-md"
     } else {
         ""

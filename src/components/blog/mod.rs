@@ -121,7 +121,7 @@ pub fn BlogList() -> Element {
                     section { class: "body-font overflow-hidden dark:bg-ideblack",
                         div { class: "container px-6 mx-auto",
                             div { class: "-my-8 divide-y-2 divide-gray-100",
-                                POSTS.iter().map(|post| rsx! { BlogPostItem { post: post } })
+                                for post in POSTS.iter() { BlogPostItem { post: post } }
                             }
                         }
                     }
@@ -185,7 +185,7 @@ pub static RecentBlogPosts: Component<()> = |cx| {
                     }
                 }
                 div { class: "-my-8 divide-y-2 divide-gray-100",
-                    POSTS.iter().map(|post| rsx!{ BlogPostItem { post: post } })
+                    for post in POSTS.iter() { BlogPostItem { post: post } }
                 }
             }
         }

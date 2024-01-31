@@ -74,14 +74,14 @@ fn TutorialPreview(id: usize) -> Element {
             Link { to: Route::Tutorial { id: *id },
                 div { class: "rounded p-4 shadow",
                     div { class: "flex justify-between",
-                        h2 { class: "text-lg font-bold", tutorial.title }
+                        h2 { class: "text-lg font-bold", "{tutorial.title}" }
                         div {
                             for tag in tutorial.tags {
-                                span { class: "rounded p-2 bg-orange", *tag }
+                                span { class: "rounded p-2 bg-orange", "{tag}" }
                             }
                         }
                     }
-                    p { tutorial.description }
+                    p { "{tutorial.description}" }
                 }
             }
         }
@@ -98,10 +98,10 @@ pub fn Tutorial(id: usize) -> Element {
             h3 { "{tutorial.author}" }
             ul {
                 for tag in tutorial.tags {
-                    li { *tag }
+                    li { "{tag}" }
                 }
             }
-            p { tutorial.contents }
+            p { "{tutorial.contents}" }
         }
     )
 }

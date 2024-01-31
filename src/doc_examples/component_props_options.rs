@@ -53,7 +53,7 @@ fn App() -> Element {
 }
 
 // ANCHOR: OptionalProps
-#[derive(Props)]
+#[derive(PartialEq, Clone, Props)]
 struct OptionalProps {
     title: String,
     subtitle: Option<String>,
@@ -68,7 +68,7 @@ fn Title(props: OptionalProps) -> Element {
 // ANCHOR_END: OptionalProps
 
 // ANCHOR: ExplicitOption
-#[derive(Props)]
+#[derive(PartialEq, Clone, Props)]
 struct ExplicitOptionProps {
     title: String,
     #[props(!optional)]

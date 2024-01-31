@@ -178,7 +178,7 @@ fn TriShow(
                         h2 { class: "text-2xl text-gray-800 font-semibold pb-2 dark:text-gray-100 ",
                             "{title}"
                         }
-                        right
+                        {right}
                     }
                 }
             }
@@ -187,14 +187,14 @@ fn TriShow(
 }
 
 #[component]
-fn TriPadding<'a>( children: Element, last: bool) -> Element {
+fn TriPadding(children: Element, last: bool) -> Element {
     rsx!(
         div { class: "flex flex-col items-center",
             div { class: "w-0 h-10 border-dashed border border-[#444]" }
             IconSplit {}
 
             if !last {
-                rsx!( div { class: "w-0 h-full border-dashed border border-[#444]", children } )
+                div { class: "w-0 h-full border-dashed border border-[#444]", {children} }
             }
         }
     )
@@ -247,9 +247,9 @@ fn ExperienceText(title: &'static str, content: &'static str) -> Element {
     rsx!(
         div { class: "pb-12",
             h3 { class: "text-2xl text-gray-800 font-semibold pb-2 dark:text-gray-100 ",
-                *title
+                "{title}"
             }
-            p { *content }
+            p { "{content}" }
         }
     )
 }
@@ -334,9 +334,9 @@ fn Platform(
             div { class: "w-8",
                 div { class: "flex flex-col h-full mx-auto",
                     if !last {
-                        rsx! { div { class: "bg-ghmetal dark:bg-white w-1 h-12 mx-auto" } }
+                        div { class: "bg-ghmetal dark:bg-white w-1 h-12 mx-auto" }
                     } else {
-                        rsx! { div { class: "bg-ghmetal dark:bg-white w-1 h-8 mx-auto" } }
+                        div { class: "bg-ghmetal dark:bg-white w-1 h-8 mx-auto" }
                     }
                     div { class: "mx-auto w-full", IconSplit {} }
                     if !last {

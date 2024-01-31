@@ -45,7 +45,7 @@ pub mod components {
 fn HeaderFooter() -> Element {
     shortcut::use_shortcut(Key::Character("/".to_string()), Modifiers::CONTROL, {
         move || {
-            SHOW_SEARCH.set(components::nav::true);
+            SHOW_SEARCH.set(true);
         }
     });
 
@@ -164,21 +164,18 @@ mod docs {
     }
 
     fn LayoutsExplanation() -> Element {
-        let highlight_nav = use_atom_state(&HIGHLIGHT_NAV_LAYOUT);
-        let highlight_docs_nav = use_atom_state(&HIGHLIGHT_DOCS_LAYOUT);
-        let highlight_docs_content = use_atom_state(&HIGHLIGHT_DOCS_CONTENT);
 
         rsx! {
             pre {
                 onmouseenter: move |_| {
-                    highlight_nav.set(true);
-                    highlight_docs_nav.set(DocsLayoutHighlighted(true));
-                    highlight_docs_content.set(DocsContentHighlighted(true));
+                    HIGHLIGHT_NAV_LAYOUT.set(true);
+                    HIGHLIGHT_DOCS_LAYOUT.set(true);
+                    HIGHLIGHT_DOCS_CONTENT.set(true);
                 },
                 onmouseleave: move |_| {
-                    highlight_nav.set(false);
-                    highlight_docs_nav.set(DocsLayoutHighlighted(false));
-                    highlight_docs_content.set(DocsContentHighlighted(false));
+                    HIGHLIGHT_NAV_LAYOUT.set(false);
+                    HIGHLIGHT_DOCS_LAYOUT.set(false);
+                    HIGHLIGHT_DOCS_CONTENT.set(false);
                 },
                 span {
                     "#[derive(Clone, Routable, PartialEq, Eq, Serialize, Deserialize)]
@@ -187,14 +184,14 @@ pub enum Route {{\n\t"
                 }
                 span {
                     onmouseenter: move |_| {
-                        highlight_nav.set(true);
-                        highlight_docs_nav.set(DocsLayoutHighlighted(false));
-                        highlight_docs_content.set(DocsContentHighlighted(false));
+                        HIGHLIGHT_NAV_LAYOUT.set(true);
+                        HIGHLIGHT_DOCS_LAYOUT.set(false);
+                        HIGHLIGHT_DOCS_CONTENT.set(false);
                     },
                     onmouseleave: move |_| {
-                        highlight_nav.set(true);
-                        highlight_docs_nav.set(DocsLayoutHighlighted(true));
-                        highlight_docs_content.set(DocsContentHighlighted(true));
+                        HIGHLIGHT_NAV_LAYOUT.set(true);
+                        HIGHLIGHT_DOCS_LAYOUT.set(true);
+                        HIGHLIGHT_DOCS_CONTENT.set(true);
                     },
                     class: "border border-orange-600 rounded-md",
                     "#[layout(HeaderFooter)]"
@@ -202,14 +199,14 @@ pub enum Route {{\n\t"
                 span { "\n\t\t// ... other routes\n\t\t" }
                 span {
                     onmouseenter: move |_| {
-                        highlight_nav.set(false);
-                        highlight_docs_nav.set(DocsLayoutHighlighted(true));
-                        highlight_docs_content.set(DocsContentHighlighted(false));
+                        HIGHLIGHT_NAV_LAYOUT.set(false);
+                        HIGHLIGHT_DOCS_LAYOUT.set(true);
+                        HIGHLIGHT_DOCS_CONTENT.set(false);
                     },
                     onmouseleave: move |_| {
-                        highlight_nav.set(true);
-                        highlight_docs_nav.set(DocsLayoutHighlighted(true));
-                        highlight_docs_content.set(DocsContentHighlighted(true));
+                        HIGHLIGHT_NAV_LAYOUT.set(true);
+                        HIGHLIGHT_DOCS_LAYOUT.set(true);
+                        HIGHLIGHT_DOCS_CONTENT.set(true);
                     },
                     class: "border border-green-600 rounded-md",
                     r##"#[layout(DocsSidebars)]"##
@@ -217,14 +214,14 @@ pub enum Route {{\n\t"
                 "\n\t\t\t"
                 span {
                     onmouseenter: move |_| {
-                        highlight_nav.set(false);
-                        highlight_docs_nav.set(DocsLayoutHighlighted(false));
-                        highlight_docs_content.set(DocsContentHighlighted(true));
+                        HIGHLIGHT_NAV_LAYOUT.set(false);
+                        HIGHLIGHT_DOCS_LAYOUT.set(false);
+                        HIGHLIGHT_DOCS_CONTENT.set(true);
                     },
                     onmouseleave: move |_| {
-                        highlight_nav.set(true);
-                        highlight_docs_nav.set(DocsLayoutHighlighted(true));
-                        highlight_docs_content.set(DocsContentHighlighted(true));
+                        HIGHLIGHT_NAV_LAYOUT.set(true);
+                        HIGHLIGHT_DOCS_LAYOUT.set(true);
+                        HIGHLIGHT_DOCS_CONTENT.set(true);
                     },
                     class: "border border-blue-600 rounded-md",
                     r##"#[route("/learn")]"##

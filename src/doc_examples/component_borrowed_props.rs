@@ -10,7 +10,7 @@ pub fn App() -> Element {
 // ANCHOR_END: App
 
 // ANCHOR: TitleCard
-#[derive(Props)]
+#[derive(PartialEq, Clone, Props)]
 struct TitleCardProps {
     title: String,
 }

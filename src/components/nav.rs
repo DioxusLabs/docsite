@@ -10,15 +10,12 @@ pub static LOGGED_IN: GlobalSignal<bool> = Signal::global(|| false);
 pub static SHOW_DOCS_NAV: GlobalSignal<bool> = Signal::global(|| false);
 
 pub fn Nav() -> Element {
-    let logged_in = use_read(&LOGGED_IN);
-    let highlighted = use_read(&HIGHLIGHT_NAV_LAYOUT);
-    let bg_color = if highlighted.0 {
+    let bg_color = if HIGHLIGHT_NAV_LAYOUT() {
         "border border-orange-600 rounded-md"
     } else {
         ""
     };
-    let show_docs_nav = use_read(&SHOW_DOCS_NAV);
-    let sidebar_class = if *show_docs_nav { "" } else { "hidden" };
+    let sidebar_class = if SHOW_DOCS_NAV() { "" } else { "hidden" };
 
     rsx! {
         SearchModal {}
@@ -73,7 +70,7 @@ pub fn Nav() -> Element {
                                 class: "md:ml-0 md:py-2 md:px-3 bg-blue-500 ml-4 text-lg md:text-sm text-white rounded font-semibold",
                                 "DEPLOY"
                             }
-                            if logged_in.0 {
+                            if LOGGED_IN() {
                                 Link { to: Route::Homepage {},
                                     img {
                                         src: "https://avatars.githubusercontent.com/u/10237910?s=40&v=4",
@@ -138,7 +135,10 @@ fn MobileNav() -> Element {
                 button {
                     class: "text-gray-500 w-8 h-8 flex items-center justify-center hover:text-gray-600 dark:text-gray-400 dark:hover:text-gray-300",
                     "type": "button",
-                    onclick: move |_| SHOW_NAV.modify(|f| !f.0),
+                    onclick: move |_| {
+                        let mut nav = SHOW_NAV.write();
+                        nav  = !*nav;
+                    },
                     span { class: "sr-only", "Navigation" }
                     svg { width: "24", height: "24", "aria-hidden": "true", fill: "none",
                         path {
@@ -226,7 +226,7 @@ fn Search() -> Element {
 
 fn SearchModal() -> Element {
     let search_text = use_signal(String::new);
-    let results = use_signal(|| SEARCH_INDEX.search(search_text.get()));
+    let results = use_signal(|| SEARCH_INDEX.search(&search_text.read()));
 
     let last_key_press = use_signal(|| {
         #[cfg(not(target_arch = "wasm32"))]
@@ -238,12 +238,12 @@ fn SearchModal() -> Element {
         async move {
             // debounce the search
             if *last_key_press.read() - js_sys::Date::now() > 100. {
-                results.set(SEARCH_INDEX.search(&search_text.current()));
+                results.set(SEARCH_INDEX.search(&search_text.read()));
                 last_key_press.set(js_sys::Date::now());
             }
             else {
                 gloo_timers::future::TimeoutFuture::new(100).await;
-                results.set(SEARCH_INDEX.search(&search_text.current()));
+                results.set(SEARCH_INDEX.search(&search_text.read()));
             }
         }
     });
@@ -282,7 +282,7 @@ fn SearchModal() -> Element {
                                         }
                                     },
                                     oninput: move |evt| {
-                                        search_text.set(evt.value.clone());
+                                        search_text.set(evt.value());
                                     },
                                     onmounted: move |evt| {
                                         evt.inner().set_focus(true);

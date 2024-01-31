@@ -44,7 +44,7 @@ pub fn Snippets() -> Element {
             div { class: "relative overflow-hidden min-h-0 flex-auto flex-col flex bg-ghmetal max-h-[60vh] sm:max-h-[none] sm:rounded-xl dark:backdrop-blur border border-neutral-500/30 shadow-cutesy",
                 div { class: "flex-none overflow-auto whitespace-nowrap flex relative min-w-full bg-ghdarkmetal pt-3 px-3",
                     ul { class: "flex text-sm leading-6 text-gray-100",
-                        SNIPPETS.iter().enumerate().map(|(id, snippet)| {
+                        for (id, snippet) in SNIPPETS.iter().enumerate() {
                             let selected = **selected_snippet == id;
 
                             let bg_selected = match selected {
@@ -65,7 +65,7 @@ pub fn Snippets() -> Element {
                                     }
                                 }
                             }
-                        })
+                        }
                     }
                     div { class: "absolute bottom-0 inset-x-0 h-px bg-neutral-500/30" }
                 }

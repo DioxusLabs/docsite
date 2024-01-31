@@ -18,7 +18,7 @@ fn App() -> Element {
 }
 
 // ANCHOR: Clickable
-#[derive(Props)]
+#[derive(PartialEq, Clone, Props)]
 struct ClickableProps {
     href: String,
     body: Element

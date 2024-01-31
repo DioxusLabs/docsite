@@ -30,7 +30,7 @@ fn test_hook<V: 'static>(
     check: impl FnMut(V, MockProxy) + 'static,
     mut final_check: impl FnMut(MockProxy) + 'static,
 ) {
-    #[derive(Props)]
+    #[derive(PartialEq, Clone, Props)]
     struct MockAppComponent<
         I: FnMut(&ScopeState) -> V + 'static,
         C: FnMut(V, MockProxy) + 'static,

@@ -1,13 +1,13 @@
 use futures::FutureExt;
-use std::{cell::RefCell, sync::Arc};
+use std::{cell::RefCell, rc::Rc, sync::Arc, thread::Scope};
 
-use dioxus::prelude::*;
+use dioxus::{dioxus_core::NoOpMutations, prelude::*};
 
 #[test]
 fn test() {
     test_hook(
-        |cx| use_signal(|| 0).clone(),
-        |value, mut proxy| match proxy.generation {
+        || use_signal(|| 0),
+        |mut value, mut proxy| match proxy.generation {
             0 => {
                 value.set(1);
             }
@@ -26,34 +26,44 @@ fn test() {
 }
 
 fn test_hook<V: 'static>(
-    initialize: impl FnMut(&ScopeState) -> V + 'static,
+    initialize: impl FnMut() -> V + 'static,
     check: impl FnMut(V, MockProxy) + 'static,
     mut final_check: impl FnMut(MockProxy) + 'static,
 ) {
-    #[derive(PartialEq, Clone, Props)]
+    #[derive(Props)]
     struct MockAppComponent<
-        I: FnMut(&ScopeState) -> V + 'static,
-        C: FnMut(V, MockProxy) + 'static,
-        V,
+        I: 'static,
+        C: 'static,
     > {
-        hook: RefCell<I>,
-        check: RefCell<C>,
+        hook: Rc<RefCell<I>>,
+        check: Rc<RefCell<C>>,
     }
 
-    impl<I: FnMut(&ScopeState) -> V, C: FnMut(V, MockProxy), V> PartialEq
-        for MockAppComponent<I, C, V>
+    impl<I, C> PartialEq
+        for MockAppComponent<I, C>
     {
         fn eq(&self, _: &Self) -> bool {
             true
         }
     }
 
-    fn mock_app<I: FnMut(&ScopeState) -> V, C: FnMut(V, MockProxy), V>(
-        props: MockAppComponent<I, C, V>
-    ) -> Element {
-        let value = props.hook.borrow_mut()(cx);
+    impl<I, C> Clone
+        for MockAppComponent<I, C>
+    {
+        fn clone(&self) -> Self {
+            Self {
+                hook: self.hook.clone(),
+                check: self.check.clone(),
+            }
+        }
+    }
 
-        props.check.borrow_mut()(value, MockProxy::new(cx));
+    fn mock_app<I: FnMut() -> V, C: FnMut(V, MockProxy), V>(
+        props: MockAppComponent<I, C>
+    ) -> Element {
+        let value = props.hook.borrow_mut()();
+
+        props.check.borrow_mut()(value, MockProxy::new());
 
         rsx! {
             div {}
@@ -63,18 +73,22 @@ fn test_hook<V: 'static>(
     let mut vdom = VirtualDom::new_with_props(
         mock_app,
         MockAppComponent {
-            hook: RefCell::new(initialize),
-            check: RefCell::new(check),
+            hook: Rc::new(RefCell::new(initialize)),
+            check: Rc::new(RefCell::new(check)),
         },
     );
 
-    let _ = vdom.rebuild();
+    vdom.rebuild_in_place();
 
     while vdom.wait_for_work().now_or_never().is_some() {
-        let _ = vdom.render_immediate();
+        vdom.render_immediate(&mut NoOpMutations);
     }
 
-    final_check(MockProxy::new(vdom.base_scope()));
+    vdom.in_runtime(||{
+        ScopeId::ROOT.in_runtime(||{
+            final_check(MockProxy::new());
+        })
+    })
 }
 
 struct MockProxy {
@@ -83,9 +97,9 @@ struct MockProxy {
 }
 
 impl MockProxy {
-    fn new(scope: &ScopeState) -> Self {
-        let generation = scope.generation();
-        let rerender = scope.schedule_update();
+    fn new() -> Self {
+        let generation = generation();
+        let rerender = schedule_update();
 
         Self {
             rerender,

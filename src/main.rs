@@ -3,8 +3,8 @@
 // cargo run --features ssr --release
 #![allow(unused)]
 
-use dioxus_docs_site::*;
 use dioxus::prelude::*;
+use dioxus_docs_site::*;
 use dioxus_fullstack::prelude::*;
 use dioxus_router::routable::Routable;
 

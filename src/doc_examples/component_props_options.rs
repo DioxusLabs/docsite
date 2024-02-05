@@ -2,7 +2,7 @@
 use dioxus::prelude::*;
 
 fn main() {
-    dioxus_desktop::launch(App);
+    launch(App);
 }
 
 fn App() -> Element {
@@ -29,7 +29,7 @@ fn App() -> Element {
     },
     ExplicitOption {
         title: "Some Title",
-        subtitle: Some("Some Title"),
+        subtitle: Some("Some Title".to_string()),
     },
     // This won't compile:
     // ExplicitOption {
@@ -62,7 +62,7 @@ struct OptionalProps {
 fn Title(props: OptionalProps) -> Element {
     rsx!(h1{
         "{props.title}: ",
-        props.subtitle.unwrap_or("No subtitle provided"),
+        {props.subtitle.unwrap_or_else(|| "No subtitle provided".to_string())}
     })
 }
 // ANCHOR_END: OptionalProps
@@ -78,7 +78,7 @@ struct ExplicitOptionProps {
 fn ExplicitOption(props: ExplicitOptionProps) -> Element {
     rsx!(h1 {
         "{props.title}: ",
-        props.subtitle.unwrap_or("No subtitle provided"),
+        {props.subtitle.unwrap_or_else(|| "No subtitle provided".to_string())}
     })
 }
 // ANCHOR_END: ExplicitOption

@@ -110,7 +110,8 @@ pub mod app_v1 {
     // ANCHOR_END: app_v1
 
     #[component]
-    fn StoryListing(story: StoryItem) -> Element {
+    fn StoryListing(stories: ReadOnlySignal<Vec<StoryItem>>, index: usize) -> Element {
+        let mut preview_state = consume_context::<Signal<PreviewState>>();
         let StoryItem {
             title,
             url,
@@ -119,7 +120,7 @@ pub mod app_v1 {
             time,
             kids,
             ..
-        } = story;
+        } = &*stories.index(index);
 
         let url = url.as_deref().unwrap_or_default();
         let hostname = url
@@ -184,7 +185,7 @@ mod story_listing_listener {
     use super::*;
 
     pub fn App() -> Element {
-        use_hook(|| provide_context(Signal::new(PreviewState::Unset)));
+        use_context_provider(|| Signal::new(PreviewState::Unset));
 
         rsx! {
             div {
@@ -266,7 +267,8 @@ mod story_listing_listener {
     }
 
     #[component]
-    fn StoryListing(story: StoryItem) -> Element {
+    fn StoryListing(stories: ReadOnlySignal<Vec<StoryItem>>, index: usize) -> Element {
+        let mut preview_state = consume_context::<Signal<PreviewState>>();
         let StoryItem {
             title,
             url,
@@ -275,14 +277,14 @@ mod story_listing_listener {
             time,
             kids,
             ..
-        } = story;
+        } = &*stories.index(index);
 
         let url = url.as_deref().unwrap_or_default();
         let hostname = url
             .trim_start_matches("https://")
             .trim_start_matches("http://")
             .trim_start_matches("www.");
-        let score = format!("{score} {}", if score == 1 { " point" } else { " points" });
+        let score = format!("{score} point{}", if *score > 1 { "s" } else { "" });
         let comments = format!(
             "{} {}",
             kids.len(),
@@ -346,7 +348,7 @@ mod story_listing_listener {
 
 // ANCHOR: shared_state_app
 pub fn App() -> Element {
-    use_hook(|| provide_context(Signal::new(PreviewState::Unset)));
+    use_context_provider(|| Signal::new(PreviewState::Unset));
     // ANCHOR_END: shared_state_app
     rsx! {
         div {
@@ -367,9 +369,8 @@ pub fn App() -> Element {
 
 // ANCHOR: shared_state_stories
 #[component]
-fn StoryListing(story: StoryItem) -> Element {
-    // New
-    let preview_state = consume_context::<Signal<PreviewState>>();
+fn StoryListing(stories: ReadOnlySignal<Vec<StoryItem>>, index: usize) -> Element {
+    let mut preview_state = consume_context::<Signal<PreviewState>>();
     let StoryItem {
         title,
         url,
@@ -378,14 +379,14 @@ fn StoryListing(story: StoryItem) -> Element {
         time,
         kids,
         ..
-    } = story;
+    } = &*stories.index(index);
 
     let url = url.as_deref().unwrap_or_default();
     let hostname = url
         .trim_start_matches("https://")
         .trim_start_matches("http://")
         .trim_start_matches("www.");
-    let score = format!("{score} {}", if score == 1 { " point" } else { " points" });
+    let score = format!("{score} point{}", if *score > 1 { "s" } else { "" });
     let comments = format!(
         "{} {}",
         kids.len(),
@@ -405,7 +406,7 @@ fn StoryListing(story: StoryItem) -> Element {
                 // NEW
                 // set the preview state to this story
                 *preview_state.write() = PreviewState::Loaded(StoryPageData {
-                    item: todo!("fix me"),
+                    item: stories.index(index).clone(),
                     comments: vec![],
                 });
             },
@@ -417,7 +418,7 @@ fn StoryListing(story: StoryItem) -> Element {
                         // NEW
                         // set the preview state to this story
                         *preview_state.write() = PreviewState::Loaded(StoryPageData {
-                            item: todo!("fix me"),
+                            item: stories.index(index).clone(),
                             comments: vec![],
                         });
                     },

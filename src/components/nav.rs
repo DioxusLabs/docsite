@@ -277,7 +277,7 @@ fn SearchModal() -> Element {
                                 input {
                                     onclick: move |evt| evt.stop_propagation(),
                                     onkeydown: move |evt| {
-                                        if evt.inner().key() == Key::Escape {
+                                        if evt.key() == Key::Escape {
                                             *SHOW_SEARCH.write() = false;
                                         }
                                     },
@@ -285,7 +285,7 @@ fn SearchModal() -> Element {
                                         search_text.set(evt.value());
                                     },
                                     onmounted: move |evt| {
-                                        evt.inner().set_focus(true);
+                                        evt.set_focus(true);
                                     },
                                     class: "flex-grow bg-transparent border-none outline-none text-xl pl-2 text-gray-800 dark:text-gray-100",
                                     placeholder: "Search the docs",

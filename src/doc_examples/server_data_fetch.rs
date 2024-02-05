@@ -4,15 +4,15 @@ use dioxus::prelude::*;
 use dioxus_fullstack::prelude::*;
 
 fn main() {
-    LaunchBuilder::new(app).launch();
+    launch(app)
 }
 
 fn app() -> Element {
-    let mut count = use_future((), |_| async { get_server_data().await });
+    let mut count = use_resource(get_server_data);
 
     rsx! {
         "server data is {count.value():?}"
-    })
+    }
 }
 
 #[server]

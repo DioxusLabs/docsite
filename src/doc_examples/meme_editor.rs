@@ -4,7 +4,7 @@
 use dioxus::prelude::*;
 
 fn main() {
-    dioxus_desktop::launch(MemeEditor);
+    launch(MemeEditor);
 }
 
 // ANCHOR: meme_editor

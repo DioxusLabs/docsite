@@ -28,7 +28,7 @@ async fn main() {
 // ANCHOR: endpoint
 async fn app_endpoint() -> Html<String> {
     // render the rsx! macro to HTML
-    Html(dioxus_ssr::render_lazy(rsx! {
+    Html(dioxus_ssr::render_element(rsx! {
         div { "hello world!" }
     }))
 }
@@ -43,7 +43,7 @@ async fn second_app_endpoint() -> Html<String> {
     // create a VirtualDom with the app component
     let mut app = VirtualDom::new(app);
     // rebuild the VirtualDom before rendering
-    let _ = app.rebuild();
+    app.rebuild_in_place();
 
     // render the VirtualDom to HTML
     Html(dioxus_ssr::render(&app))

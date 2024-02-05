@@ -89,7 +89,7 @@ pub fn Awesome() -> Element {
 
     let mut search = use_signal(|| "".to_string());
 
-    match &*items.value().read() {
+    match &*items.read() {
         Some(Ok(items)) => {
             to_owned![items];
             items.sort_by(|a, b| b.category.to_string().to_lowercase().cmp(&a.category.to_string().to_lowercase()));

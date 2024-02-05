@@ -4,11 +4,11 @@ use dioxus::prelude::*;
 use dioxus_fullstack::prelude::*;
 
 fn main() {
-    LaunchBuilder::new(app).launch();
+    launch(app);
 }
 
 fn app() -> Element {
-    let mut count = use_server_future((), |_| async { get_server_data().await })?;
+    let mut count = use_server_future(|| async { get_server_data().await })?;
 
     rsx! {
         "server data is {count.value():?}"

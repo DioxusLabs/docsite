@@ -37,7 +37,7 @@ fn App() -> Element {
 
 fn main() {
     let mut vdom = VirtualDom::new(App);
-    let _ = vdom.rebuild();
+    vdom.rebuild_in_place();
     let html = dioxus_ssr::render(&vdom);
     assert_eq!(
         html,
@@ -87,7 +87,7 @@ mod with_props {
 
     fn main() {
         let mut vdom = VirtualDom::new(App);
-        let _ = vdom.rebuild();
+        vdom.rebuild_in_place();
         let html = dioxus_ssr::render(&vdom);
         assert_eq!(
             html,
@@ -114,7 +114,7 @@ mod use_route {
 
     #[component]
     fn Wrapper() -> Element {
-        let full_route = use_route::<Route>(cx).unwrap();
+        let full_route = use_route::<Route>();
         rsx! {
             header { "Welcome to {full_route}!" }
             // The index route will be rendered here
@@ -139,7 +139,7 @@ mod use_route {
 
     fn main() {
         let mut vdom = VirtualDom::new(App);
-        let _ = vdom.rebuild();
+        vdom.rebuild_in_place();
         let html = dioxus_ssr::render(&vdom);
         assert_eq!(
             html,

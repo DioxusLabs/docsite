@@ -41,7 +41,7 @@ pub fn App() -> Element {
     // Send a message to the coroutine
     tx.send("https://example.com".to_string());
     // Get the current state of the coroutine
-    let response = response_state.get();
+    let response = response_state.read();
     // ANCHOR_END: use_coroutine
 
     todo!()

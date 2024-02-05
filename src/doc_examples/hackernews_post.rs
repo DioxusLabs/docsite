@@ -182,15 +182,16 @@ pub mod story_v6 {
     }
 
     #[component]
-    fn StoryListing(story: StoryItem) -> Element {
+    fn StoryListing(stories: ReadOnlySignal<Vec<StoryItem>>, index: usize) -> Element {
         let StoryItem {
             title,
+            url,
             by,
             score,
             time,
             kids,
             ..
-        } = story;
+        } = &*stories.index(index);
 
         let comments = kids.len();
 
@@ -277,7 +278,7 @@ pub mod story_final {
     }
 
     #[component]
-    fn StoryListing(story: StoryItem) -> Element {
+    fn StoryListing(stories: ReadOnlySignal<Vec<StoryItem>>, index: usize) -> Element {
         let StoryItem {
             title,
             url,
@@ -285,9 +286,8 @@ pub mod story_final {
             score,
             time,
             kids,
-            id,
             ..
-        } = story;
+        } = &*stories.index(index);
 
         let url = url.as_deref().unwrap_or_default();
         let hostname = url

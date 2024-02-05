@@ -3,7 +3,7 @@ use dioxus::prelude::*;
 use dioxus_fullstack::prelude::*;
 
 fn main() {
-    LaunchBuilder::new(app).launch();
+    launch(app)
 }
 
 fn app() -> Element {

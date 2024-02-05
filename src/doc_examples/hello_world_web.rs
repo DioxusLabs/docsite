@@ -4,7 +4,7 @@ use dioxus::prelude::*;
 
 fn main() {
     // launch the web app
-    dioxus_web::launch(App);
+    launch(App);
 }
 
 // create a component that renders a div with the text "Hello, world!"

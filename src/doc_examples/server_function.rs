@@ -4,13 +4,7 @@ use dioxus::prelude::*;
 use dioxus_fullstack::prelude::*;
 
 fn main() {
-    let config = LaunchBuilder::new(App);
-    #[cfg(feature = "ssr")]
-    let config = config.incremental(
-        IncrementalRendererConfig::default().invalidate_after(std::time::Duration::from_secs(120)),
-    );
-
-    config.launch();
+    launch(App)
 }
 
 fn App() -> Element {
@@ -25,7 +19,7 @@ fn App() -> Element {
                 to_owned![count];
                 async move {
                     // Call the server function just like a local async function
-                    if let Ok(new_count) = double_server(*count.current()).await {
+                    if let Ok(new_count) = double_server(count()).await {
                         count.set(new_count);
                     }
                 }

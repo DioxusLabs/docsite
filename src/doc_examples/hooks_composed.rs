@@ -7,8 +7,8 @@ fn main() {}
 struct AppSettings {}
 
 // ANCHOR: wrap_context
-fn use_settings() -> &Signal<AppSettings> {
-    consume_context::<AppSettings>().expect("App settings not provided")
+fn use_settings() -> Signal<AppSettings> {
+    consume_context()
 }
 // ANCHOR_END: wrap_context
 
@@ -24,7 +24,7 @@ pub fn use_persistent<T: Serialize + DeserializeOwned + Default + 'static>(
     key: impl ToString,
     // A function that returns the initial value if the storage entry is empty
     init: impl FnOnce() -> T,
-) -> &UsePersistent<T> {
+) -> UsePersistent<T> {
     // Use the use_signal hook to create a mutable state for the storage entry
     let state = use_signal(move || {
         // This closure will run when the hook is created
@@ -49,6 +49,14 @@ struct StorageEntry<T> {
 pub struct UsePersistent<T: 'static> {
     inner: Signal<StorageEntry<T>>,
 }
+
+impl<T> Clone for UsePersistent<T> {
+    fn clone(&self) -> Self {
+        *self
+    }
+}
+
+impl<T> Copy for UsePersistent<T> {}
 
 impl<T: Serialize + DeserializeOwned + Clone + 'static> UsePersistent<T> {
     /// Returns a reference to the value

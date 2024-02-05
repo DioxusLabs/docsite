@@ -4,8 +4,6 @@
 #[cfg(not(feature = "doc_test"))]
 pub mod boolean_attribute;
 #[cfg(not(feature = "doc_test"))]
-pub mod component_borrowed_props;
-#[cfg(not(feature = "doc_test"))]
 pub mod component_children;
 #[cfg(not(feature = "doc_test"))]
 pub mod component_owned_props;

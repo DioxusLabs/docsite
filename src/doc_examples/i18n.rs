@@ -4,7 +4,7 @@ use dioxus_std::translate;
 use std::str::FromStr;
 
 fn main() {
-    dioxus_web::launch(app);
+    launch(app);
 }
 
 static EN_US: &str = r#"{
@@ -46,14 +46,13 @@ fn Body() -> Element {
                 "Spanish"
             }
         }
-        p { translate!(i18, "messages.hello_world") }
-        p { translate!(i18, "messages.hello", name: "Dioxus")  }
+        p { {translate!(i18, "messages.hello_world")} }
+        p { {translate!(i18, "messages.hello", name: "Dioxus")} }
     )
 }
 
 fn app() -> Element {
     use_init_i18n(
-        cx,
         "en-US".parse().unwrap(),
         "en-US".parse().unwrap(),
         || {

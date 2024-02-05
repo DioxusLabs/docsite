@@ -1,22 +1,14 @@
 #![allow(non_snake_case)]
 
+use axum::Router;
 use dioxus::prelude::*;
+use dioxus_desktop::launch;
 use dioxus_fullstack::prelude::*;
 use dioxus_router::prelude::*;
 use serde::{Deserialize, Serialize};
 
 fn main() {
-    let config = LaunchBuilder::<FullstackRouterConfig<Route>>::router();
-    #[cfg(feature = "ssr")]
-    config
-        .incremental(
-            IncrementalRendererConfig::default()
-                .invalidate_after(std::time::Duration::from_secs(120)),
-        )
-        .launch();
-
-    #[cfg(not(feature = "ssr"))]
-    config.launch();
+    launch(|| rsx! { Router::<Route>{} });
 }
 
 #[derive(Clone, Routable, Debug, PartialEq, Serialize, Deserialize)]
@@ -33,9 +25,9 @@ fn Blog(id: i32) -> Element {
         Link { to: Route::Home {}, "Go to counter" }
         table {
             tbody {
-                for _ in 0..*id {
+                for _ in 0..id {
                     tr {
-                        for _ in 0..*id {
+                        for _ in 0..id {
                             td { "hello world!" }
                         }
                     }
@@ -53,7 +45,7 @@ fn Home() -> Element {
     rsx! {
         Link {
             to: Route::Blog {
-                id: *count.get()
+                id: count()
             },
             "Go to blog"
         }

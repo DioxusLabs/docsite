@@ -6,18 +6,7 @@ Just like you can pass arguments to a function or attributes to an element, you 
 
 Component props are a single struct annotated with `#[derive(PartialEq, Clone, Props)]`. For a component to accept props, the type of its argument must be `Scope<YourPropsStruct>`. Then, you can access the value of the props using `props`.
 
-There are 2 flavors of Props structs:
-
-- Owned props:
-  - Don't have an associated lifetime
-  - Implement `PartialEq`, allow for memoization (if the props don't change, Dioxus won't re-render the component)
-- Borrowed props:
-  - [Borrow](https://doc.rust-lang.org/beta/rust-by-example/scope/borrow.html) from a parent component
-  - Cannot be memoized due to lifetime constraints
-
-### Owned Props
-
-Owned Props are very simple – they don't borrow anything. Example:
+Example:
 
 ```rust, no_run
 {{#include src/doc_examples/component_owned_props.rs:Likes}}
@@ -35,33 +24,9 @@ DemoFrame {
 }
 ```
 
-### Borrowed Props
-
-Owned props work well if your props are easy to copy around – like a single number. But what if we need to pass a larger data type, like a String from an `App` Component to a `TitleCard` subcomponent? A naive solution might be to [`.clone()`](https://doc.rust-lang.org/std/clone/trait.Clone.html) the String, creating a copy of it for the subcomponent – but this would be inefficient, especially for larger Strings.
-
-Rust allows for something more efficient – borrowing the String as a `&str` – this is what Borrowed Props are for!
-
-```rust, no_run
-{{#include src/doc_examples/component_borrowed_props.rs:TitleCard}}
-```
-
-We can then use the component like this:
-
-```rust, no_run
-{{#include src/doc_examples/component_borrowed_props.rs:App}}
-```
-
-```inject-dioxus
-DemoFrame {
-    component_borrowed_props::App {}
-}
-```
-
-Borrowed props can be very useful, but they do not allow for memorization so they will _always_ rerun when the parent scope is rerendered. Because of this Borrowed Props should be reserved for components that are cheap to rerun or places where cloning data is an issue. Using Borrowed Props everywhere will result in large parts of your app rerunning every interaction.
-
 ## Prop Options
 
-The `#[derive(PartialEq, Clone, Props)]` macro has some features that let you customize the behavior of props.
+The `#[derive(Props)]` macro has some features that let you customize the behavior of props.
 
 ### Optional Props
 

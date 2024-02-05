@@ -4,16 +4,17 @@
 use dioxus::prelude::*;
 
 fn main() {
-    dioxus_desktop::launch(App);
+    launch(App);
 }
 
 // ANCHOR: DarkMode_struct
+#[derive(Clone, Copy)]
 struct DarkMode(bool);
 // ANCHOR_END: DarkMode_struct
 
 pub fn App() -> Element {
     // ANCHOR: context_provider
-    use_hook(|| provide_context(DarkMode(false)));
+    use_context_provider(|| Signal::new(DarkMode(false)));
     // ANCHOR_END: context_provider
 
     let is_dark_mode = use_is_dark_mode();
@@ -36,19 +37,17 @@ pub fn App() -> Element {
 
 pub fn use_is_dark_mode() -> bool {
     // ANCHOR: use_context
-    let dark_mode_context = consume_context::<DarkMode>();
+    let dark_mode_context = consume_context::<Signal<DarkMode>>();
     // ANCHOR_END: use_context
 
-    dark_mode_context
-        .map(|context| context.read().0)
-        .unwrap_or(false)
+    dark_mode_context().0
 }
 
 // ANCHOR: toggle
 pub fn DarkModeToggle() -> Element {
-    let dark_mode = consume_context::<DarkMode>().unwrap();
+    let dark_mode = consume_context::<Signal<DarkMode>>();
 
-    let style = if dark_mode.read().0 {
+    let style = if dark_mode().0 {
         "color:white"
     } else {
         ""
@@ -60,7 +59,7 @@ pub fn DarkModeToggle() -> Element {
         input {
             r#type: "checkbox",
             oninput: move |event| {
-                let is_enabled = event.value == "true";
+                let is_enabled = event.value() == "true";
                 dark_mode.write().0 = is_enabled;
             },
         },

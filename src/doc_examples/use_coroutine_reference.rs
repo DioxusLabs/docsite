@@ -12,7 +12,7 @@ async fn connect_to_ws_server() -> impl Stream<Item = ()> {
 use futures_util::StreamExt;
 
 fn app() {
-    let ws: &Coroutine<()> = use_coroutine(|rx| async move {
+    let ws: Coroutine<()> = use_coroutine(|rx| async move {
         // Connect to some sort of service
         let mut conn = connect_to_ws_server().await;
 
@@ -116,16 +116,14 @@ fn services() {
 }
 
 fn fermi() {
-    async fn sync_service(rx: UnboundedReceiver<()>, atoms: Rc<AtomRoot>) {
+    async fn sync_service(rx: UnboundedReceiver<()>) {
         todo!()
     }
     // ANCHOR: fermi
-    static USERNAME: Atom<String> = Atom(|_| "default".to_string());
+    static USERNAME: GlobalSignal<String> = Signal::global(|| "default".to_string());
 
     fn app() -> Element {
-        let atoms = use_atom_root();
-
-        use_coroutine(|rx| sync_service(rx, atoms.clone()));
+        use_coroutine(sync_service);
 
         rsx! {
             Banner {}
@@ -133,10 +131,8 @@ fn fermi() {
     }
 
     fn Banner() -> Element {
-        let username = use_read(&USERNAME);
-
         rsx! {
-            h1 { "Welcome back, {username}" }
+            h1 { "Welcome back, {USERNAME}" }
         }
     }
     // ANCHOR_END: fermi
@@ -149,24 +145,21 @@ fn fermi_continued() {
     // ANCHOR: fermi_continued
     use futures_util::StreamExt;
 
-    static USERNAME: &Atom<String> = &Atom(|_| "default".to_string());
-    static ERRORS: &Atom<Vec<String>> = &Atom(|_| Vec::new());
+    static USERNAME: GlobalSignal<String> = Signal::global(|| "default".to_string());
+    static ERRORS: GlobalSignal<Vec<String>> = Signal::global(|| Vec::new());
 
     enum SyncAction {
         SetUsername(String),
     }
 
-    async fn sync_service(mut rx: UnboundedReceiver<SyncAction>, atoms: Rc<AtomRoot>) {
+    async fn sync_service(mut rx: UnboundedReceiver<SyncAction>) {
         while let Some(msg) = rx.next().await {
             match msg {
                 SyncAction::SetUsername(name) => {
                     if set_name_on_server(&name).await.is_ok() {
-                        atoms.set(USERNAME.unique_id(), name);
+                        *USERNAME.write() = name;
                     } else {
-                        atoms.set(
-                            ERRORS.unique_id(),
-                            vec!["Failed to set username".to_string()],
-                        );
+                        *ERRORS.write() = vec!["Failed to set username".to_string()];
                     }
                 }
             }
@@ -181,7 +174,7 @@ fn injection() {
     }
     // ANCHOR: injection
     fn Child() -> Element {
-        let sync_task = use_coroutine_handle::<SyncAction>(cx).unwrap();
+        let sync_task = use_coroutine_handle::<SyncAction>();
 
         sync_task.send(SyncAction::SetUsername);
 

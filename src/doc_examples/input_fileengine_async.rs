@@ -3,7 +3,7 @@ use dioxus::prelude::*;
 
 // ANCHOR: component
 pub fn App() -> Element {
-    let files_uploaded: &Signal<Vec<String>> = use_signal(Vec::new);
+    let files_uploaded: Signal<Vec<String>> = use_signal(Vec::new);
 
     rsx! {
         input {
@@ -15,7 +15,7 @@ pub fn App() -> Element {
                 // A helper macro to use hooks in async environments
                 to_owned![files_uploaded];
                 async move {
-                    if let Some(file_engine) = &evt.files {
+                    if let Some(file_engine) = evt.files() {
                         let files = file_engine.files();
                         for file_name in &files {
                             // Make sure to use async/await when doing heavy I/O operations,

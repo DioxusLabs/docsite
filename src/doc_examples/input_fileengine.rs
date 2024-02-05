@@ -4,7 +4,7 @@ use dioxus::prelude::*;
 // ANCHOR: component
 pub fn App() -> Element {
     // ANCHOR: rsx
-    let filenames: &Signal<Vec<String>> = use_signal(Vec::new);
+    let filenames: Signal<Vec<String>> = use_signal(Vec::new);
     rsx! {
         input {
             // tell the input to pick a file
@@ -14,7 +14,7 @@ pub fn App() -> Element {
             // pick multiple files
             multiple: true,
             onchange: move |evt| {
-                if let Some(file_engine) = &evt.files {
+                if let Some(file_engine) = &evt.files() {
                     let files = file_engine.files();
                     for file_name in files {
                         filenames.write().push(file_name);

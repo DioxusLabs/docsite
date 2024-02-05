@@ -54,7 +54,7 @@ fn app() -> Element {
         div {
             "Hello, world!"
         }
-    })
+    }
 }
 // ANCHOR_END: app
 // ANCHOR_END: all

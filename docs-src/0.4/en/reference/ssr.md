@@ -81,7 +81,7 @@ async fn app_endpoint() -> Html<String> {
 	// create a VirtualDom with the app component
 	let mut app = VirtualDom::new(app);
 	// rebuild the VirtualDom before rendering
-	let _ = app.rebuild();
+	app.rebuild_in_place();
 
 	// render the VirtualDom to HTML
 	Html(dioxus_ssr::render_vdom(&app))

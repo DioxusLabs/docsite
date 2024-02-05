@@ -204,7 +204,7 @@ fn RightNav() -> Element {
                 }
             }
             h2 { class: "py-4 font-semibold",
-                match edit_github_url.value().cloned() {
+                match edit_github_url.cloned() {
                     Some(url) => rsx!(a { href: "{url}", "Edit this page!" }),
                     None => rsx!(a { href: "{GITHUB_EDIT_PAGE_FALLBACK_URL}", "Edit this page!" })
                 }

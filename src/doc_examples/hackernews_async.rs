@@ -118,7 +118,7 @@ pub mod fetch {
     use dioxus::prelude::*;
 
     pub fn App() -> Element {
-        use_hook(|| provide_context(Signal::new(PreviewState::Unset)));
+        use_context_provider(|| Signal::new(PreviewState::Unset));
 
         rsx! {
             div {
@@ -138,8 +138,8 @@ pub mod fetch {
     }
 
     #[component]
-    fn StoryListing(story: StoryItem) -> Element {
-        let preview_state = consume_context::<Signal<PreviewState>>();
+    fn StoryListing(stories: MappedSignal<Vec<StoryItem>>, index: usize) -> Element {
+        let mut preview_state = consume_context::<Signal<PreviewState>>();
         let StoryItem {
             title,
             url,
@@ -149,7 +149,7 @@ pub mod fetch {
             kids,
             id,
             ..
-        } = story;
+        } = &*stories.index(index);
 
         let url = url.as_deref().unwrap_or_default();
         let hostname = url
@@ -174,7 +174,7 @@ pub mod fetch {
                 position: "relative",
                 onmouseenter: move |_event| {
                     *preview_state.write() = PreviewState::Loaded(StoryPageData {
-                        item: todo!("fix me"),
+                        item: stories.index(index).clone(),
                         comments: vec![],
                     });
                 },
@@ -184,7 +184,7 @@ pub mod fetch {
                         href: url,
                         onfocus: move |_event| {
                             *preview_state.write() = PreviewState::Loaded(StoryPageData {
-                                item: todo!("fix me"),
+                                item: stories.index(index).clone(),
                                 comments: vec![],
                             });
                         },
@@ -288,9 +288,9 @@ pub mod fetch {
                 rsx! {
                     div {
                         // iterate over the stories with a for loop
-                        for story in list {
+                        for index in 0..list.len() {
                             // render every story with the StoryListing component
-                            StoryListing { story: story.clone() }
+                            StoryListing { stories: stories.map(|stories| stories.as_ref().unwrap().as_ref().unwrap()), index }
                         }
                     }
                 }
@@ -311,7 +311,7 @@ pub mod fetch {
 use dioxus::prelude::*;
 
 pub fn App() -> Element {
-    use_hook(|| provide_context(Signal::new(PreviewState::Unset)));
+    use_context_provider(|| Signal::new(PreviewState::Unset));
 
     rsx! {
         div {
@@ -350,8 +350,8 @@ async fn resolve_story(
 }
 
 #[component]
-fn StoryListing(story: StoryItem) -> Element {
-    let preview_state = consume_context::<Signal<PreviewState>>();
+fn StoryListing(stories: ReadOnlySignal<Vec<StoryItem>>, index: usize) -> Element {
+    let mut preview_state = consume_context::<Signal<PreviewState>>();
     let StoryItem {
         title,
         url,
@@ -361,7 +361,7 @@ fn StoryListing(story: StoryItem) -> Element {
         kids,
         id,
         ..
-    } = story;
+    } = &*stories.index(index);
     // New
     let full_story = use_signal(|| None);
 
@@ -498,13 +498,13 @@ fn Comment(comment: Comment) -> Element {
 }
 
 fn Stories() -> Element {
-    let story = use_resource(move || get_stories(10));
+    let stories = use_resource(move || get_stories(10));
 
-    match &*story.value().read() {
+    match &*stories.value().read() {
         Some(Ok(list)) => rsx! {
             div {
-                for story in list {
-                    StoryListing { story: story.clone() }
+                for index in 0..list.len() {
+                    StoryListing { stories: stories.value(), index }
                 }
             }
         },

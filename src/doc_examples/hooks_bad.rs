@@ -4,7 +4,7 @@ use dioxus::prelude::*;
 use std::collections::HashMap;
 
 fn main() {
-    dioxus_desktop::launch(App);
+    launch(App);
 }
 
 fn App() -> Element {
@@ -34,12 +34,12 @@ fn App() -> Element {
     // We can't guarantee that the closure, if used, will be called in the same order every time
     let _a = || {
         let b = use_signal(|| 0);
-        b.get()
+        b()
     };
 
     // ✅ instead, move hook `b` outside
     let b = use_signal(|| 0);
-    let _a = || b.get();
+    let _a = || b();
     // ANCHOR_END: closure
 
     let names: Vec<&str> = vec![];
@@ -63,5 +63,5 @@ fn App() -> Element {
     }
     // ANCHOR_END: loop
 
-    rsx!(())
+    None
 }

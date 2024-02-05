@@ -20,7 +20,7 @@ pub fn App() -> Element {
     // ANCHOR_END: use_future
 
     // ANCHOR: render
-    match &*future.value().read() {
+    match &*future.read() {
         Some(Ok(response)) => rsx! {
             button {
                 onclick: move |_| future.restart(),

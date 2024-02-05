@@ -146,7 +146,7 @@ fn app() -> Element {
                     onclick: move|_| {
                         println!("Clicked!");
                         items.push(items.len());
-                        cx.needs_update_any(ScopeId(0));
+                        needs_update_any(ScopeId(0));
                         println!("Requested update");
                     },
                     "Add item"

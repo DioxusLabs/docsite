@@ -44,27 +44,27 @@ fn AntipatternNoKeys(props: NoKeysProps) -> Element {
     // ❌ No keys
     rsx! {
         ul {
-            data.values().map(|value| rsx!(
+            for value in data.values() {
                 li { "List item: {value}" }
-            ))
+            }
         }
     };
 
     // ❌ Using index as keys
     rsx! {
         ul {
-            props.data.values().enumerate().map(|(index, value)| rsx!(
+            for (index, value) in data.values().enumerate() {
                 li { key: "{index}", "List item: {value}" }
-            ))
+            }
         }
     };
 
     // ✅ Using unique IDs as keys:
     rsx! {
         ul {
-            props.data.iter().map(|(key, value)| rsx!(
+            for (key, value) in props.data.iter() {
                 li { key: "{key}", "List item: {value}" }
-            ))
+            }
         }
     }
     // ANCHOR_END: iter_keys

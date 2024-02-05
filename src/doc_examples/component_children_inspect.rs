@@ -3,7 +3,7 @@
 use dioxus::prelude::*;
 
 fn main() {
-    dioxus_desktop::launch(App);
+    launch(App);
 }
 
 fn App() -> Element {
@@ -26,7 +26,7 @@ struct ClickableProps {
 // ANCHOR: Clickable
 fn Clickable(props: ClickableProps) -> Element {
     match props.children {
-        Some(VNode { dynamic_nodes, .. }) => {
+        Some(VNode { .. }) => {
             todo!("render some stuff")
         }
         _ => {

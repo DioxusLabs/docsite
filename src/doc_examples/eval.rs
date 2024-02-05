@@ -1,15 +1,12 @@
 use dioxus::prelude::*;
 
 fn main() {
-    dioxus_desktop::launch(app);
+    launch(app);
 }
 
 fn app() -> Element {
-    // Use eval returns a function that can spawn eval instances
-    let create_eval = use_eval();
-
     // You can create as many eval instances as you want
-    let mut eval = create_eval(
+    let mut eval = eval(
         r#"
         // You can send messages from JavaScript to Rust with the dioxus.send function
         dioxus.send("Hi from JS!");
@@ -23,7 +20,7 @@ fn app() -> Element {
     // You can send messages to JavaScript with the send method
     eval.send("Hi from Rust!".into()).unwrap();
 
-    let future = use_future((), |_| {
+    let future = use_resource(move || {
         to_owned![eval];
         async move {
             // You can receive any message from JavaScript with the recv method
@@ -31,7 +28,7 @@ fn app() -> Element {
         }
     });
 
-    match future.value() {
+    match future.read().as_ref() {
         Some(v) => rsx!(
             p { "{v}" }
         ),

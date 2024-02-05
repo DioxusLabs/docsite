@@ -3,7 +3,7 @@
 use dioxus::prelude::*;
 
 fn main() {
-    dioxus_desktop::launch(App);
+    launch(App);
 }
 
 fn App() -> Element {
@@ -29,7 +29,7 @@ fn Clickable(props: ClickableProps) -> Element {
         a {
             href: "{props.href}",
             class: "fancy-button",
-            &props.body
+            {props.body}
         }
     )
 }

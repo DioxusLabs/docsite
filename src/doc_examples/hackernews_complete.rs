@@ -2,7 +2,7 @@
 use dioxus::prelude::*;
 
 pub fn App() -> Element {
-    use_hook(|| provide_context(Signal::new(PreviewState::Unset)));
+    use_context_provider(|| Signal::new(PreviewState::Unset));
 
     rsx! {
         div {
@@ -22,13 +22,13 @@ pub fn App() -> Element {
 }
 
 fn Stories() -> Element {
-    let story = use_resource(move || get_stories(10));
+    let stories = use_resource(move || get_stories(10));
 
-    match &*story.value().read() {
+    match &*stories.value().read() {
         Some(Ok(list)) => rsx! {
             div {
-                for story in list {
-                    StoryListing { story: story.clone() }
+                for index in 0..list.len() {
+                    StoryListing { stories: stories.value(), index }
                 }
             }
         },
@@ -55,8 +55,8 @@ async fn resolve_story(
 }
 
 #[component]
-fn StoryListing(story: StoryItem) -> Element {
-    let preview_state = consume_context::<Signal<PreviewState>>();
+fn StoryListing(stories: ReadOnlySignal<Vec<StoryItem>>, index: usize) -> Element {
+    let mut preview_state = consume_context::<Signal<PreviewState>>();
     let StoryItem {
         title,
         url,
@@ -66,7 +66,7 @@ fn StoryListing(story: StoryItem) -> Element {
         kids,
         id,
         ..
-    } = story;
+    } = &*stories.index(index);
     let full_story = use_signal(|| None);
 
     let url = url.as_deref().unwrap_or_default();

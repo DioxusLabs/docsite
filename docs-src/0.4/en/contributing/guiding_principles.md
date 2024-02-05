@@ -28,7 +28,7 @@ Dioxus should be easy to learn and ergonomic to use.
 
 - We can avoid the tradeoff between simplicity and flexibility by providing multiple layers of API: One for the very common use case, one for low-level control
 
-  - Hooks: the hooks crate has the most common use cases, but `cx.hook` provides a way to access the underlying persistent reference if needed.
+  - Hooks: the hooks crate has the most common use cases, but `use_hook` provides a way to access the underlying persistent value if needed.
   - The builder pattern in platform Configs: The builder pattern is used to default to the most common use case, but users can change the defaults if needed.
 
 - Documentation:

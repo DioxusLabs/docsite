@@ -17,7 +17,7 @@ fn main() {
 }
 
 fn App() -> Element {
-    let tui_ctx: TuiContext = cx.consume_context().unwrap();
+    let tui_ctx: TuiContext = consume_context();
 
     rsx! {
         div {
@@ -26,11 +26,11 @@ fn App() -> Element {
             background_color: "red",
             justify_content: "center",
             align_items: "center",
-            onkeydown: move |k: KeyboardEvent| if let KeyCode::Q = k.key_code {
+            onkeydown: move |k: KeyboardEvent| if Key::Character("q".into()) == k.key() {
                 tui_ctx.quit();
             },
 
             "Hello world!"
         }
-    })
+    }
 }

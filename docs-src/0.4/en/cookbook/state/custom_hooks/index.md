@@ -30,7 +30,7 @@ You can use [`use_hook`](https://docs.rs/dioxus/latest/dioxus/prelude/struct.Sco
 
 Inside the initialization closure, you will typically make calls to other `cx` methods. For example:
 
-- The `use_signal` hook tracks state in the hook value, and uses [`cx.schedule_update`](https://docs.rs/dioxus/latest/dioxus/prelude/struct.ScopeState.html#method.schedule_update) to make Dioxus re-render the component whenever it changes.
+- The `use_signal` hook tracks state in the hook value, and uses [`schedule_update`](https://docs.rs/dioxus/latest/dioxus/prelude/struct.ScopeState.html#method.schedule_update) to make Dioxus re-render the component whenever it changes.
 
 Here is a simplified implementation of the `use_signal` hook:
 
@@ -38,54 +38,10 @@ Here is a simplified implementation of the `use_signal` hook:
 {{#include src/doc_examples/hooks_custom_logic.rs:use_signal}}
 ```
 
-- The `use_context` hook calls [`cx.consume_context`](https://docs.rs/dioxus/latest/dioxus/prelude/struct.ScopeState.html#method.consume_context) (which would be expensive to call on every render) to get some context from the scope
+- The `use_context` hook calls [`consume_context`](https://docs.rs/dioxus/latest/dioxus/prelude/struct.ScopeState.html#method.consume_context) (which would be expensive to call on every render) to get some context from the scope
 
 Here is an implementation of the `use_context` and `use_context_provider` hooks:
 
 ```rust
 {{#include src/doc_examples/hooks_custom_logic.rs:use_context}}
-```
-
-## Hook Anti-Patterns
-
-When writing a custom hook, you should avoid the following anti-patterns:
-
-- !Clone Hooks: To allow hooks to be used within async blocks, the hooks must be Clone. To make a hook clone, you can wrap data in Rc or Arc and avoid lifetimes in hooks.
-
-This version of use_signal may seem more efficient, but it is not cloneable:
-
-```rust
-{{#include src/doc_examples/hooks_anti_patterns.rs:non_clone_state}}
-```
-
-If we try to use this hook in an async block, we will get a compile error:
-
-```rust
-fn FutureComponent(cx: &ScopeState) -> Element {
-	let my_state = my_use_signal(|| 0);
-	spawn({
-		to_owned![my_state];
-		async move {
-			my_state.set(1);
-		}
-	});
-
-	todo!()
-}
-```
-
-But with the original version, we can use it in an async block:
-
-```rust
-fn FutureComponent(cx: &ScopeState) -> Element {
-	let my_state = use_signal(|| 0);
-	spawn({
-		to_owned![my_state];
-		async move {
-			my_state.set(1);
-		}
-	});
-
-	todo!()
-}
 ```

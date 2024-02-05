@@ -33,7 +33,7 @@ once_cell = "1.17.1"
 console_error_panic_hook = "0.1.7"
 gloo-history = "0.1.3"
 autoexport = "0.1.0"
-dioxus-material-icons = { git = "https://github.com/jkelleyrtp/dioxus-material-icons.git", branch = "jk/bump-release" }
+dioxus-material-icons = "1.2.0"
 include_dir = "0.7.3"
 anyhow = "1.0.71"
 syntect-html = { git = "https://github.com/dioxuslabs/include_mdbook" }

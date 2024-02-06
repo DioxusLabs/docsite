@@ -10,7 +10,7 @@ edition = "2018"
 dioxus-router = { version = "0.4", features = [
     "fullstack",
 ] }
-dioxus = { git = "https://github.com/ealmloff/dioxus", branch = "breaking", features = ["fullstack"] }
+dioxus = { git = "https://github.com/dioxuslabs/dioxus", features = ["fullstack"] }
 dioxus-web = { version = "0.4", features = [
     "hydrate",
 ], optional = true }
@@ -69,22 +69,22 @@ dioxus-std = { git = "https://github.com/marc2332/dioxus-std", branch = "feat/di
 tower-http = { version = "0.4.0", optional = true, features = ["timeout"] }
 
 [patch.crates-io]
-dioxus = { git = "https://github.com/ealmloff/dioxus", branch = "breaking" }
-dioxus-core = { git = "https://github.com/ealmloff/dioxus", branch = "breaking" }
-dioxus-html = { git = "https://github.com/ealmloff/dioxus", branch = "breaking" }
-dioxus-cli-config = { git = "https://github.com/ealmloff/dioxus", branch = "breaking" }
-dioxus-core-macro = { git = "https://github.com/ealmloff/dioxus", branch = "breaking" }
-dioxus-router = { git = "https://github.com/ealmloff/dioxus", branch = "breaking" }
-dioxus-rsx = { git = "https://github.com/ealmloff/dioxus", branch = "breaking" }
+dioxus = { git = "https://github.com/dioxuslabs/dioxus" }
+dioxus-core = { git = "https://github.com/dioxuslabs/dioxus" }
+dioxus-html = { git = "https://github.com/dioxuslabs/dioxus" }
+dioxus-cli-config = { git = "https://github.com/dioxuslabs/dioxus" }
+dioxus-core-macro = { git = "https://github.com/dioxuslabs/dioxus" }
+dioxus-router = { git = "https://github.com/dioxuslabs/dioxus" }
+dioxus-rsx = { git = "https://github.com/dioxuslabs/dioxus" }
 
-dioxus-web = { git = "https://github.com/ealmloff/dioxus", branch = "breaking" }
-dioxus-ssr = { git = "https://github.com/ealmloff/dioxus", branch = "breaking" }
-dioxus-tui = { git = "https://github.com/ealmloff/dioxus", branch = "breaking" }
-dioxus-desktop = { git = "https://github.com/ealmloff/dioxus", branch = "breaking" }
-dioxus-liveview = { git = "https://github.com/ealmloff/dioxus", branch = "breaking" }
-dioxus-fullstack = { git = "https://github.com/ealmloff/dioxus", branch = "breaking" }
-dioxus-native-core = { git = "https://github.com/ealmloff/dioxus", branch = "breaking" }
-dioxus-native-core-macro = { git = "https://github.com/ealmloff/dioxus", branch = "breaking" }
+dioxus-web = { git = "https://github.com/dioxuslabs/dioxus" }
+dioxus-ssr = { git = "https://github.com/dioxuslabs/dioxus" }
+dioxus-tui = { git = "https://github.com/dioxuslabs/dioxus" }
+dioxus-desktop = { git = "https://github.com/dioxuslabs/dioxus" }
+dioxus-liveview = { git = "https://github.com/dioxuslabs/dioxus" }
+dioxus-fullstack = { git = "https://github.com/dioxuslabs/dioxus" }
+dioxus-native-core = { git = "https://github.com/dioxuslabs/dioxus" }
+dioxus-native-core-macro = { git = "https://github.com/dioxuslabs/dioxus" }
 
 
 [profile.release]

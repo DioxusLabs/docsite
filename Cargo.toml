@@ -2,8 +2,8 @@
 members = ["mdbook-macro", "use-mdbook", "mdbook-shared", "syntect-html"]
 
 [patch.crates-io]
-dioxus = { git = "https://github.com/ealmloff/dioxus", branch = "breaking" }
-dioxus-core = { git = "https://github.com/ealmloff/dioxus", branch = "breaking" }
-dioxus-core-macro = { git = "https://github.com/ealmloff/dioxus", branch = "breaking" }
-dioxus-rsx = { git = "https://github.com/ealmloff/dioxus", branch = "breaking" }
-dioxus-router = { git = "https://github.com/ealmloff/dioxus", branch = "breaking" }
+dioxus = { git = "https://github.com/dioxuslabs/dioxus" }
+dioxus-core = { git = "https://github.com/dioxuslabs/dioxus" }
+dioxus-core-macro = { git = "https://github.com/dioxuslabs/dioxus" }
+dioxus-rsx = { git = "https://github.com/dioxuslabs/dioxus" }
+dioxus-router = { git = "https://github.com/dioxuslabs/dioxus" }

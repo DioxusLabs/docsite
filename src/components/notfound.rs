@@ -27,7 +27,7 @@ pub fn Err404(segments: Vec<String>) -> Element {
                     picture {
                         source {
                             r#type: "image/avif",
-                            "srcset": "/static/rustacean-flat-gesture.avif"
+                            "srcset": manganis::mg!(image("https://rustacean.net/assets/rustacean-flat-gesture.png"))
                         }
                         img {
                             class: "w-full rounded-lg object-cover",

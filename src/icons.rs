@@ -1,5 +1,5 @@
 use dioxus::prelude::*;
-pub static FERROUS_LOGO: &str = "https://rustacean.net/assets/rustacean-flat-gesture.png";
+pub static FERROUS_LOGO: &str = manganis::mg!(image("https://rustacean.net/assets/rustacean-flat-gesture.png")).path();
 
 pub static ExternalLinkIcon: Component<()> = |cx| {
     rsx! {

@@ -1,3 +1,4 @@
+use crate::icons::FERROUS_LOGO;
 use dioxus::prelude::*;
 use crate::*;
 
@@ -26,12 +27,9 @@ pub fn Err404(segments: Vec<String>) -> Element {
                     }
                 }
                 div { class: "max-w-4xl h-64 md:h-96 mx-auto",
-                    picture {
-                        source { r#type: "image/avif", "srcset": manganis::mg!(image("https://rustacean.net/assets/rustacean-flat-gesture.png")) }
-                        img {
-                            class: "w-full rounded-lg object-cover",
-                            src: "https://rustacean.net/assets/rustacean-flat-gesture.png"
-                        }
+                    img {
+                        class: "w-full rounded-lg object-cover",
+                        src: FERROUS_LOGO
                     }
                 }
             }

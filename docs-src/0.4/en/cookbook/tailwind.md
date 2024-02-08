@@ -41,7 +41,7 @@ One popular option for styling your Dioxus application is [Tailwind](https://tai
     }
     ```
 
-6. Create a `input.css` file with the following content:
+6. Create a `input.css` file in the root of your project with the following content:
 
     ```css
     @tailwind base;
@@ -49,59 +49,17 @@ One popular option for styling your Dioxus application is [Tailwind](https://tai
     @tailwind utilities;
     ```
 
-7. Create a `Dioxus.toml` file with the following content that links to the `tailwind.css` file:
+7. Add [Manganis](https://github.com/DioxusLabs/collect-assets) to your project to handle asset collection.
 
-    ```toml
-    [application]
+```sh
+cargo add maganis
+```
 
-    # App (Project) Name
-    name = "Tailwind CSS + Dioxus"
+8. Create a link to the `tailwind.css` file using maganis somewhere in your rust code:
 
-    # Dioxus App Default Platform
-    # desktop, web, mobile, ssr
-    default_platform = "web"
-
-    # `build` & `serve` dist path
-    out_dir = "dist"
-
-    # resource (public) file folder
-    asset_dir = "public"
-
-    [web.app]
-
-    # HTML title tag content
-    title = "dioxus | ⛺"
-
-    [web.watcher]
-
-    # when watcher trigger, regenerate the `index.html`
-    reload_html = true
-
-    # which files or dirs will be watcher monitoring
-    watch_path = ["src", "public"]
-
-    # uncomment line below if using Router
-    # index_on_404 = true
-
-    # include `assets` in web platform
-    [web.resource]
-
-    # CSS style file
-    style = ["/tailwind.css"]
-
-    # Javascript code file
-    script = []
-
-    [web.resource.dev]
-
-    # serve: [dev-server] only
-
-    # CSS style file
-    style = []
-
-    # Javascript code file
-    script = []
-    ```
+```rust
+{{#include src/doc_examples/tailwind.rs}}
+```
 
 ### Bonus Steps
 
@@ -128,23 +86,15 @@ One popular option for styling your Dioxus application is [Tailwind](https://tai
 - Run the following command in the root of the project to start the dioxus dev server:
 
     ```bash
-    dx serve --hot-reload
+    dx serve
     ```
 
 - Open the browser to [http://localhost:8080](http://localhost:8080).
 
 ### Desktop
 
-- Add a custom head pointing to the generated tailwind CSS file in your `main`. It looks like:
-
-  ```rust
-  dioxus_desktop::launch_cfg(
-    App,
-    dioxus_desktop::Config::new()
-      .with_custom_head(r#"<link rel="stylesheet" href="public/tailwind.css">"#.to_string()))
-  ```
 - Launch the dioxus desktop app:
 
   ```bash
-  cargo run
+  dx serve --platform desktop
   ```

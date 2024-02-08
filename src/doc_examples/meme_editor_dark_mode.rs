@@ -45,7 +45,7 @@ pub fn use_is_dark_mode() -> bool {
 
 // ANCHOR: toggle
 pub fn DarkModeToggle() -> Element {
-    let dark_mode = consume_context::<Signal<DarkMode>>();
+    let mut dark_mode = consume_context::<Signal<DarkMode>>();
 
     let style = if dark_mode().0 {
         "color:white"
@@ -80,7 +80,7 @@ fn MemeEditor() -> Element {
         width: fit-content;
     ";
 
-    let caption = use_signal(|| "me waiting for my rust code to compile".to_string());
+    let mut caption = use_signal(|| "me waiting for my rust code to compile".to_string());
 
     rsx! {
         div {
@@ -94,7 +94,7 @@ fn MemeEditor() -> Element {
             },
             CaptionEditor {
                 caption: caption,
-                on_input: move |event: FormEvent| {caption.set(event.value());},
+                on_input: move |event: FormEvent| caption.set(event.value()),
             },
         }
     }

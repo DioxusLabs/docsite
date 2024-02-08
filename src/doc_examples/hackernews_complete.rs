@@ -28,7 +28,7 @@ fn Stories() -> Element {
         Some(Ok(list)) => rsx! {
             div {
                 for index in 0..list.len() {
-                    StoryListing { stories: stories.value(), index }
+                    StoryListing { story: list[index].clone() }
                 }
             }
         },
@@ -55,7 +55,7 @@ async fn resolve_story(
 }
 
 #[component]
-fn StoryListing(stories: ReadOnlySignal<Vec<StoryItem>>, index: usize) -> Element {
+fn StoryListing(story: ReadOnlySignal<StoryItem>) -> Element {
     let mut preview_state = consume_context::<Signal<PreviewState>>();
     let StoryItem {
         title,
@@ -66,7 +66,7 @@ fn StoryListing(stories: ReadOnlySignal<Vec<StoryItem>>, index: usize) -> Elemen
         kids,
         id,
         ..
-    } = &*stories.index(index);
+    } = story();
     let full_story = use_signal(|| None);
 
     let url = url.as_deref().unwrap_or_default();

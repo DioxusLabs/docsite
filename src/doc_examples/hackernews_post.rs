@@ -182,7 +182,7 @@ pub mod story_v6 {
     }
 
     #[component]
-    fn StoryListing(stories: ReadOnlySignal<Vec<StoryItem>>, index: usize) -> Element {
+    fn StoryListing(story: ReadOnlySignal<StoryItem>) -> Element {
         let StoryItem {
             title,
             url,
@@ -191,7 +191,7 @@ pub mod story_v6 {
             time,
             kids,
             ..
-        } = &*stories.index(index);
+        } = &*story.read();
 
         let comments = kids.len();
 
@@ -278,7 +278,7 @@ pub mod story_final {
     }
 
     #[component]
-    fn StoryListing(stories: ReadOnlySignal<Vec<StoryItem>>, index: usize) -> Element {
+    fn StoryListing(story: ReadOnlySignal<StoryItem>) -> Element {
         let StoryItem {
             title,
             url,
@@ -287,14 +287,14 @@ pub mod story_final {
             time,
             kids,
             ..
-        } = &*stories.index(index);
+        } = &*story.read();
 
         let url = url.as_deref().unwrap_or_default();
         let hostname = url
             .trim_start_matches("https://")
             .trim_start_matches("http://")
             .trim_start_matches("www.");
-        let score = format!("{score} {}", if score == 1 { " point" } else { " points" });
+        let score = format!("{score} {}", if *score == 1 { " point" } else { " points" });
         let comments = format!(
             "{} {}",
             kids.len(),

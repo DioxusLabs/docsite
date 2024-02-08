@@ -110,7 +110,7 @@ pub mod app_v1 {
     // ANCHOR_END: app_v1
 
     #[component]
-    fn StoryListing(stories: ReadOnlySignal<Vec<StoryItem>>, index: usize) -> Element {
+    fn StoryListing(story: ReadOnlySignal<StoryItem>) -> Element {
         let mut preview_state = consume_context::<Signal<PreviewState>>();
         let StoryItem {
             title,
@@ -120,14 +120,14 @@ pub mod app_v1 {
             time,
             kids,
             ..
-        } = &*stories.index(index);
+        } = &*story.read();
 
         let url = url.as_deref().unwrap_or_default();
         let hostname = url
             .trim_start_matches("https://")
             .trim_start_matches("http://")
             .trim_start_matches("www.");
-        let score = format!("{score} {}", if score == 1 { " point" } else { " points" });
+        let score = format!("{score} {}", if *score == 1 { " point" } else { " points" });
         let comments = format!(
             "{} {}",
             kids.len(),
@@ -267,7 +267,7 @@ mod story_listing_listener {
     }
 
     #[component]
-    fn StoryListing(stories: ReadOnlySignal<Vec<StoryItem>>, index: usize) -> Element {
+    fn StoryListing(story: ReadOnlySignal<StoryItem>) -> Element {
         let mut preview_state = consume_context::<Signal<PreviewState>>();
         let StoryItem {
             title,
@@ -277,7 +277,7 @@ mod story_listing_listener {
             time,
             kids,
             ..
-        } = &*stories.index(index);
+        } = &*story.read();
 
         let url = url.as_deref().unwrap_or_default();
         let hostname = url
@@ -369,7 +369,7 @@ pub fn App() -> Element {
 
 // ANCHOR: shared_state_stories
 #[component]
-fn StoryListing(stories: ReadOnlySignal<Vec<StoryItem>>, index: usize) -> Element {
+fn StoryListing(story: ReadOnlySignal<StoryItem>) -> Element {
     let mut preview_state = consume_context::<Signal<PreviewState>>();
     let StoryItem {
         title,
@@ -379,7 +379,7 @@ fn StoryListing(stories: ReadOnlySignal<Vec<StoryItem>>, index: usize) -> Elemen
         time,
         kids,
         ..
-    } = &*stories.index(index);
+    } = &*story.read();
 
     let url = url.as_deref().unwrap_or_default();
     let hostname = url
@@ -406,7 +406,7 @@ fn StoryListing(stories: ReadOnlySignal<Vec<StoryItem>>, index: usize) -> Elemen
                 // NEW
                 // set the preview state to this story
                 *preview_state.write() = PreviewState::Loaded(StoryPageData {
-                    item: stories.index(index).clone(),
+                    item: story(),
                     comments: vec![],
                 });
             },
@@ -418,7 +418,7 @@ fn StoryListing(stories: ReadOnlySignal<Vec<StoryItem>>, index: usize) -> Elemen
                         // NEW
                         // set the preview state to this story
                         *preview_state.write() = PreviewState::Loaded(StoryPageData {
-                            item: stories.index(index).clone(),
+                            item: story(),
                             comments: vec![],
                         });
                     },

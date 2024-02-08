@@ -28,7 +28,7 @@ static ES_ES: &str = r#"{
 
 #[allow(non_snake_case)]
 fn Body() -> Element {
-    let i18 = use_i18();
+    let mut i18 = use_i18();
 
     let change_to_english = move |_| i18.set_language("en-US".parse().unwrap());
     let change_to_spanish = move |_| i18.set_language("es-ES".parse().unwrap());

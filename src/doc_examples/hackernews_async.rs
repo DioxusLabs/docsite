@@ -138,7 +138,7 @@ pub mod fetch {
     }
 
     #[component]
-    fn StoryListing(stories: MappedSignal<Vec<StoryItem>>, index: usize) -> Element {
+    fn StoryListing(story: ReadOnlySignal<StoryItem>) -> Element {
         let mut preview_state = consume_context::<Signal<PreviewState>>();
         let StoryItem {
             title,
@@ -149,14 +149,14 @@ pub mod fetch {
             kids,
             id,
             ..
-        } = &*stories.index(index);
+        } = &*story.read();
 
         let url = url.as_deref().unwrap_or_default();
         let hostname = url
             .trim_start_matches("https://")
             .trim_start_matches("http://")
             .trim_start_matches("www.");
-        let score = format!("{score} {}", if score == 1 { " point" } else { " points" });
+        let score = format!("{score} {}", if *score == 1 { " point" } else { " points" });
         let comments = format!(
             "{} {}",
             kids.len(),
@@ -174,7 +174,7 @@ pub mod fetch {
                 position: "relative",
                 onmouseenter: move |_event| {
                     *preview_state.write() = PreviewState::Loaded(StoryPageData {
-                        item: stories.index(index).clone(),
+                        item: story(),
                         comments: vec![],
                     });
                 },
@@ -184,7 +184,7 @@ pub mod fetch {
                         href: url,
                         onfocus: move |_event| {
                             *preview_state.write() = PreviewState::Loaded(StoryPageData {
-                                item: stories.index(index).clone(),
+                                item: story(),
                                 comments: vec![],
                             });
                         },
@@ -290,7 +290,7 @@ pub mod fetch {
                         // iterate over the stories with a for loop
                         for index in 0..list.len() {
                             // render every story with the StoryListing component
-                            StoryListing { stories: stories.map(|stories| stories.as_ref().unwrap().as_ref().unwrap()), index }
+                            StoryListing { story: list[index].clone() }
                         }
                     }
                 }
@@ -350,7 +350,7 @@ async fn resolve_story(
 }
 
 #[component]
-fn StoryListing(stories: ReadOnlySignal<Vec<StoryItem>>, index: usize) -> Element {
+fn StoryListing(story: ReadOnlySignal<StoryItem>) -> Element {
     let mut preview_state = consume_context::<Signal<PreviewState>>();
     let StoryItem {
         title,
@@ -361,7 +361,7 @@ fn StoryListing(stories: ReadOnlySignal<Vec<StoryItem>>, index: usize) -> Elemen
         kids,
         id,
         ..
-    } = &*stories.index(index);
+    } = story();
     // New
     let full_story = use_signal(|| None);
 
@@ -504,7 +504,7 @@ fn Stories() -> Element {
         Some(Ok(list)) => rsx! {
             div {
                 for index in 0..list.len() {
-                    StoryListing { stories: stories.value(), index }
+                    StoryListing { story: list[index].clone() }
                 }
             }
         },

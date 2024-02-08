@@ -17,7 +17,7 @@ fn MemeEditor() -> Element {
         width: fit-content;
     ";
 
-    let caption = use_signal(|| "me waiting for my rust code to compile".to_string());
+    let mut caption = use_signal(|| "me waiting for my rust code to compile".to_string());
 
     rsx! {
         div {
@@ -28,7 +28,7 @@ fn MemeEditor() -> Element {
             },
             CaptionEditor {
                 caption: caption,
-                on_input: move |event: FormEvent| {caption.set(event.value());},
+                on_input: move |event: FormEvent| caption.set(event.value()),
             },
         }
     }

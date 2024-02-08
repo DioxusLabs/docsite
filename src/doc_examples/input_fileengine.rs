@@ -4,7 +4,7 @@ use dioxus::prelude::*;
 // ANCHOR: component
 pub fn App() -> Element {
     // ANCHOR: rsx
-    let filenames: Signal<Vec<String>> = use_signal(Vec::new);
+    let mut filenames: Signal<Vec<String>> = use_signal(Vec::new);
     rsx! {
         input {
             // tell the input to pick a file

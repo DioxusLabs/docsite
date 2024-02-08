@@ -65,7 +65,7 @@ impl<T: Serialize + DeserializeOwned + Clone + 'static> UsePersistent<T> {
     }
 
     /// Sets the value
-    pub fn set(&self, value: T) {
+    pub fn set(&mut self, value: T) {
         let mut inner = self.inner.write();
         // Write the new value to local storage
         LocalStorage::set(inner.key.as_str(), &value);

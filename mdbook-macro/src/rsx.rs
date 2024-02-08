@@ -8,6 +8,7 @@ use dioxus_rsx::{
     AttributeType, BodyNode, CallBody, Element, ElementAttr, ElementAttrName, ElementAttrNamed,
     ElementAttrValue, IfmtInput,
 };
+use manganis_common::*;
 use pulldown_cmark::{Alignment, Event, Options, Parser, Tag};
 use syn::{Ident, __private::Span, parse_str, LitStr};
 
@@ -276,7 +277,9 @@ impl<'a, I: Iterator<Item = Event<'a>>> RsxMarkdownParser<'a, I> {
             Tag::CodeBlock(kind) => {
                 let lang = match kind {
                     pulldown_cmark::CodeBlockKind::Indented => None,
-                    pulldown_cmark::CodeBlockKind::Fenced(lang) => (!lang.is_empty()).then_some(lang),
+                    pulldown_cmark::CodeBlockKind::Fenced(lang) => {
+                        (!lang.is_empty()).then_some(lang)
+                    }
                 };
                 let raw_code = self.take_code_or_text();
 
@@ -511,6 +514,25 @@ impl<'a, I: Iterator<Item = Event<'a>>> RsxMarkdownParser<'a, I> {
             Tag::Image(_, dest, title) => {
                 let name = Ident::new("img", Span::call_site());
                 let alt = self.take_text();
+
+                let source = dest.parse().map_err(|e| {
+                    syn::Error::new(
+                        Span::call_site(),
+                        format!("Failed to parse image source {}: {}", dest, e),
+                    )
+                })?;
+                let this_file =
+                    FileAsset::new(source).with_options(manganis_common::FileOptions::Image(
+                        ImageOptions::new(manganis_common::ImageType::Avif, None),
+                    ));
+
+                let asset = add_asset(manganis_common::AssetType::File(this_file.clone()));
+                let this_file = match asset {
+                    manganis_common::AssetType::File(this_file) => this_file,
+                    _ => unreachable!(),
+                };
+                let url = this_file.served_location();
+
                 self.start_node(BodyNode::Element(Element::new(
                     None,
                     dioxus_rsx::ElementName::Ident(name.clone()),
@@ -522,7 +544,7 @@ impl<'a, I: Iterator<Item = Event<'a>>> RsxMarkdownParser<'a, I> {
                                     "src",
                                     Span::call_site(),
                                 )),
-                                value: ElementAttrValue::AttrLiteral(IfmtInput::new_static(&dest)),
+                                value: ElementAttrValue::AttrLiteral(IfmtInput::new_static(&url)),
                             },
                         }),
                         AttributeType::Named(dioxus_rsx::ElementAttrNamed {

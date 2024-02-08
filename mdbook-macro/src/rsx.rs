@@ -322,7 +322,7 @@ impl<'a, I: Iterator<Item = Event<'a>>> RsxMarkdownParser<'a, I> {
                          dioxus_rsx::ElementName::Ident(Ident::new("button", Span::call_site())),
                          vec![
                             AttributeType::Named(
-                            
+
                             dioxus_rsx::ElementAttrNamed {
                                 el_name: dioxus_rsx::ElementName::Ident(Ident::new(
                                     "button",

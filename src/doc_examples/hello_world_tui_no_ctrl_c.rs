@@ -26,8 +26,10 @@ fn App() -> Element {
             background_color: "red",
             justify_content: "center",
             align_items: "center",
-            onkeydown: move |k: KeyboardEvent| if Key::Character("q".into()) == k.key() {
-                tui_ctx.quit();
+            onkeydown: move |k: KeyboardEvent| {
+                if Key::Character("q".into()) == k.key() {
+                    tui_ctx.quit();
+                }
             },
 
             "Hello world!"

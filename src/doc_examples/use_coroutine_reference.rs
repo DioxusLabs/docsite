@@ -83,8 +83,7 @@ fn send() -> Element {
     });
 
     rsx! {
-        button {
-            onclick: move |_| profile.send(ProfileUpdate::SetUsername("Bob".to_string())),
+        button { onclick: move |_| profile.send(ProfileUpdate::SetUsername("Bob".to_string())),
             "Update username"
         }
     }
@@ -124,15 +123,11 @@ fn fermi() {
     fn app() -> Element {
         use_coroutine(sync_service);
 
-        rsx! {
-            Banner {}
-        }
+        rsx! { Banner {} }
     }
 
     fn Banner() -> Element {
-        rsx! {
-            h1 { "Welcome back, {USERNAME}" }
-        }
+        rsx! { h1 { "Welcome back, {USERNAME}" } }
     }
     // ANCHOR_END: fermi
 }

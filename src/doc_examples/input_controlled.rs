@@ -10,7 +10,7 @@ pub fn App() -> Element {
             // we tell the component what to render
             value: "{name}",
             // and what to do when the value changes
-            oninput: move |event| name.set(event.value()),
+            oninput: move |event| name.set(event.value())
         }
     }
 }

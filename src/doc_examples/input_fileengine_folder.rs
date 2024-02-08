@@ -7,7 +7,7 @@ pub fn App() -> Element {
     rsx! {
         // ANCHOR: rsx
         input {
-            r#type:"file",
+            r#type: "file",
             // Select a folder by setting the directory attribute
             directory: true,
             onchange: |evt| {
@@ -15,12 +15,10 @@ pub fn App() -> Element {
                     let files = file_engine.files();
                     for file_name in files {
                         println!("{}", file_name);
-                        // Do something with the folder path
                     }
                 }
             }
         }
-        // ANCHOR_END: rsx
     }
 }
 // ANCHOR_END: component

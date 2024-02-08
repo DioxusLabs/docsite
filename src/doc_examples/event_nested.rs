@@ -8,12 +8,10 @@ fn main() {
 fn App() -> Element {
     // ANCHOR: rsx
     rsx! {
-        div {
-            onclick: move |_event| {},
-            "outer",
+        div { onclick: move |_event| {},
+            "outer"
             button {
                 onclick: move |event| {
-                    // now, outer won't be triggered
                     event.stop_propagation();
                 },
                 "inner"

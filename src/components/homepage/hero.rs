@@ -1,3 +1,4 @@
+use manganis::mg;
 use crate::*;
 
 pub fn Hero() -> Element {
@@ -17,15 +18,15 @@ pub fn Hero() -> Element {
                     div { class: "pt-12 text-white text-[1.2em] font-sans font-bold flex flex-row justify-center space-x-4",
                         Link {
                             to: Route::Docs {
-    child: BookRoute::GettingStartedIndex {},
-},
+                                child: BookRoute::GettingStartedIndex {},
+                            },
                             class: "bg-red-600 py-2 px-8 hover:-translate-y-2 transition-transform duration-300",
                             "Quickstart"
                         }
                         Link {
                             to: Route::Docs {
-    child: BookRoute::ReferenceIndex {},
-},
+                                child: BookRoute::ReferenceIndex {},
+                            },
                             class: "bg-blue-500 py-2 px-8 hover:-translate-y-2 transition-transform duration-300",
                             "Read the docs"
                         }
@@ -71,7 +72,11 @@ fn SaveClipboard() -> Element {
             "type": "button",
             onclick: move |_| saved.set(true),
             span { class: "text-gray-900",
-                span { class: "hidden sm:inline text-gray-500", aria_hidden: "true", "$ " }
+                span {
+                    class: "hidden sm:inline text-gray-500",
+                    aria_hidden: "true",
+                    "$ "
+                }
                 span { class: "text-red-400", "cargo " }
                 "add dioxus"
             }

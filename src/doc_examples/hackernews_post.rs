@@ -9,9 +9,7 @@ pub mod story_v1 {
 
     // ANCHOR: story_v1
     pub fn App() -> Element {
-        rsx! {
-            "story"
-        }
+        rsx! {"story"}
     }
     // ANCHOR_END: story_v1
 }
@@ -27,9 +25,7 @@ pub mod story_v2 {
         let time = chrono::Utc::now();
         let comments = "comments";
 
-        rsx! {
-            "{title} by {by} ({score}) {time} {comments}"
-        }
+        rsx! {"{title} by {by} ({score}) {time} {comments}"}
     }
     // ANCHOR_END: story_v2
 }
@@ -45,11 +41,7 @@ pub mod story_v3 {
         let time = chrono::Utc::now();
         let comments = "comments";
 
-        rsx! {
-            div {
-                "{title} by {by} ({score}) {time} {comments}"
-            }
-        }
+        rsx! { div { "{title} by {by} ({score}) {time} {comments}" } }
     }
     // ANCHOR_END: story_v3
 }
@@ -66,9 +58,7 @@ pub mod story_v4 {
         let comments = "comments";
 
         rsx! {
-            div {
-                padding: "0.5rem",
-                position: "relative",
+            div { padding: "0.5rem", position: "relative",
                 "{title} by {by} ({score}) {time} {comments}"
             }
         }
@@ -81,11 +71,7 @@ pub mod story_v5 {
 
     // ANCHOR: app_v5
     pub fn App() -> Element {
-        rsx! {
-            StoryListing {
-
-            }
-        }
+        rsx! { StoryListing {} }
     }
     // ANCHOR_END: app_v5
 
@@ -98,9 +84,7 @@ pub mod story_v5 {
         let comments = "comments";
 
         rsx! {
-            div {
-                padding: "0.5rem",
-                position: "relative",
+            div { padding: "0.5rem", position: "relative",
                 "{title} by {by} ({score}) {time} {comments}"
             }
         }
@@ -196,9 +180,7 @@ pub mod story_v6 {
         let comments = kids.len();
 
         rsx! {
-            div {
-                padding: "0.5rem",
-                position: "relative",
+            div { padding: "0.5rem", position: "relative",
                 "{title} by {by} ({score}) {time} {comments}"
             }
         }
@@ -307,15 +289,9 @@ pub mod story_final {
         let time = time.format("%D %l:%M %p");
 
         rsx! {
-            div {
-                padding: "0.5rem",
-                position: "relative",
-                div {
-                    font_size: "1.5rem",
-                    a {
-                        href: url,
-                        "{title}"
-                    }
+            div { padding: "0.5rem", position: "relative",
+                div { font_size: "1.5rem",
+                    a { href: url, "{title}" }
                     a {
                         color: "gray",
                         href: "https://news.ycombinator.com/from?site={hostname}",
@@ -323,25 +299,11 @@ pub mod story_final {
                         " ({hostname})"
                     }
                 }
-                div {
-                    display: "flex",
-                    flex_direction: "row",
-                    color: "gray",
-                    div {
-                        "{score}"
-                    }
-                    div {
-                        padding_left: "0.5rem",
-                        "by {by}"
-                    }
-                    div {
-                        padding_left: "0.5rem",
-                        "{time}"
-                    }
-                    div {
-                        padding_left: "0.5rem",
-                        "{comments}"
-                    }
+                div { display: "flex", flex_direction: "row", color: "gray",
+                    div { "{score}" }
+                    div { padding_left: "0.5rem", "by {by}" }
+                    div { padding_left: "0.5rem", "{time}" }
+                    div { padding_left: "0.5rem", "{comments}" }
                 }
             }
         }

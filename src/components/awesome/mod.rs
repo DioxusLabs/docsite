@@ -96,28 +96,27 @@ pub fn Awesome() -> Element {
             let items: Vec<Item> = items.into_iter().filter(|i| i.name.to_lowercase().contains(&search.read().to_lowercase())).collect();
 
             rsx!(
-                section {
-                    class: "dark:bg-ideblack w-full pt-24 pb-10",
-                    div {
-                        class: "container mx-auto max-w-screen-1g text-center",
-                        h1 {
-                            class: "text-[3.3em] font-bold tracking-tight dark:text-white text-ghdarkmetal mb-2 px-2",
+                section { class: "dark:bg-ideblack w-full pt-24 pb-10",
+                    div { class: "container mx-auto max-w-screen-1g text-center",
+                        h1 { class: "text-[3.3em] font-bold tracking-tight dark:text-white text-ghdarkmetal mb-2 px-2",
                             "Awesome stuff for Dioxus"
                         }
-                        p {
-                            class: "mx-auto text-xl text-gray-600 dark:text-gray-400 pb-10 px-2 max-w-screen-sm",
+                        p { class: "mx-auto text-xl text-gray-600 dark:text-gray-400 pb-10 px-2 max-w-screen-sm",
                             "Everything you'll need to build awesome Dioxus apps. Also check out "
-                            b { Link { to: "#made-with-dioxus", "Made with Dioxus" } } "!"
+                            b {
+                                Link { to: "#made-with-dioxus", "Made with Dioxus" }
+                            }
+                            "!"
                         }
-                        p {
-                            class: "mx-auto text-xl text-gray-600 dark:text-gray-400 pb-10 px-2 max-w-screen-sm",
+                        p { class: "mx-auto text-xl text-gray-600 dark:text-gray-400 pb-10 px-2 max-w-screen-sm",
                             "To submit your project, make a pull request in the "
-                            b { Link { to: "https://github.com/DioxusLabs/awesome-dioxus", "awesome-dioxus" } }
+                            b {
+                                Link { to: "https://github.com/DioxusLabs/awesome-dioxus", "awesome-dioxus" }
+                            }
                             " repo."
                         }
                     }
-                    div {
-                        class: "container mx-auto",
+                    div { class: "container mx-auto",
                         div {
                             class: "mx-2 rounded-lg lg:w-2/5 lg:mx-auto",
                             background_color: "#24292f",
@@ -126,16 +125,13 @@ pub fn Awesome() -> Element {
                                 background_color: "#24292f",
                                 placeholder: "Looking for something specific?",
                                 value: "{search}",
-                                oninput: move |evt| search.set(evt.value()),
+                                oninput: move |evt| search.set(evt.value())
                             }
                         }
                     }
                 }
-        
-                section {
-                    class: "dark:bg-ideblack w-full pb-24",
-                    div {
-                        class: "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 container mx-auto px-2 max-w-screen-1g",
+                section { class: "dark:bg-ideblack w-full pb-24",
+                    div { class: "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 container mx-auto px-2 max-w-screen-1g",
                         {items.iter().filter_map(|item| {
                             if let AwesomeType::Awesome = item.r#type {
                                 Some(rsx!(AwesomeItem { key: "{item.name}", item: item.clone() }))
@@ -146,26 +142,21 @@ pub fn Awesome() -> Element {
                     }
                 }
 
-                section {
-                    class: "dark:bg-ideblack w-full pb-10",
-                    div {
-                        class: "container mx-auto max-w-screen-1g text-center",
+                section { class: "dark:bg-ideblack w-full pb-10",
+                    div { class: "container mx-auto max-w-screen-1g text-center",
                         h1 {
                             class: "text-[3.3em] font-bold tracking-tight dark:text-white text-ghdarkmetal mb-2 px-2",
                             id: "made-with-dioxus",
                             "Made with Dioxus"
                         }
-                        p {
-                            class: "mx-auto text-xl text-gray-600 dark:text-gray-400 pb-10 px-2 max-w-screen-sm",
+                        p { class: "mx-auto text-xl text-gray-600 dark:text-gray-400 pb-10 px-2 max-w-screen-sm",
                             "Real world uses of Dioxus."
                         }
                     }
                 }
 
-                section {
-                    class: "dark:bg-ideblack w-full pb-24",
-                    div {
-                        class: "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 container mx-auto px-2 max-w-screen-1g",
+                section { class: "dark:bg-ideblack w-full pb-24",
+                    div { class: "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 container mx-auto px-2 max-w-screen-1g",
                         for item in items.iter() {
                             if let AwesomeType::MadeWith = item.r#type {
                                 AwesomeItem { key: "{item.name}", item: item.clone() }
@@ -177,16 +168,12 @@ pub fn Awesome() -> Element {
         }
         Some(Err(e)) => {
             rsx!(
-                section {
-                    class: "dark:bg-ideblack w-full pt-24 pb-96",
-                    div {
-                        class: "container mx-auto max-w-screen-1g text-center animate-fadein-medium",
-                        p {
-                            class: "text-[3.3em] font-bold tracking-tight dark:text-white text-ghdarkmetal mb-2 px-2",
+                section { class: "dark:bg-ideblack w-full pt-24 pb-96",
+                    div { class: "container mx-auto max-w-screen-1g text-center animate-fadein-medium",
+                        p { class: "text-[3.3em] font-bold tracking-tight dark:text-white text-ghdarkmetal mb-2 px-2",
                             "It seems a not-so-awesome error occurred. 🙁"
                         }
-                        p {
-                            class: "mx-auto text-sm dark:text-gray-500 pb-10 px-2",
+                        p { class: "mx-auto text-sm dark:text-gray-500 pb-10 px-2",
                             "{e}"
                         }
                     }
@@ -195,12 +182,9 @@ pub fn Awesome() -> Element {
         }
         None => {
             rsx!(
-                section {
-                    class: "dark:bg-ideblack w-full pt-24 pb-96",
-                    div {
-                        class: "container mx-auto max-w-screen-1g text-center animate-fadein-medium",
-                        p {
-                            class: "text-[3.3em] font-bold tracking-tight dark:text-white text-ghdarkmetal mb-2 px-2",
+                section { class: "dark:bg-ideblack w-full pt-24 pb-96",
+                    div { class: "container mx-auto max-w-screen-1g text-center animate-fadein-medium",
+                        p { class: "text-[3.3em] font-bold tracking-tight dark:text-white text-ghdarkmetal mb-2 px-2",
                             "Loading..."
                         }
                     }
@@ -260,33 +244,19 @@ fn AwesomeItem(item: ReadOnlySignal<Item>) -> Element {
     };
 
     rsx!(
-        Link {
-            to: NavigationTarget::<Route>::External(link),
+        Link { to: NavigationTarget::<Route>::External(link),
             div {
                 class: "flex flex-col h-full p-3 rounded hover:-translate-y-2 transition-transform duration-300",
                 background_color: "#24292f",
                 div {
-                    p {
-                        class: "text-xl text-gray-100 font-bold",
-                        "{item.name}"
-                    }
-                    p {
-                        class: "text-base pt-2 text-gray-300",
-                        "{item.description}"
-                    }
+                    p { class: "text-xl text-gray-100 font-bold", "{item.name}" }
+                    p { class: "text-base pt-2 text-gray-300", "{item.description}" }
                 }
-                div {
-                    class: "mt-auto pt-4 flex",
+                div { class: "mt-auto pt-4 flex",
                     if Category::App != item.category {
-                        p {
-                            class: "text-gray-300 font-bold",
-                            "{item.category}"
-                        }
+                        p { class: "text-gray-300 font-bold", "{item.category}" }
                     }
-                    p {
-                        class: "ml-auto text-gray-300 font-bold",
-                        "{stars}"
-                    }
+                    p { class: "ml-auto text-gray-300 font-bold", "{stars}" }
                 }
             }
         }

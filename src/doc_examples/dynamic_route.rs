@@ -34,9 +34,7 @@ enum Route {
 // ANCHOR_END: router
 
 fn App() -> Element {
-    rsx! {
-        Router::<Route> {}
-    }
+    rsx! { Router::<Route> {} }
 }
 
 #[component]
@@ -44,8 +42,12 @@ fn NavBar() -> Element {
     rsx! {
         nav {
             ul {
-                li { Link { to: Route::Home {}, "Home" } }
-                li { Link { to: Route::BlogList {}, "Blog" } }
+                li {
+                    Link { to: Route::Home {}, "Home" }
+                }
+                li {
+                    Link { to: Route::BlogList {}, "Blog" }
+                }
             }
         }
         Outlet::<Route> {}
@@ -54,9 +56,7 @@ fn NavBar() -> Element {
 
 #[component]
 fn Home() -> Element {
-    rsx! {
-        h1 { "Welcome to the Dioxus Blog!" }
-    }
+    rsx! { h1 { "Welcome to the Dioxus Blog!" } }
 }
 
 // ANCHOR: blog
@@ -77,13 +77,17 @@ fn BlogList() -> Element {
         ul {
             li {
                 Link {
-                    to: Route::BlogPost { name: "Blog post 1".into() },
+                    to: Route::BlogPost {
+                        name: "Blog post 1".into(),
+                    },
                     "Read the first blog post"
                 }
             }
             li {
                 Link {
-                    to: Route::BlogPost { name: "Blog post 2".into() },
+                    to: Route::BlogPost {
+                        name: "Blog post 2".into(),
+                    },
                     "Read the second blog post"
                 }
             }
@@ -96,9 +100,7 @@ fn BlogList() -> Element {
 // The name prop comes from the /:name route segment
 #[component]
 fn BlogPost(name: String) -> Element {
-    rsx! {
-        h2 { "Blog Post: {name}"}
-    }
+    rsx! { h2 { "Blog Post: {name}" } }
 }
 // ANCHOR_END: blog_post
 
@@ -107,9 +109,6 @@ fn PageNotFound(route: Vec<String>) -> Element {
     rsx! {
         h1 { "Page not found" }
         p { "We are terribly sorry, but the page you requested doesn't exist." }
-        pre {
-            color: "red",
-            "log:\nattemped to navigate to: {route:?}"
-        }
+        pre { color: "red", "log:\nattemped to navigate to: {route:?}" }
     }
 }

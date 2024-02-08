@@ -8,7 +8,7 @@ pub fn App() -> Element {
             href: "https://example.com",
             prevent_default: "onclick",
             onclick: |_| log::info!("link clicked"),
-            "example.com",
+            "example.com"
         }
     }
     // ANCHOR_END: prevent_default

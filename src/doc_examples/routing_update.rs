@@ -13,26 +13,24 @@ enum Route {
 
 #[component]
 fn Home() -> Element {
-    rsx! {
-        p { "Home" }
-    }
+    rsx! { p { "Home" } }
 }
 
 #[component]
 fn Index() -> Element {
-    rsx! {
-        p { "Index" }
-    }
+    rsx! { p { "Index" } }
 }
 
 fn app() -> Element {
     rsx! {
         Router::<Route> {
-            config: || RouterConfig::default().on_update(|state|{
-                (state.current() == Route::Index {}).then_some(
-                    NavigationTarget::Internal(Route::Home {})
-                )
-            })
+            config: || {
+                RouterConfig::default()
+                    .on_update(|state| {
+                        (state.current() == Route::Index {})
+                            .then_some(NavigationTarget::Internal(Route::Home {}))
+                    })
+            }
         }
     }
 }

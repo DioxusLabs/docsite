@@ -6,15 +6,21 @@ pub fn Deploy() -> Element {
             div { class: "max-w-screen-md mx-auto border-b py-8 ",
                 div { class: "flex flex-row",
                     div { class: "flex-1" }
-                    h1 { class: "text-5xl text-center font-bold pb-8 px-8 flex-2", "Dioxus Deploy" }
+                    h1 { class: "text-5xl text-center font-bold pb-8 px-8 flex-2",
+                        "Dioxus Deploy"
+                    }
                     div { class: "flex-1 mx-auto",
                         div { class: "flex-row hidden md:flex",
-                            h3 { class: "text-white bg-green-600 py-1 px-2 rounded ", "Coming soon!" }
+                            h3 { class: "text-white bg-green-600 py-1 px-2 rounded ",
+                                "Coming soon!"
+                            }
                             div { class: "flex-1 " }
                         }
                     }
                 }
-                h2 { class: "text-2xl text-center", "A deployment platform designed for app developers" }
+                h2 { class: "text-2xl text-center",
+                    "A deployment platform designed for app developers"
+                }
             }
 
             div { class: "max-w-screen-sm mx-auto p-8 text-gray-600 items-center flex flex-col",

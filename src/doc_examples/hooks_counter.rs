@@ -8,20 +8,8 @@ pub fn App() -> Element {
 
     rsx!(
         h1 { "High-Five counter: {count}" }
-        button {
-            onclick: move |_| {
-                // changing the count will cause the component to re-render
-                count += 1
-            },
-            "Up high!"
-        }
-        button {
-            onclick: move |_| {
-                // changing the count will cause the component to re-render
-                count -= 1
-            },
-            "Down low!"
-        }
+        button { onclick: move |_| { count += 1 }, "Up high!" }
+        button { onclick: move |_| { count -= 1 }, "Down low!" }
     )
 }
 // ANCHOR_END: component

@@ -9,9 +9,10 @@ fn main() {
 fn App() -> Element {
     // ANCHOR: Clickable_usage
     rsx! {
-        Clickable {
-            href: "https://www.youtube.com/watch?v=C-M2hs3sXGo",
-            "How to " i {"not"} " be seen"
+        Clickable { href: "https://www.youtube.com/watch?v=C-M2hs3sXGo",
+            "How to "
+            i { "not" }
+            " be seen"
         }
     }
     // ANCHOR_END: Clickable_usage

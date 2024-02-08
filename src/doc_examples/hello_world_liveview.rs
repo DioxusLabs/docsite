@@ -50,11 +50,7 @@ async fn main() {
 
 // ANCHOR: app
 fn app() -> Element {
-    rsx! {
-        div {
-            "Hello, world!"
-        }
-    }
+    rsx! { div { "Hello, world!" } }
 }
 // ANCHOR_END: app
 // ANCHOR_END: all

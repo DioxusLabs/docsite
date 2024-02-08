@@ -14,18 +14,14 @@ enum Route {
 
 // ANCHOR: app
 fn App() -> Element {
-    rsx! {
-        Router::<Route> {}
-    }
+    rsx! { Router::<Route> {} }
 }
 // ANCHOR_END: app
 
 // ANCHOR: home
 #[component]
 fn Home() -> Element {
-    rsx! {
-        h1 { "Welcome to the Dioxus Blog!" }
-    }
+    rsx! { h1 { "Welcome to the Dioxus Blog!" } }
 }
 // ANCHOR_END: home
 

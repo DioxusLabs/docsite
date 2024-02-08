@@ -7,18 +7,12 @@ use dioxus::prelude::*;
 fn test() {
     assert_rsx_eq(
         rsx! {
-            div {
-                "Hello world"
-            }
-            div {
-                "Hello world"
-            }
+            div { "Hello world" }
+            div { "Hello world" }
         },
         rsx! {
             for _ in 0..2 {
-                div {
-                    "Hello world"
-                }
+                div { "Hello world" }
             }
         },
     )

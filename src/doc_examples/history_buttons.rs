@@ -17,12 +17,8 @@ fn Home() -> Element {
 // ANCHOR: history_buttons
 fn HistoryNavigation() -> Element {
     rsx! {
-        GoBackButton {
-            "Back to the Past"
-        }
-        GoForwardButton {
-            "Back to the Future" /* You see what I did there? 😉 */
-        }
+        GoBackButton { "Back to the Past" }
+        GoForwardButton { "Back to the Future" }
     }
 }
 // ANCHOR_END: history_buttons

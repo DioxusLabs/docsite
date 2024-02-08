@@ -70,10 +70,7 @@ fn Home() -> Element {
     let text = use_signal(|| "...".to_string());
 
     rsx! {
-        Link {
-            to: Route::Blog {},
-            "Go to blog"
-        }
+        Link { to: Route::Blog {}, "Go to blog" }
         div {
             h1 { "High-Five counter: {count}" }
             button { onclick: move |_| count += 1, "Up high!" }

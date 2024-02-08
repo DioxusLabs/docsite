@@ -13,9 +13,7 @@ enum Route {
 
 #[component]
 fn App() -> Element {
-    rsx! {
-        Router::<Route> {}
-    }
+    rsx! { Router::<Route> {} }
 }
 
 // ANCHOR: nav
@@ -35,9 +33,7 @@ fn Home() -> Element {
     // go forward
     nav.go_forward();
 
-    rsx! {
-        h1 { "Welcome to the Dioxus Blog!" }
-    }
+    rsx! { h1 { "Welcome to the Dioxus Blog!" } }
 }
 // ANCHOR_END: nav
 
@@ -46,10 +42,7 @@ fn PageNotFound(route: Vec<String>) -> Element {
     rsx! {
         h1 { "Page not found" }
         p { "We are terribly sorry, but the page you requested doesn't exist." }
-        pre {
-            color: "red",
-            "log:\nattemped to navigate to: {route:?}"
-        }
+        pre { color: "red", "log:\nattemped to navigate to: {route:?}" }
     }
 }
 

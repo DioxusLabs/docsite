@@ -16,23 +16,19 @@ fn Wrapper() -> Element {
     rsx! {
         header { "header" }
         // The index route will be rendered here
-        Outlet::<Route> { }
+        Outlet::<Route> {}
         footer { "footer" }
     }
 }
 
 #[component]
 fn Index() -> Element {
-    rsx! {
-        h1 { "Index" }
-    }
+    rsx! { h1 { "Index" } }
 }
 // ANCHOR_END: outlet
 
 fn App() -> Element {
-    rsx! {
-        Router::<Route> {}
-    }
+    rsx! { Router::<Route> {} }
 }
 
 fn main() {
@@ -66,23 +62,19 @@ mod with_props {
         rsx! {
             header { "Welcome {name}!" }
             // The index route will be rendered here
-            Outlet::<Route> { }
+            Outlet::<Route> {}
             footer { "footer" }
         }
     }
 
     #[component]
     fn Index(name: String) -> Element {
-        rsx! {
-            h1 { "This is a homepage for {name}" }
-        }
+        rsx! { h1 { "This is a homepage for {name}" } }
     }
     // ANCHOR_END: outlet_with_params
 
     fn App() -> Element {
-        rsx! {
-            Router::<Route> {}
-        }
+        rsx! { Router::<Route> {} }
     }
 
     fn main() {
@@ -118,23 +110,19 @@ mod use_route {
         rsx! {
             header { "Welcome to {full_route}!" }
             // The index route will be rendered here
-            Outlet::<Route> { }
+            Outlet::<Route> {}
             footer { "footer" }
         }
     }
 
     #[component]
     fn Index(name: String) -> Element {
-        rsx! {
-            h1 { "This is a homepage for {name}" }
-        }
+        rsx! { h1 { "This is a homepage for {name}" } }
     }
     // ANCHOR_END: outlet_route
 
     fn App() -> Element {
-        rsx! {
-            Router::<Route> {}
-        }
+        rsx! { Router::<Route> {} }
     }
 
     fn main() {

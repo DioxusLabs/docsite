@@ -19,10 +19,7 @@ fn main() {}
 // ANCHOR: component
 fn GoToDioxus() -> Element {
     rsx! {
-        Link {
-            to: "https://dioxuslabs.com",
-            "ExternalTarget target"
-        }
+        Link { to: "https://dioxuslabs.com", "ExternalTarget target" }
     }
 }
 // ANCHOR_END: component

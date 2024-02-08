@@ -5,14 +5,14 @@ use dioxus::prelude::*;
 
 pub fn App() -> Element {
     rsx!(
-        Empty {},
-        Children {},
-        Fragments {},
-        Attributes {},
-        VariableAttributes {},
-        CustomAttributes {},
-        Formatting {},
-        Expression {},
+        Empty {}
+        Children {}
+        Fragments {}
+        Attributes {}
+        VariableAttributes {}
+        CustomAttributes {}
+        Formatting {}
+        Expression {}
     )
 }
 
@@ -27,23 +27,25 @@ pub fn Empty() -> Element {
 
 pub fn Children() -> Element {
     // ANCHOR: children
-    rsx!(ol {
-        li {"First Item"}
-        li {"Second Item"}
-        li {"Third Item"}
-    })
+    rsx!(
+        ol {
+            li { "First Item" }
+            li { "Second Item" }
+            li { "Third Item" }
+        }
+    )
     // ANCHOR_END: children
 }
 
 pub fn Fragments() -> Element {
     // ANCHOR: fragments
     rsx!(
-        p {"First Item"},
-        p {"Second Item"},
+        p { "First Item" }
+        p { "Second Item" }
         Fragment {
-            span { "a group" },
-            span { "of three" },
-            span { "items" },
+            span { "a group" }
+            span { "of three" }
+            span { "items" }
         }
     )
     // ANCHOR_END: fragments
@@ -52,8 +54,8 @@ pub fn Fragments() -> Element {
 pub fn ManyRoots() -> Element {
     // ANCHOR: manyroots
     rsx!(
-        p {"First Item"},
-        p {"Second Item"},
+        p { "First Item" }
+        p { "Second Item" }
     )
     // ANCHOR_END: manyroots
 }
@@ -72,19 +74,15 @@ pub fn VariableAttributes() -> Element {
     // ANCHOR: variable_attributes
     let written_in_rust = true;
     let button_type = "button";
-    rsx!(button {
-        disabled: "{written_in_rust}",
-        class: "{button_type}",
-        "Rewrite it in rust"
-    })
+    rsx!(
+        button { disabled: "{written_in_rust}", class: "{button_type}", "Rewrite it in rust" }
+    )
     // ANCHOR_END: variable_attributes
 }
 
 pub fn CustomAttributes() -> Element {
     // ANCHOR: custom_attributes
-    rsx!(div {
-        "style": "width: 20px; height: 20px; background-color: red;",
-    })
+    rsx!( div { "style": "width: 20px; height: 20px; background-color: red;" } )
     // ANCHOR_END: custom_attributes
 }
 
@@ -92,34 +90,32 @@ pub fn Formatting() -> Element {
     // ANCHOR: formatting
     let coordinates = (42, 0);
     let country = "es";
-    rsx!(div {
-        class: "country-{country}",
-        left: "{coordinates.0:?}",
-        top: "{coordinates.1:?}",
-        // arbitrary expressions are allowed,
-        // as long as they don't contain `{}`
+    rsx!(
         div {
-            "{country.to_uppercase()}"
-        },
-        div {
-            "{7*6}"
-        },
-        // {} can be escaped with {{}}
-        div {
-            "{{}}"
-        },
-    })
+            class: "country-{country}",
+            left: "{coordinates.0:?}",
+            top: "{coordinates.1:?}",
+            // arbitrary expressions are allowed,
+            // as long as they don't contain `{}`
+            div { "{country.to_uppercase()}" }
+            div { "{7*6}" }
+            // {} can be escaped with {{}}
+            div { "{{}}" }
+        }
+    )
     // ANCHOR_END: formatting
 }
 
 pub fn Expression() -> Element {
     // ANCHOR: expression
     let text = "Dioxus";
-    rsx!(span {
-        {text.to_uppercase()}
-        // create a list of text from 0 to 9
-        {(0..10).map(|i| rsx!{ "{i}" })}
-    })
+    rsx!(
+        span {
+            {text.to_uppercase()},
+            // create a list of text from 0 to 9
+            {(0..10).map(|i| rsx!{ "{i}" })}
+        }
+    )
     // ANCHOR_END: expression
 }
 
@@ -131,15 +127,11 @@ pub fn Loops() -> Element {
             // create a list of text from 0 to 9
             for i in 0..3 {
                 // NOTE: the body of the loop is RSX not a rust statement
-                div {
-                    "{i}"
-                }
+                div { "{i}" }
             }
         }
         // iterator equivalent
-        div {
-            {(0..3).map(|i| rsx!{ div { "{i}" } })}
-        }
+        div { {(0..3).map(|i| rsx!{ div { "{i}" } })} }
     }
     // ANCHOR_END: loops
 }

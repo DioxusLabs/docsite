@@ -10,9 +10,7 @@ fn main() {
 fn app() -> Element {
     let mut count = use_server_future(|| async { get_server_data().await })?;
 
-    rsx! {
-        "server data is {count.value():?}"
-    }
+    rsx! {"server data is {count.value():?}"}
 }
 
 #[server]

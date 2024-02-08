@@ -12,13 +12,11 @@ fn AntipatternNestedFragments() -> Element {
     // ANCHOR: nested_fragments
     // ❌ Don't unnecessarily nest fragments
     let _ = rsx!(
-        Fragment {
-            Fragment {
-                Fragment {
-                    Fragment {
-                        Fragment {
-                            div { "Finally have a real node!" }
-                        }
+        Fragment { 
+            Fragment { 
+                Fragment { 
+                    Fragment { 
+                        Fragment { div { "Finally have a real node!" } }
                     }
                 }
             }
@@ -26,9 +24,7 @@ fn AntipatternNestedFragments() -> Element {
     );
 
     // ✅ Render shallow structures
-    rsx!(
-        div { "Finally have a real node!" }
-    )
+    rsx!( div { "Finally have a real node!" } )
     // ANCHOR_END: nested_fragments
 }
 
@@ -53,7 +49,7 @@ fn AntipatternNoKeys(props: NoKeysProps) -> Element {
     // ❌ Using index as keys
     rsx! {
         ul {
-            for (index, value) in data.values().enumerate() {
+            for (index , value) in data.values().enumerate() {
                 li { key: "{index}", "List item: {value}" }
             }
         }
@@ -62,7 +58,7 @@ fn AntipatternNoKeys(props: NoKeysProps) -> Element {
     // ✅ Using unique IDs as keys:
     rsx! {
         ul {
-            for (key, value) in props.data.iter() {
+            for (key , value) in props.data.iter() {
                 li { key: "{key}", "List item: {value}" }
             }
         }

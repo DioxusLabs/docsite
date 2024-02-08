@@ -49,7 +49,11 @@ pub fn Nav() -> Element {
                             ul { class: "flex items-center space-x-2", LinkList {} }
                         }
                         div { class: "flex items-center border-l border-gray-200 ml-4 pl-4 dark:border-gray-800",
-                            label { class: "sr-only", id: "headlessui-listbox-label-2", "Theme" }
+                            label {
+                                class: "sr-only",
+                                id: "headlessui-listbox-label-2",
+                                "Theme"
+                            }
                             Link {
                                 to: "https://discord.gg/XgGxMSkvUM",
                                 class: "block text-gray-400 hover:text-gray-500 dark:hover:text-gray-300",
@@ -64,7 +68,11 @@ pub fn Nav() -> Element {
                             }
                         }
                         div { class: "flex items-center border-l border-gray-200 ml-4 pl-6 dark:border-gray-800",
-                            label { class: "sr-only", id: "headlessui-listbox-label-2", "Theme" }
+                            label {
+                                class: "sr-only",
+                                id: "headlessui-listbox-label-2",
+                                "Theme"
+                            }
                             Link {
                                 to: Route::Deploy {},
                                 class: "md:ml-0 md:py-2 md:px-3 bg-blue-500 ml-4 text-lg md:text-sm text-white rounded font-semibold",
@@ -140,7 +148,11 @@ fn MobileNav() -> Element {
                         *nav = !*nav;
                     },
                     span { class: "sr-only", "Navigation" }
-                    svg { width: "24", height: "24", "aria-hidden": "true", fill: "none",
+                    svg {
+                        width: "24",
+                        height: "24",
+                        "aria-hidden": "true",
+                        fill: "none",
                         path {
                             stroke: "currentColor",
                             "stroke-width": "1.5",
@@ -188,9 +200,11 @@ fn LinkList() -> Element {
                     nav { class: "md:dropdown-menu md:absolute h-auto md:-mt-64 md:group-hover:mt-0 md:opacity-0 md:group-hover:opacity-100 md:transition-opacity md:duration-250",
                         ul { class: "top-0 w-36 md:bg-white dark:md:bg-gray-800 md:shadow md:px-4 md:py-4 rounded",
                             for (name , link) in links.iter() {
-                                Link { to: *link, key: "{name}", li { class: "rounded px-1 py-1 {hover} {hover_bg} text-base md:text-sm",
-                                    "{name}"
-                                } }
+                                Link { to: *link, key: "{name}",
+                                    li { class: "rounded px-1 py-1 {hover} {hover_bg} text-base md:text-sm",
+                                        "{name}"
+                                    }
+                                }
                             }
                         }
                     }
@@ -262,18 +276,14 @@ fn SearchModal() -> Element {
 
                 // A little weird, but we're putting an empty div with a scaled height to buffer the top of the modal
                 div { class: "max-w-screen-md mx-auto h-full flex flex-col",
-                div { class: "h-30" }
+                    div { class: "h-30" }
 
                     // The actual modal
                     div { class: "bg-white dark:bg-ideblack p-2 md:p-6 rounded-2xl m-2 md:m-8 max-h-[calc(100%-8rem)] overflow-y-auto text-gray-800 dark:text-gray-100",
                         // Search input
                         div { class: "flex flex-row flex-grow border-b border-gray-300 pb-4",
                             div { class: "my-auto flex flex-row",
-                                MaterialIcon {
-                                    name: "search",
-                                    size: 40,
-                                    color: MaterialIconColor::Dark,
-                                }
+                                MaterialIcon { name: "search", size: 40, color: MaterialIconColor::Dark }
                                 input {
                                     onclick: move |evt| evt.stop_propagation(),
                                     onkeydown: move |evt| {
@@ -289,7 +299,7 @@ fn SearchModal() -> Element {
                                     },
                                     class: "flex-grow bg-transparent border-none outline-none text-xl pl-2 text-gray-800 dark:text-gray-100",
                                     placeholder: "Search the docs",
-                                    value: "{search_text}",
+                                    value: "{search_text}"
                                 }
                             }
                             div {}
@@ -344,7 +354,6 @@ fn SearchModal() -> Element {
 
                         //
                         div {
-
                         }
                     }
                 }
@@ -373,8 +382,7 @@ fn SearchResult(result: dioxus_search::SearchResult<Route>) -> Element {
                     for segment in top_excerpt_segments {
                         if segment.highlighted {
                             span { class: "text-blue-500", "{segment.text}" }
-                        }
-                        else {
+                        } else {
                             span { "{segment.text}" }
                         }
                     }

@@ -180,12 +180,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             }
         });
 
-        rsx! {
-            div{
-                color: "red",
-                "{count}"
-            }
-        }
+        rsx! { div { color: "red", "{count}" } }
     }
 
     // create the vdom, the real_dom, and the binding layer between them

@@ -22,17 +22,12 @@ pub fn App() -> Element {
     // ANCHOR: render
     match &*future.read() {
         Some(Ok(response)) => rsx! {
-            button {
-                onclick: move |_| future.restart(),
-                "Click to fetch another doggo"
-            }
-            div {
-                img {
-                    max_width: "500px",
-                    max_height: "500px",
-                    src: "{response.image_url}",
-                }
-            }
+            button { onclick: move |_| future.restart(), "Click to fetch another doggo" }
+            div { img {
+                max_width: "500px",
+                max_height: "500px",
+                src: "{response.image_url}"
+            } }
         },
         Some(Err(_)) => rsx! { div { "Loading dogs failed" } },
         None => rsx! { div { "Loading dogs..." } },

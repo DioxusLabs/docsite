@@ -121,7 +121,9 @@ pub fn BlogList() -> Element {
                     section { class: "body-font overflow-hidden dark:bg-ideblack",
                         div { class: "container px-6 mx-auto",
                             div { class: "-my-8 divide-y-2 divide-gray-100",
-                                for post in POSTS.iter() { BlogPostItem { post: post } }
+                                for post in POSTS.iter() {
+                                    BlogPostItem { post: post }
+                                }
                             }
                         }
                     }
@@ -185,7 +187,9 @@ pub static RecentBlogPosts: Component<()> = |cx| {
                     }
                 }
                 div { class: "-my-8 divide-y-2 divide-gray-100",
-                    for post in POSTS.iter() { BlogPostItem { post: post } }
+                    for post in POSTS.iter() {
+                        BlogPostItem { post: post }
+                    }
                 }
             }
         }
@@ -206,7 +210,9 @@ fn BlogPostItem(post: &'static BlogPost) -> Element {
     rsx!(
         div { class: "py-8 flex flex-wrap md:flex-nowrap",
             div { class: "md:w-32 md:mb-0 mb-6 flex-shrink-0 flex flex-col",
-                span { class: "font-semibold title-font text-gray-700 dark:text-white", "{category}" }
+                span { class: "font-semibold title-font text-gray-700 dark:text-white",
+                    "{category}"
+                }
                 span { class: "mt-1 text-gray-500 text-sm", "{date}" }
             }
             div { class: "md:flex-grow",

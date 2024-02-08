@@ -8,7 +8,7 @@ use dioxus_router::prelude::*;
 use serde::{Deserialize, Serialize};
 
 fn main() {
-    launch(|| rsx! { Router::<Route>{} });
+    launch(|| rsx! { Router::<Route> {} });
 }
 
 #[derive(Clone, Routable, Debug, PartialEq, Serialize, Deserialize)]
@@ -43,12 +43,7 @@ fn Home() -> Element {
     let text = use_signal(|| "...".to_string());
 
     rsx! {
-        Link {
-            to: Route::Blog {
-                id: count()
-            },
-            "Go to blog"
-        }
+        Link { to: Route::Blog { id: count() }, "Go to blog" }
         div {
             h1 { "High-Five counter: {count}" }
             button { onclick: move |_| count += 1, "Up high!" }

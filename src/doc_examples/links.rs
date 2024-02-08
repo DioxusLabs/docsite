@@ -23,12 +23,7 @@ fn NavBar() -> Element {
         nav {
             ul {
                 li {
-                    Link {
-                        // The Link component will navigate to the route specified
-                        // in the target prop which is checked to exist at compile time
-                        to: Route::Home {},
-                        "Home"
-                    }
+                    Link { to: Route::Home {}, "Home" }
                 }
             }
         }
@@ -40,18 +35,14 @@ fn NavBar() -> Element {
 // ANCHOR: app
 #[component]
 fn App() -> Element {
-    rsx! {
-        Router::<Route> {}
-    }
+    rsx! { Router::<Route> {} }
 }
 // ANCHOR_END: app
 
 // ANCHOR: home
 #[component]
 fn Home() -> Element {
-    rsx! {
-        h1 { "Welcome to the Dioxus Blog!" }
-    }
+    rsx! { h1 { "Welcome to the Dioxus Blog!" } }
 }
 // ANCHOR_END: home
 
@@ -61,10 +52,7 @@ fn PageNotFound(route: Vec<String>) -> Element {
     rsx! {
         h1 { "Page not found" }
         p { "We are terribly sorry, but the page you requested doesn't exist." }
-        pre {
-            color: "red",
-            "log:\nattemped to navigate to: {route:?}"
-        }
+        pre { color: "red", "log:\nattemped to navigate to: {route:?}" }
     }
 }
 // ANCHOR_END: fallback

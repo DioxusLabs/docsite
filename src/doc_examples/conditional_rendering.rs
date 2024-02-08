@@ -8,7 +8,7 @@ pub fn App() -> Element {
     rsx!(LogIn {
         is_logged_in: is_logged_in(),
         on_log_in: move |_| is_logged_in.set(true),
-        on_log_out: move |_| is_logged_in.set(false),
+        on_log_out: move |_| is_logged_in.set(false)
     })
 }
 
@@ -18,18 +18,10 @@ fn LogIn(is_logged_in: bool, on_log_in: EventHandler, on_log_out: EventHandler) 
     if is_logged_in {
         rsx! {
             "Welcome!"
-            button {
-                onclick: move |_| on_log_out.call(()),
-                "Log Out",
-            }
+            button { onclick: move |_| on_log_out.call(()), "Log Out" }
         }
     } else {
-        rsx! {
-            button {
-                onclick: move |_| on_log_in.call(()),
-                "Log In",
-            }
-        }
+        rsx! { button { onclick: move |_| on_log_in.call(()), "Log In" } }
     }
     // ANCHOR_END: if_else
 }
@@ -40,7 +32,7 @@ pub fn LogInImprovedApp() -> Element {
     rsx!(LogInImproved {
         is_logged_in: is_logged_in(),
         on_log_in: move |_| is_logged_in.set(true),
-        on_log_out: move |_| is_logged_in.set(false),
+        on_log_out: move |_| is_logged_in.set(false)
     })
 }
 
@@ -56,12 +48,7 @@ fn LogInImproved(is_logged_in: bool, on_log_in: EventHandler, on_log_out: EventH
         }
         button {
             // depending on the value of `is_logged_in`, we will call a different event handler
-            onclick: move |_| if is_logged_in {
-                on_log_in.call(())
-            }
-            else{
-                on_log_out.call(())
-            },
+            onclick: move |_| if is_logged_in { on_log_in.call(()) } else { on_log_out.call(()) },
             if is_logged_in {
                 // if we are logged in, the button should say "Log Out"
                 "Log Out"
@@ -82,11 +69,9 @@ pub fn LogInWarningApp() -> Element {
             r#type: "checkbox",
             checked: is_logged_in(),
             oninput: move |event| is_logged_in.set(event.value() == "on"),
-            "Logged In",
+            "Logged In"
         }
-        LogInWarning {
-            is_logged_in: is_logged_in(),
-        }
+        LogInWarning { is_logged_in: is_logged_in() }
     }
 }
 
@@ -97,10 +82,6 @@ fn LogInWarning(is_logged_in: bool) -> Element {
         return None;
     }
 
-    rsx! {
-        a {
-            "You must be logged in to comment"
-        }
-    }
+    rsx! { a { "You must be logged in to comment" } }
     // ANCHOR_END: conditional_none
 }

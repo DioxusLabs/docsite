@@ -15,20 +15,14 @@ enum Route {
 // ANCHOR: app
 #[component]
 fn App() -> Element {
-    rsx! {
-        Router::<Route> {
-            config: || RouterConfig::default().history(WebHistory::default())
-        }
-    }
+    rsx! {Router::<Route> { config: || RouterConfig::default().history(WebHistory::default()) }}
 }
 // ANCHOR_END: app
 
 // ANCHOR: home
 #[component]
 fn Home() -> Element {
-    rsx! {
-        h1 { "Welcome to the Dioxus Blog!" }
-    }
+    rsx! { h1 { "Welcome to the Dioxus Blog!" } }
 }
 // ANCHOR_END: home
 

@@ -21,9 +21,7 @@ enum Route {
 fn NavBar() -> Element {
     rsx! {
         nav {
-            ul {
-                li { "links" }
-            }
+            ul { li { "links" } }
         }
         // The Outlet component will render child routes (In this case just the Home component) inside the Outlet component
         Outlet::<Route> {}
@@ -34,18 +32,14 @@ fn NavBar() -> Element {
 // ANCHOR: app
 #[component]
 fn App() -> Element {
-    rsx! {
-        Router::<Route> {}
-    }
+    rsx! { Router::<Route> {} }
 }
 // ANCHOR_END: app
 
 // ANCHOR: home
 #[component]
 fn Home() -> Element {
-    rsx! {
-        h1 { "Welcome to the Dioxus Blog!" }
-    }
+    rsx! { h1 { "Welcome to the Dioxus Blog!" } }
 }
 // ANCHOR_END: home
 
@@ -55,10 +49,7 @@ fn PageNotFound(route: Vec<String>) -> Element {
     rsx! {
         h1 { "Page not found" }
         p { "We are terribly sorry, but the page you requested doesn't exist." }
-        pre {
-            color: "red",
-            "log:\nattemped to navigate to: {route:?}"
-        }
+        pre { color: "red", "log:\nattemped to navigate to: {route:?}" }
     }
 }
 // ANCHOR_END: fallback

@@ -30,11 +30,14 @@ pub fn ValueAdd() -> Element {
         section { class: "text-gray-600 body-font",
             div { class: "container mx-auto py-12 px-6 lg:px-40",
                 div { class: "flex flex-wrap sm:-m-4 -mx-4 -mb-10 -mt-4 md:space-y-0 space-y-6 ",
-                    for (idx, (title, content)) in FEATURES.iter().enumerate() {
-                        div { class: "p-4 md:w-1/4 flex", key: "{title}",
-                            div { class: "flex-grow lg:pl-6", {DynamicNode::Component(VComponent::new(IconsSet[idx], (), title))},
+                    for (idx , (title , content)) in FEATURES.iter().enumerate() {
+                        div { key: "{title}", class: "p-4 md:w-1/4 flex",
+                            div { class: "flex-grow lg:pl-6",
+                                {DynamicNode::Component(VComponent::new(IconsSet[idx], (), title))},
                                 a { href: "#",
-                                    h2 { class: "dark:text-white text-gray-800 text-lg title-font font-medium mb-2", "{title}" }
+                                    h2 { class: "dark:text-white text-gray-800 text-lg title-font font-medium mb-2",
+                                        "{title}"
+                                    }
                                 }
                                 {content.split('\n').map(|line| rsx!{p { key: "{line}", class: "leading-relaxed text-gray-700 text-base pb-4 dark:text-white", "{line}" }})}
                             }

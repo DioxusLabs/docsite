@@ -44,7 +44,7 @@ pub fn Snippets() -> Element {
             div { class: "relative overflow-hidden min-h-0 flex-auto flex-col flex bg-ghmetal max-h-[60vh] sm:max-h-[none] sm:rounded-xl dark:backdrop-blur border border-neutral-500/30 shadow-cutesy",
                 div { class: "flex-none overflow-auto whitespace-nowrap flex relative min-w-full bg-ghdarkmetal pt-3 px-3",
                     ul { class: "flex text-sm leading-6 text-gray-100",
-                        for (id, snippet) in SNIPPETS.iter().enumerate() {
+                        for (id , snippet) in SNIPPETS.iter().enumerate() {
                             li { class: "flex-none",
                                 button {
                                     class: "relative py-2 px-4 rounded-t-md",
@@ -52,7 +52,8 @@ pub fn Snippets() -> Element {
                                         true => "bg-ghmetal border-neutral-500/30 border text-white border-b-0",
                                         false => "bg-ghdarkmetal",
                                     },
-                                    r#type: "button", onclick: move |_| selected_snippet.set(id),
+                                    r#type: "button",
+                                    onclick: move |_| selected_snippet.set(id),
                                     "{snippet.filename}"
                                     if selected_snippet == id {
                                         span { class: "absolute z-10 bottom-0 inset-x-0 h-2 bg-ghmetal" }
@@ -65,14 +66,14 @@ pub fn Snippets() -> Element {
                 }
 
                 div {
-                    for (id, snippet) in SNIPPETS.iter().enumerate() {
+                    for (id , snippet) in SNIPPETS.iter().enumerate() {
                         div {
                             key: "{snippet.title}",
                             class: "w-full min-h-0 p-4",
                             // Instead of hiding/showing, we just render all the code blocks at once and hide them with css instead
                             class: match selected_snippet() {
                                 a if a == id => "block",
-                                _ => "hidden"
+                                _ => "hidden",
                             },
                             background_color: "#2b303b",
                             dangerous_inner_html: "{snippet.html}"

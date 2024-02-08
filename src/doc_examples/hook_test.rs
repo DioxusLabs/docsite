@@ -65,9 +65,7 @@ fn test_hook<V: 'static>(
 
         props.check.borrow_mut()(value, MockProxy::new());
 
-        rsx! {
-            div {}
-        }
+        rsx! { div {} }
     }
 
     let mut vdom = VirtualDom::new_with_props(

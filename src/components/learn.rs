@@ -27,7 +27,9 @@ pub fn Learn() -> Element {
     );
 
     rsx! {
-        div { class: "w-full pt-12 text-sm dark:bg-ideblack", min_height: "100vh",
+        div {
+            class: "w-full pt-12 text-sm dark:bg-ideblack",
+            min_height: "100vh",
             // do a typical three-column flex layout with a single centered then pin the nav items on top
             div { class: "max-w-screen-2xl flex flex-row justify-between mx-auto dark:text-white",
                 Content {}
@@ -129,7 +131,10 @@ fn SidebarChapter(chapter: &'static SummaryItem<BookRoute>) -> Element {
         rsx! {
             li { class: "m-1 rounded-md ml-[-1px] hover:bg-gray-200 hover:dark:bg-gray-800",
                 button { onclick: move |_| list_toggle.toggle(),
-                    dioxus_material_icons::MaterialIcon { name: "chevron_right", color: MaterialIconColor::Custom("gray".to_string()) }
+                    dioxus_material_icons::MaterialIcon {
+                        name: "chevron_right",
+                        color: MaterialIconColor::Custom("gray".to_string())
+                    }
                 }
                 Link { to: Route::Docs { child: *url }, "{link.name}" }
             }

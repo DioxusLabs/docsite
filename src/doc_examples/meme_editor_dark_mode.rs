@@ -28,11 +28,12 @@ pub fn App() -> Element {
         r""
     };
 
-    rsx!(div {
-        style: "{wrapper_style}",
-        DarkModeToggle {},
-        MemeEditor {},
-    })
+    rsx!(
+        div { style: "{wrapper_style}",
+            DarkModeToggle {}
+            MemeEditor {}
+        }
+    )
 }
 
 pub fn use_is_dark_mode() -> bool {
@@ -53,17 +54,18 @@ pub fn DarkModeToggle() -> Element {
         ""
     };
 
-    rsx!(label {
-        style: "{style}",
-        "Dark Mode",
-        input {
-            r#type: "checkbox",
-            oninput: move |event| {
-                let is_enabled = event.value() == "true";
-                dark_mode.write().0 = is_enabled;
-            },
-        },
-    })
+    rsx!(
+        label { style: "{style}",
+            "Dark Mode"
+            input {
+                r#type: "checkbox",
+                oninput: move |event| {
+                    let is_enabled = event.value() == "true";
+                    dark_mode.write().0 = is_enabled;
+                }
+            }
+        }
+    )
 }
 // ANCHOR_END: toggle
 
@@ -83,19 +85,10 @@ fn MemeEditor() -> Element {
     let mut caption = use_signal(|| "me waiting for my rust code to compile".to_string());
 
     rsx! {
-        div {
-            style: "{container_style}",
-            h1 {
-                style: "{heading_style}",
-                "Meme Editor"
-            },
-            Meme {
-                caption: caption,
-            },
-            CaptionEditor {
-                caption: caption,
-                on_input: move |event: FormEvent| caption.set(event.value()),
-            },
+        div { style: "{container_style}",
+            h1 { style: "{heading_style}", "Meme Editor" }
+            Meme { caption: caption }
+            CaptionEditor { caption: caption, on_input: move |event: FormEvent| caption.set(event.value()) }
         }
     }
 }
@@ -125,19 +118,9 @@ fn Meme(caption: String) -> Element {
     ";
 
     rsx!(
-        div {
-            style: "{container_style}",
-            img {
-                src: "https://i.imgflip.com/2zh47r.jpg",
-                height: "500px",
-            },
-            div {
-                style: "{caption_container_style}",
-                p {
-                    style: "{caption_style}",
-                    "{caption}"
-                }
-            }
+        div { style: "{container_style}",
+            img { src: "https://i.imgflip.com/2zh47r.jpg", height: "500px" }
+            div { style: "{caption_container_style}", p { style: "{caption_style}", "{caption}" } }
         }
     )
 }
@@ -170,11 +153,13 @@ fn CaptionEditor(
         border-radius: 4px;
     ";
 
-    rsx!(input {
-        style: "{input_style}{colors}",
-        value: "{caption}",
-        oninput: move |event| on_input.call(event),
-    })
+    rsx!(
+        input {
+            style: "{input_style}{colors}",
+            value: "{caption}",
+            oninput: move |event| on_input.call(event)
+        }
+    )
 }
 // ANCHOR_END: caption_editor
 

@@ -7,18 +7,9 @@ pub mod app_v1 {
     // ANCHOR: app_v1
     pub fn App() -> Element {
         rsx! {
-            div {
-                display: "flex",
-                flex_direction: "row",
-                width: "100%",
-                div {
-                    width: "50%",
-                    Stories {}
-                }
-                div {
-                    width: "50%",
-                    Preview {}
-                }
+            div { display: "flex", flex_direction: "row", width: "100%",
+                div { width: "50%", Stories {} }
+                div { width: "50%", Preview {} }
             }
         }
     }
@@ -55,29 +46,16 @@ pub mod app_v1 {
     fn Preview() -> Element {
         let preview_state = PreviewState::Unset;
         match preview_state {
-            PreviewState::Unset => rsx! {
-                "Hover over a story to preview it here"
-            },
-            PreviewState::Loading => rsx! {
-                "Loading..."
-            },
+            PreviewState::Unset => rsx! {"Hover over a story to preview it here"},
+            PreviewState::Loading => rsx! {"Loading..."},
             PreviewState::Loaded(story) => {
                 let title = &story.item.title;
                 let url = story.item.url.as_deref().unwrap_or_default();
                 let text = story.item.text.as_deref().unwrap_or_default();
                 rsx! {
-                    div {
-                        padding: "0.5rem",
-                        div {
-                            font_size: "1.5rem",
-                            a {
-                                href: "{url}",
-                                "{title}"
-                            }
-                        }
-                        div {
-                            dangerous_inner_html: "{text}",
-                        }
+                    div { padding: "0.5rem",
+                        div { font_size: "1.5rem", a { href: "{url}", "{title}" } }
+                        div { dangerous_inner_html: "{text}" }
                         for comment in &story.comments {
                             Comment { comment: comment.clone() }
                         }
@@ -91,15 +69,9 @@ pub mod app_v1 {
     #[component]
     fn Comment(comment: Comment) -> Element {
         rsx! {
-            div {
-                padding: "0.5rem",
-                div {
-                    color: "gray",
-                    "by {comment.by}"
-                }
-                div {
-                    dangerous_inner_html: "{comment.text}"
-                }
+            div { padding: "0.5rem",
+                div { color: "gray", "by {comment.by}" }
+                div { dangerous_inner_html: "{comment.text}" }
                 for kid in &comment.sub_comments {
                     Comment { comment: kid.clone() }
                 }
@@ -140,15 +112,9 @@ pub mod app_v1 {
         let time = time.format("%D %l:%M %p");
 
         rsx! {
-            div {
-                padding: "0.5rem",
-                position: "relative",
-                div {
-                    font_size: "1.5rem",
-                    a {
-                        href: url,
-                        "{title}"
-                    }
+            div { padding: "0.5rem", position: "relative",
+                div { font_size: "1.5rem",
+                    a { href: url, "{title}" }
                     a {
                         color: "gray",
                         href: "https://news.ycombinator.com/from?site={hostname}",
@@ -156,25 +122,11 @@ pub mod app_v1 {
                         " ({hostname})"
                     }
                 }
-                div {
-                    display: "flex",
-                    flex_direction: "row",
-                    color: "gray",
-                    div {
-                        "{score}"
-                    }
-                    div {
-                        padding_left: "0.5rem",
-                        "by {by}"
-                    }
-                    div {
-                        padding_left: "0.5rem",
-                        "{time}"
-                    }
-                    div {
-                        padding_left: "0.5rem",
-                        "{comments}"
-                    }
+                div { display: "flex", flex_direction: "row", color: "gray",
+                    div { "{score}" }
+                    div { padding_left: "0.5rem", "by {by}" }
+                    div { padding_left: "0.5rem", "{time}" }
+                    div { padding_left: "0.5rem", "{comments}" }
                 }
             }
         }
@@ -188,18 +140,9 @@ mod story_listing_listener {
         use_context_provider(|| Signal::new(PreviewState::Unset));
 
         rsx! {
-            div {
-                display: "flex",
-                flex_direction: "row",
-                width: "100%",
-                div {
-                    width: "50%",
-                    Stories {}
-                }
-                div {
-                    width: "50%",
-                    Preview {}
-                }
+            div { display: "flex", flex_direction: "row", width: "100%",
+                div { width: "50%", Stories {} }
+                div { width: "50%", Preview {} }
             }
         }
     }
@@ -234,29 +177,16 @@ mod story_listing_listener {
         let preview_state = PreviewState::Unset;
 
         match preview_state {
-            PreviewState::Unset => rsx! {
-                "Hover over a story to preview it here"
-            },
-            PreviewState::Loading => rsx! {
-                "Loading..."
-            },
+            PreviewState::Unset => rsx! {"Hover over a story to preview it here"},
+            PreviewState::Loading => rsx! {"Loading..."},
             PreviewState::Loaded(story) => {
                 let title = &story.item.title;
                 let url = story.item.url.as_deref().unwrap_or_default();
                 let text = story.item.text.as_deref().unwrap_or_default();
                 rsx! {
-                    div {
-                        padding: "0.5rem",
-                        div {
-                            font_size: "1.5rem",
-                            a {
-                                href: "{url}",
-                                "{title}"
-                            }
-                        }
-                        div {
-                            dangerous_inner_html: "{text}",
-                        }
+                    div { padding: "0.5rem",
+                        div { font_size: "1.5rem", a { href: "{url}", "{title}" } }
+                        div { dangerous_inner_html: "{text}" }
                         for comment in &story.comments {
                             Comment { comment: comment.clone() }
                         }
@@ -301,18 +231,9 @@ mod story_listing_listener {
             div {
                 padding: "0.5rem",
                 position: "relative",
-                onmouseenter: move |_| {
-                    // NEW
-                },
-                div {
-                    font_size: "1.5rem",
-                    a {
-                        href: url,
-                        onfocus: move |_event| {
-                            // NEW
-                        },
-                        "{title}"
-                    }
+                onmouseenter: move |_| {},
+                div { font_size: "1.5rem",
+                    a { href: url, onfocus: move |_event| {}, "{title}" }
                     a {
                         color: "gray",
                         href: "https://news.ycombinator.com/from?site={hostname}",
@@ -320,25 +241,11 @@ mod story_listing_listener {
                         " ({hostname})"
                     }
                 }
-                div {
-                    display: "flex",
-                    flex_direction: "row",
-                    color: "gray",
-                    div {
-                        "{score}"
-                    }
-                    div {
-                        padding_left: "0.5rem",
-                        "by {by}"
-                    }
-                    div {
-                        padding_left: "0.5rem",
-                        "{time}"
-                    }
-                    div {
-                        padding_left: "0.5rem",
-                        "{comments}"
-                    }
+                div { display: "flex", flex_direction: "row", color: "gray",
+                    div { "{score}" }
+                    div { padding_left: "0.5rem", "by {by}" }
+                    div { padding_left: "0.5rem", "{time}" }
+                    div { padding_left: "0.5rem", "{comments}" }
                 }
             }
         }
@@ -351,18 +258,9 @@ pub fn App() -> Element {
     use_context_provider(|| Signal::new(PreviewState::Unset));
     // ANCHOR_END: shared_state_app
     rsx! {
-        div {
-            display: "flex",
-            flex_direction: "row",
-            width: "100%",
-            div {
-                width: "50%",
-                Stories {}
-            }
-            div {
-                width: "50%",
-                Preview {}
-            }
+        div { display: "flex", flex_direction: "row", width: "100%",
+            div { width: "50%", Stories {} }
+            div { width: "50%", Preview {} }
         }
     }
 }
@@ -403,21 +301,18 @@ fn StoryListing(story: ReadOnlySignal<StoryItem>) -> Element {
             padding: "0.5rem",
             position: "relative",
             onmouseenter: move |_event| {
-                // NEW
-                // set the preview state to this story
-                *preview_state.write() = PreviewState::Loaded(StoryPageData {
+                *preview_state
+                    .write() = PreviewState::Loaded(StoryPageData {
                     item: story(),
                     comments: vec![],
                 });
             },
-            div {
-                font_size: "1.5rem",
+            div { font_size: "1.5rem",
                 a {
                     href: url,
                     onfocus: move |_event| {
-                        // NEW
-                        // set the preview state to this story
-                        *preview_state.write() = PreviewState::Loaded(StoryPageData {
+                        *preview_state
+                            .write() = PreviewState::Loaded(StoryPageData {
                             item: story(),
                             comments: vec![],
                         });
@@ -432,25 +327,11 @@ fn StoryListing(story: ReadOnlySignal<StoryItem>) -> Element {
                     " ({hostname})"
                 }
             }
-            div {
-                display: "flex",
-                flex_direction: "row",
-                color: "gray",
-                div {
-                    "{score}"
-                }
-                div {
-                    padding_left: "0.5rem",
-                    "by {by}"
-                }
-                div {
-                    padding_left: "0.5rem",
-                    "{time}"
-                }
-                div {
-                    padding_left: "0.5rem",
-                    "{comments}"
-                }
+            div { display: "flex", flex_direction: "row", color: "gray",
+                div { "{score}" }
+                div { padding_left: "0.5rem", "by {by}" }
+                div { padding_left: "0.5rem", "{time}" }
+                div { padding_left: "0.5rem", "{comments}" }
             }
         }
     }
@@ -464,29 +345,16 @@ fn Preview() -> Element {
     // New
     match &*preview_state.read() {
         // ANCHOR_END: shared_state_preview
-        PreviewState::Unset => rsx! {
-            "Hover over a story to preview it here"
-        },
-        PreviewState::Loading => rsx! {
-            "Loading..."
-        },
+        PreviewState::Unset => rsx! {"Hover over a story to preview it here"},
+        PreviewState::Loading => rsx! {"Loading..."},
         PreviewState::Loaded(story) => {
             let title = &story.item.title;
             let url = story.item.url.as_deref().unwrap_or_default();
             let text = story.item.text.as_deref().unwrap_or_default();
             rsx! {
-                div {
-                    padding: "0.5rem",
-                    div {
-                        font_size: "1.5rem",
-                        a {
-                            href: "{url}",
-                            "{title}"
-                        }
-                    }
-                    div {
-                        dangerous_inner_html: "{text}",
-                    }
+                div { padding: "0.5rem",
+                    div { font_size: "1.5rem", a { href: "{url}", "{title}" } }
+                    div { dangerous_inner_html: "{text}" }
                     for comment in &story.comments {
                         Comment { comment: comment.clone() }
                     }
@@ -525,15 +393,9 @@ fn Stories() -> Element {
 #[component]
 fn Comment(comment: Comment) -> Element {
     rsx! {
-        div {
-            padding: "0.5rem",
-            div {
-                color: "gray",
-                "by {comment.by}"
-            }
-            div {
-                dangerous_inner_html: "{comment.text}"
-            }
+        div { padding: "0.5rem",
+            div { color: "gray", "by {comment.by}" }
+            div { dangerous_inner_html: "{comment.text}" }
             for kid in &comment.sub_comments {
                 Comment { comment: kid.clone() }
             }

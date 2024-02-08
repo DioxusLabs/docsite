@@ -14,7 +14,7 @@ fn Read() -> Element {
 fn Increment() -> Element {
     let mut count = fermi::use_atom_state(&COUNT);
 
-    rsx!( button { onclick: move |_| count += 1 , "Increment" } )
+    rsx!( button { onclick: move |_| count += 1, "Increment" } )
 }
 
 fn App() -> Element {
@@ -22,7 +22,7 @@ fn App() -> Element {
     fermi::use_init_atom_root();
 
     rsx!(
-        Read {},
+        Read {}
         Increment {}
     )
 }

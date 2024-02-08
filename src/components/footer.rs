@@ -50,12 +50,11 @@ pub fn Footer() -> Element {
                 nav { class: "list-none mb-10",
                     ul {
                         for f in links.iter() {
-                            li { key: "{f.0}",
-                                a { class: "text-gray-400 hover:text-white",
-                                    href: "{f.1}",
-                                    "{f.0}"
-                                }
-                            }
+                            li { key: "{f.0}", a {
+                                class: "text-gray-400 hover:text-white",
+                                href: "{f.1}",
+                                "{f.0}"
+                            } }
                         }
                     }
                 }
@@ -67,7 +66,8 @@ pub fn Footer() -> Element {
         footer { class: "sticky z-30 text-gray-400 bg-ghmetal body-font {bg_color}",
             div { class: "container px-5 py-24 mx-auto flex md:items-center lg:items-start md:flex-row md:flex-nowrap flex-wrap flex-col",
                 div { class: "w-64 flex-shrink-0 md:mx-0 mx-auto text-center md:text-left",
-                    a { class: "flex title-font font-medium items-center md:justify-start justify-center text-white",
+                    a {
+                        class: "flex title-font font-medium items-center md:justify-start justify-center text-white",
                         href: "https://github.com/DioxusLabs/dioxus",
                         img {
                             src: "https://avatars.githubusercontent.com/u/79236386?s=200&v=4",

@@ -29,11 +29,7 @@ fn app() -> Element {
     });
 
     match future.read().as_ref() {
-        Some(v) => rsx!(
-            p { "{v}" }
-        ),
-        _ => rsx!(
-            p { "hello" }
-        ),
+        Some(v) => rsx!( p { "{v}" } ),
+        _ => rsx!( p { "hello" } ),
     }
 }

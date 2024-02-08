@@ -18,7 +18,6 @@ fn App() -> Element {
             onclick: move |_| {
                 to_owned![count];
                 async move {
-                    // Call the server function just like a local async function
                     if let Ok(new_count) = double_server(count()).await {
                         count.set(new_count);
                     }

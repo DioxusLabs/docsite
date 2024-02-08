@@ -51,38 +51,22 @@ async fn main() {
 
 #[component]
 fn Blog() -> Element {
-    rsx! {
-        div {
-            "Blog"
-        }
-    }
+    rsx! { div { "Blog" } }
 }
 
 #[component]
 fn Post(id: usize) -> Element {
-    rsx! {
-        div {
-            "PostId: {id}"
-        }
-    }
+    rsx! { div { "PostId: {id}" } }
 }
 
 #[component]
 fn PostHome() -> Element {
-    rsx! {
-        div {
-            "Post"
-        }
-    }
+    rsx! { div { "Post" } }
 }
 
 #[component]
 fn Home() -> Element {
-    rsx! {
-        div {
-            "Home"
-        }
-    }
+    rsx! { div { "Home" } }
 }
 
 #[rustfmt::skip]

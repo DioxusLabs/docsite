@@ -8,7 +8,9 @@ pub fn Err404(segments: Vec<String>) -> Element {
         section { class: "py-20",
             div { class: "container px-4 mx-auto",
                 div { class: "mb-12 text-center",
-                    span { class: "text-xs font-semibold text-indigo-500 uppercase", "Error 404" }
+                    span { class: "text-xs font-semibold text-indigo-500 uppercase",
+                        "Error 404"
+                    }
                     h2 { class: "mt-2 mb-4 text-3xl leading-tight md:text-4xl md:leading-tight lg:text-5xl lg:leading-tight font-bold font-heading",
                         "Page not found"
                     }
@@ -25,10 +27,7 @@ pub fn Err404(segments: Vec<String>) -> Element {
                 }
                 div { class: "max-w-4xl h-64 md:h-96 mx-auto",
                     picture {
-                        source {
-                            r#type: "image/avif",
-                            "srcset": manganis::mg!(image("https://rustacean.net/assets/rustacean-flat-gesture.png"))
-                        }
+                        source { r#type: "image/avif", "srcset": manganis::mg!(image("https://rustacean.net/assets/rustacean-flat-gesture.png")) }
                         img {
                             class: "w-full rounded-lg object-cover",
                             src: "https://rustacean.net/assets/rustacean-flat-gesture.png"

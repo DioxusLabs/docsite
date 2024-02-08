@@ -8,11 +8,7 @@ fn main() {
 
 fn App() -> Element {
     // ANCHOR: usage
-    rsx! {
-        FancyButton {
-            on_click: move |event| println!("Clicked! {event:?}")
-        }
-    }
+    rsx! { FancyButton { on_click: move |event| println!("Clicked! {event:?}") } }
     // ANCHOR_END: usage
 }
 
@@ -23,11 +19,13 @@ pub struct FancyButtonProps {
 }
 
 pub fn FancyButton(props: FancyButtonProps) -> Element {
-    rsx!(button {
-        class: "fancy-button",
-        onclick: move |evt| props.on_click.call(evt),
-        "click me pls."
-    })
+    rsx!(
+        button {
+            class: "fancy-button",
+            onclick: move |evt| props.on_click.call(evt),
+            "click me pls."
+        }
+    )
 }
 // ANCHOR_END: component_with_handler
 
@@ -40,10 +38,12 @@ pub struct CustomFancyButtonProps {
 }
 
 pub fn CustomFancyButton(props: CustomFancyButtonProps) -> Element {
-    rsx!(button {
-        class: "fancy-button",
-        onclick: move |_| props.on_click.call(ComplexData(0)),
-        "click me pls."
-    })
+    rsx!(
+        button {
+            class: "fancy-button",
+            onclick: move |_| props.on_click.call(ComplexData(0)),
+            "click me pls."
+        }
+    )
 }
 // ANCHOR_END: custom_data

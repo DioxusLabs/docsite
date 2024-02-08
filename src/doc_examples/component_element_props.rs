@@ -11,7 +11,7 @@ fn App() -> Element {
     rsx! {
         Clickable {
             href: "https://www.youtube.com/watch?v=C-M2hs3sXGo",
-            body: rsx!("How to " i {"not"} " be seen"),
+            body: rsx!("How to " i { "not" } " be seen")
         }
     }
     // ANCHOR_END: Clickable_usage
@@ -26,11 +26,7 @@ struct ClickableProps {
 
 fn Clickable(props: ClickableProps) -> Element {
     rsx!(
-        a {
-            href: "{props.href}",
-            class: "fancy-button",
-            {props.body}
-        }
+        a { href: "{props.href}", class: "fancy-button", {props.body} }
     )
 }
 // ANCHOR_END: Clickable

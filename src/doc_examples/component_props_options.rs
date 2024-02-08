@@ -7,49 +7,33 @@ fn main() {
 
 fn App() -> Element {
     rsx! {
-            // ANCHOR: OptionalProps_usage
-    Title {
-        title: "Some Title",
-    },
-    Title {
-        title: "Some Title",
-        subtitle: "Some Subtitle",
-    },
-    // Providing an Option explicitly won't compile though:
-    // Title {
-    //     title: "Some Title",
-    //     subtitle: None,
-    // },
-            // ANCHOR_END: OptionalProps_usage
+        // ANCHOR: OptionalProps_usage
+        Title { title: "Some Title" }
+        Title { title: "Some Title", subtitle: "Some Subtitle" }
+        // Providing an Option explicitly won't compile though:
+        // Title {
+        //     title: "Some Title",
+        //     subtitle: None,
+        // },
+        // ANCHOR_END: OptionalProps_usage
 
-            // ANCHOR: ExplicitOption_usage
-    ExplicitOption {
-        title: "Some Title",
-        subtitle: None,
-    },
-    ExplicitOption {
-        title: "Some Title",
-        subtitle: Some("Some Title".to_string()),
-    },
-    // This won't compile:
-    // ExplicitOption {
-    //     title: "Some Title",
-    // },
-            // ANCHOR_END: ExplicitOption_usage
+        // ANCHOR: ExplicitOption_usage
+        ExplicitOption { title: "Some Title", subtitle: None }
+        ExplicitOption { title: "Some Title", subtitle: Some("Some Title".to_string()) }
+        // This won't compile:
+        // ExplicitOption {
+        //     title: "Some Title",
+        // },
+        // ANCHOR_END: ExplicitOption_usage
 
-            // ANCHOR: DefaultComponent_usage
-    DefaultComponent {
-        number: 5,
-    },
-    DefaultComponent {},
-            // ANCHOR_END: DefaultComponent_usage
+        // ANCHOR: DefaultComponent_usage
+        DefaultComponent { number: 5 }
+        DefaultComponent {}
+        // ANCHOR_END: DefaultComponent_usage
 
-            // ANCHOR: IntoComponent_usage
-    IntoComponent {
-        string: "some &str",
-    },
-            // ANCHOR_END: IntoComponent_usage
-        }
+        // ANCHOR: IntoComponent_usage
+        IntoComponent { string: "some &str" }
+    }
 }
 
 // ANCHOR: OptionalProps
@@ -60,10 +44,9 @@ struct OptionalProps {
 }
 
 fn Title(props: OptionalProps) -> Element {
-    rsx!(h1{
-        "{props.title}: ",
-        {props.subtitle.unwrap_or_else(|| "No subtitle provided".to_string())}
-    })
+    rsx!(
+        h1 { "{props.title}: ", {props.subtitle.unwrap_or_else(|| "No subtitle provided".to_string())} }
+    )
 }
 // ANCHOR_END: OptionalProps
 
@@ -76,10 +59,9 @@ struct ExplicitOptionProps {
 }
 
 fn ExplicitOption(props: ExplicitOptionProps) -> Element {
-    rsx!(h1 {
-        "{props.title}: ",
-        {props.subtitle.unwrap_or_else(|| "No subtitle provided".to_string())}
-    })
+    rsx!(
+        h1 { "{props.title}: ", {props.subtitle.unwrap_or_else(|| "No subtitle provided".to_string())} }
+    )
 }
 // ANCHOR_END: ExplicitOption
 
@@ -92,7 +74,7 @@ struct DefaultProps {
 }
 
 fn DefaultComponent(props: DefaultProps) -> Element {
-    rsx!(h1 { "{props.number}" })
+    rsx!( h1 { "{props.number}" } )
 }
 // ANCHOR_END: DefaultComponent
 
@@ -104,6 +86,6 @@ struct IntoProps {
 }
 
 fn IntoComponent(props: IntoProps) -> Element {
-    rsx!(h1 { "{props.string}" })
+    rsx!( h1 { "{props.string}" } )
 }
 // ANCHOR_END: IntoComponent

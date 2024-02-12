@@ -254,8 +254,7 @@ fn SearchModal() -> Element {
             if *last_key_press.read() - js_sys::Date::now() > 100. {
                 results.set(SEARCH_INDEX.search(&search_text.read()));
                 last_key_press.set(js_sys::Date::now());
-            }
-            else {
+            } else {
                 gloo_timers::future::TimeoutFuture::new(100).await;
                 results.set(SEARCH_INDEX.search(&search_text.read()));
             }

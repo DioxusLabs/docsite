@@ -1,5 +1,5 @@
-use syntect_html::syntect_html_fs;
 use dioxus::prelude::*;
+use syntect_html::syntect_html_fs;
 
 #[derive(PartialEq, Eq, Debug)]
 pub struct Snippet {

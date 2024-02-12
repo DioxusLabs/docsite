@@ -1,5 +1,5 @@
-use manganis::mg;
 use crate::*;
+use manganis::mg;
 
 pub fn Hero() -> Element {
     rsx! {

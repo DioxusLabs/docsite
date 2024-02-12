@@ -336,11 +336,11 @@ fn StoryListing(story: ReadOnlySignal<StoryItem>) -> Element {
         div {
             padding: "0.5rem",
             position: "relative",
-            onmouseenter: move |_event| { resolve_story(full_story.clone(), preview_state.clone(), id) },
+            onmouseenter: move |_event| { resolve_story(full_story, preview_state, id) },
             div { font_size: "1.5rem",
                 a {
                     href: url,
-                    onfocus: move |_event| { resolve_story(full_story.clone(), preview_state.clone(), id) },
+                    onfocus: move |_event| { resolve_story(full_story, preview_state, id) },
                     // ...
 
                     // ANCHOR_END: resolve_story

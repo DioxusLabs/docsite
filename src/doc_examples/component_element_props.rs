@@ -21,7 +21,7 @@ fn App() -> Element {
 #[derive(PartialEq, Clone, Props)]
 struct ClickableProps {
     href: String,
-    body: Element
+    body: Element,
 }
 
 fn Clickable(props: ClickableProps) -> Element {

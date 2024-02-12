@@ -176,7 +176,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         use_resource(move || async move {
             loop {
                 tokio::time::sleep(std::time::Duration::from_secs(1)).await;
-                count+=1;
+                count += 1;
             }
         });
 
@@ -211,7 +211,9 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                 vdom.wait_for_work().await;
 
                 // get the mutations from the vdom and apply them to the real_dom
-                vdom.render_immediate(&mut dioxus_intigration_state.create_mutation_writer(&mut rdom));
+                vdom.render_immediate(
+                    &mut dioxus_intigration_state.create_mutation_writer(&mut rdom),
+                );
 
                 // update the state of the real_dom tree
                 let mut ctx = SendAnyMap::new();

@@ -89,14 +89,17 @@ fn app() -> Element {
             // The list of dynamic nodes in the template
             Box::new([
                 // The dynamic count text node (dynamic node id 0)
-                dioxus_core::DynamicNode::Text(dioxus_core::VText::new(format!("High-Five counter: {0}", count))),
+                dioxus_core::DynamicNode::Text(dioxus_core::VText::new(format!(
+                    "High-Five counter: {0}",
+                    count
+                ))),
             ]),
             // The list of dynamic attributes in the template
             Box::new([
                 // The dynamic up high button onclick listener (dynamic attribute id 0)
                 Box::new([dioxus_elements::events::onclick(move |_| count += 1)]),
                 // The dynamic down low button onclick listener (dynamic attribute id 1)
-                Box::new([dioxus_elements::events::onclick(move |_| count -= 1)])
+                Box::new([dioxus_elements::events::onclick(move |_| count -= 1)]),
             ]),
         ))
     }

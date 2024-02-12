@@ -31,25 +31,18 @@ fn test_hook<V: 'static>(
     mut final_check: impl FnMut(MockProxy) + 'static,
 ) {
     #[derive(Props)]
-    struct MockAppComponent<
-        I: 'static,
-        C: 'static,
-    > {
+    struct MockAppComponent<I: 'static, C: 'static> {
         hook: Rc<RefCell<I>>,
         check: Rc<RefCell<C>>,
     }
 
-    impl<I, C> PartialEq
-        for MockAppComponent<I, C>
-    {
+    impl<I, C> PartialEq for MockAppComponent<I, C> {
         fn eq(&self, _: &Self) -> bool {
             true
         }
     }
 
-    impl<I, C> Clone
-        for MockAppComponent<I, C>
-    {
+    impl<I, C> Clone for MockAppComponent<I, C> {
         fn clone(&self) -> Self {
             Self {
                 hook: self.hook.clone(),
@@ -59,7 +52,7 @@ fn test_hook<V: 'static>(
     }
 
     fn mock_app<I: FnMut() -> V, C: FnMut(V, MockProxy), V>(
-        props: MockAppComponent<I, C>
+        props: MockAppComponent<I, C>,
     ) -> Element {
         let value = props.hook.borrow_mut()();
 
@@ -82,8 +75,8 @@ fn test_hook<V: 'static>(
         vdom.render_immediate(&mut NoOpMutations);
     }
 
-    vdom.in_runtime(||{
-        ScopeId::ROOT.in_runtime(||{
+    vdom.in_runtime(|| {
+        ScopeId::ROOT.in_runtime(|| {
             final_check(MockProxy::new());
         })
     })

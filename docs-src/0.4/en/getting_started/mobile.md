@@ -33,7 +33,7 @@ Once you have installed Android Studio, you will need to install the Android SDK
 2. Select `Tools > SDK manager`
 3. Navigate to the `SDK tools` window:
 
-![NDK install window](/static/android_ndk_install.png)
+![NDK install window](public/static/android_ndk_install.png)
 
 Then select:
 - The SDK
@@ -180,7 +180,7 @@ This will open XCode with this particular project.
 
 From there, just click the "play" button with the right target and the app should be running!
 
-![ios_demo](/static/IOS-dioxus-demo.png)
+![ios_demo](public/static/IOS-dioxus-demo.png)
 
 Note that clicking play doesn't cause a new build, so you'll need to keep rebuilding the app between changes. The tooling here is very young, so please be patient. If you want to contribute to make things easier, please do! We'll be happy to help.
 
@@ -199,15 +199,15 @@ This will open an android studio project for this application.
 
 Next we need to create a simulator in Android studio to run our app in. To create a simulator click on the phone icon in the top right of Android studio:
 
-![android studio manage devices](/static/android-studio-simulator.png)
+![android studio manage devices](public/static/android-studio-simulator.png)
 
 Then click the `create a virtual device` button and follow the prompts:
 
-![android studio devices](/static/android-studio-devices.png)
+![android studio devices](public/static/android-studio-devices.png)
 
 Finally, launch your device by clicking the play button on the device you created:
 
-![android studio device](/static/android-studio-device.png)
+![android studio device](public/static/android-studio-device.png)
 
 Now you can start your application from your terminal by running:
 
@@ -215,7 +215,7 @@ Now you can start your application from your terminal by running:
 cargo android run
 ```
 
-![android_demo](/static/Android-Dioxus-demo.png)
+![android_demo](public/static/Android-Dioxus-demo.png)
 
 > More information is available in the Android docs:
 > - https://developer.android.com/ndk/guides

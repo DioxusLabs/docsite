@@ -1,9 +1,10 @@
-use std::fmt::{Display, Formatter};
-use dioxus::prelude::*;
-use wasm_bindgen::prelude::wasm_bindgen;
 use crate::*;
+use dioxus::prelude::*;
+use std::fmt::{Display, Formatter};
+use wasm_bindgen::prelude::wasm_bindgen;
 
-const ITEM_LIST_LINK: &str = "https://raw.githubusercontent.com/DioxusLabs/awesome-dioxus/master/awesome.json";
+const ITEM_LIST_LINK: &str =
+    "https://raw.githubusercontent.com/DioxusLabs/awesome-dioxus/master/awesome.json";
 const STAR_CACHE_NAME: &str = "STARS-";
 
 #[derive(Props, Clone, serde::Deserialize, PartialEq)]
@@ -12,7 +13,7 @@ struct Item {
     description: String,
     r#type: AwesomeType,
     category: Category,
-    
+
     /// Option GitHub Information
     /// Items won't display stars without this.
     github: Option<GithubInfo>,
@@ -25,7 +26,7 @@ struct Item {
 #[derive(Clone, serde::Deserialize, PartialEq)]
 enum AwesomeType {
     Awesome,
-    MadeWith
+    MadeWith,
 }
 
 #[derive(Default, Clone, serde::Deserialize, PartialEq)]
@@ -92,8 +93,20 @@ pub fn Awesome() -> Element {
     match &*items.read() {
         Some(Ok(items)) => {
             to_owned![items];
-            items.sort_by(|a, b| b.category.to_string().to_lowercase().cmp(&a.category.to_string().to_lowercase()));
-            let items: Vec<Item> = items.into_iter().filter(|i| i.name.to_lowercase().contains(&search.read().to_lowercase())).collect();
+            items.sort_by(|a, b| {
+                b.category
+                    .to_string()
+                    .to_lowercase()
+                    .cmp(&a.category.to_string().to_lowercase())
+            });
+            let items: Vec<Item> = items
+                .into_iter()
+                .filter(|i| {
+                    i.name
+                        .to_lowercase()
+                        .contains(&search.read().to_lowercase())
+                })
+                .collect();
 
             rsx!(
                 section { class: "dark:bg-ideblack w-full pt-24 pb-10",
@@ -200,20 +213,30 @@ fn AwesomeItem(item: ReadOnlySignal<Item>) -> Element {
         async move {
             let item = item.read();
             let is_github = item.github.is_some();
-            let username = item.github.clone().unwrap_or(GithubInfo::default()).username;
+            let username = item
+                .github
+                .clone()
+                .unwrap_or(GithubInfo::default())
+                .username;
             let repo = item.github.clone().unwrap_or(GithubInfo::default()).repo;
             if is_github {
                 // Check cache
-                if let Some(stars) = get_stars(format!("{}{}/{}", STAR_CACHE_NAME, username, repo)) {
+                if let Some(stars) = get_stars(format!("{}{}/{}", STAR_CACHE_NAME, username, repo))
+                {
                     return Some(stars);
                 }
 
                 // Not in cache or expired, lets get from github
-                if let Ok(req) = reqwest::get(format!("https://api.github.com/repos/{username}/{repo}")).await {
+                if let Ok(req) =
+                    reqwest::get(format!("https://api.github.com/repos/{username}/{repo}")).await
+                {
                     if let Ok(res) = req.json::<StarsResponse>().await {
                         // Add to cache
-                        
-                        set_stars(format!("{}{}/{}", STAR_CACHE_NAME, username, repo), res.stargazers_count as usize);
+
+                        set_stars(
+                            format!("{}{}/{}", STAR_CACHE_NAME, username, repo),
+                            res.stargazers_count as usize,
+                        );
                         return Some(res.stargazers_count as usize);
                     }
                 }
@@ -222,7 +245,7 @@ fn AwesomeItem(item: ReadOnlySignal<Item>) -> Element {
             None
         }
     });
-    
+
     // Format stars text
     let stars = match &*stars.value().read() {
         Some(Some(v)) => format!("{} ⭐", v),

@@ -6,25 +6,23 @@ use dioxus_material_icons::MaterialIconColor;
 use mdbook_shared::Page;
 use mdbook_shared::SummaryItem;
 
-pub static HIGHLIGHT_DOCS_LAYOUT: GlobalSignal<bool> =
-Signal::global(|| false);
+pub static HIGHLIGHT_DOCS_LAYOUT: GlobalSignal<bool> = Signal::global(|| false);
 pub static SHOW_SIDEBAR: GlobalSignal<bool> = Signal::global(|| false);
-pub static HIGHLIGHT_DOCS_CONTENT: GlobalSignal<bool> =
-Signal::global(|| false);
+pub static HIGHLIGHT_DOCS_CONTENT: GlobalSignal<bool> = Signal::global(|| false);
 
 /// The Markdown file path needs to be appended to this, including the first slash!
-const GITHUB_API_URL: &str = "https://api.github.com/repos/DioxusLabs/docsite/contents/docs-src/0.4/en";
+const GITHUB_API_URL: &str =
+    "https://api.github.com/repos/DioxusLabs/docsite/contents/docs-src/0.4/en";
 /// Use this URL while loading the file-specific URL.
 const GITHUB_EDIT_PAGE_FALLBACK_URL: &str = "https://github.com/DioxusLabs/docsite";
 /// The Markdown file path needs to be appended to this, including the first slash!
-const GITHUB_EDIT_PAGE_EDIT_URL: &str = "https://github.com/DioxusLabs/docsite/edit/master/docs-src/0.4/en";
+const GITHUB_EDIT_PAGE_EDIT_URL: &str =
+    "https://github.com/DioxusLabs/docsite/edit/master/docs-src/0.4/en";
 
 #[component]
 pub fn Learn() -> Element {
     use_hook(|| *SHOW_DOCS_NAV.write() = true);
-    use_drop(
-        || *SHOW_DOCS_NAV.write() = false
-    );
+    use_drop(|| *SHOW_DOCS_NAV.write() = false);
 
     rsx! {
         div {

@@ -92,7 +92,7 @@ fn FeaturedExample(props: FeaturedExampleProps) -> Element {
         img_alt,
     } = props;
 
-    rsx!{
+    rsx! {
         div { class: "lg:w-1/3 sm:w-1/2 p-4",
             a { href: "{link}",
                 div { class: "flex relative",

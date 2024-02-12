@@ -1,5 +1,5 @@
-use dioxus::prelude::*;
 use crate::HIGHLIGHT_NAV_LAYOUT;
+use dioxus::prelude::*;
 
 pub fn Footer() -> Element {
     let bg_color = if HIGHLIGHT_NAV_LAYOUT() {
@@ -22,10 +22,7 @@ pub fn Footer() -> Element {
             &[
                 ("docs.rs", "https://docs.rs/dioxus"),
                 ("Guide", "/learn/0.4/guide"),
-                (
-                    "Awesome",
-                    "/awesome",
-                ),
+                ("Awesome", "/awesome"),
             ],
         ),
         (

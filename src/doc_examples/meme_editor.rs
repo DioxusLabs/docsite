@@ -63,10 +63,7 @@ fn Meme(caption: String) -> Element {
 
 // ANCHOR: caption_editor
 #[component]
-fn CaptionEditor(
-    caption: String,
-    on_input: EventHandler<FormEvent>,
-) -> Element {
+fn CaptionEditor(caption: String, on_input: EventHandler<FormEvent>) -> Element {
     let input_style = r"
         border: none;
         background: cornflowerblue;
@@ -76,13 +73,11 @@ fn CaptionEditor(
         color: white;
     ";
 
-    rsx!(
-        input {
-            style: "{input_style}",
-            value: "{caption}",
-            oninput: move |event| on_input.call(event)
-        }
-    )
+    rsx!(input {
+        style: "{input_style}",
+        value: "{caption}",
+        oninput: move |event| on_input.call(event)
+    })
 }
 // ANCHOR_END: caption_editor
 

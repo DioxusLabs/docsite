@@ -11,9 +11,7 @@ However, we haven't talked about error handling at all in this guide! In this ch
 Astute observers might have noticed that `Element` is actually a type alias for `Option<VNode>`. You don't need to know what a `VNode` is, but it's important to recognize that we could actually return nothing at all:
 
 ```rust
-fn App() -> Element {
-	None
-}
+{{#include src/doc_examples/error_handling.rs:none}}
 ```
 
 This lets us add in some syntactic sugar for operations we think *shouldn't* fail, but we're still not confident enough to "unwrap" on.
@@ -21,29 +19,15 @@ This lets us add in some syntactic sugar for operations we think *shouldn't* fai
 > The nature of `Option<VNode>` might change in the future as the `try` trait gets upgraded.
 
 ```rust
-fn App() -> Element {
-	// immediately return "None"
-	let name = use_hook(|_| Some("hi"))?;
-}
+{{#include src/doc_examples/error_handling.rs:try_hook}}
 ```
 
 ## Early return on result
 
-Because Rust can't accept both Options and Results with the existing try infrastructure, you'll need to manually handle Results. This can be done by converting them into Options or by explicitly handling them.
+Because Rust can't accept both Options and Results with the existing try infrastructure, you'll need to manually handle Results. This can be done by converting them into Options or by explicitly handling them. If you choose to convert your Result into an Option and bubble it with a `?`, keep in mind that if you do hit an error you will lose error information and nothing will be rendered for that component.
 
 ```rust
-fn App() -> Element {
-	// Convert Result to Option
-	let name = use_hook(|_| "1.234").parse().ok()?;
-
-
-	// Early return
-	let count = use_hook(|_| "1.234");
-	let val = match count.parse() {
-		Ok(val) => val
-		Err(err) => return rsx!{ "Parsing failed" }
-	};
-}
+{{#include src/doc_examples/error_handling.rs:early_return}}
 ```
 
 Notice that while hooks in Dioxus do not like being called in conditionals or loops, they *are* okay with early returns. Returning an error state early is a completely valid way of handling errors.
@@ -51,32 +35,19 @@ Notice that while hooks in Dioxus do not like being called in conditionals or lo
 
 ## Match results
 
-The next "best" way of handling errors in Dioxus is to match on the error locally. This is the most robust way of handling errors, though it doesn't scale to architectures beyond a single component.
+The next "best" way of handling errors in Dioxus is to match on the error locally. This is the most robust way of handling errors, but it doesn't scale to architectures beyond a single component.
 
 To do this, we simply have an error state built into our component:
 
 ```rust
-let err = use_signal(|| None);
+{{#include src/doc_examples/error_handling.rs:use_error}}
 ```
 
 Whenever we perform an action that generates an error, we'll set that error state. We can then match on the error in a number of ways (early return, return Element, etc).
 
 
 ```rust
-fn Commandline() -> Element {
-	let error = use_signal(|| None);
-
-	match *error {
-		Some(error) => rsx!(
-			h1 { "An error occurred" }
-		)
-		None => rsx!(
-			input {
-				oninput: move |_| error.set(Some("bad thing happened!")),
-			}
-		)
-	})
-}
+{{#include src/doc_examples/error_handling.rs:match_error}}
 ```
 
 ## Passing error states through components
@@ -84,77 +55,25 @@ fn Commandline() -> Element {
 If you're dealing with a handful of components with minimal nesting, you can just pass the error handle into child components.
 
 ```rust
-fn Commandline() -> Element {
-	let error = use_signal(|| None);
-
-	if let Some(error) = **error {
-		return rsx!{ "An error occurred" };
-	}
-
-	rsx!{
-		Child { error: error.clone() }
-		Child { error: error.clone() }
-		Child { error: error.clone() }
-		Child { error: error.clone() }
-	}
-}
+{{#include src/doc_examples/error_handling.rs:match_error_children}}
 ```
 
 Much like before, our child components can manually set the error during their own actions. The advantage to this pattern is that we can easily isolate error states to a few components at a time, making our app more predictable and robust.
 
-## Going global
+## Throwing errors
 
-A strategy for handling cascaded errors in larger apps is through signaling an error using global state. This particular pattern involves creating an "error" context, and then setting it wherever relevant. This particular method is not as "sophisticated" as React's error boundary, but it is more fitting for Rust.
+Dioxus provides a much easier way to handle errors: throwing them. Throwing errors combines the best parts of an error state and early return: you can easily throw and error with `?`, but you keep information about the error so that you can handle it in a parent component.
 
-To get started, consider using a built-in hook like `use_context` and `use_context_provider` or Fermi. Of course, it's pretty easy to roll your own hook too.
-
-At the "top" of our architecture, we're going to want to explicitly declare a value that could be an error.
-
+You can call `throw` on any `Result` type that implements `Debug` to turn it into an error state and then use `?` to return early if you do hit an error. You can capture the error state with an `ErrorBoundary` component that will render the a different component if an error is thrown in any of its children.
 
 ```rust
-enum InputError {
-	None,
-	TooLong,
-	TooShort,
-}
-
-static INPUT_ERROR: Atom<InputError> = |_| InputError::None;
+{{#include src/doc_examples/error_handling.rs:throw_error}}
 ```
 
-Then, in our top level component, we want to explicitly handle the possible error state for this part of the tree.
+You can even nest `ErrorBoundary` components to capture errors at different levels of your app.
 
 ```rust
-fn TopLevel() -> Element {
-	let error = use_read(INPUT_ERROR);
-
-	match error {
-		TooLong => return rsx!{ "FAILED: Too long!" },
-		TooShort => return rsx!{ "FAILED: Too Short!" },
-		_ => {}
-	}
-
-	todo!()
-}
+{{#include src/doc_examples/error_handling.rs:nested_throw}}
 ```
 
-Now, whenever a downstream component has an error in its actions, it can simply just set its own error state:
-
-```rust
-fn Commandline() -> Element {
-	let set_error = use_set(INPUT_ERROR);
-
-	rsx!{
-		input {
-			oninput: move |evt| {
-				if evt.value.len() > 20 {
-					set_error(InputError::TooLong);
-				}
-			}
-		}
-	}
-}
-```
-
-This approach to error handling is best in apps that have "well defined" error states. Consider using a crate like `thiserror` or `anyhow` to simplify the generation of the error types.
-
-This pattern is widely popular in many contexts and is particularly helpful whenever your code generates a non-recoverable error. You can gracefully capture these "global" error states without panicking or mucking up state.
+This pattern is particularly helpful whenever your code generates a non-recoverable error. You can gracefully capture these "global" error states without panicking or handling state for each error yourself.

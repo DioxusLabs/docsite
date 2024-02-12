@@ -48,11 +48,7 @@ pub fn use_is_dark_mode() -> bool {
 pub fn DarkModeToggle() -> Element {
     let mut dark_mode = consume_context::<Signal<DarkMode>>();
 
-    let style = if dark_mode().0 {
-        "color:white"
-    } else {
-        ""
-    };
+    let style = if dark_mode().0 { "color:white" } else { "" };
 
     rsx!(
         label { style: "{style}",
@@ -128,10 +124,7 @@ fn Meme(caption: String) -> Element {
 
 // ANCHOR: caption_editor
 #[component]
-fn CaptionEditor(
-    caption: String,
-    on_input: EventHandler<FormEvent>,
-) -> Element {
+fn CaptionEditor(caption: String, on_input: EventHandler<FormEvent>) -> Element {
     let is_dark_mode = use_is_dark_mode();
 
     let colors = if is_dark_mode {
@@ -153,13 +146,11 @@ fn CaptionEditor(
         border-radius: 4px;
     ";
 
-    rsx!(
-        input {
-            style: "{input_style}{colors}",
-            value: "{caption}",
-            oninput: move |event| on_input.call(event)
-        }
-    )
+    rsx!(input {
+        style: "{input_style}{colors}",
+        value: "{caption}",
+        oninput: move |event| on_input.call(event)
+    })
 }
 // ANCHOR_END: caption_editor
 

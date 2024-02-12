@@ -1,6 +1,6 @@
 use crate::icons::FERROUS_LOGO;
-use dioxus::prelude::*;
 use crate::*;
+use dioxus::prelude::*;
 
 pub static CallToAction: Component<()> = |cx| {
     rsx! {

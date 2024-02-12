@@ -10,7 +10,7 @@ edition = "2018"
 dioxus-router = { version = "0.4", features = [
     "fullstack",
 ] }
-dioxus = { git = "https://github.com/dioxuslabs/dioxus", features = ["fullstack"] }
+dioxus = { git = "https://github.com/dioxuslabs/dioxus", features = ["fullstack", "router"] }
 dioxus-web = { version = "0.4", features = [
     "hydrate",
 ], optional = true }
@@ -86,7 +86,6 @@ dioxus-liveview = { git = "https://github.com/dioxuslabs/dioxus" }
 dioxus-fullstack = { git = "https://github.com/dioxuslabs/dioxus" }
 dioxus-native-core = { git = "https://github.com/dioxuslabs/dioxus" }
 dioxus-native-core-macro = { git = "https://github.com/dioxuslabs/dioxus" }
-
 
 [profile.release]
 lto = true

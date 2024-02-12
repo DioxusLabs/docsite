@@ -14,10 +14,10 @@ For an app like the Dioxus landing page (https://dioxuslabs.com), we want to hav
 
 Each of these scenes is independent – we don't want to render both the homepage and blog at the same time.
 
-The Dioxus router makes it easy to create these scenes. To make sure we're using the router, add the `dioxus-router` package to your `Cargo.toml`.
+The Dioxus router makes it easy to create these scenes. To make sure we're using the router, add the `router` feature to your `dioxus` dependency:
 
 ```shell
-cargo add dioxus-router
+cargo add dioxus --features router
 ```
 
 
@@ -26,15 +26,8 @@ cargo add dioxus-router
 Unlike other routers in the Rust ecosystem, our router is built declaratively at compile time. This makes it possible to compose our app layout simply by defining an enum.
 
 ```rust
-// All of our routes will be a variant of this Route enum
-enum Route {
-	// if the current location is "/home", render the Home component
-	#[route("/home")]
-	Home {},
-	// if the current location is "/blog", render the Blog component
-	#[route("/blog")]
-	Blog {},
-}
+router_reference
+{{#include src/doc_examples/router_reference.rs:router_definition}}
 ```
 
 Whenever we visit this app, we will get either the Home component or the Blog component rendered depending on which route we enter at. If neither of these routes match the current location, then nothing will render.
@@ -44,32 +37,13 @@ We can fix this one of two ways:
 - A fallback 404 page
 
 ```rust
-enum Route {
-	#[route("/home")]
-	Home {},
-	#[route("/blog")]
-	Blog {},
-	//  if the current location doesn't match any of the above routes, render the NotFound component
-	#[route("/:..segments")]
-	NotFound { segments: Vec<String> },
-}
+{{#include src/doc_examples/router_reference.rs:router_definition_404}}
 ```
-
 
 - Redirect 404 to home
 
 ```rust
-enum Route {
-	#[route("/home")]
-	//  if the current location doesn't match any of the above routes, redirect to "/home"
-	#[redirect("/:..segments", |segments: Vec<String>| Route::Home {})]
-	Home {},
-	#[route("/blog")]
-	Blog {},
-	//  if the current location doesn't match any of the above routes, render the NotFound component
-	#[route("/:..segments")]
-	NotFound { segments: Vec<String> },
-}
+{{#include src/doc_examples/router_reference.rs:router_404_redirect}}
 ```
 
 ## Links
@@ -77,12 +51,7 @@ enum Route {
 For our app to navigate these routes, we can provide clickable elements called Links. These simply wrap `<a>` elements that, when clicked, navigate the app to the given location. Because our route is an enum of valid routes, if you try to link to a page that doesn't exist, you will get a compiler error.
 
 ```rust
-rsx! {
-	Link {
-		to: Route::Home {},
-		"Go home!"
-	}
-}
+{{#include src/doc_examples/router_reference.rs:links}}
 ```
 
 ## More reading

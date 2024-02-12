@@ -31,6 +31,7 @@
   - [UseFuture](reference/use_future.md)
   - [UseCoroutine](reference/use_coroutine.md)
   - [Spawn](reference/spawn.md)
+  - [Assets](reference/assets.md)
   - [Desktop](reference/desktop/index.md)
   - [Web](reference/web/index.md)
   - [SSR](reference/ssr.md)

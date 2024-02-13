@@ -104,5 +104,9 @@
 
 ---
 - [Migration](migration/index.md)
-  - [Router](migration/router.md)
-  - [Hot Reload](migration/hot_reload.md)
+  - [Fermi](migration/fermi.md)
+  - [Hooks](migration/hooks.md)
+    - [State](migration/state.md)
+    - [Dependencies](migration/hook_dependencies.md)
+  - [Fermi](migration/fermi.md)
+  - [Props](migration/props.md)

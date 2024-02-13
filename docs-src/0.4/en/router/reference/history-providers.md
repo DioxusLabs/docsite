@@ -7,6 +7,7 @@ The router provides two [`HistoryProvider`]s, but you can also create your own.
 The two default implementations are:
 
 - The [`MemoryHistory`] is a custom implementation that works in memory.
+- The [`LiveviewHistory`] is a custom implementation that works with the liveview renderer.
 - The [`WebHistory`] integrates with the browser's URL.
 
 By default, the router uses the [`MemoryHistory`]. It might be changed to use

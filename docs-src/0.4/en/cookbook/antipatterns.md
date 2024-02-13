@@ -24,7 +24,7 @@ As described in the [dynamic rendering chapter](../reference/dynamic_rendering#t
 
 While it is technically acceptable to have a `Mutex` or a `RwLock` in the props, they will be difficult to use.
 
-Suppose you have a struct `User` containing the field `username: String`. If you pass a `Mutex<User>` prop to a `UserComponent` component, that component may wish to pass the username as a `&str` prop to a child component. However, it cannot pass that borrowed field down, since it only would live as long as the `Mutex`'s lock, which belongs to the `UserComponent` function. Therefore, the component will be forced to clone the `username` field.
+Suppose you have a struct `User` containing the field `username: String`. If you pass a `Mutex<User>` prop to a `UserComponent` component, that component may wish to write to the `username` field. However, when it does, the parent component will not be aware of the change, and the component will not re-render which causes the UI to be out of sync with the state. Instead, consider passing down a reactive value like a `Signal` or immutable data.
 
 ## Avoid Updating State During Render
 

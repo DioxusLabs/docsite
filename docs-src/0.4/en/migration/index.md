@@ -73,6 +73,8 @@ Dioxus 0.5:
 {{#include src/doc_examples/migration.rs:props}}
 ```
 
+You can read more about the new props API in the [Props Migration](props.md) guide.
+
 ### Futures
 
 Dioxus 0.4:

@@ -4,38 +4,10 @@
 
 ## Dependencies
 
-You can make the callback re-run when some value changes. For example, you might want to fetch a user's data only when the user id changes. You can provide a tuple of "dependencies" to the hook. It will automatically re-run it when any of those dependencies change.
+You can make the callback re-run when some value changes. For example, you might want to fetch a user's data only when the user id changes. Effects will automatically subscribe to any signals that you read inside the effect. It will re-run it when any of those signals change.
 
 ## Example
 
 ```rust, no_run
-#[component]
-fn Profile(id: usize) -> Element {
-    let name = use_signal(|| None);
-
-    // Only fetch the user data when the id changes.
-    use_effect((id,), |(id,)| {
-        to_owned![name];
-        async move {
-            let user = fetch_user(id).await;
-            name.set(user.name);
-        }
-    });
-
-    // Because the dependencies are empty, this will only run once.
-    // An empty tuple is always equal to an empty tuple.
-    use_effect((), |()| async move {
-        println!("Hello, World!");
-    });
-
-    let name = name.get().clone().unwrap_or("Loading...".to_string());
-
-    rsx!(
-        p { "{name}" }
-    )
-}
-
-fn app() -> Element {
-    rsx!(Profile { id: 0 })
-}
+{{#include src/doc_examples/use_effect.rs}}
 ```

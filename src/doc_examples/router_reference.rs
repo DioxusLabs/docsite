@@ -44,11 +44,11 @@ mod router_404 {
     fn Home() -> Element {
         todo!()
     }
-    
+
     fn Blog() -> Element {
         todo!()
     }
-    
+
     #[component]
     fn NotFound(segments: Vec<String>) -> Element {
         todo!()

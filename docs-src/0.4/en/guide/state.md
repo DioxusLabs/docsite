@@ -36,11 +36,11 @@ So far our components have had no state like normal rust functions. To make our 
 
 You can create state in dioxus using hooks. Hooks are Rust functions that take a reference to `ScopeState` (in a component, you can pass `cx`), and provide you with functionality and state.
 
-In this case, we will use the `use_shared_state_provider` and `use_shared_state` hooks:
+In this case, we will use the `use_context_provider` and `use_context` hooks:
 
-- You can provide a closure to `use_shared_state_provider` that determines the initial value of the shared state and provides the value to all child components
-- You can then use the `use_shared_state` hook to read and modify that state in the `Preview` and `StoryListing` components
-- When the value updates, `use_shared_state` will make the component re-render, and provides you with the new value
+- You can provide a closure to `use_context_provider` that determines the initial value of the shared state and provides the value to all child components
+- You can then use the `use_context` hook to read and modify that state in the `Preview` and `StoryListing` components
+- When the value updates, `Signal` will make the component re-render, and provides you with the new value
 
 > Note: You should prefer local state hooks like use_signal or use_signal when you only use state in one component. Because we use state in multiple components, we can use a [global state pattern](../reference/context.md)
 

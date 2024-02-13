@@ -18,7 +18,7 @@ Dioxus is heavily inspired by React. If you know React, getting started with Dio
 
 ## Features
 
-- Desktop apps running natively (no Electron!) in less than 10 lines of code.
+- Desktop apps running natively (no Electron!) in less than 5 lines of code.
 - Incredibly ergonomic and powerful state management.
 - Comprehensive inline documentation – hover and guides for all HTML elements, listeners, and events.
 - Extremely memory efficient – 0 global allocations for steady-state components.

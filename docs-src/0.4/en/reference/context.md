@@ -42,7 +42,7 @@ Suppose now that we want to implement a dark mode toggle for our app. To achieve
 
 Now, we could write another `use_signal` in the top component, and pass `is_dark_mode` down to every component through props. But think about what will happen as the app grows in complexity – almost every component that renders any CSS is going to need to know if dark mode is enabled or not – so they'll all need the same dark mode prop. And every parent component will need to pass it down to them. Imagine how messy and verbose that would get, especially if we had components several levels deep!
 
-Dioxus offers a better solution than this "prop drilling" – providing context. The [`use_shared_state_provider`](https://docs.rs/dioxus-hooks/latest/dioxus_hooks/fn.use_shared_state_provider.html) hook is similar to `use_signal`, but it makes it available through [`use_shared_state`](https://docs.rs/dioxus-hooks/latest/dioxus_hooks/fn.use_shared_state.html) for all children components.
+Dioxus offers a better solution than this "prop drilling" – providing context. The [`use_context_provider`](https://docs.rs/dioxus-hooks/latest/dioxus_hooks/fn.use_context_provider.html) hook provides any Clone context (including Signals!) to any child components. Child components can use the [`use_context`](https://docs.rs/dioxus-hooks/latest/dioxus_hooks/fn.use_context.html) hook to get that context and if it is a Signal, they can read and write to it.
 
 First, we have to create a struct for our dark mode configuration:
 
@@ -62,7 +62,7 @@ As a result, any child component of `App` (direct or not), can access the `DarkM
 {{#include src/doc_examples/meme_editor_dark_mode.rs:use_context}}
 ```
 
-> `use_shared_state` returns `Option<Signal<DarkMode>>` here. If the context has been provided, the value is `Some(Signal<DarkMode>)`, which you can call `.read` or `.write` on, similarly to `Signal`. Otherwise, the value is `None`.
+> `use_context_provider` returns `Signal<DarkMode>` here. If the context has been provided, the value is `Some(Signal<DarkMode>)`, which you can call `.read` or `.write` on, similarly to `Signal`. Otherwise, the value is `None`.
 
 For example, here's how we would implement the dark mode toggle, which both reads the context (to determine what color it should render) and writes to it (to toggle dark mode):
 

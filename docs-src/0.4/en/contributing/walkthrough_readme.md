@@ -81,7 +81,7 @@ Scopes serve three main purposes:
 
 1. They store the state of hooks used by the component
 2. They store the state for the context API (for example: using
-   [use_shared_state_provider](https://docs.rs/dioxus/latest/dioxus/prelude/fn.use_shared_state_provider.html)).
+   [use_context_provider](https://docs.rs/dioxus/latest/dioxus/prelude/fn.use_context_provider.html)).
 3. They store the current and previous versions of the `VNode` that was rendered, so they can be
    diffed to generate the set of mutations needed to re-render it.
 

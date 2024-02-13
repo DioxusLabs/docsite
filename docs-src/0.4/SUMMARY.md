@@ -106,6 +106,5 @@
 - [Migration](migration/index.md)
   - [Hooks](migration/hooks.md)
     - [State](migration/state.md)
-    - [Dependencies](migration/hook_dependencies.md)
   - [Fermi](migration/fermi.md)
   - [Props](migration/props.md)

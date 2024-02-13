@@ -45,7 +45,7 @@ fn CopyPropsCompParent() -> Element {
 // ANCHOR: borrowed_props
 fn Parent() -> Element {
     let state = use_signal(|| (1, "World".to_string()));
-    
+
     rsx! {
         BorrowedComp {
             // You can pass a signal in directly

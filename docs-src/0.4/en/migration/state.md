@@ -74,6 +74,7 @@ Signals are smart enough to handle subscribing to the right scopes without a spe
 
 Some state hooks including `use_shared_state` and `use_ref` hooks had a function called `write_silent` in `0.4`. This function allowed you to update the state without triggering a re-render any subscribers. This function has been removed in `0.5`.
 
+
 Instead, you can use the `peek` function to read the current value of a signal without subscribing to it. This inverts the subscription model so that you can opt out of subscribing to a signal instead of opting all subscribers out of updates:
 
 ```rust

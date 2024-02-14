@@ -5,6 +5,7 @@ Build a mobile app with Dioxus!
 Example: [Todo App](https://github.com/DioxusLabs/example-projects/blob/master/ios_demo)
 
 ## Support
+
 Mobile is currently the least-supported renderer target for Dioxus. Mobile apps are rendered with either the platform's WebView or experimentally with [WGPU](https://github.com/DioxusLabs/blitz). WebView doesn't support animations, transparency, and native widgets.
 
 
@@ -32,7 +33,7 @@ Once you have installed Android Studio, you will need to install the Android SDK
 2. Select `Tools > SDK manager`
 3. Navigate to the `SDK tools` window:
 
-![NDK install window](/static/android_ndk_install.png)
+![NDK install window](./public/static/android_ndk_install.png)
 
 Then select:
 - The SDK
@@ -101,84 +102,22 @@ Next, we need to modify our dependencies to include dioxus and ensure the right 
 [dependencies]
 anyhow = "1.0.56"
 log = "0.4.11"
-dioxus = { version = "0.5" }
-dioxus-desktop = { version = "0.5", default-features = false, features = ["tokio_runtime"] }
+dioxus = { version = "0.5", features = ["mobile"] }
 wry = "0.35.0"
+tao = "0.25.0"
 ```
 
-> Note: There is a bug in the older version of wry that is used by default in cargo-mobile2 and dioxus. We need to use the latest version of wry and the unpublished version of dioxus that uses the latest version of wry. This will be fixed in the future. See [this issue](https://github.com/DioxusLabs/dioxus/issues/1158) for more details.
-
-Finally, we need to add a component to renderer. Replace the main function in your `lib.rs` file with this code:
-
-```rust
-use dioxus::prelude::*;
-
-pub fn main() -> Result<()> {
-    // Right now we're going through dioxus-desktop but we'd like to go through dioxus-mobile
-    // That will seed the index.html with some fixes that prevent the page from scrolling/zooming etc
-    dioxus_desktop::launch_cfg(
-        app,
-        // Note that we have to disable the viewport goofiness of the browser.
-        // Dioxus_mobile should do this for us
-        dioxus_desktop::Config::default().with_custom_index(r#"<!DOCTYPE html>
-        <html>
-          <head>
-            <title>Dioxus app</title>
-            <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-            <!-- CUSTOM HEAD -->
-          </head>
-          <body>
-            <div id="main"></div>
-            <!-- MODULE LOADER -->
-          </body>
-        </html>
-       "#.into()),
-    );
-
-    Ok(())
-}
-
-fn app(cx: Scope) -> Element {
-    let items = use_ref(cx, || vec![1, 2, 3]);
-
-    log::debug!("Hello from the app");
-
-    render! {
-        div {
-            h1 { "Hello, Mobile"}
-            div { margin_left: "auto", margin_right: "auto", width: "200px", padding: "10px", border: "1px solid black",
-                button {
-                    onclick: move|_| {
-                        println!("Clicked!");
-                        let mut items_mut = items.write();
-                        let new_item = items_mut.len() + 1;
-                        items_mut.push(new_item);
-                        println!("Requested update");
-                    },
-                    "Add item"
-                }
-                for item in items.read().iter() {
-                    div { "- {item}" }
-                }
-            }
-        }
-    }
-}
-```
-
-You complete `lib.rs` should now look something like this (with some slightly different names in the generated code):
+Finally, we need to add a component to renderer. Replace the wry template in your `lib.rs` file with this code:
 
 ```rust
 use anyhow::Result;
-#[cfg(target_os = "android")]
-use wry::android_binding;
+use dioxus::prelude::*;
 
 #[cfg(target_os = "android")]
 fn init_logging() {
     android_logger::init_once(
         android_logger::Config::default()
             .with_min_level(log::Level::Trace)
-            .with_tag("dioxus-mobile-test"), // This name may be different for your application
     );
 }
 
@@ -198,54 +137,43 @@ fn stop_unwind<F: FnOnce() -> T, T>(f: F) -> T {
     }
 }
 
-#[cfg(any(target_os = "android", target_os = "ios"))]
-fn _start_app() {
-    stop_unwind(|| main().unwrap());
-}
-
 #[no_mangle]
 #[inline(never)]
 #[cfg(any(target_os = "android", target_os = "ios"))]
 pub extern "C" fn start_app() {
+    fn _start_app() {
+        stop_unwind(|| main().unwrap());
+    }
+
     #[cfg(target_os = "android")]
-    android_binding!(com_example, dioxus_mobile_test, _start_app); // This code may be different for your application
+    {
+        tao::android_binding!(
+            com_example,
+            wry_app,
+            WryActivity,
+            wry::android_setup, // pass the wry::android_setup function to tao which will invoke when the event loop is created
+            _start_app
+        );
+        wry::android_binding!(com_example, dioxus_mobile_test);
+    }
     #[cfg(target_os = "ios")]
     _start_app()
 }
 
-use dioxus::prelude::*;
-
 pub fn main() -> Result<()> {
-    // Right now we're going through dioxus-desktop but we'd like to go through dioxus-mobile
-    // That will seed the index.html with some fixes that prevent the page from scrolling/zooming etc
-    dioxus_desktop::launch_cfg(
-        app,
-        // Note that we have to disable the viewport goofiness of the browser.
-        // Dioxus_mobile should do this for us
-        dioxus_desktop::Config::default().with_custom_index(r#"<!DOCTYPE html>
-        <html>
-          <head>
-            <title>Dioxus app</title>
-            <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-            <!-- CUSTOM HEAD -->
-          </head>
-          <body>
-            <div id="main"></div>
-            <!-- MODULE LOADER -->
-          </body>
-        </html>
-       "#.into()),
-    );
+    init_logging();
+
+    launch(app);
 
     Ok(())
 }
 
-fn app(cx: Scope) -> Element {
-    let items = use_ref(cx, || vec![1, 2, 3]);
+fn app() -> Element {
+    let mut items = use_signal(|| vec![1, 2, 3]);
 
     log::debug!("Hello from the app");
 
-    render! {
+    rsx! {
         div {
             h1 { "Hello, Mobile"}
             div { margin_left: "auto", margin_right: "auto", width: "200px", padding: "10px", border: "1px solid black",
@@ -272,27 +200,6 @@ fn app(cx: Scope) -> Element {
 
 From there, you'll want to get a build of the crate using whichever platform you're targeting (simulator or actual hardware). For now, we'll just stick with the simulator
 
-### IOS
-
-To build your project for IOS, you can run:
-```sh
-cargo build --target aarch64-apple-ios-sim
-```
-
-Next, open XCode (this might take awhile if you've never opened XCode before):
-```sh
-cargo apple open
-```
-
-This will open XCode with this particular project.
-
-From there, just click the "play" button with the right target and the app should be running!
-
-![ios_demo](/static/IOS-dioxus-demo.png)
-
-Note that clicking play doesn't cause a new build, so you'll need to keep rebuilding the app between changes. The tooling here is very young, so please be patient. If you want to contribute to make things easier, please do! We'll be happy to help.
-
-
 ### Android
 
 To build your project on Android you can run:
@@ -310,15 +217,15 @@ This will open an android studio project for this application.
 
 Next we need to create a simulator in Android studio to run our app in. To create a simulator click on the phone icon in the top right of Android studio:
 
-![android studio manage devices](/static/android-studio-simulator.png)
+![android studio manage devices](./public/static/android-studio-simulator.png)
 
 Then click the `create a virtual device` button and follow the prompts:
 
-![android studio devices](/static/android-studio-devices.png)
+![android studio devices](./public/static/android-studio-devices.png)
 
 Finally, launch your device by clicking the play button on the device you created:
 
-![android studio device](/static/android-studio-device.png)
+![android studio device](./public/static/android-studio-device.png)
 
 Now you can start your application from your terminal by running:
 
@@ -326,9 +233,29 @@ Now you can start your application from your terminal by running:
 cargo android run
 ```
 
-![android_demo](/static/Android-Dioxus-demo.png)
+![android_demo](./public/static/Android-Dioxus-demo.png)
 
 > More information is available in the Android docs:
 > - https://developer.android.com/ndk/guides
 > - https://developer.android.com/studio/projects/install-ndk
 > - https://source.android.com/docs/setup/build/rust/building-rust-modules/overview
+
+### IOS
+
+To build your project for IOS, you can run:
+```sh
+cargo build --target aarch64-apple-ios-sim
+```
+
+Next, open XCode (this might take awhile if you've never opened XCode before):
+```sh
+cargo apple open
+```
+
+This will open XCode with this particular project.
+
+From there, just click the "play" button with the right target and the app should be running!
+
+![ios_demo](./public/static/IOS-dioxus-demo.png)
+
+Note that clicking play doesn't cause a new build, so you'll need to keep rebuilding the app between changes. The tooling here is very young, so please be patient. If you want to contribute to make things easier, please do! We'll be happy to help.

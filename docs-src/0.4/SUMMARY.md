@@ -28,7 +28,7 @@
   - [Context](reference/context.md)
   - [Dynamic Rendering](reference/dynamic_rendering.md)
   - [Routing](reference/router.md)
-  - [UseFuture](reference/use_future.md)
+  - [UseResource](reference/use_resource.md)
   - [UseCoroutine](reference/use_coroutine.md)
   - [Spawn](reference/spawn.md)
   - [Assets](reference/assets.md)

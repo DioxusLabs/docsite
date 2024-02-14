@@ -40,7 +40,7 @@ If you navigate to the site above, you will first see `server data is None`, the
 This approach works, but it can be slow. Instead of waiting for the client to load and send a request to the server, what if we could get all of the data we needed for the page on the server and send it down to the client with the initial HTML page?
 
 
-This is exactly what the `use_server_future` hook allows us to do! `use_server_future` is similar to the `use_future` hook, but it allows you to wait for a future on the server and send the result of the future down to the client.
+This is exactly what the `use_server_future` hook allows us to do! `use_server_future` is similar to the `use_resource` hook, but it allows you to wait for a future on the server and send the result of the future down to the client.
 
 
 Let's change our data fetching to use `use_server_future`:

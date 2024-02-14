@@ -9,7 +9,7 @@ struct ApiResponse {
 }
 
 pub fn App() -> Element {
-    // ANCHOR: use_future
+    // ANCHOR: use_resource
     let mut future = use_resource(move || async move {
         reqwest::get("https://dog.ceo/api/breeds/image/random")
             .await
@@ -17,7 +17,7 @@ pub fn App() -> Element {
             .json::<ApiResponse>()
             .await
     });
-    // ANCHOR_END: use_future
+    // ANCHOR_END: use_resource
 
     // ANCHOR: render
     match &*future.read() {
@@ -37,15 +37,15 @@ pub fn App() -> Element {
 
 #[component]
 fn RandomDog(breed: ReadOnlySignal<String>) -> Element {
-    // ANCHOR: dependancy
-    let future = use_future(move || async move {
+    // ANCHOR: dependency
+    let future = use_resource(move || async move {
         reqwest::get(format!("https://dog.ceo/api/breed/{breed}/images/random"))
             .await
             .unwrap()
             .json::<ApiResponse>()
             .await
     });
-    // ANCHOR_END: dependancy
+    // ANCHOR_END: dependency
 
     None
 }

@@ -12,15 +12,15 @@ First we need to create some utilities to fetch data from the hackernews API usi
 
 ## Working with Async
 
-[`use_future`](https://docs.rs/dioxus-hooks/latest/dioxus_hooks/fn.use_future.html) is a [hook](./state.md) that lets you run an async closure, and provides you with its result.
+[`use_resource`](https://docs.rs/dioxus-hooks/latest/dioxus_hooks/fn.use_resource.html) is a [hook](./state.md) that lets you run an async closure, and provides you with its result.
 
-For example, we can make an API request (using [reqwest](https://docs.rs/reqwest/latest/reqwest/index.html)) inside `use_future`:
+For example, we can make an API request (using [reqwest](https://docs.rs/reqwest/latest/reqwest/index.html)) inside `use_resource`:
 
 ```rust
-{{#include src/doc_examples/hackernews_async.rs:use_future}}
+{{#include src/doc_examples/hackernews_async.rs:use_resource}}
 ```
 
-The code inside `use_future` will be submitted to the Dioxus scheduler once the component has rendered.
+The code inside `use_resource` will be submitted to the Dioxus scheduler once the component has rendered.
 
 We can use `.value()` to get the result of the future. On the first run, since there's no data ready when the component loads, its value will be `None`.  However, once the future is finished, the component will be re-rendered and the value will now be `Some(...)`, containing the return value of the closure.
 

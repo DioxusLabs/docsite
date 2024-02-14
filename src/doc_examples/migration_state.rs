@@ -6,7 +6,7 @@ mod use_signal {
     fn Parent() -> Element {
         let state = use_signal(|| 0);
 
-        render! {
+        rsx! {
             Child {
                 state
             }
@@ -15,7 +15,7 @@ mod use_signal {
 
     #[component]
     fn Child(state: Signal<i32>) -> Element {
-        render! {
+        rsx! {
             "{state}"
         }
     }
@@ -29,7 +29,7 @@ mod context_signals {
         // Create a new signal and provide it to the context API
         let state = use_context_provider(|| Signal::new(0));
 
-        render! {
+        rsx! {
             Child {}
         }
     }
@@ -38,7 +38,7 @@ mod context_signals {
         // Get the state from the context API
         let state = use_context::<Signal<i32>>();
 
-        render! {
+        rsx! {
             "{state}"
         }
     }
@@ -55,7 +55,7 @@ mod peek {
         let read_without_subscribing = state.peek();
         println!("{}", state.peek());
 
-        render! {
+        rsx! {
             Child {
                 state
             }
@@ -64,7 +64,7 @@ mod peek {
 
     #[component]
     fn Child(state: Signal<i32>) -> Element {
-        render! {
+        rsx! {
             button {
                 onclick: move |_| {
                     // We want to update the state without re-rendering the parent. Instead of using the old write_silent function, which would cause the button to have the wrong count, we can update the state like normal. The parent will not re-render because it only peeked the value.
@@ -83,7 +83,7 @@ mod global_signals {
     static COUNT: GlobalSignal<i32> = Signal::global(|| 0);
 
     fn Parent() -> Element {
-        render! {
+        rsx! {
             div {
                 "{COUNT}"
             }

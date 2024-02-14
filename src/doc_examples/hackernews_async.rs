@@ -235,7 +235,7 @@ pub mod fetch {
         }
     }
 
-    // ANCHOR: use_future
+    // ANCHOR: use_resource
     fn Stories() -> Element {
         // Fetch the top 10 stories on Hackernews
         let stories = use_resource(move || get_stories(10));
@@ -264,7 +264,7 @@ pub mod fetch {
             }
         }
     }
-    // ANCHOR_END: use_future
+    // ANCHOR_END: use_resource
 }
 
 use dioxus::prelude::*;

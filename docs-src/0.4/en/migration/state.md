@@ -25,22 +25,7 @@ fn Child(cx: Scope, state: UseState<i32>) -> Element {
 Parent would re-render every time the state changed even though only the child component was using the state. With the new `use_signal` hook, the parent would only re-render if the state was changed within the parent component:
 
 ```rust
-fn Parent() -> Element {
-	let state = use_signal(|| 0);
-
-	render! {
-		Child {
-			state
-		}
-	}
-}
-
-#[component]
-fn Child(state: Signal<i32>) -> Element {
-	render! {
-		"{state}"
-	}
-}
+{{#include src/doc_examples/migration_state.rs:use_signal}}
 ```
 Only the child component will re-render when the state changes because only the child component is reading the state.
 
@@ -49,23 +34,7 @@ Only the child component will re-render when the state changes because only the 
 The `use_shared_state_provider` and `use_shared_state` hooks have been replaced with using the `use_context_provider` and `use_context` hooks with a `Signal`:
 
 ```rust
-fn Parent() -> Element {
-	// Create a new signal and provide it to the context API
-	let state = use_context_provider(|| Signal::new(0));
-
-	render! {
-		Child {}
-	}
-}
-
-fn Child() -> Element {
-	// Get the state from the context API
-	let state = use_context::<Signal<i32>>();
-
-	render! {
-		"{state}"
-	}
-}
+{{#include src/doc_examples/migration_state.rs:context_signals}}
 ```
 
 Signals are smart enough to handle subscribing to the right scopes without a special shared state hook.
@@ -78,32 +47,7 @@ Some state hooks including `use_shared_state` and `use_ref` hooks had a function
 Instead, you can use the `peek` function to read the current value of a signal without subscribing to it. This inverts the subscription model so that you can opt out of subscribing to a signal instead of opting all subscribers out of updates:
 
 ```rust
-fn Parent() -> Element {
-	let state = use_signal(|| 0);
-
-	// Even though we are reading the state, we don't need to subscribe to it
-	let read_without_subscribing = state.peek();
-	println!("{state.peek()}");
-
-	render! {
-		Child {
-			state
-		}
-	}
-}
-
-#[component]
-fn Child(state: Signal<i32>) -> Element {
-	render! {
-		button {
-			onclick: move |_| {
-				// We want to update the state without re-rendering the parent. Instead of using the old write_silent function, which would cause the button to have the wrong count, we can update the state like normal. The parent will not re-render because it only peeked the value.
-				state += 1;
-			},
-			"count is {state}"
-		}
-	}
-}
+{{#include src/doc_examples/migration_state.rs:peek}}
 ```
 
 `peek` gives you more fine-grained control over when you want to subscribe to a signal. This can be useful for performance optimizations and for updating state without re-rendering components.
@@ -113,22 +57,7 @@ fn Child(state: Signal<i32>) -> Element {
 In `0.4`, the fermi crate provided a separate global state API called atoms. In `0.5`, the `Signal` type has been extended to provide a global state API. You can use the `Signal::global` function to create a global signal:
 
 ```rust
-static COUNT: GlobalSignal<i32> = Signal::global(|| 0);
-
-fn Parent() -> Element {
-	render! {
-		div {
-			"{COUNT}"
-		}
-		button {
-			onclick: move |_| {
-				// You can use global state directly without the use_read or use_set hooks
-				*COUNT.write() += 1;
-			},
-			"Increment"
-		}
-	}
-}
+{{#include src/doc_examples/migration_state.rs:global_signals}}
 ```
 
 You can read more about global signals in the [Fermi migration guide](fermi.md).

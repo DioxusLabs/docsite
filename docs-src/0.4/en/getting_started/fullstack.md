@@ -75,8 +75,7 @@ SandBoxFrame {
 1. Run:
 
 ```bash
-dx build --features web
-dx serve --features ssr --hot-reload --platform desktop
+dx serve --hot-reload --platform fullstack
 ```
 
 2. Change some code within a rsx or render macro

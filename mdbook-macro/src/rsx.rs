@@ -526,7 +526,13 @@ impl<'a, I: Iterator<Item = Event<'a>>> RsxMarkdownParser<'a, I> {
                         ImageOptions::new(manganis_common::ImageType::Avif, None),
                     ));
 
-                let asset = add_asset(manganis_common::AssetType::File(this_file.clone()));
+                let asset = add_asset(manganis_common::AssetType::File(this_file.clone()))
+                    .map_err(|e| {
+                        syn::Error::new(
+                            Span::call_site(),
+                            format!("Failed to add asset {}: {}", dest, e),
+                        )
+                    })?;
                 let this_file = match asset {
                     manganis_common::AssetType::File(this_file) => this_file,
                     _ => unreachable!(),

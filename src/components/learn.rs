@@ -30,8 +30,8 @@ pub fn Learn() -> Element {
             min_height: "100vh",
             // do a typical three-column flex layout with a single centered then pin the nav items on top
             div { class: "max-w-screen-2xl flex flex-row justify-between mx-auto dark:text-white",
-                Content {}
                 LeftNav {}
+                Content {}
                 RightNav {}
             }
         }
@@ -45,6 +45,7 @@ fn LeftNav() -> Element {
         ""
     };
     let hidden = if SHOW_SIDEBAR() { "" } else { "hidden" };
+    let full_width = if SHOW_SIDEBAR() { "min-w-full" } else { "" };
     let chapters = vec![
         &LAZY_BOOK.summary.prefix_chapters,
         &LAZY_BOOK.summary.numbered_chapters,
@@ -53,7 +54,7 @@ fn LeftNav() -> Element {
 
     rsx! {
         // Now, pin the nav to the left
-        nav { class: "bg-white dark:bg-ideblack lg:bg-inherit pl-6 z-20 text-base lg:block fixed top-0 pt-36 pb-16 lg:-ml-3.5 w-[calc(100%-1rem)] md:w-60 h-screen max-h-screen lg:text-[13px] text-navy content-start overflow-y-auto leading-5 {extra_class} {hidden}",
+        nav { class: "bg-white dark:bg-ideblack lg:bg-inherit pl-6 pb-32 z-20 text-base lg:block sticky top-28 lg:-ml-3.5 w-[calc(100%-1rem)] md:w-60 h-screen max-h-screen lg:text-[13px] text-navy content-start overflow-y-auto leading-5 {extra_class} {full_width} {hidden}",
             // I like the idea of breadcrumbs, but they add a lot of visual noise, and like, who cares?
             // BreadCrumbs {}
 
@@ -196,7 +197,7 @@ fn RightNav() -> Element {
 
     rsx! {
         div {
-            class: "overflow-y-auto hidden xl:block fixed top-0 pt-36 pb-16 pl-3.5 -ml-3.5 w-60 h-full md:text-[13px] leading-5 text-navy docs-right-sidebar {extra_class}",
+            class: "overflow-y-auto hidden xl:block sticky top-28 pl-3.5 -ml-3.5 w-60 h-full md:text-[13px] leading-5 text-navy docs-right-sidebar {extra_class}",
             left: "calc(100vw - 15rem)",
             h2 { class: "pb-4 font-semibold", "On this page" }
             ul { class: "",
@@ -226,7 +227,7 @@ fn Content() -> Element {
     };
 
     rsx! {
-        section { class: "text-gray-600 body-font overflow-hidden dark:bg-ideblack lg:ml-[13rem] container pt-6 pb-12 max-w-screen-lg",
+        section { class: "text-gray-600 body-font overflow-hidden dark:bg-ideblack container pt-6 pb-12",
             div { class: "-py-8 {extra_class}",
                 div { class: "flex w-full mb-20 flex-wrap list-none",
                     style {

@@ -28,6 +28,8 @@ DemoFrame {
 > - [MDN Traditional CSS Guide](https://developer.mozilla.org/en-US/docs/Learn/HTML)
 > - [W3 Schools Traditional CSS Tutorial](https://www.w3schools.com/css/default.asp)
 > - [Tailwind tutorial](https://tailwindcss.com/docs/installation) (used with the [Tailwind setup example](https://github.com/DioxusLabs/dioxus/tree/master/examples/tailwind))
+> 
+> If you have existing html code, you can use the [translate](../CLI/translate.md) command to convert it to RSX. Or if you prefer to write html, you can use the [html! macro](https://github.com/DioxusLabs/dioxus-html-macro) to write html directly in your code.
 
 ## Dynamic Text
 

@@ -1,3 +1,4 @@
+use std::ops::Deref;
 use crate::*;
 use dioxus::html::input_data::keyboard_types::Key;
 use dioxus::prelude::*;
@@ -307,7 +308,7 @@ fn SearchModal() -> Element {
                         // Results
                         div { class: "overflow-y-auto",
                             ul {
-                                match &*results.read() {
+                                match results.read().deref() {
                                     Ok(results) => {
                                         if results.is_empty() {
                                             rsx! {

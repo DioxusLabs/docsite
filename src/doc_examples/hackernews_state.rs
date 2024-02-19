@@ -49,13 +49,10 @@ pub mod app_v1 {
             PreviewState::Unset => rsx! {"Hover over a story to preview it here"},
             PreviewState::Loading => rsx! {"Loading..."},
             PreviewState::Loaded(story) => {
-                let title = &story.item.title;
-                let url = story.item.url.as_deref().unwrap_or_default();
-                let text = story.item.text.as_deref().unwrap_or_default();
                 rsx! {
                     div { padding: "0.5rem",
-                        div { font_size: "1.5rem", a { href: "{url}", "{title}" } }
-                        div { dangerous_inner_html: "{text}" }
+                        div { font_size: "1.5rem", a { href: story.item.url, "{story.item.title}" } }
+                        div { dangerous_inner_html: story.item.text }
                         for comment in &story.comments {
                             Comment { comment: comment.clone() }
                         }
@@ -173,18 +170,14 @@ mod story_listing_listener {
 
     fn Preview() -> Element {
         let preview_state = PreviewState::Unset;
-
         match preview_state {
             PreviewState::Unset => rsx! {"Hover over a story to preview it here"},
             PreviewState::Loading => rsx! {"Loading..."},
             PreviewState::Loaded(story) => {
-                let title = &story.item.title;
-                let url = story.item.url.as_deref().unwrap_or_default();
-                let text = story.item.text.as_deref().unwrap_or_default();
                 rsx! {
                     div { padding: "0.5rem",
-                        div { font_size: "1.5rem", a { href: "{url}", "{title}" } }
-                        div { dangerous_inner_html: "{text}" }
+                        div { font_size: "1.5rem", a { href: story.item.url, "{story.item.title}" } }
+                        div { dangerous_inner_html: story.item.text }
                         for comment in &story.comments {
                             Comment { comment: comment.clone() }
                         }
@@ -341,18 +334,15 @@ fn Preview() -> Element {
     let preview_state = consume_context::<Signal<PreviewState>>();
 
     // New
-    match &*preview_state.read() {
+    match preview_state() {
         // ANCHOR_END: shared_state_preview
         PreviewState::Unset => rsx! {"Hover over a story to preview it here"},
         PreviewState::Loading => rsx! {"Loading..."},
         PreviewState::Loaded(story) => {
-            let title = &story.item.title;
-            let url = story.item.url.as_deref().unwrap_or_default();
-            let text = story.item.text.as_deref().unwrap_or_default();
             rsx! {
                 div { padding: "0.5rem",
-                    div { font_size: "1.5rem", a { href: "{url}", "{title}" } }
-                    div { dangerous_inner_html: "{text}" }
+                    div { font_size: "1.5rem", a { href: story.item.url, "{story.item.title}" } }
+                    div { dangerous_inner_html: {story.item.text} }
                     for comment in &story.comments {
                         Comment { comment: comment.clone() }
                     }

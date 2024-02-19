@@ -14,8 +14,7 @@ fn app() -> Element {
         let msg = await dioxus.recv();
         console.log(msg);
         "#,
-    )
-    .unwrap();
+    );
 
     // You can send messages to JavaScript with the send method
     eval.send("Hi from Rust!".into()).unwrap();

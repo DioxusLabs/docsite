@@ -18,8 +18,8 @@ fn Stories() -> Element {
     match &*stories.value().read() {
         Some(Ok(list)) => rsx! {
             div {
-                for index in 0..list.len() {
-                    StoryListing { story: list[index].clone() }
+                for story in list {
+                    StoryListing { story: story.clone() }
                 }
             }
         },
@@ -33,7 +33,7 @@ async fn resolve_story(
     mut preview_state: Signal<PreviewState>,
     story_id: i64,
 ) {
-    if let Some(cached) = &*full_story.read() {
+    if let Some(cached) = full_story.as_ref() {
         *preview_state.write() = PreviewState::Loaded(cached.clone());
         return;
     }
@@ -115,17 +115,14 @@ enum PreviewState {
 fn Preview() -> Element {
     let preview_state = consume_context::<Signal<PreviewState>>();
 
-    match &*preview_state.read() {
+    match preview_state() {
         PreviewState::Unset => rsx! {"Hover over a story to preview it here"},
         PreviewState::Loading => rsx! {"Loading..."},
         PreviewState::Loaded(story) => {
-            let title = &story.item.title;
-            let url = story.item.url.as_deref().unwrap_or_default();
-            let text = story.item.text.as_deref().unwrap_or_default();
             rsx! {
                 div { padding: "0.5rem",
-                    div { font_size: "1.5rem", a { href: "{url}", "{title}" } }
-                    div { dangerous_inner_html: "{text}" }
+                    div { font_size: "1.5rem", a { href: story.item.url, "{story.item.title}" } }
+                    div { dangerous_inner_html: story.item.text }
                     for comment in &story.comments {
                         Comment { comment: comment.clone() }
                     }

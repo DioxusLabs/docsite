@@ -69,9 +69,9 @@ pub fn AppForLoop() -> Element {
             }
             input { r#type: "submit" }
         }
-        for comment in &*comments.read() {
+        for comment in comments() {
             // Notice the body of this for loop is rsx code, not an expression
-            CommentComponent { key: "{comment.id}", comment: comment.clone() }
+            CommentComponent { key: "{comment.id}", comment }
         }
     )
     // ANCHOR_END: render_list_for_loop

@@ -22,6 +22,7 @@ Then build your app and publish it to Github:
 ```sh
 dx build --release
 ```
+- Make a copy of your `docs/index.html` file and rename the copy to `docs/404.html` so that your app will work with client-side routing
 - Add and commit with git
 - Push to GitHub
 

@@ -27,39 +27,28 @@ cd demo
 Add Dioxus and the liveview renderer with the Axum feature as dependencies:
 
 ```shell
-cargo add dioxus
-cargo add dioxus-liveview --features axum
-```
-
-Next, add all the Axum dependencies. This will be different if you're using a different Web Framework
-
-```
-cargo add tokio --features full
-cargo add axum
+cargo add dioxus --features liveview,axum
 ```
 
 Your dependencies should look roughly like this:
 
 ```toml
 [dependencies]
-axum = "0.4.5"
-dioxus = { version = "*" }
-dioxus-liveview = { version = "*", features = ["axum"] }
-tokio = { version = "1.15.0", features = ["full"] }
+dioxus = { version = "*", features = ["liveview", "axum"] }
 ```
 
-Now, set up your Axum app to respond on an endpoint.
-
+Next, set up your app:
 
 ```rust
-{{#include src/doc_examples/hello_world_liveview.rs:glue}}
+{{#include src/doc_examples/hello_world_liveview.rs:all}}
 ```
 
+Finnaly, run your app with:
 
-And then add our app component:
-
-```rust
-{{#include src/doc_examples/hello_world_liveview.rs:app}}
+```sh
+dx serve --platform desktop
+# or
+cargo run
 ```
 
 And that's it!

@@ -65,11 +65,10 @@ cargo new --bin demo
 cd demo
 ```
 
-Add Dioxus and the desktop renderer as dependencies (this will edit your `Cargo.toml`):
+Add Dioxus crate with the desktop renderer feature as a dependency (this will edit your `Cargo.toml`):
 
 ```shell
-cargo add dioxus
-cargo add dioxus-desktop
+cargo add dioxus --features desktop
 ```
 
 Edit your `main.rs`:

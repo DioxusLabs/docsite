@@ -22,12 +22,12 @@ cargo add dioxus
 cargo add dioxus-fullstack
 ```
 
-Next, set up features for the server (`ssr`) and the client (`web`):
+Next, set up features for the server (`server`) and the client (`web`):
 
 ```toml
 [features]
 default = []
-ssr = ["dioxus-fullstack/axum"]
+server = ["dioxus-fullstack/axum"]
 web = ["dioxus-fullstack/web"]
 ```
 
@@ -35,13 +35,12 @@ Your dependencies should look roughly like this:
 
 ```toml
 [dependencies]
-dioxus = { version = "*" }
-dioxus-fullstack = { version = "*" }
+dioxus = { version = "*", features = ["fullstack"] }
 
 [features]
 default = []
-ssr = ["dioxus-fullstack/axum"]
-web = ["dioxus-fullstack/web"]
+server = ["dioxus/axum"]
+web = ["dioxus/web"]
 ```
 
 Now, set up your Axum app to serve the Dioxus app.
@@ -53,8 +52,7 @@ Now, set up your Axum app to serve the Dioxus app.
 Now, run your app with:
 
 ```
-dx build --features web --release
-cargo run --features ssr --release
+dx serve --platform fullstack
 ```
 
 Finally, open `http://localhost:8080` in your browser. You should see a server-side rendered page with a counter.

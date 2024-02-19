@@ -16,13 +16,13 @@ pub fn App() -> Element {
     )
 }
 
-pub fn Empty() -> Element {
-    // ANCHOR: empty
-    rsx!(div {
+pub fn Button() -> Element {
+    // ANCHOR: button
+    rsx!(button {
         // attributes / listeners
         // children
     })
-    // ANCHOR_END: empty
+    // ANCHOR_END: button
 }
 
 pub fn Children() -> Element {

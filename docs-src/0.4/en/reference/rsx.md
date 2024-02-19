@@ -15,12 +15,12 @@ Here, we use the `rsx!` macro to _declare_ that we want a `div` element, contain
 RSX is very similar to HTML in that it describes elements with attributes and children. Here's an empty `div` element in RSX, as well as the resulting HTML:
 
 ```rust, no_run
-{{#include src/doc_examples/rsx_overview.rs:empty}}
+{{#include src/doc_examples/rsx_overview.rs:button}}
 ```
 
 ```inject-dioxus
 DemoFrame {
-	rsx_overview::Empty {}
+	rsx_overview::Button {}
 }
 ```
 
@@ -170,7 +170,7 @@ DemoFrame {
 
 ### Expressions
 
-You can include arbitrary Rust expressions as children within RSX that implements [IntoDynNode](https://docs.rs/dioxus-core/0.3/dioxus_core/trait.IntoDynNode.html). This is useful for displaying data from an [iterator](https://doc.rust-lang.org/stable/book/ch13-02-iterators.html#processing-a-series-of-items-with-iterators):
+You can include arbitrary Rust expressions as children within RSX by surrounding your expression with `{}`s. Any expression that implements [IntoDynNode](https://docs.rs/dioxus-core/0.3/dioxus_core/trait.IntoDynNode.html) can be used within rsx. This is useful for displaying data from an [iterator](https://doc.rust-lang.org/stable/book/ch13-02-iterators.html#processing-a-series-of-items-with-iterators):
 
 ```rust, no_run
 {{#include src/doc_examples/rsx_overview.rs:expression}}

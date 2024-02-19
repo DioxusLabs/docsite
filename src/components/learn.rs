@@ -105,7 +105,11 @@ fn SidebarSection(chapter: &'static SummaryItem<BookRoute>) -> Element {
     rsx! {
         div { class: "pb-4",
             if let Some(url) = &link.location {
-                Link { to: Route::Docs { child: *url }, h2 { class: "font-semibold", "{link.name}" } }
+                Link {
+                    onclick: move |_| *SHOW_SIDEBAR.write() = false,
+                    to: Route::Docs { child: *url },
+                    h2 { class: "font-semibold", "{link.name}" }
+                }
             }
             ul { class: "pl-2", {sections} }
         }
@@ -135,7 +139,11 @@ fn SidebarChapter(chapter: &'static SummaryItem<BookRoute>) -> Element {
                         color: MaterialIconColor::Custom("gray".to_string())
                     }
                 }
-                Link { to: Route::Docs { child: *url }, "{link.name}" }
+                Link {
+                    onclick: move |_| *SHOW_SIDEBAR.write() = false,
+                    to: Route::Docs { child: *url },
+                    "{link.name}"
+                }
             }
             if show_dropdown {
                 ul { class: "ml-6 border-l border-gray-300 py-1",
@@ -163,7 +171,9 @@ fn LocationLink(chapter: &'static SummaryItem<BookRoute>) -> Element {
     };
 
     rsx! {
-        Link { to: Route::Docs { child: *url },
+        Link {
+            onclick: move |_| *SHOW_SIDEBAR.write() = false,
+            to: Route::Docs { child: *url },
             li { class: "m-1 rounded-md pl-2 hover:bg-gray-200 hover:dark:bg-gray-800 {current_class}",
                 "{link.name}"
             }

@@ -23,7 +23,7 @@ impl<T> Clone for Signal<T> {
     }
 }
 
-fn my_use_signal<T: 'static>(cx: &ScopeState, init: impl FnOnce() -> T) -> Signal<T> {
+fn my_use_signal<T: 'static>(init: impl FnOnce() -> T) -> Signal<T> {
     use_hook(|| {
         // The update function will trigger a re-render in the component cx is attached to
         let update = schedule_update();
@@ -56,7 +56,7 @@ pub fn use_context<T: 'static + Clone>() -> T {
 pub fn use_context_provider<T: 'static + Clone>(f: impl FnOnce() -> T) -> T {
     use_hook(|| {
         let val = f();
-        // Provide the context state to the scope
+        // Provide the context state to the component
         provide_context(val.clone());
         val
     })

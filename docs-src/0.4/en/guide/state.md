@@ -34,7 +34,7 @@ Let's create a [`onmouseenter`](https://docs.rs/dioxus/latest/dioxus/events/fn.o
 
 So far our components have had no state like normal rust functions. To make our application change when we hover over a link we need state to store the currently hovered link in the root of the application.
 
-You can create state in dioxus using hooks. Hooks are Rust functions that take a reference to `ScopeState` (in a component, you can pass `cx`), and provide you with functionality and state.
+You can create state in dioxus using hooks. Hooks are Rust functions that provide you with functionality and/or state that persists through rerenders.
 
 In this case, we will use the `use_context_provider` and `use_context` hooks:
 

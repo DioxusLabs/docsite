@@ -95,10 +95,10 @@ dx translate --raw "<div>Hello world</div>" --component
 This will output the following component:
 
 ```rs
-fn component(cx: Scope) -> Element {
-   cx.render(rsx! {
+fn component() -> Element {
+   rsx! {
       div { "Hello world" }
-   })
+   }
 }
 ```
 

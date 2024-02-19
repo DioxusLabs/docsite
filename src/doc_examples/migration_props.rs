@@ -68,7 +68,7 @@ struct ManualProps {
     name: String,
 }
 
-// Functions accept the props directly instead of the scope
+// Functions accept the props directly instead of the component
 fn ManualPropsComponent(props: ManualProps) -> Element {
     rsx! {
         "Hello {props.name}"

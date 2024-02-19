@@ -2,7 +2,7 @@
 
 Hooks are a great way to encapsulate business logic. If none of the existing hooks work for your problem, you can write your own.
 
-When writing your hook, you can make a function that accepts `cx: &ScopeState` as a parameter to accept a scope with any Props.
+When writing your hook, you can make a function that starts with `use_` and takes any arguments you need. You can then use the `use_hook` method to create a hook that will be called the first time the component is rendered.
 
 ## Composing Hooks
 
@@ -22,7 +22,7 @@ Or if you want to wrap a hook that persists reloads with the storage API, you ca
 
 ## Custom Hook Logic
 
-You can use [`use_hook`](https://docs.rs/dioxus/latest/dioxus/prelude/struct.ScopeState.html#method.use_hook) to build your own hooks. In fact, this is what all the standard hooks are built on!
+You can use [`use_hook`](https://docs.rs/dioxus/latest/dioxus/prelude/fn.use_hook) to build your own hooks. In fact, this is what all the standard hooks are built on!
 
 `use_hook` accepts a single closure for initializing the hook. It will be only run the first time the component is rendered. The return value of that closure will be used as the value of the hook – Dioxus will take it, and store it for as long as the component is alive. On every render (not just the first one!), you will get a reference to this value.
 
@@ -30,7 +30,7 @@ You can use [`use_hook`](https://docs.rs/dioxus/latest/dioxus/prelude/struct.Sco
 
 Inside the initialization closure, you will typically make calls to other `cx` methods. For example:
 
-- The `use_signal` hook tracks state in the hook value, and uses [`schedule_update`](https://docs.rs/dioxus/latest/dioxus/prelude/struct.ScopeState.html#method.schedule_update) to make Dioxus re-render the component whenever it changes.
+- The `use_signal` hook tracks state in the hook value, and uses [`schedule_update`](https://docs.rs/dioxus/latest/dioxus/prelude/fn.schedule_update) to make Dioxus re-render the component whenever it changes.
 
 Here is a simplified implementation of the `use_signal` hook:
 
@@ -38,7 +38,7 @@ Here is a simplified implementation of the `use_signal` hook:
 {{#include src/doc_examples/hooks_custom_logic.rs:use_signal}}
 ```
 
-- The `use_context` hook calls [`consume_context`](https://docs.rs/dioxus/latest/dioxus/prelude/struct.ScopeState.html#method.consume_context) (which would be expensive to call on every render) to get some context from the scope
+- The `use_context` hook calls [`consume_context`](https://docs.rs/dioxus/latest/dioxus/prelude/fn.consume_context) (which would be expensive to call on every render) to get some context from the component
 
 Here is an implementation of the `use_context` and `use_context_provider` hooks:
 

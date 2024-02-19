@@ -19,7 +19,6 @@ use serde::{de::DeserializeOwned, Serialize};
 /// A persistent storage hook that can be used to store data across application reloads.
 #[allow(clippy::needless_return)]
 pub fn use_persistent<T: Serialize + DeserializeOwned + Default + 'static>(
-    cx: &ScopeState,
     // A unique key for the storage entry
     key: impl ToString,
     // A function that returns the initial value if the storage entry is empty
@@ -34,10 +33,9 @@ pub fn use_persistent<T: Serialize + DeserializeOwned + Default + 'static>(
     });
 
     // Wrap the state in a new struct with a custom API
-    // Note: We use use_hook here so that this hook is easier to use in closures in the rsx. Any values with the same lifetime as the ScopeState can be used in the closure without cloning.
-    use_hook(|| UsePersistent {
-        inner: state.clone(),
-    })
+    UsePersistent {
+        inner: state,
+    }
 }
 
 struct StorageEntry<T> {

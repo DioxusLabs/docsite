@@ -4,7 +4,7 @@ Just like you can pass arguments to a function or attributes to an element, you 
 
 ## `#[derive(PartialEq, Clone, Props)]`
 
-Component props are a single struct annotated with `#[derive(PartialEq, Clone, Props)]`. For a component to accept props, the type of its argument must be `Scope<YourPropsStruct>`. Then, you can access the value of the props using `props`.
+Component props are a single struct annotated with `#[derive(PartialEq, Clone, Props)]`. For a component to accept props, the type of its argument must be `YourPropsStruct`.
 
 Example:
 

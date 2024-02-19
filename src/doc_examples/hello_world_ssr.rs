@@ -5,7 +5,7 @@
 // ANCHOR: main
 #![allow(non_snake_case)]
 use axum::{response::Html, routing::get, Router};
-// import the prelude to get access to the `rsx!` macro and the `Scope` and `Element` types
+// import the prelude to get access to the `rsx!` macro and `Element` type
 use dioxus::prelude::*;
 
 #[tokio::main]

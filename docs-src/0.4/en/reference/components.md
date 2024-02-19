@@ -2,7 +2,7 @@
 
 Just like you wouldn't want to write a complex program in a single, long, `main` function, you shouldn't build a complex UI in a single `App` function. Instead, you should break down the functionality of an app in logical parts called components.
 
-A component is a Rust function, named in UpperCammelCase, that takes a `Scope` parameter and returns an `Element` describing the UI it wants to render. In fact, our `App` function is a component!
+A component is a Rust function, named in UpperCammelCase, that takes your properties parameter and returns an `Element` describing the UI it wants to render. In fact, our `App` function is a component!
 
 ```rust, no_run
 {{#include src/doc_examples/hello_world_desktop.rs:component}}

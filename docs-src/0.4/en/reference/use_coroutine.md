@@ -50,16 +50,16 @@ For sufficiently complex apps, we could build a bunch of different useful "servi
 {{#include src/doc_examples/use_coroutine_reference.rs:services}}
 ```
 
-We can combine coroutines with [Fermi](https://docs.rs/fermi/latest/fermi/index.html) to emulate Redux Toolkit's Thunk system with much less headache. This lets us store all of our app's state _within_ a task and then simply update the "view" values stored in Atoms. It cannot be understated how powerful this technique is: we get all the perks of native Rust tasks with the optimizations and ergonomics of global state. This means your _actual_ state does not need to be tied up in a system like Fermi or Redux – the only Atoms that need to exist are those that are used to drive the display/UI.
+We can combine coroutines with Global State to emulate Redux Toolkit's Thunk system with much less headache. This lets us store all of our app's state _within_ a task and then simply update the "view" values stored in Atoms. It cannot be understated how powerful this technique is: we get all the perks of native Rust tasks with the optimizations and ergonomics of global state. This means your _actual_ state does not need to be tied up in a system like `Signal::global` or Redux – the only Atoms that need to exist are those that are used to drive the display/UI.
 
 ```rust, no_run
-{{#include src/doc_examples/use_coroutine_reference.rs:fermi}}
+{{#include src/doc_examples/use_coroutine_reference.rs:global}}
 ```
 
 Now, in our sync service, we can structure our state however we want. We only need to update the view values when ready.
 
 ```rust, no_run
-{{#include src/doc_examples/use_coroutine_reference.rs:fermi_service}}
+{{#include src/doc_examples/use_coroutine_reference.rs:global_continued}}
 ```
 
 ## Automatic injection into the Context API

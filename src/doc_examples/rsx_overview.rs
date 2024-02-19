@@ -5,7 +5,7 @@ use dioxus::prelude::*;
 
 pub fn App() -> Element {
     rsx!(
-        Empty {}
+        Button {}
         Children {}
         Fragments {}
         Attributes {}

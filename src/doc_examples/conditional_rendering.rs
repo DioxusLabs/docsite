@@ -68,7 +68,7 @@ pub fn LogInWarningApp() -> Element {
         input {
             r#type: "checkbox",
             checked: is_logged_in(),
-            oninput: move |event| is_logged_in.set(event.value() == "on"),
+            oninput: move |event| is_logged_in.set(event.checked()),
             "Logged In"
         }
         LogInWarning { is_logged_in: is_logged_in() }
@@ -82,6 +82,6 @@ fn LogInWarning(is_logged_in: bool) -> Element {
         return None;
     }
 
-    rsx! { a { "You must be logged in to comment" } }
+    rsx! { p { "You must be logged in to comment" } }
     // ANCHOR_END: conditional_none
 }

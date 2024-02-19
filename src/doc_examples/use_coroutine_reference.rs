@@ -113,11 +113,11 @@ fn services() {
     // ANCHOR_END: services
 }
 
-fn fermi() {
+fn global() {
     async fn sync_service(rx: UnboundedReceiver<()>) {
         todo!()
     }
-    // ANCHOR: fermi
+    // ANCHOR: global
     static USERNAME: GlobalSignal<String> = Signal::global(|| "default".to_string());
 
     fn app() -> Element {
@@ -129,14 +129,14 @@ fn fermi() {
     fn Banner() -> Element {
         rsx! { h1 { "Welcome back, {USERNAME}" } }
     }
-    // ANCHOR_END: fermi
+    // ANCHOR_END: global
 }
 
-fn fermi_continued() {
+fn global_continued() {
     async fn set_name_on_server(name: &str) -> Result<(), ()> {
         Ok(())
     }
-    // ANCHOR: fermi_continued
+    // ANCHOR: global_continued
     use futures_util::StreamExt;
 
     static USERNAME: GlobalSignal<String> = Signal::global(|| "default".to_string());
@@ -159,7 +159,7 @@ fn fermi_continued() {
             }
         }
     }
-    // ANCHOR_END: fermi_continued
+    // ANCHOR_END: global_continued
 }
 
 fn injection() {

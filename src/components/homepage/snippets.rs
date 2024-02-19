@@ -31,8 +31,8 @@ pub static SNIPPETS: &[Snippet] = &[
     },
     Snippet {
         title: "Global State",
-        filename: "fermi.rs",
-        html: syntect_html_fs!("./snippets/fermi.rs"),
+        filename: "global.rs",
+        html: syntect_html_fs!("./snippets/global.rs"),
     },
 ];
 

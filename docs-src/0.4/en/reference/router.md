@@ -26,7 +26,6 @@ cargo add dioxus --features router
 Unlike other routers in the Rust ecosystem, our router is built declaratively at compile time. This makes it possible to compose our app layout simply by defining an enum.
 
 ```rust
-router_reference
 {{#include src/doc_examples/router_reference.rs:router_definition}}
 ```
 

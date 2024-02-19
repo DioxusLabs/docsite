@@ -6,6 +6,6 @@ fn main() {
 
 fn app() -> Element {
     rsx! {
-        div { img { src: "examples/assets/logo.png" } }
+        div { img { src: mg!(file("examples/assets/logo.png")) } }
     }
 }

@@ -1,6 +1,6 @@
 # Routing
 
-You can easily integrate your fullstack application with a client side router using the `launch_router` macro. The `launch_router` macro works the same as the `launch` macro except it accepts a Router instead of a Component:
+You can easily integrate your fullstack application with a client side router using Dioxus Router. This allows you to create different scenes in your app and navigate between them. You can read more about the router in the [router reference](../router.md)
 
 ```rust
 {{#include src/doc_examples/server_router.rs}}

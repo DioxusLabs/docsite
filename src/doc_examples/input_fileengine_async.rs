@@ -24,6 +24,7 @@ pub fn App() -> Element {
                     }
                 }
             }
+            // ANCHOR_END: onchange_event
         }
     }
 }

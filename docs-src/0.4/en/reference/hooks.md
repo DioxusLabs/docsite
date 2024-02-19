@@ -2,7 +2,7 @@
 
 So far, our components have had no state like a normal Rust function. However, in a UI component, it is often useful to have stateful functionality to build user interactions. For example, you might want to track whether the user has opened a drop-down and render different things accordingly.
 
-Hooks allow us to create state in our components. Hooks are Rust functions that provide you with functionality and/or state that persists through rerenders.
+Hooks allow us to create state in our components. Hooks are Rust functions you call in a constant order in a component that add additional functionality to the component.
 
 Dioxus provides many built-in hooks, but if those hooks don't fit your specific use case, you also can [create your own hook](../cookbook/state/custom_hooks/index.md)
 

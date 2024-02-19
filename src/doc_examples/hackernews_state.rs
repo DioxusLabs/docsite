@@ -80,10 +80,8 @@ pub mod app_v1 {
     }
 
     // ANCHOR_END: app_v1
-
     #[component]
     fn StoryListing(story: ReadOnlySignal<StoryItem>) -> Element {
-        let mut preview_state = consume_context::<Signal<PreviewState>>();
         let StoryItem {
             title,
             url,

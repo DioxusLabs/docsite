@@ -82,7 +82,7 @@ Install [dioxus-cli](https://github.com/DioxusLabs/dioxus/tree/master/packages/c
 dx serve --hot-reload --platform desktop
 ```
 
-2. Change some code within a rsx or render macro
+2. Change some code within `rsx` or `render` macro
 3. Save and watch the style change without recompiling
 
 ### Limitations

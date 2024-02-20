@@ -5,7 +5,7 @@ user click on a link. This is called programmatic navigation.
 
 ## Using a Navigator
 
-We can get a navigator with the [`use_navigator`] hook. This hook returns a [`Navigator`].
+We can get a navigator with the [`navigator`] function which returns a [`Navigator`].
 
 We can use the [`Navigator`] to trigger four different kinds of navigation:
 

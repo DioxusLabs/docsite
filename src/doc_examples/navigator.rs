@@ -19,7 +19,7 @@ fn App() -> Element {
 // ANCHOR: nav
 #[component]
 fn Home() -> Element {
-    let nav = use_navigator();
+    let nav = navigator();
 
     // push
     nav.push(Route::PageNotFound { route: vec![] });

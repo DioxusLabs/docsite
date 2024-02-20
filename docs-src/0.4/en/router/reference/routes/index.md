@@ -52,11 +52,11 @@ Catch All segments must be the _last route segment_ in the path (query segments 
 
 ## Query Segments
 
-Query segments are in the form of `?:name` where `name` is the name of the field in the route variant.
+Query segments are in the form of `?:name&:othername` where `name` and `othername` are the names of fields in the route variant.
 
 Unlike [Dynamic Segments](#dynamic-segments) and [Catch All Segments](#catch-all-segments), parsing a Query segment must not fail.
 
-The segment can be of any type that implements `FromQuery`.
+The segment can be of any type that implements `FromQueryArgument`.
 
 Query segments must be the _after all route segments_ and cannot be included in nests.
 

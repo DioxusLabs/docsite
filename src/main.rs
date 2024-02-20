@@ -20,7 +20,7 @@ fn main() {
         use dioxus_router::prelude::*;
         use log::LevelFilter;
         simple_logger::SimpleLogger::new()
-            .with_level(LevelFilter::Info)
+            .with_level(LevelFilter::Error)
             .init()
             .unwrap();
         tokio::runtime::Runtime::new()

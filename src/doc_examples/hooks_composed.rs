@@ -33,9 +33,7 @@ pub fn use_persistent<T: Serialize + DeserializeOwned + Default + 'static>(
     });
 
     // Wrap the state in a new struct with a custom API
-    UsePersistent {
-        inner: state,
-    }
+    UsePersistent { inner: state }
 }
 
 struct StorageEntry<T> {

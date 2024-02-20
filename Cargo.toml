@@ -43,7 +43,8 @@ use-mdbook = { git = "https://github.com/dioxuslabs/include_mdbook", branch = "u
 dioxus-search = { git = "https://github.com/dioxuslabs/dioxus-search", branch = "dioxus-next" }
 
 tokio = { version = "1.29.0", features = ["full"], optional = true }
-axum = { version = "0.6.12", features = ["headers"], optional = true }
+axum = { version = "0.7", optional = true }
+http = { version = "1.0.0", optional = true }
 simple_logger = "4.2.0"
 shipyard = { version = "0.6.2", optional = true }
 reqwest = { version = "0.11.18", features = ["json"] }
@@ -67,7 +68,7 @@ automod = "1.0.13"
 
 # Used only in doc tests
 dioxus-std = { git = "https://github.com/ealmloff/dioxus-std", branch = "copy-UseI18", features = ["i18n"], optional = true }
-tower-http = { version = "0.4.0", optional = true, features = ["timeout"] }
+tower-http = { version = "0.5.0", optional = true, features = ["timeout"] }
 tracing = "0.1.40"
 
 [patch.crates-io]
@@ -119,6 +120,7 @@ doc_test = [
     "pretty_assertions",
     "tower-http",
     "dioxus-std",
+    "http",
 ]
 web = ["dioxus-web", "dioxus/web", "dioxus-router/web", "dioxus-fullstack/web"]
 server = [

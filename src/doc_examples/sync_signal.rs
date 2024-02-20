@@ -10,7 +10,7 @@ fn app() -> Element {
     use_hook(|| {
         std::thread::spawn(move || loop {
             std::thread::sleep(std::time::Duration::from_secs(1));
-			// You can easily update the signal from a different thread
+            // You can easily update the signal from a different thread
             signal += 1;
         });
     });

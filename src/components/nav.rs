@@ -1,8 +1,8 @@
-use std::ops::Deref;
 use crate::*;
 use dioxus::html::input_data::keyboard_types::Key;
 use dioxus::prelude::*;
 use dioxus_material_icons::{MaterialIcon, MaterialIconColor};
+use std::ops::Deref;
 
 pub static HIGHLIGHT_NAV_LAYOUT: GlobalSignal<bool> = Signal::global(|| false);
 pub static SHOW_NAV: GlobalSignal<bool> = Signal::global(|| false);

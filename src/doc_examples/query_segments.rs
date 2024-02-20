@@ -9,7 +9,7 @@ use dioxus_router::prelude::*;
 #[rustfmt::skip]
 enum Route {
     // segments that start with ?: are query segments
-    #[route("/blog?:query_params")]
+    #[route("/blog?:name&:surname")]
     BlogPost {
         // You must include query segments in child variants
         name: String,
@@ -18,10 +18,11 @@ enum Route {
 }
 
 #[component]
-fn BlogPost(query_params: BlogQuerySegments) -> Element {
+fn BlogPost(name: String, surname: String) -> Element {
     rsx! {
         div { "This is your blogpost with a query segment:" }
-        div { "{query_params:?}" }
+        div { "Name: {name}" }
+        div { "Surname: {surname}" }
     }
 }
 

@@ -10,17 +10,19 @@ use dioxus::prelude::*;
 
 #[tokio::main]
 async fn main() {
-    let addr = std::net::SocketAddr::from(([127, 0, 0, 1], 3000));
-    println!("listening on http://{}", addr);
-
-    axum::Server::bind(&addr)
-        .serve(
-            Router::new()
-                .route("/", get(app_endpoint))
-                .into_make_service(),
-        )
+    let listener = tokio::net::TcpListener::bind("127.0.0.1:3000")
         .await
         .unwrap();
+    println!("listening on http://127.0.0.1:3000");
+
+    axum::serve(
+        listener,
+        Router::new()
+            .route("/", get(app_endpoint))
+            .into_make_service(),
+    )
+    .await
+    .unwrap();
 }
 
 // ANCHOR_END: main

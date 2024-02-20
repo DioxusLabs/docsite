@@ -31,7 +31,7 @@ Your dependencies should look roughly like this:
 
 ```toml
 [dependencies]
-axum = "0.4.5"
+axum = "0.7"
 dioxus = { version = "*" }
 dioxus-ssr = { version = "*" }
 tokio = { version = "1.15.0", features = ["full"] }

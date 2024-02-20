@@ -1,7 +1,7 @@
-use std::ops::Deref;
 use crate::*;
 use dioxus::prelude::*;
 use std::fmt::{Display, Formatter};
+use std::ops::Deref;
 use wasm_bindgen::prelude::wasm_bindgen;
 
 const ITEM_LIST_LINK: &str =

@@ -1,4 +1,5 @@
 use dioxus::prelude::*;
+use manganis::mg;
 
 fn main() {
     launch(app);
@@ -6,6 +7,6 @@ fn main() {
 
 fn app() -> Element {
     rsx! {
-        div { img { src: mg!(file("examples/assets/logo.png")) } }
+        div { img { src: mg!(file("public/static/scanner.png")) } }
     }
 }

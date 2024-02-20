@@ -27,7 +27,7 @@ This lets us add in some syntactic sugar for operations we think *shouldn't* fai
 Because Rust can't accept both Options and Results with the existing try infrastructure, you'll need to manually handle Results. This can be done by converting them into Options or by explicitly handling them. If you choose to convert your Result into an Option and bubble it with a `?`, keep in mind that if you do hit an error you will lose error information and nothing will be rendered for that component.
 
 ```rust
-{{#include src/doc_examples/error_handling.rs:early_return}}
+{{#include src/doc_examples/error_handling.rs:try_result_hook}}
 ```
 
 Notice that while hooks in Dioxus do not like being called in conditionals or loops, they *are* okay with early returns. Returning an error state early is a completely valid way of handling errors.

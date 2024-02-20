@@ -76,7 +76,7 @@ These Features are planned for the future of Dioxus:
 ### SSR
 
 - [x] SSR Support + Hydration
-- [ ] Integrated suspense support for SSR
+- [x] Integrated suspense support for SSR
 
 ### Desktop
 
@@ -105,9 +105,9 @@ These Features are planned for the future of Dioxus:
 - [x] Translation from JSX into RSX
 - [ ] Hot module replacement
 - [ ] Code splitting
-- [ ] Asset macros
-- [ ] Css pipeline
-- [ ] Image pipeline
+- [x] Asset macros
+- [x] Css pipeline
+- [x] Image pipeline
 
 ### Essential hooks
 

@@ -112,11 +112,11 @@ There are generally two ways a scope is marked as dirty:
    [`wait_for_work`](https://docs.rs/dioxus/latest/dioxus/prelude/struct.VirtualDom.html#method.wait_for_work):
    This polls dioxus internal future queue. One of these futures may mark a component as dirty.
 
-Once at least one `Scope` is marked as dirty, the renderer can call [`render_with_deadline`](https://docs.rs/dioxus/latest/dioxus/prelude/struct.VirtualDom.html#method.render_with_deadline) to diff the dirty scopes.
+Once at least one `Scope` is marked as dirty, the renderer can call [`render_immediate`](https://docs.rs/dioxus/latest/dioxus/prelude/struct.VirtualDom.html#method.render_immediate) to diff the dirty scopes.
 
 ### Diffing Scopes
 
-When a user clicks the "up high" button, the root `Scope` will be marked as dirty by the `use_signal` hook. The desktop renderer will then call `render_with_deadline`, which will diff the root `Scope`.
+When a user clicks the "up high" button, the root `Scope` will be marked as dirty by the `use_signal` hook. The desktop renderer will then call `render_immediate`, which will diff the root `Scope`.
 
 To start the diffing process, the component function is run. After the root component is run it, the root `Scope` will look like this:
 

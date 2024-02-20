@@ -15,7 +15,8 @@ You can store your state inside the coroutine async block and communicate with t
 
 ## Making Reactive State External
 
-If you have some reactive state (state that is rendered), that you want to modify from another thread, you can use the [use_rw](https://github.com/DioxusLabs/dioxus-std/blob/master/src/utils/rw/use_rw.rs) hook in the [dioxus-std](https://github.com/DioxusLabs/dioxus-std) crate. 
+If you have some reactive state (state that is rendered), that you want to modify from another thread, you can use a signal that is sync. Signals take an optional second generic value with information about syncness. Sync signals have a slightly higher overhead than thread local signals, but they can be used in a multithreaded environment.
 
-
-The use_rw hook works like the use_signal hook, but it is Send + Sync which makes it possible to move the hook into another thread.
+```rust
+{{#include src/doc_examples/sync_signal.rs}}
+```

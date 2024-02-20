@@ -26,7 +26,7 @@ You can use [`use_hook`](https://docs.rs/dioxus/latest/dioxus/prelude/fn.use_hoo
 
 `use_hook` accepts a single closure for initializing the hook. It will be only run the first time the component is rendered. The return value of that closure will be used as the value of the hook – Dioxus will take it, and store it for as long as the component is alive. On every render (not just the first one!), you will get a reference to this value.
 
-> Note: You can implement [`Drop`](https://doc.rust-lang.org/std/ops/trait.Drop.html) for your hook value – it will be dropped then the component is unmounted (no longer in the UI)
+> Note: You can use the `use_on_destroy` hook to clean up any resources the hook uses when the component is destroyed.
 
 Inside the initialization closure, you will typically make calls to other `cx` methods. For example:
 

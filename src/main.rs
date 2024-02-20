@@ -20,34 +20,38 @@ fn main() {
         use dioxus_router::prelude::*;
         use log::LevelFilter;
         simple_logger::SimpleLogger::new()
-            .with_level(LevelFilter::Trace)
+            .with_level(LevelFilter::Info)
             .init()
             .unwrap();
         tokio::runtime::Runtime::new()
             .unwrap()
             .block_on(async move {
-                pre_cache_static_routes_with_props(
-                    &ServeConfigBuilder::new_with_router(
-                        dioxus_fullstack::router::FullstackRouterConfig::<Route>::default(),
-                    )
-                    .assets_path("docs")
-                    .incremental(
-                        IncrementalRendererConfig::default()
-                            .static_dir("docs")
-                            .map_path(|route| {
-                                let mut path = std::env::current_dir().unwrap();
-                                path.push("docs");
-                                for (i, segment) in route.split('/').enumerate() {
-                                    path.push(segment);
-                                }
-                                println!("build: {path:?}");
-                                path
-                            }),
-                    )
-                    .build(),
-                )
-                .await
-                .unwrap();
+                let index_html = std::fs::read_to_string("docs/index.html").unwrap();
+                let (before_body, after_body) =
+                    index_html.split_once("<body>").expect("body tag not found");
+                let after_body = after_body
+                    .split_once("</body>")
+                    .expect("body tag not found")
+                    .1;
+                let wrapper = DefaultRenderer {
+                    before_body: before_body.to_string() + "<body>",
+                    after_body: "</body>".to_string() + after_body,
+                };
+                let mut renderer = IncrementalRenderer::builder()
+                    .static_dir("docs")
+                    .map_path(|route| {
+                        let mut path = std::env::current_dir().unwrap();
+                        path.push("docs");
+                        for (i, segment) in route.split('/').enumerate() {
+                            path.push(segment);
+                        }
+                        println!("build: {path:?}");
+                        path
+                    })
+                    .build();
+                pre_cache_static_routes::<Route, _>(&mut renderer, &wrapper)
+                    .await
+                    .unwrap();
             });
         println!("prebuilt");
 

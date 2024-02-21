@@ -12,12 +12,12 @@ pub static HIGHLIGHT_DOCS_CONTENT: GlobalSignal<bool> = Signal::global(|| false)
 
 /// The Markdown file path needs to be appended to this, including the first slash!
 const GITHUB_API_URL: &str =
-    "https://api.github.com/repos/DioxusLabs/docsite/contents/docs-src/0.4/en";
+    "https://api.github.com/repos/DioxusLabs/docsite/contents/docs-src/0.5/en";
 /// Use this URL while loading the file-specific URL.
 const GITHUB_EDIT_PAGE_FALLBACK_URL: &str = "https://github.com/DioxusLabs/docsite";
 /// The Markdown file path needs to be appended to this, including the first slash!
 const GITHUB_EDIT_PAGE_EDIT_URL: &str =
-    "https://github.com/DioxusLabs/docsite/edit/master/docs-src/0.4/en";
+    "https://github.com/DioxusLabs/docsite/edit/master/docs-src/0.5/en";
 
 #[component]
 pub fn Learn() -> Element {
@@ -125,8 +125,8 @@ fn SidebarChapter(chapter: &'static SummaryItem<BookRoute>) -> Element {
     // current route of the browser, trimmed to the book url
     let book_url = use_book().to_string();
 
-    // for instance, if the current page is /docs/0.4/en/learn/overview
-    // then we want to show the dropdown for /docs/0.4/en/learn
+    // for instance, if the current page is /docs/0.5/en/learn/overview
+    // then we want to show the dropdown for /docs/0.5/en/learn
     let show_dropdown = list_toggle() || book_url.starts_with(&*url.to_string());
     let show_chevron = !link.nested_items.is_empty();
 

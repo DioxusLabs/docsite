@@ -172,7 +172,7 @@ type LinkPairs<'a> = &'a [(&'a str, &'a str)];
 static LINKS: &[(&str, &str, LinkPairs)] = &[
     // ("Tutorials", "/tutorials/", &[]),
     ("Awesome", "/awesome", &[]),
-    ("Docs", "/learn/0.4/", &[]),
+    ("Docs", "/learn/0.5/", &[]),
     ("Blog", "/blog", &[]),
 ];
 

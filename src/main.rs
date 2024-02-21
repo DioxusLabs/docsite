@@ -38,10 +38,10 @@ fn main() {
                     after_body: "</body>".to_string() + after_body,
                 };
                 let mut renderer = IncrementalRenderer::builder()
-                    .static_dir("docs")
+                    .static_dir("docs_static")
                     .map_path(|route| {
                         let mut path = std::env::current_dir().unwrap();
-                        path.push("docs");
+                        path.push("docs_static");
                         for (i, segment) in route.split('/').enumerate() {
                             path.push(segment);
                         }
@@ -52,6 +52,13 @@ fn main() {
                 pre_cache_static_routes::<Route, _>(&mut renderer, &wrapper)
                     .await
                     .unwrap();
+
+                // Copy everything from docs_static to docs
+                let mut options = fs_extra::dir::CopyOptions::new();
+                options.overwrite = true;
+                std::fs::create_dir_all("./docs").unwrap();
+                fs_extra::dir::copy("./docs_static", "./docs", &options).unwrap();
+                std::fs::remove_dir_all("./docs_static").unwrap();
             });
         println!("prebuilt");
 

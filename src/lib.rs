@@ -61,6 +61,7 @@ fn HeaderFooter() -> Element {
 #[derive(Clone, Routable, PartialEq, Eq, Serialize, Deserialize, Debug)]
 #[rustfmt::skip]
 pub enum Route {
+    #[nest("/docsite")]
     #[layout(HeaderFooter)]
         #[route("/")]
         #[redirect("/platforms", || Route::Homepage {})]
@@ -106,7 +107,7 @@ pub enum Route {
                 DocsO3 {
                     segments: Vec<String>
                 },
-                #[child("/0.4")]
+                #[child("/0.5")]
                 Docs { child: BookRoute },
             #[end_nest]
         #[end_layout]
@@ -230,5 +231,5 @@ pub enum Route {{\n\t"
         }
     }
 
-    use_mdbook::mdbook_router! {"docs-src/0.4"}
+    use_mdbook::mdbook_router! {"docs-src/0.5"}
 }

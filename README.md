@@ -47,5 +47,5 @@ documentation when it changes.
 </a>
 
 [dx]: https://github.com/DioxusLabs/dioxus/tree/master/packages/cli
-[section on contributing]: https://dioxuslabs.com/learn/0.4/contributing
+[section on contributing]: https://dioxuslabs.com/learn/0.5/contributing
 [issue tracker]: https://github.com/dioxuslabs/docsite/issues

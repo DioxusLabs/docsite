@@ -21,7 +21,7 @@ pub fn Footer() -> Element {
             "Learning",
             &[
                 ("docs.rs", "https://docs.rs/dioxus"),
-                ("Guide", "/learn/0.4/guide"),
+                ("Guide", "/learn/0.5/guide"),
                 ("Awesome", "/awesome"),
             ],
         ),

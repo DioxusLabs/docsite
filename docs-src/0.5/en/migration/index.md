@@ -46,6 +46,9 @@ fn Comp(cx: Scope, name: String) -> Element {
         BorrowedComp {
             "{name}"
         }
+        ManualPropsComponent {
+            name: name
+        }
     })
 }
 

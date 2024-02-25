@@ -271,8 +271,10 @@ impl Config {
                 }
             }
             // Strip any trailing slashes
-            while let Some('/') = route.chars().last() {
-                route.pop();
+            if route.len() > 1 {
+                while let Some('/') = route.chars().last() {
+                    route.pop();
+                }
             }
             static_routes.insert(route);
         }

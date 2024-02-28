@@ -27,28 +27,30 @@ fn main() {
             .unwrap()
             .block_on(async move {
                 let index_html = std::fs::read_to_string("docs/index.html").unwrap();
+                let main_tag = r#"<div id="main">"#;
                 let (before_body, after_body) =
-                    index_html.split_once("<body>").expect("body tag not found");
+                    index_html.split_once(main_tag).expect("main id not found");
                 let after_body = after_body
-                    .split_once("</body>")
-                    .expect("body tag not found")
+                    .split_once("</div>")
+                    .expect("main id not found")
                     .1;
                 let wrapper = DefaultRenderer {
-                    before_body: before_body.to_string() + "<body>",
-                    after_body: "</body>".to_string() + after_body,
+                    before_body: before_body.to_string() + main_tag,
+                    after_body: "</div>".to_string() + after_body,
                 };
                 let mut renderer = IncrementalRenderer::builder()
                     .static_dir("docs_static")
                     .map_path(|route| {
                         let mut path = std::env::current_dir().unwrap();
                         path.push("docs_static");
-                        for (i, segment) in route.split('/').enumerate() {
+                        for segment in route.split('/') {
                             path.push(segment);
                         }
-                        println!("build: {path:?}");
+                        println!("built: {}", path.display());
                         path
                     })
                     .build();
+                renderer.renderer_mut().pre_render = true;
                 pre_cache_static_routes::<Route, _>(&mut renderer, &wrapper)
                     .await
                     .unwrap();
@@ -56,9 +58,10 @@ fn main() {
                 // Copy everything from docs_static to docs
                 let mut options = fs_extra::dir::CopyOptions::new();
                 options.overwrite = true;
-                std::fs::create_dir_all("./docs").unwrap();
-                fs_extra::dir::copy("./docs_static", "./docs", &options).unwrap();
-                std::fs::remove_dir_all("./docs_static").unwrap();
+                options.content_only = true;
+                options.copy_inside = true;
+                std::fs::create_dir_all(format!("./docs")).unwrap();
+                fs_extra::dir::move_dir("./docs_static", &format!("./docs"), &options).unwrap();
             });
         println!("prebuilt");
 
@@ -67,7 +70,7 @@ fn main() {
             dioxus_search::BaseDirectoryMapping::new(std::path::PathBuf::from("./docs")).map(
                 |route: Route| {
                     let route = route.to_string();
-                    let mut path = std::path::PathBuf::new();
+                    let mut path = std::path::PathBuf::default();
                     for (i, segment) in route.split('/').enumerate() {
                         path.push(segment);
                     }

@@ -73,9 +73,9 @@ fn DocVersionNav() -> Element {
         div { class: "pb-4",
             ul { class: "pl-2",
                 li { class: "m-1 rounded-md pl-2 hover:bg-gray-200 hover:dark:bg-gray-800",
-                    a { href: "/learn/0.3",
+                    a { href: "/learn/0.4",
                         dioxus_material_icons::MaterialIcon { name: "chevron_left", color: MaterialIconColor::Custom("gray".to_string()) }
-                        "0.3"
+                        "0.4"
                     }
                 }
             }
@@ -290,6 +290,14 @@ fn default_page() -> &'static Page<BookRoute> {
 
 #[component]
 pub fn DocsO3(segments: Vec<String>) -> Element {
+    let navigator = use_navigator();
+    let route: Route = use_route();
+    navigator.push(route);
+    None
+}
+
+#[component]
+pub fn DocsO4(segments: Vec<String>) -> Element {
     let navigator = use_navigator();
     let route: Route = use_route();
     navigator.push(route);

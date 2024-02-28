@@ -241,15 +241,14 @@ fn Search() -> Element {
 
 fn SearchModal() -> Element {
     let mut search_text = use_signal(String::new);
-    let results = use_signal(|| SEARCH_INDEX.search(&search_text.read()));
+    let mut results = use_signal(|| SEARCH_INDEX.search(&search_text.read()));
 
-    let last_key_press = use_signal(|| {
+    let mut last_key_press = use_signal(|| {
         #[cfg(not(target_arch = "wasm32"))]
         return 0.;
         js_sys::Date::now()
     });
     use_resource(move || {
-        to_owned![last_key_press, results];
         async move {
             // debounce the search
             if *last_key_press.read() - js_sys::Date::now() > 100. {

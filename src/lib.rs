@@ -61,7 +61,6 @@ fn HeaderFooter() -> Element {
 #[derive(Clone, Routable, PartialEq, Eq, Serialize, Deserialize, Debug)]
 #[rustfmt::skip]
 pub enum Route {
-    #[nest("/docsite")]
     #[layout(HeaderFooter)]
         #[route("/")]
         #[redirect("/platforms", || Route::Homepage {})]
@@ -105,6 +104,10 @@ pub enum Route {
 
                 #[route("/0.3/:..segments")]
                 DocsO3 {
+                    segments: Vec<String>
+                },
+                #[route("/0.4/:..segments")]
+                DocsO4 {
                     segments: Vec<String>
                 },
                 #[child("/0.5")]

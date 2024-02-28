@@ -1,4 +1,4 @@
-# 0.4 Migration Guide
+# How to Upgrade to Dioxus 0.5
 
 This guide will outline the API changes between the `0.4` and `0.5` releases. 
 

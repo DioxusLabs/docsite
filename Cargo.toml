@@ -14,7 +14,7 @@ dioxus = { git = "https://github.com/dioxuslabs/dioxus", features = ["fullstack"
 dioxus-web = { version = "0.4", features = [
     "hydrate",
 ], optional = true }
-dioxus-ssr = { version = "0.", optional = true }
+dioxus-ssr = { version = "0.4", optional = true }
 dioxus-fullstack = { version = "0.4" }
 dioxus-tui = { version = "0.4", optional = true }
 dioxus-desktop = { version = "0.4", optional = true }

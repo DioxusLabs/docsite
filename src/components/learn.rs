@@ -67,8 +67,6 @@ fn LeftNav() -> Element {
 
 /// Navigate between doc versions
 fn DocVersionNav() -> Element {
-    let navigator = use_navigator();
-
     rsx! {
         div { class: "pb-4",
             ul { class: "pl-2",

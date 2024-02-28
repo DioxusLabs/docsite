@@ -13,7 +13,4 @@ Cargo.lock
 
 /pkg
 /static
-# /docs/learn/0.3
-# /docs/assets/
-# /docs/static/
-# /docs/
+/docs

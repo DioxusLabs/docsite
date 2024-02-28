@@ -14,3 +14,4 @@ Cargo.lock
 /pkg
 /static
 /docs
+/dioxus_search

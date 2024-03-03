@@ -117,7 +117,7 @@ use dioxus::prelude::*;
 fn init_logging() {
     android_logger::init_once(
         android_logger::Config::default()
-            .with_min_level(log::Level::Trace)
+            .with_max_level(log::LevelFilter::Trace)
     );
 }
 

@@ -94,7 +94,7 @@ cargo mobile init
 
 When you run `cargo mobile init`, you will be asked a series of questions about your project. One of those questions is what template you should use. Dioxus currently doesn't have a template in Tauri mobile, instead you can use the `wry` template.
 
-> You may also be asked to input your team ID for IOS. You can find your team id [here](https://developer.apple.com/help/account/manage-your-team/locate-your-team-id/) or create a team id by creating a develwr; oper account [here](https://developer.apple.com/help/account/get-started/about-your-developer-account)
+> You may also be asked to input your team ID for IOS. You can find your team id [here](https://developer.apple.com/help/account/manage-your-team/locate-your-team-id/) or create a team id by creating a developer account [here](https://developer.apple.com/help/account/get-started/about-your-developer-account)
 
 Next, we need to modify our dependencies to include dioxus and ensure the right version of wry is installed. Change the `[dependencies]` section of your `Cargo.toml`:
 

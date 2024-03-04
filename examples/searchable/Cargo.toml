@@ -6,10 +6,7 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-dioxus = { git = "https://github.com/dioxuslabs/dioxus" }
-dioxus-web = { git = "https://github.com/dioxuslabs/dioxus", features = ["hydrate"] }
-dioxus-router = { git = "https://github.com/dioxuslabs/dioxus", features = ["fullstack"] }
-dioxus-fullstack = { git = "https://github.com/dioxuslabs/dioxus" }
+dioxus = { version = "0.5.0-alpha.0", features = ["fullstack", "router"] }
 dioxus-search = { path = "../../" }
 axum = { version = "0.6.12", optional = true }
 serde = { version = "1.0.174", features = ["derive"] }
@@ -19,5 +16,5 @@ simple_logger = "4.2.0"
 log = "0.4.19"
 
 [features]
-web = ["getrandom/js"]
-ssr = ["dioxus-fullstack/axum", "tokio", "axum"]
+web = ["getrandom/js", "dioxus/web"]
+ssr = ["dioxus/axum", "tokio", "axum"]

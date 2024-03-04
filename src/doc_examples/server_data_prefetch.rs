@@ -1,18 +1,16 @@
 #![allow(non_snake_case, unused)]
 
 use dioxus::prelude::*;
-use dioxus_fullstack::prelude::*;
+
 
 fn main() {
-    LaunchBuilder::new(app).launch();
+    launch(app);
 }
 
-fn app(cx: Scope) -> Element {
-    let mut count = use_server_future(cx, (), |_| async { get_server_data().await })?;
+fn app() -> Element {
+    let mut count = use_server_future(|| async { get_server_data().await })?;
 
-    cx.render(rsx! {
-        "server data is {count.value():?}"
-    })
+    rsx! {"server data is {count.value():?}"}
 }
 
 #[server]

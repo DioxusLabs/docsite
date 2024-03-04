@@ -4,11 +4,11 @@
 use dioxus::prelude::*;
 
 fn main() {
-    dioxus_desktop::launch(MemeEditor);
+    launch(MemeEditor);
 }
 
 // ANCHOR: meme_editor
-fn MemeEditor(cx: Scope) -> Element {
+fn MemeEditor() -> Element {
     let container_style = r"
         display: flex;
         flex-direction: column;
@@ -17,27 +17,21 @@ fn MemeEditor(cx: Scope) -> Element {
         width: fit-content;
     ";
 
-    let caption = use_state(cx, || "me waiting for my rust code to compile".to_string());
+    let mut caption = use_signal(|| "me waiting for my rust code to compile".to_string());
 
-    cx.render(rsx! {
-        div {
-            style: "{container_style}",
-            h1 { "Meme Editor" },
-            Meme {
-                caption: caption,
-            },
-            CaptionEditor {
-                caption: caption,
-                on_input: move |event: FormEvent| {caption.set(event.value.clone());},
-            },
+    rsx! {
+        div { style: "{container_style}",
+            h1 { "Meme Editor" }
+            Meme { caption: caption }
+            CaptionEditor { caption: caption, on_input: move |event: FormEvent| caption.set(event.value()) }
         }
-    })
+    }
 }
 // ANCHOR_END: meme_editor
 
 // ANCHOR: meme_component
 #[component]
-fn Meme<'a>(cx: Scope<'a>, caption: &'a str) -> Element<'a> {
+fn Meme(caption: String) -> Element {
     let container_style = r#"
         position: relative;
         width: fit-content;
@@ -58,32 +52,18 @@ fn Meme<'a>(cx: Scope<'a>, caption: &'a str) -> Element<'a> {
         text-align: center;
     ";
 
-    cx.render(rsx!(
-        div {
-            style: "{container_style}",
-            img {
-                src: "https://i.imgflip.com/2zh47r.jpg",
-                height: "500px",
-            },
-            div {
-                style: "{caption_container_style}",
-                p {
-                    style: "{caption_style}",
-                    "{caption}"
-                }
-            }
+    rsx!(
+        div { style: "{container_style}",
+            img { src: "https://i.imgflip.com/2zh47r.jpg", height: "500px" }
+            div { style: "{caption_container_style}", p { style: "{caption_style}", "{caption}" } }
         }
-    ))
+    )
 }
 // ANCHOR_END: meme_component
 
 // ANCHOR: caption_editor
 #[component]
-fn CaptionEditor<'a>(
-    cx: Scope<'a>,
-    caption: &'a str,
-    on_input: EventHandler<'a, FormEvent>,
-) -> Element<'a> {
+fn CaptionEditor(caption: String, on_input: EventHandler<FormEvent>) -> Element {
     let input_style = r"
         border: none;
         background: cornflowerblue;
@@ -93,11 +73,13 @@ fn CaptionEditor<'a>(
         color: white;
     ";
 
-    cx.render(rsx!(input {
-        style: "{input_style}",
-        value: "{caption}",
-        oninput: move |event| on_input.call(event),
-    }))
+    rsx!(
+        input {
+            style: "{input_style}",
+            value: "{caption}",
+            oninput: move |event| on_input.call(event)
+        }
+    )
 }
 // ANCHOR_END: caption_editor
 

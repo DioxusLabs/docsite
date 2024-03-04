@@ -40,9 +40,3 @@ script = []
 # Javascript code file
 # serve: [dev-server] only
 script = []
-
-[application.tools]
-
-# use binaryen.wasm-opt for output Wasm file
-# binaryen just will trigger in `web` platform
-binaryen = { wasm_opt = true }

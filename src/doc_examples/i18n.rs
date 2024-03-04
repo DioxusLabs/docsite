@@ -4,7 +4,7 @@ use dioxus_std::translate;
 use std::str::FromStr;
 
 fn main() {
-    dioxus_web::launch(app);
+    launch(app);
 }
 
 static EN_US: &str = r#"{
@@ -27,41 +27,26 @@ static ES_ES: &str = r#"{
 }"#;
 
 #[allow(non_snake_case)]
-fn Body(cx: Scope) -> Element {
-    let i18 = use_i18(cx);
+fn Body() -> Element {
+    let mut i18 = use_i18();
 
     let change_to_english = move |_| i18.set_language("en-US".parse().unwrap());
     let change_to_spanish = move |_| i18.set_language("es-ES".parse().unwrap());
 
-    render!(
-        button {
-            onclick: change_to_english,
-            label {
-                "English"
-            }
-        }
-        button {
-            onclick: change_to_spanish,
-            label {
-                "Spanish"
-            }
-        }
-        p { translate!(i18, "messages.hello_world") }
-        p { translate!(i18, "messages.hello", name: "Dioxus")  }
+    rsx!(
+        button { onclick: change_to_english, label { "English" } }
+        button { onclick: change_to_spanish, label { "Spanish" } }
+        p { {translate!(i18, "messages.hello_world")} }
+        p { {translate!(i18, "messages.hello", name: "Dioxus")} }
     )
 }
 
-fn app(cx: Scope) -> Element {
-    use_init_i18n(
-        cx,
-        "en-US".parse().unwrap(),
-        "en-US".parse().unwrap(),
-        || {
-            let en_us = Language::from_str(EN_US).unwrap();
-            let es_es = Language::from_str(ES_ES).unwrap();
-            vec![en_us, es_es]
-        },
-    );
+fn app() -> Element {
+    use_init_i18n("en-US".parse().unwrap(), "en-US".parse().unwrap(), || {
+        let en_us = Language::from_str(EN_US).unwrap();
+        let es_es = Language::from_str(ES_ES).unwrap();
+        vec![en_us, es_es]
+    });
 
-    render!(Body {})
+    rsx!( Body {} )
 }

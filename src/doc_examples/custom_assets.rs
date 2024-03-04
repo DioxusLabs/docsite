@@ -1,13 +1,12 @@
 use dioxus::prelude::*;
+use manganis::mg;
 
 fn main() {
-    dioxus_desktop::launch(app);
+    launch(app);
 }
 
-fn app(cx: Scope) -> Element {
-    cx.render(rsx! {
-        div {
-            img { src: "examples/assets/logo.png" }
-        }
-    })
+fn app() -> Element {
+    rsx! {
+        div { img { src: mg!(file("public/static/scanner.png")) } }
+    }
 }

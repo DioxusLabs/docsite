@@ -1,9 +1,11 @@
-use std::fmt::{Display, Formatter};
-use dioxus::prelude::*;
-use wasm_bindgen::prelude::wasm_bindgen;
 use crate::*;
+use dioxus::prelude::*;
+use std::fmt::{Display, Formatter};
+use std::ops::Deref;
+use wasm_bindgen::prelude::wasm_bindgen;
 
-const ITEM_LIST_LINK: &str = "https://raw.githubusercontent.com/DioxusLabs/awesome-dioxus/master/awesome.json";
+const ITEM_LIST_LINK: &str =
+    "https://raw.githubusercontent.com/DioxusLabs/awesome-dioxus/master/awesome.json";
 const STAR_CACHE_NAME: &str = "STARS-";
 
 #[derive(Props, Clone, serde::Deserialize, PartialEq)]
@@ -12,7 +14,7 @@ struct Item {
     description: String,
     r#type: AwesomeType,
     category: Category,
-    
+
     /// Option GitHub Information
     /// Items won't display stars without this.
     github: Option<GithubInfo>,
@@ -25,7 +27,7 @@ struct Item {
 #[derive(Clone, serde::Deserialize, PartialEq)]
 enum AwesomeType {
     Awesome,
-    MadeWith
+    MadeWith,
 }
 
 #[derive(Default, Clone, serde::Deserialize, PartialEq)]
@@ -34,7 +36,7 @@ struct GithubInfo {
     repo: String,
 }
 
-#[derive(Clone, serde::Deserialize, PartialEq)]
+#[derive(Clone, Copy, serde::Deserialize, PartialEq)]
 enum Category {
     Misc,
     Util,
@@ -72,8 +74,8 @@ struct StarsResponse {
 }
 
 #[component]
-pub fn Awesome(cx: Scope) -> Element {
-    let items = use_future(cx, (), |_| async move {
+pub fn Awesome() -> Element {
+    let items = use_resource(move || async move {
         let req = match reqwest::get(ITEM_LIST_LINK).await {
             Ok(r) => r,
             Err(e) => return Err(e.to_string()),
@@ -87,37 +89,48 @@ pub fn Awesome(cx: Scope) -> Element {
         Ok(items)
     });
 
-    let search = use_state(cx, || "".to_string());
+    let mut search = use_signal(|| "".to_string());
 
-    match items.value() {
+    match &*items.read() {
         Some(Ok(items)) => {
             to_owned![items];
-            items.sort_by(|a, b| b.category.to_string().to_lowercase().cmp(&a.category.to_string().to_lowercase()));
-            let items: Vec<Item> = items.into_iter().filter(|i| i.name.to_lowercase().contains(&search.get().to_lowercase())).collect();
+            items.sort_by(|a, b| {
+                b.category
+                    .to_string()
+                    .to_lowercase()
+                    .cmp(&a.category.to_string().to_lowercase())
+            });
+            let items: Vec<Item> = items
+                .into_iter()
+                .filter(|i| {
+                    i.name
+                        .to_lowercase()
+                        .contains(&search.read().to_lowercase())
+                })
+                .collect();
 
-            cx.render(rsx!(
-                section {
-                    class: "dark:bg-ideblack w-full pt-24 pb-10",
-                    div {
-                        class: "container mx-auto max-w-screen-1g text-center",
-                        h1 {
-                            class: "text-[3.3em] font-bold tracking-tight dark:text-white text-ghdarkmetal mb-2 px-2",
+            rsx!(
+                section { class: "dark:bg-ideblack w-full pt-24 pb-10",
+                    div { class: "container mx-auto max-w-screen-1g text-center",
+                        h1 { class: "text-[3.3em] font-bold tracking-tight dark:text-white text-ghdarkmetal mb-2 px-2",
                             "Awesome stuff for Dioxus"
                         }
-                        p {
-                            class: "mx-auto text-xl text-gray-600 dark:text-gray-400 pb-10 px-2 max-w-screen-sm",
+                        p { class: "mx-auto text-xl text-gray-600 dark:text-gray-400 pb-10 px-2 max-w-screen-sm",
                             "Everything you'll need to build awesome Dioxus apps. Also check out "
-                            b { Link { to: "#made-with-dioxus", "Made with Dioxus" } } "!"
+                            b {
+                                Link { to: "#made-with-dioxus", "Made with Dioxus" }
+                            }
+                            "!"
                         }
-                        p {
-                            class: "mx-auto text-xl text-gray-600 dark:text-gray-400 pb-10 px-2 max-w-screen-sm",
+                        p { class: "mx-auto text-xl text-gray-600 dark:text-gray-400 pb-10 px-2 max-w-screen-sm",
                             "To submit your project, make a pull request in the "
-                            b { Link { to: "https://github.com/DioxusLabs/awesome-dioxus", "awesome-dioxus" } }
+                            b {
+                                Link { to: "https://github.com/DioxusLabs/awesome-dioxus", "awesome-dioxus" }
+                            }
                             " repo."
                         }
                     }
-                    div {
-                        class: "container mx-auto",
+                    div { class: "container mx-auto",
                         div {
                             class: "mx-2 rounded-lg lg:w-2/5 lg:mx-auto",
                             background_color: "#24292f",
@@ -126,124 +139,121 @@ pub fn Awesome(cx: Scope) -> Element {
                                 background_color: "#24292f",
                                 placeholder: "Looking for something specific?",
                                 value: "{search}",
-                                oninput: move |evt| search.set(evt.value.clone()),
+                                oninput: move |evt| search.set(evt.value())
                             }
                         }
                     }
                 }
-        
-                section {
-                    class: "dark:bg-ideblack w-full pb-24",
-                    div {
-                        class: "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 container mx-auto px-2 max-w-screen-1g",
-                        items.iter().filter_map(|item| {
+                section { class: "dark:bg-ideblack w-full pb-24",
+                    div { class: "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 container mx-auto px-2 max-w-screen-1g",
+                        {items.iter().filter_map(|item| {
                             if let AwesomeType::Awesome = item.r#type {
                                 Some(rsx!(AwesomeItem { key: "{item.name}", item: item.clone() }))
                             } else {
                                 None
                             }
-                        })
+                        })}
                     }
                 }
 
-                section {
-                    class: "dark:bg-ideblack w-full pb-10",
-                    div {
-                        class: "container mx-auto max-w-screen-1g text-center",
+                section { class: "dark:bg-ideblack w-full pb-10",
+                    div { class: "container mx-auto max-w-screen-1g text-center",
                         h1 {
                             class: "text-[3.3em] font-bold tracking-tight dark:text-white text-ghdarkmetal mb-2 px-2",
                             id: "made-with-dioxus",
                             "Made with Dioxus"
                         }
-                        p {
-                            class: "mx-auto text-xl text-gray-600 dark:text-gray-400 pb-10 px-2 max-w-screen-sm",
+                        p { class: "mx-auto text-xl text-gray-600 dark:text-gray-400 pb-10 px-2 max-w-screen-sm",
                             "Real world uses of Dioxus."
                         }
                     }
                 }
 
-                section {
-                    class: "dark:bg-ideblack w-full pb-24",
-                    div {
-                        class: "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 container mx-auto px-2 max-w-screen-1g",
-                        items.iter().filter_map(|item| {
+                section { class: "dark:bg-ideblack w-full pb-24",
+                    div { class: "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 container mx-auto px-2 max-w-screen-1g",
+                        for item in items.iter() {
                             if let AwesomeType::MadeWith = item.r#type {
-                                Some(rsx!(AwesomeItem { key: "{item.name}", item: item.clone() }))
-                            } else {
-                                None
+                                AwesomeItem { key: "{item.name}", item: item.clone() }
                             }
-                        })
+                        }
                     }
                 }
-            ))
+            )
         }
         Some(Err(e)) => {
-            cx.render(rsx!(
-                section {
-                    class: "dark:bg-ideblack w-full pt-24 pb-96",
-                    div {
-                        class: "container mx-auto max-w-screen-1g text-center animate-fadein-medium",
-                        p {
-                            class: "text-[3.3em] font-bold tracking-tight dark:text-white text-ghdarkmetal mb-2 px-2",
+            rsx!(
+                section { class: "dark:bg-ideblack w-full pt-24 pb-96",
+                    div { class: "container mx-auto max-w-screen-1g text-center animate-fadein-medium",
+                        p { class: "text-[3.3em] font-bold tracking-tight dark:text-white text-ghdarkmetal mb-2 px-2",
                             "It seems a not-so-awesome error occurred. 🙁"
                         }
-                        p {
-                            class: "mx-auto text-sm dark:text-gray-500 pb-10 px-2",
+                        p { class: "mx-auto text-sm dark:text-gray-500 pb-10 px-2",
                             "{e}"
                         }
                     }
                 }
-            ))
+            )
         }
         None => {
-            cx.render(rsx!(
-                section {
-                    class: "dark:bg-ideblack w-full pt-24 pb-96",
-                    div {
-                        class: "container mx-auto max-w-screen-1g text-center animate-fadein-medium",
-                        p {
-                            class: "text-[3.3em] font-bold tracking-tight dark:text-white text-ghdarkmetal mb-2 px-2",
+            rsx!(
+                section { class: "dark:bg-ideblack w-full pt-24 pb-96",
+                    div { class: "container mx-auto max-w-screen-1g text-center animate-fadein-medium",
+                        p { class: "text-[3.3em] font-bold tracking-tight dark:text-white text-ghdarkmetal mb-2 px-2",
                             "Loading..."
                         }
                     }
                 }
-            ))
+            )
         }
     }
 }
 
 #[component]
-fn AwesomeItem(cx: Scope, item: Item) -> Element {
-    let is_github = item.github.is_some();
-    let username = item.github.clone().unwrap_or(GithubInfo::default()).username;
-    let repo = item.github.clone().unwrap_or(GithubInfo::default()).repo;
+fn AwesomeItem(item: ReadOnlySignal<Item>) -> Element {
+    let stars = use_resource(move || {
+        async move {
+            let item = item.read();
+            let is_github = item.github.is_some();
+            let username = item
+                .github
+                .clone()
+                .unwrap_or(GithubInfo::default())
+                .username;
+            let repo = item.github.clone().unwrap_or(GithubInfo::default()).repo;
+            if is_github {
+                // Check cache
+                if let Some(stars) = get_stars(format!("{}{}/{}", STAR_CACHE_NAME, username, repo))
+                {
+                    return Some(stars);
+                }
 
-    let stars = use_future(cx, (), |_| async move {
-        if is_github {
-            // Check cache
-            if let Some(stars) = get_stars(format!("{}{}/{}", STAR_CACHE_NAME, username, repo)) {
-                return Some(stars);
-            }
+                // Not in cache or expired, lets get from github
+                if let Ok(req) =
+                    reqwest::get(format!("https://api.github.com/repos/{username}/{repo}")).await
+                {
+                    if let Ok(res) = req.json::<StarsResponse>().await {
+                        // Add to cache
 
-            // Not in cache or expired, lets get from github
-            if let Ok(req) = reqwest::get(format!("https://api.github.com/repos/{username}/{repo}")).await {
-                if let Ok(res) = req.json::<StarsResponse>().await {
-                    // Add to cache
-                    
-                    set_stars(format!("{}{}/{}", STAR_CACHE_NAME, username, repo), res.stargazers_count as usize);
-                    return Some(res.stargazers_count as usize);
+                        set_stars(
+                            format!("{}{}/{}", STAR_CACHE_NAME, username, repo),
+                            res.stargazers_count as usize,
+                        );
+                        return Some(res.stargazers_count as usize);
+                    }
                 }
             }
-        }
 
-        None
+            None
+        }
     });
 
     // Format stars text
-    let stars = match stars.value() {
+    let stars = match &*stars.value().read() {
         Some(Some(v)) => format!("{} ⭐", v),
         _ => "N/A ⭐".to_string(),
     };
+
+    let item = item.read();
 
     // Figure out what link to use
     let link = match &item.link {
@@ -257,40 +267,24 @@ fn AwesomeItem(cx: Scope, item: Item) -> Element {
         }
     };
 
-    cx.render(rsx!(
-        Link {
-            to: NavigationTarget::<Route>::External(link),
+    rsx!(
+        Link { to: NavigationTarget::<Route>::External(link),
             div {
                 class: "flex flex-col h-full p-3 rounded hover:-translate-y-2 transition-transform duration-300",
                 background_color: "#24292f",
                 div {
-                    p {
-                        class: "text-xl text-gray-100 font-bold",
-                        "{item.name}"
-                    }
-                    p {
-                        class: "text-base pt-2 text-gray-300",
-                        "{item.description}"
-                    }
+                    p { class: "text-xl text-gray-100 font-bold", "{item.name}" }
+                    p { class: "text-base pt-2 text-gray-300", "{item.description}" }
                 }
-                div {
-                    class: "mt-auto pt-4 flex",
+                div { class: "mt-auto pt-4 flex",
                     if Category::App != item.category {
-                        rsx! {
-                            p {
-                                class: "text-gray-300 font-bold",
-                                "{item.category}"
-                            }
-                        }
+                        p { class: "text-gray-300 font-bold", "{item.category}" }
                     }
-                    p {
-                        class: "ml-auto text-gray-300 font-bold",
-                        "{stars}"
-                    }
+                    p { class: "ml-auto text-gray-300 font-bold", "{stars}" }
                 }
             }
         }
-    ))
+    )
 }
 
 #[wasm_bindgen(module = "/src/components/awesome/storage.js")]

@@ -8,64 +8,60 @@ use dioxus::prelude::*;
 
 fn main() {}
 
-fn AntipatternNestedFragments(cx: Scope<()>) -> Element {
+fn AntipatternNestedFragments() -> Element {
     // ANCHOR: nested_fragments
     // ❌ Don't unnecessarily nest fragments
-    let _ = cx.render(rsx!(
-        Fragment {
-            Fragment {
-                Fragment {
-                    Fragment {
-                        Fragment {
-                            div { "Finally have a real node!" }
-                        }
+    let _ = rsx!(
+        Fragment { 
+            Fragment { 
+                Fragment { 
+                    Fragment { 
+                        Fragment { div { "Finally have a real node!" } }
                     }
                 }
             }
         }
-    ));
+    );
 
     // ✅ Render shallow structures
-    cx.render(rsx!(
-        div { "Finally have a real node!" }
-    ))
+    rsx!( div { "Finally have a real node!" } )
     // ANCHOR_END: nested_fragments
 }
 
-#[derive(PartialEq, Props)]
+#[derive(PartialEq, Props, Clone)]
 struct NoKeysProps {
     data: HashMap<u32, String>,
 }
 
-fn AntipatternNoKeys(cx: Scope<NoKeysProps>) -> Element {
+fn AntipatternNoKeys(props: NoKeysProps) -> Element {
     // ANCHOR: iter_keys
-    let data: &HashMap<_, _> = &cx.props.data;
+    let data: &HashMap<_, _> = &props.data;
 
     // ❌ No keys
-    cx.render(rsx! {
+    rsx! {
         ul {
-            data.values().map(|value| rsx!(
+            for value in data.values() {
                 li { "List item: {value}" }
-            ))
+            }
         }
-    });
+    };
 
     // ❌ Using index as keys
-    cx.render(rsx! {
+    rsx! {
         ul {
-            cx.props.data.values().enumerate().map(|(index, value)| rsx!(
+            for (index , value) in data.values().enumerate() {
                 li { key: "{index}", "List item: {value}" }
-            ))
+            }
         }
-    });
+    };
 
     // ✅ Using unique IDs as keys:
-    cx.render(rsx! {
+    rsx! {
         ul {
-            cx.props.data.iter().map(|(key, value)| rsx!(
+            for (key , value) in props.data.iter() {
                 li { key: "{key}", "List item: {value}" }
-            ))
+            }
         }
-    })
+    }
     // ANCHOR_END: iter_keys
 }

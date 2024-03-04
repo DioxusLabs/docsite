@@ -30,19 +30,21 @@ enum Route {
 }
 // ANCHOR_END: router
 
-pub fn App(cx: Scope) -> Element {
-    render! {
-        Router::<Route> {}
-    }
+pub fn App() -> Element {
+    rsx! { Router::<Route> {} }
 }
 
 #[component]
-fn NavBar(cx: Scope) -> Element {
-    render! {
+fn NavBar() -> Element {
+    rsx! {
         nav {
             ul {
-                li { Link { to: Route::Home {}, "Home" } }
-                li { Link { to: Route::BlogList {}, "Blog" } }
+                li {
+                    Link { to: Route::Home {}, "Home" }
+                }
+                li {
+                    Link { to: Route::BlogList {}, "Blog" }
+                }
             }
         }
         Outlet::<Route> {}
@@ -50,34 +52,36 @@ fn NavBar(cx: Scope) -> Element {
 }
 
 #[component]
-fn Home(cx: Scope) -> Element {
-    render! {
-        h1 { "Welcome to the Dioxus Blog!" }
-    }
+fn Home() -> Element {
+    rsx! { h1 { "Welcome to the Dioxus Blog!" } }
 }
 
 #[component]
-fn Blog(cx: Scope) -> Element {
-    render! {
+fn Blog() -> Element {
+    rsx! {
         h1 { "Blog" }
         Outlet::<Route> {}
     }
 }
 
 #[component]
-fn BlogList(cx: Scope) -> Element {
-    render! {
+fn BlogList() -> Element {
+    rsx! {
         h2 { "Choose a post" }
         ul {
             li {
                 Link {
-                    to: Route::BlogPost { name: "Blog post 1".into() },
+                    to: Route::BlogPost {
+                        name: "Blog post 1".into(),
+                    },
                     "Read the first blog post"
                 }
             }
             li {
                 Link {
-                    to: Route::BlogPost { name: "Blog post 2".into() },
+                    to: Route::BlogPost {
+                        name: "Blog post 2".into(),
+                    },
                     "Read the second blog post"
                 }
             }
@@ -86,20 +90,15 @@ fn BlogList(cx: Scope) -> Element {
 }
 
 #[component]
-fn BlogPost(cx: Scope, name: String) -> Element {
-    render! {
-        h2 { "Blog Post: {name}"}
-    }
+fn BlogPost(name: String) -> Element {
+    rsx! { h2 { "Blog Post: {name}" } }
 }
 
 #[component]
-fn PageNotFound(cx: Scope, route: Vec<String>) -> Element {
-    render! {
+fn PageNotFound(route: Vec<String>) -> Element {
+    rsx! {
         h1 { "Page not found" }
         p { "We are terribly sorry, but the page you requested doesn't exist." }
-        pre {
-            color: "red",
-            "log:\nattemped to navigate to: {route:?}"
-        }
+        pre { color: "red", "log:\nattemped to navigate to: {route:?}" }
     }
 }

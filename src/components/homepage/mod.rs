@@ -9,8 +9,8 @@ pub mod snippets;
 pub mod value_add;
 
 #[component]
-pub fn Homepage(cx: Scope) -> Element {
-    cx.render(rsx! {
+pub fn Homepage() -> Element {
+    rsx! {
         div {
             section { class: "w-full dark:bg-ideblack",
                 hero::Hero {}
@@ -21,7 +21,7 @@ pub fn Homepage(cx: Scope) -> Element {
             Stats {}
         }
         call_to_action::CallToAction {}
-    })
+    }
 }
 
 const CARDS: &[(&str, &str)] = &[
@@ -51,34 +51,38 @@ const CARDS: &[(&str, &str)] = &[
     ),
 ];
 
-fn ProjectCards(cx: Scope) -> Element {
-    cx.render(rsx! {
+fn ProjectCards() -> Element {
+    rsx! {
         section { class: "py-12",
             div { class: "container mx-auto px-6 lg:px-64",
                 div { class: "flex flex-wrap -mx-3",
-                    CARDS.iter().map(|(title, description)| rsx! {
-                        div { class: "w-full md:w-1/2 lg:w-1/3 px-3 mb-6 text-xs dark:text-white", key: "{title}",
+                    for (title , description) in CARDS.iter() {
+                        div { key: "{title}", class: "w-full md:w-1/2 lg:w-1/3 px-3 mb-6 text-xs dark:text-white",
                             div { class: "p-6 md:p-8 h-full rounded shadow-white hover:shadow-xl hover:border-transparent cursor-pointer",
                                 div {
-                                    h3 { class: "mb-4 text-2xl font-semibold font-heading font-sans", "{title}" }
+                                    h3 { class: "mb-4 text-2xl font-semibold font-heading font-sans",
+                                        "{title}"
+                                    }
                                     p { class: "text-base text-gray-500 pb-4", "{description}" }
                                     Link {
                                         class: "bg-gray-900 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 focus:ring-offset-gray-50 text-white font-semibold h-12 px-6 rounded-lg flex items-center justify-center sm:w-auto dark:bg-sky-500 dark:highlight-white/20 dark:hover:bg-sky-400",
-                                        to: Route::Docs { child: BookRoute::GettingStartedIndex {} },
+                                        to: Route::Docs {
+                                            child: BookRoute::GettingStartedIndex {},
+                                        },
                                         "Get started"
                                     }
                                 }
                             }
                         }
-                    })
+                    }
                 }
             }
         }
-    })
+    }
 }
 
-fn AvailablePlatforms(cx: Scope) -> Element {
-    cx.render(rsx! {
+fn AvailablePlatforms() -> Element {
+    rsx! {
         section { class: "w-full dark:bg-ideblack",
             div { class: "container mx-auto max-w-screen-lg",
                 div { class: "relative overflow-x-hidden",
@@ -98,88 +102,87 @@ fn AvailablePlatforms(cx: Scope) -> Element {
                 TriShow {
                     left: None,
                     center: None,
-                    right: render!(
-    "Build for the web using Rust and WebAssembly. As fast as SolidJS and more robust than React. Integrated hot reloading for instant iterations."
-),
+                    right: rsx!(
+                        "Build for the web using Rust and WebAssembly. As fast as SolidJS and more robust than React. Integrated hot reloading for instant iterations."
+                    ),
                     to: Route::Docs {
-    child: BookRoute::GettingStartedWasm {},
-},
+                        child: BookRoute::GettingStartedWasm {},
+                    },
                     title: "Web with WASM"
                 }
                 TriShow {
                     left: None,
                     center: None,
-                    right: render!(
-    "Lightweight (<2mb) desktop and mobile apps with zero configuration. Choose between WebView or WGPU-enabled renderers. Runs on macOS, Windows, Linux, iOS, and Android."
-),
+                    right: rsx!(
+                        "Lightweight (<2mb) desktop and mobile apps with zero configuration. Choose between WebView or WGPU-enabled renderers. Runs on macOS, Windows, Linux, iOS, and Android."
+                    ),
                     to: Route::Docs {
-    child: BookRoute::GettingStartedDesktop {
-    },
-},
+                        child: BookRoute::GettingStartedDesktop {
+                        },
+                    },
                     title: "Desktop and Mobile"
                 }
                 TriShow {
                     to: Route::Docs {
-    child: BookRoute::GettingStartedTui {},
-},
+                        child: BookRoute::GettingStartedTui {},
+                    },
                     title: "Terminal User Interfaces",
-                    right: render!(
-    "Quickly convert any CLI tool to a beautiful interactive user interface with just a few lines of code. Runs anywhere with a terminal."
-),
+                    right: rsx!(
+                        "Quickly convert any CLI tool to a beautiful interactive user interface with just a few lines of code. Runs anywhere with a terminal."
+                    ),
                     left: None,
                     center: None
                 }
                 TriShow {
                     to: Route::Docs {
-    child: BookRoute::GettingStartedFullstack {
-    },
-},
+                        child: BookRoute::GettingStartedFullstack {
+                        },
+                    },
                     title: "Fullstack Apps",
-                    right: render!(
-    "Pre-render on the server, and hydrate on the client. Perfect lighthouse scores and performance over 1000x better than Node and Python. Perfect for static site generation or fullstack apps."
-),
+                    right: rsx!(
+                        "Pre-render on the server, and hydrate on the client. Perfect lighthouse scores and performance over 1000x better than Node and Python. Perfect for static site generation or fullstack apps."
+                    ),
                     left: None,
                     center: None
                 }
                 TriShow {
                     to: Route::Docs {
-    child: BookRoute::GettingStartedLiveview {
-    },
-},
+                        child: BookRoute::GettingStartedLiveview {
+                        },
+                    },
                     title: "LiveView and LiveComponents",
-                    right: render!(
-    "Render your app entirely on the server. Zero backend configuration capable of handling thousands of active clients. Integrates with Axum, Warp, Salvo, and Tokamak.",
-),
+                    right: rsx!(
+                        "Render your app entirely on the server. Zero backend configuration capable of handling thousands of active clients. Integrates with Axum, Warp, Salvo, and Tokamak.",
+                    ),
                     left: None,
                     center: None,
                     last: true
                 }
             }
         }
-    })
+    }
 }
 
 #[component]
-fn TriShow<'a>(
-    cx: Scope<'a>,
-    left: Element<'a>,
-    center: Element<'a>,
-    right: Element<'a>,
+fn TriShow(
+    left: Element,
+    center: Element,
+    right: Element,
     title: &'static str,
     to: Route,
     last: Option<bool>,
 ) -> Element {
-    render! {
+    rsx! {
         div { class: "w-full flex flex-row justify-center max-w-screen-lg",
             // div { class: "grow basis-0", left }
-            TriPadding { last: last.unwrap_or_default(), center }
-            div { class: "grow basis-0 ",
+            TriPadding { last: last.unwrap_or_default(), {center} }
+            div { class: "grow basis-0",
                 Link { to: to.clone(),
                     div { class: "min-w-lg max-w-screen-md hover:shadow-pop rounded-lg p-8",
                         h2 { class: "text-2xl text-gray-800 font-semibold pb-2 dark:text-gray-100 ",
-                            *title
+                            "{title}"
                         }
-                        right
+                        {right}
                     }
                 }
             }
@@ -188,22 +191,22 @@ fn TriShow<'a>(
 }
 
 #[component]
-fn TriPadding<'a>(cx: Scope<'a>, children: Element<'a>, last: bool) -> Element {
-    render!(
+fn TriPadding(children: Element, last: bool) -> Element {
+    rsx!(
         div { class: "flex flex-col items-center",
             div { class: "w-0 h-10 border-dashed border border-[#444]" }
             IconSplit {}
 
             if !last {
-                rsx!( div { class: "w-0 h-full border-dashed border border-[#444]", children } )
+                div { class: "w-0 h-full border-dashed border border-[#444]", {children} }
             }
         }
     )
 }
 
 #[component]
-fn DeveloperExperience(cx: Scope) -> Element {
-    render! (
+fn DeveloperExperience() -> Element {
+    rsx! (
         section { class: "pt-36 w-full dark:bg-ideblack dark:text-white",
             div { class: "container mx-auto max-w-screen-2xl",
                 div { class: "relative",
@@ -244,19 +247,19 @@ fn DeveloperExperience(cx: Scope) -> Element {
 }
 
 #[component]
-fn ExperienceText(cx: Scope, title: &'static str, content: &'static str) -> Element {
-    render!(
+fn ExperienceText(title: &'static str, content: &'static str) -> Element {
+    rsx!(
         div { class: "pb-12",
             h3 { class: "text-2xl text-gray-800 font-semibold pb-2 dark:text-gray-100 ",
-                *title
+                "{title}"
             }
-            p { *content }
+            p { "{content}" }
         }
     )
 }
 
-fn IconSplit(cx: Scope) -> Element {
-    cx.render(rsx! {
+fn IconSplit() -> Element {
+    rsx! {
         svg {
             class: "mx-auto fill-[#444] dark:fill-white",
             version: "1.1",
@@ -271,11 +274,11 @@ fn IconSplit(cx: Scope) -> Element {
                 d: "M15.5 11.75a3.5 3.5 0 11-7 0 3.5 3.5 0 017 0zm1.444-.75a5.001 5.001 0 00-9.888 0H2.75a.75.75 0 100 1.5h4.306a5.001 5.001 0 009.888 0h4.306a.75.75 0 100-1.5h-4.306z"
             }
         }
-    })
+    }
 }
 
-fn Stats(cx: Scope) -> Element {
-    cx.render(rsx! {
+fn Stats() -> Element {
+    rsx! {
         section { class: "pb-24 w-full dark:bg-ideblack",
             div { class: "container mx-auto max-w-screen-lg",
                 div { class: "relative ",
@@ -307,44 +310,41 @@ fn Stats(cx: Scope) -> Element {
                 }
             }
         }
-    })
+    }
 }
 
 #[component]
-fn StatsItem(cx: Scope, major: &'static str, minor: &'static str) -> Element {
-    render! {
+fn StatsItem(major: &'static str, minor: &'static str) -> Element {
+    rsx! {
         div { class: "text-center py-6 border border-[#444]",
-            div { class: "text-5xl font-bold text-gray-800 dark:text-gray-100", *major }
-            div { class: "text-xl text-gray-600 dark:text-gray-400", *minor }
+            div { class: "text-5xl font-bold text-gray-800 dark:text-gray-100", {major} }
+            div { class: "text-xl text-gray-600 dark:text-gray-400", {minor} }
         }
     }
 }
 
 #[component]
-fn Platform<'a>(
-    cx: Scope<'a>,
+fn Platform(
     name: &'static str,
     content: &'static str,
-    children: Element<'a>,
+    children: Element,
     to: Route,
     last: Option<bool>,
 ) -> Element {
     let last = last.unwrap_or_default();
 
-    cx.render(rsx! {
+    rsx! {
         li { class: "text-lg text-gray-600 dark:text-gray-600 flex flex-row",
             div { class: "w-8",
                 div { class: "flex flex-col h-full mx-auto",
                     if !last {
-                        rsx! { div { class: "bg-ghmetal dark:bg-white w-1 h-12 mx-auto" } }
+                        div { class: "bg-ghmetal dark:bg-white w-1 h-12 mx-auto" }
                     } else {
-                        rsx! { div { class: "bg-ghmetal dark:bg-white w-1 h-8 mx-auto" } }
+                        div { class: "bg-ghmetal dark:bg-white w-1 h-8 mx-auto" }
                     }
                     div { class: "mx-auto w-full", IconSplit {} }
                     if !last {
-                        Some(rsx!{ div { class: "bg-ghmetal dark:bg-white w-1 h-full mx-auto" } })
-                    } else {
-                        None
+                        div { class: "bg-ghmetal dark:bg-white w-1 h-full mx-auto" }
                     }
                 }
             }
@@ -354,17 +354,17 @@ fn Platform<'a>(
                 to: to.clone(),
                 // div { class: "min-w-lg p-8 m-8 bg-slate-800 dark:bg-slate-900/70 dark:backdrop-blur dark:ring-1 dark:ring-inset dark:ring-white/10 rounded shadow-xl",
                 h2 { class: "text-2xl text-gray-800 font-semibold font-mono pb-2 dark:text-gray-100 ",
-                    *name
+                    {name}
                 }
-                p { class: "text-md text-gray-500 dark:text-gray-400", *content }
-                children
+                p { class: "text-md text-gray-500 dark:text-gray-400", {content} }
+                {children}
             }
         }
-    })
+    }
 }
 
-fn JumpStart(cx: Scope) -> Element {
-    render! {
+fn JumpStart() -> Element {
+    rsx! {
         section { class: "pt-36 w-full dark:bg-ideblack",
             div { class: "container mx-auto max-w-screen-lg",
                 div { class: "relative ",

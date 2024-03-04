@@ -1,3 +1,4 @@
+/.dioxus
 /target
 Cargo.lock
 .DS_Store
@@ -12,7 +13,5 @@ Cargo.lock
 
 /pkg
 /static
-/docs/learn/0.3
-/docs/assets/
-/docs/static/
-/docs/
+/docs
+/dioxus_search

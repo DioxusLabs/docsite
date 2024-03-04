@@ -22,12 +22,12 @@ enum Route {
 
 // Components must contain the same dynamic segments as their corresponding variant
 #[component]
-fn BlogPost(cx: Scope, name: String) -> Element {
+fn BlogPost(name: String) -> Element {
     todo!()
 }
 
 #[component]
-fn Document(cx: Scope, id: usize) -> Element {
+fn Document(id: usize) -> Element {
     todo!()
 }
 // ANCHOR_END: route

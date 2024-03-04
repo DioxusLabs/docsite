@@ -1,10 +1,8 @@
-use dioxus::prelude::*;
-use fermi::use_read;
 use crate::HIGHLIGHT_NAV_LAYOUT;
+use dioxus::prelude::*;
 
-pub fn Footer(cx: Scope) -> Element {
-    let highlighted = use_read(cx, &HIGHLIGHT_NAV_LAYOUT);
-    let bg_color = if highlighted.0 {
+pub fn Footer() -> Element {
+    let bg_color = if HIGHLIGHT_NAV_LAYOUT() {
         "border border-orange-600 rounded-md"
     } else {
         ""
@@ -23,11 +21,8 @@ pub fn Footer(cx: Scope) -> Element {
             "Learning",
             &[
                 ("docs.rs", "https://docs.rs/dioxus"),
-                ("Guide", "/learn/0.4/guide"),
-                (
-                    "Awesome",
-                    "/awesome",
-                ),
+                ("Guide", "/learn/0.5/guide"),
+                ("Awesome", "/awesome"),
             ],
         ),
         (
@@ -51,25 +46,25 @@ pub fn Footer(cx: Scope) -> Element {
                 }
                 nav { class: "list-none mb-10",
                     ul {
-                        links.iter().map(|f| rsx!{
-                            li { key: "{f.0}",
-                                a { class: "text-gray-400 hover:text-white",
-                                    href: "{f.1}",
-                                    "{f.0}"
-                                }
-                            }
-                        })
+                        for f in links.iter() {
+                            li { key: "{f.0}", a {
+                                class: "text-gray-400 hover:text-white",
+                                href: "{f.1}",
+                                "{f.0}"
+                            } }
+                        }
                     }
                 }
             }
         }
     });
 
-    cx.render(rsx! {
+    rsx! {
         footer { class: "sticky z-30 text-gray-400 bg-ghmetal body-font {bg_color}",
             div { class: "container px-5 py-24 mx-auto flex md:items-center lg:items-start md:flex-row md:flex-nowrap flex-wrap flex-col",
                 div { class: "w-64 flex-shrink-0 md:mx-0 mx-auto text-center md:text-left",
-                    a { class: "flex title-font font-medium items-center md:justify-start justify-center text-white",
+                    a {
+                        class: "flex title-font font-medium items-center md:justify-start justify-center text-white",
                         href: "https://github.com/DioxusLabs/dioxus",
                         img {
                             src: "https://avatars.githubusercontent.com/u/79236386?s=200&v=4",
@@ -83,7 +78,7 @@ pub fn Footer(cx: Scope) -> Element {
                     }
                 }
                 div { class: "flex-grow flex flex-wrap md:pl-20 -mb-10 md:mt-0 mt-10 md:text-left text-center",
-                    categories
+                    {categories}
                 }
             }
             div { class: "container mx-auto py-4 px-5 flex flex-wrap flex-col sm:flex-row",
@@ -99,5 +94,5 @@ pub fn Footer(cx: Scope) -> Element {
                 }
             }
         }
-    })
+    }
 }

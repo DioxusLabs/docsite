@@ -12,32 +12,28 @@ enum Route {
 }
 
 #[component]
-fn Wrapper(cx: Scope) -> Element {
-    render! {
+fn Wrapper() -> Element {
+    rsx! {
         header { "header" }
         // The index route will be rendered here
-        Outlet::<Route> { }
+        Outlet::<Route> {}
         footer { "footer" }
     }
 }
 
 #[component]
-fn Index(cx: Scope) -> Element {
-    render! {
-        h1 { "Index" }
-    }
+fn Index() -> Element {
+    rsx! { h1 { "Index" } }
 }
 // ANCHOR_END: outlet
 
-fn App(cx: Scope) -> Element {
-    render! {
-        Router::<Route> {}
-    }
+fn App() -> Element {
+    rsx! { Router::<Route> {} }
 }
 
 fn main() {
     let mut vdom = VirtualDom::new(App);
-    let _ = vdom.rebuild();
+    vdom.rebuild_in_place();
     let html = dioxus_ssr::render(&vdom);
     assert_eq!(
         html,
@@ -62,32 +58,28 @@ mod with_props {
     }
 
     #[component]
-    fn Wrapper(cx: Scope, name: String) -> Element {
-        render! {
+    fn Wrapper(name: String) -> Element {
+        rsx! {
             header { "Welcome {name}!" }
             // The index route will be rendered here
-            Outlet::<Route> { }
+            Outlet::<Route> {}
             footer { "footer" }
         }
     }
 
     #[component]
-    fn Index(cx: Scope, name: String) -> Element {
-        render! {
-            h1 { "This is a homepage for {name}" }
-        }
+    fn Index(name: String) -> Element {
+        rsx! { h1 { "This is a homepage for {name}" } }
     }
     // ANCHOR_END: outlet_with_params
 
-    fn App(cx: Scope) -> Element {
-        render! {
-            Router::<Route> {}
-        }
+    fn App() -> Element {
+        rsx! { Router::<Route> {} }
     }
 
     fn main() {
         let mut vdom = VirtualDom::new(App);
-        let _ = vdom.rebuild();
+        vdom.rebuild_in_place();
         let html = dioxus_ssr::render(&vdom);
         assert_eq!(
             html,
@@ -95,7 +87,6 @@ mod with_props {
         );
     }
 }
-
 
 mod use_route {
     use dioxus::prelude::*;
@@ -113,33 +104,29 @@ mod use_route {
     }
 
     #[component]
-    fn Wrapper(cx: Scope) -> Element {
-        let full_route = use_route::<Route>(cx).unwrap();
-        render! {
+    fn Wrapper() -> Element {
+        let full_route = use_route::<Route>();
+        rsx! {
             header { "Welcome to {full_route}!" }
             // The index route will be rendered here
-            Outlet::<Route> { }
+            Outlet::<Route> {}
             footer { "footer" }
         }
     }
 
     #[component]
-    fn Index(cx: Scope, name: String) -> Element {
-        render! {
-            h1 { "This is a homepage for {name}" }
-        }
+    fn Index(name: String) -> Element {
+        rsx! { h1 { "This is a homepage for {name}" } }
     }
     // ANCHOR_END: outlet_route
 
-    fn App(cx: Scope) -> Element {
-        render! {
-            Router::<Route> {}
-        }
+    fn App() -> Element {
+        rsx! { Router::<Route> {} }
     }
 
     fn main() {
         let mut vdom = VirtualDom::new(App);
-        let _ = vdom.rebuild();
+        vdom.rebuild_in_place();
         let html = dioxus_ssr::render(&vdom);
         assert_eq!(
             html,

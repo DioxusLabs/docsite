@@ -170,22 +170,17 @@ impl State for Border {
 
 // ANCHOR: rendering
 fn main() -> Result<(), Box<dyn std::error::Error>> {
-    fn app(cx: Scope) -> Element {
-        let count = use_state(cx, || 0);
+    fn app() -> Element {
+        let mut count = use_signal(|| 0);
 
-        use_future(cx, (count,), |(count,)| async move {
+        use_resource(move || async move {
             loop {
                 tokio::time::sleep(std::time::Duration::from_secs(1)).await;
-                count.set(*count + 1);
+                count += 1;
             }
         });
 
-        cx.render(rsx! {
-            div{
-                color: "red",
-                "{count}"
-            }
-        })
+        rsx! { div { color: "red", "{count}" } }
     }
 
     // create the vdom, the real_dom, and the binding layer between them
@@ -197,9 +192,9 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     ]);
     let mut dioxus_intigration_state = DioxusState::create(&mut rdom);
 
-    let mutations = vdom.rebuild();
-    // update the structure of the real_dom tree
-    dioxus_intigration_state.apply_mutations(&mut rdom, mutations);
+    // Build the virtual dom and update the structure of the real_dom tree
+    vdom.rebuild(&mut dioxus_intigration_state.create_mutation_writer(&mut rdom));
+
     let mut ctx = SendAnyMap::new();
     // set the font size to 3.3
     ctx.insert(FontSize(3.3));
@@ -215,11 +210,10 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                 // wait for the vdom to update
                 vdom.wait_for_work().await;
 
-                // get the mutations from the vdom
-                let mutations = vdom.render_immediate();
-
-                // update the structure of the real_dom tree
-                dioxus_intigration_state.apply_mutations(&mut rdom, mutations);
+                // get the mutations from the vdom and apply them to the real_dom
+                vdom.render_immediate(
+                    &mut dioxus_intigration_state.create_mutation_writer(&mut rdom),
+                );
 
                 // update the state of the real_dom tree
                 let mut ctx = SendAnyMap::new();

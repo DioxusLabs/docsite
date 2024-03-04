@@ -27,12 +27,12 @@ enum Route {
 }
 
 #[component]
-fn BlogPost(cx: Scope, id: usize) -> Element {
+fn BlogPost(id: usize) -> Element {
     todo!()
 }
 
 #[component]
-fn PostId(cx: Scope, id: usize) -> Element {
+fn PostId(id: usize) -> Element {
     todo!()
 }
 // ANCHOR_END: route

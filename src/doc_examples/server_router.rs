@@ -1,22 +1,13 @@
 #![allow(non_snake_case)]
 
+use axum::Router;
 use dioxus::prelude::*;
-use dioxus_fullstack::prelude::*;
+
 use dioxus_router::prelude::*;
 use serde::{Deserialize, Serialize};
 
 fn main() {
-    let config = LaunchBuilder::<FullstackRouterConfig<Route>>::router();
-    #[cfg(feature = "ssr")]
-    config
-        .incremental(
-            IncrementalRendererConfig::default()
-                .invalidate_after(std::time::Duration::from_secs(120)),
-        )
-        .launch();
-
-    #[cfg(not(feature = "ssr"))]
-    config.launch();
+    launch(|| rsx! { Router::<Route> {} });
 }
 
 #[derive(Clone, Routable, Debug, PartialEq, Serialize, Deserialize)]
@@ -28,14 +19,14 @@ enum Route {
 }
 
 #[component]
-fn Blog(cx: Scope, id: i32) -> Element {
-    render! {
+fn Blog(id: i32) -> Element {
+    rsx! {
         Link { to: Route::Home {}, "Go to counter" }
         table {
             tbody {
-                for _ in 0..*id {
+                for _ in 0..id {
                     tr {
-                        for _ in 0..*id {
+                        for _ in 0..id {
                             td { "hello world!" }
                         }
                     }
@@ -46,17 +37,12 @@ fn Blog(cx: Scope, id: i32) -> Element {
 }
 
 #[component]
-fn Home(cx: Scope) -> Element {
-    let mut count = use_state(cx, || 0);
-    let text = use_state(cx, || "...".to_string());
+fn Home() -> Element {
+    let mut count = use_signal(|| 0);
+    let text = use_signal(|| "...".to_string());
 
-    cx.render(rsx! {
-        Link {
-            to: Route::Blog {
-                id: *count.get()
-            },
-            "Go to blog"
-        }
+    rsx! {
+        Link { to: Route::Blog { id: count() }, "Go to blog" }
         div {
             h1 { "High-Five counter: {count}" }
             button { onclick: move |_| count += 1, "Up high!" }
@@ -76,7 +62,7 @@ fn Home(cx: Scope) -> Element {
             }
             "Server said: {text}"
         }
-    })
+    }
 }
 
 #[server(PostServerData)]

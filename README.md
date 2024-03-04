@@ -10,8 +10,8 @@ rehydrated with interactivity provided by `dioxus_web`.
 Run the following command in the root of the project to start the Tailwind CSS
 compiler:
 
-```sh
-npx tailwindcss -i ./input.css -o ./public/tailwind.css --watch
+```bash
+npx tailwindcss -i ./tailwind.css -o ./public/tailwind.css --watch
 ```
 
 The documentation can be edited using any text editor. Most commonly used
@@ -47,5 +47,5 @@ documentation when it changes.
 </a>
 
 [dx]: https://github.com/DioxusLabs/dioxus/tree/master/packages/cli
-[section on contributing]: https://dioxuslabs.com/learn/0.4/contributing
+[section on contributing]: https://dioxuslabs.com/learn/0.5/contributing
 [issue tracker]: https://github.com/dioxuslabs/docsite/issues

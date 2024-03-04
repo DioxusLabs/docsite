@@ -1,6 +1,6 @@
 
-fn component(cx: Scope) -> Element {
-    cx.render(rsx!(
+fn component() -> Element {
+    rsx!(
         section { class: "py-20",
             div { class: "container px-4 mx-auto",
                 div { class: "mb-12 text-center",

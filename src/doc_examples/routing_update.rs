@@ -12,27 +12,25 @@ enum Route {
 }
 
 #[component]
-fn Home(cx: Scope) -> Element {
-    render! {
-        p { "Home" }
-    }
+fn Home() -> Element {
+    rsx! { p { "Home" } }
 }
 
 #[component]
-fn Index(cx: Scope) -> Element {
-    render! {
-        p { "Index" }
-    }
+fn Index() -> Element {
+    rsx! { p { "Index" } }
 }
 
-fn app(cx: Scope) -> Element {
-    render! {
+fn app() -> Element {
+    rsx! {
         Router::<Route> {
-            config: || RouterConfig::default().on_update(|state|{
-                (state.current() == Route::Index {}).then_some(
-                    NavigationTarget::Internal(Route::Home {})
-                )
-            })
+            config: || {
+                RouterConfig::default()
+                    .on_update(|state| {
+                        (state.current() == Route::Index {})
+                            .then_some(NavigationTarget::Internal(Route::Home {}))
+                    })
+            }
         }
     }
 }

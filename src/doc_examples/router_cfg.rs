@@ -8,29 +8,21 @@ use dioxus_router::prelude::*;
 enum Route {
     // The home page is at the / route
     #[route("/")]
-    // If the name of the component and variant are the same you can omit the component and props name
-    // #[route("/", ComponentName, PropsName)]
     Home {},
 }
 // ANCHOR_END: router
 
 // ANCHOR: app
 #[component]
-fn App(cx: Scope) -> Element {
-    render! {
-        Router::<Route> {
-            config: || RouterConfig::default().history(WebHistory::default())
-        }
-    }
+fn App() -> Element {
+    rsx! {Router::<Route> { config: || RouterConfig::default().history(WebHistory::default()) }}
 }
 // ANCHOR_END: app
 
 // ANCHOR: home
 #[component]
-fn Home(cx: Scope) -> Element {
-    render! {
-        h1 { "Welcome to the Dioxus Blog!" }
-    }
+fn Home() -> Element {
+    rsx! { h1 { "Welcome to the Dioxus Blog!" } }
 }
 // ANCHOR_END: home
 

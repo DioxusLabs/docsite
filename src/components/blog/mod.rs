@@ -3,7 +3,7 @@ use crate::Link;
 use dioxus::prelude::*;
 use dioxus_router::prelude::*;
 
-#[derive(PartialEq, Eq)]
+#[derive(PartialEq, Eq, Clone, Copy)]
 pub struct BlogPost {
     category: &'static str,
     date: &'static str,
@@ -24,8 +24,8 @@ pub const POST_TEMPLATE: BlogPost = BlogPost {
 };
 
 #[component]
-pub fn PostTemplate(cx: Scope) -> Element {
-    render! { SinglePost { post: POST_TEMPLATE } }
+pub fn PostTemplate() -> Element {
+    rsx! { SinglePost { post: POST_TEMPLATE } }
 }
 
 pub const POST_FULLTINME: BlogPost = BlogPost {
@@ -39,8 +39,8 @@ pub const POST_FULLTINME: BlogPost = BlogPost {
 };
 
 #[component]
-pub fn PostFulltime(cx: Scope) -> Element {
-    render! { SinglePost { post: POST_FULLTINME } }
+pub fn PostFulltime() -> Element {
+    rsx! { SinglePost { post: POST_FULLTINME } }
 }
 
 pub const POST_RELEASE_040: BlogPost = BlogPost {
@@ -53,8 +53,8 @@ pub const POST_RELEASE_040: BlogPost = BlogPost {
 };
 
 #[component]
-pub fn PostRelease040(cx: Scope) -> Element {
-    render! { SinglePost { post: POST_RELEASE_040 } }
+pub fn PostRelease040() -> Element {
+    rsx! { SinglePost { post: POST_RELEASE_040 } }
 }
 
 pub const POST_RELEASE_030: BlogPost = BlogPost {
@@ -67,8 +67,8 @@ pub const POST_RELEASE_030: BlogPost = BlogPost {
 };
 
 #[component]
-pub fn PostRelease030(cx: Scope) -> Element {
-    render! { SinglePost { post: POST_RELEASE_030 } }
+pub fn PostRelease030() -> Element {
+    rsx! { SinglePost { post: POST_RELEASE_030 } }
 }
 
 pub const POST_RELEASE_020: BlogPost = BlogPost {
@@ -81,8 +81,8 @@ pub const POST_RELEASE_020: BlogPost = BlogPost {
 };
 
 #[component]
-pub fn PostRelease020(cx: Scope) -> Element {
-    render! { SinglePost { post: POST_RELEASE_020 } }
+pub fn PostRelease020() -> Element {
+    rsx! { SinglePost { post: POST_RELEASE_020 } }
 }
 
 pub const POST_RELEASE_010: BlogPost = BlogPost {
@@ -95,8 +95,8 @@ pub const POST_RELEASE_010: BlogPost = BlogPost {
 };
 
 #[component]
-pub fn PostRelease010(cx: Scope) -> Element {
-    render! { SinglePost { post: POST_RELEASE_010 } }
+pub fn PostRelease010() -> Element {
+    rsx! { SinglePost { post: POST_RELEASE_010 } }
 }
 
 pub const POSTS: &[BlogPost] = &[
@@ -109,8 +109,8 @@ pub const POSTS: &[BlogPost] = &[
 ];
 
 #[component]
-pub fn BlogList(cx: Scope) -> Element {
-    cx.render(rsx!(
+pub fn BlogList() -> Element {
+    rsx!(
         section { class: "body-font overflow-hidden dark:bg-ideblack",
             div { class: "container max-w-screen-lg pt-12 pb-12 mx-auto",
                 div { class: "-my-8 px-8 pb-12",
@@ -121,21 +121,23 @@ pub fn BlogList(cx: Scope) -> Element {
                     section { class: "body-font overflow-hidden dark:bg-ideblack",
                         div { class: "container px-6 mx-auto",
                             div { class: "-my-8 divide-y-2 divide-gray-100",
-                                POSTS.iter().map(|post| rsx! { BlogPostItem { post: post } })
+                                for post in POSTS.iter() {
+                                    BlogPostItem { post: post }
+                                }
                             }
                         }
                     }
                 }
             }
         }
-    ))
+    )
 }
 
 #[component]
-pub fn SinglePost(cx: Scope, post: BlogPost) -> Element {
+pub fn SinglePost(post: BlogPost) -> Element {
     let BlogPost { content, .. } = post;
 
-    cx.render(rsx! {
+    rsx! {
         section { class: "text-gray-600 body-font overflow-hidden dark:bg-ideblack",
             div { class: "container lg:px-20 xl:px-48 pt-12 pb-12 mx-auto",
                 script { "Prism.highlightAll()" }
@@ -151,11 +153,11 @@ pub fn SinglePost(cx: Scope, post: BlogPost) -> Element {
                 }
             }
         }
-    })
+    }
 }
 
-fn BlogHeader(cx: Scope) -> Element {
-    cx.render(rsx!(
+fn BlogHeader() -> Element {
+    rsx!(
         section { class: "py-20",
             div { class: "container px-4 mx-auto dark:text-white",
 
@@ -172,11 +174,11 @@ fn BlogHeader(cx: Scope) -> Element {
                 }
             }
         }
-    ))
+    )
 }
 
 pub static RecentBlogPosts: Component<()> = |cx| {
-    cx.render(rsx! {
+    rsx! {
         section { class: "body-font overflow-hidden dark:bg-ideblack",
             div { class: "container px-6 lg:px-40 pt-24 pb-36 mx-auto max-w-screen-xl",
                 div { class: "flex flex-col w-full mb-10",
@@ -185,15 +187,17 @@ pub static RecentBlogPosts: Component<()> = |cx| {
                     }
                 }
                 div { class: "-my-8 divide-y-2 divide-gray-100",
-                    POSTS.iter().map(|post| rsx!{ BlogPostItem { post: post } })
+                    for post in POSTS.iter() {
+                        BlogPostItem { post: post }
+                    }
                 }
             }
         }
-    })
+    }
 };
 
 #[component]
-fn BlogPostItem(cx: Scope, post: &'static BlogPost) -> Element {
+fn BlogPostItem(post: &'static BlogPost) -> Element {
     let BlogPost {
         category,
         date,
@@ -203,10 +207,12 @@ fn BlogPostItem(cx: Scope, post: &'static BlogPost) -> Element {
         ..
     } = post;
 
-    cx.render(rsx!(
+    rsx!(
         div { class: "py-8 flex flex-wrap md:flex-nowrap",
             div { class: "md:w-32 md:mb-0 mb-6 flex-shrink-0 flex flex-col",
-                span { class: "font-semibold title-font text-gray-700 dark:text-white", "{category}" }
+                span { class: "font-semibold title-font text-gray-700 dark:text-white",
+                    "{category}"
+                }
                 span { class: "mt-1 text-gray-500 text-sm", "{date}" }
             }
             div { class: "md:flex-grow",
@@ -222,5 +228,5 @@ fn BlogPostItem(cx: Scope, post: &'static BlogPost) -> Element {
                 }
             }
         }
-    ))
+    )
 }

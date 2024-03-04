@@ -16,21 +16,23 @@ fn main() {
     );
 }
 
-fn App(cx: Scope) -> Element {
-    let tui_ctx: TuiContext = cx.consume_context().unwrap();
+fn App() -> Element {
+    let tui_ctx: TuiContext = consume_context();
 
-    cx.render(rsx! {
+    rsx! {
         div {
             width: "100%",
             height: "10px",
             background_color: "red",
             justify_content: "center",
             align_items: "center",
-            onkeydown: move |k: KeyboardEvent| if let KeyCode::Q = k.key_code {
-                tui_ctx.quit();
+            onkeydown: move |k: KeyboardEvent| {
+                if Key::Character("q".into()) == k.key() {
+                    tui_ctx.quit();
+                }
             },
 
             "Hello world!"
         }
-    })
+    }
 }

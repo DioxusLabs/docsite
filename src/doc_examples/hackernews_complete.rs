@@ -1,48 +1,39 @@
 #![allow(non_snake_case)]
 use dioxus::prelude::*;
 
-pub fn App(cx: Scope) -> Element {
-    use_shared_state_provider(cx, || PreviewState::Unset);
+pub fn App() -> Element {
+    use_context_provider(|| Signal::new(PreviewState::Unset));
 
-    cx.render(rsx! {
-        div {
-            display: "flex",
-            flex_direction: "row",
-            width: "100%",
-            div {
-                width: "50%",
-                Stories {}
-            }
-            div {
-                width: "50%",
-                Preview {}
-            }
+    rsx! {
+        div { display: "flex", flex_direction: "row", width: "100%",
+            div { width: "50%", Stories {} }
+            div { width: "50%", Preview {} }
         }
-    })
+    }
 }
 
-fn Stories(cx: Scope) -> Element {
-    let story = use_future(cx, (), |_| get_stories(10));
+fn Stories() -> Element {
+    let stories = use_resource(move || get_stories(10));
 
-    match story.value() {
-        Some(Ok(list)) => render! {
+    match &*stories.value().read() {
+        Some(Ok(list)) => rsx! {
             div {
                 for story in list {
                     StoryListing { story: story.clone() }
                 }
             }
         },
-        Some(Err(err)) => render! {"An error occurred while fetching stories {err}"},
-        None => render! {"Loading items"},
+        Some(Err(err)) => rsx! {"An error occurred while fetching stories {err}"},
+        None => rsx! {"Loading items"},
     }
 }
 
 async fn resolve_story(
-    full_story: UseRef<Option<StoryPageData>>,
-    preview_state: UseSharedState<PreviewState>,
+    mut full_story: Signal<Option<StoryPageData>>,
+    mut preview_state: Signal<PreviewState>,
     story_id: i64,
 ) {
-    if let Some(cached) = &*full_story.read() {
+    if let Some(cached) = full_story.as_ref() {
         *preview_state.write() = PreviewState::Loaded(cached.clone());
         return;
     }
@@ -55,8 +46,8 @@ async fn resolve_story(
 }
 
 #[component]
-fn StoryListing(cx: Scope, story: StoryItem) -> Element {
-    let preview_state = use_shared_state::<PreviewState>(cx).unwrap();
+fn StoryListing(story: ReadOnlySignal<StoryItem>) -> Element {
+    let mut preview_state = consume_context::<Signal<PreviewState>>();
     let StoryItem {
         title,
         url,
@@ -66,15 +57,15 @@ fn StoryListing(cx: Scope, story: StoryItem) -> Element {
         kids,
         id,
         ..
-    } = story;
-    let full_story = use_ref(cx, || None);
+    } = story();
+    let full_story = use_signal(|| None);
 
     let url = url.as_deref().unwrap_or_default();
     let hostname = url
         .trim_start_matches("https://")
         .trim_start_matches("http://")
         .trim_start_matches("www.");
-    let score = format!("{score} {}", if *score == 1 { " point" } else { " points" });
+    let score = format!("{score} {}", if score == 1 { " point" } else { " points" });
     let comments = format!(
         "{} {}",
         kids.len(),
@@ -86,20 +77,15 @@ fn StoryListing(cx: Scope, story: StoryItem) -> Element {
     );
     let time = time.format("%D %l:%M %p");
 
-    cx.render(rsx! {
+    rsx! {
         div {
             padding: "0.5rem",
             position: "relative",
-            onmouseenter: move |_event| {
-                resolve_story(full_story.clone(), preview_state.clone(), *id)
-            },
-            div {
-                font_size: "1.5rem",
+            onmouseenter: move |_event| { resolve_story(full_story, preview_state, id) },
+            div { font_size: "1.5rem",
                 a {
                     href: url,
-                    onfocus: move |_event| {
-                        resolve_story(full_story.clone(), preview_state.clone(), *id)
-                    },
+                    onfocus: move |_event| { resolve_story(full_story, preview_state, id) },
                     "{title}"
                 }
                 a {
@@ -109,28 +95,14 @@ fn StoryListing(cx: Scope, story: StoryItem) -> Element {
                     " ({hostname})"
                 }
             }
-            div {
-                display: "flex",
-                flex_direction: "row",
-                color: "gray",
-                div {
-                    "{score}"
-                }
-                div {
-                    padding_left: "0.5rem",
-                    "by {by}"
-                }
-                div {
-                    padding_left: "0.5rem",
-                    "{time}"
-                }
-                div {
-                    padding_left: "0.5rem",
-                    "{comments}"
-                }
+            div { display: "flex", flex_direction: "row", color: "gray",
+                div { "{score}" }
+                div { padding_left: "0.5rem", "by {by}" }
+                div { padding_left: "0.5rem", "{time}" }
+                div { padding_left: "0.5rem", "{comments}" }
             }
         }
-    })
+    }
 }
 
 #[derive(Clone, Debug)]
@@ -140,33 +112,17 @@ enum PreviewState {
     Loaded(StoryPageData),
 }
 
-fn Preview(cx: Scope) -> Element {
-    let preview_state = use_shared_state::<PreviewState>(cx)?;
+fn Preview() -> Element {
+    let preview_state = consume_context::<Signal<PreviewState>>();
 
-    match &*preview_state.read() {
-        PreviewState::Unset => render! {
-            "Hover over a story to preview it here"
-        },
-        PreviewState::Loading => render! {
-            "Loading..."
-        },
+    match preview_state() {
+        PreviewState::Unset => rsx! {"Hover over a story to preview it here"},
+        PreviewState::Loading => rsx! {"Loading..."},
         PreviewState::Loaded(story) => {
-            let title = &story.item.title;
-            let url = story.item.url.as_deref().unwrap_or_default();
-            let text = story.item.text.as_deref().unwrap_or_default();
-            render! {
-                div {
-                    padding: "0.5rem",
-                    div {
-                        font_size: "1.5rem",
-                        a {
-                            href: "{url}",
-                            "{title}"
-                        }
-                    }
-                    div {
-                        dangerous_inner_html: "{text}",
-                    }
+            rsx! {
+                div { padding: "0.5rem",
+                    div { font_size: "1.5rem", a { href: story.item.url, "{story.item.title}" } }
+                    div { dangerous_inner_html: story.item.text }
                     for comment in &story.comments {
                         Comment { comment: comment.clone() }
                     }
@@ -177,17 +133,11 @@ fn Preview(cx: Scope) -> Element {
 }
 
 #[component]
-fn Comment(cx: Scope, comment: Comment) -> Element<'a> {
-    render! {
-        div {
-            padding: "0.5rem",
-            div {
-                color: "gray",
-                "by {comment.by}"
-            }
-            div {
-                dangerous_inner_html: "{comment.text}"
-            }
+fn Comment(comment: Comment) -> Element {
+    rsx! {
+        div { padding: "0.5rem",
+            div { color: "gray", "by {comment.by}" }
+            div { dangerous_inner_html: "{comment.text}" }
             for kid in &comment.sub_comments {
                 Comment { comment: kid.clone() }
             }

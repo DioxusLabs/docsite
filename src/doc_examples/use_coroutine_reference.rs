@@ -1,6 +1,5 @@
 #![allow(non_snake_case, unused)]
 use dioxus::prelude::*;
-use fermi::{use_atom_root, use_read, Atom, AtomRoot};
 use futures::Stream;
 use std::rc::Rc;
 use tokio::time::Duration;
@@ -12,8 +11,8 @@ async fn connect_to_ws_server() -> impl Stream<Item = ()> {
 // ANCHOR: component
 use futures_util::StreamExt;
 
-fn app(cx: Scope) {
-    let ws: &Coroutine<()> = use_coroutine(cx, |rx| async move {
+fn app() {
+    let ws: Coroutine<()> = use_coroutine(|rx| async move {
         // Connect to some sort of service
         let mut conn = connect_to_ws_server().await;
 
@@ -25,16 +24,16 @@ fn app(cx: Scope) {
 }
 // ANCHOR_END: component
 
-fn to_owned(cx: Scope) {
+fn to_owned() {
     enum Status {
         Launching,
         Working,
     }
     enum SyncAction {}
     // ANCHOR: to_owned
-    let sync_status = use_state(cx, || Status::Launching);
-    let sync_task = use_coroutine(cx, |rx: UnboundedReceiver<SyncAction>| {
-        let sync_status = sync_status.to_owned();
+    let sync_status = use_signal(|| Status::Launching);
+    let sync_task = use_coroutine(|rx: UnboundedReceiver<SyncAction>| {
+        let mut sync_status = sync_status.to_owned();
         async move {
             loop {
                 tokio::time::sleep(Duration::from_secs(1)).await;
@@ -45,10 +44,9 @@ fn to_owned(cx: Scope) {
     // ANCHOR_END: to_owned
 
     // ANCHOR: to_owned_continued
-    let sync_status = use_state(cx, || Status::Launching);
-    let load_status = use_state(cx, || Status::Launching);
-    let sync_task = use_coroutine(cx, |rx: UnboundedReceiver<SyncAction>| {
-        to_owned![sync_status, load_status];
+    let sync_status = use_signal(|| Status::Launching);
+    let load_status = use_signal(|| Status::Launching);
+    let sync_task = use_coroutine(|rx: UnboundedReceiver<SyncAction>| {
         async move {
             // ...
         }
@@ -56,7 +54,7 @@ fn to_owned(cx: Scope) {
     // ANCHOR_END: to_owned_continued
 }
 
-fn send(cx: Scope) -> Element {
+fn send() -> Element {
     struct Server;
     impl Server {
         async fn update_username(&mut self, name: String) {}
@@ -73,7 +71,7 @@ fn send(cx: Scope) -> Element {
         SetAge(i32),
     }
 
-    let profile = use_coroutine(cx, |mut rx: UnboundedReceiver<ProfileUpdate>| async move {
+    let profile = use_coroutine(|mut rx: UnboundedReceiver<ProfileUpdate>| async move {
         let mut server = connect_to_server().await;
 
         while let Some(msg) = rx.next().await {
@@ -84,23 +82,22 @@ fn send(cx: Scope) -> Element {
         }
     });
 
-    cx.render(rsx! {
-        button {
-            onclick: move |_| profile.send(ProfileUpdate::SetUsername("Bob".to_string())),
+    rsx! {
+        button { onclick: move |_| profile.send(ProfileUpdate::SetUsername("Bob".to_string())),
             "Update username"
         }
-    })
+    }
     // ANCHOR_END: send
 }
 
-fn services(cx: Scope) {
+fn services() {
     enum ProfileCommand {}
     enum SyncCommand {}
     enum EditorCommand {}
     // ANCHOR: services
-    let profile = use_coroutine(cx, profile_service);
-    let editor = use_coroutine(cx, editor_service);
-    let sync = use_coroutine(cx, sync_service);
+    let profile = use_coroutine(profile_service);
+    let editor = use_coroutine(editor_service);
+    let sync = use_coroutine(sync_service);
 
     async fn profile_service(rx: UnboundedReceiver<ProfileCommand>) {
         // do stuff
@@ -116,65 +113,53 @@ fn services(cx: Scope) {
     // ANCHOR_END: services
 }
 
-fn fermi() {
-    async fn sync_service(rx: UnboundedReceiver<()>, atoms: Rc<AtomRoot>) {
+fn global() {
+    async fn sync_service(rx: UnboundedReceiver<()>) {
         todo!()
     }
-    // ANCHOR: fermi
-    static USERNAME: Atom<String> = Atom(|_| "default".to_string());
+    // ANCHOR: global
+    static USERNAME: GlobalSignal<String> = Signal::global(|| "default".to_string());
 
-    fn app(cx: Scope) -> Element {
-        let atoms = use_atom_root(cx);
+    fn app() -> Element {
+        use_coroutine(sync_service);
 
-        use_coroutine(cx, |rx| sync_service(rx, atoms.clone()));
-
-        cx.render(rsx! {
-            Banner {}
-        })
+        rsx! { Banner {} }
     }
 
-    fn Banner(cx: Scope) -> Element {
-        let username = use_read(cx, &USERNAME);
-
-        cx.render(rsx! {
-            h1 { "Welcome back, {username}" }
-        })
+    fn Banner() -> Element {
+        rsx! { h1 { "Welcome back, {USERNAME}" } }
     }
-    // ANCHOR_END: fermi
+    // ANCHOR_END: global
 }
 
-fn fermi_continued() {
+fn global_continued() {
     async fn set_name_on_server(name: &str) -> Result<(), ()> {
         Ok(())
     }
-    // ANCHOR: fermi_continued
-    use fermi::{Atom, AtomRoot, Readable, Writable};
+    // ANCHOR: global_continued
     use futures_util::StreamExt;
 
-    static USERNAME: &Atom<String> = &Atom(|_| "default".to_string());
-    static ERRORS: &Atom<Vec<String>> = &Atom(|_| Vec::new());
+    static USERNAME: GlobalSignal<String> = Signal::global(|| "default".to_string());
+    static ERRORS: GlobalSignal<Vec<String>> = Signal::global(|| Vec::new());
 
     enum SyncAction {
         SetUsername(String),
     }
 
-    async fn sync_service(mut rx: UnboundedReceiver<SyncAction>, atoms: Rc<AtomRoot>) {
+    async fn sync_service(mut rx: UnboundedReceiver<SyncAction>) {
         while let Some(msg) = rx.next().await {
             match msg {
                 SyncAction::SetUsername(name) => {
                     if set_name_on_server(&name).await.is_ok() {
-                        atoms.set(USERNAME.unique_id(), name);
+                        *USERNAME.write() = name;
                     } else {
-                        atoms.set(
-                            ERRORS.unique_id(),
-                            vec!["Failed to set username".to_string()],
-                        );
+                        *ERRORS.write() = vec!["Failed to set username".to_string()];
                     }
                 }
             }
         }
     }
-    // ANCHOR_END: fermi_continued
+    // ANCHOR_END: global_continued
 }
 
 fn injection() {
@@ -182,8 +167,8 @@ fn injection() {
         SetUsername,
     }
     // ANCHOR: injection
-    fn Child(cx: Scope) -> Element {
-        let sync_task = use_coroutine_handle::<SyncAction>(cx).unwrap();
+    fn Child() -> Element {
+        let sync_task = use_coroutine_handle::<SyncAction>();
 
         sync_task.send(SyncAction::SetUsername);
 

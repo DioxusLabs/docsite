@@ -2,29 +2,25 @@
 use dioxus::prelude::*;
 
 // ANCHOR: App
-pub fn App(cx: Scope) -> Element {
-    cx.render(rsx! {
-        Likes {
-            score: 42,
-        },
-    })
+pub fn App() -> Element {
+    rsx! { Likes { score: 42 } }
 }
 // ANCHOR_END: App
 
 // ANCHOR: Likes
 // Remember: Owned props must implement `PartialEq`!
-#[derive(PartialEq, Props)]
+#[derive(PartialEq, Props, Clone)]
 struct LikesProps {
     score: i32,
 }
 
-fn Likes(cx: Scope<LikesProps>) -> Element {
-    cx.render(rsx! {
+fn Likes(props: LikesProps) -> Element {
+    rsx! {
         div {
-            "This post has ",
-            b { "{cx.props.score}" },
+            "This post has "
+            b { "{props.score}" }
             " likes"
         }
-    })
+    }
 }
 // ANCHOR_END: Likes

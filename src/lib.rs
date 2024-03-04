@@ -27,7 +27,6 @@ pub mod shortcut;
 mod doc_examples;
 
 pub use components::*;
-use fermi::use_init_atom_root;
 pub mod components {
     export_items! {
         pub mod blog;
@@ -43,17 +42,14 @@ pub mod components {
 }
 
 #[component]
-fn HeaderFooter(cx: Scope) -> Element {
-    use_init_atom_root(cx);
-    let set_search = fermi::use_set(cx, &SHOW_SEARCH);
-    shortcut::use_shortcut(cx, Key::Character("/".to_string()), Modifiers::CONTROL, {
-        to_owned![set_search];
+fn HeaderFooter() -> Element {
+    shortcut::use_shortcut(Key::Character("/".to_string()), Modifiers::CONTROL, {
         move || {
-            set_search(components::nav::ShowSearch(true));
+            *SHOW_SEARCH.write() = true;
         }
     });
 
-    render! {
+    rsx! {
         div {
             Nav {}
             Outlet::<Route> {}
@@ -110,7 +106,11 @@ pub enum Route {
                 DocsO3 {
                     segments: Vec<String>
                 },
-                #[child("/0.4")]
+                #[route("/0.4/:..segments")]
+                DocsO4 {
+                    segments: Vec<String>
+                },
+                #[child("/0.5")]
                 Docs { child: BookRoute },
             #[end_nest]
         #[end_layout]
@@ -122,12 +122,12 @@ pub enum Route {
     Err404 { segments: Vec<String> },
 }
 
-pub fn use_url(cx: &ScopeState) -> String {
-    use_route::<Route>(cx).unwrap().to_string()
+pub fn use_url() -> String {
+    use_route::<Route>().to_string()
 }
 
-pub fn app(cx: Scope) -> Element {
-    render! { Router::<Route> {} }
+pub fn app() -> Element {
+    rsx! { Router::<Route> {} }
 }
 
 static SEARCH_INDEX: dioxus_search::LazySearchIndex<Route> = dioxus_search::load_search_index! {
@@ -137,11 +137,10 @@ mod docs {
     use crate::components::*;
     use crate::doc_examples::*;
     use dioxus::prelude::*;
-    use fermi::use_atom_state;
 
     #[component]
-    fn SandBoxFrame<'a>(cx: Scope<'a>, url: &'a str) -> Element<'a> {
-        render! {
+    fn SandBoxFrame(url: String) -> Element {
+        rsx! {
             iframe {
                 style: "border: 1px solid rgba(0, 0, 0, 0.1);border-radius:2px;",
                 width: "800",
@@ -153,8 +152,8 @@ mod docs {
     }
 
     #[component]
-    fn DemoFrame<'a>(cx: Scope<'a>, children: Element<'a>) -> Element {
-        render! {
+    fn DemoFrame(children: Element) -> Element {
+        rsx! {
             div {
                 class: "bg-white rounded-md shadow-md p-4 my-4 overflow-scroll text-black dioxus-demo",
                 max_height: "50vh",
@@ -163,27 +162,23 @@ mod docs {
                     ".dioxus-demo input {{ all: revert; }}"
                     ".dioxus-demo form {{ all: revert; }}"
                 }
-                children
+                {children}
             }
         }
     }
 
-    fn LayoutsExplanation(cx: Scope) -> Element {
-        let highlight_nav = use_atom_state(cx, &HIGHLIGHT_NAV_LAYOUT);
-        let highlight_docs_nav = use_atom_state(cx, &HIGHLIGHT_DOCS_LAYOUT);
-        let highlight_docs_content = use_atom_state(cx, &HIGHLIGHT_DOCS_CONTENT);
-
-        render! {
+    fn LayoutsExplanation() -> Element {
+        rsx! {
             pre {
                 onmouseenter: move |_| {
-                    highlight_nav.set(NavLayoutHighlighted(true));
-                    highlight_docs_nav.set(DocsLayoutHighlighted(true));
-                    highlight_docs_content.set(DocsContentHighlighted(true));
+                    *HIGHLIGHT_NAV_LAYOUT.write() = true;
+                    *HIGHLIGHT_DOCS_LAYOUT.write() = true;
+                    *HIGHLIGHT_DOCS_CONTENT.write() = true;
                 },
                 onmouseleave: move |_| {
-                    highlight_nav.set(NavLayoutHighlighted(false));
-                    highlight_docs_nav.set(DocsLayoutHighlighted(false));
-                    highlight_docs_content.set(DocsContentHighlighted(false));
+                    *HIGHLIGHT_NAV_LAYOUT.write() = false;
+                    *HIGHLIGHT_DOCS_LAYOUT.write() = false;
+                    *HIGHLIGHT_DOCS_CONTENT.write() = false;
                 },
                 span {
                     "#[derive(Clone, Routable, PartialEq, Eq, Serialize, Deserialize)]
@@ -192,14 +187,14 @@ pub enum Route {{\n\t"
                 }
                 span {
                     onmouseenter: move |_| {
-                        highlight_nav.set(NavLayoutHighlighted(true));
-                        highlight_docs_nav.set(DocsLayoutHighlighted(false));
-                        highlight_docs_content.set(DocsContentHighlighted(false));
+                        *HIGHLIGHT_NAV_LAYOUT.write() = true;
+                        *HIGHLIGHT_DOCS_LAYOUT.write() = false;
+                        *HIGHLIGHT_DOCS_CONTENT.write() = false;
                     },
                     onmouseleave: move |_| {
-                        highlight_nav.set(NavLayoutHighlighted(true));
-                        highlight_docs_nav.set(DocsLayoutHighlighted(true));
-                        highlight_docs_content.set(DocsContentHighlighted(true));
+                        *HIGHLIGHT_NAV_LAYOUT.write() = true;
+                        *HIGHLIGHT_DOCS_LAYOUT.write() = true;
+                        *HIGHLIGHT_DOCS_CONTENT.write() = true;
                     },
                     class: "border border-orange-600 rounded-md",
                     "#[layout(HeaderFooter)]"
@@ -207,14 +202,14 @@ pub enum Route {{\n\t"
                 span { "\n\t\t// ... other routes\n\t\t" }
                 span {
                     onmouseenter: move |_| {
-                        highlight_nav.set(NavLayoutHighlighted(false));
-                        highlight_docs_nav.set(DocsLayoutHighlighted(true));
-                        highlight_docs_content.set(DocsContentHighlighted(false));
+                        *HIGHLIGHT_DOCS_LAYOUT.write() = true;
+                        *HIGHLIGHT_NAV_LAYOUT.write() = false;
+                        *HIGHLIGHT_DOCS_CONTENT.write() = false;
                     },
                     onmouseleave: move |_| {
-                        highlight_nav.set(NavLayoutHighlighted(true));
-                        highlight_docs_nav.set(DocsLayoutHighlighted(true));
-                        highlight_docs_content.set(DocsContentHighlighted(true));
+                        *HIGHLIGHT_NAV_LAYOUT.write() = true;
+                        *HIGHLIGHT_DOCS_LAYOUT.write() = true;
+                        *HIGHLIGHT_DOCS_CONTENT.write() = true;
                     },
                     class: "border border-green-600 rounded-md",
                     r##"#[layout(DocsSidebars)]"##
@@ -222,14 +217,14 @@ pub enum Route {{\n\t"
                 "\n\t\t\t"
                 span {
                     onmouseenter: move |_| {
-                        highlight_nav.set(NavLayoutHighlighted(false));
-                        highlight_docs_nav.set(DocsLayoutHighlighted(false));
-                        highlight_docs_content.set(DocsContentHighlighted(true));
+                        *HIGHLIGHT_NAV_LAYOUT.write() = false;
+                        *HIGHLIGHT_DOCS_LAYOUT.write() = false;
+                        *HIGHLIGHT_DOCS_CONTENT.write() = true;
                     },
                     onmouseleave: move |_| {
-                        highlight_nav.set(NavLayoutHighlighted(true));
-                        highlight_docs_nav.set(DocsLayoutHighlighted(true));
-                        highlight_docs_content.set(DocsContentHighlighted(true));
+                        *HIGHLIGHT_NAV_LAYOUT.write() = true;
+                        *HIGHLIGHT_DOCS_LAYOUT.write() = true;
+                        *HIGHLIGHT_DOCS_CONTENT.write() = true;
                     },
                     class: "border border-blue-600 rounded-md",
                     r##"#[route("/learn")]"##
@@ -239,5 +234,5 @@ pub enum Route {{\n\t"
         }
     }
 
-    use_mdbook::mdbook_router! {"docs-src/0.4"}
+    use_mdbook::mdbook_router! {"docs-src/0.5"}
 }

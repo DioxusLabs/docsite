@@ -4,29 +4,37 @@ use dioxus::prelude::*;
 
 fn main() {}
 
-// ANCHOR: use_state
+// ANCHOR: use_signal
 use std::cell::RefCell;
 use std::rc::Rc;
 use std::sync::Arc;
 
-#[derive(Clone)]
-struct UseState<T> {
+struct Signal<T> {
     value: Rc<RefCell<T>>,
     update: Arc<dyn Fn()>,
 }
 
-fn my_use_state<T: 'static>(cx: &ScopeState, init: impl FnOnce() -> T) -> &UseState<T> {
-    cx.use_hook(|| {
+impl<T> Clone for Signal<T> {
+    fn clone(&self) -> Self {
+        Self {
+            value: self.value.clone(),
+            update: self.update.clone(),
+        }
+    }
+}
+
+fn my_use_signal<T: 'static>(init: impl FnOnce() -> T) -> Signal<T> {
+    use_hook(|| {
         // The update function will trigger a re-render in the component cx is attached to
-        let update = cx.schedule_update();
+        let update = schedule_update();
         // Create the initial state
         let value = Rc::new(RefCell::new(init()));
 
-        UseState { value, update }
+        Signal { value, update }
     })
 }
 
-impl<T: Clone> UseState<T> {
+impl<T: Clone> Signal<T> {
     fn get(&self) -> T {
         self.value.borrow().clone()
     }
@@ -38,18 +46,18 @@ impl<T: Clone> UseState<T> {
         (self.update)();
     }
 }
-// ANCHOR_END: use_state
+// ANCHOR_END: use_signal
 
 // ANCHOR: use_context
-pub fn use_context<T: 'static + Clone>(cx: &ScopeState) -> Option<&T> {
-    cx.use_hook(|| cx.consume_context::<T>()).as_ref()
+pub fn use_context<T: 'static + Clone>() -> T {
+    use_hook(|| consume_context())
 }
 
-pub fn use_context_provider<T: 'static + Clone>(cx: &ScopeState, f: impl FnOnce() -> T) -> &T {
-    cx.use_hook(|| {
+pub fn use_context_provider<T: 'static + Clone>(f: impl FnOnce() -> T) -> T {
+    use_hook(|| {
         let val = f();
-        // Provide the context state to the scope
-        cx.provide_context(val.clone());
+        // Provide the context state to the component
+        provide_context(val.clone());
         val
     })
 }

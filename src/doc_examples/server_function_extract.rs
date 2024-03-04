@@ -1,11 +1,11 @@
 #![allow(non_snake_case, unused)]
-use dioxus_fullstack::prelude::*;
+use dioxus::prelude::*;
 
 // ANCHOR: server_function_extract
 #[server]
-pub async fn log_user_agent() -> Result<(), ServerFnError> {
-    let axum::TypedHeader(user_agent): axum::TypedHeader<axum::headers::UserAgent> = extract().await?;
-    log::info!("{:?}", user_agent);
+pub async fn log_headers() -> Result<(), ServerFnError> {
+    let headers: http::HeaderMap = extract().await?;
+    log::info!("{:?}", headers[http::header::USER_AGENT]);
     Ok(())
 }
 // ANCHOR_END: server_function_extract

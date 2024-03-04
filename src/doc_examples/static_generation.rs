@@ -50,39 +50,23 @@ async fn main() {
 }
 
 #[component]
-fn Blog(cx: Scope) -> Element {
-    render! {
-        div {
-            "Blog"
-        }
-    }
+fn Blog() -> Element {
+    rsx! { div { "Blog" } }
 }
 
 #[component]
-fn Post(cx: Scope, id: usize) -> Element {
-    render! {
-        div {
-            "PostId: {id}"
-        }
-    }
+fn Post(id: usize) -> Element {
+    rsx! { div { "PostId: {id}" } }
 }
 
 #[component]
-fn PostHome(cx: Scope) -> Element {
-    render! {
-        div {
-            "Post"
-        }
-    }
+fn PostHome() -> Element {
+    rsx! { div { "Post" } }
 }
 
 #[component]
-fn Home(cx: Scope) -> Element {
-    render! {
-        div {
-            "Home"
-        }
-    }
+fn Home() -> Element {
+    rsx! { div { "Home" } }
 }
 
 #[rustfmt::skip]

@@ -2,12 +2,12 @@
 
 use dioxus::prelude::*;
 
-pub fn App(cx: Scope) -> Element {
+pub fn App() -> Element {
     // ANCHOR: spawn
-    let response = use_state(cx, || String::from("..."));
+    let response = use_signal(|| String::from("..."));
 
     let log_in = move |_| {
-        cx.spawn({
+        spawn({
             to_owned![response];
 
             async move {
@@ -22,29 +22,22 @@ pub fn App(cx: Scope) -> Element {
                         response.set("dioxuslabs.com responded!".into());
                     }
                     Err(err) => {
-                        log::info!(
-                            "Request failed with error: {err:?}"
-                        )
+                        log::info!("Request failed with error: {err:?}")
                     }
                 }
             }
         });
     };
 
-    render! {
-        button {
-            onclick: log_in,
-            "Response: {response}",
-        }
-    }
+    rsx! { button { onclick: log_in, "Response: {response}" } }
     // ANCHOR_END: spawn
 }
 
 #[cfg(feature = "doc_test")]
-pub fn Tokio(cx: Scope) -> Element {
+pub fn Tokio() -> Element {
     let _ = || {
         // ANCHOR: tokio
-        cx.spawn(async {
+        spawn(async {
             let _ = tokio::spawn(async {}).await;
 
             let _ = tokio::task::spawn_local(async {
@@ -55,20 +48,20 @@ pub fn Tokio(cx: Scope) -> Element {
         // ANCHOR_END: tokio
     };
 
-    cx.render(rsx!(()))
+    None
 }
 
-pub fn ToOwnedMacro(cx: Scope) -> Element {
-    let count = use_state(cx, || 0);
-    let age = use_state(cx, || 0);
-    let name = use_state(cx, || 0);
-    let description = use_state(cx, || 0);
+pub fn ToOwnedMacro() -> Element {
+    let count = use_signal(|| 0);
+    let age = use_signal(|| 0);
+    let name = use_signal(|| 0);
+    let description = use_signal(|| 0);
 
     let _ = || {
         // ANCHOR: to_owned_macro
         use dioxus::hooks::to_owned;
 
-        cx.spawn({
+        spawn({
             to_owned![count, age, name, description];
             async move {
                 // ...
@@ -77,5 +70,5 @@ pub fn ToOwnedMacro(cx: Scope) -> Element {
         // ANCHOR_END: to_owned_macro
     };
 
-    cx.render(rsx!(()))
+    None
 }

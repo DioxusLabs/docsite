@@ -15,32 +15,25 @@ enum Route {
 
 // ANCHOR: app
 #[component]
-fn App(cx: Scope) -> Element {
-    render! {
-        Router::<Route> {}
-    }
+fn App() -> Element {
+    rsx! { Router::<Route> {} }
 }
 // ANCHOR_END: app
 
 // ANCHOR: home
 #[component]
-fn Home(cx: Scope) -> Element {
-    render! {
-        h1 { "Welcome to the Dioxus Blog!" }
-    }
+fn Home() -> Element {
+    rsx! { h1 { "Welcome to the Dioxus Blog!" } }
 }
 // ANCHOR_END: home
 
 // ANCHOR: fallback
 #[component]
-fn PageNotFound(cx: Scope, route: Vec<String>) -> Element {
-    render! {
+fn PageNotFound(route: Vec<String>) -> Element {
+    rsx! {
         h1 { "Page not found" }
         p { "We are terribly sorry, but the page you requested doesn't exist." }
-        pre {
-            color: "red",
-            "log:\nattemped to navigate to: {route:?}"
-        }
+        pre { color: "red", "log:\nattemped to navigate to: {route:?}" }
     }
 }
 // ANCHOR_END: fallback

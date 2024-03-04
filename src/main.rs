@@ -3,8 +3,9 @@
 // cargo run --features ssr --release
 #![allow(unused)]
 
+use dioxus::prelude::*;
 use dioxus_docs_site::*;
-use dioxus_fullstack::prelude::*;
+
 use dioxus_router::routable::Routable;
 
 fn main() {
@@ -15,38 +16,51 @@ fn main() {
     }
     #[cfg(feature = "prebuild")]
     {
-        use dioxus_fullstack::prelude::*;
         use dioxus_router::prelude::*;
         use log::LevelFilter;
         simple_logger::SimpleLogger::new()
-            .with_level(LevelFilter::Trace)
+            .with_level(LevelFilter::Error)
             .init()
             .unwrap();
         tokio::runtime::Runtime::new()
             .unwrap()
             .block_on(async move {
-                pre_cache_static_routes_with_props(
-                    &ServeConfigBuilder::new_with_router(
-                        dioxus_fullstack::router::FullstackRouterConfig::<Route>::default(),
-                    )
-                    .assets_path("docs")
-                    .incremental(
-                        IncrementalRendererConfig::default()
-                            .static_dir("docs")
-                            .map_path(|route| {
-                                let mut path = std::env::current_dir().unwrap();
-                                path.push("docs");
-                                for (i, segment) in route.split('/').enumerate() {
-                                    path.push(segment);
-                                }
-                                println!("build: {path:?}");
-                                path
-                            }),
-                    )
-                    .build(),
-                )
-                .await
-                .unwrap();
+                let index_html = std::fs::read_to_string("docs/index.html").unwrap();
+                let main_tag = r#"<div id="main">"#;
+                let (before_body, after_body) =
+                    index_html.split_once(main_tag).expect("main id not found");
+                let after_body = after_body
+                    .split_once("</div>")
+                    .expect("main id not found")
+                    .1;
+                let wrapper = DefaultRenderer {
+                    before_body: before_body.to_string() + main_tag,
+                    after_body: "</div>".to_string() + after_body,
+                };
+                let mut renderer = IncrementalRenderer::builder()
+                    .static_dir("docs_static")
+                    .map_path(|route| {
+                        let mut path = std::env::current_dir().unwrap();
+                        path.push("docs_static");
+                        for segment in route.split('/') {
+                            path.push(segment);
+                        }
+                        println!("built: {}", path.display());
+                        path
+                    })
+                    .build();
+                renderer.renderer_mut().pre_render = true;
+                pre_cache_static_routes::<Route, _>(&mut renderer, &wrapper)
+                    .await
+                    .unwrap();
+
+                // Copy everything from docs_static to docs
+                let mut options = fs_extra::dir::CopyOptions::new();
+                options.overwrite = true;
+                options.content_only = true;
+                options.copy_inside = true;
+                std::fs::create_dir_all(format!("./docs")).unwrap();
+                fs_extra::dir::move_dir("./docs_static", &format!("./docs"), &options).unwrap();
             });
         println!("prebuilt");
 
@@ -55,7 +69,7 @@ fn main() {
             dioxus_search::BaseDirectoryMapping::new(std::path::PathBuf::from("./docs")).map(
                 |route: Route| {
                     let route = route.to_string();
-                    let mut path = std::path::PathBuf::new();
+                    let mut path = std::path::PathBuf::default();
                     for (i, segment) in route.split('/').enumerate() {
                         path.push(segment);
                     }
@@ -66,28 +80,6 @@ fn main() {
         return;
     }
 
-    #[cfg(feature = "web")]
-    dioxus_web::launch_with_props(
-        app,
-        // Get the root props from the document
-        get_root_props_from_document().unwrap_or_default(),
-        dioxus_web::Config::new().hydrate(true),
-    );
-    #[cfg(feature = "ssr")]
-    {
-        use axum::extract::Path;
-        use axum::extract::State;
-        use axum::routing::get;
-
-        LaunchBuilder::<FullstackRouterConfig<Route>>::router()
-            .server_cfg(
-                ServeConfigBuilder::new(
-                    dioxus_fullstack::router::RouteWithCfg::<Route>,
-                    Default::default(),
-                )
-                .incremental(dioxus_fullstack::prelude::IncrementalRendererConfig::default())
-                .assets_path("docs"),
-            )
-            .launch();
-    }
+    #[cfg(not(feature = "prebuild"))]
+    launch(app);
 }

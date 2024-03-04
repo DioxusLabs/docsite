@@ -47,8 +47,8 @@ enum Route {
 }
 
 #[component]
-fn Blog(cx: Scope) -> Element {
-    render! {
+fn Blog() -> Element {
+    rsx! {
         Link { to: Route::Home {}, "Go to counter" }
         table {
             tbody {
@@ -65,19 +65,16 @@ fn Blog(cx: Scope) -> Element {
 }
 
 #[component]
-fn Home(cx: Scope) -> Element {
-    let mut count = use_state(cx, || 0);
-    let text = use_state(cx, || "...".to_string());
+fn Home() -> Element {
+    let mut count = use_signal(|| 0);
+    let text = use_signal(|| "...".to_string());
 
-    cx.render(rsx! {
-        Link {
-            to: Route::Blog {},
-            "Go to blog"
-        }
+    rsx! {
+        Link { to: Route::Blog {}, "Go to blog" }
         div {
             h1 { "High-Five counter: {count}" }
             button { onclick: move |_| count += 1, "Up high!" }
             button { onclick: move |_| count -= 1, "Down low!" }
         }
-    })
+    }
 }

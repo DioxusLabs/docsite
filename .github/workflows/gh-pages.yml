@@ -13,6 +13,7 @@ jobs:
   build-deploy:
     runs-on: ubuntu-latest
     steps:
+      - uses: ilammy/setup-nasm@v1
       - uses: actions-rs/toolchain@v1
         with:
           profile: minimal

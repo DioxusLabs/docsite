@@ -3,30 +3,31 @@
 use dioxus::prelude::*;
 
 fn main() {
-    dioxus_desktop::launch(App);
+    launch(App);
 }
 
-fn App(cx: Scope) -> Element {
+fn App() -> Element {
     // ANCHOR: Clickable_usage
-    cx.render(rsx! {
-        Clickable {
-            href: "https://www.youtube.com/watch?v=C-M2hs3sXGo",
-            "How to " i {"not"} " be seen"
+    rsx! {
+        Clickable { href: "https://www.youtube.com/watch?v=C-M2hs3sXGo",
+            "How to "
+            i { "not" }
+            " be seen"
         }
-    })
+    }
     // ANCHOR_END: Clickable_usage
 }
 
-#[derive(Props)]
-struct ClickableProps<'a> {
-    href: &'a str,
-    children: Element<'a>,
+#[derive(PartialEq, Clone, Props)]
+struct ClickableProps {
+    href: String,
+    children: Element,
 }
 
 // ANCHOR: Clickable
-fn Clickable<'a>(cx: Scope<'a, ClickableProps<'a>>) -> Element {
-    match cx.props.children {
-        Some(VNode { dynamic_nodes, .. }) => {
+fn Clickable(props: ClickableProps) -> Element {
+    match props.children {
+        Some(VNode { .. }) => {
             todo!("render some stuff")
         }
         _ => {

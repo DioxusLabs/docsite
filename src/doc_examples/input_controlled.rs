@@ -2,16 +2,16 @@
 use dioxus::prelude::*;
 
 // ANCHOR: component
-pub fn App(cx: Scope) -> Element {
-    let name = use_state(cx, || "bob".to_string());
+pub fn App() -> Element {
+    let mut name = use_signal(|| "bob".to_string());
 
-    cx.render(rsx! {
+    rsx! {
         input {
             // we tell the component what to render
             value: "{name}",
             // and what to do when the value changes
-            oninput: move |evt| name.set(evt.value.clone()),
+            oninput: move |event| name.set(event.value())
         }
-    })
+    }
 }
 // ANCHOR_END: component

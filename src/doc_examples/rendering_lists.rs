@@ -8,85 +8,82 @@ struct Comment {
     id: usize,
 }
 
-pub fn App(cx: Scope) -> Element {
+pub fn App() -> Element {
     // ANCHOR: render_list
-    let comment_field = use_state(cx, String::new);
-    let mut next_id = use_state(cx, || 0);
-    let comments = use_ref(cx, Vec::<Comment>::new);
+    let mut comment_field = use_signal(String::new);
+    let mut next_id = use_signal(|| 0);
+    let mut comments = use_signal(Vec::<Comment>::new);
 
     let comments_lock = comments.read();
     let comments_rendered = comments_lock.iter().map(|comment| {
         rsx!(CommentComponent {
             key: "{comment.id}",
-            comment: comment.clone(),
+            comment: comment.clone()
         })
     });
 
-    cx.render(rsx!(
+    rsx!(
         form {
             onsubmit: move |_| {
-                comments.write().push(Comment {
-                    content: comment_field.get().clone(),
-                    id: *next_id.get(),
-                });
+                comments
+                    .write()
+                    .push(Comment {
+                        content: comment_field(),
+                        id: next_id(),
+                    });
                 next_id += 1;
-
                 comment_field.set(String::new());
             },
             input {
                 value: "{comment_field}",
-                oninput: move |event| comment_field.set(event.value.clone()),
+                oninput: move |event| comment_field.set(event.value())
             }
-            input {
-                r#type: "submit",
-            }
-        },
-        comments_rendered,
-    ))
+            input { r#type: "submit" }
+        }
+        {comments_rendered}
+    )
     // ANCHOR_END: render_list
 }
 
-pub fn AppForLoop(cx: Scope) -> Element {
+pub fn AppForLoop() -> Element {
     // ANCHOR: render_list_for_loop
-    let comment_field = use_state(cx, String::new);
-    let mut next_id = use_state(cx, || 0);
-    let comments = use_ref(cx, Vec::<Comment>::new);
+    let mut comment_field = use_signal(String::new);
+    let mut next_id = use_signal(|| 0);
+    let mut comments = use_signal(Vec::<Comment>::new);
 
-    cx.render(rsx!(
+    rsx!(
         form {
             onsubmit: move |_| {
-                comments.write().push(Comment {
-                    content: comment_field.get().clone(),
-                    id: *next_id.get(),
-                });
+                comments
+                    .write()
+                    .push(Comment {
+                        content: comment_field(),
+                        id: next_id(),
+                    });
                 next_id += 1;
-
                 comment_field.set(String::new());
             },
             input {
                 value: "{comment_field}",
-                oninput: move |event| comment_field.set(event.value.clone()),
+                oninput: move |event| comment_field.set(event.value())
             }
-            input {
-                r#type: "submit",
-            }
-        },
-        for comment in &*comments.read() {
-            // Notice the body of this for loop is rsx code, not an expression
-            CommentComponent {
-                key: "{comment.id}",
-                comment: comment.clone(),
-            }
+            input { r#type: "submit" }
         }
-    ))
+        for comment in comments() {
+            // Notice the body of this for loop is rsx code, not an expression
+            CommentComponent { key: "{comment.id}", comment }
+        }
+    )
     // ANCHOR_END: render_list_for_loop
 }
 
 #[component]
-fn CommentComponent(cx: Scope, comment: Comment) -> Element {
-    cx.render(rsx!(div {
-        "Comment by anon:",
-        p { "{comment.content}" }
-        button { "Reply" },
-    }))
+fn CommentComponent(comment: Comment) -> Element {
+    rsx!(
+        div {
+            "Comment by anon:"
+            p { "{comment.content}" }
+            button { "Reply" }
+        }
+    )
 }

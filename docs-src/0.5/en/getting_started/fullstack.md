@@ -18,8 +18,7 @@ cd demo
 Add `dioxus` and `dioxus-fullstack` as dependencies:
 
 ```shell
-cargo add dioxus
-cargo add dioxus-fullstack
+cargo add dioxus@0.5.0-alpha.0 --features fullstack
 ```
 
 Next, set up features for the server (`server`) and the client (`web`):
@@ -27,8 +26,8 @@ Next, set up features for the server (`server`) and the client (`web`):
 ```toml
 [features]
 default = []
-server = ["dioxus-fullstack/axum"]
-web = ["dioxus-fullstack/web"]
+server = ["dioxus/axum"]
+web = ["dioxus/web"]
 ```
 
 Your dependencies should look roughly like this:

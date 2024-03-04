@@ -46,7 +46,7 @@ cd demo
 Add Dioxus with the web renderer feature as a dependency (this will edit your `Cargo.toml`):
 
 ```bash
-cargo add dioxus --features web
+cargo add dioxus@0.5.0-alpha.0 --features web
 ```
 
 Edit your `main.rs`:

@@ -26,12 +26,7 @@ pub fn Err404(segments: Vec<String>) -> Element {
                         }
                     }
                 }
-                div { class: "max-w-4xl h-64 md:h-96 mx-auto",
-                    img {
-                        class: "w-full rounded-lg object-cover",
-                        src: FERROUS_LOGO
-                    }
-                }
+                div { class: "max-w-4xl h-64 md:h-96 mx-auto", img { class: "w-full rounded-lg object-cover", src: FERROUS_LOGO } }
             }
         }
     )

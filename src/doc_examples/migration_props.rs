@@ -7,9 +7,7 @@ fn Comp(name: String) -> Element {
     // Name is owned here already (name is the type String inside the function)
     let owned_name: String = name;
 
-    rsx! {
-        "Hello {owned_name}"
-    }
+    rsx! {"Hello {owned_name}"}
 }
 // ANCHOR_END: owned_props
 
@@ -22,7 +20,6 @@ fn CopyPropsComp(name: ReadOnlySignal<String>) -> Element {
             // You can easily copy the value of a signal into a closure
             onclick: move |_| {
                 println!("Hello {name}");
-                // Or a future
                 async move {
                     println!("Hello {name}");
                 }
@@ -33,12 +30,7 @@ fn CopyPropsComp(name: ReadOnlySignal<String>) -> Element {
 }
 
 fn CopyPropsCompParent() -> Element {
-    rsx! {
-        CopyPropsComp {
-            // You can pass a value in directly and it will automatically be converted to a read only signal
-            name: "World"
-        }
-    }
+    rsx! { CopyPropsComp { name: "World" } }
 }
 // ANCHOR_END: copy_props
 
@@ -46,19 +38,12 @@ fn CopyPropsCompParent() -> Element {
 fn Parent() -> Element {
     let state = use_signal(|| (1, "World".to_string()));
 
-    rsx! {
-        BorrowedComp {
-            // You can pass a signal in directly
-            name: state.map(|s| &s.1)
-        }
-    }
+    rsx! { BorrowedComp { name: state.map(|s| &s.1) } }
 }
 
 #[component]
 fn BorrowedComp(name: MappedSignal<String>) -> Element {
-    rsx! {
-        "Hello {name}"
-    }
+    rsx! {"Hello {name}"}
 }
 // ANCHOR_END: borrowed_props
 
@@ -70,8 +55,6 @@ struct ManualProps {
 
 // Functions accept the props directly instead of the component
 fn ManualPropsComponent(props: ManualProps) -> Element {
-    rsx! {
-        "Hello {props.name}"
-    }
+    rsx! {"Hello {props.name}"}
 }
 // ANCHOR_END: manual_props

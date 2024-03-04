@@ -32,7 +32,7 @@ mod try_result_hook {
         let count = use_hook(|| "1.234");
         let val: i32 = match count.parse() {
             Ok(val) => val,
-            Err(err) => return rsx! { "Parsing failed" },
+            Err(err) => return rsx! {"Parsing failed"},
         };
 
         todo!()
@@ -49,12 +49,8 @@ mod match_error {
         // ANCHOR_END: use_error
 
         match error() {
-            Some(error) => rsx!(
-                h1 { "An error occurred" }
-            ),
-            None => rsx!(input {
-                oninput: move |_| error.set(Some("bad thing happened!")),
-            }),
+            Some(error) => rsx!( h1 { "An error occurred" } ),
+            None => rsx!( input { oninput: move |_| error.set(Some("bad thing happened!")) } ),
         }
     }
     // ANCHOR_END: match_error
@@ -67,7 +63,7 @@ mod match_error_children {
         let error = use_signal(|| None);
 
         if let Some(error) = error() {
-            return rsx! { "An error occurred" };
+            return rsx! {"An error occurred"};
         }
 
         rsx! {
@@ -80,11 +76,7 @@ mod match_error_children {
 
     #[component]
     fn Child(error: Signal<Option<&'static str>>) -> Element {
-        rsx! {
-            input {
-                oninput: move |_| error.set(Some("bad thing happened!")),
-            }
-        }
+        rsx! { input { oninput: move |_| error.set(Some("bad thing happened!")) } }
     }
     // ANCHOR_END: match_error_children
 }
@@ -95,7 +87,11 @@ mod throw_error {
     fn Parent() -> Element {
         rsx! {
             ErrorBoundary {
-                handle_error: |error| rsx! { "Oops, we encountered an error. Please report {error} to the developer of this application" },
+                handle_error: |error| {
+                    rsx! {
+                        "Oops, we encountered an error. Please report {error} to the developer of this application"
+                    }
+                },
                 ThrowsError {}
             }
         }
@@ -114,7 +110,11 @@ mod nested_throw {
     fn App() -> Element {
         rsx! {
             ErrorBoundary {
-                handle_error: |error| rsx! { "Hmm, something went wrong. Please report {error} to the developer of this application" },
+                handle_error: |error| {
+                    rsx! {
+                        "Hmm, something went wrong. Please report {error} to the developer of this application"
+                    }
+                },
                 Parent {}
             }
         }
@@ -123,7 +123,11 @@ mod nested_throw {
     fn Parent() -> Element {
         rsx! {
             ErrorBoundary {
-                handle_error: |error| rsx! { "The child component encountered an error: {error}" },
+                handle_error: |error| {
+                    rsx! {
+                        "The child component encountered an error: {error}"
+                    }
+                },
                 ThrowsError {}
             }
         }

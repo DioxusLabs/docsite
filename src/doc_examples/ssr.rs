@@ -24,9 +24,7 @@ async fn main() {
 // ANCHOR: app_endpoint
 async fn app_endpoint() -> Html<String> {
     // render the rsx! macro to HTML
-    Html(dioxus_ssr::render_element(rsx! {
-        div { "hello world!" }
-    }))
+    Html(dioxus_ssr::render_element(rsx! { div { "hello world!" } }))
 }
 // ANCHOR_END: app_endpoint
 
@@ -37,7 +35,7 @@ mod app_endpoint_vdom {
     async fn app_endpoint() -> Html<String> {
         // create a component that renders a div with the text "hello world"
         fn app() -> Element {
-            rsx!(div { "hello world" })
+            rsx!( div { "hello world" } )
         }
         // create a VirtualDom with the app component
         let mut app = VirtualDom::new(app);

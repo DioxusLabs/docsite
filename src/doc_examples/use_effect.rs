@@ -15,15 +15,11 @@ fn Profile(id: ReadOnlySignal<i32>) -> Element {
         tracing::info!("Hello, World!");
     });
 
-    rsx!(
-        div {
-            "Profile #{id}"
-        }
-    )
+    rsx!( div { "Profile #{id}" } )
 }
 
 fn app() -> Element {
-    rsx!(Profile { id: 0 })
+    rsx!( Profile { id: 0 } )
 }
 // ANCHOR_END: app
 

@@ -3,13 +3,10 @@ use dioxus::prelude::*;
 use manganis::*;
 
 fn App() -> Element {
-    rsx! {
-        img {
-            // You can link to assets that are relative to the package root or even link to an asset from a url
-            // These assets will automatically be picked up by the dioxus cli, optimized, and bundled with your final applications
-            src: manganis::mg!(image("./public/static/ferrous_wave.png")),
-        }
-    }
+    // You can link to assets that are relative to the package root or even link to an asset from a url
+    // These assets will automatically be picked up by the dioxus cli, optimized, and bundled with your final applications
+    const ASSET: manganis::ImageAsset = manganis::mg!(image("./public/static/ferrous_wave.png"));
+    rsx! { img { src: "{ASSET}" } }
 }
 /// ANCHOR_END: images
 
@@ -24,11 +21,7 @@ pub const ENUM_ROUTER_IMG: manganis::ImageAsset =
         .preload());
 
 fn EnumRouter() -> Element {
-    rsx! {
-        img {
-            src: ENUM_ROUTER_IMG,
-        }
-    }
+    rsx! { img { src: "{ENUM_ROUTER_IMG}" } }
 }
 /// ANCHOR_END: optimized_images
 

@@ -342,7 +342,7 @@ fn Preview() -> Element {
             rsx! {
                 div { padding: "0.5rem",
                     div { font_size: "1.5rem", a { href: story.item.url, "{story.item.title}" } }
-                    div { dangerous_inner_html: {story.item.text} }
+                    div { dangerous_inner_html: { story.item.text } }
                     for comment in &story.comments {
                         Comment { comment: comment.clone() }
                     }

@@ -9,9 +9,7 @@ fn MyComponent() -> Element {
         // Because we read from the state signal, this future will be re-run whenever the state changes
         println!("{state}");
     });
-    rsx! {
-        "{state}"
-    }
+    rsx! {"{state}"}
 }
 // ANCHOR_END: use_resource
 
@@ -27,8 +25,6 @@ fn HasDependencies() -> Element {
         // Because we read from the state signal, this future will be re-run whenever the state changes
         state() + 1
     });
-    rsx! {
-        "{state_plus_one}"
-    }
+    rsx! {"{state_plus_one}"}
 }
 // ANCHOR_END: dependencies

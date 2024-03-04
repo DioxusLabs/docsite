@@ -1,7 +1,7 @@
 #![allow(non_snake_case, unused)]
 
 use dioxus::prelude::*;
-use dioxus_fullstack::prelude::*;
+
 
 fn main() {
     launch(app);

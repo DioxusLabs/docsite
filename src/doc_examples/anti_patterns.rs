@@ -12,10 +12,10 @@ fn AntipatternNestedFragments() -> Element {
     // ANCHOR: nested_fragments
     // ❌ Don't unnecessarily nest fragments
     let _ = rsx!(
-        Fragment {
-            Fragment {
-                Fragment {
-                    Fragment {
+        Fragment { 
+            Fragment { 
+                Fragment { 
+                    Fragment { 
                         Fragment { div { "Finally have a real node!" } }
                     }
                 }

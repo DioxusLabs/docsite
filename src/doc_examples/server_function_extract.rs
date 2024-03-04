@@ -1,5 +1,5 @@
 #![allow(non_snake_case, unused)]
-use dioxus_fullstack::prelude::*;
+use dioxus::prelude::*;
 
 // ANCHOR: server_function_extract
 #[server]

@@ -19,7 +19,6 @@ pub fn App() -> Element {
                 }
             }
         }
-        // ANCHOR_END: rsx
     }
 }
 // ANCHOR_END: component

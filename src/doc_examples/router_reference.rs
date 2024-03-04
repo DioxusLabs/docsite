@@ -94,10 +94,7 @@ fn App() -> Element {
     }
     // ANCHOR: links
     rsx! {
-        Link {
-            to: Route::Home {},
-            "Go home!"
-        }
+        Link { to: Route::Home {}, "Go home!" }
     }
     // ANCHOR_END: links
 }

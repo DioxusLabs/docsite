@@ -83,7 +83,7 @@ pub fn Footer() -> Element {
             }
             div { class: "container mx-auto py-4 px-5 flex flex-wrap flex-col sm:flex-row",
                 p { class: "text-gray-400 text-sm text-center sm:text-left",
-                    "© 2023 Dioxus Labs —"
+                    "© 2024 Dioxus Labs —"
                     a {
                         class: "text-gray-500 ml-1",
                         rel: "noopener noreferrer",

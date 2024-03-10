@@ -10,7 +10,7 @@ One popular option for styling your Dioxus application is [Tailwind](https://tai
 1. Install the Dioxus CLI:
 
 ```bash
-cargo install --git https://github.com/DioxusLabs/cli
+cargo install dioxus-cli
 ```
 
 2. Install npm: https://docs.npmjs.com/downloading-and-installing-node-js-and-npm

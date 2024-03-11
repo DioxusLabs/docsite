@@ -10,7 +10,7 @@ One popular option for styling your Dioxus application is [Tailwind](https://tai
 1. Install the Dioxus CLI:
 
 ```bash
-cargo install --git https://github.com/DioxusLabs/cli
+cargo install dioxus-cli@0.5.0-alpha.0
 ```
 
 2. Install npm: https://docs.npmjs.com/downloading-and-installing-node-js-and-npm
@@ -52,10 +52,10 @@ module.exports = {
 7. Add [Manganis](https://github.com/DioxusLabs/collect-assets) to your project to handle asset collection.
 
 ```sh
-cargo add maganis
+cargo add manganis
 ```
 
-8. Create a link to the `tailwind.css` file using maganis somewhere in your rust code:
+8. Create a link to the `tailwind.css` file using manganis somewhere in your rust code:
 
 ```rust
 {{#include src/doc_examples/tailwind.rs}}

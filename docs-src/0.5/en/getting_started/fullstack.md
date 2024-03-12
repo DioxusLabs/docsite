@@ -6,9 +6,7 @@
 
 ## Setup
 
-For this guide, we're going to show how to use Dioxus with [Axum](https://docs.rs/axum/latest/axum/), but `dioxus-fullstack` also integrates with the [Warp](https://docs.rs/warp/latest/warp/) and [Salvo](https://docs.rs/salvo/latest/salvo/) web frameworks.
-
-Make sure you have Rust and Cargo installed, and then create a new project:
+Before we get started, make sure you have Rust and Cargo installed. Then create a new project:
 
 ```shell
 cargo new --bin demo
@@ -42,7 +40,7 @@ server = ["dioxus/axum"]
 web = ["dioxus/web"]
 ```
 
-Now, set up your Axum app to serve the Dioxus app.
+Now, set up your fullstack app to serve the Dioxus app.
 
 ```rust
 {{#include src/doc_examples/server_basic.rs}}

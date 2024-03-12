@@ -152,7 +152,7 @@ fn AvailablePlatforms() -> Element {
                     },
                     title: "LiveView and LiveComponents",
                     right: rsx!(
-                        "Render your app entirely on the server. Zero backend configuration capable of handling thousands of active clients. Integrates with Axum, Warp, Salvo, and Tokamak.",
+                        "Render your app entirely on the server. Zero backend configuration capable of handling thousands of active clients. Integrates with Axum.",
                     ),
                     left: None,
                     center: None,

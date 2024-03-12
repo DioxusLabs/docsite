@@ -22,7 +22,7 @@ For example, we can make an API request (using [reqwest](https://docs.rs/reqwest
 
 The code inside `use_resource` will be submitted to the Dioxus scheduler once the component has rendered.
 
-We can use `.value()` to get the result of the future. On the first run, since there's no data ready when the component loads, its value will be `None`.  However, once the future is finished, the component will be re-rendered and the value will now be `Some(...)`, containing the return value of the closure.
+We can use `.read()` to get the result of the future. On the first run, since there's no data ready when the component loads, its value will be `None`.  However, once the future is finished, the component will be re-rendered and the value will now be `Some(...)`, containing the return value of the closure.
 
 We can then render the result by looping over each of the posts and rendering them with the `StoryListing` component.
 

@@ -54,7 +54,7 @@ Because the page is initially rendered on the server, the page will be fully ren
 
 Finally, we can use [server functions](../reference/fullstack/server_functions.md) to communicate with the server in a type-safe way.
 
-This approach uses both the dioxus-web and dioxus-ssr crates. To integrate those two packages and `axum`, `warp`, or `salvo`, Dioxus provides the `dioxus-fullstack` crate.
+This approach uses both the dioxus-web and dioxus-ssr crates. To integrate those two packages and `axum` Dioxus provides the `dioxus-fullstack` crate.
 
 There can be more complexity with fullstack applications because your code runs in two different places. Dioxus tries to mitigate this with server functions and other helpers.
 

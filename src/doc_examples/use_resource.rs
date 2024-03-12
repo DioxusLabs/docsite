@@ -10,7 +10,7 @@ struct ApiResponse {
 
 pub fn App() -> Element {
     // ANCHOR: use_resource
-    let mut future = use_resource(move || async move {
+    let mut future = use_resource(|| async move {
         reqwest::get("https://dog.ceo/api/breeds/image/random")
             .await
             .unwrap()

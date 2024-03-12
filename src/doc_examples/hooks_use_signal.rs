@@ -6,12 +6,16 @@ pub fn App() -> Element {
     let mut list = use_signal(Vec::new);
 
     rsx!(
-        p { "Current list: {list.read():?}" }
+        p { "Current list: {list:?}" }
         button {
             onclick: move |event| {
-                list.with_mut(|list| list.push(event));
+                let list_len = list.len();
+                // You can get a &mut T from a Signal<T> by calling .write() on it
+                list.write().push(list_len);
+                // Or Signal<Vec<T>> contains some helper methods to like .push() and .pop() that you can call directly
+                list.push(list_len);
             },
-            "Click me!"
+            "Add two elements!"
         }
     )
 }

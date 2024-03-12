@@ -18,22 +18,21 @@ Dioxus is heavily inspired by React. If you know React, getting started with Dio
 
 ## Features
 
-- Desktop apps running natively (no Electron!) in less than 5 lines of code.
-- Incredibly ergonomic and powerful state management.
+- Cross platform apps in three lines of code. (Web, Desktop, Server, Mobile, and more)
+- Incredibly ergonomic and powerful state management that combines the best parts of react, solid and svelte.
 - Comprehensive inline documentation – hover and guides for all HTML elements, listeners, and events.
-- Extremely memory efficient – 0 global allocations for steady-state components.
-- Multi-channel asynchronous scheduler for first-class async support.
-- And more! Read the [full release post](https://dioxuslabs.com/blog/introducing-dioxus/).
+- High performance applications [approaching the fastest web frameworks on the web](https://dioxuslabs.com/blog/templates-diffing) and native speeds on desktop.
+- First-class async support.
 
 ### Multiplatform
 
 Dioxus is a *portable* toolkit, meaning the Core implementation can run anywhere with no platform-dependent linking. Unlike many other Rust frontend toolkits, Dioxus is not intrinsically linked to WebSys. In fact, every element and event listener can be swapped out at compile time. By default, Dioxus ships with the `html` feature enabled, but this can be disabled depending on your target renderer.
 
 Right now, we have several 1st-party renderers:
-- WebSys (for WASM): Great support
+- WebSys/Sledgehammer (for WASM): Great support
 - Tao/Tokio (for Desktop apps): Good support
 - Tao/Tokio (for Mobile apps): Poor support
-- SSR (for generating static markup)
+- Fullstack (for SSR and server functions): Good support
 - TUI/Rink (for terminal-based apps): Experimental
 
 ## Stability
@@ -44,4 +43,4 @@ Web: Since the web is a fairly mature platform, we expect there to be very littl
 
 Desktop: APIs will likely be in flux as we figure out better patterns than our ElectronJS counterpart.
 
-SSR: We don't expect the SSR API to change drastically in the future.
+Fullstack: APIs will likely be in flux as we figure out the best API for server communication.

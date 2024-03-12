@@ -19,7 +19,7 @@ fn Profile(id: ReadOnlySignal<i32>) -> Element {
 }
 
 fn app() -> Element {
-    rsx!( Profile { id: 0 } )
+    rsx!(Profile { id: 0 })
 }
 // ANCHOR_END: app
 

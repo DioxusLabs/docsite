@@ -2,13 +2,12 @@
 
 use dioxus::prelude::*;
 
-
 fn main() {
     launch(app);
 }
 
 fn app() -> Element {
-    let mut count = use_server_future(|| async { get_server_data().await })?;
+    let mut count = use_server_future(get_server_data)?;
 
     rsx! {"server data is {count.value():?}"}
 }

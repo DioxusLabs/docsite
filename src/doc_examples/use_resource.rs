@@ -20,7 +20,7 @@ pub fn App() -> Element {
     // ANCHOR_END: use_resource
 
     // ANCHOR: render
-    match &*future.read() {
+    match &*future.read_unchecked() {
         Some(Ok(response)) => rsx! {
             button { onclick: move |_| future.restart(), "Click to fetch another doggo" }
             div { img {

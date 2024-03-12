@@ -91,7 +91,7 @@ pub fn Awesome() -> Element {
 
     let mut search = use_signal(|| "".to_string());
 
-    match &*items.read() {
+    match &*items.read_unchecked() {
         Some(Ok(items)) => {
             to_owned![items];
             items.sort_by(|a, b| {

@@ -8,6 +8,7 @@ use dioxus_rsx::{
     AttributeType, BodyNode, CallBody, Element, ElementAttr, ElementAttrName, ElementAttrNamed,
     ElementAttrValue, IfmtInput,
 };
+#[cfg(feature = "manganis")]
 use manganis_common::*;
 use pulldown_cmark::{Alignment, Event, Options, Parser, Tag};
 use syn::{Ident, __private::Span, parse_str, LitStr};
@@ -521,23 +522,28 @@ impl<'a, I: Iterator<Item = Event<'a>>> RsxMarkdownParser<'a, I> {
                         format!("Failed to parse image source {}: {}", dest, e),
                     )
                 })?;
-                let this_file =
-                    FileAsset::new(source).with_options(manganis_common::FileOptions::Image(
-                        ImageOptions::new(manganis_common::ImageType::Avif, None),
-                    ));
+                #[cfg(not(feature = "manganis"))]
+                let url: String = source;
+                #[cfg(feature = "manganis")]
+                let url = {
+                    let this_file =
+                        FileAsset::new(source).with_options(manganis_common::FileOptions::Image(
+                            ImageOptions::new(manganis_common::ImageType::Avif, None),
+                        ));
 
-                let asset = add_asset(manganis_common::AssetType::File(this_file.clone()))
-                    .map_err(|e| {
-                        syn::Error::new(
-                            Span::call_site(),
-                            format!("Failed to add asset {}: {}", dest, e),
-                        )
-                    })?;
-                let this_file = match asset {
-                    manganis_common::AssetType::File(this_file) => this_file,
-                    _ => unreachable!(),
+                    let asset = add_asset(manganis_common::AssetType::File(this_file.clone()))
+                        .map_err(|e| {
+                            syn::Error::new(
+                                Span::call_site(),
+                                format!("Failed to add asset {}: {}", dest, e),
+                            )
+                        })?;
+                    let this_file = match asset {
+                        manganis_common::AssetType::File(this_file) => this_file,
+                        _ => unreachable!(),
+                    };
+                    this_file.served_location()
                 };
-                let url = this_file.served_location();
 
                 self.start_node(BodyNode::Element(Element::new(
                     None,

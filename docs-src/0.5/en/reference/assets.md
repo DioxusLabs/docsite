@@ -39,7 +39,7 @@ These files will be automatically included in the final build of your applicatio
 You can include stylesheets in your application using the `mg!` macro. For example, you can use the following code to include a stylesheet in your application:
 
 ```rust
-{{#include src/doc_examples/assets.rs:stylesheets}}
+{{#include src/doc_examples/assets.rs:style_sheets}}
 ```
 
 > The [tailwind guide](../cookbook/tailwind.md) has more information on how to use tailwind with dioxus.

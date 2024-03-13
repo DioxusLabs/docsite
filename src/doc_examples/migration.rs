@@ -67,6 +67,11 @@ mod futures {
         // ANCHOR: futures
         // dependency1 and dependency2 must be Signal-like types like Signal, ReadOnlySignal, GlobalSignal, or another Resource
         use_resource(|| async move { /*use dependency1 and dependency2*/ });
+
+        let non_reactive_state = 0;
+        // You can also add non-reactive state to the resource hook with the use_dependencies method
+        use_resource(|| async move { /*use non_reactive_state*/ })
+            .use_dependencies((&non_reactive_state,));
         // ANCHOR_END: futures
     }
 }

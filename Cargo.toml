@@ -7,19 +7,19 @@ edition = "2018"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-dioxus = { git = "https://github.com/ealmloff/dioxus/", branch = "make-resource-copy", features = ["fullstack", "router"] }
-dioxus-web = { git = "https://github.com/ealmloff/dioxus/", branch = "make-resource-copy", features = [
+dioxus = { git = "https://github.com/dioxuslabs/dioxus", features = ["fullstack", "router"] }
+dioxus-web = { git = "https://github.com/dioxuslabs/dioxus", features = [
     "hydrate",
 ], optional = true }
-dioxus-ssr = { git = "https://github.com/ealmloff/dioxus/", branch = "make-resource-copy", optional = true }
-dioxus-fullstack = { git = "https://github.com/ealmloff/dioxus/", branch = "make-resource-copy" }
-dioxus-tui = { git = "https://github.com/ealmloff/dioxus/", branch = "make-resource-copy", optional = true }
-dioxus-desktop = { git = "https://github.com/ealmloff/dioxus/", branch = "make-resource-copy", optional = true }
-dioxus-liveview = { git = "https://github.com/ealmloff/dioxus/", branch = "make-resource-copy", features = [
+dioxus-ssr = { git = "https://github.com/dioxuslabs/dioxus", optional = true }
+dioxus-fullstack = { git = "https://github.com/dioxuslabs/dioxus" }
+dioxus-tui = { git = "https://github.com/dioxuslabs/dioxus", optional = true }
+dioxus-desktop = { git = "https://github.com/dioxuslabs/dioxus", optional = true }
+dioxus-liveview = { git = "https://github.com/dioxuslabs/dioxus", features = [
     "axum",
 ], optional = true }
-dioxus-native-core = { git = "https://github.com/ealmloff/dioxus/", branch = "make-resource-copy", optional = true }
-dioxus-native-core-macro = { git = "https://github.com/ealmloff/dioxus/", branch = "make-resource-copy", optional = true }
+dioxus-native-core = { git = "https://github.com/dioxuslabs/dioxus", optional = true }
+dioxus-native-core-macro = { git = "https://github.com/dioxuslabs/dioxus", optional = true }
 manganis = { git = "https://github.com/DioxusLabs/collect-assets" }
 serde = { version = "1.0.163", features = ["derive"] }
 serde_json = "1.0.96"
@@ -70,25 +70,25 @@ tower-http = { version = "0.5.0", optional = true, features = ["timeout"] }
 tracing = "0.1.40"
 
 [patch.crates-io]
-dioxus = { git = "https://github.com/ealmloff/dioxus/", branch = "make-resource-copy" }
-dioxus-lib = { git = "https://github.com/ealmloff/dioxus/", branch = "make-resource-copy" }
-dioxus-core = { git = "https://github.com/ealmloff/dioxus/", branch = "make-resource-copy" }
-dioxus-core-macro = { git = "https://github.com/ealmloff/dioxus/", branch = "make-resource-copy" }
-dioxus-signals = { git = "https://github.com/ealmloff/dioxus/", branch = "make-resource-copy" }
-dioxus-html = { git = "https://github.com/ealmloff/dioxus/", branch = "make-resource-copy" }
-dioxus-cli-config = { git = "https://github.com/ealmloff/dioxus/", branch = "make-resource-copy" }
-dioxus-router = { git = "https://github.com/ealmloff/dioxus/", branch = "make-resource-copy" }
-dioxus-router-macro = { git = "https://github.com/ealmloff/dioxus/", branch = "make-resource-copy" }
-dioxus-rsx = { git = "https://github.com/ealmloff/dioxus/", branch = "make-resource-copy" }
+dioxus = { git = "https://github.com/dioxuslabs/dioxus" }
+dioxus-lib = { git = "https://github.com/dioxuslabs/dioxus" }
+dioxus-core = { git = "https://github.com/dioxuslabs/dioxus" }
+dioxus-core-macro = { git = "https://github.com/dioxuslabs/dioxus" }
+dioxus-signals = { git = "https://github.com/dioxuslabs/dioxus" }
+dioxus-html = { git = "https://github.com/dioxuslabs/dioxus" }
+dioxus-cli-config = { git = "https://github.com/dioxuslabs/dioxus" }
+dioxus-router = { git = "https://github.com/dioxuslabs/dioxus" }
+dioxus-router-macro = { git = "https://github.com/dioxuslabs/dioxus" }
+dioxus-rsx = { git = "https://github.com/dioxuslabs/dioxus" }
 
-dioxus-web = { git = "https://github.com/ealmloff/dioxus/", branch = "make-resource-copy" }
-dioxus-ssr = { git = "https://github.com/ealmloff/dioxus/", branch = "make-resource-copy" }
-dioxus-tui = { git = "https://github.com/ealmloff/dioxus/", branch = "make-resource-copy" }
-dioxus-desktop = { git = "https://github.com/ealmloff/dioxus/", branch = "make-resource-copy" }
-dioxus-liveview = { git = "https://github.com/ealmloff/dioxus/", branch = "make-resource-copy" }
-dioxus-fullstack = { git = "https://github.com/ealmloff/dioxus/", branch = "make-resource-copy" }
-dioxus-native-core = { git = "https://github.com/ealmloff/dioxus/", branch = "make-resource-copy" }
-dioxus-native-core-macro = { git = "https://github.com/ealmloff/dioxus/", branch = "make-resource-copy" }
+dioxus-web = { git = "https://github.com/dioxuslabs/dioxus" }
+dioxus-ssr = { git = "https://github.com/dioxuslabs/dioxus" }
+dioxus-tui = { git = "https://github.com/dioxuslabs/dioxus" }
+dioxus-desktop = { git = "https://github.com/dioxuslabs/dioxus" }
+dioxus-liveview = { git = "https://github.com/dioxuslabs/dioxus" }
+dioxus-fullstack = { git = "https://github.com/dioxuslabs/dioxus" }
+dioxus-native-core = { git = "https://github.com/dioxuslabs/dioxus" }
+dioxus-native-core-macro = { git = "https://github.com/dioxuslabs/dioxus" }
 
 [profile.release]
 lto = true

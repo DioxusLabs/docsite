@@ -14,12 +14,11 @@ fn Profile(id: ReadOnlySignal<i32>) -> Element {
         tracing::info!("Hello, World!");
     });
 
-    // You can also add non-reactive state to the effect hook with the use_dependencies method
+    // You can also add non-reactive state to the effect hook with the use_reactive macro
     let non_reactive_state = id();
-    use_effect(|| {
+    use_effect(use_reactive!(|(non_reactive_state,)| async move {
         tracing::info!("Profile #{}", non_reactive_state);
-    })
-    .use_dependencies((&non_reactive_state,));
+    }));
 
     rsx!( div { "Profile #{id}" } )
 }

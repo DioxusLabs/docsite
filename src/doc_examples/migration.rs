@@ -69,9 +69,11 @@ mod futures {
         use_resource(|| async move { /*use dependency1 and dependency2*/ });
 
         let non_reactive_state = 0;
-        // You can also add non-reactive state to the resource hook with the use_dependencies method
-        use_resource(|| async move { /*use non_reactive_state*/ })
-            .use_dependencies((&non_reactive_state,));
+        // You can also add non-reactive state to the resource hook with the use_reactive macro
+        use_resource(use_reactive!(|(non_reactive_state,)| async move {
+            tokio::time::sleep(std::time::Duration::from_secs(1)).await;
+            non_reactive_state + signal()
+        }));
         // ANCHOR_END: futures
     }
 }

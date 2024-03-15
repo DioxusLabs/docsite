@@ -46,9 +46,9 @@ fn RandomDog(breed: ReadOnlySignal<String>) -> Element {
             .await
     });
 
-    // You can also add non-reactive state to the resource hook with the use_dependencies method
+    // You can also add non-reactive state to the resource hook with the use_reactive method
     let non_reactive_state = "poodle";
-    use_resource(|| async move {
+    use_resource(use_reactive!(|(non_reactive_state,)| async move {
         reqwest::get(format!(
             "https://dog.ceo/api/breed/{non_reactive_state}/images/random"
         ))
@@ -56,8 +56,7 @@ fn RandomDog(breed: ReadOnlySignal<String>) -> Element {
         .unwrap()
         .json::<ApiResponse>()
         .await
-    })
-    .use_dependencies((&non_reactive_state,));
+    }));
     // ANCHOR_END: dependency
 
     None

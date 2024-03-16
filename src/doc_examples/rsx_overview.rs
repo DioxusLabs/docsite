@@ -25,6 +25,16 @@ pub fn Button() -> Element {
     // ANCHOR_END: button
 }
 
+pub fn AttributesType() -> Element {
+    // ANCHOR: attributes_type
+    rsx! {
+        input {
+            r#type: "text",
+        }
+    }
+    // ANCHOR_END: attributes_type
+}
+
 pub fn Children() -> Element {
     // ANCHOR: children
     rsx!(

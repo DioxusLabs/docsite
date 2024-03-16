@@ -149,7 +149,7 @@ pub extern "C" fn start_app() {
     {
         tao::android_binding!(
             com_example,
-            wry_app,
+            dioxus_mobile_test,
             WryActivity,
             wry::android_setup, // pass the wry::android_setup function to tao which will invoke when the event loop is created
             _start_app
@@ -198,7 +198,15 @@ fn app() -> Element {
 
 ## Running 
 
-From there, you'll want to get a build of the crate using whichever platform you're targeting (simulator or actual hardware). For now, we'll just stick with the simulator
+From there, you'll want to get a build of the crate using whichever platform you're targeting (simulator or actual hardware). For now, we'll just stick with the simulator.
+
+First, you need to make sure that the build variant is correct in Android Studio:
+1. Click "Build" in the top menu bar.
+2. Click "Select Build Variant..." in the dropdown.
+3. Find the "Build Variants" panel and use the dropdown to change the selected build variant.
+
+![android studio build dropdown](./public/static/as-build-dropdown.png)
+![android studio build variants](./public/static/as-build-variant-menu.png)
 
 ### Android
 

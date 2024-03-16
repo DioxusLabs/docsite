@@ -70,6 +70,12 @@ Edit your `main.rs`:
 {{#include src/doc_examples/hello_world_desktop.rs:all}}
 ```
 
+And to serve our app:
+
+```bash
+dx serve --platform desktop
+```
+
 ## Hot Reload
 
 1. Hot reloading allows much faster iteration times inside of RSX calls by interpreting them and streaming the edits.

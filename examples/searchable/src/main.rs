@@ -5,8 +5,6 @@
 // Note: The first time you run the build, the search index will be empty. You need to rebuild the build again to fill the search index.
 
 use dioxus::prelude::*;
-use dioxus_fullstack::prelude::*;
-use dioxus_router::prelude::*;
 
 fn main() {
     #[cfg(feature = "ssr")]
@@ -40,14 +38,7 @@ fn main() {
         println!("finished creating search index");
     }
 
-    dioxus_fullstack::launch_router!(@([127, 0, 0, 1], 8080), Route, {
-        serve_cfg: {
-            ServeConfigBuilder::new_with_router(
-                dioxus_fullstack::router::FullstackRouterConfig::<Route>::default(),
-            )
-            .incremental(IncrementalRendererConfig::default())
-        },
-    });
+    launch(|| rsx! { Router::<Route> {} });
 }
 
 #[derive(Clone, Routable, PartialEq, Eq, Debug, serde::Serialize, serde::Deserialize)]
@@ -63,15 +54,14 @@ pub enum Route {
     OtherPost {},
 }
 
-#[inline_props]
-fn Homepage(cx: Scope) -> Element {
-    let search_text = use_state(cx, String::new);
-    let results = SEARCH_INDEX.search(&search_text.get());
+fn Homepage() -> Element {
+    let mut search_text = use_signal(String::new);
+    let results = SEARCH_INDEX.search(&search_text());
 
-    render! {
+    rsx! {
         input {
             oninput: move |e| {
-                search_text.set(e.value.clone());
+                search_text.set(e.value());
             },
             value: "{search_text}",
         }
@@ -88,9 +78,8 @@ fn Homepage(cx: Scope) -> Element {
     }
 }
 
-#[inline_props]
-fn BlogPost(cx: Scope) -> Element {
-    render! {
+fn BlogPost() -> Element {
+    rsx! {
         div {
             h1 { "Hello World" }
             p { "This is a blog post" }
@@ -98,9 +87,8 @@ fn BlogPost(cx: Scope) -> Element {
     }
 }
 
-#[inline_props]
-fn OtherPost(cx: Scope) -> Element {
-    render! {
+fn OtherPost() -> Element {
+    rsx! {
         div {
             h1 { "Goodbye" }
             p { "This is another blog post" }

@@ -270,6 +270,12 @@ impl Config {
                     | dioxus_router::routable::SegmentType::Dynamic(_) => continue,
                 }
             }
+            // Strip any trailing slashes
+            if route.len() > 1 {
+                while let Some('/') = route.chars().last() {
+                    route.pop();
+                }
+            }
             static_routes.insert(route);
         }
         // Add the routes to the index

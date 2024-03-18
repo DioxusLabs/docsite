@@ -9,7 +9,7 @@ use std::{
     path::{Path, PathBuf},
 };
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct MdBook<R>
 where
     R: Hash + Eq,
@@ -64,7 +64,7 @@ pub fn get_book_content_path(mdbook_root: impl AsRef<Path>) -> Option<PathBuf> {
     None
 }
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct Page<R> {
     pub title: String,
 
@@ -81,7 +81,7 @@ pub struct Page<R> {
     pub id: PageId,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct Section {
     pub level: usize,
     pub title: String,

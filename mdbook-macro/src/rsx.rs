@@ -4,7 +4,12 @@ use std::{
     vec,
 };
 
-use dioxus_rsx::{BodyNode, CallBody, Element, ElementAttrNamed, IfmtInput};
+use dioxus_rsx::{
+    AttributeType, BodyNode, CallBody, Element, ElementAttr, ElementAttrName, ElementAttrNamed,
+    ElementAttrValue, IfmtInput,
+};
+#[cfg(feature = "manganis")]
+use manganis_common::*;
 use pulldown_cmark::{Alignment, Event, Options, Parser, Tag};
 use syn::{Ident, __private::Span, parse_str, LitStr};
 
@@ -81,13 +86,13 @@ impl<'a, I: Iterator<Item = Event<'a>>> RsxMarkdownParser<'a, I> {
             pulldown_cmark::Event::SoftBreak => {}
             pulldown_cmark::Event::HardBreak => {}
             pulldown_cmark::Event::Rule => {
-                self.create_node(BodyNode::Element(Element {
-                    name: dioxus_rsx::ElementName::Ident(Ident::new("hr", Span::call_site())),
-                    key: None,
-                    attributes: vec![],
-                    children: vec![],
-                    brace: Default::default(),
-                }));
+                self.create_node(BodyNode::Element(Element::new(
+                    None,
+                    dioxus_rsx::ElementName::Ident(Ident::new("hr", Span::call_site())),
+                    vec![],
+                    vec![],
+                    Default::default(),
+                )));
             }
             pulldown_cmark::Event::TaskListMarker(value) => {
                 self.write_checkbox(value);
@@ -99,23 +104,23 @@ impl<'a, I: Iterator<Item = Event<'a>>> RsxMarkdownParser<'a, I> {
     fn write_checkbox(&mut self, checked: bool) {
         let input = Ident::new("input", Span::call_site());
         let name = dioxus_rsx::ElementName::Ident(input);
-        self.create_node(BodyNode::Element(Element {
-            name: name.clone(),
-            key: None,
-            attributes: vec![ElementAttrNamed {
+        self.create_node(BodyNode::Element(Element::new(
+            None,
+            name.clone(),
+            vec![AttributeType::Named(ElementAttrNamed {
                 el_name: name,
-                attr: dioxus_rsx::ElementAttr::AttrText {
-                    name: Ident::new("type", Span::call_site()),
-                    value: if checked {
+                attr: dioxus_rsx::ElementAttr {
+                    name: ElementAttrName::BuiltIn(Ident::new("type", Span::call_site())),
+                    value: ElementAttrValue::AttrLiteral(if checked {
                         IfmtInput::new_static("true")
                     } else {
                         IfmtInput::new_static("false")
-                    },
+                    }),
                 },
-            }],
-            children: vec![],
-            brace: Default::default(),
-        }));
+            })],
+            vec![],
+            Default::default(),
+        )));
     }
 
     fn take_code_or_text(&mut self) -> String {
@@ -148,16 +153,13 @@ impl<'a, I: Iterator<Item = Event<'a>>> RsxMarkdownParser<'a, I> {
                 Some(pulldown_cmark::Event::Code(_)) => match self.iter.next().unwrap() {
                     pulldown_cmark::Event::Code(text) => {
                         let code = BodyNode::Text(IfmtInput::new_static(&text));
-                        self.create_node(BodyNode::Element(Element {
-                            name: dioxus_rsx::ElementName::Ident(Ident::new(
-                                "code",
-                                Span::call_site(),
-                            )),
-                            key: None,
-                            attributes: Vec::new(),
-                            children: vec![code],
-                            brace: Default::default(),
-                        }));
+                        self.create_node(BodyNode::Element(Element::new(
+                            None,
+                            dioxus_rsx::ElementName::Ident(Ident::new("code", Span::call_site())),
+                            Vec::new(),
+                            vec![code],
+                            Default::default(),
+                        )));
                     }
                     _ => return,
                 },
@@ -185,13 +187,13 @@ impl<'a, I: Iterator<Item = Event<'a>>> RsxMarkdownParser<'a, I> {
     fn start_element(&mut self, tag: Tag) -> syn::Result<()> {
         match tag {
             Tag::Paragraph => {
-                self.start_node(BodyNode::Element(Element {
-                    name: dioxus_rsx::ElementName::Ident(Ident::new("p", Span::call_site())),
-                    key: None,
-                    attributes: Vec::new(),
-                    children: Vec::new(),
-                    brace: Default::default(),
-                }));
+                self.start_node(BodyNode::Element(Element::new(
+                    None,
+                    dioxus_rsx::ElementName::Ident(Ident::new("p", Span::call_site())),
+                    Vec::new(),
+                    Vec::new(),
+                    Default::default(),
+                )));
                 self.write_text();
             }
             Tag::Heading(level, _, _) => {
@@ -218,58 +220,67 @@ impl<'a, I: Iterator<Item = Event<'a>>> RsxMarkdownParser<'a, I> {
                     },
                     Span::call_site(),
                 ));
-                self.start_node(BodyNode::Element(Element {
-                    name: name.clone(),
-                    key: None,
-                    attributes: vec![dioxus_rsx::ElementAttrNamed {
-                        el_name: name.clone(),
-                        attr: dioxus_rsx::ElementAttr::AttrText {
-                            name: Ident::new("id", Span::call_site()),
-                            value: IfmtInput::new_static(&anchor),
+                self.start_node(BodyNode::Element(Element::new(
+                    None,
+                    name.clone(),
+                    vec![AttributeType::Named(ElementAttrNamed {
+                        el_name: link_name.clone(),
+                        attr: dioxus_rsx::ElementAttr {
+                            name: ElementAttrName::BuiltIn(Ident::new("id", Span::call_site())),
+                            value: ElementAttrValue::AttrLiteral(IfmtInput::new_static(&anchor)),
                         },
-                    }],
-                    children: vec![BodyNode::Element(Element {
-                        name: link_name,
-                        key: None,
-                        attributes: vec![
-                            dioxus_rsx::ElementAttrNamed {
-                                el_name: name.clone(),
-                                attr: dioxus_rsx::ElementAttr::AttrText {
-                                    name: Ident::new("class", Span::call_site()),
-                                    value: IfmtInput::new_static("header"),
-                                },
-                            },
-                            dioxus_rsx::ElementAttrNamed {
-                                el_name: name,
-                                attr: dioxus_rsx::ElementAttr::AttrText {
-                                    name: Ident::new("href", Span::call_site()),
-                                    value: IfmtInput::new_static(&format!(r##"#{anchor}"##)),
-                                },
-                            },
-                        ],
-                        children: vec![BodyNode::Text(IfmtInput::new_static(&text))],
-                        brace: Default::default(),
                     })],
-                    brace: Default::default(),
-                }));
+                    vec![BodyNode::Element(Element::new(
+                        None,
+                        link_name,
+                        vec![
+                            AttributeType::Named(dioxus_rsx::ElementAttrNamed {
+                                el_name: name.clone(),
+                                attr: dioxus_rsx::ElementAttr {
+                                    name: ElementAttrName::BuiltIn(Ident::new(
+                                        "class",
+                                        Span::call_site(),
+                                    )),
+                                    value: ElementAttrValue::AttrLiteral(IfmtInput::new_static(
+                                        "header",
+                                    )),
+                                },
+                            }),
+                            AttributeType::Named(dioxus_rsx::ElementAttrNamed {
+                                el_name: name,
+                                attr: dioxus_rsx::ElementAttr {
+                                    name: ElementAttrName::BuiltIn(Ident::new(
+                                        "href",
+                                        Span::call_site(),
+                                    )),
+                                    value: ElementAttrValue::AttrLiteral(IfmtInput::new_static(
+                                        &format!(r##"#{anchor}"##),
+                                    )),
+                                },
+                            }),
+                        ],
+                        vec![BodyNode::Text(IfmtInput::new_static(&text))],
+                        Default::default(),
+                    ))],
+                    Default::default(),
+                )));
             }
             Tag::BlockQuote => {
-                self.start_node(BodyNode::Element(Element {
-                    name: dioxus_rsx::ElementName::Ident(Ident::new(
-                        "blockquote",
-                        Span::call_site(),
-                    )),
-                    key: None,
-                    attributes: Vec::new(),
-                    children: Vec::new(),
-                    brace: Default::default(),
-                }));
+                self.start_node(BodyNode::Element(Element::new(
+                    None,
+                    dioxus_rsx::ElementName::Ident(Ident::new("blockquote", Span::call_site())),
+                    Vec::new(),
+                    Vec::new(),
+                    Default::default(),
+                )));
                 self.write_text();
             }
             Tag::CodeBlock(kind) => {
                 let lang = match kind {
                     pulldown_cmark::CodeBlockKind::Indented => None,
-                    pulldown_cmark::CodeBlockKind::Fenced(lang) => (!lang.is_empty()).then(|| lang),
+                    pulldown_cmark::CodeBlockKind::Fenced(lang) => {
+                        (!lang.is_empty()).then_some(lang)
+                    }
                 };
                 let raw_code = self.take_code_or_text();
 
@@ -285,73 +296,83 @@ impl<'a, I: Iterator<Item = Event<'a>>> RsxMarkdownParser<'a, I> {
                     let theme = &ts.themes["base16-ocean.dark"];
                     let syntax = ss.find_syntax_by_extension("rs").unwrap();
                     let html =
-                        syntect::html::highlighted_html_for_string(&code, &ss, &syntax, theme)
+                        syntect::html::highlighted_html_for_string(&code, &ss, syntax, theme)
                             .unwrap();
-                    code_attrs.push(dioxus_rsx::ElementAttrNamed {
+                    code_attrs.push(AttributeType::Named(dioxus_rsx::ElementAttrNamed {
                         el_name: dioxus_rsx::ElementName::Ident(Ident::new(
                             "div",
                             Span::call_site(),
                         )),
-                        attr: dioxus_rsx::ElementAttr::AttrText {
-                            name: Ident::new("dangerous_inner_html", Span::call_site()),
-                            value: IfmtInput::new_static(&html),
+                        attr: dioxus_rsx::ElementAttr {
+                            name: ElementAttrName::BuiltIn(Ident::new(
+                                "dangerous_inner_html",
+                                Span::call_site(),
+                            )),
+                            value: ElementAttrValue::AttrLiteral(IfmtInput::new_static(&html)),
                         },
-                    });
-                    let code_node = BodyNode::Element(Element {
-                        name: dioxus_rsx::ElementName::Ident(Ident::new("div", Span::call_site())),
-                        key: None,
-                        attributes: code_attrs,
-                        children: vec![],
-                        brace: Default::default(),
-                    });
-                    let copy_node = BodyNode::Element(Element {
-                        name: dioxus_rsx::ElementName::Ident(Ident::new("button", Span::call_site())),
-                        key: None,
-                        attributes: vec![
+                    }));
+                    let code_node = BodyNode::Element(Element::new(
+                        None,
+                        dioxus_rsx::ElementName::Ident(Ident::new("div", Span::call_site())),
+                        code_attrs,
+                        vec![],
+                        Default::default(),
+                    ));
+                    let copy_node = BodyNode::Element(Element::new(
+                        None,
+                         dioxus_rsx::ElementName::Ident(Ident::new("button", Span::call_site())),
+                         vec![
+                            AttributeType::Named(
+
                             dioxus_rsx::ElementAttrNamed {
                                 el_name: dioxus_rsx::ElementName::Ident(Ident::new(
                                     "button",
                                     Span::call_site(),
                                 )),
-                                attr: dioxus_rsx::ElementAttr::AttrText {
-                                    name: Ident::new("style", Span::call_site()),
-                                    value: IfmtInput::new_static("position: absolute; top: 0; right: 0; background: rgba(0, 0, 0, 0.75); color: white; border: 1px solid white; padding: 0.25em;"),
+                                attr:  ElementAttr{
+                                    name: ElementAttrName::BuiltIn( Ident::new("style", Span::call_site())),
+                                    value: ElementAttrValue::AttrLiteral( IfmtInput::new_static("position: absolute; top: 0; right: 0; background: rgba(0, 0, 0, 0.75); color: white; border: 1px solid white; padding: 0.25em;")),
                                 },
-                            },
-                            dioxus_rsx::ElementAttrNamed {
+                            }),
+                            AttributeType::Named(dioxus_rsx::ElementAttrNamed {
                                 el_name: dioxus_rsx::ElementName::Ident(Ident::new(
                                     "button",
                                     Span::call_site(),
                                 )),
-                                attr: dioxus_rsx::ElementAttr::CustomAttrText  {
-                                    name: LitStr::new("onclick", Span::call_site()),
-                                    value: IfmtInput::new_static(
+                                attr: dioxus_rsx::ElementAttr  {
+                                    name: ElementAttrName::Custom(LitStr::new("onclick", Span::call_site())),
+                                    value: ElementAttrValue::AttrLiteral( IfmtInput::new_static(
                                         r##"navigator.clipboard.writeText(this.previousElementSibling.innerText)"##,
-                                    ),
+                                    )),
                                 },
-                            },
+                            }),
                         ],
-                        children: vec![
+                        vec![
                             BodyNode::Text(IfmtInput::new_static("Copy"))
                         ],
-                        brace: Default::default(),
-                    });
-                    self.start_node(BodyNode::Element(Element {
-                        name: dioxus_rsx::ElementName::Ident(Ident::new("div", Span::call_site())),
-                        key: None,
-                        attributes: vec![dioxus_rsx::ElementAttrNamed {
+                         Default::default(),
+                    ));
+                    self.start_node(BodyNode::Element(Element::new(
+                        None,
+                        dioxus_rsx::ElementName::Ident(Ident::new("div", Span::call_site())),
+                        vec![AttributeType::Named(dioxus_rsx::ElementAttrNamed {
                             el_name: dioxus_rsx::ElementName::Ident(Ident::new(
                                 "button",
                                 Span::call_site(),
                             )),
-                            attr: dioxus_rsx::ElementAttr::AttrText {
-                                name: Ident::new("style", Span::call_site()),
-                                value: IfmtInput::new_static("position: relative;"),
+                            attr: dioxus_rsx::ElementAttr {
+                                name: ElementAttrName::BuiltIn(Ident::new(
+                                    "style",
+                                    Span::call_site(),
+                                )),
+                                value: ElementAttrValue::AttrLiteral(IfmtInput::new_static(
+                                    "position: relative;",
+                                )),
                             },
-                        }],
-                        children: vec![code_node, copy_node],
-                        brace: Default::default(),
-                    }));
+                        })],
+                        vec![code_node, copy_node],
+                        Default::default(),
+                    )));
                 }
             }
             Tag::List(first) => {
@@ -359,80 +380,80 @@ impl<'a, I: Iterator<Item = Event<'a>>> RsxMarkdownParser<'a, I> {
                     Some(_) => "ol",
                     None => "ul",
                 };
-                self.start_node(BodyNode::Element(Element {
-                    name: dioxus_rsx::ElementName::Ident(Ident::new(name, Span::call_site())),
-                    key: None,
-                    attributes: Vec::new(),
-                    children: Vec::new(),
-                    brace: Default::default(),
-                }))
+                self.start_node(BodyNode::Element(Element::new(
+                    None,
+                    dioxus_rsx::ElementName::Ident(Ident::new(name, Span::call_site())),
+                    Vec::new(),
+                    Vec::new(),
+                    Default::default(),
+                )))
             }
-            Tag::Item => self.start_node(BodyNode::Element(Element {
-                name: dioxus_rsx::ElementName::Ident(Ident::new("li", Span::call_site())),
-                key: None,
-                attributes: Vec::new(),
-                children: Vec::new(),
-                brace: Default::default(),
-            })),
+            Tag::Item => self.start_node(BodyNode::Element(Element::new(
+                None,
+                dioxus_rsx::ElementName::Ident(Ident::new("li", Span::call_site())),
+                Vec::new(),
+                Vec::new(),
+                Default::default(),
+            ))),
             Tag::FootnoteDefinition(_) => {}
             Tag::Table(alignments) => {
                 self.current_table = alignments;
-                self.start_node(BodyNode::Element(Element {
-                    name: dioxus_rsx::ElementName::Ident(Ident::new("table", Span::call_site())),
-                    key: None,
-                    attributes: Vec::new(),
-                    children: Vec::new(),
-                    brace: Default::default(),
-                }))
+                self.start_node(BodyNode::Element(Element::new(
+                    None,
+                    dioxus_rsx::ElementName::Ident(Ident::new("table", Span::call_site())),
+                    Vec::new(),
+                    Vec::new(),
+                    Default::default(),
+                )))
             }
             Tag::TableHead => {
                 self.in_table_header = true;
-                self.start_node(BodyNode::Element(Element {
-                    name: dioxus_rsx::ElementName::Ident(Ident::new("thead", Span::call_site())),
-                    key: None,
-                    attributes: Vec::new(),
-                    children: Vec::new(),
-                    brace: Default::default(),
-                }))
+                self.start_node(BodyNode::Element(Element::new(
+                    None,
+                    dioxus_rsx::ElementName::Ident(Ident::new("thead", Span::call_site())),
+                    Vec::new(),
+                    Vec::new(),
+                    Default::default(),
+                )))
             }
-            Tag::TableRow => self.start_node(BodyNode::Element(Element {
-                name: dioxus_rsx::ElementName::Ident(Ident::new("tr", Span::call_site())),
-                key: None,
-                attributes: Vec::new(),
-                children: Vec::new(),
-                brace: Default::default(),
-            })),
+            Tag::TableRow => self.start_node(BodyNode::Element(Element::new(
+                None,
+                dioxus_rsx::ElementName::Ident(Ident::new("tr", Span::call_site())),
+                Vec::new(),
+                Vec::new(),
+                Default::default(),
+            ))),
             Tag::TableCell => {
                 let name = if self.in_table_header { "th" } else { "td" };
-                self.start_node(BodyNode::Element(Element {
-                    name: dioxus_rsx::ElementName::Ident(Ident::new(name, Span::call_site())),
-                    key: None,
-                    attributes: Vec::new(),
-                    children: Vec::new(),
-                    brace: Default::default(),
-                }))
+                self.start_node(BodyNode::Element(Element::new(
+                    None,
+                    dioxus_rsx::ElementName::Ident(Ident::new(name, Span::call_site())),
+                    Vec::new(),
+                    Vec::new(),
+                    Default::default(),
+                )))
             }
-            Tag::Emphasis => self.start_node(BodyNode::Element(Element {
-                name: dioxus_rsx::ElementName::Ident(Ident::new("em", Span::call_site())),
-                key: None,
-                attributes: Vec::new(),
-                children: Vec::new(),
-                brace: Default::default(),
-            })),
-            Tag::Strong => self.start_node(BodyNode::Element(Element {
-                name: dioxus_rsx::ElementName::Ident(Ident::new("strong", Span::call_site())),
-                key: None,
-                attributes: Vec::new(),
-                children: Vec::new(),
-                brace: Default::default(),
-            })),
-            Tag::Strikethrough => self.start_node(BodyNode::Element(Element {
-                name: dioxus_rsx::ElementName::Ident(Ident::new("s", Span::call_site())),
-                key: None,
-                attributes: Vec::new(),
-                children: Vec::new(),
-                brace: Default::default(),
-            })),
+            Tag::Emphasis => self.start_node(BodyNode::Element(Element::new(
+                None,
+                dioxus_rsx::ElementName::Ident(Ident::new("em", Span::call_site())),
+                Vec::new(),
+                Vec::new(),
+                Default::default(),
+            ))),
+            Tag::Strong => self.start_node(BodyNode::Element(Element::new(
+                None,
+                dioxus_rsx::ElementName::Ident(Ident::new("strong", Span::call_site())),
+                Vec::new(),
+                Vec::new(),
+                Default::default(),
+            ))),
+            Tag::Strikethrough => self.start_node(BodyNode::Element(Element::new(
+                None,
+                dioxus_rsx::ElementName::Ident(Ident::new("s", Span::call_site())),
+                Vec::new(),
+                Vec::new(),
+                Default::default(),
+            ))),
             Tag::Link(ty, dest, title) => {
                 let without_extension = dest.trim_end_matches(".md");
                 let without_index = without_extension.trim_end_matches("/index");
@@ -463,66 +484,105 @@ impl<'a, I: Iterator<Item = Event<'a>>> RsxMarkdownParser<'a, I> {
                     }
                 };
                 let name = Ident::new("a", Span::call_site());
-                let mut attributes = vec![dioxus_rsx::ElementAttrNamed {
+                let mut attributes = vec![AttributeType::Named(dioxus_rsx::ElementAttrNamed {
                     el_name: dioxus_rsx::ElementName::Ident(name.clone()),
-                    attr: dioxus_rsx::ElementAttr::AttrText {
-                        name: Ident::new("href", Span::call_site()),
-                        value: IfmtInput::new_static(&href),
+                    attr: dioxus_rsx::ElementAttr {
+                        name: ElementAttrName::BuiltIn(Ident::new("href", Span::call_site())),
+                        value: ElementAttrValue::AttrLiteral(IfmtInput::new_static(&href)),
                     },
-                }];
+                })];
 
                 if !title.is_empty() {
-                    attributes.push(dioxus_rsx::ElementAttrNamed {
+                    attributes.push(AttributeType::Named(dioxus_rsx::ElementAttrNamed {
                         el_name: dioxus_rsx::ElementName::Ident(name.clone()),
-                        attr: dioxus_rsx::ElementAttr::AttrText {
-                            name: Ident::new("title", Span::call_site()),
-                            value: IfmtInput::new_static(&title),
+                        attr: dioxus_rsx::ElementAttr {
+                            name: ElementAttrName::BuiltIn(Ident::new("title", Span::call_site())),
+                            value: ElementAttrValue::AttrLiteral(IfmtInput::new_static(&title)),
                         },
-                    });
+                    }));
                 }
 
-                self.start_node(BodyNode::Element(Element {
-                    name: dioxus_rsx::ElementName::Ident(name),
-                    key: None,
+                self.start_node(BodyNode::Element(Element::new(
+                    None,
+                    dioxus_rsx::ElementName::Ident(name),
                     attributes,
-                    children: Vec::new(),
-                    brace: Default::default(),
-                }));
+                    Vec::new(),
+                    Default::default(),
+                )));
 
                 self.write_text();
             }
             Tag::Image(_, dest, title) => {
                 let name = Ident::new("img", Span::call_site());
                 let alt = self.take_text();
-                self.start_node(BodyNode::Element(Element {
-                    name: dioxus_rsx::ElementName::Ident(name.clone()),
-                    key: None,
-                    attributes: vec![
-                        dioxus_rsx::ElementAttrNamed {
+
+                let source = dest.parse().map_err(|e| {
+                    syn::Error::new(
+                        Span::call_site(),
+                        format!("Failed to parse image source {}: {}", dest, e),
+                    )
+                })?;
+                #[cfg(not(feature = "manganis"))]
+                let url: String = source;
+                #[cfg(feature = "manganis")]
+                let url = {
+                    let this_file =
+                        FileAsset::new(source).with_options(manganis_common::FileOptions::Image(
+                            ImageOptions::new(manganis_common::ImageType::Avif, None),
+                        ));
+
+                    let asset = add_asset(manganis_common::AssetType::File(this_file.clone()))
+                        .map_err(|e| {
+                            syn::Error::new(
+                                Span::call_site(),
+                                format!("Failed to add asset {}: {}", dest, e),
+                            )
+                        })?;
+                    let this_file = match asset {
+                        manganis_common::AssetType::File(this_file) => this_file,
+                        _ => unreachable!(),
+                    };
+                    this_file.served_location()
+                };
+
+                self.start_node(BodyNode::Element(Element::new(
+                    None,
+                    dioxus_rsx::ElementName::Ident(name.clone()),
+                    vec![
+                        AttributeType::Named(dioxus_rsx::ElementAttrNamed {
                             el_name: dioxus_rsx::ElementName::Ident(name.clone()),
-                            attr: dioxus_rsx::ElementAttr::AttrText {
-                                name: Ident::new("src", Span::call_site()),
-                                value: IfmtInput::new_static(&dest),
+                            attr: dioxus_rsx::ElementAttr {
+                                name: ElementAttrName::BuiltIn(Ident::new(
+                                    "src",
+                                    Span::call_site(),
+                                )),
+                                value: ElementAttrValue::AttrLiteral(IfmtInput::new_static(&url)),
                             },
-                        },
-                        dioxus_rsx::ElementAttrNamed {
+                        }),
+                        AttributeType::Named(dioxus_rsx::ElementAttrNamed {
                             el_name: dioxus_rsx::ElementName::Ident(name.clone()),
-                            attr: dioxus_rsx::ElementAttr::AttrText {
-                                name: Ident::new("alt", Span::call_site()),
-                                value: IfmtInput::new_static(&alt),
+                            attr: dioxus_rsx::ElementAttr {
+                                name: ElementAttrName::BuiltIn(Ident::new(
+                                    "alt",
+                                    Span::call_site(),
+                                )),
+                                value: ElementAttrValue::AttrLiteral(IfmtInput::new_static(&alt)),
                             },
-                        },
-                        dioxus_rsx::ElementAttrNamed {
+                        }),
+                        AttributeType::Named(dioxus_rsx::ElementAttrNamed {
                             el_name: dioxus_rsx::ElementName::Ident(name),
-                            attr: dioxus_rsx::ElementAttr::AttrText {
-                                name: Ident::new("title", Span::call_site()),
-                                value: IfmtInput::new_static(&title),
+                            attr: dioxus_rsx::ElementAttr {
+                                name: ElementAttrName::BuiltIn(Ident::new(
+                                    "title",
+                                    Span::call_site(),
+                                )),
+                                value: ElementAttrValue::AttrLiteral(IfmtInput::new_static(&title)),
                             },
-                        },
+                        }),
                     ],
-                    children: Vec::new(),
-                    brace: Default::default(),
-                }));
+                    Vec::new(),
+                    Default::default(),
+                )));
             }
         }
         Ok(())
@@ -623,7 +683,7 @@ fn resolve_extension(_path: &Path, ext: &str) -> syn::Result<String> {
                     output += "\n";
                 }
             }
-            if output.ends_with("\n") {
+            if output.ends_with('\n') {
                 output.pop();
             }
             Ok(output)

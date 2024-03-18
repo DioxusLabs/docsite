@@ -16,7 +16,7 @@ fn Profile(id: ReadOnlySignal<i32>) -> Element {
 
     // You can also add non-reactive state to the effect hook with the use_reactive macro
     let non_reactive_state = id();
-    use_effect(use_reactive!(|(non_reactive_state,)| async move {
+    use_effect(use_reactive!(|(non_reactive_state,)| {
         tracing::info!("Profile #{}", non_reactive_state);
     }));
 

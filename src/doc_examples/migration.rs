@@ -72,7 +72,7 @@ mod futures {
         // You can also add non-reactive state to the resource hook with the use_reactive macro
         use_resource(use_reactive!(|(non_reactive_state,)| async move {
             tokio::time::sleep(std::time::Duration::from_secs(1)).await;
-            non_reactive_state + signal()
+            non_reactive_state + 1
         }));
         // ANCHOR_END: futures
     }

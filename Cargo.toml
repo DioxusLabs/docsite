@@ -13,13 +13,13 @@ dioxus-web = { git = "https://github.com/dioxuslabs/dioxus", features = [
 ], optional = true }
 dioxus-ssr = { git = "https://github.com/dioxuslabs/dioxus", optional = true }
 dioxus-fullstack = { git = "https://github.com/dioxuslabs/dioxus" }
-dioxus-tui = { git = "https://github.com/dioxuslabs/dioxus", optional = true }
+dioxus-tui = { git = "https://github.com/dioxuslabs/blitz", optional = true }
 dioxus-desktop = { git = "https://github.com/dioxuslabs/dioxus", optional = true }
 dioxus-liveview = { git = "https://github.com/dioxuslabs/dioxus", features = [
     "axum",
 ], optional = true }
-dioxus-native-core = { git = "https://github.com/dioxuslabs/dioxus", optional = true }
-dioxus-native-core-macro = { git = "https://github.com/dioxuslabs/dioxus", optional = true }
+dioxus-native-core = { git = "https://github.com/dioxuslabs/blitz", optional = true }
+dioxus-native-core-macro = { git = "https://github.com/dioxuslabs/blitz", optional = true }
 manganis = { git = "https://github.com/DioxusLabs/collect-assets" }
 serde = { version = "1.0.163", features = ["derive"] }
 serde_json = "1.0.96"
@@ -83,12 +83,12 @@ dioxus-rsx = { git = "https://github.com/dioxuslabs/dioxus" }
 
 dioxus-web = { git = "https://github.com/dioxuslabs/dioxus" }
 dioxus-ssr = { git = "https://github.com/dioxuslabs/dioxus" }
-dioxus-tui = { git = "https://github.com/dioxuslabs/dioxus" }
+dioxus-tui = { git = "https://github.com/dioxuslabs/blitz" }
 dioxus-desktop = { git = "https://github.com/dioxuslabs/dioxus" }
 dioxus-liveview = { git = "https://github.com/dioxuslabs/dioxus" }
 dioxus-fullstack = { git = "https://github.com/dioxuslabs/dioxus" }
-dioxus-native-core = { git = "https://github.com/dioxuslabs/dioxus" }
-dioxus-native-core-macro = { git = "https://github.com/dioxuslabs/dioxus" }
+dioxus-native-core = { git = "https://github.com/dioxuslabs/blitz" }
+dioxus-native-core-macro = { git = "https://github.com/dioxuslabs/blitz" }
 
 [profile.release]
 lto = true

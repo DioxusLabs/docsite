@@ -25,7 +25,7 @@ cd demo
 Add Dioxus and the liveview renderer with the Axum feature as dependencies:
 
 ```shell
-cargo add dioxus@0.5.0-alpha.0 --features liveview,axum
+cargo add dioxus@0.5.0-alpha.2 --features liveview,axum
 ```
 
 Your dependencies should look roughly like this:

@@ -16,7 +16,7 @@ cd demo
 Add `dioxus` and `dioxus-fullstack` as dependencies:
 
 ```shell
-cargo add dioxus@0.5.0-alpha.0 --features fullstack
+cargo add dioxus@0.5.0-alpha.2 --features fullstack
 ```
 
 Next, set up features for the server (`server`) and the client (`web`):

@@ -23,8 +23,8 @@ Start by making a new package and adding Dioxus and the TUI renderer as dependen
 ```shell
 cargo new --bin demo
 cd demo
-cargo add dioxus@0.5.0-alpha.0
-cargo add dioxus-tui@0.5.0-alpha.0
+cargo add dioxus@0.5.0-alpha.2
+cargo add dioxus-tui@0.5.0-alpha.2
 ```
 
 Then, edit your `main.rs` with the basic template.

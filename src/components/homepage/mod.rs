@@ -150,9 +150,9 @@ fn AvailablePlatforms() -> Element {
                         child: BookRoute::GettingStartedLiveview {
                         },
                     },
-                    title: "LiveView and LiveComponents",
+                    title: "LiveView",
                     right: rsx!(
-                        "Render your app entirely on the server. Zero backend configuration capable of handling thousands of active clients. Integrates with Axum.",
+                        "Render your app entirely on the server. Zero backend configuration capable of handling thousands of active clients.",
                     ),
                     left: None,
                     center: None,

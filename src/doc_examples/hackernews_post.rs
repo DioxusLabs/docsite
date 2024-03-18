@@ -8,6 +8,10 @@ pub mod story_v1 {
     use super::*;
 
     // ANCHOR: story_v1
+    fn main() {
+        launch(App);
+    }
+
     pub fn App() -> Element {
         rsx! {"story"}
     }
@@ -238,6 +242,10 @@ pub mod story_final {
         #[serde(default)]
         pub kids: Vec<i64>,
         pub r#type: String,
+    }
+
+    fn main() {
+        launch(App);
     }
 
     pub fn App() -> Element {

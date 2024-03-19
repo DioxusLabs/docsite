@@ -10,6 +10,20 @@ First we need to create some utilities to fetch data from the hackernews API usi
 {{#include src/doc_examples/hackernews_async.rs:api}}
 ```
 
+The code above requires you to add the [reqwest](https://crates.io/crates/reqwest), [async_recursion](https://crates.io/crates/async-recursion), and [futures](https://crates.io/crates/futures) crate:
+
+```bash
+cargo add reqwest --features json
+cargo add async_recursion
+cargo add futures
+```
+
+A quick overview of the supporting crates:
+- [reqwest](https://crates.io/crates/reqwest) allows us to create HTTP calls to the hackernews API. 
+- [async_recursion](https://crates.io/crates/async-recursion) provides a utility macro to allow us to recursively use an async function.
+- [futures](https://crates.io/crates/futures) provides us with utilities all around Rust's futures.
+
+
 ## Working with Async
 
 [`use_resource`](https://docs.rs/dioxus-hooks/latest/dioxus_hooks/fn.use_resource.html) is a [hook](./state.md) that lets you run an async closure, and provides you with its result.

@@ -79,7 +79,7 @@ DemoFrame {
 
 > Note: All attributes defined in [`dioxus-html`](https://docs.rs/dioxus-html/latest/dioxus_html/) follow the snake_case naming convention. They transform their `snake_case` names to HTML's `camelCase` attributes.
 
-> Note: Styles can be used directly outside of the `style:` attribute. In the above example, `color: "red"` is turned into `style="color: red"`.
+> Note: Styles can be used directly outside of the `style:` attribute. In the above example, `padding: "0.5rem"` is turned into `style="padding: 0.5rem"`.
 
 > You can read more about elements in the [attribute reference](../reference/rsx.md)
 

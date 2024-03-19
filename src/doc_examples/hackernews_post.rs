@@ -58,7 +58,7 @@ pub mod story_v4 {
         let comments = "comments";
 
         rsx! {
-            div { padding: "0.5rem", position: "relative",
+            div { padding: "0.5rem", position: "relative", color: "red",
                 "{title} by {by} ({score}) {time} {comments}"
             }
         }

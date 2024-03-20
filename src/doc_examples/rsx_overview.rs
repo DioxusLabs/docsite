@@ -86,6 +86,16 @@ pub fn CustomAttributes() -> Element {
     // ANCHOR_END: custom_attributes
 }
 
+pub fn ConditionalAttributes() -> Element {
+    // ANCHOR: conditional_attributes
+    let large_font = true;
+    rsx!( div {
+        class: if large_font { "text-xl" },
+        "Hello, World!"
+    } )
+    // ANCHOR_END: conditional_attributes
+}
+
 pub fn Formatting() -> Element {
     // ANCHOR: formatting
     let coordinates = (42, 0);

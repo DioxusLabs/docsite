@@ -20,14 +20,14 @@ changes you can install the [`dx`][dx] tool locally, assuming you already have a
 working `Rust` setup:
 
 ```sh
-cargo install dioxus-cli@0.5.0-alpha.0
+cargo install dioxus-cli@0.5.0-alpha.2
 ```
 
 With [`dx`][dx] installed, you can use it to build and serve the documentation
 on your local system:
 
 ```sh
-dx serve --example spa --features web
+dx serve
 ```
 
 This will start a local server that will be available on

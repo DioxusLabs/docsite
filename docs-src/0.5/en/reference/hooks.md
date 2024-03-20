@@ -11,7 +11,7 @@ Dioxus provides many built-in hooks, but if those hooks don't fit your specific 
 [`use_signal`](https://docs.rs/dioxus/latest/dioxus/prelude/fn.use_signal.html) is one of the simplest hooks.
 
 - You provide a closure that determines the initial value: `let mut count = use_signal(|| 0);`
-- `use_signal` gives you the current value, and a way to update it by setting it to something else
+- `use_signal` gives you the current value, and a way to write to the value
 - When the value updates, `use_signal` makes the component re-render (along with any other component that references it), and then provides you with the new value.
 
 
@@ -28,7 +28,7 @@ DemoFrame {
 
 Every time the component's state changes, it re-renders, and the component function is called, so you can describe what you want the new UI to look like. You don't have to worry about "changing" anything – describe what you want in terms of the state, and Dioxus will take care of the rest!
 
-> `use_signal` returns your value wrapped in a smart pointer of type [`Signal`](https://docs.rs/dioxus/latest/dioxus/prelude/struct.Signal.html). This is why you can both read the value and update it, even within an event handler.
+> `use_signal` returns your value wrapped in a smart pointer of type [`Signal`](https://docs.rs/dioxus/latest/dioxus/prelude/struct.Signal.html) that is `Copy`. This is why you can both read the value and update it, even within an event handler.
 
 You can use multiple hooks in the same component if you want:
 
@@ -39,6 +39,18 @@ You can use multiple hooks in the same component if you want:
 ```inject-dioxus
 DemoFrame {
   hooks_counter_two_state::App {}
+}
+```
+
+You can also use `use_signal` to store more complex state, like a Vec. You can read and write to the state with the `read` and `write` methods:
+
+```rust, no_run
+{{#include src/doc_examples/hooks_use_signal.rs:component}}
+```
+
+```inject-dioxus
+DemoFrame {
+  hooks_use_signal::App {}
 }
 ```
 
@@ -80,38 +92,6 @@ These rules mean that there are certain things you can't do with hooks:
 ```rust, no_run
 {{#include src/doc_examples/hooks_bad.rs:loop}}
 ```
-
-## use_signal hook
-
-`use_signal` is great for tracking simple values. However, in the [`Signal` API](https://docs.rs/dioxus/latest/dioxus/hooks/struct.Signal.html), you may notice that the only way to modify its value is to replace it with something else (e.g., by calling `set`, or through one of the `+=`, `-=` operators). This works well when it is cheap to construct a value (such as any primitive). But what if you want to maintain more complex data in the component's state?
-
-For example, suppose we want to maintain a `Vec` of values. If we stored it with `use_signal`, the
-only way to add a new value to the list would be to copy the existing `Vec`, add our value to it,
-and then replace the existing `Vec` in the state with it. This is expensive! We want to modify the
-existing `Vec` instead.
-
-Thankfully, there is another hook for that, `use_signal`! It is similar to `use_signal`, but it lets you get a mutable reference to the contained data.
-
-Here's a simple example that keeps a list of events in a `use_signal`. We can acquire write access to the state with `.with_mut()`, and then just `.push` a new value to the state:
-
-```rust, no_run
-{{#include src/doc_examples/hooks_use_signal.rs:component}}
-```
-```inject-dioxus
-DemoFrame {
-   hooks_use_signal::App {}
-}
-```
-
-
-
-> The return values of `use_signal` and `use_signal` (
-> &nbsp;[`Signal`](https://docs.rs/dioxus/latest/dioxus/prelude/struct.Signal.html) and
-> &nbsp;[`Signal`](https://docs.rs/dioxus/latest/dioxus/prelude/struct.Signal.html), respectively) are in
-> &nbsp;some ways similar to [`Cell`](https://doc.rust-lang.org/std/cell/) and
-> &nbsp;[`RefCell`](https://doc.rust-lang.org/std/cell/struct.RefCell.html) – they provide interior
-> &nbsp;mutability. However, these Dioxus wrappers also ensure that the component gets re-rendered
-> &nbsp;whenever you change the state.
 
 ## Additional resources
 

@@ -17,7 +17,7 @@ Each of these scenes is independent – we don't want to render both the homepag
 The Dioxus router makes it easy to create these scenes. To make sure we're using the router, add the `router` feature to your `dioxus` dependency:
 
 ```shell
-cargo add dioxus@0.5.0-alpha.0 --features router
+cargo add dioxus@0.5.0-alpha.2 --features router
 ```
 
 

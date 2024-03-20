@@ -16,7 +16,7 @@ We start with a `Meme` component, responsible for rendering a meme with a given 
 {{#include src/doc_examples/meme_editor.rs:meme_component}}
 ```
 
-> Note that the `Meme` component is unaware where the caption is coming from – it could be stored in `use_signal`, `use_signal`, or a constant. This ensures that it is very reusable – the same component can be used for a meme gallery without any changes!
+> Note that the `Meme` component is unaware where the caption is coming from – it could be stored in `use_signal`, or a constant. This ensures that it is very reusable – the same component can be used for a meme gallery without any changes!
 
 We also create a caption editor, completely decoupled from the meme. The caption editor must not store the caption itself – otherwise, how will we provide it to the `Meme` component? Instead, it should accept the current caption as a prop, as well as an event handler to delegate input events to:
 

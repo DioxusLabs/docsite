@@ -28,7 +28,7 @@ GitHub CI is much slower at executing all of these than your PC.
 - Format code with [rustfmt](https://github.com/rust-lang/rustfmt):
 
 ```sh
-cargo fmt --all
+cargo fmt -- src/**/**.rs
 ```
 
 - Check all code [cargo check](https://doc.rust-lang.org/cargo/commands/cargo-check.html):

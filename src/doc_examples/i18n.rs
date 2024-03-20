@@ -48,5 +48,5 @@ fn app() -> Element {
         vec![en_us, es_es]
     });
 
-    rsx!( Body {} )
+    rsx!(Body {})
 }

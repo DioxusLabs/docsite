@@ -15,7 +15,7 @@ pub fn App() -> Element {
 fn Stories() -> Element {
     let stories = use_resource(move || get_stories(10));
 
-    match &*stories.value().read() {
+    match &*stories.read_unchecked() {
         Some(Ok(list)) => rsx! {
             div {
                 for story in list {

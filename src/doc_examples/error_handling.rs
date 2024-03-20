@@ -50,7 +50,9 @@ mod match_error {
 
         match error() {
             Some(error) => rsx!( h1 { "An error occurred" } ),
-            None => rsx!( input { oninput: move |_| error.set(Some("bad thing happened!")) } ),
+            None => rsx!(input {
+                oninput: move |_| error.set(Some("bad thing happened!"))
+            }),
         }
     }
     // ANCHOR_END: match_error

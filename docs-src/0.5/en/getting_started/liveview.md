@@ -3,9 +3,7 @@
 Liveview allows apps to *run* on the server and *render* in the browser. It uses WebSockets to communicate between the server and the browser.
 
 Examples:
-- [Axum Example](https://github.com/DioxusLabs/dioxus/tree/master/packages/liveview/examples/axum.rs)
-- [Salvo Example](https://github.com/DioxusLabs/dioxus/tree/master/packages/liveview/examples/salvo.rs)
-- [Warp Example](https://github.com/DioxusLabs/dioxus/tree/master/packages/liveview/examples/warp.rs)
+- [Simple Example](https://github.com/DioxusLabs/dioxus/tree/master/packages/liveview/examples/axum.rs)
 
 
 ## Support
@@ -15,19 +13,17 @@ Liveview is currently limited in capability when compared to the Web platform. L
 
 ## Setup
 
-For this guide, we're going to show how to use Dioxus Liveview with [Axum](https://docs.rs/axum/latest/axum/).
-
-Make sure you have Rust and Cargo installed, and then create a new project:
+First, make sure you have Rust and Cargo installed, and then create a new project:
 
 ```shell
 cargo new --bin demo
 cd demo
 ```
 
-Add Dioxus and the liveview renderer with the Axum feature as dependencies:
+Add the Dioxus crate with the Axum and liveview features:
 
 ```shell
-cargo add dioxus@0.5.0-alpha.0 --features liveview,axum
+cargo add dioxus@0.5.0-alpha.2 --features liveview,axum
 ```
 
 Your dependencies should look roughly like this:

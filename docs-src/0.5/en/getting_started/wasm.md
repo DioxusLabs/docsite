@@ -25,7 +25,7 @@ The Web is the best-supported target platform for Dioxus.
 To develop your Dioxus app for the web, you'll need a tool to build and serve your assets. We recommend using [dioxus-cli](https://github.com/DioxusLabs/dioxus/tree/master/packages/cli) which includes a build system, Wasm optimization, a dev server, and support hot reloading:
 
 ```shell
-cargo install dioxus-cli@0.5.0-alpha.0
+cargo install dioxus-cli@0.5.0-alpha.2
 ```
 
 Make sure the `wasm32-unknown-unknown` target for rust is installed:
@@ -46,7 +46,7 @@ cd demo
 Add Dioxus with the web renderer feature as a dependency (this will edit your `Cargo.toml`):
 
 ```bash
-cargo add dioxus@0.5.0-alpha.0 --features web
+cargo add dioxus@0.5.0-alpha.2 --features web
 ```
 
 Edit your `main.rs`:

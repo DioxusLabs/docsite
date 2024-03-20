@@ -238,7 +238,7 @@ pub mod fetch {
         let stories = use_resource(move || get_stories(10));
 
         // check if the future is resolved
-        match &*stories.value().read() {
+        match &*stories.read_unchecked() {
             Some(Ok(list)) => {
                 // if it is, render the stories
                 rsx! {
@@ -403,7 +403,7 @@ fn Comment(comment: Comment) -> Element {
 fn Stories() -> Element {
     let stories = use_resource(move || get_stories(10));
 
-    match &*stories.value().read() {
+    match &*stories.read_unchecked() {
         Some(Ok(list)) => rsx! {
             div {
                 for story in list {

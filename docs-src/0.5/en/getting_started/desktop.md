@@ -17,8 +17,6 @@ Dioxus desktop is built off [Tauri](https://tauri.app/). Right now there are lim
 
 [![File Explorer screenshot](https://raw.githubusercontent.com/DioxusLabs/example-projects/master/file-explorer/image.png)](https://github.com/DioxusLabs/example-projects/tree/master/file-explorer)
 
-Here's a [query](https://github.com/search?q=repo%3ADioxusLabs%2Fdioxus+path%3A%2F%5Eexamples%5C%2F%2F+%22use+dioxus_desktop%22&type=code) for the main repo to find examples which use `dioxus_desktop` (might not be 100% acurrate).
-
 # Getting started
 
 ## Platform-specific dependencies
@@ -70,6 +68,12 @@ Edit your `main.rs`:
 
 ```rust
 {{#include src/doc_examples/hello_world_desktop.rs:all}}
+```
+
+And to serve our app:
+
+```bash
+dx serve --platform desktop
 ```
 
 ## Hot Reload

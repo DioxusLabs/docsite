@@ -1,6 +1,10 @@
 #![allow(non_snake_case)]
 use dioxus::prelude::*;
 
+fn main() {
+    launch(App);
+}
+
 pub fn App() -> Element {
     use_context_provider(|| Signal::new(PreviewState::Unset));
 

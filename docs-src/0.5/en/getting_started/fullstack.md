@@ -19,7 +19,7 @@ Add `dioxus` and `dioxus-fullstack` as dependencies:
 cargo add dioxus@0.5.0-alpha.2 --features fullstack
 ```
 
-Next, set up features for the server (`server`) and the client (`web`):
+Next, set up features for the server (`server`) and the client (`web`). These features are what allow Dioxus to separate the client and backend from each other. 
 
 ```toml
 [features]

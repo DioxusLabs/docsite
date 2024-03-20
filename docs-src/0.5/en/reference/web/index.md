@@ -7,7 +7,7 @@ This guide will cover concepts specific to the Dioxus web renderer.
 Dioxus provides some ergonomic wrappers over the browser API, but in some cases you may need to access parts of the browser API Dioxus does not expose. 
 
 
-For these cases, Dioxus desktop exposes the use_eval hook that allows you to run raw Javascript in the webview:
+For these cases, Dioxus web exposes the use_eval hook that allows you to run raw Javascript in the webview:
 
 ```rust
 {{#include src/doc_examples/eval.rs}}

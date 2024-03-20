@@ -33,6 +33,7 @@ fn App() -> Element {
 
         // ANCHOR: IntoComponent_usage
         IntoComponent { string: "some &str" }
+        // ANCHOR_END: IntoComponent_usage
     }
 }
 

@@ -38,6 +38,11 @@ DemoFrame {
 }
 ```
 
+Some attributes, such as the ``type`` attribute for ``input`` elements won't work on their own in Rust. This is because ``type`` is a reserved Rust keyword. To get around this, Dioxus uses the ``r#`` specifier:
+```rust, no_run
+{{#include src/doc_examples/rsx_overview.rs:attributes_type}}
+```
+
 > Note: All attributes defined in `dioxus-html` follow the snake_case naming convention. They transform their `snake_case` names to HTML's `camelCase` attributes.
 
 > Note: Styles can be used directly outside of the `style:` attribute. In the above example, `color: "red"` is turned into `style="color: red"`.

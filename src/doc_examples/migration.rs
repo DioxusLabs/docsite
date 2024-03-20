@@ -67,6 +67,13 @@ mod futures {
         // ANCHOR: futures
         // dependency1 and dependency2 must be Signal-like types like Signal, ReadOnlySignal, GlobalSignal, or another Resource
         use_resource(|| async move { /*use dependency1 and dependency2*/ });
+
+        let non_reactive_state = 0;
+        // You can also add non-reactive state to the resource hook with the use_reactive macro
+        use_resource(use_reactive!(|(non_reactive_state,)| async move {
+            tokio::time::sleep(std::time::Duration::from_secs(1)).await;
+            non_reactive_state + 1
+        }));
         // ANCHOR_END: futures
     }
 }

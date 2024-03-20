@@ -73,13 +73,11 @@ fn CaptionEditor(caption: String, on_input: EventHandler<FormEvent>) -> Element 
         color: white;
     ";
 
-    rsx!(
-        input {
-            style: "{input_style}",
-            value: "{caption}",
-            oninput: move |event| on_input.call(event)
-        }
-    )
+    rsx!(input {
+        style: "{input_style}",
+        value: "{caption}",
+        oninput: move |event| on_input.call(event)
+    })
 }
 // ANCHOR_END: caption_editor
 

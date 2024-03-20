@@ -16,7 +16,7 @@ This Reference contains more detailed explanations for all concepts covered in t
 - [Hooks](hooks.md): Hooks allow you to create components state
 - [Context](context.md): Context allows you to create state in a parent and consume it in children
 - [Routing](router.md): The router helps you manage the URL state
-- [UseFuture](use_resource.md): Use future allows you to create an async task and monitor it's state
+- [Resource](use_resource.md): Use future allows you to create an async task and monitor it's state
 - [UseCoroutine](use_coroutine.md): Use coroutine helps you manage external state
 - [Spawn](spawn.md): Spawn creates an async task
 

@@ -9,17 +9,22 @@ fn Profile(id: ReadOnlySignal<i32>) -> Element {
         eval(&format!("document.title = 'Profile #{}';", id));
     });
 
-    // Because the dependencies are empty, this will only run once.
-    // An empty tuple is always equal to an empty tuple.
+    // Because there are no dependencies, this effect will only run once.
     use_effect(|| {
         tracing::info!("Hello, World!");
     });
+
+    // You can also add non-reactive state to the effect hook with the use_reactive macro
+    let non_reactive_state = id();
+    use_effect(use_reactive!(|(non_reactive_state,)| {
+        tracing::info!("Profile #{}", non_reactive_state);
+    }));
 
     rsx!( div { "Profile #{id}" } )
 }
 
 fn app() -> Element {
-    rsx!( Profile { id: 0 } )
+    rsx!(Profile { id: 0 })
 }
 // ANCHOR_END: app
 

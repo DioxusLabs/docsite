@@ -173,6 +173,11 @@ static LINKS: &[(&str, &str, LinkPairs)] = &[
     // ("Tutorials", "/tutorials/", &[]),
     ("Awesome", "/awesome", &[]),
     ("Docs", "/learn/0.5/", &[]),
+    (
+        "API",
+        "https://docs.rs/dioxus/0.5.0-alpha.2/dioxus/index.html",
+        &[],
+    ),
     ("Blog", "/blog", &[]),
 ];
 

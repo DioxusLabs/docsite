@@ -32,5 +32,5 @@ fn component() -> Element {
                 }
             }
         }
-    ))
+    )
 }

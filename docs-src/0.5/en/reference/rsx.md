@@ -47,6 +47,20 @@ Some attributes, such as the ``type`` attribute for ``input`` elements won't wor
 
 > Note: Styles can be used directly outside of the `style:` attribute. In the above example, `color: "red"` is turned into `style="color: red"`.
 
+#### Conditional Attributes
+
+You can also conditionally include attributes by using an if statement without an else branch. This is useful for adding an attribute only if a certain condition is met:
+
+```rust, no_run
+{{#include src/doc_examples/rsx_overview.rs:conditional_attributes}}
+```
+
+```inject-dioxus
+DemoFrame {
+	rsx_overview::ConditionalAttributes {}
+}
+```
+
 #### Custom Attributes
 
 Dioxus has a pre-configured set of attributes that you can use. RSX is validated at compile time to make sure you didn't specify an invalid attribute. If you want to override this behavior with a custom attribute name, specify the attribute in quotes:

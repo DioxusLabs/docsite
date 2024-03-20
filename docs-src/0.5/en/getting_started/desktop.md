@@ -61,7 +61,7 @@ cd demo
 Add Dioxus crate with the desktop renderer feature as a dependency (this will edit your `Cargo.toml`):
 
 ```shell
-cargo add dioxus@0.5.0-alpha.0 --features desktop
+cargo add dioxus@0.5.0-alpha.2 --features desktop
 ```
 
 Edit your `main.rs`:

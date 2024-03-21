@@ -48,14 +48,14 @@ pub fn Snippets() -> Element {
                             li { class: "flex-none",
                                 button {
                                     class: "relative py-2 px-4 rounded-t-md",
-                                    class: match selected_snippet == id {
+                                    class: match selected_snippet() == id {
                                         true => "bg-ghmetal border-neutral-500/30 border text-white border-b-0",
                                         false => "bg-ghdarkmetal",
                                     },
                                     r#type: "button",
                                     onclick: move |_| selected_snippet.set(id),
                                     "{snippet.filename}"
-                                    if selected_snippet == id {
+                                    if selected_snippet() == id {
                                         span { class: "absolute z-10 bottom-0 inset-x-0 h-2 bg-ghmetal" }
                                     }
                                 }

@@ -4,26 +4,22 @@ use dioxus::prelude::*;
 
 pub fn App() -> Element {
     // ANCHOR: spawn
-    let response = use_signal(|| String::from("..."));
+    let mut response = use_signal(|| String::from("..."));
 
     let log_in = move |_| {
-        spawn({
-            to_owned![response];
+        spawn(async move {
+            let resp = reqwest::Client::new()
+                .get("https://dioxuslabs.com")
+                .send()
+                .await;
 
-            async move {
-                let resp = reqwest::Client::new()
-                    .get("https://dioxuslabs.com")
-                    .send()
-                    .await;
-
-                match resp {
-                    Ok(_data) => {
-                        log::info!("dioxuslabs.com responded!");
-                        response.set("dioxuslabs.com responded!".into());
-                    }
-                    Err(err) => {
-                        log::info!("Request failed with error: {err:?}")
-                    }
+            match resp {
+                Ok(_data) => {
+                    log::info!("dioxuslabs.com responded!");
+                    response.set("dioxuslabs.com responded!".into());
+                }
+                Err(err) => {
+                    log::info!("Request failed with error: {err:?}")
                 }
             }
         });
@@ -61,11 +57,8 @@ pub fn ToOwnedMacro() -> Element {
         // ANCHOR: to_owned_macro
         use dioxus::hooks::to_owned;
 
-        spawn({
-            to_owned![count, age, name, description];
-            async move {
-                // ...
-            }
+        spawn(async move {
+            // ...
         });
         // ANCHOR_END: to_owned_macro
     };

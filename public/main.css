@@ -1,0 +1,61 @@
+.docs-links::-webkit-scrollbar,
+.docs-toc::-webkit-scrollbar {
+    width: 5px
+}
+
+.docs-links::-webkit-scrollbar-track,
+.docs-toc::-webkit-scrollbar-track {
+    /* background: #fff */
+}
+
+.docs-links::-webkit-scrollbar-thumb,
+.docs-toc::-webkit-scrollbar-thumb {
+    background: #fff
+}
+
+.docs-links:hover,
+.docs-toc:hover {
+    scrollbar-width: thin;
+    scrollbar-color: #e9ecef #fff
+}
+
+.docs-links:hover::-webkit-scrollbar-thumb,
+.docs-toc:hover::-webkit-scrollbar-thumb {
+    background: #e9ecef
+}
+
+.docs-links::-webkit-scrollbar-thumb:hover,
+.docs-toc::-webkit-scrollbar-thumb:hover {
+    background: #e9ecef
+}
+
+html.dark .docs-links,
+html.dark .docs-toc {
+    scrollbar-width: thin;
+    scrollbar-color: #212529 #212529
+}
+
+.markdown-body>a {
+    color: black
+}
+
+.markdown-body {
+    box-sizing: border-box;
+    min-width: 200px;
+    max-width: 980px;
+    margin: 0 5%;
+    /* padding: 45px; */
+    list-style: disc;
+}
+
+
+@media (max-width: 767px) {
+    .markdown-body {
+        /* padding: 15px; */
+    }
+}
+
+.main-side-nav {
+    max-height: calc(100vh - 4rem);
+    overflow: scroll;
+}

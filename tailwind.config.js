@@ -7,12 +7,13 @@ module.exports = {
       colors: {
         ghmetal: "#24292f",
         ghdarkmetal: "#161b22",
-        ideblack: "#0e1116",
+        ideblack: "#222529",
+        // ideblack: "#0e1116",
         // ideblack: "#0a0a0a",
         // ideblack: "#0E1116",
       },
       fontFamily: {
-        sans: ["Lexend", "sans-serif"],
+        sans: ["Arimo", "sans-serif"],
         // sans: ["Inter var", "sans-serif"],
       },
       boxShadow: {

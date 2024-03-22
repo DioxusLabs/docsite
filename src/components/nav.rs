@@ -11,26 +11,22 @@ pub static LOGGED_IN: GlobalSignal<bool> = Signal::global(|| false);
 pub static SHOW_DOCS_NAV: GlobalSignal<bool> = Signal::global(|| false);
 
 pub fn Nav() -> Element {
-    let bg_color = if HIGHLIGHT_NAV_LAYOUT() {
-        "border border-orange-600 rounded-md"
-    } else {
-        ""
-    };
-    let sidebar_class = if SHOW_DOCS_NAV() { "" } else { "hidden" };
-
     rsx! {
         SearchModal {}
-        header { class: "sticky top-0 z-30 bg-white shadow dark:text-gray-200 dark:bg-ideblack dark:border-b border-stone-600 {bg_color}",
+        header {
+            class: "sticky top-0 z-30 bg-white dark:text-gray-200 dark:bg-ideblack border-b dark:border-stone-600",
+            class: if HIGHLIGHT_NAV_LAYOUT() { "border border-orange-600 rounded-md" },
             div { class: "py-3 px-12 max-w-screen-2xl mx-auto flex items-center justify-between text-sm leading-6",
                 button {
-                    class: "bg-gray-100 rounded-lg p-2 mr-4 lg:hidden my-3 h-10 flex items-center text-lg z-[100] {sidebar_class}",
+                    class: "bg-gray-100 rounded-lg p-2 mr-4 lg:hidden my-3 h-10 flex items-center text-lg z-[100]",
+                    class: if !SHOW_DOCS_NAV() { "hidden" },
                     onclick: move |_| {
                         let mut sidebar = SHOW_SIDEBAR.write();
                         *sidebar = !*sidebar;
                     },
                     MaterialIcon { name: "menu", size: 24, color: MaterialIconColor::Dark }
                 }
-                div { class: "flex z-50 flex-1",
+                div { class: "flex z-50 md:flex-1 px-2",
                     Link {
                         to: Route::Homepage {},
                         class: "flex title-font font-medium items-center text-gray-900",
@@ -38,18 +34,18 @@ pub fn Nav() -> Element {
                             src: "https://avatars.githubusercontent.com/u/79236386?s=200&v=4",
                             class: "h-5 w-auto"
                         }
-                        span { class: "ml-3 text-xl dark:text-white font-mono", "Dioxus Labs" }
+                        span { class: "ml-3 text-xl dark:text-white font-mono", "Dioxus" }
                     }
                 }
 
                 Search {}
 
-                div { class: "hidden xl:flex h-full justify-end ml-2 flex-1",
+                div { class: "hidden md:flex h-full justify-end ml-2 flex-1",
                     div { class: "hidden md:flex items-center font-semibold",
                         nav {
                             ul { class: "flex items-center space-x-2", LinkList {} }
                         }
-                        div { class: "flex items-center border-l border-gray-200 ml-4 pl-4 dark:border-gray-800",
+                        div { class: "hidden lg:flex items-center border-l border-gray-200 ml-4 pl-4 dark:border-gray-800",
                             label {
                                 class: "sr-only",
                                 id: "headlessui-listbox-label-2",
@@ -68,7 +64,7 @@ pub fn Nav() -> Element {
                                 crate::icons::Github2 {}
                             }
                         }
-                        div { class: "flex items-center border-l border-gray-200 ml-4 pl-6 dark:border-gray-800",
+                        div { class: "hidden lg:flex items-center border-l border-gray-200 ml-4 pl-6 dark:border-gray-800",
                             label {
                                 class: "sr-only",
                                 id: "headlessui-listbox-label-2",
@@ -172,12 +168,12 @@ type LinkPairs<'a> = &'a [(&'a str, &'a str)];
 static LINKS: &[(&str, &str, LinkPairs)] = &[
     // ("Tutorials", "/tutorials/", &[]),
     ("Awesome", "/awesome", &[]),
-    ("Docs", "/learn/0.5/", &[]),
     (
         "API",
         "https://docs.rs/dioxus/0.5.0-alpha.2/dioxus/index.html",
         &[],
     ),
+    ("Docs", "/learn/0.5/", &[]),
     ("Blog", "/blog", &[]),
 ];
 
@@ -186,9 +182,9 @@ fn LinkList() -> Element {
     let hover = "hover:text-sky-500 dark:hover:text-sky-400";
     let hover_bg = "dark:hover:bg-gray-500 hover:bg-gray-200 rounded";
 
-    let links = LINKS.iter().cloned().map(|(name, link, links)| {
-        if links.is_empty() {
-            rsx! {
+    rsx! {
+        for (name , link , links) in LINKS.iter().cloned() {
+            if links.is_empty() {
                 li { key: "{link}",
                     Link {
                         class: "ml-[-3.8em] md:ml-0 md:py-2 md:px-2 {hover} {hover_bg} text-lg md:text-sm",
@@ -196,9 +192,7 @@ fn LinkList() -> Element {
                         "{name}"
                     }
                 }
-            }
-        } else {
-            rsx! {
+            } else {
                 li { key: "{link}", class: "group relative dropdown",
                     span { class: "py-1 px-[0.25rem] md:px-2 text-lg md:text-sm {hover} {hover_bg} cursor-default",
                         "{name}"
@@ -206,7 +200,7 @@ fn LinkList() -> Element {
                     nav { class: "md:dropdown-menu md:absolute h-auto md:-mt-64 md:group-hover:mt-0 md:opacity-0 md:group-hover:opacity-100 md:transition-opacity md:duration-250",
                         ul { class: "top-0 w-36 md:bg-white dark:md:bg-gray-800 md:shadow md:px-4 md:py-4 rounded",
                             for (name , link) in links.iter() {
-                                Link { to: *link, key: "{name}",
+                                Link { to: *link,
                                     li { class: "rounded px-1 py-1 {hover} {hover_bg} text-base md:text-sm",
                                         "{name}"
                                     }
@@ -217,18 +211,16 @@ fn LinkList() -> Element {
                 }
             }
         }
-    });
-
-    rsx! {{links}}
+    }
 }
 
 fn Search() -> Element {
     rsx! {
-        div { class: "relative md:w-full max-w-[30rem] xl:max-w-[30rem] 2xl:max-w-[30rem] sm:mx-auto sm:flex-1",
+        div { class: "relative md:w-full max-w-[20rem] xl:max-w-[20rem] 2xl:max-w-[20rem] sm:mx-auto sm:flex-1",
             // Pop up a modal
             button {
                 // Pop up a modal
-                class: "bg-gray-100 rounded-lg px-3 py-3 sm:w-full text-left text-gray-400 my-auto sm:flex sm:flex-row sm:align-middle sm:justify-between",
+                class: "bg-gray-100 rounded-lg p-2 sm:w-full text-left text-gray-400 my-auto sm:flex sm:flex-row sm:align-middle sm:justify-between",
                 onclick: move |_| {
                     *SHOW_SEARCH.write() = true;
                 },
@@ -236,7 +228,7 @@ fn Search() -> Element {
                     MaterialIcon { name: "search", size: 24, color: MaterialIconColor::Dark }
                     span { class: "hidden sm:block pl-2", "Search the docs" }
                 }
-                div { class: "hidden sm:block border border-gray-300 rounded-lg p-1 text-xs text-gray-400",
+                div { class: "hidden md:block border border-gray-300 rounded-lg p-1 text-xs text-gray-400",
                     "CTRL + /"
                 }
             }
@@ -395,74 +387,3 @@ fn SearchResult(result: dioxus_search::SearchResult<Route>) -> Element {
         }
     }
 }
-
-// div { class: "py-4 px-12 max-w-screen-2xl mx-auto flex items-center justify-between font-semibold text-sm leading-6",
-//     // div { class: "py-4 flex items-center justify-between font-semibold text-sm leading-6 bg-white shadow dark:text-gray-200 dark:bg-black px-48",
-//     // div { class: "py-4 flex items-center justify-between font-semibold text-sm leading-6 bg-white shadow dark:text-gray-200 dark:bg-black px-4 sm:px-6 md:px-8",
-//     Link { class: "flex title-font font-medium items-center text-gray-900", to: "/",
-//         img {
-//             src: "https://avatars.githubusercontent.com/u/79236386?s=200&v=4",
-//             class: "h-5 w-auto"
-//         }
-//         span { class: "ml-3 text-xl dark:text-white font-mono", "Dioxus Labs" }
-//     }
-//     Search {}
-//     div { class: "flex items-center font-mono",
-//         MobileNav {}
-//         FullNav {}
-//     }
-// }
-// if *show {rsx! {
-//     ul { class: "flex items-center flex-col py-4", gap: "10px", LinkList { } }
-// }}
-
-// (
-//     "Platforms",
-//     "/platforms",
-//     &[
-//         (
-//             "Web",
-//             "https://dioxuslabs.com/docs/0.3/guide/en/getting_started/web",
-//         ),
-//         (
-//             "Desktop",
-//             "https://dioxuslabs.com/docs/0.3/guide/en/getting_started/desktop",
-//         ),
-//         (
-//             "Mobile",
-//             "https://dioxuslabs.com/docs/0.3/guide/en/getting_started/mobile",
-//         ),
-//         (
-//             "SSR",
-//             "https://dioxuslabs.com/docs/0.3/guide/en/getting_started/ssr",
-//         ),
-//         (
-//             "TUI",
-//             "https://github.com/DioxusLabs/dioxus/tree/master/packages/dioxus-tui",
-//         ),
-//     ],
-// ),
-// (
-//     "Projects",
-//     "https://github.com/dioxuslabs",
-//     &[
-//         (
-//             "Fermi",
-//             "https://github.com/DioxusLabs/dioxus/tree/master/packages/fermi",
-//         ),
-//         (
-//             "Router",
-//             "https://github.com/DioxusLabs/dioxus/tree/master/packages/router",
-//         ),
-//         ("Taffy", "https://github.com/DioxusLabs/taffy"),
-//         ("CLI", "https://github.com/DioxusLabs/dioxus/tree/master/packages/cli"),
-//     ],
-// ),
-// ("Tutorials", "/tutorials/", &[]),
-
-// &[
-//     ("Guide", "https://dioxuslabs.com/docs/0.3/guide/en/"),
-//     // ("Advanced", "https://dioxuslabs.com/docs/0.3/reference/"),
-//     // ("Reference", "https://dioxuslabs.com/docs/0.3/reference/"),
-//     ("Router", "https://dioxuslabs.com/docs/0.3/router/"),
-// ],

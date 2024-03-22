@@ -49,11 +49,13 @@ fn HeaderFooter() -> Element {
         }
     });
 
+    // Footer {}
     rsx! {
+        link { rel: "stylesheet", href: "main.css" }
+        link { rel: "stylesheet", href: "githubmarkdown.css" }
         div {
             Nav {}
             Outlet::<Route> {}
-            Footer {}
         }
     }
 }

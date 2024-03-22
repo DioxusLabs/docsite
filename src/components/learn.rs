@@ -29,7 +29,7 @@ pub fn Learn() -> Element {
             class: "w-full pt-12 text-sm dark:bg-ideblack",
             min_height: "100vh",
             // do a typical three-column flex layout with a single centered then pin the nav items on top
-            div { class: "max-w-screen-2xl flex flex-row justify-between mx-auto dark:text-white",
+            div { class: "flex flex-row justify-center mx-auto dark:text-white",
                 LeftNav {}
                 Content {}
                 RightNav {}
@@ -39,13 +39,6 @@ pub fn Learn() -> Element {
 }
 
 fn LeftNav() -> Element {
-    let extra_class = if HIGHLIGHT_DOCS_LAYOUT() {
-        "border border-green-600 rounded-md"
-    } else {
-        ""
-    };
-    let hidden = if SHOW_SIDEBAR() { "" } else { "hidden" };
-    let full_width = if SHOW_SIDEBAR() { "min-w-full" } else { "" };
     let chapters = vec![
         &LAZY_BOOK.summary.prefix_chapters,
         &LAZY_BOOK.summary.numbered_chapters,
@@ -54,10 +47,12 @@ fn LeftNav() -> Element {
 
     rsx! {
         // Now, pin the nav to the left
-        nav { class: "bg-white dark:bg-ideblack lg:bg-inherit pl-6 pb-32 z-20 text-base lg:block sticky top-28 lg:-ml-3.5 w-[calc(100%-1rem)] md:w-60 h-screen max-h-screen lg:text-[13px] text-navy content-start overflow-y-auto leading-5 {extra_class} {full_width} {hidden}",
-            // I like the idea of breadcrumbs, but they add a lot of visual noise, and like, who cares?
-            // BreadCrumbs {}
-
+        nav {
+            class: "bg-white dark:bg-ideblack lg:bg-inherit pl-6 pb-32 z-20 text-base lg:block top-28 lg:-ml-3.5 w-[calc(100%-1rem)] md:w-60 lg:text-[14px] text-navy content-start overflow-y-auto leading-5",
+            class: "docs-links",
+            class: if HIGHLIGHT_DOCS_LAYOUT() { "border border-green-600 rounded-md" },
+            class: if SHOW_SIDEBAR() { "min-w-full" } else { "hidden" },
+            class: "main-side-nav",
             for chapter in chapters.into_iter().flatten().filter(|chapter| chapter.maybe_link().is_some()) {
                 SidebarSection { chapter: chapter }
             }
@@ -175,16 +170,13 @@ fn LocationLink(chapter: &'static SummaryItem<BookRoute>) -> Element {
     let link = chapter.maybe_link()?;
     let url = link.location.as_ref().unwrap();
 
-    let current_class = match book_url.starts_with(&*url.to_string()) {
-        true => "bg-gray-200 dark:bg-gray-800",
-        false => "",
-    };
-
     rsx! {
         Link {
             onclick: move |_| *SHOW_SIDEBAR.write() = false,
             to: Route::Docs { child: *url },
-            li { class: "m-1 rounded-md pl-2 hover:bg-gray-200 hover:dark:bg-gray-800 {current_class}",
+            li {
+                class: "m-1 rounded-md pl-2 hover:bg-gray-200 hover:dark:bg-gray-800",
+                class: if book_url.starts_with(&*url.to_string()) { "bg-gray-200 dark:bg-gray-800" },
                 "{link.name}"
             }
         }
@@ -193,11 +185,6 @@ fn LocationLink(chapter: &'static SummaryItem<BookRoute>) -> Element {
 
 // Todo: wire this up to the sections of the current page and a scroll controller
 fn RightNav() -> Element {
-    let extra_class = if HIGHLIGHT_DOCS_LAYOUT() {
-        "border border-green-600 rounded-md"
-    } else {
-        ""
-    };
     let page = use_book();
     let padding_map = ["pl-2", "pl-4", "pl-6", "pl-8", "pl-10"];
     let page_url = use_memo(move || page.to_string());
@@ -213,14 +200,15 @@ fn RightNav() -> Element {
             format!("{GITHUB_EDIT_PAGE_EDIT_URL}{page_url}.md")
         }
     });
-    // That might be a naive approach, but it's the easiest
 
+    // That might be a naive approach, but it's the easiest
     rsx! {
         div {
-            class: "overflow-y-auto hidden xl:block sticky top-28 pl-3.5 -ml-3.5 w-60 h-full md:text-[13px] leading-5 text-navy docs-right-sidebar {extra_class}",
+            class: "overflow-y-auto hidden xl:block top-28 ml-12 h-full md:text-[13px] leading-5 text-navy docs-right-sidebar w-48",
+            class: if HIGHLIGHT_DOCS_LAYOUT() { "border border-green-600 rounded-md" },
             left: "calc(100vw - 15rem)",
             h2 { class: "pb-4 font-semibold", "On this page" }
-            ul { class: "",
+            ul {
                 for section in page.sections() {
                     li { class: "pb-2 {padding_map[section.level-1]}",
                         a { href: "?phantom={section.id}#{section.id}", "{section.title}" }
@@ -240,15 +228,11 @@ fn RightNav() -> Element {
 }
 
 fn Content() -> Element {
-    let extra_class = if HIGHLIGHT_DOCS_CONTENT() {
-        "border border-blue-600 rounded-md"
-    } else {
-        ""
-    };
-
     rsx! {
-        section { class: "text-gray-600 body-font overflow-hidden dark:bg-ideblack container pt-6 pb-12",
-            div { class: "-py-8 {extra_class}",
+        section { class: "text-gray-600 body-font overflow-hidden dark:bg-ideblack container pb-12 px-8 max-w-screen-md",
+            div {
+                class: "-py-8",
+                class: if HIGHLIGHT_DOCS_LAYOUT() { "border border-green-600 rounded-md" },
                 div { class: "flex w-full mb-20 flex-wrap list-none",
                     style {
                         ".markdown-body ul {{ list-style: disc; }}"

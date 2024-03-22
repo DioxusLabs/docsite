@@ -130,14 +130,14 @@ pub fn BlogList() -> Element {
             div { class: "container max-w-screen-lg pt-12 pb-12 mx-auto",
                 div { class: "-my-8 px-8 pb-12",
                     // Header
-                    h2 { class: "dark:text-white mb-8 md:mb-16 sm:text-3xl text-2xl font-medium title-font font-sans",
-                        "Recent Blog Posts"
+                    h2 { class: "dark:text-white my-8 md:mb-16 sm:text-3xl text-2xl font-medium title-font font-sans",
+                        "Blog"
                     }
                     section { class: "body-font overflow-hidden dark:bg-ideblack",
-                        div { class: "container px-6 mx-auto",
+                        div { class: "container px- mx-auto",
                             div { class: "-my-8 divide-y-2 divide-gray-100",
                                 for post in POSTS.iter() {
-                                    BlogPostItem { post: post }
+                                    BlogPostItem { post }
                                 }
                             }
                         }
@@ -192,25 +192,6 @@ fn BlogHeader() -> Element {
     )
 }
 
-pub static RecentBlogPosts: Component<()> = |cx| {
-    rsx! {
-        section { class: "body-font overflow-hidden dark:bg-ideblack",
-            div { class: "container px-6 lg:px-40 pt-24 pb-36 mx-auto max-w-screen-xl",
-                div { class: "flex flex-col w-full mb-10",
-                    h1 { class: "sm:text-3xl text-2xl font-medium title-font mb-4 dark:text-white",
-                        "Recent Blog Posts"
-                    }
-                }
-                div { class: "-my-8 divide-y-2 divide-gray-100",
-                    for post in POSTS.iter() {
-                        BlogPostItem { post: post }
-                    }
-                }
-            }
-        }
-    }
-};
-
 #[component]
 fn BlogPostItem(post: &'static BlogPost) -> Element {
     let BlogPost {
@@ -224,13 +205,13 @@ fn BlogPostItem(post: &'static BlogPost) -> Element {
 
     rsx!(
         div { class: "py-8 flex flex-wrap md:flex-nowrap",
-            div { class: "md:w-32 md:mb-0 mb-6 flex-shrink-0 flex flex-col",
+            div { class: "md:w-32 md:mb-0 mb-6 flex-shrink-0 flex flex-col p",
                 span { class: "font-semibold title-font text-gray-700 dark:text-white",
                     "{category}"
                 }
                 span { class: "mt-1 text-gray-500 text-sm", "{date}" }
             }
-            div { class: "md:flex-grow",
+            div { class: "md:flex-grow pl-8",
                 h2 { class: "text-2xl font-medium text-gray-900 title-font mb-2 dark:text-white",
                     "{title}"
                 }

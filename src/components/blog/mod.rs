@@ -126,8 +126,8 @@ pub const POSTS: &[BlogPost] = &[
 #[component]
 pub fn BlogList() -> Element {
     rsx!(
-        section { class: "body-font overflow-hidden dark:bg-ideblack",
-            div { class: "container max-w-screen-lg pt-12 pb-12 mx-auto",
+        section { class: "body-font overflow-hidden dark:bg-ideblack font-light",
+            div { class: "container max-w-screen-sm pt-12 pb-12 mx-auto",
                 div { class: "-my-8 px-8 pb-12",
                     // Header
                     h2 { class: "dark:text-white my-8 md:mb-16 sm:text-3xl text-2xl font-medium title-font font-sans",
@@ -135,7 +135,7 @@ pub fn BlogList() -> Element {
                     }
                     section { class: "body-font overflow-hidden dark:bg-ideblack",
                         div { class: "container px- mx-auto",
-                            div { class: "-my-8 divide-y-2 divide-gray-100",
+                            div { class: "-my-8 divide-y divide-neutral-400",
                                 for post in POSTS.iter() {
                                     BlogPostItem { post }
                                 }
@@ -153,20 +153,13 @@ pub fn SinglePost(post: BlogPost) -> Element {
     let BlogPost { content, .. } = post;
 
     rsx! {
-        section { class: "text-gray-600 body-font overflow-hidden dark:bg-ideblack",
-            div { class: "container lg:px-20 xl:px-48 pt-12 pb-12 mx-auto",
-                script { "Prism.highlightAll()" }
-                div { class: "flex w-full mb-20 flex-wrap list-none",
-                    style {
-                        ".markdown-body ul {{ list-style: disc; }}"
-                        ".markdown-body li {{ display: list-item; }}"
-                        ".markdown-body img {{ max-height: 500px; margin-left: auto; margin-right: auto; padding-left: 4px; padding-right: 4px; }}"
-                        ".markdown-body .highlight pre, .markdown-body pre {{ background-color: #1e1e1e }}"
-                    }
-                    article { class: "markdown-body", dangerous_inner_html: format_args!("{}", content) }
-                    script { "Prism.highlightAll()" }
-                }
+        section { class: "text-gray-600 body-font dark:bg-ideblack max-w-screen-md mx-auto pt-24 font-light",
+            script { "Prism.highlightAll()" }
+            article {
+                class: "markdown-body px-2  dioxus-blog-post",
+                dangerous_inner_html: format_args!("{}", content)
             }
+            script { "Prism.highlightAll()" }
         }
     }
 }

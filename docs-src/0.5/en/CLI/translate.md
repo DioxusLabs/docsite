@@ -38,19 +38,19 @@ div { class: "relative w-full mx-4 sm:mx-auto text-gray-600",
    div { class: "max-w-screen-2xl mx-auto pt-36",
       h1 { class: "text-md", "Trusted by top companies" }
       div { class: "pt-4 flex flex-row flex-wrap justify-center",
-         div { class: "h-12 w-40 bg-black p-2 m-4 flex justify-center items-center",
+         div { class: "h-12 w-40 p-2 m-4 flex justify-center items-center",
             img { src: "static/futurewei_bw.png" }
          }
-         div { class: "h-12 w-40 bg-black p-2 m-4 flex justify-center items-center",
+         div { class: "h-12 w-40 p-2 m-4 flex justify-center items-center",
             img { src: "static/airbuslogo.svg" }
          }
-         div { class: "h-12 w-40 bg-black p-2 m-4 flex justify-center items-center",
+         div { class: "h-12 w-40 p-2 m-4 flex justify-center items-center",
             img { src: "static/ESA_logo.svg" }
          }
-         div { class: "h-12 w-40 bg-black p-2 m-4 flex justify-center items-center",
+         div { class: "h-12 w-40 p-2 m-4 flex justify-center items-center",
             img { src: "static/yclogo.svg" }
          }
-         div { class: "h-12 w-40 bg-black p-2 m-4 flex justify-center items-center",
+         div { class: "h-12 w-40 p-2 m-4 flex justify-center items-center",
             img { src: "static/satellite.webp" }
          }
       }

@@ -97,13 +97,18 @@
 .markdown-body {
     -ms-text-size-adjust: 100%;
     -webkit-text-size-adjust: 100%;
-    margin: 0;
+    /* margin: 0; */
     color: var(--color-fg-default);
-    background-color: var(--color-canvas-default);
+    /* background-color: var(--color-canvas-default); */
     /* font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji"; */
     font-size: 16px;
     line-height: 1.5;
     word-wrap: break-word
+}
+
+/* tailwind is turning off our list styles :/ */
+.markdown-body ol ul {
+    list-style: unset !important;
 }
 
 .markdown-body .octicon {
@@ -142,11 +147,11 @@
 }
 
 
-.markdown-body h1 h2 h3 {
+.markdown-body h1 h2 h3 h4 h5 {
     color: var(--color-fg-default);
 }
 
-.markdown-body a {
+.markdown-body :not(h1):not(h2):not(h3):not(h4):not(h5)>a {
     background-color: transparent;
     color: var(--color-accent-fg);
     text-decoration: none;
@@ -180,7 +185,7 @@
     font-weight: 600;
     padding-bottom: .3em;
     font-size: 2em;
-    border-bottom: 1px solid var(--color-border-muted)
+    /* border-bottom: 1px solid var(--color-border-muted) */
 }
 
 .markdown-body mark {
@@ -210,7 +215,15 @@
 
 .markdown-body img {
     border-style: none;
-    max-width: 100%;
+    max-width: 85%;
+    margin: auto;
+    box-sizing: content-box;
+    background-color: var(--color-canvas-default)
+}
+
+.markdown-body video {
+    max-width: 85%;
+    margin: auto;
     box-sizing: content-box;
     background-color: var(--color-canvas-default)
 }
@@ -298,7 +311,7 @@
     font: inherit
 }
 
-.markdown-body a:hover {
+.markdown-body :not(h1):not(h2):not(h3):not(h4):not(h5)>a:hover {
     text-decoration: underline
 }
 
@@ -349,6 +362,7 @@
     box-shadow: inset 0 -1px 0 var(--color-neutral-muted)
 }
 
+
 .markdown-body h1,
 .markdown-body h2,
 .markdown-body h3,
@@ -365,7 +379,7 @@
     font-weight: 600;
     padding-bottom: .3em;
     font-size: 1.5em;
-    border-bottom: 1px solid var(--color-border-muted)
+    /* border-bottom: 1px solid var(--color-border-muted) */
 }
 
 .markdown-body h3 {
@@ -391,7 +405,8 @@
 
 .markdown-body p {
     margin-top: 0;
-    margin-bottom: 10px
+    margin-bottom: 10px;
+    /* margin-left: 5px; */
 }
 
 .markdown-body blockquote {
@@ -933,8 +948,8 @@
     overflow: auto;
     font-size: 85%;
     line-height: 1.45;
-    background-color: var(--color-canvas-subtle);
-    border-radius: 6px
+    border-radius: 6px;
+    /* background-color: var(--color-canvas-subtle); */
 }
 
 .markdown-body pre code,
@@ -1043,3 +1058,11 @@
 .markdown-body ::-webkit-calendar-picker-indicator {
     filter: invert(50%)
 }
+
+.markdown-body .code-toolbar {
+    margin: 10px;
+}
+
+/* .markdown-body h1 {
+    text-align: center;
+} */

@@ -75,6 +75,15 @@ struct StarsResponse {
 
 #[component]
 pub fn Awesome() -> Element {
+    rsx! {
+        div { class: "dark:bg-ideblack mx-auto max-w-screen-xl",
+            AwesomeInner {}
+        }
+    }
+}
+
+#[component]
+pub fn AwesomeInner() -> Element {
     let items = use_resource(move || async move {
         let req = match reqwest::get(ITEM_LIST_LINK).await {
             Ok(r) => r,
@@ -110,24 +119,26 @@ pub fn Awesome() -> Element {
                 .collect();
 
             rsx!(
-                section { class: "dark:bg-ideblack w-full pt-24 pb-10",
+                section { class: "dark:bg-ideblack w-full pt-4 md:pt-24 pb-10",
                     div { class: "container mx-auto max-w-screen-1g text-center",
-                        h1 { class: "text-[3.3em] font-bold tracking-tight dark:text-white text-ghdarkmetal mb-2 px-2",
+                        h1 { class: "text-[1.5em] md:text-[3.3em] font-bold tracking-tight dark:text-white text-ghdarkmetal mb-2 px-2",
                             "Awesome stuff for Dioxus"
                         }
-                        p { class: "mx-auto text-xl text-gray-600 dark:text-gray-400 pb-10 px-2 max-w-screen-sm",
-                            "Everything you'll need to build awesome Dioxus apps. Also check out "
-                            b {
-                                Link { to: "#made-with-dioxus", "Made with Dioxus" }
+                        p { class: "mx-auto text-md lg:text-xl text-gray-600 dark:text-gray-400 pb-10 px-2 max-w-screen-sm",
+                            div {
+                                "Everything you'll need to build awesome Dioxus apps. Also check out "
+                                b {
+                                    Link { to: "#made-with-dioxus", "Made with Dioxus" }
+                                }
+                                "!"
                             }
-                            "!"
-                        }
-                        p { class: "mx-auto text-xl text-gray-600 dark:text-gray-400 pb-10 px-2 max-w-screen-sm",
-                            "To submit your project, make a pull request in the "
-                            b {
-                                Link { to: "https://github.com/DioxusLabs/awesome-dioxus", "awesome-dioxus" }
+                            div { class: "pt-2",
+                                "To submit your project, make a pull request in the "
+                                b {
+                                    Link { to: "https://github.com/DioxusLabs/awesome-dioxus", "awesome-dioxus" }
+                                }
+                                " repo."
                             }
-                            " repo."
                         }
                     }
                     div { class: "container mx-auto",
@@ -156,10 +167,10 @@ pub fn Awesome() -> Element {
                     }
                 }
 
-                section { class: "dark:bg-ideblack w-full pb-10",
+                section { class: "dark:bg-ideblack w-full pb-2 md:pb-10",
                     div { class: "container mx-auto max-w-screen-1g text-center",
                         h1 {
-                            class: "text-[3.3em] font-bold tracking-tight dark:text-white text-ghdarkmetal mb-2 px-2",
+                            class: "text-[1.5em] md:text-[3.3em] font-bold tracking-tight dark:text-white text-ghdarkmetal mb-2 px-2",
                             id: "made-with-dioxus",
                             "Made with Dioxus"
                         }

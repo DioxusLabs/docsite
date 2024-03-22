@@ -17,7 +17,7 @@ pub fn Homepage() -> Element {
                 AvailablePlatforms {}
             }
             featured_examples::FeaturedExamples {}
-            crate::components::blog::BlogList {}
+            // crate::components::blog::BlogList {}
             Stats {}
         }
         call_to_action::CallToAction {}

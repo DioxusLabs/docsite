@@ -26,10 +26,11 @@ pub fn Learn() -> Element {
 
     rsx! {
         div {
-            class: "w-full pt-12 text-sm dark:bg-ideblack",
+            class: "w-full text-sm dark:bg-ideblack",
             min_height: "100vh",
-            // do a typical three-column flex layout with a single centered then pin the nav items on top
-            div { class: "flex flex-row justify-center mx-auto dark:text-white",
+
+            // Flex centered, every column grows to split into 3
+            div { class: "flex flex-row justify-center dark:text-[#dee2e6] font-light",
                 LeftNav {}
                 Content {}
                 RightNav {}
@@ -46,15 +47,15 @@ fn LeftNav() -> Element {
     ];
 
     rsx! {
-        // Now, pin the nav to the left
-        nav {
-            class: "bg-white dark:bg-ideblack lg:bg-inherit pl-6 pb-32 z-20 text-base lg:block top-28 lg:-ml-3.5 w-[calc(100%-1rem)] md:w-60 lg:text-[14px] text-navy content-start overflow-y-auto leading-5",
-            class: "docs-links",
-            class: if HIGHLIGHT_DOCS_LAYOUT() { "border border-green-600 rounded-md" },
-            class: if SHOW_SIDEBAR() { "min-w-full" } else { "hidden" },
-            class: "main-side-nav",
-            for chapter in chapters.into_iter().flatten().filter(|chapter| chapter.maybe_link().is_some()) {
-                SidebarSection { chapter: chapter }
+        // Create a flex grow container, and then right-align its contents so it's squahed against the center
+        div { class: "overflow-y-auto sticky docs-links pt-12 flex flex-row justify-end",
+            nav {
+                class: "bg-white dark:bg-ideblack lg:bg-inherit pl-6 pb-32 z-20 text-base lg:block top-28 lg:-ml-3.5 w-[calc(100%-1rem)] md:w-60 lg:text-[14px] text-navy content-startleading-5",
+                class: if HIGHLIGHT_DOCS_LAYOUT() { "border border-green-600 rounded-md" },
+                class: if SHOW_SIDEBAR() { "min-w-full" } else { "hidden" },
+                for chapter in chapters.into_iter().flatten().filter(|chapter| chapter.maybe_link().is_some()) {
+                    SidebarSection { chapter }
+                }
             }
         }
     }
@@ -65,19 +66,19 @@ fn DocVersionNav() -> Element {
     rsx! {
         div { class: "pb-4",
             ul { class: "pl-2",
-                li { class: "m-1 rounded-md pl-2 hover:bg-gray-200 hover:dark:bg-gray-800",
+                li { class: "m-1 rounded-md pl-2 hover:text-sky-500 dark:hover:text-sky-400",
                     p {
                         dioxus_material_icons::MaterialIcon { name: "chevron_left", color: MaterialIconColor::Custom("gray".to_string()) }
                         "0.5"
                     }
                 }
-                li { class: "m-1 rounded-md pl-2 hover:bg-gray-200 hover:dark:bg-gray-800",
+                li { class: "m-1 rounded-md pl-2 hover:text-sky-500 dark:hover:text-sky-400",
                     a { href: "/learn/0.4",
                         dioxus_material_icons::MaterialIcon { name: "chevron_left", color: MaterialIconColor::Custom("gray".to_string()) }
                         "0.4"
                     }
                 }
-                li { class: "m-1 rounded-md pl-2 hover:bg-gray-200 hover:dark:bg-gray-800",
+                li { class: "m-1 rounded-md pl-2 hover:text-sky-500 dark:hover:text-sky-400",
                     a { href: "/learn/0.3",
                         dioxus_material_icons::MaterialIcon { name: "chevron_left", color: MaterialIconColor::Custom("gray".to_string()) }
                         "0.3"
@@ -108,15 +109,15 @@ fn SidebarSection(chapter: &'static SummaryItem<BookRoute>) -> Element {
         .map(|chapter| rsx! { SidebarChapter { chapter: chapter } });
 
     rsx! {
-        div { class: "pb-4",
+        div { class: "full-chapter pb-4 mb-6",
             if let Some(url) = &link.location {
                 Link {
                     onclick: move |_| *SHOW_SIDEBAR.write() = false,
                     to: Route::Docs { child: *url },
-                    h2 { class: "font-semibold", "{link.name}" }
+                    h3 { class: "font-semibold mb-4", "{link.name}" }
                 }
             }
-            ul { class: "pl-2", {sections} }
+            ul { class: "ml-1", {sections} }
         }
     }
 }
@@ -137,29 +138,30 @@ fn SidebarChapter(chapter: &'static SummaryItem<BookRoute>) -> Element {
 
     if show_chevron {
         rsx! {
-            li { class: "m-1 rounded-md ml-[-1px] hover:bg-gray-200 hover:dark:bg-gray-800",
-                button { onclick: move |_| list_toggle.toggle(),
-                    dioxus_material_icons::MaterialIcon {
-                        name: "chevron_right",
-                        color: MaterialIconColor::Custom("gray".to_string())
-                    }
-                }
+            li { class: "my-1 mr-1 rounded-md ml-[-1px] hover:text-sky-500 dark:hover:text-sky-400",
                 Link {
                     onclick: move |_| *SHOW_SIDEBAR.write() = false,
                     to: Route::Docs { child: *url },
                     "{link.name}"
                 }
+                button {
+                    onclick: move |_| list_toggle.toggle(),
+                    dioxus_material_icons::MaterialIcon {
+                        name: "chevron_right",
+                        color: MaterialIconColor::Custom("gray".to_string())
+                    }
+                }
             }
             if show_dropdown {
-                ul { class: "ml-6 border-l border-gray-300 py-1",
+                ul { class: "border-l border-gray-300 m-2",
                     for chapter in link.nested_items.iter() {
-                        SidebarChapter { chapter: chapter }
+                        SidebarChapter { chapter }
                     }
                 }
             }
         }
     } else {
-        rsx! { LocationLink { chapter: chapter } }
+        rsx! { LocationLink { chapter } }
     }
 }
 
@@ -175,8 +177,8 @@ fn LocationLink(chapter: &'static SummaryItem<BookRoute>) -> Element {
             onclick: move |_| *SHOW_SIDEBAR.write() = false,
             to: Route::Docs { child: *url },
             li {
-                class: "m-1 rounded-md pl-2 hover:bg-gray-200 hover:dark:bg-gray-800",
-                class: if book_url.starts_with(&*url.to_string()) { "bg-gray-200 dark:bg-gray-800" },
+                class: "mr-1 rounded-md hover:text-sky-500 dark:hover:text-sky-400",
+                class: if book_url.starts_with(&*url.to_string()) { "text-sky-500 dark:text-sky-400" },
                 "{link.name}"
             }
         }
@@ -186,7 +188,7 @@ fn LocationLink(chapter: &'static SummaryItem<BookRoute>) -> Element {
 // Todo: wire this up to the sections of the current page and a scroll controller
 fn RightNav() -> Element {
     let page = use_book();
-    let padding_map = ["pl-2", "pl-4", "pl-6", "pl-8", "pl-10"];
+    let padding_map = ["", "", "pl-2", "pl-4", "pl-6", "pl-8"];
     let page_url = use_memo(move || page.to_string());
 
     let edit_github_url = use_resource(move || async move {
@@ -204,12 +206,12 @@ fn RightNav() -> Element {
     // That might be a naive approach, but it's the easiest
     rsx! {
         div {
-            class: "overflow-y-auto hidden xl:block top-28 ml-12 h-full md:text-[13px] leading-5 text-navy docs-right-sidebar w-48",
+            class: "overflow-y-auto hidden xl:block top-28 ml-12 h-full md:text-[14px] leading-5 text-navy dark:text-[#dee2e6] docs-right-sidebar w-48 sticky",
             class: if HIGHLIGHT_DOCS_LAYOUT() { "border border-green-600 rounded-md" },
-            left: "calc(100vw - 15rem)",
+            // left: "calc(100vw - 15rem)",
             h2 { class: "pb-4 font-semibold", "On this page" }
             ul {
-                for section in page.sections() {
+                for section in page.sections().iter().skip(1) {
                     li { class: "pb-2 {padding_map[section.level-1]}",
                         a { href: "?phantom={section.id}#{section.id}", "{section.title}" }
                     }
@@ -229,7 +231,7 @@ fn RightNav() -> Element {
 
 fn Content() -> Element {
     rsx! {
-        section { class: "text-gray-600 body-font overflow-hidden dark:bg-ideblack container pb-12 px-8 max-w-screen-md",
+        section { class: "text-gray-600 body-font overflow-hidden dark:bg-ideblack container pb-12 max-w-screen-sm mx-2 lg:mx-24 pt-12 grow",
             div {
                 class: "-py-8",
                 class: if HIGHLIGHT_DOCS_LAYOUT() { "border border-green-600 rounded-md" },
@@ -241,8 +243,23 @@ fn Content() -> Element {
                         ".markdown-body button {{ display: inline-block; background-color: rgba(209, 213, 219, 0.3); border-radius: 0.25rem; padding: 0.25rem 0.5rem; border: 1px solid; margin: 0.25rem; }}"
                         ".markdown-body .header {{ color: inherit }}"
                     }
-                    article { class: "markdown-body pt-1", Outlet::<Route> {} }
+                    article { class: "markdown-body", Outlet::<Route> {} }
+                    ContentFooter {}
                 }
+            }
+        }
+    }
+}
+
+fn ContentFooter() -> Element {
+    rsx! {
+       div {
+            class: "chapter-nav",
+            button {
+                "left"
+            }
+            button {
+                "right"
             }
         }
     }

@@ -1,4 +1,4 @@
-<h1 id="dioxus-0-5-signal-rewrite-remove-lifetimes-unsafe-css-hotreloading-5x-faster-desktop-asset-system-and-more-">Dioxus 0.5: Signal Rewrite, Remove lifetimes/unsafe, CSS Hotreloading, 5x Faster Desktop,  Asset System, and more!</h1>
+<h1 id="dioxus-0-5-signal-rewrite-remove-lifetimes-unsafe-css-hotreloading-5x-faster-desktop-asset-system-and-more-">Dioxus 0.5: Signal Rewrite, Remove lifetimes, CSS Hotreloading, and more!</h1>
 <h3 id="the-story">The story</h3>
 
 <p>Here at Dioxus Labs, we have an unofficial rule: only one rewrite per year.  </p>
@@ -218,6 +218,17 @@ fn Child() -&gt; Element {
     rsx! { <span class="hljs-string">"{memo}"</span> }
 }
 </code></pre>
+<h2 id="css-hot-reloading">CSS Hot Reloading</h2>
+
+<p>As part of our asset system overhaul, we implemented hotreloading of CSS files in the asset directory. If a CSS file appears in your RSX, the <code>dx</code> CLI will watch that file and immediately stream its updates to the running app. This works for web, desktop, and fullstack, with mobile support coming in a future mobile-centric update. </p>
+<p><video controls autoplay muted src="https://i.imgur.com/oXS8hYW.mp4" alt="CSS Hotreloading"></p>
+<!-- https://i.imgur.com/oXS8hYW.mp4 -->
+<!-- <p><a href="Dioxus%200%205%20Signal%20Rewrite,%20Remove%20lifetimes%20unsafe%209961963b731a4d9f8465e5bcdf8e9ab3/Screen_Recording_2024-03-20_at_6.30.47_AM.mov">Screen Recording 2024-03-20 at 6.30.47 AM.mov</a></p> -->
+<!-- <p><a href="Dioxus%200%205%20Signal%20Rewrite,%20Remove%20lifetimes%20unsafe%209961963b731a4d9f8465e5bcdf8e9ab3/Screen_Recording_2024-03-20_at_6.30.47_AM.mov">Screen Recording 2024-03-20 at 6.30.47 AM.mov</a></p> -->
+<p>What’s even niftier is that you can stream these changes to several devices at once, unlocking simultaneous hotreloading across all devices that you target:</p>
+<!-- https://i.imgur.com/cZ8qZCz.mp4 -->
+<p><video controls autoplay muted src="https://i.imgur.com/cZ8qZCz.mp4" alt="CSS Hotreloading"></p>
+<!-- <p><a href="Dioxus%200%205%20Signal%20Rewrite,%20Remove%20lifetimes%20unsafe%209961963b731a4d9f8465e5bcdf8e9ab3/Hotreload_triple_-_HD_1080p.mov">Hotreload triple - HD 1080p.mov</a></p> -->
 <h2 id="event-system-rewrite">Event System Rewrite</h2>
 
 <p>Since it’s release, dioxus has used a synthetic event system to create a cross platform event API. Synthetic events can be incredibly useful to make events work across platforms and even serialize them across the network, but they do have some drawbacks.</p>
@@ -287,17 +298,6 @@ dx serve <span class="hljs-comment">--platform fullstack</span>
 <p>The new mobile guide takes less than 1 second to load and requires only 1/3 of the resources with the exact same images!</p>
 <p>Dioxus 0.5 introduces a new asset system called <code>[manganis](https://github.com/DioxusLabs/collect-assets)</code>. Manganis integrates with the CLI to check, bundle and optimize assets in your application. The API is currently unstable so the asset system is currently published as a separate crate. In the new asset system, you can just wrap your assets in the <code>mg!</code> macro and they will automatically be picked up by the CLI. You can read more about the new asset system in the <a href="https://docs.rs/crate/manganis/latest">manganis docs</a>.</p>
 <p>As we continue to iterate on the 0.5 release, we plan to add hot reloading to manganis assets, so you can interactively add new the features to your app like CSS, images, tailwind classes, and more without forcing a complete reload.</p>
-<h2 id="css-hot-reloading">CSS Hot Reloading</h2>
-
-<p>As part of our asset system overhaul, we implemented hotreloading of CSS files in the asset directory. If a CSS file appears in your RSX, the <code>dx</code> CLI will watch that file and immediately stream its updates to the running app. This works for web, desktop, and fullstack, with mobile support coming in a future mobile-centric update. </p>
-<p><video controls autoplay muted src="https://i.imgur.com/oXS8hYW.mp4" alt="CSS Hotreloading"></p>
-<!-- https://i.imgur.com/oXS8hYW.mp4 -->
-<!-- <p><a href="Dioxus%200%205%20Signal%20Rewrite,%20Remove%20lifetimes%20unsafe%209961963b731a4d9f8465e5bcdf8e9ab3/Screen_Recording_2024-03-20_at_6.30.47_AM.mov">Screen Recording 2024-03-20 at 6.30.47 AM.mov</a></p> -->
-<!-- <p><a href="Dioxus%200%205%20Signal%20Rewrite,%20Remove%20lifetimes%20unsafe%209961963b731a4d9f8465e5bcdf8e9ab3/Screen_Recording_2024-03-20_at_6.30.47_AM.mov">Screen Recording 2024-03-20 at 6.30.47 AM.mov</a></p> -->
-<p>What’s even niftier is that you can stream these changes to several devices at once, unlocking simultaneous hotreloading across all devices that you target:</p>
-<!-- https://i.imgur.com/cZ8qZCz.mp4 -->
-<p><video controls autoplay muted src="https://i.imgur.com/cZ8qZCz.mp4" alt="CSS Hotreloading"></p>
-<!-- <p><a href="Dioxus%200%205%20Signal%20Rewrite,%20Remove%20lifetimes%20unsafe%209961963b731a4d9f8465e5bcdf8e9ab3/Hotreload_triple_-_HD_1080p.mov">Hotreload triple - HD 1080p.mov</a></p> -->
 <h2 id="5x-faster-desktop-rendering">5x Faster Desktop Rendering</h2>
 
 <p>Dioxus implements several optimizations to make diffing rendering fast. <a href="https://dioxuslabs.com/blog/templates-diffing">Templates</a> let dioxus skip diffing on any static parts of the rsx macro. However, diffing is only one side of the story. After you create a list of changes you need to make to the DOM, you need to apply them.</p>
@@ -400,8 +400,8 @@ dx serve --<span class="hljs-keyword">platform</span> fullstack
 <p><video controls autoplay muted src="https://i.imgur.com/vkkDDid.mp4" alt="Native file drop"></p>
 <!-- <p><a href="Dioxus%200%205%20Signal%20Rewrite,%20Remove%20lifetimes%20unsafe%209961963b731a4d9f8465e5bcdf8e9ab3/native_drop.mov">native_drop.mov</a></p> -->
 <!-- <p><a href="Dioxus%200%205%20Signal%20Rewrite,%20Remove%20lifetimes%20unsafe%209961963b731a4d9f8465e5bcdf8e9ab3/native_drop.mov">native_drop.mov</a></p> -->
-<p>Previously we just gave you the option to intercept filedrops but now it’s natively integrated into the event systme.</p>
-<h2 id="error-handling">Error handling</h2>a
+<p>Previously we just gave you the option to intercept filedrops but now it’s natively integrated into the event system</p>
+<h2 id="error-handling">Error handling</h2>
 
 <p>Error handling: You can use error boundaries and the throw trait to easily handle errors higher up in your app</p>
 <p>Dioxus provides a much easier way to handle errors: throwing them. Throwing errors combines the best parts of an error state and early return: you can easily throw an error with <code>?</code>, but you keep information about the error so that you can handle it in a parent component.</p>

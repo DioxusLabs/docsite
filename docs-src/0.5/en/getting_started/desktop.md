@@ -17,7 +17,6 @@ Dioxus desktop is built off [Tauri](https://tauri.app/). Right now there are lim
 
 [![File Explorer screenshot](https://raw.githubusercontent.com/DioxusLabs/example-projects/master/file-explorer/image.png)](https://github.com/DioxusLabs/example-projects/tree/master/file-explorer)
 
-# Getting started
 
 ## Platform-specific dependencies
 

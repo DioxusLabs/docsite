@@ -36,7 +36,7 @@ pub fn Hero() -> Element {
                         h1 { class: "text-md", "Trusted by top companies" }
                         div { class: "pt-4 flex flex-row flex-wrap justify-center",
                             div { class: "h-12 w-40 bg-black p-2 m-4 flex justify-center items-center",
-                                img { src: mg!(image("./public/static/futurewei_bw.png")).path() }
+                                img { src: "static/futurewei_bw.png" }
                             }
                             div { class: "h-12 w-40 bg-black p-2 m-4 flex justify-center items-center",
                                 img { src: "static/airbuslogo.svg" }

@@ -13,6 +13,20 @@ pub struct BlogPost {
     content: &'static str,
 }
 
+pub const POST_RELEASE_050: BlogPost = BlogPost {
+    category: "Release Notes",
+    date: "March 21, 2024",
+    title: "Announcing Dioxus 0.5",
+    description: "A signal rewrite, zero unsafe, no lifetimes, unified launch, and more! ",
+    link: "/blog/release-050/",
+    content: include_str!("../../../posts/release050.html"),
+};
+
+#[component]
+pub fn PostRelease050() -> Element {
+    rsx! { SinglePost { post: POST_RELEASE_050 } }
+}
+
 pub const POST_TEMPLATE: BlogPost = BlogPost {
     category: "Tech",
     date: "Dec 11, 2022",
@@ -100,6 +114,7 @@ pub fn PostRelease010() -> Element {
 }
 
 pub const POSTS: &[BlogPost] = &[
+    POST_RELEASE_050,
     POST_RELEASE_040,
     POST_FULLTINME,
     POST_RELEASE_030,

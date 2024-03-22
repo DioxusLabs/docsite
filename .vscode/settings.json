@@ -1,0 +1,6 @@
+{
+    "[html]": {
+        // so it doesn't break code blocks
+        "editor.formatOnSave": false
+    }
+}

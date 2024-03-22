@@ -1,0 +1,505 @@
+<h1 id="dioxus-0-5-signal-rewrite-remove-lifetimes-unsafe-css-hotreloading-5x-faster-desktop-asset-system-and-more-">Dioxus 0.5: Signal Rewrite, Remove lifetimes/unsafe, CSS Hotreloading, 5x Faster Desktop,  Asset System, and more!</h1>
+<h3 id="the-story">The story</h3>
+
+<p>Here at Dioxus Labs, we have an unofficial rule: only one rewrite per year.  </p>
+<p>Our last rewrite brought some amazing features: templates, hotreloading, and insane performance. However, don’t be mistaken, rewrites are scary, time consuming, and a huge gamble. We started this new rewrite on January 1st of 2024, completed it by Feburary 1st, and then spent another month and a half writing tests, squashing bugs, and polishing documentation. Rewrites are absolutely not for the faint of heart.</p>
+<p>If you’re new here, Dioxus (dye•ox•us) is a library for building GUIs in Rust. Originally, I built Dioxus as a rewrite of Yew with the intention of supporting proper server-side-rendering. Eventually, Dioxus got popular, we got some amazing sponsors, and I went full time. We’ve grown from a team of 1 (me) to a team of 4(!) - pulled entirely from the wonderful dioxus community.</p>
+<p>Now, Dioxus is something a little different. Real life, actual companies are shipping web apps, desktop apps, and mobile apps with Dioxus. What was once just a fun little side project powers a small fraction of apps out in the wild. We now have lofty goals of simplifying the entire app development ecosystem. Web, Desktop, Mobile, all end-to-end typesafe, blazing fast, living under one codebase. The dream!</p>
+<p>With 0.5 we took a hard look at how Dioxus would need to change to achieve those goals. The request we got from the community was clear: make it simpler, make it robust, make it polished. </p>
+<h3 id="what-s-new-">What’s new?</h3>
+
+<p>This is probably the biggest release of Dioxus ever, with so many new features, bug fixes, and improvements that I can’t list them all. We churned over 100,000 lines of code (yes, 100,000+) with over 1,400 commits between 0.4.3 and 0.5.0. Here’s a quick overview:</p>
+<ul>
+<li>Complete rewrite of <code>dioxus-core</code>, removing all unsafe code</li>
+<li>Abandoning <code>use_state</code> and <code>use_ref</code> for a clone-free <code>Signal</code>-based API</li>
+<li>Removal of all lifetimes and the <code>cx: Scope</code> state</li>
+<li>A single, unified <code>launch</code> function that starts your app for any platform</li>
+<li>Asset hotreloading that supports Tailwind and Vanilla CSS</li>
+<li>Rewrite of events, allowing access to the native <code>WebSys</code> event types</li>
+<li>Extension of components with element properties (IE a Link now takes all of <code>&lt;a/&gt;</code> properties)</li>
+<li>Integrated Error Boundaries and Server Futures with Suspense integration</li>
+<li>5x faster desktop reconciliation and custom asset handlers for streaming bytes</li>
+<li>Streaming server functions and fullstack hotreloading</li>
+<li>Tons of QoL improvements, bug fixes, and more!</li>
+</ul>
+<aside>
+💡 If you are updating from DIoxus 0.4, a <a href="https://dioxuslabs.com/learn/0.5/migration">migration guide</a> is available
+
+</aside>
+
+<h2 id="lifetime-problems">Lifetime Problems</h2>
+
+<p>To make Dioxus simpler, we wanted to remove lifetimes entirely. Newcomers to rust are easily scared off by lifetime issues, and even experienced Rustaceans find wading through obtuse error messages exhausting.</p>
+<p>In dioxus 0.1-0.4, every value in a component lives for a <code>&#39;bump</code> lifetime. This lifetime lets you easily use hooks, props and the scope within event listeners without cloning anything. It was the chief innovation that made Dioxus so much easier to use than Yew when it was released.</p>
+<pre><code class="lang-rust"><span class="hljs-comment">// Scope and Element have the lifetime 'bump</span>
+<span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">OldDioxusComponent</span></span>(cx: Scope) -&gt; Element {
+    <span class="hljs-comment">// hook has the lifetime 'bump</span>
+    <span class="hljs-keyword">let</span> <span class="hljs-keyword">mut</span> state = use_state(cx, || <span class="hljs-number">0</span>);
+    cx.render(rsx! {
+        button {
+            <span class="hljs-comment">// The closure has the lifetime 'bump which means you don't </span>
+            <span class="hljs-comment">// need to clone hook before you move it into the closure </span>
+            onclick: <span class="hljs-keyword">move</span> |_event| *state += <span class="hljs-number">1</span>,
+        }
+    })
+}
+</code></pre>
+<p>This works great for hooks <em>most</em> of the time. The lifetime lets you omit a bunch of manual clones every time you want to use a value inside an EventHandler (onclick, oninput, etc).</p>
+<p>However, the lifetime doesn’t work for futures. Futures in dioxus need to be <code>&#39;static</code> which means you always need to clone values before you use them in the future. Since a future might need to run while the component is rendering, it can’t share the component’s lifetime.</p>
+<pre><code class="lang-rust">// Scope and Element have the lifetime 'bump
+fn OldDioxusComponent(cx: Scope) -&gt; Element {
+    // <span class="hljs-keyword">state</span> has the lifetime 'bump
+    let <span class="hljs-keyword">state</span> = use_state(cx, || <span class="hljs-number">0</span>);
+
+    cx.spawn({
+        // Because <span class="hljs-keyword">state</span> has the lifetime 'bump, we need <span class="hljs-keyword">to</span> clone it <span class="hljs-keyword">to</span> make it
+        // 'static before we move it into the 'static future
+        let <span class="hljs-keyword">state</span> = <span class="hljs-keyword">state</span>.clone();
+        async move {
+            println!(<span class="hljs-string">"{state}"</span>);
+        }
+    });
+
+    // ...
+}
+</code></pre>
+<p>If you don’t clone the value, you will run into an error like this:</p>
+<pre><code class="lang-rust">4  |<span class="hljs-string">   fn OldDioxusComponent(cx: Scope) -&gt; Element {
+   </span>|<span class="hljs-string">                         --
+   </span>|<span class="hljs-string">                         </span>|
+   |<span class="hljs-string">                         `cx` is a reference that is only valid in the function body
+   </span>|<span class="hljs-string">                         has type `&amp;'1 Scoped&lt;'1&gt;`
+...
+8  </span>|<span class="hljs-string"> /     cx.spawn(async move {
+9  </span>|<span class="hljs-string"> </span>|<span class="hljs-string">         println!("{state}");
+10 </span>|<span class="hljs-string"> </span>|<span class="hljs-string">     });
+   </span>|<span class="hljs-string"> </span>|<span class="hljs-string">      ^
+   </span>|<span class="hljs-string"> </span>|<span class="hljs-string">      </span>|
+   |<span class="hljs-string"> </span>|<span class="hljs-string">______`cx` escapes the function body here
+   </span>|<span class="hljs-string">        argument requires that `'1` must outlive `'static`</span>
+</code></pre>
+<p>The error complains that <code>cx</code> must outlive <code>&#39;static</code> without mentioning the hook at all which can be very confusing.</p>
+<p>Dioxus 0.5 fixes this issue by first removing scopes and the <code>&#39;bump</code> lifetime and then introducing a new <code>Copy</code> state management solution called signals. Here is what the component looks like in dioxus 0.5:</p>
+<pre><code class="lang-rust"><span class="hljs-comment">// Element has no lifetime, and you don't need a Scope</span>
+<span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">NewComponent</span></span>() -&gt; Element {
+    <span class="hljs-comment">// state is 'static and Copy, even if the inner value you store is not Copy</span>
+    <span class="hljs-keyword">let</span> <span class="hljs-keyword">mut</span> state = use_signal(|| <span class="hljs-number">0</span>);
+
+    <span class="hljs-comment">// State is already 'static and Copy, so it is copied into the future automatically</span>
+    spawn(async <span class="hljs-keyword">move</span> {
+        <span class="hljs-built_in">println!</span>(<span class="hljs-string">"{state}"</span>);
+    });
+
+    rsx! {
+        button {
+            <span class="hljs-comment">// The closure has the lifetime 'static, but state is copy so you don't need to clone into the closure</span>
+            onclick: <span class="hljs-keyword">move</span> |_event| state += <span class="hljs-number">1</span>,
+        }
+    }
+}
+</code></pre>
+<p>While this might seem like a rather innocuous change, it has an impressively huge impact on how easy it is to write new components. I’d say building a new Dioxus app is about 2-5x easier with this change alone.</p>
+<h2 id="goodbye-scopes-and-lifetimes-">Goodbye scopes and lifetimes!</h2>
+
+<p>In the new version of dioxus, scopes and the <code>&#39;bump</code> lifetime have been removed! This makes declaring a component and using runtime functions within that component much easier:</p>
+<p>You can now declare a component by just accepting your props directly instead of a scope parameter</p>
+<pre><code class="lang-rust"><span class="hljs-meta">#[component]</span>
+<span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">MyComponent</span></span>(name: <span class="hljs-built_in">String</span>) -&gt; Element {
+    rsx! { <span class="hljs-string">"Hello {name}!"</span> }
+}
+</code></pre>
+<p>And inside that component, you can use runtime functions directly</p>
+<pre><code class="lang-rust">spawn(<span class="hljs-name">async</span> move {
+    tokio:<span class="hljs-symbol">:time</span>:<span class="hljs-symbol">:sleep</span>(<span class="hljs-name">Duration</span>:<span class="hljs-symbol">:from_millis</span>(<span class="hljs-number">100</span>)).await<span class="hljs-comment">;</span>
+    // You can even use runtime functions inside futures and event handlers!
+    let context: i32 = consume_context()<span class="hljs-comment">;</span>
+})<span class="hljs-comment">;</span>
+</code></pre>
+<p>Now that lifetimes are gone, <code>Element</code>s are <code>&#39;static</code> which means you can use them in hooks or even provide them through the context API. This makes some APIs like <a href="https://github.com/matthunz/dioxus-lazy">virtual lists in dioxus</a> significantly easier. We expect more interesting APIs to emerge from the community now that you don’t need to be a Rust wizard to implement things like virtualization and offscreen rendering.</p>
+<h2 id="removal-of-all-unsafe-in-core">Removal of all Unsafe in Core</h2>
+
+<p>Removing the <code>&#39;bump</code> lifetime along with the scope gave us a chance to remove a lot of unsafe from dioxus. <strong>dioxus-core 0.5 contains no unsafe code 🎉</strong></p>
+<p><img src="https://i.imgur.com/B0kf5Df.png" alt="No more unsafe in core"></p>
+<p>There’s still a tiny bit of unsafe floating around various dependencies that we plan to remove throughout the 0.5 release cycle, but way less: all quite simple to cut or unfortunately necessary due to FFI.</p>
+<h2 id="signals-">Signals!</h2>
+
+<p>Dioxus 0.5 introduces Signals as the core state primitive for components. Signals have two key advantages over the existing <code>use_state</code> and <code>use_ref</code> hooks: They are always <code>Copy</code> and they don’t require manual subscriptions.</p>
+<h3 id="copy-state">Copy state</h3>
+<p><code>Signal&lt;T&gt;</code> is <code>Copy</code>, even if the inner <code>T</code> values is not. This is enabled by our new <code>[generational-box](https://crates.io/crates/generational-box)</code> crate (implemented with zero unsafe). Signals can even optionally be <code>Send+Sync</code> if you need to move them between threads, removing the need for a whole class of specialized state management solutions.</p>
+<p>The combination of <code>Copy + Send + Sync</code> Signals, and static components makes it incredibly easy to move state to anywhere you need it:</p>
+<pre><code class="lang-rust"><span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">Parent</span></span>() -&gt; Element {
+    <span class="hljs-comment">// We use a sync signal here so that we can use it in other threads, </span>
+    <span class="hljs-comment">// but you could use a normal signal if you have !Send data</span>
+    <span class="hljs-keyword">let</span> <span class="hljs-keyword">mut</span> state = use_signal_sync(|| <span class="hljs-number">0</span>);
+
+    spawn(async <span class="hljs-keyword">move</span> {
+        <span class="hljs-comment">// Signals have a ton of helper methods that make them easy to work with. </span>
+        <span class="hljs-comment">// You can call a signal like a function to get the current value</span>
+        <span class="hljs-keyword">let</span> value: <span class="hljs-keyword">i32</span>: state();
+    });
+
+    <span class="hljs-comment">// Because signals can be sync, we can copy them into threads easily</span>
+    std::thread::spawn(<span class="hljs-keyword">move</span> || {
+        <span class="hljs-keyword">loop</span> {
+            std::thread::sleep(Duration::from_millis(<span class="hljs-number">100</span>));
+            <span class="hljs-built_in">println!</span>(<span class="hljs-string">"{state}"</span>);
+        }
+    });
+
+    rsx! {
+        <span class="hljs-comment">// You can easily move it into an event handler just like use_state</span>
+        onclick: <span class="hljs-keyword">move</span> |_| state += <span class="hljs-number">1</span>;
+    }
+}
+</code></pre>
+<p>With <code>Copy</code>  state, we’ve essentially bolted on a light form of garbage collection into Rust that uses component lifecycles as the triggers for dropping state. From a memory perspective, this is basically the same as 0.4, but with the added benefit of not needing to explicitly <code>Clone</code> anything.</p>
+<h3 id="smarter-subscriptions">Smarter subscriptions</h3>
+<p>Signals are smarter about what components rerun when they are changed. A component will only rerun if you read the value of the signal in the component (not in an async task or event handler). In this example, only the child will re-render when the button is clicked because only the child component is reading the signal:</p>
+<pre><code class="lang-rust">fn Parent() -&gt; Element {
+  let mut <span class="hljs-keyword">state</span> = use_signal(|| <span class="hljs-number">0</span>);
+
+  rsx! {
+    button { onclick: move |_| <span class="hljs-keyword">state</span> += <span class="hljs-number">1</span>, <span class="hljs-string">"increment"</span> }
+    Child { <span class="hljs-keyword">state</span> }
+  }
+}
+
+<span class="hljs-comment">#[component]</span>
+fn Child(<span class="hljs-keyword">state</span>: Signal<span class="hljs-variable">&lt;i32&gt;</span>) -&gt; Element {
+  rsx! { <span class="hljs-string">"{state}"</span> }
+}
+</code></pre>
+<p>Smarter subscriptions let us merge several different hooks into signals. For example, we were able to remove an entire crate dedicated to state management: Fermi. Fermi provided what was essentially a <code>use_state</code> API where statics were used as keys. This meant you could declare some global state, and then read it in your components:</p>
+<pre><code class="lang-rust"><span class="hljs-keyword">static</span> COUNT: Atom&lt;<span class="hljs-keyword">i32</span>&gt; = Atom::new(|| <span class="hljs-number">0</span>);
+
+<span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">Demo</span></span>(cx: Scope) -&gt; Element {
+    <span class="hljs-keyword">let</span> <span class="hljs-keyword">mut</span> count = use_read_atom(cx, &amp;COUNT);
+    rsx! { <span class="hljs-string">"{count}"</span> }
+}
+</code></pre>
+<p>Since fermi didn’t support smart subscriptions, you had to explicitly declare use the right <code>use_read</code>/ <code>use_write</code> hooks to subscribe to the value. In Dioxus 0.5, we just use signals, eliminating the need for any sort of external state management solution altogether.</p>
+<pre><code class="lang-rust"><span class="hljs-comment">// You can use a lazily initialized signal called </span>
+<span class="hljs-comment">// GlobalSignal in static instead of special Fermi atoms</span>
+<span class="hljs-keyword">static</span> COUNT: GlobalSignal&lt;<span class="hljs-keyword">i32</span>&gt; = Signal::global(|| <span class="hljs-number">0</span>);
+
+<span class="hljs-comment">// Using the GlobalSignal is just the same as any other signal!</span>
+<span class="hljs-comment">// No need for use_read or use_write</span>
+<span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">Demo</span></span>() -&gt; Element {
+   rsx! { <span class="hljs-string">"{COUNT}"</span> }
+}
+</code></pre>
+<p>Signals even work with the context API, so you can quickly share state between components in your app:</p>
+<pre><code class="lang-rust">fn Parent() -&gt; Element {
+  // Create a new signal and provide it <span class="hljs-keyword">to</span> the context API
+  // without a special use_shared_state hook
+  let mut <span class="hljs-keyword">state</span> = use_context_provider(|| Signal::new(<span class="hljs-number">0</span>));
+
+  rsx! {
+    button { onclick: move |_| <span class="hljs-keyword">state</span> += <span class="hljs-number">1</span>, <span class="hljs-string">"Increment"</span> }
+    Child {}
+  }
+}
+
+fn Child() -&gt; Element {
+  // Get the <span class="hljs-keyword">state</span> <span class="hljs-keyword">from</span> the context API
+  let <span class="hljs-keyword">state</span> = use_context::<span class="hljs-variable">&lt;Signal&lt;i32&gt;</span>&gt;();
+  rsx! { <span class="hljs-string">"{state}"</span> }
+}
+</code></pre>
+<p>Smart subscriptions also apply to hooks. Hooks like <code>use_future</code> and <code>use_memo</code> will now automatically add signals you read inside the hook to the dependencies of the hook:</p>
+<pre><code class="lang-rust"><span class="hljs-comment">// You can use a lazily initialized signal called GlobalSignal in static instead of special Fermi atoms</span>
+<span class="hljs-keyword">static</span> COUNT: GlobalSignal&lt;<span class="hljs-keyword">i32</span>&gt; = Signal::global(|| <span class="hljs-number">0</span>);
+
+<span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">App</span></span>() -&gt; Element {
+    <span class="hljs-comment">// Because we read COUNT inside the memo, it is automatically added to the memo's dependencies</span>
+    <span class="hljs-comment">// If we change COUNT, then the memo knows it needs to rerun</span>
+    <span class="hljs-keyword">let</span> memo = use_memo(<span class="hljs-keyword">move</span> || COUNT() / <span class="hljs-number">2</span>);
+
+    rsx! { <span class="hljs-string">"{memo}"</span> }
+}
+</code></pre>
+<h2 id="event-system-rewrite">Event System Rewrite</h2>
+
+<p>Since it’s release, dioxus has used a synthetic event system to create a cross platform event API. Synthetic events can be incredibly useful to make events work across platforms and even serialize them across the network, but they do have some drawbacks.</p>
+<p>Dioxus 0.5 finally exposes the underlying event type for each platform along with a trait with a cross platform API. This has two advantages:</p>
+<ol>
+<li>You can get whatever information you need from the platform event type or pass that type to another library:</li>
+</ol>
+<pre><code class="lang-rust"><span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">Button</span></span>() -&gt; Element {
+    rsx! {
+        button {
+            onclick: <span class="hljs-keyword">move</span> |event| {
+                <span class="hljs-keyword">let</span> web_sys_event: web_sys::MouseEvent = event.web_event();
+                web_sys::console::log_1(&amp;web_sys_event.related_target.into());
+            }
+        }
+    }
+}
+</code></pre>
+<ol>
+<li>Dioxus can bundle split code for events apps don’t use. For a hello world example, this shrinks the gzipped size ~25%!</li>
+</ol>
+<p><img src="https://i.imgur.com/6hZruyO.png" alt="Smaller bundles"></p>
+<p>Again, this seems like a small change on the surface, but opens up dozens of new use cases and possible libraries you can build with dioxus.</p>
+<aside>
+💡 The <a href="https://dioxuslabs.com/learn/0.5/cookbook/optimizing#build-configuration">Dioxus optimization guide</a> has tips to help you make the smallest possible bundle
+
+</aside>
+
+<h2 id="cross-platform-launch">Cross platform launch</h2>
+
+<p>Dioxus 0.5 introduces a new cross platform API to launch your app. This makes it easy to target multiple platforms with the same application. Instead of pulling in a separate renderer package, you can now enable a feature on the dioxus crate and call the launch function from the prelude:</p>
+<pre><code class="lang-toml"><span class="hljs-section">[dependencies]</span>
+<span class="hljs-attr">dioxus</span> = <span class="hljs-string">"0.5"</span>
+<span class="hljs-section">
+[features]</span>
+<span class="hljs-attr">default</span> = []
+<span class="hljs-attr">desktop</span> = [<span class="hljs-string">"dioxus/desktop"</span>]
+<span class="hljs-attr">fullstack</span> = [<span class="hljs-string">"dioxus/fullstack"</span>]
+<span class="hljs-attr">server</span> = [<span class="hljs-string">"dioxus/axum"</span>]
+<span class="hljs-attr">web</span> = [<span class="hljs-string">"dioxus/web"</span>]
+</code></pre>
+<pre><code class="lang-rust"><span class="hljs-selector-tag">use</span> <span class="hljs-selector-tag">dioxus</span><span class="hljs-selector-pseudo">::prelude</span>::*;
+
+<span class="hljs-selector-tag">fn</span> <span class="hljs-selector-tag">main</span>() {
+    <span class="hljs-attribute">dioxus</span>::<span class="hljs-built_in">launch</span>(|| rsx!{ <span class="hljs-string">"hello world"</span> })
+}
+</code></pre>
+<p>With that single application, you can easily target:</p>
+<pre><code class="lang-bash"><span class="hljs-comment"># Desktop</span>
+dx serve <span class="hljs-comment">--platform desktop</span>
+
+<span class="hljs-comment"># SPA web</span>
+dx serve <span class="hljs-comment">--platform web</span>
+
+<span class="hljs-comment"># Or a fullstack application</span>
+dx serve <span class="hljs-comment">--platform fullstack</span>
+</code></pre>
+<p>The CLI is now smart enough to automatically pass in the appropriate build features depending on the platform you’re targeting.</p>
+<h2 id="asset-system-beta">Asset System Beta</h2>
+
+<p>Currently assets in dioxus (and web applications in general) can be difficult to get right. Links to your asset can easily get out of date, the link to your asset can be different between desktop and web applications, and you need to manually add assets you want to use into your bundled application. In addition to all of that, assets can be a huge performance bottleneck.</p>
+<p>Lets take a look at the dioxus mobile guide in the docsite as an example:</p>
+<p><img src="https://i.imgur.com/GabzFJm.png" alt="docsite_mobile_old.png"></p>
+<p>The 0.4 mobile guide takes 7 seconds to load and transfers 9 MB of resources. The page has 6 different large image files which slows down the page loading times significantly. We could switch to a more optimized image format like <code>avif</code> , but manually converting every screenshot is tedious and time consuming.</p>
+<p>Lets take a look at the 0.5 mobile guide with the new asset system:</p>
+<p><img src="https://i.imgur.com/f7sGEdJ.png" alt="docsite_mobile_new.png"></p>
+<p>The new mobile guide takes less than 1 second to load and requires only 1/3 of the resources with the exact same images!</p>
+<p>Dioxus 0.5 introduces a new asset system called <code>[manganis](https://github.com/DioxusLabs/collect-assets)</code>. Manganis integrates with the CLI to check, bundle and optimize assets in your application. The API is currently unstable so the asset system is currently published as a separate crate. In the new asset system, you can just wrap your assets in the <code>mg!</code> macro and they will automatically be picked up by the CLI. You can read more about the new asset system in the <a href="https://docs.rs/crate/manganis/latest">manganis docs</a>.</p>
+<p>As we continue to iterate on the 0.5 release, we plan to add hot reloading to manganis assets, so you can interactively add new the features to your app like CSS, images, tailwind classes, and more without forcing a complete reload.</p>
+<h2 id="css-hot-reloading">CSS Hot Reloading</h2>
+
+<p>As part of our asset system overhaul, we implemented hotreloading of CSS files in the asset directory. If a CSS file appears in your RSX, the <code>dx</code> CLI will watch that file and immediately stream its updates to the running app. This works for web, desktop, and fullstack, with mobile support coming in a future mobile-centric update. </p>
+<p><video controls autoplay muted src="https://i.imgur.com/oXS8hYW.mp4" alt="CSS Hotreloading"></p>
+<!-- https://i.imgur.com/oXS8hYW.mp4 -->
+<!-- <p><a href="Dioxus%200%205%20Signal%20Rewrite,%20Remove%20lifetimes%20unsafe%209961963b731a4d9f8465e5bcdf8e9ab3/Screen_Recording_2024-03-20_at_6.30.47_AM.mov">Screen Recording 2024-03-20 at 6.30.47 AM.mov</a></p> -->
+<!-- <p><a href="Dioxus%200%205%20Signal%20Rewrite,%20Remove%20lifetimes%20unsafe%209961963b731a4d9f8465e5bcdf8e9ab3/Screen_Recording_2024-03-20_at_6.30.47_AM.mov">Screen Recording 2024-03-20 at 6.30.47 AM.mov</a></p> -->
+<p>What’s even niftier is that you can stream these changes to several devices at once, unlocking simultaneous hotreloading across all devices that you target:</p>
+<!-- https://i.imgur.com/cZ8qZCz.mp4 -->
+<p><video controls autoplay muted src="https://i.imgur.com/cZ8qZCz.mp4" alt="CSS Hotreloading"></p>
+<!-- <p><a href="Dioxus%200%205%20Signal%20Rewrite,%20Remove%20lifetimes%20unsafe%209961963b731a4d9f8465e5bcdf8e9ab3/Hotreload_triple_-_HD_1080p.mov">Hotreload triple - HD 1080p.mov</a></p> -->
+<h2 id="5x-faster-desktop-rendering">5x Faster Desktop Rendering</h2>
+
+<p>Dioxus implements several optimizations to make diffing rendering fast. <a href="https://dioxuslabs.com/blog/templates-diffing">Templates</a> let dioxus skip diffing on any static parts of the rsx macro. However, diffing is only one side of the story. After you create a list of changes you need to make to the DOM, you need to apply them.</p>
+<p>We developed <a href="https://github.com/ealmloff/sledgehammer_bindgen">sledgehammer</a> for dioxus web to make applying those mutations as fast as possible. It makes manipulating the DOM from Rust almost as <a href="https://krausest.github.io/js-framework-benchmark/2023/table_chrome_114.0.5735.90.html">fast as native JavaScript</a>.</p>
+<p>In dioxus 0.5, we apply that same technique to apply changes across the network as fast as possible. Instead of using json to communicate changes to the desktop and liveview renderers, dioxus 0.5 uses a binary protocol.</p>
+<p>For render intensive workloads, the new renderer takes only 1/5 the time to apply the changes in the browser with 1/2 the latency. Here is one of the benchmarks we developed while working on the new binary protocol. In dioxus 0.4, the renderer was constantly freezing. In dioxus 0.5, it runs smoothly:</p>
+<p><strong>Dioxus 0.4</strong></p>
+
+<p><video controls autoplay muted src="https://i.imgur.com/CX7DREF.mp4" alt="Desktop performance 0.4"></p>
+<p><strong>Dioxus 0.5</strong></p>
+<p><video controls autoplay muted src="https://i.imgur.com/3l65D0G.mp4" alt="Desktop performance 0.5"></p>
+<h2 id="spreading-props">Spreading props</h2>
+
+<p>One common pattern when creating components is providing some additional functionality to a specific element. When you wrap an element, it is often useful to provide some control over what attributes are set in the final element. Instead of manually copying over each attribute from the element, dioxus 0.5 supports extending specific elements and spreading the attributes into an element:</p>
+<pre><code class="lang-rust"><span class="hljs-meta">#[derive(Props, PartialEq, Clone)]</span>
+struct <span class="hljs-class">Props </span>{
+    <span class="hljs-comment">// You can extend a specific element or global attributes</span>
+    <span class="hljs-meta">#[props(extends = img)]</span>
+    <span class="hljs-symbol">attributes:</span> Vec<span class="hljs-params">&lt;Attribute&gt;</span>,
+}
+
+fn ImgPlus(props: Props) -&gt; <span class="hljs-class">Element </span>{
+    rsx! {
+        <span class="hljs-comment">// You can spread those attributes into any element</span>
+        <span class="hljs-class">img </span>{ ..props.attributes }
+    }
+}
+
+rsx! {
+  <span class="hljs-class">ImgPlus </span>{
+    <span class="hljs-comment">// You can use any attributes you would normally use on the img element</span>
+    <span class="hljs-symbol">width:</span> <span class="hljs-string">"10px"</span>,
+    <span class="hljs-symbol">height:</span> <span class="hljs-string">"10px"</span>,
+    <span class="hljs-symbol">src:</span> <span class="hljs-string">"https://example.com/image.png"</span>,
+  }
+}
+</code></pre>
+<h2 id="shorthand-attributes">Shorthand attributes</h2>
+
+<p>Another huge quality-of-life feature we added was the ability to use shorthand struct initialization syntax to pass attributes into elements and components. We got tired of passing <code>class: class</code> everywhere and decided to finally implement this long awaited feature, at the expense of some code breakage. Now, it’s super simple to declare attributes from props:</p>
+<pre><code class="lang-rust">#[component]
+fn ImgPlus(<span class="hljs-class"><span class="hljs-keyword">class</span>: <span class="hljs-type">String</span>, <span class="hljs-type">id: String</span>, <span class="hljs-type">src: String) -&gt; Element {</span></span>
+    rsx! {
+        img { <span class="hljs-class"><span class="hljs-keyword">class</span>, <span class="hljs-type">id</span>, <span class="hljs-type">string }</span></span>
+    }
+}
+</code></pre>
+<p>This feature works for anything implementing <code>IntoAttribute</code>, meaning signals also benefit from shorthand initialization. While signals as attributes don’t yet skip diffing, we plan to add this as a performance optimization throughout the 0.5 release cycle.</p>
+<h2 id="multi-line-attribute-merging">Multi-line attribute merging</h2>
+
+<p>Another amazing feature added this cycle was attribute merging. When working with libraries like tailwind, you’ll occasionally want to make certain attributes conditional. Before, you had to format the attribute using an empty string. Now, you can simply add an extra attribute with a conditional, and the attribute will be merged using a space as a delimiter:</p>
+<pre><code class="lang-rust"><span class="hljs-meta">#[component]</span>
+fn Blog(enabled: bool) -&gt; <span class="hljs-class">Element </span>{
+    rsx! {
+        <span class="hljs-class">div </span>{
+            <span class="hljs-symbol">class:</span> <span class="hljs-string">"bg-gray-200 border rounded shadow"</span>,
+            <span class="hljs-symbol">class:</span> if <span class="hljs-class">enabled </span>{ <span class="hljs-string">"text-white"</span> }
+        }
+    }
+}
+</code></pre>
+<p>This is particularly important when using libraries like tailwind where attributes need to be parsed at compile time but also dynamic at runtime. This syntax integrates with the tailwind compiler, removing the runtime overhead for libraries like tailwind-merge.</p>
+<h2 id="server-function-streaming">Server function streaming</h2>
+
+<p>Dioxus 0.5 supports the latest version of <a href="https://crates.io/crates/server_fn">the server functions crate</a> which supports streaming data. Server functions can now choose to stream data to or from the client. This makes it easier to do a whole class of tasks on the server.</p>
+<p>Creating a streaming server function is as easy as defining the output type and returning a TextStream from the server function. Streaming server functions are great for updating the client during any long running task. </p>
+<p>We built an AI text generation example here: <a href="https://github.com/ealmloff/dioxus-streaming-llm">https://github.com/ealmloff/dioxus-streaming-llm</a> that uses Kalosm and local LLMS to serve what is essentially a clone of OpenAI’s ChatGPT endpoint on commodity hardware.</p>
+<pre><code class="lang-rust"><span class="hljs-meta">#[server(output = StreamingText)]</span>
+<span class="hljs-keyword">pub</span> async <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">mistral</span></span>(text: <span class="hljs-built_in">String</span>) -&gt; <span class="hljs-built_in">Result</span>&lt;TextStream, ServerFnError&gt; {
+   <span class="hljs-keyword">let</span> text_generation_stream = todo!();
+   <span class="hljs-literal">Ok</span>(TextStream::new(text_generation_stream))
+}
+</code></pre>
+
+<p><video controls autoplay muted src="https://i.imgur.com/JJaMT0Z.mp4" alt="Streaming server function AI app"></p>
+<p>Side note, the AI metaframework used here - Kalosm - is maintained by the Dioxus core team member ealmloff, and his AI GUI app Floneum is built with Dioxus!</p>
+<h2 id="fullstack-cli-platform">Fullstack CLI platform</h2>
+
+<p>The CLI now supports a <code>fullstack</code> platform with hot reloading and parallel builds for the client and sever. You can now serve your fullstack app with the <code>dx</code> command:</p>
+<pre><code class="lang-bash">dx serve
+
+# <span class="hljs-keyword">Or</span> <span class="hljs-keyword">with</span> an explicit <span class="hljs-keyword">platform</span>
+dx serve --<span class="hljs-keyword">platform</span> fullstack
+</code></pre>
+<h2 id="liveview-router-support">Liveview router support</h2>
+
+<p><a href="https://github.com/DioxusLabs/dioxus/pull/1505">https://github.com/DioxusLabs/dioxus/pull/1505</a></p>
+<p>@<a href="https://github.com/DonAlonzo">DonAlonzo</a> added liveview support for the router in dioxus 0.5. The router will now work out of the box with your liveview apps!</p>
+<h2 id="custom-asset-handlers">Custom Asset Handlers</h2>
+
+<p><a href="https://github.com/DioxusLabs/dioxus/pull/1719">https://github.com/DioxusLabs/dioxus/pull/1719</a></p>
+<p>@willcrichton added support for custom asset handlers to dioxus desktop. Custom asset handlers let you efficiently stream data from your rust code into the browser without going through javascript. This is great for high bandwidth communication like <a href="https://github.com/DioxusLabs/dioxus/pull/1727">video streaming</a>:</p>
+<p><video controls autoplay muted src="https://i.imgur.com/6bdUBdF.mp4" alt="Custom asset handlers"></p>
+<!-- <p><a href="Dioxus%200%205%20Signal%20Rewrite,%20Remove%20lifetimes%20unsafe%209961963b731a4d9f8465e5bcdf8e9ab3/Screen_Recording_2024-02-22_at_10.40.42_AM.mov">Screen Recording 2024-02-22 at 10.40.42 AM.mov</a></p> -->
+<p>Now, you can do things like work with gstreamer or webrtc and pipe data directly into the webview without needing to encode/decode frames by hand.</p>
+<h2 id="native-file-handling">Native File Handling</h2>
+
+<p>This is a bit smaller of a tweak, but now we properly support file drops for desktop:</p>
+<!-- https://i.imgur.com/vkkDDid.mp4 -->
+<p><video controls autoplay muted src="https://i.imgur.com/vkkDDid.mp4" alt="Native file drop"></p>
+<!-- <p><a href="Dioxus%200%205%20Signal%20Rewrite,%20Remove%20lifetimes%20unsafe%209961963b731a4d9f8465e5bcdf8e9ab3/native_drop.mov">native_drop.mov</a></p> -->
+<!-- <p><a href="Dioxus%200%205%20Signal%20Rewrite,%20Remove%20lifetimes%20unsafe%209961963b731a4d9f8465e5bcdf8e9ab3/native_drop.mov">native_drop.mov</a></p> -->
+<p>Previously we just gave you the option to intercept filedrops but now it’s natively integrated into the event systme.</p>
+<h2 id="error-handling">Error handling</h2>a
+
+<p>Error handling: You can use error boundaries and the throw trait to easily handle errors higher up in your app</p>
+<p>Dioxus provides a much easier way to handle errors: throwing them. Throwing errors combines the best parts of an error state and early return: you can easily throw an error with <code>?</code>, but you keep information about the error so that you can handle it in a parent component.</p>
+<p>You can call <code>throw</code> on any <code>Result</code> type that implements <code>Debug</code> to turn it into an error state and then use <code>?</code> to return early if you do hit an error. You can capture the error state with an <code>ErrorBoundary</code> component that will render the a different component if an error is thrown in any of its children.</p>
+<pre><code class="lang-rust">fn Parent<span class="hljs-function"><span class="hljs-params">()</span> -&gt;</span> Element {
+  rsx! {
+    ErrorBoundary {
+        handle_error: |error| rsx! {
+            <span class="hljs-string">"Oops, we encountered an error. Please report {error} to the developer of this application"</span>
+        },
+        ThrowsError {}
+    }
+  }
+}
+
+fn ThrowsError<span class="hljs-function"><span class="hljs-params">()</span> -&gt;</span> Element {
+    <span class="hljs-keyword">let</span> name: i32 = use_hook(|| <span class="hljs-string">"1.234"</span>).parse().<span class="hljs-keyword">throw</span>()?;
+
+    todo!()
+}
+</code></pre>
+<p>You can even nest <code>ErrorBoundary</code> components to capture errors at different levels of your app.</p>
+<pre><code class="lang-rust">fn App<span class="hljs-function"><span class="hljs-params">()</span> -&gt;</span> Element {
+  rsx! {
+    ErrorBoundary {
+        handle_error: |error| rsx! {
+            <span class="hljs-string">"Hmm, something went wrong. Please report {error} to the developer"</span>
+        },
+        Parent {}
+    }
+  }
+}
+
+fn Parent<span class="hljs-function"><span class="hljs-params">()</span> -&gt;</span> Element {
+  rsx! {
+    ErrorBoundary {
+        handle_error: |error| rsx! {
+            <span class="hljs-string">"The child component encountered an error: {error}"</span>
+        },
+      ThrowsError {}
+    }
+  }
+}
+
+fn ThrowsError<span class="hljs-function"><span class="hljs-params">()</span> -&gt;</span> Element {
+  <span class="hljs-keyword">let</span> name: i32 = use_hook(|| <span class="hljs-string">"1.234"</span>).parse().<span class="hljs-keyword">throw</span>()?;
+
+  todo!()
+}
+</code></pre>
+<p>This pattern is particularly helpful whenever your code generates a non-recoverable error. You can gracefully capture these &quot;global&quot; error states without panicking or handling state for each error yourself.</p>
+<h2 id="hotreloading-by-default-and-develop-mode-for-desktop">Hotreloading by default and “develop” mode for desktop</h2>
+
+<p>We shipped hotreloading in 0.3, added it to desktop in 0.4, and now we’re finally enabling it by default in 0.5. By default, when you <code>dx serve</code> your app, hotreloading is enabled in development mode. </p>
+<p>Additionally, we’ve drastically improved the developer experience of building desktop apps. When we can’t hotreload the app and have to do a full recompile, we now preserve the state of the open windows and resume that state. This means your app won’t block your entire screen on every edit and it will maintain its size and position, leading to a more magical experience. Once you’ve played with it, you can never go back - it’s that good.</p>
+<!-- <p><a href="Dioxus%200%205%20Signal%20Rewrite,%20Remove%20lifetimes%20unsafe%209961963b731a4d9f8465e5bcdf8e9ab3/resume_state_small.mov">resume_state_small.mov</a></p> -->
+<!-- https://i.imgur.com/qjHB4ho.mp4 -->
+<!-- <p><a href="Dioxus%200%205%20Signal%20Rewrite,%20Remove%20lifetimes%20unsafe%209961963b731a4d9f8465e5bcdf8e9ab3/resume_state_small.mov">resume_state_small.mov</a></p> -->
+<p><video controls autoplay muted src="https://i.imgur.com/qjHB4ho.mp4" alt="Window state resume"></p>
+<h2 id="updates-to-the-dioxus-template">Updates to the dioxus template</h2>
+
+<p>With this update, our newest core team member Miles put serious work into overhauling documentation and our templates. We now have templates to create new dioxus apps for web, desktop, mobile, tui, and fullstack under one command. </p>
+<!-- https://i.imgur.com/jpXNW5P.mp4 -->
+<p><video controls autoplay muted src="https://i.imgur.com/jpXNW5P.mp4" alt="Window state resume"></p>
+<!-- <p><a href="Dioxus%200%205%20Signal%20Rewrite,%20Remove%20lifetimes%20unsafe%209961963b731a4d9f8465e5bcdf8e9ab3/oh_five_release.mov">oh_five_release.mov</a></p> -->
+<p>We also updated the default app you get when using <code>dx new</code> to be closer to the traditional create-react-app. The template is now seeded with assets, CSS, and some basic deploy configuration. Plus, it includes links to useful resources like dioxus-std, the VSCode Extension, docs, tutorials, and more.</p>
+<p><img src="https://i.imgur.com/DCrrDxD.png" alt="New templates"></p>
+<h2 id="dioxus-community-and-dioxus-std">Dioxus-Community and Dioxus-std</h2>
+
+<p>The Dioxus Community is something special: discord members marc and Doge have been hard at working updating important ecosystem crates for the 0.5 release. With this release, important crates like icons, charts, and the dioxus-specific standard library are ready to use right out the gate. The <code>Dioxus Community</code> project is a new GitHub organization that keeps important crates up-to-date even when the original maintainers step down. If you build a library for Dioxus, we’ll be happy to help maintain it, keeping it at what is essentially “Tier 2” support. </p>
+<p><img src="https://i.imgur.com/yoLSrwj.png" alt="dioxus_community"></p>
+<h2 id="coming-soon">Coming soon</h2>
+
+<p>At a certain point we had to stop adding new features to this release. There’s plenty of cool projects on the horizon:</p>
+<ul>
+<li>Stabilizing and more deeply integrating the asset system</li>
+<li>Bundle splitting the outputted <code>.wasm</code> directly - with lazy components</li>
+<li>Islands and resumable interactivity (serializing signals!)</li>
+<li>Server components and merging LiveView into fullstack</li>
+<li>Enhanced Devtools (potentially featuring some AI!) and testing framework</li>
+<li>Complete mobile overhaul</li>
+<li>Fullstack overhaul with websockets, SSE, progressive forms, and more</li>
+</ul>
+<h2 id="sneak-peek-dioxus-blitz-revival-using-servo">Sneak Peek: Dioxus-Blitz revival using Servo</h2>
+
+<p>We’re not going to say much about this now, but here’s a sneak peek at “Blitz 2.0”… we’re finally integrating servo into blitz so you can render natively with WGPU using the same CSS engine that powers Firefox. To push this effort forward, we’ve brought the extremely talented Nico Burns (the wizard behind our layout library Taffy) on full time. More about this later, but here’s a little demo of <a href="http://google.com">google.com</a> being rendered at 900 FPS entirely on the GPU:</p>
+<p><img src="https://i.imgur.com/I1HRiBd.png" alt="Google rendered with blitz"></p>
+<p>Admittedly the current iteration is not quite there (google.com is in fact a little wonky) but we’re progressing rapidly here and are quickly approaching something quite usable. The repo is here if you want to take a look and get involved:</p>
+<p><a href="https://github.com/jkelleyrtp/stylo-dioxus">https://github.com/jkelleyrtp/stylo-dioxus</a></p>
+<h2 id="how-can-you-contribute-">How can you contribute?</h2>
+
+<p>Well, that’s it for the new features. We might’ve missed a few things (there’s so much new!). If you find Dioxus as exciting as we do, we’d love your help to completely transform app development. We’d love contributions including:</p>
+<ul>
+<li>Translating docs into your native language</li>
+<li>Attempting “Good First Issues”</li>
+<li>Improving our documentation</li>
+<li>Contributing to the CLI</li>
+<li>Help answer questions from the discord community</li>
+</ul>
+<p>That’s it! We’re super grateful for the community support and excited for the rest of 2024. </p>
+<p>Build cool things! ✌️</p>

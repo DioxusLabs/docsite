@@ -23,7 +23,7 @@ base_path = "."
 
 [web.watcher]
 
-watch_path = ["docs-src", "src"]
+watch_path = ["docs-src", "src", "posts", "examples", "snippets"]
 index_on_404 = true
 
 # include `assets` in web platform

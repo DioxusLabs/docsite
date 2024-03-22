@@ -84,6 +84,8 @@ pub enum Route {
         #[nest("/blog")]
             #[route("/")]
             BlogList {},
+            #[route("/release-050")]
+            PostRelease050 {},
             #[route("/templates-diffing")]
             PostTemplate {},
             #[route("/going-fulltime")]

@@ -1,6 +1,5 @@
 /.dioxus
 /target
-Cargo.lock
 .DS_Store
 
 .vscode/*

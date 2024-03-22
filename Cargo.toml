@@ -37,8 +37,8 @@ dioxus-material-icons = { git = "https://github.com/ealmloff/dioxus-material-ico
 include_dir = "0.7.3"
 anyhow = "1.0.71"
 syntect-html = { git = "https://github.com/dioxuslabs/include_mdbook" }
-mdbook-shared = { git = "https://github.com/dioxuslabs/include_mdbook", default-features = false }
-use-mdbook = { git = "https://github.com/dioxuslabs/include_mdbook", default-features = false }
+mdbook-shared = { git = "https://github.com/dioxuslabs/include_mdbook" }
+use-mdbook = { git = "https://github.com/dioxuslabs/include_mdbook" }
 
 dioxus-search = { git = "https://github.com/dioxuslabs/dioxus-search" }
 

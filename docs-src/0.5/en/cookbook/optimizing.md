@@ -140,6 +140,6 @@ To see an example of this, check out [Dynamic Rendering](../reference/dynamic_re
 Also check out [Anti-patterns](antipatterns.md) for patterns that you should avoid.
 Obviously, not all of them are just about performance, but some of them are.
 
-## Bundling and minifying the output JS and HTML
+## Optimizing the size of assets
 
-This will be added in [dioxus/#1369](https://github.com/DioxusLabs/dioxus/pull/1369).
+Assets can be a significant part of your app's size. Dioxus includes alpha support for first party [assets](../reference/assets.md). Any assets you include with the `mg!` macro will be optimized for production in release builds.

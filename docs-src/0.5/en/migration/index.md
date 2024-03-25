@@ -91,7 +91,7 @@ Dioxus 0.5:
 {{#include src/doc_examples/migration.rs:futures}}
 ```
 
-Read more about the `use_resource` hook in the [Hook Migration](hook.md) guide.
+Read more about the `use_resource` hook in the [Hook Migration](hooks.md) guide.
 
 ### State Hooks
 

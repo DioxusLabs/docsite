@@ -1,5 +1,7 @@
 # Assets
 
+> ⚠️ Support: Manganis is currently in alpha. API changes are planned and bugs are more likely
+
 Assets are files that are included in the final build of the application. They can be images, fonts, stylesheets, or any other file that is not a source file. Dioxus includes first class support for assets, and provides a simple way to include them in your application and automatically optimize them for production.
 
 Assets in dioxus are also compatible with libraries! If you are building a library, you can include assets in your library and they will be automatically included in the final build of any application that uses your library.

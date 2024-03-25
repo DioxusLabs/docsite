@@ -33,7 +33,7 @@ Dioxus 0.5:
 
 ### Dependencies
 
-Some hooks including `use_effect` and `use_resource` now take a single closure with automatic subscriptions instead of a tuple of dependencies. You can read more about the `use_resource` hook in the [Hook Migration](hook.md) guide.
+Some hooks including `use_effect` and `use_resource` now take a single closure with automatic subscriptions instead of a tuple of dependencies. You can read more about the `use_resource` hook in the [Hook Migration](hooks.md) guide.
 
 Dioxus 0.4:
 

@@ -1,0 +1,172 @@
+.docs-links::-webkit-scrollbar,
+.docs-toc::-webkit-scrollbar {
+    width: 5px
+}
+
+.docs-links::-webkit-scrollbar-track,
+.docs-toc::-webkit-scrollbar-track {
+    /* background: #fff */
+}
+
+.docs-links::-webkit-scrollbar-thumb,
+.docs-toc::-webkit-scrollbar-thumb {
+    background: #fff
+}
+
+.docs-links {
+    scrollbar-color: #212529 #212529
+}
+
+.docs-links:hover,
+.docs-toc:hover {
+    scrollbar-width: thin;
+    scrollbar-color: #e9ecef #fff
+}
+
+.docs-links:hover::-webkit-scrollbar-thumb,
+.docs-toc:hover::-webkit-scrollbar-thumb {
+    background: #e9ecef
+}
+
+.docs-links::-webkit-scrollbar-thumb:hover,
+.docs-toc::-webkit-scrollbar-thumb:hover {
+    background: #e9ecef
+}
+
+html.dark .docs-links,
+html.dark .docs-toc {
+    scrollbar-width: thin;
+    scrollbar-color: #212529 #212529
+}
+
+.docs-links,
+.docs-toc {
+    scrollbar-width: thin;
+    scrollbar-color: #212529 #212529
+}
+
+.docs-links .full-chapter:not(:last-child) {
+    border-bottom: 1px solid #e9ecef
+}
+
+.docs-links .full-chapter:first-child>h3 {
+    padding-top: 0px !important;
+    margin-top: 0px !important;
+}
+
+
+.docs-links {
+    list-style: none;
+    max-height: calc(100vh - 4rem);
+    top: 4rem;
+    z-index: 1000;
+}
+
+
+.markdown-body {
+    box-sizing: border-box;
+    min-width: 200px;
+    /* max-width: 980px;
+    margin: 0 5%; */
+    /* padding: 45px; */
+    list-style: disc;
+}
+
+.markdown-body button {}
+
+
+
+@media (max-width: 767px) {
+    .markdown-body {
+        /* padding: 15px; */
+    }
+}
+
+.main-side-nav {
+    max-height: calc(100vh - 4rem);
+    overflow: scroll;
+}
+
+/* on small screens we want to hide the copy div
+we have to select it based on the content since the styling is buried deep in mdbook
+It's so unliklely anyone is copying text on mobile that we can just hide it
+*/
+@media (max-width: 767px) {
+    .markdown-body button[onclick="navigator.clipboard.writeText(this.previousElementSibling.innerText)"] {
+        display: none;
+    }
+}
+
+
+.dioxus-demo div input form button {
+    all: revert;
+}
+
+.dioxus-demo input {
+    border: 1px solid #ced4da;
+    border-radius: 5px;
+    padding: 5px;
+    margin: 5px;
+    max-width: 150px;
+}
+
+.dioxus-show {
+    z-index: 10000;
+    visibility: visible;
+    transition: opacity 0.1s, scale 0.1s;
+    opacity: 1;
+    scale: 1;
+}
+
+.dioxus-hide {
+    z-index: -1;
+    visibility: hidden;
+    opacity: 0;
+    scale: 1.1
+}
+
+
+
+.dioxus-demo {
+    border-width: 3px;
+}
+
+.markdown-body ul {
+    list-style: disc;
+}
+
+.markdown-body li {
+    display: list-item;
+}
+
+.markdown-body ol {
+    list-style: decimal;
+}
+
+.dioxus-blog-post img {
+    max-height: 500px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 4px;
+    padding-right: 4px;
+}
+
+.highlight pre,
+.markdown-body pre {
+    background-color: #1e1e1e
+}
+
+.dioxus-blog-post h1 {
+    text-align: center;
+}
+
+.dioxus-blog-post h1,
+.dioxus-blog-post h2 {
+    margin-top: 72px;
+}
+
+.navbar_externalArrow___VWBd {
+    position: absolute;
+    top: 4px;
+    right: 0px;
+}

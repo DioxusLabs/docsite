@@ -43,14 +43,21 @@ pub mod components {
 
 #[component]
 fn HeaderFooter() -> Element {
+    let cb = use_callback(|| {
+        *SHOW_SEARCH.write() = true;
+    });
+
     shortcut::use_shortcut(Key::Character("/".to_string()), Modifiers::CONTROL, {
         move || {
-            *SHOW_SEARCH.write() = true;
+            cb.call();
         }
     });
 
     rsx! {
-        div {
+        div { class: "bg-white dark:bg-ideblack",
+            link { rel: "stylesheet", href: "/githubmarkdown.css" }
+            link { rel: "stylesheet", href: "/tailwind.css" }
+            link { rel: "stylesheet", href: "/main.css" }
             Nav {}
             Outlet::<Route> {}
             Footer {}
@@ -159,11 +166,6 @@ mod docs {
             div {
                 class: "bg-white rounded-md shadow-md p-4 my-4 overflow-scroll text-black dioxus-demo",
                 max_height: "50vh",
-                style {
-                    ".dioxus-demo div {{ all: revert; }}"
-                    ".dioxus-demo input {{ all: revert; }}"
-                    ".dioxus-demo form {{ all: revert; }}"
-                }
                 {children}
             }
         }
@@ -238,7 +240,6 @@ pub enum Route {{\n\t"
 
     use_mdbook::mdbook_router! {"docs-src/0.5"}
 }
-
 
 fn main() {
     #[cfg(feature = "web")]

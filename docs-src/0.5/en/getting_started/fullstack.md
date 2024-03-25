@@ -2,8 +2,6 @@
 
 > This guide assumes you read the [Web](wasm.md) getting started guide and installed the [Dioxus-cli](https://github.com/DioxusLabs/dioxus/tree/master/packages/cli)
 
-# Getting Started
-
 ## Setup
 
 Before we get started, make sure you have Rust and Cargo installed. Then create a new project:
@@ -19,7 +17,7 @@ Add `dioxus` and `dioxus-fullstack` as dependencies:
 cargo add dioxus@0.5.0-alpha.2 --features fullstack
 ```
 
-Next, set up features for the server (`server`) and the client (`web`). These features are what allow Dioxus to separate the client and backend from each other. 
+Next, set up features for the server (`server`) and the client (`web`). These features are what allow Dioxus to separate the client and backend from each other.
 
 ```toml
 [features]

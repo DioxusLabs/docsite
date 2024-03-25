@@ -196,7 +196,7 @@ fn app() -> Element {
 }
 ```
 
-## Running 
+## Running
 
 From there, you'll want to get a build of the crate using whichever platform you're targeting (simulator or actual hardware). For now, we'll just stick with the simulator.
 

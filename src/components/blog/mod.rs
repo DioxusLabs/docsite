@@ -127,7 +127,7 @@ pub const POSTS: &[BlogPost] = &[
 pub fn BlogList() -> Element {
     rsx!(
         section { class: "body-font overflow-hidden dark:bg-ideblack font-light",
-            div { class: "container max-w-screen-sm pt-12 pb-12 mx-auto",
+            div { class: "container max-w-screen-md pt-12 pb-12 mx-auto",
                 div { class: "-my-8 px-8 pb-12",
                     // Header
                     h2 { class: "dark:text-white my-8 md:mb-16 sm:text-3xl text-2xl font-medium title-font font-sans",
@@ -196,17 +196,20 @@ fn BlogPostItem(post: &'static BlogPost) -> Element {
         ..
     } = post;
 
-    rsx!(
+    rsx! {
         div { class: "py-8 flex flex-wrap md:flex-nowrap",
-            div { class: "md:w-32 md:mb-0 mb-6 flex-shrink-0 flex flex-col p",
-                span { class: "font-semibold title-font text-gray-700 dark:text-white",
-                    "{category}"
-                }
-                span { class: "mt-1 text-gray-500 text-sm", "{date}" }
-            }
+            // div { class: "md:w-32 md:mb-0 mb-6 flex-shrink-0 flex flex-col",
+            // span { class: "font-semibold title-font text-gray-700 dark:text-white",
+            //     "{category}"
+            // }
+            // span { class: "mt-1 text-gray-500 text-sm", "{date}" }
+            // }
             div { class: "md:flex-grow pl-8",
-                h2 { class: "text-2xl font-medium text-gray-900 title-font mb-2 dark:text-white",
-                    "{title}"
+                div { class: "flex flex-row justify-between gap-4",
+                    h2 { class: "text-2xl font-medium text-gray-900 title-font mb-4 dark:text-white",
+                        "{title}"
+                    }
+                    span { class: "my-2 text-gray-500 text-sm", "{date}" }
                 }
                 p { class: "leading-relaxed dark:text-white text-base dark:opacity-75",
                     "{description}"
@@ -217,5 +220,5 @@ fn BlogPostItem(post: &'static BlogPost) -> Element {
                 }
             }
         }
-    )
+    }
 }

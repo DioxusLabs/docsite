@@ -76,7 +76,7 @@ struct StarsResponse {
 #[component]
 pub fn Awesome() -> Element {
     rsx! {
-        div { class: "dark:bg-ideblack mx-auto max-w-screen-xl",
+        div { class: "bg-white dark:bg-ideblack mx-auto max-w-screen-lg",
             AwesomeInner {}
         }
     }
@@ -119,8 +119,8 @@ pub fn AwesomeInner() -> Element {
                 .collect();
 
             rsx!(
-                section { class: "dark:bg-ideblack w-full pt-4 md:pt-24 pb-10",
-                    div { class: "container mx-auto max-w-screen-1g text-center",
+                section { class: "dark:bg-ideblack bg-white w-full pt-4 md:pt-24 pb-10",
+                    div { class: "mx-auto max-w-screen-1g text-center",
                         h1 { class: "text-[1.5em] md:text-[3.3em] font-bold tracking-tight dark:text-white text-ghdarkmetal mb-2 px-2",
                             "Awesome stuff for Dioxus"
                         }
@@ -146,8 +146,7 @@ pub fn AwesomeInner() -> Element {
                             class: "mx-2 rounded-lg lg:w-2/5 lg:mx-auto",
                             background_color: "#24292f",
                             input {
-                                class: "w-full text-center p-4 rounded-lg text-gray-300",
-                                background_color: "#24292f",
+                                class: "w-full text-center p-4 rounded-lg text-gray-300 bg-gray-100 text-gray-400 ",
                                 placeholder: "Looking for something specific?",
                                 value: "{search}",
                                 oninput: move |evt| search.set(evt.value())
@@ -157,13 +156,11 @@ pub fn AwesomeInner() -> Element {
                 }
                 section { class: "dark:bg-ideblack w-full pb-24",
                     div { class: "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 container mx-auto px-2 max-w-screen-1g",
-                        {items.iter().filter_map(|item| {
+                        for item in items.iter() {
                             if let AwesomeType::Awesome = item.r#type {
-                                Some(rsx!(AwesomeItem { key: "{item.name}", item: item.clone() }))
-                            } else {
-                                None
+                                AwesomeItem { key: "{item.name}", item: item.clone() }
                             }
-                        })}
+                        }
                     }
                 }
 
@@ -180,7 +177,7 @@ pub fn AwesomeInner() -> Element {
                     }
                 }
 
-                section { class: "dark:bg-ideblack w-full pb-24",
+                section { class: "bg-white dark:bg-ideblack w-full pb-24",
                     div { class: "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 container mx-auto px-2 max-w-screen-1g",
                         for item in items.iter() {
                             if let AwesomeType::MadeWith = item.r#type {
@@ -278,24 +275,27 @@ fn AwesomeItem(item: ReadOnlySignal<Item>) -> Element {
         }
     };
 
-    rsx!(
-        Link { to: NavigationTarget::<Route>::External(link),
+    let inner = rsx! {
+        div {
+            class: "flex flex-col h-full p-3 rounded hover:-translate-y-2 transition-transform duration-300 bg-white dark:bg-slate-800 shadow",
             div {
-                class: "flex flex-col h-full p-3 rounded hover:-translate-y-2 transition-transform duration-300",
-                background_color: "#24292f",
-                div {
-                    p { class: "text-xl text-gray-100 font-bold", "{item.name}" }
-                    p { class: "text-base pt-2 text-gray-300", "{item.description}" }
+                p { class: "text-xl text-gray-800 dark:text-gray-100 font-bold", "{item.name}" }
+                p { class: "text-base pt-2 text-gray-700 dark:text-gray-400", "{item.description}" }
+            }
+            div { class: "mt-auto pt-4 flex",
+                if Category::App != item.category {
+                    p { class: "text-gray-500 font-bold dark:text-gray-300", "{item.category}" }
                 }
-                div { class: "mt-auto pt-4 flex",
-                    if Category::App != item.category {
-                        p { class: "text-gray-300 font-bold", "{item.category}" }
-                    }
-                    p { class: "ml-auto text-gray-300 font-bold", "{stars}" }
-                }
+                p { class: "ml-auto text-gray-500 font-bold dark:text-gray-300", "{stars}" }
             }
         }
-    )
+    };
+
+    rsx! {
+        Link { to: NavigationTarget::<Route>::External(link), new_tab: true,
+            {inner}
+        }
+    }
 }
 
 #[wasm_bindgen(module = "/src/components/awesome/storage.js")]

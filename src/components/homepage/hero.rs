@@ -60,14 +60,24 @@ pub fn Hero() -> Element {
                         span { "Fullstack, crossplatform," }
                         span { "lightning fast, fully typed." }
                     }
-
                     // img { src: "https://ribir.org/landing-page/hero-banner.png" }
                     // h1 { class: "text-2xl md:text-[5em] font-semibold dark:text-white text-ghdarkmetal font-sans py-12 flex flex-col",
                     // h1 { class: "text-2xl md:text-[5em] font-semibold dark:text-white text-ghdarkmetal font-sans py-12 flex flex-col",
                     //     "Fullstack, crossplatform, lightning fast, fully typed."
                     // }
                     h3 { class: "text-[2em] dark:text-white font-extralight text-ghdarkmetal pt-4 max-w-screen-md mx-auto",
-                        "Dioxus is fullstack, crossplatform, lightning fast, and fully typed."
+                        "Dioxus is a Rust library for building apps that run on desktop, web, mobile, and more."
+                    }
+
+                    img {
+                        src: "/static/multiplatform-dark.svg",
+                        class: "mx-auto max-h-96 dark:hidden",
+                        alt: "Dioxus Contributors"
+                    }
+                    img {
+                        src: "/static/multiplatform-light.svg",
+                        class: "mx-auto max-h-96 hidden dark:block",
+                        alt: "Dioxus Contributors"
                     }
 
                     div { class: "pt-12 text-white text-[1.2em] font-sans font-bold flex flex-row justify-center space-x-4",
@@ -142,6 +152,10 @@ fn SaveClipboard() -> Element {
 fn AnimatedIcon() -> Element {
     let dark = include_str!("../../../public/static/multiplatform-dark.svg");
     let light = include_str!("../../../public/static/multiplatform-light.svg");
+
+    let a = 123;
+
+    let b = 123;
 
     rsx! {
         div {

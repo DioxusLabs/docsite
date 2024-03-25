@@ -279,7 +279,7 @@ fn IconSplit() -> Element {
 
 fn Stats() -> Element {
     rsx! {
-        section { class: "pb-24 w-full dark:bg-ideblack",
+        section { class: "py-12 w-full dark:bg-ideblack",
             div { class: "container mx-auto max-w-screen-lg",
                 div { class: "relative ",
                     div { class: "flex flex-col items-center justify-center text-center max-w-screen-lg mx-auto pb-4",
@@ -293,7 +293,7 @@ fn Stats() -> Element {
                     }
                 }
             }
-            div { class: "w-full mx-auto dark:bg-[#111111] border-t border-b mb-12",
+            div { class: "max-w-screen-xl mx-auto py-12 px-2 md:px-16 dark:bg-[#111111] mb-12",
                 div { class: "grid grid-cols-2 grid-rows-2 sm:grid-cols-4 sm:grid-rows-1",
                     StatsItem { major: "16k", minor: "Stars" }
                     StatsItem { major: "140k", minor: "Downloads" }
@@ -316,77 +316,9 @@ fn Stats() -> Element {
 #[component]
 fn StatsItem(major: &'static str, minor: &'static str) -> Element {
     rsx! {
-        div { class: "text-center py-6 border border-[#444]",
+        div { class: "text-center shadow mx-2 rounded-lg py-6 border",
             div { class: "text-5xl font-bold text-gray-800 dark:text-gray-100", {major} }
             div { class: "text-xl text-gray-600 dark:text-gray-400", {minor} }
-        }
-    }
-}
-
-#[component]
-fn Platform(
-    name: &'static str,
-    content: &'static str,
-    children: Element,
-    to: Route,
-    last: Option<bool>,
-) -> Element {
-    let last = last.unwrap_or_default();
-
-    rsx! {
-        li { class: "text-lg text-gray-600 dark:text-gray-600 flex flex-row",
-            div { class: "w-8",
-                div { class: "flex flex-col h-full mx-auto",
-                    if !last {
-                        div { class: "bg-ghmetal dark:bg-white w-1 h-12 mx-auto" }
-                    } else {
-                        div { class: "bg-ghmetal dark:bg-white w-1 h-8 mx-auto" }
-                    }
-                    div { class: "mx-auto w-full", IconSplit {} }
-                    if !last {
-                        div { class: "bg-ghmetal dark:bg-white w-1 h-full mx-auto" }
-                    }
-                }
-            }
-
-            Link {
-                class: "min-w-lg mb-12 p-8 max-w-screen-md hover:shadow-pop rounded-lg",
-                to: to.clone(),
-                // div { class: "min-w-lg p-8 m-8 bg-slate-800 dark:bg-slate-900/70 dark:backdrop-blur dark:ring-1 dark:ring-inset dark:ring-white/10 rounded shadow-xl",
-                h2 { class: "text-2xl text-gray-800 font-semibold font-mono pb-2 dark:text-gray-100 ",
-                    {name}
-                }
-                p { class: "text-md text-gray-500 dark:text-gray-400", {content} }
-                {children}
-            }
-        }
-    }
-}
-
-fn JumpStart() -> Element {
-    rsx! {
-        section { class: "pt-36 w-full dark:bg-ideblack",
-            div { class: "container mx-auto max-w-screen-lg",
-                div { class: "relative ",
-                    div { class: "flex flex-col items-center justify-center text-center max-w-screen-lg mx-auto pb-20",
-                        // span { class: "text-xl text-blue-300", "Portable" }
-                        h1 { class: "text-[3.3em] font-bold tracking-tight dark:text-white font-mono text-ghdarkmetal pb-4 mb-4 ",
-                            "Get Started in Seconds"
-                        }
-                        p { class: "text-xl text-gray-600 dark:text-gray-400 pb-4 max-w-screen-sm",
-                            "Driven by a large, active, and welcoming community, Dioxus is just getting started."
-                        }
-                    }
-                }
-            }
-            div { class: "w-full mx-auto dark:bg-[#111111] border-t border-b mb-12",
-                div { class: "grid grid-cols-2 grid-rows-2 sm:grid-cols-4 sm:grid-rows-1",
-                    StatsItem { major: "10k", minor: "Stars" }
-                    StatsItem { major: "63k", minor: "Downloads" }
-                    StatsItem { major: "136", minor: "Contributors" }
-                    StatsItem { major: "873", minor: "Community Projects" }
-                }
-            }
         }
     }
 }

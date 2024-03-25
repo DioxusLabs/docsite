@@ -153,7 +153,7 @@ fn SidebarChapter(chapter: &'static SummaryItem<BookRoute>) -> Element {
                 }
             }
             if show_dropdown {
-                ul { class: "border-l border-gray-300 m-2",
+                ul { class: "border-l border-gray-300 m-2 px-2 space-y-1",
                     for chapter in link.nested_items.iter() {
                         SidebarChapter { chapter }
                     }
@@ -244,7 +244,9 @@ fn Content() -> Element {
                         ".markdown-body .header {{ color: inherit }}"
                     }
                     article { class: "markdown-body", Outlet::<Route> {} }
-                    ContentFooter {}
+
+                    // todo: we want left-right buttons to go between pages in the docs
+                    // ContentFooter {}
                 }
             }
         }

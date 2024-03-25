@@ -4,7 +4,7 @@ pub static FERROUS_LOGO: &str = manganis::mg!(image(
 ))
 .path();
 
-pub static ExternalLinkIcon: Component<()> = |cx| {
+pub fn ExternalLinkIcon() -> Element {
     rsx! {
         svg {
             width: "15",
@@ -22,9 +22,9 @@ pub static ExternalLinkIcon: Component<()> = |cx| {
             }
         }
     }
-};
+}
 
-pub static Stacks: Component<()> = |cx| {
+pub fn Stacks() -> Element {
     rsx! {
         svg {
             class: "w-10 h-10 text-white p-2 bg-indigo-500 rounded-full",
@@ -38,9 +38,9 @@ pub static Stacks: Component<()> = |cx| {
             path { d: "M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" }
         }
     }
-};
+}
 
-pub static ArrowRight: Component<()> = |cx| {
+pub fn ArrowRight() -> Element {
     rsx! {
         svg {
             class: "w-4 h-4 ml-1",
@@ -53,7 +53,7 @@ pub static ArrowRight: Component<()> = |cx| {
             path { d: "M5 12h14M12 5l7 7-7 7" }
         }
     }
-};
+}
 
 pub static Icon1: Component<()> = |cx| {
     rsx!(

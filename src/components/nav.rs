@@ -130,7 +130,7 @@ fn LinkList() -> Element {
     });
 
     rsx! {
-        nav { class: "flex items-center space-x-2 text-md font-light leading-none text-slate-700",
+        nav { class: "flex items-center space-x-2 text-md font-light leading-none text-slate-700 dark:text-white",
             Link {
                 to: Route::Homepage {},
                 class: "flex title-font font-medium items-center text-gray-900",

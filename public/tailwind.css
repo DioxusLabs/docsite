@@ -671,10 +671,6 @@ video {
   margin: 1rem;
 }
 
-.m-8 {
-  margin: 2rem;
-}
-
 .-mx-3 {
   margin-left: -0.75rem;
   margin-right: -0.75rem;
@@ -733,6 +729,11 @@ video {
 .my-auto {
   margin-top: auto;
   margin-bottom: auto;
+}
+
+.my-2 {
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
 }
 
 .-mb-10 {
@@ -895,6 +896,10 @@ video {
   height: 3rem;
 }
 
+.h-16 {
+  height: 4rem;
+}
+
 .h-2 {
   height: 0.5rem;
 }
@@ -939,16 +944,20 @@ video {
   height: 1px;
 }
 
-.h-16 {
-  height: 4rem;
-}
-
 .max-h-\[60vh\] {
   max-height: 60vh;
 }
 
 .max-h-\[calc\(100\%-8rem\)\] {
   max-height: calc(100% - 8rem);
+}
+
+.max-h-60 {
+  max-height: 15rem;
+}
+
+.max-h-96 {
+  max-height: 24rem;
 }
 
 .min-h-0 {
@@ -961,10 +970,6 @@ video {
 
 .w-0 {
   width: 0px;
-}
-
-.w-1 {
-  width: 0.25rem;
 }
 
 .w-1\/2 {
@@ -1009,10 +1014,6 @@ video {
 
 .w-64 {
   width: 16rem;
-}
-
-.w-8 {
-  width: 2rem;
 }
 
 .w-\[calc\(100\%-1rem\)\] {
@@ -1173,6 +1174,10 @@ video {
   gap: 1.5rem;
 }
 
+.gap-4 {
+  gap: 1rem;
+}
+
 .space-x-1 > :not([hidden]) ~ :not([hidden]) {
   --tw-space-x-reverse: 0;
   margin-right: calc(0.25rem * var(--tw-space-x-reverse));
@@ -1201,6 +1206,12 @@ video {
   --tw-space-y-reverse: 0;
   margin-top: calc(1.5rem * calc(1 - var(--tw-space-y-reverse)));
   margin-bottom: calc(1.5rem * var(--tw-space-y-reverse));
+}
+
+.space-y-1 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-y-reverse: 0;
+  margin-top: calc(0.25rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(0.25rem * var(--tw-space-y-reverse));
 }
 
 .divide-y > :not([hidden]) ~ :not([hidden]) {
@@ -1436,10 +1447,6 @@ video {
 
 .bg-opacity-50 {
   --tw-bg-opacity: 0.5;
-}
-
-.bg-opacity-95 {
-  --tw-bg-opacity: 0.95;
 }
 
 .bg-opacity-80 {
@@ -1961,12 +1968,6 @@ video {
 
 .filter {
   filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
-}
-
-.backdrop-blur-md {
-  --tw-backdrop-blur: blur(12px);
-  -webkit-backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);
-          backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);
 }
 
 .backdrop-blur-sm {
@@ -2637,9 +2638,9 @@ video {
     background-color: rgb(15 23 42 / 0.7);
   }
 
-  .dark\:bg-white {
+  .dark\:bg-slate-800 {
     --tw-bg-opacity: 1;
-    background-color: rgb(255 255 255 / var(--tw-bg-opacity));
+    background-color: rgb(30 41 59 / var(--tw-bg-opacity));
   }
 
   .dark\:fill-white {
@@ -2674,11 +2675,6 @@ video {
   .dark\:text-gray-500 {
     --tw-text-opacity: 1;
     color: rgb(107 114 128 / var(--tw-text-opacity));
-  }
-
-  .dark\:text-gray-600 {
-    --tw-text-opacity: 1;
-    color: rgb(75 85 99 / var(--tw-text-opacity));
   }
 
   .dark\:text-sky-400 {

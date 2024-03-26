@@ -105,7 +105,7 @@ fn AvailablePlatforms() -> Element {
                         "Build for the web using Rust and WebAssembly. As fast as SolidJS and more robust than React. Integrated hot reloading for instant iterations."
                     ),
                     to: Route::Docs {
-                        child: BookRoute::GettingStartedWasm {},
+                        child: BookRoute::GettingStartedIndex {},
                     },
                     title: "Web with WASM"
                 }
@@ -116,14 +116,13 @@ fn AvailablePlatforms() -> Element {
                         "Lightweight (<2mb) desktop and mobile apps with zero configuration. Choose between WebView or WGPU-enabled renderers. Runs on macOS, Windows, Linux, iOS, and Android."
                     ),
                     to: Route::Docs {
-                        child: BookRoute::GettingStartedDesktop {
-                        },
+                        child: BookRoute::GettingStartedIndex {},
                     },
                     title: "Desktop and Mobile"
                 }
                 TriShow {
                     to: Route::Docs {
-                        child: BookRoute::GettingStartedTui {},
+                        child: BookRoute::GettingStartedIndex {},
                     },
                     title: "Terminal User Interfaces",
                     right: rsx!(
@@ -134,8 +133,7 @@ fn AvailablePlatforms() -> Element {
                 }
                 TriShow {
                     to: Route::Docs {
-                        child: BookRoute::GettingStartedFullstack {
-                        },
+                        child: BookRoute::GettingStartedIndex {},
                     },
                     title: "Fullstack Apps",
                     right: rsx!(
@@ -146,8 +144,7 @@ fn AvailablePlatforms() -> Element {
                 }
                 TriShow {
                     to: Route::Docs {
-                        child: BookRoute::GettingStartedLiveview {
-                        },
+                        child: BookRoute::GettingStartedIndex {},
                     },
                     title: "LiveView",
                     right: rsx!(

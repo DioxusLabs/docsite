@@ -39,6 +39,7 @@ pub(crate) mod components {
         pub(crate) mod tutorials;
         pub(crate) mod awesome;
         pub(crate) mod deploy;
+        pub(crate) mod desktop_dependencies;
     }
 }
 

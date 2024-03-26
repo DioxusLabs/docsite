@@ -1,6 +1,15 @@
 # Liveview
 
-This guide will cover concepts specific to the Dioxus liveview renderer.
+Liveview allows apps to *run* on the server and *render* in the browser. It uses WebSockets to communicate between the server and the browser.
+
+Examples:
+- [Simple Example](https://github.com/DioxusLabs/dioxus/tree/master/packages/liveview/examples/axum.rs)
+
+## Support
+
+Dioxus liveview will be deprecated in favor of [dioxus-fullstack](./fullstack/index.md) in a future release. When dioxus-liveview is deprecated, it will be moved to a separate community maintained crate.
+
+Liveview is currently limited in capability when compared to the Web platform. Liveview apps run on the server in a native thread. This means that browser APIs are not available, so rendering WebGL, Canvas, etc is not as easy as the Web. However, native system APIs are accessible, so streaming, WebSockets, filesystem, etc are all viable APIs.
 
 ## Router Integration
 

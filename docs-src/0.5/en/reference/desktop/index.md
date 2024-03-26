@@ -2,6 +2,21 @@
 
 This guide will cover concepts specific to the Dioxus desktop renderer.
 
+Apps built with Dioxus desktop use the system WebView to render the page. This makes the final size of application much smaller than other WebView renderers (typically under 5MB).
+
+Although desktop apps are rendered in a WebView, your Rust code runs natively. This means that browser APIs are _not_ available, so rendering WebGL, Canvas, etc is not as easy as the Web. However, native system APIs _are_ accessible, so streaming, WebSockets, filesystem, etc are all easily accessible though system APIs.
+
+Dioxus desktop is built off [Tauri](https://tauri.app/). Right now there are limited Dioxus abstractions over the menubar, event handling, etc. In some places you may need to leverage Tauri directly – through [Wry](http://github.com/tauri-apps/wry/) and [Tao](http://github.com/tauri-apps/tao).
+
+> In the future, we plan to move to a custom web renderer-based DOM renderer with WGPU integrations ([Blitz](https://github.com/DioxusLabs/blitz)).
+
+## Examples
+
+- [File Explorer](https://github.com/DioxusLabs/example-projects/blob/master/file-explorer)
+- [WiFi Scanner](https://github.com/DioxusLabs/example-projects/blob/master/wifi-scanner)
+
+[![File Explorer screenshot](https://raw.githubusercontent.com/DioxusLabs/example-projects/master/file-explorer/image.png)](https://github.com/DioxusLabs/example-projects/tree/master/file-explorer)
+
 ## Running Javascript
 
 Dioxus provides some ergonomic wrappers over the browser API, but in some cases you may need to access parts of the browser API Dioxus does not expose. 

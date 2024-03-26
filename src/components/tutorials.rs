@@ -33,7 +33,7 @@ static TUTORIALS: &[Tutorial] = &[
     },
 ];
 
-pub fn Tutorials() -> Element {
+pub(crate) fn Tutorials() -> Element {
     rsx! {
         div { class: "dark:bg-ideblack dark:text-white",
             div { class: "max-w-screen-lg mx-auto",
@@ -89,7 +89,7 @@ fn TutorialPreview(id: usize) -> Element {
 }
 
 #[component]
-pub fn Tutorial(id: usize) -> Element {
+pub(crate) fn Tutorial(id: usize) -> Element {
     let tutorial = TUTORIALS.get(id)?;
 
     rsx!(

@@ -1,7 +1,7 @@
 use crate::HIGHLIGHT_NAV_LAYOUT;
 use dioxus::prelude::*;
 
-pub fn Footer() -> Element {
+pub(crate) fn Footer() -> Element {
     let bg_color = if HIGHLIGHT_NAV_LAYOUT() {
         "border border-orange-600 rounded-md"
     } else {

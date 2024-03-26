@@ -25,7 +25,7 @@ static FEATURES: &[(&str, &str)] = &[
     ("Incredible inline documentation", "Comprehensive doc comments provide MDN hints and guides right under your finger tips."),
 ];
 
-pub fn ValueAdd() -> Element {
+pub(crate) fn ValueAdd() -> Element {
     rsx! {
         section { class: "text-gray-600 body-font",
             div { class: "container mx-auto py-12 px-6 lg:px-40",

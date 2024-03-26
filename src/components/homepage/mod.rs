@@ -1,15 +1,14 @@
 use crate::*;
 use dioxus::prelude::*;
 
-pub mod call_to_action;
-pub mod explainers;
-pub mod featured_examples;
-pub mod hero;
-pub mod snippets;
-pub mod value_add;
+pub(crate) mod call_to_action;
+pub(crate) mod featured_examples;
+pub(crate) mod hero;
+pub(crate) mod snippets;
+pub(crate) mod value_add;
 
 #[component]
-pub fn Homepage() -> Element {
+pub(crate) fn Homepage() -> Element {
     rsx! {
         div {
             section { class: "w-full dark:bg-ideblack",

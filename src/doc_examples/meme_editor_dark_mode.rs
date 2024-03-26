@@ -28,12 +28,12 @@ pub fn App() -> Element {
         r""
     };
 
-    rsx!(
+    rsx! {
         div { style: "{wrapper_style}",
             DarkModeToggle {}
             MemeEditor {}
         }
-    )
+    }
 }
 
 pub fn use_is_dark_mode() -> bool {
@@ -50,7 +50,7 @@ pub fn DarkModeToggle() -> Element {
 
     let style = if dark_mode().0 { "color:white" } else { "" };
 
-    rsx!(
+    rsx! {
         label { style: "{style}",
             "Dark Mode"
             input {
@@ -61,7 +61,7 @@ pub fn DarkModeToggle() -> Element {
                 }
             }
         }
-    )
+    }
 }
 // ANCHOR_END: toggle
 
@@ -113,12 +113,12 @@ fn Meme(caption: String) -> Element {
         text-align: center;
     ";
 
-    rsx!(
+    rsx! {
         div { style: "{container_style}",
             img { src: "https://i.imgflip.com/2zh47r.jpg", height: "500px" }
             div { style: "{caption_container_style}", p { style: "{caption_style}", "{caption}" } }
         }
-    )
+    }
 }
 // ANCHOR_END: meme_component
 
@@ -146,11 +146,13 @@ fn CaptionEditor(caption: String, on_input: EventHandler<FormEvent>) -> Element 
         border-radius: 4px;
     ";
 
-    rsx!(input {
-        style: "{input_style}{colors}",
-        value: "{caption}",
-        oninput: move |event| on_input.call(event)
-    })
+    rsx! {
+        input {
+            style: "{input_style}{colors}",
+            value: "{caption}",
+            oninput: move |event| on_input.call(event)
+        }
+    }
 }
 // ANCHOR_END: caption_editor
 

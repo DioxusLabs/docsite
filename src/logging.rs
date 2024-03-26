@@ -1,7 +1,7 @@
 use fern::colors::{Color, ColoredLevelConfig};
 use log::debug;
 
-pub fn set_up_logging(name: &'static str) {
+pub(crate) fn set_up_logging(name: &'static str) {
     // configure colors for the whole line
     let colors_line = ColoredLevelConfig::new()
         .error(Color::Red)

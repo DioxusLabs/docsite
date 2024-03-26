@@ -1,10 +1,10 @@
 use dioxus::prelude::*;
-pub static FERROUS_LOGO: &str = manganis::mg!(image(
+pub(crate) static FERROUS_LOGO: &str = manganis::mg!(image(
     "https://rustacean.net/assets/rustacean-flat-gesture.png"
 ))
 .path();
 
-pub fn ExternalLinkIcon() -> Element {
+pub(crate) fn ExternalLinkIcon() -> Element {
     rsx! {
         svg {
             width: "15",
@@ -24,7 +24,7 @@ pub fn ExternalLinkIcon() -> Element {
     }
 }
 
-pub fn Stacks() -> Element {
+pub(crate) fn Stacks() -> Element {
     rsx! {
         svg {
             class: "w-10 h-10 text-white p-2 bg-indigo-500 rounded-full",
@@ -40,7 +40,7 @@ pub fn Stacks() -> Element {
     }
 }
 
-pub fn ArrowRight() -> Element {
+pub(crate) fn ArrowRight() -> Element {
     rsx! {
         svg {
             class: "w-4 h-4 ml-1",
@@ -55,7 +55,7 @@ pub fn ArrowRight() -> Element {
     }
 }
 
-pub static Icon1: Component<()> = |cx| {
+pub(crate) static Icon1: Component<()> = |cx| {
     rsx!(
         svg {
             class: "w-6 h-6",
@@ -70,7 +70,7 @@ pub static Icon1: Component<()> = |cx| {
     )
 };
 
-pub static Icon2: Component<()> = |cx| {
+pub(crate) static Icon2: Component<()> = |cx| {
     rsx!(
         svg {
             class: "w-6 h-6",
@@ -87,7 +87,7 @@ pub static Icon2: Component<()> = |cx| {
     )
 };
 
-pub static Icon3: Component<()> = |cx| {
+pub(crate) static Icon3: Component<()> = |cx| {
     rsx!(
         svg {
             class: "w-6 h-6",
@@ -103,7 +103,7 @@ pub static Icon3: Component<()> = |cx| {
     )
 };
 
-pub static Icon4: Component<()> = |cx| {
+pub(crate) static Icon4: Component<()> = |cx| {
     rsx!(
         svg {
             class: "w-6 h-6",
@@ -118,7 +118,7 @@ pub static Icon4: Component<()> = |cx| {
     )
 };
 
-pub static Icon5: Component<()> = |cx| {
+pub(crate) static Icon5: Component<()> = |cx| {
     rsx!(
         svg {
             class: "w-6 h-6",
@@ -133,7 +133,7 @@ pub static Icon5: Component<()> = |cx| {
     )
 };
 
-pub static Icon6: Component<()> = |cx| {
+pub(crate) static Icon6: Component<()> = |cx| {
     rsx!(
         svg {
             class: "w-6 h-6",
@@ -148,7 +148,7 @@ pub static Icon6: Component<()> = |cx| {
     )
 };
 
-pub static IconCheck: Component<()> = |cx| {
+pub(crate) static IconCheck: Component<()> = |cx| {
     rsx!(
         svg {
             class: "text-indigo-500 w-6 h-6 flex-shrink-0 mr-4",
@@ -164,7 +164,7 @@ pub static IconCheck: Component<()> = |cx| {
     )
 };
 
-pub static TailwindLogo: Component<()> = |cx| {
+pub(crate) static TailwindLogo: Component<()> = |cx| {
     rsx!(
         svg { class: "w-auto h-7 sm:h-8", view_box: "0 0 248 31",
             path {
@@ -183,7 +183,7 @@ pub static TailwindLogo: Component<()> = |cx| {
     )
 };
 
-pub static Copy: Component<()> = |cx| {
+pub(crate) static Copy: Component<()> = |cx| {
     rsx!(
         svg {
             width: "24",
@@ -196,7 +196,7 @@ pub static Copy: Component<()> = |cx| {
     )
 };
 
-pub static GithubLogo: Component<()> = |cx| {
+pub(crate) static GithubLogo: Component<()> = |cx| {
     rsx!(
         svg {
             height: "24",
@@ -211,7 +211,7 @@ pub static GithubLogo: Component<()> = |cx| {
     )
 };
 
-pub static DiscordLogo: Component<()> = |cx| {
+pub(crate) static DiscordLogo: Component<()> = |cx| {
     rsx!(
         svg {
             width: "24",
@@ -229,7 +229,7 @@ pub static DiscordLogo: Component<()> = |cx| {
     )
 };
 
-pub static Search: Component<()> = |cx| {
+pub(crate) static Search: Component<()> = |cx| {
     rsx!(
         svg {
             class: "text-gray-400 group-hover:text-gray-500 transition-colors duration-200",
@@ -247,7 +247,7 @@ pub static Search: Component<()> = |cx| {
     )
 };
 
-pub static Github2: Component<()> = |cx| {
+pub(crate) static Github2: Component<()> = |cx| {
     rsx!(
         svg {
             class: "w-5 h-5",
@@ -259,7 +259,7 @@ pub static Github2: Component<()> = |cx| {
     )
 };
 
-pub static IconCheckGh: Component<()> = |cx| {
+pub(crate) static IconCheckGh: Component<()> = |cx| {
     rsx! {
         svg {
             class: "octicon octicon-check js-clipboard-check-icon d-inline-block d-none",

@@ -5,11 +5,13 @@ use dioxus::prelude::*;
 pub fn App() -> Element {
     let mut is_logged_in = use_signal(|| false);
 
-    rsx!(LogIn {
-        is_logged_in: is_logged_in(),
-        on_log_in: move |_| is_logged_in.set(true),
-        on_log_out: move |_| is_logged_in.set(false)
-    })
+    rsx! {
+        LogIn {
+            is_logged_in: is_logged_in(),
+            on_log_in: move |_| is_logged_in.set(true),
+            on_log_out: move |_| is_logged_in.set(false)
+        }
+    }
 }
 
 #[component]
@@ -29,11 +31,13 @@ fn LogIn(is_logged_in: bool, on_log_in: EventHandler, on_log_out: EventHandler) 
 pub fn LogInImprovedApp() -> Element {
     let mut is_logged_in = use_signal(|| false);
 
-    rsx!(LogInImproved {
-        is_logged_in: is_logged_in(),
-        on_log_in: move |_| is_logged_in.set(true),
-        on_log_out: move |_| is_logged_in.set(false)
-    })
+    rsx! {
+        LogInImproved {
+            is_logged_in: is_logged_in(),
+            on_log_in: move |_| is_logged_in.set(true),
+            on_log_out: move |_| is_logged_in.set(false)
+        }
+    }
 }
 
 #[component]

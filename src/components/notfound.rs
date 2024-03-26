@@ -4,7 +4,7 @@ use dioxus::prelude::*;
 
 #[allow(unused)]
 #[component]
-pub fn Err404(segments: Vec<String>) -> Element {
+pub(crate) fn Err404(segments: Vec<String>) -> Element {
     rsx!(
         section { class: "py-20",
             div { class: "container px-4 mx-auto",

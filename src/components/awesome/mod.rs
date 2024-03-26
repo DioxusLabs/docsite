@@ -74,7 +74,7 @@ struct StarsResponse {
 }
 
 #[component]
-pub fn Awesome() -> Element {
+pub(crate) fn Awesome() -> Element {
     rsx! {
         div { class: "bg-white dark:bg-ideblack mx-auto max-w-screen-lg",
             AwesomeInner {}
@@ -83,7 +83,7 @@ pub fn Awesome() -> Element {
 }
 
 #[component]
-pub fn AwesomeInner() -> Element {
+pub(crate) fn AwesomeInner() -> Element {
     let items = use_resource(move || async move {
         let req = match reqwest::get(ITEM_LIST_LINK).await {
             Ok(r) => r,
@@ -146,7 +146,7 @@ pub fn AwesomeInner() -> Element {
                             class: "mx-2 rounded-lg lg:w-2/5 lg:mx-auto",
                             background_color: "#24292f",
                             input {
-                                class: "w-full text-center p-4 rounded-lg text-gray-300 bg-gray-100 text-gray-400 ",
+                                class: "w-full text-center p-4 rounded-lg text-gray-300 bg-gray-100",
                                 placeholder: "Looking for something specific?",
                                 value: "{search}",
                                 oninput: move |evt| search.set(evt.value())
@@ -300,6 +300,6 @@ fn AwesomeItem(item: ReadOnlySignal<Item>) -> Element {
 
 #[wasm_bindgen(module = "/src/components/awesome/storage.js")]
 extern "C" {
-    pub fn get_stars(name: String) -> Option<usize>;
-    pub fn set_stars(name: String, stars: usize);
+    pub(crate) fn get_stars(name: String) -> Option<usize>;
+    pub(crate) fn set_stars(name: String, stars: usize);
 }

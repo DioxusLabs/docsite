@@ -1,4 +1,4 @@
-pub static SECTIONS: &[(&str, &[(&str, &str)])] = &[
+pub(crate) static SECTIONS: &[(&str, &[(&str, &str)])] = &[
     (
         "Docs",
         &[

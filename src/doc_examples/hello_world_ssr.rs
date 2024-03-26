@@ -38,7 +38,7 @@ async fn app_endpoint() -> Html<String> {
 async fn second_app_endpoint() -> Html<String> {
     // create a component that renders a div with the text "hello world"
     fn app() -> Element {
-        rsx!( div { "hello world" } )
+        rsx! { div { "hello world" } }
     }
     // create a VirtualDom with the app component
     let mut app = VirtualDom::new(app);

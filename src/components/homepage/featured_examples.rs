@@ -1,6 +1,6 @@
 use dioxus::prelude::*;
 
-pub fn FeaturedExamples() -> Element {
+pub(crate) fn FeaturedExamples() -> Element {
     rsx! {
         section { class: "body-font w-full dark:bg-ideblack",
             div { class: "container px-6 max-w-screen-lg py-24 mx-auto",

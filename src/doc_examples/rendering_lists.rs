@@ -16,13 +16,10 @@ pub fn App() -> Element {
 
     let comments_lock = comments.read();
     let comments_rendered = comments_lock.iter().map(|comment| {
-        rsx!(CommentComponent {
-            key: "{comment.id}",
-            comment: comment.clone()
-        })
+        rsx! { CommentComponent { comment: comment.clone() } }
     });
 
-    rsx!(
+    rsx! {
         form {
             onsubmit: move |_| {
                 comments
@@ -41,7 +38,7 @@ pub fn App() -> Element {
             input { r#type: "submit" }
         }
         {comments_rendered}
-    )
+    }
     // ANCHOR_END: render_list
 }
 
@@ -51,7 +48,7 @@ pub fn AppForLoop() -> Element {
     let mut next_id = use_signal(|| 0);
     let mut comments = use_signal(Vec::<Comment>::new);
 
-    rsx!(
+    rsx! {
         form {
             onsubmit: move |_| {
                 comments
@@ -71,19 +68,19 @@ pub fn AppForLoop() -> Element {
         }
         for comment in comments() {
             // Notice the body of this for loop is rsx code, not an expression
-            CommentComponent { key: "{comment.id}", comment }
+            CommentComponent { comment }
         }
-    )
+    }
     // ANCHOR_END: render_list_for_loop
 }
 
 #[component]
 fn CommentComponent(comment: Comment) -> Element {
-    rsx!(
+    rsx! {
         div {
             "Comment by anon:"
             p { "{comment.content}" }
             button { "Reply" }
         }
-    )
+    }
 }

@@ -49,7 +49,11 @@ impl ShortcutHandler {
 }
 
 /// Create a global shortcut that will be removed when the component is unmounted
-pub fn use_shortcut(key: Key, modifiers: crate::Modifiers, mut handler: impl FnMut() + 'static) {
+pub(crate) fn use_shortcut(
+    key: Key,
+    modifiers: crate::Modifiers,
+    mut handler: impl FnMut() + 'static,
+) {
     #[cfg(feature = "web")]
     {
         let id = use_hook(move || {

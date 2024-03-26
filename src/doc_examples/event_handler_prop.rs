@@ -19,13 +19,13 @@ pub struct FancyButtonProps {
 }
 
 pub fn FancyButton(props: FancyButtonProps) -> Element {
-    rsx!(
+    rsx! {
         button {
             class: "fancy-button",
             onclick: move |evt| props.on_click.call(evt),
             "click me pls."
         }
-    )
+    }
 }
 // ANCHOR_END: component_with_handler
 
@@ -38,12 +38,12 @@ pub struct CustomFancyButtonProps {
 }
 
 pub fn CustomFancyButton(props: CustomFancyButtonProps) -> Element {
-    rsx!(
+    rsx! {
         button {
             class: "fancy-button",
             onclick: move |_| props.on_click.call(ComplexData(0)),
             "click me pls."
         }
-    )
+    }
 }
 // ANCHOR_END: custom_data

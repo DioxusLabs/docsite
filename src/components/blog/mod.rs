@@ -4,7 +4,7 @@ use dioxus::prelude::*;
 use dioxus_router::prelude::*;
 
 #[derive(PartialEq, Eq, Clone, Copy)]
-pub struct BlogPost {
+pub(crate) struct BlogPost {
     category: &'static str,
     date: &'static str,
     title: &'static str,
@@ -13,7 +13,7 @@ pub struct BlogPost {
     content: &'static str,
 }
 
-pub const POST_RELEASE_050: BlogPost = BlogPost {
+pub(crate) const POST_RELEASE_050: BlogPost = BlogPost {
     category: "Release Notes",
     date: "March 21, 2024",
     title: "Announcing Dioxus 0.5",
@@ -23,11 +23,11 @@ pub const POST_RELEASE_050: BlogPost = BlogPost {
 };
 
 #[component]
-pub fn PostRelease050() -> Element {
+pub(crate) fn PostRelease050() -> Element {
     rsx! { SinglePost { post: POST_RELEASE_050 } }
 }
 
-pub const POST_TEMPLATE: BlogPost = BlogPost {
+pub(crate) const POST_TEMPLATE: BlogPost = BlogPost {
     category: "Tech",
     date: "Dec 11, 2022",
     title: "Making Dioxus (almost) as fast as SolidJS",
@@ -38,11 +38,11 @@ pub const POST_TEMPLATE: BlogPost = BlogPost {
 };
 
 #[component]
-pub fn PostTemplate() -> Element {
+pub(crate) fn PostTemplate() -> Element {
     rsx! { SinglePost { post: POST_TEMPLATE } }
 }
 
-pub const POST_FULLTINME: BlogPost = BlogPost {
+pub(crate) const POST_FULLTINME: BlogPost = BlogPost {
     category: "Misc",
     date: "May 5 2023",
     title: "Going full time on Dioxus",
@@ -53,11 +53,11 @@ pub const POST_FULLTINME: BlogPost = BlogPost {
 };
 
 #[component]
-pub fn PostFulltime() -> Element {
+pub(crate) fn PostFulltime() -> Element {
     rsx! { SinglePost { post: POST_FULLTINME } }
 }
 
-pub const POST_RELEASE_040: BlogPost = BlogPost {
+pub(crate) const POST_RELEASE_040: BlogPost = BlogPost {
     category: "Release Notes",
     date: "Aug 1 2023",
     title: "Announcing Dioxus 0.4",
@@ -67,11 +67,11 @@ pub const POST_RELEASE_040: BlogPost = BlogPost {
 };
 
 #[component]
-pub fn PostRelease040() -> Element {
+pub(crate) fn PostRelease040() -> Element {
     rsx! { SinglePost { post: POST_RELEASE_040 } }
 }
 
-pub const POST_RELEASE_030: BlogPost = BlogPost {
+pub(crate) const POST_RELEASE_030: BlogPost = BlogPost {
     category: "Release Notes",
     date: "Feb 8 2023",
     title: "Announcing Dioxus 0.3",
@@ -81,11 +81,11 @@ pub const POST_RELEASE_030: BlogPost = BlogPost {
 };
 
 #[component]
-pub fn PostRelease030() -> Element {
+pub(crate) fn PostRelease030() -> Element {
     rsx! { SinglePost { post: POST_RELEASE_030 } }
 }
 
-pub const POST_RELEASE_020: BlogPost = BlogPost {
+pub(crate) const POST_RELEASE_020: BlogPost = BlogPost {
     category: "Release Notes",
     date: "Mar 9 2022",
     title: "Announcing Dioxus 0.2",
@@ -95,11 +95,11 @@ pub const POST_RELEASE_020: BlogPost = BlogPost {
 };
 
 #[component]
-pub fn PostRelease020() -> Element {
+pub(crate) fn PostRelease020() -> Element {
     rsx! { SinglePost { post: POST_RELEASE_020 } }
 }
 
-pub const POST_RELEASE_010: BlogPost = BlogPost {
+pub(crate) const POST_RELEASE_010: BlogPost = BlogPost {
     category: "Release Notes",
     date: "Jan 3 2022",
     title: "Announcing Dioxus 0.1",
@@ -109,11 +109,11 @@ pub const POST_RELEASE_010: BlogPost = BlogPost {
 };
 
 #[component]
-pub fn PostRelease010() -> Element {
+pub(crate) fn PostRelease010() -> Element {
     rsx! { SinglePost { post: POST_RELEASE_010 } }
 }
 
-pub const POSTS: &[BlogPost] = &[
+pub(crate) const POSTS: &[BlogPost] = &[
     POST_RELEASE_050,
     POST_RELEASE_040,
     POST_FULLTINME,
@@ -124,7 +124,7 @@ pub const POSTS: &[BlogPost] = &[
 ];
 
 #[component]
-pub fn BlogList() -> Element {
+pub(crate) fn BlogList() -> Element {
     rsx!(
         section { class: "body-font overflow-hidden dark:bg-ideblack font-light",
             div { class: "container max-w-screen-md pt-12 pb-12 mx-auto",
@@ -149,7 +149,7 @@ pub fn BlogList() -> Element {
 }
 
 #[component]
-pub fn SinglePost(post: BlogPost) -> Element {
+pub(crate) fn SinglePost(post: BlogPost) -> Element {
     let BlogPost { content, .. } = post;
 
     rsx! {

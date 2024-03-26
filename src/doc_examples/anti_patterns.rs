@@ -11,7 +11,7 @@ fn main() {}
 fn AntipatternNestedFragments() -> Element {
     // ANCHOR: nested_fragments
     // ❌ Don't unnecessarily nest fragments
-    let _ = rsx!(
+    let _ = rsx! {
         Fragment {
             Fragment {
                 Fragment {
@@ -21,10 +21,10 @@ fn AntipatternNestedFragments() -> Element {
                 }
             }
         }
-    );
+    };
 
     // ✅ Render shallow structures
-    rsx!( div { "Finally have a real node!" } )
+    rsx! { div { "Finally have a real node!" } }
     // ANCHOR_END: nested_fragments
 }
 

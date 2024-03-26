@@ -6,9 +6,9 @@ use dioxus_material_icons::MaterialIconColor;
 use mdbook_shared::Page;
 use mdbook_shared::SummaryItem;
 
-pub static HIGHLIGHT_DOCS_LAYOUT: GlobalSignal<bool> = Signal::global(|| false);
-pub static SHOW_SIDEBAR: GlobalSignal<bool> = Signal::global(|| false);
-pub static HIGHLIGHT_DOCS_CONTENT: GlobalSignal<bool> = Signal::global(|| false);
+pub(crate) static HIGHLIGHT_DOCS_LAYOUT: GlobalSignal<bool> = Signal::global(|| false);
+pub(crate) static SHOW_SIDEBAR: GlobalSignal<bool> = Signal::global(|| false);
+pub(crate) static HIGHLIGHT_DOCS_CONTENT: GlobalSignal<bool> = Signal::global(|| false);
 
 /// The Markdown file path needs to be appended to this, including the first slash!
 const GITHUB_API_URL: &str =
@@ -20,7 +20,7 @@ const GITHUB_EDIT_PAGE_EDIT_URL: &str =
     "https://github.com/DioxusLabs/docsite/edit/master/docs-src/0.5/en";
 
 #[component]
-pub fn Learn() -> Element {
+pub(crate) fn Learn() -> Element {
     use_hook(|| *SHOW_DOCS_NAV.write() = true);
     use_drop(|| *SHOW_DOCS_NAV.write() = false);
 
@@ -302,7 +302,7 @@ fn default_page() -> &'static Page<BookRoute> {
 }
 
 #[component]
-pub fn DocsO3(segments: Vec<String>) -> Element {
+pub(crate) fn DocsO3(segments: Vec<String>) -> Element {
     let navigator = use_navigator();
     let route: Route = use_route();
     navigator.push(route);
@@ -310,7 +310,7 @@ pub fn DocsO3(segments: Vec<String>) -> Element {
 }
 
 #[component]
-pub fn DocsO4(segments: Vec<String>) -> Element {
+pub(crate) fn DocsO4(segments: Vec<String>) -> Element {
     let navigator = use_navigator();
     let route: Route = use_route();
     navigator.push(route);

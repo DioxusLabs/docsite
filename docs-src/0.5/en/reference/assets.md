@@ -50,4 +50,4 @@ You can include stylesheets in your application using the `mg!` macro. For examp
 
 Dioxus provides first class support for assets, and makes it easy to include them in your application. You can include images, arbitrary files, and stylesheets in your application, and dioxus will automatically optimize them for production. This makes it easy to include assets in your application and ensure that they are optimized for production.
 
-You can read more about assets and all the options available to optimize your assets in the [manganis documentation](https://docs.rs/manganis/0.1.0/manganis/).
+You can read more about assets and all the options available to optimize your assets in the [manganis documentation](https://docs.rs/manganis/0.2.2/manganis/).

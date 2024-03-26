@@ -6,10 +6,10 @@ A build of Dioxus for the web will be roughly equivalent to the size of a React 
 
 Examples:
 
-- [TodoMVC](https://github.com/DioxusLabs/example-projects/tree/master/todomvc)
-- [ECommerce](https://github.com/DioxusLabs/example-projects/tree/master/ecommerce-site)
+- [TodoMVC](https://github.com/DioxusLabs/dioxus/blob/main/examples/todomvc.rs)
+- [Tailwind App](https://github.com/DioxusLabs/dioxus/tree/main/examples/tailwind)
 
-[![TodoMVC example](https://github.com/DioxusLabs/example-projects/raw/master/todomvc/example.png)](https://github.com/DioxusLabs/example-projects/blob/master/todomvc)
+[![TodoMVC example](https://github.com/DioxusLabs/example-projects/raw/master/todomvc/example.png)](https://github.com/DioxusLabs/dioxus/blob/main/examples/todomvc.rs)
 
 > Note: Because of the limitations of Wasm, [not every crate will work](https://rustwasm.github.io/docs/book/reference/which-crates-work-with-wasm.html) with your web apps, so you'll need to make sure that your crates work without native system calls (timers, IO, etc).
 

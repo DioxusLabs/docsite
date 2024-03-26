@@ -73,7 +73,7 @@ fn DocVersionNav() -> Element {
                     }
                 }
                 li { class: "m-1 rounded-md pl-2 hover:text-sky-500 dark:hover:text-sky-400",
-                    a { href: "/learn/0.4",
+                    a { href: "/learn/0.5",
                         dioxus_material_icons::MaterialIcon { name: "chevron_left", color: MaterialIconColor::Custom("gray".to_string()) }
                         "0.4"
                     }

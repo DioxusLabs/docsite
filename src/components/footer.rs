@@ -31,7 +31,7 @@ pub(crate) fn Footer() -> Element {
                 ("Dioxus", "https://github.com/DioxusLabs/dioxus"),
                 (
                     "CLI",
-                    "https://github.com/DioxusLabs/dioxus/tree/master/packages/cli",
+                    "https://github.com/DioxusLabs/dioxus/tree/main/packages/cli",
                 ),
                 ("Taffy", "https://github.com/DioxusLabs/taffy"),
             ],

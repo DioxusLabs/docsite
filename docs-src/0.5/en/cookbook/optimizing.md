@@ -6,7 +6,7 @@ You might have noticed that Dioxus binaries are pretty big.
 The WASM binary of a [TodoMVC app](https://github.com/tigerros/dioxus-todo-app) weighs in at 2.36mb!
 Don't worry; we can get it down to a much more manageable 234kb.
 This will get obviously lower over time.
-For example, the new [event system](https://github.com/DioxusLabs/dioxus/pull/1402) will reduce the binary size of a hello world app to less than 100kb (with unstable features).
+With nightly features, you can even reduce the binary size of a hello world app to less than 100kb!
 
 We will also discuss ways to optimize your app for increased speed.
 
@@ -28,7 +28,7 @@ In debug mode, it's actually a whopping 32mb! It also increases the speed of you
 
 Thankfully, no matter what tool you're using to build your app, it will probably have a `--release` flag to do this.
 
-Using the [Dioxus CLI](https://dioxuslabs.com/learn/0.4/CLI) or [Trunk](https://trunkrs.dev/):
+Using the [Dioxus CLI](https://dioxuslabs.com/learn/0.5/CLI) or [Trunk](https://trunkrs.dev/):
 - Dioxus CLI: `dx build --release`
 - Trunk: `trunk build --release`
 

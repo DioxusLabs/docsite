@@ -6,7 +6,7 @@ Once you have the Dioxus CLI installed, you can use it to create your own projec
 
 First, run the `dx create` command to create a new project.
 
-> It clones this [template](https://github.com/DioxusLabs/dioxus-template), which is used for web apps.
+> It clones this [template](https://github.com/DioxusLabs/dioxus-template), which is used to create dioxus apps.
 >
 > You can create your project from a different template by passing the `template` argument:
 > ```

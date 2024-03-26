@@ -12,10 +12,10 @@ Dioxus desktop is built off [Tauri](https://tauri.app/). Right now there are lim
 
 ## Examples
 
-- [File Explorer](https://github.com/DioxusLabs/example-projects/blob/master/file-explorer)
-- [WiFi Scanner](https://github.com/DioxusLabs/example-projects/blob/master/wifi-scanner)
+- [File Explorer](https://github.com/DioxusLabs/dioxus/blob/main/examples/file_explorer.rs)
+- [Tailwind App](https://github.com/DioxusLabs/dioxus/tree/main/examples/tailwind)
 
-[![File Explorer screenshot](https://raw.githubusercontent.com/DioxusLabs/example-projects/master/file-explorer/image.png)](https://github.com/DioxusLabs/example-projects/tree/master/file-explorer)
+[![Tailwind App screenshot](./public/static/tailwind_desktop_app.png)](https://github.com/DioxusLabs/dioxus/tree/main/examples/tailwind)
 
 ## Running Javascript
 
@@ -40,4 +40,4 @@ You can read more about assets in the [assets](./assets.md) reference.
 
 ## Integrating with Wry
 
-In cases where you need more low level control over your window, you can use wry APIs exposed through the [Desktop Config](https://docs.rs/dioxus-desktop/0.3.0/dioxus_desktop/struct.Config.html) and the [use_window hook](https://docs.rs/dioxus-desktop/0.4.0/dioxus_desktop/fn.use_window.html)
+In cases where you need more low level control over your window, you can use wry APIs exposed through the [Desktop Config](https://docs.rs/dioxus-desktop/0.5.0/dioxus_desktop/struct.Config.html) and the [use_window hook](https://docs.rs/dioxus-desktop/0.5.0/dioxus_desktop/fn.use_window.html)

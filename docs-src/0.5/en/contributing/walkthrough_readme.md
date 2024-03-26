@@ -25,7 +25,7 @@ Before the Rust compiler runs the program, it will expand all [macros](https://d
 {{#include src/doc_examples/readme_expanded.rs}}
 ```
 
-The rsx macro separates the static parts of the rsx (the template) and the dynamic parts (the [dynamic_nodes](https://docs.rs/dioxus-core/0.3.2/dioxus_core/prelude/struct.VNode.html#structfield.dynamic_nodes) and [dynamic_attributes](https://docs.rs/dioxus-core/0.3.2/dioxus_core/prelude/struct.VNode.html#structfield.dynamic_attrs)).
+The rsx macro separates the static parts of the rsx (the template) and the dynamic parts (the [dynamic_nodes](https://docs.rs/dioxus-core/0.5.0/dioxus_core/prelude/struct.VNode.html#structfield.dynamic_nodes) and [dynamic_attributes](https://docs.rs/dioxus-core/0.5.0/dioxus_core/prelude/struct.VNode.html#structfield.dynamic_attrs)).
 
 The static template only contains the parts of the rsx that cannot change at runtime with holes for the dynamic parts:
 
@@ -102,7 +102,7 @@ After the initial render, the root `Scope` looks like this:
 
 ### Waiting for Events
 
-The Virtual DOM will only ever re-render a `Scope` if it is marked as dirty. Each hook is responsible for marking the `Scope` as dirty if the state has changed. Hooks can mark a scope as dirty by sending a message to the Virtual Dom's channel. You can see the [implementations](https://github.com/DioxusLabs/dioxus/tree/master/packages/hooks) for the hooks dioxus includes by default on how this is done. Calling `needs_update()` on a hook will also cause it to mark its scope as dirty.
+The Virtual DOM will only ever re-render a `Scope` if it is marked as dirty. Each hook is responsible for marking the `Scope` as dirty if the state has changed. Hooks can mark a scope as dirty by sending a message to the Virtual Dom's channel. You can see the [implementations](https://github.com/DioxusLabs/dioxus/tree/main/packages/hooks) for the hooks dioxus includes by default on how this is done. Calling `needs_update()` on a hook will also cause it to mark its scope as dirty.
 
 There are generally two ways a scope is marked as dirty:
 
@@ -138,4 +138,4 @@ This is only a brief overview of how the Virtual Dom works. There are several as
  * Keyed diffing
  * Using [bump allocation](https://github.com/fitzgen/bumpalo) to efficiently allocate VNodes.
 
-If you need more information about the Virtual Dom, you can read the code of the [core](https://github.com/DioxusLabs/dioxus/tree/master/packages/core) crate or reach out to us on [Discord](https://discord.gg/XgGxMSkvUM).
+If you need more information about the Virtual Dom, you can read the code of the [core](https://github.com/DioxusLabs/dioxus/tree/main/packages/core) crate or reach out to us on [Discord](https://discord.gg/XgGxMSkvUM).

@@ -2,7 +2,7 @@ use crate::icons::FERROUS_LOGO;
 use crate::*;
 use dioxus::prelude::*;
 
-pub static CallToAction: Component<()> = |cx| {
+pub(crate) static CallToAction: Component<()> = |cx| {
     rsx! {
         section { class: "text-gray-400 bg-ideblack body-font",
             div { class: "container px-5 py-12 mx-auto",

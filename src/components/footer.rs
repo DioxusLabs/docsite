@@ -1,7 +1,7 @@
 use crate::HIGHLIGHT_NAV_LAYOUT;
 use dioxus::prelude::*;
 
-pub fn Footer() -> Element {
+pub(crate) fn Footer() -> Element {
     let bg_color = if HIGHLIGHT_NAV_LAYOUT() {
         "border border-orange-600 rounded-md"
     } else {
@@ -31,7 +31,7 @@ pub fn Footer() -> Element {
                 ("Dioxus", "https://github.com/DioxusLabs/dioxus"),
                 (
                     "CLI",
-                    "https://github.com/DioxusLabs/dioxus/tree/master/packages/cli",
+                    "https://github.com/DioxusLabs/dioxus/tree/main/packages/cli",
                 ),
                 ("Taffy", "https://github.com/DioxusLabs/taffy"),
             ],

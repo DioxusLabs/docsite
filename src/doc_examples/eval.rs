@@ -28,7 +28,7 @@ fn app() -> Element {
     });
 
     match future.read_unchecked().as_ref() {
-        Some(v) => rsx!( p { "{v}" } ),
-        _ => rsx!( p { "hello" } ),
+        Some(v) => rsx! { p { "{v}" } },
+        _ => rsx! { p { "hello" } },
     }
 }

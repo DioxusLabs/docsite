@@ -67,7 +67,7 @@ Often, you'll want to render a collection of components. For example, you might 
 For this, Dioxus accepts iterators that produce `Element`s. So we need to:
 
 - Get an iterator over all of our items (e.g., if you have a `Vec` of comments, iterate over it with `iter()`)
-- `.map` the iterator to convert each item into a `LazyNode` using `rsx!(...)`
+- `.map` the iterator to convert each item into a `LazyNode` using `rsx!{...}`  
   - Add a unique `key` attribute to each iterator item
 - Include this iterator in the final RSX (or use it inline)
 

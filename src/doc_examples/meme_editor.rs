@@ -52,12 +52,12 @@ fn Meme(caption: String) -> Element {
         text-align: center;
     ";
 
-    rsx!(
+    rsx! {
         div { style: "{container_style}",
             img { src: "https://i.imgflip.com/2zh47r.jpg", height: "500px" }
             div { style: "{caption_container_style}", p { style: "{caption_style}", "{caption}" } }
         }
-    )
+    }
 }
 // ANCHOR_END: meme_component
 
@@ -73,11 +73,13 @@ fn CaptionEditor(caption: String, on_input: EventHandler<FormEvent>) -> Element 
         color: white;
     ";
 
-    rsx!(input {
-        style: "{input_style}",
-        value: "{caption}",
-        oninput: move |event| on_input.call(event)
-    })
+    rsx! {
+        input {
+            style: "{input_style}",
+            value: "{caption}",
+            oninput: move |event| on_input.call(event)
+        }
+    }
 }
 // ANCHOR_END: caption_editor
 

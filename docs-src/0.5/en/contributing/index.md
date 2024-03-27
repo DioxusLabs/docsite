@@ -6,7 +6,7 @@ Development happens in the [Dioxus GitHub repository](https://github.com/DioxusL
 
 ## Improving Docs
 
-If you'd like to improve the docs, PRs are welcome! Both Rust docs ([source](https://github.com/DioxusLabs/dioxus/tree/master/packages)) and this guide ([source](https://github.com/DioxusLabs/dioxus/tree/master/docs/guide)) can be found in the GitHub repo.
+If you'd like to improve the docs, PRs are welcome! Both Rust docs ([source](https://github.com/DioxusLabs/dioxus/tree/main/packages)) and this guide ([source](https://github.com/DioxusLabs/dioxus/tree/main/docs/guide)) can be found in the GitHub repo.
 
 ## Working on the Ecosystem
 
@@ -96,7 +96,7 @@ dioxus = { path = "<path to forked dioxus project>/dioxus/packages/dioxus/" }
 dioxus-web = { path = "<path to forked dioxus project>/dioxus/packages/web/" }
 ```
 
-This above example is for dioxus-web. To know about the dependencies for different renderer visit [here](https://dioxuslabs.com/learn/0.4/getting_started).
+This above example is for dioxus-web. To know about the dependencies for different renderer visit [here](https://dioxuslabs.com/learn/0.5/getting_started).
 
 - Run and test your feature
 
@@ -104,4 +104,4 @@ This above example is for dioxus-web. To know about the dependencies for differe
 dx serve
 ```
 
-If this is your first time with dioxus, please read [the guide](https://dioxuslabs.com/learn/0.4/guide) to get familiar with dioxus.
+If this is your first time with dioxus, please read [the guide](https://dioxuslabs.com/learn/0.5/guide) to get familiar with dioxus.

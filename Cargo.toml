@@ -54,6 +54,7 @@ web-sys = { version = "0.3.64", features = [
     "Window",
     "Event",
     "AddEventListenerOptions",
+    "Navigator"
 ] }
 slab = "0.4.8"
 chrono = { version = "0.4.26", features = ["serde"] }

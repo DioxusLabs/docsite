@@ -33,12 +33,12 @@ fn Body() -> Element {
     let change_to_english = move |_| i18.set_language("en-US".parse().unwrap());
     let change_to_spanish = move |_| i18.set_language("es-ES".parse().unwrap());
 
-    rsx!(
+    rsx! {
         button { onclick: change_to_english, label { "English" } }
         button { onclick: change_to_spanish, label { "Spanish" } }
         p { {translate!(i18, "messages.hello_world")} }
         p { {translate!(i18, "messages.hello", name: "Dioxus")} }
-    )
+    }
 }
 
 fn app() -> Element {
@@ -48,5 +48,5 @@ fn app() -> Element {
         vec![en_us, es_es]
     });
 
-    rsx!(Body {})
+    rsx! { Body {} }
 }

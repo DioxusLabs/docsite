@@ -1,7 +1,7 @@
 use crate::*;
 use manganis::mg;
 
-pub fn Hero() -> Element {
+pub(crate) fn Hero() -> Element {
     rsx! {
         section { class: "w-full dark:bg-ideblack h-fit [@media(min-height:720px)]:min-h-[calc(100vh-6rem)] flex flex-col justify-between items-center py-16",
 

@@ -2,41 +2,41 @@ use dioxus::prelude::*;
 use syntect_html::syntect_html_fs;
 
 #[derive(PartialEq, Eq, Debug)]
-pub struct Snippet {
-    pub title: &'static str,
-    pub filename: &'static str,
-    pub html: &'static str,
+pub(crate) struct Snippet {
+    pub(crate) title: &'static str,
+    pub(crate) filename: &'static str,
+    pub(crate) html: &'static str,
 }
 
-pub static SNIPPETS: &[Snippet] = &[
+pub(crate) static SNIPPETS: &[Snippet] = &[
     Snippet {
         title: "Hello world",
         filename: "readme.rs",
-        html: syntect_html_fs!("./snippets/readme.rs"),
+        html: syntect_html_fs!("./src/snippets/readme.rs"),
     },
     Snippet {
         title: "Components",
         filename: "components.rs",
-        html: syntect_html_fs!("./snippets/components.rs"),
+        html: syntect_html_fs!("./src/snippets/components.rs"),
     },
     Snippet {
         title: "Async",
         filename: "async.rs",
-        html: syntect_html_fs!("./snippets/async.rs"),
+        html: syntect_html_fs!("./src/snippets/async_.rs"),
     },
     Snippet {
-        title: "Fetching",
-        filename: "fetching.rs",
-        html: syntect_html_fs!("./snippets/fetching.rs"),
+        title: "Server",
+        filename: "server.rs",
+        html: syntect_html_fs!("./src/snippets/server.rs"),
     },
     Snippet {
         title: "Global State",
         filename: "global.rs",
-        html: syntect_html_fs!("./snippets/global.rs"),
+        html: syntect_html_fs!("./src/snippets/global.rs"),
     },
 ];
 
-pub fn Snippets() -> Element {
+pub(crate) fn Snippets() -> Element {
     let mut selected_snippet = use_signal(|| 0);
 
     rsx! {

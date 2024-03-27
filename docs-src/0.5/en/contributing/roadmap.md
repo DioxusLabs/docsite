@@ -119,7 +119,7 @@ These Features are planned for the future of Dioxus:
 
 ### Build Tool
 
-We are currently working on our own build tool called [Dioxus CLI](https://github.com/DioxusLabs/dioxus/tree/master/packages/cli) which will support:
+We are currently working on our own build tool called [Dioxus CLI](https://github.com/DioxusLabs/dioxus/tree/main/packages/cli) which will support:
 
 - an interactive TUI
 - on-the-fly reconfiguration

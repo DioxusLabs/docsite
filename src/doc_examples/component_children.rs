@@ -22,8 +22,8 @@ struct ClickableProps {
 }
 
 fn Clickable(props: ClickableProps) -> Element {
-    rsx!(
+    rsx! {
         a { href: "{props.href}", class: "fancy-button", {props.children} }
-    )
+    }
 }
 // ANCHOR_END: Clickable

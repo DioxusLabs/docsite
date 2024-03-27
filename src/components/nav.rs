@@ -4,13 +4,13 @@ use dioxus::prelude::*;
 use dioxus_material_icons::{MaterialIcon, MaterialIconColor};
 use std::ops::Deref;
 
-pub static HIGHLIGHT_NAV_LAYOUT: GlobalSignal<bool> = Signal::global(|| false);
-pub static SHOW_NAV: GlobalSignal<bool> = Signal::global(|| false);
-pub static SHOW_SEARCH: GlobalSignal<bool> = Signal::global(|| false);
-pub static LOGGED_IN: GlobalSignal<bool> = Signal::global(|| false);
-pub static SHOW_DOCS_NAV: GlobalSignal<bool> = Signal::global(|| false);
+pub(crate) static HIGHLIGHT_NAV_LAYOUT: GlobalSignal<bool> = Signal::global(|| false);
+pub(crate) static SHOW_NAV: GlobalSignal<bool> = Signal::global(|| false);
+pub(crate) static SHOW_SEARCH: GlobalSignal<bool> = Signal::global(|| false);
+pub(crate) static LOGGED_IN: GlobalSignal<bool> = Signal::global(|| false);
+pub(crate) static SHOW_DOCS_NAV: GlobalSignal<bool> = Signal::global(|| false);
 
-pub fn Nav() -> Element {
+pub(crate) fn Nav() -> Element {
     rsx! {
         SearchModal {}
         header {

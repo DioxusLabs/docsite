@@ -96,4 +96,4 @@ These rules mean that there are certain things you can't do with hooks:
 ## Additional resources
 
 - [dioxus_hooks API docs](https://docs.rs/dioxus-hooks/latest/dioxus_hooks/)
-- [dioxus_hooks source code](https://github.com/DioxusLabs/dioxus/tree/master/packages/hooks)
+- [dioxus_hooks source code](https://github.com/DioxusLabs/dioxus/tree/main/packages/hooks)

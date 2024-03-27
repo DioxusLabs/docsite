@@ -22,13 +22,15 @@ This Reference contains more detailed explanations for all concepts covered in t
 
 ## Platforms
 
+- [Choosing a Web Renderer](choosing_a_web_renderer.md): Overview of the different web renderers
 - [Desktop](desktop/index.md): Overview of desktop specific APIS
 - [Web](web/index.md): Overview of web specific APIS
-- [SSR](ssr.md): Overview of the SSR renderer
-- [Liveview](liveview.md): Overview of liveview specific APIS
 - [Fullstack](fullstack/index.md): Overview of Fullstack specific APIS
     - [Server Functions](fullstack/server_functions.md): Server functions make it easy to communicate between your server and client
     - [Extractors](fullstack/extractors.md): Extractors allow you to get extra information out of the headers of a request
     - [Middleware](fullstack/middleware.md): Middleware allows you to wrap a server function request or response
     - [Authentication](fullstack/authentication.md): An overview of how to handle authentication with server functions
     - [Routing](fullstack/routing.md): An overview of how to work with the router in the fullstack renderer
+- [SSR](ssr.md): Overview of the SSR renderer
+- [TUI](tui.md): Overview of web specific APIS
+- [Liveview](liveview.md): Overview of liveview specific APIS

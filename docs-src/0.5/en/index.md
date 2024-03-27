@@ -33,7 +33,7 @@ Right now, we have several 1st-party renderers:
 - Tao/Tokio (for Desktop apps): Good support
 - Tao/Tokio (for Mobile apps): Poor support
 - Fullstack (for SSR and server functions): Good support
-- TUI/Rink (for terminal-based apps): Experimental
+- TUI/Plasmo (for terminal-based apps): Experimental
 
 ## Stability
 

@@ -12,11 +12,11 @@ pub fn App() -> Element {
 
 // ANCHOR: About
 pub fn About() -> Element {
-    rsx!(
+    rsx! {
         p {
             b { "Dioxus Labs" }
             " An Open Source project dedicated to making Rust UI wonderful."
         }
-    )
+    }
 }
 // ANCHOR_END: About

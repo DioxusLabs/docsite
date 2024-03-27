@@ -1,6 +1,6 @@
 use dioxus::prelude::*;
 
-pub fn FeaturedExamples() -> Element {
+pub(crate) fn FeaturedExamples() -> Element {
     rsx! {
         section { class: "body-font w-full dark:bg-ideblack",
             div { class: "container px-6 max-w-screen-lg py-24 mx-auto",
@@ -14,37 +14,19 @@ pub fn FeaturedExamples() -> Element {
                         title: "TodoMVC",
                         subtitle: "Web",
                         description: "The classic demonstration of a web framework. Fits in one file in less than 150 lines of code.",
-                        link: "https://github.com/DioxusLabs/example-projects/tree/master/todomvc",
+                        link: "https://github.com/DioxusLabs/dioxus/blob/main/examples/todomvc.rs",
                         img_avif: "/static/todos_cropped.avif",
                         img: "/static/todos_cropped.png",
                         img_alt: "TodoMVC"
                     }
                     FeaturedExample {
-                        title: "E-Commerce Site",
-                        subtitle: "Web",
-                        description: "A complex website leveraging Tailwind, global state, animations, pre-rendering, and project structure.",
-                        link: "https://github.com/DioxusLabs/example-projects/tree/master/ecommerce-site",
-                        img_avif: "/static/marketplace_cropped.avif",
-                        img: "/static/marketplace_cropped.png",
-                        img_alt: "E-Commerce Site"
-                    }
-                    FeaturedExample {
                         title: "File Explorer",
                         subtitle: "Desktop",
                         description: "Interact with native APIs directly from your UI. Works with a simple `cargo run` and is bundle-ready.",
-                        link: "https://github.com/DioxusLabs/example-projects/tree/master/file-explorer",
+                        link: "https://github.com/DioxusLabs/dioxus/blob/main/examples/file_explorer.rs",
                         img_avif: "/static/file_explorer.avif",
                         img: "/static/file_explorer.png",
                         img_alt: "File Explorer"
-                    }
-                    FeaturedExample {
-                        title: "WiFi Scanner",
-                        subtitle: "Desktop, Mobile",
-                        description: "Spawn native Tokio tasks and interact with hardware directly from your app with Dioxus coroutines.",
-                        link: "https://github.com/DioxusLabs/example-projects/tree/master/wifi-scanner",
-                        img_avif: "/static/scanner.avif",
-                        img: "/static/scanner.png",
-                        img_alt: "Wifi Scanner"
                     }
                     FeaturedExample {
                         title: "Documentation Site",
@@ -59,7 +41,7 @@ pub fn FeaturedExamples() -> Element {
                         title: "JS Benchmark",
                         subtitle: "Web",
                         description: "The classic performance benchmark for web frameworks. Dioxus ranks extraordinarily high!",
-                        link: "https://github.com/DioxusLabs/example-projects/tree/master/jsframework-benchmark",
+                        link: "https://github.com/krausest/js-framework-benchmark/tree/master/frameworks/keyed/dioxus",
                         img_avif: "/static/jsbenchmark_cropped.avif",
                         img: "/static/jsbenchmark_cropped.png",
                         img_alt: "Javascript Framework Benchmark"

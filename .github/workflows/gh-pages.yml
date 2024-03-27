@@ -31,7 +31,13 @@ jobs:
         run: cargo install dioxus-cli@0.5.0-alpha.2
       - uses: actions/checkout@v2
       - name: Build
-        run: dx build --release --features web && cargo run --release --features prebuild && cp docs/index.html docs/404.html && dx build --release --features web
+        run: dx build --release --features web
+      - name: Build Static HTML
+        run: cargo run --release --features prebuild
+      - name: Create 404.html
+        run: cp docs/index.html docs/404.html
+      - name: Rebuild with search index
+        run: dx build --release --features web && cp docs/404.html docs/index.html
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@v4.2.3
         with:

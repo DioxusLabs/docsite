@@ -1,4 +1,11 @@
 <h1 id="dioxus-0-5-signal-rewrite-remove-lifetimes-unsafe-css-hotreloading-5x-faster-desktop-asset-system-and-more-">Dioxus 0.5: Signal Rewrite, Remove lifetimes, CSS Hotreloading, and more!</h1>
+<blockquote>
+<p>Aug 1, 2023</p>
+<p>
+    <a href="https://github.com/jkelleyrtp">@jkelleyrtp</a>,
+    <a href="https://github.com/demonthos">@demonthos</a>
+</p>
+</blockquote>
 <h3 id="the-story">The story</h3>
 
 <p>Here at Dioxus Labs, we have an unofficial rule: only one rewrite per year.  </p>
@@ -222,12 +229,16 @@ fn Child() -&gt; Element {
 
 <p>As part of our asset system overhaul, we implemented hotreloading of CSS files in the asset directory. If a CSS file appears in your RSX, the <code>dx</code> CLI will watch that file and immediately stream its updates to the running app. This works for web, desktop, and fullstack, with mobile support coming in a future mobile-centric update. </p>
 <p><video controls autoplay muted src="https://i.imgur.com/oXS8hYW.mp4" alt="CSS Hotreloading"></p>
+<p>When combined with the Tailwind watcher, we now support hotreloading of Tailwind CSS! On top of that, we also support IDE hinting of Tailwind classes in VSCode with a <a href="https://github.com/tailwindlabs/tailwindcss/discussions/7073" target="_blank" >custom regex extension</a></p>
+<p><video controls autoplay muted src="https://imgur.com/CSjVVLL" alt="CSS Hotreloading"></p>
+
 <!-- https://i.imgur.com/oXS8hYW.mp4 -->
 <!-- <p><a href="Dioxus%200%205%20Signal%20Rewrite,%20Remove%20lifetimes%20unsafe%209961963b731a4d9f8465e5bcdf8e9ab3/Screen_Recording_2024-03-20_at_6.30.47_AM.mov">Screen Recording 2024-03-20 at 6.30.47 AM.mov</a></p> -->
 <!-- <p><a href="Dioxus%200%205%20Signal%20Rewrite,%20Remove%20lifetimes%20unsafe%209961963b731a4d9f8465e5bcdf8e9ab3/Screen_Recording_2024-03-20_at_6.30.47_AM.mov">Screen Recording 2024-03-20 at 6.30.47 AM.mov</a></p> -->
 <p>What’s even niftier is that you can stream these changes to several devices at once, unlocking simultaneous hotreloading across all devices that you target:</p>
 <!-- https://i.imgur.com/cZ8qZCz.mp4 -->
 <p><video controls autoplay muted src="https://i.imgur.com/cZ8qZCz.mp4" alt="CSS Hotreloading"></p>
+
 <!-- <p><a href="Dioxus%200%205%20Signal%20Rewrite,%20Remove%20lifetimes%20unsafe%209961963b731a4d9f8465e5bcdf8e9ab3/Hotreload_triple_-_HD_1080p.mov">Hotreload triple - HD 1080p.mov</a></p> -->
 <h2 id="event-system-rewrite">Event System Rewrite</h2>
 
@@ -291,10 +302,10 @@ dx serve <span class="hljs-comment">--platform fullstack</span>
 
 <p>Currently assets in dioxus (and web applications in general) can be difficult to get right. Links to your asset can easily get out of date, the link to your asset can be different between desktop and web applications, and you need to manually add assets you want to use into your bundled application. In addition to all of that, assets can be a huge performance bottleneck.</p>
 <p>Lets take a look at the dioxus mobile guide in the docsite as an example:</p>
-<p><img src="https://i.imgur.com/GabzFJm.png" alt="docsite_mobile_old.png"></p>
+<p><img src="https://i.imgur.com/f7sGEdJ.png" alt="docsite_mobile_old.png"></p>
 <p>The 0.4 mobile guide takes 7 seconds to load and transfers 9 MB of resources. The page has 6 different large image files which slows down the page loading times significantly. We could switch to a more optimized image format like <code>avif</code> , but manually converting every screenshot is tedious and time consuming.</p>
 <p>Lets take a look at the 0.5 mobile guide with the new asset system:</p>
-<p><img src="https://i.imgur.com/f7sGEdJ.png" alt="docsite_mobile_new.png"></p>
+<p><img src="https://i.imgur.com/GabzFJm.png" alt="docsite_mobile_new.png"></p>
 <p>The new mobile guide takes less than 1 second to load and requires only 1/3 of the resources with the exact same images!</p>
 <p>Dioxus 0.5 introduces a new asset system called <code>[manganis](https://github.com/DioxusLabs/collect-assets)</code>. Manganis integrates with the CLI to check, bundle and optimize assets in your application. The API is currently unstable so the asset system is currently published as a separate crate. In the new asset system, you can just wrap your assets in the <code>mg!</code> macro and they will automatically be picked up by the CLI. You can read more about the new asset system in the <a href="https://docs.rs/crate/manganis/latest">manganis docs</a>.</p>
 <p>As we continue to iterate on the 0.5 release, we plan to add hot reloading to manganis assets, so you can interactively add new the features to your app like CSS, images, tailwind classes, and more without forcing a complete reload.</p>

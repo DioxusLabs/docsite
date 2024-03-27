@@ -59,7 +59,7 @@ html.dark .docs-toc {
     list-style: none;
     max-height: calc(100vh - 4rem);
     top: 4rem;
-    z-index: 1000;
+    /* z-index: 1000; */
 }
 
 

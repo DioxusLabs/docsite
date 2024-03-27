@@ -46,12 +46,14 @@ pub(crate) fn Nav() -> Element {
                             Link {
                                 to: "https://discord.gg/XgGxMSkvUM",
                                 class: "block text-gray-400 hover:text-gray-500 dark:hover:text-gray-300",
+                                new_tab: true,
                                 span { class: "sr-only", "Dioxus on Discord" }
                                 crate::icons::DiscordLogo {}
                             }
                             Link {
                                 to: "https://github.com/dioxuslabs/dioxus",
                                 class: "ml-4 block text-gray-400 hover:text-gray-500 dark:hover:text-gray-300",
+                                new_tab: true,
                                 span { class: "sr-only", "Dioxus on GitHub" }
                                 crate::icons::Github2 {}
                             }
@@ -130,7 +132,7 @@ fn LinkList() -> Element {
     });
 
     rsx! {
-        nav { class: "flex items-center space-x-2 text-md font-light leading-none text-slate-700 dark:text-white",
+        nav { class: "flex items-center space-x-2 text-md font-light leading-none text-slate-700 dark:text-white whitespace-nowrap",
             Link {
                 to: Route::Homepage {},
                 class: "flex title-font font-medium items-center text-gray-900",

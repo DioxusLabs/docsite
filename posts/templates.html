@@ -1,7 +1,7 @@
 <h1 id="making-dioxus-almost-as-fast-as-solidjs">Making Dioxus (almost) as fast as SolidJS</h1>
 <p><a href="https://github.com/dioxuslabs/dioxus">Dioxus</a> is a UI library for Rust that makes it easy to target almost any platform with the same React-like codebase. You can build apps for WASM, desktop, mobile, TUI, static-sites, SSR, LiveView, and more.</p>
 <hr>
-<p>In preparation for the next big release of Dioxus, one of the lead contributors, Demonthos, added a long-awaited feature: <strong>subtree memoization</strong>.</p>
+<p>In preparation for the next big release of Dioxus, one of the lead contributors, ealmloff, added a long-awaited feature: <strong>subtree memoization</strong>.</p>
 <p>Subtree memoization reduces the overall work that Dioxus needs to do to get your desired UI state to the screen by several orders of magnitude. In fact, it’s so fast, that it pushes Dioxus to the leading edge of performance for web frameworks, on par with the likes of SolidJS, even beating out signal-based Rust libraries like Sycamore 0.8 and Leptos 0.0.3.</p>
 <p><img src="https://i.imgur.com/9rbAXP9.png"></p>
 <p>There’s obviously still some room to grow as WASM-based UI libraries face unique challenges compared to their JavaScript counterparts. Ultimately, we hope that this update demonstrates what’s really possible with the current React paradigm.</p>

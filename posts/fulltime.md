@@ -7,7 +7,7 @@
 
 Hey folks, we’re going to deviate from the typical release post or technical discussion and talk about the future of Dioxus. If you’re new here, Dioxus is a UI library for Rust that supports web, desktop, mobile, liveview, TUI, and more. Our goal is to simplify app development, combining projects like React, Electron, Flutter, NextJS, InkJS, and Phoenix under one unified stack.
 
-I’m happy to announce that I’m now working on Dioxus Labs full time. Thanks to the generous support of Futurewei, Satellite.im, the GitHub Accelerator program, and several amazing individuals, Dioxus Labs is now able to employ both myself and top contributors like demonthos full time.
+I’m happy to announce that I’m now working on Dioxus Labs full time. Thanks to the generous support of Futurewei, Satellite.im, the GitHub Accelerator program, and several amazing individuals, Dioxus Labs is now able to employ both myself and top contributors like ealmloff full time.
 
 Over the past year, Dioxus has grown significantly. We’ve made huge strides in pushing forward the Rust frontend ecosystem. Some of the amazing innovations in this space include hot-reloading, syn-based autoformatting, and dioxus-liveview. Built on top of these innovations are breakthrough projects like Sledgehammer, Taffy, Freya, and Blitz. We want to continue innovating while also maturing Dioxus on all fronts.
 

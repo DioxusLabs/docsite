@@ -154,8 +154,10 @@ fn OldDioxusComponent(cx: Scope) -&gt; Element {
     });
 
     rsx! {
-        <span class="hljs-comment">// You can easily move it into an event handler just like use_state</span>
-        onclick: <span class="hljs-keyword">move</span> |_| state += <span class="hljs-number">1</span>;
+        button {
+            <span class="hljs-comment">// You can easily move it into an event handler just like use_state</span>
+            onclick: <span class="hljs-keyword">move</span> |_| state += <span class="hljs-number">1</span>
+        }
     }
 }
 </code></pre>
@@ -337,13 +339,15 @@ fn ImgPlus(props: Props) -&gt; <span class="hljs-class">Element </span>{
     }
 }
 
-rsx! {
-  <span class="hljs-class">ImgPlus </span>{
-    <span class="hljs-comment">// You can use any attributes you would normally use on the img element</span>
-    <span class="hljs-symbol">width:</span> <span class="hljs-string">"10px"</span>,
-    <span class="hljs-symbol">height:</span> <span class="hljs-string">"10px"</span>,
-    <span class="hljs-symbol">src:</span> <span class="hljs-string">"https://example.com/image.png"</span>,
-  }
+fn app() -&gt; <span class="hljs-class">Element </span>{
+    rsx! {
+        <span class="hljs-class">ImgPlus </span>{
+            <span class="hljs-comment">// You can use any attributes you would normally use on the img element</span>
+            <span class="hljs-symbol">width:</span> <span class="hljs-string">"10px"</span>,
+            <span class="hljs-symbol">height:</span> <span class="hljs-string">"10px"</span>,
+            <span class="hljs-symbol">src:</span> <span class="hljs-string">"https://example.com/image.png"</span>,
+        }
+    }
 }
 </code></pre>
 <h2 id="shorthand-attributes">Shorthand attributes</h2>
@@ -352,7 +356,7 @@ rsx! {
 <pre><code class="lang-rust">#[component]
 fn ImgPlus(<span class="hljs-class"><span class="hljs-keyword">class</span>: <span class="hljs-type">String</span>, <span class="hljs-type">id: String</span>, <span class="hljs-type">src: String) -&gt; Element {</span></span>
     rsx! {
-        img { <span class="hljs-class"><span class="hljs-keyword">class</span>, <span class="hljs-type">id</span>, <span class="hljs-type">string }</span></span>
+        img { <span class="hljs-class"><span class="hljs-keyword">class</span>, <span class="hljs-type">id</span>, <span class="hljs-type">src }</span></span>
     }
 }
 </code></pre>

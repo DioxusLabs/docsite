@@ -268,6 +268,7 @@ impl Config {
                     dioxus_router::routable::SegmentType::Child => {}
                     dioxus_router::routable::SegmentType::CatchAll(_)
                     | dioxus_router::routable::SegmentType::Dynamic(_) => continue,
+                    _ => todo!(),
                 }
             }
             // Strip any trailing slashes

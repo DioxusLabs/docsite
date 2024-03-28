@@ -26,13 +26,7 @@ pub(crate) fn Nav() -> Element {
                     },
                     MaterialIcon { name: "menu", size: 24, color: MaterialIconColor::Dark }
                 }
-                div { class: "flex z-50 md:flex-1 px-2",
-                    img {
-                        src: "https://avatars.githubusercontent.com/u/79236386?s=200&v=4",
-                        class: "h-8 w-auto"
-                    }
-                    LinkList {}
-                }
+                div { class: "flex z-50 md:flex-1 px-2", LinkList {} }
 
                 div { class: "hidden md:flex h-full justify-end ml-2 flex-1",
                     div { class: "hidden md:flex items-center",
@@ -108,7 +102,7 @@ fn LinkList() -> Element {
             // "{current_route}"
             Link {
                 to: link,
-                class: "p-2 leading-none hover:text-sky-500 dark:hover:text-sky-400 rounded {cur_class}",
+                class: "p-0 md:p-2 leading-none hover:text-sky-500 dark:hover:text-sky-400 rounded {cur_class}",
                 position: "relative",
                 "{name}"
                 if is_external {
@@ -133,7 +127,11 @@ fn LinkList() -> Element {
             Link {
                 to: Route::Homepage {},
                 class: "flex title-font font-medium items-center text-gray-900",
-                span { class: "mx-3 text-xl dark:text-white leading-none font-bold",
+                img {
+                    src: "https://avatars.githubusercontent.com/u/79236386?s=200&v=4",
+                    class: "h-8 w-auto"
+                }
+                span { class: "mx-3 text-xl dark:text-white leading-none font-bold hidden sm:block px-4",
                     "Dioxus Labs"
                 }
             }

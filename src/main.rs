@@ -56,14 +56,14 @@ fn HeaderFooter() -> Element {
     });
 
     rsx! {
-        div { class: "bg-white dark:bg-ideblack",
+        div { class: "bg-white dark:bg-ideblack pb-8",
             link { rel: "stylesheet", href: "/githubmarkdown.css" }
             link { rel: "stylesheet", href: "/tailwind.css" }
             link { rel: "stylesheet", href: "/main.css" }
             Nav {}
             Outlet::<Route> {}
-            Footer {}
         }
+        Footer {}
     }
 }
 

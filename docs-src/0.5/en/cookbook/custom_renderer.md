@@ -293,7 +293,7 @@ fn virtual_event_from_websys_event(event: &web_sys::Event) -> VirtualEvent {
 
 If you need to go as far as relying on custom elements/attributes for your renderer – you totally can. This still enables you to use Dioxus' reactive nature, component system, shared state, and other features, but will ultimately generate different nodes. All attributes and listeners for the HTML and SVG namespace are shuttled through helper structs that essentially compile away. You can drop in your elements any time you want, with little hassle. However, you must be sure your renderer can handle the new namespace.
 
-For more examples and information on how to create custom namespaces, see the [`dioxus_html` crate](https://github.com/DioxusLabs/dioxus/blob/master/packages/html/README.md#how-to-extend-it).
+For more examples and information on how to create custom namespaces, see the [`dioxus_html` crate](https://github.com/DioxusLabs/dioxus/blob/main/packages/html/README.md#how-to-extend-it).
 
 # Native Core
 

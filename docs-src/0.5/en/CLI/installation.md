@@ -16,6 +16,6 @@ To get the latest bug fixes and features, you can install the development versio
 cargo install --git https://github.com/DioxusLabs/dioxus dioxus-cli
 ```
 
-This will download the CLI from the master branch, and install it in Cargo's global binary directory (`~/.cargo/bin/` by default).
+This will download the CLI from the main branch, and install it in Cargo's global binary directory (`~/.cargo/bin/` by default).
 
 Run `dx --help` for a list of all the available commands. Furthermore, you can run `dx <command> --help` to get help with a specific command.

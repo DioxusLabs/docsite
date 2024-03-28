@@ -93,7 +93,7 @@ pub async fn timeout() -> ServerFnResult {
 }
 ```
 
-Combining all these concepts together, you can quickly add features like Authentication to your fullstack app. We’ve put together a [simple axum-auth example for you to get started](https://github.com/dioxuslabs/dioxus/blob/master/packages/fullstack/examples/axum-auth/src/main.rs).
+Combining all these concepts together, you can quickly add features like Authentication to your fullstack app. We’ve put together a [simple axum-auth example for you to get started](https://github.com/dioxuslabs/dioxus/blob/main/packages/fullstack/examples/axum-auth/src/main.rs).
 
 Our goal with Server Functions is to lay the foundation for our final vision of Dioxus: a fullstack, crossplatform, fully typed, and lightning fast toolkit for building, deploying, monitoring, and scaling any app you can dream of. With one ecosystem, you can quickly build complete apps that run on desktop, mobile, web with a type-safe backend to boot.
 

@@ -286,7 +286,7 @@ That being said, since Dioxus relies on a VirtualDom, it can be used as the prim
 - Static site generation
 - VR/AR (coming soon!)
 
-Note that all this work is being done for Dioxus 0.3 and hasn’t yet been released as a major version. We’re still dogfooding these changes to make sure no new bugs have slipped through. If you want these changes released sooner rather than later, feel free to build something with `master` and let us know!
+Note that all this work is being done for Dioxus 0.3 and hasn’t yet been released as a major version. We’re still dogfooding these changes to make sure no new bugs have slipped through. If you want these changes released sooner rather than later, feel free to build something with `main` and let us know!
 
 - Discord
 - Github

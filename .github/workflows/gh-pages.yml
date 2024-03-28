@@ -21,14 +21,9 @@ jobs:
           override: true
           target: wasm32-unknown-unknown
       - uses: Swatinem/rust-cache@v1
-      # TOOD: enable cache once stable CLI is working
-      # - uses: actions-rs/install@v0.1
-      #   with:
-      #     crate: dioxus-cli
-      #     version: latest
-      #     use-tool-cache: true
+      - uses: cargo-bins/cargo-binstall@main
       - name: Install CLI
-        run: cargo install dioxus-cli@0.5.0
+        run: cargo binstall dioxus-cli -y
       - uses: actions/checkout@v2
       - name: Build
         run: dx build --release --features web

@@ -132,7 +132,7 @@ fn OldDioxusComponent(cx: Scope) -&gt; Element {
 
 <p>Dioxus 0.5 introduces Signals as the core state primitive for components. Signals have two key advantages over the existing <code>use_state</code> and <code>use_ref</code> hooks: They are always <code>Copy</code> and they don’t require manual subscriptions.</p>
 <h3 id="copy-state">Copy state</h3>
-<p><code>Signal&lt;T&gt;</code> is <code>Copy</code>, even if the inner <code>T</code> values is not. This is enabled by our new <code>[generational-box](https://crates.io/crates/generational-box)</code> crate (implemented with zero unsafe). Signals can even optionally be <code>Send+Sync</code> if you need to move them between threads, removing the need for a whole class of specialized state management solutions.</p>
+<p><code>Signal&lt;T&gt;</code> is <code>Copy</code>, even if the inner <code>T</code> values is not. This is enabled by our new <a href="https://crates.io/crates/generational-box">generational-box</a> crate (implemented with zero unsafe). Signals can even optionally be <code>Send+Sync</code> if you need to move them between threads, removing the need for a whole class of specialized state management solutions.</p>
 <p>The combination of <code>Copy + Send + Sync</code> Signals, and static components makes it incredibly easy to move state to anywhere you need it:</p>
 <pre><code class="lang-rust"><span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">Parent</span></span>() -&gt; Element {
     <span class="hljs-comment">// We use a sync signal here so that we can use it in other threads, </span>
@@ -309,7 +309,7 @@ dx serve <span class="hljs-comment">--platform fullstack</span>
 <p>Lets take a look at the 0.5 mobile guide with the new asset system:</p>
 <p><img src="https://i.imgur.com/GabzFJm.png" alt="docsite_mobile_new.png"></p>
 <p>The new mobile guide takes less than 1 second to load and requires only 1/3 of the resources with the exact same images!</p>
-<p>Dioxus 0.5 introduces a new asset system called <code>[manganis](https://github.com/DioxusLabs/collect-assets)</code>. Manganis integrates with the CLI to check, bundle and optimize assets in your application. The API is currently unstable so the asset system is currently published as a separate crate. In the new asset system, you can just wrap your assets in the <code>mg!</code> macro and they will automatically be picked up by the CLI. You can read more about the new asset system in the <a href="https://docs.rs/crate/manganis/latest">manganis docs</a>.</p>
+<p>Dioxus 0.5 introduces a new asset system called <a href="https://github.com/DioxusLabs/collect-assets">manganis</a>. Manganis integrates with the CLI to check, bundle and optimize assets in your application. The API is currently unstable so the asset system is currently published as a separate crate. In the new asset system, you can just wrap your assets in the <code>mg!</code> macro and they will automatically be picked up by the CLI. You can read more about the new asset system in the <a href="https://docs.rs/crate/manganis/latest">manganis docs</a>.</p>
 <p>As we continue to iterate on the 0.5 release, we plan to add hot reloading to manganis assets, so you can interactively add new the features to your app like CSS, images, tailwind classes, and more without forcing a complete reload.</p>
 <h2 id="5x-faster-desktop-rendering">5x Faster Desktop Rendering</h2>
 

@@ -89,10 +89,7 @@ static LINKS: &[(&str, &str)] = &[
     ("Learn", "/learn/0.5/"),
     ("Blog", "/blog"),
     ("Awesome", "/awesome"),
-    (
-        "docs.rs",
-        "https://docs.rs/dioxus/0.5.0-alpha.2/dioxus/index.html",
-    ),
+    ("docs.rs", "https://docs.rs/dioxus/0.5.0/dioxus/index.html"),
 ];
 
 #[component]

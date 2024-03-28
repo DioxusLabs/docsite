@@ -34,7 +34,7 @@ DesktopDependencies {}
 Next, lets install the Dioxus CLI:
 
 ```sh
-cargo install dioxus-cli@0.5.0-alpha.2
+cargo install dioxus-cli@0.5.0
 ```
 
 ## Create a new project

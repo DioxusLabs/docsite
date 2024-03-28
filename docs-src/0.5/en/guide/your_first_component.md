@@ -12,7 +12,7 @@ To declare what you want your UI to look like, you will need to use the `rsx` ma
 
 Before running your application, you will need to add Dioxus as a dependency:
 ```bash
-cargo add dioxus@0.5.0-alpha.2 --features web
+cargo add dioxus@0.5.0 --features web
 ```
 
 Now if you run your application you should see something like this:

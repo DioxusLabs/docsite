@@ -28,7 +28,7 @@ jobs:
       #     version: latest
       #     use-tool-cache: true
       - name: Install CLI
-        run: cargo install dioxus-cli@0.5.0-alpha.2
+        run: cargo install dioxus-cli@0.5.0
       - uses: actions/checkout@v2
       - name: Build
         run: dx build --release --features web

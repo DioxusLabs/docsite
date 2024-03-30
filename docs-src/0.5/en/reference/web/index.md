@@ -22,8 +22,7 @@ The Web is the best-supported target platform for Dioxus.
 
 ## Running Javascript
 
-Dioxus provides some ergonomic wrappers over the browser API, but in some cases you may need to access parts of the browser API Dioxus does not expose. 
-
+Dioxus provides some ergonomic wrappers over the browser API, but in some cases you may need to access parts of the browser API Dioxus does not expose.
 
 For these cases, Dioxus web exposes the use_eval hook that allows you to run raw Javascript in the webview:
 
@@ -36,4 +35,4 @@ If you are targeting web, but don't plan on targeting any other Dioxus renderer 
 ## Customizing Index Template
 
 Dioxus supports providing custom index.html templates. The index.html must include a `div` with the id `main` to be used. Hot Reload is still supported. An example
-is provided in the [PWA-Example](https://github.com/DioxusLabs/Dioxus/examples/PWA-example/index.html).
+is provided in the [PWA-Example](https://github.com/DioxusLabs/dioxus/blob/main/examples/PWA-example/index.html).

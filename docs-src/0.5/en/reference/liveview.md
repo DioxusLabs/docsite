@@ -7,7 +7,7 @@ Examples:
 
 ## Support
 
-Dioxus liveview will be deprecated in favor of [dioxus-fullstack](./fullstack/index.md) in a future release. When dioxus-liveview is deprecated, it will be moved to a separate community maintained crate.
+Dioxus liveview will be migrated to [dioxus-fullstack](./fullstack/index.md) in a future release. Once this migration occurs, you may need to update your code. We plan for this migration to be minimal.
 
 Liveview is currently limited in capability when compared to the Web platform. Liveview apps run on the server in a native thread. This means that browser APIs are not available, so rendering WebGL, Canvas, etc is not as easy as the Web. However, native system APIs are accessible, so streaming, WebSockets, filesystem, etc are all viable APIs.
 

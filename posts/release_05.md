@@ -185,7 +185,7 @@ fn Parent() -> Element {
 	spawn(async move {
 		// Signals have a ton of helper methods that make them easy to work with.
 		// You can call a signal like a function to get the current value
-		let value: i32: state();
+		let value: i32 = state();
 	});
 
 	// Because signals can be sync, we can copy them into threads easily

@@ -142,7 +142,7 @@ fn OldDioxusComponent(cx: Scope) -&gt; Element {
     spawn(async <span class="hljs-keyword">move</span> {
         <span class="hljs-comment">// Signals have a ton of helper methods that make them easy to work with. </span>
         <span class="hljs-comment">// You can call a signal like a function to get the current value</span>
-        <span class="hljs-keyword">let</span> value: <span class="hljs-keyword">i32</span>: state();
+        <span class="hljs-keyword">let</span> value: <span class="hljs-keyword">i32</span> = state();
     });
 
     <span class="hljs-comment">// Because signals can be sync, we can copy them into threads easily</span>

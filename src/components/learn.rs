@@ -190,7 +190,7 @@ fn LocationLink(chapter: &'static SummaryItem<BookRoute>) -> Element {
 // Todo: wire this up to the sections of the current page and a scroll controller
 fn RightNav() -> Element {
     let page = use_book();
-    log::info!("{:?}", page.sections());
+
     let padding_map = ["", "", "pl-2", "pl-4", "pl-6", "pl-8"];
     let page_url = use_memo(move || page.to_string());
 

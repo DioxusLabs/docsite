@@ -46,7 +46,7 @@ html.dark .docs-toc {
 }
 
 .docs-links .full-chapter:not(:last-child) {
-    border-bottom: 1px solid #e9ecef
+    border-bottom: 1px solid #bebebe
 }
 
 .docs-links .full-chapter:first-child>h3 {

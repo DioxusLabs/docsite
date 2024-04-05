@@ -8,6 +8,6 @@ There's no documentation for commands here, but you can see all commands using `
 
 * Build and pack a Dioxus project.
 * Format `rsx` code.
-* Hot Reload for `web` platform.
+* Hot Reload.
 * Create a Dioxus project from a template repository.
 * And more!

@@ -50,7 +50,7 @@ fn LeftNav() -> Element {
         // Create a flex grow container, and then right-align its contents so it's squahed against the center
         div { class: "overflow-y-auto sticky docs-links pt-12 flex flex-row justify-end",
             nav {
-                class: "bg-white dark:bg-ideblack lg:bg-inherit pl-6 pb-32 z-20 text-base lg:block top-28 lg:-ml-3.5 w-[calc(100%-1rem)] md:w-60 lg:text-[14px] text-navy content-startleading-5",
+                class: "bg-white dark:bg-ideblack lg:bg-inherit pl-6 pb-32 z-20 text-base lg:block top-28 lg:-ml-3.5 pr-2 w-[calc(100%-1rem)] md:w-60 lg:text-[14px] text-navy content-startleading-5 ",
                 class: if HIGHLIGHT_DOCS_LAYOUT() { "border border-green-600 rounded-md" },
                 class: if SHOW_SIDEBAR() { "min-w-full" } else { "hidden" },
                 for chapter in chapters.into_iter().flatten().filter(|chapter| chapter.maybe_link().is_some()) {
@@ -66,20 +66,21 @@ fn DocVersionNav() -> Element {
     rsx! {
         div { class: "pb-4",
             ul { class: "pl-2",
-                li { class: "m-1 rounded-md pl-2 hover:text-sky-500 dark:hover:text-sky-400",
-                    p {
+                li { class: "m-1 rounded-md pl-2",
+                    span {
+                        class: "hover:text-sky-500 dark:hover:text-sky-400",
                         dioxus_material_icons::MaterialIcon { name: "chevron_left", color: MaterialIconColor::Custom("gray".to_string()) }
                         "0.5"
                     }
                 }
-                li { class: "m-1 rounded-md pl-2 hover:text-sky-500 dark:hover:text-sky-400",
-                    a { href: "/learn/0.4",
+                li { class: "m-1 rounded-md pl-2",
+                    a { href: "/learn/0.4", class: "hover:text-sky-500 dark:hover:text-sky-400",
                         dioxus_material_icons::MaterialIcon { name: "chevron_left", color: MaterialIconColor::Custom("gray".to_string()) }
                         "0.4"
                     }
                 }
-                li { class: "m-1 rounded-md pl-2 hover:text-sky-500 dark:hover:text-sky-400",
-                    a { href: "/learn/0.3",
+                li { class: "m-1 rounded-md pl-2",
+                    a { href: "/learn/0.3", class: "hover:text-sky-500 dark:hover:text-sky-400",
                         dioxus_material_icons::MaterialIcon { name: "chevron_left", color: MaterialIconColor::Custom("gray".to_string()) }
                         "0.3"
                     }
@@ -114,7 +115,7 @@ fn SidebarSection(chapter: &'static SummaryItem<BookRoute>) -> Element {
                 Link {
                     onclick: move |_| *SHOW_SIDEBAR.write() = false,
                     to: Route::Docs { child: *url },
-                    h3 { class: "font-semibold mb-4", "{link.name}" }
+                    h3 { class: "font-semibold mb-2 hover:text-sky-500 dark:hover:text-sky-400", "{link.name}" }
                 }
             }
             ul { class: "ml-1", {sections} }
@@ -138,7 +139,7 @@ fn SidebarChapter(chapter: &'static SummaryItem<BookRoute>) -> Element {
 
     if show_chevron {
         rsx! {
-            li { class: "my-1 mr-1 rounded-md ml-[-1px] hover:text-sky-500 dark:hover:text-sky-400",
+            li { class: "rounded-md hover:text-sky-500 dark:hover:text-sky-400",
                 Link {
                     onclick: move |_| *SHOW_SIDEBAR.write() = false,
                     to: Route::Docs { child: *url },
@@ -146,6 +147,7 @@ fn SidebarChapter(chapter: &'static SummaryItem<BookRoute>) -> Element {
                 }
                 button {
                     onclick: move |_| list_toggle.toggle(),
+                    class: "align-middle",
                     dioxus_material_icons::MaterialIcon {
                         name: "chevron_right",
                         color: MaterialIconColor::Custom("gray".to_string())
@@ -177,7 +179,7 @@ fn LocationLink(chapter: &'static SummaryItem<BookRoute>) -> Element {
             onclick: move |_| *SHOW_SIDEBAR.write() = false,
             to: Route::Docs { child: *url },
             li {
-                class: "mr-1 rounded-md hover:text-sky-500 dark:hover:text-sky-400",
+                class: "rounded-md hover:text-sky-500 dark:hover:text-sky-400",
                 class: if book_url.starts_with(&*url.to_string()) { "text-sky-500 dark:text-sky-400" },
                 "{link.name}"
             }
@@ -188,6 +190,7 @@ fn LocationLink(chapter: &'static SummaryItem<BookRoute>) -> Element {
 // Todo: wire this up to the sections of the current page and a scroll controller
 fn RightNav() -> Element {
     let page = use_book();
+
     let padding_map = ["", "", "pl-2", "pl-4", "pl-6", "pl-8"];
     let page_url = use_memo(move || page.to_string());
 
@@ -208,18 +211,17 @@ fn RightNav() -> Element {
         div {
             class: "overflow-y-auto hidden xl:block top-28 ml-12 h-full md:text-[14px] leading-5 text-navy dark:text-[#dee2e6] docs-right-sidebar w-48 sticky",
             class: if HIGHLIGHT_DOCS_LAYOUT() { "border border-green-600 rounded-md" },
-            // left: "calc(100vw - 15rem)",
             h2 { class: "pb-4 font-semibold", "On this page" }
             ul {
                 for section in page.sections().iter().skip(1) {
                     li { class: "pb-2 {padding_map[section.level-1]}",
-                        a { href: "?phantom={section.id}#{section.id}", "{section.title}" }
+                        a { class: "hover:text-sky-500 dark:hover:text-sky-400", href: "?phantom={section.id}#{section.id}", "{section.title}" }
                     }
                 }
             }
             h2 { class: "py-4 font-semibold",
                 match edit_github_url.cloned() {
-                    Some(url) => rsx!(a { href: "{url}", "Edit this page!" }),
+                    Some(url) => rsx!(a { class: "hover:text-sky-500 dark:hover:text-sky-400", href: "{url}", "Edit this page!" }),
                     None => rsx!(a { href: "{GITHUB_EDIT_PAGE_FALLBACK_URL}", "Edit this page!" })
                 }
             }

@@ -33,9 +33,11 @@ DesktopDependencies {}
 
 Next, lets install the Dioxus CLI:
 
-```sh
+```
 cargo install dioxus-cli@0.5.0
 ```
+
+If you get an OpenSSL error on installation, ensure the dependencies listed [here](https://docs.rs/openssl/latest/openssl/#automatic) are installed.
 
 ## Create a new project
 

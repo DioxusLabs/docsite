@@ -15,7 +15,6 @@ fn App() -> Element {
         button { onclick: move |_| count -= 1, "Down low!" }
         button {
             onclick: move |_| {
-                to_owned![count];
                 async move {
                     if let Ok(new_count) = double_server(count()).await {
                         count.set(new_count);

@@ -77,7 +77,6 @@
 
 ---
 - [CLI](CLI/index.md)
-	- [Installation](CLI/installation.md)
 	- [Create a Project](CLI/creating.md)
 	- [Configure Project](CLI/configure.md)
   - [Translate HTML](CLI/translate.md)

@@ -42,7 +42,7 @@ Then, you can choose to either provide them or not:
 {{#include src/doc_examples/component_props_options.rs:OptionalProps_usage}}
 ```
 
-### Explicitly Required `Option`s
+### Explicitly Required Option
 
 If you want to explicitly require an `Option`, and not an optional prop, you can annotate it with `#[props(!optional)]`:
 
@@ -70,7 +70,7 @@ Then, similarly to optional props, you don't have to provide it:
 {{#include src/doc_examples/component_props_options.rs:DefaultComponent_usage}}
 ```
 
-### Automatic Conversion with `.into`
+### Automatic Conversion with into
 
 It is common for Rust functions to accept `impl Into<SomeType>` rather than just `SomeType` to support a wider range of parameters. If you want similar functionality with props, you can use `#[props(into)]`. For example, you could add it on a `String` prop – and `&str` will also be automatically accepted, as it can be converted into `String`:
 
@@ -84,7 +84,7 @@ Then, you can use it so:
 {{#include src/doc_examples/component_props_options.rs:IntoComponent_usage}}
 ```
 
-## The `component` macro
+## The component macro
 
 So far, every Component function we've seen had a corresponding ComponentProps struct to pass in props. This was quite verbose... Wouldn't it be nice to have props as simple function arguments? Then we wouldn't need to define a Props struct, and instead of typing `props.whatever`, we could just use `whatever` directly!
 
@@ -132,7 +132,7 @@ Then, when rendering the component, you can pass in the output of `rsx!{...}`:
 
 > Warning: While it may compile, do not include the same `Element` more than once in the RSX. The resulting behavior is unspecified.
 
-### The `children` field
+### The children field
 
 Rather than passing the RSX through a regular prop, you may wish to accept children similarly to how elements can have children. The "magic" `children` prop lets you achieve this:
 

@@ -5,6 +5,8 @@ module.exports = {
   theme: {
     extend: {
       colors: {
+        dxorange: "#E96020",
+        dxblue: "#00A8D6",
         ghmetal: "#24292f",
         ghdarkmetal: "#161b22",
         // ideblack: "#222529",

@@ -10,7 +10,7 @@ There are many packages in the Dioxus organization. This document will help you 
 - [Liveview](https://github.com/DioxusLabs/dioxus/tree/main/packages/liveview): A Render that Runs on the server, and renders using a websocket proxy in the browser
 - [Plasmo](https://github.com/DioxusLabs/blitz/tree/master/packages/plasmo): A Renderer that renders a HTML-like tree into a terminal
 - [TUI](https://github.com/DioxusLabs/blitz/tree/master/packages/dioxus-tui): A Renderer that uses Plasmo to render a Dioxus application in a terminal
-- [Blitz-Core](https://github.com/DioxusLabs/blitz/tree/master/blitz-core): An experimental native renderer that renders a HTML-like tree using WGPU.
+- [Blitz-Core](https://github.com/DioxusLabs/blitz/tree/master/packages/blitz-core): An experimental native renderer that renders a HTML-like tree using WGPU.
 - [Blitz](https://github.com/DioxusLabs/blitz): An experimental native renderer that uses Blitz-Core to render a Dioxus application using WGPU.
 - [SSR](https://github.com/DioxusLabs/dioxus/tree/main/packages/ssr): A Render that Runs Dioxus applications on the server, and renders them to HTML
 
@@ -18,7 +18,7 @@ There are many packages in the Dioxus organization. This document will help you 
 
 - [Hooks](https://github.com/DioxusLabs/dioxus/tree/main/packages/hooks): A collection of common hooks for Dioxus applications
 - [Signals](https://github.com/DioxusLabs/dioxus/tree/main/packages/signals): A experimental state management library for Dioxus applications. This currently contains a `Copy` version of Signal
-- [Dioxus STD](https://github.com/DioxusLabs/dioxus-std): A collection of platform agnostic hooks to interact with system interfaces (The clipboard, camera, etc.).
+- [SDK](https://github.com/DioxusLabs/sdk): A collection of platform agnostic hooks to interact with system interfaces (The clipboard, camera, etc.).
 - [Fermi](https://github.com/DioxusLabs/dioxus/tree/main/packages/fermi): A global state management library for Dioxus applications.
 - [Router](https://github.com/DioxusLabs/dioxus/tree/main/packages/router): A client-side router for Dioxus applications
 
@@ -32,9 +32,9 @@ There are many packages in the Dioxus organization. This document will help you 
 
 ## Native Renderer Utilities
 
-- [native-core](https://github.com/DioxusLabs/dioxus/tree/main/packages/native-core): Incrementally computed tree of states (mostly styles)
+- [native-core](https://github.com/DioxusLabs/blitz/tree/main/packages/native-core): Incrementally computed tree of states (mostly styles)
   - You can read more about how native-core can help you build native renderers in the [custom renderer section of the guide](../custom_renderer/index.html#native-core)
-- [native-core-macro](https://github.com/DioxusLabs/dioxus/tree/main/packages/native-core-macro): A helper macro for native core
+- [native-core-macro](https://github.com/DioxusLabs/blitz/tree/main/packages/native-core-macro): A helper macro for native core
 - [Taffy](https://github.com/DioxusLabs/taffy): Layout engine powering Blitz-Core, Plasmo, and Bevy UI
 
 ## Web renderer tooling

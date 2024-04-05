@@ -6,9 +6,8 @@ pub fn App() -> Element {
     // ANCHOR: use_coroutine
     // import futures::StreamExt to use the next() method
     use futures::StreamExt;
-    let response_state = use_signal(|| None);
-    let tx = use_coroutine(|mut rx| {
-        to_owned![response_state];
+    let mut response_state = use_signal(|| None);
+    let tx = use_coroutine(move |mut rx| {
         async move {
             // Define your state before the loop
             let mut state = reqwest::Client::new();

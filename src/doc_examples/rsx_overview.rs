@@ -18,10 +18,12 @@ pub fn App() -> Element {
 
 pub fn Button() -> Element {
     // ANCHOR: button
-    rsx! {button {
-        // attributes / listeners
-        // children
-    }
+    rsx! {
+        button {
+            // attributes / listeners
+            // children
+            "Hello, World!"
+        }
     }
     // ANCHOR_END: button
 }

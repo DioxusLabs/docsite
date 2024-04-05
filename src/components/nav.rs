@@ -14,11 +14,11 @@ pub(crate) fn Nav() -> Element {
     rsx! {
         SearchModal {}
         header {
-            class: "sticky top-0 z-30 bg-white dark:text-gray-200 dark:bg-ideblack border-b dark:border-stone-700 h-16 bg-opacity-80 backdrop-blur-sm",
+            class: "sticky top-0 z-30 bg-white bg-opacity-80 dark:text-gray-200 dark:bg-ideblack dark:bg-opacity-80 border-b dark:border-stone-700 h-16 backdrop-blur-sm",
             class: if HIGHLIGHT_NAV_LAYOUT() { "border border-orange-600 rounded-md" },
             div { class: "lg:py-2 px-2 max-w-screen-2xl mx-auto flex items-center justify-between text-sm leading-6 h-16",
                 button {
-                    class: "bg-gray-100 rounded-lg p-2 mr-4 lg:hidden my-3 h-10 flex items-center text-lg z-[100]",
+                    class: "bg-zinc-300 rounded-lg p-2 mr-4 lg:hidden my-3 h-10 flex items-center text-lg z-[100]",
                     class: if !SHOW_DOCS_NAV() { "hidden" },
                     onclick: move |_| {
                         let mut sidebar = SHOW_SIDEBAR.write();
@@ -27,7 +27,6 @@ pub(crate) fn Nav() -> Element {
                     MaterialIcon { name: "menu", size: 24, color: MaterialIconColor::Dark }
                 }
                 div { class: "flex z-50 md:flex-1 px-2", LinkList {} }
-
                 div { class: "hidden md:flex h-full justify-end ml-2 flex-1",
                     div { class: "hidden md:flex items-center",
                         Search {}
@@ -90,19 +89,16 @@ static LINKS: &[(&str, &str)] = &[
 fn LinkList() -> Element {
     let current_route = use_route::<Route>().to_string();
 
-    let linsk = LINKS.iter().cloned().map(|(name, link)| {
+    let links = LINKS.iter().cloned().map(|(name, link)| {
         let is_current = current_route.starts_with(link);
         let cur_class = if is_current { "text-sky-500 dark:text-sky-400" } else { "" };
 
         let is_external = link.starts_with("http");
 
-
         rsx! {
-            // "{link}"
-            // "{current_route}"
             Link {
                 to: link,
-                class: "p-0 md:p-2 leading-none hover:text-sky-500 dark:hover:text-sky-400 rounded {cur_class}",
+                class: "p-0 p-2 leading-none hover:text-sky-500 dark:hover:text-sky-400 rounded fill-zinc-700 dark:fill-zinc-100 {cur_class}",
                 position: "relative",
                 "{name}"
                 if is_external {
@@ -114,7 +110,6 @@ fn LinkList() -> Element {
                         class: "navbar_externalArrow___VWBd",
                         path {
                             "d": "M1.25215 5.54731L0.622742 4.9179L3.78169 1.75597H1.3834L1.38936 0.890915H5.27615V4.78069H4.40513L4.41109 2.38538L1.25215 5.54731Z",
-                            "fill": "var(--accents-3)"
                         }
                     }
                 }
@@ -135,7 +130,7 @@ fn LinkList() -> Element {
                     "Dioxus Labs"
                 }
             }
-            {linsk}
+            {links}
         }
     }
 }

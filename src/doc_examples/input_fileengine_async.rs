@@ -3,7 +3,7 @@ use dioxus::prelude::*;
 
 // ANCHOR: component
 pub fn App() -> Element {
-    let files_uploaded: Signal<Vec<String>> = use_signal(Vec::new);
+    let mut files_uploaded: Signal<Vec<String>> = use_signal(Vec::new);
 
     rsx! {
         input {
@@ -12,7 +12,6 @@ pub fn App() -> Element {
             multiple: true,
             // ANCHOR: onchange_event
             onchange: move |evt| {
-                to_owned![files_uploaded];
                 async move {
                     if let Some(file_engine) = evt.files() {
                         let files = file_engine.files();
@@ -25,6 +24,7 @@ pub fn App() -> Element {
                     }
                 }
             }
+            // ANCHOR_END: onchange_event
         }
     }
 }

@@ -10,7 +10,7 @@ pub fn App() -> Element {
             r#type: "file",
             // Select a folder by setting the directory attribute
             directory: true,
-            onchange: |evt| {
+            onchange: move |evt| {
                 if let Some(file_engine) = evt.files() {
                     let files = file_engine.files();
                     for file_name in files {
@@ -19,6 +19,7 @@ pub fn App() -> Element {
                 }
             }
         }
+        // ANCHOR_END: rsx
     }
 }
 // ANCHOR_END: component

@@ -49,7 +49,6 @@ fn Home() -> Element {
             button { onclick: move |_| count -= 1, "Down low!" }
             button {
                 onclick: move |_| {
-                    to_owned![text];
                     async move {
                         if let Ok(data) = get_server_data().await {
                             println!("Client received: {}", data);

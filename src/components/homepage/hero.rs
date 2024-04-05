@@ -4,8 +4,7 @@ use manganis::mg;
 pub(crate) fn Hero() -> Element {
     rsx! {
         section { class: "w-full dark:bg-ideblack h-fit [@media(min-height:720px)]:min-h-[calc(100vh-6rem)] flex flex-col justify-between items-center py-16",
-
-            div { class: "flex flex-wrap items-center pb-12 px-3 md:px-12 max-w-screen-2xl mx-auto text-center my-auto",
+            div { class: "flex flex-wrap items-center pb-12 md:px-12 max-w-screen-2xl mx-auto text-center my-auto",
                 div { class: "relative w-full mx-4 sm:mx-auto text-gray-600",
                     div { class: "text-[3em] md:text-[5em] font-semibold dark:text-white text-ghdarkmetal font-sans py-12 flex flex-col",
                         span { "Fullstack, crossplatform," }
@@ -31,19 +30,19 @@ pub(crate) fn Hero() -> Element {
                         alt: "Dioxus Contributors"
                     }
 
-                    div { class: "pt-12 text-white text-[1.2em] font-sans font-bold flex flex-row justify-center space-x-4",
+                    div { class: "pt-12 text-white text-[1.2em] font-sans font-bold flex flex-col md:flex-row justify-center md:space-x-4 md:space-y-0 space-y-4",
                         Link {
                             to: Route::Docs {
                                 child: BookRoute::GettingStartedIndex {},
                             },
-                            class: "bg-red-600 py-2 px-8 hover:-translate-y-2 transition-transform duration-300",
+                            class: "bg-dxorange m-0 p-4 px-8 rounded md:hover:-translate-y-2 transition-transform duration-300 w-full md:w-auto",
                             "Quickstart"
                         }
                         Link {
                             to: Route::Docs {
                                 child: BookRoute::ReferenceIndex {},
                             },
-                            class: "bg-blue-500 py-2 px-8 hover:-translate-y-2 transition-transform duration-300",
+                            class: "bg-dxblue m-0 p-4 px-8 rounded md:hover:-translate-y-2 transition-transform duration-300 w-full md:w-auto",
                             "Read the docs"
                         }
                     }
@@ -69,32 +68,6 @@ pub(crate) fn Hero() -> Element {
                         }
                     }
                 }
-            }
-        }
-    }
-}
-
-static ADD_TO_CLIPBOARD: &str = r#"navigator.clipboard.writeText("cargo add dioxus")"#;
-
-fn SaveClipboard() -> Element {
-    let mut saved = use_signal(|| false);
-
-    // funny that we can just default to some javascript like this
-    // might want to do the same thing in rust so we can display a selected state
-    rsx! {
-        button {
-            class: "w-full sm:w-auto flex-none bg-gray-50 text-gray-400 hover:text-gray-900 font-mono leading-6 py-3 sm:px-6 border border-gray-200 rounded-xl items-center justify-center space-x-2 sm:space-x-4 focus:ring-2 focus:ring-offset-2 focus:ring-offset-white focus:ring-gray-300 focus:outline-none transition-colors duration-200 hidden md:flex",
-            "onclick": "{ADD_TO_CLIPBOARD}",
-            "type": "button",
-            onclick: move |_| saved.set(true),
-            span { class: "text-gray-900",
-                span {
-                    class: "hidden sm:inline text-gray-500",
-                    aria_hidden: "true",
-                    "$ "
-                }
-                span { class: "text-red-400", "cargo " }
-                "add dioxus"
             }
         }
     }

@@ -39,7 +39,7 @@ fn Blog(id: i32) -> Element {
 #[component]
 fn Home() -> Element {
     let mut count = use_signal(|| 0);
-    let text = use_signal(|| "...".to_string());
+    let mut text = use_signal(|| "...".to_string());
 
     rsx! {
         Link { to: Route::Blog { id: count() }, "Go to blog" }

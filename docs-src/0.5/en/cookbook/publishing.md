@@ -48,6 +48,16 @@ And then your `main.rs`:
 #![cfg_attr(feature = "bundle", windows_subsystem = "windows")]
 ```
 
+## Adding assets to your application
+
+If you want to bundle assets with your application, you can either use them with the `manganis` crate (covered more in the [assets](../reference/assets.md) page), or you can include them in your `Dioxus.toml` file:
+
+```toml
+[bundle]
+# The list of files to include in the bundle. These can contain globs.
+resources = ["main.css", "header.svg", "**/*.png"]
+```
+
 ## Install `dioxus CLI`
 
 The first thing we'll do is install the [dioxus-cli](https://github.com/DioxusLabs/dioxus/tree/main/packages/cli). This extension to cargo will make it very easy to package our app for the various platforms.

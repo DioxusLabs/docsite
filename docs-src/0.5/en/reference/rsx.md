@@ -12,7 +12,7 @@ Here, we use the `rsx!` macro to _declare_ that we want a `div` element, contain
 
 ## RSX Features
 
-RSX is very similar to HTML in that it describes elements with attributes and children. Here's an empty `div` element in RSX, as well as the resulting HTML:
+RSX is very similar to HTML in that it describes elements with attributes and children. Here's an empty `button` element in RSX, as well as the resulting HTML:
 
 ```rust, no_run
 {{#include src/doc_examples/rsx_overview.rs:button}}

@@ -30,7 +30,7 @@ pub fn Button() -> Element {
 
 pub fn AttributesType() -> Element {
     // ANCHOR: attributes_type
-    rsx! { input { r#type: "text" } }
+    rsx! { input { r#type: "text", color: "red" } }
     // ANCHOR_END: attributes_type
 }
 

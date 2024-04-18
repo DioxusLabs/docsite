@@ -62,7 +62,9 @@ As a result, any child component of `App` (direct or not), can access the `DarkM
 {{#include src/doc_examples/meme_editor_dark_mode.rs:use_context}}
 ```
 
-> `use_context_provider` returns `Signal<DarkMode>` here. If the context has been provided, the value is `Some(Signal<DarkMode>)`, which you can call `.read` or `.write` on, similarly to `Signal`. Otherwise, the value is `None`.
+> `use_context` returns `Signal<DarkMode>` here, because the Signal was provided by the parent. If the context hadn't been provided `use_context` would have panicked.
+
+If you have a component where the context might or not be provided, you might want to use `try_consume_context`instead, so you can handle the `None` case. The drawback of this method is that it will not memoeize the value between renders, so it won't be as as efficient as `use_context`, you could do it yourself with `use_hook` though.
 
 For example, here's how we would implement the dark mode toggle, which both reads the context (to determine what color it should render) and writes to it (to toggle dark mode):
 

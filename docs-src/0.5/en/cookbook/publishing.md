@@ -64,7 +64,7 @@ The first thing we'll do is install the [dioxus-cli](https://github.com/DioxusLa
 
 To install, simply run
 
-`cargo install dioxus-cli@0.5.0`
+`cargo install dioxus-cli@0.5`
 
 ## Building
 

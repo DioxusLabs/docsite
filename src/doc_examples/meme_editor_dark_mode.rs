@@ -38,7 +38,7 @@ pub fn App() -> Element {
 
 pub fn use_is_dark_mode() -> bool {
     // ANCHOR: use_context
-    let dark_mode_context = consume_context::<Signal<DarkMode>>();
+    let dark_mode_context = use_context::<Signal<DarkMode>>();
     // ANCHOR_END: use_context
 
     dark_mode_context().0
@@ -46,7 +46,7 @@ pub fn use_is_dark_mode() -> bool {
 
 // ANCHOR: toggle
 pub fn DarkModeToggle() -> Element {
-    let mut dark_mode = consume_context::<Signal<DarkMode>>();
+    let mut dark_mode = use_context::<Signal<DarkMode>>();
 
     let style = if dark_mode().0 { "color:white" } else { "" };
 

@@ -6,7 +6,7 @@ Development happens in the [Dioxus GitHub repository](https://github.com/DioxusL
 
 ## Improving Docs
 
-If you'd like to improve the docs, PRs are welcome! Both Rust docs ([source](https://github.com/DioxusLabs/dioxus/tree/main/packages)) and this guide ([source](https://github.com/DioxusLabs/dioxus/tree/main/docs/guide)) can be found in the GitHub repo.
+If you'd like to improve the docs, PRs are welcome! The Rust docs ([source](https://github.com/DioxusLabs/dioxus/tree/main/packages)) and this guide ([source](https://github.com/DioxusLabs/docsite/tree/main/docs-src/0.5/en)) can be found in their respective GitHub repos.
 
 ## Working on the Ecosystem
 
@@ -29,6 +29,12 @@ GitHub CI is much slower at executing all of these than your PC.
 
 ```sh
 cargo fmt -- src/**/**.rs
+```
+
+- You might need to install some packages on Linux (Ubuntu/deb) before the following commands will complete successfully (there is also a Nix flake in the repo root):
+
+```sh
+sudo apt install libgdk3.0-cil libatk1.0-dev libcairo2-dev libpango1.0-dev libgdk-pixbuf2.0-dev libsoup-3.0-dev libjavascriptcoregtk-4.1-dev libwebkit2gtk-4.1-dev
 ```
 
 - Check all code [cargo check](https://doc.rust-lang.org/cargo/commands/cargo-check.html):
@@ -88,15 +94,13 @@ This is where we will be testing the features of the forked
 cargo new --bin demo
 ```
 
-- Add the dioxus dependencies for your rust crate (new/existing) in cargo.toml:
+- Add the dioxus dependency to your rust crate (new/existing) in Cargo.toml:
 
 ```toml
-dioxus = { path = "<path to forked dioxus project>/dioxus/packages/dioxus/" }
-
-dioxus-web = { path = "<path to forked dioxus project>/dioxus/packages/web/" }
+dioxus = { path = "<path to forked dioxus project>/dioxus/packages/dioxus", features = ["web", "router"] }
 ```
 
-This above example is for dioxus-web. To know about the dependencies for different renderer visit [here](https://dioxuslabs.com/learn/0.5/getting_started).
+This above example is for dioxus-web, with dioxus-router. To know about the dependencies for different renderer visit [here](https://dioxuslabs.com/learn/0.5/getting_started).
 
 - Run and test your feature
 

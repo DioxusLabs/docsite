@@ -15,3 +15,6 @@ If at any point the router encounters a navigation failure, it will go to the ap
 ```rust
 {{#include src/doc_examples/routing_update.rs:router}}
 ```
+
+[`NavigationTarget`]: https://docs.rs/dioxus-router/latest/dioxus_router/navigation/enum.NavigationTarget.html
+[`RouterConfig`]: https://docs.rs/dioxus-router/latest/dioxus_router/prelude/struct.RouterConfig.html

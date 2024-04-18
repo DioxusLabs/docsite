@@ -36,8 +36,11 @@ Just like routes, layouts components must accept a prop for each dynamic segment
 {{#include src/doc_examples/outlet.rs:outlet_with_params}}
 ```
 
-Or to get the full route, you can use the [`use_route`](https://docs.rs/dioxus-router/latest/dioxus_router/hooks/fn.use_route.html) hook.
+Or to get the full route, you can use the `use_route` hook.
 
 ```rust
 {{#include src/doc_examples/outlet.rs:outlet_route}}
 ```
+
+[`Outlet`]: https://docs.rs/dioxus-router/latest/dioxus_router/components/fn.Outlet.html
+[`use_route`]: https://docs.rs/dioxus-router/latest/dioxus_router/hooks/fn.use_route.html

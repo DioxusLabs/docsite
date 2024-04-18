@@ -21,7 +21,7 @@ We can use the [`Navigator`] to trigger four different kinds of navigation:
 
 You might have noticed that, like [`Link`], the [`Navigator`]s `push` and
 `replace` functions take a [`NavigationTarget`]. This means we can use either
-[`Internal`], or [`External`] targets.
+`Internal`, or `External` targets.
 
 ## External Navigation Targets
 
@@ -30,3 +30,8 @@ handle navigation to external targets via a generated anchor element.
 
 This means, that under certain conditions, navigation to external targets can
 fail.
+
+
+[`Link`]: https://docs.rs/dioxus-router/latest/dioxus_router/components/fn.Link.html
+[`NavigationTarget`]: https://docs.rs/dioxus-router/latest/dioxus_router/navigation/enum.NavigationTarget.html
+[`Navigator`]: https://docs.rs/dioxus-router/latest/dioxus_router/prelude/struct.Navigator.html

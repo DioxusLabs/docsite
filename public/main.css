@@ -44,9 +44,9 @@ html.dark .docs-toc {
     scrollbar-width: thin;
     scrollbar-color: #212529 #212529
 }
-
-.docs-links .full-chapter:not(:last-child) {
-    border-bottom: 1px solid #bebebe
+/* Adds border bottom to everything but the first and last chapters */
+.docs-links .full-chapter:not(:last-child):not(:first-child) {
+    border-bottom: 1px solid #212529;
 }
 
 .docs-links .full-chapter:first-child>h3 {

@@ -46,7 +46,7 @@ impl CodeBlock {
                 format!("No syntax found for extension {}", extension),
             )
         })?;
-        let html = syntect::html::highlighted_html_for_string(&code, &ss, &syntax, theme).map_err(
+        let html = syntect::html::highlighted_html_for_string(&code, &ss, syntax, theme).map_err(
             |err| {
                 syn::Error::new(
                     Span::call_site(),
@@ -86,7 +86,7 @@ impl Parse for CodeBlockFs {
             std::env::var("CARGO_MANIFEST_DIR")
                 .map_err(|_| syn::Error::new(Span::call_site(), "CARGO_MANIFEST_DIR not found"))?,
         );
-        let path = path.join(&code_path);
+        let path = path.join(code_path);
         let code = std::fs::read_to_string(&path).map_err(|err| {
             syn::Error::new(
                 Span::call_site(),
@@ -102,10 +102,10 @@ impl Parse for CodeBlockFs {
         let html = syntect::html::highlighted_html_for_string(
             &code,
             &syntect::parsing::SyntaxSet::load_defaults_newlines(),
-            &syntect::parsing::SyntaxSet::load_defaults_newlines()
+            syntect::parsing::SyntaxSet::load_defaults_newlines()
                 .find_syntax_by_extension(extension)
                 .unwrap(),
-            &syntect::highlighting::ThemeSet::load_defaults()
+            syntect::highlighting::ThemeSet::load_defaults()
                 .themes
                 .get(&theme)
                 .unwrap(),

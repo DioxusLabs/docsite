@@ -79,7 +79,13 @@ impl<'a, I: Iterator<Item = Event<'a>>> RsxMarkdownParser<'a, I> {
                 self.create_node(BodyNode::Text(IfmtInput::new_static(&text)));
             }
             pulldown_cmark::Event::Code(code) => {
-                self.create_node(BodyNode::Text(IfmtInput::new_static(&code)));
+                self.create_node(BodyNode::Element(Element::new(
+                    None,
+                    dioxus_rsx::ElementName::Ident(Ident::new("code", Span::call_site())),
+                    Vec::new(),
+                    vec![BodyNode::Text(IfmtInput::new_static(&code))],
+                    Default::default(),
+                )));
             }
             pulldown_cmark::Event::Html(_) => {}
             pulldown_cmark::Event::FootnoteReference(_) => {}
@@ -125,18 +131,11 @@ impl<'a, I: Iterator<Item = Event<'a>>> RsxMarkdownParser<'a, I> {
 
     fn take_code_or_text(&mut self) -> String {
         let mut current_text = String::new();
-        loop {
-            match self.iter.peek() {
-                Some(pulldown_cmark::Event::Code(_) | pulldown_cmark::Event::Text(_)) => {
-                    match self.iter.next().unwrap() {
-                        pulldown_cmark::Event::Text(text) | pulldown_cmark::Event::Code(text) => {
-                            current_text += &text;
-                        }
-                        _ => break,
-                    }
-                }
-                _ => break,
-            }
+        while let Some(pulldown_cmark::Event::Code(text) | pulldown_cmark::Event::Text(text)) =
+            self.iter.peek()
+        {
+            current_text += &text;
+            let _ = self.iter.next().unwrap();
         }
         current_text
     }
@@ -144,25 +143,33 @@ impl<'a, I: Iterator<Item = Event<'a>>> RsxMarkdownParser<'a, I> {
     fn write_text(&mut self) {
         loop {
             match self.iter.peek() {
-                Some(pulldown_cmark::Event::Text(_)) => match self.iter.next().unwrap() {
-                    pulldown_cmark::Event::Text(text) => {
-                        self.create_node(BodyNode::Text(IfmtInput::new_static(&text)));
+                Some(pulldown_cmark::Event::Text(text)) => {
+                    let mut all_text = text.to_string();
+
+                    // Take the text or code event we just inserted
+                    let _ = self.iter.next().unwrap();
+
+                    // If the next block after this is a code block, insert the space in the text before the code block
+                    if let Some(pulldown_cmark::Event::Code(_)) = self.iter.peek() {
+                        all_text.push(' ');
                     }
-                    _ => return,
-                },
-                Some(pulldown_cmark::Event::Code(_)) => match self.iter.next().unwrap() {
-                    pulldown_cmark::Event::Code(text) => {
-                        let code = BodyNode::Text(IfmtInput::new_static(&text));
-                        self.create_node(BodyNode::Element(Element::new(
-                            None,
-                            dioxus_rsx::ElementName::Ident(Ident::new("code", Span::call_site())),
-                            Vec::new(),
-                            vec![code],
-                            Default::default(),
-                        )));
-                    }
-                    _ => return,
-                },
+
+                    let text = BodyNode::Text(IfmtInput::new_static(&all_text));
+                    self.create_node(text);
+                }
+                Some(pulldown_cmark::Event::Code(code)) => {
+                    let code = BodyNode::Text(IfmtInput::new_static(code));
+                    self.create_node(BodyNode::Element(Element::new(
+                        None,
+                        dioxus_rsx::ElementName::Ident(Ident::new("code", Span::call_site())),
+                        Vec::new(),
+                        vec![code],
+                        Default::default(),
+                    )));
+
+                    // Take the text or code event we just inserted
+                    let _ = self.iter.next().unwrap();
+                }
                 _ => return,
             }
         }
@@ -170,16 +177,16 @@ impl<'a, I: Iterator<Item = Event<'a>>> RsxMarkdownParser<'a, I> {
 
     fn take_text(&mut self) -> String {
         let mut current_text = String::new();
-        loop {
-            match self.iter.peek() {
-                Some(pulldown_cmark::Event::Text(_)) => match self.iter.next().unwrap() {
-                    pulldown_cmark::Event::Text(text) => {
-                        current_text += &text;
-                    }
-                    _ => break,
-                },
-                _ => break,
+        // pulldown_cmark will create a new text node for each newline. We insert a space
+        // between each newline to avoid two lines being rendered right next to each other.
+        let mut insert_space = false;
+        while let Some(pulldown_cmark::Event::Text(text)) = self.iter.peek() {
+            if insert_space {
+                current_text.push(' ');
             }
+            current_text += text;
+            insert_space = true;
+            let _ = self.iter.next().unwrap();
         }
         current_text
     }
@@ -607,14 +614,20 @@ impl<'a, I: Iterator<Item = Event<'a>>> RsxMarkdownParser<'a, I> {
     }
 
     fn create_node(&mut self, node: BodyNode) {
-        match self.last_mut() {
-            Some(BodyNode::Element(element)) => {
-                element.children.push(node);
-            }
-            None => {
-                self.root_nodes.push(node);
-            }
-            _ => {}
+        // Find the list of elements we should add the node to
+        let element_list = match self.last_mut() {
+            Some(BodyNode::Element(element)) => &mut element.children,
+            None => &mut self.root_nodes,
+            _ => return,
+        };
+
+        // If the last element is a text node, we can just join the text nodes together with a space
+        if let (Some(BodyNode::Text(last_text)), BodyNode::Text(new_text)) =
+            (element_list.last_mut(), &node)
+        {
+            *last_text = last_text.clone().join(new_text.clone(), " ");
+        } else {
+            element_list.push(node);
         }
     }
 

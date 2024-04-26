@@ -140,7 +140,7 @@ fn LinuxDependencies() -> Element {
                 "If you run into issues, make sure you have all the basics installed, as outlined in the "
                 Link {
                     "Tauri docs"
-                    to: "https://beta.tauri.app/guides/prerequisites/"
+                    to: "https://beta.tauri.app/start/prerequisites/"
                 }
                 "."
             }

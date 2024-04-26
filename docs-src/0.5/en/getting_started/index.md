@@ -85,6 +85,8 @@ cd my_project
 dx serve
 ```
 
+For Web targets the application will be served at [http://localhost:8080](http://localhost:8080)
+
 ## Conclusion
 
 That's it! You now have a working Dioxus project. You can continue learning about dioxus by [making a hackernews clone in the guide](../guide/index.md), or learning about specific topics/platforms in the [reference](../reference/index.md). If you have any questions, feel free to ask in the [discord](https://discord.gg/XgGxMSkvUM) or [open a discussion](https://github.com/DioxusLabs/dioxus/discussions).

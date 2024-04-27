@@ -46,6 +46,10 @@ fn LeftNav() -> Element {
         &LAZY_BOOK.summary.suffix_chapters,
     ];
 
+    // We use this to remove the spacing between "Introduction" and "Getting Started"
+    // TODO: Make this depend on if the chapter has any links.
+    let mut keep_bottom_spacing = false;
+
     rsx! {
         // Create a flex grow container, and then right-align its contents so it's squahed against the center
         div { class: "overflow-y-auto sticky docs-links pt-12 flex flex-row justify-end",
@@ -54,7 +58,8 @@ fn LeftNav() -> Element {
                 class: if HIGHLIGHT_DOCS_LAYOUT() { "border border-green-600 rounded-md" },
                 class: if SHOW_SIDEBAR() { "min-w-full" } else { "hidden" },
                 for chapter in chapters.into_iter().flatten().filter(|chapter| chapter.maybe_link().is_some()) {
-                    SidebarSection { chapter }
+                    SidebarSection { chapter, keep_bottom_spacing }
+                    {keep_bottom_spacing = true}
                 }
             }
         }
@@ -101,7 +106,7 @@ fn DocVersionNav() -> Element {
 ///
 /// This renders a single section
 #[component]
-fn SidebarSection(chapter: &'static SummaryItem<BookRoute>) -> Element {
+fn SidebarSection(chapter: &'static SummaryItem<BookRoute>, keep_bottom_spacing: bool) -> Element {
     let link = chapter.maybe_link()?;
 
     let sections = link
@@ -110,7 +115,9 @@ fn SidebarSection(chapter: &'static SummaryItem<BookRoute>) -> Element {
         .map(|chapter| rsx! { SidebarChapter { chapter: chapter } });
 
     rsx! {
-        div { class: "full-chapter pb-4 mb-6",
+        div { 
+            class: "full-chapter",
+            class: if keep_bottom_spacing { "pb-4 mb-6" },
             if let Some(url) = &link.location {
                 Link {
                     onclick: move |_| *SHOW_SIDEBAR.write() = false,

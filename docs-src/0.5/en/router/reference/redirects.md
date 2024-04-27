@@ -11,3 +11,5 @@ In the following example, we will redirect everybody from `/myblog` and `/myblog
 ```rust
 {{#include src/doc_examples/full_example.rs:router}}
 ```
+
+[`NavigationTarget`]: https://docs.rs/dioxus-router/latest/dioxus_router/navigation/enum.NavigationTarget.html

@@ -8,7 +8,7 @@ include links, nested routes, and route parameters.
 Our site visitors won't know all the available pages and blogs on our site so we
 should provide a navigation bar for them. Our navbar will be a list of links going between our pages.
 
-We want our navbar component to be rendered on several different pages on our site. Instead of duplicating the code, we can create a component that wraps all children routes. This is called a layout component. To tell the router where to render the child routes, we use the [`Outlet`] component.
+We want our navbar component to be rendered on several different pages on our site. Instead of duplicating the code, we can create a component that wraps all children routes. This is called a layout component. To tell the router where to render the child routes, we use the [`Outlet`](https://docs.rs/dioxus-router/latest/dioxus_router/components/fn.Outlet.html) component.
 
 Let's create a new `NavBar` component:
 
@@ -31,7 +31,7 @@ Instead, we want to use the [`Link`] component provided by Dioxus Router.
 
 The [`Link`] is similar to a regular `<a>` tag. It takes a target and children.
 
-Unlike a regular `<a>` tag, we can pass in our Route enum as the target. Because we annotated our routes with the [`route(path)`] attribute, the [`Link`] will know how to generate the correct URL. If we use the Route enum, the rust compiler will prevent us from linking to a page that doesn't exist.
+Unlike a regular `<a>` tag, we can pass in our Route enum as the target. Because we annotated our routes with the `#[route(path)]` attribute, the [`Link`] will know how to generate the correct URL. If we use the Route enum, the rust compiler will prevent us from linking to a page that doesn't exist.
 
 Let's add our links:
 

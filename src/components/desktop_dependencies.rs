@@ -134,7 +134,7 @@ fn LinuxDependencies() -> Element {
     rsx! {
         div {
             p {
-                "WebView Linux apps require WebkitGtk. When distributing, this can be part of your dependency tree in your `.rpm` or `.deb`. However, likely, your users will already have WebkitGtk."
+                "WebView Linux apps require WebkitGtk and xdotool. When distributing, these should be part of your dependency tree in your `.rpm` or `.deb`."
             }
             p {
                 "If you run into issues, make sure you have all the basics installed, as outlined in the "

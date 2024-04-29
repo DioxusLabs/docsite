@@ -62,7 +62,7 @@ pub(crate) fn DesktopDependencies() -> Element {
 
     rsx! {
         button {
-            class: "p-2 text-white border-0 hover:text-blue-400 text-2xl",
+            class: "p-2 border-0 hover:text-blue-400 text-2xl",
             onclick: move |_| {
                 active.toggle();
             },
@@ -83,7 +83,7 @@ pub(crate) fn DesktopDependencies() -> Element {
             div {
                 class: "flex flex-col items-center justify-center",
                 div {
-                    class: "flex flex-col width-full items-center justify-center space-y-4 text-white divide-y-2 border-white m-5 rounded-lg",
+                    class: "flex flex-col width-full items-center justify-center space-y-4 divide-y-2 border-white m-5 rounded-lg",
                     div {
                         class: "flex flex-row items-center justify-center m-2",
                         "Your OS: "

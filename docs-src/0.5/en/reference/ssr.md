@@ -55,6 +55,8 @@ Or we can render VirtualDoms.
 {{#include src/doc_examples/ssr.rs:app_endpoint_vdom}}
 ```
 
+Finally, you can run it using `cargo run` rather than `dx serve`.
+
 ## Multithreaded Support
 
 The Dioxus VirtualDom, sadly, is not currently `Send`. Internally, we use quite a bit of interior mutability which is not thread-safe.

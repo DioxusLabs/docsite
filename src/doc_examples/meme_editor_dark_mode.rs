@@ -48,7 +48,7 @@ pub fn use_is_dark_mode() -> bool {
 pub fn DarkModeToggle() -> Element {
     let mut dark_mode = use_context::<Signal<DarkMode>>();
 
-    let style = if dark_mode().0 { "color:white" } else { "" };
+    let style = if dark_mode.read().0 { "color:white" } else { "" };
 
     rsx! {
         label { style: "{style}",

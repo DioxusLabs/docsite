@@ -77,6 +77,7 @@ dioxus-std = { git = "https://github.com/ealmloff/dioxus-std", branch = "copy-Us
 ], optional = true }
 tower-http = { version = "0.5.0", optional = true, features = ["timeout"] }
 tracing = "0.1.40"
+rand = { version = "0.8.5", optional = true }
 
 [patch.crates-io]
 dioxus = { git = "https://github.com/dioxuslabs/dioxus" }
@@ -131,6 +132,7 @@ doc_test = [
     "tower-http",
     "dioxus-std",
     "http",
+    "rand"
 ]
 web = ["dioxus-web", "dioxus/web", "dioxus/web", "dioxus-fullstack/web"]
 server = [

@@ -10,7 +10,7 @@ pub fn App() -> Element {
         button {
             onclick: move |event| {
                 let list_len = list.len();
-                list.write().push(list_len);
+                list.push(list_len);
                 list.push(list_len);
             },
             "Add two elements!"

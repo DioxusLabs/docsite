@@ -84,7 +84,7 @@ fn MemeEditor() -> Element {
         div { style: "{container_style}",
             h1 { style: "{heading_style}", "Meme Editor" }
             Meme { caption: caption }
-            CaptionEditor { caption: caption, on_input: move |event: FormEvent| caption.set(event.value()) }
+            CaptionEditor { caption: caption, oninput: move |event: FormEvent| caption.set(event.value()) }
         }
     }
 }
@@ -124,7 +124,7 @@ fn Meme(caption: String) -> Element {
 
 // ANCHOR: caption_editor
 #[component]
-fn CaptionEditor(caption: String, on_input: EventHandler<FormEvent>) -> Element {
+fn CaptionEditor(caption: String, oninput: EventHandler<FormEvent>) -> Element {
     let is_dark_mode = use_is_dark_mode();
 
     let colors = if is_dark_mode {
@@ -150,7 +150,7 @@ fn CaptionEditor(caption: String, on_input: EventHandler<FormEvent>) -> Element 
         input {
             style: "{input_style}{colors}",
             value: "{caption}",
-            oninput: move |event| on_input.call(event)
+            oninput: move |event| oninput.call(event)
         }
     }
 }

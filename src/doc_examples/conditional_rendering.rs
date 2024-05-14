@@ -8,22 +8,22 @@ pub fn App() -> Element {
     rsx! {
         LogIn {
             is_logged_in: is_logged_in(),
-            on_log_in: move |_| is_logged_in.set(true),
-            on_log_out: move |_| is_logged_in.set(false)
+            log_in: move |_| is_logged_in.set(true),
+            log_out: move |_| is_logged_in.set(false)
         }
     }
 }
 
 #[component]
-fn LogIn(is_logged_in: bool, on_log_in: EventHandler, on_log_out: EventHandler) -> Element {
+fn LogIn(is_logged_in: bool, log_in: EventHandler, log_out: EventHandler) -> Element {
     // ANCHOR: if_else
     if is_logged_in {
         rsx! {
             "Welcome!"
-            button { onclick: move |_| on_log_out.call(()), "Log Out" }
+            button { onclick: move |_| log_out.call(()), "Log Out" }
         }
     } else {
-        rsx! { button { onclick: move |_| on_log_in.call(()), "Log In" } }
+        rsx! { button { onclick: move |_| log_in.call(()), "Log In" } }
     }
     // ANCHOR_END: if_else
 }
@@ -34,14 +34,14 @@ pub fn LogInImprovedApp() -> Element {
     rsx! {
         LogInImproved {
             is_logged_in: is_logged_in(),
-            on_log_in: move |_| is_logged_in.set(true),
-            on_log_out: move |_| is_logged_in.set(false)
+            log_in: move |_| is_logged_in.set(true),
+            log_out: move |_| is_logged_in.set(false)
         }
     }
 }
 
 #[component]
-fn LogInImproved(is_logged_in: bool, on_log_in: EventHandler, on_log_out: EventHandler) -> Element {
+fn LogInImproved(is_logged_in: bool, log_in: EventHandler, log_out: EventHandler) -> Element {
     // ANCHOR: if_else_improved
     rsx! {
         // We only render the welcome message if we are logged in
@@ -52,7 +52,7 @@ fn LogInImproved(is_logged_in: bool, on_log_in: EventHandler, on_log_out: EventH
         }
         button {
             // depending on the value of `is_logged_in`, we will call a different event handler
-            onclick: move |_| if is_logged_in { on_log_in.call(()) } else { on_log_out.call(()) },
+            onclick: move |_| if is_logged_in { log_in.call(()) } else { log_out.call(()) },
             if is_logged_in {
                 // if we are logged in, the button should say "Log Out"
                 "Log Out"

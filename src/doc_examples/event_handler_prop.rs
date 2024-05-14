@@ -8,21 +8,21 @@ fn main() {
 
 fn App() -> Element {
     // ANCHOR: usage
-    rsx! { FancyButton { on_click: move |event| println!("Clicked! {event:?}") } }
+    rsx! { FancyButton { onclick: move |event| println!("Clicked! {event:?}") } }
     // ANCHOR_END: usage
 }
 
 // ANCHOR: component_with_handler
 #[derive(PartialEq, Clone, Props)]
 pub struct FancyButtonProps {
-    on_click: EventHandler<MouseEvent>,
+    onclick: EventHandler<MouseEvent>,
 }
 
 pub fn FancyButton(props: FancyButtonProps) -> Element {
     rsx! {
         button {
             class: "fancy-button",
-            onclick: move |evt| props.on_click.call(evt),
+            onclick: move |evt| props.onclick.call(evt),
             "click me pls."
         }
     }
@@ -34,14 +34,14 @@ struct ComplexData(i32);
 
 #[derive(PartialEq, Clone, Props)]
 pub struct CustomFancyButtonProps {
-    on_click: EventHandler<ComplexData>,
+    onclick: EventHandler<ComplexData>,
 }
 
 pub fn CustomFancyButton(props: CustomFancyButtonProps) -> Element {
     rsx! {
         button {
             class: "fancy-button",
-            onclick: move |_| props.on_click.call(ComplexData(0)),
+            onclick: move |_| props.onclick.call(ComplexData(0)),
             "click me pls."
         }
     }

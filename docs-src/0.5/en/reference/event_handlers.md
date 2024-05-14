@@ -64,7 +64,7 @@ Any event handlers will still be called.
 
 ## Handler Props
 
-Sometimes, you might want to make a component that accepts an event handler. A simple example would be a `FancyButton` component, which accepts an `on_click` handler:
+Sometimes, you might want to make a component that accepts an event handler. A simple example would be a `FancyButton` component, which accepts an `onclick` handler:
 
 ```rust, no_run
 {{#include src/doc_examples/event_handler_prop.rs:component_with_handler}}
@@ -76,7 +76,7 @@ Then, you can use it like any other handler:
 {{#include src/doc_examples/event_handler_prop.rs:usage}}
 ```
 
-> Note: just like any other attribute, you can name the handlers anything you want! Though they must start with `on`, for the prop to be automatically turned into an `EventHandler` at the call site.
+> Note: just like any other attribute, you can name the handlers anything you want! Any closure you pass in will automatically be turned into an `EventHandler`.
 
 ## Custom Data
 

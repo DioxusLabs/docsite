@@ -1,0 +1,7 @@
+[package]
+name = "{BUILD_ID}"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+dioxus = { version = "0.5", features = "web" }

@@ -79,8 +79,8 @@ async fn build(code: String) -> Uuid {
     // TODO: Error handling
     fs_extra::dir::copy(dist, new_path, &options).unwrap();
 
-    // Delete `temp/template`
-    fs::remove_dir_all(template).await.ok();
+    // Don't delete `temp/template`! We use it to cache cargo deps.
+    //fs::remove_dir_all(template).await.ok();
 
     id
 }

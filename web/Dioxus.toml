@@ -22,11 +22,11 @@ hot_reload = true
 # HTML title tag content
 title = "Dioxus Playground"
 
-base_path = "built/62a9fecc-aad5-4790-a822-846c175c6775"
+#base_path = "built/62a9fecc-aad5-4790-a822-846c175c6775"
 
 [web.watcher]
 
-index_on_404 = true
+index_on_404 = false
 
 watch_path = ["src", "examples"]
 
@@ -34,7 +34,7 @@ watch_path = ["src", "examples"]
 [web.resource]
 
 # CSS style file
-style = []
+style = ["main.css"]
 
 # Javascript code file
 script = []

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Dioxus Playground</title>
+  <meta content="text/html;charset=utf-8" http-equiv="Content-Type" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="UTF-8" />
+  <link rel="stylesheet" href="main.css">
+
+</head>
+
+<body>
+  <div id="main"></div>
+
+  <script src="ace/ace.js" type="text/javascript" charset="utf-8"></script>
+  <script>
+    waitForElm("editor").then(() => {
+      var editor = ace.edit("editor");
+      //editor.setTheme("ace/theme/monokai");
+      //editor.setMode("ace/mode/rust");
+    });
+
+    function waitForElm(selector) {
+      return new Promise(resolve => {
+        if (document.querySelector(selector)) {
+          return resolve(document.querySelector(selector));
+        }
+
+        const observer = new MutationObserver(mutations => {
+          if (document.querySelector(selector)) {
+            observer.disconnect();
+            resolve(document.querySelector(selector));
+          }
+        });
+
+        // If you get "parameter 1 is not of type 'Node'" error, see https://stackoverflow.com/a/77855838/492336
+        observer.observe(document.body, {
+          childList: true,
+          subtree: true
+        });
+      });
+    }
+  </script>
+
+</body>
+
+</html>
+<script>// Dioxus-CLI
+  // https://github.com/DioxusLabs/dioxus/tree/master/packages/cli
+  // NOTE: This is also used in the fullstack package at ../packages/fullstack/src/render.rs, if you make changes here, make sure to update the version in there as well
+  // TODO: Extract hot reloading with axum into a separate crate or use the fullstack hot reloading Axum extension trait here
+
+  (function () {
+    var protocol = window.location.protocol === "https:" ? "wss:" : "ws:";
+    var url = protocol + "//" + window.location.host + "/_dioxus/ws";
+    var poll_interval = 8080;
+
+    var reload_upon_connect = (event) => {
+      // Firefox will send a 1001 code when the connection is closed because the page is reloaded
+      // Only firefox will trigger the onclose event when the page is reloaded manually: https://stackoverflow.com/questions/10965720/should-websocket-onclose-be-triggered-by-user-navigation-or-refresh
+      // We should not reload the page in this case
+      if (event.code === 1001) {
+        return;
+      }
+      window.setTimeout(() => {
+        var ws = new WebSocket(url);
+        ws.onopen = () => window.location.reload();
+        ws.onclose = reload_upon_connect;
+      }, poll_interval);
+    };
+
+    var ws = new WebSocket(url);
+
+    ws.onmessage = (ev) => {
+      console.log("Received message: ", ev, ev.data);
+
+      if (ev.data == "reload") {
+        window.location.reload();
+      }
+    };
+
+    ws.onclose = reload_upon_connect;
+  })();
+</script>

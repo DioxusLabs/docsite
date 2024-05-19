@@ -40,8 +40,13 @@ body {
   padding: 10px;
 }
 
-#clear-button {
+#title {
   margin-left: auto;
+  margin-right: auto;
+  font-size: 1rem;
+}
+
+#clear-button {
   border: none;
   background: none;
   outline: none;
@@ -57,7 +62,7 @@ body {
   border: none;
   background-color: rgb(75, 153, 206);
   color: #FFFFFF;
-  padding: 5px 10px;
+  padding: 5px 20px;
   transition: background-color 0.2s ease;
 }
 

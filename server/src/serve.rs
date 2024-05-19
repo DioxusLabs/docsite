@@ -9,7 +9,7 @@ use std::{path::PathBuf, time::Duration};
 use tokio_util::io::ReaderStream;
 use uuid::Uuid;
 
-use crate::{TEMP_PATH, REMOVAL_DELAY};
+use crate::{REMOVAL_DELAY, TEMP_PATH};
 
 /// Handle providing temporary built wasm assets.
 /// This should delete temporary projects after 30 seconds.
@@ -33,9 +33,9 @@ pub async fn serve_built_index(Path(build_id): Path<Uuid>) -> impl IntoResponse 
     // Remove built project after delay.
     tokio::spawn(async move {
         tokio::time::sleep(Duration::from_millis(REMOVAL_DELAY)).await;
-        //if tokio::fs::remove_dir_all(path.clone()).await.is_err() {
-        warn!(read_path = ?path, build_id = ?build_id, "failed to delete built project");
-        //}
+        if tokio::fs::remove_dir_all(path.clone()).await.is_err() {
+            warn!(path = ?path, build_id = ?build_id, "failed to delete built project");
+        }
     });
 
     Ok((headers, body))

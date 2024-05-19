@@ -4,6 +4,7 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
+model = { path = "../model" }
 axum = { version = "0.7.5", features = ["http2", "ws", "macros"] }
 dioxus-logger = "0.5.1"
 fs_extra = "1.3.0"

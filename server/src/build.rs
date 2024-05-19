@@ -1,6 +1,5 @@
+use fs_extra::{dir, file};
 use std::path::PathBuf;
-
-use fs_extra::dir::CopyOptions;
 use tokio::{
     fs,
     process::Command,
@@ -28,43 +27,54 @@ pub async fn start_build_watcher() -> mpsc::UnboundedSender<QueueType> {
 
 async fn build(code: String) -> Uuid {
     let id = Uuid::new_v4();
-
     let template = PathBuf::from(crate::BUILD_TEMPLATE_PATH);
-    let temp_path = PathBuf::from(crate::TEMP_PATH);
+    let dist = template.join("dist");
 
-    let options = CopyOptions::new().overwrite(true);
+    // Delete template/dist if it exists (clean slate)
+    fs::remove_dir_all(dist.clone()).await.ok();
+
+    let snippets_from_copy = [
+        template.join("snippets/main.rs"),
+        template.join("snippets/Cargo.toml"),
+        template.join("snippets/Dioxus.toml"),
+    ];
+
+    // New locations
+    let snippets_to_copy = [
+        template.join("src/main.rs"),
+        template.join("Cargo.toml"),
+        template.join("Dioxus.toml"),
+    ];
+
+    let options = file::CopyOptions::new().overwrite(true);
 
     // TODO: Error handling
-    fs_extra::dir::copy(template.clone(), temp_path.clone(), &options).unwrap();
+    // Enumerates over a list of paths to copy and copies them, replacing the existing ones.
+    // Allows us to reset the template for the new build.
+    for (i, path) in snippets_from_copy.iter().enumerate() {
+        let new_path = snippets_to_copy[i].clone();
+        fs_extra::file::copy(path, new_path, &options).unwrap();
+    }
 
-    let template = temp_path.join("template");
-
-    let main_rs = template.join("src/main.rs");
-    let cargo_toml = template.join("Cargo.toml");
-    let dioxus_toml = template.join("Dioxus.toml");
-
+    // TODO: Error handling
     // Modify template with new id and code.
     // (Dioxus.toml, Cargo.toml, main.rs)
-
-    // TODO: Error handling
-    let main_text = fs::read_to_string(main_rs.clone()).await.unwrap();
-    let main_text = main_text.replace(USER_CODE_ID, &code);
-    fs::write(main_rs, main_text).await.unwrap();
-
-    // TODO: Error handling
-    let cargo_text = fs::read_to_string(cargo_toml.clone()).await.unwrap();
-    let cargo_text = cargo_text.replace(BUILD_ID_ID, id.to_string().as_str());
-    fs::write(cargo_toml, cargo_text).await.unwrap();
-
-    // TODO: Error handling
-    let dioxus_text = fs::read_to_string(dioxus_toml.clone()).await.unwrap();
-    let dioxus_text = dioxus_text.replace(BUILD_ID_ID, id.to_string().as_str());
-    fs::write(dioxus_toml, dioxus_text).await.unwrap();
+    for path in snippets_to_copy {
+        let text = fs::read_to_string(path.clone()).await.unwrap();
+        let text = text
+            .replace(USER_CODE_ID, &code)
+            .replace(BUILD_ID_ID, id.to_string().as_str());
+        fs::write(path, text).await.unwrap();
+    }
 
     // Run `dx build` in template
     // TODO: Error handling & determining if build failed
     Command::new("dx")
-        .arg("serve")
+        .arg("build")
+        .arg("--platform")
+        .arg("web")
+        .arg("--release")
+        .current_dir(template.clone())
         .spawn()
         .unwrap()
         .wait()
@@ -72,15 +82,14 @@ async fn build(code: String) -> Uuid {
         .unwrap();
 
     // Copy `dist` contents to `temp/my-uuid`
-    let new_path = temp_path.join(id.to_string());
-    let dist = template.join("dist");
-    let options = CopyOptions::new().overwrite(true);
+    let temp_path = PathBuf::from(crate::TEMP_PATH);
+    let new_dist = template.join(id.to_string());
+    fs::rename(dist, new_dist.clone()).await.unwrap();
+
+    let options = dir::CopyOptions::new().overwrite(true);
 
     // TODO: Error handling
-    fs_extra::dir::copy(dist, new_path, &options).unwrap();
-
-    // Don't delete `temp/template`! We use it to cache cargo deps.
-    //fs::remove_dir_all(template).await.ok();
+    fs_extra::dir::move_dir(new_dist, temp_path, &options).unwrap();
 
     id
 }

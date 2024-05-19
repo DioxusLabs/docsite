@@ -1,7 +1,7 @@
 use std::fmt::Display;
 
 /// This represents a basic websocket message.
-/// 
+///
 /// Messages have an identifier and content.
 /// e.g. `error:compilation failed on line x`
 /// or
@@ -9,6 +9,7 @@ use std::fmt::Display;
 pub enum SocketMessage {
     CompileRequest(String),
     CompileFinished(String),
+    BannedWord(String),
     SystemError(String),
 }
 
@@ -16,7 +17,7 @@ impl TryFrom<String> for SocketMessage {
     type Error = String;
 
     fn try_from(value: String) -> Result<Self, Self::Error> {
-        let split: Vec<&str> = value.split(":").collect();
+        let split: Vec<&str> = value.split("~:~").collect();
 
         // TODO: Error handling. This will panic!
         let first = split[0];
@@ -25,6 +26,7 @@ impl TryFrom<String> for SocketMessage {
         match first {
             "please_compile" => Ok(Self::CompileRequest(last)),
             "compilation_finished" => Ok(Self::CompileFinished(last)),
+            "banned_word" => Ok(Self::BannedWord(last)),
             "error" => Ok(Self::SystemError(last)),
             _ => Err("unknown ws message".to_string()),
         }
@@ -34,9 +36,10 @@ impl TryFrom<String> for SocketMessage {
 impl Display for SocketMessage {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
-            SocketMessage::CompileRequest(s) => write!(f, "please_compile:{}", s),
-            SocketMessage::CompileFinished(s) => write!(f, "compilation_finished:{}", s),
-            SocketMessage::SystemError(s) => write!(f, "errpr:{}", s),
+            Self::CompileRequest(s) => write!(f, "please_compile~:~{}", s),
+            Self::CompileFinished(s) => write!(f, "compilation_finished~:~{}", s),
+            Self::BannedWord(s) => write!(f, "banned_word~:~{}", s),
+            Self::SystemError(s) => write!(f, "error~:~{}", s),
         }
     }
 }

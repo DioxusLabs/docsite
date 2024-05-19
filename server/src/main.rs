@@ -13,7 +13,7 @@ const SERVE_PATH: &str = "../dist";
 const TEMP_PATH: &str = "../temp/";
 const BUILD_TEMPLATE_PATH: &str = "./template";
 const REMOVAL_DELAY: u64 = 30000;
-const BANNED_WORDS: &'static [&str] = &["eval","web_sys","bindgen","document","window"];
+const BANNED_WORDS: &'static [&str] = &["eval", "web_sys", "bindgen", "document", "window"];
 
 #[derive(Clone)]
 struct AppState {

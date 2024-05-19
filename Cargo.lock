@@ -1959,6 +1959,7 @@ dependencies = [
  "dioxus-logger",
  "fs_extra",
  "futures",
+ "model",
  "tokio",
  "tokio-util",
  "tower-http",

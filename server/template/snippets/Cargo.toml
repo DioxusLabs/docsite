@@ -2,7 +2,7 @@
 [workspace]
 
 [package]
-name = "playground-a7ca28c8-0ef8-4b6f-9adb-44e85b157f1b"
+name = "playground-{BUILD_ID}"
 version = "0.1.0"
 edition = "2021"
 

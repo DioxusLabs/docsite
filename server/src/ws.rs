@@ -3,6 +3,7 @@ use axum::{
     response::IntoResponse,
 };
 use futures::{SinkExt, StreamExt as _};
+use model::SocketMessage;
 use tokio::sync::oneshot;
 
 use crate::AppState;
@@ -15,57 +16,62 @@ pub async fn ws_handler(State(state): State<AppState>, ws: WebSocketUpgrade) -> 
 /// Handle the websocket.
 async fn handle_socket(state: AppState, socket: WebSocket) {
     let (mut tx, mut rx) = socket.split();
-    let mut next_is_code = false;
+
+    // Store common errors
+    let failed_to_parse =
+        SocketMessage::SystemError("failed to parse received data".to_string()).to_string();
+
+    let failed_to_compile =
+        SocketMessage::SystemError("failed to compile code".to_string()).to_string();
 
     while let Some(Ok(msg)) = rx.next().await {
+        // Get websocket message and try converting to text.
         let Some(txt) = msg.into_text().ok() else {
-            tx.send("error:failed to parse received data".into())
-                .await
-                .ok();
+            tx.send(failed_to_parse.clone().into()).await.ok();
             continue;
         };
 
-        match &*txt {
-            "compile" => {
-                next_is_code = true;
-            }
-            txt => {
-                if !next_is_code {
-                    continue;
-                }
+        // Try converting websocket message from text to `SocketMessage`
+        let Ok(msg) = SocketMessage::try_from(txt) else {
+            tx.send(failed_to_parse.clone().into()).await.ok();
+            continue;
+        };
 
+        match msg {
+            SocketMessage::CompileRequest(code) => {
                 // Verify no banned words were submitted
-                if let Some(banned) = is_unsafe(txt) {
-                    let formatted = format!("error: banned word:{}", banned);
-                    tx.send(formatted.into()).await.ok();
+                if let Some(banned) = is_unsafe(&code) {
+                    let banned_msg = SocketMessage::BannedWord(banned).to_string();
+                    tx.send(banned_msg.into()).await.ok();
                     continue;
                 }
 
                 let (res_tx, res_rx) = oneshot::channel();
 
-                // Receive response from oneshot and parse it. 
+                // Receive response from oneshot and parse it.
                 // TODO: Compilation error handling
-                if state.build_queue_tx.send((res_tx, txt.to_string())).is_ok() {
+                if state.build_queue_tx.send((res_tx, code)).is_ok() {
                     let Ok(id) = res_rx.await else {
-                        tx.send("error:failed to compile code".into()).await.ok();
+                        tx.send(failed_to_compile.clone().into()).await.ok();
                         continue;
                     };
 
-                    let formatted = format!("built:{}", id.to_string());
-                    tx.send(formatted.into()).await.ok();
+                    let built_msg = SocketMessage::CompileFinished(id.to_string()).to_string();
+                    tx.send(built_msg.into()).await.ok();
                 } else {
-                    tx.send("error:failed to compile code".into()).await.ok();
+                    tx.send(failed_to_compile.clone().into()).await.ok();
                     continue;
                 };
             }
+            _ => {}
         }
     }
 }
 
-fn is_unsafe(code: &str) -> Option<&str> {
+fn is_unsafe(code: &String) -> Option<String> {
     for word in crate::BANNED_WORDS {
         if code.find(word).is_some() {
-            return Some(*word);
+            return Some(word.to_string());
         }
     }
     None

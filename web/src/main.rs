@@ -6,7 +6,7 @@ use wasm_bindgen::{closure::Closure, JsCast};
 use web_sys::{js_sys, MessageEvent, WebSocket};
 
 const BUILT_URI: &str = "built/";
-const SOCKET_URI: &str = "wss://localhost:3000/ws";
+const SOCKET_URI: &str = "ws://localhost:3000/ws";
 const SNIPPET_WELCOME: &str = include_str!("snippets/welcome.rs");
 
 fn main() {
@@ -32,10 +32,10 @@ fn App() -> Element {
                     match msg {
                         SocketMessage::CompileFinished(id) => {
                             compiling.set(false);
-                            iframe_src.set(format!("{}/{}", BUILT_URI, id));
-                        },
+                            iframe_src.set(format!("{}{}", BUILT_URI, id));
+                        }
                         SocketMessage::SystemError(_) => todo!(),
-                        _ => {},
+                        _ => {}
                     }
                 }
             }
@@ -47,7 +47,6 @@ fn App() -> Element {
         // Handle sending messages to socket.
         while let Some(msg) = rx.next().await {
             let parsed = msg.to_string();
-
             // TODO: Error handling
             ws.send_with_str(parsed.as_str()).unwrap();
         }
@@ -64,6 +63,9 @@ fn App() -> Element {
             editor.session.setMode(new RustMode());
 
             editor.setValue(`{SNIPPET_WELCOME}`, -1);
+
+            // Set a global so other evals can acces it.
+            window.editorGlobal = editor;
             "#
         );
         eval(&code);
@@ -76,20 +78,20 @@ fn App() -> Element {
         }
         compiling.set(true);
 
-        // `editor` is global variable for the `ace` editor.
         let mut eval = eval(
             r#"
-            let text = editor.getValue();
+            let text = window.editorGlobal.getValue();
             dioxus.send(text);
             "#,
         );
 
-        let val = eval.recv().await.unwrap().to_string();
+        // TODO: Error Handling
+        let val = eval.recv().await.unwrap().as_str().unwrap().to_string();
         socket_tx.send(SocketMessage::CompileRequest(val));
     };
 
     let on_clear = move |_| {
-        eval("editor.setValue(\"\");");
+        eval("window.editorGlobal.setValue(\"\");");
     };
 
     rsx! {
@@ -104,6 +106,11 @@ fn App() -> Element {
                         class: if compiling() { "disabled" },
                         onclick: on_run,
                         "Run",
+                    }
+
+                    h1 {
+                        id: "title",
+                        "Dioxus Playground",
                     }
 
                     button {
@@ -121,21 +128,9 @@ fn App() -> Element {
             div {
                 id: "right-pane",
                 iframe {
-                    src: "",
+                    src: iframe_src,
                 }
             }
-        }
-
-        script {
-            src: "ace/ace.js",
-            r#type: "text/javascript",
-        }
-        script {
-            r#"
-            
-            var editor = ace.edit("editor");
-            editor.setTheme("ace/mode/rust");
-            "#
         }
     }
 }

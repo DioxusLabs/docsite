@@ -20,7 +20,7 @@ hot_reload = true
 [web.app]
 
 # HTML title tag content
-title = "Dioxus Playground"
+title = ""
 
 #base_path = "built/62a9fecc-aad5-4790-a822-846c175c6775"
 

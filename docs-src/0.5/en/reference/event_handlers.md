@@ -79,13 +79,9 @@ Then, you can use it like any other handler:
 > Note: just like any other attribute, you can name the handlers anything you want! Any closure you pass in will automatically be turned into an `EventHandler`.
 
 #### Async Event Handlers
-Passing `EventHandler`s as props does not support passing a closure that returns an async block:
+Passing `EventHandler`s as props does not support passing a closure that returns an async block. Instead, you must manually call ``spawn`` to do async operations:
 ```rust, no_run
-{{#include src/doc_examples/event_handler_prop.rs:async_bad}}
-```
-Instead, you must manually call ``spawn`` to do async operations:
-```rust, no_run
-{{#include src/doc_examples/event_handler_prop.rs:async_good}}
+{{#include src/doc_examples/event_handler_prop.rs:async}}
 ```
 This is only the case for custom event handlers as props.
 

@@ -8,7 +8,11 @@ fn main() {
 
 fn App() -> Element {
     // ANCHOR: usage
-    rsx! { FancyButton { onclick: move |event| println!("Clicked! {event:?}") } }
+    rsx! {
+        FancyButton { 
+            onclick: move |event| println!("Clicked! {event:?}"), 
+        }
+    }
     // ANCHOR_END: usage
 }
 
@@ -47,3 +51,23 @@ pub fn CustomFancyButton(props: CustomFancyButtonProps) -> Element {
     }
 }
 // ANCHOR_END: custom_data
+
+pub fn MyComponent() -> Element {
+    // ANCHOR: async
+    rsx! {
+        FancyButton {
+            // This does not work!
+            // onclick: move |event| async move {
+            //      println!("Clicked! {event:?}");
+            // },
+
+            // This does work!
+            onclick: move |event| {
+                spawn(async move {
+                    println!("Clicked! {event:?}");
+                });
+            },
+        }
+    }
+    // ANCHOR_END: async
+}

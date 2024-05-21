@@ -1,31 +1,40 @@
+use crate::REMOVAL_DELAY;
+use dioxus_logger::tracing::warn;
 use fs_extra::{dir, file};
-use std::path::PathBuf;
+use std::{path::PathBuf, process::Stdio, time::Duration};
 use tokio::{
     fs,
+    io::{AsyncBufReadExt, BufReader},
     process::Command,
-    sync::{mpsc, oneshot},
+    sync::mpsc::{self, UnboundedSender},
 };
 use uuid::Uuid;
 
 const USER_CODE_ID: &str = "{USER_CODE}";
 const BUILD_ID_ID: &str = "{BUILD_ID}";
 
-pub type QueueType = (oneshot::Sender<Uuid>, String);
+pub type QueueType = (UnboundedSender<BuildMessage>, String);
 
-pub async fn start_build_watcher() -> mpsc::UnboundedSender<QueueType> {
+pub enum BuildMessage {
+    Message(String),
+    Finished(Uuid),
+    FinishedWithError,
+}
+
+pub async fn start_build_watcher() -> UnboundedSender<QueueType> {
     let (tx, mut rx) = mpsc::unbounded_channel::<QueueType>();
 
     tokio::spawn(async move {
         while let Some(item) = rx.recv().await {
-            let id = build(item.1).await;
-            item.0.send(id).ok();
+            build(item.0, item.1).await;
+            //item.0.send(BuildMessage::Finished(id)).ok();
         }
     });
 
     tx
 }
 
-async fn build(code: String) -> Uuid {
+async fn build(tx: UnboundedSender<BuildMessage>, code: String) {
     let id = Uuid::new_v4();
     let template = PathBuf::from(crate::BUILD_TEMPLATE_PATH);
     let dist = template.join("dist");
@@ -69,17 +78,25 @@ async fn build(code: String) -> Uuid {
 
     // Run `dx build` in template
     // TODO: Error handling & determining if build failed
-    Command::new("dx")
+    let mut child = Command::new("dx")
         .arg("build")
         .arg("--platform")
         .arg("web")
         .arg("--release")
         .current_dir(template.clone())
+        .stdout(Stdio::piped())
         .spawn()
-        .unwrap()
-        .wait()
-        .await
         .unwrap();
+
+    let stdout = child.stderr.take().unwrap();
+    let mut reader = BufReader::new(stdout).lines();
+
+    tokio::spawn(async move { child.wait().await.ok() });
+
+    while let Some(Some(line)) = reader.next_line().await.ok() {
+        println!("GOT LINE: {}", line);
+        tx.send(BuildMessage::Message(line)).ok();
+    }
 
     // Copy `dist` contents to `temp/my-uuid`
     let temp_path = PathBuf::from(crate::TEMP_PATH);
@@ -89,7 +106,18 @@ async fn build(code: String) -> Uuid {
     let options = dir::CopyOptions::new().overwrite(true);
 
     // TODO: Error handling
-    fs_extra::dir::move_dir(new_dist, temp_path, &options).unwrap();
+    fs_extra::dir::move_dir(new_dist, temp_path.clone(), &options).unwrap();
 
-    id
+    let build_id = id.to_string();
+    let final_path = temp_path.join(build_id.clone());
+
+    // Remove built project after delay.
+    tokio::spawn(async move {
+        tokio::time::sleep(Duration::from_millis(REMOVAL_DELAY)).await;
+        if tokio::fs::remove_dir_all(final_path.clone()).await.is_err() {
+            warn!(path = ?final_path, build_id = ?build_id, "failed to delete built project");
+        }
+    });
+
+    tx.send(BuildMessage::Finished(id)).ok();
 }

@@ -1,9 +1,11 @@
 use dioxus::prelude::*;
 use dioxus_logger::tracing::Level;
-use futures::StreamExt as _;
 use model::*;
-use wasm_bindgen::{closure::Closure, JsCast};
-use web_sys::{js_sys, MessageEvent, WebSocket};
+
+use crate::components::{Header, RightPane};
+
+mod components;
+mod ws;
 
 const BUILT_URI: &str = "built/";
 const SOCKET_URI: &str = "ws://localhost:3000/ws";
@@ -16,41 +18,10 @@ fn main() {
 
 #[component]
 fn App() -> Element {
-    let mut compiling = use_signal(|| false);
-    let mut iframe_src = use_signal(String::new);
+    let mut is_compiling = use_signal(|| false);
+    let built_src = use_signal(|| None);
 
-    let socket_tx = use_coroutine(move |mut rx: UnboundedReceiver<SocketMessage>| async move {
-        let ws = WebSocket::new(SOCKET_URI).unwrap();
-
-        // Setup socket callback
-        let cl = Closure::wrap(Box::new(move |e: MessageEvent| {
-            if let Ok(text) = e.data().dyn_into::<js_sys::JsString>() {
-                let text: String = text.into();
-
-                // Parse the message and determine what it is.
-                if let Ok(msg) = SocketMessage::try_from(text) {
-                    match msg {
-                        SocketMessage::CompileFinished(id) => {
-                            compiling.set(false);
-                            iframe_src.set(format!("{}{}", BUILT_URI, id));
-                        }
-                        SocketMessage::SystemError(_) => todo!(),
-                        _ => {}
-                    }
-                }
-            }
-        }) as Box<dyn FnMut(MessageEvent)>);
-
-        ws.set_onmessage(Some(cl.as_ref().unchecked_ref()));
-        cl.forget();
-
-        // Handle sending messages to socket.
-        while let Some(msg) = rx.next().await {
-            let parsed = msg.to_string();
-            // TODO: Error handling
-            ws.send_with_str(parsed.as_str()).unwrap();
-        }
-    });
+    let socket_tx = ws::start_socket(is_compiling, built_src);
 
     // Once the element has mounted, startup `ace` editor.
     let on_editor_mount = move |_| async move {
@@ -72,26 +43,24 @@ fn App() -> Element {
     };
 
     // Send a request to compile code.
-    let on_run = move |_| async move {
-        if compiling() {
-            return;
-        }
-        compiling.set(true);
+    let on_run = move |_| {
+        spawn(async move {
+            if is_compiling() {
+                return;
+            }
+            is_compiling.set(true);
 
-        let mut eval = eval(
-            r#"
-            let text = window.editorGlobal.getValue();
-            dioxus.send(text);
-            "#,
-        );
+            let mut eval = eval(
+                r#"
+                let text = window.editorGlobal.getValue();
+                dioxus.send(text);
+                "#,
+            );
 
-        // TODO: Error Handling
-        let val = eval.recv().await.unwrap().as_str().unwrap().to_string();
-        socket_tx.send(SocketMessage::CompileRequest(val));
-    };
-
-    let on_clear = move |_| {
-        eval("window.editorGlobal.setValue(\"\");");
+            // TODO: Error Handling
+            let val = eval.recv().await.unwrap().as_str().unwrap().to_string();
+            socket_tx.send(SocketMessage::CompileRequest(val));
+        });
     };
 
     rsx! {
@@ -99,25 +68,9 @@ fn App() -> Element {
             id: "pane-container",
             div {
                 id: "left-pane",
-                div {
-                    id: "header",
-                    button {
-                        id: "run-button",
-                        class: if compiling() { "disabled" },
-                        onclick: on_run,
-                        "Run",
-                    }
-
-                    h1 {
-                        id: "title",
-                        "Dioxus Playground",
-                    }
-
-                    button {
-                        id: "clear-button",
-                        onclick: on_clear,
-                        "Clear",
-                    }
+                Header {
+                    is_compiling: is_compiling(),
+                    on_run,
                 }
                 div {
                     id: "editor",
@@ -125,11 +78,8 @@ fn App() -> Element {
                 }
             }
 
-            div {
-                id: "right-pane",
-                iframe {
-                    src: iframe_src,
-                }
+            RightPane {
+                show_page_uri: built_src(),
             }
         }
     }

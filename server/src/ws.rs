@@ -4,9 +4,9 @@ use axum::{
 };
 use futures::{SinkExt, StreamExt as _};
 use model::SocketMessage;
-use tokio::sync::oneshot;
+use tokio::sync::mpsc;
 
-use crate::AppState;
+use crate::{build::BuildMessage, AppState};
 
 /// Handle any pre-websocket processing.
 pub async fn ws_handler(State(state): State<AppState>, ws: WebSocketUpgrade) -> impl IntoResponse {
@@ -46,18 +46,28 @@ async fn handle_socket(state: AppState, socket: WebSocket) {
                     continue;
                 }
 
-                let (res_tx, res_rx) = oneshot::channel();
+                let (res_tx, mut res_rx) = mpsc::unbounded_channel();
 
                 // Receive response from oneshot and parse it.
                 // TODO: Compilation error handling
                 if state.build_queue_tx.send((res_tx, code)).is_ok() {
-                    let Ok(id) = res_rx.await else {
-                        tx.send(failed_to_compile.clone().into()).await.ok();
-                        continue;
-                    };
-
-                    let built_msg = SocketMessage::CompileFinished(id.to_string()).to_string();
-                    tx.send(built_msg.into()).await.ok();
+                    while let Some(msg) = res_rx.recv().await {
+                        match msg {
+                            BuildMessage::Message(msg) => {
+                                let msg = SocketMessage::CompileMessage(msg).to_string();
+                                tx.send(msg.into()).await.ok();
+                            }
+                            BuildMessage::Finished(id) => {
+                                let built_msg =
+                                    SocketMessage::CompileFinished(id.to_string()).to_string();
+                                tx.send(built_msg.into()).await.ok();
+                            }
+                            BuildMessage::FinishedWithError => {
+                                let msg = SocketMessage::CompileFinishedWithError.to_string();
+                                tx.send(msg.into()).await.ok();
+                            }
+                        }
+                    }
                 } else {
                     tx.send(failed_to_compile.clone().into()).await.ok();
                     continue;

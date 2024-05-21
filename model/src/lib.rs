@@ -9,6 +9,8 @@ use std::fmt::Display;
 pub enum SocketMessage {
     CompileRequest(String),
     CompileFinished(String),
+    CompileFinishedWithError,
+    CompileMessage(String),
     BannedWord(String),
     SystemError(String),
 }
@@ -26,6 +28,8 @@ impl TryFrom<String> for SocketMessage {
         match first {
             "please_compile" => Ok(Self::CompileRequest(last)),
             "compilation_finished" => Ok(Self::CompileFinished(last)),
+            "compilation_finished_err" => Ok(Self::CompileFinishedWithError),
+            "compile_msg" => Ok(Self::CompileMessage(last)),
             "banned_word" => Ok(Self::BannedWord(last)),
             "error" => Ok(Self::SystemError(last)),
             _ => Err("unknown ws message".to_string()),
@@ -38,6 +42,8 @@ impl Display for SocketMessage {
         match self {
             Self::CompileRequest(s) => write!(f, "please_compile~:~{}", s),
             Self::CompileFinished(s) => write!(f, "compilation_finished~:~{}", s),
+            Self::CompileFinishedWithError => write!(f, "compilation_finished_err~:~"),
+            Self::CompileMessage(s) => write!(f, "compile_msg~:~{}", s),
             Self::BannedWord(s) => write!(f, "banned_word~:~{}", s),
             Self::SystemError(s) => write!(f, "error~:~{}", s),
         }

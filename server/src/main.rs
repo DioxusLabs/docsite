@@ -1,6 +1,8 @@
+use std::env;
+
 use axum::{routing::get, Router};
 use build::QueueType;
-use dioxus_logger::tracing::{info, Level};
+use dioxus_logger::tracing::{info, warn, Level};
 use tokio::{net::TcpListener, sync::mpsc};
 use tower_http::services::ServeDir;
 
@@ -8,11 +10,20 @@ mod build;
 mod serve;
 mod ws;
 
-const LISTEN_ADDR: &str = "0.0.0.0:3000";
+const LISTEN_IP: &str = "0.0.0.0";
+
+/// Duration after building to delete.
+/// 10 seconds *should* be good for most clients.
+const REMOVAL_DELAY: u64 = 10000;
+
+// Paths
 const SERVE_PATH: &str = "../dist";
 const TEMP_PATH: &str = "../temp/";
 const BUILD_TEMPLATE_PATH: &str = "./template";
-const REMOVAL_DELAY: u64 = 30000;
+
+/// A list of words that if found anywhere within submitted code, will be rejected.
+/// This isn't really nescessary as the code runs locally on the client that submitted it but
+/// it is still an extra layer of security.
 const BANNED_WORDS: &'static [&str] = &["eval", "web_sys", "bindgen", "document", "window"];
 
 #[derive(Clone)]
@@ -24,8 +35,16 @@ struct AppState {
 async fn main() {
     dioxus_logger::init(Level::INFO).expect("failed to init logger");
 
-    let build_queue_tx = build::start_build_watcher().await;
+    // Get environment variables
+    let mut port: u16 = 3000;
+    if let Ok(v) = env::var("PORT") {
+        port = v.parse().expect("the `PORT` environment variable is not a number");
+    } else {
+        warn!("`PORT` environment variable not set; defaulting to `{}`", port);
+    }
 
+    // Build app
+    let build_queue_tx = build::start_build_watcher().await;
     let state = AppState { build_queue_tx };
 
     // Build routers
@@ -41,8 +60,9 @@ async fn main() {
         .with_state(state);
 
     // Start axum
-    let listener = TcpListener::bind(LISTEN_ADDR).await.unwrap();
+    let final_address = &format!("{LISTEN_IP}:{port}");
+    let listener = TcpListener::bind(final_address).await.unwrap();
 
-    info!("listening on {}", LISTEN_ADDR);
+    info!("listening on `{}`", final_address);
     axum::serve(listener, app).await.unwrap();
 }

@@ -36,7 +36,7 @@ pub fn Playground(socket_uri: String, built_uri: String) -> Element {
     let on_editor_mount = move |_| async move {
         let code = format!(
             r#"
-            let editor = ace.edit("editor");
+            let editor = ace.edit("dxp-editor");
             editor.setTheme("ace/theme/github");
 
             let RustMode = ace.require("ace/mode/rust").Mode;
@@ -77,15 +77,15 @@ pub fn Playground(socket_uri: String, built_uri: String) -> Element {
 
     rsx! {
         div {
-            id: "pane-container",
+            id: "dxp-pane-container",
             div {
-                id: "left-pane",
+                id: "dxp-left-pane",
                 Header {
                     is_compiling: is_compiling(),
                     on_run,
                 }
                 div {
-                    id: "editor",
+                    id: "dxp-editor",
                     onmounted: on_editor_mount,
                 }
             }

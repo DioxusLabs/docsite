@@ -22,7 +22,7 @@ pub fn RightPane(
         // Scrolls to the bottom of the log pane
         eval(
             r#"
-            let pane = document.getElementById("right-pane");
+            let pane = document.getElementById("dxp-right-pane");
             pane.scrollTop = pane.scrollHeight;
             "#
         );
@@ -45,9 +45,9 @@ pub fn RightPane(
 
         let log_rsx = rsx! {
             p {
-                class: "log-message",
-                class: if is_success { "log-success" },
-                class: if error_span { "log-error" },
+                class: "dxp-log-message",
+                class: if is_success { "dxp-log-success" },
+                class: if error_span { "dxp-log-error" },
                 "{log}"
             }
         };
@@ -57,7 +57,7 @@ pub fn RightPane(
 
     rsx! {
         div {
-            id: "right-pane",
+            id: "dxp-right-pane",
             onmounted: move |_| pane_is_mounted.set(true),
 
             match current_tab {

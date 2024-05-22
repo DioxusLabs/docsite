@@ -12,7 +12,8 @@ use uuid::Uuid;
 
 // The in-code templates that get replaced.
 const USER_CODE_ID: &str = "{USER_CODE}";
-const BUILD_ID_ID: &str = "{BUILD_ID}";
+// Cargo complains about `{}` inside of package name.
+const BUILD_ID_ID: &str = "BUILD_ID";
 
 pub type QueueType = (UnboundedSender<BuildMessage>, String);
 

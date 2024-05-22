@@ -6,7 +6,11 @@ use web_sys::{js_sys, MessageEvent, WebSocket};
 
 use crate::{BUILT_URI, SOCKET_URI};
 
-pub fn start_socket(mut is_compiling: Signal<bool>, mut built_src: Signal<Option<String>>) -> Coroutine<SocketMessage> {
+pub fn start_socket(
+    mut is_compiling: Signal<bool>,
+    mut built_page_uri: Signal<Option<String>>,
+    mut compiler_messages: Signal<Vec<String>>,
+) -> Coroutine<SocketMessage> {
     use_coroutine(move |mut rx: UnboundedReceiver<SocketMessage>| async move {
         let ws = WebSocket::new(SOCKET_URI).unwrap();
 
@@ -20,7 +24,13 @@ pub fn start_socket(mut is_compiling: Signal<bool>, mut built_src: Signal<Option
                     match msg {
                         SocketMessage::CompileFinished(id) => {
                             is_compiling.set(false);
-                            built_src.set(Some(format!("{}{}", BUILT_URI, id)));
+                            built_page_uri.set(Some(format!("{}{}", BUILT_URI, id)));
+                        }
+                        SocketMessage::CompileMessage(msg) => {
+                            compiler_messages.push(msg);
+                        }
+                        SocketMessage::CompileFinishedWithError => {
+                            is_compiling.set(false);
                         }
                         SocketMessage::SystemError(_) => todo!(),
                         _ => {}

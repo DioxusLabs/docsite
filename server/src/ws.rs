@@ -49,24 +49,10 @@ async fn handle_socket(state: AppState, socket: WebSocket) {
                 let (res_tx, mut res_rx) = mpsc::unbounded_channel();
 
                 // Receive response from oneshot and parse it.
-                // TODO: Compilation error handling
                 if state.build_queue_tx.send((res_tx, code)).is_ok() {
                     while let Some(msg) = res_rx.recv().await {
-                        match msg {
-                            BuildMessage::Message(msg) => {
-                                let msg = SocketMessage::CompileMessage(msg).to_string();
-                                tx.send(msg.into()).await.ok();
-                            }
-                            BuildMessage::Finished(id) => {
-                                let built_msg =
-                                    SocketMessage::CompileFinished(id.to_string()).to_string();
-                                tx.send(built_msg.into()).await.ok();
-                            }
-                            BuildMessage::FinishedWithError => {
-                                let msg = SocketMessage::CompileFinishedWithError.to_string();
-                                tx.send(msg.into()).await.ok();
-                            }
-                        }
+                        let as_socket_msg: SocketMessage = msg.into();
+                        tx.send(as_socket_msg.to_string().into()).await.ok();
                     }
                 } else {
                     tx.send(failed_to_compile.clone().into()).await.ok();
@@ -85,4 +71,14 @@ fn is_unsafe(code: &String) -> Option<String> {
         }
     }
     None
+}
+
+impl From<BuildMessage> for SocketMessage {
+    fn from(value: BuildMessage) -> Self {
+        match value {
+            BuildMessage::Message(msg) => SocketMessage::CompileMessage(msg),
+            BuildMessage::Finished(id) => SocketMessage::CompileFinished(id.to_string()),
+            BuildMessage::FinishedWithError => SocketMessage::CompileFinishedWithError,
+        }
+    }
 }

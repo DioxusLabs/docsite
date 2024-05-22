@@ -27,7 +27,6 @@ pub async fn start_build_watcher() -> UnboundedSender<QueueType> {
     tokio::spawn(async move {
         while let Some(item) = rx.recv().await {
             build(item.0, item.1).await;
-            //item.0.send(BuildMessage::Finished(id)).ok();
         }
     });
 
@@ -77,25 +76,56 @@ async fn build(tx: UnboundedSender<BuildMessage>, code: String) {
     }
 
     // Run `dx build` in template
-    // TODO: Error handling & determining if build failed
-    let mut child = Command::new("dx")
-        .arg("build")
-        .arg("--platform")
-        .arg("web")
-        .arg("--release")
-        .current_dir(template.clone())
-        .stdout(Stdio::piped())
-        .spawn()
-        .unwrap();
+    let mut child = Command::new(
+        "C:\\Users\\Darka\\Documents\\Projects\\DioxusLabs\\dioxus\\target\\release\\dx",
+    )
+    .arg("build")
+    .arg("--platform")
+    .arg("web")
+    .arg("--release")
+    .arg("--raw-out")
+    .current_dir(template.clone())
+    .stdout(Stdio::piped())
+    .stderr(Stdio::piped())
+    .spawn()
+    .unwrap();
 
-    let stdout = child.stderr.take().unwrap();
-    let mut reader = BufReader::new(stdout).lines();
+    let stdout = child.stdout.take().unwrap();
+    let mut stdout_reader = BufReader::new(stdout).lines();
 
-    tokio::spawn(async move { child.wait().await.ok() });
+    let stderr = child.stderr.take().unwrap();
+    let mut stderr_reader = BufReader::new(stderr).lines();
 
-    while let Some(Some(line)) = reader.next_line().await.ok() {
-        println!("GOT LINE: {}", line);
-        tx.send(BuildMessage::Message(line)).ok();
+    // Get output and wait for process to finish.
+    loop {
+        tokio::select! {
+            result = stdout_reader.next_line() => {
+                match result {
+                    Ok(Some(line)) => {
+                        tx.send(BuildMessage::Message(line)).ok();
+                    },
+                    Err(_) => return,
+                    _ => {},
+                }
+            }
+            result = stderr_reader.next_line() => {
+                match result {
+                    Ok(Some(line)) => {
+                        tx.send(BuildMessage::Message(line)).ok();
+                    },
+                    Err(_) => return,
+                    _ => {},
+                }
+            }
+            _ = child.wait() => {
+                break;
+            }
+        }
+    }
+
+    if !dist.exists() {
+        tx.send(BuildMessage::FinishedWithError).ok();
+        return;
     }
 
     // Copy `dist` contents to `temp/my-uuid`
@@ -121,3 +151,4 @@ async fn build(tx: UnboundedSender<BuildMessage>, code: String) {
 
     tx.send(BuildMessage::Finished(id)).ok();
 }
+

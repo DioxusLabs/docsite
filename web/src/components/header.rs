@@ -13,7 +13,14 @@ pub fn Header(is_compiling: bool, on_run: EventHandler) -> Element {
                 id: "run-button",
                 class: if is_compiling { "disabled" },
                 onclick: move |_| on_run.call(()),
-                "Run",
+                if is_compiling {
+                    img {
+                        class: "spinner",
+                        src: "./spinner.svg",
+                    }
+                } else {
+                    "Run"
+                }
             }
 
             h1 {

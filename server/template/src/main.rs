@@ -8,7 +8,7 @@ fn main() {
 fn App() -> Element {
     rsx! {
         div {
-            "Build cool stuff!"
-        }
+            "Build coolgh stuff!"
+        }a
     }
 }

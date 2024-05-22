@@ -22,10 +22,13 @@ impl TryFrom<String> for SocketMessage {
         let split: Vec<&str> = value.split("~:~").collect();
 
         // TODO: Error handling. This will panic!
-        let first = split[0];
-        let last = split[1].to_string();
+        let Some(first) = split.get(0) else {
+            return Err("invalid message".to_string());
+        };
+        
+        let last = split.get(1).unwrap_or(&"").to_string();
 
-        match first {
+        match *first {
             "please_compile" => Ok(Self::CompileRequest(last)),
             "compilation_finished" => Ok(Self::CompileFinished(last)),
             "compilation_finished_err" => Ok(Self::CompileFinishedWithError),

@@ -1,13 +1,12 @@
+use crate::components::{Header, RightPane, Tab};
 use dioxus::prelude::*;
 use dioxus_logger::tracing::Level;
 use model::*;
 
-use crate::components::{Header, RightPane};
-
 mod components;
 mod ws;
 
-const BUILT_URI: &str = "built/";
+const BUILT_URI: &str = "http://localhost:3000/built/";
 const SOCKET_URI: &str = "ws://localhost:3000/ws";
 const SNIPPET_WELCOME: &str = include_str!("snippets/welcome.rs");
 
@@ -19,9 +18,19 @@ fn main() {
 #[component]
 fn App() -> Element {
     let mut is_compiling = use_signal(|| false);
-    let built_src = use_signal(|| None);
+    let mut built_page_uri = use_signal(|| None);
+    let mut compiler_messages = use_signal(Vec::<String>::new);
+    let mut current_tab = use_signal(|| Tab::Page);
 
-    let socket_tx = ws::start_socket(is_compiling, built_src);
+    use_memo(move || {
+        if built_page_uri().is_none() {
+            current_tab.set(Tab::Logs);
+        } else {
+            current_tab.set(Tab::Page);
+        }
+    });
+
+    let socket_tx = ws::start_socket(is_compiling, built_page_uri, compiler_messages);
 
     // Once the element has mounted, startup `ace` editor.
     let on_editor_mount = move |_| async move {
@@ -49,6 +58,9 @@ fn App() -> Element {
                 return;
             }
             is_compiling.set(true);
+            built_page_uri.set(None);
+            compiler_messages.clear();
+            compiler_messages.push("Starting build...".to_string());
 
             let mut eval = eval(
                 r#"
@@ -79,7 +91,9 @@ fn App() -> Element {
             }
 
             RightPane {
-                show_page_uri: built_src(),
+                current_tab: current_tab(),
+                built_page_uri: built_page_uri(),
+                compiler_messages: compiler_messages(),
             }
         }
     }

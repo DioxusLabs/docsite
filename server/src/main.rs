@@ -1,10 +1,9 @@
 use std::env;
 
-use axum::{routing::get, Router};
+use axum::{response::Redirect, routing::get, Router};
 use build::QueueType;
 use dioxus_logger::tracing::{info, warn, Level};
 use tokio::{net::TcpListener, sync::mpsc};
-use tower_http::services::ServeDir;
 
 mod build;
 mod serve;
@@ -17,7 +16,7 @@ const LISTEN_IP: &str = "0.0.0.0";
 const REMOVAL_DELAY: u64 = 10000;
 
 // Paths
-const SERVE_PATH: &str = "../dist";
+//const SERVE_PATH: &str = "../dist";
 const TEMP_PATH: &str = "../temp/";
 const BUILD_TEMPLATE_PATH: &str = "./template";
 
@@ -48,13 +47,14 @@ async fn main() {
     let state = AppState { build_queue_tx };
 
     // Build routers
-    let serve = ServeDir::new(SERVE_PATH);
+    //let serve = ServeDir::new(SERVE_PATH);
     let built_router = Router::new()
         .route("/", get(serve::serve_built_index))
         .route("/*file_path", get(serve::serve_other_built));
 
     let app = Router::new()
-        .nest_service("/", serve)
+        //.nest_service("/", serve)
+        .route("/", get(|| async { Redirect::permanent("https://dioxuslabs.com/play") }))
         .route("/ws", get(ws::ws_handler))
         .nest("/built/:build_id", built_router)
         .with_state(state);

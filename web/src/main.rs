@@ -22,6 +22,7 @@ fn App() -> Element {
     let mut compiler_messages = use_signal(Vec::<String>::new);
     let mut current_tab = use_signal(|| Tab::Page);
 
+    // Change tab automatically
     use_memo(move || {
         if built_page_uri().is_none() {
             current_tab.set(Tab::Logs);

@@ -32,7 +32,11 @@ pub fn start_socket(
                         SocketMessage::CompileFinishedWithError => {
                             is_compiling.set(false);
                         }
-                        SocketMessage::SystemError(_) => todo!(),
+                        SocketMessage::SystemError(s) => {
+                            is_compiling.set(false);
+                            built_page_uri.set(None);
+                            compiler_messages.push(format!("Server Error: {s}"));
+                        },
                         _ => {}
                     }
                 }

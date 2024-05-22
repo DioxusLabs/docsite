@@ -21,7 +21,6 @@ impl TryFrom<String> for SocketMessage {
     fn try_from(value: String) -> Result<Self, Self::Error> {
         let split: Vec<&str> = value.split("~:~").collect();
 
-        // TODO: Error handling. This will panic!
         let Some(first) = split.get(0) else {
             return Err("invalid message".to_string());
         };

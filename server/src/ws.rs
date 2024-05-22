@@ -78,6 +78,7 @@ impl From<BuildMessage> for SocketMessage {
         match value {
             BuildMessage::Message(msg) => SocketMessage::CompileMessage(msg),
             BuildMessage::Finished(id) => SocketMessage::CompileFinished(id.to_string()),
+            BuildMessage::BuildError(e) => SocketMessage::SystemError(e),
             BuildMessage::FinishedWithError => SocketMessage::CompileFinishedWithError,
         }
     }

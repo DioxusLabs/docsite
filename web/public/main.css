@@ -78,9 +78,13 @@ body {
   align-self: center;
 }
 
-#run-button:not(disabled):hover {
+#run-button:not(.disabled):hover {
   background-color: rgb(55, 117, 158);
   cursor: pointer;
+}
+
+#run-button.disabled:hover {
+  cursor: not-allowed;
 }
 
 #editor {

@@ -19,10 +19,11 @@ pub fn RightPane(
             return;
         }
 
+        // Scrolls to the bottom of the log pane
         eval(
             r#"
             let pane = document.getElementById("right-pane");
-            pane.scrollTo({ top: pane.scrollHeight, behavior: 'smooth' });
+            pane.scrollTop = pane.scrollHeight;
             "#
         );
     }));

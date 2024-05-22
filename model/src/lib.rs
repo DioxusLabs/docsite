@@ -3,9 +3,9 @@ use std::fmt::Display;
 /// This represents a basic websocket message.
 ///
 /// Messages have an identifier and content.
-/// e.g. `error:compilation failed on line x`
+/// e.g. `error~:~compilation failed on line x`
 /// or
-/// `please_compile:#[component]...`
+/// `please_compile~:~#[component]...`
 pub enum SocketMessage {
     CompileRequest(String),
     CompileFinished(String),

@@ -33,6 +33,26 @@ body {
   background-color: #FFFFFF;
 }
 
+@media screen and (max-width: 768px) {
+  #pane-container {
+    flex-direction: column;
+  }
+
+  #left-pane {
+    min-height: 200px;
+    height: 50vh;
+    border-radius: 5px 5px 0px 0px;
+  }
+
+  #right-pane {
+    min-height: 200px;
+    height: 40vh;
+    border-radius: 0px 0px 5px 5px;
+    border: 1px solid #000000;
+    border-top: none;
+  }
+}
+
 #header {
   display: flex;
   flex-direction: row;

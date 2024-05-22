@@ -110,7 +110,6 @@ async fn build(tx: UnboundedSender<BuildMessage>, code: String) {
     .arg("build")
     .arg("--platform")
     .arg("web")
-    .arg("--release")
     .arg("--raw-out")
     .current_dir(&template)
     .stdout(Stdio::piped())

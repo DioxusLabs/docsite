@@ -4,15 +4,15 @@ use model::*;
 use wasm_bindgen::{closure::Closure, JsCast};
 use web_sys::{js_sys, MessageEvent, WebSocket};
 
-use crate::{BUILT_URI, SOCKET_URI};
-
 pub fn start_socket(
+    socket_uri: String,
+    built_uri: String,
     mut is_compiling: Signal<bool>,
     mut built_page_uri: Signal<Option<String>>,
     mut compiler_messages: Signal<Vec<String>>,
 ) -> Coroutine<SocketMessage> {
     use_coroutine(move |mut rx: UnboundedReceiver<SocketMessage>| async move {
-        let ws = WebSocket::new(SOCKET_URI).unwrap();
+        let ws = WebSocket::new(&socket_uri).unwrap();
 
         // Setup socket callback
         let cl = Closure::wrap(Box::new(move |e: MessageEvent| {
@@ -24,10 +24,20 @@ pub fn start_socket(
                     match msg {
                         SocketMessage::CompileFinished(id) => {
                             is_compiling.set(false);
-                            built_page_uri.set(Some(format!("{}{}", BUILT_URI, id)));
+                            built_page_uri.set(Some(format!("{}{}", built_uri, id)));
                         }
                         SocketMessage::CompileMessage(msg) => {
                             compiler_messages.push(msg);
+                        }
+                        // TODO: Handle banned words on both client and server
+                        // This would avoid unnescessary requests.
+                        SocketMessage::BannedWord(word) => {
+                            compiler_messages.push(format!("Error:"));
+                            compiler_messages.push(format!("A banned word was used: {word}"));
+                            compiler_messages.push("Please remove any instances of that word and run again.".to_string());
+                            compiler_messages.push("Using that word inside of another word is not allowed either. e.g. `move` in `remove`".to_string());
+                            is_compiling.set(false);
+                            built_page_uri.set(None);
                         }
                         SocketMessage::CompileFinishedWithError => {
                             is_compiling.set(false);

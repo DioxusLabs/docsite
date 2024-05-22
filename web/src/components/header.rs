@@ -1,5 +1,7 @@
 use dioxus::prelude::*;
 
+const SPINNER: &str = manganis::mg!(file("public/spinner.svg"));
+
 #[component]
 pub fn Header(is_compiling: bool, on_run: EventHandler) -> Element {
     let on_clear = move |_| {
@@ -16,7 +18,7 @@ pub fn Header(is_compiling: bool, on_run: EventHandler) -> Element {
                 if is_compiling {
                     img {
                         class: "spinner",
-                        src: "./spinner.svg",
+                        src: "{SPINNER}",
                     }
                 } else {
                     "Run"

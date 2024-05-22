@@ -6,8 +6,8 @@
 
 #dxp-left-pane,
 #dxp-right-pane {
-  width: 90vw;
-  height: 90vh;
+  width: 80vw;
+  height: 70vh;
   margin-left: auto;
   margin-right: auto;
   border: 1px solid #000000;
@@ -34,13 +34,13 @@
 
   #dxp-left-pane {
     min-height: 200px;
-    height: 50vh;
+    height: 50%;
     border-radius: 5px 5px 0px 0px;
   }
 
   #dxp-right-pane {
     min-height: 200px;
-    height: 40vh;
+    height: 40%;
     border-radius: 0px 0px 5px 5px;
     border: 1px solid #000000;
     border-top: none;
@@ -52,8 +52,6 @@
   flex-direction: row;
   background-color: antiquewhite;
   border-bottom: 1px solid #000000;
-  border-top-left-radius: 5px;
-  border-top-right-radius: 5px;
   padding: 10px;
 }
 

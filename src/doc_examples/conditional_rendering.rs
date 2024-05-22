@@ -52,7 +52,7 @@ fn LogInImproved(is_logged_in: bool, log_in: EventHandler, log_out: EventHandler
         }
         button {
             // depending on the value of `is_logged_in`, we will call a different event handler
-            onclick: move |_| if is_logged_in { log_in.call(()) } else { log_out.call(()) },
+            onclick: move |_| if is_logged_in { log_out.call(()) } else { log_in.call(()) },
             if is_logged_in {
                 // if we are logged in, the button should say "Log Out"
                 "Log Out"

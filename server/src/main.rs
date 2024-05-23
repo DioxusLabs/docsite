@@ -3,7 +3,7 @@ use std::env;
 use axum::{response::Redirect, routing::get, Router};
 use build::QueueType;
 use dioxus_logger::tracing::{info, warn, Level};
-use tokio::{net::TcpListener, sync::mpsc};
+use tokio::{fs, net::TcpListener, sync::mpsc};
 
 mod build;
 mod serve;
@@ -41,6 +41,10 @@ async fn main() {
     } else {
         warn!("`PORT` environment variable not set; defaulting to `{}`", port);
     }
+
+    // Remove the temp directory if it exists then re-create it.
+    fs::remove_dir_all(TEMP_PATH).await.ok();
+    fs::create_dir(TEMP_PATH).await.expect("failed to create temp directory");
 
     // Build app
     let build_queue_tx = build::start_build_watcher().await;

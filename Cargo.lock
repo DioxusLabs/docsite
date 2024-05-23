@@ -1639,6 +1639,7 @@ version = "0.1.0"
 dependencies = [
  "dioxus 0.5.2",
  "dioxus-logger",
+ "dioxus-sdk",
  "futures",
  "manganis 0.2.2 (registry+https://github.com/rust-lang/crates.io-index)",
  "model",
@@ -1704,9 +1705,26 @@ dependencies = [
 ]
 
 [[package]]
+name = "dioxus-sdk"
+version = "0.5.0"
+source = "git+https://github.com/DioxusLabs/sdk?rev=refs/pull/38/head#e6766e0b7a7706397a8b8e3647901e2c0beabcad"
+dependencies = [
+ "cfg-if",
+ "dioxus 0.5.2",
+ "dioxus-desktop",
+ "futures",
+ "js-sys",
+ "tracing",
+ "uuid",
+ "wasm-bindgen",
+ "wasm-bindgen-futures",
+ "web-sys",
+]
+
+[[package]]
 name = "dioxus-search"
 version = "0.1.0"
-source = "git+https://github.com/dioxuslabs/dioxus-search#a43e4c71b0bb8fbbe8a95b7fdd76c0d0b5b7f964"
+source = "git+https://github.com/dioxuslabs/dioxus-search#589d2a944bf6bdca4ab092af716f4bd4ecc499e6"
 dependencies = [
  "bytes",
  "dioxus-router",
@@ -1725,7 +1743,7 @@ dependencies = [
 [[package]]
 name = "dioxus-search-macro"
 version = "0.1.0"
-source = "git+https://github.com/dioxuslabs/dioxus-search#a43e4c71b0bb8fbbe8a95b7fdd76c0d0b5b7f964"
+source = "git+https://github.com/dioxuslabs/dioxus-search#589d2a944bf6bdca4ab092af716f4bd4ecc499e6"
 dependencies = [
  "quote",
  "syn 2.0.60",
@@ -1734,7 +1752,7 @@ dependencies = [
 [[package]]
 name = "dioxus-search-shared"
 version = "0.1.0"
-source = "git+https://github.com/dioxuslabs/dioxus-search#a43e4c71b0bb8fbbe8a95b7fdd76c0d0b5b7f964"
+source = "git+https://github.com/dioxuslabs/dioxus-search#589d2a944bf6bdca4ab092af716f4bd4ecc499e6"
 dependencies = [
  "bytes",
  "dioxus-router",

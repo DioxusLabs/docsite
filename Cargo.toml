@@ -2,7 +2,7 @@
 name = "dioxus_docs_site"
 version = "0.0.0"
 authors = ["Jonathan Kelley <jkelleyrtp@gmail.com>"]
-edition = "2018"
+edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
@@ -41,7 +41,7 @@ mdbook-shared = { git = "https://github.com/dioxuslabs/include_mdbook" }
 use-mdbook = { git = "https://github.com/dioxuslabs/include_mdbook" }
 
 dioxus-search = { git = "https://github.com/dioxuslabs/dioxus-search" }
-dioxus-playground = { path = "../playground/web" }#git = "https://github.com/DogeDark/dioxus-playground" }
+dioxus-playground = { git = "https://github.com/DioxusLabs/dioxus-playground" }
 
 tokio = { version = "1.29.0", features = ["full"], optional = true }
 axum = { version = "0.7", optional = true }
@@ -107,9 +107,9 @@ codegen-units = 1
 opt-level = 'z'
 strip = "debuginfo"
 
-[profile.dev.build-override]
-opt-level = 3
-codegen-units = 1
+#[profile.dev.build-override]
+#opt-level = 3
+#codegen-units = 1
 
 [profile.release.build-override]
 opt-level = 3

@@ -23,8 +23,8 @@ fn main() {
 fn App() -> Element {
     rsx! {
         Playground {
-            socket_uri: SOCKET_URI.to_string(),
-            built_uri: BUILT_URI.to_string(),
+            socket_uri: SOCKET_URI,
+            built_uri: BUILT_URI,
         }
     }
 }

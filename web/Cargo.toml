@@ -11,4 +11,4 @@ wasm-bindgen = "0.2.92"
 web-sys = "0.3.69"
 futures = "0.3.30"
 manganis = "0.2.2"
-dioxus-sdk = { git = "https://github.com/DioxusLabs/sdk", rev = "refs/pull/38/head", features = ["system_theme"] }
+#dioxus-sdk = { git = "https://github.com/DioxusLabs/sdk", rev = "refs/pull/38/head", features = ["system_theme"] }

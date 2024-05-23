@@ -60,12 +60,14 @@
   margin-left: auto;
   margin-right: auto;
   font-size: 1rem;
+  font-family: Arial, Helvetica, sans-serif;
 }
 
 #dxp-clear-button {
   border: none;
   background: none;
   outline: none;
+  font-family: Arial, Helvetica, sans-serif;
 }
 
 #dxp-clear-button:hover {
@@ -83,6 +85,7 @@
   color: #FFFFFF;
   padding: 5px 20px;
   transition: background-color 0.2s ease;
+  font-family: Arial, Helvetica, sans-serif;
 }
 
 #dxp-run-button.disabled {
@@ -121,6 +124,7 @@
   margin: 10px;
   border-left: solid 2px #626dff;
   color: #979797;
+  font-family: Arial, Helvetica, sans-serif;
 }
 
 .dxp-log-message.dxp-log-success {

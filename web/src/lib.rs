@@ -1,6 +1,5 @@
 use crate::components::{Header, RightPane, Tab};
 use dioxus::prelude::*;
-use dioxus_sdk::theme::{use_system_theme, SystemTheme};
 use model::*;
 
 mod components;
@@ -20,8 +19,6 @@ pub fn Playground(socket_uri: String, built_uri: String) -> Element {
     let mut built_page_uri = use_signal(|| None);
     let mut compiler_messages = use_signal(Vec::<String>::new);
     let mut current_tab = use_signal(|| Tab::Page);
-    let system_theme = use_system_theme();
-    let system_theme = Signal::new(system_theme().unwrap_or(SystemTheme::Light));
 
     // Change tab automatically
     use_memo(move || {
@@ -42,15 +39,10 @@ pub fn Playground(socket_uri: String, built_uri: String) -> Element {
 
     // Once the element has mounted, startup `ace` editor.
     let on_editor_mount = move |_| {
-        let theme = match system_theme() {
-            SystemTheme::Light => "ace/theme/github",
-            SystemTheme::Dark => "ace/theme/github_dark",
-        };
-
         let code = format!(
             r#"
             let editor = ace.edit("dxp-editor");
-            editor.setTheme("{theme}");
+            
 
             let RustMode = ace.require("ace/mode/rust").Mode;
             editor.session.setMode(new RustMode());
@@ -59,6 +51,26 @@ pub fn Playground(socket_uri: String, built_uri: String) -> Element {
 
             // Set a global so other evals can acces it.
             window.editorGlobal = editor;
+
+            let remove = null;
+            const updateTheme = () => {{
+                if (remove != null) {{
+                    remove();
+                }}
+                const media = window.matchMedia("(prefers-color-scheme: dark");
+                media.addEventListener("change", updateTheme);
+                remove = () => {{
+                    media.removeEventListener("change", updateTheme);
+                }};
+
+                if (media.matches) {{
+                    window.editorGlobal.setTheme("ace/theme/github_dark");
+                }} else {{
+                    window.editorGlobal.setTheme("ace/theme/github");
+                }}
+            }};
+
+            updateTheme();
             "#
         );
         eval(&code);

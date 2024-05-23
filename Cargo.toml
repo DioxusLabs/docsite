@@ -8,7 +8,6 @@ edition = "2018"
 
 [dependencies]
 dioxus = { git = "https://github.com/dioxuslabs/dioxus", features = [
-    "fullstack",
     "router",
 ] }
 dioxus-web = { git = "https://github.com/dioxuslabs/dioxus", features = [
@@ -134,14 +133,21 @@ doc_test = [
     "http",
     "rand"
 ]
-web = ["dioxus-web", "dioxus/web", "dioxus/web", "dioxus-fullstack/web"]
-server = [
+web = ["dioxus-web", "dioxus/web", "dioxus/web", "dioxus-fullstack/web", "dioxus/fullstack"]
+dioxus-axum = [
     "dioxus/axum",
     "dioxus-ssr",
     "dioxus/ssr",
     "tokio",
-    "dioxus-fullstack/axum",
     "axum",
     "fs_extra",
 ]
-prebuild = ["server"]
+server = [
+    "dioxus/fullstack",
+    "dioxus-fullstack/axum",
+    "dioxus-axum",
+]
+prebuild = [
+    "dioxus/static-generation",
+    "dioxus-axum",
+]

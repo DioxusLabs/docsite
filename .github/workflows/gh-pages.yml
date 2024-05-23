@@ -30,10 +30,9 @@ jobs:
         run: dx build --release --features web
       - name: Build Static HTML
         run: cargo run --release --features prebuild
-      - name: Create 404.html
-        run: cp docs/index.html docs/404.html
       - name: Rebuild with search index
-        run: dx build --release --features web && cp docs/404.html docs/index.html
+        # rebuild web with the new search index and copy over the wasm file into the docs folder
+        run: dx build --release --features web && mv dist/assets/dioxus docs/assets/dioxus
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@v4.2.3
         with:

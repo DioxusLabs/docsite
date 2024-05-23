@@ -26,7 +26,7 @@ mod simple_router {
 }
 
 mod router_404 {
-    use super::*;
+    use dioxus::prelude::*;
 
     // ANCHOR: router_definition_404
     // All of our routes will be a variant of this Route enum

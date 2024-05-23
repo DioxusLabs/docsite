@@ -1593,7 +1593,7 @@ dependencies = [
 [[package]]
 name = "dioxus-native-core"
 version = "0.5.0-alpha.2"
-source = "git+https://github.com/dioxuslabs/blitz#e118648346f764f39261868ad13efcc2aeb2fb21"
+source = "git+https://github.com/dioxuslabs/blitz#c28de2c3d7a30e0a1105670f34d6859889b765a4"
 dependencies = [
  "anymap 1.0.0-beta.2",
  "dashmap",
@@ -1610,7 +1610,7 @@ dependencies = [
 [[package]]
 name = "dioxus-native-core-macro"
 version = "0.5.0-alpha.2"
-source = "git+https://github.com/dioxuslabs/blitz#e118648346f764f39261868ad13efcc2aeb2fb21"
+source = "git+https://github.com/dioxuslabs/blitz#c28de2c3d7a30e0a1105670f34d6859889b765a4"
 dependencies = [
  "quote",
  "syn 2.0.65",
@@ -1809,7 +1809,7 @@ dependencies = [
 [[package]]
 name = "dioxus-tui"
 version = "0.5.0-alpha.2"
-source = "git+https://github.com/dioxuslabs/blitz#e118648346f764f39261868ad13efcc2aeb2fb21"
+source = "git+https://github.com/dioxuslabs/blitz#c28de2c3d7a30e0a1105670f34d6859889b765a4"
 dependencies = [
  "crossterm 0.26.1",
  "dioxus-core 0.5.2",
@@ -4588,7 +4588,7 @@ checksum = "d231b230927b5e4ad203db57bbcbee2802f6bce620b1e4a9024a07d94e2907ec"
 [[package]]
 name = "plasmo"
 version = "0.5.0-alpha.2"
-source = "git+https://github.com/dioxuslabs/blitz#e118648346f764f39261868ad13efcc2aeb2fb21"
+source = "git+https://github.com/dioxuslabs/blitz#c28de2c3d7a30e0a1105670f34d6859889b765a4"
 dependencies = [
  "anyhow",
  "anymap 1.0.0-beta.2",

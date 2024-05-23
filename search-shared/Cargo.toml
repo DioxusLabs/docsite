@@ -17,5 +17,5 @@ yazi = "0.1.5"
 scraper = "0.17.1"
 log = "0.4.19"
 
-[target.'cfg(arch = "wasm32")'.dependencies]
+[target.'cfg(target_family = "wasm")'.dependencies]
 getrandom = { version = "0.2", features = ["js"] }

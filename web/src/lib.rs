@@ -1,11 +1,12 @@
 use crate::components::{Header, RightPane, Tab};
 use dioxus::prelude::*;
+use dioxus_sdk::theme::{use_system_theme, SystemTheme};
 use model::*;
 
 mod components;
 mod ws;
 
-const _: &str = manganis::mg!(file("public/main.css"));
+const _: &str = manganis::mg!(file("public/dxp.css"));
 const SNIPPET_WELCOME: &str = include_str!("snippets/welcome.rs");
 
 // Ace editor
@@ -13,13 +14,14 @@ const SNIPPET_WELCOME: &str = include_str!("snippets/welcome.rs");
 //const _: &str = manganis::mg!(file("public/ace/mode-rust.js"));
 //const _: &str = manganis::mg!(file("public/ace/theme-github.js"));
 
-
 #[component]
 pub fn Playground(socket_uri: String, built_uri: String) -> Element {
     let mut is_compiling = use_signal(|| false);
     let mut built_page_uri = use_signal(|| None);
     let mut compiler_messages = use_signal(Vec::<String>::new);
     let mut current_tab = use_signal(|| Tab::Page);
+    let system_theme = use_system_theme();
+    let system_theme = Signal::new(system_theme().unwrap_or(SystemTheme::Light));
 
     // Change tab automatically
     use_memo(move || {
@@ -30,14 +32,25 @@ pub fn Playground(socket_uri: String, built_uri: String) -> Element {
         }
     });
 
-    let socket_tx = ws::start_socket(socket_uri, built_uri, is_compiling, built_page_uri, compiler_messages);
+    let socket_tx = ws::start_socket(
+        socket_uri,
+        built_uri,
+        is_compiling,
+        built_page_uri,
+        compiler_messages,
+    );
 
     // Once the element has mounted, startup `ace` editor.
-    let on_editor_mount = move |_| async move {
+    let on_editor_mount = move |_| {
+        let theme = match system_theme() {
+            SystemTheme::Light => "ace/theme/github",
+            SystemTheme::Dark => "ace/theme/github_dark",
+        };
+
         let code = format!(
             r#"
             let editor = ace.edit("dxp-editor");
-            editor.setTheme("ace/theme/github");
+            editor.setTheme("{theme}");
 
             let RustMode = ace.require("ace/mode/rust").Mode;
             editor.session.setMode(new RustMode());
@@ -78,14 +91,17 @@ pub fn Playground(socket_uri: String, built_uri: String) -> Element {
     rsx! {
         div {
             id: "dxp-pane-container",
+
             div {
                 id: "dxp-left-pane",
+
                 Header {
                     is_compiling: is_compiling(),
                     on_run,
                 }
                 div {
                     id: "dxp-editor",
+
                     onmounted: on_editor_mount,
                 }
             }

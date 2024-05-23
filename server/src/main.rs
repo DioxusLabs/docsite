@@ -37,14 +37,21 @@ async fn main() {
     // Get environment variables
     let mut port: u16 = 3000;
     if let Ok(v) = env::var("PORT") {
-        port = v.parse().expect("the `PORT` environment variable is not a number");
+        port = v
+            .parse()
+            .expect("the `PORT` environment variable is not a number");
     } else {
-        warn!("`PORT` environment variable not set; defaulting to `{}`", port);
+        warn!(
+            "`PORT` environment variable not set; defaulting to `{}`",
+            port
+        );
     }
 
     // Remove the temp directory if it exists then re-create it.
     fs::remove_dir_all(TEMP_PATH).await.ok();
-    fs::create_dir(TEMP_PATH).await.expect("failed to create temp directory");
+    fs::create_dir(TEMP_PATH)
+        .await
+        .expect("failed to create temp directory");
 
     // Build app
     let build_queue_tx = build::start_build_watcher().await;
@@ -58,7 +65,10 @@ async fn main() {
 
     let app = Router::new()
         //.nest_service("/", serve)
-        .route("/", get(|| async { Redirect::permanent("https://dioxuslabs.com/play") }))
+        .route(
+            "/",
+            get(|| async { Redirect::permanent("https://dioxuslabs.com/play") }),
+        )
         .route("/ws", get(ws::ws_handler))
         .nest("/built/:build_id", built_router)
         .with_state(state);

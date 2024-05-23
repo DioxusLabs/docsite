@@ -34,7 +34,10 @@ pub fn start_socket(
                         SocketMessage::BannedWord(word) => {
                             compiler_messages.push(format!("Error:"));
                             compiler_messages.push(format!("A banned word was used: {word}"));
-                            compiler_messages.push("Please remove any instances of that word and run again.".to_string());
+                            compiler_messages.push(
+                                "Please remove any instances of that word and run again."
+                                    .to_string(),
+                            );
                             compiler_messages.push("Using that word inside of another word is not allowed either. e.g. `move` in `remove`".to_string());
                             is_compiling.set(false);
                             built_page_uri.set(None);
@@ -46,7 +49,7 @@ pub fn start_socket(
                             is_compiling.set(false);
                             built_page_uri.set(None);
                             compiler_messages.push(format!("Server Error: {s}"));
-                        },
+                        }
                         _ => {}
                     }
                 }

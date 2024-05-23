@@ -24,7 +24,7 @@ pub fn RightPane(
             r#"
             let pane = document.getElementById("dxp-right-pane");
             pane.scrollTop = pane.scrollHeight;
-            "#
+            "#,
         );
     }));
 
@@ -48,6 +48,7 @@ pub fn RightPane(
                 class: "dxp-log-message",
                 class: if is_success { "dxp-log-success" },
                 class: if error_span { "dxp-log-error" },
+
                 "{log}"
             }
         };
@@ -58,6 +59,7 @@ pub fn RightPane(
     rsx! {
         div {
             id: "dxp-right-pane",
+
             onmounted: move |_| pane_is_mounted.set(true),
 
             match current_tab {

@@ -11,9 +11,11 @@ pub fn Header(is_compiling: bool, on_run: EventHandler) -> Element {
     rsx! {
         div {
             id: "dxp-header",
+
             button {
                 id: "dxp-run-button",
                 class: if is_compiling { "disabled" },
+
                 onclick: move |_| on_run.call(()),
                 if is_compiling {
                     img {
@@ -27,11 +29,13 @@ pub fn Header(is_compiling: bool, on_run: EventHandler) -> Element {
 
             h1 {
                 id: "dxp-title",
+
                 "Dioxus Playground",
             }
 
             button {
                 id: "dxp-clear-button",
+
                 onclick: on_clear,
                 "Clear",
             }

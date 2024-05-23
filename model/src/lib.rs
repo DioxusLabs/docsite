@@ -24,7 +24,7 @@ impl TryFrom<String> for SocketMessage {
         let Some(first) = split.get(0) else {
             return Err("invalid message".to_string());
         };
-        
+
         let last = split.get(1).unwrap_or(&"").to_string();
 
         match *first {

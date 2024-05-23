@@ -2,7 +2,6 @@ use dioxus::prelude::*;
 use dioxus_logger::tracing::Level;
 use dioxus_playground::Playground;
 
-
 #[cfg(not(debug_assertions))]
 const SOCKET_URI: &str = "ws://localhost:3000/ws";
 

@@ -18,7 +18,7 @@ once_cell = "1.18.0"
 dioxus-search-macro = { path = "search-macro" }
 dioxus-search-shared = { path = "search-shared" }
 
-[target.'cfg(arch = "wasm32")'.dependencies]
+[target.'cfg(target_family = "wasm")'.dependencies]
 getrandom = { version = "0.2", features = ["js"] }
 
 [workspace]

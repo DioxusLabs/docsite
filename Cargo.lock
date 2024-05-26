@@ -725,10 +725,10 @@ dependencies = [
  "dioxus",
  "dioxus-logger",
  "futures",
+ "gloo-net 0.5.0",
+ "gloo-utils 0.2.0",
  "manganis",
  "model",
- "wasm-bindgen",
- "web-sys",
 ]
 
 [[package]]
@@ -1800,6 +1800,9 @@ dependencies = [
 [[package]]
 name = "model"
 version = "0.1.0"
+dependencies = [
+ "gloo-net 0.5.0",
+]
 
 [[package]]
 name = "native-tls"

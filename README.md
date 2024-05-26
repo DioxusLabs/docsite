@@ -11,5 +11,5 @@ You must include a `/public/ace` folder in your project with the files found in 
 
 Additionally, add the following to your `[web.resource]` section of `Dioxus.toml`:
 ```toml
-script = ["/ace/ace.js", "/ace/mode-rust.js", "/ace/theme-github.js"]
+script = ["/ace/ace.js", "/ace/mode-rust.js", "/ace/theme-github.js", "/ace/theme-github_dark.js"]
 ```

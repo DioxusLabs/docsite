@@ -4,10 +4,10 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
-model = { path = "../model" }
+model = { path = "../model", features = ["web"] }
 dioxus = { version = "0.5.1", features = ["web"] }
 dioxus-logger = "0.5.1"
-wasm-bindgen = "0.2.92"
-web-sys = "0.3.69"
 futures = "0.3.30"
 manganis = "0.2.2"
+gloo-net = { version = "0.5.0", features = ["websocket"] }
+gloo-utils = "0.2.0"

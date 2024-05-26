@@ -21,10 +21,10 @@ impl TryFrom<String> for SocketMessage {
     fn try_from(value: String) -> Result<Self, Self::Error> {
         let split: Vec<&str> = value.split("~:~").collect();
 
-        let Some(first) = split.get(0) else {
+        let Some(first) = split.first() else {
             return Err("invalid message".to_string());
         };
-        
+
         let last = split.get(1).unwrap_or(&"").to_string();
 
         match *first {
@@ -49,5 +49,29 @@ impl Display for SocketMessage {
             Self::BannedWord(s) => write!(f, "banned_word~:~{}", s),
             Self::SystemError(s) => write!(f, "error~:~{}", s),
         }
+    }
+}
+
+#[cfg(feature = "web")]
+use gloo_net::websocket::Message;
+
+#[cfg(feature = "web")]
+impl From<SocketMessage> for Message {
+    fn from(value: SocketMessage) -> Self {
+        let msg = value.to_string();
+        Message::Text(msg)
+    }
+}
+
+#[cfg(feature = "web")]
+impl TryFrom<Message> for SocketMessage {
+    type Error = String;
+
+    fn try_from(value: Message) -> Result<Self, Self::Error> {
+        let Message::Text(txt) = value else {
+            return Err("unable to `TryInto` binary messages".to_string());
+        };
+
+        SocketMessage::try_from(txt)
     }
 }

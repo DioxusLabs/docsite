@@ -4,3 +4,8 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
+gloo-net = { version = "0.5.0", features = ["websocket"], optional = true }
+
+[features]
+server = []
+web = ["dep:gloo-net"]

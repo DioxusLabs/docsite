@@ -34,7 +34,6 @@ pub fn Playground(socket_url: String, built_url: String) -> Element {
         let code = format!(
             r#"
             let editor = ace.edit("dxp-editor");
-            
 
             let RustMode = ace.require("ace/mode/rust").Mode;
             editor.session.setMode(new RustMode());
@@ -110,7 +109,6 @@ pub fn Playground(socket_url: String, built_url: String) -> Element {
             id: "dxp-pane-container",
             div {
                 id: "dxp-left-pane",
-
                 Header {
                     is_compiling: is_compiling(),
                     on_run,

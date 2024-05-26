@@ -92,7 +92,8 @@ pub fn Playground(socket_url: String, built_url: String) -> Element {
             socket.compile(val).await.unwrap();
 
             while let Some(msg) = socket.next().await {
-                let is_done = ws::handle_message(is_compiling, built_page_id, compiler_messages, msg);
+                let is_done =
+                    ws::handle_message(is_compiling, built_page_id, compiler_messages, msg);
                 if is_done {
                     break;
                 }

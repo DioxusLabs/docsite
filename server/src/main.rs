@@ -1,9 +1,20 @@
-use std::env;
+use std::{env, sync::Arc, time::Duration};
 
-use axum::{response::Redirect, routing::get, Router};
+use axum::{
+    extract::{Request, State},
+    middleware::{self, Next},
+    response::{Redirect, Response},
+    routing::get,
+    Router,
+};
 use build::QueueType;
 use dioxus_logger::tracing::{info, warn, Level};
-use tokio::{fs, net::TcpListener, sync::mpsc};
+use tokio::{
+    fs,
+    net::TcpListener,
+    sync::{mpsc, Mutex},
+    time::Instant,
+};
 
 mod build;
 mod serve;
@@ -27,6 +38,7 @@ const BANNED_WORDS: &'static [&str] = &["eval", "web_sys", "bindgen", "document"
 
 #[derive(Clone)]
 struct AppState {
+    last_request_time: Arc<Mutex<Instant>>,
     build_queue_tx: mpsc::UnboundedSender<QueueType>,
 }
 
@@ -44,6 +56,18 @@ async fn main() {
         warn!(
             "`PORT` environment variable not set; defaulting to `{}`",
             port
+        );
+    }
+
+    let mut shutdown_time_ms: u64 = REMOVAL_DELAY;
+    if let Ok(v) = env::var("SHUTDOWN_DELAY") {
+        shutdown_time_ms = v
+            .parse()
+            .expect("the `SHUTDOWN_DELAY` environment variable is not a number");
+    } else {
+        warn!(
+            "`SHUTDOWN_DELAY` environment variable not set; defaulting to `{}` ms",
+            shutdown_time_ms
         );
     }
 
@@ -65,7 +89,12 @@ async fn main() {
 
     // Build app
     let build_queue_tx = build::start_build_watcher(build_template_path).await;
-    let state = AppState { build_queue_tx };
+    let state = AppState {
+        build_queue_tx,
+        last_request_time: Arc::new(Mutex::new(Instant::now())),
+    };
+
+    start_shutdown_watcher(state.clone(), shutdown_time_ms);
 
     // Build routers
     //let serve = ServeDir::new(SERVE_PATH);
@@ -81,6 +110,10 @@ async fn main() {
         )
         .route("/ws", get(ws::ws_handler))
         .nest("/built/:build_id", built_router)
+        .route_layer(middleware::from_fn_with_state(
+            state.clone(),
+            request_counter,
+        ))
         .with_state(state);
 
     // Start axum
@@ -89,4 +122,34 @@ async fn main() {
 
     info!("listening on `{}`", final_address);
     axum::serve(listener, app).await.unwrap();
+}
+
+/// Watches time since last request and shuts down the server
+/// if there have been no requests in x time.
+fn start_shutdown_watcher(state: AppState, shutdown_time_ms: u64) {
+    tokio::task::spawn(async move {
+        loop {
+            tokio::time::sleep(Duration::from_secs(1)).await;
+            let now = Instant::now();
+
+            let last_req_time = state.last_request_time.lock().await;
+            let duration_since_req = now.duration_since(*last_req_time);
+
+            if duration_since_req.as_millis() >= shutdown_time_ms as u128 {
+                break;
+            }
+        }
+
+        // Exit the app with code 0 to tell Fly.io to scale to zero.
+        std::process::exit(0);
+    });
+}
+
+/// Updates the time since last request for the shutdown watcher.
+async fn request_counter(State(state): State<AppState>, req: Request, next: Next) -> Response {
+    let now = Instant::now();
+    let mut lock = state.last_request_time.lock().await;
+    *lock = now;
+    drop(lock);
+    next.run(req).await
 }

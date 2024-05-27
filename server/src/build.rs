@@ -25,21 +25,21 @@ pub enum BuildMessage {
     BuildError(String),
 }
 
-pub async fn start_build_watcher() -> UnboundedSender<QueueType> {
+pub async fn start_build_watcher(build_template_path: String) -> UnboundedSender<QueueType> {
     let (tx, mut rx) = mpsc::unbounded_channel::<QueueType>();
 
     tokio::spawn(async move {
         while let Some(item) = rx.recv().await {
-            build(item.0, item.1).await;
+            build(&build_template_path, item.0, item.1).await;
         }
     });
 
     tx
 }
 
-async fn build(tx: UnboundedSender<BuildMessage>, code: String) {
+async fn build(build_template_path: &str, tx: UnboundedSender<BuildMessage>, code: String) {
     let id = Uuid::new_v4();
-    let template = PathBuf::from(crate::BUILD_TEMPLATE_PATH);
+    let template = PathBuf::from(build_template_path);
     let dist = template.join("dist");
 
     // Delete template/dist if it exists (clean slate)
@@ -105,17 +105,15 @@ async fn build(tx: UnboundedSender<BuildMessage>, code: String) {
     }
 
     // Run `dx build` in template
-    let mut child = match Command::new(
-        "C:\\Users\\Darka\\Documents\\Projects\\DioxusLabs\\dioxus\\target\\release\\dx",
-    )
-    .arg("build")
-    .arg("--platform")
-    .arg("web")
-    .arg("--raw-out")
-    .current_dir(&template)
-    .stdout(Stdio::piped())
-    .stderr(Stdio::piped())
-    .spawn()
+    let mut child = match Command::new("dx")
+        .arg("build")
+        .arg("--platform")
+        .arg("web")
+        .arg("--raw-out")
+        .current_dir(&template)
+        .stdout(Stdio::piped())
+        .stderr(Stdio::piped())
+        .spawn()
     {
         Ok(c) => c,
         Err(e) => {

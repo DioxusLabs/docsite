@@ -47,6 +47,16 @@ async fn main() {
         );
     }
 
+    let mut build_template_path = String::from(BUILD_TEMPLATE_PATH);
+    if let Ok(v) = env::var("BUILD_TEMPLATE_PATH") {
+        build_template_path = v;
+    } else {
+        warn!(
+            "`BUILD_TEMPLATE_PATH` environment variable is not set; defaulting to `{}`",
+            build_template_path
+        );
+    }
+
     // Remove the temp directory if it exists then re-create it.
     fs::remove_dir_all(TEMP_PATH).await.ok();
     fs::create_dir(TEMP_PATH)
@@ -54,7 +64,7 @@ async fn main() {
         .expect("failed to create temp directory");
 
     // Build app
-    let build_queue_tx = build::start_build_watcher().await;
+    let build_queue_tx = build::start_build_watcher(build_template_path).await;
     let state = AppState { build_queue_tx };
 
     // Build routers

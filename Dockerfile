@@ -9,7 +9,7 @@ COPY . .
 RUN cargo chef prepare --recipe-path recipe.json --bin server
 
 # TODO: Use main repo / convert to install binaries
-#RUN cargo install --git https://github.com/DogeDark/dioxus --branch cli-raw-out dioxus-cli --root /.cargo
+RUN cargo install --git https://github.com/DogeDark/dioxus --branch cli-raw-out dioxus-cli --root /.cargo
 
 # Builder
 # Builds binary and imports cached deps from planner
@@ -24,8 +24,8 @@ FROM chef AS runtime
 
 COPY --from=builder /app/target/release/server /usr/local/bin
 COPY --from=builder /app/server/template /usr/local/bin/template
-#COPY --from=planner /.cargo/bin/dx /usr/local/bin   
-COPY --from=planner /app/dx-debian /usr/local/bin/dx
+COPY --from=planner /.cargo/bin/dx /usr/local/bin   
+#COPY --from=planner /app/dx-debian /usr/local/bin/dx
 
 ENV PATH="${PATH}:/usr/local/bin"
 ENV PORT=3000

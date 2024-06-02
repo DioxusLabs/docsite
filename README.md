@@ -15,3 +15,16 @@ script = ["/ace/ace.js", "/ace/mode-rust.js", "/ace/theme-github.js", "/ace/them
 ```
 
 <!-- `dx-debian` is the dx cli version 0.5.1 with [--raw-out](https://github.com/DogeDark/dioxus/tree/cli-raw-out) support. -->
+
+### Environment Variables
+Most of these are already set in the `Dockerfile` and shouldn't need modified.
+```
+- The port the server should listen to.
+PORT = 3000
+
+- The build template that should be used.
+BUILD_TEMPLATE_PATH = "/usr/local/bin/template"
+
+- If specified, shuts down the server after X ms since the last http request. 
+SHUTDOWN_DELAY = null
+```

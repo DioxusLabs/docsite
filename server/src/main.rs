@@ -59,18 +59,6 @@ async fn main() {
         );
     }
 
-    let mut shutdown_time_ms: u64 = REMOVAL_DELAY;
-    if let Ok(v) = env::var("SHUTDOWN_DELAY") {
-        shutdown_time_ms = v
-            .parse()
-            .expect("the `SHUTDOWN_DELAY` environment variable is not a number");
-    } else {
-        warn!(
-            "`SHUTDOWN_DELAY` environment variable not set; defaulting to `{}` ms",
-            shutdown_time_ms
-        );
-    }
-
     let mut build_template_path = String::from(BUILD_TEMPLATE_PATH);
     if let Ok(v) = env::var("BUILD_TEMPLATE_PATH") {
         build_template_path = v;
@@ -94,7 +82,15 @@ async fn main() {
         last_request_time: Arc::new(Mutex::new(Instant::now())),
     };
 
-    start_shutdown_watcher(state.clone(), shutdown_time_ms);
+    if let Ok(v) = env::var("SHUTDOWN_DELAY") {
+        let shutdown_time_ms = v
+            .parse()
+            .expect("the `SHUTDOWN_DELAY` environment variable is not a number");
+
+        start_shutdown_watcher(state.clone(), shutdown_time_ms);
+    } else {
+        warn!("`SHUTDOWN_DELAY` environment variable not set; the server will not turn off");
+    }
 
     // Build routers
     //let serve = ServeDir::new(SERVE_PATH);

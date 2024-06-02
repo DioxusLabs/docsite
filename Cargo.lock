@@ -1636,15 +1636,15 @@ dependencies = [
 [[package]]
 name = "dioxus-playground"
 version = "0.1.0"
+source = "git+https://github.com/DioxusLabs/playground#9982494b98f88092bbbec9fb2be38fbf8e5c2632"
 dependencies = [
  "dioxus 0.5.2",
  "dioxus-logger",
- "dioxus-sdk",
  "futures",
+ "gloo-net 0.5.0",
+ "gloo-utils 0.2.0",
  "manganis 0.2.2 (registry+https://github.com/rust-lang/crates.io-index)",
  "model",
- "wasm-bindgen",
- "web-sys",
 ]
 
 [[package]]
@@ -1702,23 +1702,6 @@ dependencies = [
  "quote",
  "syn 2.0.60",
  "tracing",
-]
-
-[[package]]
-name = "dioxus-sdk"
-version = "0.5.0"
-source = "git+https://github.com/DioxusLabs/sdk?rev=refs/pull/38/head#e6766e0b7a7706397a8b8e3647901e2c0beabcad"
-dependencies = [
- "cfg-if",
- "dioxus 0.5.2",
- "dioxus-desktop",
- "futures",
- "js-sys",
- "tracing",
- "uuid",
- "wasm-bindgen",
- "wasm-bindgen-futures",
- "web-sys",
 ]
 
 [[package]]
@@ -3863,6 +3846,10 @@ dependencies = [
 [[package]]
 name = "model"
 version = "0.1.0"
+source = "git+https://github.com/DioxusLabs/playground#9982494b98f88092bbbec9fb2be38fbf8e5c2632"
+dependencies = [
+ "gloo-net 0.5.0",
+]
 
 [[package]]
 name = "muda"

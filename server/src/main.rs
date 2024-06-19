@@ -1,4 +1,4 @@
-use std::{env, sync::Arc, time::Duration};
+use std::{env, sync::{atomic::{AtomicBool, Ordering}, Arc}, time::Duration};
 
 use axum::{
     extract::{Request, State},
@@ -34,12 +34,13 @@ const BUILD_TEMPLATE_PATH: &str = "./template";
 /// A list of words that if found anywhere within submitted code, will be rejected.
 /// This isn't really nescessary as the code runs locally on the client that submitted it but
 /// it is still an extra layer of security.
-const BANNED_WORDS: &'static [&str] = &["eval", "web_sys", "bindgen", "document", "window"];
+const BANNED_WORDS: &[&str] = &["eval", "web_sys", "bindgen", "document", "window"];
 
 #[derive(Clone)]
 struct AppState {
     last_request_time: Arc<Mutex<Instant>>,
     build_queue_tx: mpsc::UnboundedSender<QueueType>,
+    is_building: Arc<AtomicBool>,
 }
 
 #[tokio::main]
@@ -76,10 +77,12 @@ async fn main() {
         .expect("failed to create temp directory");
 
     // Build app
-    let build_queue_tx = build::start_build_watcher(build_template_path).await;
+    let is_building = Arc::new(AtomicBool::new(false));
+    let build_queue_tx = build::start_build_watcher(is_building.clone(), build_template_path).await;
     let state = AppState {
         build_queue_tx,
         last_request_time: Arc::new(Mutex::new(Instant::now())),
+        is_building,
     };
 
     if let Ok(v) = env::var("SHUTDOWN_DELAY") {
@@ -127,10 +130,16 @@ fn start_shutdown_watcher(state: AppState, shutdown_time_ms: u64) {
         loop {
             tokio::time::sleep(Duration::from_secs(1)).await;
             let now = Instant::now();
+            let mut last_req_time = state.last_request_time.lock().await;
 
-            let last_req_time = state.last_request_time.lock().await;
+            // Reset timer when build is occuring.
+            if state.is_building.load(Ordering::SeqCst) {
+                *last_req_time = now;
+                continue;
+            }
+
+            // Exit program if not building and duration exceeds shutdown time.
             let duration_since_req = now.duration_since(*last_req_time);
-
             if duration_since_req.as_millis() >= shutdown_time_ms as u128 {
                 break;
             }

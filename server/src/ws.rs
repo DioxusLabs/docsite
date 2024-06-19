@@ -37,36 +37,33 @@ async fn handle_socket(state: AppState, socket: WebSocket) {
             continue;
         };
 
-        match msg {
-            SocketMessage::CompileRequest(code) => {
-                // Verify no banned words were submitted
-                if let Some(banned) = is_unsafe(&code) {
-                    let banned_msg = SocketMessage::BannedWord(banned).to_string();
-                    tx.send(banned_msg.into()).await.ok();
-                    continue;
-                }
-
-                let (res_tx, mut res_rx) = mpsc::unbounded_channel();
-
-                // Receive response from oneshot and parse it.
-                if state.build_queue_tx.send((res_tx, code)).is_ok() {
-                    while let Some(msg) = res_rx.recv().await {
-                        let as_socket_msg: SocketMessage = msg.into();
-                        tx.send(as_socket_msg.to_string().into()).await.ok();
-                    }
-                } else {
-                    tx.send(failed_to_compile.clone().into()).await.ok();
-                    continue;
-                };
+        if let SocketMessage::CompileRequest(code) = msg {
+            // Verify no banned words were submitted
+            if let Some(banned) = is_unsafe(&code) {
+                let banned_msg = SocketMessage::BannedWord(banned).to_string();
+                tx.send(banned_msg.into()).await.ok();
+                continue;
             }
-            _ => {}
+
+            let (res_tx, mut res_rx) = mpsc::unbounded_channel();
+
+            // Receive response from oneshot and parse it.
+            if state.build_queue_tx.send((res_tx, code)).is_ok() {
+                while let Some(msg) = res_rx.recv().await {
+                    let as_socket_msg: SocketMessage = msg.into();
+                    tx.send(as_socket_msg.to_string().into()).await.ok();
+                }
+            } else {
+                tx.send(failed_to_compile.clone().into()).await.ok();
+                continue;
+            };
         }
     }
 }
 
-fn is_unsafe(code: &String) -> Option<String> {
+fn is_unsafe(code: &str) -> Option<String> {
     for word in crate::BANNED_WORDS {
-        if code.find(word).is_some() {
+        if code.contains(word) {
             return Some(word.to_string());
         }
     }

@@ -1,7 +1,12 @@
 use crate::REMOVAL_DELAY;
 use dioxus_logger::tracing::error;
 use fs_extra::{dir, file};
-use std::{path::PathBuf, process::Stdio, time::Duration};
+use std::{
+    path::PathBuf,
+    process::Stdio,
+    sync::{atomic::{AtomicBool, Ordering}, Arc},
+    time::Duration,
+};
 use tokio::{
     fs,
     io::{AsyncBufReadExt, BufReader},
@@ -25,12 +30,17 @@ pub enum BuildMessage {
     BuildError(String),
 }
 
-pub async fn start_build_watcher(build_template_path: String) -> UnboundedSender<QueueType> {
+pub async fn start_build_watcher(
+    is_building: Arc<AtomicBool>,
+    build_template_path: String,
+) -> UnboundedSender<QueueType> {
     let (tx, mut rx) = mpsc::unbounded_channel::<QueueType>();
 
     tokio::spawn(async move {
         while let Some(item) = rx.recv().await {
+            is_building.store(true, Ordering::SeqCst);
             build(&build_template_path, item.0, item.1).await;
+            is_building.store(false, Ordering::SeqCst);
         }
     });
 
@@ -64,7 +74,7 @@ async fn build(build_template_path: &str, tx: UnboundedSender<BuildMessage>, cod
     // Allows us to reset the template for the new build.
     for (i, path) in snippets_from_copy.iter().enumerate() {
         let new_path = &snippets_to_copy[i];
-        if let Err(e) = fs_extra::file::copy(path, &new_path, &options) {
+        if let Err(e) = fs_extra::file::copy(path, new_path, &options) {
             error!(?path, ?new_path, error = ?e, "failed to copy snippets to destination path");
             tx.send(BuildMessage::BuildError(
                 "Server failed to copy snippets.".to_string(),
@@ -109,7 +119,7 @@ async fn build(build_template_path: &str, tx: UnboundedSender<BuildMessage>, cod
         .arg("build")
         .arg("--platform")
         .arg("web")
-        .arg("--raw-out")
+        .arg("--release")
         .current_dir(&template)
         .stdout(Stdio::piped())
         .stderr(Stdio::piped())

@@ -291,10 +291,10 @@ fn Stats() -> Element {
             }
             div { class: "max-w-screen-xl mx-auto py-12 px-2 md:px-16 dark:bg-[#111111] mb-12",
                 div { class: "grid grid-cols-2 grid-rows-2 sm:grid-cols-4 sm:grid-rows-1",
-                    StatsItem { major: "16k", minor: "Stars" }
-                    StatsItem { major: "140k", minor: "Downloads" }
-                    StatsItem { major: "206", minor: "Contributors" }
-                    StatsItem { major: "1500", minor: "Community Projects" }
+                    StatsItem { major: "19k", minor: "Stars" }
+                    StatsItem { major: "210k", minor: "Downloads" }
+                    StatsItem { major: "235", minor: "Contributors" }
+                    StatsItem { major: "1900", minor: "Community Projects" }
                 }
             }
 

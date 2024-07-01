@@ -41,7 +41,7 @@ index_on_404 = true
 style = []
 
 # Javascript code file
-script = []
+script = ["/ace/ace.js", "/ace/mode-rust.js", "/ace/theme-github.js", "/ace/theme-github_dark.js"]
 
 [web.resource.dev]
 

@@ -2,7 +2,7 @@
 name = "dioxus_docs_site"
 version = "0.0.0"
 authors = ["Jonathan Kelley <jkelleyrtp@gmail.com>"]
-edition = "2018"
+edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
@@ -41,6 +41,7 @@ mdbook-shared = { git = "https://github.com/dioxuslabs/include_mdbook" }
 use-mdbook = { git = "https://github.com/dioxuslabs/include_mdbook" }
 
 dioxus-search = { git = "https://github.com/dioxuslabs/dioxus-search" }
+dioxus-playground = { git = "https://github.com/DioxusLabs/playground" }
 
 tokio = { version = "1.29.0", features = ["full"], optional = true }
 axum = { version = "0.7", optional = true }
@@ -54,7 +55,7 @@ web-sys = { version = "0.3.64", features = [
     "Window",
     "Event",
     "AddEventListenerOptions",
-    "Navigator"
+    "Navigator",
 ] }
 slab = "0.4.8"
 chrono = { version = "0.4.26", features = ["serde"] }
@@ -132,9 +133,9 @@ doc_test = [
     "tower-http",
     "dioxus-std",
     "http",
-    "rand"
+    "rand",
 ]
-web = ["dioxus-web", "dioxus/web", "dioxus/web", "dioxus-fullstack/web"]
+web = ["dioxus-web", "dioxus/web", "dioxus/web", "dioxus-fullstack/web",]
 server = [
     "dioxus/axum",
     "dioxus-ssr",

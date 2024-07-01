@@ -40,6 +40,7 @@ pub(crate) mod components {
         pub(crate) mod awesome;
         pub(crate) mod deploy;
         pub(crate) mod desktop_dependencies;
+        pub(crate) mod playground;
     }
 }
 
@@ -80,6 +81,9 @@ pub(crate) enum Route {
         #[redirect("/platforms/ssr", || Route::Homepage {})]
         #[redirect("/platforms/tui", || Route::Homepage {})]
         Homepage {},
+
+        #[route("/play")]
+        Playground {},
 
         #[route("/awesome")]
         Awesome {},

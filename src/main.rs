@@ -127,8 +127,11 @@ pub(crate) enum Route {
         #[end_layout]
     #[end_nest]
     #[redirect("/docs/0.3/:..segments", |segments: Vec<String>| Route::DocsO3 { segments })]
-    #[redirect("/docs/:.._segments", |_segments: Vec<String>| Route::Docs { child: BookRoute::Index {} })]
-    #[route("/:..segments")]
+    #[redirect("/docs/:..segments", |segments: Vec<String>| {
+        let joined = segments.join("/");
+        let docs_route = format!("/docs/{}", joined);
+        Route::from_str(&docs_route).unwrap_or_else(|_| Route::Docs { child: BookRoute::Index {} })
+    })]
     #[route("/:..segments")]
     Err404 { segments: Vec<String> },
 }
@@ -257,46 +260,13 @@ fn main() {
             .with_level(LevelFilter::Error)
             .init()
             .unwrap();
-        tokio::runtime::Runtime::new()
-            .unwrap()
-            .block_on(async move {
-                let index_html = std::fs::read_to_string("docs/index.html").unwrap();
-                let main_tag = r#"<div id="main">"#;
-                let (before_body, after_body) =
-                    index_html.split_once(main_tag).expect("main id not found");
-                let after_body = after_body
-                    .split_once("</div>")
-                    .expect("main id not found")
-                    .1;
-                let wrapper = DefaultRenderer {
-                    before_body: before_body.to_string() + main_tag,
-                    after_body: "</div>".to_string() + after_body,
-                };
-                let mut renderer = IncrementalRenderer::builder()
-                    .static_dir("docs_static")
-                    .map_path(|route| {
-                        let mut path = std::env::current_dir().unwrap();
-                        path.push("docs_static");
-                        for segment in route.split('/') {
-                            path.push(segment);
-                        }
-                        println!("built: {}", path.display());
-                        path
-                    })
-                    .build();
-                renderer.renderer_mut().pre_render = true;
-                pre_cache_static_routes::<Route, _>(&mut renderer, &wrapper)
-                    .await
-                    .unwrap();
 
-                // Copy everything from docs_static to docs
-                let mut options = fs_extra::dir::CopyOptions::new();
-                options.overwrite = true;
-                options.content_only = true;
-                options.copy_inside = true;
-                std::fs::create_dir_all(format!("./docs")).unwrap();
-                fs_extra::dir::move_dir("./docs_static", &format!("./docs"), &options).unwrap();
-            });
+        std::env::remove_var("DIOXUS_ACTIVE");
+        std::env::remove_var("CARGO");
+
+        LaunchBuilder::new()
+            .with_cfg(dioxus::static_site_generation::Config::new().github_pages())
+            .launch(app);
         println!("prebuilt");
 
         dioxus_search::SearchIndex::<Route>::create(

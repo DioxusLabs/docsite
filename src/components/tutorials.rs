@@ -1,7 +1,7 @@
 use crate::*;
 use dioxus::prelude::*;
 
-struct Tutorial {
+struct TutorialData {
     title: &'static str,
     description: &'static str,
     contents: &'static str,
@@ -9,22 +9,22 @@ struct Tutorial {
     tags: &'static [&'static str],
 }
 
-static TUTORIALS: &[Tutorial] = &[
-    Tutorial {
+static TUTORIALS: &[TutorialData] = &[
+    TutorialData {
         title: "Making an HTTP request",
         contents: "here's how to make an HTTP request",
         description: "here's how to make an HTTP request",
         author: "@jkelleyrtp",
         tags: &["desktop", "async", "state"],
     },
-    Tutorial {
+    TutorialData {
         title: "Making an HTTP request",
         contents: "here's how to make an HTTP request",
         description: "here's how to make an HTTP request",
         author: "@jkelleyrtp",
         tags: &["desktop", "async", "state"],
     },
-    Tutorial {
+    TutorialData {
         title: "Making an HTTP request",
         contents: "here's how to make an HTTP request",
         description: "here's how to make an HTTP request",

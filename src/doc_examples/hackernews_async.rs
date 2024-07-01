@@ -47,9 +47,9 @@ pub async fn get_story(id: i64) -> Result<StoryPageData, reqwest::Error> {
 }
 
 #[async_recursion::async_recursion(?Send)]
-pub async fn get_comment_with_depth(id: i64, depth: i64) -> Result<Comment, reqwest::Error> {
+pub async fn get_comment_with_depth(id: i64, depth: i64) -> Result<CommentData, reqwest::Error> {
     let url = format!("{}{}{}.json", BASE_API_URL, ITEM_API, id);
-    let mut comment = reqwest::get(&url).await?.json::<Comment>().await?;
+    let mut comment = reqwest::get(&url).await?.json::<CommentData>().await?;
     if depth > 0 {
         let sub_comments_futures = comment
             .kids
@@ -64,7 +64,7 @@ pub async fn get_comment_with_depth(id: i64, depth: i64) -> Result<Comment, reqw
     Ok(comment)
 }
 
-pub async fn get_comment(comment_id: i64) -> Result<Comment, reqwest::Error> {
+pub async fn get_comment(comment_id: i64) -> Result<CommentData, reqwest::Error> {
     let comment = get_comment_with_depth(comment_id, COMMENT_DEPTH).await?;
     Ok(comment)
 }
@@ -75,11 +75,11 @@ pub struct StoryPageData {
     #[serde(flatten)]
     pub item: StoryItem,
     #[serde(default)]
-    pub comments: Vec<Comment>,
+    pub comments: Vec<CommentData>,
 }
 
 #[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
-pub struct Comment {
+pub struct CommentData {
     pub id: i64,
     #[serde(default)]
     pub by: String,
@@ -90,7 +90,7 @@ pub struct Comment {
     #[serde(default)]
     pub kids: Vec<i64>,
     #[serde(default)]
-    pub sub_comments: Vec<Comment>,
+    pub sub_comments: Vec<CommentData>,
     pub r#type: String,
 }
 
@@ -220,7 +220,7 @@ pub mod fetch {
     }
 
     #[component]
-    fn Comment(comment: super::Comment) -> Element {
+    fn Comment(comment: super::CommentData) -> Element {
         rsx! {
             div { padding: "0.5rem",
                 div { color: "gray", "by {comment.by}" }
@@ -388,7 +388,7 @@ fn Preview() -> Element {
 }
 
 #[component]
-fn Comment(comment: Comment) -> Element {
+fn Comment(comment: CommentData) -> Element {
     rsx! {
         div { padding: "0.5rem",
             div { color: "gray", "by {comment.by}" }

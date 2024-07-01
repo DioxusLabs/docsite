@@ -127,8 +127,11 @@ pub(crate) enum Route {
         #[end_layout]
     #[end_nest]
     #[redirect("/docs/0.3/:..segments", |segments: Vec<String>| Route::DocsO3 { segments })]
-    #[redirect("/docs/:.._segments", |_segments: Vec<String>| Route::Docs { child: BookRoute::Index {} })]
-    #[route("/:..segments")]
+    #[redirect("/docs/:..segments", |segments: Vec<String>| {
+        let joined = segments.join("/");
+        let docs_route = format!("/learn/0.5/{}", joined);
+        Route::from_str(&docs_route).unwrap_or_else(|_| Route::Docs { child: BookRoute::Index {} })
+    })]
     #[route("/:..segments")]
     Err404 { segments: Vec<String> },
 }
@@ -314,7 +317,87 @@ fn main() {
         );
         return;
     }
+    #[cfg(feature = "canonicalize")]
+    {
+        canonicalize();
+    }
 
-    #[cfg(not(feature = "prebuild"))]
+    #[cfg(not(any(feature = "prebuild", feature = "canonicalize")))]
     launch(app);
+}
+
+#[cfg(feature = "canonicalize")]
+fn canonicalize() {
+    use std::fs::File;
+    use std::io::Read;
+    use std::io::Write;
+    use std::path::PathBuf;
+
+    // Look through all the old docs and add links to the new docs. This helps with SEO.
+    // Walk the /docs/* and /learn/* directories and try to add a canonical link to the new docs
+    let prefixes = [
+        PathBuf::from("./docs/0.3"),
+        PathBuf::from("./docs/nightly"),
+        PathBuf::from("./learn/0.3"),
+        PathBuf::from("./learn/0.4"),
+    ];
+    let prefixes = prefixes
+        .iter()
+        .filter_map(|p| p.canonicalize().ok())
+        .collect::<Vec<_>>();
+    let mut queued_paths = prefixes.clone();
+
+    while let Some(path) = queued_paths.pop() {
+        let read = std::fs::read_dir(path).into_iter().flatten().flatten();
+        for entry in read {
+            let path = entry.path();
+            let path = path.canonicalize().unwrap();
+            if path.is_dir() {
+                queued_paths.push(path);
+            } else {
+                // First remove any old canonical links
+                let mut file = File::open(&path).unwrap();
+                let mut contents = String::new();
+                if file.read_to_string(&mut contents).is_ok() {
+                    // We only care about paths that are relative to one of the old doc directories
+                    if let Some(relative_path) = prefixes
+                        .iter()
+                        .find_map(|p| path.strip_prefix(p).map(|p| p.to_path_buf()).ok())
+                    {
+                        // Remove anything between <!-- CANONICAL --> and <!-- END CANONICAL -->
+                        let end_needle = "<!-- END CANONICAL -->";
+                        if let (Some(start), Some(end)) = (
+                            contents.find("<!-- CANONICAL -->"),
+                            contents.find(end_needle),
+                        ) {
+                            contents.replace_range(start..(end + end_needle.len()), "");
+                        }
+
+                        // Try to parse the path as a path to the new docs
+                        let mut path_as_string = String::from("/docs/");
+                        for component in relative_path.components() {
+                            if let std::path::Component::Normal(component) = component {
+                                if component.to_string_lossy() == "index.html" {
+                                    continue;
+                                }
+                                path_as_string.push_str(&component.to_string_lossy());
+                                path_as_string.push('/');
+                            }
+                        }
+
+                        if let Ok(route @ Route::Docs { .. }) = path_as_string.parse::<Route>() {
+                            // Then add the canonical link to the head
+                            let needle = "</head>";
+                            let start = contents.find(needle).unwrap();
+                            contents.insert_str(start, format!("<!-- CANONICAL --><link rel=\"canonical\" href=\"https://dioxuslabs.com{}\" /><!-- END CANONICAL -->", route.to_string()).as_str());
+                        }
+
+                        // Then write the file with the new canonical link
+                        let mut file = File::create(path).unwrap();
+                        file.write_all(contents.as_bytes()).unwrap();
+                    }
+                }
+            }
+        }
+    }
 }

@@ -4,7 +4,7 @@ use axum::{
     http::{header, StatusCode},
     response::IntoResponse,
 };
-use dioxus_logger::tracing::{error, warn};
+use dioxus_logger::tracing::warn;
 use std::path::PathBuf;
 use tokio_util::io::ReaderStream;
 use uuid::Uuid;
@@ -20,7 +20,7 @@ pub async fn serve_built_index(Path(build_id): Path<Uuid>) -> impl IntoResponse 
     let file = match tokio::fs::File::open(index_path.clone()).await {
         Ok(f) => f,
         Err(e) => {
-            error!(err = ?e, path = ?index_path, "failed to read built project:");
+            warn!(err = ?e, path = ?index_path, "failed to read built project:");
             return Err((StatusCode::NOT_FOUND, "not found"));
         }
     };
@@ -43,7 +43,7 @@ pub async fn serve_other_built(
     let file = match tokio::fs::File::open(path.clone()).await {
         Ok(f) => f,
         Err(e) => {
-            error!(err = ?e, path = ?path, "failed to read built project:");
+            warn!(err = ?e, path = ?path, "failed to read built project:");
             return Err((StatusCode::NOT_FOUND, "read failure"));
         }
     };

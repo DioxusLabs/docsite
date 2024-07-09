@@ -130,11 +130,11 @@ pub mod story_v6 {
         #[serde(flatten)]
         pub item: StoryItem,
         #[serde(default)]
-        pub comments: Vec<Comment>,
+        pub comments: Vec<CommentData>,
     }
 
     #[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
-    pub struct Comment {
+    pub struct CommentData {
         pub id: i64,
         /// there will be no by field if the comment was deleted
         #[serde(default)]
@@ -146,7 +146,7 @@ pub mod story_v6 {
         #[serde(default)]
         pub kids: Vec<i64>,
         #[serde(default)]
-        pub sub_comments: Vec<Comment>,
+        pub sub_comments: Vec<CommentData>,
         pub r#type: String,
     }
 
@@ -205,11 +205,11 @@ pub mod story_final {
         #[serde(flatten)]
         pub item: StoryItem,
         #[serde(default)]
-        pub comments: Vec<Comment>,
+        pub comments: Vec<CommentData>,
     }
 
     #[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
-    pub struct Comment {
+    pub struct CommentData {
         pub id: i64,
         /// there will be no by field if the comment was deleted
         #[serde(default)]
@@ -221,7 +221,7 @@ pub mod story_final {
         #[serde(default)]
         pub kids: Vec<i64>,
         #[serde(default)]
-        pub sub_comments: Vec<Comment>,
+        pub sub_comments: Vec<CommentData>,
         pub r#type: String,
     }
 

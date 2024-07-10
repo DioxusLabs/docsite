@@ -15,7 +15,7 @@ const BUILT_URL: &str = "https://play.dioxuslabs.com/built/";
 const BUILT_URL: &str = "http://localhost:3000/built/";
 
 fn main() {
-    dioxus_logger::init(Level::WARN).expect("failed to start logger");
+    dioxus_logger::init(Level::INFO).expect("failed to start logger");
     launch(App);
 }
 

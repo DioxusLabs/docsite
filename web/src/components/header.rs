@@ -3,7 +3,7 @@ use dioxus::prelude::*;
 const SPINNER: &str = manganis::mg!(file("public/spinner.svg"));
 
 #[component]
-pub fn Header(is_compiling: bool, on_run: EventHandler) -> Element {
+pub fn Header(is_compiling: bool, queue_position: Option<u32>, on_run: EventHandler) -> Element {
     let on_clear = move |_| {
         eval("window.editorGlobal.setValue(\"\");");
     };
@@ -22,6 +22,11 @@ pub fn Header(is_compiling: bool, on_run: EventHandler) -> Element {
                         class: "dxp-spinner",
                         src: "{SPINNER}",
                     }
+
+                    if let Some(pos) = queue_position {
+                        "#{pos}"
+                    }
+
                 } else {
                     "Run"
                 }

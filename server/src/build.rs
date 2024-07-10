@@ -2,16 +2,24 @@ use crate::REMOVAL_DELAY;
 use dioxus_logger::tracing::error;
 use fs_extra::{dir, file};
 use std::{
+    collections::VecDeque,
     path::PathBuf,
     process::Stdio,
-    sync::{atomic::{AtomicBool, Ordering}, Arc},
+    sync::{
+        atomic::{AtomicBool, Ordering},
+        Arc,
+    },
     time::Duration,
 };
 use tokio::{
     fs,
     io::{AsyncBufReadExt, BufReader},
     process::Command,
-    sync::mpsc::{self, UnboundedSender},
+    select,
+    sync::{
+        mpsc::{self, UnboundedSender},
+        Notify,
+    },
 };
 use uuid::Uuid;
 
@@ -23,11 +31,17 @@ const BUILD_ID_ID: &str = "BUILD_ID";
 pub type QueueType = (UnboundedSender<BuildMessage>, String);
 
 /// Represents a message from the build process.
+#[derive(Debug)]
 pub enum BuildMessage {
     Message(String),
     Finished(Uuid),
     FinishedWithError,
     BuildError(String),
+
+    /// Alerts the current queue position.
+    QueuePosition(u32),
+    /// Alerts when the queue position has moved down.
+    QueueMoved,
 }
 
 pub async fn start_build_watcher(
@@ -35,12 +49,53 @@ pub async fn start_build_watcher(
     build_template_path: String,
 ) -> UnboundedSender<QueueType> {
     let (tx, mut rx) = mpsc::unbounded_channel::<QueueType>();
+    let (build_queue_tx, mut build_queue_rx) = mpsc::unbounded_channel::<QueueType>();
 
+    let build_finished_tx = Arc::new(Notify::new());
+    let build_finished_rx = build_finished_tx.clone();
+
+    // Handle incoming build requests, updating queue positions.
     tokio::spawn(async move {
-        while let Some(item) = rx.recv().await {
+        let mut queue_size: u32 = 0;
+        let mut queue_senders = VecDeque::new();
+
+        loop {
+            select! {
+                item = rx.recv() => {
+                    // If the item is None then the channel was closed.
+                    let Some(item) = item else {
+                        break;
+                    };
+
+                    let queue_sender = item.0.clone();
+                    _ = queue_sender.send(BuildMessage::QueuePosition(queue_size));
+                    queue_senders.push_back(queue_sender);
+                    queue_size += 1;
+
+                    _ = build_queue_tx.send(item);
+
+                },
+                _ = build_finished_rx.notified() => {
+                    // A build finished, let's alert others in queue of their position.
+                    // Remove the finished sender first.
+                    queue_senders.pop_front();
+                    queue_size -= 1;
+
+                    for tx in &queue_senders {
+                        _ = tx.send(BuildMessage::QueueMoved);
+                    }
+                }
+            }
+        }
+    });
+
+    // Handle starting builds.
+    tokio::spawn(async move {
+        while let Some(item) = build_queue_rx.recv().await {
             is_building.store(true, Ordering::SeqCst);
             build(&build_template_path, item.0, item.1).await;
             is_building.store(false, Ordering::SeqCst);
+            build_finished_tx.notify_one();
         }
     });
 
@@ -166,7 +221,7 @@ async fn build(build_template_path: &str, tx: UnboundedSender<BuildMessage>, cod
 
     // Get output and wait for process to finish.
     loop {
-        tokio::select! {
+        select! {
             result = stdout_reader.next_line() => {
                 match result {
                     Ok(Some(line)) => {

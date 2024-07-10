@@ -1,4 +1,11 @@
-use std::{env, sync::{atomic::{AtomicBool, Ordering}, Arc}, time::Duration};
+use std::{
+    env,
+    sync::{
+        atomic::{AtomicBool, Ordering},
+        Arc,
+    },
+    time::Duration,
+};
 
 use axum::{
     extract::{Request, State},

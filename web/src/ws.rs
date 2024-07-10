@@ -23,20 +23,22 @@ impl Socket {
             .map_err(|e| AppError::Socket(e.to_string()))
     }
 
-    pub async fn next(&mut self) -> Option<SocketMessage> {
+    pub async fn next(&mut self) -> Result<Option<SocketMessage>, AppError> {
         match self.socket.next().await {
-            Some(Ok(msg)) => SocketMessage::try_from(msg).ok(),
-            _ => None,
+            Some(Ok(msg)) => Ok(SocketMessage::try_from(msg).ok()),
+            Some(Err(e)) => Err(AppError::Socket(e.to_string())),
+            _ => Ok(None),
         }
     }
 
     pub async fn close(self) {
-        self.socket.close(None, None).ok();
+        //self.socket.close(None, None).ok();
     }
 }
 
 pub fn handle_message(
     mut is_compiling: Signal<bool>,
+    mut queue_position: Signal<Option<u32>>,
     mut built_page_id: Signal<Option<String>>,
     mut compiler_messages: Signal<Vec<String>>,
     msg: SocketMessage,
@@ -44,6 +46,7 @@ pub fn handle_message(
     match msg {
         SocketMessage::CompileFinished(id) => {
             is_compiling.set(false);
+            queue_position.set(None);
             built_page_id.set(Some(id));
             true
         }
@@ -65,13 +68,25 @@ pub fn handle_message(
         }
         SocketMessage::CompileFinishedWithError => {
             is_compiling.set(false);
+            queue_position.set(None);
             true
         }
         SocketMessage::SystemError(s) => {
             is_compiling.set(false);
+            queue_position.set(None);
             built_page_id.set(None);
             compiler_messages.push(format!("Server Error: {s}"));
             true
+        }
+        SocketMessage::QueuePosition(pos) => {
+            queue_position.set(Some(pos));
+            false
+        }
+        SocketMessage::QueueMoved => {
+            if let Some(pos) = queue_position() {
+                queue_position.set(Some(pos - 1));
+            }
+            false
         }
         _ => false,
     }

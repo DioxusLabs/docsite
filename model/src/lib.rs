@@ -13,6 +13,8 @@ pub enum SocketMessage {
     CompileMessage(String),
     BannedWord(String),
     SystemError(String),
+    QueuePosition(u32),
+    QueueMoved,
 }
 
 impl TryFrom<String> for SocketMessage {
@@ -34,6 +36,8 @@ impl TryFrom<String> for SocketMessage {
             "compile_msg" => Ok(Self::CompileMessage(last)),
             "banned_word" => Ok(Self::BannedWord(last)),
             "error" => Ok(Self::SystemError(last)),
+            "queue_moved" => Ok(Self::QueueMoved),
+            "queue_position" => Ok(Self::QueuePosition(last.parse().unwrap())),
             _ => Err("unknown ws message".to_string()),
         }
     }
@@ -48,6 +52,8 @@ impl Display for SocketMessage {
             Self::CompileMessage(s) => write!(f, "compile_msg~:~{}", s),
             Self::BannedWord(s) => write!(f, "banned_word~:~{}", s),
             Self::SystemError(s) => write!(f, "error~:~{}", s),
+            Self::QueuePosition(s) => write!(f, "queue_position~:~{}", s),
+            Self::QueueMoved => write!(f, "queue_moved~:~"),
         }
     }
 }

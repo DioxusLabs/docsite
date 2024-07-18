@@ -1,7 +1,7 @@
 use dioxus::prelude::*;
 
 #[cfg(not(debug_assertions))]
-const SOCKET_URL: &str = "ws://play.dioxuslabs.com/ws";
+const SOCKET_URL: &str = "wss://play.dioxuslabs.com/ws";
 
 #[cfg(debug_assertions)]
 const SOCKET_URL: &str = "ws://localhost:3000/ws";

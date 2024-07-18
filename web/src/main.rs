@@ -22,9 +22,6 @@ fn main() {
 #[component]
 fn App() -> Element {
     rsx! {
-        Playground {
-            socket_url: SOCKET_URL,
-            built_url: BUILT_URL,
-        }
+        Playground { socket_url: SOCKET_URL, built_url: BUILT_URL }
     }
 }

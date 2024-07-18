@@ -111,12 +111,12 @@ async fn main() {
         .route("/*file_path", get(serve::serve_other_built));
 
     let app = Router::new()
+        .route("/ws", get(ws::ws_handler))
+        .nest("/built/:build_id", built_router)
         .route(
             "/",
             get(|| async { Redirect::permanent("https://dioxuslabs.com/play") }),
         )
-        .route("/ws", get(ws::ws_handler))
-        .nest("/built/:build_id", built_router)
         .layer(
             ServiceBuilder::new()
                 .layer(HandleErrorLayer::new(|err: BoxError| async move {

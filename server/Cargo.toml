@@ -13,3 +13,4 @@ tokio = { version = "1.37.0", features = ["full"] }
 tokio-util = { version = "0.7.11", features = ["futures-util"] }
 tower-http = { version = "0.5.2", features = ["fs"] }
 uuid = { version = "1.8.0", features = ["v4", "serde"] }
+tower = { version = "0.4.13", features = ["buffer", "limit"] }

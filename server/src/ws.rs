@@ -38,13 +38,6 @@ async fn handle_socket(state: AppState, socket: WebSocket) {
         };
 
         if let SocketMessage::CompileRequest(code) = msg {
-            // Verify no banned words were submitted
-            if let Some(banned) = is_unsafe(&code) {
-                let banned_msg = SocketMessage::BannedWord(banned).to_string();
-                tx.send(banned_msg.into()).await.ok();
-                continue;
-            }
-
             let (res_tx, mut res_rx) = mpsc::unbounded_channel();
 
             // Receive response from oneshot and parse it.
@@ -59,15 +52,6 @@ async fn handle_socket(state: AppState, socket: WebSocket) {
             };
         }
     }
-}
-
-fn is_unsafe(code: &str) -> Option<String> {
-    for word in crate::BANNED_WORDS {
-        if code.contains(word) {
-            return Some(word.to_string());
-        }
-    }
-    None
 }
 
 impl From<BuildMessage> for SocketMessage {

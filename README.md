@@ -25,6 +25,6 @@ PORT = 3000
 - The build template that should be used.
 BUILD_TEMPLATE_PATH = "/usr/local/bin/template"
 
-- If specified, shuts down the server after X ms since the last http request. 
+- If specified, shuts down the server after X ms since the last http request.
 SHUTDOWN_DELAY = null
 ```

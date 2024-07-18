@@ -49,7 +49,7 @@ module.exports = {
 @tailwind utilities;
 ```
 
-7. Add [Manganis](https://github.com/DioxusLabs/collect-assets) to your project to handle asset collection.
+7. Add [Manganis](https://github.com/DioxusLabs/manganis) to your project to handle asset collection.
 
 ```sh
 cargo add manganis

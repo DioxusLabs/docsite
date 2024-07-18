@@ -379,7 +379,7 @@ Lets take a look at the 0.5 mobile guide with the new asset system:
 
 The new mobile guide takes less than 1 second to load and requires only 1/3 of the resources with the exact same images!
 
-Dioxus 0.5 introduces a new asset system called `[manganis](https://github.com/DioxusLabs/collect-assets)`. Manganis integrates with the CLI to check, bundle and optimize assets in your application. The API is currently unstable so the asset system is currently published as a separate crate. In the new asset system, you can just wrap your assets in the `mg!` macro and they will automatically be picked up by the CLI. You can read more about the new asset system in the [manganis docs](https://docs.rs/crate/manganis/latest).
+Dioxus 0.5 introduces a new asset system called `[manganis](https://github.com/DioxusLabs/manganis)`. Manganis integrates with the CLI to check, bundle and optimize assets in your application. The API is currently unstable so the asset system is currently published as a separate crate. In the new asset system, you can just wrap your assets in the `mg!` macro and they will automatically be picked up by the CLI. You can read more about the new asset system in the [manganis docs](https://docs.rs/crate/manganis/latest).
 
 As we continue to iterate on the 0.5 release, we plan to add hot reloading to manganis assets, so you can interactively add new the features to your app like CSS, images, Tailwind classes, and more without forcing a complete reload.
 

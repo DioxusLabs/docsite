@@ -294,7 +294,7 @@ async fn build(build_template_path: &str, tx: UnboundedSender<BuildMessage>, cod
 
     // Remove built project after delay.
     tokio::spawn(async move {
-        tokio::time::sleep(Duration::from_millis(REMOVAL_DELAY)).await;
+        tokio::time::sleep(REMOVAL_DELAY).await;
         if tokio::fs::remove_dir_all(&final_path).await.is_err() {
             error!(path = ?final_path, build_id = ?build_id, "failed to delete built project");
         }

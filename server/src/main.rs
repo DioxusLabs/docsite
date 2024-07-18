@@ -8,20 +8,31 @@ use std::{
 };
 
 use axum::{
+    error_handling::HandleErrorLayer,
     extract::{Request, State},
+    http::StatusCode,
     middleware::{self, Next},
     response::{Redirect, Response},
     routing::get,
-    Router,
+    BoxError, Router,
 };
 use build::QueueType;
 use dioxus_logger::tracing::{info, warn, Level};
+use std::{
+    env,
+    sync::{
+        atomic::{AtomicBool, Ordering},
+        Arc,
+    },
+    time::Duration,
+};
 use tokio::{
     fs,
     net::TcpListener,
     sync::{mpsc, Mutex},
     time::Instant,
 };
+use tower::{buffer::BufferLayer, limit::RateLimitLayer, ServiceBuilder};
 
 mod build;
 mod serve;
@@ -31,17 +42,17 @@ const LISTEN_IP: &str = "0.0.0.0";
 
 /// Duration after building to delete.
 /// 10 seconds *should* be good for most clients.
-const REMOVAL_DELAY: u64 = 10000;
+const REMOVAL_DELAY: Duration = Duration::from_secs(10);
+
+/// Rate limiter configuration.
+/// How many requests each user should get within a time period.
+const REQUESTS_PER_INTERVAL: u64 = 30;
+/// The period of time after the request limit resets.
+const RATE_LIMIT_INTERVAL: Duration = Duration::from_secs(60);
 
 // Paths
-//const SERVE_PATH: &str = "../dist";
 const TEMP_PATH: &str = "../temp/";
 const BUILD_TEMPLATE_PATH: &str = "./template";
-
-/// A list of words that if found anywhere within submitted code, will be rejected.
-/// This isn't really nescessary as the code runs locally on the client that submitted it but
-/// it is still an extra layer of security.
-const BANNED_WORDS: &[&str] = &["eval", "web_sys", "bindgen", "document", "window"];
 
 #[derive(Clone)]
 struct AppState {
@@ -92,34 +103,47 @@ async fn main() {
         is_building,
     };
 
+    // Shutdown watcher.
     if let Ok(v) = env::var("SHUTDOWN_DELAY") {
-        let shutdown_time_ms = v
+        let shutdown_delay = v
             .parse()
             .expect("the `SHUTDOWN_DELAY` environment variable is not a number");
 
-        start_shutdown_watcher(state.clone(), shutdown_time_ms);
+        start_shutdown_watcher(state.clone(), Duration::from_secs(shutdown_delay));
     } else {
         warn!("`SHUTDOWN_DELAY` environment variable not set; the server will not turn off");
     }
 
     // Build routers
-    //let serve = ServeDir::new(SERVE_PATH);
     let built_router = Router::new()
         .route("/", get(serve::serve_built_index))
         .route("/*file_path", get(serve::serve_other_built));
 
     let app = Router::new()
-        //.nest_service("/", serve)
         .route(
             "/",
             get(|| async { Redirect::permanent("https://dioxuslabs.com/play") }),
         )
         .route("/ws", get(ws::ws_handler))
         .nest("/built/:build_id", built_router)
-        .route_layer(middleware::from_fn_with_state(
-            state.clone(),
-            request_counter,
-        ))
+        .layer(
+            ServiceBuilder::new()
+                .layer(HandleErrorLayer::new(|err: BoxError| async move {
+                    (
+                        StatusCode::INTERNAL_SERVER_ERROR,
+                        format!("unhandled error: {}", err),
+                    )
+                }))
+                .layer(BufferLayer::new(1024))
+                .layer(RateLimitLayer::new(
+                    REQUESTS_PER_INTERVAL,
+                    RATE_LIMIT_INTERVAL,
+                ))
+                .layer(middleware::from_fn_with_state(
+                    state.clone(),
+                    request_counter,
+                )),
+        )
         .with_state(state);
 
     // Start axum
@@ -130,12 +154,12 @@ async fn main() {
     axum::serve(listener, app).await.unwrap();
 }
 
-/// Watches time since last request and shuts down the server
-/// if there have been no requests in x time.
-fn start_shutdown_watcher(state: AppState, shutdown_time_ms: u64) {
+/// Checks if the server can shutdown.
+fn start_shutdown_watcher(state: AppState, shutdown_delay: Duration) {
     tokio::task::spawn(async move {
         loop {
-            tokio::time::sleep(Duration::from_secs(1)).await;
+            tokio::time::sleep(shutdown_delay).await;
+
             let now = Instant::now();
             let mut last_req_time = state.last_request_time.lock().await;
 
@@ -147,7 +171,7 @@ fn start_shutdown_watcher(state: AppState, shutdown_time_ms: u64) {
 
             // Exit program if not building and duration exceeds shutdown time.
             let duration_since_req = now.duration_since(*last_req_time);
-            if duration_since_req.as_millis() >= shutdown_time_ms as u128 {
+            if duration_since_req.as_secs() >= shutdown_delay.as_secs() {
                 break;
             }
         }

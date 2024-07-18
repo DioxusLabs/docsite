@@ -16,6 +16,7 @@ const SNIPPET_WELCOME: &str = include_str!("snippets/welcome.rs");
 #[component]
 pub fn Playground(socket_url: String, built_url: String) -> Element {
     let mut is_compiling = use_signal(|| false);
+    let mut queue_position = use_signal(|| None);
     let mut built_page_id = use_signal(|| None);
     let mut compiler_messages = use_signal(Vec::<String>::new);
     let mut current_tab = use_signal(|| Tab::Page);
@@ -73,6 +74,7 @@ pub fn Playground(socket_url: String, built_url: String) -> Element {
             return;
         }
         is_compiling.set(true);
+        queue_position.set(None);
         built_page_id.set(None);
         compiler_messages.clear();
         compiler_messages.push("Starting build...".to_string());
@@ -91,9 +93,14 @@ pub fn Playground(socket_url: String, built_url: String) -> Element {
             let mut socket = ws::Socket::new(&socket_url).unwrap();
             socket.compile(val).await.unwrap();
 
-            while let Some(msg) = socket.next().await {
-                let is_done =
-                    ws::handle_message(is_compiling, built_page_id, compiler_messages, msg);
+            while let Some(msg) = socket.next().await.unwrap() {
+                let is_done = ws::handle_message(
+                    is_compiling,
+                    queue_position,
+                    built_page_id,
+                    compiler_messages,
+                    msg,
+                );
                 if is_done {
                     break;
                 }
@@ -112,6 +119,7 @@ pub fn Playground(socket_url: String, built_url: String) -> Element {
                 id: "dxp-left-pane",
                 Header {
                     is_compiling: is_compiling(),
+                    queue_position: queue_position(),
                     on_run,
                 }
                 div {

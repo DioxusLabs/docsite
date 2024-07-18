@@ -61,6 +61,8 @@ impl From<BuildMessage> for SocketMessage {
             BuildMessage::Finished(id) => SocketMessage::CompileFinished(id.to_string()),
             BuildMessage::BuildError(e) => SocketMessage::SystemError(e),
             BuildMessage::FinishedWithError => SocketMessage::CompileFinishedWithError,
+            BuildMessage::QueuePosition(pos) => SocketMessage::QueuePosition(pos),
+            BuildMessage::QueueMoved => SocketMessage::QueueMoved,
         }
     }
 }

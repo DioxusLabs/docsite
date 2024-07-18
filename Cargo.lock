@@ -1594,6 +1594,18 @@ dependencies = [
 ]
 
 [[package]]
+name = "dioxus-logger"
+version = "0.5.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "81fe09dc9773dc1f1bb0d38529203d6555d08f67aadca5cf955ac3d1a9e69880"
+dependencies = [
+ "console_error_panic_hook",
+ "tracing",
+ "tracing-subscriber",
+ "tracing-wasm",
+]
+
+[[package]]
 name = "dioxus-material-icons"
 version = "1.1.0"
 source = "git+https://github.com/ealmloff/dioxus-material-icons#a44cae403aa2932c68c19ebe064300acac83e29b"
@@ -1625,6 +1637,20 @@ source = "git+https://github.com/dioxuslabs/blitz#e118648346f764f39261868ad13efc
 dependencies = [
  "quote",
  "syn 2.0.60",
+]
+
+[[package]]
+name = "dioxus-playground"
+version = "0.1.0"
+source = "git+https://github.com/DioxusLabs/playground#9982494b98f88092bbbec9fb2be38fbf8e5c2632"
+dependencies = [
+ "dioxus 0.5.2",
+ "dioxus-logger",
+ "futures",
+ "gloo-net 0.5.0",
+ "gloo-utils 0.2.0",
+ "manganis 0.2.2 (registry+https://github.com/rust-lang/crates.io-index)",
+ "model",
 ]
 
 [[package]]
@@ -1687,7 +1713,7 @@ dependencies = [
 [[package]]
 name = "dioxus-search"
 version = "0.1.0"
-source = "git+https://github.com/dioxuslabs/dioxus-search#a43e4c71b0bb8fbbe8a95b7fdd76c0d0b5b7f964"
+source = "git+https://github.com/dioxuslabs/dioxus-search#589d2a944bf6bdca4ab092af716f4bd4ecc499e6"
 dependencies = [
  "bytes",
  "dioxus-router",
@@ -1706,7 +1732,7 @@ dependencies = [
 [[package]]
 name = "dioxus-search-macro"
 version = "0.1.0"
-source = "git+https://github.com/dioxuslabs/dioxus-search#a43e4c71b0bb8fbbe8a95b7fdd76c0d0b5b7f964"
+source = "git+https://github.com/dioxuslabs/dioxus-search#589d2a944bf6bdca4ab092af716f4bd4ecc499e6"
 dependencies = [
  "quote",
  "syn 2.0.60",
@@ -1715,7 +1741,7 @@ dependencies = [
 [[package]]
 name = "dioxus-search-shared"
 version = "0.1.0"
-source = "git+https://github.com/dioxuslabs/dioxus-search#a43e4c71b0bb8fbbe8a95b7fdd76c0d0b5b7f964"
+source = "git+https://github.com/dioxuslabs/dioxus-search#589d2a944bf6bdca4ab092af716f4bd4ecc499e6"
 dependencies = [
  "bytes",
  "dioxus-router",
@@ -1854,6 +1880,7 @@ dependencies = [
  "dioxus-material-icons",
  "dioxus-native-core",
  "dioxus-native-core-macro",
+ "dioxus-playground",
  "dioxus-search",
  "dioxus-ssr",
  "dioxus-std",
@@ -1870,7 +1897,7 @@ dependencies = [
  "include_dir",
  "js-sys",
  "log",
- "manganis",
+ "manganis 0.2.2 (git+https://github.com/DioxusLabs/collect-assets)",
  "mdbook-shared",
  "once_cell",
  "pretty_assertions",
@@ -3672,7 +3699,24 @@ version = "0.2.2"
 source = "git+https://github.com/DioxusLabs/manganis#ad09a549775957c5ce177274cfbb6dc76c976c10"
 dependencies = [
  "dioxus-core 0.5.2",
- "manganis-macro",
+ "manganis-macro 0.2.2 (git+https://github.com/DioxusLabs/collect-assets)",
+]
+
+[[package]]
+name = "manganis-common"
+version = "0.2.4"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "542300f1e7d9313de5b7e5b92d273ba42ab547c068d773559d616aa14987de43"
+dependencies = [
+ "anyhow",
+ "base64",
+ "home",
+ "infer",
+ "reqwest",
+ "serde",
+ "toml 0.7.8",
+ "tracing",
+ "url",
 ]
 
 [[package]]
@@ -3855,6 +3899,14 @@ dependencies = [
  "log",
  "wasi 0.11.0+wasi-snapshot-preview1",
  "windows-sys 0.48.0",
+]
+
+[[package]]
+name = "model"
+version = "0.1.0"
+source = "git+https://github.com/DioxusLabs/playground#9982494b98f88092bbbec9fb2be38fbf8e5c2632"
+dependencies = [
+ "gloo-net 0.5.0",
 ]
 
 [[package]]
@@ -6436,6 +6488,17 @@ dependencies = [
  "thread_local",
  "tracing-core",
  "tracing-log",
+]
+
+[[package]]
+name = "tracing-wasm"
+version = "0.2.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "4575c663a174420fa2d78f4108ff68f65bf2fbb7dd89f33749b6e826b3626e07"
+dependencies = [
+ "tracing",
+ "tracing-subscriber",
+ "wasm-bindgen",
 ]
 
 [[package]]

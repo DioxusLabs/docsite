@@ -1,5 +1,4 @@
 //! Encapsulate state in components
-
 use dioxus::prelude::*;
 
 #[component]

@@ -13,8 +13,8 @@ One popular option for styling your Dioxus application is [Tailwind](https://tai
 cargo install dioxus-cli
 ```
 
-2. Install npm: https://docs.npmjs.com/downloading-and-installing-node-js-and-npm
-3. Install the tailwind css cli: https://tailwindcss.com/docs/installation
+2. Install npm: [https://docs.npmjs.com/downloading-and-installing-node-js-and-npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)
+3. Install the tailwind css cli: [https://tailwindcss.com/docs/installation](https://tailwindcss.com/docs/installation)
 4. Initialize the tailwind css project:
 
 ```bash
@@ -49,7 +49,7 @@ module.exports = {
 @tailwind utilities;
 ```
 
-7. Add [Manganis](https://github.com/DioxusLabs/collect-assets) to your project to handle asset collection.
+7. Add [Manganis](https://github.com/DioxusLabs/manganis) to your project to handle asset collection.
 
 ```sh
 cargo add manganis

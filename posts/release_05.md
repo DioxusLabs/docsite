@@ -1,4 +1,4 @@
-# Dioxus 0.5: Signal Rewrite, Remove lifetimes/unsafe, CSS Hotreloading, 5x Faster Desktop,  Asset System, and more!
+# Dioxus 0.5: Signal Rewrite, Remove lifetimes/unsafe, CSS Hot reloading, 5x Faster Desktop,  Asset System, and more!
 
 ### The story
 
@@ -6,9 +6,9 @@
 
 Here at Dioxus Labs, we have an unofficial rule: only one rewrite per year.
 
-Our last rewrite brought some amazing features: templates, hotreloading, and insane performance. However, don’t be mistaken, rewrites are scary, time consuming, and a huge gamble. We started this new rewrite on January 1st of 2024, completed it by Feburary 1st, and then spent another month and a half writing tests, squashing bugs, and polishing documentation. Rewrites are absolutely not for the faint of heart.
+Our last rewrite brought some amazing features: templates, hot reloading, and insane performance. However, don’t be mistaken, rewrites are scary, time consuming, and a huge gamble. We started this new rewrite on January 1st of 2024, completed it by Feburary 1st, and then spent another month and a half writing tests, squashing bugs, and polishing documentation. Rewrites are absolutely not for the faint of heart.
 
-If you’re new here, Dioxus (dye•ox•us) is a library for building GUIs in Rust. Originally, I built Dioxus as a rewrite of Yew with the intention of supporting proper server-side-rendering. Eventually, Dioxus got popular, we got some amazing sponsors, and I went full time. We’ve grown from a team of 1 (me) to a team of 4(!) - pulled entirely from the wonderful dioxus community.
+If you’re new here, Dioxus (dye•ox•us) is a library for building GUIs in Rust. Originally, I built Dioxus as a rewrite of Yew with the intention of supporting proper server-side-rendering. Eventually, Dioxus got popular, we got some amazing sponsors, and I went full time. We’ve grown from a team of 1 (me) to a team of 4(!) - pulled entirely from the wonderful Dioxus community.
 
 Now, Dioxus is something a little different. Real life, actual companies are shipping web apps, desktop apps, and mobile apps with Dioxus. What was once just a fun little side project powers a small fraction of apps out in the wild. We now have lofty goals of simplifying the entire app development ecosystem. Web, Desktop, Mobile, all end-to-end typesafe, blazing fast, living under one codebase. The dream!
 
@@ -24,16 +24,16 @@ This is probably the biggest release of Dioxus ever, with so many new features, 
 - Abandoning `use_state` and `use_ref` for a clone-free `Signal`-based API
 - Removal of all lifetimes and the `cx: Scope` state
 - A single, unified `launch` function that starts your app for any platform
-- Asset hotreloading that supports Tailwind and Vanilla CSS
+- Asset hot reloading that supports Tailwind and Vanilla CSS
 - Rewrite of events, allowing access to the native `WebSys` event types
 - Extension of components with element properties (IE a Link now takes all of `<a/>` properties)
 - Integrated Error Boundaries and Server Futures with Suspense integration
 - 5x faster desktop reconciliation and custom asset handlers for streaming bytes
-- Streaming server functions and fullstack hotreloading
+- Streaming server functions and Fullstack hot reloading
 - Tons of QoL improvements, bug fixes, and more!
 
 <aside>
-💡 If you are updating from DIoxus 0.4, a [migration guide](https://dioxuslabs.com/learn/0.5/migration) is available
+💡 If you are updating from Dioxus 0.4, a [migration guide](https://dioxuslabs.com/learn/0.5/migration) is available
 
 </aside>
 
@@ -43,7 +43,7 @@ This is probably the biggest release of Dioxus ever, with so many new features, 
 
 To make Dioxus simpler, we wanted to remove lifetimes entirely. Newcomers to rust are easily scared off by lifetime issues, and even experienced Rustaceans find wading through obtuse error messages exhausting.
 
-In dioxus 0.1-0.4, every value in a component lives for a `'bump` lifetime. This lifetime lets you easily use hooks, props and the scope within event listeners without cloning anything. It was the chief innovation that made Dioxus so much easier to use than Yew when it was released.
+In Dioxus 0.1-0.4, every value in a component lives for a `'bump` lifetime. This lifetime lets you easily use hooks, props and the scope within event listeners without cloning anything. It was the chief innovation that made Dioxus so much easier to use than Yew when it was released.
 
 ```rust
 // Scope and Element have the lifetime 'bump
@@ -62,7 +62,7 @@ fn OldDioxusComponent(cx: Scope) -> Element {
 
 This works great for hooks *most* of the time. The lifetime lets you omit a bunch of manual clones every time you want to use a value inside an EventHandler (onclick, oninput, etc).
 
-However, the lifetime doesn’t work for futures. Futures in dioxus need to be `'static` which means you always need to clone values before you use them in the future. Since a future might need to run while the component is rendering, it can’t share the component’s lifetime.
+However, the lifetime doesn’t work for futures. Futures in Dioxus need to be `'static` which means you always need to clone values before you use them in the future. Since a future might need to run while the component is rendering, it can’t share the component’s lifetime.
 
 ```rust
 // Scope and Element have the lifetime 'bump
@@ -103,7 +103,7 @@ If you don’t clone the value, you will run into an error like this:
 
 The error complains that `cx` must outlive `'static` without mentioning the hook at all which can be very confusing.
 
-Dioxus 0.5 fixes this issue by first removing scopes and the `'bump` lifetime and then introducing a new `Copy` state management solution called signals. Here is what the component looks like in dioxus 0.5:
+Dioxus 0.5 fixes this issue by first removing scopes and the `'bump` lifetime and then introducing a new `Copy` state management solution called signals. Here is what the component looks like in Dioxus 0.5:
 
 ```rust
 // Element has no lifetime, and you don't need a Scope
@@ -131,7 +131,7 @@ While this might seem like a rather innocuous change, it has an impressively hug
 
 ---
 
-In the new version of dioxus, scopes and the `'bump` lifetime have been removed! This makes declaring a component and using runtime functions within that component much easier:
+In the new version of Dioxus, scopes and the `'bump` lifetime have been removed! This makes declaring a component and using runtime functions within that component much easier:
 
 You can now declare a component by just accepting your props directly instead of a scope parameter
 
@@ -152,13 +152,13 @@ spawn(async move {
 });
 ```
 
-Now that lifetimes are gone, `Element`s are `'static` which means you can use them in hooks or even provide them through the context API. This makes some APIs like [virtual lists in dioxus](https://github.com/matthunz/dioxus-lazy) significantly easier. We expect more interesting APIs to emerge from the community now that you don’t need to be a Rust wizard to implement things like virtualization and offscreen rendering.
+Now that lifetimes are gone, `Element`s are `'static` which means you can use them in hooks or even provide them through the context API. This makes some APIs like [virtual lists in Dioxus](https://github.com/matthunz/dioxus-lazy) significantly easier. We expect more interesting APIs to emerge from the community now that you don’t need to be a Rust wizard to implement things like virtualization and offscreen rendering.
 
 ## Removal of all Unsafe in Core
 
 ---
 
-Removing the `'bump` lifetime along with the scope gave us a chance to remove a lot of unsafe from dioxus. **dioxus-core 0.5 contains no unsafe code 🎉**
+Removing the `'bump` lifetime along with the scope gave us a chance to remove a lot of unsafe from Dioxus. **dioxus-core 0.5 contains no unsafe code 🎉**
 
 ![Screenshot 2024-02-22 at 5.45.36 PM.png](Dioxus%200%205%20Signal%20Rewrite,%20Remove%20lifetimes%20unsafe%209961963b731a4d9f8465e5bcdf8e9ab3/Screenshot_2024-02-22_at_5.45.36_PM.png)
 
@@ -290,7 +290,7 @@ fn App() -> Element {
 
 ---
 
-Since it’s release, dioxus has used a synthetic event system to create a cross platform event API. Synthetic events can be incredibly useful to make events work across platforms and even serialize them across the network, but they do have some drawbacks.
+Since its release, Dioxus has used a synthetic event system to create a cross platform event API. Synthetic events can be incredibly useful to make events work across platforms and even serialize them across the network, but they do have some drawbacks.
 
 Dioxus 0.5 finally exposes the underlying event type for each platform along with a trait with a cross platform API. This has two advantages:
 
@@ -309,11 +309,11 @@ fn Button() -> Element {
 }
 ```
 
-1. Dioxus can bundle split code for events apps don’t use. For a hello world example, this shrinks the gzipped size ~25%!
+2. Dioxus can bundle split code for events apps don’t use. For a hello world example, this shrinks the gzipped size ~25%!
 
 ![Screenshot 2024-03-21 at 8.37.04 AM.png](Dioxus%200%205%20Signal%20Rewrite,%20Remove%20lifetimes%20unsafe%209961963b731a4d9f8465e5bcdf8e9ab3/Screenshot_2024-03-21_at_8.37.04_AM.png)
 
-Again, this seems like a small change on the surface, but opens up dozens of new use cases and possible libraries you can build with dioxus.
+Again, this seems like a small change on the surface, but opens up dozens of new use cases and possible libraries you can build with Dioxus.
 
 <aside>
 💡 The [Dioxus optimization guide](https://dioxuslabs.com/learn/0.5/cookbook/optimizing#build-configuration) has tips to help you make the smallest possible bundle
@@ -324,7 +324,7 @@ Again, this seems like a small change on the surface, but opens up dozens of new
 
 ---
 
-Dioxus 0.5 introduces a new cross platform API to launch your app. This makes it easy to target multiple platforms with the same application. Instead of pulling in a separate renderer package, you can now enable a feature on the dioxus crate and call the launch function from the prelude:
+Dioxus 0.5 introduces a new cross platform API to launch your app. This makes it easy to target multiple platforms with the same application. Instead of pulling in a separate renderer package, you can now enable a feature on the Dioxus crate and call the launch function from the prelude:
 
 ```toml
 [dependencies]
@@ -365,9 +365,9 @@ The CLI is now smart enough to automatically pass in the appropriate build featu
 
 ---
 
-Currently assets in dioxus (and web applications in general) can be difficult to get right. Links to your asset can easily get out of date, the link to your asset can be different between desktop and web applications, and you need to manually add assets you want to use into your bundled application. In addition to all of that, assets can be a huge performance bottleneck.
+Currently assets in Dioxus (and web applications in general) can be difficult to get right. Links to your asset can easily get out of date, the link to your asset can be different between desktop and web applications, and you need to manually add assets you want to use into your bundled application. In addition to all of that, assets can be a huge performance bottleneck.
 
-Lets take a look at the dioxus mobile guide in the docsite as an example:
+Lets take a look at the Dioxus Mobile guide in the docsite as an example:
 
 ![docsite_mobile_old.png](Dioxus%200%205%20Signal%20Rewrite,%20Remove%20lifetimes%20unsafe%209961963b731a4d9f8465e5bcdf8e9ab3/docsite_mobile_old.png)
 
@@ -379,19 +379,19 @@ Lets take a look at the 0.5 mobile guide with the new asset system:
 
 The new mobile guide takes less than 1 second to load and requires only 1/3 of the resources with the exact same images!
 
-Dioxus 0.5 introduces a new asset system called `[manganis](https://github.com/DioxusLabs/collect-assets)`. Manganis integrates with the CLI to check, bundle and optimize assets in your application. The API is currently unstable so the asset system is currently published as a separate crate. In the new asset system, you can just wrap your assets in the `mg!` macro and they will automatically be picked up by the CLI. You can read more about the new asset system in the [manganis docs](https://docs.rs/crate/manganis/latest).
+Dioxus 0.5 introduces a new asset system called `[manganis](https://github.com/DioxusLabs/manganis)`. Manganis integrates with the CLI to check, bundle and optimize assets in your application. The API is currently unstable so the asset system is currently published as a separate crate. In the new asset system, you can just wrap your assets in the `mg!` macro and they will automatically be picked up by the CLI. You can read more about the new asset system in the [manganis docs](https://docs.rs/crate/manganis/latest).
 
-As we continue to iterate on the 0.5 release, we plan to add hot reloading to manganis assets, so you can interactively add new the features to your app like CSS, images, tailwind classes, and more without forcing a complete reload.
+As we continue to iterate on the 0.5 release, we plan to add hot reloading to manganis assets, so you can interactively add new the features to your app like CSS, images, Tailwind classes, and more without forcing a complete reload.
 
 ## CSS Hot Reloading
 
 ---
 
-As part of our asset system overhaul, we implemented hotreloading of CSS files in the asset directory. If a CSS file appears in your RSX, the `dx` CLI will watch that file and immediately stream its updates to the running app. This works for web, desktop, and fullstack, with mobile support coming in a future mobile-centric update.
+As part of our asset system overhaul, we implemented hot reloading of CSS files in the asset directory. If a CSS file appears in your RSX, the `dx` CLI will watch that file and immediately stream its updates to the running app. This works for Web, Desktop, and Fullstack, with Mobile support coming in a future Mobile-centric update.
 
 [Screen Recording 2024-03-20 at 6.30.47 AM.mov](Dioxus%200%205%20Signal%20Rewrite,%20Remove%20lifetimes%20unsafe%209961963b731a4d9f8465e5bcdf8e9ab3/Screen_Recording_2024-03-20_at_6.30.47_AM.mov)
 
-What’s even niftier is that you can stream these changes to several devices at once, unlocking simultaneous hotreloading across all devices that you target:
+What’s even niftier is that you can stream these changes to several devices at once, unlocking simultaneous hot reloading across all devices that you target:
 
 [Hotreload triple - HD 1080p.mov](Dioxus%200%205%20Signal%20Rewrite,%20Remove%20lifetimes%20unsafe%209961963b731a4d9f8465e5bcdf8e9ab3/Hotreload_triple_-_HD_1080p.mov)
 
@@ -399,13 +399,13 @@ What’s even niftier is that you can stream these changes to several devices at
 
 ---
 
-Dioxus implements several optimizations to make diffing rendering fast. [Templates](https://dioxuslabs.com/blog/templates-diffing) let dioxus skip diffing on any static parts of the rsx macro. However, diffing is only one side of the story. After you create a list of changes you need to make to the DOM, you need to apply them.
+Dioxus implements several optimizations to make diffing rendering fast. [Templates](https://dioxuslabs.com/blog/templates-diffing) let Dioxus skip diffing on any static parts of the rsx macro. However, diffing is only one side of the story. After you create a list of changes you need to make to the DOM, you need to apply them.
 
-We developed [sledgehammer](https://github.com/ealmloff/sledgehammer_bindgen) for dioxus web to make applying those mutations as fast as possible. It makes manipulating the DOM from Rust almost as [fast as native JavaScript](https://krausest.github.io/js-framework-benchmark/2023/table_chrome_114.0.5735.90.html).
+We developed [sledgehammer](https://github.com/ealmloff/sledgehammer_bindgen) for Dioxus Web to make applying those mutations as fast as possible. It makes manipulating the DOM from Rust almost as [fast as native JavaScript](https://krausest.github.io/js-framework-benchmark/2023/table_chrome_114.0.5735.90.html).
 
-In dioxus 0.5, we apply that same technique to apply changes across the network as fast as possible. Instead of using json to communicate changes to the desktop and liveview renderers, dioxus 0.5 uses a binary protocol.
+In Dioxus 0.5, we apply that same technique to apply changes across the network as fast as possible. Instead of using JSON to communicate changes to the Desktop and LiveView renderers, Dioxus 0.5 uses a binary protocol.
 
-For render intensive workloads, the new renderer takes only 1/5 the time to apply the changes in the browser with 1/2 the latency. Here is one of the benchmarks we developed while working on the new binary protocol. In dioxus 0.4, the renderer was constantly freezing. In dioxus 0.5, it runs smoothly:
+For render intensive workloads, the new renderer takes only 1/5 the time to apply the changes in the browser with 1/2 the latency. Here is one of the benchmarks we developed while working on the new binary protocol. In Dioxus 0.4, the renderer was constantly freezing. In Dioxus 0.5, it runs smoothly:
 
 **Dioxus 0.4**
 
@@ -419,7 +419,7 @@ For render intensive workloads, the new renderer takes only 1/5 the time to appl
 
 ---
 
-One common pattern when creating components is providing some additional functionality to a specific element. When you wrap an element, it is often useful to provide some control over what attributes are set in the final element. Instead of manually copying over each attribute from the element, dioxus 0.5 supports extending specific elements and spreading the attributes into an element:
+One common pattern when creating components is providing some additional functionality to a specific element. When you wrap an element, it is often useful to provide some control over what attributes are set in the final element. Instead of manually copying over each attribute from the element, Dioxus 0.5 supports extending specific elements and spreading the attributes into an element:
 
 ```rust
 #[derive(Props, PartialEq, Clone)]
@@ -467,7 +467,7 @@ This feature works for anything implementing `IntoAttribute`, meaning signals al
 
 ---
 
-Another amazing feature added this cycle was attribute merging. When working with libraries like tailwind, you’ll occasionally want to make certain attributes conditional. Before, you had to format the attribute using an empty string. Now, you can simply add an extra attribute with a conditional, and the attribute will be merged using a space as a delimiter:
+Another amazing feature added this cycle was attribute merging. When working with libraries like Tailwind, you’ll occasionally want to make certain attributes conditional. Before, you had to format the attribute using an empty string. Now, you can simply add an extra attribute with a conditional, and the attribute will be merged using a space as a delimiter:
 
 ```rust
 #[component]
@@ -481,7 +481,7 @@ fn Blog(enabled: bool) -> Element {
 }
 ```
 
-This is particularly important when using libraries like tailwind where attributes need to be parsed at compile time but also dynamic at runtime. This syntax integrates with the tailwind compiler, removing the runtime overhead for libraries like tailwind-merge.
+This is particularly important when using libraries like Tailwind where attributes need to be parsed at compile time but also dynamic at runtime. This syntax integrates with the Tailwind compiler, removing the runtime overhead for libraries like tailwind-merge.
 
 ## Server function streaming
 
@@ -509,7 +509,7 @@ Side note, the AI metaframework used here - Kalosm - is maintained by the Dioxus
 
 ---
 
-The CLI now supports a `fullstack` platform with hot reloading and parallel builds for the client and sever. You can now serve your fullstack app with the `dx` command:
+The CLI now supports a `fullstack` platform with hot reloading and parallel builds for the client and sever. You can now serve your Fullstack app with the `dx` command:
 
 ```bash
 dx serve
@@ -518,13 +518,13 @@ dx serve
 dx serve --platform fullstack
 ```
 
-## Liveview router support
+## LiveView router support
 
 ---
 
 [https://github.com/DioxusLabs/dioxus/pull/1505](https://github.com/DioxusLabs/dioxus/pull/1505)
 
-@[DonAlonzo](https://github.com/DonAlonzo) added liveview support for the router in dioxus 0.5. The router will now work out of the box with your liveview apps!
+@[DonAlonzo](https://github.com/DonAlonzo) added LiveView support for the router in Dioxus 0.5. The router will now work out of the box with your LiveView apps!
 
 ## Custom Asset Handlers
 
@@ -532,7 +532,7 @@ dx serve --platform fullstack
 
 [https://github.com/DioxusLabs/dioxus/pull/1719](https://github.com/DioxusLabs/dioxus/pull/1719)
 
-@willcrichton added support for custom asset handlers to dioxus desktop. Custom asset handlers let you efficiently stream data from your rust code into the browser without going through javascript. This is great for high bandwidth communication like [video streaming](https://github.com/DioxusLabs/dioxus/pull/1727):
+@willcrichton added support for custom asset handlers to Dioxus Desktop. Custom asset handlers let you efficiently stream data from your rust code into the browser without going through JavaScript. This is great for high bandwidth communication like [video streaming](https://github.com/DioxusLabs/dioxus/pull/1727):
 
 [Screen Recording 2024-02-22 at 10.40.42 AM.mov](Dioxus%200%205%20Signal%20Rewrite,%20Remove%20lifetimes%20unsafe%209961963b731a4d9f8465e5bcdf8e9ab3/Screen_Recording_2024-02-22_at_10.40.42_AM.mov)
 
@@ -542,11 +542,11 @@ Now, you can do things like work with gstreamer or webrtc and pipe data directly
 
 ---
 
-This is a bit smaller of a tweak, but now we properly support file drops for desktop:
+This is a bit smaller of a tweak, but now we properly support file drops for Desktop:
 
 [native_drop.mov](Dioxus%200%205%20Signal%20Rewrite,%20Remove%20lifetimes%20unsafe%209961963b731a4d9f8465e5bcdf8e9ab3/native_drop.mov)
 
-Previously we just gave you the option to intercept filedrops but now it’s natively integrated into the event systme.
+Previously we just gave you the option to intercept filedrops but now it’s natively integrated into the event system.
 
 ## Error handling
 
@@ -556,7 +556,7 @@ Error handling: You can use error boundaries and the throw trait to easily handl
 
 Dioxus provides a much easier way to handle errors: throwing them. Throwing errors combines the best parts of an error state and early return: you can easily throw an error with `?`, but you keep information about the error so that you can handle it in a parent component.
 
-You can call `throw` on any `Result` type that implements `Debug` to turn it into an error state and then use `?` to return early if you do hit an error. You can capture the error state with an `ErrorBoundary` component that will render the a different component if an error is thrown in any of its children.
+You can call `throw` on any `Result` type that implements `Debug` to turn it into an error state and then use `?` to return early if you do hit an error. You can capture the error state with an `ErrorBoundary` component that will render a different component if an error is thrown in any of its children.
 
 ```rust
 fn Parent() -> Element {
@@ -611,21 +611,21 @@ fn ThrowsError() -> Element {
 
 This pattern is particularly helpful whenever your code generates a non-recoverable error. You can gracefully capture these "global" error states without panicking or handling state for each error yourself.
 
-## Hotreloading by default and “develop” mode for desktop
+## Hot reloading by default and “develop” mode for Desktop
 
 ---
 
-We shipped hotreloading in 0.3, added it to desktop in 0.4, and now we’re finally enabling it by default in 0.5. By default, when you `dx serve` your app, hotreloading is enabled in development mode.
+We shipped hot reloading in 0.3, added it to Desktop in 0.4, and now we’re finally enabling it by default in 0.5. By default, when you `dx serve` your app, hot reloading is enabled in development mode.
 
-Additionally, we’ve drastically improved the developer experience of building desktop apps. When we can’t hotreload the app and have to do a full recompile, we now preserve the state of the open windows and resume that state. This means your app won’t block your entire screen on every edit and it will maintain its size and position, leading to a more magical experience. Once you’ve played with it, you can never go back - it’s that good.
+Additionally, we’ve drastically improved the developer experience of building desktop apps. When we can’t hot reload the app and have to do a full recompile, we now preserve the state of the open windows and resume that state. This means your app won’t block your entire screen on every edit and it will maintain its size and position, leading to a more magical experience. Once you’ve played with it, you can never go back - it’s that good.
 
 [resume_state_small.mov](Dioxus%200%205%20Signal%20Rewrite,%20Remove%20lifetimes%20unsafe%209961963b731a4d9f8465e5bcdf8e9ab3/resume_state_small.mov)
 
-## Updates to the dioxus template
+## Updates to the Dioxus template
 
 ---
 
-With this update, our newest core team member Miles (lovingly, @Doge on our discord) put serious work into overhauling documentation and our templates. We now have templates to create new dioxus apps for web, desktop, mobile, tui, and fullstack under one command.
+With this update, our newest core team member Miles (lovingly, @Doge on our discord) put serious work into overhauling documentation and our templates. We now have templates to create new Dioxus apps for Web, Desktop, Mobile, TUI, and Fullstack under one command.
 
 [oh_five_release.mov](Dioxus%200%205%20Signal%20Rewrite,%20Remove%20lifetimes%20unsafe%209961963b731a4d9f8465e5bcdf8e9ab3/oh_five_release.mov)
 
@@ -637,7 +637,7 @@ We also updated the default app you get when using `dx new` to be closer to the 
 
 ---
 
-The Dioxus Community is something special: discord members marc and Doge have been hard at working updating important ecosystem crates for the 0.5 release. With this release, important crates like icons, charts, and the dioxus-specific standard library are ready to use right out the gate. The `Dioxus Community` project is a new GitHub organization that keeps important crates up-to-date even when the original maintainers step down. If you build a library for Dioxus, we’ll be happy to help maintain it, keeping it at what is essentially “Tier 2” support.
+The Dioxus Community is something special: discord members marc and Doge have been hard at working updating important ecosystem crates for the 0.5 release. With this release, important crates like icons, charts, and the Dioxus-specific standard library are ready to use right out the gate. The `Dioxus Community` project is a new GitHub organization that keeps important crates up-to-date even when the original maintainers step down. If you build a library for Dioxus, we’ll be happy to help maintain it, keeping it at what is essentially “Tier 2” support.
 
 ![Screenshot 2024-03-21 at 3.20.29 PM.png](Dioxus%200%205%20Signal%20Rewrite,%20Remove%20lifetimes%20unsafe%209961963b731a4d9f8465e5bcdf8e9ab3/Screenshot_2024-03-21_at_3.20.29_PM.png)
 
@@ -650,16 +650,16 @@ At a certain point we had to stop adding new features to this release. There’s
 - Stabilizing and more deeply integrating the asset system
 - Bundle splitting the outputted `.wasm` directly - with lazy components
 - Islands and resumable interactivity (serializing signals!)
-- Server components and merging LiveView into fullstack
+- Server components and merging LiveView into Fullstack
 - Enhanced Devtools (potentially featuring some AI!) and testing framework
-- Complete mobile overhaul
-- Fullstack overhaul with websockets, SSE, progressive forms, and more
+- Complete Mobile overhaul
+- Fullstack overhaul with WebSocket, SSE, progressive forms, and more
 
 ## Sneak Peek: Dioxus-Blitz revival using Servo
 
 ---
 
-We’re not going to say much about this now, but here’s a sneak peek at “Blitz 2.0”… we’re finally integrating servo into blitz so you can render natively with WGPU using the same CSS engine that powers Firefox. To push this effort forward, we’ve brought the extremely talented Nico Burns (the wizard behind our layout library Taffy) on full time. More about this later, but here’s a little demo of [google.com](http://google.com) being rendered at 900 FPS entirely on the GPU:
+We’re not going to say much about this now, but here’s a sneak peek at “Blitz 2.0”… we’re finally integrating servo into Blitz so you can render natively with WGPU using the same CSS engine that powers Firefox. To push this effort forward, we’ve brought the extremely talented Nico Burns (the wizard behind our layout library Taffy) on full time. More about this later, but here’s a little demo of [google.com](http://google.com) being rendered at 900 FPS entirely on the GPU:
 
 ![Untitled](Dioxus%200%205%20Signal%20Rewrite,%20Remove%20lifetimes%20unsafe%209961963b731a4d9f8465e5bcdf8e9ab3/Untitled.png)
 

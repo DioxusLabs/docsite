@@ -9,7 +9,7 @@ use dioxus_rsx::{
     ElementAttrValue, IfmtInput,
 };
 use pulldown_cmark::{Alignment, Event, Options, Parser, Tag};
-use syn::{Ident, __private::Span, parse_quote, parse_str, LitStr};
+use syn::{Ident, __private::Span, parse_str, LitStr};
 
 use syntect::highlighting::ThemeSet;
 use syntect::parsing::SyntaxSet;
@@ -523,7 +523,7 @@ impl<'a, I: Iterator<Item = Event<'a>>> RsxMarkdownParser<'a, I> {
                 let dest: &str = &dest;
 
                 #[cfg(not(feature = "manganis"))]
-                let url: syn::Expr = parse_quote!(#dest);
+                let url: syn::Expr = syn::parse_quote!(#dest);
                 #[cfg(feature = "manganis")]
                 let url: syn::Expr = syn::parse_quote! { manganis::mg!(file(#dest)) };
 

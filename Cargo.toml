@@ -7,22 +7,22 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-dioxus = { git = "https://github.com/dioxuslabs/dioxus", features = [
+dioxus = { version = "0.5.6", features = [
     "fullstack",
     "router",
 ] }
-dioxus-web = { git = "https://github.com/dioxuslabs/dioxus", features = [
+dioxus-web = { version = "0.5.6", features = [
     "hydrate",
 ], optional = true }
-dioxus-ssr = { git = "https://github.com/dioxuslabs/dioxus", optional = true }
-dioxus-fullstack = { git = "https://github.com/dioxuslabs/dioxus" }
-dioxus-tui = { git = "https://github.com/dioxuslabs/blitz", optional = true }
-dioxus-desktop = { git = "https://github.com/dioxuslabs/dioxus", optional = true }
-dioxus-liveview = { git = "https://github.com/dioxuslabs/dioxus", features = [
+dioxus-ssr = { version = "0.5.6", optional = true }
+dioxus-fullstack = { version = "0.5.6" }
+# dioxus-tui = { git = "https://github.com/dioxuslabs/blitz", optional = true }
+dioxus-desktop = { version = "0.5.6", optional = true }
+dioxus-liveview = { version = "0.5.6", features = [
     "axum",
 ], optional = true }
-dioxus-native-core = { git = "https://github.com/dioxuslabs/blitz", optional = true }
-dioxus-native-core-macro = { git = "https://github.com/dioxuslabs/blitz", optional = true }
+# dioxus-native-core = { git = "https://github.com/dioxuslabs/blitz", optional = true }
+# dioxus-native-core-macro = { git = "https://github.com/dioxuslabs/blitz", optional = true }
 manganis = { git = "https://github.com/DioxusLabs/manganis" }
 serde = { version = "1.0.163", features = ["derive"] }
 serde_json = "1.0.96"
@@ -73,33 +73,52 @@ stork-lib = { version = "1.6.0", features = [
 ], default-features = false }
 
 # Used only in doc tests
-dioxus-std = { git = "https://github.com/ealmloff/dioxus-std", branch = "copy-UseI18", features = [
+dioxus-std = { git = "https://github.com/dioxuslabs/sdk", features = [
     "i18n",
-], optional = true }
+], optional = true, package = "dioxus-sdk" }
 tower-http = { version = "0.5.0", optional = true, features = ["timeout"] }
 tracing = "0.1.40"
 rand = { version = "0.8.5", optional = true }
 
-[patch.crates-io]
-dioxus = { git = "https://github.com/dioxuslabs/dioxus" }
-dioxus-lib = { git = "https://github.com/dioxuslabs/dioxus" }
-dioxus-core = { git = "https://github.com/dioxuslabs/dioxus" }
-dioxus-core-macro = { git = "https://github.com/dioxuslabs/dioxus" }
-dioxus-signals = { git = "https://github.com/dioxuslabs/dioxus" }
-dioxus-html = { git = "https://github.com/dioxuslabs/dioxus" }
-dioxus-cli-config = { git = "https://github.com/dioxuslabs/dioxus" }
-dioxus-router = { git = "https://github.com/dioxuslabs/dioxus" }
-dioxus-router-macro = { git = "https://github.com/dioxuslabs/dioxus" }
-dioxus-rsx = { git = "https://github.com/dioxuslabs/dioxus" }
+[patch."https://github.com/dioxuslabs/dioxus"]
+dioxus = { version = "0.5.6" }
+dioxus-lib = {version = "0.5.6" }
+dioxus-core = {version = "0.5.6" }
+dioxus-core-macro = {version = "0.5.6" }
+dioxus-signals = {version = "0.5.7" }
+dioxus-html = {version = "0.5.6" }
+dioxus-cli-config = {version = "0.5.6" }
+dioxus-router = {version = "0.5.6" }
+dioxus-router-macro = {version = "0.5.6" }
+dioxus-rsx = {version = "0.5.6" }
+dioxus-web = {version = "0.5.6" }
+dioxus-ssr = {version = "0.5.6" }
+dioxus-desktop = {version = "0.5.6" }
+dioxus-liveview = {version = "0.5.6" }
+dioxus-fullstack = {version = "0.5.6" }
 
-dioxus-web = { git = "https://github.com/dioxuslabs/dioxus" }
-dioxus-ssr = { git = "https://github.com/dioxuslabs/dioxus" }
-dioxus-tui = { git = "https://github.com/dioxuslabs/blitz" }
-dioxus-desktop = { git = "https://github.com/dioxuslabs/dioxus" }
-dioxus-liveview = { git = "https://github.com/dioxuslabs/dioxus" }
-dioxus-fullstack = { git = "https://github.com/dioxuslabs/dioxus" }
-dioxus-native-core = { git = "https://github.com/dioxuslabs/blitz" }
-dioxus-native-core-macro = { git = "https://github.com/dioxuslabs/blitz" }
+
+# [patch.crates-io]
+# dioxus = { git = "https://github.com/dioxuslabs/dioxus" }
+# dioxus-lib = { git = "https://github.com/dioxuslabs/dioxus" }
+# dioxus-core = { git = "https://github.com/dioxuslabs/dioxus" }
+# dioxus-core-macro = { git = "https://github.com/dioxuslabs/dioxus" }
+# dioxus-signals = { git = "https://github.com/dioxuslabs/dioxus" }
+# dioxus-html = { git = "https://github.com/dioxuslabs/dioxus" }
+# dioxus-cli-config = { git = "https://github.com/dioxuslabs/dioxus" }
+# dioxus-router = { git = "https://github.com/dioxuslabs/dioxus" }
+# dioxus-router-macro = { git = "https://github.com/dioxuslabs/dioxus" }
+# dioxus-rsx = { git = "https://github.com/dioxuslabs/dioxus" }
+
+# dioxus-web = { git = "https://github.com/dioxuslabs/dioxus" }
+# dioxus-ssr = { git = "https://github.com/dioxuslabs/dioxus" }
+# dioxus-desktop = { git = "https://github.com/dioxuslabs/dioxus" }
+# dioxus-liveview = { git = "https://github.com/dioxuslabs/dioxus" }
+# dioxus-fullstack = { git = "https://github.com/dioxuslabs/dioxus" }
+
+# dioxus-tui = { git = "https://github.com/dioxuslabs/blitz" }
+# dioxus-native-core = { git = "https://github.com/dioxuslabs/blitz" }
+# dioxus-native-core-macro = { git = "https://github.com/dioxuslabs/blitz" }
 
 [profile.release]
 lto = true
@@ -122,11 +141,11 @@ doc_test = [
     "server",
     "dioxus-web",
     "dioxus/web",
-    "dioxus-tui",
+    # "dioxus-tui",
     "dioxus-desktop",
     "dioxus-liveview",
-    "dioxus-native-core",
-    "dioxus-native-core-macro",
+    # "dioxus-native-core",
+    # "dioxus-native-core-macro",
     "shipyard",
     "gloo-storage",
     "pretty_assertions",

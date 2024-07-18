@@ -295,7 +295,7 @@ If you need to go as far as relying on custom elements/attributes for your rende
 
 For more examples and information on how to create custom namespaces, see the [`dioxus_html` crate](https://github.com/DioxusLabs/dioxus/blob/main/packages/html/README.md#how-to-extend-it).
 
-# Native Core
+<!-- # Native Core
 
 If you are creating a renderer in rust, the [native-core](https://github.com/DioxusLabs/blitz/tree/master/packages/native-core) crate provides some utilities to implement a renderer. It provides an abstraction over Mutations and Templates and contains helpers that can handle the layout and text editing for you.
 
@@ -406,7 +406,7 @@ To make it easier to implement text editing in rust renderers, `native-core` als
 
 ```rust
 {{#include src/doc_examples/custom_renderer.rs:cursor}}
-```
+``` -->
 
 ## Conclusion
 

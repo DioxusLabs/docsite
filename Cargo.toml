@@ -16,13 +16,10 @@ dioxus-web = { version = "0.5.6", features = [
 ], optional = true }
 dioxus-ssr = { version = "0.5.6", optional = true }
 dioxus-fullstack = { version = "0.5.6" }
-# dioxus-tui = { git = "https://github.com/dioxuslabs/blitz", optional = true }
 dioxus-desktop = { version = "0.5.6", optional = true }
 dioxus-liveview = { version = "0.5.6", features = [
     "axum",
 ], optional = true }
-# dioxus-native-core = { git = "https://github.com/dioxuslabs/blitz", optional = true }
-# dioxus-native-core-macro = { git = "https://github.com/dioxuslabs/blitz", optional = true }
 manganis = { git = "https://github.com/DioxusLabs/manganis" }
 serde = { version = "1.0.163", features = ["derive"] }
 serde_json = "1.0.96"
@@ -80,22 +77,24 @@ tower-http = { version = "0.5.0", optional = true, features = ["timeout"] }
 tracing = "0.1.40"
 rand = { version = "0.8.5", optional = true }
 
+# todo: dont do this anymore
+# https://stackoverflow.com/questions/72240671/patch-a-transient-git-dependency-to-a-specific-rev
 [patch."https://github.com/dioxuslabs/dioxus"]
-dioxus = { version = "0.5.6" }
-dioxus-lib = {version = "0.5.6" }
-dioxus-core = {version = "0.5.6" }
-dioxus-core-macro = {version = "0.5.6" }
-dioxus-signals = {version = "0.5.7" }
-dioxus-html = {version = "0.5.6" }
-dioxus-cli-config = {version = "0.5.6" }
-dioxus-router = {version = "0.5.6" }
-dioxus-router-macro = {version = "0.5.6" }
-dioxus-rsx = {version = "0.5.6" }
-dioxus-web = {version = "0.5.6" }
-dioxus-ssr = {version = "0.5.6" }
-dioxus-desktop = {version = "0.5.6" }
-dioxus-liveview = {version = "0.5.6" }
-dioxus-fullstack = {version = "0.5.6" }
+dioxus = { git = "https://github.com/dioxuslabs/dioxus?rev=f76c80bab20f71acc14b330f3b565926b352cb3f", rev = "f76c80bab20f71acc14b330f3b565926b352cb3f"}
+dioxus-lib = { git = "https://github.com/dioxuslabs/dioxus?rev=f76c80bab20f71acc14b330f3b565926b352cb3f", rev = "f76c80bab20f71acc14b330f3b565926b352cb3f"}
+dioxus-core = { git = "https://github.com/dioxuslabs/dioxus?rev=f76c80bab20f71acc14b330f3b565926b352cb3f", rev = "f76c80bab20f71acc14b330f3b565926b352cb3f"}
+dioxus-core-macro = { git = "https://github.com/dioxuslabs/dioxus?rev=f76c80bab20f71acc14b330f3b565926b352cb3f", rev = "f76c80bab20f71acc14b330f3b565926b352cb3f"}
+dioxus-signals = {  git = "https://github.com/dioxuslabs/dioxus?rev=f76c80bab20f71acc14b330f3b565926b352cb3f", rev = "f76c80bab20f71acc14b330f3b565926b352cb3f"}
+dioxus-html = { git = "https://github.com/dioxuslabs/dioxus?rev=f76c80bab20f71acc14b330f3b565926b352cb3f", rev = "f76c80bab20f71acc14b330f3b565926b352cb3f"}
+dioxus-cli-config = { git = "https://github.com/dioxuslabs/dioxus?rev=f76c80bab20f71acc14b330f3b565926b352cb3f", rev = "f76c80bab20f71acc14b330f3b565926b352cb3f"}
+dioxus-router = { git = "https://github.com/dioxuslabs/dioxus?rev=f76c80bab20f71acc14b330f3b565926b352cb3f", rev = "f76c80bab20f71acc14b330f3b565926b352cb3f"}
+dioxus-router-macro = { git = "https://github.com/dioxuslabs/dioxus?rev=f76c80bab20f71acc14b330f3b565926b352cb3f", rev = "f76c80bab20f71acc14b330f3b565926b352cb3f"}
+dioxus-rsx = { git = "https://github.com/dioxuslabs/dioxus?rev=f76c80bab20f71acc14b330f3b565926b352cb3f", rev = "f76c80bab20f71acc14b330f3b565926b352cb3f"}
+dioxus-web = { git = "https://github.com/dioxuslabs/dioxus?rev=f76c80bab20f71acc14b330f3b565926b352cb3f", rev = "f76c80bab20f71acc14b330f3b565926b352cb3f"}
+dioxus-ssr = { git = "https://github.com/dioxuslabs/dioxus?rev=f76c80bab20f71acc14b330f3b565926b352cb3f", rev = "f76c80bab20f71acc14b330f3b565926b352cb3f"}
+dioxus-desktop = { git = "https://github.com/dioxuslabs/dioxus?rev=f76c80bab20f71acc14b330f3b565926b352cb3f", rev = "f76c80bab20f71acc14b330f3b565926b352cb3f"}
+dioxus-liveview = { git = "https://github.com/dioxuslabs/dioxus?rev=f76c80bab20f71acc14b330f3b565926b352cb3f", rev = "f76c80bab20f71acc14b330f3b565926b352cb3f"}
+dioxus-fullstack = { git = "https://github.com/dioxuslabs/dioxus?rev=f76c80bab20f71acc14b330f3b565926b352cb3f", rev = "f76c80bab20f71acc14b330f3b565926b352cb3f"}
 
 
 # [patch.crates-io]
@@ -115,10 +114,12 @@ dioxus-fullstack = {version = "0.5.6" }
 # dioxus-desktop = { git = "https://github.com/dioxuslabs/dioxus" }
 # dioxus-liveview = { git = "https://github.com/dioxuslabs/dioxus" }
 # dioxus-fullstack = { git = "https://github.com/dioxuslabs/dioxus" }
-
 # dioxus-tui = { git = "https://github.com/dioxuslabs/blitz" }
 # dioxus-native-core = { git = "https://github.com/dioxuslabs/blitz" }
 # dioxus-native-core-macro = { git = "https://github.com/dioxuslabs/blitz" }
+# dioxus-tui = { git = "https://github.com/dioxuslabs/blitz", optional = true }
+# dioxus-native-core = { git = "https://github.com/dioxuslabs/blitz", optional = true }
+# dioxus-native-core-macro = { git = "https://github.com/dioxuslabs/blitz", optional = true }
 
 [profile.release]
 lto = true

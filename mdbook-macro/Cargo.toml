@@ -22,7 +22,7 @@ postcard = { version = "1.0.4", features = ["use-std"] }
 dioxus-rsx = { git = "https://github.com/dioxuslabs/dioxus" }
 pulldown-cmark = "0.9.3"
 syntect = "5.0"
-manganis-common = { git = "https://github.com/DioxusLabs/collect-assets", optional = true }
+manganis-common = { git = "https://github.com/DioxusLabs/manganis", optional = true }
 
 [features]
 manganis = ["manganis-common"]

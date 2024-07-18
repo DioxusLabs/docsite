@@ -1,12 +1,3 @@
-use std::{
-    env,
-    sync::{
-        atomic::{AtomicBool, Ordering},
-        Arc,
-    },
-    time::Duration,
-};
-
 use axum::{
     error_handling::HandleErrorLayer,
     extract::{Request, State},

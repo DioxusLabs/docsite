@@ -228,7 +228,6 @@ impl<'a, I: Iterator<Item = Event<'a>>> RsxMarkdownParser<'a, I> {
                     self.start_node(parse_str::<BodyNode>(&raw_code).unwrap());
                 } else {
                     let code = transform_code_block(&self.path, raw_code)?;
-                    // let mut code_attrs = Vec::new();
 
                     let ss = SyntaxSet::load_defaults_newlines();
                     let ts = ThemeSet::load_defaults();
@@ -360,7 +359,7 @@ impl<'a, I: Iterator<Item = Event<'a>>> RsxMarkdownParser<'a, I> {
                 #[cfg(feature = "manganis")]
                 let url: syn::Expr = syn::parse_quote! { manganis::mg!(file(#dest)) };
 
-                self.create_node(parse_quote! {
+                self.start_node(parse_quote! {
                     img {
                         src: #url,
                         alt: #alt,

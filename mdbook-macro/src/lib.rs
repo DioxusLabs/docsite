@@ -84,21 +84,12 @@ fn load_book_from_fs(input: LitStr) -> anyhow::Result<(PathBuf, mdbook_shared::M
 fn generate_router(book_path: PathBuf, book: mdbook_shared::MdBook<PathBuf>) -> TokenStream2 {
     let mdbook = write_book_with_routes(book_path, &book);
 
-    let book_pages = book.pages().iter().map(|(_, page)| {
+    let book_pages = book.pages().iter().enumerate().map(|(i, (_, page))| {
         let name = path_to_route_variant(&page.url);
         // Rsx doesn't work very well in macros because the path for all the routes generated point to the same characters. We manulally expand rsx here to get around that issue.
-        let template_name = format!("{}:0:0:0", page.url.to_string_lossy());
         match rsx::parse(page.url.clone(), &page.raw) {
-            Ok(mut rsx) => {
-                rsx.roots
-                    .push(dioxus_rsx::BodyNode::Element(dioxus_rsx::Element::new(
-                        None,
-                        dioxus_rsx::ElementName::Ident(Ident::new("script", Span::call_site())),
-                        vec![],
-                        vec![],
-                        Default::default(),
-                    )));
-                let rsx = rsx.render_with_location(template_name);
+            Ok(rsx) => {
+                rsx.template_idx.set(i*512);
                 quote! {
                     #[component(no_case_check)]
                     pub fn #name() -> dioxus::prelude::Element {

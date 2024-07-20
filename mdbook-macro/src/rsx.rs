@@ -74,7 +74,7 @@ impl<'a, I: Iterator<Item = Event<'a>>> RsxMarkdownParser<'a, I> {
                 self.create_node(BodyNode::Text(parse_quote!(#text)));
             }
             pulldown_cmark::Event::Code(code) => {
-                let code = &*code;
+                let code = escape_text(&code);
                 self.create_node(parse_quote! {
                     code {
                         #code
@@ -219,7 +219,7 @@ impl<'a, I: Iterator<Item = Event<'a>>> RsxMarkdownParser<'a, I> {
                         (!lang.is_empty()).then_some(lang)
                     }
                 };
-                let raw_code = self.take_code_or_text();
+                let raw_code = escape_text(&self.take_code_or_text());
 
                 if lang.as_deref() == Some("inject-dioxus") {
                     self.start_node(parse_str::<BodyNode>(&raw_code).unwrap());
@@ -243,7 +243,7 @@ impl<'a, I: Iterator<Item = Event<'a>>> RsxMarkdownParser<'a, I> {
                             }
                             button {
                                 style: "position: absolute; top: 0; right: 0; background: rgba(0, 0, 0, 0.75); color: white; border: 1px solid white; padding: 0.25em;",
-                                onclick: "navigator.clipboard.writeText(this.previousElementSibling.innerText)",
+                                "onclick": "navigator.clipboard.writeText(this.previousElementSibling.innerText)",
                                 "Copy"
                             }
                         }
@@ -475,4 +475,9 @@ fn resolve_extension(_path: &Path, ext: &str) -> syn::Result<String> {
     } else {
         todo!("Unknown extension: {}", ext);
     }
+}
+
+fn escape_text(text: &str) -> String {
+    text.replace('{', "{{")
+        .replace('}', "}}")
 }

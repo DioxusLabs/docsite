@@ -33,7 +33,9 @@ pub fn parse(path: PathBuf, markdown: &str) -> syn::Result<CallBody> {
     }
 
     Ok(if rsx_parser.root_nodes.is_empty() {
-        parse_quote! {}
+        parse_quote! {
+            dioxus_core::prelude::VNode::placeholder()
+        }
     } else {
         CallBody::new(TemplateBody::new(rsx_parser.root_nodes))
     })

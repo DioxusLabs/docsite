@@ -70,7 +70,7 @@ impl<'a, I: Iterator<Item = Event<'a>>> RsxMarkdownParser<'a, I> {
             }
             pulldown_cmark::Event::End(_) => self.end_node(),
             pulldown_cmark::Event::Text(text) => {
-                let text = &*text;
+                let text = escape_text(&text);
                 self.create_node(BodyNode::Text(parse_quote!(#text)));
             }
             pulldown_cmark::Event::Code(code) => {
@@ -129,12 +129,14 @@ impl<'a, I: Iterator<Item = Event<'a>>> RsxMarkdownParser<'a, I> {
                     if let Some(pulldown_cmark::Event::Code(_)) = self.iter.peek() {
                         all_text.push(' ');
                     }
+                    let all_text = escape_text(&all_text);
 
                     let text = BodyNode::Text(parse_quote!(#all_text));
                     self.create_node(text);
                 }
                 Some(pulldown_cmark::Event::Code(code)) => {
                     let code = code.to_string();
+                    let code = escape_text(&code);
                     self.create_node(parse_quote! {
                         code {
                             #code
@@ -194,6 +196,9 @@ impl<'a, I: Iterator<Item = Event<'a>>> RsxMarkdownParser<'a, I> {
                     pulldown_cmark::HeadingLevel::H5 => Ident::new("h5", Span::call_site()),
                     pulldown_cmark::HeadingLevel::H6 => Ident::new("h6", Span::call_site()),
                 };
+                let anchor = escape_text(&anchor);
+                let fragment = escape_text(&fragment);
+                let text = escape_text(&text);
                 let element = parse_quote! {
                     #element_name {
                         id: #anchor,
@@ -219,7 +224,7 @@ impl<'a, I: Iterator<Item = Event<'a>>> RsxMarkdownParser<'a, I> {
                         (!lang.is_empty()).then_some(lang)
                     }
                 };
-                let raw_code = escape_text(&self.take_code_or_text());
+                let raw_code = self.take_code_or_text();
 
                 if lang.as_deref() == Some("inject-dioxus") {
                     self.start_node(parse_str::<BodyNode>(&raw_code).unwrap());
@@ -232,9 +237,10 @@ impl<'a, I: Iterator<Item = Event<'a>>> RsxMarkdownParser<'a, I> {
 
                     let theme = &ts.themes["base16-ocean.dark"];
                     let syntax = ss.find_syntax_by_extension("rs").unwrap();
-                    let html =
-                        syntect::html::highlighted_html_for_string(&code, &ss, syntax, theme)
-                            .unwrap();
+                    let html = escape_text(
+                        &syntect::html::highlighted_html_for_string(&code, &ss, syntax, theme)
+                            .unwrap(),
+                    );
                     self.start_node(parse_quote!{
                         div {
                             style: "position: relative;",
@@ -323,7 +329,8 @@ impl<'a, I: Iterator<Item = Event<'a>>> RsxMarkdownParser<'a, I> {
                         }
                     }
                 };
-                let title: &str = &title;
+                let href = escape_text(&href);
+                let title = escape_text(&title);
                 let title_attr = if !title.is_empty() {
                     quote! {
                         title: #title,
@@ -343,12 +350,15 @@ impl<'a, I: Iterator<Item = Event<'a>>> RsxMarkdownParser<'a, I> {
                 self.write_text();
             }
             Tag::Image(_, dest, title) => {
-                let alt = self.take_text();
+                let alt = escape_text(&self.take_text());
                 let dest: &str = &dest;
-                let title: &str = &title;
+                let title = escape_text(&title);
 
                 #[cfg(not(feature = "manganis"))]
-                let url: syn::Expr = syn::parse_quote!(#dest);
+                let url: syn::Expr = {
+                    let dest = escape_text(dest);
+                    syn::parse_quote!(#dest)
+                };
                 #[cfg(feature = "manganis")]
                 let url: syn::Expr = syn::parse_quote! { manganis::mg!(file(#dest)) };
 
@@ -478,6 +488,5 @@ fn resolve_extension(_path: &Path, ext: &str) -> syn::Result<String> {
 }
 
 fn escape_text(text: &str) -> String {
-    text.replace('{', "{{")
-        .replace('}', "}}")
+    text.replace('{', "{{").replace('}', "}}")
 }

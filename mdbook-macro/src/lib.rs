@@ -89,7 +89,7 @@ fn generate_router(book_path: PathBuf, book: mdbook_shared::MdBook<PathBuf>) -> 
         // Rsx doesn't work very well in macros because the path for all the routes generated point to the same characters. We manulally expand rsx here to get around that issue.
         match rsx::parse(page.url.clone(), &page.raw) {
             Ok(rsx) => {
-                rsx.template_idx.set(i*512);
+                rsx.template_idx.set(i * 512);
                 quote! {
                     #[component(no_case_check)]
                     pub fn #name() -> dioxus::prelude::Element {

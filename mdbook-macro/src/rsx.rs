@@ -12,7 +12,7 @@ use syn::{Ident, __private::Span, parse_quote, parse_str};
 use syntect::highlighting::ThemeSet;
 use syntect::parsing::SyntaxSet;
 
-pub fn parse(path: PathBuf, markdown: &str) -> syn::Result<CallBody> {
+pub fn parse(path: PathBuf, markdown: &str, template_idx: usize) -> syn::Result<CallBody> {
     let mut options = Options::empty();
     options.insert(Options::ENABLE_STRIKETHROUGH);
     options.insert(Options::ENABLE_TABLES);
@@ -37,7 +37,7 @@ pub fn parse(path: PathBuf, markdown: &str) -> syn::Result<CallBody> {
             dioxus_core::prelude::VNode::placeholder()
         }
     } else {
-        CallBody::new(TemplateBody::new(rsx_parser.root_nodes))
+        CallBody::new_with_template_idx(TemplateBody::new(rsx_parser.root_nodes), template_idx)
     })
 }
 

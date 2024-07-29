@@ -47,6 +47,7 @@ fn to_owned() {
     let sync_status = use_signal(|| Status::Launching);
     let load_status = use_signal(|| Status::Launching);
     let sync_task = use_coroutine(|rx: UnboundedReceiver<SyncAction>| {
+        to_owned![sync_status, load_status];
         async move {
             // ...
         }

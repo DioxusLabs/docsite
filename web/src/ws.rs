@@ -1,9 +1,9 @@
-use dioxus::signals::{Signal, Writable as _, WritableVecExt as _};
+use crate::{error::AppError, BuildSignals};
+use dioxus::signals::{Writable as _, WritableVecExt as _};
+use dioxus_logger::tracing::warn;
 use futures::{SinkExt as _, StreamExt};
-use gloo_net::websocket::futures::WebSocket;
+use gloo_net::websocket::{futures::WebSocket, Message};
 use model::*;
-
-use crate::error::AppError;
 
 pub struct Socket {
     socket: WebSocket,
@@ -11,83 +11,79 @@ pub struct Socket {
 
 impl Socket {
     pub fn new(url: &str) -> Result<Self, AppError> {
-        let socket = WebSocket::open(url).map_err(|e| AppError::Socket(e.to_string()))?;
-
+        let socket = WebSocket::open(url)?;
         Ok(Self { socket })
     }
 
     pub async fn compile(&mut self, code: String) -> Result<(), AppError> {
-        self.socket
-            .send(SocketMessage::CompileRequest(code).into())
-            .await
-            .map_err(|e| AppError::Socket(e.to_string()))
+        let as_json = SocketMessage::CompileRequest(code).as_json_string()?;
+
+        self.socket.send(Message::Text(as_json)).await?;
+
+        Ok(())
     }
 
-    pub async fn next(&mut self) -> Result<Option<SocketMessage>, AppError> {
+    pub async fn next(&mut self) -> Option<Result<SocketMessage, AppError>> {
         match self.socket.next().await {
-            Some(Ok(msg)) => Ok(SocketMessage::try_from(msg).ok()),
-            Some(Err(e)) => Err(AppError::Socket(e.to_string())),
-            _ => Ok(None),
+            Some(Ok(msg)) => Some(Ok(SocketMessage::from(msg))),
+            Some(Err(e)) => Some(Err(e.into())),
+            _ => None,
         }
     }
 
     pub async fn close(self) {
-        //self.socket.close(None, None).ok();
+        self.socket.close(None, None).ok();
     }
 }
 
-pub fn handle_message(
-    mut is_compiling: Signal<bool>,
-    mut queue_position: Signal<Option<u32>>,
-    mut built_page_id: Signal<Option<String>>,
-    mut compiler_messages: Signal<Vec<String>>,
-    msg: SocketMessage,
-) -> bool {
+/// Handles a websocket message, returning true if further messages shouldn't be handled.
+pub fn handle_message(signals: &mut BuildSignals, msg: SocketMessage) -> bool {
+    let BuildSignals {
+        is_compiling,
+        queue_position,
+        built_page_id,
+        compiler_messages,
+    } = signals;
+
     match msg {
-        SocketMessage::CompileFinished(id) => {
+        // Handle a finished compilation of either success or error.
+        SocketMessage::CompileFinished(result) => {
+            match result {
+                Ok(id) => {
+                    built_page_id.set(Some(id.to_string()));
+                }
+                Err(e) => {
+                    built_page_id.set(None);
+                    compiler_messages.push(format!("Build Error: {e}"));
+                }
+            }
+
             is_compiling.set(false);
             queue_position.set(None);
-            built_page_id.set(Some(id));
+
             true
         }
+        // Handle adding compile messages to the log.
         SocketMessage::CompileMessage(msg) => {
             compiler_messages.push(msg);
             false
         }
-        // TODO: Handle banned words on both client and server
-        // This would avoid unnescessary requests.
-        SocketMessage::BannedWord(word) => {
-            compiler_messages.push("Error:".to_string());
-            compiler_messages.push(format!("A banned word was used: {word}"));
-            compiler_messages
-                .push("Please remove any instances of that word and run again.".to_string());
-            compiler_messages.push("Using that word inside of another word is not allowed either. e.g. `move` in `remove`".to_string());
-            is_compiling.set(false);
-            built_page_id.set(None);
-            true
-        }
-        SocketMessage::CompileFinishedWithError => {
-            is_compiling.set(false);
-            queue_position.set(None);
-            true
-        }
-        SocketMessage::SystemError(s) => {
-            is_compiling.set(false);
-            queue_position.set(None);
-            built_page_id.set(None);
-            compiler_messages.push(format!("Server Error: {s}"));
-            true
-        }
-        SocketMessage::QueuePosition(pos) => {
-            queue_position.set(Some(pos));
-            false
-        }
-        SocketMessage::QueueMoved => {
-            if let Some(pos) = queue_position() {
-                queue_position.set(Some(pos - 1));
+        // Handle displaying the current queue position to the user.
+        SocketMessage::QueuePosition(action) => {
+            match action {
+                QueueAction::Set(pos) => queue_position.set(Some(pos)),
+                QueueAction::Sub => {
+                    if let Some(pos) = queue_position() {
+                        queue_position.set(Some(pos - 1));
+                    }
+                }
             }
             false
         }
-        _ => false,
+        SocketMessage::CompileRequest(_) => unimplemented!(),
+        SocketMessage::Unknown => {
+            warn!("encountered an unknown socket message");
+            false
+        }
     }
 }

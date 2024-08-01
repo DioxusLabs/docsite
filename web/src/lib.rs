@@ -1,5 +1,7 @@
 use crate::components::{Header, RightPane, Tab};
 use dioxus::prelude::*;
+use dioxus_logger::tracing::error;
+use error::AppError;
 
 mod components;
 mod error;
@@ -16,10 +18,17 @@ const SNIPPET_WELCOME: &str = include_str!("snippets/welcome.rs");
 #[component]
 pub fn Playground(socket_url: String, built_url: String) -> Element {
     let mut is_compiling = use_signal(|| false);
-    let mut queue_position = use_signal(|| None);
-    let mut built_page_id = use_signal(|| None);
+    let queue_position = use_signal(|| None);
+    let built_page_id = use_signal(|| None);
     let mut compiler_messages = use_signal(Vec::<String>::new);
     let mut current_tab = use_signal(|| Tab::Page);
+
+    let mut build_signals = BuildSignals {
+        is_compiling: is_compiling.clone(),
+        built_page_id: built_page_id.clone(),
+        compiler_messages: compiler_messages.clone(),
+        queue_position: queue_position.clone(),
+    };
 
     // Change tab automatically
     use_memo(move || {
@@ -73,39 +82,19 @@ pub fn Playground(socket_url: String, built_url: String) -> Element {
         if is_compiling() {
             return;
         }
+
+        reset_signals(&mut build_signals);
         is_compiling.set(true);
-        queue_position.set(None);
-        built_page_id.set(None);
-        compiler_messages.clear();
         compiler_messages.push("Starting build...".to_string());
 
         let socket_url = socket_url.clone();
 
         spawn(async move {
-            let mut eval = eval(
-                r#"
-                let text = window.editorGlobal.getValue();
-                dioxus.send(text);
-                "#,
-            );
-            let val = eval.recv().await.unwrap().as_str().unwrap().to_string();
-
-            let mut socket = ws::Socket::new(&socket_url).unwrap();
-            socket.compile(val).await.unwrap();
-
-            while let Some(msg) = socket.next().await.unwrap() {
-                let is_done = ws::handle_message(
-                    is_compiling,
-                    queue_position,
-                    built_page_id,
-                    compiler_messages,
-                    msg,
-                );
-                if is_done {
-                    break;
-                }
+            if let Err(e) = start_build(&mut build_signals, socket_url).await {
+                error!(error = ?e, "failed to build project");
+                reset_signals(&mut build_signals);
+                compiler_messages.push(format!("Failed to build project."));
             }
-            socket.close().await;
         });
     };
 
@@ -135,4 +124,59 @@ pub fn Playground(socket_url: String, built_url: String) -> Element {
             }
         }
     }
+}
+
+/// A helper struct for passing around common build signals.
+#[derive(Clone, Copy)]
+pub(crate) struct BuildSignals {
+    pub is_compiling: Signal<bool>,
+    pub built_page_id: Signal<Option<String>>,
+    pub compiler_messages: Signal<Vec<String>>,
+    pub queue_position: Signal<Option<u32>>,
+}
+
+/// Start a build and handle updating the build signals according to socket messages.
+async fn start_build(signals: &mut BuildSignals, socket_url: String) -> Result<(), AppError> {
+    let mut eval = eval(
+        r#"
+        let text = window.editorGlobal.getValue();
+        dioxus.send(text);
+        "#,
+    );
+
+    // Decode eval
+    let val = eval.recv().await?;
+    let val = val
+        .as_str()
+        .ok_or(AppError::JsError("eval didn't provide str".into()))?
+        .to_string();
+
+    // Send socket compile request
+    let mut socket = ws::Socket::new(&socket_url)?;
+    socket.compile(val).await?;
+
+    // Handle socket messages
+    loop {
+        let msg = socket.next().await;
+        match msg {
+            Some(Ok(msg)) => {
+                let is_done = ws::handle_message(signals, msg);
+                if is_done {
+                    break;
+                }
+            }
+            Some(Err(e)) => return Err(e),
+            None => {}
+        }
+    }
+    socket.close().await;
+    Ok(())
+}
+
+/// Reset build signals.
+fn reset_signals(signals: &mut BuildSignals) {
+    signals.is_compiling.set(false);
+    signals.queue_position.set(None);
+    signals.built_page_id.set(None);
+    signals.compiler_messages.clear();
 }

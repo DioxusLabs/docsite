@@ -34,7 +34,6 @@ pub type QueueType = (UnboundedSender<BuildMessage>, String);
 pub enum BuildMessage {
     Message(String),
     Finished(Uuid),
-    FinishedWithError,
     BuildError(String),
 
     /// Alerts the current queue position.
@@ -260,7 +259,10 @@ async fn build(build_template_path: &str, tx: UnboundedSender<BuildMessage>, cod
     }
 
     if !dist.exists() {
-        tx.send(BuildMessage::FinishedWithError).ok();
+        tx.send(BuildMessage::BuildError(
+            "built directory was not created".to_string(),
+        ))
+        .ok();
         return;
     }
 

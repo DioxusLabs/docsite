@@ -12,7 +12,6 @@ pub enum AppError {
     JsError(Box<dyn Error>),
 }
 
-
 impl From<SocketError> for AppError {
     fn from(value: SocketError) -> Self {
         Self::Socket(value.0)

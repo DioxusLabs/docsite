@@ -24,10 +24,10 @@ pub fn Playground(socket_url: String, built_url: String) -> Element {
     let mut current_tab = use_signal(|| Tab::Page);
 
     let mut build_signals = BuildSignals {
-        is_compiling: is_compiling.clone(),
-        built_page_id: built_page_id.clone(),
-        compiler_messages: compiler_messages.clone(),
-        queue_position: queue_position.clone(),
+        is_compiling,
+        built_page_id,
+        compiler_messages,
+        queue_position,
     };
 
     // Change tab automatically
@@ -93,7 +93,7 @@ pub fn Playground(socket_url: String, built_url: String) -> Element {
             if let Err(e) = start_build(&mut build_signals, socket_url).await {
                 error!(error = ?e, "failed to build project");
                 reset_signals(&mut build_signals);
-                compiler_messages.push(format!("Failed to build project."));
+                compiler_messages.push("Failed to build project.".to_string());
             }
         });
     };

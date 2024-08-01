@@ -23,9 +23,10 @@ async fn handle_socket(state: AppState, socket: WebSocket) {
             .as_json_string()
             .expect("failed to convert error message to json");
 
-    let failed_to_compile = SocketMessage::CompileFinished(Err("failed to compile code".to_string()))
-        .as_json_string()
-        .expect("failed to convert error message to json");
+    let failed_to_compile =
+        SocketMessage::CompileFinished(Err("failed to compile code".to_string()))
+            .as_json_string()
+            .expect("failed to convert error message to json");
 
     while let Some(Ok(msg)) = rx.next().await {
         // Get websocket message and try converting to text.
@@ -34,12 +35,8 @@ async fn handle_socket(state: AppState, socket: WebSocket) {
             continue;
         };
 
-        // Try converting websocket message from text to `SocketMessage`
-        let Ok(msg) = SocketMessage::try_from(txt) else {
-            tx.send(failed_to_parse.clone().into()).await.ok();
-            continue;
-        };
-
+        // Convert websocket message from text to `SocketMessage`
+        let msg = SocketMessage::from(txt);
 
         if let SocketMessage::CompileRequest(code) = msg {
             let (res_tx, mut res_rx) = mpsc::unbounded_channel();

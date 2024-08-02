@@ -403,7 +403,7 @@ impl<'a, I: Iterator<Item = Event<'a>>> RsxMarkdownParser<'a, I> {
         if let (Some(BodyNode::Text(last_text)), BodyNode::Text(new_text)) =
             (element_list.last_mut(), &node)
         {
-            last_text.input.push_ifmt(new_text.input.clone());
+            last_text.input.formatted_input.push_ifmt(new_text.input.formatted_input.clone());
         } else {
             element_list.push(node);
         }

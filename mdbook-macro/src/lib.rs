@@ -87,7 +87,7 @@ fn generate_router(book_path: PathBuf, book: mdbook_shared::MdBook<PathBuf>) -> 
     let book_pages = book.pages().iter().enumerate().map(|(i, (_, page))| {
         let name = path_to_route_variant(&page.url);
         // Rsx doesn't work very well in macros because the path for all the routes generated point to the same characters. We manually expand rsx here to get around that issue.
-        match rsx::parse(page.url.clone(), &page.raw, i * 32) {
+        match rsx::parse(page.url.clone(), &page.raw, i * 256) {
             Ok(rsx) => {
                 quote! {
                     #[component(no_case_check)]

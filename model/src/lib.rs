@@ -1,83 +1,72 @@
-use std::fmt::Display;
+use serde::{Deserialize, Serialize};
+use std::{error::Error, string::FromUtf8Error};
+use uuid::Uuid;
 
-/// This represents a basic websocket message.
-///
-/// Messages have an identifier and content.
-/// e.g. `error~:~compilation failed on line x`
-/// or
-/// `please_compile~:~#[component]...`
+#[derive(Debug, Serialize, Deserialize)]
 pub enum SocketMessage {
     CompileRequest(String),
-    CompileFinished(String),
-    CompileFinishedWithError,
+    CompileFinished(Result<Uuid, String>),
     CompileMessage(String),
-    BannedWord(String),
-    SystemError(String),
-    QueuePosition(u32),
-    QueueMoved,
+    QueuePosition(QueueAction),
+    Unknown,
 }
 
-impl TryFrom<String> for SocketMessage {
-    type Error = String;
+#[derive(Debug, Serialize, Deserialize)]
+pub enum QueueAction {
+    Set(u32),
+    Sub,
+}
 
-    fn try_from(value: String) -> Result<Self, Self::Error> {
-        let split: Vec<&str> = value.split("~:~").collect();
-
-        let Some(first) = split.first() else {
-            return Err("invalid message".to_string());
-        };
-
-        let last = split.get(1).unwrap_or(&"").to_string();
-
-        match *first {
-            "please_compile" => Ok(Self::CompileRequest(last)),
-            "compilation_finished" => Ok(Self::CompileFinished(last)),
-            "compilation_finished_err" => Ok(Self::CompileFinishedWithError),
-            "compile_msg" => Ok(Self::CompileMessage(last)),
-            "banned_word" => Ok(Self::BannedWord(last)),
-            "error" => Ok(Self::SystemError(last)),
-            "queue_moved" => Ok(Self::QueueMoved),
-            "queue_position" => Ok(Self::QueuePosition(last.parse().unwrap())),
-            _ => Err("unknown ws message".to_string()),
-        }
+impl SocketMessage {
+    pub fn as_json_string(&self) -> Result<String, serde_json::Error> {
+        serde_json::to_string(self)
     }
 }
 
-impl Display for SocketMessage {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        match self {
-            Self::CompileRequest(s) => write!(f, "please_compile~:~{}", s),
-            Self::CompileFinished(s) => write!(f, "compilation_finished~:~{}", s),
-            Self::CompileFinishedWithError => write!(f, "compilation_finished_err~:~"),
-            Self::CompileMessage(s) => write!(f, "compile_msg~:~{}", s),
-            Self::BannedWord(s) => write!(f, "banned_word~:~{}", s),
-            Self::SystemError(s) => write!(f, "error~:~{}", s),
-            Self::QueuePosition(s) => write!(f, "queue_position~:~{}", s),
-            Self::QueueMoved => write!(f, "queue_moved~:~"),
-        }
+impl From<String> for SocketMessage {
+    fn from(value: String) -> Self {
+        serde_json::from_str(&value).unwrap_or(SocketMessage::Unknown)
     }
 }
 
+// Automatic SocketMessage conversion from gloo_net
 #[cfg(feature = "web")]
 use gloo_net::websocket::Message;
 
 #[cfg(feature = "web")]
-impl From<SocketMessage> for Message {
-    fn from(value: SocketMessage) -> Self {
-        let msg = value.to_string();
-        Message::Text(msg)
+impl TryFrom<SocketMessage> for Message {
+    type Error = serde_json::Error;
+
+    fn try_from(value: SocketMessage) -> Result<Self, Self::Error> {
+        let val = value.as_json_string()?;
+        Ok(Self::Text(val))
     }
 }
 
 #[cfg(feature = "web")]
-impl TryFrom<Message> for SocketMessage {
-    type Error = String;
+impl From<Message> for SocketMessage {
+    fn from(value: Message) -> Self {
+        match value {
+            Message::Bytes(bytes) => {
+                let as_string = String::from_utf8(bytes).unwrap_or("unknown".to_string());
+                Self::from(as_string)
+            }
+            Message::Text(txt) => Self::from(txt),
+        }
+    }
+}
 
-    fn try_from(value: Message) -> Result<Self, Self::Error> {
-        let Message::Text(txt) = value else {
-            return Err("unable to `TryInto` binary messages".to_string());
-        };
+/// Represents a generic socket error.
+pub struct SocketError(pub Box<dyn Error>);
 
-        SocketMessage::try_from(txt)
+impl From<serde_json::Error> for SocketError {
+    fn from(value: serde_json::Error) -> Self {
+        Self(Box::new(value))
+    }
+}
+
+impl From<FromUtf8Error> for SocketError {
+    fn from(value: FromUtf8Error) -> Self {
+        Self(Box::new(value))
     }
 }

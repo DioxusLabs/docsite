@@ -3,7 +3,7 @@ use axum::{
     response::IntoResponse,
 };
 use futures::{SinkExt, StreamExt as _};
-use model::SocketMessage;
+use model::{QueueAction, SocketMessage};
 use tokio::sync::mpsc;
 
 use crate::{build::BuildMessage, AppState};
@@ -19,10 +19,14 @@ async fn handle_socket(state: AppState, socket: WebSocket) {
 
     // Store common errors
     let failed_to_parse =
-        SocketMessage::SystemError("failed to parse received data".to_string()).to_string();
+        SocketMessage::CompileFinished(Err("failed to parse received data".to_string()))
+            .as_json_string()
+            .expect("failed to convert error message to json");
 
     let failed_to_compile =
-        SocketMessage::SystemError("failed to compile code".to_string()).to_string();
+        SocketMessage::CompileFinished(Err("failed to compile code".to_string()))
+            .as_json_string()
+            .expect("failed to convert error message to json");
 
     while let Some(Ok(msg)) = rx.next().await {
         // Get websocket message and try converting to text.
@@ -31,20 +35,19 @@ async fn handle_socket(state: AppState, socket: WebSocket) {
             continue;
         };
 
-        // Try converting websocket message from text to `SocketMessage`
-        let Ok(msg) = SocketMessage::try_from(txt) else {
-            tx.send(failed_to_parse.clone().into()).await.ok();
-            continue;
-        };
+        // Convert websocket message from text to `SocketMessage`
+        let msg = SocketMessage::from(txt);
 
         if let SocketMessage::CompileRequest(code) = msg {
             let (res_tx, mut res_rx) = mpsc::unbounded_channel();
 
-            // Receive response from oneshot and parse it.
+            // Send build request and receive any response from builder.
             if state.build_queue_tx.send((res_tx, code)).is_ok() {
                 while let Some(msg) = res_rx.recv().await {
-                    let as_socket_msg: SocketMessage = msg.into();
-                    tx.send(as_socket_msg.to_string().into()).await.ok();
+                    let socket_msg = SocketMessage::from(msg);
+                    if let Ok(as_json) = socket_msg.as_json_string() {
+                        tx.send(as_json.into()).await.ok();
+                    }
                 }
             } else {
                 tx.send(failed_to_compile.clone().into()).await.ok();
@@ -58,11 +61,10 @@ impl From<BuildMessage> for SocketMessage {
     fn from(value: BuildMessage) -> Self {
         match value {
             BuildMessage::Message(msg) => SocketMessage::CompileMessage(msg),
-            BuildMessage::Finished(id) => SocketMessage::CompileFinished(id.to_string()),
-            BuildMessage::BuildError(e) => SocketMessage::SystemError(e),
-            BuildMessage::FinishedWithError => SocketMessage::CompileFinishedWithError,
-            BuildMessage::QueuePosition(pos) => SocketMessage::QueuePosition(pos),
-            BuildMessage::QueueMoved => SocketMessage::QueueMoved,
+            BuildMessage::Finished(id) => SocketMessage::CompileFinished(Ok(id)),
+            BuildMessage::BuildError(e) => SocketMessage::CompileFinished(Err(e.to_string())),
+            BuildMessage::QueuePosition(pos) => SocketMessage::QueuePosition(QueueAction::Set(pos)),
+            BuildMessage::QueueMoved => SocketMessage::QueuePosition(QueueAction::Sub),
         }
     }
 }

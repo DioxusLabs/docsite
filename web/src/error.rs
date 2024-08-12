@@ -1,6 +1,6 @@
 use std::error::Error;
 
-use dioxus::events::EvalError;
+use dioxus::prelude::document::EvalError;
 use gloo_net::websocket::WebSocketError;
 use gloo_utils::errors::JsError;
 use model::SocketError;
@@ -31,9 +31,9 @@ impl From<serde_json::Error> for AppError {
 }
 
 impl From<EvalError> for AppError {
-    fn from(_value: EvalError) -> Self {
+    fn from(value: EvalError) -> Self {
         // TODO: Put _value in Self::Eval once EvalError implements Error
-        Self::JsError("an eval error occured".into())
+        Self::JsError(Box::new(value))
     }
 }
 

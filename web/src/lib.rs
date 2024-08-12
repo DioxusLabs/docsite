@@ -7,7 +7,7 @@ mod components;
 mod error;
 mod ws;
 
-const _: &str = manganis::mg!(file("public/dxp.css"));
+const _: &str = asset!(file("public/dxp.css"));
 const SNIPPET_WELCOME: &str = include_str!("snippets/welcome.rs");
 
 // Ace editor

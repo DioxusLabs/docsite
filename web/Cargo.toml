@@ -10,6 +10,5 @@ serde_json = { workspace = true }
 futures = { workspace = true }
 gloo-net = { workspace = true }
 
-dioxus = { version = "0.5.1", features = ["web"] }
-manganis = "0.2.2"
+dioxus = { version = "0.6.0-alpha.2", features = ["web"] }
 gloo-utils = "0.2.0"

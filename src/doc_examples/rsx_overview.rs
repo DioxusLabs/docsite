@@ -30,7 +30,9 @@ pub fn Button() -> Element {
 
 pub fn AttributesType() -> Element {
     // ANCHOR: attributes_type
-    rsx! { input { r#type: "text", color: "red" } }
+    rsx! {
+        input { r#type: "text", color: "red" }
+    }
     // ANCHOR_END: attributes_type
 }
 
@@ -93,14 +95,18 @@ pub fn VariableAttributes() -> Element {
 
 pub fn CustomAttributes() -> Element {
     // ANCHOR: custom_attributes
-    rsx! { div { "style": "width: 20px; height: 20px; background-color: red;" } }
+    rsx! {
+        div { "style": "width: 20px; height: 20px; background-color: red;" }
+    }
     // ANCHOR_END: custom_attributes
 }
 
 pub fn ConditionalAttributes() -> Element {
     // ANCHOR: conditional_attributes
     let large_font = true;
-    rsx! { div { class: if large_font { "text-xl" }, "Hello, World!" } }
+    rsx! {
+        div { class: if large_font { "text-xl" }, "Hello, World!" }
+    }
     // ANCHOR_END: conditional_attributes
 }
 

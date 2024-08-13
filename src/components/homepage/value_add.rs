@@ -33,13 +33,19 @@ pub(crate) fn ValueAdd() -> Element {
                     for (idx , (title , content)) in FEATURES.iter().enumerate() {
                         div { key: "{title}", class: "p-4 md:w-1/4 flex",
                             div { class: "flex-grow lg:pl-6",
-                                {DynamicNode::Component(VComponent::new(IconsSet[idx], (), title))},
+                                {DynamicNode::Component(VComponent::new(IconsSet[idx], (), title))}
                                 a { href: "#",
                                     h2 { class: "dark:text-white text-gray-800 text-lg title-font font-medium mb-2",
                                         "{title}"
                                     }
                                 }
-                                {content.split('\n').map(|line| rsx!{p { key: "{line}", class: "leading-relaxed text-gray-700 text-base pb-4 dark:text-white", "{line}" }})}
+                                {content.split('\n').map(|line| rsx! {
+                                    p {
+                                        key: "{line}",
+                                        class: "leading-relaxed text-gray-700 text-base pb-4 dark:text-white",
+                                        "{line}"
+                                    }
+                                })}
                             }
                         }
                     }

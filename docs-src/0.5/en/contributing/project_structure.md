@@ -32,10 +32,8 @@ There are many packages in the Dioxus organization. This document will help you 
 
 ## Native Renderer Utilities
 
-- [native-core](https://github.com/DioxusLabs/blitz/tree/main/packages/native-core): Incrementally computed tree of states (mostly styles)
-  - You can read more about how native-core can help you build native renderers in the [custom renderer section of the guide](../custom_renderer/index.html#native-core)
-- [native-core-macro](https://github.com/DioxusLabs/blitz/tree/main/packages/native-core-macro): A helper macro for native core
 - [Taffy](https://github.com/DioxusLabs/taffy): Layout engine powering Blitz-Core, Plasmo, and Bevy UI
+- [Blitz](https://github.com/DioxusLabs/blitz): An experimental native renderer for HTML+CSS
 
 ## Web renderer tooling
 

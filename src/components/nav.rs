@@ -24,7 +24,11 @@ pub(crate) fn Nav() -> Element {
                         let mut sidebar = SHOW_SIDEBAR.write();
                         *sidebar = !*sidebar;
                     },
-                    MaterialIcon { name: "menu", size: 24, color: MaterialIconColor::Dark }
+                    MaterialIcon {
+                        name: "menu",
+                        size: 24,
+                        color: MaterialIconColor::Dark,
+                    }
                 }
                 div { class: "flex z-50 md:flex-1 px-2", LinkList {} }
                 div { class: "hidden md:flex h-full justify-end ml-2 flex-1",
@@ -66,7 +70,7 @@ pub(crate) fn Nav() -> Element {
                                 Link { to: Route::Homepage {},
                                     img {
                                         src: "https://avatars.githubusercontent.com/u/10237910?s=40&v=4",
-                                        class: "ml-4 h-10 rounded-full w-auto"
+                                        class: "ml-4 h-10 rounded-full w-auto",
                                     }
                                 }
                             }
@@ -108,9 +112,7 @@ fn LinkList() -> Element {
                         width: "7",
                         "aria-hidden": "true",
                         class: "navbar_externalArrow___VWBd",
-                        path {
-                            "d": "M1.25215 5.54731L0.622742 4.9179L3.78169 1.75597H1.3834L1.38936 0.890915H5.27615V4.78069H4.40513L4.41109 2.38538L1.25215 5.54731Z",
-                        }
+                        path { "d": "M1.25215 5.54731L0.622742 4.9179L3.78169 1.75597H1.3834L1.38936 0.890915H5.27615V4.78069H4.40513L4.41109 2.38538L1.25215 5.54731Z" }
                     }
                 }
             }
@@ -124,7 +126,7 @@ fn LinkList() -> Element {
                 class: "flex title-font font-medium items-center text-gray-900",
                 img {
                     src: "https://avatars.githubusercontent.com/u/79236386?s=200&v=4",
-                    class: "h-8 w-auto"
+                    class: "h-8 w-auto",
                 }
                 span { class: "mx-3 text-xl dark:text-white leading-none font-bold hidden sm:block px-4",
                     "Dioxus Labs"
@@ -146,7 +148,11 @@ fn Search() -> Element {
                     *SHOW_SEARCH.write() = true;
                 },
                 div { class: "h-full my-auto flex flex-row align-middle justify-between",
-                    MaterialIcon { name: "search", size: 24, color: MaterialIconColor::Dark }
+                    MaterialIcon {
+                        name: "search",
+                        size: 24,
+                        color: MaterialIconColor::Dark,
+                    }
                     span { class: "hidden sm:block pl-2 pr-4", "Search the docs" }
                 }
                 div { class: "hidden md:block border border-gray-300 rounded-lg p-1 text-xs text-gray-400",
@@ -205,7 +211,11 @@ fn SearchModal() -> Element {
                     // Search input
                     div { class: "flex flex-row flex-grow border-b border-gray-300 pb-4",
                         div { class: "my-auto flex flex-row",
-                            MaterialIcon { name: "search", size: 40, color: MaterialIconColor::Dark }
+                            MaterialIcon {
+                                name: "search",
+                                size: 40,
+                                color: MaterialIconColor::Dark,
+                            }
 
                             // hide the input until show search so the onmounted fires
                             if SHOW_SEARCH() {
@@ -224,7 +234,7 @@ fn SearchModal() -> Element {
                                     },
                                     class: "flex-grow bg-transparent border-none outline-none text-xl pl-2 text-gray-800 dark:text-gray-100",
                                     placeholder: "Search the docs",
-                                    value: "{search_text}"
+                                    value: "{search_text}",
                                 }
                             }
                         }
@@ -232,7 +242,9 @@ fn SearchModal() -> Element {
 
                     // Results
                     div { class: "overflow-y-auto",
-                        ul { SearchResults { results, search_text } }
+                        ul {
+                            SearchResults { results, search_text }
+                        }
                     }
                 }
             }
@@ -243,7 +255,9 @@ fn SearchModal() -> Element {
 #[component]
 fn SearchResults(results: Signal<Results>, search_text: Signal<String>) -> Element {
     if let Err(err) = results.read().as_ref() {
-        return rsx! { div { class: "text-red-500", "{err}" } };
+        return rsx! {
+            div { class: "text-red-500", "{err}" }
+        };
     }
 
     let _results = results.read();

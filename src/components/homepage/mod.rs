@@ -56,7 +56,9 @@ fn ProjectCards() -> Element {
             div { class: "container mx-auto px-6 lg:px-64",
                 div { class: "flex flex-wrap -mx-3",
                     for (title , description) in CARDS.iter() {
-                        div { key: "{title}", class: "w-full md:w-1/2 lg:w-1/3 px-3 mb-6 text-xs dark:text-white",
+                        div {
+                            key: "{title}",
+                            class: "w-full md:w-1/2 lg:w-1/3 px-3 mb-6 text-xs dark:text-white",
                             div { class: "p-6 md:p-8 h-full rounded shadow-white hover:shadow-xl hover:border-transparent cursor-pointer",
                                 div {
                                     h3 { class: "mb-4 text-2xl font-semibold font-heading font-sans",
@@ -99,60 +101,50 @@ fn AvailablePlatforms() -> Element {
             div { class: "max-w-screen-lg mx-auto pb-8 px-2 md:px-16 dark:text-white",
                 // div { class: "max-w-screen-xl mx-auto pb-64 px-16 dark:text-white",
                 TriShow {
-                    left: None,
-                    center: None,
-                    right: rsx!(
-                        "Build for the web using Rust and WebAssembly. As fast as SolidJS and more robust than React. Integrated hot reloading for instant iterations."
-                    ),
+                    left: rsx! {  },
+                    center: rsx! {  },
+                    right: rsx! { "Build for the web using Rust and WebAssembly. As fast as SolidJS and more robust than React. Integrated hot reloading for instant iterations." },
                     to: Route::Docs {
                         child: BookRoute::GettingStartedIndex {},
                     },
-                    title: "Web with WASM"
+                    title: "Web with WASM",
                 }
                 TriShow {
-                    left: None,
-                    center: None,
-                    right: rsx!(
-                        "Lightweight (<2mb) desktop and mobile apps with zero configuration. Choose between WebView or WGPU-enabled renderers. Runs on macOS, Windows, Linux, iOS, and Android."
-                    ),
+                    left: rsx! {  },
+                    center: rsx! {  },
+                    right: rsx! { "Lightweight (<2mb) desktop and mobile apps with zero configuration. Choose between WebView or WGPU-enabled renderers. Runs on macOS, Windows, Linux, iOS, and Android." },
                     to: Route::Docs {
                         child: BookRoute::GettingStartedIndex {},
                     },
-                    title: "Desktop and Mobile"
+                    title: "Desktop and Mobile",
                 }
                 TriShow {
                     to: Route::Docs {
                         child: BookRoute::GettingStartedIndex {},
                     },
                     title: "Terminal User Interfaces",
-                    right: rsx!(
-                        "Quickly convert any CLI tool to a beautiful interactive user interface with just a few lines of code. Runs anywhere with a terminal."
-                    ),
-                    left: None,
-                    center: None
+                    right: rsx! { "Quickly convert any CLI tool to a beautiful interactive user interface with just a few lines of code. Runs anywhere with a terminal." },
+                    left: rsx! {  },
+                    center: rsx! {  },
                 }
                 TriShow {
                     to: Route::Docs {
                         child: BookRoute::GettingStartedIndex {},
                     },
                     title: "Fullstack Apps",
-                    right: rsx!(
-                        "Pre-render on the server, and hydrate on the client. Perfect lighthouse scores and performance over 1000x better than Node and Python. Perfect for static site generation or fullstack apps."
-                    ),
-                    left: None,
-                    center: None
+                    right: rsx! { "Pre-render on the server, and hydrate on the client. Perfect lighthouse scores and performance over 1000x better than Node and Python. Perfect for static site generation or fullstack apps." },
+                    left: rsx! {  },
+                    center: rsx! {  },
                 }
                 TriShow {
                     to: Route::Docs {
                         child: BookRoute::GettingStartedIndex {},
                     },
                     title: "LiveView",
-                    right: rsx!(
-                        "Render your app entirely on the server. Zero backend configuration capable of handling thousands of active clients.",
-                    ),
-                    left: None,
-                    center: None,
-                    last: true
+                    right: rsx! { "Render your app entirely on the server. Zero backend configuration capable of handling thousands of active clients." },
+                    left: rsx! {  },
+                    center: rsx! {  },
+                    last: true,
                 }
             }
         }
@@ -224,15 +216,15 @@ fn DeveloperExperience() -> Element {
                         div { class: "w-1/2",
                             ExperienceText {
                                 title: "Integrated Devtools",
-                                content: "Hot reloading for instant iteration, automatic code formatting, convert HTML to RSX, and more."
+                                content: "Hot reloading for instant iteration, automatic code formatting, convert HTML to RSX, and more.",
                             }
                             ExperienceText {
                                 title: "Minimal configuration",
-                                content: "Start projects with `cargo new`. No build scripts or configuration required for development."
+                                content: "Start projects with `cargo new`. No build scripts or configuration required for development.",
                             }
                             ExperienceText {
                                 title: "",
-                                content: "Strong typing with no runtime overhead. Automatically derive props, forms, API clients, and more."
+                                content: "Strong typing with no runtime overhead. Automatically derive props, forms, API clients, and more.",
                             }
                         }
                     }
@@ -267,7 +259,7 @@ fn IconSplit() -> Element {
             path {
                 stroke_width: "1.5",
                 fill_rule: "evenodd",
-                d: "M15.5 11.75a3.5 3.5 0 11-7 0 3.5 3.5 0 017 0zm1.444-.75a5.001 5.001 0 00-9.888 0H2.75a.75.75 0 100 1.5h4.306a5.001 5.001 0 009.888 0h4.306a.75.75 0 100-1.5h-4.306z"
+                d: "M15.5 11.75a3.5 3.5 0 11-7 0 3.5 3.5 0 017 0zm1.444-.75a5.001 5.001 0 00-9.888 0H2.75a.75.75 0 100 1.5h4.306a5.001 5.001 0 009.888 0h4.306a.75.75 0 100-1.5h-4.306z",
             }
         }
     }
@@ -302,7 +294,7 @@ fn Stats() -> Element {
                 img {
                     src: "https://contrib.rocks/image?repo=dioxuslabs/dioxus&max=52&columns=13",
                     class: "mx-auto pb-12",
-                    alt: "Dioxus Contributors"
+                    alt: "Dioxus Contributors",
                 }
             }
         }

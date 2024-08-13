@@ -25,7 +25,7 @@ There are many packages in the Dioxus organization. This document will help you 
 ## Core utilities
 
 - [core](https://github.com/DioxusLabs/dioxus/tree/main/packages/core): The core virtual dom implementation every Dioxus application uses
-  - You can read more about the architecture of the core [in this blog post](https://dioxuslabs.com/blog/templates-diffing/) and the [custom renderer section of the guide](../custom_renderer/index.md)
+  - You can read more about the architecture of the core [in this blog post](https://dioxuslabs.com/blog/templates-diffing/)
 - [RSX](https://github.com/DioxusLabs/dioxus/tree/main/packages/RSX): The core parsing for RSX used for hot reloading, autoformatting, and the macro
 - [core-macro](https://github.com/DioxusLabs/dioxus/tree/main/packages/core-macro): The rsx! macro used to write Dioxus applications. (This is a wrapper over the RSX crate)
 - [HTML macro](https://github.com/DioxusLabs/dioxus-html-macro): A html-like alternative to the RSX macro

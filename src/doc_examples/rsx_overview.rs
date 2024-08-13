@@ -77,7 +77,7 @@ pub fn Attributes() -> Element {
         img {
             src: "https://avatars.githubusercontent.com/u/79236386?s=200&v=4",
             class: "primary_button",
-            width: "10px"
+            width: "10px",
         }
     }
     // ANCHOR_END: attributes
@@ -135,9 +135,11 @@ pub fn Expression() -> Element {
     let text = "Dioxus";
     rsx! {
         span {
-            {text.to_uppercase()},
+            {text.to_uppercase()}
             // create a list of text from 0 to 9
-            {(0..10).map(|i| rsx!{ "{i}" })}
+            {(0..10).map(|i| rsx! {
+            "{i}"
+            })}
         }
     }
     // ANCHOR_END: expression
@@ -155,7 +157,11 @@ pub fn Loops() -> Element {
             }
         }
         // iterator equivalent
-        div { {(0..3).map(|i| rsx!{ div { "{i}" } })} }
+        div {
+            {(0..3).map(|i| rsx! {
+                div { "{i}" }
+            })}
+        }
     }
     // ANCHOR_END: loops
 }

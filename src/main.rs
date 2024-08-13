@@ -45,13 +45,13 @@ pub(crate) mod components {
 
 #[component]
 fn HeaderFooter() -> Element {
-    let cb = use_callback(|| {
+    let cb = use_callback(|_| {
         *SHOW_SEARCH.write() = true;
     });
 
     shortcut::use_shortcut(Key::Character("/".to_string()), Modifiers::CONTROL, {
         move || {
-            cb.call();
+            cb.call(());
         }
     });
 
@@ -141,7 +141,9 @@ pub(crate) fn use_url() -> String {
 }
 
 pub(crate) fn app() -> Element {
-    rsx! { Router::<Route> {} }
+    rsx! {
+        Router::<Route> {}
+    }
 }
 
 static SEARCH_INDEX: dioxus_search::LazySearchIndex<Route> = dioxus_search::load_search_index! {
@@ -160,7 +162,7 @@ mod docs {
                 width: "800",
                 height: "450",
                 src: "{url}?embed=1",
-                "allowfullscreen": true
+                "allowfullscreen": true,
             }
         }
     }

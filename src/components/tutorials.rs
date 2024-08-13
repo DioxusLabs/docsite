@@ -56,7 +56,7 @@ pub(crate) fn Tutorials() -> Element {
                 div { class: "pt-4 pb-8",
                     ul {
                         for id in 0..TUTORIALS.len() {
-                            TutorialPreview { id: id }
+                            TutorialPreview { id }
                         }
                     }
                 }
@@ -90,7 +90,7 @@ fn TutorialPreview(id: usize) -> Element {
 
 #[component]
 pub(crate) fn Tutorial(id: usize) -> Element {
-    let tutorial = TUTORIALS.get(id)?;
+    let tutorial = TUTORIALS.get(id).context("No tutorial found")?;
 
     rsx!(
         div {

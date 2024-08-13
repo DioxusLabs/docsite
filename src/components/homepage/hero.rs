@@ -21,12 +21,12 @@ pub(crate) fn Hero() -> Element {
                     img {
                         src: "/static/multiplatform-dark.svg",
                         class: "mx-auto max-h-48 lg:max-h-96 dark:hidden",
-                        alt: "Dioxus Contributors"
+                        alt: "Dioxus Contributors",
                     }
                     img {
                         src: "/static/multiplatform-light.svg",
                         class: "mx-auto max-h-48 lg:max-h-96 hidden dark:block",
-                        alt: "Dioxus Contributors"
+                        alt: "Dioxus Contributors",
                     }
 
                     div { class: "pt-12 text-white text-[1.2em] font-sans font-bold flex flex-col md:flex-row justify-center md:space-x-4 md:space-y-0 space-y-4",

@@ -166,7 +166,7 @@ println!("{}", double_count_plus_one); // Prints "7"
 
 // However if the value of double_count doesn't change after a write, then it won't trigger double_count_plus_one to rerun
 // Since we just write the same value, the doubled value is still 6 and we don't rerun double_count_plus_one
-*double_count.write() = 3;
+*count.write() = 3;
 
 println!("{}", double_count); // Prints "6"
 println!("{}", double_count_plus_one); // Prints "7"

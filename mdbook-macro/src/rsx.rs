@@ -1,15 +1,13 @@
+use quote::quote;
 use std::{
     iter::Peekable,
     path::{Path, PathBuf},
     vec,
 };
 
-use dioxus_rsx::{
-    AttributeType, BodyNode, CallBody, Element, ElementAttr, ElementAttrName, ElementAttrNamed,
-    ElementAttrValue, IfmtInput,
-};
+use dioxus_rsx::{BodyNode, CallBody, TemplateBody};
 use pulldown_cmark::{Alignment, Event, Options, Parser, Tag};
-use syn::{Ident, __private::Span, parse_str, LitStr};
+use syn::{Ident, __private::Span, parse_quote, parse_str};
 
 use syntect::highlighting::ThemeSet;
 use syntect::parsing::SyntaxSet;
@@ -35,13 +33,11 @@ pub fn parse(path: PathBuf, markdown: &str) -> syn::Result<CallBody> {
     }
 
     Ok(if rsx_parser.root_nodes.is_empty() {
-        CallBody {
-            roots: vec![BodyNode::Text(IfmtInput::new_static(""))],
+        parse_quote! {
+            dioxus_core::prelude::VNode::placeholder()
         }
     } else {
-        CallBody {
-            roots: rsx_parser.root_nodes,
-        }
+        CallBody::new(TemplateBody::new(rsx_parser.root_nodes))
     })
 }
 
@@ -74,30 +70,24 @@ impl<'a, I: Iterator<Item = Event<'a>>> RsxMarkdownParser<'a, I> {
             }
             pulldown_cmark::Event::End(_) => self.end_node(),
             pulldown_cmark::Event::Text(text) => {
-                self.create_node(BodyNode::Text(IfmtInput::new_static(&text)));
+                let text = escape_text(&text);
+                self.create_node(BodyNode::Text(parse_quote!(#text)));
             }
             pulldown_cmark::Event::Code(code) => {
-                self.create_node(BodyNode::Element(Element::new(
-                    None,
-                    dioxus_rsx::ElementName::Ident(Ident::new("code", Span::call_site())),
-                    Vec::new(),
-                    vec![BodyNode::Text(IfmtInput::new_static(&code))],
-                    Default::default(),
-                )));
+                let code = escape_text(&code);
+                self.create_node(parse_quote! {
+                    code {
+                        #code
+                    }
+                })
             }
             pulldown_cmark::Event::Html(_) => {}
             pulldown_cmark::Event::FootnoteReference(_) => {}
             pulldown_cmark::Event::SoftBreak => {}
             pulldown_cmark::Event::HardBreak => {}
-            pulldown_cmark::Event::Rule => {
-                self.create_node(BodyNode::Element(Element::new(
-                    None,
-                    dioxus_rsx::ElementName::Ident(Ident::new("hr", Span::call_site())),
-                    vec![],
-                    vec![],
-                    Default::default(),
-                )));
-            }
+            pulldown_cmark::Event::Rule => self.create_node(parse_quote! {
+                hr {}
+            }),
             pulldown_cmark::Event::TaskListMarker(value) => {
                 self.write_checkbox(value);
             }
@@ -106,25 +96,13 @@ impl<'a, I: Iterator<Item = Event<'a>>> RsxMarkdownParser<'a, I> {
     }
 
     fn write_checkbox(&mut self, checked: bool) {
-        let input = Ident::new("input", Span::call_site());
-        let name = dioxus_rsx::ElementName::Ident(input);
-        self.create_node(BodyNode::Element(Element::new(
-            None,
-            name.clone(),
-            vec![AttributeType::Named(ElementAttrNamed {
-                el_name: name,
-                attr: dioxus_rsx::ElementAttr {
-                    name: ElementAttrName::BuiltIn(Ident::new("type", Span::call_site())),
-                    value: ElementAttrValue::AttrLiteral(if checked {
-                        IfmtInput::new_static("true")
-                    } else {
-                        IfmtInput::new_static("false")
-                    }),
-                },
-            })],
-            vec![],
-            Default::default(),
-        )));
+        let type_value = if checked { "true" } else { "false" };
+        self.create_node(parse_quote! {
+            input {
+                r#type: "checkbox",
+                value: #type_value,
+            }
+        })
     }
 
     fn take_code_or_text(&mut self) -> String {
@@ -151,19 +129,19 @@ impl<'a, I: Iterator<Item = Event<'a>>> RsxMarkdownParser<'a, I> {
                     if let Some(pulldown_cmark::Event::Code(_)) = self.iter.peek() {
                         all_text.push(' ');
                     }
+                    let all_text = escape_text(&all_text);
 
-                    let text = BodyNode::Text(IfmtInput::new_static(&all_text));
+                    let text = BodyNode::Text(parse_quote!(#all_text));
                     self.create_node(text);
                 }
                 Some(pulldown_cmark::Event::Code(code)) => {
-                    let code = BodyNode::Text(IfmtInput::new_static(code));
-                    self.create_node(BodyNode::Element(Element::new(
-                        None,
-                        dioxus_rsx::ElementName::Ident(Ident::new("code", Span::call_site())),
-                        Vec::new(),
-                        vec![code],
-                        Default::default(),
-                    )));
+                    let code = code.to_string();
+                    let code = escape_text(&code);
+                    self.create_node(parse_quote! {
+                        code {
+                            #code
+                        }
+                    });
 
                     // Take the text or code event we just inserted
                     let _ = self.iter.next().unwrap();
@@ -192,13 +170,9 @@ impl<'a, I: Iterator<Item = Event<'a>>> RsxMarkdownParser<'a, I> {
     fn start_element(&mut self, tag: Tag) -> syn::Result<()> {
         match tag {
             Tag::Paragraph => {
-                self.start_node(BodyNode::Element(Element::new(
-                    None,
-                    dioxus_rsx::ElementName::Ident(Ident::new("p", Span::call_site())),
-                    Vec::new(),
-                    Vec::new(),
-                    Default::default(),
-                )));
+                self.start_node(parse_quote! {
+                    p {}
+                });
                 self.write_text();
             }
             Tag::Heading(level, _, _) => {
@@ -213,71 +187,34 @@ impl<'a, I: Iterator<Item = Event<'a>>> RsxMarkdownParser<'a, I> {
                         _ => None,
                     })
                     .collect();
-                let link_name = dioxus_rsx::ElementName::Ident(Ident::new("a", Span::call_site()));
-                let name = dioxus_rsx::ElementName::Ident(Ident::new(
-                    match level {
-                        pulldown_cmark::HeadingLevel::H1 => "h1",
-                        pulldown_cmark::HeadingLevel::H2 => "h2",
-                        pulldown_cmark::HeadingLevel::H3 => "h3",
-                        pulldown_cmark::HeadingLevel::H4 => "h4",
-                        pulldown_cmark::HeadingLevel::H5 => "h5",
-                        pulldown_cmark::HeadingLevel::H6 => "h6",
-                    },
-                    Span::call_site(),
-                ));
-                self.start_node(BodyNode::Element(Element::new(
-                    None,
-                    name.clone(),
-                    vec![AttributeType::Named(ElementAttrNamed {
-                        el_name: link_name.clone(),
-                        attr: dioxus_rsx::ElementAttr {
-                            name: ElementAttrName::BuiltIn(Ident::new("id", Span::call_site())),
-                            value: ElementAttrValue::AttrLiteral(IfmtInput::new_static(&anchor)),
-                        },
-                    })],
-                    vec![BodyNode::Element(Element::new(
-                        None,
-                        link_name,
-                        vec![
-                            AttributeType::Named(ElementAttrNamed {
-                                el_name: name.clone(),
-                                attr: dioxus_rsx::ElementAttr {
-                                    name: ElementAttrName::BuiltIn(Ident::new(
-                                        "class",
-                                        Span::call_site(),
-                                    )),
-                                    value: ElementAttrValue::AttrLiteral(IfmtInput::new_static(
-                                        "header",
-                                    )),
-                                },
-                            }),
-                            AttributeType::Named(ElementAttrNamed {
-                                el_name: name,
-                                attr: dioxus_rsx::ElementAttr {
-                                    name: ElementAttrName::BuiltIn(Ident::new(
-                                        "href",
-                                        Span::call_site(),
-                                    )),
-                                    value: ElementAttrValue::AttrLiteral(IfmtInput::new_static(
-                                        &format!(r##"#{anchor}"##),
-                                    )),
-                                },
-                            }),
-                        ],
-                        vec![BodyNode::Text(IfmtInput::new_static(&text))],
-                        Default::default(),
-                    ))],
-                    Default::default(),
-                )));
+                let fragment = format!("#{}", anchor);
+                let element_name = match level {
+                    pulldown_cmark::HeadingLevel::H1 => Ident::new("h1", Span::call_site()),
+                    pulldown_cmark::HeadingLevel::H2 => Ident::new("h2", Span::call_site()),
+                    pulldown_cmark::HeadingLevel::H3 => Ident::new("h3", Span::call_site()),
+                    pulldown_cmark::HeadingLevel::H4 => Ident::new("h4", Span::call_site()),
+                    pulldown_cmark::HeadingLevel::H5 => Ident::new("h5", Span::call_site()),
+                    pulldown_cmark::HeadingLevel::H6 => Ident::new("h6", Span::call_site()),
+                };
+                let anchor = escape_text(&anchor);
+                let fragment = escape_text(&fragment);
+                let text = escape_text(&text);
+                let element = parse_quote! {
+                    #element_name {
+                        id: #anchor,
+                        a {
+                            href: #fragment,
+                            class: "header",
+                            #text
+                        }
+                    }
+                };
+                self.start_node(element);
             }
             Tag::BlockQuote => {
-                self.start_node(BodyNode::Element(Element::new(
-                    None,
-                    dioxus_rsx::ElementName::Ident(Ident::new("blockquote", Span::call_site())),
-                    Vec::new(),
-                    Vec::new(),
-                    Default::default(),
-                )));
+                self.start_node(parse_quote! {
+                    blockquote {}
+                });
                 self.write_text();
             }
             Tag::CodeBlock(kind) => {
@@ -293,172 +230,75 @@ impl<'a, I: Iterator<Item = Event<'a>>> RsxMarkdownParser<'a, I> {
                     self.start_node(parse_str::<BodyNode>(&raw_code).unwrap());
                 } else {
                     let code = transform_code_block(&self.path, raw_code)?;
-                    let mut code_attrs = Vec::new();
 
                     let ss = SyntaxSet::load_defaults_newlines();
                     let ts = ThemeSet::load_defaults();
 
                     let theme = &ts.themes["base16-ocean.dark"];
                     let syntax = ss.find_syntax_by_extension("rs").unwrap();
-                    let html =
-                        syntect::html::highlighted_html_for_string(&code, &ss, syntax, theme)
-                            .unwrap();
-                    code_attrs.push(AttributeType::Named(ElementAttrNamed {
-                        el_name: dioxus_rsx::ElementName::Ident(Ident::new(
-                            "div",
-                            Span::call_site(),
-                        )),
-                        attr: dioxus_rsx::ElementAttr {
-                            name: ElementAttrName::BuiltIn(Ident::new(
-                                "dangerous_inner_html",
-                                Span::call_site(),
-                            )),
-                            value: ElementAttrValue::AttrLiteral(IfmtInput::new_static(&html)),
-                        },
-                    }));
-                    let code_node = BodyNode::Element(Element::new(
-                        None,
-                        dioxus_rsx::ElementName::Ident(Ident::new("div", Span::call_site())),
-                        code_attrs,
-                        vec![],
-                        Default::default(),
-                    ));
-                    let copy_node = BodyNode::Element(Element::new(
-                        None,
-                         dioxus_rsx::ElementName::Ident(Ident::new("button", Span::call_site())),
-                         vec![
-                            AttributeType::Named(
-
-                                ElementAttrNamed {
-                                    el_name:      dioxus_rsx::ElementName::Ident(Ident::new(
-                                    "button",
-                                    Span::call_site(),
-                                )),
-                                  attr: ElementAttr{
-                                    name: ElementAttrName::BuiltIn( Ident::new("style", Span::call_site())),
-                                    value: ElementAttrValue::AttrLiteral( IfmtInput::new_static("position: absolute; top: 0; right: 0; background: rgba(0, 0, 0, 0.75); color: white; border: 1px solid white; padding: 0.25em;")),
-                                },
-                }),
-                            AttributeType::Named(ElementAttrNamed {
-                                el_name: dioxus_rsx::ElementName::Ident(Ident::new(
-                                    "button",
-                                    Span::call_site(),
-                                )),
-                                 attr: dioxus_rsx::ElementAttr  {
-                                    name: ElementAttrName::Custom(LitStr::new("onclick", Span::call_site())),
-                                    value: ElementAttrValue::AttrLiteral( IfmtInput::new_static(
-                                        r##"navigator.clipboard.writeText(this.previousElementSibling.innerText)"##,
-                                    )),
-                                },
-                }),
-                        ],
-                        vec![
-                            BodyNode::Text(IfmtInput::new_static("Copy"))
-                        ],
-                         Default::default(),
-                    ));
-                    self.start_node(BodyNode::Element(Element::new(
-                        None,
-                        dioxus_rsx::ElementName::Ident(Ident::new("div", Span::call_site())),
-                        vec![AttributeType::Named(ElementAttrNamed {
-                            el_name: dioxus_rsx::ElementName::Ident(Ident::new(
-                                "button",
-                                Span::call_site(),
-                            )),
-                            attr: dioxus_rsx::ElementAttr {
-                                name: ElementAttrName::BuiltIn(Ident::new(
-                                    "style",
-                                    Span::call_site(),
-                                )),
-                                value: ElementAttrValue::AttrLiteral(IfmtInput::new_static(
-                                    "position: relative;",
-                                )),
-                            },
-                        })],
-                        vec![code_node, copy_node],
-                        Default::default(),
-                    )));
+                    let html = escape_text(
+                        &syntect::html::highlighted_html_for_string(&code, &ss, syntax, theme)
+                            .unwrap(),
+                    );
+                    self.start_node(parse_quote!{
+                        div {
+                            style: "position: relative;",
+                            div {
+                                dangerous_inner_html: #html
+                            }
+                            button {
+                                style: "position: absolute; top: 0; right: 0; background: rgba(0, 0, 0, 0.75); color: white; border: 1px solid white; padding: 0.25em;",
+                                "onclick": "navigator.clipboard.writeText(this.previousElementSibling.innerText)",
+                                "Copy"
+                            }
+                        }
+                    });
                 }
             }
             Tag::List(first) => {
                 let name = match first {
-                    Some(_) => "ol",
-                    None => "ul",
+                    Some(_) => Ident::new("ol", Span::call_site()),
+                    None => Ident::new("ul", Span::call_site()),
                 };
-                self.start_node(BodyNode::Element(Element::new(
-                    None,
-                    dioxus_rsx::ElementName::Ident(Ident::new(name, Span::call_site())),
-                    Vec::new(),
-                    Vec::new(),
-                    Default::default(),
-                )))
+                self.start_node(parse_quote! {
+                    #name {}
+                })
             }
-            Tag::Item => self.start_node(BodyNode::Element(Element::new(
-                None,
-                dioxus_rsx::ElementName::Ident(Ident::new("li", Span::call_site())),
-                Vec::new(),
-                Vec::new(),
-                Default::default(),
-            ))),
+            Tag::Item => self.start_node(parse_quote! {
+                li {}
+            }),
             Tag::FootnoteDefinition(_) => {}
             Tag::Table(alignments) => {
                 self.current_table = alignments;
-                self.start_node(BodyNode::Element(Element::new(
-                    None,
-                    dioxus_rsx::ElementName::Ident(Ident::new("table", Span::call_site())),
-                    Vec::new(),
-                    Vec::new(),
-                    Default::default(),
-                )))
+                self.start_node(parse_quote! {
+                    table {}
+                })
             }
             Tag::TableHead => {
                 self.in_table_header = true;
-                self.start_node(BodyNode::Element(Element::new(
-                    None,
-                    dioxus_rsx::ElementName::Ident(Ident::new("thead", Span::call_site())),
-                    Vec::new(),
-                    Vec::new(),
-                    Default::default(),
-                )))
+                self.start_node(parse_quote! {
+                    thead {}
+                })
             }
-            Tag::TableRow => self.start_node(BodyNode::Element(Element::new(
-                None,
-                dioxus_rsx::ElementName::Ident(Ident::new("tr", Span::call_site())),
-                Vec::new(),
-                Vec::new(),
-                Default::default(),
-            ))),
+            Tag::TableRow => self.start_node(parse_quote! {
+                tr {}
+            }),
             Tag::TableCell => {
                 let name = if self.in_table_header { "th" } else { "td" };
-                self.start_node(BodyNode::Element(Element::new(
-                    None,
-                    dioxus_rsx::ElementName::Ident(Ident::new(name, Span::call_site())),
-                    Vec::new(),
-                    Vec::new(),
-                    Default::default(),
-                )))
+                let ident = Ident::new(name, Span::call_site());
+                self.start_node(parse_quote! {
+                    #ident {}
+                })
             }
-            Tag::Emphasis => self.start_node(BodyNode::Element(Element::new(
-                None,
-                dioxus_rsx::ElementName::Ident(Ident::new("em", Span::call_site())),
-                Vec::new(),
-                Vec::new(),
-                Default::default(),
-            ))),
-            Tag::Strong => self.start_node(BodyNode::Element(Element::new(
-                None,
-                dioxus_rsx::ElementName::Ident(Ident::new("strong", Span::call_site())),
-                Vec::new(),
-                Vec::new(),
-                Default::default(),
-            ))),
-            Tag::Strikethrough => self.start_node(BodyNode::Element(Element::new(
-                None,
-                dioxus_rsx::ElementName::Ident(Ident::new("s", Span::call_site())),
-                Vec::new(),
-                Vec::new(),
-                Default::default(),
-            ))),
+            Tag::Emphasis => self.start_node(parse_quote! {
+                em {}
+            }),
+            Tag::Strong => self.start_node(parse_quote! {
+                strong {}
+            }),
+            Tag::Strikethrough => self.start_node(parse_quote! {
+                s {}
+            }),
             Tag::Link(ty, dest, title) => {
                 let without_extension = dest.trim_end_matches(".md");
                 let without_index = without_extension.trim_end_matches("/index");
@@ -488,83 +328,46 @@ impl<'a, I: Iterator<Item = Event<'a>>> RsxMarkdownParser<'a, I> {
                         }
                     }
                 };
-                let name = Ident::new("a", Span::call_site());
-                let mut attributes = vec![AttributeType::Named(ElementAttrNamed {
-                    el_name: dioxus_rsx::ElementName::Ident(name.clone()),
-                    attr: dioxus_rsx::ElementAttr {
-                        name: ElementAttrName::BuiltIn(Ident::new("href", Span::call_site())),
-                        value: ElementAttrValue::AttrLiteral(IfmtInput::new_static(&href)),
-                    },
-                })];
+                let href = escape_text(&href);
+                let title = escape_text(&title);
+                let title_attr = if !title.is_empty() {
+                    quote! {
+                        title: #title,
+                    }
+                } else {
+                    quote! {}
+                };
 
-                if !title.is_empty() {
-                    attributes.push(AttributeType::Named(ElementAttrNamed {
-                        el_name: dioxus_rsx::ElementName::Ident(name.clone()),
-                        attr: dioxus_rsx::ElementAttr {
-                            name: ElementAttrName::BuiltIn(Ident::new("title", Span::call_site())),
-                            value: ElementAttrValue::AttrLiteral(IfmtInput::new_static(&title)),
-                        },
-                    }));
-                }
-
-                self.start_node(BodyNode::Element(Element::new(
-                    None,
-                    dioxus_rsx::ElementName::Ident(name),
-                    attributes,
-                    Vec::new(),
-                    Default::default(),
-                )));
+                self.start_node(parse_quote! {
+                    a {
+                        href: #href,
+                        #title_attr
+                        #title
+                    }
+                });
 
                 self.write_text();
             }
             Tag::Image(_, dest, title) => {
-                let name = Ident::new("img", Span::call_site());
-                let alt = self.take_text();
+                let alt = escape_text(&self.take_text());
                 let dest: &str = &dest;
+                let title = escape_text(&title);
 
                 #[cfg(not(feature = "manganis"))]
-                let url: syn::Expr = syn::parse_quote!(#dest);
+                let url: syn::Expr = {
+                    let dest = escape_text(dest);
+                    syn::parse_quote!(#dest)
+                };
                 #[cfg(feature = "manganis")]
                 let url: syn::Expr = syn::parse_quote! { manganis::mg!(file(#dest)) };
 
-                self.start_node(BodyNode::Element(Element::new(
-                    None,
-                    dioxus_rsx::ElementName::Ident(name.clone()),
-                    vec![
-                        AttributeType::Named(ElementAttrNamed {
-                            el_name: dioxus_rsx::ElementName::Ident(name.clone()),
-                            attr: dioxus_rsx::ElementAttr {
-                                name: ElementAttrName::BuiltIn(Ident::new(
-                                    "src",
-                                    Span::call_site(),
-                                )),
-                                value: ElementAttrValue::AttrExpr(url),
-                            },
-                        }),
-                        AttributeType::Named(ElementAttrNamed {
-                            el_name: dioxus_rsx::ElementName::Ident(name.clone()),
-                            attr: dioxus_rsx::ElementAttr {
-                                name: ElementAttrName::BuiltIn(Ident::new(
-                                    "alt",
-                                    Span::call_site(),
-                                )),
-                                value: ElementAttrValue::AttrLiteral(IfmtInput::new_static(&alt)),
-                            },
-                        }),
-                        AttributeType::Named(ElementAttrNamed {
-                            el_name: dioxus_rsx::ElementName::Ident(name),
-                            attr: dioxus_rsx::ElementAttr {
-                                name: ElementAttrName::BuiltIn(Ident::new(
-                                    "title",
-                                    Span::call_site(),
-                                )),
-                                value: ElementAttrValue::AttrLiteral(IfmtInput::new_static(&title)),
-                            },
-                        }),
-                    ],
-                    Vec::new(),
-                    Default::default(),
-                )));
+                self.start_node(parse_quote! {
+                    img {
+                        src: #url,
+                        alt: #alt,
+                        title: #title,
+                    }
+                })
             }
         }
         Ok(())
@@ -600,7 +403,7 @@ impl<'a, I: Iterator<Item = Event<'a>>> RsxMarkdownParser<'a, I> {
         if let (Some(BodyNode::Text(last_text)), BodyNode::Text(new_text)) =
             (element_list.last_mut(), &node)
         {
-            *last_text = last_text.clone().join(new_text.clone(), " ");
+            last_text.input.formatted_input.push_ifmt(new_text.input.formatted_input.clone());
         } else {
             element_list.push(node);
         }
@@ -681,4 +484,8 @@ fn resolve_extension(_path: &Path, ext: &str) -> syn::Result<String> {
     } else {
         todo!("Unknown extension: {}", ext);
     }
+}
+
+fn escape_text(text: &str) -> String {
+    text.replace('{', "{{").replace('}', "}}")
 }

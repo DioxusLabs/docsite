@@ -24,7 +24,9 @@ pub(crate) const POST_RELEASE_050: BlogPost = BlogPost {
 
 #[component]
 pub(crate) fn PostRelease050() -> Element {
-    rsx! { SinglePost { post: POST_RELEASE_050 } }
+    rsx! {
+        SinglePost { post: POST_RELEASE_050 }
+    }
 }
 
 pub(crate) const POST_TEMPLATE: BlogPost = BlogPost {
@@ -39,7 +41,9 @@ pub(crate) const POST_TEMPLATE: BlogPost = BlogPost {
 
 #[component]
 pub(crate) fn PostTemplate() -> Element {
-    rsx! { SinglePost { post: POST_TEMPLATE } }
+    rsx! {
+        SinglePost { post: POST_TEMPLATE }
+    }
 }
 
 pub(crate) const POST_FULLTINME: BlogPost = BlogPost {
@@ -54,7 +58,9 @@ pub(crate) const POST_FULLTINME: BlogPost = BlogPost {
 
 #[component]
 pub(crate) fn PostFulltime() -> Element {
-    rsx! { SinglePost { post: POST_FULLTINME } }
+    rsx! {
+        SinglePost { post: POST_FULLTINME }
+    }
 }
 
 pub(crate) const POST_RELEASE_040: BlogPost = BlogPost {
@@ -68,7 +74,9 @@ pub(crate) const POST_RELEASE_040: BlogPost = BlogPost {
 
 #[component]
 pub(crate) fn PostRelease040() -> Element {
-    rsx! { SinglePost { post: POST_RELEASE_040 } }
+    rsx! {
+        SinglePost { post: POST_RELEASE_040 }
+    }
 }
 
 pub(crate) const POST_RELEASE_030: BlogPost = BlogPost {
@@ -82,7 +90,9 @@ pub(crate) const POST_RELEASE_030: BlogPost = BlogPost {
 
 #[component]
 pub(crate) fn PostRelease030() -> Element {
-    rsx! { SinglePost { post: POST_RELEASE_030 } }
+    rsx! {
+        SinglePost { post: POST_RELEASE_030 }
+    }
 }
 
 pub(crate) const POST_RELEASE_020: BlogPost = BlogPost {
@@ -96,7 +106,9 @@ pub(crate) const POST_RELEASE_020: BlogPost = BlogPost {
 
 #[component]
 pub(crate) fn PostRelease020() -> Element {
-    rsx! { SinglePost { post: POST_RELEASE_020 } }
+    rsx! {
+        SinglePost { post: POST_RELEASE_020 }
+    }
 }
 
 pub(crate) const POST_RELEASE_010: BlogPost = BlogPost {
@@ -110,7 +122,9 @@ pub(crate) const POST_RELEASE_010: BlogPost = BlogPost {
 
 #[component]
 pub(crate) fn PostRelease010() -> Element {
-    rsx! { SinglePost { post: POST_RELEASE_010 } }
+    rsx! {
+        SinglePost { post: POST_RELEASE_010 }
+    }
 }
 
 pub(crate) const POSTS: &[BlogPost] = &[
@@ -157,7 +171,7 @@ pub(crate) fn SinglePost(post: BlogPost) -> Element {
             script { "Prism.highlightAll()" }
             article {
                 class: "markdown-body px-2  dioxus-blog-post",
-                dangerous_inner_html: format_args!("{}", content)
+                dangerous_inner_html: format_args!("{}", content),
             }
             script { "Prism.highlightAll()" }
         }
@@ -198,12 +212,7 @@ fn BlogPostItem(post: &'static BlogPost) -> Element {
 
     rsx! {
         div { class: "py-8 flex flex-wrap md:flex-nowrap",
-            // div { class: "md:w-32 md:mb-0 mb-6 flex-shrink-0 flex flex-col",
-            // span { class: "font-semibold title-font text-gray-700 dark:text-white",
-            //     "{category}"
-            // }
-            // span { class: "mt-1 text-gray-500 text-sm", "{date}" }
-            // }
+
             div { class: "md:flex-grow pl-8",
                 div { class: "flex flex-row justify-between gap-4",
                     h2 { class: "text-2xl font-medium text-gray-900 title-font mb-4 dark:text-white",
@@ -214,7 +223,9 @@ fn BlogPostItem(post: &'static BlogPost) -> Element {
                 p { class: "leading-relaxed dark:text-white text-base dark:opacity-75",
                     "{description}"
                 }
-                Link { class: "text-indigo-500 inline-flex items-center mt-4", to: *link,
+                Link {
+                    class: "text-indigo-500 inline-flex items-center mt-4",
+                    to: *link,
                     "Read more"
                     icons::ArrowRight {}
                 }

@@ -6,41 +6,34 @@ use dioxus_router::prelude::*;
 pub(crate) use docs::BookRoute;
 use serde::{Deserialize, Serialize};
 
-macro_rules! export_items {
-    (
-        $(
-            pub(crate) mod $item:ident;
-        )*
-    ) => {
-        $(
-            pub(crate) mod $item;
-            pub(crate) use $item::*;
-        )*
-    };
-}
-
-pub(crate) mod icons;
-pub(crate) mod sitemap;
-
-pub(crate) mod shortcut;
-
 mod doc_examples;
+pub(crate) mod icons;
+pub(crate) mod shortcut;
+pub(crate) mod sitemap;
 mod snippets;
 
 pub(crate) use components::*;
 pub(crate) mod components {
-    export_items! {
-        pub(crate) mod blog;
-        pub(crate) mod footer;
-        pub(crate) mod homepage;
-        pub(crate) mod learn;
-        pub(crate) mod nav;
-        pub(crate) mod notfound;
-        pub(crate) mod tutorials;
-        pub(crate) mod awesome;
-        pub(crate) mod deploy;
-        pub(crate) mod desktop_dependencies;
-    }
+    pub(crate) mod awesome;
+    pub use awesome::*;
+    pub(crate) mod blog;
+    pub use blog::*;
+    pub(crate) mod deploy;
+    pub use deploy::*;
+    pub(crate) mod desktop_dependencies;
+    pub use desktop_dependencies::*;
+    pub(crate) mod footer;
+    pub use footer::*;
+    pub(crate) mod homepage;
+    pub use homepage::*;
+    pub(crate) mod learn;
+    pub use learn::*;
+    pub(crate) mod nav;
+    pub use nav::*;
+    pub(crate) mod notfound;
+    pub use notfound::*;
+    pub(crate) mod tutorials;
+    pub use tutorials::*;
 }
 
 #[component]
@@ -57,9 +50,13 @@ fn HeaderFooter() -> Element {
 
     rsx! {
         div { class: "bg-white dark:bg-ideblack pb-8",
-            link { rel: "stylesheet", href: "/githubmarkdown.css" }
-            link { rel: "stylesheet", href: "/tailwind.css" }
-            link { rel: "stylesheet", href: "/main.css" }
+            head::Link { rel: "stylesheet", href: "/githubmarkdown.css" }
+            head::Link { rel: "stylesheet", href: "/tailwind.css" }
+            head::Link { rel: "stylesheet", href: "/main.css" }
+            head::Link {
+                rel: "stylesheet",
+                href: "https://fonts.googleapis.com/icon?family=Material+Icons",
+            }
             Nav {}
             Outlet::<Route> {}
         }
@@ -249,44 +246,46 @@ pub enum Route {{\n\t"
 }
 
 fn main() {
-    #[cfg(feature = "web")]
-    {
-        wasm_logger::init(wasm_logger::Config::new(log::Level::Info));
-        std::panic::set_hook(Box::new(console_error_panic_hook::hook));
-    }
-    #[cfg(feature = "prebuild")]
-    {
-        use dioxus_router::prelude::*;
-        use log::LevelFilter;
-        simple_logger::SimpleLogger::new()
-            .with_level(LevelFilter::Error)
-            .init()
-            .unwrap();
-
-        std::env::remove_var("DIOXUS_ACTIVE");
-        std::env::remove_var("CARGO");
-
-        LaunchBuilder::new()
-            .with_cfg(dioxus::static_site_generation::Config::new().github_pages())
-            .launch(app);
-        println!("prebuilt");
-
-        dioxus_search::SearchIndex::<Route>::create(
-            "search",
-            dioxus_search::BaseDirectoryMapping::new(std::path::PathBuf::from("./docs")).map(
-                |route: Route| {
-                    let route = route.to_string();
-                    let mut path = std::path::PathBuf::default();
-                    for (i, segment) in route.split('/').enumerate() {
-                        path.push(segment);
-                    }
-                    Some(path.join("index.html"))
-                },
-            ),
-        );
-        return;
-    }
-
-    #[cfg(not(feature = "prebuild"))]
+    // #[cfg(feature = "web")]
+    // {
+    //     wasm_logger::init(wasm_logger::Config::new(log::Level::Info));
+    //     std::panic::set_hook(Box::new(console_error_panic_hook::hook));
+    // }
     launch(app);
+
+    // #[cfg(feature = "prebuild")]
+    // {
+    //     use dioxus_router::prelude::*;
+    //     use log::LevelFilter;
+    //     simple_logger::SimpleLogger::new()
+    //         .with_level(LevelFilter::Error)
+    //         .init()
+    //         .unwrap();
+
+    //     std::env::remove_var("DIOXUS_ACTIVE");
+    //     std::env::remove_var("CARGO");
+
+    //     LaunchBuilder::new()
+    //         .with_cfg(dioxus::static_site_generation::Config::new().github_pages())
+    //         .launch(app);
+    //     println!("prebuilt");
+
+    //     dioxus_search::SearchIndex::<Route>::create(
+    //         "search",
+    //         dioxus_search::BaseDirectoryMapping::new(std::path::PathBuf::from("./docs")).map(
+    //             |route: Route| {
+    //                 let route = route.to_string();
+    //                 let mut path = std::path::PathBuf::default();
+    //                 for (i, segment) in route.split('/').enumerate() {
+    //                     path.push(segment);
+    //                 }
+    //                 Some(path.join("index.html"))
+    //             },
+    //         ),
+    //     );
+    //     return;
+    // }
+
+    // #[cfg(not(feature = "prebuild"))]
+    // launch(app);
 }

@@ -2,12 +2,6 @@ use crate::HIGHLIGHT_NAV_LAYOUT;
 use dioxus::prelude::*;
 
 pub(crate) fn Footer() -> Element {
-    let bg_color = if HIGHLIGHT_NAV_LAYOUT() {
-        "border border-orange-600 rounded-md"
-    } else {
-        ""
-    };
-
     let categories = [
         (
             "Community",
@@ -47,11 +41,13 @@ pub(crate) fn Footer() -> Element {
                 nav { class: "list-none mb-10",
                     ul {
                         for f in links.iter() {
-                            li { key: "{f.0}", a {
-                                class: "text-gray-400 hover:text-white",
-                                href: "{f.1}",
-                                "{f.0}"
-                            } }
+                            li { key: "{f.0}",
+                                a {
+                                    class: "text-gray-400 hover:text-white",
+                                    href: "{f.1}",
+                                    "{f.0}"
+                                }
+                            }
                         }
                     }
                 }
@@ -60,7 +56,9 @@ pub(crate) fn Footer() -> Element {
     });
 
     rsx! {
-        footer { class: "sticky z-30 text-gray-400 bg-ghmetal body-font {bg_color}",
+        footer {
+            class: "sticky z-30 text-gray-400 bg-ghmetal body-font",
+            class: if HIGHLIGHT_NAV_LAYOUT() { "border border-orange-600 rounded-md" },
             div { class: "container px-5 py-24 mx-auto flex md:items-center lg:items-start md:flex-row md:flex-nowrap flex-wrap flex-col",
                 div { class: "w-64 flex-shrink-0 md:mx-0 mx-auto text-center md:text-left",
                     a {
@@ -69,7 +67,7 @@ pub(crate) fn Footer() -> Element {
                         img {
                             src: "https://avatars.githubusercontent.com/u/79236386?s=200&v=4",
                             class: "h-8 w-auto",
-                            alt: "Dioxus Labs Icon"
+                            alt: "Dioxus Labs Icon",
                         }
                         span { class: "ml-3 text-xl", "Dioxus Labs" }
                     }

@@ -1,6 +1,5 @@
 use dioxus::prelude::*;
-pub(crate) static FERROUS_LOGO: &str =
-    asset!("https://rustacean.net/assets/rustacean-flat-gesture.png");
+pub(crate) static FERROUS_LOGO: &str = "https://rustacean.net/assets/rustacean-flat-gesture.png";
 
 pub(crate) fn ExternalLinkIcon() -> Element {
     rsx! {

@@ -355,7 +355,6 @@ checksum = "3a6c9af12842a67734c9a2e355436e5d03b22383ed60cf13cd0c18fbfe3dcbcf"
 dependencies = [
  "async-trait",
  "axum-core",
- "axum-macros",
  "base64 0.21.7",
  "bytes",
  "futures-util",
@@ -368,7 +367,6 @@ dependencies = [
  "matchit",
  "memchr",
  "mime",
- "multer",
  "percent-encoding",
  "pin-project-lite",
  "rustversion",
@@ -405,18 +403,6 @@ dependencies = [
  "tower-layer",
  "tower-service",
  "tracing",
-]
-
-[[package]]
-name = "axum-macros"
-version = "0.4.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "00c055ee2d014ae5981ce1016374e8213682aa14d9bf40e48ab48b5f3ef20eaa"
-dependencies = [
- "heck 0.4.1",
- "proc-macro2",
- "quote",
- "syn 2.0.74",
 ]
 
 [[package]]
@@ -555,12 +541,13 @@ dependencies = [
 
 [[package]]
 name = "cc"
-version = "1.1.10"
+version = "1.1.11"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "e9e8aabfac534be767c909e0690571677d49f41bd8465ae876fe043d52ba5292"
+checksum = "5fb8dd288a69fc53a1996d7ecfbf4a20d59065bff137ce7e56bbd620de191189"
 dependencies = [
  "jobserver",
  "libc",
+ "shlex",
 ]
 
 [[package]]
@@ -1076,9 +1063,8 @@ dependencies = [
 [[package]]
 name = "dioxus"
 version = "0.6.0-alpha.2"
-source = "git+https://github.com/dioxuslabs/dioxus#959ab67624e824389a1ad96ccd6d747728be7d39"
+source = "git+https://github.com/dioxuslabs/dioxus?branch=jk/wip-diagnose-wierd-stack-bug#6ba323acf847682ff70eab556bca0c4b16a05be5"
 dependencies = [
- "axum",
  "dioxus-config-macro",
  "dioxus-core",
  "dioxus-core-macro",
@@ -1086,20 +1072,17 @@ dependencies = [
  "dioxus-hooks",
  "dioxus-hot-reload",
  "dioxus-html",
- "dioxus-liveview",
  "dioxus-router",
  "dioxus-signals",
- "dioxus-ssr",
  "dioxus-static-site-generation",
  "dioxus-web",
  "manganis",
- "serde",
 ]
 
 [[package]]
 name = "dioxus-cli-config"
 version = "0.6.0-alpha.2"
-source = "git+https://github.com/dioxuslabs/dioxus#959ab67624e824389a1ad96ccd6d747728be7d39"
+source = "git+https://github.com/dioxuslabs/dioxus?branch=jk/wip-diagnose-wierd-stack-bug#6ba323acf847682ff70eab556bca0c4b16a05be5"
 dependencies = [
  "built",
  "clap",
@@ -1112,7 +1095,7 @@ dependencies = [
 [[package]]
 name = "dioxus-config-macro"
 version = "0.6.0-alpha.2"
-source = "git+https://github.com/dioxuslabs/dioxus#959ab67624e824389a1ad96ccd6d747728be7d39"
+source = "git+https://github.com/dioxuslabs/dioxus?branch=jk/wip-diagnose-wierd-stack-bug#6ba323acf847682ff70eab556bca0c4b16a05be5"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -1121,7 +1104,7 @@ dependencies = [
 [[package]]
 name = "dioxus-core"
 version = "0.6.0-alpha.2"
-source = "git+https://github.com/dioxuslabs/dioxus#959ab67624e824389a1ad96ccd6d747728be7d39"
+source = "git+https://github.com/dioxuslabs/dioxus?branch=jk/wip-diagnose-wierd-stack-bug#6ba323acf847682ff70eab556bca0c4b16a05be5"
 dependencies = [
  "const_format",
  "futures-channel",
@@ -1141,7 +1124,7 @@ dependencies = [
 [[package]]
 name = "dioxus-core-macro"
 version = "0.6.0-alpha.2"
-source = "git+https://github.com/dioxuslabs/dioxus#959ab67624e824389a1ad96ccd6d747728be7d39"
+source = "git+https://github.com/dioxuslabs/dioxus?branch=jk/wip-diagnose-wierd-stack-bug#6ba323acf847682ff70eab556bca0c4b16a05be5"
 dependencies = [
  "convert_case 0.6.0",
  "dioxus-rsx",
@@ -1154,7 +1137,7 @@ dependencies = [
 [[package]]
 name = "dioxus-desktop"
 version = "0.6.0-alpha.2"
-source = "git+https://github.com/dioxuslabs/dioxus#959ab67624e824389a1ad96ccd6d747728be7d39"
+source = "git+https://github.com/dioxuslabs/dioxus?branch=jk/wip-diagnose-wierd-stack-bug#6ba323acf847682ff70eab556bca0c4b16a05be5"
 dependencies = [
  "async-trait",
  "cocoa",
@@ -1193,47 +1176,29 @@ dependencies = [
 [[package]]
 name = "dioxus-fullstack"
 version = "0.6.0-alpha.2"
-source = "git+https://github.com/dioxuslabs/dioxus#959ab67624e824389a1ad96ccd6d747728be7d39"
+source = "git+https://github.com/dioxuslabs/dioxus?branch=jk/wip-diagnose-wierd-stack-bug#6ba323acf847682ff70eab556bca0c4b16a05be5"
 dependencies = [
- "async-trait",
- "axum",
  "base64 0.22.1",
  "bytes",
  "ciborium",
- "clap",
- "dioxus-cli-config",
  "dioxus-hot-reload",
- "dioxus-interpreter-js",
  "dioxus-lib",
- "dioxus-ssr",
  "dioxus-web",
  "dioxus_server_macro",
  "futures-channel",
  "futures-util",
  "generational-box",
- "http 1.1.0",
- "hyper 1.4.1",
  "once_cell",
- "parking_lot",
- "pin-project",
  "serde",
  "server_fn",
- "thiserror",
- "tokio",
- "tokio-stream",
- "tokio-util",
- "tower",
- "tower-http",
- "tower-layer",
  "tracing",
- "tracing-futures",
  "web-sys",
 ]
 
 [[package]]
 name = "dioxus-hooks"
 version = "0.6.0-alpha.2"
-source = "git+https://github.com/dioxuslabs/dioxus#959ab67624e824389a1ad96ccd6d747728be7d39"
+source = "git+https://github.com/dioxuslabs/dioxus?branch=jk/wip-diagnose-wierd-stack-bug#6ba323acf847682ff70eab556bca0c4b16a05be5"
 dependencies = [
  "dioxus-core",
  "dioxus-signals",
@@ -1249,7 +1214,7 @@ dependencies = [
 [[package]]
 name = "dioxus-hot-reload"
 version = "0.6.0-alpha.2"
-source = "git+https://github.com/dioxuslabs/dioxus#959ab67624e824389a1ad96ccd6d747728be7d39"
+source = "git+https://github.com/dioxuslabs/dioxus?branch=jk/wip-diagnose-wierd-stack-bug#6ba323acf847682ff70eab556bca0c4b16a05be5"
 dependencies = [
  "dioxus-cli-config",
  "dioxus-core",
@@ -1268,7 +1233,7 @@ dependencies = [
 [[package]]
 name = "dioxus-html"
 version = "0.6.0-alpha.2"
-source = "git+https://github.com/dioxuslabs/dioxus#959ab67624e824389a1ad96ccd6d747728be7d39"
+source = "git+https://github.com/dioxuslabs/dioxus?branch=jk/wip-diagnose-wierd-stack-bug#6ba323acf847682ff70eab556bca0c4b16a05be5"
 dependencies = [
  "async-trait",
  "dioxus-core",
@@ -1296,7 +1261,7 @@ dependencies = [
 [[package]]
 name = "dioxus-html-internal-macro"
 version = "0.6.0-alpha.2"
-source = "git+https://github.com/dioxuslabs/dioxus#959ab67624e824389a1ad96ccd6d747728be7d39"
+source = "git+https://github.com/dioxuslabs/dioxus?branch=jk/wip-diagnose-wierd-stack-bug#6ba323acf847682ff70eab556bca0c4b16a05be5"
 dependencies = [
  "convert_case 0.6.0",
  "proc-macro2",
@@ -1307,7 +1272,7 @@ dependencies = [
 [[package]]
 name = "dioxus-interpreter-js"
 version = "0.6.0-alpha.2"
-source = "git+https://github.com/dioxuslabs/dioxus#959ab67624e824389a1ad96ccd6d747728be7d39"
+source = "git+https://github.com/dioxuslabs/dioxus?branch=jk/wip-diagnose-wierd-stack-bug#6ba323acf847682ff70eab556bca0c4b16a05be5"
 dependencies = [
  "dioxus-core",
  "dioxus-html",
@@ -1324,7 +1289,7 @@ dependencies = [
 [[package]]
 name = "dioxus-lib"
 version = "0.6.0-alpha.2"
-source = "git+https://github.com/dioxuslabs/dioxus#959ab67624e824389a1ad96ccd6d747728be7d39"
+source = "git+https://github.com/dioxuslabs/dioxus?branch=jk/wip-diagnose-wierd-stack-bug#6ba323acf847682ff70eab556bca0c4b16a05be5"
 dependencies = [
  "dioxus-config-macro",
  "dioxus-core",
@@ -1338,7 +1303,7 @@ dependencies = [
 [[package]]
 name = "dioxus-liveview"
 version = "0.6.0-alpha.2"
-source = "git+https://github.com/dioxuslabs/dioxus#959ab67624e824389a1ad96ccd6d747728be7d39"
+source = "git+https://github.com/dioxuslabs/dioxus?branch=jk/wip-diagnose-wierd-stack-bug#6ba323acf847682ff70eab556bca0c4b16a05be5"
 dependencies = [
  "axum",
  "dioxus-cli-config",
@@ -1371,7 +1336,7 @@ dependencies = [
 [[package]]
 name = "dioxus-router"
 version = "0.6.0-alpha.2"
-source = "git+https://github.com/dioxuslabs/dioxus#959ab67624e824389a1ad96ccd6d747728be7d39"
+source = "git+https://github.com/dioxuslabs/dioxus?branch=jk/wip-diagnose-wierd-stack-bug#6ba323acf847682ff70eab556bca0c4b16a05be5"
 dependencies = [
  "dioxus-cli-config",
  "dioxus-fullstack",
@@ -1391,7 +1356,7 @@ dependencies = [
 [[package]]
 name = "dioxus-router-macro"
 version = "0.6.0-alpha.2"
-source = "git+https://github.com/dioxuslabs/dioxus#959ab67624e824389a1ad96ccd6d747728be7d39"
+source = "git+https://github.com/dioxuslabs/dioxus?branch=jk/wip-diagnose-wierd-stack-bug#6ba323acf847682ff70eab556bca0c4b16a05be5"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -1402,7 +1367,7 @@ dependencies = [
 [[package]]
 name = "dioxus-rsx"
 version = "0.6.0-alpha.2"
-source = "git+https://github.com/dioxuslabs/dioxus#959ab67624e824389a1ad96ccd6d747728be7d39"
+source = "git+https://github.com/dioxuslabs/dioxus?branch=jk/wip-diagnose-wierd-stack-bug#6ba323acf847682ff70eab556bca0c4b16a05be5"
 dependencies = [
  "dioxus-core",
  "internment",
@@ -1432,7 +1397,7 @@ dependencies = [
 [[package]]
 name = "dioxus-search"
 version = "0.1.0"
-source = "git+https://github.com/dioxuslabs/dioxus-search#f43f94a307409eea9eedda1d32d08f983b119f6a"
+source = "git+https://github.com/dioxuslabs/dioxus-search#5b2a301b2e84106c9a1b80119277ec38b117ecfe"
 dependencies = [
  "bytes",
  "dioxus-router",
@@ -1451,7 +1416,7 @@ dependencies = [
 [[package]]
 name = "dioxus-search-macro"
 version = "0.1.0"
-source = "git+https://github.com/dioxuslabs/dioxus-search#f43f94a307409eea9eedda1d32d08f983b119f6a"
+source = "git+https://github.com/dioxuslabs/dioxus-search#5b2a301b2e84106c9a1b80119277ec38b117ecfe"
 dependencies = [
  "quote",
  "syn 2.0.74",
@@ -1460,7 +1425,7 @@ dependencies = [
 [[package]]
 name = "dioxus-search-shared"
 version = "0.1.0"
-source = "git+https://github.com/dioxuslabs/dioxus-search#f43f94a307409eea9eedda1d32d08f983b119f6a"
+source = "git+https://github.com/dioxuslabs/dioxus-search#5b2a301b2e84106c9a1b80119277ec38b117ecfe"
 dependencies = [
  "bytes",
  "dioxus-router",
@@ -1478,7 +1443,7 @@ dependencies = [
 [[package]]
 name = "dioxus-signals"
 version = "0.6.0-alpha.2"
-source = "git+https://github.com/dioxuslabs/dioxus#959ab67624e824389a1ad96ccd6d747728be7d39"
+source = "git+https://github.com/dioxuslabs/dioxus?branch=jk/wip-diagnose-wierd-stack-bug#6ba323acf847682ff70eab556bca0c4b16a05be5"
 dependencies = [
  "dioxus-core",
  "futures-channel",
@@ -1494,12 +1459,10 @@ dependencies = [
 [[package]]
 name = "dioxus-ssr"
 version = "0.6.0-alpha.2"
-source = "git+https://github.com/dioxuslabs/dioxus#959ab67624e824389a1ad96ccd6d747728be7d39"
+source = "git+https://github.com/dioxuslabs/dioxus?branch=jk/wip-diagnose-wierd-stack-bug#6ba323acf847682ff70eab556bca0c4b16a05be5"
 dependencies = [
  "askama_escape",
  "async-trait",
- "chrono",
- "dioxus-cli-config",
  "dioxus-core",
  "dioxus-html",
  "dioxus-interpreter-js",
@@ -1509,34 +1472,25 @@ dependencies = [
  "rustc-hash",
  "serde_json",
  "thiserror",
- "tokio",
  "tracing",
 ]
 
 [[package]]
 name = "dioxus-static-site-generation"
 version = "0.6.0-alpha.2"
-source = "git+https://github.com/dioxuslabs/dioxus#959ab67624e824389a1ad96ccd6d747728be7d39"
+source = "git+https://github.com/dioxuslabs/dioxus?branch=jk/wip-diagnose-wierd-stack-bug#6ba323acf847682ff70eab556bca0c4b16a05be5"
 dependencies = [
- "axum",
- "dioxus-cli-config",
  "dioxus-fullstack",
- "dioxus-hot-reload",
  "dioxus-lib",
  "dioxus-router",
- "dioxus-ssr",
  "dioxus-web",
- "http 1.1.0",
- "tokio",
- "tower",
- "tower-http",
  "tracing",
 ]
 
 [[package]]
 name = "dioxus-web"
 version = "0.6.0-alpha.2"
-source = "git+https://github.com/dioxuslabs/dioxus#959ab67624e824389a1ad96ccd6d747728be7d39"
+source = "git+https://github.com/dioxuslabs/dioxus?branch=jk/wip-diagnose-wierd-stack-bug#6ba323acf847682ff70eab556bca0c4b16a05be5"
 dependencies = [
  "ciborium",
  "console_error_panic_hook",
@@ -1594,7 +1548,7 @@ dependencies = [
  "once_cell",
  "pretty_assertions",
  "rand 0.8.5",
- "reqwest 0.11.27",
+ "reqwest",
  "serde",
  "serde_json",
  "shipyard",
@@ -1614,7 +1568,7 @@ dependencies = [
 [[package]]
 name = "dioxus_server_macro"
 version = "0.6.0-alpha.2"
-source = "git+https://github.com/dioxuslabs/dioxus#959ab67624e824389a1ad96ccd6d747728be7d39"
+source = "git+https://github.com/dioxuslabs/dioxus?branch=jk/wip-diagnose-wierd-stack-bug#6ba323acf847682ff70eab556bca0c4b16a05be5"
 dependencies = [
  "convert_case 0.6.0",
  "proc-macro2",
@@ -2148,7 +2102,7 @@ dependencies = [
 [[package]]
 name = "generational-box"
 version = "0.6.0-alpha.2"
-source = "git+https://github.com/dioxuslabs/dioxus#959ab67624e824389a1ad96ccd6d747728be7d39"
+source = "git+https://github.com/dioxuslabs/dioxus?branch=jk/wip-diagnose-wierd-stack-bug#6ba323acf847682ff70eab556bca0c4b16a05be5"
 dependencies = [
  "parking_lot",
 ]
@@ -2414,15 +2368,15 @@ dependencies = [
 
 [[package]]
 name = "gloo-net"
-version = "0.5.0"
+version = "0.6.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "43aaa242d1239a8822c15c645f02166398da4f8b5c4bae795c1f5b44e9eee173"
+checksum = "c06f627b1a58ca3d42b45d6104bf1e1a03799df472df00988b6ba21accc10580"
 dependencies = [
  "futures-channel",
  "futures-core",
  "futures-sink",
  "gloo-utils 0.2.0",
- "http 0.2.12",
+ "http 1.1.0",
  "js-sys",
  "pin-project",
  "serde",
@@ -2588,25 +2542,6 @@ dependencies = [
  "futures-sink",
  "futures-util",
  "http 0.2.12",
- "indexmap 2.4.0",
- "slab",
- "tokio",
- "tokio-util",
- "tracing",
-]
-
-[[package]]
-name = "h2"
-version = "0.4.5"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "fa82e28a107a8cc405f0839610bdc9b15f1e25ec7d696aa5cf173edbcb1486ab"
-dependencies = [
- "atomic-waker",
- "bytes",
- "fnv",
- "futures-core",
- "futures-sink",
- "http 1.1.0",
  "indexmap 2.4.0",
  "slab",
  "tokio",
@@ -2790,12 +2725,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "http-range-header"
-version = "0.4.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "08a397c49fec283e3d6211adbe480be95aae5f304cfb923e9970e08956d5168a"
-
-[[package]]
 name = "httparse"
 version = "1.9.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2817,7 +2746,7 @@ dependencies = [
  "futures-channel",
  "futures-core",
  "futures-util",
- "h2 0.3.26",
+ "h2",
  "http 0.2.12",
  "http-body 0.4.6",
  "httparse",
@@ -2840,7 +2769,6 @@ dependencies = [
  "bytes",
  "futures-channel",
  "futures-util",
- "h2 0.4.5",
  "http 1.1.0",
  "http-body 1.0.1",
  "httparse",
@@ -2849,24 +2777,6 @@ dependencies = [
  "pin-project-lite",
  "smallvec",
  "tokio",
- "want",
-]
-
-[[package]]
-name = "hyper-rustls"
-version = "0.27.2"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "5ee4be2c948921a1a5320b629c4193916ed787a7f7f293fd3f7f5a6c9de74155"
-dependencies = [
- "futures-util",
- "http 1.1.0",
- "hyper 1.4.1",
- "hyper-util",
- "rustls",
- "rustls-pki-types",
- "tokio",
- "tokio-rustls",
- "tower-service",
 ]
 
 [[package]]
@@ -2883,39 +2793,18 @@ dependencies = [
 ]
 
 [[package]]
-name = "hyper-tls"
-version = "0.6.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "70206fc6890eaca9fde8a0bf71caa2ddfc9fe045ac9e5c70df101a7dbde866e0"
-dependencies = [
- "bytes",
- "http-body-util",
- "hyper 1.4.1",
- "hyper-util",
- "native-tls",
- "tokio",
- "tokio-native-tls",
- "tower-service",
-]
-
-[[package]]
 name = "hyper-util"
 version = "0.1.7"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "cde7055719c54e36e95e8719f95883f22072a48ede39db7fc17a4e1d5281e9b9"
 dependencies = [
  "bytes",
- "futures-channel",
  "futures-util",
  "http 1.1.0",
  "http-body 1.0.1",
  "hyper 1.4.1",
  "pin-project-lite",
- "socket2",
  "tokio",
- "tower",
- "tower-service",
- "tracing",
 ]
 
 [[package]]
@@ -3035,12 +2924,6 @@ dependencies = [
  "hashbrown 0.14.5",
  "parking_lot",
 ]
-
-[[package]]
-name = "inventory"
-version = "0.3.15"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "f958d3d68f4167080a18141e10381e7634563984a537f2a49a30fd8e53ac5767"
 
 [[package]]
 name = "ipnet"
@@ -3168,7 +3051,7 @@ dependencies = [
 [[package]]
 name = "lazy-js-bundle"
 version = "0.6.0-alpha.2"
-source = "git+https://github.com/dioxuslabs/dioxus#959ab67624e824389a1ad96ccd6d747728be7d39"
+source = "git+https://github.com/dioxuslabs/dioxus?branch=jk/wip-diagnose-wierd-stack-bug#6ba323acf847682ff70eab556bca0c4b16a05be5"
 
 [[package]]
 name = "lazy_static"
@@ -3308,8 +3191,7 @@ dependencies = [
 [[package]]
 name = "manganis"
 version = "0.3.0-alpha.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "10870c8dbbfa53eaad99e7cc0689de6f2033d8769e02df28cb681b437e159473"
+source = "git+https://github.com/DioxusLabs/manganis?branch=jk/drop-remote-support#db4777c7415b9b4a8b1dbf1ce164cb61ba425eca"
 dependencies = [
  "manganis-macro",
 ]
@@ -3317,32 +3199,13 @@ dependencies = [
 [[package]]
 name = "manganis-common"
 version = "0.3.0-alpha.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "d9be0dd0eaf5ce21947bcc38131d7934a1f573b76e6e44fe9e401cb27dcb33cf"
+source = "git+https://github.com/DioxusLabs/manganis?branch=jk/drop-remote-support#db4777c7415b9b4a8b1dbf1ce164cb61ba425eca"
 dependencies = [
  "anyhow",
  "base64 0.21.7",
  "built",
  "home",
  "infer",
- "reqwest 0.12.5",
- "serde",
- "toml 0.7.8",
- "tracing",
- "url",
-]
-
-[[package]]
-name = "manganis-common"
-version = "0.3.0-alpha.1"
-source = "git+https://github.com/DioxusLabs/manganis#00b8a5c0d1b2101b52998a577d383b436818dba0"
-dependencies = [
- "anyhow",
- "base64 0.21.7",
- "built",
- "home",
- "infer",
- "reqwest 0.12.5",
  "serde",
  "toml 0.7.8",
  "tracing",
@@ -3352,10 +3215,9 @@ dependencies = [
 [[package]]
 name = "manganis-macro"
 version = "0.3.0-alpha.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "3ca00f3c266ba409900d32707f4bc66a60fbb707cf9d4d8d44d8e265c431c149"
+source = "git+https://github.com/DioxusLabs/manganis?branch=jk/drop-remote-support#db4777c7415b9b4a8b1dbf1ce164cb61ba425eca"
 dependencies = [
- "manganis-common 0.3.0-alpha.1 (registry+https://github.com/rust-lang/crates.io-index)",
+ "manganis-common",
  "proc-macro2",
  "quote",
  "serde_json",
@@ -3406,13 +3268,12 @@ checksum = "0e7465ac9959cc2b1404e8e2367b43684a6d13790fe23056cc8c6c5a6b7bcb94"
 [[package]]
 name = "mdbook-macro"
 version = "0.1.0"
-source = "git+https://github.com/dioxuslabs/include_mdbook#0ac789e1832cd23bbeb1bca3313bca0371cdb6c2"
+source = "git+https://github.com/dioxuslabs/include_mdbook#3f8e2b43a83ab2df1cac45bf8fb4387384442c9c"
 dependencies = [
  "anyhow",
  "convert_case 0.6.0",
  "dioxus-rsx",
  "macro_state",
- "manganis-common 0.3.0-alpha.1 (git+https://github.com/DioxusLabs/manganis)",
  "mdbook-shared",
  "postcard",
  "proc-macro2",
@@ -3427,7 +3288,7 @@ dependencies = [
 [[package]]
 name = "mdbook-shared"
 version = "0.1.0"
-source = "git+https://github.com/dioxuslabs/include_mdbook#0ac789e1832cd23bbeb1bca3313bca0371cdb6c2"
+source = "git+https://github.com/dioxuslabs/include_mdbook#3f8e2b43a83ab2df1cac45bf8fb4387384442c9c"
 dependencies = [
  "anyhow",
  "bytes",
@@ -3461,16 +3322,6 @@ name = "mime"
 version = "0.3.17"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "6877bb514081ee2a7ff5ef9de3281f14a4dd4bceac4c09388074a6b5df8a139a"
-
-[[package]]
-name = "mime_guess"
-version = "2.0.5"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "f7c44f8e672c00fe5308fa235f821cb4198414e1c77935c1ab6948d3fd78550e"
-dependencies = [
- "mime",
- "unicase",
-]
 
 [[package]]
 name = "miniz_oxide"
@@ -3510,23 +3361,6 @@ dependencies = [
  "png",
  "thiserror",
  "windows-sys 0.52.0",
-]
-
-[[package]]
-name = "multer"
-version = "3.1.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "83e87776546dc87511aa5ee218730c92b666d7264ab6ed41f9d215af9cd5224b"
-dependencies = [
- "bytes",
- "encoding_rs",
- "futures-util",
- "http 1.1.0",
- "httparse",
- "memchr",
- "mime",
- "spin",
- "version_check",
 ]
 
 [[package]]
@@ -4418,21 +4252,20 @@ dependencies = [
  "encoding_rs",
  "futures-core",
  "futures-util",
- "h2 0.3.26",
+ "h2",
  "http 0.2.12",
  "http-body 0.4.6",
  "hyper 0.14.30",
- "hyper-tls 0.5.0",
+ "hyper-tls",
  "ipnet",
  "js-sys",
  "log",
  "mime",
- "mime_guess",
  "native-tls",
  "once_cell",
  "percent-encoding",
  "pin-project-lite",
- "rustls-pemfile 1.0.4",
+ "rustls-pemfile",
  "serde",
  "serde_json",
  "serde_urlencoded",
@@ -4440,58 +4273,12 @@ dependencies = [
  "system-configuration",
  "tokio",
  "tokio-native-tls",
- "tokio-util",
- "tower-service",
- "url",
- "wasm-bindgen",
- "wasm-bindgen-futures",
- "wasm-streams",
- "web-sys",
- "winreg 0.50.0",
-]
-
-[[package]]
-name = "reqwest"
-version = "0.12.5"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "c7d6d2a27d57148378eb5e111173f4276ad26340ecc5c49a4a2152167a2d6a37"
-dependencies = [
- "base64 0.22.1",
- "bytes",
- "encoding_rs",
- "futures-channel",
- "futures-core",
- "futures-util",
- "h2 0.4.5",
- "http 1.1.0",
- "http-body 1.0.1",
- "http-body-util",
- "hyper 1.4.1",
- "hyper-rustls",
- "hyper-tls 0.6.0",
- "hyper-util",
- "ipnet",
- "js-sys",
- "log",
- "mime",
- "native-tls",
- "once_cell",
- "percent-encoding",
- "pin-project-lite",
- "rustls-pemfile 2.1.3",
- "serde",
- "serde_json",
- "serde_urlencoded",
- "sync_wrapper 1.0.1",
- "system-configuration",
- "tokio",
- "tokio-native-tls",
  "tower-service",
  "url",
  "wasm-bindgen",
  "wasm-bindgen-futures",
  "web-sys",
- "winreg 0.52.0",
+ "winreg",
 ]
 
 [[package]]
@@ -4618,16 +4405,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "1c74cae0a4cf6ccbbf5f359f08efdf8ee7e1dc532573bf0db71968cb56b1448c"
 dependencies = [
  "base64 0.21.7",
-]
-
-[[package]]
-name = "rustls-pemfile"
-version = "2.1.3"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "196fe16b00e106300d3e45ecfcb764fa292a535d7326a29a5875c579c7417425"
-dependencies = [
- "base64 0.22.1",
- "rustls-pki-types",
 ]
 
 [[package]]
@@ -4875,31 +4652,24 @@ dependencies = [
 
 [[package]]
 name = "server_fn"
-version = "0.6.13"
+version = "0.6.14"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "e9aaae169927ef701a4734d680adcb08f13269c9f0af822bf175d681fe56d65c"
+checksum = "024b400db1aca5bd4188714f7bbbf7a2e1962b9a12a80b2a21e937e509086963"
 dependencies = [
- "axum",
  "bytes",
  "const_format",
  "dashmap",
  "futures",
- "gloo-net 0.5.0",
+ "gloo-net 0.6.0",
  "http 1.1.0",
- "http-body-util",
- "hyper 1.4.1",
- "inventory",
  "js-sys",
  "once_cell",
- "reqwest 0.11.27",
  "send_wrapper",
  "serde",
  "serde_json",
  "serde_qs",
  "server_fn_macro_default",
  "thiserror",
- "tower",
- "tower-layer",
  "url",
  "wasm-bindgen",
  "wasm-bindgen-futures",
@@ -4910,9 +4680,9 @@ dependencies = [
 
 [[package]]
 name = "server_fn_macro"
-version = "0.6.13"
+version = "0.6.14"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "583085903fd5d091884eb52d99550e32777015af21f0f5dbec49bedcc320ce82"
+checksum = "9cf0e6f71fc924df36e87f27dfbd447f0bedd092d365db3a5396878256d9f00c"
 dependencies = [
  "const_format",
  "convert_case 0.6.0",
@@ -4924,9 +4694,9 @@ dependencies = [
 
 [[package]]
 name = "server_fn_macro_default"
-version = "0.6.13"
+version = "0.6.14"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "b628649700e28cf8bc33e0df5de5c9d591a1828ba005a25b425477055f1e0e74"
+checksum = "556e4fd51eb9ee3e7d9fb0febec6cef486dcbc8f7f427591dfcfebee1abe1ad4"
 dependencies = [
  "server_fn_macro",
  "syn 2.0.74",
@@ -5004,6 +4774,12 @@ dependencies = [
  "quote",
  "syn 1.0.109",
 ]
+
+[[package]]
+name = "shlex"
+version = "1.3.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "0fda2ff0d084019ba4d7c6f371c95d8fd75ce3524c3cb8fb653a3023f6323e64"
 
 [[package]]
 name = "signal-hook"
@@ -5300,7 +5076,7 @@ dependencies = [
 [[package]]
 name = "syntect-html"
 version = "0.1.0"
-source = "git+https://github.com/dioxuslabs/include_mdbook#0ac789e1832cd23bbeb1bca3313bca0371cdb6c2"
+source = "git+https://github.com/dioxuslabs/include_mdbook#3f8e2b43a83ab2df1cac45bf8fb4387384442c9c"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -5555,17 +5331,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "tokio-rustls"
-version = "0.26.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "0c7bc40d0e5a97695bb96e27995cd3a08538541b0a846f65bba7a359f36700d4"
-dependencies = [
- "rustls",
- "rustls-pki-types",
- "tokio",
-]
-
-[[package]]
 name = "tokio-stream"
 version = "0.1.15"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -5711,21 +5476,13 @@ checksum = "1e9cd434a998747dd2c4276bc96ee2e0c7a2eadf3cae88e52be55a05fa9053f5"
 dependencies = [
  "bitflags 2.6.0",
  "bytes",
- "futures-util",
  "http 1.1.0",
  "http-body 1.0.1",
  "http-body-util",
- "http-range-header",
- "httpdate",
- "mime",
- "mime_guess",
- "percent-encoding",
  "pin-project-lite",
  "tokio",
- "tokio-util",
  "tower-layer",
  "tower-service",
- "tracing",
 ]
 
 [[package]]
@@ -5771,16 +5528,6 @@ checksum = "c06d3da6113f116aaee68e4d601191614c9053067f9ab7f6edbcb161237daa54"
 dependencies = [
  "once_cell",
  "valuable",
-]
-
-[[package]]
-name = "tracing-futures"
-version = "0.2.5"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "97d095ae15e245a057c8e8451bab9b3ee1e1f68e9ba2b4fbc18d0ac5237835f2"
-dependencies = [
- "pin-project",
- "tracing",
 ]
 
 [[package]]
@@ -5963,7 +5710,7 @@ checksum = "daf8dba3b7eb870caf1ddeed7bc9d2a049f3cfdfae7cb521b087cc33ae4c49da"
 [[package]]
 name = "use-mdbook"
 version = "0.1.0"
-source = "git+https://github.com/dioxuslabs/include_mdbook#0ac789e1832cd23bbeb1bca3313bca0371cdb6c2"
+source = "git+https://github.com/dioxuslabs/include_mdbook#3f8e2b43a83ab2df1cac45bf8fb4387384442c9c"
 dependencies = [
  "lazy_static",
  "mdbook-macro",
@@ -6651,16 +6398,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "winreg"
-version = "0.52.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "a277a57398d4bfa075df44f501a17cfdf8542d224f0d36095a2adc7aee4ef0a5"
-dependencies = [
- "cfg-if",
- "windows-sys 0.48.0",
-]
-
-[[package]]
 name = "wry"
 version = "0.41.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -6883,8 +6620,3 @@ dependencies = [
  "quote",
  "syn 1.0.109",
 ]
-
-[[patch.unused]]
-name = "dioxus-mobile"
-version = "0.6.0-alpha.2"
-source = "git+https://github.com/dioxuslabs/dioxus#959ab67624e824389a1ad96ccd6d747728be7d39"

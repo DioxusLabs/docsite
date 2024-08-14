@@ -9,11 +9,6 @@ pub(crate) fn Hero() -> Element {
                         span { "Fullstack, crossplatform," }
                         span { "lightning fast, fully typed." }
                     }
-                    // img { src: "https://ribir.org/landing-page/hero-banner.png" }
-                    // h1 { class: "text-2xl md:text-[5em] font-semibold dark:text-white text-ghdarkmetal font-sans py-12 flex flex-col",
-                    // h1 { class: "text-2xl md:text-[5em] font-semibold dark:text-white text-ghdarkmetal font-sans py-12 flex flex-col",
-                    //     "Fullstack, crossplatform, lightning fast, fully typed."
-                    // }
                     h3 { class: "text-[2em] dark:text-white font-extralight text-ghdarkmetal pt-4 max-w-screen-md mx-auto",
                         "Dioxus is a Rust library for building apps that run on desktop, web, mobile, and more."
                     }
@@ -50,40 +45,24 @@ pub(crate) fn Hero() -> Element {
                         h1 { class: "text-md", "Trusted by top companies" }
                         div { class: "pt-4 flex flex-row flex-wrap justify-center invert dark:invert-0",
                             div { class: "h-12 w-40 p-2 m-4 flex justify-center items-center",
-                                img { src: "static/futurewei_bw.png" }
+                                img { src: "/static/futurewei_bw.png" }
                             }
                             div { class: "h-12 w-40 p-2 m-4 flex justify-center items-center",
-                                img { src: "static/airbuslogo.svg" }
+                                img { src: "/static/airbuslogo.svg" }
                             }
                             div { class: "h-12 w-40 p-2 m-4 flex justify-center items-center",
-                                img { src: "static/ESA_logo.svg" }
+                                img { src: "/static/ESA_logo.svg" }
                             }
                             div { class: "h-12 w-40 p-2 m-4 flex justify-center items-center",
-                                img { src: "static/yclogo.svg" }
+                                img { src: "/static/yclogo.svg" }
                             }
                             div { class: "h-12 w-40 p-2 m-4 flex justify-center items-center",
-                                img { src: "static/satellite.webp" }
+                                img { src: "/static/satellite.webp" }
                             }
                         }
                     }
                 }
             }
-        }
-    }
-}
-
-fn AnimatedIcon() -> Element {
-    let dark = include_str!("../../../public/static/multiplatform-dark.svg");
-    let light = include_str!("../../../public/static/multiplatform-light.svg");
-
-    let a = 123;
-
-    let b = 123;
-
-    rsx! {
-        div {
-            div { class: "dark:hidden", dangerous_inner_html: "{dark}" }
-            div { class: "hidden dark:block", dangerous_inner_html: "{light}" }
         }
     }
 }

@@ -6,8 +6,10 @@ pub fn App() -> Element {
     rsx! {
         a {
             href: "https://example.com",
-            prevent_default: "onclick",
-            onclick: |_| log::info!("link clicked"),
+            onclick: |evt| {
+                evt.prevent_default();
+                log::info!("link clicked")
+            },
             "example.com"
         }
     }

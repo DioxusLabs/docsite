@@ -41,14 +41,14 @@ pub(crate) fn Nav() -> Element {
                                 "Theme"
                             }
                             Link {
-                                to: "https://discord.gg/XgGxMSkvUM",
+                                to: "https://discord.gg/XgGxMSkvUM".to_string(),
                                 class: "block text-gray-400 hover:text-gray-500 dark:hover:text-gray-300",
                                 new_tab: true,
                                 span { class: "sr-only", "Dioxus on Discord" }
                                 crate::icons::DiscordLogo {}
                             }
                             Link {
-                                to: "https://github.com/dioxuslabs/dioxus",
+                                to: "https://github.com/dioxuslabs/dioxus".to_string(),
                                 class: "ml-4 block text-gray-400 hover:text-gray-500 dark:hover:text-gray-300",
                                 new_tab: true,
                                 span { class: "sr-only", "Dioxus on GitHub" }

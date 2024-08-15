@@ -1,6 +1,6 @@
 use std::error::Error;
 
-use dioxus::prelude::EvalError;
+use dioxus::prelude::document::EvalError;
 use gloo_net::websocket::WebSocketError;
 use gloo_utils::errors::JsError;
 use model::SocketError;

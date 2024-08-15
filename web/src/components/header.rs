@@ -1,6 +1,6 @@
 use dioxus::prelude::*;
 
-const SPINNER: &str = manganis::mg!(file("public/spinner.svg"));
+const SPINNER: &str = asset!("/public/spinner.svg");
 
 #[component]
 pub fn Header(is_compiling: bool, queue_position: Option<u32>, on_run: EventHandler) -> Element {
@@ -9,8 +9,7 @@ pub fn Header(is_compiling: bool, queue_position: Option<u32>, on_run: EventHand
     };
 
     rsx! {
-        div {
-            id: "dxp-header",
+        div { id: "dxp-header",
 
             button {
                 id: "dxp-run-button",
@@ -18,32 +17,19 @@ pub fn Header(is_compiling: bool, queue_position: Option<u32>, on_run: EventHand
 
                 onclick: move |_| on_run.call(()),
                 if is_compiling {
-                    img {
-                        class: "dxp-spinner",
-                        src: "{SPINNER}",
-                    }
+                    img { class: "dxp-spinner", src: "{SPINNER}" }
 
                     if let Some(pos) = queue_position {
                         "#{pos}"
                     }
-
                 } else {
                     "Run"
                 }
             }
 
-            h1 {
-                id: "dxp-title",
+            h1 { id: "dxp-title", "Dioxus Playground" }
 
-                "Dioxus Playground"
-            }
-
-            button {
-                id: "dxp-clear-button",
-
-                onclick: on_clear,
-                "Clear"
-            }
+            button { id: "dxp-clear-button", onclick: on_clear, "Clear" }
         }
     }
 }

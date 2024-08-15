@@ -7,7 +7,7 @@ mod components;
 mod error;
 mod ws;
 
-const _: &str = manganis::mg!(file("public/dxp.css"));
+const _: &str = asset!("/public/dxp.css");
 const SNIPPET_WELCOME: &str = include_str!("snippets/welcome.rs");
 
 // Ace editor
@@ -102,19 +102,14 @@ pub fn Playground(socket_url: String, built_url: String) -> Element {
     let built_page_url = use_memo(move || built_page_id().map(|id| format!("{}{}", built_url, id)));
 
     rsx! {
-        div {
-            id: "dxp-pane-container",
-            div {
-                id: "dxp-left-pane",
+        div { id: "dxp-pane-container",
+            div { id: "dxp-left-pane",
                 Header {
                     is_compiling: is_compiling(),
                     queue_position: queue_position(),
                     on_run,
                 }
-                div {
-                    id: "dxp-editor",
-                    onmounted: on_editor_mount,
-                }
+                div { id: "dxp-editor", onmounted: on_editor_mount }
             }
 
             RightPane {

@@ -12,4 +12,3 @@ gloo-net = { workspace = true }
 
 dioxus = { version = "0.6.0-alpha.2", features = ["web"] }
 gloo-utils = "0.2.0"
-manganis = "0.2.2"

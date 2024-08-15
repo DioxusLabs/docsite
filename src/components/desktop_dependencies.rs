@@ -6,6 +6,7 @@ enum Platform {
     Windows,
     MacOS,
     Linux,
+    Wsl,
 }
 
 impl std::fmt::Display for Platform {
@@ -14,13 +15,19 @@ impl std::fmt::Display for Platform {
             Platform::Windows => "Windows",
             Platform::MacOS => "MacOS",
             Platform::Linux => "Linux",
+            Platform::Wsl => "WSL",
         };
         write!(f, "{}", platform)
     }
 }
 
 impl Platform {
-    const ALL: [Platform; 3] = [Platform::Windows, Platform::MacOS, Platform::Linux];
+    const ALL: [Platform; 4] = [
+        Platform::Windows,
+        Platform::MacOS,
+        Platform::Linux,
+        Platform::Wsl,
+    ];
 }
 
 pub(crate) fn DesktopDependencies() -> Element {
@@ -55,6 +62,9 @@ pub(crate) fn DesktopDependencies() -> Element {
         },
         Platform::Linux => rsx! {
             LinuxDependencies {}
+        },
+        Platform::Wsl => rsx! {
+            WslDependencies {}
         },
     };
 
@@ -129,13 +139,33 @@ fn LinuxDependencies() -> Element {
     rsx! {
         div {
             p {
-                "WebView Linux apps require WebkitGtk. When distributing, this can be part of your dependency tree in your `.rpm` or `.deb`. However, likely, your users will already have WebkitGtk."
+                "WebView Linux apps require WebkitGtk and xdotool. When distributing, these should be part of your dependency tree in your `.rpm` or `.deb`."
             }
             p {
                 "If you run into issues, make sure you have all the basics installed, as outlined in the "
                 Link { to: "https://beta.tauri.app/start/prerequisites/", "Tauri docs" }
                 "."
             }
+        }
+    }
+}
+
+fn WslDependencies() -> Element {
+    rsx! {
+        div {
+            p { "While it's doable, it can be tricky to setup development in WSL for Dioxus desktop. Not everything has been figured out and some stuff may not work." }
+            p { "Here are the steps we used to get Dioxus running through WSL."}
+            ol {
+                li { "Update your kernel to the latest version and update WSL to version 2." }
+                li { "Add `export DISPLAY=:0` to `~/.zshrc`" }
+                li {
+                    "Install Tauri's Linux dependencies found "
+                    Link { "here", to: "https://beta.tauri.app/start/prerequisites/" },
+                    "."
+                }
+                li { "For file dialogs to work, you need to install a fallback like `zenity`"}
+            }
+            p { "When running Dioxus desktop on WSL, you may get warnings from `libEGL`. There is currently not a solution for these but the app should still render."}
         }
     }
 }

@@ -34,6 +34,7 @@ mdbook-shared = { git = "https://github.com/dioxuslabs/include_mdbook" }
 use-mdbook = { git = "https://github.com/dioxuslabs/include_mdbook" }
 
 dioxus-search = { git = "https://github.com/dioxuslabs/dioxus-search" }
+dioxus-playground = { git = "https://github.com/DioxusLabs/playground" }
 
 tokio = { version = "1.29.0", features = ["full"], optional = true }
 axum = { version = "0.7", optional = true }
@@ -47,7 +48,7 @@ web-sys = { version = "0.3.64", features = [
     "Window",
     "Event",
     "AddEventListenerOptions",
-    "Navigator"
+    "Navigator",
 ] }
 slab = "0.4.8"
 chrono = { version = "0.4.26", features = ["serde"] }

@@ -33,6 +33,8 @@ pub(crate) mod components {
     pub use notfound::*;
     pub(crate) mod tutorials;
     pub use tutorials::*;
+    pub(crate) mod playground;
+    pub use playground::*;
 }
 
 #[component]
@@ -76,6 +78,9 @@ pub(crate) enum Route {
         #[redirect("/platforms/ssr", || Route::Homepage {})]
         #[redirect("/platforms/tui", || Route::Homepage {})]
         Homepage {},
+
+        #[route("/play")]
+        Playground {},
 
         #[route("/awesome")]
         Awesome {},

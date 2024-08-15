@@ -85,6 +85,8 @@ cd my_project
 dx serve
 ```
 
+For projects using the liveview template, run `dx serve --desktop`.
+
 For Web targets the application will be served at [http://localhost:8080](http://localhost:8080)
 
 ## Conclusion

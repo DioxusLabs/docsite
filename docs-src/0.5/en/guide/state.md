@@ -20,7 +20,7 @@ DemoFrame {
 
 Next, we need to detect when the user hovers over a section or focuses a link. We can use an [event listener](../reference/event_handlers.md) to listen for the hover and focus events.
 
-Event handlers are similar to regular attributes, but their name usually starts with `on`- and they accept closures as values. The closure will be called whenever the event it listens for is triggered. When an event is triggered, information about the event is passed to the closure though the [Event](https://docs.rs/dioxus/latest/dioxus/prelude/struct.Event.html) structure.
+Event handlers are similar to regular attributes, but their name usually starts with `on`- and they accept closures as values. The closure will be called whenever the event it listens for is triggered. When an event is triggered, information about the event is passed to the closure through the [Event](https://docs.rs/dioxus/latest/dioxus/prelude/struct.Event.html) structure.
 
 Let's create a [`onmouseenter`](https://docs.rs/dioxus/latest/dioxus/events/fn.onmouseenter.html) event listener in the `StoryListing` component:
 

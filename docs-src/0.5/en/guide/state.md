@@ -68,11 +68,11 @@ DemoFrame {
 
 Hooks are a powerful way to manage state in Dioxus, but there are some rules you need to follow to insure they work as expected. Dioxus uses the order you call hooks to differentiate between hooks. Because the order you call hooks matters, you must follow these rules:
 
-1. Hooks may be only used in components or other hooks (we'll get to that later)
+1. Hooks may be only used in components or other hooks (we'll get to that later).
 2. On every call to the component function
-   1. The same hooks must be called
-   2. In the same order
-3. Hooks name's should start with `use_` so you don't accidentally confuse them with regular functions
+   1. the same hooks must be called (except in the case of early returns, as explained later in the [Error Handling chapter](../../cookbook/error_handling.md))
+   2. in the same order.
+3. Hooks name's should start with `use_` so you don't accidentally confuse them with regular functions (`use_signal()`, `use_signal()`, `use_resource()`, etc...).
 
 These rules mean that there are certain things you can't do with hooks:
 

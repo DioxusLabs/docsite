@@ -76,9 +76,7 @@ struct StarsResponse {
 #[component]
 pub(crate) fn Awesome() -> Element {
     rsx! {
-        div { class: "bg-white dark:bg-ideblack mx-auto max-w-screen-lg",
-            AwesomeInner {}
-        }
+        div { class: "bg-white dark:bg-ideblack mx-auto max-w-screen-lg", AwesomeInner {} }
     }
 }
 
@@ -128,14 +126,22 @@ pub(crate) fn AwesomeInner() -> Element {
                             div {
                                 "Everything you'll need to build awesome Dioxus apps. Also check out "
                                 b {
-                                    Link { class: "hover:text-sky-500 dark:hover:text-sky-400", to: "#made-with-dioxus", "Made with Dioxus" }
+                                    Link {
+                                        class: "hover:text-sky-500 dark:hover:text-sky-400",
+                                        to: "#made-with-dioxus",
+                                        "Made with Dioxus"
+                                    }
                                 }
                                 "!"
                             }
                             div { class: "pt-2",
                                 "To submit your project, make a pull request in the "
                                 b {
-                                    Link { class: "hover:text-sky-500 dark:hover:text-sky-400", to: "https://github.com/DioxusLabs/awesome-dioxus", "awesome-dioxus" }
+                                    Link {
+                                        class: "hover:text-sky-500 dark:hover:text-sky-400",
+                                        to: "https://github.com/DioxusLabs/awesome-dioxus",
+                                        "awesome-dioxus"
+                                    }
                                 }
                                 " repo."
                             }
@@ -149,7 +155,7 @@ pub(crate) fn AwesomeInner() -> Element {
                                 class: "w-full text-center p-4 rounded-lg text-gray-300 bg-gray-100",
                                 placeholder: "Looking for something specific?",
                                 value: "{search}",
-                                oninput: move |evt| search.set(evt.value())
+                                oninput: move |evt| search.set(evt.value()),
                             }
                         }
                     }
@@ -276,8 +282,7 @@ fn AwesomeItem(item: ReadOnlySignal<Item>) -> Element {
     };
 
     let inner = rsx! {
-        div {
-            class: "flex flex-col h-full p-3 rounded hover:-translate-y-2 transition-transform duration-300 bg-white dark:bg-slate-800 shadow",
+        div { class: "flex flex-col h-full p-3 rounded hover:-translate-y-2 transition-transform duration-300 bg-white dark:bg-slate-800 shadow",
             div {
                 p { class: "text-xl text-gray-800 dark:text-gray-100 font-bold", "{item.name}" }
                 p { class: "text-base pt-2 text-gray-700 dark:text-gray-400", "{item.description}" }
@@ -292,13 +297,11 @@ fn AwesomeItem(item: ReadOnlySignal<Item>) -> Element {
     };
 
     rsx! {
-        Link { to: NavigationTarget::<Route>::External(link), new_tab: true,
-            {inner}
-        }
+        Link { to: NavigationTarget::<Route>::External(link), new_tab: true, {inner} }
     }
 }
 
-#[wasm_bindgen(module = "/src/components/awesome/storage.js")]
+#[wasm_bindgen(module = "/src/components/storage.js")]
 extern "C" {
     pub(crate) fn get_stars(name: String) -> Option<usize>;
     pub(crate) fn set_stars(name: String, stars: usize);

@@ -15,11 +15,8 @@ pub(crate) fn Homepage() -> Element {
                 hero::Hero {}
                 AvailablePlatforms {}
             }
-            featured_examples::FeaturedExamples {}
-            // crate::components::blog::BlogList {}
             Stats {}
         }
-        call_to_action::CallToAction {}
     }
 }
 
@@ -99,7 +96,6 @@ fn AvailablePlatforms() -> Element {
                 }
             }
             div { class: "max-w-screen-lg mx-auto pb-8 px-2 md:px-16 dark:text-white",
-                // div { class: "max-w-screen-xl mx-auto pb-64 px-16 dark:text-white",
                 TriShow {
                     left: rsx! {  },
                     center: rsx! {  },
@@ -162,7 +158,6 @@ fn TriShow(
 ) -> Element {
     rsx! {
         div { class: "w-full flex flex-row justify-center max-w-screen-lg",
-            // div { class: "grow basis-0", left }
             TriPadding { last: last.unwrap_or_default(), {center} }
             div { class: "grow basis-0",
                 Link { to: to.clone(),
@@ -184,7 +179,6 @@ fn TriPadding(children: Element, last: bool) -> Element {
         div { class: "flex flex-col items-center",
             div { class: "w-0 h-10 border-dashed border border-[#444]" }
             IconSplit {}
-
             if !last {
                 div { class: "w-0 h-full border-dashed border border-[#444]", {children} }
             }
@@ -271,7 +265,6 @@ fn Stats() -> Element {
             div { class: "container mx-auto max-w-screen-lg",
                 div { class: "relative ",
                     div { class: "flex flex-col items-center justify-center text-center max-w-screen-lg mx-auto pb-4",
-                        // span { class: "text-xl text-blue-300", "Portable" }
                         h1 { class: "text-[3.3em] font-bold tracking-tight dark:text-white text-ghdarkmetal pb-4 mb-4 ",
                             "A vibrant, active community."
                         }
@@ -289,7 +282,6 @@ fn Stats() -> Element {
                     StatsItem { major: "1500", minor: "Community Projects" }
                 }
             }
-
             a { href: "https://github.com/dioxuslabs/dioxus/graphs/contributors",
                 img {
                     src: "https://contrib.rocks/image?repo=dioxuslabs/dioxus&max=52&columns=13",

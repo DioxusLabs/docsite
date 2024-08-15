@@ -102,7 +102,7 @@ fn LinkList() -> Element {
         rsx! {
             Link {
                 to: link,
-                class: "p-0 p-2 leading-none hover:text-sky-500 dark:hover:text-sky-400 rounded fill-zinc-700 dark:fill-zinc-100 {cur_class}",
+                class: "p-2 leading-none hover:text-sky-500 dark:hover:text-sky-400 rounded fill-zinc-700 dark:fill-zinc-100 {cur_class}",
                 position: "relative",
                 "{name}"
                 if is_external {

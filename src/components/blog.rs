@@ -19,7 +19,7 @@ pub(crate) const POST_RELEASE_050: BlogPost = BlogPost {
     title: "Announcing Dioxus 0.5",
     description: "A signal rewrite, zero unsafe, no lifetimes, unified launch, and more! ",
     link: "/blog/release-050/",
-    content: include_str!("../../../posts/release050.html"),
+    content: include_str!("../../posts/release050.html"),
 };
 
 #[component]
@@ -36,7 +36,7 @@ pub(crate) const POST_TEMPLATE: BlogPost = BlogPost {
     description:
         "Using a new technique called subtree memoization, Dioxus is now almost as fast as SolidJS.",
     link: "/blog/templates-diffing/",
-    content: include_str!("../../../posts/templates.html"),
+    content: include_str!("../../posts/templates.html"),
 };
 
 #[component]
@@ -53,7 +53,7 @@ pub(crate) const POST_FULLTINME: BlogPost = BlogPost {
     description:
         "Dioxus is now my full time job! I'm so excited to be able to work on this full time.",
     link: "/blog/going-fulltime/",
-    content: include_str!("../../../posts/fulltime.html"),
+    content: include_str!("../../posts/fulltime.html"),
 };
 
 #[component]
@@ -69,7 +69,7 @@ pub(crate) const POST_RELEASE_040: BlogPost = BlogPost {
     title: "Announcing Dioxus 0.4",
     description: "An overhauled router, fullstack, desktop hotreloading, and more!",
     link: "/blog/release-040/",
-    content: include_str!("../../../posts/release040.html"),
+    content: include_str!("../../posts/release040.html"),
 };
 
 #[component]
@@ -85,7 +85,7 @@ pub(crate) const POST_RELEASE_030: BlogPost = BlogPost {
     title: "Announcing Dioxus 0.3",
     description: "The next big release of Dioxus is here! Templates, autoformatting, multiwindow support, and more!",
     link: "/blog/release-030/",
-    content: include_str!("../../../posts/release030.html"),
+    content: include_str!("../../posts/release030.html"),
 };
 
 #[component]
@@ -101,7 +101,7 @@ pub(crate) const POST_RELEASE_020: BlogPost = BlogPost {
     title: "Announcing Dioxus 0.2",
     description: "Just over two months in, and we already have a ton of awesome changes to Dioxus!",
     link: "/blog/release-020/",
-    content: include_str!("../../../posts/release020.html"),
+    content: include_str!("../../posts/release020.html"),
 };
 
 #[component]
@@ -117,7 +117,7 @@ pub(crate) const POST_RELEASE_010: BlogPost = BlogPost {
     title: "Announcing Dioxus 0.1",
     description: "After months of work, we're very excited to release the first version of Dioxus! Dioxus is a new library for building interactive user interfaces with Rust. It is built around a VirtualDOM, making it portable for the web, desktop, server, mobile, and more.",
     link: "/blog/introducing-dioxus/",
-    content: include_str!("../../../posts/release.html"),
+    content: include_str!("../../posts/release.html"),
 };
 
 #[component]

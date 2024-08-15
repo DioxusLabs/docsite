@@ -1063,7 +1063,7 @@ dependencies = [
 [[package]]
 name = "dioxus"
 version = "0.6.0-alpha.2"
-source = "git+https://github.com/dioxuslabs/dioxus?branch=jk/wip-diagnose-wierd-stack-bug#6ba323acf847682ff70eab556bca0c4b16a05be5"
+source = "git+https://github.com/dioxuslabs/dioxus#4d6fb74e873d704c19bebdf8e9fa9b103f1e4508"
 dependencies = [
  "dioxus-config-macro",
  "dioxus-core",
@@ -1082,7 +1082,7 @@ dependencies = [
 [[package]]
 name = "dioxus-cli-config"
 version = "0.6.0-alpha.2"
-source = "git+https://github.com/dioxuslabs/dioxus?branch=jk/wip-diagnose-wierd-stack-bug#6ba323acf847682ff70eab556bca0c4b16a05be5"
+source = "git+https://github.com/dioxuslabs/dioxus#4d6fb74e873d704c19bebdf8e9fa9b103f1e4508"
 dependencies = [
  "built",
  "clap",
@@ -1095,7 +1095,7 @@ dependencies = [
 [[package]]
 name = "dioxus-config-macro"
 version = "0.6.0-alpha.2"
-source = "git+https://github.com/dioxuslabs/dioxus?branch=jk/wip-diagnose-wierd-stack-bug#6ba323acf847682ff70eab556bca0c4b16a05be5"
+source = "git+https://github.com/dioxuslabs/dioxus#4d6fb74e873d704c19bebdf8e9fa9b103f1e4508"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -1104,7 +1104,7 @@ dependencies = [
 [[package]]
 name = "dioxus-core"
 version = "0.6.0-alpha.2"
-source = "git+https://github.com/dioxuslabs/dioxus?branch=jk/wip-diagnose-wierd-stack-bug#6ba323acf847682ff70eab556bca0c4b16a05be5"
+source = "git+https://github.com/dioxuslabs/dioxus#4d6fb74e873d704c19bebdf8e9fa9b103f1e4508"
 dependencies = [
  "const_format",
  "futures-channel",
@@ -1124,7 +1124,7 @@ dependencies = [
 [[package]]
 name = "dioxus-core-macro"
 version = "0.6.0-alpha.2"
-source = "git+https://github.com/dioxuslabs/dioxus?branch=jk/wip-diagnose-wierd-stack-bug#6ba323acf847682ff70eab556bca0c4b16a05be5"
+source = "git+https://github.com/dioxuslabs/dioxus#4d6fb74e873d704c19bebdf8e9fa9b103f1e4508"
 dependencies = [
  "convert_case 0.6.0",
  "dioxus-rsx",
@@ -1137,7 +1137,7 @@ dependencies = [
 [[package]]
 name = "dioxus-desktop"
 version = "0.6.0-alpha.2"
-source = "git+https://github.com/dioxuslabs/dioxus?branch=jk/wip-diagnose-wierd-stack-bug#6ba323acf847682ff70eab556bca0c4b16a05be5"
+source = "git+https://github.com/dioxuslabs/dioxus#4d6fb74e873d704c19bebdf8e9fa9b103f1e4508"
 dependencies = [
  "async-trait",
  "cocoa",
@@ -1176,7 +1176,7 @@ dependencies = [
 [[package]]
 name = "dioxus-fullstack"
 version = "0.6.0-alpha.2"
-source = "git+https://github.com/dioxuslabs/dioxus?branch=jk/wip-diagnose-wierd-stack-bug#6ba323acf847682ff70eab556bca0c4b16a05be5"
+source = "git+https://github.com/dioxuslabs/dioxus#4d6fb74e873d704c19bebdf8e9fa9b103f1e4508"
 dependencies = [
  "base64 0.22.1",
  "bytes",
@@ -1198,7 +1198,7 @@ dependencies = [
 [[package]]
 name = "dioxus-hooks"
 version = "0.6.0-alpha.2"
-source = "git+https://github.com/dioxuslabs/dioxus?branch=jk/wip-diagnose-wierd-stack-bug#6ba323acf847682ff70eab556bca0c4b16a05be5"
+source = "git+https://github.com/dioxuslabs/dioxus#4d6fb74e873d704c19bebdf8e9fa9b103f1e4508"
 dependencies = [
  "dioxus-core",
  "dioxus-signals",
@@ -1214,7 +1214,7 @@ dependencies = [
 [[package]]
 name = "dioxus-hot-reload"
 version = "0.6.0-alpha.2"
-source = "git+https://github.com/dioxuslabs/dioxus?branch=jk/wip-diagnose-wierd-stack-bug#6ba323acf847682ff70eab556bca0c4b16a05be5"
+source = "git+https://github.com/dioxuslabs/dioxus#4d6fb74e873d704c19bebdf8e9fa9b103f1e4508"
 dependencies = [
  "dioxus-cli-config",
  "dioxus-core",
@@ -1228,12 +1228,13 @@ dependencies = [
  "tokio-stream",
  "tokio-tungstenite 0.23.1",
  "tracing",
+ "warnings",
 ]
 
 [[package]]
 name = "dioxus-html"
 version = "0.6.0-alpha.2"
-source = "git+https://github.com/dioxuslabs/dioxus?branch=jk/wip-diagnose-wierd-stack-bug#6ba323acf847682ff70eab556bca0c4b16a05be5"
+source = "git+https://github.com/dioxuslabs/dioxus#4d6fb74e873d704c19bebdf8e9fa9b103f1e4508"
 dependencies = [
  "async-trait",
  "dioxus-core",
@@ -1261,7 +1262,7 @@ dependencies = [
 [[package]]
 name = "dioxus-html-internal-macro"
 version = "0.6.0-alpha.2"
-source = "git+https://github.com/dioxuslabs/dioxus?branch=jk/wip-diagnose-wierd-stack-bug#6ba323acf847682ff70eab556bca0c4b16a05be5"
+source = "git+https://github.com/dioxuslabs/dioxus#4d6fb74e873d704c19bebdf8e9fa9b103f1e4508"
 dependencies = [
  "convert_case 0.6.0",
  "proc-macro2",
@@ -1272,7 +1273,7 @@ dependencies = [
 [[package]]
 name = "dioxus-interpreter-js"
 version = "0.6.0-alpha.2"
-source = "git+https://github.com/dioxuslabs/dioxus?branch=jk/wip-diagnose-wierd-stack-bug#6ba323acf847682ff70eab556bca0c4b16a05be5"
+source = "git+https://github.com/dioxuslabs/dioxus#4d6fb74e873d704c19bebdf8e9fa9b103f1e4508"
 dependencies = [
  "dioxus-core",
  "dioxus-html",
@@ -1289,7 +1290,7 @@ dependencies = [
 [[package]]
 name = "dioxus-lib"
 version = "0.6.0-alpha.2"
-source = "git+https://github.com/dioxuslabs/dioxus?branch=jk/wip-diagnose-wierd-stack-bug#6ba323acf847682ff70eab556bca0c4b16a05be5"
+source = "git+https://github.com/dioxuslabs/dioxus#4d6fb74e873d704c19bebdf8e9fa9b103f1e4508"
 dependencies = [
  "dioxus-config-macro",
  "dioxus-core",
@@ -1303,7 +1304,7 @@ dependencies = [
 [[package]]
 name = "dioxus-liveview"
 version = "0.6.0-alpha.2"
-source = "git+https://github.com/dioxuslabs/dioxus?branch=jk/wip-diagnose-wierd-stack-bug#6ba323acf847682ff70eab556bca0c4b16a05be5"
+source = "git+https://github.com/dioxuslabs/dioxus#4d6fb74e873d704c19bebdf8e9fa9b103f1e4508"
 dependencies = [
  "axum",
  "dioxus-cli-config",
@@ -1336,7 +1337,7 @@ dependencies = [
 [[package]]
 name = "dioxus-router"
 version = "0.6.0-alpha.2"
-source = "git+https://github.com/dioxuslabs/dioxus?branch=jk/wip-diagnose-wierd-stack-bug#6ba323acf847682ff70eab556bca0c4b16a05be5"
+source = "git+https://github.com/dioxuslabs/dioxus#4d6fb74e873d704c19bebdf8e9fa9b103f1e4508"
 dependencies = [
  "dioxus-cli-config",
  "dioxus-fullstack",
@@ -1356,7 +1357,7 @@ dependencies = [
 [[package]]
 name = "dioxus-router-macro"
 version = "0.6.0-alpha.2"
-source = "git+https://github.com/dioxuslabs/dioxus?branch=jk/wip-diagnose-wierd-stack-bug#6ba323acf847682ff70eab556bca0c4b16a05be5"
+source = "git+https://github.com/dioxuslabs/dioxus#4d6fb74e873d704c19bebdf8e9fa9b103f1e4508"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -1367,7 +1368,7 @@ dependencies = [
 [[package]]
 name = "dioxus-rsx"
 version = "0.6.0-alpha.2"
-source = "git+https://github.com/dioxuslabs/dioxus?branch=jk/wip-diagnose-wierd-stack-bug#6ba323acf847682ff70eab556bca0c4b16a05be5"
+source = "git+https://github.com/dioxuslabs/dioxus#4d6fb74e873d704c19bebdf8e9fa9b103f1e4508"
 dependencies = [
  "dioxus-core",
  "internment",
@@ -1443,7 +1444,7 @@ dependencies = [
 [[package]]
 name = "dioxus-signals"
 version = "0.6.0-alpha.2"
-source = "git+https://github.com/dioxuslabs/dioxus?branch=jk/wip-diagnose-wierd-stack-bug#6ba323acf847682ff70eab556bca0c4b16a05be5"
+source = "git+https://github.com/dioxuslabs/dioxus#4d6fb74e873d704c19bebdf8e9fa9b103f1e4508"
 dependencies = [
  "dioxus-core",
  "futures-channel",
@@ -1459,7 +1460,7 @@ dependencies = [
 [[package]]
 name = "dioxus-ssr"
 version = "0.6.0-alpha.2"
-source = "git+https://github.com/dioxuslabs/dioxus?branch=jk/wip-diagnose-wierd-stack-bug#6ba323acf847682ff70eab556bca0c4b16a05be5"
+source = "git+https://github.com/dioxuslabs/dioxus#4d6fb74e873d704c19bebdf8e9fa9b103f1e4508"
 dependencies = [
  "askama_escape",
  "async-trait",
@@ -1478,7 +1479,7 @@ dependencies = [
 [[package]]
 name = "dioxus-static-site-generation"
 version = "0.6.0-alpha.2"
-source = "git+https://github.com/dioxuslabs/dioxus?branch=jk/wip-diagnose-wierd-stack-bug#6ba323acf847682ff70eab556bca0c4b16a05be5"
+source = "git+https://github.com/dioxuslabs/dioxus#4d6fb74e873d704c19bebdf8e9fa9b103f1e4508"
 dependencies = [
  "dioxus-fullstack",
  "dioxus-lib",
@@ -1490,7 +1491,7 @@ dependencies = [
 [[package]]
 name = "dioxus-web"
 version = "0.6.0-alpha.2"
-source = "git+https://github.com/dioxuslabs/dioxus?branch=jk/wip-diagnose-wierd-stack-bug#6ba323acf847682ff70eab556bca0c4b16a05be5"
+source = "git+https://github.com/dioxuslabs/dioxus#4d6fb74e873d704c19bebdf8e9fa9b103f1e4508"
 dependencies = [
  "ciborium",
  "console_error_panic_hook",
@@ -1568,7 +1569,7 @@ dependencies = [
 [[package]]
 name = "dioxus_server_macro"
 version = "0.6.0-alpha.2"
-source = "git+https://github.com/dioxuslabs/dioxus?branch=jk/wip-diagnose-wierd-stack-bug#6ba323acf847682ff70eab556bca0c4b16a05be5"
+source = "git+https://github.com/dioxuslabs/dioxus#4d6fb74e873d704c19bebdf8e9fa9b103f1e4508"
 dependencies = [
  "convert_case 0.6.0",
  "proc-macro2",
@@ -2102,7 +2103,7 @@ dependencies = [
 [[package]]
 name = "generational-box"
 version = "0.6.0-alpha.2"
-source = "git+https://github.com/dioxuslabs/dioxus?branch=jk/wip-diagnose-wierd-stack-bug#6ba323acf847682ff70eab556bca0c4b16a05be5"
+source = "git+https://github.com/dioxuslabs/dioxus#4d6fb74e873d704c19bebdf8e9fa9b103f1e4508"
 dependencies = [
  "parking_lot",
 ]
@@ -3051,7 +3052,7 @@ dependencies = [
 [[package]]
 name = "lazy-js-bundle"
 version = "0.6.0-alpha.2"
-source = "git+https://github.com/dioxuslabs/dioxus?branch=jk/wip-diagnose-wierd-stack-bug#6ba323acf847682ff70eab556bca0c4b16a05be5"
+source = "git+https://github.com/dioxuslabs/dioxus#4d6fb74e873d704c19bebdf8e9fa9b103f1e4508"
 
 [[package]]
 name = "lazy_static"

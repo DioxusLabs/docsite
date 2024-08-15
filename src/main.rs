@@ -246,46 +246,45 @@ pub enum Route {{\n\t"
 }
 
 fn main() {
-    // #[cfg(feature = "web")]
-    // {
-    //     wasm_logger::init(wasm_logger::Config::new(log::Level::Info));
-    //     std::panic::set_hook(Box::new(console_error_panic_hook::hook));
-    // }
+    #[cfg(feature = "web")]
+    {
+        wasm_logger::init(wasm_logger::Config::new(log::Level::Info));
+        std::panic::set_hook(Box::new(console_error_panic_hook::hook));
+    }
+
+    #[cfg(feature = "prebuild")]
+    {
+        use dioxus_router::prelude::*;
+        use log::LevelFilter;
+        simple_logger::SimpleLogger::new()
+            .with_level(LevelFilter::Error)
+            .init()
+            .unwrap();
+
+        std::env::remove_var("DIOXUS_ACTIVE");
+        std::env::remove_var("CARGO");
+
+        LaunchBuilder::new()
+            .with_cfg(dioxus::static_site_generation::Config::new().github_pages())
+            .launch(app);
+        println!("prebuilt");
+
+        dioxus_search::SearchIndex::<Route>::create(
+            "search",
+            dioxus_search::BaseDirectoryMapping::new(std::path::PathBuf::from("./docs")).map(
+                |route: Route| {
+                    let route = route.to_string();
+                    let mut path = std::path::PathBuf::default();
+                    for (i, segment) in route.split('/').enumerate() {
+                        path.push(segment);
+                    }
+                    Some(path.join("index.html"))
+                },
+            ),
+        );
+        return;
+    }
+
+    #[cfg(not(feature = "prebuild"))]
     launch(app);
-
-    // #[cfg(feature = "prebuild")]
-    // {
-    //     use dioxus_router::prelude::*;
-    //     use log::LevelFilter;
-    //     simple_logger::SimpleLogger::new()
-    //         .with_level(LevelFilter::Error)
-    //         .init()
-    //         .unwrap();
-
-    //     std::env::remove_var("DIOXUS_ACTIVE");
-    //     std::env::remove_var("CARGO");
-
-    //     LaunchBuilder::new()
-    //         .with_cfg(dioxus::static_site_generation::Config::new().github_pages())
-    //         .launch(app);
-    //     println!("prebuilt");
-
-    //     dioxus_search::SearchIndex::<Route>::create(
-    //         "search",
-    //         dioxus_search::BaseDirectoryMapping::new(std::path::PathBuf::from("./docs")).map(
-    //             |route: Route| {
-    //                 let route = route.to_string();
-    //                 let mut path = std::path::PathBuf::default();
-    //                 for (i, segment) in route.split('/').enumerate() {
-    //                     path.push(segment);
-    //                 }
-    //                 Some(path.join("index.html"))
-    //             },
-    //         ),
-    //     );
-    //     return;
-    // }
-
-    // #[cfg(not(feature = "prebuild"))]
-    // launch(app);
 }

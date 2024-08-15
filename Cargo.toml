@@ -73,28 +73,28 @@ tracing = "0.1.40"
 rand = { version = "0.8.5", optional = true }
 
 [patch.crates-io]
-dioxus = { git = "https://github.com/dioxuslabs/dioxus", version = "0.6.0-alpha.2", branch = "jk/wip-diagnose-wierd-stack-bug" }
-dioxus-lib = { git = "https://github.com/dioxuslabs/dioxus", version = "0.6.0-alpha.2", branch = "jk/wip-diagnose-wierd-stack-bug" }
-dioxus-core = { git = "https://github.com/dioxuslabs/dioxus", version = "0.6.0-alpha.2", branch = "jk/wip-diagnose-wierd-stack-bug" }
-dioxus-core-macro = { git = "https://github.com/dioxuslabs/dioxus", version = "0.6.0-alpha.2", branch = "jk/wip-diagnose-wierd-stack-bug" }
-dioxus-config-macro = { git = "https://github.com/dioxuslabs/dioxus", version = "0.6.0-alpha.2", branch = "jk/wip-diagnose-wierd-stack-bug" }
-dioxus-router = { git = "https://github.com/dioxuslabs/dioxus", version = "0.6.0-alpha.2", branch = "jk/wip-diagnose-wierd-stack-bug" }
-dioxus-router-macro = { git = "https://github.com/dioxuslabs/dioxus", version = "0.6.0-alpha.2", branch = "jk/wip-diagnose-wierd-stack-bug" }
-dioxus-html = { git = "https://github.com/dioxuslabs/dioxus", version = "0.6.0-alpha.2", branch = "jk/wip-diagnose-wierd-stack-bug" }
-dioxus-html-internal-macro = { git = "https://github.com/dioxuslabs/dioxus", version = "0.6.0-alpha.2", branch = "jk/wip-diagnose-wierd-stack-bug" }
-dioxus-hooks = { git = "https://github.com/dioxuslabs/dioxus", version = "0.6.0-alpha.2", branch = "jk/wip-diagnose-wierd-stack-bug" }
-dioxus-web = { git = "https://github.com/dioxuslabs/dioxus", version = "0.6.0-alpha.2", branch = "jk/wip-diagnose-wierd-stack-bug" }
-dioxus-ssr = { git = "https://github.com/dioxuslabs/dioxus", version = "0.6.0-alpha.2", branch = "jk/wip-diagnose-wierd-stack-bug" }
-dioxus-desktop = { git = "https://github.com/dioxuslabs/dioxus", version = "0.6.0-alpha.2", branch = "jk/wip-diagnose-wierd-stack-bug" }
-dioxus-interpreter-js = { git = "https://github.com/dioxuslabs/dioxus", version = "0.6.0-alpha.2", branch = "jk/wip-diagnose-wierd-stack-bug" }
-dioxus-liveview = { git = "https://github.com/dioxuslabs/dioxus", version = "0.6.0-alpha.2", branch = "jk/wip-diagnose-wierd-stack-bug" }
-dioxus-rsx = { git = "https://github.com/dioxuslabs/dioxus", version = "0.6.0-alpha.2", branch = "jk/wip-diagnose-wierd-stack-bug" }
-dioxus-signals = { git = "https://github.com/dioxuslabs/dioxus", version = "0.6.0-alpha.2", branch = "jk/wip-diagnose-wierd-stack-bug" }
-dioxus-cli-config = { git = "https://github.com/dioxuslabs/dioxus", version = "0.6.0-alpha.2", branch = "jk/wip-diagnose-wierd-stack-bug" }
-generational-box = { git = "https://github.com/dioxuslabs/dioxus", version = "0.6.0-alpha.2", branch = "jk/wip-diagnose-wierd-stack-bug" }
-dioxus-hot-reload = { git = "https://github.com/dioxuslabs/dioxus", version = "0.6.0-alpha.2", branch = "jk/wip-diagnose-wierd-stack-bug" }
-dioxus_server_macro = { git = "https://github.com/dioxuslabs/dioxus", version = "0.6.0-alpha.2", branch = "jk/wip-diagnose-wierd-stack-bug" }
-dioxus-fullstack = { git = "https://github.com/dioxuslabs/dioxus", version = "0.6.0-alpha.2", branch = "jk/wip-diagnose-wierd-stack-bug" }
+dioxus = { git = "https://github.com/dioxuslabs/dioxus", version = "0.6.0-alpha.2" }
+dioxus-lib = { git = "https://github.com/dioxuslabs/dioxus", version = "0.6.0-alpha.2" }
+dioxus-core = { git = "https://github.com/dioxuslabs/dioxus", version = "0.6.0-alpha.2" }
+dioxus-core-macro = { git = "https://github.com/dioxuslabs/dioxus", version = "0.6.0-alpha.2" }
+dioxus-config-macro = { git = "https://github.com/dioxuslabs/dioxus", version = "0.6.0-alpha.2" }
+dioxus-router = { git = "https://github.com/dioxuslabs/dioxus", version = "0.6.0-alpha.2" }
+dioxus-router-macro = { git = "https://github.com/dioxuslabs/dioxus", version = "0.6.0-alpha.2" }
+dioxus-html = { git = "https://github.com/dioxuslabs/dioxus", version = "0.6.0-alpha.2" }
+dioxus-html-internal-macro = { git = "https://github.com/dioxuslabs/dioxus", version = "0.6.0-alpha.2" }
+dioxus-hooks = { git = "https://github.com/dioxuslabs/dioxus", version = "0.6.0-alpha.2" }
+dioxus-web = { git = "https://github.com/dioxuslabs/dioxus", version = "0.6.0-alpha.2" }
+dioxus-ssr = { git = "https://github.com/dioxuslabs/dioxus", version = "0.6.0-alpha.2" }
+dioxus-desktop = { git = "https://github.com/dioxuslabs/dioxus", version = "0.6.0-alpha.2" }
+dioxus-interpreter-js = { git = "https://github.com/dioxuslabs/dioxus", version = "0.6.0-alpha.2" }
+dioxus-liveview = { git = "https://github.com/dioxuslabs/dioxus", version = "0.6.0-alpha.2" }
+dioxus-rsx = { git = "https://github.com/dioxuslabs/dioxus", version = "0.6.0-alpha.2" }
+dioxus-signals = { git = "https://github.com/dioxuslabs/dioxus", version = "0.6.0-alpha.2" }
+dioxus-cli-config = { git = "https://github.com/dioxuslabs/dioxus", version = "0.6.0-alpha.2" }
+generational-box = { git = "https://github.com/dioxuslabs/dioxus", version = "0.6.0-alpha.2" }
+dioxus-hot-reload = { git = "https://github.com/dioxuslabs/dioxus", version = "0.6.0-alpha.2" }
+dioxus_server_macro = { git = "https://github.com/dioxuslabs/dioxus", version = "0.6.0-alpha.2" }
+dioxus-fullstack = { git = "https://github.com/dioxuslabs/dioxus", version = "0.6.0-alpha.2" }
 
 manganis = { git = "https://github.com/DioxusLabs/manganis", branch = "jk/drop-remote-support" }
 manganis-common = { git = "https://github.com/DioxusLabs/manganis", branch = "jk/drop-remote-support" }

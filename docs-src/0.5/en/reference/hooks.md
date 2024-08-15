@@ -67,11 +67,10 @@ But how can Dioxus differentiate between multiple hooks in the same component? A
 This is only possible because the two hooks are always called in the same order, so Dioxus knows which is which. Because the order you call hooks matters, you must follow certain rules when using hooks:
 
 1. Hooks may be only used in components or other hooks (we'll get to that later).
-2. On every call to a component function.
-3. The same hooks must be called (except in the case of early returns, as explained later in the [Error Handling chapter](../../cookbook/error_handling.md)).
-4. In the same order.
-5. Hook names should start with `use_` so you don't accidentally confuse them with regular
-   functions (`use_signal()`, `use_signal()`, `use_resource()`, etc...).
+2. On every call to the component function
+   1. the same hooks must be called (except in the case of early returns, as explained later in the [Error Handling chapter](../../cookbook/error_handling.md))
+   2. in the same order.
+3. Hook names should start with `use_` so you don't accidentally confuse them with regular functions (`use_signal()`, `use_signal()`, `use_resource()`, etc...).
 
 These rules mean that there are certain things you can't do with hooks:
 

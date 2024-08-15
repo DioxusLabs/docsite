@@ -276,13 +276,15 @@ fn Stats() -> Element {
             }
             div { class: "max-w-screen-xl mx-auto py-12 px-2 md:px-16 dark:bg-[#111111] mb-12",
                 div { class: "grid grid-cols-2 grid-rows-2 sm:grid-cols-4 sm:grid-rows-1",
-                    StatsItem { major: "16k", minor: "Stars" }
-                    StatsItem { major: "140k", minor: "Downloads" }
-                    StatsItem { major: "206", minor: "Contributors" }
-                    StatsItem { major: "1500", minor: "Community Projects" }
+                    StatsItem { major: "20k", minor: "Stars" }
+                    StatsItem { major: "243k", minor: "Downloads" }
+                    StatsItem { major: "244", minor: "Contributors" }
+                    StatsItem { major: "2073", minor: "Community Projects" }
                 }
             }
-            a { href: "https://github.com/dioxuslabs/dioxus/graphs/contributors",
+            a {
+                href: "https://github.com/dioxuslabs/dioxus/graphs/contributors",
+                target: "_blank",
                 img {
                     src: "https://contrib.rocks/image?repo=dioxuslabs/dioxus&max=52&columns=13",
                     class: "mx-auto pb-12",
@@ -294,7 +296,7 @@ fn Stats() -> Element {
 }
 
 #[component]
-fn StatsItem(major: &'static str, minor: &'static str) -> Element {
+fn StatsItem(major: String, minor: String) -> Element {
     rsx! {
         div { class: "text-center shadow mx-2 rounded-lg py-6 border",
             div { class: "text-5xl font-bold text-gray-800 dark:text-gray-100", {major} }

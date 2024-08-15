@@ -1,8 +1,7 @@
-#![allow(non_snake_case, non_upper_case_globals, unused)]
+#![allow(non_snake_case, non_upper_case_globals)]
 
 use dioxus::html::input_data::keyboard_types::{Key, Modifiers};
 use dioxus::prelude::*;
-use dioxus_router::prelude::*;
 pub(crate) use docs::BookRoute;
 use serde::{Deserialize, Serialize};
 
@@ -131,10 +130,6 @@ pub(crate) enum Route {
     })]
     #[route("/:..segments")]
     Err404 { segments: Vec<String> },
-}
-
-pub(crate) fn use_url() -> String {
-    use_route::<Route>().to_string()
 }
 
 pub(crate) fn app() -> Element {
@@ -285,6 +280,7 @@ fn main() {
         return;
     }
 
+    #[allow(deprecated)]
     #[cfg(not(feature = "prebuild"))]
     launch(app);
 }

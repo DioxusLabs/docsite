@@ -8,7 +8,6 @@ use proc_macro2::Ident;
 use proc_macro2::Span;
 use proc_macro2::TokenStream as TokenStream2;
 use quote::quote;
-use quote::ToTokens;
 use syn::LitStr;
 
 use crate::transform_book::write_book_with_routes;
@@ -53,14 +52,20 @@ pub fn generate_router(book_path: PathBuf, book: mdbook_shared::MdBook<PathBuf>)
 
     let book_pages = book.pages().iter().map(|(_, page)| {
         let name = path_to_route_variant(&page.url);
+
         // Rsx doesn't work very well in macros because the path for all the routes generated point to the same characters. We manually expand rsx here to get around that issue.
         match rsx::parse(page.url.clone(), &page.raw) {
             Ok(rsx) => {
+                // for the sake of readability, we want to actuall convert the CallBody back to Tokens
+                let rsx = rsx::callbody_to_tokens(rsx);
+
                 quote! {
                     #[component(no_case_check)]
                     pub fn #name() -> dioxus::prelude::Element {
                         use dioxus::prelude::*;
-                        #rsx
+                        rsx! {
+                            #rsx
+                        }
                     }
                 }
             }

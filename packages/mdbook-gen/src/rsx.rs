@@ -1,7 +1,9 @@
+use proc_macro2::TokenStream as TokenStream2;
 use quote::quote;
 use std::{
     iter::Peekable,
     path::{Path, PathBuf},
+    str::FromStr,
     vec,
 };
 
@@ -11,6 +13,15 @@ use syn::{Ident, __private::Span, parse_quote, parse_str};
 
 use syntect::highlighting::ThemeSet;
 use syntect::parsing::SyntaxSet;
+
+/// Convert a CallBody to a TokenStream
+pub fn callbody_to_tokens(cb: CallBody) -> TokenStream2 {
+    // Get the tokens
+    let out = dioxus_autofmt::write_block_out(&cb).unwrap();
+
+    // Parse the tokens
+    TokenStream2::from_str(&out).unwrap()
+}
 
 pub fn parse(path: PathBuf, markdown: &str) -> syn::Result<CallBody> {
     let mut options = Options::empty();
@@ -44,14 +55,10 @@ pub fn parse(path: PathBuf, markdown: &str) -> syn::Result<CallBody> {
 struct RsxMarkdownParser<'a, I: Iterator<Item = Event<'a>>> {
     element_stack: Vec<BodyNode>,
     root_nodes: Vec<BodyNode>,
-
     current_table: Vec<Alignment>,
     in_table_header: bool,
-
     iter: Peekable<I>,
-
     path: PathBuf,
-
     phantom: std::marker::PhantomData<&'a ()>,
 }
 
@@ -403,7 +410,10 @@ impl<'a, I: Iterator<Item = Event<'a>>> RsxMarkdownParser<'a, I> {
         if let (Some(BodyNode::Text(last_text)), BodyNode::Text(new_text)) =
             (element_list.last_mut(), &node)
         {
-            last_text.input.formatted_input.push_ifmt(new_text.input.formatted_input.clone());
+            last_text
+                .input
+                .formatted_input
+                .push_ifmt(new_text.input.formatted_input.clone());
         } else {
             element_list.push(node);
         }

@@ -6,7 +6,6 @@ Dioxus lets you define your app as a function of the current state. As you chang
 
 You can create mutable state in Dioxus with Signals. Signals are tracked values that automatically update your app when you change them. They form the skeleton of your app's state from which you can derive other state. Signals are often driven directly from user input through event handlers or async tasks.
 
-22
 You can create a signal with the `use_signal` hook:
 
 ```rust

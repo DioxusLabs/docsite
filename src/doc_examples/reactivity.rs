@@ -18,7 +18,7 @@ fn log(message: impl ToString) {
     consume_context::<Signal<LogState>>()
         .write()
         .logs
-        .push(message.to_string());
+        .insert(0, message.to_string());
 }
 
 macro_rules! log {
@@ -31,19 +31,17 @@ macro_rules! log {
 fn ComponentWithLogs(children: Element) -> Element {
     let logs = use_provide_log_state();
     rsx! {
-        div {
-            class: "w-full flex flex-row justify-between",
+        div { class: "w-full h-40 overflow-y-hidden flex flex-row justify-between",
+            div { class: "w-1/2 h-full", {children} }
             div { class: "w-1/2 h-full",
-                {children}
-            }
-            div { class: "w-1/2 h-full",
-                div {
-                    class: "p-2 text-center border-b-2 border-gray-200 dark:border-gray-800",
+                div { class: "p-2 text-center border-gray-200 dark:border-gray-800",
                     "Logs"
                 }
-                for (i, log) in logs.read().logs.iter().enumerate() {
-                    div { class: "p-2 border-b border-gray-200 dark:border-gray-800",
-                        "{i}: {log}"
+                div { class: "h-full p-4 overflow-y-auto border-gray-200 dark:border-gray-800",
+                    for log in logs.read().logs.iter() {
+                        div { class: "p-2 border-b border-gray-200 dark:border-gray-800",
+                            "{log}"
+                        }
                     }
                 }
             }
@@ -100,21 +98,16 @@ mod effect {
         });
 
         rsx! {
-            button {
-                onclick: move |_| count += 1,
-                "Increment"
-            }
+            button { onclick: move |_| count += 1, "Increment" }
 
-            "Count is {count}"
+            div { "Count is {count}" }
         }
     }
     // ANCHOR_END: effect
 
     pub fn EffectDemo() -> Element {
         rsx! {
-            ComponentWithLogs {
-                Effect {}
-            }
+            ComponentWithLogs { Effect {} }
         }
     }
 }
@@ -139,22 +132,17 @@ mod memo {
         });
 
         rsx! {
-            button {
-                onclick: move |_| count += 1,
-                "Increment"
-            }
+            button { onclick: move |_| count += 1, "Increment" }
 
-            "Count is {count}"
-            "Half count is {half_count}"
+            div { "Count is {count}" }
+            div { "Half count is {half_count}" }
         }
     }
     // ANCHOR_END: memo
 
     pub fn MemoDemo() -> Element {
         rsx! {
-            ComponentWithLogs {
-                Memo {}
-            }
+            ComponentWithLogs { Memo {} }
         }
     }
 }
@@ -183,22 +171,17 @@ mod resource {
         });
 
         rsx! {
-            button {
-                onclick: move |_| count += 1,
-                "Change Signal"
-            }
+            button { onclick: move |_| count += 1, "Change Signal" }
 
-            "Count is {count}"
-            "Half count is {half_count():?}"
+            div { "Count is {count}" }
+            div { "Half count is {half_count():?}" }
         }
     }
     // ANCHOR_END: resource
 
     pub fn ResourceDemo() -> Element {
         rsx! {
-            ComponentWithLogs {
-                Resource {}
-            }
+            ComponentWithLogs { Resource {} }
         }
     }
 }
@@ -211,23 +194,18 @@ mod component {
         let mut count = use_signal(|| 0);
 
         rsx! {
-            button {
-                onclick: move |_| count += 1,
-                "Change Signal"
-            }
+            button { onclick: move |_| count += 1, "Change Signal" }
 
             // Since we read count inside the component, it becomes a dependency of the component
             // Whenever count changes, the component will rerun
-            "Count: {count}"
+            div { "Count: {count}" }
         }
     }
     // ANCHOR_END: component
 
     pub fn ComponentDemo() -> Element {
         rsx! {
-            ComponentWithLogs {
-                Component {}
-            }
+            Component {}
         }
     }
 }

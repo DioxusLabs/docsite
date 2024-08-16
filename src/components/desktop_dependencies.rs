@@ -153,8 +153,10 @@ fn LinuxDependencies() -> Element {
 fn WslDependencies() -> Element {
     rsx! {
         div {
-            p { "While it's doable, it can be tricky to setup development in WSL for Dioxus desktop. Not everything has been figured out and some stuff may not work." }
-            p { "Here are the steps we used to get Dioxus running through WSL."}
+            p {
+                "While it's doable, it can be tricky to setup development in WSL for Dioxus desktop. Not everything has been figured out and some stuff may not work."
+            }
+            p { "Here are the steps we used to get Dioxus running through WSL." }
             ol {
                 li { "Update your kernel to the latest version and update WSL to version 2." }
                 li { "Add `export DISPLAY=:0` to `~/.zshrc`" }
@@ -163,9 +165,11 @@ fn WslDependencies() -> Element {
                     Link { to: "https://beta.tauri.app/start/prerequisites/", "here" }
                     "."
                 }
-                li { "For file dialogs to work, you need to install a fallback like `zenity`"}
+                li { "For file dialogs to work, you need to install a fallback like `zenity`" }
             }
-            p { "When running Dioxus desktop on WSL, you may get warnings from `libEGL`. There is currently not a solution for these but the app should still render."}
+            p {
+                "When running Dioxus desktop on WSL, you may get warnings from `libEGL`. There is currently not a solution for these but the app should still render."
+            }
         }
     }
 }

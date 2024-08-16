@@ -18,7 +18,7 @@ pub(crate) fn Nav() -> Element {
             class: if HIGHLIGHT_NAV_LAYOUT() { "border border-orange-600 rounded-md" },
             div { class: "lg:py-2 px-2 max-w-screen-2xl mx-auto flex items-center justify-between text-sm leading-6 h-16",
                 button {
-                    class: "bg-zinc-300 rounded-lg p-2 mr-4 lg:hidden my-3 h-10 flex items-center text-lg z-[100]",
+                    class: "bg-zinc-300 rounded-lg p-1 mr-4 lg:hidden my-3 h-10 flex items-center text-lg z-[100]",
                     class: if !SHOW_DOCS_NAV() { "hidden" },
                     onclick: move |_| {
                         let mut sidebar = SHOW_SIDEBAR.write();
@@ -84,41 +84,15 @@ pub(crate) fn Nav() -> Element {
 
 static LINKS: &[(&str, &str)] = &[
     ("Learn", "/learn/0.5/"),
+    ("Playground", "/play"),
+    ("SDK", "/sdk"),
     ("Blog", "/blog"),
-    ("Awesome", "/awesome"),
-    ("docs.rs", "https://docs.rs/dioxus/latest/dioxus/"),
+    // ("Awesome", "/awesome"),
+    // ("docs.rs", "https://docs.rs/dioxus/latest/dioxus/"),
 ];
 
 #[component]
 fn LinkList() -> Element {
-    let current_route = use_route::<Route>().to_string();
-
-    let links = LINKS.iter().cloned().map(|(name, link)| {
-        let is_current = current_route.starts_with(link);
-        let cur_class = if is_current { "text-sky-500 dark:text-sky-400" } else { "" };
-
-        let is_external = link.starts_with("http");
-
-        rsx! {
-            Link {
-                to: link,
-                class: "p-2 leading-none hover:text-sky-500 dark:hover:text-sky-400 rounded fill-zinc-700 dark:fill-zinc-100 {cur_class}",
-                position: "relative",
-                "{name}"
-                if is_external {
-                    svg {
-                        height: "7",
-                        "viewBox": "0 0 6 6",
-                        width: "7",
-                        "aria-hidden": "true",
-                        class: "navbar_externalArrow___VWBd",
-                        path { "d": "M1.25215 5.54731L0.622742 4.9179L3.78169 1.75597H1.3834L1.38936 0.890915H5.27615V4.78069H4.40513L4.41109 2.38538L1.25215 5.54731Z" }
-                    }
-                }
-            }
-        }
-    });
-
     rsx! {
         nav { class: "flex items-center space-x-2 text-md font-light leading-none text-slate-700 dark:text-white whitespace-nowrap",
             Link {
@@ -128,18 +102,26 @@ fn LinkList() -> Element {
                     src: "https://avatars.githubusercontent.com/u/79236386?s=200&v=4",
                     class: "h-8 w-auto",
                 }
-                span { class: "mx-3 text-xl dark:text-white leading-none font-bold hidden sm:block px-4",
-                    "Dioxus Labs"
+                span { class: "text-xl dark:text-white leading-none font-bold hidden sm:block px-4",
+                    "Dioxus"
                 }
             }
-            {links}
+            for (name , link) in LINKS.iter().cloned() {
+                Link {
+                    to: link,
+                    class: "p-2 leading-none hover:text-sky-500 dark:hover:text-sky-400 rounded fill-zinc-700 dark:fill-zinc-100",
+                    active_class: "text-sky-500 dark:text-sky-400",
+                    position: "relative",
+                    "{name}"
+                }
+            }
         }
     }
 }
 
 fn Search() -> Element {
     rsx! {
-        div { class: "relative md:w-full max-w-[20rem] xl:max-w-[20rem] 2xl:max-w-[20rem] sm:mx-auto sm:flex-1",
+        div { class: "relative md:w-full max-w-[20rem] xl:max-w-[20rem] 2xl:max-w-[20rem] sm:mx-auto sm:flex-1 text-md font-light leading-none",
             // Pop up a modal
             button {
                 // Pop up a modal
@@ -147,13 +129,13 @@ fn Search() -> Element {
                 onclick: move |_| {
                     *SHOW_SEARCH.write() = true;
                 },
-                div { class: "h-full my-auto flex flex-row align-middle justify-between",
+                div { class: "h-full my-auto flex flex-row content-center justify-between",
                     MaterialIcon {
                         name: "search",
-                        size: 24,
+                        size: 20,
                         color: MaterialIconColor::Dark,
                     }
-                    span { class: "hidden sm:block pl-2 pr-4", "Search the docs" }
+                    span { class: "hidden sm:block pl-2 pr-4 content-center", "Search the docs" }
                 }
                 div { class: "hidden md:block border border-gray-300 rounded-lg p-1 text-xs text-gray-400",
                     "CTRL + /"
@@ -240,7 +222,6 @@ fn SearchModal() -> Element {
                         }
                     }
 
-                    // Results
                     div { class: "overflow-y-auto",
                         ul {
                             SearchResults { results, search_text }

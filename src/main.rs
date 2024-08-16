@@ -54,10 +54,30 @@ fn HeaderFooter() -> Element {
             head::Link { rel: "stylesheet", href: "/githubmarkdown.css" }
             head::Link { rel: "stylesheet", href: "/tailwind.css" }
             head::Link { rel: "stylesheet", href: "/main.css" }
+            head::Link { rel: "stylesheet", href: "/dxp.css" }
+            head::Link { rel: "stylesheet", href: "https://rsms.me/inter/inter.css" }
             head::Link {
                 rel: "stylesheet",
                 href: "https://fonts.googleapis.com/icon?family=Material+Icons",
             }
+            head::Link { rel: "preconnect", href: "https://fonts.googleapis.com" }
+            head::Link {
+                href: "https://fonts.gstatic.com",
+                rel: "preconnect",
+                crossorigin: "false",
+            }
+            head::Link {
+                rel: "stylesheet",
+                href: "https://fonts.googleapis.com/css2?family=Arimo:wght@100;400;600&display=swap",
+            }
+            head::Link {
+                href: "https://fonts.googleapis.com/css2?family=Arimo:ital,wght@0,400..700;1,400..700&family=Lexend:wght@100;400&family=M+PLUS+1:wght@100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap",
+                rel: "stylesheet",
+            }
+            head::Script { src: "/ace/ace.js" }
+            head::Script { src: "/ace/mode-rust.js" }
+            head::Script { src: "/ace/theme-github.js" }
+
             Nav {}
             Outlet::<Route> {}
         }

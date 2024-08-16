@@ -74,28 +74,28 @@ tracing = "0.1.40"
 rand = { version = "0.8.5", optional = true }
 
 [patch.crates-io]
-dioxus = { git = "https://github.com/dioxuslabs/dioxus", version = "0.6.0-alpha.2" }
-dioxus-lib = { git = "https://github.com/dioxuslabs/dioxus", version = "0.6.0-alpha.2" }
-dioxus-core = { git = "https://github.com/dioxuslabs/dioxus", version = "0.6.0-alpha.2" }
-dioxus-core-macro = { git = "https://github.com/dioxuslabs/dioxus", version = "0.6.0-alpha.2" }
-dioxus-config-macro = { git = "https://github.com/dioxuslabs/dioxus", version = "0.6.0-alpha.2" }
-dioxus-router = { git = "https://github.com/dioxuslabs/dioxus", version = "0.6.0-alpha.2" }
-dioxus-router-macro = { git = "https://github.com/dioxuslabs/dioxus", version = "0.6.0-alpha.2" }
-dioxus-html = { git = "https://github.com/dioxuslabs/dioxus", version = "0.6.0-alpha.2" }
-dioxus-html-internal-macro = { git = "https://github.com/dioxuslabs/dioxus", version = "0.6.0-alpha.2" }
-dioxus-hooks = { git = "https://github.com/dioxuslabs/dioxus", version = "0.6.0-alpha.2" }
-dioxus-web = { git = "https://github.com/dioxuslabs/dioxus", version = "0.6.0-alpha.2" }
-dioxus-ssr = { git = "https://github.com/dioxuslabs/dioxus", version = "0.6.0-alpha.2" }
-dioxus-desktop = { git = "https://github.com/dioxuslabs/dioxus", version = "0.6.0-alpha.2" }
-dioxus-interpreter-js = { git = "https://github.com/dioxuslabs/dioxus", version = "0.6.0-alpha.2" }
-dioxus-liveview = { git = "https://github.com/dioxuslabs/dioxus", version = "0.6.0-alpha.2" }
-dioxus-rsx = { git = "https://github.com/dioxuslabs/dioxus", version = "0.6.0-alpha.2" }
-dioxus-signals = { git = "https://github.com/dioxuslabs/dioxus", version = "0.6.0-alpha.2" }
-dioxus-cli-config = { git = "https://github.com/dioxuslabs/dioxus", version = "0.6.0-alpha.2" }
-generational-box = { git = "https://github.com/dioxuslabs/dioxus", version = "0.6.0-alpha.2" }
-dioxus-hot-reload = { git = "https://github.com/dioxuslabs/dioxus", version = "0.6.0-alpha.2" }
-dioxus_server_macro = { git = "https://github.com/dioxuslabs/dioxus", version = "0.6.0-alpha.2" }
-dioxus-fullstack = { git = "https://github.com/dioxuslabs/dioxus", version = "0.6.0-alpha.2" }
+dioxus = { git = "https://github.com/dioxuslabs/dioxus" }
+dioxus-lib = { git = "https://github.com/dioxuslabs/dioxus" }
+dioxus-core = { git = "https://github.com/dioxuslabs/dioxus" }
+dioxus-core-macro = { git = "https://github.com/dioxuslabs/dioxus" }
+dioxus-config-macro = { git = "https://github.com/dioxuslabs/dioxus" }
+dioxus-router = { git = "https://github.com/dioxuslabs/dioxus" }
+dioxus-router-macro = { git = "https://github.com/dioxuslabs/dioxus" }
+dioxus-html = { git = "https://github.com/dioxuslabs/dioxus" }
+dioxus-html-internal-macro = { git = "https://github.com/dioxuslabs/dioxus" }
+dioxus-hooks = { git = "https://github.com/dioxuslabs/dioxus" }
+dioxus-web = { git = "https://github.com/dioxuslabs/dioxus" }
+dioxus-ssr = { git = "https://github.com/dioxuslabs/dioxus" }
+dioxus-desktop = { git = "https://github.com/dioxuslabs/dioxus" }
+dioxus-interpreter-js = { git = "https://github.com/dioxuslabs/dioxus" }
+dioxus-liveview = { git = "https://github.com/dioxuslabs/dioxus" }
+dioxus-rsx = { git = "https://github.com/dioxuslabs/dioxus" }
+dioxus-signals = { git = "https://github.com/dioxuslabs/dioxus" }
+dioxus-cli-config = { git = "https://github.com/dioxuslabs/dioxus" }
+generational-box = { git = "https://github.com/dioxuslabs/dioxus" }
+dioxus-hot-reload = { git = "https://github.com/dioxuslabs/dioxus" }
+dioxus_server_macro = { git = "https://github.com/dioxuslabs/dioxus" }
+dioxus-fullstack = { git = "https://github.com/dioxuslabs/dioxus" }
 
 manganis = { git = "https://github.com/DioxusLabs/manganis", branch = "jk/drop-remote-support" }
 manganis-common = { git = "https://github.com/DioxusLabs/manganis", branch = "jk/drop-remote-support" }

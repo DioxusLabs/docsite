@@ -65,5 +65,5 @@ pub fn ToOwnedMacro() -> Element {
         // ANCHOR_END: to_owned_macro
     };
 
-    rsx!{  }
+    rsx! {}
 }

@@ -40,6 +40,8 @@ pub mod input_controlled;
 #[cfg(not(feature = "doc_test"))]
 pub mod input_uncontrolled;
 #[cfg(not(feature = "doc_test"))]
+pub mod reactivity;
+#[cfg(not(feature = "doc_test"))]
 pub mod readme;
 #[cfg(not(feature = "doc_test"))]
 pub mod rendering_lists;
@@ -49,8 +51,6 @@ pub mod rsx_overview;
 pub mod spawn;
 #[cfg(not(feature = "doc_test"))]
 pub mod use_resource;
-#[cfg(not(feature = "doc_test"))]
-pub mod reactivity;
 
 // Check any examples we don't compile into the docs
 #[cfg(feature = "doc_test")]

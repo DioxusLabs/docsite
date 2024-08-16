@@ -1,9 +1,9 @@
 use dioxus::prelude::*;
 
+pub use component::ComponentDemo;
 pub use effect::EffectDemo;
 pub use memo::MemoDemo;
 pub use resource::ResourceDemo;
-pub use component::ComponentDemo;
 
 #[derive(Default)]
 struct LogState {
@@ -15,7 +15,10 @@ fn use_provide_log_state() -> Signal<LogState> {
 }
 
 fn log(message: impl ToString) {
-    consume_context::<Signal<LogState>>().write().logs.push(message.to_string());
+    consume_context::<Signal<LogState>>()
+        .write()
+        .logs
+        .push(message.to_string());
 }
 
 macro_rules! log {
@@ -50,7 +53,7 @@ fn ComponentWithLogs(children: Element) -> Element {
 
 mod signal {
     use super::*;
-    
+
     fn app() -> Element {
         // ANCHOR: signal
         let mut signal = use_signal(|| 0);
@@ -83,7 +86,7 @@ mod signal {
 
 mod effect {
     use super::*;
-    
+
     // ANCHOR: effect
     fn Effect() -> Element {
         // use_signal creates a tracked value called count
@@ -95,7 +98,7 @@ mod effect {
             // Whenever count changes, the effect will rerun
             log!("{current_count}");
         });
-        
+
         rsx! {
             button {
                 onclick: move |_| count += 1,
@@ -118,7 +121,7 @@ mod effect {
 
 mod memo {
     use super::*;
-    
+
     // ANCHOR: memo
     fn Memo() -> Element {
         let mut count = use_signal(|| 0);
@@ -134,7 +137,7 @@ mod memo {
             // and the effect will rerun when half_count changes
             log!("{half_count}");
         });
-        
+
         rsx! {
             button {
                 onclick: move |_| count += 1,
@@ -158,7 +161,7 @@ mod memo {
 
 mod resource {
     use super::*;
-    
+
     // ANCHOR: resource
     fn Resource() -> Element {
         let mut count = use_signal(|| 0);
@@ -176,9 +179,9 @@ mod resource {
             // half_count is itself a tracked value
             // When we read half_count, it becomes a dependency of the effect
             // and the effect will rerun when half_count changes
-            log!("{half_count:?}");
+            log!("{:?}", half_count());
         });
-        
+
         rsx! {
             button {
                 onclick: move |_| count += 1,
@@ -186,7 +189,7 @@ mod resource {
             }
 
             "Count is {count}"
-            "Half count is {half_count}"
+            "Half count is {half_count():?}"
         }
     }
     // ANCHOR_END: resource
@@ -202,11 +205,11 @@ mod resource {
 
 mod component {
     use super::*;
-    
+
     // ANCHOR: component
     fn Component() -> Element {
         let mut count = use_signal(|| 0);
-        
+
         rsx! {
             button {
                 onclick: move |_| count += 1,

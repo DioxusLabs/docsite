@@ -160,7 +160,7 @@ fn WslDependencies() -> Element {
                 li { "Add `export DISPLAY=:0` to `~/.zshrc`" }
                 li {
                     "Install Tauri's Linux dependencies found "
-                    Link { "here", to: "https://beta.tauri.app/start/prerequisites/" },
+                    Link { to: "https://beta.tauri.app/start/prerequisites/", "here" }
                     "."
                 }
                 li { "For file dialogs to work, you need to install a fallback like `zenity`"}

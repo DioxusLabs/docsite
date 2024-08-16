@@ -12,6 +12,7 @@
 
 ---
 - [Reference](reference/index.md)
+  - [Reactivity](reference/reactivity.md)
   - [RSX](reference/rsx.md)
   - [Components](reference/components.md)
   - [Props](reference/component_props.md)

@@ -1,8 +1,100 @@
-Here is an overview of the state management system in dioxus. This doesn't cover all the internals, but it should serve as a pretty good reference:
+# Reactivity
 
-# State
+Dioxus lets you define your app as a function of the current state. As you change the state, the parts of your app that depend on that state will automatically re-run. Reactivity is the core primitive that updates derived state.
 
-Signal is like a fancy version of RefCell<T> for UIs. Just like RefCell, it checks borrows at runtime. It has a bunch of helper methods to make it easier to use. Calling it like a function will clone the inner value. You can also call a few traits like AddAssign on it directly without writing to it manually.
+## Mutable State
+
+You can create mutable state in Dioxus with Signals. Signals are tracked values that automatically update your app when you change them. They form the skeleton of your app's state from which you can derive other state. Signals are often driven directly from user input through event handlers or async tasks.
+
+22
+You can create a signal with the `use_signal` hook:
+
+```rust
+{{#include src/doc_examples/reactivity.rs:signal}}
+```
+
+Once you have your signal, you can clone it by calling the signal like a function or get a reference to the inner value with the `.read()` method:
+
+```rust
+{{#include src/doc_examples/reactivity.rs:signal_read}}
+```
+
+Finally, you can set the value of the signal with the `.set()` method or get a mutable reference to the inner value with the `.write()` method:
+
+```rust
+{{#include src/doc_examples/reactivity.rs:signal_write}}
+```
+
+## Reactive Scopes
+
+The simplest reactive primitive in Dioxus is the `use_effect` hook. It creates a closure that is run any time a tracked value that is run inside the closure changes.
+
+
+Any value you read inside the closure will become a dependency of the effect. If the value changes, the effect will rerun.
+
+```rust
+{{#include src/doc_examples/reactivity.rs:effect}}
+```
+
+```inject-dioxus
+DemoFrame {
+    reactivity::EffectDemo {}
+}
+```
+
+## Derived State
+
+`use_memo` is a reactive primitive that lets you derive state from any tracked value. It takes a closure that computes the new state and returns a tracked value with the current state of the memo. Any time a dependency of the memo changes, the memo will rerun.
+
+The value you return from the closure will only change when the output of the closure changes (`PartialEq` between the old and new value returns false).
+
+```rust
+{{#include src/doc_examples/reactivity.rs:memo}}
+```
+
+```inject-dioxus
+DemoFrame {
+    reactivity::MemoDemo {}
+}
+```
+
+## Derived Async State
+
+`use_resource` is a reactive primitive that lets you derive state from any async closure. It takes an async closure that computes the new state and returns a tracked value with the current state of the resource. Any time a dependency of the resource changes, the resource will rerun.
+
+The value you return from the closure will only change when the state of the future changes. Unlike `use_memo`, the resource's output is not memoized with `PartialEq`.
+
+```rust
+{{#include src/doc_examples/reactivity.rs:resource}}
+```
+
+```inject-dioxus
+DemoFrame {
+    reactivity::ResourceDemo {}
+}
+```
+
+## Derived UI
+
+Components are functions that return some UI. They memorize the output of the function just like memos. Components keep track of any dependencies you read inside the component and rerun when those dependencies change.
+
+```rust
+{{#include src/doc_examples/reactivity.rs:component}}
+```
+
+```inject-dioxus
+DemoFrame {
+    reactivity::ComponentDemo {}
+}
+```
+
+
+<!-- 
+
+
+
+
+`Signal` acts a bit like a version of `RefCell` built for UIs. `Signal` it checks borrows at runtime just like `RefCell`. Unlike `RefCell`, it has a bunch of helper methods to make it easier to use. Calling it like a function will clone the inner value. You can also call a few traits like AddAssign on it directly without writing to it manually.
 
 ```rust
 // create a signal
@@ -14,31 +106,6 @@ signal.write() += 1;
 // read the signal
 signal.read();
 ```
-
-> Note: Signals are implemented with [generational-box](https://crates.io/crates/generational-box) which makes all values Copy even if the inner value is not Copy.
-> This is incredibly convenient for UI development, but it does come with some tradeoffs. The lifetime of the signal is tied to the lifetime of the component it was created in. If you drop the component that created the signal, the signal will be dropped as well. You might run into this if you try to pass a signal from a child component to a parent component and drop the child component. To avoid this you can create your signal higher up in your component tree, use global signals, or create a signal in a specific scope (like the `ScopeId::ROOT`) with [`Signal::new_in_scope`](https://docs.rs/dioxus/latest/dioxus/prelude/struct.Signal.html#method.new_in_scope) 
-> 
-> TLDR **Don't pass signals up in the component tree**. It will cause issues:
-> ```rust
-> fn MyComponent() {
->     let child_signal = use_state(|| None);
->     
->     rsx! {
->         IncrementButton {
->             child_signal
->         }
->     }
-> }
-> 
-> #[component]
-> fn IncrementButton(mut child_signal: Signal<Option<Signal<i32>>>) {
->     let signal_owned_by_child = use_state(|| 0);
->     // Don't do this: it may cause issues if you drop the child component
->     child_signal.write() = Some(signal_owned_by_child);
-> 
->     todo!()
-> }
-> ```
 
 ## Moving Around State
 
@@ -289,4 +356,4 @@ You can learn more about state management in dioxus in the [dioxus book](https:/
 
 If you want to see a more complex example of how state management comes together, check out the [todomvc example](https://github.com/DioxusLabs/dioxus/blob/main/examples/todomvc.rs).
 
-If you have any questions, feel free to ask in the [dioxus discord](https://discord.gg/XgGxMSkvUM).
+If you have any questions, feel free to ask in the [dioxus discord](https://discord.gg/XgGxMSkvUM). -->

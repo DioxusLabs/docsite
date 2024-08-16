@@ -30,21 +30,30 @@ macro_rules! log {
 #[component]
 fn ComponentWithLogs(children: Element) -> Element {
     let logs = use_provide_log_state();
+
     rsx! {
-        div { class: "w-full h-40 overflow-y-hidden flex flex-row justify-between",
-            div { class: "w-1/2 h-full", {children} }
-            div { class: "w-1/2 h-full",
+        TwoPanelComponent {
+            left: children,
+            right: rsx! {
                 div { class: "p-2 text-center border-gray-200 dark:border-gray-800",
                     "Logs"
                 }
-                div { class: "h-full p-4 overflow-y-auto border-gray-200 dark:border-gray-800",
-                    for log in logs.read().logs.iter() {
-                        div { class: "p-2 border-b border-gray-200 dark:border-gray-800",
-                            "{log}"
-                        }
+                for log in logs.read().logs.iter() {
+                    div { class: "p-2 border-b border-gray-200 dark:border-gray-800",
+                        "{log}"
                     }
                 }
             }
+        }
+    }
+}
+
+#[component]
+fn TwoPanelComponent(left: Element, right: Element) -> Element {
+    rsx! {
+        div { class: "w-full h-40 overflow-y-hidden flex flex-row justify-between",
+            div { class: "w-1/2 h-full", {left} }
+            div { class: "w-1/2 h-full", {right} }
         }
     }
 }
@@ -204,8 +213,27 @@ mod component {
     // ANCHOR_END: component
 
     pub fn ComponentDemo() -> Element {
+        let mut count = use_signal(|| 0);
+
         rsx! {
-            Component {}
+            TwoPanelComponent {
+                left: rsx! {
+                    button { onclick: move |_| count += 1, "Change Signal" }
+
+                    div { "Count: {count}" }
+                },
+                right: rsx! {
+                    div { class: "p-2 text-center border-gray-200 dark:border-gray-800",
+                        "UI"
+                    }
+                    for count in 0..count() {
+                        div {
+                            class: "p-2 border-b border-gray-200 dark:border-gray-800",
+                            div { "Count: {count}" }
+                        }
+                    }
+                }
+            }
         }
     }
 }

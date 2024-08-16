@@ -226,7 +226,7 @@ mod component {
                     div { class: "p-2 text-center border-gray-200 dark:border-gray-800",
                         "UI"
                     }
-                    for count in (0..count()).rev() {
+                    for count in (0..=count()).rev() {
                         div {
                             class: "p-2 border-b border-gray-200 dark:border-gray-800",
                             div { "Count: {count}" }

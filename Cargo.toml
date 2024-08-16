@@ -97,9 +97,9 @@ dioxus-hot-reload = { git = "https://github.com/dioxuslabs/dioxus" }
 dioxus_server_macro = { git = "https://github.com/dioxuslabs/dioxus" }
 dioxus-fullstack = { git = "https://github.com/dioxuslabs/dioxus" }
 
-manganis = { git = "https://github.com/DioxusLabs/manganis", branch = "jk/drop-remote-support" }
-manganis-common = { git = "https://github.com/DioxusLabs/manganis", branch = "jk/drop-remote-support" }
-manganis-macro = { git = "https://github.com/DioxusLabs/manganis", branch = "jk/drop-remote-support" }
+manganis = { git = "https://github.com/DioxusLabs/manganis" }
+manganis-common = { git = "https://github.com/DioxusLabs/manganis" }
+manganis-macro = { git = "https://github.com/DioxusLabs/manganis" }
 
 [profile.release]
 lto = true

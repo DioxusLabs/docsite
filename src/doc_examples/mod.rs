@@ -40,6 +40,8 @@ pub mod input_controlled;
 #[cfg(not(feature = "doc_test"))]
 pub mod input_uncontrolled;
 #[cfg(not(feature = "doc_test"))]
+pub mod moving_state_around;
+#[cfg(not(feature = "doc_test"))]
 pub mod reactivity;
 #[cfg(not(feature = "doc_test"))]
 pub mod readme;

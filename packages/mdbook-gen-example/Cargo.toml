@@ -4,8 +4,8 @@ version = "0.0.0"
 edition = "2021"
 
 [build-dependencies]
-prettyplease = "0.2.20"
 mdbook-gen = { path = "../mdbook-gen" }
 mdbook-shared = { path = "../mdbook-shared" }
 dioxus-autofmt = { version = "0.6.0-alpha.2" }
+prettyplease = "0.2.20"
 syn = "2.0"

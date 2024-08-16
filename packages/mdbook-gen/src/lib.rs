@@ -15,6 +15,18 @@ use crate::transform_book::write_book_with_routes;
 mod rsx;
 mod transform_book;
 
+/// Generate the contents of the mdbook from a router
+pub fn generate_router_build_script(mdbook_dir: PathBuf) -> String {
+    let file_src = generate_router_as_file(mdbook_dir.clone(), MdBook::new(mdbook_dir).unwrap());
+
+    let prettifed = prettyplease::unparse(&file_src);
+    let as_file = syn::parse_file(&prettifed).unwrap();
+    let fmts = dioxus_autofmt::try_fmt_file(&prettifed, &as_file, Default::default()).unwrap();
+    let out = dioxus_autofmt::apply_formats(&prettifed, fmts);
+
+    out
+}
+
 /// Load an mdbook from the filesystem using the target tokens
 /// ```ignore
 ///

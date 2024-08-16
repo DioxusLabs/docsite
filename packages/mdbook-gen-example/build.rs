@@ -12,6 +12,7 @@ fn main() {
 
     let mdbook_dir = manifest_dir.join("./example-book").canonicalize().unwrap();
     let out_dir = current_dir().unwrap().join("gen");
+
     let file_src = generate_router_as_file(mdbook_dir.clone(), MdBook::new(mdbook_dir).unwrap());
     std::fs::create_dir_all(&out_dir).unwrap();
     let prettifed = prettyplease::unparse(&file_src);

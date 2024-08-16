@@ -1,9 +1,9 @@
 use std::path::Path;
 use std::path::PathBuf;
 
+use anyhow::Context;
 use convert_case::{Case, Casing};
 use mdbook_shared::MdBook;
-use proc_macro::TokenStream;
 use proc_macro2::Ident;
 use proc_macro2::Span;
 use proc_macro2::TokenStream as TokenStream2;
@@ -16,78 +16,45 @@ use crate::transform_book::write_book_with_routes;
 mod rsx;
 mod transform_book;
 
-#[proc_macro]
-pub fn mdbook_router(input: TokenStream) -> TokenStream {
-    match syn::parse::<LitStr>(input).map(load_book_from_fs) {
-        Ok(Ok((path, book))) => generate_router(path, book).into(),
-        Ok(Err(err)) => write_book_err(err),
-        Err(err) => err.to_compile_error().into(),
-    }
-}
-
-fn write_book_err(err: anyhow::Error) -> TokenStream {
-    let err = err.to_string();
-    println!("{}", err);
-    quote! { compile_error!(#err) }.to_token_stream().into()
-}
-
 /// Load an mdbook from the filesystem using the target tokens
 /// ```ignore
 ///
 ///
 /// ```
-fn load_book_from_fs(input: LitStr) -> anyhow::Result<(PathBuf, mdbook_shared::MdBook<PathBuf>)> {
+pub fn load_book_from_fs(
+    input: LitStr,
+) -> anyhow::Result<(PathBuf, mdbook_shared::MdBook<PathBuf>)> {
     let user_dir = input.value().parse::<PathBuf>()?;
     let manifest_dir = PathBuf::from(std::env::var("CARGO_MANIFEST_DIR")?);
     let path = manifest_dir.join(user_dir);
+    let path = path.canonicalize().with_context(|| {
+        anyhow::anyhow!(
+            "Failed to canonicalize the path to the book at {:?}",
+            path.display()
+        )
+    })?;
+
     Ok((path.clone(), MdBook::new(path)?))
 }
 
-// const STATE_DIR: &str = env!("DIOXUS_ASSET_DIR");
+pub fn generate_router_as_file(
+    book_path: PathBuf,
+    book: mdbook_shared::MdBook<PathBuf>,
+) -> syn::File {
+    let router = generate_router(book_path, book);
 
-// /// Returns the path of the internal file that would be used to
-// /// store state for the specified key, as a [PathBuf](std::path::PathBuf).
-// /// You should never use this directly unless you know what you're doing.
-// fn state_file_path(key: &str) -> PathBuf {
-//     let filename = format!("mdbook_asset_{}", key);
-//     let mut buf = PathBuf::new();
-//     buf.push(STATE_DIR);
-//     buf.push(filename.as_str());
-//     buf
-// }
+    syn::parse_quote! {
+        #router
+    }
+}
 
-// fn proc_append_state(key: &str, value: &str) -> std::io::Result<()> {
-//     let value = format!("{}\n", value.replace('\n', "\\n"));
-//     let state_file = state_file_path(key);
-//     match OpenOptions::new()
-//         .append(true)
-//         .create(true)
-//         .open(state_file)
-//     {
-//         Ok(mut file) => return file.write_all(value.as_bytes()),
-//         Err(e) => Err(e),
-//     }
-// }
-
-// fn clear_assets_file(key: &str) -> std::io::Result<()> {
-//     let state_file = state_file_path(key);
-//     match OpenOptions::new()
-//         .write(true)
-//         .truncate(true)
-//         .open(state_file)
-//     {
-//         Ok(mut file) => file.write_all(&[]),
-//         Err(e) => Err(e),
-//     }
-// }
-
-fn generate_router(book_path: PathBuf, book: mdbook_shared::MdBook<PathBuf>) -> TokenStream2 {
+pub fn generate_router(book_path: PathBuf, book: mdbook_shared::MdBook<PathBuf>) -> TokenStream2 {
     let mdbook = write_book_with_routes(book_path, &book);
 
     let book_pages = book.pages().iter().map(|(_, page)| {
         let name = path_to_route_variant(&page.url);
         // Rsx doesn't work very well in macros because the path for all the routes generated point to the same characters. We manually expand rsx here to get around that issue.
-        match rsx::parse(page.url.clone(), &page.raw, ) {
+        match rsx::parse(page.url.clone(), &page.raw) {
             Ok(rsx) => {
                 quote! {
                     #[component(no_case_check)]

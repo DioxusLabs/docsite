@@ -1,0 +1,11 @@
+[package]
+name = "mdbook-gen-example"
+version = "0.0.0"
+edition = "2021"
+publish = false
+
+[build-dependencies]
+prettyplease = "0.2.20"
+mdbook-gen = { path = "../mdbook-gen" }
+mdbook-shared = { path = "../mdbook-shared" }
+

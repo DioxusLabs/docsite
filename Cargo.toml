@@ -1,2 +1,14 @@
 [workspace]
-members = ["mdbook-macro", "use-mdbook", "mdbook-shared", "syntect-html"]
+resolver = "2"
+members = [
+    "packages/mdbook-macro",
+    "packages/use-mdbook",
+    "packages/mdbook-shared",
+    "packages/syntect-html",
+    "packages/mdbook-gen",
+    "packages/mdbook-gen-example",
+]
+
+
+[workspace.dependencies]
+mdbook-gen = { path = "packages/mdbook-gen" }

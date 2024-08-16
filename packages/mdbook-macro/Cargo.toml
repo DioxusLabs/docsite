@@ -22,6 +22,7 @@ postcard = { version = "1.0.4", features = ["use-std"] }
 pulldown-cmark = "0.9.3"
 syntect = "5.0"
 dioxus-rsx = { version = "0.6.0-alpha.2" }
+mdbook-gen = { workspace = true }
 
 [features]
 manganis = []

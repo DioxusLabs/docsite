@@ -3,6 +3,9 @@ use dioxus::prelude::*;
 pub use component::ComponentDemo;
 pub use effect::EffectDemo;
 pub use memo::MemoDemo;
+pub use non_reactive_state::MakingPropsReactiveDemo;
+pub use non_reactive_state::NonReactiveDemo;
+pub use non_reactive_state::UseReactiveDemo;
 pub use resource::ResourceDemo;
 
 #[derive(Default)]
@@ -238,6 +241,153 @@ mod component {
                         div {
                             class: "p-2 border-b border-gray-200 dark:border-gray-800",
                             div { "Count: {count}" }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+mod non_reactive_state {
+    use super::*;
+    pub use making_props_reactive::*;
+    pub use non_reactive::*;
+    pub use use_reactive::*;
+
+    mod non_reactive {
+        use super::*;
+        // ANCHOR: non_reactive
+        fn Component() -> Element {
+            let mut count = use_signal(|| 0);
+
+            rsx! {
+                button { onclick: move |_| count += 1, "Change Signal" }
+
+                Count { count: count() }
+            }
+        }
+
+        // The count reruns the component when it changes, but it is not a tracked value
+        #[component]
+        fn Count(count: i32) -> Element {
+            // When you read count inside the memo, it does not subscribe to the count signal
+            // because the value is not reactive
+            let double_count = use_memo(move || count * 2);
+
+            rsx! {
+                div { "Double count: {double_count}" }
+            }
+        }
+        // ANCHOR_END: non_reactive
+
+        pub fn NonReactiveDemo() -> Element {
+            let mut count = use_signal(|| 0);
+
+            rsx! {
+                TwoPanelComponent {
+                    left: rsx! {
+                        button { onclick: move |_| count += 1, "Change Signal" }
+
+                        Count { count: count() }
+                    },
+                    right: rsx! {
+                        div { class: "p-2 text-center border-gray-200 dark:border-gray-800",
+                            "UI"
+                        }
+                        for count in (0..=count()).rev() {
+                            div {
+                                class: "p-2 border-b border-gray-200 dark:border-gray-800",
+                                Count { count }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    mod use_reactive {
+        use super::*;
+
+        // ANCHOR: use_reactive
+        #[component]
+        fn Count(count: i32) -> Element {
+            // You can manually track a non-reactive value with the use_reactive hook
+            let double_count = use_memo(
+                // Use reactive takes a tuple of dependencies and returns a reactive closure
+                use_reactive!(|(count,)| count * 2),
+            );
+
+            rsx! {
+                div { "Double count: {double_count}" }
+            }
+        }
+        // ANCHOR_END: use_reactive
+
+        pub fn UseReactiveDemo() -> Element {
+            let mut count = use_signal(|| 0);
+
+            rsx! {
+                TwoPanelComponent {
+                    left: rsx! {
+                        button { onclick: move |_| count += 1, "Change Signal" }
+
+                        Count { count: count() }
+                    },
+                    right: rsx! {
+                        div { class: "p-2 text-center border-gray-200 dark:border-gray-800",
+                            "UI"
+                        }
+                        for count in (0..=count()).rev() {
+                            div {
+                                class: "p-2 border-b border-gray-200 dark:border-gray-800",
+                                Count { count }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    mod making_props_reactive {
+        use super::*;
+
+        // ANCHOR: making_props_reactive
+        // You can track props by wrapping the type in a ReadOnlySignal
+        // Dioxus will automatically convert T into ReadOnlySignal<T> when you pass
+        // props to the component
+        #[component]
+        fn Count(count: ReadOnlySignal<i32>) -> Element {
+            // Then when you read count inside the memo, it subscribes to the count signal
+            let double_count = use_memo(move || count() * 2);
+
+            rsx! {
+                div { "Double count: {double_count}" }
+            }
+        }
+        // ANCHOR_END: making_props_reactive
+
+        pub fn MakingPropsReactiveDemo() -> Element {
+            let mut count = use_signal(|| 0);
+
+            rsx! {
+                TwoPanelComponent {
+                    left: rsx! {
+                        button { onclick: move |_| count += 1, "Change Signal" }
+
+                        Count { count: count() }
+                    },
+                    right: rsx! {
+                        div { class: "p-2 text-center border-gray-200 dark:border-gray-800",
+                            "UI"
+                        }
+                        for count in (0..=count()).rev() {
+                            div {
+                                class: "p-2 border-b border-gray-200 dark:border-gray-800",
+                                Count { count }
+                            }
                         }
                     }
                 }

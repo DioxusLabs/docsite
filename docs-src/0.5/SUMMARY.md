@@ -12,8 +12,7 @@
 
 ---
 - [Reference](reference/index.md)
-  - [Reactivity](reference/reactivity.md)
-  - [Moving Around State](reference/moving_around_state.md)
+  - [Managing State](reference/managing_state.md)
   - [RSX](reference/rsx.md)
   - [Components](reference/components.md)
   - [Props](reference/component_props.md)

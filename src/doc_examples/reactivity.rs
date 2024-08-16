@@ -205,8 +205,16 @@ mod component {
         rsx! {
             button { onclick: move |_| count += 1, "Change Signal" }
 
-            // Since we read count inside the component, it becomes a dependency of the component
-            // Whenever count changes, the component will rerun
+            // Since we read count inside Component, it becomes a dependency of Component
+            // Whenever count changes, Component will rerun
+            Count { count: count() }
+        }
+    }
+
+    // Components automatically memorize their props. If the props change, Count will rerun
+    #[component]
+    fn Count(count: i32) -> Element {
+        rsx! {
             div { "Count: {count}" }
         }
     }

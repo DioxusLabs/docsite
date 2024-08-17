@@ -360,13 +360,15 @@ impl<'a, I: Iterator<Item = Event<'a>>> RsxMarkdownParser<'a, I> {
                 let dest: &str = &dest;
                 let title = escape_text(&title);
 
-                #[cfg(not(feature = "manganis"))]
+                // #[cfg(not(feature = "manganis"))]
                 let url: syn::Expr = {
                     let dest = escape_text(dest);
                     syn::parse_quote!(#dest)
                 };
-                #[cfg(feature = "manganis")]
-                let url: syn::Expr = syn::parse_quote! { asset!(#dest) };
+                // #[cfg(feature = "manganis")]
+                // let url: syn::Expr = syn::parse_quote! { asset!(#dest) };
+                // #[cfg(feature = "manganis")]
+                // let url: syn::Expr = syn::parse_quote! { asset!(#dest) };
 
                 self.start_node(parse_quote! {
                     img {

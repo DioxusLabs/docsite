@@ -37,18 +37,12 @@ impl Default for BookRoute {
 pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRoute>> = use_mdbook::Lazy::new(||
 {
     {
-        const _: &[u8] = include_bytes!(
-            "/Users/jonkelley/Development/ecosystem-dioxus/include_mdbook/example-book/SUMMARY.md",
-        );
         let mut page_id_mapping = ::std::collections::HashMap::new();
         let mut pages = Vec::new();
         pages
             .push((
                 0usize,
                 {
-                    const _: &[u8] = include_bytes!(
-                        "/Users/jonkelley/Development/ecosystem-dioxus/include_mdbook/example-book/en/./chapter_1.md",
-                    );
                     ::use_mdbook::mdbook_shared::Page {
                         title: "Chapter 1".to_string(),
                         url: BookRoute::Chapter1 {},
@@ -81,9 +75,6 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
             .push((
                 1usize,
                 {
-                    const _: &[u8] = include_bytes!(
-                        "/Users/jonkelley/Development/ecosystem-dioxus/include_mdbook/example-book/en/./chapter_2.md",
-                    );
                     ::use_mdbook::mdbook_shared::Page {
                         title: "Chapter 2".to_string(),
                         url: BookRoute::Chapter2 {},

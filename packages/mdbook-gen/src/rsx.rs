@@ -366,7 +366,7 @@ impl<'a, I: Iterator<Item = Event<'a>>> RsxMarkdownParser<'a, I> {
                     syn::parse_quote!(#dest)
                 };
                 #[cfg(feature = "manganis")]
-                let url: syn::Expr = syn::parse_quote! { manganis::mg!(file(#dest)) };
+                let url: syn::Expr = syn::parse_quote! { asset!(#dest) };
 
                 self.start_node(parse_quote! {
                     img {

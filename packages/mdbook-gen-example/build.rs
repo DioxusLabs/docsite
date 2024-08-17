@@ -13,12 +13,7 @@ fn main() {
     let mdbook_dir = manifest_dir.join("./example-book").canonicalize().unwrap();
     let out_dir = current_dir().unwrap().join("gen");
 
-    let file_src = generate_router_as_file(mdbook_dir.clone(), MdBook::new(mdbook_dir).unwrap());
-    std::fs::create_dir_all(&out_dir).unwrap();
-    let prettifed = prettyplease::unparse(&file_src);
-    let as_file = syn::parse_file(&prettifed).unwrap();
-    let fmts = dioxus_autofmt::try_fmt_file(&prettifed, &as_file, Default::default()).unwrap();
-    let out = dioxus_autofmt::apply_formats(&prettifed, fmts);
+    let out = mdbook_gen::generate_router_build_script(mdbook_dir);
 
     std::fs::write(out_dir.join("router.rs"), out).unwrap();
 }

@@ -36,7 +36,7 @@ pub fn write_book_with_routes(
     let out = quote! {
         {
             // Let the compiler know that we care about the index file
-            const _: &[u8] = include_bytes!(#index_path);
+            // const _: &[u8] = include_bytes!(#index_path);
             let mut page_id_mapping = ::std::collections::HashMap::new();
             let mut pages = Vec::new();
             #(#pages)*
@@ -175,7 +175,7 @@ fn write_page_with_routes(book_path: &Path, book: &mdbook_shared::Page<PathBuf>)
     quote! {
         {
             // This lets the rust compile know that we read the file
-            const _: &[u8] = include_bytes!(#path_str);
+            // const _: &[u8] = include_bytes!(#path_str);
             ::use_mdbook::mdbook_shared::Page {
                 title: #title.to_string(),
                 url: #url,

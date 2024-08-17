@@ -245,17 +245,9 @@ impl<'a, I: Iterator<Item = Event<'a>>> RsxMarkdownParser<'a, I> {
                         &syntect::html::highlighted_html_for_string(&code, &ss, syntax, theme)
                             .unwrap(),
                     );
-                    self.start_node(parse_quote!{
-                        div {
-                            style: "position: relative;",
-                            div {
-                                dangerous_inner_html: #html
-                            }
-                            button {
-                                style: "position: absolute; top: 0; right: 0; background: rgba(0, 0, 0, 0.75); color: white; border: 1px solid white; padding: 0.25em;",
-                                "onclick": "navigator.clipboard.writeText(this.previousElementSibling.innerText)",
-                                "Copy"
-                            }
+                    self.start_node(parse_quote! {
+                        CodeBlock {
+                            contents: #html,
                         }
                     });
                 }

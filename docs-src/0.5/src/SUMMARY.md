@@ -77,11 +77,11 @@
 	- [SDK](router/reference/sdk.md)
 	- [Fullstack and the server](router/reference/fullstack-and-the-server.md) -->
   - [Assets](reference/assets.md)
+  - [Web](reference/web/index.md)
   - [Desktop](reference/desktop/index.md)
   - [Mobile](reference/mobile/index.md)
     - [APIs](reference/mobile/apis.md)
-  - [Web](reference/web/index.md)
-  - [SSR](reference/ssr.md)
+  - [Streaming and SSR](reference/ssr.md)
   - [Fullstack](reference/fullstack/index.md)
   	- [Server Functions](reference/fullstack/server_functions.md)
   	- [Extractors](reference/fullstack/extractors.md)

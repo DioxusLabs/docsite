@@ -1,11 +1,8 @@
 use crate::*;
-use dioxus::prelude::*;
 
-pub(crate) mod call_to_action;
 pub(crate) mod featured_examples;
 pub(crate) mod hero;
 pub(crate) mod snippets;
-pub(crate) mod value_add;
 
 #[component]
 pub(crate) fn Homepage() -> Element {
@@ -19,7 +16,6 @@ pub(crate) fn Homepage() -> Element {
         }
     }
 }
-
 
 fn AvailablePlatforms() -> Element {
     rsx! {

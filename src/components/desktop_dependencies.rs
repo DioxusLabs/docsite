@@ -30,7 +30,7 @@ impl Platform {
     ];
 }
 
-pub(crate) fn DesktopDependencies() -> Element {
+pub fn DesktopDependencies() -> Element {
     let mut current_platform = use_signal(|| Platform::Windows);
 
     #[cfg(feature = "web")]

@@ -3404,7 +3404,7 @@ checksum = "0e7465ac9959cc2b1404e8e2367b43684a6d13790fe23056cc8c6c5a6b7bcb94"
 [[package]]
 name = "mdbook-gen"
 version = "0.0.0"
-source = "git+https://github.com/dioxuslabs/include_mdbook?branch=jk/build-gen#d7b4fbfc7654ebbd4f14e4326b7d7770d99dc340"
+source = "git+https://github.com/dioxuslabs/include_mdbook?branch=jk/build-gen#d9480f140f407771f998e818a8e3f466c483659c"
 dependencies = [
  "anyhow",
  "convert_case 0.6.0",
@@ -3426,7 +3426,7 @@ dependencies = [
 [[package]]
 name = "mdbook-macro"
 version = "0.1.0"
-source = "git+https://github.com/dioxuslabs/include_mdbook?branch=jk/build-gen#d7b4fbfc7654ebbd4f14e4326b7d7770d99dc340"
+source = "git+https://github.com/dioxuslabs/include_mdbook?branch=jk/build-gen#d9480f140f407771f998e818a8e3f466c483659c"
 dependencies = [
  "anyhow",
  "convert_case 0.6.0",
@@ -3447,7 +3447,7 @@ dependencies = [
 [[package]]
 name = "mdbook-shared"
 version = "0.1.0"
-source = "git+https://github.com/dioxuslabs/include_mdbook?branch=jk/build-gen#d7b4fbfc7654ebbd4f14e4326b7d7770d99dc340"
+source = "git+https://github.com/dioxuslabs/include_mdbook?branch=jk/build-gen#d9480f140f407771f998e818a8e3f466c483659c"
 dependencies = [
  "anyhow",
  "bytes",
@@ -5309,7 +5309,7 @@ dependencies = [
 [[package]]
 name = "syntect-html"
 version = "0.1.0"
-source = "git+https://github.com/dioxuslabs/include_mdbook?branch=jk/build-gen#d7b4fbfc7654ebbd4f14e4326b7d7770d99dc340"
+source = "git+https://github.com/dioxuslabs/include_mdbook?branch=jk/build-gen#d9480f140f407771f998e818a8e3f466c483659c"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -5941,7 +5941,7 @@ checksum = "daf8dba3b7eb870caf1ddeed7bc9d2a049f3cfdfae7cb521b087cc33ae4c49da"
 [[package]]
 name = "use-mdbook"
 version = "0.1.0"
-source = "git+https://github.com/dioxuslabs/include_mdbook?branch=jk/build-gen#d7b4fbfc7654ebbd4f14e4326b7d7770d99dc340"
+source = "git+https://github.com/dioxuslabs/include_mdbook?branch=jk/build-gen#d9480f140f407771f998e818a8e3f466c483659c"
 dependencies = [
  "lazy_static",
  "mdbook-macro",

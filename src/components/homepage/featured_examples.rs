@@ -1,6 +1,6 @@
 use dioxus::prelude::*;
 
-pub(crate) fn FeaturedExamples() -> Element {
+pub fn FeaturedExamples() -> Element {
     // todo: maybe feature this somewhere else?
     // FeaturedExample {
     //     title: "JS Benchmark",

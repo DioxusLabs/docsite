@@ -1,14 +1,10 @@
 use crate::docs::LAZY_BOOK;
 use crate::*;
-use dioxus::prelude::*;
-use dioxus_material_icons::MaterialIcon;
 use dioxus_material_icons::MaterialIconColor;
-use mdbook_shared::Page;
 use mdbook_shared::SummaryItem;
 
 pub(crate) static HIGHLIGHT_DOCS_LAYOUT: GlobalSignal<bool> = Signal::global(|| false);
 pub(crate) static SHOW_SIDEBAR: GlobalSignal<bool> = Signal::global(|| false);
-pub(crate) static HIGHLIGHT_DOCS_CONTENT: GlobalSignal<bool> = Signal::global(|| false);
 
 /// The Markdown file path needs to be appended to this, including the first slash!
 const GITHUB_API_URL: &str =
@@ -287,31 +283,6 @@ fn Content() -> Element {
     }
 }
 
-fn ContentFooter() -> Element {
-    rsx! {
-        div { class: "chapter-nav",
-            button { "left" }
-            button { "right" }
-        }
-    }
-}
-
-fn BreadCrumbs() -> Element {
-    // parse out the route after the version and language
-    let route: Route = use_route();
-
-    rsx! {
-        h2 { class: "font-semibold pb-4",
-            for segment in route.to_string().split('/').skip(3).filter(|f| !f.is_empty()) {
-                if segment != "index" {
-                    Link { to: Route::Homepage {}, class: "text-blue-600", "{segment}" }
-                    " / "
-                }
-            }
-        }
-    }
-}
-
 /// Get the book URL from the current URL
 /// Ignores language and version (for now)
 fn use_book() -> BookRoute {
@@ -320,14 +291,6 @@ fn use_book() -> BookRoute {
         Route::Docs { child } => child,
         _ => unreachable!(),
     }
-}
-
-fn default_page() -> &'static Page<BookRoute> {
-    let id = LAZY_BOOK
-        .page_id_mapping
-        .get(&BookRoute::default())
-        .unwrap();
-    LAZY_BOOK.pages.get(id.0).unwrap()
 }
 
 #[component]

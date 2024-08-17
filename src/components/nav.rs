@@ -1,11 +1,8 @@
 use crate::*;
 use dioxus::html::input_data::keyboard_types::Key;
-use dioxus::prelude::*;
 use dioxus_material_icons::{MaterialIcon, MaterialIconColor};
 use std::ops::Deref;
 
-pub(crate) static HIGHLIGHT_NAV_LAYOUT: GlobalSignal<bool> = Signal::global(|| false);
-pub(crate) static SHOW_NAV: GlobalSignal<bool> = Signal::global(|| false);
 pub(crate) static SHOW_SEARCH: GlobalSignal<bool> = Signal::global(|| false);
 pub(crate) static LOGGED_IN: GlobalSignal<bool> = Signal::global(|| false);
 pub(crate) static SHOW_DOCS_NAV: GlobalSignal<bool> = Signal::global(|| false);
@@ -13,9 +10,7 @@ pub(crate) static SHOW_DOCS_NAV: GlobalSignal<bool> = Signal::global(|| false);
 pub(crate) fn Nav() -> Element {
     rsx! {
         SearchModal {}
-        header {
-            class: "sticky top-0 z-30 bg-white bg-opacity-80 dark:text-gray-200 dark:bg-ideblack dark:bg-opacity-80 border-b dark:border-stone-700 h-16 backdrop-blur-sm",
-            class: if HIGHLIGHT_NAV_LAYOUT() { "border border-orange-600 rounded-md" },
+        header { class: "sticky top-0 z-30 bg-white bg-opacity-80 dark:text-gray-200 dark:bg-ideblack dark:bg-opacity-80 border-b dark:border-stone-700 h-16 backdrop-blur-sm",
             div { class: "lg:py-2 px-2 max-w-screen-2xl mx-auto flex items-center justify-between text-sm leading-6 h-16",
                 button {
                     class: "bg-zinc-300 rounded-lg p-1 mr-4 lg:hidden my-3 h-10 flex items-center text-lg z-[100]",
@@ -121,11 +116,11 @@ fn LinkList() -> Element {
 
 fn Search() -> Element {
     rsx! {
-        div { class: "relative md:w-full max-w-[20rem] xl:max-w-[20rem] 2xl:max-w-[20rem] sm:mx-auto sm:flex-1 text-md font-light leading-none",
+        div { class: "relative md:w-full max-w-[20rem] xl:max-w-[20rem] 2xl:max-w-[20rem] sm:mx-auto sm:flex-1 text-sm font-light leading-none",
             // Pop up a modal
             button {
                 // Pop up a modal
-                class: "bg-gray-100 rounded-lg p-2 sm:w-full text-left text-gray-400 my-auto sm:flex sm:flex-row sm:align-middle sm:justify-between",
+                class: "bg-gray-100 rounded-lg p-1 sm:w-full text-left text-gray-400 my-auto sm:flex sm:flex-row sm:align-middle sm:justify-between",
                 onclick: move |_| {
                     *SHOW_SEARCH.write() = true;
                 },
@@ -152,12 +147,14 @@ fn SearchModal() -> Element {
     let mut results = use_signal(|| SEARCH_INDEX.search(&search_text.read()));
 
     let mut last_key_press = use_signal(|| {
-        #[cfg(not(target_arch = "wasm32"))]
-        return 0.;
-        js_sys::Date::now()
+        if cfg!(target_arch = "wasm32") {
+            js_sys::Date::now()
+        } else {
+            0.
+        }
     });
 
-    use_resource(move || {
+    _ = use_resource(move || {
         async move {
             _ = search_text();
 
@@ -211,8 +208,8 @@ fn SearchModal() -> Element {
                                     oninput: move |evt| {
                                         search_text.set(evt.value());
                                     },
-                                    onmounted: move |evt| {
-                                        evt.set_focus(true);
+                                    onmounted: move |evt| async move {
+                                        _ = evt.set_focus(true).await;
                                     },
                                     class: "flex-grow bg-transparent border-none outline-none text-xl pl-2 text-gray-800 dark:text-gray-100",
                                     placeholder: "Search the docs",

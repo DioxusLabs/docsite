@@ -2,51 +2,21 @@
 
 use dioxus::html::input_data::keyboard_types::{Key, Modifiers};
 use dioxus::prelude::*;
-pub(crate) use docs::BookRoute;
+pub use docs::BookRoute;
 use serde::{Deserialize, Serialize};
 
-mod doc_examples;
-pub(crate) mod icons;
-pub(crate) mod shortcut;
-pub(crate) mod sitemap;
-mod snippets;
-
-pub(crate) use components::*;
-pub(crate) mod components {
-    pub(crate) mod awesome;
-    pub use awesome::*;
-    pub(crate) mod blog;
-    pub use blog::*;
-    pub(crate) mod deploy;
-    pub use deploy::*;
-    pub(crate) mod desktop_dependencies;
-    pub use desktop_dependencies::*;
-    pub(crate) mod footer;
-    pub use footer::*;
-    pub(crate) mod homepage;
-    pub use homepage::*;
-    pub(crate) mod learn;
-    pub use learn::*;
-    pub(crate) mod nav;
-    pub use nav::*;
-    pub(crate) mod notfound;
-    pub use notfound::*;
-    pub(crate) mod tutorials;
-    pub use tutorials::*;
-    pub(crate) mod playground;
-    pub use playground::*;
-}
+pub mod components;
+pub mod doc_examples;
+pub mod icons;
+pub mod shortcut;
+pub mod snippets;
+pub use components::*;
 
 #[component]
 fn HeaderFooter() -> Element {
-    let cb = use_callback(|_| {
-        *SHOW_SEARCH.write() = true;
-    });
-
+    let cb = use_callback(|_| *SHOW_SEARCH.write() = true);
     shortcut::use_shortcut(Key::Character("/".to_string()), Modifiers::CONTROL, {
-        move || {
-            cb.call(());
-        }
+        move || cb.call(())
     });
 
     rsx! {
@@ -87,16 +57,9 @@ fn HeaderFooter() -> Element {
 
 #[derive(Clone, Routable, PartialEq, Eq, Serialize, Deserialize, Debug)]
 #[rustfmt::skip]
-pub(crate) enum Route {
+pub enum Route {
     #[layout(HeaderFooter)]
         #[route("/")]
-        #[redirect("/platforms", || Route::Homepage {})]
-        #[redirect("/platforms/web", || Route::Homepage {})]
-        #[redirect("/platforms/desktop", || Route::Homepage {})]
-        #[redirect("/platforms/liveview", || Route::Homepage {})]
-        #[redirect("/platforms/mobile", || Route::Homepage {})]
-        #[redirect("/platforms/ssr", || Route::Homepage {})]
-        #[redirect("/platforms/tui", || Route::Homepage {})]
         Homepage {},
 
         #[route("/play")]
@@ -107,9 +70,6 @@ pub(crate) enum Route {
 
         #[route("/deploy")]
         Deploy {},
-
-        #[route("/tutorials/:id")]
-        Tutorial { id: usize },
 
         #[nest("/blog")]
             #[route("/")]
@@ -157,7 +117,7 @@ pub(crate) enum Route {
     Err404 { segments: Vec<String> },
 }
 
-pub(crate) fn app() -> Element {
+pub fn app() -> Element {
     rsx! {
         Router::<Route> {}
     }
@@ -197,63 +157,29 @@ mod docs {
 
     fn LayoutsExplanation() -> Element {
         rsx! {
-            pre {
-                onmouseenter: move |_| {
-                    *HIGHLIGHT_NAV_LAYOUT.write() = true;
-                    *HIGHLIGHT_DOCS_LAYOUT.write() = true;
-                    *HIGHLIGHT_DOCS_CONTENT.write() = true;
-                },
-                onmouseleave: move |_| {
-                    *HIGHLIGHT_NAV_LAYOUT.write() = false;
-                    *HIGHLIGHT_DOCS_LAYOUT.write() = false;
-                    *HIGHLIGHT_DOCS_CONTENT.write() = false;
-                },
+            pre { onmouseenter: move |_| {}, onmouseleave: move |_| {},
                 span {
                     "#[derive(Clone, Routable, PartialEq, Eq, Serialize, Deserialize)]
 #[rustfmt::skip]
 pub enum Route {{\n\t"
                 }
                 span {
-                    onmouseenter: move |_| {
-                        *HIGHLIGHT_NAV_LAYOUT.write() = true;
-                        *HIGHLIGHT_DOCS_LAYOUT.write() = false;
-                        *HIGHLIGHT_DOCS_CONTENT.write() = false;
-                    },
-                    onmouseleave: move |_| {
-                        *HIGHLIGHT_NAV_LAYOUT.write() = true;
-                        *HIGHLIGHT_DOCS_LAYOUT.write() = true;
-                        *HIGHLIGHT_DOCS_CONTENT.write() = true;
-                    },
+                    onmouseenter: move |_| {},
+                    onmouseleave: move |_| {},
                     class: "border border-orange-600 rounded-md",
                     "#[layout(HeaderFooter)]"
                 }
                 span { "\n\t\t// ... other routes\n\t\t" }
                 span {
-                    onmouseenter: move |_| {
-                        *HIGHLIGHT_DOCS_LAYOUT.write() = true;
-                        *HIGHLIGHT_NAV_LAYOUT.write() = false;
-                        *HIGHLIGHT_DOCS_CONTENT.write() = false;
-                    },
-                    onmouseleave: move |_| {
-                        *HIGHLIGHT_NAV_LAYOUT.write() = true;
-                        *HIGHLIGHT_DOCS_LAYOUT.write() = true;
-                        *HIGHLIGHT_DOCS_CONTENT.write() = true;
-                    },
+                    onmouseenter: move |_| {},
+                    onmouseleave: move |_| {},
                     class: "border border-green-600 rounded-md",
                     r##"#[layout(DocsSidebars)]"##
                 }
                 "\n\t\t\t"
                 span {
-                    onmouseenter: move |_| {
-                        *HIGHLIGHT_NAV_LAYOUT.write() = false;
-                        *HIGHLIGHT_DOCS_LAYOUT.write() = false;
-                        *HIGHLIGHT_DOCS_CONTENT.write() = true;
-                    },
-                    onmouseleave: move |_| {
-                        *HIGHLIGHT_NAV_LAYOUT.write() = true;
-                        *HIGHLIGHT_DOCS_LAYOUT.write() = true;
-                        *HIGHLIGHT_DOCS_CONTENT.write() = true;
-                    },
+                    onmouseenter: move |_| {},
+                    onmouseleave: move |_| {},
                     class: "border border-blue-600 rounded-md",
                     r##"#[route("/learn")]"##
                 }
@@ -261,9 +187,6 @@ pub enum Route {{\n\t"
             }
         }
     }
-
-    // use_mdbook::mdbook_router! {"docs-src/0.5"}
-    // include! {"../docs-gen/router.rs"}
 
     mod router;
     pub use router::*;

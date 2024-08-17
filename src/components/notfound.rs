@@ -1,6 +1,5 @@
 use crate::icons::FERROUS_LOGO;
 use crate::*;
-use dioxus::prelude::*;
 
 #[allow(unused)]
 #[component]

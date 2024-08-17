@@ -2,7 +2,7 @@ use crate::*;
 
 pub(crate) fn Hero() -> Element {
     rsx! {
-        section { class: "w-full dark:bg-ideblack h-fit [@media(min-height:720px)]:h-[calc(100vh-6rem)] flex flex-col justify-between items-center py-16",
+        section { class: "w-full dark:bg-ideblack h-fit [@media(min-height:720px)]:h-[calc(100vh)] flex flex-col justify-between items-center py-16",
             div { class: "pb-12 md:px-12 text-center w-full flex flex-col h-full max-w-screen-2xl",
                 div { class: "flex-grow" }
                 div { class: "flex flex-row justify-start w-full pb-24",

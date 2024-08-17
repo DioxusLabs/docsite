@@ -1,7 +1,6 @@
 use crate::icons;
 use crate::Link;
 use dioxus::prelude::*;
-use dioxus_router::prelude::*;
 
 #[derive(PartialEq, Eq, Clone, Copy)]
 pub(crate) struct BlogPost {
@@ -139,7 +138,7 @@ pub(crate) const POSTS: &[BlogPost] = &[
 
 #[component]
 pub(crate) fn BlogList() -> Element {
-    rsx!(
+    rsx! {
         section { class: "body-font overflow-hidden dark:bg-ideblack font-light",
             div { class: "container max-w-screen-md pt-12 pb-12 mx-auto",
                 div { class: "-my-8 px-8 pb-12",
@@ -159,7 +158,7 @@ pub(crate) fn BlogList() -> Element {
                 }
             }
         }
-    )
+    }
 }
 
 #[component]
@@ -178,31 +177,9 @@ pub(crate) fn SinglePost(post: BlogPost) -> Element {
     }
 }
 
-fn BlogHeader() -> Element {
-    rsx!(
-        section { class: "py-20",
-            div { class: "container px-4 mx-auto dark:text-white",
-
-                h2 { class: "mb-8 md:mb-16 text-5xl lg:text-6xl font-semibold font-heading font-sans",
-                    "Dioxus Official Blog"
-                }
-
-                div { class: "flex flex-wrap items-center",
-                    div { class: "inline-block max-w-xl mb-6 md:mb-0",
-                        p { class: "text-xl pb-4 text-gray-500 dark:text-gray-300",
-                            "Updates, changelogs, and general musings of the Dioxus community...."
-                        }
-                    }
-                }
-            }
-        }
-    )
-}
-
 #[component]
 fn BlogPostItem(post: &'static BlogPost) -> Element {
     let BlogPost {
-        category,
         date,
         title,
         description,

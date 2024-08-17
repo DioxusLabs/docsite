@@ -1,5 +1,62 @@
 #![allow(unused)]
 
+use dioxus::prelude::*;
+
+#[component]
+pub fn TwoPanelComponent(left: Element, right: Element) -> Element {
+    rsx! {
+        div { class: "w-full h-40 overflow-y-hidden flex flex-row justify-between",
+            div { class: "w-1/2 h-full", {left} }
+            div { class: "w-1/2 h-full", {right} }
+        }
+    }
+}
+
+#[derive(Default)]
+struct LogState {
+    logs: Vec<String>,
+}
+
+fn use_provide_log_state() -> Signal<LogState> {
+    use_context_provider(|| Signal::new(LogState::default()))
+}
+
+pub fn log(message: impl ToString) {
+    consume_context::<Signal<LogState>>()
+        .write()
+        .logs
+        .insert(0, message.to_string());
+}
+
+#[macro_export]
+macro_rules! log {
+    ($($arg:tt)*) => {
+        log(format!($($arg)*))
+    }
+}
+
+#[component]
+pub fn ComponentWithLogs(children: Element) -> Element {
+    let logs = use_provide_log_state();
+
+    rsx! {
+        TwoPanelComponent {
+            left: children,
+            right: rsx! {
+                div { class: "p-2 text-center border-gray-200 dark:border-gray-800",
+                    "Logs"
+                }
+                for log in logs.read().logs.iter() {
+                    div { class: "p-2 border-b border-gray-200 dark:border-gray-800",
+                        "{log}"
+                    }
+                }
+            }
+        }
+    }
+}
+
+
 // Include any examples we compile into the docsite
 #[cfg(not(feature = "doc_test"))]
 pub mod boolean_attribute;
@@ -53,6 +110,8 @@ pub mod rsx_overview;
 pub mod spawn;
 #[cfg(not(feature = "doc_test"))]
 pub mod use_resource;
+#[cfg(not(feature = "doc_test"))]
+pub mod component_lifecycle;
 
 // Check any examples we don't compile into the docs
 #[cfg(feature = "doc_test")]

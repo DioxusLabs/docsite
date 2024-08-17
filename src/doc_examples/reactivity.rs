@@ -1,5 +1,6 @@
 use dioxus::prelude::*;
 
+use super::{TwoPanelComponent, log, ComponentWithLogs, LogState};
 pub use component::ComponentDemo;
 pub use effect::EffectDemo;
 pub use memo::MemoDemo;
@@ -7,59 +8,6 @@ pub use non_reactive_state::MakingPropsReactiveDemo;
 pub use non_reactive_state::NonReactiveDemo;
 pub use non_reactive_state::UseReactiveDemo;
 pub use resource::ResourceDemo;
-
-#[derive(Default)]
-struct LogState {
-    logs: Vec<String>,
-}
-
-fn use_provide_log_state() -> Signal<LogState> {
-    use_context_provider(|| Signal::new(LogState::default()))
-}
-
-fn log(message: impl ToString) {
-    consume_context::<Signal<LogState>>()
-        .write()
-        .logs
-        .insert(0, message.to_string());
-}
-
-macro_rules! log {
-    ($($arg:tt)*) => {
-        log(format!($($arg)*))
-    }
-}
-
-#[component]
-fn ComponentWithLogs(children: Element) -> Element {
-    let logs = use_provide_log_state();
-
-    rsx! {
-        TwoPanelComponent {
-            left: children,
-            right: rsx! {
-                div { class: "p-2 text-center border-gray-200 dark:border-gray-800",
-                    "Logs"
-                }
-                for log in logs.read().logs.iter() {
-                    div { class: "p-2 border-b border-gray-200 dark:border-gray-800",
-                        "{log}"
-                    }
-                }
-            }
-        }
-    }
-}
-
-#[component]
-fn TwoPanelComponent(left: Element, right: Element) -> Element {
-    rsx! {
-        div { class: "w-full h-40 overflow-y-hidden flex flex-row justify-between",
-            div { class: "w-1/2 h-full", {left} }
-            div { class: "w-1/2 h-full", {right} }
-        }
-    }
-}
 
 mod signal {
     use super::*;

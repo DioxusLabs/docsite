@@ -13,6 +13,7 @@
 ---
 - [Reference](reference/index.md)
   - [Managing State](reference/managing_state.md)
+  - [Component Lifecycle](reference/component_lifecycle.md)
   - [RSX](reference/rsx.md)
   - [Components](reference/components.md)
   - [Props](reference/component_props.md)

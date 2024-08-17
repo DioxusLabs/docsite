@@ -29,12 +29,13 @@ include_dir = "0.7.3"
 anyhow = "1.0.71"
 
 dioxus-material-icons = { git = "https://github.com/jkelleyrtp/dioxus-material-icons", branch = "jk/git-rev" }
-syntect-html = { git = "https://github.com/dioxuslabs/include_mdbook" }
-mdbook-shared = { git = "https://github.com/dioxuslabs/include_mdbook" }
-use-mdbook = { git = "https://github.com/dioxuslabs/include_mdbook" }
+
+syntect-html = { git = "https://github.com/dioxuslabs/include_mdbook", branch = "jk/build-gen" }
+mdbook-shared = { git = "https://github.com/dioxuslabs/include_mdbook", branch = "jk/build-gen" }
+use-mdbook = { git = "https://github.com/dioxuslabs/include_mdbook", branch = "jk/build-gen" }
 
 dioxus-search = { git = "https://github.com/dioxuslabs/dioxus-search" }
-dioxus-playground = { git = "https://github.com/DioxusLabs/playground" }
+dioxus-playground = { git = "https://github.com/DioxusLabs/playground", branch = "jk/update-manganis" }
 
 tokio = { version = "1.29.0", features = ["full"], optional = true }
 axum = { version = "0.7", optional = true }
@@ -73,33 +74,42 @@ tower-http = { version = "0.5.0", optional = true, features = ["timeout"] }
 tracing = "0.1.40"
 rand = { version = "0.8.5", optional = true }
 
-[patch.crates-io]
-dioxus = { git = "https://github.com/dioxuslabs/dioxus" }
-dioxus-lib = { git = "https://github.com/dioxuslabs/dioxus" }
-dioxus-core = { git = "https://github.com/dioxuslabs/dioxus" }
-dioxus-core-macro = { git = "https://github.com/dioxuslabs/dioxus" }
-dioxus-config-macro = { git = "https://github.com/dioxuslabs/dioxus" }
-dioxus-router = { git = "https://github.com/dioxuslabs/dioxus" }
-dioxus-router-macro = { git = "https://github.com/dioxuslabs/dioxus" }
-dioxus-html = { git = "https://github.com/dioxuslabs/dioxus" }
-dioxus-html-internal-macro = { git = "https://github.com/dioxuslabs/dioxus" }
-dioxus-hooks = { git = "https://github.com/dioxuslabs/dioxus" }
-dioxus-web = { git = "https://github.com/dioxuslabs/dioxus" }
-dioxus-ssr = { git = "https://github.com/dioxuslabs/dioxus" }
-dioxus-desktop = { git = "https://github.com/dioxuslabs/dioxus" }
-dioxus-interpreter-js = { git = "https://github.com/dioxuslabs/dioxus" }
-dioxus-liveview = { git = "https://github.com/dioxuslabs/dioxus" }
-dioxus-rsx = { git = "https://github.com/dioxuslabs/dioxus" }
-dioxus-signals = { git = "https://github.com/dioxuslabs/dioxus" }
-dioxus-cli-config = { git = "https://github.com/dioxuslabs/dioxus" }
-generational-box = { git = "https://github.com/dioxuslabs/dioxus" }
-dioxus-hot-reload = { git = "https://github.com/dioxuslabs/dioxus" }
-dioxus_server_macro = { git = "https://github.com/dioxuslabs/dioxus" }
-dioxus-fullstack = { git = "https://github.com/dioxuslabs/dioxus" }
+[build-dependencies]
+mdbook-gen = { git = "https://github.com/dioxuslabs/include_mdbook", branch = "jk/build-gen" }
+mdbook-shared = { git = "https://github.com/dioxuslabs/include_mdbook", branch = "jk/build-gen" }
+prettyplease = "0.2.20"
 
-manganis = { git = "https://github.com/DioxusLabs/manganis" }
-manganis-common = { git = "https://github.com/DioxusLabs/manganis" }
-manganis-macro = { git = "https://github.com/DioxusLabs/manganis" }
+[patch.crates-io]
+dioxus = { git = "https://github.com/dioxuslabs/dioxus", branch = "jk/proper-asset-crossplatform" }
+dioxus-lib = { git = "https://github.com/dioxuslabs/dioxus", branch = "jk/proper-asset-crossplatform" }
+dioxus-core = { git = "https://github.com/dioxuslabs/dioxus", branch = "jk/proper-asset-crossplatform" }
+dioxus-core-macro = { git = "https://github.com/dioxuslabs/dioxus", branch = "jk/proper-asset-crossplatform" }
+dioxus-config-macro = { git = "https://github.com/dioxuslabs/dioxus", branch = "jk/proper-asset-crossplatform" }
+dioxus-router = { git = "https://github.com/dioxuslabs/dioxus", branch = "jk/proper-asset-crossplatform" }
+dioxus-router-macro = { git = "https://github.com/dioxuslabs/dioxus", branch = "jk/proper-asset-crossplatform" }
+dioxus-html = { git = "https://github.com/dioxuslabs/dioxus", branch = "jk/proper-asset-crossplatform" }
+dioxus-html-internal-macro = { git = "https://github.com/dioxuslabs/dioxus", branch = "jk/proper-asset-crossplatform" }
+dioxus-hooks = { git = "https://github.com/dioxuslabs/dioxus", branch = "jk/proper-asset-crossplatform" }
+dioxus-web = { git = "https://github.com/dioxuslabs/dioxus", branch = "jk/proper-asset-crossplatform" }
+dioxus-ssr = { git = "https://github.com/dioxuslabs/dioxus", branch = "jk/proper-asset-crossplatform" }
+dioxus-desktop = { git = "https://github.com/dioxuslabs/dioxus", branch = "jk/proper-asset-crossplatform" }
+dioxus-interpreter-js = { git = "https://github.com/dioxuslabs/dioxus", branch = "jk/proper-asset-crossplatform" }
+dioxus-liveview = { git = "https://github.com/dioxuslabs/dioxus", branch = "jk/proper-asset-crossplatform" }
+dioxus-rsx = { git = "https://github.com/dioxuslabs/dioxus", branch = "jk/proper-asset-crossplatform" }
+dioxus-signals = { git = "https://github.com/dioxuslabs/dioxus", branch = "jk/proper-asset-crossplatform" }
+dioxus-cli-config = { git = "https://github.com/dioxuslabs/dioxus", branch = "jk/proper-asset-crossplatform" }
+generational-box = { git = "https://github.com/dioxuslabs/dioxus", branch = "jk/proper-asset-crossplatform" }
+dioxus-hot-reload = { git = "https://github.com/dioxuslabs/dioxus", branch = "jk/proper-asset-crossplatform" }
+dioxus_server_macro = { git = "https://github.com/dioxuslabs/dioxus", branch = "jk/proper-asset-crossplatform" }
+dioxus-fullstack = { git = "https://github.com/dioxuslabs/dioxus", branch = "jk/proper-asset-crossplatform" }
+dioxus-autofmt = { git = "https://github.com/dioxuslabs/dioxus", branch = "jk/proper-asset-crossplatform" }
+
+# manganis = { path = "../manganis/packages/manganis" }
+# manganis-common = { path = "../manganis/packages/common" }
+# manganis-macro = { path = "../manganis/packages/macro" }
+# manganis = { git = "https://github.com/DioxusLabs/manganis", branch = "jk/drop-remote-support" }
+# manganis-common = { git = "https://github.com/DioxusLabs/manganis", branch = "jk/drop-remote-support" }
+# manganis-macro = { git = "https://github.com/DioxusLabs/manganis", branch = "jk/drop-remote-support" }
 
 [profile.release]
 lto = true

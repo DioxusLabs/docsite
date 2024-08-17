@@ -5,3 +5,11 @@
 [env]
 MANGANIS_SUPPORT = "true"
 
+[profile.dev]
+# rustflags = ["-Cdebuginfo=none", "-Cstrip=debuginfo"]
+# opt-level = "z"
+opt-level = "z"            # Optimization level.
+debug = false             # Include debug info.
+strip = "debuginfo"           # Removes symbols or debuginfo.
+# split-debuginfo = '...'  # Debug info splitting behavior.
+

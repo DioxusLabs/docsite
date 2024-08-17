@@ -31,6 +31,7 @@ watch_path = [
     "snippets",
     "index.html",
     "public",
+    "docs-gen",
 ]
 index_on_404 = true
 

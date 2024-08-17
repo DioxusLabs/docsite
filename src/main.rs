@@ -262,7 +262,11 @@ pub enum Route {{\n\t"
         }
     }
 
-    use_mdbook::mdbook_router! {"docs-src/0.5"}
+    // use_mdbook::mdbook_router! {"docs-src/0.5"}
+    // include! {"../docs-gen/router.rs"}
+
+    mod router;
+    pub use router::*;
 }
 
 fn main() {

@@ -1,19 +1,40 @@
 # Summary
 
 [Introduction](index.md)
+- [Features](getting_started/index.md)
 
-- [Getting Started](getting_started/index.md)
-
-- [Guide](guide/index.md)
-  - [Your First Component](guide/your_first_component.md)
-  - [State](guide/state.md)
-  - [Data Fetching](guide/data_fetching.md)
-  - [Full Code](guide/full_code.md)
+<!-- - [Getting Started](getting_started/index.md) -->
 
 ---
-- [Reference](reference/index.md)
+
+<!-- - [Reference](reference/index.md)
   - [Managing State](reference/managing_state.md)
-  - [Component Lifecycle](reference/component_lifecycle.md)
+  - [Component Lifecycle](reference/component_lifecycle.md) -->
+
+- [Guide](guide/index.md)
+  - [Tooling setup](guide/tooling.md)
+  - [Creating a new app](guide/new_app.md)
+  - [Your First Component](guide/component.md)
+  - [Styling and Assets](guide/assets.md)
+  - [State](guide/state.md)
+  - [App Routing](guide/routing.md)
+  - [Data Fetching](guide/fetching.md)
+  - [Backend](guide/backend.md)
+  - [Deploying](guide/deploy.md)
+  - [Next Steps](guide/next_steps.md)
+
+---
+
+- [Essential Concepts](essentials/index.md)
+  - [Component Lifecycle](essentials/lifecycle/index.md)
+  - [Managing State](essentials/state/index.md)
+  - [Breaking Out](essentials/breaking/index.md)
+  - [Structuring Your App](essentials/structure/index.md)
+
+---
+
+- [Guides](reference/index.md)
+  - [Reactivity](reference/reactivity.md)
   - [RSX](reference/rsx.md)
   - [Components](reference/components.md)
   - [Props](reference/component_props.md)
@@ -105,3 +126,4 @@
     - [State](migration/state.md)
   - [Fermi](migration/fermi.md)
   - [Props](migration/props.md)
+

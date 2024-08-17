@@ -57,7 +57,7 @@ video {
     width: "800px",
     muted: "true",
     source {
-        src: manganis::mg!(file("./public/static/dioxus-new.mov")),
+        src: asset!("/public/static/dioxus-new.mov"),
     }
 }
 ```

@@ -20,64 +20,6 @@ pub(crate) fn Homepage() -> Element {
     }
 }
 
-const CARDS: &[(&str, &str)] = &[
-    (
-        "Web",
-        "Progressively render directly to the DOM, enhanced with SSR, rehydration, and streaming.",
-    ),
-    (
-        "Desktop",
-        "Render your apps natively with WGPU or through WebView with full access to system resources.",
-    ),
-    (
-        "Mobile",
-        "Compile natively to mobile architectures. Apps stay fast even on low-end devices.",
-    ),
-    (
-        "LiveView",
-        "Build faster than ever: your app lives on the server, eliminating the need for a dedicated backend API."
-    ),
-    (
-        "TUI",
-        "Quickly convert scripts to interactive tools with a full fledged renderer for the terminal.",
-    ),
-    (
-        "3D Scenes",
-        "Dioxus is extensible. Quickly build highly interactive 3D scenes, inspired by React-Three-Fiber.",
-    ),
-];
-
-fn ProjectCards() -> Element {
-    rsx! {
-        section { class: "py-12",
-            div { class: "container mx-auto px-6 lg:px-64",
-                div { class: "flex flex-wrap -mx-3",
-                    for (title , description) in CARDS.iter() {
-                        div {
-                            key: "{title}",
-                            class: "w-full md:w-1/2 lg:w-1/3 px-3 mb-6 text-xs dark:text-white",
-                            div { class: "p-6 md:p-8 h-full rounded shadow-white hover:shadow-xl hover:border-transparent cursor-pointer",
-                                div {
-                                    h3 { class: "mb-4 text-2xl font-semibold font-heading font-sans",
-                                        "{title}"
-                                    }
-                                    p { class: "text-base text-gray-500 pb-4", "{description}" }
-                                    Link {
-                                        class: "bg-gray-900 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 focus:ring-offset-gray-50 text-white font-semibold h-12 px-6 rounded-lg flex items-center justify-center sm:w-auto dark:bg-sky-500 dark:highlight-white/20 dark:hover:bg-sky-400",
-                                        to: Route::Docs {
-                                            child: BookRoute::GettingStartedIndex {},
-                                        },
-                                        "Get started"
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-}
 
 fn AvailablePlatforms() -> Element {
     rsx! {

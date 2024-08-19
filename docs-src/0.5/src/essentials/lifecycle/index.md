@@ -26,6 +26,16 @@ DemoFrame {
 }
 ```
 
+### ⚠️ Don't mutate state in the body of a component
+
+You should avoid changing state in the body of a component. If you read and write to state in the body of a component, you can cause an infinite loop as the component tries to rerender because of the change which triggers another state change.
+
+```rust, no_run
+{{#include src/doc_examples/component_lifecycle.rs:dont_mutate}}
+```
+
+Instead, derive state with `use_memo`, `use_resource`, or mutate state in a effect.
+
 ## Using Effects
 
 You can use [effects](../reference/reactivity.md) to run code whenever a component is rendered.

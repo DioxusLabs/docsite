@@ -78,6 +78,22 @@ mod rerenders {
     }
     // ANCHOR_END: rerenders
 
+    // ANCHOR: dont_mutate
+    fn Bad() -> Element {
+        let mut count = use_signal(|| 0);
+
+        // ❌ Don't mutate state in the body of the component.
+        // It can easily cause an infinite loop!
+        count += 1;
+
+        rsx! {
+            // If you both read and write to state in the body of the component,
+            // you can cause an infinite loop!
+            "{count}"
+        }
+    }
+    // ANCHOR_END: dont_mutate
+
     pub fn RerenderDemo() -> Element {
         rsx! {
             ComponentWithLogs {

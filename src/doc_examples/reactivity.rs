@@ -1,6 +1,6 @@
 use dioxus::prelude::*;
 
-use super::{TwoPanelComponent, log, ComponentWithLogs, LogState};
+use super::{log, ComponentWithLogs, LogState, TwoPanelComponent};
 pub use component::ComponentDemo;
 pub use effect::EffectDemo;
 pub use memo::MemoDemo;

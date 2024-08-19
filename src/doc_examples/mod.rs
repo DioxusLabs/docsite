@@ -7,7 +7,7 @@ pub fn TwoPanelComponent(left: Element, right: Element) -> Element {
     rsx! {
         div { class: "w-full h-40 overflow-y-hidden flex flex-row justify-between",
             div { class: "w-1/2 h-full", {left} }
-            div { class: "w-1/2 h-full", {right} }
+            div { class: "w-1/2 h-full text-sm", {right} }
         }
     }
 }
@@ -56,12 +56,13 @@ pub fn ComponentWithLogs(children: Element) -> Element {
     }
 }
 
-
 // Include any examples we compile into the docsite
 #[cfg(not(feature = "doc_test"))]
 pub mod boolean_attribute;
 #[cfg(not(feature = "doc_test"))]
 pub mod component_children;
+#[cfg(not(feature = "doc_test"))]
+pub mod component_lifecycle;
 #[cfg(not(feature = "doc_test"))]
 pub mod component_owned_props;
 #[cfg(not(feature = "doc_test"))]
@@ -110,8 +111,6 @@ pub mod rsx_overview;
 pub mod spawn;
 #[cfg(not(feature = "doc_test"))]
 pub mod use_resource;
-#[cfg(not(feature = "doc_test"))]
-pub mod component_lifecycle;
 
 // Check any examples we don't compile into the docs
 #[cfg(feature = "doc_test")]

@@ -9,8 +9,8 @@ fn main() {
 fn App() -> Element {
     // ANCHOR: usage
     rsx! {
-        FancyButton { 
-            onclick: move |event| println!("Clicked! {event:?}"), 
+        FancyButton {
+            onclick: move |event| println!("Clicked! {event:?}"),
         }
     }
     // ANCHOR_END: usage

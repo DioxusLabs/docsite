@@ -12,54 +12,106 @@ One popular option for styling your Dioxus application is [Tailwind](https://tai
 ```bash
 cargo install dioxus-cli
 ```
+For 0.6.0-alpha.2
+```bush
+cargo install --git https://github.com/dioxuslabs/dioxus dioxus-cli --locked
+dx --version
+dioxus 0.6.0-alpha.2 (3c699aa)
+
+[dependencies]
+dioxus = { git = "https://github.com/DioxusLabs/dioxus", features = ["web", "router"] }
+dioxus-logger = "0.5.1"
+```
 
 2. Install npm: [https://docs.npmjs.com/downloading-and-installing-node-js-and-npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)
 3. Install the tailwind css cli: [https://tailwindcss.com/docs/installation](https://tailwindcss.com/docs/installation)
-4. Initialize the tailwind css project:
+4. Initialize the tailwind css project via cli for web platform:
 
 ```bash
-npx tailwindcss init
+// You can change platform, name and router
+dx new -> web -> Project Name: project-name -> Tailwind -> true
 ```
 
-This should create a `tailwind.config.js` file in the root of the project.
+This should create all Tailwind CSS files in the root of the project.
 
-5. Edit the `tailwind.config.js` file to include rust files:
+5. Start the Tailwind CSS compiler and the Dioxus dev server in different terminals:
+```bush
+npx tailwindcss -i ./input.css -o ./assets/tailwind.css --watch
+dx serve --hot-reload true
+```
 
-```js
-module.exports = {
-    mode: "all",
-    content: [
-        // include all rust, html and css files in the src directory
-        "./src/**/*.{rs,html,css}",
-        // include all html files in the output (dist) directory
-        "./dist/**/*.html",
-    ],
-    theme: {
-        extend: {},
-    },
-    plugins: [],
+## Hot reload with dioxus 0.6.0-alpha.2 (3c699aa)
+
+6. Inside rsx, you need to add the following support to main.rs
+`script { src: "https://cdn.tailwindcss.com" }` and `href: asset!("./assets/tailwind.css")`
+[Use the Play CDN to try Tailwind right in the browser without any build step.](https://tailwindcss.com/docs/installation/play-cdn)
+
+```rust
+#[component]
+fn App() -> Element {
+    rsx! {
+        // for Play CDN to try Tailwind
+        script { src: "https://cdn.tailwindcss.com" }
+        // for manganis
+        head::Link { rel: "stylesheet", href: asset!("./assets/tailwind.css") }
+        
+        // code
+    }
 }
 ```
 
-6. Create a `input.css` file in the root of your project with the following content:
-
+If you need local stylesheet for rendering with custom styles inside input.css.
+Insert your custom styles inside input.css:
 ```css
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+@layer components {
+  p {
+    @apply p-10 bg-yellow-600;
+  }
+  .red {
+    @apply bg-red-600;
+  }
+  .yellow {
+    @apply bg-yellow-600;
+  }
+  .blue {
+    @apply bg-blue-600;
+  }
+}
 ```
-
-7. Add [Manganis](https://github.com/DioxusLabs/manganis) to your project to handle asset collection.
-
-```sh
-cargo add manganis
-```
-
-8. Create a link to the `tailwind.css` file using manganis somewhere in your rust code:
+Second you need to insert custom classes to the page:
 
 ```rust
-{{#include src/doc_examples/tailwind.rs}}
+rsx! {
+        // for Play CDN to try Tailwind        
+        script { src: "https://cdn.tailwindcss.com" }
+        // for manganis
+        head::Link { rel: "stylesheet", href: asset!("./assets/tailwind.css") }
+        img { src: "header.svg", id: "header" }
+        div { id: "links",
+            div { class: "p-5 bg-red-200", "Hello" }
+            p { "I" }
+            div { class: "red p-2", "love" }
+            div { class: "yellow p-6", "Dioxus" }
+            div { class: "blue text-white text-center py-2", "team" }
+        }
+    }
 ```
+
+And than rebuild the app.
+button `r` on terminal or `dx serve --hot-reload true`
+
+When you are done editing, you should comment out the use of Tailwind CDN
+```rust
+// for Play CDN to try Tailwind
+// script { src: "https://cdn.tailwindcss.com" }
+```
+
+
 
 ### Bonus Steps
 
@@ -73,28 +125,4 @@ cargo add manganis
 },
 ```
 
-## Development
 
-- Run the following command in the root of the project to start the tailwind css compiler:
-
-```bash
-npx tailwindcss -i ./input.css -o ./public/tailwind.css --watch
-```
-
-### Web
-
-- Run the following command in the root of the project to start the dioxus dev server:
-
-```bash
-dx serve
-```
-
-- Open the browser to [http://localhost:8080](http://localhost:8080).
-
-### Desktop
-
-- Launch the dioxus desktop app:
-
-```bash
-dx serve --platform desktop
-```

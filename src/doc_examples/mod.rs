@@ -62,6 +62,8 @@ pub mod boolean_attribute;
 #[cfg(not(feature = "doc_test"))]
 pub mod breaking_out;
 #[cfg(not(feature = "doc_test"))]
+pub mod building_uis_with_rsx;
+#[cfg(not(feature = "doc_test"))]
 pub mod component_children;
 #[cfg(not(feature = "doc_test"))]
 pub mod component_lifecycle;

@@ -30,6 +30,7 @@
   - [Managing State](essentials/state/index.md)
   - [Breaking Out](essentials/breaking/index.md)
   - [Structuring Your App](essentials/structure/index.md)
+  - [Building UIs with RSX](essentials/rsx/index.md)
 
 ---
 

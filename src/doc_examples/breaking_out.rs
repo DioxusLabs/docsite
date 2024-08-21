@@ -1,9 +1,9 @@
 use dioxus::prelude::*;
+pub use downcast::Downcast;
 pub use eval::Eval;
 pub use onmounted::OnMounted;
 pub use use_effect::Canvas;
 pub use web_sys::WebSys;
-pub use downcast::Downcast;
 
 mod eval {
     use super::*;

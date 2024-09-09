@@ -27,7 +27,7 @@ jobs:
       - name: Install CLI
         run: cargo binstall dioxus-cli -y --force
       - name: Build
-        run: dx build --release --features web
+        run: dx serve --release --features fullstack
       - name: Build Static HTML
         run: cargo run --release --features prebuild
       - name: Rebuild with search index

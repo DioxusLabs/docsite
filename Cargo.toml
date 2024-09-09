@@ -153,9 +153,8 @@ codegen-units = 1
 default = []
 doc_test = [
     "tokio",
-    "server",
-    "dioxus-web",
-    "dioxus/web",
+    "prebuild",
+    "web",
     "dioxus-desktop",
     "dioxus-liveview",
     "gloo-storage",
@@ -176,10 +175,9 @@ dioxus-axum = [
     "fs_extra",
 ]
 server = [
-    "dioxus/server",
-    "dioxus-axum",
+    "dioxus/static-generation",
+    "dioxus-axum"
 ]
 prebuild = [
-    "dioxus/static-generation",
-    "dioxus-axum",
+    "server",
 ]

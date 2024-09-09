@@ -11,5 +11,13 @@ MANGANIS_SUPPORT = "true"
 opt-level = "z"            # Optimization level.
 debug = false             # Include debug info.
 strip = "debuginfo"           # Removes symbols or debuginfo.
+
+[profile.dioxus-client]
+inherits = "dev"
+opt-level = 2
+
+[profile.dioxus-server]
+inherits = "dev"
+opt-level = 2
 # split-debuginfo = '...'  # Debug info splitting behavior.
 

@@ -151,40 +151,35 @@ codegen-units = 1
 
 [features]
 default = []
-# doc_test = [
-#     "tokio",
-#     "server",
-#     "dioxus-web",
-#     "dioxus/web",
-#     # "dioxus-tui",
-#     "dioxus-desktop",
-#     "dioxus-liveview",
-#     # "dioxus-native-core",
-#     # "dioxus-native-core-macro",
-#     "shipyard",
-#     "gloo-storage",
-#     "pretty_assertions",
-#     "tower-http",
-#     "dioxus-sdk",
-#     "http",
-#     "rand"
-# ]
+doc_test = [
+    "tokio",
+    "server",
+    "dioxus-web",
+    "dioxus/web",
+    "dioxus-desktop",
+    "dioxus-liveview",
+    "gloo-storage",
+    "pretty_assertions",
+    "tower-http",
+    "dioxus-sdk",
+    "http",
+    "rand"
+]
+fullstack = ["dioxus/fullstack"]
 web = ["dioxus/web"]
-# web = ["dioxus-web", "dioxus/web", "dioxus/web", "dioxus-fullstack/web", "dioxus/fullstack"]
-# dioxus-axum = [
-#     "dioxus/axum",
-#     "dioxus-ssr",
-#     "dioxus/ssr",
-#     "tokio",
-#     "axum",
-#     "fs_extra",
-# ]
-# server = [
-#     "dioxus/fullstack",
-#     "dioxus-fullstack/axum",
-#     "dioxus-axum",
-# ]
-# prebuild = [
-#     "dioxus/static-generation",
-#     "dioxus-axum",
-# ]
+dioxus-axum = [
+    "dioxus/axum",
+    "dioxus-ssr",
+    "dioxus/ssr",
+    "tokio",
+    "axum",
+    "fs_extra",
+]
+server = [
+    "dioxus/server",
+    "dioxus-axum",
+]
+prebuild = [
+    "dioxus/static-generation",
+    "dioxus-axum",
+]

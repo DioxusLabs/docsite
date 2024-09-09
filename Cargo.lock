@@ -344,6 +344,7 @@ checksum = "3a6c9af12842a67734c9a2e355436e5d03b22383ed60cf13cd0c18fbfe3dcbcf"
 dependencies = [
  "async-trait",
  "axum-core",
+ "axum-macros",
  "base64 0.21.7",
  "bytes",
  "futures-util",
@@ -356,6 +357,7 @@ dependencies = [
  "matchit",
  "memchr",
  "mime",
+ "multer",
  "percent-encoding",
  "pin-project-lite",
  "rustversion",
@@ -392,6 +394,18 @@ dependencies = [
  "tower-layer",
  "tower-service",
  "tracing",
+]
+
+[[package]]
+name = "axum-macros"
+version = "0.4.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "00c055ee2d014ae5981ce1016374e8213682aa14d9bf40e48ab48b5f3ef20eaa"
+dependencies = [
+ "heck 0.4.1",
+ "proc-macro2",
+ "quote",
+ "syn 2.0.74",
 ]
 
 [[package]]
@@ -1035,6 +1049,7 @@ name = "dioxus"
 version = "0.6.0-alpha.2"
 source = "git+https://github.com/dioxuslabs/dioxus#3c699aad2625d88ba15b7e012373499844da0b15"
 dependencies = [
+ "axum",
  "dioxus-config-macro",
  "dioxus-core",
  "dioxus-core-macro",
@@ -1042,11 +1057,14 @@ dependencies = [
  "dioxus-hooks",
  "dioxus-hot-reload",
  "dioxus-html",
+ "dioxus-liveview",
  "dioxus-router",
  "dioxus-signals",
+ "dioxus-ssr",
  "dioxus-static-site-generation",
  "dioxus-web",
  "manganis",
+ "serde",
 ]
 
 [[package]]
@@ -1161,20 +1179,38 @@ name = "dioxus-fullstack"
 version = "0.6.0-alpha.2"
 source = "git+https://github.com/dioxuslabs/dioxus#3c699aad2625d88ba15b7e012373499844da0b15"
 dependencies = [
+ "async-trait",
+ "axum",
  "base64 0.22.1",
  "bytes",
  "ciborium",
+ "clap",
+ "dioxus-cli-config",
  "dioxus-hot-reload",
+ "dioxus-interpreter-js",
  "dioxus-lib",
+ "dioxus-ssr",
  "dioxus-web",
  "dioxus_server_macro",
  "futures-channel",
  "futures-util",
  "generational-box",
+ "http 1.1.0",
+ "hyper 1.4.1",
  "once_cell",
+ "parking_lot",
+ "pin-project",
  "serde",
  "server_fn",
+ "thiserror",
+ "tokio",
+ "tokio-stream",
+ "tokio-util",
+ "tower",
+ "tower-http",
+ "tower-layer",
  "tracing",
+ "tracing-futures",
  "web-sys",
 ]
 
@@ -1473,6 +1509,8 @@ source = "git+https://github.com/dioxuslabs/dioxus#3c699aad2625d88ba15b7e0123734
 dependencies = [
  "askama_escape",
  "async-trait",
+ "chrono",
+ "dioxus-cli-config",
  "dioxus-core",
  "dioxus-html",
  "dioxus-interpreter-js",
@@ -1482,6 +1520,7 @@ dependencies = [
  "rustc-hash",
  "serde_json",
  "thiserror",
+ "tokio",
  "tracing",
 ]
 
@@ -1490,10 +1529,18 @@ name = "dioxus-static-site-generation"
 version = "0.6.0-alpha.2"
 source = "git+https://github.com/dioxuslabs/dioxus#3c699aad2625d88ba15b7e012373499844da0b15"
 dependencies = [
+ "axum",
+ "dioxus-cli-config",
  "dioxus-fullstack",
+ "dioxus-hot-reload",
  "dioxus-lib",
  "dioxus-router",
+ "dioxus-ssr",
  "dioxus-web",
+ "http 1.1.0",
+ "tokio",
+ "tower",
+ "tower-http",
  "tracing",
 ]
 
@@ -2768,6 +2815,12 @@ dependencies = [
 ]
 
 [[package]]
+name = "http-range-header"
+version = "0.4.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "08a397c49fec283e3d6211adbe480be95aae5f304cfb923e9970e08956d5168a"
+
+[[package]]
 name = "httparse"
 version = "1.9.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -3007,6 +3060,12 @@ dependencies = [
  "hashbrown 0.14.5",
  "parking_lot",
 ]
+
+[[package]]
+name = "inventory"
+version = "0.3.15"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "f958d3d68f4167080a18141e10381e7634563984a537f2a49a30fd8e53ac5767"
 
 [[package]]
 name = "ipnet"
@@ -3434,6 +3493,16 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "6877bb514081ee2a7ff5ef9de3281f14a4dd4bceac4c09388074a6b5df8a139a"
 
 [[package]]
+name = "mime_guess"
+version = "2.0.5"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "f7c44f8e672c00fe5308fa235f821cb4198414e1c77935c1ab6948d3fd78550e"
+dependencies = [
+ "mime",
+ "unicase",
+]
+
+[[package]]
 name = "miniz_oxide"
 version = "0.7.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -3482,6 +3551,23 @@ dependencies = [
  "png",
  "thiserror",
  "windows-sys 0.52.0",
+]
+
+[[package]]
+name = "multer"
+version = "3.1.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "83e87776546dc87511aa5ee218730c92b666d7264ab6ed41f9d215af9cd5224b"
+dependencies = [
+ "bytes",
+ "encoding_rs",
+ "futures-util",
+ "http 1.1.0",
+ "httparse",
+ "memchr",
+ "mime",
+ "spin",
+ "version_check",
 ]
 
 [[package]]
@@ -4406,6 +4492,7 @@ dependencies = [
  "js-sys",
  "log",
  "mime",
+ "mime_guess",
  "native-tls",
  "once_cell",
  "percent-encoding",
@@ -4418,10 +4505,12 @@ dependencies = [
  "system-configuration 0.6.0",
  "tokio",
  "tokio-native-tls",
+ "tokio-util",
  "tower-service",
  "url",
  "wasm-bindgen",
  "wasm-bindgen-futures",
+ "wasm-streams",
  "web-sys",
  "windows-registry",
 ]
@@ -4811,20 +4900,27 @@ version = "0.6.14"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "024b400db1aca5bd4188714f7bbbf7a2e1962b9a12a80b2a21e937e509086963"
 dependencies = [
+ "axum",
  "bytes",
  "const_format",
  "dashmap",
  "futures",
  "gloo-net 0.6.0",
  "http 1.1.0",
+ "http-body-util",
+ "hyper 1.4.1",
+ "inventory",
  "js-sys",
  "once_cell",
+ "reqwest 0.12.7",
  "send_wrapper",
  "serde",
  "serde_json",
  "serde_qs",
  "server_fn_macro_default",
  "thiserror",
+ "tower",
+ "tower-layer",
  "url",
  "wasm-bindgen",
  "wasm-bindgen-futures",
@@ -5643,13 +5739,21 @@ checksum = "1e9cd434a998747dd2c4276bc96ee2e0c7a2eadf3cae88e52be55a05fa9053f5"
 dependencies = [
  "bitflags 2.6.0",
  "bytes",
+ "futures-util",
  "http 1.1.0",
  "http-body 1.0.1",
  "http-body-util",
+ "http-range-header",
+ "httpdate",
+ "mime",
+ "mime_guess",
+ "percent-encoding",
  "pin-project-lite",
  "tokio",
+ "tokio-util",
  "tower-layer",
  "tower-service",
+ "tracing",
 ]
 
 [[package]]
@@ -5695,6 +5799,16 @@ checksum = "c06d3da6113f116aaee68e4d601191614c9053067f9ab7f6edbcb161237daa54"
 dependencies = [
  "once_cell",
  "valuable",
+]
+
+[[package]]
+name = "tracing-futures"
+version = "0.2.5"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "97d095ae15e245a057c8e8451bab9b3ee1e1f68e9ba2b4fbc18d0ac5237835f2"
+dependencies = [
+ "pin-project",
+ "tracing",
 ]
 
 [[package]]

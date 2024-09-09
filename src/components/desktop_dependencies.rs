@@ -30,7 +30,7 @@ impl Platform {
     ];
 }
 
-pub(crate) fn DesktopDependencies() -> Element {
+pub fn DesktopDependencies() -> Element {
     let mut current_platform = use_signal(|| Platform::Windows);
 
     #[cfg(feature = "web")]
@@ -79,23 +79,20 @@ pub(crate) fn DesktopDependencies() -> Element {
             if active() {
                 dioxus_material_icons::MaterialIcon {
                     name: "expand_more",
-                    color: MaterialIconColor::Custom("gray".to_string())
+                    color: MaterialIconColor::Custom("gray".to_string()),
                 }
             } else {
                 dioxus_material_icons::MaterialIcon {
                     name: "chevron_right",
-                    color: MaterialIconColor::Custom("gray".to_string())
+                    color: MaterialIconColor::Custom("gray".to_string()),
                 }
-            },
+            }
             "Desktop Specific Dependencies"
         }
         if active() {
-            div {
-                class: "flex flex-col items-center justify-center",
-                div {
-                    class: "flex flex-col width-full items-center justify-center space-y-4 divide-y-2 border-white m-5 rounded-lg",
-                    div {
-                        class: "flex flex-row items-center justify-center m-2",
+            div { class: "flex flex-col items-center justify-center",
+                div { class: "flex flex-col width-full items-center justify-center space-y-4 divide-y-2 border-white m-5 rounded-lg",
+                    div { class: "flex flex-row items-center justify-center m-2",
                         "Your OS: "
                         for platform in Platform::ALL {
                             button {
@@ -108,10 +105,7 @@ pub(crate) fn DesktopDependencies() -> Element {
                             }
                         }
                     }
-                    div {
-                        class: "p-4",
-                        {dependencies}
-                    }
+                    div { class: "p-4", {dependencies} }
                 }
             }
         }
@@ -123,14 +117,15 @@ fn WindowsDependencies() -> Element {
         div {
             p {
                 "Windows apps depend on WebView2 – a library that should be installed in all modern Windows distributions. If you have Edge installed, then Dioxus will work fine. If you _don't_ have WebView2, "
-                Link {
+                Link { to: "https://developer.microsoft.com/en-us/microsoft-edge/webview2/",
                     "then you can install it through Microsoft"
-                    to: "https://developer.microsoft.com/en-us/microsoft-edge/webview2/"
                 }
                 ". MS provides 3 options:"
             }
             ol {
-                li { "A tiny \"evergreen\" _bootstrapper_ that fetches an installer from Microsoft's CDN." }
+                li {
+                    "A tiny \"evergreen\" _bootstrapper_ that fetches an installer from Microsoft's CDN."
+                }
                 li { "A tiny _installer_ that fetches WebView2 from Microsoft's CDN." }
                 li { "A statically linked version of WebView2 in your final binary for offline users." }
             }
@@ -148,10 +143,7 @@ fn LinuxDependencies() -> Element {
             }
             p {
                 "If you run into issues, make sure you have all the basics installed, as outlined in the "
-                Link {
-                    "Tauri docs"
-                    to: "https://beta.tauri.app/start/prerequisites/"
-                }
+                Link { to: "https://beta.tauri.app/start/prerequisites/", "Tauri docs" }
                 "."
             }
         }
@@ -161,19 +153,23 @@ fn LinuxDependencies() -> Element {
 fn WslDependencies() -> Element {
     rsx! {
         div {
-            p { "While it's doable, it can be tricky to setup development in WSL for Dioxus desktop. Not everything has been figured out and some stuff may not work." }
-            p { "Here are the steps we used to get Dioxus running through WSL."}
+            p {
+                "While it's doable, it can be tricky to setup development in WSL for Dioxus desktop. Not everything has been figured out and some stuff may not work."
+            }
+            p { "Here are the steps we used to get Dioxus running through WSL." }
             ol {
                 li { "Update your kernel to the latest version and update WSL to version 2." }
                 li { "Add `export DISPLAY=:0` to `~/.zshrc`" }
                 li {
                     "Install Tauri's Linux dependencies found "
-                    Link { "here", to: "https://beta.tauri.app/start/prerequisites/" },
+                    Link { to: "https://beta.tauri.app/start/prerequisites/", "here" }
                     "."
                 }
-                li { "For file dialogs to work, you need to install a fallback like `zenity`"}
+                li { "For file dialogs to work, you need to install a fallback like `zenity`" }
             }
-            p { "When running Dioxus desktop on WSL, you may get warnings from `libEGL`. There is currently not a solution for these but the app should still render."}
+            p {
+                "When running Dioxus desktop on WSL, you may get warnings from `libEGL`. There is currently not a solution for these but the app should still render."
+            }
         }
     }
 }
@@ -181,7 +177,9 @@ fn WslDependencies() -> Element {
 fn MacOSDependencies() -> Element {
     rsx! {
         div {
-            p { "Currently – everything for macOS is built right in! However, you might run into an issue if you're using nightly Rust due to some permissions issues in our Tao dependency (which have been resolved but not published)." }
+            p {
+                "Currently – everything for macOS is built right in! However, you might run into an issue if you're using nightly Rust due to some permissions issues in our Tao dependency (which have been resolved but not published)."
+            }
         }
     }
 }

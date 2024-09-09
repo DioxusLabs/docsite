@@ -6,10 +6,10 @@ name = "docsite"
 # default platform
 # you can also use `dioxus serve/build --platform XXX` to use other platform
 # value: web | desktop
-default_platform = "web"
+# default_platform = "web"
 
-# Web `build` & `serve` dist path
-out_dir = "docs"
+# # Web `build` & `serve` dist path
+# out_dir = "dist"
 
 # resource (static) file folder
 asset_dir = "public"
@@ -19,7 +19,7 @@ asset_dir = "public"
 # HTML title tag content
 title = "Dioxus | An elegant GUI library for Rust"
 
-base_path = "."
+# base_path = "."
 
 [web.watcher]
 
@@ -31,6 +31,7 @@ watch_path = [
     "snippets",
     "index.html",
     "public",
+    "docs-gen",
 ]
 index_on_404 = true
 

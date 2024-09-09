@@ -25,7 +25,9 @@ pub fn App() -> Element {
         });
     };
 
-    rsx! { button { onclick: log_in, "Response: {response}" } }
+    rsx! {
+        button { onclick: log_in, "Response: {response}" }
+    }
     // ANCHOR_END: spawn
 }
 
@@ -63,5 +65,5 @@ pub fn ToOwnedMacro() -> Element {
         // ANCHOR_END: to_owned_macro
     };
 
-    None
+    rsx! {}
 }

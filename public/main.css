@@ -46,7 +46,7 @@ html.dark .docs-toc {
 }
 /* Adds border bottom to everything but the first and last chapters */
 .docs-links .full-chapter:not(:last-child):not(:first-child) {
-    border-bottom: 1px solid #212529;
+    border-bottom: 1px solid #2125297e;
 }
 
 .docs-links .full-chapter:first-child>h3 {

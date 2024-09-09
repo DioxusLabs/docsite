@@ -1,11 +1,8 @@
 use crate::*;
 use dioxus::html::input_data::keyboard_types::Key;
-use dioxus::prelude::*;
 use dioxus_material_icons::{MaterialIcon, MaterialIconColor};
 use std::ops::Deref;
 
-pub(crate) static HIGHLIGHT_NAV_LAYOUT: GlobalSignal<bool> = Signal::global(|| false);
-pub(crate) static SHOW_NAV: GlobalSignal<bool> = Signal::global(|| false);
 pub(crate) static SHOW_SEARCH: GlobalSignal<bool> = Signal::global(|| false);
 pub(crate) static LOGGED_IN: GlobalSignal<bool> = Signal::global(|| false);
 pub(crate) static SHOW_DOCS_NAV: GlobalSignal<bool> = Signal::global(|| false);
@@ -13,18 +10,20 @@ pub(crate) static SHOW_DOCS_NAV: GlobalSignal<bool> = Signal::global(|| false);
 pub(crate) fn Nav() -> Element {
     rsx! {
         SearchModal {}
-        header {
-            class: "sticky top-0 z-30 bg-white bg-opacity-80 dark:text-gray-200 dark:bg-ideblack dark:bg-opacity-80 border-b dark:border-stone-700 h-16 backdrop-blur-sm",
-            class: if HIGHLIGHT_NAV_LAYOUT() { "border border-orange-600 rounded-md" },
+        header { class: "sticky top-0 z-30 bg-white bg-opacity-80 dark:text-gray-200 dark:bg-ideblack dark:bg-opacity-80 border-b dark:border-stone-700 h-16 backdrop-blur-sm",
             div { class: "lg:py-2 px-2 max-w-screen-2xl mx-auto flex items-center justify-between text-sm leading-6 h-16",
                 button {
-                    class: "bg-zinc-300 rounded-lg p-2 mr-4 lg:hidden my-3 h-10 flex items-center text-lg z-[100]",
+                    class: "bg-zinc-300 rounded-lg p-1 mr-4 lg:hidden my-3 h-10 flex items-center text-lg z-[100]",
                     class: if !SHOW_DOCS_NAV() { "hidden" },
                     onclick: move |_| {
                         let mut sidebar = SHOW_SIDEBAR.write();
                         *sidebar = !*sidebar;
                     },
-                    MaterialIcon { name: "menu", size: 24, color: MaterialIconColor::Dark }
+                    MaterialIcon {
+                        name: "menu",
+                        size: 24,
+                        color: MaterialIconColor::Dark,
+                    }
                 }
                 div { class: "flex z-50 md:flex-1 px-2", LinkList {} }
                 div { class: "hidden md:flex h-full justify-end ml-2 flex-1",
@@ -37,14 +36,14 @@ pub(crate) fn Nav() -> Element {
                                 "Theme"
                             }
                             Link {
-                                to: "https://discord.gg/XgGxMSkvUM",
+                                to: "https://discord.gg/XgGxMSkvUM".to_string(),
                                 class: "block text-gray-400 hover:text-gray-500 dark:hover:text-gray-300",
                                 new_tab: true,
                                 span { class: "sr-only", "Dioxus on Discord" }
                                 crate::icons::DiscordLogo {}
                             }
                             Link {
-                                to: "https://github.com/dioxuslabs/dioxus",
+                                to: "https://github.com/dioxuslabs/dioxus".to_string(),
                                 class: "ml-4 block text-gray-400 hover:text-gray-500 dark:hover:text-gray-300",
                                 new_tab: true,
                                 span { class: "sr-only", "Dioxus on GitHub" }
@@ -66,7 +65,7 @@ pub(crate) fn Nav() -> Element {
                                 Link { to: Route::Homepage {},
                                     img {
                                         src: "https://avatars.githubusercontent.com/u/10237910?s=40&v=4",
-                                        class: "ml-4 h-10 rounded-full w-auto"
+                                        class: "ml-4 h-10 rounded-full w-auto",
                                     }
                                 }
                             }
@@ -80,43 +79,15 @@ pub(crate) fn Nav() -> Element {
 
 static LINKS: &[(&str, &str)] = &[
     ("Learn", "/learn/0.5/"),
+    ("Playground", "/play"),
+    ("SDK", "/sdk"),
     ("Blog", "/blog"),
-    ("Awesome", "/awesome"),
-    ("docs.rs", "https://docs.rs/dioxus/latest/dioxus/"),
+    // ("Awesome", "/awesome"),
+    // ("docs.rs", "https://docs.rs/dioxus/latest/dioxus/"),
 ];
 
 #[component]
 fn LinkList() -> Element {
-    let current_route = use_route::<Route>().to_string();
-
-    let links = LINKS.iter().cloned().map(|(name, link)| {
-        let is_current = current_route.starts_with(link);
-        let cur_class = if is_current { "text-sky-500 dark:text-sky-400" } else { "" };
-
-        let is_external = link.starts_with("http");
-
-        rsx! {
-            Link {
-                to: link,
-                class: "p-0 p-2 leading-none hover:text-sky-500 dark:hover:text-sky-400 rounded fill-zinc-700 dark:fill-zinc-100 {cur_class}",
-                position: "relative",
-                "{name}"
-                if is_external {
-                    svg {
-                        height: "7",
-                        "viewBox": "0 0 6 6",
-                        width: "7",
-                        "aria-hidden": "true",
-                        class: "navbar_externalArrow___VWBd",
-                        path {
-                            "d": "M1.25215 5.54731L0.622742 4.9179L3.78169 1.75597H1.3834L1.38936 0.890915H5.27615V4.78069H4.40513L4.41109 2.38538L1.25215 5.54731Z",
-                        }
-                    }
-                }
-            }
-        }
-    });
-
     rsx! {
         nav { class: "flex items-center space-x-2 text-md font-light leading-none text-slate-700 dark:text-white whitespace-nowrap",
             Link {
@@ -124,30 +95,42 @@ fn LinkList() -> Element {
                 class: "flex title-font font-medium items-center text-gray-900",
                 img {
                     src: "https://avatars.githubusercontent.com/u/79236386?s=200&v=4",
-                    class: "h-8 w-auto"
+                    class: "h-8 w-auto",
                 }
-                span { class: "mx-3 text-xl dark:text-white leading-none font-bold hidden sm:block px-4",
-                    "Dioxus Labs"
+                span { class: "text-xl dark:text-white leading-none font-bold hidden sm:block px-4",
+                    "Dioxus"
                 }
             }
-            {links}
+            for (name , link) in LINKS.iter().cloned() {
+                Link {
+                    to: link,
+                    class: "p-2 leading-none hover:text-sky-500 dark:hover:text-sky-400 rounded fill-zinc-700 dark:fill-zinc-100",
+                    active_class: "text-sky-500 dark:text-sky-400",
+                    position: "relative",
+                    "{name}"
+                }
+            }
         }
     }
 }
 
 fn Search() -> Element {
     rsx! {
-        div { class: "relative md:w-full max-w-[20rem] xl:max-w-[20rem] 2xl:max-w-[20rem] sm:mx-auto sm:flex-1",
+        div { class: "relative md:w-full max-w-[20rem] xl:max-w-[20rem] 2xl:max-w-[20rem] sm:mx-auto sm:flex-1 text-sm font-light leading-none",
             // Pop up a modal
             button {
                 // Pop up a modal
-                class: "bg-gray-100 rounded-lg p-2 sm:w-full text-left text-gray-400 my-auto sm:flex sm:flex-row sm:align-middle sm:justify-between",
+                class: "bg-gray-100 rounded-lg p-1 sm:w-full text-left text-gray-400 my-auto sm:flex sm:flex-row sm:align-middle sm:justify-between",
                 onclick: move |_| {
                     *SHOW_SEARCH.write() = true;
                 },
-                div { class: "h-full my-auto flex flex-row align-middle justify-between",
-                    MaterialIcon { name: "search", size: 24, color: MaterialIconColor::Dark }
-                    span { class: "hidden sm:block pl-2 pr-4", "Search the docs" }
+                div { class: "h-full my-auto flex flex-row content-center justify-between",
+                    MaterialIcon {
+                        name: "search",
+                        size: 20,
+                        color: MaterialIconColor::Dark,
+                    }
+                    span { class: "hidden sm:block pl-2 pr-4 content-center", "Search the docs" }
                 }
                 div { class: "hidden md:block border border-gray-300 rounded-lg p-1 text-xs text-gray-400",
                     "CTRL + /"
@@ -164,12 +147,14 @@ fn SearchModal() -> Element {
     let mut results = use_signal(|| SEARCH_INDEX.search(&search_text.read()));
 
     let mut last_key_press = use_signal(|| {
-        #[cfg(not(target_arch = "wasm32"))]
-        return 0.;
-        js_sys::Date::now()
+        if cfg!(target_arch = "wasm32") {
+            js_sys::Date::now()
+        } else {
+            0.
+        }
     });
 
-    use_resource(move || {
+    _ = use_resource(move || {
         async move {
             _ = search_text();
 
@@ -205,7 +190,11 @@ fn SearchModal() -> Element {
                     // Search input
                     div { class: "flex flex-row flex-grow border-b border-gray-300 pb-4",
                         div { class: "my-auto flex flex-row",
-                            MaterialIcon { name: "search", size: 40, color: MaterialIconColor::Dark }
+                            MaterialIcon {
+                                name: "search",
+                                size: 40,
+                                color: MaterialIconColor::Dark,
+                            }
 
                             // hide the input until show search so the onmounted fires
                             if SHOW_SEARCH() {
@@ -219,20 +208,21 @@ fn SearchModal() -> Element {
                                     oninput: move |evt| {
                                         search_text.set(evt.value());
                                     },
-                                    onmounted: move |evt| {
-                                        evt.set_focus(true);
+                                    onmounted: move |evt| async move {
+                                        _ = evt.set_focus(true).await;
                                     },
                                     class: "flex-grow bg-transparent border-none outline-none text-xl pl-2 text-gray-800 dark:text-gray-100",
                                     placeholder: "Search the docs",
-                                    value: "{search_text}"
+                                    value: "{search_text}",
                                 }
                             }
                         }
                     }
 
-                    // Results
                     div { class: "overflow-y-auto",
-                        ul { SearchResults { results, search_text } }
+                        ul {
+                            SearchResults { results, search_text }
+                        }
                     }
                 }
             }
@@ -243,7 +233,9 @@ fn SearchModal() -> Element {
 #[component]
 fn SearchResults(results: Signal<Results>, search_text: Signal<String>) -> Element {
     if let Err(err) = results.read().as_ref() {
-        return rsx! { div { class: "text-red-500", "{err}" } };
+        return rsx! {
+            div { class: "text-red-500", "{err}" }
+        };
     }
 
     let _results = results.read();

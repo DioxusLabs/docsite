@@ -1,6 +1,17 @@
 use dioxus::prelude::*;
 
-pub(crate) fn FeaturedExamples() -> Element {
+pub fn FeaturedExamples() -> Element {
+    // todo: maybe feature this somewhere else?
+    // FeaturedExample {
+    //     title: "JS Benchmark",
+    //     subtitle: "Web",
+    //     description: "The classic performance benchmark for web frameworks. Dioxus ranks extraordinarily high!",
+    //     link: "https://github.com/krausest/js-framework-benchmark/tree/master/frameworks/keyed/dioxus",
+    //     img_avif: "/static/jsbenchmark_cropped.avif",
+    //     img: "/static/jsbenchmark_cropped.png",
+    //     img_alt: "Javascript Framework Benchmark"
+    // }
+
     rsx! {
         section { class: "body-font w-full dark:bg-ideblack",
             div { class: "container px-6 max-w-screen-lg py-24 mx-auto",
@@ -17,7 +28,7 @@ pub(crate) fn FeaturedExamples() -> Element {
                         link: "https://github.com/DioxusLabs/dioxus/blob/main/examples/todomvc.rs",
                         img_avif: "/static/todos_cropped.avif",
                         img: "/static/todos_cropped.png",
-                        img_alt: "TodoMVC"
+                        img_alt: "TodoMVC",
                     }
                     FeaturedExample {
                         title: "File Explorer",
@@ -26,7 +37,7 @@ pub(crate) fn FeaturedExamples() -> Element {
                         link: "https://github.com/DioxusLabs/dioxus/blob/main/examples/file_explorer.rs",
                         img_avif: "/static/file_explorer.avif",
                         img: "/static/file_explorer.png",
-                        img_alt: "File Explorer"
+                        img_alt: "File Explorer",
                     }
                     FeaturedExample {
                         title: "Documentation Site",
@@ -35,16 +46,7 @@ pub(crate) fn FeaturedExamples() -> Element {
                         link: "https://github.com/DioxusLabs/docsite",
                         img_avif: "/static/docsite_cropped.avif",
                         img: "/static/docsite_cropped.png",
-                        img_alt: "The documentation site you're currently viewing"
-                    }
-                    FeaturedExample {
-                        title: "JS Benchmark",
-                        subtitle: "Web",
-                        description: "The classic performance benchmark for web frameworks. Dioxus ranks extraordinarily high!",
-                        link: "https://github.com/krausest/js-framework-benchmark/tree/master/frameworks/keyed/dioxus",
-                        img_avif: "/static/jsbenchmark_cropped.avif",
-                        img: "/static/jsbenchmark_cropped.png",
-                        img_alt: "Javascript Framework Benchmark"
+                        img_alt: "The documentation site you're currently viewing",
                     }
                 }
             }
@@ -82,12 +84,12 @@ fn FeaturedExample(props: FeaturedExampleProps) -> Element {
                         source {
                             class: "w-full rounded-lg object-cover",
                             r#type: "image/avif",
-                            "srcset": "{img_avif}"
+                            "srcset": "{img_avif}",
                         }
                         img {
                             class: "absolute inset-0 w-full h-full object-cover object-center",
                             alt: "{img_alt}",
-                            src: "{img}"
+                            src: "{img}",
                         }
                     }
                     div { class: "px-8 py-10 relative z-10 w-full border-4 border-gray-200 bg-white opacity-0 hover:opacity-100",

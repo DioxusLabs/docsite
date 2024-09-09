@@ -1,66 +1,53 @@
-#![allow(non_snake_case, non_upper_case_globals, unused)]
+#![allow(non_snake_case, non_upper_case_globals)]
 
 use dioxus::html::input_data::keyboard_types::{Key, Modifiers};
 use dioxus::prelude::*;
-use dioxus_router::prelude::*;
-pub(crate) use docs::BookRoute;
+pub use docs::BookRoute;
 use serde::{Deserialize, Serialize};
 
-macro_rules! export_items {
-    (
-        $(
-            pub(crate) mod $item:ident;
-        )*
-    ) => {
-        $(
-            pub(crate) mod $item;
-            pub(crate) use $item::*;
-        )*
-    };
-}
-
-pub(crate) mod icons;
-pub(crate) mod sitemap;
-
-pub(crate) mod shortcut;
-
-mod doc_examples;
-mod snippets;
-
-pub(crate) use components::*;
-pub(crate) mod components {
-    export_items! {
-        pub(crate) mod blog;
-        pub(crate) mod footer;
-        pub(crate) mod homepage;
-        pub(crate) mod learn;
-        pub(crate) mod nav;
-        pub(crate) mod notfound;
-        pub(crate) mod tutorials;
-        pub(crate) mod awesome;
-        pub(crate) mod deploy;
-        pub(crate) mod desktop_dependencies;
-        pub(crate) mod playground;
-    }
-}
+pub mod components;
+pub mod doc_examples;
+pub mod icons;
+pub mod shortcut;
+pub mod snippets;
+pub use components::*;
 
 #[component]
 fn HeaderFooter() -> Element {
-    let cb = use_callback(|| {
-        *SHOW_SEARCH.write() = true;
-    });
-
+    let cb = use_callback(|_| *SHOW_SEARCH.write() = true);
     shortcut::use_shortcut(Key::Character("/".to_string()), Modifiers::CONTROL, {
-        move || {
-            cb.call();
-        }
+        move || cb.call(())
     });
 
     rsx! {
         div { class: "bg-white dark:bg-ideblack pb-8",
-            link { rel: "stylesheet", href: "/githubmarkdown.css" }
-            link { rel: "stylesheet", href: "/tailwind.css" }
-            link { rel: "stylesheet", href: "/main.css" }
+            head::Link { rel: "stylesheet", href: "/githubmarkdown.css" }
+            head::Link { rel: "stylesheet", href: "/tailwind.css" }
+            head::Link { rel: "stylesheet", href: "/main.css" }
+            head::Link { rel: "stylesheet", href: "/dxp.css" }
+            head::Link { rel: "stylesheet", href: "https://rsms.me/inter/inter.css" }
+            head::Link {
+                rel: "stylesheet",
+                href: "https://fonts.googleapis.com/icon?family=Material+Icons",
+            }
+            head::Link { rel: "preconnect", href: "https://fonts.googleapis.com" }
+            head::Link {
+                href: "https://fonts.gstatic.com",
+                rel: "preconnect",
+                crossorigin: "false",
+            }
+            head::Link {
+                rel: "stylesheet",
+                href: "https://fonts.googleapis.com/css2?family=Arimo:wght@100;400;600&display=swap",
+            }
+            head::Link {
+                href: "https://fonts.googleapis.com/css2?family=Arimo:ital,wght@0,400..700;1,400..700&family=Lexend:wght@100;400&family=M+PLUS+1:wght@100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap",
+                rel: "stylesheet",
+            }
+            head::Script { src: "/ace/ace.js" }
+            head::Script { src: "/ace/mode-rust.js" }
+            head::Script { src: "/ace/theme-github.js" }
+
             Nav {}
             Outlet::<Route> {}
         }
@@ -70,16 +57,9 @@ fn HeaderFooter() -> Element {
 
 #[derive(Clone, Routable, PartialEq, Eq, Serialize, Deserialize, Debug)]
 #[rustfmt::skip]
-pub(crate) enum Route {
+pub enum Route {
     #[layout(HeaderFooter)]
         #[route("/")]
-        #[redirect("/platforms", || Route::Homepage {})]
-        #[redirect("/platforms/web", || Route::Homepage {})]
-        #[redirect("/platforms/desktop", || Route::Homepage {})]
-        #[redirect("/platforms/liveview", || Route::Homepage {})]
-        #[redirect("/platforms/mobile", || Route::Homepage {})]
-        #[redirect("/platforms/ssr", || Route::Homepage {})]
-        #[redirect("/platforms/tui", || Route::Homepage {})]
         Homepage {},
 
         #[route("/play")]
@@ -90,9 +70,6 @@ pub(crate) enum Route {
 
         #[route("/deploy")]
         Deploy {},
-
-        #[route("/tutorials/:id")]
-        Tutorial { id: usize },
 
         #[nest("/blog")]
             #[route("/")]
@@ -131,18 +108,19 @@ pub(crate) enum Route {
         #[end_layout]
     #[end_nest]
     #[redirect("/docs/0.3/:..segments", |segments: Vec<String>| Route::DocsO3 { segments })]
-    #[redirect("/docs/:.._segments", |_segments: Vec<String>| Route::Docs { child: BookRoute::Index {} })]
-    #[route("/:..segments")]
+    #[redirect("/docs/:..segments", |segments: Vec<String>| {
+        let joined = segments.join("/");
+        let docs_route = format!("/docs/{}", joined);
+        Route::from_str(&docs_route).unwrap_or_else(|_| Route::Docs { child: BookRoute::Index {} })
+    })]
     #[route("/:..segments")]
     Err404 { segments: Vec<String> },
 }
 
-pub(crate) fn use_url() -> String {
-    use_route::<Route>().to_string()
-}
-
-pub(crate) fn app() -> Element {
-    rsx! { Router::<Route> {} }
+pub fn app() -> Element {
+    rsx! {
+        Router::<Route> {}
+    }
 }
 
 static SEARCH_INDEX: dioxus_search::LazySearchIndex<Route> = dioxus_search::load_search_index! {
@@ -154,6 +132,23 @@ mod docs {
     use dioxus::prelude::*;
 
     #[component]
+    fn CodeBlock(contents: String) -> Element {
+        rsx! {
+            div {
+                style: "position: relative;",
+                div {
+                    dangerous_inner_html: contents
+                }
+                button {
+                    style: "position: absolute; top: 0; right: 0; background: rgba(0, 0, 0, 0.75); color: white; border: 1px solid white; padding: 0.25em;",
+                    "onclick": "navigator.clipboard.writeText(this.previousElementSibling.innerText)",
+                    "Copy"
+                }
+            }
+        }
+    }
+
+    #[component]
     fn SandBoxFrame(url: String) -> Element {
         rsx! {
             iframe {
@@ -161,7 +156,7 @@ mod docs {
                 width: "800",
                 height: "450",
                 src: "{url}?embed=1",
-                "allowfullscreen": true
+                "allowfullscreen": true,
             }
         }
     }
@@ -179,63 +174,29 @@ mod docs {
 
     fn LayoutsExplanation() -> Element {
         rsx! {
-            pre {
-                onmouseenter: move |_| {
-                    *HIGHLIGHT_NAV_LAYOUT.write() = true;
-                    *HIGHLIGHT_DOCS_LAYOUT.write() = true;
-                    *HIGHLIGHT_DOCS_CONTENT.write() = true;
-                },
-                onmouseleave: move |_| {
-                    *HIGHLIGHT_NAV_LAYOUT.write() = false;
-                    *HIGHLIGHT_DOCS_LAYOUT.write() = false;
-                    *HIGHLIGHT_DOCS_CONTENT.write() = false;
-                },
+            pre { onmouseenter: move |_| {}, onmouseleave: move |_| {},
                 span {
                     "#[derive(Clone, Routable, PartialEq, Eq, Serialize, Deserialize)]
 #[rustfmt::skip]
 pub enum Route {{\n\t"
                 }
                 span {
-                    onmouseenter: move |_| {
-                        *HIGHLIGHT_NAV_LAYOUT.write() = true;
-                        *HIGHLIGHT_DOCS_LAYOUT.write() = false;
-                        *HIGHLIGHT_DOCS_CONTENT.write() = false;
-                    },
-                    onmouseleave: move |_| {
-                        *HIGHLIGHT_NAV_LAYOUT.write() = true;
-                        *HIGHLIGHT_DOCS_LAYOUT.write() = true;
-                        *HIGHLIGHT_DOCS_CONTENT.write() = true;
-                    },
+                    onmouseenter: move |_| {},
+                    onmouseleave: move |_| {},
                     class: "border border-orange-600 rounded-md",
                     "#[layout(HeaderFooter)]"
                 }
                 span { "\n\t\t// ... other routes\n\t\t" }
                 span {
-                    onmouseenter: move |_| {
-                        *HIGHLIGHT_DOCS_LAYOUT.write() = true;
-                        *HIGHLIGHT_NAV_LAYOUT.write() = false;
-                        *HIGHLIGHT_DOCS_CONTENT.write() = false;
-                    },
-                    onmouseleave: move |_| {
-                        *HIGHLIGHT_NAV_LAYOUT.write() = true;
-                        *HIGHLIGHT_DOCS_LAYOUT.write() = true;
-                        *HIGHLIGHT_DOCS_CONTENT.write() = true;
-                    },
+                    onmouseenter: move |_| {},
+                    onmouseleave: move |_| {},
                     class: "border border-green-600 rounded-md",
                     r##"#[layout(DocsSidebars)]"##
                 }
                 "\n\t\t\t"
                 span {
-                    onmouseenter: move |_| {
-                        *HIGHLIGHT_NAV_LAYOUT.write() = false;
-                        *HIGHLIGHT_DOCS_LAYOUT.write() = false;
-                        *HIGHLIGHT_DOCS_CONTENT.write() = true;
-                    },
-                    onmouseleave: move |_| {
-                        *HIGHLIGHT_NAV_LAYOUT.write() = true;
-                        *HIGHLIGHT_DOCS_LAYOUT.write() = true;
-                        *HIGHLIGHT_DOCS_CONTENT.write() = true;
-                    },
+                    onmouseenter: move |_| {},
+                    onmouseleave: move |_| {},
                     class: "border border-blue-600 rounded-md",
                     r##"#[route("/learn")]"##
                 }
@@ -244,7 +205,8 @@ pub enum Route {{\n\t"
         }
     }
 
-    use_mdbook::mdbook_router! {"docs-src/0.5"}
+    mod router;
+    pub use router::*;
 }
 
 fn main() {
@@ -253,6 +215,7 @@ fn main() {
         wasm_logger::init(wasm_logger::Config::new(log::Level::Info));
         std::panic::set_hook(Box::new(console_error_panic_hook::hook));
     }
+
     #[cfg(feature = "prebuild")]
     {
         use dioxus_router::prelude::*;
@@ -261,46 +224,13 @@ fn main() {
             .with_level(LevelFilter::Error)
             .init()
             .unwrap();
-        tokio::runtime::Runtime::new()
-            .unwrap()
-            .block_on(async move {
-                let index_html = std::fs::read_to_string("docs/index.html").unwrap();
-                let main_tag = r#"<div id="main">"#;
-                let (before_body, after_body) =
-                    index_html.split_once(main_tag).expect("main id not found");
-                let after_body = after_body
-                    .split_once("</div>")
-                    .expect("main id not found")
-                    .1;
-                let wrapper = DefaultRenderer {
-                    before_body: before_body.to_string() + main_tag,
-                    after_body: "</div>".to_string() + after_body,
-                };
-                let mut renderer = IncrementalRenderer::builder()
-                    .static_dir("docs_static")
-                    .map_path(|route| {
-                        let mut path = std::env::current_dir().unwrap();
-                        path.push("docs_static");
-                        for segment in route.split('/') {
-                            path.push(segment);
-                        }
-                        println!("built: {}", path.display());
-                        path
-                    })
-                    .build();
-                renderer.renderer_mut().pre_render = true;
-                pre_cache_static_routes::<Route, _>(&mut renderer, &wrapper)
-                    .await
-                    .unwrap();
 
-                // Copy everything from docs_static to docs
-                let mut options = fs_extra::dir::CopyOptions::new();
-                options.overwrite = true;
-                options.content_only = true;
-                options.copy_inside = true;
-                std::fs::create_dir_all(format!("./docs")).unwrap();
-                fs_extra::dir::move_dir("./docs_static", &format!("./docs"), &options).unwrap();
-            });
+        std::env::remove_var("DIOXUS_ACTIVE");
+        std::env::remove_var("CARGO");
+
+        LaunchBuilder::new()
+            .with_cfg(dioxus::static_site_generation::Config::new().github_pages())
+            .launch(app);
         println!("prebuilt");
 
         dioxus_search::SearchIndex::<Route>::create(
@@ -319,6 +249,7 @@ fn main() {
         return;
     }
 
+    #[allow(deprecated)]
     #[cfg(not(feature = "prebuild"))]
     launch(app);
 }

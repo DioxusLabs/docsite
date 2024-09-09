@@ -2,5 +2,7 @@
     "[html]": {
         // so it doesn't break code blocks
         "editor.formatOnSave": false
-    }
+    },
+    // "editor.formatOnSave": false
+    // "files.autoSaveDelay": 10
 }

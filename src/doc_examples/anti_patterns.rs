@@ -2,8 +2,8 @@
 
 //! This example shows what *not* to do
 
-use std::collections::HashMap;
 use std::cell::RefCell;
+use std::collections::HashMap;
 use std::rc::Rc;
 
 use dioxus::prelude::*;
@@ -68,7 +68,6 @@ fn AntipatternNoKeys(props: NoKeysProps) -> Element {
     // ANCHOR_END: iter_keys
 }
 
-
 // ANCHOR: interior_mutability
 // ❌ Mutex/RwLock/RefCell in props
 #[derive(Props, Clone)]
@@ -88,7 +87,7 @@ fn AntipatternInteriorMutability(map: Rc<RefCell<HashMap<u32, String>>>) -> Elem
             onclick: {
                 let map = map.clone();
                 move |_| {
-                    // Writing to map will not rerun any components 
+                    // Writing to map will not rerun any components
                     map.borrow_mut().insert(0, "Hello".to_string());
                 }
             },
@@ -155,13 +154,13 @@ fn app() -> Element {
         logged_in: bool,
         warnings: Vec<String>,
     }
-    
+
     #[derive(Props, Clone, PartialEq)]
     struct User {
         name: String,
         email: String,
     }
-    
+
     let mut all_my_state = use_signal(|| LargeState {
         users: vec![User {
             name: "Alice".to_string(),
@@ -170,21 +169,26 @@ fn app() -> Element {
         logged_in: true,
         warnings: vec![],
     });
-    
+
     use_effect(move || {
         // It is very easy to accidentally read and write to the state object if it contains all your state
         let read = all_my_state.read();
         let logged_in = read.logged_in;
         if !logged_in {
-            all_my_state.write_unchecked().warnings.push("You are not logged in".to_string());
+            all_my_state
+                .write_unchecked()
+                .warnings
+                .push("You are not logged in".to_string());
         }
     });
 
     // ✅ Use multiple signals to manage state
-    let users = use_signal(|| vec![User {
-        name: "Alice".to_string(),
-        email: "alice@example.com".to_string(),
-    }]);
+    let users = use_signal(|| {
+        vec![User {
+            name: "Alice".to_string(),
+            email: "alice@example.com".to_string(),
+        }]
+    });
     let logged_in = use_signal(|| true);
     let mut warnings = use_signal(|| vec![]);
 
@@ -197,10 +201,12 @@ fn app() -> Element {
 
     // ✅ Use memos to create derived state when larger states are unavoidable
     // Notice we didn't split everything into separate signals. Users still make sense as a vec of data
-    let users = use_signal(|| vec![User {
-        name: "Alice".to_string(),
-        email: "alice@example.com".to_string(),
-    }]);
+    let users = use_signal(|| {
+        vec![User {
+            name: "Alice".to_string(),
+            email: "alice@example.com".to_string(),
+        }]
+    });
     let logged_in = use_signal(|| true);
     let warnings: Signal<Vec<String>> = use_signal(|| vec![]);
 
@@ -225,13 +231,12 @@ fn app() -> Element {
 }
 // ANCHOR_END: large_state
 
-
 // ANCHOR: non_deterministic
 // ❌ Non-deterministic code in the body of a component
 #[component]
 fn NonDeterministic(name: String) -> Element {
     let my_random_id = rand::random::<u64>();
-    
+
     rsx! {
         div {
             // Id will change every single time the component is re-rendered
@@ -245,7 +250,7 @@ fn NonDeterministic(name: String) -> Element {
 fn NonDeterministicHook(name: String) -> Element {
     // If you store the result of the non-deterministic code in a hook, it will stay the same between renders
     let my_random_id = use_hook(|| rand::random::<u64>());
-    
+
     rsx! {
         div {
             id: "{my_random_id}",

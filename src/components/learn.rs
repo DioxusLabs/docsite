@@ -1,20 +1,18 @@
 use crate::docs::LAZY_BOOK;
 use crate::*;
-use dioxus::prelude::*;
-use dioxus_material_icons::MaterialIcon;
 use dioxus_material_icons::MaterialIconColor;
-use mdbook_shared::Page;
 use mdbook_shared::SummaryItem;
 
 pub(crate) static HIGHLIGHT_DOCS_LAYOUT: GlobalSignal<bool> = Signal::global(|| false);
 pub(crate) static SHOW_SIDEBAR: GlobalSignal<bool> = Signal::global(|| false);
-pub(crate) static HIGHLIGHT_DOCS_CONTENT: GlobalSignal<bool> = Signal::global(|| false);
 
 /// The Markdown file path needs to be appended to this, including the first slash!
 const GITHUB_API_URL: &str =
     "https://api.github.com/repos/DioxusLabs/docsite/contents/docs-src/0.5/en";
+
 /// Use this URL while loading the file-specific URL.
 const GITHUB_EDIT_PAGE_FALLBACK_URL: &str = "https://github.com/DioxusLabs/docsite";
+
 /// The Markdown file path needs to be appended to this, including the first slash!
 const GITHUB_EDIT_PAGE_EDIT_URL: &str =
     "https://github.com/DioxusLabs/docsite/edit/main/docs-src/0.5/en";
@@ -25,9 +23,7 @@ pub(crate) fn Learn() -> Element {
     use_drop(|| *SHOW_DOCS_NAV.write() = false);
 
     rsx! {
-        div {
-            class: "w-full text-sm dark:bg-ideblack",
-            min_height: "100vh",
+        div { class: "w-full text-sm dark:bg-ideblack", min_height: "100vh",
 
             // Flex centered, every column grows to split into 3
             div { class: "flex flex-row justify-center dark:text-[#dee2e6] font-light",
@@ -72,21 +68,33 @@ fn DocVersionNav() -> Element {
         div { class: "pb-4",
             ul { class: "pl-2",
                 li { class: "m-1 rounded-md pl-2",
-                    span {
-                        class: "hover:text-sky-500 dark:hover:text-sky-400",
-                        dioxus_material_icons::MaterialIcon { name: "chevron_left", color: MaterialIconColor::Custom("gray".to_string()) }
+                    span { class: "hover:text-sky-500 dark:hover:text-sky-400",
+                        dioxus_material_icons::MaterialIcon {
+                            name: "chevron_left",
+                            color: MaterialIconColor::Custom("gray".to_string()),
+                        }
                         "0.5"
                     }
                 }
                 li { class: "m-1 rounded-md pl-2",
-                    a { href: "/learn/0.4", class: "hover:text-sky-500 dark:hover:text-sky-400",
-                        dioxus_material_icons::MaterialIcon { name: "chevron_left", color: MaterialIconColor::Custom("gray".to_string()) }
+                    a {
+                        href: "/learn/0.4",
+                        class: "hover:text-sky-500 dark:hover:text-sky-400",
+                        dioxus_material_icons::MaterialIcon {
+                            name: "chevron_left",
+                            color: MaterialIconColor::Custom("gray".to_string()),
+                        }
                         "0.4"
                     }
                 }
                 li { class: "m-1 rounded-md pl-2",
-                    a { href: "/learn/0.3", class: "hover:text-sky-500 dark:hover:text-sky-400",
-                        dioxus_material_icons::MaterialIcon { name: "chevron_left", color: MaterialIconColor::Custom("gray".to_string()) }
+                    a {
+                        href: "/learn/0.3",
+                        class: "hover:text-sky-500 dark:hover:text-sky-400",
+                        dioxus_material_icons::MaterialIcon {
+                            name: "chevron_left",
+                            color: MaterialIconColor::Custom("gray".to_string()),
+                        }
                         "0.3"
                     }
                 }
@@ -107,22 +115,25 @@ fn DocVersionNav() -> Element {
 /// This renders a single section
 #[component]
 fn SidebarSection(chapter: &'static SummaryItem<BookRoute>, keep_bottom_spacing: bool) -> Element {
-    let link = chapter.maybe_link()?;
+    let link = chapter.maybe_link().context("Could not get link")?;
 
-    let sections = link
-        .nested_items
-        .iter()
-        .map(|chapter| rsx! { SidebarChapter { chapter: chapter } });
+    let sections = link.nested_items.iter().map(|chapter| {
+        rsx! {
+            SidebarChapter { chapter }
+        }
+    });
 
     rsx! {
-        div { 
+        div {
             class: "full-chapter",
             class: if keep_bottom_spacing { "pb-4 mb-6" },
             if let Some(url) = &link.location {
                 Link {
                     onclick: move |_| *SHOW_SIDEBAR.write() = false,
                     to: Route::Docs { child: *url },
-                    h3 { class: "font-semibold mb-2 hover:text-sky-500 dark:hover:text-sky-400", "{link.name}" }
+                    h3 { class: "font-semibold mb-2 hover:text-sky-500 dark:hover:text-sky-400",
+                        "{link.name}"
+                    }
                 }
             }
             ul { class: "ml-1", {sections} }
@@ -132,7 +143,7 @@ fn SidebarSection(chapter: &'static SummaryItem<BookRoute>, keep_bottom_spacing:
 
 #[component]
 fn SidebarChapter(chapter: &'static SummaryItem<BookRoute>) -> Element {
-    let link = chapter.maybe_link()?;
+    let link = chapter.maybe_link().context("Could not get link")?;
     let url = link.location.as_ref().unwrap();
     let mut list_toggle = use_signal(|| false);
 
@@ -157,7 +168,7 @@ fn SidebarChapter(chapter: &'static SummaryItem<BookRoute>) -> Element {
                     class: "align-middle",
                     dioxus_material_icons::MaterialIcon {
                         name: "chevron_right",
-                        color: MaterialIconColor::Custom("gray".to_string())
+                        color: MaterialIconColor::Custom("gray".to_string()),
                     }
                 }
             }
@@ -170,7 +181,9 @@ fn SidebarChapter(chapter: &'static SummaryItem<BookRoute>) -> Element {
             }
         }
     } else {
-        rsx! { LocationLink { chapter } }
+        rsx! {
+            LocationLink { chapter }
+        }
     }
 }
 
@@ -178,7 +191,7 @@ fn SidebarChapter(chapter: &'static SummaryItem<BookRoute>) -> Element {
 fn LocationLink(chapter: &'static SummaryItem<BookRoute>) -> Element {
     let book_url = use_book().to_string();
 
-    let link = chapter.maybe_link()?;
+    let link = chapter.maybe_link().context("Could not get link")?;
     let url = link.location.as_ref().unwrap();
 
     rsx! {
@@ -222,14 +235,22 @@ fn RightNav() -> Element {
             ul {
                 for section in page.sections().iter().skip(1) {
                     li { class: "pb-2 {padding_map[section.level-1]}",
-                        a { class: "hover:text-sky-500 dark:hover:text-sky-400", href: "?phantom={section.id}#{section.id}", "{section.title}" }
+                        a {
+                            class: "hover:text-sky-500 dark:hover:text-sky-400",
+                            href: "?phantom={section.id}#{section.id}",
+                            "{section.title}"
+                        }
                     }
                 }
             }
             h2 { class: "py-4 font-semibold",
                 match edit_github_url.cloned() {
-                    Some(url) => rsx!(a { class: "hover:text-sky-500 dark:hover:text-sky-400", href: "{url}", "Edit this page!" }),
-                    None => rsx!(a { href: "{GITHUB_EDIT_PAGE_FALLBACK_URL}", "Edit this page!" })
+                    Some(url) => rsx! {
+                        a { class: "hover:text-sky-500 dark:hover:text-sky-400", href: "{url}", "Edit this page!" }
+                    },
+                    None => rsx! {
+                        a { href: "{GITHUB_EDIT_PAGE_FALLBACK_URL}", "Edit this page!" }
+                    },
                 }
             }
             h2 { class: "py-4 font-semibold", "Go to version" }
@@ -254,38 +275,8 @@ fn Content() -> Element {
                     }
                     article { class: "markdown-body", Outlet::<Route> {} }
 
-                    // todo: we want left-right buttons to go between pages in the docs
-                    // ContentFooter {}
-                }
-            }
-        }
-    }
-}
-
-fn ContentFooter() -> Element {
-    rsx! {
-       div {
-            class: "chapter-nav",
-            button {
-                "left"
-            }
-            button {
-                "right"
-            }
-        }
-    }
-}
-
-fn BreadCrumbs() -> Element {
-    // parse out the route after the version and language
-    let route: Route = use_route();
-
-    rsx! {
-        h2 { class: "font-semibold pb-4",
-            for segment in route.to_string().split('/').skip(3).filter(|f| !f.is_empty()) {
-                if segment != "index" {
-                    Link { to: Route::Homepage {}, class: "text-blue-600", "{segment}" }
-                    " / "
+                // todo: we want left-right buttons to go between pages in the docs
+                // ContentFooter {}
                 }
             }
         }
@@ -302,20 +293,12 @@ fn use_book() -> BookRoute {
     }
 }
 
-fn default_page() -> &'static Page<BookRoute> {
-    let id = LAZY_BOOK
-        .page_id_mapping
-        .get(&BookRoute::default())
-        .unwrap();
-    LAZY_BOOK.pages.get(id.0).unwrap()
-}
-
 #[component]
 pub(crate) fn DocsO3(segments: Vec<String>) -> Element {
     let navigator = use_navigator();
     let route: Route = use_route();
     navigator.push(route);
-    None
+    rsx!()
 }
 
 #[component]
@@ -323,5 +306,5 @@ pub(crate) fn DocsO4(segments: Vec<String>) -> Element {
     let navigator = use_navigator();
     let route: Route = use_route();
     navigator.push(route);
-    None
+    rsx!()
 }

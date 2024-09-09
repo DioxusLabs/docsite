@@ -9,7 +9,7 @@ pub fn App() -> Element {
         LogIn {
             is_logged_in: is_logged_in(),
             log_in: move |_| is_logged_in.set(true),
-            log_out: move |_| is_logged_in.set(false)
+            log_out: move |_| is_logged_in.set(false),
         }
     }
 }
@@ -23,7 +23,9 @@ fn LogIn(is_logged_in: bool, log_in: EventHandler, log_out: EventHandler) -> Ele
             button { onclick: move |_| log_out.call(()), "Log Out" }
         }
     } else {
-        rsx! { button { onclick: move |_| log_in.call(()), "Log In" } }
+        rsx! {
+            button { onclick: move |_| log_in.call(()), "Log In" }
+        }
     }
     // ANCHOR_END: if_else
 }
@@ -35,7 +37,7 @@ pub fn LogInImprovedApp() -> Element {
         LogInImproved {
             is_logged_in: is_logged_in(),
             log_in: move |_| is_logged_in.set(true),
-            log_out: move |_| is_logged_in.set(false)
+            log_out: move |_| is_logged_in.set(false),
         }
     }
 }
@@ -83,9 +85,11 @@ pub fn LogInWarningApp() -> Element {
 fn LogInWarning(is_logged_in: bool) -> Element {
     // ANCHOR: conditional_none
     if is_logged_in {
-        return None;
+        return rsx!();
     }
 
-    rsx! { p { "You must be logged in to comment" } }
+    rsx! {
+        p { "You must be logged in to comment" }
+    }
     // ANCHOR_END: conditional_none
 }

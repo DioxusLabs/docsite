@@ -10,11 +10,6 @@ mod ws;
 const _: &str = asset!("/public/dxp.css");
 const SNIPPET_WELCOME: &str = include_str!("snippets/welcome.rs");
 
-// Ace editor
-//const _: &str = manganis::mg!(file("public/ace/ace.js"));
-//const _: &str = manganis::mg!(file("public/ace/mode-rust.js"));
-//const _: &str = manganis::mg!(file("public/ace/theme-github.js"));
-
 #[component]
 pub fn Playground(socket_url: String, built_url: String) -> Element {
     let mut is_compiling = use_signal(|| false);
@@ -43,35 +38,14 @@ pub fn Playground(socket_url: String, built_url: String) -> Element {
     let on_editor_mount = move |_| {
         let code = format!(
             r#"
-            let editor = ace.edit("dxp-editor");
+            //const editorElement = document.getElementById("dxp-editor");
+            // let editor = monaco.editor.create(editorElement, {{
+            //     value: "{SNIPPET_WELCOME}",
+            //     language: 'rust',
+            // }});
 
-            let RustMode = ace.require("ace/mode/rust").Mode;
-            editor.session.setMode(new RustMode());
-
-            editor.setValue(`{SNIPPET_WELCOME}`, -1);
-
-            // Set a global so other evals can acces it.
-            window.editorGlobal = editor;
-
-            let remove = null;
-            const updateTheme = () => {{
-                if (remove != null) {{
-                    remove();
-                }}
-                const media = window.matchMedia("(prefers-color-scheme: dark");
-                media.addEventListener("change", updateTheme);
-                remove = () => {{
-                    media.removeEventListener("change", updateTheme);
-                }};
-
-                if (media.matches) {{
-                    window.editorGlobal.setTheme("ace/theme/github_dark");
-                }} else {{
-                    window.editorGlobal.setTheme("ace/theme/github");
-                }}
-            }};
-
-            updateTheme();
+            // Set a global so other evals can access it.
+            // window.editorGlobal = editor;
             "#
         );
         eval(&code);
@@ -102,6 +76,15 @@ pub fn Playground(socket_url: String, built_url: String) -> Element {
     let built_page_url = use_memo(move || built_page_id().map(|id| format!("{}{}", built_url, id)));
 
     rsx! {
+        // script {
+        //     "var require = {{ paths: {{ vs: './monaco-editor/vs' }} }};"
+        // }
+        // script {
+        //     src: "./monaco-editor/vs/loader.js",
+        // }
+        // script {
+        //     src: "./monaco-editor/vs/editor/editor.main.js",
+        // }
         div { id: "dxp-pane-container",
             div { id: "dxp-left-pane",
                 Header {

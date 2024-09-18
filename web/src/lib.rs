@@ -38,14 +38,32 @@ pub fn Playground(socket_url: String, built_url: String) -> Element {
     let on_editor_mount = move |_| {
         let code = format!(
             r#"
-            //const editorElement = document.getElementById("dxp-editor");
-            // let editor = monaco.editor.create(editorElement, {{
-            //     value: "{SNIPPET_WELCOME}",
-            //     language: 'rust',
-            // }});
+            require.config({{ paths: {{ vs: './monaco-editor/vs' }} }});
 
-            // Set a global so other evals can access it.
-            // window.editorGlobal = editor;
+			require(['vs/editor/editor.main'], function () {{
+                const media = window.matchMedia("(prefers-color-scheme: dark");
+                let currentTheme = "vs";
+                if (media.matches) {{
+                    currentTheme = "vs-dark";
+                }}
+
+				var editor = monaco.editor.create(document.getElementById('dxp-editor'), {{
+					value: `{SNIPPET_WELCOME}`,
+					language: 'rust',
+                    automaticLayout: true,
+                    theme: currentTheme,
+                }});
+
+
+                // Add theme logic
+                media.addEventListener("change", () => {{
+                    if (media.matches) {{
+                        monaco.editor.setTheme("vs-dark");
+                    }} else {{
+                        monaco.editor.setTheme("vs");
+                    }}
+                }});
+            }});
             "#
         );
         eval(&code);
@@ -76,15 +94,7 @@ pub fn Playground(socket_url: String, built_url: String) -> Element {
     let built_page_url = use_memo(move || built_page_id().map(|id| format!("{}{}", built_url, id)));
 
     rsx! {
-        // script {
-        //     "var require = {{ paths: {{ vs: './monaco-editor/vs' }} }};"
-        // }
-        // script {
-        //     src: "./monaco-editor/vs/loader.js",
-        // }
-        // script {
-        //     src: "./monaco-editor/vs/editor/editor.main.js",
-        // }
+        script { src: "./monaco-editor/vs/loader.js", onload: on_editor_mount, }
         div { id: "dxp-pane-container",
             div { id: "dxp-left-pane",
                 Header {
@@ -92,7 +102,7 @@ pub fn Playground(socket_url: String, built_url: String) -> Element {
                     queue_position: queue_position(),
                     on_run,
                 }
-                div { id: "dxp-editor", onmounted: on_editor_mount }
+                div { id: "dxp-editor" }
             }
 
             RightPane {

@@ -26,6 +26,17 @@ dx build --release
 - Add and commit with git
 - Push to GitHub
 
+## Web: Publishing with Netlify
+Set your Netlify build command to `cargo install dioxus-cli && dx build —release`.
+
+If you're using `dioxus-router`, you can configure Netlify to redirect all routes to your own `dioxus_router::Router` by creating the following `Netlify.toml` in your app's root directoy:
+```toml
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+```
+
 ## Desktop: Creating an installer
 
 Dioxus desktop app uses your operating system's WebView library, so it's portable to be distributed for other platforms.

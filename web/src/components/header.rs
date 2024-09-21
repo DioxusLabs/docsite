@@ -5,7 +5,7 @@ const SPINNER: &str = asset!("/public/spinner.svg");
 #[component]
 pub fn Header(is_compiling: bool, queue_position: Option<u32>, on_run: EventHandler) -> Element {
     let on_clear = move |_| {
-        eval("window.editorGlobal.setValue(\"\");");
+        eval("window.modelGlobal.setValue(\"\");");
     };
 
     rsx! {

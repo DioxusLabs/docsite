@@ -47,12 +47,15 @@ pub fn Playground(socket_url: String, built_url: String) -> Element {
                     currentTheme = "vs-dark";
                 }}
 
+                var model = monaco.editor.createModel(`{SNIPPET_WELCOME}`, 'rust');
+
 				var editor = monaco.editor.create(document.getElementById('dxp-editor'), {{
-					value: `{SNIPPET_WELCOME}`,
-					language: 'rust',
+                    model: model,
                     automaticLayout: true,
                     theme: currentTheme,
                 }});
+
+                window.modelGlobal = model;
 
 
                 // Add theme logic
@@ -127,7 +130,7 @@ pub(crate) struct BuildSignals {
 async fn start_build(signals: &mut BuildSignals, socket_url: String) -> Result<(), AppError> {
     let mut eval = eval(
         r#"
-        let text = window.editorGlobal.getValue();
+        let text = window.modelGlobal.getValue();
         dioxus.send(text);
         "#,
     );

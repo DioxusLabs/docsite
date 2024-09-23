@@ -60,7 +60,7 @@ resources = ["main.css", "header.svg", "**/*.png"]
 
 ## Install `dioxus CLI`
 
-The first thing we'll do is install the [dioxus-cli](https://github.com/DioxusLabs/dioxus/tree/main/packages/cli). This extension to cargo will make it very easy to package our app for the various platforms.
+The first thing we'll do is install the [dioxus-cli](https://github.com/DioxusLabs/dioxus/tree/v0.5/packages/cli). This extension to cargo will make it very easy to package our app for the various platforms.
 
 To install, simply run
 

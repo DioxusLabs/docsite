@@ -13,9 +13,9 @@ Dioxus desktop is built off [Tauri](https://tauri.app/). Right now there are lim
 ## Examples
 
 - [File Explorer](https://github.com/DioxusLabs/dioxus/blob/main/examples/file_explorer.rs)
-- [Tailwind App](https://github.com/DioxusLabs/dioxus/tree/main/examples/tailwind)
+- [Tailwind App](https://github.com/DioxusLabs/dioxus/tree/v0.5/examples/tailwind)
 
-[![Tailwind App screenshot](./public/static/tailwind_desktop_app.png)](https://github.com/DioxusLabs/dioxus/tree/main/examples/tailwind)
+[![Tailwind App screenshot](./public/static/tailwind_desktop_app.png)](https://github.com/DioxusLabs/dioxus/tree/v0.5/examples/tailwind)
 
 ## Running Javascript
 

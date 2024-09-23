@@ -7,7 +7,7 @@ A build of Dioxus for the web will be roughly equivalent to the size of a React 
 Examples:
 
 - [TodoMVC](https://github.com/DioxusLabs/dioxus/blob/main/examples/todomvc.rs)
-- [Tailwind App](https://github.com/DioxusLabs/dioxus/tree/main/examples/tailwind)
+- [Tailwind App](https://github.com/DioxusLabs/dioxus/tree/v0.5/examples/tailwind)
 
 [![TodoMVC example](https://github.com/DioxusLabs/example-projects/raw/master/todomvc/example.png)](https://github.com/DioxusLabs/dioxus/blob/main/examples/todomvc.rs)
 

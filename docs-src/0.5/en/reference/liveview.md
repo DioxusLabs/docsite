@@ -3,7 +3,7 @@
 Liveview allows apps to *run* on the server and *render* in the browser. It uses WebSockets to communicate between the server and the browser.
 
 Examples:
-- [Simple Example](https://github.com/DioxusLabs/dioxus/tree/main/packages/liveview/examples/axum.rs)
+- [Simple Example](https://github.com/DioxusLabs/dioxus/tree/v0.5/packages/liveview/examples/axum.rs)
 
 ## Support
 

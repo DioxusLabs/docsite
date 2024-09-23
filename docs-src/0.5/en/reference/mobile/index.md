@@ -2,7 +2,7 @@
 
 Build a mobile app with Dioxus!
 
-Example: [Mobile Demo](https://github.com/DioxusLabs/dioxus/tree/main/examples/mobile_demo)
+Example: [Mobile Demo](https://github.com/DioxusLabs/dioxus/tree/v0.5/examples/mobile_demo)
 
 ## Support
 

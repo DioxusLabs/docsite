@@ -1,8 +1,9 @@
-use crate::components::{Header, RightPane, Tab};
+use crate::components::Tab;
 use dioxus::prelude::*;
 use dioxus_logger::tracing::error;
 use error::AppError;
 
+mod bindings;
 mod components;
 mod error;
 mod ws;
@@ -34,44 +35,6 @@ pub fn Playground(socket_url: String, built_url: String) -> Element {
         }
     });
 
-    // Once the element has mounted, startup `ace` editor.
-    let on_editor_mount = move |_| {
-        let code = format!(
-            r#"
-            require.config({{ paths: {{ vs: './monaco-editor/vs' }} }});
-
-			require(['vs/editor/editor.main'], function () {{
-                const media = window.matchMedia("(prefers-color-scheme: dark");
-                let currentTheme = "vs";
-                if (media.matches) {{
-                    currentTheme = "vs-dark";
-                }}
-
-                var model = monaco.editor.createModel(`{SNIPPET_WELCOME}`, 'rust');
-
-				var editor = monaco.editor.create(document.getElementById('dxp-editor'), {{
-                    model: model,
-                    automaticLayout: true,
-                    theme: currentTheme,
-                }});
-
-                window.modelGlobal = model;
-
-
-                // Add theme logic
-                media.addEventListener("change", () => {{
-                    if (media.matches) {{
-                        monaco.editor.setTheme("vs-dark");
-                    }} else {{
-                        monaco.editor.setTheme("vs");
-                    }}
-                }});
-            }});
-            "#
-        );
-        eval(&code);
-    };
-
     // Send a request to compile code.
     let on_run = move |_| {
         if is_compiling() {
@@ -96,23 +59,21 @@ pub fn Playground(socket_url: String, built_url: String) -> Element {
     // Build full url to built page.
     let built_page_url = use_memo(move || built_page_id().map(|id| format!("{}{}", built_url, id)));
 
-    rsx! {
-        script { src: "./monaco-editor/vs/loader.js", onload: on_editor_mount, }
-        div { id: "dxp-pane-container",
-            div { id: "dxp-left-pane",
-                Header {
-                    is_compiling: is_compiling(),
-                    queue_position: queue_position(),
-                    on_run,
-                }
-                div { id: "dxp-editor" }
-            }
+    // Logic for pane resizing
+    let pane_left_width: Signal<Option<i32>> = use_signal(|| None);
+    let pane_right_width: Signal<Option<i32>> = use_signal(|| None);
 
-            RightPane {
-                current_tab,
-                compiler_messages,
-                built_page_url: built_page_url(),
-            }
+    rsx! {
+        script { src: "./monaco-editor-0.52/vs/loader.js", onload: move |_| bindings::monaco::init("dxp-panes-left", SNIPPET_WELCOME) }
+
+        components::Header { 
+            pane_left_width, 
+            pane_right_width,
+            on_run,
+        }
+        components::Panes {
+            pane_left_width,
+            pane_right_width,
         }
     }
 }
@@ -128,19 +89,7 @@ pub(crate) struct BuildSignals {
 
 /// Start a build and handle updating the build signals according to socket messages.
 async fn start_build(signals: &mut BuildSignals, socket_url: String) -> Result<(), AppError> {
-    let mut eval = eval(
-        r#"
-        let text = window.modelGlobal.getValue();
-        dioxus.send(text);
-        "#,
-    );
-
-    // Decode eval
-    let val = eval.recv().await?;
-    let val = val
-        .as_str()
-        .ok_or(AppError::JsError("eval didn't provide str".into()))?
-        .to_string();
+    let val = bindings::monaco::get_current_model_value();
 
     // Send socket compile request
     let mut socket = ws::Socket::new(&socket_url)?;

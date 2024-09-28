@@ -116,6 +116,10 @@ export function getCurrentModelValue() {
     return currentMonacoModel.getValue();
 }
 
+export function setCurrentModelvalue(value) {
+    currentMonacoModel.setValue(value);
+}
+
 // Rust language definitions (from rust-playground)
 const rustLangConfig = {
     comments: {
@@ -154,7 +158,7 @@ const rustLangGrammar = {
 
     keywords: [
         'as', 'break', 'const', 'crate', 'enum', 'extern', 'false', 'fn', 'impl', 'in',
-        'let', 'mod', 'move', 'mut', 'pub', 'ref', 'return', 'self', 'Self', 'static',
+        'let', 'mod', 'move', 'async', 'mut', 'pub', 'ref', 'return', 'self', 'Self', 'static',
         'struct', 'super', 'trait', 'true', 'type', 'unsafe', 'use', 'where',
         'macro_rules',
     ],
@@ -274,7 +278,7 @@ const rustLangGrammar = {
 
         func_decl: [
             [
-                /[a-z_$][\w$]*/, 'support.function', '@pop',
+                /[a-zA-Z_$][\w$]*/, 'support.function', '@pop',
             ],
         ],
     },

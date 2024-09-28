@@ -68,9 +68,65 @@
   background-color: #1E68AD;
 }
 
+/* Examples button and dropdown */
+#dxp-examples-btn-container {
+  margin-left: 12px;
+}
+
 #dxp-examples-btn {
   background-color: #454E61;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 100px;
 }
+
+#dxp-examples-btn.dxp-open {
+  border: 1px solid #8292B2;
+}
+
+#dxp-examples-btn>img {
+  margin-left: 5px;
+  transition: transform 0.2s ease;
+}
+
+#dxp-examples-btn.dxp-open>img {
+  transform: rotate(-180deg);
+}
+
+#dxp-examples-dropdown {
+  display: flex;
+  position: absolute;
+  flex-direction: column;
+  z-index: 10;
+  margin-top: 6px;
+  min-width: 100px;
+  background-color: #454E61;
+  border-radius: 3px;
+  border: 1px solid #8292B2;
+}
+
+#dxp-examples-dropdown>button {
+  width: 100%;
+  height: 25px;
+  padding: 0px 12px;
+  border: none;
+  background-color: transparent;
+  color: #FFFFFF;
+  text-align: left;
+  font-family: "Inter", sans-serif;
+  transition: background-color 0.2s ease;
+}
+
+#dxp-examples-dropdown>button:hover {
+  cursor: pointer;
+  background-color: #21252E;
+}
+
+#dxp-examples-dropdown>button:not(:last-child) {
+  border-bottom: 1px solid #5B667D;
+}
+
 
 .dxp-file-btn {
   min-width: 100px;

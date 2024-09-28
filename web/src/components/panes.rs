@@ -1,4 +1,5 @@
 use dioxus::prelude::*;
+use dioxus_sdk::utils::{timing::use_debounce, window::use_window_size};
 
 /// Stores data required for draggable pane resizing to work.
 struct DraggableData {
@@ -35,11 +36,15 @@ pub fn Panes(
 
     // Reset the panes slider on window resize.
     // TODO: This is annoying for the user, it should instead just recalculate the size from previous data.
-    let window_size = dioxus_sdk::utils::window::use_window_size();
-    use_effect(move || {
-        window_size();
+    let window_size = use_window_size();
+    let mut reset_panes_debounce = use_debounce(std::time::Duration::from_millis(200), move |_| {
         pane_left_width.set(None);
         pane_right_width.set(None);
+    });
+    
+    use_effect(move || {
+        window_size();
+        reset_panes_debounce.action(());
     });
 
     // Handle retrieving required data from dom elements and enabling drag.
@@ -103,7 +108,7 @@ pub fn Panes(
             // Left Pane
             div {
                 id: "dxp-panes-left",
-                style: if let Some(val) = pane_left_width() { "width:{val}px;" } else { "".to_string() },
+                style: if let Some(val) = pane_left_width() { "width:{val}px;" },
             }
             // Draggable
             div {
@@ -114,7 +119,7 @@ pub fn Panes(
             // Right Pane
             div {
                 id: "dxp-panes-right",
-                style: if let Some(val) = pane_right_width() { "width:{val}px;" } else { "".to_string() },
+                style: if let Some(val) = pane_right_width() { "width:{val}px;" },
             }
         }
     }

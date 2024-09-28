@@ -7,9 +7,9 @@ mod bindings;
 mod components;
 mod error;
 mod ws;
+mod examples;
 
 const _: &str = asset!("/public/dxp.css");
-const SNIPPET_WELCOME: &str = include_str!("snippets/welcome.rs");
 
 #[component]
 pub fn Playground(socket_url: String, built_url: String) -> Element {
@@ -64,7 +64,7 @@ pub fn Playground(socket_url: String, built_url: String) -> Element {
     let pane_right_width: Signal<Option<i32>> = use_signal(|| None);
 
     rsx! {
-        script { src: "./monaco-editor-0.52/vs/loader.js", onload: move |_| bindings::monaco::init("dxp-panes-left", SNIPPET_WELCOME) }
+        script { src: "./monaco-editor-0.52/vs/loader.js", onload: move |_| bindings::monaco::init("dxp-panes-left", examples::SNIPPETS[0].1) }
 
         components::Header { 
             pane_left_width, 

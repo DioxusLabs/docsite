@@ -8,6 +8,9 @@ extern "C" {
     #[wasm_bindgen(js_name = getCurrentModelValue)]
     pub fn get_current_model_value() -> String;
 
+    #[wasm_bindgen(js_name = setCurrentModelvalue)]
+    pub fn set_current_model_value(value: &str);
+
     #[wasm_bindgen(js_name = registerPasteAsRSX)]
     fn register_paste_as_rsx(convertHtmlToRSX: &Closure<dyn Fn(String) -> Option<String>>);
 }

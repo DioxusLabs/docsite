@@ -11,7 +11,7 @@ futures = { workspace = true }
 gloo-net = { workspace = true }
 
 dioxus = { version = "0.6.0-alpha.2", features = ["web"] }
-dioxus-sdk = { git = "https://github.com/DioxusLabs/sdk", rev = "refs/pull/57/head", features = ["window_size"]}
+dioxus-sdk = { git = "https://github.com/DioxusLabs/sdk", rev = "refs/pull/57/head", features = ["window_size", "timing"]}
 gloo-utils = "0.2.0"
 rsx-rosetta = "0.6.0-alpha.2"
 dioxus-autofmt = "0.6.0-alpha.2"

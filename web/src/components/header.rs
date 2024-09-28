@@ -1,4 +1,7 @@
 use dioxus::prelude::*;
+use crate::{bindings::monaco, examples};
+
+const ARROW_DOWN: &str = asset!("/public/arrow-down.svg");
 
 #[component]
 pub fn Header(
@@ -6,13 +9,15 @@ pub fn Header(
     pane_right_width: Signal<Option<i32>>,
     on_run: EventHandler,
 ) -> Element {
+    let mut examples_open = use_signal(|| false);
+
     rsx! {
         div {
             id: "dxp-header",
             // Left pane header
             div {
                 id: "dxp-header-left",
-                style: if let Some(val) = pane_left_width() { "width:{val}px;" } else { "".to_string() },
+                style: if let Some(val) = pane_left_width() { "width:{val}px;" },
 
                 button {
                     id: "dxp-run-btn",
@@ -20,10 +25,32 @@ pub fn Header(
                     onclick: move |_| on_run.call(()),
                     "Run"
                 }
-                button {
-                    id: "dxp-examples-btn",
-                    class: "dxp-ctrl-btn",
-                    "Examples"
+                div {
+                    id: "dxp-examples-btn-container",
+                    button {
+                        id: "dxp-examples-btn",
+                        class: "dxp-ctrl-btn",
+                        class: if examples_open() { "dxp-open" },
+                        onclick: move |_| examples_open.set(!examples_open()),
+                        "Examples"
+                        img { src: ARROW_DOWN, height: "16px", width: "16px" }
+                    }
+
+                    if examples_open() {
+                        div {
+                            id: "dxp-examples-dropdown",
+
+                            for snippet in examples::SNIPPETS {
+                                button {
+                                    onclick: move |_| {
+                                        examples_open.set(false);
+                                        monaco::set_current_model_value(snippet.1);
+                                    },
+                                    "{snippet.0}"
+                                }
+                            }
+                        }
+                    }
                 }
                 div {
                     id: "dxp-header-left-divider",
@@ -51,7 +78,6 @@ pub fn Header(
         }
     }
 }
-
 
 // const SPINNER: &str = asset!("/public/spinner.svg");
 

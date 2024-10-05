@@ -359,7 +359,15 @@ impl<'a, I: Iterator<Item = Event<'a>>> RsxMarkdownParser<'a, I> {
                     syn::parse_quote!(#dest)
                 };
                 #[cfg(feature = "manganis")]
-                let url: syn::Expr = syn::parse_quote! { manganis::mg!(file(#dest)) };
+                let url: syn::Expr = {
+                    let remote_image = dest.starts_with("http:") || dest.starts_with("https:");
+                    if remote_image {
+                        let dest = escape_text(dest);
+                        syn::parse_quote!(#dest)
+                    } else {
+                        syn::parse_quote! { manganis::mg!(file(#dest)) }
+                    }
+                };
 
                 self.start_node(parse_quote! {
                     img {
@@ -403,7 +411,10 @@ impl<'a, I: Iterator<Item = Event<'a>>> RsxMarkdownParser<'a, I> {
         if let (Some(BodyNode::Text(last_text)), BodyNode::Text(new_text)) =
             (element_list.last_mut(), &node)
         {
-            last_text.input.formatted_input.push_ifmt(new_text.input.formatted_input.clone());
+            last_text
+                .input
+                .formatted_input
+                .push_ifmt(new_text.input.formatted_input.clone());
         } else {
             element_list.push(node);
         }

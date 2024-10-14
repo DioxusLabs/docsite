@@ -8,6 +8,7 @@ dioxus-playground = { path = "../web" }
 
 dioxus = { workspace = true, features = ["web", "router"] }
 dioxus-logger = { workspace = true }
+dioxus-document = { workspace = true }
 
 [features]
 real-server = [] # Run the playground with the real server.

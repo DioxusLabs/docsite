@@ -25,8 +25,8 @@ pub fn init(vs_path_prefix: &str, element_id: &str, initial_snippet: &str) {
 
 fn register_paste_as_rsx_action() {
     let callback = Closure::new(|html: String| {
-        let dom = rsx_rosetta::Dom::parse(&html).ok()?;
-        let rsx_callbody = rsx_rosetta::rsx_from_html(&dom);
+        let dom = dioxus_rsx_rosetta::Dom::parse(&html).ok()?;
+        let rsx_callbody = dioxus_rsx_rosetta::rsx_from_html(&dom);
         dioxus_autofmt::write_block_out(&rsx_callbody)
     });
 

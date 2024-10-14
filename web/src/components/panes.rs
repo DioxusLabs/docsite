@@ -1,4 +1,5 @@
 use dioxus::prelude::*;
+use dioxus_document::eval;
 use dioxus_sdk::utils::{timing::use_debounce, window::use_window_size};
 
 /// Stores data required for draggable pane resizing to work.
@@ -52,18 +53,14 @@ pub fn Panes(
         "#,
         );
 
-        let first_width = data.recv().await.unwrap();
-        let first_width = first_width.as_i64().unwrap();
-
-        let second_width = data.recv().await.unwrap();
-        let second_width = second_width.as_i64().unwrap();
-
+        let first_width: i32 = data.recv().await.unwrap();
+        let second_width: i32 = data.recv().await.unwrap();
         let coords = e.client_coordinates();
 
         mouse_data.set(DraggableData {
             client_x: coords.x as i32,
-            first_width: first_width as i32,
-            second_width: second_width as i32,
+            first_width,
+            second_width,
         });
     };
 

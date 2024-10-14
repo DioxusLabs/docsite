@@ -2,6 +2,7 @@ use crate::components::Tab;
 use base64::{prelude::BASE64_URL_SAFE, Engine};
 use bindings::monaco;
 use dioxus::prelude::*;
+use dioxus_document::{eval, Link};
 use dioxus_logger::tracing::{error, info};
 use error::AppError;
 
@@ -12,7 +13,7 @@ mod examples;
 mod ws;
 
 const DXP_CSS: &str = asset!("/assets/dxp.css");
-const MONACO_FOLDER: &str = "/monaco-editor-0.52";//asset!(folder("/public/monaco-editor-0.52"));
+const MONACO_FOLDER: &str = "/monaco-editor-0.52"; //asset!(folder("/assets/monaco-editor-0.52"));
 
 /// The URLS that the playground should use for locating resources and services.
 #[derive(Debug, Clone, PartialEq)]
@@ -106,7 +107,8 @@ pub fn Playground(urls: PlaygroundUrls, share_code: Option<String>) -> Element {
     let pane_right_width: Signal<Option<i32>> = use_signal(|| None);
 
     rsx! {
-        head::Link { rel: "stylesheet", href: DXP_CSS }
+
+        Link { rel: "stylesheet", href: DXP_CSS }
         script { src: "{monaco_vs_prefix}/loader.js", onload: on_monaco_load }
 
         components::Header {
@@ -192,7 +194,7 @@ fn copy_share_link(location: &str) {
         "#,
     );
 
-    let _ = e.send(formatted.into());
+    let _ = e.send(formatted);
 }
 
 /// Decode the share code into code.

@@ -10,11 +10,13 @@ serde_json = { workspace = true }
 futures = { workspace = true }
 gloo-net = { workspace = true }
 
-dioxus = { version = "0.6.0-alpha.2", features = ["web"] }
+dioxus = { workspace = true, features = ["web"] }
+dioxus-document = { workspace = true }
+dioxus-rsx-rosetta = "0.6.0-alpha.3"
+dioxus-autofmt = "0.6.0-alpha.3"
 dioxus-sdk = { git = "https://github.com/DioxusLabs/sdk", rev = "refs/pull/57/head", features = ["window_size", "timing"]}
+
 gloo-utils = "0.2.0"
-rsx-rosetta = "0.6.0-alpha.2"
-dioxus-autofmt = "0.6.0-alpha.2"
-wasm-bindgen = "0.2.93"
+wasm-bindgen = "0.2.95"
 miniz_oxide = { version = "0.8.0", features = ["std"] }
 base64 = "0.22.1"

@@ -35,3 +35,8 @@ BUILD_TEMPLATE_PATH = "/usr/local/bin/template"
 # If specified, shuts down the server after X ms since the last http request.
 SHUTDOWN_DELAY = null
 ```
+
+### Licenses
+All `dioxus-playground` code is licensed under [MIT](./LICENSE-MIT) or [Apache 2.0](./LICENSE-APACHE). 
+
+This project includes 3rd party assets which may have their own licensing requirements. For more information, see the [licenses readme](./LICENSES/README.md).

@@ -1,3 +1,5 @@
+// TODO: Remove public folder with monaco in it (once manganis folder dir works)
+
 use dioxus::prelude::*;
 use dioxus_logger::tracing::Level;
 use dioxus_playground::{Playground, PlaygroundUrls};

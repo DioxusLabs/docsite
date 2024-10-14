@@ -4,7 +4,7 @@ use dioxus::prelude::*;
 use dioxus_sdk::utils::timing::use_debounce;
 use crate::copy_share_link;
 
-const ARROW_DOWN: &str = asset!("/public/arrow-down.svg");
+const ARROW_DOWN: &str = asset!("/assets/arrow-down.svg");
 
 #[component]
 pub fn Header(

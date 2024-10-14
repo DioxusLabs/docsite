@@ -1,8 +1,8 @@
 var monacoEditor = null;
 var currentMonacoModel = null;
 
-export function initMonaco(elementId, initialSnippet) {
-    require.config({ paths: { vs: './monaco-editor-0.52/vs' } });
+export function initMonaco(vsPathPrefix, elementId, initialSnippet) {
+    require.config({ paths: { vs: vsPathPrefix } });
 
     require(['vs/editor/editor.main'], function () {
 

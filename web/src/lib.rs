@@ -2,7 +2,7 @@ use crate::components::Tab;
 use base64::{prelude::BASE64_URL_SAFE, Engine};
 use bindings::monaco;
 use dioxus::prelude::*;
-use dioxus_logger::tracing::error;
+use dioxus_logger::tracing::{error, info};
 use error::AppError;
 
 mod bindings;
@@ -11,7 +11,8 @@ mod error;
 mod examples;
 mod ws;
 
-const _: &str = asset!("/public/dxp.css");
+const DXP_CSS: &str = asset!("/assets/dxp.css");
+const MONACO_FOLDER: &str = "/monaco-editor-0.52";//asset!(folder("/public/monaco-editor-0.52"));
 
 /// The URLS that the playground should use for locating resources and services.
 #[derive(Debug, Clone, PartialEq)]
@@ -53,13 +54,17 @@ pub fn Playground(urls: PlaygroundUrls, share_code: Option<String>) -> Element {
         Some(decoded)
     }));
 
+    info!("{}", MONACO_FOLDER);
+    let monaco_vs_prefix = format!("{}/vs", MONACO_FOLDER);
+    let monaco_vs_prefix_c = monaco_vs_prefix.clone();
+
     // Load either the shared code or the first snippet once monaco script is ready.
     let on_monaco_load = move |_| {
         let snippet = match shared_code() {
             Some(c) => c,
             None => examples::SNIPPETS[0].1.to_string(),
         };
-        bindings::monaco::init("dxp-panes-left", &snippet);
+        bindings::monaco::init(&monaco_vs_prefix_c, "dxp-panes-left", &snippet);
     };
 
     // Change tab automatically
@@ -101,7 +106,8 @@ pub fn Playground(urls: PlaygroundUrls, share_code: Option<String>) -> Element {
     let pane_right_width: Signal<Option<i32>> = use_signal(|| None);
 
     rsx! {
-        script { src: "./monaco-editor-0.52/vs/loader.js", onload: on_monaco_load }
+        head::Link { rel: "stylesheet", href: DXP_CSS }
+        script { src: "{monaco_vs_prefix}/loader.js", onload: on_monaco_load }
 
         components::Header {
             pane_left_width,

@@ -27,7 +27,6 @@ fn register_paste_as_rsx_action() {
         dioxus_autofmt::write_block_out(&rsx_callbody)
     });
 
-
     register_paste_as_rsx(&callback);
     callback.forget();
 }

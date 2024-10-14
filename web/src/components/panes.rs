@@ -2,6 +2,7 @@ use dioxus::prelude::*;
 use dioxus_sdk::utils::{timing::use_debounce, window::use_window_size};
 
 /// Stores data required for draggable pane resizing to work.
+#[derive(Default)]
 struct DraggableData {
     /// The client X coordinate of the mouse.
     client_x: i32,
@@ -13,18 +14,8 @@ struct DraggableData {
     second_width: i32,
 }
 
-impl Default for DraggableData {
-    fn default() -> Self {
-        Self {
-            client_x: 0,
-            first_width: 0,
-            second_width: 0,
-        }
-    }
-}
-
 /// Renders the panes that contain the editor and the output.
-/// 
+///
 /// The pane widths are passed down as the header requires the widths to resize with the panes.
 #[component]
 pub fn Panes(
@@ -32,7 +23,7 @@ pub fn Panes(
     pane_right_width: Signal<Option<i32>>,
 ) -> Element {
     let mut draggable_mouse_down = use_signal(|| false);
-    let mut mouse_data = use_signal(|| DraggableData::default());
+    let mut mouse_data = use_signal(DraggableData::default);
 
     // Reset the panes slider on window resize.
     // TODO: This is annoying for the user, it should instead just recalculate the size from previous data.
@@ -41,7 +32,7 @@ pub fn Panes(
         pane_left_width.set(None);
         pane_right_width.set(None);
     });
-    
+
     use_effect(move || {
         window_size();
         reset_panes_debounce.action(());
@@ -50,7 +41,7 @@ pub fn Panes(
     // Handle retrieving required data from dom elements and enabling drag.
     let draggable_mousedown = move |e: Event<MouseData>| async move {
         draggable_mouse_down.set(true);
-        
+
         let mut data = eval(
             r#"
             let leftPane = document.getElementById("dxp-panes-left");

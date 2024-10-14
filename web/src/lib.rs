@@ -6,13 +6,24 @@ use error::AppError;
 mod bindings;
 mod components;
 mod error;
-mod ws;
 mod examples;
+mod ws;
 
 const _: &str = asset!("/public/dxp.css");
 
+/// The URLS that the playground should use for locating resources and services.
+#[derive(Debug, Clone, PartialEq)]
+pub struct PlaygroundUrls {
+    /// The URL to the websocket server.
+    pub socket: &'static str,
+    /// The URL to the built project files from the server.
+    pub built: &'static str,
+    /// The url location of the playground UI: e.g. `https://dioxuslabs.com/play`
+    pub location: &'static str,
+}
+
 #[component]
-pub fn Playground(socket_url: String, built_url: String) -> Element {
+pub fn Playground(urls: PlaygroundUrls, share_code: Option<String>) -> Element {
     let mut is_compiling = use_signal(|| false);
     let queue_position = use_signal(|| None);
     let built_page_id = use_signal(|| None);
@@ -45,7 +56,7 @@ pub fn Playground(socket_url: String, built_url: String) -> Element {
         is_compiling.set(true);
         compiler_messages.push("Starting build...".to_string());
 
-        let socket_url = socket_url.clone();
+        let socket_url = urls.socket.to_string();
 
         spawn(async move {
             if let Err(e) = start_build(&mut build_signals, socket_url).await {
@@ -57,7 +68,8 @@ pub fn Playground(socket_url: String, built_url: String) -> Element {
     };
 
     // Build full url to built page.
-    let built_page_url = use_memo(move || built_page_id().map(|id| format!("{}{}", built_url, id)));
+    let built_page_url =
+        use_memo(move || built_page_id().map(|id| format!("{}{}", urls.built, id)));
 
     // Logic for pane resizing
     let pane_left_width: Signal<Option<i32>> = use_signal(|| None);
@@ -66,9 +78,10 @@ pub fn Playground(socket_url: String, built_url: String) -> Element {
     rsx! {
         script { src: "./monaco-editor-0.52/vs/loader.js", onload: move |_| bindings::monaco::init("dxp-panes-left", examples::SNIPPETS[0].1) }
 
-        components::Header { 
-            pane_left_width, 
+        components::Header {
+            pane_left_width,
             pane_right_width,
+            urls,
             on_run,
         }
         components::Panes {

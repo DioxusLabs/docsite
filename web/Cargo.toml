@@ -16,3 +16,5 @@ gloo-utils = "0.2.0"
 rsx-rosetta = "0.6.0-alpha.2"
 dioxus-autofmt = "0.6.0-alpha.2"
 wasm-bindgen = "0.2.93"
+miniz_oxide = { version = "0.8.0", features = ["std"] }
+base64 = "0.22.1"

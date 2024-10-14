@@ -1,15 +1,25 @@
+use std::time::Duration;
+
+use crate::{bindings::monaco, examples, PlaygroundUrls};
+use base64::{prelude::BASE64_URL_SAFE, Engine};
 use dioxus::prelude::*;
-use crate::{bindings::monaco, examples};
+use dioxus_sdk::utils::timing::use_debounce;
 
 const ARROW_DOWN: &str = asset!("/public/arrow-down.svg");
 
 #[component]
 pub fn Header(
+    urls: PlaygroundUrls,
     pane_left_width: Signal<Option<i32>>,
     pane_right_width: Signal<Option<i32>>,
     on_run: EventHandler,
 ) -> Element {
     let mut examples_open = use_signal(|| false);
+    let mut show_share_copied = use_signal(|| false);
+
+    let mut reset_share_copied = use_debounce(Duration::from_secs(1), move |()| {
+        show_share_copied.set(false);
+    });
 
     rsx! {
         div {
@@ -19,12 +29,15 @@ pub fn Header(
                 id: "dxp-header-left",
                 style: if let Some(val) = pane_left_width() { "width:{val}px;" },
 
+                // Run button
                 button {
                     id: "dxp-run-btn",
                     class: "dxp-ctrl-btn",
                     onclick: move |_| on_run.call(()),
                     "Run"
                 }
+
+                // Examples button/menu
                 div {
                     id: "dxp-examples-btn-container",
                     button {
@@ -59,56 +72,60 @@ pub fn Header(
                     class: "dxp-ctrl-btn dxp-file-btn dxp-selected-file",
                     "main.rs"
                 }
-                button {
-                    class: "dxp-ctrl-btn dxp-file-btn",
-                    "Cargo.toml"
-                }
+                // Keeping this for future-multi-file
+                // button {
+                //     class: "dxp-ctrl-btn dxp-file-btn",
+                //     "Cargo.toml"
+                // }
             }
 
             // Right pane header
             div {
                 id: "dxp-header-right",
                 style: if let Some(val) = pane_right_width() { "width:{val}px;" } else { "".to_string() },
+
+                // Share button
                 button {
                     id: "dxp-share-btn",
                     class: "dxp-ctrl-btn",
-                    "Share"
+                    onclick: move |_| {
+                        share_code(urls.location);
+                        show_share_copied.set(true);
+                        reset_share_copied.action(());
+                    },
+                    if show_share_copied() { "Copied" } else { "Share" }
                 }
             }
         }
     }
 }
 
-// const SPINNER: &str = asset!("/public/spinner.svg");
+/// Copy a share link to the clipboard.
+/// 
+/// This will:
+/// 1. Get the current code from the editor.
+/// 2. Compress it using `miniz_oxide`.
+/// 3. Encodes it in url-safe base64.
+/// 4. Formats the code with the provided `location` url prefix.
+/// 5. Copies the link to the clipboard.
+/// 
+/// This allows users to have primitve serverless sharing. 
+/// Links will be large and ugly but it works.
+fn share_code(location: &str) {
+    let code = monaco::get_current_model_value();
+    let compressed = miniz_oxide::deflate::compress_to_vec(code.as_bytes(), 10);
 
-// #[component]
-// pub fn Header(is_compiling: bool, queue_position: Option<u32>, on_run: EventHandler) -> Element {
-//     let on_clear = move |_| {
-//         bindings::monaco::clear_current_model_value();
-//     };
+    let mut encoded = String::new();
+    BASE64_URL_SAFE.encode_string(compressed, &mut encoded);
 
-//     rsx! {
-//         div { id: "dxp-header",
+    let formatted = format!("{}/{}", location, encoded);
 
-//             button {
-//                 id: "dxp-run-button",
-//                 class: if is_compiling { "disabled" },
+    let e = eval(
+        r#"
+        const data = await dioxus.recv();
+        navigator.clipboard.writeText(data);
+        "#,
+    );
 
-//                 onclick: move |_| on_run.call(()),
-//                 if is_compiling {
-//                     img { class: "dxp-spinner", src: "{SPINNER}" }
-
-//                     if let Some(pos) = queue_position {
-//                         "#{pos}"
-//                     }
-//                 } else {
-//                     "Run"
-//                 }
-//             }
-
-//             h1 { id: "dxp-title", "Dioxus Playground" }
-
-//             button { id: "dxp-clear-button", onclick: on_clear, "Clear" }
-//         }
-//     }
-// }
+    let _ = e.send(formatted.into());
+}

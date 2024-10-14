@@ -1,0 +1,1 @@
+This folder contains all licenses for 3rd party assets and software used in `dioxus-playground`.

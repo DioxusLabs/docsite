@@ -141,6 +141,10 @@
   background-color: transparent;
 }
 
+#dxp-share-btn:hover {
+  text-decoration: underline;
+}
+
 /* Panes */
 #dxp-panes {
   width: 80vw;

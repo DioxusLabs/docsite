@@ -1,11 +1,12 @@
 [workspace]
 resolver = "2"
-members = ["model", "server", "web"]
+members = ["model", "runner", "server", "web"]
 exclude = ["server/template"]
 
 [workspace.dependencies]
 model = { path = "./model" }
 serde_json = "1.0.121"
+dioxus = "0.6.0-alpha.2"
 dioxus-logger = "0.5.1"
 futures = "0.3.30"
 uuid = "1.8.0"

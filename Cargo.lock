@@ -1070,6 +1070,7 @@ dependencies = [
 name = "dioxus-playground"
 version = "0.1.0"
 dependencies = [
+ "base64 0.22.1",
  "dioxus",
  "dioxus-autofmt",
  "dioxus-logger",
@@ -1077,6 +1078,7 @@ dependencies = [
  "futures",
  "gloo-net 0.5.0",
  "gloo-utils 0.2.0",
+ "miniz_oxide 0.8.0",
  "model",
  "rsx-rosetta",
  "serde_json",
@@ -3664,6 +3666,15 @@ dependencies = [
  "proc-macro2",
  "quote",
  "syn 2.0.74",
+]
+
+[[package]]
+name = "runner"
+version = "0.1.0"
+dependencies = [
+ "dioxus",
+ "dioxus-logger",
+ "dioxus-playground",
 ]
 
 [[package]]

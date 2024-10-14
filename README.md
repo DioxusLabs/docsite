@@ -14,7 +14,6 @@ Additionally, add the following to your `[web.resource]` section of `Dioxus.toml
 script = ["/ace/ace.js", "/ace/mode-rust.js", "/ace/theme-github.js", "/ace/theme-github_dark.js"]
 ```
 
-<!-- `dx-debian` is the dx cli version 0.5.1 with [--raw-out](https://github.com/DogeDark/dioxus/tree/cli-raw-out) support. -->
 
 ### Environment Variables
 Most of these are already set in the `Dockerfile` and shouldn't need modified.

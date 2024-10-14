@@ -1,3 +1,5 @@
+// TODO: get rid of this file once new right pane code is established.
+
 use dioxus::prelude::*;
 
 #[derive(Clone, Copy, PartialEq)]

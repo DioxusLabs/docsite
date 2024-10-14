@@ -4,7 +4,7 @@ use dioxus::prelude::*;
 use dioxus_sdk::utils::timing::use_debounce;
 use std::time::Duration;
 
-const ARROW_DOWN: &str = asset!("/assets/arrow-down.svg");
+const ARROW_DOWN: &str = asset!("/assets/material-icons/arrow-down.svg");
 
 #[component]
 pub fn Header(

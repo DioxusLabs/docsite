@@ -14,6 +14,7 @@ mod ws;
 
 const DXP_CSS: &str = asset!("/assets/dxp.css");
 const MONACO_FOLDER: &str = "/monaco-editor-0.52"; //asset!(folder("/assets/monaco-editor-0.52"));
+const WARNING_ICON: &str = asset!("/assets/material-icons/warning.svg");
 
 /// The URLS that the playground should use for locating resources and services.
 #[derive(Debug, Clone, PartialEq)]
@@ -33,6 +34,7 @@ pub fn Playground(urls: PlaygroundUrls, share_code: Option<String>) -> Element {
     let built_page_id = use_signal(|| None);
     let mut compiler_messages = use_signal(Vec::<String>::new);
     let mut current_tab = use_signal(|| Tab::Page);
+    let mut show_share_warning = use_signal(|| false);
 
     let mut build_signals = BuildSignals {
         is_compiling,
@@ -42,9 +44,11 @@ pub fn Playground(urls: PlaygroundUrls, share_code: Option<String>) -> Element {
     };
 
     // We store the shared code in state as the editor may not be initialized yet.
-    let shared_code = use_memo(use_reactive((&share_code,), |(share_code,)| {
+    let shared_code = use_memo(use_reactive((&share_code,), move |(share_code,)| {
         let share_code = share_code?;
         let decoded = decode_share_link(&share_code).ok()?;
+
+        show_share_warning.set(true);
 
         // If monaco is initialized, set it now. Otherwise save it for monaco onload code.
         if monaco::is_ready() {
@@ -107,10 +111,21 @@ pub fn Playground(urls: PlaygroundUrls, share_code: Option<String>) -> Element {
     let pane_right_width: Signal<Option<i32>> = use_signal(|| None);
 
     rsx! {
-
+        // Head elements
         Link { rel: "stylesheet", href: DXP_CSS }
         script { src: "{monaco_vs_prefix}/loader.js", onload: on_monaco_load }
 
+        // Share warning
+        if show_share_warning() {
+            components::Modal {
+                icon_src: Some(WARNING_ICON.to_string()),
+                title: "Do you trust this code?",
+                text: "Anyone can share their project. Verify that nothing malicious has been provided before running this project.",
+                on_ok: move |_| show_share_warning.set(false),
+            }
+        }
+
+        // Playground UI
         components::Header {
             pane_left_width,
             pane_right_width,

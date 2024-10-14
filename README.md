@@ -25,7 +25,7 @@ The share functionality requires no server. It simply takes the code, compresses
 
 ### Server Environment Variables
 Most of these are already set in the `Dockerfile` and shouldn't need modified.
-```toml
+```
 # The port the server should listen to.
 PORT = 3000
 

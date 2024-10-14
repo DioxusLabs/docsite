@@ -25,7 +25,7 @@ title = "Dioxus Playground"
 
 [web.watcher]
 
-index_on_404 = false
+index_on_404 = true
 
 watch_path = ["src", "examples"]
 
@@ -33,7 +33,7 @@ watch_path = ["src", "examples"]
 [web.resource]
 
 # CSS style file
-style = ["main.css"]
+style = []
 
 # Javascript code file
 script = []

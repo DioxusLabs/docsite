@@ -1,4 +1,6 @@
 use crate::components::Tab;
+use base64::{prelude::BASE64_URL_SAFE, Engine};
+use bindings::monaco;
 use dioxus::prelude::*;
 use dioxus_logger::tracing::error;
 use error::AppError;
@@ -35,6 +37,29 @@ pub fn Playground(urls: PlaygroundUrls, share_code: Option<String>) -> Element {
         built_page_id,
         compiler_messages,
         queue_position,
+    };
+
+    // We store the shared code in state as the editor may not be initialized yet.
+    let shared_code = use_memo(use_reactive((&share_code,), |(share_code,)| {
+        let share_code = share_code?;
+        let decoded = decode_share_link(&share_code).ok()?;
+
+        // If monaco is initialized, set it now. Otherwise save it for monaco onload code.
+        if monaco::is_ready() {
+            monaco::set_current_model_value(&decoded);
+            return None;
+        }
+
+        Some(decoded)
+    }));
+
+    // Load either the shared code or the first snippet once monaco script is ready.
+    let on_monaco_load = move |_| {
+        let snippet = match shared_code() {
+            Some(c) => c,
+            None => examples::SNIPPETS[0].1.to_string(),
+        };
+        bindings::monaco::init("dxp-panes-left", &snippet);
     };
 
     // Change tab automatically
@@ -76,7 +101,7 @@ pub fn Playground(urls: PlaygroundUrls, share_code: Option<String>) -> Element {
     let pane_right_width: Signal<Option<i32>> = use_signal(|| None);
 
     rsx! {
-        script { src: "./monaco-editor-0.52/vs/loader.js", onload: move |_| bindings::monaco::init("dxp-panes-left", examples::SNIPPETS[0].1) }
+        script { src: "./monaco-editor-0.52/vs/loader.js", onload: on_monaco_load }
 
         components::Header {
             pane_left_width,
@@ -132,4 +157,45 @@ fn reset_signals(signals: &mut BuildSignals) {
     signals.queue_position.set(None);
     signals.built_page_id.set(None);
     signals.compiler_messages.clear();
+}
+
+/// Copy a share link to the clipboard.
+///
+/// This will:
+/// 1. Get the current code from the editor.
+/// 2. Compress it using `miniz_oxide`.
+/// 3. Encodes it in url-safe base64.
+/// 4. Formats the code with the provided `location` url prefix.
+/// 5. Copies the link to the clipboard.
+///
+/// This allows users to have primitve serverless sharing.
+/// Links will be large and ugly but it works.
+fn copy_share_link(location: &str) {
+    let code = monaco::get_current_model_value();
+    let compressed = miniz_oxide::deflate::compress_to_vec(code.as_bytes(), 10);
+
+    let mut encoded = String::new();
+    BASE64_URL_SAFE.encode_string(compressed, &mut encoded);
+
+    let formatted = format!("{}/{}", location, encoded);
+
+    let e = eval(
+        r#"
+        const data = await dioxus.recv();
+        navigator.clipboard.writeText(data);
+        "#,
+    );
+
+    let _ = e.send(formatted.into());
+}
+
+/// Decode the share code into code.
+fn decode_share_link(share_code: &str) -> Result<String, AppError> {
+    let bytes = BASE64_URL_SAFE
+        .decode(share_code)
+        .map_err(|_| AppError::ShareCodeDecoding)?;
+    let decoded_bytes =
+        miniz_oxide::inflate::decompress_to_vec(&bytes).map_err(|_| AppError::ShareCodeDecoding)?;
+    let decoded = String::from_utf8(decoded_bytes).map_err(|_| AppError::ShareCodeDecoding)?;
+    Ok(decoded)
 }

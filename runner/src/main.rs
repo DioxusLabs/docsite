@@ -17,7 +17,7 @@ const URLS: PlaygroundUrls = PlaygroundUrls {
 };
 
 // Runner-only styling
-const _: &str = asset!("/src/main.css");
+const MAIN_CSS: &str = asset!("/src/main.css");
 
 #[derive(Routable, PartialEq, Clone)]
 enum Route {
@@ -36,7 +36,8 @@ fn main() {
 #[component]
 fn App() -> Element {
     rsx! {
-        Playground { urls: URLS }
+        head::Link { rel: "stylesheet", href: MAIN_CSS }
+        Router::<Route> {}
     }
 }
 

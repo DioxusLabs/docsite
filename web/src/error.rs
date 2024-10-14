@@ -10,6 +10,7 @@ use model::SocketError;
 pub enum AppError {
     Socket(Box<dyn Error>),
     JsError(Box<dyn Error>),
+    ShareCodeDecoding,
 }
 
 impl From<SocketError> for AppError {

@@ -1,9 +1,8 @@
 use std::time::Duration;
-
 use crate::{bindings::monaco, examples, PlaygroundUrls};
-use base64::{prelude::BASE64_URL_SAFE, Engine};
 use dioxus::prelude::*;
 use dioxus_sdk::utils::timing::use_debounce;
+use crate::copy_share_link;
 
 const ARROW_DOWN: &str = asset!("/public/arrow-down.svg");
 
@@ -89,7 +88,7 @@ pub fn Header(
                     id: "dxp-share-btn",
                     class: "dxp-ctrl-btn",
                     onclick: move |_| {
-                        share_code(urls.location);
+                        copy_share_link(urls.location);
                         show_share_copied.set(true);
                         reset_share_copied.action(());
                     },
@@ -98,34 +97,4 @@ pub fn Header(
             }
         }
     }
-}
-
-/// Copy a share link to the clipboard.
-/// 
-/// This will:
-/// 1. Get the current code from the editor.
-/// 2. Compress it using `miniz_oxide`.
-/// 3. Encodes it in url-safe base64.
-/// 4. Formats the code with the provided `location` url prefix.
-/// 5. Copies the link to the clipboard.
-/// 
-/// This allows users to have primitve serverless sharing. 
-/// Links will be large and ugly but it works.
-fn share_code(location: &str) {
-    let code = monaco::get_current_model_value();
-    let compressed = miniz_oxide::deflate::compress_to_vec(code.as_bytes(), 10);
-
-    let mut encoded = String::new();
-    BASE64_URL_SAFE.encode_string(compressed, &mut encoded);
-
-    let formatted = format!("{}/{}", location, encoded);
-
-    let e = eval(
-        r#"
-        const data = await dioxus.recv();
-        navigator.clipboard.writeText(data);
-        "#,
-    );
-
-    let _ = e.send(formatted.into());
 }

@@ -120,6 +120,10 @@ export function setCurrentModelvalue(value) {
     currentMonacoModel.setValue(value);
 }
 
+export function isReady() {
+    return monacoEditor && currentMonacoModel;
+}
+
 // Rust language definitions (from rust-playground)
 const rustLangConfig = {
     comments: {

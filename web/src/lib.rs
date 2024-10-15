@@ -1,9 +1,11 @@
 use crate::components::Tab;
 use base64::{prelude::BASE64_URL_SAFE, Engine};
 use bindings::monaco;
+use components::material_icons::Warning;
 use dioxus::prelude::*;
 use dioxus_document::{eval, Link};
 use dioxus_logger::tracing::error;
+use dioxus_sdk::theme::{use_system_theme, SystemTheme};
 use error::AppError;
 
 mod bindings;
@@ -14,7 +16,6 @@ mod ws;
 
 const DXP_CSS: &str = asset!("/assets/dxp.css");
 const MONACO_FOLDER: &str = "/monaco-editor-0.52"; //asset!(folder("/assets/monaco-editor-0.52"));
-const WARNING_ICON: &str = asset!("/assets/material-icons/warning.svg");
 
 /// The URLS that the playground should use for locating resources and services.
 #[derive(Debug, Clone, PartialEq)]
@@ -62,13 +63,26 @@ pub fn Playground(urls: PlaygroundUrls, share_code: Option<String>) -> Element {
     let monaco_vs_prefix = format!("{}/vs", MONACO_FOLDER);
     let monaco_vs_prefix_c = monaco_vs_prefix.clone();
 
+    let system_theme = use_system_theme();
+    use_effect(move || {
+        let theme = system_theme().unwrap_or(SystemTheme::Light);
+        bindings::monaco::set_theme(theme);
+    });
+
     // Load either the shared code or the first snippet once monaco script is ready.
     let on_monaco_load = move |_| {
+        let system_theme = system_theme().unwrap_or(SystemTheme::Light);
         let snippet = match shared_code() {
             Some(c) => c,
             None => examples::SNIPPETS[0].1.to_string(),
         };
-        bindings::monaco::init(&monaco_vs_prefix_c, "dxp-panes-left", &snippet);
+
+        bindings::monaco::init(
+            &monaco_vs_prefix_c,
+            "dxp-panes-left",
+            system_theme,
+            &snippet,
+        );
     };
 
     // Change tab automatically
@@ -118,7 +132,7 @@ pub fn Playground(urls: PlaygroundUrls, share_code: Option<String>) -> Element {
         // Share warning
         if show_share_warning() {
             components::Modal {
-                icon_src: Some(WARNING_ICON.to_string()),
+                icon: rsx! { Warning {} },
                 title: "Do you trust this code?",
                 text: "Anyone can share their project. Verify that nothing malicious has been included before running this project.",
                 on_ok: move |_| show_share_warning.set(false),

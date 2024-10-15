@@ -1,10 +1,9 @@
+use crate::components::material_icons::ArrowDownIcon;
 use crate::copy_share_link;
 use crate::{bindings::monaco, examples, PlaygroundUrls};
 use dioxus::prelude::*;
 use dioxus_sdk::utils::timing::use_debounce;
 use std::time::Duration;
-
-const ARROW_DOWN: &str = asset!("/assets/material-icons/arrow-down.svg");
 
 #[component]
 pub fn Header(
@@ -45,7 +44,7 @@ pub fn Header(
                         class: if examples_open() { "dxp-open" },
                         onclick: move |_| examples_open.set(!examples_open()),
                         "Examples"
-                        img { src: ARROW_DOWN, height: "16px", width: "16px" }
+                        ArrowDownIcon {}
                     }
 
                     if examples_open() {
@@ -98,3 +97,4 @@ pub fn Header(
         }
     }
 }
+

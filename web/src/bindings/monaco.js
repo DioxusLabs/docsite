@@ -1,18 +1,29 @@
 var monacoEditor = null;
 var currentMonacoModel = null;
 
-export function initMonaco(vsPathPrefix, elementId, initialSnippet) {
+export function initMonaco(vsPathPrefix, elementId, initialTheme, initialSnippet) {
     require.config({ paths: { vs: vsPathPrefix } });
 
     require(['vs/editor/editor.main'], function () {
+        // Light Theme
+        monaco.editor.defineTheme("dx-vs", {
+            base: "vs",
+            inherit: true,
+            rules: [],
+            colors: {
+                "editor.background": "#FFFFFF",
+                "editorWidget.background": "#FFFFFF",
+                "editorWidget.border": "#A5A5A5",
+                "input.background": "#E6E6E6",
+                "editor.lineHighlightBackground": "#E6E6E6",
+                "editor.lineHighlightBorder": "#E6E6E6",
+                "list.hoverBackground": "#E6E6E6",
+                "dropdown.background": "#FFFFFF",
+                "dropdown.border": "#A5A5A5",
+            },
+        });
 
-        // const media = window.matchMedia("(prefers-color-scheme: dark");
-        // let currentTheme = "vs";
-        // if (media.matches) {{
-        //     currentTheme = "vs-dark";
-        // }}
-
-        // Create theme
+        // Dark theme
         monaco.editor.defineTheme("dx-vs-dark", {
             base: "vs-dark",
             inherit: true,
@@ -46,6 +57,7 @@ export function initMonaco(vsPathPrefix, elementId, initialSnippet) {
                 "dropdown.border": "#5B667D",
             },
         });
+        
 
         // Setup rust language providers
         monaco.languages.register({ id: 'rust' });
@@ -61,23 +73,31 @@ export function initMonaco(vsPathPrefix, elementId, initialSnippet) {
         var editor = monaco.editor.create(document.getElementById(elementId), {
             model: model,
             automaticLayout: true,
-            theme: "dx-vs-dark",
+            theme: initialTheme, //dx-vs-dark
             "semanticHighlighting.enabled": true,
         });
 
         monacoEditor = editor;
         currentMonacoModel = model;
-
-
-        // Add theme logic
-        // media.addEventListener("change", () => {{
-        //     if (media.matches) {{
-        //         monaco.editor.setTheme("vs-dark");
-        //     }} else {{
-        //         monaco.editor.setTheme("vs");
-        //     }}
-        // }});
     });
+}
+
+export function getCurrentModelValue() {
+    return currentMonacoModel.getValue();
+}
+
+export function setCurrentModelvalue(value) {
+    currentMonacoModel.setValue(value);
+}
+
+export function isReady() {
+    return monacoEditor && currentMonacoModel;
+}
+
+export function setTheme(theme) {
+    if (monacoEditor) {
+        monaco.editor.setTheme(theme);
+    }
 }
 
 export function registerPasteAsRSX(convertHtmlToRSX) {
@@ -110,18 +130,6 @@ export function registerPasteAsRSX(convertHtmlToRSX) {
             }
         },
     });
-}
-
-export function getCurrentModelValue() {
-    return currentMonacoModel.getValue();
-}
-
-export function setCurrentModelvalue(value) {
-    currentMonacoModel.setValue(value);
-}
-
-export function isReady() {
-    return monacoEditor && currentMonacoModel;
 }
 
 // Rust language definitions (from rust-playground)

@@ -2,7 +2,7 @@ use dioxus::prelude::*;
 
 #[component]
 pub fn Modal(
-    icon_src: Option<String>,
+    icon: Element,
     title: String,
     text: String,
     on_ok: EventHandler,
@@ -18,11 +18,7 @@ pub fn Modal(
                 // Modal header with optional icon
                 div {
                     id: "dxp-modal-header",
-                    if let Some(icon_src) = icon_src {
-                        img {
-                            src: icon_src
-                        }
-                    }
+                    {icon}
                     h4 {
                         id: "dxp-modal-title",
                         "{title}"

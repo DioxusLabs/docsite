@@ -3,7 +3,7 @@ use base64::{prelude::BASE64_URL_SAFE, Engine};
 use bindings::monaco;
 use dioxus::prelude::*;
 use dioxus_document::{eval, Link};
-use dioxus_logger::tracing::{error, info};
+use dioxus_logger::tracing::error;
 use error::AppError;
 
 mod bindings;
@@ -59,7 +59,6 @@ pub fn Playground(urls: PlaygroundUrls, share_code: Option<String>) -> Element {
         Some(decoded)
     }));
 
-    info!("{}", MONACO_FOLDER);
     let monaco_vs_prefix = format!("{}/vs", MONACO_FOLDER);
     let monaco_vs_prefix_c = monaco_vs_prefix.clone();
 
@@ -120,7 +119,7 @@ pub fn Playground(urls: PlaygroundUrls, share_code: Option<String>) -> Element {
             components::Modal {
                 icon_src: Some(WARNING_ICON.to_string()),
                 title: "Do you trust this code?",
-                text: "Anyone can share their project. Verify that nothing malicious has been provided before running this project.",
+                text: "Anyone can share their project. Verify that nothing malicious has been included before running this project.",
                 on_ok: move |_| show_share_warning.set(false),
             }
         }

@@ -18,14 +18,21 @@ pub fn Modal(icon_src: Option<String>, title: String, text: String, on_ok: Event
                             src: icon_src
                         }
                     }
-                    h4 { "{title}" }
+                    h4 { 
+                        id: "dxp-modal-title",
+                        "{title}" 
+                    }
                 }
 
                 // Modal description text
-                p { "{text}" }
+                p { 
+                    id: "dxp-modal-text",
+                    "{text}" 
+                }
 
                 // ok button
                 button {
+                    id: "dxp-modal-ok-btn",
                     onclick: move |_| on_ok.call(()),
                     "I understand"
                 }

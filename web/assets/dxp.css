@@ -181,6 +181,79 @@
   border-bottom-right-radius: 5px;
 }
 
+/* Modal */
+
+#dxp-modal-bg {
+  background-color: rgba(0, 0, 0, 40%);
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  z-index: 100;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#dxp-modal {
+  background-color: #2B303B;
+  border: 1px solid #5B667D;
+  border-radius: 5px;
+  padding: 15px;
+  margin-bottom: 20vh;
+  color: #ffffff;
+
+  font-family: "Inter", sans-serif;
+  font-weight: 400;
+
+  max-width: 500px;
+}
+
+#dxp-modal-header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+#dxp-modal-header>img {
+  height: 40px;
+}
+
+#dxp-modal-title {
+  font-size: 20px;
+  font-weight: 600;
+  margin-top: 0px;
+  margin-bottom: 0px;
+  margin-left: 10px;
+}
+
+#dxp-modal-text {
+  font-weight: 300;
+  font-size: 16px;
+}
+
+#dxp-modal-ok-btn {
+  display: block;
+  background-color: #454E61;
+  border-radius: 3px;
+  color: #ffffff;
+  padding: 8px;
+
+  font-weight: 400;
+  font-size: 14px;
+  margin-left: auto;
+
+  border: none;
+  transition: background-color 0.2s ease;
+}
+
+#dxp-modal-ok-btn:hover {
+  background-color: #363E4D;
+  cursor: pointer;
+}
 
 
 /* #dxp-pane-container {

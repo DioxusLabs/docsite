@@ -105,7 +105,8 @@ pub fn Playground(urls: PlaygroundUrls, share_code: Option<String>) -> Element {
     let built_page_url =
         use_memo(move || built_page_id().map(|id| format!("{}{}", urls.built, id)));
 
-    // Logic for pane resizing
+    // State for pane resizing, shared by headers and panes.
+    // The actual logic is in the panes component.
     let pane_left_width: Signal<Option<i32>> = use_signal(|| None);
     let pane_right_width: Signal<Option<i32>> = use_signal(|| None);
 

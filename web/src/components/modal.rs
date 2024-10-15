@@ -1,7 +1,12 @@
 use dioxus::prelude::*;
 
 #[component]
-pub fn Modal(icon_src: Option<String>, title: String, text: String, on_ok: EventHandler) -> Element {
+pub fn Modal(
+    icon_src: Option<String>,
+    title: String,
+    text: String,
+    on_ok: EventHandler,
+) -> Element {
     rsx! {
         // Background
         div {
@@ -18,16 +23,16 @@ pub fn Modal(icon_src: Option<String>, title: String, text: String, on_ok: Event
                             src: icon_src
                         }
                     }
-                    h4 { 
+                    h4 {
                         id: "dxp-modal-title",
-                        "{title}" 
+                        "{title}"
                     }
                 }
 
                 // Modal description text
-                p { 
+                p {
                     id: "dxp-modal-text",
-                    "{text}" 
+                    "{text}"
                 }
 
                 // ok button

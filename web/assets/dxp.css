@@ -255,6 +255,43 @@
   cursor: pointer;
 }
 
+@media screen and (max-width: 455px) {
+  #dxp-header, #dxp-panes {
+    width: 100vw;
+  }
+}
+
+@media screen and (max-width: 1000px) {
+  #dxp-header-right {
+    width: auto;
+    margin-left: auto;
+  }
+
+  #dxp-header-left {
+    width: auto;
+  }
+
+  #dxp-panes {
+    flex-direction: column;
+    height: auto;
+  }
+
+  #dxp-panes-left {
+    width: 100%;
+  }
+
+  #dxp-panes-draggable {
+    visibility: hidden;
+    display: none;
+  }
+
+  #dxp-panes-right {
+    width: 100%;
+    min-height: 400px;
+    border-top: 1px solid #5B667D;
+  }
+}
+
 
 /* #dxp-pane-container {
   display: flex;

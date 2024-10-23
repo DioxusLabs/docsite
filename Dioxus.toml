@@ -12,7 +12,7 @@ name = "docsite"
 # out_dir = "dist"
 
 # resource (static) file folder
-asset_dir = "public"
+asset_dir = "assets"
 
 [web.app]
 
@@ -42,7 +42,7 @@ index_on_404 = true
 style = []
 
 # Javascript code file
-script = ["/ace/ace.js", "/ace/mode-rust.js", "/ace/theme-github.js", "/ace/theme-github_dark.js"]
+# script = ["/ace/ace.js", "/ace/mode-rust.js", "/ace/theme-github.js", "/ace/theme-github_dark.js"]
 
 [web.resource.dev]
 

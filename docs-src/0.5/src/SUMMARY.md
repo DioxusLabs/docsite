@@ -1,17 +1,14 @@
 # Summary
 
-[Introduction](index.md)
-- [Features](getting_started/index.md)
-
-<!-- - [Getting Started](getting_started/index.md) -->
-
+- [Introduction](index.md)
+  - [Roadmap](introduction/roadmap.md)
 ---
 
 <!-- - [Reference](reference/index.md)
   - [Managing State](reference/managing_state.md)
   - [Component Lifecycle](reference/component_lifecycle.md) -->
 
-- [Guide](guide/index.md)
+- [Tutorial](guide/index.md)
   - [Tooling setup](guide/tooling.md)
   - [Creating a new app](guide/new_app.md)
   - [Your First Component](guide/component.md)
@@ -66,10 +63,10 @@
   	- [Full Code](router/example/full-code.md)
     - [Reference](router/reference/index.md)
   	- [Defining Routes](router/reference/routes/index.md)
-  	  - [Nested Routes](router/reference/routes/nested.md)
+	  - [Nested Routes](router/reference/routes/nested.md)
   	- [Layouts](router/reference/layouts.md)
   	- [Navigation](router/reference/navigation/index.md)
-  	  - [Programmatic Navigation](router/reference/navigation/programmatic.md)
+	  - [Programmatic Navigation](router/reference/navigation/programmatic.md)
   	- [History Providers](router/reference/history-providers.md)
   	- [History Buttons](router/reference/history-buttons.md)
   	- [Static Generation](router/reference/static-generation.md)
@@ -104,7 +101,7 @@
   - [Optimizing](cookbook/optimizing.md)
   - [Migration for 0.5](migration/index.md)
     - [Hooks](migration/hooks.md)
-      - [State](migration/state.md)
+    - [State](migration/state.md)
     - [Fermi](migration/fermi.md)
     - [Props](migration/props.md)
 

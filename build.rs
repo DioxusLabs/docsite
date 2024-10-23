@@ -1,6 +1,6 @@
 use std::{env::current_dir, path::PathBuf};
 
-use mdbook_gen::generate_router;
+use mdbook_gen::{generate_router, generate_router_build_script};
 use mdbook_shared::MdBook;
 
 fn main() {
@@ -10,7 +10,9 @@ fn main() {
     let mdbook_dir = PathBuf::from("docs-src/0.5");
     let out_dir = current_dir().unwrap().join("src/docs");
 
-    let mut out = generate_router(mdbook_dir.clone(), MdBook::new(mdbook_dir).unwrap()).to_string();
+    // let mut out = generate_router(mdbook_dir.clone(), MdBook::new(mdbook_dir).unwrap()).to_string();
+
+    let mut out = generate_router_build_script(mdbook_dir);
     out.push_str("\n");
     out.push_str("use super::*;\n");
 

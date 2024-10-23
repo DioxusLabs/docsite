@@ -15,6 +15,127 @@ pub(crate) fn ArrowRight() -> Element {
         }
     }
 }
+pub(crate) fn ChevronDownIcon() -> Element {
+    rsx! {
+        svg {
+            height: "24",
+            "stroke-linecap": "round",
+            "stroke-linejoin": "round",
+            "stroke-width": "1.5",
+            "viewBox": "0 0 24 24",
+            "data-testid": "geist-icon",
+            "shape-rendering": "geometricPrecision",
+            stroke: "currentColor",
+            width: "24",
+            style: "color: currentcolor; width: 16px; height: 16px;",
+            fill: "none",
+            class: "with-icon_icon__MHUeb",
+            path { d: "M6 9l6 6 6-6" }
+        }
+    }
+}
+pub(crate) fn ChevronRightIconSmall() -> Element {
+    rsx! {
+        svg {
+            fill: "none",
+            "stroke-linejoin": "round",
+            "shape-rendering": "geometricPrecision",
+            height: "24",
+            "stroke-linecap": "round",
+            "data-testid": "geist-icon",
+            style: "color: currentcolor; width: 18px; height: 18px;",
+            width: "24",
+            stroke: "currentColor",
+            "stroke-width": "1.5",
+            "viewBox": "0 0 24 24",
+            class: "with-icon_icon__MHUeb",
+            path { d: "M9 18l6-6-6-6" }
+        }
+    }
+}
+
+pub(crate) fn ChevronRightIcon() -> Element {
+    rsx! {
+        span {
+            svg {
+                "stroke-width": "1.5",
+                height: "24",
+                "shape-rendering": "geometricPrecision",
+                "stroke-linecap": "round",
+                "data-testid": "geist-icon",
+                fill: "none",
+                stroke: "currentColor",
+                "stroke-linejoin": "round",
+                "viewBox": "0 0 24 24",
+                width: "24",
+                style: "color: currentcolor; width: 18px; height: 18px;",
+                class: "with-icon_icon__MHUeb",
+                path { d: "M9 18l6-6-6-6" }
+            }
+        }
+    }
+}
+pub(crate) fn ChevronLeftIcon() -> Element {
+    rsx! {
+        span {
+            svg {
+                "stroke-width": "1.5",
+                height: "24",
+                "shape-rendering": "geometricPrecision",
+                "stroke-linecap": "round",
+                "data-testid": "geist-icon",
+                fill: "none",
+                stroke: "currentColor",
+                "stroke-linejoin": "round",
+                "viewBox": "0 0 24 24",
+                width: "24",
+                style: "color: currentcolor; width: 18px; height: 18px;",
+                path { d: "M9 18l6-6-6-6" }
+            }
+        }
+    }
+}
+
+pub(crate) fn DocumentIcon() -> Element {
+    rsx! {
+        div { class: "style_itemPrefix__HSCJc",
+            svg {
+                "data-testid": "geist-icon",
+                height: "16",
+                "viewBox": "0 0 16 16",
+                width: "16",
+                "stroke-linejoin": "round",
+                style: "color: currentcolor;",
+                path {
+                    d: "M14.5 13.5V6.5V5.41421C14.5 5.149 14.3946 4.89464 14.2071 4.70711L9.79289 0.292893C9.60536 0.105357 9.351 0 9.08579 0H8H3H1.5V1.5V13.5C1.5 14.8807 2.61929 16 4 16H12C13.3807 16 14.5 14.8807 14.5 13.5ZM13 13.5V6.5H9.5H8V5V1.5H3V13.5C3 14.0523 3.44772 14.5 4 14.5H12C12.5523 14.5 13 14.0523 13 13.5ZM9.5 5V2.12132L12.3787 5H9.5ZM5.13 5.00062H4.505V6.25062H5.13H6H6.625V5.00062H6H5.13ZM4.505 8H5.13H11H11.625V9.25H11H5.13H4.505V8ZM5.13 11H4.505V12.25H5.13H11H11.625V11H11H5.13Z",
+                    "fill-rule": "evenodd",
+                    fill: "currentColor",
+                    "clip-rule": "evenodd",
+                }
+            }
+        }
+    }
+}
+
+pub(crate) fn ExternalLinkIcon2() -> Element {
+    rsx! {
+        svg {
+            style: "color: currentcolor; width: 14px; height: 14px;",
+            fill: "none",
+            stroke: "currentColor",
+            "stroke-linejoin": "round",
+            "shape-rendering": "geometricPrecision",
+            width: "24",
+            "stroke-width": "1.5",
+            "data-testid": "geist-icon",
+            height: "24",
+            "stroke-linecap": "round",
+            "viewBox": "0 0 24 24",
+            path { d: "M7 17L17 7" }
+            path { d: "M7 7h10v10" }
+        }
+    }
+}
 
 pub(crate) fn ExternalLinkIcon() -> Element {
     rsx! {

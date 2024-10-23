@@ -30,23 +30,16 @@ mod use_hook {
     fn FakePage() -> Element {
         let mut uuid = use_signal(|| 0);
         rsx! {
-            button {
-                onclick: move |_| uuid += 1,
-                "🔄"
-            }
-            {std::iter::once(rsx!{
-                UseHook {
-                    key: "{uuid}"
-                }
+            button { onclick: move |_| uuid += 1, "🔄" }
+            {std::iter::once(rsx! {
+                UseHook { key: "{uuid}" }
             })}
         }
     }
 
     pub fn UseHookDemo() -> Element {
         rsx! {
-            ComponentWithLogs {
-                FakePage {}
-            }
+            ComponentWithLogs { FakePage {} }
         }
     }
 }
@@ -86,19 +79,13 @@ mod rerenders {
         // It can easily cause an infinite loop!
         count += 1;
 
-        rsx! {
-            // If you both read and write to state in the body of the component,
-            // you can cause an infinite loop!
-            "{count}"
-        }
+        rsx! { "{count}" }
     }
     // ANCHOR_END: dont_mutate
 
     pub fn RerenderDemo() -> Element {
         rsx! {
-            ComponentWithLogs {
-                Rerenders {}
-            }
+            ComponentWithLogs { Rerenders {} }
         }
     }
 }
@@ -112,25 +99,20 @@ mod effect {
         // You can use them to read or modify the rendered component
         use_effect(|| {
             log!("Effect ran");
-            eval(&format!(
+            document::eval(&format!(
                 "document.getElementById('effect-output').innerText = 'Effect ran'"
             ));
         });
 
         rsx! {
-            div {
-                id: "effect-output",
-                "This will be changed by the effect"
-            }
+            div { id: "effect-output", "This will be changed by the effect" }
         }
     }
     // ANCHOR_END: effect
 
     pub fn EffectDemo() -> Element {
         rsx! {
-            ComponentWithLogs {
-                Effect {}
-            }
+            ComponentWithLogs { Effect {} }
         }
     }
 }
@@ -164,9 +146,7 @@ mod drop {
 
     pub fn DropDemo() -> Element {
         rsx! {
-            ComponentWithLogs {
-                TogglesChild {}
-            }
+            ComponentWithLogs { TogglesChild {} }
         }
     }
 }

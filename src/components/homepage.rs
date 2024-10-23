@@ -7,11 +7,9 @@ pub(crate) mod snippets;
 #[component]
 pub(crate) fn Homepage() -> Element {
     rsx! {
-        div {
-            section { class: "w-full dark:bg-ideblack",
-                hero::Hero {}
-                AvailablePlatforms {}
-            }
+        div { class: "w-full dark:bg-ideblack",
+            hero::Hero {}
+            AvailablePlatforms {}
             Stats {}
         }
     }
@@ -39,7 +37,7 @@ fn AvailablePlatforms() -> Element {
                     center: rsx! {  },
                     right: rsx! { "Build for the web using Rust and WebAssembly. As fast as SolidJS and more robust than React. Integrated hot reloading for instant iterations." },
                     to: Route::Docs {
-                        child: BookRoute::GettingStartedIndex {},
+                        child: BookRoute::Index {},
                     },
                     title: "Web with WASM",
                 }
@@ -48,13 +46,13 @@ fn AvailablePlatforms() -> Element {
                     center: rsx! {  },
                     right: rsx! { "Lightweight (<2mb) desktop and mobile apps with zero configuration. Choose between WebView or WGPU-enabled renderers. Runs on macOS, Windows, Linux, iOS, and Android." },
                     to: Route::Docs {
-                        child: BookRoute::GettingStartedIndex {},
+                        child: BookRoute::Index {},
                     },
                     title: "Desktop and Mobile",
                 }
                 TriShow {
                     to: Route::Docs {
-                        child: BookRoute::GettingStartedIndex {},
+                        child: BookRoute::Index {},
                     },
                     title: "Terminal User Interfaces",
                     right: rsx! { "Quickly convert any CLI tool to a beautiful interactive user interface with just a few lines of code. Runs anywhere with a terminal." },
@@ -63,7 +61,7 @@ fn AvailablePlatforms() -> Element {
                 }
                 TriShow {
                     to: Route::Docs {
-                        child: BookRoute::GettingStartedIndex {},
+                        child: BookRoute::Index {},
                     },
                     title: "Fullstack Apps",
                     right: rsx! { "Pre-render on the server, and hydrate on the client. Perfect lighthouse scores and performance over 1000x better than Node and Python. Perfect for static site generation or fullstack apps." },
@@ -72,7 +70,7 @@ fn AvailablePlatforms() -> Element {
                 }
                 TriShow {
                     to: Route::Docs {
-                        child: BookRoute::GettingStartedIndex {},
+                        child: BookRoute::Index {},
                     },
                     title: "LiveView",
                     right: rsx! { "Render your app entirely on the server. Zero backend configuration capable of handling thousands of active clients." },

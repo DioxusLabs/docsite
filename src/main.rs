@@ -21,32 +21,29 @@ fn HeaderFooter() -> Element {
 
     rsx! {
         div { class: "bg-white dark:bg-ideblack pb-8",
-            head::Link { rel: "stylesheet", href: "/githubmarkdown.css" }
-            head::Link { rel: "stylesheet", href: "/tailwind.css" }
-            head::Link { rel: "stylesheet", href: "/main.css" }
-            head::Link { rel: "stylesheet", href: "/dxp.css" }
-            head::Link { rel: "stylesheet", href: "https://rsms.me/inter/inter.css" }
-            head::Link {
-                rel: "stylesheet",
-                href: "https://fonts.googleapis.com/icon?family=Material+Icons",
-            }
-            head::Link { rel: "preconnect", href: "https://fonts.googleapis.com" }
-            head::Link {
+            document::Link { rel: "stylesheet", href: asset!("/assets/githubmarkdown.css") }
+            document::Link { rel: "stylesheet", href: asset!("/assets/tailwind.css") }
+            document::Link { rel: "stylesheet", href: asset!("/assets/main.css") }
+            document::Link { rel: "stylesheet", href: asset!("/assets/dxp.css") }
+            document::Link { rel: "stylesheet", href: asset!("/assets/material.css") }
+            document::Link { rel: "stylesheet", href: "https://rsms.me/inter/inter.css" }
+            document::Link { rel: "preconnect", href: "https://fonts.googleapis.com" }
+            document::Link {
                 href: "https://fonts.gstatic.com",
                 rel: "preconnect",
                 crossorigin: "false",
             }
-            head::Link {
+            document::Link {
                 rel: "stylesheet",
                 href: "https://fonts.googleapis.com/css2?family=Arimo:wght@100;400;600&display=swap",
             }
-            head::Link {
+            document::Link {
                 href: "https://fonts.googleapis.com/css2?family=Arimo:ital,wght@0,400..700;1,400..700&family=Lexend:wght@100;400&family=M+PLUS+1:wght@100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap",
                 rel: "stylesheet",
             }
-            head::Script { src: "/ace/ace.js" }
-            head::Script { src: "/ace/mode-rust.js" }
-            head::Script { src: "/ace/theme-github.js" }
+            document::Script { src: asset!("/assets/ace/ace.js") }
+            document::Script { src: asset!("/assets/ace/mode-rust.js") }
+            document::Script { src: asset!("/assets/ace/theme-github.js") }
 
             Nav {}
             Outlet::<Route> {}
@@ -126,27 +123,28 @@ pub fn app() -> Element {
 static SEARCH_INDEX: dioxus_search::LazySearchIndex<Route> = dioxus_search::load_search_index! {
     "search"
 };
+
 mod docs {
     use crate::components::*;
     use crate::doc_examples::*;
     use dioxus::prelude::*;
 
-    #[component]
-    fn CodeBlock(contents: String) -> Element {
-        rsx! {
-            div {
-                style: "position: relative;",
-                div {
-                    dangerous_inner_html: contents
-                }
-                button {
-                    style: "position: absolute; top: 0; right: 0; background: rgba(0, 0, 0, 0.75); color: white; border: 1px solid white; padding: 0.25em;",
-                    "onclick": "navigator.clipboard.writeText(this.previousElementSibling.innerText)",
-                    "Copy"
-                }
-            }
-        }
-    }
+    // #[component]
+    // fn CodeBlock(contents: String) -> Element {
+    //     rsx! {
+    //         div {
+    //             style: "position: relative;",
+    //             div {
+    //                 dangerous_inner_html: contents
+    //             }
+    //             button {
+    //                 style: "position: absolute; top: 0; right: 0; background: rgba(0, 0, 0, 0.75); color: white; border: 1px solid white; padding: 0.25em;",
+    //                 "onclick": "navigator.clipboard.writeText(this.previousElementSibling.innerText)",
+    //                 "Copy"
+    //             }
+    //         }
+    //     }
+    // }
 
     #[component]
     fn SandBoxFrame(url: String) -> Element {
@@ -205,6 +203,22 @@ pub enum Route {{\n\t"
         }
     }
 
+    #[component]
+    fn CodeBlock(contents: String) -> Element {
+        rsx! {
+            div { style: "position: relative;",
+                // button {
+                //     style: "position: absolute; top: 0; right: 0; background: rgba(0, 0, 0, 0.15); color: white; border: 1px solid white; padding: 0.25em;",
+                //     background_color: "red",
+                //     "onclick": "navigator.clipboard.writeText(this.previousElementSibling.innerText)",
+                //     "Copy"
+                // }
+                div { dangerous_inner_html: contents }
+            }
+        }
+    }
+
+    #[path = "./router.rs"]
     mod router;
     pub use router::*;
 }

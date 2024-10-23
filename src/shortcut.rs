@@ -14,12 +14,12 @@ thread_local! {
         let callbacks2 = callbacks.clone();
 
         let cb: Closure<dyn FnMut(web_sys::Event)> = wasm_bindgen::closure::Closure::new(move |evt: web_sys::Event| {
-            let data = dioxus::prelude::KeyboardData::from(evt);
-            for (_, (key, modifiers, callback)) in callbacks2.lock().unwrap().iter_mut() {
-                if data.key() == *key && data.modifiers() == *modifiers {
-                    callback();
-                }
-            }
+            // let data = dioxus::prelude::KeyboardData::from(evt);
+            // for (_, (key, modifiers, callback)) in callbacks2.lock().unwrap().iter_mut() {
+            //     if data.key() == *key && data.modifiers() == *modifiers {
+            //         callback();
+            //     }
+            // }
         });
         let window = web_sys::window().unwrap();
         let document = window.document().unwrap();

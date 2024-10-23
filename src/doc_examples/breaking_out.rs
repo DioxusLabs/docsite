@@ -16,7 +16,7 @@ mod eval {
                 // When you click the button, some javascript will run in the browser
                 // to read the domain and set the signal
                 onclick: move |_| async move {
-                    domain.set(eval("return document.domain").await.unwrap().to_string());
+                    domain.set(document::eval("return document.domain").await.unwrap().to_string());
                 },
                 "Read Domain"
             }
@@ -58,15 +58,16 @@ mod web_sys {
             button {
                 // When you click the button, we use web-sys to read the domain and a signal
                 onclick: move |_| {
-                    domain.set(
-                        window()
-                            .unwrap()
-                            .document()
-                            .unwrap()
-                            .dyn_into::<::web_sys::HtmlDocument>()
-                            .unwrap()
-                            .domain()
-                    );
+                    domain
+                        .set(
+                            window()
+                                .unwrap()
+                                .document()
+                                .unwrap()
+                                .dyn_into::<::web_sys::HtmlDocument>()
+                                .unwrap()
+                                .domain(),
+                        );
                 },
                 "Read Domain"
             }
@@ -88,7 +89,7 @@ mod use_effect {
             let count = count.read();
 
             // You can use the count value to update the DOM manually
-            eval(&format!(
+            document::eval(&format!(
                 r#"var c = document.getElementById("dioxus-canvas");
     var ctx = c.getContext("2d");
     ctx.clearRect(0, 0, c.width, c.height);
@@ -103,9 +104,7 @@ mod use_effect {
                 onclick: move |_| count += 1,
                 "Increment"
             }
-            canvas {
-                id: "dioxus-canvas",
-            }
+            canvas { id: "dioxus-canvas" }
         }
     }
     // ANCHOR_END: use_effect
@@ -119,8 +118,7 @@ mod onmounted {
         let mut input_element = use_signal(|| None);
 
         rsx! {
-            div {
-                height: "100px",
+            div { height: "100px",
                 button {
                     class: "focus:outline-2 focus:outline-blue-600 focus:outline-dashed",
                     // The onmounted event will run the first time the button element is mounted

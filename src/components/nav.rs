@@ -4,32 +4,73 @@ use dioxus_material_icons::{MaterialIcon, MaterialIconColor};
 use std::ops::Deref;
 
 pub(crate) static SHOW_SEARCH: GlobalSignal<bool> = Signal::global(|| false);
-pub(crate) static LOGGED_IN: GlobalSignal<bool> = Signal::global(|| false);
 pub(crate) static SHOW_DOCS_NAV: GlobalSignal<bool> = Signal::global(|| false);
 
 pub(crate) fn Nav() -> Element {
     rsx! {
         SearchModal {}
         header { class: "sticky top-0 z-30 bg-white bg-opacity-80 dark:text-gray-200 dark:bg-ideblack dark:bg-opacity-80 border-b dark:border-stone-700 h-16 backdrop-blur-sm",
-            div { class: "lg:py-2 px-2 max-w-screen-2xl mx-auto flex items-center justify-between text-sm leading-6 h-16",
-                button {
-                    class: "bg-zinc-300 rounded-lg p-1 mr-4 lg:hidden my-3 h-10 flex items-center text-lg z-[100]",
-                    class: if !SHOW_DOCS_NAV() { "hidden" },
-                    onclick: move |_| {
-                        let mut sidebar = SHOW_SIDEBAR.write();
-                        *sidebar = !*sidebar;
-                    },
-                    MaterialIcon {
-                        name: "menu",
-                        size: 24,
-                        color: MaterialIconColor::Dark,
+            div { class: "py-2 px-2 max-w-screen-2xl mx-auto flex items-center justify-between text-sm leading-6 h-16",
+                div { class: "flex z-50 md:px-2", LinkList {} }
+                div { class: "flex h-full justify-end ml-2 items-center gap-4 py-2",
+                    button {
+                        class: "
+            max-w-[12rem] items-center rounded
+            p-1 text-left text-sm font-light leading-none border
+
+            hidden md:flex flex-row
+            w-full sm:flex-1 md:w-full xl:max-w-[12rem]
+
+            bg-gray-100 text-gray-400 hover:brightness-95
+            dark:bg-ghdarkmetal dark:text-gray-300 dark:border-gray-700 h-full
+            ",
+                        onclick: move |_| {
+                            *SHOW_SEARCH.write() = true;
+                        },
+                        span { class: "h-4 px-1 dark:hidden",
+                            MaterialIcon {
+                                name: "search",
+                                size: 16,
+                                color: MaterialIconColor::Dark,
+                            }
+                        }
+                        span { class: "h-4 px-1 hidden dark:block",
+                            MaterialIcon {
+                                name: "search",
+                                size: 16,
+                                color: MaterialIconColor::Light,
+                            }
+                        }
+                        span { class: "hidden content-center text-sm sm:flex flex-row w-60 justify-between",
+                            span { "Search..." }
+                            span { class: "px-1 min-w-6
+                border bg-gray-100 border-gray-300 rounded text-center text-base/[18px] text-[.75rem] align-middle
+                dark:bg-ghdarkmetal dark:border-gray-700
+                ",
+                                "/"
+                            }
+                        }
                     }
-                }
-                div { class: "flex z-50 md:flex-1 px-2", LinkList {} }
-                div { class: "hidden md:flex h-full justify-end ml-2 flex-1",
-                    div { class: "hidden md:flex items-center",
-                        Search {}
-                        div { class: "hidden lg:flex items-center border-l border-gray-200 ml-4 pl-4 dark:border-gray-800",
+                    div {
+                        tabindex: "0",
+                        cursor: "pointer",
+                        role: "button",
+                        onclick: move |_| {
+                            let mut sidebar = SHOW_SIDEBAR.write();
+                            *sidebar = !*sidebar;
+                        },
+                        class: "bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-500 rounded-lg p-1 mr-2 lg:hidden my-3 h-8 flex items-center text-lg z-[100]",
+                        class: if !SHOW_DOCS_NAV() { "hidden" },
+                        MaterialIcon {
+                            name: "menu",
+                            size: 24,
+                            color: MaterialIconColor::Dark,
+                        }
+                    }
+
+                    div { class: "h-full  gap-4 hidden lg:flex",
+                        div { class: "border-l border-gray-200 dark:border-gray-800 h-full" }
+                        div { class: "hidden lg:flex items-center gap-4",
                             label {
                                 class: "sr-only",
                                 id: "headlessui-listbox-label-2",
@@ -44,13 +85,15 @@ pub(crate) fn Nav() -> Element {
                             }
                             Link {
                                 to: "https://github.com/dioxuslabs/dioxus".to_string(),
-                                class: "ml-4 block text-gray-400 hover:text-gray-500 dark:hover:text-gray-300",
+                                class: "flex flex-row items-center text-gray-400 hover:text-gray-500 dark:hover:text-gray-300 gap-2",
                                 new_tab: true,
                                 span { class: "sr-only", "Dioxus on GitHub" }
                                 crate::icons::Github2 {}
+                                span { class: "text-xs", "20.7k" }
                             }
                         }
-                        div { class: "hidden lg:flex items-center border-l border-gray-200 ml-4 pl-6 dark:border-gray-800",
+                        div { class: "border-l border-gray-200 dark:border-gray-800 h-full" }
+                        div { class: "hidden lg:flex items-center gap-2 h-full",
                             label {
                                 class: "sr-only",
                                 id: "headlessui-listbox-label-2",
@@ -58,16 +101,15 @@ pub(crate) fn Nav() -> Element {
                             }
                             Link {
                                 to: Route::Deploy {},
-                                class: "md:ml-0 md:py-2 md:px-3 bg-blue-500 ml-4 text-lg md:text-sm text-white rounded font-semibold",
-                                "DEPLOY"
+                                class: "h-full flex flex-col justify-center text-center md:px-3 bg-white dark:bg-gray-300 border border-gray-200 dark:border-gray-700 text-sm md:text-sm rounded font-semibold text-gray-700 hover:brightness-95 dark:hover:brightness-105",
+                                "Deploy"
                             }
-                            if LOGGED_IN() {
-                                Link { to: Route::Homepage {},
-                                    img {
-                                        src: "https://avatars.githubusercontent.com/u/10237910?s=40&v=4",
-                                        class: "ml-4 h-10 rounded-full w-auto",
-                                    }
-                                }
+                            Link {
+                                to: Route::Docs {
+                                    child: BookRoute::Index {},
+                                },
+                                class: "md:px-3 h-full flex flex-col justify-center bg-blue-500 text-lg md:text-sm text-white rounded font-semibold hover:brightness-95 dark:hover:brightness-105",
+                                "Learn"
                             }
                         }
                     }
@@ -79,61 +121,34 @@ pub(crate) fn Nav() -> Element {
 
 static LINKS: &[(&str, &str)] = &[
     ("Learn", "/learn/0.5/"),
-    ("Playground", "/play"),
     ("SDK", "/sdk"),
+    ("Playground", "/play"),
+    ("Components", "/components"),
     ("Blog", "/blog"),
-    // ("Awesome", "/awesome"),
-    // ("docs.rs", "https://docs.rs/dioxus/latest/dioxus/"),
 ];
 
 #[component]
 fn LinkList() -> Element {
     rsx! {
-        nav { class: "flex items-center space-x-2 text-md font-light leading-none text-slate-700 dark:text-white whitespace-nowrap",
+        nav { class: "flex flex-row items-center space-x-2 md:space-x-6 text-md font-light leading-none text-slate-700 dark:text-white whitespace-nowrap",
             Link {
                 to: Route::Homepage {},
-                class: "flex title-font font-medium items-center text-gray-900",
+                class: "title-font font-medium items-center text-gray-900 flex flex-row gap-1",
                 img {
-                    src: "https://avatars.githubusercontent.com/u/79236386?s=200&v=4",
-                    class: "h-8 w-auto",
+                    src: asset!("/assets/static/smalllogo.png"),
+                    class: "h-6 w-auto",
                 }
-                span { class: "text-xl dark:text-white leading-none font-bold hidden sm:block px-4",
-                    "Dioxus"
+                span { class: "text-xl dark:text-white leading-none hidden sm:block font-mono",
+                    "DIOXUS"
                 }
             }
             for (name , link) in LINKS.iter().cloned() {
                 Link {
                     to: link,
-                    class: "p-2 leading-none hover:text-sky-500 dark:hover:text-sky-400 rounded fill-zinc-700 dark:fill-zinc-100",
+                    class: "leading-none hover:text-sky-500 dark:hover:text-sky-400 rounded fill-zinc-700 dark:fill-zinc-100",
                     active_class: "text-sky-500 dark:text-sky-400",
                     position: "relative",
                     "{name}"
-                }
-            }
-        }
-    }
-}
-
-fn Search() -> Element {
-    rsx! {
-        div { class: "relative md:w-full max-w-[20rem] xl:max-w-[20rem] 2xl:max-w-[20rem] sm:mx-auto sm:flex-1 text-sm font-light leading-none",
-            // Pop up a modal
-            button {
-                // Pop up a modal
-                class: "bg-gray-100 rounded-lg p-1 sm:w-full text-left text-gray-400 my-auto sm:flex sm:flex-row sm:align-middle sm:justify-between",
-                onclick: move |_| {
-                    *SHOW_SEARCH.write() = true;
-                },
-                div { class: "h-full my-auto flex flex-row content-center justify-between",
-                    MaterialIcon {
-                        name: "search",
-                        size: 20,
-                        color: MaterialIconColor::Dark,
-                    }
-                    span { class: "hidden sm:block pl-2 pr-4 content-center", "Search the docs" }
-                }
-                div { class: "hidden md:block border border-gray-300 rounded-lg p-1 text-xs text-gray-400",
-                    "CTRL + /"
                 }
             }
         }
@@ -177,22 +192,22 @@ fn SearchModal() -> Element {
         div {
             height: "100vh",
             width: "100vw",
-            class: "fixed top-0 left-0 z-50 block bg-gray-500 bg-opacity-50 overflow-y-hidden search-modal-animated",
+            class: "fixed top-0 left-0 z-50 block bg-gray-100 bg-opacity-70 overflow-y-hidden search-modal-animated",
             class: if *SHOW_SEARCH.read() { "dioxus-show" } else { "dioxus-hide" },
             onclick: move |_| *SHOW_SEARCH.write() = false,
 
             // A little weird, but we're putting an empty div with a scaled height to buffer the top of the modal
-            div { class: "max-w-screen-md mx-auto h-full flex flex-col",
-                div { class: "h-30" }
+            div { class: "max-w-screen-sm mx-auto h-full flex flex-col",
+                div { class: "h-40" }
 
                 // The actual modal
-                div { class: "bg-white dark:bg-ideblack p-2 md:p-6 rounded-2xl m-2 md:m-8 max-h-[calc(100%-8rem)] overflow-y-auto text-gray-800 dark:text-gray-100",
+                div { class: "bg-white dark:bg-ideblack rounded-xl max-h-[calc(100%-8rem)] overflow-y-auto text-gray-800 dark:text-gray-100 border",
                     // Search input
-                    div { class: "flex flex-row flex-grow border-b border-gray-300 pb-4",
-                        div { class: "my-auto flex flex-row",
+                    div { class: "flex flex-col flex-grow border-b border-gray-300 p-2 gap-2",
+                        div { class: "my-auto flex flex-row items-center",
                             MaterialIcon {
                                 name: "search",
-                                size: 40,
+                                size: 20,
                                 color: MaterialIconColor::Dark,
                             }
 
@@ -211,7 +226,7 @@ fn SearchModal() -> Element {
                                     onmounted: move |evt| async move {
                                         _ = evt.set_focus(true).await;
                                     },
-                                    class: "flex-grow bg-transparent border-none outline-none text-xl pl-2 text-gray-800 dark:text-gray-100",
+                                    class: "flex-grow bg-transparent border-none outline-none pl-2 text-gray-800 dark:text-gray-100 py-2",
                                     placeholder: "Search the docs",
                                     value: "{search_text}",
                                 }
@@ -219,11 +234,7 @@ fn SearchModal() -> Element {
                         }
                     }
 
-                    div { class: "overflow-y-auto",
-                        ul {
-                            SearchResults { results, search_text }
-                        }
-                    }
+                    SearchResults { results, search_text }
                 }
             }
         }
@@ -241,41 +252,65 @@ fn SearchResults(results: Signal<Results>, search_text: Signal<String>) -> Eleme
     let _results = results.read();
     let results = _results.deref().as_ref().unwrap();
 
-    if !results.is_empty() {
-        return rsx! {
-            for result in results {
-                SearchResult { result: result.clone() }
-            }
-        };
-    }
-
     rsx! {
-        div { class: "text-center text-xlg p-4",
-            "No results found"
-            div { class: "dark:text-white text-left text-lg p-4",
-                div {
-                    "Try searching for:"
-                    ul {
-                        for search in ["Fullstack", "Typesafe Routing", "Authentication"] {
-                            li {
-                                button {
-                                    class: "underline p-1 md:p-2",
-                                    onclick: move |_| {
-                                        search_text.set(search.to_string());
-                                    },
-                                    "{search}"
-                                }
-                            }
-                        }
-                    }
+        ul { class: "p-2",
+            if search_text.read().is_empty() {
+                for (search , route) in [
+                    (
+                        "Tutorial",
+                        Route::Docs {
+                            child: BookRoute::GuideIndex {},
+                        },
+                    ),
+                    (
+                        "Web",
+                        Route::Docs {
+                            child: BookRoute::ReferenceWebIndex {},
+                        },
+                    ),
+                    (
+                        "Desktop",
+                        Route::Docs {
+                            child: BookRoute::ReferenceDesktopIndex {
+                            },
+                        },
+                    ),
+                    (
+                        "Mobile",
+                        Route::Docs {
+                            child: BookRoute::ReferenceMobileIndex {},
+                        },
+                    ),
+                    (
+                        "Fullstack",
+                        Route::Docs {
+                            child: BookRoute::ReferenceFullstackIndex {
+                            },
+                        },
+                    ),
+                    (
+                        "Typesafe Routing",
+                        Route::Docs {
+                            child: BookRoute::RouterReferenceRoutesIndex {
+                            },
+                        },
+                    ),
+                ]
+                {
+                    SearchResultItem { title: search.to_string(), route }
                 }
-
-                div { class: "mt-4",
-                    "Or go to:"
-                    ul {
-                        for (name , link) in LINKS.iter().cloned() {
-                            li { class: "p-1 md:p-2",
-                                Link { to: link, class: "underline ", "{name}" }
+            } else if results.is_empty() {
+                div { class: "text-center text-xlg p-4", "No results found for: {search_text}" }
+            } else {
+                for result in results {
+                    SearchResultItem {
+                        title: result.title.clone(),
+                        route: result.route.clone(),
+                        for segment in result.excerpts.first().unwrap().text.iter() {
+                            if segment.highlighted {
+                                span { class: "text-blue-500", "{segment.text}" }
+                            } else {
+                                span { "{segment.text}" }
                             }
                         }
                     }
@@ -286,29 +321,19 @@ fn SearchResults(results: Signal<Results>, search_text: Signal<String>) -> Eleme
 }
 
 #[component]
-fn SearchResult(result: dioxus_search::SearchResult<Route>) -> Element {
-    let title = &result.title;
-    let route = &result.route;
-    let top_excerpt_segments = &result.excerpts.first().unwrap().text;
-
+fn SearchResultItem(title: String, route: Route, children: Element) -> Element {
     rsx! {
-        li { class: "w-full mt-4 p-2 rounded hover:bg-gray-100 dark:hover:bg-ideblack transition-colors duration-200 ease-in-out",
+        li { class: "w-full p-2 rounded hover:bg-gray-100 dark:hover:bg-ideblack transition-colors duration-200 ease-in-out",
             Link {
-                to: route.clone(),
+                to: route,
                 onclick: move |_| {
                     *SHOW_SEARCH.write() = false;
                 },
-                div { class: "flex flex-col justify-between pb-1",
-                    h2 { class: "font-semibold dark:text-white", "{title}" }
-                }
-                p { class: "text-sm pr-8 text-gray-500 dark:text-gray-300",
-                    for segment in top_excerpt_segments {
-                        if segment.highlighted {
-                            span { class: "text-blue-500", "{segment.text}" }
-                        } else {
-                            span { "{segment.text}" }
-                        }
-                    }
+                class: "flex flex-row items-center gap-x-2",
+                icons::DocumentIcon {}
+                div { class: "flex flex-col justify-between",
+                    h2 { class: "dark:text-white", "{title}" }
+                    {children}
                 }
             }
         }

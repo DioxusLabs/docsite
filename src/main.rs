@@ -163,7 +163,7 @@ mod docs {
     fn DemoFrame(children: Element) -> Element {
         rsx! {
             div {
-                class: "bg-white rounded-md shadow-md p-4 my-4 overflow-scroll text-black dioxus-demo",
+                class: "bg-white rounded-md shadow-md p-4 my-4 overflow-auto text-black dioxus-demo",
                 max_height: "50vh",
                 {children}
             }

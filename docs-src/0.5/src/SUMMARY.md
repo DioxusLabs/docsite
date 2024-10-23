@@ -16,6 +16,7 @@
   - [State and Interactivity](guide/state.md)
   - [App Routing](guide/routing.md)
   - [Data Fetching](guide/fetching.md)
+  - [Adding Platforms](guide/multiplatform.md)
   - [Backend](guide/backend.md)
   - [Deploying](guide/deploy.md)
   - [Next Steps](guide/next_steps.md)

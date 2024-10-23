@@ -6,7 +6,7 @@ fn Profile(id: ReadOnlySignal<i32>) -> Element {
     // Only change the page title when the id changes
     use_effect(move || {
         // We read the id signal here, so it will automatically be added as a dependency for the effect
-        eval(&format!("document.title = 'Profile #{}';", id));
+        document::eval(&format!("document.title = 'Profile #{}';", id));
     });
 
     // Because there are no dependencies, this effect will only run once.
@@ -20,11 +20,15 @@ fn Profile(id: ReadOnlySignal<i32>) -> Element {
         tracing::info!("Profile #{}", non_reactive_state);
     }));
 
-    rsx! { div { "Profile #{id}" } }
+    rsx! {
+        div { "Profile #{id}" }
+    }
 }
 
 fn app() -> Element {
-    rsx! { Profile { id: 0 } }
+    rsx! {
+        Profile { id: 0 }
+    }
 }
 // ANCHOR_END: app
 

@@ -39,8 +39,8 @@
 }
 
 .full-chapter {
-    padding-top: 8px;
-    padding-bottom: 8px;
+    padding-top: 12px;
+    padding-bottom: 12px;
 }
 .full-chapter:not(:last-child) {
     border-bottom: 1px solid #3b3d3e29;

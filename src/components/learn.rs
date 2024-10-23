@@ -39,14 +39,18 @@ fn LeftNav() -> Element {
     ];
 
     rsx! {
+
         div {
-            class: "absolute z-30 md:h-[calc(100vh-4rem)] flex-col justify-end gap-4 overflow-x-hidden md:px-4 pt-4 md:pt-8 md:sticky md:z-0 md:flex md:w-auto bg-white dark:bg-ideblack lg:bg-inherit px-4",
+            class: "
+             overflow-y-hidden lg:block pt-[2.75rem] ml-12 h-full mb-2 md:text-[14px] leading-5 text-gray-700 absolute md:sticky dark:text-gray-400 top-0
+             bg-white dark:bg-ideblack lg:bg-inherit space-y-2
+            ",
             class: if SHOW_SIDEBAR() { "w-screen" } else { "hidden" },
             VersionSwitch {}
             nav { class: "
             styled-scrollbar
-            pl-2 pb-2 z-20 text-base sm:block top-28
-            md:w-60 lg:text-[14px] content-start text-gray-600 dark:text-gray-400 h-full overflow-y-scroll pr-2 space-y-1",
+            pl-2 pb-2 z-20 text-base sm:block top-28 h-[88vh]
+            md:w-60 lg:text-[14px] content-start text-gray-600 dark:text-gray-400 overflow-y-scroll pr-2 space-y-1",
 
 
                 // DocVersionNav {}
@@ -75,7 +79,7 @@ fn VersionSwitch() -> Element {
             onfocusout: move |_| show_versions.set(false),
             onclick: move |_| show_versions.set(true),
             div { class: " hover:bg-gray-100 dark:hover:bg-ghdarkmetal rounded w-full",
-                div { class: "grid grid-cols-[auto,1fr,auto] items-center gap-2 px-1 py-2",
+                div { class: "grid grid-cols-[auto,1fr,auto] items-center gap-2 px-1",
                     div {
                         div { class: "w-8 h-8 rounded-md border flex items-center justify-center bg-gray-50 border-gray-200 text-gray-900",
                             svg {
@@ -217,8 +221,10 @@ fn SidebarChapter(chapter: &'static SummaryItem<BookRoute>) -> Element {
                 }
             }
         }
-        if show_dropdown && !link.nested_items.is_empty() {
-            ul { class: "border-l border-gray-300 px-4 ml-2 space-y-1 py-2",
+        if !link.nested_items.is_empty() {
+            ul {
+                class: "border-l border-gray-300 px-4 ml-2 space-y-1 py-2 transition-[transform] duration-500 ease-in-out ",
+                class: if show_dropdown { "block transform translate-y-0" } else { "hidden transform translate-y-12" },
                 for chapter in link.nested_items.iter() {
                     SidebarChapter { chapter }
                 }
@@ -250,7 +256,7 @@ fn RightNav() -> Element {
 
     // That might be a naive approach, but it's the easiest
     rsx! {
-        div { class: "overflow-y-auto hidden xl:block top-28 ml-12 h-full md:text-[14px] leading-5 text-gray-700  w-48 sticky  dark:text-gray-400",
+        div { class: "overflow-y-auto hidden xl:block top-28 ml-12 h-full md:text-[14px] leading-5 text-gray-600  w-48 sticky  dark:text-gray-400",
             div { class: "border-b pb-2 dark:border-[#a4a9ac7d]",
                 h2 { class: "pb-2 font-semibold text-gray-600 dark:text-gray-100",
                     "On this page"
@@ -296,81 +302,14 @@ fn RightNav() -> Element {
 }
 
 fn Content() -> Element {
-    let route: BookRoute = use_book();
-
-    let id = route.page_id();
-    let prev_id = id.0.saturating_sub(1);
-    let next_id = id.0.saturating_add(1);
-    let prev_page = LAZY_BOOK.pages.get(prev_id);
-    let next_page = LAZY_BOOK.pages.get(next_id);
-
     rsx! {
-        section { class: "text-gray-600 dark:text-gray-300 body-font overflow-hidden dark:bg-ideblack container pb-12 max-w-screen-sm px-4 pt-8 grow",
-            div { class: "-py-8",
+        section { class: "text-gray-600 dark:text-gray-300 body-font overflow-hidden dark:bg-ideblack container pb-12 max-w-screen-sm px-4 pt-[2.75rem] grow min-h-[96vh]",
+            div { class: "space-y-8",
                 Breadcrumbs {}
-                div { class: "flex w-full mb-12 flex-wrap list-none",
+                div { class: "flex w-full flex-wrap list-none",
                     article { class: "markdown-body", Outlet::<Route> {} }
                 }
-                div { class: "flex flex-row w-full",
-                    if let Some(prev_page) = prev_page {
-                        Link {
-                            class: "text-gray-700 dark:text-gray-100 p-4 rounded text-left flex-1 ",
-                            to: Route::Docs {
-                                child: prev_page.url,
-                            },
-                            div { class: "flex flex-row items-center gap-x-2 hover:text-sky-500 dark:hover:text-sky-400",
-                                svg {
-                                    "viewBox": "0 0 16 16",
-                                    width: "16",
-                                    style: "width: 20px; height: 20px; color: currentcolor;",
-                                    "data-testid": "geist-icon",
-                                    height: "16",
-                                    "stroke-linejoin": "round",
-                                    path {
-                                        d: "M10.5 14.0607L9.96966 13.5303L5.14644 8.7071C4.75592 8.31658 4.75592 7.68341 5.14644 7.29289L9.96966 2.46966L10.5 1.93933L11.5607 2.99999L11.0303 3.53032L6.56065 7.99999L11.0303 12.4697L11.5607 13L10.5 14.0607Z",
-                                        "clip-rule": "evenodd",
-                                        fill: "currentColor",
-                                        "fill-rule": "evenodd",
-                                    }
-                                }
-                                div { class: "flex flex-col",
-                                    span { class: "text-xs", "PREVIOUS" }
-                                    span { class: "font-semibold", "{prev_page.title}" }
-                                }
-                            }
-                        }
-                    }
-
-
-                    if let Some(next_page) = next_page {
-                        Link {
-                            class: "text-gray-700 dark:text-gray-100 p-4 rounded text-right flex-1",
-                            to: Route::Docs {
-                                child: next_page.url,
-                            },
-                            div { class: "flex flex-row items-center gap-x-2 justify-end hover:text-sky-500 dark:hover:text-sky-400",
-                                div { class: "flex flex-col",
-                                    span { class: "text-xs", "NEXT" }
-                                    span { class: "font-semibold", "{next_page.title}" }
-                                }
-                                svg {
-                                    height: "16",
-                                    width: "16",
-                                    "stroke-linejoin": "round",
-                                    "viewBox": "0 0 16 16",
-                                    style: "width: 20px; height: 20px; color: currentcolor;",
-                                    "data-testid": "geist-icon",
-                                    path {
-                                        d: "M5.50001 1.93933L6.03034 2.46966L10.8536 7.29288C11.2441 7.68341 11.2441 8.31657 10.8536 8.7071L6.03034 13.5303L5.50001 14.0607L4.43935 13L4.96968 12.4697L9.43935 7.99999L4.96968 3.53032L4.43935 2.99999L5.50001 1.93933Z",
-                                        "clip-rule": "evenodd",
-                                        "fill-rule": "evenodd",
-                                        fill: "currentColor",
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
+                NextPrev {}
             }
         }
     }
@@ -387,9 +326,8 @@ fn Breadcrumbs() -> Element {
     }
 
     rsx! {
-        div {
-            class: "flex flex-row space-x-2 mb-7 font-extralight",
-            class: if route == (BookRoute::Index {}) { "hidden" },
+        div { class: "flex flex-row space-x-2 font-extralight",
+            // class: if route == (BookRoute::Index {}) { "hidden" },
             Link {
                 to: Route::Docs {
                     child: BookRoute::Index {},
@@ -404,6 +342,79 @@ fn Breadcrumbs() -> Element {
                     },
                     class: if idx == routes.len() - 1 { "font-normal" },
                     "{route.page().title}"
+                }
+            }
+        }
+    }
+}
+
+fn NextPrev() -> Element {
+    let route: BookRoute = use_book();
+
+    let id = route.page_id();
+    let prev_id = id.0.saturating_sub(1);
+    let next_id = id.0.saturating_add(1);
+    let prev_page = LAZY_BOOK.pages.get(prev_id);
+    let next_page = LAZY_BOOK.pages.get(next_id);
+
+    rsx! {
+        div { class: "flex flex-row w-full",
+            if let Some(prev_page) = prev_page {
+                Link {
+                    class: "text-gray-700 dark:text-gray-100 p-4 rounded text-left flex-1 ",
+                    to: Route::Docs {
+                        child: prev_page.url,
+                    },
+                    div { class: "flex flex-row items-center gap-x-2 hover:text-sky-500 dark:hover:text-sky-400",
+                        svg {
+                            "viewBox": "0 0 16 16",
+                            width: "16",
+                            style: "width: 20px; height: 20px; color: currentcolor;",
+                            "data-testid": "geist-icon",
+                            height: "16",
+                            "stroke-linejoin": "round",
+                            path {
+                                d: "M10.5 14.0607L9.96966 13.5303L5.14644 8.7071C4.75592 8.31658 4.75592 7.68341 5.14644 7.29289L9.96966 2.46966L10.5 1.93933L11.5607 2.99999L11.0303 3.53032L6.56065 7.99999L11.0303 12.4697L11.5607 13L10.5 14.0607Z",
+                                "clip-rule": "evenodd",
+                                fill: "currentColor",
+                                "fill-rule": "evenodd",
+                            }
+                        }
+                        div { class: "flex flex-col",
+                            span { class: "text-xs", "PREVIOUS" }
+                            span { class: "font-semibold", "{prev_page.title}" }
+                        }
+                    }
+                }
+            }
+
+
+            if let Some(next_page) = next_page {
+                Link {
+                    class: "text-gray-700 dark:text-gray-100 p-4 rounded text-right flex-1",
+                    to: Route::Docs {
+                        child: next_page.url,
+                    },
+                    div { class: "flex flex-row items-center gap-x-2 justify-end hover:text-sky-500 dark:hover:text-sky-400",
+                        div { class: "flex flex-col",
+                            span { class: "text-xs", "NEXT" }
+                            span { class: "font-semibold", "{next_page.title}" }
+                        }
+                        svg {
+                            height: "16",
+                            width: "16",
+                            "stroke-linejoin": "round",
+                            "viewBox": "0 0 16 16",
+                            style: "width: 20px; height: 20px; color: currentcolor;",
+                            "data-testid": "geist-icon",
+                            path {
+                                d: "M5.50001 1.93933L6.03034 2.46966L10.8536 7.29288C11.2441 7.68341 11.2441 8.31657 10.8536 8.7071L6.03034 13.5303L5.50001 14.0607L4.43935 13L4.96968 12.4697L9.43935 7.99999L4.96968 3.53032L4.43935 2.99999L5.50001 1.93933Z",
+                                "clip-rule": "evenodd",
+                                "fill-rule": "evenodd",
+                                fill: "currentColor",
+                            }
+                        }
+                    }
                 }
             }
         }

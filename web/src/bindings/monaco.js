@@ -132,6 +132,18 @@ export function registerPasteAsRSX(convertHtmlToRSX) {
     });
 }
 
+export function registerModelChangeEvent(callback) {
+    if (!monacoEditor) {
+        setTimeout(() => registerModelChangeEvent(callback), 1000);
+        return;
+    }
+
+    currentMonacoModel.onDidChangeContent(() => {
+        let content = getCurrentModelValue();
+        callback(content);
+    });
+}
+
 // Rust language definitions (from rust-playground)
 const rustLangConfig = {
     comments: {

@@ -10,13 +10,31 @@ serde_json = { workspace = true }
 futures = { workspace = true }
 gloo-net = { workspace = true }
 
+# Dioxus
 dioxus = { workspace = true, features = ["web"] }
 dioxus-document = { workspace = true }
-dioxus-rsx-rosetta = "0.6.0-alpha.3"
-dioxus-autofmt = "0.6.0-alpha.3"
-dioxus-sdk = { git = "https://github.com/DioxusLabs/sdk", rev = "refs/pull/57/head", features = ["window_size", "timing", "system_theme"]}
+dioxus-sdk = { git = "https://github.com/DioxusLabs/sdk", rev = "refs/pull/57/head", features = [
+    "window_size",
+    "timing",
+    "system_theme",
+] }
 
 gloo-utils = "0.2.0"
 wasm-bindgen = "0.2.95"
 miniz_oxide = { version = "0.8.0", features = ["std"] }
 base64 = "0.22.1"
+
+# Hot reload / Paste as RSX
+dioxus-core = "0.6.0-alpha.3"
+dioxus-core-types = "0.6.0-alpha.3"
+dioxus-rsx-hotreload = "0.6.0-alpha.3"
+dioxus-rsx = "0.6.0-alpha.3"
+dioxus-html = { version = "0.6.0-alpha.3", features = [
+    "hot-reload-context",
+], default-features = false }
+
+syn = "2.0.85"
+proc-macro2 = "1.0.89"
+
+dioxus-rsx-rosetta = "0.6.0-alpha.3"
+dioxus-autofmt = "0.6.0-alpha.3"

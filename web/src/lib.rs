@@ -1,17 +1,24 @@
+use std::time::Duration;
+
 use crate::components::Tab;
 use base64::{prelude::BASE64_URL_SAFE, Engine};
 use bindings::monaco;
 use components::material_icons::Warning;
 use dioxus::prelude::*;
 use dioxus_document::{eval, Link};
-use dioxus_logger::tracing::error;
-use dioxus_sdk::theme::{use_system_theme, SystemTheme};
+use dioxus_logger::tracing::{error, info};
+use dioxus_sdk::{
+    theme::{use_system_theme, SystemTheme},
+    utils::timing::use_debounce,
+};
 use error::AppError;
+use hotreload::HotReload;
 
 mod bindings;
 mod components;
 mod error;
 mod examples;
+mod hotreload;
 mod ws;
 
 const DXP_CSS: &str = asset!("/assets/dxp.css");
@@ -44,6 +51,12 @@ pub fn Playground(urls: PlaygroundUrls, share_code: Option<String>) -> Element {
         queue_position,
     };
 
+    let mut hot_reload = use_signal(|| HotReload::new());
+    let on_model_changed = use_debounce(Duration::from_millis(150), move |new_code: String| {
+        let result = hot_reload.write().process_file_change(new_code);
+        info!("hr result: {:?}", result);
+    });
+
     // We store the shared code in state as the editor may not be initialized yet.
     let shared_code = use_memo(use_reactive((&share_code,), move |(share_code,)| {
         let share_code = share_code?;
@@ -54,6 +67,7 @@ pub fn Playground(urls: PlaygroundUrls, share_code: Option<String>) -> Element {
         // If monaco is initialized, set it now. Otherwise save it for monaco onload code.
         if monaco::is_ready() {
             monaco::set_current_model_value(&decoded);
+            hot_reload.write().set_starting_code(&decoded);
             return None;
         }
 
@@ -83,6 +97,8 @@ pub fn Playground(urls: PlaygroundUrls, share_code: Option<String>) -> Element {
             system_theme,
             &snippet,
         );
+        hot_reload.write().set_starting_code(&snippet);
+        bindings::monaco::register_model_change(on_model_changed);
     };
 
     // Change tab automatically

@@ -1,4 +1,4 @@
-use dioxus_sdk::theme::SystemTheme;
+use dioxus_sdk::{theme::SystemTheme, utils::timing::UseDebounce};
 use wasm_bindgen::prelude::*;
 
 #[wasm_bindgen(module = "/src/bindings/monaco.js")]
@@ -25,6 +25,9 @@ extern "C" {
 
     #[wasm_bindgen(js_name = registerPasteAsRSX)]
     fn register_paste_as_rsx(convertHtmlToRSX: &Closure<dyn Fn(String) -> Option<String>>);
+
+    #[wasm_bindgen(js_name = registerModelChangeEvent)]
+    fn register_model_change_event(callback: &Closure<dyn FnMut(String)>);
 }
 
 pub fn init(
@@ -51,6 +54,15 @@ fn register_paste_as_rsx_action() {
     });
 
     register_paste_as_rsx(&callback);
+    callback.forget();
+}
+
+pub fn register_model_change(mut debounce: UseDebounce<String>) {
+    let callback = Closure::new(move |new_code: String| {
+        debounce.action(new_code);
+    });
+
+    register_model_change_event(&callback);
     callback.forget();
 }
 

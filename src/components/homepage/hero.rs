@@ -2,87 +2,73 @@ use crate::*;
 
 pub(crate) fn Hero() -> Element {
     rsx! {
-        section { class: "w-full dark:bg-ideblack mx-auto dark:text-white flex flex-col justify-between items-center pt-8 md:pt-32 border-b md:mb-32 mb-16 pb-4 min-h-[640px] flex-1",
-            div { class: "mx-auto flex w-full max-w-screen-2xl flex-col text-center md:min-h-[640px] min-h-[760px] md:px-12",
-                div { class: "flex-1" }
-                div { class: "flex-1 flex flex-row justify-start w-full px-8 md:px-0",
-                    div { class: "text-center md:text-left flex-grow",
-                        div { class: "text-[2.5em] md:text-[4em] font-semibold dark:text-white text-ghdarkmetal font-sans",
+        section { class: "w-full dark:bg-ideblack mx-auto dark:text-white flex flex-col justify-between items-center  border-b  min-h-[760px] flex-1 dark:border-[#a4a9ac7d] max-h-[960px] px-4",
+            div { class: "flex w-full max-w-screen-xl flex-col text-center md:min-h-[520px] min-h-[760px] h-[calc(100vh-4rem)]",
+                div { class: "flex flex-col-reverse lg:flex-row items-center justify-end lg:justify-between flex-1 ",
+                    div { class: "text-center lg:text-left lg:flex-1",
+                        div { class: "text-[2.5em] md:text-[3.5em] font-semibold dark:text-white text-ghdarkmetal font-sans leading-snug text-balance",
                             span { "One codebase, " }
                             span { " every platform." }
                         }
-                        h3 { class: "text-[1.25em] dark:text-white font-extralight text-ghdarkmetal md:pt-4 pt-8 max-w-screen-sm md:max-w-screen-md md:text-left text-center",
-                            span {
-                                "Build fullstack web, desktop, and mobile apps with one unified codebase."
+                        h3 { class: "text-[1.25em] dark:text-white font-light text-ghdarkmetal max-w-screen-sm md:max-w-screen-md md:text-left text-center flex flex-col",
+                            span { class: "max-w-screen-md leading-loose",
+                                "Dioxus is "
+                                em { "the " }
+                                "Rust framework for building fullstack web, desktop, and mobile apps. Iterate with live hotreloading, add server functions, and deploy in record time."
                             }
                         }
-
-                        div { class: "pt-12 text-white text-[1em] md:text-[1.2em] font-sans font-bold flex flex-col md:flex-row md:space-x-4 md:space-y-0 space-y-4 md:w-full max-w-[200px] md:max-w-[360px] mx-auto md:mx-0",
+                        div { class: "pt-8 lg:pt-16 text-[1em] flex flex-row space-x-4 mx-auto lg:mx-0 justify-center lg:justify-start",
                             Link {
                                 to: Route::Docs {
-                                    child: BookRoute::Index {},
+                                    child: BookRoute::GuideIndex {},
                                 },
-                                class: "bg-dxorange m-0 p-2 px-4 rounded md:hover:-translate-y-2 transition-transform duration-300 w-full md:w-auto",
+                                class: "bg-ghdarkmetal dark:bg-[#EDEDED] text-white dark:text-black border border-[#a4a9ac7d] m-0 p-2 px-4 rounded md:hover:-translate-y-1 transition-transform duration-300 w-full md:w-auto  dark:shadow-white",
                                 "Quickstart"
                             }
                             Link {
                                 to: Route::Docs {
-                                    child: BookRoute::ReferenceIndex {},
+                                    child: BookRoute::Index {},
                                 },
-                                class: "bg-dxblue m-0 p-2 px-4 rounded md:hover:-translate-y-2 transition-transform duration-300 w-full md:w-auto",
+                                class: "bg-[#EDEDED] dark:bg-ghdarkmetal  text-black dark:text-white border border-[#a4a9ac7d]  m-0 p-2 px-4 rounded md:hover:-translate-y-1 transition-transform duration-300 w-full md:w-auto",
                                 "Read the docs"
                             }
                         }
                     }
-                    AnimatedLogo {}
-                }
-                div { class: "flex-1" }
-                div { class: "flex-1 max-w-screen-2xl flex-col justify-end md:flex gap-4",
-                    h1 { class: "text-md md:text-left text-center", "Trusted by top companies" }
-                    div { class: "flex flex-row flex-wrap md:justify-start justify-center invert dark:invert-0 mb-4 md:mb-12 md:gap-12 gap-4 px-4 my-4 min-h-0",
+                    div { class: "lg:pb-12 h-screen max-h-80",
                         img {
-                            class: "h-6 md:h-8",
+                            src: asset!("/assets/static/multiplatform-dark.svg"),
+                            class: "dark:hidden w-full h-full",
+                            alt: "Animated Icon",
+                        }
+                        img {
+                            src: asset!("/assets/static/multiplatform-light.svg"),
+                            class: "hidden dark:block w-full h-full",
+                            alt: "Animated Icon",
+                        }
+                    }
+                }
+                div { class: "flex max-w-screen-2xl flex-col justify-end md:flex gap-4 pb-8",
+                    h1 { class: "lg:text-left text-center font-extralight text-sm",
+                        "Trusted by top companies"
+                    }
+                    div { class: "flex flex-row flex-wrap lg:justify-start justify-center invert dark:invert-0  gap-8  min-h-0",
+                        img {
+                            class: "h-6",
                             src: "/assets/static/airbuslogo.svg",
                         }
+                        img { class: "h-6 ", src: "/assets/static/ESA_logo.svg" }
+                        img { class: "h-6 ", src: "/assets/static/xailogo.svg" }
+                        img { class: "h-6 ", src: "/assets/static/yclogo.svg" }
                         img {
-                            class: "h-6 md:h-8",
-                            src: "/assets/static/ESA_logo.svg",
-                        }
-                        img {
-                            class: "h-6 md:h-8",
-                            src: "/assets/static/xailogo.svg",
-                        }
-                        img {
-                            class: "h-6 md:h-8",
-                            src: "/assets/static/yclogo.svg",
-                        }
-                        img {
-                            class: "h-6 md:h-8",
+                            class: "h-6 ",
                             src: "/assets/static/futurewei_bw.png",
                         }
                         img {
-                            class: "h-6 md:h-8",
+                            class: "h-6 ",
                             src: "/assets/static/satellite.webp",
                         }
                     }
                 }
-            }
-        }
-    }
-}
-
-fn AnimatedLogo() -> Element {
-    rsx! {
-        div { class: "flex-grow",
-            img {
-                src: asset!("/assets/static/multiplatform-dark.svg"),
-                class: "mx-auto max-h-48 lg:max-h-96 dark:hidden",
-                alt: "Animated Icon",
-            }
-            img {
-                src: asset!("/assets/static/multiplatform-light.svg"),
-                class: "mx-auto max-h-48 lg:max-h-96 hidden dark:block",
-                alt: "Animated Icon",
             }
         }
     }

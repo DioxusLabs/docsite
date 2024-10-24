@@ -4,15 +4,17 @@ use dioxus_material_icons::{MaterialIcon, MaterialIconColor};
 use std::ops::Deref;
 
 pub(crate) static SHOW_SEARCH: GlobalSignal<bool> = Signal::global(|| false);
-pub(crate) static SHOW_DOCS_NAV: GlobalSignal<bool> = Signal::global(|| false);
 
 pub(crate) fn Nav() -> Element {
+    let route: Route = use_route();
+    let is_docs = matches!(route, Route::Docs { .. });
+
     rsx! {
         SearchModal {}
         header { class: "sticky top-0 z-30 bg-white bg-opacity-80 dark:text-gray-200 dark:bg-ideblack dark:bg-opacity-80 border-b dark:border-stone-700 h-16 backdrop-blur-sm",
             div { class: "py-2 px-2 max-w-screen-2xl mx-auto flex items-center justify-between text-sm leading-6 h-16",
-                div { class: "flex z-50 md:px-2", LinkList {} }
-                div { class: "flex h-full justify-end ml-2 items-center gap-4 py-2",
+                div { class: "flex z-50 md:px-2 flex-1", LinkList {} }
+                div { class: "flex h-full justify-end ml-2 items-center gap-3 py-2",
                     button {
                         class: "
             max-w-[12rem] items-center rounded
@@ -59,8 +61,8 @@ pub(crate) fn Nav() -> Element {
                             let mut sidebar = SHOW_SIDEBAR.write();
                             *sidebar = !*sidebar;
                         },
-                        class: "bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-500 rounded-lg p-1 mr-2 lg:hidden my-3 h-8 flex items-center text-lg z-[100]",
-                        class: if !SHOW_DOCS_NAV() { "hidden" },
+                        class: "bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-500 md:hidden rounded-lg p-1 mr-2 my-3 h-8 flex items-center text-lg z-50",
+                        class: if !is_docs { "hidden" },
                         MaterialIcon {
                             name: "menu",
                             size: 24,
@@ -68,14 +70,48 @@ pub(crate) fn Nav() -> Element {
                         }
                     }
 
-                    div { class: "h-full  gap-4 hidden lg:flex",
+                    div { class: "h-full  gap-3 hidden lg:flex",
                         div { class: "border-l border-gray-200 dark:border-gray-800 h-full" }
-                        div { class: "hidden lg:flex items-center gap-4",
+                        div { class: "hidden lg:flex items-center gap-3",
                             label {
                                 class: "sr-only",
                                 id: "headlessui-listbox-label-2",
                                 "Theme"
                             }
+                            Link {
+                                to: "https://crates.io/crates/dioxus",
+                                new_tab: true,
+                                class: "block text-gray-400 hover:text-gray-500 dark:hover:text-gray-300",
+                                span { class: "sr-only", "Dioxus on docs.rs" }
+                                svg {
+                                    "viewBox": "0 0 576 512",
+                                    xmlns: "http://www.w3.org/2000/svg",
+                                    width: "24",
+                                    height: "24",
+                                    path {
+                                        d: "M290.8 48.6l78.4 29.7L288 109.5 206.8 78.3l78.4-29.7c1.8-.7 3.8-.7 5.7 0zM136 92.5l0 112.2c-1.3 .4-2.6 .8-3.9 1.3l-96 36.4C14.4 250.6 0 271.5 0 294.7L0 413.9c0 22.2 13.1 42.3 33.5 51.3l96 42.2c14.4 6.3 30.7 6.3 45.1 0L288 457.5l113.5 49.9c14.4 6.3 30.7 6.3 45.1 0l96-42.2c20.3-8.9 33.5-29.1 33.5-51.3l0-119.1c0-23.3-14.4-44.1-36.1-52.4l-96-36.4c-1.3-.5-2.6-.9-3.9-1.3l0-112.2c0-23.3-14.4-44.1-36.1-52.4l-96-36.4c-12.8-4.8-26.9-4.8-39.7 0l-96 36.4C150.4 48.4 136 69.3 136 92.5zM392 210.6l-82.4 31.2 0-89.2L392 121l0 89.6zM154.8 250.9l78.4 29.7L152 311.7 70.8 280.6l78.4-29.7c1.8-.7 3.8-.7 5.7 0zm18.8 204.4l0-100.5L256 323.2l0 95.9-82.4 36.2zM421.2 250.9c1.8-.7 3.8-.7 5.7 0l78.4 29.7L424 311.7l-81.2-31.1 78.4-29.7zM523.2 421.2l-77.6 34.1 0-100.5L528 323.2l0 90.7c0 3.2-1.9 6-4.8 7.3z",
+                                        fill: "currentColor",
+                                        fill_rule: "nonzero",
+                                    }
+                                }
+                            }
+                            // Link {
+                            //     to: "https://www.youtube.com/@dioxuslabs",
+                            //     new_tab: true,
+                            //     class: "block text-gray-400 hover:text-gray-500 dark:hover:text-gray-300",
+                            //     span { class: "sr-only", "Dioxus on YouTube" }
+                            //     svg {
+                            //         xmlns: "http://www.w3.org/2000/svg",
+                            //         "viewBox": "0 0 576 512",
+                            //         width: "24",
+                            //         height: "24",
+                            //         path {
+                            //             d: "M549.7 124.1c-6.3-23.7-24.8-42.3-48.3-48.6C458.8 64 288 64 288 64S117.2 64 74.6 75.5c-23.5 6.3-42 24.9-48.3 48.6-11.4 42.9-11.4 132.3-11.4 132.3s0 89.4 11.4 132.3c6.3 23.7 24.8 41.5 48.3 47.8C117.2 448 288 448 288 448s170.8 0 213.4-11.5c23.5-6.3 42-24.2 48.3-47.8 11.4-42.9 11.4-132.3 11.4-132.3s0-89.4-11.4-132.3zm-317.5 213.5V175.2l142.7 81.2-142.7 81.2z",
+                            //             fill: "currentColor",
+                            //             fill_rule: "nonzero",
+                            //         }
+                            //     }
+                            // }
                             Link {
                                 to: "https://discord.gg/XgGxMSkvUM".to_string(),
                                 class: "block text-gray-400 hover:text-gray-500 dark:hover:text-gray-300",
@@ -89,7 +125,7 @@ pub(crate) fn Nav() -> Element {
                                 new_tab: true,
                                 span { class: "sr-only", "Dioxus on GitHub" }
                                 crate::icons::Github2 {}
-                                span { class: "text-xs", "20.7k" }
+                                span { class: "text-xs text", "20.7k" }
                             }
                         }
                         div { class: "border-l border-gray-200 dark:border-gray-800 h-full" }
@@ -130,7 +166,7 @@ static LINKS: &[(&str, &str)] = &[
 #[component]
 fn LinkList() -> Element {
     rsx! {
-        nav { class: "flex flex-row items-center space-x-2 md:space-x-6 text-md font-light leading-none text-slate-700 dark:text-white whitespace-nowrap",
+        nav { class: "flex-grow md:flex-grow-0 flex flex-row items-center  text-md font-light leading-none text-slate-700 dark:text-white whitespace-nowrap md:gap-6",
             Link {
                 to: Route::Homepage {},
                 class: "title-font font-medium items-center text-gray-900 flex flex-row gap-1",
@@ -142,13 +178,15 @@ fn LinkList() -> Element {
                     "DIOXUS"
                 }
             }
-            for (name , link) in LINKS.iter().cloned() {
-                Link {
-                    to: link,
-                    class: "leading-none hover:text-sky-500 dark:hover:text-sky-400 rounded fill-zinc-700 dark:fill-zinc-100",
-                    active_class: "text-sky-500 dark:text-sky-400",
-                    position: "relative",
-                    "{name}"
+            div { class: "flex-1 flex flex-row items-center md:space-x-6 justify-evenly",
+                for (name , link) in LINKS.iter().cloned() {
+                    Link {
+                        to: link,
+                        class: "leading-none hover:text-sky-500 dark:hover:text-sky-400 rounded fill-zinc-700 dark:fill-zinc-100",
+                        active_class: "text-sky-500 dark:text-sky-400",
+                        position: "relative",
+                        "{name}"
+                    }
                 }
             }
         }
@@ -192,7 +230,7 @@ fn SearchModal() -> Element {
         div {
             height: "100vh",
             width: "100vw",
-            class: "fixed top-0 left-0 z-50 block bg-gray-100 bg-opacity-70 overflow-y-hidden search-modal-animated",
+            class: "fixed top-0 left-0 z-50 block bg-gray-100 dark:bg-black dark:bg-opacity-70 bg-opacity-70 overflow-y-hidden search-modal-animated  ",
             class: if *SHOW_SEARCH.read() { "dioxus-show" } else { "dioxus-hide" },
             onclick: move |_| *SHOW_SEARCH.write() = false,
 
@@ -201,14 +239,16 @@ fn SearchModal() -> Element {
                 div { class: "h-40" }
 
                 // The actual modal
-                div { class: "bg-white dark:bg-ideblack rounded-xl max-h-[calc(100%-8rem)] overflow-y-auto text-gray-800 dark:text-gray-100 border",
+                div { class: "bg-white dark:bg-ideblack rounded-xl max-h-[calc(100%-8rem)] overflow-y-auto text-gray-800 dark:text-gray-100 border dark:border-[#a4a9ac7d]",
                     // Search input
-                    div { class: "flex flex-col flex-grow border-b border-gray-300 p-2 gap-2",
+                    div { class: "flex flex-col flex-grow border-b p-2 gap-2 border-inherit",
                         div { class: "my-auto flex flex-row items-center",
-                            MaterialIcon {
-                                name: "search",
-                                size: 20,
-                                color: MaterialIconColor::Dark,
+                            div { class: "dark:invert h-5",
+                                MaterialIcon {
+                                    name: "search",
+                                    size: 20,
+                                    color: MaterialIconColor::Dark,
+                                }
                             }
 
                             // hide the input until show search so the onmounted fires
@@ -226,8 +266,8 @@ fn SearchModal() -> Element {
                                     onmounted: move |evt| async move {
                                         _ = evt.set_focus(true).await;
                                     },
-                                    class: "flex-grow bg-transparent border-none outline-none pl-2 text-gray-800 dark:text-gray-100 py-2",
-                                    placeholder: "Search the docs",
+                                    class: "flex-grow bg-transparent border-none outline-none pl-2 text-gray-800 dark:text-gray-100 py-2 placeholder-gray-200",
+                                    placeholder: "Search the docs...",
                                     value: "{search_text}",
                                 }
                             }
@@ -253,7 +293,7 @@ fn SearchResults(results: Signal<Results>, search_text: Signal<String>) -> Eleme
     let results = _results.deref().as_ref().unwrap();
 
     rsx! {
-        ul { class: "p-2",
+        ul { class: "p-2 flex flex-col",
             if search_text.read().is_empty() {
                 for (search , route) in [
                     (
@@ -323,13 +363,13 @@ fn SearchResults(results: Signal<Results>, search_text: Signal<String>) -> Eleme
 #[component]
 fn SearchResultItem(title: String, route: Route, children: Element) -> Element {
     rsx! {
-        li { class: "w-full p-2 rounded hover:bg-gray-100 dark:hover:bg-ideblack transition-colors duration-200 ease-in-out",
+        li { class: "w-full rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors duration-200 ease-in-out",
             Link {
                 to: route,
                 onclick: move |_| {
                     *SHOW_SEARCH.write() = false;
                 },
-                class: "flex flex-row items-center gap-x-2",
+                class: "flex flex-row items-center gap-x-2 p-2",
                 icons::DocumentIcon {}
                 div { class: "flex flex-col justify-between",
                     h2 { class: "dark:text-white", "{title}" }

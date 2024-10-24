@@ -8,9 +8,9 @@ pub(crate) mod snippets;
 pub(crate) fn Homepage() -> Element {
     rsx! {
         div { class: "w-full dark:bg-ideblack",
+            // AvailablePlatforms {}
+            // Stats {}
             hero::Hero {}
-            AvailablePlatforms {}
-            Stats {}
         }
     }
 }

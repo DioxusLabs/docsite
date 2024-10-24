@@ -20,7 +20,7 @@ fn HeaderFooter() -> Element {
     });
 
     rsx! {
-        div { class: "bg-white dark:bg-ideblack pb-8",
+        div { class: "bg-white dark:bg-ideblack",
             document::Link { rel: "stylesheet", href: asset!("/assets/githubmarkdown.css") }
             document::Link { rel: "stylesheet", href: asset!("/assets/tailwind.css") }
             document::Link { rel: "stylesheet", href: asset!("/assets/main.css") }
@@ -47,8 +47,8 @@ fn HeaderFooter() -> Element {
 
             Nav {}
             Outlet::<Route> {}
+            Footer {}
         }
-        Footer {}
     }
 }
 

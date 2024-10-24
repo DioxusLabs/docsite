@@ -17,11 +17,8 @@ const GITHUB_EDIT_PAGE_EDIT_URL: &str =
 
 #[component]
 pub(crate) fn Learn() -> Element {
-    use_hook(|| *SHOW_DOCS_NAV.write() = true);
-    use_drop(|| *SHOW_DOCS_NAV.write() = false);
-
     rsx! {
-        div { class: "w-full text-sm dark:bg-ideblack", min_height: "100vh",
+        div { class: "w-full text-sm dark:bg-ideblack border-b dark:border-[#a4a9ac7d]",
             div { class: "flex flex-row justify-center dark:text-[#dee2e6] font-light lg:gap-12",
                 LeftNav {}
                 Content {}
@@ -41,21 +38,20 @@ fn LeftNav() -> Element {
     rsx! {
 
         div {
-            class: "
-             overflow-y-hidden lg:block pt-[2.75rem] ml-12 h-full mb-2 md:text-[14px] leading-5 text-gray-700 absolute md:sticky dark:text-gray-400 top-0
-             bg-white dark:bg-ideblack lg:bg-inherit space-y-2
-            ",
-            class: if SHOW_SIDEBAR() { "w-screen" } else { "hidden" },
-            VersionSwitch {}
-            nav { class: "
-            styled-scrollbar
-            pl-2 pb-2 z-20 text-base sm:block top-28 h-[88vh]
-            md:w-60 lg:text-[14px] content-start text-gray-600 dark:text-gray-400 overflow-y-scroll pr-2 space-y-1",
-
-
-                // DocVersionNav {}
-                for chapter in chapters.into_iter().flatten().filter(|chapter| chapter.maybe_link().is_some()) {
-                    SidebarSection { chapter }
+            class: if SHOW_SIDEBAR() { "w-full md:w-auto" } else { "hidden" },
+            class: "h-full md:block top-28 sticky",
+            // class: "absolute md:block md:sticky md:top-28 overflow-y-hidden bg-white dark:bg-ideblack lg:bg-inherit z-20",
+            div { class: "
+                lg:block mb-2 md:text-[14px] leading-5 text-gray-700  dark:text-gray-400 space-y-2 px-4 md:px-2 py-2 md:py-0
+                ",
+                VersionSwitch {}
+                nav { class: "
+                styled-scrollbar
+                pl-2 pb-2 z-20 text-base sm:block top-28 md:h-[88vh]
+                md:w-60 lg:text-[14px] content-start text-gray-600 dark:text-gray-400 overflow-y-scroll pr-2 space-y-1",
+                    for chapter in chapters.into_iter().flatten().filter(|chapter| chapter.maybe_link().is_some()) {
+                        SidebarSection { chapter }
+                    }
                 }
             }
         }
@@ -78,10 +74,10 @@ fn VersionSwitch() -> Element {
             role: "button",
             onfocusout: move |_| show_versions.set(false),
             onclick: move |_| show_versions.set(true),
-            div { class: " hover:bg-gray-100 dark:hover:bg-ghdarkmetal rounded w-full",
+            div { class: " hover:bg-gray-100 dark:hover:bg-ghdarkmetal rounded w-full py-1",
                 div { class: "grid grid-cols-[auto,1fr,auto] items-center gap-2 px-1",
                     div {
-                        div { class: "w-8 h-8 rounded-md border flex items-center justify-center bg-gray-50 border-gray-200 text-gray-900",
+                        div { class: "w-8 h-8 rounded-md border flex items-center justify-center bg-gray-50 border-gray-200 text-gray-900 dark:invert",
                             svg {
                                 style: "width: 16px; height: 16px; color: currentcolor;",
                                 "stroke-linejoin": "round",
@@ -99,7 +95,9 @@ fn VersionSwitch() -> Element {
                         }
                     }
                     div { class: "leading-snug text-xs text-left",
-                        p { class: "font-bold", "Using Nightly Version" }
+                        p { class: "font-medium text-gray-700 dark:text-gray-100",
+                            "Using Nightly Version"
+                        }
                         p { class: "font-light", "v0.6.0-alpha.3" }
                     }
                     div {
@@ -126,7 +124,7 @@ fn VersionSwitch() -> Element {
             div {
                 class: "relative w-full z-50",
                 class: if !show_versions() { "hidden" },
-                ul { class: "absolute flex flex-col bg-white dark:bg-ghdarkmetal text-left rounded-lg border dark:border-gray-700 mt-4 w-full overflow-hidden text-gray-500 dark:text-gray-100 text-xs shadow-lg",
+                ul { class: "absolute flex flex-col bg-white dark:bg-ghdarkmetal text-left rounded-lg border dark:border-gray-700 mt-2 w-full overflow-hidden text-gray-500 dark:text-gray-100 text-xs shadow-lg",
                     for (name , version , at) in versions.iter() {
                         li {
                             Link { to: "https://dioxuslabs.com/learn/{at}/",
@@ -256,7 +254,7 @@ fn RightNav() -> Element {
 
     // That might be a naive approach, but it's the easiest
     rsx! {
-        div { class: "overflow-y-auto hidden xl:block top-28 ml-12 h-full md:text-[14px] leading-5 text-gray-600  w-48 sticky  dark:text-gray-400",
+        div { class: "overflow-y-auto hidden xl:block top-28 ml-12 h-full md:text-[14px] leading-5 text-gray-600  w-48 sticky  dark:text-gray-400 pt-1",
             div { class: "border-b pb-2 dark:border-[#a4a9ac7d]",
                 h2 { class: "pb-2 font-semibold text-gray-600 dark:text-gray-100",
                     "On this page"
@@ -303,8 +301,10 @@ fn RightNav() -> Element {
 
 fn Content() -> Element {
     rsx! {
-        section { class: "text-gray-600 dark:text-gray-300 body-font overflow-hidden dark:bg-ideblack container pb-12 max-w-screen-sm px-4 pt-[2.75rem] grow min-h-[96vh]",
-            div { class: "space-y-8",
+        section {
+            class: "text-gray-600 dark:text-gray-300 body-font overflow-hidden dark:bg-ideblack container pb-12 max-w-screen-sm px-4 pt-4 md:pt-[3.125rem] grow min-h-[100vh] ",
+            class: if SHOW_SIDEBAR() { "hidden md:block" },
+            div { class: "",
                 Breadcrumbs {}
                 div { class: "flex w-full flex-wrap list-none",
                     article { class: "markdown-body", Outlet::<Route> {} }
@@ -317,6 +317,7 @@ fn Content() -> Element {
 
 fn Breadcrumbs() -> Element {
     let route: BookRoute = use_book();
+    let is_index = route == BookRoute::Index {};
 
     let mut routes = vec![route.clone()];
     let mut cur = route.clone();
@@ -326,8 +327,9 @@ fn Breadcrumbs() -> Element {
     }
 
     rsx! {
-        div { class: "flex flex-row space-x-2 font-extralight",
-            // class: if route == (BookRoute::Index {}) { "hidden" },
+        div {
+            class: "flex flex-row items-center space-x-2 font-extralight pb-9",
+            class: if is_index { "hidden" },
             Link {
                 to: Route::Docs {
                     child: BookRoute::Index {},
@@ -340,7 +342,7 @@ fn Breadcrumbs() -> Element {
                     to: Route::Docs {
                         child: route.clone(),
                     },
-                    class: if idx == routes.len() - 1 { "font-normal" },
+                    class: if idx == routes.len() - 1 { "font-semibold" },
                     "{route.page().title}"
                 }
             }

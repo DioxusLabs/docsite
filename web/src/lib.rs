@@ -5,14 +5,15 @@ use base64::{prelude::BASE64_URL_SAFE, Engine};
 use bindings::monaco;
 use components::material_icons::Warning;
 use dioxus::prelude::*;
+use dioxus_devtools::HotReloadMsg;
 use dioxus_document::{eval, Link};
-use dioxus_logger::tracing::{error, info};
+use dioxus_logger::tracing::error;
 use dioxus_sdk::{
     theme::{use_system_theme, SystemTheme},
     utils::timing::use_debounce,
 };
 use error::AppError;
-use hotreload::HotReload;
+use hotreload::{HotReload, HotReloadError};
 
 mod bindings;
 mod components;
@@ -39,7 +40,7 @@ pub struct PlaygroundUrls {
 pub fn Playground(urls: PlaygroundUrls, share_code: Option<String>) -> Element {
     let mut is_compiling = use_signal(|| false);
     let queue_position = use_signal(|| None);
-    let built_page_id = use_signal(|| None);
+    let built_page_id = use_signal(|| Some(String::from("d18b0b68-9c2a-4c3f-a78b-36972f23d357")));
     let mut compiler_messages = use_signal(Vec::<String>::new);
     let mut current_tab = use_signal(|| Tab::Page);
     let mut show_share_warning = use_signal(|| false);
@@ -53,8 +54,37 @@ pub fn Playground(urls: PlaygroundUrls, share_code: Option<String>) -> Element {
 
     let mut hot_reload = use_signal(|| HotReload::new());
     let on_model_changed = use_debounce(Duration::from_millis(150), move |new_code: String| {
+        if !built_page_id().is_some() {
+            return;
+        }
+
+        // Process any potential hot -eloadable changes and send them to the iframe web client.
         let result = hot_reload.write().process_file_change(new_code);
-        info!("hr result: {:?}", result);
+        match result {
+            Ok(templates) => {
+                let hr_msg = HotReloadMsg {
+                    templates,
+                    assets: Vec::new(),
+                    unknown_files: Vec::new(),
+                };
+
+                let e = eval(
+                    r#"
+                    const hrMsg = await dioxus.recv();
+                    const iframeElem = document.getElementById("dxp-viewport");
+                    const hrMsgJson = JSON.stringify(hrMsg);
+                    
+                    if (iframeElem) {
+                        console.log("iframe exists");
+                        iframeElem.contentWindow.postMessage(hrMsgJson, "*");
+                    }
+                    "#,
+                );
+                _ = e.send(hr_msg);
+            }
+            Err(HotReloadError::NeedsRebuild) => error!("todo"),
+            e => error!("hot reload error occured: {:?}", e),
+        }
     });
 
     // We store the shared code in state as the editor may not be initialized yet.
@@ -165,6 +195,7 @@ pub fn Playground(urls: PlaygroundUrls, share_code: Option<String>) -> Element {
         components::Panes {
             pane_left_width,
             pane_right_width,
+            built_page_url,
         }
     }
 }

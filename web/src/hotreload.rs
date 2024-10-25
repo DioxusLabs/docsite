@@ -116,7 +116,7 @@ impl HotReload {
 }
 
 fn template_location(old_start: proc_macro2::LineColumn) -> String {
-    let file = Path::new("main.rs");
+    let file = Path::new("src/main.rs");
     let line = old_start.line;
     let column = old_start.column + 1;
 

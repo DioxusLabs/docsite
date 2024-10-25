@@ -22,6 +22,7 @@ struct DraggableData {
 pub fn Panes(
     pane_left_width: Signal<Option<i32>>,
     pane_right_width: Signal<Option<i32>>,
+    built_page_url: Memo<Option<String>>,
 ) -> Element {
     let mut draggable_mouse_down = use_signal(|| false);
     let mut mouse_data = use_signal(DraggableData::default);
@@ -108,6 +109,12 @@ pub fn Panes(
             div {
                 id: "dxp-panes-right",
                 style: if let Some(val) = pane_right_width() { "width:{val}px;" },
+                if let Some(url) = built_page_url() {
+                    iframe {
+                        id: "dxp-viewport",
+                        src: "{url}",
+                    }
+                }
             }
         }
     }

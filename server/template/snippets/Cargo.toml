@@ -7,7 +7,8 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
-dioxus = { version = "0.5", features = ["web"] }
+dioxus = { path = "../../dioxus/packages/dioxus", features = ["web"] }
+dioxus-web = { path = "../../dioxus/packages/web", features = ["devtools-playground"] }
 
 [profile.dev]
-opt-level = 1
+opt-level = 3

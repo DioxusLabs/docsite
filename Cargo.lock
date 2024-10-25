@@ -1166,6 +1166,7 @@ dependencies = [
  "dioxus-autofmt",
  "dioxus-core",
  "dioxus-core-types",
+ "dioxus-devtools",
  "dioxus-document",
  "dioxus-html",
  "dioxus-logger",

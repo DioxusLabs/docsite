@@ -27,6 +27,7 @@ base64 = "0.22.1"
 # Hot reload / Paste as RSX
 dioxus-core = "0.6.0-alpha.3"
 dioxus-core-types = "0.6.0-alpha.3"
+dioxus-devtools = "0.6.0-alpha.3"
 dioxus-rsx-hotreload = "0.6.0-alpha.3"
 dioxus-rsx = "0.6.0-alpha.3"
 dioxus-html = { version = "0.6.0-alpha.3", features = [

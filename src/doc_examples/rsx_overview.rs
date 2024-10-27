@@ -104,6 +104,19 @@ pub fn ConditionalAttributes() -> Element {
     // ANCHOR_END: conditional_attributes
 }
 
+pub fn ConditionalAttributesConcatenation() -> Element {
+    // ANCHOR: conditional_attributes_concatenation
+    let large_font = true;
+    rsx! {
+        div {
+            class: "base-class another-class",
+            class: if large_font { "text-xl" },
+            "Hello, World!"
+        }
+    }
+    // ANCHOR_END: conditional_attributes_concatenation
+}
+
 pub fn Formatting() -> Element {
     // ANCHOR: formatting
     let coordinates = (42, 0);

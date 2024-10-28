@@ -1,51 +1,6 @@
 [application]
-
-# dioxus project name
 name = "docsite"
 
-# default platform
-# you can also use `dioxus serve/build --platform XXX` to use other platform
-# value: web | desktop
-# default_platform = "web"
-
-# # Web `build` & `serve` dist path
-# out_dir = "dist"
-
-# resource (static) file folder
-asset_dir = "assets"
-
 [web.app]
-
-# HTML title tag content
-title = "Dioxus | An elegant GUI library for Rust"
-
-# base_path = "."
-
 [web.watcher]
-
-watch_path = [
-    "docs-src",
-    "src",
-    "posts",
-    "examples",
-    "snippets",
-    "index.html",
-    "public",
-    "docs-gen",
-]
 index_on_404 = true
-
-# include `assets` in web platform
-[web.resource]
-
-# CSS style file
-style = []
-
-# Javascript code file
-# script = ["/ace/ace.js", "/ace/mode-rust.js", "/ace/theme-github.js", "/ace/theme-github_dark.js"]
-
-[web.resource.dev]
-
-# Javascript code file
-# serve: [dev-server] only
-script = []

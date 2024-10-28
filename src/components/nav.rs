@@ -95,23 +95,6 @@ pub(crate) fn Nav() -> Element {
                                     }
                                 }
                             }
-                            // Link {
-                            //     to: "https://www.youtube.com/@dioxuslabs",
-                            //     new_tab: true,
-                            //     class: "block text-gray-400 hover:text-gray-500 dark:hover:text-gray-300",
-                            //     span { class: "sr-only", "Dioxus on YouTube" }
-                            //     svg {
-                            //         xmlns: "http://www.w3.org/2000/svg",
-                            //         "viewBox": "0 0 576 512",
-                            //         width: "24",
-                            //         height: "24",
-                            //         path {
-                            //             d: "M549.7 124.1c-6.3-23.7-24.8-42.3-48.3-48.6C458.8 64 288 64 288 64S117.2 64 74.6 75.5c-23.5 6.3-42 24.9-48.3 48.6-11.4 42.9-11.4 132.3-11.4 132.3s0 89.4 11.4 132.3c6.3 23.7 24.8 41.5 48.3 47.8C117.2 448 288 448 288 448s170.8 0 213.4-11.5c23.5-6.3 42-24.2 48.3-47.8 11.4-42.9 11.4-132.3 11.4-132.3s0-89.4-11.4-132.3zm-317.5 213.5V175.2l142.7 81.2-142.7 81.2z",
-                            //             fill: "currentColor",
-                            //             fill_rule: "nonzero",
-                            //         }
-                            //     }
-                            // }
                             Link {
                                 to: "https://discord.gg/XgGxMSkvUM".to_string(),
                                 class: "block text-gray-400 hover:text-gray-500 dark:hover:text-gray-300",
@@ -125,7 +108,7 @@ pub(crate) fn Nav() -> Element {
                                 new_tab: true,
                                 span { class: "sr-only", "Dioxus on GitHub" }
                                 crate::icons::Github2 {}
-                                span { class: "text-xs text", "20.7k" }
+                                span { class: "text-xs text", "21.1k" }
                             }
                         }
                         div { class: "border-l border-gray-200 dark:border-gray-800 h-full" }
@@ -292,52 +275,23 @@ fn SearchResults(results: Signal<Results>, search_text: Signal<String>) -> Eleme
     let _results = results.read();
     let results = _results.deref().as_ref().unwrap();
 
+    let default_searches = [
+        ("Tutorial", BookRoute::GuideIndex {}),
+        ("Web", BookRoute::ReferenceWebIndex {}),
+        ("Desktop", BookRoute::ReferenceDesktopIndex {}),
+        ("Mobile", BookRoute::ReferenceMobileIndex {}),
+        ("Fullstack", BookRoute::ReferenceFullstackIndex {}),
+        ("Typesafe Routing", BookRoute::RouterReferenceRoutesIndex {}),
+    ];
+
     rsx! {
         ul { class: "p-2 flex flex-col",
             if search_text.read().is_empty() {
-                for (search , route) in [
-                    (
-                        "Tutorial",
-                        Route::Docs {
-                            child: BookRoute::GuideIndex {},
-                        },
-                    ),
-                    (
-                        "Web",
-                        Route::Docs {
-                            child: BookRoute::ReferenceWebIndex {},
-                        },
-                    ),
-                    (
-                        "Desktop",
-                        Route::Docs {
-                            child: BookRoute::ReferenceDesktopIndex {
-                            },
-                        },
-                    ),
-                    (
-                        "Mobile",
-                        Route::Docs {
-                            child: BookRoute::ReferenceMobileIndex {},
-                        },
-                    ),
-                    (
-                        "Fullstack",
-                        Route::Docs {
-                            child: BookRoute::ReferenceFullstackIndex {
-                            },
-                        },
-                    ),
-                    (
-                        "Typesafe Routing",
-                        Route::Docs {
-                            child: BookRoute::RouterReferenceRoutesIndex {
-                            },
-                        },
-                    ),
-                ]
-                {
-                    SearchResultItem { title: search.to_string(), route }
+                for (search , child) in default_searches {
+                    SearchResultItem {
+                        title: search.to_string(),
+                        route: Route::Docs { child },
+                    }
                 }
             } else if results.is_empty() {
                 div { class: "text-center text-xlg p-4", "No results found for: {search_text}" }

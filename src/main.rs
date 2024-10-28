@@ -21,6 +21,16 @@ fn HeaderFooter() -> Element {
 
     rsx! {
         div { class: "bg-white dark:bg-ideblack",
+            document::Title { "Dioxus | Fullstack crossplatform app framework for Rust" }
+            document::Meta {
+                name: "description",
+                content: "A fullstack crossplatform app framework for Rust. Supports Web, Desktop, SSR, Liveview, and Mobile.",
+            }
+            document::Link {
+                rel: "icon shortcut",
+                r#type: "image/png",
+                href: asset!("/assets/static/favicon.png"),
+            }
             document::Link { rel: "stylesheet", href: asset!("/assets/githubmarkdown.css") }
             document::Link { rel: "stylesheet", href: asset!("/assets/tailwind.css") }
             document::Link { rel: "stylesheet", href: asset!("/assets/main.css") }
@@ -44,6 +54,46 @@ fn HeaderFooter() -> Element {
             document::Script { src: asset!("/assets/ace/ace.js") }
             document::Script { src: asset!("/assets/ace/mode-rust.js") }
             document::Script { src: asset!("/assets/ace/theme-github.js") }
+            document::Meta {
+                property: "og:title",
+                content: "Dioxus | Fullstack crossplatform app framework for Rust",
+            }
+            document::Meta { property: "og:type", content: "website" }
+            document::Meta {
+                property: "og:description",
+                content: "A fullstack crossplatform app framework for Rust. Supports Web, Desktop, SSR, Liveview, and Mobile.",
+            }
+            document::Meta { property: "og:url", content: "https://dioxuslabs.com" }
+            document::Meta {
+                property: "og:image",
+                content: "https://dioxuslabs.com/static/opengraph.png",
+            }
+            document::Meta {
+                name: "twitter:title",
+                content: "Dioxus - Fullstack crossplatform app framework for Rust",
+            }
+            document::Meta {
+                name: "twitter:description",
+                content: "A fullstack crossplatform app framework for Rust. Supports Web, Desktop, SSR, Liveview, and Mobile.",
+            }
+            document::Meta {
+                name: "twitter:image",
+                content: "https://dioxuslabs.com/static/opengraph.png",
+            }
+            document::Meta { name: "twitter:card", content: "summary_large_image" }
+            document::Link {
+                rel: "stylesheet",
+                href: "https://fonts.googleapis.com/icon?family=Material+Icons",
+            }
+            document::Script {
+                r#async: true,
+                src: "https://www.googletagmanager.com/gtag/js?id=G-EBE72MVZ1B",
+            }
+            document::Script {
+                r#async: true,
+                src: asset!("/assets/gtag.js"),
+                r#type: "text/javascript",
+            }
 
             Nav {}
             Outlet::<Route> {}
@@ -128,23 +178,6 @@ mod docs {
     use crate::components::*;
     use crate::doc_examples::*;
     use dioxus::prelude::*;
-
-    // #[component]
-    // fn CodeBlock(contents: String) -> Element {
-    //     rsx! {
-    //         div {
-    //             style: "position: relative;",
-    //             div {
-    //                 dangerous_inner_html: contents
-    //             }
-    //             button {
-    //                 style: "position: absolute; top: 0; right: 0; background: rgba(0, 0, 0, 0.75); color: white; border: 1px solid white; padding: 0.25em;",
-    //                 "onclick": "navigator.clipboard.writeText(this.previousElementSibling.innerText)",
-    //                 "Copy"
-    //             }
-    //         }
-    //     }
-    // }
 
     #[component]
     fn SandBoxFrame(url: String) -> Element {

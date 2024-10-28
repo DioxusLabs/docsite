@@ -360,7 +360,7 @@ fn NextPrev() -> Element {
     let next_page = LAZY_BOOK.pages.get(next_id);
 
     rsx! {
-        div { class: "flex flex-row w-full",
+        div { class: "flex flex-row w-full pt-8",
             if let Some(prev_page) = prev_page {
                 Link {
                     class: "text-gray-700 dark:text-gray-100 p-4 rounded text-left flex-1 ",

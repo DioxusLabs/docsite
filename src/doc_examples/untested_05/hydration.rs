@@ -3,7 +3,7 @@ use dioxus::prelude::*;
 
 fn main() {
     #[cfg(feature = "web")]
-    dioxus_web::launch_cfg(app, dioxus_web::Config::new().hydrate(true));
+    dioxus::web::launch_cfg(app, dioxus::web::Config::new().hydrate(true));
     #[cfg(feature = "ssr")]
     {
         tokio::runtime::Runtime::new()

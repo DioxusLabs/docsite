@@ -1,7 +1,7 @@
 use dioxus::prelude::*;
 pub use downcast::Downcast;
 pub use eval::Eval;
-pub use onmounted::OnMounted;
+pub use onmounted_::OnMounted;
 pub use use_effect::Canvas;
 pub use web_sys::WebSys;
 
@@ -110,7 +110,7 @@ mod use_effect {
     // ANCHOR_END: use_effect
 }
 
-mod onmounted {
+mod onmounted_ {
     use super::*;
 
     // ANCHOR: onmounted

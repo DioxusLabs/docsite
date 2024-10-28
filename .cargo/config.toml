@@ -15,9 +15,6 @@
 
 [profile.dioxus-wasm]
 inherits = "dev"
-# opt-level = "z"
-# debug = false
-# strip = "debuginfo"
 
 [profile.dioxus-server]
 inherits = "dev"

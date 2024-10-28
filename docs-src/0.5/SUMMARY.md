@@ -1,8 +1,7 @@
 # Summary
 
-[Introduction](index.md)
-
-- [Getting Started](getting_started/index.md)
+- [Introduction](index.md)
+  - [Getting Started](getting_started/index.md)
 
 - [Guide](guide/index.md)
   - [Your First Component](guide/your_first_component.md)

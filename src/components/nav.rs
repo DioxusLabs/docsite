@@ -1,3 +1,4 @@
+use crate::docs::AnyBookRoute;
 use crate::*;
 use dioxus::html::input_data::keyboard_types::Key;
 use dioxus_material_icons::{MaterialIcon, MaterialIconColor};
@@ -7,7 +8,7 @@ pub(crate) static SHOW_SEARCH: GlobalSignal<bool> = Signal::global(|| false);
 
 pub(crate) fn Nav() -> Element {
     let route: Route = use_route();
-    let is_docs = matches!(route, Route::Docs { .. });
+    let is_docs = matches!(route, Route::Docs06 { .. });
 
     rsx! {
         SearchModal {}
@@ -124,9 +125,9 @@ pub(crate) fn Nav() -> Element {
                                 "Deploy"
                             }
                             Link {
-                                to: Route::Docs {
-                                    child: BookRoute::Index {},
-                                },
+                                to: crate::docs::router_05::BookRoute::Index {
+                                }
+                                    .global_route(),
                                 class: "md:px-3 h-full flex flex-col justify-center bg-blue-500 text-lg md:text-sm text-white rounded font-semibold hover:brightness-95 dark:hover:brightness-105",
                                 "Learn"
                             }
@@ -140,9 +141,10 @@ pub(crate) fn Nav() -> Element {
 
 static LINKS: &[(&str, &str)] = &[
     ("Learn", "/learn/0.5/"),
-    ("SDK", "/sdk"),
+    // ("SDK", "/sdk"),
     ("Playground", "/play"),
-    ("Components", "/components"),
+    // ("Components", "/components"),
+    ("Awesome", "/awesome"),
     ("Blog", "/blog"),
 ];
 
@@ -275,6 +277,8 @@ fn SearchResults(results: Signal<Results>, search_text: Signal<String>) -> Eleme
     let _results = results.read();
     let results = _results.deref().as_ref().unwrap();
 
+    use crate::docs::router_05::BookRoute;
+
     let default_searches = [
         ("Tutorial", BookRoute::GuideIndex {}),
         ("Web", BookRoute::ReferenceWebIndex {}),
@@ -290,7 +294,7 @@ fn SearchResults(results: Signal<Results>, search_text: Signal<String>) -> Eleme
                 for (search , child) in default_searches {
                     SearchResultItem {
                         title: search.to_string(),
-                        route: Route::Docs { child },
+                        route: child.global_route(),
                     }
                 }
             } else if results.is_empty() {

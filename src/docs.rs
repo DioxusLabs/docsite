@@ -1,6 +1,120 @@
-use crate::components::*;
 use crate::doc_examples::*;
+use crate::{components::*, Route};
 use dioxus::prelude::*;
+use mdbook_shared::MdBook;
+use std::hash::Hash;
+
+pub mod router_05;
+pub mod router_06;
+
+pub enum CurrentDocsVersion {
+    V06(router_06::BookRoute),
+    V05(router_05::BookRoute),
+    V04,
+    V03,
+}
+pub fn use_current_docs_version() -> CurrentDocsVersion {
+    let route = use_route();
+    match route {
+        Route::Docs06 { child } => CurrentDocsVersion::V06(child),
+        Route::Docs05 { child } => CurrentDocsVersion::V05(child),
+        Route::Docs04 { .. } => CurrentDocsVersion::V04,
+        Route::Docs03 { .. } => CurrentDocsVersion::V03,
+        _ => panic!("current docs version should be set"),
+    }
+}
+
+pub trait AnyBookRoute: Routable + PartialEq + Hash + Eq + Clone + Copy {
+    fn sections(&self) -> &[use_mdbook::mdbook_shared::Section];
+    fn page(&self) -> &use_mdbook::mdbook_shared::Page<Self>;
+    fn global_route(&self) -> crate::Route;
+    fn page_id(&self) -> use_mdbook::mdbook_shared::PageId;
+    fn book() -> &'static MdBook<Self>;
+    fn use_current() -> Option<Self>;
+    fn use_route() -> Self {
+        Self::use_current().expect("current route to be the same as the route")
+    }
+    fn short_version() -> &'static str;
+    fn full_version() -> &'static str;
+    fn index() -> Self;
+}
+
+impl AnyBookRoute for router_05::BookRoute {
+    fn sections(&self) -> &[use_mdbook::mdbook_shared::Section] {
+        self.sections()
+    }
+
+    fn page(&self) -> &use_mdbook::mdbook_shared::Page<Self> {
+        self.page()
+    }
+
+    fn global_route(&self) -> crate::Route {
+        crate::Route::Docs05 { child: *self }
+    }
+
+    fn page_id(&self) -> use_mdbook::mdbook_shared::PageId {
+        self.page_id()
+    }
+    fn book() -> &'static MdBook<Self> {
+        &*router_05::LAZY_BOOK
+    }
+
+    fn use_current() -> Option<Self> {
+        let route = use_route();
+        match route {
+            Route::Docs05 { child } => Some(child),
+            _ => None,
+        }
+    }
+    fn short_version() -> &'static str {
+        "0.5"
+    }
+    fn full_version() -> &'static str {
+        "0.5.5"
+    }
+
+    fn index() -> Self {
+        Self::Index {}
+    }
+}
+
+impl AnyBookRoute for router_06::BookRoute {
+    fn sections(&self) -> &[use_mdbook::mdbook_shared::Section] {
+        self.sections()
+    }
+
+    fn page(&self) -> &use_mdbook::mdbook_shared::Page<Self> {
+        self.page()
+    }
+
+    fn global_route(&self) -> crate::Route {
+        crate::Route::Docs06 { child: *self }
+    }
+
+    fn page_id(&self) -> use_mdbook::mdbook_shared::PageId {
+        self.page_id()
+    }
+    fn book() -> &'static MdBook<Self> {
+        &*router_06::LAZY_BOOK
+    }
+
+    fn use_current() -> Option<Self> {
+        let route = use_route();
+        match route {
+            Route::Docs06 { child } => Some(child),
+            _ => None,
+        }
+    }
+    fn short_version() -> &'static str {
+        "0.6"
+    }
+    fn full_version() -> &'static str {
+        "0.6.0-alpha.3"
+    }
+    fn index() -> Self {
+        Self::Index {}
+    }
+}
 
 #[component]
 fn SandBoxFrame(url: String) -> Element {
@@ -73,6 +187,3 @@ fn CodeBlock(contents: String) -> Element {
         }
     }
 }
-
-mod router_06;
-pub use router_06::*;

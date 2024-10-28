@@ -14,7 +14,7 @@ mod use_hook {
     fn UseHook() -> Element {
         // The closure that is passed to use_hook will be called once the first time the component is rendered
         let random_number = use_hook(|| {
-            let new_random_number = js_sys::Math::random();
+            let new_random_number = random_number();
 
             log!("{new_random_number}");
 
@@ -26,6 +26,10 @@ mod use_hook {
         }
     }
     // ANCHOR_END: use_hook
+
+    fn random_number() -> f64 {
+        1234.5678 // chosen by fair dice roll
+    }
 
     fn FakePage() -> Element {
         let mut uuid = use_signal(|| 0);

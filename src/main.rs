@@ -1,8 +1,9 @@
 #![allow(non_snake_case, non_upper_case_globals)]
 
+use std::env;
+
 use dioxus::html::input_data::keyboard_types::{Key, Modifiers};
 use dioxus::prelude::*;
-pub use docs::BookRoute;
 use serde::{Deserialize, Serialize};
 
 pub mod components;
@@ -140,26 +141,32 @@ pub enum Route {
 
         #[layout(Learn)]
             #[nest("/learn")]
-                #[redirect("/", || Route::Docs { child: BookRoute::Index {} })]
+                #[redirect("/", || Route::Docs05 { child: crate::docs::router_05::BookRoute::Index {} })]
 
                 #[route("/0.3/:..segments")]
-                DocsO3 {
+                Docs03 {
                     segments: Vec<String>
                 },
+
                 #[route("/0.4/:..segments")]
-                DocsO4 {
+                Docs04 {
                     segments: Vec<String>
                 },
+
                 #[child("/0.5")]
-                Docs { child: BookRoute },
+                Docs05 { child: crate::docs::router_05::BookRoute },
+
+                #[child("/0.6")]
+                Docs06 { child: crate::docs::router_06::BookRoute },
+
             #[end_nest]
         #[end_layout]
     #[end_nest]
-    #[redirect("/docs/0.3/:..segments", |segments: Vec<String>| Route::DocsO3 { segments })]
+    #[redirect("/docs/0.3/:..segments", |segments: Vec<String>| Route::Docs03 { segments })]
     #[redirect("/docs/:..segments", |segments: Vec<String>| {
         let joined = segments.join("/");
         let docs_route = format!("/docs/{}", joined);
-        Route::from_str(&docs_route).unwrap_or_else(|_| Route::Docs { child: BookRoute::Index {} })
+        Route::from_str(&docs_route).unwrap_or_else(|_| Route::Docs06 { child: crate::docs::router_06::BookRoute::Index {} })
     })]
     #[route("/:..segments")]
     Err404 { segments: Vec<String> },
@@ -180,23 +187,25 @@ fn main() {
     {
         wasm_logger::init(wasm_logger::Config::new(log::Level::Info));
         std::panic::set_hook(Box::new(console_error_panic_hook::hook));
+        dioxus::launch(app);
     }
 
     #[cfg(feature = "prebuild")]
     {
-        use dioxus_router::prelude::*;
         use log::LevelFilter;
         simple_logger::SimpleLogger::new()
             .with_level(LevelFilter::Error)
             .init()
             .unwrap();
 
-        std::env::remove_var("DIOXUS_ACTIVE");
-        std::env::remove_var("CARGO");
+        println!("CWD is {}", std::env::current_dir().unwrap().display());
+
+        env::set_var("DIOXUS_OUT_DIR", "./target/dx/dioxus_docs_site/release/web");
 
         LaunchBuilder::new()
             .with_cfg(dioxus::static_site_generation::Config::new().github_pages())
             .launch(app);
+
         println!("prebuilt");
 
         dioxus_search::SearchIndex::<Route>::create(
@@ -205,17 +214,14 @@ fn main() {
                 |route: Route| {
                     let route = route.to_string();
                     let mut path = std::path::PathBuf::default();
-                    for (i, segment) in route.split('/').enumerate() {
+                    for (_i, segment) in route.split('/').enumerate() {
                         path.push(segment);
                     }
                     Some(path.join("index.html"))
                 },
             ),
         );
-        return;
-    }
 
-    #[allow(deprecated)]
-    #[cfg(not(feature = "prebuild"))]
-    dioxus::launch(app);
+        println!("built search index");
+    }
 }

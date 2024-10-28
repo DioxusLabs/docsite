@@ -1,49 +1,61 @@
-use crate::docs::LAZY_BOOK;
 use crate::*;
+use docs::{router_05, router_06, use_current_docs_version, AnyBookRoute, CurrentDocsVersion};
 use mdbook_shared::SummaryItem;
 
 pub(crate) static SHOW_SIDEBAR: GlobalSignal<bool> = Signal::global(|| false);
 
 /// The Markdown file path needs to be appended to this, including the first slash!
-const GITHUB_API_URL: &str =
-    "https://api.github.com/repos/DioxusLabs/docsite/contents/docs-src/0.5/en";
+const GITHUB_API_URL: &str = "https://api.github.com/repos/DioxusLabs/docsite/contents/docs-src/";
 
 /// Use this URL while loading the file-specific URL.
 const GITHUB_EDIT_PAGE_FALLBACK_URL: &str = "https://github.com/DioxusLabs/docsite";
 
 /// The Markdown file path needs to be appended to this, including the first slash!
-const GITHUB_EDIT_PAGE_EDIT_URL: &str =
-    "https://github.com/DioxusLabs/docsite/edit/main/docs-src/0.5/en";
+const GITHUB_EDIT_PAGE_EDIT_URL: &str = "https://github.com/DioxusLabs/docsite/edit/main/docs-src/";
 
 #[component]
 pub(crate) fn Learn() -> Element {
+    let current_version = use_current_docs_version();
+
     rsx! {
         div { class: "w-full text-sm dark:bg-ideblack border-b dark:border-[#a4a9ac7d]",
             div { class: "flex flex-row justify-center dark:text-[#dee2e6] font-light lg:gap-12",
-                LeftNav {}
-                Content {}
-                RightNav {}
+                match current_version {
+                    CurrentDocsVersion::V06(_) => rsx! {
+                        GenericDocs::<router_06::BookRoute> {}
+                    },
+                    CurrentDocsVersion::V05(_) => rsx! {
+                        GenericDocs::<router_05::BookRoute> {}
+                    },
+                    _ => rsx! {  },
+                }
             }
         }
     }
 }
 
-fn LeftNav() -> Element {
+fn GenericDocs<R: AnyBookRoute>() -> Element {
+    rsx! {
+        LeftNav::<R> {}
+        Content::<R> {}
+        RightNav::<R> {}
+    }
+}
+
+#[component]
+fn LeftNav<R: AnyBookRoute>() -> Element {
+    let book = R::book();
     let chapters = vec![
-        &LAZY_BOOK.summary.prefix_chapters,
-        &LAZY_BOOK.summary.numbered_chapters,
-        &LAZY_BOOK.summary.suffix_chapters,
+        &book.summary.prefix_chapters,
+        &book.summary.numbered_chapters,
+        &book.summary.suffix_chapters,
     ];
 
     rsx! {
-
         div {
             class: if SHOW_SIDEBAR() { "w-full md:w-auto" } else { "hidden" },
             class: "h-full md:block top-28 sticky",
-            // class: "absolute md:block md:sticky md:top-28 overflow-y-hidden bg-white dark:bg-ideblack lg:bg-inherit z-20",
-            div { class: "
-                lg:block mb-2 md:text-[14px] leading-5 text-gray-700  dark:text-gray-400 space-y-2 px-4 md:px-2 py-2 md:py-0
-                ",
+            div { class: "lg:block mb-2 md:text-[14px] leading-5 text-gray-700  dark:text-gray-400 space-y-2 px-4 md:px-2 py-2 md:py-0",
                 VersionSwitch {}
                 nav { class: "
                 styled-scrollbar
@@ -59,13 +71,20 @@ fn LeftNav() -> Element {
 }
 
 fn VersionSwitch() -> Element {
-    let versions = [
-        ("Version 0.6 (alpha)", "v0.6.0-alpha.3", "0.6"),
-        ("Version 0.5 (stable)", "v0.5.4", "0.5"),
-        ("Version 0.4", "v0.4.3", "0.4"),
-        ("Version 0.3", "v0.3.0", "0.3"),
-    ];
     let mut show_versions = use_signal(|| false);
+    let current_version = use_current_docs_version();
+    let current_stability = match current_version {
+        CurrentDocsVersion::V06(_) => "Alpha",
+        CurrentDocsVersion::V05(_) => "Stable",
+        CurrentDocsVersion::V04 => "stable",
+        CurrentDocsVersion::V03 => "stable",
+    };
+    let current_version_long = match current_version {
+        CurrentDocsVersion::V06(_) => "v0.6.0-alpha.3",
+        CurrentDocsVersion::V05(_) => "v0.5.6",
+        CurrentDocsVersion::V04 => "v0.4.3",
+        CurrentDocsVersion::V03 => "v0.3.2",
+    };
 
     rsx! {
         div {
@@ -76,73 +95,69 @@ fn VersionSwitch() -> Element {
             onclick: move |_| show_versions.set(true),
             div { class: " hover:bg-gray-100 dark:hover:bg-ghdarkmetal rounded w-full py-1",
                 div { class: "grid grid-cols-[auto,1fr,auto] items-center gap-2 px-1",
-                    div {
-                        div { class: "w-8 h-8 rounded-md border flex items-center justify-center bg-gray-50 border-gray-200 text-gray-900 dark:invert",
-                            svg {
-                                style: "width: 16px; height: 16px; color: currentcolor;",
-                                "stroke-linejoin": "round",
-                                "viewBox": "0 0 16 16",
-                                width: "16",
-                                height: "16",
-                                class: "translate-x-px translate-y-px",
-                                path {
-                                    "fill-rule": "evenodd",
-                                    fill: "currentColor",
-                                    d: "M1.5 1.5H6.34315C7.00619 1.5 7.64207 1.76339 8.11091 2.23223L13.8787 8L8 13.8787L2.23223 8.11091C1.76339 7.64207 1.5 7.00619 1.5 6.34315V1.5ZM16 8L14.9393 6.93934L9.17157 1.17157C8.42143 0.421427 7.40401 0 6.34315 0H1.5H0V1.5V6.34315C0 7.40401 0.421426 8.42143 1.17157 9.17157L6.93934 14.9393L8 16L9.06066 14.9393L14.9393 9.06066L16 8ZM4.5 5.25C4.91421 5.25 5.25 4.91421 5.25 4.5C5.25 4.08579 4.91421 3.75 4.5 3.75C4.08579 3.75 3.75 4.08579 3.75 4.5C3.75 4.91421 4.08579 5.25 4.5 5.25Z",
-                                    "clip-rule": "evenodd",
-                                }
-                            }
-                        }
+                    div { class: "w-8 h-8 rounded-md border flex items-center justify-center bg-gray-50 border-gray-200 text-gray-900 dark:invert",
+                        icons::VersionTagIcon {}
                     }
                     div { class: "leading-snug text-xs text-left",
                         p { class: "font-medium text-gray-700 dark:text-gray-100",
-                            "Using Nightly Version"
+                            "Using {current_stability} Version"
                         }
-                        p { class: "font-light", "v0.6.0-alpha.3" }
+                        p { class: "font-light", {current_version_long} }
                     }
-                    div {
-                        svg {
-                            "stroke-linecap": "round",
-                            width: "24",
-                            "shape-rendering": "geometricPrecision",
-                            height: "24",
-                            "data-testid": "geist-icon",
-                            stroke: "currentColor",
-                            "viewBox": "0 0 24 24",
-                            "stroke-width": "1.5",
-                            style: "color: currentcolor; width: 20px; height: 20px;",
-                            fill: "none",
-                            "aria-hidden": "true",
-                            "stroke-linejoin": "round",
-                            class: "with-icon_icon__MHUeb",
-                            path { d: "M17 8.517L12 3 7 8.517M7 15.48l5 5.517 5-5.517" }
-                        }
-                    }
+                    icons::DropdownChevrons {}
                 }
             }
             // relative then absolute to make sure the width ends up correct
             div {
                 class: "relative w-full z-50",
                 class: if !show_versions() { "hidden" },
-                ul { class: "absolute flex flex-col bg-white dark:bg-ghdarkmetal text-left rounded-lg border dark:border-gray-700 mt-2 w-full overflow-hidden text-gray-500 dark:text-gray-100 text-xs shadow-lg",
-                    for (name , version , at) in versions.iter() {
-                        li {
-                            Link { to: "https://dioxuslabs.com/learn/{at}/",
-                                div { class: "flex flex-row items-center hover:bg-gray-100 dark:hover:bg-ghdarkmetal py-2 gap-2 px-2",
-                                    span { class: "row-span-3", "⭐️" }
-                                    div { class: "flex flex-col",
-                                        span { class: "text-gray-700 dark:text-gray-100 font-semibold",
-                                            "{name}"
-                                        }
-                                        span { class: "row-span-2 col-span-2", "{version}" }
-                                    }
-                                    div { class: "flex-1" }
-                                    span { "✅" }
-                                }
-                            }
-                        }
+                div { class: "absolute flex flex-col bg-white dark:bg-ghdarkmetal text-left rounded-lg border dark:border-gray-700 mt-2 w-full overflow-hidden text-gray-500 dark:text-gray-100 text-xs shadow-lg",
+                    TypedVersionSelectItem::<crate::docs::router_06::BookRoute> {}
+                    TypedVersionSelectItem::<crate::docs::router_05::BookRoute> {}
+                    UntypedVersionSelectItem {
+                        route: "https://dioxuslabs.com/learn/0.4".into(),
+                        full_version: "0.4.3",
+                        short_version: "0.4",
+                    }
+                    UntypedVersionSelectItem {
+                        route: "https://dioxuslabs.com/learn/0.3".into(),
+                        full_version: "0.3.2",
+                        short_version: "0.3",
                     }
                 }
+            }
+        }
+    }
+}
+
+#[component]
+fn TypedVersionSelectItem<R: AnyBookRoute>() -> Element {
+    rsx! {
+        UntypedVersionSelectItem {
+            route: R::index().global_route().into(),
+            full_version: R::full_version(),
+            short_version: R::short_version(),
+        }
+    }
+}
+#[component]
+fn UntypedVersionSelectItem(
+    route: IntoRoutable,
+    full_version: &'static str,
+    short_version: &'static str,
+) -> Element {
+    rsx! {
+        Link { to: route, active_class: "bg-gray-100",
+            div { class: "flex flex-row items-center hover:bg-gray-100 dark:hover:bg-ghdarkmetal py-2 gap-2 px-2",
+                span { class: "row-span-3", " " }
+                div { class: "flex flex-col",
+                    span { class: "text-gray-700 dark:text-gray-100 font-semibold",
+                        "Version {short_version}"
+                    }
+                    span { class: "row-span-2 col-span-2", "{full_version}" }
+                }
+                div { class: "flex-1" }
+                span {}
             }
         }
     }
@@ -159,7 +174,7 @@ fn VersionSwitch() -> Element {
 ///
 /// This renders a single section
 #[component]
-fn SidebarSection(chapter: &'static SummaryItem<BookRoute>) -> Element {
+fn SidebarSection<R: AnyBookRoute>(chapter: &'static SummaryItem<R>) -> Element {
     let link = chapter.maybe_link().context("Could not get link")?;
 
     rsx! {
@@ -167,7 +182,7 @@ fn SidebarSection(chapter: &'static SummaryItem<BookRoute>) -> Element {
             if let Some(url) = &link.location {
                 Link {
                     onclick: move |_| *SHOW_SIDEBAR.write() = false,
-                    to: Route::Docs { child: *url },
+                    to: url.global_route(),
                     class: "font-semibold hover:text-sky-500 dark:hover:text-sky-400 dark:text-gray-100 text-gray-700",
                     active_class: "text-sky-600 dark:text-sky-400",
                     h3 { class: "pb-2", "{link.name}" }
@@ -183,10 +198,10 @@ fn SidebarSection(chapter: &'static SummaryItem<BookRoute>) -> Element {
 }
 
 #[component]
-fn SidebarChapter(chapter: &'static SummaryItem<BookRoute>) -> Element {
+fn SidebarChapter<R: AnyBookRoute>(chapter: &'static SummaryItem<R>) -> Element {
     // current route of the browser, trimmed to the book url
     let mut list_toggle = use_signal(|| false);
-    let book_url = use_book().to_string();
+    let book_url = R::use_route().to_string();
     let link = chapter.maybe_link().context("Could not get link")?;
 
     // for instance, if the current page is /docs/0.5/en/learn/overview
@@ -205,7 +220,7 @@ fn SidebarChapter(chapter: &'static SummaryItem<BookRoute>) -> Element {
                     list_toggle.toggle();
                     *SHOW_SIDEBAR.write() = false;
                 },
-                to: Route::Docs { child: *url },
+                to: url.global_route(),
                 class: "flex-grow flex flex-row items-center",
                 active_class: "text-sky-600 dark:text-sky-400",
                 "{link.name}"
@@ -232,23 +247,24 @@ fn SidebarChapter(chapter: &'static SummaryItem<BookRoute>) -> Element {
 }
 
 // Todo: wire this up to the sections of the current page and a scroll controller
-fn RightNav() -> Element {
-    let page = use_book();
+fn RightNav<R: AnyBookRoute>() -> Element {
+    let page = R::use_route();
+    let short_version = R::short_version();
 
     let page_url = use_memo(move || page.to_string());
 
     let edit_github_url = use_resource(move || async move {
         // This is the URL for the file if that file is not a directory that uses /index.md
         // page_url starts with '/', so we don't need to worry about that
-        let github_api_url = format!("{GITHUB_API_URL}{page_url}.md");
+        let github_api_url = format!("{GITHUB_API_URL}{short_version}/en/{page_url}.md");
 
         // If the file is not found, that means that we have to use /index.md
         if reqwest::get(github_api_url).await.ok().map(|f| f.status())
             == Some(reqwest::StatusCode::NOT_FOUND)
         {
-            format!("{GITHUB_EDIT_PAGE_EDIT_URL}{page_url}/index.md")
+            format!("{GITHUB_EDIT_PAGE_EDIT_URL}{short_version}/en/{page_url}/index.md")
         } else {
-            format!("{GITHUB_EDIT_PAGE_EDIT_URL}{page_url}.md")
+            format!("{GITHUB_EDIT_PAGE_EDIT_URL}{short_version}/en/{page_url}.md")
         }
     });
 
@@ -299,25 +315,43 @@ fn RightNav() -> Element {
     }
 }
 
-fn Content() -> Element {
+#[component]
+fn Content<R: AnyBookRoute>() -> Element {
     rsx! {
         section {
             class: "text-gray-600 dark:text-gray-300 body-font overflow-hidden dark:bg-ideblack container pb-12 max-w-screen-sm px-4 pt-4 md:pt-[3.125rem] grow min-h-[100vh] ",
             class: if SHOW_SIDEBAR() { "hidden md:block" },
             div { class: "",
-                Breadcrumbs {}
+                Breadcrumbs::<R> {}
+                VersionWarning {}
                 div { class: "flex w-full flex-wrap list-none",
                     article { class: "markdown-body", Outlet::<Route> {} }
                 }
-                NextPrev {}
+                NextPrev::<R> {}
             }
         }
     }
 }
 
-fn Breadcrumbs() -> Element {
-    let route: BookRoute = use_book();
-    let is_index = route == BookRoute::Index {};
+fn VersionWarning() -> Element {
+    let current_version = use_current_docs_version();
+
+    match current_version {
+        CurrentDocsVersion::V06(_) => rsx! {
+            div { class: "flex flex-row items-center justify-start w-full bg-yellow-200 opacity-80 text-yellow-800 text-sm font-normal py-2 px-2 rounded-md mb-4 gap-2",
+                crate::icons::IconWarning {}
+                "You are currently viewing the docs for Dioxus 0.6.0 which is under construction."
+            }
+        },
+        CurrentDocsVersion::V05(_) => rsx! {  },
+        CurrentDocsVersion::V04 => rsx! {  },
+        CurrentDocsVersion::V03 => rsx! {  },
+    }
+}
+
+fn Breadcrumbs<R: AnyBookRoute>() -> Element {
+    let route = R::use_route();
+    let is_index = route.to_string() == "/";
 
     let mut routes = vec![route.clone()];
     let mut cur = route.clone();
@@ -330,18 +364,11 @@ fn Breadcrumbs() -> Element {
         div {
             class: "flex flex-row items-center space-x-2 font-extralight pb-9",
             class: if is_index { "hidden" },
-            Link {
-                to: Route::Docs {
-                    child: BookRoute::Index {},
-                },
-                "Dioxus v0.6.0-alpha.3"
-            }
+            Link { to: route.global_route(), "Dioxus v0.6.0-alpha.3" }
             for (idx , route) in routes.iter().rev().enumerate() {
                 icons::ChevronRightIcon {}
                 Link {
-                    to: Route::Docs {
-                        child: route.clone(),
-                    },
+                    to: route.global_route(),
                     class: if idx == routes.len() - 1 { "font-semibold" },
                     "{route.page().title}"
                 }
@@ -350,23 +377,23 @@ fn Breadcrumbs() -> Element {
     }
 }
 
-fn NextPrev() -> Element {
-    let route: BookRoute = use_book();
+#[component]
+fn NextPrev<R: AnyBookRoute>() -> Element {
+    let book = R::book();
+    let route = R::use_route();
 
     let id = route.page_id();
     let prev_id = id.0.saturating_sub(1);
     let next_id = id.0.saturating_add(1);
-    let prev_page = LAZY_BOOK.pages.get(prev_id);
-    let next_page = LAZY_BOOK.pages.get(next_id);
+    let prev_page = book.pages.get(prev_id);
+    let next_page = book.pages.get(next_id);
 
     rsx! {
         div { class: "flex flex-row w-full pt-8",
             if let Some(prev_page) = prev_page {
                 Link {
                     class: "text-gray-700 dark:text-gray-100 p-4 rounded text-left flex-1 ",
-                    to: Route::Docs {
-                        child: prev_page.url,
-                    },
+                    to: prev_page.url.global_route(),
                     div { class: "flex flex-row items-center gap-x-2 hover:text-sky-500 dark:hover:text-sky-400",
                         svg {
                             "viewBox": "0 0 16 16",
@@ -394,9 +421,7 @@ fn NextPrev() -> Element {
             if let Some(next_page) = next_page {
                 Link {
                     class: "text-gray-700 dark:text-gray-100 p-4 rounded text-right flex-1",
-                    to: Route::Docs {
-                        child: next_page.url,
-                    },
+                    to: next_page.url.global_route(),
                     div { class: "flex flex-row items-center gap-x-2 justify-end hover:text-sky-500 dark:hover:text-sky-400",
                         div { class: "flex flex-col",
                             span { class: "text-xs", "NEXT" }
@@ -423,28 +448,18 @@ fn NextPrev() -> Element {
     }
 }
 
-/// Get the book URL from the current URL
-/// Ignores language and version (for now)
-fn use_book() -> BookRoute {
-    let route = use_route();
-    match route {
-        Route::Docs { child } => child,
-        _ => unreachable!(),
-    }
-}
-
 #[component]
-pub fn DocsO3(segments: Vec<String>) -> Element {
+pub fn Docs04(segments: Vec<String>) -> Element {
     let navigator = use_navigator();
     let route: Route = use_route();
     navigator.push(route);
-    rsx!()
+    rsx! {  }
 }
 
 #[component]
-pub fn DocsO4(segments: Vec<String>) -> Element {
+pub fn Docs03(segments: Vec<String>) -> Element {
     let navigator = use_navigator();
     let route: Route = use_route();
     navigator.push(route);
-    rsx!()
+    rsx! {  }
 }

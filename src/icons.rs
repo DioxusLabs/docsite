@@ -302,3 +302,62 @@ pub(crate) static IconCheckGh: Component<()> = |cx| {
         }
     }
 };
+
+pub(crate) fn DropdownChevrons() -> Element {
+    rsx! {
+        svg {
+            "stroke-linecap": "round",
+            width: "24",
+            "shape-rendering": "geometricPrecision",
+            height: "24",
+            "data-testid": "geist-icon",
+            stroke: "currentColor",
+            "viewBox": "0 0 24 24",
+            "stroke-width": "1.5",
+            style: "color: currentcolor; width: 20px; height: 20px;",
+            fill: "none",
+            "aria-hidden": "true",
+            "stroke-linejoin": "round",
+            class: "with-icon_icon__MHUeb",
+            path { d: "M17 8.517L12 3 7 8.517M7 15.48l5 5.517 5-5.517" }
+        }
+    }
+}
+
+pub(crate) fn VersionTagIcon() -> Element {
+    rsx! {
+        svg {
+            style: "width: 16px; height: 16px; color: currentcolor;",
+            "stroke-linejoin": "round",
+            "viewBox": "0 0 16 16",
+            width: "16",
+            height: "16",
+            class: "translate-x-px translate-y-px",
+            path {
+                "fill-rule": "evenodd",
+                fill: "currentColor",
+                d: "M1.5 1.5H6.34315C7.00619 1.5 7.64207 1.76339 8.11091 2.23223L13.8787 8L8 13.8787L2.23223 8.11091C1.76339 7.64207 1.5 7.00619 1.5 6.34315V1.5ZM16 8L14.9393 6.93934L9.17157 1.17157C8.42143 0.421427 7.40401 0 6.34315 0H1.5H0V1.5V6.34315C0 7.40401 0.421426 8.42143 1.17157 9.17157L6.93934 14.9393L8 16L9.06066 14.9393L14.9393 9.06066L16 8ZM4.5 5.25C4.91421 5.25 5.25 4.91421 5.25 4.5C5.25 4.08579 4.91421 3.75 4.5 3.75C4.08579 3.75 3.75 4.08579 3.75 4.5C3.75 4.91421 4.08579 5.25 4.5 5.25Z",
+                "clip-rule": "evenodd",
+            }
+        }
+    }
+}
+
+pub(crate) fn IconWarning() -> Element {
+    rsx! {
+        svg {
+            "stroke-linejoin": "round",
+            width: "16",
+            "data-testid": "geist-icon",
+            "viewBox": "0 0 16 16",
+            style: "width: 16px; height: 16px; color: var(--ds-amber-900);",
+            height: "16",
+            path {
+                "fill-rule": "evenodd",
+                fill: "currentColor",
+                "clip-rule": "evenodd",
+                d: "M8.55846 2H7.44148L1.88975 13.5H14.1102L8.55846 2ZM9.90929 1.34788C9.65902 0.829456 9.13413 0.5 8.55846 0.5H7.44148C6.86581 0.5 6.34092 0.829454 6.09065 1.34787L0.192608 13.5653C-0.127943 14.2293 0.355835 15 1.09316 15H14.9068C15.6441 15 16.1279 14.2293 15.8073 13.5653L9.90929 1.34788ZM8.74997 4.75V5.5V8V8.75H7.24997V8V5.5V4.75H8.74997ZM7.99997 12C8.55226 12 8.99997 11.5523 8.99997 11C8.99997 10.4477 8.55226 10 7.99997 10C7.44769 10 6.99997 10.4477 6.99997 11C6.99997 11.5523 7.44769 12 7.99997 12Z",
+            }
+        }
+    }
+}

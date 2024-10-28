@@ -5,7 +5,7 @@ fn main() {
     // re-run only if the "example-book" directory changes
     println!("cargo:rerun-if-changed=docs-src");
 
-    // make_docs("0.5");
+    make_docs("0.5");
     make_docs("0.6");
 }
 

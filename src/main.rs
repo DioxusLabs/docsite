@@ -251,7 +251,7 @@ pub enum Route {{\n\t"
         }
     }
 
-    #[path = "./router.rs"]
+    #[path = "./router_06.rs"]
     mod router;
     pub use router::*;
 }
@@ -298,5 +298,5 @@ fn main() {
 
     #[allow(deprecated)]
     #[cfg(not(feature = "prebuild"))]
-    launch(app);
+    dioxus::launch(app);
 }

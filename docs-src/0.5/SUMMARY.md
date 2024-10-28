@@ -54,7 +54,7 @@
 	  - [Programmatic Navigation](router/reference/navigation/programmatic.md)
 	- [History Providers](router/reference/history-providers.md)
 	- [History Buttons](router/reference/history-buttons.md)
-	- [Static Generation](router/reference/static-generation.md)
+	<!-- - [Static Generation](router/reference/static-generation.md) -->
 	- [Routing Update Callback](router/reference/routing-update-callback.md)
 
 ---
@@ -92,7 +92,7 @@
 ---
 - [Contributing](contributing/index.md)
   - [Project Structure](contributing/project_structure.md)
-  - [Walkthrough of Internals](contributing/walkthrough_readme.md)
+  <!-- - [Walkthrough of Internals](contributing/walkthrough_readme.md) -->
   - [Guiding Principles](contributing/guiding_principles.md)
   - [Roadmap](contributing/roadmap.md)
 <!-- Empty file. TODO: Uncomment when the file is finished. - [Governance](contributing/governance.md) -->

@@ -1,5 +1,8 @@
 use crate::*;
-use docs::{router_05, router_06, use_current_docs_version, AnyBookRoute, CurrentDocsVersion};
+use docs::router_05;
+use docs::router_06;
+use docs::{use_current_docs_version, AnyBookRoute, CurrentDocsVersion};
+
 use mdbook_shared::SummaryItem;
 
 pub(crate) static SHOW_SIDEBAR: GlobalSignal<bool> = Signal::global(|| false);

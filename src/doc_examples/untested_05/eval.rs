@@ -6,7 +6,7 @@ fn main() {
 
 fn app() -> Element {
     // You can create as many eval instances as you want
-    let mut eval = document::eval(
+    let mut eval = eval(
         r#"
         // You can send messages from JavaScript to Rust with the dioxus.send function
         dioxus.send("Hi from JS!");
@@ -19,9 +19,12 @@ fn app() -> Element {
     // You can send messages to JavaScript with the send method
     eval.send("Hi from Rust!".into()).unwrap();
 
-    let future = use_resource(move || async move {
-        // You can receive any message from JavaScript with the recv method
-        eval.recv().await.unwrap()
+    let future = use_resource(move || {
+        to_owned![eval];
+        async move {
+            // You can receive any message from JavaScript with the recv method
+            eval.recv().await.unwrap()
+        }
     });
 
     match future.read_unchecked().as_ref() {

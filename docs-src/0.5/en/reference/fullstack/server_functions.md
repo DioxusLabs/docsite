@@ -66,7 +66,7 @@ The project presented so far makes a web browser interact with the server, but i
 
 First, we need to make two binary targets, one for the desktop program (the `client.rs` file), one for the server (the `server.rs` file). The client app and the server functions are written in a shared `lib.rs` file.
 
-The desktop and server targets have slightly different build configuration to enable additional dependencies or features. 
+The desktop and server targets have slightly different build configuration to enable additional dependencies or features.
 The Cargo.toml in the full example has more information, but the main points are:
 - the client.rs has to be run with the `desktop` feature, so that the optional `dioxus-desktop` dependency is included
 - the server.rs has to be run with the `ssr` features; this will generate the server part of the server functions and will run our backend server.
@@ -100,9 +100,3 @@ For example, consider this server function:
 {{#include src/doc_examples/server_function_desktop_client.rs:server_function}}
 ```
 
-The `GetServerData` type has to be registered in the server, which will add the corresponding route to the server.
-```rust
-{{#include src/doc_examples/server_function_desktop_client.rs:function_registration}}
-```
-
-Finally, the server is started and it begins responding to requests.

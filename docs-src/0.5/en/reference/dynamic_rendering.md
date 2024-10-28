@@ -37,7 +37,7 @@ DemoFrame {
 Since `Element` is a `Option<VNode>`, components accepting `Element` as a prop can inspect its contents, and render different things based on that. Example:
 
 ```rust, no_run
-{{#include src/doc_examples/component_children_inspect.rs:Clickable}}
+{{#include src/doc_examples/untested_05/component_children_inspect.rs:Clickable}}
 ```
 
 You can't mutate the `Element`, but if you need a modified version of it, you can construct a new one based on its attributes/children/etc.
@@ -67,7 +67,7 @@ Often, you'll want to render a collection of components. For example, you might 
 For this, Dioxus accepts iterators that produce `Element`s. So we need to:
 
 - Get an iterator over all of our items (e.g., if you have a `Vec` of comments, iterate over it with `iter()`)
-- `.map` the iterator to convert each item into a `LazyNode` using `rsx!{...}`  
+- `.map` the iterator to convert each item into a `LazyNode` using `rsx!{...}`
   - Add a unique `key` attribute to each iterator item
 - Include this iterator in the final RSX (or use it inline)
 

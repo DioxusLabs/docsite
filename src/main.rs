@@ -143,21 +143,21 @@ pub enum Route {
             #[nest("/learn")]
                 #[redirect("/", || Route::Docs05 { child: crate::docs::router_05::BookRoute::Index {} })]
 
-                #[route("/0.3/:..segments")]
-                Docs03 {
-                    segments: Vec<String>
-                },
+                #[child("/0.6")]
+                Docs06 { child: crate::docs::router_06::BookRoute },
+
+                #[child("/0.5")]
+                Docs05 { child: crate::docs::router_05::BookRoute },
 
                 #[route("/0.4/:..segments")]
                 Docs04 {
                     segments: Vec<String>
                 },
 
-                #[child("/0.5")]
-                Docs05 { child: crate::docs::router_05::BookRoute },
-
-                #[child("/0.6")]
-                Docs06 { child: crate::docs::router_06::BookRoute },
+                #[route("/0.3/:..segments")]
+                Docs03 {
+                    segments: Vec<String>
+                },
 
             #[end_nest]
         #[end_layout]

@@ -285,7 +285,7 @@ fn SearchResults(results: Signal<Results>, search_text: Signal<String>) -> Eleme
         ("Desktop", BookRoute::ReferenceDesktopIndex {}),
         ("Mobile", BookRoute::ReferenceMobileIndex {}),
         ("Fullstack", BookRoute::ReferenceFullstackIndex {}),
-        ("Typesafe Routing", BookRoute::RouterReferenceRoutesIndex {}),
+        ("Typesafe Routing", BookRoute::RouterReferenceIndex {}),
     ];
 
     rsx! {

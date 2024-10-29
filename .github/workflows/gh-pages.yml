@@ -24,16 +24,16 @@ jobs:
       - uses: Swatinem/rust-cache@v2
         with:
           cache-all-crates: "true"
+          cache-on-failure: "true"
       - uses: cargo-bins/cargo-binstall@main
+      # - name: Install CLI
+      # run: cargo binstall dioxus-cli -y --force
       - name: Install CLI
-        run: cargo binstall dioxus-cli -y --force
+        run: cargo install --git https://github.com/DioxusLabs/dioxus --force
       - name: Build
-        run: dx build --release --features web
-      - name: Build Static HTML
-        run: dx run --release --features prebuild --platform server
-      - name: Rebuild with search index
-        # rebuild web with the new search index and copy over the wasm file into the docs folder
-        run: dx build --release --platform web && mv target/dx/dioxus_docs_site/release/web/public/wasm docs/wasm
+        run: dx build --release
+      - name: Copy output
+        run: cp -r target/dx/dioxus_docs_site/release/web/public docs
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@v4.2.3
         with:

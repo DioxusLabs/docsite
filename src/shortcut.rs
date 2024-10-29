@@ -54,7 +54,7 @@ pub(crate) fn use_shortcut(
     modifiers: crate::Modifiers,
     mut handler: impl FnMut() + 'static,
 ) {
-    #[cfg(feature = "web")]
+    #[cfg(all(feature = "web", target_arch = "wasm32"))]
     {
         let id = use_hook(move || {
             LISTENERS.with(|l| {

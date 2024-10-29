@@ -9,11 +9,11 @@ resolver = "2"
 
 [dependencies]
 dioxus = { version = "0.6.0-alpha.3", features = ["router"] }
-dioxus-fullstack = { version = "0.6.0-alpha.3" }
 dioxus-web = { version = "0.6.0-alpha.3", features = ["hydrate"], optional = true }
 dioxus-ssr = { version = "0.6.0-alpha.3", optional = true }
 dioxus-desktop = { version = "0.6.0-alpha.3", optional = true }
 dioxus-liveview = { version = "0.6.0-alpha.3", features = ["axum"], optional = true }
+dioxus-logger = { version = "0.5.1" }
 
 serde = { version = "1.0.163", features = ["derive"] }
 serde_json = "1.0.96"
@@ -110,6 +110,7 @@ lto = true
 codegen-units = 1
 opt-level = 'z'
 strip = "debuginfo"
+incremental = true
 
 [profile.dev.build-override]
 opt-level = 3
@@ -120,10 +121,18 @@ opt-level = 3
 codegen-units = 1
 
 [features]
-default = []
+default = ["web"]
+web = ["dioxus/web"]
+server = [
+    "dioxus/axum",
+    "dioxus-ssr",
+    "dioxus/ssr",
+    "tokio",
+    "axum",
+    "fs_extra",
+]
 doc_test = [
     "tokio",
-    "prebuild",
     "web",
     "dioxus-desktop",
     "dioxus-liveview",
@@ -132,22 +141,6 @@ doc_test = [
     "tower-http",
     "dioxus-sdk",
     "http",
-    "rand"
-]
-fullstack = ["dioxus/fullstack"]
-web = ["dioxus/web"]
-dioxus-axum = [
-    "dioxus/axum",
-    "dioxus-ssr",
-    "dioxus/ssr",
-    "tokio",
-    "axum",
-    "fs_extra",
-]
-server = [
-    "dioxus/static-generation",
-    "dioxus-axum"
-]
-prebuild = [
-    "server",
+    "rand",
+    "server"
 ]

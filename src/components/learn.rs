@@ -96,7 +96,7 @@ fn VersionSwitch() -> Element {
             role: "button",
             onfocusout: move |_| show_versions.set(false),
             onclick: move |_| show_versions.set(true),
-            div { class: " hover:bg-gray-100 dark:hover:bg-ghdarkmetal rounded w-full py-1",
+            div { class: "hover:bg-gray-100 dark:hover:bg-ghdarkmetal rounded w-full py-1",
                 div { class: "grid grid-cols-[auto,1fr,auto] items-center gap-2 px-1",
                     div { class: "w-8 h-8 rounded-md border flex items-center justify-center bg-gray-50 border-gray-200 text-gray-900 dark:invert",
                         icons::VersionTagIcon {}
@@ -150,8 +150,8 @@ fn UntypedVersionSelectItem(
     short_version: &'static str,
 ) -> Element {
     rsx! {
-        Link { to: route, active_class: "bg-gray-100",
-            div { class: "flex flex-row items-center hover:bg-gray-100 dark:hover:bg-ghdarkmetal py-2 gap-2 px-2",
+        Link { to: route, active_class: "bg-gray-100 dark:bg-gray-900",
+            div { class: "flex flex-row items-center hover:bg-gray-100 dark:hover:bg-gray-900 py-2 gap-2 px-2",
                 span { class: "row-span-3", " " }
                 div { class: "flex flex-col",
                     span { class: "text-gray-700 dark:text-gray-100 font-semibold",
@@ -273,7 +273,7 @@ fn RightNav<R: AnyBookRoute>() -> Element {
 
     // That might be a naive approach, but it's the easiest
     rsx! {
-        div { class: "overflow-y-auto hidden xl:block top-28 ml-12 h-full md:text-[14px] leading-5 text-gray-600  w-48 sticky  dark:text-gray-400 pt-1",
+        div { class: "overflow-y-auto hidden xl:block top-28 px-2 h-full md:text-[14px] leading-5 text-gray-600  w-48 sticky  dark:text-gray-400 pt-1",
             div { class: "border-b pb-2 dark:border-[#a4a9ac7d]",
                 h2 { class: "pb-2 font-semibold text-gray-600 dark:text-gray-100",
                     "On this page"

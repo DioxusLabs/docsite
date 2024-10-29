@@ -5,7 +5,6 @@
     },
     "rust-analyzer.cargo.features": [
         "web",
-        "prebuild",
         "doc_test"
     ]
     // "editor.formatOnSave": false

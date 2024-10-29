@@ -1,3 +1,5 @@
+#![allow(unused)]
+
 use dioxus::prelude::*;
 pub(crate) static FERROUS_LOGO: &str = "https://rustacean.net/assets/rustacean-flat-gesture.png";
 

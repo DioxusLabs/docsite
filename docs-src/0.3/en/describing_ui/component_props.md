@@ -20,12 +20,12 @@ There are 2 flavors of Props structs:
 Owned Props are very simple – they don't borrow anything. Example:
 
 ```rust
-{{#include ../../examples/component_owned_props.rs:Likes}}
+{{#include src/doc_examples/untested_03/component_owned_props.rs:Likes}}
 ```
 
 You can then pass prop values to the component the same way you would pass attributes to an element:
 ```rust
-{{#include ../../examples/component_owned_props.rs:App}}
+{{#include src/doc_examples/untested_03/component_owned_props.rs:App}}
 ```
 
 ![Screenshot: Likes component](./images/component_owned_props_screenshot.png)
@@ -37,13 +37,13 @@ Owned props work well if your props are easy to copy around – like a single nu
 Rust allows for something more efficient – borrowing the String as a `&str` – this is what Borrowed Props are for!
 
 ```rust
-{{#include ../../examples/component_borrowed_props.rs:TitleCard}}
+{{#include src/doc_examples/untested_03/component_borrowed_props.rs:TitleCard}}
 ```
 
 We can then use the component like this:
 
 ```rust
-{{#include ../../examples/component_borrowed_props.rs:App}}
+{{#include src/doc_examples/untested_03/component_borrowed_props.rs:App}}
 ```
 ![Screenshot: TitleCard component](./images/component_borrowed_props_screenshot.png)
 
@@ -58,13 +58,13 @@ The `#[derive(Props)]` macro has some features that let you customize the behavi
 You can create optional fields by using the `Option<…>` type for a field:
 
 ```rust
-{{#include ../../examples/component_props_options.rs:OptionalProps}}
+{{#include src/doc_examples/untested_03/component_props_options.rs:OptionalProps}}
 ```
 
 Then, you can choose to either provide them or not:
 
 ```rust
-{{#include ../../examples/component_props_options.rs:OptionalProps_usage}}
+{{#include src/doc_examples/untested_03/component_props_options.rs:OptionalProps_usage}}
 ```
 
 ### Explicitly Required `Option`s
@@ -72,13 +72,13 @@ Then, you can choose to either provide them or not:
 If you want to explicitly require an `Option`, and not an optional prop, you can annotate it with `#[props(!optional)]`:
 
 ```rust
-{{#include ../../examples/component_props_options.rs:ExplicitOption}}
+{{#include src/doc_examples/untested_03/component_props_options.rs:ExplicitOption}}
 ```
 
 Then, you have to explicitly pass either `Some("str")` or `None`:
 
 ```rust
-{{#include ../../examples/component_props_options.rs:ExplicitOption_usage}}
+{{#include src/doc_examples/untested_03/component_props_options.rs:ExplicitOption_usage}}
 ```
 
 ### Default Props
@@ -86,13 +86,13 @@ Then, you have to explicitly pass either `Some("str")` or `None`:
 You can use `#[props(default = 42)]` to make a field optional and specify its default value:
 
 ```rust
-{{#include ../../examples/component_props_options.rs:DefaultComponent}}
+{{#include src/doc_examples/untested_03/component_props_options.rs:DefaultComponent}}
 ```
 
 Then, similarly to optional props, you don't have to provide it:
 
 ```rust
-{{#include ../../examples/component_props_options.rs:DefaultComponent_usage}}
+{{#include src/doc_examples/untested_03/component_props_options.rs:DefaultComponent_usage}}
 ```
 
 ### Automatic Conversion with `.into`
@@ -100,13 +100,13 @@ Then, similarly to optional props, you don't have to provide it:
 It is common for Rust functions to accept `impl Into<SomeType>` rather than just `SomeType` to support a wider range of parameters. If you want similar functionality with props, you can use `#[props(into)]`. For example, you could add it on a `String` prop – and `&str` will also be automatically accepted, as it can be converted into `String`:
 
 ```rust
-{{#include ../../examples/component_props_options.rs:IntoComponent}}
+{{#include src/doc_examples/untested_03/component_props_options.rs:IntoComponent}}
 ```
 
 Then, you can use it so:
 
 ```rust
-{{#include ../../examples/component_props_options.rs:IntoComponent_usage}}
+{{#include src/doc_examples/untested_03/component_props_options.rs:IntoComponent_usage}}
 ```
 
 ## The `inline_props` macro

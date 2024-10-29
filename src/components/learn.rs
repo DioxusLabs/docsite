@@ -1,7 +1,9 @@
 use crate::*;
-use docs::router_05;
-use docs::router_06;
-use docs::{use_current_docs_version, AnyBookRoute, CurrentDocsVersion};
+
+use docs::{
+    router_03, router_04, router_05, router_06, use_current_docs_version, AnyBookRoute,
+    CurrentDocsVersion,
+};
 
 use mdbook_shared::SummaryItem;
 
@@ -30,7 +32,12 @@ pub(crate) fn Learn() -> Element {
                     CurrentDocsVersion::V05(_) => rsx! {
                         GenericDocs::<router_05::BookRoute> {}
                     },
-                    _ => rsx! {  },
+                    CurrentDocsVersion::V04(_) => rsx! {
+                        GenericDocs::<router_04::BookRoute> {}
+                    },
+                    CurrentDocsVersion::V03(_) => rsx! {
+                        GenericDocs::<router_03::BookRoute> {}
+                    },
                 }
             }
         }
@@ -79,14 +86,14 @@ fn VersionSwitch() -> Element {
     let current_stability = match current_version {
         CurrentDocsVersion::V06(_) => "Alpha",
         CurrentDocsVersion::V05(_) => "Stable",
-        CurrentDocsVersion::V04 => "stable",
-        CurrentDocsVersion::V03 => "stable",
+        CurrentDocsVersion::V04(_) => "stable",
+        CurrentDocsVersion::V03(_) => "stable",
     };
     let current_version_long = match current_version {
         CurrentDocsVersion::V06(_) => "v0.6.0-alpha.3",
         CurrentDocsVersion::V05(_) => "v0.5.6",
-        CurrentDocsVersion::V04 => "v0.4.3",
-        CurrentDocsVersion::V03 => "v0.3.2",
+        CurrentDocsVersion::V04(_) => "v0.4.3",
+        CurrentDocsVersion::V03(_) => "v0.3.2",
     };
 
     rsx! {
@@ -117,16 +124,8 @@ fn VersionSwitch() -> Element {
                 div { class: "absolute flex flex-col bg-white dark:bg-ghdarkmetal text-left rounded-lg border dark:border-gray-700 mt-2 w-full overflow-hidden text-gray-500 dark:text-gray-100 text-xs shadow-lg",
                     TypedVersionSelectItem::<crate::docs::router_06::BookRoute> {}
                     TypedVersionSelectItem::<crate::docs::router_05::BookRoute> {}
-                    UntypedVersionSelectItem {
-                        route: "https://dioxuslabs.com/learn/0.4".into(),
-                        full_version: "0.4.3",
-                        short_version: "0.4",
-                    }
-                    UntypedVersionSelectItem {
-                        route: "https://dioxuslabs.com/learn/0.3".into(),
-                        full_version: "0.3.2",
-                        short_version: "0.3",
-                    }
+                    TypedVersionSelectItem::<crate::docs::router_04::BookRoute> {}
+                    TypedVersionSelectItem::<crate::docs::router_03::BookRoute> {}
                 }
             }
         }
@@ -346,9 +345,19 @@ fn VersionWarning() -> Element {
                 "You are currently viewing the docs for Dioxus 0.6.0 which is under construction."
             }
         },
-        CurrentDocsVersion::V05(_) => rsx! {  },
-        CurrentDocsVersion::V04 => rsx! {  },
-        CurrentDocsVersion::V03 => rsx! {  },
+        CurrentDocsVersion::V05(_) => rsx! {},
+        CurrentDocsVersion::V04(_) => rsx! {
+            div { class: "flex flex-row items-center justify-start w-full bg-yellow-200 opacity-80 text-yellow-800 text-sm font-normal py-2 px-2 rounded-md mb-4 gap-2",
+                crate::icons::IconWarning {}
+                "You are currently viewing the docs for Dioxus 0.4.3 which is no longer maintained."
+            }
+        },
+        CurrentDocsVersion::V03(_) => rsx! {
+            div { class: "flex flex-row items-center justify-start w-full bg-yellow-200 opacity-80 text-yellow-800 text-sm font-normal py-2 px-2 rounded-md mb-4 gap-2",
+                crate::icons::IconWarning {}
+                "You are currently viewing the docs for Dioxus 0.3.2 which is no longer maintained."
+            }
+        },
     }
 }
 
@@ -450,20 +459,4 @@ fn NextPrev<R: AnyBookRoute>() -> Element {
             }
         }
     }
-}
-
-#[component]
-pub fn Docs04(segments: Vec<String>) -> Element {
-    let navigator = use_navigator();
-    let route: Route = use_route();
-    navigator.push(route);
-    rsx! {  }
-}
-
-#[component]
-pub fn Docs03(segments: Vec<String>) -> Element {
-    let navigator = use_navigator();
-    let route: Route = use_route();
-    navigator.push(route);
-    rsx! {  }
 }

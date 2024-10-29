@@ -43,20 +43,18 @@ pub fn ComponentWithLogs(children: Element) -> Element {
         TwoPanelComponent {
             left: children,
             right: rsx! {
-                div { class: "p-2 text-center border-gray-200 dark:border-gray-800",
-                    "Logs"
-                }
+                div { class: "p-2 text-center border-gray-200 dark:border-gray-800", "Logs" }
                 for log in logs.read().logs.iter() {
-                    div { class: "p-2 border-b border-gray-200 dark:border-gray-800",
-                        "{log}"
-                    }
+                    div { class: "p-2 border-b border-gray-200 dark:border-gray-800", "{log}" }
                 }
-            }
+            },
         }
     }
 }
 
 // Include any examples we compile into the docsite
+#[cfg(not(feature = "doc_test"))]
+pub mod __interactive_04;
 #[cfg(not(feature = "doc_test"))]
 pub mod boolean_attribute;
 #[cfg(not(feature = "doc_test"))]

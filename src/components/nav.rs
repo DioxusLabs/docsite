@@ -8,10 +8,6 @@ pub(crate) static SHOW_SEARCH: GlobalSignal<bool> = Signal::global(|| false);
 
 pub(crate) fn Nav() -> Element {
     let route: Route = use_route();
-    let is_docs = matches!(
-        route,
-        Route::Docs06 { .. } | Route::Docs05 { .. } | Route::Docs04 { .. } | Route::Docs03 { .. }
-    );
 
     rsx! {
         SearchModal {}
@@ -66,7 +62,7 @@ pub(crate) fn Nav() -> Element {
                             *sidebar = !*sidebar;
                         },
                         class: "bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-500 md:hidden rounded-lg p-1 mr-2 my-3 h-8 flex items-center text-lg z-50",
-                        class: if !is_docs { "hidden" },
+                        class: if !route.is_docs() { "hidden" },
                         MaterialIcon {
                             name: "menu",
                             size: 24,

@@ -4,6 +4,7 @@ use dioxus::prelude::*;
 use mdbook_shared::MdBook;
 use std::hash::Hash;
 
+pub mod router_03;
 pub mod router_04;
 pub mod router_05;
 pub mod router_06;

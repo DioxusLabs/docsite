@@ -47,20 +47,6 @@ You can create a new Dioxus project by running the following command and followi
 dx new
 ```
 
-```inject-dioxus
-video {
-    "type": "video/mp4",
-    "name": "dx new demo",
-    autoplay: "true",
-    controls: "false",
-    r#loop: "true",
-    width: "800px",
-    muted: "true",
-    source {
-        src: manganis::mg!(file("./public/static/dioxus-new.mov")),
-    }
-}
-```
 
 First you will need to select a platform. Each platform has its own reference with more information on how to set up a project for that platform. Here are the platforms we recommend starting with:
 

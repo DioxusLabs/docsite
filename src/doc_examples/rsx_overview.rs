@@ -30,7 +30,9 @@ pub fn Button() -> Element {
 
 pub fn AttributesType() -> Element {
     // ANCHOR: attributes_type
-    rsx! { input { r#type: "text", color: "red" } }
+    rsx! {
+        input { r#type: "text", color: "red" }
+    }
     // ANCHOR_END: attributes_type
 }
 
@@ -75,7 +77,7 @@ pub fn Attributes() -> Element {
         img {
             src: "https://avatars.githubusercontent.com/u/79236386?s=200&v=4",
             class: "primary_button",
-            width: "10px"
+            width: "10px",
         }
     }
     // ANCHOR_END: attributes
@@ -93,14 +95,18 @@ pub fn VariableAttributes() -> Element {
 
 pub fn CustomAttributes() -> Element {
     // ANCHOR: custom_attributes
-    rsx! { div { "style": "width: 20px; height: 20px; background-color: red;" } }
+    rsx! {
+        div { "style": "width: 20px; height: 20px; background-color: red;" }
+    }
     // ANCHOR_END: custom_attributes
 }
 
 pub fn ConditionalAttributes() -> Element {
     // ANCHOR: conditional_attributes
     let large_font = true;
-    rsx! { div { class: if large_font { "text-xl" }, "Hello, World!" } }
+    rsx! {
+        div { class: if large_font { "text-xl" }, "Hello, World!" }
+    }
     // ANCHOR_END: conditional_attributes
 }
 
@@ -129,9 +135,11 @@ pub fn Expression() -> Element {
     let text = "Dioxus";
     rsx! {
         span {
-            {text.to_uppercase()},
+            {text.to_uppercase()}
             // create a list of text from 0 to 9
-            {(0..10).map(|i| rsx!{ "{i}" })}
+            {(0..10).map(|i| rsx! {
+            "{i}"
+            })}
         }
     }
     // ANCHOR_END: expression
@@ -149,7 +157,11 @@ pub fn Loops() -> Element {
             }
         }
         // iterator equivalent
-        div { {(0..3).map(|i| rsx!{ div { "{i}" } })} }
+        div {
+            {(0..3).map(|i| rsx! {
+                div { "{i}" }
+            })}
+        }
     }
     // ANCHOR_END: loops
 }

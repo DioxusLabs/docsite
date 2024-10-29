@@ -1,2 +1,4 @@
+use dioxus::prelude::*;
+
 // Urls are relative to your Cargo.toml file
-const _TAILWIND_URL: &str = manganis::mg!(file("public/tailwind.css"));
+const TAILWIND_URL: Asset = asset!("/assets/tailwind.css");

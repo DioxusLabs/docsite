@@ -4,7 +4,7 @@ mod handle_none {
     use super::*;
     // ANCHOR: none
     fn App() -> Element {
-        None
+        rsx! {  }
     }
     // ANCHOR_END: none
 }
@@ -14,7 +14,7 @@ mod try_hook {
     // ANCHOR: try_hook
     fn App() -> Element {
         // immediately return "None"
-        let name = use_hook(|| Some("hi"))?;
+        let name = use_hook(|| dioxus::Result::Ok("hi"))?;
 
         todo!()
     }
@@ -26,13 +26,13 @@ mod try_result_hook {
     // ANCHOR: try_result_hook
     fn App() -> Element {
         // Convert Result to Option
-        let name: i32 = use_hook(|| "1.234").parse().ok()?;
+        let name: i32 = use_hook(|| "1.234").parse().context("Failed to parse")?;
 
         // Early return
         let count = use_hook(|| "1.234");
         let val: i32 = match count.parse() {
             Ok(val) => val,
-            Err(err) => return rsx! {"Parsing failed"},
+            Err(err) => return rsx! { "Parsing failed" },
         };
 
         todo!()
@@ -49,8 +49,12 @@ mod match_error {
         // ANCHOR_END: use_error
 
         match error() {
-            Some(error) => rsx! { h1 { "An error occurred" } },
-            None => rsx! { input { oninput: move |_| error.set(Some("bad thing happened!")) } },
+            Some(error) => rsx! {
+                h1 { "An error occurred" }
+            },
+            None => rsx! {
+                input { oninput: move |_| error.set(Some("bad thing happened!")) }
+            },
         }
     }
     // ANCHOR_END: match_error
@@ -63,7 +67,7 @@ mod match_error_children {
         let error = use_signal(|| None);
 
         if let Some(error) = error() {
-            return rsx! {"An error occurred"};
+            return rsx! { "An error occurred" };
         }
 
         rsx! {
@@ -76,7 +80,9 @@ mod match_error_children {
 
     #[component]
     fn Child(error: Signal<Option<&'static str>>) -> Element {
-        rsx! { input { oninput: move |_| error.set(Some("bad thing happened!")) } }
+        rsx! {
+            input { oninput: move |_| error.set(Some("bad thing happened!")) }
+        }
     }
     // ANCHOR_END: match_error_children
 }
@@ -87,9 +93,10 @@ mod throw_error {
     fn Parent() -> Element {
         rsx! {
             ErrorBoundary {
-                handle_error: |error| {
+                handle_error: |ctx: ErrorContext| {
+                    let error = &ctx.errors()[0];
                     rsx! {
-                        "Oops, we encountered an error. Please report {error} to the developer of this application"
+                    "Oops, we encountered an error. Please report {error} to the developer of this application"
                     }
                 },
                 ThrowsError {}
@@ -98,7 +105,7 @@ mod throw_error {
     }
 
     fn ThrowsError() -> Element {
-        let name: i32 = use_hook(|| "1.234").parse().throw()?;
+        let name: i32 = use_hook(|| "1.234").parse().context("Failed to parse")?;
 
         todo!()
     }
@@ -110,9 +117,10 @@ mod nested_throw {
     fn App() -> Element {
         rsx! {
             ErrorBoundary {
-                handle_error: |error| {
+                handle_error: |ctx: ErrorContext| {
+                    let error = &ctx.errors()[0];
                     rsx! {
-                        "Hmm, something went wrong. Please report {error} to the developer of this application"
+                    "Hmm, something went wrong. Please report {error} to the developer of this application"
                     }
                 },
                 Parent {}
@@ -123,9 +131,10 @@ mod nested_throw {
     fn Parent() -> Element {
         rsx! {
             ErrorBoundary {
-                handle_error: |error| {
+                handle_error: |ctx: ErrorContext| {
+                    let error = &ctx.errors()[0];
                     rsx! {
-                        "The child component encountered an error: {error}"
+                    "The child component encountered an error: {error}"
                     }
                 },
                 ThrowsError {}
@@ -134,7 +143,7 @@ mod nested_throw {
     }
 
     fn ThrowsError() -> Element {
-        let name: i32 = use_hook(|| "1.234").parse().throw()?;
+        let name: i32 = use_hook(|| "1.234").parse().context("Failed to parse")?;
 
         todo!()
     }

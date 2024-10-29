@@ -31,14 +31,11 @@ fn to_owned() {
     }
     enum SyncAction {}
     // ANCHOR: to_owned
-    let sync_status = use_signal(|| Status::Launching);
-    let sync_task = use_coroutine(|rx: UnboundedReceiver<SyncAction>| {
-        let mut sync_status = sync_status.to_owned();
-        async move {
-            loop {
-                tokio::time::sleep(Duration::from_secs(1)).await;
-                sync_status.set(Status::Working);
-            }
+    let mut sync_status = use_signal(|| Status::Launching);
+    let sync_task = use_coroutine(move |rx: UnboundedReceiver<SyncAction>| async move {
+        loop {
+            tokio::time::sleep(Duration::from_secs(1)).await;
+            sync_status.set(Status::Working);
         }
     });
     // ANCHOR_END: to_owned
@@ -123,11 +120,15 @@ fn global() {
     fn app() -> Element {
         use_coroutine(sync_service);
 
-        rsx! { Banner {} }
+        rsx! {
+            Banner {}
+        }
     }
 
     fn Banner() -> Element {
-        rsx! { h1 { "Welcome back, {USERNAME}" } }
+        rsx! {
+            h1 { "Welcome back, {USERNAME}" }
+        }
     }
     // ANCHOR_END: global
 }

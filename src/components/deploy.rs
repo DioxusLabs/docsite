@@ -1,6 +1,6 @@
 use dioxus::prelude::*;
 
-pub(crate) fn Deploy() -> Element {
+pub fn Deploy() -> Element {
     rsx! {
         section { class: "max-w-screen-2xl mx-auto px-4 py-16 my-8 dark:text-white",
             div { class: "max-w-screen-md mx-auto border-b py-8 ",

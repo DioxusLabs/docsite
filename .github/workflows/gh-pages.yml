@@ -12,6 +12,8 @@ concurrency:
 jobs:
   build-deploy:
     runs-on: ubuntu-latest
+    env:
+      CARGO_INCREMENTAL: 1
     steps:
       - uses: actions/checkout@v4
       - name: Install Rust
@@ -22,18 +24,16 @@ jobs:
       - uses: Swatinem/rust-cache@v2
         with:
           cache-all-crates: "true"
-          save-if: ${{ github.ref == 'refs/heads/main' }}
+          cache-on-failure: "true"
       - uses: cargo-bins/cargo-binstall@main
+      # - name: Install CLI
+      # run: cargo binstall dioxus-cli -y --force
       - name: Install CLI
-        run: cargo binstall dioxus-cli -y --force
+        run: cargo install --git https://github.com/DioxusLabs/dioxus --force
       - name: Build
-        run: dx build --release --features web
-      - name: Build Static HTML
-        run: cargo run --release --features prebuild
-      - name: Create 404.html
-        run: cp docs/index.html docs/404.html
-      - name: Rebuild with search index
-        run: dx build --release --features web && cp docs/404.html docs/index.html
+        run: dx build --release
+      - name: Copy output
+        run: cp -r target/dx/dioxus_docs_site/release/web/public docs
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@v4.2.3
         with:

@@ -9,7 +9,6 @@ async fn get_server_data() -> Result<String, ServerFnError> {
 // ANCHOR_END: server_function
 
 use dioxus::prelude::*;
-use server_fn::axum::register_explicit;
 
 #[tokio::main]
 async fn main() {
@@ -19,17 +18,4 @@ async fn main() {
         .unwrap();
     println!("listening on http://127.0.0.1:3000");
     // ANCHOR_END: server_url
-
-    // ANCHOR: function_registration
-    register_explicit::<GetServerData>();
-    // ANCHOR_END: function_registration
-
-    axum::serve(
-        listener,
-        axum::Router::new()
-            .register_server_fns()
-            .into_make_service(),
-    )
-    .await
-    .unwrap();
 }

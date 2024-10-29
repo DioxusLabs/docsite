@@ -2,7 +2,8 @@
 use dioxus::prelude::*;
 
 pub mod app_v1 {
-    use super::*;
+    use super::{CommentData, StoryItem, StoryPageData};
+    use dioxus::prelude::*;
 
     // ANCHOR: app_v1
     pub fn App() -> Element {
@@ -64,7 +65,7 @@ pub mod app_v1 {
 
     // NEW
     #[component]
-    fn Comment(comment: Comment) -> Element {
+    fn Comment(comment: CommentData) -> Element {
         rsx! {
             div { padding: "0.5rem",
                 div { color: "gray", "by {comment.by}" }
@@ -129,7 +130,8 @@ pub mod app_v1 {
 }
 
 mod story_listing_listener {
-    use super::*;
+    use super::{Comment, CommentData, StoryItem, StoryPageData};
+    use dioxus::prelude::*;
 
     pub fn App() -> Element {
         use_context_provider(|| Signal::new(PreviewState::Unset));
@@ -379,7 +381,7 @@ fn Stories() -> Element {
 }
 
 #[component]
-fn Comment(comment: Comment) -> Element {
+fn Comment(comment: CommentData) -> Element {
     rsx! {
         div { padding: "0.5rem",
             div { color: "gray", "by {comment.by}" }
@@ -400,11 +402,11 @@ pub struct StoryPageData {
     #[serde(flatten)]
     pub item: StoryItem,
     #[serde(default)]
-    pub comments: Vec<Comment>,
+    pub comments: Vec<CommentData>,
 }
 
 #[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
-pub struct Comment {
+pub struct CommentData {
     pub id: i64,
     /// there will be no by field if the comment was deleted
     #[serde(default)]
@@ -416,7 +418,7 @@ pub struct Comment {
     #[serde(default)]
     pub kids: Vec<i64>,
     #[serde(default)]
-    pub sub_comments: Vec<Comment>,
+    pub sub_comments: Vec<CommentData>,
     pub r#type: String,
 }
 

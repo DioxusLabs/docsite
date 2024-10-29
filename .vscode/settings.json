@@ -2,5 +2,11 @@
     "[html]": {
         // so it doesn't break code blocks
         "editor.formatOnSave": false
-    }
+    },
+    "rust-analyzer.cargo.features": [
+        "web",
+        "doc_test"
+    ]
+    // "editor.formatOnSave": false
+    // "files.autoSaveDelay": 10
 }

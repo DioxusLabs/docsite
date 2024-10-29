@@ -65,8 +65,15 @@ Windows:
 
 #### IOS
 
+First, install the rust IOS targets:
+
+```sh
+rustup target add aarch64-apple-ios x86_64-apple-ios aarch64-apple-ios-sim
+```
+
 To develop on IOS, you will need to [install XCode](https://apps.apple.com/us/app/xcode/id497799835).
 
+> Note: On Apple silicon you must run Xcode on rosetta. Goto Application > Right Click Xcode > Get Info > Open in Rosetta.
 > If you are using M1, you will have to run `cargo build --target x86_64-apple-ios` instead of `cargo apple build` if you want to run in simulator.
 
 ### Setting up your project
@@ -93,11 +100,11 @@ Next, we need to modify our dependencies to include dioxus and ensure the right 
 
 ```toml
 [dependencies]
-anyhow = "1.0"
-log = "0.4"
-wry = "0.37"
-tao = "0.26"
-dioxus = { version = "0.6", features = ["mobile"] }
+anyhow = "1.0.56"
+log = "0.4.11"
+dioxus = { version = "0.5", features = ["mobile"] }
+wry = "0.35.0"
+tao = "0.25.0"
 ```
 
 Finally, we need to add a component to renderer. Replace the wry template in your `lib.rs` file with this code:

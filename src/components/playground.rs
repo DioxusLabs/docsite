@@ -15,9 +15,6 @@ const BUILT_URL: &str = "http://localhost:3000/built/";
 #[component]
 pub fn Playground() -> Element {
     rsx! {
-        dioxus_playground::Playground {
-            socket_url: SOCKET_URL,
-            built_url: BUILT_URL,
-        },
+        dioxus_playground::Playground { socket_url: SOCKET_URL, built_url: BUILT_URL }
     }
 }

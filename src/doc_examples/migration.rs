@@ -28,10 +28,10 @@ mod props {
         rsx! {
             "Hello {owned_name}"
             BorrowedComp {
-                name: "{owned_name}"
+                name: "other name"
             }
             ManualPropsComponent {
-                name: "{owned_name}"
+                name: "other name 2"
             }
         }
     }

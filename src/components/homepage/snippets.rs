@@ -48,10 +48,7 @@ pub(crate) fn Snippets() -> Element {
                             li { class: "flex-none",
                                 button {
                                     class: "relative py-2 px-4 rounded-t-md",
-                                    class: match selected_snippet() == id {
-                                        true => "bg-ghmetal border-neutral-500/30 border text-white border-b-0",
-                                        false => "bg-ghdarkmetal",
-                                    },
+                                    class: if selected_snippet() == id { "bg-ghmetal border-neutral-500/30 border text-white border-b-0" } else { "bg-ghdarkmetal" },
                                     r#type: "button",
                                     onclick: move |_| selected_snippet.set(id),
                                     "{snippet.filename}"
@@ -71,12 +68,9 @@ pub(crate) fn Snippets() -> Element {
                             key: "{snippet.title}",
                             class: "w-full min-h-0 p-4",
                             // Instead of hiding/showing, we just render all the code blocks at once and hide them with css instead
-                            class: match selected_snippet() {
-                                a if a == id => "block",
-                                _ => "hidden",
-                            },
+                            class: if selected_snippet() == id { "block" } else { "hidden" },
                             background_color: "#2b303b",
-                            dangerous_inner_html: "{snippet.html}"
+                            dangerous_inner_html: "{snippet.html}",
                         }
                     }
                 }

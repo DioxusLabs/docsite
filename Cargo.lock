@@ -1021,6 +1021,7 @@ dependencies = [
  "dioxus-static-site-generation",
  "dioxus-web",
  "manganis",
+ "serde",
 ]
 
 [[package]]

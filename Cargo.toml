@@ -142,5 +142,6 @@ doc_test = [
     "dioxus-sdk",
     "http",
     "rand",
-    "server"
+    "server",
+    "dioxus/fullstack"
 ]

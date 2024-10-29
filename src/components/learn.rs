@@ -377,7 +377,7 @@ fn Breadcrumbs<R: AnyBookRoute>() -> Element {
         div {
             class: "flex flex-row items-center space-x-2 font-extralight pb-9",
             class: if is_index { "hidden" },
-            Link { to: route.global_route(), "Dioxus {long_version}" }
+            Link { to: R::index().global_route(), "Dioxus {long_version}" }
             for (idx , route) in routes.iter().rev().enumerate() {
                 icons::ChevronRightIcon {}
                 Link {

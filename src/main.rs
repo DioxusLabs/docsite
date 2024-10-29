@@ -179,6 +179,18 @@ pub enum Route {
     Err404 { segments: Vec<String> },
 }
 
+impl Route {
+    fn is_docs(&self) -> bool {
+        matches!(
+            self,
+            Route::Docs06 { .. }
+                | Route::Docs05 { .. }
+                | Route::Docs04 { .. }
+                | Route::Docs03 { .. }
+        )
+    }
+}
+
 static SEARCH_INDEX: dioxus_search::LazySearchIndex<Route> = dioxus_search::load_search_index! {
     "search"
 };

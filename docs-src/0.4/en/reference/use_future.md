@@ -21,7 +21,7 @@ We can then render that result:
 ```inject-dioxus
 DemoFrame {
     // original: use_future::App {}
-    __interactive_04::use_future {}
+    __interactive_04::use_future_ {}
 }
 ```
 

@@ -8,7 +8,10 @@ pub(crate) static SHOW_SEARCH: GlobalSignal<bool> = Signal::global(|| false);
 
 pub(crate) fn Nav() -> Element {
     let route: Route = use_route();
-    let is_docs = matches!(route, Route::Docs06 { .. });
+    let is_docs = matches!(
+        route,
+        Route::Docs06 { .. } | Route::Docs05 { .. } | Route::Docs04 { .. } | Route::Docs03 { .. }
+    );
 
     rsx! {
         SearchModal {}

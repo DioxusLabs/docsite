@@ -907,8 +907,8 @@ video {
   height: 100vh;
 }
 
-.max-h-80 {
-  max-height: 20rem;
+.max-h-40 {
+  max-height: 10rem;
 }
 
 .max-h-\[60vh\] {
@@ -2394,6 +2394,10 @@ video {
 
   .lg\:h-\[34\.6875rem\] {
     height: 34.6875rem;
+  }
+
+  .lg\:max-h-80 {
+    max-height: 20rem;
   }
 
   .lg\:w-1\/3 {

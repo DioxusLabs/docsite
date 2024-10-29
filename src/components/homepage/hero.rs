@@ -35,7 +35,7 @@ pub(crate) fn Hero() -> Element {
                             }
                         }
                     }
-                    div { class: "lg:pb-12 h-screen max-h-80",
+                    div { class: "lg:pb-12 h-screen max-h-40 lg:max-h-80 my-8",
                         img {
                             src: asset!("/assets/static/multiplatform-dark.svg"),
                             class: "dark:hidden w-full h-full",

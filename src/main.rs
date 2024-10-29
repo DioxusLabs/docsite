@@ -45,7 +45,7 @@ fn Head() -> Element {
         Title { "Dioxus | Fullstack crossplatform app framework for Rust" }
         Meta {
             name: "description",
-            content: "A fullstack crossplatform app framework for Rust. Supports Web, Desktop, SSR, Liveview, and Mobile.",
+            content: "Dioxus | A fullstack crossplatform app framework for Rust. Supports Web, Desktop, SSR, Liveview, and Mobile.",
         }
         Link {
             rel: "icon shortcut",
@@ -99,7 +99,7 @@ fn Head() -> Element {
         }
         Meta {
             name: "twitter:description",
-            content: "A fullstack crossplatform app framework for Rust. Supports Web, Desktop, SSR, Liveview, and Mobile.",
+            content: "Dioxus | A fullstack crossplatform app framework for Rust. Supports Web, Desktop, SSR, Liveview, and Mobile.",
         }
         Meta {
             name: "twitter:image",

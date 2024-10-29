@@ -4,13 +4,13 @@ This guide will cover concepts specific to the Dioxus mobile renderer.
 
 ## Running Javascript
 
-Dioxus provides some ergonomic wrappers over the browser API, but in some cases you may need to access parts of the browser API Dioxus does not expose. 
+Dioxus provides some ergonomic wrappers over the browser API, but in some cases you may need to access parts of the browser API Dioxus does not expose.
 
 
 For these cases, Dioxus desktop exposes the use_eval hook that allows you to run raw Javascript in the webview:
 
 ```rust
-{{#include src/doc_examples/eval.rs}}
+{{#include src/doc_examples/untested_04/eval.rs}}
 ```
 
 ## Custom Assets
@@ -18,7 +18,7 @@ For these cases, Dioxus desktop exposes the use_eval hook that allows you to run
 You can link to local assets in dioxus mobile instead of using a url:
 
 ```rust
-{{#include src/doc_examples/custom_assets.rs}}
+{{#include src/doc_examples/untested_04/custom_assets.rs}}
 ```
 
 ## Integrating with Wry

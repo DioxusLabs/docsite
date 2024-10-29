@@ -5,5 +5,5 @@ If you application supports multiple languages, the [Dioxus-std](https://github.
 ## The full code for internationalization
 
 ```rust
-{{#include src/doc_examples/i18n.rs}}
+{{#include src/doc_examples/untested_04/i18n.rs}}
 ```

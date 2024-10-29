@@ -156,27 +156,20 @@ pub enum Route {
         #[layout(Learn)]
             #[nest("/learn")]
                 #[redirect("/", || Route::Docs05 { child: crate::docs::router_05::BookRoute::Index {} })]
-
-                #[child("/0.6")]
+                #[child("/0.6/")]
                 Docs06 { child: crate::docs::router_06::BookRoute },
 
-                #[child("/0.5")]
+                #[child("/0.5/")]
                 Docs05 { child: crate::docs::router_05::BookRoute },
 
-                #[route("/0.4/:..segments")]
-                Docs04 {
-                    segments: Vec<String>
-                },
+                #[child("/0.4/")]
+                Docs04 { child: crate::docs::router_04::BookRoute },
 
-                #[route("/0.3/:..segments")]
-                Docs03 {
-                    segments: Vec<String>
-                },
-
+                #[child("/0.3/")]
+                Docs03 { child: crate::docs::router_03::BookRoute },
             #[end_nest]
         #[end_layout]
     #[end_nest]
-    #[redirect("/docs/0.3/:..segments", |segments: Vec<String>| Route::Docs03 { segments })]
     #[redirect("/docs/:..segments", |segments: Vec<String>| {
         let joined = segments.join("/");
         let docs_route = format!("/docs/{}", joined);

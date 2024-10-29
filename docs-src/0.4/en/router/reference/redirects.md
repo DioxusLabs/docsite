@@ -9,5 +9,5 @@ The `#[redirect]` attribute accepts a route and a closure with all of the parame
 In the following example, we will redirect everybody from `/myblog` and `/myblog/:id` to `/blog` and `/blog/:id` respectively
 
 ```rust
-{{#include src/doc_examples/full_example.rs:router}}
+{{#include src/doc_examples/untested_04/full_example.rs:router}}
 ```

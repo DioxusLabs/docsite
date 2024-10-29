@@ -3,7 +3,7 @@
 The `use_future` and `use_coroutine` hooks are useful if you want to unconditionally spawn the future. Sometimes, though, you'll want to only spawn a future in response to an event, such as a mouse click. For example, suppose you need to send a request when the user clicks a "log in" button. For this, you can use `cx.spawn`:
 
 ```rust
-{{#include src/doc_examples/spawn.rs:spawn}}
+{{#include src/doc_examples/untested_04/spawn.rs:spawn}}
 ```
 
 ```inject-dioxus
@@ -21,5 +21,5 @@ Calling `spawn` will give you a `JoinHandle` which lets you cancel or pause the 
 Sometimes, you might want to spawn a background task that needs multiple threads or talk to hardware that might block your app code. In these cases, we can directly spawn a Tokio task from our future. For Dioxus-Desktop, your task will be spawned onto Tokio's Multithreaded runtime:
 
 ```rust
-{{#include src/doc_examples/spawn.rs:tokio}}
+{{#include src/doc_examples/untested_04/spawn.rs:tokio}}
 ```

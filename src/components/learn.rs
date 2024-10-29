@@ -346,9 +346,9 @@ fn VersionWarning() -> Element {
                 "You are currently viewing the docs for Dioxus 0.6.0 which is under construction."
             }
         },
-        CurrentDocsVersion::V05(_) => rsx! {  },
-        CurrentDocsVersion::V04 => rsx! {  },
-        CurrentDocsVersion::V03 => rsx! {  },
+        CurrentDocsVersion::V05(_) => rsx! {},
+        CurrentDocsVersion::V04 => rsx! {},
+        CurrentDocsVersion::V03 => rsx! {},
     }
 }
 
@@ -450,20 +450,4 @@ fn NextPrev<R: AnyBookRoute>() -> Element {
             }
         }
     }
-}
-
-#[component]
-pub fn Docs04(segments: Vec<String>) -> Element {
-    let navigator = use_navigator();
-    let route: Route = use_route();
-    navigator.push(route);
-    rsx! {  }
-}
-
-#[component]
-pub fn Docs03(segments: Vec<String>) -> Element {
-    let navigator = use_navigator();
-    let route: Route = use_route();
-    navigator.push(route);
-    rsx! {  }
 }

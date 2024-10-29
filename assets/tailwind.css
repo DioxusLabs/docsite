@@ -1141,6 +1141,10 @@ video {
   align-content: flex-start;
 }
 
+.items-start {
+  align-items: flex-start;
+}
+
 .items-center {
   align-items: center;
 }
@@ -1189,6 +1193,10 @@ video {
   gap: 2rem;
 }
 
+.gap-24 {
+  gap: 6rem;
+}
+
 .gap-x-1 {
   -moz-column-gap: 0.25rem;
        column-gap: 0.25rem;
@@ -1197,6 +1205,19 @@ video {
 .gap-x-2 {
   -moz-column-gap: 0.5rem;
        column-gap: 0.5rem;
+}
+
+.gap-x-24 {
+  -moz-column-gap: 6rem;
+       column-gap: 6rem;
+}
+
+.gap-y-12 {
+  row-gap: 3rem;
+}
+
+.gap-y-8 {
+  row-gap: 2rem;
 }
 
 .space-x-1\.5 > :not([hidden]) ~ :not([hidden]) {
@@ -2184,6 +2205,10 @@ video {
     grid-template-rows: repeat(1, minmax(0, 1fr));
   }
 
+  .sm\:justify-between {
+    justify-content: space-between;
+  }
+
   .sm\:rounded-xl {
     border-radius: 0.75rem;
   }
@@ -2283,6 +2308,10 @@ video {
     justify-content: flex-start;
   }
 
+  .md\:justify-between {
+    justify-content: space-between;
+  }
+
   .md\:gap-6 {
     gap: 1.5rem;
   }
@@ -2311,6 +2340,11 @@ video {
   .md\:py-0 {
     padding-top: 0px;
     padding-bottom: 0px;
+  }
+
+  .md\:py-24 {
+    padding-top: 6rem;
+    padding-bottom: 6rem;
   }
 
   .md\:pb-10 {

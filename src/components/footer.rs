@@ -37,8 +37,8 @@ pub fn Footer() -> Element {
     ];
 
     rsx! {
-        footer { class: "text-gray-700 dark:text-gray-400 w-full mx-auto max-w-screen-lg",
-            div { class: "container py-24 mx-auto flex md:items-center lg:items-start md:flex-row md:flex-nowrap flex-wrap flex-col justify-between ",
+        footer { class: "text-gray-700 dark:text-gray-400 w-full mx-auto max-w-screen-lg px-4 ",
+            div { class: "container mx-auto py-8 md:py-24 flex flex-wrap justify-center items-start sm:justify-between lg:items-start md:flex-row md:flex-nowrap  gap-x-24 gap-y-8",
                 for (name , links) in categories.iter() {
                     div { key: "{name}",
                         h2 { class: "text-md mb-3 text-black dark:text-gray-100", "{name}" }
@@ -54,23 +54,28 @@ pub fn Footer() -> Element {
                     }
                 }
 
-                div { class: "text-center md:text-left ",
+                div { class: "text-center md:text-left",
                     a {
-                        class: "flex items-center md:justify-start justify-evenly gap-1",
+                        class: "flex items-center justify-start gap-1",
                         href: "https://github.com/DioxusLabs",
+                        div {
+                            span { class: "text-lg font-mono dark:text-gray-100", "DIOXUS" }
+                        }
                         img {
                             src: "https://avatars.githubusercontent.com/u/79236386?s=200&v=4",
                             class: "h-6 w-auto",
                             alt: "Dioxus Labs Icon",
                         }
-                        div {
-                            span { class: "text-xl font-mono dark:text-gray-100", "Dioxus" }
-                        }
                     }
                     span { class: "text-xs", "Build cool things ✌️" }
                 }
             }
-            p { class: "text-gray-400 text-sm text-center sm:text-left pb-2", "© 2024 Dioxus Labs" }
+
+
+
+            div { class: "text-gray-400 text-sm text-center sm:text-left pb-2 mx-auto",
+                "© 2024 Dioxus Labs"
+            }
         }
     }
 }

@@ -37,8 +37,8 @@ pub fn Footer() -> Element {
     ];
 
     rsx! {
-        footer { class: "text-gray-700 dark:text-gray-400 w-full mx-auto max-w-screen-lg px-4 ",
-            div { class: "container mx-auto py-8 md:py-24 flex flex-wrap justify-center items-start sm:justify-between lg:items-start md:flex-row md:flex-nowrap  gap-x-24 gap-y-8",
+        footer { class: "text-gray-700 dark:text-gray-400 w-full mx-auto max-w-screen-xl ",
+            div { class: "py-8 md:py-24 flex flex-wrap justify-between items-start lg:items-start md:flex-row md:flex-nowrap  gap-x-24 gap-y-8 mx-auto",
                 for (name , links) in categories.iter() {
                     div { key: "{name}",
                         h2 { class: "text-md mb-3 text-black dark:text-gray-100", "{name}" }
@@ -54,9 +54,9 @@ pub fn Footer() -> Element {
                     }
                 }
 
-                div { class: "text-center md:text-left",
+                div { class: "text-left md:text-left",
                     a {
-                        class: "flex items-center justify-start gap-1",
+                        class: "flex items-center gap-1",
                         href: "https://github.com/DioxusLabs",
                         div {
                             span { class: "text-lg font-mono dark:text-gray-100", "DIOXUS" }
@@ -69,10 +69,8 @@ pub fn Footer() -> Element {
                     }
                     span { class: "text-xs", "Build cool things ✌️" }
                 }
+
             }
-
-
-
             div { class: "text-gray-400 text-sm text-center sm:text-left pb-2 mx-auto",
                 "© 2024 Dioxus Labs"
             }

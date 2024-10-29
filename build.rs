@@ -6,6 +6,7 @@ fn main() {
     println!("cargo:rerun-if-changed=docs-src");
     println!("cargo:rerun-if-changed=src/doc_examples");
 
+    make_docs("0.4");
     make_docs("0.5");
     make_docs("0.6");
 }

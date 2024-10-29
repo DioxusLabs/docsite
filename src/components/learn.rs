@@ -354,6 +354,7 @@ fn VersionWarning() -> Element {
 
 fn Breadcrumbs<R: AnyBookRoute>() -> Element {
     let route = R::use_route();
+    let long_version = R::full_version();
     let is_index = route.to_string() == "/";
 
     let mut routes = vec![route.clone()];
@@ -367,7 +368,7 @@ fn Breadcrumbs<R: AnyBookRoute>() -> Element {
         div {
             class: "flex flex-row items-center space-x-2 font-extralight pb-9",
             class: if is_index { "hidden" },
-            Link { to: route.global_route(), "Dioxus v0.6.0-alpha.3" }
+            Link { to: route.global_route(), "Dioxus {long_version}" }
             for (idx , route) in routes.iter().rev().enumerate() {
                 icons::ChevronRightIcon {}
                 Link {

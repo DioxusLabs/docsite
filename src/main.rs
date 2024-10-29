@@ -30,7 +30,7 @@ fn HeaderFooter() -> Element {
 
     rsx! {
         Head {}
-        div { class: "bg-white dark:bg-ideblack",
+        div { class: "bg-white dark:bg-ideblack min-h-screen",
             Nav {}
             Outlet::<Route> {}
             Footer {}

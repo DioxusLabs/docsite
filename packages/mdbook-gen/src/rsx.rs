@@ -339,7 +339,6 @@ impl<'a, I: Iterator<Item = Event<'a>>> RsxMarkdownParser<'a, I> {
                     a {
                         href: #href,
                         #title_attr
-                        #title
                     }
                 });
 
@@ -490,4 +489,36 @@ fn resolve_extension(_path: &Path, ext: &str) -> syn::Result<String> {
 
 fn escape_text(text: &str) -> String {
     text.replace('{', "{{").replace('}', "}}")
+}
+
+#[test]
+fn parse_link() {
+    let markdown = r#"
+# Chapter 1
+[Chapter 2](./chapter_2.md)
+"#;
+
+    let mut options = Options::empty();
+    options.insert(Options::ENABLE_STRIKETHROUGH);
+    options.insert(Options::ENABLE_TABLES);
+    let mut parser = Parser::new_ext(markdown, options);
+
+    let mut rsx_parser = RsxMarkdownParser {
+        element_stack: vec![],
+        root_nodes: vec![],
+        current_table: vec![],
+        in_table_header: false,
+        iter: parser.by_ref().peekable(),
+        path: PathBuf::from("example-book/en/chapter_1.md"),
+        phantom: std::marker::PhantomData,
+    };
+
+    rsx_parser.parse().unwrap();
+    while !rsx_parser.element_stack.is_empty() {
+        rsx_parser.end_node();
+    }
+
+    let body = CallBody::new(TemplateBody::new(rsx_parser.root_nodes));
+
+    dbg!(body);
 }

@@ -197,7 +197,7 @@ pub fn Chapter2() -> dioxus::prelude::Element {
         }
         p {
             "If a feature that you need doesn't exist or you want to contribute to projects on the roadmap, feel free to get involved by "
-            a { href: "https://discord.gg/XgGxMSkvUM", "" }
+            a { href: "https://discord.gg/XgGxMSkvUM", "joining the discord" }
             "."
         }
         p { "Generally, here's the status of each platform:" }
@@ -496,7 +496,7 @@ pub fn Chapter2() -> dioxus::prelude::Element {
         p {
             "We are currently working on our own build tool called "
             a { href: "https://github.com/DioxusLabs/dioxus/tree/master/packages/cli",
-                ""
+                "Dioxus CLI"
             }
             " which will support:"
         }
@@ -523,7 +523,7 @@ pub fn Chapter2() -> dioxus::prelude::Element {
         }
         p {
             "We are currently working on a native renderer for Dioxus using WGPU called "
-            a { href: "https://github.com/DioxusLabs/blitz/", "" }
+            a { href: "https://github.com/DioxusLabs/blitz/", "Blitz" }
             ". This will allow you to build apps that are rendered natively for iOS, Android, and Desktop."
         }
     }

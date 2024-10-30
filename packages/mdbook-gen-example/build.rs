@@ -6,6 +6,7 @@ use mdbook_shared::MdBook;
 fn main() {
     // re-run only if the "example-book" directory changes
     println!("cargo:rerun-if-changed=../../example-book");
+    println!("cargo:rerun-if-changed=../mdbook-gen/");
 
     let manifest_dir =
         PathBuf::from("/Users/jonkelley/Development/ecosystem-dioxus/include_mdbook/");

@@ -16,12 +16,18 @@ Generally, here's the status of each platform:
 
 - **LiveView**: LiveView support is very young. You'll be figuring things out as you go. Thankfully, none of it is too hard and any work can be upstreamed into Dioxus.
 
+```rust
+fn main() {
+  dioxus_rocks;
+}
+```
+
 ## Features
 
 ---
 
 | Feature                   | Status | Description                                                          |
-|---------------------------|--------|----------------------------------------------------------------------|
+| ------------------------- | ------ | -------------------------------------------------------------------- |
 | Conditional Rendering     | ✅      | if/then to hide/show component                                       |
 | Map, Iterator             | ✅      | map/filter/reduce to produce rsx!                                    |
 | Keyed Components          | ✅      | advanced diffing with keys                                           |

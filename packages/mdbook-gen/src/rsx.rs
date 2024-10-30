@@ -236,14 +236,23 @@ impl<'a, I: Iterator<Item = Event<'a>>> RsxMarkdownParser<'a, I> {
                 } else {
                     let code = transform_code_block(&self.path, raw_code)?;
 
-                    let ss = SyntaxSet::load_defaults_newlines();
-                    let ts = ThemeSet::load_defaults();
+                    static THEME: once_cell::sync::Lazy<syntect::highlighting::Theme> =
+                        once_cell::sync::Lazy::new(|| {
+                            let raw = include_str!("../themes/MonokaiDark.thTheme").to_string();
+                            let mut reader = std::io::Cursor::new(raw.clone());
+                            ThemeSet::load_from_reader(&mut reader).unwrap()
+                        });
 
-                    let theme = &ts.themes["base16-ocean.dark"];
+                    let ss = SyntaxSet::load_defaults_newlines();
                     let syntax = ss.find_syntax_by_extension("rs").unwrap();
                     let html = escape_text(
-                        &syntect::html::highlighted_html_for_string(&code, &ss, syntax, theme)
-                            .unwrap(),
+                        &syntect::html::highlighted_html_for_string(
+                            &code.trim_end(),
+                            &ss,
+                            syntax,
+                            &THEME,
+                        )
+                        .unwrap(),
                     );
                     self.start_node(parse_quote! {
                         CodeBlock {

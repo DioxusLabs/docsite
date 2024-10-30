@@ -235,6 +235,7 @@ pub fn Chapter2() -> dioxus::prelude::Element {
                 }
             }
         }
+        CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">main</span><span style=\"color:#f8f8f2;\">() {{\n</span><span style=\"color:#f8f8f2;\">  dioxus_rocks;\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n" }
         h2 { id: "features",
             a { href: "#features", class: "header", "Features" }
         }

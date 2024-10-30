@@ -1,8 +1,5 @@
 use std::{env::current_dir, path::PathBuf};
 
-use mdbook_gen::generate_router_as_file;
-use mdbook_shared::MdBook;
-
 fn main() {
     // re-run only if the "example-book" directory changes
     println!("cargo:rerun-if-changed=../../example-book");

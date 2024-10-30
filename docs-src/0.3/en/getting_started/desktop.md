@@ -8,7 +8,7 @@ Examples:
 - [File Explorer](https://github.com/DioxusLabs/example-projects/blob/master/file-explorer)
 - [WiFi Scanner](https://github.com/DioxusLabs/example-projects/blob/master/wifi-scanner)
 
-[![File ExplorerExample](https://raw.githubusercontent.com/DioxusLabs/example-projects/master/file-explorer/image.png)](https://github.com/DioxusLabs/example-projects/tree/master/file-explorer)
+[![File ExplorerExample](https://github.com/DioxusLabs/example-projects/raw/master/file-explorer/assets/image.png)](https://github.com/DioxusLabs/example-projects/tree/master/file-explorer)
 
 ## Support
 

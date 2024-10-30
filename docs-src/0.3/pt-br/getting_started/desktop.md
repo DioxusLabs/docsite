@@ -9,7 +9,7 @@ Exemplos:
 - [Explorador de arquivos](https://github.com/DioxusLabs/example-projects/blob/master/file-explorer)
 - [Scanner WiFi](https://github.com/DioxusLabs/example-projects/blob/master/wifi-scanner)
 
-[![Exemplo do Explorador de Arquivos](https://raw.githubusercontent.com/DioxusLabs/example-projects/master/file-explorer/image.png)](https://github.com/DioxusLabs/example-projects/tree /master/file-explorer)
+[![Exemplo do Explorador de Arquivos](https://github.com/DioxusLabs/example-projects/raw/master/file-explorer/assets/image.png)](https://github.com/DioxusLabs/example-projects/tree /master/file-explorer)
 
 ## Suporte
 

@@ -29,7 +29,7 @@ Você pode então passar valores de _prop_ para o componente da mesma forma que 
 {{#include src/doc_examples/untested_03/component_owned_props.rs:App}}
 ```
 
-![Screenshot: Likes component](./images/component_owned_props_screenshot.png)
+![Screenshot: Likes component](/assets/static/images03/component_owned_props_screenshot.png)
 
 ### Props Emprestados
 
@@ -47,7 +47,7 @@ Podemos então usar o componente assim:
 {{#include src/doc_examples/untested_03/component_borrowed_props.rs:App}}
 ```
 
-![Screenshot: TitleCard component](./images/component_borrowed_props_screenshot.png)
+![Screenshot: TitleCard component](/assets/static/images03/component_borrowed_props_screenshot.png)
 
 ## Props de Option
 

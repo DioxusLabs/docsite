@@ -27,7 +27,7 @@ Finally, a third component will render the other two as children. It will be res
 ```rust
 {{#include src/doc_examples/untested_03/meme_editor.rs:meme_editor}}
 ```
-![Meme Editor Screenshot: An old plastic skeleton sitting on a park bench. Caption: "me waiting for a language feature"](./images/meme_editor_screenshot.png)
+![Meme Editor Screenshot: An old plastic skeleton sitting on a park bench. Caption: "me waiting for a language feature"](/assets/static/images03/meme_editor_screenshot.png)
 
 ## Using Context
 

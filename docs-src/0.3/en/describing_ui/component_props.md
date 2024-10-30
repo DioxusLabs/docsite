@@ -28,7 +28,7 @@ You can then pass prop values to the component the same way you would pass attri
 {{#include src/doc_examples/untested_03/component_owned_props.rs:App}}
 ```
 
-![Screenshot: Likes component](./images/component_owned_props_screenshot.png)
+![Screenshot: Likes component](/assets/static/images03/component_owned_props_screenshot.png)
 
 ### Borrowed Props
 
@@ -45,7 +45,7 @@ We can then use the component like this:
 ```rust
 {{#include src/doc_examples/untested_03/component_borrowed_props.rs:App}}
 ```
-![Screenshot: TitleCard component](./images/component_borrowed_props_screenshot.png)
+![Screenshot: TitleCard component](/assets/static/images03/component_borrowed_props_screenshot.png)
 
 Borrowed props can be very useful, but they do not allow for memorization so they will *always* rerun when the parent scope is rerendered. Because of this Borrowed Props should be reserved for components that are cheap to rerun or places where cloning data is an issue. Using Borrowed Props everywhere will result in large parts of your app rerunning every interaction.
 

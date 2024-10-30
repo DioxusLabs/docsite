@@ -22,6 +22,6 @@ Em seguida, você pode renderizar seu componente em outro componente, da mesma f
 {{#include src/doc_examples/untested_03/components.rs:App}}
 ```
 
-![Captura de tela contendo o componente Sobre duas vezes](./images/screenshot_about_component.png)
+![Captura de tela contendo o componente Sobre duas vezes](/assets/static/images03/screenshot_about_component.png)
 
 > Neste ponto, pode parecer que os componentes nada mais são do que funções. No entanto, à medida que você aprende mais sobre os recursos do Dioxus, verá que eles são realmente mais poderosos!

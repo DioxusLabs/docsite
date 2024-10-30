@@ -1,6 +1,6 @@
 # Introdução
 
-![dioxuslogo](./images/dioxuslogo_full.png)
+![dioxuslogo](/assets/static/images03/dioxuslogo_full.png)
 
 Dioxus é uma estrutura portátil, de alto desempenho e ergonômica para a construção de interfaces de usuário multiplataforma no Rust. Este guia irá ajudá-lo a começar a escrever aplicativos Dioxus para a Web, Desktop, Mobile e muito mais.
 

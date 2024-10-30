@@ -101,7 +101,7 @@ fn VersionSwitch() -> Element {
             cursor: "pointer",
             role: "button",
             onmouseleave: move |_| show_versions.set(false),
-            onclick: move |_| show_versions.set(true),
+            onclick: move |_| show_versions.toggle(),
             div { class: "hover:bg-gray-100 dark:hover:bg-ghdarkmetal rounded w-full py-1",
                 div { class: "grid grid-cols-[auto,1fr,auto] items-center gap-2 px-1",
                     div { class: "w-8 h-8 rounded-md border flex items-center justify-center bg-gray-50 border-gray-200 text-gray-900 dark:bg-inherit dark:text-gray-500 dark:border-gray-700 ",
@@ -117,7 +117,7 @@ fn VersionSwitch() -> Element {
                 }
             }
             div {
-                class: "relative w-full z-50 pt-2",
+                class: "relative w-full z-50",
                 class: if !show_versions() { "hidden" },
                 div { class: "absolute flex flex-col bg-white dark:bg-ghdarkmetal text-left rounded-lg border  dark:border-gray-700 w-full overflow-hidden text-gray-500 dark:text-gray-100 text-xs shadow-lg",
                     TypedVersionSelectItem::<crate::docs::router_06::BookRoute> {}

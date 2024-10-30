@@ -51,18 +51,25 @@
     }
 }
 
+@media (prefers-color-scheme: light) {
+    .codeblock>pre {
+        background-color: rgb(37, 36, 36) !important;
+    }
+}
 
+.codeblock>pre {
+    border-radius: 0px 0px 0px 0px;
+    margin-bottom: 0px !important;
+}
 
 .markdown-body {
     box-sizing: border-box;
     min-width: 200px;
-    /* max-width: 980px;
-    margin: 0 5%; */
-    /* padding: 45px; */
     list-style: disc;
 }
 
 .markdown-body button {}
+
 
 /*
 https: //stackoverflow.com/questions/10732690/offsetting-an-html-anchor-to-adjust-for-fixed-header
@@ -170,7 +177,14 @@ It's so unliklely anyone is copying text on mobile that we can just hide it
 .markdown-body ul { list-style: disc; }
 .markdown-body ol { list-style: decimal; }
 .markdown-body li { display: list-item; }
-.markdown-body button { display: inline-block; background-color: rgba(209, 213, 219, 0.3); border-radius: 0.25rem; padding: 0.25rem 0.5rem; border: 1px solid; margin: 0.25rem; }
+.markdown-body>div>button {
+    display: inline-block;
+    background-color: rgba(209, 213, 219, 0.3);
+    border-radius: 0.25rem;
+    padding: 0.25rem 0.5rem;
+    border: 1px solid;
+    margin: 0.25rem;
+}
 .markdown-body .header { color: inherit }
 
 .textured-body {

@@ -105,7 +105,7 @@ fn VersionSwitch() -> Element {
             onclick: move |_| show_versions.set(true),
             div { class: "hover:bg-gray-100 dark:hover:bg-ghdarkmetal rounded w-full py-1",
                 div { class: "grid grid-cols-[auto,1fr,auto] items-center gap-2 px-1",
-                    div { class: "w-8 h-8 rounded-md border flex items-center justify-center bg-gray-50 border-gray-200 text-gray-900 dark:invert",
+                    div { class: "w-8 h-8 rounded-md border flex items-center justify-center bg-gray-50 border-gray-200 text-gray-900 dark:bg-inherit dark:text-gray-500 dark:border-gray-700 ",
                         icons::VersionTagIcon {}
                     }
                     div { class: "leading-snug text-xs text-left",

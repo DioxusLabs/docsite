@@ -256,16 +256,28 @@ pub enum Route {{\n\t"
 }
 
 #[component]
-fn CodeBlock(contents: String) -> Element {
+fn CodeBlock(contents: String, name: Option<String>) -> Element {
+    let mut copied = use_signal(|| false);
     rsx! {
-        div { style: "position: relative;",
-            // button {
-            //     style: "position: absolute; top: 0; right: 0; background: rgba(0, 0, 0, 0.15); color: white; border: 1px solid white; padding: 0.25em;",
-            //     background_color: "red",
-            //     "onclick": "navigator.clipboard.writeText(this.previousElementSibling.innerText)",
-            //     "Copy"
-            // }
-            div { dangerous_inner_html: contents }
+        div { class: "border overflow-hidden rounded-md border-gray-300 dark:border-gray-500",
+            div { class: "w-full bg-red flex flex-row justify-between border-b border-gray-300 dark:border-gray-500 py-1 px-2 text-xs items-center bg-gray-100 dark:bg-gray-800",
+                div { class: "font-mono",
+                    if let Some(path) = name {
+                        "src/{path}"
+                    }
+                }
+                button {
+                    class: "hover:text-blue-600 flex flex-row items-center gap-1",
+                    class: if copied() { "text-green-600" },
+                    "onclick": "navigator.clipboard.writeText(this.parentNode.parentNode.lastChild.innerText);",
+                    onclick: move |_| copied.set(true),
+                    if copied() {
+                        "Copied!"
+                    }
+                    span { crate::icons::Copy {} }
+                }
+            }
+            div { class: "codeblock", dangerous_inner_html: contents }
         }
     }
 }

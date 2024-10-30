@@ -948,7 +948,7 @@
     overflow: auto;
     font-size: 85%;
     line-height: 1.45;
-    border-radius: 6px;
+    /* border-radius: 6px; */
     /* background-color: var(--color-canvas-subtle); */
 }
 

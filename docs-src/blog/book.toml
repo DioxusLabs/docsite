@@ -1,0 +1,32 @@
+[book.en]
+title = "Dioxus Blog"
+description = "Blog posts about for the Dioxus docsite"
+authors = ["Jonathan Kelley"]
+language = "en"
+
+[language.en]
+name = "English"
+
+[rust]
+edition = "2021"
+
+[output.html]
+mathjax-support = true
+site-url = "/mdBook/"
+git-repository-url = "https://github.com/DioxusLabs/dioxus/edit/main/docs-src/blog"
+edit-url-template = "https://github.com/DioxusLabs/dioxus/edit/main/docs-src/blog/{path}"
+
+# running examples will not work because dioxus is not a included in the playground
+[output.html.playground]
+editable = true
+line-numbers = true
+runnable = false
+
+[output.html.search]
+limit-results = 20
+use-boolean-and = true
+boost-title = 2
+boost-hierarchy = 2
+boost-paragraph = 1
+expand = true
+heading-split-level = 2

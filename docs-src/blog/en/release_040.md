@@ -14,7 +14,7 @@ Dioxus 0.4 is adding support for the next frontier: the server backend.
 
 You can now write your entire fullstack web app in one file.
 
-![meme](/static/04meme.png)
+![meme](/assets/static/04meme.png)
 
 The gist of this release:
 
@@ -58,7 +58,7 @@ async fn get_username() -> Result<String> {
 
 The `server` macro will generate a different helper function depending on the configuration flags of your project. If you build your project for the backend (`server`), then your endpoint will be automatically injected into any axum/salvo/warp router created with `dioxus_fullstack`. However, if you build your project with any other feature flag, like, `client`, then the macro generates the *call* to the server.
 
-![Server / Client code splitting](/static/split_codegen.png)
+![Server / Client code splitting](/assets/static/split_codegen.png)
 
 This approach makes it easy to incrementally add new backend functionality to your app. Of course, this has some disadvantages - the backend is rather tightly coupled to the frontend - but for most apps, Server Functions will be a huge productivity win.
 
@@ -102,7 +102,7 @@ Our goal with Server Functions is to lay the foundation for our final vision of 
 
 One feature that has been missing in Dioxus since its release is the ability to wait for futures to complete before generating the final server-side-rendered HTML. Before, the expectation was that you’d load any data *ahead of time,* and pass in the data via Root Props. We quickly learned this caused issues with scalability: you might not want to fetch every piece of props depending on the route.
 
-![Diagram of how SSR data used to be fetched](/static/old_fetch.png)
+![Diagram of how SSR data used to be fetched](/assets/static/old_fetch.png)
 
 To solve this, we’re adding future-compatible `Suspense` - now integrated with Dioxus Fullstack and Server Functions.  Suspense is freely available to components via the `cx.suspend()` method. Calling `suspend` will tell Dioxus that this particular component is blocking the completion of the final render due to a pending future. The most basic usage of Suspense is pausing rendering until a data fetch has been completed:
 
@@ -141,7 +141,7 @@ async fn get_server_ip() -> Result<String> {
 
 With inline datafetching, we can greatly simplify the amount of work required to build fullstack apps. In this diagram of a Dioxus app with suspense, we can see that suspended components are marked yellow. When their futures completed, Dioxus will continue rendering them, cascading into their children until all futures have been resolved.
 
-![Diagram of how SSR data is fetched now](/static/new_fetch.png)
+![Diagram of how SSR data is fetched now](/assets/static/new_fetch.png)
 
 Adopting suspense and fullstack should be easy. Now, when you go to render the app, you can simply call `wait_for_suspense()` before pre-rendering the markup:
 
@@ -323,7 +323,7 @@ fn HeaderFooterNav(cx: Scope) -> Element {
 
 The new router was an absolutely massive amount of work, spearheaded by @TeFiLeDo, improved by @ealmloff, and made possible thanks to community members like @stephenandary and @attilio-oliva.
 
-![PR of enum router](/static/enum_router.png)
+![PR of enum router](/assets/static/enum_router.png)
 
 ## New and beautiful interactive docs
 
@@ -332,15 +332,15 @@ It’s about time we revamped our documentation. When we launched, the original 
 
 To start, we revamped our landing page. Short, sweet, to the point.
 
-![Screenshot of new doc site landing page](/static/landing_1.png)
+![Screenshot of new doc site landing page](/assets/static/landing_1.png)
 
 At the top of the page, you’ll see a new search bar. You can search for anything in our docs with just a `ctrl+/` .  This new search functionality uses a [new search crate we designed and built](https://github.com/dioxusLabs/dioxus-search). `Dioxus-search` is fully crossplatform and ready to use in your next Dioxus app.
 
-![Screenshot of new doc site search](/static/landing_2.png)
+![Screenshot of new doc site search](/assets/static/landing_2.png)
 
 Selecting any of the search results will take you straight to the docs page without bouncing out to an external mdbook.
 
-![Screenshot of new doc site mdbook](/static/landing_3.png)
+![Screenshot of new doc site mdbook](/assets/static/landing_3.png)
 
 We’ve added a bunch more content to the docs, including new pages like:
 
@@ -352,11 +352,11 @@ We’ve added a bunch more content to the docs, including new pages like:
 
 The best part? The docs are interactive! Examples like the `hello-world` and even the `hackernews` clone come to life from within the docs page.
 
-![Screenshot of new doc site interactivity](/static/landing_4.png)
+![Screenshot of new doc site interactivity](/assets/static/landing_4.png)
 
 We also moved the `awesome` dioxus page from GitHub to the docsite, so you can explore the various crates that other developers have submitted as “awesome.”
 
-![Screenshot of new doc site awesome page](/static/landing_5.png)
+![Screenshot of new doc site awesome page](/assets/static/landing_5.png)
 
 The new docs leverage many of the amazing new features from the router, including:
 
@@ -369,11 +369,11 @@ To date, Dioxus has provided first-party support for mobile via iOS, but our And
 
 iOS Demo:
 
-![Screenshot of xcode with dioxus app](/static/ios_demo.png)
+![Screenshot of xcode with dioxus app](/assets/static/ios_demo.png)
 
 Android Demo:
 
-![Screenshot of android studio with dioxus app](/static/android_demo.png)
+![Screenshot of android studio with dioxus app](/assets/static/android_demo.png)
 
 ## Window-Close Behavior
 
@@ -505,7 +505,7 @@ Yet another small tweak the CLI: you can now use `dx serve` on desktop apps with
 
 So far, the CLI has supported useful commands like `dx fmt` , `dx build` , `dx serve` . Until date, we haven’t provided a command to build a final distributable image of your app. In 0.4, we’re incorporating cargo-bundle support into the Dioxus CLI. Now, from the Dioxus CLI, you can bundle your app using the same configuration options as the Tauri bundler, making it easy to migrate existing projects over. `dx bundle` supports bundling apps for macOS, iOS, Windows, and Linux (.deb, .rpm).
 
-![A bundled app on macos](/static/bundle.png)
+![A bundled app on macos](/assets/static/bundle.png)
 
 This is a great place for new contributors to help flesh out the ecosystem!
 
@@ -514,7 +514,7 @@ This is a great place for new contributors to help flesh out the ecosystem!
 
 The Dioxus CLI has a new helper command: `dx check`. Thanks to the work from community member @eventualbuddha, `dx check` will now identify and help mitigate issues like hooks being called inside conditionals and loops.
 
-![The new check command for dx](/static/dxcheck.png)
+![The new check command for dx](/assets/static/dxcheck.png)
 
 These lints make it easier for newcomers to Dioxus to get started, especially if they’re not super familiar with React.
 
@@ -527,7 +527,7 @@ As part of improving stability and fixing bugs, we’ve made some improvements t
 - We fixed a handful of autoformatting bugs around event handlers
 - We’ve moved the code for the extension out of the CLI and into a small WebAssembly binary so you don’t need the CLI installed and version matched
 
-![The Dioxus VSCode extension page](/static/extension.png)
+![The Dioxus VSCode extension page](/assets/static/extension.png)
 
 The extension is a great place for new contributors to dive into the Dioxus codebase!
 

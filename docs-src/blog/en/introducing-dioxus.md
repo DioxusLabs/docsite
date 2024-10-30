@@ -57,7 +57,7 @@ However, some things are different in Dioxus:
 
 As a demo, here's our teaser example running on all our current supported platforms:
 
-![Teaser Example](/static/Untitled.png)
+![Teaser Example](/assets/static/Untitled.png)
 
 This very site is built with Dioxus, and the source code is available [here](https://github.com/dioxuslabs/docsite).
 
@@ -203,7 +203,7 @@ fn app(cx: Scope) -> Element {
 
 And voilà! We can `cargo run` our app
 
-![Simple Counter Desktop App](/static/counter.png)
+![Simple Counter Desktop App](/assets/static/counter.png)
 
 ## Support for JSX-style templating
 
@@ -300,23 +300,23 @@ Note: all IDE-related features have only been tested with [Rust-Analyzer](https:
 
 Dioxus code operates pleasantly with your IDE. For starters, most elements are documented through the Rustdoc system. A quick summary of the MDN docs is always under your finger tips:
 
-![Elements have hover context](/static/ide_hover.png)
+![Elements have hover context](/assets/static/ide_hover.png)
 
 Dioxus also wraps platform-specific events with a custom synthetic event system. This means events enjoy proper autocomplete and documentation, unlike [Yew](https://yew.rs/) which currently relies on [web-sys](https://crates.io/crates/web-sys) with incomplete IDE support:
 
-![Events are strongly typed](/static/ide_autocomplete.png)
+![Events are strongly typed](/assets/static/ide_autocomplete.png)
 
 Even element attributes and event handlers have top-notch documentation!
 
-![Element attributes and listeners have hover context](/static/ide_listener.png)
+![Element attributes and listeners have hover context](/assets/static/ide_listener.png)
 
 The `rsx!` macro also benefits from code folding, batch renaming, and block selection, making most basic code navigation and completion tasks a breeze.
 
-![Element blocks can be folded and renamed](/static/ide_selection.png)
+![Element blocks can be folded and renamed](/assets/static/ide_selection.png)
 
 Furthermore, the `rsx!` macro itself is documented, so if you ever forget how to use a certain feature, the documentation remains close at hand:
 
-![The RSX documentation is provided on hover](/static/ide_rsx.png)
+![The RSX documentation is provided on hover](/assets/static/ide_rsx.png)
 
 We spent a ton of time on this and we hope you enjoy it!
 

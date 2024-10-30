@@ -137,20 +137,10 @@ pub enum Route {
         #[nest("/blog")]
             #[route("/")]
             BlogList {},
-            #[route("/release-050")]
-            PostRelease050 {},
-            #[route("/templates-diffing")]
-            PostTemplate {},
-            #[route("/going-fulltime")]
-            PostFulltime {},
-            #[route("/release-040")]
-            PostRelease040 {},
-            #[route("/release-030")]
-            PostRelease030 {},
-            #[route("/release-020")]
-            PostRelease020 {},
-            #[route("/introducing-dioxus")]
-            PostRelease010 {},
+            #[layout(BlogPost)]
+                #[child("/")]
+                BlogPost { child: crate::docs::router_blog::BookRoute },
+            #[end_layout]
         #[end_nest]
 
         #[layout(Learn)]

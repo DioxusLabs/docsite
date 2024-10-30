@@ -23,7 +23,7 @@ This release represents an absolutely massive jump forward for the Dioxus ecosys
 
 We’ve made huge changes underpinning the architecture of Dioxus. The significance of these changes is hard to describe in this simple release document, but we did write a blog post about it [here](https://dioxuslabs.com/blog/templates-diffing/). Now, Dioxus performance is on par with of SolidJS.
 
-![Untitled](Dioxus%200%203%20-%20Templates,%20Hot%20Reloading,%20LiveView,%20a%2041efa87bc9d8464b88c75d6eb62e21b5/Untitled.png)
+![Js-framework-benchmark of Dioxus showing good performance](https://i.imgur.com/9rbAXP9.png)
 
 Additionally, we’ve reworked how desktop apps stream edits from the native thread into the webview, greatly improving performance.
 
@@ -33,7 +33,7 @@ Dioxus can now update how your app looks without recompiling the underlying Rust
 
 We’ve found hot reloading to significantly speed up development cycles, making it faster than ever to iterate your app.
 
-[hotreload-full.mov](Dioxus%200%203%20-%20Templates,%20Hot%20Reloading,%20LiveView,%20a%2041efa87bc9d8464b88c75d6eb62e21b5/hotreload-full.mov)
+![hotreload full](https://i.imgur.com/OzIURca.mp4)
 
 Note that hot reloading works by interpreting the body of RSX macro calls. If the hot reloading engine detects a modification unrelated to RSX, then it will force a full refresh of the app.
 
@@ -43,11 +43,11 @@ Another widely requested feature - autoformatting - is now built into the Dioxus
 
 Autoformatting can be used via the VSCode Extension which will autoformat as you code.
 
-[autofmt.mov](Dioxus%200%203%20-%20Templates,%20Hot%20Reloading,%20LiveView,%20a%2041efa87bc9d8464b88c75d6eb62e21b5/autofmt.mov)
+![autofmt.mov](https://i.imgur.com/aPQEFNO.mp4)
 
 Or directly for use in CI or non-vscode editors with the `dioxus fmt` command.
 
-[dioxusfmt.mov](Dioxus%200%203%20-%20Templates,%20Hot%20Reloading,%20LiveView,%20a%2041efa87bc9d8464b88c75d6eb62e21b5/dioxusfmt.mov)
+![dioxusfmt.mov](https://i.imgur.com/WrNZZdW.mp4)
 
 Autoformatting respects some simple rustfmt features but is still in its early stages. If you find any quirks or disagree with the formatting style, feel free to file an issue.
 
@@ -55,7 +55,7 @@ Autoformatting respects some simple rustfmt features but is still in its early s
 
 Dioxus 0.3 marks the first official release of dedicated tooling for LiveView. LiveView is a new web-app development paradigm that combines the simplicity of server-side rendering with the rich interactivity of the single-page-application.
 
-[liveviewdemo.mov](Dioxus%200%203%20-%20Templates,%20Hot%20Reloading,%20LiveView,%20a%2041efa87bc9d8464b88c75d6eb62e21b5/liveviewdemo.mov)
+![liveviewdemo.mov](https://i.imgur.com/Eiejo1h.mp4)
 
 Because there’s no frontend build step or need for a dedicated backend, writing LiveView apps is easy. LiveView lets you freely mix database access into your frontend code, saving the hassle of a dedicated backend. LiveView is the fastest way to build a complete app in Rust.
 
@@ -85,7 +85,7 @@ fn app(cx: Scope) -> Element {
 
 Up to this point, Dioxus rendered into the terminal using just static elements. Now, with the release of Dioxus 0.3, we’re shipping a collection of input widgets for common utilities like buttons, sliders, text inputs, checkboxes, and more. These same widgets provide a basis of functionality for the native renderers we mention below.
 
-[tuiinputs.mp4](Dioxus%200%203%20-%20Templates,%20Hot%20Reloading,%20LiveView,%20a%2041efa87bc9d8464b88c75d6eb62e21b5/tuiinputs.mp4)
+![tuiinputs.mp4](https://i.imgur.com/oXQC5o5.mp4)
 
 ## Multi-window Desktop Apps
 
@@ -93,7 +93,7 @@ The Dioxus VirtualDom and tao/wry event loop now share the same scheduler, allow
 
 One big advantage of this is the ability to open and close multiple windows from within your Dioxus app. With access to the event loop, you can even get a raw window handle, allowing alternative rendering engines like OpenGL or WGPU.
 
-[multiwindow.mov](Dioxus%200%203%20-%20Templates,%20Hot%20Reloading,%20LiveView,%20a%2041efa87bc9d8464b88c75d6eb62e21b5/multiwindow.mov)
+![multiwindow.mov](https://i.imgur.com/4Yg9FWd.mp4)
 
 ## Lowercase components
 
@@ -128,7 +128,7 @@ Dioxus 0.3 delivers on another commonly requested feature: native (non-web brows
 
 The renderer is very raw but already capable of rendering HTML, CSS, and responding to user input. We’re actively working on adding accessibility support using the work done by EGUI as inspiration.
 
-→ video of WGPU/Blitz
+![wgpu](https://i.imgur.com/NVp4COt.mp4)
 
 ## Skia Renderer
 
@@ -141,7 +141,7 @@ Freya is already an amazing piece of technology and has support for things like 
 
 A common complaint with Dioxus’ event system is its reliance on imperfect web standards. For Dioxus 0.3, we overhauled the public API for events to be more “Rusty.” Instead of shipping our own types like keyboard keys, we now provide an API comfortable for the everyday Rustacean. You can now do mouse position math with `euclid`, match on keys native to `keyboard-types`, and get helpful docs with cargo-doc. Dioxus also now provides better support for file upload and drag-and-drop operations by downcasting the native event type if it exists.
 
-[dragdropworks.mov](Dioxus%200%203%20-%20Templates,%20Hot%20Reloading,%20LiveView,%20a%2041efa87bc9d8464b88c75d6eb62e21b5/dragdropworks.mov)
+![dragdropworks.mov](https://i.imgur.com/DHBvvVy.mp4)
 
 Note that the old JS-like API is still available (but deprecated) and will be phased out in a future release of Dioxus.
 
@@ -153,14 +153,14 @@ The CLI has been overhauled with a ton of new features and improved ergonomics. 
 
 The community seems to really enjoy Dioxus! And they want their friends to know about Dioxus, too! But, our guides have not been available in every language that developers want. In this release, we’re adding two new languages to our guide:
 
-- Chinese provided by @mrxiaozhuox
-- Portuguese provided by @whoeverdidthis
+- Chinese provided by [`@mrxiaozhuox`](https://github.com/mrxiaozhuox)
+- Portuguese provided by [`@whoeverdidthis`](https://github.com/whoeverdidthis)
 
 ## A new landing page and better docs
 
 If you haven’t already noticed, our homepage is cleaner, more direct, and a bit more eye-catching. Check it out if you haven’t!
 
-As part of our translation and Rust-ification work, @renis has overhauled our guide to be more familiar for Rust developers. This skips some of the boilerplate (IE install Rust) and gets straight into the action of building Dioxus apps.
+As part of our translation and Rust-ification work, [`@renis`](https://github.com/renis) has overhauled our guide to be more familiar for Rust developers. This skips some of the boilerplate (IE install Rust) and gets straight into the action of building Dioxus apps.
 
 ## Community Projects
 

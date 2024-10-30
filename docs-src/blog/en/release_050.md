@@ -283,8 +283,11 @@ As part of our asset system overhaul, we implemented hot reloading of CSS files 
 
 When combined with the Tailwind watcher, we now support hot reloading of Tailwind CSS! On top of that, we also support IDE hinting of Tailwind classes in VSCode with a [custom regex extension](https://github.com/tailwindlabs/tailwindcss/discussions/7073)
 
+![CSS Hot reloading](https://imgur.com/CSjVVLL.mp4)
+
 What’s even niftier is that you can stream these changes to several devices at once, unlocking simultaneous hot reloading across all devices that you target:
 
+![CSS Hot reloading](https://i.imgur.com/cZ8qZCz.mp4)
 
 ## Event System Rewrite
 
@@ -385,8 +388,10 @@ In Dioxus 0.5, we apply that same technique to apply changes across the network 
 For render intensive workloads, the new renderer takes only 1/5 the time to apply the changes in the browser with 1/2 the latency. Here is one of the benchmarks we developed while working on the new binary protocol. In Dioxus 0.4, the renderer was constantly freezing. In Dioxus 0.5, it runs smoothly:
 
 **Dioxus 0.4**
+![Desktop performance 0.4](https://i.imgur.com/CX7DREF.mp4)
 
 **Dioxus 0.5**
+![Desktop performance 0.5](https://i.imgur.com/3l65D0G.mp4)
 
 ## Spreading props
 
@@ -468,6 +473,8 @@ pub async fn mistral(text: String) -> Result<TextStream, ServerFnError> {
 }
 ```
 
+![Streaming server function AI app](https://i.imgur.com/JJaMT0Z.mp4)
+
 Side note, the AI metaframework used here - Kalosm - is maintained by the Dioxus core team member ealmloff, and his AI GUI app Floneum is built with Dioxus!
 
 ## Fullstack CLI platform
@@ -485,13 +492,15 @@ dx serve --platform fullstack
 
 [https://github.com/DioxusLabs/dioxus/pull/1505](https://github.com/DioxusLabs/dioxus/pull/1505)
 
-@[DonAlonzo](https://github.com/DonAlonzo) added LiveView support for the router in Dioxus 0.5. The router will now work out of the box with your LiveView apps!
+[`@DonAlonzo`](https://github.com/DonAlonzo) added LiveView support for the router in Dioxus 0.5. The router will now work out of the box with your LiveView apps!
 
 ## Custom Asset Handlers
 
 [https://github.com/DioxusLabs/dioxus/pull/1719](https://github.com/DioxusLabs/dioxus/pull/1719)
 
-@willcrichton added support for custom asset handlers to Dioxus Desktop. Custom asset handlers let you efficiently stream data from your rust code into the browser without going through JavaScript. This is great for high bandwidth communication like [video streaming](https://github.com/DioxusLabs/dioxus/pull/1727):
+[`@willcrichton`](https://github.com/willcrichton) added support for custom asset handlers to Dioxus Desktop. Custom asset handlers let you efficiently stream data from your rust code into the browser without going through JavaScript. This is great for high bandwidth communication like [video streaming](https://github.com/DioxusLabs/dioxus/pull/1727):
+
+![Custom asset handlers](https://i.imgur.com/6bdUBdF.mp4)
 
 Now, you can do things like work with gstreamer or webrtc and pipe data directly into the webview without needing to encode/decode frames by hand.
 
@@ -499,6 +508,7 @@ Now, you can do things like work with gstreamer or webrtc and pipe data directly
 
 This is a bit smaller of a tweak, but now we properly support file drops for Desktop:
 
+![Native file drop](https://i.imgur.com/vkkDDid.mp4)
 Previously we just gave you the option to intercept filedrops but now it’s natively integrated into the event system
 
 ## Error handling
@@ -568,7 +578,11 @@ We shipped hot reloading in 0.3, added it to Desktop in 0.4, and now we’re fin
 
 Additionally, we’ve drastically improved the developer experience of building desktop apps. When we can’t hot reload the app and have to do a full recompile, we now preserve the state of the open windows and resume that state. This means your app won’t block your entire screen on every edit and it will maintain its size and position, leading to a more magical experience. Once you’ve played with it, you can never go back - it’s that good.
 
+![Hot reloading by default](https://i.imgur.com/qjHB4ho.mp4)
+
 ## Updates to the Dioxus template
+
+![Dioxus template update](https://i.imgur.com/jpXNW5P.mp4)
 
 With this update, our newest core team member Miles put serious work into overhauling documentation and our templates. We now have templates to create new Dioxus apps for Web, Desktop, Mobile, TUI, and Fullstack under one command.
 

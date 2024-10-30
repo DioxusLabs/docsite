@@ -234,7 +234,8 @@ impl<'a, I: Iterator<Item = Event<'a>>> RsxMarkdownParser<'a, I> {
                 if lang.as_deref() == Some("inject-dioxus") {
                     self.start_node(parse_str::<BodyNode>(&raw_code).unwrap());
                 } else {
-                    let code = transform_code_block(&self.path, raw_code)?;
+                    let mut fname = None;
+                    let code = transform_code_block(&self.path, raw_code, &mut fname)?;
 
                     static THEME: once_cell::sync::Lazy<syntect::highlighting::Theme> =
                         once_cell::sync::Lazy::new(|| {
@@ -254,9 +255,15 @@ impl<'a, I: Iterator<Item = Event<'a>>> RsxMarkdownParser<'a, I> {
                         )
                         .unwrap(),
                     );
+                    let fname = if let Some(fname) = fname {
+                        quote! { name: #fname.to_string() }
+                    } else {
+                        quote! {}
+                    };
                     self.start_node(parse_quote! {
                         CodeBlock {
                             contents: #html,
+                            #fname
                         }
                     });
                 }
@@ -424,13 +431,17 @@ impl<'a, I: Iterator<Item = Event<'a>>> RsxMarkdownParser<'a, I> {
     }
 }
 
-fn transform_code_block(path: &Path, code_contents: String) -> syn::Result<String> {
+fn transform_code_block(
+    path: &Path,
+    code_contents: String,
+    fname: &mut Option<String>,
+) -> syn::Result<String> {
     let segments = code_contents.split("{{#");
     let mut output = String::new();
     for segment in segments {
         if let Some((plugin, after)) = segment.split_once("}}") {
             if plugin.starts_with("include") {
-                output += &resolve_extension(path, plugin)?;
+                output += &resolve_extension(path, plugin, fname)?;
                 output += after;
             }
         } else {
@@ -440,7 +451,7 @@ fn transform_code_block(path: &Path, code_contents: String) -> syn::Result<Strin
     Ok(output)
 }
 
-fn resolve_extension(_path: &Path, ext: &str) -> syn::Result<String> {
+fn resolve_extension(_path: &Path, ext: &str, fname: &mut Option<String>) -> syn::Result<String> {
     if let Some(file) = ext.strip_prefix("include") {
         let file = file.trim();
         let mut segment = None;
@@ -456,6 +467,13 @@ fn resolve_extension(_path: &Path, ext: &str) -> syn::Result<String> {
                 format!("Failed to read file {}: {}", file, e),
             )
         })?;
+        *fname = Some(
+            PathBuf::from(file)
+                .file_name()
+                .unwrap()
+                .to_string_lossy()
+                .to_string(),
+        );
         if let Some(segment) = segment {
             // get the text between lines with ANCHOR: segment and ANCHOR_END: segment
             let lines = result.lines();

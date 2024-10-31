@@ -59,7 +59,9 @@ Whenever a `CreateElement` edit is generated during diffing, Dioxus increments i
 For the sake of understanding, let's consider this example – a very simple UI declaration:
 
 ```rust
-rsx! { h1 { "count: {x}" } }
+rsx! {
+	h1 { "count: {x}" }
+}
 ```
 
 #### Building Templates

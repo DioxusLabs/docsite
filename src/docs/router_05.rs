@@ -5127,7 +5127,7 @@ pub fn ReferenceRsx() -> dioxus::prelude::Element {
         }
         p { "You have already seen a simple example of RSX syntax in the \"hello world\" application:" }
         CodeBlock {
-            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#8c8c8c;\">// define a component that renders a div with the text &quot;Hello, world!&quot;\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">App</span><span style=\"color:#f8f8f2;\">() -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    rsx! {{ div {{ </span><span style=\"color:#ffee99;\">&quot;Hello, world!&quot; </span><span style=\"color:#f8f8f2;\">}} }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#8c8c8c;\">// define a component that renders a div with the text &quot;Hello, world!&quot;\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">App</span><span style=\"color:#f8f8f2;\">() -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    rsx! {{\n</span><span style=\"color:#f8f8f2;\">        div {{ </span><span style=\"color:#ffee99;\">&quot;Hello, world!&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
             name: "hello_world_desktop.rs".to_string(),
         }
         p {
@@ -5248,7 +5248,7 @@ pub fn ReferenceRsx() -> dioxus::prelude::Element {
             ":"
         }
         CodeBlock {
-            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#8c8c8c;\">// this should come from a trusted source\n</span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> contents </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;live &lt;b&gt;dangerously&lt;/b&gt;&quot;</span><span style=\"color:#f8f8f2;\">;\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">rsx! {{ div {{ dangerous_inner_html: </span><span style=\"color:#ffee99;\">&quot;{{contents}}&quot; </span><span style=\"color:#f8f8f2;\">}} }}</span></pre>\n",
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#8c8c8c;\">// this should come from a trusted source\n</span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> contents </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;live &lt;b&gt;dangerously&lt;/b&gt;&quot;</span><span style=\"color:#f8f8f2;\">;\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">rsx! {{\n</span><span style=\"color:#f8f8f2;\">    div {{ dangerous_inner_html: </span><span style=\"color:#ffee99;\">&quot;{{contents}}&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
             name: "hello_world_desktop.rs".to_string(),
         }
         DemoFrame { dangerous_inner_html::App {} }
@@ -5282,7 +5282,7 @@ pub fn ReferenceRsx() -> dioxus::prelude::Element {
             " attribute:"
         }
         CodeBlock {
-            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">rsx! {{ div {{ hidden: </span><span style=\"color:#ff80f4;\">false</span><span style=\"color:#f8f8f2;\">, </span><span style=\"color:#ffee99;\">&quot;hello&quot; </span><span style=\"color:#f8f8f2;\">}} }}</span></pre>\n",
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">rsx! {{\n</span><span style=\"color:#f8f8f2;\">    div {{ hidden: </span><span style=\"color:#ff80f4;\">false</span><span style=\"color:#f8f8f2;\">, </span><span style=\"color:#ffee99;\">&quot;hello&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
             name: "hello_world_desktop.rs".to_string(),
         }
         DemoFrame { boolean_attribute::App {} }
@@ -5488,7 +5488,7 @@ pub fn ReferenceComponents() -> dioxus::prelude::Element {
             " describing the UI it wants to render."
         }
         CodeBlock {
-            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#8c8c8c;\">// define a component that renders a div with the text &quot;Hello, world!&quot;\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">App</span><span style=\"color:#f8f8f2;\">() -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    rsx! {{ div {{ </span><span style=\"color:#ffee99;\">&quot;Hello, world!&quot; </span><span style=\"color:#f8f8f2;\">}} }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#8c8c8c;\">// define a component that renders a div with the text &quot;Hello, world!&quot;\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">App</span><span style=\"color:#f8f8f2;\">() -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    rsx! {{\n</span><span style=\"color:#f8f8f2;\">        div {{ </span><span style=\"color:#ffee99;\">&quot;Hello, world!&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
             name: "hello_world_desktop.rs".to_string(),
         }
         blockquote {
@@ -9967,7 +9967,7 @@ pub fn CookbookCustomRenderer() -> dioxus::prelude::Element {
         p {
             "For the sake of understanding, let's consider this example – a very simple UI declaration:"
         }
-        CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">rsx! {{ h1 {{ </span><span style=\"color:#ffee99;\">&quot;count: {{x}}&quot; </span><span style=\"color:#f8f8f2;\">}} }}</span></pre>\n" }
+        CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">rsx! {{\n</span><span style=\"color:#f8f8f2;\">\th1 {{ </span><span style=\"color:#ffee99;\">&quot;count: {{x}}&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n" }
         h4 { id: "building-templates",
             a { href: "#building-templates", class: "header", "Building Templates" }
         }

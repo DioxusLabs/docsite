@@ -11,7 +11,9 @@ fn main() {
 // ANCHOR: component
 // define a component that renders a div with the text "Hello, world!"
 fn App() -> Element {
-    rsx! { div { "Hello, world!" } }
+    rsx! {
+        div { "Hello, world!" }
+    }
 }
 // ANCHOR_END: component
 // ANCHOR_END: all

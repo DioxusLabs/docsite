@@ -3,5 +3,7 @@
 use dioxus::prelude::*;
 
 pub fn HelloWorldCounter() -> Element {
-    rsx! { div { "Hello, world!" } }
+    rsx! {
+        div { "Hello, world!" }
+    }
 }

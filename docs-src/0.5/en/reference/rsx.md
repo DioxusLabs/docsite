@@ -61,6 +61,12 @@ DemoFrame {
 }
 ```
 
+Repeating an attribute joins the values with a space. This makes it easy to add values like classes conditionally:
+
+```rust, no_run
+{{#include src/doc_examples/rsx_overview.rs:conditional_attributes_concatenation}}
+```
+
 #### Custom Attributes
 
 Dioxus has a pre-configured set of attributes that you can use. RSX is validated at compile time to make sure you didn't specify an invalid attribute. If you want to override this behavior with a custom attribute name, specify the attribute in quotes:

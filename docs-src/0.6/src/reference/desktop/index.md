@@ -15,11 +15,11 @@ Dioxus desktop is built off [Tauri](https://tauri.app/). Right now there are lim
 - [File Explorer](https://github.com/DioxusLabs/dioxus/blob/main/examples/file_explorer.rs)
 - [Tailwind App](https://github.com/DioxusLabs/dioxus/tree/main/examples/tailwind)
 
-[![Tailwind App screenshot](./public/static/tailwind_desktop_app.png)](https://github.com/DioxusLabs/dioxus/tree/main/examples/tailwind)
+[![Tailwind App screenshot](/assets/static/tailwind_desktop_app.png)](https://github.com/DioxusLabs/dioxus/tree/main/examples/tailwind)
 
 ## Running Javascript
 
-Dioxus provides some ergonomic wrappers over the browser API, but in some cases you may need to access parts of the browser API Dioxus does not expose. 
+Dioxus provides some ergonomic wrappers over the browser API, but in some cases you may need to access parts of the browser API Dioxus does not expose.
 
 
 For these cases, Dioxus desktop exposes the use_eval hook that allows you to run raw Javascript in the webview:

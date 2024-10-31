@@ -24,8 +24,6 @@ pub enum BookRoute {
     Release040 {},
     #[route("/release_050")]
     Release050 {},
-    #[route("/release_060")]
-    Release060 {},
 }
 impl BookRoute {
     pub fn sections(&self) -> &[use_mdbook::mdbook_shared::Section] {
@@ -43,7 +41,6 @@ impl BookRoute {
             BookRoute::Fulltime {} => use_mdbook::mdbook_shared::PageId(4usize),
             BookRoute::Release040 {} => use_mdbook::mdbook_shared::PageId(5usize),
             BookRoute::Release050 {} => use_mdbook::mdbook_shared::PageId(6usize),
-            BookRoute::Release060 {} => use_mdbook::mdbook_shared::PageId(7usize),
         }
     }
 }
@@ -736,26 +733,6 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                 BookRoute::Release050 {},
                 ::use_mdbook::mdbook_shared::PageId(6usize),
             );
-        pages
-            .push((
-                7usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "Announcing Dioxus 0.6 $ Release Notes $ November 4, 2024 $ A signal rewrite, zero unsafe, no lifetimes, unified launch, and more!"
-                            .to_string(),
-                        url: BookRoute::Release060 {},
-                        segments: vec![],
-                        sections: vec![],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(7usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::Release060 {},
-                ::use_mdbook::mdbook_shared::PageId(7usize),
-            );
         ::use_mdbook::mdbook_shared::MdBook {
             summary: ::use_mdbook::mdbook_shared::Summary {
                 title: Some("Summary".to_string()),
@@ -821,15 +798,6 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                         location: Some(BookRoute::Release050 {}),
                         number: Some(
                             ::use_mdbook::mdbook_shared::SectionNumber(vec![7u32]),
-                        ),
-                        nested_items: vec![],
-                    }),
-                    ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
-                        name: "Announcing Dioxus 0.6 $ Release Notes $ November 4, 2024 $ A signal rewrite, zero unsafe, no lifetimes, unified launch, and more!"
-                            .to_string(),
-                        location: Some(BookRoute::Release060 {}),
-                        number: Some(
-                            ::use_mdbook::mdbook_shared::SectionNumber(vec![8u32]),
                         ),
                         nested_items: vec![],
                     }),
@@ -3955,11 +3923,6 @@ pub fn Release050() -> dioxus::prelude::Element {
         }
         p { "Build cool things! ✌\u{fe0f}" }
     }
-}
-#[component(no_case_check)]
-pub fn Release060() -> dioxus::prelude::Element {
-    use dioxus::prelude::*;
-    rsx! {}
 }
 
 use super::*;

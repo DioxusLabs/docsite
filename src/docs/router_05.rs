@@ -7116,7 +7116,7 @@ pub fn ReferenceDesktopIndex() -> dioxus::prelude::Element {
         p {
             a { href: "https://github.com/DioxusLabs/dioxus/tree/v0.5/examples/tailwind",
                 img {
-                    src: "./public/static/tailwind_desktop_app.png",
+                    src: "/assets/static/tailwind_desktop_app.png",
                     alt: "Tailwind App screenshot",
                     title: "",
                 }
@@ -7126,7 +7126,7 @@ pub fn ReferenceDesktopIndex() -> dioxus::prelude::Element {
             a { href: "#running-javascript", class: "header", "Running Javascript" }
         }
         p {
-            "Dioxus provides some ergonomic wrappers over the browser API, but in some cases you may need to access parts of the browser API Dioxus does not expose. "
+            "Dioxus provides some ergonomic wrappers over the browser API, but in some cases you may need to access parts of the browser API Dioxus does not expose."
         }
         p {
             "For these cases, Dioxus desktop exposes the use_eval hook that allows you to run raw Javascript in the webview:"
@@ -7222,7 +7222,7 @@ pub fn ReferenceMobileIndex() -> dioxus::prelude::Element {
         }
         p {
             img {
-                src: "./public/static/android_ndk_install.png",
+                src: "/assets/static/android_ndk_install.png",
                 alt: "NDK install window",
                 title: "",
             }
@@ -7342,12 +7342,12 @@ pub fn ReferenceMobileIndex() -> dioxus::prelude::Element {
         }
         p {
             img {
-                src: "./public/static/as-build-dropdown.png",
+                src: "/assets/static/as-build-dropdown.png",
                 alt: "android studio build dropdown",
                 title: "",
             }
             img {
-                src: "./public/static/as-build-variant-menu.png",
+                src: "/assets/static/as-build-variant-menu.png",
                 alt: "android studio build variants",
                 title: "",
             }
@@ -7365,7 +7365,7 @@ pub fn ReferenceMobileIndex() -> dioxus::prelude::Element {
         }
         p {
             img {
-                src: "./public/static/android-studio-simulator.png",
+                src: "/assets/static/android-studio-simulator.png",
                 alt: "android studio manage devices",
                 title: "",
             }
@@ -7377,7 +7377,7 @@ pub fn ReferenceMobileIndex() -> dioxus::prelude::Element {
         }
         p {
             img {
-                src: "./public/static/android-studio-devices.png",
+                src: "/assets/static/android-studio-devices.png",
                 alt: "android studio devices",
                 title: "",
             }
@@ -7385,7 +7385,7 @@ pub fn ReferenceMobileIndex() -> dioxus::prelude::Element {
         p { "Finally, launch your device by clicking the play button on the device you created:" }
         p {
             img {
-                src: "./public/static/android-studio-device.png",
+                src: "/assets/static/android-studio-device.png",
                 alt: "android studio device",
                 title: "",
             }
@@ -7394,7 +7394,7 @@ pub fn ReferenceMobileIndex() -> dioxus::prelude::Element {
         CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">cargo android run</span></pre>\n" }
         p {
             img {
-                src: "./public/static/Android-Dioxus-demo.png",
+                src: "/assets/static/Android-Dioxus-demo.png",
                 alt: "android_demo",
                 title: "",
             }
@@ -7420,7 +7420,7 @@ pub fn ReferenceMobileIndex() -> dioxus::prelude::Element {
         }
         p {
             img {
-                src: "./public/static/IOS-dioxus-demo.png",
+                src: "/assets/static/IOS-dioxus-demo.png",
                 alt: "ios_demo",
                 title: "",
             }

@@ -8063,7 +8063,7 @@ pub fn ReferenceContext() -> dioxus::prelude::Element {
         }
         p {
             img {
-                src: "./images/meme_editor_screenshot.png",
+                src: "/assets/static/meme_editor_screenshot.png",
                 alt: "Meme Editor Screenshot: An old plastic skeleton sitting on a park bench. Caption: \"me waiting for a language feature\"",
                 title: "",
             }

@@ -61,8 +61,7 @@ DemoFrame {
 }
 ```
 
-Repeating an attribute internally concatenates the values.
-This makes it easy to conditionally append to an attribute:
+Repeating an attribute joins the values with a space. This makes it easy to add values like classes conditionally:
 
 ```rust, no_run
 {{#include src/doc_examples/rsx_overview.rs:conditional_attributes_concatenation}}

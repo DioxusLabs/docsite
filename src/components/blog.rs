@@ -6,13 +6,13 @@ use dioxus::prelude::*;
 #[component]
 pub(crate) fn BlogList() -> Element {
     rsx! {
-        section { class: "body-font overflow-hidden dark:bg-ideblack font-light",
+        section { class: "body-font overflow-hidden font-light",
             div { class: "container max-w-screen-md pt-12 pb-12 mx-auto",
                 div { class: "-my-8 px-8 pb-12",
                     h2 { class: "dark:text-white my-8 md:mb-16 sm:text-3xl text-2xl font-medium title-font font-sans",
                         "Blog"
                     }
-                    section { class: "body-font overflow-hidden dark:bg-ideblack",
+                    section { class: "body-font overflow-hidden",
                         div { class: "container px- mx-auto",
                             div { class: "-my-8 divide-y divide-neutral-400",
                                 for route in BlogRoute::static_routes().into_iter().rev() {
@@ -30,7 +30,7 @@ pub(crate) fn BlogList() -> Element {
 #[component]
 pub(crate) fn BlogPost() -> Element {
     rsx! {
-        section { class: "text-gray-600 body-font dark:bg-ideblack max-w-screen-md mx-auto pt-24 font-light",
+        section { class: "text-gray-600 body-font max-w-screen-md mx-auto pt-24 font-light",
             div { class: "markdown-body px-2  dioxus-blog-post", Outlet::<Route> {} }
         }
     }

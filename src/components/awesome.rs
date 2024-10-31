@@ -44,7 +44,6 @@ enum Category {
     Styling,
     Deployment,
     Renderer,
-    /// This is not actually displayed
     App,
 }
 
@@ -74,7 +73,7 @@ struct StarsResponse {
 #[component]
 pub(crate) fn Awesome() -> Element {
     rsx! {
-        div { class: "bg-white dark:bg-ideblack mx-auto max-w-screen-lg", AwesomeInner {} }
+        div { class: "mx-auto max-w-screen-lg", AwesomeInner {} }
     }
 }
 
@@ -115,7 +114,7 @@ pub(crate) fn AwesomeInner() -> Element {
                 .collect();
 
             rsx!(
-                section { class: "dark:bg-ideblack bg-white w-full pt-4 md:pt-24 pb-10",
+                section { class: "w-full pt-4 md:pt-24 pb-10",
                     div { class: "mx-auto max-w-screen-1g text-center",
                         h1 { class: "text-[1.5em] md:text-[3.3em] font-bold tracking-tight dark:text-white text-ghdarkmetal mb-2 px-2 ",
                             "Awesome stuff for Dioxus"
@@ -158,7 +157,7 @@ pub(crate) fn AwesomeInner() -> Element {
                         }
                     }
                 }
-                section { class: "dark:bg-ideblack w-full pb-24",
+                section { class: "w-full pb-24",
                     div { class: "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 container mx-auto px-2 max-w-screen-1g",
                         for item in items.iter() {
                             if let AwesomeType::Awesome = item.r#type {
@@ -167,8 +166,7 @@ pub(crate) fn AwesomeInner() -> Element {
                         }
                     }
                 }
-
-                section { class: "dark:bg-ideblack w-full pb-2 md:pb-10",
+                section { class: " w-full pb-2 md:pb-10",
                     div { class: "container mx-auto max-w-screen-1g text-center",
                         h1 {
                             class: "text-[1.5em] md:text-[3.3em] font-bold tracking-tight dark:text-white text-ghdarkmetal mb-2 px-2",
@@ -180,8 +178,7 @@ pub(crate) fn AwesomeInner() -> Element {
                         }
                     }
                 }
-
-                section { class: "bg-white dark:bg-ideblack w-full pb-24",
+                section { class: "w-full pb-24",
                     div { class: "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 container mx-auto px-2 max-w-screen-1g",
                         for item in items.iter() {
                             if let AwesomeType::MadeWith = item.r#type {
@@ -194,7 +191,7 @@ pub(crate) fn AwesomeInner() -> Element {
         }
         Some(Err(e)) => {
             rsx!(
-                section { class: "dark:bg-ideblack w-full pt-24 pb-96",
+                section { class: "w-full pt-24 pb-96",
                     div { class: "container mx-auto max-w-screen-1g text-center animate-fadein-medium",
                         p { class: "text-[3.3em] font-bold tracking-tight dark:text-white text-ghdarkmetal mb-2 px-2",
                             "It seems a not-so-awesome error occurred. 🙁"
@@ -208,7 +205,7 @@ pub(crate) fn AwesomeInner() -> Element {
         }
         None => {
             rsx!(
-                section { class: "dark:bg-ideblack w-full pt-24 pb-96",
+                section { class: "w-full pt-24 pb-96",
                     div { class: "container mx-auto max-w-screen-1g text-center animate-fadein-medium",
                         p { class: "text-[3.3em] font-bold tracking-tight dark:text-white text-ghdarkmetal mb-2 px-2",
                             "Loading..."
@@ -232,26 +229,28 @@ fn AwesomeItem(item: ReadOnlySignal<Item>) -> Element {
                 .unwrap_or(GithubInfo::default())
                 .username;
             let repo = item.github.clone().unwrap_or(GithubInfo::default()).repo;
-            if is_github {
-                // Check cache
-                if let Some(stars) = get_stars(format!("{}{}/{}", STAR_CACHE_NAME, username, repo))
-                {
-                    return Some(stars);
-                }
 
-                // Not in cache or expired, lets get from github
-                if let Ok(req) =
-                    reqwest::get(format!("https://api.github.com/repos/{username}/{repo}")).await
-                {
-                    if let Ok(res) = req.json::<StarsResponse>().await {
-                        // Add to cache
+            if !is_github {
+                return None;
+            }
 
-                        set_stars(
-                            format!("{}{}/{}", STAR_CACHE_NAME, username, repo),
-                            res.stargazers_count as usize,
-                        );
-                        return Some(res.stargazers_count as usize);
-                    }
+            // Check cache
+            if let Some(stars) = get_stars(format!("{}{}/{}", STAR_CACHE_NAME, username, repo)) {
+                return Some(stars);
+            }
+
+            // Not in cache or expired, lets get from github
+            if let Ok(req) =
+                reqwest::get(format!("https://api.github.com/repos/{username}/{repo}")).await
+            {
+                if let Ok(res) = req.json::<StarsResponse>().await {
+                    // Add to cache
+
+                    set_stars(
+                        format!("{}{}/{}", STAR_CACHE_NAME, username, repo),
+                        res.stargazers_count as usize,
+                    );
+                    return Some(res.stargazers_count as usize);
                 }
             }
 
@@ -279,23 +278,27 @@ fn AwesomeItem(item: ReadOnlySignal<Item>) -> Element {
         }
     };
 
-    let inner = rsx! {
-        div { class: "flex flex-col h-full p-3 rounded hover:-translate-y-2 transition-transform duration-300 bg-white dark:bg-slate-800 shadow",
-            div {
-                p { class: "text-xl text-gray-800 dark:text-gray-100 font-bold", "{item.name}" }
-                p { class: "text-base pt-2 text-gray-700 dark:text-gray-400", "{item.description}" }
-            }
-            div { class: "mt-auto pt-4 flex",
-                if Category::App != item.category {
-                    p { class: "text-gray-500 font-bold dark:text-gray-300", "{item.category}" }
+    rsx! {
+        Link { to: NavigationTarget::<Route>::External(link), new_tab: true,
+            div { class: "flex flex-col h-full p-3 rounded hover:-translate-y-2 transition-transform duration-300 shadow border border-gray-800",
+                div {
+                    p { class: "text-xl text-gray-800 dark:text-gray-100 font-bold",
+                        "{item.name}"
+                    }
+                    p { class: "text-base pt-2 text-gray-700 dark:text-gray-400",
+                        "{item.description}"
+                    }
                 }
-                p { class: "ml-auto text-gray-500 font-bold dark:text-gray-300", "{stars}" }
+                div { class: "mt-auto pt-4 flex",
+                    if Category::App != item.category {
+                        p { class: "text-gray-500 font-bold dark:text-gray-300", "{item.category}" }
+                    }
+                    p { class: "ml-auto text-gray-500 font-bold dark:text-gray-300",
+                        "{stars}"
+                    }
+                }
             }
         }
-    };
-
-    rsx! {
-        Link { to: NavigationTarget::<Route>::External(link), new_tab: true, {inner} }
     }
 }
 

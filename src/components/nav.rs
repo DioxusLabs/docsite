@@ -11,7 +11,7 @@ pub(crate) fn Nav() -> Element {
 
     rsx! {
         SearchModal {}
-        header { class: "sticky top-0 z-30 bg-white bg-opacity-80 dark:text-gray-200 dark:bg-ideblack dark:bg-opacity-80 border-b dark:border-stone-700 h-16 backdrop-blur-sm",
+        header { class: "sticky top-0 z-30 bg-opacity-80 dark:text-gray-200 dark:bg-opacity-80 border-b dark:border-stone-700 h-16 backdrop-blur-sm",
             div { class: "py-2 px-2 max-w-screen-2xl mx-auto flex items-center justify-between text-sm leading-6 h-16",
                 div { class: "flex z-50 md:px-2 flex-1", LinkList {} }
                 div { class: "flex h-full justify-end ml-2 items-center gap-3 py-2",
@@ -214,7 +214,7 @@ fn SearchModal() -> Element {
         div {
             height: "100vh",
             width: "100vw",
-            class: "fixed top-0 left-0 z-50 block bg-gray-100 dark:bg-black dark:bg-opacity-70 bg-opacity-70 overflow-y-hidden search-modal-animated  ",
+            class: "fixed top-0 left-0 z-50 block bg-gray-100 dark:bg-opacity-70 bg-opacity-70 overflow-y-hidden search-modal-animated  ",
             class: if *SHOW_SEARCH.read() { "dioxus-show" } else { "dioxus-hide" },
             onclick: move |_| *SHOW_SEARCH.write() = false,
 

@@ -7,7 +7,7 @@ pub(crate) mod snippets;
 #[component]
 pub(crate) fn Homepage() -> Element {
     rsx! {
-        div { class: "w-full dark:bg-ideblack",
+        div { class: "w-full",
             // AvailablePlatforms {}
             // Stats {}
             hero::Hero {}
@@ -19,7 +19,7 @@ fn AvailablePlatforms() -> Element {
     use crate::docs::router_05::BookRoute;
 
     rsx! {
-        section { class: "w-full dark:bg-ideblack",
+        section { class: "w-full",
             div { class: "container mx-auto max-w-screen-lg",
                 div { class: "relative overflow-x-hidden",
                     div { class: "flex flex-col items-center justify-center text-center max-w-screen-lg mx-auto pb-4",
@@ -127,7 +127,7 @@ fn TriPadding(children: Element, last: bool) -> Element {
 #[component]
 fn DeveloperExperience() -> Element {
     rsx! (
-        section { class: "pt-36 w-full dark:bg-ideblack dark:text-white",
+        section { class: "pt-36 w-full dark:text-white",
             div { class: "container mx-auto max-w-screen-2xl",
                 div { class: "relative",
                     div { class: "flex flex-col max-w-screen-lg mx-auto pb-20",
@@ -199,7 +199,7 @@ fn IconSplit() -> Element {
 
 fn Stats() -> Element {
     rsx! {
-        section { class: "py-12 w-full dark:bg-ideblack",
+        section { class: "py-12 w-full",
             div { class: "container mx-auto max-w-screen-lg",
                 div { class: "relative ",
                     div { class: "flex flex-col items-center justify-center text-center max-w-screen-lg mx-auto pb-4",

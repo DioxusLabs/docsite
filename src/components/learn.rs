@@ -22,7 +22,7 @@ pub(crate) fn Learn() -> Element {
     let current_version = use_current_docs_version();
 
     rsx! {
-        div { class: "w-full text-sm dark:bg-ideblack border-b dark:border-[#a4a9ac7d]",
+        div { class: "w-full text-sm border-b dark:border-[#a4a9ac7d]",
             div { class: "flex flex-row justify-center dark:text-[#dee2e6] font-light lg:gap-12",
                 match current_version {
                     CurrentDocsVersion::V06(_) => rsx! {
@@ -319,7 +319,7 @@ fn RightNav<R: AnyBookRoute>() -> Element {
 fn Content<R: AnyBookRoute>() -> Element {
     rsx! {
         section {
-            class: "text-gray-600 dark:text-gray-300 body-font overflow-hidden dark:bg-ideblack container pb-12 max-w-screen-sm px-4 pt-4 md:pt-[3.125rem] grow min-h-[100vh] ",
+            class: "text-gray-600 dark:text-gray-300 body-font overflow-hidden container pb-12 max-w-screen-sm px-4 pt-4 md:pt-[3.125rem] grow min-h-[100vh] ",
             class: if SHOW_SIDEBAR() { "hidden md:block" },
             div { class: "",
                 Breadcrumbs::<R> {}

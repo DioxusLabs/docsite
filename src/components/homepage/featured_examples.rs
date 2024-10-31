@@ -13,7 +13,7 @@ pub fn FeaturedExamples() -> Element {
     // }
 
     rsx! {
-        section { class: "body-font w-full dark:bg-ideblack",
+        section { class: "body-font w-full",
             div { class: "container px-6 max-w-screen-lg py-24 mx-auto",
                 div { class: "flex flex-col w-full mb-10",
                     h1 { class: "sm:text-3xl text-2xl font-medium title-font mb-4 dark:text-white",

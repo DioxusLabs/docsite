@@ -5219,6 +5219,13 @@ pub fn ReferenceRsx() -> dioxus::prelude::Element {
             name: "hello_world_desktop.rs".to_string(),
         }
         DemoFrame { rsx_overview::ConditionalAttributes {} }
+        p {
+            "Repeating an attribute joins the values with a space. This makes it easy to add values like classes conditionally:"
+        }
+        CodeBlock {
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> large_font </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ff80f4;\">true</span><span style=\"color:#f8f8f2;\">;\n</span><span style=\"color:#f8f8f2;\">rsx! {{\n</span><span style=\"color:#f8f8f2;\">    div {{\n</span><span style=\"color:#f8f8f2;\">        class: </span><span style=\"color:#ffee99;\">&quot;base-class another-class&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">        class: </span><span style=\"color:#f92672;\">if</span><span style=\"color:#f8f8f2;\"> large_font {{ </span><span style=\"color:#ffee99;\">&quot;text-xl&quot; </span><span style=\"color:#f8f8f2;\">}},\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"color:#ffee99;\">&quot;Hello, World!&quot;\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
+            name: "hello_world_desktop.rs".to_string(),
+        }
         h4 { id: "custom-attributes",
             a { href: "#custom-attributes", class: "header", "Custom Attributes" }
         }

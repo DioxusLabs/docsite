@@ -12,17 +12,17 @@
 pub enum BookRoute {
     #[route("/introducing-dioxus")]
     IntroducingDioxus {},
-    #[route("/release_020")]
+    #[route("/release-020")]
     Release020 {},
     #[route("/templates-diffing")]
     TemplatesDiffing {},
-    #[route("/release_030")]
+    #[route("/release-030")]
     Release030 {},
     #[route("/fulltime")]
     Fulltime {},
-    #[route("/release_040")]
+    #[route("/release-040")]
     Release040 {},
-    #[route("/release_050")]
+    #[route("/release-050")]
     Release050 {},
 }
 impl BookRoute {

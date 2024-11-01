@@ -13,11 +13,24 @@ pub mod snippets;
 pub use components::*;
 
 fn main() {
-    dioxus::LaunchBuilder::new().launch(|| {
-        rsx! {
-            Router::<Route> {}
-        }
-    });
+    dioxus::LaunchBuilder::new()
+        .with_cfg(server_only! {
+            // Only in release do we SSG
+            if cfg!(debug_assertions) {
+                ServeConfig::new().expect("Unable to build ServeConfig")
+            } else {
+                ServeConfig::builder()
+                    .incremental(IncrementalRendererConfig::new().static_dir(std::env::current_exe().unwrap().parent().unwrap().join("public")).clear_cache(false))
+                    .build()
+                    .expect("Unable to build ServeConfig")
+            }
+
+        })
+        .launch(|| {
+            rsx! {
+                Router::<Route> {}
+            }
+        });
 }
 
 #[component]
@@ -140,7 +153,7 @@ pub enum Route {
             #[route("/")]
             BlogList {},
             #[layout(BlogPost)]
-                #[child("/")]
+                #[child("")]
                 BlogPost { child: crate::docs::router_blog::BookRoute },
             #[end_layout]
         #[end_nest]
@@ -148,16 +161,16 @@ pub enum Route {
         #[layout(Learn)]
             #[nest("/learn")]
                 #[redirect("/", || Route::Docs05 { child: crate::docs::router_05::BookRoute::Index {} })]
-                #[child("/0.6/")]
+                #[child("/0.6")]
                 Docs06 { child: crate::docs::router_06::BookRoute },
 
-                #[child("/0.5/")]
+                #[child("/0.5")]
                 Docs05 { child: crate::docs::router_05::BookRoute },
 
-                #[child("/0.4/")]
+                #[child("/0.4")]
                 Docs04 { child: crate::docs::router_04::BookRoute },
 
-                #[child("/0.3/")]
+                #[child("/0.3")]
                 Docs03 { child: crate::docs::router_03::BookRoute },
             #[end_nest]
         #[end_layout]
@@ -187,9 +200,11 @@ static SEARCH_INDEX: dioxus_search::LazySearchIndex<Route> = dioxus_search::load
     "search"
 };
 
-#[test]
-fn write_routes() {
-    for route in Route::static_routes() {
-        println!("{route}");
-    }
+#[server(endpoint = "static_routes")]
+async fn static_routes() -> Result<String, ServerFnError> {
+    Ok(Route::static_routes()
+        .into_iter()
+        .map(|route| route.to_string())
+        .collect::<Vec<_>>()
+        .join("\n"))
 }

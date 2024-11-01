@@ -8,7 +8,7 @@ resolver = "2"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-dioxus = { version = "0.6.0-alpha.3", features = ["router"] }
+dioxus = { version = "0.6.0-alpha.3", features = ["router", "fullstack"] }
 dioxus-web = { version = "0.6.0-alpha.3", features = ["hydrate"], optional = true }
 dioxus-ssr = { version = "0.6.0-alpha.3", optional = true }
 dioxus-desktop = { version = "0.6.0-alpha.3", optional = true }
@@ -110,7 +110,6 @@ lto = true
 codegen-units = 1
 opt-level = 'z'
 strip = "debuginfo"
-incremental = true
 
 [profile.dev.build-override]
 opt-level = 3

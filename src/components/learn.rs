@@ -142,7 +142,7 @@ fn TypedVersionSelectItem<R: AnyBookRoute>() -> Element {
 }
 #[component]
 fn UntypedVersionSelectItem(
-    route: IntoRoutable,
+    route: NavigationTarget,
     full_version: &'static str,
     short_version: &'static str,
 ) -> Element {
@@ -343,7 +343,7 @@ fn VersionWarning() -> Element {
                 "You are currently viewing the docs for Dioxus 0.6.0 which is under construction."
             }
         },
-        CurrentDocsVersion::V05(_) => rsx! {},
+        CurrentDocsVersion::V05(_) => rsx! {  },
         CurrentDocsVersion::V04(_) => rsx! {
             div { class: "flex flex-row items-center justify-start w-full bg-yellow-200 opacity-80 text-yellow-800 text-sm font-normal py-2 px-2 rounded-md mb-4 gap-2",
                 crate::icons::IconWarning {}

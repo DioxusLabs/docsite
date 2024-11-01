@@ -1,6 +1,3 @@
 [application]
 name = "docsite"
 
-[web.app]
-[web.watcher]
-index_on_404 = true

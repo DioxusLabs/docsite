@@ -31,7 +31,7 @@ jobs:
       - name: Install CLI
         run: cargo install --force --git https://github.com/DioxusLabs/dioxus dioxus-cli --locked
       - name: Build
-        run: DIOXUS_LOG=dx=trace dx build --platform web --ssg
+        run: DIOXUS_LOG=dx=trace dx build --platform web --release --ssg
       - name: Copy output
         run: cp -r target/dx/dioxus_docs_site/release/web/public docs
       - name: Add gh pages 404

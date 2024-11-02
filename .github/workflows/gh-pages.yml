@@ -26,10 +26,8 @@ jobs:
           cache-all-crates: "true"
           cache-on-failure: "true"
       - uses: cargo-bins/cargo-binstall@main
-      # - name: Install CLI
-      # run: cargo binstall dioxus-cli -y --force
       - name: Install CLI
-        run: cargo install --force --git https://github.com/DioxusLabs/dioxus dioxus-cli --locked
+        run: cargo binstall dioxus-cli -y --force --version v0.6.0-alpha.4
       - name: Build
         run: DIOXUS_LOG=dx=trace dx build --platform web --release --ssg
       - name: Copy output
@@ -43,3 +41,7 @@ jobs:
           folder: docs # The folder the action should deploy.
           target-folder: .
           clean: true # don't scrub docs
+
+
+      # - name: Install CLI
+      #   run: cargo install --force --git https://github.com/DioxusLabs/dioxus dioxus-cli --locked

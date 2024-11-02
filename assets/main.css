@@ -49,6 +49,10 @@
     .full-chapter:not(:last-child) {
         border-bottom: 1px solid #a4a9ac7d;
     }
+
+    html{
+        background-color: black;
+    }
 }
 
 @media (prefers-color-scheme: light) {

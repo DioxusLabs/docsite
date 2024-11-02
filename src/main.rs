@@ -45,7 +45,7 @@ fn HeaderFooter() -> Element {
         Head {}
         div { class: "bg-white dark:bg-black min-h-screen",
             Nav {}
-            div { class: "px-2",
+            div {
                 Outlet::<Route> {}
                 Footer {}
             }

@@ -141,7 +141,7 @@ pub(crate) fn Nav() -> Element {
 static LINKS: &[(&str, &str)] = &[
     ("Learn", "/learn/0.5/"),
     // ("SDK", "/sdk"),
-    ("Playground", "/play"),
+    // ("Playground", "/play"),
     // ("Components", "/components"),
     ("Awesome", "/awesome"),
     ("Blog", "/blog"),

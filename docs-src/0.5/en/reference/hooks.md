@@ -78,19 +78,19 @@ These rules mean that there are certain things you can't do with hooks:
 ### No hooks in conditionals
 
 ```rust, no_run
-{{#include src/doc_examples/hooks_bad.rs:conditional}}
+{{#include src/doc_examples/untested_05/hooks_bad.rs:conditional}}
 ```
 
 ### No hooks in closures
 
 ```rust, no_run
-{{#include src/doc_examples/hooks_bad.rs:closure}}
+{{#include src/doc_examples/untested_05/hooks_bad.rs:closure}}
 ```
 
 ### No hooks in loops
 
 ```rust, no_run
-{{#include src/doc_examples/hooks_bad.rs:loop}}
+{{#include src/doc_examples/untested_05/hooks_bad.rs:loop}}
 ```
 
 ## Additional resources

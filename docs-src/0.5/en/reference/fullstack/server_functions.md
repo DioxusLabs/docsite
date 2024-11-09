@@ -91,12 +91,12 @@ For development, the example project runs the server on `localhost:8080`. **Befo
 
 In the server code, first you have to set the network address and port where the server will listen to.
 ```rust
-{{#include src/doc_examples/server_function_desktop_client.rs:server_url}}
+{{#include src/doc_examples/untested_05/server_function_desktop_client.rs:server_url}}
 ```
 
 Then, you have to register the types declared in the server function macros into the server.
 For example, consider this server function:
 ```rust
-{{#include src/doc_examples/server_function_desktop_client.rs:server_function}}
+{{#include src/doc_examples/untested_05/server_function_desktop_client.rs:server_function}}
 ```
 

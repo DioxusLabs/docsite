@@ -10,7 +10,7 @@ Dioxus provides some ergonomic wrappers over the browser API, but in some cases 
 For these cases, Dioxus desktop exposes the use_eval hook that allows you to run raw Javascript in the webview:
 
 ```rust
-{{#include src/doc_examples/eval.rs}}
+{{#include src/doc_examples/untested_05/eval.rs}}
 ```
 
 ## Custom Assets

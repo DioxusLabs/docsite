@@ -181,7 +181,35 @@ type Results = Result<Vec<dioxus_search::SearchResult<Route>>, stork_lib::Search
 
 fn SearchModal() -> Element {
     let mut search_text = use_signal(String::new);
-    let mut results = use_signal(|| SEARCH_INDEX.search(&search_text.read()));
+
+    let search_index = use_resource(|| async move {
+        #[cfg(debug_assertions)]
+        let url = "http://localhost:8080/assets/dioxus_search/index_searchable.bin";
+
+        #[cfg(not(debug_assertions))]
+        let url = "http://dioxuslabs.com/assets/dioxus_search/index_searchable.bin";
+
+        let data = reqwest::get(url).await.ok()?.bytes().await.ok()?;
+
+        let (bytes, _) = dioxus_search::yazi::decompress(&data, dioxus_search::yazi::Format::Zlib)
+            .expect("decompression of search to succeed");
+
+        let index = dioxus_search::SearchIndex::from_bytes("search", bytes);
+
+        Some(index)
+    });
+
+    let search = move || {
+        let query = &search_text.read();
+        search_index
+            .value()
+            .as_ref()
+            .map(|search| search.as_ref().map(|s| s.search(query)))
+            .flatten()
+            .unwrap_or_else(|| Ok(vec![]))
+    };
+
+    let mut results = use_signal(|| search());
 
     let mut last_key_press = use_signal(|| {
         if cfg!(target_arch = "wasm32") {
@@ -197,11 +225,11 @@ fn SearchModal() -> Element {
 
             // debounce the search
             if *last_key_press.read() - js_sys::Date::now() > 100. {
-                results.set(SEARCH_INDEX.search(&search_text.read()));
+                results.set(search());
                 last_key_press.set(js_sys::Date::now());
             } else {
                 gloo_timers::future::TimeoutFuture::new(100).await;
-                results.set(SEARCH_INDEX.search(&search_text.read()));
+                results.set(search());
             }
         }
     });

@@ -4648,7 +4648,9 @@ pub fn GettingStartedIndex() -> dioxus::prelude::Element {
         blockquote {
             p {
                 "If you are not sure which web platform you want to use, check out the "
-                a { href: "getting_started/choosing_a_web_renderer", "choosing a web renderer" }
+                a { href: "getting_started/../reference/choosing_a_web_renderer",
+                    "choosing a web renderer"
+                }
                 " chapter."
             }
         }

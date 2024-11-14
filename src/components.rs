@@ -18,3 +18,5 @@ pub mod notfound;
 pub use notfound::*;
 pub mod playground;
 pub use playground::*;
+pub mod search;
+pub use search::*;

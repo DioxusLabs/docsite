@@ -16,15 +16,14 @@ fn main() {
     dioxus::LaunchBuilder::new()
         .with_cfg(server_only! {
             // Only in release do we SSG
-            if cfg!(debug_assertions) {
-                ServeConfig::new().expect("Unable to build ServeConfig")
-            } else {
-                ServeConfig::builder()
-                    .incremental(IncrementalRendererConfig::new().static_dir(std::env::current_exe().unwrap().parent().unwrap().join("public")).clear_cache(false))
-                    .build()
-                    .expect("Unable to build ServeConfig")
-            }
-
+            ServeConfig::builder()
+                .incremental(
+                    IncrementalRendererConfig::new()
+                        .static_dir(static_dir())
+                        .clear_cache(false)
+                )
+                .build()
+                .expect("Unable to build ServeConfig")
         })
         .launch(|| {
             rsx! {
@@ -175,6 +174,12 @@ pub enum Route {
             #[end_nest]
         #[end_layout]
     #[end_nest]
+
+    // once all the routes above have been generated, we build the search index
+    // a bit of a hack, sorry
+    #[route("/search")]
+    Search {},
+
     #[redirect("/docs/:..segments", |segments: Vec<String>| {
         let joined = segments.join("/");
         let docs_route = format!("/docs/{}", joined);
@@ -196,10 +201,6 @@ impl Route {
     }
 }
 
-static SEARCH_INDEX: dioxus_search::LazySearchIndex<Route> = dioxus_search::load_search_index! {
-    "search"
-};
-
 #[server(endpoint = "static_routes")]
 async fn static_routes() -> Result<String, ServerFnError> {
     Ok(Route::static_routes()
@@ -207,4 +208,12 @@ async fn static_routes() -> Result<String, ServerFnError> {
         .map(|route| route.to_string())
         .collect::<Vec<_>>()
         .join("\n"))
+}
+
+fn static_dir() -> std::path::PathBuf {
+    std::env::current_exe()
+        .unwrap()
+        .parent()
+        .unwrap()
+        .join("public")
 }

@@ -94,6 +94,20 @@ pub enum BookRoute {
     RouterExampleFullCode {},
     #[route("/router/reference")]
     RouterReferenceIndex {},
+    #[route("/router/reference/routes")]
+    RouterReferenceRoutesIndex {},
+    #[route("/router/reference/routes/nested")]
+    RouterReferenceRoutesNested {},
+    #[route("/router/reference/layouts")]
+    RouterReferenceLayouts {},
+    #[route("/router/reference/navigation")]
+    RouterReferenceNavigationIndex {},
+    #[route("/router/reference/navigation/programmatic")]
+    RouterReferenceNavigationProgrammatic {},
+    #[route("/router/reference/history-providers")]
+    RouterReferenceHistoryProviders {},
+    #[route("/router/reference/history-buttons")]
+    RouterReferenceHistoryButtons {},
     #[route("/router/reference/routing-update-callback")]
     RouterReferenceRoutingUpdateCallback {},
     #[route("/cookbook")]
@@ -136,6 +150,8 @@ pub enum BookRoute {
     CliTranslate {},
     #[route("/contributing")]
     ContributingIndex {},
+    #[route("/contributing/project_structure")]
+    ContributingProjectStructure {},
     #[route("/contributing/guiding_principles")]
     ContributingGuidingPrinciples {},
     #[route("/contributing/roadmap")]
@@ -254,62 +270,86 @@ impl BookRoute {
             BookRoute::RouterReferenceIndex {} => {
                 use_mdbook::mdbook_shared::PageId(41usize)
             }
-            BookRoute::RouterReferenceRoutingUpdateCallback {} => {
+            BookRoute::RouterReferenceRoutesIndex {} => {
                 use_mdbook::mdbook_shared::PageId(42usize)
             }
-            BookRoute::CookbookIndex {} => use_mdbook::mdbook_shared::PageId(43usize),
-            BookRoute::CookbookPublishing {} => {
+            BookRoute::RouterReferenceRoutesNested {} => {
+                use_mdbook::mdbook_shared::PageId(43usize)
+            }
+            BookRoute::RouterReferenceLayouts {} => {
                 use_mdbook::mdbook_shared::PageId(44usize)
             }
-            BookRoute::CookbookAntipatterns {} => {
+            BookRoute::RouterReferenceNavigationIndex {} => {
                 use_mdbook::mdbook_shared::PageId(45usize)
             }
-            BookRoute::CookbookErrorHandling {} => {
+            BookRoute::RouterReferenceNavigationProgrammatic {} => {
                 use_mdbook::mdbook_shared::PageId(46usize)
             }
-            BookRoute::CookbookIntegrationsIndex {} => {
+            BookRoute::RouterReferenceHistoryProviders {} => {
                 use_mdbook::mdbook_shared::PageId(47usize)
             }
-            BookRoute::CookbookIntegrationsLogging {} => {
+            BookRoute::RouterReferenceHistoryButtons {} => {
                 use_mdbook::mdbook_shared::PageId(48usize)
             }
-            BookRoute::CookbookIntegrationsInternationalization {} => {
+            BookRoute::RouterReferenceRoutingUpdateCallback {} => {
                 use_mdbook::mdbook_shared::PageId(49usize)
             }
-            BookRoute::CookbookStateIndex {} => {
-                use_mdbook::mdbook_shared::PageId(50usize)
-            }
-            BookRoute::CookbookStateExternalIndex {} => {
+            BookRoute::CookbookIndex {} => use_mdbook::mdbook_shared::PageId(50usize),
+            BookRoute::CookbookPublishing {} => {
                 use_mdbook::mdbook_shared::PageId(51usize)
             }
-            BookRoute::CookbookStateCustomHooksIndex {} => {
+            BookRoute::CookbookAntipatterns {} => {
                 use_mdbook::mdbook_shared::PageId(52usize)
             }
-            BookRoute::CookbookTesting {} => use_mdbook::mdbook_shared::PageId(53usize),
-            BookRoute::CookbookExamples {} => use_mdbook::mdbook_shared::PageId(54usize),
-            BookRoute::CookbookTailwind {} => use_mdbook::mdbook_shared::PageId(55usize),
-            BookRoute::CookbookCustomRenderer {} => {
+            BookRoute::CookbookErrorHandling {} => {
+                use_mdbook::mdbook_shared::PageId(53usize)
+            }
+            BookRoute::CookbookIntegrationsIndex {} => {
+                use_mdbook::mdbook_shared::PageId(54usize)
+            }
+            BookRoute::CookbookIntegrationsLogging {} => {
+                use_mdbook::mdbook_shared::PageId(55usize)
+            }
+            BookRoute::CookbookIntegrationsInternationalization {} => {
                 use_mdbook::mdbook_shared::PageId(56usize)
             }
-            BookRoute::CookbookOptimizing {} => {
+            BookRoute::CookbookStateIndex {} => {
                 use_mdbook::mdbook_shared::PageId(57usize)
             }
-            BookRoute::CliIndex {} => use_mdbook::mdbook_shared::PageId(58usize),
-            BookRoute::CliCreating {} => use_mdbook::mdbook_shared::PageId(59usize),
-            BookRoute::CliConfigure {} => use_mdbook::mdbook_shared::PageId(60usize),
-            BookRoute::CliTranslate {} => use_mdbook::mdbook_shared::PageId(61usize),
-            BookRoute::ContributingIndex {} => use_mdbook::mdbook_shared::PageId(62usize),
-            BookRoute::ContributingGuidingPrinciples {} => {
+            BookRoute::CookbookStateExternalIndex {} => {
+                use_mdbook::mdbook_shared::PageId(58usize)
+            }
+            BookRoute::CookbookStateCustomHooksIndex {} => {
+                use_mdbook::mdbook_shared::PageId(59usize)
+            }
+            BookRoute::CookbookTesting {} => use_mdbook::mdbook_shared::PageId(60usize),
+            BookRoute::CookbookExamples {} => use_mdbook::mdbook_shared::PageId(61usize),
+            BookRoute::CookbookTailwind {} => use_mdbook::mdbook_shared::PageId(62usize),
+            BookRoute::CookbookCustomRenderer {} => {
                 use_mdbook::mdbook_shared::PageId(63usize)
             }
-            BookRoute::ContributingRoadmap {} => {
+            BookRoute::CookbookOptimizing {} => {
                 use_mdbook::mdbook_shared::PageId(64usize)
             }
-            BookRoute::MigrationIndex {} => use_mdbook::mdbook_shared::PageId(65usize),
-            BookRoute::MigrationHooks {} => use_mdbook::mdbook_shared::PageId(66usize),
-            BookRoute::MigrationState {} => use_mdbook::mdbook_shared::PageId(67usize),
-            BookRoute::MigrationFermi {} => use_mdbook::mdbook_shared::PageId(68usize),
-            BookRoute::MigrationProps {} => use_mdbook::mdbook_shared::PageId(69usize),
+            BookRoute::CliIndex {} => use_mdbook::mdbook_shared::PageId(65usize),
+            BookRoute::CliCreating {} => use_mdbook::mdbook_shared::PageId(66usize),
+            BookRoute::CliConfigure {} => use_mdbook::mdbook_shared::PageId(67usize),
+            BookRoute::CliTranslate {} => use_mdbook::mdbook_shared::PageId(68usize),
+            BookRoute::ContributingIndex {} => use_mdbook::mdbook_shared::PageId(69usize),
+            BookRoute::ContributingProjectStructure {} => {
+                use_mdbook::mdbook_shared::PageId(70usize)
+            }
+            BookRoute::ContributingGuidingPrinciples {} => {
+                use_mdbook::mdbook_shared::PageId(71usize)
+            }
+            BookRoute::ContributingRoadmap {} => {
+                use_mdbook::mdbook_shared::PageId(72usize)
+            }
+            BookRoute::MigrationIndex {} => use_mdbook::mdbook_shared::PageId(73usize),
+            BookRoute::MigrationHooks {} => use_mdbook::mdbook_shared::PageId(74usize),
+            BookRoute::MigrationState {} => use_mdbook::mdbook_shared::PageId(75usize),
+            BookRoute::MigrationFermi {} => use_mdbook::mdbook_shared::PageId(76usize),
+            BookRoute::MigrationProps {} => use_mdbook::mdbook_shared::PageId(77usize),
         }
     }
 }
@@ -2095,6 +2135,240 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                 42usize,
                 {
                     ::use_mdbook::mdbook_shared::Page {
+                        title: "Defining Routes".to_string(),
+                        url: BookRoute::RouterReferenceRoutesIndex {
+                        },
+                        segments: vec![],
+                        sections: vec![
+                            ::use_mdbook::mdbook_shared::Section {
+                                title: "Defining Routes".to_string(),
+                                id: "defining-routes".to_string(),
+                                level: 1usize,
+                            },
+                            ::use_mdbook::mdbook_shared::Section {
+                                title: "Route Segments".to_string(),
+                                id: "route-segments".to_string(),
+                                level: 2usize,
+                            },
+                            ::use_mdbook::mdbook_shared::Section {
+                                title: "Static segments".to_string(),
+                                id: "static-segments".to_string(),
+                                level: 2usize,
+                            },
+                            ::use_mdbook::mdbook_shared::Section {
+                                title: "Dynamic Segments".to_string(),
+                                id: "dynamic-segments".to_string(),
+                                level: 2usize,
+                            },
+                            ::use_mdbook::mdbook_shared::Section {
+                                title: "Catch All Segments".to_string(),
+                                id: "catch-all-segments".to_string(),
+                                level: 2usize,
+                            },
+                            ::use_mdbook::mdbook_shared::Section {
+                                title: "Query Segments".to_string(),
+                                id: "query-segments".to_string(),
+                                level: 2usize,
+                            },
+                        ],
+                        raw: String::new(),
+                        id: ::use_mdbook::mdbook_shared::PageId(42usize),
+                    }
+                },
+            ));
+        page_id_mapping
+            .insert(
+                BookRoute::RouterReferenceRoutesIndex {
+                },
+                ::use_mdbook::mdbook_shared::PageId(42usize),
+            );
+        pages
+            .push((
+                43usize,
+                {
+                    ::use_mdbook::mdbook_shared::Page {
+                        title: "Nested Routes".to_string(),
+                        url: BookRoute::RouterReferenceRoutesNested {
+                        },
+                        segments: vec![],
+                        sections: vec![
+                            ::use_mdbook::mdbook_shared::Section {
+                                title: "Nested Routes".to_string(),
+                                id: "nested-routes".to_string(),
+                                level: 1usize,
+                            },
+                            ::use_mdbook::mdbook_shared::Section {
+                                title: "Nesting".to_string(),
+                                id: "nesting".to_string(),
+                                level: 2usize,
+                            },
+                        ],
+                        raw: String::new(),
+                        id: ::use_mdbook::mdbook_shared::PageId(43usize),
+                    }
+                },
+            ));
+        page_id_mapping
+            .insert(
+                BookRoute::RouterReferenceRoutesNested {
+                },
+                ::use_mdbook::mdbook_shared::PageId(43usize),
+            );
+        pages
+            .push((
+                44usize,
+                {
+                    ::use_mdbook::mdbook_shared::Page {
+                        title: "Layouts".to_string(),
+                        url: BookRoute::RouterReferenceLayouts {
+                        },
+                        segments: vec![],
+                        sections: vec![
+                            ::use_mdbook::mdbook_shared::Section {
+                                title: "Layouts".to_string(),
+                                id: "layouts".to_string(),
+                                level: 1usize,
+                            },
+                            ::use_mdbook::mdbook_shared::Section {
+                                title: "Layouts with dynamic segments".to_string(),
+                                id: "layouts-with-dynamic-segments".to_string(),
+                                level: 2usize,
+                            },
+                        ],
+                        raw: String::new(),
+                        id: ::use_mdbook::mdbook_shared::PageId(44usize),
+                    }
+                },
+            ));
+        page_id_mapping
+            .insert(
+                BookRoute::RouterReferenceLayouts {
+                },
+                ::use_mdbook::mdbook_shared::PageId(44usize),
+            );
+        pages
+            .push((
+                45usize,
+                {
+                    ::use_mdbook::mdbook_shared::Page {
+                        title: "Navigation".to_string(),
+                        url: BookRoute::RouterReferenceNavigationIndex {
+                        },
+                        segments: vec![],
+                        sections: vec![
+                            ::use_mdbook::mdbook_shared::Section {
+                                title: "Links & Navigation".to_string(),
+                                id: "links-&-navigation".to_string(),
+                                level: 1usize,
+                            },
+                        ],
+                        raw: String::new(),
+                        id: ::use_mdbook::mdbook_shared::PageId(45usize),
+                    }
+                },
+            ));
+        page_id_mapping
+            .insert(
+                BookRoute::RouterReferenceNavigationIndex {
+                },
+                ::use_mdbook::mdbook_shared::PageId(45usize),
+            );
+        pages
+            .push((
+                46usize,
+                {
+                    ::use_mdbook::mdbook_shared::Page {
+                        title: "Programmatic Navigation".to_string(),
+                        url: BookRoute::RouterReferenceNavigationProgrammatic {
+                        },
+                        segments: vec![],
+                        sections: vec![
+                            ::use_mdbook::mdbook_shared::Section {
+                                title: "Programmatic Navigation".to_string(),
+                                id: "programmatic-navigation".to_string(),
+                                level: 1usize,
+                            },
+                            ::use_mdbook::mdbook_shared::Section {
+                                title: "Using a Navigator".to_string(),
+                                id: "using-a-navigator".to_string(),
+                                level: 2usize,
+                            },
+                            ::use_mdbook::mdbook_shared::Section {
+                                title: "External Navigation Targets".to_string(),
+                                id: "external-navigation-targets".to_string(),
+                                level: 2usize,
+                            },
+                        ],
+                        raw: String::new(),
+                        id: ::use_mdbook::mdbook_shared::PageId(46usize),
+                    }
+                },
+            ));
+        page_id_mapping
+            .insert(
+                BookRoute::RouterReferenceNavigationProgrammatic {
+                },
+                ::use_mdbook::mdbook_shared::PageId(46usize),
+            );
+        pages
+            .push((
+                47usize,
+                {
+                    ::use_mdbook::mdbook_shared::Page {
+                        title: "History Providers".to_string(),
+                        url: BookRoute::RouterReferenceHistoryProviders {
+                        },
+                        segments: vec![],
+                        sections: vec![
+                            ::use_mdbook::mdbook_shared::Section {
+                                title: "History Providers".to_string(),
+                                id: "history-providers".to_string(),
+                                level: 1usize,
+                            },
+                        ],
+                        raw: String::new(),
+                        id: ::use_mdbook::mdbook_shared::PageId(47usize),
+                    }
+                },
+            ));
+        page_id_mapping
+            .insert(
+                BookRoute::RouterReferenceHistoryProviders {
+                },
+                ::use_mdbook::mdbook_shared::PageId(47usize),
+            );
+        pages
+            .push((
+                48usize,
+                {
+                    ::use_mdbook::mdbook_shared::Page {
+                        title: "History Buttons".to_string(),
+                        url: BookRoute::RouterReferenceHistoryButtons {
+                        },
+                        segments: vec![],
+                        sections: vec![
+                            ::use_mdbook::mdbook_shared::Section {
+                                title: "History Buttons".to_string(),
+                                id: "history-buttons".to_string(),
+                                level: 1usize,
+                            },
+                        ],
+                        raw: String::new(),
+                        id: ::use_mdbook::mdbook_shared::PageId(48usize),
+                    }
+                },
+            ));
+        page_id_mapping
+            .insert(
+                BookRoute::RouterReferenceHistoryButtons {
+                },
+                ::use_mdbook::mdbook_shared::PageId(48usize),
+            );
+        pages
+            .push((
+                49usize,
+                {
+                    ::use_mdbook::mdbook_shared::Page {
                         title: "Routing Update Callback".to_string(),
                         url: BookRoute::RouterReferenceRoutingUpdateCallback {
                         },
@@ -2117,7 +2391,7 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                             },
                         ],
                         raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(42usize),
+                        id: ::use_mdbook::mdbook_shared::PageId(49usize),
                     }
                 },
             ));
@@ -2125,11 +2399,11 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
             .insert(
                 BookRoute::RouterReferenceRoutingUpdateCallback {
                 },
-                ::use_mdbook::mdbook_shared::PageId(42usize),
+                ::use_mdbook::mdbook_shared::PageId(49usize),
             );
         pages
             .push((
-                43usize,
+                50usize,
                 {
                     ::use_mdbook::mdbook_shared::Page {
                         title: "Cookbook".to_string(),
@@ -2143,18 +2417,18 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                             },
                         ],
                         raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(43usize),
+                        id: ::use_mdbook::mdbook_shared::PageId(50usize),
                     }
                 },
             ));
         page_id_mapping
             .insert(
                 BookRoute::CookbookIndex {},
-                ::use_mdbook::mdbook_shared::PageId(43usize),
+                ::use_mdbook::mdbook_shared::PageId(50usize),
             );
         pages
             .push((
-                44usize,
+                51usize,
                 {
                     ::use_mdbook::mdbook_shared::Page {
                         title: "Publishing".to_string(),
@@ -2199,18 +2473,18 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                             },
                         ],
                         raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(44usize),
+                        id: ::use_mdbook::mdbook_shared::PageId(51usize),
                     }
                 },
             ));
         page_id_mapping
             .insert(
                 BookRoute::CookbookPublishing {},
-                ::use_mdbook::mdbook_shared::PageId(44usize),
+                ::use_mdbook::mdbook_shared::PageId(51usize),
             );
         pages
             .push((
-                45usize,
+                52usize,
                 {
                     ::use_mdbook::mdbook_shared::Page {
                         title: "Anti-patterns".to_string(),
@@ -2261,18 +2535,18 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                             },
                         ],
                         raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(45usize),
+                        id: ::use_mdbook::mdbook_shared::PageId(52usize),
                     }
                 },
             ));
         page_id_mapping
             .insert(
                 BookRoute::CookbookAntipatterns {},
-                ::use_mdbook::mdbook_shared::PageId(45usize),
+                ::use_mdbook::mdbook_shared::PageId(52usize),
             );
         pages
             .push((
-                46usize,
+                53usize,
                 {
                     ::use_mdbook::mdbook_shared::Page {
                         title: "Error Handling".to_string(),
@@ -2313,7 +2587,7 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                             },
                         ],
                         raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(46usize),
+                        id: ::use_mdbook::mdbook_shared::PageId(53usize),
                     }
                 },
             ));
@@ -2321,11 +2595,11 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
             .insert(
                 BookRoute::CookbookErrorHandling {
                 },
-                ::use_mdbook::mdbook_shared::PageId(46usize),
+                ::use_mdbook::mdbook_shared::PageId(53usize),
             );
         pages
             .push((
-                47usize,
+                54usize,
                 {
                     ::use_mdbook::mdbook_shared::Page {
                         title: "Integrations".to_string(),
@@ -2334,7 +2608,7 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                         segments: vec![],
                         sections: vec![],
                         raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(47usize),
+                        id: ::use_mdbook::mdbook_shared::PageId(54usize),
                     }
                 },
             ));
@@ -2342,11 +2616,11 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
             .insert(
                 BookRoute::CookbookIntegrationsIndex {
                 },
-                ::use_mdbook::mdbook_shared::PageId(47usize),
+                ::use_mdbook::mdbook_shared::PageId(54usize),
             );
         pages
             .push((
-                48usize,
+                55usize,
                 {
                     ::use_mdbook::mdbook_shared::Page {
                         title: "Logging".to_string(),
@@ -2416,7 +2690,7 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                             },
                         ],
                         raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(48usize),
+                        id: ::use_mdbook::mdbook_shared::PageId(55usize),
                     }
                 },
             ));
@@ -2424,11 +2698,11 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
             .insert(
                 BookRoute::CookbookIntegrationsLogging {
                 },
-                ::use_mdbook::mdbook_shared::PageId(48usize),
+                ::use_mdbook::mdbook_shared::PageId(55usize),
             );
         pages
             .push((
-                49usize,
+                56usize,
                 {
                     ::use_mdbook::mdbook_shared::Page {
                         title: "Internationalization".to_string(),
@@ -2448,7 +2722,7 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                             },
                         ],
                         raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(49usize),
+                        id: ::use_mdbook::mdbook_shared::PageId(56usize),
                     }
                 },
             ));
@@ -2456,11 +2730,11 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
             .insert(
                 BookRoute::CookbookIntegrationsInternationalization {
                 },
-                ::use_mdbook::mdbook_shared::PageId(49usize),
+                ::use_mdbook::mdbook_shared::PageId(56usize),
             );
         pages
             .push((
-                50usize,
+                57usize,
                 {
                     ::use_mdbook::mdbook_shared::Page {
                         title: "State Management".to_string(),
@@ -2474,18 +2748,18 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                             },
                         ],
                         raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(50usize),
+                        id: ::use_mdbook::mdbook_shared::PageId(57usize),
                     }
                 },
             ));
         page_id_mapping
             .insert(
                 BookRoute::CookbookStateIndex {},
-                ::use_mdbook::mdbook_shared::PageId(50usize),
+                ::use_mdbook::mdbook_shared::PageId(57usize),
             );
         pages
             .push((
-                51usize,
+                58usize,
                 {
                     ::use_mdbook::mdbook_shared::Page {
                         title: "External State".to_string(),
@@ -2510,7 +2784,7 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                             },
                         ],
                         raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(51usize),
+                        id: ::use_mdbook::mdbook_shared::PageId(58usize),
                     }
                 },
             ));
@@ -2518,11 +2792,11 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
             .insert(
                 BookRoute::CookbookStateExternalIndex {
                 },
-                ::use_mdbook::mdbook_shared::PageId(51usize),
+                ::use_mdbook::mdbook_shared::PageId(58usize),
             );
         pages
             .push((
-                52usize,
+                59usize,
                 {
                     ::use_mdbook::mdbook_shared::Page {
                         title: "Custom Hooks".to_string(),
@@ -2547,7 +2821,7 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                             },
                         ],
                         raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(52usize),
+                        id: ::use_mdbook::mdbook_shared::PageId(59usize),
                     }
                 },
             ));
@@ -2555,11 +2829,11 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
             .insert(
                 BookRoute::CookbookStateCustomHooksIndex {
                 },
-                ::use_mdbook::mdbook_shared::PageId(52usize),
+                ::use_mdbook::mdbook_shared::PageId(59usize),
             );
         pages
             .push((
-                53usize,
+                60usize,
                 {
                     ::use_mdbook::mdbook_shared::Page {
                         title: "Testing".to_string(),
@@ -2588,18 +2862,18 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                             },
                         ],
                         raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(53usize),
+                        id: ::use_mdbook::mdbook_shared::PageId(60usize),
                     }
                 },
             ));
         page_id_mapping
             .insert(
                 BookRoute::CookbookTesting {},
-                ::use_mdbook::mdbook_shared::PageId(53usize),
+                ::use_mdbook::mdbook_shared::PageId(60usize),
             );
         pages
             .push((
-                54usize,
+                61usize,
                 {
                     ::use_mdbook::mdbook_shared::Page {
                         title: "Examples".to_string(),
@@ -2613,18 +2887,18 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                             },
                         ],
                         raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(54usize),
+                        id: ::use_mdbook::mdbook_shared::PageId(61usize),
                     }
                 },
             ));
         page_id_mapping
             .insert(
                 BookRoute::CookbookExamples {},
-                ::use_mdbook::mdbook_shared::PageId(54usize),
+                ::use_mdbook::mdbook_shared::PageId(61usize),
             );
         pages
             .push((
-                55usize,
+                62usize,
                 {
                     ::use_mdbook::mdbook_shared::Page {
                         title: "Tailwind".to_string(),
@@ -2663,18 +2937,18 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                             },
                         ],
                         raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(55usize),
+                        id: ::use_mdbook::mdbook_shared::PageId(62usize),
                     }
                 },
             ));
         page_id_mapping
             .insert(
                 BookRoute::CookbookTailwind {},
-                ::use_mdbook::mdbook_shared::PageId(55usize),
+                ::use_mdbook::mdbook_shared::PageId(62usize),
             );
         pages
             .push((
-                56usize,
+                63usize,
                 {
                     ::use_mdbook::mdbook_shared::Page {
                         title: "Custom Renderer".to_string(),
@@ -2764,7 +3038,7 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                             },
                         ],
                         raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(56usize),
+                        id: ::use_mdbook::mdbook_shared::PageId(63usize),
                     }
                 },
             ));
@@ -2772,11 +3046,11 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
             .insert(
                 BookRoute::CookbookCustomRenderer {
                 },
-                ::use_mdbook::mdbook_shared::PageId(56usize),
+                ::use_mdbook::mdbook_shared::PageId(63usize),
             );
         pages
             .push((
-                57usize,
+                64usize,
                 {
                     ::use_mdbook::mdbook_shared::Page {
                         title: "Optimizing".to_string(),
@@ -2830,18 +3104,18 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                             },
                         ],
                         raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(57usize),
+                        id: ::use_mdbook::mdbook_shared::PageId(64usize),
                     }
                 },
             ));
         page_id_mapping
             .insert(
                 BookRoute::CookbookOptimizing {},
-                ::use_mdbook::mdbook_shared::PageId(57usize),
+                ::use_mdbook::mdbook_shared::PageId(64usize),
             );
         pages
             .push((
-                58usize,
+                65usize,
                 {
                     ::use_mdbook::mdbook_shared::Page {
                         title: "CLI".to_string(),
@@ -2860,18 +3134,18 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                             },
                         ],
                         raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(58usize),
+                        id: ::use_mdbook::mdbook_shared::PageId(65usize),
                     }
                 },
             ));
         page_id_mapping
             .insert(
                 BookRoute::CliIndex {},
-                ::use_mdbook::mdbook_shared::PageId(58usize),
+                ::use_mdbook::mdbook_shared::PageId(65usize),
             );
         pages
             .push((
-                59usize,
+                66usize,
                 {
                     ::use_mdbook::mdbook_shared::Page {
                         title: "Create a Project".to_string(),
@@ -2890,18 +3164,18 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                             },
                         ],
                         raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(59usize),
+                        id: ::use_mdbook::mdbook_shared::PageId(66usize),
                     }
                 },
             ));
         page_id_mapping
             .insert(
                 BookRoute::CliCreating {},
-                ::use_mdbook::mdbook_shared::PageId(59usize),
+                ::use_mdbook::mdbook_shared::PageId(66usize),
             );
         pages
             .push((
-                60usize,
+                67usize,
                 {
                     ::use_mdbook::mdbook_shared::Page {
                         title: "Configure Project".to_string(),
@@ -2955,18 +3229,18 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                             },
                         ],
                         raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(60usize),
+                        id: ::use_mdbook::mdbook_shared::PageId(67usize),
                     }
                 },
             ));
         page_id_mapping
             .insert(
                 BookRoute::CliConfigure {},
-                ::use_mdbook::mdbook_shared::PageId(60usize),
+                ::use_mdbook::mdbook_shared::PageId(67usize),
             );
         pages
             .push((
-                61usize,
+                68usize,
                 {
                     ::use_mdbook::mdbook_shared::Page {
                         title: "Translate HTML".to_string(),
@@ -2985,18 +3259,18 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                             },
                         ],
                         raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(61usize),
+                        id: ::use_mdbook::mdbook_shared::PageId(68usize),
                     }
                 },
             ));
         page_id_mapping
             .insert(
                 BookRoute::CliTranslate {},
-                ::use_mdbook::mdbook_shared::PageId(61usize),
+                ::use_mdbook::mdbook_shared::PageId(68usize),
             );
         pages
             .push((
-                62usize,
+                69usize,
                 {
                     ::use_mdbook::mdbook_shared::Page {
                         title: "Contributing".to_string(),
@@ -3035,18 +3309,75 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                             },
                         ],
                         raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(62usize),
+                        id: ::use_mdbook::mdbook_shared::PageId(69usize),
                     }
                 },
             ));
         page_id_mapping
             .insert(
                 BookRoute::ContributingIndex {},
-                ::use_mdbook::mdbook_shared::PageId(62usize),
+                ::use_mdbook::mdbook_shared::PageId(69usize),
             );
         pages
             .push((
-                63usize,
+                70usize,
+                {
+                    ::use_mdbook::mdbook_shared::Page {
+                        title: "Project Structure".to_string(),
+                        url: BookRoute::ContributingProjectStructure {
+                        },
+                        segments: vec![],
+                        sections: vec![
+                            ::use_mdbook::mdbook_shared::Section {
+                                title: "Project Structure".to_string(),
+                                id: "project-structure".to_string(),
+                                level: 1usize,
+                            },
+                            ::use_mdbook::mdbook_shared::Section {
+                                title: "Renderers".to_string(),
+                                id: "renderers".to_string(),
+                                level: 2usize,
+                            },
+                            ::use_mdbook::mdbook_shared::Section {
+                                title: "State Management/Hooks".to_string(),
+                                id: "state-management/hooks".to_string(),
+                                level: 2usize,
+                            },
+                            ::use_mdbook::mdbook_shared::Section {
+                                title: "Core utilities".to_string(),
+                                id: "core-utilities".to_string(),
+                                level: 2usize,
+                            },
+                            ::use_mdbook::mdbook_shared::Section {
+                                title: "Native Renderer Utilities".to_string(),
+                                id: "native-renderer-utilities".to_string(),
+                                level: 2usize,
+                            },
+                            ::use_mdbook::mdbook_shared::Section {
+                                title: "Web renderer tooling".to_string(),
+                                id: "web-renderer-tooling".to_string(),
+                                level: 2usize,
+                            },
+                            ::use_mdbook::mdbook_shared::Section {
+                                title: "Developer tooling".to_string(),
+                                id: "developer-tooling".to_string(),
+                                level: 2usize,
+                            },
+                        ],
+                        raw: String::new(),
+                        id: ::use_mdbook::mdbook_shared::PageId(70usize),
+                    }
+                },
+            ));
+        page_id_mapping
+            .insert(
+                BookRoute::ContributingProjectStructure {
+                },
+                ::use_mdbook::mdbook_shared::PageId(70usize),
+            );
+        pages
+            .push((
+                71usize,
                 {
                     ::use_mdbook::mdbook_shared::Page {
                         title: "Guiding Principles".to_string(),
@@ -3081,7 +3412,7 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                             },
                         ],
                         raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(63usize),
+                        id: ::use_mdbook::mdbook_shared::PageId(71usize),
                     }
                 },
             ));
@@ -3089,11 +3420,11 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
             .insert(
                 BookRoute::ContributingGuidingPrinciples {
                 },
-                ::use_mdbook::mdbook_shared::PageId(63usize),
+                ::use_mdbook::mdbook_shared::PageId(71usize),
             );
         pages
             .push((
-                64usize,
+                72usize,
                 {
                     ::use_mdbook::mdbook_shared::Page {
                         title: "Roadmap".to_string(),
@@ -3167,18 +3498,18 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                             },
                         ],
                         raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(64usize),
+                        id: ::use_mdbook::mdbook_shared::PageId(72usize),
                     }
                 },
             ));
         page_id_mapping
             .insert(
                 BookRoute::ContributingRoadmap {},
-                ::use_mdbook::mdbook_shared::PageId(64usize),
+                ::use_mdbook::mdbook_shared::PageId(72usize),
             );
         pages
             .push((
-                65usize,
+                73usize,
                 {
                     ::use_mdbook::mdbook_shared::Page {
                         title: "Migration".to_string(),
@@ -3222,18 +3553,18 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                             },
                         ],
                         raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(65usize),
+                        id: ::use_mdbook::mdbook_shared::PageId(73usize),
                     }
                 },
             ));
         page_id_mapping
             .insert(
                 BookRoute::MigrationIndex {},
-                ::use_mdbook::mdbook_shared::PageId(65usize),
+                ::use_mdbook::mdbook_shared::PageId(73usize),
             );
         pages
             .push((
-                66usize,
+                74usize,
                 {
                     ::use_mdbook::mdbook_shared::Page {
                         title: "Hooks".to_string(),
@@ -3262,18 +3593,18 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                             },
                         ],
                         raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(66usize),
+                        id: ::use_mdbook::mdbook_shared::PageId(74usize),
                     }
                 },
             ));
         page_id_mapping
             .insert(
                 BookRoute::MigrationHooks {},
-                ::use_mdbook::mdbook_shared::PageId(66usize),
+                ::use_mdbook::mdbook_shared::PageId(74usize),
             );
         pages
             .push((
-                67usize,
+                75usize,
                 {
                     ::use_mdbook::mdbook_shared::Page {
                         title: "State".to_string(),
@@ -3302,18 +3633,18 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                             },
                         ],
                         raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(67usize),
+                        id: ::use_mdbook::mdbook_shared::PageId(75usize),
                     }
                 },
             ));
         page_id_mapping
             .insert(
                 BookRoute::MigrationState {},
-                ::use_mdbook::mdbook_shared::PageId(67usize),
+                ::use_mdbook::mdbook_shared::PageId(75usize),
             );
         pages
             .push((
-                68usize,
+                76usize,
                 {
                     ::use_mdbook::mdbook_shared::Page {
                         title: "Fermi".to_string(),
@@ -3332,18 +3663,18 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                             },
                         ],
                         raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(68usize),
+                        id: ::use_mdbook::mdbook_shared::PageId(76usize),
                     }
                 },
             ));
         page_id_mapping
             .insert(
                 BookRoute::MigrationFermi {},
-                ::use_mdbook::mdbook_shared::PageId(68usize),
+                ::use_mdbook::mdbook_shared::PageId(76usize),
             );
         pages
             .push((
-                69usize,
+                77usize,
                 {
                     ::use_mdbook::mdbook_shared::Page {
                         title: "Props".to_string(),
@@ -3372,14 +3703,14 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                             },
                         ],
                         raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(69usize),
+                        id: ::use_mdbook::mdbook_shared::PageId(77usize),
                     }
                 },
             ));
         page_id_mapping
             .insert(
                 BookRoute::MigrationProps {},
-                ::use_mdbook::mdbook_shared::PageId(69usize),
+                ::use_mdbook::mdbook_shared::PageId(77usize),
             );
         ::use_mdbook::mdbook_shared::MdBook {
             summary: ::use_mdbook::mdbook_shared::Summary {
@@ -3789,11 +4120,89 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                                 ),
                                 nested_items: vec![
                                     ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
+                                        name: "Defining Routes".to_string(),
+                                        location: Some(BookRoute::RouterReferenceRoutesIndex {
+                                        }),
+                                        number: Some(
+                                            ::use_mdbook::mdbook_shared::SectionNumber(
+                                                vec![4u32, 2u32, 1u32],
+                                            ),
+                                        ),
+                                        nested_items: vec![
+                                            ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
+                                                name: "Nested Routes".to_string(),
+                                                location: Some(BookRoute::RouterReferenceRoutesNested {
+                                                }),
+                                                number: Some(
+                                                    ::use_mdbook::mdbook_shared::SectionNumber(
+                                                        vec![4u32, 2u32, 1u32, 1u32],
+                                                    ),
+                                                ),
+                                                nested_items: vec![],
+                                            }),
+                                        ],
+                                    }),
+                                    ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
+                                        name: "Layouts".to_string(),
+                                        location: Some(BookRoute::RouterReferenceLayouts {
+                                        }),
+                                        number: Some(
+                                            ::use_mdbook::mdbook_shared::SectionNumber(
+                                                vec![4u32, 2u32, 2u32],
+                                            ),
+                                        ),
+                                        nested_items: vec![],
+                                    }),
+                                    ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
+                                        name: "Navigation".to_string(),
+                                        location: Some(BookRoute::RouterReferenceNavigationIndex {
+                                        }),
+                                        number: Some(
+                                            ::use_mdbook::mdbook_shared::SectionNumber(
+                                                vec![4u32, 2u32, 3u32],
+                                            ),
+                                        ),
+                                        nested_items: vec![
+                                            ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
+                                                name: "Programmatic Navigation".to_string(),
+                                                location: Some(BookRoute::RouterReferenceNavigationProgrammatic {}),
+                                                number: Some(
+                                                    ::use_mdbook::mdbook_shared::SectionNumber(
+                                                        vec![4u32, 2u32, 3u32, 1u32],
+                                                    ),
+                                                ),
+                                                nested_items: vec![],
+                                            }),
+                                        ],
+                                    }),
+                                    ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
+                                        name: "History Providers".to_string(),
+                                        location: Some(BookRoute::RouterReferenceHistoryProviders {
+                                        }),
+                                        number: Some(
+                                            ::use_mdbook::mdbook_shared::SectionNumber(
+                                                vec![4u32, 2u32, 4u32],
+                                            ),
+                                        ),
+                                        nested_items: vec![],
+                                    }),
+                                    ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
+                                        name: "History Buttons".to_string(),
+                                        location: Some(BookRoute::RouterReferenceHistoryButtons {
+                                        }),
+                                        number: Some(
+                                            ::use_mdbook::mdbook_shared::SectionNumber(
+                                                vec![4u32, 2u32, 5u32],
+                                            ),
+                                        ),
+                                        nested_items: vec![],
+                                    }),
+                                    ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
                                         name: "Routing Update Callback".to_string(),
                                         location: Some(BookRoute::RouterReferenceRoutingUpdateCallback {}),
                                         number: Some(
                                             ::use_mdbook::mdbook_shared::SectionNumber(
-                                                vec![4u32, 2u32, 1u32],
+                                                vec![4u32, 2u32, 6u32],
                                             ),
                                         ),
                                         nested_items: vec![],
@@ -3985,8 +4394,8 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                         ),
                         nested_items: vec![
                             ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
-                                name: "Guiding Principles".to_string(),
-                                location: Some(BookRoute::ContributingGuidingPrinciples {
+                                name: "Project Structure".to_string(),
+                                location: Some(BookRoute::ContributingProjectStructure {
                                 }),
                                 number: Some(
                                     ::use_mdbook::mdbook_shared::SectionNumber(vec![7u32, 1u32]),
@@ -3994,10 +4403,19 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                                 nested_items: vec![],
                             }),
                             ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
+                                name: "Guiding Principles".to_string(),
+                                location: Some(BookRoute::ContributingGuidingPrinciples {
+                                }),
+                                number: Some(
+                                    ::use_mdbook::mdbook_shared::SectionNumber(vec![7u32, 2u32]),
+                                ),
+                                nested_items: vec![],
+                            }),
+                            ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
                                 name: "Roadmap".to_string(),
                                 location: Some(BookRoute::ContributingRoadmap {}),
                                 number: Some(
-                                    ::use_mdbook::mdbook_shared::SectionNumber(vec![7u32, 2u32]),
+                                    ::use_mdbook::mdbook_shared::SectionNumber(vec![7u32, 3u32]),
                                 ),
                                 nested_items: vec![],
                             }),
@@ -8574,6 +8992,507 @@ pub fn RouterReferenceIndex() -> dioxus::prelude::Element {
     }
 }
 #[component(no_case_check)]
+pub fn RouterReferenceRoutesIndex() -> dioxus::prelude::Element {
+    use dioxus::prelude::*;
+    rsx! {
+        h1 { id: "defining-routes",
+            a { href: "#defining-routes", class: "header", "Defining Routes" }
+        }
+        p {
+            "When creating a "
+            code { "Routable" }
+            "]"
+            code { "route(\"path\")" }
+            " attribute."
+        }
+        h2 { id: "route-segments",
+            a { href: "#route-segments", class: "header", "Route Segments" }
+        }
+        p {
+            "Each route is made up of segments. Most segments are separated by  "
+            code { "/" }
+            " characters in the path."
+        }
+        p { "There are four fundamental types of segments:" }
+        ol {
+            li {
+                a { href: "routes/#static-segments", "Static segments" }
+                " are fixed strings that must be present in the path."
+            }
+            li {
+                a { href: "routes/#dynamic-segments", "Dynamic segments" }
+                " are types that can be parsed from a segment."
+            }
+            li {
+                a { href: "routes/#catch-all-segments", "Catch-all segments" }
+                " are types that can be parsed from multiple segments."
+            }
+            li {
+                a { href: "routes/#query-segments", "Query segments" }
+                " are types that can be parsed from the query string."
+            }
+        }
+        p { "Routes are matched:" }
+        ul {
+            li {
+                "First, from most specific to least specific (Static then Dynamic then Catch All) (Query is always matched)"
+            }
+            li {
+                "Then, if multiple routes match the same path, the order in which they are defined in the enum is followed."
+            }
+        }
+        h2 { id: "static-segments",
+            a { href: "#static-segments", class: "header", "Static segments" }
+        }
+        p {
+            "Fixed routes match a specific path. For example, the route  "
+            code { "#[route(\"/about\")]" }
+            " will match the path  "
+            code { "/about" }
+            "."
+        }
+        CodeBlock {
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">#[derive(Routable, Clone)]\n</span><span style=\"color:#f8f8f2;\">#[rustfmt::skip]\n</span><span style=\"font-style:italic;color:#66d9ef;\">enum </span><span style=\"color:#f8f8f2;\">Route {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#8c8c8c;\">// Routes always start with a slash\n</span><span style=\"color:#f8f8f2;\">    #[route(</span><span style=\"color:#ffee99;\">&quot;/&quot;</span><span style=\"color:#f8f8f2;\">)]\n</span><span style=\"color:#f8f8f2;\">    Home {{}},\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#8c8c8c;\">// You can have multiple segments in a route\n</span><span style=\"color:#f8f8f2;\">    #[route(</span><span style=\"color:#ffee99;\">&quot;/hello/world&quot;</span><span style=\"color:#f8f8f2;\">)]\n</span><span style=\"color:#f8f8f2;\">    HelloWorld {{}},\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">#[component]\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">Home</span><span style=\"color:#f8f8f2;\">() -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    todo!()\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">#[component]\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">HelloWorld</span><span style=\"color:#f8f8f2;\">() -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    todo!()\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
+            name: "static_segments.rs".to_string(),
+        }
+        h2 { id: "dynamic-segments",
+            a { href: "#dynamic-segments", class: "header", "Dynamic Segments" }
+        }
+        p {
+            "Dynamic segments are in the form of  "
+            code { ":name" }
+            " where  "
+            code { "name" }
+            " is"
+        }
+        p {
+            "The segment can be of any type that implements  "
+            code { "FromStr" }
+            "."
+        }
+        CodeBlock {
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">#[derive(Routable, Clone)]\n</span><span style=\"color:#f8f8f2;\">#[rustfmt::skip]\n</span><span style=\"font-style:italic;color:#66d9ef;\">enum </span><span style=\"color:#f8f8f2;\">Route {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#8c8c8c;\">// segments that start with : are dynamic segments\n</span><span style=\"color:#f8f8f2;\">    #[route(</span><span style=\"color:#ffee99;\">&quot;/post/:name&quot;</span><span style=\"color:#f8f8f2;\">)]\n</span><span style=\"color:#f8f8f2;\">    BlogPost {{\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"color:#8c8c8c;\">// You must include dynamic segments in child variants\n</span><span style=\"color:#f8f8f2;\">        name: </span><span style=\"font-style:italic;color:#66d9ef;\">String</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">    }},\n</span><span style=\"color:#f8f8f2;\">    #[route(</span><span style=\"color:#ffee99;\">&quot;/document/:id&quot;</span><span style=\"color:#f8f8f2;\">)]\n</span><span style=\"color:#f8f8f2;\">    Document {{\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"color:#8c8c8c;\">// You can use any type that implements FromStr\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"color:#8c8c8c;\">// If the segment can&#39;t be parsed, the route will not match\n</span><span style=\"color:#f8f8f2;\">        id: </span><span style=\"font-style:italic;color:#66d9ef;\">usize</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">    }},\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#8c8c8c;\">// Components must contain the same dynamic segments as their corresponding variant\n</span><span style=\"color:#f8f8f2;\">#[component]\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">BlogPost</span><span style=\"color:#f8f8f2;\">(</span><span style=\"font-style:italic;color:#fd971f;\">name</span><span style=\"color:#f8f8f2;\">: String) -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    todo!()\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">#[component]\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">Document</span><span style=\"color:#f8f8f2;\">(</span><span style=\"font-style:italic;color:#fd971f;\">id</span><span style=\"color:#f8f8f2;\">: </span><span style=\"font-style:italic;color:#66d9ef;\">usize</span><span style=\"color:#f8f8f2;\">) -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    todo!()\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
+            name: "static_segments.rs".to_string(),
+        }
+        h2 { id: "catch-all-segments",
+            a { href: "#catch-all-segments", class: "header", "Catch All Segments" }
+        }
+        p {
+            "Catch All segments are in the form of  "
+            code { ":..name" }
+            " where  "
+            code { "name" }
+            " is the name of the field in the route variant. If the segments are parsed successfully then the route matches, otherwise the matching continues."
+        }
+        p {
+            "The segment can be of any type that implements  "
+            code { "FromSegments" }
+            ". (Vec"
+        }
+        p {
+            "Catch All segments must be the "
+            em { "last route segment" }
+            " in the path (query segments are not counted) and cannot be included in nests."
+        }
+        CodeBlock {
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">#[derive(Routable, Clone)]\n</span><span style=\"color:#f8f8f2;\">#[rustfmt::skip]\n</span><span style=\"font-style:italic;color:#66d9ef;\">enum </span><span style=\"color:#f8f8f2;\">Route {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#8c8c8c;\">// segments that start with :.. are catch all segments\n</span><span style=\"color:#f8f8f2;\">    #[route(</span><span style=\"color:#ffee99;\">&quot;/blog/:..segments&quot;</span><span style=\"color:#f8f8f2;\">)]\n</span><span style=\"color:#f8f8f2;\">    BlogPost {{\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"color:#8c8c8c;\">// You must include catch all segment in child variants\n</span><span style=\"color:#f8f8f2;\">        segments: Vec&lt;String&gt;,\n</span><span style=\"color:#f8f8f2;\">    }},\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#8c8c8c;\">// Components must contain the same catch all segments as their corresponding variant\n</span><span style=\"color:#f8f8f2;\">#[component]\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">BlogPost</span><span style=\"color:#f8f8f2;\">(</span><span style=\"font-style:italic;color:#fd971f;\">segments</span><span style=\"color:#f8f8f2;\">: Vec&lt;String&gt;) -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    todo!()\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
+            name: "static_segments.rs".to_string(),
+        }
+        h2 { id: "query-segments",
+            a { href: "#query-segments", class: "header", "Query Segments" }
+        }
+        p {
+            "Query segments are in the form of  "
+            code { "?:name&:othername" }
+            " where  "
+            code { "name" }
+            " and  "
+            code { "othername" }
+            " are the names of fields in the route variant."
+        }
+        p {
+            "Unlike "
+            a { href: "routes/#dynamic-segments", "Dynamic Segments" }
+            " and "
+            a { href: "routes/#catch-all-segments", "Catch All Segments" }
+            ", parsing a Query segment must not fail."
+        }
+        p {
+            "The segment can be of any type that implements  "
+            code { "FromQueryArgument" }
+            "."
+        }
+        p {
+            "Query segments must be the "
+            em { "after all route segments" }
+            " and cannot be included in nests."
+        }
+        CodeBlock {
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">#[derive(Routable, Clone)]\n</span><span style=\"color:#f8f8f2;\">#[rustfmt::skip]\n</span><span style=\"font-style:italic;color:#66d9ef;\">enum </span><span style=\"color:#f8f8f2;\">Route {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#8c8c8c;\">// segments that start with ?: are query segments\n</span><span style=\"color:#f8f8f2;\">    #[route(</span><span style=\"color:#ffee99;\">&quot;/blog?:name&amp;:surname&quot;</span><span style=\"color:#f8f8f2;\">)]\n</span><span style=\"color:#f8f8f2;\">    BlogPost {{\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"color:#8c8c8c;\">// You must include query segments in child variants\n</span><span style=\"color:#f8f8f2;\">        name: </span><span style=\"font-style:italic;color:#66d9ef;\">String</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">        surname: </span><span style=\"font-style:italic;color:#66d9ef;\">String</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">    }},\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">#[component]\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">BlogPost</span><span style=\"color:#f8f8f2;\">(</span><span style=\"font-style:italic;color:#fd971f;\">name</span><span style=\"color:#f8f8f2;\">: String, </span><span style=\"font-style:italic;color:#fd971f;\">surname</span><span style=\"color:#f8f8f2;\">: String) -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    rsx! {{\n</span><span style=\"color:#f8f8f2;\">        div {{ </span><span style=\"color:#ffee99;\">&quot;This is your blogpost with a query segment:&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">        div {{ </span><span style=\"color:#ffee99;\">&quot;Name: {{name}}&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">        div {{ </span><span style=\"color:#ffee99;\">&quot;Surname: {{surname}}&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">App</span><span style=\"color:#f8f8f2;\">() -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    rsx! {{ Router::&lt;Route&gt; {{}} }}\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">main</span><span style=\"color:#f8f8f2;\">() {{}}</span></pre>\n",
+            name: "static_segments.rs".to_string(),
+        }
+    }
+}
+#[component(no_case_check)]
+pub fn RouterReferenceRoutesNested() -> dioxus::prelude::Element {
+    use dioxus::prelude::*;
+    rsx! {
+        h1 { id: "nested-routes",
+            a { href: "#nested-routes", class: "header", "Nested Routes" }
+        }
+        p { "When developing bigger applications we often want to nest routes within each" }
+        CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">└ Settings\n</span><span style=\"color:#f8f8f2;\">  ├ General Settings (displayed when opening the settings)\n</span><span style=\"color:#f8f8f2;\">  ├ Change Password\n</span><span style=\"color:#f8f8f2;\">  └ Privacy Settings</span></pre>\n" }
+        p { "We might want to map this structure to these paths and components:" }
+        CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f92672;\">/</span><span style=\"color:#f8f8f2;\">settings\t\t  -&gt; Settings {{ GeneralSettings }}\n</span><span style=\"color:#f92672;\">/</span><span style=\"color:#f8f8f2;\">settings</span><span style=\"color:#f92672;\">/</span><span style=\"color:#f8f8f2;\">password -&gt; Settings {{ PWSettings }}\n</span><span style=\"color:#f92672;\">/</span><span style=\"color:#f8f8f2;\">settings</span><span style=\"color:#f92672;\">/</span><span style=\"color:#f8f8f2;\">privacy  -&gt; Settings {{ PrivacySettings }}</span></pre>\n" }
+        p { "Nested routes allow us to do this without repeating /settings in every route." }
+        h2 { id: "nesting",
+            a { href: "#nesting", class: "header", "Nesting" }
+        }
+        p {
+            "To nest routes, we use the  "
+            code { "#[nest(\"path\")]" }
+            " and  "
+            code { "#[end_nest]" }
+            " attributes."
+        }
+        p { "The path in nest must not:" }
+        ol {
+            li {
+                "Contain a "
+                a { href: "./#catch-all-segments", "Catch All Segment" }
+            }
+            li {
+                "Contain a "
+                a { href: "./#query-segments", "Query Segment" }
+            }
+        }
+        p {
+            "If you define a dynamic segment in a nest, it will be available to all child routes and layouts."
+        }
+        p {
+            "To finish a nest, we use the  "
+            code { "#[end_nest]" }
+            " attribute or the end of the enum."
+        }
+        CodeBlock {
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">#[derive(Routable, Clone)]\n</span><span style=\"color:#8c8c8c;\">// Skipping formatting allows you to indent nests\n</span><span style=\"color:#f8f8f2;\">#[rustfmt::skip]\n</span><span style=\"font-style:italic;color:#66d9ef;\">enum </span><span style=\"color:#f8f8f2;\">Route {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#8c8c8c;\">// Start the /blog nest\n</span><span style=\"color:#f8f8f2;\">    #[nest(</span><span style=\"color:#ffee99;\">&quot;/blog&quot;</span><span style=\"color:#f8f8f2;\">)]\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"color:#8c8c8c;\">// You can nest as many times as you want\n</span><span style=\"color:#f8f8f2;\">        #[nest(</span><span style=\"color:#ffee99;\">&quot;/:id&quot;</span><span style=\"color:#f8f8f2;\">)]\n</span><span style=\"color:#f8f8f2;\">            #[route(</span><span style=\"color:#ffee99;\">&quot;/post&quot;</span><span style=\"color:#f8f8f2;\">)]\n</span><span style=\"color:#f8f8f2;\">            PostId {{\n</span><span style=\"color:#f8f8f2;\">                </span><span style=\"color:#8c8c8c;\">// You must include parent dynamic segments in child variants\n</span><span style=\"color:#f8f8f2;\">                id: </span><span style=\"font-style:italic;color:#66d9ef;\">usize</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">            }},\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"color:#8c8c8c;\">// End nests manually with #[end_nest]\n</span><span style=\"color:#f8f8f2;\">        #[end_nest]\n</span><span style=\"color:#f8f8f2;\">        #[route(</span><span style=\"color:#ffee99;\">&quot;/:id&quot;</span><span style=\"color:#f8f8f2;\">)]\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"color:#8c8c8c;\">// The absolute route of BlogPost is /blog/:name\n</span><span style=\"color:#f8f8f2;\">        BlogPost {{\n</span><span style=\"color:#f8f8f2;\">            id: </span><span style=\"font-style:italic;color:#66d9ef;\">usize</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">        }},\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#8c8c8c;\">// Or nests are ended automatically at the end of the enum\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">#[component]\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">BlogPost</span><span style=\"color:#f8f8f2;\">(</span><span style=\"font-style:italic;color:#fd971f;\">id</span><span style=\"color:#f8f8f2;\">: </span><span style=\"font-style:italic;color:#66d9ef;\">usize</span><span style=\"color:#f8f8f2;\">) -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    todo!()\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">#[component]\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">PostId</span><span style=\"color:#f8f8f2;\">(</span><span style=\"font-style:italic;color:#fd971f;\">id</span><span style=\"color:#f8f8f2;\">: </span><span style=\"font-style:italic;color:#66d9ef;\">usize</span><span style=\"color:#f8f8f2;\">) -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    todo!()\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
+            name: "nest.rs".to_string(),
+        }
+    }
+}
+#[component(no_case_check)]
+pub fn RouterReferenceLayouts() -> dioxus::prelude::Element {
+    use dioxus::prelude::*;
+    rsx! {
+        h1 { id: "layouts",
+            a { href: "#layouts", class: "header", "Layouts" }
+        }
+        p {
+            "Layouts allow you to wrap all child routes in a component. This can be useful when creating something like a header that will be used in many different routes."
+        }
+        p {
+            a { href: "https://docs.rs/dioxus-router/latest/dioxus_router/components/fn.Outlet.html",
+                code { "Outlet" }
+            }
+            " tells the router where to render content in layouts. In the following example,"
+            a { href: "https://docs.rs/dioxus-router/latest/dioxus_router/components/fn.Outlet.html",
+                code { "Outlet" }
+            }
+            "."
+        }
+        p {
+            "This page is built with the Dioxus. It uses Layouts in several different places. Here is an outline of how layouts are used on the current page. Hover over different layouts to see what elements they are on the page."
+        }
+        LayoutsExplanation {}
+        p { "Here is a more complete example of a layout wrapping the body of a page." }
+        CodeBlock {
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">#[derive(Routable, Clone)]\n</span><span style=\"color:#f8f8f2;\">#[rustfmt::skip]\n</span><span style=\"font-style:italic;color:#66d9ef;\">enum </span><span style=\"color:#f8f8f2;\">Route {{\n</span><span style=\"color:#f8f8f2;\">    #[layout(Wrapper)]\n</span><span style=\"color:#f8f8f2;\">        #[route(</span><span style=\"color:#ffee99;\">&quot;/&quot;</span><span style=\"color:#f8f8f2;\">)]\n</span><span style=\"color:#f8f8f2;\">        Index {{}},\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">#[component]\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">Wrapper</span><span style=\"color:#f8f8f2;\">() -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    rsx! {{\n</span><span style=\"color:#f8f8f2;\">        header {{ </span><span style=\"color:#ffee99;\">&quot;header&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"color:#8c8c8c;\">// The index route will be rendered here\n</span><span style=\"color:#f8f8f2;\">        Outlet::&lt;Route&gt; {{}}\n</span><span style=\"color:#f8f8f2;\">        footer {{ </span><span style=\"color:#ffee99;\">&quot;footer&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">#[component]\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">Index</span><span style=\"color:#f8f8f2;\">() -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    rsx! {{ h1 {{ </span><span style=\"color:#ffee99;\">&quot;Index&quot; </span><span style=\"color:#f8f8f2;\">}} }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
+            name: "outlet.rs".to_string(),
+        }
+        p { "The example above will output the following HTML (line breaks added for" }
+        CodeBlock {
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f92672;\">&lt;</span><span style=\"color:#f8f8f2;\">header</span><span style=\"color:#f92672;\">&gt;</span><span style=\"color:#f8f8f2;\">header&lt;</span><span style=\"background-color:#f92672;color:#f8f8f0;\">/</span><span style=\"color:#f8f8f2;\">header</span><span style=\"color:#f92672;\">&gt;\n</span><span style=\"color:#f92672;\">&lt;</span><span style=\"color:#f8f8f2;\">h1</span><span style=\"color:#f92672;\">&gt;</span><span style=\"color:#f8f8f2;\">Index&lt;</span><span style=\"background-color:#f92672;color:#f8f8f0;\">/</span><span style=\"color:#f8f8f2;\">h1</span><span style=\"color:#f92672;\">&gt;\n</span><span style=\"color:#f92672;\">&lt;</span><span style=\"color:#f8f8f2;\">footer</span><span style=\"color:#f92672;\">&gt;</span><span style=\"color:#f8f8f2;\">footer&lt;</span><span style=\"background-color:#f92672;color:#f8f8f0;\">/</span><span style=\"color:#f8f8f2;\">footer</span><span style=\"color:#f92672;\">&gt;</span></pre>\n",
+        }
+        h2 { id: "layouts-with-dynamic-segments",
+            a { href: "#layouts-with-dynamic-segments", class: "header",
+                "Layouts with dynamic segments"
+            }
+        }
+        p {
+            "You can combine layouts with "
+            a { href: "./routes/nested", "nested routes" }
+            " to create dynamic layouts with content that changes based on the current route."
+        }
+        p {
+            "Just like routes, layouts components must accept a prop for each dynamic segment in the route. For example, if you have a route with a dynamic segment like  "
+            code { "/:name" }
+            ", your layout component must accept a  "
+            code { "name" }
+            " prop:"
+        }
+        CodeBlock {
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">#[derive(Routable, Clone)]\n</span><span style=\"color:#f8f8f2;\">#[rustfmt::skip]\n</span><span style=\"font-style:italic;color:#66d9ef;\">enum </span><span style=\"color:#f8f8f2;\">Route {{\n</span><span style=\"color:#f8f8f2;\">    #[nest(</span><span style=\"color:#ffee99;\">&quot;/:name&quot;</span><span style=\"color:#f8f8f2;\">)]\n</span><span style=\"color:#f8f8f2;\">        #[layout(Wrapper)]\n</span><span style=\"color:#f8f8f2;\">            #[route(</span><span style=\"color:#ffee99;\">&quot;/&quot;</span><span style=\"color:#f8f8f2;\">)]\n</span><span style=\"color:#f8f8f2;\">            Index {{\n</span><span style=\"color:#f8f8f2;\">                name: </span><span style=\"font-style:italic;color:#66d9ef;\">String</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">            }},\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">#[component]\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">Wrapper</span><span style=\"color:#f8f8f2;\">(</span><span style=\"font-style:italic;color:#fd971f;\">name</span><span style=\"color:#f8f8f2;\">: String) -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    rsx! {{\n</span><span style=\"color:#f8f8f2;\">        header {{ </span><span style=\"color:#ffee99;\">&quot;Welcome {{name}}!&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"color:#8c8c8c;\">// The index route will be rendered here\n</span><span style=\"color:#f8f8f2;\">        Outlet::&lt;Route&gt; {{}}\n</span><span style=\"color:#f8f8f2;\">        footer {{ </span><span style=\"color:#ffee99;\">&quot;footer&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">#[component]\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">Index</span><span style=\"color:#f8f8f2;\">(</span><span style=\"font-style:italic;color:#fd971f;\">name</span><span style=\"color:#f8f8f2;\">: String) -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    rsx! {{ h1 {{ </span><span style=\"color:#ffee99;\">&quot;This is a homepage for {{name}}&quot; </span><span style=\"color:#f8f8f2;\">}} }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
+            name: "outlet.rs".to_string(),
+        }
+        p {
+            "Or to get the full route, you can use the  "
+            code { "use_route" }
+            " hook."
+        }
+        CodeBlock {
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">#[derive(Routable, Clone)]\n</span><span style=\"color:#f8f8f2;\">#[rustfmt::skip]\n</span><span style=\"font-style:italic;color:#66d9ef;\">enum </span><span style=\"color:#f8f8f2;\">Route {{\n</span><span style=\"color:#f8f8f2;\">    #[layout(Wrapper)]\n</span><span style=\"color:#f8f8f2;\">        #[route(</span><span style=\"color:#ffee99;\">&quot;/:name&quot;</span><span style=\"color:#f8f8f2;\">)]\n</span><span style=\"color:#f8f8f2;\">        Index {{\n</span><span style=\"color:#f8f8f2;\">            name: </span><span style=\"font-style:italic;color:#66d9ef;\">String</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">        }},\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">#[component]\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">Wrapper</span><span style=\"color:#f8f8f2;\">() -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> full_route </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">use_route::&lt;Route&gt;();\n</span><span style=\"color:#f8f8f2;\">    rsx! {{\n</span><span style=\"color:#f8f8f2;\">        header {{ </span><span style=\"color:#ffee99;\">&quot;Welcome to {{full_route}}!&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"color:#8c8c8c;\">// The index route will be rendered here\n</span><span style=\"color:#f8f8f2;\">        Outlet::&lt;Route&gt; {{}}\n</span><span style=\"color:#f8f8f2;\">        footer {{ </span><span style=\"color:#ffee99;\">&quot;footer&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">#[component]\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">Index</span><span style=\"color:#f8f8f2;\">(</span><span style=\"font-style:italic;color:#fd971f;\">name</span><span style=\"color:#f8f8f2;\">: String) -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    rsx! {{ h1 {{ </span><span style=\"color:#ffee99;\">&quot;This is a homepage for {{name}}&quot; </span><span style=\"color:#f8f8f2;\">}} }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
+            name: "outlet.rs".to_string(),
+        }
+    }
+}
+#[component(no_case_check)]
+pub fn RouterReferenceNavigationIndex() -> dioxus::prelude::Element {
+    use dioxus::prelude::*;
+    rsx! {
+        h1 { id: "links--navigation",
+            a { href: "#links--navigation", class: "header", "Links & Navigation" }
+        }
+        p { "When we split our app into pages, we need to provide our users with a way to" }
+        CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f92672;\">&lt;</span><span style=\"color:#f8f8f2;\">a href</span><span style=\"color:#f92672;\">=</span><span style=\"color:#ffee99;\">&quot;/other&quot;</span><span style=\"color:#f92672;\">&gt;</span><span style=\"color:#f8f8f2;\">Link to an other page&lt;</span><span style=\"background-color:#f92672;color:#f8f8f0;\">/</span><span style=\"color:#f8f8f2;\">a</span><span style=\"color:#f92672;\">&gt;</span></pre>\n" }
+        p { "However, we cannot do that when using the router for three reasons:" }
+        ol {
+            li { "Anchor tags make the browser load a new page from the server. This takes a" }
+            li { "Navigation using anchor tags only works when the app is running inside a" }
+            li { "Anchor tags cannot check if the target page exists. This means we cannot" }
+        }
+        p {
+            "To solve these problems, the router provides us with a "
+            code { "Link" }
+            "]"
+        }
+        CodeBlock {
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">#[component]\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">NavBar</span><span style=\"color:#f8f8f2;\">() -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    rsx! {{\n</span><span style=\"color:#f8f8f2;\">        nav {{\n</span><span style=\"color:#f8f8f2;\">            ul {{\n</span><span style=\"color:#f8f8f2;\">                li {{\n</span><span style=\"color:#f8f8f2;\">                    Link {{ to: Route::Home {{}}, </span><span style=\"color:#ffee99;\">&quot;Home&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">                }}\n</span><span style=\"color:#f8f8f2;\">            }}\n</span><span style=\"color:#f8f8f2;\">        }}\n</span><span style=\"color:#f8f8f2;\">        Outlet::&lt;Route&gt; {{}}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
+            name: "links.rs".to_string(),
+        }
+        p {
+            "The  "
+            code { "target" }
+            " in the example above is similar to the  "
+            code { "href" }
+            " of a regular anchor"
+            code { "NavigationTarget" }
+            "]"
+        }
+        ul {
+            li {
+                "The example uses a Internal route. This is the most common type of navigation."
+                code { "Routable" }
+                "]"
+            }
+            li {
+                "["
+                code { "External" }
+                "]"
+            }
+        }
+        blockquote {
+            p {
+                "The "
+                code { "Link" }
+                "]"
+            }
+        }
+    }
+}
+#[component(no_case_check)]
+pub fn RouterReferenceNavigationProgrammatic() -> dioxus::prelude::Element {
+    use dioxus::prelude::*;
+    rsx! {
+        h1 { id: "programmatic-navigation",
+            a { href: "#programmatic-navigation", class: "header", "Programmatic Navigation" }
+        }
+        p { "Sometimes we want our application to navigate to another page without having the" }
+        h2 { id: "using-a-navigator",
+            a { href: "#using-a-navigator", class: "header", "Using a Navigator" }
+        }
+        p {
+            "We can get a navigator with the "
+            a { href: "https://docs.rs/dioxus-router/latest/dioxus_router/prelude/struct.Navigator.html",
+                code { "navigator" }
+            }
+            " function which returns a "
+            a { href: "https://docs.rs/dioxus-router/latest/dioxus_router/prelude/struct.Navigator.html",
+                code { "Navigator" }
+            }
+            "."
+        }
+        p {
+            "We can use the "
+            a { href: "https://docs.rs/dioxus-router/latest/dioxus_router/prelude/struct.Navigator.html",
+                code { "Navigator" }
+            }
+            " to trigger four different kinds of navigation:"
+        }
+        ul {
+            li {
+                code { "push" }
+                " will navigate to the target. It works like a regular anchor tag."
+            }
+            li {
+                code { "replace" }
+                " works like "
+                code { "push" }
+                ", except that it replaces the current history entry"
+            }
+            li {
+                code { "Go back" }
+                " works like the browser's back button."
+            }
+            li {
+                code { "Go forward" }
+                " works like the browser's forward button."
+            }
+        }
+        CodeBlock {
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">#[component]\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">Home</span><span style=\"color:#f8f8f2;\">() -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> nav </span><span style=\"color:#f92672;\">= </span><span style=\"color:#66d9ef;\">navigator</span><span style=\"color:#f8f8f2;\">();\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#8c8c8c;\">// push\n</span><span style=\"color:#f8f8f2;\">    nav.</span><span style=\"color:#66d9ef;\">push</span><span style=\"color:#f8f8f2;\">(Route::PageNotFound {{ route: vec![] }});\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#8c8c8c;\">// replace\n</span><span style=\"color:#f8f8f2;\">    nav.</span><span style=\"color:#66d9ef;\">replace</span><span style=\"color:#f8f8f2;\">(Route::Home {{}});\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#8c8c8c;\">// go back\n</span><span style=\"color:#f8f8f2;\">    nav.</span><span style=\"color:#66d9ef;\">go_back</span><span style=\"color:#f8f8f2;\">();\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#8c8c8c;\">// go forward\n</span><span style=\"color:#f8f8f2;\">    nav.</span><span style=\"color:#66d9ef;\">go_forward</span><span style=\"color:#f8f8f2;\">();\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">    rsx! {{ h1 {{ </span><span style=\"color:#ffee99;\">&quot;Welcome to the Dioxus Blog!&quot; </span><span style=\"color:#f8f8f2;\">}} }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
+            name: "navigator.rs".to_string(),
+        }
+        p {
+            "You might have noticed that, like "
+            a { href: "https://docs.rs/dioxus-router/latest/dioxus_router/components/fn.Link.html",
+                code { "Link" }
+            }
+            ", the "
+            a { href: "https://docs.rs/dioxus-router/latest/dioxus_router/prelude/struct.Navigator.html",
+                code { "Navigator" }
+            }
+            "s "
+            code { "push" }
+            " and"
+            code { "replace" }
+            " functions take a "
+            a { href: "https://docs.rs/dioxus-router/latest/dioxus_router/navigation/enum.NavigationTarget.html",
+                code { "NavigationTarget" }
+            }
+            ". This means we can use either"
+            code { "Internal" }
+            ", or "
+            code { "External" }
+            " targets."
+        }
+        h2 { id: "external-navigation-targets",
+            a { href: "#external-navigation-targets", class: "header",
+                "External Navigation Targets"
+            }
+        }
+        p {
+            "Unlike a "
+            a { href: "https://docs.rs/dioxus-router/latest/dioxus_router/components/fn.Link.html",
+                code { "Link" }
+            }
+            ", the "
+            a { href: "https://docs.rs/dioxus-router/latest/dioxus_router/prelude/struct.Navigator.html",
+                code { "Navigator" }
+            }
+            " cannot rely on the browser (or webview) to"
+        }
+        p { "This means, that under certain conditions, navigation to external targets can" }
+    }
+}
+#[component(no_case_check)]
+pub fn RouterReferenceHistoryProviders() -> dioxus::prelude::Element {
+    use dioxus::prelude::*;
+    rsx! {
+        h1 { id: "history-providers",
+            a { href: "#history-providers", class: "header", "History Providers" }
+        }
+        p {
+            "[ "
+            code { "HistoryProvider" }
+            "]"
+        }
+        p {
+            "The router provides two "
+            code { "HistoryProvider" }
+            "]"
+        }
+        ul {
+            li {
+                "The "
+                code { "MemoryHistory" }
+                "]"
+            }
+            li {
+                "The "
+                code { "LiveviewHistory" }
+                "]"
+            }
+            li {
+                "The "
+                code { "WebHistory" }
+                "]"
+            }
+        }
+        p {
+            "By default, the router uses the "
+            code { "MemoryHistory" }
+            "]"
+            code { "WebHistory" }
+            "]"
+            code { "web" }
+            " feature is active, but that is not guaranteed."
+        }
+        p { "You can override the default history:" }
+        CodeBlock {
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">#[component]\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">App</span><span style=\"color:#f8f8f2;\">() -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    rsx! {{Router::&lt;Route&gt; {{ config: || RouterConfig::default().</span><span style=\"color:#66d9ef;\">history</span><span style=\"color:#f8f8f2;\">(WebHistory::default()) }}}}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
+            name: "history_provider.rs".to_string(),
+        }
+    }
+}
+#[component(no_case_check)]
+pub fn RouterReferenceHistoryButtons() -> dioxus::prelude::Element {
+    use dioxus::prelude::*;
+    rsx! {
+        h1 { id: "history-buttons",
+            a { href: "#history-buttons", class: "header", "History Buttons" }
+        }
+        p { "Some platforms, like web browsers, provide users with an easy way to navigate" }
+        p { "However, native platforms usually don't provide such amenities, which means that" }
+        ul {
+            li {
+                a { href: "https://docs.rs/dioxus-router/latest/dioxus_router/components/fn.GoBackButton.html",
+                    code { "GoBackButton" }
+                }
+            }
+            li {
+                a { href: "https://docs.rs/dioxus-router/latest/dioxus_router/components/fn.GoForwardButton.html",
+                    code { "GoForwardButton" }
+                }
+            }
+        }
+        blockquote {
+            p {
+                "If you want to navigate through the history programmatically, take a look at"
+                a { href: "./navigation/programmatic",
+                    code { "programmatic navigation" }
+                }
+                "."
+            }
+        }
+        CodeBlock {
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">HistoryNavigation</span><span style=\"color:#f8f8f2;\">() -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    rsx! {{\n</span><span style=\"color:#f8f8f2;\">        GoBackButton {{ </span><span style=\"color:#ffee99;\">&quot;Back to the Past&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">        GoForwardButton {{ </span><span style=\"color:#ffee99;\">&quot;Back to the Future&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
+            name: "history_buttons.rs".to_string(),
+        }
+        p { "As you might know, browsers usually disable the back and forward buttons if" }
+        p {
+            "Importantly, neither  "
+            code { "WebHistory" }
+            " supports that feature."
+        }
+        p { "However, in both cases, the router will just ignore button presses, if there is" }
+        p {
+            "Also, when using  "
+            code { "WebHistory" }
+            ", the history buttons might"
+        }
+    }
+}
+#[component(no_case_check)]
 pub fn RouterReferenceRoutingUpdateCallback() -> dioxus::prelude::Element {
     use dioxus::prelude::*;
     rsx! {
@@ -10958,6 +11877,223 @@ pub fn ContributingIndex() -> dioxus::prelude::Element {
             "If this is your first time with dioxus, please read "
             a { href: "https://dioxuslabs.com/learn/0.5/guide", "the guide" }
             " to get familiar with dioxus."
+        }
+    }
+}
+#[component(no_case_check)]
+pub fn ContributingProjectStructure() -> dioxus::prelude::Element {
+    use dioxus::prelude::*;
+    rsx! {
+        h1 { id: "project-structure",
+            a { href: "#project-structure", class: "header", "Project Structure" }
+        }
+        p {
+            "There are many packages in the Dioxus organization. This document will help you understand the purpose of each package and how they fit together."
+        }
+        h2 { id: "renderers",
+            a { href: "#renderers", class: "header", "Renderers" }
+        }
+        ul {
+            li {
+                a { href: "https://github.com/DioxusLabs/dioxus/tree/main/packages/desktop",
+                    "Desktop"
+                }
+                ": A Render that Runs Dioxus applications natively, but renders them with the system webview"
+            }
+            li {
+                a { href: "https://github.com/DioxusLabs/dioxus/tree/main/packages/mobile",
+                    "Mobile"
+                }
+                ": A Render that Runs Dioxus applications natively, but renders them with the system webview. This is currently a copy of the desktop render"
+            }
+            li {
+                a { href: "https://github.com/DioxusLabs/dioxus/tree/main/packages/Web",
+                    "Web"
+                }
+                ": Renders Dioxus applications in the browser by compiling to WASM and manipulating the DOM"
+            }
+            li {
+                a { href: "https://github.com/DioxusLabs/dioxus/tree/main/packages/liveview",
+                    "Liveview"
+                }
+                ": A Render that Runs on the server, and renders using a websocket proxy in the browser"
+            }
+            li {
+                a { href: "https://github.com/DioxusLabs/blitz/tree/master/packages/plasmo",
+                    "Plasmo"
+                }
+                ": A Renderer that renders a HTML-like tree into a terminal"
+            }
+            li {
+                a { href: "https://github.com/DioxusLabs/blitz/tree/master/packages/dioxus-tui",
+                    "TUI"
+                }
+                ": A Renderer that uses Plasmo to render a Dioxus application in a terminal"
+            }
+            li {
+                a { href: "https://github.com/DioxusLabs/blitz/tree/master/packages/blitz-core",
+                    "Blitz-Core"
+                }
+                ": An experimental native renderer that renders a HTML-like tree using WGPU."
+            }
+            li {
+                a { href: "https://github.com/DioxusLabs/blitz", "Blitz" }
+                ": An experimental native renderer that uses Blitz-Core to render a Dioxus application using WGPU."
+            }
+            li {
+                a { href: "https://github.com/DioxusLabs/dioxus/tree/main/packages/ssr",
+                    "SSR"
+                }
+                ": A Render that Runs Dioxus applications on the server, and renders them to HTML"
+            }
+        }
+        h2 { id: "state-managementhooks",
+            a { href: "#state-managementhooks", class: "header", "State Management/Hooks" }
+        }
+        ul {
+            li {
+                a { href: "https://github.com/DioxusLabs/dioxus/tree/main/packages/hooks",
+                    "Hooks"
+                }
+                ": A collection of common hooks for Dioxus applications"
+            }
+            li {
+                a { href: "https://github.com/DioxusLabs/dioxus/tree/main/packages/signals",
+                    "Signals"
+                }
+                ": A experimental state management library for Dioxus applications. This currently contains a "
+                code { "Copy" }
+                " version of Signal"
+            }
+            li {
+                a { href: "https://github.com/DioxusLabs/sdk", "SDK" }
+                ": A collection of platform agnostic hooks to interact with system interfaces (The clipboard, camera, etc.)."
+            }
+            li {
+                a { href: "https://github.com/DioxusLabs/dioxus/tree/main/packages/fermi",
+                    "Fermi"
+                }
+                ": A global state management library for Dioxus applications."
+            }
+            li {
+                a { href: "https://github.com/DioxusLabs/dioxus/tree/main/packages/router",
+                    "Router"
+                }
+                ": A client-side router for Dioxus applications"
+            }
+        }
+        h2 { id: "core-utilities",
+            a { href: "#core-utilities", class: "header", "Core utilities" }
+        }
+        ul {
+            li {
+                a { href: "https://github.com/DioxusLabs/dioxus/tree/main/packages/core",
+                    "core"
+                }
+                ": The core virtual dom implementation every Dioxus application uses"
+                ul {
+                    li {
+                        "You can read more about the architecture of the core "
+                        a { href: "https://dioxuslabs.com/blog/templates-diffing/",
+                            "in this blog post"
+                        }
+                        " and the "
+                        a { href: "../custom_renderer", "custom renderer section of the guide" }
+                    }
+                }
+            }
+            li {
+                a { href: "https://github.com/DioxusLabs/dioxus/tree/main/packages/RSX",
+                    "RSX"
+                }
+                ": The core parsing for RSX used for hot reloading, autoformatting, and the macro"
+            }
+            li {
+                a { href: "https://github.com/DioxusLabs/dioxus/tree/main/packages/core-macro",
+                    "core-macro"
+                }
+                ": The rsx! macro used to write Dioxus applications. (This is a wrapper over the RSX crate)"
+            }
+            li {
+                a { href: "https://github.com/DioxusLabs/dioxus-html-macro", "HTML macro" }
+                ": A html-like alternative to the RSX macro"
+            }
+        }
+        h2 { id: "native-renderer-utilities",
+            a { href: "#native-renderer-utilities", class: "header", "Native Renderer Utilities" }
+        }
+        ul {
+            li {
+                a { href: "https://github.com/DioxusLabs/blitz/tree/main/packages/native-core",
+                    "native-core"
+                }
+                ": Incrementally computed tree of states (mostly styles)"
+                ul {
+                    li {
+                        "You can read more about how native-core can help you build native renderers in the "
+                        a { href: "../custom_renderer/index.html#native-core",
+                            "custom renderer section of the guide"
+                        }
+                    }
+                }
+            }
+            li {
+                a { href: "https://github.com/DioxusLabs/blitz/tree/main/packages/native-core-macro",
+                    "native-core-macro"
+                }
+                ": A helper macro for native core"
+            }
+            li {
+                a { href: "https://github.com/DioxusLabs/taffy", "Taffy" }
+                ": Layout engine powering Blitz-Core, Plasmo, and Bevy UI"
+            }
+        }
+        h2 { id: "web-renderer-tooling",
+            a { href: "#web-renderer-tooling", class: "header", "Web renderer tooling" }
+        }
+        ul {
+            li {
+                a { href: "https://github.com/DioxusLabs/dioxus/tree/main/packages/html",
+                    "HTML"
+                }
+                ": defines html specific elements, events, and attributes"
+            }
+            li {
+                a { href: "https://github.com/DioxusLabs/dioxus/tree/main/packages/interpreter",
+                    "Interpreter"
+                }
+                ": defines browser bindings used by the web and desktop renderers"
+            }
+        }
+        h2 { id: "developer-tooling",
+            a { href: "#developer-tooling", class: "header", "Developer tooling" }
+        }
+        ul {
+            li {
+                a { href: "https://github.com/DioxusLabs/dioxus/tree/main/packages/hot-reload",
+                    "hot-reload"
+                }
+                ": Macro that uses the RSX crate to hot reload static parts of any rsx! macro. This macro works with any non-web renderer with an "
+                a { href: "https://crates.io/crates/dioxus-hot-reload", "integration" }
+            }
+            li {
+                a { href: "https://github.com/DioxusLabs/dioxus/tree/main/packages/autofmt",
+                    "autofmt"
+                }
+                ": Formats RSX code"
+            }
+            li {
+                a { href: "https://github.com/DioxusLabs/dioxus/tree/main/packages/RSX-rosetta",
+                    "rsx-rosetta"
+                }
+                ": Handles conversion between HTML and RSX"
+            }
+            li {
+                a { href: "https://github.com/DioxusLabs/dioxus/tree/main/packages/cli",
+                    "CLI"
+                }
+                ": A Command Line Interface and VSCode extension to assist with Dioxus usage"
+            }
         }
     }
 }

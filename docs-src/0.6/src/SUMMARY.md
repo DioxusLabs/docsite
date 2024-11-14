@@ -70,11 +70,7 @@
 	  - [Programmatic Navigation](router/reference/navigation/programmatic.md)
   	- [History Providers](router/reference/history-providers.md)
   	- [History Buttons](router/reference/history-buttons.md)
-  	<!-- - [Static Generation](router/reference/static-generation.md) -->
   	- [Routing Update Callback](router/reference/routing-update-callback.md)
-	<!-- - [CLI in Depth](router/reference/cli-in-depth.md)
-	- [SDK](router/reference/sdk.md)
-	- [Fullstack and the server](router/reference/fullstack-and-the-server.md) -->
   - [Assets](reference/assets.md)
   - [Web](reference/web/index.md)
   - [Desktop](reference/desktop/index.md)
@@ -106,12 +102,17 @@
     - [Fermi](migration/fermi.md)
     - [Props](migration/props.md)
 
+  <!-- - [Static Generation](router/reference/static-generation.md) -->
+	<!-- - [CLI in Depth](router/reference/cli-in-depth.md)
+	- [SDK](router/reference/sdk.md)
+	- [Fullstack and the server](router/reference/fullstack-and-the-server.md) -->
+
 ---
 - [Contributing](contributing/index.md)
   - [Project Structure](contributing/project_structure.md)
-  <!-- - [Walkthrough of Internals](contributing/walkthrough_readme.md) -->
   - [Guiding Principles](contributing/guiding_principles.md)
   - [Roadmap](contributing/roadmap.md)
+  <!-- - [Walkthrough of Internals](contributing/walkthrough_readme.md) -->
 
 
 <!-- Empty file. TODO: Uncomment when the file is finished. - [Governance](contributing/governance.md) -->

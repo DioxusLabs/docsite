@@ -25,11 +25,11 @@ static SEARCH_INDEX: dioxus_search::LazySearchIndex<Route> = dioxus_search::load
 };
 
 
-#[inline_props]
-fn Homepage(cx: Scope) -> Element {
-    let search_text = use_state(cx, String::new);
+#[component]
+fn Homepage() -> Element {
+    let search_text = use_signal(String::new);
     let results = SEARCH_INDEX.search(&search_text.get());
-    
+
     render!{
         input {
             oninput: move |e| {

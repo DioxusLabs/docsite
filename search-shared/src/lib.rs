@@ -11,64 +11,6 @@ use scraper::{Html, Selector};
 use serde::{Deserialize, Serialize};
 use stork_lib::{build_index, SearchError};
 
-pub trait SearchIndexMapping<R: Routable> {
-    fn base_directory(&self) -> PathBuf;
-    fn map_route(&self, route: R) -> Option<PathBuf>;
-}
-
-pub struct Mapped<F: Fn(R) -> Option<PathBuf>, R: Routable> {
-    base_directory: PathBuf,
-    map: F,
-    _marker: std::marker::PhantomData<R>,
-}
-
-impl<F: Fn(R) -> Option<PathBuf>, R: Routable> SearchIndexMapping<R> for Mapped<F, R> {
-    fn base_directory(&self) -> PathBuf {
-        self.base_directory.clone()
-    }
-
-    fn map_route(&self, route: R) -> Option<PathBuf> {
-        (self.map)(route)
-    }
-}
-
-pub struct BaseDirectoryMapping {
-    base_directory: PathBuf,
-}
-
-impl<R: Routable> SearchIndexMapping<R> for BaseDirectoryMapping {
-    fn base_directory(&self) -> PathBuf {
-        self.base_directory.clone()
-    }
-
-    fn map_route(&self, route: R) -> Option<PathBuf> {
-        let route = PathBuf::from(route.to_string()).join("index.html");
-        Some(route)
-    }
-}
-
-impl BaseDirectoryMapping {
-    pub fn new(base_directory: impl Into<PathBuf>) -> Self {
-        Self {
-            base_directory: base_directory.into(),
-        }
-    }
-
-    pub fn map<F: Fn(R) -> Option<PathBuf>, R: Routable>(self, map: F) -> Mapped<F, R> {
-        Mapped {
-            base_directory: self.base_directory,
-            map,
-            _marker: std::marker::PhantomData,
-        }
-    }
-}
-
-impl From<PathBuf> for BaseDirectoryMapping {
-    fn from(base_directory: PathBuf) -> Self {
-        Self::new(base_directory)
-    }
-}
-
 #[derive(Deserialize, Serialize)]
 pub struct SearchIndex<R> {
     index: Bytes,
@@ -349,13 +291,9 @@ pub struct InputConfig {
     base_directory: String,
     url_prefix: String,
     html_selector: Option<String>,
-
     files: Vec<File>,
-
     break_on_file_error: bool,
-
     minimum_indexed_substring_length: u8,
-
     minimum_index_ideographic_substring_length: u8,
 }
 
@@ -382,4 +320,62 @@ pub enum DataSource {
 
     #[serde(rename = "path")]
     FilePath(String),
+}
+
+pub trait SearchIndexMapping<R: Routable> {
+    fn base_directory(&self) -> PathBuf;
+    fn map_route(&self, route: R) -> Option<PathBuf>;
+}
+
+pub struct Mapped<F: Fn(R) -> Option<PathBuf>, R: Routable> {
+    base_directory: PathBuf,
+    map: F,
+    _marker: std::marker::PhantomData<R>,
+}
+
+impl<F: Fn(R) -> Option<PathBuf>, R: Routable> SearchIndexMapping<R> for Mapped<F, R> {
+    fn base_directory(&self) -> PathBuf {
+        self.base_directory.clone()
+    }
+
+    fn map_route(&self, route: R) -> Option<PathBuf> {
+        (self.map)(route)
+    }
+}
+
+pub struct BaseDirectoryMapping {
+    base_directory: PathBuf,
+}
+
+impl<R: Routable> SearchIndexMapping<R> for BaseDirectoryMapping {
+    fn base_directory(&self) -> PathBuf {
+        self.base_directory.clone()
+    }
+
+    fn map_route(&self, route: R) -> Option<PathBuf> {
+        let route = PathBuf::from(route.to_string()).join("index.html");
+        Some(route)
+    }
+}
+
+impl BaseDirectoryMapping {
+    pub fn new(base_directory: impl Into<PathBuf>) -> Self {
+        Self {
+            base_directory: base_directory.into(),
+        }
+    }
+
+    pub fn map<F: Fn(R) -> Option<PathBuf>, R: Routable>(self, map: F) -> Mapped<F, R> {
+        Mapped {
+            base_directory: self.base_directory,
+            map,
+            _marker: std::marker::PhantomData,
+        }
+    }
+}
+
+impl From<PathBuf> for BaseDirectoryMapping {
+    fn from(base_directory: PathBuf) -> Self {
+        Self::new(base_directory)
+    }
 }

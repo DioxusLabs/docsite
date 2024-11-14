@@ -53,7 +53,7 @@ First you will need to select a platform. Each platform has its own reference wi
 - Web
     - [Client Side](../reference/web/index.md): runs in the browser through WebAssembly
     - [Fullstack](../reference/fullstack/index.md): renders to HTML text on the server and hydrates it on the client
-> If you are not sure which web platform you want to use, check out the [choosing a web renderer](choosing_a_web_renderer.md) chapter.
+> If you are not sure which web platform you want to use, check out the [choosing a web renderer](../reference/choosing_a_web_renderer.md) chapter.
 - WebView
     - [Desktop](../reference/desktop/index.md): runs in a web view on desktop
     - [Mobile](../reference/mobile/index.md): runs in a web view on mobile. Mobile is currently not supported by the dioxus CLI. The [mobile reference](../reference/mobile/index.md) has more information about setting up a mobile project

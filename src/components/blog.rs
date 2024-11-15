@@ -38,8 +38,15 @@ pub(crate) fn BlogPost() -> Element {
 
 #[component]
 fn BlogPostItem(route: BlogRoute) -> Element {
-    let post = &route.page().title;
-    let items = post.splitn(4, " $ ").collect::<Vec<_>>();
+    // coming in the form of:
+    // "Announcing Dioxus 0.6 [draft] $ Release Notes $ November 18, 2024 $ Android/iOS simulator, Interactive CLI, RSX Autocomplete, Props Hotreloading, and more!"
+    let raw_title = &route.page().title;
+
+    if raw_title.contains("[draft]") {
+        return rsx! {};
+    }
+
+    let items = raw_title.splitn(4, " $ ").collect::<Vec<_>>();
     let [title, _category, date, description, ..] = items.as_slice() else {
         panic!("Invalid post structure:");
     };

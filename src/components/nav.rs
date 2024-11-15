@@ -187,12 +187,12 @@ fn SearchModal() -> Element {
         let url = "http://localhost:8080/assets/dioxus_search/index_searchable.bin";
 
         #[cfg(not(debug_assertions))]
-        let url = "http://dioxuslabs.com/assets/dioxus_search/index_searchable.bin";
+        let url = "https://dioxuslabs.com/assets/dioxus_search/index_searchable.bin";
 
         let data = reqwest::get(url).await.ok()?.bytes().await.ok()?;
 
-        let (bytes, _) = dioxus_search::yazi::decompress(&data, dioxus_search::yazi::Format::Zlib)
-            .expect("decompression of search to succeed");
+        let (bytes, _) =
+            dioxus_search::yazi::decompress(&data, dioxus_search::yazi::Format::Zlib).ok()?;
 
         let index = dioxus_search::SearchIndex::from_bytes("search", bytes);
 

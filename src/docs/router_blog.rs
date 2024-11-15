@@ -741,7 +741,7 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                 7usize,
                 {
                     ::use_mdbook::mdbook_shared::Page {
-                        title: "Announcing Dioxus 0.6 $ Release Notes $ November 18, 2024 $ Android/iOS simulator, Interactive CLI, RSX Autocomplete, Props Hotreloading, and more!"
+                        title: "Announcing Dioxus 0.6 [draft] $ Release Notes $ November 18, 2024 $ Android/iOS simulator, Interactive CLI, RSX Autocomplete, Props Hotreloading, and more!"
                             .to_string(),
                         url: BookRoute::Release060 {},
                         segments: vec![],
@@ -983,7 +983,7 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                         nested_items: vec![],
                     }),
                     ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
-                        name: "Announcing Dioxus 0.6 $ Release Notes $ November 18, 2024 $ Android/iOS simulator, Interactive CLI, RSX Autocomplete, Props Hotreloading, and more!"
+                        name: "Announcing Dioxus 0.6 [draft] $ Release Notes $ November 18, 2024 $ Android/iOS simulator, Interactive CLI, RSX Autocomplete, Props Hotreloading, and more!"
                             .to_string(),
                         location: Some(BookRoute::Release060 {}),
                         number: Some(
@@ -4151,7 +4151,9 @@ pub fn Release060() -> dioxus::prelude::Element {
         p {
             "To showcase everything in Dioxus 0.6, I made a quick video highlighting new features, bugs fixed, and a quick tour of everything you can do with Dioxus now:"
         }
-        p { "[" }
+        p {
+            a { href: "some-image.png", " a video goes here " }
+        }
         p { "What’s new?" }
         ul {
             li {
@@ -4243,7 +4245,7 @@ pub fn Release060() -> dioxus::prelude::Element {
         }
         p {
             img {
-                src: "Dioxus%200%206%2012df1847ef8e804ca89dc35ee34c6d3a/image.png",
+                src: "/assets/06assets/image.png",
                 alt: "image.png",
                 title: "",
             }
@@ -4267,7 +4269,9 @@ pub fn Release060() -> dioxus::prelude::Element {
         p {
             "In fact, this tiny snippet is all the code you need for a mobile app. No extra configurations, setup for Gradle, Java, Cocoapods, or any other specific mobile tooling! Provided you already have Android NDK installed and/or an iOS Simulator setup, you currently are less than 30 seconds away from a functional mobile app written entirely in Rust. In the time it takes for you to watch this gif, you could have your very own mobile app:"
         }
-        p { "[" }
+        p {
+            a { href: "some-image.png", " gif of us binstalling dx, running dx new, dx serve " }
+        }
         p {
             "While the support for mobile platforms is quite exciting, there are certainly many limitations: the Rust mobile ecosystem is practically nonexistent, we don’t have great ways of configuring the hundreds of XCode and AndroidStudio flags, and there isn’t a particularly great Rust/Java interop story today. However, we’re very dedicated to making mobile app development as great as possible and will be rolling out improvements to mobile over the next year."
         }
@@ -4282,7 +4286,7 @@ pub fn Release060() -> dioxus::prelude::Element {
         }
         p {
             img {
-                src: "Dioxus%200%206%2012df1847ef8e804ca89dc35ee34c6d3a/image%201.png",
+                src: "/assets/06assets/image%201.png",
                 alt: "image.png",
                 title: "",
             }
@@ -4290,13 +4294,15 @@ pub fn Release060() -> dioxus::prelude::Element {
         p {
             "The new CLI sports live progress bars, animations, an interactive filter system, the ability to change log levels on the fly, and more."
         }
-        p { "[" }
+        p {
+            a { href: "some-image.png", " small clip of things working " }
+        }
         p {
             "We’re using the lovely Ratatui library which unlocks new features like an expandable info panel and custom tracing integrations:"
         }
         p {
             img {
-                src: "Dioxus%200%206%2012df1847ef8e804ca89dc35ee34c6d3a/Screenshot_2024-11-14_at_9.50.33_PM.png",
+                src: "/assets/06assets/Screenshot_2024-11-14_at_9.50.33_PM.png",
                 alt: "Screenshot 2024-11-14 at 9.50.33\u{202f}PM.png",
                 title: "",
             }
@@ -4316,7 +4322,7 @@ pub fn Release060() -> dioxus::prelude::Element {
         }
         p {
             img {
-                src: "Dioxus%200%206%2012df1847ef8e804ca89dc35ee34c6d3a/Screenshot_2024-11-14_at_8.52.18_PM.png",
+                src: "/assets/06assets/Screenshot_2024-11-14_at_8.52.18_PM.png",
                 alt: "Screenshot 2024-11-14 at 8.52.18\u{202f}PM.png",
                 title: "",
             }
@@ -4326,7 +4332,7 @@ pub fn Release060() -> dioxus::prelude::Element {
         }
         p {
             img {
-                src: "Dioxus%200%206%2012df1847ef8e804ca89dc35ee34c6d3a/Screenshot_2024-11-14_at_9.01.18_PM.png",
+                src: "/assets/06assets/Screenshot_2024-11-14_at_9.01.18_PM.png",
                 alt: "Screenshot 2024-11-14 at 9.01.18\u{202f}PM.png",
                 title: "",
             }
@@ -4342,7 +4348,7 @@ pub fn Release060() -> dioxus::prelude::Element {
         }
         p {
             img {
-                src: "Dioxus%200%206%2012df1847ef8e804ca89dc35ee34c6d3a/Screenshot_2024-11-14_at_9.06.05_PM.png",
+                src: "/assets/06assets/Screenshot_2024-11-14_at_9.06.05_PM.png",
                 alt: "Screenshot 2024-11-14 at 9.06.05\u{202f}PM.png",
                 title: "",
             }
@@ -4360,7 +4366,9 @@ pub fn Release060() -> dioxus::prelude::Element {
             code { "dx" }
             " triggers too many full rebuilds."
         }
-        p { "[" }
+        p {
+            a { href: "some-image.png", " gif of that working " }
+        }
         h2 { id: "toasts-and-loading-screen",
             a { href: "#toasts-and-loading-screen", class: "header", "Toasts and Loading Screen" }
         }
@@ -4373,7 +4381,7 @@ pub fn Release060() -> dioxus::prelude::Element {
         }
         p {
             img {
-                src: "Dioxus%200%206%2012df1847ef8e804ca89dc35ee34c6d3a/Screenshot_2024-11-14_at_9.41.38_PM.png",
+                src: "/assets/06assets/Screenshot_2024-11-14_at_9.41.38_PM.png",
                 alt: "Screenshot 2024-11-14 at 9.41.38\u{202f}PM.png",
                 title: "",
             }
@@ -4383,7 +4391,7 @@ pub fn Release060() -> dioxus::prelude::Element {
         }
         p {
             img {
-                src: "Dioxus%200%206%2012df1847ef8e804ca89dc35ee34c6d3a/Screenshot_2024-11-14_at_9.42.33_PM.png",
+                src: "/assets/06assets/Screenshot_2024-11-14_at_9.42.33_PM.png",
                 alt: "Screenshot 2024-11-14 at 9.42.33\u{202f}PM.png",
                 title: "",
             }
@@ -4391,7 +4399,7 @@ pub fn Release060() -> dioxus::prelude::Element {
         p { "The new CLI sports a number of new helpful toasts:" }
         p {
             img {
-                src: "Dioxus%200%206%2012df1847ef8e804ca89dc35ee34c6d3a/toasts.png",
+                src: "/assets/06assets/toasts.png",
                 alt: "toasts.png",
                 title: "",
             }
@@ -4406,9 +4414,7 @@ pub fn Release060() -> dioxus::prelude::Element {
             "Additionally, as part of our work on improving the tooling story for Dioxus, we decided to properly fix our integration with server functions when targeting the Desktop and Mobile platforms. Server functions finally work out-of-the-box when targeting native platforms:"
         }
         p {
-            a { href: "Dioxus%200%206%2012df1847ef8e804ca89dc35ee34c6d3a/native-serverfn12.mp4",
-                "native-serverfn12.mp4"
-            }
+            a { href: "/assets/06assets/native-serverfn12.mp4", "native-serverfn12.mp4" }
         }
         p {
             "By default, in development, we set the server function endpoint to be localhost, so in production you need to make sure to point the functions to your deployed server:"
@@ -4436,7 +4442,7 @@ pub fn Release060() -> dioxus::prelude::Element {
         }
         p {
             img {
-                src: "Dioxus%200%206%2012df1847ef8e804ca89dc35ee34c6d3a/Screenshot_2024-11-14_at_9.55.12_PM.png",
+                src: "/assets/06assets/Screenshot_2024-11-14_at_9.55.12_PM.png",
                 alt: "Screenshot 2024-11-14 at 9.55.12\u{202f}PM.png",
                 title: "",
             }
@@ -4445,7 +4451,7 @@ pub fn Release060() -> dioxus::prelude::Element {
             "The autocomplete experience is much nicer now, with all attributes, elements, components, and inline Rust code benefiting from the overhauled experience."
         }
         p {
-            a { href: "Dioxus%200%206%2012df1847ef8e804ca89dc35ee34c6d3a/355646745-10781eef-de07-491d-aaa3-f75949b32190.mov",
+            a { href: "/assets/06assets/355646745-10781eef-de07-491d-aaa3-f75949b32190.mov",
                 "355646745-10781eef-de07-491d-aaa3-f75949b32190.mov"
             }
         }
@@ -4456,7 +4462,7 @@ pub fn Release060() -> dioxus::prelude::Element {
         }
         p {
             img {
-                src: "Dioxus%200%206%2012df1847ef8e804ca89dc35ee34c6d3a/355903878-ebcb5872-acf7-4e29-8acb-5b183b0617ca.png",
+                src: "/assets/06assets/355903878-ebcb5872-acf7-4e29-8acb-5b183b0617ca.png",
                 alt: "355903878-ebcb5872-acf7-4e29-8acb-5b183b0617ca.png",
                 title: "",
             }
@@ -4491,9 +4497,7 @@ pub fn Release060() -> dioxus::prelude::Element {
             "The new hotreloading engine almost feels like magic - you can quickly iterate on new designs with waiting for full Rust rebuilds:"
         }
         p {
-            a { href: "Dioxus%200%206%2012df1847ef8e804ca89dc35ee34c6d3a/dogapphr2.mp4",
-                "dogapphr2.mp4"
-            }
+            a { href: "/assets/06assets/dogapphr2.mp4", "dogapphr2.mp4" }
         }
         h3 { id: "hotreloading-formatted-strings",
             a { href: "#hotreloading-formatted-strings", class: "header",
@@ -4514,13 +4518,17 @@ pub fn Release060() -> dioxus::prelude::Element {
             em { "formatted strings." }
             " Very frequently, when working on the docsite, we’d want to modify formatted tailwind classes, but these changes would cause a full rebuild. This drastically slowed down iteration time, making working on the docsite a rather unpleasant experience."
         }
-        p { "[" }
+        p {
+            a { href: "some-image.png", " gif of string hotreloading " }
+        }
         p {
             "Hotreloading of formatted strings works "
             em { "everywhere" }
             " in rsx. This means you can get string hotreloading in component props too:"
         }
-        p { "[" }
+        p {
+            a { href: "some-image.png", " gif of component prop hotreloading " }
+        }
         h3 { id: "hotreloading-literals",
             a { href: "#hotreloading-literals", class: "header", "Hotreloading literals" }
         }
@@ -4566,9 +4574,7 @@ pub fn Release060() -> dioxus::prelude::Element {
             "With Dioxus 0.6, we also wanted to fix the longstanding issue where mobile simulators didn’t properly get hotreloading. Mobile can be tricky to work with - and will take a long time to get 100% right - but this is a solid step in making mobile targets better supported with Dioxus."
         }
         p {
-            a { href: "Dioxus%200%206%2012df1847ef8e804ca89dc35ee34c6d3a/bundled-ios-reload.mp4",
-                "bundled-ios-reload.mp4"
-            }
+            a { href: "/assets/06assets/bundled-ios-reload.mp4", "bundled-ios-reload.mp4" }
         }
         h3 { id: "proper-workspace-hotreloading",
             a { href: "#proper-workspace-hotreloading", class: "header",
@@ -4612,13 +4618,15 @@ pub fn Release060() -> dioxus::prelude::Element {
             }
             " while Manganis can do this for you, for free, at build time!"
         }
-        p { "[" }
+        p {
+            a { href: "some-image.png", " photo of delta between the two formats " }
+        }
         p {
             "Additionally, manganis automatically hashes the images and modifies the generated asset name, allowing for better integration with CDNs and browser caching."
         }
         p {
             img {
-                src: "Dioxus%200%206%2012df1847ef8e804ca89dc35ee34c6d3a/Screenshot_2024-11-14_at_10.22.48_PM.png",
+                src: "/assets/06assets/Screenshot_2024-11-14_at_10.22.48_PM.png",
                 alt: "Screenshot 2024-11-14 at 10.22.48\u{202f}PM.png",
                 title: "",
             }
@@ -4634,7 +4642,9 @@ pub fn Release060() -> dioxus::prelude::Element {
             em { "the linker" }
             " to extract asset locations from the compiled binary. This is a rather advanced technique and took a while to get right, but we believe it’s a more robust solution in the long term. If you’re interested in integrating Manganis into your libraries and apps (like say, Bevy!), we have a guide just for that."
         }
-        p { "[" }
+        p {
+            a { href: "some-image.png", " guide to using manganis " }
+        }
         h2 { id: "suspense-and-html-streaming-for-the-web",
             a {
                 href: "#suspense-and-html-streaming-for-the-web",
@@ -4671,14 +4681,18 @@ pub fn Release060() -> dioxus::prelude::Element {
             "Along with suspense boundaries, dioxus fullstack also supports streaming each suspense boundary in from the server. Instead of waiting for the whole page to load, dioxus fullstack streams in each chunk with the resolved futures as they finish:"
         }
         p {
-            a { href: "Dioxus%200%206%2012df1847ef8e804ca89dc35ee34c6d3a/streaming-demo.mov",
-                "streaming-demo.mov"
+            img {
+                src: "/assets/06assets/streaming-demo.mov",
+                alt: "streaming-demo.mov",
+                title: "",
             }
         }
         p {
             "Many of these features are quite cutting-edge and just being rolled out in major frameworks in the JavaScript ecosystem. Getting the details right for Dioxus was quite difficult - we wanted to support both the fullstack web as well as native desktop and mobile apps. These two platforms often have competing design considerations. Fortunately, suspense also works for desktop and mobile, allowing you to emulate web-like data fetching patterns for native apps."
         }
-        p { "[" }
+        p {
+            a { href: "some-image.png", " suspense native " }
+        }
         h2 { id: "static-site-generation-and-isg",
             a { href: "#static-site-generation-and-isg", class: "header",
                 "Static Site Generation and ISG"
@@ -4797,7 +4811,7 @@ pub fn Release060() -> dioxus::prelude::Element {
         p { "And accordingly, the title of the page will update:" }
         p {
             img {
-                src: "Dioxus%200%206%2012df1847ef8e804ca89dc35ee34c6d3a/Screenshot_2024-11-14_at_11.28.42_PM.png",
+                src: "/assets/06assets/Screenshot_2024-11-14_at_11.28.42_PM.png",
                 alt: "Screenshot 2024-11-14 at 11.28.42\u{202f}PM.png",
                 title: "",
             }
@@ -4820,7 +4834,7 @@ pub fn Release060() -> dioxus::prelude::Element {
         CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">app</span><span style=\"color:#f8f8f2;\">() -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    rsx! {{\n</span><span style=\"color:#f8f8f2;\">        Title {{ </span><span style=\"color:#ffee99;\">&quot;WebAssembly rocks!&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">        Stylesheet {{ href: asset!(</span><span style=\"color:#ffee99;\">&quot;/assets/main.css&quot;</span><span style=\"color:#f8f8f2;\">) }}\n</span><span style=\"color:#f8f8f2;\">        h1 {{ </span><span style=\"color:#ffee99;\">&quot;A site dedicated to webassembly&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n" }
         p {
             img {
-                src: "Dioxus%200%206%2012df1847ef8e804ca89dc35ee34c6d3a/Screenshot_2024-11-14_at_11.31.18_PM.png",
+                src: "/assets/06assets/Screenshot_2024-11-14_at_11.31.18_PM.png",
                 alt: "Screenshot 2024-11-14 at 11.31.18\u{202f}PM.png",
                 title: "",
             }
@@ -4926,7 +4940,7 @@ pub fn Release060() -> dioxus::prelude::Element {
         }
         p {
             img {
-                src: "Dioxus%200%206%2012df1847ef8e804ca89dc35ee34c6d3a/Screenshot_2024-11-14_at_10.38.33_PM.png",
+                src: "/assets/06assets/Screenshot_2024-11-14_at_10.38.33_PM.png",
                 alt: "Screenshot 2024-11-14 at 10.38.33\u{202f}PM.png",
                 title: "",
             }
@@ -4942,7 +4956,7 @@ pub fn Release060() -> dioxus::prelude::Element {
         }
         p {
             img {
-                src: "Dioxus%200%206%2012df1847ef8e804ca89dc35ee34c6d3a/Screenshot_2024-11-14_at_10.40.56_PM.png",
+                src: "/assets/06assets/Screenshot_2024-11-14_at_10.40.56_PM.png",
                 alt: "Screenshot 2024-11-14 at 10.40.56\u{202f}PM.png",
                 title: "",
             }
@@ -4985,7 +4999,9 @@ pub fn Release060() -> dioxus::prelude::Element {
             em { "every" }
             " bug in autoformat, but we are now much more confident and happy with its style choices."
         }
-        p { "[" }
+        p {
+            a { href: "some-image.png", " gif of autoformatting? " }
+        }
         h2 { id: "updated-docs---now-with-inline-version-switcher",
             a {
                 href: "#updated-docs---now-with-inline-version-switcher",
@@ -4999,7 +5015,7 @@ pub fn Release060() -> dioxus::prelude::Element {
         }
         p {
             img {
-                src: "Dioxus%200%206%2012df1847ef8e804ca89dc35ee34c6d3a/Screenshot_2024-11-14_at_11.35.23_PM.png",
+                src: "/assets/06assets/Screenshot_2024-11-14_at_11.35.23_PM.png",
                 alt: "Screenshot 2024-11-14 at 11.35.23\u{202f}PM.png",
                 title: "",
             }
@@ -5009,7 +5025,7 @@ pub fn Release060() -> dioxus::prelude::Element {
         }
         p {
             img {
-                src: "Dioxus%200%206%2012df1847ef8e804ca89dc35ee34c6d3a/Screenshot_2024-11-15_at_1.02.23_AM.png",
+                src: "/assets/06assets/Screenshot_2024-11-15_at_1.02.23_AM.png",
                 alt: "Screenshot 2024-11-15 at 1.02.23\u{202f}AM.png",
                 title: "",
             }
@@ -5019,7 +5035,7 @@ pub fn Release060() -> dioxus::prelude::Element {
         }
         p {
             img {
-                src: "Dioxus%200%206%2012df1847ef8e804ca89dc35ee34c6d3a/Screenshot_2024-11-15_at_1.04.13_AM.png",
+                src: "/assets/06assets/Screenshot_2024-11-15_at_1.04.13_AM.png",
                 alt: "Screenshot 2024-11-15 at 1.04.13\u{202f}AM.png",
                 title: "",
             }
@@ -5027,7 +5043,7 @@ pub fn Release060() -> dioxus::prelude::Element {
         p { "as well as new codeblocks with interactive examples:" }
         p {
             img {
-                src: "Dioxus%200%206%2012df1847ef8e804ca89dc35ee34c6d3a/Screenshot_2024-11-15_at_1.05.03_AM.png",
+                src: "/assets/06assets/Screenshot_2024-11-15_at_1.05.03_AM.png",
                 alt: "Screenshot 2024-11-15 at 1.05.03\u{202f}AM.png",
                 title: "",
             }
@@ -5090,9 +5106,7 @@ pub fn Release060() -> dioxus::prelude::Element {
             ":"
         }
         p {
-            a { href: "Dioxus%200%206%2012df1847ef8e804ca89dc35ee34c6d3a/full_hr_dioxus_fast.mov",
-                "full_hr_dioxus_fast.mov"
-            }
+            a { href: "/assets/06assets/full_hr_dioxus_fast.mov", "full_hr_dioxus_fast.mov" }
         }
         p {
             "We likely won’t have the time to ship true Rust hotreloading in 0.7, but stay tuned for early next year!"
@@ -5164,7 +5178,9 @@ pub fn Release060() -> dioxus::prelude::Element {
         p {
             "I want to extend a huge thank-you to everyone who helped test and improve this release. We saw an incredible number of contributors fix bugs and add features. Special thanks to:"
         }
-        p { "[" }
+        p {
+            a { href: "some-image.png", " list of contributors " }
+        }
     }
 }
 

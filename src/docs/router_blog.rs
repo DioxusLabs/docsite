@@ -4414,7 +4414,11 @@ pub fn Release060() -> dioxus::prelude::Element {
             "Additionally, as part of our work on improving the tooling story for Dioxus, we decided to properly fix our integration with server functions when targeting the Desktop and Mobile platforms. Server functions finally work out-of-the-box when targeting native platforms:"
         }
         p {
-            a { href: "/assets/06assets/native-serverfn12.mp4", "native-serverfn12.mp4" }
+            img {
+                src: "/assets/06assets/native-serverfn12.mp4",
+                alt: "native-serverfn12.mp4",
+                title: "",
+            }
         }
         p {
             "By default, in development, we set the server function endpoint to be localhost, so in production you need to make sure to point the functions to your deployed server:"
@@ -5098,11 +5102,15 @@ pub fn Release060() -> dioxus::prelude::Element {
         hr {}
         p {
             "While working on the new hotreloading engine, we experimented with adding hotreloading to Dioxus apps by developing our own strategy inspired by Andrew Kelley’s “in-place-binary-patching” goal for Zig. Unfortunately, we didn’t have a chance to productionize the prototype for this release (way too many features already!) but we did put together a "
-            a { href: "http://github.com/jkelleyrtp/ipbp", "little prototype" }
+            a { href: "http://github.com/jkelleyrtp/ipbp", "small prototype" }
             ":"
         }
         p {
-            a { href: "/assets/06assets/full_hr_dioxus_fast.mov", "full_hr_dioxus_fast.mov" }
+            img {
+                src: "/assets/06assets/full_hr_dioxus_fast.mov",
+                alt: "full_hr_dioxus_fast.mov",
+                title: "",
+            }
         }
         p {
             "We likely won’t have the time to ship true Rust hotreloading in 0.7, but stay tuned for early next year!"

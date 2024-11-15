@@ -164,7 +164,7 @@ The new CLI sports a number of new helpful toasts:
 
 Additionally, as part of our work on improving the tooling story for Dioxus, we decided to properly fix our integration with server functions when targeting the Desktop and Mobile platforms. Server functions finally work out-of-the-box when targeting native platforms:
 
-[native-serverfn12.mp4](/assets/06assets/native-serverfn12.mp4)
+![native-serverfn12.mp4](/assets/06assets/native-serverfn12.mp4)
 
 By default, in development, we set the server function endpoint to be localhost, so in production you need to make sure to point the functions to your deployed server:
 
@@ -741,9 +741,9 @@ Not every change gets a particularly large section in the release notes, but we 
 
 ---
 
-While working on the new hotreloading engine, we experimented with adding hotreloading to Dioxus apps by developing our own strategy inspired by Andrew Kelley’s “in-place-binary-patching” goal for Zig. Unfortunately, we didn’t have a chance to productionize the prototype for this release (way too many features already!) but we did put together a [little prototype](http://github.com/jkelleyrtp/ipbp):
+While working on the new hotreloading engine, we experimented with adding hotreloading to Dioxus apps by developing our own strategy inspired by Andrew Kelley’s “in-place-binary-patching” goal for Zig. Unfortunately, we didn’t have a chance to productionize the prototype for this release (way too many features already!) but we did put together a [small prototype](http://github.com/jkelleyrtp/ipbp):
 
-[full_hr_dioxus_fast.mov](/assets/06assets/full_hr_dioxus_fast.mov)
+![full_hr_dioxus_fast.mov](/assets/06assets/full_hr_dioxus_fast.mov)
 
 We likely won’t have the time to ship true Rust hotreloading in 0.7, but stay tuned for early next year!
 

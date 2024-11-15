@@ -121,7 +121,7 @@ We’re using the lovely Ratatui library which unlocks new features like an expa
 
 ![Screenshot 2024-11-14 at 9.50.33 PM.png](/assets/06assets/Screenshot_2024-11-14_at_9.50.33_PM.png)
 
-## Inline stacktraces and `tracing` integration
+## Inline WASM stacktraces and `tracing` integration
 
 ---
 

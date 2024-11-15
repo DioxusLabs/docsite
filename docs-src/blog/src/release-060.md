@@ -129,7 +129,7 @@ One cool feature: the new CLI integrates with web, desktop, and mobile apps to c
 
 ![Screenshot 2024-11-14 at 8.52.18 PM.png](/assets/06assets/Screenshot_2024-11-14_at_8.52.18_PM.png)
 
-Thanks to this integration, we now have much nicer logging around fullstack apps, showing status codes, fetched assets, and other helpful information during development mode:
+Thanks to this integration, we now have much nicer logging around fullstack apps, showing status codes, fetched assets, and other helpful information during development:
 
 ![Screenshot 2024-11-14 at 9.01.18 PM.png](/assets/06assets/Screenshot_2024-11-14_at_9.01.18_PM.png)
 
@@ -182,9 +182,9 @@ fn main() {
 
 ---
 
-Another huge overhaul in Dioxus 0.6: greatly improved autocomplete of `rsx! {}`.  Our old implementation of `rsx! {}` suffered from poor integration with tools like Rust-analyzer which provide language-server integration with your code. If the input to the macro wasn’t perfectly parsable, we failed to generate any tokens at all, meaning rust-analyzer couldn’t jump in to provide completions.
+Another huge overhaul in Dioxus 0.6: greatly improved autocomplete of `rsx! {}`.  Our old implementation of `rsx! {}` suffered from poor integration with tools like Rust-analyzer which provide language-server integration for your code. If the input to the macro wasn’t perfectly parsable, we failed to generate any tokens at all, meaning rust-analyzer couldn’t jump in to provide completions.
 
-The work to fix this was immense. Macro parsing libraries like syn don’t provide great facilities for “partial parsing” Rust code which is necessary for implementing better errors and autocomplete. We had to rewrite the entire internals of `rsx! {}` to support partial parsing of `rsx! {}` , but finally, in 0.6, we’re able to provide stellar autocomplete. Not only can we autocomplete Rust code in attribute positions, but with a few tricks, we’re able to automatically insert the appropriate braces next to element names:
+The work to fix this was immense. Macro parsing libraries like `syn` don’t provide great facilities for “partial parsing” Rust code which is necessary for implementing better errors and autocomplete. We had to rewrite the entire internals of `rsx! {}` to support partial parsing of `rsx! {}` , but finally, in 0.6, we’re able to provide stellar autocomplete. Not only can we autocomplete Rust code in attribute positions, but with a few tricks, we’re able to automatically insert the appropriate braces next to element names:
 
 ![Screenshot 2024-11-14 at 9.55.12 PM.png](/assets/06assets/Screenshot_2024-11-14_at_9.55.12_PM.png)
 
@@ -200,7 +200,7 @@ Since we no longer fail completely in the `rsx! {}` macro, we’re able to emit 
 
 ---
 
-As part of our effort to improve the `rsx! {}` experience, we shipped massive improvements to the hotreloading engine powering Dioxus. Our personal goal was to iterate on the Dioxus Docsite content with zero full rebuilds - we only wanted full rebuilds when modifying real Rust code.
+As part of our effort to improve the `rsx! {}` experience, we shipped massive improvements to the hotreloading engine powering Dioxus. Our internal goal was to iterate on the Dioxus Docsite content with zero full rebuilds - we only wanted full rebuilds when modifying real Rust code.
 
 This means we needed to add support for a number of new hotreloading engine changes:
 
@@ -211,7 +211,7 @@ This means we needed to add support for a number of new hotreloading engine chan
 - Hotreload mobile platforms
 - Hotreload as many Rust expressions as possible
 
-The new hotreloading engine almost feels like magic - you can quickly iterate on new designs with waiting for full Rust rebuilds:
+The new hotreloading engine almost feels like magic - you can quickly iterate on new designs without waiting for full Rust rebuilds:
 
 [dogapphr2.mp4](/assets/06assets/dogapphr2.mp4)
 
@@ -219,7 +219,7 @@ The new hotreloading engine almost feels like magic - you can quickly iterate on
 
 ---
 
-We can now hotreload any formatted string in your rsx! For this component, we can hotreload both the `class` attribute on button as well as the text in the button itself.
+We can now hotreload any formatted string in your markup! For this component, we can hotreload both the `class` attribute on button as well as the text in the button itself.
 
 ```rust
 #[component]
@@ -242,7 +242,7 @@ Hotreloading of formatted strings works *everywhere* in rsx. This means you can 
 
 ---
 
-As part of the hotreloading overhauls, we also now support hotreloading of any literals we can find inside your rsx. We’ve basically built a very simple interpreter for Rust code! Any changes to literals are automatically propagated through the signal-based reactivity system shipped in 0.5. This means you can change the bounds on component props without causing a full rebuild.
+As part of the hotreloading overhauls, we also now support hotreloading of any literals we can find inside your rsx. We built a very simple interpreter for Rust code! Any changes to literals are automatically propagated through the signal-based reactivity system shipped in 0.5. This means you can change the bounds on component props without causing a full rebuild.
 
 ```rust
 fn LoopIt() -> Element {
@@ -255,6 +255,9 @@ fn LoopIt() -> Element {
     }
 }
 ```
+
+[ gif of literal reloading ](some-image.png)
+
 
 While limited in many ways, this can feel downright magical.
 
@@ -295,6 +298,8 @@ With Dioxus 0.6, we also wanted to fix the longstanding issue where mobile simul
 
 [bundled-ios-reload.mp4](/assets/06assets/bundled-ios-reload.mp4)
 
+The changes here also unlocked hotreloading of bundled assets used by the `asset!()` macro. If you're using Tailwind with Dioxus, you can now simply run your Tailwind watcher in the background and Dioxus will automatically hotreload your CSS files web, desktop, and mobile.
+
 ### Proper Workspace Hotreloading
 
 ---
@@ -313,7 +318,7 @@ rsx! {
 }
 ```
 
-Manganis is a crucial step in supporting assets crossplatform, and specifically, through dependencies. Previously, if an upstream library wanted to export an asset like an image or a stylesheet, you would need to manually add those assets to your app in your `assets` folder. This gets complex and messy when libraries that generate CSS: many classes are duplicated and might even conflict with each other. Now, all CSS collected by the `asset!()` macro is processed via our build pipeline, benefiting from minification and deduplication. Libraries can now include their stylesheets and images and components and you can be guaranteed that those assets make it bundled into your app:
+Manganis is a crucial step in supporting assets crossplatform, and specifically, through dependencies. Previously, if an upstream library wanted to export an asset like an image or a stylesheet, your app would need to manually add those assets in your `assets` folder. This gets complex and messy when libraries generate CSS: many classes are duplicated and might even conflict with each other. Now, all CSS collected by the `asset!()` macro is processed via our build pipeline, benefiting from minification and deduplication. Libraries can include their stylesheets and images and components and you can be guaranteed that those assets make it bundled into your app:
 
 ```rust
 fn app() -> Element {
@@ -430,7 +435,7 @@ Along with suspense boundaries, dioxus fullstack also supports streaming each su
 
 [streaming-demo.mov](/assets/06assets/streaming-demo.mov)
 
-Many of these features are quite cutting-edge and just being rolled out in major frameworks in the JavaScript ecosystem. Getting the details right for Dioxus was quite difficult - we wanted to support both the fullstack web as well as native desktop and mobile apps. These two platforms often have competing design considerations. Fortunately, suspense also works for desktop and mobile, allowing you to emulate web-like data fetching patterns for native apps.
+Many of these features are quite cutting-edge and are just now being rolled out in frameworks in the JavaScript ecosystem. Getting the details right for Dioxus was quite difficult. We wanted to support both the fullstack web as well as native desktop and mobile apps. These two platforms often have competing design considerations. Fortunately, suspense also works for desktop and mobile, allowing you to emulate web-like data fetching patterns for native apps.
 
 [ suspense native ](some-image.png)
 
@@ -468,6 +473,7 @@ fn main() {
         dioxus::LaunchBuilder::new()
         .with_cfg(server_only! {
             ServeConfig::builder()
+                // turn on incremental site generation with the .incremental() method
                 .incremental(IncrementalRendererConfig::new())
                 .build()
                 .unwrap()
@@ -486,7 +492,7 @@ We will likely be changing these APIs in future releases, but we are eager to le
 
 ---
 
-With this release, we’ve finally made the transition where `Element` is no longer an `Option<Node>` and now an `Result<Node>`. This means we’re *finally* able to open up the use of typical rust error handling in components:
+With this release, we’ve finally made the transition where `Element` is no longer an `Option<Node>` but rather a `Result<Node>`. This means we’re *finally* able to open up the use of typical rust error handling in components:
 
 ```rust
 fn Slider() -> Element {
@@ -601,7 +607,7 @@ fn Preview() -> Element {
 
 ---
 
-In addition to being able to access the native event type, Dioxus 0.6 also makes all event handling synchronous. Previously, all event handling in Dioxus had to occur outside the normal browser event handling flow to support platforms like `dioxus-desktop` which need to communicate over an interprocess communication (IPC) layer with the host webview. With this release, we’ve finally figured out how to enable synchronous event handling for `dioxus-desktop` and can finally make event handling synchronous!
+In addition to being able to access the native event type, Dioxus 0.6 also makes all event handling synchronous. Previously, all event handling in Dioxus had to occur outside the normal browser event handling flow to support platforms like `dioxus-desktop` which need to communicate over an interprocess communication (IPC) layer with the host webview. With this release, we’ve finally figured out how to enable synchronous communication for `dioxus-desktop` and can finally make event handling synchronous!
 
 As such, we no longer need the special `dioxus_prevent_default` attribute and you can directly call `event.prevent_default()`.
 
@@ -655,6 +661,8 @@ fn app() -> Element {
 }
 ```
 
+[ gif of resize and visible working ](some-image.png)
+
 ## Web-component syntax
 
 ---
@@ -693,11 +701,11 @@ This is particularly important for users of `dx bundle` who want to automaticall
 
 ---
 
-`dx fmt` is much nicer now, and more stable. We’ve fixed as many bugs as we could find and fix without a huge rewrite or overhaul.
+`dx fmt` is much nicer now, and more stable. We’ve fixed as many bugs as we could find and fix without a huge rewrite.
 
 - `dx fmt` supports `#[rustfmt::skip]` attributes
-- `dx fmt` deletes way fewer comments in rsx!{}
-- `dx fmt` respects rustfmt settings like tabs vs spaces and line widths
+- `dx fmt` deletes way fewer comments in `rsx! {}`
+- `dx fmt` respects `rustfmt.toml` settings like tabs vs spaces and line widths
 - `dx fmt` can now autoformat `rsx! {}` within `rsx! {}`
 
 We haven’t fixed *every* bug in autoformat, but we are now much more confident and happy with its style choices.
@@ -737,12 +745,11 @@ Not every change gets a particularly large section in the release notes, but we 
 - `dioxus-history`: we also split out our `history` abstraction so other renderers can benefit from `Link` and `Router` without needing a dedicated feature flag on `dioxus-router`
 - `eval` API was simplified to allow `.recv::<T>().await` on evals, making interoping with JavaScript easier.
 
-
 ## Preview of In-Place Binary Patching
 
 ---
 
-While working on the new hotreloading engine, we experimented with adding hotreloading to Dioxus apps by developing our own strategy inspired by Andrew Kelley’s “in-place-binary-patching” goal for Zig. Unfortunately, we didn’t have a chance to productionize the prototype for this release (way too many features already!) but we did put together a [small prototype](http://github.com/jkelleyrtp/ipbp):
+While working on the new hotreloading engine, we experimented with adding hotreloading to Dioxus apps. The work here was inspired by Andrew Kelley’s “in-place-binary-patching” goal for Zig. Unfortunately, we didn’t have a chance to productionize the prototype for this release (way too many features already!) but we did put together a [small prototype](http://github.com/jkelleyrtp/ipbp):
 
 ![full_hr_dioxus_fast.mov](/assets/06assets/full_hr_dioxus_fast.mov)
 

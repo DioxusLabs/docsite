@@ -9,11 +9,11 @@ Happy holidays! As an early holidays present, we’re proud to release Dioxus 0.
 
 Dioxus 0.6 is the biggest release of Dioxus ever - with over 350 pull requests merged, hundreds of issues closed, dozens of huge new features, and a complete overhaul of many parts of the framework. I’m happy to say that Dioxus is the most mature and complete it’s ever been, *finally* living up to the original mission.
 
-If you’re new here, Dioxus (Dye-ox-us) is a framework for building crossplatform apps in Rust. With one codebase you can ship apps that work across web, desktop, mobile.
+If you’re new here, Dioxus (Dye-ox-us) is a framework for building crossplatform apps in Rust. With one codebase you can ship apps that work across web, desktop, mobile, and more.
 
 Dioxus 0.6 is the culmination of nearly 6 months of work. While improving various pieces of the framework, we got carried away and basically shipped all the features we wanted for Dioxus 0.7. With this release, we set a goal to retain a very high bar for quality and polish: everything from CLI tools to APIs and ecosystem libraries have seen huge improvements.
 
-With this release, we didn’t necessarily want to focus on shipping shiny new features. Instead, we wanted to continue much of the work started in Dioxus 0.5 and focus on cleaning up and improving existing features. The end result: a rebirth of Dioxus with hundreds of bug fixes, massively improved tooling, and the “ungating” of essential APIs. Everything from CLI tooling to hotreloading and autocomplete saw huge jumps in quality.
+With 0.6, we didn’t necessarily want to focus on shipping shiny new features. Instead, we wanted to continue much of the work started in Dioxus 0.5 and focus on cleaning up and improving existing features. The end result: a rebirth of Dioxus with hundreds of bug fixes, massively improved tooling, and the “ungating” of essential APIs. Everything from CLI tooling to hotreloading and autocomplete saw huge jumps in quality.
 
 To showcase everything in Dioxus 0.6, I made a quick video highlighting new features, bugs fixed, and a quick tour of everything you can do with Dioxus now:
 
@@ -48,8 +48,9 @@ With this release, we’ve decided to put the huge amount of effort into writing
 
 ![image.png](/assets/06assets/image.png)
 
-The Android and iOS simulator targets support all the same features that desktop supports: hotreloading, fast rebuilds, asset bundling, logging, etc. One notable accomplishment: you can build Rust mobile apps with a simple `main.rs`. All the existing solutions like xbuild and Tauri require you to fundamentally restructure your app, making your launch function something quite convoluted. Your app also needs to be converted to a cdylib, meaning you can’t share a launch function between desktop and mobile.
+The Android and iOS simulator targets support all the same features that desktop supports: hotreloading, fast rebuilds, asset bundling, logging, etc. One notable accomplishment: you can build Rust mobile apps with a simple `main.rs`. All the existing solutions like xbuild and Tauri require you to fundamentally restructure your app, making your launch function quite convoluted. Your app also needs to be converted to a cdylib, meaning you can’t share a launch function between desktop and mobile.
 
+Previously, the entrypoint of your app required manual catch-unwind and manually exposing a `start_app` function in lieu of a proper `fn main()`:
 ```rust
 #[cfg(any(target_os = "android", target_os = "ios"))]
 fn stop_unwind<F: FnOnce() -> T, T>(f: F) -> T {
@@ -88,7 +89,7 @@ pub extern "C" fn start_app() {
 }
 ```
 
-With Dioxus 0.6, you simply create a [`main.rs`](http://main.rs) like every other platform with no code or configuration changes:
+With Dioxus 0.6, you simply create a `main.rs` like desktop with no code or configuration changes:
 
 ```rust
 use dioxus::prelude::*;
@@ -102,7 +103,7 @@ In fact, this tiny snippet is all the code you need for a mobile app. No extra c
 
 [ gif of us binstalling dx, running dx new, dx serve ](some-image.png)
 
-While the support for mobile platforms is quite exciting, there are certainly many limitations: the Rust mobile ecosystem is practically nonexistent, we don’t have great ways of configuring the hundreds of XCode and AndroidStudio flags, and there isn’t a particularly great Rust/Java interop story today. However, we’re very dedicated to making mobile app development as great as possible and will be rolling out improvements to mobile over the next year.
+While 1st-class support for mobile platforms is quite exciting, there are certainly many limitations: the Rust mobile ecosystem is practically nonexistent, we don’t have great ways of configuring the hundreds of XCode and AndroidStudio flags, and there isn’t a particularly great Rust/Java interop story. However, we’re very dedicated to making mobile app development as great as possible and will be rolling out improvements to mobile over the next year.
 
 ## A new interactive CLI experience!
 

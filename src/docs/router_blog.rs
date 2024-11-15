@@ -4681,11 +4681,7 @@ pub fn Release060() -> dioxus::prelude::Element {
             "Along with suspense boundaries, dioxus fullstack also supports streaming each suspense boundary in from the server. Instead of waiting for the whole page to load, dioxus fullstack streams in each chunk with the resolved futures as they finish:"
         }
         p {
-            img {
-                src: "/assets/06assets/streaming-demo.mov",
-                alt: "streaming-demo.mov",
-                title: "",
-            }
+            a { href: "/assets/06assets/streaming-demo.mov", "streaming-demo.mov" }
         }
         p {
             "Many of these features are quite cutting-edge and just being rolled out in major frameworks in the JavaScript ecosystem. Getting the details right for Dioxus was quite difficult - we wanted to support both the fullstack web as well as native desktop and mobile apps. These two platforms often have competing design considerations. Fortunately, suspense also works for desktop and mobile, allowing you to emulate web-like data fetching patterns for native apps."

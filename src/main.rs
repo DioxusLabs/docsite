@@ -203,12 +203,11 @@ impl Route {
 
 // todo - when we update to 0.6.0 we need to change this to return a Vec<String>
 #[server(endpoint = "static_routes")]
-async fn static_routes() -> Result<String, ServerFnError> {
+async fn static_routes() -> Result<Vec<String>, ServerFnError> {
     Ok(Route::static_routes()
         .into_iter()
         .map(|route| route.to_string())
-        .collect::<Vec<_>>()
-        .join("\n"))
+        .collect::<Vec<_>>())
 }
 
 fn static_dir() -> std::path::PathBuf {

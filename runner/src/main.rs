@@ -1,7 +1,6 @@
 // TODO: Remove public folder with monaco in it (once manganis folder dir works)
 
 use dioxus::prelude::*;
-use dioxus_document::Link;
 use dioxus_logger::tracing::Level;
 use dioxus_playground::{Playground, PlaygroundUrls};
 
@@ -20,7 +19,7 @@ const URLS: PlaygroundUrls = PlaygroundUrls {
 };
 
 // Runner-only styling
-const MAIN_CSS: &str = asset!("/src/main.css");
+const MAIN_CSS: Asset = asset!("/src/main.css");
 
 #[derive(Routable, PartialEq, Clone)]
 enum Route {
@@ -39,7 +38,7 @@ fn main() {
 #[component]
 fn App() -> Element {
     rsx! {
-        Link { rel: "stylesheet", href: MAIN_CSS }
+        document::Link { rel: "stylesheet", href: MAIN_CSS }
         Router::<Route> {}
     }
 }

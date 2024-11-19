@@ -22,8 +22,8 @@ mod examples;
 mod hotreload;
 mod ws;
 
-const DXP_CSS: &str = asset!("/assets/dxp.css");
-const MONACO_FOLDER: &str = "/monaco-editor-0.52"; //asset!(folder("/assets/monaco-editor-0.52"));
+const DXP_CSS: Asset = asset!("/assets/dxp.css");
+const MONACO_FOLDER: &str = "/assets/monaco-editor-0.52"; //asset!(folder("/assets/monaco-editor-0.52"));
 
 /// The URLS that the playground should use for locating resources and services.
 #[derive(Debug, Clone, PartialEq)]
@@ -75,7 +75,6 @@ pub fn Playground(urls: PlaygroundUrls, share_code: Option<String>) -> Element {
                     const hrMsgJson = JSON.stringify(hrMsg);
                     
                     if (iframeElem) {
-                        console.log("iframe exists");
                         iframeElem.contentWindow.postMessage(hrMsgJson, "*");
                     }
                     "#,

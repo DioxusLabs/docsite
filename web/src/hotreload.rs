@@ -1,5 +1,7 @@
 //! This is simplified  hot reloading for a single main.rs file.
-use dioxus_core::internal::{HotReloadTemplateWithLocation, HotReloadedTemplate};
+use dioxus_core::internal::{
+    HotReloadTemplateWithLocation, HotReloadedTemplate, TemplateGlobalKey,
+};
 use dioxus_html::HtmlCtx;
 use dioxus_rsx::CallBody;
 use dioxus_rsx_hotreload::{diff_rsx, ChangedRsx};
@@ -12,7 +14,7 @@ pub struct HotReload {
 
 struct CachedParse {
     raw: String,
-    templates: HashMap<String, HotReloadedTemplate>,
+    templates: HashMap<TemplateGlobalKey, HotReloadedTemplate>,
 }
 
 impl HotReload {
@@ -59,9 +61,7 @@ impl HotReload {
 
         let mut out_templates = Vec::new();
 
-        for calls in changes.into_iter() {
-            let ChangedRsx { old, new } = calls;
-
+        for ChangedRsx { old, new } in changes {
             let old_start = old.span().start();
 
             let old_parsed = syn::parse2::<CallBody>(old.tokens);
@@ -80,36 +80,31 @@ impl HotReload {
             );
 
             // if the template is not hotreloadable, we need to do a full rebuild
-            let Some(mut results) = hotreload_result else {
+            let Some(results) = hotreload_result else {
                 return Err(self.full_rebuild(new_code));
             };
 
-            // Be careful to not send the bad templates
-            results.templates.retain(|idx, template| {
-                // dioxus cannot handle empty templates...
+            for (index, template) in results.templates {
                 if template.roots.is_empty() {
-                    return false;
+                    continue;
                 }
-                let template_location = format_template_name(&template_location, *idx);
 
-                // if the template is the same, don't send its
-                if cached.templates.get(&template_location) == Some(&*template) {
-                    return false;
+                // Create the key we're going to use to identify this template
+                let key = TemplateGlobalKey {
+                    file: template_location.clone(),
+                    line: old_start.line,
+                    column: old_start.column + 1,
+                    index,
                 };
 
-                // Update the most recent idea of the template
-                // This lets us know if the template has changed so we don't need to send it
-                cached.templates.insert(template_location, template.clone());
+                // if the template is the same, don't send it
+                if cached.templates.get(&key) == Some(&template) {
+                    continue;
+                };
 
-                true
-            });
-
-            out_templates.extend(results.templates.into_iter().map(|(idx, template)| {
-                HotReloadTemplateWithLocation {
-                    location: format_template_name(&template_location, idx),
-                    template,
-                }
-            }));
+                cached.templates.insert(key.clone(), template.clone());
+                out_templates.push(HotReloadTemplateWithLocation { key, template })
+            }
         }
         Ok(out_templates)
     }
@@ -130,10 +125,6 @@ fn template_location(old_start: proc_macro2::LineColumn) -> String {
     path + ":" + line.to_string().as_str() + ":" + column.to_string().as_str()
 }
 
-fn format_template_name(name: &str, index: usize) -> String {
-    format!("{}:{}", name, index)
-}
-
 #[derive(Debug, PartialEq)]
 pub enum HotReloadError {
     NeedsRebuild,
@@ -144,7 +135,7 @@ impl Display for HotReloadError {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
             Self::NeedsRebuild => write!(f, "needs rebuild"),
-            Self::Parse => write!(f, "failed to parse rust file")
+            Self::Parse => write!(f, "failed to parse rust file"),
         }
     }
 }

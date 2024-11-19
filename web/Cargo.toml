@@ -25,17 +25,16 @@ miniz_oxide = { version = "0.8.0", features = ["std"] }
 base64 = "0.22.1"
 
 # Hot reload / Paste as RSX
-dioxus-core = "0.6.0-alpha.3"
-dioxus-core-types = "0.6.0-alpha.3"
-dioxus-devtools = "0.6.0-alpha.3"
-dioxus-rsx-hotreload = "0.6.0-alpha.3"
-dioxus-rsx = "0.6.0-alpha.3"
-dioxus-html = { version = "0.6.0-alpha.3", features = [
+dioxus-core = "0.6.0-alpha.5"
+dioxus-core-types = "0.6.0-alpha.5"
+dioxus-devtools = "0.6.0-alpha.5"
+dioxus-rsx-hotreload = "0.6.0-alpha.5"
+dioxus-rsx = "0.6.0-alpha.5"
+dioxus-html = { version = "0.6.0-alpha.5", features = [
     "hot-reload-context",
 ], default-features = false }
+dioxus-rsx-rosetta = "0.6.0-alpha.5"
+dioxus-autofmt = "0.6.0-alpha.5"
 
 syn = "2.0.85"
 proc-macro2 = "1.0.89"
-
-dioxus-rsx-rosetta = "0.6.0-alpha.3"
-dioxus-autofmt = "0.6.0-alpha.3"

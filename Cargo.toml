@@ -6,8 +6,8 @@ exclude = ["server/template"]
 [workspace.dependencies]
 model = { path = "./model" }
 
-dioxus = "0.6.0-alpha.3"
-dioxus-document = "0.6.0-alpha.3"
+dioxus = "0.6.0-alpha.5"
+dioxus-document = "0.6.0-alpha.5"
 dioxus-logger = "0.5.1"
 
 serde_json = "1.0.121"

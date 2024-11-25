@@ -96,11 +96,7 @@
   - [Examples](cookbook/examples.md)
   - [Tailwind](cookbook/tailwind.md)
   - [Optimizing](cookbook/optimizing.md)
-  - [Migration for 0.5](migration/index.md)
-    - [Hooks](migration/hooks.md)
-    - [State](migration/state.md)
-    - [Fermi](migration/fermi.md)
-    - [Props](migration/props.md)
+  - [Migration for 0.6](migration/index.md)
 
   <!-- - [Static Generation](router/reference/static-generation.md) -->
 	<!-- - [CLI in Depth](router/reference/cli-in-depth.md)

@@ -7,7 +7,7 @@
     Hash,
     Debug,
     serde::Serialize,
-    serde::Deserialize,
+    serde::Deserialize
 )]
 pub enum BookRoute {
     #[route("/introducing-dioxus")]
@@ -52,8 +52,9 @@ impl Default for BookRoute {
         BookRoute::Fulltime {}
     }
 }
-pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRoute>> =
-    use_mdbook::Lazy::new(|| {
+pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRoute>> = use_mdbook::Lazy::new(||
+{
+    {
         let mut page_id_mapping = ::std::collections::HashMap::new();
         let mut pages = Vec::new();
         pages
@@ -152,10 +153,11 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     }
                 },
             ));
-        page_id_mapping.insert(
-            BookRoute::IntroducingDioxus {},
-            ::use_mdbook::mdbook_shared::PageId(0usize),
-        );
+        page_id_mapping
+            .insert(
+                BookRoute::IntroducingDioxus {},
+                ::use_mdbook::mdbook_shared::PageId(0usize),
+            );
         pages
             .push((
                 1usize,
@@ -249,10 +251,11 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     }
                 },
             ));
-        page_id_mapping.insert(
-            BookRoute::Release020 {},
-            ::use_mdbook::mdbook_shared::PageId(1usize),
-        );
+        page_id_mapping
+            .insert(
+                BookRoute::Release020 {},
+                ::use_mdbook::mdbook_shared::PageId(1usize),
+            );
         pages
             .push((
                 2usize,
@@ -321,10 +324,11 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     }
                 },
             ));
-        page_id_mapping.insert(
-            BookRoute::TemplatesDiffing {},
-            ::use_mdbook::mdbook_shared::PageId(2usize),
-        );
+        page_id_mapping
+            .insert(
+                BookRoute::TemplatesDiffing {},
+                ::use_mdbook::mdbook_shared::PageId(2usize),
+            );
         pages
             .push((
                 3usize,
@@ -427,10 +431,11 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     }
                 },
             ));
-        page_id_mapping.insert(
-            BookRoute::Release030 {},
-            ::use_mdbook::mdbook_shared::PageId(3usize),
-        );
+        page_id_mapping
+            .insert(
+                BookRoute::Release030 {},
+                ::use_mdbook::mdbook_shared::PageId(3usize),
+            );
         pages
             .push((
                 4usize,
@@ -452,10 +457,8 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     }
                 },
             ));
-        page_id_mapping.insert(
-            BookRoute::Fulltime {},
-            ::use_mdbook::mdbook_shared::PageId(4usize),
-        );
+        page_id_mapping
+            .insert(BookRoute::Fulltime {}, ::use_mdbook::mdbook_shared::PageId(4usize));
         pages
             .push((
                 5usize,
@@ -556,10 +559,11 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     }
                 },
             ));
-        page_id_mapping.insert(
-            BookRoute::Release040 {},
-            ::use_mdbook::mdbook_shared::PageId(5usize),
-        );
+        page_id_mapping
+            .insert(
+                BookRoute::Release040 {},
+                ::use_mdbook::mdbook_shared::PageId(5usize),
+            );
         pages
             .push((
                 6usize,
@@ -727,10 +731,11 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     }
                 },
             ));
-        page_id_mapping.insert(
-            BookRoute::Release050 {},
-            ::use_mdbook::mdbook_shared::PageId(6usize),
-        );
+        page_id_mapping
+            .insert(
+                BookRoute::Release050 {},
+                ::use_mdbook::mdbook_shared::PageId(6usize),
+            );
         pages
             .push((
                 7usize,
@@ -904,10 +909,11 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     }
                 },
             ));
-        page_id_mapping.insert(
-            BookRoute::Release060 {},
-            ::use_mdbook::mdbook_shared::PageId(7usize),
-        );
+        page_id_mapping
+            .insert(
+                BookRoute::Release060 {},
+                ::use_mdbook::mdbook_shared::PageId(7usize),
+            );
         ::use_mdbook::mdbook_shared::MdBook {
             summary: ::use_mdbook::mdbook_shared::Summary {
                 title: Some("Summary".to_string()),
@@ -991,7 +997,8 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
             pages: pages.into_iter().collect(),
             page_id_mapping,
         }
-    });
+    }
+});
 #[component(no_case_check)]
 pub fn IntroducingDioxus() -> dioxus::prelude::Element {
     use dioxus::prelude::*;

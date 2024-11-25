@@ -6254,7 +6254,7 @@ pub fn ReferenceEventHandlers() -> dioxus::prelude::Element {
             " attribute with the name of the handler whose default behavior you want to stop. This attribute can be used for multiple handlers using their name separated by spaces:"
         }
         CodeBlock {
-            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">rsx! {{\n</span><span style=\"color:#f8f8f2;\">    a {{\n</span><span style=\"color:#f8f8f2;\">        href: </span><span style=\"color:#ffee99;\">&quot;https://example.com&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">        onclick: |</span><span style=\"font-style:italic;color:#fd971f;\">evt</span><span style=\"color:#f8f8f2;\">| {{\n</span><span style=\"color:#f8f8f2;\">            evt.</span><span style=\"color:#66d9ef;\">prevent_default</span><span style=\"color:#f8f8f2;\">();\n</span><span style=\"color:#f8f8f2;\">            log::info</span><span style=\"color:#f92672;\">!</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#ffee99;\">&quot;link clicked&quot;</span><span style=\"color:#f8f8f2;\">)\n</span><span style=\"color:#f8f8f2;\">        }},\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"color:#ffee99;\">&quot;example.com&quot;\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">rsx! {{\n</span><span style=\"color:#f8f8f2;\">    a {{\n</span><span style=\"color:#f8f8f2;\">        href: </span><span style=\"color:#ffee99;\">&quot;https://example.com&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">        prevent_default: </span><span style=\"color:#ffee99;\">&quot;onclick&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"color:#ffee99;\">&quot;example.com&quot;\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
             name: "event_click.rs".to_string(),
         }
         DemoFrame { event_prevent_default::App {} }
@@ -11909,7 +11909,7 @@ pub fn ContributingProjectStructure() -> dioxus::prelude::Element {
                 ": A Render that Runs Dioxus applications natively, but renders them with the system webview. This is currently a copy of the desktop render"
             }
             li {
-                a { href: "https://github.com/DioxusLabs/dioxus/tree/main/packages/Web",
+                a { href: "https://github.com/DioxusLabs/dioxus/tree/main/packages/web",
                     "Web"
                 }
                 ": Renders Dioxus applications in the browser by compiling to WASM and manipulating the DOM"
@@ -12005,7 +12005,7 @@ pub fn ContributingProjectStructure() -> dioxus::prelude::Element {
                 }
             }
             li {
-                a { href: "https://github.com/DioxusLabs/dioxus/tree/main/packages/RSX",
+                a { href: "https://github.com/DioxusLabs/dioxus/tree/main/packages/rsx",
                     "RSX"
                 }
                 ": The core parsing for RSX used for hot reloading, autoformatting, and the macro"
@@ -12085,7 +12085,7 @@ pub fn ContributingProjectStructure() -> dioxus::prelude::Element {
                 ": Formats RSX code"
             }
             li {
-                a { href: "https://github.com/DioxusLabs/dioxus/tree/main/packages/RSX-rosetta",
+                a { href: "https://github.com/DioxusLabs/dioxus/tree/main/packages/rsx-rosetta",
                     "rsx-rosetta"
                 }
                 ": Handles conversion between HTML and RSX"

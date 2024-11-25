@@ -46,7 +46,7 @@ pub fn Tokio() -> Element {
         // ANCHOR_END: tokio
     };
 
-    rsx! {  }
+    rsx! {}
 }
 
 pub fn ToOwnedMacro() -> Element {
@@ -65,5 +65,5 @@ pub fn ToOwnedMacro() -> Element {
         // ANCHOR_END: to_owned_macro
     };
 
-    rsx! {  }
+    rsx! {}
 }

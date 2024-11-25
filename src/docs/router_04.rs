@@ -12707,7 +12707,7 @@ pub fn ContributingProjectStructure() -> dioxus::prelude::Element {
                 ": A Render that Runs Dioxus applications natively, but renders them with the system webview. This is currently a copy of the desktop render"
             }
             li {
-                a { href: "https://github.com/DioxusLabs/dioxus/tree/master/packages/Web",
+                a { href: "https://github.com/DioxusLabs/dioxus/tree/master/packages/web",
                     "Web"
                 }
                 ": Renders Dioxus applications in the browser by compiling to WASM and manipulating the DOM"
@@ -12803,7 +12803,7 @@ pub fn ContributingProjectStructure() -> dioxus::prelude::Element {
                 }
             }
             li {
-                a { href: "https://github.com/DioxusLabs/dioxus/tree/master/packages/RSX",
+                a { href: "https://github.com/DioxusLabs/dioxus/tree/master/packages/rsx",
                     "RSX"
                 }
                 ": The core parsing for RSX used for hot reloading, autoformatting, and the macro"
@@ -12883,7 +12883,7 @@ pub fn ContributingProjectStructure() -> dioxus::prelude::Element {
                 ": Formats RSX code"
             }
             li {
-                a { href: "https://github.com/DioxusLabs/dioxus/tree/master/packages/RSX-rosetta",
+                a { href: "https://github.com/DioxusLabs/dioxus/tree/master/packages/rsx-rosetta",
                     "rsx-rosetta"
                 }
                 ": Handles conversion between HTML and RSX"

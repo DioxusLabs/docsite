@@ -52,21 +52,22 @@ pub fn CustomFancyButton(props: CustomFancyButtonProps) -> Element {
 }
 // ANCHOR_END: custom_data
 
-// ANCHOR: callback
-#[derive(PartialEq, Clone, Props)]
-pub struct CounterProps {
-    modify: Callback<u32, u32>,
-}
-
-pub fn Counter(props: CounterProps) -> Element {
-    let mut count = use_signal(|| 1);
-
+pub fn MyComponent() -> Element {
+    // ANCHOR: async
     rsx! {
-        button {
-            onclick: move |_| count.set(props.modify.call(count())),
-            "double"
+        FancyButton {
+            // This does not work!
+            // onclick: move |event| async move {
+            //      println!("Clicked! {event:?}");
+            // },
+
+            // This does work!
+            onclick: move |event| {
+                spawn(async move {
+                    println!("Clicked! {event:?}");
+                });
+            },
         }
-        div { "count: {count}" }
     }
+    // ANCHOR_END: async
 }
-// ANCHOR_END: callback

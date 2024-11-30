@@ -82,6 +82,8 @@ pub enum BookRoute {
     ReferenceSsr {},
     #[route("/reference/fullstack")]
     ReferenceFullstackIndex {},
+    #[route("/reference/fullstack/managing_dependancies")]
+    ReferenceFullstackManagingDependancies {},
     #[route("/reference/fullstack/server_functions")]
     ReferenceFullstackServerFunctions {},
     #[route("/reference/fullstack/extractors")]
@@ -220,63 +222,66 @@ impl BookRoute {
             BookRoute::ReferenceFullstackIndex {} => {
                 use_mdbook::mdbook_shared::PageId(35usize)
             }
-            BookRoute::ReferenceFullstackServerFunctions {} => {
+            BookRoute::ReferenceFullstackManagingDependancies {} => {
                 use_mdbook::mdbook_shared::PageId(36usize)
             }
-            BookRoute::ReferenceFullstackExtractors {} => {
+            BookRoute::ReferenceFullstackServerFunctions {} => {
                 use_mdbook::mdbook_shared::PageId(37usize)
             }
-            BookRoute::ReferenceFullstackMiddleware {} => {
+            BookRoute::ReferenceFullstackExtractors {} => {
                 use_mdbook::mdbook_shared::PageId(38usize)
             }
-            BookRoute::ReferenceFullstackAuthentication {} => {
+            BookRoute::ReferenceFullstackMiddleware {} => {
                 use_mdbook::mdbook_shared::PageId(39usize)
             }
-            BookRoute::ReferenceFullstackRouting {} => {
+            BookRoute::ReferenceFullstackAuthentication {} => {
                 use_mdbook::mdbook_shared::PageId(40usize)
             }
-            BookRoute::CookbookPublishing {} => {
+            BookRoute::ReferenceFullstackRouting {} => {
                 use_mdbook::mdbook_shared::PageId(41usize)
             }
-            BookRoute::CookbookAntipatterns {} => {
+            BookRoute::CookbookPublishing {} => {
                 use_mdbook::mdbook_shared::PageId(42usize)
             }
-            BookRoute::CookbookErrorHandling {} => {
+            BookRoute::CookbookAntipatterns {} => {
                 use_mdbook::mdbook_shared::PageId(43usize)
             }
-            BookRoute::CookbookIntegrationsIndex {} => {
+            BookRoute::CookbookErrorHandling {} => {
                 use_mdbook::mdbook_shared::PageId(44usize)
             }
-            BookRoute::CookbookIntegrationsLogging {} => {
+            BookRoute::CookbookIntegrationsIndex {} => {
                 use_mdbook::mdbook_shared::PageId(45usize)
             }
-            BookRoute::CookbookIntegrationsInternationalization {} => {
+            BookRoute::CookbookIntegrationsLogging {} => {
                 use_mdbook::mdbook_shared::PageId(46usize)
             }
-            BookRoute::CookbookStateIndex {} => {
+            BookRoute::CookbookIntegrationsInternationalization {} => {
                 use_mdbook::mdbook_shared::PageId(47usize)
             }
-            BookRoute::CookbookStateExternalIndex {} => {
+            BookRoute::CookbookStateIndex {} => {
                 use_mdbook::mdbook_shared::PageId(48usize)
             }
-            BookRoute::CookbookStateCustomHooksIndex {} => {
+            BookRoute::CookbookStateExternalIndex {} => {
                 use_mdbook::mdbook_shared::PageId(49usize)
             }
-            BookRoute::CookbookTesting {} => use_mdbook::mdbook_shared::PageId(50usize),
-            BookRoute::CookbookExamples {} => use_mdbook::mdbook_shared::PageId(51usize),
-            BookRoute::CookbookTailwind {} => use_mdbook::mdbook_shared::PageId(52usize),
+            BookRoute::CookbookStateCustomHooksIndex {} => {
+                use_mdbook::mdbook_shared::PageId(50usize)
+            }
+            BookRoute::CookbookTesting {} => use_mdbook::mdbook_shared::PageId(51usize),
+            BookRoute::CookbookExamples {} => use_mdbook::mdbook_shared::PageId(52usize),
+            BookRoute::CookbookTailwind {} => use_mdbook::mdbook_shared::PageId(53usize),
             BookRoute::CookbookOptimizing {} => {
-                use_mdbook::mdbook_shared::PageId(53usize)
+                use_mdbook::mdbook_shared::PageId(54usize)
             }
-            BookRoute::ContributingIndex {} => use_mdbook::mdbook_shared::PageId(54usize),
+            BookRoute::ContributingIndex {} => use_mdbook::mdbook_shared::PageId(55usize),
             BookRoute::ContributingProjectStructure {} => {
-                use_mdbook::mdbook_shared::PageId(55usize)
-            }
-            BookRoute::ContributingGuidingPrinciples {} => {
                 use_mdbook::mdbook_shared::PageId(56usize)
             }
-            BookRoute::ContributingRoadmap {} => {
+            BookRoute::ContributingGuidingPrinciples {} => {
                 use_mdbook::mdbook_shared::PageId(57usize)
+            }
+            BookRoute::ContributingRoadmap {} => {
+                use_mdbook::mdbook_shared::PageId(58usize)
             }
         }
     }
@@ -1806,6 +1811,53 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                 36usize,
                 {
                     ::use_mdbook::mdbook_shared::Page {
+                        title: "Managing Dependencies".to_string(),
+                        url: BookRoute::ReferenceFullstackManagingDependancies {
+                        },
+                        segments: vec![],
+                        sections: vec![
+                            ::use_mdbook::mdbook_shared::Section {
+                                title: "Managing Fullstack Dependencies".to_string(),
+                                id: "managing-fullstack-dependencies".to_string(),
+                                level: 1usize,
+                            },
+                            ::use_mdbook::mdbook_shared::Section {
+                                title: "Client and Server Feature Flags".to_string(),
+                                id: "client-and-server-feature-flags".to_string(),
+                                level: 2usize,
+                            },
+                            ::use_mdbook::mdbook_shared::Section {
+                                title: "Adding Server Only Dependencies".to_string(),
+                                id: "adding-server-only-dependencies".to_string(),
+                                level: 2usize,
+                            },
+                            ::use_mdbook::mdbook_shared::Section {
+                                title: "Adding Client Only Dependencies".to_string(),
+                                id: "adding-client-only-dependencies".to_string(),
+                                level: 2usize,
+                            },
+                            ::use_mdbook::mdbook_shared::Section {
+                                title: "Managing Binary Specific Imports".to_string(),
+                                id: "managing-binary-specific-imports".to_string(),
+                                level: 2usize,
+                            },
+                        ],
+                        raw: String::new(),
+                        id: ::use_mdbook::mdbook_shared::PageId(36usize),
+                    }
+                },
+            ));
+        page_id_mapping
+            .insert(
+                BookRoute::ReferenceFullstackManagingDependancies {
+                },
+                ::use_mdbook::mdbook_shared::PageId(36usize),
+            );
+        pages
+            .push((
+                37usize,
+                {
+                    ::use_mdbook::mdbook_shared::Page {
                         title: "Server Functions".to_string(),
                         url: BookRoute::ReferenceFullstackServerFunctions {
                         },
@@ -1838,7 +1890,7 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                             },
                         ],
                         raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(36usize),
+                        id: ::use_mdbook::mdbook_shared::PageId(37usize),
                     }
                 },
             ));
@@ -1846,11 +1898,11 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
             .insert(
                 BookRoute::ReferenceFullstackServerFunctions {
                 },
-                ::use_mdbook::mdbook_shared::PageId(36usize),
+                ::use_mdbook::mdbook_shared::PageId(37usize),
             );
         pages
             .push((
-                37usize,
+                38usize,
                 {
                     ::use_mdbook::mdbook_shared::Page {
                         title: "Extractors".to_string(),
@@ -1865,7 +1917,7 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                             },
                         ],
                         raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(37usize),
+                        id: ::use_mdbook::mdbook_shared::PageId(38usize),
                     }
                 },
             ));
@@ -1873,11 +1925,11 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
             .insert(
                 BookRoute::ReferenceFullstackExtractors {
                 },
-                ::use_mdbook::mdbook_shared::PageId(37usize),
+                ::use_mdbook::mdbook_shared::PageId(38usize),
             );
         pages
             .push((
-                38usize,
+                39usize,
                 {
                     ::use_mdbook::mdbook_shared::Page {
                         title: "Middleware".to_string(),
@@ -1892,7 +1944,7 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                             },
                         ],
                         raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(38usize),
+                        id: ::use_mdbook::mdbook_shared::PageId(39usize),
                     }
                 },
             ));
@@ -1900,11 +1952,11 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
             .insert(
                 BookRoute::ReferenceFullstackMiddleware {
                 },
-                ::use_mdbook::mdbook_shared::PageId(38usize),
+                ::use_mdbook::mdbook_shared::PageId(39usize),
             );
         pages
             .push((
-                39usize,
+                40usize,
                 {
                     ::use_mdbook::mdbook_shared::Page {
                         title: "Authentication".to_string(),
@@ -1919,7 +1971,7 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                             },
                         ],
                         raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(39usize),
+                        id: ::use_mdbook::mdbook_shared::PageId(40usize),
                     }
                 },
             ));
@@ -1927,11 +1979,11 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
             .insert(
                 BookRoute::ReferenceFullstackAuthentication {
                 },
-                ::use_mdbook::mdbook_shared::PageId(39usize),
+                ::use_mdbook::mdbook_shared::PageId(40usize),
             );
         pages
             .push((
-                40usize,
+                41usize,
                 {
                     ::use_mdbook::mdbook_shared::Page {
                         title: "Routing".to_string(),
@@ -1946,7 +1998,7 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                             },
                         ],
                         raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(40usize),
+                        id: ::use_mdbook::mdbook_shared::PageId(41usize),
                     }
                 },
             ));
@@ -1954,11 +2006,11 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
             .insert(
                 BookRoute::ReferenceFullstackRouting {
                 },
-                ::use_mdbook::mdbook_shared::PageId(40usize),
+                ::use_mdbook::mdbook_shared::PageId(41usize),
             );
         pages
             .push((
-                41usize,
+                42usize,
                 {
                     ::use_mdbook::mdbook_shared::Page {
                         title: "Publishing".to_string(),
@@ -2003,18 +2055,18 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                             },
                         ],
                         raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(41usize),
+                        id: ::use_mdbook::mdbook_shared::PageId(42usize),
                     }
                 },
             ));
         page_id_mapping
             .insert(
                 BookRoute::CookbookPublishing {},
-                ::use_mdbook::mdbook_shared::PageId(41usize),
+                ::use_mdbook::mdbook_shared::PageId(42usize),
             );
         pages
             .push((
-                42usize,
+                43usize,
                 {
                     ::use_mdbook::mdbook_shared::Page {
                         title: "Anti-patterns".to_string(),
@@ -2065,18 +2117,18 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                             },
                         ],
                         raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(42usize),
+                        id: ::use_mdbook::mdbook_shared::PageId(43usize),
                     }
                 },
             ));
         page_id_mapping
             .insert(
                 BookRoute::CookbookAntipatterns {},
-                ::use_mdbook::mdbook_shared::PageId(42usize),
+                ::use_mdbook::mdbook_shared::PageId(43usize),
             );
         pages
             .push((
-                43usize,
+                44usize,
                 {
                     ::use_mdbook::mdbook_shared::Page {
                         title: "Error Handling".to_string(),
@@ -2117,7 +2169,7 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                             },
                         ],
                         raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(43usize),
+                        id: ::use_mdbook::mdbook_shared::PageId(44usize),
                     }
                 },
             ));
@@ -2125,11 +2177,11 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
             .insert(
                 BookRoute::CookbookErrorHandling {
                 },
-                ::use_mdbook::mdbook_shared::PageId(43usize),
+                ::use_mdbook::mdbook_shared::PageId(44usize),
             );
         pages
             .push((
-                44usize,
+                45usize,
                 {
                     ::use_mdbook::mdbook_shared::Page {
                         title: "Integrations".to_string(),
@@ -2138,7 +2190,7 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                         segments: vec![],
                         sections: vec![],
                         raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(44usize),
+                        id: ::use_mdbook::mdbook_shared::PageId(45usize),
                     }
                 },
             ));
@@ -2146,11 +2198,11 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
             .insert(
                 BookRoute::CookbookIntegrationsIndex {
                 },
-                ::use_mdbook::mdbook_shared::PageId(44usize),
+                ::use_mdbook::mdbook_shared::PageId(45usize),
             );
         pages
             .push((
-                45usize,
+                46usize,
                 {
                     ::use_mdbook::mdbook_shared::Page {
                         title: "Logging".to_string(),
@@ -2220,7 +2272,7 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                             },
                         ],
                         raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(45usize),
+                        id: ::use_mdbook::mdbook_shared::PageId(46usize),
                     }
                 },
             ));
@@ -2228,11 +2280,11 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
             .insert(
                 BookRoute::CookbookIntegrationsLogging {
                 },
-                ::use_mdbook::mdbook_shared::PageId(45usize),
+                ::use_mdbook::mdbook_shared::PageId(46usize),
             );
         pages
             .push((
-                46usize,
+                47usize,
                 {
                     ::use_mdbook::mdbook_shared::Page {
                         title: "Internationalization".to_string(),
@@ -2252,7 +2304,7 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                             },
                         ],
                         raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(46usize),
+                        id: ::use_mdbook::mdbook_shared::PageId(47usize),
                     }
                 },
             ));
@@ -2260,11 +2312,11 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
             .insert(
                 BookRoute::CookbookIntegrationsInternationalization {
                 },
-                ::use_mdbook::mdbook_shared::PageId(46usize),
+                ::use_mdbook::mdbook_shared::PageId(47usize),
             );
         pages
             .push((
-                47usize,
+                48usize,
                 {
                     ::use_mdbook::mdbook_shared::Page {
                         title: "State Management".to_string(),
@@ -2278,18 +2330,18 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                             },
                         ],
                         raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(47usize),
+                        id: ::use_mdbook::mdbook_shared::PageId(48usize),
                     }
                 },
             ));
         page_id_mapping
             .insert(
                 BookRoute::CookbookStateIndex {},
-                ::use_mdbook::mdbook_shared::PageId(47usize),
+                ::use_mdbook::mdbook_shared::PageId(48usize),
             );
         pages
             .push((
-                48usize,
+                49usize,
                 {
                     ::use_mdbook::mdbook_shared::Page {
                         title: "External State".to_string(),
@@ -2314,7 +2366,7 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                             },
                         ],
                         raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(48usize),
+                        id: ::use_mdbook::mdbook_shared::PageId(49usize),
                     }
                 },
             ));
@@ -2322,11 +2374,11 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
             .insert(
                 BookRoute::CookbookStateExternalIndex {
                 },
-                ::use_mdbook::mdbook_shared::PageId(48usize),
+                ::use_mdbook::mdbook_shared::PageId(49usize),
             );
         pages
             .push((
-                49usize,
+                50usize,
                 {
                     ::use_mdbook::mdbook_shared::Page {
                         title: "Custom Hooks".to_string(),
@@ -2351,7 +2403,7 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                             },
                         ],
                         raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(49usize),
+                        id: ::use_mdbook::mdbook_shared::PageId(50usize),
                     }
                 },
             ));
@@ -2359,11 +2411,11 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
             .insert(
                 BookRoute::CookbookStateCustomHooksIndex {
                 },
-                ::use_mdbook::mdbook_shared::PageId(49usize),
+                ::use_mdbook::mdbook_shared::PageId(50usize),
             );
         pages
             .push((
-                50usize,
+                51usize,
                 {
                     ::use_mdbook::mdbook_shared::Page {
                         title: "Testing".to_string(),
@@ -2392,18 +2444,18 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                             },
                         ],
                         raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(50usize),
+                        id: ::use_mdbook::mdbook_shared::PageId(51usize),
                     }
                 },
             ));
         page_id_mapping
             .insert(
                 BookRoute::CookbookTesting {},
-                ::use_mdbook::mdbook_shared::PageId(50usize),
+                ::use_mdbook::mdbook_shared::PageId(51usize),
             );
         pages
             .push((
-                51usize,
+                52usize,
                 {
                     ::use_mdbook::mdbook_shared::Page {
                         title: "Examples".to_string(),
@@ -2417,18 +2469,18 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                             },
                         ],
                         raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(51usize),
+                        id: ::use_mdbook::mdbook_shared::PageId(52usize),
                     }
                 },
             ));
         page_id_mapping
             .insert(
                 BookRoute::CookbookExamples {},
-                ::use_mdbook::mdbook_shared::PageId(51usize),
+                ::use_mdbook::mdbook_shared::PageId(52usize),
             );
         pages
             .push((
-                52usize,
+                53usize,
                 {
                     ::use_mdbook::mdbook_shared::Page {
                         title: "Tailwind".to_string(),
@@ -2467,18 +2519,18 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                             },
                         ],
                         raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(52usize),
+                        id: ::use_mdbook::mdbook_shared::PageId(53usize),
                     }
                 },
             ));
         page_id_mapping
             .insert(
                 BookRoute::CookbookTailwind {},
-                ::use_mdbook::mdbook_shared::PageId(52usize),
+                ::use_mdbook::mdbook_shared::PageId(53usize),
             );
         pages
             .push((
-                53usize,
+                54usize,
                 {
                     ::use_mdbook::mdbook_shared::Page {
                         title: "Optimizing".to_string(),
@@ -2532,18 +2584,18 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                             },
                         ],
                         raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(53usize),
+                        id: ::use_mdbook::mdbook_shared::PageId(54usize),
                     }
                 },
             ));
         page_id_mapping
             .insert(
                 BookRoute::CookbookOptimizing {},
-                ::use_mdbook::mdbook_shared::PageId(53usize),
+                ::use_mdbook::mdbook_shared::PageId(54usize),
             );
         pages
             .push((
-                54usize,
+                55usize,
                 {
                     ::use_mdbook::mdbook_shared::Page {
                         title: "Contributing".to_string(),
@@ -2582,18 +2634,18 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                             },
                         ],
                         raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(54usize),
+                        id: ::use_mdbook::mdbook_shared::PageId(55usize),
                     }
                 },
             ));
         page_id_mapping
             .insert(
                 BookRoute::ContributingIndex {},
-                ::use_mdbook::mdbook_shared::PageId(54usize),
+                ::use_mdbook::mdbook_shared::PageId(55usize),
             );
         pages
             .push((
-                55usize,
+                56usize,
                 {
                     ::use_mdbook::mdbook_shared::Page {
                         title: "Project Structure".to_string(),
@@ -2638,7 +2690,7 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                             },
                         ],
                         raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(55usize),
+                        id: ::use_mdbook::mdbook_shared::PageId(56usize),
                     }
                 },
             ));
@@ -2646,11 +2698,11 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
             .insert(
                 BookRoute::ContributingProjectStructure {
                 },
-                ::use_mdbook::mdbook_shared::PageId(55usize),
+                ::use_mdbook::mdbook_shared::PageId(56usize),
             );
         pages
             .push((
-                56usize,
+                57usize,
                 {
                     ::use_mdbook::mdbook_shared::Page {
                         title: "Guiding Principles".to_string(),
@@ -2685,7 +2737,7 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                             },
                         ],
                         raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(56usize),
+                        id: ::use_mdbook::mdbook_shared::PageId(57usize),
                     }
                 },
             ));
@@ -2693,11 +2745,11 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
             .insert(
                 BookRoute::ContributingGuidingPrinciples {
                 },
-                ::use_mdbook::mdbook_shared::PageId(56usize),
+                ::use_mdbook::mdbook_shared::PageId(57usize),
             );
         pages
             .push((
-                57usize,
+                58usize,
                 {
                     ::use_mdbook::mdbook_shared::Page {
                         title: "Roadmap".to_string(),
@@ -2705,14 +2757,14 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                         segments: vec![],
                         sections: vec![],
                         raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(57usize),
+                        id: ::use_mdbook::mdbook_shared::PageId(58usize),
                     }
                 },
             ));
         page_id_mapping
             .insert(
                 BookRoute::ContributingRoadmap {},
-                ::use_mdbook::mdbook_shared::PageId(57usize),
+                ::use_mdbook::mdbook_shared::PageId(58usize),
             );
         ::use_mdbook::mdbook_shared::MdBook {
             summary: ::use_mdbook::mdbook_shared::Summary {
@@ -3063,11 +3115,21 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                                 ),
                                 nested_items: vec![
                                     ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
+                                        name: "Managing Dependencies".to_string(),
+                                        location: Some(BookRoute::ReferenceFullstackManagingDependancies {}),
+                                        number: Some(
+                                            ::use_mdbook::mdbook_shared::SectionNumber(
+                                                vec![4u32, 7u32, 1u32],
+                                            ),
+                                        ),
+                                        nested_items: vec![],
+                                    }),
+                                    ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
                                         name: "Server Functions".to_string(),
                                         location: Some(BookRoute::ReferenceFullstackServerFunctions {}),
                                         number: Some(
                                             ::use_mdbook::mdbook_shared::SectionNumber(
-                                                vec![4u32, 7u32, 1u32],
+                                                vec![4u32, 7u32, 2u32],
                                             ),
                                         ),
                                         nested_items: vec![],
@@ -3078,7 +3140,7 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                                         }),
                                         number: Some(
                                             ::use_mdbook::mdbook_shared::SectionNumber(
-                                                vec![4u32, 7u32, 2u32],
+                                                vec![4u32, 7u32, 3u32],
                                             ),
                                         ),
                                         nested_items: vec![],
@@ -3089,7 +3151,7 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                                         }),
                                         number: Some(
                                             ::use_mdbook::mdbook_shared::SectionNumber(
-                                                vec![4u32, 7u32, 3u32],
+                                                vec![4u32, 7u32, 4u32],
                                             ),
                                         ),
                                         nested_items: vec![],
@@ -3100,7 +3162,7 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                                         }),
                                         number: Some(
                                             ::use_mdbook::mdbook_shared::SectionNumber(
-                                                vec![4u32, 7u32, 4u32],
+                                                vec![4u32, 7u32, 5u32],
                                             ),
                                         ),
                                         nested_items: vec![],
@@ -3111,7 +3173,7 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                                         }),
                                         number: Some(
                                             ::use_mdbook::mdbook_shared::SectionNumber(
-                                                vec![4u32, 7u32, 5u32],
+                                                vec![4u32, 7u32, 6u32],
                                             ),
                                         ),
                                         nested_items: vec![],
@@ -6949,6 +7011,184 @@ pub fn ReferenceFullstackIndex() -> dioxus::prelude::Element {
                     "dioxus-fullstack examples directory"
                 }
                 "."
+            }
+        }
+    }
+}
+#[component(no_case_check)]
+pub fn ReferenceFullstackManagingDependancies() -> dioxus::prelude::Element {
+    use dioxus::prelude::*;
+    rsx! {
+        h1 { id: "managing-fullstack-dependencies",
+            a { href: "#managing-fullstack-dependencies", class: "header",
+                "Managing Fullstack Dependencies"
+            }
+        }
+        p { "Fullstack applications build to at least two different binaries:" }
+        ul {
+            li { "The client application that runs the desktop, mobile, or web application" }
+            li { "The server that renders the initial HTML and runs server functions" }
+        }
+        p {
+            "Those binaries tend to have different dependencies and those dependencies often are only compatible with a specific target platform. This guide will cover how fullstack manages each binary's dependencies and how to add dependencies that are only compatible with one binary/target."
+        }
+        h2 { id: "client-and-server-feature-flags",
+            a { href: "#client-and-server-feature-flags", class: "header",
+                "Client and Server Feature Flags"
+            }
+        }
+        p {
+            "Dioxus uses feature flags to differentiate between the different binaries a single library can produce. Each target binary should have a feature flag in your  "
+            code { "Cargo.toml" }
+            " file that enables the corresponding feature in dioxus. For example, if you are targeting  "
+            code { "web" }
+            " and  "
+            code { "desktop" }
+            " with a fullstack server, you would add the following to your  "
+            code { "Cargo.toml" }
+            ":"
+        }
+        CodeBlock {
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">[dependencies]\n</span><span style=\"color:#f92672;\">#</span><span style=\"color:#f8f8f2;\"> Don</span><span style=\"color:#f92672;\">&#39;t</span><span style=\"color:#f8f8f2;\"> include any renderer features </span><span style=\"color:#f92672;\">in</span><span style=\"color:#f8f8f2;\"> your dioxus dependency directly. They will be added </span><span style=\"color:#f92672;\">in</span><span style=\"color:#f8f8f2;\"> feature flags.\n</span><span style=\"color:#f92672;\">#</span><span style=\"color:#f8f8f2;\"> The fullstack feature enables the bindings between the server and client without enabling a specific binary target.\n</span><span style=\"color:#f8f8f2;\">dioxus </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">{{ version </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;0.6&quot;</span><span style=\"color:#f8f8f2;\">, features </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">[</span><span style=\"color:#ffee99;\">&quot;fullstack&quot;</span><span style=\"color:#f8f8f2;\">] }}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">[features]\n</span><span style=\"color:#f92672;\">#</span><span style=\"color:#f8f8f2;\"> The web feature enables the web renderer. Dioxus will automatically enable the feature you define that activates `dioxus</span><span style=\"color:#f92672;\">/</span><span style=\"color:#f8f8f2;\">web` when building the client </span><span style=\"color:#ff80f4;\">WASM</span><span style=\"color:#f8f8f2;\"> bundle.\n</span><span style=\"color:#f8f8f2;\">web </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">[</span><span style=\"color:#ffee99;\">&quot;dioxus/web&quot;</span><span style=\"color:#f8f8f2;\">]\n</span><span style=\"color:#f92672;\">#</span><span style=\"color:#f8f8f2;\"> The desktop feature enables the desktop renderer. Dioxus will automatically enable the feature you define that activates `dioxus</span><span style=\"color:#f92672;\">/</span><span style=\"color:#f8f8f2;\">desktop` when building the client native bundle.\n</span><span style=\"color:#f8f8f2;\">desktop </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">[</span><span style=\"color:#ffee99;\">&quot;dioxus/desktop&quot;</span><span style=\"color:#f8f8f2;\">]\n</span><span style=\"color:#f92672;\">#</span><span style=\"color:#f8f8f2;\"> The server feature enables server functions and server</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">side rendering. Dioxus will automatically enable the feature you define that activates `dioxus</span><span style=\"color:#f92672;\">/</span><span style=\"color:#f8f8f2;\">server` when building the server binary.\n</span><span style=\"color:#f8f8f2;\">server </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">[</span><span style=\"color:#ffee99;\">&quot;dioxus/server&quot;</span><span style=\"color:#f8f8f2;\">]</span></pre>\n",
+        }
+        p {
+            "Feature flags like these for the client and server are automatically generated by the CLI when you run  "
+            code { "dx new" }
+            " with fullstack enabled. If you are creating a project from scratch, you will need to add the feature flags manually."
+        }
+        blockquote {
+            p {
+                "If you are not familiar with features in rust, you can read more about feature flags in the "
+                a { href: "https://doc.rust-lang.org/cargo/reference/features.html",
+                    "cargo reference"
+                }
+                "."
+            }
+        }
+        h2 { id: "adding-server-only-dependencies",
+            a { href: "#adding-server-only-dependencies", class: "header",
+                "Adding Server Only Dependencies"
+            }
+        }
+        p {
+            "Many dependencies like "
+            a { href: "https://docs.rs/tokio/latest/tokio/index.html",
+                code { "tokio" }
+            }
+            " and "
+            a { href: "https://docs.rs/axum/latest/axum/index.html",
+                code { "axum" }
+            }
+            " are only compatible with the server. If these dependencies are enabled when building a WASM bundle for the browser client, you will get a compilation error. For example, if we want to interact with the filesystem in a server function, we might want to add "
+            code { "tokio" }
+            ". "
+            code { "tokio" }
+            " has utilities for working with async IO like "
+            a { href: "https://docs.rs/tokio/latest/tokio/fs/struct.File.html",
+                code { "tokio::fs::File" }
+            }
+            ". Let's try it as a dependency to our fullstack project:"
+        }
+        CodeBlock {
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">[dependencies]\n</span><span style=\"color:#f92672;\"># ...\n</span><span style=\"color:#f92672;\">#</span><span style=\"color:#f8f8f2;\"> ❌ If tokio is added </span><span style=\"color:#f92672;\">as</span><span style=\"color:#f8f8f2;\"> a required dependency, it will be included </span><span style=\"color:#f92672;\">in</span><span style=\"color:#f8f8f2;\"> both the server\n</span><span style=\"color:#f92672;\">#</span><span style=\"color:#f8f8f2;\"> and the web bundle. The web bundle will fail to build because tokio is not\n</span><span style=\"color:#f92672;\">#</span><span style=\"color:#f8f8f2;\"> compatible with wasm\n</span><span style=\"color:#f8f8f2;\">tokio </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">{{ version </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;1&quot;</span><span style=\"color:#f8f8f2;\">, features </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">[</span><span style=\"color:#ffee99;\">&quot;full&quot;</span><span style=\"color:#f8f8f2;\">] }}</span></pre>\n",
+        }
+        p {
+            "If we try to compile with tokio as a required dependency, we will get a compilation error like this:"
+        }
+        CodeBlock {
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">error[</span><span style=\"color:#ff80f4;\">E0432</span><span style=\"color:#f8f8f2;\">]: unresolved import `</span><span style=\"color:#f92672;\">crate</span><span style=\"color:#f8f8f2;\">::sys::IoSourceState`\n</span><span style=\"color:#f8f8f2;\">  </span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">-&gt; </span><span style=\"color:#f92672;\">/</span><span style=\"color:#f8f8f2;\">Users</span><span style=\"color:#f92672;\">/</span><span style=\"color:#f8f8f2;\">user</span><span style=\"color:#f92672;\">/</span><span style=\"color:#f8f8f2;\">.cargo</span><span style=\"color:#f92672;\">/</span><span style=\"color:#f8f8f2;\">registry</span><span style=\"color:#f92672;\">/</span><span style=\"color:#f8f8f2;\">src</span><span style=\"color:#f92672;\">/</span><span style=\"color:#f8f8f2;\">index.crates.io</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">6f17d22bba15001f</span><span style=\"color:#f92672;\">/</span><span style=\"color:#f8f8f2;\">mio</span><span style=\"color:#f92672;\">-</span><span style=\"color:#ff80f4;\">1.0</span><span style=\"color:#f8f8f2;\">.</span><span style=\"color:#ff80f4;\">2</span><span style=\"color:#f92672;\">/</span><span style=\"color:#f8f8f2;\">src   </span><span style=\"color:#f92672;\">|</span><span style=\"color:#f8f8f2;\">source.rs:</span><span style=\"color:#ff80f4;\">14</span><span style=\"color:#f8f8f2;\">:</span><span style=\"color:#ff80f4;\">5\n</span><span style=\"color:#ff80f4;\">14 </span><span style=\"color:#f92672;\">| use crate</span><span style=\"color:#f8f8f2;\">::sys::IoSourceState;\n</span><span style=\"color:#f8f8f2;\">   |     ^^^^^^^^^^^^^^^^^^^^^^^^^ no `IoSourceState` in `sys`\n</span><span style=\"color:#f92672;\">...</span></pre>\n",
+        }
+        p {
+            "Since we added  "
+            code { "tokio" }
+            " as a dependency for all three binaries, cargo tries to compile it for each target. This fails because  "
+            code { "tokio" }
+            " is not compatible with the  "
+            code { "wasm32-unknown-unknown" }
+            " target."
+        }
+        p {
+            "To fix the issue, we can "
+            strong { "make the dependency optional and only enable it in the server feature" }
+            ":"
+        }
+        CodeBlock {
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">[dependencies]\n</span><span style=\"color:#f92672;\"># ...\n</span><span style=\"color:#f92672;\">#</span><span style=\"color:#f8f8f2;\"> ✅ Since the tokio dependency is optional, it is not included </span><span style=\"color:#f92672;\">in</span><span style=\"color:#f8f8f2;\"> the web and desktop\n</span><span style=\"color:#f92672;\">#</span><span style=\"color:#f8f8f2;\"> bundles.\n</span><span style=\"color:#f8f8f2;\">tokio </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">{{ version </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;1&quot;</span><span style=\"color:#f8f8f2;\">, features </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">[</span><span style=\"color:#ffee99;\">&quot;full&quot;</span><span style=\"color:#f8f8f2;\">], optional </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ff80f4;\">true </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">[features]\n</span><span style=\"color:#f92672;\"># ...\n</span><span style=\"color:#f92672;\">#</span><span style=\"color:#f8f8f2;\"> ✅ Since the tokio dependency is enabled </span><span style=\"color:#f92672;\">in</span><span style=\"color:#f8f8f2;\"> the server feature, it is included </span><span style=\"color:#f92672;\">in\n</span><span style=\"color:#f92672;\">#</span><span style=\"color:#f8f8f2;\"> the server binary.\n</span><span style=\"color:#f8f8f2;\">server </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">[</span><span style=\"color:#ffee99;\">&quot;dioxus/server&quot;</span><span style=\"color:#f8f8f2;\">, </span><span style=\"color:#ffee99;\">&quot;dep:tokio&quot;</span><span style=\"color:#f8f8f2;\">]</span></pre>\n",
+        }
+        p {
+            "Now when we build with  "
+            code { "dx serve" }
+            ", the project compiles successfully."
+        }
+        h2 { id: "adding-client-only-dependencies",
+            a { href: "#adding-client-only-dependencies", class: "header",
+                "Adding Client Only Dependencies"
+            }
+        }
+        p {
+            "Many dependencies like "
+            a { href: "https://docs.rs/wasm-bindgen/latest/wasm_bindgen/index.html",
+                code { "wasm-bindgen" }
+            }
+            " and "
+            a { href: "https://docs.rs/web-sys/latest/web_sys/index.html",
+                code { "web-sys" }
+            }
+            " are only compatible with the client. Unlike server-only dependencies, these dependencies can generally compile on native targets, but they will panic when used outside of the browser."
+        }
+        p {
+            "You can cut down on build times for your server and native binaries by only including web dependencies in the browser client binary."
+        }
+        p { "Instead of adding web only dependencies every binary in your project like this:" }
+        CodeBlock {
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">[dependencies]\n</span><span style=\"color:#f92672;\"># ...\n</span><span style=\"color:#f92672;\">#</span><span style=\"color:#f8f8f2;\"> ❌ If web</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">sys is added </span><span style=\"color:#f92672;\">as</span><span style=\"color:#f8f8f2;\"> a required dependency, it will be included </span><span style=\"color:#f92672;\">in</span><span style=\"color:#f8f8f2;\"> the server,\n</span><span style=\"color:#f92672;\">#</span><span style=\"color:#f8f8f2;\"> native, and the web bundle which makes build times longer.\n</span><span style=\"color:#f8f8f2;\">web</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">sys </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">{{ version </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;0.3.60&quot;</span><span style=\"color:#f8f8f2;\">, features </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">[</span><span style=\"color:#ffee99;\">&quot;console&quot;</span><span style=\"color:#f8f8f2;\">] }}</span></pre>\n",
+        }
+        p {
+            "You can make the dependency optional and only enable it in the  "
+            code { "web" }
+            " feature in your  "
+            code { "Cargo.toml" }
+            ":"
+        }
+        CodeBlock {
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">[dependencies]\n</span><span style=\"color:#f92672;\"># ...\n</span><span style=\"color:#f92672;\">#</span><span style=\"color:#f8f8f2;\"> ✅ Since the web</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">sys dependency is optional, it is not included </span><span style=\"color:#f92672;\">in</span><span style=\"color:#f8f8f2;\"> the server and\n</span><span style=\"color:#f92672;\">#</span><span style=\"color:#f8f8f2;\"> native bundles.\n</span><span style=\"color:#f8f8f2;\">web</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">sys </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">{{ version </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;0.3.60&quot;</span><span style=\"color:#f8f8f2;\">, features </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">[</span><span style=\"color:#ffee99;\">&quot;console&quot;</span><span style=\"color:#f8f8f2;\">], optional </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ff80f4;\">true </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">[features]\n</span><span style=\"color:#f92672;\"># ...\n</span><span style=\"color:#f92672;\">#</span><span style=\"color:#f8f8f2;\"> ✅ Since the web</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">sys dependency is enabled </span><span style=\"color:#f92672;\">in</span><span style=\"color:#f8f8f2;\"> the web feature, it is included </span><span style=\"color:#f92672;\">in\n</span><span style=\"color:#f92672;\">#</span><span style=\"color:#f8f8f2;\"> the web bundle.\n</span><span style=\"color:#f8f8f2;\">web </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">[</span><span style=\"color:#ffee99;\">&quot;dioxus/web&quot;</span><span style=\"color:#f8f8f2;\">, </span><span style=\"color:#ffee99;\">&quot;dep:web-sys&quot;</span><span style=\"color:#f8f8f2;\">]</span></pre>\n",
+        }
+        h2 { id: "managing-binary-specific-imports",
+            a { href: "#managing-binary-specific-imports", class: "header",
+                "Managing Binary Specific Imports"
+            }
+        }
+        p {
+            "Once you have set up binary specific dependencies, you need to adjust any of your imports to only import the dependencies when building for the binary that includes those dependencies."
+        }
+        p {
+            "For example, if  "
+            code { "tokio" }
+            " is only enabled in the server feature, you will need to import it like this:"
+        }
+        CodeBlock {
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#8c8c8c;\">// Since the tokio dependency is only enabled in the server feature,\n</span><span style=\"color:#8c8c8c;\">// we need to only import it when the server feature is enabled.\n</span><span style=\"color:#f8f8f2;\">#[cfg(feature </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;server&quot;</span><span style=\"color:#f8f8f2;\">)]\n</span><span style=\"color:#f92672;\">use </span><span style=\"color:#f8f8f2;\">tokio::fs::File;\n</span><span style=\"color:#f8f8f2;\">#[cfg(feature </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;server&quot;</span><span style=\"color:#f8f8f2;\">)]\n</span><span style=\"color:#f92672;\">use </span><span style=\"color:#f8f8f2;\">tokio::io::AsyncReadExt;</span></pre>\n",
+            name: "server_tokio_import.rs".to_string(),
+        }
+        p { "You also need to only compile any usage of the dependency when the feature is enabled:" }
+        CodeBlock {
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#8c8c8c;\">// Since the tokio dependency is only enabled in the server feature,\n</span><span style=\"color:#8c8c8c;\">// we need to only compile any usage of the dependency when the server feature is enabled.\n</span><span style=\"color:#f8f8f2;\">#[cfg(feature </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;server&quot;</span><span style=\"color:#f8f8f2;\">)]\n</span><span style=\"color:#f8f8f2;\">async </span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">read_file</span><span style=\"color:#f8f8f2;\">() -&gt; Result&lt;String, std::io::Error&gt; {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let </span><span style=\"color:#f92672;\">mut</span><span style=\"color:#f8f8f2;\"> file </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">File::open(</span><span style=\"color:#ffee99;\">&quot;path/to/file&quot;</span><span style=\"color:#f8f8f2;\">).await</span><span style=\"color:#f92672;\">?</span><span style=\"color:#f8f8f2;\">;\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let </span><span style=\"color:#f92672;\">mut</span><span style=\"color:#f8f8f2;\"> contents </span><span style=\"color:#f92672;\">= </span><span style=\"font-style:italic;color:#66d9ef;\">String</span><span style=\"color:#f8f8f2;\">::new();\n</span><span style=\"color:#f8f8f2;\">    file.</span><span style=\"color:#66d9ef;\">read_to_string</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#f92672;\">&amp;mut</span><span style=\"color:#f8f8f2;\"> contents).await</span><span style=\"color:#f92672;\">?</span><span style=\"color:#f8f8f2;\">;\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">Ok</span><span style=\"color:#f8f8f2;\">(contents)\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#8c8c8c;\">// The bodies of server functions automatically only compile when the server feature is enabled.\n</span><span style=\"color:#f8f8f2;\">#[server]\n</span><span style=\"color:#f8f8f2;\">async </span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">get_file_contents</span><span style=\"color:#f8f8f2;\">() -&gt; Result&lt;String, ServerFnError&gt; {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let </span><span style=\"color:#f92672;\">mut</span><span style=\"color:#f8f8f2;\"> file </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">File::open(</span><span style=\"color:#ffee99;\">&quot;path/to/file&quot;</span><span style=\"color:#f8f8f2;\">).await</span><span style=\"color:#f92672;\">?</span><span style=\"color:#f8f8f2;\">;\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let </span><span style=\"color:#f92672;\">mut</span><span style=\"color:#f8f8f2;\"> contents </span><span style=\"color:#f92672;\">= </span><span style=\"font-style:italic;color:#66d9ef;\">String</span><span style=\"color:#f8f8f2;\">::new();\n</span><span style=\"color:#f8f8f2;\">    file.</span><span style=\"color:#66d9ef;\">read_to_string</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#f92672;\">&amp;mut</span><span style=\"color:#f8f8f2;\"> contents).await</span><span style=\"color:#f92672;\">?</span><span style=\"color:#f8f8f2;\">;\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">Ok</span><span style=\"color:#f8f8f2;\">(contents)\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
+            name: "server_tokio_import.rs".to_string(),
+        }
+        p {
+            "It may be more convenient to group server or client specific code into a module that is only compiled when the feature is enabled:"
+        }
+        CodeBlock {
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#8c8c8c;\">// Instead of configuring each item that is only used in the server, you can group\n</span><span style=\"color:#8c8c8c;\">// them into a module that is only compiled when the server feature is enabled.\n</span><span style=\"color:#f8f8f2;\">#[cfg(feature </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;server&quot;</span><span style=\"color:#f8f8f2;\">)]\n</span><span style=\"font-style:italic;color:#66d9ef;\">mod </span><span style=\"color:#f8f8f2;\">tokio_utilities {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#f92672;\">use </span><span style=\"color:#f8f8f2;\">tokio::fs::File;\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#f92672;\">use </span><span style=\"color:#f8f8f2;\">tokio::io::AsyncReadExt;\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#f92672;\">pub</span><span style=\"color:#f8f8f2;\"> async </span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">read_file</span><span style=\"color:#f8f8f2;\">() -&gt; Result&lt;String, std::io::Error&gt; {{\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"font-style:italic;color:#66d9ef;\">let </span><span style=\"color:#f92672;\">mut</span><span style=\"color:#f8f8f2;\"> file </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">File::open(</span><span style=\"color:#ffee99;\">&quot;path/to/file&quot;</span><span style=\"color:#f8f8f2;\">).await</span><span style=\"color:#f92672;\">?</span><span style=\"color:#f8f8f2;\">;\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"font-style:italic;color:#66d9ef;\">let </span><span style=\"color:#f92672;\">mut</span><span style=\"color:#f8f8f2;\"> contents </span><span style=\"color:#f92672;\">= </span><span style=\"font-style:italic;color:#66d9ef;\">String</span><span style=\"color:#f8f8f2;\">::new();\n</span><span style=\"color:#f8f8f2;\">        file.</span><span style=\"color:#66d9ef;\">read_to_string</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#f92672;\">&amp;mut</span><span style=\"color:#f8f8f2;\"> contents).await</span><span style=\"color:#f92672;\">?</span><span style=\"color:#f8f8f2;\">;\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"font-style:italic;color:#66d9ef;\">Ok</span><span style=\"color:#f8f8f2;\">(contents)\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
+            name: "server_tokio_import.rs".to_string(),
+        }
+        blockquote {
+            p {
+                "The "
+                a { href: "https://doc.rust-lang.org/reference/conditional-compilation.html",
+                    "rust reference"
+                }
+                " has more information about conditional compilation in rust."
             }
         }
     }

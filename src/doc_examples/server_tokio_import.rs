@@ -10,8 +10,7 @@ use tokio::io::AsyncReadExt;
 
 // ANCHOR: tokio_usage
 // Since the tokio dependency is only enabled in the server feature,
-// we need to only compile any usage of the dependency when the server feature
-// is enabled.
+// we need to only compile any usage of the dependency when the server feature is enabled.
 #[cfg(feature = "server")]
 async fn read_file() -> Result<String, std::io::Error> {
     let mut file = File::open("path/to/file").await?;
@@ -20,8 +19,7 @@ async fn read_file() -> Result<String, std::io::Error> {
     Ok(contents)
 }
 
-// The bodies of server functions automatically only compile when the server
-// feature is enabled.
+// The bodies of server functions automatically only compile when the server feature is enabled.
 #[server]
 async fn get_file_contents() -> Result<String, ServerFnError> {
     let mut file = File::open("path/to/file").await?;
@@ -32,9 +30,8 @@ async fn get_file_contents() -> Result<String, ServerFnError> {
 // ANCHOR_END: tokio_usage
 
 // ANCHOR: tokio_module
-// Instead of configuring each item that is only used in the server, you can
-// group them into a module that is only compiled when the server feature
-// is enabled.
+// Instead of configuring each item that is only used in the server, you can group
+// them into a module that is only compiled when the server feature is enabled.
 #[cfg(feature = "server")]
 mod tokio_utilities {
     use tokio::fs::File;

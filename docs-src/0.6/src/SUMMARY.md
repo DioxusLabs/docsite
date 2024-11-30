@@ -70,7 +70,7 @@
     - [APIs](reference/mobile/apis.md)
   - [Streaming and SSR](reference/ssr.md)
   - [Fullstack](reference/fullstack/index.md)
-    - [Managing Dependencies](reference/fullstack/managing_dependancies.md)
+    - [Managing Dependencies](reference/fullstack/managing_dependencies.md)
   	- [Server Functions](reference/fullstack/server_functions.md)
   	- [Extractors](reference/fullstack/extractors.md)
   	- [Middleware](reference/fullstack/middleware.md)

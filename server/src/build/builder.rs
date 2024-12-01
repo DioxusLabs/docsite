@@ -11,9 +11,10 @@ use tokio::{fs, select};
 
 // The in-code templates that get replaced.
 const USER_CODE_ID: &str = "{USER_CODE}";
-// Cargo complains about `{}` inside of package name.
+// The build id template.
 const BUILD_ID_ID: &str = "{BUILD_ID}";
 
+// TODO: We need some way of cleaning up any stopped builds.
 /// The builder provides a convenient interface for controlling builds running in another task.
 pub struct Builder {
     template_path: PathBuf,
@@ -51,7 +52,7 @@ impl Builder {
     /// Wait for the current build to finish.
     pub async fn finished(&mut self) {
         let task = &mut self.task;
-        task.await;
+        task.await.unwrap();
         self.task = tokio::spawn(std::future::pending());
         self.current_build = None;
     }
@@ -145,10 +146,10 @@ async fn move_to_built(template_path: &PathBuf, request: &BuildRequest) {
     // Delete the built project in the target directory to prevent a storage leak.
     // We use `spawn_blocking` to batch call `std::fs` as recommended by Tokio.
     tokio::task::spawn_blocking(move || {
-        std::fs::rename(&built_project, &id_string);
+        std::fs::rename(&built_project, &id_string).unwrap();
         let options = CopyOptions::new().overwrite(true);
         fs_extra::dir::move_dir(&built_project, &built_path, &options).unwrap();
         std::fs::remove_dir_all(&built_project_parent).unwrap();
     })
-    .await;
+    .await.unwrap();
 }

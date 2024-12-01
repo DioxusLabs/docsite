@@ -48,7 +48,7 @@ pub async fn start_build_watcher(
                         BuildCommand::Start { request } => {
                             // If the builder has a build, add to queue, otherwise start the build.
                             if builder.has_build() {
-                                request.ws_msg_tx.send(BuildMessage::QueuePosition(pending_builds.len() + 1));
+                                let _ = request.ws_msg_tx.send(BuildMessage::QueuePosition(pending_builds.len() + 1));
                                 pending_builds.push_back(request);
                             } else {
                                 builder.start(request);
@@ -84,7 +84,7 @@ pub async fn start_build_watcher(
 
                                 // Tell any other requests behind the removed that they're moving up.
                                 if matching_id.is_some() {
-                                    build_request.ws_msg_tx.send(BuildMessage::QueuePosition(i - 1));
+                                    let _ = build_request.ws_msg_tx.send(BuildMessage::QueuePosition(i - 1));
                                 }
                             }
 

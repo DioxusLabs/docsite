@@ -8,6 +8,8 @@ model = { workspace = true }
 dioxus-logger = { workspace = true }
 futures = { workspace = true }
 uuid = { workspace = true, features = ["v4", "serde"] }
+serde = { workspace = true }
+serde_json = { workspace = true }
 
 axum = { version = "0.7.5", features = ["http2", "ws", "macros"] }
 fs_extra = "1.3.0"

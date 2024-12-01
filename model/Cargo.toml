@@ -6,7 +6,7 @@ edition = "2021"
 [dependencies]
 serde_json = { workspace = true }
 uuid = { workspace = true, features = ["serde"] }
-serde = { version = "1.0.204", features = ["derive"] }
+serde = { workspace = true }
 
 # Web only
 gloo-net = { workspace = true, optional = true }

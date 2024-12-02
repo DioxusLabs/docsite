@@ -2,13 +2,12 @@
 [workspace]
 
 [package]
-name = "{BUILD_ID}"
+name = "play-{BUILD_ID}"
 version = "0.1.0"
 edition = "2021"
 
 [dependencies]
-dioxus = { path = "../../dioxus/packages/dioxus", features = ["web"] }
-dioxus-web = { path = "../../dioxus/packages/web", features = ["devtools-playground"] }
+dioxus = { path = "../../../dioxus/packages/dioxus", features = ["web"] }
 
 [profile.dev]
 opt-level = 3

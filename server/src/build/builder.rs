@@ -1,4 +1,7 @@
+use crate::build::{BuildMessage, CliMessage};
+
 use super::watcher::BuildRequest;
+use dioxus_dx_wire_format::{BuildStage, StructuredOutput};
 use fs_extra::dir::CopyOptions;
 use std::path::PathBuf;
 use std::process::Stdio;
@@ -104,7 +107,8 @@ async fn setup_template(template_path: &PathBuf, request: &BuildRequest) {
 }
 
 /// Run the build command provided by the DX CLI.
-async fn dx_build(template_path: &PathBuf, request: &BuildRequest) {
+/// Returns if DX built the project successfully.
+async fn dx_build(template_path: &PathBuf, request: &BuildRequest) -> bool {
     let mut child = Command::new("dx")
         .arg("build")
         .arg("--platform")
@@ -124,10 +128,44 @@ async fn dx_build(template_path: &PathBuf, request: &BuildRequest) {
     loop {
         select! {
             result = stdout_reader.next_line() => {
-                // process line
+                let Ok(Some(line)) = result else {
+                    continue;
+                };
+
+                println!("{:?}", line);
+
+                let cli_message = serde_json::from_str::<CliMessage>(&line).unwrap();
+                let Some(json) = cli_message.json else {
+                    continue;
+                };
+
+                let cli_message = serde_json::from_str::<StructuredOutput>(&json).unwrap();
+
+                match cli_message {
+                    StructuredOutput::BuildUpdate { stage } => {
+                        match stage {
+                            BuildStage::Compiling { current, total, krate, .. } => {
+                                println!("compiling");
+                                let _ = request.ws_msg_tx.send(BuildMessage::Compiling { current_crate: current, total_crates: total, krate, });
+                            }
+                            _ => {}
+                        }
+                    }
+                    _ => {}
+                }
+
             }
-            _ = child.wait() => {
-                break;
+            status = child.wait() => {
+                println!("DX EXITED WTIH: {:?}", status);
+
+                // Check if the build was successful.
+                let exit_code = status.map(|c| c.code());
+                if let Ok(Some(code)) = exit_code {
+                    if code == 0 {
+                        break true;
+                    }
+                }
+                break false;
             }
         }
     }
@@ -136,8 +174,14 @@ async fn dx_build(template_path: &PathBuf, request: &BuildRequest) {
 /// Moves the project built by `dx` to the final location for serving.
 async fn move_to_built(template_path: &PathBuf, request: &BuildRequest) {
     let id_string = request.id.to_string();
-    let built_project_parent = template_path.join("target/dx").join(&id_string);
-    let built_project = built_project_parent.join("debug/web/public");
+
+    // The path to the built project from DX
+    let play_build_id = format!("play-{}", &id_string);
+    let built_project_parent = template_path.join("target/dx").join(play_build_id);
+
+    // The public folder of the built project (what we want).
+    let debug_web = built_project_parent.join("debug/web/");
+    let public_folder = debug_web.join("public");
 
     let built_path = PathBuf::from(crate::TEMP_PATH);
 
@@ -146,10 +190,15 @@ async fn move_to_built(template_path: &PathBuf, request: &BuildRequest) {
     // Delete the built project in the target directory to prevent a storage leak.
     // We use `spawn_blocking` to batch call `std::fs` as recommended by Tokio.
     tokio::task::spawn_blocking(move || {
-        std::fs::rename(&built_project, &id_string).unwrap();
+        // Rename to be the build id
+        let built_project = debug_web.join(&id_string);
+        std::fs::rename(&public_folder, &built_project).unwrap();
+
+        // Copy to the built project folder for serving.
         let options = CopyOptions::new().overwrite(true);
         fs_extra::dir::move_dir(&built_project, &built_path, &options).unwrap();
         std::fs::remove_dir_all(&built_project_parent).unwrap();
     })
-    .await.unwrap();
+    .await
+    .unwrap();
 }

@@ -102,6 +102,11 @@ pub async fn start_build_watcher(
                     if let Some(request) = next_request {
                         builder.start(request);
                     }
+
+                    // Tell pending builds their new position.
+                    for (i, build_request) in pending_builds.iter_mut().enumerate() {
+                        let _ = build_request.ws_msg_tx.send(BuildMessage::QueuePosition(i + 1));
+                    }
                 }
             }
         }

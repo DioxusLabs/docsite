@@ -4,3 +4,4 @@ Cargo.lock
 /Cargo.toml
 /Dioxus.toml
 /src/main.rs
+.cargo

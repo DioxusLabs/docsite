@@ -13,11 +13,11 @@ use axum::{
     response::IntoResponse,
 };
 use dioxus_logger::tracing::error;
-use futures::{stream::SplitSink, SinkExt, StreamExt as _};
+use futures::{SinkExt, StreamExt as _};
 use model::SocketMessage;
 use tokio::{
     select,
-    sync::mpsc::{self},
+    sync::mpsc::{self, UnboundedSender},
 };
 use uuid::Uuid;
 
@@ -56,27 +56,31 @@ async fn handle_socket(state: AppState, socket: WebSocket) {
                             }
                         }
 
-                        let request = start_build(&state, &socket_tx, code);
+                        let request = start_build(&state, build_tx.clone(), code);
                         current_build = Some(request);
                     }
-                    // We don't care about any other message.
+                    // We don't care about any other message from the client.
                     _ => {}
                 }
             }
             // Handle sending build messages to client and closing the socket when finished.
             Some(build_msg) = build_rx.recv() => {
-                match build_msg {
-                    BuildMessage::Finished => {
-                        current_build = None;
-                        // TODO: send finished message
-                        let _ = socket_tx.close();
-                    },
-                    _ => {}
+                println!("GOT BUILD MSG WS");
+                let socket_msg = SocketMessage::from(build_msg.clone());
+                let _ = socket_tx.send(Message::Text(socket_msg.as_json_string().unwrap())).await;
+
+                // If the build finished, let's close this socket.
+                if let BuildMessage::Finished(_) = build_msg {
+                    current_build = None;
+                    let _ = socket_tx.close().await;
+                    break;
                 }
             }
             else => break,
         }
     }
+    
+    println!("closing socket");
 
     // The socket has closed for some reason. Make sure we cancel any active builds.
     if let Some(request) = current_build {
@@ -90,23 +94,43 @@ async fn handle_socket(state: AppState, socket: WebSocket) {
     }
 }
 
-/// Assembles the build request and sends it off.
+/// Assembles the build request and sends it to the queue.
 fn start_build(
     state: &AppState,
-    socket_tx: &SplitSink<WebSocket, Message>,
+    build_tx: UnboundedSender<BuildMessage>,
     code: String,
 ) -> BuildRequest {
     let build_id = Uuid::new_v4();
-    let (build_tx, build_rx) = mpsc::unbounded_channel();
-
     let request = BuildRequest {
         id: build_id.clone(),
         code,
         ws_msg_tx: build_tx,
     };
 
-    state.build_queue_tx.send(BuildCommand::Start {
-        request: request.clone(),
-    });
+    state
+        .build_queue_tx
+        .send(BuildCommand::Start {
+            request: request.clone(),
+        })
+        .expect("the build queue channel should never close");
+
     request
+}
+
+impl From<BuildMessage> for SocketMessage {
+    fn from(value: BuildMessage) -> Self {
+        match value {
+            BuildMessage::Finished(result) => Self::CompileFinished(result),
+            BuildMessage::QueuePosition(i) => Self::QueuePosition(i),
+            BuildMessage::Compiling {
+                current_crate,
+                total_crates,
+                krate,
+            } => Self::Compiling {
+                current_crate,
+                total_crates,
+                krate,
+            },
+        }
+    }
 }

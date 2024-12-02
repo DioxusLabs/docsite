@@ -7,7 +7,12 @@ pub enum SocketMessage {
     CompileRequest(String),
     CompileFinished(Result<Uuid, String>),
     CompileMessage(String),
-    QueuePosition(QueueAction),
+    Compiling {
+        current_crate: usize,
+        total_crates: usize,
+        krate: String,
+    },
+    QueuePosition(usize),
     Unknown,
 }
 

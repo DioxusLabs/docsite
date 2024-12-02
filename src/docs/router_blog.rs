@@ -4152,7 +4152,7 @@ pub fn Release060() -> dioxus::prelude::Element {
             "To showcase everything in Dioxus 0.6, I made a quick video highlighting new features, bugs fixed, and a quick tour of everything you can do with Dioxus now:"
         }
         p {
-            a { href: "some-image.png", " a video goes here " }
+            a { href: "some-image.png", " youtube video? " }
         }
         p { "What’s new?" }
         ul {
@@ -4300,7 +4300,7 @@ pub fn Release060() -> dioxus::prelude::Element {
             "The new CLI sports live progress bars, animations, an interactive filter system, the ability to change log levels on the fly, and more."
         }
         p {
-            a { href: "some-image.png", " small clip of things working " }
+            a { href: "some-image.png", " cli animation " }
         }
         p {
             "We’re using the lovely Ratatui library which unlocks new features like an expandable info panel and custom tracing integrations:"

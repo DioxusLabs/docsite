@@ -1,5 +1,11 @@
 # Roadmap
 
+
+The scope of Dioxus is quite large and there's a chance we never ship a `1.0` of the `dioxus` crate. However, don't be spooked. The culture of the Rust ecosystem is generally to ship `0.x.y` releases that are suitable for production.
+
+With the recent 0.6 release, we're quite confident in our core offering and encourage you to experiment with production usage of Dioxus. However, be warned that the Dioxus ecosystem is quite smaller than Flutter and React Native. You will likely need to call into system APIs yourself since the Rust app ecosystem is quite nascent. There is [funded work]() to improve this story in partnership with [major sponsors]().
+
+
 This feature set and roadmap can help you decide if what Dioxus can do today works for you.
 
 If a feature that you need doesn't exist or you want to contribute to projects on the roadmap, feel free to get involved by [joining the discord](https://discord.gg/XgGxMSkvUM).

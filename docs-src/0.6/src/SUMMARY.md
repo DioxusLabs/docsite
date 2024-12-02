@@ -29,30 +29,9 @@
   - [Breaking Out](essentials/breaking/index.md)
   - [Structuring Your App](essentials/structure/index.md)
   - [Building UIs with RSX](essentials/rsx/index.md)
+  - [Assets and Deploying](essentials/production.md)
 
 ---
-
-
-<!-- # Overview / what these guides are for -->
-
-<!-- [Important Hooks - Overview]()
-[Router and managing “pages”]()
-[The “Document” abstraction]()
-[Understanding Hot-Reloading]()
-[CLI in Depth]()
-[SDK]()
-[Fullstack/The server]()
-[WASM]()
-[Desktop]()
-[Mobile]()
-[SDK]()
-[Hosting Options]()
-[Reactivity in way too much depth]()
-[rsx! in way too much depth?]()
-[Building Libraries for Dioxus]()
-[Custom Renderer]()
-[Crates and Compatibility]()
-[Accessibility]() -->
 
 - [Guides](reference/index.md)
   - [Router](router/index.md)
@@ -96,6 +75,7 @@
   - [Examples](cookbook/examples.md)
   - [Tailwind](cookbook/tailwind.md)
   - [Optimizing](cookbook/optimizing.md)
+  - [Comparisons](cookbook/comparisons.md)
   - [Migration for 0.5](migration/index.md)
     - [Hooks](migration/hooks.md)
     - [State](migration/state.md)
@@ -148,3 +128,26 @@
   - [Spawn](reference/spawn.md)
   - [Choosing A Web Renderer](reference/choosing_a_web_renderer.md) -->
 
+
+
+
+<!-- # Overview / what these guides are for -->
+
+<!-- [Important Hooks - Overview]()
+[Router and managing “pages”]()
+[The “Document” abstraction]()
+[Understanding Hot-Reloading]()
+[CLI in Depth]()
+[SDK]()
+[Fullstack/The server]()
+[WASM]()
+[Desktop]()
+[Mobile]()
+[SDK]()
+[Hosting Options]()
+[Reactivity in way too much depth]()
+[rsx! in way too much depth?]()
+[Building Libraries for Dioxus]()
+[Custom Renderer]()
+[Crates and Compatibility]()
+[Accessibility]() -->

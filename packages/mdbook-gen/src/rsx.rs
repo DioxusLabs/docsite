@@ -86,7 +86,15 @@ impl<'a, I: Iterator<Item = Event<'a>>> RsxMarkdownParser<'a, I> {
                     }
                 })
             }
-            pulldown_cmark::Event::Html(_) => {}
+            pulldown_cmark::Event::Html(node) => {
+                let code = escape_text(&node);
+                self.create_node(parse_quote! {
+                    div {
+                        class: "inline-html-block",
+                        dangerous_inner_html: #code,
+                    }
+                })
+            }
             pulldown_cmark::Event::FootnoteReference(_) => {}
             pulldown_cmark::Event::SoftBreak => {}
             pulldown_cmark::Event::HardBreak => {}

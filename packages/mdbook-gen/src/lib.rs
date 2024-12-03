@@ -19,7 +19,9 @@ mod transform_book;
 pub fn generate_router_build_script(mdbook_dir: PathBuf) -> String {
     let file_src = generate_router_as_file(mdbook_dir.clone(), MdBook::new(mdbook_dir).unwrap());
 
-    let prettifed = prettyplease::unparse(&file_src);
+    let stringified = prettyplease::unparse(&file_src);
+    let prettifed = rustfmt_via_cli(&stringified);
+
     let as_file = syn::parse_file(&prettifed).unwrap();
     let fmts = dioxus_autofmt::try_fmt_file(&prettifed, &as_file, Default::default()).unwrap();
     let out = dioxus_autofmt::apply_formats(&prettifed, fmts);
@@ -187,4 +189,21 @@ pub(crate) fn path_to_route_enum(path: &Path) -> TokenStream2 {
     quote! {
         BookRoute::#name {}
     }
+}
+
+fn rustfmt_via_cli(input: &str) -> String {
+    let tmpfile = std::env::temp_dir().join(format!("mdbook-gen-{}.rs", std::process::id()));
+    std::fs::write(&tmpfile, input).unwrap();
+
+    let file = std::fs::File::open(&tmpfile).unwrap();
+    let output = std::process::Command::new("rustfmt")
+        .arg("--edition=2021")
+        .stdin(file)
+        .stdout(std::process::Stdio::piped())
+        .output()
+        .unwrap();
+
+    _ = std::fs::remove_file(tmpfile);
+
+    String::from_utf8(output.stdout).unwrap()
 }

@@ -17,7 +17,7 @@ yazi = "0.1.5"
 
 [dev-dependencies]
 dioxus = { version = "0.6.0-rc.0" }
-dioxus-router = { version = "0.6.0-rc.0" , features = ["ssr"] }
+dioxus-router = { version = "0.6.0-rc.0" }
 tokio = { version = "*", features = ["full"] }
 
 [features]

@@ -176,10 +176,10 @@ pub enum BookRoute {
     MigrationHotReload {},
 }
 impl BookRoute {
-    pub fn sections(&self) -> &[use_mdbook::mdbook_shared::Section] {
+    pub fn sections(&self) -> &'static [use_mdbook::mdbook_shared::Section] {
         &self.page().sections
     }
-    pub fn page(&self) -> &use_mdbook::mdbook_shared::Page<Self> {
+    pub fn page(&self) -> &'static use_mdbook::mdbook_shared::Page<Self> {
         LAZY_BOOK.get_page(self)
     }
     pub fn page_id(&self) -> use_mdbook::mdbook_shared::PageId {
@@ -9227,6 +9227,8 @@ pub fn RouterReferenceRoutesIndex() -> dioxus::prelude::Element {
             "The segment can be of any type that implements  "
             code { "FromSegments" }
             ". (Vec"
+            p { class: "inline-html-block", dangerous_inner_html: "<String>" }
+            " implements this by default)"
         }
         p {
             "Catch All segments must be the "
@@ -11035,6 +11037,8 @@ pub fn CookbookCustomRenderer() -> dioxus::prelude::Element {
             "Whenever a  "
             code { "CreateElement" }
             " edit is generated during diffing, Dioxus increments its node counter and assigns that new element its current NodeCount. The RealDom is responsible for remembering this ID and pushing the correct node when id is used in a mutation. Dioxus reclaims the IDs of elements when removed. To stay in sync with Dioxus you can use a sparse Vec (Vec"
+            p { class: "inline-html-block", dangerous_inner_html: "<T>" }
+            ">) with possibly unoccupied items. You can use the ids as indexes into the Vec for elements, and grow the Vec when an id does not exist."
         }
         h3 { id: "an-example",
             a { href: "#an-example", class: "header", "An Example" }

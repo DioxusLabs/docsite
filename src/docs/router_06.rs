@@ -128,10 +128,10 @@ pub enum BookRoute {
     ContributingRoadmap {},
 }
 impl BookRoute {
-    pub fn sections(&self) -> &[use_mdbook::mdbook_shared::Section] {
+    pub fn sections(&self) -> &'static [use_mdbook::mdbook_shared::Section] {
         &self.page().sections
     }
-    pub fn page(&self) -> &use_mdbook::mdbook_shared::Page<Self> {
+    pub fn page(&self) -> &'static use_mdbook::mdbook_shared::Page<Self> {
         LAZY_BOOK.get_page(self)
     }
     pub fn page_id(&self) -> use_mdbook::mdbook_shared::PageId {
@@ -5351,6 +5351,8 @@ pub fn RouterReferenceRoutesIndex() -> dioxus::prelude::Element {
             "The segment can be of any type that implements  "
             code { "FromSegments" }
             ". (Vec"
+            p { class: "inline-html-block", dangerous_inner_html: "<String>" }
+            " implements this by default)"
         }
         p {
             "Catch All segments must be the "

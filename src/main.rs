@@ -16,14 +16,17 @@ fn main() {
     dioxus::LaunchBuilder::new()
         .with_cfg(server_only! {
             // Only in release do we SSG
-            ServeConfig::builder()
-                .incremental(
+            let mut cfg = ServeConfig::builder();
+
+            if !cfg!(debug_assertions) {
+                cfg = cfg.incremental(
                     IncrementalRendererConfig::new()
                         .static_dir(static_dir())
                         .clear_cache(false)
-                )
-                .build()
-                .expect("Unable to build ServeConfig")
+                );
+            }
+
+            cfg.build().expect("Unable to build ServeConfig")
         })
         .launch(|| {
             rsx! {
@@ -202,6 +205,7 @@ impl Route {
 }
 
 // todo - when we update to 0.6.0 we need to change this to return a Vec<String>
+#[cfg(feature = "fullstack")]
 #[server(endpoint = "static_routes")]
 async fn static_routes() -> Result<Vec<String>, ServerFnError> {
     Ok(Route::static_routes()

@@ -168,10 +168,10 @@ pub enum BookRoute {
     MigrationProps {},
 }
 impl BookRoute {
-    pub fn sections(&self) -> &[use_mdbook::mdbook_shared::Section] {
+    pub fn sections(&self) -> &'static [use_mdbook::mdbook_shared::Section] {
         &self.page().sections
     }
-    pub fn page(&self) -> &use_mdbook::mdbook_shared::Page<Self> {
+    pub fn page(&self) -> &'static use_mdbook::mdbook_shared::Page<Self> {
         LAZY_BOOK.get_page(self)
     }
     pub fn page_id(&self) -> use_mdbook::mdbook_shared::PageId {
@@ -6739,6 +6739,110 @@ pub fn ReferenceSpawn() -> dioxus::prelude::Element {
 pub fn ReferenceAssets() -> dioxus::prelude::Element {
     use dioxus::prelude::*;
     rsx! {
+        p {
+            class: "inline-html-block",
+            dangerous_inner_html: "<!-- # Assets\n",
+        }
+        p { class: "inline-html-block", dangerous_inner_html: "\n" }
+        p {
+            class: "inline-html-block",
+            dangerous_inner_html: "> ⚠\u{fe0f} Support: Manganis is currently in alpha. API changes are planned and bugs are more likely\n",
+        }
+        p { class: "inline-html-block", dangerous_inner_html: "\n" }
+        p {
+            class: "inline-html-block",
+            dangerous_inner_html: "Assets are files that are included in the final build of the application. They can be images, fonts, stylesheets, or any other file that is not a source file. Dioxus includes first class support for assets, and provides a simple way to include them in your application and automatically optimize them for production.\n",
+        }
+        p { class: "inline-html-block", dangerous_inner_html: "\n" }
+        p {
+            class: "inline-html-block",
+            dangerous_inner_html: "Assets in dioxus are also compatible with libraries! If you are building a library, you can include assets in your library and they will be automatically included in the final build of any application that uses your library.\n",
+        }
+        p { class: "inline-html-block", dangerous_inner_html: "\n" }
+        p {
+            class: "inline-html-block",
+            dangerous_inner_html: "First, you need to add the `manganis` crate to your `Cargo.toml` file:\n",
+        }
+        p { class: "inline-html-block", dangerous_inner_html: "\n" }
+        p { class: "inline-html-block", dangerous_inner_html: "```sh\n" }
+        p {
+            class: "inline-html-block",
+            dangerous_inner_html: "cargo add manganis\n",
+        }
+        p { class: "inline-html-block", dangerous_inner_html: "```\n" }
+        p { class: "inline-html-block", dangerous_inner_html: "\n" }
+        p {
+            class: "inline-html-block",
+            dangerous_inner_html: "## Including images\n",
+        }
+        p { class: "inline-html-block", dangerous_inner_html: "\n" }
+        p {
+            class: "inline-html-block",
+            dangerous_inner_html: "To include an asset in your application, you can simply wrap the path to the asset in a `mg!` call. For example, to include an image in your application, you can use the following code:\n",
+        }
+        p { class: "inline-html-block", dangerous_inner_html: "\n" }
+        p { class: "inline-html-block", dangerous_inner_html: "```rust\n" }
+        p {
+            class: "inline-html-block",
+            dangerous_inner_html: "{{{{#include src/doc_examples/untested_05/assets.rs:images}}}}\n",
+        }
+        p { class: "inline-html-block", dangerous_inner_html: "```\n" }
+        p { class: "inline-html-block", dangerous_inner_html: "\n" }
+        p {
+            class: "inline-html-block",
+            dangerous_inner_html: "You can also optimize, resize, and preload images using the `mg!` macro. Choosing an optimized file type (like WebP) and a reasonable quality setting can significantly reduce the size of your images which helps your application load faster. For example, you can use the following code to include an optimized image in your application:\n",
+        }
+        p { class: "inline-html-block", dangerous_inner_html: "\n" }
+        p { class: "inline-html-block", dangerous_inner_html: "```rust\n" }
+        p {
+            class: "inline-html-block",
+            dangerous_inner_html: "{{{{#include src/doc_examples/untested_05/assets.rs:optimized_images}}}}\n",
+        }
+        p { class: "inline-html-block", dangerous_inner_html: "```\n" }
+        p { class: "inline-html-block", dangerous_inner_html: "\n" }
+        p {
+            class: "inline-html-block",
+            dangerous_inner_html: "## Including arbitrary files\n",
+        }
+        p { class: "inline-html-block", dangerous_inner_html: "\n" }
+        p {
+            class: "inline-html-block",
+            dangerous_inner_html: "In dioxus desktop, you may want to include a file with data for your application. You can use the `file` function to include arbitrary files in your application. For example, you can use the following code to include a file in your application:\n",
+        }
+        p { class: "inline-html-block", dangerous_inner_html: "\n" }
+        p { class: "inline-html-block", dangerous_inner_html: "```rust\n" }
+        p {
+            class: "inline-html-block",
+            dangerous_inner_html: "{{{{#include src/doc_examples/untested_05/assets.rs:arbitrary_files}}}}\n",
+        }
+        p { class: "inline-html-block", dangerous_inner_html: "```\n" }
+        p { class: "inline-html-block", dangerous_inner_html: "\n" }
+        p {
+            class: "inline-html-block",
+            dangerous_inner_html: "These files will be automatically included in the final build of your application, and you can use them in your application as you would any other file.\n",
+        }
+        p { class: "inline-html-block", dangerous_inner_html: "\n" }
+        p {
+            class: "inline-html-block",
+            dangerous_inner_html: "## Including stylesheets\n",
+        }
+        p { class: "inline-html-block", dangerous_inner_html: "\n" }
+        p {
+            class: "inline-html-block",
+            dangerous_inner_html: "You can include stylesheets in your application using the `mg!` macro. For example, you can use the following code to include a stylesheet in your application:\n",
+        }
+        p { class: "inline-html-block", dangerous_inner_html: "\n" }
+        p { class: "inline-html-block", dangerous_inner_html: "```rust\n" }
+        p {
+            class: "inline-html-block",
+            dangerous_inner_html: "{{{{#include src/doc_examples/untested_05/assets.rs:style_sheets}}}}\n",
+        }
+        p { class: "inline-html-block", dangerous_inner_html: "```\n" }
+        p { class: "inline-html-block", dangerous_inner_html: "\n" }
+        p {
+            class: "inline-html-block",
+            dangerous_inner_html: "> The [tailwind guide](../cookbook/tailwind.md) has more information on how to use tailwind with dioxus. -->\n",
+        }
         h2 { id: "conclusion",
             a { href: "#conclusion", class: "header", "Conclusion" }
         }
@@ -8528,6 +8632,8 @@ pub fn RouterReferenceRoutesIndex() -> dioxus::prelude::Element {
             "The segment can be of any type that implements  "
             code { "FromSegments" }
             ". (Vec"
+            p { class: "inline-html-block", dangerous_inner_html: "<String>" }
+            " implements this by default)"
         }
         p {
             "Catch All segments must be the "
@@ -10326,6 +10432,8 @@ pub fn CookbookCustomRenderer() -> dioxus::prelude::Element {
             "Whenever a  "
             code { "CreateElement" }
             " edit is generated during diffing, Dioxus increments its node counter and assigns that new element its current NodeCount. The RealDom is responsible for remembering this ID and pushing the correct node when id is used in a mutation. Dioxus reclaims the IDs of elements when removed. To stay in sync with Dioxus you can use a sparse Vec (Vec"
+            p { class: "inline-html-block", dangerous_inner_html: "<T>" }
+            ">) with possibly unoccupied items. You can use the ids as indexes into the Vec for elements, and grow the Vec when an id does not exist."
         }
         h3 { id: "an-example",
             a { href: "#an-example", class: "header", "An Example" }

@@ -687,6 +687,23 @@ dependencies = [
 ]
 
 [[package]]
+name = "const-serialize"
+version = "0.6.0-rc.0"
+dependencies = [
+ "const-serialize-macro",
+ "serde",
+]
+
+[[package]]
+name = "const-serialize-macro"
+version = "0.6.0-rc.0"
+dependencies = [
+ "proc-macro2",
+ "quote",
+ "syn 2.0.90",
+]
+
+[[package]]
 name = "const_format"
 version = "0.2.33"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1007,6 +1024,7 @@ dependencies = [
 name = "dioxus"
 version = "0.6.0-rc.0"
 dependencies = [
+ "dioxus-cli-config",
  "dioxus-config-macro",
  "dioxus-core",
  "dioxus-core-macro",
@@ -3262,21 +3280,19 @@ dependencies = [
 name = "manganis"
 version = "0.6.0-rc.0"
 dependencies = [
- "anyhow",
- "base64 0.22.1",
- "dioxus-core-types",
- "dunce",
+ "const-serialize",
+ "manganis-core",
  "manganis-macro",
- "once_cell",
- "serde",
 ]
 
 [[package]]
 name = "manganis-core"
 version = "0.6.0-rc.0"
 dependencies = [
+ "const-serialize",
+ "dioxus-cli-config",
+ "dioxus-core-types",
  "serde",
- "serde_json",
 ]
 
 [[package]]
@@ -3286,8 +3302,6 @@ dependencies = [
  "manganis-core",
  "proc-macro2",
  "quote",
- "serde",
- "serde_json",
  "syn 2.0.90",
 ]
 
@@ -3334,7 +3348,7 @@ checksum = "0e7465ac9959cc2b1404e8e2367b43684a6d13790fe23056cc8c6c5a6b7bcb94"
 [[package]]
 name = "mdbook-gen"
 version = "0.0.0"
-source = "git+https://github.com/dioxuslabs/include_mdbook?branch=jk%2Fbuild-gen#10c5814f0ddf18aa1d141dcc66abb0da6e85bbe3"
+source = "git+https://github.com/dioxuslabs/include_mdbook?branch=jk%2Fbuild-gen#eb84f38464098b69d565ab3ff54d31789063887b"
 dependencies = [
  "anyhow",
  "convert_case 0.6.0",
@@ -3357,7 +3371,7 @@ dependencies = [
 [[package]]
 name = "mdbook-macro"
 version = "0.1.0"
-source = "git+https://github.com/dioxuslabs/include_mdbook?branch=jk%2Fbuild-gen#10c5814f0ddf18aa1d141dcc66abb0da6e85bbe3"
+source = "git+https://github.com/dioxuslabs/include_mdbook?branch=jk%2Fbuild-gen#eb84f38464098b69d565ab3ff54d31789063887b"
 dependencies = [
  "anyhow",
  "convert_case 0.6.0",
@@ -3378,7 +3392,7 @@ dependencies = [
 [[package]]
 name = "mdbook-shared"
 version = "0.1.0"
-source = "git+https://github.com/dioxuslabs/include_mdbook?branch=jk%2Fbuild-gen#10c5814f0ddf18aa1d141dcc66abb0da6e85bbe3"
+source = "git+https://github.com/dioxuslabs/include_mdbook?branch=jk%2Fbuild-gen#eb84f38464098b69d565ab3ff54d31789063887b"
 dependencies = [
  "anyhow",
  "bytes",
@@ -5290,7 +5304,7 @@ dependencies = [
 [[package]]
 name = "syntect-html"
 version = "0.1.0"
-source = "git+https://github.com/dioxuslabs/include_mdbook?branch=jk%2Fbuild-gen#10c5814f0ddf18aa1d141dcc66abb0da6e85bbe3"
+source = "git+https://github.com/dioxuslabs/include_mdbook?branch=jk%2Fbuild-gen#eb84f38464098b69d565ab3ff54d31789063887b"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -5920,7 +5934,7 @@ checksum = "daf8dba3b7eb870caf1ddeed7bc9d2a049f3cfdfae7cb521b087cc33ae4c49da"
 [[package]]
 name = "use-mdbook"
 version = "0.1.0"
-source = "git+https://github.com/dioxuslabs/include_mdbook?branch=jk%2Fbuild-gen#10c5814f0ddf18aa1d141dcc66abb0da6e85bbe3"
+source = "git+https://github.com/dioxuslabs/include_mdbook?branch=jk%2Fbuild-gen#eb84f38464098b69d565ab3ff54d31789063887b"
 dependencies = [
  "lazy_static",
  "mdbook-macro",

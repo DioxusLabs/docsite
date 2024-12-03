@@ -82,10 +82,10 @@ pub enum BookRoute {
     Contributing {},
 }
 impl BookRoute {
-    pub fn sections(&self) -> &[use_mdbook::mdbook_shared::Section] {
+    pub fn sections(&self) -> &'static [use_mdbook::mdbook_shared::Section] {
         &self.page().sections
     }
-    pub fn page(&self) -> &use_mdbook::mdbook_shared::Page<Self> {
+    pub fn page(&self) -> &'static use_mdbook::mdbook_shared::Page<Self> {
         LAZY_BOOK.get_page(self)
     }
     pub fn page_id(&self) -> use_mdbook::mdbook_shared::PageId {
@@ -4953,6 +4953,8 @@ pub fn CustomRendererIndex() -> dioxus::prelude::Element {
             "Whenever a  "
             code { "CreateElement" }
             " edit is generated during diffing, Dioxus increments its node counter and assigns that new element its current NodeCount. The RealDom is responsible for remembering this ID and pushing the correct node when PushRoot(ID) is generated. Dioxus reclaims the IDs of elements when removed. To stay in sync with Dioxus you can use a sparse Vec (Vec"
+            p { class: "inline-html-block", dangerous_inner_html: "<T>" }
+            ">) with possibly unoccupied items. You can use the ids as indexes into the Vec for elements, and grow the Vec when an id does not exist."
         }
         p {
             "This little demo serves to show exactly how a Renderer would need to process an edit stream to build UIs. A set of serialized DomEditss for various demos is available for you to test your custom renderer against."

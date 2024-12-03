@@ -3,6 +3,9 @@
         // so it doesn't break code blocks
         "editor.formatOnSave": false
     },
+    "[css]": {
+        "editor.formatOnSave": false
+    },
     "rust-analyzer.cargo.features": [
         "web",
         "server"

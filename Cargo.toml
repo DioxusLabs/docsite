@@ -8,7 +8,7 @@ resolver = "2"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-dioxus = { version = "0.6.0-rc.0", features = ["router", "fullstack"] }
+dioxus = { version = "0.6.0-rc.0", features = ["router"] }
 dioxus-web = { version = "0.6.0-rc.0", features = ["hydrate"], optional = true }
 dioxus-ssr = { version = "0.6.0-rc.0", optional = true }
 dioxus-desktop = { version = "0.6.0-rc.0", optional = true }
@@ -146,7 +146,8 @@ opt-level = 3
 codegen-units = 1
 
 [features]
-default = ["web"]
+default = []
+fullstack = ["dioxus/fullstack"]
 web = ["dioxus/web"]
 server = [
     "dioxus/server",

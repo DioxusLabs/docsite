@@ -89,7 +89,7 @@ impl<'a, I: Iterator<Item = Event<'a>>> RsxMarkdownParser<'a, I> {
             pulldown_cmark::Event::Html(node) => {
                 let code = escape_text(&node);
                 self.create_node(parse_quote! {
-                    div {
+                    p {
                         class: "inline-html-block",
                         dangerous_inner_html: #code,
                     }

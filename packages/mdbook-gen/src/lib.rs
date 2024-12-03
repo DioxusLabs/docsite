@@ -138,11 +138,11 @@ pub fn generate_router(book_path: PathBuf, book: mdbook_shared::MdBook<PathBuf>)
         }
 
         impl BookRoute {
-            pub fn sections(&self) -> &[use_mdbook::mdbook_shared::Section] {
+            pub fn sections(&self) -> &'static [use_mdbook::mdbook_shared::Section] {
                 &self.page().sections
             }
 
-            pub fn page(&self) -> &use_mdbook::mdbook_shared::Page<Self> {
+            pub fn page(&self) -> &'static use_mdbook::mdbook_shared::Page<Self> {
                 LAZY_BOOK.get_page(self)
             }
 

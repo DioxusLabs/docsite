@@ -62,9 +62,9 @@ dependencies = [
 
 [[package]]
 name = "anyhow"
-version = "1.0.93"
+version = "1.0.94"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "4c95c10ba0b00a02636238b814946408b1322d5ac4760326e6fb8ec956d85775"
+checksum = "c1fd03a028ef38ba2276dce7e33fcd6369c158a1bca17946c4b1b701891c1ff7"
 
 [[package]]
 name = "arrayvec"
@@ -292,7 +292,7 @@ dependencies = [
  "base64 0.22.1",
  "bytes",
  "futures-util",
- "http 1.1.0",
+ "http 1.2.0",
  "http-body 1.0.1",
  "http-body-util",
  "hyper 1.5.1",
@@ -328,7 +328,7 @@ dependencies = [
  "async-trait",
  "bytes",
  "futures-util",
- "http 1.1.0",
+ "http 1.2.0",
  "http-body 1.0.1",
  "http-body-util",
  "mime",
@@ -684,23 +684,6 @@ checksum = "a06aeb73f470f66dcdbf7223caeebb85984942f22f1adb2a088cf9668146bbbc"
 dependencies = [
  "cfg-if",
  "wasm-bindgen",
-]
-
-[[package]]
-name = "const-serialize"
-version = "0.6.0-rc.0"
-dependencies = [
- "const-serialize-macro",
- "serde",
-]
-
-[[package]]
-name = "const-serialize-macro"
-version = "0.6.0-rc.0"
-dependencies = [
- "proc-macro2",
- "quote",
- "syn 2.0.90",
 ]
 
 [[package]]
@@ -1210,7 +1193,7 @@ dependencies = [
  "futures-channel",
  "futures-util",
  "generational-box",
- "http 1.1.0",
+ "http 1.2.0",
  "hyper 1.5.1",
  "once_cell",
  "parking_lot",
@@ -1308,7 +1291,7 @@ name = "dioxus-isrg"
 version = "0.6.0-rc.0"
 dependencies = [
  "chrono",
- "http 1.1.0",
+ "http 1.2.0",
  "lru",
  "rustc-hash",
  "thiserror",
@@ -1555,7 +1538,7 @@ dependencies = [
  "gloo-history",
  "gloo-storage",
  "gloo-timers",
- "http 1.1.0",
+ "http 1.2.0",
  "include_dir",
  "js-sys",
  "log",
@@ -2329,7 +2312,7 @@ dependencies = [
  "futures-core",
  "futures-sink",
  "gloo-utils 0.2.0",
- "http 1.1.0",
+ "http 1.2.0",
  "js-sys",
  "pin-project",
  "serde",
@@ -2605,9 +2588,9 @@ dependencies = [
 
 [[package]]
 name = "http"
-version = "1.1.0"
+version = "1.2.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "21b9ddb458710bc376481b842f5da65cdf31522de232c1ca8146abce2a358258"
+checksum = "f16ca2af56261c99fba8bac40a10251ce8188205a4c448fbb745a2e4daa76fea"
 dependencies = [
  "bytes",
  "fnv",
@@ -2632,7 +2615,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "1efedce1fb8e6913f23e0c92de8e62cd5b772a67e7b3946df930a62566c93184"
 dependencies = [
  "bytes",
- "http 1.1.0",
+ "http 1.2.0",
 ]
 
 [[package]]
@@ -2643,7 +2626,7 @@ checksum = "793429d76616a256bcb62c2a2ec2bed781c8307e797e2598c50010f2bee2544f"
 dependencies = [
  "bytes",
  "futures-util",
- "http 1.1.0",
+ "http 1.2.0",
  "http-body 1.0.1",
  "pin-project-lite",
 ]
@@ -2699,7 +2682,7 @@ dependencies = [
  "bytes",
  "futures-channel",
  "futures-util",
- "http 1.1.0",
+ "http 1.2.0",
  "http-body 1.0.1",
  "httparse",
  "httpdate",
@@ -2748,7 +2731,7 @@ dependencies = [
  "bytes",
  "futures-channel",
  "futures-util",
- "http 1.1.0",
+ "http 1.2.0",
  "http-body 1.0.1",
  "hyper 1.5.1",
  "pin-project-lite",
@@ -3279,18 +3262,21 @@ dependencies = [
 name = "manganis"
 version = "0.6.0-rc.0"
 dependencies = [
- "const-serialize",
- "manganis-core",
+ "anyhow",
+ "base64 0.22.1",
+ "dioxus-core-types",
+ "dunce",
  "manganis-macro",
+ "once_cell",
+ "serde",
 ]
 
 [[package]]
 name = "manganis-core"
 version = "0.6.0-rc.0"
 dependencies = [
- "const-serialize",
- "dioxus-core-types",
  "serde",
+ "serde_json",
 ]
 
 [[package]]
@@ -3300,6 +3286,8 @@ dependencies = [
  "manganis-core",
  "proc-macro2",
  "quote",
+ "serde",
+ "serde_json",
  "syn 2.0.90",
 ]
 
@@ -3346,7 +3334,7 @@ checksum = "0e7465ac9959cc2b1404e8e2367b43684a6d13790fe23056cc8c6c5a6b7bcb94"
 [[package]]
 name = "mdbook-gen"
 version = "0.0.0"
-source = "git+https://github.com/dioxuslabs/include_mdbook?branch=jk%2Fbuild-gen#077fd5f87c806916994acc0240c7fc648fd3358b"
+source = "git+https://github.com/dioxuslabs/include_mdbook?branch=jk%2Fbuild-gen#10c5814f0ddf18aa1d141dcc66abb0da6e85bbe3"
 dependencies = [
  "anyhow",
  "convert_case 0.6.0",
@@ -3369,7 +3357,7 @@ dependencies = [
 [[package]]
 name = "mdbook-macro"
 version = "0.1.0"
-source = "git+https://github.com/dioxuslabs/include_mdbook?branch=jk%2Fbuild-gen#077fd5f87c806916994acc0240c7fc648fd3358b"
+source = "git+https://github.com/dioxuslabs/include_mdbook?branch=jk%2Fbuild-gen#10c5814f0ddf18aa1d141dcc66abb0da6e85bbe3"
 dependencies = [
  "anyhow",
  "convert_case 0.6.0",
@@ -3390,7 +3378,7 @@ dependencies = [
 [[package]]
 name = "mdbook-shared"
 version = "0.1.0"
-source = "git+https://github.com/dioxuslabs/include_mdbook?branch=jk%2Fbuild-gen#077fd5f87c806916994acc0240c7fc648fd3358b"
+source = "git+https://github.com/dioxuslabs/include_mdbook?branch=jk%2Fbuild-gen#10c5814f0ddf18aa1d141dcc66abb0da6e85bbe3"
 dependencies = [
  "anyhow",
  "bytes",
@@ -3503,7 +3491,7 @@ dependencies = [
  "bytes",
  "encoding_rs",
  "futures-util",
- "http 1.1.0",
+ "http 1.2.0",
  "httparse",
  "memchr",
  "mime",
@@ -4521,7 +4509,7 @@ dependencies = [
  "bytes",
  "futures-core",
  "futures-util",
- "http 1.1.0",
+ "http 1.2.0",
  "http-body 1.0.1",
  "http-body-util",
  "hyper 1.5.1",
@@ -4904,7 +4892,7 @@ dependencies = [
  "dashmap",
  "futures",
  "gloo-net",
- "http 1.1.0",
+ "http 1.2.0",
  "http-body-util",
  "hyper 1.5.1",
  "inventory",
@@ -5302,7 +5290,7 @@ dependencies = [
 [[package]]
 name = "syntect-html"
 version = "0.1.0"
-source = "git+https://github.com/dioxuslabs/include_mdbook?branch=jk%2Fbuild-gen#077fd5f87c806916994acc0240c7fc648fd3358b"
+source = "git+https://github.com/dioxuslabs/include_mdbook?branch=jk%2Fbuild-gen#10c5814f0ddf18aa1d141dcc66abb0da6e85bbe3"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -5691,7 +5679,7 @@ dependencies = [
  "bitflags 2.6.0",
  "bytes",
  "futures-util",
- "http 1.1.0",
+ "http 1.2.0",
  "http-body 1.0.1",
  "http-body-util",
  "http-range-header",
@@ -5818,7 +5806,7 @@ dependencies = [
  "byteorder",
  "bytes",
  "data-encoding",
- "http 1.1.0",
+ "http 1.2.0",
  "httparse",
  "log",
  "rand 0.8.5",
@@ -5836,7 +5824,7 @@ dependencies = [
  "byteorder",
  "bytes",
  "data-encoding",
- "http 1.1.0",
+ "http 1.2.0",
  "httparse",
  "log",
  "rand 0.8.5",
@@ -5932,7 +5920,7 @@ checksum = "daf8dba3b7eb870caf1ddeed7bc9d2a049f3cfdfae7cb521b087cc33ae4c49da"
 [[package]]
 name = "use-mdbook"
 version = "0.1.0"
-source = "git+https://github.com/dioxuslabs/include_mdbook?branch=jk%2Fbuild-gen#077fd5f87c806916994acc0240c7fc648fd3358b"
+source = "git+https://github.com/dioxuslabs/include_mdbook?branch=jk%2Fbuild-gen#10c5814f0ddf18aa1d141dcc66abb0da6e85bbe3"
 dependencies = [
  "lazy_static",
  "mdbook-macro",
@@ -6627,7 +6615,7 @@ dependencies = [
  "gdkx11",
  "gtk",
  "html5ever 0.26.0",
- "http 1.1.0",
+ "http 1.2.0",
  "javascriptcore-rs",
  "jni",
  "kuchikiki",

@@ -4102,7 +4102,7 @@ pub fn Release050() -> dioxus::prelude::Element {
 pub fn Release060() -> dioxus::prelude::Element {
     use dioxus::prelude::*;
     rsx! {
-        p { "Happy holidays! As an early holidays present, we’re proud to release Dioxus 0.6!" }
+        p { "Happy holidays! As an early holidays present, we’re proud to release Dioxus v0.6! Yay" }
         p {
             "Dioxus 0.6 is the biggest release of Dioxus ever - with over 350 pull requests merged, hundreds of issues closed, dozens of huge new features, and a complete overhaul of many parts of the framework. I’m happy to say that Dioxus is the most mature and complete it’s ever been, "
             em { "finally" }
@@ -4121,7 +4121,7 @@ pub fn Release060() -> dioxus::prelude::Element {
             "To showcase everything in Dioxus 0.6, I made a quick video highlighting new features, bugs fixed, and a quick tour of everything you can do with Dioxus now:"
         }
         p {
-            a { href: "some-image.png", " youtube video? " }
+            a { href: "some-image.png", "youtube video?" }
         }
         p { "What’s new?" }
         ul {

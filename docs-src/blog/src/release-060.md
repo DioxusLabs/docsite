@@ -1,4 +1,4 @@
-Happy holidays! As an early holidays present, we’re proud to release Dioxus 0.6!
+Happy holidays! As an early holidays present, we’re proud to release Dioxus v0.6! Yay
 
 Dioxus 0.6 is the biggest release of Dioxus ever - with over 350 pull requests merged, hundreds of issues closed, dozens of huge new features, and a complete overhaul of many parts of the framework. I’m happy to say that Dioxus is the most mature and complete it’s ever been, *finally* living up to the original mission.
 
@@ -10,7 +10,7 @@ With 0.6, we didn’t necessarily want to focus on shipping shiny new features. 
 
 To showcase everything in Dioxus 0.6, I made a quick video highlighting new features, bugs fixed, and a quick tour of everything you can do with Dioxus now:
 
-[ youtube video? ](some-image.png)
+[youtube video?](some-image.png)
 
 What’s new?
 

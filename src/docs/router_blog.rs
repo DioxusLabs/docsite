@@ -842,11 +842,6 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                                 level: 2usize,
                             },
                             ::use_mdbook::mdbook_shared::Section {
-                                title: "Accessing Native Websys Event".to_string(),
-                                id: "accessing-native-websys-event".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
                                 title: "Synchronous preventDefault".to_string(),
                                 id: "synchronous-preventdefault".to_string(),
                                 level: 2usize,
@@ -857,8 +852,8 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                                 level: 2usize,
                             },
                             ::use_mdbook::mdbook_shared::Section {
-                                title: "Web-component syntax".to_string(),
-                                id: "web-component-syntax".to_string(),
+                                title: "Hybrid WGPU support".to_string(),
+                                id: "hybrid-wgpu-support".to_string(),
                                 level: 2usize,
                             },
                             ::use_mdbook::mdbook_shared::Section {
@@ -4152,7 +4147,7 @@ pub fn Release060() -> dioxus::prelude::Element {
             "To showcase everything in Dioxus 0.6, I made a quick video highlighting new features, bugs fixed, and a quick tour of everything you can do with Dioxus now:"
         }
         p {
-            a { href: "some-image.png", " a video goes here " }
+            a { href: "some-image.png", " youtube video? " }
         }
         p { "What’s new?" }
         ul {
@@ -4300,7 +4295,7 @@ pub fn Release060() -> dioxus::prelude::Element {
             "The new CLI sports live progress bars, animations, an interactive filter system, the ability to change log levels on the fly, and more."
         }
         p {
-            a { href: "some-image.png", " small clip of things working " }
+            a { href: "some-image.png", " cli animation " }
         }
         p {
             "We’re using the lovely Ratatui library which unlocks new features like an expandable info panel and custom tracing integrations:"
@@ -4856,33 +4851,6 @@ pub fn Release060() -> dioxus::prelude::Element {
                 title: "",
             }
         }
-        h2 { id: "accessing-native-websys-event",
-            a { href: "#accessing-native-websys-event", class: "header",
-                "Accessing Native Websys Event"
-            }
-        }
-        hr {}
-        p {
-            "While improving our  "
-            code { "document" }
-            " support, we also took time to improve our  "
-            code { "Event" }
-            " support. The  "
-            code { "dioxus-web" }
-            " platform now provides an extension trait called  "
-            code { "WebEventExt" }
-            " that allows you to downcast any eventhandler’s  "
-            code { "Event" }
-            " to the native  "
-            code { "websys" }
-            " event type."
-        }
-        p {
-            "This allows you to write web-specific code using the actual underlying web-sys event instead of the “synthetic” event that Dioxus previously exposed."
-        }
-        CodeBlock {
-            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">Preview</span><span style=\"color:#f8f8f2;\">() -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    rsx! {{\n</span><span style=\"color:#f8f8f2;\">        input {{\n</span><span style=\"color:#f8f8f2;\">            oninput: </span><span style=\"color:#f92672;\">move |</span><span style=\"color:#f8f8f2;\">event</span><span style=\"color:#f92672;\">| </span><span style=\"color:#f8f8f2;\">{{\n</span><span style=\"color:#f8f8f2;\">                </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> websys_event </span><span style=\"color:#f92672;\">=</span><span style=\"color:#f8f8f2;\"> event.</span><span style=\"color:#66d9ef;\">try_as_web_event</span><span style=\"color:#f8f8f2;\">().</span><span style=\"color:#66d9ef;\">unwrap</span><span style=\"color:#f8f8f2;\">();\n</span><span style=\"color:#f8f8f2;\">                </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> transfer_object </span><span style=\"color:#f92672;\">=</span><span style=\"color:#f8f8f2;\"> websys_event.</span><span style=\"color:#66d9ef;\">data_transfer</span><span style=\"color:#f8f8f2;\">();\n</span><span style=\"color:#f8f8f2;\">                </span><span style=\"color:#8c8c8c;\">// ...do websys-specific stuff with the websys event\n</span><span style=\"color:#f8f8f2;\">            }}\n</span><span style=\"color:#f8f8f2;\">        }}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
-        }
         h2 { id: "synchronous-preventdefault",
             a { href: "#synchronous-preventdefault", class: "header", "Synchronous preventDefault" }
         }
@@ -4935,18 +4903,10 @@ pub fn Release060() -> dioxus::prelude::Element {
         p {
             a { href: "some-image.png", " gif of resize and visible working " }
         }
-        h2 { id: "web-component-syntax",
-            a { href: "#web-component-syntax", class: "header", "Web-component syntax" }
+        h2 { id: "hybrid-wgpu-support",
+            a { href: "#hybrid-wgpu-support", class: "header", "Hybrid WGPU support" }
         }
         hr {}
-        p {
-            "As part of our upgrades the  "
-            code { "rsx! {{}}" }
-            ", we’ve decided to add support for on-the-fly web-component syntax. You can now create web components on the fly, making it even easier to wrap them in typesafe Rust APIs or simply drop them into your existing app."
-        }
-        CodeBlock {
-            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#8c8c8c;\">/// A web-component wrapped with a strongly typed interface using a component\n</span><span style=\"color:#f8f8f2;\">#[component]\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">CoolWebComponent</span><span style=\"color:#f8f8f2;\">(</span><span style=\"font-style:italic;color:#fd971f;\">my_prop</span><span style=\"color:#f8f8f2;\">: String) -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    rsx! {{\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"color:#8c8c8c;\">// rsx! takes a webcomponent as long as its tag name is separated\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"color:#8c8c8c;\">// with dashes\n</span><span style=\"color:#f8f8f2;\">        web</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">component {{\n</span><span style=\"color:#f8f8f2;\">            </span><span style=\"color:#8c8c8c;\">// Since web-components don&#39;t have built-in attributes,\n</span><span style=\"color:#f8f8f2;\">            </span><span style=\"color:#8c8c8c;\">// the attribute names must be passed as a string\n</span><span style=\"color:#f8f8f2;\">            </span><span style=\"color:#ffee99;\">&quot;my-prop&quot;</span><span style=\"color:#f8f8f2;\">: my_prop,\n</span><span style=\"color:#f8f8f2;\">        }}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
-        }
         h2 { id: "json-output-for-ci--cli",
             a { href: "#json-output-for-ci--cli", class: "header", "JSON Output for CI / CLI" }
         }
@@ -5034,7 +4994,7 @@ pub fn Release060() -> dioxus::prelude::Element {
         }
         hr {}
         p {
-            "As usual with these large release, Dioxus 0.6 features a rather sizable overhaul to the documentation. We’ve completely overhauled the tutorial to be less heavy on code, instead choosing to focus more the basics like including assets and deploying."
+            "As usual with these large release, Dioxus 0.6 features a rather sizable overhaul to the documentation. We’ve completely overhauled the tutorial to be less heavy on code. The new tutorial focues on basics like including assets and deploying to production."
         }
         p {
             img {

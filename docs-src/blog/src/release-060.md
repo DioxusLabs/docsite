@@ -17,7 +17,7 @@ With 0.6, we didn’t necessarily want to focus on shipping shiny new features. 
 
 To showcase everything in Dioxus 0.6, I made a quick video highlighting new features, bugs fixed, and a quick tour of everything you can do with Dioxus now:
 
-[ a video goes here ](some-image.png)
+[ youtube video? ](some-image.png)
 
 What’s new?
 
@@ -115,7 +115,7 @@ You might have noticed in the gifs above: Dioxus 0.6 is shipping with a complete
 
 The new CLI sports live progress bars, animations, an interactive filter system, the ability to change log levels on the fly, and more.
 
-[ small clip of things working ](some-image.png)
+![cli_animation](https://private-user-images.githubusercontent.com/10237910/391807201-00673048-9ba9-4df3-8878-93ef849e9fa0.mp4)
 
 We’re using the lovely Ratatui library which unlocks new features like an expandable info panel and custom tracing integrations:
 
@@ -581,28 +581,6 @@ fn app() -> Element {
 
 ![Screenshot 2024-11-14 at 11.31.18 PM.png](/assets/06assets/Screenshot_2024-11-14_at_11.31.18_PM.png)
 
-## Accessing Native Websys Event
-
----
-
-While improving our `document` support, we also took time to improve our `Event` support. The `dioxus-web` platform now provides an extension trait called `WebEventExt` that allows you to downcast any eventhandler’s `Event` to the native `websys` event type.
-
-This allows you to write web-specific code using the actual underlying web-sys event instead of the “synthetic” event that Dioxus previously exposed.
-
-```rust
-fn Preview() -> Element {
-    rsx! {
-        input {
-            oninput: move |event| {
-                let websys_event = event.try_as_web_event().unwrap();
-                let transfer_object = websys_event.data_transfer();
-                // ...do websys-specific stuff with the websys event
-            }
-        }
-    }
-}
-```
-
 ## Synchronous preventDefault
 
 ---
@@ -663,27 +641,36 @@ fn app() -> Element {
 
 [ gif of resize and visible working ](some-image.png)
 
-## Web-component syntax
+## `onvisible` event handler
 
 ---
 
-As part of our upgrades the `rsx! {}`, we’ve decided to add support for on-the-fly web-component syntax. You can now create web components on the fly, making it even easier to wrap them in typesafe Rust APIs or simply drop them into your existing app.
+In addition to `onresize`, we now have a special handler *not* found in the HTML spec: `onvisible`.
 
 ```rust
-/// A web-component wrapped with a strongly typed interface using a component
-#[component]
-fn CoolWebComponent(my_prop: String) -> Element {
+fn app() -> Element {
     rsx! {
-        // rsx! takes a webcomponent as long as its tag name is separated
-        // with dashes
-        web-component {
-            // Since web-components don't have built-in attributes,
-            // the attribute names must be passed as a string
-            "my-prop": my_prop,
+        div {
+            onvisible: move |data| {
+                println!("visible!");
+            }
+            "Hello world!"
         }
     }
 }
 ```
+
+This makes it possible to add rich animations to your app without needing to write custom JavaScript.
+
+![gif_of_visible_working.mp4](https://private-user-images.githubusercontent.com/10237910/391778934-a233e580-f638-4937-b19a-a1745ab9ad19.mp4)
+
+## Hybrid WGPU support
+
+---
+
+![hybrid_wgpu.mp5](https://private-user-images.githubusercontent.com/30946190/379960934-082ef776-dad2-4872-8e1c-b230574ec234.mov)
+
+
 
 ## JSON Output for CI / CLI
 
@@ -716,7 +703,7 @@ We haven’t fixed *every* bug in autoformat, but we are now much more confident
 
 ---
 
-As usual with these large release, Dioxus 0.6 features a rather sizable overhaul to the documentation. We’ve completely overhauled the tutorial to be less heavy on code, instead choosing to focus more the basics like including assets and deploying.
+As usual with these large release, Dioxus 0.6 features a rather sizable overhaul to the documentation. We’ve completely overhauled the tutorial to be less heavy on code. The new tutorial focues on basics like including assets and deploying to production.
 
 ![Screenshot 2024-11-14 at 11.35.23 PM.png](/assets/06assets/Screenshot_2024-11-14_at_11.35.23_PM.png)
 

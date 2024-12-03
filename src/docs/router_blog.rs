@@ -7,7 +7,7 @@
     Hash,
     Debug,
     serde::Serialize,
-    serde::Deserialize
+    serde::Deserialize,
 )]
 pub enum BookRoute {
     #[route("/introducing-dioxus")]
@@ -52,9 +52,8 @@ impl Default for BookRoute {
         BookRoute::Fulltime {}
     }
 }
-pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRoute>> = use_mdbook::Lazy::new(||
-{
-    {
+pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRoute>> =
+    use_mdbook::Lazy::new(|| {
         let mut page_id_mapping = ::std::collections::HashMap::new();
         let mut pages = Vec::new();
         pages
@@ -153,11 +152,10 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     }
                 },
             ));
-        page_id_mapping
-            .insert(
-                BookRoute::IntroducingDioxus {},
-                ::use_mdbook::mdbook_shared::PageId(0usize),
-            );
+        page_id_mapping.insert(
+            BookRoute::IntroducingDioxus {},
+            ::use_mdbook::mdbook_shared::PageId(0usize),
+        );
         pages
             .push((
                 1usize,
@@ -251,11 +249,10 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     }
                 },
             ));
-        page_id_mapping
-            .insert(
-                BookRoute::Release020 {},
-                ::use_mdbook::mdbook_shared::PageId(1usize),
-            );
+        page_id_mapping.insert(
+            BookRoute::Release020 {},
+            ::use_mdbook::mdbook_shared::PageId(1usize),
+        );
         pages
             .push((
                 2usize,
@@ -324,11 +321,10 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     }
                 },
             ));
-        page_id_mapping
-            .insert(
-                BookRoute::TemplatesDiffing {},
-                ::use_mdbook::mdbook_shared::PageId(2usize),
-            );
+        page_id_mapping.insert(
+            BookRoute::TemplatesDiffing {},
+            ::use_mdbook::mdbook_shared::PageId(2usize),
+        );
         pages
             .push((
                 3usize,
@@ -431,11 +427,10 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     }
                 },
             ));
-        page_id_mapping
-            .insert(
-                BookRoute::Release030 {},
-                ::use_mdbook::mdbook_shared::PageId(3usize),
-            );
+        page_id_mapping.insert(
+            BookRoute::Release030 {},
+            ::use_mdbook::mdbook_shared::PageId(3usize),
+        );
         pages
             .push((
                 4usize,
@@ -457,8 +452,10 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     }
                 },
             ));
-        page_id_mapping
-            .insert(BookRoute::Fulltime {}, ::use_mdbook::mdbook_shared::PageId(4usize));
+        page_id_mapping.insert(
+            BookRoute::Fulltime {},
+            ::use_mdbook::mdbook_shared::PageId(4usize),
+        );
         pages
             .push((
                 5usize,
@@ -559,11 +556,10 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     }
                 },
             ));
-        page_id_mapping
-            .insert(
-                BookRoute::Release040 {},
-                ::use_mdbook::mdbook_shared::PageId(5usize),
-            );
+        page_id_mapping.insert(
+            BookRoute::Release040 {},
+            ::use_mdbook::mdbook_shared::PageId(5usize),
+        );
         pages
             .push((
                 6usize,
@@ -731,38 +727,28 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     }
                 },
             ));
-        page_id_mapping
-            .insert(
-                BookRoute::Release050 {},
-                ::use_mdbook::mdbook_shared::PageId(6usize),
-            );
+        page_id_mapping.insert(
+            BookRoute::Release050 {},
+            ::use_mdbook::mdbook_shared::PageId(6usize),
+        );
         pages
             .push((
                 7usize,
                 {
                     ::use_mdbook::mdbook_shared::Page {
-                        title: "Announcing Dioxus 0.6 [draft] $ Release Notes $ November 18, 2024 $ Android/iOS simulator, Interactive CLI, RSX Autocomplete, Props Hotreloading, and more!"
+                        title: "Announcing Dioxus 0.6 [draft] $ Release Notes $ December 9, 2024 $ Android/iOS simulator, Interactive CLI, RSX Autocomplete, Props Hotreloading, and more!"
                             .to_string(),
                         url: BookRoute::Release060 {},
                         segments: vec![],
                         sections: vec![
                             ::use_mdbook::mdbook_shared::Section {
-                                title: "Dioxus 0.6: Android/iOS Simulator, Interactive CLI,  Props Hotreloading, and more!"
-                                    .to_string(),
-                                id: "dioxus-0.6:-android/ios-simulator,-interactive-cli,--props-hotreloading,-and-more!"
-                                    .to_string(),
-                                level: 1usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "First-party tooling for iOS and Android simulators"
-                                    .to_string(),
-                                id: "first-party-tooling-for-ios-and-android-simulators"
-                                    .to_string(),
+                                title: "Android and iOS support for ".to_string(),
+                                id: "android-and-ios-support-for".to_string(),
                                 level: 2usize,
                             },
                             ::use_mdbook::mdbook_shared::Section {
-                                title: "A new interactive CLI experience!".to_string(),
-                                id: "a-new-interactive-cli-experience!".to_string(),
+                                title: "Interactive Command Line Tools!".to_string(),
+                                id: "interactive-command-line-tools!".to_string(),
                                 level: 2usize,
                             },
                             ::use_mdbook::mdbook_shared::Section {
@@ -771,8 +757,8 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                                 level: 2usize,
                             },
                             ::use_mdbook::mdbook_shared::Section {
-                                title: "Toasts and Loading Screen".to_string(),
-                                id: "toasts-and-loading-screen".to_string(),
+                                title: "Toasts and Loading Screens".to_string(),
+                                id: "toasts-and-loading-screens".to_string(),
                                 level: 2usize,
                             },
                             ::use_mdbook::mdbook_shared::Section {
@@ -842,13 +828,18 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                                 level: 2usize,
                             },
                             ::use_mdbook::mdbook_shared::Section {
-                                title: "Synchronous preventDefault".to_string(),
-                                id: "synchronous-preventdefault".to_string(),
+                                title: "Synchronous ".to_string(),
+                                id: "synchronous".to_string(),
                                 level: 2usize,
                             },
                             ::use_mdbook::mdbook_shared::Section {
                                 title: " and ".to_string(),
                                 id: "and".to_string(),
+                                level: 2usize,
+                            },
+                            ::use_mdbook::mdbook_shared::Section {
+                                title: " event handler".to_string(),
+                                id: "event-handler".to_string(),
                                 level: 2usize,
                             },
                             ::use_mdbook::mdbook_shared::Section {
@@ -904,11 +895,10 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     }
                 },
             ));
-        page_id_mapping
-            .insert(
-                BookRoute::Release060 {},
-                ::use_mdbook::mdbook_shared::PageId(7usize),
-            );
+        page_id_mapping.insert(
+            BookRoute::Release060 {},
+            ::use_mdbook::mdbook_shared::PageId(7usize),
+        );
         ::use_mdbook::mdbook_shared::MdBook {
             summary: ::use_mdbook::mdbook_shared::Summary {
                 title: Some("Summary".to_string()),
@@ -978,7 +968,7 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                         nested_items: vec![],
                     }),
                     ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
-                        name: "Announcing Dioxus 0.6 [draft] $ Release Notes $ November 18, 2024 $ Android/iOS simulator, Interactive CLI, RSX Autocomplete, Props Hotreloading, and more!"
+                        name: "Announcing Dioxus 0.6 [draft] $ Release Notes $ December 9, 2024 $ Android/iOS simulator, Interactive CLI, RSX Autocomplete, Props Hotreloading, and more!"
                             .to_string(),
                         location: Some(BookRoute::Release060 {}),
                         number: Some(
@@ -992,8 +982,7 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
             pages: pages.into_iter().collect(),
             page_id_mapping,
         }
-    }
-});
+    });
 #[component(no_case_check)]
 pub fn IntroducingDioxus() -> dioxus::prelude::Element {
     use dioxus::prelude::*;
@@ -4113,21 +4102,6 @@ pub fn Release050() -> dioxus::prelude::Element {
 pub fn Release060() -> dioxus::prelude::Element {
     use dioxus::prelude::*;
     rsx! {
-        h1 { id: "dioxus-06-androidios-simulator-interactive-cli--props-hotreloading-and-more",
-            a {
-                href: "#dioxus-06-androidios-simulator-interactive-cli--props-hotreloading-and-more",
-                class: "header",
-                "Dioxus 0.6: Android/iOS Simulator, Interactive CLI,  Props Hotreloading, and more!"
-            }
-        }
-        blockquote {
-            p { "November 18, 2024" }
-            p {
-                a { href: "https://github.com/jkelleyrtp",
-                    code { "@jkelleyrtp" }
-                }
-            }
-        }
         p { "Happy holidays! As an early holidays present, we’re proud to release Dioxus 0.6!" }
         p {
             "Dioxus 0.6 is the biggest release of Dioxus ever - with over 350 pull requests merged, hundreds of issues closed, dozens of huge new features, and a complete overhaul of many parts of the framework. I’m happy to say that Dioxus is the most mature and complete it’s ever been, "
@@ -4152,74 +4126,121 @@ pub fn Release060() -> dioxus::prelude::Element {
         p { "What’s new?" }
         ul {
             li {
-                "CLI support for Android and iOS simulator: simply "
-                code { "dx serve --platform android" }
-            }
-            li { "Overhauled interactive CLI inspired by Astro’s excellent tools" }
-            li {
-                "Proper "
-                code { "ServerFn" }
-                " support for Desktop and Mobile apps for simple server RPC"
-            }
-            li { "Toasts and loading screens for web apps, inspired by many JS frameworks" }
-            li {
-                "Revamped autocomplete using Rust-analyzer itself (no 3rd party LSP integration needed)"
+                a { href: "",
+                    "CLI support for Android and iOS simulator: simply  "
+                    code { "dx serve --platform android" }
+                }
             }
             li {
-                "Hotreloading of formatted strings, component properties, "
-                code { "if" }
-                "/"
-                code { "for" }
-                " blocks, and nested rsx!{{}}"
-            }
-            li { "Mobile hotreloading and bundled asset hotreloading" }
-            li {
-                "Stabilization of "
-                code { "asset!()" }
-                " macro for including assets in your app and ecosystem crates"
+                a { href: "", "Overhauled interactive CLI inspired by Astro’s excellent tools" }
             }
             li {
-                "Streaming HTML support with integrated Suspense and server-compatible Error Boundaries"
+                a { href: "",
+                    "Proper  "
+                    code { "ServerFn" }
+                    " support for Desktop and Mobile apps for simple server RPC"
+                }
             }
             li {
-                "Ability to use "
-                code { "?" }
-                " in handlers, tasks, and components to bubble up errors to error boundaries"
-            }
-            li { "Static site generation support in the CLI" }
-            li {
-                code { "Head {{}}" }
-                ", "
-                code { "Title {{}}" }
-                ", "
-                code { "Meta {{}}" }
-                ", and "
-                code { "Link {{}}" }
-                " elements for setting document attributes from components"
+                a { href: "",
+                    "Toasts and loading screens for web apps, inspired by many JS frameworks"
+                }
             }
             li {
-                code { "dx bundle" }
-                " support for web, iOS, and Android (in addition to desktop)"
+                a { href: "",
+                    "Revamped autocomplete using Rust-analyzer itself (no 3rd party LSP integration needed)"
+                }
             }
             li {
-                code { "json" }
-                " mode for the CLI for use by 3rd party tools"
+                a { href: "",
+                    "Hotreloading of formatted strings, component properties,  "
+                    code { "if" }
+                    "/ "
+                    code { "for" }
+                    " blocks, and nested rsx!{{}}"
+                }
             }
             li {
-                "Proper "
-                code { "preventDefault" }
-                " handling with synchronous event propagation"
+                a { href: "", "Mobile hotreloading and bundled asset hotreloading" }
             }
-            li { "and so much more!" }
+            li {
+                a { href: "",
+                    "Stabilization of  "
+                    code { "asset!()" }
+                    " macro for including assets in your app and ecosystem crates"
+                }
+            }
+            li {
+                a { href: "",
+                    "Streaming HTML support with integrated Suspense and server-compatible Error Boundaries"
+                }
+            }
+            li {
+                a { href: "",
+                    "Ability to use  "
+                    code { "?" }
+                    " in handlers, tasks, and components to bubble up errors to error boundaries"
+                }
+            }
+            li {
+                a { href: "", "Static site generation support in the CLI" }
+            }
+            li {
+                a { href: "",
+                    code { "Head {{}}" }
+                    ",  "
+                    code { "Title {{}}" }
+                    ",  "
+                    code { "Meta {{}}" }
+                    ", and  "
+                    code { "Link {{}}" }
+                    " elements for setting document attributes from components"
+                }
+            }
+            li {
+                a { href: "",
+                    code { "dx bundle" }
+                    " support for web, iOS, and Android (in addition to desktop)"
+                }
+            }
+            li {
+                a { href: "",
+                    code { "json" }
+                    " mode for the CLI for use by 3rd party tools"
+                }
+            }
+            li {
+                a { href: "",
+                    "Proper  "
+                    code { "prevent_default" }
+                    " handling with synchronous event propagation"
+                }
+            }
+            li {
+                a { href: "", "WGPU Integration for Dioxus Desktop" }
+            }
+            li {
+                a { href: "",
+                    code { "onvisible" }
+                    " event hander"
+                }
+            }
+            li {
+                a { href: "",
+                    code { "onresize" }
+                    " event hander"
+                }
+            }
+            li {
+                a { href: "", "and so much more!" }
+            }
         }
-        h2 { id: "first-party-tooling-for-ios-and-android-simulators",
-            a {
-                href: "#first-party-tooling-for-ios-and-android-simulators",
-                class: "header",
-                "First-party tooling for iOS and Android simulators"
+        h2 { id: "android-and-ios-support-for",
+            a { href: "#android-and-ios-support-for", class: "header",
+                "Android and iOS support for "
             }
+            code { "dx serve" }
         }
-        hr {}
         p {
             "Every since Dioxus’ initial release two years ago, we’ve had support for iOS and Android. However, we’ve historically not had great tooling for deploying Rust code into simulators and onto devices. We’ve had to rely on projects like "
             a { href: "https://github.com/BrainiumLLC/cargo-mobile", "cargo-mobile" }
@@ -4275,12 +4296,11 @@ pub fn Release060() -> dioxus::prelude::Element {
         p {
             "While 1st-class support for mobile platforms is quite exciting, there are certainly many limitations: the Rust mobile ecosystem is practically nonexistent, we don’t have great ways of configuring the hundreds of XCode and AndroidStudio flags, and there isn’t a particularly great Rust/Java interop story. However, we’re very dedicated to making mobile app development as great as possible and will be rolling out improvements to mobile over the next year."
         }
-        h2 { id: "a-new-interactive-cli-experience",
-            a { href: "#a-new-interactive-cli-experience", class: "header",
-                "A new interactive CLI experience!"
+        h2 { id: "interactive-command-line-tools",
+            a { href: "#interactive-command-line-tools", class: "header",
+                "Interactive Command Line Tools!"
             }
         }
-        hr {}
         p {
             "You might have noticed in the gifs above: Dioxus 0.6 is shipping with a completely overhauled CLI experience! We’ve completely rewritten the CLI to support a ton of new features and improve stability."
         }
@@ -4295,7 +4315,11 @@ pub fn Release060() -> dioxus::prelude::Element {
             "The new CLI sports live progress bars, animations, an interactive filter system, the ability to change log levels on the fly, and more."
         }
         p {
-            a { href: "some-image.png", " cli animation " }
+            img {
+                src: "https://private-user-images.githubusercontent.com/10237910/391807201-00673048-9ba9-4df3-8878-93ef849e9fa0.mp4",
+                alt: "cli_animation",
+                title: "",
+            }
         }
         p {
             "We’re using the lovely Ratatui library which unlocks new features like an expandable info panel and custom tracing integrations:"
@@ -4314,7 +4338,6 @@ pub fn Release060() -> dioxus::prelude::Element {
             code { "tracing" }
             " integration"
         }
-        hr {}
         p {
             "One cool feature: the new CLI integrates with web, desktop, and mobile apps to capture their  "
             code { "tracing" }
@@ -4371,10 +4394,9 @@ pub fn Release060() -> dioxus::prelude::Element {
         p {
             a { href: "some-image.png", " gif of that working " }
         }
-        h2 { id: "toasts-and-loading-screen",
-            a { href: "#toasts-and-loading-screen", class: "header", "Toasts and Loading Screen" }
+        h2 { id: "toasts-and-loading-screens",
+            a { href: "#toasts-and-loading-screens", class: "header", "Toasts and Loading Screens" }
         }
-        hr {}
         p {
             "As part of our mission to improve the developer experience of building apps with Dioxus, we shipped two huge new improvements: loading screens and pop-up toasts!"
         }
@@ -4411,7 +4433,6 @@ pub fn Release060() -> dioxus::prelude::Element {
                 "Fullstack Desktop and Mobile"
             }
         }
-        hr {}
         p {
             "Additionally, as part of our work on improving the tooling story for Dioxus, we decided to properly fix our integration with server functions when targeting the Desktop and Mobile platforms. Server functions finally work out-of-the-box when targeting native platforms:"
         }
@@ -4431,7 +4452,6 @@ pub fn Release060() -> dioxus::prelude::Element {
                 "Greatly improved autocomplete"
             }
         }
-        hr {}
         p {
             "Another huge overhaul in Dioxus 0.6: greatly improved autocomplete of  "
             code { "rsx! {{}}" }
@@ -4480,7 +4500,6 @@ pub fn Release060() -> dioxus::prelude::Element {
                 "Greatly improved hotreloading"
             }
         }
-        hr {}
         p {
             "As part of our effort to improve the  "
             code { "rsx! {{}}" }
@@ -4512,7 +4531,6 @@ pub fn Release060() -> dioxus::prelude::Element {
                 "Hotreloading Formatted Strings"
             }
         }
-        hr {}
         p {
             "We can now hotreload any formatted string in your markup! For this component, we can hotreload both the  "
             code { "class" }
@@ -4540,7 +4558,6 @@ pub fn Release060() -> dioxus::prelude::Element {
         h3 { id: "hotreloading-literals",
             a { href: "#hotreloading-literals", class: "header", "Hotreloading literals" }
         }
-        hr {}
         p {
             "As part of the hotreloading overhauls, we also now support hotreloading of any literals we can find inside your rsx. We built a very simple interpreter for Rust code! Any changes to literals are automatically propagated through the signal-based reactivity system shipped in 0.5. This means you can change the bounds on component props without causing a full rebuild."
         }
@@ -4558,7 +4575,6 @@ pub fn Release060() -> dioxus::prelude::Element {
             code { "component" }
             " )"
         }
-        hr {}
         p {
             "With Dioxus 0.4 we shipped improvements that enabled a simpler syntax for  "
             code { "for" }
@@ -4580,7 +4596,6 @@ pub fn Release060() -> dioxus::prelude::Element {
                 "Bundled and mobile hotreloading"
             }
         }
-        hr {}
         p {
             "With Dioxus 0.6, we also wanted to fix the longstanding issue where mobile simulators didn’t properly get hotreloading. Mobile can be tricky to work with - and will take a long time to get 100% right - but this is a solid step in making mobile targets better supported with Dioxus."
         }
@@ -4597,7 +4612,6 @@ pub fn Release060() -> dioxus::prelude::Element {
                 "Proper Workspace Hotreloading"
             }
         }
-        hr {}
         p {
             "We now properly support hotreloading across multiple projects in a workspace. This solves the longstanding issue where you’re developing a component library in one crate and using it another crate. Our new hotreload engine intelligently walks your project’s dependencies across the filesystem and watches all the related Rust files."
         }
@@ -4606,7 +4620,6 @@ pub fn Release060() -> dioxus::prelude::Element {
             code { "asset!()" }
             " system"
         }
-        hr {}
         p {
             "We introduced our new asset system,\u{a0}"
             a { href: "https://github.com/DioxusLabs/manganis", "Manganis" }
@@ -4668,7 +4681,6 @@ pub fn Release060() -> dioxus::prelude::Element {
                 "Suspense and HTML Streaming for the Web"
             }
         }
-        hr {}
         p {
             "Async is a core component of any UI framework. Dioxus provides hooks to handle async state. You can start a future and handle the loading and resolved states within the component:"
         }
@@ -4710,7 +4722,6 @@ pub fn Release060() -> dioxus::prelude::Element {
                 "Static Site Generation and ISG"
             }
         }
-        hr {}
         p {
             "As part of our work on streaming, we also wanted to support another cutting-edge web feature: incremental static generation (ISG) and its cousin static site generation (SSG)."
         }
@@ -4753,7 +4764,6 @@ pub fn Release060() -> dioxus::prelude::Element {
             code { "?" }
             " while rendering and in event handlers"
         }
-        hr {}
         p {
             "With this release, we’ve finally made the transition where  "
             code { "Element" }
@@ -4799,7 +4809,6 @@ pub fn Release060() -> dioxus::prelude::Element {
             " , and "
             code { "Meta {{}}" }
         }
-        hr {}
         p {
             "To date, it’s been rather cumbersome to do what is seemingly simple JavaScript operations in Dioxus. Due to our crossplatform nature, we need to find solutions to what seems like simple problems in ways that work for web, desktop, and mobile with a single abstraction."
         }
@@ -4851,10 +4860,10 @@ pub fn Release060() -> dioxus::prelude::Element {
                 title: "",
             }
         }
-        h2 { id: "synchronous-preventdefault",
-            a { href: "#synchronous-preventdefault", class: "header", "Synchronous preventDefault" }
+        h2 { id: "synchronous",
+            a { href: "#synchronous", class: "header", "Synchronous " }
+            code { "prevent_default" }
         }
-        hr {}
         p {
             "In addition to being able to access the native event type, Dioxus 0.6 also makes all event handling synchronous. Previously, all event handling in Dioxus had to occur outside the normal browser event handling flow to support platforms like  "
             code { "dioxus-desktop" }
@@ -4884,7 +4893,6 @@ pub fn Release060() -> dioxus::prelude::Element {
             code { "onresize" }
             " extensions to elements"
         }
-        hr {}
         p {
             "Thanks to the community, we now have two special handlers "
             em { "not" }
@@ -4903,14 +4911,46 @@ pub fn Release060() -> dioxus::prelude::Element {
         p {
             a { href: "some-image.png", " gif of resize and visible working " }
         }
+        h2 { id: "",
+            a { href: "#", class: "header", "" }
+            code { "onvisible" }
+            " event handler"
+        }
+        p {
+            "In addition to  "
+            code { "onresize" }
+            ", we now have a special handler "
+            em { "not" }
+            " found in the HTML spec: "
+            code { "onvisible" }
+            "."
+        }
+        CodeBlock {
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">app</span><span style=\"color:#f8f8f2;\">() -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    rsx! {{\n</span><span style=\"color:#f8f8f2;\">        div {{\n</span><span style=\"color:#f8f8f2;\">            onvisible: </span><span style=\"color:#f92672;\">move |</span><span style=\"color:#f8f8f2;\">data</span><span style=\"color:#f92672;\">| </span><span style=\"color:#f8f8f2;\">{{\n</span><span style=\"color:#f8f8f2;\">                println!(</span><span style=\"color:#ffee99;\">&quot;visible!&quot;</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"color:#f8f8f2;\">            }}\n</span><span style=\"color:#f8f8f2;\">            </span><span style=\"color:#ffee99;\">&quot;Hello world!&quot;\n</span><span style=\"color:#f8f8f2;\">        }}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
+        }
+        p {
+            "This makes it possible to add rich animations to your app without needing to write custom JavaScript."
+        }
+        p {
+            img {
+                src: "https://private-user-images.githubusercontent.com/10237910/391778934-a233e580-f638-4937-b19a-a1745ab9ad19.mp4",
+                alt: "gif_of_visible_working.mp4",
+                title: "",
+            }
+        }
         h2 { id: "hybrid-wgpu-support",
             a { href: "#hybrid-wgpu-support", class: "header", "Hybrid WGPU support" }
         }
-        hr {}
+        p {
+            img {
+                src: "https://private-user-images.githubusercontent.com/30946190/379960934-082ef776-dad2-4872-8e1c-b230574ec234.mov",
+                alt: "hybrid_wgpu.mp5",
+                title: "",
+            }
+        }
         h2 { id: "json-output-for-ci--cli",
             a { href: "#json-output-for-ci--cli", class: "header", "JSON Output for CI / CLI" }
         }
-        hr {}
         p {
             "As part of our overhaul with the CLI, we’re also shipping a  "
             code { "json-output" }
@@ -4946,7 +4986,6 @@ pub fn Release060() -> dioxus::prelude::Element {
                 "Greatly improved autoformatting"
             }
         }
-        hr {}
         p {
             code { "dx fmt" }
             " is much nicer now, and more stable. We’ve fixed as many bugs as we could find and fix without a huge rewrite."
@@ -4992,7 +5031,6 @@ pub fn Release060() -> dioxus::prelude::Element {
                 "Updated Docs - now with inline version switcher!"
             }
         }
-        hr {}
         p {
             "As usual with these large release, Dioxus 0.6 features a rather sizable overhaul to the documentation. We’ve completely overhauled the tutorial to be less heavy on code. The new tutorial focues on basics like including assets and deploying to production."
         }
@@ -5034,7 +5072,6 @@ pub fn Release060() -> dioxus::prelude::Element {
         h2 { id: "smaller-changes",
             a { href: "#smaller-changes", class: "header", "Smaller changes:" }
         }
-        hr {}
         p {
             "Not every change gets a particularly large section in the release notes, but we did land several new features and refactors."
         }
@@ -5082,7 +5119,6 @@ pub fn Release060() -> dioxus::prelude::Element {
                 "Preview of In-Place Binary Patching"
             }
         }
-        hr {}
         p {
             "While working on the new hotreloading engine, we experimented with adding hotreloading to Dioxus apps. The work here was inspired by Andrew Kelley’s “in-place-binary-patching” goal for Zig. Unfortunately, we didn’t have a chance to productionize the prototype for this release (way too many features already!) but we did put together a "
             a { href: "http://github.com/jkelleyrtp/ipbp", "small prototype" }
@@ -5101,7 +5137,6 @@ pub fn Release060() -> dioxus::prelude::Element {
         h2 { id: "upgrading-from-05-to-06",
             a { href: "#upgrading-from-05-to-06", class: "header", "Upgrading from 0.5 to 0.6" }
         }
-        hr {}
         p {
             "Generally there are few huge breaking changes in this release. However, we did change a few APIs that might break your existing apps but are easy to fix."
         }
@@ -5128,7 +5163,6 @@ pub fn Release060() -> dioxus::prelude::Element {
         h2 { id: "conclusion",
             a { href: "#conclusion", class: "header", "Conclusion" }
         }
-        hr {}
         p {
             "That’s it for all the new features! Due to the sheer size of this release, we might have missed several new features and bug fixes. The list of fixed bugs is also quite massive. Everything from bundling issues to spurious hotreloads and compatibility with rare platforms and editors has been addressed."
         }
@@ -5161,7 +5195,6 @@ pub fn Release060() -> dioxus::prelude::Element {
         h2 { id: "thanks-to-the-community",
             a { href: "#thanks-to-the-community", class: "header", "Thanks to the community!" }
         }
-        hr {}
         p {
             "I want to extend a huge thank-you to everyone who helped test and improve this release. We saw an incredible number of contributors fix bugs and add features. Special thanks to:"
         }

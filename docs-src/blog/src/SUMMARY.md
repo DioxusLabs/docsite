@@ -7,4 +7,4 @@
 - [Going fulltime on Dioxus $ Misc $ May 5, 2023 $ Dioxus is now my full time job! I'm so excited to be able to work on this full time.](fulltime.md)
 - [Announcing Dioxus 0.4 $ Release Notes $ August 1, 2023 $ An overhauled router, fullstack, desktop hotreloading, and more!](release-040.md)
 - [Announcing Dioxus 0.5 $ Release Notes $ March 21, 2024 $ A signal rewrite, zero unsafe, no lifetimes, unified launch, and more!](release-050.md)
-- [Announcing Dioxus 0.6 [draft] $ Release Notes $ November 18, 2024 $ Android/iOS simulator, Interactive CLI, RSX Autocomplete, Props Hotreloading, and more!](release-060.md)
+- [Announcing Dioxus 0.6 [draft] $ Release Notes $ December 9, 2024 $ Android/iOS simulator, Interactive CLI, RSX Autocomplete, Props Hotreloading, and more!](release-060.md)

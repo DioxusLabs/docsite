@@ -12,9 +12,9 @@
 pub enum BookRoute {
     #[route("/")]
     Index {},
-    #[route("/getting_started")]
+    #[route("/getting_started/")]
     GettingStartedIndex {},
-    #[route("/guide")]
+    #[route("/guide/")]
     GuideIndex {},
     #[route("/guide/your_first_component")]
     GuideYourFirstComponent {},
@@ -24,7 +24,7 @@ pub enum BookRoute {
     GuideDataFetching {},
     #[route("/guide/full_code")]
     GuideFullCode {},
-    #[route("/reference")]
+    #[route("/reference/")]
     ReferenceIndex {},
     #[route("/reference/rsx")]
     ReferenceRsx {},
@@ -54,19 +54,19 @@ pub enum BookRoute {
     ReferenceAssets {},
     #[route("/reference/choosing_a_web_renderer")]
     ReferenceChoosingAWebRenderer {},
-    #[route("/reference/desktop")]
+    #[route("/reference/desktop/")]
     ReferenceDesktopIndex {},
-    #[route("/reference/mobile")]
+    #[route("/reference/mobile/")]
     ReferenceMobileIndex {},
     #[route("/reference/mobile/apis")]
     ReferenceMobileApis {},
-    #[route("/reference/web")]
+    #[route("/reference/web/")]
     ReferenceWebIndex {},
     #[route("/reference/ssr")]
     ReferenceSsr {},
     #[route("/reference/liveview")]
     ReferenceLiveview {},
-    #[route("/reference/fullstack")]
+    #[route("/reference/fullstack/")]
     ReferenceFullstackIndex {},
     #[route("/reference/fullstack/server_functions")]
     ReferenceFullstackServerFunctions {},
@@ -78,9 +78,9 @@ pub enum BookRoute {
     ReferenceFullstackAuthentication {},
     #[route("/reference/fullstack/routing")]
     ReferenceFullstackRouting {},
-    #[route("/router")]
+    #[route("/router/")]
     RouterIndex {},
-    #[route("/router/example")]
+    #[route("/router/example/")]
     RouterExampleIndex {},
     #[route("/router/example/first-route")]
     RouterExampleFirstRoute {},
@@ -92,15 +92,15 @@ pub enum BookRoute {
     RouterExampleRedirectionPerfection {},
     #[route("/router/example/full-code")]
     RouterExampleFullCode {},
-    #[route("/router/reference")]
+    #[route("/router/reference/")]
     RouterReferenceIndex {},
-    #[route("/router/reference/routes")]
+    #[route("/router/reference/routes/")]
     RouterReferenceRoutesIndex {},
     #[route("/router/reference/routes/nested")]
     RouterReferenceRoutesNested {},
     #[route("/router/reference/layouts")]
     RouterReferenceLayouts {},
-    #[route("/router/reference/navigation")]
+    #[route("/router/reference/navigation/")]
     RouterReferenceNavigationIndex {},
     #[route("/router/reference/navigation/programmatic")]
     RouterReferenceNavigationProgrammatic {},
@@ -110,7 +110,7 @@ pub enum BookRoute {
     RouterReferenceHistoryButtons {},
     #[route("/router/reference/routing-update-callback")]
     RouterReferenceRoutingUpdateCallback {},
-    #[route("/cookbook")]
+    #[route("/cookbook/")]
     CookbookIndex {},
     #[route("/cookbook/publishing")]
     CookbookPublishing {},
@@ -118,17 +118,17 @@ pub enum BookRoute {
     CookbookAntipatterns {},
     #[route("/cookbook/error_handling")]
     CookbookErrorHandling {},
-    #[route("/cookbook/integrations")]
+    #[route("/cookbook/integrations/")]
     CookbookIntegrationsIndex {},
     #[route("/cookbook/integrations/logging")]
     CookbookIntegrationsLogging {},
     #[route("/cookbook/integrations/internationalization")]
     CookbookIntegrationsInternationalization {},
-    #[route("/cookbook/state")]
+    #[route("/cookbook/state/")]
     CookbookStateIndex {},
-    #[route("/cookbook/state/external")]
+    #[route("/cookbook/state/external/")]
     CookbookStateExternalIndex {},
-    #[route("/cookbook/state/custom_hooks")]
+    #[route("/cookbook/state/custom_hooks/")]
     CookbookStateCustomHooksIndex {},
     #[route("/cookbook/testing")]
     CookbookTesting {},
@@ -140,7 +140,7 @@ pub enum BookRoute {
     CookbookCustomRenderer {},
     #[route("/cookbook/optimizing")]
     CookbookOptimizing {},
-    #[route("/CLI")]
+    #[route("/CLI/")]
     CliIndex {},
     #[route("/CLI/creating")]
     CliCreating {},
@@ -148,7 +148,7 @@ pub enum BookRoute {
     CliConfigure {},
     #[route("/CLI/translate")]
     CliTranslate {},
-    #[route("/contributing")]
+    #[route("/contributing/")]
     ContributingIndex {},
     #[route("/contributing/project_structure")]
     ContributingProjectStructure {},
@@ -156,7 +156,7 @@ pub enum BookRoute {
     ContributingGuidingPrinciples {},
     #[route("/contributing/roadmap")]
     ContributingRoadmap {},
-    #[route("/migration")]
+    #[route("/migration/")]
     MigrationIndex {},
     #[route("/migration/hooks")]
     MigrationHooks {},
@@ -4095,11 +4095,11 @@ pub fn GettingStartedIndex() -> dioxus::prelude::Element {
                 "Web"
                 ul {
                     li {
-                        a { href: "getting_started/../reference/web", "Client Side" }
+                        a { href: "../reference/web", "Client Side" }
                         ": runs in the browser through WebAssembly"
                     }
                     li {
-                        a { href: "getting_started/../reference/fullstack", "Fullstack" }
+                        a { href: "../reference/fullstack", "Fullstack" }
                         ": renders to HTML text on the server and hydrates it on the client"
                     }
                 }
@@ -4108,9 +4108,7 @@ pub fn GettingStartedIndex() -> dioxus::prelude::Element {
         blockquote {
             p {
                 "If you are not sure which web platform you want to use, check out the "
-                a { href: "getting_started/../reference/choosing_a_web_renderer",
-                    "choosing a web renderer"
-                }
+                a { href: "../reference/choosing_a_web_renderer", "choosing a web renderer" }
                 " chapter."
             }
         }
@@ -4119,13 +4117,13 @@ pub fn GettingStartedIndex() -> dioxus::prelude::Element {
                 "WebView"
                 ul {
                     li {
-                        a { href: "getting_started/../reference/desktop", "Desktop" }
+                        a { href: "../reference/desktop", "Desktop" }
                         ": runs in a web view on desktop"
                     }
                     li {
-                        a { href: "getting_started/../reference/mobile", "Mobile" }
+                        a { href: "../reference/mobile", "Mobile" }
                         ": runs in a web view on mobile. Mobile is currently not supported by the dioxus CLI. The "
-                        a { href: "getting_started/../reference/mobile", "mobile reference" }
+                        a { href: "../reference/mobile", "mobile reference" }
                         " has more information about setting up a mobile project"
                     }
                 }
@@ -4134,7 +4132,7 @@ pub fn GettingStartedIndex() -> dioxus::prelude::Element {
         p { "Next, you can choose a styling library. For this project, we will use vanilla CSS." }
         p {
             "Finally, you can choose to start the project with the router enabled. The router is covered in the "
-            a { href: "getting_started/../router", "router guide" }
+            a { href: "../router", "router guide" }
             "."
         }
         h2 { id: "running-the-project",
@@ -4156,9 +4154,9 @@ pub fn GettingStartedIndex() -> dioxus::prelude::Element {
         }
         p {
             "That's it! You now have a working Dioxus project. You can continue learning about dioxus by "
-            a { href: "getting_started/../guide", "making a hackernews clone in the guide" }
+            a { href: "../guide", "making a hackernews clone in the guide" }
             ", or learning about specific topics/platforms in the "
-            a { href: "getting_started/../reference", "reference" }
+            a { href: "../reference", "reference" }
             ". If you have any questions, feel free to ask in the "
             a { href: "https://discord.gg/XgGxMSkvUM", "discord" }
             " or "
@@ -4183,7 +4181,7 @@ pub fn GuideIndex() -> dioxus::prelude::Element {
         DemoFrame { hackernews_complete::App {} }
         p {
             "This guide serves a very brief overview of Dioxus. Throughout the guide, there will be links to the "
-            a { href: "guide/../reference", "reference" }
+            a { href: "../reference", "reference" }
             " with more details about specific concepts."
         }
     }
@@ -4825,7 +4823,7 @@ pub fn ReferenceIndex() -> dioxus::prelude::Element {
         }
         p {
             "This Reference contains more detailed explanations for all concepts covered in the "
-            a { href: "reference/../guide", "guide" }
+            a { href: "../guide", "guide" }
             " and more."
         }
         h2 { id: "rendering",
@@ -4833,37 +4831,37 @@ pub fn ReferenceIndex() -> dioxus::prelude::Element {
         }
         ul {
             li {
-                a { href: "reference/rsx",
+                a { href: "rsx",
                     code { "RSX" }
                 }
                 " Rsx is a HTML-like macro that allows you to declare UI"
             }
             li {
-                a { href: "reference/components",
+                a { href: "components",
                     code { "Components" }
                 }
                 " Components are the building blocks of UI in Dioxus"
             }
             li {
-                a { href: "reference/component_props",
+                a { href: "component_props",
                     code { "Props" }
                 }
                 " Props allow you pass information to Components"
             }
             li {
-                a { href: "reference/event_handlers",
+                a { href: "event_handlers",
                     code { "Event Listeners" }
                 }
                 " Event listeners let you respond to user input"
             }
             li {
-                a { href: "reference/user_input",
+                a { href: "user_input",
                     code { "User Input" }
                 }
                 " How to handle User input in Dioxus"
             }
             li {
-                a { href: "reference/dynamic_rendering",
+                a { href: "dynamic_rendering",
                     code { "Dynamic Rendering" }
                 }
                 " How to dynamically render data in Dioxus"
@@ -4874,37 +4872,37 @@ pub fn ReferenceIndex() -> dioxus::prelude::Element {
         }
         ul {
             li {
-                a { href: "reference/hooks",
+                a { href: "hooks",
                     code { "Hooks" }
                 }
                 " Hooks allow you to create components state"
             }
             li {
-                a { href: "reference/context",
+                a { href: "context",
                     code { "Context" }
                 }
                 " Context allows you to create state in a parent and consume it in children"
             }
             li {
-                a { href: "reference/router",
+                a { href: "router",
                     code { "Routing" }
                 }
                 " The router helps you manage the URL state"
             }
             li {
-                a { href: "reference/use_resource",
+                a { href: "use_resource",
                     code { "Resource" }
                 }
                 " Use future allows you to create an async task and monitor it's state"
             }
             li {
-                a { href: "reference/use_coroutine",
+                a { href: "use_coroutine",
                     code { "UseCoroutine" }
                 }
                 " Use coroutine helps you manage external state"
             }
             li {
-                a { href: "reference/spawn",
+                a { href: "spawn",
                     code { "Spawn" }
                 }
                 " Spawn creates an async task"
@@ -4915,55 +4913,55 @@ pub fn ReferenceIndex() -> dioxus::prelude::Element {
         }
         ul {
             li {
-                a { href: "reference/choosing_a_web_renderer",
+                a { href: "choosing_a_web_renderer",
                     code { "Choosing a Web Renderer" }
                 }
                 " Overview of the different web renderers"
             }
             li {
-                a { href: "reference/desktop",
+                a { href: "desktop",
                     code { "Desktop" }
                 }
                 " Overview of desktop specific APIS"
             }
             li {
-                a { href: "reference/web",
+                a { href: "web",
                     code { "Web" }
                 }
                 " Overview of web specific APIS"
             }
             li {
-                a { href: "reference/fullstack",
+                a { href: "fullstack",
                     code { "Fullstack" }
                 }
                 " Overview of Fullstack specific APIS"
                 ul {
                     li {
-                        a { href: "reference/fullstack/server_functions",
+                        a { href: "fullstack/server_functions",
                             code { "Server Functions" }
                         }
                         " Server functions make it easy to communicate between your server and client"
                     }
                     li {
-                        a { href: "reference/fullstack/extractors",
+                        a { href: "fullstack/extractors",
                             code { "Extractors" }
                         }
                         " Extractors allow you to get extra information out of the headers of a request"
                     }
                     li {
-                        a { href: "reference/fullstack/middleware",
+                        a { href: "fullstack/middleware",
                             code { "Middleware" }
                         }
                         " Middleware allows you to wrap a server function request or response"
                     }
                     li {
-                        a { href: "reference/fullstack/authentication",
+                        a { href: "fullstack/authentication",
                             code { "Authentication" }
                         }
                         " An overview of how to handle authentication with server functions"
                     }
                     li {
-                        a { href: "reference/fullstack/routing",
+                        a { href: "fullstack/routing",
                             code { "Routing" }
                         }
                         " An overview of how to work with the router in the fullstack renderer"
@@ -4971,19 +4969,19 @@ pub fn ReferenceIndex() -> dioxus::prelude::Element {
                 }
             }
             li {
-                a { href: "reference/ssr",
+                a { href: "ssr",
                     code { "SSR" }
                 }
                 " Overview of the SSR renderer"
             }
             li {
-                a { href: "reference/tui",
+                a { href: "tui",
                     code { "TUI" }
                 }
                 " Overview of web specific APIS"
             }
             li {
-                a { href: "reference/liveview",
+                a { href: "liveview",
                     code { "Liveview" }
                 }
                 " Overview of liveview specific APIS"
@@ -7109,7 +7107,7 @@ pub fn ReferenceDesktopIndex() -> dioxus::prelude::Element {
         }
         p {
             "You can read more about assets in the "
-            a { href: "desktop/./assets", "assets" }
+            a { href: "./assets", "assets" }
             " reference."
         }
         h2 { id: "integrating-with-wry",
@@ -7504,7 +7502,7 @@ pub fn ReferenceWebIndex() -> dioxus::prelude::Element {
             }
             li {
                 "Dioxus provides hydration to resume apps that are rendered on the server. See the "
-                a { href: "web/../fullstack", "fullstack" }
+                a { href: "../fullstack", "fullstack" }
                 " reference for more information."
             }
         }
@@ -8003,7 +8001,7 @@ pub fn RouterIndex() -> dioxus::prelude::Element {
         blockquote {
             p {
                 "If you are not familiar with Dioxus itself, check out the "
-                a { href: "router/../guide", "Dioxus guide" }
+                a { href: "../guide", "Dioxus guide" }
                 " first."
             }
         }
@@ -8020,7 +8018,7 @@ pub fn RouterIndex() -> dioxus::prelude::Element {
             "Then, add this to your  "
             code { "Dioxus.toml" }
             " (learn more about configuration "
-            a { href: "router/../CLI/configure", "here" }
+            a { href: "../CLI/configure", "here" }
             "):"
         }
         CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">[web.watcher]\n</span><span style=\"color:#f8f8f2;\">index_on_404 </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ff80f4;\">true</span></pre>\n" }
@@ -8050,13 +8048,13 @@ pub fn RouterIndex() -> dioxus::prelude::Element {
         ol {
             li {
                 "The "
-                a { href: "router/reference", "reference" }
+                a { href: "reference", "reference" }
                 " section explains individual features in "
             }
             li {
                 "If you prefer a learning-by-doing approach, you can check out the "
                 em {
-                    a { href: "router/example", "example project" }
+                    a { href: "example", "example project" }
                 }
                 ". It guides you through "
             }
@@ -8088,7 +8086,7 @@ pub fn RouterExampleIndex() -> dioxus::prelude::Element {
         blockquote {
             p {
                 "Make sure to add Dioxus Router as a dependency, as explained in the"
-                a { href: "example/..", "introduction" }
+                a { href: "..", "introduction" }
                 "."
             }
         }
@@ -8109,7 +8107,7 @@ pub fn RouterExampleIndex() -> dioxus::prelude::Element {
         }
         p {
             "You can find the complete application in the "
-            a { href: "example/full-code", "full code" }
+            a { href: "full-code", "full code" }
             " chapter."
         }
     }
@@ -8511,7 +8509,7 @@ pub fn RouterReferenceIndex() -> dioxus::prelude::Element {
                 "Make sure you added the  "
                 code { "dioxus-router" }
                 " dependency as explained in the"
-                a { href: "reference/..", "introduction" }
+                a { href: "..", "introduction" }
                 "."
             }
         }
@@ -8557,19 +8555,19 @@ pub fn RouterReferenceRoutesIndex() -> dioxus::prelude::Element {
         p { "There are four fundamental types of segments:" }
         ol {
             li {
-                a { href: "routes/#static-segments", "Static segments" }
+                a { href: "#static-segments", "Static segments" }
                 " are fixed strings that must be present in the path."
             }
             li {
-                a { href: "routes/#dynamic-segments", "Dynamic segments" }
+                a { href: "#dynamic-segments", "Dynamic segments" }
                 " are types that can be parsed from a segment."
             }
             li {
-                a { href: "routes/#catch-all-segments", "Catch-all segments" }
+                a { href: "#catch-all-segments", "Catch-all segments" }
                 " are types that can be parsed from multiple segments."
             }
             li {
-                a { href: "routes/#query-segments", "Query segments" }
+                a { href: "#query-segments", "Query segments" }
                 " are types that can be parsed from the query string."
             }
         }
@@ -8655,9 +8653,9 @@ pub fn RouterReferenceRoutesIndex() -> dioxus::prelude::Element {
         }
         p {
             "Unlike "
-            a { href: "routes/#dynamic-segments", "Dynamic Segments" }
+            a { href: "#dynamic-segments", "Dynamic Segments" }
             " and "
-            a { href: "routes/#catch-all-segments", "Catch All Segments" }
+            a { href: "#catch-all-segments", "Catch All Segments" }
             ", parsing a Query segment must not fail."
         }
         p {
@@ -9097,47 +9095,47 @@ pub fn CookbookIndex() -> dioxus::prelude::Element {
         p { "There are a few different sections in the cookbook:" }
         ul {
             li {
-                a { href: "cookbook/publishing", "Publishing" }
+                a { href: "publishing", "Publishing" }
                 " will teach you how to present your app in a variety of delicious forms."
             }
             li {
                 "Explore the "
-                a { href: "cookbook/antipatterns", "Anti-patterns" }
+                a { href: "antipatterns", "Anti-patterns" }
                 " section to discover what ingredients to avoid when preparing your application."
             }
             li {
                 "Within "
-                a { href: "cookbook/error_handling", "Error Handling" }
+                a { href: "error_handling", "Error Handling" }
                 ", we'll master the fine art of managing spoiled ingredients in Dioxus."
             }
             li {
                 "Take a culinary journey through "
-                a { href: "cookbook/state", "State management" }
+                a { href: "state", "State management" }
                 ", where we'll explore the world of handling local, global, and external state in Dioxus."
             }
             li {
-                a { href: "cookbook/integrations", "Integrations" }
+                a { href: "integrations", "Integrations" }
                 " will guide you how to seamlessly blend external libraries into your Dioxus culinary creations."
             }
             li {
-                a { href: "cookbook/testing", "Testing" }
+                a { href: "testing", "Testing" }
                 " explains how to examine the unique flavor of Dioxus-specific features, like components."
             }
             li {
-                a { href: "cookbook/examples", "Examples" }
+                a { href: "examples", "Examples" }
                 " is a curated list of delightful recipes that demonstrate the various ways of using Dioxus ingredients."
             }
             li {
-                a { href: "cookbook/tailwind", "Tailwind" }
+                a { href: "tailwind", "Tailwind" }
                 " reveals the secrets of combining your Tailwind and Dioxus ingredients into a complete meal. You will also learn about using other NPM ingredients (packages) with Dioxus."
             }
             li {
                 "In the "
-                a { href: "cookbook/custom_renderer", "Custom Renderer" }
+                a { href: "custom_renderer", "Custom Renderer" }
                 " section, we embark on a cooking adventure, inventing new ways to cook with Dioxus!"
             }
             li {
-                a { href: "cookbook/optimizing", "Optimizing" }
+                a { href: "optimizing", "Optimizing" }
                 " will show you how to maximize the quality of your ingredients."
             }
         }
@@ -9601,10 +9599,10 @@ pub fn CookbookIntegrationsIndex() -> dioxus::prelude::Element {
         }
         ul {
             li {
-                a { href: "integrations/./logging", "Logging" }
+                a { href: "./logging", "Logging" }
             }
             li {
-                a { href: "integrations/./internationalization", "Internationalization" }
+                a { href: "./internationalization", "Internationalization" }
             }
         }
     }
@@ -9843,10 +9841,10 @@ pub fn CookbookStateIndex() -> dioxus::prelude::Element {
         }
         ul {
             li {
-                a { href: "state/external", "External State" }
+                a { href: "external", "External State" }
             }
             li {
-                a { href: "state/custom_hooks", "Custom Hook" }
+                a { href: "custom_hooks", "Custom Hook" }
             }
         }
     }
@@ -9869,7 +9867,7 @@ pub fn CookbookStateExternalIndex() -> dioxus::prelude::Element {
             }
         }
         p {
-            a { href: "external/../../reference/use_coroutine", "Coroutines" }
+            a { href: "../../reference/use_coroutine", "Coroutines" }
             " are great tool for dealing with non-reactive (state you don't render directly) state within your application."
         }
         p {
@@ -11295,7 +11293,7 @@ pub fn ContributingIndex() -> dioxus::prelude::Element {
             "If you've fixed "
             a { href: "https://github.com/DioxusLabs/dioxus/issues", "an open issue" }
             ", feel free to submit a PR! You can also take a look at "
-            a { href: "contributing/./roadmap", "the roadmap" }
+            a { href: "./roadmap", "the roadmap" }
             " and work on something in there. Consider "
             a { href: "https://discord.gg/XgGxMSkvUM", "reaching out" }
             " to the team first to make sure everyone's on the same page, and you don't do useless work!"
@@ -12116,7 +12114,7 @@ pub fn MigrationIndex() -> dioxus::prelude::Element {
         }
         p {
             "You can read more about the new props API in the "
-            a { href: "migration/props", "Props Migration" }
+            a { href: "props", "Props Migration" }
             " guide."
         }
         h3 { id: "futures",
@@ -12133,7 +12131,7 @@ pub fn MigrationIndex() -> dioxus::prelude::Element {
             "Read more about the  "
             code { "use_resource" }
             " hook in the "
-            a { href: "migration/hooks", "Hook Migration" }
+            a { href: "hooks", "Hook Migration" }
             " guide."
         }
         h3 { id: "state-hooks",
@@ -12152,7 +12150,7 @@ pub fn MigrationIndex() -> dioxus::prelude::Element {
             "Read more about the  "
             code { "use_signal" }
             " hook in the "
-            a { href: "migration/state", "State Migration" }
+            a { href: "state", "State Migration" }
             " guide."
         }
         h3 { id: "fermi",
@@ -12169,7 +12167,7 @@ pub fn MigrationIndex() -> dioxus::prelude::Element {
         }
         p {
             "You can read more about global signals in the "
-            a { href: "migration/fermi", "Fermi migration guide" }
+            a { href: "fermi", "Fermi migration guide" }
             "."
         }
     }

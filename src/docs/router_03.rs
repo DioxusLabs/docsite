@@ -12,7 +12,7 @@
 pub enum BookRoute {
     #[route("/")]
     Index {},
-    #[route("/getting_started")]
+    #[route("/getting_started/")]
     GettingStartedIndex {},
     #[route("/getting_started/desktop")]
     GettingStartedDesktop {},
@@ -28,7 +28,7 @@ pub enum BookRoute {
     GettingStartedTui {},
     #[route("/getting_started/mobile")]
     GettingStartedMobile {},
-    #[route("/describing_ui")]
+    #[route("/describing_ui/")]
     DescribingUiIndex {},
     #[route("/describing_ui/special_attributes")]
     DescribingUiSpecialAttributes {},
@@ -38,7 +38,7 @@ pub enum BookRoute {
     DescribingUiComponentProps {},
     #[route("/describing_ui/component_children")]
     DescribingUiComponentChildren {},
-    #[route("/interactivity")]
+    #[route("/interactivity/")]
     InteractivityIndex {},
     #[route("/interactivity/event_handlers")]
     InteractivityEventHandlers {},
@@ -54,7 +54,7 @@ pub enum BookRoute {
     InteractivityDynamicRendering {},
     #[route("/interactivity/router")]
     InteractivityRouter {},
-    #[route("/async")]
+    #[route("/async/")]
     AsyncIndex {},
     #[route("/async/use_future")]
     AsyncUseFuture {},
@@ -62,19 +62,19 @@ pub enum BookRoute {
     AsyncUseCoroutine {},
     #[route("/async/spawn")]
     AsyncSpawn {},
-    #[route("/best_practices")]
+    #[route("/best_practices/")]
     BestPracticesIndex {},
     #[route("/best_practices/error_handling")]
     BestPracticesErrorHandling {},
     #[route("/best_practices/antipatterns")]
     BestPracticesAntipatterns {},
-    #[route("/publishing")]
+    #[route("/publishing/")]
     PublishingIndex {},
     #[route("/publishing/desktop")]
     PublishingDesktop {},
     #[route("/publishing/web")]
     PublishingWeb {},
-    #[route("/custom_renderer")]
+    #[route("/custom_renderer/")]
     CustomRendererIndex {},
     #[route("/roadmap")]
     Roadmap {},
@@ -1945,27 +1945,27 @@ pub fn GettingStartedIndex() -> dioxus::prelude::Element {
         }
         ul {
             li {
-                a { href: "getting_started/web", "Web" }
+                a { href: "web", "Web" }
                 ": runs in the browser through WebAssembly"
             }
             li {
-                a { href: "getting_started/ssr", "Server Side Rendering" }
+                a { href: "ssr", "Server Side Rendering" }
                 ": renders to HTML text on the server"
             }
             li {
-                a { href: "getting_started/liveview", "Liveview" }
+                a { href: "liveview", "Liveview" }
                 ": runs on the server, renders in the browser using WebSockets"
             }
             li {
-                a { href: "getting_started/desktop", "Desktop" }
+                a { href: "desktop", "Desktop" }
                 ": runs in a web view on desktop"
             }
             li {
-                a { href: "getting_started/mobile", "Mobile" }
+                a { href: "mobile", "Mobile" }
                 ": runs in a web view on mobile"
             }
             li {
-                a { href: "getting_started/tui", "Terminal UI" }
+                a { href: "tui", "Terminal UI" }
                 ": renders text-based graphics in the terminal"
             }
         }
@@ -2599,7 +2599,7 @@ pub fn DescribingUiIndex() -> dioxus::prelude::Element {
         }
         p {
             "Attributes (and "
-            a { href: "describing_ui/../interactivity", "listeners" }
+            a { href: "../interactivity", "listeners" }
             ") modify the behavior or appearance of the element they are attached to. They are specified inside the "
             code { "{{}}" }
             " brackets, using the "
@@ -2672,7 +2672,7 @@ pub fn DescribingUiIndex() -> dioxus::prelude::Element {
             "To add children to an element, put them inside the  "
             code { "{{}}" }
             " brackets after all attributes and listeners in the element. They can be other elements, text, or "
-            a { href: "describing_ui/components", "components" }
+            a { href: "components", "components" }
             ". For example, you could have an "
             code { "ol" }
             " (ordered list) element, containing 3 "

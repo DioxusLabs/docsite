@@ -149,17 +149,14 @@ It's so unliklely anyone is copying text on mobile that we can just hide it
 }
 
 .dioxus-blog-post img, .centered-overflow {
-  max-height: 800px;
-  max-width: min(1200px, 95vw);
+  max-height: 700px;
+  max-width: 100%;
+  /* max-width: min(1200px, 95vw); */
   width: auto;
   margin-left: 50%;
   transform: translateX(-50%);
-  padding-bottom: 1rem;
-  /* max-height: 500px;
-  margin-left: auto;
-  margin-right: auto;
-  padding-left: 4px;
-  padding-right: 4px; */
+  margin-bottom: 1rem;
+  border-radius: 6px;
 }
 
 .highlight pre,

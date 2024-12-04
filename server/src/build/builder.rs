@@ -1,8 +1,9 @@
 use super::watcher::BuildRequest;
+use super::BuildError;
 use crate::build::{BuildMessage, CliMessage};
 use dioxus_dx_wire_format::StructuredOutput;
 use fs_extra::dir::CopyOptions;
-use model::BuildStage;
+use model::{BuildStage, CargoDiagnostic};
 use std::path::{Path, PathBuf};
 use std::process::Stdio;
 use std::sync::atomic::{AtomicBool, Ordering};
@@ -23,7 +24,7 @@ pub struct Builder {
     template_path: PathBuf,
     is_building: Arc<AtomicBool>,
     current_build: Option<BuildRequest>,
-    task: JoinHandle<()>,
+    task: JoinHandle<Result<(), BuildError>>,
 }
 
 impl Builder {
@@ -53,11 +54,17 @@ impl Builder {
     }
 
     /// Wait for the current build to finish.
-    pub async fn finished(&mut self) {
+    pub async fn finished(&mut self) -> Result<BuildRequest, BuildError> {
+        // Ensure we don't poll a completed task.
+        if self.task.is_finished() {
+            self.stop_current();
+        }
+
+        // Make progress on the build task.
         let task = &mut self.task;
-        task.await.unwrap();
-        self.task = tokio::spawn(std::future::pending());
-        self.current_build = None;
+        task.await??;
+
+        self.current_build.take().ok_or(BuildError::NotStarted)
     }
 
     /// Check if the builder has an ongoing build.
@@ -72,14 +79,15 @@ impl Builder {
 }
 
 /// Run the steps to produce a build for a [`BuildRequest`]
-async fn build(template_path: PathBuf, request: BuildRequest) {
-    setup_template(&template_path, &request).await;
-    dx_build(&template_path, &request).await;
-    move_to_built(&template_path, &request).await;
+async fn build(template_path: PathBuf, request: BuildRequest) -> Result<(), BuildError> {
+    setup_template(&template_path, &request).await?;
+    dx_build(&template_path, &request).await?;
+    move_to_built(&template_path, &request).await?;
+    Ok(())
 }
 
 /// Resets the template with values for the next build.
-async fn setup_template(template_path: &Path, request: &BuildRequest) {
+async fn setup_template(template_path: &Path, request: &BuildRequest) -> Result<(), BuildError> {
     let snippets_from_copy = [
         template_path.join("snippets/main.rs"),
         template_path.join("snippets/Cargo.toml"),
@@ -96,19 +104,21 @@ async fn setup_template(template_path: &Path, request: &BuildRequest) {
     // Enumerate over a list of paths to copy and copies them to the new location while modifying any template strings.
     for (i, path) in snippets_from_copy.iter().enumerate() {
         let new_path = &snippets_to_copy[i];
-        let contents = fs::read_to_string(path).await.unwrap();
+        let contents = fs::read_to_string(path).await?;
 
         let contents = contents
             .replace(USER_CODE_ID, &request.code)
             .replace(BUILD_ID_ID, &request.id.to_string());
 
-        fs::write(new_path, contents).await.unwrap();
+        fs::write(new_path, contents).await?;
     }
+
+    Ok(())
 }
 
 /// Run the build command provided by the DX CLI.
 /// Returns if DX built the project successfully.
-async fn dx_build(template_path: &PathBuf, request: &BuildRequest) -> bool {
+async fn dx_build(template_path: &PathBuf, request: &BuildRequest) -> Result<(), BuildError> {
     let mut child = Command::new("dx")
         .arg("build")
         .arg("--platform")
@@ -119,10 +129,9 @@ async fn dx_build(template_path: &PathBuf, request: &BuildRequest) -> bool {
         .current_dir(template_path)
         .stdout(Stdio::piped())
         .stderr(Stdio::piped())
-        .spawn()
-        .unwrap();
+        .spawn()?;
 
-    let stdout = child.stdout.take().unwrap();
+    let stdout = child.stdout.take().expect("dx stdout should exist");
     let mut stdout_reader = BufReader::new(stdout).lines();
 
     loop {
@@ -132,42 +141,57 @@ async fn dx_build(template_path: &PathBuf, request: &BuildRequest) -> bool {
                     continue;
                 };
 
-                println!("{:?}", line);
-
-                let cli_message = serde_json::from_str::<CliMessage>(&line).unwrap();
-                let Some(json) = cli_message.json else {
-                    continue;
-                };
-
-                let cli_message = serde_json::from_str::<StructuredOutput>(&json).unwrap();
-
-                match cli_message {
-                    StructuredOutput::BuildUpdate { stage } => {
-                        let stage = BuildStage::from(stage);
-                        let _ = request.ws_msg_tx.send(BuildMessage::Building(stage));
-                    }
-                    _ => {}
-                }
-
+                process_dx_message(request, line);
             }
             status = child.wait() => {
-                println!("DX EXITED WTIH: {:?}", status);
-
                 // Check if the build was successful.
                 let exit_code = status.map(|c| c.code());
                 if let Ok(Some(code)) = exit_code {
                     if code == 0 {
-                        break true;
+                        break;
+                    } else {
+                        return Err(BuildError::DxFailed(Some(code)));
                     }
                 }
-                break false;
+                return Err(BuildError::DxFailed(None));
             }
         }
     }
+
+    Ok(())
+}
+
+/// Process a JSON-formatted message from the DX CLI, returning nothing on error.
+///
+/// We don't care if this errors as it is human-readable output which the playground doesn't depend on for build status.
+fn process_dx_message(request: &BuildRequest, message: String) {
+    // We parse the tracing json log and if it contains a json field, we parse that as StructuredOutput.
+    let result = serde_json::from_str::<CliMessage>(&message)
+        .ok()
+        .and_then(|v| v.json)
+        .and_then(|json| serde_json::from_str::<StructuredOutput>(&json).ok());
+
+    let Some(output) = result else {
+        return;
+    };
+
+    let _ = match output {
+        StructuredOutput::BuildUpdate { stage } => {
+            let stage = BuildStage::from(stage);
+            request.ws_msg_tx.send(BuildMessage::Building(stage))
+        }
+        StructuredOutput::CargoOutput { message } => {
+            let Ok(diagnostic) = CargoDiagnostic::try_from(message) else {
+                return;
+            };
+            request.ws_msg_tx.send(BuildMessage::CargoDiagnostic(diagnostic))
+        }
+        _ => Ok(()),
+    };
 }
 
 /// Moves the project built by `dx` to the final location for serving.
-async fn move_to_built(template_path: &Path, request: &BuildRequest) {
+async fn move_to_built(template_path: &Path, request: &BuildRequest) -> Result<(), BuildError> {
     let id_string = request.id.to_string();
 
     // The path to the built project from DX
@@ -184,16 +208,18 @@ async fn move_to_built(template_path: &Path, request: &BuildRequest) {
     // Move the built project to the built projects folder to be served.
     // Delete the built project in the target directory to prevent a storage leak.
     // We use `spawn_blocking` to batch call `std::fs` as recommended by Tokio.
-    tokio::task::spawn_blocking(move || {
+    tokio::task::spawn_blocking::<_, Result<(), BuildError>>(move || {
         // Rename to be the build id
         let built_project = debug_web.join(&id_string);
-        std::fs::rename(&public_folder, &built_project).unwrap();
+        std::fs::rename(&public_folder, &built_project)?;
 
         // Copy to the built project folder for serving.
         let options = CopyOptions::new().overwrite(true);
-        fs_extra::dir::move_dir(&built_project, &built_path, &options).unwrap();
-        std::fs::remove_dir_all(&built_project_parent).unwrap();
+        fs_extra::dir::move_dir(&built_project, &built_path, &options)?;
+        std::fs::remove_dir_all(&built_project_parent)?;
+        Ok(())
     })
-    .await
-    .unwrap();
+    .await??;
+
+    Ok(())
 }

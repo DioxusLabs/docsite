@@ -60,7 +60,6 @@ async fn handle_socket(state: AppState, socket: WebSocket) {
             }
             // Handle sending build messages to client and closing the socket when finished.
             Some(build_msg) = build_rx.recv() => {
-                println!("GOT BUILD MSG WS");
                 let socket_msg = SocketMessage::from(build_msg.clone());
                 let _ = socket_tx.send(Message::Text(socket_msg.as_json_string().unwrap())).await;
 
@@ -74,8 +73,6 @@ async fn handle_socket(state: AppState, socket: WebSocket) {
             else => break,
         }
     }
-
-    println!("closing socket");
 
     // The socket has closed for some reason. Make sure we cancel any active builds.
     if let Some(request) = current_build {
@@ -118,6 +115,7 @@ impl From<BuildMessage> for SocketMessage {
             BuildMessage::Building(stage) => Self::BuildStage(stage),
             BuildMessage::Finished(result) => Self::BuildFinished(result),
             BuildMessage::QueuePosition(i) => Self::QueuePosition(i),
+            BuildMessage::CargoDiagnostic(diagnostic) => Self::BuildDiagnostic(diagnostic),
         }
     }
 }

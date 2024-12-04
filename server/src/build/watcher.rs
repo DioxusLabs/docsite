@@ -97,7 +97,18 @@ pub async fn start_build_watcher(
                 }
 
                 // The current build finished.
-                _ = builder.finished() => {
+                result = builder.finished() => {
+                    // Tell the socket the result of their build.
+                    let _ = match result {
+                        Ok(request) => request.ws_msg_tx.send(BuildMessage::Finished(Ok(request.id))),
+                        Err(e) => {
+                            match builder.current_build() {
+                                Some(request) => request.ws_msg_tx.send(BuildMessage::Finished(Err(e.to_string()))),
+                                None => Ok(()),
+                            }
+                        }
+                    };
+
                     let next_request = pending_builds.pop_front();
                     if let Some(request) = next_request {
                         builder.start(request);

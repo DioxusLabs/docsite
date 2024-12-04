@@ -122,6 +122,7 @@ async fn main() {
             "/",
             get(|| async { Redirect::permanent("https://dioxuslabs.com/play") }),
         )
+        .route("/health", get(|| async { StatusCode::OK }))
         .layer(
             ServiceBuilder::new()
                 .layer(HandleErrorLayer::new(|err: BoxError| async move {

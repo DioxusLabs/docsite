@@ -1,4 +1,4 @@
-<!-- # Assets
+# Assets
 
 > ⚠️ Support: Manganis is currently in alpha. API changes are planned and bugs are more likely
 
@@ -44,7 +44,7 @@ You can include stylesheets in your application using the `mg!` macro. For examp
 {{#include src/doc_examples/untested_05/assets.rs:style_sheets}}
 ```
 
-> The [tailwind guide](../cookbook/tailwind.md) has more information on how to use tailwind with dioxus. -->
+> The [tailwind guide](../cookbook/tailwind.md) has more information on how to use tailwind with dioxus.
 
 ## Conclusion
 

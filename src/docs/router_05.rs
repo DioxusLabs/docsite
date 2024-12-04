@@ -1161,11 +1161,33 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                 title: "Assets".to_string(),
                 url: BookRoute::ReferenceAssets {},
                 segments: vec![],
-                sections: vec![::use_mdbook::mdbook_shared::Section {
-                    title: "Conclusion".to_string(),
-                    id: "conclusion".to_string(),
-                    level: 2usize,
-                }],
+                sections: vec![
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Assets".to_string(),
+                        id: "assets".to_string(),
+                        level: 1usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Including images".to_string(),
+                        id: "including-images".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Including arbitrary files".to_string(),
+                        id: "including-arbitrary-files".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Including stylesheets".to_string(),
+                        id: "including-stylesheets".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Conclusion".to_string(),
+                        id: "conclusion".to_string(),
+                        level: 2usize,
+                    },
+                ],
                 raw: String::new(),
                 id: ::use_mdbook::mdbook_shared::PageId(20usize),
             }
@@ -6739,109 +6761,82 @@ pub fn ReferenceSpawn() -> dioxus::prelude::Element {
 pub fn ReferenceAssets() -> dioxus::prelude::Element {
     use dioxus::prelude::*;
     rsx! {
-        p {
-            class: "inline-html-block",
-            dangerous_inner_html: "<!-- # Assets\n",
+        h1 { id: "assets",
+            a { href: "#assets", class: "header", "Assets" }
         }
-        p { class: "inline-html-block", dangerous_inner_html: "\n" }
-        p {
-            class: "inline-html-block",
-            dangerous_inner_html: "> ⚠\u{fe0f} Support: Manganis is currently in alpha. API changes are planned and bugs are more likely\n",
+        blockquote {
+            p {
+                "⚠\u{fe0f} Support: Manganis is currently in alpha. API changes are planned and bugs are more likely"
+            }
         }
-        p { class: "inline-html-block", dangerous_inner_html: "\n" }
         p {
-            class: "inline-html-block",
-            dangerous_inner_html: "Assets are files that are included in the final build of the application. They can be images, fonts, stylesheets, or any other file that is not a source file. Dioxus includes first class support for assets, and provides a simple way to include them in your application and automatically optimize them for production.\n",
+            "Assets are files that are included in the final build of the application. They can be images, fonts, stylesheets, or any other file that is not a source file. Dioxus includes first class support for assets, and provides a simple way to include them in your application and automatically optimize them for production."
         }
-        p { class: "inline-html-block", dangerous_inner_html: "\n" }
         p {
-            class: "inline-html-block",
-            dangerous_inner_html: "Assets in dioxus are also compatible with libraries! If you are building a library, you can include assets in your library and they will be automatically included in the final build of any application that uses your library.\n",
+            "Assets in dioxus are also compatible with libraries! If you are building a library, you can include assets in your library and they will be automatically included in the final build of any application that uses your library."
         }
-        p { class: "inline-html-block", dangerous_inner_html: "\n" }
         p {
-            class: "inline-html-block",
-            dangerous_inner_html: "First, you need to add the `manganis` crate to your `Cargo.toml` file:\n",
+            "First, you need to add the  "
+            code { "manganis" }
+            " crate to your  "
+            code { "Cargo.toml" }
+            " file:"
         }
-        p { class: "inline-html-block", dangerous_inner_html: "\n" }
-        p { class: "inline-html-block", dangerous_inner_html: "```sh\n" }
-        p {
-            class: "inline-html-block",
-            dangerous_inner_html: "cargo add manganis\n",
+        CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">cargo add manganis</span></pre>\n" }
+        h2 { id: "including-images",
+            a { href: "#including-images", class: "header", "Including images" }
         }
-        p { class: "inline-html-block", dangerous_inner_html: "```\n" }
-        p { class: "inline-html-block", dangerous_inner_html: "\n" }
         p {
-            class: "inline-html-block",
-            dangerous_inner_html: "## Including images\n",
+            "To include an asset in your application, you can simply wrap the path to the asset in a  "
+            code { "mg!" }
+            " call. For example, to include an image in your application, you can use the following code:"
         }
-        p { class: "inline-html-block", dangerous_inner_html: "\n" }
-        p {
-            class: "inline-html-block",
-            dangerous_inner_html: "To include an asset in your application, you can simply wrap the path to the asset in a `mg!` call. For example, to include an image in your application, you can use the following code:\n",
+        CodeBlock {
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f92672;\">use </span><span style=\"color:#f8f8f2;\">dioxus::prelude::</span><span style=\"color:#f92672;\">*</span><span style=\"color:#f8f8f2;\">;\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">App</span><span style=\"color:#f8f8f2;\">() -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#8c8c8c;\">// You can link to assets that are relative to the package root or even link to an asset from a url\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#8c8c8c;\">// These assets will automatically be picked up by the dioxus cli, optimized, and bundled with your final applications\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">const </span><span style=\"color:#ff80f4;\">ASSET</span><span style=\"color:#f8f8f2;\">: Asset </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">asset!(</span><span style=\"color:#ffee99;\">&quot;/assets/static/ferrous_wave.png&quot;</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">    rsx! {{\n</span><span style=\"color:#f8f8f2;\">        img {{ src: </span><span style=\"color:#ffee99;\">&quot;{{ASSET}}&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
+            name: "assets.rs".to_string(),
         }
-        p { class: "inline-html-block", dangerous_inner_html: "\n" }
-        p { class: "inline-html-block", dangerous_inner_html: "```rust\n" }
         p {
-            class: "inline-html-block",
-            dangerous_inner_html: "{{{{#include src/doc_examples/untested_05/assets.rs:images}}}}\n",
+            "You can also optimize, resize, and preload images using the  "
+            code { "mg!" }
+            " macro. Choosing an optimized file type (like WebP) and a reasonable quality setting can significantly reduce the size of your images which helps your application load faster. For example, you can use the following code to include an optimized image in your application:"
         }
-        p { class: "inline-html-block", dangerous_inner_html: "```\n" }
-        p { class: "inline-html-block", dangerous_inner_html: "\n" }
-        p {
-            class: "inline-html-block",
-            dangerous_inner_html: "You can also optimize, resize, and preload images using the `mg!` macro. Choosing an optimized file type (like WebP) and a reasonable quality setting can significantly reduce the size of your images which helps your application load faster. For example, you can use the following code to include an optimized image in your application:\n",
+        CodeBlock {
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f92672;\">pub </span><span style=\"font-style:italic;color:#66d9ef;\">const </span><span style=\"color:#ff80f4;\">ENUM_ROUTER_IMG</span><span style=\"color:#f8f8f2;\">: Asset </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">asset!(</span><span style=\"color:#ffee99;\">&quot;/assets/static/enum_router.png&quot;</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">EnumRouter</span><span style=\"color:#f8f8f2;\">() -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    rsx! {{\n</span><span style=\"color:#f8f8f2;\">        img {{ src: </span><span style=\"color:#ffee99;\">&quot;{{ENUM_ROUTER_IMG}}&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
+            name: "assets.rs".to_string(),
         }
-        p { class: "inline-html-block", dangerous_inner_html: "\n" }
-        p { class: "inline-html-block", dangerous_inner_html: "```rust\n" }
-        p {
-            class: "inline-html-block",
-            dangerous_inner_html: "{{{{#include src/doc_examples/untested_05/assets.rs:optimized_images}}}}\n",
+        h2 { id: "including-arbitrary-files",
+            a { href: "#including-arbitrary-files", class: "header", "Including arbitrary files" }
         }
-        p { class: "inline-html-block", dangerous_inner_html: "```\n" }
-        p { class: "inline-html-block", dangerous_inner_html: "\n" }
         p {
-            class: "inline-html-block",
-            dangerous_inner_html: "## Including arbitrary files\n",
+            "In dioxus desktop, you may want to include a file with data for your application. You can use the  "
+            code { "file" }
+            " function to include arbitrary files in your application. For example, you can use the following code to include a file in your application:"
         }
-        p { class: "inline-html-block", dangerous_inner_html: "\n" }
-        p {
-            class: "inline-html-block",
-            dangerous_inner_html: "In dioxus desktop, you may want to include a file with data for your application. You can use the `file` function to include arbitrary files in your application. For example, you can use the following code to include a file in your application:\n",
+        CodeBlock {
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#8c8c8c;\">// You can also collect arbitrary files. Relative paths are resolved relative to the package root\n</span><span style=\"font-style:italic;color:#66d9ef;\">const </span><span style=\"color:#ff80f4;\">PATH_TO_BUNDLED_CARGO_TOML</span><span style=\"color:#f8f8f2;\">: </span><span style=\"color:#f92672;\">&amp;</span><span style=\"font-style:italic;color:#66d9ef;\">str </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">manganis::mg</span><span style=\"color:#f92672;\">!</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#66d9ef;\">file</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#ffee99;\">&quot;./Cargo.toml&quot;</span><span style=\"color:#f8f8f2;\">));</span></pre>\n",
+            name: "assets.rs".to_string(),
         }
-        p { class: "inline-html-block", dangerous_inner_html: "\n" }
-        p { class: "inline-html-block", dangerous_inner_html: "```rust\n" }
         p {
-            class: "inline-html-block",
-            dangerous_inner_html: "{{{{#include src/doc_examples/untested_05/assets.rs:arbitrary_files}}}}\n",
+            "These files will be automatically included in the final build of your application, and you can use them in your application as you would any other file."
         }
-        p { class: "inline-html-block", dangerous_inner_html: "```\n" }
-        p { class: "inline-html-block", dangerous_inner_html: "\n" }
-        p {
-            class: "inline-html-block",
-            dangerous_inner_html: "These files will be automatically included in the final build of your application, and you can use them in your application as you would any other file.\n",
+        h2 { id: "including-stylesheets",
+            a { href: "#including-stylesheets", class: "header", "Including stylesheets" }
         }
-        p { class: "inline-html-block", dangerous_inner_html: "\n" }
         p {
-            class: "inline-html-block",
-            dangerous_inner_html: "## Including stylesheets\n",
+            "You can include stylesheets in your application using the  "
+            code { "mg!" }
+            " macro. For example, you can use the following code to include a stylesheet in your application:"
         }
-        p { class: "inline-html-block", dangerous_inner_html: "\n" }
-        p {
-            class: "inline-html-block",
-            dangerous_inner_html: "You can include stylesheets in your application using the `mg!` macro. For example, you can use the following code to include a stylesheet in your application:\n",
+        CodeBlock {
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#8c8c8c;\">// You can also bundle stylesheets with your application\n</span><span style=\"color:#8c8c8c;\">// Any files that end with .css will be minified and bundled with your application even if you don&#39;t explicitly include them in your &lt;head&gt;\n</span><span style=\"font-style:italic;color:#66d9ef;\">const </span><span style=\"color:#f92672;\">_</span><span style=\"color:#f8f8f2;\">: </span><span style=\"color:#f92672;\">&amp;</span><span style=\"font-style:italic;color:#66d9ef;\">str </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">manganis::mg</span><span style=\"color:#f92672;\">!</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#66d9ef;\">file</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#ffee99;\">&quot;./tailwind.css&quot;</span><span style=\"color:#f8f8f2;\">));</span></pre>\n",
+            name: "assets.rs".to_string(),
         }
-        p { class: "inline-html-block", dangerous_inner_html: "\n" }
-        p { class: "inline-html-block", dangerous_inner_html: "```rust\n" }
-        p {
-            class: "inline-html-block",
-            dangerous_inner_html: "{{{{#include src/doc_examples/untested_05/assets.rs:style_sheets}}}}\n",
-        }
-        p { class: "inline-html-block", dangerous_inner_html: "```\n" }
-        p { class: "inline-html-block", dangerous_inner_html: "\n" }
-        p {
-            class: "inline-html-block",
-            dangerous_inner_html: "> The [tailwind guide](../cookbook/tailwind.md) has more information on how to use tailwind with dioxus. -->\n",
+        blockquote {
+            p {
+                "The "
+                a { href: "../cookbook/tailwind", "tailwind guide" }
+                " has more information on how to use tailwind with dioxus."
+            }
         }
         h2 { id: "conclusion",
             a { href: "#conclusion", class: "header", "Conclusion" }
@@ -7741,10 +7736,12 @@ pub fn ReferenceFullstackServerFunctions() -> dioxus::prelude::Element {
                 " with an error type of ServerFnError"
             }
         }
-        p {
-            "You must call  "
-            code { "register" }
-            " on the type you passed into the server macro in your main function before starting your server to tell Dioxus about the server function."
+        blockquote {
+            p {
+                "If you are targeting WASM on the server with WASI, you must call  "
+                code { "register" }
+                " on the type you passed into the server macro in your main function before starting your server to tell Dioxus about the server function. For all other targets, the server function will be registered automatically."
+            }
         }
         p {
             "Let's continue building on the app we made in the "

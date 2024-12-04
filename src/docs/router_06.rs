@@ -6598,10 +6598,12 @@ pub fn ReferenceFullstackServerFunctions() -> dioxus::prelude::Element {
                 " with an error type of ServerFnError"
             }
         }
-        p {
-            "You must call  "
-            code { "register" }
-            " on the type you passed into the server macro in your main function before starting your server to tell Dioxus about the server function."
+        blockquote {
+            p {
+                "If you are targeting WASM on the server with WASI, you must call  "
+                code { "register" }
+                " on the type you passed into the server macro in your main function before starting your server to tell Dioxus about the server function. For all other targets, the server function will be registered automatically."
+            }
         }
         p {
             "Let's continue building on the app we made in the "

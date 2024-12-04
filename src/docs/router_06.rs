@@ -2135,7 +2135,7 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
         );
         pages.push((54usize, {
             ::use_mdbook::mdbook_shared::Page {
-                title: "Migration for 0.6".to_string(),
+                title: "Migrating to v0.6".to_string(),
                 url: BookRoute::MigrationIndex {},
                 segments: vec![],
                 sections: vec![
@@ -2855,7 +2855,7 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                                 nested_items: vec![],
                             }),
                             ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
-                                name: "Migration for 0.6".to_string(),
+                                name: "Migrating to v0.6".to_string(),
                                 location: Some(BookRoute::MigrationIndex {}),
                                 number: Some(
                                     ::use_mdbook::mdbook_shared::SectionNumber(

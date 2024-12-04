@@ -88,7 +88,7 @@
   - [Examples](cookbook/examples.md)
   - [Tailwind](cookbook/tailwind.md)
   - [Optimizing](cookbook/optimizing.md)
-  - [Migration for 0.6](migration/index.md)
+  - [Migrating to v0.6](migration/index.md)
 
   <!-- - [Static Generation](router/reference/static-generation.md) -->
 	<!-- - [CLI in Depth](router/reference/cli-in-depth.md)

@@ -7,7 +7,7 @@
     Hash,
     Debug,
     serde::Serialize,
-    serde::Deserialize
+    serde::Deserialize,
 )]
 pub enum BookRoute {
     #[route("/")]
@@ -128,68 +128,42 @@ pub enum BookRoute {
     ContributingRoadmap {},
 }
 impl BookRoute {
-    pub fn sections(&self) -> &[use_mdbook::mdbook_shared::Section] {
+    pub fn sections(&self) -> &'static [use_mdbook::mdbook_shared::Section] {
         &self.page().sections
     }
-    pub fn page(&self) -> &use_mdbook::mdbook_shared::Page<Self> {
+    pub fn page(&self) -> &'static use_mdbook::mdbook_shared::Page<Self> {
         LAZY_BOOK.get_page(self)
     }
     pub fn page_id(&self) -> use_mdbook::mdbook_shared::PageId {
         match self {
             BookRoute::Index {} => use_mdbook::mdbook_shared::PageId(0usize),
-            BookRoute::IntroductionRoadmap {} => {
-                use_mdbook::mdbook_shared::PageId(1usize)
-            }
+            BookRoute::IntroductionRoadmap {} => use_mdbook::mdbook_shared::PageId(1usize),
             BookRoute::GuideIndex {} => use_mdbook::mdbook_shared::PageId(2usize),
-            BookRoute::GuideYourFirstComponent {} => {
-                use_mdbook::mdbook_shared::PageId(3usize)
-            }
+            BookRoute::GuideYourFirstComponent {} => use_mdbook::mdbook_shared::PageId(3usize),
             BookRoute::GuideState {} => use_mdbook::mdbook_shared::PageId(4usize),
             BookRoute::GuideDataFetching {} => use_mdbook::mdbook_shared::PageId(5usize),
             BookRoute::GuideFullCode {} => use_mdbook::mdbook_shared::PageId(6usize),
             BookRoute::EssentialsIndex {} => use_mdbook::mdbook_shared::PageId(7usize),
             BookRoute::EssentialsRsxIndex {} => use_mdbook::mdbook_shared::PageId(8usize),
-            BookRoute::EssentialsLifecycleIndex {} => {
-                use_mdbook::mdbook_shared::PageId(9usize)
-            }
-            BookRoute::EssentialsStateIndex {} => {
-                use_mdbook::mdbook_shared::PageId(10usize)
-            }
-            BookRoute::EssentialsBreakingIndex {} => {
-                use_mdbook::mdbook_shared::PageId(11usize)
-            }
+            BookRoute::EssentialsLifecycleIndex {} => use_mdbook::mdbook_shared::PageId(9usize),
+            BookRoute::EssentialsStateIndex {} => use_mdbook::mdbook_shared::PageId(10usize),
+            BookRoute::EssentialsBreakingIndex {} => use_mdbook::mdbook_shared::PageId(11usize),
             BookRoute::ReferenceIndex {} => use_mdbook::mdbook_shared::PageId(12usize),
             BookRoute::RouterIndex {} => use_mdbook::mdbook_shared::PageId(13usize),
-            BookRoute::RouterExampleIndex {} => {
-                use_mdbook::mdbook_shared::PageId(14usize)
-            }
-            BookRoute::RouterExampleFirstRoute {} => {
-                use_mdbook::mdbook_shared::PageId(15usize)
-            }
-            BookRoute::RouterExampleBuildingANest {} => {
-                use_mdbook::mdbook_shared::PageId(16usize)
-            }
+            BookRoute::RouterExampleIndex {} => use_mdbook::mdbook_shared::PageId(14usize),
+            BookRoute::RouterExampleFirstRoute {} => use_mdbook::mdbook_shared::PageId(15usize),
+            BookRoute::RouterExampleBuildingANest {} => use_mdbook::mdbook_shared::PageId(16usize),
             BookRoute::RouterExampleNavigationTargets {} => {
                 use_mdbook::mdbook_shared::PageId(17usize)
             }
             BookRoute::RouterExampleRedirectionPerfection {} => {
                 use_mdbook::mdbook_shared::PageId(18usize)
             }
-            BookRoute::RouterExampleFullCode {} => {
-                use_mdbook::mdbook_shared::PageId(19usize)
-            }
-            BookRoute::RouterReferenceIndex {} => {
-                use_mdbook::mdbook_shared::PageId(20usize)
-            }
-            BookRoute::RouterReferenceRoutesIndex {} => {
-                use_mdbook::mdbook_shared::PageId(21usize)
-            }
-            BookRoute::RouterReferenceRoutesNested {} => {
-                use_mdbook::mdbook_shared::PageId(22usize)
-            }
-            BookRoute::RouterReferenceLayouts {} => {
-                use_mdbook::mdbook_shared::PageId(23usize)
-            }
+            BookRoute::RouterExampleFullCode {} => use_mdbook::mdbook_shared::PageId(19usize),
+            BookRoute::RouterReferenceIndex {} => use_mdbook::mdbook_shared::PageId(20usize),
+            BookRoute::RouterReferenceRoutesIndex {} => use_mdbook::mdbook_shared::PageId(21usize),
+            BookRoute::RouterReferenceRoutesNested {} => use_mdbook::mdbook_shared::PageId(22usize),
+            BookRoute::RouterReferenceLayouts {} => use_mdbook::mdbook_shared::PageId(23usize),
             BookRoute::RouterReferenceNavigationIndex {} => {
                 use_mdbook::mdbook_shared::PageId(24usize)
             }
@@ -207,19 +181,11 @@ impl BookRoute {
             }
             BookRoute::ReferenceAssets {} => use_mdbook::mdbook_shared::PageId(29usize),
             BookRoute::ReferenceWebIndex {} => use_mdbook::mdbook_shared::PageId(30usize),
-            BookRoute::ReferenceDesktopIndex {} => {
-                use_mdbook::mdbook_shared::PageId(31usize)
-            }
-            BookRoute::ReferenceMobileIndex {} => {
-                use_mdbook::mdbook_shared::PageId(32usize)
-            }
-            BookRoute::ReferenceMobileApis {} => {
-                use_mdbook::mdbook_shared::PageId(33usize)
-            }
+            BookRoute::ReferenceDesktopIndex {} => use_mdbook::mdbook_shared::PageId(31usize),
+            BookRoute::ReferenceMobileIndex {} => use_mdbook::mdbook_shared::PageId(32usize),
+            BookRoute::ReferenceMobileApis {} => use_mdbook::mdbook_shared::PageId(33usize),
             BookRoute::ReferenceSsr {} => use_mdbook::mdbook_shared::PageId(34usize),
-            BookRoute::ReferenceFullstackIndex {} => {
-                use_mdbook::mdbook_shared::PageId(35usize)
-            }
+            BookRoute::ReferenceFullstackIndex {} => use_mdbook::mdbook_shared::PageId(35usize),
             BookRoute::ReferenceFullstackServerFunctions {} => {
                 use_mdbook::mdbook_shared::PageId(36usize)
             }
@@ -232,42 +198,24 @@ impl BookRoute {
             BookRoute::ReferenceFullstackAuthentication {} => {
                 use_mdbook::mdbook_shared::PageId(39usize)
             }
-            BookRoute::ReferenceFullstackRouting {} => {
-                use_mdbook::mdbook_shared::PageId(40usize)
-            }
-            BookRoute::CookbookPublishing {} => {
-                use_mdbook::mdbook_shared::PageId(41usize)
-            }
-            BookRoute::CookbookAntipatterns {} => {
-                use_mdbook::mdbook_shared::PageId(42usize)
-            }
-            BookRoute::CookbookErrorHandling {} => {
-                use_mdbook::mdbook_shared::PageId(43usize)
-            }
-            BookRoute::CookbookIntegrationsIndex {} => {
-                use_mdbook::mdbook_shared::PageId(44usize)
-            }
-            BookRoute::CookbookIntegrationsLogging {} => {
-                use_mdbook::mdbook_shared::PageId(45usize)
-            }
+            BookRoute::ReferenceFullstackRouting {} => use_mdbook::mdbook_shared::PageId(40usize),
+            BookRoute::CookbookPublishing {} => use_mdbook::mdbook_shared::PageId(41usize),
+            BookRoute::CookbookAntipatterns {} => use_mdbook::mdbook_shared::PageId(42usize),
+            BookRoute::CookbookErrorHandling {} => use_mdbook::mdbook_shared::PageId(43usize),
+            BookRoute::CookbookIntegrationsIndex {} => use_mdbook::mdbook_shared::PageId(44usize),
+            BookRoute::CookbookIntegrationsLogging {} => use_mdbook::mdbook_shared::PageId(45usize),
             BookRoute::CookbookIntegrationsInternationalization {} => {
                 use_mdbook::mdbook_shared::PageId(46usize)
             }
-            BookRoute::CookbookStateIndex {} => {
-                use_mdbook::mdbook_shared::PageId(47usize)
-            }
-            BookRoute::CookbookStateExternalIndex {} => {
-                use_mdbook::mdbook_shared::PageId(48usize)
-            }
+            BookRoute::CookbookStateIndex {} => use_mdbook::mdbook_shared::PageId(47usize),
+            BookRoute::CookbookStateExternalIndex {} => use_mdbook::mdbook_shared::PageId(48usize),
             BookRoute::CookbookStateCustomHooksIndex {} => {
                 use_mdbook::mdbook_shared::PageId(49usize)
             }
             BookRoute::CookbookTesting {} => use_mdbook::mdbook_shared::PageId(50usize),
             BookRoute::CookbookExamples {} => use_mdbook::mdbook_shared::PageId(51usize),
             BookRoute::CookbookTailwind {} => use_mdbook::mdbook_shared::PageId(52usize),
-            BookRoute::CookbookOptimizing {} => {
-                use_mdbook::mdbook_shared::PageId(53usize)
-            }
+            BookRoute::CookbookOptimizing {} => use_mdbook::mdbook_shared::PageId(53usize),
             BookRoute::ContributingIndex {} => use_mdbook::mdbook_shared::PageId(54usize),
             BookRoute::ContributingProjectStructure {} => {
                 use_mdbook::mdbook_shared::PageId(55usize)
@@ -275,9 +223,7 @@ impl BookRoute {
             BookRoute::ContributingGuidingPrinciples {} => {
                 use_mdbook::mdbook_shared::PageId(56usize)
             }
-            BookRoute::ContributingRoadmap {} => {
-                use_mdbook::mdbook_shared::PageId(57usize)
-            }
+            BookRoute::ContributingRoadmap {} => use_mdbook::mdbook_shared::PageId(57usize),
         }
     }
 }
@@ -286,2434 +232,2053 @@ impl Default for BookRoute {
         BookRoute::Index {}
     }
 }
-pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRoute>> = use_mdbook::Lazy::new(||
-{
-    {
+pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRoute>> =
+    use_mdbook::Lazy::new(|| {
         let mut page_id_mapping = ::std::collections::HashMap::new();
         let mut pages = Vec::new();
-        pages
-            .push((
-                0usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
+        pages.push((0usize, {
+            ::use_mdbook::mdbook_shared::Page {
+                title: "Introduction".to_string(),
+                url: BookRoute::Index {},
+                segments: vec![],
+                sections: vec![
+                    ::use_mdbook::mdbook_shared::Section {
                         title: "Introduction".to_string(),
-                        url: BookRoute::Index {},
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Introduction".to_string(),
-                                id: "introduction".to_string(),
-                                level: 1usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Features".to_string(),
-                                id: "features".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Multiplatform".to_string(),
-                                id: "multiplatform".to_string(),
-                                level: 3usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Stability".to_string(),
-                                id: "stability".to_string(),
-                                level: 2usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(0usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(BookRoute::Index {}, ::use_mdbook::mdbook_shared::PageId(0usize));
-        pages
-            .push((
-                1usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
+                        id: "introduction".to_string(),
+                        level: 1usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Features".to_string(),
+                        id: "features".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Multiplatform".to_string(),
+                        id: "multiplatform".to_string(),
+                        level: 3usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Stability".to_string(),
+                        id: "stability".to_string(),
+                        level: 2usize,
+                    },
+                ],
+                raw: String::new(),
+                id: ::use_mdbook::mdbook_shared::PageId(0usize),
+            }
+        }));
+        page_id_mapping.insert(
+            BookRoute::Index {},
+            ::use_mdbook::mdbook_shared::PageId(0usize),
+        );
+        pages.push((1usize, {
+            ::use_mdbook::mdbook_shared::Page {
+                title: "Roadmap".to_string(),
+                url: BookRoute::IntroductionRoadmap {},
+                segments: vec![],
+                sections: vec![
+                    ::use_mdbook::mdbook_shared::Section {
                         title: "Roadmap".to_string(),
-                        url: BookRoute::IntroductionRoadmap {},
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Roadmap".to_string(),
-                                id: "roadmap".to_string(),
-                                level: 1usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Features".to_string(),
-                                id: "features".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Roadmap".to_string(),
-                                id: "roadmap".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Core".to_string(),
-                                id: "core".to_string(),
-                                level: 3usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "SSR".to_string(),
-                                id: "ssr".to_string(),
-                                level: 3usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Desktop".to_string(),
-                                id: "desktop".to_string(),
-                                level: 3usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Mobile".to_string(),
-                                id: "mobile".to_string(),
-                                level: 3usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Bundling (CLI)".to_string(),
-                                id: "bundling-(cli)".to_string(),
-                                level: 3usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Essential hooks".to_string(),
-                                id: "essential-hooks".to_string(),
-                                level: 3usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Work in Progress".to_string(),
-                                id: "work-in-progress".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Build Tool".to_string(),
-                                id: "build-tool".to_string(),
-                                level: 3usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Server Component Support".to_string(),
-                                id: "server-component-support".to_string(),
-                                level: 3usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Native rendering".to_string(),
-                                id: "native-rendering".to_string(),
-                                level: 3usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(1usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::IntroductionRoadmap {},
-                ::use_mdbook::mdbook_shared::PageId(1usize),
-            );
-        pages
-            .push((
-                2usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "Tutorial".to_string(),
-                        url: BookRoute::GuideIndex {},
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Dioxus Guide".to_string(),
-                                id: "dioxus-guide".to_string(),
-                                level: 1usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Introduction".to_string(),
-                                id: "introduction".to_string(),
-                                level: 2usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(2usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::GuideIndex {},
-                ::use_mdbook::mdbook_shared::PageId(2usize),
-            );
-        pages
-            .push((
-                3usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "Your First Component".to_string(),
-                        url: BookRoute::GuideYourFirstComponent {
-                        },
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Your First Component".to_string(),
-                                id: "your-first-component".to_string(),
-                                level: 1usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Setup".to_string(),
-                                id: "setup".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Describing the UI".to_string(),
-                                id: "describing-the-ui".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Dynamic Text".to_string(),
-                                id: "dynamic-text".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Creating Elements".to_string(),
-                                id: "creating-elements".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Setting Attributes".to_string(),
-                                id: "setting-attributes".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Creating a Component".to_string(),
-                                id: "creating-a-component".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Creating Props".to_string(),
-                                id: "creating-props".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Cleaning Up Our Interface".to_string(),
-                                id: "cleaning-up-our-interface".to_string(),
-                                level: 2usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(3usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::GuideYourFirstComponent {
-                },
-                ::use_mdbook::mdbook_shared::PageId(3usize),
-            );
-        pages
-            .push((
-                4usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "State".to_string(),
-                        url: BookRoute::GuideState {},
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Interactivity".to_string(),
-                                id: "interactivity".to_string(),
-                                level: 1usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Creating a Preview".to_string(),
-                                id: "creating-a-preview".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Event Handlers".to_string(),
-                                id: "event-handlers".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "State".to_string(),
-                                id: "state".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "The Rules of Hooks".to_string(),
-                                id: "the-rules-of-hooks".to_string(),
-                                level: 3usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "No Hooks in Conditionals".to_string(),
-                                id: "no-hooks-in-conditionals".to_string(),
-                                level: 4usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "No Hooks in Closures".to_string(),
-                                id: "no-hooks-in-closures".to_string(),
-                                level: 4usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "No Hooks in Loops".to_string(),
-                                id: "no-hooks-in-loops".to_string(),
-                                level: 4usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(4usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::GuideState {},
-                ::use_mdbook::mdbook_shared::PageId(4usize),
-            );
-        pages
-            .push((
-                5usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "Data Fetching".to_string(),
-                        url: BookRoute::GuideDataFetching {},
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Fetching Data".to_string(),
-                                id: "fetching-data".to_string(),
-                                level: 1usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Defining the API".to_string(),
-                                id: "defining-the-api".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Working with Async".to_string(),
-                                id: "working-with-async".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Lazily Fetching Data".to_string(),
-                                id: "lazily-fetching-data".to_string(),
-                                level: 2usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(5usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::GuideDataFetching {},
-                ::use_mdbook::mdbook_shared::PageId(5usize),
-            );
-        pages
-            .push((
-                6usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "Full Code".to_string(),
-                        url: BookRoute::GuideFullCode {},
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Conclusion".to_string(),
-                                id: "conclusion".to_string(),
-                                level: 1usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Challenges".to_string(),
-                                id: "challenges".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "The full code for the hacker news project"
-                                    .to_string(),
-                                id: "the-full-code-for-the-hacker-news-project".to_string(),
-                                level: 2usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(6usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::GuideFullCode {},
-                ::use_mdbook::mdbook_shared::PageId(6usize),
-            );
-        pages
-            .push((
-                7usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "Essential Concepts".to_string(),
-                        url: BookRoute::EssentialsIndex {},
-                        segments: vec![],
-                        sections: vec![],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(7usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::EssentialsIndex {},
-                ::use_mdbook::mdbook_shared::PageId(7usize),
-            );
-        pages
-            .push((
-                8usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "Building UIs with RSX".to_string(),
-                        url: BookRoute::EssentialsRsxIndex {},
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Building UIs with RSX".to_string(),
-                                id: "building-uis-with-rsx".to_string(),
-                                level: 1usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Text Nodes".to_string(),
-                                id: "text-nodes".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Elements".to_string(),
-                                id: "elements".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Attributes".to_string(),
-                                id: "attributes".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Conditional Attributes".to_string(),
-                                id: "conditional-attributes".to_string(),
-                                level: 3usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Event Listeners".to_string(),
-                                id: "event-listeners".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Children".to_string(),
-                                id: "children".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Loops".to_string(),
-                                id: "loops".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "If Statements".to_string(),
-                                id: "if-statements".to_string(),
-                                level: 2usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(8usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::EssentialsRsxIndex {},
-                ::use_mdbook::mdbook_shared::PageId(8usize),
-            );
-        pages
-            .push((
-                9usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "Component Lifecycle".to_string(),
-                        url: BookRoute::EssentialsLifecycleIndex {
-                        },
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Component Lifecycle".to_string(),
-                                id: "component-lifecycle".to_string(),
-                                level: 1usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Initializing State with ".to_string(),
-                                id: "initializing-state-with".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Rerendering".to_string(),
-                                id: "rerendering".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "⚠\u{fe0f} Don't mutate state in the body of a component"
-                                    .to_string(),
-                                id: "⚠\u{fe0f}-don't-mutate-state-in-the-body-of-a-component"
-                                    .to_string(),
-                                level: 3usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Using Effects".to_string(),
-                                id: "using-effects".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Cleaning Up Components with Drop".to_string(),
-                                id: "cleaning-up-components-with-drop".to_string(),
-                                level: 2usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(9usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::EssentialsLifecycleIndex {
-                },
-                ::use_mdbook::mdbook_shared::PageId(9usize),
-            );
-        pages
-            .push((
-                10usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "Managing State".to_string(),
-                        url: BookRoute::EssentialsStateIndex {},
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Managing State".to_string(),
-                                id: "managing-state".to_string(),
-                                level: 1usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Creating State".to_string(),
-                                id: "creating-state".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Reactive Scopes".to_string(),
-                                id: "reactive-scopes".to_string(),
-                                level: 3usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Derived State".to_string(),
-                                id: "derived-state".to_string(),
-                                level: 3usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Derived Async State".to_string(),
-                                id: "derived-async-state".to_string(),
-                                level: 3usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Derived UI".to_string(),
-                                id: "derived-ui".to_string(),
-                                level: 3usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Working with Untracked State".to_string(),
-                                id: "working-with-untracked-state".to_string(),
-                                level: 3usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Making Props Reactive".to_string(),
-                                id: "making-props-reactive".to_string(),
-                                level: 3usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Moving Around State".to_string(),
-                                id: "moving-around-state".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Passing props".to_string(),
-                                id: "passing-props".to_string(),
-                                level: 3usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Passing context".to_string(),
-                                id: "passing-context".to_string(),
-                                level: 3usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Using globals".to_string(),
-                                id: "using-globals".to_string(),
-                                level: 3usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(10usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::EssentialsStateIndex {},
-                ::use_mdbook::mdbook_shared::PageId(10usize),
-            );
-        pages
-            .push((
-                11usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "Breaking Out".to_string(),
-                        url: BookRoute::EssentialsBreakingIndex {
-                        },
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Breaking Out of Dioxus".to_string(),
-                                id: "breaking-out-of-dioxus".to_string(),
-                                level: 1usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Interacting with JavaScript with ".to_string(),
-                                id: "interacting-with-javascript-with".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Synchronizing DOM updates with ".to_string(),
-                                id: "synchronizing-dom-updates-with".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Getting access to elements with ".to_string(),
-                                id: "getting-access-to-elements-with".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Down casting web sys events".to_string(),
-                                id: "down-casting-web-sys-events".to_string(),
-                                level: 2usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(11usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::EssentialsBreakingIndex {
-                },
-                ::use_mdbook::mdbook_shared::PageId(11usize),
-            );
-        pages
-            .push((
-                12usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "Guides".to_string(),
-                        url: BookRoute::ReferenceIndex {},
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Dioxus Reference".to_string(),
-                                id: "dioxus-reference".to_string(),
-                                level: 1usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Rendering".to_string(),
-                                id: "rendering".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "State".to_string(),
-                                id: "state".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Platforms".to_string(),
-                                id: "platforms".to_string(),
-                                level: 2usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(12usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::ReferenceIndex {},
-                ::use_mdbook::mdbook_shared::PageId(12usize),
-            );
-        pages
-            .push((
-                13usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "Router".to_string(),
-                        url: BookRoute::RouterIndex {},
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Introduction".to_string(),
-                                id: "introduction".to_string(),
-                                level: 1usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(13usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::RouterIndex {},
-                ::use_mdbook::mdbook_shared::PageId(13usize),
-            );
-        pages
-            .push((
-                14usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "Example Project".to_string(),
-                        url: BookRoute::RouterExampleIndex {},
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Overview".to_string(),
-                                id: "overview".to_string(),
-                                level: 1usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "You'll learn how to".to_string(),
-                                id: "you'll-learn-how-to".to_string(),
-                                level: 2usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(14usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::RouterExampleIndex {},
-                ::use_mdbook::mdbook_shared::PageId(14usize),
-            );
-        pages
-            .push((
-                15usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "Creating Our First Route".to_string(),
-                        url: BookRoute::RouterExampleFirstRoute {
-                        },
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Creating Our First Route".to_string(),
-                                id: "creating-our-first-route".to_string(),
-                                level: 1usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Fundamentals".to_string(),
-                                id: "fundamentals".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Creating Routes".to_string(),
-                                id: "creating-routes".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Fallback Route".to_string(),
-                                id: "fallback-route".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Conclusion".to_string(),
-                                id: "conclusion".to_string(),
-                                level: 2usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(15usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::RouterExampleFirstRoute {
-                },
-                ::use_mdbook::mdbook_shared::PageId(15usize),
-            );
-        pages
-            .push((
-                16usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "Building a Nest".to_string(),
-                        url: BookRoute::RouterExampleBuildingANest {
-                        },
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Building a Nest".to_string(),
-                                id: "building-a-nest".to_string(),
-                                level: 1usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Site Navigation".to_string(),
-                                id: "site-navigation".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "URL Parameters and Nested Routes".to_string(),
-                                id: "url-parameters-and-nested-routes".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Conclusion".to_string(),
-                                id: "conclusion".to_string(),
-                                level: 2usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(16usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::RouterExampleBuildingANest {
-                },
-                ::use_mdbook::mdbook_shared::PageId(16usize),
-            );
-        pages
-            .push((
-                17usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "Navigation Targets".to_string(),
-                        url: BookRoute::RouterExampleNavigationTargets {
-                        },
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Navigation Targets".to_string(),
-                                id: "navigation-targets".to_string(),
-                                level: 1usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "What is a navigation target?".to_string(),
-                                id: "what-is-a-navigation-target?".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "External navigation".to_string(),
-                                id: "external-navigation".to_string(),
-                                level: 2usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(17usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::RouterExampleNavigationTargets {
-                },
-                ::use_mdbook::mdbook_shared::PageId(17usize),
-            );
-        pages
-            .push((
-                18usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "Redirection Perfection".to_string(),
-                        url: BookRoute::RouterExampleRedirectionPerfection {
-                        },
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Redirection Perfection".to_string(),
-                                id: "redirection-perfection".to_string(),
-                                level: 1usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Creating Redirects".to_string(),
-                                id: "creating-redirects".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Conclusion".to_string(),
-                                id: "conclusion".to_string(),
-                                level: 3usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Challenges".to_string(),
-                                id: "challenges".to_string(),
-                                level: 3usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(18usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::RouterExampleRedirectionPerfection {
-                },
-                ::use_mdbook::mdbook_shared::PageId(18usize),
-            );
-        pages
-            .push((
-                19usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "Full Code".to_string(),
-                        url: BookRoute::RouterExampleFullCode {
-                        },
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Full Code".to_string(),
-                                id: "full-code".to_string(),
-                                level: 1usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(19usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::RouterExampleFullCode {
-                },
-                ::use_mdbook::mdbook_shared::PageId(19usize),
-            );
-        pages
-            .push((
-                20usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "Reference".to_string(),
-                        url: BookRoute::RouterReferenceIndex {},
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Adding the router to your application".to_string(),
-                                id: "adding-the-router-to-your-application".to_string(),
-                                level: 1usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(20usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::RouterReferenceIndex {},
-                ::use_mdbook::mdbook_shared::PageId(20usize),
-            );
-        pages
-            .push((
-                21usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "Defining Routes".to_string(),
-                        url: BookRoute::RouterReferenceRoutesIndex {
-                        },
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Defining Routes".to_string(),
-                                id: "defining-routes".to_string(),
-                                level: 1usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Route Segments".to_string(),
-                                id: "route-segments".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Static segments".to_string(),
-                                id: "static-segments".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Dynamic Segments".to_string(),
-                                id: "dynamic-segments".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Catch All Segments".to_string(),
-                                id: "catch-all-segments".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Query Segments".to_string(),
-                                id: "query-segments".to_string(),
-                                level: 2usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(21usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::RouterReferenceRoutesIndex {
-                },
-                ::use_mdbook::mdbook_shared::PageId(21usize),
-            );
-        pages
-            .push((
-                22usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "Nested Routes".to_string(),
-                        url: BookRoute::RouterReferenceRoutesNested {
-                        },
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Nested Routes".to_string(),
-                                id: "nested-routes".to_string(),
-                                level: 1usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Nesting".to_string(),
-                                id: "nesting".to_string(),
-                                level: 2usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(22usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::RouterReferenceRoutesNested {
-                },
-                ::use_mdbook::mdbook_shared::PageId(22usize),
-            );
-        pages
-            .push((
-                23usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "Layouts".to_string(),
-                        url: BookRoute::RouterReferenceLayouts {
-                        },
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Layouts".to_string(),
-                                id: "layouts".to_string(),
-                                level: 1usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Layouts with dynamic segments".to_string(),
-                                id: "layouts-with-dynamic-segments".to_string(),
-                                level: 2usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(23usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::RouterReferenceLayouts {
-                },
-                ::use_mdbook::mdbook_shared::PageId(23usize),
-            );
-        pages
-            .push((
-                24usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "Navigation".to_string(),
-                        url: BookRoute::RouterReferenceNavigationIndex {
-                        },
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Links & Navigation".to_string(),
-                                id: "links-&-navigation".to_string(),
-                                level: 1usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(24usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::RouterReferenceNavigationIndex {
-                },
-                ::use_mdbook::mdbook_shared::PageId(24usize),
-            );
-        pages
-            .push((
-                25usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "Programmatic Navigation".to_string(),
-                        url: BookRoute::RouterReferenceNavigationProgrammatic {
-                        },
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Programmatic Navigation".to_string(),
-                                id: "programmatic-navigation".to_string(),
-                                level: 1usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Using a Navigator".to_string(),
-                                id: "using-a-navigator".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "External Navigation Targets".to_string(),
-                                id: "external-navigation-targets".to_string(),
-                                level: 2usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(25usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::RouterReferenceNavigationProgrammatic {
-                },
-                ::use_mdbook::mdbook_shared::PageId(25usize),
-            );
-        pages
-            .push((
-                26usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "History Providers".to_string(),
-                        url: BookRoute::RouterReferenceHistoryProviders {
-                        },
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "History Providers".to_string(),
-                                id: "history-providers".to_string(),
-                                level: 1usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(26usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::RouterReferenceHistoryProviders {
-                },
-                ::use_mdbook::mdbook_shared::PageId(26usize),
-            );
-        pages
-            .push((
-                27usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "History Buttons".to_string(),
-                        url: BookRoute::RouterReferenceHistoryButtons {
-                        },
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "History Buttons".to_string(),
-                                id: "history-buttons".to_string(),
-                                level: 1usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(27usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::RouterReferenceHistoryButtons {
-                },
-                ::use_mdbook::mdbook_shared::PageId(27usize),
-            );
-        pages
-            .push((
-                28usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "Routing Update Callback".to_string(),
-                        url: BookRoute::RouterReferenceRoutingUpdateCallback {
-                        },
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Routing Update Callback".to_string(),
-                                id: "routing-update-callback".to_string(),
-                                level: 1usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "How does the callback behave?".to_string(),
-                                id: "how-does-the-callback-behave?".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Code Example".to_string(),
-                                id: "code-example".to_string(),
-                                level: 2usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(28usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::RouterReferenceRoutingUpdateCallback {
-                },
-                ::use_mdbook::mdbook_shared::PageId(28usize),
-            );
-        pages
-            .push((
-                29usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "Assets".to_string(),
-                        url: BookRoute::ReferenceAssets {},
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Assets".to_string(),
-                                id: "assets".to_string(),
-                                level: 1usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Including images".to_string(),
-                                id: "including-images".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Including arbitrary files".to_string(),
-                                id: "including-arbitrary-files".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Including stylesheets".to_string(),
-                                id: "including-stylesheets".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Conclusion".to_string(),
-                                id: "conclusion".to_string(),
-                                level: 2usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(29usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::ReferenceAssets {},
-                ::use_mdbook::mdbook_shared::PageId(29usize),
-            );
-        pages
-            .push((
-                30usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "Web".to_string(),
-                        url: BookRoute::ReferenceWebIndex {},
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Web".to_string(),
-                                id: "web".to_string(),
-                                level: 1usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Support".to_string(),
-                                id: "support".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Running Javascript".to_string(),
-                                id: "running-javascript".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Customizing Index Template".to_string(),
-                                id: "customizing-index-template".to_string(),
-                                level: 2usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(30usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::ReferenceWebIndex {},
-                ::use_mdbook::mdbook_shared::PageId(30usize),
-            );
-        pages
-            .push((
-                31usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
+                        id: "roadmap".to_string(),
+                        level: 1usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Features".to_string(),
+                        id: "features".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Roadmap".to_string(),
+                        id: "roadmap".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Core".to_string(),
+                        id: "core".to_string(),
+                        level: 3usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "SSR".to_string(),
+                        id: "ssr".to_string(),
+                        level: 3usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
                         title: "Desktop".to_string(),
-                        url: BookRoute::ReferenceDesktopIndex {
-                        },
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Desktop".to_string(),
-                                id: "desktop".to_string(),
-                                level: 1usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Examples".to_string(),
-                                id: "examples".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Running Javascript".to_string(),
-                                id: "running-javascript".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Custom Assets".to_string(),
-                                id: "custom-assets".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Integrating with Wry".to_string(),
-                                id: "integrating-with-wry".to_string(),
-                                level: 2usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(31usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::ReferenceDesktopIndex {
-                },
-                ::use_mdbook::mdbook_shared::PageId(31usize),
-            );
-        pages
-            .push((
-                32usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
+                        id: "desktop".to_string(),
+                        level: 3usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
                         title: "Mobile".to_string(),
-                        url: BookRoute::ReferenceMobileIndex {},
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Mobile App".to_string(),
-                                id: "mobile-app".to_string(),
-                                level: 1usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Support".to_string(),
-                                id: "support".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Getting Set up".to_string(),
-                                id: "getting-set-up".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Setting up dependencies".to_string(),
-                                id: "setting-up-dependencies".to_string(),
-                                level: 3usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Android".to_string(),
-                                id: "android".to_string(),
-                                level: 4usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "IOS".to_string(),
-                                id: "ios".to_string(),
-                                level: 4usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Setting up your project".to_string(),
-                                id: "setting-up-your-project".to_string(),
-                                level: 3usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Running".to_string(),
-                                id: "running".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Android".to_string(),
-                                id: "android".to_string(),
-                                level: 3usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "IOS".to_string(),
-                                id: "ios".to_string(),
-                                level: 3usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(32usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::ReferenceMobileIndex {},
-                ::use_mdbook::mdbook_shared::PageId(32usize),
-            );
-        pages
-            .push((
-                33usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "APIs".to_string(),
-                        url: BookRoute::ReferenceMobileApis {},
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Mobile".to_string(),
-                                id: "mobile".to_string(),
-                                level: 1usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Running Javascript".to_string(),
-                                id: "running-javascript".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Custom Assets".to_string(),
-                                id: "custom-assets".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Integrating with Wry".to_string(),
-                                id: "integrating-with-wry".to_string(),
-                                level: 2usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(33usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::ReferenceMobileApis {},
-                ::use_mdbook::mdbook_shared::PageId(33usize),
-            );
-        pages
-            .push((
-                34usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "Streaming and SSR".to_string(),
-                        url: BookRoute::ReferenceSsr {},
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Server-Side Rendering".to_string(),
-                                id: "server-side-rendering".to_string(),
-                                level: 1usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Setup".to_string(),
-                                id: "setup".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Multithreaded Support".to_string(),
-                                id: "multithreaded-support".to_string(),
-                                level: 2usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(34usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::ReferenceSsr {},
-                ::use_mdbook::mdbook_shared::PageId(34usize),
-            );
-        pages
-            .push((
-                35usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "Fullstack".to_string(),
-                        url: BookRoute::ReferenceFullstackIndex {
-                        },
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Fullstack development".to_string(),
-                                id: "fullstack-development".to_string(),
-                                level: 1usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(35usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::ReferenceFullstackIndex {
-                },
-                ::use_mdbook::mdbook_shared::PageId(35usize),
-            );
-        pages
-            .push((
-                36usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "Server Functions".to_string(),
-                        url: BookRoute::ReferenceFullstackServerFunctions {
-                        },
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Communicating with the server".to_string(),
-                                id: "communicating-with-the-server".to_string(),
-                                level: 1usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Cached data fetching".to_string(),
-                                id: "cached-data-fetching".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Running the client with dioxus-desktop".to_string(),
-                                id: "running-the-client-with-dioxus-desktop".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Client code".to_string(),
-                                id: "client-code".to_string(),
-                                level: 3usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Server code".to_string(),
-                                id: "server-code".to_string(),
-                                level: 3usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(36usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::ReferenceFullstackServerFunctions {
-                },
-                ::use_mdbook::mdbook_shared::PageId(36usize),
-            );
-        pages
-            .push((
-                37usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "Extractors".to_string(),
-                        url: BookRoute::ReferenceFullstackExtractors {
-                        },
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Extractors".to_string(),
-                                id: "extractors".to_string(),
-                                level: 1usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(37usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::ReferenceFullstackExtractors {
-                },
-                ::use_mdbook::mdbook_shared::PageId(37usize),
-            );
-        pages
-            .push((
-                38usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "Middleware".to_string(),
-                        url: BookRoute::ReferenceFullstackMiddleware {
-                        },
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Middleware".to_string(),
-                                id: "middleware".to_string(),
-                                level: 1usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(38usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::ReferenceFullstackMiddleware {
-                },
-                ::use_mdbook::mdbook_shared::PageId(38usize),
-            );
-        pages
-            .push((
-                39usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "Authentication".to_string(),
-                        url: BookRoute::ReferenceFullstackAuthentication {
-                        },
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Authentication".to_string(),
-                                id: "authentication".to_string(),
-                                level: 1usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(39usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::ReferenceFullstackAuthentication {
-                },
-                ::use_mdbook::mdbook_shared::PageId(39usize),
-            );
-        pages
-            .push((
-                40usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "Routing".to_string(),
-                        url: BookRoute::ReferenceFullstackRouting {
-                        },
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Routing".to_string(),
-                                id: "routing".to_string(),
-                                level: 1usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(40usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::ReferenceFullstackRouting {
-                },
-                ::use_mdbook::mdbook_shared::PageId(40usize),
-            );
-        pages
-            .push((
-                41usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "Publishing".to_string(),
-                        url: BookRoute::CookbookPublishing {},
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Publishing".to_string(),
-                                id: "publishing".to_string(),
-                                level: 1usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Web: Publishing with GitHub Pages".to_string(),
-                                id: "web:-publishing-with-github-pages".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Desktop: Creating an installer".to_string(),
-                                id: "desktop:-creating-an-installer".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Preparing your application for bundling"
-                                    .to_string(),
-                                id: "preparing-your-application-for-bundling".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Adding assets to your application".to_string(),
-                                id: "adding-assets-to-your-application".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Install ".to_string(),
-                                id: "install".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Building".to_string(),
-                                id: "building".to_string(),
-                                level: 2usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(41usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::CookbookPublishing {},
-                ::use_mdbook::mdbook_shared::PageId(41usize),
-            );
-        pages
-            .push((
-                42usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "Anti-patterns".to_string(),
-                        url: BookRoute::CookbookAntipatterns {},
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Antipatterns".to_string(),
-                                id: "antipatterns".to_string(),
-                                level: 1usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Unnecessarily Nested Fragments".to_string(),
-                                id: "unnecessarily-nested-fragments".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Incorrect Iterator Keys".to_string(),
-                                id: "incorrect-iterator-keys".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Avoid Interior Mutability in Props".to_string(),
-                                id: "avoid-interior-mutability-in-props".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Avoid Updating State During Render".to_string(),
-                                id: "avoid-updating-state-during-render".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Avoid Large Groups of State".to_string(),
-                                id: "avoid-large-groups-of-state".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Running Non-Deterministic Code in the Body of a Component"
-                                    .to_string(),
-                                id: "running-non-deterministic-code-in-the-body-of-a-component"
-                                    .to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Overly Permissive PartialEq for Props".to_string(),
-                                id: "overly-permissive-partialeq-for-props".to_string(),
-                                level: 2usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(42usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::CookbookAntipatterns {},
-                ::use_mdbook::mdbook_shared::PageId(42usize),
-            );
-        pages
-            .push((
-                43usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "Error Handling".to_string(),
-                        url: BookRoute::CookbookErrorHandling {
-                        },
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Error handling".to_string(),
-                                id: "error-handling".to_string(),
-                                level: 1usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "The simplest – returning None".to_string(),
-                                id: "the-simplest-–-returning-none".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Early return on result".to_string(),
-                                id: "early-return-on-result".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Match results".to_string(),
-                                id: "match-results".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Passing error states through components"
-                                    .to_string(),
-                                id: "passing-error-states-through-components".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Throwing errors".to_string(),
-                                id: "throwing-errors".to_string(),
-                                level: 2usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(43usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::CookbookErrorHandling {
-                },
-                ::use_mdbook::mdbook_shared::PageId(43usize),
-            );
-        pages
-            .push((
-                44usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "Integrations".to_string(),
-                        url: BookRoute::CookbookIntegrationsIndex {
-                        },
-                        segments: vec![],
-                        sections: vec![],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(44usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::CookbookIntegrationsIndex {
-                },
-                ::use_mdbook::mdbook_shared::PageId(44usize),
-            );
-        pages
-            .push((
-                45usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "Logging".to_string(),
-                        url: BookRoute::CookbookIntegrationsLogging {
-                        },
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Logging".to_string(),
-                                id: "logging".to_string(),
-                                level: 1usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "The Tracing Crate".to_string(),
-                                id: "the-tracing-crate".to_string(),
-                                level: 4usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Dioxus Logger".to_string(),
-                                id: "dioxus-logger".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Platform Intricacies".to_string(),
-                                id: "platform-intricacies".to_string(),
-                                level: 4usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Final Notes".to_string(),
-                                id: "final-notes".to_string(),
-                                level: 4usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Desktop and Server".to_string(),
-                                id: "desktop-and-server".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Web".to_string(),
-                                id: "web".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Mobile".to_string(),
-                                id: "mobile".to_string(),
-                                level: 1usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Android".to_string(),
-                                id: "android".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Viewing Logs".to_string(),
-                                id: "viewing-logs".to_string(),
-                                level: 4usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "iOS".to_string(),
-                                id: "ios".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Viewing Logs".to_string(),
-                                id: "viewing-logs".to_string(),
-                                level: 4usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(45usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::CookbookIntegrationsLogging {
-                },
-                ::use_mdbook::mdbook_shared::PageId(45usize),
-            );
-        pages
-            .push((
-                46usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "Internationalization".to_string(),
-                        url: BookRoute::CookbookIntegrationsInternationalization {
-                        },
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Internationalization".to_string(),
-                                id: "internationalization".to_string(),
-                                level: 1usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "The full code for internationalization".to_string(),
-                                id: "the-full-code-for-internationalization".to_string(),
-                                level: 2usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(46usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::CookbookIntegrationsInternationalization {
-                },
-                ::use_mdbook::mdbook_shared::PageId(46usize),
-            );
-        pages
-            .push((
-                47usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "State Management".to_string(),
-                        url: BookRoute::CookbookStateIndex {},
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "State Cookbook".to_string(),
-                                id: "state-cookbook".to_string(),
-                                level: 1usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(47usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::CookbookStateIndex {},
-                ::use_mdbook::mdbook_shared::PageId(47usize),
-            );
-        pages
-            .push((
-                48usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "External State".to_string(),
-                        url: BookRoute::CookbookStateExternalIndex {
-                        },
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Working with External State".to_string(),
-                                id: "working-with-external-state".to_string(),
-                                level: 1usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Working with non-reactive State".to_string(),
-                                id: "working-with-non-reactive-state".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Making Reactive State External".to_string(),
-                                id: "making-reactive-state-external".to_string(),
-                                level: 2usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(48usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::CookbookStateExternalIndex {
-                },
-                ::use_mdbook::mdbook_shared::PageId(48usize),
-            );
-        pages
-            .push((
-                49usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "Custom Hooks".to_string(),
-                        url: BookRoute::CookbookStateCustomHooksIndex {
-                        },
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Custom Hooks".to_string(),
-                                id: "custom-hooks".to_string(),
-                                level: 1usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Composing Hooks".to_string(),
-                                id: "composing-hooks".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Custom Hook Logic".to_string(),
-                                id: "custom-hook-logic".to_string(),
-                                level: 2usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(49usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::CookbookStateCustomHooksIndex {
-                },
-                ::use_mdbook::mdbook_shared::PageId(49usize),
-            );
-        pages
-            .push((
-                50usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "Testing".to_string(),
-                        url: BookRoute::CookbookTesting {},
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Testing".to_string(),
-                                id: "testing".to_string(),
-                                level: 1usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Component Testing".to_string(),
-                                id: "component-testing".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Hook Testing".to_string(),
-                                id: "hook-testing".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "End to End Testing".to_string(),
-                                id: "end-to-end-testing".to_string(),
-                                level: 2usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(50usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::CookbookTesting {},
-                ::use_mdbook::mdbook_shared::PageId(50usize),
-            );
-        pages
-            .push((
-                51usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
+                        id: "mobile".to_string(),
+                        level: 3usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Bundling (CLI)".to_string(),
+                        id: "bundling-(cli)".to_string(),
+                        level: 3usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Essential hooks".to_string(),
+                        id: "essential-hooks".to_string(),
+                        level: 3usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Work in Progress".to_string(),
+                        id: "work-in-progress".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Build Tool".to_string(),
+                        id: "build-tool".to_string(),
+                        level: 3usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Server Component Support".to_string(),
+                        id: "server-component-support".to_string(),
+                        level: 3usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Native rendering".to_string(),
+                        id: "native-rendering".to_string(),
+                        level: 3usize,
+                    },
+                ],
+                raw: String::new(),
+                id: ::use_mdbook::mdbook_shared::PageId(1usize),
+            }
+        }));
+        page_id_mapping.insert(
+            BookRoute::IntroductionRoadmap {},
+            ::use_mdbook::mdbook_shared::PageId(1usize),
+        );
+        pages.push((2usize, {
+            ::use_mdbook::mdbook_shared::Page {
+                title: "Tutorial".to_string(),
+                url: BookRoute::GuideIndex {},
+                segments: vec![],
+                sections: vec![
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Dioxus Guide".to_string(),
+                        id: "dioxus-guide".to_string(),
+                        level: 1usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Introduction".to_string(),
+                        id: "introduction".to_string(),
+                        level: 2usize,
+                    },
+                ],
+                raw: String::new(),
+                id: ::use_mdbook::mdbook_shared::PageId(2usize),
+            }
+        }));
+        page_id_mapping.insert(
+            BookRoute::GuideIndex {},
+            ::use_mdbook::mdbook_shared::PageId(2usize),
+        );
+        pages.push((3usize, {
+            ::use_mdbook::mdbook_shared::Page {
+                title: "Your First Component".to_string(),
+                url: BookRoute::GuideYourFirstComponent {},
+                segments: vec![],
+                sections: vec![
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Your First Component".to_string(),
+                        id: "your-first-component".to_string(),
+                        level: 1usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Setup".to_string(),
+                        id: "setup".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Describing the UI".to_string(),
+                        id: "describing-the-ui".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Dynamic Text".to_string(),
+                        id: "dynamic-text".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Creating Elements".to_string(),
+                        id: "creating-elements".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Setting Attributes".to_string(),
+                        id: "setting-attributes".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Creating a Component".to_string(),
+                        id: "creating-a-component".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Creating Props".to_string(),
+                        id: "creating-props".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Cleaning Up Our Interface".to_string(),
+                        id: "cleaning-up-our-interface".to_string(),
+                        level: 2usize,
+                    },
+                ],
+                raw: String::new(),
+                id: ::use_mdbook::mdbook_shared::PageId(3usize),
+            }
+        }));
+        page_id_mapping.insert(
+            BookRoute::GuideYourFirstComponent {},
+            ::use_mdbook::mdbook_shared::PageId(3usize),
+        );
+        pages.push((4usize, {
+            ::use_mdbook::mdbook_shared::Page {
+                title: "State".to_string(),
+                url: BookRoute::GuideState {},
+                segments: vec![],
+                sections: vec![
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Interactivity".to_string(),
+                        id: "interactivity".to_string(),
+                        level: 1usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Creating a Preview".to_string(),
+                        id: "creating-a-preview".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Event Handlers".to_string(),
+                        id: "event-handlers".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "State".to_string(),
+                        id: "state".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "The Rules of Hooks".to_string(),
+                        id: "the-rules-of-hooks".to_string(),
+                        level: 3usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "No Hooks in Conditionals".to_string(),
+                        id: "no-hooks-in-conditionals".to_string(),
+                        level: 4usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "No Hooks in Closures".to_string(),
+                        id: "no-hooks-in-closures".to_string(),
+                        level: 4usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "No Hooks in Loops".to_string(),
+                        id: "no-hooks-in-loops".to_string(),
+                        level: 4usize,
+                    },
+                ],
+                raw: String::new(),
+                id: ::use_mdbook::mdbook_shared::PageId(4usize),
+            }
+        }));
+        page_id_mapping.insert(
+            BookRoute::GuideState {},
+            ::use_mdbook::mdbook_shared::PageId(4usize),
+        );
+        pages.push((5usize, {
+            ::use_mdbook::mdbook_shared::Page {
+                title: "Data Fetching".to_string(),
+                url: BookRoute::GuideDataFetching {},
+                segments: vec![],
+                sections: vec![
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Fetching Data".to_string(),
+                        id: "fetching-data".to_string(),
+                        level: 1usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Defining the API".to_string(),
+                        id: "defining-the-api".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Working with Async".to_string(),
+                        id: "working-with-async".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Lazily Fetching Data".to_string(),
+                        id: "lazily-fetching-data".to_string(),
+                        level: 2usize,
+                    },
+                ],
+                raw: String::new(),
+                id: ::use_mdbook::mdbook_shared::PageId(5usize),
+            }
+        }));
+        page_id_mapping.insert(
+            BookRoute::GuideDataFetching {},
+            ::use_mdbook::mdbook_shared::PageId(5usize),
+        );
+        pages.push((6usize, {
+            ::use_mdbook::mdbook_shared::Page {
+                title: "Full Code".to_string(),
+                url: BookRoute::GuideFullCode {},
+                segments: vec![],
+                sections: vec![
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Conclusion".to_string(),
+                        id: "conclusion".to_string(),
+                        level: 1usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Challenges".to_string(),
+                        id: "challenges".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "The full code for the hacker news project".to_string(),
+                        id: "the-full-code-for-the-hacker-news-project".to_string(),
+                        level: 2usize,
+                    },
+                ],
+                raw: String::new(),
+                id: ::use_mdbook::mdbook_shared::PageId(6usize),
+            }
+        }));
+        page_id_mapping.insert(
+            BookRoute::GuideFullCode {},
+            ::use_mdbook::mdbook_shared::PageId(6usize),
+        );
+        pages.push((7usize, {
+            ::use_mdbook::mdbook_shared::Page {
+                title: "Essential Concepts".to_string(),
+                url: BookRoute::EssentialsIndex {},
+                segments: vec![],
+                sections: vec![],
+                raw: String::new(),
+                id: ::use_mdbook::mdbook_shared::PageId(7usize),
+            }
+        }));
+        page_id_mapping.insert(
+            BookRoute::EssentialsIndex {},
+            ::use_mdbook::mdbook_shared::PageId(7usize),
+        );
+        pages.push((8usize, {
+            ::use_mdbook::mdbook_shared::Page {
+                title: "Building UIs with RSX".to_string(),
+                url: BookRoute::EssentialsRsxIndex {},
+                segments: vec![],
+                sections: vec![
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Building UIs with RSX".to_string(),
+                        id: "building-uis-with-rsx".to_string(),
+                        level: 1usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Text Nodes".to_string(),
+                        id: "text-nodes".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Elements".to_string(),
+                        id: "elements".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Attributes".to_string(),
+                        id: "attributes".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Conditional Attributes".to_string(),
+                        id: "conditional-attributes".to_string(),
+                        level: 3usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Event Listeners".to_string(),
+                        id: "event-listeners".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Children".to_string(),
+                        id: "children".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Loops".to_string(),
+                        id: "loops".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "If Statements".to_string(),
+                        id: "if-statements".to_string(),
+                        level: 2usize,
+                    },
+                ],
+                raw: String::new(),
+                id: ::use_mdbook::mdbook_shared::PageId(8usize),
+            }
+        }));
+        page_id_mapping.insert(
+            BookRoute::EssentialsRsxIndex {},
+            ::use_mdbook::mdbook_shared::PageId(8usize),
+        );
+        pages.push((9usize, {
+            ::use_mdbook::mdbook_shared::Page {
+                title: "Component Lifecycle".to_string(),
+                url: BookRoute::EssentialsLifecycleIndex {},
+                segments: vec![],
+                sections: vec![
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Component Lifecycle".to_string(),
+                        id: "component-lifecycle".to_string(),
+                        level: 1usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Initializing State with ".to_string(),
+                        id: "initializing-state-with".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Rerendering".to_string(),
+                        id: "rerendering".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "⚠\u{fe0f} Don't mutate state in the body of a component"
+                            .to_string(),
+                        id: "⚠\u{fe0f}-don't-mutate-state-in-the-body-of-a-component".to_string(),
+                        level: 3usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Using Effects".to_string(),
+                        id: "using-effects".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Cleaning Up Components with Drop".to_string(),
+                        id: "cleaning-up-components-with-drop".to_string(),
+                        level: 2usize,
+                    },
+                ],
+                raw: String::new(),
+                id: ::use_mdbook::mdbook_shared::PageId(9usize),
+            }
+        }));
+        page_id_mapping.insert(
+            BookRoute::EssentialsLifecycleIndex {},
+            ::use_mdbook::mdbook_shared::PageId(9usize),
+        );
+        pages.push((10usize, {
+            ::use_mdbook::mdbook_shared::Page {
+                title: "Managing State".to_string(),
+                url: BookRoute::EssentialsStateIndex {},
+                segments: vec![],
+                sections: vec![
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Managing State".to_string(),
+                        id: "managing-state".to_string(),
+                        level: 1usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Creating State".to_string(),
+                        id: "creating-state".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Reactive Scopes".to_string(),
+                        id: "reactive-scopes".to_string(),
+                        level: 3usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Derived State".to_string(),
+                        id: "derived-state".to_string(),
+                        level: 3usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Derived Async State".to_string(),
+                        id: "derived-async-state".to_string(),
+                        level: 3usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Derived UI".to_string(),
+                        id: "derived-ui".to_string(),
+                        level: 3usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Working with Untracked State".to_string(),
+                        id: "working-with-untracked-state".to_string(),
+                        level: 3usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Making Props Reactive".to_string(),
+                        id: "making-props-reactive".to_string(),
+                        level: 3usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Moving Around State".to_string(),
+                        id: "moving-around-state".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Passing props".to_string(),
+                        id: "passing-props".to_string(),
+                        level: 3usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Passing context".to_string(),
+                        id: "passing-context".to_string(),
+                        level: 3usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Using globals".to_string(),
+                        id: "using-globals".to_string(),
+                        level: 3usize,
+                    },
+                ],
+                raw: String::new(),
+                id: ::use_mdbook::mdbook_shared::PageId(10usize),
+            }
+        }));
+        page_id_mapping.insert(
+            BookRoute::EssentialsStateIndex {},
+            ::use_mdbook::mdbook_shared::PageId(10usize),
+        );
+        pages.push((11usize, {
+            ::use_mdbook::mdbook_shared::Page {
+                title: "Breaking Out".to_string(),
+                url: BookRoute::EssentialsBreakingIndex {},
+                segments: vec![],
+                sections: vec![
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Breaking Out of Dioxus".to_string(),
+                        id: "breaking-out-of-dioxus".to_string(),
+                        level: 1usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Interacting with JavaScript with ".to_string(),
+                        id: "interacting-with-javascript-with".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Synchronizing DOM updates with ".to_string(),
+                        id: "synchronizing-dom-updates-with".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Getting access to elements with ".to_string(),
+                        id: "getting-access-to-elements-with".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Down casting web sys events".to_string(),
+                        id: "down-casting-web-sys-events".to_string(),
+                        level: 2usize,
+                    },
+                ],
+                raw: String::new(),
+                id: ::use_mdbook::mdbook_shared::PageId(11usize),
+            }
+        }));
+        page_id_mapping.insert(
+            BookRoute::EssentialsBreakingIndex {},
+            ::use_mdbook::mdbook_shared::PageId(11usize),
+        );
+        pages.push((12usize, {
+            ::use_mdbook::mdbook_shared::Page {
+                title: "Guides".to_string(),
+                url: BookRoute::ReferenceIndex {},
+                segments: vec![],
+                sections: vec![
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Dioxus Reference".to_string(),
+                        id: "dioxus-reference".to_string(),
+                        level: 1usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Rendering".to_string(),
+                        id: "rendering".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "State".to_string(),
+                        id: "state".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Platforms".to_string(),
+                        id: "platforms".to_string(),
+                        level: 2usize,
+                    },
+                ],
+                raw: String::new(),
+                id: ::use_mdbook::mdbook_shared::PageId(12usize),
+            }
+        }));
+        page_id_mapping.insert(
+            BookRoute::ReferenceIndex {},
+            ::use_mdbook::mdbook_shared::PageId(12usize),
+        );
+        pages.push((13usize, {
+            ::use_mdbook::mdbook_shared::Page {
+                title: "Router".to_string(),
+                url: BookRoute::RouterIndex {},
+                segments: vec![],
+                sections: vec![::use_mdbook::mdbook_shared::Section {
+                    title: "Introduction".to_string(),
+                    id: "introduction".to_string(),
+                    level: 1usize,
+                }],
+                raw: String::new(),
+                id: ::use_mdbook::mdbook_shared::PageId(13usize),
+            }
+        }));
+        page_id_mapping.insert(
+            BookRoute::RouterIndex {},
+            ::use_mdbook::mdbook_shared::PageId(13usize),
+        );
+        pages.push((14usize, {
+            ::use_mdbook::mdbook_shared::Page {
+                title: "Example Project".to_string(),
+                url: BookRoute::RouterExampleIndex {},
+                segments: vec![],
+                sections: vec![
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Overview".to_string(),
+                        id: "overview".to_string(),
+                        level: 1usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "You'll learn how to".to_string(),
+                        id: "you'll-learn-how-to".to_string(),
+                        level: 2usize,
+                    },
+                ],
+                raw: String::new(),
+                id: ::use_mdbook::mdbook_shared::PageId(14usize),
+            }
+        }));
+        page_id_mapping.insert(
+            BookRoute::RouterExampleIndex {},
+            ::use_mdbook::mdbook_shared::PageId(14usize),
+        );
+        pages.push((15usize, {
+            ::use_mdbook::mdbook_shared::Page {
+                title: "Creating Our First Route".to_string(),
+                url: BookRoute::RouterExampleFirstRoute {},
+                segments: vec![],
+                sections: vec![
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Creating Our First Route".to_string(),
+                        id: "creating-our-first-route".to_string(),
+                        level: 1usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Fundamentals".to_string(),
+                        id: "fundamentals".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Creating Routes".to_string(),
+                        id: "creating-routes".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Fallback Route".to_string(),
+                        id: "fallback-route".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Conclusion".to_string(),
+                        id: "conclusion".to_string(),
+                        level: 2usize,
+                    },
+                ],
+                raw: String::new(),
+                id: ::use_mdbook::mdbook_shared::PageId(15usize),
+            }
+        }));
+        page_id_mapping.insert(
+            BookRoute::RouterExampleFirstRoute {},
+            ::use_mdbook::mdbook_shared::PageId(15usize),
+        );
+        pages.push((16usize, {
+            ::use_mdbook::mdbook_shared::Page {
+                title: "Building a Nest".to_string(),
+                url: BookRoute::RouterExampleBuildingANest {},
+                segments: vec![],
+                sections: vec![
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Building a Nest".to_string(),
+                        id: "building-a-nest".to_string(),
+                        level: 1usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Site Navigation".to_string(),
+                        id: "site-navigation".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "URL Parameters and Nested Routes".to_string(),
+                        id: "url-parameters-and-nested-routes".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Conclusion".to_string(),
+                        id: "conclusion".to_string(),
+                        level: 2usize,
+                    },
+                ],
+                raw: String::new(),
+                id: ::use_mdbook::mdbook_shared::PageId(16usize),
+            }
+        }));
+        page_id_mapping.insert(
+            BookRoute::RouterExampleBuildingANest {},
+            ::use_mdbook::mdbook_shared::PageId(16usize),
+        );
+        pages.push((17usize, {
+            ::use_mdbook::mdbook_shared::Page {
+                title: "Navigation Targets".to_string(),
+                url: BookRoute::RouterExampleNavigationTargets {},
+                segments: vec![],
+                sections: vec![
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Navigation Targets".to_string(),
+                        id: "navigation-targets".to_string(),
+                        level: 1usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "What is a navigation target?".to_string(),
+                        id: "what-is-a-navigation-target?".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "External navigation".to_string(),
+                        id: "external-navigation".to_string(),
+                        level: 2usize,
+                    },
+                ],
+                raw: String::new(),
+                id: ::use_mdbook::mdbook_shared::PageId(17usize),
+            }
+        }));
+        page_id_mapping.insert(
+            BookRoute::RouterExampleNavigationTargets {},
+            ::use_mdbook::mdbook_shared::PageId(17usize),
+        );
+        pages.push((18usize, {
+            ::use_mdbook::mdbook_shared::Page {
+                title: "Redirection Perfection".to_string(),
+                url: BookRoute::RouterExampleRedirectionPerfection {},
+                segments: vec![],
+                sections: vec![
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Redirection Perfection".to_string(),
+                        id: "redirection-perfection".to_string(),
+                        level: 1usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Creating Redirects".to_string(),
+                        id: "creating-redirects".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Conclusion".to_string(),
+                        id: "conclusion".to_string(),
+                        level: 3usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Challenges".to_string(),
+                        id: "challenges".to_string(),
+                        level: 3usize,
+                    },
+                ],
+                raw: String::new(),
+                id: ::use_mdbook::mdbook_shared::PageId(18usize),
+            }
+        }));
+        page_id_mapping.insert(
+            BookRoute::RouterExampleRedirectionPerfection {},
+            ::use_mdbook::mdbook_shared::PageId(18usize),
+        );
+        pages.push((19usize, {
+            ::use_mdbook::mdbook_shared::Page {
+                title: "Full Code".to_string(),
+                url: BookRoute::RouterExampleFullCode {},
+                segments: vec![],
+                sections: vec![::use_mdbook::mdbook_shared::Section {
+                    title: "Full Code".to_string(),
+                    id: "full-code".to_string(),
+                    level: 1usize,
+                }],
+                raw: String::new(),
+                id: ::use_mdbook::mdbook_shared::PageId(19usize),
+            }
+        }));
+        page_id_mapping.insert(
+            BookRoute::RouterExampleFullCode {},
+            ::use_mdbook::mdbook_shared::PageId(19usize),
+        );
+        pages.push((20usize, {
+            ::use_mdbook::mdbook_shared::Page {
+                title: "Reference".to_string(),
+                url: BookRoute::RouterReferenceIndex {},
+                segments: vec![],
+                sections: vec![::use_mdbook::mdbook_shared::Section {
+                    title: "Adding the router to your application".to_string(),
+                    id: "adding-the-router-to-your-application".to_string(),
+                    level: 1usize,
+                }],
+                raw: String::new(),
+                id: ::use_mdbook::mdbook_shared::PageId(20usize),
+            }
+        }));
+        page_id_mapping.insert(
+            BookRoute::RouterReferenceIndex {},
+            ::use_mdbook::mdbook_shared::PageId(20usize),
+        );
+        pages.push((21usize, {
+            ::use_mdbook::mdbook_shared::Page {
+                title: "Defining Routes".to_string(),
+                url: BookRoute::RouterReferenceRoutesIndex {},
+                segments: vec![],
+                sections: vec![
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Defining Routes".to_string(),
+                        id: "defining-routes".to_string(),
+                        level: 1usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Route Segments".to_string(),
+                        id: "route-segments".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Static segments".to_string(),
+                        id: "static-segments".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Dynamic Segments".to_string(),
+                        id: "dynamic-segments".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Catch All Segments".to_string(),
+                        id: "catch-all-segments".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Query Segments".to_string(),
+                        id: "query-segments".to_string(),
+                        level: 2usize,
+                    },
+                ],
+                raw: String::new(),
+                id: ::use_mdbook::mdbook_shared::PageId(21usize),
+            }
+        }));
+        page_id_mapping.insert(
+            BookRoute::RouterReferenceRoutesIndex {},
+            ::use_mdbook::mdbook_shared::PageId(21usize),
+        );
+        pages.push((22usize, {
+            ::use_mdbook::mdbook_shared::Page {
+                title: "Nested Routes".to_string(),
+                url: BookRoute::RouterReferenceRoutesNested {},
+                segments: vec![],
+                sections: vec![
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Nested Routes".to_string(),
+                        id: "nested-routes".to_string(),
+                        level: 1usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Nesting".to_string(),
+                        id: "nesting".to_string(),
+                        level: 2usize,
+                    },
+                ],
+                raw: String::new(),
+                id: ::use_mdbook::mdbook_shared::PageId(22usize),
+            }
+        }));
+        page_id_mapping.insert(
+            BookRoute::RouterReferenceRoutesNested {},
+            ::use_mdbook::mdbook_shared::PageId(22usize),
+        );
+        pages.push((23usize, {
+            ::use_mdbook::mdbook_shared::Page {
+                title: "Layouts".to_string(),
+                url: BookRoute::RouterReferenceLayouts {},
+                segments: vec![],
+                sections: vec![
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Layouts".to_string(),
+                        id: "layouts".to_string(),
+                        level: 1usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Layouts with dynamic segments".to_string(),
+                        id: "layouts-with-dynamic-segments".to_string(),
+                        level: 2usize,
+                    },
+                ],
+                raw: String::new(),
+                id: ::use_mdbook::mdbook_shared::PageId(23usize),
+            }
+        }));
+        page_id_mapping.insert(
+            BookRoute::RouterReferenceLayouts {},
+            ::use_mdbook::mdbook_shared::PageId(23usize),
+        );
+        pages.push((24usize, {
+            ::use_mdbook::mdbook_shared::Page {
+                title: "Navigation".to_string(),
+                url: BookRoute::RouterReferenceNavigationIndex {},
+                segments: vec![],
+                sections: vec![::use_mdbook::mdbook_shared::Section {
+                    title: "Links & Navigation".to_string(),
+                    id: "links-&-navigation".to_string(),
+                    level: 1usize,
+                }],
+                raw: String::new(),
+                id: ::use_mdbook::mdbook_shared::PageId(24usize),
+            }
+        }));
+        page_id_mapping.insert(
+            BookRoute::RouterReferenceNavigationIndex {},
+            ::use_mdbook::mdbook_shared::PageId(24usize),
+        );
+        pages.push((25usize, {
+            ::use_mdbook::mdbook_shared::Page {
+                title: "Programmatic Navigation".to_string(),
+                url: BookRoute::RouterReferenceNavigationProgrammatic {},
+                segments: vec![],
+                sections: vec![
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Programmatic Navigation".to_string(),
+                        id: "programmatic-navigation".to_string(),
+                        level: 1usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Using a Navigator".to_string(),
+                        id: "using-a-navigator".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "External Navigation Targets".to_string(),
+                        id: "external-navigation-targets".to_string(),
+                        level: 2usize,
+                    },
+                ],
+                raw: String::new(),
+                id: ::use_mdbook::mdbook_shared::PageId(25usize),
+            }
+        }));
+        page_id_mapping.insert(
+            BookRoute::RouterReferenceNavigationProgrammatic {},
+            ::use_mdbook::mdbook_shared::PageId(25usize),
+        );
+        pages.push((26usize, {
+            ::use_mdbook::mdbook_shared::Page {
+                title: "History Providers".to_string(),
+                url: BookRoute::RouterReferenceHistoryProviders {},
+                segments: vec![],
+                sections: vec![::use_mdbook::mdbook_shared::Section {
+                    title: "History Providers".to_string(),
+                    id: "history-providers".to_string(),
+                    level: 1usize,
+                }],
+                raw: String::new(),
+                id: ::use_mdbook::mdbook_shared::PageId(26usize),
+            }
+        }));
+        page_id_mapping.insert(
+            BookRoute::RouterReferenceHistoryProviders {},
+            ::use_mdbook::mdbook_shared::PageId(26usize),
+        );
+        pages.push((27usize, {
+            ::use_mdbook::mdbook_shared::Page {
+                title: "History Buttons".to_string(),
+                url: BookRoute::RouterReferenceHistoryButtons {},
+                segments: vec![],
+                sections: vec![::use_mdbook::mdbook_shared::Section {
+                    title: "History Buttons".to_string(),
+                    id: "history-buttons".to_string(),
+                    level: 1usize,
+                }],
+                raw: String::new(),
+                id: ::use_mdbook::mdbook_shared::PageId(27usize),
+            }
+        }));
+        page_id_mapping.insert(
+            BookRoute::RouterReferenceHistoryButtons {},
+            ::use_mdbook::mdbook_shared::PageId(27usize),
+        );
+        pages.push((28usize, {
+            ::use_mdbook::mdbook_shared::Page {
+                title: "Routing Update Callback".to_string(),
+                url: BookRoute::RouterReferenceRoutingUpdateCallback {},
+                segments: vec![],
+                sections: vec![
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Routing Update Callback".to_string(),
+                        id: "routing-update-callback".to_string(),
+                        level: 1usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "How does the callback behave?".to_string(),
+                        id: "how-does-the-callback-behave?".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Code Example".to_string(),
+                        id: "code-example".to_string(),
+                        level: 2usize,
+                    },
+                ],
+                raw: String::new(),
+                id: ::use_mdbook::mdbook_shared::PageId(28usize),
+            }
+        }));
+        page_id_mapping.insert(
+            BookRoute::RouterReferenceRoutingUpdateCallback {},
+            ::use_mdbook::mdbook_shared::PageId(28usize),
+        );
+        pages.push((29usize, {
+            ::use_mdbook::mdbook_shared::Page {
+                title: "Assets".to_string(),
+                url: BookRoute::ReferenceAssets {},
+                segments: vec![],
+                sections: vec![
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Assets".to_string(),
+                        id: "assets".to_string(),
+                        level: 1usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Including images".to_string(),
+                        id: "including-images".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Including arbitrary files".to_string(),
+                        id: "including-arbitrary-files".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Including stylesheets".to_string(),
+                        id: "including-stylesheets".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Conclusion".to_string(),
+                        id: "conclusion".to_string(),
+                        level: 2usize,
+                    },
+                ],
+                raw: String::new(),
+                id: ::use_mdbook::mdbook_shared::PageId(29usize),
+            }
+        }));
+        page_id_mapping.insert(
+            BookRoute::ReferenceAssets {},
+            ::use_mdbook::mdbook_shared::PageId(29usize),
+        );
+        pages.push((30usize, {
+            ::use_mdbook::mdbook_shared::Page {
+                title: "Web".to_string(),
+                url: BookRoute::ReferenceWebIndex {},
+                segments: vec![],
+                sections: vec![
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Web".to_string(),
+                        id: "web".to_string(),
+                        level: 1usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Support".to_string(),
+                        id: "support".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Running Javascript".to_string(),
+                        id: "running-javascript".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Customizing Index Template".to_string(),
+                        id: "customizing-index-template".to_string(),
+                        level: 2usize,
+                    },
+                ],
+                raw: String::new(),
+                id: ::use_mdbook::mdbook_shared::PageId(30usize),
+            }
+        }));
+        page_id_mapping.insert(
+            BookRoute::ReferenceWebIndex {},
+            ::use_mdbook::mdbook_shared::PageId(30usize),
+        );
+        pages.push((31usize, {
+            ::use_mdbook::mdbook_shared::Page {
+                title: "Desktop".to_string(),
+                url: BookRoute::ReferenceDesktopIndex {},
+                segments: vec![],
+                sections: vec![
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Desktop".to_string(),
+                        id: "desktop".to_string(),
+                        level: 1usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
                         title: "Examples".to_string(),
-                        url: BookRoute::CookbookExamples {},
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Examples".to_string(),
-                                id: "examples".to_string(),
-                                level: 1usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(51usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::CookbookExamples {},
-                ::use_mdbook::mdbook_shared::PageId(51usize),
-            );
-        pages
-            .push((
-                52usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
+                        id: "examples".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Running Javascript".to_string(),
+                        id: "running-javascript".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Custom Assets".to_string(),
+                        id: "custom-assets".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Integrating with Wry".to_string(),
+                        id: "integrating-with-wry".to_string(),
+                        level: 2usize,
+                    },
+                ],
+                raw: String::new(),
+                id: ::use_mdbook::mdbook_shared::PageId(31usize),
+            }
+        }));
+        page_id_mapping.insert(
+            BookRoute::ReferenceDesktopIndex {},
+            ::use_mdbook::mdbook_shared::PageId(31usize),
+        );
+        pages.push((32usize, {
+            ::use_mdbook::mdbook_shared::Page {
+                title: "Mobile".to_string(),
+                url: BookRoute::ReferenceMobileIndex {},
+                segments: vec![],
+                sections: vec![
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Mobile App".to_string(),
+                        id: "mobile-app".to_string(),
+                        level: 1usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Support".to_string(),
+                        id: "support".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Getting Set up".to_string(),
+                        id: "getting-set-up".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Setting up dependencies".to_string(),
+                        id: "setting-up-dependencies".to_string(),
+                        level: 3usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Android".to_string(),
+                        id: "android".to_string(),
+                        level: 4usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "IOS".to_string(),
+                        id: "ios".to_string(),
+                        level: 4usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Setting up your project".to_string(),
+                        id: "setting-up-your-project".to_string(),
+                        level: 3usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Running".to_string(),
+                        id: "running".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Android".to_string(),
+                        id: "android".to_string(),
+                        level: 3usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "IOS".to_string(),
+                        id: "ios".to_string(),
+                        level: 3usize,
+                    },
+                ],
+                raw: String::new(),
+                id: ::use_mdbook::mdbook_shared::PageId(32usize),
+            }
+        }));
+        page_id_mapping.insert(
+            BookRoute::ReferenceMobileIndex {},
+            ::use_mdbook::mdbook_shared::PageId(32usize),
+        );
+        pages.push((33usize, {
+            ::use_mdbook::mdbook_shared::Page {
+                title: "APIs".to_string(),
+                url: BookRoute::ReferenceMobileApis {},
+                segments: vec![],
+                sections: vec![
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Mobile".to_string(),
+                        id: "mobile".to_string(),
+                        level: 1usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Running Javascript".to_string(),
+                        id: "running-javascript".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Custom Assets".to_string(),
+                        id: "custom-assets".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Integrating with Wry".to_string(),
+                        id: "integrating-with-wry".to_string(),
+                        level: 2usize,
+                    },
+                ],
+                raw: String::new(),
+                id: ::use_mdbook::mdbook_shared::PageId(33usize),
+            }
+        }));
+        page_id_mapping.insert(
+            BookRoute::ReferenceMobileApis {},
+            ::use_mdbook::mdbook_shared::PageId(33usize),
+        );
+        pages.push((34usize, {
+            ::use_mdbook::mdbook_shared::Page {
+                title: "Streaming and SSR".to_string(),
+                url: BookRoute::ReferenceSsr {},
+                segments: vec![],
+                sections: vec![
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Server-Side Rendering".to_string(),
+                        id: "server-side-rendering".to_string(),
+                        level: 1usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Setup".to_string(),
+                        id: "setup".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Multithreaded Support".to_string(),
+                        id: "multithreaded-support".to_string(),
+                        level: 2usize,
+                    },
+                ],
+                raw: String::new(),
+                id: ::use_mdbook::mdbook_shared::PageId(34usize),
+            }
+        }));
+        page_id_mapping.insert(
+            BookRoute::ReferenceSsr {},
+            ::use_mdbook::mdbook_shared::PageId(34usize),
+        );
+        pages.push((35usize, {
+            ::use_mdbook::mdbook_shared::Page {
+                title: "Fullstack".to_string(),
+                url: BookRoute::ReferenceFullstackIndex {},
+                segments: vec![],
+                sections: vec![::use_mdbook::mdbook_shared::Section {
+                    title: "Fullstack development".to_string(),
+                    id: "fullstack-development".to_string(),
+                    level: 1usize,
+                }],
+                raw: String::new(),
+                id: ::use_mdbook::mdbook_shared::PageId(35usize),
+            }
+        }));
+        page_id_mapping.insert(
+            BookRoute::ReferenceFullstackIndex {},
+            ::use_mdbook::mdbook_shared::PageId(35usize),
+        );
+        pages.push((36usize, {
+            ::use_mdbook::mdbook_shared::Page {
+                title: "Server Functions".to_string(),
+                url: BookRoute::ReferenceFullstackServerFunctions {},
+                segments: vec![],
+                sections: vec![
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Communicating with the server".to_string(),
+                        id: "communicating-with-the-server".to_string(),
+                        level: 1usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Cached data fetching".to_string(),
+                        id: "cached-data-fetching".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Running the client with dioxus-desktop".to_string(),
+                        id: "running-the-client-with-dioxus-desktop".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Client code".to_string(),
+                        id: "client-code".to_string(),
+                        level: 3usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Server code".to_string(),
+                        id: "server-code".to_string(),
+                        level: 3usize,
+                    },
+                ],
+                raw: String::new(),
+                id: ::use_mdbook::mdbook_shared::PageId(36usize),
+            }
+        }));
+        page_id_mapping.insert(
+            BookRoute::ReferenceFullstackServerFunctions {},
+            ::use_mdbook::mdbook_shared::PageId(36usize),
+        );
+        pages.push((37usize, {
+            ::use_mdbook::mdbook_shared::Page {
+                title: "Extractors".to_string(),
+                url: BookRoute::ReferenceFullstackExtractors {},
+                segments: vec![],
+                sections: vec![::use_mdbook::mdbook_shared::Section {
+                    title: "Extractors".to_string(),
+                    id: "extractors".to_string(),
+                    level: 1usize,
+                }],
+                raw: String::new(),
+                id: ::use_mdbook::mdbook_shared::PageId(37usize),
+            }
+        }));
+        page_id_mapping.insert(
+            BookRoute::ReferenceFullstackExtractors {},
+            ::use_mdbook::mdbook_shared::PageId(37usize),
+        );
+        pages.push((38usize, {
+            ::use_mdbook::mdbook_shared::Page {
+                title: "Middleware".to_string(),
+                url: BookRoute::ReferenceFullstackMiddleware {},
+                segments: vec![],
+                sections: vec![::use_mdbook::mdbook_shared::Section {
+                    title: "Middleware".to_string(),
+                    id: "middleware".to_string(),
+                    level: 1usize,
+                }],
+                raw: String::new(),
+                id: ::use_mdbook::mdbook_shared::PageId(38usize),
+            }
+        }));
+        page_id_mapping.insert(
+            BookRoute::ReferenceFullstackMiddleware {},
+            ::use_mdbook::mdbook_shared::PageId(38usize),
+        );
+        pages.push((39usize, {
+            ::use_mdbook::mdbook_shared::Page {
+                title: "Authentication".to_string(),
+                url: BookRoute::ReferenceFullstackAuthentication {},
+                segments: vec![],
+                sections: vec![::use_mdbook::mdbook_shared::Section {
+                    title: "Authentication".to_string(),
+                    id: "authentication".to_string(),
+                    level: 1usize,
+                }],
+                raw: String::new(),
+                id: ::use_mdbook::mdbook_shared::PageId(39usize),
+            }
+        }));
+        page_id_mapping.insert(
+            BookRoute::ReferenceFullstackAuthentication {},
+            ::use_mdbook::mdbook_shared::PageId(39usize),
+        );
+        pages.push((40usize, {
+            ::use_mdbook::mdbook_shared::Page {
+                title: "Routing".to_string(),
+                url: BookRoute::ReferenceFullstackRouting {},
+                segments: vec![],
+                sections: vec![::use_mdbook::mdbook_shared::Section {
+                    title: "Routing".to_string(),
+                    id: "routing".to_string(),
+                    level: 1usize,
+                }],
+                raw: String::new(),
+                id: ::use_mdbook::mdbook_shared::PageId(40usize),
+            }
+        }));
+        page_id_mapping.insert(
+            BookRoute::ReferenceFullstackRouting {},
+            ::use_mdbook::mdbook_shared::PageId(40usize),
+        );
+        pages.push((41usize, {
+            ::use_mdbook::mdbook_shared::Page {
+                title: "Publishing".to_string(),
+                url: BookRoute::CookbookPublishing {},
+                segments: vec![],
+                sections: vec![
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Publishing".to_string(),
+                        id: "publishing".to_string(),
+                        level: 1usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Web: Publishing with GitHub Pages".to_string(),
+                        id: "web:-publishing-with-github-pages".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Desktop: Creating an installer".to_string(),
+                        id: "desktop:-creating-an-installer".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Preparing your application for bundling".to_string(),
+                        id: "preparing-your-application-for-bundling".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Adding assets to your application".to_string(),
+                        id: "adding-assets-to-your-application".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Install ".to_string(),
+                        id: "install".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Building".to_string(),
+                        id: "building".to_string(),
+                        level: 2usize,
+                    },
+                ],
+                raw: String::new(),
+                id: ::use_mdbook::mdbook_shared::PageId(41usize),
+            }
+        }));
+        page_id_mapping.insert(
+            BookRoute::CookbookPublishing {},
+            ::use_mdbook::mdbook_shared::PageId(41usize),
+        );
+        pages.push((42usize, {
+            ::use_mdbook::mdbook_shared::Page {
+                title: "Anti-patterns".to_string(),
+                url: BookRoute::CookbookAntipatterns {},
+                segments: vec![],
+                sections: vec![
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Antipatterns".to_string(),
+                        id: "antipatterns".to_string(),
+                        level: 1usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Unnecessarily Nested Fragments".to_string(),
+                        id: "unnecessarily-nested-fragments".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Incorrect Iterator Keys".to_string(),
+                        id: "incorrect-iterator-keys".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Avoid Interior Mutability in Props".to_string(),
+                        id: "avoid-interior-mutability-in-props".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Avoid Updating State During Render".to_string(),
+                        id: "avoid-updating-state-during-render".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Avoid Large Groups of State".to_string(),
+                        id: "avoid-large-groups-of-state".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Running Non-Deterministic Code in the Body of a Component"
+                            .to_string(),
+                        id: "running-non-deterministic-code-in-the-body-of-a-component".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Overly Permissive PartialEq for Props".to_string(),
+                        id: "overly-permissive-partialeq-for-props".to_string(),
+                        level: 2usize,
+                    },
+                ],
+                raw: String::new(),
+                id: ::use_mdbook::mdbook_shared::PageId(42usize),
+            }
+        }));
+        page_id_mapping.insert(
+            BookRoute::CookbookAntipatterns {},
+            ::use_mdbook::mdbook_shared::PageId(42usize),
+        );
+        pages.push((43usize, {
+            ::use_mdbook::mdbook_shared::Page {
+                title: "Error Handling".to_string(),
+                url: BookRoute::CookbookErrorHandling {},
+                segments: vec![],
+                sections: vec![
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Error handling".to_string(),
+                        id: "error-handling".to_string(),
+                        level: 1usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "The simplest – returning None".to_string(),
+                        id: "the-simplest-–-returning-none".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Early return on result".to_string(),
+                        id: "early-return-on-result".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Match results".to_string(),
+                        id: "match-results".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Passing error states through components".to_string(),
+                        id: "passing-error-states-through-components".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Throwing errors".to_string(),
+                        id: "throwing-errors".to_string(),
+                        level: 2usize,
+                    },
+                ],
+                raw: String::new(),
+                id: ::use_mdbook::mdbook_shared::PageId(43usize),
+            }
+        }));
+        page_id_mapping.insert(
+            BookRoute::CookbookErrorHandling {},
+            ::use_mdbook::mdbook_shared::PageId(43usize),
+        );
+        pages.push((44usize, {
+            ::use_mdbook::mdbook_shared::Page {
+                title: "Integrations".to_string(),
+                url: BookRoute::CookbookIntegrationsIndex {},
+                segments: vec![],
+                sections: vec![],
+                raw: String::new(),
+                id: ::use_mdbook::mdbook_shared::PageId(44usize),
+            }
+        }));
+        page_id_mapping.insert(
+            BookRoute::CookbookIntegrationsIndex {},
+            ::use_mdbook::mdbook_shared::PageId(44usize),
+        );
+        pages.push((45usize, {
+            ::use_mdbook::mdbook_shared::Page {
+                title: "Logging".to_string(),
+                url: BookRoute::CookbookIntegrationsLogging {},
+                segments: vec![],
+                sections: vec![
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Logging".to_string(),
+                        id: "logging".to_string(),
+                        level: 1usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "The Tracing Crate".to_string(),
+                        id: "the-tracing-crate".to_string(),
+                        level: 4usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Dioxus Logger".to_string(),
+                        id: "dioxus-logger".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Platform Intricacies".to_string(),
+                        id: "platform-intricacies".to_string(),
+                        level: 4usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Final Notes".to_string(),
+                        id: "final-notes".to_string(),
+                        level: 4usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Desktop and Server".to_string(),
+                        id: "desktop-and-server".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Web".to_string(),
+                        id: "web".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Mobile".to_string(),
+                        id: "mobile".to_string(),
+                        level: 1usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Android".to_string(),
+                        id: "android".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Viewing Logs".to_string(),
+                        id: "viewing-logs".to_string(),
+                        level: 4usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "iOS".to_string(),
+                        id: "ios".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Viewing Logs".to_string(),
+                        id: "viewing-logs".to_string(),
+                        level: 4usize,
+                    },
+                ],
+                raw: String::new(),
+                id: ::use_mdbook::mdbook_shared::PageId(45usize),
+            }
+        }));
+        page_id_mapping.insert(
+            BookRoute::CookbookIntegrationsLogging {},
+            ::use_mdbook::mdbook_shared::PageId(45usize),
+        );
+        pages.push((46usize, {
+            ::use_mdbook::mdbook_shared::Page {
+                title: "Internationalization".to_string(),
+                url: BookRoute::CookbookIntegrationsInternationalization {},
+                segments: vec![],
+                sections: vec![
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Internationalization".to_string(),
+                        id: "internationalization".to_string(),
+                        level: 1usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "The full code for internationalization".to_string(),
+                        id: "the-full-code-for-internationalization".to_string(),
+                        level: 2usize,
+                    },
+                ],
+                raw: String::new(),
+                id: ::use_mdbook::mdbook_shared::PageId(46usize),
+            }
+        }));
+        page_id_mapping.insert(
+            BookRoute::CookbookIntegrationsInternationalization {},
+            ::use_mdbook::mdbook_shared::PageId(46usize),
+        );
+        pages.push((47usize, {
+            ::use_mdbook::mdbook_shared::Page {
+                title: "State Management".to_string(),
+                url: BookRoute::CookbookStateIndex {},
+                segments: vec![],
+                sections: vec![::use_mdbook::mdbook_shared::Section {
+                    title: "State Cookbook".to_string(),
+                    id: "state-cookbook".to_string(),
+                    level: 1usize,
+                }],
+                raw: String::new(),
+                id: ::use_mdbook::mdbook_shared::PageId(47usize),
+            }
+        }));
+        page_id_mapping.insert(
+            BookRoute::CookbookStateIndex {},
+            ::use_mdbook::mdbook_shared::PageId(47usize),
+        );
+        pages.push((48usize, {
+            ::use_mdbook::mdbook_shared::Page {
+                title: "External State".to_string(),
+                url: BookRoute::CookbookStateExternalIndex {},
+                segments: vec![],
+                sections: vec![
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Working with External State".to_string(),
+                        id: "working-with-external-state".to_string(),
+                        level: 1usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Working with non-reactive State".to_string(),
+                        id: "working-with-non-reactive-state".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Making Reactive State External".to_string(),
+                        id: "making-reactive-state-external".to_string(),
+                        level: 2usize,
+                    },
+                ],
+                raw: String::new(),
+                id: ::use_mdbook::mdbook_shared::PageId(48usize),
+            }
+        }));
+        page_id_mapping.insert(
+            BookRoute::CookbookStateExternalIndex {},
+            ::use_mdbook::mdbook_shared::PageId(48usize),
+        );
+        pages.push((49usize, {
+            ::use_mdbook::mdbook_shared::Page {
+                title: "Custom Hooks".to_string(),
+                url: BookRoute::CookbookStateCustomHooksIndex {},
+                segments: vec![],
+                sections: vec![
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Custom Hooks".to_string(),
+                        id: "custom-hooks".to_string(),
+                        level: 1usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Composing Hooks".to_string(),
+                        id: "composing-hooks".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Custom Hook Logic".to_string(),
+                        id: "custom-hook-logic".to_string(),
+                        level: 2usize,
+                    },
+                ],
+                raw: String::new(),
+                id: ::use_mdbook::mdbook_shared::PageId(49usize),
+            }
+        }));
+        page_id_mapping.insert(
+            BookRoute::CookbookStateCustomHooksIndex {},
+            ::use_mdbook::mdbook_shared::PageId(49usize),
+        );
+        pages.push((50usize, {
+            ::use_mdbook::mdbook_shared::Page {
+                title: "Testing".to_string(),
+                url: BookRoute::CookbookTesting {},
+                segments: vec![],
+                sections: vec![
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Testing".to_string(),
+                        id: "testing".to_string(),
+                        level: 1usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Component Testing".to_string(),
+                        id: "component-testing".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Hook Testing".to_string(),
+                        id: "hook-testing".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "End to End Testing".to_string(),
+                        id: "end-to-end-testing".to_string(),
+                        level: 2usize,
+                    },
+                ],
+                raw: String::new(),
+                id: ::use_mdbook::mdbook_shared::PageId(50usize),
+            }
+        }));
+        page_id_mapping.insert(
+            BookRoute::CookbookTesting {},
+            ::use_mdbook::mdbook_shared::PageId(50usize),
+        );
+        pages.push((51usize, {
+            ::use_mdbook::mdbook_shared::Page {
+                title: "Examples".to_string(),
+                url: BookRoute::CookbookExamples {},
+                segments: vec![],
+                sections: vec![::use_mdbook::mdbook_shared::Section {
+                    title: "Examples".to_string(),
+                    id: "examples".to_string(),
+                    level: 1usize,
+                }],
+                raw: String::new(),
+                id: ::use_mdbook::mdbook_shared::PageId(51usize),
+            }
+        }));
+        page_id_mapping.insert(
+            BookRoute::CookbookExamples {},
+            ::use_mdbook::mdbook_shared::PageId(51usize),
+        );
+        pages.push((52usize, {
+            ::use_mdbook::mdbook_shared::Page {
+                title: "Tailwind".to_string(),
+                url: BookRoute::CookbookTailwind {},
+                segments: vec![],
+                sections: vec![
+                    ::use_mdbook::mdbook_shared::Section {
                         title: "Tailwind".to_string(),
-                        url: BookRoute::CookbookTailwind {},
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Tailwind".to_string(),
-                                id: "tailwind".to_string(),
-                                level: 1usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Setup".to_string(),
-                                id: "setup".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Bonus Steps".to_string(),
-                                id: "bonus-steps".to_string(),
-                                level: 3usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Development".to_string(),
-                                id: "development".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Web".to_string(),
-                                id: "web".to_string(),
-                                level: 3usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Desktop".to_string(),
-                                id: "desktop".to_string(),
-                                level: 3usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(52usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::CookbookTailwind {},
-                ::use_mdbook::mdbook_shared::PageId(52usize),
-            );
-        pages
-            .push((
-                53usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
+                        id: "tailwind".to_string(),
+                        level: 1usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Setup".to_string(),
+                        id: "setup".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Bonus Steps".to_string(),
+                        id: "bonus-steps".to_string(),
+                        level: 3usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Development".to_string(),
+                        id: "development".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Web".to_string(),
+                        id: "web".to_string(),
+                        level: 3usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Desktop".to_string(),
+                        id: "desktop".to_string(),
+                        level: 3usize,
+                    },
+                ],
+                raw: String::new(),
+                id: ::use_mdbook::mdbook_shared::PageId(52usize),
+            }
+        }));
+        page_id_mapping.insert(
+            BookRoute::CookbookTailwind {},
+            ::use_mdbook::mdbook_shared::PageId(52usize),
+        );
+        pages.push((53usize, {
+            ::use_mdbook::mdbook_shared::Page {
+                title: "Optimizing".to_string(),
+                url: BookRoute::CookbookOptimizing {},
+                segments: vec![],
+                sections: vec![
+                    ::use_mdbook::mdbook_shared::Section {
                         title: "Optimizing".to_string(),
-                        url: BookRoute::CookbookOptimizing {},
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Optimizing".to_string(),
-                                id: "optimizing".to_string(),
-                                level: 1usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Building in release mode".to_string(),
-                                id: "building-in-release-mode".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "UPX".to_string(),
-                                id: "upx".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Build configuration".to_string(),
-                                id: "build-configuration".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Stable".to_string(),
-                                id: "stable".to_string(),
-                                level: 3usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Unstable".to_string(),
-                                id: "unstable".to_string(),
-                                level: 3usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "wasm-opt".to_string(),
-                                id: "wasm-opt".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Improving Dioxus code".to_string(),
-                                id: "improving-dioxus-code".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Optimizing the size of assets".to_string(),
-                                id: "optimizing-the-size-of-assets".to_string(),
-                                level: 2usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(53usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::CookbookOptimizing {},
-                ::use_mdbook::mdbook_shared::PageId(53usize),
-            );
-        pages
-            .push((
-                54usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
+                        id: "optimizing".to_string(),
+                        level: 1usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Building in release mode".to_string(),
+                        id: "building-in-release-mode".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "UPX".to_string(),
+                        id: "upx".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Build configuration".to_string(),
+                        id: "build-configuration".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Stable".to_string(),
+                        id: "stable".to_string(),
+                        level: 3usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Unstable".to_string(),
+                        id: "unstable".to_string(),
+                        level: 3usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "wasm-opt".to_string(),
+                        id: "wasm-opt".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Improving Dioxus code".to_string(),
+                        id: "improving-dioxus-code".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Optimizing the size of assets".to_string(),
+                        id: "optimizing-the-size-of-assets".to_string(),
+                        level: 2usize,
+                    },
+                ],
+                raw: String::new(),
+                id: ::use_mdbook::mdbook_shared::PageId(53usize),
+            }
+        }));
+        page_id_mapping.insert(
+            BookRoute::CookbookOptimizing {},
+            ::use_mdbook::mdbook_shared::PageId(53usize),
+        );
+        pages.push((54usize, {
+            ::use_mdbook::mdbook_shared::Page {
+                title: "Contributing".to_string(),
+                url: BookRoute::ContributingIndex {},
+                segments: vec![],
+                sections: vec![
+                    ::use_mdbook::mdbook_shared::Section {
                         title: "Contributing".to_string(),
-                        url: BookRoute::ContributingIndex {},
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Contributing".to_string(),
-                                id: "contributing".to_string(),
-                                level: 1usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Improving Docs".to_string(),
-                                id: "improving-docs".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Working on the Ecosystem".to_string(),
-                                id: "working-on-the-ecosystem".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Bugs & Features".to_string(),
-                                id: "bugs-&-features".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Before you contribute".to_string(),
-                                id: "before-you-contribute".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "How to test dioxus with local crate".to_string(),
-                                id: "how-to-test-dioxus-with-local-crate".to_string(),
-                                level: 2usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(54usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::ContributingIndex {},
-                ::use_mdbook::mdbook_shared::PageId(54usize),
-            );
-        pages
-            .push((
-                55usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
+                        id: "contributing".to_string(),
+                        level: 1usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Improving Docs".to_string(),
+                        id: "improving-docs".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Working on the Ecosystem".to_string(),
+                        id: "working-on-the-ecosystem".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Bugs & Features".to_string(),
+                        id: "bugs-&-features".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Before you contribute".to_string(),
+                        id: "before-you-contribute".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "How to test dioxus with local crate".to_string(),
+                        id: "how-to-test-dioxus-with-local-crate".to_string(),
+                        level: 2usize,
+                    },
+                ],
+                raw: String::new(),
+                id: ::use_mdbook::mdbook_shared::PageId(54usize),
+            }
+        }));
+        page_id_mapping.insert(
+            BookRoute::ContributingIndex {},
+            ::use_mdbook::mdbook_shared::PageId(54usize),
+        );
+        pages.push((55usize, {
+            ::use_mdbook::mdbook_shared::Page {
+                title: "Project Structure".to_string(),
+                url: BookRoute::ContributingProjectStructure {},
+                segments: vec![],
+                sections: vec![
+                    ::use_mdbook::mdbook_shared::Section {
                         title: "Project Structure".to_string(),
-                        url: BookRoute::ContributingProjectStructure {
-                        },
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Project Structure".to_string(),
-                                id: "project-structure".to_string(),
-                                level: 1usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Renderers".to_string(),
-                                id: "renderers".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "State Management/Hooks".to_string(),
-                                id: "state-management/hooks".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Core utilities".to_string(),
-                                id: "core-utilities".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Native Renderer Utilities".to_string(),
-                                id: "native-renderer-utilities".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Web renderer tooling".to_string(),
-                                id: "web-renderer-tooling".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Developer tooling".to_string(),
-                                id: "developer-tooling".to_string(),
-                                level: 2usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(55usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::ContributingProjectStructure {
-                },
-                ::use_mdbook::mdbook_shared::PageId(55usize),
-            );
-        pages
-            .push((
-                56usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "Guiding Principles".to_string(),
-                        url: BookRoute::ContributingGuidingPrinciples {
-                        },
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Overall Goals".to_string(),
-                                id: "overall-goals".to_string(),
-                                level: 1usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Cross-Platform".to_string(),
-                                id: "cross-platform".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Performance".to_string(),
-                                id: "performance".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Type Safety".to_string(),
-                                id: "type-safety".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Developer Experience".to_string(),
-                                id: "developer-experience".to_string(),
-                                level: 2usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(56usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::ContributingGuidingPrinciples {
-                },
-                ::use_mdbook::mdbook_shared::PageId(56usize),
-            );
-        pages
-            .push((
-                57usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "Roadmap".to_string(),
-                        url: BookRoute::ContributingRoadmap {},
-                        segments: vec![],
-                        sections: vec![],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(57usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::ContributingRoadmap {},
-                ::use_mdbook::mdbook_shared::PageId(57usize),
-            );
+                        id: "project-structure".to_string(),
+                        level: 1usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Renderers".to_string(),
+                        id: "renderers".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "State Management/Hooks".to_string(),
+                        id: "state-management/hooks".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Core utilities".to_string(),
+                        id: "core-utilities".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Native Renderer Utilities".to_string(),
+                        id: "native-renderer-utilities".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Web renderer tooling".to_string(),
+                        id: "web-renderer-tooling".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Developer tooling".to_string(),
+                        id: "developer-tooling".to_string(),
+                        level: 2usize,
+                    },
+                ],
+                raw: String::new(),
+                id: ::use_mdbook::mdbook_shared::PageId(55usize),
+            }
+        }));
+        page_id_mapping.insert(
+            BookRoute::ContributingProjectStructure {},
+            ::use_mdbook::mdbook_shared::PageId(55usize),
+        );
+        pages.push((56usize, {
+            ::use_mdbook::mdbook_shared::Page {
+                title: "Guiding Principles".to_string(),
+                url: BookRoute::ContributingGuidingPrinciples {},
+                segments: vec![],
+                sections: vec![
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Overall Goals".to_string(),
+                        id: "overall-goals".to_string(),
+                        level: 1usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Cross-Platform".to_string(),
+                        id: "cross-platform".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Performance".to_string(),
+                        id: "performance".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Type Safety".to_string(),
+                        id: "type-safety".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Developer Experience".to_string(),
+                        id: "developer-experience".to_string(),
+                        level: 2usize,
+                    },
+                ],
+                raw: String::new(),
+                id: ::use_mdbook::mdbook_shared::PageId(56usize),
+            }
+        }));
+        page_id_mapping.insert(
+            BookRoute::ContributingGuidingPrinciples {},
+            ::use_mdbook::mdbook_shared::PageId(56usize),
+        );
+        pages.push((57usize, {
+            ::use_mdbook::mdbook_shared::Page {
+                title: "Roadmap".to_string(),
+                url: BookRoute::ContributingRoadmap {},
+                segments: vec![],
+                sections: vec![],
+                raw: String::new(),
+                id: ::use_mdbook::mdbook_shared::PageId(57usize),
+            }
+        }));
+        page_id_mapping.insert(
+            BookRoute::ContributingRoadmap {},
+            ::use_mdbook::mdbook_shared::PageId(57usize),
+        );
         ::use_mdbook::mdbook_shared::MdBook {
             summary: ::use_mdbook::mdbook_shared::Summary {
                 title: Some("Summary".to_string()),
@@ -3295,8 +2860,7 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
             pages: pages.into_iter().collect(),
             page_id_mapping,
         }
-    }
-});
+    });
 #[component(no_case_check)]
 pub fn Index() -> dioxus::prelude::Element {
     use dioxus::prelude::*;
@@ -4974,7 +4538,7 @@ pub fn EssentialsBreakingIndex() -> dioxus::prelude::Element {
             " method to get the underlying web-sys event:"
         }
         CodeBlock {
-            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f92672;\">use </span><span style=\"color:#f8f8f2;\">dioxus::web::WebEventExt;\n</span><span style=\"color:#f92672;\">pub </span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">Downcast</span><span style=\"color:#f8f8f2;\">() -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let </span><span style=\"color:#f92672;\">mut</span><span style=\"color:#f8f8f2;\"> event_text </span><span style=\"color:#f92672;\">= </span><span style=\"color:#66d9ef;\">use_signal</span><span style=\"color:#f8f8f2;\">(|| </span><span style=\"color:#ff80f4;\">0</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">    rsx! {{\n</span><span style=\"color:#f8f8f2;\">        div {{\n</span><span style=\"color:#f8f8f2;\">            onmousemove: </span><span style=\"color:#f92672;\">move |</span><span style=\"color:#f8f8f2;\">event</span><span style=\"color:#f92672;\">| </span><span style=\"color:#f8f8f2;\">{{\n</span><span style=\"color:#f8f8f2;\">                event_text.</span><span style=\"color:#66d9ef;\">set</span><span style=\"color:#f8f8f2;\">(event.</span><span style=\"color:#66d9ef;\">as_web_event</span><span style=\"color:#f8f8f2;\">().</span><span style=\"color:#66d9ef;\">movement_x</span><span style=\"color:#f8f8f2;\">());\n</span><span style=\"color:#f8f8f2;\">            }},\n</span><span style=\"color:#f8f8f2;\">            </span><span style=\"color:#ffee99;\">&quot;movement_x was {{event_text}}&quot;\n</span><span style=\"color:#f8f8f2;\">        }}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f92672;\">pub </span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">Downcast</span><span style=\"color:#f8f8f2;\">() -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let </span><span style=\"color:#f92672;\">mut</span><span style=\"color:#f8f8f2;\"> event_text </span><span style=\"color:#f92672;\">= </span><span style=\"color:#66d9ef;\">use_signal</span><span style=\"color:#f8f8f2;\">(|| </span><span style=\"color:#ff80f4;\">0</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">    rsx! {{\n</span><span style=\"color:#f8f8f2;\">        div {{\n</span><span style=\"color:#f8f8f2;\">            onmousemove: </span><span style=\"color:#f92672;\">move |</span><span style=\"color:#f8f8f2;\">event</span><span style=\"color:#f92672;\">| </span><span style=\"color:#f8f8f2;\">{{\n</span><span style=\"color:#f8f8f2;\">                #[cfg(feature </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;web&quot;</span><span style=\"color:#f8f8f2;\">)]\n</span><span style=\"color:#f8f8f2;\">                {{\n</span><span style=\"color:#f8f8f2;\">                    </span><span style=\"color:#f92672;\">use </span><span style=\"color:#f8f8f2;\">dioxus::web::WebEventExt;\n</span><span style=\"color:#f8f8f2;\">                    event_text.</span><span style=\"color:#66d9ef;\">set</span><span style=\"color:#f8f8f2;\">(event.</span><span style=\"color:#66d9ef;\">as_web_event</span><span style=\"color:#f8f8f2;\">().</span><span style=\"color:#66d9ef;\">movement_x</span><span style=\"color:#f8f8f2;\">());\n</span><span style=\"color:#f8f8f2;\">                }}\n</span><span style=\"color:#f8f8f2;\">            }},\n</span><span style=\"color:#f8f8f2;\">            </span><span style=\"color:#ffee99;\">&quot;movement_x was {{event_text}}&quot;\n</span><span style=\"color:#f8f8f2;\">        }}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
             name: "breaking_out.rs".to_string(),
         }
         DemoFrame { breaking_out::Downcast {} }
@@ -5787,6 +5351,8 @@ pub fn RouterReferenceRoutesIndex() -> dioxus::prelude::Element {
             "The segment can be of any type that implements  "
             code { "FromSegments" }
             ". (Vec"
+            p { class: "inline-html-block", dangerous_inner_html: "<String>" }
+            " implements this by default)"
         }
         p {
             "Catch All segments must be the "

@@ -3,9 +3,36 @@
         // so it doesn't break code blocks
         "editor.formatOnSave": false
     },
+    "[css]": {
+        "editor.formatOnSave": false
+    },
     "rust-analyzer.cargo.features": [
         "web",
         "server"
+    ],
+    "cSpell.words": [
+        "appimage",
+        "autoplay",
+        "binstall",
+        "cdylib",
+        "Cocoapod",
+        "Cocoapods",
+        "Dioxus",
+        "dioxuslabs",
+        "docsite",
+        "eprintln",
+        "interoperating",
+        "interprocess",
+        "Manganis",
+        "onvisible",
+        "println",
+        "productionize",
+        "reloadable",
+        "Tauri",
+        "ungating",
+        "webassembly",
+        "wgpu",
+        "xbuild"
     ]
     // "editor.formatOnSave": false
     // "files.autoSaveDelay": 10

@@ -1,11 +1,3 @@
-# Dioxus 0.4: Server Functions, Suspense, Enum Router, Overhauled Docs, Bundler, Android Support, and more
-
-> Aug 1, 2023
-
-> [@jkelleyrtp](https://github.com/jkelleyrtp), [@ealmloff](https://github.com/ealmloff)
-> Thanks to [@tefiledo](https://github.com/tefiledo) [@marc2332](https://github.com/marc2332)  [@DogeDark](https://github.com/DogeDark)
-
-
 Welcome back, get your snacks, Dioxus 0.4 just dropped.
 
 If you’re new here: Dioxus (dye•ox•us) is a library for building React-like user interface in Rust. Dioxus supports a ton of targets: web, desktop, mobile, TUI, and more.

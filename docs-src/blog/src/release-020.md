@@ -1,7 +1,3 @@
-# Dioxus v0.2 Release: TUI, Router, Fermi, and Tooling
-
-> March 9, 2022
-
 Thanks to these amazing folks for their financial support on OpenCollective:
 
 *   [@t1m0t](https://github.com/t1m0t)

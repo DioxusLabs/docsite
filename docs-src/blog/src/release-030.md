@@ -1,5 +1,3 @@
-# Dioxus 0.3 - Templates, Hot Reloading,  LiveView, and more
-
 If you’re new here: Dioxus (dye•ox•us) is a library for building React-like user interface in Rust. Dioxus supports a ton of targets: web, desktop, mobile, TUI, and more. On the web it renders via the DOM and on desktop and mobile you can choose between the WebView DOM, WGPU, or Skia.
 
 Dioxus 0.3 is bringing a *lot* of fantastic new features:

@@ -8,11 +8,11 @@ resolver = "2"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-dioxus = { version = "0.6.0-alpha.3", features = ["router", "fullstack"] }
-dioxus-web = { version = "0.6.0-alpha.3", features = ["hydrate"], optional = true }
-dioxus-ssr = { version = "0.6.0-alpha.3", optional = true }
-dioxus-desktop = { version = "0.6.0-alpha.3", optional = true }
-dioxus-liveview = { version = "0.6.0-alpha.3", features = ["axum"], optional = true }
+dioxus = { version = "0.6.0-rc.0", features = ["router"] }
+dioxus-web = { version = "0.6.0-rc.0", features = ["hydrate"], optional = true }
+dioxus-ssr = { version = "0.6.0-rc.0", optional = true }
+dioxus-desktop = { version = "0.6.0-rc.0", optional = true }
+dioxus-liveview = { version = "0.6.0-rc.0", features = ["axum"], optional = true }
 dioxus-logger = { version = "0.5.1" }
 
 serde = { version = "1.0.163", features = ["derive"] }
@@ -28,13 +28,12 @@ include_dir = "0.7.3"
 anyhow = "1.0.71"
 
 dioxus-material-icons = { git = "https://github.com/jkelleyrtp/dioxus-material-icons", branch = "jk/git-rev" }
-
 syntect-html = { git = "https://github.com/dioxuslabs/include_mdbook", branch = "jk/build-gen" }
 mdbook-shared = { git = "https://github.com/dioxuslabs/include_mdbook", branch = "jk/build-gen" }
 use-mdbook = { git = "https://github.com/dioxuslabs/include_mdbook", branch = "jk/build-gen" }
-
 dioxus-search = { git = "https://github.com/dioxuslabs/dioxus-search" }
-dioxus-playground = { git = "https://github.com/DioxusLabs/playground", branch = "jk/update-manganis" }
+
+# dioxus-playground = { git = "https://github.com/DioxusLabs/playground", branch = "jk/update-manganis" }
 
 tokio = { version = "1.29.0", features = ["full"], optional = true }
 axum = { version = "0.7", optional = true }
@@ -77,33 +76,61 @@ mdbook-shared = { git = "https://github.com/dioxuslabs/include_mdbook", branch =
 prettyplease = "0.2.20"
 
 [patch.crates-io]
-dioxus = { git = "https://github.com/dioxuslabs/dioxus" }
-dioxus-lib = { git = "https://github.com/dioxuslabs/dioxus" }
-dioxus-core = { git = "https://github.com/dioxuslabs/dioxus" }
-dioxus-core-macro = { git = "https://github.com/dioxuslabs/dioxus" }
-dioxus-config-macro = { git = "https://github.com/dioxuslabs/dioxus" }
-dioxus-router = { git = "https://github.com/dioxuslabs/dioxus" }
-dioxus-router-macro = { git = "https://github.com/dioxuslabs/dioxus" }
-dioxus-html = { git = "https://github.com/dioxuslabs/dioxus" }
-dioxus-html-internal-macro = { git = "https://github.com/dioxuslabs/dioxus" }
-dioxus-hooks = { git = "https://github.com/dioxuslabs/dioxus" }
-dioxus-web = { git = "https://github.com/dioxuslabs/dioxus" }
-dioxus-ssr = { git = "https://github.com/dioxuslabs/dioxus" }
-dioxus-desktop = { git = "https://github.com/dioxuslabs/dioxus" }
-dioxus-interpreter-js = { git = "https://github.com/dioxuslabs/dioxus" }
-dioxus-liveview = { git = "https://github.com/dioxuslabs/dioxus" }
-dioxus-rsx = { git = "https://github.com/dioxuslabs/dioxus" }
-dioxus-signals = { git = "https://github.com/dioxuslabs/dioxus" }
-dioxus-cli-config = { git = "https://github.com/dioxuslabs/dioxus" }
-generational-box = { git = "https://github.com/dioxuslabs/dioxus" }
-dioxus_server_macro = { git = "https://github.com/dioxuslabs/dioxus" }
-dioxus-fullstack = { git = "https://github.com/dioxuslabs/dioxus" }
-dioxus-autofmt = { git = "https://github.com/dioxuslabs/dioxus" }
-dioxus-devtools = { git = "https://github.com/dioxuslabs/dioxus" }
-dioxus-devtools-types = { git = "https://github.com/dioxuslabs/dioxus" }
-manganis = { git = "https://github.com/dioxuslabs/dioxus" }
-manganis-core = { git = "https://github.com/dioxuslabs/dioxus" }
-manganis-macro = { git = "https://github.com/dioxuslabs/dioxus" }
+# dioxus = { path = "../../dioxus/packages/dioxus" }
+# dioxus-lib = { path = "../../dioxus/packages/dioxus-lib" }
+# dioxus-core = { path = "../../dioxus/packages/core" }
+# dioxus-core-macro = { path = "../../dioxus/packages/core-macro" }
+# dioxus-config-macro = { path = "../../dioxus/packages/config-macro" }
+# dioxus-router = { path = "../../dioxus/packages/router" }
+# dioxus-router-macro = { path = "../../dioxus/packages/router-macro" }
+# dioxus-html = { path = "../../dioxus/packages/html" }
+# dioxus-html-internal-macro = { path = "../../dioxus/packages/html-internal-macro" }
+# dioxus-hooks = { path = "../../dioxus/packages/hooks" }
+# dioxus-web = { path = "../../dioxus/packages/web" }
+# dioxus-ssr = { path = "../../dioxus/packages/ssr" }
+# dioxus-desktop = { path = "../../dioxus/packages/desktop" }
+# dioxus-interpreter-js = { path = "../../dioxus/packages/interpreter" }
+# dioxus-liveview = { path = "../../dioxus/packages/liveview" }
+# dioxus-rsx = { path = "../../dioxus/packages/rsx" }
+# dioxus-signals = { path = "../../dioxus/packages/signals" }
+# dioxus-cli-config = { path = "../../dioxus/packages/cli-config" }
+# generational-box = { path = "../../dioxus/packages/generational-box" }
+# dioxus_server_macro = { path = "../../dioxus/packages/server-macro" }
+# dioxus-fullstack = { path = "../../dioxus/packages/fullstack" }
+# dioxus-autofmt = { path = "../../dioxus/packages/autofmt" }
+# dioxus-devtools = { path = "../../dioxus/packages/devtools" }
+# dioxus-devtools-types = { path = "../../dioxus/packages/devtools-types" }
+# manganis = { path = "../../dioxus/packages/manganis/manganis" }
+# manganis-core = { path = "../../dioxus/packages/manganis/manganis-core" }
+# manganis-macro = { path = "../../dioxus/packages/manganis/manganis-macro" }
+
+# dioxus = { git = "https://github.com/dioxuslabs/dioxus" }
+# dioxus-lib = { git = "https://github.com/dioxuslabs/dioxus" }
+# dioxus-core = { git = "https://github.com/dioxuslabs/dioxus" }
+# dioxus-core-macro = { git = "https://github.com/dioxuslabs/dioxus" }
+# dioxus-config-macro = { git = "https://github.com/dioxuslabs/dioxus" }
+# dioxus-router = { git = "https://github.com/dioxuslabs/dioxus" }
+# dioxus-router-macro = { git = "https://github.com/dioxuslabs/dioxus" }
+# dioxus-html = { git = "https://github.com/dioxuslabs/dioxus" }
+# dioxus-html-internal-macro = { git = "https://github.com/dioxuslabs/dioxus" }
+# dioxus-hooks = { git = "https://github.com/dioxuslabs/dioxus" }
+# dioxus-web = { git = "https://github.com/dioxuslabs/dioxus" }
+# dioxus-ssr = { git = "https://github.com/dioxuslabs/dioxus" }
+# dioxus-desktop = { git = "https://github.com/dioxuslabs/dioxus" }
+# dioxus-interpreter-js = { git = "https://github.com/dioxuslabs/dioxus" }
+# dioxus-liveview = { git = "https://github.com/dioxuslabs/dioxus" }
+# dioxus-rsx = { git = "https://github.com/dioxuslabs/dioxus" }
+# dioxus-signals = { git = "https://github.com/dioxuslabs/dioxus" }
+# dioxus-cli-config = { git = "https://github.com/dioxuslabs/dioxus" }
+# generational-box = { git = "https://github.com/dioxuslabs/dioxus" }
+# dioxus_server_macro = { git = "https://github.com/dioxuslabs/dioxus" }
+# dioxus-fullstack = { git = "https://github.com/dioxuslabs/dioxus" }
+# dioxus-autofmt = { git = "https://github.com/dioxuslabs/dioxus" }
+# dioxus-devtools = { git = "https://github.com/dioxuslabs/dioxus" }
+# dioxus-devtools-types = { git = "https://github.com/dioxuslabs/dioxus" }
+# manganis = { git = "https://github.com/dioxuslabs/dioxus" }
+# manganis-core = { git = "https://github.com/dioxuslabs/dioxus" }
+# manganis-macro = { git = "https://github.com/dioxuslabs/dioxus" }
 
 [profile.release]
 lto = true
@@ -120,10 +147,11 @@ opt-level = 3
 codegen-units = 1
 
 [features]
-default = ["web"]
+default = []
+fullstack = ["dioxus/fullstack"]
 web = ["dioxus/web"]
 server = [
-    "dioxus/axum",
+    "dioxus/server",
     "dioxus-ssr",
     "dioxus/ssr",
     "tokio",

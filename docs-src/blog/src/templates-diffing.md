@@ -8,13 +8,13 @@ In preparation for the next big release of Dioxus, one of the lead contributors,
 
 Subtree memoization reduces the overall work that Dioxus needs to do to get your desired UI state to the screen by several orders of magnitude. In fact, it’s so fast, that it pushes Dioxus to the leading edge of performance for web frameworks, on par with the likes of SolidJS, even beating out signal-based Rust libraries like Sycamore 0.8 and Leptos 0.0.3.
 
-![Untitled](Making%20Dioxus%20(almost)%20as%20fast%20as%20SolidJS%20baea0d5b4e614351ac8e3d4fc4240d04/Untitled.png)
+![Untitled](/assets/blogassets/jsframework-diffing.png)
 
 There’s obviously still some room to grow as WASM-based UI libraries face unique challenges compared to their JavaScript counterparts. Ultimately, we hope that this update demonstrates what’s really possible with the current React paradigm.
 
 And, of course, we need to mention that benchmarks never give a truly clear insight into how performant a library is, especially as an app scales. It’s definitely reasonable to believe that as an app grows in size, any other library might come out ahead. You shouldn’t make a decision on the framework for your next project just because it’s slightly more or less performant than any other library based on entirely arbitrary benchmarks.
 
-![Untitled](Making%20Dioxus%20(almost)%20as%20fast%20as%20SolidJS%20baea0d5b4e614351ac8e3d4fc4240d04/Untitled%201.png)
+![Untitled](https://imgs.xkcd.com/comics/optimization.png)
 
 Anyways…
 
@@ -84,7 +84,7 @@ In Dioxus, we noticed this early on and decided to see if we could reuse all the
 
 When you create a div, or a piece of text, or anything in Dioxus, it simply gets allocated inside a bump arena that gets reset when diffed. No cleanup, no extra heap allocations, just steady-state reuse of pre-allocated memory.
 
-![Making%20Dioxus%20(almost)%20as%20fast%20as%20SolidJS%20baea0d5b4e614351ac8e3d4fc4240d04/Screen_Shot_2021-08-17_at_2.24.39_AM.png](Making%20Dioxus%20(almost)%20as%20fast%20as%20SolidJS%20baea0d5b4e614351ac8e3d4fc4240d04/Screen_Shot_2021-08-17_at_2.24.39_AM.png)
+![Making%20Dioxus%20(almost)%20as%20fast%20as%20SolidJS%20baea0d5b4e614351ac8e3d4fc4240d04/Screen_Shot_2021-08-17_at_2.24.39_AM.png](/assets/blogassets/bump-alloc.png)
 
 This is fast. Really fast. And when coupled with automatic component memoization, it’s really easy to write Dioxus apps that are memory efficient and faster than React.
 
@@ -95,7 +95,7 @@ Well, no. Dioxus still wasn’t nearly as fast as Svelte, Sycamore, SolidJS, or 
 Except, we’re creating new objects, still in the heap, and doing a lot of diffing work. In the words of the creator of Svelte,
 
 > But you know what would be even faster? *Not doing that.*
->
+
 
 ## Making Dioxus faster by doing less work
 
@@ -135,7 +135,7 @@ VNode {
 
 Now, on every render, we only create the single dynamic node. When we go to diff the VNode, we only need to diff that one text node too. So now, instead of 11 comparisons (9 elements and 2 attributes) we have one comparison. Diffing this template takes 90% less time than before! This is a huge win! Our app can be 10x bigger for the same diffing cost. And the results speak for themselves. Combined with the integration of [Sledgehammer](https://crates.io/crates/sledgehammer), Dioxus is pushing the limits of what the React model can reasonably achieve.
 
-![Untitled](Making%20Dioxus%20(almost)%20as%20fast%20as%20SolidJS%20baea0d5b4e614351ac8e3d4fc4240d04/Untitled.png)
+![Untitled](/assets/blogassets/jsframework-diffing.png)
 
 The React team also agrees that React can be better. That’s why they’ve started working on an experimental compiler for React.
 
@@ -211,7 +211,7 @@ Now that we’re working with the mindset of templates, we can start to build ne
 
 One amazing feature added to Dioxus using the new template model is hot reloading. You can now modify your running Dioxus app without recompiling, provided you add, remove, or modify elements inside of `rsx!` . This mechanism works for *any* renderer too, since each renderer has to implement the same protocol to manage edits.
 
-[174206798-1b73e42a-0b36-4bce-83c4-aa7d875ec800.mp4](Making%20Dioxus%20(almost)%20as%20fast%20as%20SolidJS%20baea0d5b4e614351ac8e3d4fc4240d04/174206798-1b73e42a-0b36-4bce-83c4-aa7d875ec800.mp4)
+![174206798-1b73e42a-0b36-4bce-83c4-aa7d875ec800.mp4](https://i.imgur.com/PSJdqKO.mp4)
 
 Not only can templates be cached inside of a renderer, they can be modified after-the-fact. The renderer is smart enough to track down the instance of every template node on the page and apply the same patches.
 
@@ -219,7 +219,7 @@ Not only can templates be cached inside of a renderer, they can be modified afte
 
 Another addition to Dioxus 0.3 is the new LiveView renderer. Much like its counterpart Phoenix LiveView, Dioxus LiveView enables entirely server-rendered apps and components while shipping minimal JS to the client. In the Liveview model, minimizing latency and bandwidth is crucial to keeping apps snappy, especially for lower-end clients.
 
-![ElixirLivewview.jpg](Making%20Dioxus%20(almost)%20as%20fast%20as%20SolidJS%20baea0d5b4e614351ac8e3d4fc4240d04/ElixirLivewview.jpg)
+![ElixirLivewview.jpg](/assets/blogassets/elixir.jpeg)
 
 Now, instead of sending hundreds or thousands of edits to the client to render things like lists and complex markup, Dioxus packages all the templates the client will use inside of the HTML shipped to the client. A sample HTML document that might be sent from the server to the client may look like this:
 

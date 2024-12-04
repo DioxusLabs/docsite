@@ -4157,7 +4157,7 @@ pub fn Release060() -> dioxus::prelude::Element {
                         " Event Handler"
                     }
                 }
-                ": Track an element's visiblility without an IntersectionObserver."
+                ": Track an element's visibility without an IntersectionObserver."
             }
             li {
                 strong {
@@ -4213,10 +4213,12 @@ pub fn Release060() -> dioxus::prelude::Element {
             " living up to the original mission."
         }
         p {
-            "Dioxus 0.6 is the culmination of nearly 6 months of work. While improving various pieces of the framework, we got carried away and basically shipped all the features we wanted for Dioxus 0.7. With this release, we set a goal to retain a very high bar for quality and polish: everything from CLI tools to APIs and ecosystem libraries have seen huge improvements."
+            "Dioxus 0.6 is the culmination of nearly 6 months of hard work. We originally intended Dioxus 0.6 to be a much smaller release, but with the complexity of assets and tooling improvements, we eventually chose to merge the features we had planned for Dioxus 0.7 as well. With this release, we set a very high bar for quality and polish: everything from CLI tools to APIs and ecosystem libraries have seen huge improvements."
         }
         p {
-            "With 0.6, we didn’t necessarily want to focus on shipping shiny new features. Instead, we wanted to continue much of the work started in Dioxus 0.5 and focus on cleaning up and improving existing features. The end result: a rebirth of Dioxus with hundreds of bug fixes, massively improved tooling, and the “ungating” of essential APIs. Everything from CLI tooling to hot-reloading and autocomplete saw huge jumps in quality."
+            "With 0.6, we focused on improving existing features and cleaning up various holes in the framework. The end result: a rebirth of Dioxus with hundreds of bug fixes, massively improved tooling, and the “ungating” of essential APIs. Everything from CLI tooling to hot-reloading and autocomplete saw huge jumps in quality. We're not "
+            em { "completely done" }
+            " - early next year we'd still like to ship our Rust binary patching and WASM bundle splitting prototypes - but we're still quite confident in Dioxus' improved developer experience."
         }
         p {
             "Since this post is quite long, we made a quick video highlighting new features, bugs fixed, and a quick tour of everything you can do with Dioxus now:"
@@ -4232,23 +4234,21 @@ pub fn Release060() -> dioxus::prelude::Element {
             code { "dx serve" }
         }
         p {
-            "Our goal with Dioxus has always been to support web, desktop, mobile, and more. And while "
-            em { "technically" }
-            " Dioxus has supported mobile since its release, the Rust"
+            "Our goal with Dioxus has always been to support web, desktop, mobile, and more. And while Dioxus has supported mobile since its release, the Rust tooling for mobile has been extremely unstable. Users constantly ran into issues with tools like "
             a { href: "https://github.com/BrainiumLLC/cargo-mobile",
                 code { "cargo-mobile" }
             }
-            " and Tauri’s fork "
+            " and Tauri's fork "
             a { href: "https://github.com/tauri-apps/cargo-mobile2", "cargo-mobile2" }
             ". These tools, while useful, take a different architectural approach than what is a good fit for Dioxus."
         }
         p {
-            "We want to provide features like asset bundling, hot-reloading, and proper support for regular apps built with a traditional  "
+            "We want to provide features like asset bundling, hot-reloading, and proper support for \"regular\" apps built with a traditional  "
             code { "main.rs" }
-            " - none of which we can properly do with 3rd party tools."
+            " - none of which we can properly do with the existing tools."
         }
         p {
-            "With this release, we’ve decided to put the huge amount of effort into writing our own mobile support from scratch. Now, you can go from  "
+            "With this release, we wrote our entire mobile tooling system from scratch. Now, you can go from  "
             code { "dx new" }
             " to  "
             code { "dx serve --platform ios" }
@@ -4262,13 +4262,15 @@ pub fn Release060() -> dioxus::prelude::Element {
             }
         }
         p {
-            "The Android and iOS simulator targets support all the same features that desktop supports: hot-reloading, fast rebuilds, asset bundling, logging, etc. One notable accomplishment: you can build Rust mobile apps with a simple  "
+            "The Android and iOS simulator targets support all the same features as desktop: hot-reloading, fast rebuilds, asset bundling, logging, etc. One notable accomplishment: you can build Rust mobile apps with a simple  "
             code { "main.rs" }
             ". Existing solutions like "
             a { href: "http://github.com/rust-mobile/xbuild", "xbuild" }
             " and "
             a { href: "http://github.com/tauri-apps/tauri", "Tauri" }
-            " require you to fundamentally restructure your app. Your app also needs to be converted to a cdylib, meaning you can’t share a launch function between desktop and mobile."
+            " require you to fundamentally restructure your app. Your app also needs to be converted to a "
+            code { "cdylib" }
+            ", meaning you can’t share a launch function between desktop and mobile."
         }
         p { "The simplest Dioxus 0.6 Mobile app is tiny:" }
         CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f92672;\">use </span><span style=\"color:#f8f8f2;\">dioxus::prelude::</span><span style=\"color:#f92672;\">*</span><span style=\"color:#f8f8f2;\">;\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">main</span><span style=\"color:#f8f8f2;\">() {{\n</span><span style=\"color:#f8f8f2;\">    dioxus::launch(|| rsx! {{ </span><span style=\"color:#ffee99;\">&quot;hello dioxus! 🧬&quot; </span><span style=\"color:#f8f8f2;\">}});\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n" }
@@ -4281,22 +4283,22 @@ pub fn Release060() -> dioxus::prelude::Element {
             contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#8c8c8c;\">// no main allowed! - must expose a `start_app` function\n</span><span style=\"color:#f8f8f2;\">#[no_mangle]\n</span><span style=\"color:#f8f8f2;\">#[inline(never)]\n</span><span style=\"color:#f8f8f2;\">#[cfg(any(target_os </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;android&quot;</span><span style=\"color:#f8f8f2;\">, target_os </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;ios&quot;</span><span style=\"color:#f8f8f2;\">))]\n</span><span style=\"color:#f92672;\">pub extern </span><span style=\"color:#ffee99;\">&quot;C&quot; </span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">start_app</span><span style=\"color:#f8f8f2;\">() {{\n</span><span style=\"color:#f8f8f2;\">    #[cfg(target_os </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;android&quot;</span><span style=\"color:#f8f8f2;\">)]\n</span><span style=\"color:#f8f8f2;\">    {{\n</span><span style=\"color:#f8f8f2;\">        tao::android_binding</span><span style=\"color:#f92672;\">!</span><span style=\"color:#f8f8f2;\">(\n</span><span style=\"color:#f8f8f2;\">            com_dioxuslabs,\n</span><span style=\"color:#f8f8f2;\">            app_name,\n</span><span style=\"color:#f8f8f2;\">            WryActivity,\n</span><span style=\"color:#f8f8f2;\">            wry::android_setup,\n</span><span style=\"color:#f8f8f2;\">            _start_app\n</span><span style=\"color:#f8f8f2;\">        );\n</span><span style=\"color:#f8f8f2;\">        wry::android_binding</span><span style=\"color:#f92672;\">!</span><span style=\"color:#f8f8f2;\">(com_dioxuslabs, app_name);\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#8c8c8c;\">// need to manually catch panics!\n</span><span style=\"color:#f8f8f2;\">    #[cfg(target_os </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;ios&quot;</span><span style=\"color:#f8f8f2;\">)]\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#66d9ef;\">stop_unwind</span><span style=\"color:#f8f8f2;\">(|| </span><span style=\"color:#66d9ef;\">main</span><span style=\"color:#f8f8f2;\">())\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">#[cfg(any(target_os </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;android&quot;</span><span style=\"color:#f8f8f2;\">, target_os </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;ios&quot;</span><span style=\"color:#f8f8f2;\">))]\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">stop_unwind</span><span style=\"color:#f8f8f2;\">&lt;F: FnOnce() -&gt; T, T&gt;(</span><span style=\"font-style:italic;color:#fd971f;\">f</span><span style=\"color:#f8f8f2;\">: F) -&gt; T {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#f92672;\">match </span><span style=\"color:#f8f8f2;\">std::panic::catch_unwind(std::panic::AssertUnwindSafe(f)) {{\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"font-style:italic;color:#66d9ef;\">Ok</span><span style=\"color:#f8f8f2;\">(t) </span><span style=\"color:#f92672;\">=&gt;</span><span style=\"color:#f8f8f2;\"> t,\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"font-style:italic;color:#66d9ef;\">Err</span><span style=\"color:#f8f8f2;\">(err) </span><span style=\"color:#f92672;\">=&gt; </span><span style=\"color:#f8f8f2;\">{{\n</span><span style=\"color:#f8f8f2;\">            eprintln!(</span><span style=\"color:#ffee99;\">&quot;attempt to unwind out of `rust` with err: {{:?}}&quot;</span><span style=\"color:#f8f8f2;\">, err);\n</span><span style=\"color:#f8f8f2;\">            std::process::abort()\n</span><span style=\"color:#f8f8f2;\">        }}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
         }
         p {
-            "Our inline mobile support requires no extra configurations, no manual setup for Gradle, Java, Cocoapods, and no other specific mobile tooling! Provided you already have Android NDK installed or an iOS Simulator, you currently are less than 30 seconds away from a functional mobile app written entirely in Rust. In the time it takes for you to watch this gif, you could have your very own mobile app:"
+            "Our inline mobile support requires no extra configurations, no manual setup for Gradle, Java, Cocoapods, and no other 3rd party tooling. If you already have the Android NDK or iOS Simulator installed, you currently are less than 30 seconds away from a production-ready mobile app written entirely in Rust. In the time it takes for you to watch this gif, you could have your very own mobile app:"
         }
         p {
             img {
                 src: "/assets/06assets/dxnew.mp4",
-                alt: "full dx new, serve",
+                alt: "dx-serve.mp4",
                 title: "",
             }
         }
         p {
-            "While 1st-class support for mobile platforms is quite exciting, there are certainly many limitations: the Rust mobile ecosystem is practically nonexistent, we don’t have great ways of configuring the hundreds of XCode and AndroidStudio flags, and there isn’t a particularly great Rust/Java interop story. However, we’re very dedicated to making mobile app development as great as possible and will be rolling out improvements to mobile over the next year."
+            "While 1st-class support for mobile platforms is quite exciting, there are certainly many limitations: the Rust mobile ecosystem is nascent, we don’t have great ways of configuring the many platform-specific build flags, and there isn’t a particularly great Rust/Java interop story. However, we’re  dedicated to improving Rust's mobile app development capabilities and will be rolling out improvements to the mobile ecosystem over the next year."
         }
         p {
             "If you're interested in helping us build out mobile support, please join us on "
             a { href: "https://discord.gg/XgGxMSkvUM", "Discord" }
-            ". We have amibitious goals for Dioxus 0.7+ to integrate automatic deploys to app stores and a build a comprehensive SDK for mobile development in Rust."
+            ". We have ambitious goals for Dioxus 0.7+ to integrate cool features like automatic deploys to app stores and a build a comprehensive SDK for mobile development in Rust."
         }
         h2 { id: "interactive-command-line-tools",
             a { href: "#interactive-command-line-tools", class: "header",
@@ -4304,12 +4306,12 @@ pub fn Release060() -> dioxus::prelude::Element {
             }
         }
         p {
-            "You might have noticed in the gifs above... Dioxus 0.6 is shipping with a completely overhauled CLI experience! We’ve completely rewritten the CLI to support a ton of new features and improve stability:"
+            "You might have noticed in the GIFs above... Dioxus 0.6 is shipping with a completely overhauled CLI experience! We’ve completely rewritten the CLI to support a ton of new features and improve stability:"
         }
         p {
             img {
                 src: "/assets/06assets/image%201.png",
-                alt: "image.png",
+                alt: "new-cli.png",
                 title: "",
             }
         }
@@ -4318,7 +4320,7 @@ pub fn Release060() -> dioxus::prelude::Element {
         }
         p {
             img {
-                src: "https://private-user-images.githubusercontent.com/10237910/391807201-00673048-9ba9-4df3-8878-93ef849e9fa0.mp4",
+                src: "/assets/06assets/cli-new.mp4",
                 alt: "cli_animation",
                 title: "",
             }
@@ -4328,21 +4330,21 @@ pub fn Release060() -> dioxus::prelude::Element {
         }
         ul {
             li {
-                "We dropped the "
-                code { "outdir" }
-                " concept and instead use "
-                code { "target/dx" }
-                " for all output."
-            }
-            li {
                 "You can manually rebuild your app by pressing "
                 code { "r" }
             }
             li {
                 "You can toggle the log level of the CLI output on the fly and even inspect Cargo internal logs"
             }
-            li { "Log capture for WASM tracing and panics" }
             li { "We output all internal logs of the CLI so you can debug any issues" }
+            li { "We capture logs for WASM tracing and panics" }
+            li {
+                "We dropped the "
+                code { "outdir" }
+                " concept and instead use "
+                code { "target/dx" }
+                " for all output."
+            }
         }
         p {
             "You can install the new CLI using "
@@ -4425,7 +4427,7 @@ pub fn Release060() -> dioxus::prelude::Element {
         p {
             img {
                 src: "/assets/06assets/native-serverfn12.mp4",
-                alt: "native-serverfn12.mp4",
+                alt: "native-server12.mp4",
                 title: "",
             }
         }
@@ -4462,7 +4464,9 @@ pub fn Release060() -> dioxus::prelude::Element {
             }
         }
         p {
-            "The autocomplete experience is much nicer now, with all attributes, elements, components, and inline Rust code benefiting from the overhauled experience."
+            "The autocomplete experience is much nicer now, with all attributes, elements, components, and inline Rust code benefiting from the overhauled experience. All Rust expressions participate in proper Rust-analyzer autocomplete and we're even able to provide warnings when  "
+            code { "rsx!{{}}" }
+            " input is malformed instead of panicking."
         }
         p {
             img {
@@ -4483,18 +4487,29 @@ pub fn Release060() -> dioxus::prelude::Element {
         }
         p { "This means we needed to add support for a number of new hot-reloading engine changes:" }
         ul {
-            li { "Hotreload formatted strings" }
             li {
-                "Hotreload "
-                code { "for" }
-                " and "
-                code { "if" }
-                " blocks in RSX"
+                a { href: "#hot-reloading-formatted-strings", "Hot-reload formatted strings" }
             }
-            li { "Hotreload children of components" }
-            li { "Hotreload properties of components" }
-            li { "Hotreload mobile platforms" }
-            li { "Hotreload as many Rust expressions as possible" }
+            li {
+                a { href: "#hot-reloading-rust-literals",
+                    "Hot-reload component properties and simple Rust expressions"
+                }
+            }
+            li {
+                a { href: "#hot-reloading-nested-rsx-",
+                    "Hot-reload  "
+                    code { "for" }
+                    " and  "
+                    code { "if" }
+                    " blocks in RSX"
+                }
+            }
+            li {
+                a { href: "#hot-reloading-nested-rsx-", "Hot-reload children of components" }
+            }
+            li {
+                a { href: "#mobile-hot-reloading", "Hot-reload mobile platforms" }
+            }
         }
         p {
             "The new hot-reloading engine almost feels like magic - you can quickly iterate on new designs without waiting for full Rust rebuilds:"
@@ -4502,7 +4517,7 @@ pub fn Release060() -> dioxus::prelude::Element {
         p {
             img {
                 src: "/assets/06assets/dogapphr2.mp4",
-                alt: "dogapphr2.mp4",
+                alt: "dog_app.mp4",
                 title: "",
             }
         }
@@ -4512,7 +4527,7 @@ pub fn Release060() -> dioxus::prelude::Element {
             }
         }
         p {
-            "We can now hotreload any formatted string in your markup! For this component, we can hotreload both the  "
+            "We can now hot-reload any formatted string in your markup! For this component, we can hot-reload both the  "
             code { "class" }
             " attribute on button as well as the text in the button itself."
         }
@@ -4546,21 +4561,25 @@ pub fn Release060() -> dioxus::prelude::Element {
             " )"
         }
         p {
-            "With Dioxus 0.4 we shipped improvements that enabled a simpler syntax for  "
+            "With Dioxus 0.4, we shipped improvements that enabled a simpler syntax for  "
             code { "for" }
             " loops and  "
             code { "if" }
-            " chains in rsx. However, we never properly implemented hot-reloading for the contents of these items, leading to frequent unnecessary rebuilds. With Dioxus 0.6, we finally had a chance to iron out hot-reloading in every possible nook and cranny. Now, more places properly support hot-reloading, like  "
+            " chains in rsx. However, we never properly implemented hot-reloading for the contents of these items, leading to frequent unnecessary rebuilds. With Dioxus 0.6, we finally had a chance to iron out hot-reloading in every possible instance. Now, more places properly support hot-reloading, like  "
             code { "for" }
             " loops and  "
             code { "if" }
             " chains:"
         }
         CodeBlock {
-            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">LoopIt</span><span style=\"color:#f8f8f2;\">() -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    rsx! {{\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"color:#f92672;\">for</span><span style=\"color:#f8f8f2;\"> x </span><span style=\"color:#f92672;\">in </span><span style=\"color:#ff80f4;\">0</span><span style=\"color:#f92672;\">..</span><span style=\"color:#ff80f4;\">10 </span><span style=\"color:#f8f8f2;\">{{\n</span><span style=\"color:#f8f8f2;\">            </span><span style=\"color:#8c8c8c;\">// modifying the body of this loop is hotrelodable!\n</span><span style=\"color:#f8f8f2;\">            li {{ </span><span style=\"color:#ffee99;\">&quot;{{x}}&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">        }}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">LoopIt</span><span style=\"color:#f8f8f2;\">() -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    rsx! {{\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"color:#f92672;\">for</span><span style=\"color:#f8f8f2;\"> x </span><span style=\"color:#f92672;\">in </span><span style=\"color:#ff80f4;\">0</span><span style=\"color:#f92672;\">..</span><span style=\"color:#ff80f4;\">10 </span><span style=\"color:#f8f8f2;\">{{\n</span><span style=\"color:#f8f8f2;\">            </span><span style=\"color:#8c8c8c;\">// modifying the body of this loop is hot-reloadable!\n</span><span style=\"color:#f8f8f2;\">            li {{ </span><span style=\"color:#ffee99;\">&quot;{{x}}&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">        }}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
         }
         p { "We also now support hot-reloading of bodies of components:" }
-        CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">LoopIt</span><span style=\"color:#f8f8f2;\">() -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    rsx! {{\n</span><span style=\"color:#f8f8f2;\">        Counter {{\n</span><span style=\"color:#f8f8f2;\">            div {{ </span><span style=\"color:#ffee99;\">&quot;These div contents get hotreloaded too!&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">        }}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n" }
+        CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">LoopIt</span><span style=\"color:#f8f8f2;\">() -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    rsx! {{\n</span><span style=\"color:#f8f8f2;\">        Counter {{\n</span><span style=\"color:#f8f8f2;\">            div {{ </span><span style=\"color:#ffee99;\">&quot;These div contents get hot-reloaded too!&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">        }}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n" }
+        p {
+            "This new engine also allows you to move and clone Rust expressions between contexts, allowing you to re-use components and formatted strings between element properties without a full rebuild."
+        }
+        CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">LoopIt</span><span style=\"color:#f8f8f2;\">() -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    rsx! {{\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"color:#8c8c8c;\">// If we start with this formatted text\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"color:#ffee99;\">&quot;Thing1 {{a}}&quot;\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"color:#8c8c8c;\">// we can add this formatted text on the fly\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"color:#ffee99;\">&quot;Thing2 {{a}}&quot;\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n" }
         h2 { id: "mobile-hot-reloading",
             a { href: "#mobile-hot-reloading", class: "header", "Mobile Hot-Reloading" }
         }
@@ -4577,7 +4596,7 @@ pub fn Release060() -> dioxus::prelude::Element {
         p {
             "The changes here also unlocked hot-reloading of bundled assets used by the  "
             code { "asset!()" }
-            " macro. If you're using Tailwind with Dioxus, you can now simply run your Tailwind watcher in the background and Dioxus will automatically hotreload your CSS files web, desktop, and mobile."
+            " macro. If you're using Tailwind with Dioxus, you can now simply run your Tailwind watcher in the background and Dioxus will automatically hot-reload your CSS files across web, desktop, and mobile."
         }
         h2 { id: "proper-workspace-hot-reloading",
             a { href: "#proper-workspace-hot-reloading", class: "header",
@@ -4585,7 +4604,7 @@ pub fn Release060() -> dioxus::prelude::Element {
             }
         }
         p {
-            "We now properly support hot-reloading across multiple projects in a workspace. This solves the longstanding issue where you’re developing a component library in one crate and using it another crate. Our new hotreload engine intelligently walks your project’s dependencies across the filesystem and watches all the related Rust files."
+            "We now properly support hot-reloading across multiple projects in a workspace. This solves the longstanding issue where we didn't propagate changes from a component library in one crate and in your main app. Our new hot-reload engine intelligently walks your project’s dependencies across the filesystem and watches all the related Rust files (respecting their gitignore)."
         }
         h2 { id: "stabilizing-manganis",
             a { href: "#stabilizing-manganis", class: "header", "Stabilizing Manganis " }
@@ -4601,9 +4620,9 @@ pub fn Release060() -> dioxus::prelude::Element {
             code { "asset!" }
             "\u{a0}anywhere in your code. It will automatically be optimized and bundled across all platforms:"
         }
-        CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">rsx! {{\n</span><span style=\"color:#f8f8f2;\">    img {{ src: asset!(</span><span style=\"color:#ffee99;\">&quot;/assets/myimg.png&quot;</span><span style=\"color:#f8f8f2;\">) }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n" }
+        CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">rsx! {{\n</span><span style=\"color:#f8f8f2;\">    img {{ src: asset!(</span><span style=\"color:#ffee99;\">&quot;/assets/image.png&quot;</span><span style=\"color:#f8f8f2;\">) }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n" }
         p {
-            "Manganis is a crucial step in supporting assets crossplatform, and specifically, through dependencies. Previously, if an upstream library wanted to export an asset like an image or a stylesheet, your app would need to manually add those assets in your  "
+            "Manganis is a crucial step in supporting assets cross-platform, and specifically, through dependencies. Previously, if an upstream library wanted to export an asset like an image or a stylesheet, your app would need to manually add those assets in your  "
             code { "assets" }
             " folder. This gets complex and messy when libraries generate CSS: many classes are duplicated and might even conflict with each other. Now, all CSS collected by the  "
             code { "asset!()" }
@@ -4620,7 +4639,7 @@ pub fn Release060() -> dioxus::prelude::Element {
             " while Manganis can do this for you, for free, at build time!"
         }
         p {
-            a { href: "some-image.png", " photo of delta between the two formats " }
+            a { href: "/assets/06assets/manganis-opt.avif", "manganis-opt" }
         }
         p {
             "Additionally, manganis automatically hashes the images and modifies the generated asset name, allowing for better integration with CDNs and browser caching."
@@ -4680,7 +4699,7 @@ pub fn Release060() -> dioxus::prelude::Element {
         p {
             img {
                 src: "/assets/06assets/streamingsuspense.mp4",
-                alt: "streamingsuspense.mp4",
+                alt: "streaming-suspense.mp4",
                 title: "",
             }
         }
@@ -4721,7 +4740,7 @@ pub fn Release060() -> dioxus::prelude::Element {
         }
         CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">dx build </span><span style=\"color:#f92672;\">--</span><span style=\"color:#f8f8f2;\">platform web </span><span style=\"color:#f92672;\">--</span><span style=\"color:#f8f8f2;\">ssg</span></pre>\n" }
         p {
-            "Static-site-generation is built on a new feature in Dioxus called incremental-site-generation (ISG). ISG is a technique similar to static-site-generation where the server generates pages on demand and caches them on the system filesystem. This allows the server to cache huge amounts of pages (for something like a school’s facebook directory or an ecommerce site with thousands of products) that get periodically invalidated. ISG is a somewhat advanced technique but is required to enable when using static-site-generation:"
+            "Static-site-generation is built on a new feature in Dioxus called incremental-site-generation (ISG). ISG is a technique similar to static-site-generation where the server generates pages on demand and caches them on the system filesystem. This allows the server to cache huge amounts of pages (for something like a school’s facebook directory or an e-commerce site with thousands of products) that get periodically invalidated. ISG is a somewhat advanced technique but is required to enable when using static-site-generation:"
         }
         CodeBlock {
             contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">main</span><span style=\"color:#f8f8f2;\">() {{\n</span><span style=\"color:#f8f8f2;\">        dioxus::LaunchBuilder::new()\n</span><span style=\"color:#f8f8f2;\">        .</span><span style=\"color:#66d9ef;\">with_cfg</span><span style=\"color:#f8f8f2;\">(server_only! {{\n</span><span style=\"color:#f8f8f2;\">            ServeConfig::builder()\n</span><span style=\"color:#f8f8f2;\">                </span><span style=\"color:#8c8c8c;\">// turn on incremental site generation with the .incremental() method\n</span><span style=\"color:#f8f8f2;\">                .</span><span style=\"color:#66d9ef;\">incremental</span><span style=\"color:#f8f8f2;\">(IncrementalRendererConfig::new())\n</span><span style=\"color:#f8f8f2;\">                .</span><span style=\"color:#66d9ef;\">build</span><span style=\"color:#f8f8f2;\">()\n</span><span style=\"color:#f8f8f2;\">                .</span><span style=\"color:#66d9ef;\">unwrap</span><span style=\"color:#f8f8f2;\">()\n</span><span style=\"color:#f8f8f2;\">        }})\n</span><span style=\"color:#f8f8f2;\">        .</span><span style=\"color:#66d9ef;\">launch</span><span style=\"color:#f8f8f2;\">(|| {{\n</span><span style=\"color:#f8f8f2;\">            rsx! {{\n</span><span style=\"color:#f8f8f2;\">                Router::&lt;Route&gt; {{}}\n</span><span style=\"color:#f8f8f2;\">            }}\n</span><span style=\"color:#f8f8f2;\">        }})\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
@@ -4780,7 +4799,7 @@ pub fn Release060() -> dioxus::prelude::Element {
             code { "Meta {{}}" }
         }
         p {
-            "To date, it’s been rather cumbersome to do what is seemingly simple JavaScript operations in Dioxus. Due to our crossplatform nature, we need to find solutions to what seems like simple problems in ways that work for web, desktop, and mobile with a single abstraction."
+            "To date, it’s been rather cumbersome to do what is seemingly simple JavaScript operations in Dioxus. Due to our cross-platform nature, we need to find solutions to what seems like simple problems in ways that work for web, desktop, and mobile with a single abstraction."
         }
         p {
             "Finally with Dioxus 0.6, we’re providing special elements under the  "
@@ -4975,7 +4994,7 @@ pub fn Release060() -> dioxus::prelude::Element {
             }
         }
         p {
-            "As usual with these large release, Dioxus 0.6 features a rather sizable overhaul to the documentation. We’ve completely overhauled the tutorial to be less heavy on code. The new tutorial focues on basics like including assets and deploying to production."
+            "As usual with these large release, Dioxus 0.6 features a rather sizable overhaul to the documentation. We’ve completely overhauled the tutorial to be less heavy on code. The new tutorial focuses on basics like including assets and deploying to production."
         }
         p {
             img {
@@ -4985,7 +5004,7 @@ pub fn Release060() -> dioxus::prelude::Element {
             }
         }
         p {
-            "The docsite now includes all “modern” versions of Dioxus inline: 0.3, 0.4, 0.5, and 0.6 are all accessible under the same top-level website. Previously, we linked out to different mdbooks which eventually became a hassle. Now, you can simply switch between each version inline:"
+            "The docsite now includes all “modern” versions of Dioxus inline: 0.3, 0.4, 0.5, and 0.6 are all accessible under the same top-level website. Previously, we linked out to different MDbooks which eventually became a hassle. Now, you can simply switch between each version inline:"
         }
         p {
             img {
@@ -5045,7 +5064,6 @@ pub fn Release060() -> dioxus::prelude::Element {
             li {
                 "Custom event loops: you can provide your own event loop, making it possible to use Dioxus in contexts where you already have other windows."
             }
-            li { "WGPU integration for dioxus-desktop: you can now overlay Dioxus with WGPU contexts." }
             li {
                 code { "dioxus-document" }
                 ": we split out our "
@@ -5074,15 +5092,15 @@ pub fn Release060() -> dioxus::prelude::Element {
                 code { "eval" }
                 " API was simplified to allow "
                 code { ".recv::<T>().await" }
-                " on evals, making interoping with JavaScript easier."
+                " on evals, making interoperating with JavaScript easier."
             }
             li {
                 code { "dx fmt" }
                 " now supports "
                 code { "#[rustfmt::skip]" }
-                " attributes and respects "
+                " attributes, respects "
                 code { "rustfmt.toml" }
-                " settings"
+                " settings, and is generally more reliable"
             }
         }
         h2 { id: "upgrading-from-05-to-06",
@@ -5115,7 +5133,7 @@ pub fn Release060() -> dioxus::prelude::Element {
             a { href: "#conclusion", class: "header", "Conclusion" }
         }
         p {
-            "That’s it for all the new features! Due to the sheer size of this release, we might have missed several new features and bug fixes. The list of fixed bugs is also quite massive. Everything from bundling issues to spurious hotreloads and compatibility with rare platforms and editors has been addressed."
+            "That’s it for all the new features! Due to the sheer size of this release, we might have missed several new features and bug fixes. The list of fixed bugs is also quite massive. Everything from bundling issues to spurious hot-reloads and compatibility with rare platforms and editors has been addressed."
         }
         p {
             "Dioxus 0.6 has been in alpha for quite a while, and we’re very thankful for all the testing the community has done to make this the most polished release yet. It’s quite difficult to run a large open source project such a vast scope. This release took "
@@ -5126,7 +5144,7 @@ pub fn Release060() -> dioxus::prelude::Element {
             "We focused hard this release to polish up as many rough edges as possible. Our continuous integration and deployment is in a much nicer place. We’re finally able to release nightly versions of documentation and the alpha release system has worked well for users eager to test out new features and bug fixes."
         }
         p {
-            "Unfortunately, this release contained many connected pieces which made it hard to release incrementally. Systems like assets integrate tightly with CLI tooling and crossplatform support: to get one configuration right you need to test them all. With 0.6 behind us, the future seems much more “incremental” which should let us release major versions with faster cadence."
+            "Unfortunately, this release contained many connected pieces which made it hard to release incrementally. Systems like assets integrate tightly with CLI tooling and cross-platform support: to get one configuration right you need to test them all. With 0.6 behind us, the future seems much more “incremental” which should let us release major versions with faster cadence."
         }
         p {
             "We plan to release Dioxus 0.7 early next year once everyone has had a chance to play with Dioxus 0.6. Similar to 0.6, Dioxus 0.7 will focus on polishes and bug fixes - the Dioxus team wants to spend time building our own apps!"

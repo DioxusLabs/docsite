@@ -4941,6 +4941,21 @@ pub fn Release060() -> dioxus::prelude::Element {
                 "Web, iOS, and Android bundle support"
             }
         }
+        p {
+            "With this release, we added support for web and mobile with  "
+            code { "dx bundle" }
+            ". Previously,  "
+            code { "dx bundle" }
+            " only worked for desktop apps. Now you can bundle for a wide variety of targets:"
+        }
+        ul {
+            li { "macOS (.app, .dmg)" }
+            li { "Windows (.exe, .msi)" }
+            li { "Linux (.deb, .rpm, .appimage)" }
+            li { "Android (.apk)" }
+            li { "iOS (.ipa, .app)" }
+            li { "Web (.appimage, /public folder)" }
+        }
         h2 { id: "json-output-for-ci--cli",
             a { href: "#json-output-for-ci--cli", class: "header", "JSON Output for CI / CLI" }
         }

@@ -621,11 +621,20 @@ This makes it possible to add rich animations to your app without needing to wri
 
 ## Hybrid WGPU Overlays
 
+
+
 ![wgpu-windows.mp4](/assets/06assets/wgpu-windows.mp4)
 
 ## Web, iOS, and Android bundle support
 
+With this release, we added support for web and mobile with `dx bundle`. Previously, `dx bundle` only worked for desktop apps. Now you can bundle for a wide variety of targets:
 
+- macOS (.app, .dmg)
+- Windows (.exe, .msi)
+- Linux (.deb, .rpm, .appimage)
+- Android (.apk)
+- iOS (.ipa, .app)
+- Web (.appimage, /public folder)
 
 ## JSON Output for CI / CLI
 

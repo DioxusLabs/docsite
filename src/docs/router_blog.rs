@@ -2019,7 +2019,7 @@ pub fn TemplatesDiffing() -> dioxus::prelude::Element {
         }
         p {
             img {
-                src: "https://i.imgur.com/9rbAXP9.png",
+                src: "/assets/blogassets/jsframework-diffing.png",
                 alt: "Untitled",
                 title: "",
             }
@@ -2122,7 +2122,7 @@ pub fn TemplatesDiffing() -> dioxus::prelude::Element {
         }
         p {
             img {
-                src: "https://i.imgur.com/PYtTb6I.png",
+                src: "/assets/blogassets/bump-alloc.png",
                 alt: "Making%20Dioxus%20(almost)%20as%20fast%20as%20SolidJS%20baea0d5b4e614351ac8e3d4fc4240d04/Screen_Shot_2021-08-17_at_2.24.39_AM.png",
                 title: "",
             }
@@ -2193,7 +2193,7 @@ pub fn TemplatesDiffing() -> dioxus::prelude::Element {
         }
         p {
             img {
-                src: "https://i.imgur.com/9rbAXP9.png",
+                src: "/assets/blogassets/jsframework-diffing.png",
                 alt: "Untitled",
                 title: "",
             }
@@ -2252,10 +2252,13 @@ pub fn TemplatesDiffing() -> dioxus::prelude::Element {
             " renderer too, since each renderer has to implement the same protocol to manage edits."
         }
         p {
-            img {
+            video {
                 src: "https://i.imgur.com/PSJdqKO.mp4",
                 alt: "174206798-1b73e42a-0b36-4bce-83c4-aa7d875ec800.mp4",
                 title: "",
+                controls: true,
+                autoplay: true,
+                muted: true,
             }
         }
         p {
@@ -2269,7 +2272,7 @@ pub fn TemplatesDiffing() -> dioxus::prelude::Element {
         }
         p {
             img {
-                src: "https://i.imgur.com/nJOX4cw.jpg",
+                src: "/assets/blogassets/elixir.jpeg",
                 alt: "ElixirLivewview.jpg",
                 title: "",
             }
@@ -2401,10 +2404,13 @@ pub fn Release030() -> dioxus::prelude::Element {
             "We’ve found hot reloading to significantly speed up development cycles, making it faster than ever to iterate your app."
         }
         p {
-            img {
+            video {
                 src: "https://i.imgur.com/OzIURca.mp4",
                 alt: "hotreload full",
                 title: "",
+                controls: true,
+                autoplay: true,
+                muted: true,
             }
         }
         p {
@@ -2418,10 +2424,13 @@ pub fn Release030() -> dioxus::prelude::Element {
         }
         p { "Autoformatting can be used via the VSCode Extension which will autoformat as you code." }
         p {
-            img {
+            video {
                 src: "https://i.imgur.com/aPQEFNO.mp4",
                 alt: "autofmt.mov",
                 title: "",
+                controls: true,
+                autoplay: true,
+                muted: true,
             }
         }
         p {
@@ -2430,10 +2439,13 @@ pub fn Release030() -> dioxus::prelude::Element {
             " command."
         }
         p {
-            img {
+            video {
                 src: "https://i.imgur.com/WrNZZdW.mp4",
                 alt: "dioxusfmt.mov",
                 title: "",
+                controls: true,
+                autoplay: true,
+                muted: true,
             }
         }
         p {
@@ -2448,10 +2460,13 @@ pub fn Release030() -> dioxus::prelude::Element {
             "Dioxus 0.3 marks the first official release of dedicated tooling for LiveView. LiveView is a new web-app development paradigm that combines the simplicity of server-side rendering with the rich interactivity of the single-page-application."
         }
         p {
-            img {
+            video {
                 src: "https://i.imgur.com/Eiejo1h.mp4",
                 alt: "liveviewdemo.mov",
                 title: "",
+                controls: true,
+                autoplay: true,
+                muted: true,
             }
         }
         p {
@@ -2467,10 +2482,13 @@ pub fn Release030() -> dioxus::prelude::Element {
             "Up to this point, Dioxus rendered into the terminal using just static elements. Now, with the release of Dioxus 0.3, we’re shipping a collection of input widgets for common utilities like buttons, sliders, text inputs, checkboxes, and more. These same widgets provide a basis of functionality for the native renderers we mention below."
         }
         p {
-            img {
+            video {
                 src: "https://i.imgur.com/oXQC5o5.mp4",
                 alt: "tuiinputs.mp4",
                 title: "",
+                controls: true,
+                autoplay: true,
+                muted: true,
             }
         }
         h2 { id: "multi-window-desktop-apps",
@@ -2483,10 +2501,13 @@ pub fn Release030() -> dioxus::prelude::Element {
             "One big advantage of this is the ability to open and close multiple windows from within your Dioxus app. With access to the event loop, you can even get a raw window handle, allowing alternative rendering engines like OpenGL or WGPU."
         }
         p {
-            img {
+            video {
                 src: "https://i.imgur.com/4Yg9FWd.mp4",
                 alt: "multiwindow.mov",
                 title: "",
+                controls: true,
+                autoplay: true,
+                muted: true,
             }
         }
         h2 { id: "lowercase-components",
@@ -2533,10 +2554,13 @@ pub fn Release030() -> dioxus::prelude::Element {
             "The renderer is very raw but already capable of rendering HTML, CSS, and responding to user input. We’re actively working on adding accessibility support using the work done by EGUI as inspiration."
         }
         p {
-            img {
+            video {
                 src: "https://i.imgur.com/NVp4COt.mp4",
                 alt: "wgpu",
                 title: "",
+                controls: true,
+                autoplay: true,
+                muted: true,
             }
         }
         h2 { id: "skia-renderer",
@@ -2563,10 +2587,13 @@ pub fn Release030() -> dioxus::prelude::Element {
             ", and get helpful docs with cargo-doc. Dioxus also now provides better support for file upload and drag-and-drop operations by downcasting the native event type if it exists."
         }
         p {
-            img {
+            video {
                 src: "https://i.imgur.com/DHBvvVy.mp4",
                 alt: "dragdropworks.mov",
                 title: "",
+                controls: true,
+                autoplay: true,
+                muted: true,
             }
         }
         p {
@@ -3055,10 +3082,13 @@ pub fn Release040() -> dioxus::prelude::Element {
             }
         }
         p {
-            img {
+            video {
                 src: "https://i.imgur.com/m4wJ6gN.mp4",
                 alt: "window_close.mov",
                 title: "",
+                controls: true,
+                autoplay: true,
+                muted: true,
             }
         }
         h2 { id: "bidirectional-eval",
@@ -3086,10 +3116,13 @@ pub fn Release040() -> dioxus::prelude::Element {
             contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f92672;\">use </span><span style=\"color:#f8f8f2;\">dioxus::prelude::</span><span style=\"color:#f92672;\">*</span><span style=\"color:#f8f8f2;\">;\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">main</span><span style=\"color:#f8f8f2;\">() {{\n</span><span style=\"color:#f8f8f2;\">    dioxus_desktop::launch(app);\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">app</span><span style=\"color:#f8f8f2;\">(</span><span style=\"font-style:italic;color:#fd971f;\">cx</span><span style=\"color:#f8f8f2;\">: Scope) -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> header_element </span><span style=\"color:#f92672;\">= </span><span style=\"color:#66d9ef;\">use_state</span><span style=\"color:#f8f8f2;\">(cx, || </span><span style=\"font-style:italic;color:#66d9ef;\">None</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">    cx.</span><span style=\"color:#66d9ef;\">render</span><span style=\"color:#f8f8f2;\">(rsx!(\n</span><span style=\"color:#f8f8f2;\">        div {{\n</span><span style=\"color:#f8f8f2;\">            h1 {{\n</span><span style=\"color:#f8f8f2;\">                onmounted: </span><span style=\"color:#f92672;\">move |</span><span style=\"color:#f8f8f2;\">cx</span><span style=\"color:#f92672;\">| </span><span style=\"color:#f8f8f2;\">{{\n</span><span style=\"color:#f8f8f2;\">                    header_element.</span><span style=\"color:#66d9ef;\">set</span><span style=\"color:#f8f8f2;\">(</span><span style=\"font-style:italic;color:#66d9ef;\">Some</span><span style=\"color:#f8f8f2;\">(cx.</span><span style=\"color:#66d9ef;\">inner</span><span style=\"color:#f8f8f2;\">().</span><span style=\"color:#66d9ef;\">clone</span><span style=\"color:#f8f8f2;\">()));\n</span><span style=\"color:#f8f8f2;\">                }},\n</span><span style=\"color:#f8f8f2;\">                </span><span style=\"color:#ffee99;\">&quot;Scroll to top example&quot;\n</span><span style=\"color:#f8f8f2;\">            }}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">            </span><span style=\"color:#f92672;\">for</span><span style=\"color:#f8f8f2;\"> i </span><span style=\"color:#f92672;\">in </span><span style=\"color:#ff80f4;\">0</span><span style=\"color:#f92672;\">..</span><span style=\"color:#ff80f4;\">40 </span><span style=\"color:#f8f8f2;\">{{\n</span><span style=\"color:#f8f8f2;\">                div {{ </span><span style=\"color:#ffee99;\">&quot;Item {{i}}&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">            }}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">            button {{\n</span><span style=\"color:#f8f8f2;\">                onclick: </span><span style=\"color:#f92672;\">move |_| </span><span style=\"color:#f8f8f2;\">{{\n</span><span style=\"color:#f8f8f2;\">                    </span><span style=\"color:#f92672;\">if </span><span style=\"font-style:italic;color:#66d9ef;\">let Some</span><span style=\"color:#f8f8f2;\">(header) </span><span style=\"color:#f92672;\">=</span><span style=\"color:#f8f8f2;\"> header_element.</span><span style=\"color:#66d9ef;\">as_ref</span><span style=\"color:#f8f8f2;\">() {{\n</span><span style=\"color:#f8f8f2;\">                        header.</span><span style=\"color:#66d9ef;\">scroll_to</span><span style=\"color:#f8f8f2;\">(ScrollBehavior::Smooth);\n</span><span style=\"color:#f8f8f2;\">                    }}\n</span><span style=\"color:#f8f8f2;\">                }},\n</span><span style=\"color:#f8f8f2;\">                </span><span style=\"color:#ffee99;\">&quot;Scroll to top&quot;\n</span><span style=\"color:#f8f8f2;\">            }}\n</span><span style=\"color:#f8f8f2;\">        }}\n</span><span style=\"color:#f8f8f2;\">    ))\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
         }
         p {
-            img {
+            video {
                 src: "https://i.imgur.com/yp7GyIf.mp4",
                 alt: "Scroll demo",
                 title: "",
+                controls: true,
+                autoplay: true,
+                muted: true,
             }
         }
         h2 { id: "renaming-dioxus-cli-to-dx",
@@ -3128,10 +3161,13 @@ pub fn Release040() -> dioxus::prelude::Element {
             " will shutdown the app and restart it with the new changes applied."
         }
         p {
-            img {
+            video {
                 src: "https://i.imgur.com/ML93XtT.mp4",
                 alt: "Hotreloading on desktop",
                 title: "",
+                controls: true,
+                autoplay: true,
+                muted: true,
             }
         }
         h2 { id: "dioxus-bundle",
@@ -3561,20 +3597,26 @@ pub fn Release050() -> dioxus::prelude::Element {
             }
         }
         p {
-            img {
+            video {
                 src: "https://imgur.com/CSjVVLL.mp4",
                 alt: "CSS Hot reloading",
                 title: "",
+                controls: true,
+                autoplay: true,
+                muted: true,
             }
         }
         p {
             "What’s even niftier is that you can stream these changes to several devices at once, unlocking simultaneous hot reloading across all devices that you target:"
         }
         p {
-            img {
+            video {
                 src: "https://i.imgur.com/cZ8qZCz.mp4",
                 alt: "CSS Hot reloading",
                 title: "",
+                controls: true,
+                autoplay: true,
+                muted: true,
             }
         }
         h2 { id: "event-system-rewrite",
@@ -3700,18 +3742,24 @@ pub fn Release050() -> dioxus::prelude::Element {
         }
         p {
             strong { "Dioxus 0.4" }
-            img {
+            video {
                 src: "https://i.imgur.com/CX7DREF.mp4",
                 alt: "Desktop performance 0.4",
                 title: "",
+                controls: true,
+                autoplay: true,
+                muted: true,
             }
         }
         p {
             strong { "Dioxus 0.5" }
-            img {
+            video {
                 src: "https://i.imgur.com/3l65D0G.mp4",
                 alt: "Desktop performance 0.5",
                 title: "",
+                controls: true,
+                autoplay: true,
+                muted: true,
             }
         }
         h2 { id: "spreading-props",
@@ -3773,10 +3821,13 @@ pub fn Release050() -> dioxus::prelude::Element {
             contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">#[server(output </span><span style=\"color:#f92672;\">=</span><span style=\"color:#f8f8f2;\"> StreamingText)]\n</span><span style=\"color:#f92672;\">pub</span><span style=\"color:#f8f8f2;\"> async </span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">mistral</span><span style=\"color:#f8f8f2;\">(</span><span style=\"font-style:italic;color:#fd971f;\">text</span><span style=\"color:#f8f8f2;\">: String) -&gt; Result&lt;TextStream, ServerFnError&gt; {{\n</span><span style=\"color:#f8f8f2;\">   </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> text_generation_stream </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">todo!();\n</span><span style=\"color:#f8f8f2;\">   </span><span style=\"font-style:italic;color:#66d9ef;\">Ok</span><span style=\"color:#f8f8f2;\">(TextStream::new(text_generation_stream))\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
         }
         p {
-            img {
+            video {
                 src: "https://i.imgur.com/JJaMT0Z.mp4",
                 alt: "Streaming server function AI app",
                 title: "",
+                controls: true,
+                autoplay: true,
+                muted: true,
             }
         }
         p {
@@ -3824,10 +3875,13 @@ pub fn Release050() -> dioxus::prelude::Element {
             ":"
         }
         p {
-            img {
+            video {
                 src: "https://i.imgur.com/6bdUBdF.mp4",
                 alt: "Custom asset handlers",
                 title: "",
+                controls: true,
+                autoplay: true,
+                muted: true,
             }
         }
         p {
@@ -3838,10 +3892,13 @@ pub fn Release050() -> dioxus::prelude::Element {
         }
         p { "This is a bit smaller of a tweak, but now we properly support file drops for Desktop:" }
         p {
-            img {
+            video {
                 src: "https://i.imgur.com/vkkDDid.mp4",
                 alt: "Native file drop",
                 title: "",
+                controls: true,
+                autoplay: true,
+                muted: true,
             }
             "Previously we just gave you the option to intercept filedrops but now it’s natively integrated into the event system"
         }
@@ -3899,10 +3956,13 @@ pub fn Release050() -> dioxus::prelude::Element {
             "Additionally, we’ve drastically improved the developer experience of building desktop apps. When we can’t hot reload the app and have to do a full recompile, we now preserve the state of the open windows and resume that state. This means your app won’t block your entire screen on every edit and it will maintain its size and position, leading to a more magical experience. Once you’ve played with it, you can never go back - it’s that good."
         }
         p {
-            img {
+            video {
                 src: "https://i.imgur.com/qjHB4ho.mp4",
                 alt: "Hot reloading by default",
                 title: "",
+                controls: true,
+                autoplay: true,
+                muted: true,
             }
         }
         h2 { id: "updates-to-the-dioxus-template",
@@ -3911,10 +3971,13 @@ pub fn Release050() -> dioxus::prelude::Element {
             }
         }
         p {
-            img {
+            video {
                 src: "https://i.imgur.com/jpXNW5P.mp4",
                 alt: "Dioxus template update",
                 title: "",
+                controls: true,
+                autoplay: true,
+                muted: true,
             }
         }
         p {
@@ -4288,10 +4351,13 @@ pub fn Release060() -> dioxus::prelude::Element {
             "Our inline mobile support requires no extra configurations, no manual setup for Gradle, Java, Cocoapods, and no other 3rd party tooling. If you already have the Android NDK or iOS Simulator installed, you currently are less than 30 seconds away from a production-ready mobile app written entirely in Rust. In the time it takes for you to watch this gif, you could have your very own mobile app:"
         }
         p {
-            img {
+            video {
                 src: "/assets/06assets/dxnew.mp4",
                 alt: "dx-serve.mp4",
                 title: "",
+                controls: true,
+                autoplay: true,
+                muted: true,
             }
         }
         p {
@@ -4321,10 +4387,13 @@ pub fn Release060() -> dioxus::prelude::Element {
             "The new CLI sports live progress bars, animations, an interactive filter system, the ability to change log levels on the fly, and more."
         }
         p {
-            img {
+            video {
                 src: "/assets/06assets/cli-new.mp4",
                 alt: "cli_animation",
                 title: "",
+                controls: true,
+                autoplay: true,
+                muted: true,
             }
         }
         p {
@@ -4427,10 +4496,13 @@ pub fn Release060() -> dioxus::prelude::Element {
             "Additionally, as improving tooling, we properly integrated server functions with native apps. Server functions finally work out-of-the-box when targeting desktop and mobile:"
         }
         p {
-            img {
+            video {
                 src: "/assets/06assets/native-serverfn12.mp4",
                 alt: "native-server12.mp4",
                 title: "",
+                controls: true,
+                autoplay: true,
+                muted: true,
             }
         }
         p {
@@ -4471,10 +4543,13 @@ pub fn Release060() -> dioxus::prelude::Element {
             " input is malformed instead of panicking."
         }
         p {
-            img {
+            video {
                 src: "/assets/06assets/autocomplete-overhaul.mp4",
                 alt: "autocomplete-overhaul.mp4",
                 title: "",
+                controls: true,
+                autoplay: true,
+                muted: true,
             }
         }
         h2 { id: "completely-revamped-hot-reloading",
@@ -4517,10 +4592,13 @@ pub fn Release060() -> dioxus::prelude::Element {
             "The new hot-reloading engine almost feels like magic - you can quickly iterate on new designs without waiting for full Rust rebuilds:"
         }
         p {
-            img {
+            video {
                 src: "/assets/06assets/dogapphr2.mp4",
                 alt: "dog_app.mp4",
                 title: "",
+                controls: true,
+                autoplay: true,
+                muted: true,
             }
         }
         h2 { id: "hot-reloading-formatted-strings",
@@ -4589,10 +4667,13 @@ pub fn Release060() -> dioxus::prelude::Element {
             "With Dioxus 0.6, we also wanted to fix the longstanding issue where mobile simulators didn’t properly get hot-reloading. Mobile can be tricky to work with - and will take a long time to get 100% right - but this is a solid step in making mobile targets better supported with Dioxus."
         }
         p {
-            img {
+            video {
                 src: "/assets/06assets/bundled-ios-reload.mp4",
                 alt: "bundled-ios-reload.mp4",
                 title: "",
+                controls: true,
+                autoplay: true,
+                muted: true,
             }
         }
         p {
@@ -4703,10 +4784,13 @@ pub fn Release060() -> dioxus::prelude::Element {
             "Along with suspense boundaries, dioxus fullstack also supports streaming each suspense boundary in from the server. Instead of waiting for the whole page to load, dioxus fullstack streams in each chunk with the resolved futures as they finish:"
         }
         p {
-            img {
+            video {
                 src: "/assets/06assets/streamingsuspense.mp4",
                 alt: "streaming-suspense.mp4",
                 title: "",
+                controls: true,
+                autoplay: true,
+                muted: true,
             }
         }
         p {
@@ -4922,20 +5006,26 @@ pub fn Release060() -> dioxus::prelude::Element {
             "This makes it possible to add rich animations to your app without needing to write custom JavaScript."
         }
         p {
-            img {
+            video {
                 src: "/assets/06assets/onvisible.mp4",
                 alt: "gif_of_visible_working.mp4",
                 title: "",
+                controls: true,
+                autoplay: true,
+                muted: true,
             }
         }
         h2 { id: "hybrid-wgpu-overlays",
             a { href: "#hybrid-wgpu-overlays", class: "header", "Hybrid WGPU Overlays" }
         }
         p {
-            img {
+            video {
                 src: "/assets/06assets/wgpu-windows.mp4",
                 alt: "wgpu-windows.mp4",
                 title: "",
+                controls: true,
+                autoplay: true,
+                muted: true,
             }
         }
         h2 { id: "web-ios-and-android-bundle-support",
@@ -5065,10 +5155,13 @@ pub fn Release060() -> dioxus::prelude::Element {
             ":"
         }
         p {
-            img {
+            video {
                 src: "/assets/06assets/full_hr_dioxus_fast.mp4",
                 alt: "full_hr_dioxus_fast.mp4",
                 title: "",
+                controls: true,
+                autoplay: true,
+                muted: true,
             }
         }
         p {

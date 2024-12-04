@@ -389,9 +389,9 @@ impl<'a, I: Iterator<Item = Event<'a>>> RsxMarkdownParser<'a, I> {
                             src: #url,
                             alt: #alt,
                             title: #title,
-                            controls: true
-                            autoplay: true
-                            muted: true
+                            controls: true,
+                            autoplay: true,
+                            muted: true,
                         }
                     })
                 } else {

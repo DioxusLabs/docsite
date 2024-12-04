@@ -2019,7 +2019,7 @@ pub fn TemplatesDiffing() -> dioxus::prelude::Element {
         }
         p {
             img {
-                src: "Making%20Dioxus%20(almost)%20as%20fast%20as%20SolidJS%20baea0d5b4e614351ac8e3d4fc4240d04/Untitled.png",
+                src: "https://i.imgur.com/9rbAXP9.png",
                 alt: "Untitled",
                 title: "",
             }
@@ -2032,7 +2032,7 @@ pub fn TemplatesDiffing() -> dioxus::prelude::Element {
         }
         p {
             img {
-                src: "Making%20Dioxus%20(almost)%20as%20fast%20as%20SolidJS%20baea0d5b4e614351ac8e3d4fc4240d04/Untitled%201.png",
+                src: "https://imgs.xkcd.com/comics/optimization.png",
                 alt: "Untitled",
                 title: "",
             }
@@ -2122,7 +2122,7 @@ pub fn TemplatesDiffing() -> dioxus::prelude::Element {
         }
         p {
             img {
-                src: "Making%20Dioxus%20(almost)%20as%20fast%20as%20SolidJS%20baea0d5b4e614351ac8e3d4fc4240d04/Screen_Shot_2021-08-17_at_2.24.39_AM.png",
+                src: "https://i.imgur.com/PYtTb6I.png",
                 alt: "Making%20Dioxus%20(almost)%20as%20fast%20as%20SolidJS%20baea0d5b4e614351ac8e3d4fc4240d04/Screen_Shot_2021-08-17_at_2.24.39_AM.png",
                 title: "",
             }
@@ -2193,7 +2193,7 @@ pub fn TemplatesDiffing() -> dioxus::prelude::Element {
         }
         p {
             img {
-                src: "Making%20Dioxus%20(almost)%20as%20fast%20as%20SolidJS%20baea0d5b4e614351ac8e3d4fc4240d04/Untitled.png",
+                src: "https://i.imgur.com/9rbAXP9.png",
                 alt: "Untitled",
                 title: "",
             }
@@ -2252,8 +2252,10 @@ pub fn TemplatesDiffing() -> dioxus::prelude::Element {
             " renderer too, since each renderer has to implement the same protocol to manage edits."
         }
         p {
-            a { href: "Making%20Dioxus%20(almost)%20as%20fast%20as%20SolidJS%20baea0d5b4e614351ac8e3d4fc4240d04/174206798-1b73e42a-0b36-4bce-83c4-aa7d875ec800.mp4",
-                "174206798-1b73e42a-0b36-4bce-83c4-aa7d875ec800.mp4"
+            img {
+                src: "https://i.imgur.com/PSJdqKO.mp4",
+                alt: "174206798-1b73e42a-0b36-4bce-83c4-aa7d875ec800.mp4",
+                title: "",
             }
         }
         p {
@@ -2267,7 +2269,7 @@ pub fn TemplatesDiffing() -> dioxus::prelude::Element {
         }
         p {
             img {
-                src: "Making%20Dioxus%20(almost)%20as%20fast%20as%20SolidJS%20baea0d5b4e614351ac8e3d4fc4240d04/ElixirLivewview.jpg",
+                src: "https://i.imgur.com/nJOX4cw.jpg",
                 alt: "ElixirLivewview.jpg",
                 title: "",
             }

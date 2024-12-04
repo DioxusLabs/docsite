@@ -111,9 +111,9 @@ pub fn generate_router(book_path: PathBuf, book: mdbook_shared::MdBook<PathBuf>)
         if let Some(stripped) = url.strip_suffix("index") {
             url = stripped.to_string();
         }
-        if let Some(stripped) = url.strip_suffix('/') {
-            url = stripped.to_string();
-        }
+        // if let Some(stripped) = url.strip_suffix('/') {
+        //     url = stripped.to_string();
+        // }
         if !url.starts_with('/') {
             url = format!("/{}", url);
         }

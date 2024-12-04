@@ -9,26 +9,18 @@
   - [Component Lifecycle](reference/component_lifecycle.md) -->
 
 - [Tutorial](guide/index.md)
-  - [Tooling setup](guide/tooling.md)
-  - [Creating a new app](guide/new_app.md)
-  - [Your First Component](guide/component.md)
-  - [Styling and Assets](guide/assets.md)
-  - [State and Interactivity](guide/state.md)
-  - [App Routing](guide/routing.md)
-  - [Data Fetching](guide/fetching.md)
-  - [More Platforms](guide/multiplatform.md)
-  - [Backend](guide/backend.md)
-  - [Deploying](guide/deploy.md)
-  - [Next Steps](guide/next_steps.md)
+  - [Your First Component](guide/your_first_component.md)
+  - [State](guide/state.md)
+  - [Data Fetching](guide/data_fetching.md)
+  - [Full Code](guide/full_code.md)
 
 ---
 
 - [Essential Concepts](essentials/index.md)
+  - [Building UIs with RSX](essentials/rsx/index.md)
   - [Component Lifecycle](essentials/lifecycle/index.md)
   - [Managing State](essentials/state/index.md)
   - [Breaking Out](essentials/breaking/index.md)
-  - [Structuring Your App](essentials/structure/index.md)
-  - [Building UIs with RSX](essentials/rsx/index.md)
 
 ---
 

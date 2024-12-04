@@ -8,6 +8,8 @@ pub use rerenders::RerenderDemo;
 pub use use_hook::UseHookDemo;
 
 mod use_hook {
+    use std::sync::atomic::AtomicUsize;
+
     use super::*;
 
     // ANCHOR: use_hook
@@ -28,7 +30,10 @@ mod use_hook {
     // ANCHOR_END: use_hook
 
     fn random_number() -> f64 {
-        1234.5678 // chosen by fair dice roll
+        const RANDOM: &[f64] = &[13.97, 2.233, 3.85, 9.0, 132.4];
+        static COUNT: AtomicUsize = AtomicUsize::new(0);
+
+        RANDOM[COUNT.fetch_add(1, std::sync::atomic::Ordering::SeqCst) % RANDOM.len()]
     }
 
     fn FakePage() -> Element {

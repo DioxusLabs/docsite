@@ -30,14 +30,17 @@ mod downcast {
     use super::*;
 
     // ANCHOR: downcast
-    use dioxus::web::WebEventExt;
     pub fn Downcast() -> Element {
         let mut event_text = use_signal(|| 0);
 
         rsx! {
             div {
                 onmousemove: move |event| {
-                    event_text.set(event.as_web_event().movement_x());
+                    #[cfg(feature = "web")]
+                    {
+                        use dioxus::web::WebEventExt;
+                        event_text.set(event.as_web_event().movement_x());
+                    }
                 },
                 "movement_x was {event_text}"
             }

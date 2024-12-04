@@ -1,11 +1,3 @@
-# Dioxus 0.5: Signal Rewrite, Remove lifetimes, CSS Hot reloading, and more!
-
-> March 28, 2024
->
-> [`@jkelleyrtp`](https://github.com/jkelleyrtp), [`@ealmloff`](https://github.com/ealmloff)
-
-## The story
-
 Here at Dioxus Labs, we have an unofficial rule: only one rewrite per year.
 
 Our last rewrite brought some amazing features: templates, hot reloading, and insane performance. However, don’t be mistaken, rewrites are scary, time consuming, and a huge gamble. We started this new rewrite on January 1st of 2024, completed it by Feburary 1st, and then spent another month and a half writing tests, squashing bugs, and polishing documentation. Rewrites are absolutely not for the faint of heart.

@@ -1054,8 +1054,8 @@ dependencies = [
 
 [[package]]
 name = "dioxus-dx-wire-format"
-version = "0.6.0-alpha.5"
-source = "git+https://github.com/dioxuslabs/dioxus#79a2f023e735183626e63bd817dc279f730d0a87"
+version = "0.6.0-rc.0"
+source = "git+https://github.com/dioxuslabs/dioxus?rev=2db758a#2db758ad7b76783b75c925ba7eea8d794152bfb6"
 dependencies = [
  "cargo_metadata",
  "serde",
@@ -2652,7 +2652,6 @@ name = "model"
 version = "0.1.0"
 dependencies = [
  "axum",
- "cargo_metadata",
  "dioxus-dx-wire-format",
  "gloo-net",
  "serde",

@@ -1,8 +1,5 @@
 use crate::{
-    build::{
-        watcher::{BuildCommand, BuildRequest},
-        BuildMessage,
-    },
+    build::{BuildCommand, BuildMessage, BuildRequest},
     AppState,
 };
 use axum::{

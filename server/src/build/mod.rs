@@ -1,10 +1,25 @@
 use model::CargoDiagnostic;
 use std::{error::Error, fmt::Display, io};
-use tokio::task::JoinError;
+use tokio::{sync::mpsc::UnboundedSender, task::JoinError};
 use uuid::Uuid;
 
 pub mod builder;
 pub mod watcher;
+
+/// A build command which allows consumers of the builder api to submit and stop builds.
+#[derive(Debug, Clone)]
+pub enum BuildCommand {
+    Start { request: BuildRequest },
+    Stop { id: Uuid },
+}
+
+/// A build request which contains the id of the build, the code to be built, and a socket to send build updates.
+#[derive(Debug, Clone)]
+pub struct BuildRequest {
+    pub id: Uuid,
+    pub code: String,
+    pub ws_msg_tx: UnboundedSender<BuildMessage>,
+}
 
 /// A message from the playground build process.
 #[derive(Debug, Clone, PartialEq)]

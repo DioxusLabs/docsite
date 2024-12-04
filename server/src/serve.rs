@@ -1,6 +1,6 @@
 use axum::{
     body::Body,
-    extract::Path,
+    extract::{Path, State},
     http::{header, StatusCode},
     response::IntoResponse,
 };
@@ -9,12 +9,15 @@ use std::path::PathBuf;
 use tokio_util::io::ReaderStream;
 use uuid::Uuid;
 
-use crate::TEMP_PATH;
+use crate::app::AppState;
 
 /// Handle providing temporary built wasm assets.
 /// This should delete temporary projects after 30 seconds.
-pub async fn serve_built_index(Path(build_id): Path<Uuid>) -> impl IntoResponse {
-    let path = PathBuf::from(TEMP_PATH).join(build_id.to_string());
+pub async fn serve_built_index(
+    State(state): State<AppState>,
+    Path(build_id): Path<Uuid>,
+) -> impl IntoResponse {
+    let path = state.env.built_path.join(build_id.to_string());
 
     let index_path = path.join("index.html");
     let file = match tokio::fs::File::open(index_path.clone()).await {
@@ -34,9 +37,12 @@ pub async fn serve_built_index(Path(build_id): Path<Uuid>) -> impl IntoResponse 
 }
 
 pub async fn serve_other_built(
+    State(state): State<AppState>,
     Path((build_id, file_path)): Path<(Uuid, PathBuf)>,
 ) -> impl IntoResponse {
-    let path = PathBuf::from(TEMP_PATH)
+    let path = state
+        .env
+        .built_path
         .join(build_id.to_string())
         .join(file_path);
 

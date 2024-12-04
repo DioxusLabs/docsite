@@ -4,8 +4,10 @@ use crate::{
     BuildStage, CargoDiagnostic, CargoDiagnosticSpan, CargoLevel, SocketError, SocketMessage,
 };
 use axum::extract::ws;
-use cargo_metadata::{diagnostic::DiagnosticLevel, CompilerMessage};
-use dioxus_dx_wire_format::BuildStage as DxBuildStage;
+use dioxus_dx_wire_format::{
+    cargo_metadata::{diagnostic::DiagnosticLevel, CompilerMessage},
+    BuildStage as DxBuildStage,
+};
 
 impl From<DxBuildStage> for BuildStage {
     fn from(value: DxBuildStage) -> Self {

@@ -1,3 +1,4 @@
+use app::AppState;
 use axum::{
     error_handling::HandleErrorLayer,
     extract::{Request, State},
@@ -7,34 +8,15 @@ use axum::{
     routing::get,
     BoxError, Router,
 };
-use build::watcher::{start_build_watcher, BuildCommand};
-use dioxus_logger::tracing::{info, warn, Level};
-use std::{
-    env,
-    path::PathBuf,
-    sync::{
-        atomic::{AtomicBool, Ordering},
-        Arc,
-    },
-    time::Duration,
-};
-use tokio::{
-    fs,
-    net::TcpListener,
-    sync::{mpsc::UnboundedSender, Mutex},
-    time::Instant,
-};
+use dioxus_logger::tracing::{info, Level};
+use std::{sync::atomic::Ordering, time::Duration};
+use tokio::{net::TcpListener, time::Instant};
 use tower::{buffer::BufferLayer, limit::RateLimitLayer, ServiceBuilder};
 
+mod app;
 mod build;
 mod serve;
 mod ws;
-
-const LISTEN_IP: &str = "0.0.0.0";
-
-/// Duration after building to delete.
-/// 20 seconds should be plenty.
-const REMOVAL_DELAY: Duration = Duration::from_secs(20);
 
 /// Rate limiter configuration.
 /// How many requests each user should get within a time period.
@@ -42,73 +24,12 @@ const REQUESTS_PER_INTERVAL: u64 = 30;
 /// The period of time after the request limit resets.
 const RATE_LIMIT_INTERVAL: Duration = Duration::from_secs(60);
 
-// Paths
-const TEMP_PATH: &str = "../temp/";
-const BUILD_TEMPLATE_PATH: &str = "./template";
-
-#[derive(Clone)]
-struct AppState {
-    last_request_time: Arc<Mutex<Instant>>,
-    build_queue_tx: UnboundedSender<BuildCommand>,
-    is_building: Arc<AtomicBool>,
-}
-
 #[tokio::main]
 async fn main() {
     dioxus_logger::init(Level::INFO).expect("failed to init logger");
 
-    // Get the port to run on.
-    let mut port: u16 = 3000;
-    match env::var("PORT") {
-        Ok(v) => {
-            port = v
-                .parse()
-                .expect("the `PORT` environment variable should be a number")
-        }
-        Err(_) => warn!(
-            "`PORT` environment variable not set; defaulting to `{}`",
-            port
-        ),
-    }
-
-    // Get the path to the build template.
-    let mut build_template_path = PathBuf::from(BUILD_TEMPLATE_PATH);
-    match env::var("BUILD_TEMPLATE_PATH") {
-        Ok(v) => build_template_path = PathBuf::from(v),
-        Err(_) => warn!(
-            "`BUILD_TEMPLATE_PATH` environment variable is not set; defaulting to `{:?}`",
-            build_template_path
-        ),
-    }
-
-    // Remove any stale built projects in the temp folder and then recreate the folder.
-    let _ = fs::remove_dir_all(TEMP_PATH).await;
-    fs::create_dir(TEMP_PATH)
-        .await
-        .expect("failed to create temp directory");
-
-    // Build the app state
-    let is_building = Arc::new(AtomicBool::new(false));
-    let build_queue_tx = start_build_watcher(is_building.clone(), build_template_path).await;
-    let state = AppState {
-        build_queue_tx,
-        last_request_time: Arc::new(Mutex::new(Instant::now())),
-        is_building,
-    };
-
-    // Start the shutdown watcher is requested.
-    match env::var("SHUTDOWN_DELAY") {
-        Ok(v) => {
-            let shutdown_delay = v
-                .parse()
-                .expect("the `SHUTDOWN_DELAY` environment variable should be a number");
-
-            start_shutdown_watcher(state.clone(), Duration::from_secs(shutdown_delay));
-        }
-        Err(_) => {
-            warn!("`SHUTDOWN_DELAY` environment variable is not set; the server will not turn off")
-        }
-    }
+    let state = AppState::new().await;
+    let port = state.env.port;
 
     // Build the routers.
     let built_router = Router::new()
@@ -144,7 +65,7 @@ async fn main() {
         .with_state(state);
 
     // Start the Axum server.
-    let final_address = &format!("{LISTEN_IP}:{port}");
+    let final_address = &format!("0.0.0.0:{port}");
     let listener = TcpListener::bind(final_address).await.unwrap();
 
     info!("listening on `{}`", final_address);

@@ -1,5 +1,5 @@
-use super::watcher::BuildRequest;
-use super::BuildError;
+use super::{BuildError, BuildRequest};
+use crate::app::EnvVars;
 use crate::build::{BuildMessage, CliMessage};
 use dioxus_dx_wire_format::StructuredOutput;
 use fs_extra::dir::CopyOptions;
@@ -22,15 +22,17 @@ const BUILD_ID_ID: &str = "{BUILD_ID}";
 /// The builder provides a convenient interface for controlling builds running in another task.
 pub struct Builder {
     template_path: PathBuf,
+    temp_path: PathBuf,
     is_building: Arc<AtomicBool>,
     current_build: Option<BuildRequest>,
     task: JoinHandle<Result<(), BuildError>>,
 }
 
 impl Builder {
-    pub fn new(template_path: PathBuf, is_building: Arc<AtomicBool>) -> Self {
+    pub fn new(env: EnvVars, is_building: Arc<AtomicBool>) -> Self {
         Self {
-            template_path,
+            template_path: env.build_template_path,
+            temp_path: env.built_path,
             is_building,
             current_build: None,
             task: tokio::spawn(std::future::pending()),
@@ -42,7 +44,11 @@ impl Builder {
         self.stop_current();
         self.is_building.store(true, Ordering::SeqCst);
         self.current_build = Some(request.clone());
-        self.task = tokio::spawn(build(self.template_path.clone(), request));
+        self.task = tokio::spawn(build(
+            self.template_path.clone(),
+            self.temp_path.clone(),
+            request,
+        ));
     }
 
     /// Stop the current build.
@@ -79,10 +85,14 @@ impl Builder {
 }
 
 /// Run the steps to produce a build for a [`BuildRequest`]
-async fn build(template_path: PathBuf, request: BuildRequest) -> Result<(), BuildError> {
+async fn build(
+    template_path: PathBuf,
+    temp_path: PathBuf,
+    request: BuildRequest,
+) -> Result<(), BuildError> {
     setup_template(&template_path, &request).await?;
     dx_build(&template_path, &request).await?;
-    move_to_built(&template_path, &request).await?;
+    move_to_built(&template_path, &temp_path, &request).await?;
     Ok(())
 }
 
@@ -136,6 +146,7 @@ async fn dx_build(template_path: &PathBuf, request: &BuildRequest) -> Result<(),
 
     loop {
         select! {
+            // Read stdout lines from DX.
             result = stdout_reader.next_line() => {
                 let Ok(Some(line)) = result else {
                     continue;
@@ -143,6 +154,7 @@ async fn dx_build(template_path: &PathBuf, request: &BuildRequest) -> Result<(),
 
                 process_dx_message(request, line);
             }
+            // Wait for the DX process to exit.
             status = child.wait() => {
                 // Check if the build was successful.
                 let exit_code = status.map(|c| c.code());
@@ -184,14 +196,20 @@ fn process_dx_message(request: &BuildRequest, message: String) {
             let Ok(diagnostic) = CargoDiagnostic::try_from(message) else {
                 return;
             };
-            request.ws_msg_tx.send(BuildMessage::CargoDiagnostic(diagnostic))
+            request
+                .ws_msg_tx
+                .send(BuildMessage::CargoDiagnostic(diagnostic))
         }
         _ => Ok(()),
     };
 }
 
 /// Moves the project built by `dx` to the final location for serving.
-async fn move_to_built(template_path: &Path, request: &BuildRequest) -> Result<(), BuildError> {
+async fn move_to_built(
+    template_path: &Path,
+    built_path: &Path,
+    request: &BuildRequest,
+) -> Result<(), BuildError> {
     let id_string = request.id.to_string();
 
     // The path to the built project from DX
@@ -202,7 +220,7 @@ async fn move_to_built(template_path: &Path, request: &BuildRequest) -> Result<(
     let debug_web = built_project_parent.join("debug/web/");
     let public_folder = debug_web.join("public");
 
-    let built_path = PathBuf::from(crate::TEMP_PATH);
+    let built_path = built_path.to_path_buf();
 
     // Rename the built project public folder to the build id.
     // Move the built project to the built projects folder to be served.

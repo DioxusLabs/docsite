@@ -9,7 +9,7 @@ model = { path = "./model" }
 dioxus = "0.6.0-rc.0"
 dioxus-document = "0.6.0-rc.0"
 dioxus-logger = "0.5.1"
-dioxus-dx-wire-format = { git = "https://github.com/dioxuslabs/dioxus" }
+dioxus-dx-wire-format = { git = "https://github.com/dioxuslabs/dioxus", rev = "2db758a" }
 
 serde = { version = "1.0.215", features = ["derive"] }
 serde_json = "1.0.133"

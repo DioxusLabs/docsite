@@ -11,11 +11,10 @@ serde = { workspace = true }
 # Server only
 dioxus-dx-wire-format = { workspace = true, optional = true }
 axum = { workspace = true, features = ["ws"], optional = true}
-cargo_metadata = { version = "0.18.1", optional = true }
 
 # Web only
 gloo-net = { workspace = true, optional = true }
 
 [features]
-server = ["dep:dioxus-dx-wire-format", "dep:axum", "dep:cargo_metadata"]
+server = ["dep:dioxus-dx-wire-format", "dep:axum"]
 web = ["dep:gloo-net"]

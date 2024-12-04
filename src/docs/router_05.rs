@@ -132,8 +132,6 @@ pub enum BookRoute {
     CookbookStateCustomHooksIndex {},
     #[route("/cookbook/testing")]
     CookbookTesting {},
-    #[route("/cookbook/examples")]
-    CookbookExamples {},
     #[route("/cookbook/tailwind")]
     CookbookTailwind {},
     #[route("/cookbook/custom_renderer")]
@@ -265,27 +263,26 @@ impl BookRoute {
                 use_mdbook::mdbook_shared::PageId(59usize)
             }
             BookRoute::CookbookTesting {} => use_mdbook::mdbook_shared::PageId(60usize),
-            BookRoute::CookbookExamples {} => use_mdbook::mdbook_shared::PageId(61usize),
-            BookRoute::CookbookTailwind {} => use_mdbook::mdbook_shared::PageId(62usize),
-            BookRoute::CookbookCustomRenderer {} => use_mdbook::mdbook_shared::PageId(63usize),
-            BookRoute::CookbookOptimizing {} => use_mdbook::mdbook_shared::PageId(64usize),
-            BookRoute::CliIndex {} => use_mdbook::mdbook_shared::PageId(65usize),
-            BookRoute::CliCreating {} => use_mdbook::mdbook_shared::PageId(66usize),
-            BookRoute::CliConfigure {} => use_mdbook::mdbook_shared::PageId(67usize),
-            BookRoute::CliTranslate {} => use_mdbook::mdbook_shared::PageId(68usize),
-            BookRoute::ContributingIndex {} => use_mdbook::mdbook_shared::PageId(69usize),
+            BookRoute::CookbookTailwind {} => use_mdbook::mdbook_shared::PageId(61usize),
+            BookRoute::CookbookCustomRenderer {} => use_mdbook::mdbook_shared::PageId(62usize),
+            BookRoute::CookbookOptimizing {} => use_mdbook::mdbook_shared::PageId(63usize),
+            BookRoute::CliIndex {} => use_mdbook::mdbook_shared::PageId(64usize),
+            BookRoute::CliCreating {} => use_mdbook::mdbook_shared::PageId(65usize),
+            BookRoute::CliConfigure {} => use_mdbook::mdbook_shared::PageId(66usize),
+            BookRoute::CliTranslate {} => use_mdbook::mdbook_shared::PageId(67usize),
+            BookRoute::ContributingIndex {} => use_mdbook::mdbook_shared::PageId(68usize),
             BookRoute::ContributingProjectStructure {} => {
-                use_mdbook::mdbook_shared::PageId(70usize)
+                use_mdbook::mdbook_shared::PageId(69usize)
             }
             BookRoute::ContributingGuidingPrinciples {} => {
-                use_mdbook::mdbook_shared::PageId(71usize)
+                use_mdbook::mdbook_shared::PageId(70usize)
             }
-            BookRoute::ContributingRoadmap {} => use_mdbook::mdbook_shared::PageId(72usize),
-            BookRoute::MigrationIndex {} => use_mdbook::mdbook_shared::PageId(73usize),
-            BookRoute::MigrationHooks {} => use_mdbook::mdbook_shared::PageId(74usize),
-            BookRoute::MigrationState {} => use_mdbook::mdbook_shared::PageId(75usize),
-            BookRoute::MigrationFermi {} => use_mdbook::mdbook_shared::PageId(76usize),
-            BookRoute::MigrationProps {} => use_mdbook::mdbook_shared::PageId(77usize),
+            BookRoute::ContributingRoadmap {} => use_mdbook::mdbook_shared::PageId(71usize),
+            BookRoute::MigrationIndex {} => use_mdbook::mdbook_shared::PageId(72usize),
+            BookRoute::MigrationHooks {} => use_mdbook::mdbook_shared::PageId(73usize),
+            BookRoute::MigrationState {} => use_mdbook::mdbook_shared::PageId(74usize),
+            BookRoute::MigrationFermi {} => use_mdbook::mdbook_shared::PageId(75usize),
+            BookRoute::MigrationProps {} => use_mdbook::mdbook_shared::PageId(76usize),
         }
     }
 }
@@ -2427,24 +2424,6 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
         );
         pages.push((61usize, {
             ::use_mdbook::mdbook_shared::Page {
-                title: "Examples".to_string(),
-                url: BookRoute::CookbookExamples {},
-                segments: vec![],
-                sections: vec![::use_mdbook::mdbook_shared::Section {
-                    title: "Examples".to_string(),
-                    id: "examples".to_string(),
-                    level: 1usize,
-                }],
-                raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(61usize),
-            }
-        }));
-        page_id_mapping.insert(
-            BookRoute::CookbookExamples {},
-            ::use_mdbook::mdbook_shared::PageId(61usize),
-        );
-        pages.push((62usize, {
-            ::use_mdbook::mdbook_shared::Page {
                 title: "Tailwind".to_string(),
                 url: BookRoute::CookbookTailwind {},
                 segments: vec![],
@@ -2481,14 +2460,14 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(62usize),
+                id: ::use_mdbook::mdbook_shared::PageId(61usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::CookbookTailwind {},
-            ::use_mdbook::mdbook_shared::PageId(62usize),
+            ::use_mdbook::mdbook_shared::PageId(61usize),
         );
-        pages.push((63usize, {
+        pages.push((62usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Custom Renderer".to_string(),
                 url: BookRoute::CookbookCustomRenderer {},
@@ -2576,14 +2555,14 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(63usize),
+                id: ::use_mdbook::mdbook_shared::PageId(62usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::CookbookCustomRenderer {},
-            ::use_mdbook::mdbook_shared::PageId(63usize),
+            ::use_mdbook::mdbook_shared::PageId(62usize),
         );
-        pages.push((64usize, {
+        pages.push((63usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Optimizing".to_string(),
                 url: BookRoute::CookbookOptimizing {},
@@ -2636,14 +2615,14 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(64usize),
+                id: ::use_mdbook::mdbook_shared::PageId(63usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::CookbookOptimizing {},
-            ::use_mdbook::mdbook_shared::PageId(64usize),
+            ::use_mdbook::mdbook_shared::PageId(63usize),
         );
-        pages.push((65usize, {
+        pages.push((64usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "CLI".to_string(),
                 url: BookRoute::CliIndex {},
@@ -2661,14 +2640,14 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(65usize),
+                id: ::use_mdbook::mdbook_shared::PageId(64usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::CliIndex {},
-            ::use_mdbook::mdbook_shared::PageId(65usize),
+            ::use_mdbook::mdbook_shared::PageId(64usize),
         );
-        pages.push((66usize, {
+        pages.push((65usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Create a Project".to_string(),
                 url: BookRoute::CliCreating {},
@@ -2686,14 +2665,14 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(66usize),
+                id: ::use_mdbook::mdbook_shared::PageId(65usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::CliCreating {},
-            ::use_mdbook::mdbook_shared::PageId(66usize),
+            ::use_mdbook::mdbook_shared::PageId(65usize),
         );
-        pages.push((67usize, {
+        pages.push((66usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Configure Project".to_string(),
                 url: BookRoute::CliConfigure {},
@@ -2746,14 +2725,14 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(67usize),
+                id: ::use_mdbook::mdbook_shared::PageId(66usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::CliConfigure {},
-            ::use_mdbook::mdbook_shared::PageId(67usize),
+            ::use_mdbook::mdbook_shared::PageId(66usize),
         );
-        pages.push((68usize, {
+        pages.push((67usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Translate HTML".to_string(),
                 url: BookRoute::CliTranslate {},
@@ -2771,14 +2750,14 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(68usize),
+                id: ::use_mdbook::mdbook_shared::PageId(67usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::CliTranslate {},
-            ::use_mdbook::mdbook_shared::PageId(68usize),
+            ::use_mdbook::mdbook_shared::PageId(67usize),
         );
-        pages.push((69usize, {
+        pages.push((68usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Contributing".to_string(),
                 url: BookRoute::ContributingIndex {},
@@ -2816,14 +2795,14 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(69usize),
+                id: ::use_mdbook::mdbook_shared::PageId(68usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::ContributingIndex {},
-            ::use_mdbook::mdbook_shared::PageId(69usize),
+            ::use_mdbook::mdbook_shared::PageId(68usize),
         );
-        pages.push((70usize, {
+        pages.push((69usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Project Structure".to_string(),
                 url: BookRoute::ContributingProjectStructure {},
@@ -2866,14 +2845,14 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(70usize),
+                id: ::use_mdbook::mdbook_shared::PageId(69usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::ContributingProjectStructure {},
-            ::use_mdbook::mdbook_shared::PageId(70usize),
+            ::use_mdbook::mdbook_shared::PageId(69usize),
         );
-        pages.push((71usize, {
+        pages.push((70usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Guiding Principles".to_string(),
                 url: BookRoute::ContributingGuidingPrinciples {},
@@ -2906,14 +2885,14 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(71usize),
+                id: ::use_mdbook::mdbook_shared::PageId(70usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::ContributingGuidingPrinciples {},
-            ::use_mdbook::mdbook_shared::PageId(71usize),
+            ::use_mdbook::mdbook_shared::PageId(70usize),
         );
-        pages.push((72usize, {
+        pages.push((71usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Roadmap".to_string(),
                 url: BookRoute::ContributingRoadmap {},
@@ -2986,14 +2965,14 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(72usize),
+                id: ::use_mdbook::mdbook_shared::PageId(71usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::ContributingRoadmap {},
-            ::use_mdbook::mdbook_shared::PageId(72usize),
+            ::use_mdbook::mdbook_shared::PageId(71usize),
         );
-        pages.push((73usize, {
+        pages.push((72usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Migration".to_string(),
                 url: BookRoute::MigrationIndex {},
@@ -3036,14 +3015,14 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(73usize),
+                id: ::use_mdbook::mdbook_shared::PageId(72usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::MigrationIndex {},
-            ::use_mdbook::mdbook_shared::PageId(73usize),
+            ::use_mdbook::mdbook_shared::PageId(72usize),
         );
-        pages.push((74usize, {
+        pages.push((73usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Hooks".to_string(),
                 url: BookRoute::MigrationHooks {},
@@ -3071,14 +3050,14 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(74usize),
+                id: ::use_mdbook::mdbook_shared::PageId(73usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::MigrationHooks {},
-            ::use_mdbook::mdbook_shared::PageId(74usize),
+            ::use_mdbook::mdbook_shared::PageId(73usize),
         );
-        pages.push((75usize, {
+        pages.push((74usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "State".to_string(),
                 url: BookRoute::MigrationState {},
@@ -3106,14 +3085,14 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(75usize),
+                id: ::use_mdbook::mdbook_shared::PageId(74usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::MigrationState {},
-            ::use_mdbook::mdbook_shared::PageId(75usize),
+            ::use_mdbook::mdbook_shared::PageId(74usize),
         );
-        pages.push((76usize, {
+        pages.push((75usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Fermi".to_string(),
                 url: BookRoute::MigrationFermi {},
@@ -3131,14 +3110,14 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(76usize),
+                id: ::use_mdbook::mdbook_shared::PageId(75usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::MigrationFermi {},
-            ::use_mdbook::mdbook_shared::PageId(76usize),
+            ::use_mdbook::mdbook_shared::PageId(75usize),
         );
-        pages.push((77usize, {
+        pages.push((76usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Props".to_string(),
                 url: BookRoute::MigrationProps {},
@@ -3166,12 +3145,12 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(77usize),
+                id: ::use_mdbook::mdbook_shared::PageId(76usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::MigrationProps {},
-            ::use_mdbook::mdbook_shared::PageId(77usize),
+            ::use_mdbook::mdbook_shared::PageId(76usize),
         );
         ::use_mdbook::mdbook_shared::MdBook {
             summary: ::use_mdbook::mdbook_shared::Summary {
@@ -3776,18 +3755,10 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                                 nested_items: vec![],
                             }),
                             ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
-                                name: "Examples".to_string(),
-                                location: Some(BookRoute::CookbookExamples {}),
-                                number: Some(
-                                    ::use_mdbook::mdbook_shared::SectionNumber(vec![5u32, 7u32]),
-                                ),
-                                nested_items: vec![],
-                            }),
-                            ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
                                 name: "Tailwind".to_string(),
                                 location: Some(BookRoute::CookbookTailwind {}),
                                 number: Some(
-                                    ::use_mdbook::mdbook_shared::SectionNumber(vec![5u32, 8u32]),
+                                    ::use_mdbook::mdbook_shared::SectionNumber(vec![5u32, 7u32]),
                                 ),
                                 nested_items: vec![],
                             }),
@@ -3796,7 +3767,7 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                                 location: Some(BookRoute::CookbookCustomRenderer {
                                 }),
                                 number: Some(
-                                    ::use_mdbook::mdbook_shared::SectionNumber(vec![5u32, 9u32]),
+                                    ::use_mdbook::mdbook_shared::SectionNumber(vec![5u32, 8u32]),
                                 ),
                                 nested_items: vec![],
                             }),
@@ -3804,9 +3775,7 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                                 name: "Optimizing".to_string(),
                                 location: Some(BookRoute::CookbookOptimizing {}),
                                 number: Some(
-                                    ::use_mdbook::mdbook_shared::SectionNumber(
-                                        vec![5u32, 10u32],
-                                    ),
+                                    ::use_mdbook::mdbook_shared::SectionNumber(vec![5u32, 9u32]),
                                 ),
                                 nested_items: vec![],
                             }),
@@ -9122,10 +9091,6 @@ pub fn CookbookIndex() -> dioxus::prelude::Element {
                 " explains how to examine the unique flavor of Dioxus-specific features, like components."
             }
             li {
-                a { href: "examples", "Examples" }
-                " is a curated list of delightful recipes that demonstrate the various ways of using Dioxus ingredients."
-            }
-            li {
                 a { href: "tailwind", "Tailwind" }
                 " reveals the secrets of combining your Tailwind and Dioxus ingredients into a complete meal. You will also learn about using other NPM ingredients (packages) with Dioxus."
             }
@@ -10071,125 +10036,6 @@ pub fn CookbookTesting() -> dioxus::prelude::Element {
             li {
                 a { href: "https://github.com/DioxusLabs/dioxus/tree/v0.5/playwright-tests/fullstack",
                     "Fullstack example"
-                }
-            }
-        }
-    }
-}
-#[component(no_case_check)]
-pub fn CookbookExamples() -> dioxus::prelude::Element {
-    use dioxus::prelude::*;
-    rsx! {
-        h1 { id: "examples",
-            a { href: "#examples", class: "header", "Examples" }
-        }
-        p {
-            "There's a "
-            em { "lot" }
-            " of these, so if you're having trouble implementing something, or you just want to see cool things"
-        }
-        p {
-            "Each of the examples in the main repository also has a permalink attached, in case the main one doesn't work."
-        }
-        ul {
-            li {
-                a { href: "https://github.com/DioxusLabs/dioxus/tree/v0.5/examples",
-                    "Main list"
-                }
-                " - "
-                a { href: "(https://github.com/DioxusLabs/dioxus/tree/7eccc7a104df013b06c104fc1275450d2747e78c/examples)",
-                    "permalink"
-                }
-                " - This is the largest list."
-            }
-            li {
-                "Package-specific examples from the "
-                a { href: "https://github.com/DioxusLabs/dioxus/", "main repository" }
-                ". To learn more about these packages, search them up on "
-                a { href: "https://crates.io/", "crates.io" }
-                ", or navigate from the examples to the root of the package."
-                ul {
-                    li {
-                        a { href: "https://github.com/DioxusLabs/dioxus/tree/v0.5/packages/web/examples",
-                            "dioxus-web"
-                        }
-                        " - "
-                        a { href: "https://github.com/DioxusLabs/dioxus/tree/7eccc7a104df013b06c104fc1275450d2747e78c/packages/web/examples",
-                            "permalink"
-                        }
-                    }
-                    li {
-                        a { href: "https://github.com/DioxusLabs/dioxus/tree/v0.5/packages/fullstack/examples",
-                            "dioxus-fullstack"
-                        }
-                        " - "
-                        a { href: "https://github.com/DioxusLabs/dioxus/tree/7eccc7a104df013b06c104fc1275450d2747e78c/packages/fullstack/examples",
-                            "permalink"
-                        }
-                    }
-                    li {
-                        a { href: "https://github.com/DioxusLabs/dioxus/tree/v0.5/packages/liveview/examples",
-                            "dioxus-liveview"
-                        }
-                        " - "
-                        a { href: "https://github.com/DioxusLabs/dioxus/tree/7eccc7a104df013b06c104fc1275450d2747e78c/packages/liveview/examples",
-                            "permalink"
-                        }
-                    }
-                    li {
-                        a { href: "https://github.com/DioxusLabs/dioxus/tree/v0.5/packages/router/examples",
-                            "dioxus-router"
-                        }
-                        " - "
-                        a { href: "https://github.com/DioxusLabs/dioxus/tree/7eccc7a104df013b06c104fc1275450d2747e78c/packages/router/examples",
-                            "permalink"
-                        }
-                    }
-                    li {
-                        a { href: "https://github.com/DioxusLabs/blitz/tree/master/packages/dioxus-tui/examples",
-                            "dioxus-tui"
-                        }
-                        " - "
-                        a { href: "https://github.com/DioxusLabs/dioxus/tree/e118648346f764f39261868ad13efcc2aeb2fb21/packages/dioxus-tui/examples",
-                            "permalink"
-                        }
-                    }
-                    li {
-                        a { href: "https://github.com/DioxusLabs/blitz/tree/master/packages/plasmo/examples",
-                            "plasmo"
-                        }
-                        " - "
-                        a { href: "https://github.com/DioxusLabs/blitz/tree/e118648346f764f39261868ad13efcc2aeb2fb21/packages/plasmo/examples",
-                            "permalink"
-                        }
-                    }
-                    li {
-                        a { href: "https://github.com/DioxusLabs/dioxus/tree/v0.5/packages/rsx-rosetta/examples",
-                            "rsx-rosetta"
-                        }
-                        " - "
-                        a { href: "https://github.com/DioxusLabs/dioxus/tree/7eccc7a104df013b06c104fc1275450d2747e78c/packages/rsx-rosetta/examples",
-                            "permalink"
-                        }
-                    }
-                    li {
-                        a { href: "https://github.com/DioxusLabs/blitz/tree/master/packages/native-core/examples",
-                            "native-core"
-                        }
-                        " - "
-                        a { href: "https://github.com/DioxusLabs/dioxus/tree/e118648346f764f39261868ad13efcc2aeb2fb21/packages/native-core/examples",
-                            "permalink"
-                        }
-                    }
-                    li {
-                        a { href: "https://github.com/DioxusLabs/dioxus/tree/v0.5/packages/signals/examples",
-                            "signals"
-                        }
-                        " - "
-                        a { href: "https://github.com/DioxusLabs/dioxus/tree/7eccc7a104df013b06c104fc1275450d2747e78c/packages/signals/examples",
-                            "permalink"
-                        }
-                    }
                 }
             }
         }

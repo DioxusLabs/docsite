@@ -69,7 +69,6 @@
     - [External State](cookbook/state/external/index.md)
     - [Custom Hooks](cookbook/state/custom_hooks/index.md)
   - [Testing](cookbook/testing.md)
-  - [Examples](cookbook/examples.md)
   - [Tailwind](cookbook/tailwind.md)
   - [Custom Renderer](cookbook/custom_renderer.md)
   - [Optimizing](cookbook/optimizing.md)

@@ -9,9 +9,9 @@ use axum::{
     BoxError, Router,
 };
 use axum_client_ip::SecureClientIpSource;
-use dioxus_logger::tracing::{info, Level};
-use std::{net::SocketAddr, sync::atomic::Ordering, time::Duration};
-use tokio::{net::TcpListener, time::Instant};
+use dioxus_logger::tracing::{info, warn, Level};
+use std::{io, net::SocketAddr, sync::atomic::Ordering, time::Duration};
+use tokio::{net::TcpListener, select, time::Instant};
 use tower::{buffer::BufferLayer, limit::RateLimitLayer, ServiceBuilder};
 
 mod app;
@@ -84,31 +84,84 @@ async fn main() {
     .unwrap();
 }
 
-/// Checks if the server can shutdown.
-fn start_shutdown_watcher(state: AppState, shutdown_delay: Duration) {
+/// Start misc services for maintaining the server's operation.
+fn start_cleanup_services(state: AppState) {
     tokio::task::spawn(async move {
+        let cleanup_delay = state.env.built_cleanup_delay;
+        let shutdown_delay = state
+            .env
+            .shutdown_delay
+            .unwrap_or(Duration::from_secs(99999999));
+
         loop {
-            tokio::time::sleep(shutdown_delay).await;
-
             let now = Instant::now();
-            let mut last_req_time = state.last_request_time.lock().await;
+            let next_shutdown_check = now + shutdown_delay;
+            let next_cleanup_check = now + cleanup_delay;
 
-            // Reset timer when build is occuring.
-            if state.is_building.load(Ordering::SeqCst) {
-                *last_req_time = now;
-                continue;
+            select! {
+                // Perform the next built project cleanup.
+                _ = tokio::time::sleep_until(next_cleanup_check) => {
+                    if let Err(e) = check_cleanup(state.clone()).await {
+                        warn!("failed to clean built projects: {e}");
+                    }
+                }
+
+                // Check if server should shut down.
+                _ = tokio::time::sleep_until(next_shutdown_check), if state.env.shutdown_delay.is_some() => {
+                    let should_shutdown = check_shutdown(&state, &shutdown_delay).await;
+                    if should_shutdown {
+                        // TODO: We could be more graceful here.
+                        std::process::exit(0);
+                    }
+                }
             }
+        }
+    });
+}
 
-            // Exit program if not building and duration exceeds shutdown time.
-            let duration_since_req = now.duration_since(*last_req_time);
-            if duration_since_req.as_secs() >= shutdown_delay.as_secs() {
-                break;
+/// Check and cleanup any expired built projects.
+async fn check_cleanup(state: AppState) -> Result<(), io::Error> {
+    let task = tokio::task::spawn_blocking(move || {
+        let dir = std::fs::read_dir(state.env.built_path)?;
+
+        for item in dir {
+            let item = item?;
+            let path = item.path();
+
+            let time_elapsed = item
+                .metadata()
+                .and_then(|m| m.created())
+                .and_then(|c| c.elapsed().map_err(io::Error::other))?;
+
+            if time_elapsed >= state.env.built_cleanup_delay {
+                std::fs::remove_dir_all(path)?;
             }
         }
 
-        // Exit the app with code 0 to tell Fly.io to scale to zero.
-        std::process::exit(0);
+        Ok(())
     });
+
+    task.await.expect("task should not panic or abort")
+}
+
+/// Check if the server should shutdown.
+async fn check_shutdown(state: &AppState, shutdown_delay: &Duration) -> bool {
+    let now = Instant::now();
+    let mut last_req_time = state.last_request_time.lock().await;
+
+    // Reset timer when build is occuring.
+    if state.is_building.load(Ordering::SeqCst) {
+        *last_req_time = now;
+        return false;
+    }
+
+    // Exit program if not building and duration exceeds shutdown time.
+    let duration_since_req = now.duration_since(*last_req_time);
+    if duration_since_req.as_secs() >= shutdown_delay.as_secs() {
+        return true;
+    }
+
+    false
 }
 
 /// A middleware that counts the time since the last request for the shutdown watcher.

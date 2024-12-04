@@ -2,7 +2,7 @@
 
 use crate::{
     build::{watcher::start_build_watcher, BuildCommand},
-    start_shutdown_watcher,
+    start_cleanup_services,
 };
 use dioxus_logger::tracing::{info, warn};
 use std::{
@@ -24,7 +24,7 @@ const DEFAULT_BUILT_PATH: &str = "../temp/";
 const DEFAULT_BUILD_TEMPLATE_PATH: &str = "./template";
 
 // Duration after built projects are created to be removed.
-const REMOVAL_DELAY: Duration = Duration::from_secs(20);
+const DEFAULT_BUILT_CLEANUP_DELAY: Duration = Duration::from_secs(20);
 
 /// A group of environment configurations for the application.
 #[derive(Clone)]
@@ -40,6 +40,9 @@ pub struct EnvVars {
 
     /// The path where built projects are temporarily stored.
     pub built_path: PathBuf,
+
+    /// The time after creation each built project should be removed.
+    pub built_cleanup_delay: Duration,
 
     /// The optional shutdown delay that specifies how many seconds after
     /// inactivity to shut down the server.
@@ -60,6 +63,7 @@ impl EnvVars {
             build_template_path,
             built_path: PathBuf::from(DEFAULT_BUILT_PATH),
             shutdown_delay,
+            built_cleanup_delay: DEFAULT_BUILT_CLEANUP_DELAY,
         }
     }
 
@@ -163,10 +167,8 @@ impl AppState {
             warn!("failed to reset built dir: {}", e);
         }
 
-        // Start the shutdown watcher if the env was provided.
-        if let Some(shutdown_delay) = state.env.shutdown_delay {
-            start_shutdown_watcher(state.clone(), shutdown_delay);
-        }
+        // Start the app services
+        start_cleanup_services(state.clone());
 
         state
     }

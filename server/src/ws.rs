@@ -42,7 +42,7 @@ async fn handle_socket(state: AppState, ip: String, socket: WebSocket) {
         let _ = socket_tx
             .send(SocketMessage::AlreadyConnected.into_axum())
             .await;
-        let _ = socket_tx.close();
+        let _ = socket_tx.close().await;
         return;
     } else {
         connected_sockets.push(ip);

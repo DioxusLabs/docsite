@@ -392,6 +392,7 @@ impl<'a, I: Iterator<Item = Event<'a>>> RsxMarkdownParser<'a, I> {
                             controls: true,
                             autoplay: true,
                             muted: true,
+                            r#loop: true,
                         }
                     })
                 } else {

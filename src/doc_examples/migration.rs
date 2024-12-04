@@ -1,164 +1,88 @@
-mod scope {
-    // ANCHOR: scope
-    use dioxus::prelude::*;
-
-    // In dioxus 0.5, the scope is no longer passed as an argument to the function
-    fn app() -> Element {
-        // Hooks, context, and spawn are now called directly
-        use_hook(|| { /*...*/ });
-        provide_context({ /*...*/ });
-        spawn(async move { /*...*/ });
-        rsx! {
-            /*...*/
-        }
-    }
-    // ANCHOR_END: scope
-}
-
-mod props {
-    // ANCHOR: props
-    use dioxus::prelude::*;
-
-    // In dioxus 0.5, props are always owned. You pass in owned props and you get owned props in the body of the component
-    #[component]
-    fn Comp(name: String) -> Element {
-        // Name is owned here already (name is the type String inside the function)
-        let owned_name: String = name;
-
-        rsx! {
-            "Hello {owned_name}"
-            BorrowedComp {
-                name: "other name"
-            }
-            ManualPropsComponent {
-                name: "other name 2"
-            }
-        }
-    }
-
-    // Borrowed props are removed in dioxus 0.5. Mapped signals can act similarly to borrowed props if your props are borrowed from state
-    // ReadOnlySignal is a copy wrapper over a state that will be automatically converted to
-    #[component]
-    fn BorrowedComp(name: ReadOnlySignal<String>) -> Element {
-        rsx! {
-            "Hello {name}"
-        }
-    }
-
-    // In dioxus 0.5, props need to implement Props, Clone, and PartialEq
-    #[derive(Props, Clone, PartialEq)]
-    struct ManualProps {
-        name: String,
-    }
-
-    // Functions accept the props directly instead of the scope
-    fn ManualPropsComponent(props: ManualProps) -> Element {
-        rsx! {
-            "Hello {props.name}"
-        }
-    }
-    // ANCHOR_END: props
-}
-
-mod futures {
-    use dioxus::prelude::*;
-
-    fn app() {
-        // ANCHOR: futures
-        // dependency1 and dependency2 must be Signal-like types like Signal, ReadOnlySignal, GlobalSignal, or another Resource
-        use_resource(|| async move { /*use dependency1 and dependency2*/ });
-
-        let non_reactive_state = 0;
-        // You can also add non-reactive state to the resource hook with the use_reactive macro
-        use_resource(use_reactive!(|(non_reactive_state,)| async move {
-            tokio::time::sleep(std::time::Duration::from_secs(1)).await;
-            non_reactive_state + 1
-        }));
-        // ANCHOR_END: futures
-    }
-}
-
-mod state {
+mod element_fixed {
+    // ANCHOR: element_fixed
     use dioxus::prelude::*;
 
     fn app() -> Element {
-        // ANCHOR: state
-        // You can now use signals for local copy state, local clone state, and shared state with the same API
-        let mut copy_state = use_signal(|| 0);
-        let mut clone_shared_state = use_context_provider(|| Signal::new(String::from("Hello")));
-        let mut clone_local_state = use_signal(|| String::from("Hello"));
+        let number = use_signal(|| -1);
 
-        // Call the signal like a function to clone the current value
-        let copy_state_value = copy_state();
-        // Or use the read method to borrow the current value
-        let clone_local_state_value = clone_local_state.read();
-        let clone_shared_state_value = clone_shared_state.read();
+        if number() < 0 {
+            // ✅ You can return VNode::empty() instead
+            return VNode::empty();
+        }
+        if number() < 0 {
+            // ✅ Or an empty rsx! macro
+            return rsx! {};
+        }
 
         rsx! {
-            "{copy_state_value}"
-            "{clone_shared_state_value}"
-            "{clone_local_state_value}"
-            button {
-                onclick: move |_| {
-                    // All three states have the same API for updating the state
-                    copy_state.set(1);
-                    clone_shared_state.set("World".to_string());
-                    clone_local_state.set("World".to_string());
-                },
-                "Set State"
-            }
+            "Positive number: {number}"
         }
-        // ANCHOR_END: state
     }
+    // ANCHOR_END: element_fixed
 }
 
-mod fermi {
-    // ANCHOR: fermi
+#[allow(deprecated)]
+mod prevent_default_old {
+    // ANCHOR: prevent_default_old
     use dioxus::prelude::*;
-
-    // Atoms and AtomRefs have been replaced with GlobalSignals
-    static NAME: GlobalSignal<String> = Signal::global(|| "world".to_string());
 
     fn app() -> Element {
         rsx! {
-            // You can use global state directly without the use_read or use_set hooks
-            div { "hello {NAME}!" }
-            Child {}
-            ChildWithRef {}
-        }
-    }
-
-    fn Child() -> Element {
-        rsx! {
-            button {
-                onclick: move |_| *NAME.write() = "dioxus".to_string(),
-                "reset name"
+            a {
+                href: "https://dioxuslabs.com",
+                // ❌ The prevent default attribute is deprecated in dioxus 0.6
+                prevent_default: "onclick",
+                "Don't navigate to dioxuslabs.com"
             }
         }
     }
+    // ANCHOR_END: prevent_default_old
+}
 
-    // Atoms and AtomRefs have been replaced with GlobalSignals
-    static NAMES: GlobalSignal<Vec<String>> = Signal::global(|| vec!["world".to_string()]);
+mod prevent_default_new {
+    // ANCHOR: prevent_default_new
+    use dioxus::prelude::*;
 
-    fn ChildWithRef() -> Element {
+    fn app() -> Element {
         rsx! {
-            div {
-                ul {
-                    for name in NAMES.read().iter() {
-                        li { "hello: {name}" }
-                    }
-                }
-                button {
-                    onclick: move |_| {
-                        // No need to clone the signal into futures, you can use it directly
-                        async move {
-                            NAMES.write().push("asd".to_string());
-                        }
-                    },
-                    "Add name"
-                }
+            a {
+                href: "https://dioxuslabs.com",
+                // ✅ Instead, you can call event.prevent_default() inside the event handler
+                onclick: move |event| event.prevent_default(),
+                "Don't navigate to dioxuslabs.com"
             }
         }
     }
-    // ANCHOR_END: fermi
+    // ANCHOR_END: prevent_default_new
+}
+
+mod prevent_default_new_liveview {
+    // ANCHOR: prevent_default_new_liveview
+    use dioxus::prelude::*;
+
+    fn app() -> Element {
+        rsx! {
+            a {
+                href: "https://dioxuslabs.com",
+                // ✅ In liveview, you can use javascript to prevent default behavior
+                "onclick": "event.preventDefault()",
+                "Don't navigate to dioxuslabs.com"
+            }
+        }
+    }
+    // ANCHOR_END: prevent_default_new_liveview
+}
+
+mod assets_new {
+    // ANCHOR: assets_new
+    use dioxus::prelude::*;
+
+    fn app() -> Element {
+        rsx! {
+            img {
+                src: asset!("/assets/static/bundle.png", ImageAssetOptions::new().with_size(ImageSize::Manual { width: 100, height: 100 }))
+            }
+        }
+    }
+    // ANCHOR_END: assets_new
 }

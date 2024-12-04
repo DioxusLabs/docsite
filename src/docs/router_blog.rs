@@ -4505,7 +4505,7 @@ pub fn Release060() -> dioxus::prelude::Element {
                 }
             }
             li {
-                a { href: "#hot-reloading-nested-rsx-", "Hot-reload children of components" }
+                a { href: "#hot-reloading-nested-rsx-", "Hot-reload nested rsx blocks" }
             }
             li {
                 a { href: "#mobile-hot-reloading", "Hot-reload mobile platforms" }
@@ -4639,7 +4639,11 @@ pub fn Release060() -> dioxus::prelude::Element {
             " while Manganis can do this for you, for free, at build time!"
         }
         p {
-            a { href: "/assets/06assets/manganis-opt.avif", "manganis-opt" }
+            img {
+                src: "/assets/06assets/manganis-opt.avif",
+                alt: "manganis-opt",
+                title: "",
+            }
         }
         p {
             "Additionally, manganis automatically hashes the images and modifies the generated asset name, allowing for better integration with CDNs and browser caching."
@@ -4780,13 +4784,13 @@ pub fn Release060() -> dioxus::prelude::Element {
         p {
             "What’s even better: the  "
             code { "?" }
-            " syntax also works in event handlers, so you can quickly add things like server functions to your app without worrying about being bogged down with manual error handling:"
+            " syntax also works in event handlers, so you can quickly add things like server functions to your app without worrying about manual error handling:"
         }
         CodeBlock {
             contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">Counter</span><span style=\"color:#f8f8f2;\">() -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let </span><span style=\"color:#f92672;\">mut</span><span style=\"color:#f8f8f2;\"> data </span><span style=\"color:#f92672;\">= </span><span style=\"color:#66d9ef;\">use_signal</span><span style=\"color:#f8f8f2;\">(|| Data::default());\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">    rsx! {{\n</span><span style=\"color:#f8f8f2;\">        button {{\n</span><span style=\"color:#f8f8f2;\">            onclick: </span><span style=\"color:#f92672;\">move |_|</span><span style=\"color:#f8f8f2;\"> async </span><span style=\"color:#f92672;\">move </span><span style=\"color:#f8f8f2;\">{{\n</span><span style=\"color:#f8f8f2;\">                </span><span style=\"color:#8c8c8c;\">// the `?` automatically throws this error upwards\n</span><span style=\"color:#f8f8f2;\">                data.</span><span style=\"color:#66d9ef;\">set</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#66d9ef;\">request_server_data</span><span style=\"color:#f8f8f2;\">().await</span><span style=\"color:#f92672;\">?</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"color:#f8f8f2;\">                </span><span style=\"font-style:italic;color:#66d9ef;\">Ok</span><span style=\"color:#f8f8f2;\">(())\n</span><span style=\"color:#f8f8f2;\">            }},\n</span><span style=\"color:#f8f8f2;\">            </span><span style=\"color:#ffee99;\">&quot;{{data}}&quot;\n</span><span style=\"color:#f8f8f2;\">        }}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
         }
         p {
-            "This new syntax works with suspense and HTML-streaming to allow you to return errors while rendering that don’t bring down the entire page."
+            "This new syntax works with suspense and HTML-streaming return errors while rendering that don’t bring down the entire page."
         }
         h2 { id: "document-elements",
             a { href: "#document-elements", class: "header", "Document Elements: " }
@@ -4799,10 +4803,10 @@ pub fn Release060() -> dioxus::prelude::Element {
             code { "Meta {{}}" }
         }
         p {
-            "To date, it’s been rather cumbersome to do what is seemingly simple JavaScript operations in Dioxus. Due to our cross-platform nature, we need to find solutions to what seems like simple problems in ways that work for web, desktop, and mobile with a single abstraction."
+            "To date, it’s been rather cumbersome seemingly simple JavaScript operations in Dioxus. Due to our cross-platform nature, we need to find solutions to simple problems in ways that work for web, desktop, and mobile with a single abstraction."
         }
         p {
-            "Finally with Dioxus 0.6, we’re providing special elements under the  "
+            "With Dioxus 0.6, we’re providing special elements under the  "
             code { "document" }
             " namespace that make it possible to interact with the HTML  "
             code { "document" }
@@ -4856,7 +4860,7 @@ pub fn Release060() -> dioxus::prelude::Element {
         p {
             "In addition to being able to access the native event type, Dioxus 0.6 also makes all event handling synchronous. Previously, all event handling in Dioxus had to occur outside the normal browser event handling flow to support platforms like  "
             code { "dioxus-desktop" }
-            " which need to communicate over an interprocess communication (IPC) layer with the host webview. With this release, we’ve finally figured out how to enable synchronous communication for  "
+            " which need to communicate over an interprocess communication (IPC) layer with the host webview. With this release, we’ve finally figured out how to enable blocking communication for  "
             code { "dioxus-desktop" }
             " and can finally make event handling synchronous!"
         }
@@ -4871,7 +4875,9 @@ pub fn Release060() -> dioxus::prelude::Element {
             contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">Form</span><span style=\"color:#f8f8f2;\">() -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    rsx! {{\n</span><span style=\"color:#f8f8f2;\">        button {{\n</span><span style=\"color:#f8f8f2;\">            </span><span style=\"color:#8c8c8c;\">// we no longer need this!\n</span><span style=\"color:#f8f8f2;\">            dioxus_prevent_default: </span><span style=\"color:#ffee99;\">&quot;onclick&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">            </span><span style=\"color:#8c8c8c;\">// instead we can just call .prevent_default()\n</span><span style=\"color:#f8f8f2;\">            onclick: </span><span style=\"color:#f92672;\">move |</span><span style=\"color:#f8f8f2;\">evt</span><span style=\"color:#f92672;\">| </span><span style=\"color:#f8f8f2;\">{{\n</span><span style=\"color:#f8f8f2;\">                evt.</span><span style=\"color:#66d9ef;\">prevent_default</span><span style=\"color:#f8f8f2;\">();\n</span><span style=\"color:#f8f8f2;\">                todos.</span><span style=\"color:#66d9ef;\">write</span><span style=\"color:#f8f8f2;\">().</span><span style=\"color:#66d9ef;\">remove</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#f92672;\">&amp;</span><span style=\"color:#f8f8f2;\">id);\n</span><span style=\"color:#f8f8f2;\">            }},\n</span><span style=\"color:#f8f8f2;\">        }}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
         }
         p {
-            "This now makes it possible to implement prevent_default conditionally which has previously been a major limitation with Dioxus. Components like  "
+            "This now makes it possible to implement  "
+            code { "prevent_default" }
+            " conditionally which has previously been a limitation with Dioxus. Components like  "
             code { "Link {{}}" }
             " now exhibit behavior exactly aligned with their native counterparts, solving long-standing issues with Dioxus apps."
         }
@@ -5133,12 +5139,12 @@ pub fn Release060() -> dioxus::prelude::Element {
             a { href: "#conclusion", class: "header", "Conclusion" }
         }
         p {
-            "That’s it for all the new features! Due to the sheer size of this release, we might have missed several new features and bug fixes. The list of fixed bugs is also quite massive. Everything from bundling issues to spurious hot-reloads and compatibility with rare platforms and editors has been addressed."
+            "That’s it for this release! Due to the sheer size of this release, we might have missed a features and bug fixes. Countless issues including bundling bugs, spurious hot-reloads, and compatibility with unusual platforms and editors has been addressed."
         }
         p {
-            "Dioxus 0.6 has been in alpha for quite a while, and we’re very thankful for all the testing the community has done to make this the most polished release yet. It’s quite difficult to run a large open source project such a vast scope. This release took "
+            "Dioxus 0.6 has been in alpha for quite a while, and we’re very thankful for all the testing the community has done to make this the most polished release yet. It’s quite difficult to run a large open source project such a wide scope. This release took "
             em { "much" }
-            " longer to get out than we wanted - basically consuming two release cycles instead of just one."
+            " longer to get out than we wanted - consuming two release cycles instead of just one."
         }
         p {
             "We focused hard this release to polish up as many rough edges as possible. Our continuous integration and deployment is in a much nicer place. We’re finally able to release nightly versions of documentation and the alpha release system has worked well for users eager to test out new features and bug fixes."
@@ -5147,15 +5153,15 @@ pub fn Release060() -> dioxus::prelude::Element {
             "Unfortunately, this release contained many connected pieces which made it hard to release incrementally. Systems like assets integrate tightly with CLI tooling and cross-platform support: to get one configuration right you need to test them all. With 0.6 behind us, the future seems much more “incremental” which should let us release major versions with faster cadence."
         }
         p {
-            "We plan to release Dioxus 0.7 early next year once everyone has had a chance to play with Dioxus 0.6. Similar to 0.6, Dioxus 0.7 will focus on polishes and bug fixes - the Dioxus team wants to spend time building our own apps!"
+            "We plan to keep 0.6 around for a while. Instead of shipping new features for a while, we're excited to make tutorial videos, write documentation, fix bugs, improve performance, and work with the community. The Dioxus team wants to spend time building our own apps!"
         }
-        p { "We have a few major items planned for beginning of 2025:" }
+        p { "That being said, we do have a few major items planned for Dioxus 0.7 and beyond:" }
         ul {
             li { "Rust hot-reloading with binary patching" }
             li { "Integrating wasm bundle splitting with the router" }
             li {
                 code { "dx deploy" }
-                " to a hosted deploy platform"
+                " to a hosted deploy platform (Fly.io, AWS, Cloudflare, etc.)"
             }
         }
         p {
@@ -5168,7 +5174,52 @@ pub fn Release060() -> dioxus::prelude::Element {
             "I want to extend a huge thank-you to everyone who helped test and improve this release. We saw an incredible number of contributors fix bugs and add features. Special thanks to:"
         }
         p {
-            a { href: "some-image.png", " list of contributors " }
+            a { href: "https://github.com/ASR-ASU", "@ASR-ASU" }
+            a { href: "https://github.com/Aandreba", "@Aandreba" }
+            a { href: "https://github.com/Andrew15-5", "@Andrew15-5" }
+            a { href: "https://github.com/DogeDark", "@DogeDark" }
+            a { href: "https://github.com/Klemen2", "@Klemen2" }
+            a { href: "https://github.com/LeWimbes", "@LeWimbes" }
+            a { href: "https://github.com/LeoDog896", "@LeoDog896" }
+            a { href: "https://github.com/MrGVSV", "@MrGVSV" }
+            a { href: "https://github.com/Rahul721999", "@Rahul721999" }
+            a { href: "https://github.com/Septimus", "@Septimus" }
+            a { href: "https://github.com/Tahinli", "@Tahinli" }
+            a { href: "https://github.com/WilliamRagstad", "@WilliamRagstad" }
+            a { href: "https://github.com/ahqsoftwares", "@ahqsoftwares" }
+            a { href: "https://github.com/airblast-dev", "@airblast-dev" }
+            a { href: "https://github.com/alilosoft", "@alilosoft" }
+            a { href: "https://github.com/azamara", "@azamara" }
+            a { href: "https://github.com/chungwong", "@chungwong" }
+            a { href: "https://github.com/d3rpp", "@d3rpp" }
+            a { href: "https://github.com/daixiwen", "@daixiwen" }
+            a { href: "https://github.com/dependabot", "@dependabot" }
+            a { href: "https://github.com/ealmloff", "@ealmloff" }
+            a { href: "https://github.com/hackartists", "@hackartists" }
+            a { href: "https://github.com/hardBSDk", "@hardBSDk" }
+            a { href: "https://github.com/houseme", "@houseme" }
+            a { href: "https://github.com/i123iu", "@i123iu" }
+            a { href: "https://github.com/ilaborie", "@ilaborie" }
+            a { href: "https://github.com/imgurbot12", "@imgurbot12" }
+            a { href: "https://github.com/jacklund", "@jacklund" }
+            a { href: "https://github.com/jingchanglu", "@jingchanglu" }
+            a { href: "https://github.com/luveti", "@luveti" }
+            a { href: "https://github.com/marc2332", "@marc2332" }
+            a { href: "https://github.com/matthunz", "@matthunz" }
+            a { href: "https://github.com/nayo0513", "@nayo0513" }
+            a { href: "https://github.com/opensource-inemar-net", "@opensource-inemar-net" }
+            a { href: "https://github.com/oskardotglobal", "@oskardotglobal" }
+            a { href: "https://github.com/panglars", "@panglars" }
+            a { href: "https://github.com/pyrrho", "@pyrrho" }
+            a { href: "https://github.com/ribelo", "@ribelo" }
+            a { href: "https://github.com/rogusdev", "@rogusdev" }
+            a { href: "https://github.com/ryo33", "@ryo33" }
+            a { href: "https://github.com/samtay", "@samtay" }
+            a { href: "https://github.com/sknauff", "@sknauff" }
+            a { href: "https://github.com/srid", "@srid" }
+            a { href: "https://github.com/tigerros", "@tigerros" }
+            a { href: "https://github.com/tpoliaw", "@tpoliaw" }
+            a { href: "https://github.com/uzytkownik", "@uzytkownik" }
         }
     }
 }

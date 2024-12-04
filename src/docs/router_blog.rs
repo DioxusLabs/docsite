@@ -5314,53 +5314,145 @@ pub fn Release060() -> dioxus::prelude::Element {
         p {
             "I want to extend a huge thank-you to everyone who helped test and improve this release. We saw an incredible number of contributors fix bugs and add features. Special thanks to:"
         }
-        p {
-            a { href: "https://github.com/ASR-ASU", "@ASR-ASU" }
-            a { href: "https://github.com/Aandreba", "@Aandreba" }
-            a { href: "https://github.com/Andrew15-5", "@Andrew15-5" }
-            a { href: "https://github.com/DogeDark", "@DogeDark" }
-            a { href: "https://github.com/Klemen2", "@Klemen2" }
-            a { href: "https://github.com/LeWimbes", "@LeWimbes" }
-            a { href: "https://github.com/LeoDog896", "@LeoDog896" }
-            a { href: "https://github.com/MrGVSV", "@MrGVSV" }
-            a { href: "https://github.com/Rahul721999", "@Rahul721999" }
-            a { href: "https://github.com/Septimus", "@Septimus" }
-            a { href: "https://github.com/Tahinli", "@Tahinli" }
-            a { href: "https://github.com/WilliamRagstad", "@WilliamRagstad" }
-            a { href: "https://github.com/ahqsoftwares", "@ahqsoftwares" }
-            a { href: "https://github.com/airblast-dev", "@airblast-dev" }
-            a { href: "https://github.com/alilosoft", "@alilosoft" }
-            a { href: "https://github.com/azamara", "@azamara" }
-            a { href: "https://github.com/chungwong", "@chungwong" }
-            a { href: "https://github.com/d3rpp", "@d3rpp" }
-            a { href: "https://github.com/daixiwen", "@daixiwen" }
-            a { href: "https://github.com/dependabot", "@dependabot" }
-            a { href: "https://github.com/ealmloff", "@ealmloff" }
-            a { href: "https://github.com/hackartists", "@hackartists" }
-            a { href: "https://github.com/hardBSDk", "@hardBSDk" }
-            a { href: "https://github.com/houseme", "@houseme" }
-            a { href: "https://github.com/i123iu", "@i123iu" }
-            a { href: "https://github.com/ilaborie", "@ilaborie" }
-            a { href: "https://github.com/imgurbot12", "@imgurbot12" }
-            a { href: "https://github.com/jacklund", "@jacklund" }
-            a { href: "https://github.com/jingchanglu", "@jingchanglu" }
-            a { href: "https://github.com/luveti", "@luveti" }
-            a { href: "https://github.com/marc2332", "@marc2332" }
-            a { href: "https://github.com/matthunz", "@matthunz" }
-            a { href: "https://github.com/nayo0513", "@nayo0513" }
-            a { href: "https://github.com/opensource-inemar-net", "@opensource-inemar-net" }
-            a { href: "https://github.com/oskardotglobal", "@oskardotglobal" }
-            a { href: "https://github.com/panglars", "@panglars" }
-            a { href: "https://github.com/pyrrho", "@pyrrho" }
-            a { href: "https://github.com/ribelo", "@ribelo" }
-            a { href: "https://github.com/rogusdev", "@rogusdev" }
-            a { href: "https://github.com/ryo33", "@ryo33" }
-            a { href: "https://github.com/samtay", "@samtay" }
-            a { href: "https://github.com/sknauff", "@sknauff" }
-            a { href: "https://github.com/srid", "@srid" }
-            a { href: "https://github.com/tigerros", "@tigerros" }
-            a { href: "https://github.com/tpoliaw", "@tpoliaw" }
-            a { href: "https://github.com/uzytkownik", "@uzytkownik" }
+        ul {
+            li {
+                a { href: "https://github.com/ASR-ASU", "@ASR-ASU" }
+            }
+            li {
+                a { href: "https://github.com/Aandreba", "@Aandreba" }
+            }
+            li {
+                a { href: "https://github.com/Andrew15-5", "@Andrew15-5" }
+            }
+            li {
+                a { href: "https://github.com/DogeDark", "@DogeDark" }
+            }
+            li {
+                a { href: "https://github.com/Klemen2", "@Klemen2" }
+            }
+            li {
+                a { href: "https://github.com/LeWimbes", "@LeWimbes" }
+            }
+            li {
+                a { href: "https://github.com/LeoDog896", "@LeoDog896" }
+            }
+            li {
+                a { href: "https://github.com/MrGVSV", "@MrGVSV" }
+            }
+            li {
+                a { href: "https://github.com/Rahul721999", "@Rahul721999" }
+            }
+            li {
+                a { href: "https://github.com/Septimus", "@Septimus" }
+            }
+            li {
+                a { href: "https://github.com/Tahinli", "@Tahinli" }
+            }
+            li {
+                a { href: "https://github.com/WilliamRagstad", "@WilliamRagstad" }
+            }
+            li {
+                a { href: "https://github.com/ahqsoftwares", "@ahqsoftwares" }
+            }
+            li {
+                a { href: "https://github.com/airblast-dev", "@airblast-dev" }
+            }
+            li {
+                a { href: "https://github.com/alilosoft", "@alilosoft" }
+            }
+            li {
+                a { href: "https://github.com/azamara", "@azamara" }
+            }
+            li {
+                a { href: "https://github.com/chungwong", "@chungwong" }
+            }
+            li {
+                a { href: "https://github.com/d3rpp", "@d3rpp" }
+            }
+            li {
+                a { href: "https://github.com/daixiwen", "@daixiwen" }
+            }
+            li {
+                a { href: "https://github.com/dependabot", "@dependabot" }
+            }
+            li {
+                a { href: "https://github.com/ealmloff", "@ealmloff" }
+            }
+            li {
+                a { href: "https://github.com/hackartists", "@hackartists" }
+            }
+            li {
+                a { href: "https://github.com/hardBSDk", "@hardBSDk" }
+            }
+            li {
+                a { href: "https://github.com/houseme", "@houseme" }
+            }
+            li {
+                a { href: "https://github.com/i123iu", "@i123iu" }
+            }
+            li {
+                a { href: "https://github.com/ilaborie", "@ilaborie" }
+            }
+            li {
+                a { href: "https://github.com/imgurbot12", "@imgurbot12" }
+            }
+            li {
+                a { href: "https://github.com/jacklund", "@jacklund" }
+            }
+            li {
+                a { href: "https://github.com/jingchanglu", "@jingchanglu" }
+            }
+            li {
+                a { href: "https://github.com/luveti", "@luveti" }
+            }
+            li {
+                a { href: "https://github.com/marc2332", "@marc2332" }
+            }
+            li {
+                a { href: "https://github.com/matthunz", "@matthunz" }
+            }
+            li {
+                a { href: "https://github.com/nayo0513", "@nayo0513" }
+            }
+            li {
+                a { href: "https://github.com/opensource-inemar-net", "@opensource-inemar-net" }
+            }
+            li {
+                a { href: "https://github.com/oskardotglobal", "@oskardotglobal" }
+            }
+            li {
+                a { href: "https://github.com/panglars", "@panglars" }
+            }
+            li {
+                a { href: "https://github.com/pyrrho", "@pyrrho" }
+            }
+            li {
+                a { href: "https://github.com/ribelo", "@ribelo" }
+            }
+            li {
+                a { href: "https://github.com/rogusdev", "@rogusdev" }
+            }
+            li {
+                a { href: "https://github.com/ryo33", "@ryo33" }
+            }
+            li {
+                a { href: "https://github.com/samtay", "@samtay" }
+            }
+            li {
+                a { href: "https://github.com/sknauff", "@sknauff" }
+            }
+            li {
+                a { href: "https://github.com/srid", "@srid" }
+            }
+            li {
+                a { href: "https://github.com/tigerros", "@tigerros" }
+            }
+            li {
+                a { href: "https://github.com/tpoliaw", "@tpoliaw" }
+            }
+            li {
+                a { href: "https://github.com/uzytkownik", "@uzytkownik" }
+            }
         }
     }
 }

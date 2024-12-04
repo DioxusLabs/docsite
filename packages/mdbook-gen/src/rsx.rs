@@ -383,7 +383,7 @@ impl<'a, I: Iterator<Item = Event<'a>>> RsxMarkdownParser<'a, I> {
                 // #[cfg(feature = "manganis")]
                 // let url: syn::Expr = syn::parse_quote! { asset!(#dest) };
 
-                if dest.ends_with(".mp4") || dest.ends_with(".mov") || dest.ends_with("") {
+                if dest.ends_with(".mp4") || dest.ends_with(".mov") {
                     self.start_node(parse_quote! {
                         video {
                             src: #url,

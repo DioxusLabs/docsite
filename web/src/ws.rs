@@ -16,7 +16,7 @@ impl Socket {
     }
 
     pub async fn compile(&mut self, code: String) -> Result<(), AppError> {
-        let as_json = SocketMessage::CompileRequest(code).as_json_string()?;
+        let as_json = SocketMessage::BuildRequest(code).as_json_string()?;
 
         self.socket.send(Message::Text(as_json)).await?;
 
@@ -47,7 +47,7 @@ pub fn handle_message(signals: &mut BuildSignals, msg: SocketMessage) -> bool {
 
     match msg {
         // Handle a finished compilation of either success or error.
-        SocketMessage::CompileFinished(result) => {
+        SocketMessage::BuildFinished(result) => {
             match result {
                 Ok(id) => {
                     built_page_id.set(Some(id.to_string()));
@@ -64,7 +64,7 @@ pub fn handle_message(signals: &mut BuildSignals, msg: SocketMessage) -> bool {
             true
         }
         // Handle adding compile messages to the log.
-        SocketMessage::CompileMessage(msg) => {
+        SocketMessage::BuildMessage(msg) => {
             compiler_messages.push(msg);
             false
         }
@@ -80,7 +80,7 @@ pub fn handle_message(signals: &mut BuildSignals, msg: SocketMessage) -> bool {
             }
             false
         }
-        SocketMessage::CompileRequest(_) => unimplemented!(),
+        SocketMessage::BuildRequest(_) => unimplemented!(),
         SocketMessage::Unknown => {
             warn!("encountered an unknown socket message");
             false

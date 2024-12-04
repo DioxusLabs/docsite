@@ -226,7 +226,6 @@ checksum = "3a6c9af12842a67734c9a2e355436e5d03b22383ed60cf13cd0c18fbfe3dcbcf"
 dependencies = [
  "async-trait",
  "axum-core",
- "axum-macros",
  "base64 0.21.7",
  "bytes",
  "futures-util",
@@ -275,18 +274,6 @@ dependencies = [
  "tower-layer",
  "tower-service",
  "tracing",
-]
-
-[[package]]
-name = "axum-macros"
-version = "0.4.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "00c055ee2d014ae5981ce1016374e8213682aa14d9bf40e48ab48b5f3ef20eaa"
-dependencies = [
- "heck 0.4.1",
- "proc-macro2",
- "quote",
- "syn 2.0.85",
 ]
 
 [[package]]
@@ -599,6 +586,27 @@ dependencies = [
 ]
 
 [[package]]
+name = "const-serialize"
+version = "0.6.0-rc.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "6c075270e81c5fac2325b02dc0ea989d91f127f41c25017ecb2b7a1ae55ecb06"
+dependencies = [
+ "const-serialize-macro",
+ "serde",
+]
+
+[[package]]
+name = "const-serialize-macro"
+version = "0.6.0-rc.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "5d912eee0e3e18f706c66beb70fe7f3d6152733f1b8d6e435b619ea7ff474a34"
+dependencies = [
+ "proc-macro2",
+ "quote",
+ "syn 2.0.85",
+]
+
+[[package]]
 name = "const_format"
 version = "0.2.32"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -861,10 +869,11 @@ dependencies = [
 
 [[package]]
 name = "dioxus"
-version = "0.6.0-alpha.5"
+version = "0.6.0-rc.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "b7ae41ff3005907dd9641ec0fba547b6195d71621c4ef617d2b6b18f36b223c3"
+checksum = "1eb730be1abc18750031265a43a410df4814e40b6360d602205d7ed5ae6803a5"
 dependencies = [
+ "dioxus-cli-config",
  "dioxus-config-macro",
  "dioxus-core",
  "dioxus-core-macro",
@@ -882,9 +891,9 @@ dependencies = [
 
 [[package]]
 name = "dioxus-autofmt"
-version = "0.6.0-alpha.5"
+version = "0.6.0-rc.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "a575c84cb83fa193ae13df0990245ad280d1162de92c437e8cdee037c538c532"
+checksum = "c289c86d86c3be306cedcfed2546e3836aa32c3c387e568938fbbad5206fa705"
 dependencies = [
  "dioxus-rsx",
  "prettyplease",
@@ -896,15 +905,18 @@ dependencies = [
 
 [[package]]
 name = "dioxus-cli-config"
-version = "0.6.0-alpha.5"
+version = "0.6.0-rc.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "76ada3c1010b9cf23c2950637fca77d8dfd42aac5276d1a4bbba096799f55270"
+checksum = "26cad0796b62dd4edd92264b2a101369679aff1e286636fe194ede59438f7a9e"
+dependencies = [
+ "wasm-bindgen",
+]
 
 [[package]]
 name = "dioxus-config-macro"
-version = "0.6.0-alpha.5"
+version = "0.6.0-rc.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "feb9b9e85e91a80bb9e68df6f2d5f25215b849049e1bc6dc1a117a886a79606c"
+checksum = "04f00834c9a14eba53f145cb032ceb3f8c738a21b698fe771822cf696b0b161d"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -912,9 +924,9 @@ dependencies = [
 
 [[package]]
 name = "dioxus-core"
-version = "0.6.0-alpha.5"
+version = "0.6.0-rc.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "13a1743f96843de62a2d0aa6aec3705b3546e544c235cb8e75c2eb2221167818"
+checksum = "f2eaea199a67ba6b8a1062990c48f75ac6ab9928a9ebd398cf003470007e1382"
 dependencies = [
  "const_format",
  "dioxus-core-types",
@@ -933,9 +945,9 @@ dependencies = [
 
 [[package]]
 name = "dioxus-core-macro"
-version = "0.6.0-alpha.5"
+version = "0.6.0-rc.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "857514cf5bcc08f1cf5f8f52b260da9e47cb6b04cd791889915606bbee0037ae"
+checksum = "bb3f9cf7a60e43de7bf6455eecf1f2623ca5048b93121047bd455c88284fb368"
 dependencies = [
  "convert_case 0.6.0",
  "dioxus-rsx",
@@ -946,9 +958,9 @@ dependencies = [
 
 [[package]]
 name = "dioxus-core-types"
-version = "0.6.0-alpha.5"
+version = "0.6.0-rc.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "d343c3fd5e1a911b14a25e4c4a0ffd9fbcb08a17df2a0265dd9d6ddabf09bee4"
+checksum = "5b23056431b4647cc719dc63024db4afcb1a3afab66ed4e20a93d33f1674b8bf"
 dependencies = [
  "once_cell",
 ]
@@ -997,9 +1009,9 @@ dependencies = [
 
 [[package]]
 name = "dioxus-devtools"
-version = "0.6.0-alpha.5"
+version = "0.6.0-rc.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "d574b96e666445105fd5acaa1b24b1ee54f54dcbfac95b4225894903fc7c87eb"
+checksum = "46126974c9685bb1baa1bfb56c5b82ee26d35c2697f49c719cae19ea354d9412"
 dependencies = [
  "dioxus-core",
  "dioxus-devtools-types",
@@ -1013,9 +1025,9 @@ dependencies = [
 
 [[package]]
 name = "dioxus-devtools-types"
-version = "0.6.0-alpha.5"
+version = "0.6.0-rc.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "abbf17182e87e840ec1f6273d544e1fb8bbfae8c681b4361883f08db2f005c17"
+checksum = "57a6061dd70c532fa1baa1870f2e729009d11efd3e7626009d8a9209d9033c0f"
 dependencies = [
  "dioxus-core",
  "serde",
@@ -1023,9 +1035,9 @@ dependencies = [
 
 [[package]]
 name = "dioxus-document"
-version = "0.6.0-alpha.5"
+version = "0.6.0-rc.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "28ff2dd13d82da5102cc0f49ed9dfcd7d7fc420bc718a3e9afd3c27c800f26cf"
+checksum = "7293569fb5018da4a0e80b796ac5f87dc9c3d4f2b17e6e97b604fb157d6f4728"
 dependencies = [
  "dioxus-core",
  "dioxus-core-macro",
@@ -1052,9 +1064,9 @@ dependencies = [
 
 [[package]]
 name = "dioxus-fullstack"
-version = "0.6.0-alpha.5"
+version = "0.6.0-rc.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "f94e759174ce7aec71c56d6cdc2ade8aca5e8632997232416d2f61257c26f62d"
+checksum = "994f0d6f77e4cdc1bd4f8647b2fd09c3b4aacae32b3c5411d9131562bfef3602"
 dependencies = [
  "base64 0.22.1",
  "bytes",
@@ -1076,9 +1088,9 @@ dependencies = [
 
 [[package]]
 name = "dioxus-history"
-version = "0.6.0-alpha.5"
+version = "0.6.0-rc.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "667f1043511e3439ada833aed369b0ada2a3749eba12cf5a378a35f69ef60c4f"
+checksum = "ac0e0dd2d1c1a14e9a84b3dee90ac347d2b9565dd7291a6a766506c2c3dab805"
 dependencies = [
  "dioxus-core",
  "tracing",
@@ -1086,9 +1098,9 @@ dependencies = [
 
 [[package]]
 name = "dioxus-hooks"
-version = "0.6.0-alpha.5"
+version = "0.6.0-rc.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "9a296aef27787a54f9e5f35bf75a46ba6aba459230d89fd9a08a1aad2deb96cf"
+checksum = "9ca3a762fc2e398029b52f06499d22284e46587f98e50d0be92b5b12d5120b4e"
 dependencies = [
  "dioxus-core",
  "dioxus-signals",
@@ -1103,9 +1115,9 @@ dependencies = [
 
 [[package]]
 name = "dioxus-html"
-version = "0.6.0-alpha.5"
+version = "0.6.0-rc.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "67be72847c58db742daf221697e48c31122f11adf9fe68aa627e84c62d7b1272"
+checksum = "bf3db2887cbeaf981da5c48a797d53b3f17369aaad1fe5d521291c27f0fc0b32"
 dependencies = [
  "async-trait",
  "dioxus-core",
@@ -1129,9 +1141,9 @@ dependencies = [
 
 [[package]]
 name = "dioxus-html-internal-macro"
-version = "0.6.0-alpha.5"
+version = "0.6.0-rc.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "ba68321182056dd4aeef1fbaffd5aed5d4144666ac3f1abdfd72d5da33219250"
+checksum = "708a151e83913a86264111a397390dba3eab914aaa0054ae963ac7f099756b09"
 dependencies = [
  "convert_case 0.6.0",
  "proc-macro2",
@@ -1141,9 +1153,9 @@ dependencies = [
 
 [[package]]
 name = "dioxus-interpreter-js"
-version = "0.6.0-alpha.5"
+version = "0.6.0-rc.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "0b6a574b0ed0ed0e84409d8c4410868c7a3d92d900d50509bead97a32874589a"
+checksum = "dfca5c0b318d58c791d64619a1f88d6a69f37240581c584b0c26ad62cbc7c546"
 dependencies = [
  "dioxus-core",
  "dioxus-core-types",
@@ -1161,9 +1173,9 @@ dependencies = [
 
 [[package]]
 name = "dioxus-lib"
-version = "0.6.0-alpha.5"
+version = "0.6.0-rc.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "5a30fef842f4d8a1a6275c4046994ac8901b36d0fc33ded43cbe962e12f489f0"
+checksum = "dcbf168ef8801e22df8a6ec693277460903eaad8e1a318e894acd3d7088531c5"
 dependencies = [
  "dioxus-config-macro",
  "dioxus-core",
@@ -1218,9 +1230,9 @@ dependencies = [
 
 [[package]]
 name = "dioxus-router"
-version = "0.6.0-alpha.5"
+version = "0.6.0-rc.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "99ba15466a8161c8d59dddca75e002de7fa1dce5aab01661157bd7cc50e9089b"
+checksum = "dc939a239622a5662428d9b15a4b37fedcb60b6dfb097a1278b1f2d5a50507ce"
 dependencies = [
  "dioxus-cli-config",
  "dioxus-history",
@@ -1234,9 +1246,9 @@ dependencies = [
 
 [[package]]
 name = "dioxus-router-macro"
-version = "0.6.0-alpha.5"
+version = "0.6.0-rc.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "c5f95e6af6c7133f7e9772c13bd274ecd08cfcd737cca3b6edae5797dc4bb4c1"
+checksum = "724ea23ac71edf3898453df18e0782b2c52c9a8d684bfc9ae5abf365c790dbd2"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -1246,9 +1258,9 @@ dependencies = [
 
 [[package]]
 name = "dioxus-rsx"
-version = "0.6.0-alpha.5"
+version = "0.6.0-rc.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "46b7ab74e8e3d0f8a32a89b2cad8dc2689e2a2a0748c3b40a77ab7a72c1f1928"
+checksum = "013d6e21d8cac69244fd3b24ad4c0010563a2416b77c221082c95195251e94c4"
 dependencies = [
  "proc-macro2",
  "proc-macro2-diagnostics",
@@ -1258,9 +1270,9 @@ dependencies = [
 
 [[package]]
 name = "dioxus-rsx-hotreload"
-version = "0.6.0-alpha.5"
+version = "0.6.0-rc.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "e3fbba734049f92bb9daabc89038a364bd4d971ba73bd31b6987e58874815427"
+checksum = "8822bd89392f65813d1b4daec0bf67fcdf51995e797d6646520fd7857f7d861e"
 dependencies = [
  "dioxus-core",
  "dioxus-core-types",
@@ -1275,9 +1287,9 @@ dependencies = [
 
 [[package]]
 name = "dioxus-rsx-rosetta"
-version = "0.6.0-alpha.5"
+version = "0.6.0-rc.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "3ec2924883b229251c03512bb6536dbb179c96b4f0c206645678ba1e702a218f"
+checksum = "9d3402bc98b407984972aeeb1b37a20088c59eefb26d4f52a4e9f291bd69e0ee"
 dependencies = [
  "convert_case 0.6.0",
  "dioxus-autofmt",
@@ -1312,9 +1324,9 @@ dependencies = [
 
 [[package]]
 name = "dioxus-signals"
-version = "0.6.0-alpha.5"
+version = "0.6.0-rc.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "f015306cf5d21cc1a6b2e6faa3a123cbfb936e804cd202eadc88785c6190f24c"
+checksum = "2f37ae9f51a8c8a87b27142ee408b31ac44ac290fe8723045e6792ecd3e7dfdd"
 dependencies = [
  "dioxus-core",
  "futures-channel",
@@ -1329,9 +1341,9 @@ dependencies = [
 
 [[package]]
 name = "dioxus-web"
-version = "0.6.0-alpha.5"
+version = "0.6.0-rc.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "4bdd4ac037f7f434ecd39c522a1e75b9e05ecb531a06e5bf248798ba7b4e50d0"
+checksum = "8359e75b4dbac758400858d412a8b6cebf0acc960dd711e7bde6679ccb9536df"
 dependencies = [
  "async-trait",
  "ciborium",
@@ -1362,9 +1374,9 @@ dependencies = [
 
 [[package]]
 name = "dioxus_server_macro"
-version = "0.6.0-alpha.5"
+version = "0.6.0-rc.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "7c493bb99f97a9a2fea0a0a20e50245118000dc4f7a7fee2bbea8a03de91f7c9"
+checksum = "5fd3717cf8451fc63c9f00da432f567644a32718aa0dff6725785b0568b120aa"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -1834,9 +1846,9 @@ dependencies = [
 
 [[package]]
 name = "generational-box"
-version = "0.6.0-alpha.5"
+version = "0.6.0-rc.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "bfaaaa7be7b64b9b23b2d654fd3e3fbc79f0acb042df0ac6f10a52b726ebb6a9"
+checksum = "806e41555242741c0f59982c23868fcf1f9fe0cbc94dbcf975160fb61f3d0cc1"
 dependencies = [
  "parking_lot",
  "tracing",
@@ -2088,25 +2100,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "h2"
-version = "0.4.5"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "fa82e28a107a8cc405f0839610bdc9b15f1e25ec7d696aa5cf173edbcb1486ab"
-dependencies = [
- "atomic-waker",
- "bytes",
- "fnv",
- "futures-core",
- "futures-sink",
- "http",
- "indexmap 2.4.0",
- "slab",
- "tokio",
- "tokio-util",
- "tracing",
-]
-
-[[package]]
 name = "half"
 version = "2.4.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2272,7 +2265,6 @@ dependencies = [
  "bytes",
  "futures-channel",
  "futures-util",
- "h2",
  "http",
  "http-body",
  "httparse",
@@ -2454,9 +2446,9 @@ dependencies = [
 
 [[package]]
 name = "lazy-js-bundle"
-version = "0.6.0-alpha.5"
+version = "0.6.0-rc.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "2ca6aad6f1dcf7b56963b7783ac845c77fa3252575ece8cd1d2a286a2ff80647"
+checksum = "9a915892e741ebc64c62c72dbb22258f49fd05f47083c39cc00368f57b1589a0"
 
 [[package]]
 name = "lazy_static"
@@ -2534,40 +2526,36 @@ dependencies = [
 
 [[package]]
 name = "manganis"
-version = "0.6.0-alpha.5"
+version = "0.6.0-rc.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "83e1a7c5322d78855056425e4c57064c8af94c63606ec4c0ba5bc6a6291739a5"
+checksum = "517044428e27492c05a53addf5a2c982d8a79b68d095e07ed6ea1ce2d7084908"
 dependencies = [
- "anyhow",
- "base64 0.22.1",
- "dioxus-core-types",
- "dunce",
+ "const-serialize",
+ "manganis-core",
  "manganis-macro",
- "once_cell",
- "serde",
 ]
 
 [[package]]
 name = "manganis-core"
-version = "0.6.0-alpha.5"
+version = "0.6.0-rc.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "699570bfb0834cc42adf93379c801435a57d3e43f67eb467078be164e93d8327"
+checksum = "408f3ed5aa32a62b45e421893a0239a236ae83ee14f818df0efe5c79c1d274e1"
 dependencies = [
+ "const-serialize",
+ "dioxus-cli-config",
+ "dioxus-core-types",
  "serde",
- "serde_json",
 ]
 
 [[package]]
 name = "manganis-macro"
-version = "0.6.0-alpha.5"
+version = "0.6.0-rc.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "0d656ea5eeb2d70e4197610b47b533dd8c18f9d9082fc48c82947c9e2f500da9"
+checksum = "23f5b924e4628d0d020e0e323271b2a645c2277299780c476ad43380983a9b89"
 dependencies = [
  "manganis-core",
  "proc-macro2",
  "quote",
- "serde",
- "serde_json",
  "syn 2.0.85",
 ]
 
@@ -2663,6 +2651,8 @@ dependencies = [
 name = "model"
 version = "0.1.0"
 dependencies = [
+ "axum",
+ "dioxus-dx-wire-format",
  "gloo-net",
  "serde",
  "serde_json",

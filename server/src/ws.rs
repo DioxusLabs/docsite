@@ -42,25 +42,20 @@ async fn handle_socket(state: AppState, socket: WebSocket) {
         select! {
             // Parse socket messages, performing the proper action.
             Some(Ok(socket_msg)) = socket_rx.next() => {
-                let text = socket_msg.into_text().unwrap();
-                let socket_msg = SocketMessage::from(text);
+                let socket_msg = SocketMessage::try_from(socket_msg).unwrap();
 
-                match socket_msg {
-                    // Start a new build, stopping any existing ones.
-                    SocketMessage::CompileRequest(code) => {
-                        if let Some(ref request) = current_build {
-                            let result = state.build_queue_tx.send(BuildCommand::Stop { id: request.id });
-                            if result.is_err() {
-                                error!(build_id = ?request.id, "failed to send build stop signal for new build request");
-                                continue;
-                            }
+                // Start a new build, stopping any existing ones.
+                if let SocketMessage::BuildRequest(code) = socket_msg {
+                    if let Some(ref request) = current_build {
+                        let result = state.build_queue_tx.send(BuildCommand::Stop { id: request.id });
+                        if result.is_err() {
+                            error!(build_id = ?request.id, "failed to send build stop signal for new build request");
+                            continue;
                         }
-
-                        let request = start_build(&state, build_tx.clone(), code);
-                        current_build = Some(request);
                     }
-                    // We don't care about any other message from the client.
-                    _ => {}
+
+                    let request = start_build(&state, build_tx.clone(), code);
+                    current_build = Some(request);
                 }
             }
             // Handle sending build messages to client and closing the socket when finished.
@@ -79,7 +74,7 @@ async fn handle_socket(state: AppState, socket: WebSocket) {
             else => break,
         }
     }
-    
+
     println!("closing socket");
 
     // The socket has closed for some reason. Make sure we cancel any active builds.
@@ -102,7 +97,7 @@ fn start_build(
 ) -> BuildRequest {
     let build_id = Uuid::new_v4();
     let request = BuildRequest {
-        id: build_id.clone(),
+        id: build_id,
         code,
         ws_msg_tx: build_tx,
     };
@@ -120,17 +115,9 @@ fn start_build(
 impl From<BuildMessage> for SocketMessage {
     fn from(value: BuildMessage) -> Self {
         match value {
-            BuildMessage::Finished(result) => Self::CompileFinished(result),
+            BuildMessage::Building(stage) => Self::BuildStage(stage),
+            BuildMessage::Finished(result) => Self::BuildFinished(result),
             BuildMessage::QueuePosition(i) => Self::QueuePosition(i),
-            BuildMessage::Compiling {
-                current_crate,
-                total_crates,
-                krate,
-            } => Self::Compiling {
-                current_crate,
-                total_crates,
-                krate,
-            },
         }
     }
 }

@@ -1,9 +1,9 @@
-use crate::build::{BuildMessage, CliMessage};
-
 use super::watcher::BuildRequest;
-use dioxus_dx_wire_format::{BuildStage, StructuredOutput};
+use crate::build::{BuildMessage, CliMessage};
+use dioxus_dx_wire_format::StructuredOutput;
 use fs_extra::dir::CopyOptions;
-use std::path::PathBuf;
+use model::BuildStage;
+use std::path::{Path, PathBuf};
 use std::process::Stdio;
 use std::sync::atomic::{AtomicBool, Ordering};
 use std::sync::Arc;
@@ -79,7 +79,7 @@ async fn build(template_path: PathBuf, request: BuildRequest) {
 }
 
 /// Resets the template with values for the next build.
-async fn setup_template(template_path: &PathBuf, request: &BuildRequest) {
+async fn setup_template(template_path: &Path, request: &BuildRequest) {
     let snippets_from_copy = [
         template_path.join("snippets/main.rs"),
         template_path.join("snippets/Cargo.toml"),
@@ -143,13 +143,8 @@ async fn dx_build(template_path: &PathBuf, request: &BuildRequest) -> bool {
 
                 match cli_message {
                     StructuredOutput::BuildUpdate { stage } => {
-                        match stage {
-                            BuildStage::Compiling { current, total, krate, .. } => {
-                                println!("compiling");
-                                let _ = request.ws_msg_tx.send(BuildMessage::Compiling { current_crate: current, total_crates: total, krate, });
-                            }
-                            _ => {}
-                        }
+                        let stage = BuildStage::from(stage);
+                        let _ = request.ws_msg_tx.send(BuildMessage::Building(stage));
                     }
                     _ => {}
                 }
@@ -172,7 +167,7 @@ async fn dx_build(template_path: &PathBuf, request: &BuildRequest) -> bool {
 }
 
 /// Moves the project built by `dx` to the final location for serving.
-async fn move_to_built(template_path: &PathBuf, request: &BuildRequest) {
+async fn move_to_built(template_path: &Path, request: &BuildRequest) {
     let id_string = request.id.to_string();
 
     // The path to the built project from DX

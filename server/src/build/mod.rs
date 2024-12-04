@@ -3,14 +3,10 @@ use uuid::Uuid;
 pub mod builder;
 pub mod watcher;
 
-/// Represents a message from the build process.
+/// A message from the playground build process.
 #[derive(Debug, Clone, PartialEq)]
 pub enum BuildMessage {
-    Compiling {
-        current_crate: usize,
-        total_crates: usize,
-        krate: String,
-    },
+    Building(model::BuildStage),
     Finished(Result<Uuid, String>),
     QueuePosition(usize),
 }

@@ -63,7 +63,6 @@ pub(crate) fn BlogPost() -> Element {
                     "{meta.author}"
                 }
                 h3 { class: "text-[1.5rem] pb-2 ", "{meta.description}" }
-            
             }
             div { class: "markdown-body px-2  dioxus-blog-post", Outlet::<Route> {} }
         }
@@ -77,7 +76,7 @@ fn BlogPostItem(route: BlogRoute) -> Element {
     let raw_title = &route.page().title;
 
     if raw_title.contains("[draft]") {
-        return rsx! {  };
+        return rsx! {};
     }
 
     let items = raw_title.splitn(4, " $ ").collect::<Vec<_>>();

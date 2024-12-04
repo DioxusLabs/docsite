@@ -1,7 +1,9 @@
 use super::{builder::Builder, BuildCommand, BuildError, BuildMessage, BuildRequest};
 use crate::app::EnvVars;
+use dioxus_logger::tracing::debug;
 use std::{
     collections::VecDeque,
+    error::Error as _,
     sync::{atomic::AtomicBool, Arc},
 };
 use tokio::{
@@ -118,12 +120,15 @@ fn handle_finished_build(
         Ok(request) => request
             .ws_msg_tx
             .send(BuildMessage::Finished(Ok(request.id))),
-        Err(e) => match builder.current_build() {
-            Some(request) => request
-                .ws_msg_tx
-                .send(BuildMessage::Finished(Err(e.to_string()))),
-            None => Ok(()),
-        },
+        Err(e) => {
+            debug!(err = ?e, src = ?e.source(), "build failed");
+            match builder.current_build() {
+                Some(request) => request
+                    .ws_msg_tx
+                    .send(BuildMessage::Finished(Err(e.to_string()))),
+                None => Ok(()),
+            }
+        }
     };
 
     // Start the next build.

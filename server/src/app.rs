@@ -4,7 +4,7 @@ use crate::{
     build::{watcher::start_build_watcher, BuildCommand},
     start_shutdown_watcher,
 };
-use dioxus_logger::tracing::warn;
+use dioxus_logger::tracing::{info, warn};
 use std::{
     env, io,
     path::PathBuf,
@@ -29,6 +29,9 @@ const REMOVAL_DELAY: Duration = Duration::from_secs(20);
 /// A group of environment configurations for the application.
 #[derive(Clone)]
 pub struct EnvVars {
+    /// Is the server running in production?
+    pub production: bool,
+
     /// The port the server will listen on.
     pub port: u16,
 
@@ -46,16 +49,29 @@ pub struct EnvVars {
 impl EnvVars {
     /// Get the environment configuration for the server.
     pub async fn new() -> Self {
+        let production = Self::get_production_env();
         let port = Self::get_port_env();
         let build_template_path = Self::get_build_template_path();
         let shutdown_delay = Self::get_shutdown_delay();
 
         Self {
+            production,
             port,
             build_template_path,
             built_path: PathBuf::from(DEFAULT_BUILT_PATH),
             shutdown_delay,
         }
+    }
+
+    /// Get the production environment variable.
+    fn get_production_env() -> bool {
+        let production = env::var("PRODUCTION")
+            .ok()
+            .and_then(|v| v.parse::<bool>().ok())
+            .unwrap_or(false);
+
+        info!("is the server is running in production? {production}");
+        production
     }
 
     /// Get the serve port from environment or default.
@@ -67,7 +83,7 @@ impl EnvVars {
                     .parse()
                     .expect("the `PORT` environment variable should be a number")
             }
-            Err(_) => warn!(
+            Err(_) => info!(
                 "`PORT` environment variable not set; defaulting to `{}`",
                 port
             ),
@@ -81,7 +97,7 @@ impl EnvVars {
         let mut build_template_path = PathBuf::from(DEFAULT_BUILD_TEMPLATE_PATH);
         match env::var("BUILD_TEMPLATE_PATH") {
             Ok(v) => build_template_path = PathBuf::from(v),
-            Err(_) => warn!(
+            Err(_) => info!(
                 "`BUILD_TEMPLATE_PATH` environment variable is not set; defaulting to `{:?}`",
                 build_template_path
             ),
@@ -119,6 +135,9 @@ pub struct AppState {
 
     /// Prevents the server from shutting down during an active build.
     pub is_building: Arc<AtomicBool>,
+
+    /// A list of connected sockets by ip. Used to disallow extra socket connections.
+    pub connected_sockets: Arc<Mutex<Vec<String>>>,
 }
 
 impl AppState {
@@ -135,6 +154,7 @@ impl AppState {
             build_queue_tx,
             last_request_time: Arc::new(Mutex::new(Instant::now())),
             is_building,
+            connected_sockets: Arc::new(Mutex::new(Vec::new())),
         };
 
         // Reset the built dir

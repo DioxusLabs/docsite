@@ -15,6 +15,7 @@ pub enum SocketMessage {
     BuildStage(BuildStage),
     BuildDiagnostic(CargoDiagnostic),
     QueuePosition(usize),
+    AlreadyConnected,
 }
 
 /// A stage of building from the playground.

@@ -28,6 +28,15 @@ impl From<DxBuildStage> for BuildStage {
     }
 }
 
+impl SocketMessage {
+    pub fn into_axum(self) -> ws::Message {
+        let msg = self
+            .as_json_string()
+            .expect("socket message should be valid json");
+        ws::Message::Text(msg)
+    }
+}
+
 impl TryFrom<ws::Message> for SocketMessage {
     type Error = SocketError;
 
@@ -50,18 +59,11 @@ impl TryFrom<CompilerMessage> for CargoDiagnostic {
     fn try_from(value: CompilerMessage) -> Result<Self, Self::Error> {
         let diagnostic = value.message;
 
-        println!("{:?} | {}", diagnostic.level, diagnostic.message);
-
         let level = match diagnostic.level {
             DiagnosticLevel::Error => CargoLevel::Error,
             DiagnosticLevel::Warning => CargoLevel::Warning,
             _ => return Err(()),
         };
-
-        // let message = match diagnostic.rendered {
-        //     Some(m) => m,
-        //     None => diagnostic.message,
-        // };
 
         let message = diagnostic.message;
 

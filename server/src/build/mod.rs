@@ -1,5 +1,6 @@
 use model::CargoDiagnostic;
-use std::{error::Error, fmt::Display, io};
+use std::io;
+use thiserror::Error;
 use tokio::{sync::mpsc::UnboundedSender, task::JoinError};
 use uuid::Uuid;
 
@@ -37,44 +38,26 @@ pub struct CliMessage {
 }
 
 /// Build failed to complete.
-#[derive(Debug)]
+#[derive(Error, Debug)]
 pub enum BuildError {
     /// DX ClI returned a non-success status code. This could be caused by invalid user-submitted code.
+    #[error("dx returned a non-success status code: {0:?}")]
     DxFailed(Option<i32>),
     /// The builder doesn't have a build to finish.
+    #[error("the builder doesn't have a build to finish")]
     NotStarted,
 
+    #[error("build panicked: {0}")]
     Panicked(JoinError),
+
+    #[error("build aborted: {0}")]
     Aborted(JoinError),
 
-    Io(io::Error),
-    FsExtra(fs_extra::error::Error),
-}
+    #[error("io error: {0}")]
+    Io(#[from] io::Error),
 
-impl Display for BuildError {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        match self {
-            Self::DxFailed(code) => write!(f, "dx returned a non-success status code: {code:?}"),
-            Self::NotStarted => write!(f, "the builder doesn't have a build to finish"),
-            Self::Panicked(e) => write!(f, "build panicked: {e}"),
-            Self::Aborted(e) => write!(f, "build aborted: {e}"),
-            Self::Io(e) => write!(f, "io error: {e}"),
-            Self::FsExtra(e) => write!(f, "file system error: {e}"),
-        }
-    }
-}
-
-impl Error for BuildError {
-    fn source(&self) -> Option<&(dyn Error + 'static)> {
-        match self {
-            Self::DxFailed(_) => None,
-            Self::NotStarted => None,
-            Self::Panicked(e) => e.source(),
-            Self::Aborted(e) => e.source(),
-            Self::Io(e) => e.source(),
-            Self::FsExtra(e) => e.source(),
-        }
-    }
+    #[error("io error: {0}")]
+    FsExtra(#[from] fs_extra::error::Error),
 }
 
 // Tokio task JoinError.
@@ -85,20 +68,5 @@ impl From<JoinError> for BuildError {
         } else {
             Self::Panicked(value)
         }
-    }
-}
-
-// Any io error.
-impl From<io::Error> for BuildError {
-    fn from(value: io::Error) -> Self {
-        Self::Io(value)
-    }
-}
-
-// Fs extra error.
-// Is there a way to convert this to an io::Error?
-impl From<fs_extra::error::Error> for BuildError {
-    fn from(value: fs_extra::error::Error) -> Self {
-        Self::FsExtra(value)
     }
 }

@@ -8,8 +8,9 @@ use axum::{
     routing::get,
     BoxError, Router,
 };
+use axum_client_ip::SecureClientIpSource;
 use dioxus_logger::tracing::{info, Level};
-use std::{sync::atomic::Ordering, time::Duration};
+use std::{net::SocketAddr, sync::atomic::Ordering, time::Duration};
 use tokio::{net::TcpListener, time::Instant};
 use tower::{buffer::BufferLayer, limit::RateLimitLayer, ServiceBuilder};
 
@@ -30,6 +31,11 @@ async fn main() {
 
     let state = AppState::new().await;
     let port = state.env.port;
+
+    let secure_ip_src = match state.env.production {
+        true => SecureClientIpSource::FlyClientIp,
+        false => SecureClientIpSource::ConnectInfo,
+    };
 
     // Build the routers.
     let built_router = Router::new()
@@ -57,6 +63,7 @@ async fn main() {
                     REQUESTS_PER_INTERVAL,
                     RATE_LIMIT_INTERVAL,
                 ))
+                .layer(secure_ip_src.into_extension())
                 .layer(middleware::from_fn_with_state(
                     state.clone(),
                     request_counter,
@@ -69,7 +76,12 @@ async fn main() {
     let listener = TcpListener::bind(final_address).await.unwrap();
 
     info!("listening on `{}`", final_address);
-    axum::serve(listener, app).await.unwrap();
+    axum::serve(
+        listener,
+        app.into_make_service_with_connect_info::<SocketAddr>(),
+    )
+    .await
+    .unwrap();
 }
 
 /// Checks if the server can shutdown.

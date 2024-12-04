@@ -22,7 +22,7 @@ const BUILD_ID_ID: &str = "{BUILD_ID}";
 /// The builder provides a convenient interface for controlling builds running in another task.
 pub struct Builder {
     template_path: PathBuf,
-    temp_path: PathBuf,
+    built_path: PathBuf,
     is_building: Arc<AtomicBool>,
     current_build: Option<BuildRequest>,
     task: JoinHandle<Result<(), BuildError>>,
@@ -32,7 +32,7 @@ impl Builder {
     pub fn new(env: EnvVars, is_building: Arc<AtomicBool>) -> Self {
         Self {
             template_path: env.build_template_path,
-            temp_path: env.built_path,
+            built_path: env.built_path,
             is_building,
             current_build: None,
             task: tokio::spawn(std::future::pending()),
@@ -46,7 +46,7 @@ impl Builder {
         self.current_build = Some(request.clone());
         self.task = tokio::spawn(build(
             self.template_path.clone(),
-            self.temp_path.clone(),
+            self.built_path.clone(),
             request,
         ));
     }
@@ -87,12 +87,12 @@ impl Builder {
 /// Run the steps to produce a build for a [`BuildRequest`]
 async fn build(
     template_path: PathBuf,
-    temp_path: PathBuf,
+    built_path: PathBuf,
     request: BuildRequest,
 ) -> Result<(), BuildError> {
     setup_template(&template_path, &request).await?;
     dx_build(&template_path, &request).await?;
-    move_to_built(&template_path, &temp_path, &request).await?;
+    move_to_built(&template_path, &built_path, &request).await?;
     Ok(())
 }
 

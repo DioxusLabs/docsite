@@ -18,3 +18,5 @@ uuid = "1.8.0"
 
 gloo-net = { version = "0.6.0", features = ["websocket"] }
 axum = { version = "0.7.5" }
+
+thiserror = "2.0.4"

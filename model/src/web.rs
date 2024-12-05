@@ -15,7 +15,6 @@ impl TryFrom<GlooMessage> for SocketMessage {
     type Error = SocketError;
 
     fn try_from(value: GlooMessage) -> Result<Self, Self::Error> {
-        
         Ok(match value {
             GlooMessage::Bytes(bytes) => {
                 let as_string = String::from_utf8(bytes)?;

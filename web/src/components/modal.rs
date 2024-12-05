@@ -1,12 +1,7 @@
 use dioxus::prelude::*;
 
 #[component]
-pub fn Modal(
-    icon: Element,
-    title: String,
-    text: String,
-    on_ok: EventHandler,
-) -> Element {
+pub fn Modal(icon: Element, title: String, text: String, on_ok: EventHandler) -> Element {
     rsx! {
         // Background
         div {

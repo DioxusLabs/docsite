@@ -24,7 +24,10 @@ mod hotreload;
 mod ws;
 
 const DXP_CSS: Asset = asset!("/assets/dxp.css");
-const MONACO_FOLDER: Asset = asset!("/assets/monaco-editor-0.52");
+
+const MONACO_FOLDER_OPTIONS: FolderAssetOptions =
+    FolderAssetOptions::new().with_preserve_files(true);
+const MONACO_FOLDER: Asset = asset!("/assets/monaco-editor-0.52", MONACO_FOLDER_OPTIONS);
 
 /// The URLS that the playground should use for locating resources and services.
 #[derive(Debug, Clone, PartialEq)]
@@ -126,7 +129,7 @@ pub fn Playground(urls: PlaygroundUrls, share_code: Option<String>) -> Element {
         if build.stage().is_running() {
             return;
         }
-        
+
         build.reset();
         build.set_stage(BuildStage::Starting);
 

@@ -3419,7 +3419,7 @@ checksum = "0e7465ac9959cc2b1404e8e2367b43684a6d13790fe23056cc8c6c5a6b7bcb94"
 [[package]]
 name = "mdbook-gen"
 version = "0.0.0"
-source = "git+https://github.com/dioxuslabs/include_mdbook?branch=jk%2Fbuild-gen#1f01445bf983e2117731635aa7e91c680fb0394c"
+source = "git+https://github.com/dioxuslabs/include_mdbook?branch=jk%2Fbuild-gen#a9de5842afddf64c6c233a274f9d5e2756b1c8c9"
 dependencies = [
  "anyhow",
  "convert_case 0.6.0",
@@ -3442,7 +3442,7 @@ dependencies = [
 [[package]]
 name = "mdbook-macro"
 version = "0.1.0"
-source = "git+https://github.com/dioxuslabs/include_mdbook?branch=jk%2Fbuild-gen#1f01445bf983e2117731635aa7e91c680fb0394c"
+source = "git+https://github.com/dioxuslabs/include_mdbook?branch=jk%2Fbuild-gen#a9de5842afddf64c6c233a274f9d5e2756b1c8c9"
 dependencies = [
  "anyhow",
  "convert_case 0.6.0",
@@ -3463,7 +3463,7 @@ dependencies = [
 [[package]]
 name = "mdbook-shared"
 version = "0.1.0"
-source = "git+https://github.com/dioxuslabs/include_mdbook?branch=jk%2Fbuild-gen#1f01445bf983e2117731635aa7e91c680fb0394c"
+source = "git+https://github.com/dioxuslabs/include_mdbook?branch=jk%2Fbuild-gen#a9de5842afddf64c6c233a274f9d5e2756b1c8c9"
 dependencies = [
  "anyhow",
  "bytes",
@@ -5375,7 +5375,7 @@ dependencies = [
 [[package]]
 name = "syntect-html"
 version = "0.1.0"
-source = "git+https://github.com/dioxuslabs/include_mdbook?branch=jk%2Fbuild-gen#1f01445bf983e2117731635aa7e91c680fb0394c"
+source = "git+https://github.com/dioxuslabs/include_mdbook?branch=jk%2Fbuild-gen#a9de5842afddf64c6c233a274f9d5e2756b1c8c9"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -6005,7 +6005,7 @@ checksum = "daf8dba3b7eb870caf1ddeed7bc9d2a049f3cfdfae7cb521b087cc33ae4c49da"
 [[package]]
 name = "use-mdbook"
 version = "0.1.0"
-source = "git+https://github.com/dioxuslabs/include_mdbook?branch=jk%2Fbuild-gen#1f01445bf983e2117731635aa7e91c680fb0394c"
+source = "git+https://github.com/dioxuslabs/include_mdbook?branch=jk%2Fbuild-gen#a9de5842afddf64c6c233a274f9d5e2756b1c8c9"
 dependencies = [
  "lazy_static",
  "mdbook-macro",

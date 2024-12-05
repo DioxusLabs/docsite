@@ -2260,6 +2260,8 @@ pub fn TemplatesDiffing() -> dioxus::prelude::Element {
                 autoplay: true,
                 muted: true,
                 r#loop: true,
+                playsinline: true,
+                preload: "metadata",
             }
         }
         p {
@@ -2413,6 +2415,8 @@ pub fn Release030() -> dioxus::prelude::Element {
                 autoplay: true,
                 muted: true,
                 r#loop: true,
+                playsinline: true,
+                preload: "metadata",
             }
         }
         p {
@@ -2434,6 +2438,8 @@ pub fn Release030() -> dioxus::prelude::Element {
                 autoplay: true,
                 muted: true,
                 r#loop: true,
+                playsinline: true,
+                preload: "metadata",
             }
         }
         p {
@@ -2450,6 +2456,8 @@ pub fn Release030() -> dioxus::prelude::Element {
                 autoplay: true,
                 muted: true,
                 r#loop: true,
+                playsinline: true,
+                preload: "metadata",
             }
         }
         p {
@@ -2472,6 +2480,8 @@ pub fn Release030() -> dioxus::prelude::Element {
                 autoplay: true,
                 muted: true,
                 r#loop: true,
+                playsinline: true,
+                preload: "metadata",
             }
         }
         p {
@@ -2495,6 +2505,8 @@ pub fn Release030() -> dioxus::prelude::Element {
                 autoplay: true,
                 muted: true,
                 r#loop: true,
+                playsinline: true,
+                preload: "metadata",
             }
         }
         h2 { id: "multi-window-desktop-apps",
@@ -2515,6 +2527,8 @@ pub fn Release030() -> dioxus::prelude::Element {
                 autoplay: true,
                 muted: true,
                 r#loop: true,
+                playsinline: true,
+                preload: "metadata",
             }
         }
         h2 { id: "lowercase-components",
@@ -2569,6 +2583,8 @@ pub fn Release030() -> dioxus::prelude::Element {
                 autoplay: true,
                 muted: true,
                 r#loop: true,
+                playsinline: true,
+                preload: "metadata",
             }
         }
         h2 { id: "skia-renderer",
@@ -2603,6 +2619,8 @@ pub fn Release030() -> dioxus::prelude::Element {
                 autoplay: true,
                 muted: true,
                 r#loop: true,
+                playsinline: true,
+                preload: "metadata",
             }
         }
         p {
@@ -3099,6 +3117,8 @@ pub fn Release040() -> dioxus::prelude::Element {
                 autoplay: true,
                 muted: true,
                 r#loop: true,
+                playsinline: true,
+                preload: "metadata",
             }
         }
         h2 { id: "bidirectional-eval",
@@ -3134,6 +3154,8 @@ pub fn Release040() -> dioxus::prelude::Element {
                 autoplay: true,
                 muted: true,
                 r#loop: true,
+                playsinline: true,
+                preload: "metadata",
             }
         }
         h2 { id: "renaming-dioxus-cli-to-dx",
@@ -3180,6 +3202,8 @@ pub fn Release040() -> dioxus::prelude::Element {
                 autoplay: true,
                 muted: true,
                 r#loop: true,
+                playsinline: true,
+                preload: "metadata",
             }
         }
         h2 { id: "dioxus-bundle",
@@ -3617,6 +3641,8 @@ pub fn Release050() -> dioxus::prelude::Element {
                 autoplay: true,
                 muted: true,
                 r#loop: true,
+                playsinline: true,
+                preload: "metadata",
             }
         }
         p {
@@ -3631,6 +3657,8 @@ pub fn Release050() -> dioxus::prelude::Element {
                 autoplay: true,
                 muted: true,
                 r#loop: true,
+                playsinline: true,
+                preload: "metadata",
             }
         }
         h2 { id: "event-system-rewrite",
@@ -3764,6 +3792,8 @@ pub fn Release050() -> dioxus::prelude::Element {
                 autoplay: true,
                 muted: true,
                 r#loop: true,
+                playsinline: true,
+                preload: "metadata",
             }
         }
         p {
@@ -3776,6 +3806,8 @@ pub fn Release050() -> dioxus::prelude::Element {
                 autoplay: true,
                 muted: true,
                 r#loop: true,
+                playsinline: true,
+                preload: "metadata",
             }
         }
         h2 { id: "spreading-props",
@@ -3845,6 +3877,8 @@ pub fn Release050() -> dioxus::prelude::Element {
                 autoplay: true,
                 muted: true,
                 r#loop: true,
+                playsinline: true,
+                preload: "metadata",
             }
         }
         p {
@@ -3900,6 +3934,8 @@ pub fn Release050() -> dioxus::prelude::Element {
                 autoplay: true,
                 muted: true,
                 r#loop: true,
+                playsinline: true,
+                preload: "metadata",
             }
         }
         p {
@@ -3918,6 +3954,8 @@ pub fn Release050() -> dioxus::prelude::Element {
                 autoplay: true,
                 muted: true,
                 r#loop: true,
+                playsinline: true,
+                preload: "metadata",
             }
             "Previously we just gave you the option to intercept filedrops but now it’s natively integrated into the event system"
         }
@@ -3983,6 +4021,8 @@ pub fn Release050() -> dioxus::prelude::Element {
                 autoplay: true,
                 muted: true,
                 r#loop: true,
+                playsinline: true,
+                preload: "metadata",
             }
         }
         h2 { id: "updates-to-the-dioxus-template",
@@ -3999,6 +4039,8 @@ pub fn Release050() -> dioxus::prelude::Element {
                 autoplay: true,
                 muted: true,
                 r#loop: true,
+                playsinline: true,
+                preload: "metadata",
             }
         }
         p {
@@ -4380,6 +4422,8 @@ pub fn Release060() -> dioxus::prelude::Element {
                 autoplay: true,
                 muted: true,
                 r#loop: true,
+                playsinline: true,
+                preload: "metadata",
             }
         }
         p {
@@ -4417,6 +4461,8 @@ pub fn Release060() -> dioxus::prelude::Element {
                 autoplay: true,
                 muted: true,
                 r#loop: true,
+                playsinline: true,
+                preload: "metadata",
             }
         }
         p {
@@ -4527,6 +4573,8 @@ pub fn Release060() -> dioxus::prelude::Element {
                 autoplay: true,
                 muted: true,
                 r#loop: true,
+                playsinline: true,
+                preload: "metadata",
             }
         }
         p {
@@ -4575,6 +4623,8 @@ pub fn Release060() -> dioxus::prelude::Element {
                 autoplay: true,
                 muted: true,
                 r#loop: true,
+                playsinline: true,
+                preload: "metadata",
             }
         }
         h2 { id: "completely-revamped-hot-reloading",
@@ -4625,6 +4675,8 @@ pub fn Release060() -> dioxus::prelude::Element {
                 autoplay: true,
                 muted: true,
                 r#loop: true,
+                playsinline: true,
+                preload: "metadata",
             }
         }
         h2 { id: "hot-reloading-formatted-strings",
@@ -4701,6 +4753,8 @@ pub fn Release060() -> dioxus::prelude::Element {
                 autoplay: true,
                 muted: true,
                 r#loop: true,
+                playsinline: true,
+                preload: "metadata",
             }
         }
         p {
@@ -4819,6 +4873,8 @@ pub fn Release060() -> dioxus::prelude::Element {
                 autoplay: true,
                 muted: true,
                 r#loop: true,
+                playsinline: true,
+                preload: "metadata",
             }
         }
         p {
@@ -5042,6 +5098,8 @@ pub fn Release060() -> dioxus::prelude::Element {
                 autoplay: true,
                 muted: true,
                 r#loop: true,
+                playsinline: true,
+                preload: "metadata",
             }
         }
         h2 { id: "hybrid-wgpu-overlays",
@@ -5056,6 +5114,8 @@ pub fn Release060() -> dioxus::prelude::Element {
                 autoplay: true,
                 muted: true,
                 r#loop: true,
+                playsinline: true,
+                preload: "metadata",
             }
         }
         h2 { id: "web-ios-and-android-bundle-support",
@@ -5193,6 +5253,8 @@ pub fn Release060() -> dioxus::prelude::Element {
                 autoplay: true,
                 muted: true,
                 r#loop: true,
+                playsinline: true,
+                preload: "metadata",
             }
         }
         p {

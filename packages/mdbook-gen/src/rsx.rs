@@ -394,6 +394,8 @@ impl<'a, I: Iterator<Item = Event<'a>>> RsxMarkdownParser<'a, I> {
                             autoplay: true,
                             muted: true,
                             r#loop: true,
+                            playsinline: true,
+                            preload: "metadata"
                         }
                     })
                 } else {

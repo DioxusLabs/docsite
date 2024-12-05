@@ -46,12 +46,6 @@ impl TryFrom<ws::Message> for SocketMessage {
     }
 }
 
-impl From<axum::Error> for SocketError {
-    fn from(value: axum::Error) -> Self {
-        Self::Parse(Box::new(value))
-    }
-}
-
 /// TryFrom that fails for data we don't care about from cargo.
 impl TryFrom<CompilerMessage> for CargoDiagnostic {
     type Error = ();

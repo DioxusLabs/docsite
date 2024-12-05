@@ -1,5 +1,7 @@
+use gloo_net::websocket::WebSocketError;
 use serde::{Deserialize, Serialize};
-use std::{error::Error, fmt::Display, string::FromUtf8Error};
+use std::string::FromUtf8Error;
+use thiserror::Error;
 use uuid::Uuid;
 
 #[cfg(feature = "server")]
@@ -68,35 +70,19 @@ pub struct CargoDiagnosticSpan {
 }
 
 /// Any socket error.
-#[derive(Debug)]
+#[derive(Debug, Error)]
 pub enum SocketError {
-    Parse(Box<dyn Error>),
-}
+    #[error(transparent)]
+    ParseJson(#[from] serde_json::Error),
 
-impl Display for SocketError {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        match self {
-            Self::Parse(..) => write!(f, "the socket message failed to parse"),
-        }
-    }
-}
+    #[error(transparent)]
+    Utf8Decode(#[from] FromUtf8Error),
 
-impl Error for SocketError {
-    fn source(&self) -> Option<&(dyn Error + 'static)> {
-        match self {
-            Self::Parse(e) => e.source(),
-        }
-    }
-}
+    #[cfg(feature = "web")]
+    #[error(transparent)]
+    Gloo(#[from] WebSocketError),
 
-impl From<serde_json::Error> for SocketError {
-    fn from(value: serde_json::Error) -> Self {
-        Self::Parse(Box::new(value))
-    }
-}
-
-impl From<FromUtf8Error> for SocketError {
-    fn from(value: FromUtf8Error) -> Self {
-        Self::Parse(Box::new(value))
-    }
+    #[cfg(feature = "server")]
+    #[error(transparent)]
+    Axum(#[from] axum::Error),
 }

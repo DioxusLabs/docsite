@@ -1,45 +1,35 @@
-use std::error::Error;
-
 use dioxus::prelude::document::EvalError;
-use gloo_net::websocket::WebSocketError;
 use gloo_utils::errors::JsError;
 use model::SocketError;
+use std::string::FromUtf8Error;
+use thiserror::Error;
 
-#[allow(unused)]
-#[derive(Debug)]
+#[derive(Debug, Error)]
 pub enum AppError {
-    Socket(Box<dyn Error>),
-    JsError(Box<dyn Error>),
-    ShareCodeDecoding,
+    #[error(transparent)]
+    Socket(#[from] SocketError),
+
+    #[error("json parse failed: {0}")]
+    JsonParse(#[from] serde_json::Error),
+
+    #[error("share code failed: {0}")]
+    ShareCode(ShareError),
+
+    #[error("js eval failed: {0}")]
+    JsEvalError(#[from] EvalError),
+
+    #[error("js failed: {0}")]
+    JsError(#[from] JsError),
 }
 
-impl From<SocketError> for AppError {
-    fn from(value: SocketError) -> Self {
-        Self::Socket(value.0)
-    }
-}
+#[derive(Debug, Error)]
+pub enum ShareError {
+    #[error(transparent)]
+    Base64Decode(#[from] base64::DecodeError),
 
-impl From<WebSocketError> for AppError {
-    fn from(value: WebSocketError) -> Self {
-        Self::Socket(Box::new(value))
-    }
-}
+    #[error(transparent)]
+    Decompression(#[from] miniz_oxide::inflate::DecompressError),
 
-impl From<serde_json::Error> for AppError {
-    fn from(value: serde_json::Error) -> Self {
-        Self::Socket(Box::new(value))
-    }
-}
-
-impl From<EvalError> for AppError {
-    fn from(_value: EvalError) -> Self {
-        // TODO: Put _value in Self::Eval once EvalError implements Error
-        Self::JsError("failed to run js evalutation".into())
-    }
-}
-
-impl From<JsError> for AppError {
-    fn from(value: JsError) -> Self {
-        Self::JsError(Box::new(value))
-    }
+    #[error(transparent)]
+    Utf8Decode(#[from] FromUtf8Error),
 }

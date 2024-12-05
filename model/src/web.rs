@@ -3,13 +3,10 @@
 use crate::{SocketError, SocketMessage};
 use gloo_net::websocket::Message as GlooMessage;
 
-// SocketMessage to Gloo conversion.
-impl TryFrom<SocketMessage> for GlooMessage {
-    type Error = SocketError;
-
-    fn try_from(value: SocketMessage) -> Result<Self, Self::Error> {
-        let val = value.as_json_string()?;
-        Ok(Self::Text(val))
+impl SocketMessage {
+    pub fn into_gloo(self) -> Result<GlooMessage, SocketError> {
+        let val = self.as_json_string()?;
+        Ok(GlooMessage::Text(val))
     }
 }
 

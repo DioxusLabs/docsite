@@ -7,10 +7,11 @@ edition = "2021"
 serde_json = { workspace = true }
 uuid = { workspace = true, features = ["serde"] }
 serde = { workspace = true }
+thiserror = { workspace = true }
 
 # Server only
 dioxus-dx-wire-format = { workspace = true, optional = true }
-axum = { workspace = true, features = ["ws"], optional = true}
+axum = { workspace = true, features = ["ws"], optional = true }
 
 # Web only
 gloo-net = { workspace = true, optional = true }

@@ -1,33 +1,36 @@
-use crate::{error::AppError, BuildSignals};
+use crate::{error::AppError, BuildState};
 use dioxus::signals::{Writable as _, WritableVecExt as _};
 use dioxus_logger::tracing::warn;
 use futures::{SinkExt as _, StreamExt};
 use gloo_net::websocket::{futures::WebSocket, Message};
 use model::*;
 
+/// A socket connection.
 pub struct Socket {
     socket: WebSocket,
 }
 
 impl Socket {
+    /// Create a new socket connection at the url.
     pub fn new(url: &str) -> Result<Self, AppError> {
         let socket = WebSocket::open(url)?;
         Ok(Self { socket })
     }
 
-    pub async fn compile(&mut self, code: String) -> Result<(), AppError> {
-        let as_json = SocketMessage::BuildRequest(code).as_json_string()?;
-
-        self.socket.send(Message::Text(as_json)).await?;
+    pub async fn send(&mut self, message: SocketMessage) -> Result<(), AppError> {
+        self.socket
+            .send(message.into_gloo()?)
+            .await
+            .map_err(|e| SocketError::from(e))?;
 
         Ok(())
     }
 
-    pub async fn next(&mut self) -> Option<Result<SocketMessage, AppError>> {
+    pub async fn next(&mut self) -> Result<Option<SocketMessage>, AppError> {
         match self.socket.next().await {
-            Some(Ok(msg)) => Some(Ok(SocketMessage::from(msg))),
-            Some(Err(e)) => Some(Err(e.into())),
-            _ => None,
+            Some(Ok(msg)) => Ok(Some(SocketMessage::try_from(msg)?)),
+            Some(Err(e)) => Err(SocketError::from(e))?,
+            _ => Ok(None),
         }
     }
 
@@ -37,8 +40,8 @@ impl Socket {
 }
 
 /// Handles a websocket message, returning true if further messages shouldn't be handled.
-pub fn handle_message(signals: &mut BuildSignals, msg: SocketMessage) -> bool {
-    let BuildSignals {
+pub fn handle_message(signals: &mut BuildState, msg: SocketMessage) -> bool {
+    let BuildState {
         is_compiling,
         queue_position,
         built_page_id,

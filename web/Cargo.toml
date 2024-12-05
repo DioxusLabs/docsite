@@ -9,6 +9,8 @@ dioxus-logger = { workspace = true }
 serde_json = { workspace = true }
 futures = { workspace = true }
 gloo-net = { workspace = true }
+uuid = { workspace = true }
+thiserror = { workspace = true }
 
 # Dioxus
 dioxus = { workspace = true, features = ["web"] }

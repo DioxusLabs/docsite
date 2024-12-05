@@ -1,8 +1,7 @@
-use std::time::Duration;
-
 use crate::components::Tab;
 use base64::{prelude::BASE64_URL_SAFE, Engine};
 use bindings::monaco;
+use build::{start_build, BuildStage, BuildState};
 use components::material_icons::Warning;
 use dioxus::prelude::*;
 use dioxus_devtools::HotReloadMsg;
@@ -12,10 +11,12 @@ use dioxus_sdk::{
     theme::{use_system_theme, SystemTheme},
     utils::timing::use_debounce,
 };
-use error::AppError;
+use error::ShareError;
 use hotreload::{HotReload, HotReloadError};
+use std::time::Duration;
 
 mod bindings;
+mod build;
 mod components;
 mod error;
 mod examples;
@@ -23,7 +24,7 @@ mod hotreload;
 mod ws;
 
 const DXP_CSS: Asset = asset!("/assets/dxp.css");
-const MONACO_FOLDER: &str = "/assets/monaco-editor-0.52"; //asset!(folder("/assets/monaco-editor-0.52"));
+const MONACO_FOLDER: Asset = asset!("/assets/monaco-editor-0.52");
 
 /// The URLS that the playground should use for locating resources and services.
 #[derive(Debug, Clone, PartialEq)]
@@ -38,23 +39,13 @@ pub struct PlaygroundUrls {
 
 #[component]
 pub fn Playground(urls: PlaygroundUrls, share_code: Option<String>) -> Element {
-    let mut is_compiling = use_signal(|| false);
-    let queue_position = use_signal(|| None);
-    let built_page_id = use_signal(|| Some(String::from("d18b0b68-9c2a-4c3f-a78b-36972f23d357")));
-    let mut compiler_messages = use_signal(Vec::<String>::new);
+    let mut build = provide_context(BuildState::new());
     let mut current_tab = use_signal(|| Tab::Page);
     let mut show_share_warning = use_signal(|| false);
 
-    let mut build_signals = BuildSignals {
-        is_compiling,
-        built_page_id,
-        compiler_messages,
-        queue_position,
-    };
-
     let mut hot_reload = use_signal(|| HotReload::new());
     let on_model_changed = use_debounce(Duration::from_millis(150), move |new_code: String| {
-        if !built_page_id().is_some() {
+        if !build.stage().is_finished() {
             return;
         }
 
@@ -130,39 +121,28 @@ pub fn Playground(urls: PlaygroundUrls, share_code: Option<String>) -> Element {
         bindings::monaco::register_model_change(on_model_changed);
     };
 
-    // Change tab automatically
-    use_memo(move || {
-        if built_page_id().is_none() {
-            current_tab.set(Tab::Logs);
-        } else {
-            current_tab.set(Tab::Page);
-        }
-    });
-
     // Send a request to compile code.
     let on_run = move |_| {
-        if is_compiling() {
+        if build.stage().is_running() {
             return;
         }
-
-        reset_signals(&mut build_signals);
-        is_compiling.set(true);
-        compiler_messages.push("Starting build...".to_string());
+        
+        build.reset();
+        build.set_stage(BuildStage::Starting);
 
         let socket_url = urls.socket.to_string();
-
         spawn(async move {
-            if let Err(e) = start_build(&mut build_signals, socket_url).await {
+            if let Err(e) = start_build(&mut build, socket_url).await {
                 error!(error = ?e, "failed to build project");
-                reset_signals(&mut build_signals);
-                compiler_messages.push("Failed to build project.".to_string());
             }
         });
     };
 
     // Build full url to built page.
-    let built_page_url =
-        use_memo(move || built_page_id().map(|id| format!("{}{}", urls.built, id)));
+    let built_page_url = use_memo(move || {
+        let id = build.stage().finished_id();
+        id.map(|id| format!("{}{}", urls.built, id))
+    });
 
     // State for pane resizing, shared by headers and panes.
     // The actual logic is in the panes component.
@@ -199,49 +179,6 @@ pub fn Playground(urls: PlaygroundUrls, share_code: Option<String>) -> Element {
     }
 }
 
-/// A helper struct for passing around common build signals.
-#[derive(Clone, Copy)]
-pub(crate) struct BuildSignals {
-    pub is_compiling: Signal<bool>,
-    pub built_page_id: Signal<Option<String>>,
-    pub compiler_messages: Signal<Vec<String>>,
-    pub queue_position: Signal<Option<u32>>,
-}
-
-/// Start a build and handle updating the build signals according to socket messages.
-async fn start_build(signals: &mut BuildSignals, socket_url: String) -> Result<(), AppError> {
-    let val = bindings::monaco::get_current_model_value();
-
-    // Send socket compile request
-    let mut socket = ws::Socket::new(&socket_url)?;
-    socket.compile(val).await?;
-
-    // Handle socket messages
-    loop {
-        let msg = socket.next().await;
-        match msg {
-            Some(Ok(msg)) => {
-                let is_done = ws::handle_message(signals, msg);
-                if is_done {
-                    break;
-                }
-            }
-            Some(Err(e)) => return Err(e),
-            None => {}
-        }
-    }
-    socket.close().await;
-    Ok(())
-}
-
-/// Reset build signals.
-fn reset_signals(signals: &mut BuildSignals) {
-    signals.is_compiling.set(false);
-    signals.queue_position.set(None);
-    signals.built_page_id.set(None);
-    signals.compiler_messages.clear();
-}
-
 /// Copy a share link to the clipboard.
 ///
 /// This will:
@@ -261,7 +198,6 @@ fn copy_share_link(location: &str) {
     BASE64_URL_SAFE.encode_string(compressed, &mut encoded);
 
     let formatted = format!("{}/{}", location, encoded);
-
     let e = eval(
         r#"
         const data = await dioxus.recv();
@@ -273,12 +209,9 @@ fn copy_share_link(location: &str) {
 }
 
 /// Decode the share code into code.
-fn decode_share_link(share_code: &str) -> Result<String, AppError> {
-    let bytes = BASE64_URL_SAFE
-        .decode(share_code)
-        .map_err(|_| AppError::ShareCodeDecoding)?;
-    let decoded_bytes =
-        miniz_oxide::inflate::decompress_to_vec(&bytes).map_err(|_| AppError::ShareCodeDecoding)?;
-    let decoded = String::from_utf8(decoded_bytes).map_err(|_| AppError::ShareCodeDecoding)?;
+fn decode_share_link(share_code: &str) -> Result<String, ShareError> {
+    let bytes = BASE64_URL_SAFE.decode(share_code)?;
+    let decoded_bytes = miniz_oxide::inflate::decompress_to_vec(&bytes)?;
+    let decoded = String::from_utf8(decoded_bytes)?;
     Ok(decoded)
 }

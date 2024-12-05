@@ -376,15 +376,27 @@ impl<'a, I: Iterator<Item = Event<'a>>> RsxMarkdownParser<'a, I> {
                 let dest: &str = &dest;
                 let title = escape_text(&title);
 
-                // #[cfg(not(feature = "manganis"))]
-                let url: syn::Expr = {
+                let mut url: syn::Expr = {
                     let dest = escape_text(dest);
                     syn::parse_quote!(#dest)
                 };
-                // #[cfg(feature = "manganis")]
-                // let url: syn::Expr = syn::parse_quote! { asset!(#dest) };
-                // #[cfg(feature = "manganis")]
-                // let url: syn::Expr = syn::parse_quote! { asset!(#dest) };
+
+                // todo(jon): recognize the url by parsing it and checking if it's external/internal - these might be unreliable heuristics
+                if cfg!(feature = "manganis")
+                    && (dest.starts_with("/")
+                        || !(dest.starts_with("https://") || dest.starts_with("http://")))
+                {
+                    // optimize our images
+                    if dest.ends_with(".png") || dest.ends_with(".jpg") || dest.ends_with(".jpeg") {
+                        url = syn::parse_quote! {
+                            asset!(#dest, ImageAssetOptions::new().with_avif())
+                        };
+                    } else {
+                        url = syn::parse_quote! {
+                            asset!(#dest)
+                        };
+                    }
+                }
 
                 if dest.ends_with(".mp4") || dest.ends_with(".mov") {
                     self.start_node(parse_quote! {

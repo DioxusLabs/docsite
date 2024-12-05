@@ -190,11 +190,11 @@ pub fn Chapter2() -> dioxus::prelude::Element {
             "This feature set and roadmap can help you decide if what Dioxus can do today works for you."
         }
         p {
-            "If a feature that you need doesn't exist or you want to contribute to projects on the roadmap, feel free to get involved by "
+            "If a feature that you need doesn"
             a { href: "https://discord.gg/XgGxMSkvUM", "joining the discord" }
             "."
         }
-        p { "Generally, here's the status of each platform:" }
+        p { "Generally, here" }
         ul {
             li {
                 p {
@@ -219,13 +219,13 @@ pub fn Chapter2() -> dioxus::prelude::Element {
             li {
                 p {
                     strong { "Mobile" }
-                    ": Mobile support is very young. You'll be figuring things out as you go and there are not many support crates for peripherals."
+                    ": Mobile support is very young. You"
                 }
             }
             li {
                 p {
                     strong { "LiveView" }
-                    ": LiveView support is very young. You'll be figuring things out as you go. Thankfully, none of it is too hard and any work can be upstreamed into Dioxus."
+                    ": LiveView support is very young. You"
                 }
             }
         }
@@ -288,7 +288,7 @@ pub fn Chapter2() -> dioxus::prelude::Element {
             tr {
                 th { "Headless components" }
                 th { "✅" }
-                th { "components that don't return real elements" }
+                th { "components that don" }
             }
             tr {
                 th { "Fragments" }
@@ -388,7 +388,7 @@ pub fn Chapter2() -> dioxus::prelude::Element {
             tr {
                 th { "High-efficiency templates" }
                 th { "✅" }
-                th { "rsx! calls are translated to templates on the DOM's side" }
+                th { "rsx! calls are translated to templates on the DOM" }
             }
             tr {
                 th { "Compile-time correct" }
@@ -419,68 +419,165 @@ pub fn Chapter2() -> dioxus::prelude::Element {
             a { href: "#core", class: "header", "Core" }
         }
         ul {
-            li { "[" }
-            li { "[" }
-            li { "[" }
-            li { "[" }
-            li { "[" }
-            li { "[" }
+            li {
+                input { r#type: "checkbox", value: "true" }
+                "Release of Dioxus Core"
+            }
+            li {
+                input { r#type: "checkbox", value: "true" }
+                "Upgrade documentation to include more theory and be more comprehensive"
+            }
+            li {
+                input { r#type: "checkbox", value: "true" }
+                "Support for HTML-side templates for lightning-fast dom manipulation"
+            }
+            li {
+                input { r#type: "checkbox", value: "false" }
+                "Support for multiple renderers for same virtualdom (subtrees)"
+            }
+            li {
+                input { r#type: "checkbox", value: "false" }
+                "Support for ThreadSafe (Send + Sync)"
+            }
+            li {
+                input { r#type: "checkbox", value: "false" }
+                "Support for Portals"
+            }
         }
         h3 { id: "ssr",
             a { href: "#ssr", class: "header", "SSR" }
         }
         ul {
-            li { "[" }
-            li { "[" }
+            li {
+                input { r#type: "checkbox", value: "true" }
+                "SSR Support + Hydration"
+            }
+            li {
+                input { r#type: "checkbox", value: "false" }
+                "Integrated suspense support for SSR"
+            }
         }
         h3 { id: "desktop",
             a { href: "#desktop", class: "header", "Desktop" }
         }
         ul {
-            li { "[" }
-            li { "[" }
-            li { "[" }
+            li {
+                input { r#type: "checkbox", value: "false" }
+                "Declarative window management"
+            }
+            li {
+                input { r#type: "checkbox", value: "false" }
+                "Templates for building/bundling"
+            }
+            li {
+                input { r#type: "checkbox", value: "false" }
+                "Access to Canvas/WebGL context natively"
+            }
         }
         h3 { id: "mobile",
             a { href: "#mobile", class: "header", "Mobile" }
         }
         ul {
             li {
-                "["
+                input { r#type: "checkbox", value: "false" }
+                "Mobile standard library"
                 ul {
-                    li { "[" }
-                    li { "[" }
-                    li { "[" }
-                    li { "[" }
-                    li { "[" }
-                    li { "[" }
-                    li { "[" }
-                    li { "[" }
+                    li {
+                        input { r#type: "checkbox", value: "false" }
+                        "GPS"
+                    }
+                    li {
+                        input { r#type: "checkbox", value: "false" }
+                        "Camera"
+                    }
+                    li {
+                        input { r#type: "checkbox", value: "false" }
+                        "filesystem"
+                    }
+                    li {
+                        input { r#type: "checkbox", value: "false" }
+                        "Biometrics"
+                    }
+                    li {
+                        input { r#type: "checkbox", value: "false" }
+                        "WiFi"
+                    }
+                    li {
+                        input { r#type: "checkbox", value: "false" }
+                        "Bluetooth"
+                    }
+                    li {
+                        input { r#type: "checkbox", value: "false" }
+                        "Notifications"
+                    }
+                    li {
+                        input { r#type: "checkbox", value: "false" }
+                        "Clipboard"
+                    }
                 }
             }
-            li { "[" }
+            li {
+                input { r#type: "checkbox", value: "false" }
+                "Animations"
+            }
         }
         h3 { id: "bundling-cli",
             a { href: "#bundling-cli", class: "header", "Bundling (CLI)" }
         }
         ul {
-            li { "[" }
-            li { "[" }
-            li { "[" }
-            li { "[" }
-            li { "[" }
-            li { "[" }
-            li { "[" }
-            li { "[" }
-            li { "[" }
+            li {
+                input { r#type: "checkbox", value: "true" }
+                "Translation from HTML into RSX"
+            }
+            li {
+                input { r#type: "checkbox", value: "true" }
+                "Dev server"
+            }
+            li {
+                input { r#type: "checkbox", value: "true" }
+                "Live reload"
+            }
+            li {
+                input { r#type: "checkbox", value: "true" }
+                "Translation from JSX into RSX"
+            }
+            li {
+                input { r#type: "checkbox", value: "false" }
+                "Hot module replacement"
+            }
+            li {
+                input { r#type: "checkbox", value: "false" }
+                "Code splitting"
+            }
+            li {
+                input { r#type: "checkbox", value: "false" }
+                "Asset macros"
+            }
+            li {
+                input { r#type: "checkbox", value: "false" }
+                "Css pipeline"
+            }
+            li {
+                input { r#type: "checkbox", value: "false" }
+                "Image pipeline"
+            }
         }
         h3 { id: "essential-hooks",
             a { href: "#essential-hooks", class: "header", "Essential hooks" }
         }
         ul {
-            li { "[" }
-            li { "[" }
-            li { "[" }
+            li {
+                input { r#type: "checkbox", value: "true" }
+                "Router"
+            }
+            li {
+                input { r#type: "checkbox", value: "true" }
+                "Global state management"
+            }
+            li {
+                input { r#type: "checkbox", value: "false" }
+                "Resize observer"
+            }
         }
         h2 { id: "work-in-progress",
             a { href: "#work-in-progress", class: "header", "Work in Progress" }
@@ -511,7 +608,7 @@ pub fn Chapter2() -> dioxus::prelude::Element {
             a { href: "#server-component-support", class: "header", "Server Component Support" }
         }
         p {
-            "While not currently fully implemented, the expectation is that LiveView apps can be a hybrid between Wasm and server-rendered where only portions of a page are \"live\" and the rest of the page is either server-rendered, statically generated, or handled by the host SPA."
+            "While not currently fully implemented, the expectation is that LiveView apps can be a hybrid between Wasm and server-rendered where only portions of a page are "
         }
         h3 { id: "native-rendering",
             a { href: "#native-rendering", class: "header", "Native rendering" }

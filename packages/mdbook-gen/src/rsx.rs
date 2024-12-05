@@ -25,8 +25,8 @@ pub fn callbody_to_tokens(cb: CallBody) -> TokenStream2 {
 
 pub fn parse(path: PathBuf, markdown: &str) -> syn::Result<CallBody> {
     let mut options = Options::empty();
-    options.insert(Options::ENABLE_STRIKETHROUGH);
-    options.insert(Options::ENABLE_TABLES);
+    options.insert(Options::all());
+
     let mut parser = Parser::new_ext(markdown, options);
 
     let mut rsx_parser = RsxMarkdownParser {

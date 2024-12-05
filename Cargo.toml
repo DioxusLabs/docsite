@@ -12,3 +12,8 @@ members = [
 
 [workspace.dependencies]
 mdbook-gen = { path = "packages/mdbook-gen" }
+
+# [patch.crates-io]
+# dioxus-autofmt = { path = "../../dioxus/packages/autofmt" }
+# dioxus-rsx = { path = "../../dioxus/packages/rsx" }
+# dioxus-router = { path = "../../dioxus/packages/router" }

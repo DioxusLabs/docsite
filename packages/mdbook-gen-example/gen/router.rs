@@ -14,6 +14,8 @@ pub enum BookRoute {
     Chapter1 {},
     #[route("/./chapter_2")]
     Chapter2 {},
+    #[route("/./chapter_3")]
+    Chapter3 {},
 }
 impl BookRoute {
     pub fn sections(&self) -> &'static [use_mdbook::mdbook_shared::Section] {
@@ -26,6 +28,7 @@ impl BookRoute {
         match self {
             BookRoute::Chapter1 {} => use_mdbook::mdbook_shared::PageId(0usize),
             BookRoute::Chapter2 {} => use_mdbook::mdbook_shared::PageId(1usize),
+            BookRoute::Chapter3 {} => use_mdbook::mdbook_shared::PageId(2usize),
         }
     }
 }
@@ -148,6 +151,24 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
             BookRoute::Chapter2 {},
             ::use_mdbook::mdbook_shared::PageId(1usize),
         );
+        pages.push((2usize, {
+            ::use_mdbook::mdbook_shared::Page {
+                title: "Chapter 3".to_string(),
+                url: BookRoute::Chapter3 {},
+                segments: vec![],
+                sections: vec![::use_mdbook::mdbook_shared::Section {
+                    title: "Assets".to_string(),
+                    id: "assets".to_string(),
+                    level: 1usize,
+                }],
+                raw: String::new(),
+                id: ::use_mdbook::mdbook_shared::PageId(2usize),
+            }
+        }));
+        page_id_mapping.insert(
+            BookRoute::Chapter3 {},
+            ::use_mdbook::mdbook_shared::PageId(2usize),
+        );
         ::use_mdbook::mdbook_shared::MdBook {
             summary: ::use_mdbook::mdbook_shared::Summary {
                 title: Some("Summary".to_string()),
@@ -166,6 +187,14 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                             name: "Chapter 2".to_string(),
                             location: Some(BookRoute::Chapter2 {}),
                             number: Some(::use_mdbook::mdbook_shared::SectionNumber(vec![2u32])),
+                            nested_items: vec![],
+                        },
+                    ),
+                    ::use_mdbook::mdbook_shared::SummaryItem::Link(
+                        ::use_mdbook::mdbook_shared::Link {
+                            name: "Chapter 3".to_string(),
+                            location: Some(BookRoute::Chapter3 {}),
+                            number: Some(::use_mdbook::mdbook_shared::SectionNumber(vec![3u32])),
                             nested_items: vec![],
                         },
                     ),
@@ -230,19 +259,6 @@ pub fn Chapter2() -> dioxus::prelude::Element {
             }
         }
         CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">main</span><span style=\"color:#f8f8f2;\">() {{\n</span><span style=\"color:#f8f8f2;\">  dioxus_rocks;\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n" }
-        p {
-            "Some assets:"
-            img {
-                src: "https://avatars.githubusercontent.com/u/79236386?s=200&v=4",
-                alt: "some_external",
-                title: "",
-            }
-            img {
-                src: asset!("/example-book/assets/logo.png", ImageAssetOptions::new().with_avif()),
-                alt: "some_local",
-                title: "",
-            }
-        }
         h2 { id: "features",
             a { href: "#features", class: "header", "Features" }
         }
@@ -795,6 +811,38 @@ pub fn Chapter2() -> dioxus::prelude::Element {
             "We are currently working on a native renderer for Dioxus using WGPU called "
             a { href: "https://github.com/DioxusLabs/blitz/", "Blitz" }
             ". This will allow you to build apps that are rendered natively for iOS, Android, and Desktop."
+        }
+    }
+}
+#[component(no_case_check)]
+pub fn Chapter3() -> dioxus::prelude::Element {
+    use dioxus::prelude::*;
+    rsx! {
+        h1 { id: "assets",
+            a { href: "#assets", class: "header", "Assets" }
+        }
+        p {
+            "Some assets:"
+            img {
+                src: "https://avatars.githubusercontent.com/u/79236386?s=200&v=4",
+                alt: "some_external",
+                title: "",
+            }
+            img {
+                src: asset!("/example-book/assetsasd/logo"),
+                alt: "some_local",
+                title: "",
+            }
+            img {
+                src: asset!("/example-book/assets1/logo.png", ImageAssetOptions::new().with_avif()),
+                alt: "some_local1",
+                title: "",
+            }
+            img {
+                src: asset!("/example-book/assets2/logo.png", ImageAssetOptions::new().with_avif()),
+                alt: "some_local2",
+                title: "",
+            }
         }
     }
 }

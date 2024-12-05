@@ -23,7 +23,7 @@ pub fn callbody_to_tokens(cb: CallBody) -> TokenStream2 {
     TokenStream2::from_str(&out).unwrap()
 }
 
-pub fn parse(path: PathBuf, markdown: &str) -> syn::Result<CallBody> {
+pub fn parse_markdown(path: PathBuf, markdown: &str) -> syn::Result<CallBody> {
     let mut options = Options::empty();
     options.insert(
         Options::ENABLE_TABLES
@@ -381,27 +381,27 @@ impl<'a, I: Iterator<Item = Event<'a>>> RsxMarkdownParser<'a, I> {
                 let dest: &str = &dest;
                 let title = escape_text(&title);
 
-                let mut url: syn::Expr = {
-                    let dest = escape_text(dest);
-                    syn::parse_quote!(#dest)
-                };
-
-                // todo(jon): recognize the url by parsing it and checking if it's external/internal - these might be unreliable heuristics
-                if cfg!(feature = "manganis")
+                let should_asset_it = cfg!(feature = "manganis")
                     && (dest.starts_with("/")
-                        || !(dest.starts_with("https://") || dest.starts_with("http://")))
-                {
-                    // optimize our images
+                        || !(dest.starts_with("https://") || dest.starts_with("http://")));
+
+                let url = if should_asset_it {
+                    // todo(jon): recognize the url by parsing it and checking if it's external/internal - these might be unreliable heuristics
                     if dest.ends_with(".png") || dest.ends_with(".jpg") || dest.ends_with(".jpeg") {
-                        url = syn::parse_quote! {
+                        let res = quote::quote! {
                             asset!(#dest, ImageAssetOptions::new().with_avif())
                         };
+
+                        res
                     } else {
-                        url = syn::parse_quote! {
+                        quote::quote! {
                             asset!(#dest)
-                        };
+                        }
                     }
-                }
+                } else {
+                    let dest = escape_text(dest);
+                    quote::quote!(#dest)
+                };
 
                 if dest.ends_with(".mp4") || dest.ends_with(".mov") {
                     self.start_node(parse_quote! {
@@ -566,11 +566,18 @@ fn parse_link() {
     let markdown = r#"
 # Chapter 1
 [Chapter 2](./chapter_2.md)
+
+Some assets:
+![some_external](https://avatars.githubusercontent.com/u/79236386?s=200&v=4)
+![some_local](/example-book/assetsasd/logo)
+![some_local1](/example-book/assets1/logo.png)
+![some_local2](/example-book/assets2/logo.png)
 "#;
 
     let mut options = Options::empty();
     options.insert(Options::ENABLE_STRIKETHROUGH);
     options.insert(Options::ENABLE_TABLES);
+    options.insert(Options::ENABLE_TASKLISTS);
     let mut parser = Parser::new_ext(markdown, options);
 
     let mut rsx_parser = RsxMarkdownParser {
@@ -590,5 +597,54 @@ fn parse_link() {
 
     let body = CallBody::new(TemplateBody::new(rsx_parser.root_nodes));
 
-    dbg!(body);
+    dbg!(&body);
+
+    let fmted = dioxus_autofmt::write_block_out(&body).unwrap();
+    println!("{}", fmted);
+
+    // Parse the tokens
+    let tokens_out = TokenStream2::from_str(&fmted).unwrap();
+
+    let out: syn::File = parse_quote! {
+        #[component(no_case_check)]
+        pub fn Hmm() -> dioxus::prelude::Element {
+            use dioxus::prelude::*;
+            rsx! {
+                #tokens_out
+            }
+        }
+    };
+
+    let fmted = prettyplease::unparse(&out);
+
+    println!("{}", fmted);
+}
+
+#[test]
+fn syn_parsing_race() {
+    let alt1 = "some_alt_text";
+
+    let res1 = quote::quote! {
+        asset!(#alt1, ImageAssetOptions::new().with_avif())
+    };
+
+    let alt2 = "some_alt_text2";
+
+    let res2 = quote::quote! {
+        asset!(#alt2, ImageAssetOptions::new().with_avif())
+    };
+
+    println!("{}", res1.to_string());
+    println!("{}", res2.to_string());
+
+    let out_toks1: BodyNode = parse_quote! {
+        img { alt: #alt1, src: #res1 }
+    };
+
+    let out_toks2: BodyNode = parse_quote! {
+        img { alt: #alt2, src: #res2 }
+    };
+
+    println!("{:?}", out_toks1);
+    println!("{:?}", out_toks2);
 }

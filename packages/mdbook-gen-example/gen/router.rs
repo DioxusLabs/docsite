@@ -190,11 +190,11 @@ pub fn Chapter2() -> dioxus::prelude::Element {
             "This feature set and roadmap can help you decide if what Dioxus can do today works for you."
         }
         p {
-            "If a feature that you need doesn"
+            "If a feature that you need doesn't exist or you want to contribute to projects on the roadmap, feel free to get involved by "
             a { href: "https://discord.gg/XgGxMSkvUM", "joining the discord" }
             "."
         }
-        p { "Generally, here" }
+        p { "Generally, here's the status of each platform:" }
         ul {
             li {
                 p {
@@ -219,13 +219,13 @@ pub fn Chapter2() -> dioxus::prelude::Element {
             li {
                 p {
                     strong { "Mobile" }
-                    ": Mobile support is very young. You"
+                    ": Mobile support is very young. You'll be figuring things out as you go and there are not many support crates for peripherals."
                 }
             }
             li {
                 p {
                     strong { "LiveView" }
-                    ": LiveView support is very young. You"
+                    ": LiveView support is very young. You'll be figuring things out as you go. Thankfully, none of it is too hard and any work can be upstreamed into Dioxus."
                 }
             }
         }
@@ -301,7 +301,7 @@ pub fn Chapter2() -> dioxus::prelude::Element {
             tr {
                 th { "Headless components" }
                 th { "✅" }
-                th { "components that don" }
+                th { "components that don't return real elements" }
             }
             tr {
                 th { "Fragments" }
@@ -401,7 +401,7 @@ pub fn Chapter2() -> dioxus::prelude::Element {
             tr {
                 th { "High-efficiency templates" }
                 th { "✅" }
-                th { "rsx! calls are translated to templates on the DOM" }
+                th { "rsx! calls are translated to templates on the DOM's side" }
             }
             tr {
                 th { "Compile-time correct" }
@@ -786,7 +786,7 @@ pub fn Chapter2() -> dioxus::prelude::Element {
             a { href: "#server-component-support", class: "header", "Server Component Support" }
         }
         p {
-            "While not currently fully implemented, the expectation is that LiveView apps can be a hybrid between Wasm and server-rendered where only portions of a page are "
+            "While not currently fully implemented, the expectation is that LiveView apps can be a hybrid between Wasm and server-rendered where only portions of a page are \"live\" and the rest of the page is either server-rendered, statically generated, or handled by the host SPA."
         }
         h3 { id: "native-rendering",
             a { href: "#native-rendering", class: "header", "Native rendering" }

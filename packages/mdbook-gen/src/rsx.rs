@@ -25,7 +25,12 @@ pub fn callbody_to_tokens(cb: CallBody) -> TokenStream2 {
 
 pub fn parse(path: PathBuf, markdown: &str) -> syn::Result<CallBody> {
     let mut options = Options::empty();
-    options.insert(Options::all());
+    options.insert(
+        Options::ENABLE_TABLES
+            | Options::ENABLE_FOOTNOTES
+            | Options::ENABLE_STRIKETHROUGH
+            | Options::ENABLE_TASKLISTS,
+    );
 
     let mut parser = Parser::new_ext(markdown, options);
 

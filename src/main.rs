@@ -70,7 +70,7 @@ fn Head() -> Element {
             href: asset!("/assets/static/favicon.png"),
         }
         Stylesheet { href: asset!("/assets/githubmarkdown.css") }
-        Stylesheet { href: asset!("/assets/tailwind.css") }
+        Stylesheet { href: asset!("/assets/tailwind.css", CssAssetOptions::new().with_minify(false)) }
         Stylesheet { href: asset!("/assets/main.css") }
         Stylesheet { href: asset!("/assets/dxp.css") }
         Stylesheet { href: asset!("/assets/material.css") }

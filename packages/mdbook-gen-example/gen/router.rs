@@ -420,27 +420,57 @@ pub fn Chapter2() -> dioxus::prelude::Element {
         }
         ul {
             li {
-                input { r#type: "checkbox", value: "true" }
+                input {
+                    r#type: "checkbox",
+                    readonly: true,
+                    class: "mdbook-checkbox",
+                    value: "true",
+                }
                 "Release of Dioxus Core"
             }
             li {
-                input { r#type: "checkbox", value: "true" }
+                input {
+                    r#type: "checkbox",
+                    readonly: true,
+                    class: "mdbook-checkbox",
+                    value: "true",
+                }
                 "Upgrade documentation to include more theory and be more comprehensive"
             }
             li {
-                input { r#type: "checkbox", value: "true" }
+                input {
+                    r#type: "checkbox",
+                    readonly: true,
+                    class: "mdbook-checkbox",
+                    value: "true",
+                }
                 "Support for HTML-side templates for lightning-fast dom manipulation"
             }
             li {
-                input { r#type: "checkbox", value: "false" }
+                input {
+                    r#type: "checkbox",
+                    readonly: true,
+                    class: "mdbook-checkbox",
+                    value: "false",
+                }
                 "Support for multiple renderers for same virtualdom (subtrees)"
             }
             li {
-                input { r#type: "checkbox", value: "false" }
+                input {
+                    r#type: "checkbox",
+                    readonly: true,
+                    class: "mdbook-checkbox",
+                    value: "false",
+                }
                 "Support for ThreadSafe (Send + Sync)"
             }
             li {
-                input { r#type: "checkbox", value: "false" }
+                input {
+                    r#type: "checkbox",
+                    readonly: true,
+                    class: "mdbook-checkbox",
+                    value: "false",
+                }
                 "Support for Portals"
             }
         }
@@ -449,11 +479,21 @@ pub fn Chapter2() -> dioxus::prelude::Element {
         }
         ul {
             li {
-                input { r#type: "checkbox", value: "true" }
+                input {
+                    r#type: "checkbox",
+                    readonly: true,
+                    class: "mdbook-checkbox",
+                    value: "true",
+                }
                 "SSR Support + Hydration"
             }
             li {
-                input { r#type: "checkbox", value: "false" }
+                input {
+                    r#type: "checkbox",
+                    readonly: true,
+                    class: "mdbook-checkbox",
+                    value: "false",
+                }
                 "Integrated suspense support for SSR"
             }
         }
@@ -462,15 +502,30 @@ pub fn Chapter2() -> dioxus::prelude::Element {
         }
         ul {
             li {
-                input { r#type: "checkbox", value: "false" }
+                input {
+                    r#type: "checkbox",
+                    readonly: true,
+                    class: "mdbook-checkbox",
+                    value: "false",
+                }
                 "Declarative window management"
             }
             li {
-                input { r#type: "checkbox", value: "false" }
+                input {
+                    r#type: "checkbox",
+                    readonly: true,
+                    class: "mdbook-checkbox",
+                    value: "false",
+                }
                 "Templates for building/bundling"
             }
             li {
-                input { r#type: "checkbox", value: "false" }
+                input {
+                    r#type: "checkbox",
+                    readonly: true,
+                    class: "mdbook-checkbox",
+                    value: "false",
+                }
                 "Access to Canvas/WebGL context natively"
             }
         }
@@ -479,45 +534,95 @@ pub fn Chapter2() -> dioxus::prelude::Element {
         }
         ul {
             li {
-                input { r#type: "checkbox", value: "false" }
+                input {
+                    r#type: "checkbox",
+                    readonly: true,
+                    class: "mdbook-checkbox",
+                    value: "false",
+                }
                 "Mobile standard library"
                 ul {
                     li {
-                        input { r#type: "checkbox", value: "false" }
+                        input {
+                            r#type: "checkbox",
+                            readonly: true,
+                            class: "mdbook-checkbox",
+                            value: "false",
+                        }
                         "GPS"
                     }
                     li {
-                        input { r#type: "checkbox", value: "false" }
+                        input {
+                            r#type: "checkbox",
+                            readonly: true,
+                            class: "mdbook-checkbox",
+                            value: "false",
+                        }
                         "Camera"
                     }
                     li {
-                        input { r#type: "checkbox", value: "false" }
+                        input {
+                            r#type: "checkbox",
+                            readonly: true,
+                            class: "mdbook-checkbox",
+                            value: "false",
+                        }
                         "filesystem"
                     }
                     li {
-                        input { r#type: "checkbox", value: "false" }
+                        input {
+                            r#type: "checkbox",
+                            readonly: true,
+                            class: "mdbook-checkbox",
+                            value: "false",
+                        }
                         "Biometrics"
                     }
                     li {
-                        input { r#type: "checkbox", value: "false" }
+                        input {
+                            r#type: "checkbox",
+                            readonly: true,
+                            class: "mdbook-checkbox",
+                            value: "false",
+                        }
                         "WiFi"
                     }
                     li {
-                        input { r#type: "checkbox", value: "false" }
+                        input {
+                            r#type: "checkbox",
+                            readonly: true,
+                            class: "mdbook-checkbox",
+                            value: "false",
+                        }
                         "Bluetooth"
                     }
                     li {
-                        input { r#type: "checkbox", value: "false" }
+                        input {
+                            r#type: "checkbox",
+                            readonly: true,
+                            class: "mdbook-checkbox",
+                            value: "false",
+                        }
                         "Notifications"
                     }
                     li {
-                        input { r#type: "checkbox", value: "false" }
+                        input {
+                            r#type: "checkbox",
+                            readonly: true,
+                            class: "mdbook-checkbox",
+                            value: "false",
+                        }
                         "Clipboard"
                     }
                 }
             }
             li {
-                input { r#type: "checkbox", value: "false" }
+                input {
+                    r#type: "checkbox",
+                    readonly: true,
+                    class: "mdbook-checkbox",
+                    value: "false",
+                }
                 "Animations"
             }
         }
@@ -526,39 +631,84 @@ pub fn Chapter2() -> dioxus::prelude::Element {
         }
         ul {
             li {
-                input { r#type: "checkbox", value: "true" }
+                input {
+                    r#type: "checkbox",
+                    readonly: true,
+                    class: "mdbook-checkbox",
+                    value: "true",
+                }
                 "Translation from HTML into RSX"
             }
             li {
-                input { r#type: "checkbox", value: "true" }
+                input {
+                    r#type: "checkbox",
+                    readonly: true,
+                    class: "mdbook-checkbox",
+                    value: "true",
+                }
                 "Dev server"
             }
             li {
-                input { r#type: "checkbox", value: "true" }
+                input {
+                    r#type: "checkbox",
+                    readonly: true,
+                    class: "mdbook-checkbox",
+                    value: "true",
+                }
                 "Live reload"
             }
             li {
-                input { r#type: "checkbox", value: "true" }
+                input {
+                    r#type: "checkbox",
+                    readonly: true,
+                    class: "mdbook-checkbox",
+                    value: "true",
+                }
                 "Translation from JSX into RSX"
             }
             li {
-                input { r#type: "checkbox", value: "false" }
+                input {
+                    r#type: "checkbox",
+                    readonly: true,
+                    class: "mdbook-checkbox",
+                    value: "false",
+                }
                 "Hot module replacement"
             }
             li {
-                input { r#type: "checkbox", value: "false" }
+                input {
+                    r#type: "checkbox",
+                    readonly: true,
+                    class: "mdbook-checkbox",
+                    value: "false",
+                }
                 "Code splitting"
             }
             li {
-                input { r#type: "checkbox", value: "false" }
+                input {
+                    r#type: "checkbox",
+                    readonly: true,
+                    class: "mdbook-checkbox",
+                    value: "false",
+                }
                 "Asset macros"
             }
             li {
-                input { r#type: "checkbox", value: "false" }
+                input {
+                    r#type: "checkbox",
+                    readonly: true,
+                    class: "mdbook-checkbox",
+                    value: "false",
+                }
                 "Css pipeline"
             }
             li {
-                input { r#type: "checkbox", value: "false" }
+                input {
+                    r#type: "checkbox",
+                    readonly: true,
+                    class: "mdbook-checkbox",
+                    value: "false",
+                }
                 "Image pipeline"
             }
         }
@@ -567,15 +717,30 @@ pub fn Chapter2() -> dioxus::prelude::Element {
         }
         ul {
             li {
-                input { r#type: "checkbox", value: "true" }
+                input {
+                    r#type: "checkbox",
+                    readonly: true,
+                    class: "mdbook-checkbox",
+                    value: "true",
+                }
                 "Router"
             }
             li {
-                input { r#type: "checkbox", value: "true" }
+                input {
+                    r#type: "checkbox",
+                    readonly: true,
+                    class: "mdbook-checkbox",
+                    value: "true",
+                }
                 "Global state management"
             }
             li {
-                input { r#type: "checkbox", value: "false" }
+                input {
+                    r#type: "checkbox",
+                    readonly: true,
+                    class: "mdbook-checkbox",
+                    value: "false",
+                }
                 "Resize observer"
             }
         }

@@ -113,6 +113,8 @@ impl<'a, I: Iterator<Item = Event<'a>>> RsxMarkdownParser<'a, I> {
         self.create_node(parse_quote! {
             input {
                 r#type: "checkbox",
+                readonly: true,
+                class: "mdbook-checkbox",
                 value: #type_value,
             }
         })

@@ -7,7 +7,7 @@ fn main() {
 fn app() -> Element {
     rsx! {
         div {
-            img { src: "public/static/scanner.png" }
+            img { src: "/public/static/scanner.png" }
         }
     }
 }

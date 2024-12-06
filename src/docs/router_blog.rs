@@ -703,7 +703,7 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                 7usize,
                 {
                     ::use_mdbook::mdbook_shared::Page {
-                        title: "Dioxus 0.6 $ Release Notes $ December 9, 2024 $ Android/iOS simulator, Interactive CLI, RSX Autocomplete, Props Hotreloading, WGPU Integration, Asset Stabilization, and more."
+                        title: "Dioxus 0.6 $ Release Notes $ December 9, 2024 $ Mobile Simulators, Magical Hot-Reloading, Interactive CLI, and more!"
                             .to_string(),
                         url: BookRoute::Release060 {},
                         segments: vec![],
@@ -714,13 +714,23 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                                 level: 2usize,
                             },
                             ::use_mdbook::mdbook_shared::Section {
+                                title: "Interactive Command Line Tools".to_string(),
+                                id: "interactive-command-line-tools".to_string(),
+                                level: 2usize,
+                            },
+                            ::use_mdbook::mdbook_shared::Section {
                                 title: "Android and iOS support for ".to_string(),
                                 id: "android-and-ios-support-for".to_string(),
                                 level: 2usize,
                             },
                             ::use_mdbook::mdbook_shared::Section {
-                                title: "Interactive Command Line Tools".to_string(),
-                                id: "interactive-command-line-tools".to_string(),
+                                title: "Completely Revamped Hot-Reloading".to_string(),
+                                id: "completely-revamped-hot-reloading".to_string(),
+                                level: 2usize,
+                            },
+                            ::use_mdbook::mdbook_shared::Section {
+                                title: "Completely Revamped Autocomplete".to_string(),
+                                id: "completely-revamped-autocomplete".to_string(),
                                 level: 2usize,
                             },
                             ::use_mdbook::mdbook_shared::Section {
@@ -736,41 +746,6 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                             ::use_mdbook::mdbook_shared::Section {
                                 title: "Fullstack Desktop and Mobile".to_string(),
                                 id: "fullstack-desktop-and-mobile".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Completely Revamped Autocomplete".to_string(),
-                                id: "completely-revamped-autocomplete".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Completely Revamped Hot-Reloading".to_string(),
-                                id: "completely-revamped-hot-reloading".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Hot-Reloading Formatted Strings".to_string(),
-                                id: "hot-reloading-formatted-strings".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Hot-Reloading Rust Literals".to_string(),
-                                id: "hot-reloading-rust-literals".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Hot-Reloading nested rsx (".to_string(),
-                                id: "hot-reloading-nested-rsx-(".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Mobile Hot-Reloading".to_string(),
-                                id: "mobile-hot-reloading".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Proper Workspace Hot-Reloading".to_string(),
-                                id: "proper-workspace-hot-reloading".to_string(),
                                 level: 2usize,
                             },
                             ::use_mdbook::mdbook_shared::Section {
@@ -790,13 +765,13 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                                 level: 2usize,
                             },
                             ::use_mdbook::mdbook_shared::Section {
-                                title: "Question Mark Error Handling".to_string(),
-                                id: "question-mark-error-handling".to_string(),
+                                title: "Document Elements: ".to_string(),
+                                id: "document-elements:".to_string(),
                                 level: 2usize,
                             },
                             ::use_mdbook::mdbook_shared::Section {
-                                title: "Document Elements: ".to_string(),
-                                id: "document-elements:".to_string(),
+                                title: "Question Mark Error Handling".to_string(),
+                                id: "question-mark-error-handling".to_string(),
                                 level: 2usize,
                             },
                             ::use_mdbook::mdbook_shared::Section {
@@ -944,7 +919,7 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                         nested_items: vec![],
                     }),
                     ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
-                        name: "Dioxus 0.6 $ Release Notes $ December 9, 2024 $ Android/iOS simulator, Interactive CLI, RSX Autocomplete, Props Hotreloading, WGPU Integration, Asset Stabilization, and more."
+                        name: "Dioxus 0.6 $ Release Notes $ December 9, 2024 $ Mobile Simulators, Magical Hot-Reloading, Interactive CLI, and more!"
                             .to_string(),
                         location: Some(BookRoute::Release060 {}),
                         number: Some(
@@ -4133,16 +4108,14 @@ pub fn Release050() -> dioxus::prelude::Element {
 pub fn Release060() -> dioxus::prelude::Element {
     use dioxus::prelude::*;
     rsx! {
+        p { "Today we're releasing Dioxus 0.6!" }
         p {
-            "Happy Holidays! As an early holiday present, we're happy to announce the release of Dioxus 0.6! 🎉"
+            "Dioxus is a framework for building fullstack web, desktop, and mobile apps with a single codebase. Our goal is to build a \"Flutter but better.\" Dioxus focuses on first-class fullstack web support, type-safe server/client communication, and blazing fast performance."
         }
         p {
-            "Dioxus (Dye-ox-us) is a framework for building fullstack web, desktop, and mobiles apps in Rust."
+            "With this release, we focused on making Dioxus easier to use, improving the developer experience, and fixing bugs."
         }
-        p {
-            "Dioxus 0.6 is the biggest release of Dioxus ever: over 350 pull requests, hundreds of issues closed, huge new features, and a complete overhaul the framework. With this release, we focused on fixing bugs, polishing existing features, and improving tooling."
-        }
-        p { "Here's what's new in Dioxus 0.6:" }
+        p { "Headlining the release is a complete overhaul of the Dioxus CLI:" }
         ul {
             li {
                 strong {
@@ -4152,6 +4125,14 @@ pub fn Release060() -> dioxus::prelude::Element {
                     }
                 }
                 ": Serve your app on Android and iOS simulators and devices."
+            }
+            li {
+                strong {
+                    a { href: "#completely-revamped-hot-reloading", "Magical Hot-Reloading" }
+                }
+                ": Hot-Reloading of formatted strings, properties, and nested "
+                code { "rsx!{{}}" }
+                "."
             }
             li {
                 strong {
@@ -4167,37 +4148,26 @@ pub fn Release060() -> dioxus::prelude::Element {
             }
             li {
                 strong {
+                    a { href: "#fullstack-desktop-and-mobile", "Server Functions for Native" }
+                }
+                ": Inline Server RPC for Desktop and Mobile apps."
+            }
+        }
+        p {
+            "We also improved the developer experience across the entire framework, fixing long standing bugs and improving tooling:"
+        }
+        ul {
+            li {
+                strong {
                     a { href: "#toasts-and-loading-screens", "Toasts and Loading Screens" }
                 }
                 ": New toasts and loading screens for web apps in development."
             }
             li {
                 strong {
-                    a { href: "#fullstack-desktop-and-mobile", "Server Functions for Native" }
+                    a { href: "#completely-revamped-autocomplete", "Improved Autocomplete" }
                 }
-                ": Inline Server RPC for Desktop and Mobile apps."
-            }
-            li {
-                strong {
-                    a { href: "#completely-revamped-autocomplete", "Revamped Autocomplete" }
-                }
-                ": Massively improved autocomplete using Rust-analyzer itself."
-            }
-            li {
-                strong {
-                    a { href: "#completely-revamped-hot-reloading", "Magical Hot-Reloading" }
-                }
-                ": Hot-Reloading of formatted strings, properties, and nested "
-                code { "rsx!{{}}" }
-                "."
-            }
-            li {
-                strong {
-                    a { href: "#mobile-hot-reloading", "Mobile Hot-Reloading" }
-                }
-                ": Hot-Reloading of "
-                code { "rsx!{{}}" }
-                " and assets for mobile devices and emulators."
+                ": Massively improved autocomplete of RSX."
             }
             li {
                 strong {
@@ -4325,17 +4295,12 @@ pub fn Release060() -> dioxus::prelude::Element {
             a { href: "#about-this-release", class: "header", "About this Release" }
         }
         p {
-            "I’m happy to say that Dioxus is the most mature and complete it’s ever been, "
-            em { "finally" }
-            " living up to the original mission."
+            "Dioxus 0.6 is our biggest release ever: over 350 pull requests merged and hundreds of issues closed. We shipped 0.6 with a few goals:"
         }
-        p {
-            "Dioxus 0.6 is the culmination of nearly 6 months of hard work. We originally intended Dioxus 0.6 to be a much smaller release, but with the complexity of assets and tooling improvements, we eventually chose to merge the features we had planned for Dioxus 0.7 as well. With this release, we set a very high bar for quality and polish: everything from CLI tools to APIs and ecosystem libraries have seen huge improvements."
-        }
-        p {
-            "With 0.6, we focused on improving existing features and cleaning up various holes in the framework. The end result: a rebirth of Dioxus with hundreds of bug fixes, massively improved tooling, and the “ungating” of essential APIs. Everything from CLI tooling to hot-reloading and autocomplete saw huge jumps in quality. We're not "
-            em { "completely done" }
-            " - early next year we'd still like to ship our Rust binary patching and WASM bundle splitting prototypes - but we're still quite confident in Dioxus' improved developer experience."
+        ul {
+            li { "Dramatically improve the quality of hot-reloading, autocomplete, and asset bundling." }
+            li { "Make the Dioxus CLI more robust and easier to use." }
+            li { "Inline our mobile tooling into the dioxus CLI for 1st-class mobile support." }
         }
         p {
             "Since this post is quite long, we made a quick video highlighting new features, bugs fixed, and a quick tour of everything you can do with Dioxus now:"
@@ -4344,91 +4309,13 @@ pub fn Release060() -> dioxus::prelude::Element {
             class: "inline-html-block",
             dangerous_inner_html: "<iframe style=\"width: 120%\" height=\"500px\" class=\"centered-overflow\" src=\"https://www.youtube.com/embed/-RN4LB3-9AE\" title=\"Dioxus 0.5 Overview preview\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share\" referrerpolicy=\"strict-origin-when-cross-origin\" allowfullscreen></iframe>\n",
         }
-        h2 { id: "android-and-ios-support-for",
-            a { href: "#android-and-ios-support-for", class: "header",
-                "Android and iOS support for "
-            }
-            code { "dx serve" }
-        }
-        p {
-            "Our goal with Dioxus has always been to support web, desktop, mobile, and more. And while Dioxus has supported mobile since its release, the Rust tooling for mobile has been extremely unstable. Users constantly ran into issues with tools like "
-            a { href: "https://github.com/BrainiumLLC/cargo-mobile",
-                code { "cargo-mobile" }
-            }
-            " and Tauri's fork "
-            a { href: "https://github.com/tauri-apps/cargo-mobile2", "cargo-mobile2" }
-            ". These tools, while useful, take a different architectural approach than what is a good fit for Dioxus."
-        }
-        p {
-            "We want to provide features like asset bundling, hot-reloading, and proper support for \"regular\" apps built with a traditional  "
-            code { "main.rs" }
-            " - none of which we can properly do with the existing tools."
-        }
-        p {
-            "With this release, we wrote our entire mobile tooling system from scratch. Now, you can go from  "
-            code { "dx new" }
-            " to  "
-            code { "dx serve --platform ios" }
-            " in a matter of seconds."
-        }
-        p {
-            img {
-                src: asset!("/assets/06assets/image.png", ImageAssetOptions::new().with_avif()),
-                alt: "Dioxus Mobile Support",
-                title: "",
-            }
-        }
-        p {
-            "The Android and iOS simulator targets support all the same features as desktop: hot-reloading, fast rebuilds, asset bundling, logging, etc. One notable accomplishment: you can build Rust mobile apps with a simple  "
-            code { "main.rs" }
-            ". Existing solutions like "
-            a { href: "http://github.com/rust-mobile/xbuild", "xbuild" }
-            " and "
-            a { href: "http://github.com/tauri-apps/tauri", "Tauri" }
-            " require you to fundamentally restructure your app. Your app also needs to be converted to a "
-            code { "cdylib" }
-            ", meaning you can’t share a launch function between desktop and mobile."
-        }
-        p { "The simplest Dioxus 0.6 Mobile app is tiny:" }
-        CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f92672;\">use </span><span style=\"color:#f8f8f2;\">dioxus::prelude::</span><span style=\"color:#f92672;\">*</span><span style=\"color:#f8f8f2;\">;\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">main</span><span style=\"color:#f8f8f2;\">() {{\n</span><span style=\"color:#f8f8f2;\">    dioxus::launch(|| rsx! {{ </span><span style=\"color:#ffee99;\">&quot;hello dioxus! 🧬&quot; </span><span style=\"color:#f8f8f2;\">}});\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n" }
-        p {
-            "Especially, when compared to v0.5 which required you to migrate your app to a  "
-            code { "cdylib" }
-            " and manually set up the binding layer:"
-        }
-        CodeBlock {
-            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#8c8c8c;\">// no main allowed! - must expose a `start_app` function\n</span><span style=\"color:#f8f8f2;\">#[no_mangle]\n</span><span style=\"color:#f8f8f2;\">#[inline(never)]\n</span><span style=\"color:#f8f8f2;\">#[cfg(any(target_os </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;android&quot;</span><span style=\"color:#f8f8f2;\">, target_os </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;ios&quot;</span><span style=\"color:#f8f8f2;\">))]\n</span><span style=\"color:#f92672;\">pub extern </span><span style=\"color:#ffee99;\">&quot;C&quot; </span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">start_app</span><span style=\"color:#f8f8f2;\">() {{\n</span><span style=\"color:#f8f8f2;\">    #[cfg(target_os </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;android&quot;</span><span style=\"color:#f8f8f2;\">)]\n</span><span style=\"color:#f8f8f2;\">    {{\n</span><span style=\"color:#f8f8f2;\">        tao::android_binding</span><span style=\"color:#f92672;\">!</span><span style=\"color:#f8f8f2;\">(\n</span><span style=\"color:#f8f8f2;\">            com_dioxuslabs,\n</span><span style=\"color:#f8f8f2;\">            app_name,\n</span><span style=\"color:#f8f8f2;\">            WryActivity,\n</span><span style=\"color:#f8f8f2;\">            wry::android_setup,\n</span><span style=\"color:#f8f8f2;\">            _start_app\n</span><span style=\"color:#f8f8f2;\">        );\n</span><span style=\"color:#f8f8f2;\">        wry::android_binding</span><span style=\"color:#f92672;\">!</span><span style=\"color:#f8f8f2;\">(com_dioxuslabs, app_name);\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#8c8c8c;\">// need to manually catch panics!\n</span><span style=\"color:#f8f8f2;\">    #[cfg(target_os </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;ios&quot;</span><span style=\"color:#f8f8f2;\">)]\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#66d9ef;\">stop_unwind</span><span style=\"color:#f8f8f2;\">(|| </span><span style=\"color:#66d9ef;\">main</span><span style=\"color:#f8f8f2;\">())\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">#[cfg(any(target_os </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;android&quot;</span><span style=\"color:#f8f8f2;\">, target_os </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;ios&quot;</span><span style=\"color:#f8f8f2;\">))]\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">stop_unwind</span><span style=\"color:#f8f8f2;\">&lt;F: FnOnce() -&gt; T, T&gt;(</span><span style=\"font-style:italic;color:#fd971f;\">f</span><span style=\"color:#f8f8f2;\">: F) -&gt; T {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#f92672;\">match </span><span style=\"color:#f8f8f2;\">std::panic::catch_unwind(std::panic::AssertUnwindSafe(f)) {{\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"font-style:italic;color:#66d9ef;\">Ok</span><span style=\"color:#f8f8f2;\">(t) </span><span style=\"color:#f92672;\">=&gt;</span><span style=\"color:#f8f8f2;\"> t,\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"font-style:italic;color:#66d9ef;\">Err</span><span style=\"color:#f8f8f2;\">(err) </span><span style=\"color:#f92672;\">=&gt; </span><span style=\"color:#f8f8f2;\">{{\n</span><span style=\"color:#f8f8f2;\">            eprintln!(</span><span style=\"color:#ffee99;\">&quot;attempt to unwind out of `rust` with err: {{:?}}&quot;</span><span style=\"color:#f8f8f2;\">, err);\n</span><span style=\"color:#f8f8f2;\">            std::process::abort()\n</span><span style=\"color:#f8f8f2;\">        }}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
-        }
-        p {
-            "Our inline mobile support requires no extra configurations, no manual setup for Gradle, Java, Cocoapods, and no other 3rd party tooling. If you already have the Android NDK or iOS Simulator installed, you currently are less than 30 seconds away from a production-ready mobile app written entirely in Rust. In the time it takes for you to watch this gif, you could have your very own mobile app:"
-        }
-        p {
-            video {
-                src: asset!("/assets/06assets/dxnew.mp4"),
-                alt: "dx-serve.mp4",
-                title: "",
-                autoplay: true,
-                muted: true,
-                r#loop: true,
-                playsinline: true,
-                preload: "metadata",
-            }
-        }
-        p {
-            "While 1st-class support for mobile platforms is quite exciting, there are certainly many limitations: the Rust mobile ecosystem is nascent, we don’t have great ways of configuring the many platform-specific build flags, and there isn’t a particularly great Rust/Java interop story. However, we’re  dedicated to improving Rust's mobile app development capabilities and will be rolling out improvements to the mobile ecosystem over the next year."
-        }
-        p {
-            "If you're interested in helping us build out mobile support, please join us on "
-            a { href: "https://discord.gg/XgGxMSkvUM", "Discord" }
-            ". We have ambitious goals for Dioxus 0.7+ to integrate cool features like automatic deploys to app stores and a build a comprehensive SDK for mobile development in Rust."
-        }
         h2 { id: "interactive-command-line-tools",
             a { href: "#interactive-command-line-tools", class: "header",
                 "Interactive Command Line Tools"
             }
         }
         p {
-            "You might have noticed in the GIFs above... Dioxus 0.6 is shipping with a completely overhauled CLI experience! We’ve completely rewritten the CLI to support a ton of new features and improve stability:"
+            "Dioxus 0.6 is shipping with a completely overhauled CLI experience! We’ve completely rewritten the CLI to support a ton of new features and improve stability:"
         }
         p {
             img {
@@ -4472,6 +4359,7 @@ pub fn Release060() -> dioxus::prelude::Element {
                 code { "target/dx" }
                 " for all output."
             }
+            li { "Inline support for iOS and Android emulators." }
         }
         p {
             "You can install the new CLI using "
@@ -4479,6 +4367,215 @@ pub fn Release060() -> dioxus::prelude::Element {
             " with "
             code { "cargo binstall dioxus-cli@0.6.0 --force" }
             "."
+        }
+        h2 { id: "android-and-ios-support-for",
+            a { href: "#android-and-ios-support-for", class: "header",
+                "Android and iOS support for "
+            }
+            code { "dx serve" }
+        }
+        p {
+            "With Dioxus 0.6, the dioxus CLI supports  "
+            code { "dx serve --platform ios/android" }
+            " out of the box! 🎉"
+        }
+        p {
+            "While Dioxus has always had mobile, the Rust tooling for mobile has been extremely unstable. Users constantly ran into issues with tools like "
+            a { href: "https://github.com/BrainiumLLC/cargo-mobile",
+                code { "cargo-mobile" }
+            }
+            " and "
+            a { href: "https://github.com/tauri-apps/cargo-mobile2", "cargo-mobile2" }
+            ". These tools, while useful, take a different architectural approach than what is a good fit for Dioxus."
+        }
+        p {
+            "With this release, we wrote our entire mobile tooling system from scratch. Now, you can go from  "
+            code { "dx new" }
+            " to  "
+            code { "dx serve --platform ios" }
+            " in a matter of seconds."
+        }
+        p {
+            img {
+                src: asset!("/assets/06assets/image.png", ImageAssetOptions::new().with_avif()),
+                alt: "Dioxus Mobile Support",
+                title: "",
+            }
+        }
+        p {
+            "The Android and iOS simulator targets support all the same features as desktop: hot-reloading, fast rebuilds, asset bundling, logging, etc. Dioxus is also the only Rust framework that supports  "
+            code { "main.rs" }
+            " for mobile - no other tools have supported the same  "
+            code { "main.rs" }
+            " for every platform until now."
+        }
+        p {
+            "Our inline mobile support requires no extra configurations, no manual setup for Gradle, Java, Cocoapods, and no other 3rd party tooling. If you already have the Android NDK or iOS Simulator installed, you currently are less than 30 seconds away from a production-ready mobile app written entirely in Rust."
+        }
+        p {
+            video {
+                src: asset!("/assets/06assets/dxnew.mp4"),
+                alt: "dx-serve.mp4",
+                title: "",
+                autoplay: true,
+                muted: true,
+                r#loop: true,
+                playsinline: true,
+                preload: "metadata",
+            }
+        }
+        p { "The simplest Dioxus 0.6 Mobile app is tiny:" }
+        CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f92672;\">use </span><span style=\"color:#f8f8f2;\">dioxus::prelude::</span><span style=\"color:#f92672;\">*</span><span style=\"color:#f8f8f2;\">;\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">main</span><span style=\"color:#f8f8f2;\">() {{\n</span><span style=\"color:#f8f8f2;\">    dioxus::launch(|| rsx! {{ </span><span style=\"color:#ffee99;\">&quot;hello dioxus! 🧬&quot; </span><span style=\"color:#f8f8f2;\">}});\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n" }
+        p {
+            "Especially, when compared to v0.5 which required you to migrate your app to a  "
+            code { "cdylib" }
+            " and manually set up the binding layer:"
+        }
+        CodeBlock {
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#8c8c8c;\">// no main allowed! - must expose a `start_app` function\n</span><span style=\"color:#f8f8f2;\">#[no_mangle]\n</span><span style=\"color:#f8f8f2;\">#[inline(never)]\n</span><span style=\"color:#f8f8f2;\">#[cfg(any(target_os </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;android&quot;</span><span style=\"color:#f8f8f2;\">, target_os </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;ios&quot;</span><span style=\"color:#f8f8f2;\">))]\n</span><span style=\"color:#f92672;\">pub extern </span><span style=\"color:#ffee99;\">&quot;C&quot; </span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">start_app</span><span style=\"color:#f8f8f2;\">() {{\n</span><span style=\"color:#f8f8f2;\">    #[cfg(target_os </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;android&quot;</span><span style=\"color:#f8f8f2;\">)]\n</span><span style=\"color:#f8f8f2;\">    {{\n</span><span style=\"color:#f8f8f2;\">        tao::android_binding</span><span style=\"color:#f92672;\">!</span><span style=\"color:#f8f8f2;\">(\n</span><span style=\"color:#f8f8f2;\">            com_dioxuslabs,\n</span><span style=\"color:#f8f8f2;\">            app_name,\n</span><span style=\"color:#f8f8f2;\">            WryActivity,\n</span><span style=\"color:#f8f8f2;\">            wry::android_setup,\n</span><span style=\"color:#f8f8f2;\">            _start_app\n</span><span style=\"color:#f8f8f2;\">        );\n</span><span style=\"color:#f8f8f2;\">        wry::android_binding</span><span style=\"color:#f92672;\">!</span><span style=\"color:#f8f8f2;\">(com_dioxuslabs, app_name);\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#8c8c8c;\">// need to manually catch panics!\n</span><span style=\"color:#f8f8f2;\">    #[cfg(target_os </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;ios&quot;</span><span style=\"color:#f8f8f2;\">)]\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#66d9ef;\">stop_unwind</span><span style=\"color:#f8f8f2;\">(|| </span><span style=\"color:#66d9ef;\">main</span><span style=\"color:#f8f8f2;\">())\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">#[cfg(any(target_os </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;android&quot;</span><span style=\"color:#f8f8f2;\">, target_os </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;ios&quot;</span><span style=\"color:#f8f8f2;\">))]\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">stop_unwind</span><span style=\"color:#f8f8f2;\">&lt;F: FnOnce() -&gt; T, T&gt;(</span><span style=\"font-style:italic;color:#fd971f;\">f</span><span style=\"color:#f8f8f2;\">: F) -&gt; T {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#f92672;\">match </span><span style=\"color:#f8f8f2;\">std::panic::catch_unwind(std::panic::AssertUnwindSafe(f)) {{\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"font-style:italic;color:#66d9ef;\">Ok</span><span style=\"color:#f8f8f2;\">(t) </span><span style=\"color:#f92672;\">=&gt;</span><span style=\"color:#f8f8f2;\"> t,\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"font-style:italic;color:#66d9ef;\">Err</span><span style=\"color:#f8f8f2;\">(err) </span><span style=\"color:#f92672;\">=&gt; </span><span style=\"color:#f8f8f2;\">{{\n</span><span style=\"color:#f8f8f2;\">            eprintln!(</span><span style=\"color:#ffee99;\">&quot;attempt to unwind out of `rust` with err: {{:?}}&quot;</span><span style=\"color:#f8f8f2;\">, err);\n</span><span style=\"color:#f8f8f2;\">            std::process::abort()\n</span><span style=\"color:#f8f8f2;\">        }}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
+        }
+        p {
+            "While 1st-class support for mobile platforms is quite exciting, there are certainly many limitations: the Rust mobile ecosystem is nascent, we don’t have great ways of configuring the many platform-specific build flags, and there isn’t a particularly great Rust/Java interop story."
+        }
+        p {
+            "If you're interested in helping us build out mobile support, please join us on "
+            a { href: "https://discord.gg/XgGxMSkvUM", "Discord" }
+            "."
+        }
+        h2 { id: "completely-revamped-hot-reloading",
+            a { href: "#completely-revamped-hot-reloading", class: "header",
+                "Completely Revamped Hot-Reloading"
+            }
+        }
+        p {
+            "We shipped massive improvements to the hot-reloading engine powering Dioxus. Our internal goal was to iterate on the Dioxus Docsite with zero full rebuilds."
+        }
+        p { "This means we needed to add support for a number of new hot-reloading engine changes:" }
+        ul {
+            li { "Hot-reload formatted strings" }
+            li { "Hot-reload nested rsx blocks" }
+            li { "Hot-reload component properties and simple Rust expressions" }
+            li { "Hot-reload mobile platforms and their bundled assets" }
+        }
+        p {
+            "The new hot-reloading engine almost feels like magic - you can quickly iterate on new designs - and even modify simple Rust code! - without waiting for full rebuilds:"
+        }
+        p {
+            video {
+                src: asset!("/assets/06assets/dogapphr2.mp4"),
+                alt: "dog_app.mp4",
+                title: "",
+                autoplay: true,
+                muted: true,
+                r#loop: true,
+                playsinline: true,
+                preload: "metadata",
+            }
+        }
+        p {
+            "The new engine allows you to modify formatted strings anywhere in your  "
+            code { "rsx" }
+            ": in text blocks, element attributes, and even on component properties."
+        }
+        CodeBlock {
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">#[component]\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">Counter</span><span style=\"color:#f8f8f2;\">(</span><span style=\"font-style:italic;color:#fd971f;\">count</span><span style=\"color:#f8f8f2;\">: </span><span style=\"font-style:italic;color:#66d9ef;\">i32</span><span style=\"color:#f8f8f2;\">, </span><span style=\"font-style:italic;color:#fd971f;\">class_ext</span><span style=\"color:#f8f8f2;\">: String) -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    rsx! {{\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"color:#8c8c8c;\">// Instantly hot-reload these formatted strings\n</span><span style=\"color:#f8f8f2;\">        button {{ class: </span><span style=\"color:#ffee99;\">&quot;btn-{{class_ext}}&quot;</span><span style=\"color:#f8f8f2;\">, </span><span style=\"color:#ffee99;\">&quot;Count {{count}}&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"color:#8c8c8c;\">// Even hot-reload formatted strings as props on components\n</span><span style=\"color:#f8f8f2;\">        Component {{ text: </span><span style=\"color:#ffee99;\">&quot;btn-{{class_exit}}&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
+        }
+        p {
+            "The same tooling that enables component props reloading also works with "
+            em { "any Rust literal!" }
+            " You can hot-reload numbers, booleans, and strings on component prop boundaries."
+        }
+        CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">LoopIt</span><span style=\"color:#f8f8f2;\">() -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    rsx! {{\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"color:#8c8c8c;\">// Change either prop without causing a full rebuild\n</span><span style=\"color:#f8f8f2;\">        Link {{\n</span><span style=\"color:#f8f8f2;\">            to: </span><span style=\"color:#ffee99;\">&quot;google.com&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">            enabled: </span><span style=\"color:#ff80f4;\">false\n</span><span style=\"color:#f8f8f2;\">        }}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n" }
+        p {
+            video {
+                src: asset!("/assets/06assets/prop-hotreload.mp4"),
+                alt: "prop-hotreload.mp4",
+                title: "",
+                autoplay: true,
+                muted: true,
+                r#loop: true,
+                playsinline: true,
+                preload: "metadata",
+            }
+        }
+        p {
+            "The new hot-reloading engine also brings nested rsx hot-reloading support. The contents of  "
+            code { "for" }
+            " loops,  "
+            code { "if" }
+            " statements, and component bodies all now participate in hot-reloading:"
+        }
+        CodeBlock {
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">LoopIt</span><span style=\"color:#f8f8f2;\">() -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    rsx! {{\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"color:#f92672;\">for</span><span style=\"color:#f8f8f2;\"> x </span><span style=\"color:#f92672;\">in </span><span style=\"color:#ff80f4;\">0</span><span style=\"color:#f92672;\">..</span><span style=\"color:#ff80f4;\">10 </span><span style=\"color:#f8f8f2;\">{{\n</span><span style=\"color:#f8f8f2;\">            </span><span style=\"color:#8c8c8c;\">// modifying the body of this loop is hot-reloadable!\n</span><span style=\"color:#f8f8f2;\">            li {{ </span><span style=\"color:#ffee99;\">&quot;{{x}}&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">        }}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">        Counter {{\n</span><span style=\"color:#f8f8f2;\">            </span><span style=\"color:#8c8c8c;\">// component children also get hot-reloaded\n</span><span style=\"color:#f8f8f2;\">            div {{ </span><span style=\"color:#ffee99;\">&quot;These div contents get hot-reloaded too!&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">        }}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
+        }
+        p {
+            "You can now move and clone Rust expressions between contexts, allowing you to re-use components and formatted strings between element properties without a full rebuild."
+        }
+        CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">LoopIt</span><span style=\"color:#f8f8f2;\">() -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    rsx! {{\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"color:#8c8c8c;\">// If we start with this formatted text\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"color:#ffee99;\">&quot;Thing1 {{a}}&quot;\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"color:#8c8c8c;\">// we can add this formatted text on the fly\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"color:#ffee99;\">&quot;Thing2 {{a}}&quot;\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n" }
+        p { "These changes are supported in all platforms: web, desktop, and mobile." }
+        p {
+            "You can now hot-reload RSX and Assets on iOS and Android apps in addition to the classic web and desktop platforms."
+        }
+        p {
+            video {
+                src: asset!("/assets/06assets/bundled-ios-reload.mp4"),
+                alt: "bundled-ios-reload.mp4",
+                title: "",
+                autoplay: true,
+                muted: true,
+                r#loop: true,
+                playsinline: true,
+                preload: "metadata",
+            }
+        }
+        p { "The new hot-reloading feels like magic and we encourage you to try it out!" }
+        h2 { id: "completely-revamped-autocomplete",
+            a { href: "#completely-revamped-autocomplete", class: "header",
+                "Completely Revamped Autocomplete"
+            }
+        }
+        p {
+            "Another huge overhaul in Dioxus 0.6: greatly improved autocomplete of  "
+            code { "rsx! {{}}" }
+            ".  Our old implementation of  "
+            code { "rsx! {{}}" }
+            " suffered from poor integration with tools like Rust-analyzer which provide language-server integration for your code. If the input to the macro wasn’t perfectly parsable, we failed to generate any tokens at all, meaning rust-analyzer couldn’t jump in to provide completions."
+        }
+        p {
+            "The work to fix this was immense. Macro parsing libraries like  "
+            code { "syn" }
+            " don’t provide great facilities for “partial parsing” Rust code which is necessary for implementing better errors and autocomplete. We had to rewrite the entire internals of  "
+            code { "rsx! {{}}" }
+            " to support partial parsing of  "
+            code { "rsx! {{}}" }
+            " , but finally, in 0.6, we’re able to provide stellar autocomplete. Not only can we autocomplete Rust code in attribute positions, but with a few tricks, we’re able to automatically insert the appropriate braces next to element names:"
+        }
+        p {
+            img {
+                src: asset!(
+                    "/assets/06assets/Screenshot_2024-11-14_at_9.55.12_PM.png",
+                    ImageAssetOptions::new().with_avif()
+                ),
+                alt: "Screenshot 2024-11-14 at 9.55.12\u{202f}PM.png",
+                title: "",
+            }
+        }
+        p {
+            "The autocomplete experience is much nicer now, with all attributes, elements, components, and inline Rust code benefiting from the overhauled experience. All Rust expressions participate in proper Rust-analyzer autocomplete and we're even able to provide warnings when  "
+            code { "rsx!{{}}" }
+            " input is malformed instead of panicking."
+        }
+        p {
+            video {
+                src: asset!("/assets/06assets/autocomplete-overhaul.mp4"),
+                alt: "autocomplete-overhaul.mp4",
+                title: "",
+                autoplay: true,
+                muted: true,
+                r#loop: true,
+                playsinline: true,
+                preload: "metadata",
+            }
         }
         h2 { id: "inline-wasm-stacktraces-and",
             a { href: "#inline-wasm-stacktraces-and", class: "header",
@@ -4530,7 +4627,7 @@ pub fn Release060() -> dioxus::prelude::Element {
             "As part of our CLI overhaul, we wanted to provide better feedback for developers when building web apps. Dioxus 0.6 will now show Popup Toasts and Loading Screens for web apps in development mode."
         }
         p {
-            "Now, when your app is building, Dioxus will rendering a loading screen with the current progress of the build:"
+            "Now, when your app is building, Dioxus will render a loading screen with the current progress of the build:"
         }
         p {
             img {
@@ -4561,7 +4658,7 @@ pub fn Release060() -> dioxus::prelude::Element {
             }
         }
         p {
-            "Additionally, as improving tooling, we properly integrated server functions with native apps. Server functions finally work out-of-the-box when targeting desktop and mobile:"
+            "Additionally, we properly integrated server functions with native apps. Server functions finally work out-of-the-box when targeting desktop and mobile:"
         }
         p {
             video {
@@ -4579,195 +4676,6 @@ pub fn Release060() -> dioxus::prelude::Element {
             "By default, in development, we set the server function endpoint to be localhost, so in production you need to make sure to point the functions to your deployed server:"
         }
         CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">main</span><span style=\"color:#f8f8f2;\">() {{\n</span><span style=\"color:#f8f8f2;\">    #[cfg(feature </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;production&quot;</span><span style=\"color:#f8f8f2;\">)]\n</span><span style=\"color:#f8f8f2;\">    server_fn::client::set_server_url(</span><span style=\"color:#ffee99;\">&quot;app.endpoint.com&quot;</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">    dioxus::launch(app)\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n" }
-        h2 { id: "completely-revamped-autocomplete",
-            a { href: "#completely-revamped-autocomplete", class: "header",
-                "Completely Revamped Autocomplete"
-            }
-        }
-        p {
-            "Another huge overhaul in Dioxus 0.6: greatly improved autocomplete of  "
-            code { "rsx! {{}}" }
-            ".  Our old implementation of  "
-            code { "rsx! {{}}" }
-            " suffered from poor integration with tools like Rust-analyzer which provide language-server integration for your code. If the input to the macro wasn’t perfectly parsable, we failed to generate any tokens at all, meaning rust-analyzer couldn’t jump in to provide completions."
-        }
-        p {
-            "The work to fix this was immense. Macro parsing libraries like  "
-            code { "syn" }
-            " don’t provide great facilities for “partial parsing” Rust code which is necessary for implementing better errors and autocomplete. We had to rewrite the entire internals of  "
-            code { "rsx! {{}}" }
-            " to support partial parsing of  "
-            code { "rsx! {{}}" }
-            " , but finally, in 0.6, we’re able to provide stellar autocomplete. Not only can we autocomplete Rust code in attribute positions, but with a few tricks, we’re able to automatically insert the appropriate braces next to element names:"
-        }
-        p {
-            img {
-                src: asset!(
-                    "/assets/06assets/Screenshot_2024-11-14_at_9.55.12_PM.png",
-                    ImageAssetOptions::new().with_avif()
-                ),
-                alt: "Screenshot 2024-11-14 at 9.55.12\u{202f}PM.png",
-                title: "",
-            }
-        }
-        p {
-            "The autocomplete experience is much nicer now, with all attributes, elements, components, and inline Rust code benefiting from the overhauled experience. All Rust expressions participate in proper Rust-analyzer autocomplete and we're even able to provide warnings when  "
-            code { "rsx!{{}}" }
-            " input is malformed instead of panicking."
-        }
-        p {
-            video {
-                src: asset!("/assets/06assets/autocomplete-overhaul.mp4"),
-                alt: "autocomplete-overhaul.mp4",
-                title: "",
-                autoplay: true,
-                muted: true,
-                r#loop: true,
-                playsinline: true,
-                preload: "metadata",
-            }
-        }
-        h2 { id: "completely-revamped-hot-reloading",
-            a { href: "#completely-revamped-hot-reloading", class: "header",
-                "Completely Revamped Hot-Reloading"
-            }
-        }
-        p {
-            "As part of our effort to improve the  "
-            code { "rsx! {{}}" }
-            " experience, we shipped massive improvements to the hot-reloading engine powering Dioxus. Our internal goal was to iterate on the Dioxus Docsite content with zero full rebuilds - we only wanted full rebuilds when modifying real Rust code."
-        }
-        p { "This means we needed to add support for a number of new hot-reloading engine changes:" }
-        ul {
-            li {
-                a { href: "#hot-reloading-formatted-strings", "Hot-reload formatted strings" }
-            }
-            li {
-                a { href: "#hot-reloading-rust-literals",
-                    "Hot-reload component properties and simple Rust expressions"
-                }
-            }
-            li {
-                a { href: "#hot-reloading-nested-rsx-",
-                    "Hot-reload  "
-                    code { "for" }
-                    " and  "
-                    code { "if" }
-                    " blocks in RSX"
-                }
-            }
-            li {
-                a { href: "#hot-reloading-nested-rsx-", "Hot-reload nested rsx blocks" }
-            }
-            li {
-                a { href: "#mobile-hot-reloading", "Hot-reload mobile platforms" }
-            }
-        }
-        p {
-            "The new hot-reloading engine almost feels like magic - you can quickly iterate on new designs without waiting for full Rust rebuilds:"
-        }
-        p {
-            video {
-                src: asset!("/assets/06assets/dogapphr2.mp4"),
-                alt: "dog_app.mp4",
-                title: "",
-                autoplay: true,
-                muted: true,
-                r#loop: true,
-                playsinline: true,
-                preload: "metadata",
-            }
-        }
-        h2 { id: "hot-reloading-formatted-strings",
-            a { href: "#hot-reloading-formatted-strings", class: "header",
-                "Hot-Reloading Formatted Strings"
-            }
-        }
-        p {
-            "We can now hot-reload any formatted string in your markup! For this component, we can hot-reload both the  "
-            code { "class" }
-            " attribute on button as well as the text in the button itself."
-        }
-        CodeBlock {
-            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">#[component]\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">Counter</span><span style=\"color:#f8f8f2;\">(</span><span style=\"font-style:italic;color:#fd971f;\">count</span><span style=\"color:#f8f8f2;\">: </span><span style=\"font-style:italic;color:#66d9ef;\">i32</span><span style=\"color:#f8f8f2;\">, </span><span style=\"font-style:italic;color:#fd971f;\">class_ext</span><span style=\"color:#f8f8f2;\">: String) -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    rsx! {{\n</span><span style=\"color:#f8f8f2;\">        button {{ class: </span><span style=\"color:#ffee99;\">&quot;btn-{{class_ext}}&quot;</span><span style=\"color:#f8f8f2;\">, </span><span style=\"color:#ffee99;\">&quot;Count {{count}}&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
-        }
-        p {
-            "Notice that these are "
-            em { "formatted strings." }
-            " Very frequently, when working on the docsite, we’d want to modify formatted tailwind classes, but these changes would cause a full rebuild. This drastically slowed down iteration time, making working on the docsite a rather unpleasant experience. Hot-Reloading of formatted strings works "
-            em { "everywhere" }
-            " in rsx. This means you can get string hot-reloading in component props too."
-        }
-        h2 { id: "hot-reloading-rust-literals",
-            a { href: "#hot-reloading-rust-literals", class: "header",
-                "Hot-Reloading Rust Literals"
-            }
-        }
-        p {
-            "As part of the hot-reloading overhauls, we also now support hot-reloading of any literals we can find inside your rsx. We built a very simple interpreter for Rust code! Any changes to literals are automatically propagated through the signal-based reactivity system shipped in 0.5. This means you can change the bounds on component props without causing a full rebuild."
-        }
-        CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">LoopIt</span><span style=\"color:#f8f8f2;\">() -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    rsx! {{\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"color:#8c8c8c;\">// Change either prop without causing a full rebuild\n</span><span style=\"color:#f8f8f2;\">        Link {{\n</span><span style=\"color:#f8f8f2;\">            to: </span><span style=\"color:#ffee99;\">&quot;google.com&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">            enabled: </span><span style=\"color:#ff80f4;\">false\n</span><span style=\"color:#f8f8f2;\">        }}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n" }
-        p { "While limited in some ways, this can feel downright magical." }
-        h2 { id: "hot-reloading-nested-rsx-",
-            a { href: "#hot-reloading-nested-rsx-", class: "header", "Hot-Reloading nested rsx (" }
-            code { "for" }
-            "/ "
-            code { "if" }
-            " / "
-            code { "component" }
-            " )"
-        }
-        p {
-            "With Dioxus 0.4, we shipped improvements that enabled a simpler syntax for  "
-            code { "for" }
-            " loops and  "
-            code { "if" }
-            " chains in rsx. However, we never properly implemented hot-reloading for the contents of these items, leading to frequent unnecessary rebuilds. With Dioxus 0.6, we finally had a chance to iron out hot-reloading in every possible instance. Now, more places properly support hot-reloading, like  "
-            code { "for" }
-            " loops and  "
-            code { "if" }
-            " chains:"
-        }
-        CodeBlock {
-            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">LoopIt</span><span style=\"color:#f8f8f2;\">() -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    rsx! {{\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"color:#f92672;\">for</span><span style=\"color:#f8f8f2;\"> x </span><span style=\"color:#f92672;\">in </span><span style=\"color:#ff80f4;\">0</span><span style=\"color:#f92672;\">..</span><span style=\"color:#ff80f4;\">10 </span><span style=\"color:#f8f8f2;\">{{\n</span><span style=\"color:#f8f8f2;\">            </span><span style=\"color:#8c8c8c;\">// modifying the body of this loop is hot-reloadable!\n</span><span style=\"color:#f8f8f2;\">            li {{ </span><span style=\"color:#ffee99;\">&quot;{{x}}&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">        }}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
-        }
-        p { "We also now support hot-reloading of bodies of components:" }
-        CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">LoopIt</span><span style=\"color:#f8f8f2;\">() -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    rsx! {{\n</span><span style=\"color:#f8f8f2;\">        Counter {{\n</span><span style=\"color:#f8f8f2;\">            div {{ </span><span style=\"color:#ffee99;\">&quot;These div contents get hot-reloaded too!&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">        }}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n" }
-        p {
-            "This new engine also allows you to move and clone Rust expressions between contexts, allowing you to re-use components and formatted strings between element properties without a full rebuild."
-        }
-        CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">LoopIt</span><span style=\"color:#f8f8f2;\">() -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    rsx! {{\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"color:#8c8c8c;\">// If we start with this formatted text\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"color:#ffee99;\">&quot;Thing1 {{a}}&quot;\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"color:#8c8c8c;\">// we can add this formatted text on the fly\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"color:#ffee99;\">&quot;Thing2 {{a}}&quot;\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n" }
-        h2 { id: "mobile-hot-reloading",
-            a { href: "#mobile-hot-reloading", class: "header", "Mobile Hot-Reloading" }
-        }
-        p {
-            "With Dioxus 0.6, we also wanted to fix the longstanding issue where mobile simulators didn’t properly get hot-reloading. Mobile can be tricky to work with - and will take a long time to get 100% right - but this is a solid step in making mobile targets better supported with Dioxus."
-        }
-        p {
-            video {
-                src: asset!("/assets/06assets/bundled-ios-reload.mp4"),
-                alt: "bundled-ios-reload.mp4",
-                title: "",
-                autoplay: true,
-                muted: true,
-                r#loop: true,
-                playsinline: true,
-                preload: "metadata",
-            }
-        }
-        p {
-            "The changes here also unlocked hot-reloading of bundled assets used by the  "
-            code { "asset!()" }
-            " macro. If you're using Tailwind with Dioxus, you can now simply run your Tailwind watcher in the background and Dioxus will automatically hot-reload your CSS files across web, desktop, and mobile."
-        }
-        h2 { id: "proper-workspace-hot-reloading",
-            a { href: "#proper-workspace-hot-reloading", class: "header",
-                "Proper Workspace Hot-Reloading"
-            }
-        }
-        p {
-            "We now properly support hot-reloading across multiple projects in a workspace. This solves the longstanding issue where we didn't propagate changes from a component library in one crate and in your main app. Our new hot-reload engine intelligently walks your project’s dependencies across the filesystem and watches all the related Rust files (respecting their gitignore)."
-        }
         h2 { id: "stabilizing-manganis",
             a { href: "#stabilizing-manganis", class: "header", "Stabilizing Manganis " }
             code { "asset!()" }
@@ -4922,46 +4830,6 @@ pub fn Release060() -> dioxus::prelude::Element {
         p {
             "We will likely be changing these APIs in future releases, but we are eager to let users experiment with these new features to simplify the existing static site setup."
         }
-        h2 { id: "question-mark-error-handling",
-            a { href: "#question-mark-error-handling", class: "header",
-                "Question Mark Error Handling"
-            }
-        }
-        p {
-            "With this release, we’ve finally made the transition where  "
-            code { "Element" }
-            " is no longer an  "
-            code { "Option<Node>" }
-            " but rather a  "
-            code { "Result<Node>" }
-            ". This means we’re "
-            em { "finally" }
-            " able to open up the use of typical rust error handling in components:"
-        }
-        CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">Slider</span><span style=\"color:#f8f8f2;\">() -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> value: </span><span style=\"font-style:italic;color:#66d9ef;\">f64 </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;1234&quot;</span><span style=\"color:#f8f8f2;\">.</span><span style=\"color:#66d9ef;\">parse</span><span style=\"color:#f8f8f2;\">()</span><span style=\"color:#f92672;\">?</span><span style=\"color:#f8f8f2;\">;\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">    rsx! {{\n</span><span style=\"color:#f8f8f2;\">        Handle {{ offset: value }}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n" }
-        p {
-            "The new  "
-            code { "RenderError" }
-            " acts like anyhow’s  "
-            code { "Error" }
-            " type that can take in any  "
-            code { "dyn std::Error" }
-            " type and propagate it upwards to the nearest error boundary."
-        }
-        CodeBlock {
-            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">Input</span><span style=\"color:#f8f8f2;\">() -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    rsx! {{\n</span><span style=\"color:#f8f8f2;\">        ErrorBoundary {{\n</span><span style=\"color:#f8f8f2;\">            handle_error: |</span><span style=\"font-style:italic;color:#fd971f;\">errors</span><span style=\"color:#f8f8f2;\">| rsx! {{\n</span><span style=\"color:#f8f8f2;\">                h3 {{ </span><span style=\"color:#ffee99;\">&quot;Oops, we encountered an error.!&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">                pre {{ </span><span style=\"color:#ffee99;\">&quot;Please report {{errors:?}} to the developers.&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">            }},\n</span><span style=\"color:#f8f8f2;\">            Slider {{}}\n</span><span style=\"color:#f8f8f2;\">        }}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
-        }
-        p {
-            "What’s even better: the  "
-            code { "?" }
-            " syntax also works in event handlers, so you can quickly add things like server functions to your app without worrying about manual error handling:"
-        }
-        CodeBlock {
-            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">Counter</span><span style=\"color:#f8f8f2;\">() -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let </span><span style=\"color:#f92672;\">mut</span><span style=\"color:#f8f8f2;\"> data </span><span style=\"color:#f92672;\">= </span><span style=\"color:#66d9ef;\">use_signal</span><span style=\"color:#f8f8f2;\">(|| Data::default());\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">    rsx! {{\n</span><span style=\"color:#f8f8f2;\">        button {{\n</span><span style=\"color:#f8f8f2;\">            onclick: </span><span style=\"color:#f92672;\">move |_|</span><span style=\"color:#f8f8f2;\"> async </span><span style=\"color:#f92672;\">move </span><span style=\"color:#f8f8f2;\">{{\n</span><span style=\"color:#f8f8f2;\">                </span><span style=\"color:#8c8c8c;\">// the `?` automatically throws this error upwards\n</span><span style=\"color:#f8f8f2;\">                data.</span><span style=\"color:#66d9ef;\">set</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#66d9ef;\">request_server_data</span><span style=\"color:#f8f8f2;\">().await</span><span style=\"color:#f92672;\">?</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"color:#f8f8f2;\">                </span><span style=\"font-style:italic;color:#66d9ef;\">Ok</span><span style=\"color:#f8f8f2;\">(())\n</span><span style=\"color:#f8f8f2;\">            }},\n</span><span style=\"color:#f8f8f2;\">            </span><span style=\"color:#ffee99;\">&quot;{{data}}&quot;\n</span><span style=\"color:#f8f8f2;\">        }}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
-        }
-        p {
-            "This new syntax works with suspense and HTML-streaming return errors while rendering that don’t bring down the entire page."
-        }
         h2 { id: "document-elements",
             a { href: "#document-elements", class: "header", "Document Elements: " }
             code { "Title {{}}" }
@@ -5028,6 +4896,46 @@ pub fn Release060() -> dioxus::prelude::Element {
                 alt: "Screenshot 2024-11-14 at 11.31.18\u{202f}PM.png",
                 title: "",
             }
+        }
+        h2 { id: "question-mark-error-handling",
+            a { href: "#question-mark-error-handling", class: "header",
+                "Question Mark Error Handling"
+            }
+        }
+        p {
+            "With this release, we’ve finally made the transition where  "
+            code { "Element" }
+            " is no longer an  "
+            code { "Option<Node>" }
+            " but rather a  "
+            code { "Result<Node>" }
+            ". This means we’re "
+            em { "finally" }
+            " able to open up the use of typical rust error handling in components:"
+        }
+        CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">Slider</span><span style=\"color:#f8f8f2;\">() -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> value: </span><span style=\"font-style:italic;color:#66d9ef;\">f64 </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;1234&quot;</span><span style=\"color:#f8f8f2;\">.</span><span style=\"color:#66d9ef;\">parse</span><span style=\"color:#f8f8f2;\">()</span><span style=\"color:#f92672;\">?</span><span style=\"color:#f8f8f2;\">;\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">    rsx! {{\n</span><span style=\"color:#f8f8f2;\">        Handle {{ offset: value }}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n" }
+        p {
+            "The new  "
+            code { "RenderError" }
+            " acts like anyhow’s  "
+            code { "Error" }
+            " type that can take in any  "
+            code { "dyn std::Error" }
+            " type and propagate it upwards to the nearest error boundary."
+        }
+        CodeBlock {
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">Input</span><span style=\"color:#f8f8f2;\">() -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    rsx! {{\n</span><span style=\"color:#f8f8f2;\">        ErrorBoundary {{\n</span><span style=\"color:#f8f8f2;\">            handle_error: |</span><span style=\"font-style:italic;color:#fd971f;\">errors</span><span style=\"color:#f8f8f2;\">| rsx! {{\n</span><span style=\"color:#f8f8f2;\">                h3 {{ </span><span style=\"color:#ffee99;\">&quot;Oops, we encountered an error.!&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">                pre {{ </span><span style=\"color:#ffee99;\">&quot;Please report {{errors:?}} to the developers.&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">            }},\n</span><span style=\"color:#f8f8f2;\">            Slider {{}}\n</span><span style=\"color:#f8f8f2;\">        }}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
+        }
+        p {
+            "What’s even better: the  "
+            code { "?" }
+            " syntax also works in event handlers, so you can quickly add things like server functions to your app without worrying about manual error handling:"
+        }
+        CodeBlock {
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">Counter</span><span style=\"color:#f8f8f2;\">() -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let </span><span style=\"color:#f92672;\">mut</span><span style=\"color:#f8f8f2;\"> data </span><span style=\"color:#f92672;\">= </span><span style=\"color:#66d9ef;\">use_signal</span><span style=\"color:#f8f8f2;\">(|| Data::default());\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">    rsx! {{\n</span><span style=\"color:#f8f8f2;\">        button {{\n</span><span style=\"color:#f8f8f2;\">            onclick: </span><span style=\"color:#f92672;\">move |_|</span><span style=\"color:#f8f8f2;\"> async </span><span style=\"color:#f92672;\">move </span><span style=\"color:#f8f8f2;\">{{\n</span><span style=\"color:#f8f8f2;\">                </span><span style=\"color:#8c8c8c;\">// the `?` automatically throws this error upwards\n</span><span style=\"color:#f8f8f2;\">                data.</span><span style=\"color:#66d9ef;\">set</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#66d9ef;\">request_server_data</span><span style=\"color:#f8f8f2;\">().await</span><span style=\"color:#f92672;\">?</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"color:#f8f8f2;\">                </span><span style=\"font-style:italic;color:#66d9ef;\">Ok</span><span style=\"color:#f8f8f2;\">(())\n</span><span style=\"color:#f8f8f2;\">            }},\n</span><span style=\"color:#f8f8f2;\">            </span><span style=\"color:#ffee99;\">&quot;{{data}}&quot;\n</span><span style=\"color:#f8f8f2;\">        }}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
+        }
+        p {
+            "This new syntax works with suspense and HTML-streaming return errors while rendering that don’t bring down the entire page."
         }
         h2 { id: "synchronous",
             a { href: "#synchronous", class: "header", "Synchronous " }
@@ -5109,6 +5017,9 @@ pub fn Release060() -> dioxus::prelude::Element {
         }
         h2 { id: "hybrid-wgpu-overlays",
             a { href: "#hybrid-wgpu-overlays", class: "header", "Hybrid WGPU Overlays" }
+        }
+        p {
+            "With this release, we're enable the \"child window\" feature for Dioxus desktop, letting you overlay native Dioxus apps on existing windows. This makes it simple to integrate Dioxus as an overlay over other renderers like WGPU and OpenGL:"
         }
         p {
             video {
@@ -5357,12 +5268,16 @@ pub fn Release060() -> dioxus::prelude::Element {
                 " for empty nodes"
             }
         }
-        p { "We’ve assembled a migration guide here to help." }
+        p {
+            "We’ve assembled a "
+            a { href: "https://dioxuslabs.com/learn/0.6/migration/", "migration guide" }
+            " to help."
+        }
         h2 { id: "conclusion",
             a { href: "#conclusion", class: "header", "Conclusion" }
         }
         p {
-            "That’s it for this release! Due to the sheer size of this release, we might have missed a features and bug fixes. Countless issues including bundling bugs, spurious hot-reloads, and compatibility with unusual platforms and editors has been addressed."
+            "That’s it for this release! We addressed countless issues including bundling bugs, spurious hot-reloads, and compatibility with unusual platforms and editors."
         }
         p {
             "Dioxus 0.6 has been in alpha for quite a while, and we’re very thankful for all the testing the community has done to make this the most polished release yet. It’s quite difficult to run a large open source project such a wide scope. This release took "
@@ -5394,147 +5309,100 @@ pub fn Release060() -> dioxus::prelude::Element {
             a { href: "#thanks-to-the-community", class: "header", "Thanks to the community!" }
         }
         p {
-            "I want to extend a huge thank-you to everyone who helped test and improve this release. We saw an incredible number of contributors fix bugs and add features. Special thanks to:"
+            "We want to extend a huge thank-you to everyone who helped test and improve this release. We saw an incredible number of contributors fix bugs and add features. Special thanks to:"
         }
-        ul {
-            li {
-                a { href: "https://github.com/ASR-ASU", "@ASR-ASU" }
-            }
-            li {
-                a { href: "https://github.com/Aandreba", "@Aandreba" }
-            }
-            li {
-                a { href: "https://github.com/Andrew15-5", "@Andrew15-5" }
-            }
-            li {
-                a { href: "https://github.com/DogeDark", "@DogeDark" }
-            }
-            li {
-                a { href: "https://github.com/Klemen2", "@Klemen2" }
-            }
-            li {
-                a { href: "https://github.com/LeWimbes", "@LeWimbes" }
-            }
-            li {
-                a { href: "https://github.com/LeoDog896", "@LeoDog896" }
-            }
-            li {
-                a { href: "https://github.com/MrGVSV", "@MrGVSV" }
-            }
-            li {
-                a { href: "https://github.com/Rahul721999", "@Rahul721999" }
-            }
-            li {
-                a { href: "https://github.com/Septimus", "@Septimus" }
-            }
-            li {
-                a { href: "https://github.com/Tahinli", "@Tahinli" }
-            }
-            li {
-                a { href: "https://github.com/WilliamRagstad", "@WilliamRagstad" }
-            }
-            li {
-                a { href: "https://github.com/ahqsoftwares", "@ahqsoftwares" }
-            }
-            li {
-                a { href: "https://github.com/airblast-dev", "@airblast-dev" }
-            }
-            li {
-                a { href: "https://github.com/alilosoft", "@alilosoft" }
-            }
-            li {
-                a { href: "https://github.com/azamara", "@azamara" }
-            }
-            li {
-                a { href: "https://github.com/chungwong", "@chungwong" }
-            }
-            li {
-                a { href: "https://github.com/d3rpp", "@d3rpp" }
-            }
-            li {
-                a { href: "https://github.com/daixiwen", "@daixiwen" }
-            }
-            li {
-                a { href: "https://github.com/dependabot", "@dependabot" }
-            }
-            li {
-                a { href: "https://github.com/ealmloff", "@ealmloff" }
-            }
-            li {
-                a { href: "https://github.com/hackartists", "@hackartists" }
-            }
-            li {
-                a { href: "https://github.com/hardBSDk", "@hardBSDk" }
-            }
-            li {
-                a { href: "https://github.com/houseme", "@houseme" }
-            }
-            li {
-                a { href: "https://github.com/i123iu", "@i123iu" }
-            }
-            li {
-                a { href: "https://github.com/ilaborie", "@ilaborie" }
-            }
-            li {
-                a { href: "https://github.com/imgurbot12", "@imgurbot12" }
-            }
-            li {
-                a { href: "https://github.com/jacklund", "@jacklund" }
-            }
-            li {
-                a { href: "https://github.com/jingchanglu", "@jingchanglu" }
-            }
-            li {
-                a { href: "https://github.com/luveti", "@luveti" }
-            }
-            li {
-                a { href: "https://github.com/marc2332", "@marc2332" }
-            }
-            li {
-                a { href: "https://github.com/matthunz", "@matthunz" }
-            }
-            li {
-                a { href: "https://github.com/nayo0513", "@nayo0513" }
-            }
-            li {
-                a { href: "https://github.com/opensource-inemar-net", "@opensource-inemar-net" }
-            }
-            li {
-                a { href: "https://github.com/oskardotglobal", "@oskardotglobal" }
-            }
-            li {
-                a { href: "https://github.com/panglars", "@panglars" }
-            }
-            li {
-                a { href: "https://github.com/pyrrho", "@pyrrho" }
-            }
-            li {
-                a { href: "https://github.com/ribelo", "@ribelo" }
-            }
-            li {
-                a { href: "https://github.com/rogusdev", "@rogusdev" }
-            }
-            li {
-                a { href: "https://github.com/ryo33", "@ryo33" }
-            }
-            li {
-                a { href: "https://github.com/samtay", "@samtay" }
-            }
-            li {
-                a { href: "https://github.com/sknauff", "@sknauff" }
-            }
-            li {
-                a { href: "https://github.com/srid", "@srid" }
-            }
-            li {
-                a { href: "https://github.com/tigerros", "@tigerros" }
-            }
-            li {
-                a { href: "https://github.com/tpoliaw", "@tpoliaw" }
-            }
-            li {
-                a { href: "https://github.com/uzytkownik", "@uzytkownik" }
-            }
+        p {
+            a { href: "https://github.com/ASR-ASU", "@ASR-ASU" }
+            " - "
+            a { href: "https://github.com/Aandreba", "@Aandreba" }
+            " - "
+            a { href: "https://github.com/Andrew15-5", "@Andrew15-5" }
+            " - "
+            a { href: "https://github.com/DogeDark", "@DogeDark" }
+            " - "
+            a { href: "https://github.com/Klemen2", "@Klemen2" }
+            " - "
+            a { href: "https://github.com/LeWimbes", "@LeWimbes" }
+            " - "
+            a { href: "https://github.com/LeoDog896", "@LeoDog896" }
+            " - "
+            a { href: "https://github.com/MrGVSV", "@MrGVSV" }
+            " - "
+            a { href: "https://github.com/Rahul721999", "@Rahul721999" }
+            " - "
+            a { href: "https://github.com/Septimus", "@Septimus" }
+            " - "
+            a { href: "https://github.com/Tahinli", "@Tahinli" }
+            " - "
+            a { href: "https://github.com/WilliamRagstad", "@WilliamRagstad" }
+            " - "
+            a { href: "https://github.com/ahqsoftwares", "@ahqsoftwares" }
+            " - "
+            a { href: "https://github.com/airblast-dev", "@airblast-dev" }
+            " - "
+            a { href: "https://github.com/alilosoft", "@alilosoft" }
+            " - "
+            a { href: "https://github.com/azamara", "@azamara" }
+            " - "
+            a { href: "https://github.com/chungwong", "@chungwong" }
+            " - "
+            a { href: "https://github.com/d3rpp", "@d3rpp" }
+            " - "
+            a { href: "https://github.com/daixiwen", "@daixiwen" }
+            " - "
+            a { href: "https://github.com/dependabot", "@dependabot" }
+            " - "
+            a { href: "https://github.com/ealmloff", "@ealmloff" }
+            " - "
+            a { href: "https://github.com/hackartists", "@hackartists" }
+            " - "
+            a { href: "https://github.com/hardBSDk", "@hardBSDk" }
+            " - "
+            a { href: "https://github.com/houseme", "@houseme" }
+            " - "
+            a { href: "https://github.com/i123iu", "@i123iu" }
+            " - "
+            a { href: "https://github.com/ilaborie", "@ilaborie" }
+            " - "
+            a { href: "https://github.com/imgurbot12", "@imgurbot12" }
+            " - "
+            a { href: "https://github.com/jacklund", "@jacklund" }
+            " - "
+            a { href: "https://github.com/jingchanglu", "@jingchanglu" }
+            " - "
+            a { href: "https://github.com/luveti", "@luveti" }
+            " - "
+            a { href: "https://github.com/marc2332", "@marc2332" }
+            " - "
+            a { href: "https://github.com/matthunz", "@matthunz" }
+            " - "
+            a { href: "https://github.com/nayo0513", "@nayo0513" }
+            " - "
+            a { href: "https://github.com/opensource-inemar-net", "@opensource-inemar-net" }
+            " - "
+            a { href: "https://github.com/oskardotglobal", "@oskardotglobal" }
+            " - "
+            a { href: "https://github.com/panglars", "@panglars" }
+            " - "
+            a { href: "https://github.com/pyrrho", "@pyrrho" }
+            " - "
+            a { href: "https://github.com/ribelo", "@ribelo" }
+            " - "
+            a { href: "https://github.com/rogusdev", "@rogusdev" }
+            " - "
+            a { href: "https://github.com/ryo33", "@ryo33" }
+            " - "
+            a { href: "https://github.com/samtay", "@samtay" }
+            " - "
+            a { href: "https://github.com/sknauff", "@sknauff" }
+            " - "
+            a { href: "https://github.com/srid", "@srid" }
+            " - "
+            a { href: "https://github.com/tigerros", "@tigerros" }
+            " - "
+            a { href: "https://github.com/tpoliaw", "@tpoliaw" }
+            " - "
+            a { href: "https://github.com/uzytkownik", "@uzytkownik" }
         }
     }
 }

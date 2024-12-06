@@ -43,18 +43,42 @@ Since this post is quite long, we made a quick video highlighting new features, 
 
 <iframe style="width: 120%" height="500px" class="centered-overflow" src="https://www.youtube.com/embed/-RN4LB3-9AE" title="Dioxus 0.5 Overview preview" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
+## Interactive Command Line Tools
+
+Dioxus 0.6 is shipping with a completely overhauled CLI experience! We’ve completely rewritten the CLI to support a ton of new features and improve stability:
+
+![new-cli.png](/assets/06assets/image1.png)
+
+The new CLI sports live progress bars, animations, an interactive filter system, the ability to change log levels on the fly, and more.
+
+![cli_animation](/assets/06assets/cli-new.mp4)
+
+The CLI rewrite alone took more than half this release cycle. We went through several different design iterations and solved tons of bugs along the way. A few of the highlights:
+
+- You can manually rebuild your app by pressing `r`
+- You can toggle the log level of the CLI output on the fly and even inspect Cargo internal logs
+- We output all internal logs of the CLI so you can debug any issues
+- We capture logs for WASM tracing and panics
+- We dropped the `outdir` concept and instead use `target/dx` for all output.
+- Inline support for iOS and Android emulators.
+
+You can install the new CLI using [cargo binstall](https://github.com/cargo-bins/cargo-binstall) with `cargo binstall dioxus-cli@0.6.0 --force`.
 
 ## Android and iOS support for `dx serve`
 
-Our goal with Dioxus has always been to support web, desktop, mobile, and more. And while Dioxus has supported mobile since its release, the Rust tooling for mobile has been extremely unstable. Users constantly ran into issues with tools like [`cargo-mobile`](https://github.com/BrainiumLLC/cargo-mobile) and Tauri's fork [cargo-mobile2](https://github.com/tauri-apps/cargo-mobile2). These tools, while useful, take a different architectural approach than what is a good fit for Dioxus.
+With Dioxus 0.6, the dioxus CLI supports `dx serve --platform ios/android` out of the box! 🎉
 
-We want to provide features like asset bundling, hot-reloading, and proper support for "regular" apps built with a traditional `main.rs` - none of which we can properly do with the existing tools.
+While Dioxus has always had mobile, the Rust tooling for mobile has been extremely unstable. Users constantly ran into issues with tools like [`cargo-mobile`](https://github.com/BrainiumLLC/cargo-mobile) and [cargo-mobile2](https://github.com/tauri-apps/cargo-mobile2). These tools, while useful, take a different architectural approach than what is a good fit for Dioxus.
 
 With this release, we wrote our entire mobile tooling system from scratch. Now, you can go from `dx new` to `dx serve --platform ios` in a matter of seconds.
 
 ![Dioxus Mobile Support](/assets/06assets/image.png)
 
-The Android and iOS simulator targets support all the same features as desktop: hot-reloading, fast rebuilds, asset bundling, logging, etc. One notable accomplishment: you can build Rust mobile apps with a simple `main.rs`. Existing solutions like [xbuild](http://github.com/rust-mobile/xbuild) and [Tauri](http://github.com/tauri-apps/tauri) require you to fundamentally restructure your app. Your app also needs to be converted to a `cdylib`, meaning you can’t share a launch function between desktop and mobile.
+The Android and iOS simulator targets support all the same features as desktop: hot-reloading, fast rebuilds, asset bundling, logging, etc. Dioxus is also the only Rust framework that supports `main.rs` for mobile - no other tools have supported the same `main.rs` for every platform until now.
+
+Our inline mobile support requires no extra configurations, no manual setup for Gradle, Java, Cocoapods, and no other 3rd party tooling. If you already have the Android NDK or iOS Simulator installed, you currently are less than 30 seconds away from a production-ready mobile app written entirely in Rust.
+
+![dx-serve.mp4](/assets/06assets/dxnew.mp4)
 
 The simplest Dioxus 0.6 Mobile app is tiny:
 
@@ -103,50 +127,26 @@ fn stop_unwind<F: FnOnce() -> T, T>(f: F) -> T {
 }
 ```
 
-Our inline mobile support requires no extra configurations, no manual setup for Gradle, Java, Cocoapods, and no other 3rd party tooling. If you already have the Android NDK or iOS Simulator installed, you currently are less than 30 seconds away from a production-ready mobile app written entirely in Rust.
-
-![dx-serve.mp4](/assets/06assets/dxnew.mp4)
-
 While 1st-class support for mobile platforms is quite exciting, there are certainly many limitations: the Rust mobile ecosystem is nascent, we don’t have great ways of configuring the many platform-specific build flags, and there isn’t a particularly great Rust/Java interop story.
 
 If you're interested in helping us build out mobile support, please join us on [Discord](https://discord.gg/XgGxMSkvUM).
 
-## Interactive Command Line Tools
-
-Dioxus 0.6 is shipping with a completely overhauled CLI experience! We’ve completely rewritten the CLI to support a ton of new features and improve stability:
-
-![new-cli.png](/assets/06assets/image1.png)
-
-The new CLI sports live progress bars, animations, an interactive filter system, the ability to change log levels on the fly, and more.
-
-![cli_animation](/assets/06assets/cli-new.mp4)
-
-The CLI rewrite alone took more than half this release cycle. We went through several different design iterations and solved tons of bugs along the way. A few of the highlights:
-
-- You can manually rebuild your app by pressing `r`
-- You can toggle the log level of the CLI output on the fly and even inspect Cargo internal logs
-- We output all internal logs of the CLI so you can debug any issues
-- We capture logs for WASM tracing and panics
-- We dropped the `outdir` concept and instead use `target/dx` for all output.
-
-You can install the new CLI using [cargo binstall](https://github.com/cargo-bins/cargo-binstall) with `cargo binstall dioxus-cli@0.6.0 --force`.
-
 ## Completely Revamped Hot-Reloading
 
-As part of our effort to improve the `rsx! {}` experience, we shipped massive improvements to the hot-reloading engine powering Dioxus. Our internal goal was to iterate on the Dioxus Docsite content with zero full rebuilds - we only wanted full rebuilds when modifying real Rust code.
+We shipped massive improvements to the hot-reloading engine powering Dioxus. Our internal goal was to iterate on the Dioxus Docsite with zero full rebuilds.
 
 This means we needed to add support for a number of new hot-reloading engine changes:
 
 - Hot-reload formatted strings
-- Hot-reload component properties and simple Rust expressions
 - Hot-reload nested rsx blocks
+- Hot-reload component properties and simple Rust expressions
 - Hot-reload mobile platforms and their bundled assets
 
-The new hot-reloading engine almost feels like magic - you can quickly iterate on new designs without waiting for full Rust rebuilds:
+The new hot-reloading engine almost feels like magic - you can quickly iterate on new designs - and even modify simple Rust code! - without waiting for full rebuilds:
 
 ![dog_app.mp4](/assets/06assets/dogapphr2.mp4)
 
-The new hot-reload engine allows you to modify formatted strings anywhere in your `rsx`: in text blocks, element attributes, and even on component properties.
+The new engine allows you to modify formatted strings anywhere in your `rsx`: in text blocks, element attributes, and even on component properties.
 
 ```rust
 #[component]
@@ -174,6 +174,8 @@ fn LoopIt() -> Element {
     }
 }
 ```
+
+![prop-hotreload.mp4](/assets/06assets/prop-hotreload.mp4)
 
 The new hot-reloading engine also brings nested rsx hot-reloading support. The contents of `for` loops, `if` statements, and component bodies all now participate in hot-reloading:
 
@@ -243,7 +245,7 @@ Thanks to this integration, we now have much nicer logging around fullstack apps
 
 As part of our CLI overhaul, we wanted to provide better feedback for developers when building web apps. Dioxus 0.6 will now show Popup Toasts and Loading Screens for web apps in development mode.
 
-Now, when your app is building, Dioxus will rendering a loading screen with the current progress of the build:
+Now, when your app is building, Dioxus will render a loading screen with the current progress of the build:
 
 ![Screenshot 2024-11-14 at 9.41.38 PM.png](/assets/06assets/Screenshot_2024-11-14_at_9.41.38_PM.png)
 
@@ -253,7 +255,7 @@ Additionally, once the app is rebuilt, you’ll receive a toast indicating the s
 
 ## Fullstack Desktop and Mobile
 
-Additionally, as improving tooling, we properly integrated server functions with native apps. Server functions finally work out-of-the-box when targeting desktop and mobile:
+Additionally, we properly integrated server functions with native apps. Server functions finally work out-of-the-box when targeting desktop and mobile:
 
 ![native-server12.mp4](/assets/06assets/native-serverfn12.mp4)
 

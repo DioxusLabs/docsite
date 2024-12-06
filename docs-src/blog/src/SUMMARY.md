@@ -7,4 +7,4 @@
 - [Going fulltime on Dioxus $ Misc $ May 5, 2023 $ Dioxus is now my full time job! I'm so excited to be able to work on this full time.](fulltime.md)
 - [Dioxus 0.4 $ Release Notes $ August 1, 2023 $ Server Functions, Suspense, Enum Router, Overhauled Docs, Bundler, Android Support, and more!](release-040.md)
 - [Dioxus 0.5 $ Release Notes $ March 21, 2024 $ A signal rewrite, zero unsafe, no lifetimes, unified launch, and more!](release-050.md)
-- [Dioxus 0.6 $ Release Notes $ December 9, 2024 $ First-class Mobile Support, Magical Hot-Reloading, Interactive CLI, and more.](release-060.md)
+- [Dioxus 0.6 $ Release Notes $ December 9, 2024 $ Mobile Simulators, Magical Hot-Reloading, Interactive CLI, and more!](release-060.md)

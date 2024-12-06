@@ -60,8 +60,6 @@ DemoFrame {
 
 Any event handlers will still be called.
 
-> Normally, in React or JavaScript, you'd call "preventDefault" on the event in the callback. Dioxus does _not_ currently support this behavior. Note: this means you cannot conditionally prevent default behavior based on the data in the event.
-
 ## Handler Props
 
 Sometimes, you might want to make a component that accepts an event handler. A simple example would be a `FancyButton` component, which accepts an `onclick` handler:
@@ -78,17 +76,18 @@ Then, you can use it like any other handler:
 
 > Note: just like any other attribute, you can name the handlers anything you want! Any closure you pass in will automatically be turned into an `EventHandler`.
 
-#### Async Event Handlers
-Passing `EventHandler`s as props does not support passing a closure that returns an async block. Instead, you must manually call ``spawn`` to do async operations:
-```rust, no_run
-{{#include src/doc_examples/event_handler_prop.rs:async}}
-```
-This is only the case for custom event handlers as props.
-
 ## Custom Data
 
 Event Handlers are generic over any type, so you can pass in any data you want to them, e.g:
 
 ```rust, no_run
 {{#include src/doc_examples/event_handler_prop.rs:custom_data}}
+```
+
+## Returning a value from an event handler
+
+If you want to accept a closure like an event handler that returns a value, you can use the `Callback` type. The callback type accepts two generic arguments, `I`, the input type, and `O`, the output type. Just like `EventHandler`, `Callback` is automatically converted in props and can be easily copied into anywhere in your component:
+
+```rust, no_run
+{{#include src/doc_examples/event_handler_prop.rs:callback}}
 ```

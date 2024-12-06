@@ -11,7 +11,7 @@ In this section, we'll cover how to bundle your app for macOS, Windows, and Linu
 
 The first thing we'll do is install [`cargo-bundle`](https://github.com/burtonageo/cargo-bundle). This extension to cargo will make it very easy to package our app for the various platforms.
 
-According to the `cargo-bundle` github page, 
+According to the `cargo-bundle` github page,
 
 
 
@@ -26,7 +26,7 @@ To install, simply run
 ## Setting up your project
 
 
-To get a project setup for bundling, we need to add some flags to our `Cargo.toml` file. 
+To get a project setup for bundling, we need to add some flags to our `Cargo.toml` file.
 
 
 ```toml
@@ -57,7 +57,7 @@ Once you've ran `cargo-bundle --release`, your app should be accessible in
 
 For example, a macOS app would look like this:
 
-![Published App](../images/publish.png)
+![Published App](/assets/static/publish.png)
 
 Nice! And it's only 4.8 Mb – extremely lean!! Because Dioxus leverages your platform's native WebView, Dioxus apps are extremely memory efficient and won't waste your battery.
 

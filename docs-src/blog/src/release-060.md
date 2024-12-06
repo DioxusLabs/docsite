@@ -114,7 +114,7 @@ If you're interested in helping us build out mobile support, please join us on [
 
 You might have noticed in the GIFs above... Dioxus 0.6 is shipping with a completely overhauled CLI experience! We’ve completely rewritten the CLI to support a ton of new features and improve stability:
 
-![new-cli.png](/assets/06assets/image%201.png)
+![new-cli.png](/assets/06assets/image1.png)
 
 The new CLI sports live progress bars, animations, an interactive filter system, the ability to change log levels on the fly, and more.
 

@@ -1051,7 +1051,7 @@ pub fn IntroducingDioxus() -> dioxus::prelude::Element {
         p { "As a demo, here's our teaser example running on all our current supported platforms:" }
         p {
             img {
-                src: "/assets/static/Untitled.png",
+                src: asset!("/assets/static/Untitled.png", ImageAssetOptions::new().with_avif()),
                 alt: "Teaser Example",
                 title: "",
             }
@@ -1227,7 +1227,7 @@ pub fn IntroducingDioxus() -> dioxus::prelude::Element {
         }
         p {
             img {
-                src: "/assets/static/counter.png",
+                src: asset!("/assets/static/counter.png", ImageAssetOptions::new().with_avif()),
                 alt: "Simple Counter Desktop App",
                 title: "",
             }
@@ -1311,7 +1311,7 @@ pub fn IntroducingDioxus() -> dioxus::prelude::Element {
         }
         p {
             img {
-                src: "/assets/static/ide_hover.png",
+                src: asset!("/assets/static/ide_hover.png", ImageAssetOptions::new().with_avif()),
                 alt: "Elements have hover context",
                 title: "",
             }
@@ -1325,7 +1325,7 @@ pub fn IntroducingDioxus() -> dioxus::prelude::Element {
         }
         p {
             img {
-                src: "/assets/static/ide_autocomplete.png",
+                src: asset!("/assets/static/ide_autocomplete.png", ImageAssetOptions::new().with_avif()),
                 alt: "Events are strongly typed",
                 title: "",
             }
@@ -1333,7 +1333,7 @@ pub fn IntroducingDioxus() -> dioxus::prelude::Element {
         p { "Even element attributes and event handlers have top-notch documentation!" }
         p {
             img {
-                src: "/assets/static/ide_listener.png",
+                src: asset!("/assets/static/ide_listener.png", ImageAssetOptions::new().with_avif()),
                 alt: "Element attributes and listeners have hover context",
                 title: "",
             }
@@ -1345,7 +1345,7 @@ pub fn IntroducingDioxus() -> dioxus::prelude::Element {
         }
         p {
             img {
-                src: "/assets/static/ide_selection.png",
+                src: asset!("/assets/static/ide_selection.png", ImageAssetOptions::new().with_avif()),
                 alt: "Element blocks can be folded and renamed",
                 title: "",
             }
@@ -1357,7 +1357,7 @@ pub fn IntroducingDioxus() -> dioxus::prelude::Element {
         }
         p {
             img {
-                src: "/assets/static/ide_rsx.png",
+                src: asset!("/assets/static/ide_rsx.png", ImageAssetOptions::new().with_avif()),
                 alt: "The RSX documentation is provided on hover",
                 title: "",
             }
@@ -2019,7 +2019,10 @@ pub fn TemplatesDiffing() -> dioxus::prelude::Element {
         }
         p {
             img {
-                src: "/assets/blogassets/jsframework-diffing.png",
+                src: asset!(
+                    "/assets/blogassets/jsframework-diffing.png", ImageAssetOptions::new()
+                    .with_avif()
+                ),
                 alt: "Untitled",
                 title: "",
             }
@@ -2122,7 +2125,7 @@ pub fn TemplatesDiffing() -> dioxus::prelude::Element {
         }
         p {
             img {
-                src: "/assets/blogassets/bump-alloc.png",
+                src: asset!("/assets/blogassets/bump-alloc.png", ImageAssetOptions::new().with_avif()),
                 alt: "Making%20Dioxus%20(almost)%20as%20fast%20as%20SolidJS%20baea0d5b4e614351ac8e3d4fc4240d04/Screen_Shot_2021-08-17_at_2.24.39_AM.png",
                 title: "",
             }
@@ -2193,7 +2196,10 @@ pub fn TemplatesDiffing() -> dioxus::prelude::Element {
         }
         p {
             img {
-                src: "/assets/blogassets/jsframework-diffing.png",
+                src: asset!(
+                    "/assets/blogassets/jsframework-diffing.png", ImageAssetOptions::new()
+                    .with_avif()
+                ),
                 alt: "Untitled",
                 title: "",
             }
@@ -2274,7 +2280,7 @@ pub fn TemplatesDiffing() -> dioxus::prelude::Element {
         }
         p {
             img {
-                src: "/assets/blogassets/elixir.jpeg",
+                src: asset!("/assets/blogassets/elixir.jpeg", ImageAssetOptions::new().with_avif()),
                 alt: "ElixirLivewview.jpg",
                 title: "",
             }
@@ -2748,7 +2754,11 @@ pub fn Release040() -> dioxus::prelude::Element {
         p { "Dioxus 0.4 is adding support for the next frontier: the server backend." }
         p { "You can now write your entire fullstack web app in one file." }
         p {
-            img { src: "/assets/static/04meme.png", alt: "meme", title: "" }
+            img {
+                src: asset!("/assets/static/04meme.png", ImageAssetOptions::new().with_avif()),
+                alt: "meme",
+                title: "",
+            }
         }
         p { "The gist of this release:" }
         ul {
@@ -2815,7 +2825,7 @@ pub fn Release040() -> dioxus::prelude::Element {
         }
         p {
             img {
-                src: "/assets/static/split_codegen.png",
+                src: asset!("/assets/static/split_codegen.png", ImageAssetOptions::new().with_avif()),
                 alt: "Server / Client code splitting",
                 title: "",
             }
@@ -2857,7 +2867,7 @@ pub fn Release040() -> dioxus::prelude::Element {
         }
         p {
             img {
-                src: "/assets/static/old_fetch.png",
+                src: asset!("/assets/static/old_fetch.png", ImageAssetOptions::new().with_avif()),
                 alt: "Diagram of how SSR data used to be fetched",
                 title: "",
             }
@@ -2889,7 +2899,7 @@ pub fn Release040() -> dioxus::prelude::Element {
         }
         p {
             img {
-                src: "/assets/static/new_fetch.png",
+                src: asset!("/assets/static/new_fetch.png", ImageAssetOptions::new().with_avif()),
                 alt: "Diagram of how SSR data is fetched now",
                 title: "",
             }
@@ -2969,7 +2979,7 @@ pub fn Release040() -> dioxus::prelude::Element {
         }
         p {
             img {
-                src: "/assets/static/enum_router.png",
+                src: asset!("/assets/static/enum_router.png", ImageAssetOptions::new().with_avif()),
                 alt: "PR of enum router",
                 title: "",
             }
@@ -2985,7 +2995,7 @@ pub fn Release040() -> dioxus::prelude::Element {
         p { "To start, we revamped our landing page. Short, sweet, to the point." }
         p {
             img {
-                src: "/assets/static/landing_1.png",
+                src: asset!("/assets/static/landing_1.png", ImageAssetOptions::new().with_avif()),
                 alt: "Screenshot of new doc site landing page",
                 title: "",
             }
@@ -3003,7 +3013,7 @@ pub fn Release040() -> dioxus::prelude::Element {
         }
         p {
             img {
-                src: "/assets/static/landing_2.png",
+                src: asset!("/assets/static/landing_2.png", ImageAssetOptions::new().with_avif()),
                 alt: "Screenshot of new doc site search",
                 title: "",
             }
@@ -3013,7 +3023,7 @@ pub fn Release040() -> dioxus::prelude::Element {
         }
         p {
             img {
-                src: "/assets/static/landing_3.png",
+                src: asset!("/assets/static/landing_3.png", ImageAssetOptions::new().with_avif()),
                 alt: "Screenshot of new doc site mdbook",
                 title: "",
             }
@@ -3035,7 +3045,7 @@ pub fn Release040() -> dioxus::prelude::Element {
         }
         p {
             img {
-                src: "/assets/static/landing_4.png",
+                src: asset!("/assets/static/landing_4.png", ImageAssetOptions::new().with_avif()),
                 alt: "Screenshot of new doc site interactivity",
                 title: "",
             }
@@ -3047,7 +3057,7 @@ pub fn Release040() -> dioxus::prelude::Element {
         }
         p {
             img {
-                src: "/assets/static/landing_5.png",
+                src: asset!("/assets/static/landing_5.png", ImageAssetOptions::new().with_avif()),
                 alt: "Screenshot of new doc site awesome page",
                 title: "",
             }
@@ -3073,7 +3083,7 @@ pub fn Release040() -> dioxus::prelude::Element {
         p { "iOS Demo:" }
         p {
             img {
-                src: "/assets/static/ios_demo.png",
+                src: asset!("/assets/static/ios_demo.png", ImageAssetOptions::new().with_avif()),
                 alt: "Screenshot of xcode with dioxus app",
                 title: "",
             }
@@ -3081,7 +3091,7 @@ pub fn Release040() -> dioxus::prelude::Element {
         p { "Android Demo:" }
         p {
             img {
-                src: "/assets/static/android_demo.png",
+                src: asset!("/assets/static/android_demo.png", ImageAssetOptions::new().with_avif()),
                 alt: "Screenshot of android studio with dioxus app",
                 title: "",
             }
@@ -3210,7 +3220,7 @@ pub fn Release040() -> dioxus::prelude::Element {
         }
         p {
             img {
-                src: "/assets/static/bundle.png",
+                src: asset!("/assets/static/bundle.png", ImageAssetOptions::new().with_avif()),
                 alt: "A bundled app on macos",
                 title: "",
             }
@@ -3228,7 +3238,7 @@ pub fn Release040() -> dioxus::prelude::Element {
         }
         p {
             img {
-                src: "/assets/static/dxcheck.png",
+                src: asset!("/assets/static/dxcheck.png", ImageAssetOptions::new().with_avif()),
                 alt: "The new check command for dx",
                 title: "",
             }
@@ -3253,7 +3263,7 @@ pub fn Release040() -> dioxus::prelude::Element {
         }
         p {
             img {
-                src: "/assets/static/extension.png",
+                src: asset!("/assets/static/extension.png", ImageAssetOptions::new().with_avif()),
                 alt: "The Dioxus VSCode extension page",
                 title: "",
             }
@@ -4363,7 +4373,7 @@ pub fn Release060() -> dioxus::prelude::Element {
         }
         p {
             img {
-                src: "/assets/06assets/image.png",
+                src: asset!("/assets/06assets/image.png", ImageAssetOptions::new().with_avif()),
                 alt: "Dioxus Mobile Support",
                 title: "",
             }
@@ -4394,7 +4404,7 @@ pub fn Release060() -> dioxus::prelude::Element {
         }
         p {
             video {
-                src: "/assets/06assets/dxnew.mp4",
+                src: asset!("/assets/06assets/dxnew.mp4"),
                 alt: "dx-serve.mp4",
                 title: "",
                 autoplay: true,
@@ -4422,7 +4432,7 @@ pub fn Release060() -> dioxus::prelude::Element {
         }
         p {
             img {
-                src: "/assets/06assets/image%201.png",
+                src: asset!("/assets/06assets/image1.png", ImageAssetOptions::new().with_avif()),
                 alt: "new-cli.png",
                 title: "",
             }
@@ -4432,7 +4442,7 @@ pub fn Release060() -> dioxus::prelude::Element {
         }
         p {
             video {
-                src: "/assets/06assets/cli-new.mp4",
+                src: asset!("/assets/06assets/cli-new.mp4"),
                 alt: "cli_animation",
                 title: "",
                 autoplay: true,
@@ -4486,7 +4496,10 @@ pub fn Release060() -> dioxus::prelude::Element {
         }
         p {
             img {
-                src: "/assets/06assets/Screenshot_2024-11-14_at_8.52.18_PM.png",
+                src: asset!(
+                    "/assets/06assets/Screenshot_2024-11-14_at_8.52.18_PM.png",
+                    ImageAssetOptions::new().with_avif()
+                ),
                 alt: "Inline Stack Traces",
                 title: "",
             }
@@ -4502,7 +4515,10 @@ pub fn Release060() -> dioxus::prelude::Element {
         }
         p {
             img {
-                src: "/assets/06assets/Screenshot_2024-11-14_at_9.06.05_PM.png",
+                src: asset!(
+                    "/assets/06assets/Screenshot_2024-11-14_at_9.06.05_PM.png",
+                    ImageAssetOptions::new().with_avif()
+                ),
                 alt: "Screenshot 2024-11-14 at 9.06.05\u{202f}PM.png",
                 title: "",
             }
@@ -4518,7 +4534,10 @@ pub fn Release060() -> dioxus::prelude::Element {
         }
         p {
             img {
-                src: "/assets/06assets/Screenshot_2024-11-14_at_9.41.38_PM.png",
+                src: asset!(
+                    "/assets/06assets/Screenshot_2024-11-14_at_9.41.38_PM.png",
+                    ImageAssetOptions::new().with_avif()
+                ),
                 alt: "Screenshot 2024-11-14 at 9.41.38\u{202f}PM.png",
                 title: "",
             }
@@ -4528,7 +4547,10 @@ pub fn Release060() -> dioxus::prelude::Element {
         }
         p {
             img {
-                src: "/assets/06assets/Screenshot_2024-11-14_at_9.42.33_PM.png",
+                src: asset!(
+                    "/assets/06assets/Screenshot_2024-11-14_at_9.42.33_PM.png",
+                    ImageAssetOptions::new().with_avif()
+                ),
                 alt: "Screenshot 2024-11-14 at 9.42.33\u{202f}PM.png",
                 title: "",
             }
@@ -4543,7 +4565,7 @@ pub fn Release060() -> dioxus::prelude::Element {
         }
         p {
             video {
-                src: "/assets/06assets/native-serverfn12.mp4",
+                src: asset!("/assets/06assets/native-serverfn12.mp4"),
                 alt: "native-server12.mp4",
                 title: "",
                 autoplay: true,
@@ -4580,7 +4602,10 @@ pub fn Release060() -> dioxus::prelude::Element {
         }
         p {
             img {
-                src: "/assets/06assets/Screenshot_2024-11-14_at_9.55.12_PM.png",
+                src: asset!(
+                    "/assets/06assets/Screenshot_2024-11-14_at_9.55.12_PM.png",
+                    ImageAssetOptions::new().with_avif()
+                ),
                 alt: "Screenshot 2024-11-14 at 9.55.12\u{202f}PM.png",
                 title: "",
             }
@@ -4592,7 +4617,7 @@ pub fn Release060() -> dioxus::prelude::Element {
         }
         p {
             video {
-                src: "/assets/06assets/autocomplete-overhaul.mp4",
+                src: asset!("/assets/06assets/autocomplete-overhaul.mp4"),
                 alt: "autocomplete-overhaul.mp4",
                 title: "",
                 autoplay: true,
@@ -4643,7 +4668,7 @@ pub fn Release060() -> dioxus::prelude::Element {
         }
         p {
             video {
-                src: "/assets/06assets/dogapphr2.mp4",
+                src: asset!("/assets/06assets/dogapphr2.mp4"),
                 alt: "dog_app.mp4",
                 title: "",
                 autoplay: true,
@@ -4720,7 +4745,7 @@ pub fn Release060() -> dioxus::prelude::Element {
         }
         p {
             video {
-                src: "/assets/06assets/bundled-ios-reload.mp4",
+                src: asset!("/assets/06assets/bundled-ios-reload.mp4"),
                 alt: "bundled-ios-reload.mp4",
                 title: "",
                 autoplay: true,
@@ -4777,7 +4802,7 @@ pub fn Release060() -> dioxus::prelude::Element {
         }
         p {
             img {
-                src: "/assets/06assets/manganis-opt.avif",
+                src: asset!("/assets/06assets/manganis-opt.avif"),
                 alt: "manganis-opt",
                 title: "",
             }
@@ -4787,7 +4812,10 @@ pub fn Release060() -> dioxus::prelude::Element {
         }
         p {
             img {
-                src: "/assets/06assets/Screenshot_2024-11-14_at_10.22.48_PM.png",
+                src: asset!(
+                    "/assets/06assets/Screenshot_2024-11-14_at_10.22.48_PM.png",
+                    ImageAssetOptions::new().with_avif()
+                ),
                 alt: "Screenshot 2024-11-14 at 10.22.48\u{202f}PM.png",
                 title: "",
             }
@@ -4839,7 +4867,7 @@ pub fn Release060() -> dioxus::prelude::Element {
         }
         p {
             video {
-                src: "/assets/06assets/streamingsuspense.mp4",
+                src: asset!("/assets/06assets/streamingsuspense.mp4"),
                 alt: "streaming-suspense.mp4",
                 title: "",
                 autoplay: true,
@@ -4967,7 +4995,10 @@ pub fn Release060() -> dioxus::prelude::Element {
         p { "And accordingly, the title of the page will update:" }
         p {
             img {
-                src: "/assets/06assets/Screenshot_2024-11-14_at_11.28.42_PM.png",
+                src: asset!(
+                    "/assets/06assets/Screenshot_2024-11-14_at_11.28.42_PM.png",
+                    ImageAssetOptions::new().with_avif()
+                ),
                 alt: "Screenshot 2024-11-14 at 11.28.42\u{202f}PM.png",
                 title: "",
             }
@@ -4990,7 +5021,10 @@ pub fn Release060() -> dioxus::prelude::Element {
         CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">app</span><span style=\"color:#f8f8f2;\">() -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    rsx! {{\n</span><span style=\"color:#f8f8f2;\">        Title {{ </span><span style=\"color:#ffee99;\">&quot;WebAssembly rocks!&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">        Stylesheet {{ href: asset!(</span><span style=\"color:#ffee99;\">&quot;/assets/main.css&quot;</span><span style=\"color:#f8f8f2;\">) }}\n</span><span style=\"color:#f8f8f2;\">        h1 {{ </span><span style=\"color:#ffee99;\">&quot;A site dedicated to webassembly&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n" }
         p {
             img {
-                src: "/assets/06assets/Screenshot_2024-11-14_at_11.31.18_PM.png",
+                src: asset!(
+                    "/assets/06assets/Screenshot_2024-11-14_at_11.31.18_PM.png",
+                    ImageAssetOptions::new().with_avif()
+                ),
                 alt: "Screenshot 2024-11-14 at 11.31.18\u{202f}PM.png",
                 title: "",
             }
@@ -5063,7 +5097,7 @@ pub fn Release060() -> dioxus::prelude::Element {
         }
         p {
             video {
-                src: "/assets/06assets/onvisible.mp4",
+                src: asset!("/assets/06assets/onvisible.mp4"),
                 alt: "gif_of_visible_working.mp4",
                 title: "",
                 autoplay: true,
@@ -5078,7 +5112,7 @@ pub fn Release060() -> dioxus::prelude::Element {
         }
         p {
             video {
-                src: "/assets/06assets/wgpu-windows.mp4",
+                src: asset!("/assets/06assets/wgpu-windows.mp4"),
                 alt: "wgpu-windows.mp4",
                 title: "",
                 autoplay: true,
@@ -5120,7 +5154,10 @@ pub fn Release060() -> dioxus::prelude::Element {
         }
         p {
             img {
-                src: "/assets/06assets/Screenshot_2024-11-14_at_10.38.33_PM.png",
+                src: asset!(
+                    "/assets/06assets/Screenshot_2024-11-14_at_10.38.33_PM.png",
+                    ImageAssetOptions::new().with_avif()
+                ),
                 alt: "Screenshot 2024-11-14 at 10.38.33\u{202f}PM.png",
                 title: "",
             }
@@ -5136,7 +5173,10 @@ pub fn Release060() -> dioxus::prelude::Element {
         }
         p {
             img {
-                src: "/assets/06assets/Screenshot_2024-11-14_at_10.40.56_PM.png",
+                src: asset!(
+                    "/assets/06assets/Screenshot_2024-11-14_at_10.40.56_PM.png",
+                    ImageAssetOptions::new().with_avif()
+                ),
                 alt: "Screenshot 2024-11-14 at 10.40.56\u{202f}PM.png",
                 title: "",
             }
@@ -5171,7 +5211,10 @@ pub fn Release060() -> dioxus::prelude::Element {
         }
         p {
             img {
-                src: "/assets/06assets/Screenshot_2024-11-14_at_11.35.23_PM.png",
+                src: asset!(
+                    "/assets/06assets/Screenshot_2024-11-14_at_11.35.23_PM.png",
+                    ImageAssetOptions::new().with_avif()
+                ),
                 alt: "Screenshot 2024-11-14 at 11.35.23\u{202f}PM.png",
                 title: "",
             }
@@ -5181,7 +5224,10 @@ pub fn Release060() -> dioxus::prelude::Element {
         }
         p {
             img {
-                src: "/assets/06assets/version_switch_shadow.png",
+                src: asset!(
+                    "/assets/06assets/version_switch_shadow.png", ImageAssetOptions::new()
+                    .with_avif()
+                ),
                 alt: "Screenshot 2024-11-15 at 1.02.23\u{202f}AM.png",
                 title: "",
             }
@@ -5191,7 +5237,9 @@ pub fn Release060() -> dioxus::prelude::Element {
         }
         p {
             img {
-                src: "/assets/06assets/breadcrumbs_shadow.png",
+                src: asset!(
+                    "/assets/06assets/breadcrumbs_shadow.png", ImageAssetOptions::new().with_avif()
+                ),
                 alt: "Screenshot 2024-11-15 at 1.04.13\u{202f}AM.png",
                 title: "",
             }
@@ -5199,7 +5247,10 @@ pub fn Release060() -> dioxus::prelude::Element {
         p { "as well as new codeblocks with interactive examples:" }
         p {
             img {
-                src: "/assets/06assets/interacitve_widget_shadow.png",
+                src: asset!(
+                    "/assets/06assets/interacitve_widget_shadow.png", ImageAssetOptions::new()
+                    .with_avif()
+                ),
                 alt: "Screenshot 2024-11-15 at 1.05.03\u{202f}AM.png",
                 title: "",
             }
@@ -5216,7 +5267,7 @@ pub fn Release060() -> dioxus::prelude::Element {
         }
         p {
             video {
-                src: "/assets/06assets/full_hr_dioxus_fast.mp4",
+                src: asset!("/assets/06assets/full_hr_dioxus_fast.mp4"),
                 alt: "full_hr_dioxus_fast.mp4",
                 title: "",
                 autoplay: true,

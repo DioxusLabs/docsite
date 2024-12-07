@@ -1821,58 +1821,28 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                         level: 1usize,
                     },
                     ::use_mdbook::mdbook_shared::Section {
-                        title: "The Tracing Crate".to_string(),
-                        id: "the-tracing-crate".to_string(),
-                        level: 4usize,
-                    },
-                    ::use_mdbook::mdbook_shared::Section {
                         title: "Dioxus Logger".to_string(),
                         id: "dioxus-logger".to_string(),
                         level: 2usize,
                     },
                     ::use_mdbook::mdbook_shared::Section {
+                        title: "The Tracing Crate".to_string(),
+                        id: "the-tracing-crate".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
                         title: "Platform Intricacies".to_string(),
                         id: "platform-intricacies".to_string(),
-                        level: 4usize,
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Viewing Logs".to_string(),
+                        id: "viewing-logs".to_string(),
+                        level: 2usize,
                     },
                     ::use_mdbook::mdbook_shared::Section {
                         title: "Final Notes".to_string(),
                         id: "final-notes".to_string(),
-                        level: 4usize,
-                    },
-                    ::use_mdbook::mdbook_shared::Section {
-                        title: "Desktop and Server".to_string(),
-                        id: "desktop-and-server".to_string(),
-                        level: 2usize,
-                    },
-                    ::use_mdbook::mdbook_shared::Section {
-                        title: "Web".to_string(),
-                        id: "web".to_string(),
-                        level: 2usize,
-                    },
-                    ::use_mdbook::mdbook_shared::Section {
-                        title: "Mobile".to_string(),
-                        id: "mobile".to_string(),
-                        level: 1usize,
-                    },
-                    ::use_mdbook::mdbook_shared::Section {
-                        title: "Android".to_string(),
-                        id: "android".to_string(),
-                        level: 2usize,
-                    },
-                    ::use_mdbook::mdbook_shared::Section {
-                        title: "Viewing Logs".to_string(),
-                        id: "viewing-logs".to_string(),
-                        level: 4usize,
-                    },
-                    ::use_mdbook::mdbook_shared::Section {
-                        title: "iOS".to_string(),
-                        id: "ios".to_string(),
-                        level: 2usize,
-                    },
-                    ::use_mdbook::mdbook_shared::Section {
-                        title: "Viewing Logs".to_string(),
-                        id: "viewing-logs".to_string(),
                         level: 4usize,
                     },
                 ],
@@ -7802,18 +7772,48 @@ pub fn CookbookIntegrationsLogging() -> dioxus::prelude::Element {
         p {
             "Dioxus has a wide range of supported platforms, each with their own logging requirements. We'll discuss the different options available for your projects."
         }
-        h4 { id: "the-tracing-crate",
+        h2 { id: "dioxus-logger",
+            a { href: "#dioxus-logger", class: "header", "Dioxus Logger" }
+        }
+        p {
+            "Dioxus provides a first-party logger as part of  "
+            code { "launch" }
+            ". This sets up a tracing subscriber that cleanly integrates with the Dioxus CLI and platforms like Web and Mobile. In development mode, the  "
+            code { "Debug" }
+            " tracing level is set, and in release only the  "
+            code { "Info" }
+            " level is set."
+        }
+        CodeBlock {
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f92672;\">use </span><span style=\"color:#f8f8f2;\">dioxus::prelude::</span><span style=\"color:#f92672;\">*</span><span style=\"color:#f8f8f2;\">;\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">main</span><span style=\"color:#f8f8f2;\">() {{\n</span><span style=\"color:#f8f8f2;\">    dioxus::launch(|| {{\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"color:#8c8c8c;\">// Will only log in &quot;dev&quot; mode\n</span><span style=\"color:#f8f8f2;\">        tracing::debug</span><span style=\"color:#f92672;\">!</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#ffee99;\">&quot;Rendering app!&quot;</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"color:#8c8c8c;\">// Will log in dev and release\n</span><span style=\"color:#f8f8f2;\">        tracing::info</span><span style=\"color:#f92672;\">!</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#ffee99;\">&quot;Rendering app!&quot;</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">        rsx! {{}}\n</span><span style=\"color:#f8f8f2;\">    }})\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
+        }
+        p {
+            "To override the default or initialize the logger before  "
+            code { "launch" }
+            ", you can use the  "
+            code { "init" }
+            " function yourself:"
+        }
+        p {
+            "To use Dioxus Logger, call the  "
+            code { "init()" }
+            " function:"
+        }
+        CodeBlock {
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f92672;\">use </span><span style=\"color:#f8f8f2;\">tracing::Level;\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">main</span><span style=\"color:#f8f8f2;\">() {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#8c8c8c;\">// Init logger\n</span><span style=\"color:#f8f8f2;\">    dioxus_logger::init(Level::</span><span style=\"color:#ff80f4;\">INFO</span><span style=\"color:#f8f8f2;\">).</span><span style=\"color:#66d9ef;\">expect</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#ffee99;\">&quot;failed to init logger&quot;</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#8c8c8c;\">// Dioxus launch code\n</span><span style=\"color:#f8f8f2;\">    dioxus::launch(|| rsx! {{}})\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
+        }
+        h2 { id: "the-tracing-crate",
             a { href: "#the-tracing-crate", class: "header", "The Tracing Crate" }
         }
         p {
             "The "
             a { href: "https://crates.io/crates/tracing", "Tracing" }
-            " crate is the logging interface that the Dioxus library uses. It is not required to use the Tracing crate, but you will not recieve logs from the Dioxus library."
+            " crate is the logging interface that the dioxus-logger uses. It is not required to use the Tracing crate, but you will not receive logs from the Dioxus library."
         }
         p {
             "The Tracing crate provides a variety of simple  "
             code { "println" }
-            "-like macros with varying levels of severity. "
+            "-like macros with varying levels of severity."
         }
         CodeBlock {
             contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">main</span><span style=\"color:#f8f8f2;\">() {{\n</span><span style=\"color:#f8f8f2;\">    tracing::trace</span><span style=\"color:#f92672;\">!</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#ffee99;\">&quot;trace&quot;</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"color:#f8f8f2;\">    tracing::debug</span><span style=\"color:#f92672;\">!</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#ffee99;\">&quot;debug&quot;</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"color:#f8f8f2;\">    tracing::info</span><span style=\"color:#f92672;\">!</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#ffee99;\">&quot;info&quot;</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"color:#f8f8f2;\">    tracing::warn</span><span style=\"color:#f92672;\">!</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#ffee99;\">&quot;warn&quot;</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"color:#f8f8f2;\">    tracing::error</span><span style=\"color:#f92672;\">!</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#ffee99;\">&quot;error&quot;</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
@@ -7828,27 +7828,7 @@ pub fn CookbookIntegrationsLogging() -> dioxus::prelude::Element {
             a { href: "https://docs.rs/tracing/latest/tracing/", "docs" }
             "."
         }
-        h2 { id: "dioxus-logger",
-            a { href: "#dioxus-logger", class: "header", "Dioxus Logger" }
-        }
-        p {
-            a { href: "https://crates.io/crates/dioxus-logger", "Dioxus Logger" }
-            " is a logging utility that will start the appropriate logger for the platform. Currently every platform except mobile is supported."
-        }
-        p {
-            "To use Dioxus Logger, call the  "
-            code { "init()" }
-            " function:"
-        }
-        CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f92672;\">use </span><span style=\"color:#f8f8f2;\">tracing::Level;\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">main</span><span style=\"color:#f8f8f2;\">() {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#8c8c8c;\">// Init logger\n</span><span style=\"color:#f8f8f2;\">    dioxus_logger::init(Level::</span><span style=\"color:#ff80f4;\">INFO</span><span style=\"color:#f8f8f2;\">).</span><span style=\"color:#66d9ef;\">expect</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#ffee99;\">&quot;failed to init logger&quot;</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#8c8c8c;\">// Dioxus launch code\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n" }
-        p {
-            "The  "
-            code { "dioxus_logger::init()" }
-            " function initializes Dioxus Logger with the appropriate tracing logger using the default configuration and provided  "
-            code { "Level" }
-            "."
-        }
-        h4 { id: "platform-intricacies",
+        h2 { id: "platform-intricacies",
             a { href: "#platform-intricacies", class: "header", "Platform Intricacies" }
         }
         p {
@@ -7860,106 +7840,7 @@ pub fn CookbookIntegrationsLogging() -> dioxus::prelude::Element {
             code { "FmtSubscriber" }
             "."
         }
-        h4 { id: "final-notes",
-            a { href: "#final-notes", class: "header", "Final Notes" }
-        }
-        p {
-            "Dioxus Logger is the preferred logger to use with Dioxus if it suites your needs. There are more features to come and Dioxus Logger is planned to become an integral part of Dioxus. If there are any feature suggestions or issues with Dioxus Logger, feel free to reach out on the "
-            a { href: "https://discord.gg/XgGxMSkvUM", "Dioxus Discord Server" }
-            "!"
-        }
-        p {
-            "For more information, visit Dioxus Logger's "
-            a { href: "https://docs.rs/dioxus-logger/latest/dioxus_logger/", "docs" }
-            "."
-        }
-        h2 { id: "desktop-and-server",
-            a { href: "#desktop-and-server", class: "header", "Desktop and Server" }
-        }
-        p { "For Dioxus' desktop and server targets, you can generally use the logger of your choice." }
-        p { "Some popular options are:" }
-        ul {
-            li {
-                a { href: "https://crates.io/crates/tracing-subscriber", "tracing-subscriber" }
-                "'s "
-                code { "FmtSubscriber" }
-                " for console output."
-            }
-            li {
-                a { href: "https://crates.io/crates/tracing-appender", "tracing-appender" }
-                " for logging to files."
-            }
-            li {
-                a { href: "https://crates.io/crates/tracing-bunyan-formatter",
-                    "tracing-bunyan-formatter"
-                }
-                " for the Bunyan format."
-            }
-        }
-        p { "To keep this guide short, we will not be covering the usage of these crates." }
-        p {
-            "For a full list of popular tracing-based logging crates, visit "
-            a { href: "https://docs.rs/tracing/latest/tracing/#related-crates", "this" }
-            " list in the Tracing crate's docs."
-        }
-        h2 { id: "web",
-            a { href: "#web", class: "header", "Web" }
-        }
-        p {
-            a { href: "https://crates.io/crates/tracing-wasm", "tracing-wasm" }
-            " is a logging interface that can be used with Dioxus' web platform."
-        }
-        p {
-            "The easiest way to use WASM Logger is with the  "
-            code { "set_as_global_default" }
-            " function:"
-        }
-        CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">main</span><span style=\"color:#f8f8f2;\">() {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#8c8c8c;\">// Init logger\n</span><span style=\"color:#f8f8f2;\">    tracing_wasm::set_as_global_default();\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#8c8c8c;\">// Dioxus code\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n" }
-        p {
-            "This starts tracing with a  "
-            code { "Level" }
-            " of  "
-            code { "Trace" }
-            ". "
-        }
-        p {
-            "Using a custom  "
-            code { "level" }
-            " is a little trickier. We need to use the  "
-            code { "WasmLayerConfigBuilder" }
-            " and start the logger with  "
-            code { "set_as_global_default_with_config()" }
-            ":"
-        }
-        CodeBlock {
-            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f92672;\">use </span><span style=\"color:#f8f8f2;\">tracing::Level;\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">main</span><span style=\"color:#f8f8f2;\">() {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#8c8c8c;\">// Init logger\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> tracing_config </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">tracing_wasm::WASMLayerConfigBuilder::new().</span><span style=\"color:#66d9ef;\">set_max_level</span><span style=\"color:#f8f8f2;\">(Level::</span><span style=\"color:#ff80f4;\">INFO</span><span style=\"color:#f8f8f2;\">).</span><span style=\"color:#66d9ef;\">build</span><span style=\"color:#f8f8f2;\">();\n</span><span style=\"color:#f8f8f2;\">    tracing_wasm::set_as_global_default_with_config(tracing_config);\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#8c8c8c;\">// Dioxus code\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
-        }
-        h1 { id: "mobile",
-            a { href: "#mobile", class: "header", "Mobile" }
-        }
-        p {
-            "Unfortunately there are no tracing crates that work with mobile targets. As an alternative you can use the "
-            a { href: "https://crates.io/crates/log", "log" }
-            " crate."
-        }
-        h2 { id: "android",
-            a { href: "#android", class: "header", "Android" }
-        }
-        p {
-            a { href: "https://crates.io/crates/android_logger", "Android Logger" }
-            " is a logging interface that can be used when targeting Android. Android Logger runs whenever an event "
-            code { "native_activity_create" }
-            " is called by the Android system:"
-        }
-        CodeBlock {
-            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f92672;\">use </span><span style=\"color:#f8f8f2;\">log::LevelFilter;\n</span><span style=\"color:#f92672;\">use </span><span style=\"color:#f8f8f2;\">android_logger::Config;\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">native_activity_create</span><span style=\"color:#f8f8f2;\">() {{\n</span><span style=\"color:#f8f8f2;\">    android_logger::init_once(\n</span><span style=\"color:#f8f8f2;\">        Config::default()\n</span><span style=\"color:#f8f8f2;\">            .</span><span style=\"color:#66d9ef;\">with_max_level</span><span style=\"color:#f8f8f2;\">(LevelFilter::Info)\n</span><span style=\"color:#f8f8f2;\">            .</span><span style=\"color:#66d9ef;\">with_tag</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#ffee99;\">&quot;myapp&quot;</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"color:#f8f8f2;\">    );\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
-        }
-        p {
-            "The  "
-            code { "with_tag()" }
-            " is what your app's logs will show as."
-        }
-        h4 { id: "viewing-logs",
+        h2 { id: "viewing-logs",
             a { href: "#viewing-logs", class: "header", "Viewing Logs" }
         }
         p { "Android logs are sent to logcat. To use logcat through the Android debugger, run:" }
@@ -7970,25 +7851,24 @@ pub fn CookbookIntegrationsLogging() -> dioxus::prelude::Element {
             a { href: "https://docs.rs/android_logger/latest/android_logger/", "docs" }
             "."
         }
-        h2 { id: "ios",
-            a { href: "#ios", class: "header", "iOS" }
-        }
-        p {
-            "The current option for iOS is the "
-            a { href: "https://crates.io/crates/oslog", "oslog" }
-            " crate. "
-        }
-        CodeBlock {
-            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">main</span><span style=\"color:#f8f8f2;\">() {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#8c8c8c;\">// Init logger\n</span><span style=\"color:#f8f8f2;\">    OsLogger::new(</span><span style=\"color:#ffee99;\">&quot;com.example.test&quot;</span><span style=\"color:#f8f8f2;\">)\n</span><span style=\"color:#f8f8f2;\">        .</span><span style=\"color:#66d9ef;\">level_filter</span><span style=\"color:#f8f8f2;\">(LevelFilter::Debug)\n</span><span style=\"color:#f8f8f2;\">        .</span><span style=\"color:#66d9ef;\">init</span><span style=\"color:#f8f8f2;\">()\n</span><span style=\"color:#f8f8f2;\">        .</span><span style=\"color:#66d9ef;\">expect</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#ffee99;\">&quot;failed to init logger&quot;</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#8c8c8c;\">// Dioxus code\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
-        }
-        h4 { id: "viewing-logs",
-            a { href: "#viewing-logs", class: "header", "Viewing Logs" }
-        }
-        p { "You can view the emitted logs in Xcode. " }
+        p { "iOS logs are sent to oslog." }
         p {
             "For more information, visit "
             a { href: "https://crates.io/crates/oslog", "oslog" }
-            ". "
+            "."
+        }
+        h4 { id: "final-notes",
+            a { href: "#final-notes", class: "header", "Final Notes" }
+        }
+        p {
+            "Dioxus Logger is the preferred logger to use with Dioxus if it suites your needs. There are more features to come. If there are any feature suggestions or issues with Dioxus Logger, feel free to reach out on the "
+            a { href: "https://discord.gg/XgGxMSkvUM", "Dioxus Discord Server" }
+            "!"
+        }
+        p {
+            "For more information, visit Dioxus Logger's "
+            a { href: "https://docs.rs/dioxus-logger/latest/dioxus_logger/", "docs" }
+            "."
         }
     }
 }

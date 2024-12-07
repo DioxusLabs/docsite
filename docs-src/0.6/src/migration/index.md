@@ -16,7 +16,7 @@ use dioxus::prelude::*;
 
 fn app() -> Element {
     let number = use_signal(|| -1);
-    
+
     if number() < 0 {
         // ❌ In dioxus 0.6, the element type is a result, so None values cannot be returned directly
         return None;
@@ -78,4 +78,52 @@ fn app() -> Element {
 Dioxus 0.6:
 ```rust
 {{#include src/doc_examples/migration.rs:assets_new}}
+```
+
+## Logging
+
+Dioxus 0.6 brings the `dioxus-logger` crate directly into dioxus itself.
+
+Previously, you needed to add `dioxus-logger` to your Cargo.toml and then call its init function:
+
+
+
+```rs
+// cargo.toml:
+// dioxus-logger = "0.5"
+
+use dioxus::prelude::*;
+use tracing::Level;
+
+fn main() {
+    // Init logger
+    dioxus_logger::init(Level::INFO).expect("failed to init logger");
+
+    // Dioxus launch code
+    dioxus::launch(app)
+}
+```
+
+Now, in Dioxus 0.6, the logger is implicit with `launch`. Simply call launch and the logger is initialized to a default log level. In development mode, the `Debug` tracing level is set, and in release only the `Info` level is set.
+
+```rust
+use dioxus::prelude::*;
+
+fn main() {
+    dioxus::launch(app);
+}
+```
+
+If you still need to set the level manually or configure a custom subscriber, do that before `launch`. We expose the `initialize_default` function in case you need additional logging before your `launch` call:
+
+```rust
+use dioxus::prelude::*;
+
+fn main() {
+    dioxus::logger::initialize_default();
+
+    tracing::info!("Logs received!");
+
+    dioxus::launch(app);
+}
 ```

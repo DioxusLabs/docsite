@@ -142,6 +142,17 @@ strip = "debuginfo"
 opt-level = 3
 codegen-units = 1
 
+[profile.wasm-dev]
+inherits = "dev"
+debug = 0
+
+[profile.server-dev]
+inherits = "dev"
+debug = 0
+
+[profile.android-dev]
+inherits = "dev"
+
 [profile.release.build-override]
 opt-level = 3
 codegen-units = 1

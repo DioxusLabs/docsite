@@ -483,7 +483,7 @@ fn app() -> Element {
 
 ## Question Mark Error Handling
 
-With this release, we’ve finally made the transition where `Element` is no longer an `Option<Node>` but rather a `Result<Node>`. This means we’re *finally* able to open up the use of typical rust error handling in components:
+With this release, we’ve made the transition where `Element` is no longer an `Option<Node>` but rather a `Result<Node>`. This means we’re *finally* able to open up the use of typical Rust error handling in components:
 
 ```rust
 fn Slider() -> Element {
@@ -511,7 +511,7 @@ fn Input() -> Element {
 }
 ```
 
-What’s even better: the `?` syntax also works in event handlers, so you can quickly add things like server functions to your app without worrying about manual error handling:
+What’s even better: the `?` syntax also works in EventHandlers, so you can quickly add things like server functions to your app without worrying about manual error handling:
 
 ```rust
 fn Counter() -> Element {
@@ -530,7 +530,7 @@ fn Counter() -> Element {
 }
 ```
 
-This new syntax works with suspense and HTML-streaming return errors while rendering that don’t bring down the entire page.
+This new syntax works lets Suspense and HTML-streaming return errors while rendering that don’t bring down the entire page.
 
 ## Synchronous `prevent_default`
 
@@ -559,17 +559,15 @@ This now makes it possible to implement `prevent_default` conditionally which ha
 
 ## Tracking size with `onresize`
 
-Thanks to the community, we now have two special handlers *not* found in the HTML spec: `onvisible` and `onresize`. These handlers are “special” dioxus handlers that automatically set up an `IntersectionObserver` which previously required JavaScript.
+Thanks to the community, we now have two special handlers *not* found in the HTML spec: `onvisible` and `onresize`. These handlers are “special” dioxus handlers that automatically sets up an `IntersectionObserver` which previously required JavaScript.
 
-You can now implement particularly rich interactions with little hassle:
+You can now implement rich interactions with little hassle:
 
 ```rust
 fn app() -> Element {
     let mut items = use_signal(|| 100);
 
     rsx! {
-        h1 { "A site dedicated to webassembly" }
-
         // Adding a value will cause the `div` to be re-rendered with an extra div
         button { onclick: move |_| items += 1, "Add one" }
 
@@ -610,13 +608,13 @@ This makes it possible to add rich animations to your app without needing to wri
 
 ## Hybrid WGPU Overlays
 
-With this release, we're enable the "child window" feature for Dioxus desktop, letting you overlay native Dioxus apps on existing windows. This makes it simple to integrate Dioxus as an overlay over other renderers like WGPU and OpenGL:
+This release also brings the "child window" feature for Dioxus desktop which lets you overlay native Dioxus apps on existing windows. This makes it simple to integrate Dioxus as an overlay over other renderers like WGPU and OpenGL:
 
 ![wgpu-windows.mp4](/assets/06assets/wgpu-windows.mp4)
 
 ## Web, iOS, and Android bundle support
 
-With this release, we added support for web and mobile with `dx bundle`. Previously, `dx bundle` only worked for desktop apps. Now you can bundle for a wide variety of targets:
+We added support for web and mobile with `dx bundle`. Previously, `dx bundle` only worked for desktop apps. Now you can bundle for a wide variety of targets:
 
 - macOS (.app, .dmg)
 - Windows (.exe, .msi)
@@ -647,7 +645,7 @@ These are baked directly into the `dx new` command - simply run `dx new` and fol
 
 ## Nightly Docs, Tutorials, and New Guides
 
-As usual with these large release, Dioxus 0.6 features a rather sizable overhaul to the documentation. We’ve completely overhauled the tutorial to be less heavy on code. The new tutorial focuses on basics like including assets and deploying to production.
+As usual with these large releases, Dioxus 0.6 features a rather sizable overhaul to the documentation. We’ve completely overhauled the tutorial to be less heavy on code. The new tutorial focuses on basics like including assets and deploying to production.
 
 ![Screenshot 2024-11-14 at 11.35.23 PM.png](/assets/06assets/Screenshot_2024-11-14_at_11.35.23_PM.png)
 

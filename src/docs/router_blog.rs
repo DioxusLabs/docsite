@@ -703,7 +703,7 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                 7usize,
                 {
                     ::use_mdbook::mdbook_shared::Page {
-                        title: "Dioxus 0.6 $ Release Notes $ December 9, 2024 $ Mobile Simulators, Magical Hot-Reloading, Interactive CLI, and more!"
+                        title: "Dioxus 0.6 $ Release Notes $ December 9, 2024 $ Massive Tooling Improvements: Mobile Simulators, Magical Hot-Reloading, Interactive CLI, and more!"
                             .to_string(),
                         url: BookRoute::Release060 {},
                         segments: vec![],
@@ -919,7 +919,7 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                         nested_items: vec![],
                     }),
                     ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
-                        name: "Dioxus 0.6 $ Release Notes $ December 9, 2024 $ Mobile Simulators, Magical Hot-Reloading, Interactive CLI, and more!"
+                        name: "Dioxus 0.6 $ Release Notes $ December 9, 2024 $ Massive Tooling Improvements: Mobile Simulators, Magical Hot-Reloading, Interactive CLI, and more!"
                             .to_string(),
                         location: Some(BookRoute::Release060 {}),
                         number: Some(
@@ -4903,7 +4903,7 @@ pub fn Release060() -> dioxus::prelude::Element {
             }
         }
         p {
-            "With this release, we’ve finally made the transition where  "
+            "With this release, we’ve made the transition where  "
             code { "Element" }
             " is no longer an  "
             code { "Option<Node>" }
@@ -4911,7 +4911,7 @@ pub fn Release060() -> dioxus::prelude::Element {
             code { "Result<Node>" }
             ". This means we’re "
             em { "finally" }
-            " able to open up the use of typical rust error handling in components:"
+            " able to open up the use of typical Rust error handling in components:"
         }
         CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">Slider</span><span style=\"color:#f8f8f2;\">() -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> value: </span><span style=\"font-style:italic;color:#66d9ef;\">f64 </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;1234&quot;</span><span style=\"color:#f8f8f2;\">.</span><span style=\"color:#66d9ef;\">parse</span><span style=\"color:#f8f8f2;\">()</span><span style=\"color:#f92672;\">?</span><span style=\"color:#f8f8f2;\">;\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">    rsx! {{\n</span><span style=\"color:#f8f8f2;\">        Handle {{ offset: value }}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n" }
         p {
@@ -4929,13 +4929,13 @@ pub fn Release060() -> dioxus::prelude::Element {
         p {
             "What’s even better: the  "
             code { "?" }
-            " syntax also works in event handlers, so you can quickly add things like server functions to your app without worrying about manual error handling:"
+            " syntax also works in EventHandlers, so you can quickly add things like server functions to your app without worrying about manual error handling:"
         }
         CodeBlock {
             contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">Counter</span><span style=\"color:#f8f8f2;\">() -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let </span><span style=\"color:#f92672;\">mut</span><span style=\"color:#f8f8f2;\"> data </span><span style=\"color:#f92672;\">= </span><span style=\"color:#66d9ef;\">use_signal</span><span style=\"color:#f8f8f2;\">(|| Data::default());\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">    rsx! {{\n</span><span style=\"color:#f8f8f2;\">        button {{\n</span><span style=\"color:#f8f8f2;\">            onclick: </span><span style=\"color:#f92672;\">move |_|</span><span style=\"color:#f8f8f2;\"> async </span><span style=\"color:#f92672;\">move </span><span style=\"color:#f8f8f2;\">{{\n</span><span style=\"color:#f8f8f2;\">                </span><span style=\"color:#8c8c8c;\">// the `?` automatically throws this error upwards\n</span><span style=\"color:#f8f8f2;\">                data.</span><span style=\"color:#66d9ef;\">set</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#66d9ef;\">request_server_data</span><span style=\"color:#f8f8f2;\">().await</span><span style=\"color:#f92672;\">?</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"color:#f8f8f2;\">                </span><span style=\"font-style:italic;color:#66d9ef;\">Ok</span><span style=\"color:#f8f8f2;\">(())\n</span><span style=\"color:#f8f8f2;\">            }},\n</span><span style=\"color:#f8f8f2;\">            </span><span style=\"color:#ffee99;\">&quot;{{data}}&quot;\n</span><span style=\"color:#f8f8f2;\">        }}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
         }
         p {
-            "This new syntax works with suspense and HTML-streaming return errors while rendering that don’t bring down the entire page."
+            "This new syntax works lets Suspense and HTML-streaming return errors while rendering that don’t bring down the entire page."
         }
         h2 { id: "synchronous",
             a { href: "#synchronous", class: "header", "Synchronous " }
@@ -4976,13 +4976,13 @@ pub fn Release060() -> dioxus::prelude::Element {
             code { "onvisible" }
             " and "
             code { "onresize" }
-            ". These handlers are “special” dioxus handlers that automatically set up an "
+            ". These handlers are “special” dioxus handlers that automatically sets up an "
             code { "IntersectionObserver" }
             " which previously required JavaScript."
         }
-        p { "You can now implement particularly rich interactions with little hassle:" }
+        p { "You can now implement rich interactions with little hassle:" }
         CodeBlock {
-            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">app</span><span style=\"color:#f8f8f2;\">() -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let </span><span style=\"color:#f92672;\">mut</span><span style=\"color:#f8f8f2;\"> items </span><span style=\"color:#f92672;\">= </span><span style=\"color:#66d9ef;\">use_signal</span><span style=\"color:#f8f8f2;\">(|| </span><span style=\"color:#ff80f4;\">100</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">    rsx! {{\n</span><span style=\"color:#f8f8f2;\">        h1 {{ </span><span style=\"color:#ffee99;\">&quot;A site dedicated to webassembly&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"color:#8c8c8c;\">// Adding a value will cause the `div` to be re-rendered with an extra div\n</span><span style=\"color:#f8f8f2;\">        button {{ onclick: </span><span style=\"color:#f92672;\">move |_|</span><span style=\"color:#f8f8f2;\"> items </span><span style=\"color:#f92672;\">+= </span><span style=\"color:#ff80f4;\">1</span><span style=\"color:#f8f8f2;\">, </span><span style=\"color:#ffee99;\">&quot;Add one&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">        div {{\n</span><span style=\"color:#f8f8f2;\">            </span><span style=\"color:#8c8c8c;\">// This will be called when the `div` is resized\n</span><span style=\"color:#f8f8f2;\">            onresize: </span><span style=\"color:#f92672;\">move |</span><span style=\"color:#f8f8f2;\">data</span><span style=\"color:#f92672;\">| </span><span style=\"color:#f8f8f2;\">{{\n</span><span style=\"color:#f8f8f2;\">                tracing::info</span><span style=\"color:#f92672;\">!</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#ffee99;\">&quot;resized to {{:#?}}&quot;</span><span style=\"color:#f8f8f2;\">, data.</span><span style=\"color:#66d9ef;\">get_border_box_size</span><span style=\"color:#f8f8f2;\">().</span><span style=\"color:#66d9ef;\">unwrap</span><span style=\"color:#f8f8f2;\">());\n</span><span style=\"color:#f8f8f2;\">            }},\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">            </span><span style=\"color:#f92672;\">for</span><span style=\"color:#f8f8f2;\"> x </span><span style=\"color:#f92672;\">in </span><span style=\"color:#ff80f4;\">0</span><span style=\"color:#f92672;\">..</span><span style=\"color:#66d9ef;\">items</span><span style=\"color:#f8f8f2;\">() {{\n</span><span style=\"color:#f8f8f2;\">                div {{ </span><span style=\"color:#ffee99;\">&quot;{{x}}&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">            }}\n</span><span style=\"color:#f8f8f2;\">        }}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">app</span><span style=\"color:#f8f8f2;\">() -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let </span><span style=\"color:#f92672;\">mut</span><span style=\"color:#f8f8f2;\"> items </span><span style=\"color:#f92672;\">= </span><span style=\"color:#66d9ef;\">use_signal</span><span style=\"color:#f8f8f2;\">(|| </span><span style=\"color:#ff80f4;\">100</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">    rsx! {{\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"color:#8c8c8c;\">// Adding a value will cause the `div` to be re-rendered with an extra div\n</span><span style=\"color:#f8f8f2;\">        button {{ onclick: </span><span style=\"color:#f92672;\">move |_|</span><span style=\"color:#f8f8f2;\"> items </span><span style=\"color:#f92672;\">+= </span><span style=\"color:#ff80f4;\">1</span><span style=\"color:#f8f8f2;\">, </span><span style=\"color:#ffee99;\">&quot;Add one&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">        div {{\n</span><span style=\"color:#f8f8f2;\">            </span><span style=\"color:#8c8c8c;\">// This will be called when the `div` is resized\n</span><span style=\"color:#f8f8f2;\">            onresize: </span><span style=\"color:#f92672;\">move |</span><span style=\"color:#f8f8f2;\">data</span><span style=\"color:#f92672;\">| </span><span style=\"color:#f8f8f2;\">{{\n</span><span style=\"color:#f8f8f2;\">                tracing::info</span><span style=\"color:#f92672;\">!</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#ffee99;\">&quot;resized to {{:#?}}&quot;</span><span style=\"color:#f8f8f2;\">, data.</span><span style=\"color:#66d9ef;\">get_border_box_size</span><span style=\"color:#f8f8f2;\">().</span><span style=\"color:#66d9ef;\">unwrap</span><span style=\"color:#f8f8f2;\">());\n</span><span style=\"color:#f8f8f2;\">            }},\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">            </span><span style=\"color:#f92672;\">for</span><span style=\"color:#f8f8f2;\"> x </span><span style=\"color:#f92672;\">in </span><span style=\"color:#ff80f4;\">0</span><span style=\"color:#f92672;\">..</span><span style=\"color:#66d9ef;\">items</span><span style=\"color:#f8f8f2;\">() {{\n</span><span style=\"color:#f8f8f2;\">                div {{ </span><span style=\"color:#ffee99;\">&quot;{{x}}&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">            }}\n</span><span style=\"color:#f8f8f2;\">        }}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
         }
         h2 { id: "tracking-visibility-with",
             a { href: "#tracking-visibility-with", class: "header", "Tracking visibility with " }
@@ -5019,7 +5019,7 @@ pub fn Release060() -> dioxus::prelude::Element {
             a { href: "#hybrid-wgpu-overlays", class: "header", "Hybrid WGPU Overlays" }
         }
         p {
-            "With this release, we're enable the \"child window\" feature for Dioxus desktop, letting you overlay native Dioxus apps on existing windows. This makes it simple to integrate Dioxus as an overlay over other renderers like WGPU and OpenGL:"
+            "This release also brings the \"child window\" feature for Dioxus desktop which lets you overlay native Dioxus apps on existing windows. This makes it simple to integrate Dioxus as an overlay over other renderers like WGPU and OpenGL:"
         }
         p {
             video {
@@ -5039,7 +5039,7 @@ pub fn Release060() -> dioxus::prelude::Element {
             }
         }
         p {
-            "With this release, we added support for web and mobile with  "
+            "We added support for web and mobile with  "
             code { "dx bundle" }
             ". Previously,  "
             code { "dx bundle" }
@@ -5118,7 +5118,7 @@ pub fn Release060() -> dioxus::prelude::Element {
             }
         }
         p {
-            "As usual with these large release, Dioxus 0.6 features a rather sizable overhaul to the documentation. We’ve completely overhauled the tutorial to be less heavy on code. The new tutorial focuses on basics like including assets and deploying to production."
+            "As usual with these large releases, Dioxus 0.6 features a rather sizable overhaul to the documentation. We’ve completely overhauled the tutorial to be less heavy on code. The new tutorial focuses on basics like including assets and deploying to production."
         }
         p {
             img {

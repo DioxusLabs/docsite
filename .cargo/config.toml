@@ -19,7 +19,7 @@ debug = 0
 
 [profile.dioxus-server]
 inherits = "dev"
-opt-level = 1
+opt-level = 0
 debug = 0
 
 [profile.dioxus-android]

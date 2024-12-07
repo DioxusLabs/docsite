@@ -39,9 +39,9 @@ Dioxus 0.6 is our biggest release ever: over 350 pull requests merged and hundre
 - Make the Dioxus CLI more robust and easier to use.
 - Inline our mobile tooling into the dioxus CLI for 1st-class mobile support.
 
-Since this post is quite long, we made a quick video highlighting new features, bugs fixed, and a quick tour of everything you can do with Dioxus now:
+<!-- Since this post is quite long, we made a quick video highlighting new features, bugs fixed, and a quick tour of everything you can do with Dioxus now: -->
 
-<iframe style="width: 120%" height="500px" class="centered-overflow" src="https://www.youtube.com/embed/-RN4LB3-9AE" title="Dioxus 0.5 Overview preview" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+<!-- <iframe style="width: 120%" height="500px" class="centered-overflow" src="https://www.youtube.com/embed/-RN4LB3-9AE" title="Dioxus 0.5 Overview preview" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe> -->
 
 ## Interactive Command Line Tools
 

@@ -12,8 +12,8 @@
 pub enum BookRoute {
     #[route("/")]
     Index {},
-    #[route("/introduction/roadmap")]
-    IntroductionRoadmap {},
+    #[route("/./getting_started/")]
+    GettingStartedIndex {},
     #[route("/guide/")]
     GuideIndex {},
     #[route("/guide/your_first_component")]
@@ -34,8 +34,8 @@ pub enum BookRoute {
     EssentialsStateIndex {},
     #[route("/essentials/breaking/")]
     EssentialsBreakingIndex {},
-    #[route("/reference/")]
-    ReferenceIndex {},
+    #[route("/guides/")]
+    GuidesIndex {},
     #[route("/router/")]
     RouterIndex {},
     #[route("/router/example/")]
@@ -68,30 +68,30 @@ pub enum BookRoute {
     RouterReferenceHistoryButtons {},
     #[route("/router/reference/routing-update-callback")]
     RouterReferenceRoutingUpdateCallback {},
-    #[route("/reference/assets")]
-    ReferenceAssets {},
-    #[route("/reference/web/")]
-    ReferenceWebIndex {},
-    #[route("/reference/desktop/")]
-    ReferenceDesktopIndex {},
-    #[route("/reference/mobile/")]
-    ReferenceMobileIndex {},
-    #[route("/reference/mobile/apis")]
-    ReferenceMobileApis {},
-    #[route("/reference/ssr")]
-    ReferenceSsr {},
-    #[route("/reference/fullstack/")]
-    ReferenceFullstackIndex {},
-    #[route("/reference/fullstack/server_functions")]
-    ReferenceFullstackServerFunctions {},
-    #[route("/reference/fullstack/extractors")]
-    ReferenceFullstackExtractors {},
-    #[route("/reference/fullstack/middleware")]
-    ReferenceFullstackMiddleware {},
-    #[route("/reference/fullstack/authentication")]
-    ReferenceFullstackAuthentication {},
-    #[route("/reference/fullstack/routing")]
-    ReferenceFullstackRouting {},
+    #[route("/guides/assets")]
+    GuidesAssets {},
+    #[route("/guides/web/")]
+    GuidesWebIndex {},
+    #[route("/guides/desktop/")]
+    GuidesDesktopIndex {},
+    #[route("/guides/mobile/")]
+    GuidesMobileIndex {},
+    #[route("/guides/mobile/apis")]
+    GuidesMobileApis {},
+    #[route("/guides/ssr")]
+    GuidesSsr {},
+    #[route("/guides/fullstack/")]
+    GuidesFullstackIndex {},
+    #[route("/guides/fullstack/server_functions")]
+    GuidesFullstackServerFunctions {},
+    #[route("/guides/fullstack/extractors")]
+    GuidesFullstackExtractors {},
+    #[route("/guides/fullstack/middleware")]
+    GuidesFullstackMiddleware {},
+    #[route("/guides/fullstack/authentication")]
+    GuidesFullstackAuthentication {},
+    #[route("/guides/fullstack/routing")]
+    GuidesFullstackRouting {},
     #[route("/cookbook/publishing")]
     CookbookPublishing {},
     #[route("/cookbook/antipatterns")]
@@ -118,6 +118,32 @@ pub enum BookRoute {
     CookbookOptimizing {},
     #[route("/migration/")]
     MigrationIndex {},
+    #[route("/reference/")]
+    ReferenceIndex {},
+    #[route("/reference/rsx")]
+    ReferenceRsx {},
+    #[route("/reference/components")]
+    ReferenceComponents {},
+    #[route("/reference/component_props")]
+    ReferenceComponentProps {},
+    #[route("/reference/event_handlers")]
+    ReferenceEventHandlers {},
+    #[route("/reference/hooks")]
+    ReferenceHooks {},
+    #[route("/reference/user_input")]
+    ReferenceUserInput {},
+    #[route("/reference/context")]
+    ReferenceContext {},
+    #[route("/reference/dynamic_rendering")]
+    ReferenceDynamicRendering {},
+    #[route("/reference/router")]
+    ReferenceRouter {},
+    #[route("/reference/use_resource")]
+    ReferenceUseResource {},
+    #[route("/reference/use_coroutine")]
+    ReferenceUseCoroutine {},
+    #[route("/reference/spawn")]
+    ReferenceSpawn {},
     #[route("/contributing/")]
     ContributingIndex {},
     #[route("/contributing/project_structure")]
@@ -137,7 +163,7 @@ impl BookRoute {
     pub fn page_id(&self) -> use_mdbook::mdbook_shared::PageId {
         match self {
             BookRoute::Index {} => use_mdbook::mdbook_shared::PageId(0usize),
-            BookRoute::IntroductionRoadmap {} => use_mdbook::mdbook_shared::PageId(1usize),
+            BookRoute::GettingStartedIndex {} => use_mdbook::mdbook_shared::PageId(1usize),
             BookRoute::GuideIndex {} => use_mdbook::mdbook_shared::PageId(2usize),
             BookRoute::GuideYourFirstComponent {} => use_mdbook::mdbook_shared::PageId(3usize),
             BookRoute::GuideState {} => use_mdbook::mdbook_shared::PageId(4usize),
@@ -148,7 +174,7 @@ impl BookRoute {
             BookRoute::EssentialsLifecycleIndex {} => use_mdbook::mdbook_shared::PageId(9usize),
             BookRoute::EssentialsStateIndex {} => use_mdbook::mdbook_shared::PageId(10usize),
             BookRoute::EssentialsBreakingIndex {} => use_mdbook::mdbook_shared::PageId(11usize),
-            BookRoute::ReferenceIndex {} => use_mdbook::mdbook_shared::PageId(12usize),
+            BookRoute::GuidesIndex {} => use_mdbook::mdbook_shared::PageId(12usize),
             BookRoute::RouterIndex {} => use_mdbook::mdbook_shared::PageId(13usize),
             BookRoute::RouterExampleIndex {} => use_mdbook::mdbook_shared::PageId(14usize),
             BookRoute::RouterExampleFirstRoute {} => use_mdbook::mdbook_shared::PageId(15usize),
@@ -179,26 +205,22 @@ impl BookRoute {
             BookRoute::RouterReferenceRoutingUpdateCallback {} => {
                 use_mdbook::mdbook_shared::PageId(28usize)
             }
-            BookRoute::ReferenceAssets {} => use_mdbook::mdbook_shared::PageId(29usize),
-            BookRoute::ReferenceWebIndex {} => use_mdbook::mdbook_shared::PageId(30usize),
-            BookRoute::ReferenceDesktopIndex {} => use_mdbook::mdbook_shared::PageId(31usize),
-            BookRoute::ReferenceMobileIndex {} => use_mdbook::mdbook_shared::PageId(32usize),
-            BookRoute::ReferenceMobileApis {} => use_mdbook::mdbook_shared::PageId(33usize),
-            BookRoute::ReferenceSsr {} => use_mdbook::mdbook_shared::PageId(34usize),
-            BookRoute::ReferenceFullstackIndex {} => use_mdbook::mdbook_shared::PageId(35usize),
-            BookRoute::ReferenceFullstackServerFunctions {} => {
+            BookRoute::GuidesAssets {} => use_mdbook::mdbook_shared::PageId(29usize),
+            BookRoute::GuidesWebIndex {} => use_mdbook::mdbook_shared::PageId(30usize),
+            BookRoute::GuidesDesktopIndex {} => use_mdbook::mdbook_shared::PageId(31usize),
+            BookRoute::GuidesMobileIndex {} => use_mdbook::mdbook_shared::PageId(32usize),
+            BookRoute::GuidesMobileApis {} => use_mdbook::mdbook_shared::PageId(33usize),
+            BookRoute::GuidesSsr {} => use_mdbook::mdbook_shared::PageId(34usize),
+            BookRoute::GuidesFullstackIndex {} => use_mdbook::mdbook_shared::PageId(35usize),
+            BookRoute::GuidesFullstackServerFunctions {} => {
                 use_mdbook::mdbook_shared::PageId(36usize)
             }
-            BookRoute::ReferenceFullstackExtractors {} => {
-                use_mdbook::mdbook_shared::PageId(37usize)
-            }
-            BookRoute::ReferenceFullstackMiddleware {} => {
-                use_mdbook::mdbook_shared::PageId(38usize)
-            }
-            BookRoute::ReferenceFullstackAuthentication {} => {
+            BookRoute::GuidesFullstackExtractors {} => use_mdbook::mdbook_shared::PageId(37usize),
+            BookRoute::GuidesFullstackMiddleware {} => use_mdbook::mdbook_shared::PageId(38usize),
+            BookRoute::GuidesFullstackAuthentication {} => {
                 use_mdbook::mdbook_shared::PageId(39usize)
             }
-            BookRoute::ReferenceFullstackRouting {} => use_mdbook::mdbook_shared::PageId(40usize),
+            BookRoute::GuidesFullstackRouting {} => use_mdbook::mdbook_shared::PageId(40usize),
             BookRoute::CookbookPublishing {} => use_mdbook::mdbook_shared::PageId(41usize),
             BookRoute::CookbookAntipatterns {} => use_mdbook::mdbook_shared::PageId(42usize),
             BookRoute::CookbookErrorHandling {} => use_mdbook::mdbook_shared::PageId(43usize),
@@ -216,14 +238,27 @@ impl BookRoute {
             BookRoute::CookbookTailwind {} => use_mdbook::mdbook_shared::PageId(51usize),
             BookRoute::CookbookOptimizing {} => use_mdbook::mdbook_shared::PageId(52usize),
             BookRoute::MigrationIndex {} => use_mdbook::mdbook_shared::PageId(53usize),
-            BookRoute::ContributingIndex {} => use_mdbook::mdbook_shared::PageId(54usize),
+            BookRoute::ReferenceIndex {} => use_mdbook::mdbook_shared::PageId(54usize),
+            BookRoute::ReferenceRsx {} => use_mdbook::mdbook_shared::PageId(55usize),
+            BookRoute::ReferenceComponents {} => use_mdbook::mdbook_shared::PageId(56usize),
+            BookRoute::ReferenceComponentProps {} => use_mdbook::mdbook_shared::PageId(57usize),
+            BookRoute::ReferenceEventHandlers {} => use_mdbook::mdbook_shared::PageId(58usize),
+            BookRoute::ReferenceHooks {} => use_mdbook::mdbook_shared::PageId(59usize),
+            BookRoute::ReferenceUserInput {} => use_mdbook::mdbook_shared::PageId(60usize),
+            BookRoute::ReferenceContext {} => use_mdbook::mdbook_shared::PageId(61usize),
+            BookRoute::ReferenceDynamicRendering {} => use_mdbook::mdbook_shared::PageId(62usize),
+            BookRoute::ReferenceRouter {} => use_mdbook::mdbook_shared::PageId(63usize),
+            BookRoute::ReferenceUseResource {} => use_mdbook::mdbook_shared::PageId(64usize),
+            BookRoute::ReferenceUseCoroutine {} => use_mdbook::mdbook_shared::PageId(65usize),
+            BookRoute::ReferenceSpawn {} => use_mdbook::mdbook_shared::PageId(66usize),
+            BookRoute::ContributingIndex {} => use_mdbook::mdbook_shared::PageId(67usize),
             BookRoute::ContributingProjectStructure {} => {
-                use_mdbook::mdbook_shared::PageId(55usize)
+                use_mdbook::mdbook_shared::PageId(68usize)
             }
             BookRoute::ContributingGuidingPrinciples {} => {
-                use_mdbook::mdbook_shared::PageId(56usize)
+                use_mdbook::mdbook_shared::PageId(69usize)
             }
-            BookRoute::ContributingRoadmap {} => use_mdbook::mdbook_shared::PageId(57usize),
+            BookRoute::ContributingRoadmap {} => use_mdbook::mdbook_shared::PageId(70usize),
         }
     }
 }
@@ -273,74 +308,54 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
         );
         pages.push((1usize, {
             ::use_mdbook::mdbook_shared::Page {
-                title: "Roadmap".to_string(),
-                url: BookRoute::IntroductionRoadmap {},
+                title: "Getting Started".to_string(),
+                url: BookRoute::GettingStartedIndex {},
                 segments: vec![],
                 sections: vec![
                     ::use_mdbook::mdbook_shared::Section {
-                        title: "Roadmap".to_string(),
-                        id: "roadmap".to_string(),
+                        title: "Getting Started".to_string(),
+                        id: "getting-started".to_string(),
                         level: 1usize,
                     },
                     ::use_mdbook::mdbook_shared::Section {
-                        title: "Features".to_string(),
-                        id: "features".to_string(),
+                        title: "Prerequisites".to_string(),
+                        id: "prerequisites".to_string(),
                         level: 2usize,
                     },
                     ::use_mdbook::mdbook_shared::Section {
-                        title: "Roadmap".to_string(),
-                        id: "roadmap".to_string(),
+                        title: "An Editor".to_string(),
+                        id: "an-editor".to_string(),
+                        level: 3usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Rust".to_string(),
+                        id: "rust".to_string(),
+                        level: 3usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Platform-specific dependencies".to_string(),
+                        id: "platform-specific-dependencies".to_string(),
+                        level: 3usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Dioxus CLI".to_string(),
+                        id: "dioxus-cli".to_string(),
+                        level: 3usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Create a new project".to_string(),
+                        id: "create-a-new-project".to_string(),
                         level: 2usize,
                     },
                     ::use_mdbook::mdbook_shared::Section {
-                        title: "Core".to_string(),
-                        id: "core".to_string(),
-                        level: 3usize,
-                    },
-                    ::use_mdbook::mdbook_shared::Section {
-                        title: "SSR".to_string(),
-                        id: "ssr".to_string(),
-                        level: 3usize,
-                    },
-                    ::use_mdbook::mdbook_shared::Section {
-                        title: "Desktop".to_string(),
-                        id: "desktop".to_string(),
-                        level: 3usize,
-                    },
-                    ::use_mdbook::mdbook_shared::Section {
-                        title: "Mobile".to_string(),
-                        id: "mobile".to_string(),
-                        level: 3usize,
-                    },
-                    ::use_mdbook::mdbook_shared::Section {
-                        title: "Bundling (CLI)".to_string(),
-                        id: "bundling-(cli)".to_string(),
-                        level: 3usize,
-                    },
-                    ::use_mdbook::mdbook_shared::Section {
-                        title: "Essential hooks".to_string(),
-                        id: "essential-hooks".to_string(),
-                        level: 3usize,
-                    },
-                    ::use_mdbook::mdbook_shared::Section {
-                        title: "Work in Progress".to_string(),
-                        id: "work-in-progress".to_string(),
+                        title: "Running the project".to_string(),
+                        id: "running-the-project".to_string(),
                         level: 2usize,
                     },
                     ::use_mdbook::mdbook_shared::Section {
-                        title: "Build Tool".to_string(),
-                        id: "build-tool".to_string(),
-                        level: 3usize,
-                    },
-                    ::use_mdbook::mdbook_shared::Section {
-                        title: "Server Component Support".to_string(),
-                        id: "server-component-support".to_string(),
-                        level: 3usize,
-                    },
-                    ::use_mdbook::mdbook_shared::Section {
-                        title: "Native rendering".to_string(),
-                        id: "native-rendering".to_string(),
-                        level: 3usize,
+                        title: "Conclusion".to_string(),
+                        id: "conclusion".to_string(),
+                        level: 2usize,
                     },
                 ],
                 raw: String::new(),
@@ -348,7 +363,7 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
             }
         }));
         page_id_mapping.insert(
-            BookRoute::IntroductionRoadmap {},
+            BookRoute::GettingStartedIndex {},
             ::use_mdbook::mdbook_shared::PageId(1usize),
         );
         pages.push((2usize, {
@@ -794,7 +809,7 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
         pages.push((12usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Guides".to_string(),
-                url: BookRoute::ReferenceIndex {},
+                url: BookRoute::GuidesIndex {},
                 segments: vec![],
                 sections: vec![
                     ::use_mdbook::mdbook_shared::Section {
@@ -823,7 +838,7 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
             }
         }));
         page_id_mapping.insert(
-            BookRoute::ReferenceIndex {},
+            BookRoute::GuidesIndex {},
             ::use_mdbook::mdbook_shared::PageId(12usize),
         );
         pages.push((13usize, {
@@ -1257,7 +1272,7 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
         pages.push((29usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Assets".to_string(),
-                url: BookRoute::ReferenceAssets {},
+                url: BookRoute::GuidesAssets {},
                 segments: vec![],
                 sections: vec![
                     ::use_mdbook::mdbook_shared::Section {
@@ -1291,13 +1306,13 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
             }
         }));
         page_id_mapping.insert(
-            BookRoute::ReferenceAssets {},
+            BookRoute::GuidesAssets {},
             ::use_mdbook::mdbook_shared::PageId(29usize),
         );
         pages.push((30usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Web".to_string(),
-                url: BookRoute::ReferenceWebIndex {},
+                url: BookRoute::GuidesWebIndex {},
                 segments: vec![],
                 sections: vec![
                     ::use_mdbook::mdbook_shared::Section {
@@ -1326,13 +1341,13 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
             }
         }));
         page_id_mapping.insert(
-            BookRoute::ReferenceWebIndex {},
+            BookRoute::GuidesWebIndex {},
             ::use_mdbook::mdbook_shared::PageId(30usize),
         );
         pages.push((31usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Desktop".to_string(),
-                url: BookRoute::ReferenceDesktopIndex {},
+                url: BookRoute::GuidesDesktopIndex {},
                 segments: vec![],
                 sections: vec![
                     ::use_mdbook::mdbook_shared::Section {
@@ -1366,13 +1381,13 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
             }
         }));
         page_id_mapping.insert(
-            BookRoute::ReferenceDesktopIndex {},
+            BookRoute::GuidesDesktopIndex {},
             ::use_mdbook::mdbook_shared::PageId(31usize),
         );
         pages.push((32usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Mobile".to_string(),
-                url: BookRoute::ReferenceMobileIndex {},
+                url: BookRoute::GuidesMobileIndex {},
                 segments: vec![],
                 sections: vec![
                     ::use_mdbook::mdbook_shared::Section {
@@ -1431,13 +1446,13 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
             }
         }));
         page_id_mapping.insert(
-            BookRoute::ReferenceMobileIndex {},
+            BookRoute::GuidesMobileIndex {},
             ::use_mdbook::mdbook_shared::PageId(32usize),
         );
         pages.push((33usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "APIs".to_string(),
-                url: BookRoute::ReferenceMobileApis {},
+                url: BookRoute::GuidesMobileApis {},
                 segments: vec![],
                 sections: vec![
                     ::use_mdbook::mdbook_shared::Section {
@@ -1466,13 +1481,13 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
             }
         }));
         page_id_mapping.insert(
-            BookRoute::ReferenceMobileApis {},
+            BookRoute::GuidesMobileApis {},
             ::use_mdbook::mdbook_shared::PageId(33usize),
         );
         pages.push((34usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Streaming and SSR".to_string(),
-                url: BookRoute::ReferenceSsr {},
+                url: BookRoute::GuidesSsr {},
                 segments: vec![],
                 sections: vec![
                     ::use_mdbook::mdbook_shared::Section {
@@ -1496,13 +1511,13 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
             }
         }));
         page_id_mapping.insert(
-            BookRoute::ReferenceSsr {},
+            BookRoute::GuidesSsr {},
             ::use_mdbook::mdbook_shared::PageId(34usize),
         );
         pages.push((35usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Fullstack".to_string(),
-                url: BookRoute::ReferenceFullstackIndex {},
+                url: BookRoute::GuidesFullstackIndex {},
                 segments: vec![],
                 sections: vec![::use_mdbook::mdbook_shared::Section {
                     title: "Fullstack development".to_string(),
@@ -1514,13 +1529,13 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
             }
         }));
         page_id_mapping.insert(
-            BookRoute::ReferenceFullstackIndex {},
+            BookRoute::GuidesFullstackIndex {},
             ::use_mdbook::mdbook_shared::PageId(35usize),
         );
         pages.push((36usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Server Functions".to_string(),
-                url: BookRoute::ReferenceFullstackServerFunctions {},
+                url: BookRoute::GuidesFullstackServerFunctions {},
                 segments: vec![],
                 sections: vec![
                     ::use_mdbook::mdbook_shared::Section {
@@ -1554,13 +1569,13 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
             }
         }));
         page_id_mapping.insert(
-            BookRoute::ReferenceFullstackServerFunctions {},
+            BookRoute::GuidesFullstackServerFunctions {},
             ::use_mdbook::mdbook_shared::PageId(36usize),
         );
         pages.push((37usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Extractors".to_string(),
-                url: BookRoute::ReferenceFullstackExtractors {},
+                url: BookRoute::GuidesFullstackExtractors {},
                 segments: vec![],
                 sections: vec![::use_mdbook::mdbook_shared::Section {
                     title: "Extractors".to_string(),
@@ -1572,13 +1587,13 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
             }
         }));
         page_id_mapping.insert(
-            BookRoute::ReferenceFullstackExtractors {},
+            BookRoute::GuidesFullstackExtractors {},
             ::use_mdbook::mdbook_shared::PageId(37usize),
         );
         pages.push((38usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Middleware".to_string(),
-                url: BookRoute::ReferenceFullstackMiddleware {},
+                url: BookRoute::GuidesFullstackMiddleware {},
                 segments: vec![],
                 sections: vec![::use_mdbook::mdbook_shared::Section {
                     title: "Middleware".to_string(),
@@ -1590,13 +1605,13 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
             }
         }));
         page_id_mapping.insert(
-            BookRoute::ReferenceFullstackMiddleware {},
+            BookRoute::GuidesFullstackMiddleware {},
             ::use_mdbook::mdbook_shared::PageId(38usize),
         );
         pages.push((39usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Authentication".to_string(),
-                url: BookRoute::ReferenceFullstackAuthentication {},
+                url: BookRoute::GuidesFullstackAuthentication {},
                 segments: vec![],
                 sections: vec![::use_mdbook::mdbook_shared::Section {
                     title: "Authentication".to_string(),
@@ -1608,13 +1623,13 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
             }
         }));
         page_id_mapping.insert(
-            BookRoute::ReferenceFullstackAuthentication {},
+            BookRoute::GuidesFullstackAuthentication {},
             ::use_mdbook::mdbook_shared::PageId(39usize),
         );
         pages.push((40usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Routing".to_string(),
-                url: BookRoute::ReferenceFullstackRouting {},
+                url: BookRoute::GuidesFullstackRouting {},
                 segments: vec![],
                 sections: vec![::use_mdbook::mdbook_shared::Section {
                     title: "Routing".to_string(),
@@ -1626,7 +1641,7 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
             }
         }));
         page_id_mapping.insert(
-            BookRoute::ReferenceFullstackRouting {},
+            BookRoute::GuidesFullstackRouting {},
             ::use_mdbook::mdbook_shared::PageId(40usize),
         );
         pages.push((41usize, {
@@ -2149,6 +2164,547 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
         );
         pages.push((54usize, {
             ::use_mdbook::mdbook_shared::Page {
+                title: "Reference".to_string(),
+                url: BookRoute::ReferenceIndex {},
+                segments: vec![],
+                sections: vec![::use_mdbook::mdbook_shared::Section {
+                    title: "Reference".to_string(),
+                    id: "reference".to_string(),
+                    level: 1usize,
+                }],
+                raw: String::new(),
+                id: ::use_mdbook::mdbook_shared::PageId(54usize),
+            }
+        }));
+        page_id_mapping.insert(
+            BookRoute::ReferenceIndex {},
+            ::use_mdbook::mdbook_shared::PageId(54usize),
+        );
+        pages.push((55usize, {
+            ::use_mdbook::mdbook_shared::Page {
+                title: "RSX".to_string(),
+                url: BookRoute::ReferenceRsx {},
+                segments: vec![],
+                sections: vec![
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Describing the UI".to_string(),
+                        id: "describing-the-ui".to_string(),
+                        level: 1usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "RSX Features".to_string(),
+                        id: "rsx-features".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Attributes".to_string(),
+                        id: "attributes".to_string(),
+                        level: 3usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Conditional Attributes".to_string(),
+                        id: "conditional-attributes".to_string(),
+                        level: 4usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Custom Attributes".to_string(),
+                        id: "custom-attributes".to_string(),
+                        level: 4usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Special Attributes".to_string(),
+                        id: "special-attributes".to_string(),
+                        level: 3usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "The HTML Escape Hatch".to_string(),
+                        id: "the-html-escape-hatch".to_string(),
+                        level: 4usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Boolean Attributes".to_string(),
+                        id: "boolean-attributes".to_string(),
+                        level: 4usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Interpolation".to_string(),
+                        id: "interpolation".to_string(),
+                        level: 3usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Children".to_string(),
+                        id: "children".to_string(),
+                        level: 3usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Fragments".to_string(),
+                        id: "fragments".to_string(),
+                        level: 3usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Expressions".to_string(),
+                        id: "expressions".to_string(),
+                        level: 3usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Loops".to_string(),
+                        id: "loops".to_string(),
+                        level: 3usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "If statements".to_string(),
+                        id: "if-statements".to_string(),
+                        level: 3usize,
+                    },
+                ],
+                raw: String::new(),
+                id: ::use_mdbook::mdbook_shared::PageId(55usize),
+            }
+        }));
+        page_id_mapping.insert(
+            BookRoute::ReferenceRsx {},
+            ::use_mdbook::mdbook_shared::PageId(55usize),
+        );
+        pages.push((56usize, {
+            ::use_mdbook::mdbook_shared::Page {
+                title: "Components".to_string(),
+                url: BookRoute::ReferenceComponents {},
+                segments: vec![],
+                sections: vec![::use_mdbook::mdbook_shared::Section {
+                    title: "Components".to_string(),
+                    id: "components".to_string(),
+                    level: 1usize,
+                }],
+                raw: String::new(),
+                id: ::use_mdbook::mdbook_shared::PageId(56usize),
+            }
+        }));
+        page_id_mapping.insert(
+            BookRoute::ReferenceComponents {},
+            ::use_mdbook::mdbook_shared::PageId(56usize),
+        );
+        pages.push((57usize, {
+            ::use_mdbook::mdbook_shared::Page {
+                title: "Props".to_string(),
+                url: BookRoute::ReferenceComponentProps {},
+                segments: vec![],
+                sections: vec![
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Component Props".to_string(),
+                        id: "component-props".to_string(),
+                        level: 1usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Component props are a single struct annotated with ".to_string(),
+                        id: "component-props-are-a-single-struct-annotated-with".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Prop Options".to_string(),
+                        id: "prop-options".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Optional Props".to_string(),
+                        id: "optional-props".to_string(),
+                        level: 3usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Explicitly Required Option".to_string(),
+                        id: "explicitly-required-option".to_string(),
+                        level: 3usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Default Props".to_string(),
+                        id: "default-props".to_string(),
+                        level: 3usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Automatic Conversion with into".to_string(),
+                        id: "automatic-conversion-with-into".to_string(),
+                        level: 3usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "The component macro".to_string(),
+                        id: "the-component-macro".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Component Children".to_string(),
+                        id: "component-children".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "The children field".to_string(),
+                        id: "the-children-field".to_string(),
+                        level: 3usize,
+                    },
+                ],
+                raw: String::new(),
+                id: ::use_mdbook::mdbook_shared::PageId(57usize),
+            }
+        }));
+        page_id_mapping.insert(
+            BookRoute::ReferenceComponentProps {},
+            ::use_mdbook::mdbook_shared::PageId(57usize),
+        );
+        pages.push((58usize, {
+            ::use_mdbook::mdbook_shared::Page {
+                title: "Event Handlers".to_string(),
+                url: BookRoute::ReferenceEventHandlers {},
+                segments: vec![],
+                sections: vec![
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Event Handlers".to_string(),
+                        id: "event-handlers".to_string(),
+                        level: 1usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "The ".to_string(),
+                        id: "the".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Event propagation".to_string(),
+                        id: "event-propagation".to_string(),
+                        level: 3usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Prevent Default".to_string(),
+                        id: "prevent-default".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Handler Props".to_string(),
+                        id: "handler-props".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Custom Data".to_string(),
+                        id: "custom-data".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Returning a value from an event handler".to_string(),
+                        id: "returning-a-value-from-an-event-handler".to_string(),
+                        level: 2usize,
+                    },
+                ],
+                raw: String::new(),
+                id: ::use_mdbook::mdbook_shared::PageId(58usize),
+            }
+        }));
+        page_id_mapping.insert(
+            BookRoute::ReferenceEventHandlers {},
+            ::use_mdbook::mdbook_shared::PageId(58usize),
+        );
+        pages.push((59usize, {
+            ::use_mdbook::mdbook_shared::Page {
+                title: "Hooks".to_string(),
+                url: BookRoute::ReferenceHooks {},
+                segments: vec![],
+                sections: vec![
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Hooks and component state".to_string(),
+                        id: "hooks-and-component-state".to_string(),
+                        level: 1usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "use_signal hook".to_string(),
+                        id: "use_signal-hook".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Rules of hooks".to_string(),
+                        id: "rules-of-hooks".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "No hooks in conditionals".to_string(),
+                        id: "no-hooks-in-conditionals".to_string(),
+                        level: 3usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "No hooks in closures".to_string(),
+                        id: "no-hooks-in-closures".to_string(),
+                        level: 3usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "No hooks in loops".to_string(),
+                        id: "no-hooks-in-loops".to_string(),
+                        level: 3usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Additional resources".to_string(),
+                        id: "additional-resources".to_string(),
+                        level: 2usize,
+                    },
+                ],
+                raw: String::new(),
+                id: ::use_mdbook::mdbook_shared::PageId(59usize),
+            }
+        }));
+        page_id_mapping.insert(
+            BookRoute::ReferenceHooks {},
+            ::use_mdbook::mdbook_shared::PageId(59usize),
+        );
+        pages.push((60usize, {
+            ::use_mdbook::mdbook_shared::Page {
+                title: "User Input".to_string(),
+                url: BookRoute::ReferenceUserInput {},
+                segments: vec![],
+                sections: vec![
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "User Input".to_string(),
+                        id: "user-input".to_string(),
+                        level: 1usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Controlled Inputs".to_string(),
+                        id: "controlled-inputs".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Uncontrolled Inputs".to_string(),
+                        id: "uncontrolled-inputs".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Handling files".to_string(),
+                        id: "handling-files".to_string(),
+                        level: 2usize,
+                    },
+                ],
+                raw: String::new(),
+                id: ::use_mdbook::mdbook_shared::PageId(60usize),
+            }
+        }));
+        page_id_mapping.insert(
+            BookRoute::ReferenceUserInput {},
+            ::use_mdbook::mdbook_shared::PageId(60usize),
+        );
+        pages.push((61usize, {
+            ::use_mdbook::mdbook_shared::Page {
+                title: "Context".to_string(),
+                url: BookRoute::ReferenceContext {},
+                segments: vec![],
+                sections: vec![
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Sharing State".to_string(),
+                        id: "sharing-state".to_string(),
+                        level: 1usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Lifting State".to_string(),
+                        id: "lifting-state".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Using Shared State".to_string(),
+                        id: "using-shared-state".to_string(),
+                        level: 2usize,
+                    },
+                ],
+                raw: String::new(),
+                id: ::use_mdbook::mdbook_shared::PageId(61usize),
+            }
+        }));
+        page_id_mapping.insert(
+            BookRoute::ReferenceContext {},
+            ::use_mdbook::mdbook_shared::PageId(61usize),
+        );
+        pages.push((62usize, {
+            ::use_mdbook::mdbook_shared::Page {
+                title: "Dynamic Rendering".to_string(),
+                url: BookRoute::ReferenceDynamicRendering {},
+                segments: vec![],
+                sections: vec![
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Dynamic Rendering".to_string(),
+                        id: "dynamic-rendering".to_string(),
+                        level: 1usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Conditional Rendering".to_string(),
+                        id: "conditional-rendering".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Improving the ".to_string(),
+                        id: "improving-the".to_string(),
+                        level: 3usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Inspecting ".to_string(),
+                        id: "inspecting".to_string(),
+                        level: 3usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Rendering Nothing".to_string(),
+                        id: "rendering-nothing".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Rendering Lists".to_string(),
+                        id: "rendering-lists".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Inline for loops".to_string(),
+                        id: "inline-for-loops".to_string(),
+                        level: 3usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "The ".to_string(),
+                        id: "the".to_string(),
+                        level: 3usize,
+                    },
+                ],
+                raw: String::new(),
+                id: ::use_mdbook::mdbook_shared::PageId(62usize),
+            }
+        }));
+        page_id_mapping.insert(
+            BookRoute::ReferenceDynamicRendering {},
+            ::use_mdbook::mdbook_shared::PageId(62usize),
+        );
+        pages.push((63usize, {
+            ::use_mdbook::mdbook_shared::Page {
+                title: "Routing".to_string(),
+                url: BookRoute::ReferenceRouter {},
+                segments: vec![],
+                sections: vec![
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Router".to_string(),
+                        id: "router".to_string(),
+                        level: 1usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "What is it?".to_string(),
+                        id: "what-is-it?".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Using the router".to_string(),
+                        id: "using-the-router".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Links".to_string(),
+                        id: "links".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "More reading".to_string(),
+                        id: "more-reading".to_string(),
+                        level: 2usize,
+                    },
+                ],
+                raw: String::new(),
+                id: ::use_mdbook::mdbook_shared::PageId(63usize),
+            }
+        }));
+        page_id_mapping.insert(
+            BookRoute::ReferenceRouter {},
+            ::use_mdbook::mdbook_shared::PageId(63usize),
+        );
+        pages.push((64usize, {
+            ::use_mdbook::mdbook_shared::Page {
+                title: "Resource".to_string(),
+                url: BookRoute::ReferenceUseResource {},
+                segments: vec![],
+                sections: vec![
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Resource".to_string(),
+                        id: "resource".to_string(),
+                        level: 1usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Restarting the Future".to_string(),
+                        id: "restarting-the-future".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Dependencies".to_string(),
+                        id: "dependencies".to_string(),
+                        level: 2usize,
+                    },
+                ],
+                raw: String::new(),
+                id: ::use_mdbook::mdbook_shared::PageId(64usize),
+            }
+        }));
+        page_id_mapping.insert(
+            BookRoute::ReferenceUseResource {},
+            ::use_mdbook::mdbook_shared::PageId(64usize),
+        );
+        pages.push((65usize, {
+            ::use_mdbook::mdbook_shared::Page {
+                title: "UseCoroutine".to_string(),
+                url: BookRoute::ReferenceUseCoroutine {},
+                segments: vec![],
+                sections: vec![
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Coroutines".to_string(),
+                        id: "coroutines".to_string(),
+                        level: 1usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "The ".to_string(),
+                        id: "the".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Yielding Values".to_string(),
+                        id: "yielding-values".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Sending Values".to_string(),
+                        id: "sending-values".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Automatic injection into the Context API".to_string(),
+                        id: "automatic-injection-into-the-context-api".to_string(),
+                        level: 2usize,
+                    },
+                ],
+                raw: String::new(),
+                id: ::use_mdbook::mdbook_shared::PageId(65usize),
+            }
+        }));
+        page_id_mapping.insert(
+            BookRoute::ReferenceUseCoroutine {},
+            ::use_mdbook::mdbook_shared::PageId(65usize),
+        );
+        pages.push((66usize, {
+            ::use_mdbook::mdbook_shared::Page {
+                title: "Spawn".to_string(),
+                url: BookRoute::ReferenceSpawn {},
+                segments: vec![],
+                sections: vec![
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Spawning Futures".to_string(),
+                        id: "spawning-futures".to_string(),
+                        level: 1usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Spawning Tokio Tasks".to_string(),
+                        id: "spawning-tokio-tasks".to_string(),
+                        level: 2usize,
+                    },
+                ],
+                raw: String::new(),
+                id: ::use_mdbook::mdbook_shared::PageId(66usize),
+            }
+        }));
+        page_id_mapping.insert(
+            BookRoute::ReferenceSpawn {},
+            ::use_mdbook::mdbook_shared::PageId(66usize),
+        );
+        pages.push((67usize, {
+            ::use_mdbook::mdbook_shared::Page {
                 title: "Contributing".to_string(),
                 url: BookRoute::ContributingIndex {},
                 segments: vec![],
@@ -2185,14 +2741,14 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(54usize),
+                id: ::use_mdbook::mdbook_shared::PageId(67usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::ContributingIndex {},
-            ::use_mdbook::mdbook_shared::PageId(54usize),
+            ::use_mdbook::mdbook_shared::PageId(67usize),
         );
-        pages.push((55usize, {
+        pages.push((68usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Project Structure".to_string(),
                 url: BookRoute::ContributingProjectStructure {},
@@ -2235,14 +2791,14 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(55usize),
+                id: ::use_mdbook::mdbook_shared::PageId(68usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::ContributingProjectStructure {},
-            ::use_mdbook::mdbook_shared::PageId(55usize),
+            ::use_mdbook::mdbook_shared::PageId(68usize),
         );
-        pages.push((56usize, {
+        pages.push((69usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Guiding Principles".to_string(),
                 url: BookRoute::ContributingGuidingPrinciples {},
@@ -2275,26 +2831,26 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(56usize),
+                id: ::use_mdbook::mdbook_shared::PageId(69usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::ContributingGuidingPrinciples {},
-            ::use_mdbook::mdbook_shared::PageId(56usize),
+            ::use_mdbook::mdbook_shared::PageId(69usize),
         );
-        pages.push((57usize, {
+        pages.push((70usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Roadmap".to_string(),
                 url: BookRoute::ContributingRoadmap {},
                 segments: vec![],
                 sections: vec![],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(57usize),
+                id: ::use_mdbook::mdbook_shared::PageId(70usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::ContributingRoadmap {},
-            ::use_mdbook::mdbook_shared::PageId(57usize),
+            ::use_mdbook::mdbook_shared::PageId(70usize),
         );
         ::use_mdbook::mdbook_shared::MdBook {
             summary: ::use_mdbook::mdbook_shared::Summary {
@@ -2309,8 +2865,8 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                         ),
                         nested_items: vec![
                             ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
-                                name: "Roadmap".to_string(),
-                                location: Some(BookRoute::IntroductionRoadmap {}),
+                                name: "Getting Started".to_string(),
+                                location: Some(BookRoute::GettingStartedIndex {}),
                                 number: Some(
                                     ::use_mdbook::mdbook_shared::SectionNumber(vec![1u32, 1u32]),
                                 ),
@@ -2408,7 +2964,7 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     ::use_mdbook::mdbook_shared::SummaryItem::Separator,
                     ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
                         name: "Guides".to_string(),
-                        location: Some(BookRoute::ReferenceIndex {}),
+                        location: Some(BookRoute::GuidesIndex {}),
                         number: Some(
                             ::use_mdbook::mdbook_shared::SectionNumber(vec![4u32]),
                         ),
@@ -2586,7 +3142,7 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                             }),
                             ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
                                 name: "Assets".to_string(),
-                                location: Some(BookRoute::ReferenceAssets {}),
+                                location: Some(BookRoute::GuidesAssets {}),
                                 number: Some(
                                     ::use_mdbook::mdbook_shared::SectionNumber(vec![4u32, 2u32]),
                                 ),
@@ -2594,7 +3150,7 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                             }),
                             ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
                                 name: "Web".to_string(),
-                                location: Some(BookRoute::ReferenceWebIndex {}),
+                                location: Some(BookRoute::GuidesWebIndex {}),
                                 number: Some(
                                     ::use_mdbook::mdbook_shared::SectionNumber(vec![4u32, 3u32]),
                                 ),
@@ -2602,8 +3158,7 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                             }),
                             ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
                                 name: "Desktop".to_string(),
-                                location: Some(BookRoute::ReferenceDesktopIndex {
-                                }),
+                                location: Some(BookRoute::GuidesDesktopIndex {}),
                                 number: Some(
                                     ::use_mdbook::mdbook_shared::SectionNumber(vec![4u32, 4u32]),
                                 ),
@@ -2611,14 +3166,14 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                             }),
                             ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
                                 name: "Mobile".to_string(),
-                                location: Some(BookRoute::ReferenceMobileIndex {}),
+                                location: Some(BookRoute::GuidesMobileIndex {}),
                                 number: Some(
                                     ::use_mdbook::mdbook_shared::SectionNumber(vec![4u32, 5u32]),
                                 ),
                                 nested_items: vec![
                                     ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
                                         name: "APIs".to_string(),
-                                        location: Some(BookRoute::ReferenceMobileApis {}),
+                                        location: Some(BookRoute::GuidesMobileApis {}),
                                         number: Some(
                                             ::use_mdbook::mdbook_shared::SectionNumber(
                                                 vec![4u32, 5u32, 1u32],
@@ -2630,7 +3185,7 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                             }),
                             ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
                                 name: "Streaming and SSR".to_string(),
-                                location: Some(BookRoute::ReferenceSsr {}),
+                                location: Some(BookRoute::GuidesSsr {}),
                                 number: Some(
                                     ::use_mdbook::mdbook_shared::SectionNumber(vec![4u32, 6u32]),
                                 ),
@@ -2638,15 +3193,15 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                             }),
                             ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
                                 name: "Fullstack".to_string(),
-                                location: Some(BookRoute::ReferenceFullstackIndex {
-                                }),
+                                location: Some(BookRoute::GuidesFullstackIndex {}),
                                 number: Some(
                                     ::use_mdbook::mdbook_shared::SectionNumber(vec![4u32, 7u32]),
                                 ),
                                 nested_items: vec![
                                     ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
                                         name: "Server Functions".to_string(),
-                                        location: Some(BookRoute::ReferenceFullstackServerFunctions {}),
+                                        location: Some(BookRoute::GuidesFullstackServerFunctions {
+                                        }),
                                         number: Some(
                                             ::use_mdbook::mdbook_shared::SectionNumber(
                                                 vec![4u32, 7u32, 1u32],
@@ -2656,7 +3211,7 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                                     }),
                                     ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
                                         name: "Extractors".to_string(),
-                                        location: Some(BookRoute::ReferenceFullstackExtractors {
+                                        location: Some(BookRoute::GuidesFullstackExtractors {
                                         }),
                                         number: Some(
                                             ::use_mdbook::mdbook_shared::SectionNumber(
@@ -2667,7 +3222,7 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                                     }),
                                     ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
                                         name: "Middleware".to_string(),
-                                        location: Some(BookRoute::ReferenceFullstackMiddleware {
+                                        location: Some(BookRoute::GuidesFullstackMiddleware {
                                         }),
                                         number: Some(
                                             ::use_mdbook::mdbook_shared::SectionNumber(
@@ -2678,7 +3233,7 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                                     }),
                                     ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
                                         name: "Authentication".to_string(),
-                                        location: Some(BookRoute::ReferenceFullstackAuthentication {
+                                        location: Some(BookRoute::GuidesFullstackAuthentication {
                                         }),
                                         number: Some(
                                             ::use_mdbook::mdbook_shared::SectionNumber(
@@ -2689,7 +3244,7 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                                     }),
                                     ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
                                         name: "Routing".to_string(),
-                                        location: Some(BookRoute::ReferenceFullstackRouting {
+                                        location: Some(BookRoute::GuidesFullstackRouting {
                                         }),
                                         number: Some(
                                             ::use_mdbook::mdbook_shared::SectionNumber(
@@ -2837,10 +3392,126 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     }),
                     ::use_mdbook::mdbook_shared::SummaryItem::Separator,
                     ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
+                        name: "Reference".to_string(),
+                        location: Some(BookRoute::ReferenceIndex {}),
+                        number: Some(
+                            ::use_mdbook::mdbook_shared::SectionNumber(vec![5u32]),
+                        ),
+                        nested_items: vec![
+                            ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
+                                name: "RSX".to_string(),
+                                location: Some(BookRoute::ReferenceRsx {}),
+                                number: Some(
+                                    ::use_mdbook::mdbook_shared::SectionNumber(vec![5u32, 1u32]),
+                                ),
+                                nested_items: vec![],
+                            }),
+                            ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
+                                name: "Components".to_string(),
+                                location: Some(BookRoute::ReferenceComponents {}),
+                                number: Some(
+                                    ::use_mdbook::mdbook_shared::SectionNumber(vec![5u32, 2u32]),
+                                ),
+                                nested_items: vec![],
+                            }),
+                            ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
+                                name: "Props".to_string(),
+                                location: Some(BookRoute::ReferenceComponentProps {
+                                }),
+                                number: Some(
+                                    ::use_mdbook::mdbook_shared::SectionNumber(vec![5u32, 3u32]),
+                                ),
+                                nested_items: vec![],
+                            }),
+                            ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
+                                name: "Event Handlers".to_string(),
+                                location: Some(BookRoute::ReferenceEventHandlers {
+                                }),
+                                number: Some(
+                                    ::use_mdbook::mdbook_shared::SectionNumber(vec![5u32, 4u32]),
+                                ),
+                                nested_items: vec![],
+                            }),
+                            ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
+                                name: "Hooks".to_string(),
+                                location: Some(BookRoute::ReferenceHooks {}),
+                                number: Some(
+                                    ::use_mdbook::mdbook_shared::SectionNumber(vec![5u32, 5u32]),
+                                ),
+                                nested_items: vec![],
+                            }),
+                            ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
+                                name: "User Input".to_string(),
+                                location: Some(BookRoute::ReferenceUserInput {}),
+                                number: Some(
+                                    ::use_mdbook::mdbook_shared::SectionNumber(vec![5u32, 6u32]),
+                                ),
+                                nested_items: vec![],
+                            }),
+                            ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
+                                name: "Context".to_string(),
+                                location: Some(BookRoute::ReferenceContext {}),
+                                number: Some(
+                                    ::use_mdbook::mdbook_shared::SectionNumber(vec![5u32, 7u32]),
+                                ),
+                                nested_items: vec![],
+                            }),
+                            ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
+                                name: "Dynamic Rendering".to_string(),
+                                location: Some(BookRoute::ReferenceDynamicRendering {
+                                }),
+                                number: Some(
+                                    ::use_mdbook::mdbook_shared::SectionNumber(vec![5u32, 8u32]),
+                                ),
+                                nested_items: vec![],
+                            }),
+                            ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
+                                name: "Routing".to_string(),
+                                location: Some(BookRoute::ReferenceRouter {}),
+                                number: Some(
+                                    ::use_mdbook::mdbook_shared::SectionNumber(vec![5u32, 9u32]),
+                                ),
+                                nested_items: vec![],
+                            }),
+                            ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
+                                name: "Resource".to_string(),
+                                location: Some(BookRoute::ReferenceUseResource {}),
+                                number: Some(
+                                    ::use_mdbook::mdbook_shared::SectionNumber(
+                                        vec![5u32, 10u32],
+                                    ),
+                                ),
+                                nested_items: vec![],
+                            }),
+                            ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
+                                name: "UseCoroutine".to_string(),
+                                location: Some(BookRoute::ReferenceUseCoroutine {
+                                }),
+                                number: Some(
+                                    ::use_mdbook::mdbook_shared::SectionNumber(
+                                        vec![5u32, 11u32],
+                                    ),
+                                ),
+                                nested_items: vec![],
+                            }),
+                            ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
+                                name: "Spawn".to_string(),
+                                location: Some(BookRoute::ReferenceSpawn {}),
+                                number: Some(
+                                    ::use_mdbook::mdbook_shared::SectionNumber(
+                                        vec![5u32, 12u32],
+                                    ),
+                                ),
+                                nested_items: vec![],
+                            }),
+                        ],
+                    }),
+                    ::use_mdbook::mdbook_shared::SummaryItem::Separator,
+                    ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
                         name: "Contributing".to_string(),
                         location: Some(BookRoute::ContributingIndex {}),
                         number: Some(
-                            ::use_mdbook::mdbook_shared::SectionNumber(vec![5u32]),
+                            ::use_mdbook::mdbook_shared::SectionNumber(vec![6u32]),
                         ),
                         nested_items: vec![
                             ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
@@ -2848,7 +3519,7 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                                 location: Some(BookRoute::ContributingProjectStructure {
                                 }),
                                 number: Some(
-                                    ::use_mdbook::mdbook_shared::SectionNumber(vec![5u32, 1u32]),
+                                    ::use_mdbook::mdbook_shared::SectionNumber(vec![6u32, 1u32]),
                                 ),
                                 nested_items: vec![],
                             }),
@@ -2857,7 +3528,7 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                                 location: Some(BookRoute::ContributingGuidingPrinciples {
                                 }),
                                 number: Some(
-                                    ::use_mdbook::mdbook_shared::SectionNumber(vec![5u32, 2u32]),
+                                    ::use_mdbook::mdbook_shared::SectionNumber(vec![6u32, 2u32]),
                                 ),
                                 nested_items: vec![],
                             }),
@@ -2865,7 +3536,7 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                                 name: "Roadmap".to_string(),
                                 location: Some(BookRoute::ContributingRoadmap {}),
                                 number: Some(
-                                    ::use_mdbook::mdbook_shared::SectionNumber(vec![5u32, 3u32]),
+                                    ::use_mdbook::mdbook_shared::SectionNumber(vec![6u32, 3u32]),
                                 ),
                                 nested_items: vec![],
                             }),
@@ -2961,607 +3632,151 @@ pub fn Index() -> dioxus::prelude::Element {
     }
 }
 #[component(no_case_check)]
-pub fn IntroductionRoadmap() -> dioxus::prelude::Element {
+pub fn GettingStartedIndex() -> dioxus::prelude::Element {
     use dioxus::prelude::*;
     rsx! {
-        h1 { id: "roadmap",
-            a { href: "#roadmap", class: "header", "Roadmap" }
+        h1 { id: "getting-started",
+            a { href: "#getting-started", class: "header", "Getting Started" }
+        }
+        p { "This section will help you set up your Dioxus project!" }
+        h2 { id: "prerequisites",
+            a { href: "#prerequisites", class: "header", "Prerequisites" }
+        }
+        h3 { id: "an-editor",
+            a { href: "#an-editor", class: "header", "An Editor" }
         }
         p {
-            "This feature set and roadmap can help you decide if what Dioxus can do today works for you."
+            "Dioxus integrates very well with the "
+            a { href: "https://rust-analyzer.github.io", "Rust-Analyzer LSP plugin" }
+            " which will provide appropriate syntax highlighting, code navigation, folding, and more."
+        }
+        h3 { id: "rust",
+            a { href: "#rust", class: "header", "Rust" }
         }
         p {
-            "If a feature that you need doesn't exist or you want to contribute to projects on the roadmap, feel free to get involved by "
-            a { href: "https://discord.gg/XgGxMSkvUM", "joining the discord" }
-            "."
+            "Head over to "
+            a { href: "http://rust-lang.org", "https://rust-lang.org" }
+            " and install the Rust compiler."
         }
-        p { "Generally, here's the status of each platform:" }
-        ul {
-            li {
-                p {
-                    strong { "Web" }
-                    ": Dioxus is a great choice for pure web-apps – especially for CRUD/complex apps. However, it does lack the ecosystem of React, so you might be missing a component library or some useful hook."
-                }
+        p {
+            "We strongly recommend going through the "
+            a { href: "https://doc.rust-lang.org/book/ch01-00-getting-started.html",
+                "official Rust book"
             }
-            li {
-                p {
-                    strong { "SSR" }
-                    ": Dioxus is a great choice for pre-rendering, hydration, and rendering HTML on a web endpoint. Be warned – the VirtualDom is not (currently) "
-                    code { "Send + Sync" }
-                    "."
-                }
-            }
-            li {
-                p {
-                    strong { "Desktop" }
-                    ": You can build very competent single-window desktop apps right now. However, multi-window apps require support from Dioxus core and are not ready."
-                }
-            }
-            li {
-                p {
-                    strong { "Mobile" }
-                    ": Mobile support is very young. You'll be figuring things out as you go and there are not many support crates for peripherals."
-                }
-            }
-            li {
-                p {
-                    strong { "LiveView" }
-                    ": LiveView support is very young. You'll be figuring things out as you go. Thankfully, none of it is too hard and any work can be upstreamed into Dioxus."
-                }
-            }
-        }
-        h2 { id: "features",
-            a { href: "#features", class: "header", "Features" }
-        }
-        hr {}
-        table {
-            thead {
-                th { "Feature" }
-                th { "Status" }
-                th { "Description" }
-            }
-            tr {
-                th { "Conditional Rendering" }
-                th { "x" }
-                th { "if/then to hide/show component" }
-            }
-            tr {
-                th { "Map, Iterator" }
-                th { "x" }
-                th { "map/filter/reduce to produce rsx!" }
-            }
-            tr {
-                th { "Keyed Components" }
-                th { "x" }
-                th { "advanced diffing with keys" }
-            }
-            tr {
-                th { "Web" }
-                th { "x" }
-                th { "renderer for web browser" }
-            }
-            tr {
-                th { "Desktop (webview)" }
-                th { "x" }
-                th { "renderer for desktop" }
-            }
-            tr {
-                th { "Shared State (Context)" }
-                th { "x" }
-                th { "share state through the tree" }
-            }
-            tr {
-                th { "Hooks" }
-                th { "x" }
-                th { "memory cells in components" }
-            }
-            tr {
-                th { "SSR" }
-                th { "x" }
-                th { "render directly to string" }
-            }
-            tr {
-                th { "Component Children" }
-                th { "x" }
-                th { "cx.children() as a list of nodes" }
-            }
-            tr {
-                th { "Headless components" }
-                th { "x" }
-                th { "components that don't return real elements" }
-            }
-            tr {
-                th { "Fragments" }
-                th { "x" }
-                th { "multiple elements without a real root" }
-            }
-            tr {
-                th { "Manual Props" }
-                th { "x" }
-                th { "Manually pass in props with spread syntax" }
-            }
-            tr {
-                th { "Controlled Inputs" }
-                th { "x" }
-                th { "stateful wrappers around inputs" }
-            }
-            tr {
-                th { "CSS/Inline Styles" }
-                th { "x" }
-                th { "syntax for inline styles/attribute groups" }
-            }
-            tr {
-                th { "Custom elements" }
-                th { "x" }
-                th { "Define new element primitives" }
-            }
-            tr {
-                th { "Suspense" }
-                th { "x" }
-                th { "schedule future render from future/promise" }
-            }
-            tr {
-                th { "Integrated error handling" }
-                th { "x" }
-                th { "Gracefully handle errors with ? syntax" }
-            }
-            tr {
-                th { "NodeRef" }
-                th { "x" }
-                th { "gain direct access to nodes" }
-            }
-            tr {
-                th { "Re-hydration" }
-                th { "x" }
-                th { "Pre-render to HTML to speed up first contentful paint" }
-            }
-            tr {
-                th { "Jank-Free Rendering" }
-                th { "x" }
-                th { "Large diffs are segmented across frames for silky-smooth transitions" }
-            }
-            tr {
-                th { "Effects" }
-                th { "x" }
-                th { "Run effects after a component has been committed to render" }
-            }
-            tr {
-                th { "Portals" }
-                th { "*" }
-                th { "Render nodes outside of the traditional tree structure" }
-            }
-            tr {
-                th { "Cooperative Scheduling" }
-                th { "*" }
-                th { "Prioritize important events over non-important events" }
-            }
-            tr {
-                th { "Server Components" }
-                th { "*" }
-                th { "Hybrid components for SPA and Server" }
-            }
-            tr {
-                th { "Bundle Splitting" }
-                th { "i" }
-                th { "Efficiently and asynchronously load the app" }
-            }
-            tr {
-                th { "Lazy Components" }
-                th { "i" }
-                th { "Dynamically load the new components as the page is loaded" }
-            }
-            tr {
-                th { "1st class global state" }
-                th { "x" }
-                th { "redux/recoil/mobx on top of context" }
-            }
-            tr {
-                th { "Runs natively" }
-                th { "x" }
-                th { "runs as a portable binary w/o a runtime (Node)" }
-            }
-            tr {
-                th { "Subtree Memoization" }
-                th { "x" }
-                th { "skip diffing static element subtrees" }
-            }
-            tr {
-                th { "High-efficiency templates" }
-                th { "x" }
-                th { "rsx! calls are translated to templates on the DOM's side" }
-            }
-            tr {
-                th { "Compile-time correct" }
-                th { "x" }
-                th { "Throw errors on invalid template layouts" }
-            }
-            tr {
-                th { "Heuristic Engine" }
-                th { "x" }
-                th { "track component memory usage to minimize future allocations" }
-            }
-            tr {
-                th { "Fine-grained reactivity" }
-                th { "i" }
-                th { "Skip diffing for fine-grain updates" }
-            }
+            " "
+            em { "completely" }
+            ". However, we hope that a Dioxus app can serve as a great first Rust project. With Dioxus, you'll learn about:"
         }
         ul {
-            li { "x = implemented and working" }
-            li { "* = actively being worked on" }
-            li { "i = not yet implemented or being worked on" }
+            li { "Error handling" }
+            li { "Structs, Functions, Enums" }
+            li { "Closures" }
+            li { "Macros" }
         }
-        h2 { id: "roadmap",
-            a { href: "#roadmap", class: "header", "Roadmap" }
+        p {
+            "We've put a lot of care into making Dioxus syntax familiar and easy to understand, so you won't need deep knowledge of async, lifetimes, or smart pointers until you start building complex Dioxus apps."
         }
-        p { "These Features are planned for the future of Dioxus:" }
-        h3 { id: "core",
-            a { href: "#core", class: "header", "Core" }
+        h3 { id: "platform-specific-dependencies",
+            a { href: "#platform-specific-dependencies", class: "header",
+                "Platform-specific dependencies"
+            }
+        }
+        p {
+            "Most platforms don't require any additional dependencies, but if you are targeting desktop, you can install the following dependencies:"
+        }
+        DesktopDependencies {}
+        h3 { id: "dioxus-cli",
+            a { href: "#dioxus-cli", class: "header", "Dioxus CLI" }
+        }
+        p { "Next, lets install the Dioxus CLI:" }
+        CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">cargo install dioxus</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">cli</span></pre>\n" }
+        p {
+            "If you get an OpenSSL error on installation, ensure the dependencies listed "
+            a { href: "https://docs.rs/openssl/latest/openssl/#automatic", "here" }
+            " are installed."
+        }
+        h2 { id: "create-a-new-project",
+            a { href: "#create-a-new-project", class: "header", "Create a new project" }
+        }
+        p {
+            "You can create a new Dioxus project by running the following command and following the prompts:"
+        }
+        CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">dx new</span></pre>\n" }
+        p {
+            "First you will need to select a platform. Each platform has its own reference with more information on how to set up a project for that platform. Here are the platforms we recommend starting with:"
         }
         ul {
             li {
-                input {
-                    r#type: "checkbox",
-                    readonly: true,
-                    class: "mdbook-checkbox",
-                    value: "true",
-                }
-                "Release of Dioxus Core"
-            }
-            li {
-                input {
-                    r#type: "checkbox",
-                    readonly: true,
-                    class: "mdbook-checkbox",
-                    value: "true",
-                }
-                "Upgrade documentation to include more theory and be more comprehensive"
-            }
-            li {
-                input {
-                    r#type: "checkbox",
-                    readonly: true,
-                    class: "mdbook-checkbox",
-                    value: "true",
-                }
-                "Support for HTML-side templates for lightning-fast dom manipulation"
-            }
-            li {
-                input {
-                    r#type: "checkbox",
-                    readonly: true,
-                    class: "mdbook-checkbox",
-                    value: "false",
-                }
-                "Support for multiple renderers for same virtualdom (subtrees)"
-            }
-            li {
-                input {
-                    r#type: "checkbox",
-                    readonly: true,
-                    class: "mdbook-checkbox",
-                    value: "false",
-                }
-                "Support for ThreadSafe (Send + Sync)"
-            }
-            li {
-                input {
-                    r#type: "checkbox",
-                    readonly: true,
-                    class: "mdbook-checkbox",
-                    value: "false",
-                }
-                "Support for Portals"
-            }
-        }
-        h3 { id: "ssr",
-            a { href: "#ssr", class: "header", "SSR" }
-        }
-        ul {
-            li {
-                input {
-                    r#type: "checkbox",
-                    readonly: true,
-                    class: "mdbook-checkbox",
-                    value: "true",
-                }
-                "SSR Support + Hydration"
-            }
-            li {
-                input {
-                    r#type: "checkbox",
-                    readonly: true,
-                    class: "mdbook-checkbox",
-                    value: "true",
-                }
-                "Integrated suspense support for SSR"
-            }
-        }
-        h3 { id: "desktop",
-            a { href: "#desktop", class: "header", "Desktop" }
-        }
-        ul {
-            li {
-                input {
-                    r#type: "checkbox",
-                    readonly: true,
-                    class: "mdbook-checkbox",
-                    value: "false",
-                }
-                "Declarative window management"
-            }
-            li {
-                input {
-                    r#type: "checkbox",
-                    readonly: true,
-                    class: "mdbook-checkbox",
-                    value: "false",
-                }
-                "Templates for building/bundling"
-            }
-            li {
-                input {
-                    r#type: "checkbox",
-                    readonly: true,
-                    class: "mdbook-checkbox",
-                    value: "false",
-                }
-                "Access to Canvas/WebGL context natively"
-            }
-        }
-        h3 { id: "mobile",
-            a { href: "#mobile", class: "header", "Mobile" }
-        }
-        ul {
-            li {
-                input {
-                    r#type: "checkbox",
-                    readonly: true,
-                    class: "mdbook-checkbox",
-                    value: "false",
-                }
-                "Mobile standard library"
+                "Web"
                 ul {
                     li {
-                        input {
-                            r#type: "checkbox",
-                            readonly: true,
-                            class: "mdbook-checkbox",
-                            value: "false",
-                        }
-                        "GPS"
+                        a { href: "../reference/web", "Client Side" }
+                        ": runs in the browser through WebAssembly"
                     }
                     li {
-                        input {
-                            r#type: "checkbox",
-                            readonly: true,
-                            class: "mdbook-checkbox",
-                            value: "false",
-                        }
-                        "Camera"
-                    }
-                    li {
-                        input {
-                            r#type: "checkbox",
-                            readonly: true,
-                            class: "mdbook-checkbox",
-                            value: "false",
-                        }
-                        "filesystem"
-                    }
-                    li {
-                        input {
-                            r#type: "checkbox",
-                            readonly: true,
-                            class: "mdbook-checkbox",
-                            value: "false",
-                        }
-                        "Biometrics"
-                    }
-                    li {
-                        input {
-                            r#type: "checkbox",
-                            readonly: true,
-                            class: "mdbook-checkbox",
-                            value: "false",
-                        }
-                        "WiFi"
-                    }
-                    li {
-                        input {
-                            r#type: "checkbox",
-                            readonly: true,
-                            class: "mdbook-checkbox",
-                            value: "false",
-                        }
-                        "Bluetooth"
-                    }
-                    li {
-                        input {
-                            r#type: "checkbox",
-                            readonly: true,
-                            class: "mdbook-checkbox",
-                            value: "false",
-                        }
-                        "Notifications"
-                    }
-                    li {
-                        input {
-                            r#type: "checkbox",
-                            readonly: true,
-                            class: "mdbook-checkbox",
-                            value: "false",
-                        }
-                        "Clipboard"
+                        a { href: "../reference/fullstack", "Fullstack" }
+                        ": renders to HTML text on the server and hydrates it on the client"
                     }
                 }
-            }
-            li {
-                input {
-                    r#type: "checkbox",
-                    readonly: true,
-                    class: "mdbook-checkbox",
-                    value: "false",
-                }
-                "Animations"
             }
         }
-        h3 { id: "bundling-cli",
-            a { href: "#bundling-cli", class: "header", "Bundling (CLI)" }
+        blockquote {
+            p {
+                "If you are not sure which web platform you want to use, check out the "
+                a { href: "../reference/choosing_a_web_renderer", "choosing a web renderer" }
+                " chapter."
+            }
         }
         ul {
             li {
-                input {
-                    r#type: "checkbox",
-                    readonly: true,
-                    class: "mdbook-checkbox",
-                    value: "true",
+                "WebView"
+                ul {
+                    li {
+                        a { href: "../reference/desktop", "Desktop" }
+                        ": runs in a web view on desktop"
+                    }
+                    li {
+                        a { href: "../reference/mobile", "Mobile" }
+                        ": runs in a web view on mobile. Mobile is currently not supported by the dioxus CLI. The "
+                        a { href: "../reference/mobile", "mobile reference" }
+                        " has more information about setting up a mobile project"
+                    }
                 }
-                "Translation from HTML into RSX"
-            }
-            li {
-                input {
-                    r#type: "checkbox",
-                    readonly: true,
-                    class: "mdbook-checkbox",
-                    value: "true",
-                }
-                "Dev server"
-            }
-            li {
-                input {
-                    r#type: "checkbox",
-                    readonly: true,
-                    class: "mdbook-checkbox",
-                    value: "true",
-                }
-                "Live reload"
-            }
-            li {
-                input {
-                    r#type: "checkbox",
-                    readonly: true,
-                    class: "mdbook-checkbox",
-                    value: "true",
-                }
-                "Translation from JSX into RSX"
-            }
-            li {
-                input {
-                    r#type: "checkbox",
-                    readonly: true,
-                    class: "mdbook-checkbox",
-                    value: "false",
-                }
-                "Hot module replacement"
-            }
-            li {
-                input {
-                    r#type: "checkbox",
-                    readonly: true,
-                    class: "mdbook-checkbox",
-                    value: "false",
-                }
-                "Code splitting"
-            }
-            li {
-                input {
-                    r#type: "checkbox",
-                    readonly: true,
-                    class: "mdbook-checkbox",
-                    value: "true",
-                }
-                "Asset macros"
-            }
-            li {
-                input {
-                    r#type: "checkbox",
-                    readonly: true,
-                    class: "mdbook-checkbox",
-                    value: "true",
-                }
-                "Css pipeline"
-            }
-            li {
-                input {
-                    r#type: "checkbox",
-                    readonly: true,
-                    class: "mdbook-checkbox",
-                    value: "true",
-                }
-                "Image pipeline"
             }
         }
-        h3 { id: "essential-hooks",
-            a { href: "#essential-hooks", class: "header", "Essential hooks" }
+        p { "Next, you can choose a styling library. For this project, we will use vanilla CSS." }
+        p {
+            "Finally, you can choose to start the project with the router enabled. The router is covered in the "
+            a { href: "../router", "router guide" }
+            "."
         }
-        ul {
-            li {
-                input {
-                    r#type: "checkbox",
-                    readonly: true,
-                    class: "mdbook-checkbox",
-                    value: "true",
-                }
-                "Router"
-            }
-            li {
-                input {
-                    r#type: "checkbox",
-                    readonly: true,
-                    class: "mdbook-checkbox",
-                    value: "true",
-                }
-                "Global state management"
-            }
-            li {
-                input {
-                    r#type: "checkbox",
-                    readonly: true,
-                    class: "mdbook-checkbox",
-                    value: "false",
-                }
-                "Resize observer"
-            }
+        h2 { id: "running-the-project",
+            a { href: "#running-the-project", class: "header", "Running the project" }
         }
-        h2 { id: "work-in-progress",
-            a { href: "#work-in-progress", class: "header", "Work in Progress" }
-        }
-        h3 { id: "build-tool",
-            a { href: "#build-tool", class: "header", "Build Tool" }
+        p { "Once you have created your project, you can start it with the following command:" }
+        CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">cd my_project\n</span><span style=\"color:#f8f8f2;\">dx serve</span></pre>\n" }
+        p {
+            "For projects using the liveview template, run  "
+            code { "dx serve --desktop" }
+            "."
         }
         p {
-            "We are currently working on our own build tool called "
-            a { href: "https://github.com/DioxusLabs/dioxus/tree/main/packages/cli",
-                "Dioxus CLI"
-            }
-            " which will support:"
+            "For Web targets the application will be served at "
+            a { href: "http://localhost:8080", "http://localhost:8080" }
         }
-        ul {
-            li { "an interactive TUI" }
-            li { "on-the-fly reconfiguration" }
-            li { "hot CSS reloading" }
-            li { "two-way data binding between browser and source code" }
-            li {
-                "an interpreter for "
-                code { "rsx!" }
-            }
-            li { "ability to publish to github/netlify/vercel" }
-            li { "bundling for iOS/Desktop/etc" }
-        }
-        h3 { id: "server-component-support",
-            a { href: "#server-component-support", class: "header", "Server Component Support" }
+        h2 { id: "conclusion",
+            a { href: "#conclusion", class: "header", "Conclusion" }
         }
         p {
-            "While not currently fully implemented, the expectation is that LiveView apps can be a hybrid between Wasm and server-rendered where only portions of a page are \"live\" and the rest of the page is either server-rendered, statically generated, or handled by the host SPA."
-        }
-        h3 { id: "native-rendering",
-            a { href: "#native-rendering", class: "header", "Native rendering" }
-        }
-        p {
-            "We are currently working on a native renderer for Dioxus using WGPU called "
-            a { href: "https://github.com/DioxusLabs/blitz/", "Blitz" }
-            ". This will allow you to build apps that are rendered natively for iOS, Android, and Desktop."
+            "That's it! You now have a working Dioxus project. You can continue learning about dioxus by "
+            a { href: "../guide", "making a hackernews clone in the guide" }
+            ", or learning about specific topics/platforms in the "
+            a { href: "../reference", "reference" }
+            ". If you have any questions, feel free to ask in the "
+            a { href: "https://discord.gg/XgGxMSkvUM", "discord" }
+            " or "
+            a { href: "https://github.com/DioxusLabs/dioxus/discussions", "open a discussion" }
+            "."
         }
     }
 }
@@ -4824,7 +5039,7 @@ pub fn EssentialsBreakingIndex() -> dioxus::prelude::Element {
     }
 }
 #[component(no_case_check)]
-pub fn ReferenceIndex() -> dioxus::prelude::Element {
+pub fn GuidesIndex() -> dioxus::prelude::Element {
     use dioxus::prelude::*;
     rsx! {
         h1 { id: "dioxus-reference",
@@ -6088,7 +6303,7 @@ pub fn RouterReferenceRoutingUpdateCallback() -> dioxus::prelude::Element {
     }
 }
 #[component(no_case_check)]
-pub fn ReferenceAssets() -> dioxus::prelude::Element {
+pub fn GuidesAssets() -> dioxus::prelude::Element {
     use dioxus::prelude::*;
     rsx! {
         h1 { id: "assets",
@@ -6182,7 +6397,7 @@ pub fn ReferenceAssets() -> dioxus::prelude::Element {
     }
 }
 #[component(no_case_check)]
-pub fn ReferenceWebIndex() -> dioxus::prelude::Element {
+pub fn GuidesWebIndex() -> dioxus::prelude::Element {
     use dioxus::prelude::*;
     rsx! {
         h1 { id: "web",
@@ -6290,7 +6505,7 @@ pub fn ReferenceWebIndex() -> dioxus::prelude::Element {
     }
 }
 #[component(no_case_check)]
-pub fn ReferenceDesktopIndex() -> dioxus::prelude::Element {
+pub fn GuidesDesktopIndex() -> dioxus::prelude::Element {
     use dioxus::prelude::*;
     rsx! {
         h1 { id: "desktop",
@@ -6391,7 +6606,7 @@ pub fn ReferenceDesktopIndex() -> dioxus::prelude::Element {
     }
 }
 #[component(no_case_check)]
-pub fn ReferenceMobileIndex() -> dioxus::prelude::Element {
+pub fn GuidesMobileIndex() -> dioxus::prelude::Element {
     use dioxus::prelude::*;
     rsx! {
         h1 { id: "mobile-app",
@@ -6669,7 +6884,7 @@ pub fn ReferenceMobileIndex() -> dioxus::prelude::Element {
     }
 }
 #[component(no_case_check)]
-pub fn ReferenceMobileApis() -> dioxus::prelude::Element {
+pub fn GuidesMobileApis() -> dioxus::prelude::Element {
     use dioxus::prelude::*;
     rsx! {
         h1 { id: "mobile",
@@ -6713,7 +6928,7 @@ pub fn ReferenceMobileApis() -> dioxus::prelude::Element {
     }
 }
 #[component(no_case_check)]
-pub fn ReferenceSsr() -> dioxus::prelude::Element {
+pub fn GuidesSsr() -> dioxus::prelude::Element {
     use dioxus::prelude::*;
     rsx! {
         h1 { id: "server-side-rendering",
@@ -6787,7 +7002,7 @@ pub fn ReferenceSsr() -> dioxus::prelude::Element {
     }
 }
 #[component(no_case_check)]
-pub fn ReferenceFullstackIndex() -> dioxus::prelude::Element {
+pub fn GuidesFullstackIndex() -> dioxus::prelude::Element {
     use dioxus::prelude::*;
     rsx! {
         h1 { id: "fullstack-development",
@@ -6814,7 +7029,7 @@ pub fn ReferenceFullstackIndex() -> dioxus::prelude::Element {
     }
 }
 #[component(no_case_check)]
-pub fn ReferenceFullstackServerFunctions() -> dioxus::prelude::Element {
+pub fn GuidesFullstackServerFunctions() -> dioxus::prelude::Element {
     use dioxus::prelude::*;
     rsx! {
         h1 { id: "communicating-with-the-server",
@@ -7017,7 +7232,7 @@ pub fn ReferenceFullstackServerFunctions() -> dioxus::prelude::Element {
     }
 }
 #[component(no_case_check)]
-pub fn ReferenceFullstackExtractors() -> dioxus::prelude::Element {
+pub fn GuidesFullstackExtractors() -> dioxus::prelude::Element {
     use dioxus::prelude::*;
     rsx! {
         h1 { id: "extractors",
@@ -7047,7 +7262,7 @@ pub fn ReferenceFullstackExtractors() -> dioxus::prelude::Element {
     }
 }
 #[component(no_case_check)]
-pub fn ReferenceFullstackMiddleware() -> dioxus::prelude::Element {
+pub fn GuidesFullstackMiddleware() -> dioxus::prelude::Element {
     use dioxus::prelude::*;
     rsx! {
         h1 { id: "middleware",
@@ -7070,7 +7285,7 @@ pub fn ReferenceFullstackMiddleware() -> dioxus::prelude::Element {
     }
 }
 #[component(no_case_check)]
-pub fn ReferenceFullstackAuthentication() -> dioxus::prelude::Element {
+pub fn GuidesFullstackAuthentication() -> dioxus::prelude::Element {
     use dioxus::prelude::*;
     rsx! {
         h1 { id: "authentication",
@@ -7094,7 +7309,7 @@ pub fn ReferenceFullstackAuthentication() -> dioxus::prelude::Element {
     }
 }
 #[component(no_case_check)]
-pub fn ReferenceFullstackRouting() -> dioxus::prelude::Element {
+pub fn GuidesFullstackRouting() -> dioxus::prelude::Element {
     use dioxus::prelude::*;
     rsx! {
         h1 { id: "routing",
@@ -8556,6 +8771,1819 @@ pub fn MigrationIndex() -> dioxus::prelude::Element {
         CodeBlock {
             contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f92672;\">use </span><span style=\"color:#f8f8f2;\">dioxus::prelude::</span><span style=\"color:#f92672;\">*</span><span style=\"color:#f8f8f2;\">;\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">app</span><span style=\"color:#f8f8f2;\">() -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    rsx! {{\n</span><span style=\"color:#f8f8f2;\">        img {{\n</span><span style=\"color:#f8f8f2;\">            src: asset!(</span><span style=\"color:#ffee99;\">&quot;/assets/static/bundle.png&quot;</span><span style=\"color:#f8f8f2;\">, ImageAssetOptions::new().</span><span style=\"color:#66d9ef;\">with_size</span><span style=\"color:#f8f8f2;\">(ImageSize::Manual {{ width: </span><span style=\"color:#ff80f4;\">100</span><span style=\"color:#f8f8f2;\">, height: </span><span style=\"color:#ff80f4;\">100 </span><span style=\"color:#f8f8f2;\">}}))\n</span><span style=\"color:#f8f8f2;\">        }}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
             name: "migration.rs".to_string(),
+        }
+    }
+}
+#[component(no_case_check)]
+pub fn ReferenceIndex() -> dioxus::prelude::Element {
+    use dioxus::prelude::*;
+    rsx! {
+        h1 { id: "reference",
+            a { href: "#reference", class: "header", "Reference" }
+        }
+        p {
+            "This portion of the Dioxus Docs contains specific details about features that provide more depth than what is necessary for most reading."
+        }
+        ul {
+            li {
+                a { href: "./rsx", "RSX" }
+            }
+            li {
+                a { href: "./components", "Components" }
+            }
+            li {
+                a { href: "./component_props", "Props" }
+            }
+            li {
+                a { href: "./event_handlers", "Event Handlers" }
+            }
+            li {
+                a { href: "./hooks", "Hooks" }
+            }
+            li {
+                a { href: "./user_input", "User Input" }
+            }
+            li {
+                a { href: "./context", "Context" }
+            }
+            li {
+                a { href: "./dynamic_rendering", "Dynamic Rendering" }
+            }
+            li {
+                a { href: "./router", "Routing" }
+            }
+            li {
+                a { href: "./use_resource", "Resource" }
+            }
+            li {
+                a { href: "./use_coroutine", "UseCoroutine" }
+            }
+            li {
+                a { href: "./spawn", "Spawn" }
+            }
+        }
+    }
+}
+#[component(no_case_check)]
+pub fn ReferenceRsx() -> dioxus::prelude::Element {
+    use dioxus::prelude::*;
+    rsx! {
+        h1 { id: "describing-the-ui",
+            a { href: "#describing-the-ui", class: "header", "Describing the UI" }
+        }
+        p {
+            "Dioxus is a "
+            em { "declarative" }
+            " framework. This means that instead of telling Dioxus what to do (e.g. to \"create an element\" or \"set the color to red\") we simply "
+            em { "declare" }
+            " what we want the UI to look like using RSX."
+        }
+        p { "You have already seen a simple example of RSX syntax in the \"hello world\" application:" }
+        CodeBlock {
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#8c8c8c;\">// define a component that renders a div with the text &quot;Hello, world!&quot;\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">App</span><span style=\"color:#f8f8f2;\">() -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    rsx! {{\n</span><span style=\"color:#f8f8f2;\">        div {{ </span><span style=\"color:#ffee99;\">&quot;Hello, world!&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
+            name: "hello_world_desktop.rs".to_string(),
+        }
+        p {
+            "Here, we use the  "
+            code { "rsx!" }
+            " macro to "
+            em { "declare" }
+            " that we want a "
+            code { "div" }
+            " element, containing the text "
+            code { "\"Hello, world!\"" }
+            ". Dioxus takes the RSX and constructs a UI from it."
+        }
+        h2 { id: "rsx-features",
+            a { href: "#rsx-features", class: "header", "RSX Features" }
+        }
+        p {
+            "RSX is very similar to HTML in that it describes elements with attributes and children. Here's an empty  "
+            code { "button" }
+            " element in RSX, as well as the resulting HTML:"
+        }
+        CodeBlock {
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">rsx! {{\n</span><span style=\"color:#f8f8f2;\">    button {{\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"color:#8c8c8c;\">// attributes / listeners\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"color:#8c8c8c;\">// children\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"color:#ffee99;\">&quot;Hello, World!&quot;\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
+            name: "rsx_overview.rs".to_string(),
+        }
+        DemoFrame { rsx_overview::Button {} }
+        h3 { id: "attributes",
+            a { href: "#attributes", class: "header", "Attributes" }
+        }
+        p {
+            "Attributes (and "
+            a { href: "event_handlers", "event handlers" }
+            ") modify the behavior or appearance of the element they are attached to. They are specified inside the "
+            code { "{{}}" }
+            " brackets, using the "
+            code { "name: value" }
+            " syntax. You can provide the value as a literal in the RSX:"
+        }
+        CodeBlock {
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">rsx! {{\n</span><span style=\"color:#f8f8f2;\">    img {{\n</span><span style=\"color:#f8f8f2;\">        src: </span><span style=\"color:#ffee99;\">&quot;https://avatars.githubusercontent.com/u/79236386?s=200&amp;v=4&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">        class: </span><span style=\"color:#ffee99;\">&quot;primary_button&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">        width: </span><span style=\"color:#ffee99;\">&quot;10px&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
+            name: "rsx_overview.rs".to_string(),
+        }
+        DemoFrame { rsx_overview::Attributes {} }
+        p {
+            "Some attributes, such as the  "
+            code { "type" }
+            " attribute for  "
+            code { "input" }
+            " elements won't work on their own in Rust. This is because  "
+            code { "type" }
+            " is a reserved Rust keyword. To get around this, Dioxus uses the  "
+            code { "r#" }
+            " specifier:"
+        }
+        CodeBlock {
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">rsx! {{\n</span><span style=\"color:#f8f8f2;\">    input {{ r</span><span style=\"color:#f92672;\">#</span><span style=\"font-style:italic;color:#66d9ef;\">type</span><span style=\"color:#f8f8f2;\">: </span><span style=\"color:#ffee99;\">&quot;text&quot;</span><span style=\"color:#f8f8f2;\">, color: </span><span style=\"color:#ffee99;\">&quot;red&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
+            name: "rsx_overview.rs".to_string(),
+        }
+        blockquote {
+            p {
+                "Note: All attributes defined in  "
+                code { "dioxus-html" }
+                " follow the snake_case naming convention. They transform their  "
+                code { "snake_case" }
+                " names to HTML's  "
+                code { "camelCase" }
+                " attributes."
+            }
+        }
+        blockquote {
+            p {
+                "Note: Styles can be used directly outside of the  "
+                code { "style:" }
+                " attribute. In the above example,  "
+                code { "color: \"red\"" }
+                " is turned into  "
+                code { "style=\"color: red\"" }
+                "."
+            }
+        }
+        h4 { id: "conditional-attributes",
+            a { href: "#conditional-attributes", class: "header", "Conditional Attributes" }
+        }
+        p {
+            "You can also conditionally include attributes by using an if statement without an else branch. This is useful for adding an attribute only if a certain condition is met:"
+        }
+        CodeBlock {
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> large_font </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ff80f4;\">true</span><span style=\"color:#f8f8f2;\">;\n</span><span style=\"color:#f8f8f2;\">rsx! {{\n</span><span style=\"color:#f8f8f2;\">    div {{ class: </span><span style=\"color:#f92672;\">if</span><span style=\"color:#f8f8f2;\"> large_font {{ </span><span style=\"color:#ffee99;\">&quot;text-xl&quot; </span><span style=\"color:#f8f8f2;\">}}, </span><span style=\"color:#ffee99;\">&quot;Hello, World!&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
+            name: "rsx_overview.rs".to_string(),
+        }
+        DemoFrame { rsx_overview::ConditionalAttributes {} }
+        h4 { id: "custom-attributes",
+            a { href: "#custom-attributes", class: "header", "Custom Attributes" }
+        }
+        p {
+            "Dioxus has a pre-configured set of attributes that you can use. RSX is validated at compile time to make sure you didn't specify an invalid attribute. If you want to override this behavior with a custom attribute name, specify the attribute in quotes:"
+        }
+        CodeBlock {
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">rsx! {{\n</span><span style=\"color:#f8f8f2;\">    div {{ </span><span style=\"color:#ffee99;\">&quot;style&quot;</span><span style=\"color:#f8f8f2;\">: </span><span style=\"color:#ffee99;\">&quot;width: 20px; height: 20px; background-color: red;&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
+            name: "rsx_overview.rs".to_string(),
+        }
+        DemoFrame { rsx_overview::CustomAttributes {} }
+        h3 { id: "special-attributes",
+            a { href: "#special-attributes", class: "header", "Special Attributes" }
+        }
+        p { "While most attributes are simply passed on to the HTML, some have special behaviors." }
+        h4 { id: "the-html-escape-hatch",
+            a { href: "#the-html-escape-hatch", class: "header", "The HTML Escape Hatch" }
+        }
+        p {
+            "If you're working with pre-rendered assets, output from templates, or output from a JS library, then you might want to pass HTML directly instead of going through Dioxus. In these instances, reach for  "
+            code { "dangerous_inner_html" }
+            "."
+        }
+        p {
+            "For example, shipping a markdown-to-Dioxus converter might significantly bloat your final application size. Instead, you'll want to pre-render your markdown to HTML and then include the HTML directly in your output. We use this approach for the "
+            a { href: "https://dioxuslabs.com", "Dioxus homepage" }
+            ":"
+        }
+        CodeBlock {
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#8c8c8c;\">// this should come from a trusted source\n</span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> contents </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;live &lt;b&gt;dangerously&lt;/b&gt;&quot;</span><span style=\"color:#f8f8f2;\">;\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">rsx! {{\n</span><span style=\"color:#f8f8f2;\">    div {{ dangerous_inner_html: </span><span style=\"color:#ffee99;\">&quot;{{contents}}&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
+            name: "dangerous_inner_html.rs".to_string(),
+        }
+        DemoFrame { dangerous_inner_html::App {} }
+        blockquote {
+            p {
+                "Note! This attribute is called \"dangerous_inner_html\" because it is "
+                strong { "dangerous" }
+                " to pass it data you don't trust. If you're not careful, you can easily expose "
+                a { href: "https://en.wikipedia.org/wiki/Cross-site_scripting",
+                    "cross-site scripting (XSS)"
+                }
+                " attacks to your users."
+            }
+            p {
+                "If you're handling untrusted input, make sure to sanitize your HTML before passing it into  "
+                code { "dangerous_inner_html" }
+                " – or just pass it to a Text Element to escape any HTML tags."
+            }
+        }
+        h4 { id: "boolean-attributes",
+            a { href: "#boolean-attributes", class: "header", "Boolean Attributes" }
+        }
+        p {
+            "Most attributes, when rendered, will be rendered exactly as the input you provided. However, some attributes are considered \"boolean\" attributes and just their presence determines whether they affect the output. For these attributes, a provided value of  "
+            code { "\"false\"" }
+            " will cause them to be removed from the target element."
+        }
+        p {
+            "So this RSX wouldn't actually render the  "
+            code { "hidden" }
+            " attribute:"
+        }
+        CodeBlock {
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">rsx! {{\n</span><span style=\"color:#f8f8f2;\">    div {{ hidden: </span><span style=\"color:#ff80f4;\">false</span><span style=\"color:#f8f8f2;\">, </span><span style=\"color:#ffee99;\">&quot;hello&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
+            name: "boolean_attribute.rs".to_string(),
+        }
+        DemoFrame { boolean_attribute::App {} }
+        p {
+            "Not all attributes work like this however. "
+            em { "Only the following attributes" }
+            " have this behavior:"
+        }
+        ul {
+            li {
+                code { "allowfullscreen" }
+            }
+            li {
+                code { "allowpaymentrequest" }
+            }
+            li {
+                code { "async" }
+            }
+            li {
+                code { "autofocus" }
+            }
+            li {
+                code { "autoplay" }
+            }
+            li {
+                code { "checked" }
+            }
+            li {
+                code { "controls" }
+            }
+            li {
+                code { "default" }
+            }
+            li {
+                code { "defer" }
+            }
+            li {
+                code { "disabled" }
+            }
+            li {
+                code { "formnovalidate" }
+            }
+            li {
+                code { "hidden" }
+            }
+            li {
+                code { "ismap" }
+            }
+            li {
+                code { "itemscope" }
+            }
+            li {
+                code { "loop" }
+            }
+            li {
+                code { "multiple" }
+            }
+            li {
+                code { "muted" }
+            }
+            li {
+                code { "nomodule" }
+            }
+            li {
+                code { "novalidate" }
+            }
+            li {
+                code { "open" }
+            }
+            li {
+                code { "playsinline" }
+            }
+            li {
+                code { "readonly" }
+            }
+            li {
+                code { "required" }
+            }
+            li {
+                code { "reversed" }
+            }
+            li {
+                code { "selected" }
+            }
+            li {
+                code { "truespeed" }
+            }
+        }
+        p {
+            "For any other attributes, a value of  "
+            code { "\"false\"" }
+            " will be sent directly to the DOM."
+        }
+        h3 { id: "interpolation",
+            a { href: "#interpolation", class: "header", "Interpolation" }
+        }
+        p {
+            "Similarly to how you can "
+            a { href: "https://doc.rust-lang.org/rust-by-example/hello/print/fmt.html",
+                "format"
+            }
+            " Rust strings, you can also interpolate in RSX text. Use "
+            code { "{{variable}}" }
+            " to Display the value of a variable in a string, or "
+            code { "{{variable:?}}" }
+            " to use the Debug representation:"
+        }
+        CodeBlock {
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> coordinates </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#ff80f4;\">42</span><span style=\"color:#f8f8f2;\">, </span><span style=\"color:#ff80f4;\">0</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> country </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;es&quot;</span><span style=\"color:#f8f8f2;\">;\n</span><span style=\"color:#f8f8f2;\">rsx! {{\n</span><span style=\"color:#f8f8f2;\">    div {{\n</span><span style=\"color:#f8f8f2;\">        class: </span><span style=\"color:#ffee99;\">&quot;country-{{country}}&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">        left: </span><span style=\"color:#ffee99;\">&quot;{{coordinates.0:?}}&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">        top: </span><span style=\"color:#ffee99;\">&quot;{{coordinates.1:?}}&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"color:#8c8c8c;\">// arbitrary expressions are allowed,\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"color:#8c8c8c;\">// as long as they don&#39;t contain `{{}}`\n</span><span style=\"color:#f8f8f2;\">        div {{ </span><span style=\"color:#ffee99;\">&quot;{{country.to_uppercase()}}&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">        div {{ </span><span style=\"color:#ffee99;\">&quot;{{7*6}}&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"color:#8c8c8c;\">// {{}} can be escaped with {{{{}}}}\n</span><span style=\"color:#f8f8f2;\">        div {{ </span><span style=\"color:#ffee99;\">&quot;{{{{}}}}&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
+            name: "rsx_overview.rs".to_string(),
+        }
+        DemoFrame { rsx_overview::Formatting {} }
+        h3 { id: "children",
+            a { href: "#children", class: "header", "Children" }
+        }
+        p {
+            "To add children to an element, put them inside the  "
+            code { "{{}}" }
+            " brackets after all attributes and listeners in the element. They can be other elements, text, or "
+            a { href: "components", "components" }
+            ". For example, you could have an "
+            code { "ol" }
+            " (ordered list) element, containing 3 "
+            code { "li" }
+            " (list item) elements, each of which contains some text:"
+        }
+        CodeBlock {
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">rsx! {{\n</span><span style=\"color:#f8f8f2;\">    ol {{\n</span><span style=\"color:#f8f8f2;\">        li {{ </span><span style=\"color:#ffee99;\">&quot;First Item&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">        li {{ </span><span style=\"color:#ffee99;\">&quot;Second Item&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">        li {{ </span><span style=\"color:#ffee99;\">&quot;Third Item&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
+            name: "rsx_overview.rs".to_string(),
+        }
+        DemoFrame { rsx_overview::Children {} }
+        h3 { id: "fragments",
+            a { href: "#fragments", class: "header", "Fragments" }
+        }
+        p {
+            "You can render multiple elements at the top level of  "
+            code { "rsx!" }
+            " and they will be automatically grouped."
+        }
+        CodeBlock {
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">rsx! {{\n</span><span style=\"color:#f8f8f2;\">    p {{ </span><span style=\"color:#ffee99;\">&quot;First Item&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">    p {{ </span><span style=\"color:#ffee99;\">&quot;Second Item&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
+            name: "rsx_overview.rs".to_string(),
+        }
+        DemoFrame { rsx_overview::ManyRoots {} }
+        h3 { id: "expressions",
+            a { href: "#expressions", class: "header", "Expressions" }
+        }
+        p {
+            "You can include arbitrary Rust expressions as children within RSX by surrounding your expression with  "
+            code { "{{}}" }
+            "s. Any expression that implements "
+            a { href: "https://docs.rs/dioxus-core/0.3/dioxus_core/trait.IntoDynNode.html",
+                "IntoDynNode"
+            }
+            " can be used within rsx. This is useful for displaying data from an "
+            a { href: "https://doc.rust-lang.org/stable/book/ch13-02-iterators.html#processing-a-series-of-items-with-iterators",
+                "iterator"
+            }
+            ":"
+        }
+        CodeBlock {
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> text </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;Dioxus&quot;</span><span style=\"color:#f8f8f2;\">;\n</span><span style=\"color:#f8f8f2;\">rsx! {{\n</span><span style=\"color:#f8f8f2;\">    span {{\n</span><span style=\"color:#f8f8f2;\">        {{text.</span><span style=\"color:#66d9ef;\">to_uppercase</span><span style=\"color:#f8f8f2;\">()}}\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"color:#8c8c8c;\">// create a list of text from 0 to 9\n</span><span style=\"color:#f8f8f2;\">        {{(</span><span style=\"color:#ff80f4;\">0</span><span style=\"color:#f92672;\">..</span><span style=\"color:#ff80f4;\">10</span><span style=\"color:#f8f8f2;\">).</span><span style=\"color:#66d9ef;\">map</span><span style=\"color:#f8f8f2;\">(|</span><span style=\"font-style:italic;color:#fd971f;\">i</span><span style=\"color:#f8f8f2;\">| rsx! {{\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"color:#ffee99;\">&quot;{{i}}&quot;\n</span><span style=\"color:#f8f8f2;\">        }})}}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
+            name: "rsx_overview.rs".to_string(),
+        }
+        DemoFrame { rsx_overview::Expression {} }
+        h3 { id: "loops",
+            a { href: "#loops", class: "header", "Loops" }
+        }
+        p { "In addition to iterators you can also use for loops directly within RSX:" }
+        CodeBlock {
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">rsx! {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#8c8c8c;\">// use a for loop where the body itself is RSX\n</span><span style=\"color:#f8f8f2;\">    div {{\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"color:#8c8c8c;\">// create a list of text from 0 to 9\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"color:#f92672;\">for</span><span style=\"color:#f8f8f2;\"> i </span><span style=\"color:#f92672;\">in </span><span style=\"color:#ff80f4;\">0</span><span style=\"color:#f92672;\">..</span><span style=\"color:#ff80f4;\">3 </span><span style=\"color:#f8f8f2;\">{{\n</span><span style=\"color:#f8f8f2;\">            </span><span style=\"color:#8c8c8c;\">// NOTE: the body of the loop is RSX not a rust statement\n</span><span style=\"color:#f8f8f2;\">            div {{ </span><span style=\"color:#ffee99;\">&quot;{{i}}&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">        }}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#8c8c8c;\">// iterator equivalent\n</span><span style=\"color:#f8f8f2;\">    div {{\n</span><span style=\"color:#f8f8f2;\">        {{(</span><span style=\"color:#ff80f4;\">0</span><span style=\"color:#f92672;\">..</span><span style=\"color:#ff80f4;\">3</span><span style=\"color:#f8f8f2;\">).</span><span style=\"color:#66d9ef;\">map</span><span style=\"color:#f8f8f2;\">(|</span><span style=\"font-style:italic;color:#fd971f;\">i</span><span style=\"color:#f8f8f2;\">| rsx! {{\n</span><span style=\"color:#f8f8f2;\">            div {{ </span><span style=\"color:#ffee99;\">&quot;{{i}}&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">        }})}}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
+            name: "rsx_overview.rs".to_string(),
+        }
+        DemoFrame { rsx_overview::Loops {} }
+        h3 { id: "if-statements",
+            a { href: "#if-statements", class: "header", "If statements" }
+        }
+        p { "You can also use if statements without an else branch within RSX:" }
+        CodeBlock {
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">rsx! {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#8c8c8c;\">// use if statements without an else\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#f92672;\">if </span><span style=\"color:#ff80f4;\">true </span><span style=\"color:#f8f8f2;\">{{\n</span><span style=\"color:#f8f8f2;\">        div {{ </span><span style=\"color:#ffee99;\">&quot;true&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
+            name: "rsx_overview.rs".to_string(),
+        }
+        DemoFrame { rsx_overview::IfStatements {} }
+    }
+}
+#[component(no_case_check)]
+pub fn ReferenceComponents() -> dioxus::prelude::Element {
+    use dioxus::prelude::*;
+    rsx! {
+        h1 { id: "components",
+            a { href: "#components", class: "header", "Components" }
+        }
+        p {
+            "Just like you wouldn't want to write a complex program in a single, long,  "
+            code { "main" }
+            " function, you shouldn't build a complex UI in a single  "
+            code { "App" }
+            " function. Instead, you should break down the functionality of an app in logical parts called components."
+        }
+        p {
+            "A component is a Rust function, named in UpperCammelCase, that either takes no parameters or a properties struct and returns an  "
+            code { "Element" }
+            " describing the UI it wants to render."
+        }
+        CodeBlock {
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#8c8c8c;\">// define a component that renders a div with the text &quot;Hello, world!&quot;\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">App</span><span style=\"color:#f8f8f2;\">() -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    rsx! {{\n</span><span style=\"color:#f8f8f2;\">        div {{ </span><span style=\"color:#ffee99;\">&quot;Hello, world!&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
+            name: "hello_world_desktop.rs".to_string(),
+        }
+        blockquote {
+            p {
+                "You'll probably want to add  "
+                code { "#![allow(non_snake_case)]" }
+                " to the top of your crate to avoid warnings about UpperCammelCase component names"
+            }
+        }
+        p {
+            "A Component is responsible for some rendering task – typically, rendering an isolated part of the user interface. For example, you could have an  "
+            code { "About" }
+            " component that renders a short description of Dioxus Labs:"
+        }
+        CodeBlock {
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f92672;\">pub </span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">About</span><span style=\"color:#f8f8f2;\">() -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    rsx! {{\n</span><span style=\"color:#f8f8f2;\">        p {{\n</span><span style=\"color:#f8f8f2;\">            b {{ </span><span style=\"color:#ffee99;\">&quot;Dioxus Labs&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">            </span><span style=\"color:#ffee99;\">&quot; An Open Source project dedicated to making Rust UI wonderful.&quot;\n</span><span style=\"color:#f8f8f2;\">        }}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
+            name: "components.rs".to_string(),
+        }
+        DemoFrame { components::About {} }
+        p {
+            "Then, you can render your component in another component, similarly to how elements are rendered:"
+        }
+        CodeBlock {
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f92672;\">pub </span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">App</span><span style=\"color:#f8f8f2;\">() -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    rsx! {{\n</span><span style=\"color:#f8f8f2;\">        About {{}}\n</span><span style=\"color:#f8f8f2;\">        About {{}}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
+            name: "components.rs".to_string(),
+        }
+        DemoFrame { components::App {} }
+        blockquote {
+            p {
+                "At this point, it might seem like components are nothing more than functions. However, as you learn more about the features of Dioxus, you'll see that they are actually more powerful!"
+            }
+        }
+    }
+}
+#[component(no_case_check)]
+pub fn ReferenceComponentProps() -> dioxus::prelude::Element {
+    use dioxus::prelude::*;
+    rsx! {
+        h1 { id: "component-props",
+            a { href: "#component-props", class: "header", "Component Props" }
+        }
+        p {
+            "Just like you can pass arguments to a function or attributes to an element, you can pass props to a component that customize its behavior! The components we've seen so far didn't accept any props – so let's write some components that do."
+        }
+        h2 { id: "",
+            a { href: "#", class: "header", "" }
+            code { "#[derive(Props)]" }
+        }
+        p {
+            "Component props are a single struct annotated with  "
+            code { "#[derive(PartialEq, Clone, Props)]" }
+            ". For a component to accept props, the type of its argument must be  "
+            code { "YourPropsStruct" }
+            "."
+        }
+        p { "Example:" }
+        CodeBlock {
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">#[derive(PartialEq, Props, Clone)]\n</span><span style=\"font-style:italic;color:#66d9ef;\">struct </span><span style=\"color:#f8f8f2;\">LikesProps {{\n</span><span style=\"color:#f8f8f2;\">    score: </span><span style=\"font-style:italic;color:#66d9ef;\">i32</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">Likes</span><span style=\"color:#f8f8f2;\">(</span><span style=\"font-style:italic;color:#fd971f;\">props</span><span style=\"color:#f8f8f2;\">: LikesProps) -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    rsx! {{\n</span><span style=\"color:#f8f8f2;\">        div {{\n</span><span style=\"color:#f8f8f2;\">            </span><span style=\"color:#ffee99;\">&quot;This post has &quot;\n</span><span style=\"color:#f8f8f2;\">            b {{ </span><span style=\"color:#ffee99;\">&quot;{{props.score}}&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">            </span><span style=\"color:#ffee99;\">&quot; likes&quot;\n</span><span style=\"color:#f8f8f2;\">        }}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
+            name: "component_owned_props.rs".to_string(),
+        }
+        p {
+            "You can then pass prop values to the component the same way you would pass attributes to an element:"
+        }
+        CodeBlock {
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f92672;\">pub </span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">App</span><span style=\"color:#f8f8f2;\">() -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    rsx! {{ Likes {{ score: </span><span style=\"color:#ff80f4;\">42 </span><span style=\"color:#f8f8f2;\">}} }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
+            name: "component_owned_props.rs".to_string(),
+        }
+        DemoFrame { component_owned_props::App {} }
+        h2 { id: "prop-options",
+            a { href: "#prop-options", class: "header", "Prop Options" }
+        }
+        p {
+            "The  "
+            code { "#[derive(Props)]" }
+            " macro has some features that let you customize the behavior of props."
+        }
+        h3 { id: "optional-props",
+            a { href: "#optional-props", class: "header", "Optional Props" }
+        }
+        p {
+            "You can create optional fields by using the  "
+            code { "Option<…>" }
+            " type for a field:"
+        }
+        CodeBlock {
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">#[derive(PartialEq, Clone, Props)]\n</span><span style=\"font-style:italic;color:#66d9ef;\">struct </span><span style=\"color:#f8f8f2;\">OptionalProps {{\n</span><span style=\"color:#f8f8f2;\">    title: String,\n</span><span style=\"color:#f8f8f2;\">    subtitle: Option&lt;String&gt;,\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">Title</span><span style=\"color:#f8f8f2;\">(</span><span style=\"font-style:italic;color:#fd971f;\">props</span><span style=\"color:#f8f8f2;\">: OptionalProps) -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    rsx! {{\n</span><span style=\"color:#f8f8f2;\">        h1 {{ </span><span style=\"color:#ffee99;\">&quot;{{props.title}}: &quot;</span><span style=\"color:#f8f8f2;\">, {{props.subtitle.</span><span style=\"color:#66d9ef;\">unwrap_or_else</span><span style=\"color:#f8f8f2;\">(|| </span><span style=\"color:#ffee99;\">&quot;No subtitle provided&quot;</span><span style=\"color:#f8f8f2;\">.</span><span style=\"color:#66d9ef;\">to_string</span><span style=\"color:#f8f8f2;\">())}} }}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
+            name: "component_props_options.rs".to_string(),
+        }
+        p { "Then, you can choose to either provide them or not:" }
+        CodeBlock {
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">Title {{ title: </span><span style=\"color:#ffee99;\">&quot;Some Title&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">Title {{ title: </span><span style=\"color:#ffee99;\">&quot;Some Title&quot;</span><span style=\"color:#f8f8f2;\">, subtitle: </span><span style=\"color:#ffee99;\">&quot;Some Subtitle&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#8c8c8c;\">// Providing an Option explicitly won&#39;t compile though:\n</span><span style=\"color:#8c8c8c;\">// Title {{\n</span><span style=\"color:#8c8c8c;\">//     title: &quot;Some Title&quot;,\n</span><span style=\"color:#8c8c8c;\">//     subtitle: None,\n</span><span style=\"color:#8c8c8c;\">// }},</span></pre>\n",
+            name: "component_props_options.rs".to_string(),
+        }
+        h3 { id: "explicitly-required-option",
+            a { href: "#explicitly-required-option", class: "header", "Explicitly Required Option" }
+        }
+        p {
+            "If you want to explicitly require an  "
+            code { "Option" }
+            ", and not an optional prop, you can annotate it with  "
+            code { "#[props(!optional)]" }
+            ":"
+        }
+        CodeBlock {
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">#[derive(PartialEq, Clone, Props)]\n</span><span style=\"font-style:italic;color:#66d9ef;\">struct </span><span style=\"color:#f8f8f2;\">ExplicitOptionProps {{\n</span><span style=\"color:#f8f8f2;\">    title: String,\n</span><span style=\"color:#f8f8f2;\">    #[props(!optional)]\n</span><span style=\"color:#f8f8f2;\">    subtitle: Option&lt;String&gt;,\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">ExplicitOption</span><span style=\"color:#f8f8f2;\">(</span><span style=\"font-style:italic;color:#fd971f;\">props</span><span style=\"color:#f8f8f2;\">: ExplicitOptionProps) -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    rsx! {{\n</span><span style=\"color:#f8f8f2;\">        h1 {{ </span><span style=\"color:#ffee99;\">&quot;{{props.title}}: &quot;</span><span style=\"color:#f8f8f2;\">, {{props.subtitle.</span><span style=\"color:#66d9ef;\">unwrap_or_else</span><span style=\"color:#f8f8f2;\">(|| </span><span style=\"color:#ffee99;\">&quot;No subtitle provided&quot;</span><span style=\"color:#f8f8f2;\">.</span><span style=\"color:#66d9ef;\">to_string</span><span style=\"color:#f8f8f2;\">())}} }}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
+            name: "component_props_options.rs".to_string(),
+        }
+        p {
+            "Then, you have to explicitly pass either  "
+            code { "Some(\"str\")" }
+            " or  "
+            code { "None" }
+            ":"
+        }
+        CodeBlock {
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">ExplicitOption {{ title: </span><span style=\"color:#ffee99;\">&quot;Some Title&quot;</span><span style=\"color:#f8f8f2;\">, subtitle: </span><span style=\"font-style:italic;color:#66d9ef;\">None </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">ExplicitOption {{ title: </span><span style=\"color:#ffee99;\">&quot;Some Title&quot;</span><span style=\"color:#f8f8f2;\">, subtitle: </span><span style=\"font-style:italic;color:#66d9ef;\">Some</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#ffee99;\">&quot;Some Title&quot;</span><span style=\"color:#f8f8f2;\">.</span><span style=\"color:#66d9ef;\">to_string</span><span style=\"color:#f8f8f2;\">()) }}\n</span><span style=\"color:#8c8c8c;\">// This won&#39;t compile:\n</span><span style=\"color:#8c8c8c;\">// ExplicitOption {{\n</span><span style=\"color:#8c8c8c;\">//     title: &quot;Some Title&quot;,\n</span><span style=\"color:#8c8c8c;\">// }},</span></pre>\n",
+            name: "component_props_options.rs".to_string(),
+        }
+        h3 { id: "default-props",
+            a { href: "#default-props", class: "header", "Default Props" }
+        }
+        p {
+            "You can use  "
+            code { "#[props(default = 42)]" }
+            " to make a field optional and specify its default value:"
+        }
+        CodeBlock {
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">#[derive(PartialEq, Props, Clone)]\n</span><span style=\"font-style:italic;color:#66d9ef;\">struct </span><span style=\"color:#f8f8f2;\">DefaultProps {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#8c8c8c;\">// default to 42 when not provided\n</span><span style=\"color:#f8f8f2;\">    #[props(default = 42)]\n</span><span style=\"color:#f8f8f2;\">    number: </span><span style=\"font-style:italic;color:#66d9ef;\">i64</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">DefaultComponent</span><span style=\"color:#f8f8f2;\">(</span><span style=\"font-style:italic;color:#fd971f;\">props</span><span style=\"color:#f8f8f2;\">: DefaultProps) -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    rsx! {{ h1 {{ </span><span style=\"color:#ffee99;\">&quot;{{props.number}}&quot; </span><span style=\"color:#f8f8f2;\">}} }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
+            name: "component_props_options.rs".to_string(),
+        }
+        p { "Then, similarly to optional props, you don't have to provide it:" }
+        CodeBlock {
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">DefaultComponent {{ number: </span><span style=\"color:#ff80f4;\">5 </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">DefaultComponent {{}}</span></pre>\n",
+            name: "component_props_options.rs".to_string(),
+        }
+        h3 { id: "automatic-conversion-with-into",
+            a { href: "#automatic-conversion-with-into", class: "header",
+                "Automatic Conversion with into"
+            }
+        }
+        p {
+            "It is common for Rust functions to accept  "
+            code { "impl Into<SomeType>" }
+            " rather than just  "
+            code { "SomeType" }
+            " to support a wider range of parameters. If you want similar functionality with props, you can use  "
+            code { "#[props(into)]" }
+            ". For example, you could add it on a  "
+            code { "String" }
+            " prop – and  "
+            code { "&str" }
+            " will also be automatically accepted, as it can be converted into  "
+            code { "String" }
+            ":"
+        }
+        CodeBlock {
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">#[derive(PartialEq, Props, Clone)]\n</span><span style=\"font-style:italic;color:#66d9ef;\">struct </span><span style=\"color:#f8f8f2;\">IntoProps {{\n</span><span style=\"color:#f8f8f2;\">    #[props(into)]\n</span><span style=\"color:#f8f8f2;\">    string: String,\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">IntoComponent</span><span style=\"color:#f8f8f2;\">(</span><span style=\"font-style:italic;color:#fd971f;\">props</span><span style=\"color:#f8f8f2;\">: IntoProps) -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    rsx! {{ h1 {{ </span><span style=\"color:#ffee99;\">&quot;{{props.string}}&quot; </span><span style=\"color:#f8f8f2;\">}} }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
+            name: "component_props_options.rs".to_string(),
+        }
+        p { "Then, you can use it so:" }
+        CodeBlock {
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">IntoComponent {{ string: </span><span style=\"color:#ffee99;\">&quot;some &amp;str&quot; </span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
+            name: "component_props_options.rs".to_string(),
+        }
+        h2 { id: "the-component-macro",
+            a { href: "#the-component-macro", class: "header", "The component macro" }
+        }
+        p {
+            "So far, every Component function we've seen had a corresponding ComponentProps struct to pass in props. This was quite verbose... Wouldn't it be nice to have props as simple function arguments? Then we wouldn't need to define a Props struct, and instead of typing  "
+            code { "props.whatever" }
+            ", we could just use  "
+            code { "whatever" }
+            " directly!"
+        }
+        p {
+            code { "component" }
+            " allows you to do just that. Instead of typing the \"full\" version:"
+        }
+        CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">#[derive(Props, Clone, PartialEq)]\n</span><span style=\"font-style:italic;color:#66d9ef;\">struct </span><span style=\"color:#f8f8f2;\">TitleCardProps {{\n</span><span style=\"color:#f8f8f2;\">    title: String,\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">TitleCard</span><span style=\"color:#f8f8f2;\">(</span><span style=\"font-style:italic;color:#fd971f;\">props</span><span style=\"color:#f8f8f2;\">: TitleCardProps) -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    rsx!{{\n</span><span style=\"color:#f8f8f2;\">        h1 {{ </span><span style=\"color:#ffee99;\">&quot;{{props.title}}&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n" }
+        p {
+            "...you can define a function that accepts props as arguments. Then, just annotate it with  "
+            code { "#[component]" }
+            ", and the macro will turn it into a regular Component for you:"
+        }
+        CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">#[component]\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">TitleCard</span><span style=\"color:#f8f8f2;\">(</span><span style=\"font-style:italic;color:#fd971f;\">title</span><span style=\"color:#f8f8f2;\">: String) -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    rsx!{{\n</span><span style=\"color:#f8f8f2;\">        h1 {{ </span><span style=\"color:#ffee99;\">&quot;{{title}}&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n" }
+        blockquote {
+            p {
+                "While the new Component is shorter and easier to read, this macro should not be used by library authors since you have less control over Prop documentation."
+            }
+        }
+        h2 { id: "component-children",
+            a { href: "#component-children", class: "header", "Component Children" }
+        }
+        p {
+            "In some cases, you may wish to create a component that acts as a container for some other content, without the component needing to know what that content is. To achieve this, create a prop of type  "
+            code { "Element" }
+            ":"
+        }
+        CodeBlock {
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">#[derive(PartialEq, Clone, Props)]\n</span><span style=\"font-style:italic;color:#66d9ef;\">struct </span><span style=\"color:#f8f8f2;\">ClickableProps {{\n</span><span style=\"color:#f8f8f2;\">    href: String,\n</span><span style=\"color:#f8f8f2;\">    body: Element,\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">Clickable</span><span style=\"color:#f8f8f2;\">(</span><span style=\"font-style:italic;color:#fd971f;\">props</span><span style=\"color:#f8f8f2;\">: ClickableProps) -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    rsx! {{\n</span><span style=\"color:#f8f8f2;\">        a {{ href: </span><span style=\"color:#ffee99;\">&quot;{{props.href}}&quot;</span><span style=\"color:#f8f8f2;\">, class: </span><span style=\"color:#ffee99;\">&quot;fancy-button&quot;</span><span style=\"color:#f8f8f2;\">, {{props.body}} }}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
+            name: "component_element_props.rs".to_string(),
+        }
+        p {
+            "Then, when rendering the component, you can pass in the output of  "
+            code { "rsx!{{...}}" }
+            ": "
+        }
+        CodeBlock {
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">rsx! {{\n</span><span style=\"color:#f8f8f2;\">    Clickable {{\n</span><span style=\"color:#f8f8f2;\">        href: </span><span style=\"color:#ffee99;\">&quot;https://www.youtube.com/watch?v=C-M2hs3sXGo&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">        body: rsx! {{\n</span><span style=\"color:#f8f8f2;\">            </span><span style=\"color:#ffee99;\">&quot;How to &quot;</span><span style=\"color:#f8f8f2;\"> i {{ </span><span style=\"color:#ffee99;\">&quot;not&quot; </span><span style=\"color:#f8f8f2;\">}} </span><span style=\"color:#ffee99;\">&quot; be seen&quot;\n</span><span style=\"color:#f8f8f2;\">        }}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
+            name: "component_element_props.rs".to_string(),
+        }
+        blockquote {
+            p {
+                "Warning: While it may compile, do not include the same  "
+                code { "Element" }
+                " more than once in the RSX. The resulting behavior is unspecified."
+            }
+        }
+        h3 { id: "the-children-field",
+            a { href: "#the-children-field", class: "header", "The children field" }
+        }
+        p {
+            "Rather than passing the RSX through a regular prop, you may wish to accept children similarly to how elements can have children. The \"magic\"  "
+            code { "children" }
+            " prop lets you achieve this:"
+        }
+        CodeBlock {
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">#[derive(PartialEq, Clone, Props)]\n</span><span style=\"font-style:italic;color:#66d9ef;\">struct </span><span style=\"color:#f8f8f2;\">ClickableProps {{\n</span><span style=\"color:#f8f8f2;\">    href: String,\n</span><span style=\"color:#f8f8f2;\">    children: Element,\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">Clickable</span><span style=\"color:#f8f8f2;\">(</span><span style=\"font-style:italic;color:#fd971f;\">props</span><span style=\"color:#f8f8f2;\">: ClickableProps) -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    rsx! {{\n</span><span style=\"color:#f8f8f2;\">        a {{ href: </span><span style=\"color:#ffee99;\">&quot;{{props.href}}&quot;</span><span style=\"color:#f8f8f2;\">, class: </span><span style=\"color:#ffee99;\">&quot;fancy-button&quot;</span><span style=\"color:#f8f8f2;\">, {{props.children}} }}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
+            name: "component_children.rs".to_string(),
+        }
+        p {
+            "This makes using the component much simpler: simply put the RSX inside the  "
+            code { "{{}}" }
+            " brackets – and there is no need for a  "
+            code { "render" }
+            " call or another macro!"
+        }
+        CodeBlock {
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">rsx! {{\n</span><span style=\"color:#f8f8f2;\">    Clickable {{ href: </span><span style=\"color:#ffee99;\">&quot;https://www.youtube.com/watch?v=C-M2hs3sXGo&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"color:#ffee99;\">&quot;How to &quot;\n</span><span style=\"color:#f8f8f2;\">        i {{ </span><span style=\"color:#ffee99;\">&quot;not&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"color:#ffee99;\">&quot; be seen&quot;\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
+            name: "component_children.rs".to_string(),
+        }
+        DemoFrame { component_children::App {} }
+    }
+}
+#[component(no_case_check)]
+pub fn ReferenceEventHandlers() -> dioxus::prelude::Element {
+    use dioxus::prelude::*;
+    rsx! {
+        h1 { id: "event-handlers",
+            a { href: "#event-handlers", class: "header", "Event Handlers" }
+        }
+        p {
+            "Event handlers are used to respond to user actions. For example, an event handler could be triggered when the user clicks, scrolls, moves the mouse, or types a character."
+        }
+        p {
+            "Event handlers are attached to elements. For example, we usually don't care about all the clicks that happen within an app, only those on a particular button."
+        }
+        p {
+            "Event handlers are similar to regular attributes, but their name usually starts with  "
+            code { "on" }
+            "- and they accept closures as values. The closure will be called whenever the event it listens for is triggered and will be passed that event."
+        }
+        p {
+            "For example, to handle clicks on an element, we can specify an  "
+            code { "onclick" }
+            " handler:"
+        }
+        CodeBlock {
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">rsx! {{\n</span><span style=\"color:#f8f8f2;\">    button {{ onclick: </span><span style=\"color:#f92672;\">move |</span><span style=\"color:#f8f8f2;\">event</span><span style=\"color:#f92672;\">| </span><span style=\"color:#f8f8f2;\">log::info</span><span style=\"color:#f92672;\">!</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#ffee99;\">&quot;Clicked! Event: {{event:?}}&quot;</span><span style=\"color:#f8f8f2;\">), </span><span style=\"color:#ffee99;\">&quot;click me!&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
+            name: "event_click.rs".to_string(),
+        }
+        DemoFrame { event_click::App {} }
+        h2 { id: "the",
+            a { href: "#the", class: "header", "The " }
+            code { "Event" }
+            " object"
+        }
+        p {
+            "Event handlers receive an "
+            a { href: "https://docs.rs/dioxus-core/latest/dioxus_core/struct.Event.html",
+                code { "Event" }
+            }
+            " object containing information about the event. Different types of events contain different types of data. For example, mouse-related events contain "
+            a { href: "https://docs.rs/dioxus/latest/dioxus/events/struct.MouseData.html",
+                code { "MouseData" }
+            }
+            ", which tells you things like where the mouse was clicked and what mouse buttons were used."
+        }
+        p { "In the example above, this event data was logged to the terminal:" }
+        CodeBlock {
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">Clicked</span><span style=\"color:#f92672;\">!</span><span style=\"color:#f8f8f2;\"> Event: UiEvent {{ bubble_state: Cell {{ value: </span><span style=\"color:#ff80f4;\">true </span><span style=\"color:#f8f8f2;\">}}, data: MouseData {{ coordinates: Coordinates {{ screen: (</span><span style=\"color:#ff80f4;\">242.0</span><span style=\"color:#f8f8f2;\">, </span><span style=\"color:#ff80f4;\">256.0</span><span style=\"color:#f8f8f2;\">), client: (</span><span style=\"color:#ff80f4;\">26.0</span><span style=\"color:#f8f8f2;\">, </span><span style=\"color:#ff80f4;\">17.0</span><span style=\"color:#f8f8f2;\">), element: (</span><span style=\"color:#ff80f4;\">16.0</span><span style=\"color:#f8f8f2;\">, </span><span style=\"color:#ff80f4;\">7.0</span><span style=\"color:#f8f8f2;\">), page: (</span><span style=\"color:#ff80f4;\">26.0</span><span style=\"color:#f8f8f2;\">, </span><span style=\"color:#ff80f4;\">17.0</span><span style=\"color:#f8f8f2;\">) }}, modifiers: (empty), held_buttons: EnumSet(), trigger_button: </span><span style=\"font-style:italic;color:#66d9ef;\">Some</span><span style=\"color:#f8f8f2;\">(Primary) }} }}\n</span><span style=\"color:#f8f8f2;\">Clicked</span><span style=\"color:#f92672;\">!</span><span style=\"color:#f8f8f2;\"> Event: UiEvent {{ bubble_state: Cell {{ value: </span><span style=\"color:#ff80f4;\">true </span><span style=\"color:#f8f8f2;\">}}, data: MouseData {{ coordinates: Coordinates {{ screen: (</span><span style=\"color:#ff80f4;\">242.0</span><span style=\"color:#f8f8f2;\">, </span><span style=\"color:#ff80f4;\">256.0</span><span style=\"color:#f8f8f2;\">), client: (</span><span style=\"color:#ff80f4;\">26.0</span><span style=\"color:#f8f8f2;\">, </span><span style=\"color:#ff80f4;\">17.0</span><span style=\"color:#f8f8f2;\">), element: (</span><span style=\"color:#ff80f4;\">16.0</span><span style=\"color:#f8f8f2;\">, </span><span style=\"color:#ff80f4;\">7.0</span><span style=\"color:#f8f8f2;\">), page: (</span><span style=\"color:#ff80f4;\">26.0</span><span style=\"color:#f8f8f2;\">, </span><span style=\"color:#ff80f4;\">17.0</span><span style=\"color:#f8f8f2;\">) }}, modifiers: (empty), held_buttons: EnumSet(), trigger_button: </span><span style=\"font-style:italic;color:#66d9ef;\">Some</span><span style=\"color:#f8f8f2;\">(Primary) }} }}</span></pre>\n",
+        }
+        p {
+            "To learn what the different event types for HTML provide, read the "
+            a { href: "https://docs.rs/dioxus-html/latest/dioxus_html/events/index.html",
+                "events module docs"
+            }
+            "."
+        }
+        h3 { id: "event-propagation",
+            a { href: "#event-propagation", class: "header", "Event propagation" }
+        }
+        p {
+            "Some events will trigger first on the element the event originated at upward. For example, a click event on a  "
+            code { "button" }
+            " inside a  "
+            code { "div" }
+            " would first trigger the button's event listener and then the div's event listener."
+        }
+        blockquote {
+            p {
+                "For more information about event propagation see "
+                a { href: "https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Building_blocks/Events#event_bubbling",
+                    "the mdn docs on event bubbling"
+                }
+            }
+        }
+        p {
+            "If you want to prevent this behavior, you can call  "
+            code { "stop_propagation()" }
+            " on the event:"
+        }
+        CodeBlock {
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">rsx! {{\n</span><span style=\"color:#f8f8f2;\">    div {{ onclick: </span><span style=\"color:#f92672;\">move |</span><span style=\"color:#f8f8f2;\">_event</span><span style=\"color:#f92672;\">| </span><span style=\"color:#f8f8f2;\">{{}},\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"color:#ffee99;\">&quot;outer&quot;\n</span><span style=\"color:#f8f8f2;\">        button {{\n</span><span style=\"color:#f8f8f2;\">            onclick: </span><span style=\"color:#f92672;\">move |</span><span style=\"color:#f8f8f2;\">event</span><span style=\"color:#f92672;\">| </span><span style=\"color:#f8f8f2;\">{{\n</span><span style=\"color:#f8f8f2;\">                event.</span><span style=\"color:#66d9ef;\">stop_propagation</span><span style=\"color:#f8f8f2;\">();\n</span><span style=\"color:#f8f8f2;\">            }},\n</span><span style=\"color:#f8f8f2;\">            </span><span style=\"color:#ffee99;\">&quot;inner&quot;\n</span><span style=\"color:#f8f8f2;\">        }}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
+            name: "event_nested.rs".to_string(),
+        }
+        h2 { id: "prevent-default",
+            a { href: "#prevent-default", class: "header", "Prevent Default" }
+        }
+        p {
+            "Some events have a default behavior. For keyboard events, this might be entering the typed character. For mouse events, this might be selecting some text."
+        }
+        p {
+            "In some instances, might want to avoid this default behavior. For this, you can add the  "
+            code { "prevent_default" }
+            " attribute with the name of the handler whose default behavior you want to stop. This attribute can be used for multiple handlers using their name separated by spaces:"
+        }
+        CodeBlock {
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">rsx! {{\n</span><span style=\"color:#f8f8f2;\">    a {{\n</span><span style=\"color:#f8f8f2;\">        href: </span><span style=\"color:#ffee99;\">&quot;https://example.com&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">        onclick: |</span><span style=\"font-style:italic;color:#fd971f;\">evt</span><span style=\"color:#f8f8f2;\">| {{\n</span><span style=\"color:#f8f8f2;\">            evt.</span><span style=\"color:#66d9ef;\">prevent_default</span><span style=\"color:#f8f8f2;\">();\n</span><span style=\"color:#f8f8f2;\">            log::info</span><span style=\"color:#f92672;\">!</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#ffee99;\">&quot;link clicked&quot;</span><span style=\"color:#f8f8f2;\">)\n</span><span style=\"color:#f8f8f2;\">        }},\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"color:#ffee99;\">&quot;example.com&quot;\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
+            name: "event_prevent_default.rs".to_string(),
+        }
+        DemoFrame { event_prevent_default::App {} }
+        p { "Any event handlers will still be called." }
+        h2 { id: "handler-props",
+            a { href: "#handler-props", class: "header", "Handler Props" }
+        }
+        p {
+            "Sometimes, you might want to make a component that accepts an event handler. A simple example would be a  "
+            code { "FancyButton" }
+            " component, which accepts an  "
+            code { "onclick" }
+            " handler:"
+        }
+        CodeBlock {
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">#[derive(PartialEq, Clone, Props)]\n</span><span style=\"color:#f92672;\">pub </span><span style=\"font-style:italic;color:#66d9ef;\">struct </span><span style=\"color:#f8f8f2;\">FancyButtonProps {{\n</span><span style=\"color:#f8f8f2;\">    onclick: EventHandler&lt;MouseEvent&gt;,\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\">pub </span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">FancyButton</span><span style=\"color:#f8f8f2;\">(</span><span style=\"font-style:italic;color:#fd971f;\">props</span><span style=\"color:#f8f8f2;\">: FancyButtonProps) -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    rsx! {{\n</span><span style=\"color:#f8f8f2;\">        button {{\n</span><span style=\"color:#f8f8f2;\">            class: </span><span style=\"color:#ffee99;\">&quot;fancy-button&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">            onclick: </span><span style=\"color:#f92672;\">move |</span><span style=\"color:#f8f8f2;\">evt</span><span style=\"color:#f92672;\">|</span><span style=\"color:#f8f8f2;\"> props.onclick.</span><span style=\"color:#66d9ef;\">call</span><span style=\"color:#f8f8f2;\">(evt),\n</span><span style=\"color:#f8f8f2;\">            </span><span style=\"color:#ffee99;\">&quot;click me pls.&quot;\n</span><span style=\"color:#f8f8f2;\">        }}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
+            name: "event_handler_prop.rs".to_string(),
+        }
+        p { "Then, you can use it like any other handler:" }
+        CodeBlock {
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">rsx! {{\n</span><span style=\"color:#f8f8f2;\">    FancyButton {{\n</span><span style=\"color:#f8f8f2;\">        onclick: </span><span style=\"color:#f92672;\">move |</span><span style=\"color:#f8f8f2;\">event</span><span style=\"color:#f92672;\">| </span><span style=\"color:#f8f8f2;\">println!(</span><span style=\"color:#ffee99;\">&quot;Clicked! </span><span style=\"color:#ff80f4;\">{{event:?}}</span><span style=\"color:#ffee99;\">&quot;</span><span style=\"color:#f8f8f2;\">),\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
+            name: "event_handler_prop.rs".to_string(),
+        }
+        blockquote {
+            p {
+                "Note: just like any other attribute, you can name the handlers anything you want! Any closure you pass in will automatically be turned into an  "
+                code { "EventHandler" }
+                "."
+            }
+        }
+        h2 { id: "custom-data",
+            a { href: "#custom-data", class: "header", "Custom Data" }
+        }
+        p {
+            "Event Handlers are generic over any type, so you can pass in any data you want to them, e.g:"
+        }
+        CodeBlock {
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"font-style:italic;color:#66d9ef;\">struct </span><span style=\"color:#f8f8f2;\">ComplexData(</span><span style=\"font-style:italic;color:#66d9ef;\">i32</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">#[derive(PartialEq, Clone, Props)]\n</span><span style=\"color:#f92672;\">pub </span><span style=\"font-style:italic;color:#66d9ef;\">struct </span><span style=\"color:#f8f8f2;\">CustomFancyButtonProps {{\n</span><span style=\"color:#f8f8f2;\">    onclick: EventHandler&lt;ComplexData&gt;,\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\">pub </span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">CustomFancyButton</span><span style=\"color:#f8f8f2;\">(</span><span style=\"font-style:italic;color:#fd971f;\">props</span><span style=\"color:#f8f8f2;\">: CustomFancyButtonProps) -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    rsx! {{\n</span><span style=\"color:#f8f8f2;\">        button {{\n</span><span style=\"color:#f8f8f2;\">            class: </span><span style=\"color:#ffee99;\">&quot;fancy-button&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">            onclick: </span><span style=\"color:#f92672;\">move |_|</span><span style=\"color:#f8f8f2;\"> props.onclick.</span><span style=\"color:#66d9ef;\">call</span><span style=\"color:#f8f8f2;\">(ComplexData(</span><span style=\"color:#ff80f4;\">0</span><span style=\"color:#f8f8f2;\">)),\n</span><span style=\"color:#f8f8f2;\">            </span><span style=\"color:#ffee99;\">&quot;click me pls.&quot;\n</span><span style=\"color:#f8f8f2;\">        }}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
+            name: "event_handler_prop.rs".to_string(),
+        }
+        h2 { id: "returning-a-value-from-an-event-handler",
+            a {
+                href: "#returning-a-value-from-an-event-handler",
+                class: "header",
+                "Returning a value from an event handler"
+            }
+        }
+        p {
+            "If you want to accept a closure like an event handler that returns a value, you can use the  "
+            code { "Callback" }
+            " type. The callback type accepts two generic arguments,  "
+            code { "I" }
+            ", the input type, and  "
+            code { "O" }
+            ", the output type. Just like  "
+            code { "EventHandler" }
+            ",  "
+            code { "Callback" }
+            " is automatically converted in props and can be easily copied into anywhere in your component:"
+        }
+        CodeBlock {
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">#[derive(PartialEq, Clone, Props)]\n</span><span style=\"color:#f92672;\">pub </span><span style=\"font-style:italic;color:#66d9ef;\">struct </span><span style=\"color:#f8f8f2;\">CounterProps {{\n</span><span style=\"color:#f8f8f2;\">    modify: Callback&lt;</span><span style=\"font-style:italic;color:#66d9ef;\">u32</span><span style=\"color:#f8f8f2;\">, </span><span style=\"font-style:italic;color:#66d9ef;\">u32</span><span style=\"color:#f8f8f2;\">&gt;,\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\">pub </span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">Counter</span><span style=\"color:#f8f8f2;\">(</span><span style=\"font-style:italic;color:#fd971f;\">props</span><span style=\"color:#f8f8f2;\">: CounterProps) -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let </span><span style=\"color:#f92672;\">mut</span><span style=\"color:#f8f8f2;\"> count </span><span style=\"color:#f92672;\">= </span><span style=\"color:#66d9ef;\">use_signal</span><span style=\"color:#f8f8f2;\">(|| </span><span style=\"color:#ff80f4;\">1</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">    rsx! {{\n</span><span style=\"color:#f8f8f2;\">        button {{\n</span><span style=\"color:#f8f8f2;\">            onclick: </span><span style=\"color:#f92672;\">move |_|</span><span style=\"color:#f8f8f2;\"> count.</span><span style=\"color:#66d9ef;\">set</span><span style=\"color:#f8f8f2;\">(props.modify.</span><span style=\"color:#66d9ef;\">call</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#66d9ef;\">count</span><span style=\"color:#f8f8f2;\">())),\n</span><span style=\"color:#f8f8f2;\">            </span><span style=\"color:#ffee99;\">&quot;double&quot;\n</span><span style=\"color:#f8f8f2;\">        }}\n</span><span style=\"color:#f8f8f2;\">        div {{ </span><span style=\"color:#ffee99;\">&quot;count: {{count}}&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
+            name: "event_handler_prop.rs".to_string(),
+        }
+    }
+}
+#[component(no_case_check)]
+pub fn ReferenceHooks() -> dioxus::prelude::Element {
+    use dioxus::prelude::*;
+    rsx! {
+        h1 { id: "hooks-and-component-state",
+            a { href: "#hooks-and-component-state", class: "header", "Hooks and component state" }
+        }
+        p {
+            "So far, our components have had no state like a normal Rust function. However, in a UI component, it is often useful to have stateful functionality to build user interactions. For example, you might want to track whether the user has opened a drop-down and render different things accordingly."
+        }
+        p {
+            "Hooks allow us to create state in our components. Hooks are Rust functions you call in a constant order in a component that add additional functionality to the component."
+        }
+        p {
+            "Dioxus provides many built-in hooks, but if those hooks don't fit your specific use case, you also can "
+            a { href: "../cookbook/state/custom_hooks", "create your own hook" }
+        }
+        h2 { id: "use-signal-hook",
+            a { href: "#use-signal-hook", class: "header", "use_signal hook" }
+        }
+        p {
+            a { href: "https://docs.rs/dioxus/latest/dioxus/prelude/fn.use_signal.html",
+                code { "use_signal" }
+            }
+            " is one of the simplest hooks."
+        }
+        ul {
+            li {
+                "You provide a closure that determines the initial value: "
+                code { "let mut count = use_signal(|| 0);" }
+            }
+            li {
+                code { "use_signal" }
+                " gives you the current value, and a way to write to the value"
+            }
+            li {
+                "When the value updates, "
+                code { "use_signal" }
+                " makes the component re-render (along with any other component that references it), and then provides you with the new value."
+            }
+        }
+        p {
+            "For example, you might have seen the counter example, in which state (a number) is tracked using the  "
+            code { "use_signal" }
+            " hook:"
+        }
+        CodeBlock {
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f92672;\">pub </span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">App</span><span style=\"color:#f8f8f2;\">() -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#8c8c8c;\">// count will be initialized to 0 the first time the component is rendered\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let </span><span style=\"color:#f92672;\">mut</span><span style=\"color:#f8f8f2;\"> count </span><span style=\"color:#f92672;\">= </span><span style=\"color:#66d9ef;\">use_signal</span><span style=\"color:#f8f8f2;\">(|| </span><span style=\"color:#ff80f4;\">0</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">    rsx! {{\n</span><span style=\"color:#f8f8f2;\">        h1 {{ </span><span style=\"color:#ffee99;\">&quot;High-Five counter: {{count}}&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">        button {{ onclick: </span><span style=\"color:#f92672;\">move |_|</span><span style=\"color:#f8f8f2;\"> count </span><span style=\"color:#f92672;\">+= </span><span style=\"color:#ff80f4;\">1</span><span style=\"color:#f8f8f2;\">, </span><span style=\"color:#ffee99;\">&quot;Up high!&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">        button {{ onclick: </span><span style=\"color:#f92672;\">move |_|</span><span style=\"color:#f8f8f2;\"> count </span><span style=\"color:#f92672;\">-= </span><span style=\"color:#ff80f4;\">1</span><span style=\"color:#f8f8f2;\">, </span><span style=\"color:#ffee99;\">&quot;Down low!&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
+            name: "hooks_counter.rs".to_string(),
+        }
+        DemoFrame { hooks_counter::App {} }
+        p {
+            "Every time the component's state changes, it re-renders, and the component function is called, so you can describe what you want the new UI to look like. You don't have to worry about \"changing\" anything – describe what you want in terms of the state, and Dioxus will take care of the rest!"
+        }
+        blockquote {
+            p {
+                code { "use_signal" }
+                " returns your value wrapped in a smart pointer of type "
+                a { href: "https://docs.rs/dioxus/latest/dioxus/prelude/struct.Signal.html",
+                    code { "Signal" }
+                }
+                " that is "
+                code { "Copy" }
+                ". This is why you can both read the value and update it, even within an event handler."
+            }
+        }
+        p { "You can use multiple hooks in the same component if you want:" }
+        CodeBlock {
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f92672;\">pub </span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">App</span><span style=\"color:#f8f8f2;\">() -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let </span><span style=\"color:#f92672;\">mut</span><span style=\"color:#f8f8f2;\"> count_a </span><span style=\"color:#f92672;\">= </span><span style=\"color:#66d9ef;\">use_signal</span><span style=\"color:#f8f8f2;\">(|| </span><span style=\"color:#ff80f4;\">0</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let </span><span style=\"color:#f92672;\">mut</span><span style=\"color:#f8f8f2;\"> count_b </span><span style=\"color:#f92672;\">= </span><span style=\"color:#66d9ef;\">use_signal</span><span style=\"color:#f8f8f2;\">(|| </span><span style=\"color:#ff80f4;\">0</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">    rsx! {{\n</span><span style=\"color:#f8f8f2;\">        h1 {{ </span><span style=\"color:#ffee99;\">&quot;Counter_a: {{count_a}}&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">        button {{ onclick: </span><span style=\"color:#f92672;\">move |_|</span><span style=\"color:#f8f8f2;\"> count_a </span><span style=\"color:#f92672;\">+= </span><span style=\"color:#ff80f4;\">1</span><span style=\"color:#f8f8f2;\">, </span><span style=\"color:#ffee99;\">&quot;a++&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">        button {{ onclick: </span><span style=\"color:#f92672;\">move |_|</span><span style=\"color:#f8f8f2;\"> count_a </span><span style=\"color:#f92672;\">-= </span><span style=\"color:#ff80f4;\">1</span><span style=\"color:#f8f8f2;\">, </span><span style=\"color:#ffee99;\">&quot;a--&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">        h1 {{ </span><span style=\"color:#ffee99;\">&quot;Counter_b: {{count_b}}&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">        button {{ onclick: </span><span style=\"color:#f92672;\">move |_|</span><span style=\"color:#f8f8f2;\"> count_b </span><span style=\"color:#f92672;\">+= </span><span style=\"color:#ff80f4;\">1</span><span style=\"color:#f8f8f2;\">, </span><span style=\"color:#ffee99;\">&quot;b++&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">        button {{ onclick: </span><span style=\"color:#f92672;\">move |_|</span><span style=\"color:#f8f8f2;\"> count_b </span><span style=\"color:#f92672;\">-= </span><span style=\"color:#ff80f4;\">1</span><span style=\"color:#f8f8f2;\">, </span><span style=\"color:#ffee99;\">&quot;b--&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
+            name: "hooks_counter_two_state.rs".to_string(),
+        }
+        DemoFrame { hooks_counter_two_state::App {} }
+        p {
+            "You can also use  "
+            code { "use_signal" }
+            " to store more complex state, like a Vec. You can read and write to the state with the  "
+            code { "read" }
+            " and  "
+            code { "write" }
+            " methods:"
+        }
+        CodeBlock {
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f92672;\">pub </span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">App</span><span style=\"color:#f8f8f2;\">() -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let </span><span style=\"color:#f92672;\">mut</span><span style=\"color:#f8f8f2;\"> list </span><span style=\"color:#f92672;\">= </span><span style=\"color:#66d9ef;\">use_signal</span><span style=\"color:#f8f8f2;\">(</span><span style=\"font-style:italic;color:#66d9ef;\">Vec</span><span style=\"color:#f8f8f2;\">::new);\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">    rsx! {{\n</span><span style=\"color:#f8f8f2;\">        p {{ </span><span style=\"color:#ffee99;\">&quot;Current list: {{list:?}}&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">        button {{\n</span><span style=\"color:#f8f8f2;\">            onclick: </span><span style=\"color:#f92672;\">move |</span><span style=\"color:#f8f8f2;\">event</span><span style=\"color:#f92672;\">| </span><span style=\"color:#f8f8f2;\">{{\n</span><span style=\"color:#f8f8f2;\">                </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> list_len </span><span style=\"color:#f92672;\">=</span><span style=\"color:#f8f8f2;\"> list.</span><span style=\"color:#66d9ef;\">len</span><span style=\"color:#f8f8f2;\">();\n</span><span style=\"color:#f8f8f2;\">                list.</span><span style=\"color:#66d9ef;\">push</span><span style=\"color:#f8f8f2;\">(list_len);\n</span><span style=\"color:#f8f8f2;\">                list.</span><span style=\"color:#66d9ef;\">push</span><span style=\"color:#f8f8f2;\">(list_len);\n</span><span style=\"color:#f8f8f2;\">            }},\n</span><span style=\"color:#f8f8f2;\">            </span><span style=\"color:#ffee99;\">&quot;Add two elements!&quot;\n</span><span style=\"color:#f8f8f2;\">        }}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
+            name: "hooks_use_signal.rs".to_string(),
+        }
+        DemoFrame { hooks_use_signal::App {} }
+        h2 { id: "rules-of-hooks",
+            a { href: "#rules-of-hooks", class: "header", "Rules of hooks" }
+        }
+        p {
+            "The above example might seem a bit magic since Rust functions are typically not associated with state. Dioxus allows hooks to maintain state across renders through a hidden scope that is associated with the component."
+        }
+        p {
+            "But how can Dioxus differentiate between multiple hooks in the same component? As you saw in the second example, both  "
+            code { "use_signal" }
+            " functions were called with the same parameters, so how come they can return different things when the counters are different?"
+        }
+        CodeBlock {
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"font-style:italic;color:#66d9ef;\">let </span><span style=\"color:#f92672;\">mut</span><span style=\"color:#f8f8f2;\"> count_a </span><span style=\"color:#f92672;\">= </span><span style=\"color:#66d9ef;\">use_signal</span><span style=\"color:#f8f8f2;\">(|| </span><span style=\"color:#ff80f4;\">0</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"font-style:italic;color:#66d9ef;\">let </span><span style=\"color:#f92672;\">mut</span><span style=\"color:#f8f8f2;\"> count_b </span><span style=\"color:#f92672;\">= </span><span style=\"color:#66d9ef;\">use_signal</span><span style=\"color:#f8f8f2;\">(|| </span><span style=\"color:#ff80f4;\">0</span><span style=\"color:#f8f8f2;\">);</span></pre>\n",
+            name: "hooks_counter_two_state.rs".to_string(),
+        }
+        p {
+            "This is only possible because the two hooks are always called in the same order, so Dioxus knows which is which. Because the order you call hooks matters, you must follow certain rules when using hooks:"
+        }
+        ol {
+            li { "Hooks may be only used in components or other hooks (we'll get to that later)." }
+            li { "On every call to a component function." }
+            li {
+                "The same hooks must be called (except in the case of early returns, as explained later in the "
+                a { href: "../../cookbook/error_handling", "Error Handling chapter" }
+                ")."
+            }
+            li { "In the same order." }
+            li {
+                "Hook names should start with "
+                code { "use_" }
+                " so you don't accidentally confuse them with regular"
+                code { "use_signal()" }
+                ", "
+                code { "use_signal()" }
+                ", "
+                code { "use_resource()" }
+                ", etc...)."
+            }
+        }
+        p { "These rules mean that there are certain things you can't do with hooks:" }
+        h3 { id: "no-hooks-in-conditionals",
+            a { href: "#no-hooks-in-conditionals", class: "header", "No hooks in conditionals" }
+        }
+        CodeBlock {
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#8c8c8c;\">// ❌ don&#39;t call hooks in conditionals!\n</span><span style=\"color:#8c8c8c;\">// We must ensure that the same hooks will be called every time\n</span><span style=\"color:#8c8c8c;\">// But `if` statements only run if the conditional is true!\n</span><span style=\"color:#8c8c8c;\">// So we might violate rule 2.\n</span><span style=\"color:#f92672;\">if</span><span style=\"color:#f8f8f2;\"> you_are_happy </span><span style=\"color:#f92672;\">&amp;&amp;</span><span style=\"color:#f8f8f2;\"> you_know_it {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> something </span><span style=\"color:#f92672;\">= </span><span style=\"color:#66d9ef;\">use_signal</span><span style=\"color:#f8f8f2;\">(|| </span><span style=\"color:#ffee99;\">&quot;hands&quot;</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"color:#f8f8f2;\">    println!(</span><span style=\"color:#ffee99;\">&quot;clap your </span><span style=\"color:#ff80f4;\">{{something}}</span><span style=\"color:#ffee99;\">&quot;</span><span style=\"color:#f8f8f2;\">)\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#8c8c8c;\">// ✅ instead, *always* call use_signal\n</span><span style=\"color:#8c8c8c;\">// You can put other stuff in the conditional though\n</span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> something </span><span style=\"color:#f92672;\">= </span><span style=\"color:#66d9ef;\">use_signal</span><span style=\"color:#f8f8f2;\">(|| </span><span style=\"color:#ffee99;\">&quot;hands&quot;</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"color:#f92672;\">if</span><span style=\"color:#f8f8f2;\"> you_are_happy </span><span style=\"color:#f92672;\">&amp;&amp;</span><span style=\"color:#f8f8f2;\"> you_know_it {{\n</span><span style=\"color:#f8f8f2;\">    println!(</span><span style=\"color:#ffee99;\">&quot;clap your </span><span style=\"color:#ff80f4;\">{{something}}</span><span style=\"color:#ffee99;\">&quot;</span><span style=\"color:#f8f8f2;\">)\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
+            name: "hooks_bad.rs".to_string(),
+        }
+        h3 { id: "no-hooks-in-closures",
+            a { href: "#no-hooks-in-closures", class: "header", "No hooks in closures" }
+        }
+        CodeBlock {
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#8c8c8c;\">// ❌ don&#39;t call hooks inside closures!\n</span><span style=\"color:#8c8c8c;\">// We can&#39;t guarantee that the closure, if used, will be called in the same order every time\n</span><span style=\"font-style:italic;color:#66d9ef;\">let </span><span style=\"color:#a6e22e;\">_a </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">|| {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> b </span><span style=\"color:#f92672;\">= </span><span style=\"color:#66d9ef;\">use_signal</span><span style=\"color:#f8f8f2;\">(|| </span><span style=\"color:#ff80f4;\">0</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#66d9ef;\">b</span><span style=\"color:#f8f8f2;\">()\n</span><span style=\"color:#f8f8f2;\">}};\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#8c8c8c;\">// ✅ instead, move hook `b` outside\n</span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> b </span><span style=\"color:#f92672;\">= </span><span style=\"color:#66d9ef;\">use_signal</span><span style=\"color:#f8f8f2;\">(|| </span><span style=\"color:#ff80f4;\">0</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"font-style:italic;color:#66d9ef;\">let </span><span style=\"color:#a6e22e;\">_a </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">|| </span><span style=\"color:#66d9ef;\">b</span><span style=\"color:#f8f8f2;\">();</span></pre>\n",
+            name: "hooks_bad.rs".to_string(),
+        }
+        h3 { id: "no-hooks-in-loops",
+            a { href: "#no-hooks-in-loops", class: "header", "No hooks in loops" }
+        }
+        CodeBlock {
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#8c8c8c;\">// `names` is a Vec&lt;&amp;str&gt;\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#8c8c8c;\">// ❌ Do not use hooks in loops!\n</span><span style=\"color:#8c8c8c;\">// In this case, if the length of the Vec changes, we break rule 2\n</span><span style=\"color:#f92672;\">for</span><span style=\"color:#f8f8f2;\"> _name </span><span style=\"color:#f92672;\">in &amp;</span><span style=\"color:#f8f8f2;\">names {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> is_selected </span><span style=\"color:#f92672;\">= </span><span style=\"color:#66d9ef;\">use_signal</span><span style=\"color:#f8f8f2;\">(|| </span><span style=\"color:#ff80f4;\">false</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"color:#f8f8f2;\">    println!(</span><span style=\"color:#ffee99;\">&quot;selected: </span><span style=\"color:#ff80f4;\">{{is_selected}}</span><span style=\"color:#ffee99;\">&quot;</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#8c8c8c;\">// ✅ Instead, use a hashmap with use_signal\n</span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> selection_map </span><span style=\"color:#f92672;\">= </span><span style=\"color:#66d9ef;\">use_signal</span><span style=\"color:#f8f8f2;\">(HashMap::&lt;</span><span style=\"color:#f92672;\">&amp;</span><span style=\"font-style:italic;color:#66d9ef;\">str</span><span style=\"color:#f8f8f2;\">, </span><span style=\"font-style:italic;color:#66d9ef;\">bool</span><span style=\"color:#f8f8f2;\">&gt;::new);\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\">for</span><span style=\"color:#f8f8f2;\"> name </span><span style=\"color:#f92672;\">in &amp;</span><span style=\"color:#f8f8f2;\">names {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> is_selected </span><span style=\"color:#f92672;\">=</span><span style=\"color:#f8f8f2;\"> selection_map.</span><span style=\"color:#66d9ef;\">read</span><span style=\"color:#f8f8f2;\">()[name];\n</span><span style=\"color:#f8f8f2;\">    println!(</span><span style=\"color:#ffee99;\">&quot;selected: </span><span style=\"color:#ff80f4;\">{{is_selected}}</span><span style=\"color:#ffee99;\">&quot;</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
+            name: "hooks_bad.rs".to_string(),
+        }
+        h2 { id: "additional-resources",
+            a { href: "#additional-resources", class: "header", "Additional resources" }
+        }
+        ul {
+            li {
+                a { href: "https://docs.rs/dioxus-hooks/latest/dioxus_hooks/",
+                    "dioxus_hooks API docs"
+                }
+            }
+            li {
+                a { href: "https://github.com/DioxusLabs/dioxus/tree/main/packages/hooks",
+                    "dioxus_hooks source code"
+                }
+            }
+        }
+    }
+}
+#[component(no_case_check)]
+pub fn ReferenceUserInput() -> dioxus::prelude::Element {
+    use dioxus::prelude::*;
+    rsx! {
+        h1 { id: "user-input",
+            a { href: "#user-input", class: "header", "User Input" }
+        }
+        p {
+            "Interfaces often need to provide a way to input data: e.g. text, numbers, checkboxes, etc. In Dioxus, there are two ways you can work with user input."
+        }
+        h2 { id: "controlled-inputs",
+            a { href: "#controlled-inputs", class: "header", "Controlled Inputs" }
+        }
+        p {
+            "With controlled inputs, you are directly in charge of the state of the input. This gives you a lot of flexibility, and makes it easy to keep things in sync. For example, this is how you would create a controlled text input:"
+        }
+        CodeBlock {
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f92672;\">pub </span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">App</span><span style=\"color:#f8f8f2;\">() -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let </span><span style=\"color:#f92672;\">mut</span><span style=\"color:#f8f8f2;\"> name </span><span style=\"color:#f92672;\">= </span><span style=\"color:#66d9ef;\">use_signal</span><span style=\"color:#f8f8f2;\">(|| </span><span style=\"color:#ffee99;\">&quot;bob&quot;</span><span style=\"color:#f8f8f2;\">.</span><span style=\"color:#66d9ef;\">to_string</span><span style=\"color:#f8f8f2;\">());\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">    rsx! {{\n</span><span style=\"color:#f8f8f2;\">        input {{\n</span><span style=\"color:#f8f8f2;\">            </span><span style=\"color:#8c8c8c;\">// we tell the component what to render\n</span><span style=\"color:#f8f8f2;\">            value: </span><span style=\"color:#ffee99;\">&quot;{{name}}&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">            </span><span style=\"color:#8c8c8c;\">// and what to do when the value changes\n</span><span style=\"color:#f8f8f2;\">            oninput: </span><span style=\"color:#f92672;\">move |</span><span style=\"color:#f8f8f2;\">event</span><span style=\"color:#f92672;\">|</span><span style=\"color:#f8f8f2;\"> name.</span><span style=\"color:#66d9ef;\">set</span><span style=\"color:#f8f8f2;\">(event.</span><span style=\"color:#66d9ef;\">value</span><span style=\"color:#f8f8f2;\">())\n</span><span style=\"color:#f8f8f2;\">        }}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
+            name: "input_controlled.rs".to_string(),
+        }
+        DemoFrame { input_controlled::App {} }
+        p { "Notice the flexibility – you can:" }
+        ul {
+            li { "Also display the same contents in another element, and they will be in sync" }
+            li { "Transform the input every time it is modified (e.g. to make sure it is upper case)" }
+            li { "Validate the input every time it changes" }
+            li {
+                "Have custom logic happening when the input changes (e.g. network request for autocompletion)"
+            }
+            li {
+                "Programmatically change the value (e.g. a \"randomize\" button that fills the input with nonsense)"
+            }
+        }
+        h2 { id: "uncontrolled-inputs",
+            a { href: "#uncontrolled-inputs", class: "header", "Uncontrolled Inputs" }
+        }
+        p {
+            "As an alternative to controlled inputs, you can simply let the platform keep track of the input values. If we don't tell a HTML input what content it should have, it will be editable anyway (this is built into the browser). This approach can be more performant, but less flexible. For example, it's harder to keep the input in sync with another element."
+        }
+        p {
+            "Since you don't necessarily have the current value of the uncontrolled input in state, you can access it either by listening to  "
+            code { "oninput" }
+            " events (similarly to controlled components), or, if the input is part of a form, you can access the form data in the form events (e.g.  "
+            code { "oninput" }
+            " or  "
+            code { "onsubmit" }
+            "):"
+        }
+        CodeBlock {
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f92672;\">pub </span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">App</span><span style=\"color:#f8f8f2;\">() -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    rsx! {{\n</span><span style=\"color:#f8f8f2;\">        form {{ onsubmit: </span><span style=\"color:#f92672;\">move |</span><span style=\"color:#f8f8f2;\">event</span><span style=\"color:#f92672;\">| </span><span style=\"color:#f8f8f2;\">{{ log::info</span><span style=\"color:#f92672;\">!</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#ffee99;\">&quot;Submitted! {{event:?}}&quot;</span><span style=\"color:#f8f8f2;\">) }},\n</span><span style=\"color:#f8f8f2;\">            input {{ name: </span><span style=\"color:#ffee99;\">&quot;name&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">            input {{ name: </span><span style=\"color:#ffee99;\">&quot;age&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">            input {{ name: </span><span style=\"color:#ffee99;\">&quot;date&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">            input {{ r</span><span style=\"color:#f92672;\">#</span><span style=\"font-style:italic;color:#66d9ef;\">type</span><span style=\"color:#f8f8f2;\">: </span><span style=\"color:#ffee99;\">&quot;submit&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">        }}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
+            name: "input_uncontrolled.rs".to_string(),
+        }
+        DemoFrame { input_uncontrolled::App {} }
+        CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">Submitted</span><span style=\"color:#f92672;\">!</span><span style=\"color:#f8f8f2;\"> UiEvent {{ data: FormData {{ value: </span><span style=\"color:#ffee99;\">&quot;&quot;</span><span style=\"color:#f8f8f2;\">, values: {{</span><span style=\"color:#ffee99;\">&quot;age&quot;</span><span style=\"color:#f8f8f2;\">: </span><span style=\"color:#ffee99;\">&quot;very old&quot;</span><span style=\"color:#f8f8f2;\">, </span><span style=\"color:#ffee99;\">&quot;date&quot;</span><span style=\"color:#f8f8f2;\">: </span><span style=\"color:#ffee99;\">&quot;1966&quot;</span><span style=\"color:#f8f8f2;\">, </span><span style=\"color:#ffee99;\">&quot;name&quot;</span><span style=\"color:#f8f8f2;\">: </span><span style=\"color:#ffee99;\">&quot;Fred&quot;</span><span style=\"color:#f8f8f2;\">}} }} }}</span></pre>\n" }
+        h2 { id: "handling-files",
+            a { href: "#handling-files", class: "header", "Handling files" }
+        }
+        p {
+            "You can insert a file picker by using an input element of type  "
+            code { "file" }
+            ". This element supports the  "
+            code { "multiple" }
+            " attribute, to let you pick more files at the same time. You can select a folder by adding the  "
+            code { "directory" }
+            " attribute: Dioxus will map this attribute to browser specific attributes, because there is no standardized way to allow a directory to be selected."
+        }
+        p {
+            code { "type" }
+            " is a Rust keyword, so when specifying the type of the input field, you have to write it as  "
+            code { "r#type:\"file\"" }
+            "."
+        }
+        p {
+            "Extracting the selected files is a bit different from what you may typically use in Javascript."
+        }
+        p {
+            "The  "
+            code { "FormData" }
+            " event contains a  "
+            code { "files" }
+            " field with data about the uploaded files. This field contains a  "
+            code { "FileEngine" }
+            " struct which lets you fetch the filenames selected by the user. This example saves the filenames of the selected files to a  "
+            code { "Vec" }
+            ":"
+        }
+        CodeBlock {
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f92672;\">pub </span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">App</span><span style=\"color:#f8f8f2;\">() -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let </span><span style=\"color:#f92672;\">mut</span><span style=\"color:#f8f8f2;\"> filenames: Signal&lt;Vec&lt;String&gt;&gt; </span><span style=\"color:#f92672;\">= </span><span style=\"color:#66d9ef;\">use_signal</span><span style=\"color:#f8f8f2;\">(</span><span style=\"font-style:italic;color:#66d9ef;\">Vec</span><span style=\"color:#f8f8f2;\">::new);\n</span><span style=\"color:#f8f8f2;\">    rsx! {{\n</span><span style=\"color:#f8f8f2;\">        input {{\n</span><span style=\"color:#f8f8f2;\">            </span><span style=\"color:#8c8c8c;\">// tell the input to pick a file\n</span><span style=\"color:#f8f8f2;\">            r</span><span style=\"color:#f92672;\">#</span><span style=\"font-style:italic;color:#66d9ef;\">type</span><span style=\"color:#f8f8f2;\">: </span><span style=\"color:#ffee99;\">&quot;file&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">            </span><span style=\"color:#8c8c8c;\">// list the accepted extensions\n</span><span style=\"color:#f8f8f2;\">            accept: </span><span style=\"color:#ffee99;\">&quot;.txt,.rs&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">            </span><span style=\"color:#8c8c8c;\">// pick multiple files\n</span><span style=\"color:#f8f8f2;\">            multiple: </span><span style=\"color:#ff80f4;\">true</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">            onchange: </span><span style=\"color:#f92672;\">move |</span><span style=\"color:#f8f8f2;\">evt</span><span style=\"color:#f92672;\">| </span><span style=\"color:#f8f8f2;\">{{\n</span><span style=\"color:#f8f8f2;\">                </span><span style=\"color:#f92672;\">if </span><span style=\"font-style:italic;color:#66d9ef;\">let Some</span><span style=\"color:#f8f8f2;\">(file_engine) </span><span style=\"color:#f92672;\">= &amp;</span><span style=\"color:#f8f8f2;\">evt.</span><span style=\"color:#66d9ef;\">files</span><span style=\"color:#f8f8f2;\">() {{\n</span><span style=\"color:#f8f8f2;\">                    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> files </span><span style=\"color:#f92672;\">=</span><span style=\"color:#f8f8f2;\"> file_engine.</span><span style=\"color:#66d9ef;\">files</span><span style=\"color:#f8f8f2;\">();\n</span><span style=\"color:#f8f8f2;\">                    </span><span style=\"color:#f92672;\">for</span><span style=\"color:#f8f8f2;\"> file_name </span><span style=\"color:#f92672;\">in</span><span style=\"color:#f8f8f2;\"> files {{\n</span><span style=\"color:#f8f8f2;\">                        filenames.</span><span style=\"color:#66d9ef;\">write</span><span style=\"color:#f8f8f2;\">().</span><span style=\"color:#66d9ef;\">push</span><span style=\"color:#f8f8f2;\">(file_name);\n</span><span style=\"color:#f8f8f2;\">                    }}\n</span><span style=\"color:#f8f8f2;\">                }}\n</span><span style=\"color:#f8f8f2;\">            }}\n</span><span style=\"color:#f8f8f2;\">        }}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
+            name: "input_fileengine.rs".to_string(),
+        }
+        p {
+            "If you're planning to read the file content, you need to do it asynchronously, to keep the rest of the UI interactive. This example event handler loads the content of the selected files in an async closure:"
+        }
+        CodeBlock {
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">onchange: </span><span style=\"color:#f92672;\">move |</span><span style=\"color:#f8f8f2;\">evt</span><span style=\"color:#f92672;\">| </span><span style=\"color:#f8f8f2;\">{{\n</span><span style=\"color:#f8f8f2;\">    async </span><span style=\"color:#f92672;\">move </span><span style=\"color:#f8f8f2;\">{{\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"color:#f92672;\">if </span><span style=\"font-style:italic;color:#66d9ef;\">let Some</span><span style=\"color:#f8f8f2;\">(file_engine) </span><span style=\"color:#f92672;\">=</span><span style=\"color:#f8f8f2;\"> evt.</span><span style=\"color:#66d9ef;\">files</span><span style=\"color:#f8f8f2;\">() {{\n</span><span style=\"color:#f8f8f2;\">            </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> files </span><span style=\"color:#f92672;\">=</span><span style=\"color:#f8f8f2;\"> file_engine.</span><span style=\"color:#66d9ef;\">files</span><span style=\"color:#f8f8f2;\">();\n</span><span style=\"color:#f8f8f2;\">            </span><span style=\"color:#f92672;\">for</span><span style=\"color:#f8f8f2;\"> file_name </span><span style=\"color:#f92672;\">in &amp;</span><span style=\"color:#f8f8f2;\">files {{\n</span><span style=\"color:#f8f8f2;\">                </span><span style=\"color:#f92672;\">if </span><span style=\"font-style:italic;color:#66d9ef;\">let Some</span><span style=\"color:#f8f8f2;\">(file) </span><span style=\"color:#f92672;\">=</span><span style=\"color:#f8f8f2;\"> file_engine.</span><span style=\"color:#66d9ef;\">read_file_to_string</span><span style=\"color:#f8f8f2;\">(file_name).await\n</span><span style=\"color:#f8f8f2;\">                {{\n</span><span style=\"color:#f8f8f2;\">                    files_uploaded.</span><span style=\"color:#66d9ef;\">write</span><span style=\"color:#f8f8f2;\">().</span><span style=\"color:#66d9ef;\">push</span><span style=\"color:#f8f8f2;\">(file);\n</span><span style=\"color:#f8f8f2;\">                }}\n</span><span style=\"color:#f8f8f2;\">            }}\n</span><span style=\"color:#f8f8f2;\">        }}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
+            name: "input_fileengine_async.rs".to_string(),
+        }
+        p {
+            "Lastly, this example shows you how to select a folder, by setting the  "
+            code { "directory" }
+            " attribute to  "
+            code { "true" }
+            "."
+        }
+        CodeBlock {
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">input {{\n</span><span style=\"color:#f8f8f2;\">    r</span><span style=\"color:#f92672;\">#</span><span style=\"font-style:italic;color:#66d9ef;\">type</span><span style=\"color:#f8f8f2;\">: </span><span style=\"color:#ffee99;\">&quot;file&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#8c8c8c;\">// Select a folder by setting the directory attribute\n</span><span style=\"color:#f8f8f2;\">    directory: </span><span style=\"color:#ff80f4;\">true</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">    onchange: </span><span style=\"color:#f92672;\">move |</span><span style=\"color:#f8f8f2;\">evt</span><span style=\"color:#f92672;\">| </span><span style=\"color:#f8f8f2;\">{{\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"color:#f92672;\">if </span><span style=\"font-style:italic;color:#66d9ef;\">let Some</span><span style=\"color:#f8f8f2;\">(file_engine) </span><span style=\"color:#f92672;\">=</span><span style=\"color:#f8f8f2;\"> evt.</span><span style=\"color:#66d9ef;\">files</span><span style=\"color:#f8f8f2;\">() {{\n</span><span style=\"color:#f8f8f2;\">            </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> files </span><span style=\"color:#f92672;\">=</span><span style=\"color:#f8f8f2;\"> file_engine.</span><span style=\"color:#66d9ef;\">files</span><span style=\"color:#f8f8f2;\">();\n</span><span style=\"color:#f8f8f2;\">            </span><span style=\"color:#f92672;\">for</span><span style=\"color:#f8f8f2;\"> file_name </span><span style=\"color:#f92672;\">in</span><span style=\"color:#f8f8f2;\"> files {{\n</span><span style=\"color:#f8f8f2;\">                println!(</span><span style=\"color:#ffee99;\">&quot;</span><span style=\"color:#ff80f4;\">{{}}</span><span style=\"color:#ffee99;\">&quot;</span><span style=\"color:#f8f8f2;\">, file_name);\n</span><span style=\"color:#f8f8f2;\">            }}\n</span><span style=\"color:#f8f8f2;\">        }}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
+            name: "input_fileengine_folder.rs".to_string(),
+        }
+    }
+}
+#[component(no_case_check)]
+pub fn ReferenceContext() -> dioxus::prelude::Element {
+    use dioxus::prelude::*;
+    rsx! {
+        h1 { id: "sharing-state",
+            a { href: "#sharing-state", class: "header", "Sharing State" }
+        }
+        p {
+            "Often, multiple components need to access the same state. Depending on your needs, there are several ways to implement this."
+        }
+        h2 { id: "lifting-state",
+            a { href: "#lifting-state", class: "header", "Lifting State" }
+        }
+        p {
+            "One approach to share state between components is to \"lift\" it up to the nearest common ancestor. This means putting the  "
+            code { "use_signal" }
+            " hook in a parent component, and passing the needed values down as props."
+        }
+        p {
+            "Suppose we want to build a meme editor. We want to have an input to edit the meme caption, but also a preview of the meme with the caption. Logically, the meme and the input are 2 separate components, but they need access to the same state (the current caption)."
+        }
+        blockquote {
+            p {
+                "Of course, in this simple example, we could write everything in one component – but it is better to split everything out in smaller components to make the code more reusable, maintainable, and performant (this is even more important for larger, complex apps)."
+            }
+        }
+        p {
+            "We start with a  "
+            code { "Meme" }
+            " component, responsible for rendering a meme with a given caption:"
+        }
+        CodeBlock {
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">#[component]\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">Meme</span><span style=\"color:#f8f8f2;\">(</span><span style=\"font-style:italic;color:#fd971f;\">caption</span><span style=\"color:#f8f8f2;\">: String) -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> container_style </span><span style=\"color:#f92672;\">= </span><span style=\"font-style:italic;color:#66d9ef;\">r</span><span style=\"color:#ffee99;\">#&quot;\n</span><span style=\"color:#ffee99;\">        position: relative;\n</span><span style=\"color:#ffee99;\">        width: fit-content;\n</span><span style=\"color:#ffee99;\">    &quot;#</span><span style=\"color:#f8f8f2;\">;\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> caption_container_style </span><span style=\"color:#f92672;\">= </span><span style=\"font-style:italic;color:#66d9ef;\">r</span><span style=\"color:#ffee99;\">#&quot;\n</span><span style=\"color:#ffee99;\">        position: absolute;\n</span><span style=\"color:#ffee99;\">        bottom: 0;\n</span><span style=\"color:#ffee99;\">        left: 0;\n</span><span style=\"color:#ffee99;\">        right: 0;\n</span><span style=\"color:#ffee99;\">        padding: 16px 8px;\n</span><span style=\"color:#ffee99;\">    &quot;#</span><span style=\"color:#f8f8f2;\">;\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> caption_style </span><span style=\"color:#f92672;\">= </span><span style=\"font-style:italic;color:#66d9ef;\">r</span><span style=\"color:#ffee99;\">&quot;\n</span><span style=\"color:#ffee99;\">        font-size: 32px;\n</span><span style=\"color:#ffee99;\">        margin: 0;\n</span><span style=\"color:#ffee99;\">        color: white;\n</span><span style=\"color:#ffee99;\">        text-align: center;\n</span><span style=\"color:#ffee99;\">    &quot;</span><span style=\"color:#f8f8f2;\">;\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">    rsx! {{\n</span><span style=\"color:#f8f8f2;\">        div {{ style: </span><span style=\"color:#ffee99;\">&quot;{{container_style}}&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">            img {{ src: </span><span style=\"color:#ffee99;\">&quot;https://i.imgflip.com/2zh47r.jpg&quot;</span><span style=\"color:#f8f8f2;\">, height: </span><span style=\"color:#ffee99;\">&quot;500px&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">            div {{ style: </span><span style=\"color:#ffee99;\">&quot;{{caption_container_style}}&quot;</span><span style=\"color:#f8f8f2;\">, p {{ style: </span><span style=\"color:#ffee99;\">&quot;{{caption_style}}&quot;</span><span style=\"color:#f8f8f2;\">, </span><span style=\"color:#ffee99;\">&quot;{{caption}}&quot; </span><span style=\"color:#f8f8f2;\">}} }}\n</span><span style=\"color:#f8f8f2;\">        }}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
+            name: "meme_editor.rs".to_string(),
+        }
+        blockquote {
+            p {
+                "Note that the  "
+                code { "Meme" }
+                " component is unaware where the caption is coming from – it could be stored in  "
+                code { "use_signal" }
+                ", or a constant. This ensures that it is very reusable – the same component can be used for a meme gallery without any changes!"
+            }
+        }
+        p {
+            "We also create a caption editor, completely decoupled from the meme. The caption editor must not store the caption itself – otherwise, how will we provide it to the  "
+            code { "Meme" }
+            " component? Instead, it should accept the current caption as a prop, as well as an event handler to delegate input events to:"
+        }
+        CodeBlock {
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">#[component]\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">CaptionEditor</span><span style=\"color:#f8f8f2;\">(</span><span style=\"font-style:italic;color:#fd971f;\">caption</span><span style=\"color:#f8f8f2;\">: String, </span><span style=\"font-style:italic;color:#fd971f;\">oninput</span><span style=\"color:#f8f8f2;\">: EventHandler&lt;FormEvent&gt;) -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> input_style </span><span style=\"color:#f92672;\">= </span><span style=\"font-style:italic;color:#66d9ef;\">r</span><span style=\"color:#ffee99;\">&quot;\n</span><span style=\"color:#ffee99;\">        border: none;\n</span><span style=\"color:#ffee99;\">        background: cornflowerblue;\n</span><span style=\"color:#ffee99;\">        padding: 8px 16px;\n</span><span style=\"color:#ffee99;\">        margin: 0;\n</span><span style=\"color:#ffee99;\">        border-radius: 4px;\n</span><span style=\"color:#ffee99;\">        color: white;\n</span><span style=\"color:#ffee99;\">    &quot;</span><span style=\"color:#f8f8f2;\">;\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">    rsx! {{\n</span><span style=\"color:#f8f8f2;\">        input {{\n</span><span style=\"color:#f8f8f2;\">            style: </span><span style=\"color:#ffee99;\">&quot;{{input_style}}&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">            value: </span><span style=\"color:#ffee99;\">&quot;{{caption}}&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">            oninput: </span><span style=\"color:#f92672;\">move |</span><span style=\"color:#f8f8f2;\">event</span><span style=\"color:#f92672;\">|</span><span style=\"color:#f8f8f2;\"> oninput.</span><span style=\"color:#66d9ef;\">call</span><span style=\"color:#f8f8f2;\">(event)\n</span><span style=\"color:#f8f8f2;\">        }}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
+            name: "meme_editor.rs".to_string(),
+        }
+        p {
+            "Finally, a third component will render the other two as children. It will be responsible for keeping the state and passing down the relevant props."
+        }
+        CodeBlock {
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">MemeEditor</span><span style=\"color:#f8f8f2;\">() -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> container_style </span><span style=\"color:#f92672;\">= </span><span style=\"font-style:italic;color:#66d9ef;\">r</span><span style=\"color:#ffee99;\">&quot;\n</span><span style=\"color:#ffee99;\">        display: flex;\n</span><span style=\"color:#ffee99;\">        flex-direction: column;\n</span><span style=\"color:#ffee99;\">        gap: 16px;\n</span><span style=\"color:#ffee99;\">        margin: 0 auto;\n</span><span style=\"color:#ffee99;\">        width: fit-content;\n</span><span style=\"color:#ffee99;\">    &quot;</span><span style=\"color:#f8f8f2;\">;\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let </span><span style=\"color:#f92672;\">mut</span><span style=\"color:#f8f8f2;\"> caption </span><span style=\"color:#f92672;\">= </span><span style=\"color:#66d9ef;\">use_signal</span><span style=\"color:#f8f8f2;\">(|| </span><span style=\"color:#ffee99;\">&quot;me waiting for my rust code to compile&quot;</span><span style=\"color:#f8f8f2;\">.</span><span style=\"color:#66d9ef;\">to_string</span><span style=\"color:#f8f8f2;\">());\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">    rsx! {{\n</span><span style=\"color:#f8f8f2;\">        div {{ style: </span><span style=\"color:#ffee99;\">&quot;{{container_style}}&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">            h1 {{ </span><span style=\"color:#ffee99;\">&quot;Meme Editor&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">            Meme {{ caption: caption }}\n</span><span style=\"color:#f8f8f2;\">            CaptionEditor {{ caption: caption, oninput: </span><span style=\"color:#f92672;\">move |</span><span style=\"color:#f8f8f2;\">event: FormEvent</span><span style=\"color:#f92672;\">|</span><span style=\"color:#f8f8f2;\"> caption.</span><span style=\"color:#66d9ef;\">set</span><span style=\"color:#f8f8f2;\">(event.</span><span style=\"color:#66d9ef;\">value</span><span style=\"color:#f8f8f2;\">()) }}\n</span><span style=\"color:#f8f8f2;\">        }}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
+            name: "meme_editor.rs".to_string(),
+        }
+        p {
+            img {
+                src: asset!(
+                    "/assets/static/meme_editor_screenshot.png", ImageAssetOptions::new().with_avif()
+                ),
+                alt: "Meme Editor Screenshot: An old plastic skeleton sitting on a park bench. Caption: \"me waiting for a language feature\"",
+                title: "",
+            }
+        }
+        h2 { id: "using-shared-state",
+            a { href: "#using-shared-state", class: "header", "Using Shared State" }
+        }
+        p {
+            "Sometimes, some state needs to be shared between multiple components far down the tree, and passing it down through props is very inconvenient."
+        }
+        p {
+            "Suppose now that we want to implement a dark mode toggle for our app. To achieve this, we will make every component select styling depending on whether dark mode is enabled or not."
+        }
+        blockquote {
+            p {
+                "Note: we're choosing this approach for the sake of an example. There are better ways to implement dark mode (e.g. using CSS variables). Let's pretend CSS variables don't exist – welcome to 2013!"
+            }
+        }
+        p {
+            "Now, we could write another  "
+            code { "use_signal" }
+            " in the top component, and pass  "
+            code { "is_dark_mode" }
+            " down to every component through props. But think about what will happen as the app grows in complexity – almost every component that renders any CSS is going to need to know if dark mode is enabled or not – so they'll all need the same dark mode prop. And every parent component will need to pass it down to them. Imagine how messy and verbose that would get, especially if we had components several levels deep!"
+        }
+        p {
+            "Dioxus offers a better solution than this \"prop drilling\" – providing context. The "
+            a { href: "https://docs.rs/dioxus-hooks/latest/dioxus_hooks/fn.use_context_provider.html",
+                code { "use_context_provider" }
+            }
+            " hook provides any Clone context (including Signals!) to any child components. Child components can use the "
+            a { href: "https://docs.rs/dioxus-hooks/latest/dioxus_hooks/fn.use_context.html",
+                code { "use_context" }
+            }
+            " hook to get that context and if it is a Signal, they can read and write to it."
+        }
+        p { "First, we have to create a struct for our dark mode configuration:" }
+        CodeBlock {
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">#[derive(Clone, Copy)]\n</span><span style=\"font-style:italic;color:#66d9ef;\">struct </span><span style=\"color:#f8f8f2;\">DarkMode(</span><span style=\"font-style:italic;color:#66d9ef;\">bool</span><span style=\"color:#f8f8f2;\">);</span></pre>\n",
+            name: "meme_editor_dark_mode.rs".to_string(),
+        }
+        p {
+            "Now, in a top-level component (like  "
+            code { "App" }
+            "), we can provide the  "
+            code { "DarkMode" }
+            " context to all children components:"
+        }
+        CodeBlock {
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#66d9ef;\">use_context_provider</span><span style=\"color:#f8f8f2;\">(|| Signal::new(DarkMode(</span><span style=\"color:#ff80f4;\">false</span><span style=\"color:#f8f8f2;\">)));</span></pre>\n",
+            name: "meme_editor_dark_mode.rs".to_string(),
+        }
+        p {
+            "As a result, any child component of  "
+            code { "App" }
+            " (direct or not), can access the  "
+            code { "DarkMode" }
+            " context."
+        }
+        CodeBlock {
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> dark_mode_context </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">use_context::&lt;Signal&lt;DarkMode&gt;&gt;();</span></pre>\n",
+            name: "meme_editor_dark_mode.rs".to_string(),
+        }
+        blockquote {
+            p {
+                code { "use_context" }
+                " returns  "
+                code { "Signal<DarkMode>" }
+                " here, because the Signal was provided by the parent. If the context hadn't been provided  "
+                code { "use_context" }
+                " would have panicked."
+            }
+        }
+        p {
+            "If you have a component where the context might or not be provided, you might want to use  "
+            code { "try_consume_context" }
+            "instead, so you can handle the  "
+            code { "None" }
+            " case. The drawback of this method is that it will not memoize the value between renders, so it won't be as as efficient as  "
+            code { "use_context" }
+            ", you could do it yourself with  "
+            code { "use_hook" }
+            " though."
+        }
+        p {
+            "For example, here's how we would implement the dark mode toggle, which both reads the context (to determine what color it should render) and writes to it (to toggle dark mode):"
+        }
+        CodeBlock {
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f92672;\">pub </span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">DarkModeToggle</span><span style=\"color:#f8f8f2;\">() -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let </span><span style=\"color:#f92672;\">mut</span><span style=\"color:#f8f8f2;\"> dark_mode </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">use_context::&lt;Signal&lt;DarkMode&gt;&gt;();\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> style </span><span style=\"color:#f92672;\">= if </span><span style=\"color:#66d9ef;\">dark_mode</span><span style=\"color:#f8f8f2;\">().</span><span style=\"color:#ff80f4;\">0 </span><span style=\"color:#f8f8f2;\">{{ </span><span style=\"color:#ffee99;\">&quot;color:white&quot; </span><span style=\"color:#f8f8f2;\">}} </span><span style=\"color:#f92672;\">else </span><span style=\"color:#f8f8f2;\">{{ </span><span style=\"color:#ffee99;\">&quot;&quot; </span><span style=\"color:#f8f8f2;\">}};\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">    rsx! {{\n</span><span style=\"color:#f8f8f2;\">        label {{ style: </span><span style=\"color:#ffee99;\">&quot;{{style}}&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">            </span><span style=\"color:#ffee99;\">&quot;Dark Mode&quot;\n</span><span style=\"color:#f8f8f2;\">            input {{\n</span><span style=\"color:#f8f8f2;\">                r</span><span style=\"color:#f92672;\">#</span><span style=\"font-style:italic;color:#66d9ef;\">type</span><span style=\"color:#f8f8f2;\">: </span><span style=\"color:#ffee99;\">&quot;checkbox&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">                oninput: </span><span style=\"color:#f92672;\">move |</span><span style=\"color:#f8f8f2;\">event</span><span style=\"color:#f92672;\">| </span><span style=\"color:#f8f8f2;\">{{\n</span><span style=\"color:#f8f8f2;\">                    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> is_enabled </span><span style=\"color:#f92672;\">=</span><span style=\"color:#f8f8f2;\"> event.</span><span style=\"color:#66d9ef;\">value</span><span style=\"color:#f8f8f2;\">() </span><span style=\"color:#f92672;\">== </span><span style=\"color:#ffee99;\">&quot;true&quot;</span><span style=\"color:#f8f8f2;\">;\n</span><span style=\"color:#f8f8f2;\">                    dark_mode.</span><span style=\"color:#66d9ef;\">write</span><span style=\"color:#f8f8f2;\">().</span><span style=\"color:#ff80f4;\">0 </span><span style=\"color:#f92672;\">=</span><span style=\"color:#f8f8f2;\"> is_enabled;\n</span><span style=\"color:#f8f8f2;\">                }}\n</span><span style=\"color:#f8f8f2;\">            }}\n</span><span style=\"color:#f8f8f2;\">        }}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
+            name: "meme_editor_dark_mode.rs".to_string(),
+        }
+    }
+}
+#[component(no_case_check)]
+pub fn ReferenceDynamicRendering() -> dioxus::prelude::Element {
+    use dioxus::prelude::*;
+    rsx! {
+        h1 { id: "dynamic-rendering",
+            a { href: "#dynamic-rendering", class: "header", "Dynamic Rendering" }
+        }
+        p {
+            "Sometimes you want to render different things depending on the state/props. With Dioxus, just describe what you want to see using Rust control flow – the framework will take care of making the necessary changes on the fly if the state or props change!"
+        }
+        h2 { id: "conditional-rendering",
+            a { href: "#conditional-rendering", class: "header", "Conditional Rendering" }
+        }
+        p {
+            "To render different elements based on a condition, you could use an  "
+            code { "if-else" }
+            " statement:"
+        }
+        CodeBlock {
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f92672;\">if</span><span style=\"color:#f8f8f2;\"> is_logged_in {{\n</span><span style=\"color:#f8f8f2;\">    rsx! {{\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"color:#ffee99;\">&quot;Welcome!&quot;\n</span><span style=\"color:#f8f8f2;\">        button {{ onclick: </span><span style=\"color:#f92672;\">move |_|</span><span style=\"color:#f8f8f2;\"> log_out.</span><span style=\"color:#66d9ef;\">call</span><span style=\"color:#f8f8f2;\">(()), </span><span style=\"color:#ffee99;\">&quot;Log Out&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}} </span><span style=\"color:#f92672;\">else </span><span style=\"color:#f8f8f2;\">{{\n</span><span style=\"color:#f8f8f2;\">    rsx! {{\n</span><span style=\"color:#f8f8f2;\">        button {{ onclick: </span><span style=\"color:#f92672;\">move |_|</span><span style=\"color:#f8f8f2;\"> log_in.</span><span style=\"color:#66d9ef;\">call</span><span style=\"color:#f8f8f2;\">(()), </span><span style=\"color:#ffee99;\">&quot;Log In&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
+            name: "conditional_rendering.rs".to_string(),
+        }
+        DemoFrame { conditional_rendering::App {} }
+        blockquote {
+            p {
+                "You could also use  "
+                code { "match" }
+                " statements, or any Rust function to conditionally render different things."
+            }
+        }
+        h3 { id: "improving-the",
+            a { href: "#improving-the", class: "header", "Improving the " }
+            code { "if-else" }
+            " Example"
+        }
+        p {
+            "You may have noticed some repeated code in the  "
+            code { "if-else" }
+            " example above. Repeating code like this is both bad for maintainability and performance. Dioxus will skip diffing static elements like the button, but when switching between multiple  "
+            code { "rsx" }
+            " calls it cannot perform this optimization. For this example either approach is fine, but for components with large parts that are reused between conditionals, it can be more of an issue."
+        }
+        p {
+            "We can improve this example by splitting up the dynamic parts and inserting them where they are needed."
+        }
+        CodeBlock {
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">rsx! {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#8c8c8c;\">// We only render the welcome message if we are logged in\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#8c8c8c;\">// You can use if statements in the middle of a render block to conditionally render elements\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#f92672;\">if</span><span style=\"color:#f8f8f2;\"> is_logged_in {{\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"color:#8c8c8c;\">// Notice the body of this if statement is rsx code, not an expression\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"color:#ffee99;\">&quot;Welcome!&quot;\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">    button {{\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"color:#8c8c8c;\">// depending on the value of `is_logged_in`, we will call a different event handler\n</span><span style=\"color:#f8f8f2;\">        onclick: </span><span style=\"color:#f92672;\">move |_| if</span><span style=\"color:#f8f8f2;\"> is_logged_in {{ log_out.</span><span style=\"color:#66d9ef;\">call</span><span style=\"color:#f8f8f2;\">(()) }} </span><span style=\"color:#f92672;\">else </span><span style=\"color:#f8f8f2;\">{{ log_in.</span><span style=\"color:#66d9ef;\">call</span><span style=\"color:#f8f8f2;\">(()) }},\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"color:#f92672;\">if</span><span style=\"color:#f8f8f2;\"> is_logged_in {{\n</span><span style=\"color:#f8f8f2;\">            </span><span style=\"color:#8c8c8c;\">// if we are logged in, the button should say &quot;Log Out&quot;\n</span><span style=\"color:#f8f8f2;\">            </span><span style=\"color:#ffee99;\">&quot;Log Out&quot;\n</span><span style=\"color:#f8f8f2;\">        }} </span><span style=\"color:#f92672;\">else </span><span style=\"color:#f8f8f2;\">{{\n</span><span style=\"color:#f8f8f2;\">            </span><span style=\"color:#8c8c8c;\">// if we are not logged in, the button should say &quot;Log In&quot;\n</span><span style=\"color:#f8f8f2;\">            </span><span style=\"color:#ffee99;\">&quot;Log In&quot;\n</span><span style=\"color:#f8f8f2;\">        }}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
+            name: "conditional_rendering.rs".to_string(),
+        }
+        DemoFrame { conditional_rendering::LogInImprovedApp {} }
+        h3 { id: "inspecting",
+            a { href: "#inspecting", class: "header", "Inspecting " }
+            code { "Element" }
+            " props"
+        }
+        p {
+            "Since  "
+            code { "Element" }
+            " is a  "
+            code { "Option<VNode>" }
+            ", components accepting  "
+            code { "Element" }
+            " as a prop can inspect its contents, and render different things based on that. Example:"
+        }
+        CodeBlock {
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">Clickable</span><span style=\"color:#f8f8f2;\">(</span><span style=\"font-style:italic;color:#fd971f;\">props</span><span style=\"color:#f8f8f2;\">: ClickableProps) -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    rsx! {{\n</span><span style=\"color:#f8f8f2;\">        div {{ class: </span><span style=\"color:#ffee99;\">&quot;wrapper&quot;</span><span style=\"color:#f8f8f2;\">, {{props.children}} }}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
+            name: "component_children_inspect.rs".to_string(),
+        }
+        p {
+            "You can't mutate the  "
+            code { "Element" }
+            ", but if you need a modified version of it, you can construct a new one based on its attributes/children/etc."
+        }
+        h2 { id: "rendering-nothing",
+            a { href: "#rendering-nothing", class: "header", "Rendering Nothing" }
+        }
+        p {
+            "To render nothing, you can return  "
+            code { "None" }
+            " from a component. This is useful if you want to conditionally hide something:"
+        }
+        CodeBlock {
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f92672;\">if</span><span style=\"color:#f8f8f2;\"> is_logged_in {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#f92672;\">return </span><span style=\"color:#f8f8f2;\">rsx!();\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">rsx! {{\n</span><span style=\"color:#f8f8f2;\">    p {{ </span><span style=\"color:#ffee99;\">&quot;You must be logged in to comment&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
+            name: "conditional_rendering.rs".to_string(),
+        }
+        DemoFrame { conditional_rendering::LogInWarningApp {} }
+        p {
+            "This works because the  "
+            code { "Element" }
+            " type is just an alias for  "
+            code { "Option<VNode>" }
+        }
+        blockquote {
+            p {
+                "Again, you may use a different method to conditionally return  "
+                code { "None" }
+                ". For example the boolean's "
+                a { href: "https://doc.rust-lang.org/std/primitive.bool.html#method.then",
+                    code { "then()" }
+                }
+                " function could be used."
+            }
+        }
+        h2 { id: "rendering-lists",
+            a { href: "#rendering-lists", class: "header", "Rendering Lists" }
+        }
+        p {
+            "Often, you'll want to render a collection of components. For example, you might want to render a list of all comments on a post."
+        }
+        p {
+            "For this, Dioxus accepts iterators that produce  "
+            code { "Element" }
+            "s. So we need to:"
+        }
+        ul {
+            li {
+                "Get an iterator over all of our items (e.g., if you have a "
+                code { "Vec" }
+                " of comments, iterate over it with "
+                code { "iter()" }
+                ")"
+            }
+            li {
+                code { ".map" }
+                " the iterator to convert each item into a "
+                code { "LazyNode" }
+                " using "
+                code { "rsx!{{...}}" }
+                ul {
+                    li {
+                        "Add a unique "
+                        code { "key" }
+                        " attribute to each iterator item"
+                    }
+                }
+            }
+            li { "Include this iterator in the final RSX (or use it inline)" }
+        }
+        p {
+            "Example: suppose you have a list of comments you want to render. Then, you can render them like this:"
+        }
+        CodeBlock {
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"font-style:italic;color:#66d9ef;\">let </span><span style=\"color:#f92672;\">mut</span><span style=\"color:#f8f8f2;\"> comment_field </span><span style=\"color:#f92672;\">= </span><span style=\"color:#66d9ef;\">use_signal</span><span style=\"color:#f8f8f2;\">(</span><span style=\"font-style:italic;color:#66d9ef;\">String</span><span style=\"color:#f8f8f2;\">::new);\n</span><span style=\"font-style:italic;color:#66d9ef;\">let </span><span style=\"color:#f92672;\">mut</span><span style=\"color:#f8f8f2;\"> next_id </span><span style=\"color:#f92672;\">= </span><span style=\"color:#66d9ef;\">use_signal</span><span style=\"color:#f8f8f2;\">(|| </span><span style=\"color:#ff80f4;\">0</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"font-style:italic;color:#66d9ef;\">let </span><span style=\"color:#f92672;\">mut</span><span style=\"color:#f8f8f2;\"> comments </span><span style=\"color:#f92672;\">= </span><span style=\"color:#66d9ef;\">use_signal</span><span style=\"color:#f8f8f2;\">(</span><span style=\"font-style:italic;color:#66d9ef;\">Vec</span><span style=\"color:#f8f8f2;\">::&lt;CommentData&gt;::new);\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> comments_lock </span><span style=\"color:#f92672;\">=</span><span style=\"color:#f8f8f2;\"> comments.</span><span style=\"color:#66d9ef;\">read</span><span style=\"color:#f8f8f2;\">();\n</span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> comments_rendered </span><span style=\"color:#f92672;\">=</span><span style=\"color:#f8f8f2;\"> comments_lock.</span><span style=\"color:#66d9ef;\">iter</span><span style=\"color:#f8f8f2;\">().</span><span style=\"color:#66d9ef;\">map</span><span style=\"color:#f8f8f2;\">(|</span><span style=\"font-style:italic;color:#fd971f;\">comment</span><span style=\"color:#f8f8f2;\">| {{\n</span><span style=\"color:#f8f8f2;\">    rsx! {{ Comment {{ comment: comment.</span><span style=\"color:#66d9ef;\">clone</span><span style=\"color:#f8f8f2;\">() }} }}\n</span><span style=\"color:#f8f8f2;\">}});\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">rsx! {{\n</span><span style=\"color:#f8f8f2;\">    form {{\n</span><span style=\"color:#f8f8f2;\">        onsubmit: </span><span style=\"color:#f92672;\">move |_| </span><span style=\"color:#f8f8f2;\">{{\n</span><span style=\"color:#f8f8f2;\">            comments\n</span><span style=\"color:#f8f8f2;\">                .</span><span style=\"color:#66d9ef;\">write</span><span style=\"color:#f8f8f2;\">()\n</span><span style=\"color:#f8f8f2;\">                .</span><span style=\"color:#66d9ef;\">push</span><span style=\"color:#f8f8f2;\">(CommentData {{\n</span><span style=\"color:#f8f8f2;\">                    content: </span><span style=\"color:#66d9ef;\">comment_field</span><span style=\"color:#f8f8f2;\">(),\n</span><span style=\"color:#f8f8f2;\">                    id: </span><span style=\"color:#66d9ef;\">next_id</span><span style=\"color:#f8f8f2;\">(),\n</span><span style=\"color:#f8f8f2;\">                }});\n</span><span style=\"color:#f8f8f2;\">            next_id </span><span style=\"color:#f92672;\">+= </span><span style=\"color:#ff80f4;\">1</span><span style=\"color:#f8f8f2;\">;\n</span><span style=\"color:#f8f8f2;\">            comment_field.</span><span style=\"color:#66d9ef;\">set</span><span style=\"color:#f8f8f2;\">(</span><span style=\"font-style:italic;color:#66d9ef;\">String</span><span style=\"color:#f8f8f2;\">::new());\n</span><span style=\"color:#f8f8f2;\">        }},\n</span><span style=\"color:#f8f8f2;\">        input {{\n</span><span style=\"color:#f8f8f2;\">            value: </span><span style=\"color:#ffee99;\">&quot;{{comment_field}}&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">            oninput: </span><span style=\"color:#f92672;\">move |</span><span style=\"color:#f8f8f2;\">event</span><span style=\"color:#f92672;\">|</span><span style=\"color:#f8f8f2;\"> comment_field.</span><span style=\"color:#66d9ef;\">set</span><span style=\"color:#f8f8f2;\">(event.</span><span style=\"color:#66d9ef;\">value</span><span style=\"color:#f8f8f2;\">())\n</span><span style=\"color:#f8f8f2;\">        }}\n</span><span style=\"color:#f8f8f2;\">        input {{ r</span><span style=\"color:#f92672;\">#</span><span style=\"font-style:italic;color:#66d9ef;\">type</span><span style=\"color:#f8f8f2;\">: </span><span style=\"color:#ffee99;\">&quot;submit&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">    {{comments_rendered}}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
+            name: "rendering_lists.rs".to_string(),
+        }
+        DemoFrame { rendering_lists::App {} }
+        h3 { id: "inline-for-loops",
+            a { href: "#inline-for-loops", class: "header", "Inline for loops" }
+        }
+        p {
+            "Because of how common it is to render a list of items, Dioxus provides a shorthand for this. Instead of using  "
+            code { ".iter" }
+            ",  "
+            code { ".map" }
+            ", and  "
+            code { "rsx" }
+            ", you can use a  "
+            code { "for" }
+            " loop with a body of rsx code:"
+        }
+        CodeBlock {
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"font-style:italic;color:#66d9ef;\">let </span><span style=\"color:#f92672;\">mut</span><span style=\"color:#f8f8f2;\"> comment_field </span><span style=\"color:#f92672;\">= </span><span style=\"color:#66d9ef;\">use_signal</span><span style=\"color:#f8f8f2;\">(</span><span style=\"font-style:italic;color:#66d9ef;\">String</span><span style=\"color:#f8f8f2;\">::new);\n</span><span style=\"font-style:italic;color:#66d9ef;\">let </span><span style=\"color:#f92672;\">mut</span><span style=\"color:#f8f8f2;\"> next_id </span><span style=\"color:#f92672;\">= </span><span style=\"color:#66d9ef;\">use_signal</span><span style=\"color:#f8f8f2;\">(|| </span><span style=\"color:#ff80f4;\">0</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"font-style:italic;color:#66d9ef;\">let </span><span style=\"color:#f92672;\">mut</span><span style=\"color:#f8f8f2;\"> comments </span><span style=\"color:#f92672;\">= </span><span style=\"color:#66d9ef;\">use_signal</span><span style=\"color:#f8f8f2;\">(</span><span style=\"font-style:italic;color:#66d9ef;\">Vec</span><span style=\"color:#f8f8f2;\">::&lt;CommentData&gt;::new);\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">rsx! {{\n</span><span style=\"color:#f8f8f2;\">    form {{\n</span><span style=\"color:#f8f8f2;\">        onsubmit: </span><span style=\"color:#f92672;\">move |_| </span><span style=\"color:#f8f8f2;\">{{\n</span><span style=\"color:#f8f8f2;\">            comments\n</span><span style=\"color:#f8f8f2;\">                .</span><span style=\"color:#66d9ef;\">write</span><span style=\"color:#f8f8f2;\">()\n</span><span style=\"color:#f8f8f2;\">                .</span><span style=\"color:#66d9ef;\">push</span><span style=\"color:#f8f8f2;\">(CommentData {{\n</span><span style=\"color:#f8f8f2;\">                    content: </span><span style=\"color:#66d9ef;\">comment_field</span><span style=\"color:#f8f8f2;\">(),\n</span><span style=\"color:#f8f8f2;\">                    id: </span><span style=\"color:#66d9ef;\">next_id</span><span style=\"color:#f8f8f2;\">(),\n</span><span style=\"color:#f8f8f2;\">                }});\n</span><span style=\"color:#f8f8f2;\">            next_id </span><span style=\"color:#f92672;\">+= </span><span style=\"color:#ff80f4;\">1</span><span style=\"color:#f8f8f2;\">;\n</span><span style=\"color:#f8f8f2;\">            comment_field.</span><span style=\"color:#66d9ef;\">set</span><span style=\"color:#f8f8f2;\">(</span><span style=\"font-style:italic;color:#66d9ef;\">String</span><span style=\"color:#f8f8f2;\">::new());\n</span><span style=\"color:#f8f8f2;\">        }},\n</span><span style=\"color:#f8f8f2;\">        input {{\n</span><span style=\"color:#f8f8f2;\">            value: </span><span style=\"color:#ffee99;\">&quot;{{comment_field}}&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">            oninput: </span><span style=\"color:#f92672;\">move |</span><span style=\"color:#f8f8f2;\">event</span><span style=\"color:#f92672;\">|</span><span style=\"color:#f8f8f2;\"> comment_field.</span><span style=\"color:#66d9ef;\">set</span><span style=\"color:#f8f8f2;\">(event.</span><span style=\"color:#66d9ef;\">value</span><span style=\"color:#f8f8f2;\">())\n</span><span style=\"color:#f8f8f2;\">        }}\n</span><span style=\"color:#f8f8f2;\">        input {{ r</span><span style=\"color:#f92672;\">#</span><span style=\"font-style:italic;color:#66d9ef;\">type</span><span style=\"color:#f8f8f2;\">: </span><span style=\"color:#ffee99;\">&quot;submit&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#f92672;\">for</span><span style=\"color:#f8f8f2;\"> comment </span><span style=\"color:#f92672;\">in </span><span style=\"color:#66d9ef;\">comments</span><span style=\"color:#f8f8f2;\">() {{\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"color:#8c8c8c;\">// Notice the body of this for loop is rsx code, not an expression\n</span><span style=\"color:#f8f8f2;\">        Comment {{ comment }}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
+            name: "rendering_lists.rs".to_string(),
+        }
+        DemoFrame { rendering_lists::AppForLoop {} }
+        h3 { id: "the",
+            a { href: "#the", class: "header", "The " }
+            code { "key" }
+            " Attribute"
+        }
+        p {
+            "Every time you re-render your list, Dioxus needs to keep track of which items go where to determine what updates need to be made to the UI."
+        }
+        p {
+            "For example, suppose the  "
+            code { "CommentComponent" }
+            " had some state – e.g. a field where the user typed in a reply. If the order of comments suddenly changes, Dioxus needs to correctly associate that state with the same comment – otherwise, the user will end up replying to a different comment!"
+        }
+        p {
+            "To help Dioxus keep track of list items, we need to associate each item with a unique key. In the example above, we dynamically generated the unique key. In real applications, it's more likely that the key will come from e.g. a database ID. It doesn't matter where you get the key from, as long as it meets the requirements:"
+        }
+        ul {
+            li { "Keys must be unique in a list" }
+            li { "The same item should always get associated with the same key" }
+            li {
+                "Keys should be relatively small (i.e. converting the entire Comment structure to a String would be a pretty bad key) so they can be compared efficiently"
+            }
+        }
+        p {
+            "You might be tempted to use an item's index in the list as its key. That’s what Dioxus will use if you don’t specify a key at all. This is only acceptable if you can guarantee that the list is constant – i.e., no re-ordering, additions, or deletions."
+        }
+        blockquote {
+            p {
+                "Note that if you pass the key to a component you've made, it won't receive the key as a prop. It’s only used as a hint by Dioxus itself. If your component needs an ID, you have to pass it as a separate prop."
+            }
+        }
+    }
+}
+#[component(no_case_check)]
+pub fn ReferenceRouter() -> dioxus::prelude::Element {
+    use dioxus::prelude::*;
+    rsx! {
+        h1 { id: "router",
+            a { href: "#router", class: "header", "Router" }
+        }
+        p {
+            "In many of your apps, you'll want to have different \"scenes\". For a webpage, these scenes might be the different webpages with their own content. For a desktop app, these scenes might be different views in your app."
+        }
+        p {
+            "To unify these platforms, Dioxus provides a first-party solution for scene management called Dioxus Router."
+        }
+        h2 { id: "what-is-it",
+            a { href: "#what-is-it", class: "header", "What is it?" }
+        }
+        p {
+            "For an app like the Dioxus landing page (https://dioxuslabs.com), we want to have several different scenes:"
+        }
+        ul {
+            li { "Homepage" }
+            li { "Blog" }
+        }
+        p {
+            "Each of these scenes is independent – we don't want to render both the homepage and blog at the same time."
+        }
+        p {
+            "The Dioxus router makes it easy to create these scenes. To make sure we're using the router, add the  "
+            code { "router" }
+            " feature to your  "
+            code { "dioxus" }
+            " dependency:"
+        }
+        CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">cargo add dioxus</span><span style=\"color:#f92672;\">@</span><span style=\"color:#ff80f4;\">0.5</span><span style=\"color:#f8f8f2;\">.</span><span style=\"color:#ff80f4;\">0 </span><span style=\"color:#f92672;\">--</span><span style=\"color:#f8f8f2;\">features router</span></pre>\n" }
+        h2 { id: "using-the-router",
+            a { href: "#using-the-router", class: "header", "Using the router" }
+        }
+        p {
+            "Unlike other routers in the Rust ecosystem, our router is built declaratively at compile time. This makes it possible to compose our app layout simply by defining an enum."
+        }
+        CodeBlock {
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#8c8c8c;\">// All of our routes will be a variant of this Route enum\n</span><span style=\"color:#f8f8f2;\">#[derive(Routable, PartialEq, Clone)]\n</span><span style=\"font-style:italic;color:#66d9ef;\">enum </span><span style=\"color:#f8f8f2;\">Route {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#8c8c8c;\">// if the current location is &quot;/home&quot;, render the Home component\n</span><span style=\"color:#f8f8f2;\">    #[route(</span><span style=\"color:#ffee99;\">&quot;/home&quot;</span><span style=\"color:#f8f8f2;\">)]\n</span><span style=\"color:#f8f8f2;\">    Home {{}},\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#8c8c8c;\">// if the current location is &quot;/blog&quot;, render the Blog component\n</span><span style=\"color:#f8f8f2;\">    #[route(</span><span style=\"color:#ffee99;\">&quot;/blog&quot;</span><span style=\"color:#f8f8f2;\">)]\n</span><span style=\"color:#f8f8f2;\">    Blog {{}},\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">Home</span><span style=\"color:#f8f8f2;\">() -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    todo!()\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">Blog</span><span style=\"color:#f8f8f2;\">() -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    todo!()\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
+            name: "router_reference.rs".to_string(),
+        }
+        p {
+            "Whenever we visit this app, we will get either the Home component or the Blog component rendered depending on which route we enter at. If neither of these routes match the current location, then nothing will render."
+        }
+        p { "We can fix this one of two ways:" }
+        ul {
+            li { "A fallback 404 page" }
+        }
+        CodeBlock {
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#8c8c8c;\">// All of our routes will be a variant of this Route enum\n</span><span style=\"color:#f8f8f2;\">#[derive(Routable, PartialEq, Clone)]\n</span><span style=\"font-style:italic;color:#66d9ef;\">enum </span><span style=\"color:#f8f8f2;\">Route {{\n</span><span style=\"color:#f8f8f2;\">    #[route(</span><span style=\"color:#ffee99;\">&quot;/home&quot;</span><span style=\"color:#f8f8f2;\">)]\n</span><span style=\"color:#f8f8f2;\">    Home {{}},\n</span><span style=\"color:#f8f8f2;\">    #[route(</span><span style=\"color:#ffee99;\">&quot;/blog&quot;</span><span style=\"color:#f8f8f2;\">)]\n</span><span style=\"color:#f8f8f2;\">    Blog {{}},\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#8c8c8c;\">//  if the current location doesn&#39;t match any of the above routes, render the NotFound component\n</span><span style=\"color:#f8f8f2;\">    #[route(</span><span style=\"color:#ffee99;\">&quot;/:..segments&quot;</span><span style=\"color:#f8f8f2;\">)]\n</span><span style=\"color:#f8f8f2;\">    NotFound {{ segments: Vec&lt;String&gt; }},\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">Home</span><span style=\"color:#f8f8f2;\">() -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    todo!()\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">Blog</span><span style=\"color:#f8f8f2;\">() -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    todo!()\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">#[component]\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">NotFound</span><span style=\"color:#f8f8f2;\">(</span><span style=\"font-style:italic;color:#fd971f;\">segments</span><span style=\"color:#f8f8f2;\">: Vec&lt;String&gt;) -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    todo!()\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
+            name: "router_reference.rs".to_string(),
+        }
+        ul {
+            li { "Redirect 404 to home" }
+        }
+        CodeBlock {
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#8c8c8c;\">// All of our routes will be a variant of this Route enum\n</span><span style=\"color:#f8f8f2;\">#[derive(Routable, PartialEq, Clone)]\n</span><span style=\"font-style:italic;color:#66d9ef;\">enum </span><span style=\"color:#f8f8f2;\">Route {{\n</span><span style=\"color:#f8f8f2;\">    #[route(</span><span style=\"color:#ffee99;\">&quot;/home&quot;</span><span style=\"color:#f8f8f2;\">)]\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#8c8c8c;\">//  if the current location doesn&#39;t match any of the other routes, redirect to &quot;/home&quot;\n</span><span style=\"color:#f8f8f2;\">    #[redirect(</span><span style=\"color:#ffee99;\">&quot;/:..segments&quot;</span><span style=\"color:#f8f8f2;\">, |segments: Vec&lt;String&gt;| Route::Home {{}})]\n</span><span style=\"color:#f8f8f2;\">    Home {{}},\n</span><span style=\"color:#f8f8f2;\">    #[route(</span><span style=\"color:#ffee99;\">&quot;/blog&quot;</span><span style=\"color:#f8f8f2;\">)]\n</span><span style=\"color:#f8f8f2;\">    Blog {{}},\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
+            name: "router_reference.rs".to_string(),
+        }
+        h2 { id: "links",
+            a { href: "#links", class: "header", "Links" }
+        }
+        p {
+            "For our app to navigate these routes, we can provide clickable elements called Links. These simply wrap  "
+            code { "<a>" }
+            " elements that, when clicked, navigate the app to the given location. Because our route is an enum of valid routes, if you try to link to a page that doesn't exist, you will get a compiler error."
+        }
+        CodeBlock {
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">rsx! {{\n</span><span style=\"color:#f8f8f2;\">    Link {{ to: Route::Home {{}}, </span><span style=\"color:#ffee99;\">&quot;Go home!&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
+            name: "router_reference.rs".to_string(),
+        }
+        h2 { id: "more-reading",
+            a { href: "#more-reading", class: "header", "More reading" }
+        }
+        p {
+            "This page is just a very brief overview of the router. For more information, check out the "
+            a { href: "../router", "router book" }
+            " or some of the "
+            a { href: "https://github.com/DioxusLabs/dioxus/blob/master/examples/router.rs",
+                "router examples"
+            }
+            "."
+        }
+    }
+}
+#[component(no_case_check)]
+pub fn ReferenceUseResource() -> dioxus::prelude::Element {
+    use dioxus::prelude::*;
+    rsx! {
+        h1 { id: "resource",
+            a { href: "#resource", class: "header", "Resource" }
+        }
+        p {
+            a { href: "https://docs.rs/dioxus-hooks/latest/dioxus_hooks/fn.use_resource.html",
+                code { "use_resource" }
+            }
+            " lets you run an async closure, and provides you with its result."
+        }
+        p {
+            "For example, we can make an API request (using "
+            a { href: "https://docs.rs/reqwest/latest/reqwest/index.html", "reqwest" }
+            ") inside "
+            code { "use_resource" }
+            ":"
+        }
+        CodeBlock {
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"font-style:italic;color:#66d9ef;\">let </span><span style=\"color:#f92672;\">mut</span><span style=\"color:#f8f8f2;\"> future </span><span style=\"color:#f92672;\">= </span><span style=\"color:#66d9ef;\">use_resource</span><span style=\"color:#f8f8f2;\">(|| async </span><span style=\"color:#f92672;\">move </span><span style=\"color:#f8f8f2;\">{{\n</span><span style=\"color:#f8f8f2;\">    reqwest::get(</span><span style=\"color:#ffee99;\">&quot;https://dog.ceo/api/breeds/image/random&quot;</span><span style=\"color:#f8f8f2;\">)\n</span><span style=\"color:#f8f8f2;\">        .await\n</span><span style=\"color:#f8f8f2;\">        .</span><span style=\"color:#66d9ef;\">unwrap</span><span style=\"color:#f8f8f2;\">()\n</span><span style=\"color:#f8f8f2;\">        .json::&lt;ApiResponse&gt;()\n</span><span style=\"color:#f8f8f2;\">        .await\n</span><span style=\"color:#f8f8f2;\">}});</span></pre>\n",
+            name: "use_resource.rs".to_string(),
+        }
+        p {
+            "The code inside  "
+            code { "use_resource" }
+            " will be submitted to the Dioxus scheduler once the component has rendered."
+        }
+        p {
+            "We can use  "
+            code { ".read()" }
+            " to get the result of the future. On the first run, since there's no data ready when the component loads, its value will be  "
+            code { "None" }
+            ". However, once the future is finished, the component will be re-rendered and the value will now be  "
+            code { "Some(...)" }
+            ", containing the return value of the closure."
+        }
+        p { "We can then render that result:" }
+        CodeBlock {
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f92672;\">match &amp;*</span><span style=\"color:#f8f8f2;\">future.</span><span style=\"color:#66d9ef;\">read_unchecked</span><span style=\"color:#f8f8f2;\">() {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">Some</span><span style=\"color:#f8f8f2;\">(</span><span style=\"font-style:italic;color:#66d9ef;\">Ok</span><span style=\"color:#f8f8f2;\">(response)) </span><span style=\"color:#f92672;\">=&gt; </span><span style=\"color:#f8f8f2;\">rsx! {{\n</span><span style=\"color:#f8f8f2;\">        button {{ onclick: </span><span style=\"color:#f92672;\">move |_|</span><span style=\"color:#f8f8f2;\"> future.</span><span style=\"color:#66d9ef;\">restart</span><span style=\"color:#f8f8f2;\">(), </span><span style=\"color:#ffee99;\">&quot;Click to fetch another doggo&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">        div {{\n</span><span style=\"color:#f8f8f2;\">            img {{\n</span><span style=\"color:#f8f8f2;\">                max_width: </span><span style=\"color:#ffee99;\">&quot;500px&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">                max_height: </span><span style=\"color:#ffee99;\">&quot;500px&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">                src: </span><span style=\"color:#ffee99;\">&quot;{{response.image_url}}&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">            }}\n</span><span style=\"color:#f8f8f2;\">        }}\n</span><span style=\"color:#f8f8f2;\">    }},\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">Some</span><span style=\"color:#f8f8f2;\">(</span><span style=\"font-style:italic;color:#66d9ef;\">Err</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#f92672;\">_</span><span style=\"color:#f8f8f2;\">)) </span><span style=\"color:#f92672;\">=&gt; </span><span style=\"color:#f8f8f2;\">rsx! {{\n</span><span style=\"color:#f8f8f2;\">        div {{ </span><span style=\"color:#ffee99;\">&quot;Loading dogs failed&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">    }},\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">None </span><span style=\"color:#f92672;\">=&gt; </span><span style=\"color:#f8f8f2;\">rsx! {{\n</span><span style=\"color:#f8f8f2;\">        div {{ </span><span style=\"color:#ffee99;\">&quot;Loading dogs...&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">    }},\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
+            name: "use_resource.rs".to_string(),
+        }
+        DemoFrame { use_resource::App {} }
+        h2 { id: "restarting-the-future",
+            a { href: "#restarting-the-future", class: "header", "Restarting the Future" }
+        }
+        p {
+            "The  "
+            code { "Resource" }
+            " handle provides a  "
+            code { "restart" }
+            " method. It can be used to execute the future again, producing a new value."
+        }
+        h2 { id: "dependencies",
+            a { href: "#dependencies", class: "header", "Dependencies" }
+        }
+        p {
+            "Often, you will need to run the future again every time some value (e.g. a state) changes. Rather than calling  "
+            code { "restart" }
+            " manually, you can read a signal inside of the future. It will automatically re-run the future when any of the states you read inside the future change. Example:"
+        }
+        CodeBlock {
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> future </span><span style=\"color:#f92672;\">= </span><span style=\"color:#66d9ef;\">use_resource</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#f92672;\">move ||</span><span style=\"color:#f8f8f2;\"> async </span><span style=\"color:#f92672;\">move </span><span style=\"color:#f8f8f2;\">{{\n</span><span style=\"color:#f8f8f2;\">    reqwest::get(format!(</span><span style=\"color:#ffee99;\">&quot;https://dog.ceo/api/breed/</span><span style=\"color:#ff80f4;\">{{breed}}</span><span style=\"color:#ffee99;\">/images/random&quot;</span><span style=\"color:#f8f8f2;\">))\n</span><span style=\"color:#f8f8f2;\">        .await\n</span><span style=\"color:#f8f8f2;\">        .</span><span style=\"color:#66d9ef;\">unwrap</span><span style=\"color:#f8f8f2;\">()\n</span><span style=\"color:#f8f8f2;\">        .json::&lt;ApiResponse&gt;()\n</span><span style=\"color:#f8f8f2;\">        .await\n</span><span style=\"color:#f8f8f2;\">}});\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#8c8c8c;\">// You can also add non-reactive state to the resource hook with the use_reactive method\n</span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> non_reactive_state </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;poodle&quot;</span><span style=\"color:#f8f8f2;\">;\n</span><span style=\"color:#66d9ef;\">use_resource</span><span style=\"color:#f8f8f2;\">(use_reactive!(|(</span><span style=\"font-style:italic;color:#fd971f;\">non_reactive_state</span><span style=\"color:#f8f8f2;\">,)| async </span><span style=\"color:#f92672;\">move </span><span style=\"color:#f8f8f2;\">{{\n</span><span style=\"color:#f8f8f2;\">    reqwest::get(format!(\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"color:#ffee99;\">&quot;https://dog.ceo/api/breed/</span><span style=\"color:#ff80f4;\">{{non_reactive_state}}</span><span style=\"color:#ffee99;\">/images/random&quot;\n</span><span style=\"color:#f8f8f2;\">    ))\n</span><span style=\"color:#f8f8f2;\">    .await\n</span><span style=\"color:#f8f8f2;\">    .</span><span style=\"color:#66d9ef;\">unwrap</span><span style=\"color:#f8f8f2;\">()\n</span><span style=\"color:#f8f8f2;\">    .json::&lt;ApiResponse&gt;()\n</span><span style=\"color:#f8f8f2;\">    .await\n</span><span style=\"color:#f8f8f2;\">}}));</span></pre>\n",
+            name: "use_resource.rs".to_string(),
+        }
+    }
+}
+#[component(no_case_check)]
+pub fn ReferenceUseCoroutine() -> dioxus::prelude::Element {
+    use dioxus::prelude::*;
+    rsx! {
+        h1 { id: "coroutines",
+            a { href: "#coroutines", class: "header", "Coroutines" }
+        }
+        p {
+            "Another tool in your async toolbox are coroutines. Coroutines are futures that can have values sent to them."
+        }
+        p {
+            "Like regular futures, code in a coroutine will run until the next  "
+            code { "await" }
+            " point before yielding. This low-level control over asynchronous tasks is quite powerful, allowing for infinitely looping tasks like WebSocket polling, background timers, and other periodic actions."
+        }
+        h2 { id: "",
+            a { href: "#", class: "header", "" }
+            code { "use_coroutine" }
+        }
+        p {
+            "The  "
+            code { "use_coroutine" }
+            " hook allows you to create a coroutine. Most coroutines we write will be polling loops using await."
+        }
+        CodeBlock {
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f92672;\">use </span><span style=\"color:#f8f8f2;\">futures_util::StreamExt;\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">app</span><span style=\"color:#f8f8f2;\">() {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> ws: Coroutine&lt;()&gt; </span><span style=\"color:#f92672;\">= </span><span style=\"color:#66d9ef;\">use_coroutine</span><span style=\"color:#f8f8f2;\">(|</span><span style=\"font-style:italic;color:#fd971f;\">rx</span><span style=\"color:#f8f8f2;\">| async </span><span style=\"color:#f92672;\">move </span><span style=\"color:#f8f8f2;\">{{\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"color:#8c8c8c;\">// Connect to some sort of service\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"font-style:italic;color:#66d9ef;\">let </span><span style=\"color:#f92672;\">mut</span><span style=\"color:#f8f8f2;\"> conn </span><span style=\"color:#f92672;\">= </span><span style=\"color:#66d9ef;\">connect_to_ws_server</span><span style=\"color:#f8f8f2;\">().await;\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"color:#8c8c8c;\">// Wait for data on the service\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"color:#f92672;\">while </span><span style=\"font-style:italic;color:#66d9ef;\">let Some</span><span style=\"color:#f8f8f2;\">(msg) </span><span style=\"color:#f92672;\">=</span><span style=\"color:#f8f8f2;\"> conn.</span><span style=\"color:#66d9ef;\">next</span><span style=\"color:#f8f8f2;\">().await {{\n</span><span style=\"color:#f8f8f2;\">            </span><span style=\"color:#8c8c8c;\">// handle messages\n</span><span style=\"color:#f8f8f2;\">        }}\n</span><span style=\"color:#f8f8f2;\">    }});\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
+            name: "use_coroutine_reference.rs".to_string(),
+        }
+        p { "For many services, a simple async loop will handle the majority of use cases." }
+        h2 { id: "yielding-values",
+            a { href: "#yielding-values", class: "header", "Yielding Values" }
+        }
+        p {
+            "To yield values from a coroutine, simply bring in a  "
+            code { "Signal" }
+            " handle and set the value whenever your coroutine completes its work."
+        }
+        p {
+            "The future must be  "
+            code { "'static" }
+            " – so any values captured by the task cannot carry any references to  "
+            code { "cx" }
+            ", such as a  "
+            code { "Signal" }
+            "."
+        }
+        p {
+            "You can use "
+            a { href: "https://doc.rust-lang.org/std/borrow/trait.ToOwned.html#tymethod.to_owned",
+                "to_owned"
+            }
+            " to create a clone of the hook handle which can be moved into the async closure."
+        }
+        CodeBlock {
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"font-style:italic;color:#66d9ef;\">let </span><span style=\"color:#f92672;\">mut</span><span style=\"color:#f8f8f2;\"> sync_status </span><span style=\"color:#f92672;\">= </span><span style=\"color:#66d9ef;\">use_signal</span><span style=\"color:#f8f8f2;\">(|| Status::Launching);\n</span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> sync_task </span><span style=\"color:#f92672;\">= </span><span style=\"color:#66d9ef;\">use_coroutine</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#f92672;\">move |</span><span style=\"color:#f8f8f2;\">rx: UnboundedReceiver&lt;SyncAction&gt;</span><span style=\"color:#f92672;\">|</span><span style=\"color:#f8f8f2;\"> async </span><span style=\"color:#f92672;\">move </span><span style=\"color:#f8f8f2;\">{{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#f92672;\">loop </span><span style=\"color:#f8f8f2;\">{{\n</span><span style=\"color:#f8f8f2;\">        tokio::time::sleep(Duration::from_secs(</span><span style=\"color:#ff80f4;\">1</span><span style=\"color:#f8f8f2;\">)).await;\n</span><span style=\"color:#f8f8f2;\">        sync_status.</span><span style=\"color:#66d9ef;\">set</span><span style=\"color:#f8f8f2;\">(Status::Working);\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}});</span></pre>\n",
+            name: "use_coroutine_reference.rs".to_string(),
+        }
+        p {
+            "To make this a bit less verbose, Dioxus exports the  "
+            code { "to_owned!" }
+            " macro which will create a binding as shown above, which can be quite helpful when dealing with many values."
+        }
+        CodeBlock {
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> sync_status </span><span style=\"color:#f92672;\">= </span><span style=\"color:#66d9ef;\">use_signal</span><span style=\"color:#f8f8f2;\">(|| Status::Launching);\n</span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> load_status </span><span style=\"color:#f92672;\">= </span><span style=\"color:#66d9ef;\">use_signal</span><span style=\"color:#f8f8f2;\">(|| Status::Launching);\n</span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> sync_task </span><span style=\"color:#f92672;\">= </span><span style=\"color:#66d9ef;\">use_coroutine</span><span style=\"color:#f8f8f2;\">(|</span><span style=\"font-style:italic;color:#fd971f;\">rx</span><span style=\"color:#f8f8f2;\">: UnboundedReceiver&lt;SyncAction&gt;| {{\n</span><span style=\"color:#f8f8f2;\">    async </span><span style=\"color:#f92672;\">move </span><span style=\"color:#f8f8f2;\">{{\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"color:#8c8c8c;\">// ...\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}});</span></pre>\n",
+            name: "use_coroutine_reference.rs".to_string(),
+        }
+        h2 { id: "sending-values",
+            a { href: "#sending-values", class: "header", "Sending Values" }
+        }
+        p {
+            "You might've noticed the  "
+            code { "use_coroutine" }
+            " closure takes an argument called  "
+            code { "rx" }
+            ". What is that? Well, a common pattern in complex apps is to handle a bunch of async code at once. With libraries like Redux Toolkit, managing multiple promises at once can be challenging and a common source of bugs."
+        }
+        p {
+            "With Coroutines, we can centralize our async logic. The  "
+            code { "rx" }
+            " parameter is an Channel that allows code external to the coroutine to send data "
+            em { "into" }
+            " the coroutine. Instead of looping on an external service, we can loop on the channel itself, processing messages from within our app without needing to spawn a new future. To send data into the coroutine, we would call \"send\" on the handle."
+        }
+        CodeBlock {
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f92672;\">use </span><span style=\"color:#f8f8f2;\">futures_util::StreamExt;\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"font-style:italic;color:#66d9ef;\">enum </span><span style=\"color:#f8f8f2;\">ProfileUpdate {{\n</span><span style=\"color:#f8f8f2;\">    SetUsername(</span><span style=\"font-style:italic;color:#66d9ef;\">String</span><span style=\"color:#f8f8f2;\">),\n</span><span style=\"color:#f8f8f2;\">    SetAge(</span><span style=\"font-style:italic;color:#66d9ef;\">i32</span><span style=\"color:#f8f8f2;\">),\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> profile </span><span style=\"color:#f92672;\">= </span><span style=\"color:#66d9ef;\">use_coroutine</span><span style=\"color:#f8f8f2;\">(|</span><span style=\"color:#f92672;\">mut </span><span style=\"font-style:italic;color:#fd971f;\">rx</span><span style=\"color:#f8f8f2;\">: UnboundedReceiver&lt;ProfileUpdate&gt;| async </span><span style=\"color:#f92672;\">move </span><span style=\"color:#f8f8f2;\">{{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let </span><span style=\"color:#f92672;\">mut</span><span style=\"color:#f8f8f2;\"> server </span><span style=\"color:#f92672;\">= </span><span style=\"color:#66d9ef;\">connect_to_server</span><span style=\"color:#f8f8f2;\">().await;\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#f92672;\">while </span><span style=\"font-style:italic;color:#66d9ef;\">let Some</span><span style=\"color:#f8f8f2;\">(msg) </span><span style=\"color:#f92672;\">=</span><span style=\"color:#f8f8f2;\"> rx.</span><span style=\"color:#66d9ef;\">next</span><span style=\"color:#f8f8f2;\">().await {{\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"color:#f92672;\">match</span><span style=\"color:#f8f8f2;\"> msg {{\n</span><span style=\"color:#f8f8f2;\">            ProfileUpdate::SetUsername(name) </span><span style=\"color:#f92672;\">=&gt;</span><span style=\"color:#f8f8f2;\"> server.</span><span style=\"color:#66d9ef;\">update_username</span><span style=\"color:#f8f8f2;\">(name).await,\n</span><span style=\"color:#f8f8f2;\">            ProfileUpdate::SetAge(age) </span><span style=\"color:#f92672;\">=&gt;</span><span style=\"color:#f8f8f2;\"> server.</span><span style=\"color:#66d9ef;\">update_age</span><span style=\"color:#f8f8f2;\">(age).await,\n</span><span style=\"color:#f8f8f2;\">        }}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}});\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">rsx! {{\n</span><span style=\"color:#f8f8f2;\">    button {{ onclick: </span><span style=\"color:#f92672;\">move |_|</span><span style=\"color:#f8f8f2;\"> profile.</span><span style=\"color:#66d9ef;\">send</span><span style=\"color:#f8f8f2;\">(ProfileUpdate::SetUsername(</span><span style=\"color:#ffee99;\">&quot;Bob&quot;</span><span style=\"color:#f8f8f2;\">.</span><span style=\"color:#66d9ef;\">to_string</span><span style=\"color:#f8f8f2;\">())),\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"color:#ffee99;\">&quot;Update username&quot;\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
+            name: "use_coroutine_reference.rs".to_string(),
+        }
+        blockquote {
+            p {
+                "Note: In order to use/run the  "
+                code { "rx.next().await" }
+                " statement you will need to extend the "
+                code { "Stream" }
+                "]"
+                code { "UnboundedReceiver" }
+                "]"
+                code { "use futures_util::stream::StreamExt;" }
+                "."
+            }
+        }
+        p {
+            "For sufficiently complex apps, we could build a bunch of different useful \"services\" that loop on channels to update the app."
+        }
+        CodeBlock {
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> profile </span><span style=\"color:#f92672;\">= </span><span style=\"color:#66d9ef;\">use_coroutine</span><span style=\"color:#f8f8f2;\">(profile_service);\n</span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> editor </span><span style=\"color:#f92672;\">= </span><span style=\"color:#66d9ef;\">use_coroutine</span><span style=\"color:#f8f8f2;\">(editor_service);\n</span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> sync </span><span style=\"color:#f92672;\">= </span><span style=\"color:#66d9ef;\">use_coroutine</span><span style=\"color:#f8f8f2;\">(sync_service);\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">async </span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">profile_service</span><span style=\"color:#f8f8f2;\">(</span><span style=\"font-style:italic;color:#fd971f;\">rx</span><span style=\"color:#f8f8f2;\">: UnboundedReceiver&lt;ProfileCommand&gt;) {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#8c8c8c;\">// do stuff\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">async </span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">sync_service</span><span style=\"color:#f8f8f2;\">(</span><span style=\"font-style:italic;color:#fd971f;\">rx</span><span style=\"color:#f8f8f2;\">: UnboundedReceiver&lt;SyncCommand&gt;) {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#8c8c8c;\">// do stuff\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">async </span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">editor_service</span><span style=\"color:#f8f8f2;\">(</span><span style=\"font-style:italic;color:#fd971f;\">rx</span><span style=\"color:#f8f8f2;\">: UnboundedReceiver&lt;EditorCommand&gt;) {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#8c8c8c;\">// do stuff\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
+            name: "use_coroutine_reference.rs".to_string(),
+        }
+        p {
+            "We can combine coroutines with Global State to emulate Redux Toolkit's Thunk system with much less headache. This lets us store all of our app's state "
+            em { "within" }
+            " a task and then simply update the \"view\" values stored in Atoms. It cannot be understated how powerful this technique is: we get all the perks of native Rust tasks with the optimizations and ergonomics of global state. This means your "
+            em { "actual" }
+            " state does not need to be tied up in a system like "
+            code { "Signal::global" }
+            " or Redux – the only Atoms that need to exist are those that are used to drive the display/UI."
+        }
+        CodeBlock {
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"font-style:italic;color:#66d9ef;\">static </span><span style=\"color:#ff80f4;\">USERNAME</span><span style=\"color:#f8f8f2;\">: GlobalSignal&lt;String&gt; </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">Signal::global(|| </span><span style=\"color:#ffee99;\">&quot;default&quot;</span><span style=\"color:#f8f8f2;\">.</span><span style=\"color:#66d9ef;\">to_string</span><span style=\"color:#f8f8f2;\">());\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">app</span><span style=\"color:#f8f8f2;\">() -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#66d9ef;\">use_coroutine</span><span style=\"color:#f8f8f2;\">(sync_service);\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">    rsx! {{\n</span><span style=\"color:#f8f8f2;\">        Banner {{}}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">Banner</span><span style=\"color:#f8f8f2;\">() -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    rsx! {{\n</span><span style=\"color:#f8f8f2;\">        h1 {{ </span><span style=\"color:#ffee99;\">&quot;Welcome back, {{USERNAME}}&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
+            name: "use_coroutine_reference.rs".to_string(),
+        }
+        p {
+            "Now, in our sync service, we can structure our state however we want. We only need to update the view values when ready."
+        }
+        CodeBlock {
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f92672;\">use </span><span style=\"color:#f8f8f2;\">futures_util::StreamExt;\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"font-style:italic;color:#66d9ef;\">static </span><span style=\"color:#ff80f4;\">USERNAME</span><span style=\"color:#f8f8f2;\">: GlobalSignal&lt;String&gt; </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">Signal::global(|| </span><span style=\"color:#ffee99;\">&quot;default&quot;</span><span style=\"color:#f8f8f2;\">.</span><span style=\"color:#66d9ef;\">to_string</span><span style=\"color:#f8f8f2;\">());\n</span><span style=\"font-style:italic;color:#66d9ef;\">static </span><span style=\"color:#ff80f4;\">ERRORS</span><span style=\"color:#f8f8f2;\">: GlobalSignal&lt;Vec&lt;String&gt;&gt; </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">Signal::global(|| </span><span style=\"font-style:italic;color:#66d9ef;\">Vec</span><span style=\"color:#f8f8f2;\">::new());\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"font-style:italic;color:#66d9ef;\">enum </span><span style=\"color:#f8f8f2;\">SyncAction {{\n</span><span style=\"color:#f8f8f2;\">    SetUsername(</span><span style=\"font-style:italic;color:#66d9ef;\">String</span><span style=\"color:#f8f8f2;\">),\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">async </span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">sync_service</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#f92672;\">mut </span><span style=\"font-style:italic;color:#fd971f;\">rx</span><span style=\"color:#f8f8f2;\">: UnboundedReceiver&lt;SyncAction&gt;) {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#f92672;\">while </span><span style=\"font-style:italic;color:#66d9ef;\">let Some</span><span style=\"color:#f8f8f2;\">(msg) </span><span style=\"color:#f92672;\">=</span><span style=\"color:#f8f8f2;\"> rx.</span><span style=\"color:#66d9ef;\">next</span><span style=\"color:#f8f8f2;\">().await {{\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"color:#f92672;\">match</span><span style=\"color:#f8f8f2;\"> msg {{\n</span><span style=\"color:#f8f8f2;\">            SyncAction::SetUsername(name) </span><span style=\"color:#f92672;\">=&gt; </span><span style=\"color:#f8f8f2;\">{{\n</span><span style=\"color:#f8f8f2;\">                </span><span style=\"color:#f92672;\">if </span><span style=\"color:#66d9ef;\">set_name_on_server</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#f92672;\">&amp;</span><span style=\"color:#f8f8f2;\">name).await.</span><span style=\"color:#66d9ef;\">is_ok</span><span style=\"color:#f8f8f2;\">() {{\n</span><span style=\"color:#f8f8f2;\">                    </span><span style=\"color:#f92672;\">*</span><span style=\"color:#ff80f4;\">USERNAME</span><span style=\"color:#f8f8f2;\">.</span><span style=\"color:#66d9ef;\">write</span><span style=\"color:#f8f8f2;\">() </span><span style=\"color:#f92672;\">=</span><span style=\"color:#f8f8f2;\"> name;\n</span><span style=\"color:#f8f8f2;\">                }} </span><span style=\"color:#f92672;\">else </span><span style=\"color:#f8f8f2;\">{{\n</span><span style=\"color:#f8f8f2;\">                    </span><span style=\"color:#f92672;\">*</span><span style=\"color:#ff80f4;\">ERRORS</span><span style=\"color:#f8f8f2;\">.</span><span style=\"color:#66d9ef;\">write</span><span style=\"color:#f8f8f2;\">() </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">vec![</span><span style=\"color:#ffee99;\">&quot;Failed to set username&quot;</span><span style=\"color:#f8f8f2;\">.</span><span style=\"color:#66d9ef;\">to_string</span><span style=\"color:#f8f8f2;\">()];\n</span><span style=\"color:#f8f8f2;\">                }}\n</span><span style=\"color:#f8f8f2;\">            }}\n</span><span style=\"color:#f8f8f2;\">        }}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
+            name: "use_coroutine_reference.rs".to_string(),
+        }
+        h2 { id: "automatic-injection-into-the-context-api",
+            a {
+                href: "#automatic-injection-into-the-context-api",
+                class: "header",
+                "Automatic injection into the Context API"
+            }
+        }
+        p {
+            "Coroutine handles are automatically injected through the context API. You can use the  "
+            code { "use_coroutine_handle" }
+            " hook with the message type as a generic to fetch a handle."
+        }
+        CodeBlock {
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">Child</span><span style=\"color:#f8f8f2;\">() -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> sync_task </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">use_coroutine_handle::&lt;SyncAction&gt;();\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">    sync_task.</span><span style=\"color:#66d9ef;\">send</span><span style=\"color:#f8f8f2;\">(SyncAction::SetUsername);\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">    todo!()\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
+            name: "use_coroutine_reference.rs".to_string(),
+        }
+    }
+}
+#[component(no_case_check)]
+pub fn ReferenceSpawn() -> dioxus::prelude::Element {
+    use dioxus::prelude::*;
+    rsx! {
+        h1 { id: "spawning-futures",
+            a { href: "#spawning-futures", class: "header", "Spawning Futures" }
+        }
+        p {
+            "The  "
+            code { "use_resource" }
+            " and  "
+            code { "use_coroutine" }
+            " hooks are useful if you want to unconditionally spawn the future. Sometimes, though, you'll want to only spawn a future in response to an event, such as a mouse click. For example, suppose you need to send a request when the user clicks a \"log in\" button. For this, you can use  "
+            code { "spawn" }
+            ":"
+        }
+        CodeBlock {
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"font-style:italic;color:#66d9ef;\">let </span><span style=\"color:#f92672;\">mut</span><span style=\"color:#f8f8f2;\"> response </span><span style=\"color:#f92672;\">= </span><span style=\"color:#66d9ef;\">use_signal</span><span style=\"color:#f8f8f2;\">(|| </span><span style=\"font-style:italic;color:#66d9ef;\">String</span><span style=\"color:#f8f8f2;\">::from(</span><span style=\"color:#ffee99;\">&quot;...&quot;</span><span style=\"color:#f8f8f2;\">));\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> log_in </span><span style=\"color:#f92672;\">= move |_| </span><span style=\"color:#f8f8f2;\">{{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#66d9ef;\">spawn</span><span style=\"color:#f8f8f2;\">(async </span><span style=\"color:#f92672;\">move </span><span style=\"color:#f8f8f2;\">{{\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> resp </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">reqwest::Client::new()\n</span><span style=\"color:#f8f8f2;\">            .</span><span style=\"color:#66d9ef;\">get</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#ffee99;\">&quot;https://dioxuslabs.com&quot;</span><span style=\"color:#f8f8f2;\">)\n</span><span style=\"color:#f8f8f2;\">            .</span><span style=\"color:#66d9ef;\">send</span><span style=\"color:#f8f8f2;\">()\n</span><span style=\"color:#f8f8f2;\">            .await;\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"color:#f92672;\">match</span><span style=\"color:#f8f8f2;\"> resp {{\n</span><span style=\"color:#f8f8f2;\">            </span><span style=\"font-style:italic;color:#66d9ef;\">Ok</span><span style=\"color:#f8f8f2;\">(_data) </span><span style=\"color:#f92672;\">=&gt; </span><span style=\"color:#f8f8f2;\">{{\n</span><span style=\"color:#f8f8f2;\">                log::info</span><span style=\"color:#f92672;\">!</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#ffee99;\">&quot;dioxuslabs.com responded!&quot;</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"color:#f8f8f2;\">                response.</span><span style=\"color:#66d9ef;\">set</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#ffee99;\">&quot;dioxuslabs.com responded!&quot;</span><span style=\"color:#f8f8f2;\">.</span><span style=\"color:#66d9ef;\">into</span><span style=\"color:#f8f8f2;\">());\n</span><span style=\"color:#f8f8f2;\">            }}\n</span><span style=\"color:#f8f8f2;\">            </span><span style=\"font-style:italic;color:#66d9ef;\">Err</span><span style=\"color:#f8f8f2;\">(err) </span><span style=\"color:#f92672;\">=&gt; </span><span style=\"color:#f8f8f2;\">{{\n</span><span style=\"color:#f8f8f2;\">                log::info</span><span style=\"color:#f92672;\">!</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#ffee99;\">&quot;Request failed with error: {{err:?}}&quot;</span><span style=\"color:#f8f8f2;\">)\n</span><span style=\"color:#f8f8f2;\">            }}\n</span><span style=\"color:#f8f8f2;\">        }}\n</span><span style=\"color:#f8f8f2;\">    }});\n</span><span style=\"color:#f8f8f2;\">}};\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">rsx! {{\n</span><span style=\"color:#f8f8f2;\">    button {{ onclick: log_in, </span><span style=\"color:#ffee99;\">&quot;Response: {{response}}&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
+            name: "spawn.rs".to_string(),
+        }
+        DemoFrame { spawn::App {} }
+        blockquote {
+            p {
+                "Note:  "
+                code { "spawn" }
+                " will always spawn a "
+                em { "new" }
+                " future. You most likely don't want to call it on every render."
+            }
+        }
+        p {
+            "Calling  "
+            code { "spawn" }
+            " will give you a  "
+            code { "JoinHandle" }
+            " which lets you cancel or pause the future."
+        }
+        h2 { id: "spawning-tokio-tasks",
+            a { href: "#spawning-tokio-tasks", class: "header", "Spawning Tokio Tasks" }
+        }
+        p {
+            "Sometimes, you might want to spawn a background task that needs multiple threads or talk to hardware that might block your app code. In these cases, we can directly spawn a Tokio task from our future. For Dioxus-Desktop, your task will be spawned onto Tokio's Multithreaded runtime:"
+        }
+        CodeBlock {
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#66d9ef;\">spawn</span><span style=\"color:#f8f8f2;\">(async {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let </span><span style=\"color:#f92672;\">_ = </span><span style=\"color:#f8f8f2;\">tokio::spawn(async {{}}).await;\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let </span><span style=\"color:#f92672;\">_ = </span><span style=\"color:#f8f8f2;\">tokio::task::spawn_local(async {{\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"color:#8c8c8c;\">// some !Send work\n</span><span style=\"color:#f8f8f2;\">    }})\n</span><span style=\"color:#f8f8f2;\">    .await;\n</span><span style=\"color:#f8f8f2;\">}});</span></pre>\n",
+            name: "spawn.rs".to_string(),
         }
     }
 }

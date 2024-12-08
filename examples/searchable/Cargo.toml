@@ -6,7 +6,7 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-dioxus = { version = "0.6.0-rc.0", features = ["fullstack", "router"] }
+dioxus = { version = "0.6.0", features = ["fullstack", "router"] }
 dioxus-search = { path = "../../" }
 axum = { version = "0.6.12", optional = true }
 serde = { version = "1.0.174", features = ["derive"] }
@@ -17,4 +17,4 @@ log = "0.4.19"
 
 [features]
 web = ["getrandom/js", "dioxus/web"]
-ssr = ["dioxus/axum", "tokio", "axum"]
+ssr = ["dioxus/server", "tokio", "axum"]

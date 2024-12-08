@@ -16,8 +16,8 @@ convert_case = "0.6.0"
 postcard = { version = "1.0.4", features = ["use-std"] }
 pulldown-cmark = "0.9.3"
 syntect = { version = "5.2.0", features = ["plist-load"] }
-dioxus-rsx = { version = "0.6.0-rc.0" }
-dioxus-autofmt = { version = "0.6.0-rc.0" }
+dioxus-rsx = { version = "0.6.0" }
+dioxus-autofmt = { version = "0.6.0" }
 prettyplease = "0.2.20"
 once_cell = "1.20.2"
 

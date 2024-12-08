@@ -16,8 +16,8 @@ serde_json = "1.0.96"
 yazi = "0.1.5"
 
 [dev-dependencies]
-dioxus = { version = "0.6.0-rc.0" }
-dioxus-router = { version = "0.6.0-rc.0" }
+dioxus = { version = "0.6.0" }
+dioxus-router = { version = "0.6.0" }
 tokio = { version = "*", features = ["full"] }
 
 [features]

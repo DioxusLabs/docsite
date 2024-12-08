@@ -21,7 +21,7 @@ convert_case = "0.6.0"
 postcard = { version = "1.0.4", features = ["use-std"] }
 pulldown-cmark = "0.9.3"
 syntect = "5.0"
-dioxus-rsx = { version = "0.6.0-rc.0" }
+dioxus-rsx = { version = "0.6.0" }
 mdbook-gen = { workspace = true }
 
 [features]

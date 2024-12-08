@@ -1,7 +1,7 @@
 # Summary
 
 - [Introduction](index.md)
-  - [Getting Started](./getting_started/index.md)
+  - [Getting Started](getting_started/index.md)
 ---
 
 - [Tutorial](guide/index.md)

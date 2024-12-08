@@ -12,7 +12,7 @@
 pub enum BookRoute {
     #[route("/")]
     Index {},
-    #[route("/./getting_started/")]
+    #[route("/getting_started/")]
     GettingStartedIndex {},
     #[route("/guide/")]
     GuideIndex {},
@@ -8565,6 +8565,11 @@ pub fn MigrationIndex() -> dioxus::prelude::Element {
             }
             li { "Prevent default" }
             li { "Assets with Manganis" }
+            li {
+                code { "dioxus_logger" }
+                " integration with "
+                code { "dioxus" }
+            }
         }
         h2 { id: "element",
             a { href: "#element", class: "header", "Element" }

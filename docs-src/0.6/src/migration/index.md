@@ -4,6 +4,7 @@ This guide will outline the API changes between the `0.5` and `0.6` releases. Th
 - The `Element` type
 - Prevent default
 - Assets with Manganis
+- `dioxus_logger` integration with `dioxus`
 
 ## Element
 

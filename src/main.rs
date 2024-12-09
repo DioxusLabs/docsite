@@ -162,7 +162,7 @@ pub enum Route {
 
         #[layout(Learn)]
             #[nest("/learn")]
-                #[redirect("/", || Route::Docs05 { child: crate::docs::router_06::BookRoute::Index {} })]
+                #[redirect("/", || Route::Docs06 { child: crate::docs::router_06::BookRoute::Index {} })]
                 #[child("/0.6")]
                 Docs06 { child: crate::docs::router_06::BookRoute },
 

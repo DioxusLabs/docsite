@@ -30,7 +30,7 @@ Finally, a third component will render the other two as children. It will be res
 {{#include src/doc_examples/meme_editor.rs:meme_editor}}
 ```
 
-![Meme Editor Screenshot: An old plastic skeleton sitting on a park bench. Caption: "me waiting for a language feature"](public/static/meme_editor_screenshot.png)
+![Meme Editor Screenshot: An old plastic skeleton sitting on a park bench. Caption: "me waiting for a language feature"](/assets/static/meme_editor_screenshot.png)
 
 ## Using Shared State
 

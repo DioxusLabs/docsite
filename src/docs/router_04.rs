@@ -7,12 +7,12 @@
     Hash,
     Debug,
     serde::Serialize,
-    serde::Deserialize
+    serde::Deserialize,
 )]
 pub enum BookRoute {
     #[route("/")]
     Index {},
-    #[route("/getting_started")]
+    #[route("/getting_started/")]
     GettingStartedIndex {},
     #[route("/getting_started/choosing_a_web_renderer")]
     GettingStartedChoosingAWebRenderer {},
@@ -28,7 +28,7 @@ pub enum BookRoute {
     GettingStartedMobile {},
     #[route("/getting_started/tui")]
     GettingStartedTui {},
-    #[route("/guide")]
+    #[route("/guide/")]
     GuideIndex {},
     #[route("/guide/your_first_component")]
     GuideYourFirstComponent {},
@@ -38,7 +38,7 @@ pub enum BookRoute {
     GuideDataFetching {},
     #[route("/guide/full_code")]
     GuideFullCode {},
-    #[route("/reference")]
+    #[route("/reference/")]
     ReferenceIndex {},
     #[route("/reference/rsx")]
     ReferenceRsx {},
@@ -64,15 +64,15 @@ pub enum BookRoute {
     ReferenceUseCoroutine {},
     #[route("/reference/spawn")]
     ReferenceSpawn {},
-    #[route("/reference/desktop")]
+    #[route("/reference/desktop/")]
     ReferenceDesktopIndex {},
-    #[route("/reference/web")]
+    #[route("/reference/web/")]
     ReferenceWebIndex {},
     #[route("/reference/ssr")]
     ReferenceSsr {},
     #[route("/reference/liveview")]
     ReferenceLiveview {},
-    #[route("/reference/fullstack")]
+    #[route("/reference/fullstack/")]
     ReferenceFullstackIndex {},
     #[route("/reference/fullstack/server_functions")]
     ReferenceFullstackServerFunctions {},
@@ -84,9 +84,9 @@ pub enum BookRoute {
     ReferenceFullstackAuthentication {},
     #[route("/reference/fullstack/routing")]
     ReferenceFullstackRouting {},
-    #[route("/router")]
+    #[route("/router/")]
     RouterIndex {},
-    #[route("/router/example")]
+    #[route("/router/example/")]
     RouterExampleIndex {},
     #[route("/router/example/first-route")]
     RouterExampleFirstRoute {},
@@ -98,15 +98,15 @@ pub enum BookRoute {
     RouterExampleRedirectionPerfection {},
     #[route("/router/example/full-code")]
     RouterExampleFullCode {},
-    #[route("/router/reference")]
+    #[route("/router/reference/")]
     RouterReferenceIndex {},
-    #[route("/router/reference/routes")]
+    #[route("/router/reference/routes/")]
     RouterReferenceRoutesIndex {},
     #[route("/router/reference/routes/nested")]
     RouterReferenceRoutesNested {},
     #[route("/router/reference/layouts")]
     RouterReferenceLayouts {},
-    #[route("/router/reference/navigation")]
+    #[route("/router/reference/navigation/")]
     RouterReferenceNavigationIndex {},
     #[route("/router/reference/navigation/programmatic")]
     RouterReferenceNavigationProgrammatic {},
@@ -118,7 +118,7 @@ pub enum BookRoute {
     RouterReferenceStaticGeneration {},
     #[route("/router/reference/routing-update-callback")]
     RouterReferenceRoutingUpdateCallback {},
-    #[route("/cookbook")]
+    #[route("/cookbook/")]
     CookbookIndex {},
     #[route("/cookbook/publishing")]
     CookbookPublishing {},
@@ -126,17 +126,17 @@ pub enum BookRoute {
     CookbookAntipatterns {},
     #[route("/cookbook/error_handling")]
     CookbookErrorHandling {},
-    #[route("/cookbook/integrations")]
+    #[route("/cookbook/integrations/")]
     CookbookIntegrationsIndex {},
     #[route("/cookbook/integrations/logging")]
     CookbookIntegrationsLogging {},
     #[route("/cookbook/integrations/internationalization")]
     CookbookIntegrationsInternationalization {},
-    #[route("/cookbook/state")]
+    #[route("/cookbook/state/")]
     CookbookStateIndex {},
-    #[route("/cookbook/state/external")]
+    #[route("/cookbook/state/external/")]
     CookbookStateExternalIndex {},
-    #[route("/cookbook/state/custom_hooks")]
+    #[route("/cookbook/state/custom_hooks/")]
     CookbookStateCustomHooksIndex {},
     #[route("/cookbook/testing")]
     CookbookTesting {},
@@ -148,7 +148,7 @@ pub enum BookRoute {
     CookbookCustomRenderer {},
     #[route("/cookbook/optimizing")]
     CookbookOptimizing {},
-    #[route("/CLI")]
+    #[route("/CLI/")]
     CliIndex {},
     #[route("/CLI/installation")]
     CliInstallation {},
@@ -158,7 +158,7 @@ pub enum BookRoute {
     CliConfigure {},
     #[route("/CLI/translate")]
     CliTranslate {},
-    #[route("/contributing")]
+    #[route("/contributing/")]
     ContributingIndex {},
     #[route("/contributing/project_structure")]
     ContributingProjectStructure {},
@@ -168,7 +168,7 @@ pub enum BookRoute {
     ContributingGuidingPrinciples {},
     #[route("/contributing/roadmap")]
     ContributingRoadmap {},
-    #[route("/migration")]
+    #[route("/migration/")]
     MigrationIndex {},
     #[route("/migration/router")]
     MigrationRouter {},
@@ -176,78 +176,48 @@ pub enum BookRoute {
     MigrationHotReload {},
 }
 impl BookRoute {
-    pub fn sections(&self) -> &[use_mdbook::mdbook_shared::Section] {
+    pub fn sections(&self) -> &'static [use_mdbook::mdbook_shared::Section] {
         &self.page().sections
     }
-    pub fn page(&self) -> &use_mdbook::mdbook_shared::Page<Self> {
+    pub fn page(&self) -> &'static use_mdbook::mdbook_shared::Page<Self> {
         LAZY_BOOK.get_page(self)
     }
     pub fn page_id(&self) -> use_mdbook::mdbook_shared::PageId {
         match self {
             BookRoute::Index {} => use_mdbook::mdbook_shared::PageId(0usize),
-            BookRoute::GettingStartedIndex {} => {
-                use_mdbook::mdbook_shared::PageId(1usize)
-            }
+            BookRoute::GettingStartedIndex {} => use_mdbook::mdbook_shared::PageId(1usize),
             BookRoute::GettingStartedChoosingAWebRenderer {} => {
                 use_mdbook::mdbook_shared::PageId(2usize)
             }
             BookRoute::GettingStartedWasm {} => use_mdbook::mdbook_shared::PageId(3usize),
-            BookRoute::GettingStartedLiveview {} => {
-                use_mdbook::mdbook_shared::PageId(4usize)
-            }
-            BookRoute::GettingStartedFullstack {} => {
-                use_mdbook::mdbook_shared::PageId(5usize)
-            }
-            BookRoute::GettingStartedDesktop {} => {
-                use_mdbook::mdbook_shared::PageId(6usize)
-            }
-            BookRoute::GettingStartedMobile {} => {
-                use_mdbook::mdbook_shared::PageId(7usize)
-            }
+            BookRoute::GettingStartedLiveview {} => use_mdbook::mdbook_shared::PageId(4usize),
+            BookRoute::GettingStartedFullstack {} => use_mdbook::mdbook_shared::PageId(5usize),
+            BookRoute::GettingStartedDesktop {} => use_mdbook::mdbook_shared::PageId(6usize),
+            BookRoute::GettingStartedMobile {} => use_mdbook::mdbook_shared::PageId(7usize),
             BookRoute::GettingStartedTui {} => use_mdbook::mdbook_shared::PageId(8usize),
             BookRoute::GuideIndex {} => use_mdbook::mdbook_shared::PageId(9usize),
-            BookRoute::GuideYourFirstComponent {} => {
-                use_mdbook::mdbook_shared::PageId(10usize)
-            }
+            BookRoute::GuideYourFirstComponent {} => use_mdbook::mdbook_shared::PageId(10usize),
             BookRoute::GuideState {} => use_mdbook::mdbook_shared::PageId(11usize),
             BookRoute::GuideDataFetching {} => use_mdbook::mdbook_shared::PageId(12usize),
             BookRoute::GuideFullCode {} => use_mdbook::mdbook_shared::PageId(13usize),
             BookRoute::ReferenceIndex {} => use_mdbook::mdbook_shared::PageId(14usize),
             BookRoute::ReferenceRsx {} => use_mdbook::mdbook_shared::PageId(15usize),
-            BookRoute::ReferenceComponents {} => {
-                use_mdbook::mdbook_shared::PageId(16usize)
-            }
-            BookRoute::ReferenceComponentProps {} => {
-                use_mdbook::mdbook_shared::PageId(17usize)
-            }
-            BookRoute::ReferenceEventHandlers {} => {
-                use_mdbook::mdbook_shared::PageId(18usize)
-            }
+            BookRoute::ReferenceComponents {} => use_mdbook::mdbook_shared::PageId(16usize),
+            BookRoute::ReferenceComponentProps {} => use_mdbook::mdbook_shared::PageId(17usize),
+            BookRoute::ReferenceEventHandlers {} => use_mdbook::mdbook_shared::PageId(18usize),
             BookRoute::ReferenceHooks {} => use_mdbook::mdbook_shared::PageId(19usize),
-            BookRoute::ReferenceUserInput {} => {
-                use_mdbook::mdbook_shared::PageId(20usize)
-            }
+            BookRoute::ReferenceUserInput {} => use_mdbook::mdbook_shared::PageId(20usize),
             BookRoute::ReferenceContext {} => use_mdbook::mdbook_shared::PageId(21usize),
-            BookRoute::ReferenceDynamicRendering {} => {
-                use_mdbook::mdbook_shared::PageId(22usize)
-            }
+            BookRoute::ReferenceDynamicRendering {} => use_mdbook::mdbook_shared::PageId(22usize),
             BookRoute::ReferenceRouter {} => use_mdbook::mdbook_shared::PageId(23usize),
-            BookRoute::ReferenceUseFuture {} => {
-                use_mdbook::mdbook_shared::PageId(24usize)
-            }
-            BookRoute::ReferenceUseCoroutine {} => {
-                use_mdbook::mdbook_shared::PageId(25usize)
-            }
+            BookRoute::ReferenceUseFuture {} => use_mdbook::mdbook_shared::PageId(24usize),
+            BookRoute::ReferenceUseCoroutine {} => use_mdbook::mdbook_shared::PageId(25usize),
             BookRoute::ReferenceSpawn {} => use_mdbook::mdbook_shared::PageId(26usize),
-            BookRoute::ReferenceDesktopIndex {} => {
-                use_mdbook::mdbook_shared::PageId(27usize)
-            }
+            BookRoute::ReferenceDesktopIndex {} => use_mdbook::mdbook_shared::PageId(27usize),
             BookRoute::ReferenceWebIndex {} => use_mdbook::mdbook_shared::PageId(28usize),
             BookRoute::ReferenceSsr {} => use_mdbook::mdbook_shared::PageId(29usize),
             BookRoute::ReferenceLiveview {} => use_mdbook::mdbook_shared::PageId(30usize),
-            BookRoute::ReferenceFullstackIndex {} => {
-                use_mdbook::mdbook_shared::PageId(31usize)
-            }
+            BookRoute::ReferenceFullstackIndex {} => use_mdbook::mdbook_shared::PageId(31usize),
             BookRoute::ReferenceFullstackServerFunctions {} => {
                 use_mdbook::mdbook_shared::PageId(32usize)
             }
@@ -260,40 +230,22 @@ impl BookRoute {
             BookRoute::ReferenceFullstackAuthentication {} => {
                 use_mdbook::mdbook_shared::PageId(35usize)
             }
-            BookRoute::ReferenceFullstackRouting {} => {
-                use_mdbook::mdbook_shared::PageId(36usize)
-            }
+            BookRoute::ReferenceFullstackRouting {} => use_mdbook::mdbook_shared::PageId(36usize),
             BookRoute::RouterIndex {} => use_mdbook::mdbook_shared::PageId(37usize),
-            BookRoute::RouterExampleIndex {} => {
-                use_mdbook::mdbook_shared::PageId(38usize)
-            }
-            BookRoute::RouterExampleFirstRoute {} => {
-                use_mdbook::mdbook_shared::PageId(39usize)
-            }
-            BookRoute::RouterExampleBuildingANest {} => {
-                use_mdbook::mdbook_shared::PageId(40usize)
-            }
+            BookRoute::RouterExampleIndex {} => use_mdbook::mdbook_shared::PageId(38usize),
+            BookRoute::RouterExampleFirstRoute {} => use_mdbook::mdbook_shared::PageId(39usize),
+            BookRoute::RouterExampleBuildingANest {} => use_mdbook::mdbook_shared::PageId(40usize),
             BookRoute::RouterExampleNavigationTargets {} => {
                 use_mdbook::mdbook_shared::PageId(41usize)
             }
             BookRoute::RouterExampleRedirectionPerfection {} => {
                 use_mdbook::mdbook_shared::PageId(42usize)
             }
-            BookRoute::RouterExampleFullCode {} => {
-                use_mdbook::mdbook_shared::PageId(43usize)
-            }
-            BookRoute::RouterReferenceIndex {} => {
-                use_mdbook::mdbook_shared::PageId(44usize)
-            }
-            BookRoute::RouterReferenceRoutesIndex {} => {
-                use_mdbook::mdbook_shared::PageId(45usize)
-            }
-            BookRoute::RouterReferenceRoutesNested {} => {
-                use_mdbook::mdbook_shared::PageId(46usize)
-            }
-            BookRoute::RouterReferenceLayouts {} => {
-                use_mdbook::mdbook_shared::PageId(47usize)
-            }
+            BookRoute::RouterExampleFullCode {} => use_mdbook::mdbook_shared::PageId(43usize),
+            BookRoute::RouterReferenceIndex {} => use_mdbook::mdbook_shared::PageId(44usize),
+            BookRoute::RouterReferenceRoutesIndex {} => use_mdbook::mdbook_shared::PageId(45usize),
+            BookRoute::RouterReferenceRoutesNested {} => use_mdbook::mdbook_shared::PageId(46usize),
+            BookRoute::RouterReferenceLayouts {} => use_mdbook::mdbook_shared::PageId(47usize),
             BookRoute::RouterReferenceNavigationIndex {} => {
                 use_mdbook::mdbook_shared::PageId(48usize)
             }
@@ -313,42 +265,24 @@ impl BookRoute {
                 use_mdbook::mdbook_shared::PageId(53usize)
             }
             BookRoute::CookbookIndex {} => use_mdbook::mdbook_shared::PageId(54usize),
-            BookRoute::CookbookPublishing {} => {
-                use_mdbook::mdbook_shared::PageId(55usize)
-            }
-            BookRoute::CookbookAntipatterns {} => {
-                use_mdbook::mdbook_shared::PageId(56usize)
-            }
-            BookRoute::CookbookErrorHandling {} => {
-                use_mdbook::mdbook_shared::PageId(57usize)
-            }
-            BookRoute::CookbookIntegrationsIndex {} => {
-                use_mdbook::mdbook_shared::PageId(58usize)
-            }
-            BookRoute::CookbookIntegrationsLogging {} => {
-                use_mdbook::mdbook_shared::PageId(59usize)
-            }
+            BookRoute::CookbookPublishing {} => use_mdbook::mdbook_shared::PageId(55usize),
+            BookRoute::CookbookAntipatterns {} => use_mdbook::mdbook_shared::PageId(56usize),
+            BookRoute::CookbookErrorHandling {} => use_mdbook::mdbook_shared::PageId(57usize),
+            BookRoute::CookbookIntegrationsIndex {} => use_mdbook::mdbook_shared::PageId(58usize),
+            BookRoute::CookbookIntegrationsLogging {} => use_mdbook::mdbook_shared::PageId(59usize),
             BookRoute::CookbookIntegrationsInternationalization {} => {
                 use_mdbook::mdbook_shared::PageId(60usize)
             }
-            BookRoute::CookbookStateIndex {} => {
-                use_mdbook::mdbook_shared::PageId(61usize)
-            }
-            BookRoute::CookbookStateExternalIndex {} => {
-                use_mdbook::mdbook_shared::PageId(62usize)
-            }
+            BookRoute::CookbookStateIndex {} => use_mdbook::mdbook_shared::PageId(61usize),
+            BookRoute::CookbookStateExternalIndex {} => use_mdbook::mdbook_shared::PageId(62usize),
             BookRoute::CookbookStateCustomHooksIndex {} => {
                 use_mdbook::mdbook_shared::PageId(63usize)
             }
             BookRoute::CookbookTesting {} => use_mdbook::mdbook_shared::PageId(64usize),
             BookRoute::CookbookExamples {} => use_mdbook::mdbook_shared::PageId(65usize),
             BookRoute::CookbookTailwind {} => use_mdbook::mdbook_shared::PageId(66usize),
-            BookRoute::CookbookCustomRenderer {} => {
-                use_mdbook::mdbook_shared::PageId(67usize)
-            }
-            BookRoute::CookbookOptimizing {} => {
-                use_mdbook::mdbook_shared::PageId(68usize)
-            }
+            BookRoute::CookbookCustomRenderer {} => use_mdbook::mdbook_shared::PageId(67usize),
+            BookRoute::CookbookOptimizing {} => use_mdbook::mdbook_shared::PageId(68usize),
             BookRoute::CliIndex {} => use_mdbook::mdbook_shared::PageId(69usize),
             BookRoute::CliInstallation {} => use_mdbook::mdbook_shared::PageId(70usize),
             BookRoute::CliCreating {} => use_mdbook::mdbook_shared::PageId(71usize),
@@ -364,14 +298,10 @@ impl BookRoute {
             BookRoute::ContributingGuidingPrinciples {} => {
                 use_mdbook::mdbook_shared::PageId(77usize)
             }
-            BookRoute::ContributingRoadmap {} => {
-                use_mdbook::mdbook_shared::PageId(78usize)
-            }
+            BookRoute::ContributingRoadmap {} => use_mdbook::mdbook_shared::PageId(78usize),
             BookRoute::MigrationIndex {} => use_mdbook::mdbook_shared::PageId(79usize),
             BookRoute::MigrationRouter {} => use_mdbook::mdbook_shared::PageId(80usize),
-            BookRoute::MigrationHotReload {} => {
-                use_mdbook::mdbook_shared::PageId(81usize)
-            }
+            BookRoute::MigrationHotReload {} => use_mdbook::mdbook_shared::PageId(81usize),
         }
     }
 }
@@ -380,3604 +310,3069 @@ impl Default for BookRoute {
         BookRoute::Index {}
     }
 }
-pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRoute>> = use_mdbook::Lazy::new(||
-{
-    {
+pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRoute>> =
+    use_mdbook::Lazy::new(|| {
         let mut page_id_mapping = ::std::collections::HashMap::new();
         let mut pages = Vec::new();
-        pages
-            .push((
-                0usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
+        pages.push((0usize, {
+            ::use_mdbook::mdbook_shared::Page {
+                title: "Introduction".to_string(),
+                url: BookRoute::Index {},
+                segments: vec![],
+                sections: vec![
+                    ::use_mdbook::mdbook_shared::Section {
                         title: "Introduction".to_string(),
-                        url: BookRoute::Index {},
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Introduction".to_string(),
-                                id: "introduction".to_string(),
-                                level: 1usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Features".to_string(),
-                                id: "features".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Multiplatform".to_string(),
-                                id: "multiplatform".to_string(),
-                                level: 3usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Stability".to_string(),
-                                id: "stability".to_string(),
-                                level: 2usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(0usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(BookRoute::Index {}, ::use_mdbook::mdbook_shared::PageId(0usize));
-        pages
-            .push((
-                1usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
+                        id: "introduction".to_string(),
+                        level: 1usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Features".to_string(),
+                        id: "features".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Multiplatform".to_string(),
+                        id: "multiplatform".to_string(),
+                        level: 3usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Stability".to_string(),
+                        id: "stability".to_string(),
+                        level: 2usize,
+                    },
+                ],
+                raw: String::new(),
+                id: ::use_mdbook::mdbook_shared::PageId(0usize),
+            }
+        }));
+        page_id_mapping.insert(
+            BookRoute::Index {},
+            ::use_mdbook::mdbook_shared::PageId(0usize),
+        );
+        pages.push((1usize, {
+            ::use_mdbook::mdbook_shared::Page {
+                title: "Getting Started".to_string(),
+                url: BookRoute::GettingStartedIndex {},
+                segments: vec![],
+                sections: vec![
+                    ::use_mdbook::mdbook_shared::Section {
                         title: "Getting Started".to_string(),
-                        url: BookRoute::GettingStartedIndex {},
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Getting Started".to_string(),
-                                id: "getting-started".to_string(),
-                                level: 1usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Prerequisites".to_string(),
-                                id: "prerequisites".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "An Editor".to_string(),
-                                id: "an-editor".to_string(),
-                                level: 3usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Rust".to_string(),
-                                id: "rust".to_string(),
-                                level: 3usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Setup Guides".to_string(),
-                                id: "setup-guides".to_string(),
-                                level: 2usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(1usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::GettingStartedIndex {},
-                ::use_mdbook::mdbook_shared::PageId(1usize),
-            );
-        pages
-            .push((
-                2usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "Choosing A Web Renderer".to_string(),
-                        url: BookRoute::GettingStartedChoosingAWebRenderer {
-                        },
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Choosing a web renderer".to_string(),
-                                id: "choosing-a-web-renderer".to_string(),
-                                level: 1usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Dioxus Liveview".to_string(),
-                                id: "dioxus-liveview".to_string(),
-                                level: 3usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Dioxus Web".to_string(),
-                                id: "dioxus-web".to_string(),
-                                level: 3usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Dioxus Fullstack".to_string(),
-                                id: "dioxus-fullstack".to_string(),
-                                level: 3usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(2usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::GettingStartedChoosingAWebRenderer {
-                },
-                ::use_mdbook::mdbook_shared::PageId(2usize),
-            );
-        pages
-            .push((
-                3usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
+                        id: "getting-started".to_string(),
+                        level: 1usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Prerequisites".to_string(),
+                        id: "prerequisites".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "An Editor".to_string(),
+                        id: "an-editor".to_string(),
+                        level: 3usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Rust".to_string(),
+                        id: "rust".to_string(),
+                        level: 3usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Setup Guides".to_string(),
+                        id: "setup-guides".to_string(),
+                        level: 2usize,
+                    },
+                ],
+                raw: String::new(),
+                id: ::use_mdbook::mdbook_shared::PageId(1usize),
+            }
+        }));
+        page_id_mapping.insert(
+            BookRoute::GettingStartedIndex {},
+            ::use_mdbook::mdbook_shared::PageId(1usize),
+        );
+        pages.push((2usize, {
+            ::use_mdbook::mdbook_shared::Page {
+                title: "Choosing A Web Renderer".to_string(),
+                url: BookRoute::GettingStartedChoosingAWebRenderer {},
+                segments: vec![],
+                sections: vec![
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Choosing a web renderer".to_string(),
+                        id: "choosing-a-web-renderer".to_string(),
+                        level: 1usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Dioxus Liveview".to_string(),
+                        id: "dioxus-liveview".to_string(),
+                        level: 3usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Dioxus Web".to_string(),
+                        id: "dioxus-web".to_string(),
+                        level: 3usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Dioxus Fullstack".to_string(),
+                        id: "dioxus-fullstack".to_string(),
+                        level: 3usize,
+                    },
+                ],
+                raw: String::new(),
+                id: ::use_mdbook::mdbook_shared::PageId(2usize),
+            }
+        }));
+        page_id_mapping.insert(
+            BookRoute::GettingStartedChoosingAWebRenderer {},
+            ::use_mdbook::mdbook_shared::PageId(2usize),
+        );
+        pages.push((3usize, {
+            ::use_mdbook::mdbook_shared::Page {
+                title: "Web".to_string(),
+                url: BookRoute::GettingStartedWasm {},
+                segments: vec![],
+                sections: vec![
+                    ::use_mdbook::mdbook_shared::Section {
                         title: "Web".to_string(),
-                        url: BookRoute::GettingStartedWasm {},
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Web".to_string(),
-                                id: "web".to_string(),
-                                level: 1usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Support".to_string(),
-                                id: "support".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Tooling".to_string(),
-                                id: "tooling".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Creating a Project".to_string(),
-                                id: "creating-a-project".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Hot Reload".to_string(),
-                                id: "hot-reload".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Setup".to_string(),
-                                id: "setup".to_string(),
-                                level: 3usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Usage".to_string(),
-                                id: "usage".to_string(),
-                                level: 3usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Limitations".to_string(),
-                                id: "limitations".to_string(),
-                                level: 3usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(3usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::GettingStartedWasm {},
-                ::use_mdbook::mdbook_shared::PageId(3usize),
-            );
-        pages
-            .push((
-                4usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "Liveview".to_string(),
-                        url: BookRoute::GettingStartedLiveview {
-                        },
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Liveview".to_string(),
-                                id: "liveview".to_string(),
-                                level: 1usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Support".to_string(),
-                                id: "support".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Setup".to_string(),
-                                id: "setup".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Hot Reload".to_string(),
-                                id: "hot-reload".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Setup".to_string(),
-                                id: "setup".to_string(),
-                                level: 3usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Usage".to_string(),
-                                id: "usage".to_string(),
-                                level: 3usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Limitations".to_string(),
-                                id: "limitations".to_string(),
-                                level: 3usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(4usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::GettingStartedLiveview {
-                },
-                ::use_mdbook::mdbook_shared::PageId(4usize),
-            );
-        pages
-            .push((
-                5usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "Fullstack".to_string(),
-                        url: BookRoute::GettingStartedFullstack {
-                        },
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Fullstack".to_string(),
-                                id: "fullstack".to_string(),
-                                level: 1usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Getting Started".to_string(),
-                                id: "getting-started".to_string(),
-                                level: 1usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Setup".to_string(),
-                                id: "setup".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Hot Reload".to_string(),
-                                id: "hot-reload".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Usage".to_string(),
-                                id: "usage".to_string(),
-                                level: 3usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Limitations".to_string(),
-                                id: "limitations".to_string(),
-                                level: 3usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(5usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::GettingStartedFullstack {
-                },
-                ::use_mdbook::mdbook_shared::PageId(5usize),
-            );
-        pages
-            .push((
-                6usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "Desktop".to_string(),
-                        url: BookRoute::GettingStartedDesktop {
-                        },
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Desktop overview".to_string(),
-                                id: "desktop-overview".to_string(),
-                                level: 1usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Examples".to_string(),
-                                id: "examples".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Getting started".to_string(),
-                                id: "getting-started".to_string(),
-                                level: 1usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Platform-specific dependencies".to_string(),
-                                id: "platform-specific-dependencies".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Windows".to_string(),
-                                id: "windows".to_string(),
-                                level: 3usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Linux".to_string(),
-                                id: "linux".to_string(),
-                                level: 3usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "MacOS".to_string(),
-                                id: "macos".to_string(),
-                                level: 3usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Creating a Project".to_string(),
-                                id: "creating-a-project".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Hot Reload".to_string(),
-                                id: "hot-reload".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Setup".to_string(),
-                                id: "setup".to_string(),
-                                level: 3usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Usage".to_string(),
-                                id: "usage".to_string(),
-                                level: 3usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Limitations".to_string(),
-                                id: "limitations".to_string(),
-                                level: 3usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(6usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::GettingStartedDesktop {
-                },
-                ::use_mdbook::mdbook_shared::PageId(6usize),
-            );
-        pages
-            .push((
-                7usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "Mobile".to_string(),
-                        url: BookRoute::GettingStartedMobile {},
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Mobile App".to_string(),
-                                id: "mobile-app".to_string(),
-                                level: 1usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Support".to_string(),
-                                id: "support".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Getting Set up".to_string(),
-                                id: "getting-set-up".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Setting up dependencies".to_string(),
-                                id: "setting-up-dependencies".to_string(),
-                                level: 3usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Android".to_string(),
-                                id: "android".to_string(),
-                                level: 4usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "IOS".to_string(),
-                                id: "ios".to_string(),
-                                level: 4usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Setting up your project".to_string(),
-                                id: "setting-up-your-project".to_string(),
-                                level: 3usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Running".to_string(),
-                                id: "running".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "IOS".to_string(),
-                                id: "ios".to_string(),
-                                level: 3usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Android".to_string(),
-                                id: "android".to_string(),
-                                level: 3usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(7usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::GettingStartedMobile {},
-                ::use_mdbook::mdbook_shared::PageId(7usize),
-            );
-        pages
-            .push((
-                8usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "Terminal UI".to_string(),
-                        url: BookRoute::GettingStartedTui {},
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Terminal UI".to_string(),
-                                id: "terminal-ui".to_string(),
-                                level: 1usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Support".to_string(),
-                                id: "support".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Getting Set up".to_string(),
-                                id: "getting-set-up".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Hot Reload".to_string(),
-                                id: "hot-reload".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Setup".to_string(),
-                                id: "setup".to_string(),
-                                level: 3usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Usage".to_string(),
-                                id: "usage".to_string(),
-                                level: 3usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Limitations".to_string(),
-                                id: "limitations".to_string(),
-                                level: 3usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(8usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::GettingStartedTui {},
-                ::use_mdbook::mdbook_shared::PageId(8usize),
-            );
-        pages
-            .push((
-                9usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "Guide".to_string(),
-                        url: BookRoute::GuideIndex {},
-                        segments: vec![],
-                        sections: vec![],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(9usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::GuideIndex {},
-                ::use_mdbook::mdbook_shared::PageId(9usize),
-            );
-        pages
-            .push((
-                10usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "Your First Component".to_string(),
-                        url: BookRoute::GuideYourFirstComponent {
-                        },
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Your First Component".to_string(),
-                                id: "your-first-component".to_string(),
-                                level: 1usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Dynamic Text".to_string(),
-                                id: "dynamic-text".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Creating Elements".to_string(),
-                                id: "creating-elements".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Setting Attributes".to_string(),
-                                id: "setting-attributes".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Creating a Component".to_string(),
-                                id: "creating-a-component".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Creating Props".to_string(),
-                                id: "creating-props".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Cleaning Up Our Interface".to_string(),
-                                id: "cleaning-up-our-interface".to_string(),
-                                level: 2usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(10usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::GuideYourFirstComponent {
-                },
-                ::use_mdbook::mdbook_shared::PageId(10usize),
-            );
-        pages
-            .push((
-                11usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "State".to_string(),
-                        url: BookRoute::GuideState {},
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Interactivity".to_string(),
-                                id: "interactivity".to_string(),
-                                level: 1usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Creating a Preview".to_string(),
-                                id: "creating-a-preview".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Event Handlers".to_string(),
-                                id: "event-handlers".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "State".to_string(),
-                                id: "state".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "The Rules of Hooks".to_string(),
-                                id: "the-rules-of-hooks".to_string(),
-                                level: 3usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "No Hooks in Conditionals".to_string(),
-                                id: "no-hooks-in-conditionals".to_string(),
-                                level: 4usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "No Hooks in Closures".to_string(),
-                                id: "no-hooks-in-closures".to_string(),
-                                level: 4usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "No Hooks in Loops".to_string(),
-                                id: "no-hooks-in-loops".to_string(),
-                                level: 4usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(11usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::GuideState {},
-                ::use_mdbook::mdbook_shared::PageId(11usize),
-            );
-        pages
-            .push((
-                12usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "Data Fetching".to_string(),
-                        url: BookRoute::GuideDataFetching {},
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Fetching Data".to_string(),
-                                id: "fetching-data".to_string(),
-                                level: 1usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Defining the API".to_string(),
-                                id: "defining-the-api".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Working with Async".to_string(),
-                                id: "working-with-async".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Lazily Fetching Data".to_string(),
-                                id: "lazily-fetching-data".to_string(),
-                                level: 2usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(12usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::GuideDataFetching {},
-                ::use_mdbook::mdbook_shared::PageId(12usize),
-            );
-        pages
-            .push((
-                13usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "Full Code".to_string(),
-                        url: BookRoute::GuideFullCode {},
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Conclusion".to_string(),
-                                id: "conclusion".to_string(),
-                                level: 1usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Challenges".to_string(),
-                                id: "challenges".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "The full code for the hacker news project"
-                                    .to_string(),
-                                id: "the-full-code-for-the-hacker-news-project".to_string(),
-                                level: 2usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(13usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::GuideFullCode {},
-                ::use_mdbook::mdbook_shared::PageId(13usize),
-            );
-        pages
-            .push((
-                14usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "Reference".to_string(),
-                        url: BookRoute::ReferenceIndex {},
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Dioxus Reference".to_string(),
-                                id: "dioxus-reference".to_string(),
-                                level: 1usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Rendering".to_string(),
-                                id: "rendering".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "State".to_string(),
-                                id: "state".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Platforms".to_string(),
-                                id: "platforms".to_string(),
-                                level: 2usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(14usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::ReferenceIndex {},
-                ::use_mdbook::mdbook_shared::PageId(14usize),
-            );
-        pages
-            .push((
-                15usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "RSX".to_string(),
-                        url: BookRoute::ReferenceRsx {},
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Describing the UI".to_string(),
-                                id: "describing-the-ui".to_string(),
-                                level: 1usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "RSX Features".to_string(),
-                                id: "rsx-features".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Attributes".to_string(),
-                                id: "attributes".to_string(),
-                                level: 3usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Custom Attributes".to_string(),
-                                id: "custom-attributes".to_string(),
-                                level: 4usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Special Attributes".to_string(),
-                                id: "special-attributes".to_string(),
-                                level: 3usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "The HTML Escape Hatch".to_string(),
-                                id: "the-html-escape-hatch".to_string(),
-                                level: 4usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Boolean Attributes".to_string(),
-                                id: "boolean-attributes".to_string(),
-                                level: 4usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Interpolation".to_string(),
-                                id: "interpolation".to_string(),
-                                level: 3usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Children".to_string(),
-                                id: "children".to_string(),
-                                level: 3usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Fragments".to_string(),
-                                id: "fragments".to_string(),
-                                level: 3usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Expressions".to_string(),
-                                id: "expressions".to_string(),
-                                level: 3usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Loops".to_string(),
-                                id: "loops".to_string(),
-                                level: 3usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "If statements".to_string(),
-                                id: "if-statements".to_string(),
-                                level: 3usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(15usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::ReferenceRsx {},
-                ::use_mdbook::mdbook_shared::PageId(15usize),
-            );
-        pages
-            .push((
-                16usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "Components".to_string(),
-                        url: BookRoute::ReferenceComponents {},
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Components".to_string(),
-                                id: "components".to_string(),
-                                level: 1usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(16usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::ReferenceComponents {},
-                ::use_mdbook::mdbook_shared::PageId(16usize),
-            );
-        pages
-            .push((
-                17usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "Props".to_string(),
-                        url: BookRoute::ReferenceComponentProps {
-                        },
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Component Props".to_string(),
-                                id: "component-props".to_string(),
-                                level: 1usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Component props are a single struct annotated with "
-                                    .to_string(),
-                                id: "component-props-are-a-single-struct-annotated-with"
-                                    .to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Owned Props".to_string(),
-                                id: "owned-props".to_string(),
-                                level: 3usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Borrowed Props".to_string(),
-                                id: "borrowed-props".to_string(),
-                                level: 3usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Prop Options".to_string(),
-                                id: "prop-options".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Optional Props".to_string(),
-                                id: "optional-props".to_string(),
-                                level: 3usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Explicitly Required ".to_string(),
-                                id: "explicitly-required".to_string(),
-                                level: 3usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Default Props".to_string(),
-                                id: "default-props".to_string(),
-                                level: 3usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Automatic Conversion with ".to_string(),
-                                id: "automatic-conversion-with".to_string(),
-                                level: 3usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "The ".to_string(),
-                                id: "the".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Component Children".to_string(),
-                                id: "component-children".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "The ".to_string(),
-                                id: "the".to_string(),
-                                level: 3usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(17usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::ReferenceComponentProps {
-                },
-                ::use_mdbook::mdbook_shared::PageId(17usize),
-            );
-        pages
-            .push((
-                18usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "Event Handlers".to_string(),
-                        url: BookRoute::ReferenceEventHandlers {
-                        },
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Event Handlers".to_string(),
-                                id: "event-handlers".to_string(),
-                                level: 1usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "The ".to_string(),
-                                id: "the".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Event propagation".to_string(),
-                                id: "event-propagation".to_string(),
-                                level: 3usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Prevent Default".to_string(),
-                                id: "prevent-default".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Handler Props".to_string(),
-                                id: "handler-props".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Custom Data".to_string(),
-                                id: "custom-data".to_string(),
-                                level: 2usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(18usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::ReferenceEventHandlers {
-                },
-                ::use_mdbook::mdbook_shared::PageId(18usize),
-            );
-        pages
-            .push((
-                19usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "Hooks".to_string(),
-                        url: BookRoute::ReferenceHooks {},
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Hooks and component state".to_string(),
-                                id: "hooks-and-component-state".to_string(),
-                                level: 1usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "use_state hook".to_string(),
-                                id: "use_state-hook".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Out-of-date UseState".to_string(),
-                                id: "out-of-date-usestate".to_string(),
-                                level: 3usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Rules of hooks".to_string(),
-                                id: "rules-of-hooks".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "No hooks in conditionals".to_string(),
-                                id: "no-hooks-in-conditionals".to_string(),
-                                level: 3usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "No hooks in closures".to_string(),
-                                id: "no-hooks-in-closures".to_string(),
-                                level: 3usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "No hooks in loops".to_string(),
-                                id: "no-hooks-in-loops".to_string(),
-                                level: 3usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "use_ref hook".to_string(),
-                                id: "use_ref-hook".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Additional resources".to_string(),
-                                id: "additional-resources".to_string(),
-                                level: 2usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(19usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::ReferenceHooks {},
-                ::use_mdbook::mdbook_shared::PageId(19usize),
-            );
-        pages
-            .push((
-                20usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "User Input".to_string(),
-                        url: BookRoute::ReferenceUserInput {},
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "User Input".to_string(),
-                                id: "user-input".to_string(),
-                                level: 1usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Controlled Inputs".to_string(),
-                                id: "controlled-inputs".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Uncontrolled Inputs".to_string(),
-                                id: "uncontrolled-inputs".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Handling files".to_string(),
-                                id: "handling-files".to_string(),
-                                level: 2usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(20usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::ReferenceUserInput {},
-                ::use_mdbook::mdbook_shared::PageId(20usize),
-            );
-        pages
-            .push((
-                21usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "Context".to_string(),
-                        url: BookRoute::ReferenceContext {},
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Sharing State".to_string(),
-                                id: "sharing-state".to_string(),
-                                level: 1usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Lifting State".to_string(),
-                                id: "lifting-state".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Using Shared State".to_string(),
-                                id: "using-shared-state".to_string(),
-                                level: 2usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(21usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::ReferenceContext {},
-                ::use_mdbook::mdbook_shared::PageId(21usize),
-            );
-        pages
-            .push((
-                22usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "Dynamic Rendering".to_string(),
-                        url: BookRoute::ReferenceDynamicRendering {
-                        },
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Dynamic Rendering".to_string(),
-                                id: "dynamic-rendering".to_string(),
-                                level: 1usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Conditional Rendering".to_string(),
-                                id: "conditional-rendering".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Improving the ".to_string(),
-                                id: "improving-the".to_string(),
-                                level: 3usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Inspecting ".to_string(),
-                                id: "inspecting".to_string(),
-                                level: 3usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Rendering Nothing".to_string(),
-                                id: "rendering-nothing".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Rendering Lists".to_string(),
-                                id: "rendering-lists".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Inline for loops".to_string(),
-                                id: "inline-for-loops".to_string(),
-                                level: 3usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "The ".to_string(),
-                                id: "the".to_string(),
-                                level: 3usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(22usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::ReferenceDynamicRendering {
-                },
-                ::use_mdbook::mdbook_shared::PageId(22usize),
-            );
-        pages
-            .push((
-                23usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "Routing".to_string(),
-                        url: BookRoute::ReferenceRouter {},
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Router".to_string(),
-                                id: "router".to_string(),
-                                level: 1usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "What is it?".to_string(),
-                                id: "what-is-it?".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Using the router".to_string(),
-                                id: "using-the-router".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Links".to_string(),
-                                id: "links".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "More reading".to_string(),
-                                id: "more-reading".to_string(),
-                                level: 2usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(23usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::ReferenceRouter {},
-                ::use_mdbook::mdbook_shared::PageId(23usize),
-            );
-        pages
-            .push((
-                24usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "UseFuture".to_string(),
-                        url: BookRoute::ReferenceUseFuture {},
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "UseFuture".to_string(),
-                                id: "usefuture".to_string(),
-                                level: 1usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Restarting the Future".to_string(),
-                                id: "restarting-the-future".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Dependencies".to_string(),
-                                id: "dependencies".to_string(),
-                                level: 2usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(24usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::ReferenceUseFuture {},
-                ::use_mdbook::mdbook_shared::PageId(24usize),
-            );
-        pages
-            .push((
-                25usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "UseCoroutine".to_string(),
-                        url: BookRoute::ReferenceUseCoroutine {
-                        },
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Coroutines".to_string(),
-                                id: "coroutines".to_string(),
-                                level: 1usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "The ".to_string(),
-                                id: "the".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Yielding Values".to_string(),
-                                id: "yielding-values".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Sending Values".to_string(),
-                                id: "sending-values".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Automatic injection into the Context API"
-                                    .to_string(),
-                                id: "automatic-injection-into-the-context-api".to_string(),
-                                level: 2usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(25usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::ReferenceUseCoroutine {
-                },
-                ::use_mdbook::mdbook_shared::PageId(25usize),
-            );
-        pages
-            .push((
-                26usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "Spawn".to_string(),
-                        url: BookRoute::ReferenceSpawn {},
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Spawning Futures".to_string(),
-                                id: "spawning-futures".to_string(),
-                                level: 1usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Spawning Tokio Tasks".to_string(),
-                                id: "spawning-tokio-tasks".to_string(),
-                                level: 2usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(26usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::ReferenceSpawn {},
-                ::use_mdbook::mdbook_shared::PageId(26usize),
-            );
-        pages
-            .push((
-                27usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "Desktop".to_string(),
-                        url: BookRoute::ReferenceDesktopIndex {
-                        },
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Desktop".to_string(),
-                                id: "desktop".to_string(),
-                                level: 1usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Running Javascript".to_string(),
-                                id: "running-javascript".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Custom Assets".to_string(),
-                                id: "custom-assets".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Integrating with Wry".to_string(),
-                                id: "integrating-with-wry".to_string(),
-                                level: 2usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(27usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::ReferenceDesktopIndex {
-                },
-                ::use_mdbook::mdbook_shared::PageId(27usize),
-            );
-        pages
-            .push((
-                28usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "Web".to_string(),
-                        url: BookRoute::ReferenceWebIndex {},
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Web".to_string(),
-                                id: "web".to_string(),
-                                level: 1usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Running Javascript".to_string(),
-                                id: "running-javascript".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Customizing Index Template".to_string(),
-                                id: "customizing-index-template".to_string(),
-                                level: 2usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(28usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::ReferenceWebIndex {},
-                ::use_mdbook::mdbook_shared::PageId(28usize),
-            );
-        pages
-            .push((
-                29usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "SSR".to_string(),
-                        url: BookRoute::ReferenceSsr {},
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Server-Side Rendering".to_string(),
-                                id: "server-side-rendering".to_string(),
-                                level: 1usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Setup".to_string(),
-                                id: "setup".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Multithreaded Support".to_string(),
-                                id: "multithreaded-support".to_string(),
-                                level: 2usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(29usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::ReferenceSsr {},
-                ::use_mdbook::mdbook_shared::PageId(29usize),
-            );
-        pages
-            .push((
-                30usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "Liveview".to_string(),
-                        url: BookRoute::ReferenceLiveview {},
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Liveview".to_string(),
-                                id: "liveview".to_string(),
-                                level: 1usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Router Integration".to_string(),
-                                id: "router-integration".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Managing Latency".to_string(),
-                                id: "managing-latency".to_string(),
-                                level: 2usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(30usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::ReferenceLiveview {},
-                ::use_mdbook::mdbook_shared::PageId(30usize),
-            );
-        pages
-            .push((
-                31usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "Fullstack".to_string(),
-                        url: BookRoute::ReferenceFullstackIndex {
-                        },
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Fullstack development".to_string(),
-                                id: "fullstack-development".to_string(),
-                                level: 1usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(31usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::ReferenceFullstackIndex {
-                },
-                ::use_mdbook::mdbook_shared::PageId(31usize),
-            );
-        pages
-            .push((
-                32usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "Server Functions".to_string(),
-                        url: BookRoute::ReferenceFullstackServerFunctions {
-                        },
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Communicating with the server".to_string(),
-                                id: "communicating-with-the-server".to_string(),
-                                level: 1usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Cached data fetching".to_string(),
-                                id: "cached-data-fetching".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Running the client with dioxus-desktop".to_string(),
-                                id: "running-the-client-with-dioxus-desktop".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Client code".to_string(),
-                                id: "client-code".to_string(),
-                                level: 3usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Server code".to_string(),
-                                id: "server-code".to_string(),
-                                level: 3usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(32usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::ReferenceFullstackServerFunctions {
-                },
-                ::use_mdbook::mdbook_shared::PageId(32usize),
-            );
-        pages
-            .push((
-                33usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "Extractors".to_string(),
-                        url: BookRoute::ReferenceFullstackExtractors {
-                        },
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Extractors".to_string(),
-                                id: "extractors".to_string(),
-                                level: 1usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(33usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::ReferenceFullstackExtractors {
-                },
-                ::use_mdbook::mdbook_shared::PageId(33usize),
-            );
-        pages
-            .push((
-                34usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "Middleware".to_string(),
-                        url: BookRoute::ReferenceFullstackMiddleware {
-                        },
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Middleware".to_string(),
-                                id: "middleware".to_string(),
-                                level: 1usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(34usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::ReferenceFullstackMiddleware {
-                },
-                ::use_mdbook::mdbook_shared::PageId(34usize),
-            );
-        pages
-            .push((
-                35usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "Authentication".to_string(),
-                        url: BookRoute::ReferenceFullstackAuthentication {
-                        },
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Authentication".to_string(),
-                                id: "authentication".to_string(),
-                                level: 1usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(35usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::ReferenceFullstackAuthentication {
-                },
-                ::use_mdbook::mdbook_shared::PageId(35usize),
-            );
-        pages
-            .push((
-                36usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "Routing".to_string(),
-                        url: BookRoute::ReferenceFullstackRouting {
-                        },
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Routing".to_string(),
-                                id: "routing".to_string(),
-                                level: 1usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(36usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::ReferenceFullstackRouting {
-                },
-                ::use_mdbook::mdbook_shared::PageId(36usize),
-            );
-        pages
-            .push((
-                37usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "Router".to_string(),
-                        url: BookRoute::RouterIndex {},
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Introduction".to_string(),
-                                id: "introduction".to_string(),
-                                level: 1usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(37usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::RouterIndex {},
-                ::use_mdbook::mdbook_shared::PageId(37usize),
-            );
-        pages
-            .push((
-                38usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "Example Project".to_string(),
-                        url: BookRoute::RouterExampleIndex {},
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Overview".to_string(),
-                                id: "overview".to_string(),
-                                level: 1usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "You'll learn how to".to_string(),
-                                id: "you'll-learn-how-to".to_string(),
-                                level: 2usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(38usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::RouterExampleIndex {},
-                ::use_mdbook::mdbook_shared::PageId(38usize),
-            );
-        pages
-            .push((
-                39usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "Creating Our First Route".to_string(),
-                        url: BookRoute::RouterExampleFirstRoute {
-                        },
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Creating Our First Route".to_string(),
-                                id: "creating-our-first-route".to_string(),
-                                level: 1usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Fundamentals".to_string(),
-                                id: "fundamentals".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Creating Routes".to_string(),
-                                id: "creating-routes".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Fallback Route".to_string(),
-                                id: "fallback-route".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Conclusion".to_string(),
-                                id: "conclusion".to_string(),
-                                level: 2usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(39usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::RouterExampleFirstRoute {
-                },
-                ::use_mdbook::mdbook_shared::PageId(39usize),
-            );
-        pages
-            .push((
-                40usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "Building a Nest".to_string(),
-                        url: BookRoute::RouterExampleBuildingANest {
-                        },
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Building a Nest".to_string(),
-                                id: "building-a-nest".to_string(),
-                                level: 1usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Site Navigation".to_string(),
-                                id: "site-navigation".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "URL Parameters and Nested Routes".to_string(),
-                                id: "url-parameters-and-nested-routes".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Conclusion".to_string(),
-                                id: "conclusion".to_string(),
-                                level: 2usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(40usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::RouterExampleBuildingANest {
-                },
-                ::use_mdbook::mdbook_shared::PageId(40usize),
-            );
-        pages
-            .push((
-                41usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "Navigation Targets".to_string(),
-                        url: BookRoute::RouterExampleNavigationTargets {
-                        },
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Navigation Targets".to_string(),
-                                id: "navigation-targets".to_string(),
-                                level: 1usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "What is a navigation target?".to_string(),
-                                id: "what-is-a-navigation-target?".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "External navigation".to_string(),
-                                id: "external-navigation".to_string(),
-                                level: 2usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(41usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::RouterExampleNavigationTargets {
-                },
-                ::use_mdbook::mdbook_shared::PageId(41usize),
-            );
-        pages
-            .push((
-                42usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "Redirection Perfection".to_string(),
-                        url: BookRoute::RouterExampleRedirectionPerfection {
-                        },
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Redirection Perfection".to_string(),
-                                id: "redirection-perfection".to_string(),
-                                level: 1usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Creating Redirects".to_string(),
-                                id: "creating-redirects".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Conclusion".to_string(),
-                                id: "conclusion".to_string(),
-                                level: 3usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Challenges".to_string(),
-                                id: "challenges".to_string(),
-                                level: 3usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(42usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::RouterExampleRedirectionPerfection {
-                },
-                ::use_mdbook::mdbook_shared::PageId(42usize),
-            );
-        pages
-            .push((
-                43usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "Full Code".to_string(),
-                        url: BookRoute::RouterExampleFullCode {
-                        },
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Full Code".to_string(),
-                                id: "full-code".to_string(),
-                                level: 1usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(43usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::RouterExampleFullCode {
-                },
-                ::use_mdbook::mdbook_shared::PageId(43usize),
-            );
-        pages
-            .push((
-                44usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "Reference".to_string(),
-                        url: BookRoute::RouterReferenceIndex {},
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Adding the router to your application".to_string(),
-                                id: "adding-the-router-to-your-application".to_string(),
-                                level: 1usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(44usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::RouterReferenceIndex {},
-                ::use_mdbook::mdbook_shared::PageId(44usize),
-            );
-        pages
-            .push((
-                45usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "Defining Routes".to_string(),
-                        url: BookRoute::RouterReferenceRoutesIndex {
-                        },
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Defining Routes".to_string(),
-                                id: "defining-routes".to_string(),
-                                level: 1usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Route Segments".to_string(),
-                                id: "route-segments".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Static segments".to_string(),
-                                id: "static-segments".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Dynamic Segments".to_string(),
-                                id: "dynamic-segments".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Catch All Segments".to_string(),
-                                id: "catch-all-segments".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Query Segments".to_string(),
-                                id: "query-segments".to_string(),
-                                level: 2usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(45usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::RouterReferenceRoutesIndex {
-                },
-                ::use_mdbook::mdbook_shared::PageId(45usize),
-            );
-        pages
-            .push((
-                46usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "Nested Routes".to_string(),
-                        url: BookRoute::RouterReferenceRoutesNested {
-                        },
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Nested Routes".to_string(),
-                                id: "nested-routes".to_string(),
-                                level: 1usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Nesting".to_string(),
-                                id: "nesting".to_string(),
-                                level: 2usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(46usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::RouterReferenceRoutesNested {
-                },
-                ::use_mdbook::mdbook_shared::PageId(46usize),
-            );
-        pages
-            .push((
-                47usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "Layouts".to_string(),
-                        url: BookRoute::RouterReferenceLayouts {
-                        },
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Layouts".to_string(),
-                                id: "layouts".to_string(),
-                                level: 1usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Layouts with dynamic segments".to_string(),
-                                id: "layouts-with-dynamic-segments".to_string(),
-                                level: 2usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(47usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::RouterReferenceLayouts {
-                },
-                ::use_mdbook::mdbook_shared::PageId(47usize),
-            );
-        pages
-            .push((
-                48usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "Navigation".to_string(),
-                        url: BookRoute::RouterReferenceNavigationIndex {
-                        },
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Links & Navigation".to_string(),
-                                id: "links-&-navigation".to_string(),
-                                level: 1usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(48usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::RouterReferenceNavigationIndex {
-                },
-                ::use_mdbook::mdbook_shared::PageId(48usize),
-            );
-        pages
-            .push((
-                49usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "Programmatic Navigation".to_string(),
-                        url: BookRoute::RouterReferenceNavigationProgrammatic {
-                        },
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Programmatic Navigation".to_string(),
-                                id: "programmatic-navigation".to_string(),
-                                level: 1usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Using a Navigator".to_string(),
-                                id: "using-a-navigator".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "External Navigation Targets".to_string(),
-                                id: "external-navigation-targets".to_string(),
-                                level: 2usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(49usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::RouterReferenceNavigationProgrammatic {
-                },
-                ::use_mdbook::mdbook_shared::PageId(49usize),
-            );
-        pages
-            .push((
-                50usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "History Providers".to_string(),
-                        url: BookRoute::RouterReferenceHistoryProviders {
-                        },
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "History Providers".to_string(),
-                                id: "history-providers".to_string(),
-                                level: 1usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(50usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::RouterReferenceHistoryProviders {
-                },
-                ::use_mdbook::mdbook_shared::PageId(50usize),
-            );
-        pages
-            .push((
-                51usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "History Buttons".to_string(),
-                        url: BookRoute::RouterReferenceHistoryButtons {
-                        },
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "History Buttons".to_string(),
-                                id: "history-buttons".to_string(),
-                                level: 1usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(51usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::RouterReferenceHistoryButtons {
-                },
-                ::use_mdbook::mdbook_shared::PageId(51usize),
-            );
-        pages
-            .push((
-                52usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "Static Generation".to_string(),
-                        url: BookRoute::RouterReferenceStaticGeneration {
-                        },
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Static Generation".to_string(),
-                                id: "static-generation".to_string(),
-                                level: 1usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Getting the Sitemap".to_string(),
-                                id: "getting-the-sitemap".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Generating a Sitemap".to_string(),
-                                id: "generating-a-sitemap".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Example".to_string(),
-                                id: "example".to_string(),
-                                level: 2usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(52usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::RouterReferenceStaticGeneration {
-                },
-                ::use_mdbook::mdbook_shared::PageId(52usize),
-            );
-        pages
-            .push((
-                53usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "Routing Update Callback".to_string(),
-                        url: BookRoute::RouterReferenceRoutingUpdateCallback {
-                        },
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Routing Update Callback".to_string(),
-                                id: "routing-update-callback".to_string(),
-                                level: 1usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "How does the callback behave?".to_string(),
-                                id: "how-does-the-callback-behave?".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Code Example".to_string(),
-                                id: "code-example".to_string(),
-                                level: 2usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(53usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::RouterReferenceRoutingUpdateCallback {
-                },
-                ::use_mdbook::mdbook_shared::PageId(53usize),
-            );
-        pages
-            .push((
-                54usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "Cookbook".to_string(),
-                        url: BookRoute::CookbookIndex {},
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Cookbook".to_string(),
-                                id: "cookbook".to_string(),
-                                level: 1usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(54usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::CookbookIndex {},
-                ::use_mdbook::mdbook_shared::PageId(54usize),
-            );
-        pages
-            .push((
-                55usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "Publishing".to_string(),
-                        url: BookRoute::CookbookPublishing {},
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Publishing".to_string(),
-                                id: "publishing".to_string(),
-                                level: 1usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Web: Publishing with GitHub Pages".to_string(),
-                                id: "web:-publishing-with-github-pages".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Desktop: Creating an installer".to_string(),
-                                id: "desktop:-creating-an-installer".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Preparing your application for bundling"
-                                    .to_string(),
-                                id: "preparing-your-application-for-bundling".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Install ".to_string(),
-                                id: "install".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Building".to_string(),
-                                id: "building".to_string(),
-                                level: 2usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(55usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::CookbookPublishing {},
-                ::use_mdbook::mdbook_shared::PageId(55usize),
-            );
-        pages
-            .push((
-                56usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "Anti-patterns".to_string(),
-                        url: BookRoute::CookbookAntipatterns {},
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Antipatterns".to_string(),
-                                id: "antipatterns".to_string(),
-                                level: 1usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Unnecessarily Nested Fragments".to_string(),
-                                id: "unnecessarily-nested-fragments".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Incorrect Iterator Keys".to_string(),
-                                id: "incorrect-iterator-keys".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Avoid Interior Mutability in Props".to_string(),
-                                id: "avoid-interior-mutability-in-props".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Avoid Updating State During Render".to_string(),
-                                id: "avoid-updating-state-during-render".to_string(),
-                                level: 2usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(56usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::CookbookAntipatterns {},
-                ::use_mdbook::mdbook_shared::PageId(56usize),
-            );
-        pages
-            .push((
-                57usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "Error Handling".to_string(),
-                        url: BookRoute::CookbookErrorHandling {
-                        },
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Error handling".to_string(),
-                                id: "error-handling".to_string(),
-                                level: 1usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "The simplest – returning None".to_string(),
-                                id: "the-simplest-–-returning-none".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Early return on result".to_string(),
-                                id: "early-return-on-result".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Match results".to_string(),
-                                id: "match-results".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Passing error states through components"
-                                    .to_string(),
-                                id: "passing-error-states-through-components".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Going global".to_string(),
-                                id: "going-global".to_string(),
-                                level: 2usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(57usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::CookbookErrorHandling {
-                },
-                ::use_mdbook::mdbook_shared::PageId(57usize),
-            );
-        pages
-            .push((
-                58usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "Integrations".to_string(),
-                        url: BookRoute::CookbookIntegrationsIndex {
-                        },
-                        segments: vec![],
-                        sections: vec![],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(58usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::CookbookIntegrationsIndex {
-                },
-                ::use_mdbook::mdbook_shared::PageId(58usize),
-            );
-        pages
-            .push((
-                59usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "Logging".to_string(),
-                        url: BookRoute::CookbookIntegrationsLogging {
-                        },
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Logging".to_string(),
-                                id: "logging".to_string(),
-                                level: 1usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "The Log Crate".to_string(),
-                                id: "the-log-crate".to_string(),
-                                level: 4usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Dioxus Logger".to_string(),
-                                id: "dioxus-logger".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Custom Format".to_string(),
-                                id: "custom-format".to_string(),
-                                level: 4usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Timestamps".to_string(),
-                                id: "timestamps".to_string(),
-                                level: 4usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Platform Intricacies".to_string(),
-                                id: "platform-intricacies".to_string(),
-                                level: 4usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Final Notes".to_string(),
-                                id: "final-notes".to_string(),
-                                level: 4usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Desktop and Server".to_string(),
-                                id: "desktop-and-server".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Web".to_string(),
-                                id: "web".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Platform Intricacies".to_string(),
-                                id: "platform-intricacies".to_string(),
-                                level: 4usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Android".to_string(),
-                                id: "android".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Viewing Logs".to_string(),
-                                id: "viewing-logs".to_string(),
-                                level: 4usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "iOS".to_string(),
-                                id: "ios".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Viewing Logs".to_string(),
-                                id: "viewing-logs".to_string(),
-                                level: 4usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(59usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::CookbookIntegrationsLogging {
-                },
-                ::use_mdbook::mdbook_shared::PageId(59usize),
-            );
-        pages
-            .push((
-                60usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "Internationalization".to_string(),
-                        url: BookRoute::CookbookIntegrationsInternationalization {
-                        },
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Internationalization".to_string(),
-                                id: "internationalization".to_string(),
-                                level: 1usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "The full code for internationalization".to_string(),
-                                id: "the-full-code-for-internationalization".to_string(),
-                                level: 2usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(60usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::CookbookIntegrationsInternationalization {
-                },
-                ::use_mdbook::mdbook_shared::PageId(60usize),
-            );
-        pages
-            .push((
-                61usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "State Management".to_string(),
-                        url: BookRoute::CookbookStateIndex {},
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "State Cookbook".to_string(),
-                                id: "state-cookbook".to_string(),
-                                level: 1usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(61usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::CookbookStateIndex {},
-                ::use_mdbook::mdbook_shared::PageId(61usize),
-            );
-        pages
-            .push((
-                62usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "External State".to_string(),
-                        url: BookRoute::CookbookStateExternalIndex {
-                        },
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Working with External State".to_string(),
-                                id: "working-with-external-state".to_string(),
-                                level: 1usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Working with non-reactive State".to_string(),
-                                id: "working-with-non-reactive-state".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Making Reactive State External".to_string(),
-                                id: "making-reactive-state-external".to_string(),
-                                level: 2usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(62usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::CookbookStateExternalIndex {
-                },
-                ::use_mdbook::mdbook_shared::PageId(62usize),
-            );
-        pages
-            .push((
-                63usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "Custom Hooks".to_string(),
-                        url: BookRoute::CookbookStateCustomHooksIndex {
-                        },
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Custom Hooks".to_string(),
-                                id: "custom-hooks".to_string(),
-                                level: 1usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Composing Hooks".to_string(),
-                                id: "composing-hooks".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Custom Hook Logic".to_string(),
-                                id: "custom-hook-logic".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Hook Anti-Patterns".to_string(),
-                                id: "hook-anti-patterns".to_string(),
-                                level: 2usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(63usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::CookbookStateCustomHooksIndex {
-                },
-                ::use_mdbook::mdbook_shared::PageId(63usize),
-            );
-        pages
-            .push((
-                64usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "Testing".to_string(),
-                        url: BookRoute::CookbookTesting {},
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Testing".to_string(),
-                                id: "testing".to_string(),
-                                level: 1usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Component Testing".to_string(),
-                                id: "component-testing".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Hook Testing".to_string(),
-                                id: "hook-testing".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "End to End Testing".to_string(),
-                                id: "end-to-end-testing".to_string(),
-                                level: 2usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(64usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::CookbookTesting {},
-                ::use_mdbook::mdbook_shared::PageId(64usize),
-            );
-        pages
-            .push((
-                65usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "Examples".to_string(),
-                        url: BookRoute::CookbookExamples {},
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Examples".to_string(),
-                                id: "examples".to_string(),
-                                level: 1usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(65usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::CookbookExamples {},
-                ::use_mdbook::mdbook_shared::PageId(65usize),
-            );
-        pages
-            .push((
-                66usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "Tailwind".to_string(),
-                        url: BookRoute::CookbookTailwind {},
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Tailwind".to_string(),
-                                id: "tailwind".to_string(),
-                                level: 1usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Setup".to_string(),
-                                id: "setup".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Bonus Steps".to_string(),
-                                id: "bonus-steps".to_string(),
-                                level: 3usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Development".to_string(),
-                                id: "development".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Web".to_string(),
-                                id: "web".to_string(),
-                                level: 3usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Desktop".to_string(),
-                                id: "desktop".to_string(),
-                                level: 3usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(66usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::CookbookTailwind {},
-                ::use_mdbook::mdbook_shared::PageId(66usize),
-            );
-        pages
-            .push((
-                67usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "Custom Renderer".to_string(),
-                        url: BookRoute::CookbookCustomRenderer {
-                        },
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Custom Renderer".to_string(),
-                                id: "custom-renderer".to_string(),
-                                level: 1usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "The specifics:".to_string(),
-                                id: "the-specifics:".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Templates".to_string(),
-                                id: "templates".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Mutations".to_string(),
-                                id: "mutations".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Node storage".to_string(),
-                                id: "node-storage".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "An Example".to_string(),
-                                id: "an-example".to_string(),
-                                level: 3usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Building Templates".to_string(),
-                                id: "building-templates".to_string(),
-                                level: 4usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Applying Mutations".to_string(),
-                                id: "applying-mutations".to_string(),
-                                level: 4usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Event loop".to_string(),
-                                id: "event-loop".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Custom raw elements".to_string(),
-                                id: "custom-raw-elements".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Native Core".to_string(),
-                                id: "native-core".to_string(),
-                                level: 1usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "The RealDom".to_string(),
-                                id: "the-realdom".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Example".to_string(),
-                                id: "example".to_string(),
-                                level: 3usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Layout".to_string(),
-                                id: "layout".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Text Editing".to_string(),
-                                id: "text-editing".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Conclusion".to_string(),
-                                id: "conclusion".to_string(),
-                                level: 2usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(67usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::CookbookCustomRenderer {
-                },
-                ::use_mdbook::mdbook_shared::PageId(67usize),
-            );
-        pages
-            .push((
-                68usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "Optimizing".to_string(),
-                        url: BookRoute::CookbookOptimizing {},
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Optimizing".to_string(),
-                                id: "optimizing".to_string(),
-                                level: 1usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Building in release mode".to_string(),
-                                id: "building-in-release-mode".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "UPX".to_string(),
-                                id: "upx".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Build configuration".to_string(),
-                                id: "build-configuration".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Stable".to_string(),
-                                id: "stable".to_string(),
-                                level: 3usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Unstable".to_string(),
-                                id: "unstable".to_string(),
-                                level: 3usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "wasm-opt".to_string(),
-                                id: "wasm-opt".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Improving Dioxus code".to_string(),
-                                id: "improving-dioxus-code".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Bundling and minifying the output JS and HTML"
-                                    .to_string(),
-                                id: "bundling-and-minifying-the-output-js-and-html"
-                                    .to_string(),
-                                level: 2usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(68usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::CookbookOptimizing {},
-                ::use_mdbook::mdbook_shared::PageId(68usize),
-            );
-        pages
-            .push((
-                69usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "CLI".to_string(),
-                        url: BookRoute::CliIndex {},
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Introduction".to_string(),
-                                id: "introduction".to_string(),
-                                level: 1usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Features".to_string(),
-                                id: "features".to_string(),
-                                level: 2usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(69usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::CliIndex {},
-                ::use_mdbook::mdbook_shared::PageId(69usize),
-            );
-        pages
-            .push((
-                70usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "Installation".to_string(),
-                        url: BookRoute::CliInstallation {},
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Installation".to_string(),
-                                id: "installation".to_string(),
-                                level: 1usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Install the stable version (recommended)"
-                                    .to_string(),
-                                id: "install-the-stable-version-(recommended)".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Install the latest development build through git"
-                                    .to_string(),
-                                id: "install-the-latest-development-build-through-git"
-                                    .to_string(),
-                                level: 2usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(70usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::CliInstallation {},
-                ::use_mdbook::mdbook_shared::PageId(70usize),
-            );
-        pages
-            .push((
-                71usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "Create a Project".to_string(),
-                        url: BookRoute::CliCreating {},
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Create a Project".to_string(),
-                                id: "create-a-project".to_string(),
-                                level: 1usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Initializing a project".to_string(),
-                                id: "initializing-a-project".to_string(),
-                                level: 2usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(71usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::CliCreating {},
-                ::use_mdbook::mdbook_shared::PageId(71usize),
-            );
-        pages
-            .push((
-                72usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "Configure Project".to_string(),
-                        url: BookRoute::CliConfigure {},
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Configure Project".to_string(),
-                                id: "configure-project".to_string(),
-                                level: 1usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Structure".to_string(),
-                                id: "structure".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Application 🔒".to_string(),
-                                id: "application-🔒".to_string(),
-                                level: 3usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Web.App 🔒".to_string(),
-                                id: "web.app-🔒".to_string(),
-                                level: 3usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Web.Watcher 🔒".to_string(),
-                                id: "web.watcher-🔒".to_string(),
-                                level: 3usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Web.Resource 🔒".to_string(),
-                                id: "web.resource-🔒".to_string(),
-                                level: 3usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Web.Resource.Dev 🔒".to_string(),
-                                id: "web.resource.dev-🔒".to_string(),
-                                level: 3usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Web.Proxy".to_string(),
-                                id: "web.proxy".to_string(),
-                                level: 3usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Config example".to_string(),
-                                id: "config-example".to_string(),
-                                level: 2usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(72usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::CliConfigure {},
-                ::use_mdbook::mdbook_shared::PageId(72usize),
-            );
-        pages
-            .push((
-                73usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "Translate HTML".to_string(),
-                        url: BookRoute::CliTranslate {},
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Translating existing HTML".to_string(),
-                                id: "translating-existing-html".to_string(),
-                                level: 1usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Usage".to_string(),
-                                id: "usage".to_string(),
-                                level: 2usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(73usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::CliTranslate {},
-                ::use_mdbook::mdbook_shared::PageId(73usize),
-            );
-        pages
-            .push((
-                74usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "Contributing".to_string(),
-                        url: BookRoute::ContributingIndex {},
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Contributing".to_string(),
-                                id: "contributing".to_string(),
-                                level: 1usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Improving Docs".to_string(),
-                                id: "improving-docs".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Working on the Ecosystem".to_string(),
-                                id: "working-on-the-ecosystem".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Bugs & Features".to_string(),
-                                id: "bugs-&-features".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Before you contribute".to_string(),
-                                id: "before-you-contribute".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "How to test dioxus with local crate".to_string(),
-                                id: "how-to-test-dioxus-with-local-crate".to_string(),
-                                level: 2usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(74usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::ContributingIndex {},
-                ::use_mdbook::mdbook_shared::PageId(74usize),
-            );
-        pages
-            .push((
-                75usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "Project Structure".to_string(),
-                        url: BookRoute::ContributingProjectStructure {
-                        },
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Project Structure".to_string(),
-                                id: "project-structure".to_string(),
-                                level: 1usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Renderers".to_string(),
-                                id: "renderers".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "State Management/Hooks".to_string(),
-                                id: "state-management/hooks".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Core utilities".to_string(),
-                                id: "core-utilities".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Native Renderer Utilities".to_string(),
-                                id: "native-renderer-utilities".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Web renderer tooling".to_string(),
-                                id: "web-renderer-tooling".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Developer tooling".to_string(),
-                                id: "developer-tooling".to_string(),
-                                level: 2usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(75usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::ContributingProjectStructure {
-                },
-                ::use_mdbook::mdbook_shared::PageId(75usize),
-            );
-        pages
-            .push((
-                76usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "Walkthrough of Internals".to_string(),
-                        url: BookRoute::ContributingWalkthroughReadme {
-                        },
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Walkthrough of the Hello World Example Internals"
-                                    .to_string(),
-                                id: "walkthrough-of-the-hello-world-example-internals"
-                                    .to_string(),
-                                level: 1usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "The Source File".to_string(),
-                                id: "the-source-file".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "The rsx! Macro".to_string(),
-                                id: "the-rsx!-macro".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Launching the App".to_string(),
-                                id: "launching-the-app".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "The Virtual DOM".to_string(),
-                                id: "the-virtual-dom".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "The Initial Render".to_string(),
-                                id: "the-initial-render".to_string(),
-                                level: 3usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Waiting for Events".to_string(),
-                                id: "waiting-for-events".to_string(),
-                                level: 3usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Diffing Scopes".to_string(),
-                                id: "diffing-scopes".to_string(),
-                                level: 3usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Conclusion".to_string(),
-                                id: "conclusion".to_string(),
-                                level: 2usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(76usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::ContributingWalkthroughReadme {
-                },
-                ::use_mdbook::mdbook_shared::PageId(76usize),
-            );
-        pages
-            .push((
-                77usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "Guiding Principles".to_string(),
-                        url: BookRoute::ContributingGuidingPrinciples {
-                        },
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Overall Goals".to_string(),
-                                id: "overall-goals".to_string(),
-                                level: 1usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Cross-Platform".to_string(),
-                                id: "cross-platform".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Performance".to_string(),
-                                id: "performance".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Type Safety".to_string(),
-                                id: "type-safety".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Developer Experience".to_string(),
-                                id: "developer-experience".to_string(),
-                                level: 2usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(77usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::ContributingGuidingPrinciples {
-                },
-                ::use_mdbook::mdbook_shared::PageId(77usize),
-            );
-        pages
-            .push((
-                78usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "Roadmap".to_string(),
-                        url: BookRoute::ContributingRoadmap {},
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Roadmap & Feature-set".to_string(),
-                                id: "roadmap-&-feature-set".to_string(),
-                                level: 1usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Features".to_string(),
-                                id: "features".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Roadmap".to_string(),
-                                id: "roadmap".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Core".to_string(),
-                                id: "core".to_string(),
-                                level: 3usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "SSR".to_string(),
-                                id: "ssr".to_string(),
-                                level: 3usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Desktop".to_string(),
-                                id: "desktop".to_string(),
-                                level: 3usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Mobile".to_string(),
-                                id: "mobile".to_string(),
-                                level: 3usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Bundling (CLI)".to_string(),
-                                id: "bundling-(cli)".to_string(),
-                                level: 3usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Essential hooks".to_string(),
-                                id: "essential-hooks".to_string(),
-                                level: 3usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Work in Progress".to_string(),
-                                id: "work-in-progress".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Build Tool".to_string(),
-                                id: "build-tool".to_string(),
-                                level: 3usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Server Component Support".to_string(),
-                                id: "server-component-support".to_string(),
-                                level: 3usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Native rendering".to_string(),
-                                id: "native-rendering".to_string(),
-                                level: 3usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(78usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::ContributingRoadmap {},
-                ::use_mdbook::mdbook_shared::PageId(78usize),
-            );
-        pages
-            .push((
-                79usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "Migration".to_string(),
-                        url: BookRoute::MigrationIndex {},
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "0.3 Migration Guide".to_string(),
-                                id: "0.3-migration-guide".to_string(),
-                                level: 1usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(79usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::MigrationIndex {},
-                ::use_mdbook::mdbook_shared::PageId(79usize),
-            );
-        pages
-            .push((
-                80usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
-                        title: "Router".to_string(),
-                        url: BookRoute::MigrationRouter {},
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Router".to_string(),
-                                id: "router".to_string(),
-                                level: 1usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Defining Your Router".to_string(),
-                                id: "defining-your-router".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Linking to routes".to_string(),
-                                id: "linking-to-routes".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "External Links".to_string(),
-                                id: "external-links".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "use_router".to_string(),
-                                id: "use_router".to_string(),
-                                level: 2usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "use_route".to_string(),
-                                id: "use_route".to_string(),
-                                level: 3usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "use_navigator".to_string(),
-                                id: "use_navigator".to_string(),
-                                level: 3usize,
-                            },
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "New features".to_string(),
-                                id: "new-features".to_string(),
-                                level: 3usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(80usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::MigrationRouter {},
-                ::use_mdbook::mdbook_shared::PageId(80usize),
-            );
-        pages
-            .push((
-                81usize,
-                {
-                    ::use_mdbook::mdbook_shared::Page {
+                        id: "web".to_string(),
+                        level: 1usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Support".to_string(),
+                        id: "support".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Tooling".to_string(),
+                        id: "tooling".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Creating a Project".to_string(),
+                        id: "creating-a-project".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
                         title: "Hot Reload".to_string(),
-                        url: BookRoute::MigrationHotReload {},
-                        segments: vec![],
-                        sections: vec![
-                            ::use_mdbook::mdbook_shared::Section {
-                                title: "Hot reloading".to_string(),
-                                id: "hot-reloading".to_string(),
-                                level: 1usize,
-                            },
-                        ],
-                        raw: String::new(),
-                        id: ::use_mdbook::mdbook_shared::PageId(81usize),
-                    }
-                },
-            ));
-        page_id_mapping
-            .insert(
-                BookRoute::MigrationHotReload {},
-                ::use_mdbook::mdbook_shared::PageId(81usize),
-            );
+                        id: "hot-reload".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Setup".to_string(),
+                        id: "setup".to_string(),
+                        level: 3usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Usage".to_string(),
+                        id: "usage".to_string(),
+                        level: 3usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Limitations".to_string(),
+                        id: "limitations".to_string(),
+                        level: 3usize,
+                    },
+                ],
+                raw: String::new(),
+                id: ::use_mdbook::mdbook_shared::PageId(3usize),
+            }
+        }));
+        page_id_mapping.insert(
+            BookRoute::GettingStartedWasm {},
+            ::use_mdbook::mdbook_shared::PageId(3usize),
+        );
+        pages.push((4usize, {
+            ::use_mdbook::mdbook_shared::Page {
+                title: "Liveview".to_string(),
+                url: BookRoute::GettingStartedLiveview {},
+                segments: vec![],
+                sections: vec![
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Liveview".to_string(),
+                        id: "liveview".to_string(),
+                        level: 1usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Support".to_string(),
+                        id: "support".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Setup".to_string(),
+                        id: "setup".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Hot Reload".to_string(),
+                        id: "hot-reload".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Setup".to_string(),
+                        id: "setup".to_string(),
+                        level: 3usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Usage".to_string(),
+                        id: "usage".to_string(),
+                        level: 3usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Limitations".to_string(),
+                        id: "limitations".to_string(),
+                        level: 3usize,
+                    },
+                ],
+                raw: String::new(),
+                id: ::use_mdbook::mdbook_shared::PageId(4usize),
+            }
+        }));
+        page_id_mapping.insert(
+            BookRoute::GettingStartedLiveview {},
+            ::use_mdbook::mdbook_shared::PageId(4usize),
+        );
+        pages.push((5usize, {
+            ::use_mdbook::mdbook_shared::Page {
+                title: "Fullstack".to_string(),
+                url: BookRoute::GettingStartedFullstack {},
+                segments: vec![],
+                sections: vec![
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Fullstack".to_string(),
+                        id: "fullstack".to_string(),
+                        level: 1usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Getting Started".to_string(),
+                        id: "getting-started".to_string(),
+                        level: 1usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Setup".to_string(),
+                        id: "setup".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Hot Reload".to_string(),
+                        id: "hot-reload".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Usage".to_string(),
+                        id: "usage".to_string(),
+                        level: 3usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Limitations".to_string(),
+                        id: "limitations".to_string(),
+                        level: 3usize,
+                    },
+                ],
+                raw: String::new(),
+                id: ::use_mdbook::mdbook_shared::PageId(5usize),
+            }
+        }));
+        page_id_mapping.insert(
+            BookRoute::GettingStartedFullstack {},
+            ::use_mdbook::mdbook_shared::PageId(5usize),
+        );
+        pages.push((6usize, {
+            ::use_mdbook::mdbook_shared::Page {
+                title: "Desktop".to_string(),
+                url: BookRoute::GettingStartedDesktop {},
+                segments: vec![],
+                sections: vec![
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Desktop overview".to_string(),
+                        id: "desktop-overview".to_string(),
+                        level: 1usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Examples".to_string(),
+                        id: "examples".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Getting started".to_string(),
+                        id: "getting-started".to_string(),
+                        level: 1usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Platform-specific dependencies".to_string(),
+                        id: "platform-specific-dependencies".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Windows".to_string(),
+                        id: "windows".to_string(),
+                        level: 3usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Linux".to_string(),
+                        id: "linux".to_string(),
+                        level: 3usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "MacOS".to_string(),
+                        id: "macos".to_string(),
+                        level: 3usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Creating a Project".to_string(),
+                        id: "creating-a-project".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Hot Reload".to_string(),
+                        id: "hot-reload".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Setup".to_string(),
+                        id: "setup".to_string(),
+                        level: 3usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Usage".to_string(),
+                        id: "usage".to_string(),
+                        level: 3usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Limitations".to_string(),
+                        id: "limitations".to_string(),
+                        level: 3usize,
+                    },
+                ],
+                raw: String::new(),
+                id: ::use_mdbook::mdbook_shared::PageId(6usize),
+            }
+        }));
+        page_id_mapping.insert(
+            BookRoute::GettingStartedDesktop {},
+            ::use_mdbook::mdbook_shared::PageId(6usize),
+        );
+        pages.push((7usize, {
+            ::use_mdbook::mdbook_shared::Page {
+                title: "Mobile".to_string(),
+                url: BookRoute::GettingStartedMobile {},
+                segments: vec![],
+                sections: vec![
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Mobile App".to_string(),
+                        id: "mobile-app".to_string(),
+                        level: 1usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Support".to_string(),
+                        id: "support".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Getting Set up".to_string(),
+                        id: "getting-set-up".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Setting up dependencies".to_string(),
+                        id: "setting-up-dependencies".to_string(),
+                        level: 3usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Android".to_string(),
+                        id: "android".to_string(),
+                        level: 4usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "IOS".to_string(),
+                        id: "ios".to_string(),
+                        level: 4usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Setting up your project".to_string(),
+                        id: "setting-up-your-project".to_string(),
+                        level: 3usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Running".to_string(),
+                        id: "running".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "IOS".to_string(),
+                        id: "ios".to_string(),
+                        level: 3usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Android".to_string(),
+                        id: "android".to_string(),
+                        level: 3usize,
+                    },
+                ],
+                raw: String::new(),
+                id: ::use_mdbook::mdbook_shared::PageId(7usize),
+            }
+        }));
+        page_id_mapping.insert(
+            BookRoute::GettingStartedMobile {},
+            ::use_mdbook::mdbook_shared::PageId(7usize),
+        );
+        pages.push((8usize, {
+            ::use_mdbook::mdbook_shared::Page {
+                title: "Terminal UI".to_string(),
+                url: BookRoute::GettingStartedTui {},
+                segments: vec![],
+                sections: vec![
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Terminal UI".to_string(),
+                        id: "terminal-ui".to_string(),
+                        level: 1usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Support".to_string(),
+                        id: "support".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Getting Set up".to_string(),
+                        id: "getting-set-up".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Hot Reload".to_string(),
+                        id: "hot-reload".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Setup".to_string(),
+                        id: "setup".to_string(),
+                        level: 3usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Usage".to_string(),
+                        id: "usage".to_string(),
+                        level: 3usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Limitations".to_string(),
+                        id: "limitations".to_string(),
+                        level: 3usize,
+                    },
+                ],
+                raw: String::new(),
+                id: ::use_mdbook::mdbook_shared::PageId(8usize),
+            }
+        }));
+        page_id_mapping.insert(
+            BookRoute::GettingStartedTui {},
+            ::use_mdbook::mdbook_shared::PageId(8usize),
+        );
+        pages.push((9usize, {
+            ::use_mdbook::mdbook_shared::Page {
+                title: "Guide".to_string(),
+                url: BookRoute::GuideIndex {},
+                segments: vec![],
+                sections: vec![],
+                raw: String::new(),
+                id: ::use_mdbook::mdbook_shared::PageId(9usize),
+            }
+        }));
+        page_id_mapping.insert(
+            BookRoute::GuideIndex {},
+            ::use_mdbook::mdbook_shared::PageId(9usize),
+        );
+        pages.push((10usize, {
+            ::use_mdbook::mdbook_shared::Page {
+                title: "Your First Component".to_string(),
+                url: BookRoute::GuideYourFirstComponent {},
+                segments: vec![],
+                sections: vec![
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Your First Component".to_string(),
+                        id: "your-first-component".to_string(),
+                        level: 1usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Dynamic Text".to_string(),
+                        id: "dynamic-text".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Creating Elements".to_string(),
+                        id: "creating-elements".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Setting Attributes".to_string(),
+                        id: "setting-attributes".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Creating a Component".to_string(),
+                        id: "creating-a-component".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Creating Props".to_string(),
+                        id: "creating-props".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Cleaning Up Our Interface".to_string(),
+                        id: "cleaning-up-our-interface".to_string(),
+                        level: 2usize,
+                    },
+                ],
+                raw: String::new(),
+                id: ::use_mdbook::mdbook_shared::PageId(10usize),
+            }
+        }));
+        page_id_mapping.insert(
+            BookRoute::GuideYourFirstComponent {},
+            ::use_mdbook::mdbook_shared::PageId(10usize),
+        );
+        pages.push((11usize, {
+            ::use_mdbook::mdbook_shared::Page {
+                title: "State".to_string(),
+                url: BookRoute::GuideState {},
+                segments: vec![],
+                sections: vec![
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Interactivity".to_string(),
+                        id: "interactivity".to_string(),
+                        level: 1usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Creating a Preview".to_string(),
+                        id: "creating-a-preview".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Event Handlers".to_string(),
+                        id: "event-handlers".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "State".to_string(),
+                        id: "state".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "The Rules of Hooks".to_string(),
+                        id: "the-rules-of-hooks".to_string(),
+                        level: 3usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "No Hooks in Conditionals".to_string(),
+                        id: "no-hooks-in-conditionals".to_string(),
+                        level: 4usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "No Hooks in Closures".to_string(),
+                        id: "no-hooks-in-closures".to_string(),
+                        level: 4usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "No Hooks in Loops".to_string(),
+                        id: "no-hooks-in-loops".to_string(),
+                        level: 4usize,
+                    },
+                ],
+                raw: String::new(),
+                id: ::use_mdbook::mdbook_shared::PageId(11usize),
+            }
+        }));
+        page_id_mapping.insert(
+            BookRoute::GuideState {},
+            ::use_mdbook::mdbook_shared::PageId(11usize),
+        );
+        pages.push((12usize, {
+            ::use_mdbook::mdbook_shared::Page {
+                title: "Data Fetching".to_string(),
+                url: BookRoute::GuideDataFetching {},
+                segments: vec![],
+                sections: vec![
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Fetching Data".to_string(),
+                        id: "fetching-data".to_string(),
+                        level: 1usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Defining the API".to_string(),
+                        id: "defining-the-api".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Working with Async".to_string(),
+                        id: "working-with-async".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Lazily Fetching Data".to_string(),
+                        id: "lazily-fetching-data".to_string(),
+                        level: 2usize,
+                    },
+                ],
+                raw: String::new(),
+                id: ::use_mdbook::mdbook_shared::PageId(12usize),
+            }
+        }));
+        page_id_mapping.insert(
+            BookRoute::GuideDataFetching {},
+            ::use_mdbook::mdbook_shared::PageId(12usize),
+        );
+        pages.push((13usize, {
+            ::use_mdbook::mdbook_shared::Page {
+                title: "Full Code".to_string(),
+                url: BookRoute::GuideFullCode {},
+                segments: vec![],
+                sections: vec![
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Conclusion".to_string(),
+                        id: "conclusion".to_string(),
+                        level: 1usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Challenges".to_string(),
+                        id: "challenges".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "The full code for the hacker news project".to_string(),
+                        id: "the-full-code-for-the-hacker-news-project".to_string(),
+                        level: 2usize,
+                    },
+                ],
+                raw: String::new(),
+                id: ::use_mdbook::mdbook_shared::PageId(13usize),
+            }
+        }));
+        page_id_mapping.insert(
+            BookRoute::GuideFullCode {},
+            ::use_mdbook::mdbook_shared::PageId(13usize),
+        );
+        pages.push((14usize, {
+            ::use_mdbook::mdbook_shared::Page {
+                title: "Reference".to_string(),
+                url: BookRoute::ReferenceIndex {},
+                segments: vec![],
+                sections: vec![
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Dioxus Reference".to_string(),
+                        id: "dioxus-reference".to_string(),
+                        level: 1usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Rendering".to_string(),
+                        id: "rendering".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "State".to_string(),
+                        id: "state".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Platforms".to_string(),
+                        id: "platforms".to_string(),
+                        level: 2usize,
+                    },
+                ],
+                raw: String::new(),
+                id: ::use_mdbook::mdbook_shared::PageId(14usize),
+            }
+        }));
+        page_id_mapping.insert(
+            BookRoute::ReferenceIndex {},
+            ::use_mdbook::mdbook_shared::PageId(14usize),
+        );
+        pages.push((15usize, {
+            ::use_mdbook::mdbook_shared::Page {
+                title: "RSX".to_string(),
+                url: BookRoute::ReferenceRsx {},
+                segments: vec![],
+                sections: vec![
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Describing the UI".to_string(),
+                        id: "describing-the-ui".to_string(),
+                        level: 1usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "RSX Features".to_string(),
+                        id: "rsx-features".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Attributes".to_string(),
+                        id: "attributes".to_string(),
+                        level: 3usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Custom Attributes".to_string(),
+                        id: "custom-attributes".to_string(),
+                        level: 4usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Special Attributes".to_string(),
+                        id: "special-attributes".to_string(),
+                        level: 3usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "The HTML Escape Hatch".to_string(),
+                        id: "the-html-escape-hatch".to_string(),
+                        level: 4usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Boolean Attributes".to_string(),
+                        id: "boolean-attributes".to_string(),
+                        level: 4usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Interpolation".to_string(),
+                        id: "interpolation".to_string(),
+                        level: 3usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Children".to_string(),
+                        id: "children".to_string(),
+                        level: 3usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Fragments".to_string(),
+                        id: "fragments".to_string(),
+                        level: 3usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Expressions".to_string(),
+                        id: "expressions".to_string(),
+                        level: 3usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Loops".to_string(),
+                        id: "loops".to_string(),
+                        level: 3usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "If statements".to_string(),
+                        id: "if-statements".to_string(),
+                        level: 3usize,
+                    },
+                ],
+                raw: String::new(),
+                id: ::use_mdbook::mdbook_shared::PageId(15usize),
+            }
+        }));
+        page_id_mapping.insert(
+            BookRoute::ReferenceRsx {},
+            ::use_mdbook::mdbook_shared::PageId(15usize),
+        );
+        pages.push((16usize, {
+            ::use_mdbook::mdbook_shared::Page {
+                title: "Components".to_string(),
+                url: BookRoute::ReferenceComponents {},
+                segments: vec![],
+                sections: vec![::use_mdbook::mdbook_shared::Section {
+                    title: "Components".to_string(),
+                    id: "components".to_string(),
+                    level: 1usize,
+                }],
+                raw: String::new(),
+                id: ::use_mdbook::mdbook_shared::PageId(16usize),
+            }
+        }));
+        page_id_mapping.insert(
+            BookRoute::ReferenceComponents {},
+            ::use_mdbook::mdbook_shared::PageId(16usize),
+        );
+        pages.push((17usize, {
+            ::use_mdbook::mdbook_shared::Page {
+                title: "Props".to_string(),
+                url: BookRoute::ReferenceComponentProps {},
+                segments: vec![],
+                sections: vec![
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Component Props".to_string(),
+                        id: "component-props".to_string(),
+                        level: 1usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Component props are a single struct annotated with ".to_string(),
+                        id: "component-props-are-a-single-struct-annotated-with".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Owned Props".to_string(),
+                        id: "owned-props".to_string(),
+                        level: 3usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Borrowed Props".to_string(),
+                        id: "borrowed-props".to_string(),
+                        level: 3usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Prop Options".to_string(),
+                        id: "prop-options".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Optional Props".to_string(),
+                        id: "optional-props".to_string(),
+                        level: 3usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Explicitly Required ".to_string(),
+                        id: "explicitly-required".to_string(),
+                        level: 3usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Default Props".to_string(),
+                        id: "default-props".to_string(),
+                        level: 3usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Automatic Conversion with ".to_string(),
+                        id: "automatic-conversion-with".to_string(),
+                        level: 3usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "The ".to_string(),
+                        id: "the".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Component Children".to_string(),
+                        id: "component-children".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "The ".to_string(),
+                        id: "the".to_string(),
+                        level: 3usize,
+                    },
+                ],
+                raw: String::new(),
+                id: ::use_mdbook::mdbook_shared::PageId(17usize),
+            }
+        }));
+        page_id_mapping.insert(
+            BookRoute::ReferenceComponentProps {},
+            ::use_mdbook::mdbook_shared::PageId(17usize),
+        );
+        pages.push((18usize, {
+            ::use_mdbook::mdbook_shared::Page {
+                title: "Event Handlers".to_string(),
+                url: BookRoute::ReferenceEventHandlers {},
+                segments: vec![],
+                sections: vec![
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Event Handlers".to_string(),
+                        id: "event-handlers".to_string(),
+                        level: 1usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "The ".to_string(),
+                        id: "the".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Event propagation".to_string(),
+                        id: "event-propagation".to_string(),
+                        level: 3usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Prevent Default".to_string(),
+                        id: "prevent-default".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Handler Props".to_string(),
+                        id: "handler-props".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Custom Data".to_string(),
+                        id: "custom-data".to_string(),
+                        level: 2usize,
+                    },
+                ],
+                raw: String::new(),
+                id: ::use_mdbook::mdbook_shared::PageId(18usize),
+            }
+        }));
+        page_id_mapping.insert(
+            BookRoute::ReferenceEventHandlers {},
+            ::use_mdbook::mdbook_shared::PageId(18usize),
+        );
+        pages.push((19usize, {
+            ::use_mdbook::mdbook_shared::Page {
+                title: "Hooks".to_string(),
+                url: BookRoute::ReferenceHooks {},
+                segments: vec![],
+                sections: vec![
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Hooks and component state".to_string(),
+                        id: "hooks-and-component-state".to_string(),
+                        level: 1usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "use_state hook".to_string(),
+                        id: "use_state-hook".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Out-of-date UseState".to_string(),
+                        id: "out-of-date-usestate".to_string(),
+                        level: 3usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Rules of hooks".to_string(),
+                        id: "rules-of-hooks".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "No hooks in conditionals".to_string(),
+                        id: "no-hooks-in-conditionals".to_string(),
+                        level: 3usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "No hooks in closures".to_string(),
+                        id: "no-hooks-in-closures".to_string(),
+                        level: 3usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "No hooks in loops".to_string(),
+                        id: "no-hooks-in-loops".to_string(),
+                        level: 3usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "use_ref hook".to_string(),
+                        id: "use_ref-hook".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Additional resources".to_string(),
+                        id: "additional-resources".to_string(),
+                        level: 2usize,
+                    },
+                ],
+                raw: String::new(),
+                id: ::use_mdbook::mdbook_shared::PageId(19usize),
+            }
+        }));
+        page_id_mapping.insert(
+            BookRoute::ReferenceHooks {},
+            ::use_mdbook::mdbook_shared::PageId(19usize),
+        );
+        pages.push((20usize, {
+            ::use_mdbook::mdbook_shared::Page {
+                title: "User Input".to_string(),
+                url: BookRoute::ReferenceUserInput {},
+                segments: vec![],
+                sections: vec![
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "User Input".to_string(),
+                        id: "user-input".to_string(),
+                        level: 1usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Controlled Inputs".to_string(),
+                        id: "controlled-inputs".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Uncontrolled Inputs".to_string(),
+                        id: "uncontrolled-inputs".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Handling files".to_string(),
+                        id: "handling-files".to_string(),
+                        level: 2usize,
+                    },
+                ],
+                raw: String::new(),
+                id: ::use_mdbook::mdbook_shared::PageId(20usize),
+            }
+        }));
+        page_id_mapping.insert(
+            BookRoute::ReferenceUserInput {},
+            ::use_mdbook::mdbook_shared::PageId(20usize),
+        );
+        pages.push((21usize, {
+            ::use_mdbook::mdbook_shared::Page {
+                title: "Context".to_string(),
+                url: BookRoute::ReferenceContext {},
+                segments: vec![],
+                sections: vec![
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Sharing State".to_string(),
+                        id: "sharing-state".to_string(),
+                        level: 1usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Lifting State".to_string(),
+                        id: "lifting-state".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Using Shared State".to_string(),
+                        id: "using-shared-state".to_string(),
+                        level: 2usize,
+                    },
+                ],
+                raw: String::new(),
+                id: ::use_mdbook::mdbook_shared::PageId(21usize),
+            }
+        }));
+        page_id_mapping.insert(
+            BookRoute::ReferenceContext {},
+            ::use_mdbook::mdbook_shared::PageId(21usize),
+        );
+        pages.push((22usize, {
+            ::use_mdbook::mdbook_shared::Page {
+                title: "Dynamic Rendering".to_string(),
+                url: BookRoute::ReferenceDynamicRendering {},
+                segments: vec![],
+                sections: vec![
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Dynamic Rendering".to_string(),
+                        id: "dynamic-rendering".to_string(),
+                        level: 1usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Conditional Rendering".to_string(),
+                        id: "conditional-rendering".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Improving the ".to_string(),
+                        id: "improving-the".to_string(),
+                        level: 3usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Inspecting ".to_string(),
+                        id: "inspecting".to_string(),
+                        level: 3usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Rendering Nothing".to_string(),
+                        id: "rendering-nothing".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Rendering Lists".to_string(),
+                        id: "rendering-lists".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Inline for loops".to_string(),
+                        id: "inline-for-loops".to_string(),
+                        level: 3usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "The ".to_string(),
+                        id: "the".to_string(),
+                        level: 3usize,
+                    },
+                ],
+                raw: String::new(),
+                id: ::use_mdbook::mdbook_shared::PageId(22usize),
+            }
+        }));
+        page_id_mapping.insert(
+            BookRoute::ReferenceDynamicRendering {},
+            ::use_mdbook::mdbook_shared::PageId(22usize),
+        );
+        pages.push((23usize, {
+            ::use_mdbook::mdbook_shared::Page {
+                title: "Routing".to_string(),
+                url: BookRoute::ReferenceRouter {},
+                segments: vec![],
+                sections: vec![
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Router".to_string(),
+                        id: "router".to_string(),
+                        level: 1usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "What is it?".to_string(),
+                        id: "what-is-it?".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Using the router".to_string(),
+                        id: "using-the-router".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Links".to_string(),
+                        id: "links".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "More reading".to_string(),
+                        id: "more-reading".to_string(),
+                        level: 2usize,
+                    },
+                ],
+                raw: String::new(),
+                id: ::use_mdbook::mdbook_shared::PageId(23usize),
+            }
+        }));
+        page_id_mapping.insert(
+            BookRoute::ReferenceRouter {},
+            ::use_mdbook::mdbook_shared::PageId(23usize),
+        );
+        pages.push((24usize, {
+            ::use_mdbook::mdbook_shared::Page {
+                title: "UseFuture".to_string(),
+                url: BookRoute::ReferenceUseFuture {},
+                segments: vec![],
+                sections: vec![
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "UseFuture".to_string(),
+                        id: "usefuture".to_string(),
+                        level: 1usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Restarting the Future".to_string(),
+                        id: "restarting-the-future".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Dependencies".to_string(),
+                        id: "dependencies".to_string(),
+                        level: 2usize,
+                    },
+                ],
+                raw: String::new(),
+                id: ::use_mdbook::mdbook_shared::PageId(24usize),
+            }
+        }));
+        page_id_mapping.insert(
+            BookRoute::ReferenceUseFuture {},
+            ::use_mdbook::mdbook_shared::PageId(24usize),
+        );
+        pages.push((25usize, {
+            ::use_mdbook::mdbook_shared::Page {
+                title: "UseCoroutine".to_string(),
+                url: BookRoute::ReferenceUseCoroutine {},
+                segments: vec![],
+                sections: vec![
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Coroutines".to_string(),
+                        id: "coroutines".to_string(),
+                        level: 1usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "The ".to_string(),
+                        id: "the".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Yielding Values".to_string(),
+                        id: "yielding-values".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Sending Values".to_string(),
+                        id: "sending-values".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Automatic injection into the Context API".to_string(),
+                        id: "automatic-injection-into-the-context-api".to_string(),
+                        level: 2usize,
+                    },
+                ],
+                raw: String::new(),
+                id: ::use_mdbook::mdbook_shared::PageId(25usize),
+            }
+        }));
+        page_id_mapping.insert(
+            BookRoute::ReferenceUseCoroutine {},
+            ::use_mdbook::mdbook_shared::PageId(25usize),
+        );
+        pages.push((26usize, {
+            ::use_mdbook::mdbook_shared::Page {
+                title: "Spawn".to_string(),
+                url: BookRoute::ReferenceSpawn {},
+                segments: vec![],
+                sections: vec![
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Spawning Futures".to_string(),
+                        id: "spawning-futures".to_string(),
+                        level: 1usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Spawning Tokio Tasks".to_string(),
+                        id: "spawning-tokio-tasks".to_string(),
+                        level: 2usize,
+                    },
+                ],
+                raw: String::new(),
+                id: ::use_mdbook::mdbook_shared::PageId(26usize),
+            }
+        }));
+        page_id_mapping.insert(
+            BookRoute::ReferenceSpawn {},
+            ::use_mdbook::mdbook_shared::PageId(26usize),
+        );
+        pages.push((27usize, {
+            ::use_mdbook::mdbook_shared::Page {
+                title: "Desktop".to_string(),
+                url: BookRoute::ReferenceDesktopIndex {},
+                segments: vec![],
+                sections: vec![
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Desktop".to_string(),
+                        id: "desktop".to_string(),
+                        level: 1usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Running Javascript".to_string(),
+                        id: "running-javascript".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Custom Assets".to_string(),
+                        id: "custom-assets".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Integrating with Wry".to_string(),
+                        id: "integrating-with-wry".to_string(),
+                        level: 2usize,
+                    },
+                ],
+                raw: String::new(),
+                id: ::use_mdbook::mdbook_shared::PageId(27usize),
+            }
+        }));
+        page_id_mapping.insert(
+            BookRoute::ReferenceDesktopIndex {},
+            ::use_mdbook::mdbook_shared::PageId(27usize),
+        );
+        pages.push((28usize, {
+            ::use_mdbook::mdbook_shared::Page {
+                title: "Web".to_string(),
+                url: BookRoute::ReferenceWebIndex {},
+                segments: vec![],
+                sections: vec![
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Web".to_string(),
+                        id: "web".to_string(),
+                        level: 1usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Running Javascript".to_string(),
+                        id: "running-javascript".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Customizing Index Template".to_string(),
+                        id: "customizing-index-template".to_string(),
+                        level: 2usize,
+                    },
+                ],
+                raw: String::new(),
+                id: ::use_mdbook::mdbook_shared::PageId(28usize),
+            }
+        }));
+        page_id_mapping.insert(
+            BookRoute::ReferenceWebIndex {},
+            ::use_mdbook::mdbook_shared::PageId(28usize),
+        );
+        pages.push((29usize, {
+            ::use_mdbook::mdbook_shared::Page {
+                title: "SSR".to_string(),
+                url: BookRoute::ReferenceSsr {},
+                segments: vec![],
+                sections: vec![
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Server-Side Rendering".to_string(),
+                        id: "server-side-rendering".to_string(),
+                        level: 1usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Setup".to_string(),
+                        id: "setup".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Multithreaded Support".to_string(),
+                        id: "multithreaded-support".to_string(),
+                        level: 2usize,
+                    },
+                ],
+                raw: String::new(),
+                id: ::use_mdbook::mdbook_shared::PageId(29usize),
+            }
+        }));
+        page_id_mapping.insert(
+            BookRoute::ReferenceSsr {},
+            ::use_mdbook::mdbook_shared::PageId(29usize),
+        );
+        pages.push((30usize, {
+            ::use_mdbook::mdbook_shared::Page {
+                title: "Liveview".to_string(),
+                url: BookRoute::ReferenceLiveview {},
+                segments: vec![],
+                sections: vec![
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Liveview".to_string(),
+                        id: "liveview".to_string(),
+                        level: 1usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Router Integration".to_string(),
+                        id: "router-integration".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Managing Latency".to_string(),
+                        id: "managing-latency".to_string(),
+                        level: 2usize,
+                    },
+                ],
+                raw: String::new(),
+                id: ::use_mdbook::mdbook_shared::PageId(30usize),
+            }
+        }));
+        page_id_mapping.insert(
+            BookRoute::ReferenceLiveview {},
+            ::use_mdbook::mdbook_shared::PageId(30usize),
+        );
+        pages.push((31usize, {
+            ::use_mdbook::mdbook_shared::Page {
+                title: "Fullstack".to_string(),
+                url: BookRoute::ReferenceFullstackIndex {},
+                segments: vec![],
+                sections: vec![::use_mdbook::mdbook_shared::Section {
+                    title: "Fullstack development".to_string(),
+                    id: "fullstack-development".to_string(),
+                    level: 1usize,
+                }],
+                raw: String::new(),
+                id: ::use_mdbook::mdbook_shared::PageId(31usize),
+            }
+        }));
+        page_id_mapping.insert(
+            BookRoute::ReferenceFullstackIndex {},
+            ::use_mdbook::mdbook_shared::PageId(31usize),
+        );
+        pages.push((32usize, {
+            ::use_mdbook::mdbook_shared::Page {
+                title: "Server Functions".to_string(),
+                url: BookRoute::ReferenceFullstackServerFunctions {},
+                segments: vec![],
+                sections: vec![
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Communicating with the server".to_string(),
+                        id: "communicating-with-the-server".to_string(),
+                        level: 1usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Cached data fetching".to_string(),
+                        id: "cached-data-fetching".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Running the client with dioxus-desktop".to_string(),
+                        id: "running-the-client-with-dioxus-desktop".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Client code".to_string(),
+                        id: "client-code".to_string(),
+                        level: 3usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Server code".to_string(),
+                        id: "server-code".to_string(),
+                        level: 3usize,
+                    },
+                ],
+                raw: String::new(),
+                id: ::use_mdbook::mdbook_shared::PageId(32usize),
+            }
+        }));
+        page_id_mapping.insert(
+            BookRoute::ReferenceFullstackServerFunctions {},
+            ::use_mdbook::mdbook_shared::PageId(32usize),
+        );
+        pages.push((33usize, {
+            ::use_mdbook::mdbook_shared::Page {
+                title: "Extractors".to_string(),
+                url: BookRoute::ReferenceFullstackExtractors {},
+                segments: vec![],
+                sections: vec![::use_mdbook::mdbook_shared::Section {
+                    title: "Extractors".to_string(),
+                    id: "extractors".to_string(),
+                    level: 1usize,
+                }],
+                raw: String::new(),
+                id: ::use_mdbook::mdbook_shared::PageId(33usize),
+            }
+        }));
+        page_id_mapping.insert(
+            BookRoute::ReferenceFullstackExtractors {},
+            ::use_mdbook::mdbook_shared::PageId(33usize),
+        );
+        pages.push((34usize, {
+            ::use_mdbook::mdbook_shared::Page {
+                title: "Middleware".to_string(),
+                url: BookRoute::ReferenceFullstackMiddleware {},
+                segments: vec![],
+                sections: vec![::use_mdbook::mdbook_shared::Section {
+                    title: "Middleware".to_string(),
+                    id: "middleware".to_string(),
+                    level: 1usize,
+                }],
+                raw: String::new(),
+                id: ::use_mdbook::mdbook_shared::PageId(34usize),
+            }
+        }));
+        page_id_mapping.insert(
+            BookRoute::ReferenceFullstackMiddleware {},
+            ::use_mdbook::mdbook_shared::PageId(34usize),
+        );
+        pages.push((35usize, {
+            ::use_mdbook::mdbook_shared::Page {
+                title: "Authentication".to_string(),
+                url: BookRoute::ReferenceFullstackAuthentication {},
+                segments: vec![],
+                sections: vec![::use_mdbook::mdbook_shared::Section {
+                    title: "Authentication".to_string(),
+                    id: "authentication".to_string(),
+                    level: 1usize,
+                }],
+                raw: String::new(),
+                id: ::use_mdbook::mdbook_shared::PageId(35usize),
+            }
+        }));
+        page_id_mapping.insert(
+            BookRoute::ReferenceFullstackAuthentication {},
+            ::use_mdbook::mdbook_shared::PageId(35usize),
+        );
+        pages.push((36usize, {
+            ::use_mdbook::mdbook_shared::Page {
+                title: "Routing".to_string(),
+                url: BookRoute::ReferenceFullstackRouting {},
+                segments: vec![],
+                sections: vec![::use_mdbook::mdbook_shared::Section {
+                    title: "Routing".to_string(),
+                    id: "routing".to_string(),
+                    level: 1usize,
+                }],
+                raw: String::new(),
+                id: ::use_mdbook::mdbook_shared::PageId(36usize),
+            }
+        }));
+        page_id_mapping.insert(
+            BookRoute::ReferenceFullstackRouting {},
+            ::use_mdbook::mdbook_shared::PageId(36usize),
+        );
+        pages.push((37usize, {
+            ::use_mdbook::mdbook_shared::Page {
+                title: "Router".to_string(),
+                url: BookRoute::RouterIndex {},
+                segments: vec![],
+                sections: vec![::use_mdbook::mdbook_shared::Section {
+                    title: "Introduction".to_string(),
+                    id: "introduction".to_string(),
+                    level: 1usize,
+                }],
+                raw: String::new(),
+                id: ::use_mdbook::mdbook_shared::PageId(37usize),
+            }
+        }));
+        page_id_mapping.insert(
+            BookRoute::RouterIndex {},
+            ::use_mdbook::mdbook_shared::PageId(37usize),
+        );
+        pages.push((38usize, {
+            ::use_mdbook::mdbook_shared::Page {
+                title: "Example Project".to_string(),
+                url: BookRoute::RouterExampleIndex {},
+                segments: vec![],
+                sections: vec![
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Overview".to_string(),
+                        id: "overview".to_string(),
+                        level: 1usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "You'll learn how to".to_string(),
+                        id: "you'll-learn-how-to".to_string(),
+                        level: 2usize,
+                    },
+                ],
+                raw: String::new(),
+                id: ::use_mdbook::mdbook_shared::PageId(38usize),
+            }
+        }));
+        page_id_mapping.insert(
+            BookRoute::RouterExampleIndex {},
+            ::use_mdbook::mdbook_shared::PageId(38usize),
+        );
+        pages.push((39usize, {
+            ::use_mdbook::mdbook_shared::Page {
+                title: "Creating Our First Route".to_string(),
+                url: BookRoute::RouterExampleFirstRoute {},
+                segments: vec![],
+                sections: vec![
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Creating Our First Route".to_string(),
+                        id: "creating-our-first-route".to_string(),
+                        level: 1usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Fundamentals".to_string(),
+                        id: "fundamentals".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Creating Routes".to_string(),
+                        id: "creating-routes".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Fallback Route".to_string(),
+                        id: "fallback-route".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Conclusion".to_string(),
+                        id: "conclusion".to_string(),
+                        level: 2usize,
+                    },
+                ],
+                raw: String::new(),
+                id: ::use_mdbook::mdbook_shared::PageId(39usize),
+            }
+        }));
+        page_id_mapping.insert(
+            BookRoute::RouterExampleFirstRoute {},
+            ::use_mdbook::mdbook_shared::PageId(39usize),
+        );
+        pages.push((40usize, {
+            ::use_mdbook::mdbook_shared::Page {
+                title: "Building a Nest".to_string(),
+                url: BookRoute::RouterExampleBuildingANest {},
+                segments: vec![],
+                sections: vec![
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Building a Nest".to_string(),
+                        id: "building-a-nest".to_string(),
+                        level: 1usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Site Navigation".to_string(),
+                        id: "site-navigation".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "URL Parameters and Nested Routes".to_string(),
+                        id: "url-parameters-and-nested-routes".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Conclusion".to_string(),
+                        id: "conclusion".to_string(),
+                        level: 2usize,
+                    },
+                ],
+                raw: String::new(),
+                id: ::use_mdbook::mdbook_shared::PageId(40usize),
+            }
+        }));
+        page_id_mapping.insert(
+            BookRoute::RouterExampleBuildingANest {},
+            ::use_mdbook::mdbook_shared::PageId(40usize),
+        );
+        pages.push((41usize, {
+            ::use_mdbook::mdbook_shared::Page {
+                title: "Navigation Targets".to_string(),
+                url: BookRoute::RouterExampleNavigationTargets {},
+                segments: vec![],
+                sections: vec![
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Navigation Targets".to_string(),
+                        id: "navigation-targets".to_string(),
+                        level: 1usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "What is a navigation target?".to_string(),
+                        id: "what-is-a-navigation-target?".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "External navigation".to_string(),
+                        id: "external-navigation".to_string(),
+                        level: 2usize,
+                    },
+                ],
+                raw: String::new(),
+                id: ::use_mdbook::mdbook_shared::PageId(41usize),
+            }
+        }));
+        page_id_mapping.insert(
+            BookRoute::RouterExampleNavigationTargets {},
+            ::use_mdbook::mdbook_shared::PageId(41usize),
+        );
+        pages.push((42usize, {
+            ::use_mdbook::mdbook_shared::Page {
+                title: "Redirection Perfection".to_string(),
+                url: BookRoute::RouterExampleRedirectionPerfection {},
+                segments: vec![],
+                sections: vec![
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Redirection Perfection".to_string(),
+                        id: "redirection-perfection".to_string(),
+                        level: 1usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Creating Redirects".to_string(),
+                        id: "creating-redirects".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Conclusion".to_string(),
+                        id: "conclusion".to_string(),
+                        level: 3usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Challenges".to_string(),
+                        id: "challenges".to_string(),
+                        level: 3usize,
+                    },
+                ],
+                raw: String::new(),
+                id: ::use_mdbook::mdbook_shared::PageId(42usize),
+            }
+        }));
+        page_id_mapping.insert(
+            BookRoute::RouterExampleRedirectionPerfection {},
+            ::use_mdbook::mdbook_shared::PageId(42usize),
+        );
+        pages.push((43usize, {
+            ::use_mdbook::mdbook_shared::Page {
+                title: "Full Code".to_string(),
+                url: BookRoute::RouterExampleFullCode {},
+                segments: vec![],
+                sections: vec![::use_mdbook::mdbook_shared::Section {
+                    title: "Full Code".to_string(),
+                    id: "full-code".to_string(),
+                    level: 1usize,
+                }],
+                raw: String::new(),
+                id: ::use_mdbook::mdbook_shared::PageId(43usize),
+            }
+        }));
+        page_id_mapping.insert(
+            BookRoute::RouterExampleFullCode {},
+            ::use_mdbook::mdbook_shared::PageId(43usize),
+        );
+        pages.push((44usize, {
+            ::use_mdbook::mdbook_shared::Page {
+                title: "Reference".to_string(),
+                url: BookRoute::RouterReferenceIndex {},
+                segments: vec![],
+                sections: vec![::use_mdbook::mdbook_shared::Section {
+                    title: "Adding the router to your application".to_string(),
+                    id: "adding-the-router-to-your-application".to_string(),
+                    level: 1usize,
+                }],
+                raw: String::new(),
+                id: ::use_mdbook::mdbook_shared::PageId(44usize),
+            }
+        }));
+        page_id_mapping.insert(
+            BookRoute::RouterReferenceIndex {},
+            ::use_mdbook::mdbook_shared::PageId(44usize),
+        );
+        pages.push((45usize, {
+            ::use_mdbook::mdbook_shared::Page {
+                title: "Defining Routes".to_string(),
+                url: BookRoute::RouterReferenceRoutesIndex {},
+                segments: vec![],
+                sections: vec![
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Defining Routes".to_string(),
+                        id: "defining-routes".to_string(),
+                        level: 1usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Route Segments".to_string(),
+                        id: "route-segments".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Static segments".to_string(),
+                        id: "static-segments".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Dynamic Segments".to_string(),
+                        id: "dynamic-segments".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Catch All Segments".to_string(),
+                        id: "catch-all-segments".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Query Segments".to_string(),
+                        id: "query-segments".to_string(),
+                        level: 2usize,
+                    },
+                ],
+                raw: String::new(),
+                id: ::use_mdbook::mdbook_shared::PageId(45usize),
+            }
+        }));
+        page_id_mapping.insert(
+            BookRoute::RouterReferenceRoutesIndex {},
+            ::use_mdbook::mdbook_shared::PageId(45usize),
+        );
+        pages.push((46usize, {
+            ::use_mdbook::mdbook_shared::Page {
+                title: "Nested Routes".to_string(),
+                url: BookRoute::RouterReferenceRoutesNested {},
+                segments: vec![],
+                sections: vec![
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Nested Routes".to_string(),
+                        id: "nested-routes".to_string(),
+                        level: 1usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Nesting".to_string(),
+                        id: "nesting".to_string(),
+                        level: 2usize,
+                    },
+                ],
+                raw: String::new(),
+                id: ::use_mdbook::mdbook_shared::PageId(46usize),
+            }
+        }));
+        page_id_mapping.insert(
+            BookRoute::RouterReferenceRoutesNested {},
+            ::use_mdbook::mdbook_shared::PageId(46usize),
+        );
+        pages.push((47usize, {
+            ::use_mdbook::mdbook_shared::Page {
+                title: "Layouts".to_string(),
+                url: BookRoute::RouterReferenceLayouts {},
+                segments: vec![],
+                sections: vec![
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Layouts".to_string(),
+                        id: "layouts".to_string(),
+                        level: 1usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Layouts with dynamic segments".to_string(),
+                        id: "layouts-with-dynamic-segments".to_string(),
+                        level: 2usize,
+                    },
+                ],
+                raw: String::new(),
+                id: ::use_mdbook::mdbook_shared::PageId(47usize),
+            }
+        }));
+        page_id_mapping.insert(
+            BookRoute::RouterReferenceLayouts {},
+            ::use_mdbook::mdbook_shared::PageId(47usize),
+        );
+        pages.push((48usize, {
+            ::use_mdbook::mdbook_shared::Page {
+                title: "Navigation".to_string(),
+                url: BookRoute::RouterReferenceNavigationIndex {},
+                segments: vec![],
+                sections: vec![::use_mdbook::mdbook_shared::Section {
+                    title: "Links & Navigation".to_string(),
+                    id: "links-&-navigation".to_string(),
+                    level: 1usize,
+                }],
+                raw: String::new(),
+                id: ::use_mdbook::mdbook_shared::PageId(48usize),
+            }
+        }));
+        page_id_mapping.insert(
+            BookRoute::RouterReferenceNavigationIndex {},
+            ::use_mdbook::mdbook_shared::PageId(48usize),
+        );
+        pages.push((49usize, {
+            ::use_mdbook::mdbook_shared::Page {
+                title: "Programmatic Navigation".to_string(),
+                url: BookRoute::RouterReferenceNavigationProgrammatic {},
+                segments: vec![],
+                sections: vec![
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Programmatic Navigation".to_string(),
+                        id: "programmatic-navigation".to_string(),
+                        level: 1usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Using a Navigator".to_string(),
+                        id: "using-a-navigator".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "External Navigation Targets".to_string(),
+                        id: "external-navigation-targets".to_string(),
+                        level: 2usize,
+                    },
+                ],
+                raw: String::new(),
+                id: ::use_mdbook::mdbook_shared::PageId(49usize),
+            }
+        }));
+        page_id_mapping.insert(
+            BookRoute::RouterReferenceNavigationProgrammatic {},
+            ::use_mdbook::mdbook_shared::PageId(49usize),
+        );
+        pages.push((50usize, {
+            ::use_mdbook::mdbook_shared::Page {
+                title: "History Providers".to_string(),
+                url: BookRoute::RouterReferenceHistoryProviders {},
+                segments: vec![],
+                sections: vec![::use_mdbook::mdbook_shared::Section {
+                    title: "History Providers".to_string(),
+                    id: "history-providers".to_string(),
+                    level: 1usize,
+                }],
+                raw: String::new(),
+                id: ::use_mdbook::mdbook_shared::PageId(50usize),
+            }
+        }));
+        page_id_mapping.insert(
+            BookRoute::RouterReferenceHistoryProviders {},
+            ::use_mdbook::mdbook_shared::PageId(50usize),
+        );
+        pages.push((51usize, {
+            ::use_mdbook::mdbook_shared::Page {
+                title: "History Buttons".to_string(),
+                url: BookRoute::RouterReferenceHistoryButtons {},
+                segments: vec![],
+                sections: vec![::use_mdbook::mdbook_shared::Section {
+                    title: "History Buttons".to_string(),
+                    id: "history-buttons".to_string(),
+                    level: 1usize,
+                }],
+                raw: String::new(),
+                id: ::use_mdbook::mdbook_shared::PageId(51usize),
+            }
+        }));
+        page_id_mapping.insert(
+            BookRoute::RouterReferenceHistoryButtons {},
+            ::use_mdbook::mdbook_shared::PageId(51usize),
+        );
+        pages.push((52usize, {
+            ::use_mdbook::mdbook_shared::Page {
+                title: "Static Generation".to_string(),
+                url: BookRoute::RouterReferenceStaticGeneration {},
+                segments: vec![],
+                sections: vec![
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Static Generation".to_string(),
+                        id: "static-generation".to_string(),
+                        level: 1usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Getting the Sitemap".to_string(),
+                        id: "getting-the-sitemap".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Generating a Sitemap".to_string(),
+                        id: "generating-a-sitemap".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Example".to_string(),
+                        id: "example".to_string(),
+                        level: 2usize,
+                    },
+                ],
+                raw: String::new(),
+                id: ::use_mdbook::mdbook_shared::PageId(52usize),
+            }
+        }));
+        page_id_mapping.insert(
+            BookRoute::RouterReferenceStaticGeneration {},
+            ::use_mdbook::mdbook_shared::PageId(52usize),
+        );
+        pages.push((53usize, {
+            ::use_mdbook::mdbook_shared::Page {
+                title: "Routing Update Callback".to_string(),
+                url: BookRoute::RouterReferenceRoutingUpdateCallback {},
+                segments: vec![],
+                sections: vec![
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Routing Update Callback".to_string(),
+                        id: "routing-update-callback".to_string(),
+                        level: 1usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "How does the callback behave?".to_string(),
+                        id: "how-does-the-callback-behave?".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Code Example".to_string(),
+                        id: "code-example".to_string(),
+                        level: 2usize,
+                    },
+                ],
+                raw: String::new(),
+                id: ::use_mdbook::mdbook_shared::PageId(53usize),
+            }
+        }));
+        page_id_mapping.insert(
+            BookRoute::RouterReferenceRoutingUpdateCallback {},
+            ::use_mdbook::mdbook_shared::PageId(53usize),
+        );
+        pages.push((54usize, {
+            ::use_mdbook::mdbook_shared::Page {
+                title: "Cookbook".to_string(),
+                url: BookRoute::CookbookIndex {},
+                segments: vec![],
+                sections: vec![::use_mdbook::mdbook_shared::Section {
+                    title: "Cookbook".to_string(),
+                    id: "cookbook".to_string(),
+                    level: 1usize,
+                }],
+                raw: String::new(),
+                id: ::use_mdbook::mdbook_shared::PageId(54usize),
+            }
+        }));
+        page_id_mapping.insert(
+            BookRoute::CookbookIndex {},
+            ::use_mdbook::mdbook_shared::PageId(54usize),
+        );
+        pages.push((55usize, {
+            ::use_mdbook::mdbook_shared::Page {
+                title: "Publishing".to_string(),
+                url: BookRoute::CookbookPublishing {},
+                segments: vec![],
+                sections: vec![
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Publishing".to_string(),
+                        id: "publishing".to_string(),
+                        level: 1usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Web: Publishing with GitHub Pages".to_string(),
+                        id: "web:-publishing-with-github-pages".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Desktop: Creating an installer".to_string(),
+                        id: "desktop:-creating-an-installer".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Preparing your application for bundling".to_string(),
+                        id: "preparing-your-application-for-bundling".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Install ".to_string(),
+                        id: "install".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Building".to_string(),
+                        id: "building".to_string(),
+                        level: 2usize,
+                    },
+                ],
+                raw: String::new(),
+                id: ::use_mdbook::mdbook_shared::PageId(55usize),
+            }
+        }));
+        page_id_mapping.insert(
+            BookRoute::CookbookPublishing {},
+            ::use_mdbook::mdbook_shared::PageId(55usize),
+        );
+        pages.push((56usize, {
+            ::use_mdbook::mdbook_shared::Page {
+                title: "Anti-patterns".to_string(),
+                url: BookRoute::CookbookAntipatterns {},
+                segments: vec![],
+                sections: vec![
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Antipatterns".to_string(),
+                        id: "antipatterns".to_string(),
+                        level: 1usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Unnecessarily Nested Fragments".to_string(),
+                        id: "unnecessarily-nested-fragments".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Incorrect Iterator Keys".to_string(),
+                        id: "incorrect-iterator-keys".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Avoid Interior Mutability in Props".to_string(),
+                        id: "avoid-interior-mutability-in-props".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Avoid Updating State During Render".to_string(),
+                        id: "avoid-updating-state-during-render".to_string(),
+                        level: 2usize,
+                    },
+                ],
+                raw: String::new(),
+                id: ::use_mdbook::mdbook_shared::PageId(56usize),
+            }
+        }));
+        page_id_mapping.insert(
+            BookRoute::CookbookAntipatterns {},
+            ::use_mdbook::mdbook_shared::PageId(56usize),
+        );
+        pages.push((57usize, {
+            ::use_mdbook::mdbook_shared::Page {
+                title: "Error Handling".to_string(),
+                url: BookRoute::CookbookErrorHandling {},
+                segments: vec![],
+                sections: vec![
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Error handling".to_string(),
+                        id: "error-handling".to_string(),
+                        level: 1usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "The simplest – returning None".to_string(),
+                        id: "the-simplest-–-returning-none".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Early return on result".to_string(),
+                        id: "early-return-on-result".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Match results".to_string(),
+                        id: "match-results".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Passing error states through components".to_string(),
+                        id: "passing-error-states-through-components".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Going global".to_string(),
+                        id: "going-global".to_string(),
+                        level: 2usize,
+                    },
+                ],
+                raw: String::new(),
+                id: ::use_mdbook::mdbook_shared::PageId(57usize),
+            }
+        }));
+        page_id_mapping.insert(
+            BookRoute::CookbookErrorHandling {},
+            ::use_mdbook::mdbook_shared::PageId(57usize),
+        );
+        pages.push((58usize, {
+            ::use_mdbook::mdbook_shared::Page {
+                title: "Integrations".to_string(),
+                url: BookRoute::CookbookIntegrationsIndex {},
+                segments: vec![],
+                sections: vec![],
+                raw: String::new(),
+                id: ::use_mdbook::mdbook_shared::PageId(58usize),
+            }
+        }));
+        page_id_mapping.insert(
+            BookRoute::CookbookIntegrationsIndex {},
+            ::use_mdbook::mdbook_shared::PageId(58usize),
+        );
+        pages.push((59usize, {
+            ::use_mdbook::mdbook_shared::Page {
+                title: "Logging".to_string(),
+                url: BookRoute::CookbookIntegrationsLogging {},
+                segments: vec![],
+                sections: vec![
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Logging".to_string(),
+                        id: "logging".to_string(),
+                        level: 1usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "The Log Crate".to_string(),
+                        id: "the-log-crate".to_string(),
+                        level: 4usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Dioxus Logger".to_string(),
+                        id: "dioxus-logger".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Custom Format".to_string(),
+                        id: "custom-format".to_string(),
+                        level: 4usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Timestamps".to_string(),
+                        id: "timestamps".to_string(),
+                        level: 4usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Platform Intricacies".to_string(),
+                        id: "platform-intricacies".to_string(),
+                        level: 4usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Final Notes".to_string(),
+                        id: "final-notes".to_string(),
+                        level: 4usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Desktop and Server".to_string(),
+                        id: "desktop-and-server".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Web".to_string(),
+                        id: "web".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Platform Intricacies".to_string(),
+                        id: "platform-intricacies".to_string(),
+                        level: 4usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Android".to_string(),
+                        id: "android".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Viewing Logs".to_string(),
+                        id: "viewing-logs".to_string(),
+                        level: 4usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "iOS".to_string(),
+                        id: "ios".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Viewing Logs".to_string(),
+                        id: "viewing-logs".to_string(),
+                        level: 4usize,
+                    },
+                ],
+                raw: String::new(),
+                id: ::use_mdbook::mdbook_shared::PageId(59usize),
+            }
+        }));
+        page_id_mapping.insert(
+            BookRoute::CookbookIntegrationsLogging {},
+            ::use_mdbook::mdbook_shared::PageId(59usize),
+        );
+        pages.push((60usize, {
+            ::use_mdbook::mdbook_shared::Page {
+                title: "Internationalization".to_string(),
+                url: BookRoute::CookbookIntegrationsInternationalization {},
+                segments: vec![],
+                sections: vec![
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Internationalization".to_string(),
+                        id: "internationalization".to_string(),
+                        level: 1usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "The full code for internationalization".to_string(),
+                        id: "the-full-code-for-internationalization".to_string(),
+                        level: 2usize,
+                    },
+                ],
+                raw: String::new(),
+                id: ::use_mdbook::mdbook_shared::PageId(60usize),
+            }
+        }));
+        page_id_mapping.insert(
+            BookRoute::CookbookIntegrationsInternationalization {},
+            ::use_mdbook::mdbook_shared::PageId(60usize),
+        );
+        pages.push((61usize, {
+            ::use_mdbook::mdbook_shared::Page {
+                title: "State Management".to_string(),
+                url: BookRoute::CookbookStateIndex {},
+                segments: vec![],
+                sections: vec![::use_mdbook::mdbook_shared::Section {
+                    title: "State Cookbook".to_string(),
+                    id: "state-cookbook".to_string(),
+                    level: 1usize,
+                }],
+                raw: String::new(),
+                id: ::use_mdbook::mdbook_shared::PageId(61usize),
+            }
+        }));
+        page_id_mapping.insert(
+            BookRoute::CookbookStateIndex {},
+            ::use_mdbook::mdbook_shared::PageId(61usize),
+        );
+        pages.push((62usize, {
+            ::use_mdbook::mdbook_shared::Page {
+                title: "External State".to_string(),
+                url: BookRoute::CookbookStateExternalIndex {},
+                segments: vec![],
+                sections: vec![
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Working with External State".to_string(),
+                        id: "working-with-external-state".to_string(),
+                        level: 1usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Working with non-reactive State".to_string(),
+                        id: "working-with-non-reactive-state".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Making Reactive State External".to_string(),
+                        id: "making-reactive-state-external".to_string(),
+                        level: 2usize,
+                    },
+                ],
+                raw: String::new(),
+                id: ::use_mdbook::mdbook_shared::PageId(62usize),
+            }
+        }));
+        page_id_mapping.insert(
+            BookRoute::CookbookStateExternalIndex {},
+            ::use_mdbook::mdbook_shared::PageId(62usize),
+        );
+        pages.push((63usize, {
+            ::use_mdbook::mdbook_shared::Page {
+                title: "Custom Hooks".to_string(),
+                url: BookRoute::CookbookStateCustomHooksIndex {},
+                segments: vec![],
+                sections: vec![
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Custom Hooks".to_string(),
+                        id: "custom-hooks".to_string(),
+                        level: 1usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Composing Hooks".to_string(),
+                        id: "composing-hooks".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Custom Hook Logic".to_string(),
+                        id: "custom-hook-logic".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Hook Anti-Patterns".to_string(),
+                        id: "hook-anti-patterns".to_string(),
+                        level: 2usize,
+                    },
+                ],
+                raw: String::new(),
+                id: ::use_mdbook::mdbook_shared::PageId(63usize),
+            }
+        }));
+        page_id_mapping.insert(
+            BookRoute::CookbookStateCustomHooksIndex {},
+            ::use_mdbook::mdbook_shared::PageId(63usize),
+        );
+        pages.push((64usize, {
+            ::use_mdbook::mdbook_shared::Page {
+                title: "Testing".to_string(),
+                url: BookRoute::CookbookTesting {},
+                segments: vec![],
+                sections: vec![
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Testing".to_string(),
+                        id: "testing".to_string(),
+                        level: 1usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Component Testing".to_string(),
+                        id: "component-testing".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Hook Testing".to_string(),
+                        id: "hook-testing".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "End to End Testing".to_string(),
+                        id: "end-to-end-testing".to_string(),
+                        level: 2usize,
+                    },
+                ],
+                raw: String::new(),
+                id: ::use_mdbook::mdbook_shared::PageId(64usize),
+            }
+        }));
+        page_id_mapping.insert(
+            BookRoute::CookbookTesting {},
+            ::use_mdbook::mdbook_shared::PageId(64usize),
+        );
+        pages.push((65usize, {
+            ::use_mdbook::mdbook_shared::Page {
+                title: "Examples".to_string(),
+                url: BookRoute::CookbookExamples {},
+                segments: vec![],
+                sections: vec![::use_mdbook::mdbook_shared::Section {
+                    title: "Examples".to_string(),
+                    id: "examples".to_string(),
+                    level: 1usize,
+                }],
+                raw: String::new(),
+                id: ::use_mdbook::mdbook_shared::PageId(65usize),
+            }
+        }));
+        page_id_mapping.insert(
+            BookRoute::CookbookExamples {},
+            ::use_mdbook::mdbook_shared::PageId(65usize),
+        );
+        pages.push((66usize, {
+            ::use_mdbook::mdbook_shared::Page {
+                title: "Tailwind".to_string(),
+                url: BookRoute::CookbookTailwind {},
+                segments: vec![],
+                sections: vec![
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Tailwind".to_string(),
+                        id: "tailwind".to_string(),
+                        level: 1usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Setup".to_string(),
+                        id: "setup".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Bonus Steps".to_string(),
+                        id: "bonus-steps".to_string(),
+                        level: 3usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Development".to_string(),
+                        id: "development".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Web".to_string(),
+                        id: "web".to_string(),
+                        level: 3usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Desktop".to_string(),
+                        id: "desktop".to_string(),
+                        level: 3usize,
+                    },
+                ],
+                raw: String::new(),
+                id: ::use_mdbook::mdbook_shared::PageId(66usize),
+            }
+        }));
+        page_id_mapping.insert(
+            BookRoute::CookbookTailwind {},
+            ::use_mdbook::mdbook_shared::PageId(66usize),
+        );
+        pages.push((67usize, {
+            ::use_mdbook::mdbook_shared::Page {
+                title: "Custom Renderer".to_string(),
+                url: BookRoute::CookbookCustomRenderer {},
+                segments: vec![],
+                sections: vec![
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Custom Renderer".to_string(),
+                        id: "custom-renderer".to_string(),
+                        level: 1usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "The specifics:".to_string(),
+                        id: "the-specifics:".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Templates".to_string(),
+                        id: "templates".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Mutations".to_string(),
+                        id: "mutations".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Node storage".to_string(),
+                        id: "node-storage".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "An Example".to_string(),
+                        id: "an-example".to_string(),
+                        level: 3usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Building Templates".to_string(),
+                        id: "building-templates".to_string(),
+                        level: 4usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Applying Mutations".to_string(),
+                        id: "applying-mutations".to_string(),
+                        level: 4usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Event loop".to_string(),
+                        id: "event-loop".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Custom raw elements".to_string(),
+                        id: "custom-raw-elements".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Native Core".to_string(),
+                        id: "native-core".to_string(),
+                        level: 1usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "The RealDom".to_string(),
+                        id: "the-realdom".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Example".to_string(),
+                        id: "example".to_string(),
+                        level: 3usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Layout".to_string(),
+                        id: "layout".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Text Editing".to_string(),
+                        id: "text-editing".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Conclusion".to_string(),
+                        id: "conclusion".to_string(),
+                        level: 2usize,
+                    },
+                ],
+                raw: String::new(),
+                id: ::use_mdbook::mdbook_shared::PageId(67usize),
+            }
+        }));
+        page_id_mapping.insert(
+            BookRoute::CookbookCustomRenderer {},
+            ::use_mdbook::mdbook_shared::PageId(67usize),
+        );
+        pages.push((68usize, {
+            ::use_mdbook::mdbook_shared::Page {
+                title: "Optimizing".to_string(),
+                url: BookRoute::CookbookOptimizing {},
+                segments: vec![],
+                sections: vec![
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Optimizing".to_string(),
+                        id: "optimizing".to_string(),
+                        level: 1usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Building in release mode".to_string(),
+                        id: "building-in-release-mode".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "UPX".to_string(),
+                        id: "upx".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Build configuration".to_string(),
+                        id: "build-configuration".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Stable".to_string(),
+                        id: "stable".to_string(),
+                        level: 3usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Unstable".to_string(),
+                        id: "unstable".to_string(),
+                        level: 3usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "wasm-opt".to_string(),
+                        id: "wasm-opt".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Improving Dioxus code".to_string(),
+                        id: "improving-dioxus-code".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Bundling and minifying the output JS and HTML".to_string(),
+                        id: "bundling-and-minifying-the-output-js-and-html".to_string(),
+                        level: 2usize,
+                    },
+                ],
+                raw: String::new(),
+                id: ::use_mdbook::mdbook_shared::PageId(68usize),
+            }
+        }));
+        page_id_mapping.insert(
+            BookRoute::CookbookOptimizing {},
+            ::use_mdbook::mdbook_shared::PageId(68usize),
+        );
+        pages.push((69usize, {
+            ::use_mdbook::mdbook_shared::Page {
+                title: "CLI".to_string(),
+                url: BookRoute::CliIndex {},
+                segments: vec![],
+                sections: vec![
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Introduction".to_string(),
+                        id: "introduction".to_string(),
+                        level: 1usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Features".to_string(),
+                        id: "features".to_string(),
+                        level: 2usize,
+                    },
+                ],
+                raw: String::new(),
+                id: ::use_mdbook::mdbook_shared::PageId(69usize),
+            }
+        }));
+        page_id_mapping.insert(
+            BookRoute::CliIndex {},
+            ::use_mdbook::mdbook_shared::PageId(69usize),
+        );
+        pages.push((70usize, {
+            ::use_mdbook::mdbook_shared::Page {
+                title: "Installation".to_string(),
+                url: BookRoute::CliInstallation {},
+                segments: vec![],
+                sections: vec![
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Installation".to_string(),
+                        id: "installation".to_string(),
+                        level: 1usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Install the stable version (recommended)".to_string(),
+                        id: "install-the-stable-version-(recommended)".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Install the latest development build through git".to_string(),
+                        id: "install-the-latest-development-build-through-git".to_string(),
+                        level: 2usize,
+                    },
+                ],
+                raw: String::new(),
+                id: ::use_mdbook::mdbook_shared::PageId(70usize),
+            }
+        }));
+        page_id_mapping.insert(
+            BookRoute::CliInstallation {},
+            ::use_mdbook::mdbook_shared::PageId(70usize),
+        );
+        pages.push((71usize, {
+            ::use_mdbook::mdbook_shared::Page {
+                title: "Create a Project".to_string(),
+                url: BookRoute::CliCreating {},
+                segments: vec![],
+                sections: vec![
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Create a Project".to_string(),
+                        id: "create-a-project".to_string(),
+                        level: 1usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Initializing a project".to_string(),
+                        id: "initializing-a-project".to_string(),
+                        level: 2usize,
+                    },
+                ],
+                raw: String::new(),
+                id: ::use_mdbook::mdbook_shared::PageId(71usize),
+            }
+        }));
+        page_id_mapping.insert(
+            BookRoute::CliCreating {},
+            ::use_mdbook::mdbook_shared::PageId(71usize),
+        );
+        pages.push((72usize, {
+            ::use_mdbook::mdbook_shared::Page {
+                title: "Configure Project".to_string(),
+                url: BookRoute::CliConfigure {},
+                segments: vec![],
+                sections: vec![
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Configure Project".to_string(),
+                        id: "configure-project".to_string(),
+                        level: 1usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Structure".to_string(),
+                        id: "structure".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Application 🔒".to_string(),
+                        id: "application-🔒".to_string(),
+                        level: 3usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Web.App 🔒".to_string(),
+                        id: "web.app-🔒".to_string(),
+                        level: 3usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Web.Watcher 🔒".to_string(),
+                        id: "web.watcher-🔒".to_string(),
+                        level: 3usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Web.Resource 🔒".to_string(),
+                        id: "web.resource-🔒".to_string(),
+                        level: 3usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Web.Resource.Dev 🔒".to_string(),
+                        id: "web.resource.dev-🔒".to_string(),
+                        level: 3usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Web.Proxy".to_string(),
+                        id: "web.proxy".to_string(),
+                        level: 3usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Config example".to_string(),
+                        id: "config-example".to_string(),
+                        level: 2usize,
+                    },
+                ],
+                raw: String::new(),
+                id: ::use_mdbook::mdbook_shared::PageId(72usize),
+            }
+        }));
+        page_id_mapping.insert(
+            BookRoute::CliConfigure {},
+            ::use_mdbook::mdbook_shared::PageId(72usize),
+        );
+        pages.push((73usize, {
+            ::use_mdbook::mdbook_shared::Page {
+                title: "Translate HTML".to_string(),
+                url: BookRoute::CliTranslate {},
+                segments: vec![],
+                sections: vec![
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Translating existing HTML".to_string(),
+                        id: "translating-existing-html".to_string(),
+                        level: 1usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Usage".to_string(),
+                        id: "usage".to_string(),
+                        level: 2usize,
+                    },
+                ],
+                raw: String::new(),
+                id: ::use_mdbook::mdbook_shared::PageId(73usize),
+            }
+        }));
+        page_id_mapping.insert(
+            BookRoute::CliTranslate {},
+            ::use_mdbook::mdbook_shared::PageId(73usize),
+        );
+        pages.push((74usize, {
+            ::use_mdbook::mdbook_shared::Page {
+                title: "Contributing".to_string(),
+                url: BookRoute::ContributingIndex {},
+                segments: vec![],
+                sections: vec![
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Contributing".to_string(),
+                        id: "contributing".to_string(),
+                        level: 1usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Improving Docs".to_string(),
+                        id: "improving-docs".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Working on the Ecosystem".to_string(),
+                        id: "working-on-the-ecosystem".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Bugs & Features".to_string(),
+                        id: "bugs-&-features".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Before you contribute".to_string(),
+                        id: "before-you-contribute".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "How to test dioxus with local crate".to_string(),
+                        id: "how-to-test-dioxus-with-local-crate".to_string(),
+                        level: 2usize,
+                    },
+                ],
+                raw: String::new(),
+                id: ::use_mdbook::mdbook_shared::PageId(74usize),
+            }
+        }));
+        page_id_mapping.insert(
+            BookRoute::ContributingIndex {},
+            ::use_mdbook::mdbook_shared::PageId(74usize),
+        );
+        pages.push((75usize, {
+            ::use_mdbook::mdbook_shared::Page {
+                title: "Project Structure".to_string(),
+                url: BookRoute::ContributingProjectStructure {},
+                segments: vec![],
+                sections: vec![
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Project Structure".to_string(),
+                        id: "project-structure".to_string(),
+                        level: 1usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Renderers".to_string(),
+                        id: "renderers".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "State Management/Hooks".to_string(),
+                        id: "state-management/hooks".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Core utilities".to_string(),
+                        id: "core-utilities".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Native Renderer Utilities".to_string(),
+                        id: "native-renderer-utilities".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Web renderer tooling".to_string(),
+                        id: "web-renderer-tooling".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Developer tooling".to_string(),
+                        id: "developer-tooling".to_string(),
+                        level: 2usize,
+                    },
+                ],
+                raw: String::new(),
+                id: ::use_mdbook::mdbook_shared::PageId(75usize),
+            }
+        }));
+        page_id_mapping.insert(
+            BookRoute::ContributingProjectStructure {},
+            ::use_mdbook::mdbook_shared::PageId(75usize),
+        );
+        pages.push((76usize, {
+            ::use_mdbook::mdbook_shared::Page {
+                title: "Walkthrough of Internals".to_string(),
+                url: BookRoute::ContributingWalkthroughReadme {},
+                segments: vec![],
+                sections: vec![
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Walkthrough of the Hello World Example Internals".to_string(),
+                        id: "walkthrough-of-the-hello-world-example-internals".to_string(),
+                        level: 1usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "The Source File".to_string(),
+                        id: "the-source-file".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "The rsx! Macro".to_string(),
+                        id: "the-rsx!-macro".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Launching the App".to_string(),
+                        id: "launching-the-app".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "The Virtual DOM".to_string(),
+                        id: "the-virtual-dom".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "The Initial Render".to_string(),
+                        id: "the-initial-render".to_string(),
+                        level: 3usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Waiting for Events".to_string(),
+                        id: "waiting-for-events".to_string(),
+                        level: 3usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Diffing Scopes".to_string(),
+                        id: "diffing-scopes".to_string(),
+                        level: 3usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Conclusion".to_string(),
+                        id: "conclusion".to_string(),
+                        level: 2usize,
+                    },
+                ],
+                raw: String::new(),
+                id: ::use_mdbook::mdbook_shared::PageId(76usize),
+            }
+        }));
+        page_id_mapping.insert(
+            BookRoute::ContributingWalkthroughReadme {},
+            ::use_mdbook::mdbook_shared::PageId(76usize),
+        );
+        pages.push((77usize, {
+            ::use_mdbook::mdbook_shared::Page {
+                title: "Guiding Principles".to_string(),
+                url: BookRoute::ContributingGuidingPrinciples {},
+                segments: vec![],
+                sections: vec![
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Overall Goals".to_string(),
+                        id: "overall-goals".to_string(),
+                        level: 1usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Cross-Platform".to_string(),
+                        id: "cross-platform".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Performance".to_string(),
+                        id: "performance".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Type Safety".to_string(),
+                        id: "type-safety".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Developer Experience".to_string(),
+                        id: "developer-experience".to_string(),
+                        level: 2usize,
+                    },
+                ],
+                raw: String::new(),
+                id: ::use_mdbook::mdbook_shared::PageId(77usize),
+            }
+        }));
+        page_id_mapping.insert(
+            BookRoute::ContributingGuidingPrinciples {},
+            ::use_mdbook::mdbook_shared::PageId(77usize),
+        );
+        pages.push((78usize, {
+            ::use_mdbook::mdbook_shared::Page {
+                title: "Roadmap".to_string(),
+                url: BookRoute::ContributingRoadmap {},
+                segments: vec![],
+                sections: vec![
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Roadmap & Feature-set".to_string(),
+                        id: "roadmap-&-feature-set".to_string(),
+                        level: 1usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Features".to_string(),
+                        id: "features".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Roadmap".to_string(),
+                        id: "roadmap".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Core".to_string(),
+                        id: "core".to_string(),
+                        level: 3usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "SSR".to_string(),
+                        id: "ssr".to_string(),
+                        level: 3usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Desktop".to_string(),
+                        id: "desktop".to_string(),
+                        level: 3usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Mobile".to_string(),
+                        id: "mobile".to_string(),
+                        level: 3usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Bundling (CLI)".to_string(),
+                        id: "bundling-(cli)".to_string(),
+                        level: 3usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Essential hooks".to_string(),
+                        id: "essential-hooks".to_string(),
+                        level: 3usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Work in Progress".to_string(),
+                        id: "work-in-progress".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Build Tool".to_string(),
+                        id: "build-tool".to_string(),
+                        level: 3usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Server Component Support".to_string(),
+                        id: "server-component-support".to_string(),
+                        level: 3usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Native rendering".to_string(),
+                        id: "native-rendering".to_string(),
+                        level: 3usize,
+                    },
+                ],
+                raw: String::new(),
+                id: ::use_mdbook::mdbook_shared::PageId(78usize),
+            }
+        }));
+        page_id_mapping.insert(
+            BookRoute::ContributingRoadmap {},
+            ::use_mdbook::mdbook_shared::PageId(78usize),
+        );
+        pages.push((79usize, {
+            ::use_mdbook::mdbook_shared::Page {
+                title: "Migration".to_string(),
+                url: BookRoute::MigrationIndex {},
+                segments: vec![],
+                sections: vec![::use_mdbook::mdbook_shared::Section {
+                    title: "0.3 Migration Guide".to_string(),
+                    id: "0.3-migration-guide".to_string(),
+                    level: 1usize,
+                }],
+                raw: String::new(),
+                id: ::use_mdbook::mdbook_shared::PageId(79usize),
+            }
+        }));
+        page_id_mapping.insert(
+            BookRoute::MigrationIndex {},
+            ::use_mdbook::mdbook_shared::PageId(79usize),
+        );
+        pages.push((80usize, {
+            ::use_mdbook::mdbook_shared::Page {
+                title: "Router".to_string(),
+                url: BookRoute::MigrationRouter {},
+                segments: vec![],
+                sections: vec![
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Router".to_string(),
+                        id: "router".to_string(),
+                        level: 1usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Defining Your Router".to_string(),
+                        id: "defining-your-router".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Linking to routes".to_string(),
+                        id: "linking-to-routes".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "External Links".to_string(),
+                        id: "external-links".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "use_router".to_string(),
+                        id: "use_router".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "use_route".to_string(),
+                        id: "use_route".to_string(),
+                        level: 3usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "use_navigator".to_string(),
+                        id: "use_navigator".to_string(),
+                        level: 3usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "New features".to_string(),
+                        id: "new-features".to_string(),
+                        level: 3usize,
+                    },
+                ],
+                raw: String::new(),
+                id: ::use_mdbook::mdbook_shared::PageId(80usize),
+            }
+        }));
+        page_id_mapping.insert(
+            BookRoute::MigrationRouter {},
+            ::use_mdbook::mdbook_shared::PageId(80usize),
+        );
+        pages.push((81usize, {
+            ::use_mdbook::mdbook_shared::Page {
+                title: "Hot Reload".to_string(),
+                url: BookRoute::MigrationHotReload {},
+                segments: vec![],
+                sections: vec![::use_mdbook::mdbook_shared::Section {
+                    title: "Hot reloading".to_string(),
+                    id: "hot-reloading".to_string(),
+                    level: 1usize,
+                }],
+                raw: String::new(),
+                id: ::use_mdbook::mdbook_shared::PageId(81usize),
+            }
+        }));
+        page_id_mapping.insert(
+            BookRoute::MigrationHotReload {},
+            ::use_mdbook::mdbook_shared::PageId(81usize),
+        );
         ::use_mdbook::mdbook_shared::MdBook {
             summary: ::use_mdbook::mdbook_shared::Summary {
                 title: Some("Summary".to_string()),
@@ -4763,8 +4158,7 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
             pages: pages.into_iter().collect(),
             page_id_mapping,
         }
-    }
-});
+    });
 #[component(no_case_check)]
 pub fn Index() -> dioxus::prelude::Element {
     use dioxus::prelude::*;
@@ -4895,37 +4289,37 @@ pub fn GettingStartedIndex() -> dioxus::prelude::Element {
         }
         ul {
             li {
-                a { href: "getting_started/choosing_a_web_renderer", "Choosing a Web Renderer" }
+                a { href: "choosing_a_web_renderer", "Choosing a Web Renderer" }
             }
             li {
-                a { href: "getting_started/wasm", "Client Side" }
+                a { href: "wasm", "Client Side" }
                 ": runs in the browser through WebAssembly"
             }
             li {
-                a { href: "getting_started/liveview", "Liveview" }
+                a { href: "liveview", "Liveview" }
                 ": runs on the server, renders in the browser using WebSockets"
             }
             li {
-                a { href: "getting_started/fullstack", "Fullstack" }
+                a { href: "fullstack", "Fullstack" }
                 ": renders to HTML text on the server and hydrates it on the client"
             }
             li {
-                a { href: "getting_started/desktop", "Desktop" }
+                a { href: "desktop", "Desktop" }
                 ": runs in a web view on desktop"
             }
             li {
-                a { href: "getting_started/mobile", "Mobile" }
+                a { href: "mobile", "Mobile" }
                 ": runs in a web view on mobile"
             }
             li {
-                a { href: "getting_started/tui", "Terminal UI" }
+                a { href: "tui", "Terminal UI" }
                 ": renders text-based graphics in the terminal"
             }
         }
         blockquote {
             p {
                 "More information on any platform you choose is available in the section of the same name in the "
-                a { href: "getting_started/../reference", "Reference" }
+                a { href: "../reference", "Reference" }
             }
         }
     }
@@ -5767,7 +5161,9 @@ pub fn GettingStartedMobile() -> dioxus::prelude::Element {
         }
         p {
             img {
-                src: "/assets/static/android_ndk_install.png",
+                src: asset!(
+                    "/assets/static/android_ndk_install.png", ImageAssetOptions::new().with_avif()
+                ),
                 alt: "NDK install window",
                 title: "",
             }
@@ -5878,7 +5274,7 @@ pub fn GettingStartedMobile() -> dioxus::prelude::Element {
         }
         p {
             img {
-                src: "/assets/static/IOS-dioxus-demo.png",
+                src: asset!("/assets/static/IOS-dioxus-demo.png", ImageAssetOptions::new().with_avif()),
                 alt: "ios_demo",
                 title: "",
             }
@@ -5901,7 +5297,10 @@ pub fn GettingStartedMobile() -> dioxus::prelude::Element {
         }
         p {
             img {
-                src: "/assets/static/android-studio-simulator.png",
+                src: asset!(
+                    "/assets/static/android-studio-simulator.png", ImageAssetOptions::new()
+                    .with_avif()
+                ),
                 alt: "android studio manage devices",
                 title: "",
             }
@@ -5913,7 +5312,9 @@ pub fn GettingStartedMobile() -> dioxus::prelude::Element {
         }
         p {
             img {
-                src: "/assets/static/android-studio-devices.png",
+                src: asset!(
+                    "/assets/static/android-studio-devices.png", ImageAssetOptions::new().with_avif()
+                ),
                 alt: "android studio devices",
                 title: "",
             }
@@ -5921,7 +5322,9 @@ pub fn GettingStartedMobile() -> dioxus::prelude::Element {
         p { "Finally, launch your device by clicking the play button on the device you created:" }
         p {
             img {
-                src: "/assets/static/android-studio-device.png",
+                src: asset!(
+                    "/assets/static/android-studio-device.png", ImageAssetOptions::new().with_avif()
+                ),
                 alt: "android studio device",
                 title: "",
             }
@@ -5930,7 +5333,9 @@ pub fn GettingStartedMobile() -> dioxus::prelude::Element {
         CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">cargo android run</span></pre>\n" }
         p {
             img {
-                src: "/assets/static/Android-Dioxus-demo.png",
+                src: asset!(
+                    "/assets/static/Android-Dioxus-demo.png", ImageAssetOptions::new().with_avif()
+                ),
                 alt: "android_demo",
                 title: "",
             }
@@ -6004,7 +5409,7 @@ pub fn GettingStartedTui() -> dioxus::prelude::Element {
         }
         CodeBlock {
             contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#8c8c8c;\">// todo remove deprecated\n</span><span style=\"color:#f8f8f2;\">#![allow(non_snake_case, deprecated)]\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\">use </span><span style=\"color:#f8f8f2;\">dioxus::events::{{KeyCode, KeyboardEvent}};\n</span><span style=\"color:#f92672;\">use </span><span style=\"color:#f8f8f2;\">dioxus::prelude::</span><span style=\"color:#f92672;\">*</span><span style=\"color:#f8f8f2;\">;\n</span><span style=\"color:#f92672;\">use </span><span style=\"color:#f8f8f2;\">dioxus_tui::TuiContext;\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">main</span><span style=\"color:#f8f8f2;\">() {{\n</span><span style=\"color:#f8f8f2;\">    dioxus_tui::launch_cfg(\n</span><span style=\"color:#f8f8f2;\">        App,\n</span><span style=\"color:#f8f8f2;\">        dioxus_tui::Config::new()\n</span><span style=\"color:#f8f8f2;\">            .</span><span style=\"color:#66d9ef;\">without_ctrl_c_quit</span><span style=\"color:#f8f8f2;\">()\n</span><span style=\"color:#f8f8f2;\">            </span><span style=\"color:#8c8c8c;\">// Some older terminals only support 16 colors or ANSI colors\n</span><span style=\"color:#f8f8f2;\">            </span><span style=\"color:#8c8c8c;\">// If your terminal is one of these, change this to BaseColors or ANSI\n</span><span style=\"color:#f8f8f2;\">            .</span><span style=\"color:#66d9ef;\">with_rendering_mode</span><span style=\"color:#f8f8f2;\">(dioxus_tui::RenderingMode::Rgb),\n</span><span style=\"color:#f8f8f2;\">    );\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">App</span><span style=\"color:#f8f8f2;\">(</span><span style=\"font-style:italic;color:#fd971f;\">cx</span><span style=\"color:#f8f8f2;\">: Scope) -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> tui_ctx: TuiContext </span><span style=\"color:#f92672;\">=</span><span style=\"color:#f8f8f2;\"> cx.</span><span style=\"color:#66d9ef;\">consume_context</span><span style=\"color:#f8f8f2;\">().</span><span style=\"color:#66d9ef;\">unwrap</span><span style=\"color:#f8f8f2;\">();\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">    cx.</span><span style=\"color:#66d9ef;\">render</span><span style=\"color:#f8f8f2;\">(rsx! {{\n</span><span style=\"color:#f8f8f2;\">        div {{\n</span><span style=\"color:#f8f8f2;\">            width: </span><span style=\"color:#ffee99;\">&quot;100%&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">            height: </span><span style=\"color:#ffee99;\">&quot;10px&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">            background_color: </span><span style=\"color:#ffee99;\">&quot;red&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">            justify_content: </span><span style=\"color:#ffee99;\">&quot;center&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">            align_items: </span><span style=\"color:#ffee99;\">&quot;center&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">            onkeydown: </span><span style=\"color:#f92672;\">move |</span><span style=\"color:#f8f8f2;\">k: KeyboardEvent</span><span style=\"color:#f92672;\">| if </span><span style=\"font-style:italic;color:#66d9ef;\">let </span><span style=\"color:#f8f8f2;\">KeyCode::Q </span><span style=\"color:#f92672;\">=</span><span style=\"color:#f8f8f2;\"> k.key_code {{\n</span><span style=\"color:#f8f8f2;\">                tui_ctx.</span><span style=\"color:#66d9ef;\">quit</span><span style=\"color:#f8f8f2;\">();\n</span><span style=\"color:#f8f8f2;\">            }},\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">            </span><span style=\"color:#ffee99;\">&quot;Hello world!&quot;\n</span><span style=\"color:#f8f8f2;\">        }}\n</span><span style=\"color:#f8f8f2;\">    }})\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
-            name: "hello_world_tui.rs".to_string(),
+            name: "hello_world_tui_no_ctrl_c.rs".to_string(),
         }
         h2 { id: "hot-reload",
             a { href: "#hot-reload", class: "header", "Hot Reload" }
@@ -6061,12 +5466,12 @@ pub fn GuideIndex() -> dioxus::prelude::Element {
         DemoFrame { hackernews_complete::App {} }
         p {
             "This guide serves a very brief overview of Dioxus. Throughout the guide, there will be links to the "
-            a { href: "guide/../reference", "reference" }
+            a { href: "../reference", "reference" }
             " with more details about specific concepts."
         }
         p {
             "First, lets setup our dependencies. In addition to the dependencies you added in the "
-            a { href: "guide/../getting_started", "getting started" }
+            a { href: "../getting_started", "getting started" }
             " guide for your platform, we need to set up a few more dependencies to work with the hacker news API:"
         }
         CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">cargo add chrono </span><span style=\"color:#f92672;\">--</span><span style=\"color:#f8f8f2;\">features serde\n</span><span style=\"color:#f8f8f2;\">cargo add futures\n</span><span style=\"color:#f8f8f2;\">cargo add reqwest </span><span style=\"color:#f92672;\">--</span><span style=\"color:#f8f8f2;\">features json\n</span><span style=\"color:#f8f8f2;\">cargo add serde </span><span style=\"color:#f92672;\">--</span><span style=\"color:#f8f8f2;\">features derive\n</span><span style=\"color:#f8f8f2;\">cargo add serde_json\n</span><span style=\"color:#f8f8f2;\">cargo add async_recursion</span></pre>\n" }
@@ -6494,21 +5899,21 @@ pub fn GuideState() -> dioxus::prelude::Element {
         }
         CodeBlock {
             contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#8c8c8c;\">// ❌ don&#39;t call hooks in conditionals!\n</span><span style=\"color:#8c8c8c;\">// We must ensure that the same hooks will be called every time\n</span><span style=\"color:#8c8c8c;\">// But `if` statements only run if the conditional is true!\n</span><span style=\"color:#8c8c8c;\">// So we might violate rule 2.\n</span><span style=\"color:#f92672;\">if</span><span style=\"color:#f8f8f2;\"> you_are_happy </span><span style=\"color:#f92672;\">&amp;&amp;</span><span style=\"color:#f8f8f2;\"> you_know_it {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> something </span><span style=\"color:#f92672;\">= </span><span style=\"color:#66d9ef;\">use_state</span><span style=\"color:#f8f8f2;\">(cx, || </span><span style=\"color:#ffee99;\">&quot;hands&quot;</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"color:#f8f8f2;\">    println!(</span><span style=\"color:#ffee99;\">&quot;clap your </span><span style=\"color:#ff80f4;\">{{something}}</span><span style=\"color:#ffee99;\">&quot;</span><span style=\"color:#f8f8f2;\">)\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#8c8c8c;\">// ✅ instead, *always* call use_state\n</span><span style=\"color:#8c8c8c;\">// You can put other stuff in the conditional though\n</span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> something </span><span style=\"color:#f92672;\">= </span><span style=\"color:#66d9ef;\">use_state</span><span style=\"color:#f8f8f2;\">(cx, || </span><span style=\"color:#ffee99;\">&quot;hands&quot;</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"color:#f92672;\">if</span><span style=\"color:#f8f8f2;\"> you_are_happy </span><span style=\"color:#f92672;\">&amp;&amp;</span><span style=\"color:#f8f8f2;\"> you_know_it {{\n</span><span style=\"color:#f8f8f2;\">    println!(</span><span style=\"color:#ffee99;\">&quot;clap your </span><span style=\"color:#ff80f4;\">{{something}}</span><span style=\"color:#ffee99;\">&quot;</span><span style=\"color:#f8f8f2;\">)\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
-            name: "hackernews_state.rs".to_string(),
+            name: "hooks_bad.rs".to_string(),
         }
         h4 { id: "no-hooks-in-closures",
             a { href: "#no-hooks-in-closures", class: "header", "No Hooks in Closures" }
         }
         CodeBlock {
             contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#8c8c8c;\">// ❌ don&#39;t call hooks inside closures!\n</span><span style=\"color:#8c8c8c;\">// We can&#39;t guarantee that the closure, if used, will be called in the same order every time\n</span><span style=\"font-style:italic;color:#66d9ef;\">let </span><span style=\"color:#a6e22e;\">_a </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">|| {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> b </span><span style=\"color:#f92672;\">= </span><span style=\"color:#66d9ef;\">use_state</span><span style=\"color:#f8f8f2;\">(cx, || </span><span style=\"color:#ff80f4;\">0</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"color:#f8f8f2;\">    b.</span><span style=\"color:#66d9ef;\">get</span><span style=\"color:#f8f8f2;\">()\n</span><span style=\"color:#f8f8f2;\">}};\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#8c8c8c;\">// ✅ instead, move hook `b` outside\n</span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> b </span><span style=\"color:#f92672;\">= </span><span style=\"color:#66d9ef;\">use_state</span><span style=\"color:#f8f8f2;\">(cx, || </span><span style=\"color:#ff80f4;\">0</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"font-style:italic;color:#66d9ef;\">let </span><span style=\"color:#a6e22e;\">_a </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">|| b.</span><span style=\"color:#66d9ef;\">get</span><span style=\"color:#f8f8f2;\">();</span></pre>\n",
-            name: "hackernews_state.rs".to_string(),
+            name: "hooks_bad.rs".to_string(),
         }
         h4 { id: "no-hooks-in-loops",
             a { href: "#no-hooks-in-loops", class: "header", "No Hooks in Loops" }
         }
         CodeBlock {
             contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#8c8c8c;\">// `names` is a Vec&lt;&amp;str&gt;\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#8c8c8c;\">// ❌ Do not use hooks in loops!\n</span><span style=\"color:#8c8c8c;\">// In this case, if the length of the Vec changes, we break rule 2\n</span><span style=\"color:#f92672;\">for</span><span style=\"color:#f8f8f2;\"> _name </span><span style=\"color:#f92672;\">in &amp;</span><span style=\"color:#f8f8f2;\">names {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> is_selected </span><span style=\"color:#f92672;\">= </span><span style=\"color:#66d9ef;\">use_state</span><span style=\"color:#f8f8f2;\">(cx, || </span><span style=\"color:#ff80f4;\">false</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"color:#f8f8f2;\">    println!(</span><span style=\"color:#ffee99;\">&quot;selected: </span><span style=\"color:#ff80f4;\">{{is_selected}}</span><span style=\"color:#ffee99;\">&quot;</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#8c8c8c;\">// ✅ Instead, use a hashmap with use_ref\n</span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> selection_map </span><span style=\"color:#f92672;\">= </span><span style=\"color:#66d9ef;\">use_ref</span><span style=\"color:#f8f8f2;\">(cx, HashMap::&lt;</span><span style=\"color:#f92672;\">&amp;</span><span style=\"font-style:italic;color:#66d9ef;\">str</span><span style=\"color:#f8f8f2;\">, </span><span style=\"font-style:italic;color:#66d9ef;\">bool</span><span style=\"color:#f8f8f2;\">&gt;::new);\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\">for</span><span style=\"color:#f8f8f2;\"> name </span><span style=\"color:#f92672;\">in &amp;</span><span style=\"color:#f8f8f2;\">names {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> is_selected </span><span style=\"color:#f92672;\">=</span><span style=\"color:#f8f8f2;\"> selection_map.</span><span style=\"color:#66d9ef;\">read</span><span style=\"color:#f8f8f2;\">()[name];\n</span><span style=\"color:#f8f8f2;\">    println!(</span><span style=\"color:#ffee99;\">&quot;selected: </span><span style=\"color:#ff80f4;\">{{is_selected}}</span><span style=\"color:#ffee99;\">&quot;</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
-            name: "hackernews_state.rs".to_string(),
+            name: "hooks_bad.rs".to_string(),
         }
     }
 }
@@ -6652,7 +6057,7 @@ pub fn ReferenceIndex() -> dioxus::prelude::Element {
         }
         p {
             "This Reference contains more detailed explanations for all concepts covered in the "
-            a { href: "reference/../guide", "guide" }
+            a { href: "../guide", "guide" }
             " and more."
         }
         h2 { id: "rendering",
@@ -6660,37 +6065,37 @@ pub fn ReferenceIndex() -> dioxus::prelude::Element {
         }
         ul {
             li {
-                a { href: "reference/rsx",
+                a { href: "rsx",
                     code { "RSX" }
                 }
                 " Rsx is a HTML-like macro that allows you to declare UI"
             }
             li {
-                a { href: "reference/components",
+                a { href: "components",
                     code { "Components" }
                 }
                 " Components are the building blocks of UI in Dioxus"
             }
             li {
-                a { href: "reference/component_props",
+                a { href: "component_props",
                     code { "Props" }
                 }
                 " Props allow you pass information to Components"
             }
             li {
-                a { href: "reference/event_handlers",
+                a { href: "event_handlers",
                     code { "Event Listeners" }
                 }
                 " Event listeners let you respond to user input"
             }
             li {
-                a { href: "reference/user_input",
+                a { href: "user_input",
                     code { "User Input" }
                 }
                 " How to handle User input in Dioxus"
             }
             li {
-                a { href: "reference/dynamic_rendering",
+                a { href: "dynamic_rendering",
                     code { "Dynamic Rendering" }
                 }
                 " How to dynamically render data in Dioxus"
@@ -6701,37 +6106,37 @@ pub fn ReferenceIndex() -> dioxus::prelude::Element {
         }
         ul {
             li {
-                a { href: "reference/hooks",
+                a { href: "hooks",
                     code { "Hooks" }
                 }
                 ": Hooks allow you to create components state"
             }
             li {
-                a { href: "reference/context",
+                a { href: "context",
                     code { "Context" }
                 }
                 ": Context allows you to create state in a parent and consume it in children"
             }
             li {
-                a { href: "reference/router",
+                a { href: "router",
                     code { "Routing" }
                 }
                 ": The router helps you manage the URL state"
             }
             li {
-                a { href: "reference/use_future",
+                a { href: "use_future",
                     code { "UseFuture" }
                 }
                 ": Use future allows you to create an async task and monitor it's state"
             }
             li {
-                a { href: "reference/use_coroutine",
+                a { href: "use_coroutine",
                     code { "UseCoroutine" }
                 }
                 ": Use coroutine helps you manage external state"
             }
             li {
-                a { href: "reference/spawn",
+                a { href: "spawn",
                     code { "Spawn" }
                 }
                 ": Spawn creates an async task"
@@ -6742,61 +6147,61 @@ pub fn ReferenceIndex() -> dioxus::prelude::Element {
         }
         ul {
             li {
-                a { href: "reference/desktop",
+                a { href: "desktop",
                     code { "Desktop" }
                 }
                 ": Overview of desktop specific APIS"
             }
             li {
-                a { href: "reference/web",
+                a { href: "web",
                     code { "Web" }
                 }
                 ": Overview of web specific APIS"
             }
             li {
-                a { href: "reference/ssr",
+                a { href: "ssr",
                     code { "SSR" }
                 }
                 ": Overview of the SSR renderer"
             }
             li {
-                a { href: "reference/liveview",
+                a { href: "liveview",
                     code { "Liveview" }
                 }
                 ": Overview of liveview specific APIS"
             }
             li {
-                a { href: "reference/fullstack",
+                a { href: "fullstack",
                     code { "Fullstack" }
                 }
                 ": Overview of Fullstack specific APIS"
                 ul {
                     li {
-                        a { href: "reference/fullstack/server_functions",
+                        a { href: "fullstack/server_functions",
                             code { "Server Functions" }
                         }
                         ": Server functions make it easy to communicate between your server and client"
                     }
                     li {
-                        a { href: "reference/fullstack/extractors",
+                        a { href: "fullstack/extractors",
                             code { "Extractors" }
                         }
                         ": Extractors allow you to get extra information out of the headers of a request"
                     }
                     li {
-                        a { href: "reference/fullstack/middleware",
+                        a { href: "fullstack/middleware",
                             code { "Middleware" }
                         }
                         ": Middleware allows you to wrap a server function request or response"
                     }
                     li {
-                        a { href: "reference/fullstack/authentication",
+                        a { href: "fullstack/authentication",
                             code { "Authentication" }
                         }
                         ": An overview of how to handle authentication with server functions"
                     }
                     li {
-                        a { href: "reference/fullstack/routing",
+                        a { href: "fullstack/routing",
                             code { "Routing" }
                         }
                         ": An overview of how to work with the router in the fullstack renderer"
@@ -6846,7 +6251,7 @@ pub fn ReferenceRsx() -> dioxus::prelude::Element {
         }
         CodeBlock {
             contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">cx.</span><span style=\"color:#66d9ef;\">render</span><span style=\"color:#f8f8f2;\">(rsx!(div {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#8c8c8c;\">// attributes / listeners\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#8c8c8c;\">// children\n</span><span style=\"color:#f8f8f2;\">}}))</span></pre>\n",
-            name: "hello_world_desktop.rs".to_string(),
+            name: "rsx_overview.rs".to_string(),
         }
         DemoFrame { __interactive_04::Empty {} }
         h3 { id: "attributes",
@@ -6863,7 +6268,7 @@ pub fn ReferenceRsx() -> dioxus::prelude::Element {
         }
         CodeBlock {
             contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">cx.</span><span style=\"color:#66d9ef;\">render</span><span style=\"color:#f8f8f2;\">(rsx!(img {{\n</span><span style=\"color:#f8f8f2;\">    src: </span><span style=\"color:#ffee99;\">&quot;https://avatars.githubusercontent.com/u/79236386?s=200&amp;v=4&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">    class: </span><span style=\"color:#ffee99;\">&quot;primary_button&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">    width: </span><span style=\"color:#ffee99;\">&quot;10px&quot;\n</span><span style=\"color:#f8f8f2;\">}}))</span></pre>\n",
-            name: "hello_world_desktop.rs".to_string(),
+            name: "rsx_overview.rs".to_string(),
         }
         DemoFrame { rsx_overview::Attributes {} }
         blockquote {
@@ -6896,7 +6301,7 @@ pub fn ReferenceRsx() -> dioxus::prelude::Element {
         }
         CodeBlock {
             contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">cx.</span><span style=\"color:#66d9ef;\">render</span><span style=\"color:#f8f8f2;\">(rsx!(div {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#ffee99;\">&quot;style&quot;</span><span style=\"color:#f8f8f2;\">: </span><span style=\"color:#ffee99;\">&quot;width: 20px; height: 20px; background-color: red;&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">}}))</span></pre>\n",
-            name: "hello_world_desktop.rs".to_string(),
+            name: "rsx_overview.rs".to_string(),
         }
         DemoFrame { rsx_overview::CustomAttributes {} }
         h3 { id: "special-attributes",
@@ -6918,7 +6323,7 @@ pub fn ReferenceRsx() -> dioxus::prelude::Element {
         }
         CodeBlock {
             contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#8c8c8c;\">// this should come from a trusted source\n</span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> contents </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;live &lt;b&gt;dangerously&lt;/b&gt;&quot;</span><span style=\"color:#f8f8f2;\">;\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">cx.</span><span style=\"color:#66d9ef;\">render</span><span style=\"color:#f8f8f2;\">(rsx! {{\n</span><span style=\"color:#f8f8f2;\">    div {{\n</span><span style=\"color:#f8f8f2;\">        dangerous_inner_html: </span><span style=\"color:#ffee99;\">&quot;{{contents}}&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}})</span></pre>\n",
-            name: "hello_world_desktop.rs".to_string(),
+            name: "dangerous_inner_html.rs".to_string(),
         }
         DemoFrame { dangerous_inner_html::App {} }
         blockquote {
@@ -6952,7 +6357,7 @@ pub fn ReferenceRsx() -> dioxus::prelude::Element {
         }
         CodeBlock {
             contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">cx.</span><span style=\"color:#66d9ef;\">render</span><span style=\"color:#f8f8f2;\">(rsx! {{\n</span><span style=\"color:#f8f8f2;\">    div {{\n</span><span style=\"color:#f8f8f2;\">        hidden: </span><span style=\"color:#ff80f4;\">false</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"color:#ffee99;\">&quot;hello&quot;\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}})</span></pre>\n",
-            name: "hello_world_desktop.rs".to_string(),
+            name: "boolean_attribute.rs".to_string(),
         }
         DemoFrame { boolean_attribute::App {} }
         p {
@@ -7061,7 +6466,7 @@ pub fn ReferenceRsx() -> dioxus::prelude::Element {
         }
         CodeBlock {
             contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> coordinates </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#ff80f4;\">42</span><span style=\"color:#f8f8f2;\">, </span><span style=\"color:#ff80f4;\">0</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> country </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;es&quot;</span><span style=\"color:#f8f8f2;\">;\n</span><span style=\"color:#f8f8f2;\">cx.</span><span style=\"color:#66d9ef;\">render</span><span style=\"color:#f8f8f2;\">(rsx!(div {{\n</span><span style=\"color:#f8f8f2;\">    class: </span><span style=\"color:#ffee99;\">&quot;country-{{country}}&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">    left: </span><span style=\"color:#ffee99;\">&quot;{{coordinates.0:?}}&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">    top: </span><span style=\"color:#ffee99;\">&quot;{{coordinates.1:?}}&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#8c8c8c;\">// arbitrary expressions are allowed,\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#8c8c8c;\">// as long as they don&#39;t contain `{{}}`\n</span><span style=\"color:#f8f8f2;\">    div {{\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"color:#ffee99;\">&quot;{{country.to_uppercase()}}&quot;\n</span><span style=\"color:#f8f8f2;\">    }},\n</span><span style=\"color:#f8f8f2;\">    div {{\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"color:#ffee99;\">&quot;{{7*6}}&quot;\n</span><span style=\"color:#f8f8f2;\">    }},\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#8c8c8c;\">// {{}} can be escaped with {{{{}}}}\n</span><span style=\"color:#f8f8f2;\">    div {{\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"color:#ffee99;\">&quot;{{{{}}}}&quot;\n</span><span style=\"color:#f8f8f2;\">    }},\n</span><span style=\"color:#f8f8f2;\">}}))</span></pre>\n",
-            name: "hello_world_desktop.rs".to_string(),
+            name: "rsx_overview.rs".to_string(),
         }
         DemoFrame { rsx_overview::Formatting {} }
         h3 { id: "children",
@@ -7080,7 +6485,7 @@ pub fn ReferenceRsx() -> dioxus::prelude::Element {
         }
         CodeBlock {
             contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">cx.</span><span style=\"color:#66d9ef;\">render</span><span style=\"color:#f8f8f2;\">(rsx!(ol {{\n</span><span style=\"color:#f8f8f2;\">    li {{</span><span style=\"color:#ffee99;\">&quot;First Item&quot;</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">    li {{</span><span style=\"color:#ffee99;\">&quot;Second Item&quot;</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">    li {{</span><span style=\"color:#ffee99;\">&quot;Third Item&quot;</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">}}))</span></pre>\n",
-            name: "hello_world_desktop.rs".to_string(),
+            name: "rsx_overview.rs".to_string(),
         }
         DemoFrame { rsx_overview::Children {} }
         h3 { id: "fragments",
@@ -7093,7 +6498,7 @@ pub fn ReferenceRsx() -> dioxus::prelude::Element {
         }
         CodeBlock {
             contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">cx.</span><span style=\"color:#66d9ef;\">render</span><span style=\"color:#f8f8f2;\">(rsx!(\n</span><span style=\"color:#f8f8f2;\">    p {{</span><span style=\"color:#ffee99;\">&quot;First Item&quot;</span><span style=\"color:#f8f8f2;\">}},\n</span><span style=\"color:#f8f8f2;\">    p {{</span><span style=\"color:#ffee99;\">&quot;Second Item&quot;</span><span style=\"color:#f8f8f2;\">}},\n</span><span style=\"color:#f8f8f2;\">))</span></pre>\n",
-            name: "hello_world_desktop.rs".to_string(),
+            name: "rsx_overview.rs".to_string(),
         }
         DemoFrame { rsx_overview::ManyRoots {} }
         h3 { id: "expressions",
@@ -7112,7 +6517,7 @@ pub fn ReferenceRsx() -> dioxus::prelude::Element {
         }
         CodeBlock {
             contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> text </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;Dioxus&quot;</span><span style=\"color:#f8f8f2;\">;\n</span><span style=\"color:#f8f8f2;\">cx.</span><span style=\"color:#66d9ef;\">render</span><span style=\"color:#f8f8f2;\">(rsx!(span {{\n</span><span style=\"color:#f8f8f2;\">    text.</span><span style=\"color:#66d9ef;\">to_uppercase</span><span style=\"color:#f8f8f2;\">(),\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#8c8c8c;\">// create a list of text from 0 to 9\n</span><span style=\"color:#f8f8f2;\">    (</span><span style=\"color:#ff80f4;\">0</span><span style=\"color:#f92672;\">..</span><span style=\"color:#ff80f4;\">10</span><span style=\"color:#f8f8f2;\">).</span><span style=\"color:#66d9ef;\">map</span><span style=\"color:#f8f8f2;\">(|</span><span style=\"font-style:italic;color:#fd971f;\">i</span><span style=\"color:#f8f8f2;\">| rsx!{{ i.</span><span style=\"color:#66d9ef;\">to_string</span><span style=\"color:#f8f8f2;\">() }})\n</span><span style=\"color:#f8f8f2;\">}}))</span></pre>\n",
-            name: "hello_world_desktop.rs".to_string(),
+            name: "rsx_overview.rs".to_string(),
         }
         DemoFrame { rsx_overview::Expression {} }
         h3 { id: "loops",
@@ -7121,7 +6526,7 @@ pub fn ReferenceRsx() -> dioxus::prelude::Element {
         p { "In addition to iterators you can also use for loops directly within RSX:" }
         CodeBlock {
             contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">cx.</span><span style=\"color:#66d9ef;\">render</span><span style=\"color:#f8f8f2;\">(rsx! {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#8c8c8c;\">// use a for loop where the body itself is RSX\n</span><span style=\"color:#f8f8f2;\">    div {{\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"color:#8c8c8c;\">// create a list of text from 0 to 9\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"color:#f92672;\">for</span><span style=\"color:#f8f8f2;\"> i </span><span style=\"color:#f92672;\">in </span><span style=\"color:#ff80f4;\">0</span><span style=\"color:#f92672;\">..</span><span style=\"color:#ff80f4;\">3 </span><span style=\"color:#f8f8f2;\">{{\n</span><span style=\"color:#f8f8f2;\">            </span><span style=\"color:#8c8c8c;\">// NOTE: the body of the loop is RSX not a rust statement\n</span><span style=\"color:#f8f8f2;\">            div {{\n</span><span style=\"color:#f8f8f2;\">                </span><span style=\"color:#ffee99;\">&quot;{{i}}&quot;\n</span><span style=\"color:#f8f8f2;\">            }}\n</span><span style=\"color:#f8f8f2;\">        }}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#8c8c8c;\">// iterator equivalent\n</span><span style=\"color:#f8f8f2;\">    div {{\n</span><span style=\"color:#f8f8f2;\">        (</span><span style=\"color:#ff80f4;\">0</span><span style=\"color:#f92672;\">..</span><span style=\"color:#ff80f4;\">3</span><span style=\"color:#f8f8f2;\">).</span><span style=\"color:#66d9ef;\">map</span><span style=\"color:#f8f8f2;\">(|</span><span style=\"font-style:italic;color:#fd971f;\">i</span><span style=\"color:#f8f8f2;\">| rsx!{{ div {{ </span><span style=\"color:#ffee99;\">&quot;{{i}}&quot; </span><span style=\"color:#f8f8f2;\">}} }})\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}})</span></pre>\n",
-            name: "hello_world_desktop.rs".to_string(),
+            name: "rsx_overview.rs".to_string(),
         }
         DemoFrame { rsx_overview::Loops {} }
         h3 { id: "if-statements",
@@ -7130,7 +6535,7 @@ pub fn ReferenceRsx() -> dioxus::prelude::Element {
         p { "You can also use if statements without an else branch within RSX:" }
         CodeBlock {
             contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">cx.</span><span style=\"color:#66d9ef;\">render</span><span style=\"color:#f8f8f2;\">(rsx! {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#8c8c8c;\">// use if statements without an else\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#f92672;\">if </span><span style=\"color:#ff80f4;\">true </span><span style=\"color:#f8f8f2;\">{{\n</span><span style=\"color:#f8f8f2;\">        rsx!(div {{ </span><span style=\"color:#ffee99;\">&quot;true&quot; </span><span style=\"color:#f8f8f2;\">}})\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}})</span></pre>\n",
-            name: "hello_world_desktop.rs".to_string(),
+            name: "rsx_overview.rs".to_string(),
         }
         DemoFrame { rsx_overview::IfStatements {} }
     }
@@ -7176,7 +6581,7 @@ pub fn ReferenceComponents() -> dioxus::prelude::Element {
         }
         CodeBlock {
             contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f92672;\">pub </span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">About</span><span style=\"color:#f8f8f2;\">(</span><span style=\"font-style:italic;color:#fd971f;\">cx</span><span style=\"color:#f8f8f2;\">: Scope) -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    cx.</span><span style=\"color:#66d9ef;\">render</span><span style=\"color:#f8f8f2;\">(rsx!(p {{\n</span><span style=\"color:#f8f8f2;\">        b {{</span><span style=\"color:#ffee99;\">&quot;Dioxus Labs&quot;</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"color:#ffee99;\">&quot; An Open Source project dedicated to making Rust UI wonderful.&quot;\n</span><span style=\"color:#f8f8f2;\">    }}))\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
-            name: "hello_world_desktop.rs".to_string(),
+            name: "components.rs".to_string(),
         }
         DemoFrame { components::About {} }
         p {
@@ -7184,7 +6589,7 @@ pub fn ReferenceComponents() -> dioxus::prelude::Element {
         }
         CodeBlock {
             contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f92672;\">pub </span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">App</span><span style=\"color:#f8f8f2;\">(</span><span style=\"font-style:italic;color:#fd971f;\">cx</span><span style=\"color:#f8f8f2;\">: Scope) -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    cx.</span><span style=\"color:#66d9ef;\">render</span><span style=\"color:#f8f8f2;\">(rsx! {{\n</span><span style=\"color:#f8f8f2;\">        About {{}},\n</span><span style=\"color:#f8f8f2;\">        About {{}},\n</span><span style=\"color:#f8f8f2;\">    }})\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
-            name: "hello_world_desktop.rs".to_string(),
+            name: "components.rs".to_string(),
         }
         DemoFrame { components::App {} }
         blockquote {
@@ -7280,12 +6685,12 @@ pub fn ReferenceComponentProps() -> dioxus::prelude::Element {
         }
         CodeBlock {
             contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">#[derive(Props)]\n</span><span style=\"font-style:italic;color:#66d9ef;\">struct </span><span style=\"color:#f8f8f2;\">TitleCardProps&lt;</span><span style=\"color:#f92672;\">&#39;a</span><span style=\"color:#f8f8f2;\">&gt; {{\n</span><span style=\"color:#f8f8f2;\">    title: </span><span style=\"color:#f92672;\">&amp;&#39;a </span><span style=\"font-style:italic;color:#66d9ef;\">str</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">TitleCard</span><span style=\"color:#f8f8f2;\">&lt;</span><span style=\"color:#f92672;\">&#39;a</span><span style=\"color:#f8f8f2;\">&gt;(</span><span style=\"font-style:italic;color:#fd971f;\">cx</span><span style=\"color:#f8f8f2;\">: Scope&lt;</span><span style=\"color:#f92672;\">&#39;a</span><span style=\"color:#f8f8f2;\">, TitleCardProps&lt;</span><span style=\"color:#f92672;\">&#39;a</span><span style=\"color:#f8f8f2;\">&gt;&gt;) -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    cx.</span><span style=\"color:#66d9ef;\">render</span><span style=\"color:#f8f8f2;\">(rsx! {{\n</span><span style=\"color:#f8f8f2;\">        h1 {{ </span><span style=\"color:#ffee99;\">&quot;{{cx.props.title}}&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">    }})\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
-            name: "component_owned_props.rs".to_string(),
+            name: "component_borrowed_props.rs".to_string(),
         }
         p { "We can then use the component like this:" }
         CodeBlock {
             contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f92672;\">pub </span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">App</span><span style=\"color:#f8f8f2;\">(</span><span style=\"font-style:italic;color:#fd971f;\">cx</span><span style=\"color:#f8f8f2;\">: Scope) -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> hello </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;Hello Dioxus!&quot;</span><span style=\"color:#f8f8f2;\">;\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">    cx.</span><span style=\"color:#66d9ef;\">render</span><span style=\"color:#f8f8f2;\">(rsx!(TitleCard {{ title: hello }}))\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
-            name: "component_owned_props.rs".to_string(),
+            name: "component_borrowed_props.rs".to_string(),
         }
         DemoFrame { __interactive_04::component_borrowed_props {} }
         p {
@@ -7311,12 +6716,12 @@ pub fn ReferenceComponentProps() -> dioxus::prelude::Element {
         }
         CodeBlock {
             contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">#[derive(Props)]\n</span><span style=\"font-style:italic;color:#66d9ef;\">struct </span><span style=\"color:#f8f8f2;\">OptionalProps&lt;</span><span style=\"color:#f92672;\">&#39;a</span><span style=\"color:#f8f8f2;\">&gt; {{\n</span><span style=\"color:#f8f8f2;\">    title: </span><span style=\"color:#f92672;\">&amp;&#39;a </span><span style=\"font-style:italic;color:#66d9ef;\">str</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">    subtitle: Option&lt;</span><span style=\"color:#f92672;\">&amp;&#39;a </span><span style=\"font-style:italic;color:#66d9ef;\">str</span><span style=\"color:#f8f8f2;\">&gt;,\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">Title</span><span style=\"color:#f8f8f2;\">&lt;</span><span style=\"color:#f92672;\">&#39;a</span><span style=\"color:#f8f8f2;\">&gt;(</span><span style=\"font-style:italic;color:#fd971f;\">cx</span><span style=\"color:#f8f8f2;\">: Scope&lt;</span><span style=\"color:#f92672;\">&#39;a</span><span style=\"color:#f8f8f2;\">, OptionalProps&gt;) -&gt; Element&lt;</span><span style=\"color:#f92672;\">&#39;a</span><span style=\"color:#f8f8f2;\">&gt; {{\n</span><span style=\"color:#f8f8f2;\">    cx.</span><span style=\"color:#66d9ef;\">render</span><span style=\"color:#f8f8f2;\">(rsx!(h1{{\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"color:#ffee99;\">&quot;{{cx.props.title}}: &quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">        cx.props.subtitle.</span><span style=\"color:#66d9ef;\">unwrap_or</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#ffee99;\">&quot;No subtitle provided&quot;</span><span style=\"color:#f8f8f2;\">),\n</span><span style=\"color:#f8f8f2;\">    }}))\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
-            name: "component_owned_props.rs".to_string(),
+            name: "component_props_options.rs".to_string(),
         }
         p { "Then, you can choose to either provide them or not:" }
         CodeBlock {
             contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">Title {{\n</span><span style=\"color:#f8f8f2;\">title: </span><span style=\"color:#ffee99;\">&quot;Some Title&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">}},\n</span><span style=\"color:#f8f8f2;\">Title {{\n</span><span style=\"color:#f8f8f2;\">title: </span><span style=\"color:#ffee99;\">&quot;Some Title&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">subtitle: </span><span style=\"color:#ffee99;\">&quot;Some Subtitle&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">}},\n</span><span style=\"color:#8c8c8c;\">// Providing an Option explicitly won&#39;t compile though:\n</span><span style=\"color:#8c8c8c;\">// Title {{\n</span><span style=\"color:#8c8c8c;\">//     title: &quot;Some Title&quot;,\n</span><span style=\"color:#8c8c8c;\">//     subtitle: None,\n</span><span style=\"color:#8c8c8c;\">// }},</span></pre>\n",
-            name: "component_owned_props.rs".to_string(),
+            name: "component_props_options.rs".to_string(),
         }
         h3 { id: "explicitly-required",
             a { href: "#explicitly-required", class: "header", "Explicitly Required " }
@@ -7332,7 +6737,7 @@ pub fn ReferenceComponentProps() -> dioxus::prelude::Element {
         }
         CodeBlock {
             contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">#[derive(Props)]\n</span><span style=\"font-style:italic;color:#66d9ef;\">struct </span><span style=\"color:#f8f8f2;\">ExplicitOptionProps&lt;</span><span style=\"color:#f92672;\">&#39;a</span><span style=\"color:#f8f8f2;\">&gt; {{\n</span><span style=\"color:#f8f8f2;\">    title: </span><span style=\"color:#f92672;\">&amp;&#39;a </span><span style=\"font-style:italic;color:#66d9ef;\">str</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">    #[props(!optional)]\n</span><span style=\"color:#f8f8f2;\">    subtitle: Option&lt;</span><span style=\"color:#f92672;\">&amp;&#39;a </span><span style=\"font-style:italic;color:#66d9ef;\">str</span><span style=\"color:#f8f8f2;\">&gt;,\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">ExplicitOption</span><span style=\"color:#f8f8f2;\">&lt;</span><span style=\"color:#f92672;\">&#39;a</span><span style=\"color:#f8f8f2;\">&gt;(</span><span style=\"font-style:italic;color:#fd971f;\">cx</span><span style=\"color:#f8f8f2;\">: Scope&lt;</span><span style=\"color:#f92672;\">&#39;a</span><span style=\"color:#f8f8f2;\">, ExplicitOptionProps&gt;) -&gt; Element&lt;</span><span style=\"color:#f92672;\">&#39;a</span><span style=\"color:#f8f8f2;\">&gt; {{\n</span><span style=\"color:#f8f8f2;\">    cx.</span><span style=\"color:#66d9ef;\">render</span><span style=\"color:#f8f8f2;\">(rsx!(h1 {{\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"color:#ffee99;\">&quot;{{cx.props.title}}: &quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">        cx.props.subtitle.</span><span style=\"color:#66d9ef;\">unwrap_or</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#ffee99;\">&quot;No subtitle provided&quot;</span><span style=\"color:#f8f8f2;\">),\n</span><span style=\"color:#f8f8f2;\">    }}))\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
-            name: "component_owned_props.rs".to_string(),
+            name: "component_props_options.rs".to_string(),
         }
         p {
             "Then, you have to explicitly pass either  "
@@ -7343,7 +6748,7 @@ pub fn ReferenceComponentProps() -> dioxus::prelude::Element {
         }
         CodeBlock {
             contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">ExplicitOption {{\n</span><span style=\"color:#f8f8f2;\">title: </span><span style=\"color:#ffee99;\">&quot;Some Title&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">subtitle: </span><span style=\"font-style:italic;color:#66d9ef;\">None</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">}},\n</span><span style=\"color:#f8f8f2;\">ExplicitOption {{\n</span><span style=\"color:#f8f8f2;\">title: </span><span style=\"color:#ffee99;\">&quot;Some Title&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">subtitle: </span><span style=\"font-style:italic;color:#66d9ef;\">Some</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#ffee99;\">&quot;Some Title&quot;</span><span style=\"color:#f8f8f2;\">),\n</span><span style=\"color:#f8f8f2;\">}},\n</span><span style=\"color:#8c8c8c;\">// This won&#39;t compile:\n</span><span style=\"color:#8c8c8c;\">// ExplicitOption {{\n</span><span style=\"color:#8c8c8c;\">//     title: &quot;Some Title&quot;,\n</span><span style=\"color:#8c8c8c;\">// }},</span></pre>\n",
-            name: "component_owned_props.rs".to_string(),
+            name: "component_props_options.rs".to_string(),
         }
         h3 { id: "default-props",
             a { href: "#default-props", class: "header", "Default Props" }
@@ -7355,12 +6760,12 @@ pub fn ReferenceComponentProps() -> dioxus::prelude::Element {
         }
         CodeBlock {
             contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">#[derive(PartialEq, Props)]\n</span><span style=\"font-style:italic;color:#66d9ef;\">struct </span><span style=\"color:#f8f8f2;\">DefaultProps {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#8c8c8c;\">// default to 42 when not provided\n</span><span style=\"color:#f8f8f2;\">    #[props(default = 42)]\n</span><span style=\"color:#f8f8f2;\">    number: </span><span style=\"font-style:italic;color:#66d9ef;\">i64</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">DefaultComponent</span><span style=\"color:#f8f8f2;\">(</span><span style=\"font-style:italic;color:#fd971f;\">cx</span><span style=\"color:#f8f8f2;\">: Scope&lt;DefaultProps&gt;) -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    cx.</span><span style=\"color:#66d9ef;\">render</span><span style=\"color:#f8f8f2;\">(rsx!(h1 {{ </span><span style=\"color:#ffee99;\">&quot;{{cx.props.number}}&quot; </span><span style=\"color:#f8f8f2;\">}}))\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
-            name: "component_owned_props.rs".to_string(),
+            name: "component_props_options.rs".to_string(),
         }
         p { "Then, similarly to optional props, you don't have to provide it:" }
         CodeBlock {
             contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">DefaultComponent {{\n</span><span style=\"color:#f8f8f2;\">number: </span><span style=\"color:#ff80f4;\">5</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">}},\n</span><span style=\"color:#f8f8f2;\">DefaultComponent {{}},</span></pre>\n",
-            name: "component_owned_props.rs".to_string(),
+            name: "component_props_options.rs".to_string(),
         }
         h3 { id: "automatic-conversion-with",
             a { href: "#automatic-conversion-with", class: "header", "Automatic Conversion with " }
@@ -7383,12 +6788,12 @@ pub fn ReferenceComponentProps() -> dioxus::prelude::Element {
         }
         CodeBlock {
             contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">#[derive(PartialEq, Props)]\n</span><span style=\"font-style:italic;color:#66d9ef;\">struct </span><span style=\"color:#f8f8f2;\">IntoProps {{\n</span><span style=\"color:#f8f8f2;\">    #[props(into)]\n</span><span style=\"color:#f8f8f2;\">    string: String,\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">IntoComponent</span><span style=\"color:#f8f8f2;\">(</span><span style=\"font-style:italic;color:#fd971f;\">cx</span><span style=\"color:#f8f8f2;\">: Scope&lt;IntoProps&gt;) -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    cx.</span><span style=\"color:#66d9ef;\">render</span><span style=\"color:#f8f8f2;\">(rsx!(h1 {{ </span><span style=\"color:#ffee99;\">&quot;{{cx.props.string}}&quot; </span><span style=\"color:#f8f8f2;\">}}))\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
-            name: "component_owned_props.rs".to_string(),
+            name: "component_props_options.rs".to_string(),
         }
         p { "Then, you can use it so:" }
         CodeBlock {
             contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">IntoComponent {{\n</span><span style=\"color:#f8f8f2;\">string: </span><span style=\"color:#ffee99;\">&quot;some &amp;str&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">}},</span></pre>\n",
-            name: "component_owned_props.rs".to_string(),
+            name: "component_props_options.rs".to_string(),
         }
         h2 { id: "the",
             a { href: "#the", class: "header", "The " }
@@ -7430,7 +6835,7 @@ pub fn ReferenceComponentProps() -> dioxus::prelude::Element {
         }
         CodeBlock {
             contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">#[derive(Props)]\n</span><span style=\"font-style:italic;color:#66d9ef;\">struct </span><span style=\"color:#f8f8f2;\">ClickableProps&lt;</span><span style=\"color:#f92672;\">&#39;a</span><span style=\"color:#f8f8f2;\">&gt; {{\n</span><span style=\"color:#f8f8f2;\">    href: </span><span style=\"color:#f92672;\">&amp;&#39;a </span><span style=\"font-style:italic;color:#66d9ef;\">str</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">    body: Element&lt;</span><span style=\"color:#f92672;\">&#39;a</span><span style=\"color:#f8f8f2;\">&gt;,\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">Clickable</span><span style=\"color:#f8f8f2;\">&lt;</span><span style=\"color:#f92672;\">&#39;a</span><span style=\"color:#f8f8f2;\">&gt;(</span><span style=\"font-style:italic;color:#fd971f;\">cx</span><span style=\"color:#f8f8f2;\">: Scope&lt;</span><span style=\"color:#f92672;\">&#39;a</span><span style=\"color:#f8f8f2;\">, ClickableProps&lt;</span><span style=\"color:#f92672;\">&#39;a</span><span style=\"color:#f8f8f2;\">&gt;&gt;) -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    cx.</span><span style=\"color:#66d9ef;\">render</span><span style=\"color:#f8f8f2;\">(rsx!(\n</span><span style=\"color:#f8f8f2;\">        a {{\n</span><span style=\"color:#f8f8f2;\">            href: </span><span style=\"color:#ffee99;\">&quot;{{cx.props.href}}&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">            class: </span><span style=\"color:#ffee99;\">&quot;fancy-button&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">            </span><span style=\"color:#f92672;\">&amp;</span><span style=\"color:#f8f8f2;\">cx.props.body\n</span><span style=\"color:#f8f8f2;\">        }}\n</span><span style=\"color:#f8f8f2;\">    ))\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
-            name: "component_owned_props.rs".to_string(),
+            name: "component_element_props.rs".to_string(),
         }
         p {
             "Then, when rendering the component, you can pass in the output of  "
@@ -7439,7 +6844,7 @@ pub fn ReferenceComponentProps() -> dioxus::prelude::Element {
         }
         CodeBlock {
             contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">cx.</span><span style=\"color:#66d9ef;\">render</span><span style=\"color:#f8f8f2;\">(rsx! {{\n</span><span style=\"color:#f8f8f2;\">    Clickable {{\n</span><span style=\"color:#f8f8f2;\">        href: </span><span style=\"color:#ffee99;\">&quot;https://www.youtube.com/watch?v=C-M2hs3sXGo&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">        body: cx.</span><span style=\"color:#66d9ef;\">render</span><span style=\"color:#f8f8f2;\">(rsx!(</span><span style=\"color:#ffee99;\">&quot;How to &quot;</span><span style=\"color:#f8f8f2;\"> i {{</span><span style=\"color:#ffee99;\">&quot;not&quot;</span><span style=\"color:#f8f8f2;\">}} </span><span style=\"color:#ffee99;\">&quot; be seen&quot;</span><span style=\"color:#f8f8f2;\">)),\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}})</span></pre>\n",
-            name: "component_owned_props.rs".to_string(),
+            name: "component_element_props.rs".to_string(),
         }
         blockquote {
             p {
@@ -7467,7 +6872,7 @@ pub fn ReferenceComponentProps() -> dioxus::prelude::Element {
         }
         CodeBlock {
             contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">#[derive(Props)]\n</span><span style=\"font-style:italic;color:#66d9ef;\">struct </span><span style=\"color:#f8f8f2;\">ClickableProps&lt;</span><span style=\"color:#f92672;\">&#39;a</span><span style=\"color:#f8f8f2;\">&gt; {{\n</span><span style=\"color:#f8f8f2;\">    href: </span><span style=\"color:#f92672;\">&amp;&#39;a </span><span style=\"font-style:italic;color:#66d9ef;\">str</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">    children: Element&lt;</span><span style=\"color:#f92672;\">&#39;a</span><span style=\"color:#f8f8f2;\">&gt;,\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">Clickable</span><span style=\"color:#f8f8f2;\">&lt;</span><span style=\"color:#f92672;\">&#39;a</span><span style=\"color:#f8f8f2;\">&gt;(</span><span style=\"font-style:italic;color:#fd971f;\">cx</span><span style=\"color:#f8f8f2;\">: Scope&lt;</span><span style=\"color:#f92672;\">&#39;a</span><span style=\"color:#f8f8f2;\">, ClickableProps&lt;</span><span style=\"color:#f92672;\">&#39;a</span><span style=\"color:#f8f8f2;\">&gt;&gt;) -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    cx.</span><span style=\"color:#66d9ef;\">render</span><span style=\"color:#f8f8f2;\">(rsx!(\n</span><span style=\"color:#f8f8f2;\">        a {{\n</span><span style=\"color:#f8f8f2;\">            href: </span><span style=\"color:#ffee99;\">&quot;{{cx.props.href}}&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">            class: </span><span style=\"color:#ffee99;\">&quot;fancy-button&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">            </span><span style=\"color:#f92672;\">&amp;</span><span style=\"color:#f8f8f2;\">cx.props.children\n</span><span style=\"color:#f8f8f2;\">        }}\n</span><span style=\"color:#f8f8f2;\">    ))\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
-            name: "component_owned_props.rs".to_string(),
+            name: "component_children.rs".to_string(),
         }
         p {
             "This makes using the component much simpler: simply put the RSX inside the  "
@@ -7478,7 +6883,7 @@ pub fn ReferenceComponentProps() -> dioxus::prelude::Element {
         }
         CodeBlock {
             contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">cx.</span><span style=\"color:#66d9ef;\">render</span><span style=\"color:#f8f8f2;\">(rsx! {{\n</span><span style=\"color:#f8f8f2;\">    Clickable {{\n</span><span style=\"color:#f8f8f2;\">        href: </span><span style=\"color:#ffee99;\">&quot;https://www.youtube.com/watch?v=C-M2hs3sXGo&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"color:#ffee99;\">&quot;How to &quot;</span><span style=\"color:#f8f8f2;\"> i {{</span><span style=\"color:#ffee99;\">&quot;not&quot;</span><span style=\"color:#f8f8f2;\">}} </span><span style=\"color:#ffee99;\">&quot; be seen&quot;\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}})</span></pre>\n",
-            name: "component_owned_props.rs".to_string(),
+            name: "component_children.rs".to_string(),
         }
         DemoFrame { component_children::App {} }
     }
@@ -7563,7 +6968,7 @@ pub fn ReferenceEventHandlers() -> dioxus::prelude::Element {
         }
         CodeBlock {
             contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">cx.</span><span style=\"color:#66d9ef;\">render</span><span style=\"color:#f8f8f2;\">(rsx! {{\n</span><span style=\"color:#f8f8f2;\">    div {{\n</span><span style=\"color:#f8f8f2;\">        onclick: </span><span style=\"color:#f92672;\">move |</span><span style=\"color:#f8f8f2;\">_event</span><span style=\"color:#f92672;\">| </span><span style=\"color:#f8f8f2;\">{{}},\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"color:#ffee99;\">&quot;outer&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">        button {{\n</span><span style=\"color:#f8f8f2;\">            onclick: </span><span style=\"color:#f92672;\">move |</span><span style=\"color:#f8f8f2;\">event</span><span style=\"color:#f92672;\">| </span><span style=\"color:#f8f8f2;\">{{\n</span><span style=\"color:#f8f8f2;\">                </span><span style=\"color:#8c8c8c;\">// now, outer won&#39;t be triggered\n</span><span style=\"color:#f8f8f2;\">                event.</span><span style=\"color:#66d9ef;\">stop_propagation</span><span style=\"color:#f8f8f2;\">();\n</span><span style=\"color:#f8f8f2;\">            }},\n</span><span style=\"color:#f8f8f2;\">            </span><span style=\"color:#ffee99;\">&quot;inner&quot;\n</span><span style=\"color:#f8f8f2;\">        }}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}})</span></pre>\n",
-            name: "event_click.rs".to_string(),
+            name: "event_nested.rs".to_string(),
         }
         h2 { id: "prevent-default",
             a { href: "#prevent-default", class: "header", "Prevent Default" }
@@ -7578,7 +6983,7 @@ pub fn ReferenceEventHandlers() -> dioxus::prelude::Element {
         }
         CodeBlock {
             contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">cx.</span><span style=\"color:#66d9ef;\">render</span><span style=\"color:#f8f8f2;\">(rsx! {{\n</span><span style=\"color:#f8f8f2;\">    a {{\n</span><span style=\"color:#f8f8f2;\">        href: </span><span style=\"color:#ffee99;\">&quot;https://example.com&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">        prevent_default: </span><span style=\"color:#ffee99;\">&quot;onclick&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">        onclick: |_| log::info</span><span style=\"color:#f92672;\">!</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#ffee99;\">&quot;link clicked&quot;</span><span style=\"color:#f8f8f2;\">),\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"color:#ffee99;\">&quot;example.com&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}})</span></pre>\n",
-            name: "event_click.rs".to_string(),
+            name: "event_prevent_default.rs".to_string(),
         }
         DemoFrame { event_prevent_default::App {} }
         p { "Any event handlers will still be called." }
@@ -7601,12 +7006,12 @@ pub fn ReferenceEventHandlers() -> dioxus::prelude::Element {
         }
         CodeBlock {
             contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">#[derive(Props)]\n</span><span style=\"color:#f92672;\">pub </span><span style=\"font-style:italic;color:#66d9ef;\">struct </span><span style=\"color:#f8f8f2;\">FancyButtonProps&lt;</span><span style=\"color:#f92672;\">&#39;a</span><span style=\"color:#f8f8f2;\">&gt; {{\n</span><span style=\"color:#f8f8f2;\">    on_click: EventHandler&lt;</span><span style=\"color:#f92672;\">&#39;a</span><span style=\"color:#f8f8f2;\">, MouseEvent&gt;,\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\">pub </span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">FancyButton</span><span style=\"color:#f8f8f2;\">&lt;</span><span style=\"color:#f92672;\">&#39;a</span><span style=\"color:#f8f8f2;\">&gt;(</span><span style=\"font-style:italic;color:#fd971f;\">cx</span><span style=\"color:#f8f8f2;\">: Scope&lt;</span><span style=\"color:#f92672;\">&#39;a</span><span style=\"color:#f8f8f2;\">, FancyButtonProps&lt;</span><span style=\"color:#f92672;\">&#39;a</span><span style=\"color:#f8f8f2;\">&gt;&gt;) -&gt; Element&lt;</span><span style=\"color:#f92672;\">&#39;a</span><span style=\"color:#f8f8f2;\">&gt; {{\n</span><span style=\"color:#f8f8f2;\">    cx.</span><span style=\"color:#66d9ef;\">render</span><span style=\"color:#f8f8f2;\">(rsx!(button {{\n</span><span style=\"color:#f8f8f2;\">        class: </span><span style=\"color:#ffee99;\">&quot;fancy-button&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">        onclick: </span><span style=\"color:#f92672;\">move |</span><span style=\"color:#f8f8f2;\">evt</span><span style=\"color:#f92672;\">|</span><span style=\"color:#f8f8f2;\"> cx.props.on_click.</span><span style=\"color:#66d9ef;\">call</span><span style=\"color:#f8f8f2;\">(evt),\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"color:#ffee99;\">&quot;click me pls.&quot;\n</span><span style=\"color:#f8f8f2;\">    }}))\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
-            name: "event_click.rs".to_string(),
+            name: "event_handler_prop.rs".to_string(),
         }
         p { "Then, you can use it like any other handler:" }
         CodeBlock {
             contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">cx.</span><span style=\"color:#66d9ef;\">render</span><span style=\"color:#f8f8f2;\">(rsx! {{\n</span><span style=\"color:#f8f8f2;\">    FancyButton {{\n</span><span style=\"color:#f8f8f2;\">        on_click: </span><span style=\"color:#f92672;\">move |</span><span style=\"color:#f8f8f2;\">event</span><span style=\"color:#f92672;\">| </span><span style=\"color:#f8f8f2;\">println!(</span><span style=\"color:#ffee99;\">&quot;Clicked! </span><span style=\"color:#ff80f4;\">{{event:?}}</span><span style=\"color:#ffee99;\">&quot;</span><span style=\"color:#f8f8f2;\">)\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}})</span></pre>\n",
-            name: "event_click.rs".to_string(),
+            name: "event_handler_prop.rs".to_string(),
         }
         blockquote {
             p {
@@ -7625,7 +7030,7 @@ pub fn ReferenceEventHandlers() -> dioxus::prelude::Element {
         }
         CodeBlock {
             contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"font-style:italic;color:#66d9ef;\">struct </span><span style=\"color:#f8f8f2;\">ComplexData(</span><span style=\"font-style:italic;color:#66d9ef;\">i32</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">#[derive(Props)]\n</span><span style=\"color:#f92672;\">pub </span><span style=\"font-style:italic;color:#66d9ef;\">struct </span><span style=\"color:#f8f8f2;\">CustomFancyButtonProps&lt;</span><span style=\"color:#f92672;\">&#39;a</span><span style=\"color:#f8f8f2;\">&gt; {{\n</span><span style=\"color:#f8f8f2;\">    on_click: EventHandler&lt;</span><span style=\"color:#f92672;\">&#39;a</span><span style=\"color:#f8f8f2;\">, ComplexData&gt;,\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\">pub </span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">CustomFancyButton</span><span style=\"color:#f8f8f2;\">&lt;</span><span style=\"color:#f92672;\">&#39;a</span><span style=\"color:#f8f8f2;\">&gt;(</span><span style=\"font-style:italic;color:#fd971f;\">cx</span><span style=\"color:#f8f8f2;\">: Scope&lt;</span><span style=\"color:#f92672;\">&#39;a</span><span style=\"color:#f8f8f2;\">, CustomFancyButtonProps&lt;</span><span style=\"color:#f92672;\">&#39;a</span><span style=\"color:#f8f8f2;\">&gt;&gt;) -&gt; Element&lt;</span><span style=\"color:#f92672;\">&#39;a</span><span style=\"color:#f8f8f2;\">&gt; {{\n</span><span style=\"color:#f8f8f2;\">    cx.</span><span style=\"color:#66d9ef;\">render</span><span style=\"color:#f8f8f2;\">(rsx!(button {{\n</span><span style=\"color:#f8f8f2;\">        class: </span><span style=\"color:#ffee99;\">&quot;fancy-button&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">        onclick: </span><span style=\"color:#f92672;\">move |_|</span><span style=\"color:#f8f8f2;\"> cx.props.on_click.</span><span style=\"color:#66d9ef;\">call</span><span style=\"color:#f8f8f2;\">(ComplexData(</span><span style=\"color:#ff80f4;\">0</span><span style=\"color:#f8f8f2;\">)),\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"color:#ffee99;\">&quot;click me pls.&quot;\n</span><span style=\"color:#f8f8f2;\">    }}))\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
-            name: "event_click.rs".to_string(),
+            name: "event_handler_prop.rs".to_string(),
         }
     }
 }
@@ -7702,7 +7107,7 @@ pub fn ReferenceHooks() -> dioxus::prelude::Element {
         p { "You can use multiple hooks in the same component if you want:" }
         CodeBlock {
             contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f92672;\">pub </span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">App</span><span style=\"color:#f8f8f2;\">(</span><span style=\"font-style:italic;color:#fd971f;\">cx</span><span style=\"color:#f8f8f2;\">: Scope) -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let </span><span style=\"color:#f92672;\">mut</span><span style=\"color:#f8f8f2;\"> count_a </span><span style=\"color:#f92672;\">= </span><span style=\"color:#66d9ef;\">use_state</span><span style=\"color:#f8f8f2;\">(cx, || </span><span style=\"color:#ff80f4;\">0</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let </span><span style=\"color:#f92672;\">mut</span><span style=\"color:#f8f8f2;\"> count_b </span><span style=\"color:#f92672;\">= </span><span style=\"color:#66d9ef;\">use_state</span><span style=\"color:#f8f8f2;\">(cx, || </span><span style=\"color:#ff80f4;\">0</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">    cx.</span><span style=\"color:#66d9ef;\">render</span><span style=\"color:#f8f8f2;\">(rsx!(\n</span><span style=\"color:#f8f8f2;\">        h1 {{ </span><span style=\"color:#ffee99;\">&quot;Counter_a: {{count_a}}&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">        button {{ onclick: </span><span style=\"color:#f92672;\">move |_|</span><span style=\"color:#f8f8f2;\"> count_a </span><span style=\"color:#f92672;\">+= </span><span style=\"color:#ff80f4;\">1</span><span style=\"color:#f8f8f2;\">, </span><span style=\"color:#ffee99;\">&quot;a++&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">        button {{ onclick: </span><span style=\"color:#f92672;\">move |_|</span><span style=\"color:#f8f8f2;\"> count_a </span><span style=\"color:#f92672;\">-= </span><span style=\"color:#ff80f4;\">1</span><span style=\"color:#f8f8f2;\">, </span><span style=\"color:#ffee99;\">&quot;a--&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">        h1 {{ </span><span style=\"color:#ffee99;\">&quot;Counter_b: {{count_b}}&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">        button {{ onclick: </span><span style=\"color:#f92672;\">move |_|</span><span style=\"color:#f8f8f2;\"> count_b </span><span style=\"color:#f92672;\">+= </span><span style=\"color:#ff80f4;\">1</span><span style=\"color:#f8f8f2;\">, </span><span style=\"color:#ffee99;\">&quot;b++&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">        button {{ onclick: </span><span style=\"color:#f92672;\">move |_|</span><span style=\"color:#f8f8f2;\"> count_b </span><span style=\"color:#f92672;\">-= </span><span style=\"color:#ff80f4;\">1</span><span style=\"color:#f8f8f2;\">, </span><span style=\"color:#ffee99;\">&quot;b--&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">    ))\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
-            name: "hooks_counter.rs".to_string(),
+            name: "hooks_counter_two_state.rs".to_string(),
         }
         DemoFrame { hooks_counter_two_state::App {} }
         h3 { id: "out-of-date-usestate",
@@ -7715,7 +7120,7 @@ pub fn ReferenceHooks() -> dioxus::prelude::Element {
         }
         CodeBlock {
             contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f92672;\">pub </span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">App</span><span style=\"color:#f8f8f2;\">(</span><span style=\"font-style:italic;color:#fd971f;\">cx</span><span style=\"color:#f8f8f2;\">: Scope) -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#8c8c8c;\">// count will be initialized to 0 the first time the component is rendered\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let </span><span style=\"color:#f92672;\">mut</span><span style=\"color:#f8f8f2;\"> count </span><span style=\"color:#f92672;\">= </span><span style=\"color:#66d9ef;\">use_state</span><span style=\"color:#f8f8f2;\">(cx, || </span><span style=\"color:#ff80f4;\">0</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> first_count_read </span><span style=\"color:#f92672;\">= </span><span style=\"color:#66d9ef;\">use_state</span><span style=\"color:#f8f8f2;\">(cx, || </span><span style=\"color:#ff80f4;\">0</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#8c8c8c;\">// Increase the count\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#f92672;\">if *</span><span style=\"color:#f8f8f2;\">count </span><span style=\"color:#f92672;\">== </span><span style=\"color:#ff80f4;\">0 </span><span style=\"color:#f8f8f2;\">{{\n</span><span style=\"color:#f8f8f2;\">        count </span><span style=\"color:#f92672;\">+= </span><span style=\"color:#ff80f4;\">1</span><span style=\"color:#f8f8f2;\">;\n</span><span style=\"color:#f8f8f2;\">        first_count_read.</span><span style=\"color:#66d9ef;\">set</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#f92672;\">**</span><span style=\"color:#f8f8f2;\">count);\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">    cx.</span><span style=\"color:#66d9ef;\">render</span><span style=\"color:#f8f8f2;\">(rsx!(\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"color:#8c8c8c;\">// This uses the deref value\n</span><span style=\"color:#f8f8f2;\">        h1 {{ </span><span style=\"color:#ffee99;\">&quot;High-Five counter: {{first_count_read}}&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">    ))\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
-            name: "hooks_counter.rs".to_string(),
+            name: "hooks_out_of_date.rs".to_string(),
         }
         DemoFrame { __interactive_04::hooks_out_of_date {} }
         p {
@@ -7727,7 +7132,7 @@ pub fn ReferenceHooks() -> dioxus::prelude::Element {
         }
         CodeBlock {
             contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f92672;\">pub </span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">App</span><span style=\"color:#f8f8f2;\">(</span><span style=\"font-style:italic;color:#fd971f;\">cx</span><span style=\"color:#f8f8f2;\">: Scope) -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let </span><span style=\"color:#f92672;\">mut</span><span style=\"color:#f8f8f2;\"> count </span><span style=\"color:#f92672;\">= </span><span style=\"color:#66d9ef;\">use_state</span><span style=\"color:#f8f8f2;\">(cx, || </span><span style=\"color:#ff80f4;\">0</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> first_count_read </span><span style=\"color:#f92672;\">= </span><span style=\"color:#66d9ef;\">use_state</span><span style=\"color:#f8f8f2;\">(cx, || </span><span style=\"color:#ff80f4;\">0</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#8c8c8c;\">// Increase the count\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#f92672;\">if *</span><span style=\"color:#f8f8f2;\">count </span><span style=\"color:#f92672;\">== </span><span style=\"color:#ff80f4;\">0 </span><span style=\"color:#f8f8f2;\">{{\n</span><span style=\"color:#f8f8f2;\">        count </span><span style=\"color:#f92672;\">+= </span><span style=\"color:#ff80f4;\">1</span><span style=\"color:#f8f8f2;\">;\n</span><span style=\"color:#f8f8f2;\">        first_count_read.</span><span style=\"color:#66d9ef;\">set</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#f92672;\">*</span><span style=\"color:#f8f8f2;\">count.</span><span style=\"color:#66d9ef;\">current</span><span style=\"color:#f8f8f2;\">());\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">    cx.</span><span style=\"color:#66d9ef;\">render</span><span style=\"color:#f8f8f2;\">(rsx!(\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"color:#8c8c8c;\">// Use .current to get the real current value\n</span><span style=\"color:#f8f8f2;\">        h1 {{ </span><span style=\"color:#ffee99;\">&quot;High-Five counter: {{first_count_read}}&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">    ))\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
-            name: "hooks_counter.rs".to_string(),
+            name: "hooks_out_of_date.rs".to_string(),
         }
         DemoFrame { __interactive_04::hooks_out_of_date_fixed {} }
         h2 { id: "rules-of-hooks",
@@ -7747,7 +7152,7 @@ pub fn ReferenceHooks() -> dioxus::prelude::Element {
         }
         CodeBlock {
             contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"font-style:italic;color:#66d9ef;\">let </span><span style=\"color:#f92672;\">mut</span><span style=\"color:#f8f8f2;\"> count_a </span><span style=\"color:#f92672;\">= </span><span style=\"color:#66d9ef;\">use_state</span><span style=\"color:#f8f8f2;\">(cx, || </span><span style=\"color:#ff80f4;\">0</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"font-style:italic;color:#66d9ef;\">let </span><span style=\"color:#f92672;\">mut</span><span style=\"color:#f8f8f2;\"> count_b </span><span style=\"color:#f92672;\">= </span><span style=\"color:#66d9ef;\">use_state</span><span style=\"color:#f8f8f2;\">(cx, || </span><span style=\"color:#ff80f4;\">0</span><span style=\"color:#f8f8f2;\">);</span></pre>\n",
-            name: "hooks_counter.rs".to_string(),
+            name: "hooks_counter_two_state.rs".to_string(),
         }
         p {
             "This is only possible because the two hooks are always called in the same order, so Dioxus knows which is which. Because the order you call hooks matters, you must follow certain rules when using hooks:"
@@ -7779,21 +7184,21 @@ pub fn ReferenceHooks() -> dioxus::prelude::Element {
         }
         CodeBlock {
             contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#8c8c8c;\">// ❌ don&#39;t call hooks in conditionals!\n</span><span style=\"color:#8c8c8c;\">// We must ensure that the same hooks will be called every time\n</span><span style=\"color:#8c8c8c;\">// But `if` statements only run if the conditional is true!\n</span><span style=\"color:#8c8c8c;\">// So we might violate rule 2.\n</span><span style=\"color:#f92672;\">if</span><span style=\"color:#f8f8f2;\"> you_are_happy </span><span style=\"color:#f92672;\">&amp;&amp;</span><span style=\"color:#f8f8f2;\"> you_know_it {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> something </span><span style=\"color:#f92672;\">= </span><span style=\"color:#66d9ef;\">use_state</span><span style=\"color:#f8f8f2;\">(cx, || </span><span style=\"color:#ffee99;\">&quot;hands&quot;</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"color:#f8f8f2;\">    println!(</span><span style=\"color:#ffee99;\">&quot;clap your </span><span style=\"color:#ff80f4;\">{{something}}</span><span style=\"color:#ffee99;\">&quot;</span><span style=\"color:#f8f8f2;\">)\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#8c8c8c;\">// ✅ instead, *always* call use_state\n</span><span style=\"color:#8c8c8c;\">// You can put other stuff in the conditional though\n</span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> something </span><span style=\"color:#f92672;\">= </span><span style=\"color:#66d9ef;\">use_state</span><span style=\"color:#f8f8f2;\">(cx, || </span><span style=\"color:#ffee99;\">&quot;hands&quot;</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"color:#f92672;\">if</span><span style=\"color:#f8f8f2;\"> you_are_happy </span><span style=\"color:#f92672;\">&amp;&amp;</span><span style=\"color:#f8f8f2;\"> you_know_it {{\n</span><span style=\"color:#f8f8f2;\">    println!(</span><span style=\"color:#ffee99;\">&quot;clap your </span><span style=\"color:#ff80f4;\">{{something}}</span><span style=\"color:#ffee99;\">&quot;</span><span style=\"color:#f8f8f2;\">)\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
-            name: "hooks_counter.rs".to_string(),
+            name: "hooks_bad.rs".to_string(),
         }
         h3 { id: "no-hooks-in-closures",
             a { href: "#no-hooks-in-closures", class: "header", "No hooks in closures" }
         }
         CodeBlock {
             contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#8c8c8c;\">// ❌ don&#39;t call hooks inside closures!\n</span><span style=\"color:#8c8c8c;\">// We can&#39;t guarantee that the closure, if used, will be called in the same order every time\n</span><span style=\"font-style:italic;color:#66d9ef;\">let </span><span style=\"color:#a6e22e;\">_a </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">|| {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> b </span><span style=\"color:#f92672;\">= </span><span style=\"color:#66d9ef;\">use_state</span><span style=\"color:#f8f8f2;\">(cx, || </span><span style=\"color:#ff80f4;\">0</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"color:#f8f8f2;\">    b.</span><span style=\"color:#66d9ef;\">get</span><span style=\"color:#f8f8f2;\">()\n</span><span style=\"color:#f8f8f2;\">}};\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#8c8c8c;\">// ✅ instead, move hook `b` outside\n</span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> b </span><span style=\"color:#f92672;\">= </span><span style=\"color:#66d9ef;\">use_state</span><span style=\"color:#f8f8f2;\">(cx, || </span><span style=\"color:#ff80f4;\">0</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"font-style:italic;color:#66d9ef;\">let </span><span style=\"color:#a6e22e;\">_a </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">|| b.</span><span style=\"color:#66d9ef;\">get</span><span style=\"color:#f8f8f2;\">();</span></pre>\n",
-            name: "hooks_counter.rs".to_string(),
+            name: "hooks_bad.rs".to_string(),
         }
         h3 { id: "no-hooks-in-loops",
             a { href: "#no-hooks-in-loops", class: "header", "No hooks in loops" }
         }
         CodeBlock {
             contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#8c8c8c;\">// `names` is a Vec&lt;&amp;str&gt;\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#8c8c8c;\">// ❌ Do not use hooks in loops!\n</span><span style=\"color:#8c8c8c;\">// In this case, if the length of the Vec changes, we break rule 2\n</span><span style=\"color:#f92672;\">for</span><span style=\"color:#f8f8f2;\"> _name </span><span style=\"color:#f92672;\">in &amp;</span><span style=\"color:#f8f8f2;\">names {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> is_selected </span><span style=\"color:#f92672;\">= </span><span style=\"color:#66d9ef;\">use_state</span><span style=\"color:#f8f8f2;\">(cx, || </span><span style=\"color:#ff80f4;\">false</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"color:#f8f8f2;\">    println!(</span><span style=\"color:#ffee99;\">&quot;selected: </span><span style=\"color:#ff80f4;\">{{is_selected}}</span><span style=\"color:#ffee99;\">&quot;</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#8c8c8c;\">// ✅ Instead, use a hashmap with use_ref\n</span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> selection_map </span><span style=\"color:#f92672;\">= </span><span style=\"color:#66d9ef;\">use_ref</span><span style=\"color:#f8f8f2;\">(cx, HashMap::&lt;</span><span style=\"color:#f92672;\">&amp;</span><span style=\"font-style:italic;color:#66d9ef;\">str</span><span style=\"color:#f8f8f2;\">, </span><span style=\"font-style:italic;color:#66d9ef;\">bool</span><span style=\"color:#f8f8f2;\">&gt;::new);\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\">for</span><span style=\"color:#f8f8f2;\"> name </span><span style=\"color:#f92672;\">in &amp;</span><span style=\"color:#f8f8f2;\">names {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> is_selected </span><span style=\"color:#f92672;\">=</span><span style=\"color:#f8f8f2;\"> selection_map.</span><span style=\"color:#66d9ef;\">read</span><span style=\"color:#f8f8f2;\">()[name];\n</span><span style=\"color:#f8f8f2;\">    println!(</span><span style=\"color:#ffee99;\">&quot;selected: </span><span style=\"color:#ff80f4;\">{{is_selected}}</span><span style=\"color:#ffee99;\">&quot;</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
-            name: "hooks_counter.rs".to_string(),
+            name: "hooks_bad.rs".to_string(),
         }
         h2 { id: "use-ref-hook",
             a { href: "#use-ref-hook", class: "header", "use_ref hook" }
@@ -7844,7 +7249,7 @@ pub fn ReferenceHooks() -> dioxus::prelude::Element {
         }
         CodeBlock {
             contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f92672;\">pub </span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">App</span><span style=\"color:#f8f8f2;\">(</span><span style=\"font-style:italic;color:#fd971f;\">cx</span><span style=\"color:#f8f8f2;\">: Scope) -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> list </span><span style=\"color:#f92672;\">= </span><span style=\"color:#66d9ef;\">use_ref</span><span style=\"color:#f8f8f2;\">(cx, </span><span style=\"font-style:italic;color:#66d9ef;\">Vec</span><span style=\"color:#f8f8f2;\">::new);\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">    cx.</span><span style=\"color:#66d9ef;\">render</span><span style=\"color:#f8f8f2;\">(rsx!(\n</span><span style=\"color:#f8f8f2;\">        p {{ </span><span style=\"color:#ffee99;\">&quot;Current list: {{list.read():?}}&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">        button {{\n</span><span style=\"color:#f8f8f2;\">            onclick: </span><span style=\"color:#f92672;\">move |</span><span style=\"color:#f8f8f2;\">event</span><span style=\"color:#f92672;\">| </span><span style=\"color:#f8f8f2;\">{{\n</span><span style=\"color:#f8f8f2;\">                list.</span><span style=\"color:#66d9ef;\">with_mut</span><span style=\"color:#f8f8f2;\">(|</span><span style=\"font-style:italic;color:#fd971f;\">list</span><span style=\"color:#f8f8f2;\">| list.</span><span style=\"color:#66d9ef;\">push</span><span style=\"color:#f8f8f2;\">(event));\n</span><span style=\"color:#f8f8f2;\">            }},\n</span><span style=\"color:#f8f8f2;\">            </span><span style=\"color:#ffee99;\">&quot;Click me!&quot;\n</span><span style=\"color:#f8f8f2;\">        }}\n</span><span style=\"color:#f8f8f2;\">    ))\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
-            name: "hooks_counter.rs".to_string(),
+            name: "hooks_use_ref.rs".to_string(),
         }
         DemoFrame { __interactive_04::hooks_use_ref {} }
         blockquote {
@@ -7939,7 +7344,7 @@ pub fn ReferenceUserInput() -> dioxus::prelude::Element {
         }
         CodeBlock {
             contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f92672;\">pub </span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">App</span><span style=\"color:#f8f8f2;\">(</span><span style=\"font-style:italic;color:#fd971f;\">cx</span><span style=\"color:#f8f8f2;\">: Scope) -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    cx.</span><span style=\"color:#66d9ef;\">render</span><span style=\"color:#f8f8f2;\">(rsx! {{\n</span><span style=\"color:#f8f8f2;\">        form {{\n</span><span style=\"color:#f8f8f2;\">            onsubmit: </span><span style=\"color:#f92672;\">move |</span><span style=\"color:#f8f8f2;\">event</span><span style=\"color:#f92672;\">| </span><span style=\"color:#f8f8f2;\">{{\n</span><span style=\"color:#f8f8f2;\">                log::info</span><span style=\"color:#f92672;\">!</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#ffee99;\">&quot;Submitted! {{event:?}}&quot;</span><span style=\"color:#f8f8f2;\">)\n</span><span style=\"color:#f8f8f2;\">            }},\n</span><span style=\"color:#f8f8f2;\">            input {{ name: </span><span style=\"color:#ffee99;\">&quot;name&quot;</span><span style=\"color:#f8f8f2;\">, }},\n</span><span style=\"color:#f8f8f2;\">            input {{ name: </span><span style=\"color:#ffee99;\">&quot;age&quot;</span><span style=\"color:#f8f8f2;\">, }},\n</span><span style=\"color:#f8f8f2;\">            input {{ name: </span><span style=\"color:#ffee99;\">&quot;date&quot;</span><span style=\"color:#f8f8f2;\">, }},\n</span><span style=\"color:#f8f8f2;\">            input {{ r</span><span style=\"color:#f92672;\">#</span><span style=\"font-style:italic;color:#66d9ef;\">type</span><span style=\"color:#f8f8f2;\">: </span><span style=\"color:#ffee99;\">&quot;submit&quot;</span><span style=\"color:#f8f8f2;\">, }},\n</span><span style=\"color:#f8f8f2;\">        }}\n</span><span style=\"color:#f8f8f2;\">    }})\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
-            name: "input_controlled.rs".to_string(),
+            name: "input_uncontrolled.rs".to_string(),
         }
         DemoFrame { input_uncontrolled::App {} }
         CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">Submitted</span><span style=\"color:#f92672;\">!</span><span style=\"color:#f8f8f2;\"> UiEvent {{ data: FormData {{ value: </span><span style=\"color:#ffee99;\">&quot;&quot;</span><span style=\"color:#f8f8f2;\">, values: {{</span><span style=\"color:#ffee99;\">&quot;age&quot;</span><span style=\"color:#f8f8f2;\">: </span><span style=\"color:#ffee99;\">&quot;very old&quot;</span><span style=\"color:#f8f8f2;\">, </span><span style=\"color:#ffee99;\">&quot;date&quot;</span><span style=\"color:#f8f8f2;\">: </span><span style=\"color:#ffee99;\">&quot;1966&quot;</span><span style=\"color:#f8f8f2;\">, </span><span style=\"color:#ffee99;\">&quot;name&quot;</span><span style=\"color:#f8f8f2;\">: </span><span style=\"color:#ffee99;\">&quot;Fred&quot;</span><span style=\"color:#f8f8f2;\">}} }} }}</span></pre>\n" }
@@ -7977,14 +7382,14 @@ pub fn ReferenceUserInput() -> dioxus::prelude::Element {
         }
         CodeBlock {
             contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f92672;\">pub </span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">App</span><span style=\"color:#f8f8f2;\">(</span><span style=\"font-style:italic;color:#fd971f;\">cx</span><span style=\"color:#f8f8f2;\">: Scope) -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> filenames: </span><span style=\"color:#f92672;\">&amp;</span><span style=\"color:#f8f8f2;\">UseRef&lt;Vec&lt;String&gt;&gt; </span><span style=\"color:#f92672;\">= </span><span style=\"color:#66d9ef;\">use_ref</span><span style=\"color:#f8f8f2;\">(cx, </span><span style=\"font-style:italic;color:#66d9ef;\">Vec</span><span style=\"color:#f8f8f2;\">::new);\n</span><span style=\"color:#f8f8f2;\">    cx.</span><span style=\"color:#66d9ef;\">render</span><span style=\"color:#f8f8f2;\">(rsx! {{\n</span><span style=\"color:#f8f8f2;\">        input {{\n</span><span style=\"color:#f8f8f2;\">            </span><span style=\"color:#8c8c8c;\">// tell the input to pick a file\n</span><span style=\"color:#f8f8f2;\">            r</span><span style=\"color:#f92672;\">#</span><span style=\"font-style:italic;color:#66d9ef;\">type</span><span style=\"color:#f8f8f2;\">:</span><span style=\"color:#ffee99;\">&quot;file&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">            </span><span style=\"color:#8c8c8c;\">// list the accepted extensions\n</span><span style=\"color:#f8f8f2;\">            accept: </span><span style=\"color:#ffee99;\">&quot;.txt,.rs&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">            </span><span style=\"color:#8c8c8c;\">// pick multiple files\n</span><span style=\"color:#f8f8f2;\">            multiple: </span><span style=\"color:#ff80f4;\">true</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">            onchange: </span><span style=\"color:#f92672;\">move |</span><span style=\"color:#f8f8f2;\">evt</span><span style=\"color:#f92672;\">| </span><span style=\"color:#f8f8f2;\">{{\n</span><span style=\"color:#f8f8f2;\">                </span><span style=\"color:#f92672;\">if </span><span style=\"font-style:italic;color:#66d9ef;\">let Some</span><span style=\"color:#f8f8f2;\">(file_engine) </span><span style=\"color:#f92672;\">= &amp;</span><span style=\"color:#f8f8f2;\">evt.files {{\n</span><span style=\"color:#f8f8f2;\">                    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> files </span><span style=\"color:#f92672;\">=</span><span style=\"color:#f8f8f2;\"> file_engine.</span><span style=\"color:#66d9ef;\">files</span><span style=\"color:#f8f8f2;\">();\n</span><span style=\"color:#f8f8f2;\">                    </span><span style=\"color:#f92672;\">for</span><span style=\"color:#f8f8f2;\"> file_name </span><span style=\"color:#f92672;\">in</span><span style=\"color:#f8f8f2;\"> files {{\n</span><span style=\"color:#f8f8f2;\">                        filenames.</span><span style=\"color:#66d9ef;\">write</span><span style=\"color:#f8f8f2;\">().</span><span style=\"color:#66d9ef;\">push</span><span style=\"color:#f8f8f2;\">(file_name);\n</span><span style=\"color:#f8f8f2;\">                    }}\n</span><span style=\"color:#f8f8f2;\">                }}\n</span><span style=\"color:#f8f8f2;\">            }}\n</span><span style=\"color:#f8f8f2;\">        }}\n</span><span style=\"color:#f8f8f2;\">    }})\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
-            name: "input_controlled.rs".to_string(),
+            name: "input_fileengine.rs".to_string(),
         }
         p {
             "If you're planning to read the file content, you need to do it asynchronously, to keep the rest of the UI interactive. This example event handler loads the content of the selected files in an async closure:"
         }
         CodeBlock {
             contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">onchange: </span><span style=\"color:#f92672;\">move |</span><span style=\"color:#f8f8f2;\">evt</span><span style=\"color:#f92672;\">| </span><span style=\"color:#f8f8f2;\">{{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#8c8c8c;\">// A helper macro to use hooks in async environments\n</span><span style=\"color:#f8f8f2;\">    to_owned![files_uploaded];\n</span><span style=\"color:#f8f8f2;\">    async </span><span style=\"color:#f92672;\">move </span><span style=\"color:#f8f8f2;\">{{\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"color:#f92672;\">if </span><span style=\"font-style:italic;color:#66d9ef;\">let Some</span><span style=\"color:#f8f8f2;\">(file_engine) </span><span style=\"color:#f92672;\">= &amp;</span><span style=\"color:#f8f8f2;\">evt.files {{\n</span><span style=\"color:#f8f8f2;\">            </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> files </span><span style=\"color:#f92672;\">=</span><span style=\"color:#f8f8f2;\"> file_engine.</span><span style=\"color:#66d9ef;\">files</span><span style=\"color:#f8f8f2;\">();\n</span><span style=\"color:#f8f8f2;\">            </span><span style=\"color:#f92672;\">for</span><span style=\"color:#f8f8f2;\"> file_name </span><span style=\"color:#f92672;\">in &amp;</span><span style=\"color:#f8f8f2;\">files {{\n</span><span style=\"color:#f8f8f2;\">                </span><span style=\"color:#8c8c8c;\">// Make sure to use async/await when doing heavy I/O operations,\n</span><span style=\"color:#f8f8f2;\">                </span><span style=\"color:#8c8c8c;\">// to not freeze the interface in the meantime\n</span><span style=\"color:#f8f8f2;\">                </span><span style=\"color:#f92672;\">if </span><span style=\"font-style:italic;color:#66d9ef;\">let Some</span><span style=\"color:#f8f8f2;\">(file) </span><span style=\"color:#f92672;\">=</span><span style=\"color:#f8f8f2;\"> file_engine.</span><span style=\"color:#66d9ef;\">read_file_to_string</span><span style=\"color:#f8f8f2;\">(file_name).await{{\n</span><span style=\"color:#f8f8f2;\">                    files_uploaded.</span><span style=\"color:#66d9ef;\">write</span><span style=\"color:#f8f8f2;\">().</span><span style=\"color:#66d9ef;\">push</span><span style=\"color:#f8f8f2;\">(file);\n</span><span style=\"color:#f8f8f2;\">                }}\n</span><span style=\"color:#f8f8f2;\">            }}\n</span><span style=\"color:#f8f8f2;\">        }}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
-            name: "input_controlled.rs".to_string(),
+            name: "input_fileengine_async.rs".to_string(),
         }
         p {
             "Lastly, this example shows you how to select a folder, by setting the  "
@@ -7995,7 +7400,7 @@ pub fn ReferenceUserInput() -> dioxus::prelude::Element {
         }
         CodeBlock {
             contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">input {{\n</span><span style=\"color:#f8f8f2;\">    r</span><span style=\"color:#f92672;\">#</span><span style=\"font-style:italic;color:#66d9ef;\">type</span><span style=\"color:#f8f8f2;\">:</span><span style=\"color:#ffee99;\">&quot;file&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#8c8c8c;\">// Select a folder by setting the directory attribute\n</span><span style=\"color:#f8f8f2;\">    directory: </span><span style=\"color:#ff80f4;\">true</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">    onchange: |</span><span style=\"font-style:italic;color:#fd971f;\">evt</span><span style=\"color:#f8f8f2;\">| {{\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"color:#f92672;\">if </span><span style=\"font-style:italic;color:#66d9ef;\">let Some</span><span style=\"color:#f8f8f2;\">(file_engine) </span><span style=\"color:#f92672;\">= &amp;</span><span style=\"color:#f8f8f2;\">evt.files {{\n</span><span style=\"color:#f8f8f2;\">            </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> files </span><span style=\"color:#f92672;\">=</span><span style=\"color:#f8f8f2;\"> file_engine.</span><span style=\"color:#66d9ef;\">files</span><span style=\"color:#f8f8f2;\">();\n</span><span style=\"color:#f8f8f2;\">            </span><span style=\"color:#f92672;\">for</span><span style=\"color:#f8f8f2;\"> file_name </span><span style=\"color:#f92672;\">in</span><span style=\"color:#f8f8f2;\"> files {{\n</span><span style=\"color:#f8f8f2;\">                println!(</span><span style=\"color:#ffee99;\">&quot;</span><span style=\"color:#ff80f4;\">{{}}</span><span style=\"color:#ffee99;\">&quot;</span><span style=\"color:#f8f8f2;\">, file_name);\n</span><span style=\"color:#f8f8f2;\">                </span><span style=\"color:#8c8c8c;\">// Do something with the folder path\n</span><span style=\"color:#f8f8f2;\">            }}\n</span><span style=\"color:#f8f8f2;\">        }}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
-            name: "input_controlled.rs".to_string(),
+            name: "input_fileengine_folder.rs".to_string(),
         }
     }
 }
@@ -8063,7 +7468,9 @@ pub fn ReferenceContext() -> dioxus::prelude::Element {
         }
         p {
             img {
-                src: "/assets/static/meme_editor_screenshot.png",
+                src: asset!(
+                    "/assets/static/meme_editor_screenshot.png", ImageAssetOptions::new().with_avif()
+                ),
                 alt: "Meme Editor Screenshot: An old plastic skeleton sitting on a park bench. Caption: \"me waiting for a language feature\"",
                 title: "",
             }
@@ -8105,7 +7512,7 @@ pub fn ReferenceContext() -> dioxus::prelude::Element {
         p { "First, we have to create a struct for our dark mode configuration:" }
         CodeBlock {
             contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"font-style:italic;color:#66d9ef;\">struct </span><span style=\"color:#f8f8f2;\">DarkMode(</span><span style=\"font-style:italic;color:#66d9ef;\">bool</span><span style=\"color:#f8f8f2;\">);</span></pre>\n",
-            name: "meme_editor.rs".to_string(),
+            name: "meme_editor_dark_mode.rs".to_string(),
         }
         p {
             "Now, in a top-level component (like  "
@@ -8116,7 +7523,7 @@ pub fn ReferenceContext() -> dioxus::prelude::Element {
         }
         CodeBlock {
             contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#66d9ef;\">use_shared_state_provider</span><span style=\"color:#f8f8f2;\">(cx, || DarkMode(</span><span style=\"color:#ff80f4;\">false</span><span style=\"color:#f8f8f2;\">));</span></pre>\n",
-            name: "meme_editor.rs".to_string(),
+            name: "meme_editor_dark_mode.rs".to_string(),
         }
         p {
             "As a result, any child component of  "
@@ -8127,7 +7534,7 @@ pub fn ReferenceContext() -> dioxus::prelude::Element {
         }
         CodeBlock {
             contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> dark_mode_context </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">use_shared_state::&lt;DarkMode&gt;(cx);</span></pre>\n",
-            name: "meme_editor.rs".to_string(),
+            name: "meme_editor_dark_mode.rs".to_string(),
         }
         blockquote {
             p {
@@ -8152,7 +7559,7 @@ pub fn ReferenceContext() -> dioxus::prelude::Element {
         }
         CodeBlock {
             contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f92672;\">pub </span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">DarkModeToggle</span><span style=\"color:#f8f8f2;\">(</span><span style=\"font-style:italic;color:#fd971f;\">cx</span><span style=\"color:#f8f8f2;\">: Scope) -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> dark_mode </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">use_shared_state::&lt;DarkMode&gt;(cx).</span><span style=\"color:#66d9ef;\">unwrap</span><span style=\"color:#f8f8f2;\">();\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> style </span><span style=\"color:#f92672;\">= if</span><span style=\"color:#f8f8f2;\"> dark_mode.</span><span style=\"color:#66d9ef;\">read</span><span style=\"color:#f8f8f2;\">().</span><span style=\"color:#ff80f4;\">0 </span><span style=\"color:#f8f8f2;\">{{\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"color:#ffee99;\">&quot;color:white&quot;\n</span><span style=\"color:#f8f8f2;\">    }} </span><span style=\"color:#f92672;\">else </span><span style=\"color:#f8f8f2;\">{{\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"color:#ffee99;\">&quot;&quot;\n</span><span style=\"color:#f8f8f2;\">    }};\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">    cx.</span><span style=\"color:#66d9ef;\">render</span><span style=\"color:#f8f8f2;\">(rsx!(label {{\n</span><span style=\"color:#f8f8f2;\">        style: </span><span style=\"color:#ffee99;\">&quot;{{style}}&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"color:#ffee99;\">&quot;Dark Mode&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">        input {{\n</span><span style=\"color:#f8f8f2;\">            r</span><span style=\"color:#f92672;\">#</span><span style=\"font-style:italic;color:#66d9ef;\">type</span><span style=\"color:#f8f8f2;\">: </span><span style=\"color:#ffee99;\">&quot;checkbox&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">            oninput: </span><span style=\"color:#f92672;\">move |</span><span style=\"color:#f8f8f2;\">event</span><span style=\"color:#f92672;\">| </span><span style=\"color:#f8f8f2;\">{{\n</span><span style=\"color:#f8f8f2;\">                </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> is_enabled </span><span style=\"color:#f92672;\">=</span><span style=\"color:#f8f8f2;\"> event.value </span><span style=\"color:#f92672;\">== </span><span style=\"color:#ffee99;\">&quot;true&quot;</span><span style=\"color:#f8f8f2;\">;\n</span><span style=\"color:#f8f8f2;\">                dark_mode.</span><span style=\"color:#66d9ef;\">write</span><span style=\"color:#f8f8f2;\">().</span><span style=\"color:#ff80f4;\">0 </span><span style=\"color:#f92672;\">=</span><span style=\"color:#f8f8f2;\"> is_enabled;\n</span><span style=\"color:#f8f8f2;\">            }},\n</span><span style=\"color:#f8f8f2;\">        }},\n</span><span style=\"color:#f8f8f2;\">    }}))\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
-            name: "meme_editor.rs".to_string(),
+            name: "meme_editor_dark_mode.rs".to_string(),
         }
     }
 }
@@ -8222,7 +7629,7 @@ pub fn ReferenceDynamicRendering() -> dioxus::prelude::Element {
         }
         CodeBlock {
             contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">Clickable</span><span style=\"color:#f8f8f2;\">&lt;</span><span style=\"color:#f92672;\">&#39;a</span><span style=\"color:#f8f8f2;\">&gt;(</span><span style=\"font-style:italic;color:#fd971f;\">cx</span><span style=\"color:#f8f8f2;\">: Scope&lt;</span><span style=\"color:#f92672;\">&#39;a</span><span style=\"color:#f8f8f2;\">, ClickableProps&lt;</span><span style=\"color:#f92672;\">&#39;a</span><span style=\"color:#f8f8f2;\">&gt;&gt;) -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#f92672;\">match</span><span style=\"color:#f8f8f2;\"> cx.props.children {{\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"font-style:italic;color:#66d9ef;\">Some</span><span style=\"color:#f8f8f2;\">(VNode {{ dynamic_nodes, </span><span style=\"color:#f92672;\">.. </span><span style=\"color:#f8f8f2;\">}}) </span><span style=\"color:#f92672;\">=&gt; </span><span style=\"color:#f8f8f2;\">{{\n</span><span style=\"color:#f8f8f2;\">            todo!(</span><span style=\"color:#ffee99;\">&quot;render some stuff&quot;</span><span style=\"color:#f8f8f2;\">)\n</span><span style=\"color:#f8f8f2;\">        }}\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"color:#f92672;\">_ =&gt; </span><span style=\"color:#f8f8f2;\">{{\n</span><span style=\"color:#f8f8f2;\">            todo!(</span><span style=\"color:#ffee99;\">&quot;render some other stuff&quot;</span><span style=\"color:#f8f8f2;\">)\n</span><span style=\"color:#f8f8f2;\">        }}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
-            name: "conditional_rendering.rs".to_string(),
+            name: "component_children_inspect.rs".to_string(),
         }
         p {
             "You can't mutate the  "
@@ -8299,7 +7706,7 @@ pub fn ReferenceDynamicRendering() -> dioxus::prelude::Element {
         }
         CodeBlock {
             contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> comment_field </span><span style=\"color:#f92672;\">= </span><span style=\"color:#66d9ef;\">use_state</span><span style=\"color:#f8f8f2;\">(cx, </span><span style=\"font-style:italic;color:#66d9ef;\">String</span><span style=\"color:#f8f8f2;\">::new);\n</span><span style=\"font-style:italic;color:#66d9ef;\">let </span><span style=\"color:#f92672;\">mut</span><span style=\"color:#f8f8f2;\"> next_id </span><span style=\"color:#f92672;\">= </span><span style=\"color:#66d9ef;\">use_state</span><span style=\"color:#f8f8f2;\">(cx, || </span><span style=\"color:#ff80f4;\">0</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> comments </span><span style=\"color:#f92672;\">= </span><span style=\"color:#66d9ef;\">use_ref</span><span style=\"color:#f8f8f2;\">(cx, </span><span style=\"font-style:italic;color:#66d9ef;\">Vec</span><span style=\"color:#f8f8f2;\">::&lt;Comment&gt;::new);\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> comments_lock </span><span style=\"color:#f92672;\">=</span><span style=\"color:#f8f8f2;\"> comments.</span><span style=\"color:#66d9ef;\">read</span><span style=\"color:#f8f8f2;\">();\n</span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> comments_rendered </span><span style=\"color:#f92672;\">=</span><span style=\"color:#f8f8f2;\"> comments_lock.</span><span style=\"color:#66d9ef;\">iter</span><span style=\"color:#f8f8f2;\">().</span><span style=\"color:#66d9ef;\">map</span><span style=\"color:#f8f8f2;\">(|</span><span style=\"font-style:italic;color:#fd971f;\">comment</span><span style=\"color:#f8f8f2;\">| {{\n</span><span style=\"color:#f8f8f2;\">    rsx!(CommentComponent {{\n</span><span style=\"color:#f8f8f2;\">        key: </span><span style=\"color:#ffee99;\">&quot;{{comment.id}}&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">        comment: comment.</span><span style=\"color:#66d9ef;\">clone</span><span style=\"color:#f8f8f2;\">(),\n</span><span style=\"color:#f8f8f2;\">    }})\n</span><span style=\"color:#f8f8f2;\">}});\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">cx.</span><span style=\"color:#66d9ef;\">render</span><span style=\"color:#f8f8f2;\">(rsx!(\n</span><span style=\"color:#f8f8f2;\">    form {{\n</span><span style=\"color:#f8f8f2;\">        onsubmit: </span><span style=\"color:#f92672;\">move |_| </span><span style=\"color:#f8f8f2;\">{{\n</span><span style=\"color:#f8f8f2;\">            comments.</span><span style=\"color:#66d9ef;\">write</span><span style=\"color:#f8f8f2;\">().</span><span style=\"color:#66d9ef;\">push</span><span style=\"color:#f8f8f2;\">(Comment {{\n</span><span style=\"color:#f8f8f2;\">                content: comment_field.</span><span style=\"color:#66d9ef;\">get</span><span style=\"color:#f8f8f2;\">().</span><span style=\"color:#66d9ef;\">clone</span><span style=\"color:#f8f8f2;\">(),\n</span><span style=\"color:#f8f8f2;\">                id: </span><span style=\"color:#f92672;\">*</span><span style=\"color:#f8f8f2;\">next_id.</span><span style=\"color:#66d9ef;\">get</span><span style=\"color:#f8f8f2;\">(),\n</span><span style=\"color:#f8f8f2;\">            }});\n</span><span style=\"color:#f8f8f2;\">            next_id </span><span style=\"color:#f92672;\">+= </span><span style=\"color:#ff80f4;\">1</span><span style=\"color:#f8f8f2;\">;\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">            comment_field.</span><span style=\"color:#66d9ef;\">set</span><span style=\"color:#f8f8f2;\">(</span><span style=\"font-style:italic;color:#66d9ef;\">String</span><span style=\"color:#f8f8f2;\">::new());\n</span><span style=\"color:#f8f8f2;\">        }},\n</span><span style=\"color:#f8f8f2;\">        input {{\n</span><span style=\"color:#f8f8f2;\">            value: </span><span style=\"color:#ffee99;\">&quot;{{comment_field}}&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">            oninput: </span><span style=\"color:#f92672;\">move |</span><span style=\"color:#f8f8f2;\">event</span><span style=\"color:#f92672;\">|</span><span style=\"color:#f8f8f2;\"> comment_field.</span><span style=\"color:#66d9ef;\">set</span><span style=\"color:#f8f8f2;\">(event.value.</span><span style=\"color:#66d9ef;\">clone</span><span style=\"color:#f8f8f2;\">()),\n</span><span style=\"color:#f8f8f2;\">        }}\n</span><span style=\"color:#f8f8f2;\">        input {{\n</span><span style=\"color:#f8f8f2;\">            r</span><span style=\"color:#f92672;\">#</span><span style=\"font-style:italic;color:#66d9ef;\">type</span><span style=\"color:#f8f8f2;\">: </span><span style=\"color:#ffee99;\">&quot;submit&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">        }}\n</span><span style=\"color:#f8f8f2;\">    }},\n</span><span style=\"color:#f8f8f2;\">    comments_rendered,\n</span><span style=\"color:#f8f8f2;\">))</span></pre>\n",
-            name: "conditional_rendering.rs".to_string(),
+            name: "rendering_lists.rs".to_string(),
         }
         DemoFrame { rendering_lists::App {} }
         h3 { id: "inline-for-loops",
@@ -8318,7 +7725,7 @@ pub fn ReferenceDynamicRendering() -> dioxus::prelude::Element {
         }
         CodeBlock {
             contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> comment_field </span><span style=\"color:#f92672;\">= </span><span style=\"color:#66d9ef;\">use_state</span><span style=\"color:#f8f8f2;\">(cx, </span><span style=\"font-style:italic;color:#66d9ef;\">String</span><span style=\"color:#f8f8f2;\">::new);\n</span><span style=\"font-style:italic;color:#66d9ef;\">let </span><span style=\"color:#f92672;\">mut</span><span style=\"color:#f8f8f2;\"> next_id </span><span style=\"color:#f92672;\">= </span><span style=\"color:#66d9ef;\">use_state</span><span style=\"color:#f8f8f2;\">(cx, || </span><span style=\"color:#ff80f4;\">0</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> comments </span><span style=\"color:#f92672;\">= </span><span style=\"color:#66d9ef;\">use_ref</span><span style=\"color:#f8f8f2;\">(cx, </span><span style=\"font-style:italic;color:#66d9ef;\">Vec</span><span style=\"color:#f8f8f2;\">::&lt;Comment&gt;::new);\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">cx.</span><span style=\"color:#66d9ef;\">render</span><span style=\"color:#f8f8f2;\">(rsx!(\n</span><span style=\"color:#f8f8f2;\">    form {{\n</span><span style=\"color:#f8f8f2;\">        onsubmit: </span><span style=\"color:#f92672;\">move |_| </span><span style=\"color:#f8f8f2;\">{{\n</span><span style=\"color:#f8f8f2;\">            comments.</span><span style=\"color:#66d9ef;\">write</span><span style=\"color:#f8f8f2;\">().</span><span style=\"color:#66d9ef;\">push</span><span style=\"color:#f8f8f2;\">(Comment {{\n</span><span style=\"color:#f8f8f2;\">                content: comment_field.</span><span style=\"color:#66d9ef;\">get</span><span style=\"color:#f8f8f2;\">().</span><span style=\"color:#66d9ef;\">clone</span><span style=\"color:#f8f8f2;\">(),\n</span><span style=\"color:#f8f8f2;\">                id: </span><span style=\"color:#f92672;\">*</span><span style=\"color:#f8f8f2;\">next_id.</span><span style=\"color:#66d9ef;\">get</span><span style=\"color:#f8f8f2;\">(),\n</span><span style=\"color:#f8f8f2;\">            }});\n</span><span style=\"color:#f8f8f2;\">            next_id </span><span style=\"color:#f92672;\">+= </span><span style=\"color:#ff80f4;\">1</span><span style=\"color:#f8f8f2;\">;\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">            comment_field.</span><span style=\"color:#66d9ef;\">set</span><span style=\"color:#f8f8f2;\">(</span><span style=\"font-style:italic;color:#66d9ef;\">String</span><span style=\"color:#f8f8f2;\">::new());\n</span><span style=\"color:#f8f8f2;\">        }},\n</span><span style=\"color:#f8f8f2;\">        input {{\n</span><span style=\"color:#f8f8f2;\">            value: </span><span style=\"color:#ffee99;\">&quot;{{comment_field}}&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">            oninput: </span><span style=\"color:#f92672;\">move |</span><span style=\"color:#f8f8f2;\">event</span><span style=\"color:#f92672;\">|</span><span style=\"color:#f8f8f2;\"> comment_field.</span><span style=\"color:#66d9ef;\">set</span><span style=\"color:#f8f8f2;\">(event.value.</span><span style=\"color:#66d9ef;\">clone</span><span style=\"color:#f8f8f2;\">()),\n</span><span style=\"color:#f8f8f2;\">        }}\n</span><span style=\"color:#f8f8f2;\">        input {{\n</span><span style=\"color:#f8f8f2;\">            r</span><span style=\"color:#f92672;\">#</span><span style=\"font-style:italic;color:#66d9ef;\">type</span><span style=\"color:#f8f8f2;\">: </span><span style=\"color:#ffee99;\">&quot;submit&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">        }}\n</span><span style=\"color:#f8f8f2;\">    }},\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#f92672;\">for</span><span style=\"color:#f8f8f2;\"> comment </span><span style=\"color:#f92672;\">in &amp;*</span><span style=\"color:#f8f8f2;\">comments.</span><span style=\"color:#66d9ef;\">read</span><span style=\"color:#f8f8f2;\">() {{\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"color:#8c8c8c;\">// Notice the body of this for loop is rsx code, not an expression\n</span><span style=\"color:#f8f8f2;\">        CommentComponent {{\n</span><span style=\"color:#f8f8f2;\">            key: </span><span style=\"color:#ffee99;\">&quot;{{comment.id}}&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">            comment: comment.</span><span style=\"color:#66d9ef;\">clone</span><span style=\"color:#f8f8f2;\">(),\n</span><span style=\"color:#f8f8f2;\">        }}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">))</span></pre>\n",
-            name: "conditional_rendering.rs".to_string(),
+            name: "rendering_lists.rs".to_string(),
         }
         DemoFrame { rendering_lists::AppForLoop {} }
         h3 { id: "the",
@@ -8725,7 +8132,7 @@ pub fn ReferenceDesktopIndex() -> dioxus::prelude::Element {
         p { "You can link to local assets in dioxus desktop instead of using a url:" }
         CodeBlock {
             contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f92672;\">use </span><span style=\"color:#f8f8f2;\">dioxus::prelude::</span><span style=\"color:#f92672;\">*</span><span style=\"color:#f8f8f2;\">;\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">main</span><span style=\"color:#f8f8f2;\">() {{\n</span><span style=\"color:#f8f8f2;\">    dioxus_desktop::launch(app);\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">app</span><span style=\"color:#f8f8f2;\">(</span><span style=\"font-style:italic;color:#fd971f;\">cx</span><span style=\"color:#f8f8f2;\">: Scope) -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    cx.</span><span style=\"color:#66d9ef;\">render</span><span style=\"color:#f8f8f2;\">(rsx! {{\n</span><span style=\"color:#f8f8f2;\">        div {{\n</span><span style=\"color:#f8f8f2;\">            img {{ src: </span><span style=\"color:#ffee99;\">&quot;examples/assets/logo.png&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">        }}\n</span><span style=\"color:#f8f8f2;\">    }})\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
-            name: "eval.rs".to_string(),
+            name: "custom_assets.rs".to_string(),
         }
         h2 { id: "integrating-with-wry",
             a { href: "#integrating-with-wry", class: "header", "Integrating with Wry" }
@@ -8975,7 +8382,7 @@ pub fn ReferenceFullstackServerFunctions() -> dioxus::prelude::Element {
         p { "One common use case for server functions is fetching data from the server:" }
         CodeBlock {
             contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">#![allow(non_snake_case, unused)]\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\">use </span><span style=\"color:#f8f8f2;\">dioxus::prelude::</span><span style=\"color:#f92672;\">*</span><span style=\"color:#f8f8f2;\">;\n</span><span style=\"color:#f92672;\">use </span><span style=\"color:#f8f8f2;\">dioxus_fullstack::prelude::</span><span style=\"color:#f92672;\">*</span><span style=\"color:#f8f8f2;\">;\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">main</span><span style=\"color:#f8f8f2;\">() {{\n</span><span style=\"color:#f8f8f2;\">    LaunchBuilder::new(app).</span><span style=\"color:#66d9ef;\">launch</span><span style=\"color:#f8f8f2;\">();\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">app</span><span style=\"color:#f8f8f2;\">(</span><span style=\"font-style:italic;color:#fd971f;\">cx</span><span style=\"color:#f8f8f2;\">: Scope) -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let </span><span style=\"color:#f92672;\">mut</span><span style=\"color:#f8f8f2;\"> count </span><span style=\"color:#f92672;\">= </span><span style=\"color:#66d9ef;\">use_future</span><span style=\"color:#f8f8f2;\">(cx, (), |_| async {{ </span><span style=\"color:#66d9ef;\">get_server_data</span><span style=\"color:#f8f8f2;\">().await }});\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">    cx.</span><span style=\"color:#66d9ef;\">render</span><span style=\"color:#f8f8f2;\">(rsx! {{\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"color:#ffee99;\">&quot;server data is {{count.value():?}}&quot;\n</span><span style=\"color:#f8f8f2;\">    }})\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">#[server]\n</span><span style=\"color:#f8f8f2;\">async </span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">get_server_data</span><span style=\"color:#f8f8f2;\">() -&gt; Result&lt;String, ServerFnError&gt; {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#8c8c8c;\">// Access a database\n</span><span style=\"color:#f8f8f2;\">    tokio::time::sleep(std::time::Duration::from_millis(</span><span style=\"color:#ff80f4;\">100</span><span style=\"color:#f8f8f2;\">)).await;\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">Ok</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#ffee99;\">&quot;Hello from the server!&quot;</span><span style=\"color:#f8f8f2;\">.</span><span style=\"color:#66d9ef;\">to_string</span><span style=\"color:#f8f8f2;\">())\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
-            name: "server_function.rs".to_string(),
+            name: "server_data_fetch.rs".to_string(),
         }
         p {
             "If you navigate to the site above, you will first see  "
@@ -9005,7 +8412,7 @@ pub fn ReferenceFullstackServerFunctions() -> dioxus::prelude::Element {
         }
         CodeBlock {
             contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">#![allow(non_snake_case, unused)]\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\">use </span><span style=\"color:#f8f8f2;\">dioxus::prelude::</span><span style=\"color:#f92672;\">*</span><span style=\"color:#f8f8f2;\">;\n</span><span style=\"color:#f92672;\">use </span><span style=\"color:#f8f8f2;\">dioxus_fullstack::prelude::</span><span style=\"color:#f92672;\">*</span><span style=\"color:#f8f8f2;\">;\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">main</span><span style=\"color:#f8f8f2;\">() {{\n</span><span style=\"color:#f8f8f2;\">    LaunchBuilder::new(app).</span><span style=\"color:#66d9ef;\">launch</span><span style=\"color:#f8f8f2;\">();\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">app</span><span style=\"color:#f8f8f2;\">(</span><span style=\"font-style:italic;color:#fd971f;\">cx</span><span style=\"color:#f8f8f2;\">: Scope) -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let </span><span style=\"color:#f92672;\">mut</span><span style=\"color:#f8f8f2;\"> count </span><span style=\"color:#f92672;\">= </span><span style=\"color:#66d9ef;\">use_server_future</span><span style=\"color:#f8f8f2;\">(cx, (), |_| async {{ </span><span style=\"color:#66d9ef;\">get_server_data</span><span style=\"color:#f8f8f2;\">().await }})</span><span style=\"color:#f92672;\">?</span><span style=\"color:#f8f8f2;\">;\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">    cx.</span><span style=\"color:#66d9ef;\">render</span><span style=\"color:#f8f8f2;\">(rsx! {{\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"color:#ffee99;\">&quot;server data is {{count.value():?}}&quot;\n</span><span style=\"color:#f8f8f2;\">    }})\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">#[server]\n</span><span style=\"color:#f8f8f2;\">async </span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">get_server_data</span><span style=\"color:#f8f8f2;\">() -&gt; Result&lt;String, ServerFnError&gt; {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#8c8c8c;\">// Access a database\n</span><span style=\"color:#f8f8f2;\">    tokio::time::sleep(std::time::Duration::from_millis(</span><span style=\"color:#ff80f4;\">100</span><span style=\"color:#f8f8f2;\">)).await;\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">Ok</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#ffee99;\">&quot;Hello from the server!&quot;</span><span style=\"color:#f8f8f2;\">.</span><span style=\"color:#66d9ef;\">to_string</span><span style=\"color:#f8f8f2;\">())\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
-            name: "server_function.rs".to_string(),
+            name: "server_data_prefetch.rs".to_string(),
         }
         blockquote {
             p {
@@ -9092,14 +8499,14 @@ pub fn ReferenceFullstackServerFunctions() -> dioxus::prelude::Element {
         }
         CodeBlock {
             contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> addr </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">std::net::SocketAddr::from(([</span><span style=\"color:#ff80f4;\">127</span><span style=\"color:#f8f8f2;\">, </span><span style=\"color:#ff80f4;\">0</span><span style=\"color:#f8f8f2;\">, </span><span style=\"color:#ff80f4;\">0</span><span style=\"color:#f8f8f2;\">, </span><span style=\"color:#ff80f4;\">1</span><span style=\"color:#f8f8f2;\">], </span><span style=\"color:#ff80f4;\">8080</span><span style=\"color:#f8f8f2;\">));</span></pre>\n",
-            name: "server_function.rs".to_string(),
+            name: "server_function_desktop_client.rs".to_string(),
         }
         p {
             "Then, you have to register the types declared in the server function macros into the axum server."
         }
         CodeBlock {
             contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">#[server(GetServerData)]\n</span><span style=\"color:#f8f8f2;\">async </span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">get_server_data</span><span style=\"color:#f8f8f2;\">() -&gt; Result&lt;String, ServerFnError&gt; {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">Ok</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#ffee99;\">&quot;Hello from the server!&quot;</span><span style=\"color:#f8f8f2;\">.</span><span style=\"color:#66d9ef;\">to_string</span><span style=\"color:#f8f8f2;\">())\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
-            name: "server_function.rs".to_string(),
+            name: "server_function_desktop_client.rs".to_string(),
         }
         p {
             "The  "
@@ -9108,7 +8515,7 @@ pub fn ReferenceFullstackServerFunctions() -> dioxus::prelude::Element {
         }
         CodeBlock {
             contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"font-style:italic;color:#66d9ef;\">let </span><span style=\"color:#f92672;\">_ = </span><span style=\"color:#f8f8f2;\">GetServerData::register_explicit();</span></pre>\n",
-            name: "server_function.rs".to_string(),
+            name: "server_function_desktop_client.rs".to_string(),
         }
         p { "Finally, the server is started and it begins responding to requests." }
     }
@@ -9223,7 +8630,7 @@ pub fn RouterIndex() -> dioxus::prelude::Element {
         blockquote {
             p {
                 "If you are not familiar with Dioxus itself, check out the "
-                a { href: "router/../guide", "Dioxus guide" }
+                a { href: "../guide", "Dioxus guide" }
                 " first."
             }
         }
@@ -9240,7 +8647,7 @@ pub fn RouterIndex() -> dioxus::prelude::Element {
             "Then, add this to your  "
             code { "Dioxus.toml" }
             " (learn more about configuration "
-            a { href: "router/../CLI/configure", "here" }
+            a { href: "../CLI/configure", "here" }
             "):"
         }
         CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">[web.watcher]\n</span><span style=\"color:#f8f8f2;\">index_on_404 </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ff80f4;\">true</span></pre>\n" }
@@ -9270,13 +8677,13 @@ pub fn RouterIndex() -> dioxus::prelude::Element {
         ol {
             li {
                 "The "
-                a { href: "router/reference", "reference" }
+                a { href: "reference", "reference" }
                 " section explains individual features in "
             }
             li {
                 "If you prefer a learning-by-doing approach, you can check out the "
                 em {
-                    a { href: "router/example", "example project" }
+                    a { href: "example", "example project" }
                 }
                 ". It guides you through "
             }
@@ -9308,7 +8715,7 @@ pub fn RouterExampleIndex() -> dioxus::prelude::Element {
         blockquote {
             p {
                 "Make sure to add Dioxus Router as a dependency, as explained in the"
-                a { href: "example/..", "introduction" }
+                a { href: "..", "introduction" }
                 "."
             }
         }
@@ -9329,7 +8736,7 @@ pub fn RouterExampleIndex() -> dioxus::prelude::Element {
         }
         p {
             "You can find the complete application in the "
-            a { href: "example/full-code", "full code" }
+            a { href: "full-code", "full code" }
             " chapter."
         }
     }
@@ -9417,12 +8824,12 @@ pub fn RouterExampleFirstRoute() -> dioxus::prelude::Element {
         }
         CodeBlock {
             contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">#[component]\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">PageNotFound</span><span style=\"color:#f8f8f2;\">(</span><span style=\"font-style:italic;color:#fd971f;\">cx</span><span style=\"color:#f8f8f2;\">: Scope, </span><span style=\"font-style:italic;color:#fd971f;\">route</span><span style=\"color:#f8f8f2;\">: Vec&lt;String&gt;) -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    render! {{\n</span><span style=\"color:#f8f8f2;\">        h1 {{ </span><span style=\"color:#ffee99;\">&quot;Page not found&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">        p {{ </span><span style=\"color:#ffee99;\">&quot;We are terribly sorry, but the page you requested doesn&#39;t exist.&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">        pre {{\n</span><span style=\"color:#f8f8f2;\">            color: </span><span style=\"color:#ffee99;\">&quot;red&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">            </span><span style=\"color:#ffee99;\">&quot;log:</span><span style=\"color:#ff80f4;\">\\n</span><span style=\"color:#ffee99;\">attemped to navigate to: {{route:?}}&quot;\n</span><span style=\"color:#f8f8f2;\">        }}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
-            name: "first_route.rs".to_string(),
+            name: "catch_all.rs".to_string(),
         }
         p { "Next, register the route in the Route enum to match if all other routes fail." }
         CodeBlock {
             contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">#[derive(Routable, Clone)]\n</span><span style=\"font-style:italic;color:#66d9ef;\">enum </span><span style=\"color:#f8f8f2;\">Route {{\n</span><span style=\"color:#f8f8f2;\">    #[route(</span><span style=\"color:#ffee99;\">&quot;/&quot;</span><span style=\"color:#f8f8f2;\">)]\n</span><span style=\"color:#f8f8f2;\">    Home {{}},\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#8c8c8c;\">// PageNotFound is a catch all route that will match any route and placing the matched segments in the route field\n</span><span style=\"color:#f8f8f2;\">    #[route(</span><span style=\"color:#ffee99;\">&quot;/:..route&quot;</span><span style=\"color:#f8f8f2;\">)]\n</span><span style=\"color:#f8f8f2;\">    PageNotFound {{ route: Vec&lt;String&gt; }},\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
-            name: "first_route.rs".to_string(),
+            name: "catch_all.rs".to_string(),
         }
         p { "Now when you go to a route that doesn't exist, you should see the page not found" }
         h2 { id: "conclusion",
@@ -9509,7 +8916,7 @@ pub fn RouterExampleBuildingANest() -> dioxus::prelude::Element {
         p { "Let's add our links:" }
         CodeBlock {
             contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">#[component]\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">NavBar</span><span style=\"color:#f8f8f2;\">(</span><span style=\"font-style:italic;color:#fd971f;\">cx</span><span style=\"color:#f8f8f2;\">: Scope) -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    render! {{\n</span><span style=\"color:#f8f8f2;\">        nav {{\n</span><span style=\"color:#f8f8f2;\">            ul {{\n</span><span style=\"color:#f8f8f2;\">                li {{\n</span><span style=\"color:#f8f8f2;\">                    Link {{\n</span><span style=\"color:#f8f8f2;\">                        </span><span style=\"color:#8c8c8c;\">// The Link component will navigate to the route specified\n</span><span style=\"color:#f8f8f2;\">                        </span><span style=\"color:#8c8c8c;\">// in the target prop which is checked to exist at compile time\n</span><span style=\"color:#f8f8f2;\">                        to: Route::Home {{}},\n</span><span style=\"color:#f8f8f2;\">                        </span><span style=\"color:#ffee99;\">&quot;Home&quot;\n</span><span style=\"color:#f8f8f2;\">                    }}\n</span><span style=\"color:#f8f8f2;\">                }}\n</span><span style=\"color:#f8f8f2;\">            }}\n</span><span style=\"color:#f8f8f2;\">        }}\n</span><span style=\"color:#f8f8f2;\">        Outlet::&lt;Route&gt; {{}}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
-            name: "nested_routes.rs".to_string(),
+            name: "links.rs".to_string(),
         }
         blockquote {
             p {
@@ -9547,24 +8954,24 @@ pub fn RouterExampleBuildingANest() -> dioxus::prelude::Element {
         }
         CodeBlock {
             contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">#[component]\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">Blog</span><span style=\"color:#f8f8f2;\">(</span><span style=\"font-style:italic;color:#fd971f;\">cx</span><span style=\"color:#f8f8f2;\">: Scope) -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    render! {{\n</span><span style=\"color:#f8f8f2;\">        h1 {{ </span><span style=\"color:#ffee99;\">&quot;Blog&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">        Outlet::&lt;Route&gt; {{}}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
-            name: "nested_routes.rs".to_string(),
+            name: "dynamic_route.rs".to_string(),
         }
         p { "Now we'll create another index component, that'll be displayed when no blog post" }
         CodeBlock {
             contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">#[component]\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">BlogList</span><span style=\"color:#f8f8f2;\">(</span><span style=\"font-style:italic;color:#fd971f;\">cx</span><span style=\"color:#f8f8f2;\">: Scope) -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    render! {{\n</span><span style=\"color:#f8f8f2;\">        h2 {{ </span><span style=\"color:#ffee99;\">&quot;Choose a post&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">        ul {{\n</span><span style=\"color:#f8f8f2;\">            li {{\n</span><span style=\"color:#f8f8f2;\">                Link {{\n</span><span style=\"color:#f8f8f2;\">                    to: Route::BlogPost {{ name: </span><span style=\"color:#ffee99;\">&quot;Blog post 1&quot;</span><span style=\"color:#f8f8f2;\">.</span><span style=\"color:#66d9ef;\">into</span><span style=\"color:#f8f8f2;\">() }},\n</span><span style=\"color:#f8f8f2;\">                    </span><span style=\"color:#ffee99;\">&quot;Read the first blog post&quot;\n</span><span style=\"color:#f8f8f2;\">                }}\n</span><span style=\"color:#f8f8f2;\">            }}\n</span><span style=\"color:#f8f8f2;\">            li {{\n</span><span style=\"color:#f8f8f2;\">                Link {{\n</span><span style=\"color:#f8f8f2;\">                    to: Route::BlogPost {{ name: </span><span style=\"color:#ffee99;\">&quot;Blog post 2&quot;</span><span style=\"color:#f8f8f2;\">.</span><span style=\"color:#66d9ef;\">into</span><span style=\"color:#f8f8f2;\">() }},\n</span><span style=\"color:#f8f8f2;\">                    </span><span style=\"color:#ffee99;\">&quot;Read the second blog post&quot;\n</span><span style=\"color:#f8f8f2;\">                }}\n</span><span style=\"color:#f8f8f2;\">            }}\n</span><span style=\"color:#f8f8f2;\">        }}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
-            name: "nested_routes.rs".to_string(),
+            name: "dynamic_route.rs".to_string(),
         }
         p {
             "We also need to create a component that displays an actual blog post. This component will accept the URL parameters as props:"
         }
         CodeBlock {
             contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#8c8c8c;\">// The name prop comes from the /:name route segment\n</span><span style=\"color:#f8f8f2;\">#[component]\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">BlogPost</span><span style=\"color:#f8f8f2;\">(</span><span style=\"font-style:italic;color:#fd971f;\">cx</span><span style=\"color:#f8f8f2;\">: Scope, </span><span style=\"font-style:italic;color:#fd971f;\">name</span><span style=\"color:#f8f8f2;\">: String) -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    render! {{\n</span><span style=\"color:#f8f8f2;\">        h2 {{ </span><span style=\"color:#ffee99;\">&quot;Blog Post: {{name}}&quot;</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
-            name: "nested_routes.rs".to_string(),
+            name: "dynamic_route.rs".to_string(),
         }
         p { "Finally, let's tell our router about those components:" }
         CodeBlock {
             contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">#[derive(Routable, Clone)]\n</span><span style=\"color:#f8f8f2;\">#[rustfmt::skip]\n</span><span style=\"font-style:italic;color:#66d9ef;\">enum </span><span style=\"color:#f8f8f2;\">Route {{\n</span><span style=\"color:#f8f8f2;\">    #[layout(NavBar)]\n</span><span style=\"color:#f8f8f2;\">        #[route(</span><span style=\"color:#ffee99;\">&quot;/&quot;</span><span style=\"color:#f8f8f2;\">)]\n</span><span style=\"color:#f8f8f2;\">        Home {{}},\n</span><span style=\"color:#f8f8f2;\">        #[nest(</span><span style=\"color:#ffee99;\">&quot;/blog&quot;</span><span style=\"color:#f8f8f2;\">)]\n</span><span style=\"color:#f8f8f2;\">            #[layout(Blog)]\n</span><span style=\"color:#f8f8f2;\">            #[route(</span><span style=\"color:#ffee99;\">&quot;/&quot;</span><span style=\"color:#f8f8f2;\">)]\n</span><span style=\"color:#f8f8f2;\">            BlogList {{}},\n</span><span style=\"color:#f8f8f2;\">            #[route(</span><span style=\"color:#ffee99;\">&quot;/post/:name&quot;</span><span style=\"color:#f8f8f2;\">)]\n</span><span style=\"color:#f8f8f2;\">            BlogPost {{ name: </span><span style=\"font-style:italic;color:#66d9ef;\">String </span><span style=\"color:#f8f8f2;\">}},\n</span><span style=\"color:#f8f8f2;\">            #[end_layout]\n</span><span style=\"color:#f8f8f2;\">        #[end_nest]\n</span><span style=\"color:#f8f8f2;\">    #[end_layout]\n</span><span style=\"color:#f8f8f2;\">    #[route(</span><span style=\"color:#ffee99;\">&quot;/:..route&quot;</span><span style=\"color:#f8f8f2;\">)]\n</span><span style=\"color:#f8f8f2;\">    PageNotFound {{\n</span><span style=\"color:#f8f8f2;\">        route: Vec&lt;String&gt;,\n</span><span style=\"color:#f8f8f2;\">    }},\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
-            name: "nested_routes.rs".to_string(),
+            name: "dynamic_route.rs".to_string(),
         }
         p {
             "That's it! If you head to  "
@@ -9715,7 +9122,7 @@ pub fn RouterReferenceIndex() -> dioxus::prelude::Element {
                 "Make sure you added the  "
                 code { "dioxus-router" }
                 " dependency as explained in the"
-                a { href: "reference/..", "introduction" }
+                a { href: "..", "introduction" }
                 "."
             }
         }
@@ -9761,19 +9168,19 @@ pub fn RouterReferenceRoutesIndex() -> dioxus::prelude::Element {
         p { "There are four fundamental types of segments:" }
         ol {
             li {
-                a { href: "routes/#static-segments", "Static segments" }
+                a { href: "#static-segments", "Static segments" }
                 " are fixed strings that must be present in the path."
             }
             li {
-                a { href: "routes/#dynamic-segments", "Dynamic segments" }
+                a { href: "#dynamic-segments", "Dynamic segments" }
                 " are types that can be parsed from a segment."
             }
             li {
-                a { href: "routes/#catch-all-segments", "Catch-all segments" }
+                a { href: "#catch-all-segments", "Catch-all segments" }
                 " are types that can be parsed from multiple segments."
             }
             li {
-                a { href: "routes/#query-segments", "Query segments" }
+                a { href: "#query-segments", "Query segments" }
                 " are types that can be parsed from the query string."
             }
         }
@@ -9817,7 +9224,7 @@ pub fn RouterReferenceRoutesIndex() -> dioxus::prelude::Element {
         }
         CodeBlock {
             contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">#[derive(Routable, Clone)]\n</span><span style=\"color:#f8f8f2;\">#[rustfmt::skip]\n</span><span style=\"font-style:italic;color:#66d9ef;\">enum </span><span style=\"color:#f8f8f2;\">Route {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#8c8c8c;\">// segments that start with : are dynamic segments\n</span><span style=\"color:#f8f8f2;\">    #[route(</span><span style=\"color:#ffee99;\">&quot;/post/:name&quot;</span><span style=\"color:#f8f8f2;\">)]\n</span><span style=\"color:#f8f8f2;\">    BlogPost {{\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"color:#8c8c8c;\">// You must include dynamic segments in child variants\n</span><span style=\"color:#f8f8f2;\">        name: </span><span style=\"font-style:italic;color:#66d9ef;\">String</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">    }},\n</span><span style=\"color:#f8f8f2;\">    #[route(</span><span style=\"color:#ffee99;\">&quot;/document/:id&quot;</span><span style=\"color:#f8f8f2;\">)]\n</span><span style=\"color:#f8f8f2;\">    Document {{\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"color:#8c8c8c;\">// You can use any type that implements FromStr\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"color:#8c8c8c;\">// If the segment can&#39;t be parsed, the route will not match\n</span><span style=\"color:#f8f8f2;\">        id: </span><span style=\"font-style:italic;color:#66d9ef;\">usize</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">    }},\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#8c8c8c;\">// Components must contain the same dynamic segments as their corresponding variant\n</span><span style=\"color:#f8f8f2;\">#[component]\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">BlogPost</span><span style=\"color:#f8f8f2;\">(</span><span style=\"font-style:italic;color:#fd971f;\">cx</span><span style=\"color:#f8f8f2;\">: Scope, </span><span style=\"font-style:italic;color:#fd971f;\">name</span><span style=\"color:#f8f8f2;\">: String) -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    todo!()\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">#[component]\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">Document</span><span style=\"color:#f8f8f2;\">(</span><span style=\"font-style:italic;color:#fd971f;\">cx</span><span style=\"color:#f8f8f2;\">: Scope, </span><span style=\"font-style:italic;color:#fd971f;\">id</span><span style=\"color:#f8f8f2;\">: </span><span style=\"font-style:italic;color:#66d9ef;\">usize</span><span style=\"color:#f8f8f2;\">) -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    todo!()\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
-            name: "static_segments.rs".to_string(),
+            name: "dynamic_segments.rs".to_string(),
         }
         h2 { id: "catch-all-segments",
             a { href: "#catch-all-segments", class: "header", "Catch All Segments" }
@@ -9833,6 +9240,8 @@ pub fn RouterReferenceRoutesIndex() -> dioxus::prelude::Element {
             "The segment can be of any type that implements  "
             code { "FromSegments" }
             ". (Vec"
+            p { class: "inline-html-block", dangerous_inner_html: "<String>" }
+            " implements this by default)"
         }
         p {
             "Catch All segments must be the "
@@ -9841,7 +9250,7 @@ pub fn RouterReferenceRoutesIndex() -> dioxus::prelude::Element {
         }
         CodeBlock {
             contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">#[derive(Routable, Clone)]\n</span><span style=\"color:#f8f8f2;\">#[rustfmt::skip]\n</span><span style=\"font-style:italic;color:#66d9ef;\">enum </span><span style=\"color:#f8f8f2;\">Route {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#8c8c8c;\">// segments that start with :.. are catch all segments\n</span><span style=\"color:#f8f8f2;\">    #[route(</span><span style=\"color:#ffee99;\">&quot;/blog/:..segments&quot;</span><span style=\"color:#f8f8f2;\">)]\n</span><span style=\"color:#f8f8f2;\">    BlogPost {{\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"color:#8c8c8c;\">// You must include catch all segment in child variants\n</span><span style=\"color:#f8f8f2;\">        segments: Vec&lt;String&gt;,\n</span><span style=\"color:#f8f8f2;\">    }},\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#8c8c8c;\">// Components must contain the same catch all segments as their corresponding variant\n</span><span style=\"color:#f8f8f2;\">#[component]\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">BlogPost</span><span style=\"color:#f8f8f2;\">(</span><span style=\"font-style:italic;color:#fd971f;\">cx</span><span style=\"color:#f8f8f2;\">: Scope, </span><span style=\"font-style:italic;color:#fd971f;\">segments</span><span style=\"color:#f8f8f2;\">: Vec&lt;String&gt;) -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    todo!()\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
-            name: "static_segments.rs".to_string(),
+            name: "catch_all_segments.rs".to_string(),
         }
         h2 { id: "query-segments",
             a { href: "#query-segments", class: "header", "Query Segments" }
@@ -9855,9 +9264,9 @@ pub fn RouterReferenceRoutesIndex() -> dioxus::prelude::Element {
         }
         p {
             "Unlike "
-            a { href: "routes/#dynamic-segments", "Dynamic Segments" }
+            a { href: "#dynamic-segments", "Dynamic Segments" }
             " and "
-            a { href: "routes/#catch-all-segments", "Catch All Segments" }
+            a { href: "#catch-all-segments", "Catch All Segments" }
             ", parsing a Query segment must not fail."
         }
         p {
@@ -9872,7 +9281,7 @@ pub fn RouterReferenceRoutesIndex() -> dioxus::prelude::Element {
         }
         CodeBlock {
             contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">#[derive(Routable, Clone)]\n</span><span style=\"color:#f8f8f2;\">#[rustfmt::skip]\n</span><span style=\"font-style:italic;color:#66d9ef;\">enum </span><span style=\"color:#f8f8f2;\">Route {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#8c8c8c;\">// segments that start with ?: are query segments\n</span><span style=\"color:#f8f8f2;\">    #[route(</span><span style=\"color:#ffee99;\">&quot;/blog?:query_params&quot;</span><span style=\"color:#f8f8f2;\">)]\n</span><span style=\"color:#f8f8f2;\">    BlogPost {{\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"color:#8c8c8c;\">// You must include query segments in child variants\n</span><span style=\"color:#f8f8f2;\">        query_params: BlogQuerySegments,\n</span><span style=\"color:#f8f8f2;\">    }},\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">#[derive(Debug, Clone, PartialEq)]\n</span><span style=\"font-style:italic;color:#66d9ef;\">struct </span><span style=\"color:#f8f8f2;\">BlogQuerySegments {{\n</span><span style=\"color:#f8f8f2;\">    name: String,\n</span><span style=\"color:#f8f8f2;\">    surname: String,\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#8c8c8c;\">/// The display impl needs to display the query in a way that can be parsed:\n</span><span style=\"font-style:italic;color:#66d9ef;\">impl </span><span style=\"color:#f8f8f2;\">Display </span><span style=\"color:#f92672;\">for </span><span style=\"color:#f8f8f2;\">BlogQuerySegments {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">fmt</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#f92672;\">&amp;</span><span style=\"font-style:italic;color:#fd971f;\">self</span><span style=\"color:#f8f8f2;\">, </span><span style=\"font-style:italic;color:#fd971f;\">f</span><span style=\"color:#f8f8f2;\">: </span><span style=\"color:#f92672;\">&amp;mut </span><span style=\"color:#f8f8f2;\">std::fmt::Formatter&lt;&#39;</span><span style=\"color:#f92672;\">_</span><span style=\"color:#f8f8f2;\">&gt;) -&gt; std::fmt::Result {{\n</span><span style=\"color:#f8f8f2;\">        write!(f, </span><span style=\"color:#ffee99;\">&quot;name=</span><span style=\"color:#ff80f4;\">{{}}</span><span style=\"color:#ffee99;\">&amp;surname=</span><span style=\"color:#ff80f4;\">{{}}</span><span style=\"color:#ffee99;\">&quot;</span><span style=\"color:#f8f8f2;\">, self.name, self.surname)\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#8c8c8c;\">/// The query segment is anything that implements https://docs.rs/dioxus-router/latest/dioxus_router/routable/trait.FromQuery.html. You can implement that trait for a struct if you want to parse multiple query parameters.\n</span><span style=\"font-style:italic;color:#66d9ef;\">impl </span><span style=\"color:#f8f8f2;\">FromQuery </span><span style=\"color:#f92672;\">for </span><span style=\"color:#f8f8f2;\">BlogQuerySegments {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">from_query</span><span style=\"color:#f8f8f2;\">(</span><span style=\"font-style:italic;color:#fd971f;\">query</span><span style=\"color:#f8f8f2;\">: </span><span style=\"color:#f92672;\">&amp;</span><span style=\"font-style:italic;color:#66d9ef;\">str</span><span style=\"color:#f8f8f2;\">) -&gt; </span><span style=\"font-style:italic;color:#66d9ef;\">Self </span><span style=\"color:#f8f8f2;\">{{\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"font-style:italic;color:#66d9ef;\">let </span><span style=\"color:#f92672;\">mut</span><span style=\"color:#f8f8f2;\"> name </span><span style=\"color:#f92672;\">= </span><span style=\"font-style:italic;color:#66d9ef;\">None</span><span style=\"color:#f8f8f2;\">;\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"font-style:italic;color:#66d9ef;\">let </span><span style=\"color:#f92672;\">mut</span><span style=\"color:#f8f8f2;\"> surname </span><span style=\"color:#f92672;\">= </span><span style=\"font-style:italic;color:#66d9ef;\">None</span><span style=\"color:#f8f8f2;\">;\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> pairs </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">form_urlencoded::parse(query.</span><span style=\"color:#66d9ef;\">as_bytes</span><span style=\"color:#f8f8f2;\">());\n</span><span style=\"color:#f8f8f2;\">        pairs.</span><span style=\"color:#66d9ef;\">for_each</span><span style=\"color:#f8f8f2;\">(|(</span><span style=\"font-style:italic;color:#fd971f;\">key</span><span style=\"color:#f8f8f2;\">, </span><span style=\"font-style:italic;color:#fd971f;\">value</span><span style=\"color:#f8f8f2;\">)| {{\n</span><span style=\"color:#f8f8f2;\">            </span><span style=\"color:#f92672;\">if</span><span style=\"color:#f8f8f2;\"> key </span><span style=\"color:#f92672;\">== </span><span style=\"color:#ffee99;\">&quot;name&quot; </span><span style=\"color:#f8f8f2;\">{{\n</span><span style=\"color:#f8f8f2;\">                name </span><span style=\"color:#f92672;\">= </span><span style=\"font-style:italic;color:#66d9ef;\">Some</span><span style=\"color:#f8f8f2;\">(value.</span><span style=\"color:#66d9ef;\">clone</span><span style=\"color:#f8f8f2;\">().</span><span style=\"color:#66d9ef;\">into</span><span style=\"color:#f8f8f2;\">());\n</span><span style=\"color:#f8f8f2;\">            }}\n</span><span style=\"color:#f8f8f2;\">            </span><span style=\"color:#f92672;\">if</span><span style=\"color:#f8f8f2;\"> key </span><span style=\"color:#f92672;\">== </span><span style=\"color:#ffee99;\">&quot;surname&quot; </span><span style=\"color:#f8f8f2;\">{{\n</span><span style=\"color:#f8f8f2;\">                surname </span><span style=\"color:#f92672;\">= </span><span style=\"font-style:italic;color:#66d9ef;\">Some</span><span style=\"color:#f8f8f2;\">(value.</span><span style=\"color:#66d9ef;\">clone</span><span style=\"color:#f8f8f2;\">().</span><span style=\"color:#66d9ef;\">into</span><span style=\"color:#f8f8f2;\">());\n</span><span style=\"color:#f8f8f2;\">            }}\n</span><span style=\"color:#f8f8f2;\">        }});\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"font-style:italic;color:#66d9ef;\">Self </span><span style=\"color:#f8f8f2;\">{{\n</span><span style=\"color:#f8f8f2;\">            name: name.</span><span style=\"color:#66d9ef;\">unwrap</span><span style=\"color:#f8f8f2;\">(),\n</span><span style=\"color:#f8f8f2;\">            surname: surname.</span><span style=\"color:#66d9ef;\">unwrap</span><span style=\"color:#f8f8f2;\">(),\n</span><span style=\"color:#f8f8f2;\">        }}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">#[component]\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">BlogPost</span><span style=\"color:#f8f8f2;\">(</span><span style=\"font-style:italic;color:#fd971f;\">cx</span><span style=\"color:#f8f8f2;\">: Scope, </span><span style=\"font-style:italic;color:#fd971f;\">query_params</span><span style=\"color:#f8f8f2;\">: BlogQuerySegments) -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    render! {{\n</span><span style=\"color:#f8f8f2;\">        div{{</span><span style=\"color:#ffee99;\">&quot;This is your blogpost with a query segment:&quot;</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">        div{{format!(</span><span style=\"color:#ffee99;\">&quot;</span><span style=\"color:#ff80f4;\">{{:?}}</span><span style=\"color:#ffee99;\">&quot;</span><span style=\"color:#f8f8f2;\">, query_params)}}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">App</span><span style=\"color:#f8f8f2;\">(</span><span style=\"font-style:italic;color:#fd971f;\">cx</span><span style=\"color:#f8f8f2;\">: Scope) -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    render! {{ Router::&lt;Route&gt;{{}} }}\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">main</span><span style=\"color:#f8f8f2;\">() {{}}</span></pre>\n",
-            name: "static_segments.rs".to_string(),
+            name: "query_segments.rs".to_string(),
         }
     }
 }
@@ -10315,47 +9724,47 @@ pub fn CookbookIndex() -> dioxus::prelude::Element {
         p { "There are a few different sections in the cookbook:" }
         ul {
             li {
-                a { href: "cookbook/publishing", "Publishing" }
+                a { href: "publishing", "Publishing" }
                 " will teach you how to present your app in a variety of delicious forms."
             }
             li {
                 "Explore the "
-                a { href: "cookbook/antipatterns", "Anti-patterns" }
+                a { href: "antipatterns", "Anti-patterns" }
                 " section to discover what ingredients to avoid when preparing your application."
             }
             li {
                 "Within "
-                a { href: "cookbook/error_handling", "Error Handling" }
+                a { href: "error_handling", "Error Handling" }
                 ", we'll master the fine art of managing spoiled ingredients in Dioxus."
             }
             li {
                 "Take a culinary journey through "
-                a { href: "cookbook/state", "State management" }
+                a { href: "state", "State management" }
                 ", where we'll explore the world of handling local, global, and external state in Dioxus."
             }
             li {
-                a { href: "cookbook/integrations", "Integrations" }
+                a { href: "integrations", "Integrations" }
                 " will guide you how to seamlessly blend external libraries into your Dioxus culinary creations."
             }
             li {
-                a { href: "cookbook/testing", "Testing" }
+                a { href: "testing", "Testing" }
                 " explains how to examine the unique flavor of Dioxus-specific features, like components."
             }
             li {
-                a { href: "cookbook/examples", "Examples" }
+                a { href: "examples", "Examples" }
                 " is a curated list of delightful recipes that demonstrate the various ways of using Dioxus ingredients."
             }
             li {
-                a { href: "cookbook/tailwind", "Tailwind" }
+                a { href: "tailwind", "Tailwind" }
                 " reveals the secrets of combining your Tailwind and Dioxus ingredients into a complete meal. You will also learn about using other NPM ingredients (packages) with Dioxus."
             }
             li {
                 "In the "
-                a { href: "cookbook/custom_renderer", "Custom Renderer" }
+                a { href: "custom_renderer", "Custom Renderer" }
                 " section, we embark on a cooking adventure, inventing new ways to cook with Dioxus!"
             }
             li {
-                a { href: "cookbook/optimizing", "Optimizing" }
+                a { href: "optimizing", "Optimizing" }
                 " will show you how to maximize the quality of your ingredients."
             }
         }
@@ -10469,7 +9878,7 @@ pub fn CookbookPublishing() -> dioxus::prelude::Element {
         p { "For example, a macOS app would look like this:" }
         p {
             img {
-                src: "/assets/static/images/publish.png",
+                src: asset!("/assets/static/publish.png", ImageAssetOptions::new().with_avif()),
                 alt: "Published App",
                 title: "",
             }
@@ -10704,10 +10113,10 @@ pub fn CookbookIntegrationsIndex() -> dioxus::prelude::Element {
         }
         ul {
             li {
-                a { href: "integrations/./logging", "Logging" }
+                a { href: "./logging", "Logging" }
             }
             li {
-                a { href: "integrations/./internationalization", "Internationalization" }
+                a { href: "./internationalization", "Internationalization" }
             }
         }
     }
@@ -11009,10 +10418,10 @@ pub fn CookbookStateIndex() -> dioxus::prelude::Element {
         }
         ul {
             li {
-                a { href: "state/external", "External State" }
+                a { href: "external", "External State" }
             }
             li {
-                a { href: "state/custom_hooks", "Custom Hook" }
+                a { href: "custom_hooks", "Custom Hook" }
             }
         }
     }
@@ -11035,7 +10444,7 @@ pub fn CookbookStateExternalIndex() -> dioxus::prelude::Element {
             }
         }
         p {
-            a { href: "external/../../reference/use_coroutine", "Coroutines" }
+            a { href: "../../reference/use_coroutine", "Coroutines" }
             " are great tool for dealing with non-reactive (state you don't render directly) state within your application."
         }
         p {
@@ -11147,7 +10556,7 @@ pub fn CookbookStateCustomHooksIndex() -> dioxus::prelude::Element {
         }
         CodeBlock {
             contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f92672;\">use </span><span style=\"color:#f8f8f2;\">std::cell::RefCell;\n</span><span style=\"color:#f92672;\">use </span><span style=\"color:#f8f8f2;\">std::rc::Rc;\n</span><span style=\"color:#f92672;\">use </span><span style=\"color:#f8f8f2;\">std::sync::Arc;\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">#[derive(Clone)]\n</span><span style=\"font-style:italic;color:#66d9ef;\">struct </span><span style=\"color:#f8f8f2;\">UseState&lt;T&gt; {{\n</span><span style=\"color:#f8f8f2;\">    value: Rc&lt;RefCell&lt;T&gt;&gt;,\n</span><span style=\"color:#f8f8f2;\">    update: Arc&lt;dyn Fn()&gt;,\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">my_use_state</span><span style=\"color:#f8f8f2;\">&lt;T: </span><span style=\"color:#f92672;\">&#39;static</span><span style=\"color:#f8f8f2;\">&gt;(</span><span style=\"font-style:italic;color:#fd971f;\">cx</span><span style=\"color:#f8f8f2;\">: </span><span style=\"color:#f92672;\">&amp;</span><span style=\"color:#f8f8f2;\">ScopeState, </span><span style=\"font-style:italic;color:#fd971f;\">init</span><span style=\"color:#f8f8f2;\">: impl FnOnce() -&gt; T) -&gt; </span><span style=\"color:#f92672;\">&amp;</span><span style=\"color:#f8f8f2;\">UseState&lt;T&gt; {{\n</span><span style=\"color:#f8f8f2;\">    cx.</span><span style=\"color:#66d9ef;\">use_hook</span><span style=\"color:#f8f8f2;\">(|| {{\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"color:#8c8c8c;\">// The update function will trigger a re-render in the component cx is attached to\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> update </span><span style=\"color:#f92672;\">=</span><span style=\"color:#f8f8f2;\"> cx.</span><span style=\"color:#66d9ef;\">schedule_update</span><span style=\"color:#f8f8f2;\">();\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"color:#8c8c8c;\">// Create the initial state\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> value </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">Rc::new(RefCell::new(</span><span style=\"color:#66d9ef;\">init</span><span style=\"color:#f8f8f2;\">()));\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">        UseState {{ value, update }}\n</span><span style=\"color:#f8f8f2;\">    }})\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"font-style:italic;color:#66d9ef;\">impl</span><span style=\"color:#f8f8f2;\">&lt;T: Clone&gt; UseState&lt;T&gt; {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">get</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#f92672;\">&amp;</span><span style=\"font-style:italic;color:#fd971f;\">self</span><span style=\"color:#f8f8f2;\">) -&gt; T {{\n</span><span style=\"color:#f8f8f2;\">        self.value.</span><span style=\"color:#66d9ef;\">borrow</span><span style=\"color:#f8f8f2;\">().</span><span style=\"color:#66d9ef;\">clone</span><span style=\"color:#f8f8f2;\">()\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">set</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#f92672;\">&amp;</span><span style=\"font-style:italic;color:#fd971f;\">self</span><span style=\"color:#f8f8f2;\">, </span><span style=\"font-style:italic;color:#fd971f;\">value</span><span style=\"color:#f8f8f2;\">: T) {{\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"color:#8c8c8c;\">// Update the state\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"color:#f92672;\">*</span><span style=\"color:#f8f8f2;\">self.value.</span><span style=\"color:#66d9ef;\">borrow_mut</span><span style=\"color:#f8f8f2;\">() </span><span style=\"color:#f92672;\">=</span><span style=\"color:#f8f8f2;\"> value;\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"color:#8c8c8c;\">// Trigger a re-render on the component the state is from\n</span><span style=\"color:#f8f8f2;\">        (self.update)();\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
-            name: "hooks_composed.rs".to_string(),
+            name: "hooks_custom_logic.rs".to_string(),
         }
         ul {
             li {
@@ -11169,7 +10578,7 @@ pub fn CookbookStateCustomHooksIndex() -> dioxus::prelude::Element {
         }
         CodeBlock {
             contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f92672;\">pub </span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">use_context</span><span style=\"color:#f8f8f2;\">&lt;T: </span><span style=\"color:#f92672;\">&#39;static +</span><span style=\"color:#f8f8f2;\"> Clone&gt;(</span><span style=\"font-style:italic;color:#fd971f;\">cx</span><span style=\"color:#f8f8f2;\">: </span><span style=\"color:#f92672;\">&amp;</span><span style=\"color:#f8f8f2;\">ScopeState) -&gt; Option&lt;</span><span style=\"color:#f92672;\">&amp;</span><span style=\"color:#f8f8f2;\">T&gt; {{\n</span><span style=\"color:#f8f8f2;\">    cx.</span><span style=\"color:#66d9ef;\">use_hook</span><span style=\"color:#f8f8f2;\">(|| cx.consume_context::&lt;T&gt;()).</span><span style=\"color:#66d9ef;\">as_ref</span><span style=\"color:#f8f8f2;\">()\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\">pub </span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">use_context_provider</span><span style=\"color:#f8f8f2;\">&lt;T: </span><span style=\"color:#f92672;\">&#39;static +</span><span style=\"color:#f8f8f2;\"> Clone&gt;(</span><span style=\"font-style:italic;color:#fd971f;\">cx</span><span style=\"color:#f8f8f2;\">: </span><span style=\"color:#f92672;\">&amp;</span><span style=\"color:#f8f8f2;\">ScopeState, </span><span style=\"font-style:italic;color:#fd971f;\">f</span><span style=\"color:#f8f8f2;\">: impl FnOnce() -&gt; T) -&gt; </span><span style=\"color:#f92672;\">&amp;</span><span style=\"color:#f8f8f2;\">T {{\n</span><span style=\"color:#f8f8f2;\">    cx.</span><span style=\"color:#66d9ef;\">use_hook</span><span style=\"color:#f8f8f2;\">(|| {{\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> val </span><span style=\"color:#f92672;\">= </span><span style=\"color:#66d9ef;\">f</span><span style=\"color:#f8f8f2;\">();\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"color:#8c8c8c;\">// Provide the context state to the scope\n</span><span style=\"color:#f8f8f2;\">        cx.</span><span style=\"color:#66d9ef;\">provide_context</span><span style=\"color:#f8f8f2;\">(val.</span><span style=\"color:#66d9ef;\">clone</span><span style=\"color:#f8f8f2;\">());\n</span><span style=\"color:#f8f8f2;\">        val\n</span><span style=\"color:#f8f8f2;\">    }})\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
-            name: "hooks_composed.rs".to_string(),
+            name: "hooks_custom_logic.rs".to_string(),
         }
         h2 { id: "hook-anti-patterns",
             a { href: "#hook-anti-patterns", class: "header", "Hook Anti-Patterns" }
@@ -11183,7 +10592,7 @@ pub fn CookbookStateCustomHooksIndex() -> dioxus::prelude::Element {
         p { "This version of use_state may seem more efficient, but it is not cloneable:" }
         CodeBlock {
             contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f92672;\">use </span><span style=\"color:#f8f8f2;\">std::cell::RefCell;\n</span><span style=\"color:#f92672;\">use </span><span style=\"color:#f8f8f2;\">std::rc::Rc;\n</span><span style=\"color:#f92672;\">use </span><span style=\"color:#f8f8f2;\">std::sync::Arc;\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"font-style:italic;color:#66d9ef;\">struct </span><span style=\"color:#f8f8f2;\">UseState&lt;</span><span style=\"color:#f92672;\">&#39;a</span><span style=\"color:#f8f8f2;\">, T&gt; {{\n</span><span style=\"color:#f8f8f2;\">    value: </span><span style=\"color:#f92672;\">&amp;&#39;a </span><span style=\"color:#f8f8f2;\">RefCell&lt;T&gt;,\n</span><span style=\"color:#f8f8f2;\">    update: Arc&lt;dyn Fn()&gt;,\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">my_use_state</span><span style=\"color:#f8f8f2;\">&lt;T: </span><span style=\"color:#f92672;\">&#39;static</span><span style=\"color:#f8f8f2;\">&gt;(</span><span style=\"font-style:italic;color:#fd971f;\">cx</span><span style=\"color:#f8f8f2;\">: </span><span style=\"color:#f92672;\">&amp;</span><span style=\"color:#f8f8f2;\">ScopeState, </span><span style=\"font-style:italic;color:#fd971f;\">init</span><span style=\"color:#f8f8f2;\">: impl FnOnce() -&gt; T) -&gt; UseState&lt;T&gt; {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#8c8c8c;\">// The update function will trigger a re-render in the component cx is attached to\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> update </span><span style=\"color:#f92672;\">=</span><span style=\"color:#f8f8f2;\"> cx.</span><span style=\"color:#66d9ef;\">schedule_update</span><span style=\"color:#f8f8f2;\">();\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#8c8c8c;\">// Create the initial state\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> value </span><span style=\"color:#f92672;\">=</span><span style=\"color:#f8f8f2;\"> cx.</span><span style=\"color:#66d9ef;\">use_hook</span><span style=\"color:#f8f8f2;\">(|| RefCell::new(</span><span style=\"color:#66d9ef;\">init</span><span style=\"color:#f8f8f2;\">()));\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">    UseState {{ value, update }}\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"font-style:italic;color:#66d9ef;\">impl</span><span style=\"color:#f8f8f2;\">&lt;T: Clone&gt; UseState&lt;&#39;</span><span style=\"color:#f92672;\">_</span><span style=\"color:#f8f8f2;\">, T&gt; {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">get</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#f92672;\">&amp;</span><span style=\"font-style:italic;color:#fd971f;\">self</span><span style=\"color:#f8f8f2;\">) -&gt; T {{\n</span><span style=\"color:#f8f8f2;\">        self.value.</span><span style=\"color:#66d9ef;\">borrow</span><span style=\"color:#f8f8f2;\">().</span><span style=\"color:#66d9ef;\">clone</span><span style=\"color:#f8f8f2;\">()\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">set</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#f92672;\">&amp;</span><span style=\"font-style:italic;color:#fd971f;\">self</span><span style=\"color:#f8f8f2;\">, </span><span style=\"font-style:italic;color:#fd971f;\">value</span><span style=\"color:#f8f8f2;\">: T) {{\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"color:#8c8c8c;\">// Update the state\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"color:#f92672;\">*</span><span style=\"color:#f8f8f2;\">self.value.</span><span style=\"color:#66d9ef;\">borrow_mut</span><span style=\"color:#f8f8f2;\">() </span><span style=\"color:#f92672;\">=</span><span style=\"color:#f8f8f2;\"> value;\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"color:#8c8c8c;\">// Trigger a re-render on the component the state is from\n</span><span style=\"color:#f8f8f2;\">        (self.update)();\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
-            name: "hooks_composed.rs".to_string(),
+            name: "hooks_anti_patterns.rs".to_string(),
         }
         p { "If we try to use this hook in an async block, we will get a compile error:" }
         CodeBlock {
@@ -11234,7 +10643,7 @@ pub fn CookbookTesting() -> dioxus::prelude::Element {
         }
         CodeBlock {
             contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f92672;\">use </span><span style=\"color:#f8f8f2;\">futures::FutureExt;\n</span><span style=\"color:#f92672;\">use </span><span style=\"color:#f8f8f2;\">std::{{cell::RefCell, sync::Arc}};\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\">use </span><span style=\"color:#f8f8f2;\">dioxus::prelude::</span><span style=\"color:#f92672;\">*</span><span style=\"color:#f8f8f2;\">;\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">#[test]\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">test</span><span style=\"color:#f8f8f2;\">() {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#66d9ef;\">test_hook</span><span style=\"color:#f8f8f2;\">(\n</span><span style=\"color:#f8f8f2;\">        |</span><span style=\"font-style:italic;color:#fd971f;\">cx</span><span style=\"color:#f8f8f2;\">| </span><span style=\"color:#66d9ef;\">use_ref</span><span style=\"color:#f8f8f2;\">(cx, || </span><span style=\"color:#ff80f4;\">0</span><span style=\"color:#f8f8f2;\">).</span><span style=\"color:#66d9ef;\">clone</span><span style=\"color:#f8f8f2;\">(),\n</span><span style=\"color:#f8f8f2;\">        |</span><span style=\"font-style:italic;color:#fd971f;\">value</span><span style=\"color:#f8f8f2;\">, </span><span style=\"color:#f92672;\">mut </span><span style=\"font-style:italic;color:#fd971f;\">proxy</span><span style=\"color:#f8f8f2;\">| </span><span style=\"color:#f92672;\">match</span><span style=\"color:#f8f8f2;\"> proxy.generation {{\n</span><span style=\"color:#f8f8f2;\">            </span><span style=\"color:#ff80f4;\">0 </span><span style=\"color:#f92672;\">=&gt; </span><span style=\"color:#f8f8f2;\">{{\n</span><span style=\"color:#f8f8f2;\">                value.</span><span style=\"color:#66d9ef;\">set</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#ff80f4;\">1</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"color:#f8f8f2;\">            }}\n</span><span style=\"color:#f8f8f2;\">            </span><span style=\"color:#ff80f4;\">1 </span><span style=\"color:#f92672;\">=&gt; </span><span style=\"color:#f8f8f2;\">{{\n</span><span style=\"color:#f8f8f2;\">                assert_eq!(</span><span style=\"color:#f92672;\">*</span><span style=\"color:#f8f8f2;\">value.</span><span style=\"color:#66d9ef;\">read</span><span style=\"color:#f8f8f2;\">(), </span><span style=\"color:#ff80f4;\">1</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"color:#f8f8f2;\">                value.</span><span style=\"color:#66d9ef;\">set</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#ff80f4;\">2</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"color:#f8f8f2;\">            }}\n</span><span style=\"color:#f8f8f2;\">            </span><span style=\"color:#ff80f4;\">2 </span><span style=\"color:#f92672;\">=&gt; </span><span style=\"color:#f8f8f2;\">{{\n</span><span style=\"color:#f8f8f2;\">                proxy.</span><span style=\"color:#66d9ef;\">rerun</span><span style=\"color:#f8f8f2;\">();\n</span><span style=\"color:#f8f8f2;\">            }}\n</span><span style=\"color:#f8f8f2;\">            </span><span style=\"color:#ff80f4;\">3 </span><span style=\"color:#f92672;\">=&gt; </span><span style=\"color:#f8f8f2;\">{{}}\n</span><span style=\"color:#f8f8f2;\">            </span><span style=\"color:#f92672;\">_ =&gt; </span><span style=\"color:#f8f8f2;\">todo!(),\n</span><span style=\"color:#f8f8f2;\">        }},\n</span><span style=\"color:#f8f8f2;\">        |</span><span style=\"font-style:italic;color:#fd971f;\">proxy</span><span style=\"color:#f8f8f2;\">| assert_eq!(proxy.generation, </span><span style=\"color:#ff80f4;\">4</span><span style=\"color:#f8f8f2;\">),\n</span><span style=\"color:#f8f8f2;\">    );\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">test_hook</span><span style=\"color:#f8f8f2;\">&lt;V: </span><span style=\"color:#f92672;\">&#39;static</span><span style=\"color:#f8f8f2;\">&gt;(\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#fd971f;\">initialize</span><span style=\"color:#f8f8f2;\">: impl FnMut(&amp;</span><span style=\"font-style:italic;color:#fd971f;\">ScopeState</span><span style=\"color:#f8f8f2;\">) -&gt; V + </span><span style=\"color:#f92672;\">&#39;static</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#fd971f;\">check</span><span style=\"color:#f8f8f2;\">: impl FnMut(</span><span style=\"font-style:italic;color:#fd971f;\">V</span><span style=\"color:#f8f8f2;\">, </span><span style=\"font-style:italic;color:#fd971f;\">MockProxy</span><span style=\"color:#f8f8f2;\">) + </span><span style=\"color:#f92672;\">&#39;static</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#f92672;\">mut </span><span style=\"font-style:italic;color:#fd971f;\">final_check</span><span style=\"color:#f8f8f2;\">: impl FnMut(</span><span style=\"font-style:italic;color:#fd971f;\">MockProxy</span><span style=\"color:#f8f8f2;\">) + </span><span style=\"color:#f92672;\">&#39;static</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">) {{\n</span><span style=\"color:#f8f8f2;\">    #[derive(Props)]\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">struct </span><span style=\"color:#f8f8f2;\">MockAppComponent&lt;\n</span><span style=\"color:#f8f8f2;\">        I: FnMut(</span><span style=\"color:#f92672;\">&amp;</span><span style=\"color:#f8f8f2;\">ScopeState) -&gt; V </span><span style=\"color:#f92672;\">+ &#39;static</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">        C: FnMut(V, MockProxy) </span><span style=\"color:#f92672;\">+ &#39;static</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">        V,\n</span><span style=\"color:#f8f8f2;\">    &gt; {{\n</span><span style=\"color:#f8f8f2;\">        hook: RefCell&lt;I&gt;,\n</span><span style=\"color:#f8f8f2;\">        check: RefCell&lt;C&gt;,\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">impl</span><span style=\"color:#f8f8f2;\">&lt;I: FnMut(</span><span style=\"color:#f92672;\">&amp;</span><span style=\"color:#f8f8f2;\">ScopeState) -&gt; V, C: FnMut(V, MockProxy), V&gt; PartialEq\n</span><span style=\"color:#f8f8f2;\">        for MockAppComponent&lt;I, C, V&gt;\n</span><span style=\"color:#f8f8f2;\">    {{\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">eq</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#f92672;\">&amp;</span><span style=\"font-style:italic;color:#fd971f;\">self</span><span style=\"color:#f8f8f2;\">, </span><span style=\"color:#f92672;\">_</span><span style=\"color:#f8f8f2;\">: </span><span style=\"color:#f92672;\">&amp;</span><span style=\"font-style:italic;color:#66d9ef;\">Self</span><span style=\"color:#f8f8f2;\">) -&gt; </span><span style=\"font-style:italic;color:#66d9ef;\">bool </span><span style=\"color:#f8f8f2;\">{{\n</span><span style=\"color:#f8f8f2;\">            </span><span style=\"color:#ff80f4;\">true\n</span><span style=\"color:#f8f8f2;\">        }}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">mock_app</span><span style=\"color:#f8f8f2;\">&lt;I: FnMut(</span><span style=\"color:#f92672;\">&amp;</span><span style=\"color:#f8f8f2;\">ScopeState) -&gt; V, C: FnMut(V, MockProxy), V&gt;(\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"font-style:italic;color:#fd971f;\">cx</span><span style=\"color:#f8f8f2;\">: Scope&lt;MockAppComponent&lt;I, C, V&gt;&gt;,\n</span><span style=\"color:#f8f8f2;\">    ) -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> value </span><span style=\"color:#f92672;\">=</span><span style=\"color:#f8f8f2;\"> cx.props.hook.</span><span style=\"color:#66d9ef;\">borrow_mut</span><span style=\"color:#f8f8f2;\">()(cx);\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">        cx.props.check.</span><span style=\"color:#66d9ef;\">borrow_mut</span><span style=\"color:#f8f8f2;\">()(value, MockProxy::new(cx));\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">        render! {{\n</span><span style=\"color:#f8f8f2;\">            div {{}}\n</span><span style=\"color:#f8f8f2;\">        }}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let </span><span style=\"color:#f92672;\">mut</span><span style=\"color:#f8f8f2;\"> vdom </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">VirtualDom::new_with_props(\n</span><span style=\"color:#f8f8f2;\">        mock_app,\n</span><span style=\"color:#f8f8f2;\">        MockAppComponent {{\n</span><span style=\"color:#f8f8f2;\">            hook: RefCell::new(initialize),\n</span><span style=\"color:#f8f8f2;\">            check: RefCell::new(check),\n</span><span style=\"color:#f8f8f2;\">        }},\n</span><span style=\"color:#f8f8f2;\">    );\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let </span><span style=\"color:#f92672;\">_ =</span><span style=\"color:#f8f8f2;\"> vdom.</span><span style=\"color:#66d9ef;\">rebuild</span><span style=\"color:#f8f8f2;\">();\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#f92672;\">while</span><span style=\"color:#f8f8f2;\"> vdom.</span><span style=\"color:#66d9ef;\">wait_for_work</span><span style=\"color:#f8f8f2;\">().</span><span style=\"color:#66d9ef;\">now_or_never</span><span style=\"color:#f8f8f2;\">().</span><span style=\"color:#66d9ef;\">is_some</span><span style=\"color:#f8f8f2;\">() {{\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"font-style:italic;color:#66d9ef;\">let </span><span style=\"color:#f92672;\">_ =</span><span style=\"color:#f8f8f2;\"> vdom.</span><span style=\"color:#66d9ef;\">render_immediate</span><span style=\"color:#f8f8f2;\">();\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#66d9ef;\">final_check</span><span style=\"color:#f8f8f2;\">(MockProxy::new(vdom.</span><span style=\"color:#66d9ef;\">base_scope</span><span style=\"color:#f8f8f2;\">()));\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"font-style:italic;color:#66d9ef;\">struct </span><span style=\"color:#f8f8f2;\">MockProxy {{\n</span><span style=\"color:#f8f8f2;\">    rerender: Arc&lt;dyn Fn()&gt;,\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#f92672;\">pub </span><span style=\"color:#f8f8f2;\">generation: </span><span style=\"font-style:italic;color:#66d9ef;\">usize</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"font-style:italic;color:#66d9ef;\">impl </span><span style=\"color:#f8f8f2;\">MockProxy {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">new</span><span style=\"color:#f8f8f2;\">(</span><span style=\"font-style:italic;color:#fd971f;\">scope</span><span style=\"color:#f8f8f2;\">: </span><span style=\"color:#f92672;\">&amp;</span><span style=\"color:#f8f8f2;\">ScopeState) -&gt; </span><span style=\"font-style:italic;color:#66d9ef;\">Self </span><span style=\"color:#f8f8f2;\">{{\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> generation </span><span style=\"color:#f92672;\">=</span><span style=\"color:#f8f8f2;\"> scope.</span><span style=\"color:#66d9ef;\">generation</span><span style=\"color:#f8f8f2;\">();\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> rerender </span><span style=\"color:#f92672;\">=</span><span style=\"color:#f8f8f2;\"> scope.</span><span style=\"color:#66d9ef;\">schedule_update</span><span style=\"color:#f8f8f2;\">();\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"font-style:italic;color:#66d9ef;\">Self </span><span style=\"color:#f8f8f2;\">{{\n</span><span style=\"color:#f8f8f2;\">            rerender,\n</span><span style=\"color:#f8f8f2;\">            generation,\n</span><span style=\"color:#f8f8f2;\">        }}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#f92672;\">pub </span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">rerun</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#f92672;\">&amp;mut </span><span style=\"font-style:italic;color:#fd971f;\">self</span><span style=\"color:#f8f8f2;\">) {{\n</span><span style=\"color:#f8f8f2;\">        (self.rerender)();\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
-            name: "component_test.rs".to_string(),
+            name: "hook_test.rs".to_string(),
         }
         h2 { id: "end-to-end-testing",
             a { href: "#end-to-end-testing", class: "header", "End to End Testing" }
@@ -11641,6 +11050,8 @@ pub fn CookbookCustomRenderer() -> dioxus::prelude::Element {
             "Whenever a  "
             code { "CreateElement" }
             " edit is generated during diffing, Dioxus increments its node counter and assigns that new element its current NodeCount. The RealDom is responsible for remembering this ID and pushing the correct node when id is used in a mutation. Dioxus reclaims the IDs of elements when removed. To stay in sync with Dioxus you can use a sparse Vec (Vec"
+            p { class: "inline-html-block", dangerous_inner_html: "<T>" }
+            ">) with possibly unoccupied items. You can use the ids as indexes into the Vec for elements, and grow the Vec when an id does not exist."
         }
         h3 { id: "an-example",
             a { href: "#an-example", class: "header", "An Example" }
@@ -12558,7 +11969,7 @@ pub fn ContributingIndex() -> dioxus::prelude::Element {
             "If you've fixed "
             a { href: "https://github.com/DioxusLabs/dioxus/issues", "an open issue" }
             ", feel free to submit a PR! You can also take a look at "
-            a { href: "contributing/./roadmap", "the roadmap" }
+            a { href: "./roadmap", "the roadmap" }
             " and work on something in there. Consider "
             a { href: "https://discord.gg/XgGxMSkvUM", "reaching out" }
             " to the team first to make sure everyone's on the same page, and you don't do useless work!"
@@ -12950,7 +12361,7 @@ pub fn ContributingWalkthroughReadme() -> dioxus::prelude::Element {
         }
         CodeBlock {
             contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f92672;\">use </span><span style=\"color:#f8f8f2;\">dioxus::prelude::</span><span style=\"color:#f92672;\">*</span><span style=\"color:#f8f8f2;\">;\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">main</span><span style=\"color:#f8f8f2;\">() {{\n</span><span style=\"color:#f8f8f2;\">    dioxus_desktop::launch(app);\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">app</span><span style=\"color:#f8f8f2;\">(</span><span style=\"font-style:italic;color:#fd971f;\">cx</span><span style=\"color:#f8f8f2;\">: Scope) -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let </span><span style=\"color:#f92672;\">mut</span><span style=\"color:#f8f8f2;\"> count </span><span style=\"color:#f92672;\">= </span><span style=\"color:#66d9ef;\">use_state</span><span style=\"color:#f8f8f2;\">(cx, || </span><span style=\"color:#ff80f4;\">0</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">    cx.</span><span style=\"color:#66d9ef;\">render</span><span style=\"color:#f8f8f2;\">(\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"color:#8c8c8c;\">// rsx expands to LazyNodes::new\n</span><span style=\"color:#f8f8f2;\">        ::dioxus::core::LazyNodes::new(\n</span><span style=\"color:#f8f8f2;\">            </span><span style=\"color:#f92672;\">move |</span><span style=\"color:#f8f8f2;\">__cx: </span><span style=\"color:#f92672;\">&amp;</span><span style=\"color:#f8f8f2;\">::dioxus::core::ScopeState</span><span style=\"color:#f92672;\">| </span><span style=\"color:#f8f8f2;\">-&gt; ::dioxus::core::VNode {{\n</span><span style=\"color:#f8f8f2;\">                </span><span style=\"color:#8c8c8c;\">// The template is every static part of the rsx\n</span><span style=\"color:#f8f8f2;\">                </span><span style=\"font-style:italic;color:#66d9ef;\">static </span><span style=\"color:#ff80f4;\">TEMPLATE</span><span style=\"color:#f8f8f2;\">: ::dioxus::core::Template </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">::dioxus::core::Template {{\n</span><span style=\"color:#f8f8f2;\">                    </span><span style=\"color:#8c8c8c;\">// This is the source location of the rsx that generated this template. This is used to make hot rsx reloading work. Hot rsx reloading just replaces the template with a new one generated from the rsx by the CLI.\n</span><span style=\"color:#f8f8f2;\">                    name: </span><span style=\"color:#ffee99;\">&quot;examples</span><span style=\"color:#ff80f4;\">\\\\</span><span style=\"color:#ffee99;\">readme.rs:14:15:250&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">                    </span><span style=\"color:#8c8c8c;\">// The root nodes are the top level nodes of the rsx\n</span><span style=\"color:#f8f8f2;\">                    roots: </span><span style=\"color:#f92672;\">&amp;</span><span style=\"color:#f8f8f2;\">[\n</span><span style=\"color:#f8f8f2;\">                        </span><span style=\"color:#8c8c8c;\">// The h1 node\n</span><span style=\"color:#f8f8f2;\">                        ::dioxus::core::TemplateNode::Element {{\n</span><span style=\"color:#f8f8f2;\">                            </span><span style=\"color:#8c8c8c;\">// Find the built in h1 tag in the dioxus_elements crate exported by the dioxus html crate\n</span><span style=\"color:#f8f8f2;\">                            tag: dioxus_elements::h1::</span><span style=\"color:#ff80f4;\">TAG_NAME</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">                            namespace: dioxus_elements::h1::</span><span style=\"color:#ff80f4;\">NAME_SPACE</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">                            attrs: </span><span style=\"color:#f92672;\">&amp;</span><span style=\"color:#f8f8f2;\">[],\n</span><span style=\"color:#f8f8f2;\">                            </span><span style=\"color:#8c8c8c;\">// The children of the h1 node\n</span><span style=\"color:#f8f8f2;\">                            children: </span><span style=\"color:#f92672;\">&amp;</span><span style=\"color:#f8f8f2;\">[\n</span><span style=\"color:#f8f8f2;\">                                </span><span style=\"color:#8c8c8c;\">// The dynamic count text node\n</span><span style=\"color:#f8f8f2;\">                                </span><span style=\"color:#8c8c8c;\">// Any nodes that are dynamic have a dynamic placeholder with a unique index\n</span><span style=\"color:#f8f8f2;\">                                ::dioxus::core::TemplateNode::DynamicText {{\n</span><span style=\"color:#f8f8f2;\">                                    </span><span style=\"color:#8c8c8c;\">// This index is used to find what element in `dynamic_nodes` to use instead of the placeholder\n</span><span style=\"color:#f8f8f2;\">                                    id: </span><span style=\"color:#ff80f4;\">0</span><span style=\"font-style:italic;color:#66d9ef;\">usize</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">                                }},\n</span><span style=\"color:#f8f8f2;\">                            ],\n</span><span style=\"color:#f8f8f2;\">                        }},\n</span><span style=\"color:#f8f8f2;\">                        </span><span style=\"color:#8c8c8c;\">// The up high button node\n</span><span style=\"color:#f8f8f2;\">                        ::dioxus::core::TemplateNode::Element {{\n</span><span style=\"color:#f8f8f2;\">                            tag: dioxus_elements::button::</span><span style=\"color:#ff80f4;\">TAG_NAME</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">                            namespace: dioxus_elements::button::</span><span style=\"color:#ff80f4;\">NAME_SPACE</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">                            attrs: </span><span style=\"color:#f92672;\">&amp;</span><span style=\"color:#f8f8f2;\">[\n</span><span style=\"color:#f8f8f2;\">                                </span><span style=\"color:#8c8c8c;\">// The dynamic onclick listener attribute\n</span><span style=\"color:#f8f8f2;\">                                </span><span style=\"color:#8c8c8c;\">// Any attributes that are dynamic have a dynamic placeholder with a unique index.\n</span><span style=\"color:#f8f8f2;\">                                ::dioxus::core::TemplateAttribute::Dynamic {{\n</span><span style=\"color:#f8f8f2;\">                                    </span><span style=\"color:#8c8c8c;\">// Similar to dynamic nodes, dynamic attributes have a unique index used to find the attribute in `dynamic_attrs` to use instead of the placeholder\n</span><span style=\"color:#f8f8f2;\">                                    id: </span><span style=\"color:#ff80f4;\">0</span><span style=\"font-style:italic;color:#66d9ef;\">usize</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">                                }},\n</span><span style=\"color:#f8f8f2;\">                            ],\n</span><span style=\"color:#f8f8f2;\">                            children: </span><span style=\"color:#f92672;\">&amp;</span><span style=\"color:#f8f8f2;\">[::dioxus::core::TemplateNode::Text {{ text: </span><span style=\"color:#ffee99;\">&quot;Up high!&quot; </span><span style=\"color:#f8f8f2;\">}}],\n</span><span style=\"color:#f8f8f2;\">                        }},\n</span><span style=\"color:#f8f8f2;\">                        </span><span style=\"color:#8c8c8c;\">// The down low button node\n</span><span style=\"color:#f8f8f2;\">                        ::dioxus::core::TemplateNode::Element {{\n</span><span style=\"color:#f8f8f2;\">                            tag: dioxus_elements::button::</span><span style=\"color:#ff80f4;\">TAG_NAME</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">                            namespace: dioxus_elements::button::</span><span style=\"color:#ff80f4;\">NAME_SPACE</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">                            attrs: </span><span style=\"color:#f92672;\">&amp;</span><span style=\"color:#f8f8f2;\">[\n</span><span style=\"color:#f8f8f2;\">                                </span><span style=\"color:#8c8c8c;\">// The dynamic onclick listener attribute\n</span><span style=\"color:#f8f8f2;\">                                ::dioxus::core::TemplateAttribute::Dynamic {{ id: </span><span style=\"color:#ff80f4;\">1</span><span style=\"font-style:italic;color:#66d9ef;\">usize </span><span style=\"color:#f8f8f2;\">}},\n</span><span style=\"color:#f8f8f2;\">                            ],\n</span><span style=\"color:#f8f8f2;\">                            children: </span><span style=\"color:#f92672;\">&amp;</span><span style=\"color:#f8f8f2;\">[::dioxus::core::TemplateNode::Text {{ text: </span><span style=\"color:#ffee99;\">&quot;Down low!&quot; </span><span style=\"color:#f8f8f2;\">}}],\n</span><span style=\"color:#f8f8f2;\">                        }},\n</span><span style=\"color:#f8f8f2;\">                    ],\n</span><span style=\"color:#f8f8f2;\">                    </span><span style=\"color:#8c8c8c;\">// Node paths is a list of paths to every dynamic node in the rsx\n</span><span style=\"color:#f8f8f2;\">                    node_paths: </span><span style=\"color:#f92672;\">&amp;</span><span style=\"color:#f8f8f2;\">[\n</span><span style=\"color:#f8f8f2;\">                        </span><span style=\"color:#8c8c8c;\">// The first node path is the path to the dynamic node with an id of 0 (the count text node)\n</span><span style=\"color:#f8f8f2;\">                        </span><span style=\"color:#f92672;\">&amp;</span><span style=\"color:#f8f8f2;\">[\n</span><span style=\"color:#f8f8f2;\">                            </span><span style=\"color:#8c8c8c;\">// Go to the index 0 root node\n</span><span style=\"color:#f8f8f2;\">                            </span><span style=\"color:#ff80f4;\">0</span><span style=\"font-style:italic;color:#66d9ef;\">u8</span><span style=\"color:#f8f8f2;\">, </span><span style=\"color:#8c8c8c;\">//\n</span><span style=\"color:#f8f8f2;\">                            </span><span style=\"color:#8c8c8c;\">// Go to the first child of the root node\n</span><span style=\"color:#f8f8f2;\">                            </span><span style=\"color:#ff80f4;\">0</span><span style=\"font-style:italic;color:#66d9ef;\">u8</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">                        ],\n</span><span style=\"color:#f8f8f2;\">                    ],\n</span><span style=\"color:#f8f8f2;\">                    </span><span style=\"color:#8c8c8c;\">// Attr paths is a list of paths to every dynamic attribute in the rsx\n</span><span style=\"color:#f8f8f2;\">                    attr_paths: </span><span style=\"color:#f92672;\">&amp;</span><span style=\"color:#f8f8f2;\">[\n</span><span style=\"color:#f8f8f2;\">                        </span><span style=\"color:#8c8c8c;\">// The first attr path is the path to the dynamic attribute with an id of 0 (the up high button onclick listener)\n</span><span style=\"color:#f8f8f2;\">                        </span><span style=\"color:#f92672;\">&amp;</span><span style=\"color:#f8f8f2;\">[\n</span><span style=\"color:#f8f8f2;\">                            </span><span style=\"color:#8c8c8c;\">// Go to the index 1 root node\n</span><span style=\"color:#f8f8f2;\">                            </span><span style=\"color:#ff80f4;\">1</span><span style=\"font-style:italic;color:#66d9ef;\">u8</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">                        ],\n</span><span style=\"color:#f8f8f2;\">                        </span><span style=\"color:#8c8c8c;\">// The second attr path is the path to the dynamic attribute with an id of 1 (the down low button onclick listener)\n</span><span style=\"color:#f8f8f2;\">                        </span><span style=\"color:#f92672;\">&amp;</span><span style=\"color:#f8f8f2;\">[\n</span><span style=\"color:#f8f8f2;\">                            </span><span style=\"color:#8c8c8c;\">// Go to the index 2 root node\n</span><span style=\"color:#f8f8f2;\">                            </span><span style=\"color:#ff80f4;\">2</span><span style=\"font-style:italic;color:#66d9ef;\">u8</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">                        ],\n</span><span style=\"color:#f8f8f2;\">                    ],\n</span><span style=\"color:#f8f8f2;\">                }};\n</span><span style=\"color:#f8f8f2;\">                </span><span style=\"color:#8c8c8c;\">// The VNode is a reference to the template with the dynamic parts of the rsx\n</span><span style=\"color:#f8f8f2;\">                ::dioxus::core::VNode {{\n</span><span style=\"color:#f8f8f2;\">                    parent: </span><span style=\"font-style:italic;color:#66d9ef;\">None</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">                    key: </span><span style=\"font-style:italic;color:#66d9ef;\">None</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">                    </span><span style=\"color:#8c8c8c;\">// The static template this node will use. The template is stored in a Cell so it can be replaced with a new template when hot rsx reloading is enabled\n</span><span style=\"color:#f8f8f2;\">                    template: std::cell::Cell::new(</span><span style=\"color:#ff80f4;\">TEMPLATE</span><span style=\"color:#f8f8f2;\">),\n</span><span style=\"color:#f8f8f2;\">                    root_ids: dioxus::core::exports::bumpalo::collections::Vec::with_capacity_in(\n</span><span style=\"color:#f8f8f2;\">                        </span><span style=\"color:#ff80f4;\">3</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">                        __cx.</span><span style=\"color:#66d9ef;\">bump</span><span style=\"color:#f8f8f2;\">(),\n</span><span style=\"color:#f8f8f2;\">                    )\n</span><span style=\"color:#f8f8f2;\">                    .</span><span style=\"color:#66d9ef;\">into</span><span style=\"color:#f8f8f2;\">(),\n</span><span style=\"color:#f8f8f2;\">                    dynamic_nodes: __cx.</span><span style=\"color:#66d9ef;\">bump</span><span style=\"color:#f8f8f2;\">().</span><span style=\"color:#66d9ef;\">alloc</span><span style=\"color:#f8f8f2;\">([\n</span><span style=\"color:#f8f8f2;\">                        </span><span style=\"color:#8c8c8c;\">// The dynamic count text node (dynamic node id 0)\n</span><span style=\"color:#f8f8f2;\">                        __cx.</span><span style=\"color:#66d9ef;\">text_node</span><span style=\"color:#f8f8f2;\">(format_args!(</span><span style=\"color:#ffee99;\">&quot;High-Five counter: {{0}}&quot;</span><span style=\"color:#f8f8f2;\">, count)),\n</span><span style=\"color:#f8f8f2;\">                    ]),\n</span><span style=\"color:#f8f8f2;\">                    dynamic_attrs: __cx.</span><span style=\"color:#66d9ef;\">bump</span><span style=\"color:#f8f8f2;\">().</span><span style=\"color:#66d9ef;\">alloc</span><span style=\"color:#f8f8f2;\">([\n</span><span style=\"color:#f8f8f2;\">                        </span><span style=\"color:#8c8c8c;\">// The dynamic up high button onclick listener (dynamic attribute id 0)\n</span><span style=\"color:#f8f8f2;\">                        dioxus_elements::events::onclick(__cx, </span><span style=\"color:#f92672;\">move |_|</span><span style=\"color:#f8f8f2;\"> count </span><span style=\"color:#f92672;\">+= </span><span style=\"color:#ff80f4;\">1</span><span style=\"color:#f8f8f2;\">),\n</span><span style=\"color:#f8f8f2;\">                        </span><span style=\"color:#8c8c8c;\">// The dynamic down low button onclick listener (dynamic attribute id 1)\n</span><span style=\"color:#f8f8f2;\">                        dioxus_elements::events::onclick(__cx, </span><span style=\"color:#f92672;\">move |_|</span><span style=\"color:#f8f8f2;\"> count </span><span style=\"color:#f92672;\">-= </span><span style=\"color:#ff80f4;\">1</span><span style=\"color:#f8f8f2;\">),\n</span><span style=\"color:#f8f8f2;\">                    ]),\n</span><span style=\"color:#f8f8f2;\">                }}\n</span><span style=\"color:#f8f8f2;\">            }},\n</span><span style=\"color:#f8f8f2;\">        ),\n</span><span style=\"color:#f8f8f2;\">    )\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
-            name: "readme.rs".to_string(),
+            name: "readme_expanded.rs".to_string(),
         }
         p {
             "The rsx macro separates the static parts of the rsx (the template) and the dynamic parts (the "
@@ -13522,68 +12933,330 @@ pub fn ContributingRoadmap() -> dioxus::prelude::Element {
             a { href: "#core", class: "header", "Core" }
         }
         ul {
-            li { "[" }
-            li { "[" }
-            li { "[" }
-            li { "[" }
-            li { "[" }
-            li { "[" }
+            li {
+                input {
+                    r#type: "checkbox",
+                    readonly: true,
+                    class: "mdbook-checkbox",
+                    value: "true",
+                }
+                "Release of Dioxus Core"
+            }
+            li {
+                input {
+                    r#type: "checkbox",
+                    readonly: true,
+                    class: "mdbook-checkbox",
+                    value: "true",
+                }
+                "Upgrade documentation to include more theory and be more comprehensive"
+            }
+            li {
+                input {
+                    r#type: "checkbox",
+                    readonly: true,
+                    class: "mdbook-checkbox",
+                    value: "true",
+                }
+                "Support for HTML-side templates for lightning-fast dom manipulation"
+            }
+            li {
+                input {
+                    r#type: "checkbox",
+                    readonly: true,
+                    class: "mdbook-checkbox",
+                    value: "false",
+                }
+                "Support for multiple renderers for same virtualdom (subtrees)"
+            }
+            li {
+                input {
+                    r#type: "checkbox",
+                    readonly: true,
+                    class: "mdbook-checkbox",
+                    value: "false",
+                }
+                "Support for ThreadSafe (Send + Sync)"
+            }
+            li {
+                input {
+                    r#type: "checkbox",
+                    readonly: true,
+                    class: "mdbook-checkbox",
+                    value: "false",
+                }
+                "Support for Portals"
+            }
         }
         h3 { id: "ssr",
             a { href: "#ssr", class: "header", "SSR" }
         }
         ul {
-            li { "[" }
-            li { "[" }
+            li {
+                input {
+                    r#type: "checkbox",
+                    readonly: true,
+                    class: "mdbook-checkbox",
+                    value: "true",
+                }
+                "SSR Support + Hydration"
+            }
+            li {
+                input {
+                    r#type: "checkbox",
+                    readonly: true,
+                    class: "mdbook-checkbox",
+                    value: "false",
+                }
+                "Integrated suspense support for SSR"
+            }
         }
         h3 { id: "desktop",
             a { href: "#desktop", class: "header", "Desktop" }
         }
         ul {
-            li { "[" }
-            li { "[" }
-            li { "[" }
+            li {
+                input {
+                    r#type: "checkbox",
+                    readonly: true,
+                    class: "mdbook-checkbox",
+                    value: "false",
+                }
+                "Declarative window management"
+            }
+            li {
+                input {
+                    r#type: "checkbox",
+                    readonly: true,
+                    class: "mdbook-checkbox",
+                    value: "false",
+                }
+                "Templates for building/bundling"
+            }
+            li {
+                input {
+                    r#type: "checkbox",
+                    readonly: true,
+                    class: "mdbook-checkbox",
+                    value: "false",
+                }
+                "Access to Canvas/WebGL context natively"
+            }
         }
         h3 { id: "mobile",
             a { href: "#mobile", class: "header", "Mobile" }
         }
         ul {
             li {
-                "["
+                input {
+                    r#type: "checkbox",
+                    readonly: true,
+                    class: "mdbook-checkbox",
+                    value: "false",
+                }
+                "Mobile standard library"
                 ul {
-                    li { "[" }
-                    li { "[" }
-                    li { "[" }
-                    li { "[" }
-                    li { "[" }
-                    li { "[" }
-                    li { "[" }
-                    li { "[" }
+                    li {
+                        input {
+                            r#type: "checkbox",
+                            readonly: true,
+                            class: "mdbook-checkbox",
+                            value: "false",
+                        }
+                        "GPS"
+                    }
+                    li {
+                        input {
+                            r#type: "checkbox",
+                            readonly: true,
+                            class: "mdbook-checkbox",
+                            value: "false",
+                        }
+                        "Camera"
+                    }
+                    li {
+                        input {
+                            r#type: "checkbox",
+                            readonly: true,
+                            class: "mdbook-checkbox",
+                            value: "false",
+                        }
+                        "filesystem"
+                    }
+                    li {
+                        input {
+                            r#type: "checkbox",
+                            readonly: true,
+                            class: "mdbook-checkbox",
+                            value: "false",
+                        }
+                        "Biometrics"
+                    }
+                    li {
+                        input {
+                            r#type: "checkbox",
+                            readonly: true,
+                            class: "mdbook-checkbox",
+                            value: "false",
+                        }
+                        "WiFi"
+                    }
+                    li {
+                        input {
+                            r#type: "checkbox",
+                            readonly: true,
+                            class: "mdbook-checkbox",
+                            value: "false",
+                        }
+                        "Bluetooth"
+                    }
+                    li {
+                        input {
+                            r#type: "checkbox",
+                            readonly: true,
+                            class: "mdbook-checkbox",
+                            value: "false",
+                        }
+                        "Notifications"
+                    }
+                    li {
+                        input {
+                            r#type: "checkbox",
+                            readonly: true,
+                            class: "mdbook-checkbox",
+                            value: "false",
+                        }
+                        "Clipboard"
+                    }
                 }
             }
-            li { "[" }
+            li {
+                input {
+                    r#type: "checkbox",
+                    readonly: true,
+                    class: "mdbook-checkbox",
+                    value: "false",
+                }
+                "Animations"
+            }
         }
         h3 { id: "bundling-cli",
             a { href: "#bundling-cli", class: "header", "Bundling (CLI)" }
         }
         ul {
-            li { "[" }
-            li { "[" }
-            li { "[" }
-            li { "[" }
-            li { "[" }
-            li { "[" }
-            li { "[" }
-            li { "[" }
-            li { "[" }
+            li {
+                input {
+                    r#type: "checkbox",
+                    readonly: true,
+                    class: "mdbook-checkbox",
+                    value: "true",
+                }
+                "Translation from HTML into RSX"
+            }
+            li {
+                input {
+                    r#type: "checkbox",
+                    readonly: true,
+                    class: "mdbook-checkbox",
+                    value: "true",
+                }
+                "Dev server"
+            }
+            li {
+                input {
+                    r#type: "checkbox",
+                    readonly: true,
+                    class: "mdbook-checkbox",
+                    value: "true",
+                }
+                "Live reload"
+            }
+            li {
+                input {
+                    r#type: "checkbox",
+                    readonly: true,
+                    class: "mdbook-checkbox",
+                    value: "true",
+                }
+                "Translation from JSX into RSX"
+            }
+            li {
+                input {
+                    r#type: "checkbox",
+                    readonly: true,
+                    class: "mdbook-checkbox",
+                    value: "false",
+                }
+                "Hot module replacement"
+            }
+            li {
+                input {
+                    r#type: "checkbox",
+                    readonly: true,
+                    class: "mdbook-checkbox",
+                    value: "false",
+                }
+                "Code splitting"
+            }
+            li {
+                input {
+                    r#type: "checkbox",
+                    readonly: true,
+                    class: "mdbook-checkbox",
+                    value: "false",
+                }
+                "Asset macros"
+            }
+            li {
+                input {
+                    r#type: "checkbox",
+                    readonly: true,
+                    class: "mdbook-checkbox",
+                    value: "false",
+                }
+                "Css pipeline"
+            }
+            li {
+                input {
+                    r#type: "checkbox",
+                    readonly: true,
+                    class: "mdbook-checkbox",
+                    value: "false",
+                }
+                "Image pipeline"
+            }
         }
         h3 { id: "essential-hooks",
             a { href: "#essential-hooks", class: "header", "Essential hooks" }
         }
         ul {
-            li { "[" }
-            li { "[" }
-            li { "[" }
+            li {
+                input {
+                    r#type: "checkbox",
+                    readonly: true,
+                    class: "mdbook-checkbox",
+                    value: "true",
+                }
+                "Router"
+            }
+            li {
+                input {
+                    r#type: "checkbox",
+                    readonly: true,
+                    class: "mdbook-checkbox",
+                    value: "true",
+                }
+                "Global state management"
+            }
+            li {
+                input {
+                    r#type: "checkbox",
+                    readonly: true,
+                    class: "mdbook-checkbox",
+                    value: "false",
+                }
+                "Resize observer"
+            }
         }
         h2 { id: "work-in-progress",
             a { href: "#work-in-progress", class: "header", "Work in Progress" }
@@ -13642,10 +13315,10 @@ pub fn MigrationIndex() -> dioxus::prelude::Element {
         }
         ul {
             li {
-                a { href: "migration/hot_reload", "Hot reload" }
+                a { href: "hot_reload", "Hot reload" }
             }
             li {
-                a { href: "migration/router", "Router" }
+                a { href: "router", "Router" }
             }
         }
     }

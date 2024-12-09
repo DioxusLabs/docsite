@@ -1,73 +1,99 @@
-# Dioxus 0.6: Android/iOS Simulator, Interactive CLI,  Props Hotreloading, and more!
+Today we're releasing Dioxus 0.6!
 
-> November 18, 2024
->
-> [`@jkelleyrtp`](https://github.com/jkelleyrtp)
+Dioxus is a framework for building fullstack web, desktop, and mobile apps with a single codebase. Our goal is to build a "Flutter but better." Dioxus focuses on first-class fullstack web support, type-safe server/client communication, and blazing fast performance.
 
+With this release, we focused on making Dioxus easier to use, improving the developer experience, and fixing bugs.
 
-Happy holidays! As an early holidays present, we’re proud to release Dioxus 0.6!
+Headlining the release is a complete overhaul of the Dioxus CLI:
 
-Dioxus 0.6 is the biggest release of Dioxus ever - with over 350 pull requests merged, hundreds of issues closed, dozens of huge new features, and a complete overhaul of many parts of the framework. I’m happy to say that Dioxus is the most mature and complete it’s ever been, *finally* living up to the original mission.
+- **[`dx serve` for mobile](#android-and-ios-support-for)**: Serve your app on Android and iOS simulators and devices.
+- **[Magical Hot-Reloading](#completely-revamped-hot-reloading)**: Hot-Reloading of formatted strings, properties, and nested `rsx!{}`.
+- **[Interactive CLI](#interactive-command-line-tools)**: Rewrite of the Dioxus CLI with a new, interactive UX inspired by Astro.
+- **[Inline Stack Traces](#inline-wasm-stacktraces-and)**: Capture WASM panics and logs directly into your terminal.
+- **[Server Functions for Native](#fullstack-desktop-and-mobile)**: Inline Server RPC for Desktop and Mobile apps.
 
-If you’re new here, Dioxus (Dye-ox-us) is a framework for building crossplatform apps in Rust. With one codebase you can ship apps that work across web, desktop, mobile, and more.
+We also improved the developer experience across the entire framework, fixing long standing bugs and improving tooling:
 
-Dioxus 0.6 is the culmination of nearly 6 months of work. While improving various pieces of the framework, we got carried away and basically shipped all the features we wanted for Dioxus 0.7. With this release, we set a goal to retain a very high bar for quality and polish: everything from CLI tools to APIs and ecosystem libraries have seen huge improvements.
+- **[Toasts and Loading Screens](#toasts-and-loading-screens)**: New toasts and loading screens for web apps in development.
+- **[Improved Autocomplete](#completely-revamped-autocomplete)**: Massively improved autocomplete of RSX.
+- **[`asset!` Stabilization](#stabilizing-manganis)**: Stabilizing our linker-based asset system integrated for native apps.
+- **[Streaming HTML](#suspense-and-html-streaming-for-the-web)**: Stream `Suspense` and `Error` Boundaries from the server to the client.
+- **[SSG and ISG](#static-site-generation-and-isg)**: Support for Static Site Generation and Incremental Static Regeneration.
+- **[Error Handling with `?`](#question-mark-error-handling)**: Use `?` to handle errors in event handlers, tasks, and components.
+- **[Meta Elements](#document-elements)**: New `Head`, `Title`, `Meta`, and `Link` elements for setting document attributes.
+- **[Synchronous `prevent_default`](#synchronous)**: Handle events synchronously across all platforms.
+- **[`onresize` Event Handler](#tracking-size-with)**: Track an element's size without an IntersectionObserver.
+- **[`onvisible` Event Handler](#tracking-visibility-with)**: Track an element's visibility without an IntersectionObserver.
+- **[WGPU Integration](#hybrid-wgpu-overlays)**: Render Dioxus as an overlay on top of WGPU surfaces and child windows.
+- **[`dx bundle` for Web, iOS, and Android](#web-ios-and-android-bundle-support)**: Complete `dx bundle` support for every platform.
+- **[`json` mode](#json-output-for-ci--cli)**: Emit CLI messages as JSON for use by 3rd party tools and CI/CD pipelines.
+- **[New Templates](#new-starter-templates)**: Three new starter templates for cross-platform apps.
+- **[Nightly Tutorial and Guides](#nightly-docs-tutorials-and-new-guides)**: New tutorials and guides for Dioxus 0.6 and beyond.
+- **[Binary Patching Prototype](#preview-of-in-place-binary-patching)**: Prototype of our new pure Rust hot-reloading engine.
 
-With 0.6, we didn’t necessarily want to focus on shipping shiny new features. Instead, we wanted to continue much of the work started in Dioxus 0.5 and focus on cleaning up and improving existing features. The end result: a rebirth of Dioxus with hundreds of bug fixes, massively improved tooling, and the “ungating” of essential APIs. Everything from CLI tooling to hotreloading and autocomplete saw huge jumps in quality.
+## About this Release
 
-To showcase everything in Dioxus 0.6, I made a quick video highlighting new features, bugs fixed, and a quick tour of everything you can do with Dioxus now:
+Dioxus 0.6 is our biggest release ever: over 350 pull requests merged and hundreds of issues closed. We shipped 0.6 with a few goals:
 
-[ a video goes here ](some-image.png)
+- Dramatically improve the quality of hot-reloading, autocomplete, and asset bundling.
+- Make the Dioxus CLI more robust and easier to use.
+- Inline our mobile tooling into the dioxus CLI for 1st-class mobile support.
 
-What’s new?
+<!-- Since this post is quite long, we made a quick video highlighting new features, bugs fixed, and a quick tour of everything you can do with Dioxus now: -->
 
-- CLI support for Android and iOS simulator: simply `dx serve --platform android`
-- Overhauled interactive CLI inspired by Astro’s excellent tools
-- Proper `ServerFn` support for Desktop and Mobile apps for simple server RPC
-- Toasts and loading screens for web apps, inspired by many JS frameworks
-- Revamped autocomplete using Rust-analyzer itself (no 3rd party LSP integration needed)
-- Hotreloading of formatted strings, component properties, `if`/`for` blocks, and nested rsx!{}
-- Mobile hotreloading and bundled asset hotreloading
-- Stabilization of `asset!()` macro for including assets in your app and ecosystem crates
-- Streaming HTML support with integrated Suspense and server-compatible Error Boundaries
-- Ability to use `?` in handlers, tasks, and components to bubble up errors to error boundaries
-- Static site generation support in the CLI
-- `Head {}`, `Title {}`, `Meta {}`, and `Link {}` elements for setting document attributes from components
-- `dx bundle` support for web, iOS, and Android (in addition to desktop)
-- `json` mode for the CLI for use by 3rd party tools
-- Proper `preventDefault` handling with synchronous event propagation
-- and so much more!
+<!-- <iframe style="width: 120%" height="500px" class="centered-overflow" src="https://www.youtube.com/embed/-RN4LB3-9AE" title="Dioxus 0.5 Overview preview" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe> -->
 
-## First-party tooling for iOS and Android simulators
+## Interactive Command Line Tools
 
----
+Dioxus 0.6 is shipping with a completely overhauled CLI experience! We’ve completely rewritten the CLI to support a ton of new features and improve stability:
 
-Every since Dioxus’ initial release two years ago, we’ve had support for iOS and Android. However, we’ve historically not had great tooling for deploying Rust code into simulators and onto devices. We’ve had to rely on projects like [cargo-mobile](https://github.com/BrainiumLLC/cargo-mobile) and Tauri’s fork [cargo-mobile2](https://github.com/tauri-apps/cargo-mobile2), which, while very useful, are extremely unstable and not a great fit for Dioxus. We want to provide features like asset bundling, hot-reloading, and proper support for regular apps built with a traditional `main.rs` - none of which we can properly do with 3rd party tools.
+![new-cli.png](/assets/06assets/image1.png)
 
-With this release, we’ve decided to put the huge amount of effort into writing our own mobile support from scratch. Now, you can go from `dx new` to `dx serve --platform ios` in a matter of seconds - faster than nearly *every* existing app framework.
+The new CLI sports live progress bars, animations, an interactive filter system, the ability to change log levels on the fly, and more.
 
-![image.png](/assets/06assets/image.png)
+![cli_animation](/assets/06assets/cli-new.mp4)
 
-The Android and iOS simulator targets support all the same features that desktop supports: hotreloading, fast rebuilds, asset bundling, logging, etc. One notable accomplishment: you can build Rust mobile apps with a simple `main.rs`. All the existing solutions like xbuild and Tauri require you to fundamentally restructure your app, making your launch function quite convoluted. Your app also needs to be converted to a cdylib, meaning you can’t share a launch function between desktop and mobile.
+The CLI rewrite alone took more than half this release cycle. We went through several different design iterations and solved tons of bugs along the way. A few of the highlights:
 
-Previously, the entrypoint of your app required manual catch-unwind and manually exposing a `start_app` function in lieu of a proper `fn main()`:
+- You can manually rebuild your app by pressing `r`
+- You can toggle the log level of the CLI output on the fly and even inspect Cargo internal logs
+- We output all internal logs of the CLI so you can debug any issues
+- We capture logs for WASM tracing and panics
+- We dropped the `outdir` concept and instead use `target/dx` for all output.
+- Inline support for iOS and Android emulators.
+
+You can install the new CLI using [cargo binstall](https://github.com/cargo-bins/cargo-binstall) with `cargo binstall dioxus-cli@0.6.0 --force`.
+
+## Android and iOS support for `dx serve`
+
+With Dioxus 0.6, the dioxus CLI supports `dx serve --platform ios/android` out of the box! 🎉
+
+While Dioxus has always had mobile, the Rust tooling for mobile has been extremely unstable. Users constantly ran into issues with tools like [`cargo-mobile`](https://github.com/BrainiumLLC/cargo-mobile) and [cargo-mobile2](https://github.com/tauri-apps/cargo-mobile2). These tools, while useful, take a different architectural approach than what is a good fit for Dioxus.
+
+With this release, we wrote our entire mobile tooling system from scratch. Now, you can go from `dx new` to `dx serve --platform ios` in a matter of seconds.
+
+![Dioxus Mobile Support](/assets/06assets/image.png)
+
+The Android and iOS simulator targets support all the same features as desktop: hot-reloading, fast rebuilds, asset bundling, logging, etc. Dioxus is also the only Rust framework that supports `main.rs` for mobile - no other tools have supported the same `main.rs` for every platform until now.
+
+Our inline mobile support requires no extra configurations, no manual setup for Gradle, Java, Cocoapods, and no other 3rd party tooling. If you already have the Android NDK or iOS Simulator installed, you currently are less than 30 seconds away from a production-ready mobile app written entirely in Rust.
+
+![dx-serve.mp4](/assets/06assets/dxnew.mp4)
+
+The simplest Dioxus 0.6 Mobile app is tiny:
+
 ```rust
-#[cfg(any(target_os = "android", target_os = "ios"))]
-fn stop_unwind<F: FnOnce() -> T, T>(f: F) -> T {
-    match std::panic::catch_unwind(std::panic::AssertUnwindSafe(f)) {
-        Ok(t) => t,
-        Err(err) => {
-            eprintln!("attempt to unwind out of `rust` with err: {:?}", err);
-            std::process::abort()
-        }
-    }
-}
+use dioxus::prelude::*;
 
-#[cfg(any(target_os = "android", target_os = "ios"))]
-fn _start_app() {
-    stop_unwind(|| main());
+fn main() {
+    dioxus::launch(|| rsx! { "hello dioxus! 🧬" });
 }
+```
 
+Especially, when compared to v0.5 which required you to migrate your app to a `cdylib` and manually set up the binding layer:
+
+```rust
+// no main allowed! - must expose a `start_app` function
 #[no_mangle]
 #[inline(never)]
 #[cfg(any(target_os = "android", target_os = "ios"))]
@@ -84,165 +110,58 @@ pub extern "C" fn start_app() {
         wry::android_binding!(com_dioxuslabs, app_name);
     }
 
+    // need to manually catch panics!
     #[cfg(target_os = "ios")]
-    _start_app()
+    stop_unwind(|| main())
+}
+
+#[cfg(any(target_os = "android", target_os = "ios"))]
+fn stop_unwind<F: FnOnce() -> T, T>(f: F) -> T {
+    match std::panic::catch_unwind(std::panic::AssertUnwindSafe(f)) {
+        Ok(t) => t,
+        Err(err) => {
+            eprintln!("attempt to unwind out of `rust` with err: {:?}", err);
+            std::process::abort()
+        }
+    }
 }
 ```
 
-With Dioxus 0.6, you simply create a `main.rs` like desktop with no code or configuration changes:
+While 1st-class support for mobile platforms is quite exciting, there are certainly many limitations: the Rust mobile ecosystem is nascent, we don’t have great ways of configuring the many platform-specific build flags, and there isn’t a particularly great Rust/Java interop story.
 
-```rust
-use dioxus::prelude::*;
+If you're interested in helping us build out mobile support, please join us on [Discord](https://discord.gg/XgGxMSkvUM).
 
-fn main() {
-    dioxus::launch(|| rsx! { "hello dioxus! 🧬" });
-}
-```
+## Completely Revamped Hot-Reloading
 
-In fact, this tiny snippet is all the code you need for a mobile app. No extra configurations, setup for Gradle, Java, Cocoapods, or any other specific mobile tooling! Provided you already have Android NDK installed and/or an iOS Simulator setup, you currently are less than 30 seconds away from a functional mobile app written entirely in Rust. In the time it takes for you to watch this gif, you could have your very own mobile app:
+We shipped massive improvements to the hot-reloading engine powering Dioxus. Our internal goal was to iterate on the Dioxus Docsite with zero full rebuilds.
 
-[ gif of us binstalling dx, running dx new, dx serve ](some-image.png)
+This means we needed to add support for a number of new hot-reloading engine changes:
 
-While 1st-class support for mobile platforms is quite exciting, there are certainly many limitations: the Rust mobile ecosystem is practically nonexistent, we don’t have great ways of configuring the hundreds of XCode and AndroidStudio flags, and there isn’t a particularly great Rust/Java interop story. However, we’re very dedicated to making mobile app development as great as possible and will be rolling out improvements to mobile over the next year.
+- Hot-reload formatted strings
+- Hot-reload nested rsx blocks
+- Hot-reload component properties and simple Rust expressions
+- Hot-reload mobile platforms and their bundled assets
 
-## A new interactive CLI experience!
+The new hot-reloading engine almost feels like magic - you can quickly iterate on new designs - and even modify simple Rust code! - without waiting for full rebuilds:
 
----
+![dog_app.mp4](/assets/06assets/dogapphr2.mp4)
 
-You might have noticed in the gifs above: Dioxus 0.6 is shipping with a completely overhauled CLI experience! We’ve completely rewritten the CLI to support a ton of new features and improve stability.
-
-![image.png](/assets/06assets/image%201.png)
-
-The new CLI sports live progress bars, animations, an interactive filter system, the ability to change log levels on the fly, and more.
-
-[ small clip of things working ](some-image.png)
-
-We’re using the lovely Ratatui library which unlocks new features like an expandable info panel and custom tracing integrations:
-
-![Screenshot 2024-11-14 at 9.50.33 PM.png](/assets/06assets/Screenshot_2024-11-14_at_9.50.33_PM.png)
-
-## Inline WASM stacktraces and `tracing` integration
-
----
-
-One cool feature: the new CLI integrates with web, desktop, and mobile apps to capture their `tracing` and `panic` outputs directly inline. You can now view panics of your web apps without having to open the console. If you build your app with debug symbols, these stack traces directly integrate with your editor, allowing you to jump directly to the troublesome files from within your terminal.
-
-![Screenshot 2024-11-14 at 8.52.18 PM.png](/assets/06assets/Screenshot_2024-11-14_at_8.52.18_PM.png)
-
-Thanks to this integration, we now have much nicer logging around fullstack apps, showing status codes, fetched assets, and other helpful information during development:
-
-![Screenshot 2024-11-14 at 9.01.18 PM.png](/assets/06assets/Screenshot_2024-11-14_at_9.01.18_PM.png)
-
-With the toggle-able verbosity modes, you can now inspect the internal logs of the CLI itself, making it easier to debug issues with tooling to understand what exactly `dx` is doing when it builds your app. Simply type `v` to turn on “verbose” mode and `t` to turn on “trace” mode for more helpful logs:
-
-![Screenshot 2024-11-14 at 9.06.05 PM.png](/assets/06assets/Screenshot_2024-11-14_at_9.06.05_PM.png)
-
-Because `dx` is interactive, we are able to support a few other modes. You can now press `r` to force a full rebuild manually and `p` to pause automatic full rebuilds. This should help the many cases where `dx` doesn’t trigger a full rebuild or when `dx` triggers too many full rebuilds.
-
-[ gif of that working ](some-image.png)
-
-## Toasts and Loading Screen
-
----
-
-As part of our mission to improve the developer experience of building apps with Dioxus, we shipped two huge new improvements: loading screens and pop-up toasts!
-
-Now, when your app is building, Dioxus will rendering a loading screen with the current progress of the build:
-
-![Screenshot 2024-11-14 at 9.41.38 PM.png](/assets/06assets/Screenshot_2024-11-14_at_9.41.38_PM.png)
-
-Additionally, once the app is rebuilt, you’ll receive a toast indicating the status of the build:
-
-![Screenshot 2024-11-14 at 9.42.33 PM.png](/assets/06assets/Screenshot_2024-11-14_at_9.42.33_PM.png)
-
-The new CLI sports a number of new helpful toasts:
-
-![toasts.png](/assets/06assets/toasts.png)
-
-## Fullstack Desktop and Mobile
-
----
-
-Additionally, as part of our work on improving the tooling story for Dioxus, we decided to properly fix our integration with server functions when targeting the Desktop and Mobile platforms. Server functions finally work out-of-the-box when targeting native platforms:
-
-![native-serverfn12.mp4](/assets/06assets/native-serverfn12.mp4)
-
-By default, in development, we set the server function endpoint to be localhost, so in production you need to make sure to point the functions to your deployed server:
-
-```rust
-fn main() {
-    #[cfg(feature = "production")]
-    server_fn::client::set_server_url("app.endpoint.com");
-
-    dioxus::launch(app)
-}
-```
-
-## Greatly improved autocomplete
-
----
-
-Another huge overhaul in Dioxus 0.6: greatly improved autocomplete of `rsx! {}`.  Our old implementation of `rsx! {}` suffered from poor integration with tools like Rust-analyzer which provide language-server integration for your code. If the input to the macro wasn’t perfectly parsable, we failed to generate any tokens at all, meaning rust-analyzer couldn’t jump in to provide completions.
-
-The work to fix this was immense. Macro parsing libraries like `syn` don’t provide great facilities for “partial parsing” Rust code which is necessary for implementing better errors and autocomplete. We had to rewrite the entire internals of `rsx! {}` to support partial parsing of `rsx! {}` , but finally, in 0.6, we’re able to provide stellar autocomplete. Not only can we autocomplete Rust code in attribute positions, but with a few tricks, we’re able to automatically insert the appropriate braces next to element names:
-
-![Screenshot 2024-11-14 at 9.55.12 PM.png](/assets/06assets/Screenshot_2024-11-14_at_9.55.12_PM.png)
-
-The autocomplete experience is much nicer now, with all attributes, elements, components, and inline Rust code benefiting from the overhauled experience.
-
-[355646745-10781eef-de07-491d-aaa3-f75949b32190.mov](/assets/06assets/355646745-10781eef-de07-491d-aaa3-f75949b32190.mov)
-
-Since we no longer fail completely in the `rsx! {}` macro, we’re able to emit much nicer error messages:
-
-![355903878-ebcb5872-acf7-4e29-8acb-5b183b0617ca.png](/assets/06assets/355903878-ebcb5872-acf7-4e29-8acb-5b183b0617ca.png)
-
-## Greatly improved hotreloading
-
----
-
-As part of our effort to improve the `rsx! {}` experience, we shipped massive improvements to the hotreloading engine powering Dioxus. Our internal goal was to iterate on the Dioxus Docsite content with zero full rebuilds - we only wanted full rebuilds when modifying real Rust code.
-
-This means we needed to add support for a number of new hotreloading engine changes:
-
-- Hotreload formatted strings
-- Hotreload `for` and `if` blocks in RSX
-- Hotreload children of components
-- Hotreload properties of components
-- Hotreload mobile platforms
-- Hotreload as many Rust expressions as possible
-
-The new hotreloading engine almost feels like magic - you can quickly iterate on new designs without waiting for full Rust rebuilds:
-
-[dogapphr2.mp4](/assets/06assets/dogapphr2.mp4)
-
-### Hotreloading Formatted Strings
-
----
-
-We can now hotreload any formatted string in your markup! For this component, we can hotreload both the `class` attribute on button as well as the text in the button itself.
+The new engine allows you to modify formatted strings anywhere in your `rsx`: in text blocks, element attributes, and even on component properties.
 
 ```rust
 #[component]
 fn Counter(count: i32, class_ext: String) -> Element {
     rsx! {
+        // Instantly hot-reload these formatted strings
         button { class: "btn-{class_ext}", "Count {count}" }
+
+        // Even hot-reload formatted strings as props on components
+        Component { text: "btn-{class_exit}" }
     }
 }
 ```
 
-Notice that these are *formatted strings.* Very frequently, when working on the docsite, we’d want to modify formatted tailwind classes, but these changes would cause a full rebuild. This drastically slowed down iteration time, making working on the docsite a rather unpleasant experience.
-
-[ gif of string hotreloading ](some-image.png)
-
-Hotreloading of formatted strings works *everywhere* in rsx. This means you can get string hotreloading in component props too:
-
-[ gif of component prop hotreloading ](some-image.png)
-
-### Hotreloading literals
-
----
-
-As part of the hotreloading overhauls, we also now support hotreloading of any literals we can find inside your rsx. We built a very simple interpreter for Rust code! Any changes to literals are automatically propagated through the signal-based reactivity system shipped in 0.5. This means you can change the bounds on component props without causing a full rebuild.
+The same tooling that enables component props reloading also works with *any Rust literal!* You can hot-reload numbers, booleans, and strings on component prop boundaries.
 
 ```rust
 fn LoopIt() -> Element {
@@ -256,69 +175,112 @@ fn LoopIt() -> Element {
 }
 ```
 
-[ gif of literal reloading ](some-image.png)
+![prop-hotreload.mp4](/assets/06assets/prop-hotreload.mp4)
 
-
-While limited in many ways, this can feel downright magical.
-
-### Hotreloading nested rsx (`for`/ `if` / `component` )
-
----
-
-With Dioxus 0.4 we shipped improvements that enabled a simpler syntax for `for` loops and `if` chains in rsx. However, we never properly implemented hotreloading for the contents of these items, leading to frequent unnecessary rebuilds. With Dioxus 0.6, we finally had a chance to iron out hotreloading in every possible nook and cranny. Now, more places properly support hotreloading, like `for` loops and `if` chains:
+The new hot-reloading engine also brings nested rsx hot-reloading support. The contents of `for` loops, `if` statements, and component bodies all now participate in hot-reloading:
 
 ```rust
 fn LoopIt() -> Element {
     rsx! {
         for x in 0..10 {
-            // modifying the body of this loop is hotrelodable!
+            // modifying the body of this loop is hot-reloadable!
             li { "{x}" }
+        }
+
+        Counter {
+            // component children also get hot-reloaded
+            div { "These div contents get hot-reloaded too!" }
         }
     }
 }
 ```
 
-We also now support hotreloading of bodies of components:
+
+You can now move and clone Rust expressions between contexts, allowing you to re-use components and formatted strings between element properties without a full rebuild.
 
 ```rust
 fn LoopIt() -> Element {
     rsx! {
-        Counter {
-            div { "These div contents get hotreloaded too!" }
-        }
+        // If we start with this formatted text
+        "Thing1 {a}"
+
+        // we can add this formatted text on the fly
+        "Thing2 {a}"
     }
 }
 ```
 
-### Bundled and mobile hotreloading
+These changes are supported in all platforms: web, desktop, and mobile.
 
----
+You can now hot-reload RSX and Assets on iOS and Android apps in addition to the classic web and desktop platforms.
 
-With Dioxus 0.6, we also wanted to fix the longstanding issue where mobile simulators didn’t properly get hotreloading. Mobile can be tricky to work with - and will take a long time to get 100% right - but this is a solid step in making mobile targets better supported with Dioxus.
+![bundled-ios-reload.mp4](/assets/06assets/bundled-ios-reload.mp4)
 
-[bundled-ios-reload.mp4](/assets/06assets/bundled-ios-reload.mp4)
+The new hot-reloading feels like magic and we encourage you to try it out!
 
-The changes here also unlocked hotreloading of bundled assets used by the `asset!()` macro. If you're using Tailwind with Dioxus, you can now simply run your Tailwind watcher in the background and Dioxus will automatically hotreload your CSS files web, desktop, and mobile.
+## Completely Revamped Autocomplete
 
-### Proper Workspace Hotreloading
+Another huge overhaul in Dioxus 0.6: greatly improved autocomplete of `rsx! {}`.  Our old implementation of `rsx! {}` suffered from poor integration with tools like Rust-analyzer which provide language-server integration for your code. If the input to the macro wasn’t perfectly parsable, we failed to generate any tokens at all, meaning rust-analyzer couldn’t jump in to provide completions.
 
----
+The work to fix this was immense. Macro parsing libraries like `syn` don’t provide great facilities for “partial parsing” Rust code which is necessary for implementing better errors and autocomplete. We had to rewrite the entire internals of `rsx! {}` to support partial parsing of `rsx! {}` , but finally, in 0.6, we’re able to provide stellar autocomplete. Not only can we autocomplete Rust code in attribute positions, but with a few tricks, we’re able to automatically insert the appropriate braces next to element names:
 
-We now properly support hotreloading across multiple projects in a workspace. This solves the longstanding issue where you’re developing a component library in one crate and using it another crate. Our new hotreload engine intelligently walks your project’s dependencies across the filesystem and watches all the related Rust files.
+![Screenshot 2024-11-14 at 9.55.12 PM.png](/assets/06assets/Screenshot_2024-11-14_at_9.55.12_PM.png)
 
-## Stabilizing `asset!()` system
+The autocomplete experience is much nicer now, with all attributes, elements, components, and inline Rust code benefiting from the overhauled experience. All Rust expressions participate in proper Rust-analyzer autocomplete and we're even able to provide warnings when `rsx!{}` input is malformed instead of panicking.
 
----
+![autocomplete-overhaul.mp4](/assets/06assets/autocomplete-overhaul.mp4)
+
+
+## Inline WASM stacktraces and `tracing` integration
+
+Along with the rewrite of the CLI, we shipped a `tracing` integration for WASM apps that captures panics and logs and sends them `dx` in your terminal. When you build your app with debug symbols, stack traces directly integrate with your editor, allowing you to jump directly to the troublesome files from within your terminal.
+
+![Inline Stack Traces](/assets/06assets/Screenshot_2024-11-14_at_8.52.18_PM.png)
+
+Thanks to this integration, we now have much nicer logging around fullstack apps, showing status codes, fetched assets, and other helpful information during development. With the toggle-able verbosity modes, you can now inspect the internal logs of the CLI itself, making it easier to debug issues with tooling to understand what exactly `dx` is doing when it builds your app. Simply type `v` to turn on “verbose” mode and `t` to turn on “trace” mode for more helpful logs:
+
+![Screenshot 2024-11-14 at 9.06.05 PM.png](/assets/06assets/Screenshot_2024-11-14_at_9.06.05_PM.png)
+
+## Toasts and Loading Screens
+
+As part of our CLI overhaul, we wanted to provide better feedback for developers when building web apps. Dioxus 0.6 will now show Popup Toasts and Loading Screens for web apps in development mode.
+
+Now, when your app is building, Dioxus will render a loading screen with the current progress of the build:
+
+![Screenshot 2024-11-14 at 9.41.38 PM.png](/assets/06assets/Screenshot_2024-11-14_at_9.41.38_PM.png)
+
+Additionally, once the app is rebuilt, you’ll receive a toast indicating the status of the build:
+
+![Screenshot 2024-11-14 at 9.42.33 PM.png](/assets/06assets/Screenshot_2024-11-14_at_9.42.33_PM.png)
+
+## Fullstack Desktop and Mobile
+
+Additionally, we properly integrated server functions with native apps. Server functions finally work out-of-the-box when targeting desktop and mobile:
+
+![native-server12.mp4](/assets/06assets/native-serverfn12.mp4)
+
+By default, in development, we set the server function endpoint to be localhost, so in production you need to make sure to point the functions to your deployed server:
+
+```rust
+fn main() {
+    #[cfg(feature = "production")]
+    server_fn::client::set_server_url("app.endpoint.com");
+
+    dioxus::launch(app)
+}
+```
+
+## Stabilizing Manganis `asset!()` system
 
 We introduced our new asset system, [Manganis](https://github.com/DioxusLabs/manganis), in an alpha state with the 0.5 release. Dioxus 0.6 stabilizes the asset system and fixes several bugs and performance issues. You can try out the new [linker based asset system](https://github.com/DioxusLabs/manganis/pull/30) by including an `asset!` anywhere in your code. It will automatically be optimized and bundled across all platforms:
 
 ```rust
 rsx! {
-    img { src: asset!("/assets/myimg.png") }
+    img { src: asset!("/assets/image.png") }
 }
 ```
 
-Manganis is a crucial step in supporting assets crossplatform, and specifically, through dependencies. Previously, if an upstream library wanted to export an asset like an image or a stylesheet, your app would need to manually add those assets in your `assets` folder. This gets complex and messy when libraries generate CSS: many classes are duplicated and might even conflict with each other. Now, all CSS collected by the `asset!()` macro is processed via our build pipeline, benefiting from minification and deduplication. Libraries can include their stylesheets and images and components and you can be guaranteed that those assets make it bundled into your app:
+Manganis is a crucial step in supporting assets cross-platform, and specifically, through dependencies. Previously, if an upstream library wanted to export an asset like an image or a stylesheet, your app would need to manually add those assets in your `assets` folder. This gets complex and messy when libraries generate CSS: many classes are duplicated and might even conflict with each other. Now, all CSS collected by the `asset!()` macro is processed via our build pipeline, benefiting from minification and deduplication. Libraries can include their stylesheets and images and components and you can be guaranteed that those assets make it bundled into your app:
 
 ```rust
 fn app() -> Element {
@@ -339,7 +301,7 @@ mod cool_icons {
 
 Even better, assets like images are automatically optimized to generate thumbnails and more optimized formats. This can cut huge amounts of data from your site - AVIF and Webp can reduce file sizes by up to 90%. A funny note - platforms like Vercel actually [provide paid products for image optimization](https://vercel.com/docs/image-optimization) while Manganis can do this for you, for free, at build time!
 
-[ photo of delta between the two formats ](some-image.png)
+![manganis-opt](/assets/06assets/manganis-opt.avif)
 
 Additionally, manganis automatically hashes the images and modifies the generated asset name, allowing for better integration with CDNs and browser caching.
 
@@ -351,11 +313,7 @@ In Dioxus 0.5, we released Manganis in “alpha” status - and in 0.6 we’re s
 
 Our new system leverages *the linker* to extract asset locations from the compiled binary. This is a rather advanced technique and took a while to get right, but we believe it’s a more robust solution in the long term. If you’re interested in integrating Manganis into your libraries and apps (like say, Bevy!), we have a guide just for that.
 
-[ guide to using manganis ](some-image.png)
-
 ## Suspense and HTML Streaming for the Web
-
----
 
 Async is a core component of any UI framework. Dioxus provides hooks to handle async state. You can start a future and handle the loading and resolved states within the component:
 
@@ -433,15 +391,11 @@ fn Article() -> Element {
 
 Along with suspense boundaries, dioxus fullstack also supports streaming each suspense boundary in from the server. Instead of waiting for the whole page to load, dioxus fullstack streams in each chunk with the resolved futures as they finish:
 
-[streaming-demo.mov](/assets/06assets/streaming-demo.mov)
+![streaming-suspense.mp4](/assets/06assets/streamingsuspense.mp4)
 
 Many of these features are quite cutting-edge and are just now being rolled out in frameworks in the JavaScript ecosystem. Getting the details right for Dioxus was quite difficult. We wanted to support both the fullstack web as well as native desktop and mobile apps. These two platforms often have competing design considerations. Fortunately, suspense also works for desktop and mobile, allowing you to emulate web-like data fetching patterns for native apps.
 
-[ suspense native ](some-image.png)
-
 ## Static Site Generation and ISG
-
----
 
 As part of our work on streaming, we also wanted to support another cutting-edge web feature: incremental static generation (ISG) and its cousin static site generation (SSG).
 
@@ -466,7 +420,7 @@ Now, when you want to emit your static `.html`, add the `--ssg`  flag to `dx bui
 dx build --platform web --ssg
 ```
 
-Static-site-generation is built on a new feature in Dioxus called incremental-site-generation (ISG). ISG is a technique similar to static-site-generation where the server generates pages on demand and caches them on the system filesystem. This allows the server to cache huge amounts of pages (for something like a school’s facebook directory or an ecommerce site with thousands of products) that get periodically invalidated. ISG is a somewhat advanced technique but is required to enable when using static-site-generation:
+Static-site-generation is built on a new feature in Dioxus called incremental-site-generation (ISG). ISG is a technique similar to static-site-generation where the server generates pages on demand and caches them on the system filesystem. This allows the server to cache huge amounts of pages (for something like a school’s facebook directory or an e-commerce site with thousands of products) that get periodically invalidated. ISG is a somewhat advanced technique but is required to enable when using static-site-generation:
 
 ```rust
 fn main() {
@@ -488,66 +442,12 @@ fn main() {
 
 We will likely be changing these APIs in future releases, but we are eager to let users experiment with these new features to simplify the existing static site setup.
 
-## Use `?` while rendering and in event handlers
 
----
+## Document Elements: `Title {}` , `Link {}` , `Stylesheet` , and `Meta {}`
 
-With this release, we’ve finally made the transition where `Element` is no longer an `Option<Node>` but rather a `Result<Node>`. This means we’re *finally* able to open up the use of typical rust error handling in components:
+To date, it’s been rather cumbersome seemingly simple JavaScript operations in Dioxus. Due to our cross-platform nature, we need to find solutions to simple problems in ways that work for web, desktop, and mobile with a single abstraction.
 
-```rust
-fn Slider() -> Element {
-    let value: f64 = "1234".parse()?;
-
-    rsx! {
-        Handle { offset: value }
-    }
-}
-```
-
-The new `RenderError` acts like anyhow’s `Error` type that can take in any `dyn std::Error` type and propagate it upwards to the nearest error boundary.
-
-```rust
-fn Input() -> Element {
-    rsx! {
-        ErrorBoundary {
-            handle_error: |errors| rsx! {
-                h3 { "Oops, we encountered an error.!" }
-                pre { "Please report {errors:?} to the developers." }
-            },
-            Slider {}
-        }
-    }
-}
-```
-
-What’s even better: the `?` syntax also works in event handlers, so you can quickly add things like server functions to your app without worrying about being bogged down with manual error handling:
-
-```rust
-fn Counter() -> Element {
-    let mut data = use_signal(|| Data::default());
-
-    rsx! {
-        button {
-            onclick: move |_| async move {
-                // the `?` automatically throws this error upwards
-                data.set(request_server_data().await?);
-                Ok(())
-            },
-            "{data}"
-        }
-    }
-}
-```
-
-This new syntax works with suspense and HTML-streaming to allow you to return errors while rendering that don’t bring down the entire page.
-
-## `Title {}` , `Link {}` , `Stylesheet` , and `Meta {}`
-
----
-
-To date, it’s been rather cumbersome to do what is seemingly simple JavaScript operations in Dioxus. Due to our crossplatform nature, we need to find solutions to what seems like simple problems in ways that work for web, desktop, and mobile with a single abstraction.
-
-Finally with Dioxus 0.6, we’re providing special elements under the `document` namespace that make it possible to interact with the HTML `document` object without needing to write extra JavaScript.
+With Dioxus 0.6, we’re providing special elements under the `document` namespace that make it possible to interact with the HTML `document` object without needing to write extra JavaScript.
 
 Now, to set the `title` of your HTML document, simply use the `document::Title {}` component:
 
@@ -581,33 +481,60 @@ fn app() -> Element {
 
 ![Screenshot 2024-11-14 at 11.31.18 PM.png](/assets/06assets/Screenshot_2024-11-14_at_11.31.18_PM.png)
 
-## Accessing Native Websys Event
+## Question Mark Error Handling
 
----
-
-While improving our `document` support, we also took time to improve our `Event` support. The `dioxus-web` platform now provides an extension trait called `WebEventExt` that allows you to downcast any eventhandler’s `Event` to the native `websys` event type.
-
-This allows you to write web-specific code using the actual underlying web-sys event instead of the “synthetic” event that Dioxus previously exposed.
+With this release, we’ve made the transition where `Element` is no longer an `Option<Node>` but rather a `Result<Node>`. This means we’re *finally* able to open up the use of typical Rust error handling in components:
 
 ```rust
-fn Preview() -> Element {
+fn Slider() -> Element {
+    let value: f64 = "1234".parse()?;
+
     rsx! {
-        input {
-            oninput: move |event| {
-                let websys_event = event.try_as_web_event().unwrap();
-                let transfer_object = websys_event.data_transfer();
-                // ...do websys-specific stuff with the websys event
-            }
+        Handle { offset: value }
+    }
+}
+```
+
+The new `RenderError` acts like anyhow’s `Error` type that can take in any `dyn std::Error` type and propagate it upwards to the nearest error boundary.
+
+```rust
+fn Input() -> Element {
+    rsx! {
+        ErrorBoundary {
+            handle_error: |errors| rsx! {
+                h3 { "Oops, we encountered an error.!" }
+                pre { "Please report {errors:?} to the developers." }
+            },
+            Slider {}
         }
     }
 }
 ```
 
-## Synchronous preventDefault
+What’s even better: the `?` syntax also works in EventHandlers, so you can quickly add things like server functions to your app without worrying about manual error handling:
 
----
+```rust
+fn Counter() -> Element {
+    let mut data = use_signal(|| Data::default());
 
-In addition to being able to access the native event type, Dioxus 0.6 also makes all event handling synchronous. Previously, all event handling in Dioxus had to occur outside the normal browser event handling flow to support platforms like `dioxus-desktop` which need to communicate over an interprocess communication (IPC) layer with the host webview. With this release, we’ve finally figured out how to enable synchronous communication for `dioxus-desktop` and can finally make event handling synchronous!
+    rsx! {
+        button {
+            onclick: move |_| async move {
+                // the `?` automatically throws this error upwards
+                data.set(request_server_data().await?);
+                Ok(())
+            },
+            "{data}"
+        }
+    }
+}
+```
+
+This new syntax works lets Suspense and HTML-streaming return errors while rendering that don’t bring down the entire page.
+
+## Synchronous `prevent_default`
+
+In addition to being able to access the native event type, Dioxus 0.6 also makes all event handling synchronous. Previously, all event handling in Dioxus had to occur outside the normal browser event handling flow to support platforms like `dioxus-desktop` which need to communicate over an interprocess communication (IPC) layer with the host webview. With this release, we’ve finally figured out how to enable blocking communication for `dioxus-desktop` and can finally make event handling synchronous!
 
 As such, we no longer need the special `dioxus_prevent_default` attribute and you can directly call `event.prevent_default()`.
 
@@ -628,23 +555,19 @@ fn Form() -> Element {
 }
 ```
 
-This now makes it possible to implement prevent_default conditionally which has previously been a major limitation with Dioxus. Components like `Link {}` now exhibit behavior exactly aligned with their native counterparts, solving long-standing issues with Dioxus apps.
+This now makes it possible to implement `prevent_default` conditionally which has previously been a limitation with Dioxus. Components like `Link {}` now exhibit behavior exactly aligned with their native counterparts, solving long-standing issues with Dioxus apps.
 
-## `onvisible` and `onresize` extensions to elements
+## Tracking size with `onresize`
 
----
+Thanks to the community, we now have two special handlers *not* found in the HTML spec: `onvisible` and `onresize`. These handlers are “special” dioxus handlers that automatically sets up an `IntersectionObserver` which previously required JavaScript.
 
-Thanks to the community, we now have two special handlers *not* found in the HTML spec: `onvisible` and `onresize`. These handlers are “special” dioxus handlers that automatically set up an `IntersectionObserver` which previously required JavaScript.
-
-You can now implement particularly rich interactions with little hassle:
+You can now implement rich interactions with little hassle:
 
 ```rust
 fn app() -> Element {
     let mut items = use_signal(|| 100);
 
     rsx! {
-        h1 { "A site dedicated to webassembly" }
-
         // Adding a value will cause the `div` to be re-rendered with an extra div
         button { onclick: move |_| items += 1, "Add one" }
 
@@ -653,6 +576,7 @@ fn app() -> Element {
             onresize: move |data| {
                 tracing::info!("resized to {:#?}", data.get_border_box_size().unwrap());
             },
+
             for x in 0..items() {
                 div { "{x}" }
             }
@@ -661,33 +585,45 @@ fn app() -> Element {
 }
 ```
 
-[ gif of resize and visible working ](some-image.png)
+## Tracking visibility with `onvisible`
 
-## Web-component syntax
-
----
-
-As part of our upgrades the `rsx! {}`, we’ve decided to add support for on-the-fly web-component syntax. You can now create web components on the fly, making it even easier to wrap them in typesafe Rust APIs or simply drop them into your existing app.
+In addition to `onresize`, we now have a special handler *not* found in the HTML spec: `onvisible`.
 
 ```rust
-/// A web-component wrapped with a strongly typed interface using a component
-#[component]
-fn CoolWebComponent(my_prop: String) -> Element {
+fn app() -> Element {
     rsx! {
-        // rsx! takes a webcomponent as long as its tag name is separated
-        // with dashes
-        web-component {
-            // Since web-components don't have built-in attributes,
-            // the attribute names must be passed as a string
-            "my-prop": my_prop,
+        div {
+            onvisible: move |data| {
+                println!("visible!");
+            }
+            "Hello world!"
         }
     }
 }
 ```
 
-## JSON Output for CI / CLI
+This makes it possible to add rich animations to your app without needing to write custom JavaScript.
 
----
+![gif_of_visible_working.mp4](/assets/06assets/onvisible.mp4)
+
+## Hybrid WGPU Overlays
+
+This release also brings the "child window" feature for Dioxus desktop which lets you overlay native Dioxus apps on existing windows. This makes it simple to integrate Dioxus as an overlay over other renderers like WGPU and OpenGL:
+
+![wgpu-windows.mp4](/assets/06assets/wgpu-windows.mp4)
+
+## Web, iOS, and Android bundle support
+
+We added support for web and mobile with `dx bundle`. Previously, `dx bundle` only worked for desktop apps. Now you can bundle for a wide variety of targets:
+
+- macOS (.app, .dmg)
+- Windows (.exe, .msi)
+- Linux (.deb, .rpm, .appimage)
+- Android (.apk)
+- iOS (.ipa, .app)
+- Web (.appimage, /public folder)
+
+## JSON Output for CI / CLI
 
 As part of our overhaul with the CLI, we’re also shipping a `json-output` mode. Now, when you pass `--json-output` to Dioxus commands, you will receive the logging in json format:
 
@@ -697,67 +633,54 @@ This is particularly important for users of `dx bundle` who want to automaticall
 
 ![Screenshot 2024-11-14 at 10.40.56 PM.png](/assets/06assets/Screenshot_2024-11-14_at_10.40.56_PM.png)
 
-## Greatly improved autoformatting
+## New Starter Templates
 
----
+Dioxus 0.6 ships with three new starter templates for cross-platform apps. Each template is a fully-featured, production-ready app that you can use as a starting point for your own Dioxus apps.
 
-`dx fmt` is much nicer now, and more stable. We’ve fixed as many bugs as we could find and fix without a huge rewrite.
+- Bare-Bones: A bare-bones starter template with no styling, assets, or structure.
+- Jumpstart: A starter template with a basic structure, components, and a few pages.
+- Workspace: A starter template with separate crates for web, desktop, and mobile.
 
-- `dx fmt` supports `#[rustfmt::skip]` attributes
-- `dx fmt` deletes way fewer comments in `rsx! {}`
-- `dx fmt` respects `rustfmt.toml` settings like tabs vs spaces and line widths
-- `dx fmt` can now autoformat `rsx! {}` within `rsx! {}`
+These are baked directly into the `dx new` command - simply run `dx new` and follow the prompts to select the template you want.
 
-We haven’t fixed *every* bug in autoformat, but we are now much more confident and happy with its style choices.
+## Nightly Docs, Tutorials, and New Guides
 
-[ gif of autoformatting? ](some-image.png)
-
-## Updated Docs - now with inline version switcher!
-
----
-
-As usual with these large release, Dioxus 0.6 features a rather sizable overhaul to the documentation. We’ve completely overhauled the tutorial to be less heavy on code, instead choosing to focus more the basics like including assets and deploying.
+As usual with these large releases, Dioxus 0.6 features a rather sizable overhaul to the documentation. We’ve completely overhauled the tutorial to be less heavy on code. The new tutorial focuses on basics like including assets and deploying to production.
 
 ![Screenshot 2024-11-14 at 11.35.23 PM.png](/assets/06assets/Screenshot_2024-11-14_at_11.35.23_PM.png)
 
-The docsite now includes all “modern” versions of Dioxus inline: 0.3, 0.4, 0.5, and 0.6 are all accessible under the same top-level website. Previously, we linked out to different mdbooks which eventually became a hassle. Now, you can simply switch between each version inline:
+The docsite now includes all “modern” versions of Dioxus inline: 0.3, 0.4, 0.5, and 0.6 are all accessible under the same top-level website. Previously, we linked out to different MDbooks which eventually became a hassle. Now, you can simply switch between each version inline:
 
-![Screenshot 2024-11-15 at 1.02.23 AM.png](/assets/06assets/Screenshot_2024-11-15_at_1.02.23_AM.png)
+![Screenshot 2024-11-15 at 1.02.23 AM.png](/assets/06assets/version_switch_shadow.png)
 
 The inline version switcher means we’ll now be able to publish documentation for alpha releases of Dioxus, hopefully making your life easier as we ship new features for the future. The new docs also feature small quality-of-life upgrades like breadcrumbs:
 
-![Screenshot 2024-11-15 at 1.04.13 AM.png](/assets/06assets/Screenshot_2024-11-15_at_1.04.13_AM.png)
+![Screenshot 2024-11-15 at 1.04.13 AM.png](/assets/06assets/breadcrumbs_shadow.png)
 
 as well as new codeblocks with interactive examples:
 
-![Screenshot 2024-11-15 at 1.05.03 AM.png](/assets/06assets/Screenshot_2024-11-15_at_1.05.03_AM.png)
+![Screenshot 2024-11-15 at 1.05.03 AM.png](/assets/06assets/interacitve_widget_shadow.png)
+
+## Preview of In-Place Binary Patching
+
+While working on the new hot-reloading engine, we experimented with adding hot-reloading to Dioxus apps. The work here was inspired by Andrew Kelley’s “in-place-binary-patching” goal for Zig. Unfortunately, we didn’t have a chance to productionize the prototype for this release (way too many features already!) but we did put together a [small prototype](http://github.com/jkelleyrtp/ipbp):
+
+![full_hr_dioxus_fast.mp4](/assets/06assets/full_hr_dioxus_fast.mp4)
+
+We likely won’t have the time to ship true Rust hot-reloading in 0.7, but stay tuned for early next year!
 
 ## Smaller changes:
-
----
 
 Not every change gets a particularly large section in the release notes, but we did land several new features and refactors.
 
 - System tray support: we now have proper support for System Trays again, thanks to a wonderful community contribution.
 - Custom event loops: you can provide your own event loop, making it possible to use Dioxus in contexts where you already have other windows.
-- WGPU integration for dioxus-desktop: you can now overlay Dioxus with WGPU contexts.
 - `dioxus-document`: we split out our `document` abstraction so any renderer can implement the `Document` trait to integrate with `Title {}`, `Script {}` , and `eval`
 - `dioxus-history`: we also split out our `history` abstraction so other renderers can benefit from `Link` and `Router` without needing a dedicated feature flag on `dioxus-router`
-- `eval` API was simplified to allow `.recv::<T>().await` on evals, making interoping with JavaScript easier.
-
-## Preview of In-Place Binary Patching
-
----
-
-While working on the new hotreloading engine, we experimented with adding hotreloading to Dioxus apps. The work here was inspired by Andrew Kelley’s “in-place-binary-patching” goal for Zig. Unfortunately, we didn’t have a chance to productionize the prototype for this release (way too many features already!) but we did put together a [small prototype](http://github.com/jkelleyrtp/ipbp):
-
-![full_hr_dioxus_fast.mov](/assets/06assets/full_hr_dioxus_fast.mov)
-
-We likely won’t have the time to ship true Rust hotreloading in 0.7, but stay tuned for early next year!
+- `eval` API was simplified to allow `.recv::<T>().await` on evals, making interoperating with JavaScript easier.
+- `dx fmt` now supports `#[rustfmt::skip]` attributes, respects `rustfmt.toml` settings, and is generally more reliable
 
 ## Upgrading from 0.5 to 0.6
-
----
 
 Generally there are few huge breaking changes in this release. However, we did change a few APIs that might break your existing apps but are easy to fix.
 
@@ -766,34 +689,30 @@ Generally there are few huge breaking changes in this release. However, we did c
 - migrating to `prevent_default()`
 - migrating from VNode::None to `rsx! {}` for empty nodes
 
-We’ve assembled a migration guide here to help.
+We’ve assembled a [migration guide](https://dioxuslabs.com/learn/0.6/migration/) to help.
 
 ## Conclusion
 
----
+That’s it for this release! We addressed countless issues including bundling bugs, spurious hot-reloads, and compatibility with unusual platforms and editors.
 
-That’s it for all the new features! Due to the sheer size of this release, we might have missed several new features and bug fixes. The list of fixed bugs is also quite massive. Everything from bundling issues to spurious hotreloads and compatibility with rare platforms and editors has been addressed.
-
-Dioxus 0.6 has been in alpha for quite a while, and we’re very thankful for all the testing the community has done to make this the most polished release yet. It’s quite difficult to run a large open source project such a vast scope. This release took *much* longer to get out than we wanted - basically consuming two release cycles instead of just one.
+Dioxus 0.6 has been in alpha for quite a while, and we’re very thankful for all the testing the community has done to make this the most polished release yet. It’s quite difficult to run a large open source project such a wide scope. This release took *much* longer to get out than we wanted - consuming two release cycles instead of just one.
 
 We focused hard this release to polish up as many rough edges as possible. Our continuous integration and deployment is in a much nicer place. We’re finally able to release nightly versions of documentation and the alpha release system has worked well for users eager to test out new features and bug fixes.
 
-Unfortunately, this release contained many connected pieces which made it hard to release incrementally. Systems like assets integrate tightly with CLI tooling and crossplatform support: to get one configuration right you need to test them all. With 0.6 behind us, the future seems much more “incremental” which should let us release major versions with faster cadence.
+Unfortunately, this release contained many connected pieces which made it hard to release incrementally. Systems like assets integrate tightly with CLI tooling and cross-platform support: to get one configuration right you need to test them all. With 0.6 behind us, the future seems much more “incremental” which should let us release major versions with faster cadence.
 
-We plan to release Dioxus 0.7 early next year once everyone has had a chance to play with Dioxus 0.6. Similar to 0.6, Dioxus 0.7 will focus on polishes and bug fixes - the Dioxus team wants to spend time building our own apps!
+We plan to keep 0.6 around for a while. Instead of shipping new features for a while, we're excited to make tutorial videos, write documentation, fix bugs, improve performance, and work with the community. The Dioxus team wants to spend time building our own apps!
 
-We have a few major items planned for beginning of 2025:
+That being said, we do have a few major items planned for Dioxus 0.7 and beyond:
 
 - Rust hot-reloading with binary patching
 - Integrating wasm bundle splitting with the router
-- `dx deploy` to a hosted deploy platform
+- `dx deploy` to a hosted deploy platform (Fly.io, AWS, Cloudflare, etc.)
 
 We’re also hiring - if you want to come build Dioxus with me in San Francisco (or remote) please reach out!
 
 ## Thanks to the community!
 
----
+We want to extend a huge thank-you to everyone who helped test and improve this release. We saw an incredible number of contributors fix bugs and add features. Special thanks to:
 
-I want to extend a huge thank-you to everyone who helped test and improve this release. We saw an incredible number of contributors fix bugs and add features. Special thanks to:
-
-[ list of contributors ](some-image.png)
+[@ASR-ASU](https://github.com/ASR-ASU) - [@Aandreba](https://github.com/Aandreba) - [@Andrew15-5](https://github.com/Andrew15-5) - [@DogeDark](https://github.com/DogeDark) - [@Klemen2](https://github.com/Klemen2) - [@LeWimbes](https://github.com/LeWimbes) - [@LeoDog896](https://github.com/LeoDog896) - [@MrGVSV](https://github.com/MrGVSV) - [@Rahul721999](https://github.com/Rahul721999) - [@Septimus](https://github.com/Septimus) - [@Tahinli](https://github.com/Tahinli) - [@WilliamRagstad](https://github.com/WilliamRagstad) - [@ahqsoftwares](https://github.com/ahqsoftwares) - [@airblast-dev](https://github.com/airblast-dev) - [@alilosoft](https://github.com/alilosoft) - [@azamara](https://github.com/azamara) - [@chungwong](https://github.com/chungwong) - [@d3rpp](https://github.com/d3rpp) - [@daixiwen](https://github.com/daixiwen) - [@dependabot](https://github.com/dependabot) - [@ealmloff](https://github.com/ealmloff) - [@hackartists](https://github.com/hackartists) - [@hardBSDk](https://github.com/hardBSDk) - [@houseme](https://github.com/houseme) - [@i123iu](https://github.com/i123iu) - [@ilaborie](https://github.com/ilaborie) - [@imgurbot12](https://github.com/imgurbot12) - [@jacklund](https://github.com/jacklund) - [@jingchanglu](https://github.com/jingchanglu) - [@luveti](https://github.com/luveti) - [@marc2332](https://github.com/marc2332) - [@matthunz](https://github.com/matthunz) - [@nayo0513](https://github.com/nayo0513) - [@opensource-inemar-net](https://github.com/opensource-inemar-net) - [@oskardotglobal](https://github.com/oskardotglobal) - [@panglars](https://github.com/panglars) - [@pyrrho](https://github.com/pyrrho) - [@ribelo](https://github.com/ribelo) - [@rogusdev](https://github.com/rogusdev) - [@ryo33](https://github.com/ryo33) - [@samtay](https://github.com/samtay) - [@sknauff](https://github.com/sknauff) - [@srid](https://github.com/srid) - [@tigerros](https://github.com/tigerros) - [@tpoliaw](https://github.com/tpoliaw) - [@uzytkownik](https://github.com/uzytkownik)

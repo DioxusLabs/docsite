@@ -8,7 +8,7 @@ To make a server function, simply add the `#[server(YourUniqueType)]` attribute 
 - Have arguments and a return type that both implement serialize and deserialize (with [serde](https://serde.rs/)).
 - Return a `Result` with an error type of ServerFnError
 
-You must call `register` on the type you passed into the server macro in your main function before starting your server to tell Dioxus about the server function.
+> If you are targeting WASM on the server with WASI, you must call `register` on the type you passed into the server macro in your main function before starting your server to tell Dioxus about the server function. For all other targets, the server function will be registered automatically.
 
 Let's continue building on the app we made in the [getting started](../../getting_started/fullstack.md) guide. We will add a server function to our app that allows us to double the count on the server.
 

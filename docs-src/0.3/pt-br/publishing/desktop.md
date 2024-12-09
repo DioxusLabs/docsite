@@ -47,7 +47,7 @@ Depois de executar `cargo-bundle --release`, seu aplicativo deve estar acessíve
 
 Por exemplo, um aplicativo macOS ficaria assim:
 
-![Aplicativo publicado](../images/publish.png)
+![Aplicativo publicado](/assets/static/publish.png)
 
 Ótimo! E são apenas 4,8 Mb – extremamente enxutos! Como o Dioxus aproveita o WebView nativo da sua plataforma, os aplicativos Dioxus são extremamente eficientes em termos de memória e não desperdiçam sua bateria.
 

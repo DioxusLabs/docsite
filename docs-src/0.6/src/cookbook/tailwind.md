@@ -49,13 +49,7 @@ module.exports = {
 @tailwind utilities;
 ```
 
-7. Add [Manganis](https://github.com/DioxusLabs/manganis) to your project to handle asset collection.
-
-```sh
-cargo add manganis
-```
-
-8. Create a link to the `tailwind.css` file using manganis somewhere in your rust code:
+7. Create a link to the `tailwind.css` file using manganis somewhere in your rust code:
 
 ```rust
 {{#include src/doc_examples/tailwind.rs}}
@@ -78,7 +72,7 @@ cargo add manganis
 - Run the following command in the root of the project to start the tailwind css compiler:
 
 ```bash
-npx tailwindcss -i ./input.css -o ./public/tailwind.css --watch
+npx tailwindcss -i ./input.css -o ./assets/tailwind.css --watch
 ```
 
 ### Web

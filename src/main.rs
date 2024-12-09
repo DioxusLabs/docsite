@@ -108,7 +108,7 @@ fn Head() -> Element {
         Meta { property: "og:url", content: "https://dioxuslabs.com" }
         Meta {
             property: "og:image",
-            content: "https://dioxuslabs.com/static/opengraph.png",
+            content: "https://dioxuslabs.com/assets/static/opengraph.png",
         }
         Meta {
             name: "twitter:title",
@@ -120,7 +120,7 @@ fn Head() -> Element {
         }
         Meta {
             name: "twitter:image",
-            content: "https://dioxuslabs.com/static/opengraph.png",
+            content: "https://dioxuslabs.com/assets/static/opengraph.png",
         }
         Meta { name: "twitter:card", content: "summary_large_image" }
         Script {

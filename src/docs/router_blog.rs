@@ -4304,12 +4304,14 @@ pub fn Release060() -> dioxus::prelude::Element {
         }
         p {
             class: "inline-html-block",
-            dangerous_inner_html: "<!-- Since this post is quite long, we made a quick video highlighting new features, bugs fixed, and a quick tour of everything you can do with Dioxus now: -->\n",
+            dangerous_inner_html: "<!-- Since this post is quite long, we made a quick video highlighting new features, bugs fixed, and a quick tour of everything you can do with Dioxus now: -->",
         }
+        p { class: "inline-html-block", dangerous_inner_html: "\n" }
         p {
             class: "inline-html-block",
-            dangerous_inner_html: "<!-- <iframe style=\"width: 120%\" height=\"500px\" class=\"centered-overflow\" src=\"https://www.youtube.com/embed/-RN4LB3-9AE\" title=\"Dioxus 0.5 Overview preview\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share\" referrerpolicy=\"strict-origin-when-cross-origin\" allowfullscreen></iframe> -->\n",
+            dangerous_inner_html: "<!-- <iframe style=\"width: 120%\" height=\"500px\" class=\"centered-overflow\" src=\"https://www.youtube.com/embed/-RN4LB3-9AE\" title=\"Dioxus 0.5 Overview preview\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share\" referrerpolicy=\"strict-origin-when-cross-origin\" allowfullscreen></iframe> -->",
         }
+        p { class: "inline-html-block", dangerous_inner_html: "\n" }
         h2 { id: "interactive-command-line-tools",
             a { href: "#interactive-command-line-tools", class: "header",
                 "Interactive Command Line Tools"

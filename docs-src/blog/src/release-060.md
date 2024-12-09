@@ -41,7 +41,7 @@ Dioxus 0.6 is our biggest release ever: over 350 pull requests merged and hundre
 
 Since this post is quite long, we made a quick video highlighting new features, bugs fixed, and a quick tour of everything you can do with Dioxus now:
 
-<iframe style="width: auto" height="500px" class="centered-overflow" src="https://www.youtube.com/embed/WgAjWPKRVlQ" title="Dioxus 0.6" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+<iframe width="100%" height="500px" class="centered-overflow" src="https://www.youtube.com/embed/WgAjWPKRVlQ" title="Dioxus 0.6" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
 ## Interactive Command Line Tools
 

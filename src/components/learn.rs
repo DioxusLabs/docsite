@@ -83,13 +83,13 @@ fn VersionSwitch() -> Element {
     let mut show_versions = use_signal(|| false);
     let current_version = use_current_docs_version();
     let current_stability = match current_version {
-        CurrentDocsVersion::V06(_) => "Alpha",
+        CurrentDocsVersion::V06(_) => "Stable",
         CurrentDocsVersion::V05(_) => "Stable",
-        CurrentDocsVersion::V04(_) => "stable",
-        CurrentDocsVersion::V03(_) => "stable",
+        CurrentDocsVersion::V04(_) => "Stable",
+        CurrentDocsVersion::V03(_) => "Stable",
     };
     let current_version_long = match current_version {
-        CurrentDocsVersion::V06(_) => "v0.6.0-alpha.3",
+        CurrentDocsVersion::V06(_) => "v0.6.0",
         CurrentDocsVersion::V05(_) => "v0.5.6",
         CurrentDocsVersion::V04(_) => "v0.4.3",
         CurrentDocsVersion::V03(_) => "v0.3.2",
@@ -335,15 +335,18 @@ fn Content<R: AnyBookRoute>() -> Element {
 
 fn VersionWarning() -> Element {
     let current_version = use_current_docs_version();
-
+    // div { class: "flex flex-row items-center justify-start w-full bg-yellow-200 opacity-80 text-yellow-800 text-sm font-normal py-2 px-2 rounded-md mb-4 gap-2",
+    // crate::icons::IconWarning {}
+    // "You are currently viewing the docs for Dioxus 0.6.0 which is under construction."
+    // }
     match current_version {
-        CurrentDocsVersion::V06(_) => rsx! {
+        CurrentDocsVersion::V06(_) => rsx! {},
+        CurrentDocsVersion::V05(_) => rsx! {
             div { class: "flex flex-row items-center justify-start w-full bg-yellow-200 opacity-80 text-yellow-800 text-sm font-normal py-2 px-2 rounded-md mb-4 gap-2",
                 crate::icons::IconWarning {}
-                "You are currently viewing the docs for Dioxus 0.6.0 which is under construction."
+                "You are currently viewing the docs for Dioxus 0.5.7 which is no longer maintained."
             }
         },
-        CurrentDocsVersion::V05(_) => rsx! {},
         CurrentDocsVersion::V04(_) => rsx! {
             div { class: "flex flex-row items-center justify-start w-full bg-yellow-200 opacity-80 text-yellow-800 text-sm font-normal py-2 px-2 rounded-md mb-4 gap-2",
                 crate::icons::IconWarning {}

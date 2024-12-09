@@ -254,7 +254,7 @@ fn SearchModal() -> Element {
                 div { class: "bg-white dark:bg-ideblack rounded-xl max-h-[calc(100%-8rem)] overflow-y-auto text-gray-800 dark:text-gray-100 border dark:border-[#a4a9ac7d]",
                     // Search input
                     div { class: "flex flex-col flex-grow border-b p-2 gap-2 border-inherit",
-                        div { class: "my-auto flex flex-row items-center",
+                        div { class: "my-auto flex flex-row items-center pl-2",
                             div { class: "dark:invert h-5",
                                 MaterialIcon {
                                     name: "search",
@@ -331,11 +331,14 @@ fn SearchResults(results: Signal<Results>, search_text: Signal<String>) -> Eleme
                     SearchResultItem {
                         title: result.title.clone(),
                         route: result.route.clone(),
-                        for segment in result.excerpts.first().unwrap().text.iter() {
-                            if segment.highlighted {
-                                span { class: "text-blue-500", "{segment.text}" }
-                            } else {
-                                span { "{segment.text}" }
+                        span {
+                            class: "mt-1",
+                            for segment in result.excerpts.first().unwrap().text.iter() {
+                                if segment.highlighted {
+                                    span { class: "text-blue-500", "{segment.text}" }
+                                } else {
+                                    span { class: "text-gray-400", "{segment.text}" }
+                                }
                             }
                         }
                     }
@@ -355,9 +358,12 @@ fn SearchResultItem(title: String, route: Route, children: Element) -> Element {
                     *SHOW_SEARCH.write() = false;
                 },
                 class: "flex flex-row items-center gap-x-2 p-2",
-                icons::DocumentIcon {}
-                div { class: "flex flex-col justify-between",
-                    h2 { class: "dark:text-white", "{title}" }
+                div { class: "flex flex-col mt-1 mb-1",
+                    span {
+                        class: "flex flex-row items-center gap-x-1",
+                        icons::DocumentIcon {}
+                        h2 { class: "dark:text-white ml-1", "{title}" }
+                    }
                     {children}
                 }
             }

@@ -39,9 +39,9 @@ Dioxus 0.6 is our biggest release ever: over 350 pull requests merged and hundre
 - Make the Dioxus CLI more robust and easier to use.
 - Inline our mobile tooling into the dioxus CLI for 1st-class mobile support.
 
-<!-- Since this post is quite long, we made a quick video highlighting new features, bugs fixed, and a quick tour of everything you can do with Dioxus now: -->
+Since this post is quite long, we made a quick video highlighting new features, bugs fixed, and a quick tour of everything you can do with Dioxus now:
 
-<!-- <iframe style="width: 120%" height="500px" class="centered-overflow" src="https://www.youtube.com/embed/-RN4LB3-9AE" title="Dioxus 0.5 Overview preview" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe> -->
+<iframe style="width: auto" height="500px" class="centered-overflow" src="https://www.youtube.com/embed/WgAjWPKRVlQ" title="Dioxus 0.6" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
 ## Interactive Command Line Tools
 
@@ -68,7 +68,7 @@ You can install the new CLI using [cargo binstall](https://github.com/cargo-bins
 
 With Dioxus 0.6, the dioxus CLI supports `dx serve --platform ios/android` out of the box! 🎉
 
-While Dioxus has always had mobile, the Rust tooling for mobile has been extremely unstable. Users constantly ran into issues with tools like [`cargo-mobile`](https://github.com/BrainiumLLC/cargo-mobile) and [cargo-mobile2](https://github.com/tauri-apps/cargo-mobile2). These tools, while useful, take a different architectural approach than what is a good fit for Dioxus.
+While Dioxus has always had mobile support, the Rust tooling for mobile has been extremely unstable. Users constantly ran into issues with tools like [`cargo-mobile`](https://github.com/BrainiumLLC/cargo-mobile) and [`cargo-mobile2`](https://github.com/tauri-apps/cargo-mobile2). These tools, while useful, take a different architectural approach than what is a good fit for Dioxus.
 
 With this release, we wrote our entire mobile tooling system from scratch. Now, you can go from `dx new` to `dx serve --platform ios` in a matter of seconds.
 
@@ -445,7 +445,7 @@ We will likely be changing these APIs in future releases, but we are eager to le
 
 ## Document Elements: `Title {}` , `Link {}` , `Stylesheet` , and `Meta {}`
 
-To date, it’s been rather cumbersome seemingly simple JavaScript operations in Dioxus. Due to our cross-platform nature, we need to find solutions to simple problems in ways that work for web, desktop, and mobile with a single abstraction.
+To date, it’s been rather cumbersome to do seemingly simple JavaScript operations in Dioxus. Due to our cross-platform nature, we need to find solutions to simple problems in ways that work for web, desktop, and mobile with a single abstraction.
 
 With Dioxus 0.6, we’re providing special elements under the `document` namespace that make it possible to interact with the HTML `document` object without needing to write extra JavaScript.
 
@@ -530,7 +530,7 @@ fn Counter() -> Element {
 }
 ```
 
-This new syntax works lets Suspense and HTML-streaming return errors while rendering that don’t bring down the entire page.
+This new syntax lets Suspense and HTML-streaming return errors while rendering that don’t bring down the entire page.
 
 ## Synchronous `prevent_default`
 
@@ -663,7 +663,7 @@ as well as new codeblocks with interactive examples:
 
 ## Preview of In-Place Binary Patching
 
-While working on the new hot-reloading engine, we experimented with adding hot-reloading to Dioxus apps. The work here was inspired by Andrew Kelley’s “in-place-binary-patching” goal for Zig. Unfortunately, we didn’t have a chance to productionize the prototype for this release (way too many features already!) but we did put together a [small prototype](http://github.com/jkelleyrtp/ipbp):
+While working on the new hot-reloading engine, we experimented with adding proper hot-reloading of Rust code to Dioxus apps. The work here was inspired by Andrew Kelley’s “in-place-binary-patching” goal for Zig. Unfortunately, we didn’t have a chance to productionize the prototype for this release (way too many features already!) but we did put together a [small prototype](http://github.com/jkelleyrtp/ipbp):
 
 ![full_hr_dioxus_fast.mp4](/assets/06assets/full_hr_dioxus_fast.mp4)
 

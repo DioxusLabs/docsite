@@ -4303,15 +4303,12 @@ pub fn Release060() -> dioxus::prelude::Element {
             li { "Inline our mobile tooling into the dioxus CLI for 1st-class mobile support." }
         }
         p {
-            class: "inline-html-block",
-            dangerous_inner_html: "<!-- Since this post is quite long, we made a quick video highlighting new features, bugs fixed, and a quick tour of everything you can do with Dioxus now: -->",
+            "Since this post is quite long, we made a quick video highlighting new features, bugs fixed, and a quick tour of everything you can do with Dioxus now:"
         }
-        p { class: "inline-html-block", dangerous_inner_html: "\n" }
         p {
             class: "inline-html-block",
-            dangerous_inner_html: "<!-- <iframe style=\"width: 120%\" height=\"500px\" class=\"centered-overflow\" src=\"https://www.youtube.com/embed/-RN4LB3-9AE\" title=\"Dioxus 0.5 Overview preview\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share\" referrerpolicy=\"strict-origin-when-cross-origin\" allowfullscreen></iframe> -->",
+            dangerous_inner_html: "<iframe style=\"width: auto\" height=\"500px\" class=\"centered-overflow\" src=\"https://www.youtube.com/embed/WgAjWPKRVlQ\" title=\"Dioxus 0.6\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share\" referrerpolicy=\"strict-origin-when-cross-origin\" allowfullscreen></iframe>\n",
         }
-        p { class: "inline-html-block", dangerous_inner_html: "\n" }
         h2 { id: "interactive-command-line-tools",
             a { href: "#interactive-command-line-tools", class: "header",
                 "Interactive Command Line Tools"
@@ -4383,12 +4380,14 @@ pub fn Release060() -> dioxus::prelude::Element {
             " out of the box! 🎉"
         }
         p {
-            "While Dioxus has always had mobile, the Rust tooling for mobile has been extremely unstable. Users constantly ran into issues with tools like "
+            "While Dioxus has always had mobile support, the Rust tooling for mobile has been extremely unstable. Users constantly ran into issues with tools like "
             a { href: "https://github.com/BrainiumLLC/cargo-mobile",
                 code { "cargo-mobile" }
             }
             " and "
-            a { href: "https://github.com/tauri-apps/cargo-mobile2", "cargo-mobile2" }
+            a { href: "https://github.com/tauri-apps/cargo-mobile2",
+                code { "cargo-mobile2" }
+            }
             ". These tools, while useful, take a different architectural approach than what is a good fit for Dioxus."
         }
         p {
@@ -4844,7 +4843,7 @@ pub fn Release060() -> dioxus::prelude::Element {
             code { "Meta {{}}" }
         }
         p {
-            "To date, it’s been rather cumbersome seemingly simple JavaScript operations in Dioxus. Due to our cross-platform nature, we need to find solutions to simple problems in ways that work for web, desktop, and mobile with a single abstraction."
+            "To date, it’s been rather cumbersome to do seemingly simple JavaScript operations in Dioxus. Due to our cross-platform nature, we need to find solutions to simple problems in ways that work for web, desktop, and mobile with a single abstraction."
         }
         p {
             "With Dioxus 0.6, we’re providing special elements under the  "
@@ -4938,7 +4937,7 @@ pub fn Release060() -> dioxus::prelude::Element {
             contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">Counter</span><span style=\"color:#f8f8f2;\">() -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let </span><span style=\"color:#f92672;\">mut</span><span style=\"color:#f8f8f2;\"> data </span><span style=\"color:#f92672;\">= </span><span style=\"color:#66d9ef;\">use_signal</span><span style=\"color:#f8f8f2;\">(|| Data::default());\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">    rsx! {{\n</span><span style=\"color:#f8f8f2;\">        button {{\n</span><span style=\"color:#f8f8f2;\">            onclick: </span><span style=\"color:#f92672;\">move |_|</span><span style=\"color:#f8f8f2;\"> async </span><span style=\"color:#f92672;\">move </span><span style=\"color:#f8f8f2;\">{{\n</span><span style=\"color:#f8f8f2;\">                </span><span style=\"color:#8c8c8c;\">// the `?` automatically throws this error upwards\n</span><span style=\"color:#f8f8f2;\">                data.</span><span style=\"color:#66d9ef;\">set</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#66d9ef;\">request_server_data</span><span style=\"color:#f8f8f2;\">().await</span><span style=\"color:#f92672;\">?</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"color:#f8f8f2;\">                </span><span style=\"font-style:italic;color:#66d9ef;\">Ok</span><span style=\"color:#f8f8f2;\">(())\n</span><span style=\"color:#f8f8f2;\">            }},\n</span><span style=\"color:#f8f8f2;\">            </span><span style=\"color:#ffee99;\">&quot;{{data}}&quot;\n</span><span style=\"color:#f8f8f2;\">        }}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
         }
         p {
-            "This new syntax works lets Suspense and HTML-streaming return errors while rendering that don’t bring down the entire page."
+            "This new syntax lets Suspense and HTML-streaming return errors while rendering that don’t bring down the entire page."
         }
         h2 { id: "synchronous",
             a { href: "#synchronous", class: "header", "Synchronous " }
@@ -5175,7 +5174,7 @@ pub fn Release060() -> dioxus::prelude::Element {
             }
         }
         p {
-            "While working on the new hot-reloading engine, we experimented with adding hot-reloading to Dioxus apps. The work here was inspired by Andrew Kelley’s “in-place-binary-patching” goal for Zig. Unfortunately, we didn’t have a chance to productionize the prototype for this release (way too many features already!) but we did put together a "
+            "While working on the new hot-reloading engine, we experimented with adding proper hot-reloading of Rust code to Dioxus apps. The work here was inspired by Andrew Kelley’s “in-place-binary-patching” goal for Zig. Unfortunately, we didn’t have a chance to productionize the prototype for this release (way too many features already!) but we did put together a "
             a { href: "http://github.com/jkelleyrtp/ipbp", "small prototype" }
             ":"
         }

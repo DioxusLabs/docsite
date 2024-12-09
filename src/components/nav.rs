@@ -124,7 +124,7 @@ pub(crate) fn Nav() -> Element {
                                 "Deploy"
                             }
                             Link {
-                                to: crate::docs::router_05::BookRoute::Index {
+                                to: crate::docs::router_06::BookRoute::Index {
                                 }
                                     .global_route(),
                                 class: "md:px-3 h-full flex flex-col justify-center bg-blue-500 text-lg md:text-sm text-white rounded font-semibold hover:brightness-95 dark:hover:brightness-105",
@@ -331,8 +331,7 @@ fn SearchResults(results: Signal<Results>, search_text: Signal<String>) -> Eleme
                     SearchResultItem {
                         title: result.title.clone(),
                         route: result.route.clone(),
-                        span {
-                            class: "mt-1",
+                        span { class: "mt-1",
                             for segment in result.excerpts.first().unwrap().text.iter() {
                                 if segment.highlighted {
                                     span { class: "text-blue-500", "{segment.text}" }
@@ -359,8 +358,7 @@ fn SearchResultItem(title: String, route: Route, children: Element) -> Element {
                 },
                 class: "flex flex-row items-center gap-x-2 p-2",
                 div { class: "flex flex-col mt-1 mb-1",
-                    span {
-                        class: "flex flex-row items-center gap-x-1",
+                    span { class: "flex flex-row items-center gap-x-1",
                         icons::DocumentIcon {}
                         h2 { class: "dark:text-white ml-1", "{title}" }
                     }

@@ -4307,7 +4307,7 @@ pub fn Release060() -> dioxus::prelude::Element {
         }
         p {
             class: "inline-html-block",
-            dangerous_inner_html: "<iframe width=\"100%\" height=\"500px\" class=\"centered-overflow\" src=\"https://www.youtube.com/embed/WgAjWPKRVlQ\" title=\"Dioxus 0.6\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share\" referrerpolicy=\"strict-origin-when-cross-origin\" allowfullscreen></iframe>\n",
+            dangerous_inner_html: "<iframe style=\"width: 100%\" height=\"500px\" class=\"centered-overflow\" src=\"https://www.youtube.com/embed/WgAjWPKRVlQ\" title=\"Dioxus 0.6\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share\" referrerpolicy=\"strict-origin-when-cross-origin\" allowfullscreen></iframe>\n",
         }
         h2 { id: "interactive-command-line-tools",
             a { href: "#interactive-command-line-tools", class: "header",

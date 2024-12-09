@@ -1859,18 +1859,11 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                 title: "Internationalization".to_string(),
                 url: BookRoute::CookbookIntegrationsInternationalization {},
                 segments: vec![],
-                sections: vec![
-                    ::use_mdbook::mdbook_shared::Section {
-                        title: "Internationalization".to_string(),
-                        id: "internationalization".to_string(),
-                        level: 1usize,
-                    },
-                    ::use_mdbook::mdbook_shared::Section {
-                        title: "The full code for internationalization".to_string(),
-                        id: "the-full-code-for-internationalization".to_string(),
-                        level: 2usize,
-                    },
-                ],
+                sections: vec![::use_mdbook::mdbook_shared::Section {
+                    title: "Internationalization".to_string(),
+                    id: "internationalization".to_string(),
+                    level: 1usize,
+                }],
                 raw: String::new(),
                 id: ::use_mdbook::mdbook_shared::PageId(46usize),
             }
@@ -7885,20 +7878,16 @@ pub fn CookbookIntegrationsInternationalization() -> dioxus::prelude::Element {
             a { href: "#internationalization", class: "header", "Internationalization" }
         }
         p {
-            "If you application supports multiple languages, the "
-            a { href: "https://github.com/DioxusLabs/sdk", "Dioxus SDK" }
+            "If your application supports multiple languages, the "
+            a { href: "https://github.com/dioxus-community/dioxus-i18n", "dioxus-i18n" }
             " crate contains helpers to make working with translations in your application easier."
         }
-        h2 { id: "the-full-code-for-internationalization",
-            a {
-                href: "#the-full-code-for-internationalization",
-                class: "header",
-                "The full code for internationalization"
+        p {
+            "You can find an example "
+            a { href: "https://github.com/dioxus-community/dioxus-i18n/blob/main/examples/dioxus-desktop.rs",
+                "here"
             }
-        }
-        CodeBlock {
-            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f92672;\">use </span><span style=\"color:#f8f8f2;\">dioxus::prelude::</span><span style=\"color:#f92672;\">*</span><span style=\"color:#f8f8f2;\">;\r\n</span><span style=\"color:#f92672;\">use </span><span style=\"color:#f8f8f2;\">dioxus_sdk::i18n::</span><span style=\"color:#f92672;\">*</span><span style=\"color:#f8f8f2;\">;\r\n</span><span style=\"color:#f92672;\">use </span><span style=\"color:#f8f8f2;\">dioxus_sdk::translate;\r\n</span><span style=\"color:#f92672;\">use </span><span style=\"color:#f8f8f2;\">std::str::FromStr;\r\n</span><span style=\"color:#f8f8f2;\">\r\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">main</span><span style=\"color:#f8f8f2;\">() {{\r\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#66d9ef;\">launch</span><span style=\"color:#f8f8f2;\">(app);\r\n</span><span style=\"color:#f8f8f2;\">}}\r\n</span><span style=\"color:#f8f8f2;\">\r\n</span><span style=\"font-style:italic;color:#66d9ef;\">static </span><span style=\"color:#ff80f4;\">EN_US</span><span style=\"color:#f8f8f2;\">: </span><span style=\"color:#f92672;\">&amp;</span><span style=\"font-style:italic;color:#66d9ef;\">str </span><span style=\"color:#f92672;\">= </span><span style=\"font-style:italic;color:#66d9ef;\">r</span><span style=\"color:#ffee99;\">#&quot;{{\r\n</span><span style=\"color:#ffee99;\">    &quot;id&quot;: &quot;en-US&quot;,\r\n</span><span style=\"color:#ffee99;\">    &quot;texts&quot;: {{\r\n</span><span style=\"color:#ffee99;\">        &quot;messages&quot;: {{\r\n</span><span style=\"color:#ffee99;\">            &quot;hello_world&quot;: &quot;Hello World!&quot;\r\n</span><span style=\"color:#ffee99;\">        }},\r\n</span><span style=\"color:#ffee99;\">        &quot;messages.hello&quot;: &quot;Hello {{name}}&quot;\r\n</span><span style=\"color:#ffee99;\">    }}\r\n</span><span style=\"color:#ffee99;\">}}&quot;#</span><span style=\"color:#f8f8f2;\">;\r\n</span><span style=\"font-style:italic;color:#66d9ef;\">static </span><span style=\"color:#ff80f4;\">ES_ES</span><span style=\"color:#f8f8f2;\">: </span><span style=\"color:#f92672;\">&amp;</span><span style=\"font-style:italic;color:#66d9ef;\">str </span><span style=\"color:#f92672;\">= </span><span style=\"font-style:italic;color:#66d9ef;\">r</span><span style=\"color:#ffee99;\">#&quot;{{\r\n</span><span style=\"color:#ffee99;\">    &quot;id&quot;: &quot;es-ES&quot;,\r\n</span><span style=\"color:#ffee99;\">    &quot;texts&quot;: {{\r\n</span><span style=\"color:#ffee99;\">        &quot;messages&quot;: {{\r\n</span><span style=\"color:#ffee99;\">            &quot;hello_world&quot;: &quot;Hola Mundo!&quot;\r\n</span><span style=\"color:#ffee99;\">        }},\r\n</span><span style=\"color:#ffee99;\">        &quot;messages.hello&quot;: &quot;Hola {{name}}&quot;\r\n</span><span style=\"color:#ffee99;\">    }}\r\n</span><span style=\"color:#ffee99;\">}}&quot;#</span><span style=\"color:#f8f8f2;\">;\r\n</span><span style=\"color:#f8f8f2;\">\r\n</span><span style=\"color:#f8f8f2;\">#[allow(non_snake_case)]\r\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">Body</span><span style=\"color:#f8f8f2;\">() -&gt; Element {{\r\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let </span><span style=\"color:#f92672;\">mut</span><span style=\"color:#f8f8f2;\"> i18 </span><span style=\"color:#f92672;\">= </span><span style=\"color:#66d9ef;\">use_i18</span><span style=\"color:#f8f8f2;\">();\r\n</span><span style=\"color:#f8f8f2;\">\r\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> change_to_english </span><span style=\"color:#f92672;\">= move |_|</span><span style=\"color:#f8f8f2;\"> i18.</span><span style=\"color:#66d9ef;\">set_language</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#ffee99;\">&quot;en-US&quot;</span><span style=\"color:#f8f8f2;\">.</span><span style=\"color:#66d9ef;\">parse</span><span style=\"color:#f8f8f2;\">().</span><span style=\"color:#66d9ef;\">unwrap</span><span style=\"color:#f8f8f2;\">());\r\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> change_to_spanish </span><span style=\"color:#f92672;\">= move |_|</span><span style=\"color:#f8f8f2;\"> i18.</span><span style=\"color:#66d9ef;\">set_language</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#ffee99;\">&quot;es-ES&quot;</span><span style=\"color:#f8f8f2;\">.</span><span style=\"color:#66d9ef;\">parse</span><span style=\"color:#f8f8f2;\">().</span><span style=\"color:#66d9ef;\">unwrap</span><span style=\"color:#f8f8f2;\">());\r\n</span><span style=\"color:#f8f8f2;\">\r\n</span><span style=\"color:#f8f8f2;\">    rsx! {{\r\n</span><span style=\"color:#f8f8f2;\">        button {{ onclick: change_to_english, label {{ </span><span style=\"color:#ffee99;\">&quot;English&quot; </span><span style=\"color:#f8f8f2;\">}} }}\r\n</span><span style=\"color:#f8f8f2;\">        button {{ onclick: change_to_spanish, label {{ </span><span style=\"color:#ffee99;\">&quot;Spanish&quot; </span><span style=\"color:#f8f8f2;\">}} }}\r\n</span><span style=\"color:#f8f8f2;\">        p {{ {{translate!(i18, </span><span style=\"color:#ffee99;\">&quot;messages.hello_world&quot;</span><span style=\"color:#f8f8f2;\">)}} }}\r\n</span><span style=\"color:#f8f8f2;\">        p {{ {{translate!(i18, </span><span style=\"color:#ffee99;\">&quot;messages.hello&quot;</span><span style=\"color:#f8f8f2;\">, name: </span><span style=\"color:#ffee99;\">&quot;Dioxus&quot;</span><span style=\"color:#f8f8f2;\">)}} }}\r\n</span><span style=\"color:#f8f8f2;\">    }}\r\n</span><span style=\"color:#f8f8f2;\">}}\r\n</span><span style=\"color:#f8f8f2;\">\r\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">app</span><span style=\"color:#f8f8f2;\">() -&gt; Element {{\r\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#66d9ef;\">use_init_i18n</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#ffee99;\">&quot;en-US&quot;</span><span style=\"color:#f8f8f2;\">.</span><span style=\"color:#66d9ef;\">parse</span><span style=\"color:#f8f8f2;\">().</span><span style=\"color:#66d9ef;\">unwrap</span><span style=\"color:#f8f8f2;\">(), </span><span style=\"color:#ffee99;\">&quot;en-US&quot;</span><span style=\"color:#f8f8f2;\">.</span><span style=\"color:#66d9ef;\">parse</span><span style=\"color:#f8f8f2;\">().</span><span style=\"color:#66d9ef;\">unwrap</span><span style=\"color:#f8f8f2;\">(), || {{\r\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> en_us </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">Language::from_str(</span><span style=\"color:#ff80f4;\">EN_US</span><span style=\"color:#f8f8f2;\">).</span><span style=\"color:#66d9ef;\">unwrap</span><span style=\"color:#f8f8f2;\">();\r\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> es_es </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">Language::from_str(</span><span style=\"color:#ff80f4;\">ES_ES</span><span style=\"color:#f8f8f2;\">).</span><span style=\"color:#66d9ef;\">unwrap</span><span style=\"color:#f8f8f2;\">();\r\n</span><span style=\"color:#f8f8f2;\">        vec![en_us, es_es]\r\n</span><span style=\"color:#f8f8f2;\">    }});\r\n</span><span style=\"color:#f8f8f2;\">\r\n</span><span style=\"color:#f8f8f2;\">    rsx! {{ Body {{}} }}\r\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
-            name: "i18n.rs".to_string(),
+            "."
         }
     }
 }

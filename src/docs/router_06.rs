@@ -5483,7 +5483,7 @@ pub fn RouterIndex() -> dioxus::prelude::Element {
         }
         blockquote {
             p {
-                "Please note that this is not the only documentation for the Dioxus Router. You"
+                "Please note that this is not the only documentation for the Dioxus Router. You can also check out the "
                 a { href: "https://docs.rs/dioxus-router/", "API Docs" }
                 "."
             }

@@ -34,5 +34,4 @@ into two sections:
    creating a dioxus app, setting up the router, and using some of its 
    functionality.
 
-> Please note that this is not the only documentation for the Dioxus Router. You
-> can also check out the [API Docs](https://docs.rs/dioxus-router/).
+> Please note that this is not the only documentation for the Dioxus Router. You can also check out the [API Docs](https://docs.rs/dioxus-router/).

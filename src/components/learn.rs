@@ -336,12 +336,14 @@ fn VersionWarning() -> Element {
     // }
     match current_version {
         CurrentDocsVersion::V06(_) => rsx! {},
-        CurrentDocsVersion::V05(_) | CurrentDocsVersion::V04(_) | CurrentDocsVersion::V03(_) => rsx! {
-            div { class: "flex flex-row items-center justify-start w-full bg-yellow-200 opacity-80 text-yellow-800 text-sm font-normal py-2 px-2 rounded-md mb-4 gap-2",
-                crate::icons::IconWarning {}
-                "You are currently viewing the docs for Dioxus {current_version.full_version()} which is no longer maintained."
+        CurrentDocsVersion::V05(_) | CurrentDocsVersion::V04(_) | CurrentDocsVersion::V03(_) => {
+            rsx! {
+                div { class: "flex flex-row items-center justify-start w-full bg-yellow-200 opacity-80 text-yellow-800 text-sm font-normal py-2 px-2 rounded-md mb-4 gap-2",
+                    crate::icons::IconWarning {}
+                    "You are currently viewing the docs for Dioxus {current_version.full_version()} which is no longer maintained."
+                }
             }
-        },
+        }
     }
 }
 

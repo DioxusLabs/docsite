@@ -5320,7 +5320,7 @@ pub fn RouterExampleIndex() -> dioxus::prelude::Element {
         blockquote {
             p {
                 "To follow along with the router example, you'll need a working Dioxus app."
-                a { href: "https://dioxuslabs.com/learn/0.5/getting_started", "Dioxus book" }
+                a { href: "https://dioxuslabs.com/learn/0.6/getting_started", "Dioxus book" }
                 " to get started."
             }
         }
@@ -6618,11 +6618,11 @@ pub fn GuidesDesktopIndex() -> dioxus::prelude::Element {
         }
         p {
             "In cases where you need more low level control over your window, you can use wry APIs exposed through the "
-            a { href: "https://docs.rs/dioxus-desktop/0.5.0/dioxus_desktop/struct.Config.html",
+            a { href: "https://docs.rs/dioxus-desktop/0.6.0/dioxus_desktop/struct.Config.html",
                 "Desktop Config"
             }
             " and the "
-            a { href: "https://docs.rs/dioxus-desktop/0.5.0/dioxus_desktop/fn.use_window.html",
+            a { href: "https://docs.rs/dioxus-desktop/0.6.0/dioxus_desktop/fn.use_window.html",
                 "use_window hook"
             }
         }
@@ -6940,11 +6940,11 @@ pub fn GuidesMobileApis() -> dioxus::prelude::Element {
         }
         p {
             "In cases where you need more low level control over your window, you can use wry APIs exposed through the "
-            a { href: "https://docs.rs/dioxus-desktop/0.5.0/dioxus_desktop/struct.Config.html",
+            a { href: "https://docs.rs/dioxus-desktop/0.6.0/dioxus_desktop/type.DesktopContext.html",
                 "Desktop Config"
             }
             " and the "
-            a { href: "https://docs.rs/dioxus-desktop/0.5.0/dioxus_desktop/struct.DesktopContext.html",
+            a { href: "https://docs.rs/dioxus-desktop/0.6.0/dioxus_desktop/fn.use_window.html",
                 "use_window hook"
             }
         }
@@ -8530,26 +8530,12 @@ pub fn CookbookOptimizing() -> dioxus::prelude::Element {
             "This is the best way to optimize. In fact, the 2.36mb figure at the start of the guide is with release mode."
         }
         p {
-            "Thankfully, no matter what tool you're using to build your app, it will probably have a  "
+            "We can use the  "
             code { "--release" }
-            " flag to do this."
+            " flag to create an optimized build of our application which will be both faster and smaller:"
         }
         p {
-            "Using the "
-            a { href: "https://dioxuslabs.com/learn/0.5/CLI", "Dioxus CLI" }
-            " or "
-            a { href: "https://trunkrs.dev/", "Trunk" }
-            ":"
-        }
-        ul {
-            li {
-                "Dioxus CLI: "
-                code { "dx build --release" }
-            }
-            li {
-                "Trunk: "
-                code { "trunk build --release" }
-            }
+            code { "dx build --release" }
         }
         h2 { id: "upx",
             a { href: "#upx", class: "header", "UPX" }
@@ -10754,7 +10740,7 @@ pub fn ContributingIndex() -> dioxus::prelude::Element {
             "If you'd like to improve the docs, PRs are welcome! The Rust docs ("
             a { href: "https://github.com/DioxusLabs/dioxus/tree/main/packages", "source" }
             ") and this guide ("
-            a { href: "https://github.com/DioxusLabs/docsite/tree/main/docs-src/0.5/en",
+            a { href: "https://github.com/DioxusLabs/docsite/tree/main/docs-src/0.6",
                 "source"
             }
             ") can be found in their respective GitHub repos."
@@ -10884,7 +10870,7 @@ pub fn ContributingIndex() -> dioxus::prelude::Element {
         CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">dioxus </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">{{ path </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;&lt;path to forked dioxus project&gt;/dioxus/packages/dioxus&quot;</span><span style=\"color:#f8f8f2;\">, features </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">[</span><span style=\"color:#ffee99;\">&quot;web&quot;</span><span style=\"color:#f8f8f2;\">, </span><span style=\"color:#ffee99;\">&quot;router&quot;</span><span style=\"color:#f8f8f2;\">] }}</span></pre>\n" }
         p {
             "This above example is for dioxus-web, with dioxus-router. To know about the dependencies for different renderer visit "
-            a { href: "https://dioxuslabs.com/learn/0.5/getting_started", "here" }
+            a { href: "../getting_started", "here" }
             "."
         }
         ul {
@@ -10893,7 +10879,7 @@ pub fn ContributingIndex() -> dioxus::prelude::Element {
         CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">dx serve</span></pre>\n" }
         p {
             "If this is your first time with dioxus, please read "
-            a { href: "https://dioxuslabs.com/learn/0.5/guide", "the guide" }
+            a { href: "../guide", "the guide" }
             " to get familiar with dioxus."
         }
     }

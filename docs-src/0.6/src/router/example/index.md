@@ -5,7 +5,7 @@ building a small todo app or the next FAANG company. We will create a small
 website with a blog, homepage, and more!
 
 > To follow along with the router example, you'll need a working Dioxus app.
-> Check out the [Dioxus book](https://dioxuslabs.com/learn/0.5/getting_started) to get started.
+> Check out the [Dioxus book](https://dioxuslabs.com/learn/0.6/getting_started) to get started.
 
 > Make sure to add Dioxus Router as a dependency, as explained in the
 > [introduction](../index.md).

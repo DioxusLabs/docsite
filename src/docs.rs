@@ -16,6 +16,18 @@ pub enum CurrentDocsVersion {
     V04(router_04::BookRoute),
     V03(router_03::BookRoute),
 }
+
+impl CurrentDocsVersion {
+    pub fn full_version(&self) -> &'static str {
+        match self {
+            CurrentDocsVersion::V06(_) => router_06::BookRoute::full_version(),
+            CurrentDocsVersion::V05(_) => router_05::BookRoute::full_version(),
+            CurrentDocsVersion::V04(_) => router_04::BookRoute::full_version(),
+            CurrentDocsVersion::V03(_) => router_03::BookRoute::full_version(),
+        }
+    }
+}
+
 pub fn use_current_docs_version() -> CurrentDocsVersion {
     let route = use_route();
     match route {
@@ -152,7 +164,7 @@ impl AnyBookRoute for router_05::BookRoute {
     }
 
     fn full_version() -> &'static str {
-        "0.5.5"
+        "0.5.7"
     }
 
     fn index() -> Self {

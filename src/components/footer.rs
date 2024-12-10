@@ -16,7 +16,7 @@ pub fn Footer() -> Element {
             vec![
                 ("docs.rs", "https://docs.rs/dioxus"),
                 ("crates.io", "https://crates.io/crates/dioxus"),
-                ("Guide", "/learn/0.5/guide"),
+                ("Guide", "/learn/0.6/guide"),
                 ("Awesome", "/awesome"),
                 ("Playground", "/play"),
             ],

@@ -26,11 +26,9 @@ Additional resources:
 This is the best way to optimize. In fact, the 2.36mb figure at the start of the guide is with release mode.
 In debug mode, it's actually a whopping 32mb! It also increases the speed of your app.
 
-Thankfully, no matter what tool you're using to build your app, it will probably have a `--release` flag to do this.
+We can use the `--release` flag to create an optimized build of our application which will be both faster and smaller:
 
-Using the [Dioxus CLI](https://dioxuslabs.com/learn/0.5/CLI) or [Trunk](https://trunkrs.dev/):
-- Dioxus CLI: `dx build --release`
-- Trunk: `trunk build --release`
+`dx build --release`
 
 ## UPX
 

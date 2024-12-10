@@ -154,6 +154,14 @@ pub enum BookRoute {
     ContributingGuidingPrinciples {},
     #[route("/contributing/roadmap")]
     ContributingRoadmap {},
+    #[route("/CLI/")]
+    CliIndex {},
+    #[route("/CLI/creating")]
+    CliCreating {},
+    #[route("/CLI/configure")]
+    CliConfigure {},
+    #[route("/CLI/translate")]
+    CliTranslate {},
 }
 impl BookRoute {
     pub fn sections(&self) -> &'static [use_mdbook::mdbook_shared::Section] {
@@ -264,6 +272,10 @@ impl BookRoute {
                 use_mdbook::mdbook_shared::PageId(70usize)
             }
             BookRoute::ContributingRoadmap {} => use_mdbook::mdbook_shared::PageId(71usize),
+            BookRoute::CliIndex {} => use_mdbook::mdbook_shared::PageId(72usize),
+            BookRoute::CliCreating {} => use_mdbook::mdbook_shared::PageId(73usize),
+            BookRoute::CliConfigure {} => use_mdbook::mdbook_shared::PageId(74usize),
+            BookRoute::CliTranslate {} => use_mdbook::mdbook_shared::PageId(75usize),
         }
     }
 }
@@ -2865,6 +2877,141 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
             BookRoute::ContributingRoadmap {},
             ::use_mdbook::mdbook_shared::PageId(71usize),
         );
+        pages.push((72usize, {
+            ::use_mdbook::mdbook_shared::Page {
+                title: "CLI".to_string(),
+                url: BookRoute::CliIndex {},
+                segments: vec![],
+                sections: vec![
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Introduction".to_string(),
+                        id: "introduction".to_string(),
+                        level: 1usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Features".to_string(),
+                        id: "features".to_string(),
+                        level: 2usize,
+                    },
+                ],
+                raw: String::new(),
+                id: ::use_mdbook::mdbook_shared::PageId(72usize),
+            }
+        }));
+        page_id_mapping.insert(
+            BookRoute::CliIndex {},
+            ::use_mdbook::mdbook_shared::PageId(72usize),
+        );
+        pages.push((73usize, {
+            ::use_mdbook::mdbook_shared::Page {
+                title: "Create a Project".to_string(),
+                url: BookRoute::CliCreating {},
+                segments: vec![],
+                sections: vec![
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Create a Project".to_string(),
+                        id: "create-a-project".to_string(),
+                        level: 1usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Initializing a project".to_string(),
+                        id: "initializing-a-project".to_string(),
+                        level: 2usize,
+                    },
+                ],
+                raw: String::new(),
+                id: ::use_mdbook::mdbook_shared::PageId(73usize),
+            }
+        }));
+        page_id_mapping.insert(
+            BookRoute::CliCreating {},
+            ::use_mdbook::mdbook_shared::PageId(73usize),
+        );
+        pages.push((74usize, {
+            ::use_mdbook::mdbook_shared::Page {
+                title: "Configure Project".to_string(),
+                url: BookRoute::CliConfigure {},
+                segments: vec![],
+                sections: vec![
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Configure Project".to_string(),
+                        id: "configure-project".to_string(),
+                        level: 1usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Structure".to_string(),
+                        id: "structure".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Application 🔒".to_string(),
+                        id: "application-🔒".to_string(),
+                        level: 3usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Web.App 🔒".to_string(),
+                        id: "web.app-🔒".to_string(),
+                        level: 3usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Web.Watcher 🔒".to_string(),
+                        id: "web.watcher-🔒".to_string(),
+                        level: 3usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Web.Resource 🔒".to_string(),
+                        id: "web.resource-🔒".to_string(),
+                        level: 3usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Web.Resource.Dev 🔒".to_string(),
+                        id: "web.resource.dev-🔒".to_string(),
+                        level: 3usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Web.Proxy".to_string(),
+                        id: "web.proxy".to_string(),
+                        level: 3usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Config example".to_string(),
+                        id: "config-example".to_string(),
+                        level: 2usize,
+                    },
+                ],
+                raw: String::new(),
+                id: ::use_mdbook::mdbook_shared::PageId(74usize),
+            }
+        }));
+        page_id_mapping.insert(
+            BookRoute::CliConfigure {},
+            ::use_mdbook::mdbook_shared::PageId(74usize),
+        );
+        pages.push((75usize, {
+            ::use_mdbook::mdbook_shared::Page {
+                title: "Translate HTML".to_string(),
+                url: BookRoute::CliTranslate {},
+                segments: vec![],
+                sections: vec![
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Translating existing HTML".to_string(),
+                        id: "translating-existing-html".to_string(),
+                        level: 1usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Usage".to_string(),
+                        id: "usage".to_string(),
+                        level: 2usize,
+                    },
+                ],
+                raw: String::new(),
+                id: ::use_mdbook::mdbook_shared::PageId(75usize),
+            }
+        }));
+        page_id_mapping.insert(
+            BookRoute::CliTranslate {},
+            ::use_mdbook::mdbook_shared::PageId(75usize),
+        );
         ::use_mdbook::mdbook_shared::MdBook {
             summary: ::use_mdbook::mdbook_shared::Summary {
                 title: Some("Summary".to_string()),
@@ -2997,159 +3144,159 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                                                 vec![4u32, 1u32, 1u32],
                                             ),
                                         ),
-                                        nested_items: vec![],
-                                    }),
-                                    ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
-                                        name: "Creating Our First Route".to_string(),
-                                        location: Some(BookRoute::RouterExampleFirstRoute {
-                                        }),
-                                        number: Some(
-                                            ::use_mdbook::mdbook_shared::SectionNumber(
-                                                vec![4u32, 1u32, 2u32],
-                                            ),
-                                        ),
-                                        nested_items: vec![],
-                                    }),
-                                    ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
-                                        name: "Building a Nest".to_string(),
-                                        location: Some(BookRoute::RouterExampleBuildingANest {
-                                        }),
-                                        number: Some(
-                                            ::use_mdbook::mdbook_shared::SectionNumber(
-                                                vec![4u32, 1u32, 3u32],
-                                            ),
-                                        ),
-                                        nested_items: vec![],
-                                    }),
-                                    ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
-                                        name: "Navigation Targets".to_string(),
-                                        location: Some(BookRoute::RouterExampleNavigationTargets {
-                                        }),
-                                        number: Some(
-                                            ::use_mdbook::mdbook_shared::SectionNumber(
-                                                vec![4u32, 1u32, 4u32],
-                                            ),
-                                        ),
-                                        nested_items: vec![],
-                                    }),
-                                    ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
-                                        name: "Redirection Perfection".to_string(),
-                                        location: Some(BookRoute::RouterExampleRedirectionPerfection {}),
-                                        number: Some(
-                                            ::use_mdbook::mdbook_shared::SectionNumber(
-                                                vec![4u32, 1u32, 5u32],
-                                            ),
-                                        ),
-                                        nested_items: vec![],
-                                    }),
-                                    ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
-                                        name: "Full Code".to_string(),
-                                        location: Some(BookRoute::RouterExampleFullCode {
-                                        }),
-                                        number: Some(
-                                            ::use_mdbook::mdbook_shared::SectionNumber(
-                                                vec![4u32, 1u32, 6u32],
-                                            ),
-                                        ),
-                                        nested_items: vec![],
+                                        nested_items: vec![
+                                            ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
+                                                name: "Creating Our First Route".to_string(),
+                                                location: Some(BookRoute::RouterExampleFirstRoute {
+                                                }),
+                                                number: Some(
+                                                    ::use_mdbook::mdbook_shared::SectionNumber(
+                                                        vec![4u32, 1u32, 1u32, 1u32],
+                                                    ),
+                                                ),
+                                                nested_items: vec![],
+                                            }),
+                                            ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
+                                                name: "Building a Nest".to_string(),
+                                                location: Some(BookRoute::RouterExampleBuildingANest {
+                                                }),
+                                                number: Some(
+                                                    ::use_mdbook::mdbook_shared::SectionNumber(
+                                                        vec![4u32, 1u32, 1u32, 2u32],
+                                                    ),
+                                                ),
+                                                nested_items: vec![],
+                                            }),
+                                            ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
+                                                name: "Navigation Targets".to_string(),
+                                                location: Some(BookRoute::RouterExampleNavigationTargets {
+                                                }),
+                                                number: Some(
+                                                    ::use_mdbook::mdbook_shared::SectionNumber(
+                                                        vec![4u32, 1u32, 1u32, 3u32],
+                                                    ),
+                                                ),
+                                                nested_items: vec![],
+                                            }),
+                                            ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
+                                                name: "Redirection Perfection".to_string(),
+                                                location: Some(BookRoute::RouterExampleRedirectionPerfection {}),
+                                                number: Some(
+                                                    ::use_mdbook::mdbook_shared::SectionNumber(
+                                                        vec![4u32, 1u32, 1u32, 4u32],
+                                                    ),
+                                                ),
+                                                nested_items: vec![],
+                                            }),
+                                            ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
+                                                name: "Full Code".to_string(),
+                                                location: Some(BookRoute::RouterExampleFullCode {
+                                                }),
+                                                number: Some(
+                                                    ::use_mdbook::mdbook_shared::SectionNumber(
+                                                        vec![4u32, 1u32, 1u32, 5u32],
+                                                    ),
+                                                ),
+                                                nested_items: vec![],
+                                            }),
+                                        ],
                                     }),
                                     ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
                                         name: "Reference".to_string(),
                                         location: Some(BookRoute::RouterReferenceIndex {}),
                                         number: Some(
                                             ::use_mdbook::mdbook_shared::SectionNumber(
-                                                vec![4u32, 1u32, 7u32],
-                                            ),
-                                        ),
-                                        nested_items: vec![],
-                                    }),
-                                    ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
-                                        name: "Defining Routes".to_string(),
-                                        location: Some(BookRoute::RouterReferenceRoutesIndex {
-                                        }),
-                                        number: Some(
-                                            ::use_mdbook::mdbook_shared::SectionNumber(
-                                                vec![4u32, 1u32, 8u32],
+                                                vec![4u32, 1u32, 2u32],
                                             ),
                                         ),
                                         nested_items: vec![
+                                            ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
+                                                name: "Defining Routes".to_string(),
+                                                location: Some(BookRoute::RouterReferenceRoutesIndex {
+                                                }),
+                                                number: Some(
+                                                    ::use_mdbook::mdbook_shared::SectionNumber(
+                                                        vec![4u32, 1u32, 2u32, 1u32],
+                                                    ),
+                                                ),
+                                                nested_items: vec![],
+                                            }),
                                             ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
                                                 name: "Nested Routes".to_string(),
                                                 location: Some(BookRoute::RouterReferenceRoutesNested {
                                                 }),
                                                 number: Some(
                                                     ::use_mdbook::mdbook_shared::SectionNumber(
-                                                        vec![4u32, 1u32, 8u32, 1u32],
+                                                        vec![4u32, 1u32, 2u32, 2u32],
                                                     ),
                                                 ),
                                                 nested_items: vec![],
                                             }),
-                                        ],
-                                    }),
-                                    ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
-                                        name: "Layouts".to_string(),
-                                        location: Some(BookRoute::RouterReferenceLayouts {
-                                        }),
-                                        number: Some(
-                                            ::use_mdbook::mdbook_shared::SectionNumber(
-                                                vec![4u32, 1u32, 9u32],
-                                            ),
-                                        ),
-                                        nested_items: vec![],
-                                    }),
-                                    ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
-                                        name: "Navigation".to_string(),
-                                        location: Some(BookRoute::RouterReferenceNavigationIndex {
-                                        }),
-                                        number: Some(
-                                            ::use_mdbook::mdbook_shared::SectionNumber(
-                                                vec![4u32, 1u32, 10u32],
-                                            ),
-                                        ),
-                                        nested_items: vec![
+                                            ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
+                                                name: "Layouts".to_string(),
+                                                location: Some(BookRoute::RouterReferenceLayouts {
+                                                }),
+                                                number: Some(
+                                                    ::use_mdbook::mdbook_shared::SectionNumber(
+                                                        vec![4u32, 1u32, 2u32, 3u32],
+                                                    ),
+                                                ),
+                                                nested_items: vec![],
+                                            }),
+                                            ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
+                                                name: "Navigation".to_string(),
+                                                location: Some(BookRoute::RouterReferenceNavigationIndex {
+                                                }),
+                                                number: Some(
+                                                    ::use_mdbook::mdbook_shared::SectionNumber(
+                                                        vec![4u32, 1u32, 2u32, 4u32],
+                                                    ),
+                                                ),
+                                                nested_items: vec![],
+                                            }),
                                             ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
                                                 name: "Programmatic Navigation".to_string(),
                                                 location: Some(BookRoute::RouterReferenceNavigationProgrammatic {}),
                                                 number: Some(
                                                     ::use_mdbook::mdbook_shared::SectionNumber(
-                                                        vec![4u32, 1u32, 10u32, 1u32],
+                                                        vec![4u32, 1u32, 2u32, 5u32],
+                                                    ),
+                                                ),
+                                                nested_items: vec![],
+                                            }),
+                                            ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
+                                                name: "History Providers".to_string(),
+                                                location: Some(BookRoute::RouterReferenceHistoryProviders {
+                                                }),
+                                                number: Some(
+                                                    ::use_mdbook::mdbook_shared::SectionNumber(
+                                                        vec![4u32, 1u32, 2u32, 6u32],
+                                                    ),
+                                                ),
+                                                nested_items: vec![],
+                                            }),
+                                            ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
+                                                name: "History Buttons".to_string(),
+                                                location: Some(BookRoute::RouterReferenceHistoryButtons {
+                                                }),
+                                                number: Some(
+                                                    ::use_mdbook::mdbook_shared::SectionNumber(
+                                                        vec![4u32, 1u32, 2u32, 7u32],
+                                                    ),
+                                                ),
+                                                nested_items: vec![],
+                                            }),
+                                            ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
+                                                name: "Routing Update Callback".to_string(),
+                                                location: Some(BookRoute::RouterReferenceRoutingUpdateCallback {}),
+                                                number: Some(
+                                                    ::use_mdbook::mdbook_shared::SectionNumber(
+                                                        vec![4u32, 1u32, 2u32, 8u32],
                                                     ),
                                                 ),
                                                 nested_items: vec![],
                                             }),
                                         ],
-                                    }),
-                                    ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
-                                        name: "History Providers".to_string(),
-                                        location: Some(BookRoute::RouterReferenceHistoryProviders {
-                                        }),
-                                        number: Some(
-                                            ::use_mdbook::mdbook_shared::SectionNumber(
-                                                vec![4u32, 1u32, 11u32],
-                                            ),
-                                        ),
-                                        nested_items: vec![],
-                                    }),
-                                    ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
-                                        name: "History Buttons".to_string(),
-                                        location: Some(BookRoute::RouterReferenceHistoryButtons {
-                                        }),
-                                        number: Some(
-                                            ::use_mdbook::mdbook_shared::SectionNumber(
-                                                vec![4u32, 1u32, 12u32],
-                                            ),
-                                        ),
-                                        nested_items: vec![],
-                                    }),
-                                    ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
-                                        name: "Routing Update Callback".to_string(),
-                                        location: Some(BookRoute::RouterReferenceRoutingUpdateCallback {}),
-                                        number: Some(
-                                            ::use_mdbook::mdbook_shared::SectionNumber(
-                                                vec![4u32, 1u32, 13u32],
-                                            ),
-                                        ),
-                                        nested_items: vec![],
                                     }),
                                 ],
                             }),
@@ -3560,6 +3707,40 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                                 location: Some(BookRoute::ContributingRoadmap {}),
                                 number: Some(
                                     ::use_mdbook::mdbook_shared::SectionNumber(vec![6u32, 3u32]),
+                                ),
+                                nested_items: vec![],
+                            }),
+                        ],
+                    }),
+                    ::use_mdbook::mdbook_shared::SummaryItem::Separator,
+                    ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
+                        name: "CLI".to_string(),
+                        location: Some(BookRoute::CliIndex {}),
+                        number: Some(
+                            ::use_mdbook::mdbook_shared::SectionNumber(vec![7u32]),
+                        ),
+                        nested_items: vec![
+                            ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
+                                name: "Create a Project".to_string(),
+                                location: Some(BookRoute::CliCreating {}),
+                                number: Some(
+                                    ::use_mdbook::mdbook_shared::SectionNumber(vec![7u32, 1u32]),
+                                ),
+                                nested_items: vec![],
+                            }),
+                            ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
+                                name: "Configure Project".to_string(),
+                                location: Some(BookRoute::CliConfigure {}),
+                                number: Some(
+                                    ::use_mdbook::mdbook_shared::SectionNumber(vec![7u32, 2u32]),
+                                ),
+                                nested_items: vec![],
+                            }),
+                            ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
+                                name: "Translate HTML".to_string(),
+                                location: Some(BookRoute::CliTranslate {}),
+                                number: Some(
+                                    ::use_mdbook::mdbook_shared::SectionNumber(vec![7u32, 3u32]),
                                 ),
                                 nested_items: vec![],
                             }),
@@ -5254,7 +5435,7 @@ pub fn RouterIndex() -> dioxus::prelude::Element {
             code { "cargo add" }
             " command to add the dependency:"
         }
-        CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">cargo add dioxus</span><span style=\"color:#f92672;\">@</span><span style=\"color:#ff80f4;\">0.5</span><span style=\"color:#f8f8f2;\">.</span><span style=\"color:#ff80f4;\">0 </span><span style=\"color:#f92672;\">--</span><span style=\"color:#f8f8f2;\">features router</span></pre>\n" }
+        CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">cargo add dioxus </span><span style=\"color:#f92672;\">--</span><span style=\"color:#f8f8f2;\">features router</span></pre>\n" }
         p {
             "Then, add this to your  "
             code { "Dioxus.toml" }
@@ -5302,7 +5483,7 @@ pub fn RouterIndex() -> dioxus::prelude::Element {
         }
         blockquote {
             p {
-                "Please note that this is not the only documentation for the Dioxus Router. You"
+                "Please note that this is not the only documentation for the Dioxus Router. You can also check out the "
                 a { href: "https://docs.rs/dioxus-router/", "API Docs" }
                 "."
             }
@@ -5320,7 +5501,7 @@ pub fn RouterExampleIndex() -> dioxus::prelude::Element {
         blockquote {
             p {
                 "To follow along with the router example, you'll need a working Dioxus app."
-                a { href: "https://dioxuslabs.com/learn/0.5/getting_started", "Dioxus book" }
+                a { href: "https://dioxuslabs.com/learn/0.6/getting_started", "Dioxus book" }
                 " to get started."
             }
         }
@@ -6618,11 +6799,11 @@ pub fn GuidesDesktopIndex() -> dioxus::prelude::Element {
         }
         p {
             "In cases where you need more low level control over your window, you can use wry APIs exposed through the "
-            a { href: "https://docs.rs/dioxus-desktop/0.5.0/dioxus_desktop/struct.Config.html",
+            a { href: "https://docs.rs/dioxus-desktop/0.6.0/dioxus_desktop/struct.Config.html",
                 "Desktop Config"
             }
             " and the "
-            a { href: "https://docs.rs/dioxus-desktop/0.5.0/dioxus_desktop/fn.use_window.html",
+            a { href: "https://docs.rs/dioxus-desktop/0.6.0/dioxus_desktop/fn.use_window.html",
                 "use_window hook"
             }
         }
@@ -6940,11 +7121,11 @@ pub fn GuidesMobileApis() -> dioxus::prelude::Element {
         }
         p {
             "In cases where you need more low level control over your window, you can use wry APIs exposed through the "
-            a { href: "https://docs.rs/dioxus-desktop/0.5.0/dioxus_desktop/struct.Config.html",
+            a { href: "https://docs.rs/dioxus-desktop/0.6.0/dioxus_desktop/type.DesktopContext.html",
                 "Desktop Config"
             }
             " and the "
-            a { href: "https://docs.rs/dioxus-desktop/0.5.0/dioxus_desktop/struct.DesktopContext.html",
+            a { href: "https://docs.rs/dioxus-desktop/0.6.0/dioxus_desktop/fn.use_window.html",
                 "use_window hook"
             }
         }
@@ -6975,7 +7156,7 @@ pub fn GuidesSsr() -> dioxus::prelude::Element {
         p { "Make sure you have Rust and Cargo installed, and then create a new project:" }
         CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">cargo new </span><span style=\"color:#f92672;\">--</span><span style=\"color:#f8f8f2;\">bin demo\n</span><span style=\"color:#f8f8f2;\">cd demo</span></pre>\n" }
         p { "Add Dioxus and the ssr renderer as dependencies:" }
-        CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">cargo add dioxus</span><span style=\"color:#f92672;\">@</span><span style=\"color:#ff80f4;\">0.5</span><span style=\"color:#f8f8f2;\">.</span><span style=\"color:#ff80f4;\">0\n</span><span style=\"color:#f8f8f2;\">cargo add dioxus</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">ssr</span><span style=\"color:#f92672;\">@</span><span style=\"color:#ff80f4;\">0.5</span><span style=\"color:#f8f8f2;\">.</span><span style=\"color:#ff80f4;\">0</span></pre>\n" }
+        CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">cargo add dioxus\n</span><span style=\"color:#f8f8f2;\">cargo add dioxus</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">ssr</span></pre>\n" }
         p {
             "Next, add all the Axum dependencies. This will be different if you're using a different Web Framework"
         }
@@ -8530,26 +8711,12 @@ pub fn CookbookOptimizing() -> dioxus::prelude::Element {
             "This is the best way to optimize. In fact, the 2.36mb figure at the start of the guide is with release mode."
         }
         p {
-            "Thankfully, no matter what tool you're using to build your app, it will probably have a  "
+            "We can use the  "
             code { "--release" }
-            " flag to do this."
+            " flag to create an optimized build of our application which will be both faster and smaller:"
         }
         p {
-            "Using the "
-            a { href: "https://dioxuslabs.com/learn/0.5/CLI", "Dioxus CLI" }
-            " or "
-            a { href: "https://trunkrs.dev/", "Trunk" }
-            ":"
-        }
-        ul {
-            li {
-                "Dioxus CLI: "
-                code { "dx build --release" }
-            }
-            li {
-                "Trunk: "
-                code { "trunk build --release" }
-            }
+            code { "dx build --release" }
         }
         h2 { id: "upx",
             a { href: "#upx", class: "header", "UPX" }
@@ -10410,7 +10577,7 @@ pub fn ReferenceRouter() -> dioxus::prelude::Element {
             code { "dioxus" }
             " dependency:"
         }
-        CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">cargo add dioxus</span><span style=\"color:#f92672;\">@</span><span style=\"color:#ff80f4;\">0.5</span><span style=\"color:#f8f8f2;\">.</span><span style=\"color:#ff80f4;\">0 </span><span style=\"color:#f92672;\">--</span><span style=\"color:#f8f8f2;\">features router</span></pre>\n" }
+        CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">cargo add dioxus </span><span style=\"color:#f92672;\">--</span><span style=\"color:#f8f8f2;\">features router</span></pre>\n" }
         h2 { id: "using-the-router",
             a { href: "#using-the-router", class: "header", "Using the router" }
         }
@@ -10754,7 +10921,7 @@ pub fn ContributingIndex() -> dioxus::prelude::Element {
             "If you'd like to improve the docs, PRs are welcome! The Rust docs ("
             a { href: "https://github.com/DioxusLabs/dioxus/tree/main/packages", "source" }
             ") and this guide ("
-            a { href: "https://github.com/DioxusLabs/docsite/tree/main/docs-src/0.5/en",
+            a { href: "https://github.com/DioxusLabs/docsite/tree/main/docs-src/0.6",
                 "source"
             }
             ") can be found in their respective GitHub repos."
@@ -10884,7 +11051,7 @@ pub fn ContributingIndex() -> dioxus::prelude::Element {
         CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">dioxus </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">{{ path </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;&lt;path to forked dioxus project&gt;/dioxus/packages/dioxus&quot;</span><span style=\"color:#f8f8f2;\">, features </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">[</span><span style=\"color:#ffee99;\">&quot;web&quot;</span><span style=\"color:#f8f8f2;\">, </span><span style=\"color:#ffee99;\">&quot;router&quot;</span><span style=\"color:#f8f8f2;\">] }}</span></pre>\n" }
         p {
             "This above example is for dioxus-web, with dioxus-router. To know about the dependencies for different renderer visit "
-            a { href: "https://dioxuslabs.com/learn/0.5/getting_started", "here" }
+            a { href: "../getting_started", "here" }
             "."
         }
         ul {
@@ -10893,7 +11060,7 @@ pub fn ContributingIndex() -> dioxus::prelude::Element {
         CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">dx serve</span></pre>\n" }
         p {
             "If this is your first time with dioxus, please read "
-            a { href: "https://dioxuslabs.com/learn/0.5/guide", "the guide" }
+            a { href: "../guide", "the guide" }
             " to get familiar with dioxus."
         }
     }
@@ -11182,6 +11349,327 @@ pub fn ContributingGuidingPrinciples() -> dioxus::prelude::Element {
 pub fn ContributingRoadmap() -> dioxus::prelude::Element {
     use dioxus::prelude::*;
     rsx! {}
+}
+#[component(no_case_check)]
+pub fn CliIndex() -> dioxus::prelude::Element {
+    use dioxus::prelude::*;
+    rsx! {
+        h1 { id: "introduction",
+            a { href: "#introduction", class: "header", "Introduction" }
+        }
+        p {
+            "The ✨"
+            strong { "Dioxus CLI" }
+            "✨ is a tool to get Dioxus projects off the ground."
+        }
+        p {
+            "There's no documentation for commands here, but you can see all commands using  "
+            code { "dx --help" }
+            " once you've installed the CLI! Furthermore, you can run  "
+            code { "dx <command> --help" }
+            " to get help with a specific command."
+        }
+        h2 { id: "features",
+            a { href: "#features", class: "header", "Features" }
+        }
+        ul {
+            li { "Build and pack a Dioxus project." }
+            li {
+                "Format "
+                code { "rsx" }
+                " code."
+            }
+            li { "Hot Reload." }
+            li { "Create a Dioxus project from a template repository." }
+            li { "And more!" }
+        }
+    }
+}
+#[component(no_case_check)]
+pub fn CliCreating() -> dioxus::prelude::Element {
+    use dioxus::prelude::*;
+    rsx! {
+        h1 { id: "create-a-project",
+            a { href: "#create-a-project", class: "header", "Create a Project" }
+        }
+        p { "Once you have the Dioxus CLI installed, you can use it to create your own project!" }
+        h2 { id: "initializing-a-project",
+            a { href: "#initializing-a-project", class: "header", "Initializing a project" }
+        }
+        p {
+            "First, run the  "
+            code { "dx new" }
+            " command to create a new project."
+        }
+        blockquote {
+            p {
+                "It clones this "
+                a { href: "https://github.com/DioxusLabs/dioxus-template", "template" }
+                ", which is used to create dioxus apps."
+            }
+            p {
+                "You can create your project from a different template by passing the  "
+                code { "template" }
+                " argument:"
+            }
+            CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">dx new </span><span style=\"color:#f92672;\">--</span><span style=\"color:#f8f8f2;\">template gh:dioxuslabs</span><span style=\"color:#f92672;\">/</span><span style=\"color:#f8f8f2;\">dioxus</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">template</span></pre>\n" }
+        }
+        p {
+            "Next, navigate into your new project using  "
+            code { "cd project-name" }
+            ", or simply opening it in an IDE."
+        }
+        blockquote {
+            p { "Make sure the WASM target is installed before running the projects." }
+            CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">rustup target add wasm32</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">unknown</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">unknown</span></pre>\n" }
+        }
+        p {
+            "Finally, serve your project with  "
+            code { "dx serve" }
+            "! The CLI will tell you the address it is serving on, along with additional"
+        }
+    }
+}
+#[component(no_case_check)]
+pub fn CliConfigure() -> dioxus::prelude::Element {
+    use dioxus::prelude::*;
+    rsx! {
+        h1 { id: "configure-project",
+            a { href: "#configure-project", class: "header", "Configure Project" }
+        }
+        p {
+            "This chapter will teach you how to configure the CLI with the  "
+            code { "Dioxus.toml" }
+            " file. There's an "
+            a { href: "#config-example", "example" }
+            " which has comments to describe individual keys. You can copy that or view this documentation for a more complete learning experience."
+        }
+        p {
+            "\"🔒\" indicates a mandatory item. Some headers are mandatory, but none of the keys inside them are. In that case, you only need to include the header, but no keys. It might look weird, but it's normal."
+        }
+        h2 { id: "structure",
+            a { href: "#structure", class: "header", "Structure" }
+        }
+        p { "Each header has its TOML form directly under it." }
+        h3 { id: "application-",
+            a { href: "#application-", class: "header", "Application 🔒" }
+        }
+        CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">[application]</span></pre>\n" }
+        p { "Application-wide configuration. Applies to both web and desktop." }
+        ul {
+            li {
+                strong { "name" }
+                " 🔒 - Project name & title."
+                CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">name </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;my_project&quot;</span></pre>\n" }
+            }
+            li {
+                strong { "default_platform" }
+                " 🔒 - The platform this project targets"
+                CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f92672;\">#</span><span style=\"color:#f8f8f2;\"> Currently supported platforms: web, desktop\n</span><span style=\"color:#f8f8f2;\">default_platform </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;web&quot;</span></pre>\n" }
+            }
+            li {
+                strong { "out_dir" }
+                " - The directory to place the build artifacts from "
+                code { "dx build" }
+                " or "
+                code { "dx serve" }
+                " into. This is also where the "
+                code { "assets" }
+                " directory will be copied into."
+                CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">out_dir </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;dist&quot;</span></pre>\n" }
+            }
+            li {
+                strong { "asset_dir" }
+                " - The directory with your static assets. The CLI will automatically copy these assets into the "
+                strong { "out_dir" }
+                " after a build/serve."
+                CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">asset_dir </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;public&quot;</span></pre>\n" }
+            }
+            li {
+                strong { "sub_package" }
+                " - The sub package in the workspace to build by default."
+                CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">sub_package </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;my-crate&quot;</span></pre>\n" }
+            }
+        }
+        h3 { id: "webapp-",
+            a { href: "#webapp-", class: "header", "Web.App 🔒" }
+        }
+        CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">[web.app]</span></pre>\n" }
+        p { "Web-specific configuration." }
+        ul {
+            li {
+                strong { "title" }
+                " - The title of the web page."
+                CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f92672;\"># </span><span style=\"color:#ff80f4;\">HTML</span><span style=\"color:#f8f8f2;\"> title tag content\n</span><span style=\"color:#f8f8f2;\">title </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;project_name&quot;</span></pre>\n" }
+            }
+            li {
+                strong { "base_path" }
+                " - The base path to build the application for serving at. This can be useful when serving your application in a subdirectory under a domain. For example, when building a site to be served on GitHub Pages."
+                CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f92672;\">#</span><span style=\"color:#f8f8f2;\"> The application will be served at domain.com</span><span style=\"color:#f92672;\">/</span><span style=\"color:#f8f8f2;\">my_application</span><span style=\"color:#f92672;\">/</span><span style=\"color:#f8f8f2;\">, so we need to modify the base_path to the path </span><span style=\"color:#f92672;\">where</span><span style=\"color:#f8f8f2;\"> the application will be served\n</span><span style=\"color:#f8f8f2;\">base_path </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;my_application&quot;</span></pre>\n" }
+            }
+        }
+        h3 { id: "webwatcher-",
+            a { href: "#webwatcher-", class: "header", "Web.Watcher 🔒" }
+        }
+        CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">[web.watcher]</span></pre>\n" }
+        p { "Development server configuration." }
+        ul {
+            li {
+                p {
+                    strong { "reload_html" }
+                    " - If this is true, the cli will rebuild the index.html file every time the application is rebuilt"
+                }
+                CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">reload_html </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ff80f4;\">true</span></pre>\n" }
+            }
+            li {
+                p {
+                    strong { "watch_path" }
+                    " - The files & directories to monitor for changes"
+                }
+                CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">watch_path </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">[</span><span style=\"color:#ffee99;\">&quot;src&quot;</span><span style=\"color:#f8f8f2;\">, </span><span style=\"color:#ffee99;\">&quot;public&quot;</span><span style=\"color:#f8f8f2;\">]</span></pre>\n" }
+            }
+            li {
+                p {
+                    strong { "index_on_404" }
+                    " - If enabled, Dioxus will serve the root page when a route is not found."
+                    em { "This is needed when serving an application that uses the router" }
+                    ". However, when serving your app using something else than Dioxus (e.g. GitHub Pages), you will have to check how to configure it on that platform. In GitHub Pages, you can make a copy of "
+                    code { "index.html" }
+                    " named "
+                    code { "404.html" }
+                    " in the same directory."
+                }
+                CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">index_on_404 </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ff80f4;\">true</span></pre>\n" }
+            }
+        }
+        h3 { id: "webresource-",
+            a { href: "#webresource-", class: "header", "Web.Resource 🔒" }
+        }
+        CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">[web.resource]</span></pre>\n" }
+        p { "Static resource configuration." }
+        ul {
+            li {
+                p {
+                    strong { "style" }
+                    " - CSS files to include in your application."
+                }
+                CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">style </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">[\n</span><span style=\"color:#f8f8f2;\">   </span><span style=\"color:#f92672;\">#</span><span style=\"color:#f8f8f2;\"> Include from public_dir.\n</span><span style=\"color:#f8f8f2;\">   </span><span style=\"color:#ffee99;\">&quot;./assets/style.css&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">   </span><span style=\"color:#f92672;\">#</span><span style=\"color:#f8f8f2;\"> Or some asset from online cdn.\n</span><span style=\"color:#f8f8f2;\">   </span><span style=\"color:#ffee99;\">&quot;https://cdn.jsdelivr.net/npm/bootstrap/dist/css/bootstrap.css&quot;\n</span><span style=\"color:#f8f8f2;\">]</span></pre>\n" }
+            }
+            li {
+                p {
+                    strong { "script" }
+                    " - JavaScript files to include in your application."
+                }
+                CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">script </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">[\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#f92672;\">#</span><span style=\"color:#f8f8f2;\"> Include from asset_dir.\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#ffee99;\">&quot;./public/index.js&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#f92672;\">#</span><span style=\"color:#f8f8f2;\"> Or from an online </span><span style=\"color:#ff80f4;\">CDN</span><span style=\"color:#f8f8f2;\">.\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#ffee99;\">&quot;https://cdn.jsdelivr.net/npm/bootstrap/dist/js/bootstrap.js&quot;\n</span><span style=\"color:#f8f8f2;\">]</span></pre>\n" }
+            }
+        }
+        h3 { id: "webresourcedev-",
+            a { href: "#webresourcedev-", class: "header", "Web.Resource.Dev 🔒" }
+        }
+        CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">[web.resource.dev]</span></pre>\n" }
+        p {
+            "This is the same as "
+            a { href: "#webresource-",
+                code { "[web.resource]" }
+            }
+            ", but it only works in development servers. For example, if you want to include a file in a "
+            code { "dx serve" }
+            " server, but not a "
+            code { "dx serve --release" }
+            " server, put it here."
+        }
+        h3 { id: "webproxy",
+            a { href: "#webproxy", class: "header", "Web.Proxy" }
+        }
+        CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">[[web.proxy]]</span></pre>\n" }
+        p {
+            "Configuration related to any proxies your application requires during development. Proxies will forward requests to a new service."
+        }
+        ul {
+            li {
+                strong { "backend" }
+                " - The URL to the server to proxy. The CLI will forward any requests under the backend relative route to the backend instead of returning 404"
+                CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">backend </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;http://localhost:8000/api/&quot;</span></pre>\n" }
+                "This will cause any requests made to the dev server with prefix /api/ to be redirected to the backend server at http://localhost:8000. The path and query parameters will be passed on as-is (path rewriting is currently not supported)."
+            }
+        }
+        h2 { id: "config-example",
+            a { href: "#config-example", class: "header", "Config example" }
+        }
+        p { "This includes all fields, mandatory or not." }
+        CodeBlock {
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">[application]\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\">#</span><span style=\"color:#f8f8f2;\"> App name\n</span><span style=\"color:#f8f8f2;\">name </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;project_name&quot;\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\">#</span><span style=\"color:#f8f8f2;\"> The Dioxus platform to default to\n</span><span style=\"color:#f8f8f2;\">default_platform </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;web&quot;\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\">#</span><span style=\"color:#f8f8f2;\"> `build` </span><span style=\"color:#f92672;\">&amp;</span><span style=\"color:#f8f8f2;\"> `serve` output path\n</span><span style=\"color:#f8f8f2;\">out_dir </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;dist&quot;\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\">#</span><span style=\"color:#f8f8f2;\"> The </span><span style=\"font-style:italic;color:#66d9ef;\">static</span><span style=\"color:#f8f8f2;\"> resource path\n</span><span style=\"color:#f8f8f2;\">asset_dir </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;public&quot;\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">[web.app]\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\"># </span><span style=\"color:#ff80f4;\">HTML</span><span style=\"color:#f8f8f2;\"> title tag content\n</span><span style=\"color:#f8f8f2;\">title </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;project_name&quot;\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">[web.watcher]\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\">#</span><span style=\"color:#f8f8f2;\"> When watcher is triggered, regenerate the `index.html`\n</span><span style=\"color:#f8f8f2;\">reload_html </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ff80f4;\">true\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\">#</span><span style=\"color:#f8f8f2;\"> Which files or dirs will be monitored\n</span><span style=\"color:#f8f8f2;\">watch_path </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">[</span><span style=\"color:#ffee99;\">&quot;src&quot;</span><span style=\"color:#f8f8f2;\">, </span><span style=\"color:#ffee99;\">&quot;public&quot;</span><span style=\"color:#f8f8f2;\">]\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\">#</span><span style=\"color:#f8f8f2;\"> Include style or script assets\n</span><span style=\"color:#f8f8f2;\">[web.resource]\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\"># </span><span style=\"color:#ff80f4;\">CSS</span><span style=\"color:#f8f8f2;\"> style file\n</span><span style=\"color:#f8f8f2;\">style </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">[]\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\">#</span><span style=\"color:#f8f8f2;\"> Javascript code file\n</span><span style=\"color:#f8f8f2;\">script </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">[]\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">[web.resource.dev]\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\">#</span><span style=\"color:#f8f8f2;\"> Same </span><span style=\"color:#f92672;\">as </span><span style=\"color:#f8f8f2;\">[web.resource], but </span><span style=\"color:#f92672;\">for</span><span style=\"color:#f8f8f2;\"> development servers\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\"># </span><span style=\"color:#ff80f4;\">CSS</span><span style=\"color:#f8f8f2;\"> style file\n</span><span style=\"color:#f8f8f2;\">style </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">[]\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\">#</span><span style=\"color:#f8f8f2;\"> JavaScript files\n</span><span style=\"color:#f8f8f2;\">script </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">[]\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">[[web.proxy]]\n</span><span style=\"color:#f8f8f2;\">backend </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;http://localhost:8000/api/&quot;</span></pre>\n",
+        }
+    }
+}
+#[component(no_case_check)]
+pub fn CliTranslate() -> dioxus::prelude::Element {
+    use dioxus::prelude::*;
+    rsx! {
+        h1 { id: "translating-existing-html",
+            a { href: "#translating-existing-html", class: "header", "Translating existing HTML" }
+        }
+        p {
+            "Dioxus uses a custom format called RSX to represent the HTML because it is more concise and looks more like Rust code. However, it can be a pain to convert existing HTML to RSX. That's why Dioxus comes with a tool called  "
+            code { "dx translate" }
+            " that can automatically convert HTML to RSX!"
+        }
+        p {
+            "Dx translate can make converting large chunks of HTML to RSX much easier! Lets try translating some of the HTML from the Dioxus homepage:"
+        }
+        CodeBlock {
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">dx translate </span><span style=\"color:#f92672;\">--</span><span style=\"color:#f8f8f2;\">raw  </span><span style=\"color:#ffee99;\">&quot;&lt;div class=</span><span style=\"color:#ff80f4;\">\\&quot;</span><span style=\"color:#ffee99;\">relative w-full mx-4 sm:mx-auto text-gray-600</span><span style=\"color:#ff80f4;\">\\&quot;</span><span style=\"color:#ffee99;\">&gt;&lt;div class=</span><span style=\"color:#ff80f4;\">\\&quot;</span><span style=\"color:#ffee99;\">text-[3em] md:text-[5em] font-semibold dark:text-white text-ghdarkmetal font-sans py-12 flex flex-col</span><span style=\"color:#ff80f4;\">\\&quot;</span><span style=\"color:#ffee99;\">&gt;&lt;span&gt;Fullstack, crossplatform,&lt;/span&gt;&lt;span&gt;lightning fast, fully typed.&lt;/span&gt;&lt;/div&gt;&lt;h3 class=</span><span style=\"color:#ff80f4;\">\\&quot;</span><span style=\"color:#ffee99;\">text-[2em] dark:text-white font-extralight text-ghdarkmetal pt-4 max-w-screen-md mx-auto</span><span style=\"color:#ff80f4;\">\\&quot;</span><span style=\"color:#ffee99;\">&gt;Dioxus is a Rust library for building apps that run on desktop, web, mobile, and more.&lt;/h3&gt;&lt;div class=</span><span style=\"color:#ff80f4;\">\\&quot;</span><span style=\"color:#ffee99;\">pt-12 text-white text-[1.2em] font-sans font-bold flex flex-row justify-center space-x-4</span><span style=\"color:#ff80f4;\">\\&quot;</span><span style=\"color:#ffee99;\">&gt;&lt;a href=</span><span style=\"color:#ff80f4;\">\\&quot;</span><span style=\"color:#ffee99;\">/learn/0.6/getting_started</span><span style=\"color:#ff80f4;\">\\&quot;</span><span style=\"color:#ffee99;\"> dioxus-prevent-default=</span><span style=\"color:#ff80f4;\">\\&quot;</span><span style=\"color:#ffee99;\">onclick</span><span style=\"color:#ff80f4;\">\\&quot;</span><span style=\"color:#ffee99;\"> class=</span><span style=\"color:#ff80f4;\">\\&quot;</span><span style=\"color:#ffee99;\">bg-red-600 py-2 px-8 hover:-translate-y-2 transition-transform duration-300</span><span style=\"color:#ff80f4;\">\\&quot;</span><span style=\"color:#ffee99;\"> data-dioxus-id=</span><span style=\"color:#ff80f4;\">\\&quot;</span><span style=\"color:#ffee99;\">216</span><span style=\"color:#ff80f4;\">\\&quot;</span><span style=\"color:#ffee99;\">&gt;Quickstart&lt;/a&gt;&lt;a href=</span><span style=\"color:#ff80f4;\">\\&quot;</span><span style=\"color:#ffee99;\">/learn/0.6/reference</span><span style=\"color:#ff80f4;\">\\&quot;</span><span style=\"color:#ffee99;\"> dioxus-prevent-default=</span><span style=\"color:#ff80f4;\">\\&quot;</span><span style=\"color:#ffee99;\">onclick</span><span style=\"color:#ff80f4;\">\\&quot;</span><span style=\"color:#ffee99;\"> class=</span><span style=\"color:#ff80f4;\">\\&quot;</span><span style=\"color:#ffee99;\">bg-blue-500 py-2 px-8 hover:-translate-y-2 transition-transform duration-300</span><span style=\"color:#ff80f4;\">\\&quot;</span><span style=\"color:#ffee99;\"> data-dioxus-id=</span><span style=\"color:#ff80f4;\">\\&quot;</span><span style=\"color:#ffee99;\">214</span><span style=\"color:#ff80f4;\">\\&quot;</span><span style=\"color:#ffee99;\">&gt;Read the docs&lt;/a&gt;&lt;/div&gt;&lt;div class=</span><span style=\"color:#ff80f4;\">\\&quot;</span><span style=\"color:#ffee99;\">max-w-screen-2xl mx-auto pt-36</span><span style=\"color:#ff80f4;\">\\&quot;</span><span style=\"color:#ffee99;\">&gt;&lt;h1 class=</span><span style=\"color:#ff80f4;\">\\&quot;</span><span style=\"color:#ffee99;\">text-md</span><span style=\"color:#ff80f4;\">\\&quot;</span><span style=\"color:#ffee99;\">&gt;Trusted by top companies&lt;/h1&gt;&lt;div class=</span><span style=\"color:#ff80f4;\">\\&quot;</span><span style=\"color:#ffee99;\">pt-4 flex flex-row flex-wrap justify-center</span><span style=\"color:#ff80f4;\">\\&quot;</span><span style=\"color:#ffee99;\">&gt;&lt;div class=</span><span style=\"color:#ff80f4;\">\\&quot;</span><span style=\"color:#ffee99;\">h-12 w-40 bg-black p-2 m-4 flex justify-center items-center</span><span style=\"color:#ff80f4;\">\\&quot;</span><span style=\"color:#ffee99;\">&gt;&lt;img src=</span><span style=\"color:#ff80f4;\">\\&quot;</span><span style=\"color:#ffee99;\">static/futurewei_bw.png</span><span style=\"color:#ff80f4;\">\\&quot;</span><span style=\"color:#ffee99;\">&gt;&lt;/div&gt;&lt;div class=</span><span style=\"color:#ff80f4;\">\\&quot;</span><span style=\"color:#ffee99;\">h-12 w-40 bg-black p-2 m-4 flex justify-center items-center</span><span style=\"color:#ff80f4;\">\\&quot;</span><span style=\"color:#ffee99;\">&gt;&lt;img src=</span><span style=\"color:#ff80f4;\">\\&quot;</span><span style=\"color:#ffee99;\">static/airbuslogo.svg</span><span style=\"color:#ff80f4;\">\\&quot;</span><span style=\"color:#ffee99;\">&gt;&lt;/div&gt;&lt;div class=</span><span style=\"color:#ff80f4;\">\\&quot;</span><span style=\"color:#ffee99;\">h-12 w-40 bg-black p-2 m-4 flex justify-center items-center</span><span style=\"color:#ff80f4;\">\\&quot;</span><span style=\"color:#ffee99;\">&gt;&lt;img src=</span><span style=\"color:#ff80f4;\">\\&quot;</span><span style=\"color:#ffee99;\">static/ESA_logo.svg</span><span style=\"color:#ff80f4;\">\\&quot;</span><span style=\"color:#ffee99;\">&gt;&lt;/div&gt;&lt;div class=</span><span style=\"color:#ff80f4;\">\\&quot;</span><span style=\"color:#ffee99;\">h-12 w-40 bg-black p-2 m-4 flex justify-center items-center</span><span style=\"color:#ff80f4;\">\\&quot;</span><span style=\"color:#ffee99;\">&gt;&lt;img src=</span><span style=\"color:#ff80f4;\">\\&quot;</span><span style=\"color:#ffee99;\">static/yclogo.svg</span><span style=\"color:#ff80f4;\">\\&quot;</span><span style=\"color:#ffee99;\">&gt;&lt;/div&gt;&lt;div class=</span><span style=\"color:#ff80f4;\">\\&quot;</span><span style=\"color:#ffee99;\">h-12 w-40 bg-black p-2 m-4 flex justify-center items-center</span><span style=\"color:#ff80f4;\">\\&quot;</span><span style=\"color:#ffee99;\">&gt;&lt;img src=</span><span style=\"color:#ff80f4;\">\\&quot;</span><span style=\"color:#ffee99;\">static/satellite.webp</span><span style=\"color:#ff80f4;\">\\&quot;</span><span style=\"color:#ffee99;\">&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&quot;</span></pre>\n",
+        }
+        p { "We get the following RSX you can easily copy and paste into your code:" }
+        CodeBlock {
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">div {{ class: </span><span style=\"color:#ffee99;\">&quot;relative w-full mx-4 sm:mx-auto text-gray-600&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">   div {{ class: </span><span style=\"color:#ffee99;\">&quot;text-[3em] md:text-[5em] font-semibold dark:text-white text-ghdarkmetal font-sans py-12 flex flex-col&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">      span {{ </span><span style=\"color:#ffee99;\">&quot;Fullstack, crossplatform,&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">      span {{ </span><span style=\"color:#ffee99;\">&quot;lightning fast, fully typed.&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">   }}\n</span><span style=\"color:#f8f8f2;\">   h3 {{ class: </span><span style=\"color:#ffee99;\">&quot;text-[2em] dark:text-white font-extralight text-ghdarkmetal pt-4 max-w-screen-md mx-auto&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">      </span><span style=\"color:#ffee99;\">&quot;Dioxus is a Rust library for building apps that run on desktop, web, mobile, and more.&quot;\n</span><span style=\"color:#f8f8f2;\">   }}\n</span><span style=\"color:#f8f8f2;\">   div {{ class: </span><span style=\"color:#ffee99;\">&quot;pt-12 text-white text-[1.2em] font-sans font-bold flex flex-row justify-center space-x-4&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">      a {{\n</span><span style=\"color:#f8f8f2;\">         href: </span><span style=\"color:#ffee99;\">&quot;/learn/0.6/getting_started&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">         data_dioxus_id: </span><span style=\"color:#ffee99;\">&quot;216&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">         dioxus_prevent_default: </span><span style=\"color:#ffee99;\">&quot;onclick&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">         class: </span><span style=\"color:#ffee99;\">&quot;bg-red-600 py-2 px-8 hover:-translate-y-2 transition-transform duration-300&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">         </span><span style=\"color:#ffee99;\">&quot;Quickstart&quot;\n</span><span style=\"color:#f8f8f2;\">      }}\n</span><span style=\"color:#f8f8f2;\">      a {{\n</span><span style=\"color:#f8f8f2;\">         dioxus_prevent_default: </span><span style=\"color:#ffee99;\">&quot;onclick&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">         href: </span><span style=\"color:#ffee99;\">&quot;/learn/0.6/reference&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">         data_dioxus_id: </span><span style=\"color:#ffee99;\">&quot;214&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">         class: </span><span style=\"color:#ffee99;\">&quot;bg-blue-500 py-2 px-8 hover:-translate-y-2 **transition**-transform duration-300&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">         </span><span style=\"color:#ffee99;\">&quot;Read the docs&quot;\n</span><span style=\"color:#f8f8f2;\">      }}\n</span><span style=\"color:#f8f8f2;\">   }}\n</span><span style=\"color:#f8f8f2;\">   div {{ class: </span><span style=\"color:#ffee99;\">&quot;max-w-screen-2xl mx-auto pt-36&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">      h1 {{ class: </span><span style=\"color:#ffee99;\">&quot;text-md&quot;</span><span style=\"color:#f8f8f2;\">, </span><span style=\"color:#ffee99;\">&quot;Trusted by top companies&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">      div {{ class: </span><span style=\"color:#ffee99;\">&quot;pt-4 flex flex-row flex-wrap justify-center&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">         div {{ class: </span><span style=\"color:#ffee99;\">&quot;h-12 w-40 p-2 m-4 flex justify-center items-center&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">            img {{ src: </span><span style=\"color:#ffee99;\">&quot;/assets/static/futurewei_bw.png&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">         }}\n</span><span style=\"color:#f8f8f2;\">         div {{ class: </span><span style=\"color:#ffee99;\">&quot;h-12 w-40 p-2 m-4 flex justify-center items-center&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">            img {{ src: </span><span style=\"color:#ffee99;\">&quot;/assets/static/airbuslogo.svg&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">         }}\n</span><span style=\"color:#f8f8f2;\">         div {{ class: </span><span style=\"color:#ffee99;\">&quot;h-12 w-40 p-2 m-4 flex justify-center items-center&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">            img {{ src: </span><span style=\"color:#ffee99;\">&quot;/assets/static/ESA_logo.svg&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">         }}\n</span><span style=\"color:#f8f8f2;\">         div {{ class: </span><span style=\"color:#ffee99;\">&quot;h-12 w-40 p-2 m-4 flex justify-center items-center&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">            img {{ src: </span><span style=\"color:#ffee99;\">&quot;/assets/static/yclogo.svg&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">         }}\n</span><span style=\"color:#f8f8f2;\">         div {{ class: </span><span style=\"color:#ffee99;\">&quot;h-12 w-40 p-2 m-4 flex justify-center items-center&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">            img {{ src: </span><span style=\"color:#ffee99;\">&quot;/assets/static/satellite.webp&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">         }}\n</span><span style=\"color:#f8f8f2;\">      }}\n</span><span style=\"color:#f8f8f2;\">   }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
+        }
+        h2 { id: "usage",
+            a { href: "#usage", class: "header", "Usage" }
+        }
+        p {
+            "The  "
+            code { "dx translate" }
+            " command has several flags you can use to control your html input and rsx output."
+        }
+        p {
+            "You can use the  "
+            code { "--file" }
+            " flag to translate an HTML file to RSX:"
+        }
+        CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">dx translate </span><span style=\"color:#f92672;\">--</span><span style=\"color:#f8f8f2;\">file index.html</span></pre>\n" }
+        p {
+            "Or you can use the  "
+            code { "--raw" }
+            " flag to translate a string of HTML to RSX:"
+        }
+        CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">dx translate </span><span style=\"color:#f92672;\">--</span><span style=\"color:#f8f8f2;\">raw </span><span style=\"color:#ffee99;\">&quot;&lt;div&gt;Hello world&lt;/div&gt;&quot;</span></pre>\n" }
+        p { "Both of those commands will output the following RSX:" }
+        CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">div {{ </span><span style=\"color:#ffee99;\">&quot;Hello world&quot; </span><span style=\"color:#f8f8f2;\">}}</span></pre>\n" }
+        p {
+            "The  "
+            code { "dx translate" }
+            " command will output the RSX to stdout. You can use the  "
+            code { "--output" }
+            " flag to write the RSX to a file instead."
+        }
+        CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">dx translate </span><span style=\"color:#f92672;\">--</span><span style=\"color:#f8f8f2;\">raw </span><span style=\"color:#ffee99;\">&quot;&lt;div&gt;Hello world&lt;/div&gt;&quot; </span><span style=\"color:#f92672;\">--</span><span style=\"color:#f8f8f2;\">output index.rs</span></pre>\n" }
+        p {
+            "You can automatically create a component with the  "
+            code { "--component" }
+            " flag."
+        }
+        CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">dx translate </span><span style=\"color:#f92672;\">--</span><span style=\"color:#f8f8f2;\">raw </span><span style=\"color:#ffee99;\">&quot;&lt;div&gt;Hello world&lt;/div&gt;&quot; </span><span style=\"color:#f92672;\">--</span><span style=\"color:#f8f8f2;\">component</span></pre>\n" }
+        p { "This will output the following component:" }
+        CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">component</span><span style=\"color:#f8f8f2;\">() -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">   rsx! {{\n</span><span style=\"color:#f8f8f2;\">      div {{ </span><span style=\"color:#ffee99;\">&quot;Hello world&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">   }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n" }
+        p {
+            "To learn more about the different flags  "
+            code { "dx translate" }
+            " supports, run  "
+            code { "dx translate --help" }
+            "."
+        }
+    }
 }
 
 use super::*;

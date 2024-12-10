@@ -6,7 +6,7 @@ Development happens in the [Dioxus GitHub repository](https://github.com/DioxusL
 
 ## Improving Docs
 
-If you'd like to improve the docs, PRs are welcome! The Rust docs ([source](https://github.com/DioxusLabs/dioxus/tree/main/packages)) and this guide ([source](https://github.com/DioxusLabs/docsite/tree/main/docs-src/0.5/en)) can be found in their respective GitHub repos.
+If you'd like to improve the docs, PRs are welcome! The Rust docs ([source](https://github.com/DioxusLabs/dioxus/tree/main/packages)) and this guide ([source](https://github.com/DioxusLabs/docsite/tree/main/docs-src/0.6)) can be found in their respective GitHub repos.
 
 ## Working on the Ecosystem
 
@@ -93,7 +93,7 @@ cargo new --bin demo
 dioxus = { path = "<path to forked dioxus project>/dioxus/packages/dioxus", features = ["web", "router"] }
 ```
 
-This above example is for dioxus-web, with dioxus-router. To know about the dependencies for different renderer visit [here](https://dioxuslabs.com/learn/0.5/getting_started).
+This above example is for dioxus-web, with dioxus-router. To know about the dependencies for different renderer visit [here](../getting_started/index.md).
 
 - Run and test your feature
 
@@ -101,4 +101,4 @@ This above example is for dioxus-web, with dioxus-router. To know about the depe
 dx serve
 ```
 
-If this is your first time with dioxus, please read [the guide](https://dioxuslabs.com/learn/0.5/guide) to get familiar with dioxus.
+If this is your first time with dioxus, please read [the guide](../guide/index.md) to get familiar with dioxus.

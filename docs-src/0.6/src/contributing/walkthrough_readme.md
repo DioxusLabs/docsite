@@ -25,7 +25,7 @@ Before the Rust compiler runs the program, it will expand all [macros](https://d
 {{#include src/doc_examples/readme_expanded.rs}}
 ```
 
-The rsx macro separates the static parts of the rsx (the template) and the dynamic parts (the [dynamic_nodes](https://docs.rs/dioxus-core/0.5.0/dioxus_core/prelude/struct.VNode.html#structfield.dynamic_nodes) and [dynamic_attributes](https://docs.rs/dioxus-core/0.5.0/dioxus_core/prelude/struct.VNode.html#structfield.dynamic_attrs)).
+The rsx macro separates the static parts of the rsx (the template) and the dynamic parts (the [dynamic_nodes](https://github.com/DioxusLabs/dioxus/blob/38cb2759e842780cdcdcf957fce526ed49c5db97/packages/core/src/nodes.rs#L57) and [dynamic_attributes](https://github.com/DioxusLabs/dioxus/blob/38cb2759e842780cdcdcf957fce526ed49c5db97/packages/core/src/nodes.rs#L90)).
 
 The static template only contains the parts of the rsx that cannot change at runtime with holes for the dynamic parts:
 

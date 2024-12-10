@@ -16,8 +16,8 @@ cd demo
 Add Dioxus and the ssr renderer as dependencies:
 
 ```shell
-cargo add dioxus@0.5.0
-cargo add dioxus-ssr@0.5.0
+cargo add dioxus
+cargo add dioxus-ssr
 ```
 
 Next, add all the Axum dependencies. This will be different if you're using a different Web Framework

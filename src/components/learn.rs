@@ -88,12 +88,7 @@ fn VersionSwitch() -> Element {
         CurrentDocsVersion::V04(_) => "Stable",
         CurrentDocsVersion::V03(_) => "Stable",
     };
-    let current_version_long = match current_version {
-        CurrentDocsVersion::V06(_) => "v0.6.0",
-        CurrentDocsVersion::V05(_) => "v0.5.6",
-        CurrentDocsVersion::V04(_) => "v0.4.3",
-        CurrentDocsVersion::V03(_) => "v0.3.2",
-    };
+    let current_version_long = current_version.full_version();
 
     rsx! {
         div {
@@ -341,22 +336,10 @@ fn VersionWarning() -> Element {
     // }
     match current_version {
         CurrentDocsVersion::V06(_) => rsx! {},
-        CurrentDocsVersion::V05(_) => rsx! {
+        CurrentDocsVersion::V05(_) | CurrentDocsVersion::V04(_) | CurrentDocsVersion::V03(_) => rsx! {
             div { class: "flex flex-row items-center justify-start w-full bg-yellow-200 opacity-80 text-yellow-800 text-sm font-normal py-2 px-2 rounded-md mb-4 gap-2",
                 crate::icons::IconWarning {}
-                "You are currently viewing the docs for Dioxus 0.5.7 which is no longer maintained."
-            }
-        },
-        CurrentDocsVersion::V04(_) => rsx! {
-            div { class: "flex flex-row items-center justify-start w-full bg-yellow-200 opacity-80 text-yellow-800 text-sm font-normal py-2 px-2 rounded-md mb-4 gap-2",
-                crate::icons::IconWarning {}
-                "You are currently viewing the docs for Dioxus 0.4.3 which is no longer maintained."
-            }
-        },
-        CurrentDocsVersion::V03(_) => rsx! {
-            div { class: "flex flex-row items-center justify-start w-full bg-yellow-200 opacity-80 text-yellow-800 text-sm font-normal py-2 px-2 rounded-md mb-4 gap-2",
-                crate::icons::IconWarning {}
-                "You are currently viewing the docs for Dioxus 0.3.2 which is no longer maintained."
+                "You are currently viewing the docs for Dioxus {current_version.full_version()} which is no longer maintained."
             }
         },
     }

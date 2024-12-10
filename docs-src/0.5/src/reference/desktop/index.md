@@ -33,7 +33,7 @@ For these cases, Dioxus desktop exposes the use_eval hook that allows you to run
 You can link to local assets in dioxus desktop instead of using a url:
 
 ```rust
-{{#include src/doc_examples/custom_assets.rs}}
+{{#include src/doc_examples/untested_05/custom_assets.rs}}
 ```
 
 You can read more about assets in the [assets](./assets.md) reference.

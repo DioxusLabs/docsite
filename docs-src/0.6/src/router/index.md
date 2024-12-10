@@ -7,7 +7,7 @@ Whether you are building a website, desktop app, or mobile app, splitting your a
 For this purpose, Dioxus provides a router. Use the `cargo add` command to add the dependency:
 
 ```sh
-cargo add dioxus@0.5.0 --features router
+cargo add dioxus --features router
 ```
 
 Then, add this to your `Dioxus.toml` (learn more about configuration [here](../CLI/configure)):

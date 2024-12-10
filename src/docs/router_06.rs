@@ -5254,7 +5254,7 @@ pub fn RouterIndex() -> dioxus::prelude::Element {
             code { "cargo add" }
             " command to add the dependency:"
         }
-        CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">cargo add dioxus</span><span style=\"color:#f92672;\">@</span><span style=\"color:#ff80f4;\">0.5</span><span style=\"color:#f8f8f2;\">.</span><span style=\"color:#ff80f4;\">0 </span><span style=\"color:#f92672;\">--</span><span style=\"color:#f8f8f2;\">features router</span></pre>\n" }
+        CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">cargo add dioxus </span><span style=\"color:#f92672;\">--</span><span style=\"color:#f8f8f2;\">features router</span></pre>\n" }
         p {
             "Then, add this to your  "
             code { "Dioxus.toml" }
@@ -6975,7 +6975,7 @@ pub fn GuidesSsr() -> dioxus::prelude::Element {
         p { "Make sure you have Rust and Cargo installed, and then create a new project:" }
         CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">cargo new </span><span style=\"color:#f92672;\">--</span><span style=\"color:#f8f8f2;\">bin demo\n</span><span style=\"color:#f8f8f2;\">cd demo</span></pre>\n" }
         p { "Add Dioxus and the ssr renderer as dependencies:" }
-        CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">cargo add dioxus</span><span style=\"color:#f92672;\">@</span><span style=\"color:#ff80f4;\">0.5</span><span style=\"color:#f8f8f2;\">.</span><span style=\"color:#ff80f4;\">0\n</span><span style=\"color:#f8f8f2;\">cargo add dioxus</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">ssr</span><span style=\"color:#f92672;\">@</span><span style=\"color:#ff80f4;\">0.5</span><span style=\"color:#f8f8f2;\">.</span><span style=\"color:#ff80f4;\">0</span></pre>\n" }
+        CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">cargo add dioxus\n</span><span style=\"color:#f8f8f2;\">cargo add dioxus</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">ssr</span></pre>\n" }
         p {
             "Next, add all the Axum dependencies. This will be different if you're using a different Web Framework"
         }
@@ -10396,7 +10396,7 @@ pub fn ReferenceRouter() -> dioxus::prelude::Element {
             code { "dioxus" }
             " dependency:"
         }
-        CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">cargo add dioxus</span><span style=\"color:#f92672;\">@</span><span style=\"color:#ff80f4;\">0.5</span><span style=\"color:#f8f8f2;\">.</span><span style=\"color:#ff80f4;\">0 </span><span style=\"color:#f92672;\">--</span><span style=\"color:#f8f8f2;\">features router</span></pre>\n" }
+        CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">cargo add dioxus </span><span style=\"color:#f92672;\">--</span><span style=\"color:#f8f8f2;\">features router</span></pre>\n" }
         h2 { id: "using-the-router",
             a { href: "#using-the-router", class: "header", "Using the router" }
         }

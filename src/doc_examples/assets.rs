@@ -12,16 +12,16 @@ fn App() -> Element {
 }
 /// ANCHOR_END: images
 
-// manganis::mg!(image("./assets/static/enum_router.png")
-//         // Manganis uses the builder pattern inside the macro. You can set the image size in pixels at compile time to send the smallest possible image to the client
-//         .size(52, 52)
-//         // You can also convert the image to a web friendly format at compile time. This can make your images significantly smaller
-//         .format(ImageType::Avif)
-//         // You can even tell manganis to preload the image so it's ready to be displayed as soon as it's needed
-//         .preload());
-
 /// ANCHOR: optimized_images
-pub const ENUM_ROUTER_IMG: Asset = asset!("/assets/static/enum_router.png");
+pub const ENUM_ROUTER_IMG: Asset = asset!(
+    "/assets/static/enum_router.png",
+    // You can pass a second argument to the asset macro to set up options for the asset
+    ImageAssetOptions::new()
+        // You can set the image size in pixels at compile time to send the smallest possible image to the client
+        .with_size(ImageSize::Manual { width: 52, height: 52 })
+        // You can also convert the image to a web friendly format at compile time. This can make your images significantly smaller
+        .with_format(ImageFormat::Avif)
+);
 
 fn EnumRouter() -> Element {
     rsx! {

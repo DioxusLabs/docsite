@@ -1,4 +1,4 @@
-use crate::docs::router_05::BookRoute;
+use crate::docs::router_06::BookRoute;
 use crate::*;
 
 pub(crate) fn Hero() -> Element {

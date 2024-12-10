@@ -16,7 +16,7 @@ pub(crate) fn Homepage() -> Element {
 }
 
 fn AvailablePlatforms() -> Element {
-    use crate::docs::router_05::BookRoute;
+    use crate::docs::router_06::BookRoute;
 
     rsx! {
         section { class: "w-full",

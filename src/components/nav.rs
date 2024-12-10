@@ -304,14 +304,14 @@ fn SearchResults(results: Signal<Results>, search_text: Signal<String>) -> Eleme
     let _results = results.read();
     let results = _results.deref().as_ref().unwrap();
 
-    use crate::docs::router_05::BookRoute;
+    use crate::docs::router_06::BookRoute;
 
     let default_searches = [
         ("Tutorial", BookRoute::GuideIndex {}),
-        ("Web", BookRoute::ReferenceWebIndex {}),
-        ("Desktop", BookRoute::ReferenceDesktopIndex {}),
-        ("Mobile", BookRoute::ReferenceMobileIndex {}),
-        ("Fullstack", BookRoute::ReferenceFullstackIndex {}),
+        ("Web", BookRoute::GuidesWebIndex {}),
+        ("Desktop", BookRoute::GuidesDesktopIndex {}),
+        ("Mobile", BookRoute::GuidesMobileIndex {}),
+        ("Fullstack", BookRoute::GuidesFullstackIndex {}),
         ("Typesafe Routing", BookRoute::RouterReferenceIndex {}),
     ];
 

@@ -4372,7 +4372,7 @@ pub fn GuideDataFetching() -> dioxus::prelude::Element {
         }
         p {
             "We can use  "
-            code { ".read()" }
+            code { "&*stories.read_unchecked()" }
             " to get the result of the future. On the first run, since there's no data ready when the component loads, its value will be  "
             code { "None" }
             ".  However, once the future is finished, the component will be re-rendered and the value will now be  "
@@ -10496,7 +10496,7 @@ pub fn ReferenceUseResource() -> dioxus::prelude::Element {
         }
         p {
             "We can use  "
-            code { ".read()" }
+            code { "&*future.read_unchecked()" }
             " to get the result of the future. On the first run, since there's no data ready when the component loads, its value will be  "
             code { "None" }
             ". However, once the future is finished, the component will be re-rendered and the value will now be  "

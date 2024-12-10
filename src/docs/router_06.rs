@@ -3144,159 +3144,159 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                                                 vec![4u32, 1u32, 1u32],
                                             ),
                                         ),
-                                        nested_items: vec![],
-                                    }),
-                                    ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
-                                        name: "Creating Our First Route".to_string(),
-                                        location: Some(BookRoute::RouterExampleFirstRoute {
-                                        }),
-                                        number: Some(
-                                            ::use_mdbook::mdbook_shared::SectionNumber(
-                                                vec![4u32, 1u32, 2u32],
-                                            ),
-                                        ),
-                                        nested_items: vec![],
-                                    }),
-                                    ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
-                                        name: "Building a Nest".to_string(),
-                                        location: Some(BookRoute::RouterExampleBuildingANest {
-                                        }),
-                                        number: Some(
-                                            ::use_mdbook::mdbook_shared::SectionNumber(
-                                                vec![4u32, 1u32, 3u32],
-                                            ),
-                                        ),
-                                        nested_items: vec![],
-                                    }),
-                                    ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
-                                        name: "Navigation Targets".to_string(),
-                                        location: Some(BookRoute::RouterExampleNavigationTargets {
-                                        }),
-                                        number: Some(
-                                            ::use_mdbook::mdbook_shared::SectionNumber(
-                                                vec![4u32, 1u32, 4u32],
-                                            ),
-                                        ),
-                                        nested_items: vec![],
-                                    }),
-                                    ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
-                                        name: "Redirection Perfection".to_string(),
-                                        location: Some(BookRoute::RouterExampleRedirectionPerfection {}),
-                                        number: Some(
-                                            ::use_mdbook::mdbook_shared::SectionNumber(
-                                                vec![4u32, 1u32, 5u32],
-                                            ),
-                                        ),
-                                        nested_items: vec![],
-                                    }),
-                                    ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
-                                        name: "Full Code".to_string(),
-                                        location: Some(BookRoute::RouterExampleFullCode {
-                                        }),
-                                        number: Some(
-                                            ::use_mdbook::mdbook_shared::SectionNumber(
-                                                vec![4u32, 1u32, 6u32],
-                                            ),
-                                        ),
-                                        nested_items: vec![],
+                                        nested_items: vec![
+                                            ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
+                                                name: "Creating Our First Route".to_string(),
+                                                location: Some(BookRoute::RouterExampleFirstRoute {
+                                                }),
+                                                number: Some(
+                                                    ::use_mdbook::mdbook_shared::SectionNumber(
+                                                        vec![4u32, 1u32, 1u32, 1u32],
+                                                    ),
+                                                ),
+                                                nested_items: vec![],
+                                            }),
+                                            ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
+                                                name: "Building a Nest".to_string(),
+                                                location: Some(BookRoute::RouterExampleBuildingANest {
+                                                }),
+                                                number: Some(
+                                                    ::use_mdbook::mdbook_shared::SectionNumber(
+                                                        vec![4u32, 1u32, 1u32, 2u32],
+                                                    ),
+                                                ),
+                                                nested_items: vec![],
+                                            }),
+                                            ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
+                                                name: "Navigation Targets".to_string(),
+                                                location: Some(BookRoute::RouterExampleNavigationTargets {
+                                                }),
+                                                number: Some(
+                                                    ::use_mdbook::mdbook_shared::SectionNumber(
+                                                        vec![4u32, 1u32, 1u32, 3u32],
+                                                    ),
+                                                ),
+                                                nested_items: vec![],
+                                            }),
+                                            ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
+                                                name: "Redirection Perfection".to_string(),
+                                                location: Some(BookRoute::RouterExampleRedirectionPerfection {}),
+                                                number: Some(
+                                                    ::use_mdbook::mdbook_shared::SectionNumber(
+                                                        vec![4u32, 1u32, 1u32, 4u32],
+                                                    ),
+                                                ),
+                                                nested_items: vec![],
+                                            }),
+                                            ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
+                                                name: "Full Code".to_string(),
+                                                location: Some(BookRoute::RouterExampleFullCode {
+                                                }),
+                                                number: Some(
+                                                    ::use_mdbook::mdbook_shared::SectionNumber(
+                                                        vec![4u32, 1u32, 1u32, 5u32],
+                                                    ),
+                                                ),
+                                                nested_items: vec![],
+                                            }),
+                                        ],
                                     }),
                                     ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
                                         name: "Reference".to_string(),
                                         location: Some(BookRoute::RouterReferenceIndex {}),
                                         number: Some(
                                             ::use_mdbook::mdbook_shared::SectionNumber(
-                                                vec![4u32, 1u32, 7u32],
-                                            ),
-                                        ),
-                                        nested_items: vec![],
-                                    }),
-                                    ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
-                                        name: "Defining Routes".to_string(),
-                                        location: Some(BookRoute::RouterReferenceRoutesIndex {
-                                        }),
-                                        number: Some(
-                                            ::use_mdbook::mdbook_shared::SectionNumber(
-                                                vec![4u32, 1u32, 8u32],
+                                                vec![4u32, 1u32, 2u32],
                                             ),
                                         ),
                                         nested_items: vec![
+                                            ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
+                                                name: "Defining Routes".to_string(),
+                                                location: Some(BookRoute::RouterReferenceRoutesIndex {
+                                                }),
+                                                number: Some(
+                                                    ::use_mdbook::mdbook_shared::SectionNumber(
+                                                        vec![4u32, 1u32, 2u32, 1u32],
+                                                    ),
+                                                ),
+                                                nested_items: vec![],
+                                            }),
                                             ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
                                                 name: "Nested Routes".to_string(),
                                                 location: Some(BookRoute::RouterReferenceRoutesNested {
                                                 }),
                                                 number: Some(
                                                     ::use_mdbook::mdbook_shared::SectionNumber(
-                                                        vec![4u32, 1u32, 8u32, 1u32],
+                                                        vec![4u32, 1u32, 2u32, 2u32],
                                                     ),
                                                 ),
                                                 nested_items: vec![],
                                             }),
-                                        ],
-                                    }),
-                                    ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
-                                        name: "Layouts".to_string(),
-                                        location: Some(BookRoute::RouterReferenceLayouts {
-                                        }),
-                                        number: Some(
-                                            ::use_mdbook::mdbook_shared::SectionNumber(
-                                                vec![4u32, 1u32, 9u32],
-                                            ),
-                                        ),
-                                        nested_items: vec![],
-                                    }),
-                                    ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
-                                        name: "Navigation".to_string(),
-                                        location: Some(BookRoute::RouterReferenceNavigationIndex {
-                                        }),
-                                        number: Some(
-                                            ::use_mdbook::mdbook_shared::SectionNumber(
-                                                vec![4u32, 1u32, 10u32],
-                                            ),
-                                        ),
-                                        nested_items: vec![
+                                            ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
+                                                name: "Layouts".to_string(),
+                                                location: Some(BookRoute::RouterReferenceLayouts {
+                                                }),
+                                                number: Some(
+                                                    ::use_mdbook::mdbook_shared::SectionNumber(
+                                                        vec![4u32, 1u32, 2u32, 3u32],
+                                                    ),
+                                                ),
+                                                nested_items: vec![],
+                                            }),
+                                            ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
+                                                name: "Navigation".to_string(),
+                                                location: Some(BookRoute::RouterReferenceNavigationIndex {
+                                                }),
+                                                number: Some(
+                                                    ::use_mdbook::mdbook_shared::SectionNumber(
+                                                        vec![4u32, 1u32, 2u32, 4u32],
+                                                    ),
+                                                ),
+                                                nested_items: vec![],
+                                            }),
                                             ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
                                                 name: "Programmatic Navigation".to_string(),
                                                 location: Some(BookRoute::RouterReferenceNavigationProgrammatic {}),
                                                 number: Some(
                                                     ::use_mdbook::mdbook_shared::SectionNumber(
-                                                        vec![4u32, 1u32, 10u32, 1u32],
+                                                        vec![4u32, 1u32, 2u32, 5u32],
+                                                    ),
+                                                ),
+                                                nested_items: vec![],
+                                            }),
+                                            ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
+                                                name: "History Providers".to_string(),
+                                                location: Some(BookRoute::RouterReferenceHistoryProviders {
+                                                }),
+                                                number: Some(
+                                                    ::use_mdbook::mdbook_shared::SectionNumber(
+                                                        vec![4u32, 1u32, 2u32, 6u32],
+                                                    ),
+                                                ),
+                                                nested_items: vec![],
+                                            }),
+                                            ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
+                                                name: "History Buttons".to_string(),
+                                                location: Some(BookRoute::RouterReferenceHistoryButtons {
+                                                }),
+                                                number: Some(
+                                                    ::use_mdbook::mdbook_shared::SectionNumber(
+                                                        vec![4u32, 1u32, 2u32, 7u32],
+                                                    ),
+                                                ),
+                                                nested_items: vec![],
+                                            }),
+                                            ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
+                                                name: "Routing Update Callback".to_string(),
+                                                location: Some(BookRoute::RouterReferenceRoutingUpdateCallback {}),
+                                                number: Some(
+                                                    ::use_mdbook::mdbook_shared::SectionNumber(
+                                                        vec![4u32, 1u32, 2u32, 8u32],
                                                     ),
                                                 ),
                                                 nested_items: vec![],
                                             }),
                                         ],
-                                    }),
-                                    ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
-                                        name: "History Providers".to_string(),
-                                        location: Some(BookRoute::RouterReferenceHistoryProviders {
-                                        }),
-                                        number: Some(
-                                            ::use_mdbook::mdbook_shared::SectionNumber(
-                                                vec![4u32, 1u32, 11u32],
-                                            ),
-                                        ),
-                                        nested_items: vec![],
-                                    }),
-                                    ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
-                                        name: "History Buttons".to_string(),
-                                        location: Some(BookRoute::RouterReferenceHistoryButtons {
-                                        }),
-                                        number: Some(
-                                            ::use_mdbook::mdbook_shared::SectionNumber(
-                                                vec![4u32, 1u32, 12u32],
-                                            ),
-                                        ),
-                                        nested_items: vec![],
-                                    }),
-                                    ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
-                                        name: "Routing Update Callback".to_string(),
-                                        location: Some(BookRoute::RouterReferenceRoutingUpdateCallback {}),
-                                        number: Some(
-                                            ::use_mdbook::mdbook_shared::SectionNumber(
-                                                vec![4u32, 1u32, 13u32],
-                                            ),
-                                        ),
-                                        nested_items: vec![],
                                     }),
                                 ],
                             }),

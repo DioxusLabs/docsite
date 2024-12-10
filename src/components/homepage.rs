@@ -38,7 +38,7 @@ fn AvailablePlatforms() -> Element {
                     left: rsx! {  },
                     center: rsx! {  },
                     right: rsx! { "Build for the web using Rust and WebAssembly. As fast as SolidJS and more robust than React. Integrated hot reloading for instant iterations." },
-                    to: Route::Docs05 {
+                    to: Route::Docs06 {
                         child: BookRoute::Index {},
                     },
                     title: "Web with WASM",
@@ -47,13 +47,13 @@ fn AvailablePlatforms() -> Element {
                     left: rsx! {  },
                     center: rsx! {  },
                     right: rsx! { "Lightweight (<2mb) desktop and mobile apps with zero configuration. Choose between WebView or WGPU-enabled renderers. Runs on macOS, Windows, Linux, iOS, and Android." },
-                    to: Route::Docs05 {
+                    to: Route::Docs06 {
                         child: BookRoute::Index {},
                     },
                     title: "Desktop and Mobile",
                 }
                 TriShow {
-                    to: Route::Docs05 {
+                    to: Route::Docs06 {
                         child: BookRoute::Index {},
                     },
                     title: "Terminal User Interfaces",
@@ -62,7 +62,7 @@ fn AvailablePlatforms() -> Element {
                     center: rsx! {  },
                 }
                 TriShow {
-                    to: Route::Docs05 {
+                    to: Route::Docs06 {
                         child: BookRoute::Index {},
                     },
                     title: "Fullstack Apps",
@@ -71,7 +71,7 @@ fn AvailablePlatforms() -> Element {
                     center: rsx! {  },
                 }
                 TriShow {
-                    to: Route::Docs05 {
+                    to: Route::Docs06 {
                         child: BookRoute::Index {},
                     },
                     title: "LiveView",

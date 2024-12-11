@@ -6712,13 +6712,9 @@ pub fn GuidesDesktopIndex() -> dioxus::prelude::Element {
             " accessible, so streaming, WebSockets, filesystem, etc are all easily accessible though system APIs."
         }
         p {
-            "Dioxus desktop is built off "
-            a { href: "https://tauri.app/", "Tauri" }
-            ". Right now there are limited Dioxus abstractions over the menubar, event handling, etc. In some places you may need to leverage Tauri directly – through "
-            a { href: "http://github.com/tauri-apps/wry/", "Wry" }
-            " and "
-            a { href: "http://github.com/tauri-apps/tao", "Tao" }
-            "."
+            "Dioxus desktop is built on top of "
+            a { href: "https://github.com/tauri-apps/wry", "wry" }
+            ", a Rust library for creating desktop applications with a WebView."
         }
         blockquote {
             p {

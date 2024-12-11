@@ -13,6 +13,8 @@ pub mod snippets;
 pub use components::*;
 
 fn main() {
+    create_sitemap();
+
     dioxus::LaunchBuilder::new()
         .with_cfg(server_only! {
             // Only in release do we SSG
@@ -202,6 +204,13 @@ impl Route {
                 | Route::Docs03 { .. }
         )
     }
+
+    fn is_latest_docs(&self) -> bool {
+        matches!(
+            self,
+            Route::Docs06 { .. }
+        )
+    }
 }
 
 // todo - when we update to 0.6.0 we need to change this to return a Vec<String>
@@ -220,4 +229,40 @@ fn static_dir() -> std::path::PathBuf {
         .parent()
         .unwrap()
         .join("public")
+}
+
+
+fn create_sitemap() {
+    #[cfg(not(debug_assertions))]
+    server_only! {
+        use std::io::Write;
+        
+        // Write a sitemap file on the server
+        // The sitemap helps with SEO because google will deprioritize pages it finds that are not in the sitemap
+        let all_routes = Route::static_routes();
+        _ = std::fs::create_dir_all(static_dir()); 
+        let output_path = static_dir().join("sitemap.xml");
+        let Ok(file) = std::fs::File::create(output_path) else {
+            eprintln!("Failed to create sitemap file");
+            return;
+        };
+        let mut writer = std::io::BufWriter::new(file);
+        _ = writeln!(writer, r#"<?xml version="1.0" encoding="UTF-8"?>"#);
+        _ = writeln!(writer, r#"<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">"#);
+        for route in all_routes {
+            // If the documentation is out of date, don't include it in the sitemap
+            if route.is_docs() && !route.is_latest_docs() {
+                continue;
+            }
+            _ = writeln!(writer, r#"<url>"#);
+            let url = format!("https://dioxuslabs.com{}", route);
+            let escaped_url = askama_escape::escape(&url, askama_escape::Html);
+            _ = writeln!(writer, r#"    <loc>{}</loc>"#, escaped_url);
+            _ = writeln!(writer, r#"</url>"#);
+        }
+        _ = writeln!(writer, r#"</urlset>"#);
+
+        // Point to the sitemap file in the robots.txt
+        _ = std::fs::write(static_dir().join("robots.txt"), formaot!("Sitemap: https://dioxuslabs.com/sitemap.xml"));
+    }
 }

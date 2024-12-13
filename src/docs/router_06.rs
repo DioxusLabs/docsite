@@ -4003,8 +4003,9 @@ pub fn GettingStartedIndex() -> dioxus::prelude::Element {
         h2 { id: "pick-an-editor",
             a { href: "#pick-an-editor", class: "header", "Pick an Editor" }
         }
+        p { "Pick your favorite editor!" }
         p {
-            "Pick your favorite editor! We recommend using "
+            "We recommend using "
             a { href: "https://code.visualstudio.com", "VSCode" }
             " since Dioxus ships with its "
             a { href: "https://marketplace.visualstudio.com/items?itemName=DioxusLabs.dioxus",

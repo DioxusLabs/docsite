@@ -315,11 +315,6 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                         level: 2usize,
                     },
                     ::use_mdbook::mdbook_shared::Section {
-                        title: "Framework Architecture".to_string(),
-                        id: "framework-architecture".to_string(),
-                        level: 2usize,
-                    },
-                    ::use_mdbook::mdbook_shared::Section {
                         title: "Stability".to_string(),
                         id: "stability".to_string(),
                         level: 2usize,
@@ -3928,114 +3923,6 @@ pub fn Index() -> dioxus::prelude::Element {
                 a { href: "http://github.com/dioxusLabs/sdk", "SDK" }
                 ": 1st-party System integrations"
             }
-        }
-        h2 { id: "framework-architecture",
-            a { href: "#framework-architecture", class: "header", "Framework Architecture" }
-        }
-        p {
-            "The Dioxus framework is composed of two parts: the  "
-            code { "dx" }
-            " tool and the  "
-            code { "dioxus" }
-            " Rust crate. The  "
-            code { "dioxus" }
-            " crate is modular and can be used without  "
-            code { "dx" }
-            ", but you'll find that  "
-            code { "dx" }
-            " provides a much better developer experience than other alternatives in the Rust ecosystem."
-        }
-        p {
-            "The  "
-            code { "dx" }
-            " tool can build your app for a many number of platforms:"
-        }
-        ul {
-            li {
-                "Mobile: Android ("
-                code { ".apk" }
-                ") and iOS ("
-                code { ".ipa" }
-                "),"
-            }
-            li {
-                "Desktop: macOS ("
-                code { ".app" }
-                "), Windows ("
-                code { ".msi" }
-                ", "
-                code { ".exe" }
-                "), Linux ("
-                code { ".rpm" }
-                ", "
-                code { ".deb" }
-                ", "
-                code { ".appimage" }
-                ")"
-            }
-            li {
-                "Web: WebAssembly ("
-                code { ".wasm" }
-                " and "
-                code { "/public" }
-                "), servers, and static site generation"
-            }
-        }
-        p {
-            "The  "
-            code { "dx" }
-            " tool provides a number of helpful utilities that the default Rust  "
-            code { "cargo" }
-            " experience lacks:"
-        }
-        ul {
-            li {
-                "Instant hotreloading of "
-                code { "rsx! {{}}" }
-                " markup blocks"
-            }
-            li { "Instant hotreloading of assets like images and stylesheets" }
-            li { "Automatic reloading of Rust code with interactive controls" }
-            li {
-                "Autoformatting of some Rust macros like "
-                code { "rsx! {{}}" }
-            }
-        }
-        p {
-            "The  "
-            code { "dioxus" }
-            " crate includes a number of optional features that integrate with  "
-            code { "dx" }
-            ":"
-        }
-        ul {
-            li {
-                a { href: "router",
-                    code { "router" }
-                }
-                ": Integrate with the platform's routing technology"
-            }
-            li {
-                a { href: "guides/fullstack",
-                    code { "fullstack" }
-                }
-                ": Add RPC to your app with the "
-                code { "#[server_fn]" }
-                " attribute"
-            }
-            li {
-                a { href: "guides/fullstack",
-                    code { "server" }
-                }
-                ": Enable server-side-rendering with client-side hydration"
-            }
-        }
-        p {
-            "Several other features like  "
-            code { "devtools" }
-            " and  "
-            code { "document" }
-            " are available, though it is unlikely you'll disable any of these for most apps."
         }
         h2 { id: "stability",
             a { href: "#stability", class: "header", "Stability" }

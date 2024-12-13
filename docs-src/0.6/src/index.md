@@ -82,30 +82,6 @@ The core Dioxus framework covers a number of utilities that are either challengi
 - [State management](guides/managing_state.md) (signals-based reactivity)
 - [SDK](http://github.com/dioxusLabs/sdk): 1st-party System integrations
 
-## Framework Architecture
-
-The Dioxus framework is composed of two parts: the `dx` tool and the `dioxus` Rust crate. The `dioxus` crate is modular and can be used without `dx`, but you'll find that `dx` provides a much better developer experience than other alternatives in the Rust ecosystem.
-
-The `dx` tool can build your app for a many number of platforms:
-- Mobile: Android (`.apk`) and iOS (`.ipa`),
-- Desktop: macOS (`.app`), Windows (`.msi`, `.exe`), Linux (`.rpm`, `.deb`, `.appimage`)
-- Web: WebAssembly (`.wasm` and `/public`), servers, and static site generation
-
-The `dx` tool provides a number of helpful utilities that the default Rust `cargo` experience lacks:
-
-- Instant hotreloading of `rsx! {}` markup blocks
-- Instant hotreloading of assets like images and stylesheets
-- Automatic reloading of Rust code with interactive controls
-- Autoformatting of some Rust macros like `rsx! {}`
-
-The `dioxus` crate includes a number of optional features that integrate with `dx`:
-
-- [`router`](router/index.md): Integrate with the platform's routing technology
-- [`fullstack`](guides/fullstack/index.md): Add RPC to your app with the `#[server_fn]` attribute
-- [`server`](guides/fullstack/index.md): Enable server-side-rendering with client-side hydration
-
-Several other features like `devtools` and `document` are available, though it is unlikely you'll disable any of these for most apps.
-
 ## Stability
 
 Dioxus has not reached a "1.0" release yet.

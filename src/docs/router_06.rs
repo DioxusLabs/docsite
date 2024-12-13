@@ -300,18 +300,38 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                         level: 1usize,
                     },
                     ::use_mdbook::mdbook_shared::Section {
-                        title: "Features".to_string(),
-                        id: "features".to_string(),
+                        title: "What is Dioxus?".to_string(),
+                        id: "what-is-dioxus?".to_string(),
                         level: 2usize,
                     },
                     ::use_mdbook::mdbook_shared::Section {
-                        title: "Multiplatform".to_string(),
-                        id: "multiplatform".to_string(),
-                        level: 3usize,
+                        title: "Why Dioxus?".to_string(),
+                        id: "why-dioxus?".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Syntax and Ecosystem".to_string(),
+                        id: "syntax-and-ecosystem".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Framework Architecture".to_string(),
+                        id: "framework-architecture".to_string(),
+                        level: 2usize,
                     },
                     ::use_mdbook::mdbook_shared::Section {
                         title: "Stability".to_string(),
                         id: "stability".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Examples, projects, tutorials, and more".to_string(),
+                        id: "examples,-projects,-tutorials,-and-more".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Who's funding Dioxus?".to_string(),
+                        id: "who's-funding-dioxus?".to_string(),
                         level: 2usize,
                     },
                 ],
@@ -3761,15 +3781,39 @@ pub fn Index() -> dioxus::prelude::Element {
             a { href: "#introduction", class: "header", "Introduction" }
         }
         p {
-            "Dioxus is a portable, performant, and ergonomic framework for building cross-platform user interfaces in Rust. This guide will help you get started with writing Dioxus apps for the Web, Desktop, Mobile, and more."
+            "Welcome to the Dioxus documentation! Dioxus is a framework for building cross-platform apps with the Rust programming language. With one codebase, you can build apps that run on web, desktop, and mobile."
+        }
+        p {
+            "Dioxus is designed to be familiar for developers who already know tools like React and Flutter."
         }
         CodeBlock {
             contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f92672;\">use </span><span style=\"color:#f8f8f2;\">dioxus::prelude::</span><span style=\"color:#f92672;\">*</span><span style=\"color:#f8f8f2;\">;\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\">pub </span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">App</span><span style=\"color:#f8f8f2;\">() -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let </span><span style=\"color:#f92672;\">mut</span><span style=\"color:#f8f8f2;\"> count </span><span style=\"color:#f92672;\">= </span><span style=\"color:#66d9ef;\">use_signal</span><span style=\"color:#f8f8f2;\">(|| </span><span style=\"color:#ff80f4;\">0</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">    rsx! {{\n</span><span style=\"color:#f8f8f2;\">        h1 {{ </span><span style=\"color:#ffee99;\">&quot;High-Five counter: {{count}}&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">        button {{ onclick: </span><span style=\"color:#f92672;\">move |_|</span><span style=\"color:#f8f8f2;\"> count </span><span style=\"color:#f92672;\">+= </span><span style=\"color:#ff80f4;\">1</span><span style=\"color:#f8f8f2;\">, </span><span style=\"color:#ffee99;\">&quot;Up high!&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">        button {{ onclick: </span><span style=\"color:#f92672;\">move |_|</span><span style=\"color:#f8f8f2;\"> count </span><span style=\"color:#f92672;\">-= </span><span style=\"color:#ff80f4;\">1</span><span style=\"color:#f8f8f2;\">, </span><span style=\"color:#ffee99;\">&quot;Down low!&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
             name: "readme.rs".to_string(),
         }
         DemoFrame { readme::App {} }
+        p { "This guide is split into different sections:" }
+        ul {
+            li {
+                a { href: "guide", "Tutorial" }
+                " walks you through your first Dioxus app."
+            }
+            li {
+                a { href: "essentials", "Essential Concepts" }
+                " provides detail on topics like managing state."
+            }
+            li {
+                a { href: "reference", "Guides" }
+                " provides references for things like assets, routing, testing, and more."
+            }
+        }
         p {
-            "Dioxus is heavily inspired by React. If you know React, getting started with Dioxus will be a breeze."
+            "First, try walking through the "
+            a { href: "guide", "Tutorial" }
+            " to get familiar with Dioxus. Before embarking on a larger project, we strongly recommend reading the entire "
+            a { href: "essentials", "Essential Concepts" }
+            " and glancing through the "
+            a { href: "guides", "Guides Overview" }
+            "."
         }
         blockquote {
             p {
@@ -3782,56 +3826,277 @@ pub fn Index() -> dioxus::prelude::Element {
                 " to learn Rust first."
             }
         }
-        h2 { id: "features",
-            a { href: "#features", class: "header", "Features" }
-        }
-        ul {
-            li { "Cross platform apps in three lines of code. (Web, Desktop, Server, Mobile, and more)" }
-            li {
-                "Incredibly ergonomic and powerful state management that combines the best parts of react, solid and svelte."
-            }
-            li {
-                "Comprehensive inline documentation – hover and guides for all HTML elements, listeners, and events."
-            }
-            li {
-                "High performance applications "
-                a { href: "https://dioxuslabs.com/blog/templates-diffing",
-                    "approaching the fastest web frameworks on the web"
-                }
-                " and native speeds on desktop."
-            }
-            li { "First-class async support." }
-        }
-        h3 { id: "multiplatform",
-            a { href: "#multiplatform", class: "header", "Multiplatform" }
+        h2 { id: "what-is-dioxus",
+            a { href: "#what-is-dioxus", class: "header", "What is Dioxus?" }
         }
         p {
-            "Dioxus is a "
-            em { "portable" }
-            " toolkit, meaning the Core implementation can run anywhere with no platform-dependent linking. Unlike many other Rust frontend toolkits, Dioxus is not intrinsically linked to WebSys. In fact, every element and event listener can be swapped out at compile time. By default, Dioxus ships with the "
-            code { "html" }
-            " feature enabled, but this can be disabled depending on your target renderer."
+            "Dioxus is a developer-friendly framework that empowers developers to ship cross-platform apps with one codebase."
         }
-        p { "Right now, we have several 1st-party renderers:" }
+        p {
+            img {
+                src: asset!(
+                    "/assets/static/dioxus-architecture-diagram.png", ImageAssetOptions::new()
+                    .with_avif()
+                ),
+                alt: "Multi-platform app architecture diagram",
+                title: "",
+            }
+        }
+        p {
+            "In many ways, Dioxus is similar to Flutter: we integrate our own build tools, foster an ecosystem, and provide a markup language for declaring UI. In key areas, Dioxus takes a different approach:"
+        }
         ul {
-            li { "WebSys/Sledgehammer (for WASM): Great support" }
-            li { "Tao/Tokio (for Desktop apps): Good support" }
-            li { "Tao/Tokio (for Mobile apps): Poor support" }
-            li { "Fullstack (for SSR and server functions): Good support" }
-            li { "TUI/Plasmo (for terminal-based apps): Experimental" }
+            li { "Apps are declared with HTML and CSS instead of custom styling solution" }
+            li { "Reactivity is inspired by web frameworks like React and SolidJS" }
+            li {
+                "Dioxus code runs natively with no virtual machine and enables direct FFI with system APIs"
+            }
+        }
+        p {
+            "Our goal is to provide a \"better Flutter\": faster, slimmer, and web-native. You can think of Dioxus is a hybrid of "
+            a { href: "", "Flutter" }
+            " and "
+            a { href: "", "NextJS" }
+            ": cross-platform apps with stellar fullstack support. Today, Dioxus apps can only be written in Rust, but we plan to support more languages in the future."
+        }
+        h2 { id: "why-dioxus",
+            a { href: "#why-dioxus", class: "header", "Why Dioxus?" }
+        }
+        p {
+            "We started Dioxus because we believe the current standard of building apps is too complex. Developers need to learn and install dozens of different tools just to get their app into the world."
+        }
+        p {
+            img {
+                src: asset!("/assets/static/dioxus-app-stack.png", ImageAssetOptions::new().with_avif()),
+                alt: "App stack",
+                title: "",
+            }
+        }
+        p {
+            "Our vision for Dioxus is a framework that is fast, flexible, and has a minimal learning curve. We want developers to confidently ship their app from idea to production as fast as possible. We believe that fewer tools and a simpler architecture makes it easier to develop apps. Apps that are easier to build also ship faster and are more likely to succeed."
+        }
+        h2 { id: "syntax-and-ecosystem",
+            a { href: "#syntax-and-ecosystem", class: "header", "Syntax and Ecosystem" }
+        }
+        p {
+            "The Dioxus syntax is similar to React's JSX markup, borrowing React's component and hooks approach. All components are Rust functions that take  "
+            code { "Properties" }
+            ", define state with hooks, and return an  "
+            code { "Element" }
+            ". We only support markup in with the  "
+            code { "rsx! {{}}" }
+            " markup; this ensures your app is automatically optimized and has stellar devtools support like advanced hot-reloading."
+        }
+        CodeBlock {
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">#[component]\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">Component</span><span style=\"color:#f8f8f2;\">(</span><span style=\"font-style:italic;color:#fd971f;\">name</span><span style=\"color:#f8f8f2;\">: String) -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let </span><span style=\"color:#f92672;\">mut</span><span style=\"color:#f8f8f2;\"> count </span><span style=\"color:#f92672;\">= </span><span style=\"color:#66d9ef;\">use_signal</span><span style=\"color:#f8f8f2;\">(|| </span><span style=\"color:#ff80f4;\">0</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">    rsx! {{\n</span><span style=\"color:#f8f8f2;\">        h1 {{ </span><span style=\"color:#ffee99;\">&quot;Hello, {{name}}&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">        p {{ </span><span style=\"color:#ffee99;\">&quot;Count: {{count}}&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
+        }
+        p {
+            "Dioxus is designed to be easy to extend and fairly thin over system APIs. This means you can easily drop into system APIs when first-party APIs are lacking. When targeting the web, this might mean using "
+            a { href: "http://crates.io/crates/web-sys/",
+                code { "web-sys" }
+            }
+            " and on Android using "
+            a { href: "http://crates.io/crates/jni",
+                code { "jni" }
+            }
+            "."
+        }
+        CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">PromptModal</span><span style=\"color:#f8f8f2;\">() {{\n</span><span style=\"color:#f8f8f2;\">    #[cfg(web)]\n</span><span style=\"color:#f8f8f2;\">    web_sys::call_web_function();\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">    #[cfg(android)]\n</span><span style=\"color:#f8f8f2;\">    jni_sys::call_android_function();\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n" }
+        p {
+            "The core Dioxus framework covers a number of utilities that are either challenging to design or integrate the  "
+            code { "dx" }
+            " tooling:"
+        }
+        ul {
+            li {
+                a { href: "router", "App Routing" }
+            }
+            li {
+                a { href: "guides/fullstack/server_functions",
+                    "Backend integration via server functions"
+                }
+            }
+            li {
+                a { href: "guides/assets", "Including and optimizing" }
+                " assets"
+            }
+            li {
+                a { href: "guides/managing_state", "State management" }
+                " (signals-based reactivity)"
+            }
+            li {
+                a { href: "http://github.com/dioxusLabs/sdk", "SDK" }
+                ": 1st-party System integrations"
+            }
+        }
+        h2 { id: "framework-architecture",
+            a { href: "#framework-architecture", class: "header", "Framework Architecture" }
+        }
+        p {
+            "The Dioxus framework is composed of two parts: the  "
+            code { "dx" }
+            " tool and the  "
+            code { "dioxus" }
+            " Rust crate. The  "
+            code { "dioxus" }
+            " crate is modular and can be used without  "
+            code { "dx" }
+            ", but you'll find that  "
+            code { "dx" }
+            " provides a much better developer experience than other alternatives in the Rust ecosystem."
+        }
+        p {
+            "The  "
+            code { "dx" }
+            " tool can build your app for a many number of platforms:"
+        }
+        ul {
+            li {
+                "Mobile: Android ("
+                code { ".apk" }
+                ") and iOS ("
+                code { ".ipa" }
+                "),"
+            }
+            li {
+                "Desktop: macOS ("
+                code { ".app" }
+                "), Windows ("
+                code { ".msi" }
+                ", "
+                code { ".exe" }
+                "), Linux ("
+                code { ".rpm" }
+                ", "
+                code { ".deb" }
+                ", "
+                code { ".appimage" }
+                ")"
+            }
+            li {
+                "Web: WebAssembly ("
+                code { ".wasm" }
+                " and "
+                code { "/public" }
+                "), servers, and static site generation"
+            }
+        }
+        p {
+            "The  "
+            code { "dx" }
+            " tool provides a number of helpful utilities that the default Rust  "
+            code { "cargo" }
+            " experience lacks:"
+        }
+        ul {
+            li {
+                "Instant hotreloading of "
+                code { "rsx! {{}}" }
+                " markup blocks"
+            }
+            li { "Instant hotreloading of assets like images and stylesheets" }
+            li { "Automatic reloading of Rust code with interactive controls" }
+            li {
+                "Autoformatting of some Rust macros like "
+                code { "rsx! {{}}" }
+            }
+        }
+        p {
+            "The  "
+            code { "dioxus" }
+            " crate includes a number of optional features that integrate with  "
+            code { "dx" }
+            ":"
+        }
+        ul {
+            li {
+                a { href: "router",
+                    code { "router" }
+                }
+                ": Integrate with the platform's routing technology"
+            }
+            li {
+                a { href: "guides/fullstack",
+                    code { "fullstack" }
+                }
+                ": Add RPC to your app with the "
+                code { "#[server_fn]" }
+                " attribute"
+            }
+            li {
+                a { href: "guides/fullstack",
+                    code { "server" }
+                }
+                ": Enable server-side-rendering with client-side hydration"
+            }
+        }
+        p {
+            "Several other features like  "
+            code { "devtools" }
+            " and  "
+            code { "document" }
+            " are available, though it is unlikely you'll disable any of these for most apps."
         }
         h2 { id: "stability",
             a { href: "#stability", class: "header", "Stability" }
         }
-        p { "Dioxus has not reached a stable release yet." }
+        p { "Dioxus has not reached a \"1.0\" release yet." }
         p {
-            "Web: Since the web is a fairly mature platform, we expect there to be very little API churn for web-based features."
+            "We are currently on version 0.6, which has stabilized a huge number of APIs are drastically improved the developer experience. In version 0.5 we overhauled the state management system and in 0.6 we overhauled tooling."
         }
         p {
-            "Desktop: APIs will likely be in flux as we figure out better patterns than our ElectronJS counterpart."
+            "It's likely that the next few versions of Dioxus (0.7, 0.8) will bring breaking changes to your apps. Fortunately, these planned changes will only affect the syntax of specific APIs and not your apps at large. With every version update, we ship a rather comprehensive migration guide - eg "
+            a { href: "migration", "0.6" }
+            "."
+        }
+        h2 { id: "examples-projects-tutorials-and-more",
+            a {
+                href: "#examples-projects-tutorials-and-more",
+                class: "header",
+                "Examples, projects, tutorials, and more"
+            }
         }
         p {
-            "Fullstack: APIs will likely be in flux as we figure out the best API for server communication."
+            "The Dioxus ecosystem is growing and so are the number of examples, projects, tutorials, books, and other learning resources."
+        }
+        p { "We highly recommend a few first-party sources:" }
+        ul {
+            li {
+                "The "
+                a { href: "https://github.com/DioxusLabs/dioxus/tree/main/examples",
+                    "official folder of small examples"
+                }
+            }
+            li {
+                "The "
+                a { href: "https://github.com/DioxusLabs/dioxus/tree/main/example-projects",
+                    "official repository of example projects"
+                }
+            }
+            li {
+                "The official "
+                a { href: "https://www.youtube.com/@DioxusLabs", "YouTube channel" }
+            }
+        }
+        h2 { id: "whos-funding-dioxus",
+            a { href: "#whos-funding-dioxus", class: "header", "Who's funding Dioxus?" }
+        }
+        p {
+            "Dioxus is funded by a mix of corporate sponsorships, enterprise support contracts, "
+            a { href: "https://github.com/sponsors/DioxusLabs#sponsors", "crowd-sourced funding" }
+            ", and "
+            a { href: "http://ycombinator.com/companies/dioxus-labs", "venture capital" }
+            ". We strive to maintain a healthy mix of funding to balance the various competing visions of the future. We want to provide a \"Flutter but better\" for everyone - not controlled by Apple, Meta, or Google - and we need to make sure Dioxus has a sustainable long-term financial future."
+        }
+        p {
+            "Ultimately, we'd like Dioxus to be self-sustaining. This means that you'll eventually have the option to deploy your production apps with "
+            a { href: "/deploy", "Dioxus Deploy" }
+            ". Revenue from "
+            em { "Dioxus Deploy" }
+            " will in turn fund development on Dioxus itself."
+        }
+        p {
+            "We're committed to keeping Dioxus free and open source forever. You'll never need to pay us to build apps nor will we ever change the license of Dioxus."
         }
     }
 }

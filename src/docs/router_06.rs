@@ -350,39 +350,64 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                         level: 1usize,
                     },
                     ::use_mdbook::mdbook_shared::Section {
-                        title: "Prerequisites".to_string(),
-                        id: "prerequisites".to_string(),
+                        title: "Pick an Editor".to_string(),
+                        id: "pick-an-editor".to_string(),
                         level: 2usize,
                     },
                     ::use_mdbook::mdbook_shared::Section {
-                        title: "An Editor".to_string(),
-                        id: "an-editor".to_string(),
-                        level: 3usize,
+                        title: "Install Rust-Analyzer".to_string(),
+                        id: "install-rust-analyzer".to_string(),
+                        level: 2usize,
                     },
                     ::use_mdbook::mdbook_shared::Section {
-                        title: "Rust".to_string(),
-                        id: "rust".to_string(),
-                        level: 3usize,
+                        title: "Install Rust".to_string(),
+                        id: "install-rust".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Install cargo-binstall".to_string(),
+                        id: "install-cargo-binstall".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Install the Dioxus CLI".to_string(),
+                        id: "install-the-dioxus-cli".to_string(),
+                        level: 2usize,
                     },
                     ::use_mdbook::mdbook_shared::Section {
                         title: "Platform-specific dependencies".to_string(),
                         id: "platform-specific-dependencies".to_string(),
-                        level: 3usize,
-                    },
-                    ::use_mdbook::mdbook_shared::Section {
-                        title: "Dioxus CLI".to_string(),
-                        id: "dioxus-cli".to_string(),
-                        level: 3usize,
-                    },
-                    ::use_mdbook::mdbook_shared::Section {
-                        title: "Create a new project".to_string(),
-                        id: "create-a-new-project".to_string(),
                         level: 2usize,
                     },
                     ::use_mdbook::mdbook_shared::Section {
-                        title: "Running the project".to_string(),
-                        id: "running-the-project".to_string(),
-                        level: 2usize,
+                        title: "macOS".to_string(),
+                        id: "macos".to_string(),
+                        level: 3usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Windows".to_string(),
+                        id: "windows".to_string(),
+                        level: 3usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Linux".to_string(),
+                        id: "linux".to_string(),
+                        level: 3usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "WSL".to_string(),
+                        id: "wsl".to_string(),
+                        level: 3usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "iOS".to_string(),
+                        id: "ios".to_string(),
+                        level: 3usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Android".to_string(),
+                        id: "android".to_string(),
+                        level: 3usize,
                     },
                     ::use_mdbook::mdbook_shared::Section {
                         title: "Conclusion".to_string(),
@@ -1438,39 +1463,19 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                         level: 2usize,
                     },
                     ::use_mdbook::mdbook_shared::Section {
-                        title: "Setting up dependencies".to_string(),
-                        id: "setting-up-dependencies".to_string(),
-                        level: 3usize,
-                    },
-                    ::use_mdbook::mdbook_shared::Section {
                         title: "Android".to_string(),
                         id: "android".to_string(),
-                        level: 4usize,
-                    },
-                    ::use_mdbook::mdbook_shared::Section {
-                        title: "IOS".to_string(),
-                        id: "ios".to_string(),
-                        level: 4usize,
-                    },
-                    ::use_mdbook::mdbook_shared::Section {
-                        title: "Setting up your project".to_string(),
-                        id: "setting-up-your-project".to_string(),
-                        level: 3usize,
-                    },
-                    ::use_mdbook::mdbook_shared::Section {
-                        title: "Running".to_string(),
-                        id: "running".to_string(),
                         level: 2usize,
                     },
                     ::use_mdbook::mdbook_shared::Section {
-                        title: "Android".to_string(),
-                        id: "android".to_string(),
-                        level: 3usize,
-                    },
-                    ::use_mdbook::mdbook_shared::Section {
                         title: "IOS".to_string(),
                         id: "ios".to_string(),
-                        level: 3usize,
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Running your app".to_string(),
+                        id: "running-your-app".to_string(),
+                        level: 2usize,
                     },
                 ],
                 raw: String::new(),
@@ -3994,20 +3999,57 @@ pub fn GettingStartedIndex() -> dioxus::prelude::Element {
         h1 { id: "getting-started",
             a { href: "#getting-started", class: "header", "Getting Started" }
         }
-        p { "This section will help you set up your Dioxus project!" }
-        h2 { id: "prerequisites",
-            a { href: "#prerequisites", class: "header", "Prerequisites" }
+        p { "Getting started with Dioxus is quick and shouldn't take more than a minute or two." }
+        h2 { id: "pick-an-editor",
+            a { href: "#pick-an-editor", class: "header", "Pick an Editor" }
         }
-        h3 { id: "an-editor",
-            a { href: "#an-editor", class: "header", "An Editor" }
+        p {
+            "Pick your favorite editor! We recommend using "
+            a { href: "https://code.visualstudio.com", "VSCode" }
+            " since Dioxus ships with its "
+            a { href: "https://marketplace.visualstudio.com/items?itemName=DioxusLabs.dioxus",
+                "own VSCode extension"
+            }
+            "."
+        }
+        p {
+            "Our build tool  "
+            code { "dx" }
+            " is standalone and works with any editor."
+        }
+        h2 { id: "install-rust-analyzer",
+            a { href: "#install-rust-analyzer", class: "header", "Install Rust-Analyzer" }
         }
         p {
             "Dioxus integrates very well with the "
             a { href: "https://rust-analyzer.github.io", "Rust-Analyzer LSP plugin" }
-            " which will provide appropriate syntax highlighting, code navigation, folding, and more."
+            " which provides appropriate syntax highlighting, code navigation, folding, and more."
         }
-        h3 { id: "rust",
-            a { href: "#rust", class: "header", "Rust" }
+        p {
+            "You can follow the "
+            a { href: "https://rust-analyzer.github.io/manual.html#installation",
+                "installation instructions"
+            }
+            " for your editor of choice."
+        }
+        ul {
+            li {
+                a { href: "https://rust-analyzer.github.io/manual.html#vs-code", "VSCode" }
+            }
+            li {
+                a { href: "https://rust-analyzer.github.io/manual.html#zed", "Zed" }
+            }
+            li {
+                a { href: "https://rust-analyzer.github.io/manual.html#emacs", "Emacs" }
+            }
+            li {
+                a { href: "https://rust-analyzer.github.io/manual.html#vimneovim",
+                    "Vim"
+                }
+            }
+        }
+        h2 { id: "install-rust",
+            a { href: "#install-rust", class: "header", "Install Rust" }
         }
         p {
             "Head over to "
@@ -4021,104 +4063,196 @@ pub fn GettingStartedIndex() -> dioxus::prelude::Element {
             }
             " "
             em { "completely" }
-            ". However, we hope that a Dioxus app can serve as a great first Rust project. With Dioxus, you'll learn about:"
-        }
-        ul {
-            li { "Error handling" }
-            li { "Structs, Functions, Enums" }
-            li { "Closures" }
-            li { "Macros" }
+            ". However, we hope that a Dioxus app can serve as a great first Rust project."
         }
         p {
             "We've put a lot of care into making Dioxus syntax familiar and easy to understand, so you won't need deep knowledge of async, lifetimes, or smart pointers until you start building complex Dioxus apps."
         }
-        h3 { id: "platform-specific-dependencies",
-            a { href: "#platform-specific-dependencies", class: "header",
-                "Platform-specific dependencies"
+        h2 { id: "install-cargo-binstall",
+            a { href: "#install-cargo-binstall", class: "header", "Install cargo-binstall" }
+        }
+        p {
+            "Dioxus ships prebuilt binaries for its CLI using "
+            a { href: "https://github.com/cargo-bins/cargo-binstall?tab=readme-ov-file#installation",
+                code { "cargo-binstall" }
+            }
+            ". This means you can install Dioxus without needing to compile from source."
+        }
+        p {
+            "You can install  "
+            code { "cargo-binstall" }
+            " with the following command:"
+        }
+        CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">curl </span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">L </span><span style=\"color:#f92672;\">--</span><span style=\"color:#f8f8f2;\">proto </span><span style=\"color:#f92672;\">&#39;=</span><span style=\"color:#f8f8f2;\">https</span><span style=\"color:#f92672;\">&#39; --</span><span style=\"color:#f8f8f2;\">tlsv1.</span><span style=\"color:#ff80f4;\">2 </span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">sSf https:</span><span style=\"color:#8c8c8c;\">//raw.githubusercontent.com/cargo-bins/cargo-binstall/main/install-from-binstall-release.sh | bash</span></pre>\n" }
+        p { "through brew:" }
+        CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">brew install cargo</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">binstall</span></pre>\n" }
+        p { "or from source:" }
+        CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">cargo install cargo</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">binstall</span></pre>\n" }
+        h2 { id: "install-the-dioxus-cli",
+            a { href: "#install-the-dioxus-cli", class: "header", "Install the Dioxus CLI" }
+        }
+        p { "Dioxus is comprised of two parts:" }
+        ul {
+            li {
+                "The "
+                code { "dioxus" }
+                " crate: the core Dioxus framework"
+            }
+            li {
+                "The "
+                code { "dx" }
+                " tool: a CLI tool for building Dioxus apps"
             }
         }
         p {
-            "Most platforms don't require any additional dependencies, but if you are targeting desktop, you can install the following dependencies:"
+            "If you want to build web or mobile apps with Dioxus, or benefit from features like hot-reloading and bundling, you'll need to install the  "
+            code { "dx" }
+            " tool. You can download the prebuilt binary with the following command:"
         }
-        DesktopDependencies {}
-        h3 { id: "dioxus-cli",
-            a { href: "#dioxus-cli", class: "header", "Dioxus CLI" }
-        }
-        p { "Next, lets install the Dioxus CLI:" }
+        CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">cargo binstall dioxus</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">cli</span></pre>\n" }
+        p { "If you want to build the CLI from source, you can install it with the following command:" }
         CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">cargo install dioxus</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">cli</span></pre>\n" }
+        blockquote {
+            p {
+                "Installing from source will take several minutes. We strongly recommend using  "
+                code { "cargo-binstall" }
+                " for installation."
+            }
+        }
         p {
             "If you get an OpenSSL error on installation, ensure the dependencies listed "
             a { href: "https://docs.rs/openssl/latest/openssl/#automatic", "here" }
             " are installed."
         }
-        h2 { id: "create-a-new-project",
-            a { href: "#create-a-new-project", class: "header", "Create a new project" }
+        h2 { id: "platform-specific-dependencies",
+            a { href: "#platform-specific-dependencies", class: "header",
+                "Platform-specific dependencies"
+            }
         }
         p {
-            "You can create a new Dioxus project by running the following command and following the prompts:"
+            "Most platforms don't require any additional dependencies, but if you are targeting desktop, you can install the following dependencies."
         }
-        CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">dx new</span></pre>\n" }
+        h3 { id: "macos",
+            a { href: "#macos", class: "header", "macOS" }
+        }
         p {
-            "First you will need to select a platform. Each platform has its own reference with more information on how to set up a project for that platform. Here are the platforms we recommend starting with:"
+            "There are no extra dependencies for macOS! However, if you want to build iOS apps, read the "
+            a { href: "#ios", "iOS section" }
+            " below."
         }
-        ul {
+        h3 { id: "windows",
+            a { href: "#windows", class: "header", "Windows" }
+        }
+        p {
+            "Windows apps depend on WebView2 – a library that should be installed in all modern Windows distributions."
+        }
+        p {
+            "If you have Edge installed, then Dioxus will work fine. If you "
+            em { "don't" }
+            " have WebView2, then you can "
+            a { href: "https://developer.microsoft.com/en-us/microsoft-edge/webview2/",
+                "install it through Microsoft"
+            }
+            ". Microsoft provides 3 options:"
+        }
+        ol {
             li {
-                "Web"
-                ul {
-                    li {
-                        a { href: "../reference/web", "Client Side" }
-                        ": runs in the browser through WebAssembly"
-                    }
-                    li {
-                        a { href: "../reference/fullstack", "Fullstack" }
-                        ": renders to HTML text on the server and hydrates it on the client"
-                    }
-                }
+                "A tiny \"evergreen\" "
+                em { "bootstrapper" }
+                " that fetches an installer from Microsoft's CDN."
             }
-        }
-        blockquote {
-            p {
-                "If you are not sure which web platform you want to use, check out the "
-                a { href: "../reference/choosing_a_web_renderer", "choosing a web renderer" }
-                " chapter."
-            }
-        }
-        ul {
             li {
-                "WebView"
-                ul {
-                    li {
-                        a { href: "../reference/desktop", "Desktop" }
-                        ": runs in a web view on desktop"
-                    }
-                    li {
-                        a { href: "../reference/mobile", "Mobile" }
-                        ": runs in a web view on mobile. Mobile is currently not supported by the dioxus CLI. The "
-                        a { href: "../reference/mobile", "mobile reference" }
-                        " has more information about setting up a mobile project"
-                    }
-                }
+                "A tiny "
+                em { "installer" }
+                " that fetches WebView2 from Microsoft's CDN."
             }
+            li { "A statically linked version of WebView2 in your final binary for offline users." }
         }
-        p { "Next, you can choose a styling library. For this project, we will use vanilla CSS." }
+        p { "We recommend using Option 1." }
+        h3 { id: "linux",
+            a { href: "#linux", class: "header", "Linux" }
+        }
         p {
-            "Finally, you can choose to start the project with the router enabled. The router is covered in the "
-            a { href: "../router", "router guide" }
+            "WebView Linux apps require WebkitGtk and xdotool. When distributing, these should be part of your dependency tree in your  "
+            code { ".rpm" }
+            " or  "
+            code { ".deb" }
             "."
         }
-        h2 { id: "running-the-project",
-            a { href: "#running-the-project", class: "header", "Running the project" }
+        p { "If you run into issues, make sure you have all the basics installed." }
+        p { "For Ubuntu, make sure everything is installed:" }
+        CodeBlock {
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">sudo apt update\n</span><span style=\"color:#f8f8f2;\">sudo apt install libwebkit2gtk</span><span style=\"color:#f92672;\">-</span><span style=\"color:#ff80f4;\">4.1</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">dev \\\n</span><span style=\"color:#f8f8f2;\">  build</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">essential \\\n</span><span style=\"color:#f8f8f2;\">  curl \\\n</span><span style=\"color:#f8f8f2;\">  wget \\\n</span><span style=\"color:#f8f8f2;\">  file \\\n</span><span style=\"color:#f8f8f2;\">  libxdo</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">dev \\\n</span><span style=\"color:#f8f8f2;\">  libssl</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">dev \\\n</span><span style=\"color:#f8f8f2;\">  libayatana</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">appindicator3</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">dev \\\n</span><span style=\"color:#f8f8f2;\">  librsvg2</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">dev</span></pre>\n",
         }
-        p { "Once you have created your project, you can start it with the following command:" }
-        CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">cd my_project\n</span><span style=\"color:#f8f8f2;\">dx serve</span></pre>\n" }
+        p { "For arch:" }
+        CodeBlock {
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">sudo pacman </span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">Syu\n</span><span style=\"color:#f8f8f2;\">sudo pacman </span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">S </span><span style=\"color:#f92672;\">--</span><span style=\"color:#f8f8f2;\">needed \\\n</span><span style=\"color:#f8f8f2;\">  webkit2gtk</span><span style=\"color:#f92672;\">-</span><span style=\"color:#ff80f4;\">4.1</span><span style=\"color:#f8f8f2;\"> \\\n</span><span style=\"color:#f8f8f2;\">  base</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">devel \\\n</span><span style=\"color:#f8f8f2;\">  curl \\\n</span><span style=\"color:#f8f8f2;\">  wget \\\n</span><span style=\"color:#f8f8f2;\">  file \\\n</span><span style=\"color:#f8f8f2;\">  openssl \\\n</span><span style=\"color:#f8f8f2;\">  appmenu</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">gtk</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">module \\\n</span><span style=\"color:#f8f8f2;\">  libappindicator</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">gtk3 \\\n</span><span style=\"color:#f8f8f2;\">  librsvg</span></pre>\n",
+        }
         p {
-            "For projects using the liveview template, run  "
-            code { "dx serve --desktop" }
+            "For all other Linux targets, "
+            a { href: "https://tauri.app/start/prerequisites/#linux",
+                "check the Tauri docs which cover the same dependencies"
+            }
             "."
         }
+        h3 { id: "wsl",
+            a { href: "#wsl", class: "header", "WSL" }
+        }
         p {
-            "For Web targets the application will be served at "
-            a { href: "http://localhost:8080", "http://localhost:8080" }
+            "While it's doable, it can be tricky to setup development in WSL for Dioxus desktop. Not everything has been figured out and some stuff may not work."
+        }
+        p { "Here are the steps we used to get Dioxus running through WSL:" }
+        ol {
+            li { "Update your kernel to the latest version and update WSL to version 2." }
+            li {
+                "Add "
+                code { "export DISPLAY=:0" }
+                " to "
+                code { "~/.zshrc" }
+            }
+            li {
+                "Install Tauri's Linux dependencies found "
+                a { href: "https://beta.tauri.app/start/prerequisites/", "here" }
+                "."
+            }
+            li {
+                "For file dialogs to work, you need to install a fallback like "
+                code { "zenity" }
+            }
+        }
+        p {
+            "When running Dioxus desktop on WSL, you may get warnings from  "
+            code { "libEGL" }
+            ". There is currently not a solution for these but the app should still render."
+        }
+        h3 { id: "ios",
+            a { href: "#ios", class: "header", "iOS" }
+        }
+        p { "Building iOS apps requires a device running macOS with XCode installed." }
+        p { "Download and install XCode from one of the following places:" }
+        ul {
+            li {
+                a { href: "https://apps.apple.com/gb/app/xcode/id497799835?mt=12",
+                    "Mac App Store"
+                }
+            }
+            li {
+                a { href: "https://developer.apple.com/xcode/resources/", "Apple Developer website" }
+            }
+        }
+        p { "You will need to download the iOS SDK and install some simulators." }
+        p {
+            "For more details, we recommend reading the "
+            a { href: "../guides/mobile", "dedicated guide for iOS development" }
+            "."
+        }
+        h3 { id: "android",
+            a { href: "#android", class: "header", "Android" }
+        }
+        p {
+            "Android apps require the Android SDK and NDK to be installed. This can be a substantial amount of setup, so we recommend reading the "
+            a { href: "../guides/mobile", "dedicated guide for Android development" }
+            "."
         }
         h2 { id: "conclusion",
             a { href: "#conclusion", class: "header", "Conclusion" }
@@ -6950,17 +7084,14 @@ pub fn GuidesMobileIndex() -> dioxus::prelude::Element {
             a { href: "#mobile-app", class: "header", "Mobile App" }
         }
         p { "Build a mobile app with Dioxus!" }
-        p {
-            "Example: "
-            a { href: "https://github.com/DioxusLabs/dioxus/tree/main/examples/mobile_demo",
-                "Mobile Demo"
-            }
-        }
         h2 { id: "support",
             a { href: "#support", class: "header", "Support" }
         }
         p {
-            "Mobile is currently the least-supported renderer target for Dioxus. Mobile apps are rendered with either the platform's WebView or experimentally with "
+            "The Rust ecosystem for mobile is still in its infancy. Mobile is a 1st-class target for Dioxus apps, but there are very few packages that are battle-tested and ready to use."
+        }
+        p {
+            "Mobile apps are rendered with either the platform's WebView or experimentally with "
             a { href: "https://github.com/DioxusLabs/blitz", "WGPU" }
             ". WebView doesn't support animations, transparency, and native widgets."
         }
@@ -6970,16 +7101,13 @@ pub fn GuidesMobileIndex() -> dioxus::prelude::Element {
         h2 { id: "getting-set-up",
             a { href: "#getting-set-up", class: "header", "Getting Set up" }
         }
-        p {
-            "Getting set up with mobile can be quite challenging. The tooling here isn't great (yet) and might take some hacking around to get things working."
-        }
-        h3 { id: "setting-up-dependencies",
-            a { href: "#setting-up-dependencies", class: "header", "Setting up dependencies" }
-        }
-        h4 { id: "android",
+        h2 { id: "android",
             a { href: "#android", class: "header", "Android" }
         }
-        p { "First, install the rust Android targets:" }
+        p {
+            "Android devices run a different executable architecture than desktop and web. We need to install these toolchains to build Dioxus apps for Android."
+        }
+        p { "First, install the Rust Android targets:" }
         CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">rustup target add aarch64</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">linux</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">android armv7</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">linux</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">androideabi i686</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">linux</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">android x86_64</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">linux</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">android</span></pre>\n" }
         p {
             "To develop on Android, you will need to "
@@ -7030,9 +7158,9 @@ pub fn GuidesMobileIndex() -> dioxus::prelude::Element {
                 }
             }
         }
-        p { "Next set the Java, Android and NDK home variables:" }
+        p { "Next set the Java, Android, NDK, and PATH variables:" }
         p { "Mac:" }
-        CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">export </span><span style=\"color:#ff80f4;\">JAVA_HOME</span><span style=\"color:#f92672;\">=</span><span style=\"color:#ffee99;\">&quot;/Applications/Android Studio.app/Contents/jbr/Contents/Home&quot;\n</span><span style=\"color:#f8f8f2;\">export </span><span style=\"color:#ff80f4;\">ANDROID_HOME</span><span style=\"color:#f92672;\">=</span><span style=\"color:#ffee99;\">&quot;$HOME/Library/Android/sdk&quot;\n</span><span style=\"color:#f8f8f2;\">export </span><span style=\"color:#ff80f4;\">NDK_HOME</span><span style=\"color:#f92672;\">=</span><span style=\"color:#ffee99;\">&quot;$ANDROID_HOME/ndk/25.2.9519653&quot;</span></pre>\n" }
+        CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">export </span><span style=\"color:#ff80f4;\">JAVA_HOME</span><span style=\"color:#f92672;\">=</span><span style=\"color:#ffee99;\">&quot;/Applications/Android Studio.app/Contents/jbr/Contents/Home&quot;\n</span><span style=\"color:#f8f8f2;\">export </span><span style=\"color:#ff80f4;\">ANDROID_HOME</span><span style=\"color:#f92672;\">=</span><span style=\"color:#ffee99;\">&quot;$HOME/Library/Android/sdk&quot;\n</span><span style=\"color:#f8f8f2;\">export </span><span style=\"color:#ff80f4;\">NDK_HOME</span><span style=\"color:#f92672;\">=</span><span style=\"color:#ffee99;\">&quot;$ANDROID_HOME/ndk/25.2.9519653&quot;\n</span><span style=\"color:#f8f8f2;\">export </span><span style=\"color:#ff80f4;\">PATH</span><span style=\"color:#f92672;\">=</span><span style=\"color:#ffee99;\">&quot;$PATH:$ANDROID_HOME/emulator&quot;</span></pre>\n" }
         p { "Windows:" }
         CodeBlock {
             contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">[System.Environment]::SetEnvironmentVariable(</span><span style=\"color:#ffee99;\">&quot;JAVA_HOME&quot;</span><span style=\"color:#f8f8f2;\">, </span><span style=\"color:#ffee99;\">&quot;C:\\Program Files\\Android\\Android Studio\\jbr&quot;</span><span style=\"color:#f8f8f2;\">, </span><span style=\"color:#ffee99;\">&quot;User&quot;</span><span style=\"color:#f8f8f2;\">)\n</span><span style=\"color:#f8f8f2;\">[System.Environment]::SetEnvironmentVariable(</span><span style=\"color:#ffee99;\">&quot;ANDROID_HOME&quot;</span><span style=\"color:#f8f8f2;\">, </span><span style=\"color:#ffee99;\">&quot;$env:LocalAppData\\Android\\Sdk&quot;</span><span style=\"color:#f8f8f2;\">, </span><span style=\"color:#ffee99;\">&quot;User&quot;</span><span style=\"color:#f8f8f2;\">)\n</span><span style=\"color:#f8f8f2;\">[System.Environment]::SetEnvironmentVariable(</span><span style=\"color:#ffee99;\">&quot;NDK_HOME&quot;</span><span style=\"color:#f8f8f2;\">, </span><span style=\"color:#ffee99;\">&quot;$env:LocalAppData\\Android\\Sdk</span><span style=\"color:#ff80f4;\">\\n</span><span style=\"color:#ffee99;\">dk\\25.2.9519653&quot;</span><span style=\"color:#f8f8f2;\">, </span><span style=\"color:#ffee99;\">&quot;User&quot;</span><span style=\"color:#f8f8f2;\">)</span></pre>\n",
@@ -7040,7 +7168,10 @@ pub fn GuidesMobileIndex() -> dioxus::prelude::Element {
         blockquote {
             p { "The NDK version in the paths should match the version you installed in the last step" }
         }
-        h4 { id: "ios",
+        p {
+            "We manually set the PATH variable to include the Android emulator since some distributions of Android Studio include the emulator in the wrong location."
+        }
+        h2 { id: "ios",
             a { href: "#ios", class: "header", "IOS" }
         }
         p {
@@ -7057,167 +7188,26 @@ pub fn GuidesMobileIndex() -> dioxus::prelude::Element {
                 " if you want to run in simulator."
             }
         }
-        h3 { id: "setting-up-your-project",
-            a { href: "#setting-up-your-project", class: "header", "Setting up your project" }
-        }
-        p { "First, we need to create a rust project:" }
-        CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">cargo new dioxus</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">mobile</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">test </span><span style=\"color:#f92672;\">--</span><span style=\"color:#f8f8f2;\">lib\n</span><span style=\"color:#f8f8f2;\">cd dioxus</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">mobile</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">test</span></pre>\n" }
-        p {
-            "Next, we can use  "
-            code { "cargo-mobile2" }
-            " to create a project for mobile:"
-        }
-        CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">cargo install </span><span style=\"color:#f92672;\">--</span><span style=\"color:#f8f8f2;\">git https:</span><span style=\"color:#8c8c8c;\">//github.com/tauri-apps/cargo-mobile2\n</span><span style=\"color:#f8f8f2;\">cargo mobile init</span></pre>\n" }
-        p {
-            "When you run  "
-            code { "cargo mobile init" }
-            ", you will be asked a series of questions about your project. One of those questions is what template you should use. Dioxus currently doesn't have a template in Tauri mobile, instead you can use the  "
-            code { "wry" }
-            " template."
-        }
-        blockquote {
-            p {
-                "You may also be asked to input your team ID for IOS. You can find your team id "
-                a { href: "https://developer.apple.com/help/account/manage-your-team/locate-your-team-id/",
-                    "here"
-                }
-                " or create a team id by creating a developer account "
-                a { href: "https://developer.apple.com/help/account/get-started/about-your-developer-account",
-                    "here"
-                }
-            }
+        p { "You will also need to install the iOS SDK and the Xcode command line tools." }
+        h2 { id: "running-your-app",
+            a { href: "#running-your-app", class: "header", "Running your app" }
         }
         p {
-            "Next, we need to modify our dependencies to include dioxus and ensure the right version of wry is installed. Change the  "
-            code { "[dependencies]" }
-            " section of your  "
-            code { "Cargo.toml" }
-            ":"
+            "Starting with Dioxus 0.6,  "
+            code { "dx" }
+            " ships with built-in support for mobile."
         }
-        CodeBlock {
-            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">[dependencies]\n</span><span style=\"color:#f8f8f2;\">anyhow </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;1.0&quot;\n</span><span style=\"color:#f8f8f2;\">log </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;0.4&quot;\n</span><span style=\"color:#f8f8f2;\">wry </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;0.37&quot;\n</span><span style=\"color:#f8f8f2;\">tao </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;0.26&quot;\n</span><span style=\"color:#f8f8f2;\">dioxus </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">{{ version </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;0.6&quot;</span><span style=\"color:#f8f8f2;\">, features </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">[</span><span style=\"color:#ffee99;\">&quot;mobile&quot;</span><span style=\"color:#f8f8f2;\">] }}</span></pre>\n",
-        }
+        p { "Simply create a new Dioxus project:" }
+        CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">dx new my</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">app</span></pre>\n" }
         p {
-            "Finally, we need to add a component to renderer. Replace the wry template in your  "
-            code { "lib.rs" }
-            " file with this code:"
+            "Make sure to launch the relevant mobile simulator. For Android, you can use the Android Studio emulator, or the Android Emulator in the terminal. Make sure to adjust the device name depending on which emulator you installed."
         }
-        CodeBlock {
-            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f92672;\">use </span><span style=\"color:#f8f8f2;\">anyhow::Result;\n</span><span style=\"color:#f92672;\">use </span><span style=\"color:#f8f8f2;\">dioxus::prelude::</span><span style=\"color:#f92672;\">*</span><span style=\"color:#f8f8f2;\">;\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">#[cfg(target_os </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;android&quot;</span><span style=\"color:#f8f8f2;\">)]\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">init_logging</span><span style=\"color:#f8f8f2;\">() {{\n</span><span style=\"color:#f8f8f2;\">    android_logger::init_once(\n</span><span style=\"color:#f8f8f2;\">        android_logger::Config::default()\n</span><span style=\"color:#f8f8f2;\">            .</span><span style=\"color:#66d9ef;\">with_max_level</span><span style=\"color:#f8f8f2;\">(log::LevelFilter::Trace)\n</span><span style=\"color:#f8f8f2;\">    );\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">#[cfg(not(target_os </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;android&quot;</span><span style=\"color:#f8f8f2;\">))]\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">init_logging</span><span style=\"color:#f8f8f2;\">() {{\n</span><span style=\"color:#f8f8f2;\">    env_logger::init();\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">#[cfg(any(target_os </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;android&quot;</span><span style=\"color:#f8f8f2;\">, target_os </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;ios&quot;</span><span style=\"color:#f8f8f2;\">))]\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">stop_unwind</span><span style=\"color:#f8f8f2;\">&lt;F: FnOnce() -&gt; T, T&gt;(</span><span style=\"font-style:italic;color:#fd971f;\">f</span><span style=\"color:#f8f8f2;\">: F) -&gt; T {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#f92672;\">match </span><span style=\"color:#f8f8f2;\">std::panic::catch_unwind(std::panic::AssertUnwindSafe(f)) {{\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"font-style:italic;color:#66d9ef;\">Ok</span><span style=\"color:#f8f8f2;\">(t) </span><span style=\"color:#f92672;\">=&gt;</span><span style=\"color:#f8f8f2;\"> t,\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"font-style:italic;color:#66d9ef;\">Err</span><span style=\"color:#f8f8f2;\">(err) </span><span style=\"color:#f92672;\">=&gt; </span><span style=\"color:#f8f8f2;\">{{\n</span><span style=\"color:#f8f8f2;\">            eprintln!(</span><span style=\"color:#ffee99;\">&quot;attempt to unwind out of `rust` with err: {{:?}}&quot;</span><span style=\"color:#f8f8f2;\">, err);\n</span><span style=\"color:#f8f8f2;\">            std::process::abort()\n</span><span style=\"color:#f8f8f2;\">        }}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">#[no_mangle]\n</span><span style=\"color:#f8f8f2;\">#[inline(never)]\n</span><span style=\"color:#f8f8f2;\">#[cfg(any(target_os </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;android&quot;</span><span style=\"color:#f8f8f2;\">, target_os </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;ios&quot;</span><span style=\"color:#f8f8f2;\">))]\n</span><span style=\"color:#f92672;\">pub extern </span><span style=\"color:#ffee99;\">&quot;C&quot; </span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">start_app</span><span style=\"color:#f8f8f2;\">() {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">_start_app</span><span style=\"color:#f8f8f2;\">() {{\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"color:#66d9ef;\">stop_unwind</span><span style=\"color:#f8f8f2;\">(|| </span><span style=\"color:#66d9ef;\">main</span><span style=\"color:#f8f8f2;\">().</span><span style=\"color:#66d9ef;\">unwrap</span><span style=\"color:#f8f8f2;\">());\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">    #[cfg(target_os </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;android&quot;</span><span style=\"color:#f8f8f2;\">)]\n</span><span style=\"color:#f8f8f2;\">    {{\n</span><span style=\"color:#f8f8f2;\">        tao::android_binding</span><span style=\"color:#f92672;\">!</span><span style=\"color:#f8f8f2;\">(\n</span><span style=\"color:#f8f8f2;\">            com_example,\n</span><span style=\"color:#f8f8f2;\">            dioxus_mobile_test,\n</span><span style=\"color:#f8f8f2;\">            WryActivity,\n</span><span style=\"color:#f8f8f2;\">            wry::android_setup, </span><span style=\"color:#8c8c8c;\">// pass the wry::android_setup function to tao which will invoke when the event loop is created\n</span><span style=\"color:#f8f8f2;\">            _start_app\n</span><span style=\"color:#f8f8f2;\">        );\n</span><span style=\"color:#f8f8f2;\">        wry::android_binding</span><span style=\"color:#f92672;\">!</span><span style=\"color:#f8f8f2;\">(com_example, dioxus_mobile_test);\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">    #[cfg(target_os </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;ios&quot;</span><span style=\"color:#f8f8f2;\">)]\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#66d9ef;\">_start_app</span><span style=\"color:#f8f8f2;\">()\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\">pub </span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">main</span><span style=\"color:#f8f8f2;\">() -&gt; Result&lt;()&gt; {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#66d9ef;\">init_logging</span><span style=\"color:#f8f8f2;\">();\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#66d9ef;\">launch</span><span style=\"color:#f8f8f2;\">(app);\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">Ok</span><span style=\"color:#f8f8f2;\">(())\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">app</span><span style=\"color:#f8f8f2;\">() -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let </span><span style=\"color:#f92672;\">mut</span><span style=\"color:#f8f8f2;\"> items </span><span style=\"color:#f92672;\">= </span><span style=\"color:#66d9ef;\">use_signal</span><span style=\"color:#f8f8f2;\">(|| vec![</span><span style=\"color:#ff80f4;\">1</span><span style=\"color:#f8f8f2;\">, </span><span style=\"color:#ff80f4;\">2</span><span style=\"color:#f8f8f2;\">, </span><span style=\"color:#ff80f4;\">3</span><span style=\"color:#f8f8f2;\">]);\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">    log::debug</span><span style=\"color:#f92672;\">!</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#ffee99;\">&quot;Hello from the app&quot;</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">    rsx! {{\n</span><span style=\"color:#f8f8f2;\">        div {{\n</span><span style=\"color:#f8f8f2;\">            h1 {{ </span><span style=\"color:#ffee99;\">&quot;Hello, Mobile&quot;</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">            div {{ margin_left: </span><span style=\"color:#ffee99;\">&quot;auto&quot;</span><span style=\"color:#f8f8f2;\">, margin_right: </span><span style=\"color:#ffee99;\">&quot;auto&quot;</span><span style=\"color:#f8f8f2;\">, width: </span><span style=\"color:#ffee99;\">&quot;200px&quot;</span><span style=\"color:#f8f8f2;\">, padding: </span><span style=\"color:#ffee99;\">&quot;10px&quot;</span><span style=\"color:#f8f8f2;\">, border: </span><span style=\"color:#ffee99;\">&quot;1px solid black&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">                button {{\n</span><span style=\"color:#f8f8f2;\">                    onclick: </span><span style=\"color:#f92672;\">move|_| </span><span style=\"color:#f8f8f2;\">{{\n</span><span style=\"color:#f8f8f2;\">                        println!(</span><span style=\"color:#ffee99;\">&quot;Clicked!&quot;</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"color:#f8f8f2;\">                        </span><span style=\"font-style:italic;color:#66d9ef;\">let </span><span style=\"color:#f92672;\">mut</span><span style=\"color:#f8f8f2;\"> items_mut </span><span style=\"color:#f92672;\">=</span><span style=\"color:#f8f8f2;\"> items.</span><span style=\"color:#66d9ef;\">write</span><span style=\"color:#f8f8f2;\">();\n</span><span style=\"color:#f8f8f2;\">                        </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> new_item </span><span style=\"color:#f92672;\">=</span><span style=\"color:#f8f8f2;\"> items_mut.</span><span style=\"color:#66d9ef;\">len</span><span style=\"color:#f8f8f2;\">() </span><span style=\"color:#f92672;\">+ </span><span style=\"color:#ff80f4;\">1</span><span style=\"color:#f8f8f2;\">;\n</span><span style=\"color:#f8f8f2;\">                        items_mut.</span><span style=\"color:#66d9ef;\">push</span><span style=\"color:#f8f8f2;\">(new_item);\n</span><span style=\"color:#f8f8f2;\">                        println!(</span><span style=\"color:#ffee99;\">&quot;Requested update&quot;</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"color:#f8f8f2;\">                    }},\n</span><span style=\"color:#f8f8f2;\">                    </span><span style=\"color:#ffee99;\">&quot;Add item&quot;\n</span><span style=\"color:#f8f8f2;\">                }}\n</span><span style=\"color:#f8f8f2;\">                </span><span style=\"color:#f92672;\">for</span><span style=\"color:#f8f8f2;\"> item </span><span style=\"color:#f92672;\">in</span><span style=\"color:#f8f8f2;\"> items.</span><span style=\"color:#66d9ef;\">read</span><span style=\"color:#f8f8f2;\">().</span><span style=\"color:#66d9ef;\">iter</span><span style=\"color:#f8f8f2;\">() {{\n</span><span style=\"color:#f8f8f2;\">                    div {{ </span><span style=\"color:#ffee99;\">&quot;- {{item}}&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">                }}\n</span><span style=\"color:#f8f8f2;\">            }}\n</span><span style=\"color:#f8f8f2;\">        }}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
-        }
-        h2 { id: "running",
-            a { href: "#running", class: "header", "Running" }
-        }
-        p {
-            "From there, you'll want to get a build of the crate using whichever platform you're targeting (simulator or actual hardware). For now, we'll just stick with the simulator."
-        }
-        p { "First, you need to make sure that the build variant is correct in Android Studio:" }
-        ol {
-            li { "Click \"Build\" in the top menu bar." }
-            li { "Click \"Select Build Variant...\" in the dropdown." }
-            li {
-                "Find the \"Build Variants\" panel and use the dropdown to change the selected build variant."
-            }
-        }
-        p {
-            img {
-                src: asset!("/assets/static/as-build-dropdown.png", ImageAssetOptions::new().with_avif()),
-                alt: "android studio build dropdown",
-                title: "",
-            }
-            img {
-                src: asset!(
-                    "/assets/static/as-build-variant-menu.png", ImageAssetOptions::new().with_avif()
-                ),
-                alt: "android studio build variants",
-                title: "",
-            }
-        }
-        h3 { id: "android",
-            a { href: "#android", class: "header", "Android" }
-        }
-        p { "To build your project on Android you can run:" }
-        CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">cargo android build</span></pre>\n" }
-        p { "Next, open Android studio:" }
-        CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">cargo android open</span></pre>\n" }
-        p { "This will open an android studio project for this application." }
-        p {
-            "Next we need to create a simulator in Android studio to run our app in. To create a simulator click on the phone icon in the top right of Android studio:"
-        }
-        p {
-            img {
-                src: asset!(
-                    "/assets/static/android-studio-simulator.png", ImageAssetOptions::new()
-                    .with_avif()
-                ),
-                alt: "android studio manage devices",
-                title: "",
-            }
-        }
-        p {
-            "Then click the  "
-            code { "create a virtual device" }
-            " button and follow the prompts:"
-        }
-        p {
-            img {
-                src: asset!(
-                    "/assets/static/android-studio-devices.png", ImageAssetOptions::new().with_avif()
-                ),
-                alt: "android studio devices",
-                title: "",
-            }
-        }
-        p { "Finally, launch your device by clicking the play button on the device you created:" }
-        p {
-            img {
-                src: asset!(
-                    "/assets/static/android-studio-device.png", ImageAssetOptions::new().with_avif()
-                ),
-                alt: "android studio device",
-                title: "",
-            }
-        }
-        p { "Now you can start your application from your terminal by running:" }
-        CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">cargo android run</span></pre>\n" }
-        p {
-            img {
-                src: asset!(
-                    "/assets/static/Android-Dioxus-demo.png", ImageAssetOptions::new().with_avif()
-                ),
-                alt: "android_demo",
-                title: "",
-            }
-        }
-        blockquote {
-            p { "More information is available in the Android docs:" }
-            ul {
-                li { "https://developer.android.com/ndk/guides" }
-                li { "https://developer.android.com/studio/projects/install-ndk" }
-                li { "https://source.android.com/docs/setup/build/rust/building-rust-modules/overview" }
-            }
-        }
-        h3 { id: "ios",
-            a { href: "#ios", class: "header", "IOS" }
-        }
-        p { "To build your project for IOS, you can run:" }
-        CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">cargo build </span><span style=\"color:#f92672;\">--</span><span style=\"color:#f8f8f2;\">target aarch64</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">apple</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">ios</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">sim</span></pre>\n" }
-        p { "Next, open XCode (this might take awhile if you've never opened XCode before):" }
-        CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">cargo apple open</span></pre>\n" }
-        p { "This will open XCode with this particular project." }
-        p {
-            "From there, just click the \"play\" button with the right target and the app should be running!"
-        }
-        p {
-            img {
-                src: asset!("/assets/static/IOS-dioxus-demo.png", ImageAssetOptions::new().with_avif()),
-                alt: "ios_demo",
-                title: "",
-            }
-        }
-        p {
-            "Note that clicking play doesn't cause a new build, so you'll need to keep rebuilding the app between changes. The tooling here is very young, so please be patient. If you want to contribute to make things easier, please do! We'll be happy to help."
-        }
+        CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">emulator </span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">avd Pixel_6_API_34  </span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">netdelay none </span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">netspeed full</span></pre>\n" }
+        p { "For iOS, you can use the iOS simulator. You can launch it with:" }
+        CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">open </span><span style=\"color:#f92672;\">/</span><span style=\"color:#f8f8f2;\">Applications</span><span style=\"color:#f92672;\">/</span><span style=\"color:#f8f8f2;\">Xcode.app</span><span style=\"color:#f92672;\">/</span><span style=\"color:#f8f8f2;\">Contents</span><span style=\"color:#f92672;\">/</span><span style=\"color:#f8f8f2;\">Developer</span><span style=\"color:#f92672;\">/</span><span style=\"color:#f8f8f2;\">Applications</span><span style=\"color:#f92672;\">/</span><span style=\"color:#f8f8f2;\">Simulator.app\n</span><span style=\"color:#f8f8f2;\">xcrun simctl boot </span><span style=\"color:#ffee99;\">&quot;iPhone 15 Pro Max&quot;</span></pre>\n" }
+        p { "And then run the app with:" }
+        CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">cd my</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">app\n</span><span style=\"color:#f8f8f2;\">dx serve</span></pre>\n" }
+        p { "This will start the app in development mode." }
     }
 }
 #[component(no_case_check)]

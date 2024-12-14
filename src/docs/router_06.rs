@@ -14,16 +14,30 @@ pub enum BookRoute {
     Index {},
     #[route("/getting_started/")]
     GettingStartedIndex {},
-    #[route("/guide/")]
-    GuideIndex {},
-    #[route("/guide/your_first_component")]
-    GuideYourFirstComponent {},
-    #[route("/guide/state")]
-    GuideState {},
-    #[route("/guide/data_fetching")]
-    GuideDataFetching {},
-    #[route("/guide/full_code")]
-    GuideFullCode {},
+    #[route("/new-guide/")]
+    NewGuideIndex {},
+    #[route("/new-guide/tooling")]
+    NewGuideTooling {},
+    #[route("/new-guide/new_app")]
+    NewGuideNewApp {},
+    #[route("/new-guide/component")]
+    NewGuideComponent {},
+    #[route("/new-guide/rsx")]
+    NewGuideRsx {},
+    #[route("/new-guide/assets")]
+    NewGuideAssets {},
+    #[route("/new-guide/state")]
+    NewGuideState {},
+    #[route("/new-guide/routing")]
+    NewGuideRouting {},
+    #[route("/new-guide/data_fetching")]
+    NewGuideDataFetching {},
+    #[route("/new-guide/backend")]
+    NewGuideBackend {},
+    #[route("/new-guide/deploy")]
+    NewGuideDeploy {},
+    #[route("/new-guide/next_steps")]
+    NewGuideNextSteps {},
     #[route("/essentials/")]
     EssentialsIndex {},
     #[route("/essentials/rsx/")]
@@ -122,6 +136,8 @@ pub enum BookRoute {
     MigrationIndex {},
     #[route("/reference/")]
     ReferenceIndex {},
+    #[route("/reference/hotreload")]
+    ReferenceHotreload {},
     #[route("/reference/rsx")]
     ReferenceRsx {},
     #[route("/reference/components")]
@@ -174,108 +190,116 @@ impl BookRoute {
         match self {
             BookRoute::Index {} => use_mdbook::mdbook_shared::PageId(0usize),
             BookRoute::GettingStartedIndex {} => use_mdbook::mdbook_shared::PageId(1usize),
-            BookRoute::GuideIndex {} => use_mdbook::mdbook_shared::PageId(2usize),
-            BookRoute::GuideYourFirstComponent {} => use_mdbook::mdbook_shared::PageId(3usize),
-            BookRoute::GuideState {} => use_mdbook::mdbook_shared::PageId(4usize),
-            BookRoute::GuideDataFetching {} => use_mdbook::mdbook_shared::PageId(5usize),
-            BookRoute::GuideFullCode {} => use_mdbook::mdbook_shared::PageId(6usize),
-            BookRoute::EssentialsIndex {} => use_mdbook::mdbook_shared::PageId(7usize),
-            BookRoute::EssentialsRsxIndex {} => use_mdbook::mdbook_shared::PageId(8usize),
-            BookRoute::EssentialsLifecycleIndex {} => use_mdbook::mdbook_shared::PageId(9usize),
-            BookRoute::EssentialsStateIndex {} => use_mdbook::mdbook_shared::PageId(10usize),
-            BookRoute::EssentialsBreakingIndex {} => use_mdbook::mdbook_shared::PageId(11usize),
-            BookRoute::GuidesIndex {} => use_mdbook::mdbook_shared::PageId(12usize),
-            BookRoute::RouterIndex {} => use_mdbook::mdbook_shared::PageId(13usize),
-            BookRoute::RouterExampleIndex {} => use_mdbook::mdbook_shared::PageId(14usize),
-            BookRoute::RouterExampleFirstRoute {} => use_mdbook::mdbook_shared::PageId(15usize),
-            BookRoute::RouterExampleBuildingANest {} => use_mdbook::mdbook_shared::PageId(16usize),
+            BookRoute::NewGuideIndex {} => use_mdbook::mdbook_shared::PageId(2usize),
+            BookRoute::NewGuideTooling {} => use_mdbook::mdbook_shared::PageId(3usize),
+            BookRoute::NewGuideNewApp {} => use_mdbook::mdbook_shared::PageId(4usize),
+            BookRoute::NewGuideComponent {} => use_mdbook::mdbook_shared::PageId(5usize),
+            BookRoute::NewGuideRsx {} => use_mdbook::mdbook_shared::PageId(6usize),
+            BookRoute::NewGuideAssets {} => use_mdbook::mdbook_shared::PageId(7usize),
+            BookRoute::NewGuideState {} => use_mdbook::mdbook_shared::PageId(8usize),
+            BookRoute::NewGuideRouting {} => use_mdbook::mdbook_shared::PageId(9usize),
+            BookRoute::NewGuideDataFetching {} => use_mdbook::mdbook_shared::PageId(10usize),
+            BookRoute::NewGuideBackend {} => use_mdbook::mdbook_shared::PageId(11usize),
+            BookRoute::NewGuideDeploy {} => use_mdbook::mdbook_shared::PageId(12usize),
+            BookRoute::NewGuideNextSteps {} => use_mdbook::mdbook_shared::PageId(13usize),
+            BookRoute::EssentialsIndex {} => use_mdbook::mdbook_shared::PageId(14usize),
+            BookRoute::EssentialsRsxIndex {} => use_mdbook::mdbook_shared::PageId(15usize),
+            BookRoute::EssentialsLifecycleIndex {} => use_mdbook::mdbook_shared::PageId(16usize),
+            BookRoute::EssentialsStateIndex {} => use_mdbook::mdbook_shared::PageId(17usize),
+            BookRoute::EssentialsBreakingIndex {} => use_mdbook::mdbook_shared::PageId(18usize),
+            BookRoute::GuidesIndex {} => use_mdbook::mdbook_shared::PageId(19usize),
+            BookRoute::RouterIndex {} => use_mdbook::mdbook_shared::PageId(20usize),
+            BookRoute::RouterExampleIndex {} => use_mdbook::mdbook_shared::PageId(21usize),
+            BookRoute::RouterExampleFirstRoute {} => use_mdbook::mdbook_shared::PageId(22usize),
+            BookRoute::RouterExampleBuildingANest {} => use_mdbook::mdbook_shared::PageId(23usize),
             BookRoute::RouterExampleNavigationTargets {} => {
-                use_mdbook::mdbook_shared::PageId(17usize)
-            }
-            BookRoute::RouterExampleRedirectionPerfection {} => {
-                use_mdbook::mdbook_shared::PageId(18usize)
-            }
-            BookRoute::RouterExampleFullCode {} => use_mdbook::mdbook_shared::PageId(19usize),
-            BookRoute::RouterReferenceIndex {} => use_mdbook::mdbook_shared::PageId(20usize),
-            BookRoute::RouterReferenceRoutesIndex {} => use_mdbook::mdbook_shared::PageId(21usize),
-            BookRoute::RouterReferenceRoutesNested {} => use_mdbook::mdbook_shared::PageId(22usize),
-            BookRoute::RouterReferenceLayouts {} => use_mdbook::mdbook_shared::PageId(23usize),
-            BookRoute::RouterReferenceNavigationIndex {} => {
                 use_mdbook::mdbook_shared::PageId(24usize)
             }
-            BookRoute::RouterReferenceNavigationProgrammatic {} => {
+            BookRoute::RouterExampleRedirectionPerfection {} => {
                 use_mdbook::mdbook_shared::PageId(25usize)
             }
+            BookRoute::RouterExampleFullCode {} => use_mdbook::mdbook_shared::PageId(26usize),
+            BookRoute::RouterReferenceIndex {} => use_mdbook::mdbook_shared::PageId(27usize),
+            BookRoute::RouterReferenceRoutesIndex {} => use_mdbook::mdbook_shared::PageId(28usize),
+            BookRoute::RouterReferenceRoutesNested {} => use_mdbook::mdbook_shared::PageId(29usize),
+            BookRoute::RouterReferenceLayouts {} => use_mdbook::mdbook_shared::PageId(30usize),
+            BookRoute::RouterReferenceNavigationIndex {} => {
+                use_mdbook::mdbook_shared::PageId(31usize)
+            }
+            BookRoute::RouterReferenceNavigationProgrammatic {} => {
+                use_mdbook::mdbook_shared::PageId(32usize)
+            }
             BookRoute::RouterReferenceHistoryProviders {} => {
-                use_mdbook::mdbook_shared::PageId(26usize)
+                use_mdbook::mdbook_shared::PageId(33usize)
             }
             BookRoute::RouterReferenceHistoryButtons {} => {
-                use_mdbook::mdbook_shared::PageId(27usize)
+                use_mdbook::mdbook_shared::PageId(34usize)
             }
             BookRoute::RouterReferenceRoutingUpdateCallback {} => {
-                use_mdbook::mdbook_shared::PageId(28usize)
+                use_mdbook::mdbook_shared::PageId(35usize)
             }
-            BookRoute::GuidesAssets {} => use_mdbook::mdbook_shared::PageId(29usize),
-            BookRoute::GuidesWebIndex {} => use_mdbook::mdbook_shared::PageId(30usize),
-            BookRoute::GuidesDesktopIndex {} => use_mdbook::mdbook_shared::PageId(31usize),
-            BookRoute::GuidesMobileIndex {} => use_mdbook::mdbook_shared::PageId(32usize),
-            BookRoute::GuidesMobileApis {} => use_mdbook::mdbook_shared::PageId(33usize),
-            BookRoute::GuidesSsr {} => use_mdbook::mdbook_shared::PageId(34usize),
-            BookRoute::GuidesFullstackIndex {} => use_mdbook::mdbook_shared::PageId(35usize),
+            BookRoute::GuidesAssets {} => use_mdbook::mdbook_shared::PageId(36usize),
+            BookRoute::GuidesWebIndex {} => use_mdbook::mdbook_shared::PageId(37usize),
+            BookRoute::GuidesDesktopIndex {} => use_mdbook::mdbook_shared::PageId(38usize),
+            BookRoute::GuidesMobileIndex {} => use_mdbook::mdbook_shared::PageId(39usize),
+            BookRoute::GuidesMobileApis {} => use_mdbook::mdbook_shared::PageId(40usize),
+            BookRoute::GuidesSsr {} => use_mdbook::mdbook_shared::PageId(41usize),
+            BookRoute::GuidesFullstackIndex {} => use_mdbook::mdbook_shared::PageId(42usize),
             BookRoute::GuidesFullstackManagingDependencies {} => {
-                use_mdbook::mdbook_shared::PageId(36usize)
+                use_mdbook::mdbook_shared::PageId(43usize)
             }
             BookRoute::GuidesFullstackServerFunctions {} => {
-                use_mdbook::mdbook_shared::PageId(37usize)
+                use_mdbook::mdbook_shared::PageId(44usize)
             }
-            BookRoute::GuidesFullstackExtractors {} => use_mdbook::mdbook_shared::PageId(38usize),
-            BookRoute::GuidesFullstackMiddleware {} => use_mdbook::mdbook_shared::PageId(39usize),
+            BookRoute::GuidesFullstackExtractors {} => use_mdbook::mdbook_shared::PageId(45usize),
+            BookRoute::GuidesFullstackMiddleware {} => use_mdbook::mdbook_shared::PageId(46usize),
             BookRoute::GuidesFullstackAuthentication {} => {
-                use_mdbook::mdbook_shared::PageId(40usize)
-            }
-            BookRoute::GuidesFullstackRouting {} => use_mdbook::mdbook_shared::PageId(41usize),
-            BookRoute::CookbookPublishing {} => use_mdbook::mdbook_shared::PageId(42usize),
-            BookRoute::CookbookAntipatterns {} => use_mdbook::mdbook_shared::PageId(43usize),
-            BookRoute::CookbookErrorHandling {} => use_mdbook::mdbook_shared::PageId(44usize),
-            BookRoute::CookbookIntegrationsIndex {} => use_mdbook::mdbook_shared::PageId(45usize),
-            BookRoute::CookbookIntegrationsLogging {} => use_mdbook::mdbook_shared::PageId(46usize),
-            BookRoute::CookbookIntegrationsInternationalization {} => {
                 use_mdbook::mdbook_shared::PageId(47usize)
             }
-            BookRoute::CookbookStateIndex {} => use_mdbook::mdbook_shared::PageId(48usize),
-            BookRoute::CookbookStateExternalIndex {} => use_mdbook::mdbook_shared::PageId(49usize),
-            BookRoute::CookbookStateCustomHooksIndex {} => {
-                use_mdbook::mdbook_shared::PageId(50usize)
+            BookRoute::GuidesFullstackRouting {} => use_mdbook::mdbook_shared::PageId(48usize),
+            BookRoute::CookbookPublishing {} => use_mdbook::mdbook_shared::PageId(49usize),
+            BookRoute::CookbookAntipatterns {} => use_mdbook::mdbook_shared::PageId(50usize),
+            BookRoute::CookbookErrorHandling {} => use_mdbook::mdbook_shared::PageId(51usize),
+            BookRoute::CookbookIntegrationsIndex {} => use_mdbook::mdbook_shared::PageId(52usize),
+            BookRoute::CookbookIntegrationsLogging {} => use_mdbook::mdbook_shared::PageId(53usize),
+            BookRoute::CookbookIntegrationsInternationalization {} => {
+                use_mdbook::mdbook_shared::PageId(54usize)
             }
-            BookRoute::CookbookTesting {} => use_mdbook::mdbook_shared::PageId(51usize),
-            BookRoute::CookbookTailwind {} => use_mdbook::mdbook_shared::PageId(52usize),
-            BookRoute::CookbookOptimizing {} => use_mdbook::mdbook_shared::PageId(53usize),
-            BookRoute::MigrationIndex {} => use_mdbook::mdbook_shared::PageId(54usize),
-            BookRoute::ReferenceIndex {} => use_mdbook::mdbook_shared::PageId(55usize),
-            BookRoute::ReferenceRsx {} => use_mdbook::mdbook_shared::PageId(56usize),
-            BookRoute::ReferenceComponents {} => use_mdbook::mdbook_shared::PageId(57usize),
-            BookRoute::ReferenceComponentProps {} => use_mdbook::mdbook_shared::PageId(58usize),
-            BookRoute::ReferenceEventHandlers {} => use_mdbook::mdbook_shared::PageId(59usize),
-            BookRoute::ReferenceHooks {} => use_mdbook::mdbook_shared::PageId(60usize),
-            BookRoute::ReferenceUserInput {} => use_mdbook::mdbook_shared::PageId(61usize),
-            BookRoute::ReferenceContext {} => use_mdbook::mdbook_shared::PageId(62usize),
-            BookRoute::ReferenceDynamicRendering {} => use_mdbook::mdbook_shared::PageId(63usize),
-            BookRoute::ReferenceRouter {} => use_mdbook::mdbook_shared::PageId(64usize),
-            BookRoute::ReferenceUseResource {} => use_mdbook::mdbook_shared::PageId(65usize),
-            BookRoute::ReferenceUseCoroutine {} => use_mdbook::mdbook_shared::PageId(66usize),
-            BookRoute::ReferenceSpawn {} => use_mdbook::mdbook_shared::PageId(67usize),
-            BookRoute::ContributingIndex {} => use_mdbook::mdbook_shared::PageId(68usize),
+            BookRoute::CookbookStateIndex {} => use_mdbook::mdbook_shared::PageId(55usize),
+            BookRoute::CookbookStateExternalIndex {} => use_mdbook::mdbook_shared::PageId(56usize),
+            BookRoute::CookbookStateCustomHooksIndex {} => {
+                use_mdbook::mdbook_shared::PageId(57usize)
+            }
+            BookRoute::CookbookTesting {} => use_mdbook::mdbook_shared::PageId(58usize),
+            BookRoute::CookbookTailwind {} => use_mdbook::mdbook_shared::PageId(59usize),
+            BookRoute::CookbookOptimizing {} => use_mdbook::mdbook_shared::PageId(60usize),
+            BookRoute::MigrationIndex {} => use_mdbook::mdbook_shared::PageId(61usize),
+            BookRoute::ReferenceIndex {} => use_mdbook::mdbook_shared::PageId(62usize),
+            BookRoute::ReferenceHotreload {} => use_mdbook::mdbook_shared::PageId(63usize),
+            BookRoute::ReferenceRsx {} => use_mdbook::mdbook_shared::PageId(64usize),
+            BookRoute::ReferenceComponents {} => use_mdbook::mdbook_shared::PageId(65usize),
+            BookRoute::ReferenceComponentProps {} => use_mdbook::mdbook_shared::PageId(66usize),
+            BookRoute::ReferenceEventHandlers {} => use_mdbook::mdbook_shared::PageId(67usize),
+            BookRoute::ReferenceHooks {} => use_mdbook::mdbook_shared::PageId(68usize),
+            BookRoute::ReferenceUserInput {} => use_mdbook::mdbook_shared::PageId(69usize),
+            BookRoute::ReferenceContext {} => use_mdbook::mdbook_shared::PageId(70usize),
+            BookRoute::ReferenceDynamicRendering {} => use_mdbook::mdbook_shared::PageId(71usize),
+            BookRoute::ReferenceRouter {} => use_mdbook::mdbook_shared::PageId(72usize),
+            BookRoute::ReferenceUseResource {} => use_mdbook::mdbook_shared::PageId(73usize),
+            BookRoute::ReferenceUseCoroutine {} => use_mdbook::mdbook_shared::PageId(74usize),
+            BookRoute::ReferenceSpawn {} => use_mdbook::mdbook_shared::PageId(75usize),
+            BookRoute::ContributingIndex {} => use_mdbook::mdbook_shared::PageId(76usize),
             BookRoute::ContributingProjectStructure {} => {
-                use_mdbook::mdbook_shared::PageId(69usize)
+                use_mdbook::mdbook_shared::PageId(77usize)
             }
             BookRoute::ContributingGuidingPrinciples {} => {
-                use_mdbook::mdbook_shared::PageId(70usize)
+                use_mdbook::mdbook_shared::PageId(78usize)
             }
-            BookRoute::ContributingRoadmap {} => use_mdbook::mdbook_shared::PageId(71usize),
-            BookRoute::CliIndex {} => use_mdbook::mdbook_shared::PageId(72usize),
-            BookRoute::CliCreating {} => use_mdbook::mdbook_shared::PageId(73usize),
-            BookRoute::CliConfigure {} => use_mdbook::mdbook_shared::PageId(74usize),
-            BookRoute::CliTranslate {} => use_mdbook::mdbook_shared::PageId(75usize),
+            BookRoute::ContributingRoadmap {} => use_mdbook::mdbook_shared::PageId(79usize),
+            BookRoute::CliIndex {} => use_mdbook::mdbook_shared::PageId(80usize),
+            BookRoute::CliCreating {} => use_mdbook::mdbook_shared::PageId(81usize),
+            BookRoute::CliConfigure {} => use_mdbook::mdbook_shared::PageId(82usize),
+            BookRoute::CliTranslate {} => use_mdbook::mdbook_shared::PageId(83usize),
         }
     }
 }
@@ -426,17 +450,22 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
         pages.push((2usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Tutorial".to_string(),
-                url: BookRoute::GuideIndex {},
+                url: BookRoute::NewGuideIndex {},
                 segments: vec![],
                 sections: vec![
                     ::use_mdbook::mdbook_shared::Section {
-                        title: "Dioxus Guide".to_string(),
-                        id: "dioxus-guide".to_string(),
+                        title: "Dioxus Tutorial".to_string(),
+                        id: "dioxus-tutorial".to_string(),
                         level: 1usize,
                     },
                     ::use_mdbook::mdbook_shared::Section {
-                        title: "Introduction".to_string(),
-                        id: "introduction".to_string(),
+                        title: "What are we building?".to_string(),
+                        id: "what-are-we-building?".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "What will we be learning?".to_string(),
+                        id: "what-will-we-be-learning?".to_string(),
                         level: 2usize,
                     },
                 ],
@@ -445,58 +474,28 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
             }
         }));
         page_id_mapping.insert(
-            BookRoute::GuideIndex {},
+            BookRoute::NewGuideIndex {},
             ::use_mdbook::mdbook_shared::PageId(2usize),
         );
         pages.push((3usize, {
             ::use_mdbook::mdbook_shared::Page {
-                title: "Your First Component".to_string(),
-                url: BookRoute::GuideYourFirstComponent {},
+                title: "Tooling Setup".to_string(),
+                url: BookRoute::NewGuideTooling {},
                 segments: vec![],
                 sections: vec![
                     ::use_mdbook::mdbook_shared::Section {
-                        title: "Your First Component".to_string(),
-                        id: "your-first-component".to_string(),
+                        title: "Setting up Tooling".to_string(),
+                        id: "setting-up-tooling".to_string(),
                         level: 1usize,
                     },
                     ::use_mdbook::mdbook_shared::Section {
-                        title: "Setup".to_string(),
-                        id: "setup".to_string(),
+                        title: "Checklist".to_string(),
+                        id: "checklist".to_string(),
                         level: 2usize,
                     },
                     ::use_mdbook::mdbook_shared::Section {
-                        title: "Describing the UI".to_string(),
-                        id: "describing-the-ui".to_string(),
-                        level: 2usize,
-                    },
-                    ::use_mdbook::mdbook_shared::Section {
-                        title: "Dynamic Text".to_string(),
-                        id: "dynamic-text".to_string(),
-                        level: 2usize,
-                    },
-                    ::use_mdbook::mdbook_shared::Section {
-                        title: "Creating Elements".to_string(),
-                        id: "creating-elements".to_string(),
-                        level: 2usize,
-                    },
-                    ::use_mdbook::mdbook_shared::Section {
-                        title: "Setting Attributes".to_string(),
-                        id: "setting-attributes".to_string(),
-                        level: 2usize,
-                    },
-                    ::use_mdbook::mdbook_shared::Section {
-                        title: "Creating a Component".to_string(),
-                        id: "creating-a-component".to_string(),
-                        level: 2usize,
-                    },
-                    ::use_mdbook::mdbook_shared::Section {
-                        title: "Creating Props".to_string(),
-                        id: "creating-props".to_string(),
-                        level: 2usize,
-                    },
-                    ::use_mdbook::mdbook_shared::Section {
-                        title: "Cleaning Up Our Interface".to_string(),
-                        id: "cleaning-up-our-interface".to_string(),
+                        title: "Verify your setup".to_string(),
+                        id: "verify-your-setup".to_string(),
                         level: 2usize,
                     },
                 ],
@@ -505,13 +504,162 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
             }
         }));
         page_id_mapping.insert(
-            BookRoute::GuideYourFirstComponent {},
+            BookRoute::NewGuideTooling {},
             ::use_mdbook::mdbook_shared::PageId(3usize),
         );
         pages.push((4usize, {
             ::use_mdbook::mdbook_shared::Page {
-                title: "State".to_string(),
-                url: BookRoute::GuideState {},
+                title: "Creating a new app".to_string(),
+                url: BookRoute::NewGuideNewApp {},
+                segments: vec![],
+                sections: vec![
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Create a new project".to_string(),
+                        id: "create-a-new-project".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Running the project".to_string(),
+                        id: "running-the-project".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Structure of the app".to_string(),
+                        id: "structure-of-the-app".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "The Cargo.toml".to_string(),
+                        id: "the-cargo.toml".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Dioxus.toml".to_string(),
+                        id: "dioxus.toml".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Assets Folder".to_string(),
+                        id: "assets-folder".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "main.rs".to_string(),
+                        id: "main.rs".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Resetting to Basics".to_string(),
+                        id: "resetting-to-basics".to_string(),
+                        level: 2usize,
+                    },
+                ],
+                raw: String::new(),
+                id: ::use_mdbook::mdbook_shared::PageId(4usize),
+            }
+        }));
+        page_id_mapping.insert(
+            BookRoute::NewGuideNewApp {},
+            ::use_mdbook::mdbook_shared::PageId(4usize),
+        );
+        pages.push((5usize, {
+            ::use_mdbook::mdbook_shared::Page {
+                title: "Your First Component".to_string(),
+                url: BookRoute::NewGuideComponent {},
+                segments: vec![],
+                sections: vec![
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Your First Component".to_string(),
+                        id: "your-first-component".to_string(),
+                        level: 1usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "What is a component?".to_string(),
+                        id: "what-is-a-component?".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Component Properties".to_string(),
+                        id: "component-properties".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Properties are Immutable".to_string(),
+                        id: "properties-are-immutable".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Component Functions are Called Multiple Times".to_string(),
+                        id: "component-functions-are-called-multiple-times".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Composing Components".to_string(),
+                        id: "composing-components".to_string(),
+                        level: 2usize,
+                    },
+                ],
+                raw: String::new(),
+                id: ::use_mdbook::mdbook_shared::PageId(5usize),
+            }
+        }));
+        page_id_mapping.insert(
+            BookRoute::NewGuideComponent {},
+            ::use_mdbook::mdbook_shared::PageId(5usize),
+        );
+        pages.push((6usize, {
+            ::use_mdbook::mdbook_shared::Page {
+                title: "Creating UI with RSX".to_string(),
+                url: BookRoute::NewGuideRsx {},
+                segments: vec![],
+                sections: vec![
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Describing the UI".to_string(),
+                        id: "describing-the-ui".to_string(),
+                        level: 1usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "RSX is just HTML".to_string(),
+                        id: "rsx-is-just-html".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Editing RSX with Hot-Reloading".to_string(),
+                        id: "editing-rsx-with-hot-reloading".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Adding UI to our ".to_string(),
+                        id: "adding-ui-to-our".to_string(),
+                        level: 2usize,
+                    },
+                ],
+                raw: String::new(),
+                id: ::use_mdbook::mdbook_shared::PageId(6usize),
+            }
+        }));
+        page_id_mapping.insert(
+            BookRoute::NewGuideRsx {},
+            ::use_mdbook::mdbook_shared::PageId(6usize),
+        );
+        pages.push((7usize, {
+            ::use_mdbook::mdbook_shared::Page {
+                title: "Styling and Assets".to_string(),
+                url: BookRoute::NewGuideAssets {},
+                segments: vec![],
+                sections: vec![],
+                raw: String::new(),
+                id: ::use_mdbook::mdbook_shared::PageId(7usize),
+            }
+        }));
+        page_id_mapping.insert(
+            BookRoute::NewGuideAssets {},
+            ::use_mdbook::mdbook_shared::PageId(7usize),
+        );
+        pages.push((8usize, {
+            ::use_mdbook::mdbook_shared::Page {
+                title: "Adding State".to_string(),
+                url: BookRoute::NewGuideState {},
                 segments: vec![],
                 sections: vec![
                     ::use_mdbook::mdbook_shared::Section {
@@ -556,17 +704,31 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(4usize),
+                id: ::use_mdbook::mdbook_shared::PageId(8usize),
             }
         }));
         page_id_mapping.insert(
-            BookRoute::GuideState {},
-            ::use_mdbook::mdbook_shared::PageId(4usize),
+            BookRoute::NewGuideState {},
+            ::use_mdbook::mdbook_shared::PageId(8usize),
         );
-        pages.push((5usize, {
+        pages.push((9usize, {
             ::use_mdbook::mdbook_shared::Page {
-                title: "Data Fetching".to_string(),
-                url: BookRoute::GuideDataFetching {},
+                title: "App Routing".to_string(),
+                url: BookRoute::NewGuideRouting {},
+                segments: vec![],
+                sections: vec![],
+                raw: String::new(),
+                id: ::use_mdbook::mdbook_shared::PageId(9usize),
+            }
+        }));
+        page_id_mapping.insert(
+            BookRoute::NewGuideRouting {},
+            ::use_mdbook::mdbook_shared::PageId(9usize),
+        );
+        pages.push((10usize, {
+            ::use_mdbook::mdbook_shared::Page {
+                title: "Fetching Data".to_string(),
+                url: BookRoute::NewGuideDataFetching {},
                 segments: vec![],
                 sections: vec![
                     ::use_mdbook::mdbook_shared::Section {
@@ -591,58 +753,70 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(5usize),
+                id: ::use_mdbook::mdbook_shared::PageId(10usize),
             }
         }));
         page_id_mapping.insert(
-            BookRoute::GuideDataFetching {},
-            ::use_mdbook::mdbook_shared::PageId(5usize),
+            BookRoute::NewGuideDataFetching {},
+            ::use_mdbook::mdbook_shared::PageId(10usize),
         );
-        pages.push((6usize, {
+        pages.push((11usize, {
             ::use_mdbook::mdbook_shared::Page {
-                title: "Full Code".to_string(),
-                url: BookRoute::GuideFullCode {},
+                title: "Add a Backend".to_string(),
+                url: BookRoute::NewGuideBackend {},
                 segments: vec![],
-                sections: vec![
-                    ::use_mdbook::mdbook_shared::Section {
-                        title: "Conclusion".to_string(),
-                        id: "conclusion".to_string(),
-                        level: 1usize,
-                    },
-                    ::use_mdbook::mdbook_shared::Section {
-                        title: "Challenges".to_string(),
-                        id: "challenges".to_string(),
-                        level: 2usize,
-                    },
-                    ::use_mdbook::mdbook_shared::Section {
-                        title: "The full code for the hacker news project".to_string(),
-                        id: "the-full-code-for-the-hacker-news-project".to_string(),
-                        level: 2usize,
-                    },
-                ],
+                sections: vec![],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(6usize),
+                id: ::use_mdbook::mdbook_shared::PageId(11usize),
             }
         }));
         page_id_mapping.insert(
-            BookRoute::GuideFullCode {},
-            ::use_mdbook::mdbook_shared::PageId(6usize),
+            BookRoute::NewGuideBackend {},
+            ::use_mdbook::mdbook_shared::PageId(11usize),
         );
-        pages.push((7usize, {
+        pages.push((12usize, {
+            ::use_mdbook::mdbook_shared::Page {
+                title: "Bundling and Deployment".to_string(),
+                url: BookRoute::NewGuideDeploy {},
+                segments: vec![],
+                sections: vec![],
+                raw: String::new(),
+                id: ::use_mdbook::mdbook_shared::PageId(12usize),
+            }
+        }));
+        page_id_mapping.insert(
+            BookRoute::NewGuideDeploy {},
+            ::use_mdbook::mdbook_shared::PageId(12usize),
+        );
+        pages.push((13usize, {
+            ::use_mdbook::mdbook_shared::Page {
+                title: "Next Steps".to_string(),
+                url: BookRoute::NewGuideNextSteps {},
+                segments: vec![],
+                sections: vec![],
+                raw: String::new(),
+                id: ::use_mdbook::mdbook_shared::PageId(13usize),
+            }
+        }));
+        page_id_mapping.insert(
+            BookRoute::NewGuideNextSteps {},
+            ::use_mdbook::mdbook_shared::PageId(13usize),
+        );
+        pages.push((14usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Essential Concepts".to_string(),
                 url: BookRoute::EssentialsIndex {},
                 segments: vec![],
                 sections: vec![],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(7usize),
+                id: ::use_mdbook::mdbook_shared::PageId(14usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::EssentialsIndex {},
-            ::use_mdbook::mdbook_shared::PageId(7usize),
+            ::use_mdbook::mdbook_shared::PageId(14usize),
         );
-        pages.push((8usize, {
+        pages.push((15usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Building UIs with RSX".to_string(),
                 url: BookRoute::EssentialsRsxIndex {},
@@ -693,16 +867,21 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                         id: "if-statements".to_string(),
                         level: 2usize,
                     },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Why RSX and not HTML ?".to_string(),
+                        id: "why-rsx-and-not-html-?".to_string(),
+                        level: 2usize,
+                    },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(8usize),
+                id: ::use_mdbook::mdbook_shared::PageId(15usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::EssentialsRsxIndex {},
-            ::use_mdbook::mdbook_shared::PageId(8usize),
+            ::use_mdbook::mdbook_shared::PageId(15usize),
         );
-        pages.push((9usize, {
+        pages.push((16usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Component Lifecycle".to_string(),
                 url: BookRoute::EssentialsLifecycleIndex {},
@@ -741,14 +920,14 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(9usize),
+                id: ::use_mdbook::mdbook_shared::PageId(16usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::EssentialsLifecycleIndex {},
-            ::use_mdbook::mdbook_shared::PageId(9usize),
+            ::use_mdbook::mdbook_shared::PageId(16usize),
         );
-        pages.push((10usize, {
+        pages.push((17usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Managing State".to_string(),
                 url: BookRoute::EssentialsStateIndex {},
@@ -816,14 +995,14 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(10usize),
+                id: ::use_mdbook::mdbook_shared::PageId(17usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::EssentialsStateIndex {},
-            ::use_mdbook::mdbook_shared::PageId(10usize),
+            ::use_mdbook::mdbook_shared::PageId(17usize),
         );
-        pages.push((11usize, {
+        pages.push((18usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Breaking Out".to_string(),
                 url: BookRoute::EssentialsBreakingIndex {},
@@ -856,14 +1035,14 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(11usize),
+                id: ::use_mdbook::mdbook_shared::PageId(18usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::EssentialsBreakingIndex {},
-            ::use_mdbook::mdbook_shared::PageId(11usize),
+            ::use_mdbook::mdbook_shared::PageId(18usize),
         );
-        pages.push((12usize, {
+        pages.push((19usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Guides".to_string(),
                 url: BookRoute::GuidesIndex {},
@@ -891,14 +1070,14 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(12usize),
+                id: ::use_mdbook::mdbook_shared::PageId(19usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::GuidesIndex {},
-            ::use_mdbook::mdbook_shared::PageId(12usize),
+            ::use_mdbook::mdbook_shared::PageId(19usize),
         );
-        pages.push((13usize, {
+        pages.push((20usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Router".to_string(),
                 url: BookRoute::RouterIndex {},
@@ -909,14 +1088,14 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     level: 1usize,
                 }],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(13usize),
+                id: ::use_mdbook::mdbook_shared::PageId(20usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::RouterIndex {},
-            ::use_mdbook::mdbook_shared::PageId(13usize),
+            ::use_mdbook::mdbook_shared::PageId(20usize),
         );
-        pages.push((14usize, {
+        pages.push((21usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Example Project".to_string(),
                 url: BookRoute::RouterExampleIndex {},
@@ -934,14 +1113,14 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(14usize),
+                id: ::use_mdbook::mdbook_shared::PageId(21usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::RouterExampleIndex {},
-            ::use_mdbook::mdbook_shared::PageId(14usize),
+            ::use_mdbook::mdbook_shared::PageId(21usize),
         );
-        pages.push((15usize, {
+        pages.push((22usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Creating Our First Route".to_string(),
                 url: BookRoute::RouterExampleFirstRoute {},
@@ -974,14 +1153,14 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(15usize),
+                id: ::use_mdbook::mdbook_shared::PageId(22usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::RouterExampleFirstRoute {},
-            ::use_mdbook::mdbook_shared::PageId(15usize),
+            ::use_mdbook::mdbook_shared::PageId(22usize),
         );
-        pages.push((16usize, {
+        pages.push((23usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Building a Nest".to_string(),
                 url: BookRoute::RouterExampleBuildingANest {},
@@ -1009,14 +1188,14 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(16usize),
+                id: ::use_mdbook::mdbook_shared::PageId(23usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::RouterExampleBuildingANest {},
-            ::use_mdbook::mdbook_shared::PageId(16usize),
+            ::use_mdbook::mdbook_shared::PageId(23usize),
         );
-        pages.push((17usize, {
+        pages.push((24usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Navigation Targets".to_string(),
                 url: BookRoute::RouterExampleNavigationTargets {},
@@ -1039,14 +1218,14 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(17usize),
+                id: ::use_mdbook::mdbook_shared::PageId(24usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::RouterExampleNavigationTargets {},
-            ::use_mdbook::mdbook_shared::PageId(17usize),
+            ::use_mdbook::mdbook_shared::PageId(24usize),
         );
-        pages.push((18usize, {
+        pages.push((25usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Redirection Perfection".to_string(),
                 url: BookRoute::RouterExampleRedirectionPerfection {},
@@ -1074,14 +1253,14 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(18usize),
+                id: ::use_mdbook::mdbook_shared::PageId(25usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::RouterExampleRedirectionPerfection {},
-            ::use_mdbook::mdbook_shared::PageId(18usize),
+            ::use_mdbook::mdbook_shared::PageId(25usize),
         );
-        pages.push((19usize, {
+        pages.push((26usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Full Code".to_string(),
                 url: BookRoute::RouterExampleFullCode {},
@@ -1092,14 +1271,14 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     level: 1usize,
                 }],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(19usize),
+                id: ::use_mdbook::mdbook_shared::PageId(26usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::RouterExampleFullCode {},
-            ::use_mdbook::mdbook_shared::PageId(19usize),
+            ::use_mdbook::mdbook_shared::PageId(26usize),
         );
-        pages.push((20usize, {
+        pages.push((27usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Reference".to_string(),
                 url: BookRoute::RouterReferenceIndex {},
@@ -1110,14 +1289,14 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     level: 1usize,
                 }],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(20usize),
+                id: ::use_mdbook::mdbook_shared::PageId(27usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::RouterReferenceIndex {},
-            ::use_mdbook::mdbook_shared::PageId(20usize),
+            ::use_mdbook::mdbook_shared::PageId(27usize),
         );
-        pages.push((21usize, {
+        pages.push((28usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Defining Routes".to_string(),
                 url: BookRoute::RouterReferenceRoutesIndex {},
@@ -1155,14 +1334,14 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(21usize),
+                id: ::use_mdbook::mdbook_shared::PageId(28usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::RouterReferenceRoutesIndex {},
-            ::use_mdbook::mdbook_shared::PageId(21usize),
+            ::use_mdbook::mdbook_shared::PageId(28usize),
         );
-        pages.push((22usize, {
+        pages.push((29usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Nested Routes".to_string(),
                 url: BookRoute::RouterReferenceRoutesNested {},
@@ -1180,14 +1359,14 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(22usize),
+                id: ::use_mdbook::mdbook_shared::PageId(29usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::RouterReferenceRoutesNested {},
-            ::use_mdbook::mdbook_shared::PageId(22usize),
+            ::use_mdbook::mdbook_shared::PageId(29usize),
         );
-        pages.push((23usize, {
+        pages.push((30usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Layouts".to_string(),
                 url: BookRoute::RouterReferenceLayouts {},
@@ -1205,14 +1384,14 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(23usize),
+                id: ::use_mdbook::mdbook_shared::PageId(30usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::RouterReferenceLayouts {},
-            ::use_mdbook::mdbook_shared::PageId(23usize),
+            ::use_mdbook::mdbook_shared::PageId(30usize),
         );
-        pages.push((24usize, {
+        pages.push((31usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Navigation".to_string(),
                 url: BookRoute::RouterReferenceNavigationIndex {},
@@ -1223,14 +1402,14 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     level: 1usize,
                 }],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(24usize),
+                id: ::use_mdbook::mdbook_shared::PageId(31usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::RouterReferenceNavigationIndex {},
-            ::use_mdbook::mdbook_shared::PageId(24usize),
+            ::use_mdbook::mdbook_shared::PageId(31usize),
         );
-        pages.push((25usize, {
+        pages.push((32usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Programmatic Navigation".to_string(),
                 url: BookRoute::RouterReferenceNavigationProgrammatic {},
@@ -1253,14 +1432,14 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(25usize),
+                id: ::use_mdbook::mdbook_shared::PageId(32usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::RouterReferenceNavigationProgrammatic {},
-            ::use_mdbook::mdbook_shared::PageId(25usize),
+            ::use_mdbook::mdbook_shared::PageId(32usize),
         );
-        pages.push((26usize, {
+        pages.push((33usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "History Providers".to_string(),
                 url: BookRoute::RouterReferenceHistoryProviders {},
@@ -1271,14 +1450,14 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     level: 1usize,
                 }],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(26usize),
+                id: ::use_mdbook::mdbook_shared::PageId(33usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::RouterReferenceHistoryProviders {},
-            ::use_mdbook::mdbook_shared::PageId(26usize),
+            ::use_mdbook::mdbook_shared::PageId(33usize),
         );
-        pages.push((27usize, {
+        pages.push((34usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "History Buttons".to_string(),
                 url: BookRoute::RouterReferenceHistoryButtons {},
@@ -1289,14 +1468,14 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     level: 1usize,
                 }],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(27usize),
+                id: ::use_mdbook::mdbook_shared::PageId(34usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::RouterReferenceHistoryButtons {},
-            ::use_mdbook::mdbook_shared::PageId(27usize),
+            ::use_mdbook::mdbook_shared::PageId(34usize),
         );
-        pages.push((28usize, {
+        pages.push((35usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Routing Update Callback".to_string(),
                 url: BookRoute::RouterReferenceRoutingUpdateCallback {},
@@ -1319,14 +1498,14 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(28usize),
+                id: ::use_mdbook::mdbook_shared::PageId(35usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::RouterReferenceRoutingUpdateCallback {},
-            ::use_mdbook::mdbook_shared::PageId(28usize),
+            ::use_mdbook::mdbook_shared::PageId(35usize),
         );
-        pages.push((29usize, {
+        pages.push((36usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Assets".to_string(),
                 url: BookRoute::GuidesAssets {},
@@ -1359,14 +1538,14 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(29usize),
+                id: ::use_mdbook::mdbook_shared::PageId(36usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::GuidesAssets {},
-            ::use_mdbook::mdbook_shared::PageId(29usize),
+            ::use_mdbook::mdbook_shared::PageId(36usize),
         );
-        pages.push((30usize, {
+        pages.push((37usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Web".to_string(),
                 url: BookRoute::GuidesWebIndex {},
@@ -1394,14 +1573,14 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(30usize),
+                id: ::use_mdbook::mdbook_shared::PageId(37usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::GuidesWebIndex {},
-            ::use_mdbook::mdbook_shared::PageId(30usize),
+            ::use_mdbook::mdbook_shared::PageId(37usize),
         );
-        pages.push((31usize, {
+        pages.push((38usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Desktop".to_string(),
                 url: BookRoute::GuidesDesktopIndex {},
@@ -1434,14 +1613,14 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(31usize),
+                id: ::use_mdbook::mdbook_shared::PageId(38usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::GuidesDesktopIndex {},
-            ::use_mdbook::mdbook_shared::PageId(31usize),
+            ::use_mdbook::mdbook_shared::PageId(38usize),
         );
-        pages.push((32usize, {
+        pages.push((39usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Mobile".to_string(),
                 url: BookRoute::GuidesMobileIndex {},
@@ -1479,14 +1658,14 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(32usize),
+                id: ::use_mdbook::mdbook_shared::PageId(39usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::GuidesMobileIndex {},
-            ::use_mdbook::mdbook_shared::PageId(32usize),
+            ::use_mdbook::mdbook_shared::PageId(39usize),
         );
-        pages.push((33usize, {
+        pages.push((40usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "APIs".to_string(),
                 url: BookRoute::GuidesMobileApis {},
@@ -1514,14 +1693,14 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(33usize),
+                id: ::use_mdbook::mdbook_shared::PageId(40usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::GuidesMobileApis {},
-            ::use_mdbook::mdbook_shared::PageId(33usize),
+            ::use_mdbook::mdbook_shared::PageId(40usize),
         );
-        pages.push((34usize, {
+        pages.push((41usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Streaming and SSR".to_string(),
                 url: BookRoute::GuidesSsr {},
@@ -1544,14 +1723,14 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(34usize),
+                id: ::use_mdbook::mdbook_shared::PageId(41usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::GuidesSsr {},
-            ::use_mdbook::mdbook_shared::PageId(34usize),
+            ::use_mdbook::mdbook_shared::PageId(41usize),
         );
-        pages.push((35usize, {
+        pages.push((42usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Fullstack".to_string(),
                 url: BookRoute::GuidesFullstackIndex {},
@@ -1562,14 +1741,14 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     level: 1usize,
                 }],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(35usize),
+                id: ::use_mdbook::mdbook_shared::PageId(42usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::GuidesFullstackIndex {},
-            ::use_mdbook::mdbook_shared::PageId(35usize),
+            ::use_mdbook::mdbook_shared::PageId(42usize),
         );
-        pages.push((36usize, {
+        pages.push((43usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Managing Dependencies".to_string(),
                 url: BookRoute::GuidesFullstackManagingDependencies {},
@@ -1602,14 +1781,14 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(36usize),
+                id: ::use_mdbook::mdbook_shared::PageId(43usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::GuidesFullstackManagingDependencies {},
-            ::use_mdbook::mdbook_shared::PageId(36usize),
+            ::use_mdbook::mdbook_shared::PageId(43usize),
         );
-        pages.push((37usize, {
+        pages.push((44usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Server Functions".to_string(),
                 url: BookRoute::GuidesFullstackServerFunctions {},
@@ -1642,14 +1821,14 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(37usize),
+                id: ::use_mdbook::mdbook_shared::PageId(44usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::GuidesFullstackServerFunctions {},
-            ::use_mdbook::mdbook_shared::PageId(37usize),
+            ::use_mdbook::mdbook_shared::PageId(44usize),
         );
-        pages.push((38usize, {
+        pages.push((45usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Extractors".to_string(),
                 url: BookRoute::GuidesFullstackExtractors {},
@@ -1660,14 +1839,14 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     level: 1usize,
                 }],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(38usize),
+                id: ::use_mdbook::mdbook_shared::PageId(45usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::GuidesFullstackExtractors {},
-            ::use_mdbook::mdbook_shared::PageId(38usize),
+            ::use_mdbook::mdbook_shared::PageId(45usize),
         );
-        pages.push((39usize, {
+        pages.push((46usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Middleware".to_string(),
                 url: BookRoute::GuidesFullstackMiddleware {},
@@ -1678,14 +1857,14 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     level: 1usize,
                 }],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(39usize),
+                id: ::use_mdbook::mdbook_shared::PageId(46usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::GuidesFullstackMiddleware {},
-            ::use_mdbook::mdbook_shared::PageId(39usize),
+            ::use_mdbook::mdbook_shared::PageId(46usize),
         );
-        pages.push((40usize, {
+        pages.push((47usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Authentication".to_string(),
                 url: BookRoute::GuidesFullstackAuthentication {},
@@ -1696,14 +1875,14 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     level: 1usize,
                 }],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(40usize),
+                id: ::use_mdbook::mdbook_shared::PageId(47usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::GuidesFullstackAuthentication {},
-            ::use_mdbook::mdbook_shared::PageId(40usize),
+            ::use_mdbook::mdbook_shared::PageId(47usize),
         );
-        pages.push((41usize, {
+        pages.push((48usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Routing".to_string(),
                 url: BookRoute::GuidesFullstackRouting {},
@@ -1714,14 +1893,14 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     level: 1usize,
                 }],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(41usize),
+                id: ::use_mdbook::mdbook_shared::PageId(48usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::GuidesFullstackRouting {},
-            ::use_mdbook::mdbook_shared::PageId(41usize),
+            ::use_mdbook::mdbook_shared::PageId(48usize),
         );
-        pages.push((42usize, {
+        pages.push((49usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Publishing".to_string(),
                 url: BookRoute::CookbookPublishing {},
@@ -1764,14 +1943,14 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(42usize),
+                id: ::use_mdbook::mdbook_shared::PageId(49usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::CookbookPublishing {},
-            ::use_mdbook::mdbook_shared::PageId(42usize),
+            ::use_mdbook::mdbook_shared::PageId(49usize),
         );
-        pages.push((43usize, {
+        pages.push((50usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Anti-patterns".to_string(),
                 url: BookRoute::CookbookAntipatterns {},
@@ -1820,14 +1999,14 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(43usize),
+                id: ::use_mdbook::mdbook_shared::PageId(50usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::CookbookAntipatterns {},
-            ::use_mdbook::mdbook_shared::PageId(43usize),
+            ::use_mdbook::mdbook_shared::PageId(50usize),
         );
-        pages.push((44usize, {
+        pages.push((51usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Error Handling".to_string(),
                 url: BookRoute::CookbookErrorHandling {},
@@ -1865,28 +2044,28 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(44usize),
+                id: ::use_mdbook::mdbook_shared::PageId(51usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::CookbookErrorHandling {},
-            ::use_mdbook::mdbook_shared::PageId(44usize),
+            ::use_mdbook::mdbook_shared::PageId(51usize),
         );
-        pages.push((45usize, {
+        pages.push((52usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Integrations".to_string(),
                 url: BookRoute::CookbookIntegrationsIndex {},
                 segments: vec![],
                 sections: vec![],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(45usize),
+                id: ::use_mdbook::mdbook_shared::PageId(52usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::CookbookIntegrationsIndex {},
-            ::use_mdbook::mdbook_shared::PageId(45usize),
+            ::use_mdbook::mdbook_shared::PageId(52usize),
         );
-        pages.push((46usize, {
+        pages.push((53usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Logging".to_string(),
                 url: BookRoute::CookbookIntegrationsLogging {},
@@ -1924,14 +2103,14 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(46usize),
+                id: ::use_mdbook::mdbook_shared::PageId(53usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::CookbookIntegrationsLogging {},
-            ::use_mdbook::mdbook_shared::PageId(46usize),
+            ::use_mdbook::mdbook_shared::PageId(53usize),
         );
-        pages.push((47usize, {
+        pages.push((54usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Internationalization".to_string(),
                 url: BookRoute::CookbookIntegrationsInternationalization {},
@@ -1942,14 +2121,14 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     level: 1usize,
                 }],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(47usize),
+                id: ::use_mdbook::mdbook_shared::PageId(54usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::CookbookIntegrationsInternationalization {},
-            ::use_mdbook::mdbook_shared::PageId(47usize),
+            ::use_mdbook::mdbook_shared::PageId(54usize),
         );
-        pages.push((48usize, {
+        pages.push((55usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "State Management".to_string(),
                 url: BookRoute::CookbookStateIndex {},
@@ -1960,14 +2139,14 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     level: 1usize,
                 }],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(48usize),
+                id: ::use_mdbook::mdbook_shared::PageId(55usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::CookbookStateIndex {},
-            ::use_mdbook::mdbook_shared::PageId(48usize),
+            ::use_mdbook::mdbook_shared::PageId(55usize),
         );
-        pages.push((49usize, {
+        pages.push((56usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "External State".to_string(),
                 url: BookRoute::CookbookStateExternalIndex {},
@@ -1990,14 +2169,14 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(49usize),
+                id: ::use_mdbook::mdbook_shared::PageId(56usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::CookbookStateExternalIndex {},
-            ::use_mdbook::mdbook_shared::PageId(49usize),
+            ::use_mdbook::mdbook_shared::PageId(56usize),
         );
-        pages.push((50usize, {
+        pages.push((57usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Custom Hooks".to_string(),
                 url: BookRoute::CookbookStateCustomHooksIndex {},
@@ -2020,14 +2199,14 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(50usize),
+                id: ::use_mdbook::mdbook_shared::PageId(57usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::CookbookStateCustomHooksIndex {},
-            ::use_mdbook::mdbook_shared::PageId(50usize),
+            ::use_mdbook::mdbook_shared::PageId(57usize),
         );
-        pages.push((51usize, {
+        pages.push((58usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Testing".to_string(),
                 url: BookRoute::CookbookTesting {},
@@ -2055,14 +2234,14 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(51usize),
+                id: ::use_mdbook::mdbook_shared::PageId(58usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::CookbookTesting {},
-            ::use_mdbook::mdbook_shared::PageId(51usize),
+            ::use_mdbook::mdbook_shared::PageId(58usize),
         );
-        pages.push((52usize, {
+        pages.push((59usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Tailwind".to_string(),
                 url: BookRoute::CookbookTailwind {},
@@ -2100,14 +2279,14 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(52usize),
+                id: ::use_mdbook::mdbook_shared::PageId(59usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::CookbookTailwind {},
-            ::use_mdbook::mdbook_shared::PageId(52usize),
+            ::use_mdbook::mdbook_shared::PageId(59usize),
         );
-        pages.push((53usize, {
+        pages.push((60usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Optimizing".to_string(),
                 url: BookRoute::CookbookOptimizing {},
@@ -2160,14 +2339,14 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(53usize),
+                id: ::use_mdbook::mdbook_shared::PageId(60usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::CookbookOptimizing {},
-            ::use_mdbook::mdbook_shared::PageId(53usize),
+            ::use_mdbook::mdbook_shared::PageId(60usize),
         );
-        pages.push((54usize, {
+        pages.push((61usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Migrating to v0.6".to_string(),
                 url: BookRoute::MigrationIndex {},
@@ -2200,14 +2379,14 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(54usize),
+                id: ::use_mdbook::mdbook_shared::PageId(61usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::MigrationIndex {},
-            ::use_mdbook::mdbook_shared::PageId(54usize),
+            ::use_mdbook::mdbook_shared::PageId(61usize),
         );
-        pages.push((55usize, {
+        pages.push((62usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Reference".to_string(),
                 url: BookRoute::ReferenceIndex {},
@@ -2218,14 +2397,44 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     level: 1usize,
                 }],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(55usize),
+                id: ::use_mdbook::mdbook_shared::PageId(62usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::ReferenceIndex {},
-            ::use_mdbook::mdbook_shared::PageId(55usize),
+            ::use_mdbook::mdbook_shared::PageId(62usize),
         );
-        pages.push((56usize, {
+        pages.push((63usize, {
+            ::use_mdbook::mdbook_shared::Page {
+                title: "Hot-Reload".to_string(),
+                url: BookRoute::ReferenceHotreload {},
+                segments: vec![],
+                sections: vec![
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Dioxus Hot-Reloading Reference".to_string(),
+                        id: "dioxus-hot-reloading-reference".to_string(),
+                        level: 1usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "What can be hot-reloaded?".to_string(),
+                        id: "what-can-be-hot-reloaded?".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "What causes a full-rebuild?".to_string(),
+                        id: "what-causes-a-full-rebuild?".to_string(),
+                        level: 2usize,
+                    },
+                ],
+                raw: String::new(),
+                id: ::use_mdbook::mdbook_shared::PageId(63usize),
+            }
+        }));
+        page_id_mapping.insert(
+            BookRoute::ReferenceHotreload {},
+            ::use_mdbook::mdbook_shared::PageId(63usize),
+        );
+        pages.push((64usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "RSX".to_string(),
                 url: BookRoute::ReferenceRsx {},
@@ -2303,14 +2512,14 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(56usize),
+                id: ::use_mdbook::mdbook_shared::PageId(64usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::ReferenceRsx {},
-            ::use_mdbook::mdbook_shared::PageId(56usize),
+            ::use_mdbook::mdbook_shared::PageId(64usize),
         );
-        pages.push((57usize, {
+        pages.push((65usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Components".to_string(),
                 url: BookRoute::ReferenceComponents {},
@@ -2321,14 +2530,14 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     level: 1usize,
                 }],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(57usize),
+                id: ::use_mdbook::mdbook_shared::PageId(65usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::ReferenceComponents {},
-            ::use_mdbook::mdbook_shared::PageId(57usize),
+            ::use_mdbook::mdbook_shared::PageId(65usize),
         );
-        pages.push((58usize, {
+        pages.push((66usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Props".to_string(),
                 url: BookRoute::ReferenceComponentProps {},
@@ -2386,14 +2595,14 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(58usize),
+                id: ::use_mdbook::mdbook_shared::PageId(66usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::ReferenceComponentProps {},
-            ::use_mdbook::mdbook_shared::PageId(58usize),
+            ::use_mdbook::mdbook_shared::PageId(66usize),
         );
-        pages.push((59usize, {
+        pages.push((67usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Event Handlers".to_string(),
                 url: BookRoute::ReferenceEventHandlers {},
@@ -2436,14 +2645,14 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(59usize),
+                id: ::use_mdbook::mdbook_shared::PageId(67usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::ReferenceEventHandlers {},
-            ::use_mdbook::mdbook_shared::PageId(59usize),
+            ::use_mdbook::mdbook_shared::PageId(67usize),
         );
-        pages.push((60usize, {
+        pages.push((68usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Hooks".to_string(),
                 url: BookRoute::ReferenceHooks {},
@@ -2486,14 +2695,14 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(60usize),
+                id: ::use_mdbook::mdbook_shared::PageId(68usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::ReferenceHooks {},
-            ::use_mdbook::mdbook_shared::PageId(60usize),
+            ::use_mdbook::mdbook_shared::PageId(68usize),
         );
-        pages.push((61usize, {
+        pages.push((69usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "User Input".to_string(),
                 url: BookRoute::ReferenceUserInput {},
@@ -2521,14 +2730,14 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(61usize),
+                id: ::use_mdbook::mdbook_shared::PageId(69usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::ReferenceUserInput {},
-            ::use_mdbook::mdbook_shared::PageId(61usize),
+            ::use_mdbook::mdbook_shared::PageId(69usize),
         );
-        pages.push((62usize, {
+        pages.push((70usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Context".to_string(),
                 url: BookRoute::ReferenceContext {},
@@ -2551,14 +2760,14 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(62usize),
+                id: ::use_mdbook::mdbook_shared::PageId(70usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::ReferenceContext {},
-            ::use_mdbook::mdbook_shared::PageId(62usize),
+            ::use_mdbook::mdbook_shared::PageId(70usize),
         );
-        pages.push((63usize, {
+        pages.push((71usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Dynamic Rendering".to_string(),
                 url: BookRoute::ReferenceDynamicRendering {},
@@ -2606,14 +2815,14 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(63usize),
+                id: ::use_mdbook::mdbook_shared::PageId(71usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::ReferenceDynamicRendering {},
-            ::use_mdbook::mdbook_shared::PageId(63usize),
+            ::use_mdbook::mdbook_shared::PageId(71usize),
         );
-        pages.push((64usize, {
+        pages.push((72usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Routing".to_string(),
                 url: BookRoute::ReferenceRouter {},
@@ -2646,14 +2855,14 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(64usize),
+                id: ::use_mdbook::mdbook_shared::PageId(72usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::ReferenceRouter {},
-            ::use_mdbook::mdbook_shared::PageId(64usize),
+            ::use_mdbook::mdbook_shared::PageId(72usize),
         );
-        pages.push((65usize, {
+        pages.push((73usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Resource".to_string(),
                 url: BookRoute::ReferenceUseResource {},
@@ -2676,14 +2885,14 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(65usize),
+                id: ::use_mdbook::mdbook_shared::PageId(73usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::ReferenceUseResource {},
-            ::use_mdbook::mdbook_shared::PageId(65usize),
+            ::use_mdbook::mdbook_shared::PageId(73usize),
         );
-        pages.push((66usize, {
+        pages.push((74usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "UseCoroutine".to_string(),
                 url: BookRoute::ReferenceUseCoroutine {},
@@ -2716,14 +2925,14 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(66usize),
+                id: ::use_mdbook::mdbook_shared::PageId(74usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::ReferenceUseCoroutine {},
-            ::use_mdbook::mdbook_shared::PageId(66usize),
+            ::use_mdbook::mdbook_shared::PageId(74usize),
         );
-        pages.push((67usize, {
+        pages.push((75usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Spawn".to_string(),
                 url: BookRoute::ReferenceSpawn {},
@@ -2741,14 +2950,14 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(67usize),
+                id: ::use_mdbook::mdbook_shared::PageId(75usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::ReferenceSpawn {},
-            ::use_mdbook::mdbook_shared::PageId(67usize),
+            ::use_mdbook::mdbook_shared::PageId(75usize),
         );
-        pages.push((68usize, {
+        pages.push((76usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Contributing".to_string(),
                 url: BookRoute::ContributingIndex {},
@@ -2786,14 +2995,14 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(68usize),
+                id: ::use_mdbook::mdbook_shared::PageId(76usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::ContributingIndex {},
-            ::use_mdbook::mdbook_shared::PageId(68usize),
+            ::use_mdbook::mdbook_shared::PageId(76usize),
         );
-        pages.push((69usize, {
+        pages.push((77usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Project Structure".to_string(),
                 url: BookRoute::ContributingProjectStructure {},
@@ -2836,14 +3045,14 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(69usize),
+                id: ::use_mdbook::mdbook_shared::PageId(77usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::ContributingProjectStructure {},
-            ::use_mdbook::mdbook_shared::PageId(69usize),
+            ::use_mdbook::mdbook_shared::PageId(77usize),
         );
-        pages.push((70usize, {
+        pages.push((78usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Guiding Principles".to_string(),
                 url: BookRoute::ContributingGuidingPrinciples {},
@@ -2876,28 +3085,28 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(70usize),
+                id: ::use_mdbook::mdbook_shared::PageId(78usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::ContributingGuidingPrinciples {},
-            ::use_mdbook::mdbook_shared::PageId(70usize),
+            ::use_mdbook::mdbook_shared::PageId(78usize),
         );
-        pages.push((71usize, {
+        pages.push((79usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Roadmap".to_string(),
                 url: BookRoute::ContributingRoadmap {},
                 segments: vec![],
                 sections: vec![],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(71usize),
+                id: ::use_mdbook::mdbook_shared::PageId(79usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::ContributingRoadmap {},
-            ::use_mdbook::mdbook_shared::PageId(71usize),
+            ::use_mdbook::mdbook_shared::PageId(79usize),
         );
-        pages.push((72usize, {
+        pages.push((80usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "CLI".to_string(),
                 url: BookRoute::CliIndex {},
@@ -2915,14 +3124,14 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(72usize),
+                id: ::use_mdbook::mdbook_shared::PageId(80usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::CliIndex {},
-            ::use_mdbook::mdbook_shared::PageId(72usize),
+            ::use_mdbook::mdbook_shared::PageId(80usize),
         );
-        pages.push((73usize, {
+        pages.push((81usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Create a Project".to_string(),
                 url: BookRoute::CliCreating {},
@@ -2940,14 +3149,14 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(73usize),
+                id: ::use_mdbook::mdbook_shared::PageId(81usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::CliCreating {},
-            ::use_mdbook::mdbook_shared::PageId(73usize),
+            ::use_mdbook::mdbook_shared::PageId(81usize),
         );
-        pages.push((74usize, {
+        pages.push((82usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Configure Project".to_string(),
                 url: BookRoute::CliConfigure {},
@@ -3000,14 +3209,14 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(74usize),
+                id: ::use_mdbook::mdbook_shared::PageId(82usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::CliConfigure {},
-            ::use_mdbook::mdbook_shared::PageId(74usize),
+            ::use_mdbook::mdbook_shared::PageId(82usize),
         );
-        pages.push((75usize, {
+        pages.push((83usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Translate HTML".to_string(),
                 url: BookRoute::CliTranslate {},
@@ -3025,12 +3234,12 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(75usize),
+                id: ::use_mdbook::mdbook_shared::PageId(83usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::CliTranslate {},
-            ::use_mdbook::mdbook_shared::PageId(75usize),
+            ::use_mdbook::mdbook_shared::PageId(83usize),
         );
         ::use_mdbook::mdbook_shared::MdBook {
             summary: ::use_mdbook::mdbook_shared::Summary {
@@ -3057,41 +3266,100 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     ::use_mdbook::mdbook_shared::SummaryItem::Separator,
                     ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
                         name: "Tutorial".to_string(),
-                        location: Some(BookRoute::GuideIndex {}),
+                        location: Some(BookRoute::NewGuideIndex {}),
                         number: Some(
                             ::use_mdbook::mdbook_shared::SectionNumber(vec![2u32]),
                         ),
                         nested_items: vec![
                             ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
-                                name: "Your First Component".to_string(),
-                                location: Some(BookRoute::GuideYourFirstComponent {
-                                }),
+                                name: "Tooling Setup".to_string(),
+                                location: Some(BookRoute::NewGuideTooling {}),
                                 number: Some(
                                     ::use_mdbook::mdbook_shared::SectionNumber(vec![2u32, 1u32]),
                                 ),
                                 nested_items: vec![],
                             }),
                             ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
-                                name: "State".to_string(),
-                                location: Some(BookRoute::GuideState {}),
+                                name: "Creating a new app".to_string(),
+                                location: Some(BookRoute::NewGuideNewApp {}),
                                 number: Some(
                                     ::use_mdbook::mdbook_shared::SectionNumber(vec![2u32, 2u32]),
                                 ),
                                 nested_items: vec![],
                             }),
                             ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
-                                name: "Data Fetching".to_string(),
-                                location: Some(BookRoute::GuideDataFetching {}),
+                                name: "Your First Component".to_string(),
+                                location: Some(BookRoute::NewGuideComponent {}),
                                 number: Some(
                                     ::use_mdbook::mdbook_shared::SectionNumber(vec![2u32, 3u32]),
                                 ),
                                 nested_items: vec![],
                             }),
                             ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
-                                name: "Full Code".to_string(),
-                                location: Some(BookRoute::GuideFullCode {}),
+                                name: "Creating UI with RSX".to_string(),
+                                location: Some(BookRoute::NewGuideRsx {}),
                                 number: Some(
                                     ::use_mdbook::mdbook_shared::SectionNumber(vec![2u32, 4u32]),
+                                ),
+                                nested_items: vec![],
+                            }),
+                            ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
+                                name: "Styling and Assets".to_string(),
+                                location: Some(BookRoute::NewGuideAssets {}),
+                                number: Some(
+                                    ::use_mdbook::mdbook_shared::SectionNumber(vec![2u32, 5u32]),
+                                ),
+                                nested_items: vec![],
+                            }),
+                            ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
+                                name: "Adding State".to_string(),
+                                location: Some(BookRoute::NewGuideState {}),
+                                number: Some(
+                                    ::use_mdbook::mdbook_shared::SectionNumber(vec![2u32, 6u32]),
+                                ),
+                                nested_items: vec![],
+                            }),
+                            ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
+                                name: "App Routing".to_string(),
+                                location: Some(BookRoute::NewGuideRouting {}),
+                                number: Some(
+                                    ::use_mdbook::mdbook_shared::SectionNumber(vec![2u32, 7u32]),
+                                ),
+                                nested_items: vec![],
+                            }),
+                            ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
+                                name: "Fetching Data".to_string(),
+                                location: Some(BookRoute::NewGuideDataFetching {}),
+                                number: Some(
+                                    ::use_mdbook::mdbook_shared::SectionNumber(vec![2u32, 8u32]),
+                                ),
+                                nested_items: vec![],
+                            }),
+                            ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
+                                name: "Add a Backend".to_string(),
+                                location: Some(BookRoute::NewGuideBackend {}),
+                                number: Some(
+                                    ::use_mdbook::mdbook_shared::SectionNumber(vec![2u32, 9u32]),
+                                ),
+                                nested_items: vec![],
+                            }),
+                            ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
+                                name: "Bundling and Deployment".to_string(),
+                                location: Some(BookRoute::NewGuideDeploy {}),
+                                number: Some(
+                                    ::use_mdbook::mdbook_shared::SectionNumber(
+                                        vec![2u32, 10u32],
+                                    ),
+                                ),
+                                nested_items: vec![],
+                            }),
+                            ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
+                                name: "Next Steps".to_string(),
+                                location: Some(BookRoute::NewGuideNextSteps {}),
+                                number: Some(
+                                    ::use_mdbook::mdbook_shared::SectionNumber(
+                                        vec![2u32, 11u32],
+                                    ),
                                 ),
                                 nested_items: vec![],
                             }),
@@ -3589,10 +3857,18 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                         ),
                         nested_items: vec![
                             ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
+                                name: "Hot-Reload".to_string(),
+                                location: Some(BookRoute::ReferenceHotreload {}),
+                                number: Some(
+                                    ::use_mdbook::mdbook_shared::SectionNumber(vec![5u32, 1u32]),
+                                ),
+                                nested_items: vec![],
+                            }),
+                            ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
                                 name: "RSX".to_string(),
                                 location: Some(BookRoute::ReferenceRsx {}),
                                 number: Some(
-                                    ::use_mdbook::mdbook_shared::SectionNumber(vec![5u32, 1u32]),
+                                    ::use_mdbook::mdbook_shared::SectionNumber(vec![5u32, 2u32]),
                                 ),
                                 nested_items: vec![],
                             }),
@@ -3600,7 +3876,7 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                                 name: "Components".to_string(),
                                 location: Some(BookRoute::ReferenceComponents {}),
                                 number: Some(
-                                    ::use_mdbook::mdbook_shared::SectionNumber(vec![5u32, 2u32]),
+                                    ::use_mdbook::mdbook_shared::SectionNumber(vec![5u32, 3u32]),
                                 ),
                                 nested_items: vec![],
                             }),
@@ -3609,7 +3885,7 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                                 location: Some(BookRoute::ReferenceComponentProps {
                                 }),
                                 number: Some(
-                                    ::use_mdbook::mdbook_shared::SectionNumber(vec![5u32, 3u32]),
+                                    ::use_mdbook::mdbook_shared::SectionNumber(vec![5u32, 4u32]),
                                 ),
                                 nested_items: vec![],
                             }),
@@ -3618,7 +3894,7 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                                 location: Some(BookRoute::ReferenceEventHandlers {
                                 }),
                                 number: Some(
-                                    ::use_mdbook::mdbook_shared::SectionNumber(vec![5u32, 4u32]),
+                                    ::use_mdbook::mdbook_shared::SectionNumber(vec![5u32, 5u32]),
                                 ),
                                 nested_items: vec![],
                             }),
@@ -3626,7 +3902,7 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                                 name: "Hooks".to_string(),
                                 location: Some(BookRoute::ReferenceHooks {}),
                                 number: Some(
-                                    ::use_mdbook::mdbook_shared::SectionNumber(vec![5u32, 5u32]),
+                                    ::use_mdbook::mdbook_shared::SectionNumber(vec![5u32, 6u32]),
                                 ),
                                 nested_items: vec![],
                             }),
@@ -3634,7 +3910,7 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                                 name: "User Input".to_string(),
                                 location: Some(BookRoute::ReferenceUserInput {}),
                                 number: Some(
-                                    ::use_mdbook::mdbook_shared::SectionNumber(vec![5u32, 6u32]),
+                                    ::use_mdbook::mdbook_shared::SectionNumber(vec![5u32, 7u32]),
                                 ),
                                 nested_items: vec![],
                             }),
@@ -3642,7 +3918,7 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                                 name: "Context".to_string(),
                                 location: Some(BookRoute::ReferenceContext {}),
                                 number: Some(
-                                    ::use_mdbook::mdbook_shared::SectionNumber(vec![5u32, 7u32]),
+                                    ::use_mdbook::mdbook_shared::SectionNumber(vec![5u32, 8u32]),
                                 ),
                                 nested_items: vec![],
                             }),
@@ -3651,7 +3927,7 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                                 location: Some(BookRoute::ReferenceDynamicRendering {
                                 }),
                                 number: Some(
-                                    ::use_mdbook::mdbook_shared::SectionNumber(vec![5u32, 8u32]),
+                                    ::use_mdbook::mdbook_shared::SectionNumber(vec![5u32, 9u32]),
                                 ),
                                 nested_items: vec![],
                             }),
@@ -3659,7 +3935,9 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                                 name: "Routing".to_string(),
                                 location: Some(BookRoute::ReferenceRouter {}),
                                 number: Some(
-                                    ::use_mdbook::mdbook_shared::SectionNumber(vec![5u32, 9u32]),
+                                    ::use_mdbook::mdbook_shared::SectionNumber(
+                                        vec![5u32, 10u32],
+                                    ),
                                 ),
                                 nested_items: vec![],
                             }),
@@ -3668,7 +3946,7 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                                 location: Some(BookRoute::ReferenceUseResource {}),
                                 number: Some(
                                     ::use_mdbook::mdbook_shared::SectionNumber(
-                                        vec![5u32, 10u32],
+                                        vec![5u32, 11u32],
                                     ),
                                 ),
                                 nested_items: vec![],
@@ -3679,7 +3957,7 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                                 }),
                                 number: Some(
                                     ::use_mdbook::mdbook_shared::SectionNumber(
-                                        vec![5u32, 11u32],
+                                        vec![5u32, 12u32],
                                     ),
                                 ),
                                 nested_items: vec![],
@@ -3689,7 +3967,7 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                                 location: Some(BookRoute::ReferenceSpawn {}),
                                 number: Some(
                                     ::use_mdbook::mdbook_shared::SectionNumber(
-                                        vec![5u32, 12u32],
+                                        vec![5u32, 13u32],
                                     ),
                                 ),
                                 nested_items: vec![],
@@ -4272,338 +4550,727 @@ pub fn GettingStartedIndex() -> dioxus::prelude::Element {
     }
 }
 #[component(no_case_check)]
-pub fn GuideIndex() -> dioxus::prelude::Element {
+pub fn NewGuideIndex() -> dioxus::prelude::Element {
     use dioxus::prelude::*;
     rsx! {
-        h1 { id: "dioxus-guide",
-            a { href: "#dioxus-guide", class: "header", "Dioxus Guide" }
+        h1 { id: "dioxus-tutorial",
+            a { href: "#dioxus-tutorial", class: "header", "Dioxus Tutorial" }
         }
-        h2 { id: "introduction",
-            a { href: "#introduction", class: "header", "Introduction" }
+        p { "In this small book, we'll walk you through creating and deploying your first Dioxus app." }
+        p {
+            "This guide will primarily focus on the higher-level concepts of Dioxus without diving too deep into the details of specific APIs. We recommend experimenting with the APIs yourself or reading the "
+            a { href: "../essentials", "Essential Concepts" }
+            " and specific "
+            a { href: "guides", "Guides" }
+            " for more information."
+        }
+        h2 { id: "what-are-we-building",
+            a { href: "#what-are-we-building", class: "header", "What are we building?" }
         }
         p {
-            "In this guide, you'll learn to use Dioxus to build user interfaces that run anywhere. We will recreate the hackernews homepage in Dioxus:"
+            "In this tutorial, we'll be building a small app called: "
+            em { "\"HotDog\"" }
+            ". This app will serve as a great way to learn about building UIs, adding state, and deploying."
         }
-        DemoFrame { hackernews_complete::App {} }
         p {
-            "This guide serves a very brief overview of Dioxus. Throughout the guide, there will be links to the "
-            a { href: "../reference", "reference" }
-            " with more details about specific concepts."
+            "The features of "
+            em { "HotDog" }
+            " are fairly simple:"
+        }
+        ul {
+            li { "Engage with a stream of cute dog photos" }
+            li { "Swipe right if we want to save the dog photo to our collection" }
+            li { "Swipe left if we don't want to save the dog photo" }
+            li { "View the dog photos we saved later" }
+        }
+        p {
+            "At the end of the tutorial, you'll have your very own "
+            em { "HotDog" }
+            " app to remix and download to your device."
+        }
+        p {
+            img { src: asset!(""), alt: "Photo of HotDog", title: "" }
+        }
+        h2 { id: "what-will-we-be-learning",
+            a { href: "#what-will-we-be-learning", class: "header", "What will we be learning?" }
+        }
+        p { "This guide will cover the \"core\" Dioxus features including:" }
+        ul {
+            li {
+                a { href: "tooling", "Tooling Setup" }
+            }
+            li {
+                a { href: "new_app", "Creating a new app" }
+            }
+            li {
+                a { href: "component", "How Components Work" }
+            }
+            li {
+                a { href: "rsx", "Creating UI with RSX" }
+            }
+            li {
+                a { href: "assets", "Styling and Assets" }
+            }
+            li {
+                a { href: "state", "Adding State" }
+            }
+            li {
+                a { href: "routing", "App Routing" }
+            }
+            li {
+                a { href: "data_fetching", "Fetching Data" }
+            }
+            li {
+                a { href: "backend", "Adding a Backend" }
+            }
+            li {
+                a { href: "deploy", "Bundling and Deployment" }
+            }
+        }
+        p {
+            "Dioxus is a very full-featured framework, so we encourage you to follow up this tutorial by building your own larger apps."
         }
     }
 }
 #[component(no_case_check)]
-pub fn GuideYourFirstComponent() -> dioxus::prelude::Element {
+pub fn NewGuideTooling() -> dioxus::prelude::Element {
+    use dioxus::prelude::*;
+    rsx! {
+        h1 { id: "setting-up-tooling",
+            a { href: "#setting-up-tooling", class: "header", "Setting up Tooling" }
+        }
+        p {
+            "Before we get started, make sure you've followed the "
+            a { href: "", "Getting Started" }
+            " page on installing the required dependencies."
+        }
+        p {
+            "We will be primarily developing "
+            em { "HotDog" }
+            " as web application, but we still recommend setting up the relevant tooling for desktop and mobile development as well."
+        }
+        h2 { id: "checklist",
+            a { href: "#checklist", class: "header", "Checklist" }
+        }
+        p {
+            "We covered the setup instructions in "
+            a { href: "", "Getting Started" }
+            ", but first you should verify everything is set up properly:"
+        }
+        ul {
+            li {
+                input {
+                    r#type: "checkbox",
+                    readonly: true,
+                    class: "mdbook-checkbox",
+                    value: "false",
+                }
+                "Rust is installed"
+            }
+            li {
+                input {
+                    r#type: "checkbox",
+                    readonly: true,
+                    class: "mdbook-checkbox",
+                    value: "false",
+                }
+                "The wasm32-unknown-unknown Rust toolchain is installed"
+            }
+            li {
+                input {
+                    r#type: "checkbox",
+                    readonly: true,
+                    class: "mdbook-checkbox",
+                    value: "false",
+                }
+                "You picked an editor to build with"
+            }
+            li {
+                input {
+                    r#type: "checkbox",
+                    readonly: true,
+                    class: "mdbook-checkbox",
+                    value: "false",
+                }
+                "The "
+                code { "dioxus-cli" }
+                " is installed and up-to-date"
+            }
+            li {
+                input {
+                    r#type: "checkbox",
+                    readonly: true,
+                    class: "mdbook-checkbox",
+                    value: "false",
+                }
+                "System-specific dependencies are installed"
+            }
+        }
+        h2 { id: "verify-your-setup",
+            a { href: "#verify-your-setup", class: "header", "Verify your setup" }
+        }
+        p {
+            "Before proceeding, make sure you have the  "
+            code { "dioxus-cli" }
+            " installed and it's running a stable release."
+        }
+        p {
+            "Run this command in your terminal and verify the returned version matches this guide (eg 0.6)."
+        }
+        CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">dx </span><span style=\"color:#f92672;\">--</span><span style=\"color:#f8f8f2;\">version</span></pre>\n" }
+        p {
+            "You can also run  "
+            code { "dx help" }
+            " which will give you a list of useful commands and some information on how to use  "
+            code { "dx" }
+            "."
+        }
+        CodeBlock {
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">Build, Bundle </span><span style=\"color:#f92672;\">&amp;</span><span style=\"color:#f8f8f2;\"> Ship Dioxus Apps\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">Usage: dx [</span><span style=\"color:#ff80f4;\">OPTIONS</span><span style=\"color:#f8f8f2;\">] </span><span style=\"color:#f92672;\">&lt;</span><span style=\"color:#ff80f4;\">COMMAND</span><span style=\"color:#f92672;\">&gt;\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">Commands:\n</span><span style=\"color:#f8f8f2;\">  build      Build the Dioxus project and all of its assets\n</span><span style=\"color:#f8f8f2;\">  translate  Translate a source file into Dioxus code\n</span><span style=\"color:#f8f8f2;\">  serve      Build, watch </span><span style=\"color:#f92672;\">&amp;</span><span style=\"color:#f8f8f2;\"> serve the Dioxus project and all of its assets\n</span><span style=\"color:#f8f8f2;\">  new        Create a new project </span><span style=\"color:#f92672;\">for</span><span style=\"color:#f8f8f2;\"> Dioxus\n</span><span style=\"color:#f8f8f2;\">  init       Init a new project </span><span style=\"color:#f92672;\">for</span><span style=\"color:#f8f8f2;\"> Dioxus </span><span style=\"color:#f92672;\">in</span><span style=\"color:#f8f8f2;\"> the current directory (by default). Will attempt to keep your project </span><span style=\"color:#f92672;\">in</span><span style=\"color:#f8f8f2;\"> a good state\n</span><span style=\"color:#f8f8f2;\">  clean      Clean output artifacts\n</span><span style=\"color:#f8f8f2;\">  bundle     Bundle the Dioxus app into a shippable object\n</span><span style=\"color:#f8f8f2;\">  fmt        Automatically format </span><span style=\"color:#ff80f4;\">RSX\n</span><span style=\"color:#f8f8f2;\">  check      Check the project </span><span style=\"color:#f92672;\">for</span><span style=\"color:#f8f8f2;\"> any issues\n</span><span style=\"color:#f8f8f2;\">  run        Run the project without any hotreloading\n</span><span style=\"color:#f8f8f2;\">  doctor     Ensure all the tooling is installed and configured correctly\n</span><span style=\"color:#f8f8f2;\">  config     Dioxus config file controls\n</span><span style=\"color:#f8f8f2;\">  help       Print this message or the help of the given </span><span style=\"color:#66d9ef;\">subcommand</span><span style=\"color:#f8f8f2;\">(s)\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">Options:\n</span><span style=\"color:#f8f8f2;\">      </span><span style=\"color:#f92672;\">--</span><span style=\"color:#f8f8f2;\">verbose      Use verbose output [default: </span><span style=\"color:#ff80f4;\">false</span><span style=\"color:#f8f8f2;\">]\n</span><span style=\"color:#f8f8f2;\">      </span><span style=\"color:#f92672;\">--</span><span style=\"color:#f8f8f2;\">trace        Use trace output [default: </span><span style=\"color:#ff80f4;\">false</span><span style=\"color:#f8f8f2;\">]\n</span><span style=\"color:#f8f8f2;\">      </span><span style=\"color:#f92672;\">--</span><span style=\"color:#f8f8f2;\">json</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">output  Output logs </span><span style=\"color:#f92672;\">in </span><span style=\"color:#ff80f4;\">JSON</span><span style=\"color:#f8f8f2;\"> format\n</span><span style=\"color:#f8f8f2;\">  </span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">h, </span><span style=\"color:#f92672;\">--</span><span style=\"color:#f8f8f2;\">help         Print help\n</span><span style=\"color:#f8f8f2;\">  </span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">V, </span><span style=\"color:#f92672;\">--</span><span style=\"color:#f8f8f2;\">version      Print version</span></pre>\n",
+        }
+        p {
+            "If  "
+            code { "dx" }
+            " is installed properly, then you're ready to proceed!"
+        }
+    }
+}
+#[component(no_case_check)]
+pub fn NewGuideNewApp() -> dioxus::prelude::Element {
+    use dioxus::prelude::*;
+    rsx! {
+        h2 { id: "create-a-new-project",
+            a { href: "#create-a-new-project", class: "header", "Create a new project" }
+        }
+        p {
+            "You can create a new Dioxus project by running the following command and following the prompts:"
+        }
+        CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">dx new hot_dog</span></pre>\n" }
+        p {
+            video {
+                src: asset!("/assets/06_docs/dx_new_06.mp4"),
+                alt: "dx new",
+                title: "",
+                autoplay: true,
+                muted: true,
+                r#loop: true,
+                playsinline: true,
+                preload: "metadata",
+            }
+        }
+        p { "You'll need to select a template to use to get started." }
+        ul {
+            li {
+                "Bare-bones: a very simple setup with just a "
+                code { "main.rs" }
+                " an and "
+                code { "assets" }
+                " folder."
+            }
+            li { "Jumpstart: a scaffolded app with components, views, and suggested structure." }
+            li { "Workspace: a full cargo workspace setup with different crates per platform." }
+        }
+        p {
+            "We're going to use the bare-bones template for "
+            em { "HotDog" }
+            ". Our app won't be too complex and can fit in one file."
+        }
+        p {
+            "You'll also need to select a \"default platform\" to run. This will set the corresponding  "
+            code { "default = []" }
+            " feature section in your Cargo.toml and inform  "
+            code { "dx" }
+            " to server that platform by default. For the sake of this tutorial, "
+            em { "HotDog" }
+            " will be a web app by default, though we will create desktop and mobile builds as well."
+        }
+        p {
+            "We're not going to set up the project with a Router at first, though we will eventually add the router to the app."
+        }
+        p {
+            "We're not going to use TailwindCSS for this tutorial, but make sure to read the "
+            a { href: "../cookbook/tailwind", "TailwindCSS guide" }
+            " if you want to use Tailwind for your own apps."
+        }
+        h2 { id: "running-the-project",
+            a { href: "#running-the-project", class: "header", "Running the project" }
+        }
+        p { "Once you have created your project, you can start it with the following command:" }
+        CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">cd hot_dog\n</span><span style=\"color:#f8f8f2;\">dx serve</span></pre>\n" }
+        p {
+            video {
+                src: asset!("/assets/06_docs/dx_serve_06.mp4"),
+                alt: "dx serve",
+                title: "",
+                autoplay: true,
+                muted: true,
+                r#loop: true,
+                playsinline: true,
+                preload: "metadata",
+            }
+        }
+        p {
+            "This will start the cargo build and launch a web server to serve your app. If you visit the \"serve\" address (in this case,  "
+            code { "http://127.0.0.1:8080" }
+            "), then you'll receive a nice loading screen in your browser:"
+        }
+        p {
+            img {
+                src: asset!("/assets/06_docs/hotdog_loading.png", ImageAssetOptions::new().with_avif()),
+                alt: "dx serve",
+                title: "",
+            }
+        }
+        p { "Once the app is loaded, you should be greeted with the default Dioxus template:" }
+        p {
+            img {
+                src: asset!(
+                    "/assets/06_docs/default_dioxus_app.png", ImageAssetOptions::new().with_avif()
+                ),
+                alt: "dx serve",
+                title: "",
+            }
+        }
+        p { "Congrats! You have your very first Dioxus App." }
+        h2 { id: "structure-of-the-app",
+            a { href: "#structure-of-the-app", class: "header", "Structure of the app" }
+        }
+        p { "Open the app in your favorite editor and take a look at its structure:" }
+        CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">├── Cargo.lock\n</span><span style=\"color:#f8f8f2;\">├── Cargo.toml\n</span><span style=\"color:#f8f8f2;\">├── Dioxus.toml\n</span><span style=\"color:#f8f8f2;\">├── </span><span style=\"color:#ff80f4;\">README</span><span style=\"color:#f8f8f2;\">.md\n</span><span style=\"color:#f8f8f2;\">├── assets\n</span><span style=\"color:#f8f8f2;\">│\u{a0}\u{a0} ├── favicon.ico\n</span><span style=\"color:#f8f8f2;\">│\u{a0}\u{a0} ├── header.svg\n</span><span style=\"color:#f8f8f2;\">│\u{a0}\u{a0} └── main.css\n</span><span style=\"color:#f8f8f2;\">└── src\n</span><span style=\"color:#f8f8f2;\">    └── main.rs</span></pre>\n" }
+        p {
+            "All Rust apps are comprised of a root  "
+            code { "Cargo.toml" }
+            " and a  "
+            code { "main.rs" }
+            " file located in the  "
+            code { "src" }
+            " folder. Our CLI  "
+            code { "dx" }
+            " pre-filled these files with the  "
+            code { "dioxus" }
+            " dependency and some starter code for us to get building quickly."
+        }
+        h2 { id: "the-cargotoml",
+            a { href: "#the-cargotoml", class: "header", "The Cargo.toml" }
+        }
+        p {
+            "The  "
+            code { "Cargo.toml" }
+            " outlines the dependencies to our app and specifies compiler settings. All Rust apps are "
+            em { "compiled" }
+            ": we execute the Rust tool "
+            code { "cargo" }
+            " which aggregates our "
+            code { ".rs" }
+            " files together and generates a final binary executable (like a "
+            code { ".exe" }
+            ") that runs our app."
+        }
+        p {
+            "All Dioxus apps will include  "
+            code { "dioxus" }
+            " as a dependency:"
+        }
+        CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">[dependencies]\n</span><span style=\"color:#f8f8f2;\">dioxus </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">{{ version </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;0.6.0&quot;</span><span style=\"color:#f8f8f2;\">, features </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">[] }}</span></pre>\n" }
+        p {
+            "The prebuilt Dioxus templates initialize different cargo features for your app.  "
+            code { "dx" }
+            " will use these to decide what cargo features to enable when you specify the  "
+            code { "--platform" }
+            " feature when serving. For example, when building your app for desktop,  "
+            code { "dx" }
+            " will call  "
+            code { "cargo build --no-default-features --features desktop" }
+            "."
+        }
+        CodeBlock {
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">[features]\n</span><span style=\"color:#f8f8f2;\">default </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">[</span><span style=\"color:#ffee99;\">&quot;web&quot;</span><span style=\"color:#f8f8f2;\">]\n</span><span style=\"color:#f8f8f2;\">web </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">[</span><span style=\"color:#ffee99;\">&quot;dioxus/web&quot;</span><span style=\"color:#f8f8f2;\">]\n</span><span style=\"color:#f8f8f2;\">desktop </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">[</span><span style=\"color:#ffee99;\">&quot;dioxus/desktop&quot;</span><span style=\"color:#f8f8f2;\">]\n</span><span style=\"color:#f8f8f2;\">mobile </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">[</span><span style=\"color:#ffee99;\">&quot;dioxus/mobile&quot;</span><span style=\"color:#f8f8f2;\">]</span></pre>\n",
+        }
+        p {
+            "Starting with Dioxus 0.6,  "
+            code { "dx" }
+            " will also initialize separate "
+            a { href: "https://doc.rust-lang.org/cargo/reference/profiles.html", "Cargo profiles" }
+            " for your app. These profiles let you customize the optimization level of each platform. "
+            code { "dx" }
+            " also uses these platforms as a mechanism of isolating builds from each other, enabling parallel server and client builds and preventing unnecessary full-rebuilds."
+        }
+        h2 { id: "dioxustoml",
+            a { href: "#dioxustoml", class: "header", "Dioxus.toml" }
+        }
+        p {
+            "The  "
+            code { "Dioxus.toml" }
+            " file contains Dioxus-specific configuration for things like bundling and deploying. Before Dioxus 0.5, we used the  "
+            code { "Dioxus.toml" }
+            " to specify asset inclusion and hot-reload watch paths, but as of Dioxus 0.6, these fields are deprecated and replaced by standards like  "
+            code { "asset!()" }
+            " and  "
+            code { ".gitignore" }
+            "."
+        }
+        p {
+            "We won't need to configure the  "
+            code { "Dioxus.toml" }
+            " for our DogApp just yet."
+        }
+        h2 { id: "assets-folder",
+            a { href: "#assets-folder", class: "header", "Assets Folder" }
+        }
+        p {
+            "To include assets in your Dioxus app, you'll want to use the  "
+            code { "asset!()" }
+            " macro that we'll cover later in the "
+            a { href: "assets", "Styling and Assets" }
+            " chapter. You can include assets from anywhere within your app's file tree, but we recommend using the pregenerated "
+            code { "assets" }
+            " folder."
+        }
+        h2 { id: "mainrs",
+            a { href: "#mainrs", class: "header", "main.rs" }
+        }
+        p {
+            "Finally, the  "
+            code { "main.rs" }
+            ". The  "
+            code { "main.rs" }
+            " file is the entrypoint of our app, containing the  "
+            code { "fn main" }
+            " function. All Rust executables start their life at  "
+            code { "main" }
+            "."
+        }
+        p {
+            "The  "
+            code { "main" }
+            " of our HotDog app looks like this:"
+        }
+        CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f92672;\">use </span><span style=\"color:#f8f8f2;\">dioxus::prelude::</span><span style=\"color:#f92672;\">*</span><span style=\"color:#f8f8f2;\">;\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">main</span><span style=\"color:#f8f8f2;\">() {{\n</span><span style=\"color:#f8f8f2;\">    dioxus::launch(App);\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n" }
+        p {
+            "The  "
+            code { "launch" }
+            " function calls the platform-specific  "
+            code { "launch" }
+            " function depending on which feature (web/desktop/mobile) is enabled on  "
+            code { "dioxus" }
+            ".  "
+            code { "launch" }
+            " takes in a root component, typically called  "
+            code { "App" }
+            "."
+        }
+        p {
+            "We'll cover components more in-depth in the "
+            a { href: "component", "next chapter" }
+            "."
+        }
+        h2 { id: "resetting-to-basics",
+            a { href: "#resetting-to-basics", class: "header", "Resetting to Basics" }
+        }
+        p {
+            "The bare-bones template provides us some starter code that we could use as a basis for our app. However, we want to start truly from scratch, so we'll wipe away the  "
+            code { "Hero" }
+            " component and empty the  "
+            code { "App" }
+            " component to its basics:"
+        }
+        CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f92672;\">use </span><span style=\"color:#f8f8f2;\">dioxus::prelude::</span><span style=\"color:#f92672;\">*</span><span style=\"color:#f8f8f2;\">;\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">main</span><span style=\"color:#f8f8f2;\">() {{\n</span><span style=\"color:#f8f8f2;\">    dioxus::launch(App);\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">#[component]\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">App</span><span style=\"color:#f8f8f2;\">() -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    rsx! {{ </span><span style=\"color:#ffee99;\">&quot;HotDog!&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n" }
+    }
+}
+#[component(no_case_check)]
+pub fn NewGuideComponent() -> dioxus::prelude::Element {
     use dioxus::prelude::*;
     rsx! {
         h1 { id: "your-first-component",
             a { href: "#your-first-component", class: "header", "Your First Component" }
         }
         p {
-            "This chapter will teach you how to create a "
-            a { href: "../reference/components", "Component" }
-            " that displays a link to a post on hackernews."
+            "Now that we've initialized our "
+            em { "HotDog" }
+            " app, we can start building out its components."
         }
-        h2 { id: "setup",
-            a { href: "#setup", class: "header", "Setup" }
+        p { "Make sure you've reset your app back to basics before getting started." }
+        CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f92672;\">use </span><span style=\"color:#f8f8f2;\">dioxus::prelude::</span><span style=\"color:#f92672;\">*</span><span style=\"color:#f8f8f2;\">;\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">main</span><span style=\"color:#f8f8f2;\">() {{\n</span><span style=\"color:#f8f8f2;\">    dioxus::launch(App);\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">#[component]\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">App</span><span style=\"color:#f8f8f2;\">() -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    rsx! {{ </span><span style=\"color:#ffee99;\">&quot;HotDog!&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n" }
+        h2 { id: "what-is-a-component",
+            a { href: "#what-is-a-component", class: "header", "What is a component?" }
         }
-        blockquote {
-            p {
-                "Before you start the guide, make sure you have the dioxus CLI and any required dependencies for your platform as described in the "
-                a { href: "../getting_started", "getting started" }
-                " guide."
-            }
+        p { "Dioxus provides a number of utilities to render your app to the user's screen." }
+        p {
+            "In Dioxus, apps are comprised of individual functions called "
+            em { "Components" }
+            " that take in some "
+            em { "Properties" }
+            " and render an "
+            em { "Element" }
+            ":"
+        }
+        CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">DogApp</span><span style=\"color:#f8f8f2;\">(</span><span style=\"font-style:italic;color:#fd971f;\">props</span><span style=\"color:#f8f8f2;\">: DogAppProps) -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#8c8c8c;\">// ...\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n" }
+        h2 { id: "component-properties",
+            a { href: "#component-properties", class: "header", "Component Properties" }
         }
         p {
-            "First, let's create a new project for our hacker news app. We can use the CLI to create a new project. You can select a platform of your choice or view the getting started guide for more information on each option. If you aren't sure what platform to try out, we recommend getting started with web or desktop:"
-        }
-        CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">dx new</span></pre>\n" }
-        p {
-            "The template contains some boilerplate to help you get started. For this guide, we will be rebuilding some of the code from scratch for learning purposes. You can clear the  "
-            code { "src/main.rs" }
-            " file. We will be adding new code in the next sections."
-        }
-        p {
-            "Next, let's setup our dependencies. We need to set up a few dependencies to work with the hacker news API: "
-        }
-        CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">cargo add chrono </span><span style=\"color:#f92672;\">--</span><span style=\"color:#f8f8f2;\">features serde\n</span><span style=\"color:#f8f8f2;\">cargo add futures\n</span><span style=\"color:#f8f8f2;\">cargo add reqwest </span><span style=\"color:#f92672;\">--</span><span style=\"color:#f8f8f2;\">features json\n</span><span style=\"color:#f8f8f2;\">cargo add serde </span><span style=\"color:#f92672;\">--</span><span style=\"color:#f8f8f2;\">features derive\n</span><span style=\"color:#f8f8f2;\">cargo add serde_json\n</span><span style=\"color:#f8f8f2;\">cargo add async_recursion</span></pre>\n" }
-        h2 { id: "describing-the-ui",
-            a { href: "#describing-the-ui", class: "header", "Describing the UI" }
-        }
-        p {
-            "Now, we can define how to display a post. Dioxus is a "
-            em { "declarative" }
-            " framework. This means that instead of telling Dioxus what to do (e.g. to \"create an element\" or \"set the color to red\") we simply "
-            em { "declare" }
-            " how we want the UI to look. "
-        }
-        p {
-            "To declare what you want your UI to look like, you will need to use the  "
-            code { "rsx" }
-            " macro. Let's create a  "
-            code { "main" }
-            " function and an  "
-            code { "App" }
-            " component to show information about our story:"
-        }
-        CodeBlock {
-            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">main</span><span style=\"color:#f8f8f2;\">() {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#66d9ef;\">launch</span><span style=\"color:#f8f8f2;\">(App);\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\">pub </span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">App</span><span style=\"color:#f8f8f2;\">() -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    rsx! {{</span><span style=\"color:#ffee99;\">&quot;story&quot;</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
-            name: "hackernews_post.rs".to_string(),
-        }
-        p { "Now if you run your application you should see something like this:" }
-        DemoFrame { hackernews_post::story_v1::App {} }
-        blockquote {
-            p { "RSX mirrors HTML. Because of this you will need to know some html to use Dioxus." }
-            p { "Here are some resources to help get you started learning HTML:" }
-            ul {
-                li {
-                    a { href: "https://developer.mozilla.org/en-US/docs/Learn/HTML",
-                        "MDN HTML Guide"
-                    }
-                }
-                li {
-                    a { href: "https://www.w3schools.com/html/default.asp",
-                        "W3 Schools HTML Tutorial"
-                    }
-                }
-            }
-            p {
-                "In addition to HTML, Dioxus uses CSS to style applications. You can either use traditional CSS (what this guide uses) or use a tool like "
-                a { href: "https://tailwindcss.com/docs/installation", "tailwind CSS" }
-                ":"
-            }
-            ul {
-                li {
-                    a { href: "https://developer.mozilla.org/en-US/docs/Learn/HTML",
-                        "MDN Traditional CSS Guide"
-                    }
-                }
-                li {
-                    a { href: "https://www.w3schools.com/css/default.asp",
-                        "W3 Schools Traditional CSS Tutorial"
-                    }
-                }
-                li {
-                    a { href: "https://tailwindcss.com/docs/installation", "Tailwind tutorial" }
-                    " (used with the "
-                    a { href: "https://github.com/DioxusLabs/dioxus/tree/v0.5/examples/tailwind",
-                        "Tailwind setup example"
-                    }
-                    ")"
-                }
-            }
-            p {
-                "If you have existing html code, you can use the "
-                a { href: "../CLI/translate", "translate" }
-                " command to convert it to RSX. Or if you prefer to write html, you can use the "
-                a { href: "https://github.com/DioxusLabs/dioxus-html-macro", "html! macro" }
-                " to write html directly in your code."
-            }
-        }
-        h2 { id: "dynamic-text",
-            a { href: "#dynamic-text", class: "header", "Dynamic Text" }
-        }
-        p {
-            "Let's expand our  "
-            code { "App" }
-            " component to include the story title, author, score, time posted, and number of comments. We can insert dynamic text in the render macro by inserting variables inside  "
-            code { "{{}}" }
-            "s (this works similarly to the formatting in the "
-            a { href: "https://doc.rust-lang.org/std/macro.println.html", "println!" }
-            " macro):"
-        }
-        CodeBlock {
-            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f92672;\">pub </span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">App</span><span style=\"color:#f8f8f2;\">() -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> title </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;title&quot;</span><span style=\"color:#f8f8f2;\">;\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> by </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;author&quot;</span><span style=\"color:#f8f8f2;\">;\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> score </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ff80f4;\">0</span><span style=\"color:#f8f8f2;\">;\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> time </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">chrono::Utc::now();\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> comments </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;comments&quot;</span><span style=\"color:#f8f8f2;\">;\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">    rsx! {{</span><span style=\"color:#ffee99;\">&quot;{{title}} by {{by}} ({{score}}) {{time}} {{comments}}&quot;</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
-            name: "hackernews_post.rs".to_string(),
-        }
-        DemoFrame { hackernews_post::story_v2::App {} }
-        h2 { id: "creating-elements",
-            a { href: "#creating-elements", class: "header", "Creating Elements" }
-        }
-        p {
-            "Next, let's wrap our post description in a "
-            a { href: "https://developer.mozilla.org/en-US/docs/Web/HTML/Element/div",
-                code { "div" }
-            }
-            ". You can create HTML elements in Dioxus by putting a "
-            code { "{{" }
-            " after the element name and a "
-            code { "}}" }
-            " after the last child of the element:"
-        }
-        CodeBlock {
-            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f92672;\">pub </span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">App</span><span style=\"color:#f8f8f2;\">() -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> title </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;title&quot;</span><span style=\"color:#f8f8f2;\">;\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> by </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;author&quot;</span><span style=\"color:#f8f8f2;\">;\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> score </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ff80f4;\">0</span><span style=\"color:#f8f8f2;\">;\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> time </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">chrono::Utc::now();\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> comments </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;comments&quot;</span><span style=\"color:#f8f8f2;\">;\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">    rsx! {{ div {{ </span><span style=\"color:#ffee99;\">&quot;{{title}} by {{by}} ({{score}}) {{time}} {{comments}}&quot; </span><span style=\"color:#f8f8f2;\">}} }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
-            name: "hackernews_post.rs".to_string(),
-        }
-        DemoFrame { hackernews_post::story_v3::App {} }
-        blockquote {
-            p {
-                "You can read more about elements in the "
-                a { href: "../reference/rsx", "rsx reference" }
-                "."
-            }
-        }
-        h2 { id: "setting-attributes",
-            a { href: "#setting-attributes", class: "header", "Setting Attributes" }
-        }
-        p { "Next, let's add some padding around our post listing with an attribute." }
-        p {
-            "Attributes (and "
-            a { href: "../reference/event_handlers", "listeners" }
-            ") modify the behavior or appearance of the element they are attached to. They are specified inside the "
-            code { "{{}}" }
-            " brackets before any children, using the "
-            code { "name: value" }
-            " syntax. You can format the text in the attribute as you would with a text node:"
-        }
-        CodeBlock {
-            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f92672;\">pub </span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">App</span><span style=\"color:#f8f8f2;\">() -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> title </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;title&quot;</span><span style=\"color:#f8f8f2;\">;\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> by </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;author&quot;</span><span style=\"color:#f8f8f2;\">;\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> score </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ff80f4;\">0</span><span style=\"color:#f8f8f2;\">;\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> time </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">chrono::Utc::now();\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> comments </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;comments&quot;</span><span style=\"color:#f8f8f2;\">;\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">    rsx! {{\n</span><span style=\"color:#f8f8f2;\">        div {{ padding: </span><span style=\"color:#ffee99;\">&quot;0.5rem&quot;</span><span style=\"color:#f8f8f2;\">, position: </span><span style=\"color:#ffee99;\">&quot;relative&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">            </span><span style=\"color:#ffee99;\">&quot;{{title}} by {{by}} ({{score}}) {{time}} {{comments}}&quot;\n</span><span style=\"color:#f8f8f2;\">        }}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
-            name: "hackernews_post.rs".to_string(),
-        }
-        DemoFrame { hackernews_post::story_v4::App {} }
-        blockquote {
-            p {
-                "Note: All attributes defined in "
-                a { href: "https://docs.rs/dioxus-html/latest/dioxus_html/",
-                    code { "dioxus-html" }
-                }
-                " follow the snake_case naming convention. They transform their "
-                code { "snake_case" }
-                " names to HTML's "
-                code { "camelCase" }
-                " attributes."
-            }
-        }
-        blockquote {
-            p {
-                "Note: Styles can be used directly outside of the  "
-                code { "style:" }
-                " attribute. In the above example,  "
-                code { "padding: \"0.5rem\"" }
-                " is turned into  "
-                code { "style=\"padding: 0.5rem\"" }
-                "."
-            }
-        }
-        blockquote {
-            p {
-                "You can read more about elements in the "
-                a { href: "../reference/rsx", "attribute reference" }
-            }
-        }
-        h2 { id: "creating-a-component",
-            a { href: "#creating-a-component", class: "header", "Creating a Component" }
-        }
-        p {
-            "Just like you wouldn't want to write a complex program in a single, long,  "
-            code { "main" }
-            " function, you shouldn't build a complex UI in a single  "
-            code { "App" }
-            " function. Instead, you should break down the functionality of an app in logical parts called components."
-        }
-        p {
-            "A component is a Rust function, named in UpperCamelCase, that takes a props parameter and returns an  "
-            code { "Element" }
-            " describing the UI it wants to render. In fact, our  "
-            code { "App" }
-            " function is a component!"
-        }
-        p { "Let's pull our story description into a new component:" }
-        CodeBlock {
-            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">StoryListing</span><span style=\"color:#f8f8f2;\">() -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> title </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;title&quot;</span><span style=\"color:#f8f8f2;\">;\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> by </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;author&quot;</span><span style=\"color:#f8f8f2;\">;\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> score </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ff80f4;\">0</span><span style=\"color:#f8f8f2;\">;\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> time </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">chrono::Utc::now();\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> comments </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;comments&quot;</span><span style=\"color:#f8f8f2;\">;\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">    rsx! {{\n</span><span style=\"color:#f8f8f2;\">        div {{ padding: </span><span style=\"color:#ffee99;\">&quot;0.5rem&quot;</span><span style=\"color:#f8f8f2;\">, position: </span><span style=\"color:#ffee99;\">&quot;relative&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">            </span><span style=\"color:#ffee99;\">&quot;{{title}} by {{by}} ({{score}}) {{time}} {{comments}}&quot;\n</span><span style=\"color:#f8f8f2;\">        }}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
-            name: "hackernews_post.rs".to_string(),
-        }
-        p {
-            "We can render our component like we would an element by putting  "
-            code { "{{}}" }
-            "s after the component name. Let's modify our  "
-            code { "App" }
-            " component to render our new StoryListing component:"
-        }
-        CodeBlock {
-            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f92672;\">pub </span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">App</span><span style=\"color:#f8f8f2;\">() -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    rsx! {{ StoryListing {{}} }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
-            name: "hackernews_post.rs".to_string(),
-        }
-        DemoFrame { hackernews_post::story_v5::App {} }
-        blockquote {
-            p {
-                "You can read more about elements in the "
-                a { href: "../reference/components", "component reference" }
-            }
-        }
-        h2 { id: "creating-props",
-            a { href: "#creating-props", class: "header", "Creating Props" }
-        }
-        p {
-            "Just like you can pass arguments to a function or attributes to an element, you can pass props to a component that customize its behavior!"
-        }
-        p {
-            "We can define arguments that components can take when they are rendered (called  "
+            "The  "
+            code { "DogAppProps" }
+            " is a Rust struct that we declare that contains fields that the component will use to render. All  "
             code { "Props" }
-            ") by adding the  "
+            " structs in Dioxus need to derive the  "
+            code { "Properties" }
+            " trait which requires both  "
+            code { "Clone" }
+            " and  "
+            code { "PartialEq" }
+            ":"
+        }
+        CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">#[derive(Props, PartialEq, Clone)]\n</span><span style=\"font-style:italic;color:#66d9ef;\">struct </span><span style=\"color:#f8f8f2;\">DogAppProps {{\n</span><span style=\"color:#f8f8f2;\">    breed: String\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n" }
+        p {
+            "Dioxus provides the  "
             code { "#[component]" }
-            " macro before our function definition and adding extra function arguments."
+            " utility for simplifying how components are defined. This macro converts the parameters of the annotated function into a hidden accompanying struct."
+        }
+        CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">#[component]\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">DogApp</span><span style=\"color:#f8f8f2;\">(</span><span style=\"font-style:italic;color:#fd971f;\">breed</span><span style=\"color:#f8f8f2;\">: String) -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#8c8c8c;\">// ...\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n" }
+        h2 { id: "properties-are-immutable",
+            a { href: "#properties-are-immutable", class: "header", "Properties are Immutable" }
         }
         p {
-            "Currently, our  "
-            code { "StoryListing" }
-            " component always renders the same story. We can modify it to accept a story to render as a prop."
+            "If you're familiar with JavaScript, then you might also be familiar with libraries like "
+            a { href: "http://react.dev", "React" }
+            ". Dioxus is "
+            em { "very" }
+            " similar to React: if you know React then you will be very comfortable with Dioxus."
         }
         p {
-            "We will also define what a post is and include information for how to transform our post to and from a different format using "
-            a { href: "https://serde.rs", "serde" }
-            ". This will be used with the hackernews API in a later chapter:"
+            "Just like React, Dioxus components are rendered by calling the function component with a  "
+            code { "Clone" }
+            " of the props. This ensures you can't accidentally modify your props which can lead to hard-to-track issues with state management."
         }
-        CodeBlock {
-            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f92672;\">use </span><span style=\"color:#f8f8f2;\">chrono::{{DateTime, Utc}};\n</span><span style=\"color:#f92672;\">use </span><span style=\"color:#f8f8f2;\">serde::{{Deserialize, Serialize}};\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#8c8c8c;\">// Define the Hackernews types\n</span><span style=\"color:#f8f8f2;\">#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]\n</span><span style=\"color:#f92672;\">pub </span><span style=\"font-style:italic;color:#66d9ef;\">struct </span><span style=\"color:#f8f8f2;\">StoryPageData {{\n</span><span style=\"color:#f8f8f2;\">    #[serde(flatten)]\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#f92672;\">pub </span><span style=\"color:#f8f8f2;\">item: StoryItem,\n</span><span style=\"color:#f8f8f2;\">    #[serde(default)]\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#f92672;\">pub </span><span style=\"color:#f8f8f2;\">comments: Vec&lt;CommentData&gt;,\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]\n</span><span style=\"color:#f92672;\">pub </span><span style=\"font-style:italic;color:#66d9ef;\">struct </span><span style=\"color:#f8f8f2;\">CommentData {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#f92672;\">pub </span><span style=\"color:#f8f8f2;\">id: </span><span style=\"font-style:italic;color:#66d9ef;\">i64</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#8c8c8c;\">/// there will be no by field if the comment was deleted\n</span><span style=\"color:#f8f8f2;\">    #[serde(default)]\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#f92672;\">pub </span><span style=\"color:#f8f8f2;\">by: String,\n</span><span style=\"color:#f8f8f2;\">    #[serde(default)]\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#f92672;\">pub </span><span style=\"color:#f8f8f2;\">text: String,\n</span><span style=\"color:#f8f8f2;\">    #[serde(with = &quot;chrono::serde::ts_seconds&quot;)]\n</span><span style=\"color:#f8f8f2;\">    pub time: DateTime&lt;Utc&gt;,\n</span><span style=\"color:#f8f8f2;\">    #[serde(default)]\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#f92672;\">pub </span><span style=\"color:#f8f8f2;\">kids: Vec&lt;</span><span style=\"font-style:italic;color:#66d9ef;\">i64</span><span style=\"color:#f8f8f2;\">&gt;,\n</span><span style=\"color:#f8f8f2;\">    #[serde(default)]\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#f92672;\">pub </span><span style=\"color:#f8f8f2;\">sub_comments: Vec&lt;CommentData&gt;,\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#f92672;\">pub</span><span style=\"color:#f8f8f2;\"> r#type: String,\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]\n</span><span style=\"color:#f92672;\">pub </span><span style=\"font-style:italic;color:#66d9ef;\">struct </span><span style=\"color:#f8f8f2;\">StoryItem {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#f92672;\">pub </span><span style=\"color:#f8f8f2;\">id: </span><span style=\"font-style:italic;color:#66d9ef;\">i64</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#f92672;\">pub </span><span style=\"color:#f8f8f2;\">title: String,\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#f92672;\">pub </span><span style=\"color:#f8f8f2;\">url: Option&lt;String&gt;,\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#f92672;\">pub </span><span style=\"color:#f8f8f2;\">text: Option&lt;String&gt;,\n</span><span style=\"color:#f8f8f2;\">    #[serde(default)]\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#f92672;\">pub </span><span style=\"color:#f8f8f2;\">by: String,\n</span><span style=\"color:#f8f8f2;\">    #[serde(default)]\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#f92672;\">pub </span><span style=\"color:#f8f8f2;\">score: </span><span style=\"font-style:italic;color:#66d9ef;\">i64</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">    #[serde(default)]\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#f92672;\">pub </span><span style=\"color:#f8f8f2;\">descendants: </span><span style=\"font-style:italic;color:#66d9ef;\">i64</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">    #[serde(with = &quot;chrono::serde::ts_seconds&quot;)]\n</span><span style=\"color:#f8f8f2;\">    pub time: DateTime&lt;Utc&gt;,\n</span><span style=\"color:#f8f8f2;\">    #[serde(default)]\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#f92672;\">pub </span><span style=\"color:#f8f8f2;\">kids: Vec&lt;</span><span style=\"font-style:italic;color:#66d9ef;\">i64</span><span style=\"color:#f8f8f2;\">&gt;,\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#f92672;\">pub</span><span style=\"color:#f8f8f2;\"> r#type: String,\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">#[component]\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">StoryListing</span><span style=\"color:#f8f8f2;\">(</span><span style=\"font-style:italic;color:#fd971f;\">story</span><span style=\"color:#f8f8f2;\">: ReadOnlySignal&lt;StoryItem&gt;) -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> StoryItem {{\n</span><span style=\"color:#f8f8f2;\">        title,\n</span><span style=\"color:#f8f8f2;\">        url,\n</span><span style=\"color:#f8f8f2;\">        by,\n</span><span style=\"color:#f8f8f2;\">        score,\n</span><span style=\"color:#f8f8f2;\">        time,\n</span><span style=\"color:#f8f8f2;\">        kids,\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"color:#f92672;\">..\n</span><span style=\"color:#f8f8f2;\">    }} </span><span style=\"color:#f92672;\">= &amp;*</span><span style=\"color:#f8f8f2;\">story.</span><span style=\"color:#66d9ef;\">read</span><span style=\"color:#f8f8f2;\">();\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> comments </span><span style=\"color:#f92672;\">=</span><span style=\"color:#f8f8f2;\"> kids.</span><span style=\"color:#66d9ef;\">len</span><span style=\"color:#f8f8f2;\">();\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">    rsx! {{\n</span><span style=\"color:#f8f8f2;\">        div {{ padding: </span><span style=\"color:#ffee99;\">&quot;0.5rem&quot;</span><span style=\"color:#f8f8f2;\">, position: </span><span style=\"color:#ffee99;\">&quot;relative&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">            </span><span style=\"color:#ffee99;\">&quot;{{title}} by {{by}} ({{score}}) {{time}} {{comments}}&quot;\n</span><span style=\"color:#f8f8f2;\">        }}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
-            name: "hackernews_post.rs".to_string(),
-        }
-        p {
-            "Make sure to also add "
-            a { href: "https://serde.rs", "serde" }
-            " as a dependency:"
-        }
-        CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">cargo add serde </span><span style=\"color:#f92672;\">--</span><span style=\"color:#f8f8f2;\">features derive\n</span><span style=\"color:#f8f8f2;\">cargo add serde_json</span></pre>\n" }
-        p {
-            "We will also use the "
-            a { href: "https://crates.io/crates/chrono", "chrono" }
-            " crate to provide utilities for handling time data from the hackernews API:"
-        }
-        CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">cargo add chrono </span><span style=\"color:#f92672;\">--</span><span style=\"color:#f8f8f2;\">features serde</span></pre>\n" }
-        p {
-            "Now, let's modify the  "
-            code { "App" }
-            " component to pass the story to our  "
-            code { "StoryListing" }
-            " component like we would set an attribute on an element:"
-        }
-        CodeBlock {
-            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f92672;\">pub </span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">App</span><span style=\"color:#f8f8f2;\">() -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    rsx! {{\n</span><span style=\"color:#f8f8f2;\">        StoryListing {{\n</span><span style=\"color:#f8f8f2;\">            story: StoryItem {{\n</span><span style=\"color:#f8f8f2;\">                id: </span><span style=\"color:#ff80f4;\">0</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">                title: </span><span style=\"color:#ffee99;\">&quot;hello hackernews&quot;</span><span style=\"color:#f8f8f2;\">.</span><span style=\"color:#66d9ef;\">to_string</span><span style=\"color:#f8f8f2;\">(),\n</span><span style=\"color:#f8f8f2;\">                url: </span><span style=\"font-style:italic;color:#66d9ef;\">None</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">                text: </span><span style=\"font-style:italic;color:#66d9ef;\">None</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">                by: </span><span style=\"color:#ffee99;\">&quot;Author&quot;</span><span style=\"color:#f8f8f2;\">.</span><span style=\"color:#66d9ef;\">to_string</span><span style=\"color:#f8f8f2;\">(),\n</span><span style=\"color:#f8f8f2;\">                score: </span><span style=\"color:#ff80f4;\">0</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">                descendants: </span><span style=\"color:#ff80f4;\">0</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">                time: chrono::Utc::now(),\n</span><span style=\"color:#f8f8f2;\">                kids: vec![],\n</span><span style=\"color:#f8f8f2;\">                r</span><span style=\"color:#f92672;\">#</span><span style=\"font-style:italic;color:#66d9ef;\">type</span><span style=\"color:#f8f8f2;\">: </span><span style=\"color:#ffee99;\">&quot;&quot;</span><span style=\"color:#f8f8f2;\">.</span><span style=\"color:#66d9ef;\">to_string</span><span style=\"color:#f8f8f2;\">(),\n</span><span style=\"color:#f8f8f2;\">            }}\n</span><span style=\"color:#f8f8f2;\">        }}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
-            name: "hackernews_post.rs".to_string(),
-        }
-        DemoFrame { hackernews_post::story_v6::App {} }
-        blockquote {
-            p {
-                "You can read more about Props in the "
-                a { href: "../reference/component_props", "Props reference" }
+        CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">DogApp</span><span style=\"color:#f8f8f2;\">(</span><span style=\"font-style:italic;color:#fd971f;\">props</span><span style=\"color:#f8f8f2;\">: DogAppProps) -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    tracing::info</span><span style=\"color:#f92672;\">!</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#ffee99;\">&quot;Rendered with breed: {{}}&quot;</span><span style=\"color:#f8f8f2;\">, props.breed);\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#8c8c8c;\">// ...\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n" }
+        h2 { id: "component-functions-are-called-multiple-times",
+            a {
+                href: "#component-functions-are-called-multiple-times",
+                class: "header",
+                "Component Functions are Called Multiple Times"
             }
         }
-        h2 { id: "cleaning-up-our-interface",
-            a { href: "#cleaning-up-our-interface", class: "header", "Cleaning Up Our Interface" }
+        p {
+            "Just like React, Dioxus will call your component function multiple times throughout its lifecycle. This is called "
+            em { "re-rendering" }
+            ". In Dioxus, re-renders are extremely cheap (much cheaper than React!). In most cases you shouldn't worry about re-rendering too frequently."
         }
         p {
-            "Finally, by combining elements and attributes, we can make our post listing much more appealing:"
+            "When Dioxus re-renders your component, it compares the  "
+            code { "Element" }
+            " returned from the "
+            em { "last" }
+            " render against the "
+            code { "Element" }
+            " returned in the "
+            em { "current" }
+            " render."
         }
-        p { "Full code up to this point:" }
-        CodeBlock {
-            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f92672;\">use </span><span style=\"color:#f8f8f2;\">dioxus::prelude::</span><span style=\"color:#f92672;\">*</span><span style=\"color:#f8f8f2;\">;\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#8c8c8c;\">// Define the Hackernews types\n</span><span style=\"color:#f92672;\">use </span><span style=\"color:#f8f8f2;\">chrono::{{DateTime, Utc}};\n</span><span style=\"color:#f92672;\">use </span><span style=\"color:#f8f8f2;\">serde::{{Deserialize, Serialize}};\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]\n</span><span style=\"color:#f92672;\">pub </span><span style=\"font-style:italic;color:#66d9ef;\">struct </span><span style=\"color:#f8f8f2;\">StoryPageData {{\n</span><span style=\"color:#f8f8f2;\">    #[serde(flatten)]\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#f92672;\">pub </span><span style=\"color:#f8f8f2;\">item: StoryItem,\n</span><span style=\"color:#f8f8f2;\">    #[serde(default)]\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#f92672;\">pub </span><span style=\"color:#f8f8f2;\">comments: Vec&lt;CommentData&gt;,\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]\n</span><span style=\"color:#f92672;\">pub </span><span style=\"font-style:italic;color:#66d9ef;\">struct </span><span style=\"color:#f8f8f2;\">CommentData {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#f92672;\">pub </span><span style=\"color:#f8f8f2;\">id: </span><span style=\"font-style:italic;color:#66d9ef;\">i64</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#8c8c8c;\">/// there will be no by field if the comment was deleted\n</span><span style=\"color:#f8f8f2;\">    #[serde(default)]\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#f92672;\">pub </span><span style=\"color:#f8f8f2;\">by: String,\n</span><span style=\"color:#f8f8f2;\">    #[serde(default)]\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#f92672;\">pub </span><span style=\"color:#f8f8f2;\">text: String,\n</span><span style=\"color:#f8f8f2;\">    #[serde(with = &quot;chrono::serde::ts_seconds&quot;)]\n</span><span style=\"color:#f8f8f2;\">    pub time: DateTime&lt;Utc&gt;,\n</span><span style=\"color:#f8f8f2;\">    #[serde(default)]\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#f92672;\">pub </span><span style=\"color:#f8f8f2;\">kids: Vec&lt;</span><span style=\"font-style:italic;color:#66d9ef;\">i64</span><span style=\"color:#f8f8f2;\">&gt;,\n</span><span style=\"color:#f8f8f2;\">    #[serde(default)]\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#f92672;\">pub </span><span style=\"color:#f8f8f2;\">sub_comments: Vec&lt;CommentData&gt;,\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#f92672;\">pub</span><span style=\"color:#f8f8f2;\"> r#type: String,\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]\n</span><span style=\"color:#f92672;\">pub </span><span style=\"font-style:italic;color:#66d9ef;\">struct </span><span style=\"color:#f8f8f2;\">StoryItem {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#f92672;\">pub </span><span style=\"color:#f8f8f2;\">id: </span><span style=\"font-style:italic;color:#66d9ef;\">i64</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#f92672;\">pub </span><span style=\"color:#f8f8f2;\">title: String,\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#f92672;\">pub </span><span style=\"color:#f8f8f2;\">url: Option&lt;String&gt;,\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#f92672;\">pub </span><span style=\"color:#f8f8f2;\">text: Option&lt;String&gt;,\n</span><span style=\"color:#f8f8f2;\">    #[serde(default)]\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#f92672;\">pub </span><span style=\"color:#f8f8f2;\">by: String,\n</span><span style=\"color:#f8f8f2;\">    #[serde(default)]\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#f92672;\">pub </span><span style=\"color:#f8f8f2;\">score: </span><span style=\"font-style:italic;color:#66d9ef;\">i64</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">    #[serde(default)]\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#f92672;\">pub </span><span style=\"color:#f8f8f2;\">descendants: </span><span style=\"font-style:italic;color:#66d9ef;\">i64</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">    #[serde(with = &quot;chrono::serde::ts_seconds&quot;)]\n</span><span style=\"color:#f8f8f2;\">    pub time: DateTime&lt;Utc&gt;,\n</span><span style=\"color:#f8f8f2;\">    #[serde(default)]\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#f92672;\">pub </span><span style=\"color:#f8f8f2;\">kids: Vec&lt;</span><span style=\"font-style:italic;color:#66d9ef;\">i64</span><span style=\"color:#f8f8f2;\">&gt;,\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#f92672;\">pub</span><span style=\"color:#f8f8f2;\"> r#type: String,\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">main</span><span style=\"color:#f8f8f2;\">() {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#66d9ef;\">launch</span><span style=\"color:#f8f8f2;\">(App);\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\">pub </span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">App</span><span style=\"color:#f8f8f2;\">() -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    rsx! {{\n</span><span style=\"color:#f8f8f2;\">        StoryListing {{\n</span><span style=\"color:#f8f8f2;\">            story: StoryItem {{\n</span><span style=\"color:#f8f8f2;\">                id: </span><span style=\"color:#ff80f4;\">0</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">                title: </span><span style=\"color:#ffee99;\">&quot;hello hackernews&quot;</span><span style=\"color:#f8f8f2;\">.</span><span style=\"color:#66d9ef;\">to_string</span><span style=\"color:#f8f8f2;\">(),\n</span><span style=\"color:#f8f8f2;\">                url: </span><span style=\"font-style:italic;color:#66d9ef;\">None</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">                text: </span><span style=\"font-style:italic;color:#66d9ef;\">None</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">                by: </span><span style=\"color:#ffee99;\">&quot;Author&quot;</span><span style=\"color:#f8f8f2;\">.</span><span style=\"color:#66d9ef;\">to_string</span><span style=\"color:#f8f8f2;\">(),\n</span><span style=\"color:#f8f8f2;\">                score: </span><span style=\"color:#ff80f4;\">0</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">                descendants: </span><span style=\"color:#ff80f4;\">0</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">                time: Utc::now(),\n</span><span style=\"color:#f8f8f2;\">                kids: vec![],\n</span><span style=\"color:#f8f8f2;\">                r</span><span style=\"color:#f92672;\">#</span><span style=\"font-style:italic;color:#66d9ef;\">type</span><span style=\"color:#f8f8f2;\">: </span><span style=\"color:#ffee99;\">&quot;&quot;</span><span style=\"color:#f8f8f2;\">.</span><span style=\"color:#66d9ef;\">to_string</span><span style=\"color:#f8f8f2;\">(),\n</span><span style=\"color:#f8f8f2;\">            }}\n</span><span style=\"color:#f8f8f2;\">        }}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">#[component]\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">StoryListing</span><span style=\"color:#f8f8f2;\">(</span><span style=\"font-style:italic;color:#fd971f;\">story</span><span style=\"color:#f8f8f2;\">: ReadOnlySignal&lt;StoryItem&gt;) -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> StoryItem {{\n</span><span style=\"color:#f8f8f2;\">        title,\n</span><span style=\"color:#f8f8f2;\">        url,\n</span><span style=\"color:#f8f8f2;\">        by,\n</span><span style=\"color:#f8f8f2;\">        score,\n</span><span style=\"color:#f8f8f2;\">        time,\n</span><span style=\"color:#f8f8f2;\">        kids,\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"color:#f92672;\">..\n</span><span style=\"color:#f8f8f2;\">    }} </span><span style=\"color:#f92672;\">= &amp;*</span><span style=\"color:#f8f8f2;\">story.</span><span style=\"color:#66d9ef;\">read</span><span style=\"color:#f8f8f2;\">();\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> url </span><span style=\"color:#f92672;\">=</span><span style=\"color:#f8f8f2;\"> url.</span><span style=\"color:#66d9ef;\">as_deref</span><span style=\"color:#f8f8f2;\">().</span><span style=\"color:#66d9ef;\">unwrap_or_default</span><span style=\"color:#f8f8f2;\">();\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> hostname </span><span style=\"color:#f92672;\">=</span><span style=\"color:#f8f8f2;\"> url\n</span><span style=\"color:#f8f8f2;\">        .</span><span style=\"color:#66d9ef;\">trim_start_matches</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#ffee99;\">&quot;https://&quot;</span><span style=\"color:#f8f8f2;\">)\n</span><span style=\"color:#f8f8f2;\">        .</span><span style=\"color:#66d9ef;\">trim_start_matches</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#ffee99;\">&quot;http://&quot;</span><span style=\"color:#f8f8f2;\">)\n</span><span style=\"color:#f8f8f2;\">        .</span><span style=\"color:#66d9ef;\">trim_start_matches</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#ffee99;\">&quot;www.&quot;</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> score </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">format!(</span><span style=\"color:#ffee99;\">&quot;</span><span style=\"color:#ff80f4;\">{{score}} {{}}</span><span style=\"color:#ffee99;\">&quot;</span><span style=\"color:#f8f8f2;\">, </span><span style=\"color:#f92672;\">if *</span><span style=\"color:#f8f8f2;\">score </span><span style=\"color:#f92672;\">== </span><span style=\"color:#ff80f4;\">1 </span><span style=\"color:#f8f8f2;\">{{ </span><span style=\"color:#ffee99;\">&quot; point&quot; </span><span style=\"color:#f8f8f2;\">}} </span><span style=\"color:#f92672;\">else </span><span style=\"color:#f8f8f2;\">{{ </span><span style=\"color:#ffee99;\">&quot; points&quot; </span><span style=\"color:#f8f8f2;\">}});\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> comments </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">format!(\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"color:#ffee99;\">&quot;</span><span style=\"color:#ff80f4;\">{{}} {{}}</span><span style=\"color:#ffee99;\">&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">        kids.</span><span style=\"color:#66d9ef;\">len</span><span style=\"color:#f8f8f2;\">(),\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"color:#f92672;\">if</span><span style=\"color:#f8f8f2;\"> kids.</span><span style=\"color:#66d9ef;\">len</span><span style=\"color:#f8f8f2;\">() </span><span style=\"color:#f92672;\">== </span><span style=\"color:#ff80f4;\">1 </span><span style=\"color:#f8f8f2;\">{{\n</span><span style=\"color:#f8f8f2;\">            </span><span style=\"color:#ffee99;\">&quot; comment&quot;\n</span><span style=\"color:#f8f8f2;\">        }} </span><span style=\"color:#f92672;\">else </span><span style=\"color:#f8f8f2;\">{{\n</span><span style=\"color:#f8f8f2;\">            </span><span style=\"color:#ffee99;\">&quot; comments&quot;\n</span><span style=\"color:#f8f8f2;\">        }}\n</span><span style=\"color:#f8f8f2;\">    );\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> time </span><span style=\"color:#f92672;\">=</span><span style=\"color:#f8f8f2;\"> time.</span><span style=\"color:#66d9ef;\">format</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#ffee99;\">&quot;%D %l:%M %p&quot;</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">    rsx! {{\n</span><span style=\"color:#f8f8f2;\">        div {{ padding: </span><span style=\"color:#ffee99;\">&quot;0.5rem&quot;</span><span style=\"color:#f8f8f2;\">, position: </span><span style=\"color:#ffee99;\">&quot;relative&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">            div {{ font_size: </span><span style=\"color:#ffee99;\">&quot;1.5rem&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">                a {{ href: url, </span><span style=\"color:#ffee99;\">&quot;{{title}}&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">                a {{\n</span><span style=\"color:#f8f8f2;\">                    color: </span><span style=\"color:#ffee99;\">&quot;gray&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">                    href: </span><span style=\"color:#ffee99;\">&quot;https://news.ycombinator.com/from?site={{hostname}}&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">                    text_decoration: </span><span style=\"color:#ffee99;\">&quot;none&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">                    </span><span style=\"color:#ffee99;\">&quot; ({{hostname}})&quot;\n</span><span style=\"color:#f8f8f2;\">                }}\n</span><span style=\"color:#f8f8f2;\">            }}\n</span><span style=\"color:#f8f8f2;\">            div {{ display: </span><span style=\"color:#ffee99;\">&quot;flex&quot;</span><span style=\"color:#f8f8f2;\">, flex_direction: </span><span style=\"color:#ffee99;\">&quot;row&quot;</span><span style=\"color:#f8f8f2;\">, color: </span><span style=\"color:#ffee99;\">&quot;gray&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">                div {{ </span><span style=\"color:#ffee99;\">&quot;{{score}}&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">                div {{ padding_left: </span><span style=\"color:#ffee99;\">&quot;0.5rem&quot;</span><span style=\"color:#f8f8f2;\">, </span><span style=\"color:#ffee99;\">&quot;by {{by}}&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">                div {{ padding_left: </span><span style=\"color:#ffee99;\">&quot;0.5rem&quot;</span><span style=\"color:#f8f8f2;\">, </span><span style=\"color:#ffee99;\">&quot;{{time}}&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">                div {{ padding_left: </span><span style=\"color:#ffee99;\">&quot;0.5rem&quot;</span><span style=\"color:#f8f8f2;\">, </span><span style=\"color:#ffee99;\">&quot;{{comments}}&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">            }}\n</span><span style=\"color:#f8f8f2;\">        }}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
-            name: "hackernews_post.rs".to_string(),
+        p {
+            "For example, when the  "
+            code { "breed" }
+            " property changes on the  "
+            code { "DogApp" }
+            " component, Dioxus will call the DogApp function a second time and compare the previous  "
+            code { "Element" }
+            " against the new  "
+            code { "Element" }
+            "."
         }
-        DemoFrame { hackernews_post::story_final::App {} }
+        CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">#[component]\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">DogApp</span><span style=\"color:#f8f8f2;\">(</span><span style=\"font-style:italic;color:#fd971f;\">breed</span><span style=\"color:#f8f8f2;\">: String) -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">\trsx! {{\n</span><span style=\"color:#f8f8f2;\">\t\t</span><span style=\"color:#ffee99;\">&quot;Breed: {{breed}}&quot;\n</span><span style=\"color:#f8f8f2;\">\t}}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n" }
+        p {
+            img {
+                src: asset!("/assets/06_docs/diffing_diagram.png", ImageAssetOptions::new().with_avif()),
+                alt: "Diffing",
+                title: "",
+            }
+        }
+        p { "Dioxus will re-render your component in only two circumstances:" }
+        ul {
+            li {
+                "When the "
+                code { "Props" }
+                " change as determined by "
+                code { "PartialEq" }
+            }
+            li {
+                "When a function like "
+                code { "signal.set()" }
+                " or "
+                code { "signal.write()" }
+                " calls "
+                code { "Scope.needs_update()" }
+            }
+        }
+        p {
+            "Unlike React, all Dioxus components are "
+            em { "memoized by default" }
+            " meaning Dioxus will always compare "
+            code { "Props" }
+            " before deciding to re-render your component."
+        }
+        h2 { id: "composing-components",
+            a { href: "#composing-components", class: "header", "Composing Components" }
+        }
+        p {
+            "In Dioxus, "
+            em { "Components" }
+            " are composed together to create "
+            em { "Apps" }
+            ". Each component will hold onto its own state and handle its own updates. This makes it easy to abstract your app into different parts and even share pieces of your app as libraries for others to use."
+        }
+        p {
+            "To compose components together, we'll use the  "
+            code { "rsx! {{}}" }
+            " macro to define the structure of our app."
+        }
+        CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">#[component]\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">App</span><span style=\"color:#f8f8f2;\">() -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    rsx! {{\n</span><span style=\"color:#f8f8f2;\">        Header {{}}\n</span><span style=\"color:#f8f8f2;\">        DogApp {{ breed: </span><span style=\"color:#ffee99;\">&quot;corgi&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">        Footer {{}}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n" }
+        p {
+            "We'll cover  "
+            code { "rsx! {{}}" }
+            " in more depth in the "
+            a { href: "rsx", "next chapter" }
+            "."
+        }
     }
 }
 #[component(no_case_check)]
-pub fn GuideState() -> dioxus::prelude::Element {
+pub fn NewGuideRsx() -> dioxus::prelude::Element {
+    use dioxus::prelude::*;
+    rsx! {
+        h1 { id: "describing-the-ui",
+            a { href: "#describing-the-ui", class: "header", "Describing the UI" }
+        }
+        p {
+            "Dioxus is a "
+            em { "declarative" }
+            " framework. This means that instead of telling Dioxus what to do (e.g. to \"create an element\" or \"set the color to red\") we simply "
+            em { "declare" }
+            " what we want the UI to look like using RSX."
+        }
+        CodeBlock {
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#8c8c8c;\">// define a component that renders a div with the text &quot;Hello, world!&quot;\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">App</span><span style=\"color:#f8f8f2;\">() -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    rsx! {{\n</span><span style=\"color:#f8f8f2;\">        div {{ </span><span style=\"color:#ffee99;\">&quot;Hello, world!&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
+            name: "hello_world_desktop.rs".to_string(),
+        }
+        p {
+            "Here, we use the  "
+            code { "rsx!" }
+            " macro to "
+            em { "declare" }
+            " that we want a "
+            code { "div" }
+            " element, containing the text "
+            code { "\"Hello, world!\"" }
+            ". Dioxus takes the RSX and constructs a user interface from it."
+        }
+        h2 { id: "rsx-is-just-html",
+            a { href: "#rsx-is-just-html", class: "header", "RSX is just HTML" }
+        }
+        p {
+            "Dioxus provides the  "
+            code { "rsx! {{}}" }
+            " macro for assembling  "
+            code { "Element" }
+            "s in your app. The  "
+            code { "rsx! {{}}" }
+            " macro primarily speaks HTML: the web, desktop, and mobile Dioxus first-party renderers all use HTML and CSS as the layout and styling technologies."
+        }
+        p {
+            "This means you can reuse your knowledge of the web and build your app using  "
+            code { "div" }
+            ",  "
+            code { "span" }
+            ",  "
+            code { "img" }
+            ",  "
+            code { "style" }
+            ",  "
+            code { "button" }
+            ", and more."
+        }
+        p {
+            "The RSX syntax is a \"strict\" form of Rust that uses Rust's  "
+            code { "Struct" }
+            " syntax for combining elements:"
+        }
+        CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">rsx! {{\n</span><span style=\"color:#f8f8f2;\">    div {{\n</span><span style=\"color:#f8f8f2;\">        class: </span><span style=\"color:#ffee99;\">&quot;bg-red-100&quot;\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n" }
+        p {
+            "Elements in RSX differ slightly from Rust struct syntax: they can also contain child structs placed immediately after the final attribute."
+        }
+        CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">rsx! {{\n</span><span style=\"color:#f8f8f2;\">    div {{ class: </span><span style=\"color:#ffee99;\">&quot;bg-red-100&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">        button {{\n</span><span style=\"color:#f8f8f2;\">            onclick: handle_click,\n</span><span style=\"color:#f8f8f2;\">            </span><span style=\"color:#ffee99;\">&quot;Click me!&quot;\n</span><span style=\"color:#f8f8f2;\">        }}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n" }
+        p {
+            "Additionally, all quoted strings in RSX imply  "
+            code { "format!()" }
+            " automatically, so you can define a variable outside your markup and use it in your strings without an explicit format call:"
+        }
+        CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">rsx! {{\n</span><span style=\"color:#f8f8f2;\">    div {{ </span><span style=\"color:#ffee99;\">&quot;Breed: {{breed}}&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n" }
+        p {
+            "Any expression that can be rendered to a String can be included directly in RSX as well as  "
+            code { "Option<Element>" }
+            " and iterators of Elements:"
+        }
+        CodeBlock {
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">rsx! {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#8c8c8c;\">// Optionals\n</span><span style=\"color:#f8f8f2;\">    {{show_title.</span><span style=\"color:#66d9ef;\">and_then</span><span style=\"color:#f8f8f2;\">(|| rsx! {{ </span><span style=\"color:#ffee99;\">&quot;title!&quot; </span><span style=\"color:#f8f8f2;\">}} )}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#8c8c8c;\">// And iterators\n</span><span style=\"color:#f8f8f2;\">    ul {{\n</span><span style=\"color:#f8f8f2;\">        {{(</span><span style=\"color:#ff80f4;\">0</span><span style=\"color:#f92672;\">..</span><span style=\"color:#ff80f4;\">5</span><span style=\"color:#f8f8f2;\">).</span><span style=\"color:#66d9ef;\">map</span><span style=\"color:#f8f8f2;\">(|</span><span style=\"font-style:italic;color:#fd971f;\">i</span><span style=\"color:#f8f8f2;\">| rsx! {{ </span><span style=\"color:#ffee99;\">&quot;{{i}}&quot; </span><span style=\"color:#f8f8f2;\">}})}}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
+        }
+        p {
+            "Dioxus provides two items of syntax sugar for these common cases:  "
+            code { "for" }
+            " loops and  "
+            code { "if" }
+            " chains. These blocks return the contained RSX instead directly."
+        }
+        CodeBlock {
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">rsx! {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#f92672;\">if</span><span style=\"color:#f8f8f2;\"> show_title {{\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"color:#ffee99;\">&quot;title!&quot;\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">    ul {{\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"color:#f92672;\">for</span><span style=\"color:#f8f8f2;\"> item </span><span style=\"color:#f92672;\">in </span><span style=\"color:#ff80f4;\">0</span><span style=\"color:#f92672;\">..</span><span style=\"color:#ff80f4;\">5 </span><span style=\"color:#f8f8f2;\">{{\n</span><span style=\"color:#f8f8f2;\">            </span><span style=\"color:#ffee99;\">&quot;{{i}}&quot;\n</span><span style=\"color:#f8f8f2;\">        }}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
+        }
+        h2 { id: "editing-rsx-with-hot-reloading",
+            a { href: "#editing-rsx-with-hot-reloading", class: "header",
+                "Editing RSX with Hot-Reloading"
+            }
+        }
+        p {
+            "When using  "
+            code { "dx serve" }
+            ", your app's RSX is automatically hot-reloaded whenever you edit and save the file. You can edit RSX structure, add new elements, and style your markup without a full rebuild."
+        }
+        p {
+            "Whenever you edit "
+            em { "Rust" }
+            " code, then "
+            code { "dx" }
+            " will automatically force a \"full rebuild\" of your app."
+        }
+        p {
+            video {
+                src: asset!("/assets/06_docs/dog_app_hotreload.mp4"),
+                alt: "Dog App Hotreloading",
+                title: "",
+                autoplay: true,
+                muted: true,
+                r#loop: true,
+                playsinline: true,
+                preload: "metadata",
+            }
+        }
+        p {
+            "For an in-depth guide in what can and can't be hot-reloaded, check the "
+            a { href: "../reference/hotreload", "hot-reload guide" }
+            " in the reference."
+        }
+        h2 { id: "adding-ui-to-our",
+            a { href: "#adding-ui-to-our", class: "header", "Adding UI to our " }
+            em { "HotDog" }
+            " App"
+        }
+    }
+}
+#[component(no_case_check)]
+pub fn NewGuideAssets() -> dioxus::prelude::Element {
+    use dioxus::prelude::*;
+    rsx! {}
+}
+#[component(no_case_check)]
+pub fn NewGuideState() -> dioxus::prelude::Element {
     use dioxus::prelude::*;
     rsx! {
         h1 { id: "interactivity",
@@ -4765,7 +5432,12 @@ pub fn GuideState() -> dioxus::prelude::Element {
     }
 }
 #[component(no_case_check)]
-pub fn GuideDataFetching() -> dioxus::prelude::Element {
+pub fn NewGuideRouting() -> dioxus::prelude::Element {
+    use dioxus::prelude::*;
+    rsx! {}
+}
+#[component(no_case_check)]
+pub fn NewGuideDataFetching() -> dioxus::prelude::Element {
     use dioxus::prelude::*;
     rsx! {
         h1 { id: "fetching-data",
@@ -4881,44 +5553,19 @@ pub fn GuideDataFetching() -> dioxus::prelude::Element {
     }
 }
 #[component(no_case_check)]
-pub fn GuideFullCode() -> dioxus::prelude::Element {
+pub fn NewGuideBackend() -> dioxus::prelude::Element {
     use dioxus::prelude::*;
-    rsx! {
-        h1 { id: "conclusion",
-            a { href: "#conclusion", class: "header", "Conclusion" }
-        }
-        p {
-            "Well done! You've completed the Dioxus guide and built a hackernews application in Dioxus. "
-        }
-        p {
-            "To continue your journey, you can attempt a challenge listed below, or look at the "
-            a { href: "../reference", "Dioxus reference" }
-            "."
-        }
-        h2 { id: "challenges",
-            a { href: "#challenges", class: "header", "Challenges" }
-        }
-        ul {
-            li { "Organize your components into separate files for better maintainability." }
-            li { "Give your app some style if you haven't already." }
-            li {
-                "Integrate your application with the "
-                a { href: "../router", "Dioxus router" }
-                "."
-            }
-        }
-        h2 { id: "the-full-code-for-the-hacker-news-project",
-            a {
-                href: "#the-full-code-for-the-hacker-news-project",
-                class: "header",
-                "The full code for the hacker news project"
-            }
-        }
-        CodeBlock {
-            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">#![allow(non_snake_case)]\n</span><span style=\"color:#f92672;\">use </span><span style=\"color:#f8f8f2;\">dioxus::prelude::</span><span style=\"color:#f92672;\">*</span><span style=\"color:#f8f8f2;\">;\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">main</span><span style=\"color:#f8f8f2;\">() {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#66d9ef;\">launch</span><span style=\"color:#f8f8f2;\">(App);\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\">pub </span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">App</span><span style=\"color:#f8f8f2;\">() -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#66d9ef;\">use_context_provider</span><span style=\"color:#f8f8f2;\">(|| Signal::new(PreviewState::Unset));\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">    rsx! {{\n</span><span style=\"color:#f8f8f2;\">        div {{ display: </span><span style=\"color:#ffee99;\">&quot;flex&quot;</span><span style=\"color:#f8f8f2;\">, flex_direction: </span><span style=\"color:#ffee99;\">&quot;row&quot;</span><span style=\"color:#f8f8f2;\">, width: </span><span style=\"color:#ffee99;\">&quot;100%&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">            div {{ width: </span><span style=\"color:#ffee99;\">&quot;50%&quot;</span><span style=\"color:#f8f8f2;\">, Stories {{}} }}\n</span><span style=\"color:#f8f8f2;\">            div {{ width: </span><span style=\"color:#ffee99;\">&quot;50%&quot;</span><span style=\"color:#f8f8f2;\">, Preview {{}} }}\n</span><span style=\"color:#f8f8f2;\">        }}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">Stories</span><span style=\"color:#f8f8f2;\">() -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> stories </span><span style=\"color:#f92672;\">= </span><span style=\"color:#66d9ef;\">use_resource</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#f92672;\">move || </span><span style=\"color:#66d9ef;\">get_stories</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#ff80f4;\">10</span><span style=\"color:#f8f8f2;\">));\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#f92672;\">match &amp;*</span><span style=\"color:#f8f8f2;\">stories.</span><span style=\"color:#66d9ef;\">read_unchecked</span><span style=\"color:#f8f8f2;\">() {{\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"font-style:italic;color:#66d9ef;\">Some</span><span style=\"color:#f8f8f2;\">(</span><span style=\"font-style:italic;color:#66d9ef;\">Ok</span><span style=\"color:#f8f8f2;\">(list)) </span><span style=\"color:#f92672;\">=&gt; </span><span style=\"color:#f8f8f2;\">rsx! {{\n</span><span style=\"color:#f8f8f2;\">            div {{\n</span><span style=\"color:#f8f8f2;\">                </span><span style=\"color:#f92672;\">for</span><span style=\"color:#f8f8f2;\"> story </span><span style=\"color:#f92672;\">in</span><span style=\"color:#f8f8f2;\"> list {{\n</span><span style=\"color:#f8f8f2;\">                    StoryListing {{ story: story.</span><span style=\"color:#66d9ef;\">clone</span><span style=\"color:#f8f8f2;\">() }}\n</span><span style=\"color:#f8f8f2;\">                }}\n</span><span style=\"color:#f8f8f2;\">            }}\n</span><span style=\"color:#f8f8f2;\">        }},\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"font-style:italic;color:#66d9ef;\">Some</span><span style=\"color:#f8f8f2;\">(</span><span style=\"font-style:italic;color:#66d9ef;\">Err</span><span style=\"color:#f8f8f2;\">(err)) </span><span style=\"color:#f92672;\">=&gt; </span><span style=\"color:#f8f8f2;\">rsx! {{</span><span style=\"color:#ffee99;\">&quot;An error occurred while fetching stories {{err}}&quot;</span><span style=\"color:#f8f8f2;\">}},\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"font-style:italic;color:#66d9ef;\">None </span><span style=\"color:#f92672;\">=&gt; </span><span style=\"color:#f8f8f2;\">rsx! {{</span><span style=\"color:#ffee99;\">&quot;Loading items&quot;</span><span style=\"color:#f8f8f2;\">}},\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">async </span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">resolve_story</span><span style=\"color:#f8f8f2;\">(\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#f92672;\">mut </span><span style=\"font-style:italic;color:#fd971f;\">full_story</span><span style=\"color:#f8f8f2;\">: Signal&lt;Option&lt;StoryPageData&gt;&gt;,\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#f92672;\">mut </span><span style=\"font-style:italic;color:#fd971f;\">preview_state</span><span style=\"color:#f8f8f2;\">: Signal&lt;PreviewState&gt;,\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#fd971f;\">story_id</span><span style=\"color:#f8f8f2;\">: </span><span style=\"font-style:italic;color:#66d9ef;\">i64</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">) {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#f92672;\">if </span><span style=\"font-style:italic;color:#66d9ef;\">let Some</span><span style=\"color:#f8f8f2;\">(cached) </span><span style=\"color:#f92672;\">=</span><span style=\"color:#f8f8f2;\"> full_story.</span><span style=\"color:#66d9ef;\">as_ref</span><span style=\"color:#f8f8f2;\">() {{\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"color:#f92672;\">*</span><span style=\"color:#f8f8f2;\">preview_state.</span><span style=\"color:#66d9ef;\">write</span><span style=\"color:#f8f8f2;\">() </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">PreviewState::Loaded(cached.</span><span style=\"color:#66d9ef;\">clone</span><span style=\"color:#f8f8f2;\">());\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"color:#f92672;\">return</span><span style=\"color:#f8f8f2;\">;\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#f92672;\">*</span><span style=\"color:#f8f8f2;\">preview_state.</span><span style=\"color:#66d9ef;\">write</span><span style=\"color:#f8f8f2;\">() </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">PreviewState::Loading;\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#f92672;\">if </span><span style=\"font-style:italic;color:#66d9ef;\">let Ok</span><span style=\"color:#f8f8f2;\">(story) </span><span style=\"color:#f92672;\">= </span><span style=\"color:#66d9ef;\">get_story</span><span style=\"color:#f8f8f2;\">(story_id).await {{\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"color:#f92672;\">*</span><span style=\"color:#f8f8f2;\">preview_state.</span><span style=\"color:#66d9ef;\">write</span><span style=\"color:#f8f8f2;\">() </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">PreviewState::Loaded(story.</span><span style=\"color:#66d9ef;\">clone</span><span style=\"color:#f8f8f2;\">());\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"color:#f92672;\">*</span><span style=\"color:#f8f8f2;\">full_story.</span><span style=\"color:#66d9ef;\">write</span><span style=\"color:#f8f8f2;\">() </span><span style=\"color:#f92672;\">= </span><span style=\"font-style:italic;color:#66d9ef;\">Some</span><span style=\"color:#f8f8f2;\">(story);\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">#[component]\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">StoryListing</span><span style=\"color:#f8f8f2;\">(</span><span style=\"font-style:italic;color:#fd971f;\">story</span><span style=\"color:#f8f8f2;\">: ReadOnlySignal&lt;StoryItem&gt;) -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> preview_state </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">consume_context::&lt;Signal&lt;PreviewState&gt;&gt;();\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> StoryItem {{\n</span><span style=\"color:#f8f8f2;\">        title,\n</span><span style=\"color:#f8f8f2;\">        url,\n</span><span style=\"color:#f8f8f2;\">        by,\n</span><span style=\"color:#f8f8f2;\">        score,\n</span><span style=\"color:#f8f8f2;\">        time,\n</span><span style=\"color:#f8f8f2;\">        kids,\n</span><span style=\"color:#f8f8f2;\">        id,\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"color:#f92672;\">..\n</span><span style=\"color:#f8f8f2;\">    }} </span><span style=\"color:#f92672;\">= </span><span style=\"color:#66d9ef;\">story</span><span style=\"color:#f8f8f2;\">();\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> full_story </span><span style=\"color:#f92672;\">= </span><span style=\"color:#66d9ef;\">use_signal</span><span style=\"color:#f8f8f2;\">(|| </span><span style=\"font-style:italic;color:#66d9ef;\">None</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> url </span><span style=\"color:#f92672;\">=</span><span style=\"color:#f8f8f2;\"> url.</span><span style=\"color:#66d9ef;\">as_deref</span><span style=\"color:#f8f8f2;\">().</span><span style=\"color:#66d9ef;\">unwrap_or_default</span><span style=\"color:#f8f8f2;\">();\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> hostname </span><span style=\"color:#f92672;\">=</span><span style=\"color:#f8f8f2;\"> url\n</span><span style=\"color:#f8f8f2;\">        .</span><span style=\"color:#66d9ef;\">trim_start_matches</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#ffee99;\">&quot;https://&quot;</span><span style=\"color:#f8f8f2;\">)\n</span><span style=\"color:#f8f8f2;\">        .</span><span style=\"color:#66d9ef;\">trim_start_matches</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#ffee99;\">&quot;http://&quot;</span><span style=\"color:#f8f8f2;\">)\n</span><span style=\"color:#f8f8f2;\">        .</span><span style=\"color:#66d9ef;\">trim_start_matches</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#ffee99;\">&quot;www.&quot;</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> score </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">format!(</span><span style=\"color:#ffee99;\">&quot;</span><span style=\"color:#ff80f4;\">{{score}} {{}}</span><span style=\"color:#ffee99;\">&quot;</span><span style=\"color:#f8f8f2;\">, </span><span style=\"color:#f92672;\">if</span><span style=\"color:#f8f8f2;\"> score </span><span style=\"color:#f92672;\">== </span><span style=\"color:#ff80f4;\">1 </span><span style=\"color:#f8f8f2;\">{{ </span><span style=\"color:#ffee99;\">&quot; point&quot; </span><span style=\"color:#f8f8f2;\">}} </span><span style=\"color:#f92672;\">else </span><span style=\"color:#f8f8f2;\">{{ </span><span style=\"color:#ffee99;\">&quot; points&quot; </span><span style=\"color:#f8f8f2;\">}});\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> comments </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">format!(\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"color:#ffee99;\">&quot;</span><span style=\"color:#ff80f4;\">{{}} {{}}</span><span style=\"color:#ffee99;\">&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">        kids.</span><span style=\"color:#66d9ef;\">len</span><span style=\"color:#f8f8f2;\">(),\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"color:#f92672;\">if</span><span style=\"color:#f8f8f2;\"> kids.</span><span style=\"color:#66d9ef;\">len</span><span style=\"color:#f8f8f2;\">() </span><span style=\"color:#f92672;\">== </span><span style=\"color:#ff80f4;\">1 </span><span style=\"color:#f8f8f2;\">{{\n</span><span style=\"color:#f8f8f2;\">            </span><span style=\"color:#ffee99;\">&quot; comment&quot;\n</span><span style=\"color:#f8f8f2;\">        }} </span><span style=\"color:#f92672;\">else </span><span style=\"color:#f8f8f2;\">{{\n</span><span style=\"color:#f8f8f2;\">            </span><span style=\"color:#ffee99;\">&quot; comments&quot;\n</span><span style=\"color:#f8f8f2;\">        }}\n</span><span style=\"color:#f8f8f2;\">    );\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> time </span><span style=\"color:#f92672;\">=</span><span style=\"color:#f8f8f2;\"> time.</span><span style=\"color:#66d9ef;\">format</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#ffee99;\">&quot;%D %l:%M %p&quot;</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">    rsx! {{\n</span><span style=\"color:#f8f8f2;\">        div {{\n</span><span style=\"color:#f8f8f2;\">            padding: </span><span style=\"color:#ffee99;\">&quot;0.5rem&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">            position: </span><span style=\"color:#ffee99;\">&quot;relative&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">            onmouseenter: </span><span style=\"color:#f92672;\">move |</span><span style=\"color:#f8f8f2;\">_event</span><span style=\"color:#f92672;\">| </span><span style=\"color:#f8f8f2;\">{{ </span><span style=\"color:#66d9ef;\">resolve_story</span><span style=\"color:#f8f8f2;\">(full_story, preview_state, id) }},\n</span><span style=\"color:#f8f8f2;\">            div {{ font_size: </span><span style=\"color:#ffee99;\">&quot;1.5rem&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">                a {{\n</span><span style=\"color:#f8f8f2;\">                    href: url,\n</span><span style=\"color:#f8f8f2;\">                    onfocus: </span><span style=\"color:#f92672;\">move |</span><span style=\"color:#f8f8f2;\">_event</span><span style=\"color:#f92672;\">| </span><span style=\"color:#f8f8f2;\">{{ </span><span style=\"color:#66d9ef;\">resolve_story</span><span style=\"color:#f8f8f2;\">(full_story, preview_state, id) }},\n</span><span style=\"color:#f8f8f2;\">                    </span><span style=\"color:#ffee99;\">&quot;{{title}}&quot;\n</span><span style=\"color:#f8f8f2;\">                }}\n</span><span style=\"color:#f8f8f2;\">                a {{\n</span><span style=\"color:#f8f8f2;\">                    color: </span><span style=\"color:#ffee99;\">&quot;gray&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">                    href: </span><span style=\"color:#ffee99;\">&quot;https://news.ycombinator.com/from?site={{hostname}}&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">                    text_decoration: </span><span style=\"color:#ffee99;\">&quot;none&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">                    </span><span style=\"color:#ffee99;\">&quot; ({{hostname}})&quot;\n</span><span style=\"color:#f8f8f2;\">                }}\n</span><span style=\"color:#f8f8f2;\">            }}\n</span><span style=\"color:#f8f8f2;\">            div {{ display: </span><span style=\"color:#ffee99;\">&quot;flex&quot;</span><span style=\"color:#f8f8f2;\">, flex_direction: </span><span style=\"color:#ffee99;\">&quot;row&quot;</span><span style=\"color:#f8f8f2;\">, color: </span><span style=\"color:#ffee99;\">&quot;gray&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">                div {{ </span><span style=\"color:#ffee99;\">&quot;{{score}}&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">                div {{ padding_left: </span><span style=\"color:#ffee99;\">&quot;0.5rem&quot;</span><span style=\"color:#f8f8f2;\">, </span><span style=\"color:#ffee99;\">&quot;by {{by}}&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">                div {{ padding_left: </span><span style=\"color:#ffee99;\">&quot;0.5rem&quot;</span><span style=\"color:#f8f8f2;\">, </span><span style=\"color:#ffee99;\">&quot;{{time}}&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">                div {{ padding_left: </span><span style=\"color:#ffee99;\">&quot;0.5rem&quot;</span><span style=\"color:#f8f8f2;\">, </span><span style=\"color:#ffee99;\">&quot;{{comments}}&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">            }}\n</span><span style=\"color:#f8f8f2;\">        }}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">#[derive(Clone, Debug)]\n</span><span style=\"font-style:italic;color:#66d9ef;\">enum </span><span style=\"color:#f8f8f2;\">PreviewState {{\n</span><span style=\"color:#f8f8f2;\">    Unset,\n</span><span style=\"color:#f8f8f2;\">    Loading,\n</span><span style=\"color:#f8f8f2;\">    Loaded(StoryPageData),\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">Preview</span><span style=\"color:#f8f8f2;\">() -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> preview_state </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">consume_context::&lt;Signal&lt;PreviewState&gt;&gt;();\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#f92672;\">match </span><span style=\"color:#66d9ef;\">preview_state</span><span style=\"color:#f8f8f2;\">() {{\n</span><span style=\"color:#f8f8f2;\">        PreviewState::Unset </span><span style=\"color:#f92672;\">=&gt; </span><span style=\"color:#f8f8f2;\">rsx! {{</span><span style=\"color:#ffee99;\">&quot;Hover over a story to preview it here&quot;</span><span style=\"color:#f8f8f2;\">}},\n</span><span style=\"color:#f8f8f2;\">        PreviewState::Loading </span><span style=\"color:#f92672;\">=&gt; </span><span style=\"color:#f8f8f2;\">rsx! {{</span><span style=\"color:#ffee99;\">&quot;Loading...&quot;</span><span style=\"color:#f8f8f2;\">}},\n</span><span style=\"color:#f8f8f2;\">        PreviewState::Loaded(story) </span><span style=\"color:#f92672;\">=&gt; </span><span style=\"color:#f8f8f2;\">{{\n</span><span style=\"color:#f8f8f2;\">            rsx! {{\n</span><span style=\"color:#f8f8f2;\">                div {{ padding: </span><span style=\"color:#ffee99;\">&quot;0.5rem&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">                    div {{ font_size: </span><span style=\"color:#ffee99;\">&quot;1.5rem&quot;</span><span style=\"color:#f8f8f2;\">, a {{ href: story.item.url, </span><span style=\"color:#ffee99;\">&quot;{{story.item.title}}&quot; </span><span style=\"color:#f8f8f2;\">}} }}\n</span><span style=\"color:#f8f8f2;\">                    div {{ dangerous_inner_html: story.item.text }}\n</span><span style=\"color:#f8f8f2;\">                    </span><span style=\"color:#f92672;\">for</span><span style=\"color:#f8f8f2;\"> comment </span><span style=\"color:#f92672;\">in &amp;</span><span style=\"color:#f8f8f2;\">story.comments {{\n</span><span style=\"color:#f8f8f2;\">                        Comment {{ comment: comment.</span><span style=\"color:#66d9ef;\">clone</span><span style=\"color:#f8f8f2;\">() }}\n</span><span style=\"color:#f8f8f2;\">                    }}\n</span><span style=\"color:#f8f8f2;\">                }}\n</span><span style=\"color:#f8f8f2;\">            }}\n</span><span style=\"color:#f8f8f2;\">        }}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">#[component]\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">Comment</span><span style=\"color:#f8f8f2;\">(</span><span style=\"font-style:italic;color:#fd971f;\">comment</span><span style=\"color:#f8f8f2;\">: CommentData) -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    rsx! {{\n</span><span style=\"color:#f8f8f2;\">        div {{ padding: </span><span style=\"color:#ffee99;\">&quot;0.5rem&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">            div {{ color: </span><span style=\"color:#ffee99;\">&quot;gray&quot;</span><span style=\"color:#f8f8f2;\">, </span><span style=\"color:#ffee99;\">&quot;by {{comment.by}}&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">            div {{ dangerous_inner_html: </span><span style=\"color:#ffee99;\">&quot;{{comment.text}}&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">            </span><span style=\"color:#f92672;\">for</span><span style=\"color:#f8f8f2;\"> kid </span><span style=\"color:#f92672;\">in &amp;</span><span style=\"color:#f8f8f2;\">comment.sub_comments {{\n</span><span style=\"color:#f8f8f2;\">                Comment {{ comment: kid.</span><span style=\"color:#66d9ef;\">clone</span><span style=\"color:#f8f8f2;\">() }}\n</span><span style=\"color:#f8f8f2;\">            }}\n</span><span style=\"color:#f8f8f2;\">        }}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#8c8c8c;\">// Define the Hackernews API and types\n</span><span style=\"color:#f92672;\">use </span><span style=\"color:#f8f8f2;\">chrono::{{DateTime, Utc}};\n</span><span style=\"color:#f92672;\">use </span><span style=\"color:#f8f8f2;\">futures::future::join_all;\n</span><span style=\"color:#f92672;\">use </span><span style=\"color:#f8f8f2;\">serde::{{Deserialize, Serialize}};\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\">pub </span><span style=\"font-style:italic;color:#66d9ef;\">static </span><span style=\"color:#ff80f4;\">BASE_API_URL</span><span style=\"color:#f8f8f2;\">: </span><span style=\"color:#f92672;\">&amp;</span><span style=\"font-style:italic;color:#66d9ef;\">str </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;https://hacker-news.firebaseio.com/v0/&quot;</span><span style=\"color:#f8f8f2;\">;\n</span><span style=\"color:#f92672;\">pub </span><span style=\"font-style:italic;color:#66d9ef;\">static </span><span style=\"color:#ff80f4;\">ITEM_API</span><span style=\"color:#f8f8f2;\">: </span><span style=\"color:#f92672;\">&amp;</span><span style=\"font-style:italic;color:#66d9ef;\">str </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;item/&quot;</span><span style=\"color:#f8f8f2;\">;\n</span><span style=\"color:#f92672;\">pub </span><span style=\"font-style:italic;color:#66d9ef;\">static </span><span style=\"color:#ff80f4;\">USER_API</span><span style=\"color:#f8f8f2;\">: </span><span style=\"color:#f92672;\">&amp;</span><span style=\"font-style:italic;color:#66d9ef;\">str </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;user/&quot;</span><span style=\"color:#f8f8f2;\">;\n</span><span style=\"font-style:italic;color:#66d9ef;\">const </span><span style=\"color:#ff80f4;\">COMMENT_DEPTH</span><span style=\"color:#f8f8f2;\">: </span><span style=\"font-style:italic;color:#66d9ef;\">i64 </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ff80f4;\">2</span><span style=\"color:#f8f8f2;\">;\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\">pub</span><span style=\"color:#f8f8f2;\"> async </span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">get_story_preview</span><span style=\"color:#f8f8f2;\">(</span><span style=\"font-style:italic;color:#fd971f;\">id</span><span style=\"color:#f8f8f2;\">: </span><span style=\"font-style:italic;color:#66d9ef;\">i64</span><span style=\"color:#f8f8f2;\">) -&gt; Result&lt;StoryItem, reqwest::Error&gt; {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> url </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">format!(</span><span style=\"color:#ffee99;\">&quot;</span><span style=\"color:#ff80f4;\">{{}}{{}}{{}}</span><span style=\"color:#ffee99;\">.json&quot;</span><span style=\"color:#f8f8f2;\">, </span><span style=\"color:#ff80f4;\">BASE_API_URL</span><span style=\"color:#f8f8f2;\">, </span><span style=\"color:#ff80f4;\">ITEM_API</span><span style=\"color:#f8f8f2;\">, id);\n</span><span style=\"color:#f8f8f2;\">    reqwest::get(</span><span style=\"color:#f92672;\">&amp;</span><span style=\"color:#f8f8f2;\">url).await</span><span style=\"color:#f92672;\">?</span><span style=\"color:#f8f8f2;\">.</span><span style=\"color:#66d9ef;\">json</span><span style=\"color:#f8f8f2;\">().await\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\">pub</span><span style=\"color:#f8f8f2;\"> async </span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">get_stories</span><span style=\"color:#f8f8f2;\">(</span><span style=\"font-style:italic;color:#fd971f;\">count</span><span style=\"color:#f8f8f2;\">: </span><span style=\"font-style:italic;color:#66d9ef;\">usize</span><span style=\"color:#f8f8f2;\">) -&gt; Result&lt;Vec&lt;StoryItem&gt;, reqwest::Error&gt; {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> url </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">format!(</span><span style=\"color:#ffee99;\">&quot;</span><span style=\"color:#ff80f4;\">{{}}</span><span style=\"color:#ffee99;\">topstories.json&quot;</span><span style=\"color:#f8f8f2;\">, </span><span style=\"color:#ff80f4;\">BASE_API_URL</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> stories_ids </span><span style=\"color:#f92672;\">= &amp;</span><span style=\"color:#f8f8f2;\">reqwest::get(</span><span style=\"color:#f92672;\">&amp;</span><span style=\"color:#f8f8f2;\">url).await</span><span style=\"color:#f92672;\">?</span><span style=\"color:#f8f8f2;\">.json::&lt;Vec&lt;</span><span style=\"font-style:italic;color:#66d9ef;\">i64</span><span style=\"color:#f8f8f2;\">&gt;&gt;().await</span><span style=\"color:#f92672;\">?</span><span style=\"color:#f8f8f2;\">[</span><span style=\"color:#f92672;\">..</span><span style=\"color:#f8f8f2;\">count];\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> story_futures </span><span style=\"color:#f92672;\">=</span><span style=\"color:#f8f8f2;\"> stories_ids[</span><span style=\"color:#f92672;\">..</span><span style=\"font-style:italic;color:#66d9ef;\">usize</span><span style=\"color:#f8f8f2;\">::min(stories_ids.</span><span style=\"color:#66d9ef;\">len</span><span style=\"color:#f8f8f2;\">(), count)]\n</span><span style=\"color:#f8f8f2;\">        .</span><span style=\"color:#66d9ef;\">iter</span><span style=\"color:#f8f8f2;\">()\n</span><span style=\"color:#f8f8f2;\">        .</span><span style=\"color:#66d9ef;\">map</span><span style=\"color:#f8f8f2;\">(|</span><span style=\"color:#f92672;\">&amp;</span><span style=\"font-style:italic;color:#fd971f;\">story_id</span><span style=\"color:#f8f8f2;\">| </span><span style=\"color:#66d9ef;\">get_story_preview</span><span style=\"color:#f8f8f2;\">(story_id));\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">Ok</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#66d9ef;\">join_all</span><span style=\"color:#f8f8f2;\">(story_futures)\n</span><span style=\"color:#f8f8f2;\">        .await\n</span><span style=\"color:#f8f8f2;\">        .</span><span style=\"color:#66d9ef;\">into_iter</span><span style=\"color:#f8f8f2;\">()\n</span><span style=\"color:#f8f8f2;\">        .</span><span style=\"color:#66d9ef;\">filter_map</span><span style=\"color:#f8f8f2;\">(|</span><span style=\"font-style:italic;color:#fd971f;\">story</span><span style=\"color:#f8f8f2;\">| story.</span><span style=\"color:#66d9ef;\">ok</span><span style=\"color:#f8f8f2;\">())\n</span><span style=\"color:#f8f8f2;\">        .</span><span style=\"color:#66d9ef;\">collect</span><span style=\"color:#f8f8f2;\">())\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]\n</span><span style=\"color:#f92672;\">pub </span><span style=\"font-style:italic;color:#66d9ef;\">struct </span><span style=\"color:#f8f8f2;\">StoryPageData {{\n</span><span style=\"color:#f8f8f2;\">    #[serde(flatten)]\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#f92672;\">pub </span><span style=\"color:#f8f8f2;\">item: StoryItem,\n</span><span style=\"color:#f8f8f2;\">    #[serde(default)]\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#f92672;\">pub </span><span style=\"color:#f8f8f2;\">comments: Vec&lt;CommentData&gt;,\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]\n</span><span style=\"color:#f92672;\">pub </span><span style=\"font-style:italic;color:#66d9ef;\">struct </span><span style=\"color:#f8f8f2;\">CommentData {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#f92672;\">pub </span><span style=\"color:#f8f8f2;\">id: </span><span style=\"font-style:italic;color:#66d9ef;\">i64</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#8c8c8c;\">/// there will be no by field if the comment was deleted\n</span><span style=\"color:#f8f8f2;\">    #[serde(default)]\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#f92672;\">pub </span><span style=\"color:#f8f8f2;\">by: String,\n</span><span style=\"color:#f8f8f2;\">    #[serde(default)]\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#f92672;\">pub </span><span style=\"color:#f8f8f2;\">text: String,\n</span><span style=\"color:#f8f8f2;\">    #[serde(with = &quot;chrono::serde::ts_seconds&quot;)]\n</span><span style=\"color:#f8f8f2;\">    pub time: DateTime&lt;Utc&gt;,\n</span><span style=\"color:#f8f8f2;\">    #[serde(default)]\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#f92672;\">pub </span><span style=\"color:#f8f8f2;\">kids: Vec&lt;</span><span style=\"font-style:italic;color:#66d9ef;\">i64</span><span style=\"color:#f8f8f2;\">&gt;,\n</span><span style=\"color:#f8f8f2;\">    #[serde(default)]\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#f92672;\">pub </span><span style=\"color:#f8f8f2;\">sub_comments: Vec&lt;CommentData&gt;,\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#f92672;\">pub</span><span style=\"color:#f8f8f2;\"> r#type: String,\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]\n</span><span style=\"color:#f92672;\">pub </span><span style=\"font-style:italic;color:#66d9ef;\">struct </span><span style=\"color:#f8f8f2;\">StoryItem {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#f92672;\">pub </span><span style=\"color:#f8f8f2;\">id: </span><span style=\"font-style:italic;color:#66d9ef;\">i64</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#f92672;\">pub </span><span style=\"color:#f8f8f2;\">title: String,\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#f92672;\">pub </span><span style=\"color:#f8f8f2;\">url: Option&lt;String&gt;,\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#f92672;\">pub </span><span style=\"color:#f8f8f2;\">text: Option&lt;String&gt;,\n</span><span style=\"color:#f8f8f2;\">    #[serde(default)]\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#f92672;\">pub </span><span style=\"color:#f8f8f2;\">by: String,\n</span><span style=\"color:#f8f8f2;\">    #[serde(default)]\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#f92672;\">pub </span><span style=\"color:#f8f8f2;\">score: </span><span style=\"font-style:italic;color:#66d9ef;\">i64</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">    #[serde(default)]\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#f92672;\">pub </span><span style=\"color:#f8f8f2;\">descendants: </span><span style=\"font-style:italic;color:#66d9ef;\">i64</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">    #[serde(with = &quot;chrono::serde::ts_seconds&quot;)]\n</span><span style=\"color:#f8f8f2;\">    pub time: DateTime&lt;Utc&gt;,\n</span><span style=\"color:#f8f8f2;\">    #[serde(default)]\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#f92672;\">pub </span><span style=\"color:#f8f8f2;\">kids: Vec&lt;</span><span style=\"font-style:italic;color:#66d9ef;\">i64</span><span style=\"color:#f8f8f2;\">&gt;,\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#f92672;\">pub</span><span style=\"color:#f8f8f2;\"> r#type: String,\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\">pub</span><span style=\"color:#f8f8f2;\"> async </span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">get_story</span><span style=\"color:#f8f8f2;\">(</span><span style=\"font-style:italic;color:#fd971f;\">id</span><span style=\"color:#f8f8f2;\">: </span><span style=\"font-style:italic;color:#66d9ef;\">i64</span><span style=\"color:#f8f8f2;\">) -&gt; Result&lt;StoryPageData, reqwest::Error&gt; {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> url </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">format!(</span><span style=\"color:#ffee99;\">&quot;</span><span style=\"color:#ff80f4;\">{{}}{{}}{{}}</span><span style=\"color:#ffee99;\">.json&quot;</span><span style=\"color:#f8f8f2;\">, </span><span style=\"color:#ff80f4;\">BASE_API_URL</span><span style=\"color:#f8f8f2;\">, </span><span style=\"color:#ff80f4;\">ITEM_API</span><span style=\"color:#f8f8f2;\">, id);\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let </span><span style=\"color:#f92672;\">mut</span><span style=\"color:#f8f8f2;\"> story </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">reqwest::get(</span><span style=\"color:#f92672;\">&amp;</span><span style=\"color:#f8f8f2;\">url).await</span><span style=\"color:#f92672;\">?</span><span style=\"color:#f8f8f2;\">.json::&lt;StoryPageData&gt;().await</span><span style=\"color:#f92672;\">?</span><span style=\"color:#f8f8f2;\">;\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> comment_futures </span><span style=\"color:#f92672;\">=</span><span style=\"color:#f8f8f2;\"> story.item.kids.</span><span style=\"color:#66d9ef;\">iter</span><span style=\"color:#f8f8f2;\">().</span><span style=\"color:#66d9ef;\">map</span><span style=\"color:#f8f8f2;\">(|</span><span style=\"color:#f92672;\">&amp;</span><span style=\"font-style:italic;color:#fd971f;\">id</span><span style=\"color:#f8f8f2;\">| </span><span style=\"color:#66d9ef;\">get_comment</span><span style=\"color:#f8f8f2;\">(id));\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> comments </span><span style=\"color:#f92672;\">= </span><span style=\"color:#66d9ef;\">join_all</span><span style=\"color:#f8f8f2;\">(comment_futures)\n</span><span style=\"color:#f8f8f2;\">        .await\n</span><span style=\"color:#f8f8f2;\">        .</span><span style=\"color:#66d9ef;\">into_iter</span><span style=\"color:#f8f8f2;\">()\n</span><span style=\"color:#f8f8f2;\">        .</span><span style=\"color:#66d9ef;\">filter_map</span><span style=\"color:#f8f8f2;\">(|</span><span style=\"font-style:italic;color:#fd971f;\">c</span><span style=\"color:#f8f8f2;\">| c.</span><span style=\"color:#66d9ef;\">ok</span><span style=\"color:#f8f8f2;\">())\n</span><span style=\"color:#f8f8f2;\">        .</span><span style=\"color:#66d9ef;\">collect</span><span style=\"color:#f8f8f2;\">();\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">    story.comments </span><span style=\"color:#f92672;\">=</span><span style=\"color:#f8f8f2;\"> comments;\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">Ok</span><span style=\"color:#f8f8f2;\">(story)\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">#[async_recursion::async_recursion(?Send)]\n</span><span style=\"color:#f92672;\">pub</span><span style=\"color:#f8f8f2;\"> async </span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">get_comment_with_depth</span><span style=\"color:#f8f8f2;\">(</span><span style=\"font-style:italic;color:#fd971f;\">id</span><span style=\"color:#f8f8f2;\">: </span><span style=\"font-style:italic;color:#66d9ef;\">i64</span><span style=\"color:#f8f8f2;\">, </span><span style=\"font-style:italic;color:#fd971f;\">depth</span><span style=\"color:#f8f8f2;\">: </span><span style=\"font-style:italic;color:#66d9ef;\">i64</span><span style=\"color:#f8f8f2;\">) -&gt; Result&lt;CommentData, reqwest::Error&gt; {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> url </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">format!(</span><span style=\"color:#ffee99;\">&quot;</span><span style=\"color:#ff80f4;\">{{}}{{}}{{}}</span><span style=\"color:#ffee99;\">.json&quot;</span><span style=\"color:#f8f8f2;\">, </span><span style=\"color:#ff80f4;\">BASE_API_URL</span><span style=\"color:#f8f8f2;\">, </span><span style=\"color:#ff80f4;\">ITEM_API</span><span style=\"color:#f8f8f2;\">, id);\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let </span><span style=\"color:#f92672;\">mut</span><span style=\"color:#f8f8f2;\"> comment </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">reqwest::get(</span><span style=\"color:#f92672;\">&amp;</span><span style=\"color:#f8f8f2;\">url).await</span><span style=\"color:#f92672;\">?</span><span style=\"color:#f8f8f2;\">.json::&lt;CommentData&gt;().await</span><span style=\"color:#f92672;\">?</span><span style=\"color:#f8f8f2;\">;\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#f92672;\">if</span><span style=\"color:#f8f8f2;\"> depth </span><span style=\"color:#f92672;\">&gt; </span><span style=\"color:#ff80f4;\">0 </span><span style=\"color:#f8f8f2;\">{{\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> sub_comments_futures </span><span style=\"color:#f92672;\">=</span><span style=\"color:#f8f8f2;\"> comment\n</span><span style=\"color:#f8f8f2;\">            .kids\n</span><span style=\"color:#f8f8f2;\">            .</span><span style=\"color:#66d9ef;\">iter</span><span style=\"color:#f8f8f2;\">()\n</span><span style=\"color:#f8f8f2;\">            .</span><span style=\"color:#66d9ef;\">map</span><span style=\"color:#f8f8f2;\">(|</span><span style=\"font-style:italic;color:#fd971f;\">story_id</span><span style=\"color:#f8f8f2;\">| </span><span style=\"color:#66d9ef;\">get_comment_with_depth</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#f92672;\">*</span><span style=\"color:#f8f8f2;\">story_id, depth </span><span style=\"color:#f92672;\">- </span><span style=\"color:#ff80f4;\">1</span><span style=\"color:#f8f8f2;\">));\n</span><span style=\"color:#f8f8f2;\">        comment.sub_comments </span><span style=\"color:#f92672;\">= </span><span style=\"color:#66d9ef;\">join_all</span><span style=\"color:#f8f8f2;\">(sub_comments_futures)\n</span><span style=\"color:#f8f8f2;\">            .await\n</span><span style=\"color:#f8f8f2;\">            .</span><span style=\"color:#66d9ef;\">into_iter</span><span style=\"color:#f8f8f2;\">()\n</span><span style=\"color:#f8f8f2;\">            .</span><span style=\"color:#66d9ef;\">filter_map</span><span style=\"color:#f8f8f2;\">(|</span><span style=\"font-style:italic;color:#fd971f;\">c</span><span style=\"color:#f8f8f2;\">| c.</span><span style=\"color:#66d9ef;\">ok</span><span style=\"color:#f8f8f2;\">())\n</span><span style=\"color:#f8f8f2;\">            .</span><span style=\"color:#66d9ef;\">collect</span><span style=\"color:#f8f8f2;\">();\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">Ok</span><span style=\"color:#f8f8f2;\">(comment)\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\">pub</span><span style=\"color:#f8f8f2;\"> async </span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">get_comment</span><span style=\"color:#f8f8f2;\">(</span><span style=\"font-style:italic;color:#fd971f;\">comment_id</span><span style=\"color:#f8f8f2;\">: </span><span style=\"font-style:italic;color:#66d9ef;\">i64</span><span style=\"color:#f8f8f2;\">) -&gt; Result&lt;CommentData, reqwest::Error&gt; {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#66d9ef;\">get_comment_with_depth</span><span style=\"color:#f8f8f2;\">(comment_id, </span><span style=\"color:#ff80f4;\">COMMENT_DEPTH</span><span style=\"color:#f8f8f2;\">).await\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
-            name: "hackernews_complete.rs".to_string(),
-        }
-    }
+    rsx! {}
+}
+#[component(no_case_check)]
+pub fn NewGuideDeploy() -> dioxus::prelude::Element {
+    use dioxus::prelude::*;
+    rsx! {}
+}
+#[component(no_case_check)]
+pub fn NewGuideNextSteps() -> dioxus::prelude::Element {
+    use dioxus::prelude::*;
+    rsx! {}
 }
 #[component(no_case_check)]
 pub fn EssentialsIndex() -> dioxus::prelude::Element {
@@ -5114,6 +5761,21 @@ pub fn EssentialsRsxIndex() -> dioxus::prelude::Element {
             name: "building_uis_with_rsx.rs".to_string(),
         }
         DemoFrame { building_uis_with_rsx::IfStatement {} }
+        h2 { id: "why-rsx-and-not-html-",
+            a { href: "#why-rsx-and-not-html-", class: "header", "Why RSX and not HTML ?" }
+        }
+        p {
+            "If you've seen React's JSX or the  "
+            code { "html!{{}}" }
+            " Rust macro, you might be curious as to why Dioxus chose to use its own syntax instead of a syntax that looks more similar to HTML."
+        }
+        p { "A few reasons:" }
+        ul {
+            li { "RSX gets token coloring and code-folding without additional tooling" }
+            li { "RSX is faster to type since curly braces are auto-closed" }
+            li { "Not all RSX is HTML - Dioxus can be used in non-HTML contexts" }
+            li { "HTML is not valid Rust - not all HTML can be used in html!{{}}" }
+        }
     }
 }
 #[component(no_case_check)]
@@ -9252,6 +9914,45 @@ pub fn ReferenceIndex() -> dioxus::prelude::Element {
             li {
                 a { href: "./spawn", "Spawn" }
             }
+        }
+    }
+}
+#[component(no_case_check)]
+pub fn ReferenceHotreload() -> dioxus::prelude::Element {
+    use dioxus::prelude::*;
+    rsx! {
+        h1 { id: "dioxus-hot-reloading-reference",
+            a { href: "#dioxus-hot-reloading-reference", class: "header",
+                "Dioxus Hot-Reloading Reference"
+            }
+        }
+        p {
+            "The Dioxus Hot-Reload is very powerful. When used properly, it is by-far the fastest tool to build apps with Rust."
+        }
+        p {
+            "Dioxus 0.5 featured a slightly limited form of hot-reloading while Dioxus 0.6 drastically improved it."
+        }
+        blockquote {
+            p {
+                "Currently Dioxus cannot hot-reload "
+                em { "Rust" }
+                " code, only RSX markup. Usually, modifying Rust code requires a full rebuild."
+            }
+        }
+        p {
+            "We provide this text guide as a resource for the details of hot-reloading. This guide also has an accompanying video as well:"
+        }
+        p {
+            class: "inline-html-block",
+            dangerous_inner_html: "<iframe style=\"width: 100%\" height=\"500px\" class=\"centered-overflow\" src=\"https://www.youtube.com/embed/Q4Xzz8OJEoc\" title=\"Dioxus 0.6\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share\" referrerpolicy=\"strict-origin-when-cross-origin\" allowfullscreen></iframe>\n",
+        }
+        h2 { id: "what-can-be-hot-reloaded",
+            a { href: "#what-can-be-hot-reloaded", class: "header", "What can be hot-reloaded?" }
+        }
+        p { "Within RSX, all elements and their properties can be hot-reloaded." }
+        CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">rsx! {{\n</span><span style=\"color:#f8f8f2;\">    div {{}}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n" }
+        h2 { id: "what-causes-a-full-rebuild",
+            a { href: "#what-causes-a-full-rebuild", class: "header", "What causes a full-rebuild?" }
         }
     }
 }

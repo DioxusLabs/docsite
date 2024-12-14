@@ -45,7 +45,7 @@ DemoFrame {
 
 > Bonus: web components
 > Any element with a dash in the name is a web component. Web components are rendered directly in dioxus without type checking. We recommend wrapping web components in a type safe component to make them easier to use.
-> 
+>
 > ```rust, no_run
 > {{#include src/doc_examples/building_uis_with_rsx.rs:web_component}}
 > ```
@@ -157,3 +157,15 @@ DemoFrame {
     building_uis_with_rsx::IfStatement {}
 }
 ```
+
+## Why RSX and not HTML ?
+
+If you've seen React's JSX or the `html!{}` Rust macro, you might be curious as to why Dioxus chose to use its own syntax instead of a syntax that looks more similar to HTML.
+
+A few reasons:
+
+- RSX gets token coloring and code-folding without additional tooling
+- RSX is faster to type since curly braces are auto-closed
+- Not all RSX is HTML - Dioxus can be used in non-HTML contexts
+- HTML is not valid Rust - not all HTML can be used in html!{}
+

@@ -4,11 +4,18 @@
   - [Getting Started](getting_started/index.md)
 ---
 
-- [Tutorial](guide/index.md)
-  - [Your First Component](guide/your_first_component.md)
-  - [State](guide/state.md)
-  - [Data Fetching](guide/data_fetching.md)
-  - [Full Code](guide/full_code.md)
+- [Tutorial](new-guide/index.md)
+  - [Tooling Setup](new-guide/tooling.md)
+  - [Creating a new app](new-guide/new_app.md)
+  - [Your First Component](new-guide/component.md)
+  - [Creating UI with RSX](new-guide/rsx.md)
+  - [Styling and Assets](new-guide/assets.md)
+  - [Adding State](new-guide/state.md)
+  - [App Routing](new-guide/routing.md)
+  - [Fetching Data](new-guide/data_fetching.md)
+  - [Add a Backend](new-guide/backend.md)
+  - [Bundling and Deployment](new-guide/deploy.md)
+  - [Next Steps](new-guide/next_steps.md)
 
 ---
 
@@ -66,6 +73,7 @@
 
 ---
 - [Reference](reference/index.md)
+  - [Hot-Reload](reference/hotreload.md)
   - [RSX](reference/rsx.md)
   - [Components](reference/components.md)
   - [Props](reference/component_props.md)

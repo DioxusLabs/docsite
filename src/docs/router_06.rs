@@ -647,7 +647,48 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                 title: "Styling and Assets".to_string(),
                 url: BookRoute::NewGuideAssets {},
                 segments: vec![],
-                sections: vec![],
+                sections: vec![
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Styling and Assets".to_string(),
+                        id: "styling-and-assets".to_string(),
+                        level: 1usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Dioxus uses CSS for Styling".to_string(),
+                        id: "dioxus-uses-css-for-styling".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Adding the CSS File with asset!()".to_string(),
+                        id: "adding-the-css-file-with-asset!()".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Hot-Reloading".to_string(),
+                        id: "hot-reloading".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Including Images".to_string(),
+                        id: "including-images".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Optimizations".to_string(),
+                        id: "optimizations".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Using Tailwind with Dioxus".to_string(),
+                        id: "using-tailwind-with-dioxus".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "The Final CSS".to_string(),
+                        id: "the-final-css".to_string(),
+                        level: 2usize,
+                    },
+                ],
                 raw: String::new(),
                 id: ::use_mdbook::mdbook_shared::PageId(7usize),
             }
@@ -668,8 +709,8 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                         level: 1usize,
                     },
                     ::use_mdbook::mdbook_shared::Section {
-                        title: "Creating a Preview".to_string(),
-                        id: "creating-a-preview".to_string(),
+                        title: "Encapsulating State".to_string(),
+                        id: "encapsulating-state".to_string(),
                         level: 2usize,
                     },
                     ::use_mdbook::mdbook_shared::Section {
@@ -683,24 +724,19 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                         level: 2usize,
                     },
                     ::use_mdbook::mdbook_shared::Section {
-                        title: "The Rules of Hooks".to_string(),
-                        id: "the-rules-of-hooks".to_string(),
-                        level: 3usize,
+                        title: "Signals and ".to_string(),
+                        id: "signals-and".to_string(),
+                        level: 2usize,
                     },
                     ::use_mdbook::mdbook_shared::Section {
-                        title: "No Hooks in Conditionals".to_string(),
-                        id: "no-hooks-in-conditionals".to_string(),
-                        level: 4usize,
+                        title: "Global State with Context".to_string(),
+                        id: "global-state-with-context".to_string(),
+                        level: 2usize,
                     },
                     ::use_mdbook::mdbook_shared::Section {
-                        title: "No Hooks in Closures".to_string(),
-                        id: "no-hooks-in-closures".to_string(),
-                        level: 4usize,
-                    },
-                    ::use_mdbook::mdbook_shared::Section {
-                        title: "No Hooks in Loops".to_string(),
-                        id: "no-hooks-in-loops".to_string(),
-                        level: 4usize,
+                        title: "Global Signals".to_string(),
+                        id: "global-signals".to_string(),
+                        level: 2usize,
                     },
                 ],
                 raw: String::new(),
@@ -716,7 +752,11 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                 title: "App Routing".to_string(),
                 url: BookRoute::NewGuideRouting {},
                 segments: vec![],
-                sections: vec![],
+                sections: vec![::use_mdbook::mdbook_shared::Section {
+                    title: "Adding More Routes".to_string(),
+                    id: "adding-more-routes".to_string(),
+                    level: 1usize,
+                }],
                 raw: String::new(),
                 id: ::use_mdbook::mdbook_shared::PageId(9usize),
             }
@@ -737,18 +777,23 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                         level: 1usize,
                     },
                     ::use_mdbook::mdbook_shared::Section {
-                        title: "Defining the API".to_string(),
-                        id: "defining-the-api".to_string(),
+                        title: "Adding Dependencies".to_string(),
+                        id: "adding-dependencies".to_string(),
                         level: 2usize,
                     },
                     ::use_mdbook::mdbook_shared::Section {
-                        title: "Working with Async".to_string(),
-                        id: "working-with-async".to_string(),
+                        title: "Defining a Response Type".to_string(),
+                        id: "defining-a-response-type".to_string(),
                         level: 2usize,
                     },
                     ::use_mdbook::mdbook_shared::Section {
-                        title: "Lazily Fetching Data".to_string(),
-                        id: "lazily-fetching-data".to_string(),
+                        title: "Using ".to_string(),
+                        id: "using".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Managing Data Fetching with use_resource".to_string(),
+                        id: "managing-data-fetching-with-use_resource".to_string(),
                         level: 2usize,
                     },
                 ],
@@ -765,7 +810,23 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                 title: "Add a Backend".to_string(),
                 url: BookRoute::NewGuideBackend {},
                 segments: vec![],
-                sections: vec![],
+                sections: vec![
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Adding a Backend".to_string(),
+                        id: "adding-a-backend".to_string(),
+                        level: 1usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Enabling Fullstack".to_string(),
+                        id: "enabling-fullstack".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Our First Server Function".to_string(),
+                        id: "our-first-server-function".to_string(),
+                        level: 2usize,
+                    },
+                ],
                 raw: String::new(),
                 id: ::use_mdbook::mdbook_shared::PageId(11usize),
             }
@@ -4615,13 +4676,16 @@ pub fn NewGuideIndex() -> dioxus::prelude::Element {
                 a { href: "state", "Adding State" }
             }
             li {
-                a { href: "routing", "App Routing" }
-            }
-            li {
                 a { href: "data_fetching", "Fetching Data" }
             }
             li {
                 a { href: "backend", "Adding a Backend" }
+            }
+            li {
+                a { href: "structure", "Structuring our App" }
+            }
+            li {
+                a { href: "routing", "App Routing" }
             }
             li {
                 a { href: "deploy", "Bundling and Deployment" }
@@ -5262,12 +5326,188 @@ pub fn NewGuideRsx() -> dioxus::prelude::Element {
             em { "HotDog" }
             " App"
         }
+        p {
+            "Let's add a basic UI to our app. We'll add a header, a body image for the dog photo, and some basic buttons."
+        }
+        CodeBlock {
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">#[component]\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">App</span><span style=\"color:#f8f8f2;\">() -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    rsx! {{\n</span><span style=\"color:#f8f8f2;\">        div {{ id: </span><span style=\"color:#ffee99;\">&quot;title&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">            h1 {{ </span><span style=\"color:#ffee99;\">&quot;HotDog! 🌭&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">        }}\n</span><span style=\"color:#f8f8f2;\">        div {{ id: </span><span style=\"color:#ffee99;\">&quot;dogview&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">            img {{ src: </span><span style=\"color:#ffee99;\">&quot;https://images.dog.ceo/breeds/pitbull/dog-3981540_1280.jpg&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">        }}\n</span><span style=\"color:#f8f8f2;\">        div {{ id: </span><span style=\"color:#ffee99;\">&quot;buttons&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">            button {{ id: </span><span style=\"color:#ffee99;\">&quot;skip&quot;</span><span style=\"color:#f8f8f2;\">, </span><span style=\"color:#ffee99;\">&quot;skip&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">            button {{ id: </span><span style=\"color:#ffee99;\">&quot;save&quot;</span><span style=\"color:#f8f8f2;\">, </span><span style=\"color:#ffee99;\">&quot;save!&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">        }}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
+        }
+        p { "Our app is coming together!" }
+        p {
+            img {
+                src: asset!("/assets/06_docs/unstyled_dog_app.png", ImageAssetOptions::new().with_avif()),
+                alt: "Unstyled Dog App",
+                title: "",
+            }
+        }
+        p {
+            "Unfortunately, it's not very beautiful yet. Let's move on to "
+            a { href: "assets", "styling our app" }
+            "."
+        }
     }
 }
 #[component(no_case_check)]
 pub fn NewGuideAssets() -> dioxus::prelude::Element {
     use dioxus::prelude::*;
-    rsx! {}
+    rsx! {
+        h1 { id: "styling-and-assets",
+            a { href: "#styling-and-assets", class: "header", "Styling and Assets" }
+        }
+        p { "Unfortunately, our HotDog app isn't quite ready to show off - it's completely unstyled!" }
+        p { "In this chapter we'll cover adding assets and styles to our app." }
+        h2 { id: "dioxus-uses-css-for-styling",
+            a { href: "#dioxus-uses-css-for-styling", class: "header",
+                "Dioxus uses CSS for Styling"
+            }
+        }
+        p {
+            "As mentioned earlier, Dioxus apps uses HTML and CSS as the core markup and styling technology. Instead of re-inventing the wheel like Flutter and React-Native, we designed Dioxus to use HTML and CSS on every platform."
+        }
+        p {
+            "CSS is by-far the most popular styling system and is extremely capable. For example, here's a screenshot of "
+            a { href: "https://github.com/terhechte/Ebou", "ebou" }
+            ", a very beautiful Mastodon client built with Dioxus."
+        }
+        p {
+            img {
+                src: asset!("/assets/06_docs/ebou-following.png", ImageAssetOptions::new().with_avif()),
+                alt: "Ebou",
+                title: "",
+            }
+        }
+        h2 { id: "adding-the-css-file-with-asset",
+            a { href: "#adding-the-css-file-with-asset", class: "header",
+                "Adding the CSS File with asset!()"
+            }
+        }
+        p {
+            "The bare-bones template already sets us up with a  "
+            code { "main.css" }
+            " in the  "
+            code { "assets" }
+            " folder."
+        }
+        CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">├── Cargo.toml\n</span><span style=\"color:#f8f8f2;\">├── assets\n</span><span style=\"color:#f8f8f2;\">│\u{a0}\u{a0} └── main.css\n</span><span style=\"color:#f8f8f2;\">└── src\n</span><span style=\"color:#f8f8f2;\">    └── main.rs</span></pre>\n" }
+        p {
+            "To include it the CSS in our app, we can use the  "
+            code { "asset!()" }
+            " macro. This macro marks a particular asset to be included in the final app bundle."
+        }
+        CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"font-style:italic;color:#66d9ef;\">static </span><span style=\"color:#ff80f4;\">CSS</span><span style=\"color:#f8f8f2;\">: Asset </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">asset!(</span><span style=\"color:#ffee99;\">&quot;/assets/main.css&quot;</span><span style=\"color:#f8f8f2;\">);</span></pre>\n" }
+        p {
+            "We also need to make sure the asset gets loaded into our app using the  "
+            code { "document::Stylesheet" }
+            " component. This component is equivalent to the  "
+            code { "<link>" }
+            " HTML element but also works when server-side-rendering our app."
+        }
+        CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">app</span><span style=\"color:#f8f8f2;\">() -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    rsx! {{\n</span><span style=\"color:#f8f8f2;\">        document::Stylesheet {{ href: </span><span style=\"color:#ff80f4;\">CSS </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"color:#8c8c8c;\">// rest of the app\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n" }
+        p {
+            "Unlike Rust's  "
+            code { "include_str!()" }
+            " macro, the  "
+            code { "asset!()" }
+            " macro does not actually include the "
+            em { "contents" }
+            " of the asset in our final executable. Instead, it generates a unique path so that the asset can be loaded at runtime. This is ideal for web apps where assets are loaded in parallel through different HTTP requests."
+        }
+        h2 { id: "hot-reloading",
+            a { href: "#hot-reloading", class: "header", "Hot-Reloading" }
+        }
+        p {
+            "All assets in Dioxus participate in hot-reloading. Try editing your app's  "
+            code { "main.css" }
+            " and watch changes propagate in real time."
+        }
+        p {
+            video {
+                src: asset!("/assets/06_docs/dog-asset-hotreload.mp4"),
+                alt: "CSS Hot-reloading",
+                title: "",
+                autoplay: true,
+                muted: true,
+                r#loop: true,
+                playsinline: true,
+                preload: "metadata",
+            }
+        }
+        h2 { id: "including-images",
+            a { href: "#including-images", class: "header", "Including Images" }
+        }
+        p {
+            "The  "
+            code { "asset!()" }
+            " macro can include a wide variety of assets in our app. We can also include images, JSON, JavaScript, and more."
+        }
+        p {
+            "For "
+            em { "HotDog" }
+            ", we'll use a combination of static assets defined with "
+            code { "asset!()" }
+            " and by simply referring to the URL of the image in our app in the img "
+            code { "src" }
+            ":"
+        }
+        CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">rsx! {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#8c8c8c;\">// ...\n</span><span style=\"color:#f8f8f2;\">    div {{\n</span><span style=\"color:#f8f8f2;\">        img {{ src: </span><span style=\"color:#ffee99;\">&quot;https://images.dog.ceo/breeds/pitbull/dog-3981540_1280.jpg&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#8c8c8c;\">// ...\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n" }
+        h2 { id: "optimizations",
+            a { href: "#optimizations", class: "header", "Optimizations" }
+        }
+        p {
+            "By default, the  "
+            code { "asset!()" }
+            " macro will lightly optimize CSS, JavaScript, JSON, and images. The name of the asset will also be modified to include a content hash."
+        }
+        CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">asset!(</span><span style=\"color:#ffee99;\">&quot;/assets/main.css&quot;</span><span style=\"color:#f8f8f2;\">).</span><span style=\"color:#66d9ef;\">to_string</span><span style=\"color:#f8f8f2;\">() </span><span style=\"color:#8c8c8c;\">// would output main-j1238nask123.css</span></pre>\n" }
+        p {
+            "You can optimize assets even further, with an optional  "
+            code { "Options" }
+            " struct. For example,  "
+            code { "dx" }
+            " can automatically convert  "
+            code { ".png" }
+            " images to a more optimized  "
+            code { ".avif" }
+            " format:"
+        }
+        CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">asset!(</span><span style=\"color:#ffee99;\">&quot;/assets/image.png&quot;</span><span style=\"color:#f8f8f2;\">, ImageAssetOptions::new().</span><span style=\"color:#66d9ef;\">with_avif</span><span style=\"color:#f8f8f2;\">())</span></pre>\n" }
+        p {
+            "Check out the "
+            a { href: "../guides/assets", "assets guide" }
+            " for a more in-depth explanation of how the Dioxus asset system works."
+        }
+        h2 { id: "using-tailwind-with-dioxus",
+            a { href: "#using-tailwind-with-dioxus", class: "header", "Using Tailwind with Dioxus" }
+        }
+        p {
+            "We're not going to use Tailwind for the "
+            em { "HotDog" }
+            ", but it's important to note that Dioxus "
+            em { "does" }
+            " have TailwindCSS support. If you're interested in using Tailwind to style your app, make sure to "
+            a { href: "../cookbook/tailwind", "read the guide" }
+            "."
+        }
+        h2 { id: "the-final-css",
+            a { href: "#the-final-css", class: "header", "The Final CSS" }
+        }
+        p {
+            "We can use the asset hot-reload system of  "
+            code { "dx" }
+            " and our knowledge of CSS to create a beautiful app:"
+        }
+        p {
+            img {
+                src: asset!("/assets/06_docs/dog_app_styled.png", ImageAssetOptions::new().with_avif()),
+                alt: "Styled Dog App",
+                title: "",
+            }
+        }
+        p { "The final CSS is here for reference:" }
+        CodeBlock {
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#8c8c8c;\">/* App-wide styling */\n</span><span style=\"color:#f8f8f2;\">html, body {{\n</span><span style=\"color:#f8f8f2;\">    background</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">color: </span><span style=\"color:#f92672;\">#</span><span style=\"color:#f8f8f2;\">0e0e0e;\n</span><span style=\"color:#f8f8f2;\">    color: white;\n</span><span style=\"color:#f8f8f2;\">    font</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">family: </span><span style=\"color:#f92672;\">&#39;Segoe </span><span style=\"color:#ff80f4;\">UI</span><span style=\"color:#f92672;\">&#39;</span><span style=\"color:#f8f8f2;\">, Tahoma, Geneva, Verdana, sans</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">serif;\n</span><span style=\"color:#f8f8f2;\">    height: </span><span style=\"color:#ff80f4;\">100</span><span style=\"color:#f92672;\">%</span><span style=\"color:#f8f8f2;\">;\n</span><span style=\"color:#f8f8f2;\">    width: </span><span style=\"color:#ff80f4;\">100</span><span style=\"color:#f92672;\">%</span><span style=\"color:#f8f8f2;\">;\n</span><span style=\"color:#f8f8f2;\">    overflow: hidden;\n</span><span style=\"color:#f8f8f2;\">    margin: </span><span style=\"color:#ff80f4;\">0</span><span style=\"color:#f8f8f2;\">;\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\">#</span><span style=\"color:#f8f8f2;\">main {{\n</span><span style=\"color:#f8f8f2;\">    display: flex;\n</span><span style=\"color:#f8f8f2;\">    flex</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">direction: column;\n</span><span style=\"color:#f8f8f2;\">    height: </span><span style=\"color:#ff80f4;\">100</span><span style=\"color:#f92672;\">%</span><span style=\"color:#f8f8f2;\">;\n</span><span style=\"color:#f8f8f2;\">    justify</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">content: space</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">between;\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\">#</span><span style=\"color:#f8f8f2;\">dogview {{\n</span><span style=\"color:#f8f8f2;\">    flex</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">grow: </span><span style=\"color:#ff80f4;\">1</span><span style=\"color:#f8f8f2;\">;\n</span><span style=\"color:#f8f8f2;\">    width: </span><span style=\"color:#ff80f4;\">100</span><span style=\"color:#f92672;\">%</span><span style=\"color:#f8f8f2;\">;\n</span><span style=\"color:#f8f8f2;\">    min</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">height: 0px;\n</span><span style=\"color:#f8f8f2;\">    padding: 10px\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\">#</span><span style=\"color:#f8f8f2;\">dogview img {{\n</span><span style=\"color:#f8f8f2;\">    display: block;\n</span><span style=\"color:#f8f8f2;\">    max</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">height: </span><span style=\"color:#ff80f4;\">90</span><span style=\"color:#f92672;\">%</span><span style=\"color:#f8f8f2;\">;\n</span><span style=\"color:#f8f8f2;\">    max</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">width: </span><span style=\"color:#ff80f4;\">90</span><span style=\"color:#f92672;\">%</span><span style=\"color:#f8f8f2;\">;\n</span><span style=\"color:#f8f8f2;\">    height: 1000px;\n</span><span style=\"color:#f8f8f2;\">    object</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">fit: cover;\n</span><span style=\"color:#f8f8f2;\">    border</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">radius: 5px;\n</span><span style=\"color:#f8f8f2;\">    border: 1px solid </span><span style=\"color:#66d9ef;\">rgb</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#ff80f4;\">233</span><span style=\"color:#f8f8f2;\">, </span><span style=\"color:#ff80f4;\">233</span><span style=\"color:#f8f8f2;\">, </span><span style=\"color:#ff80f4;\">233</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#f92672;\">box-</span><span style=\"color:#f8f8f2;\">shadow: 0px 5px 10px 10px </span><span style=\"color:#66d9ef;\">rgb</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#ff80f4;\">216</span><span style=\"color:#f8f8f2;\">, </span><span style=\"color:#ff80f4;\">216</span><span style=\"color:#f8f8f2;\">, </span><span style=\"color:#ff80f4;\">216</span><span style=\"color:#f8f8f2;\">, </span><span style=\"color:#ff80f4;\">0.5</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"color:#f8f8f2;\">    margin: auto;\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\">#</span><span style=\"color:#f8f8f2;\">title {{\n</span><span style=\"color:#f8f8f2;\">    text</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">align: center;\n</span><span style=\"color:#f8f8f2;\">    padding</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">top: 10px;\n</span><span style=\"color:#f8f8f2;\">    border</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">bottom: 1px solid </span><span style=\"color:#f92672;\">#</span><span style=\"color:#f8f8f2;\">a8a8a8;\n</span><span style=\"color:#f8f8f2;\">    font</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">style: italic;\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\">#</span><span style=\"color:#f8f8f2;\">title h1 {{\n</span><span style=\"color:#f8f8f2;\">    margin: </span><span style=\"color:#ff80f4;\">0.25</span><span style=\"color:#f8f8f2;\">em;\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\">#</span><span style=\"color:#f8f8f2;\">buttons {{\n</span><span style=\"color:#f8f8f2;\">    display: flex;\n</span><span style=\"color:#f8f8f2;\">    flex</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">direction: row;\n</span><span style=\"color:#f8f8f2;\">    justify</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">content: center;\n</span><span style=\"color:#f8f8f2;\">    gap: 20px;\n</span><span style=\"color:#f8f8f2;\">    padding</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">top: 20px;\n</span><span style=\"color:#f8f8f2;\">    padding</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">bottom: 20px;\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\">#</span><span style=\"color:#f8f8f2;\">skip {{ background</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">color: gray }}\n</span><span style=\"color:#f92672;\">#</span><span style=\"color:#f8f8f2;\">save {{ background</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">color: green; }}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\">#</span><span style=\"color:#f8f8f2;\">skip, </span><span style=\"color:#f92672;\">#</span><span style=\"color:#f8f8f2;\">save {{\n</span><span style=\"color:#f8f8f2;\">    padding: 5px 30px 5px 30px;\n</span><span style=\"color:#f8f8f2;\">    border</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">radius: 3px;\n</span><span style=\"color:#f8f8f2;\">    font</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">size: 2rem;\n</span><span style=\"color:#f8f8f2;\">    font</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">weight: bold;\n</span><span style=\"color:#f8f8f2;\">    color: </span><span style=\"color:#66d9ef;\">rgb</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#ff80f4;\">230</span><span style=\"color:#f8f8f2;\">, </span><span style=\"color:#ff80f4;\">230</span><span style=\"color:#f8f8f2;\">, </span><span style=\"color:#ff80f4;\">230</span><span style=\"color:#f8f8f2;\">)\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
+        }
+    }
 }
 #[component(no_case_check)]
 pub fn NewGuideState() -> dioxus::prelude::Element {
@@ -5276,47 +5516,58 @@ pub fn NewGuideState() -> dioxus::prelude::Element {
         h1 { id: "interactivity",
             a { href: "#interactivity", class: "header", "Interactivity" }
         }
-        p { "In this chapter, we will add a preview for articles you hover over or links you focus on." }
-        h2 { id: "creating-a-preview",
-            a { href: "#creating-a-preview", class: "header", "Creating a Preview" }
+        p {
+            "Now that our "
+            em { "HotDog" }
+            " app is scaffolded and styled, we can finally add some interactive elements."
+        }
+        h2 { id: "encapsulating-state",
+            a { href: "#encapsulating-state", class: "header", "Encapsulating State" }
         }
         p {
-            "First, let's split our app into a Stories component on the left side of the screen, and a preview component on the right side of the screen:"
+            "Before we get too far, let's split our app into two parts: the  "
+            code { "Title" }
+            " and the  "
+            code { "DogView" }
+            ". This will help us organize our app and keep the  "
+            code { "DogView" }
+            " state separated from  "
+            code { "Title" }
+            " state."
         }
         CodeBlock {
-            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f92672;\">pub </span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">App</span><span style=\"color:#f8f8f2;\">() -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    rsx! {{\n</span><span style=\"color:#f8f8f2;\">        div {{ display: </span><span style=\"color:#ffee99;\">&quot;flex&quot;</span><span style=\"color:#f8f8f2;\">, flex_direction: </span><span style=\"color:#ffee99;\">&quot;row&quot;</span><span style=\"color:#f8f8f2;\">, width: </span><span style=\"color:#ffee99;\">&quot;100%&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">            div {{ width: </span><span style=\"color:#ffee99;\">&quot;50%&quot;</span><span style=\"color:#f8f8f2;\">, Stories {{}} }}\n</span><span style=\"color:#f8f8f2;\">            div {{ width: </span><span style=\"color:#ffee99;\">&quot;50%&quot;</span><span style=\"color:#f8f8f2;\">, Preview {{}} }}\n</span><span style=\"color:#f8f8f2;\">        }}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#8c8c8c;\">// New\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">Stories</span><span style=\"color:#f8f8f2;\">() -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    rsx! {{\n</span><span style=\"color:#f8f8f2;\">        StoryListing {{\n</span><span style=\"color:#f8f8f2;\">            story: StoryItem {{\n</span><span style=\"color:#f8f8f2;\">                id: </span><span style=\"color:#ff80f4;\">0</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">                title: </span><span style=\"color:#ffee99;\">&quot;hello hackernews&quot;</span><span style=\"color:#f8f8f2;\">.</span><span style=\"color:#66d9ef;\">to_string</span><span style=\"color:#f8f8f2;\">(),\n</span><span style=\"color:#f8f8f2;\">                url: </span><span style=\"font-style:italic;color:#66d9ef;\">None</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">                text: </span><span style=\"font-style:italic;color:#66d9ef;\">None</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">                by: </span><span style=\"color:#ffee99;\">&quot;Author&quot;</span><span style=\"color:#f8f8f2;\">.</span><span style=\"color:#66d9ef;\">to_string</span><span style=\"color:#f8f8f2;\">(),\n</span><span style=\"color:#f8f8f2;\">                score: </span><span style=\"color:#ff80f4;\">0</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">                descendants: </span><span style=\"color:#ff80f4;\">0</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">                time: chrono::Utc::now(),\n</span><span style=\"color:#f8f8f2;\">                kids: vec![],\n</span><span style=\"color:#f8f8f2;\">                r</span><span style=\"color:#f92672;\">#</span><span style=\"font-style:italic;color:#66d9ef;\">type</span><span style=\"color:#f8f8f2;\">: </span><span style=\"color:#ffee99;\">&quot;&quot;</span><span style=\"color:#f8f8f2;\">.</span><span style=\"color:#66d9ef;\">to_string</span><span style=\"color:#f8f8f2;\">(),\n</span><span style=\"color:#f8f8f2;\">            }}\n</span><span style=\"color:#f8f8f2;\">        }}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#8c8c8c;\">// New\n</span><span style=\"color:#f8f8f2;\">#[derive(Clone, Debug)]\n</span><span style=\"font-style:italic;color:#66d9ef;\">enum </span><span style=\"color:#f8f8f2;\">PreviewState {{\n</span><span style=\"color:#f8f8f2;\">    Unset,\n</span><span style=\"color:#f8f8f2;\">    Loading,\n</span><span style=\"color:#f8f8f2;\">    Loaded(StoryPageData),\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#8c8c8c;\">// New\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">Preview</span><span style=\"color:#f8f8f2;\">() -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> preview_state </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">PreviewState::Unset;\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#f92672;\">match</span><span style=\"color:#f8f8f2;\"> preview_state {{\n</span><span style=\"color:#f8f8f2;\">        PreviewState::Unset </span><span style=\"color:#f92672;\">=&gt; </span><span style=\"color:#f8f8f2;\">rsx! {{</span><span style=\"color:#ffee99;\">&quot;Hover over a story to preview it here&quot;</span><span style=\"color:#f8f8f2;\">}},\n</span><span style=\"color:#f8f8f2;\">        PreviewState::Loading </span><span style=\"color:#f92672;\">=&gt; </span><span style=\"color:#f8f8f2;\">rsx! {{</span><span style=\"color:#ffee99;\">&quot;Loading...&quot;</span><span style=\"color:#f8f8f2;\">}},\n</span><span style=\"color:#f8f8f2;\">        PreviewState::Loaded(story) </span><span style=\"color:#f92672;\">=&gt; </span><span style=\"color:#f8f8f2;\">{{\n</span><span style=\"color:#f8f8f2;\">            rsx! {{\n</span><span style=\"color:#f8f8f2;\">                div {{ padding: </span><span style=\"color:#ffee99;\">&quot;0.5rem&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">                    div {{ font_size: </span><span style=\"color:#ffee99;\">&quot;1.5rem&quot;</span><span style=\"color:#f8f8f2;\">, a {{ href: story.item.url, </span><span style=\"color:#ffee99;\">&quot;{{story.item.title}}&quot; </span><span style=\"color:#f8f8f2;\">}} }}\n</span><span style=\"color:#f8f8f2;\">                    div {{ dangerous_inner_html: story.item.text }}\n</span><span style=\"color:#f8f8f2;\">                    </span><span style=\"color:#f92672;\">for</span><span style=\"color:#f8f8f2;\"> comment </span><span style=\"color:#f92672;\">in &amp;</span><span style=\"color:#f8f8f2;\">story.comments {{\n</span><span style=\"color:#f8f8f2;\">                        Comment {{ comment: comment.</span><span style=\"color:#66d9ef;\">clone</span><span style=\"color:#f8f8f2;\">() }}\n</span><span style=\"color:#f8f8f2;\">                    }}\n</span><span style=\"color:#f8f8f2;\">                }}\n</span><span style=\"color:#f8f8f2;\">            }}\n</span><span style=\"color:#f8f8f2;\">        }}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#8c8c8c;\">// NEW\n</span><span style=\"color:#f8f8f2;\">#[component]\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">Comment</span><span style=\"color:#f8f8f2;\">(</span><span style=\"font-style:italic;color:#fd971f;\">comment</span><span style=\"color:#f8f8f2;\">: CommentData) -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    rsx! {{\n</span><span style=\"color:#f8f8f2;\">        div {{ padding: </span><span style=\"color:#ffee99;\">&quot;0.5rem&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">            div {{ color: </span><span style=\"color:#ffee99;\">&quot;gray&quot;</span><span style=\"color:#f8f8f2;\">, </span><span style=\"color:#ffee99;\">&quot;by {{comment.by}}&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">            div {{ dangerous_inner_html: </span><span style=\"color:#ffee99;\">&quot;{{comment.text}}&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">            </span><span style=\"color:#f92672;\">for</span><span style=\"color:#f8f8f2;\"> kid </span><span style=\"color:#f92672;\">in &amp;</span><span style=\"color:#f8f8f2;\">comment.sub_comments {{\n</span><span style=\"color:#f8f8f2;\">                Comment {{ comment: kid.</span><span style=\"color:#66d9ef;\">clone</span><span style=\"color:#f8f8f2;\">() }}\n</span><span style=\"color:#f8f8f2;\">            }}\n</span><span style=\"color:#f8f8f2;\">        }}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
-            name: "hackernews_state.rs".to_string(),
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">App</span><span style=\"color:#f8f8f2;\">() -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    rsx! {{\n</span><span style=\"color:#f8f8f2;\">        Title {{}}\n</span><span style=\"color:#f8f8f2;\">        DogView {{}}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">#[component]\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">Title</span><span style=\"color:#f8f8f2;\">() -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    rsx! {{\n</span><span style=\"color:#f8f8f2;\">        div {{ id: </span><span style=\"color:#ffee99;\">&quot;title&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">            h1 {{ </span><span style=\"color:#ffee99;\">&quot;HotDog! 🌭&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">        }}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">#[component]\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">DogView</span><span style=\"color:#f8f8f2;\">() -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    rsx! {{\n</span><span style=\"color:#f8f8f2;\">        div {{ id: </span><span style=\"color:#ffee99;\">&quot;dogview&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">            img {{ src: </span><span style=\"color:#ffee99;\">&quot;https://images.dog.ceo/breeds/pitbull/dog-3981540_1280.jpg&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">        }}\n</span><span style=\"color:#f8f8f2;\">        div {{ id: </span><span style=\"color:#ffee99;\">&quot;buttons&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">            button {{ id: </span><span style=\"color:#ffee99;\">&quot;skip&quot;</span><span style=\"color:#f8f8f2;\">, </span><span style=\"color:#ffee99;\">&quot;skip&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">            button {{ id: </span><span style=\"color:#ffee99;\">&quot;save&quot;</span><span style=\"color:#f8f8f2;\">, </span><span style=\"color:#ffee99;\">&quot;save!&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">        }}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
         }
-        DemoFrame { hackernews_state::app_v1::App {} }
         h2 { id: "event-handlers",
             a { href: "#event-handlers", class: "header", "Event Handlers" }
         }
         p {
-            "Next, we need to detect when the user hovers over a section or focuses a link. We can use an "
+            "In the  "
+            code { "DogView" }
+            " component, we'll want to attach some action to the click of the buttons. This would let the user skip or save the current dog photo. We can use an "
             a { href: "../reference/event_handlers", "event listener" }
             " to listen for the hover and focus events."
         }
         p {
             "Event handlers are similar to regular attributes, but their name usually starts with  "
             code { "on" }
-            "- and they accept closures as values. The closure will be called whenever the event it listens for is triggered. When an event is triggered, information about the event is passed to the closure through the "
+            " - and they accept closures as values. The closure will be called whenever its corresponding event triggered. The listener receives information about the event in the "
             a { href: "https://docs.rs/dioxus/latest/dioxus/prelude/struct.Event.html",
                 "Event"
             }
-            " structure."
+            " object."
         }
         p {
-            "Let's create a "
-            a { href: "https://docs.rs/dioxus/latest/dioxus/events/fn.onmouseenter.html",
-                code { "onmouseenter" }
-            }
-            " event listener in the "
-            code { "StoryListing" }
-            " component:"
+            "We'll add some closures inline and then pass them to the  "
+            code { "onclick" }
+            " attribute for both the "
+            em { "skip" }
+            " and "
+            em { "save" }
+            " buttons:"
         }
         CodeBlock {
-            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">rsx! {{\n</span><span style=\"color:#f8f8f2;\">    div {{\n</span><span style=\"color:#f8f8f2;\">        padding: </span><span style=\"color:#ffee99;\">&quot;0.5rem&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">        position: </span><span style=\"color:#ffee99;\">&quot;relative&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">        onmouseenter: </span><span style=\"color:#f92672;\">move |_| </span><span style=\"color:#f8f8f2;\">{{}},\n</span><span style=\"color:#f8f8f2;\">        div {{ font_size: </span><span style=\"color:#ffee99;\">&quot;1.5rem&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">            a {{ href: url, onfocus: </span><span style=\"color:#f92672;\">move |</span><span style=\"color:#f8f8f2;\">_event</span><span style=\"color:#f92672;\">| </span><span style=\"color:#f8f8f2;\">{{}}, </span><span style=\"color:#ffee99;\">&quot;{{title}}&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">            a {{\n</span><span style=\"color:#f8f8f2;\">                color: </span><span style=\"color:#ffee99;\">&quot;gray&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">                href: </span><span style=\"color:#ffee99;\">&quot;https://news.ycombinator.com/from?site={{hostname}}&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">                text_decoration: </span><span style=\"color:#ffee99;\">&quot;none&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">                </span><span style=\"color:#ffee99;\">&quot; ({{hostname}})&quot;\n</span><span style=\"color:#f8f8f2;\">            }}\n</span><span style=\"color:#f8f8f2;\">        }}\n</span><span style=\"color:#f8f8f2;\">        div {{ display: </span><span style=\"color:#ffee99;\">&quot;flex&quot;</span><span style=\"color:#f8f8f2;\">, flex_direction: </span><span style=\"color:#ffee99;\">&quot;row&quot;</span><span style=\"color:#f8f8f2;\">, color: </span><span style=\"color:#ffee99;\">&quot;gray&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">            div {{ </span><span style=\"color:#ffee99;\">&quot;{{score}}&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">            div {{ padding_left: </span><span style=\"color:#ffee99;\">&quot;0.5rem&quot;</span><span style=\"color:#f8f8f2;\">, </span><span style=\"color:#ffee99;\">&quot;by {{by}}&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">            div {{ padding_left: </span><span style=\"color:#ffee99;\">&quot;0.5rem&quot;</span><span style=\"color:#f8f8f2;\">, </span><span style=\"color:#ffee99;\">&quot;{{time}}&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">            div {{ padding_left: </span><span style=\"color:#ffee99;\">&quot;0.5rem&quot;</span><span style=\"color:#f8f8f2;\">, </span><span style=\"color:#ffee99;\">&quot;{{comments}}&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">        }}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
-            name: "hackernews_state.rs".to_string(),
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">#[component]\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">DogView</span><span style=\"color:#f8f8f2;\">() -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> skip </span><span style=\"color:#f92672;\">= move |_| </span><span style=\"color:#f8f8f2;\">{{}};\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> save </span><span style=\"color:#f92672;\">= move |_| </span><span style=\"color:#f8f8f2;\">{{}};\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">    rsx! {{\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"color:#8c8c8c;\">// ...\n</span><span style=\"color:#f8f8f2;\">        div {{ id: </span><span style=\"color:#ffee99;\">&quot;buttons&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">            button {{ onclick: skip, id: </span><span style=\"color:#ffee99;\">&quot;skip&quot;</span><span style=\"color:#f8f8f2;\">,  </span><span style=\"color:#ffee99;\">&quot;skip&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">            button {{ onclick: save, id: </span><span style=\"color:#ffee99;\">&quot;save&quot;</span><span style=\"color:#f8f8f2;\">,  </span><span style=\"color:#ffee99;\">&quot;save!&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">        }}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
         }
         blockquote {
             p {
@@ -5328,113 +5579,164 @@ pub fn NewGuideState() -> dioxus::prelude::Element {
             a { href: "#state", class: "header", "State" }
         }
         p {
-            "So far our components have had no state like normal rust functions. To make our application change when we hover over a link we need state to store the currently hovered link in the root of the application."
+            "So far, our components have no internal state. However, for our  "
+            code { "DogView" }
+            ", we want to change the currently displayed dog photo whenever the user clicks "
+            em { "skip" }
+            " or "
+            em { "save" }
+            "."
         }
         p {
-            "You can create state in dioxus using hooks. Hooks are Rust functions you call in a constant order in a component that add additional functionality to the component."
+            "Dioxus makes it possible for bare Rust functions to store and load state - without the use of an extra struct - using the  "
+            code { "use_hook" }
+            " function."
         }
         p {
-            "In this case, we will use the  "
-            code { "use_context_provider" }
+            "When called in a component, the  "
+            code { "use_hook" }
+            " function will return a  "
+            code { ".clone()" }
+            " of the originally stored value:"
+        }
+        CodeBlock {
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">DogView</span><span style=\"color:#f8f8f2;\">() -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> img_src </span><span style=\"color:#f92672;\">= </span><span style=\"color:#66d9ef;\">use_hook</span><span style=\"color:#f8f8f2;\">(|| </span><span style=\"color:#ffee99;\">&quot;https://images.dog.ceo/breeds/pitbull/dog-3981540_1280.jpg&quot;</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">    rsx! {{\n</span><span style=\"color:#f8f8f2;\">        div {{ id: </span><span style=\"color:#ffee99;\">&quot;dogview&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">            img {{ src: </span><span style=\"color:#ffee99;\">&quot;{{img_src}}&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">        }}\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"color:#8c8c8c;\">// ..\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
+        }
+        p {
+            "Dioxus hooks are very similar to React's hooks and need to follow some "
+            a { href: "#the-rules-of-hooks", "simple rules" }
+            " to function properly."
+        }
+        h2 { id: "signals-and",
+            a { href: "#signals-and", class: "header", "Signals and " }
+            code { "use_signal" }
+        }
+        p {
+            "While  "
+            code { "use_hook" }
+            " makes it possible to store any value that implements  "
+            code { "Clone" }
+            ", you'll frequently want a more advanced form of state management. Built-in to Dioxus are "
+            em { "signals" }
+            "."
+        }
+        p {
+            "Signals are wrapper type around ordinary Rust values that track reads and writes to bring your app to life. You can wrap any Rust value in a signal. Signals can be created manually with  "
+            code { "Signal::new()" }
+            " but we strongly recommend using the  "
+            code { "use_signal" }
+            " hook instead."
+        }
+        blockquote {
+            p {
+                "Manually creating Signals requires remembering to call  "
+                code { ".dispose()" }
+                " on the signal whereas  "
+                code { "use_signal" }
+                " cleans the Signal up for you automatically."
+            }
+        }
+        p {
+            "Whenever a signal's value changes, its containing \"reactive scope\" will be \"marked dirty\" and re-run. By default, Dioxus components are reactive scopes, and thus, will re-render whenever a signal value changes."
+        }
+        p {
+            video {
+                src: asset!("/assets/06_docs/hotdog-interactivity.mp4"),
+                alt: "Interactivity Basic",
+                title: "",
+                autoplay: true,
+                muted: true,
+                r#loop: true,
+                playsinline: true,
+                preload: "metadata",
+            }
+        }
+        p {
+            "Signals are core to Dioxus and might take some time to master. We recommend reading the "
+            a { href: "../essentials/state", "state management" }
+            " guide in depth before diving into your first large app."
+        }
+        h2 { id: "global-state-with-context",
+            a { href: "#global-state-with-context", class: "header", "Global State with Context" }
+        }
+        p {
+            "While hooks are good for state local to components, occasionally you'll want to manage state for your entire app."
+        }
+        p {
+            "Dioxus provides two mechanisms:  "
+            code { "Context" }
             " and  "
-            code { "use_context" }
-            " hooks:"
-        }
-        ul {
-            li {
-                "You can provide a closure to "
-                code { "use_context_provider" }
-                " that determines the initial value of the shared state and provides the value to all child components"
-            }
-            li {
-                "You can then use the "
-                code { "use_context" }
-                " hook to read and modify that state in the "
-                code { "Preview" }
-                " and "
-                code { "StoryListing" }
-                " components"
-            }
-            li {
-                "When the value updates, the "
-                code { "Signal" }
-                " will cause the component to re-render, and provides you with the new value"
-            }
-        }
-        blockquote {
-            p {
-                "Note: You should prefer local state hooks like use_signal or use_signal_sync when you only use state in one component. Because we use state in multiple components, we can use a "
-                a { href: "../reference/context", "global state pattern" }
-            }
-        }
-        CodeBlock {
-            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f92672;\">pub </span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">App</span><span style=\"color:#f8f8f2;\">() -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#66d9ef;\">use_context_provider</span><span style=\"color:#f8f8f2;\">(|| Signal::new(PreviewState::Unset));</span></pre>\n",
-            name: "hackernews_state.rs".to_string(),
-        }
-        CodeBlock {
-            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">#[component]\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">StoryListing</span><span style=\"color:#f8f8f2;\">(</span><span style=\"font-style:italic;color:#fd971f;\">story</span><span style=\"color:#f8f8f2;\">: ReadOnlySignal&lt;StoryItem&gt;) -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let </span><span style=\"color:#f92672;\">mut</span><span style=\"color:#f8f8f2;\"> preview_state </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">consume_context::&lt;Signal&lt;PreviewState&gt;&gt;();\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> StoryItem {{\n</span><span style=\"color:#f8f8f2;\">        title,\n</span><span style=\"color:#f8f8f2;\">        url,\n</span><span style=\"color:#f8f8f2;\">        by,\n</span><span style=\"color:#f8f8f2;\">        score,\n</span><span style=\"color:#f8f8f2;\">        time,\n</span><span style=\"color:#f8f8f2;\">        kids,\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"color:#f92672;\">..\n</span><span style=\"color:#f8f8f2;\">    }} </span><span style=\"color:#f92672;\">= &amp;*</span><span style=\"color:#f8f8f2;\">story.</span><span style=\"color:#66d9ef;\">read</span><span style=\"color:#f8f8f2;\">();\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> url </span><span style=\"color:#f92672;\">=</span><span style=\"color:#f8f8f2;\"> url.</span><span style=\"color:#66d9ef;\">as_deref</span><span style=\"color:#f8f8f2;\">().</span><span style=\"color:#66d9ef;\">unwrap_or_default</span><span style=\"color:#f8f8f2;\">();\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> hostname </span><span style=\"color:#f92672;\">=</span><span style=\"color:#f8f8f2;\"> url\n</span><span style=\"color:#f8f8f2;\">        .</span><span style=\"color:#66d9ef;\">trim_start_matches</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#ffee99;\">&quot;https://&quot;</span><span style=\"color:#f8f8f2;\">)\n</span><span style=\"color:#f8f8f2;\">        .</span><span style=\"color:#66d9ef;\">trim_start_matches</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#ffee99;\">&quot;http://&quot;</span><span style=\"color:#f8f8f2;\">)\n</span><span style=\"color:#f8f8f2;\">        .</span><span style=\"color:#66d9ef;\">trim_start_matches</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#ffee99;\">&quot;www.&quot;</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> score </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">format!(</span><span style=\"color:#ffee99;\">&quot;</span><span style=\"color:#ff80f4;\">{{score}}</span><span style=\"color:#ffee99;\"> point</span><span style=\"color:#ff80f4;\">{{}}</span><span style=\"color:#ffee99;\">&quot;</span><span style=\"color:#f8f8f2;\">, </span><span style=\"color:#f92672;\">if *</span><span style=\"color:#f8f8f2;\">score </span><span style=\"color:#f92672;\">&gt; </span><span style=\"color:#ff80f4;\">1 </span><span style=\"color:#f8f8f2;\">{{ </span><span style=\"color:#ffee99;\">&quot;s&quot; </span><span style=\"color:#f8f8f2;\">}} </span><span style=\"color:#f92672;\">else </span><span style=\"color:#f8f8f2;\">{{ </span><span style=\"color:#ffee99;\">&quot;&quot; </span><span style=\"color:#f8f8f2;\">}});\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> comments </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">format!(\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"color:#ffee99;\">&quot;</span><span style=\"color:#ff80f4;\">{{}} {{}}</span><span style=\"color:#ffee99;\">&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">        kids.</span><span style=\"color:#66d9ef;\">len</span><span style=\"color:#f8f8f2;\">(),\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"color:#f92672;\">if</span><span style=\"color:#f8f8f2;\"> kids.</span><span style=\"color:#66d9ef;\">len</span><span style=\"color:#f8f8f2;\">() </span><span style=\"color:#f92672;\">== </span><span style=\"color:#ff80f4;\">1 </span><span style=\"color:#f8f8f2;\">{{\n</span><span style=\"color:#f8f8f2;\">            </span><span style=\"color:#ffee99;\">&quot; comment&quot;\n</span><span style=\"color:#f8f8f2;\">        }} </span><span style=\"color:#f92672;\">else </span><span style=\"color:#f8f8f2;\">{{\n</span><span style=\"color:#f8f8f2;\">            </span><span style=\"color:#ffee99;\">&quot; comments&quot;\n</span><span style=\"color:#f8f8f2;\">        }}\n</span><span style=\"color:#f8f8f2;\">    );\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> time </span><span style=\"color:#f92672;\">=</span><span style=\"color:#f8f8f2;\"> time.</span><span style=\"color:#66d9ef;\">format</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#ffee99;\">&quot;%D %l:%M %p&quot;</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">    rsx! {{\n</span><span style=\"color:#f8f8f2;\">        div {{\n</span><span style=\"color:#f8f8f2;\">            padding: </span><span style=\"color:#ffee99;\">&quot;0.5rem&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">            position: </span><span style=\"color:#ffee99;\">&quot;relative&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">            onmouseenter: </span><span style=\"color:#f92672;\">move |</span><span style=\"color:#f8f8f2;\">_event</span><span style=\"color:#f92672;\">| </span><span style=\"color:#f8f8f2;\">{{\n</span><span style=\"color:#f8f8f2;\">                </span><span style=\"color:#f92672;\">*</span><span style=\"color:#f8f8f2;\">preview_state\n</span><span style=\"color:#f8f8f2;\">                    .</span><span style=\"color:#66d9ef;\">write</span><span style=\"color:#f8f8f2;\">() </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">PreviewState::Loaded(StoryPageData {{\n</span><span style=\"color:#f8f8f2;\">                    item: </span><span style=\"color:#66d9ef;\">story</span><span style=\"color:#f8f8f2;\">(),\n</span><span style=\"color:#f8f8f2;\">                    comments: vec![],\n</span><span style=\"color:#f8f8f2;\">                }});\n</span><span style=\"color:#f8f8f2;\">            }},\n</span><span style=\"color:#f8f8f2;\">            div {{ font_size: </span><span style=\"color:#ffee99;\">&quot;1.5rem&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">                a {{\n</span><span style=\"color:#f8f8f2;\">                    href: url,\n</span><span style=\"color:#f8f8f2;\">                    onfocus: </span><span style=\"color:#f92672;\">move |</span><span style=\"color:#f8f8f2;\">_event</span><span style=\"color:#f92672;\">| </span><span style=\"color:#f8f8f2;\">{{\n</span><span style=\"color:#f8f8f2;\">                        </span><span style=\"color:#f92672;\">*</span><span style=\"color:#f8f8f2;\">preview_state\n</span><span style=\"color:#f8f8f2;\">                            .</span><span style=\"color:#66d9ef;\">write</span><span style=\"color:#f8f8f2;\">() </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">PreviewState::Loaded(StoryPageData {{\n</span><span style=\"color:#f8f8f2;\">                            item: </span><span style=\"color:#66d9ef;\">story</span><span style=\"color:#f8f8f2;\">(),\n</span><span style=\"color:#f8f8f2;\">                            comments: vec![],\n</span><span style=\"color:#f8f8f2;\">                        }});\n</span><span style=\"color:#f8f8f2;\">                    }},</span></pre>\n",
-            name: "hackernews_state.rs".to_string(),
-        }
-        CodeBlock {
-            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">Preview</span><span style=\"color:#f8f8f2;\">() -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#8c8c8c;\">// New\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> preview_state </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">consume_context::&lt;Signal&lt;PreviewState&gt;&gt;();\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#8c8c8c;\">// New\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#f92672;\">match </span><span style=\"color:#66d9ef;\">preview_state</span><span style=\"color:#f8f8f2;\">() {{</span></pre>\n",
-            name: "hackernews_state.rs".to_string(),
-        }
-        DemoFrame { hackernews_state::App {} }
-        blockquote {
-            p {
-                "You can read more about Hooks in the "
-                a { href: "../reference/hooks", "Hooks reference" }
-            }
-        }
-        h3 { id: "the-rules-of-hooks",
-            a { href: "#the-rules-of-hooks", class: "header", "The Rules of Hooks" }
+            code { "GlobalSignal" }
+            "."
         }
         p {
-            "Hooks are a powerful way to manage state in Dioxus, but there are some rules you need to follow to insure they work as expected. Dioxus uses the order you call hooks to differentiate between hooks. Because the order you call hooks matters, you must follow these rules:"
+            "The  "
+            code { "Context" }
+            " API makes it possible for parent components to share state with child components without explicitly declaring an additional property field. This is generally used by larger apps and libraries to share state across the app that doesn't modify component signatures."
         }
-        ol {
-            li { "Hooks may be only used in components or other hooks (we'll get to that later)" }
-            li {
-                "On every call to the component function"
-                ol {
-                    li { "The same hooks must be called" }
-                    li { "In the same order" }
-                }
-            }
-            li {
-                "Hooks name's should start with "
-                code { "use_" }
-                " so you don't accidentally confuse them with regular functions"
-            }
-        }
-        p { "These rules mean that there are certain things you can't do with hooks:" }
-        h4 { id: "no-hooks-in-conditionals",
-            a { href: "#no-hooks-in-conditionals", class: "header", "No Hooks in Conditionals" }
+        p {
+            "To \"provide\" context, simply call  "
+            code { "use_context_provider()" }
+            " with a struct that implements  "
+            code { "Clone" }
+            ". To read that context in a child, call  "
+            code { "use_context()" }
         }
         CodeBlock {
-            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#8c8c8c;\">// ❌ don&#39;t call hooks in conditionals!\n</span><span style=\"color:#8c8c8c;\">// We must ensure that the same hooks will be called every time\n</span><span style=\"color:#8c8c8c;\">// But `if` statements only run if the conditional is true!\n</span><span style=\"color:#8c8c8c;\">// So we might violate rule 2.\n</span><span style=\"color:#f92672;\">if</span><span style=\"color:#f8f8f2;\"> you_are_happy </span><span style=\"color:#f92672;\">&amp;&amp;</span><span style=\"color:#f8f8f2;\"> you_know_it {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> something </span><span style=\"color:#f92672;\">= </span><span style=\"color:#66d9ef;\">use_signal</span><span style=\"color:#f8f8f2;\">(|| </span><span style=\"color:#ffee99;\">&quot;hands&quot;</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"color:#f8f8f2;\">    println!(</span><span style=\"color:#ffee99;\">&quot;clap your </span><span style=\"color:#ff80f4;\">{{something}}</span><span style=\"color:#ffee99;\">&quot;</span><span style=\"color:#f8f8f2;\">)\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#8c8c8c;\">// ✅ instead, *always* call use_signal\n</span><span style=\"color:#8c8c8c;\">// You can put other stuff in the conditional though\n</span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> something </span><span style=\"color:#f92672;\">= </span><span style=\"color:#66d9ef;\">use_signal</span><span style=\"color:#f8f8f2;\">(|| </span><span style=\"color:#ffee99;\">&quot;hands&quot;</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"color:#f92672;\">if</span><span style=\"color:#f8f8f2;\"> you_are_happy </span><span style=\"color:#f92672;\">&amp;&amp;</span><span style=\"color:#f8f8f2;\"> you_know_it {{\n</span><span style=\"color:#f8f8f2;\">    println!(</span><span style=\"color:#ffee99;\">&quot;clap your </span><span style=\"color:#ff80f4;\">{{something}}</span><span style=\"color:#ffee99;\">&quot;</span><span style=\"color:#f8f8f2;\">)\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
-            name: "hooks_bad.rs".to_string(),
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">#[derive(Clone)]\n</span><span style=\"font-style:italic;color:#66d9ef;\">struct </span><span style=\"color:#f8f8f2;\">TitleState(String);\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">App</span><span style=\"color:#f8f8f2;\">() -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#66d9ef;\">use_context_provider</span><span style=\"color:#f8f8f2;\">(|| TitleState(</span><span style=\"color:#ffee99;\">&quot;HotDog&quot;</span><span style=\"color:#f8f8f2;\">.</span><span style=\"color:#66d9ef;\">to_string</span><span style=\"color:#f8f8f2;\">()))\n</span><span style=\"color:#f8f8f2;\">    rsx! {{\n</span><span style=\"color:#f8f8f2;\">        Title {{}}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">Title</span><span style=\"color:#f8f8f2;\">() -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> title </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">use_context::&lt;TitleState&gt;();\n</span><span style=\"color:#f8f8f2;\">    rsx! {{\n</span><span style=\"color:#f8f8f2;\">        h1 {{ </span><span style=\"color:#ffee99;\">&quot;{{title.0}}&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
         }
-        h4 { id: "no-hooks-in-closures",
-            a { href: "#no-hooks-in-closures", class: "header", "No Hooks in Closures" }
-        }
-        CodeBlock {
-            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#8c8c8c;\">// ❌ don&#39;t call hooks inside closures!\n</span><span style=\"color:#8c8c8c;\">// We can&#39;t guarantee that the closure, if used, will be called in the same order every time\n</span><span style=\"font-style:italic;color:#66d9ef;\">let </span><span style=\"color:#a6e22e;\">_a </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">|| {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> b </span><span style=\"color:#f92672;\">= </span><span style=\"color:#66d9ef;\">use_signal</span><span style=\"color:#f8f8f2;\">(|| </span><span style=\"color:#ff80f4;\">0</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#66d9ef;\">b</span><span style=\"color:#f8f8f2;\">()\n</span><span style=\"color:#f8f8f2;\">}};\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#8c8c8c;\">// ✅ instead, move hook `b` outside\n</span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> b </span><span style=\"color:#f92672;\">= </span><span style=\"color:#66d9ef;\">use_signal</span><span style=\"color:#f8f8f2;\">(|| </span><span style=\"color:#ff80f4;\">0</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"font-style:italic;color:#66d9ef;\">let </span><span style=\"color:#a6e22e;\">_a </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">|| </span><span style=\"color:#66d9ef;\">b</span><span style=\"color:#f8f8f2;\">();</span></pre>\n",
-            name: "hooks_bad.rs".to_string(),
-        }
-        h4 { id: "no-hooks-in-loops",
-            a { href: "#no-hooks-in-loops", class: "header", "No Hooks in Loops" }
+        p {
+            "You can combine use_signal and  "
+            code { "Context" }
+            " to provide reactive state to your app:"
         }
         CodeBlock {
-            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#8c8c8c;\">// `names` is a Vec&lt;&amp;str&gt;\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#8c8c8c;\">// ❌ Do not use hooks in loops!\n</span><span style=\"color:#8c8c8c;\">// In this case, if the length of the Vec changes, we break rule 2\n</span><span style=\"color:#f92672;\">for</span><span style=\"color:#f8f8f2;\"> _name </span><span style=\"color:#f92672;\">in &amp;</span><span style=\"color:#f8f8f2;\">names {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> is_selected </span><span style=\"color:#f92672;\">= </span><span style=\"color:#66d9ef;\">use_signal</span><span style=\"color:#f8f8f2;\">(|| </span><span style=\"color:#ff80f4;\">false</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"color:#f8f8f2;\">    println!(</span><span style=\"color:#ffee99;\">&quot;selected: </span><span style=\"color:#ff80f4;\">{{is_selected}}</span><span style=\"color:#ffee99;\">&quot;</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#8c8c8c;\">// ✅ Instead, use a hashmap with use_signal\n</span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> selection_map </span><span style=\"color:#f92672;\">= </span><span style=\"color:#66d9ef;\">use_signal</span><span style=\"color:#f8f8f2;\">(HashMap::&lt;</span><span style=\"color:#f92672;\">&amp;</span><span style=\"font-style:italic;color:#66d9ef;\">str</span><span style=\"color:#f8f8f2;\">, </span><span style=\"font-style:italic;color:#66d9ef;\">bool</span><span style=\"color:#f8f8f2;\">&gt;::new);\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\">for</span><span style=\"color:#f8f8f2;\"> name </span><span style=\"color:#f92672;\">in &amp;</span><span style=\"color:#f8f8f2;\">names {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> is_selected </span><span style=\"color:#f92672;\">=</span><span style=\"color:#f8f8f2;\"> selection_map.</span><span style=\"color:#66d9ef;\">read</span><span style=\"color:#f8f8f2;\">()[name];\n</span><span style=\"color:#f8f8f2;\">    println!(</span><span style=\"color:#ffee99;\">&quot;selected: </span><span style=\"color:#ff80f4;\">{{is_selected}}</span><span style=\"color:#ffee99;\">&quot;</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
-            name: "hooks_bad.rs".to_string(),
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">#[derive(Clone, Copy)]\n</span><span style=\"font-style:italic;color:#66d9ef;\">struct </span><span style=\"color:#f8f8f2;\">MusicPlayer {{\n</span><span style=\"color:#f8f8f2;\">    song: Signal&lt;String&gt;\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">use_music_player_provider</span><span style=\"color:#f8f8f2;\">() {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> song </span><span style=\"color:#f92672;\">= </span><span style=\"color:#66d9ef;\">use_signal</span><span style=\"color:#f8f8f2;\">(|| </span><span style=\"color:#ffee99;\">&quot;Drift Away&quot;</span><span style=\"color:#f8f8f2;\">.</span><span style=\"color:#66d9ef;\">to_string</span><span style=\"color:#f8f8f2;\">());\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#66d9ef;\">use_context_provider</span><span style=\"color:#f8f8f2;\">(|| MusicPlayer {{ song }});\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
+        }
+        p {
+            "And then with  "
+            code { "use_context" }
+            " and  "
+            code { "consume_context" }
+            ", you can easily reach up to modify that state:"
+        }
+        CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">Player</span><span style=\"color:#f8f8f2;\">() -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    rsx! {{\n</span><span style=\"color:#f8f8f2;\">        button {{\n</span><span style=\"color:#f8f8f2;\">            onclick: </span><span style=\"color:#f92672;\">move |_| </span><span style=\"color:#f8f8f2;\">consume_context::&lt;MusicPlayer&gt;().song.</span><span style=\"color:#66d9ef;\">set</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#ffee99;\">&quot;Vienna&quot;</span><span style=\"color:#f8f8f2;\">),\n</span><span style=\"color:#f8f8f2;\">            </span><span style=\"color:#ffee99;\">&quot;Shuffle&quot;\n</span><span style=\"color:#f8f8f2;\">        }}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n" }
+        p {
+            "Any components that read the "
+            em { "song" }
+            " signal will automatically re-render."
+        }
+        h2 { id: "global-signals",
+            a { href: "#global-signals", class: "header", "Global Signals" }
+        }
+        p {
+            "While Context is good for encapsulating complex interactions, you'll occasionally just want a single global value for your entire app. This is where  "
+            code { "GlobalSignal" }
+            " helps. GlobalSignals are a combination of the Context system and Signals that require no additional structs or setup."
+        }
+        p { "Simply declare a GlobalSignal somewhere in your app:" }
+        CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"font-style:italic;color:#66d9ef;\">static </span><span style=\"color:#ff80f4;\">SONG</span><span style=\"color:#f8f8f2;\">: GlobalSignal&lt;String&gt; </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">Signal::global(|| </span><span style=\"color:#ffee99;\">&quot;Drift Away&quot;</span><span style=\"color:#f8f8f2;\">.</span><span style=\"color:#66d9ef;\">to_string</span><span style=\"color:#f8f8f2;\">());</span></pre>\n" }
+        p { "And then read and write to it from anywhere:" }
+        CodeBlock {
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">Player</span><span style=\"color:#f8f8f2;\">() -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    rsx! {{\n</span><span style=\"color:#f8f8f2;\">        h3 {{ </span><span style=\"color:#ffee99;\">&quot;Now playing {{SONG}}&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">        button {{\n</span><span style=\"color:#f8f8f2;\">            onclick: </span><span style=\"color:#f92672;\">move |_| *</span><span style=\"color:#ff80f4;\">SONG</span><span style=\"color:#f8f8f2;\">.</span><span style=\"color:#66d9ef;\">write</span><span style=\"color:#f8f8f2;\">() </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;Vienna&quot;</span><span style=\"color:#f8f8f2;\">.</span><span style=\"color:#66d9ef;\">to_string</span><span style=\"color:#f8f8f2;\">(),\n</span><span style=\"color:#f8f8f2;\">            </span><span style=\"color:#ffee99;\">&quot;Shuffle&quot;\n</span><span style=\"color:#f8f8f2;\">        }}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
         }
     }
 }
 #[component(no_case_check)]
 pub fn NewGuideRouting() -> dioxus::prelude::Element {
     use dioxus::prelude::*;
-    rsx! {}
+    rsx! {
+        h1 { id: "adding-more-routes",
+            a { href: "#adding-more-routes", class: "header", "Adding More Routes" }
+        }
+        p { "So far, our app has only had a single page. Let's change that!" }
+        p {
+            "In this chapter, we'll be adding a Navbar to our app, a welcome screen, and a \"favorites\" page where we can revisit our favorite dogs."
+        }
+        h2 { id: "",
+            a { href: "#", class: "header", "" }
+        }
+    }
 }
 #[component(no_case_check)]
 pub fn NewGuideDataFetching() -> dioxus::prelude::Element {
@@ -5444,118 +5746,248 @@ pub fn NewGuideDataFetching() -> dioxus::prelude::Element {
             a { href: "#fetching-data", class: "header", "Fetching Data" }
         }
         p {
-            "In this chapter, we will fetch data from the hacker news API and use it to render the list of top posts in our application."
+            "Our "
+            em { "HotDog" }
+            " app has some basic interactivity but does not yet fetch new dog images. In this chapter, we'll interact with async and fetching data from an API."
         }
-        h2 { id: "defining-the-api",
-            a { href: "#defining-the-api", class: "header", "Defining the API" }
-        }
-        p {
-            "First we need to create some utilities to fetch data from the hackernews API using "
-            a { href: "https://docs.rs/reqwest/latest/reqwest/index.html", "reqwest" }
-            ":"
-        }
-        CodeBlock {
-            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#8c8c8c;\">// Define the Hackernews API\n</span><span style=\"color:#f92672;\">use </span><span style=\"color:#f8f8f2;\">futures::future::join_all;\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\">pub </span><span style=\"font-style:italic;color:#66d9ef;\">static </span><span style=\"color:#ff80f4;\">BASE_API_URL</span><span style=\"color:#f8f8f2;\">: </span><span style=\"color:#f92672;\">&amp;</span><span style=\"font-style:italic;color:#66d9ef;\">str </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;https://hacker-news.firebaseio.com/v0/&quot;</span><span style=\"color:#f8f8f2;\">;\n</span><span style=\"color:#f92672;\">pub </span><span style=\"font-style:italic;color:#66d9ef;\">static </span><span style=\"color:#ff80f4;\">ITEM_API</span><span style=\"color:#f8f8f2;\">: </span><span style=\"color:#f92672;\">&amp;</span><span style=\"font-style:italic;color:#66d9ef;\">str </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;item/&quot;</span><span style=\"color:#f8f8f2;\">;\n</span><span style=\"color:#f92672;\">pub </span><span style=\"font-style:italic;color:#66d9ef;\">static </span><span style=\"color:#ff80f4;\">USER_API</span><span style=\"color:#f8f8f2;\">: </span><span style=\"color:#f92672;\">&amp;</span><span style=\"font-style:italic;color:#66d9ef;\">str </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;user/&quot;</span><span style=\"color:#f8f8f2;\">;\n</span><span style=\"font-style:italic;color:#66d9ef;\">const </span><span style=\"color:#ff80f4;\">COMMENT_DEPTH</span><span style=\"color:#f8f8f2;\">: </span><span style=\"font-style:italic;color:#66d9ef;\">i64 </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ff80f4;\">2</span><span style=\"color:#f8f8f2;\">;\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\">pub</span><span style=\"color:#f8f8f2;\"> async </span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">get_story_preview</span><span style=\"color:#f8f8f2;\">(</span><span style=\"font-style:italic;color:#fd971f;\">id</span><span style=\"color:#f8f8f2;\">: </span><span style=\"font-style:italic;color:#66d9ef;\">i64</span><span style=\"color:#f8f8f2;\">) -&gt; Result&lt;StoryItem, reqwest::Error&gt; {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> url </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">format!(</span><span style=\"color:#ffee99;\">&quot;</span><span style=\"color:#ff80f4;\">{{}}{{}}{{}}</span><span style=\"color:#ffee99;\">.json&quot;</span><span style=\"color:#f8f8f2;\">, </span><span style=\"color:#ff80f4;\">BASE_API_URL</span><span style=\"color:#f8f8f2;\">, </span><span style=\"color:#ff80f4;\">ITEM_API</span><span style=\"color:#f8f8f2;\">, id);\n</span><span style=\"color:#f8f8f2;\">    reqwest::get(</span><span style=\"color:#f92672;\">&amp;</span><span style=\"color:#f8f8f2;\">url).await</span><span style=\"color:#f92672;\">?</span><span style=\"color:#f8f8f2;\">.</span><span style=\"color:#66d9ef;\">json</span><span style=\"color:#f8f8f2;\">().await\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\">pub</span><span style=\"color:#f8f8f2;\"> async </span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">get_stories</span><span style=\"color:#f8f8f2;\">(</span><span style=\"font-style:italic;color:#fd971f;\">count</span><span style=\"color:#f8f8f2;\">: </span><span style=\"font-style:italic;color:#66d9ef;\">usize</span><span style=\"color:#f8f8f2;\">) -&gt; Result&lt;Vec&lt;StoryItem&gt;, reqwest::Error&gt; {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> url </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">format!(</span><span style=\"color:#ffee99;\">&quot;</span><span style=\"color:#ff80f4;\">{{}}</span><span style=\"color:#ffee99;\">topstories.json&quot;</span><span style=\"color:#f8f8f2;\">, </span><span style=\"color:#ff80f4;\">BASE_API_URL</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> stories_ids </span><span style=\"color:#f92672;\">= &amp;</span><span style=\"color:#f8f8f2;\">reqwest::get(</span><span style=\"color:#f92672;\">&amp;</span><span style=\"color:#f8f8f2;\">url).await</span><span style=\"color:#f92672;\">?</span><span style=\"color:#f8f8f2;\">.json::&lt;Vec&lt;</span><span style=\"font-style:italic;color:#66d9ef;\">i64</span><span style=\"color:#f8f8f2;\">&gt;&gt;().await</span><span style=\"color:#f92672;\">?</span><span style=\"color:#f8f8f2;\">[</span><span style=\"color:#f92672;\">..</span><span style=\"color:#f8f8f2;\">count];\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> story_futures </span><span style=\"color:#f92672;\">=</span><span style=\"color:#f8f8f2;\"> stories_ids[</span><span style=\"color:#f92672;\">..</span><span style=\"font-style:italic;color:#66d9ef;\">usize</span><span style=\"color:#f8f8f2;\">::min(stories_ids.</span><span style=\"color:#66d9ef;\">len</span><span style=\"color:#f8f8f2;\">(), count)]\n</span><span style=\"color:#f8f8f2;\">        .</span><span style=\"color:#66d9ef;\">iter</span><span style=\"color:#f8f8f2;\">()\n</span><span style=\"color:#f8f8f2;\">        .</span><span style=\"color:#66d9ef;\">map</span><span style=\"color:#f8f8f2;\">(|</span><span style=\"color:#f92672;\">&amp;</span><span style=\"font-style:italic;color:#fd971f;\">story_id</span><span style=\"color:#f8f8f2;\">| </span><span style=\"color:#66d9ef;\">get_story_preview</span><span style=\"color:#f8f8f2;\">(story_id));\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> stories </span><span style=\"color:#f92672;\">= </span><span style=\"color:#66d9ef;\">join_all</span><span style=\"color:#f8f8f2;\">(story_futures)\n</span><span style=\"color:#f8f8f2;\">        .await\n</span><span style=\"color:#f8f8f2;\">        .</span><span style=\"color:#66d9ef;\">into_iter</span><span style=\"color:#f8f8f2;\">()\n</span><span style=\"color:#f8f8f2;\">        .</span><span style=\"color:#66d9ef;\">filter_map</span><span style=\"color:#f8f8f2;\">(|</span><span style=\"font-style:italic;color:#fd971f;\">story</span><span style=\"color:#f8f8f2;\">| story.</span><span style=\"color:#66d9ef;\">ok</span><span style=\"color:#f8f8f2;\">())\n</span><span style=\"color:#f8f8f2;\">        .</span><span style=\"color:#66d9ef;\">collect</span><span style=\"color:#f8f8f2;\">();\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">Ok</span><span style=\"color:#f8f8f2;\">(stories)\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\">pub</span><span style=\"color:#f8f8f2;\"> async </span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">get_story</span><span style=\"color:#f8f8f2;\">(</span><span style=\"font-style:italic;color:#fd971f;\">id</span><span style=\"color:#f8f8f2;\">: </span><span style=\"font-style:italic;color:#66d9ef;\">i64</span><span style=\"color:#f8f8f2;\">) -&gt; Result&lt;StoryPageData, reqwest::Error&gt; {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> url </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">format!(</span><span style=\"color:#ffee99;\">&quot;</span><span style=\"color:#ff80f4;\">{{}}{{}}{{}}</span><span style=\"color:#ffee99;\">.json&quot;</span><span style=\"color:#f8f8f2;\">, </span><span style=\"color:#ff80f4;\">BASE_API_URL</span><span style=\"color:#f8f8f2;\">, </span><span style=\"color:#ff80f4;\">ITEM_API</span><span style=\"color:#f8f8f2;\">, id);\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let </span><span style=\"color:#f92672;\">mut</span><span style=\"color:#f8f8f2;\"> story </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">reqwest::get(</span><span style=\"color:#f92672;\">&amp;</span><span style=\"color:#f8f8f2;\">url).await</span><span style=\"color:#f92672;\">?</span><span style=\"color:#f8f8f2;\">.json::&lt;StoryPageData&gt;().await</span><span style=\"color:#f92672;\">?</span><span style=\"color:#f8f8f2;\">;\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> comment_futures </span><span style=\"color:#f92672;\">=</span><span style=\"color:#f8f8f2;\"> story.item.kids.</span><span style=\"color:#66d9ef;\">iter</span><span style=\"color:#f8f8f2;\">().</span><span style=\"color:#66d9ef;\">map</span><span style=\"color:#f8f8f2;\">(|</span><span style=\"color:#f92672;\">&amp;</span><span style=\"font-style:italic;color:#fd971f;\">id</span><span style=\"color:#f8f8f2;\">| </span><span style=\"color:#66d9ef;\">get_comment</span><span style=\"color:#f8f8f2;\">(id));\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> comments </span><span style=\"color:#f92672;\">= </span><span style=\"color:#66d9ef;\">join_all</span><span style=\"color:#f8f8f2;\">(comment_futures)\n</span><span style=\"color:#f8f8f2;\">        .await\n</span><span style=\"color:#f8f8f2;\">        .</span><span style=\"color:#66d9ef;\">into_iter</span><span style=\"color:#f8f8f2;\">()\n</span><span style=\"color:#f8f8f2;\">        .</span><span style=\"color:#66d9ef;\">filter_map</span><span style=\"color:#f8f8f2;\">(|</span><span style=\"font-style:italic;color:#fd971f;\">c</span><span style=\"color:#f8f8f2;\">| c.</span><span style=\"color:#66d9ef;\">ok</span><span style=\"color:#f8f8f2;\">())\n</span><span style=\"color:#f8f8f2;\">        .</span><span style=\"color:#66d9ef;\">collect</span><span style=\"color:#f8f8f2;\">();\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">    story.comments </span><span style=\"color:#f92672;\">=</span><span style=\"color:#f8f8f2;\"> comments;\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">Ok</span><span style=\"color:#f8f8f2;\">(story)\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">#[async_recursion::async_recursion(?Send)]\n</span><span style=\"color:#f92672;\">pub</span><span style=\"color:#f8f8f2;\"> async </span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">get_comment_with_depth</span><span style=\"color:#f8f8f2;\">(</span><span style=\"font-style:italic;color:#fd971f;\">id</span><span style=\"color:#f8f8f2;\">: </span><span style=\"font-style:italic;color:#66d9ef;\">i64</span><span style=\"color:#f8f8f2;\">, </span><span style=\"font-style:italic;color:#fd971f;\">depth</span><span style=\"color:#f8f8f2;\">: </span><span style=\"font-style:italic;color:#66d9ef;\">i64</span><span style=\"color:#f8f8f2;\">) -&gt; Result&lt;CommentData, reqwest::Error&gt; {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> url </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">format!(</span><span style=\"color:#ffee99;\">&quot;</span><span style=\"color:#ff80f4;\">{{}}{{}}{{}}</span><span style=\"color:#ffee99;\">.json&quot;</span><span style=\"color:#f8f8f2;\">, </span><span style=\"color:#ff80f4;\">BASE_API_URL</span><span style=\"color:#f8f8f2;\">, </span><span style=\"color:#ff80f4;\">ITEM_API</span><span style=\"color:#f8f8f2;\">, id);\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let </span><span style=\"color:#f92672;\">mut</span><span style=\"color:#f8f8f2;\"> comment </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">reqwest::get(</span><span style=\"color:#f92672;\">&amp;</span><span style=\"color:#f8f8f2;\">url).await</span><span style=\"color:#f92672;\">?</span><span style=\"color:#f8f8f2;\">.json::&lt;CommentData&gt;().await</span><span style=\"color:#f92672;\">?</span><span style=\"color:#f8f8f2;\">;\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#f92672;\">if</span><span style=\"color:#f8f8f2;\"> depth </span><span style=\"color:#f92672;\">&gt; </span><span style=\"color:#ff80f4;\">0 </span><span style=\"color:#f8f8f2;\">{{\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> sub_comments_futures </span><span style=\"color:#f92672;\">=</span><span style=\"color:#f8f8f2;\"> comment\n</span><span style=\"color:#f8f8f2;\">            .kids\n</span><span style=\"color:#f8f8f2;\">            .</span><span style=\"color:#66d9ef;\">iter</span><span style=\"color:#f8f8f2;\">()\n</span><span style=\"color:#f8f8f2;\">            .</span><span style=\"color:#66d9ef;\">map</span><span style=\"color:#f8f8f2;\">(|</span><span style=\"font-style:italic;color:#fd971f;\">story_id</span><span style=\"color:#f8f8f2;\">| </span><span style=\"color:#66d9ef;\">get_comment_with_depth</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#f92672;\">*</span><span style=\"color:#f8f8f2;\">story_id, depth </span><span style=\"color:#f92672;\">- </span><span style=\"color:#ff80f4;\">1</span><span style=\"color:#f8f8f2;\">));\n</span><span style=\"color:#f8f8f2;\">        comment.sub_comments </span><span style=\"color:#f92672;\">= </span><span style=\"color:#66d9ef;\">join_all</span><span style=\"color:#f8f8f2;\">(sub_comments_futures)\n</span><span style=\"color:#f8f8f2;\">            .await\n</span><span style=\"color:#f8f8f2;\">            .</span><span style=\"color:#66d9ef;\">into_iter</span><span style=\"color:#f8f8f2;\">()\n</span><span style=\"color:#f8f8f2;\">            .</span><span style=\"color:#66d9ef;\">filter_map</span><span style=\"color:#f8f8f2;\">(|</span><span style=\"font-style:italic;color:#fd971f;\">c</span><span style=\"color:#f8f8f2;\">| c.</span><span style=\"color:#66d9ef;\">ok</span><span style=\"color:#f8f8f2;\">())\n</span><span style=\"color:#f8f8f2;\">            .</span><span style=\"color:#66d9ef;\">collect</span><span style=\"color:#f8f8f2;\">();\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">Ok</span><span style=\"color:#f8f8f2;\">(comment)\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\">pub</span><span style=\"color:#f8f8f2;\"> async </span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">get_comment</span><span style=\"color:#f8f8f2;\">(</span><span style=\"font-style:italic;color:#fd971f;\">comment_id</span><span style=\"color:#f8f8f2;\">: </span><span style=\"font-style:italic;color:#66d9ef;\">i64</span><span style=\"color:#f8f8f2;\">) -&gt; Result&lt;CommentData, reqwest::Error&gt; {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> comment </span><span style=\"color:#f92672;\">= </span><span style=\"color:#66d9ef;\">get_comment_with_depth</span><span style=\"color:#f8f8f2;\">(comment_id, </span><span style=\"color:#ff80f4;\">COMMENT_DEPTH</span><span style=\"color:#f8f8f2;\">).await</span><span style=\"color:#f92672;\">?</span><span style=\"color:#f8f8f2;\">;\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">Ok</span><span style=\"color:#f8f8f2;\">(comment)\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
-            name: "hackernews_async.rs".to_string(),
+        h2 { id: "adding-dependencies",
+            a { href: "#adding-dependencies", class: "header", "Adding Dependencies" }
         }
         p {
-            "The code above requires you to add the "
+            "Dioxus does not provide any built-in utilities for fetching data. Crates like "
+            a { href: "https://github.com/marc2332/dioxus-query", "dioxus-query" }
+            " exist, but for this tutorial we'll showcase how to implement data-fetching from scratch."
+        }
+        p {
+            "First, we need to add two new dependencies to our app: "
+            a { href: "https://crates.io/crates/serde", "serde" }
+            " and "
             a { href: "https://crates.io/crates/reqwest", "reqwest" }
-            ", "
-            a { href: "https://crates.io/crates/async-recursion", "async_recursion" }
-            ", and "
-            a { href: "https://crates.io/crates/futures", "futures" }
-            " crate:"
-        }
-        CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">cargo add reqwest </span><span style=\"color:#f92672;\">--</span><span style=\"color:#f8f8f2;\">features json\n</span><span style=\"color:#f8f8f2;\">cargo add async_recursion\n</span><span style=\"color:#f8f8f2;\">cargo add futures</span></pre>\n" }
-        p { "A quick overview of the supporting crates:" }
-        ul {
-            li {
-                a { href: "https://crates.io/crates/reqwest", "reqwest" }
-                " allows us to create HTTP calls to the hackernews API. "
-            }
-            li {
-                a { href: "https://crates.io/crates/async-recursion", "async_recursion" }
-                " provides a utility macro to allow us to recursively use an async function."
-            }
-            li {
-                a { href: "https://crates.io/crates/futures", "futures" }
-                " provides us with utilities all around Rust's futures."
-            }
-        }
-        h2 { id: "working-with-async",
-            a { href: "#working-with-async", class: "header", "Working with Async" }
+            "."
         }
         p {
-            a { href: "https://docs.rs/dioxus-hooks/latest/dioxus_hooks/fn.use_resource.html",
-                code { "use_resource" }
-            }
-            " is a "
-            a { href: "./state", "hook" }
-            " that lets you run an async closure, and provides you with its result."
+            "Serde will let us derive a JSON Deserializer and Reqwest provides us an HTTP client to fetch with."
         }
         p {
-            "For example, we can make an API request (using "
-            a { href: "https://docs.rs/reqwest/latest/reqwest/index.html", "reqwest" }
-            ") inside "
-            code { "use_resource" }
-            ":"
+            "In a new terminal window, add these crates to your app with  "
+            code { "cargo add" }
+            "."
+        }
+        CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">cargo add reqwest </span><span style=\"color:#f92672;\">--</span><span style=\"color:#f8f8f2;\">features json\n</span><span style=\"color:#f8f8f2;\">cargo add serde </span><span style=\"color:#f92672;\">--</span><span style=\"color:#f8f8f2;\">features derive</span></pre>\n" }
+        h2 { id: "defining-a-response-type",
+            a { href: "#defining-a-response-type", class: "header", "Defining a Response Type" }
+        }
+        p {
+            "We'll be using the amazing "
+            a { href: "https://dog.ceo/dog-api/", "dog.ceo/api" }
+            " to fetch images of dogs for "
+            em { "HotDog" }
+            ". Fortunately, the API response type is quite simple."
+        }
+        p {
+            "Let's create a new Rust struct that matches the format of the API and derive  "
+            code { "Deserialize" }
+            " for it."
+        }
+        CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">#[derive(serde::Deserialize)]\n</span><span style=\"font-style:italic;color:#66d9ef;\">struct </span><span style=\"color:#f8f8f2;\">DogApi {{\n</span><span style=\"color:#f8f8f2;\">\tmessage: String,\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n" }
+        h2 { id: "using",
+            a { href: "#using", class: "header", "Using " }
+            code { "reqwest" }
+            " and "
+            code { "async" }
+        }
+        p {
+            "Dioxus has stellar support for asynchronous Rust. We can simply convert our  "
+            code { "onclick" }
+            " handler to be  "
+            code { "async" }
+            " and then set the  "
+            code { "img_src" }
+            " after the future has resolved."
+        }
+        p {
+            video {
+                src: asset!("/assets/06_docs/fetch-dog.mp4"),
+                alt: "Dog Fetching",
+                title: "",
+                autoplay: true,
+                muted: true,
+                r#loop: true,
+                playsinline: true,
+                preload: "metadata",
+            }
+        }
+        p {
+            "The changes to our code are quite simple - just add the  "
+            code { "reqwest::get" }
+            " call and then set  "
+            code { "img_src" }
+            " to the result."
         }
         CodeBlock {
-            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">Stories</span><span style=\"color:#f8f8f2;\">() -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#8c8c8c;\">// Fetch the top 10 stories on Hackernews\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> stories </span><span style=\"color:#f92672;\">= </span><span style=\"color:#66d9ef;\">use_resource</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#f92672;\">move || </span><span style=\"color:#66d9ef;\">get_stories</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#ff80f4;\">10</span><span style=\"color:#f8f8f2;\">));\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#8c8c8c;\">// check if the future is resolved\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#f92672;\">match &amp;*</span><span style=\"color:#f8f8f2;\">stories.</span><span style=\"color:#66d9ef;\">read_unchecked</span><span style=\"color:#f8f8f2;\">() {{\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"font-style:italic;color:#66d9ef;\">Some</span><span style=\"color:#f8f8f2;\">(</span><span style=\"font-style:italic;color:#66d9ef;\">Ok</span><span style=\"color:#f8f8f2;\">(list)) </span><span style=\"color:#f92672;\">=&gt; </span><span style=\"color:#f8f8f2;\">{{\n</span><span style=\"color:#f8f8f2;\">            </span><span style=\"color:#8c8c8c;\">// if it is, render the stories\n</span><span style=\"color:#f8f8f2;\">            rsx! {{\n</span><span style=\"color:#f8f8f2;\">                div {{\n</span><span style=\"color:#f8f8f2;\">                    </span><span style=\"color:#8c8c8c;\">// iterate over the stories with a for loop\n</span><span style=\"color:#f8f8f2;\">                    </span><span style=\"color:#f92672;\">for</span><span style=\"color:#f8f8f2;\"> story </span><span style=\"color:#f92672;\">in</span><span style=\"color:#f8f8f2;\"> list {{\n</span><span style=\"color:#f8f8f2;\">                        </span><span style=\"color:#8c8c8c;\">// render every story with the StoryListing component\n</span><span style=\"color:#f8f8f2;\">                        StoryListing {{ story: story.</span><span style=\"color:#66d9ef;\">clone</span><span style=\"color:#f8f8f2;\">() }}\n</span><span style=\"color:#f8f8f2;\">                    }}\n</span><span style=\"color:#f8f8f2;\">                }}\n</span><span style=\"color:#f8f8f2;\">            }}\n</span><span style=\"color:#f8f8f2;\">        }}\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"font-style:italic;color:#66d9ef;\">Some</span><span style=\"color:#f8f8f2;\">(</span><span style=\"font-style:italic;color:#66d9ef;\">Err</span><span style=\"color:#f8f8f2;\">(err)) </span><span style=\"color:#f92672;\">=&gt; </span><span style=\"color:#f8f8f2;\">{{\n</span><span style=\"color:#f8f8f2;\">            </span><span style=\"color:#8c8c8c;\">// if there was an error, render the error\n</span><span style=\"color:#f8f8f2;\">            rsx! {{</span><span style=\"color:#ffee99;\">&quot;An error occurred while fetching stories {{err}}&quot;</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">        }}\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"font-style:italic;color:#66d9ef;\">None </span><span style=\"color:#f92672;\">=&gt; </span><span style=\"color:#f8f8f2;\">{{\n</span><span style=\"color:#f8f8f2;\">            </span><span style=\"color:#8c8c8c;\">// if the future is not resolved yet, render a loading message\n</span><span style=\"color:#f8f8f2;\">            rsx! {{</span><span style=\"color:#ffee99;\">&quot;Loading items&quot;</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">        }}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
-            name: "hackernews_async.rs".to_string(),
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">DogView</span><span style=\"color:#f8f8f2;\">() -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let </span><span style=\"color:#f92672;\">mut</span><span style=\"color:#f8f8f2;\"> img_src </span><span style=\"color:#f92672;\">= </span><span style=\"color:#66d9ef;\">use_signal</span><span style=\"color:#f8f8f2;\">(|| </span><span style=\"color:#ffee99;\">&quot;&quot;</span><span style=\"color:#f8f8f2;\">.</span><span style=\"color:#66d9ef;\">to_string</span><span style=\"color:#f8f8f2;\">());\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> fetch_new </span><span style=\"color:#f92672;\">= move |_|</span><span style=\"color:#f8f8f2;\"> async </span><span style=\"color:#f92672;\">move </span><span style=\"color:#f8f8f2;\">{{\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> response </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">reqwest::get(</span><span style=\"color:#ffee99;\">&quot;https://dog.ceo/api/breeds/image/random&quot;</span><span style=\"color:#f8f8f2;\">)\n</span><span style=\"color:#f8f8f2;\">            .await\n</span><span style=\"color:#f8f8f2;\">            .</span><span style=\"color:#66d9ef;\">unwrap</span><span style=\"color:#f8f8f2;\">()\n</span><span style=\"color:#f8f8f2;\">            .json::&lt;DogApi&gt;()\n</span><span style=\"color:#f8f8f2;\">            .await\n</span><span style=\"color:#f8f8f2;\">\t\t\t.</span><span style=\"color:#66d9ef;\">unwrap</span><span style=\"color:#f8f8f2;\">();\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">        img_src.</span><span style=\"color:#66d9ef;\">set</span><span style=\"color:#f8f8f2;\">(response.message);\n</span><span style=\"color:#f8f8f2;\">    }};\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">    rsx! {{\n</span><span style=\"color:#f8f8f2;\">        div {{ id: </span><span style=\"color:#ffee99;\">&quot;dogview&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">            img {{ src: </span><span style=\"color:#ffee99;\">&quot;{{img_src}}&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">        }}\n</span><span style=\"color:#f8f8f2;\">        div {{ id: </span><span style=\"color:#ffee99;\">&quot;buttons&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">            button {{ onclick: fetch_new, id: </span><span style=\"color:#ffee99;\">&quot;save&quot;</span><span style=\"color:#f8f8f2;\">, </span><span style=\"color:#ffee99;\">&quot;save!&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">        }}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
         }
         p {
-            "The code inside  "
+            "Under the hood, when Dioxus recognizes that an  "
+            code { "async" }
+            " closure is passed to an EventHandler, it calls  "
+            code { "dioxus::spawn" }
+            " on the resulting  "
+            code { "Future" }
+            ". You can use this API directly to do async work "
+            em { "without" }
+            " async closures."
+        }
+        CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">rsx! {{\n</span><span style=\"color:#f8f8f2;\">    button {{\n</span><span style=\"color:#f8f8f2;\">        onclick: </span><span style=\"color:#f92672;\">move |_| </span><span style=\"color:#f8f8f2;\">{{\n</span><span style=\"color:#f8f8f2;\">            dioxus::spawn(async </span><span style=\"color:#f92672;\">move </span><span style=\"color:#f8f8f2;\">{{\n</span><span style=\"color:#f8f8f2;\">                </span><span style=\"color:#8c8c8c;\">// do some async work...\n</span><span style=\"color:#f8f8f2;\">            }});\n</span><span style=\"color:#f8f8f2;\">        }}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n" }
+        h2 { id: "managing-data-fetching-with-use-resource",
+            a {
+                href: "#managing-data-fetching-with-use-resource",
+                class: "header",
+                "Managing Data Fetching with use_resource"
+            }
+        }
+        p {
+            "Eventually, using bare  "
+            code { "async" }
+            " calls might lead to race conditions and weird state bugs. For example, if the user clicks the "
+            em { "fetch" }
+            " button too quickly, then two requests will be made in parallel. If the request is updating data somewhere else, then it's likely that the wrong request finishes early and causes a race condition."
+        }
+        p {
+            "Dioxus provides some helpful utilities to manage these scenarios with a hook called  "
             code { "use_resource" }
-            " will be submitted to the Dioxus scheduler once the component has rendered."
+            ". In Dioxus, "
+            em { "Resources" }
+            " are pieces of state whose value is dependent on the completion of some asynchronous work. The "
+            code { "use_resource" }
+            " hook provides a "
+            code { "Resource" }
+            " object with helpful methods to start, stop, pause, and modify the asynchronous state."
         }
         p {
-            "We can use  "
-            code { "&*stories.read_unchecked()" }
-            " to get the result of the future. On the first run, since there's no data ready when the component loads, its value will be  "
-            code { "None" }
-            ".  However, once the future is finished, the component will be re-rendered and the value will now be  "
-            code { "Some(...)" }
-            ", containing the return value of the closure."
+            "Resources are very powerful: they integrate with Suspense, Streaming HTML, reactivity, and more."
         }
-        p {
-            "We can then render the result by looping over each of the posts and rendering them with the  "
-            code { "StoryListing" }
-            " component."
-        }
-        DemoFrame { hackernews_async::fetch::App {} }
-        blockquote {
-            p {
-                "You can read more about working with Async in Dioxus in the "
-                a { href: "../reference", "Async reference" }
-            }
-        }
-        h2 { id: "lazily-fetching-data",
-            a { href: "#lazily-fetching-data", class: "header", "Lazily Fetching Data" }
-        }
-        p { "Finally, we will lazily fetch the comments on each post as the user hovers over the post." }
-        p {
-            "We need to revisit the code that handles hovering over an item. Instead of passing an empty list of comments, we can fetch all the related comments when the user hovers over the item."
-        }
-        p {
-            "We will cache the list of comments with a "
-            a { href: "https://docs.rs/dioxus-hooks/latest/dioxus_hooks/fn.use_signal.html",
-                "use_signal"
-            }
-            " hook. This hook allows you to store some state in a single component. When the user triggers fetching the comments we will check if the response has already been cached before fetching the data from the hackernews API."
-        }
+        p { "Let's change our component to use a resource instead:" }
         CodeBlock {
-            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#8c8c8c;\">// New\n</span><span style=\"color:#f8f8f2;\">async </span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">resolve_story</span><span style=\"color:#f8f8f2;\">(\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#f92672;\">mut </span><span style=\"font-style:italic;color:#fd971f;\">full_story</span><span style=\"color:#f8f8f2;\">: Signal&lt;Option&lt;StoryPageData&gt;&gt;,\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#f92672;\">mut </span><span style=\"font-style:italic;color:#fd971f;\">preview_state</span><span style=\"color:#f8f8f2;\">: Signal&lt;PreviewState&gt;,\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#fd971f;\">story_id</span><span style=\"color:#f8f8f2;\">: </span><span style=\"font-style:italic;color:#66d9ef;\">i64</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">) {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#f92672;\">if </span><span style=\"font-style:italic;color:#66d9ef;\">let Some</span><span style=\"color:#f8f8f2;\">(cached) </span><span style=\"color:#f92672;\">=</span><span style=\"color:#f8f8f2;\"> full_story.</span><span style=\"color:#66d9ef;\">as_ref</span><span style=\"color:#f8f8f2;\">() {{\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"color:#f92672;\">*</span><span style=\"color:#f8f8f2;\">preview_state.</span><span style=\"color:#66d9ef;\">write</span><span style=\"color:#f8f8f2;\">() </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">PreviewState::Loaded(cached.</span><span style=\"color:#66d9ef;\">clone</span><span style=\"color:#f8f8f2;\">());\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"color:#f92672;\">return</span><span style=\"color:#f8f8f2;\">;\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#f92672;\">*</span><span style=\"color:#f8f8f2;\">preview_state.</span><span style=\"color:#66d9ef;\">write</span><span style=\"color:#f8f8f2;\">() </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">PreviewState::Loading;\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#f92672;\">if </span><span style=\"font-style:italic;color:#66d9ef;\">let Ok</span><span style=\"color:#f8f8f2;\">(story) </span><span style=\"color:#f92672;\">= </span><span style=\"color:#66d9ef;\">get_story</span><span style=\"color:#f8f8f2;\">(story_id).await {{\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"color:#f92672;\">*</span><span style=\"color:#f8f8f2;\">preview_state.</span><span style=\"color:#66d9ef;\">write</span><span style=\"color:#f8f8f2;\">() </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">PreviewState::Loaded(story.</span><span style=\"color:#66d9ef;\">clone</span><span style=\"color:#f8f8f2;\">());\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"color:#f92672;\">*</span><span style=\"color:#f8f8f2;\">full_story.</span><span style=\"color:#66d9ef;\">write</span><span style=\"color:#f8f8f2;\">() </span><span style=\"color:#f92672;\">= </span><span style=\"font-style:italic;color:#66d9ef;\">Some</span><span style=\"color:#f8f8f2;\">(story);\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">#[component]\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">StoryListing</span><span style=\"color:#f8f8f2;\">(</span><span style=\"font-style:italic;color:#fd971f;\">story</span><span style=\"color:#f8f8f2;\">: ReadOnlySignal&lt;StoryItem&gt;) -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let </span><span style=\"color:#f92672;\">mut</span><span style=\"color:#f8f8f2;\"> preview_state </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">consume_context::&lt;Signal&lt;PreviewState&gt;&gt;();\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> StoryItem {{\n</span><span style=\"color:#f8f8f2;\">        title,\n</span><span style=\"color:#f8f8f2;\">        url,\n</span><span style=\"color:#f8f8f2;\">        by,\n</span><span style=\"color:#f8f8f2;\">        score,\n</span><span style=\"color:#f8f8f2;\">        time,\n</span><span style=\"color:#f8f8f2;\">        kids,\n</span><span style=\"color:#f8f8f2;\">        id,\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"color:#f92672;\">..\n</span><span style=\"color:#f8f8f2;\">    }} </span><span style=\"color:#f92672;\">= </span><span style=\"color:#66d9ef;\">story</span><span style=\"color:#f8f8f2;\">();\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#8c8c8c;\">// New\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> full_story </span><span style=\"color:#f92672;\">= </span><span style=\"color:#66d9ef;\">use_signal</span><span style=\"color:#f8f8f2;\">(|| </span><span style=\"font-style:italic;color:#66d9ef;\">None</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> url </span><span style=\"color:#f92672;\">=</span><span style=\"color:#f8f8f2;\"> url.</span><span style=\"color:#66d9ef;\">as_deref</span><span style=\"color:#f8f8f2;\">().</span><span style=\"color:#66d9ef;\">unwrap_or_default</span><span style=\"color:#f8f8f2;\">();\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> hostname </span><span style=\"color:#f92672;\">=</span><span style=\"color:#f8f8f2;\"> url\n</span><span style=\"color:#f8f8f2;\">        .</span><span style=\"color:#66d9ef;\">trim_start_matches</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#ffee99;\">&quot;https://&quot;</span><span style=\"color:#f8f8f2;\">)\n</span><span style=\"color:#f8f8f2;\">        .</span><span style=\"color:#66d9ef;\">trim_start_matches</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#ffee99;\">&quot;http://&quot;</span><span style=\"color:#f8f8f2;\">)\n</span><span style=\"color:#f8f8f2;\">        .</span><span style=\"color:#66d9ef;\">trim_start_matches</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#ffee99;\">&quot;www.&quot;</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> score </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">format!(</span><span style=\"color:#ffee99;\">&quot;</span><span style=\"color:#ff80f4;\">{{score}} {{}}</span><span style=\"color:#ffee99;\">&quot;</span><span style=\"color:#f8f8f2;\">, </span><span style=\"color:#f92672;\">if</span><span style=\"color:#f8f8f2;\"> score </span><span style=\"color:#f92672;\">== </span><span style=\"color:#ff80f4;\">1 </span><span style=\"color:#f8f8f2;\">{{ </span><span style=\"color:#ffee99;\">&quot; point&quot; </span><span style=\"color:#f8f8f2;\">}} </span><span style=\"color:#f92672;\">else </span><span style=\"color:#f8f8f2;\">{{ </span><span style=\"color:#ffee99;\">&quot; points&quot; </span><span style=\"color:#f8f8f2;\">}});\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> comments </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">format!(\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"color:#ffee99;\">&quot;</span><span style=\"color:#ff80f4;\">{{}} {{}}</span><span style=\"color:#ffee99;\">&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">        kids.</span><span style=\"color:#66d9ef;\">len</span><span style=\"color:#f8f8f2;\">(),\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"color:#f92672;\">if</span><span style=\"color:#f8f8f2;\"> kids.</span><span style=\"color:#66d9ef;\">len</span><span style=\"color:#f8f8f2;\">() </span><span style=\"color:#f92672;\">== </span><span style=\"color:#ff80f4;\">1 </span><span style=\"color:#f8f8f2;\">{{\n</span><span style=\"color:#f8f8f2;\">            </span><span style=\"color:#ffee99;\">&quot; comment&quot;\n</span><span style=\"color:#f8f8f2;\">        }} </span><span style=\"color:#f92672;\">else </span><span style=\"color:#f8f8f2;\">{{\n</span><span style=\"color:#f8f8f2;\">            </span><span style=\"color:#ffee99;\">&quot; comments&quot;\n</span><span style=\"color:#f8f8f2;\">        }}\n</span><span style=\"color:#f8f8f2;\">    );\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> time </span><span style=\"color:#f92672;\">=</span><span style=\"color:#f8f8f2;\"> time.</span><span style=\"color:#66d9ef;\">format</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#ffee99;\">&quot;%D %l:%M %p&quot;</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">    rsx! {{\n</span><span style=\"color:#f8f8f2;\">        div {{\n</span><span style=\"color:#f8f8f2;\">            padding: </span><span style=\"color:#ffee99;\">&quot;0.5rem&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">            position: </span><span style=\"color:#ffee99;\">&quot;relative&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">            onmouseenter: </span><span style=\"color:#f92672;\">move |</span><span style=\"color:#f8f8f2;\">_event</span><span style=\"color:#f92672;\">| </span><span style=\"color:#f8f8f2;\">{{ </span><span style=\"color:#66d9ef;\">resolve_story</span><span style=\"color:#f8f8f2;\">(full_story, preview_state, id) }},\n</span><span style=\"color:#f8f8f2;\">            div {{ font_size: </span><span style=\"color:#ffee99;\">&quot;1.5rem&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">                a {{\n</span><span style=\"color:#f8f8f2;\">                    href: url,\n</span><span style=\"color:#f8f8f2;\">                    onfocus: </span><span style=\"color:#f92672;\">move |</span><span style=\"color:#f8f8f2;\">_event</span><span style=\"color:#f92672;\">| </span><span style=\"color:#f8f8f2;\">{{ </span><span style=\"color:#66d9ef;\">resolve_story</span><span style=\"color:#f8f8f2;\">(full_story, preview_state, id) }},\n</span><span style=\"color:#f8f8f2;\">                    </span><span style=\"color:#8c8c8c;\">// ...</span></pre>\n",
-            name: "hackernews_async.rs".to_string(),
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">DogView</span><span style=\"color:#f8f8f2;\">() -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let </span><span style=\"color:#f92672;\">mut</span><span style=\"color:#f8f8f2;\"> img_src </span><span style=\"color:#f92672;\">= </span><span style=\"color:#66d9ef;\">use_resource</span><span style=\"color:#f8f8f2;\">(|| async </span><span style=\"color:#f92672;\">move </span><span style=\"color:#f8f8f2;\">{{\n</span><span style=\"color:#f8f8f2;\">        reqwest::get(</span><span style=\"color:#ffee99;\">&quot;https://dog.ceo/api/breeds/image/random&quot;</span><span style=\"color:#f8f8f2;\">)\n</span><span style=\"color:#f8f8f2;\">            .await\n</span><span style=\"color:#f8f8f2;\">            .</span><span style=\"color:#66d9ef;\">unwrap</span><span style=\"color:#f8f8f2;\">()\n</span><span style=\"color:#f8f8f2;\">            .json::&lt;DogApi&gt;()\n</span><span style=\"color:#f8f8f2;\">            .await\n</span><span style=\"color:#f8f8f2;\">            .</span><span style=\"color:#66d9ef;\">unwrap</span><span style=\"color:#f8f8f2;\">()\n</span><span style=\"color:#f8f8f2;\">            .message\n</span><span style=\"color:#f8f8f2;\">    }});\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">    rsx! {{\n</span><span style=\"color:#f8f8f2;\">        div {{ id: </span><span style=\"color:#ffee99;\">&quot;dogview&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">            img {{ src: img_src.</span><span style=\"color:#66d9ef;\">value</span><span style=\"color:#f8f8f2;\">().</span><span style=\"color:#66d9ef;\">cloned</span><span style=\"color:#f8f8f2;\">().</span><span style=\"color:#66d9ef;\">unwrap_or_default</span><span style=\"color:#f8f8f2;\">() }}\n</span><span style=\"color:#f8f8f2;\">        }}\n</span><span style=\"color:#f8f8f2;\">        div {{ id: </span><span style=\"color:#ffee99;\">&quot;buttons&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">            button {{ onclick: </span><span style=\"color:#f92672;\">move |_|</span><span style=\"color:#f8f8f2;\"> img_src.</span><span style=\"color:#66d9ef;\">restart</span><span style=\"color:#f8f8f2;\">(), id: </span><span style=\"color:#ffee99;\">&quot;save&quot;</span><span style=\"color:#f8f8f2;\">, </span><span style=\"color:#ffee99;\">&quot;save!&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">        }}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
         }
-        DemoFrame { hackernews_async::App {} }
+        p {
+            "The details of the  "
+            code { "Resource" }
+            " API are not terribly important right now, but you'll be using Resources frequently in larger apps, so it's a good idea to "
+            a { href: "../reference/use_resource", "read the docs" }
+            "."
+        }
     }
 }
 #[component(no_case_check)]
 pub fn NewGuideBackend() -> dioxus::prelude::Element {
     use dioxus::prelude::*;
-    rsx! {}
+    rsx! {
+        h1 { id: "adding-a-backend",
+            a { href: "#adding-a-backend", class: "header", "Adding a Backend" }
+        }
+        p {
+            "Dioxus is a "
+            em { "fullstack" }
+            " framework, meaning it allows you to seamlessly build your frontend alongside your backend."
+        }
+        p {
+            "We provide a number of utilities like "
+            em { "Server Functions" }
+            ", "
+            em { "Server Futures" }
+            ", and "
+            em { "Server State" }
+            " for you to integrate into your apps. In this chapter, we'll cover loading and saving state to our backend with "
+            em { "Server Functions" }
+            ". For an in-depth guide on fullstack, check out the dedicated "
+            a { href: "../guides/fullstack", "Fullstack Guide" }
+            "."
+        }
+        h2 { id: "enabling-fullstack",
+            a { href: "#enabling-fullstack", class: "header", "Enabling Fullstack" }
+        }
+        p {
+            "Before we can start using server functions, we need to enable the \"fullstack\" feature on Dioxus in our Cargo.toml."
+        }
+        CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">[dependencies]\n</span><span style=\"color:#f8f8f2;\">dioxus </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">{{ version </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;0.6.0&quot;</span><span style=\"color:#f8f8f2;\">, features </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">[</span><span style=\"color:#ffee99;\">&quot;fullstack&quot;</span><span style=\"color:#f8f8f2;\">] }}</span></pre>\n" }
+        p { "We also need to add the \"server\" feature to our app's features, also in the Cargo.toml" }
+        CodeBlock {
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">[features]\n</span><span style=\"color:#f8f8f2;\">default </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">[</span><span style=\"color:#ffee99;\">&quot;web&quot;</span><span style=\"color:#f8f8f2;\">]\n</span><span style=\"color:#f8f8f2;\">web </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">[</span><span style=\"color:#ffee99;\">&quot;dioxus/web&quot;</span><span style=\"color:#f8f8f2;\">]\n</span><span style=\"color:#f8f8f2;\">desktop </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">[</span><span style=\"color:#ffee99;\">&quot;dioxus/desktop&quot;</span><span style=\"color:#f8f8f2;\">]\n</span><span style=\"color:#f8f8f2;\">mobile </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">[</span><span style=\"color:#ffee99;\">&quot;dioxus/mobile&quot;</span><span style=\"color:#f8f8f2;\">]\n</span><span style=\"color:#f8f8f2;\">server </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">[</span><span style=\"color:#ffee99;\">&quot;dioxus/server&quot;</span><span style=\"color:#f8f8f2;\">] </span><span style=\"color:#f92672;\"># &lt;-----</span><span style=\"color:#f8f8f2;\"> add this additional platform</span></pre>\n",
+        }
+        p {
+            "If you selected "
+            em { "yes" }
+            " to the \"use fullstack?\" prompt when creating your app, you will already have this set up!"
+        }
+        blockquote {
+            p {
+                "Unfortunately,  "
+                code { "dx" }
+                " doesn't know how to hot-reload this change, so we'll need to kill our currently running  "
+                code { "dx serve" }
+                " process and launch it again."
+            }
+        }
+        p {
+            "Give your app a moment to build again and make sure that the \"fullstack\" feature is enabled in  "
+            code { "dx serve" }
+            "."
+        }
+        p {
+            img {
+                src: asset!(
+                    "/assets/06_docs/serve_with_fullstack.png", ImageAssetOptions::new().with_avif()
+                ),
+                alt: "Fullstack Enabled",
+                title: "",
+            }
+        }
+        h2 { id: "our-first-server-function",
+            a { href: "#our-first-server-function", class: "header", "Our First Server Function" }
+        }
+        p {
+            "In Dioxus, Server Functions are async functions annotated with the  "
+            code { "#[server]" }
+            " attribute. Server Functions allow you to communicate with your server backend without writing any explicit web-server code."
+        }
+        p {
+            "Now,  "
+            code { "dx" }
+            " is compiling two versions of your app twice parallel:"
+        }
+        ul {
+            li {
+                "The client build with "
+                code { "--feature web" }
+            }
+            li {
+                "The server build with "
+                code { "--feature server" }
+            }
+        }
+        p {
+            "When server functions are called on the client, they make an HTTP request to the corresponding endpoint on the server. When server functions are called on the server, the body of the server function is ran."
+        }
+        p { "Let's add a server function to our dog app to save our favorite dog photos:" }
+        CodeBlock {
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">DogView</span><span style=\"color:#f8f8f2;\">() -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let </span><span style=\"color:#f92672;\">mut</span><span style=\"color:#f8f8f2;\"> img_src </span><span style=\"color:#f92672;\">= </span><span style=\"color:#66d9ef;\">use_resource</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#8c8c8c;\">/**/</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> save </span><span style=\"color:#f92672;\">= move |_|</span><span style=\"color:#f8f8f2;\"> async </span><span style=\"color:#f92672;\">move </span><span style=\"color:#f8f8f2;\">{{\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"color:#8c8c8c;\">// Grab the current image\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> current </span><span style=\"color:#f92672;\">=</span><span style=\"color:#f8f8f2;\"> img_src.</span><span style=\"color:#66d9ef;\">value</span><span style=\"color:#f8f8f2;\">().</span><span style=\"color:#66d9ef;\">cloned</span><span style=\"color:#f8f8f2;\">().</span><span style=\"color:#66d9ef;\">unwrap</span><span style=\"color:#f8f8f2;\">();\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"color:#8c8c8c;\">// Start fetching a new image\n</span><span style=\"color:#f8f8f2;\">        img_src.</span><span style=\"color:#66d9ef;\">restart</span><span style=\"color:#f8f8f2;\">();\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"color:#8c8c8c;\">// And call the `save_dog` endpoint\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"color:#66d9ef;\">save_dog</span><span style=\"color:#f8f8f2;\">(current).await;\n</span><span style=\"color:#f8f8f2;\">    }};\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> skip </span><span style=\"color:#f92672;\">= move |_|</span><span style=\"color:#f8f8f2;\"> img_src.</span><span style=\"color:#66d9ef;\">restart</span><span style=\"color:#f8f8f2;\">();\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">    rsx! {{\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"color:#8c8c8c;\">// ...\n</span><span style=\"color:#f8f8f2;\">        div {{ id: </span><span style=\"color:#ffee99;\">&quot;buttons&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">            button {{ onclick: skip, id: </span><span style=\"color:#ffee99;\">&quot;skip&quot;</span><span style=\"color:#f8f8f2;\">, </span><span style=\"color:#ffee99;\">&quot;skip&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">            button {{ onclick: save, id: </span><span style=\"color:#ffee99;\">&quot;save&quot;</span><span style=\"color:#f8f8f2;\">, </span><span style=\"color:#ffee99;\">&quot;save!&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">        }}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#8c8c8c;\">// And then on the server, write the dog to &quot;dogs.txt&quot;\n</span><span style=\"color:#f8f8f2;\">#[server]\n</span><span style=\"color:#f8f8f2;\">async </span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">save_dog</span><span style=\"color:#f8f8f2;\">(</span><span style=\"font-style:italic;color:#fd971f;\">image</span><span style=\"color:#f8f8f2;\">: String) -&gt; Result&lt;(), ServerFnError&gt; {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#f92672;\">use </span><span style=\"color:#f8f8f2;\">std::io::Write;\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#f92672;\">_ = </span><span style=\"color:#f8f8f2;\">std::fs::OpenOptions::new()\n</span><span style=\"color:#f8f8f2;\">        .</span><span style=\"color:#66d9ef;\">write</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#ff80f4;\">true</span><span style=\"color:#f8f8f2;\">)\n</span><span style=\"color:#f8f8f2;\">        .</span><span style=\"color:#66d9ef;\">append</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#ff80f4;\">true</span><span style=\"color:#f8f8f2;\">)\n</span><span style=\"color:#f8f8f2;\">        .</span><span style=\"color:#66d9ef;\">create</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#ff80f4;\">true</span><span style=\"color:#f8f8f2;\">)\n</span><span style=\"color:#f8f8f2;\">        .</span><span style=\"color:#66d9ef;\">open</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#ffee99;\">&quot;dogs.txt&quot;</span><span style=\"color:#f8f8f2;\">)\n</span><span style=\"color:#f8f8f2;\">        .</span><span style=\"color:#66d9ef;\">unwrap</span><span style=\"color:#f8f8f2;\">()\n</span><span style=\"color:#f8f8f2;\">        .</span><span style=\"color:#66d9ef;\">write_fmt</span><span style=\"color:#f8f8f2;\">(format_args!(</span><span style=\"color:#ffee99;\">&quot;{{image}}</span><span style=\"color:#ff80f4;\">\\n</span><span style=\"color:#ffee99;\">&quot;</span><span style=\"color:#f8f8f2;\">));\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">Ok</span><span style=\"color:#f8f8f2;\">(())\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
+        }
+        p { "Wow, our app is really coming together!" }
+        p {
+            video {
+                src: asset!("/assets/06_docs/dog-save-serverfn.mp4"),
+                alt: "Working Server Functions",
+                title: "",
+                autoplay: true,
+                muted: true,
+                r#loop: true,
+                playsinline: true,
+                preload: "metadata",
+            }
+        }
+    }
 }
 #[component(no_case_check)]
 pub fn NewGuideDeploy() -> dioxus::prelude::Element {

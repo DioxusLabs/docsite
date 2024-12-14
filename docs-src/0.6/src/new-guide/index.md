@@ -31,6 +31,7 @@ This guide will cover the "core" Dioxus features including:
 - [Adding State](state.md)
 - [Fetching Data](data_fetching.md)
 - [Adding a Backend](backend.md)
+- [Structuring our App](structure.md)
 - [App Routing](routing.md)
 - [Bundling and Deployment](deploy.md)
 

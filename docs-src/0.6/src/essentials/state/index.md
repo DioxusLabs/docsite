@@ -115,7 +115,7 @@ DemoFrame {
 
 ### Making Props Reactive
 
-To avoid loosing reactivity with props, we recommend you wrap any props you want to track in a `ReadOnlySignal`. Dioxus will automatically convert `T` into `ReadOnlySignal<T>` when you pass props to the component. This will ensure your props are tracked and rerun any state you derive in the component:
+To avoid losing reactivity with props, we recommend you wrap any props you want to track in a `ReadOnlySignal`. Dioxus will automatically convert `T` into `ReadOnlySignal<T>` when you pass props to the component. This will ensure your props are tracked and rerun any state you derive in the component:
 
 ```rust
 {{#include src/doc_examples/reactivity.rs:making_props_reactive}}

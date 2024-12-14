@@ -1,69 +1,114 @@
 # Fetching Data
 
-In this chapter, we will fetch data from the hacker news API and use it to render the list of top posts in our application.
+Our *HotDog* app has some basic interactivity but does not yet fetch new dog images. In this chapter, we'll interact with async and fetching data from an API.
 
-## Defining the API
+## Adding Dependencies
 
-First we need to create some utilities to fetch data from the hackernews API using [reqwest](https://docs.rs/reqwest/latest/reqwest/index.html):
+Dioxus does not provide any built-in utilities for fetching data. Crates like [dioxus-query](https://github.com/marc2332/dioxus-query) exist, but for this tutorial we'll showcase how to implement data-fetching from scratch.
 
-```rust
-{{#include src/doc_examples/hackernews_async.rs:api}}
-```
+First, we need to add two new dependencies to our app: [serde](https://crates.io/crates/serde) and [reqwest](https://crates.io/crates/reqwest).
 
-The code above requires you to add the [reqwest](https://crates.io/crates/reqwest), [async_recursion](https://crates.io/crates/async-recursion), and [futures](https://crates.io/crates/futures) crate:
+Serde will let us derive a JSON Deserializer and Reqwest provides us an HTTP client to fetch with.
+
+In a new terminal window, add these crates to your app with `cargo add`.
 
 ```bash
 cargo add reqwest --features json
-cargo add async_recursion
-cargo add futures
+cargo add serde --features derive
 ```
 
-A quick overview of the supporting crates:
-- [reqwest](https://crates.io/crates/reqwest) allows us to create HTTP calls to the hackernews API. 
-- [async_recursion](https://crates.io/crates/async-recursion) provides a utility macro to allow us to recursively use an async function.
-- [futures](https://crates.io/crates/futures) provides us with utilities all around Rust's futures.
+## Defining a Response Type
 
+We'll be using the amazing [dog.ceo/api](https://dog.ceo/dog-api/) to fetch images of dogs for *HotDog*. Fortunately, the API response type is quite simple.
 
-## Working with Async
-
-[`use_resource`](https://docs.rs/dioxus-hooks/latest/dioxus_hooks/fn.use_resource.html) is a [hook](./state.md) that lets you run an async closure, and provides you with its result.
-
-For example, we can make an API request (using [reqwest](https://docs.rs/reqwest/latest/reqwest/index.html)) inside `use_resource`:
+Let's create a new Rust struct that matches the format of the API and derive `Deserialize` for it.
 
 ```rust
-{{#include src/doc_examples/hackernews_async.rs:use_resource}}
-```
-
-The code inside `use_resource` will be submitted to the Dioxus scheduler once the component has rendered.
-
-We can use `&*stories.read_unchecked()` to get the result of the future. On the first run, since there's no data ready when the component loads, its value will be `None`.  However, once the future is finished, the component will be re-rendered and the value will now be `Some(...)`, containing the return value of the closure.
-
-We can then render the result by looping over each of the posts and rendering them with the `StoryListing` component.
-
-```inject-dioxus
-DemoFrame {
-	hackernews_async::fetch::App {}
+#[derive(serde::Deserialize)]
+struct DogApi {
+	message: String,
 }
 ```
 
-> You can read more about working with Async in Dioxus in the [Async reference](../reference/index.md)
+## Using `reqwest` and `async`
 
-## Lazily Fetching Data
+Dioxus has stellar support for asynchronous Rust. We can simply convert our `onclick` handler to be `async` and then set the `img_src` after the future has resolved.
 
-Finally, we will lazily fetch the comments on each post as the user hovers over the post.
+![Dog Fetching](/assets/06_docs/fetch-dog.mp4)
 
-
-We need to revisit the code that handles hovering over an item. Instead of passing an empty list of comments, we can fetch all the related comments when the user hovers over the item.
-
-
-We will cache the list of comments with a [use_signal](https://docs.rs/dioxus-hooks/latest/dioxus_hooks/fn.use_signal.html) hook. This hook allows you to store some state in a single component. When the user triggers fetching the comments we will check if the response has already been cached before fetching the data from the hackernews API.
+The changes to our code are quite simple - just add the `reqwest::get` call and then set `img_src` to the result.
 
 ```rust
-{{#include src/doc_examples/hackernews_async.rs:resolve_story}}
-```
+fn DogView() -> Element {
+    let mut img_src = use_signal(|| "".to_string());
 
-```inject-dioxus
-DemoFrame {
-	hackernews_async::App {}
+    let fetch_new = move |_| async move {
+        let response = reqwest::get("https://dog.ceo/api/breeds/image/random")
+            .await
+            .unwrap()
+            .json::<DogApi>()
+            .await
+			.unwrap();
+
+        img_src.set(response.message);
+    };
+
+    rsx! {
+        div { id: "dogview",
+            img { src: "{img_src}" }
+        }
+        div { id: "buttons",
+            button { onclick: fetch_new, id: "save", "save!" }
+        }
+    }
 }
 ```
+
+Under the hood, when Dioxus recognizes that an `async` closure is passed to an EventHandler, it calls `dioxus::spawn` on the resulting `Future`. You can use this API directly to do async work *without* async closures.
+
+```rust
+rsx! {
+    button {
+        onclick: move |_| {
+            dioxus::spawn(async move {
+                // do some async work...
+            });
+        }
+    }
+}
+```
+
+## Managing Data Fetching with use_resource
+
+Eventually, using bare `async` calls might lead to race conditions and weird state bugs. For example, if the user clicks the *fetch* button too quickly, then two requests will be made in parallel. If the request is updating data somewhere else, then it's likely that the wrong request finishes early and causes a race condition.
+
+Dioxus provides some helpful utilities to manage these scenarios with a hook called `use_resource`. In Dioxus, *Resources* are pieces of state whose value is dependent on the completion of some asynchronous work. The `use_resource` hook provides a `Resource` object with helpful methods to start, stop, pause, and modify the asynchronous state.
+
+Resources are very powerful: they integrate with Suspense, Streaming HTML, reactivity, and more.
+
+Let's change our component to use a resource instead:
+
+```rust
+fn DogView() -> Element {
+    let mut img_src = use_resource(|| async move {
+        reqwest::get("https://dog.ceo/api/breeds/image/random")
+            .await
+            .unwrap()
+            .json::<DogApi>()
+            .await
+            .unwrap()
+            .message
+    });
+
+    rsx! {
+        div { id: "dogview",
+            img { src: img_src.value().cloned().unwrap_or_default() }
+        }
+        div { id: "buttons",
+            button { onclick: move |_| img_src.restart(), id: "save", "save!" }
+        }
+    }
+}
+```
+
+The details of the `Resource` API are not terribly important right now, but you'll be using Resources frequently in larger apps, so it's a good idea to [read the docs](../reference/use_resource.md).

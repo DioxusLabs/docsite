@@ -234,6 +234,7 @@ See https://github.com/DioxusLabs/dioxus/pull/2258 for more details.
 - `register_server_fns` was renamed to `register_server_functions`. See https://github.com/DioxusLabs/dioxus/pull/2515 for more details.
 - `RenderHandleState::new` accepts a new `ServeConfig` argument. See https://github.com/DioxusLabs/dioxus/pull/2862 for more details.
 - `ServeConfigBuilder::build` returns a result. It may fail during desktop builds if no `index.html` file is found. This error is fine to ignore in desktop builds. You can pass the builder directly to `serve_dioxus_application` to only serve the index.html file if it exists. See https://github.com/DioxusLabs/dioxus/pull/2862 for more details.
+- `dioxus_fullstack::Config::addr` was removed. You can now export the `PORT` and `IP` environment variables to set the address the `launch` method uses for the server.
 
 ## Router
 

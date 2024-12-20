@@ -14,7 +14,7 @@ dx new
 
 The template contains some boilerplate to help you get started. For this guide, we will be rebuilding some of the code from scratch for learning purposes. You can clear the `src/main.rs` file. We will be adding new code in the next sections.
 
-Next, let's setup our dependencies. We need to set up a few dependencies to work with the hacker news API:
+Next, let's setup our dependencies. We need to set up a few dependencies to work with the hacker news API: 
 
 ```sh
 cargo add chrono --features serde
@@ -27,7 +27,7 @@ cargo add async_recursion
 
 ## Describing the UI
 
-Now, we can define how to display a post. Dioxus is a *declarative* framework. This means that instead of telling Dioxus what to do (e.g. to "create an element" or "set the color to red") we simply *declare* how we want the UI to look.
+Now, we can define how to display a post. Dioxus is a *declarative* framework. This means that instead of telling Dioxus what to do (e.g. to "create an element" or "set the color to red") we simply *declare* how we want the UI to look. 
 
 To declare what you want your UI to look like, you will need to use the `rsx` macro. Let's create a ``main`` function and an ``App`` component to show information about our story:
 
@@ -44,16 +44,16 @@ DemoFrame {
 ```
 
 > RSX mirrors HTML. Because of this you will need to know some html to use Dioxus.
->
+> 
 > Here are some resources to help get you started learning HTML:
 > - [MDN HTML Guide](https://developer.mozilla.org/en-US/docs/Learn/HTML)
 > - [W3 Schools HTML Tutorial](https://www.w3schools.com/html/default.asp)
->
+> 
 > In addition to HTML, Dioxus uses CSS to style applications. You can either use traditional CSS (what this guide uses) or use a tool like [tailwind CSS](https://tailwindcss.com/docs/installation):
 > - [MDN Traditional CSS Guide](https://developer.mozilla.org/en-US/docs/Learn/HTML)
 > - [W3 Schools Traditional CSS Tutorial](https://www.w3schools.com/css/default.asp)
-> - [Tailwind tutorial](https://tailwindcss.com/docs/installation) (used with the [Tailwind setup example](https://github.com/DioxusLabs/dioxus/tree/main/examples/tailwind))
->
+> - [Tailwind tutorial](https://tailwindcss.com/docs/installation) (used with the [Tailwind setup example](https://github.com/DioxusLabs/dioxus/tree/v0.5/examples/tailwind))
+> 
 > If you have existing html code, you can use the [translate](../CLI/translate.md) command to convert it to RSX. Or if you prefer to write html, you can use the [html! macro](https://github.com/DioxusLabs/dioxus-html-macro) to write html directly in your code.
 
 ## Dynamic Text

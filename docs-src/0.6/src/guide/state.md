@@ -117,7 +117,7 @@ struct TitleState(String);
 
 fn App() -> Element {
     // Provide that type as a Context
-    use_context_provider(|| TitleState("HotDog".to_string()))
+    use_context_provider(|| TitleState("HotDog".to_string()));
     rsx! {
         Title {}
     }

@@ -4,12 +4,12 @@ Now that our *HotDog* app is scaffolded and styled, we can finally add some inte
 
 ## Encapsulating State
 
-Before we get too far, let's split our app into two parts: the `NavBar` and the `DogView`. This will help us organize our app and keep the `DogView` state separated from `NavBar` state.
+Before we get too far, let's split our app into two parts: the `Title` and the `DogView`. This will help us organize our app and keep the `DogView` state separated from `Title` state.
 
 ```rust
 fn App() -> Element {
     rsx! {
-        NavBar {}
+        Title {}
         DogView {}
     }
 }
@@ -117,7 +117,7 @@ struct TitleState(String);
 
 fn App() -> Element {
     // Provide that type as a Context
-    use_context_provider(|| TitleState("HotDog".to_string()))
+    use_context_provider(|| TitleState("HotDog".to_string()));
     rsx! {
         Title {}
     }

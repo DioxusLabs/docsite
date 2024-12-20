@@ -19,9 +19,10 @@ You'll need to select a template to use to get started.
 
 We're going to use the bare-bones template for *HotDog*. Our app won't be too complex and can fit in one file.
 
-- Select web as the default platform
+- Select "false" when asked if you want to create a fullstack website.
 - Select "false" for the router, though we *will* eventually add the router to the app.
 - Select no for TailwindCSS. If you want to use Tailwind, make sure to read the [TailwindCSS guide](../cookbook/tailwind.md).
+- Select "Web" as the default platform.
 
 > 📣 You don't need `dx new` to create new Dioxus apps! Dioxus apps are Rust projects and can also be built with tools like cargo.
 

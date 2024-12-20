@@ -4,14 +4,6 @@ Congrats on making it through our *HotDog* tutorial!
 
 Hopefully this isn't the end of our journey, but rather, a bold new beginning.
 
-## Challenges
-
-- Add animations to your app with CSS or [dioxus-motion](https://github.com/wheregmis/dioxus-motion).
-- Style your app with a library like [TailwindCSS](http://tailwindcss.com).
-- Add inputs to allow users to upload their own dog photos.
-- Make it social! Add login, user accounts, and a feed.
-- Remix HotDog for something entirely new.
-
 ## Up Next
 
 We strongly recommend moving on to the [Essential Topics](../essentials/index.md) to become familiar with the important details of Dioxus.
@@ -25,6 +17,17 @@ The essentials section will guide you through key concepts in Dioxus:
 - [Managing State](../essentials/state/index.md) guides you through how state works in Dioxus. It will teach you how to create state with `use_signal`, derive state with `use_memo`, and integrate state with asynchronous tasks with `use_resource`. Along the way, you will learn about you can use reactivity to declaratively describe your UI.
 
 - [Breaking Out](../essentials/breaking/index.md) will teach you how to break out of Dioxus' rendering model to run JavaScript or interact with the DOM directly with `web-sys`.
+
+
+## Ideas for New Features
+
+Challenge yourself by adding new features to *HotDop*.
+
+- Add animations to your app with CSS or [dioxus-motion](https://github.com/wheregmis/dioxus-motion).
+- Style your app with a library like [TailwindCSS](http://tailwindcss.com).
+- Add inputs to allow users to upload their own dog photos.
+- Make it social! Add login, user accounts, and a feed.
+- Remix HotDog for something entirely new.
 
 
 ## FAQ
@@ -78,8 +81,8 @@ There's a budding ecosystem of Rust projects for building apps and websites! We 
 
 Dioxus is an "all-in-one" solution for building apps with Rust. We try to be helpful every step of the way: getting started, iterating, testing, bundling, and deploying.
 
-- You can use Dioxus with Tauri, but we focus primarily on the standalone Dioxus experience. Tauri is a good choice if you want to use a JavaScript frontend or need full-featured access to the Webview DOM.
-- Dioxus and Leptos are both good choices for fullstack web development with differences in syntax and reactivity models. Dioxus is architected to support desktop and mobile "1st-class" whereas Leptos is primarily a web framework.
-- Iced is GUI framework that renders using its own render engine, making it highly customizable. Iced is a good choice for apps that need access to lower-level rendering through WGPU. Dioxus will be releasing its own WGPU renderer in early 2025, so stay tuned!
+- **Tauri**: You can use Dioxus with Tauri, but we focus primarily on the standalone Dioxus experience. Tauri is a good choice if you want to use a JavaScript frontend or need full-featured access to the Webview DOM.
+- **Leptos**: Dioxus and Leptos are both good choices for fullstack web development with differences in syntax and reactivity models. Dioxus is architected to support desktop and mobile "1st-class" whereas Leptos is primarily a web framework.
+- **Iced:** Iced is GUI framework that renders using its own render engine, making it highly customizable. Iced is a good choice for apps that need access to lower-level rendering through WGPU. Dioxus will be releasing its own WGPU renderer in early 2025, so stay tuned!
 
 Dioxus is quite a large project and has been a bit slower to mature than other projects with larger development teams or smaller scopes. With 0.6, Dioxus is more mature but still has some ground to cover.

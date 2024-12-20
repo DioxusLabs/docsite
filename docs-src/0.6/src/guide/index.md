@@ -1,10 +1,13 @@
 # Dioxus Tutorial
 
-In this tutorial, we'll be building a small app called: *"HotDog"*. This app will serve as a great way to learn about building UIs, adding state, and deploying.
+In this tutorial, we'll be building a small app called: *HotDog* - basically Tinder, but for dogs! This app will serve as a great way to learn about building UIs, adding state, and deploying.
+
+By the end of this tutorial, you will launch your very own web, desktop, and mobile apps and a backend deployed to [Fly.io](http://fly.io).
 
 ![Photo of HotDog](/assets/06_docs/dog_app_styled.png)
 
-This guide will primarily focus on the higher-level concepts of Dioxus without diving too deep into the details of specific APIs. We recommend experimenting with the APIs yourself or reading the [Essential Concepts](../essentials/index.md) and specific [Guides](guides/index.md) for more information.
+We will primarily focus on the higher-level concepts of Dioxus without diving deep into the details of specific APIs. We recommend experimenting with the APIs yourself or reading the [Core Concepts](../essentials/index.md) and specific [Guides](guides/index.md) for more information.
+
 
 ## What will we be learning?
 

@@ -45,7 +45,7 @@ fn app() -> Element {
 
 Unlike Rust's `include_str!()` macro, the `asset!()` macro does not actually include the *contents* of the asset in our final executable. Instead, it generates a unique path so that the asset can be loaded at runtime. This is ideal for web apps where assets are loaded in parallel through different HTTP requests.
 
-> The `asset!()` macro generates a unique name that won't exactly match the input name. This helps prevents name collisions and improves caching on the web.
+> 📣 The `asset!()` macro generates a unique name that won't exactly match the input name. This helps prevents name collisions and improves caching.
 
 ## Hot-Reloading
 
@@ -87,7 +87,8 @@ rsx! {
 By default, the `asset!()` macro will lightly optimize CSS, JavaScript, JSON, and images. The name of the asset will also be modified to include a content hash.
 
 ```rust
-asset!("/assets/main.css").to_string() // would output main-j1238nask123.css
+// would output main-j1238nask123.css
+asset!("/assets/main.css").to_string()
 ```
 
 You can optimize assets even further, with an optional `Options` struct. For example, `dx` can automatically convert `.png` images to a more optimized `.avif` format:
@@ -128,33 +129,53 @@ html, body {
 }
 
 #dogview {
+    max-height: 80vh;
     flex-grow: 1;
     width: 100%;
-    min-height: 0px;
-    padding: 10px
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 
-#dogview img {
+#dogimg {
     display: block;
-    max-height: 90%;
-    max-width: 90%;
-    height: 1000px;
-    object-fit: cover;
+    max-width: 50%;
+    max-height: 50%;
+    transform: scale(1.8);
     border-radius: 5px;
     border: 1px solid rgb(233, 233, 233);
-    box-shadow: 0px 5px 10px 10px rgb(216, 216, 216, 0.5);
-    margin: auto;
+    box-shadow: 0px 0px 5px 1px rgb(216, 216, 216, 0.5);
 }
 
 #title {
     text-align: center;
     padding-top: 10px;
     border-bottom: 1px solid #a8a8a8;
-    font-style: italic;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+#title a {
+    text-decoration: none;
+    color: white;
+}
+
+#heart {
+    background-color: white;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+#title span {
+    width: 20px;
 }
 
 #title h1 {
     margin: 0.25em;
+    font-style: italic;
 }
 
 #buttons {
@@ -162,7 +183,7 @@ html, body {
     flex-direction: row;
     justify-content: center;
     gap: 20px;
-    padding-top: 20px;
+    /* padding-top: 20px; */
     padding-bottom: 20px;
 }
 
@@ -175,6 +196,68 @@ html, body {
     font-size: 2rem;
     font-weight: bold;
     color: rgb(230, 230, 230)
+}
+
+#navbar {
+    border: 1px solid rgb(233, 233, 233);
+    border-width: 1px 0px 0px 0px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    padding: 20px;
+    gap: 20px;
+}
+
+#navbar a {
+    background-color: #a8a8a8;
+    border-radius: 5px;
+    border: 1px solid black;
+    text-decoration: none;
+    color: black;
+    padding: 10px 30px 10px 30px;
+}
+
+#favorites {
+    flex-grow: 1;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+}
+
+#favorites-container {
+    overflow-y: auto;
+    overflow-x: hidden;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    padding: 10px;
+}
+
+.favorite-dog {
+    max-height: 180px;
+    max-width: 60%;
+    position: relative;
+}
+
+.favorite-dog img {
+    max-height: 150px;
+    border-radius: 5px;
+    margin: 5px;
+}
+
+.favorite-dog:hover button {
+    display: block;
+}
+
+.favorite-dog button {
+    display: none;
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    z-index: 10;
 }
 ```
 

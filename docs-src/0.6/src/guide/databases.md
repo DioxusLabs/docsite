@@ -4,7 +4,7 @@ Our HotDog app is coming together nicely! We implemented a very simple backend t
 
 In practice, you will likely want to store data in a proper database. Modern databases are *much* more powerful than a text file!
 
-If you already have a good understanding of databases, jump ahead to the [section where we integrate Sqlite with HotDog](#Adding-Database-operations-to-HotDog);
+If you already have a good understanding of databases, jump ahead to the [section where we integrate Sqlite with HotDog](#adding-database-operations-to-hotdog);
 
 ## Choosing a Database
 
@@ -12,65 +12,34 @@ In today's age of app development, there are *many* databases to choose from, ea
 
 Here is a (incomplete!) list of databases and a short summary of each:
 
-- [PostgreSQL](https://www.postgresql.org): Advanced database known for its powerful plugin system and scalability.
-- [MySQL](https://www.mysql.com): World's most popular open source database good for running small and large apps.
+- [PostgreSQL](https://www.postgresql.org): Advanced database known for its powerful plugin system.
+- [MySQL](https://www.mysql.com): World's most popular open source database good for all apps.
 - [SQLite](https://www.sqlite.org): Simple file-based engine known for its reliability and embeddability.
 - [Oracle](https://www.oracle.com/database/): Advanced commercial database known for its enterprise features.
-- [Redis](http://redis.io): Simple key-value database known for its great performance and simple data model.
-- [MongoDB](https://www.mongodb.com/): A *document* database ideal for data that doesn't fit into rows and columns.
-- [SurrealDB](https://surrealdb.com/): A new "all-in-one" database that combines many database models into one.
+- [Redis](http://redis.io): Simple key-value database known for its great performancel.
+- [MongoDB](https://www.mongodb.com/): A database ideal for data that doesn't fit into rows and columns.
+- [SurrealDB](https://surrealdb.com/): A new "all-in-one" database that combines many models.
 - [CockroachDB](https://www.cockroachlabs.com): Distributed SQL database designed for high-availability.
 - [and many more](https://dev.to/shreyvijayvargiya/list-of-45-databases-in-the-world-57e8)!
 
 There are many different types of databases, each good at different tasks. These might include:
-- Relational: traditional row/column/table approach - basically a large programmable spreadsheet
-- Document: storing a variety of unstructured or loosely structured blobs of data
-- Timeseries: storing and querying lots of data that changes over time
-- Graph: querying data based on its connections to other data like a list of friends' friends
-- Key-value: storing just key-value pairs - basically a fast concurrent HashMap
-- In-memory: databases designed for low-latency operations usually used as a cache
-- Embedded: a database that is shipped *inside* your app and is not accessible by a server
+- **Relational**: traditional row/column/table approach.
+- **Document**: storing unstructured or loosely structured blobs of data.
+- **Timeseries**: storing and querying lots of data that changes over time.
+- **Graph**: querying data based on its connections to other data.
+- **Key-value**: storing just key-value pairs - a fast concurrent HashMap.
+- **In-memory**: designed for low-latency operations usually used as a cache.
+- **Embedded**: a database that is shipped *inside* your app.
 
-For most apps - unless you have specific requirements - we recommend a mainstream relational database like PostgreSQL or MySQL. PostgreSQL is currently a very interesting option: it can be extended to support time-series, vector, graph, search and geo-spatial data with plugins.
+For most apps - unless you have specific requirements - we recommend a mainstream relational database like PostgreSQL or MySQL.
 
-In some cases, you might want a database that's specific to *just one app instance*. For example, you might ship a desktop app that needs to persist data to the user's disk. In these cases, you'll want to use an embedded database like [SQLite](https://www.sqlite.org) or [RocksDB](https://rocksdb.org).
+> 📣 PostgreSQL is currently a very interesting option: it can be extended to support time-series, vector, graph, search and geo-spatial data with plugins.
 
-## Choosing a Database Provider
-
-While there are just a handful of databases you might consider for your app, there are many *database providers*, each with their own strengths and weaknesses. We are not sponsored by any of these providers - this is just a list of providers we have seen in use by Rust apps.
-
-You *do not* need to use a database provider. Databases providers provide paid database hosting. It will cost you money to use these providers! Many have a free tier and some support "scale-to-zero" to help you save money on small apps. At any time, you are free to host and manage your own database.
-
-For popular relational databases:
-
-- [GCP](https://cloud.google.com/products/databases): Provides AlloyDB (enterprise postgres), CloudSQL (MySql, Postgres), and more.
-- [AWS](https://aws.amazon.com/products/databases/): Provides RDS, Aurora, DynamoDB, and more.
-- [PlanetScale](https://planetscale.com): Reliable MySQL-compatible database with sharding designed for scale.
-- [Firebase](https://firebase.google.com): Google's comprehensive real-time database designed for rapid app development.
-- [Supabase](https://supabase.com): Hosted Postgres known for its great dashboard and tooling.
-- [Neon](https://neon.tech): Hosted Postgres that separates compute and storage for scale-to-zero apps.
-
-For Sqlite:
-
-- [LiteFS](https://fly.io/docs/litefs/): A distributed Sqlite sync engine designed to be used with Fly.io
-- [Turso](https://turso.tech): A "multi-tenant" sqlite provider that maintains one isolated database per user
-
-The "scale-to-zero" relational solutions:
-
-- [AWS Aurora](https://aws.amazon.com/rds/aurora/)
-- [LiteFS](https://fly.io/docs/litefs/)
-
-We don't suggest any particular database provider.
-
-- If you have lots of free cloud credits, consider AWS/GCP/Azure.
-- If you want Postgres with a good dashboard, consider Supabase or Neon.
-- If you want a simple experience, consider Turso or LiteFS.
+In some cases, you might want a database that's specific to *just one app instance* or the *user's machine*. In these cases, you'll want to use an embedded database like [SQLite](https://www.sqlite.org) or [RocksDB](https://rocksdb.org).
 
 ## Adding Database operations to HotDog
 
 For *HotDog*, we're going to use Sqlite. *HotDog* is a very simple app and will only ever have one user: you!
-
-When we deploy *HotDog*, we'll use a micro-vm on [Fly.io](http://fly.io) paired with [LiteFS](https://fly.io/docs/litefs/). LiteFS will persist and replicate our database automatically. We're using this approach so you can follow along without setting up an account or paying for anything if you're not interested in deploying your app.
 
 To add sqlite functionality to *HotDog*, we'll pull in the `rusqlite` crate. Note that `rusqlite` is only meant to be compiled on the server, so we'll feature gate it behind the `"server"` feature in our Cargo.toml.
 
@@ -143,3 +112,34 @@ There are many libraries we haven't tested yet, but might be worth checking out:
 - [firebase-rs](https://github.com/emreyalvac/firebase-rs): Firebase client crate
 - [postgrest-rs](https://github.com/supabase-community/postgrest-rs): Supabase client crate
 - [mongo-rust-driver](https://github.com/mongodb/mongo-rust-driver): Official MongoDB client crate
+
+## Choosing a Database Provider
+
+While there are just a handful of databases you might consider for your app, there are many *database providers*, each with their own strengths and weaknesses. We are not sponsored by any of these providers - this is just a list of providers we have seen in use by Rust apps.
+
+You *do not* need to use a database provider. Databases providers provide paid database hosting. It will cost you money to use these providers! Many have a free tier and some support "scale-to-zero" to help you save money on small apps. At any time, you are free to host and manage your own database.
+
+For popular relational databases:
+
+- [GCP](https://cloud.google.com/products/databases): Provides AlloyDB (enterprise postgres), CloudSQL (MySql, Postgres), and more.
+- [AWS](https://aws.amazon.com/products/databases/): Provides RDS, Aurora, DynamoDB, and more.
+- [PlanetScale](https://planetscale.com): Reliable MySQL-compatible database with sharding designed for scale.
+- [Firebase](https://firebase.google.com): Google's comprehensive real-time database designed for rapid app development.
+- [Supabase](https://supabase.com): Hosted Postgres known for its great dashboard and tooling.
+- [Neon](https://neon.tech): Hosted Postgres that separates compute and storage for scale-to-zero apps.
+
+For Sqlite:
+
+- [LiteFS](https://fly.io/docs/litefs/): A distributed Sqlite sync engine designed to be used with Fly.io
+- [Turso](https://turso.tech): A "multi-tenant" sqlite provider that maintains one isolated database per user
+
+The "scale-to-zero" relational solutions:
+
+- [AWS Aurora](https://aws.amazon.com/rds/aurora/)
+- [LiteFS](https://fly.io/docs/litefs/)
+
+We don't suggest any particular database provider.
+
+- If you have lots of free cloud credits, consider AWS/GCP/Azure.
+- If you want Postgres with a good dashboard, consider Supabase or Neon.
+- If you want a simple experience, consider Turso or LiteFS.

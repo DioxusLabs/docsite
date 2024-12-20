@@ -72,7 +72,7 @@ rsx! {
 }
 ```
 
-Dioxus provides two items of syntax sugar for these common cases: `for` loops and `if` chains. These blocks return the contained RSX instead directly.
+Dioxus provides two items of syntax sugar for these common cases: `for` loops and `if` chains. These blocks return the contained RSX directly.
 
 ```rust
 rsx! {
@@ -88,7 +88,7 @@ rsx! {
 }
 ```
 
-For lists, Dioxus uses the `key` attribute to ensure it's comparing the right elements between renders. If you forget to add a `key` attribute to your lists, you might run into performance and state management issues. Usually you can find a unique key to differentiate your list items:
+For lists, Dioxus uses the `key` attribute to ensure it's comparing the right elements between renders. If you forget to add a `key` attribute to your list item, you might run into performance and state management issues. Usually you can find a unique key to differentiate your list items:
 
 ```rust
 rsx! {

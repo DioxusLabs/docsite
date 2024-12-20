@@ -26,7 +26,7 @@ server = ["dioxus/server"] # <----- add this additional platform
 
 If you selected *yes* to the "use fullstack?" prompt when creating your app, you will already have this set up!
 
-> Unfortunately, `dx` doesn't know how to hot-reload this change, so we'll need to kill our currently running `dx serve` process and launch it again.
+> 📣 Unfortunately, `dx` doesn't know how to hot-reload this change, so we'll need to kill our currently running `dx serve` process and launch it again.
 
 Give your app a moment to build again and make sure that the "fullstack" feature is enabled in `dx serve`.
 

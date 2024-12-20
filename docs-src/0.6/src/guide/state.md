@@ -63,7 +63,7 @@ fn DogView() -> Element {
 
 > You can read more about Event Handlers in the [Event Handler reference](../reference/event_handlers.md)
 
-## State
+## State with use_hook
 
 So far, our components have no internal state. For our `DogView`, we want to change the currently displayed dog photo whenever the user clicks *skip* or *save*.
 
@@ -90,9 +90,9 @@ Dioxus hooks are very similar to React's hooks and need to follow some [simple r
 
 While `use_hook` makes it possible to store any value that implements `Clone`, you'll frequently want a more capable form of state management. Built-in to Dioxus are *signals*.
 
-The `Signal` is a wrapper type around an ordinary Rust value that tracks reads and writes, bringing your app to life. You can wrap any Rust value in a signal. Signals can be created manually with `Signal::new()` but we strongly recommend using the `use_signal` hook instead.
+`Signal` is a wrapper type around an ordinary Rust value that tracks reads and writes, bringing your app to life. You can wrap any Rust value in a signal. Signals can be created manually with `Signal::new()` but we strongly recommend using the `use_signal` hook instead.
 
-> Manually creating Signals requires remembering to call `.dispose()` on the signal whereas `use_signal` cleans the Signal up for you automatically.
+> 📣 Manually creating Signals requires remembering to call `.dispose()` on the signal whereas `use_signal` cleans the Signal up for you automatically.
 
 Whenever a signal's value changes, its containing "reactive scope" will be "marked dirty" and re-run. By default, Dioxus components are reactive scopes, and thus, will re-render whenever a signal value changes.
 
@@ -102,7 +102,7 @@ Signals are core to Dioxus and take time to master. We recommend reading the [st
 
 ## Global State with Context
 
-While hooks are good for state local to components, occasionally you'll want to manage state for your entire app.
+While hooks are good for state *local* to components, occasionally you'll want to manage state for your *entire* app.
 
 Dioxus provides two mechanisms: `Context` and `GlobalSignal`.
 
@@ -159,11 +159,11 @@ fn Player() -> Element {
 }
 ```
 
-Any components that read the *song* signal will automatically re-render.
+Any components that read the song signal will automatically re-render when the value changes.
 
 ## Global Signals
 
-Occasionally you'll want a simple global value per-app. This is where `GlobalSignal` helps. GlobalSignals are a combination of the Context system and Signals that require no additional structs or setup.
+Occasionally you'll want a simple global value. This is where `GlobalSignal` helps. GlobalSignals are a combination of the Context system and Signals that require no additional structs or setup.
 
 Simply declare a GlobalSignal somewhere in your app:
 
@@ -184,5 +184,7 @@ fn Player() -> Element {
     }
 }
 ```
+
+> 📣 GlobalSignals are only global to one app - not the entire program. On the server, every app gets its own GlobalSignal.
 
 We won't need either GlobalSignal or Context for *HotDog*, but it's important to know that these are available to you.

@@ -1,18 +1,18 @@
 # Setting up Tooling
 
-Before we get started, make sure you've followed the [Getting Started]() page on installing the required dependencies.
+Before we get started, make sure you've followed the [Getting Started](../getting_started/index.md) page on installing the required dependencies.
 
 We will be primarily developing *HotDog* as web application, but we still recommend setting up the relevant tooling for desktop and mobile development as well.
 
 ## Checklist
 
-We covered the setup instructions in [Getting Started](), but first you should verify everything is set up properly:
+We covered the setup instructions in [Getting Started](../getting_started/index.md), but first you should verify everything is set up properly:
 
-- [x] Rust is installed
-- [x] You have a code editor installed
-- [x] The wasm32-unknown-unknown Rust toolchain is installed
-- [x] The `dioxus-cli` is installed and up-to-date
-- [x] System-specific dependencies are installed
+- Rust is installed
+- You have a code editor installed
+- The wasm32-unknown-unknown Rust toolchain is installed
+- The `dioxus-cli` is installed and up-to-date
+- System-specific dependencies are installed
 
 ## Verify your setup
 

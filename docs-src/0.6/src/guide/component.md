@@ -2,24 +2,7 @@
 
 Now that we've initialized our *HotDog* app, we can start building out its components.
 
-Make sure you've reset your app back to basics before getting started.
-
-```rust
-use dioxus::prelude::*;
-
-fn main() {
-    dioxus::launch(App);
-}
-
-#[component]
-fn App() -> Element {
-    rsx! { "HotDog!" }
-}
-```
-
 ## What is a component?
-
-Dioxus provides a number of utilities to render your app to the user's screen.
 
 In Dioxus, apps are comprised of individual functions called *Components* that take in some *Properties* and render an *Element*:
 
@@ -31,7 +14,7 @@ fn DogApp(props: DogAppProps) -> Element {
 
 ## Component Properties
 
-The `DogAppProps` is a Rust struct that outlines which parameters `DogApp` can accept. All `Props` structs in Dioxus need to derive the `Properties` trait which requires both `Clone` and `PartialEq`:
+All components take an object that outlines which parameters the component can accept. All `Props` structs in Dioxus need to derive the `Properties` trait which requires both `Clone` and `PartialEq`:
 
 ```rust
 #[derive(Props, PartialEq, Clone)]
@@ -40,7 +23,7 @@ struct DogAppProps {
 }
 ```
 
-Dioxus provides the `#[component]` utility for simplifying how components are defined. This macro converts the parameters of the annotated function into a hidden accompanying struct.
+Dioxus provides the `#[component]` macro for simplifying how components are defined. This macro converts the parameters of the annotated function into a hidden accompanying struct.
 
 ```rust
 #[component]
@@ -49,7 +32,7 @@ fn DogApp(breed: String) -> Element {
 }
 ```
 
-When building apps, you'll frequently use the `#[component]` macro. When building libraries, we generally suggest the struct approach.
+When building apps, you'll frequently use the `#[component]` macro. When building libraries, we generally suggest deriving Props instead.
 
 ## Properties are Immutable
 
@@ -73,7 +56,7 @@ Just like React, Dioxus will call your component function multiple times through
 
 When Dioxus re-renders your component, it compares the `Element` returned from the *last* render against the `Element` returned in the *current* render.
 
-For example, when the `breed` property changes on the `DogApp` component, Dioxus will call the DogApp function a second time and compare the previous `Element` against the new `Element`.
+For example, when the `breed` property changes on the DogApp component, Dioxus will call the DogApp function a second time and compare the previous Element against the new Element.
 
 ```rust
 #[component]

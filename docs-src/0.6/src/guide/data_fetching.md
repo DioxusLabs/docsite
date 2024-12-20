@@ -94,9 +94,7 @@ The futures passed to `dioxus::spawn` must not contain latent references to data
 
 Eventually, using bare `async` calls might lead to race conditions and weird state bugs. For example, if the user clicks the *fetch* button too quickly, then two requests will be made in parallel. If the request is updating data somewhere else, the wrong request might finish early and causes a race condition.
 
-Dioxus provides some helpful utilities to manage these scenarios with a hook called `use_resource`. In Dioxus, *Resources* are pieces of state whose value is dependent on the completion of some asynchronous work. The `use_resource` hook provides a `Resource` object with helpful methods to start, stop, pause, and modify the asynchronous state.
-
-Resources are very powerful: they integrate with Suspense, Streaming HTML, reactivity, and more.
+In Dioxus, *Resources* are pieces of state whose value is dependent on the completion of some asynchronous work. The `use_resource` hook provides a `Resource` object with helpful methods to start, stop, pause, and modify the asynchronous state.
 
 Let's change our component to use a resource instead:
 
@@ -122,5 +120,7 @@ fn DogView() -> Element {
     }
 }
 ```
+
+Resources are very powerful: they integrate with Suspense, Streaming HTML, reactivity, and more.
 
 The details of the `Resource` API are not terribly important right now, but you'll be using Resources frequently in larger apps, so it's a good idea to [read the docs](../reference/use_resource.md).

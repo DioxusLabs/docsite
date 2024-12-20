@@ -19,17 +19,16 @@ You'll need to select a template to use to get started.
 
 We're going to use the bare-bones template for *HotDog*. Our app won't be too complex and can fit in one file.
 
-> You don't need `dx new` to create new Dioxus apps! Dioxus apps are Rust projects and can also be built with tools like cargo.
+- Select web as the default platform
+- Select "false" for the router, though we *will* eventually add the router to the app.
+- Select no for TailwindCSS. If you want to use Tailwind, make sure to read the [TailwindCSS guide](../cookbook/tailwind.md).
 
-You'll also need to select a "default platform" to run. This will set the corresponding `default = []` feature section in your Cargo.toml and inform `dx` to serve that platform by default. For the sake of this tutorial, we'll develop *HotDog* as a web app. At the end, we will also create desktop and mobile builds.
+> 📣 You don't need `dx new` to create new Dioxus apps! Dioxus apps are Rust projects and can also be built with tools like cargo.
 
-We're not going to start the project with a Router, though we *will* eventually add the router to the app.
-
-We're not going to use TailwindCSS for this tutorial, but make sure to read the [TailwindCSS guide](../cookbook/tailwind.md) if you want to use Tailwind for your own apps.
 
 ## Running the project
 
-Once you created your project, you can start it with the following command:
+Once the project is generated, you can start it with the following command:
 
 ```sh
 cd hot_dog
@@ -46,11 +45,11 @@ Once the app is loaded, you should be greeted with the default Dioxus template a
 
 ![app](/assets/06_docs/default_dioxus_app.png)
 
-Congrats! You have your very first Dioxus App.
+Congrats! You have your very first Dioxus app.
 
 ## Structure of the app
 
-Open the app in your favorite editor and take a look at its structure:
+Open the app in your editor and take a look at its structure:
 
 ```sh
 ├── Cargo.lock
@@ -90,13 +89,13 @@ desktop = ["dioxus/desktop"]
 mobile = ["dioxus/mobile"]
 ```
 
-Starting with Dioxus 0.6, `dx` will also initialize separate [Cargo profiles](https://doc.rust-lang.org/cargo/reference/profiles.html) for your app. These profiles let you customize the optimization level of each platform. `dx` also uses these platforms as a mechanism of isolating builds from each other. Custom profiles enable parallel server and client builds and prevent unnecessary full-rebuilds.
+Starting with Dioxus 0.6, `dx` will also initialize separate [Cargo profiles](https://doc.rust-lang.org/cargo/reference/profiles.html) for your app. These profiles let you customize the optimization level of each platform. `dx` also uses these platforms as a mechanism of isolating builds from each other.
 
 ## Dioxus.toml
 
 The `Dioxus.toml` file contains Dioxus-specific configuration for stages like bundling and deploying. Before Dioxus 0.5, we used the `Dioxus.toml` to specify asset inclusion and hot-reload watch paths, but as of Dioxus 0.6, these fields are deprecated and replaced by standards like `asset!()` and `.gitignore`.
 
-We won't need to configure the `Dioxus.toml` for our DogApp just yet.
+We won't need to configure the `Dioxus.toml` for our app just yet.
 
 ## Assets Folder
 

@@ -8,21 +8,23 @@ We will be primarily developing *HotDog* as web application, but we still recomm
 
 We covered the setup instructions in [Getting Started](), but first you should verify everything is set up properly:
 
-- [ ] Rust is installed
-- [ ] The wasm32-unknown-unknown Rust toolchain is installed
-- [ ] You picked an editor to build with
-- [ ] The `dioxus-cli` is installed and up-to-date
-- [ ] System-specific dependencies are installed
+- [x] Rust is installed
+- [x] You have a code editor installed
+- [x] The wasm32-unknown-unknown Rust toolchain is installed
+- [x] The `dioxus-cli` is installed and up-to-date
+- [x] System-specific dependencies are installed
 
 ## Verify your setup
 
-Before proceeding, make sure you have the `dioxus-cli` installed and it's running a stable release.
+Before proceeding, make sure you have the `dioxus-cli` installed and up-to-date.
 
-Run this command in your terminal and verify the returned version matches this guide (eg 0.6).
+Verify the returned version matches this guide (eg 0.6) by running:
 
 ```sh
 dx --version
 ```
+
+## All the Commands
 
 You can also run `dx help` which will give you a list of useful commands and some information on how to use `dx`.
 

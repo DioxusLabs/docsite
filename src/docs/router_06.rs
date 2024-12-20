@@ -14,30 +14,30 @@ pub enum BookRoute {
     Index {},
     #[route("/getting_started/")]
     GettingStartedIndex {},
-    #[route("/new-guide/")]
-    NewGuideIndex {},
-    #[route("/new-guide/tooling")]
-    NewGuideTooling {},
-    #[route("/new-guide/new_app")]
-    NewGuideNewApp {},
-    #[route("/new-guide/component")]
-    NewGuideComponent {},
-    #[route("/new-guide/rsx")]
-    NewGuideRsx {},
-    #[route("/new-guide/assets")]
-    NewGuideAssets {},
-    #[route("/new-guide/state")]
-    NewGuideState {},
-    #[route("/new-guide/routing")]
-    NewGuideRouting {},
-    #[route("/new-guide/data_fetching")]
-    NewGuideDataFetching {},
-    #[route("/new-guide/backend")]
-    NewGuideBackend {},
-    #[route("/new-guide/deploy")]
-    NewGuideDeploy {},
-    #[route("/new-guide/next_steps")]
-    NewGuideNextSteps {},
+    #[route("/guide/")]
+    GuideIndex {},
+    #[route("/guide/tooling")]
+    GuideTooling {},
+    #[route("/guide/new_app")]
+    GuideNewApp {},
+    #[route("/guide/component")]
+    GuideComponent {},
+    #[route("/guide/rsx")]
+    GuideRsx {},
+    #[route("/guide/assets")]
+    GuideAssets {},
+    #[route("/guide/state")]
+    GuideState {},
+    #[route("/guide/data_fetching")]
+    GuideDataFetching {},
+    #[route("/guide/backend")]
+    GuideBackend {},
+    #[route("/guide/routing")]
+    GuideRouting {},
+    #[route("/guide/deploy")]
+    GuideDeploy {},
+    #[route("/guide/next_steps")]
+    GuideNextSteps {},
     #[route("/essentials/")]
     EssentialsIndex {},
     #[route("/essentials/rsx/")]
@@ -190,18 +190,18 @@ impl BookRoute {
         match self {
             BookRoute::Index {} => use_mdbook::mdbook_shared::PageId(0usize),
             BookRoute::GettingStartedIndex {} => use_mdbook::mdbook_shared::PageId(1usize),
-            BookRoute::NewGuideIndex {} => use_mdbook::mdbook_shared::PageId(2usize),
-            BookRoute::NewGuideTooling {} => use_mdbook::mdbook_shared::PageId(3usize),
-            BookRoute::NewGuideNewApp {} => use_mdbook::mdbook_shared::PageId(4usize),
-            BookRoute::NewGuideComponent {} => use_mdbook::mdbook_shared::PageId(5usize),
-            BookRoute::NewGuideRsx {} => use_mdbook::mdbook_shared::PageId(6usize),
-            BookRoute::NewGuideAssets {} => use_mdbook::mdbook_shared::PageId(7usize),
-            BookRoute::NewGuideState {} => use_mdbook::mdbook_shared::PageId(8usize),
-            BookRoute::NewGuideRouting {} => use_mdbook::mdbook_shared::PageId(9usize),
-            BookRoute::NewGuideDataFetching {} => use_mdbook::mdbook_shared::PageId(10usize),
-            BookRoute::NewGuideBackend {} => use_mdbook::mdbook_shared::PageId(11usize),
-            BookRoute::NewGuideDeploy {} => use_mdbook::mdbook_shared::PageId(12usize),
-            BookRoute::NewGuideNextSteps {} => use_mdbook::mdbook_shared::PageId(13usize),
+            BookRoute::GuideIndex {} => use_mdbook::mdbook_shared::PageId(2usize),
+            BookRoute::GuideTooling {} => use_mdbook::mdbook_shared::PageId(3usize),
+            BookRoute::GuideNewApp {} => use_mdbook::mdbook_shared::PageId(4usize),
+            BookRoute::GuideComponent {} => use_mdbook::mdbook_shared::PageId(5usize),
+            BookRoute::GuideRsx {} => use_mdbook::mdbook_shared::PageId(6usize),
+            BookRoute::GuideAssets {} => use_mdbook::mdbook_shared::PageId(7usize),
+            BookRoute::GuideState {} => use_mdbook::mdbook_shared::PageId(8usize),
+            BookRoute::GuideDataFetching {} => use_mdbook::mdbook_shared::PageId(9usize),
+            BookRoute::GuideBackend {} => use_mdbook::mdbook_shared::PageId(10usize),
+            BookRoute::GuideRouting {} => use_mdbook::mdbook_shared::PageId(11usize),
+            BookRoute::GuideDeploy {} => use_mdbook::mdbook_shared::PageId(12usize),
+            BookRoute::GuideNextSteps {} => use_mdbook::mdbook_shared::PageId(13usize),
             BookRoute::EssentialsIndex {} => use_mdbook::mdbook_shared::PageId(14usize),
             BookRoute::EssentialsRsxIndex {} => use_mdbook::mdbook_shared::PageId(15usize),
             BookRoute::EssentialsLifecycleIndex {} => use_mdbook::mdbook_shared::PageId(16usize),
@@ -450,7 +450,7 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
         pages.push((2usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Tutorial".to_string(),
-                url: BookRoute::NewGuideIndex {},
+                url: BookRoute::GuideIndex {},
                 segments: vec![],
                 sections: vec![
                     ::use_mdbook::mdbook_shared::Section {
@@ -474,13 +474,13 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
             }
         }));
         page_id_mapping.insert(
-            BookRoute::NewGuideIndex {},
+            BookRoute::GuideIndex {},
             ::use_mdbook::mdbook_shared::PageId(2usize),
         );
         pages.push((3usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Tooling Setup".to_string(),
-                url: BookRoute::NewGuideTooling {},
+                url: BookRoute::GuideTooling {},
                 segments: vec![],
                 sections: vec![
                     ::use_mdbook::mdbook_shared::Section {
@@ -504,13 +504,13 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
             }
         }));
         page_id_mapping.insert(
-            BookRoute::NewGuideTooling {},
+            BookRoute::GuideTooling {},
             ::use_mdbook::mdbook_shared::PageId(3usize),
         );
         pages.push((4usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Creating a new app".to_string(),
-                url: BookRoute::NewGuideNewApp {},
+                url: BookRoute::GuideNewApp {},
                 segments: vec![],
                 sections: vec![
                     ::use_mdbook::mdbook_shared::Section {
@@ -559,13 +559,13 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
             }
         }));
         page_id_mapping.insert(
-            BookRoute::NewGuideNewApp {},
+            BookRoute::GuideNewApp {},
             ::use_mdbook::mdbook_shared::PageId(4usize),
         );
         pages.push((5usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Your First Component".to_string(),
-                url: BookRoute::NewGuideComponent {},
+                url: BookRoute::GuideComponent {},
                 segments: vec![],
                 sections: vec![
                     ::use_mdbook::mdbook_shared::Section {
@@ -604,13 +604,13 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
             }
         }));
         page_id_mapping.insert(
-            BookRoute::NewGuideComponent {},
+            BookRoute::GuideComponent {},
             ::use_mdbook::mdbook_shared::PageId(5usize),
         );
         pages.push((6usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Creating UI with RSX".to_string(),
-                url: BookRoute::NewGuideRsx {},
+                url: BookRoute::GuideRsx {},
                 segments: vec![],
                 sections: vec![
                     ::use_mdbook::mdbook_shared::Section {
@@ -639,13 +639,13 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
             }
         }));
         page_id_mapping.insert(
-            BookRoute::NewGuideRsx {},
+            BookRoute::GuideRsx {},
             ::use_mdbook::mdbook_shared::PageId(6usize),
         );
         pages.push((7usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Styling and Assets".to_string(),
-                url: BookRoute::NewGuideAssets {},
+                url: BookRoute::GuideAssets {},
                 segments: vec![],
                 sections: vec![
                     ::use_mdbook::mdbook_shared::Section {
@@ -679,11 +679,6 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                         level: 2usize,
                     },
                     ::use_mdbook::mdbook_shared::Section {
-                        title: "Using Tailwind with Dioxus".to_string(),
-                        id: "using-tailwind-with-dioxus".to_string(),
-                        level: 2usize,
-                    },
-                    ::use_mdbook::mdbook_shared::Section {
                         title: "The Final CSS".to_string(),
                         id: "the-final-css".to_string(),
                         level: 2usize,
@@ -694,13 +689,13 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
             }
         }));
         page_id_mapping.insert(
-            BookRoute::NewGuideAssets {},
+            BookRoute::GuideAssets {},
             ::use_mdbook::mdbook_shared::PageId(7usize),
         );
         pages.push((8usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Adding State".to_string(),
-                url: BookRoute::NewGuideState {},
+                url: BookRoute::GuideState {},
                 segments: vec![],
                 sections: vec![
                     ::use_mdbook::mdbook_shared::Section {
@@ -744,31 +739,13 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
             }
         }));
         page_id_mapping.insert(
-            BookRoute::NewGuideState {},
+            BookRoute::GuideState {},
             ::use_mdbook::mdbook_shared::PageId(8usize),
         );
         pages.push((9usize, {
             ::use_mdbook::mdbook_shared::Page {
-                title: "App Routing".to_string(),
-                url: BookRoute::NewGuideRouting {},
-                segments: vec![],
-                sections: vec![::use_mdbook::mdbook_shared::Section {
-                    title: "Adding More Routes".to_string(),
-                    id: "adding-more-routes".to_string(),
-                    level: 1usize,
-                }],
-                raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(9usize),
-            }
-        }));
-        page_id_mapping.insert(
-            BookRoute::NewGuideRouting {},
-            ::use_mdbook::mdbook_shared::PageId(9usize),
-        );
-        pages.push((10usize, {
-            ::use_mdbook::mdbook_shared::Page {
                 title: "Fetching Data".to_string(),
-                url: BookRoute::NewGuideDataFetching {},
+                url: BookRoute::GuideDataFetching {},
                 segments: vec![],
                 sections: vec![
                     ::use_mdbook::mdbook_shared::Section {
@@ -798,17 +775,17 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(10usize),
+                id: ::use_mdbook::mdbook_shared::PageId(9usize),
             }
         }));
         page_id_mapping.insert(
-            BookRoute::NewGuideDataFetching {},
-            ::use_mdbook::mdbook_shared::PageId(10usize),
+            BookRoute::GuideDataFetching {},
+            ::use_mdbook::mdbook_shared::PageId(9usize),
         );
-        pages.push((11usize, {
+        pages.push((10usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Add a Backend".to_string(),
-                url: BookRoute::NewGuideBackend {},
+                url: BookRoute::GuideBackend {},
                 segments: vec![],
                 sections: vec![
                     ::use_mdbook::mdbook_shared::Section {
@@ -828,17 +805,35 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
+                id: ::use_mdbook::mdbook_shared::PageId(10usize),
+            }
+        }));
+        page_id_mapping.insert(
+            BookRoute::GuideBackend {},
+            ::use_mdbook::mdbook_shared::PageId(10usize),
+        );
+        pages.push((11usize, {
+            ::use_mdbook::mdbook_shared::Page {
+                title: "App Routing".to_string(),
+                url: BookRoute::GuideRouting {},
+                segments: vec![],
+                sections: vec![::use_mdbook::mdbook_shared::Section {
+                    title: "Adding More Routes".to_string(),
+                    id: "adding-more-routes".to_string(),
+                    level: 1usize,
+                }],
+                raw: String::new(),
                 id: ::use_mdbook::mdbook_shared::PageId(11usize),
             }
         }));
         page_id_mapping.insert(
-            BookRoute::NewGuideBackend {},
+            BookRoute::GuideRouting {},
             ::use_mdbook::mdbook_shared::PageId(11usize),
         );
         pages.push((12usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Bundling and Deployment".to_string(),
-                url: BookRoute::NewGuideDeploy {},
+                url: BookRoute::GuideDeploy {},
                 segments: vec![],
                 sections: vec![],
                 raw: String::new(),
@@ -846,13 +841,13 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
             }
         }));
         page_id_mapping.insert(
-            BookRoute::NewGuideDeploy {},
+            BookRoute::GuideDeploy {},
             ::use_mdbook::mdbook_shared::PageId(12usize),
         );
         pages.push((13usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Next Steps".to_string(),
-                url: BookRoute::NewGuideNextSteps {},
+                url: BookRoute::GuideNextSteps {},
                 segments: vec![],
                 sections: vec![],
                 raw: String::new(),
@@ -860,7 +855,7 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
             }
         }));
         page_id_mapping.insert(
-            BookRoute::NewGuideNextSteps {},
+            BookRoute::GuideNextSteps {},
             ::use_mdbook::mdbook_shared::PageId(13usize),
         );
         pages.push((14usize, {
@@ -3327,14 +3322,14 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     ::use_mdbook::mdbook_shared::SummaryItem::Separator,
                     ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
                         name: "Tutorial".to_string(),
-                        location: Some(BookRoute::NewGuideIndex {}),
+                        location: Some(BookRoute::GuideIndex {}),
                         number: Some(
                             ::use_mdbook::mdbook_shared::SectionNumber(vec![2u32]),
                         ),
                         nested_items: vec![
                             ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
                                 name: "Tooling Setup".to_string(),
-                                location: Some(BookRoute::NewGuideTooling {}),
+                                location: Some(BookRoute::GuideTooling {}),
                                 number: Some(
                                     ::use_mdbook::mdbook_shared::SectionNumber(vec![2u32, 1u32]),
                                 ),
@@ -3342,7 +3337,7 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                             }),
                             ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
                                 name: "Creating a new app".to_string(),
-                                location: Some(BookRoute::NewGuideNewApp {}),
+                                location: Some(BookRoute::GuideNewApp {}),
                                 number: Some(
                                     ::use_mdbook::mdbook_shared::SectionNumber(vec![2u32, 2u32]),
                                 ),
@@ -3350,7 +3345,7 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                             }),
                             ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
                                 name: "Your First Component".to_string(),
-                                location: Some(BookRoute::NewGuideComponent {}),
+                                location: Some(BookRoute::GuideComponent {}),
                                 number: Some(
                                     ::use_mdbook::mdbook_shared::SectionNumber(vec![2u32, 3u32]),
                                 ),
@@ -3358,7 +3353,7 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                             }),
                             ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
                                 name: "Creating UI with RSX".to_string(),
-                                location: Some(BookRoute::NewGuideRsx {}),
+                                location: Some(BookRoute::GuideRsx {}),
                                 number: Some(
                                     ::use_mdbook::mdbook_shared::SectionNumber(vec![2u32, 4u32]),
                                 ),
@@ -3366,7 +3361,7 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                             }),
                             ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
                                 name: "Styling and Assets".to_string(),
-                                location: Some(BookRoute::NewGuideAssets {}),
+                                location: Some(BookRoute::GuideAssets {}),
                                 number: Some(
                                     ::use_mdbook::mdbook_shared::SectionNumber(vec![2u32, 5u32]),
                                 ),
@@ -3374,31 +3369,31 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                             }),
                             ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
                                 name: "Adding State".to_string(),
-                                location: Some(BookRoute::NewGuideState {}),
+                                location: Some(BookRoute::GuideState {}),
                                 number: Some(
                                     ::use_mdbook::mdbook_shared::SectionNumber(vec![2u32, 6u32]),
                                 ),
                                 nested_items: vec![],
                             }),
                             ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
-                                name: "App Routing".to_string(),
-                                location: Some(BookRoute::NewGuideRouting {}),
+                                name: "Fetching Data".to_string(),
+                                location: Some(BookRoute::GuideDataFetching {}),
                                 number: Some(
                                     ::use_mdbook::mdbook_shared::SectionNumber(vec![2u32, 7u32]),
                                 ),
                                 nested_items: vec![],
                             }),
                             ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
-                                name: "Fetching Data".to_string(),
-                                location: Some(BookRoute::NewGuideDataFetching {}),
+                                name: "Add a Backend".to_string(),
+                                location: Some(BookRoute::GuideBackend {}),
                                 number: Some(
                                     ::use_mdbook::mdbook_shared::SectionNumber(vec![2u32, 8u32]),
                                 ),
                                 nested_items: vec![],
                             }),
                             ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
-                                name: "Add a Backend".to_string(),
-                                location: Some(BookRoute::NewGuideBackend {}),
+                                name: "App Routing".to_string(),
+                                location: Some(BookRoute::GuideRouting {}),
                                 number: Some(
                                     ::use_mdbook::mdbook_shared::SectionNumber(vec![2u32, 9u32]),
                                 ),
@@ -3406,7 +3401,7 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                             }),
                             ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
                                 name: "Bundling and Deployment".to_string(),
-                                location: Some(BookRoute::NewGuideDeploy {}),
+                                location: Some(BookRoute::GuideDeploy {}),
                                 number: Some(
                                     ::use_mdbook::mdbook_shared::SectionNumber(
                                         vec![2u32, 10u32],
@@ -3416,7 +3411,7 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                             }),
                             ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
                                 name: "Next Steps".to_string(),
-                                location: Some(BookRoute::NewGuideNextSteps {}),
+                                location: Some(BookRoute::GuideNextSteps {}),
                                 number: Some(
                                     ::use_mdbook::mdbook_shared::SectionNumber(
                                         vec![2u32, 11u32],
@@ -4611,7 +4606,7 @@ pub fn GettingStartedIndex() -> dioxus::prelude::Element {
     }
 }
 #[component(no_case_check)]
-pub fn NewGuideIndex() -> dioxus::prelude::Element {
+pub fn GuideIndex() -> dioxus::prelude::Element {
     use dioxus::prelude::*;
     rsx! {
         h1 { id: "dioxus-tutorial",
@@ -4650,7 +4645,11 @@ pub fn NewGuideIndex() -> dioxus::prelude::Element {
             " app to remix and download to your device."
         }
         p {
-            img { src: asset!(""), alt: "Photo of HotDog", title: "" }
+            img {
+                src: asset!("/assets/06_docs/dog_app_styled.png", ImageAssetOptions::new().with_avif()),
+                alt: "Photo of HotDog",
+                title: "",
+            }
         }
         h2 { id: "what-will-we-be-learning",
             a { href: "#what-will-we-be-learning", class: "header", "What will we be learning?" }
@@ -4697,7 +4696,7 @@ pub fn NewGuideIndex() -> dioxus::prelude::Element {
     }
 }
 #[component(no_case_check)]
-pub fn NewGuideTooling() -> dioxus::prelude::Element {
+pub fn GuideTooling() -> dioxus::prelude::Element {
     use dioxus::prelude::*;
     rsx! {
         h1 { id: "setting-up-tooling",
@@ -4800,7 +4799,7 @@ pub fn NewGuideTooling() -> dioxus::prelude::Element {
     }
 }
 #[component(no_case_check)]
-pub fn NewGuideNewApp() -> dioxus::prelude::Element {
+pub fn GuideNewApp() -> dioxus::prelude::Element {
     use dioxus::prelude::*;
     rsx! {
         h2 { id: "create-a-new-project",
@@ -4813,7 +4812,7 @@ pub fn NewGuideNewApp() -> dioxus::prelude::Element {
         p {
             video {
                 src: asset!("/assets/06_docs/dx_new_06.mp4"),
-                alt: "dx new",
+                alt: "dxnew",
                 title: "",
                 autoplay: true,
                 muted: true,
@@ -4844,7 +4843,7 @@ pub fn NewGuideNewApp() -> dioxus::prelude::Element {
             code { "default = []" }
             " feature section in your Cargo.toml and inform  "
             code { "dx" }
-            " to server that platform by default. For the sake of this tutorial, "
+            " to serve that platform by default. For the sake of this tutorial, "
             em { "HotDog" }
             " will be a web app by default, though we will create desktop and mobile builds as well."
         }
@@ -4864,7 +4863,7 @@ pub fn NewGuideNewApp() -> dioxus::prelude::Element {
         p {
             video {
                 src: asset!("/assets/06_docs/dx_serve_06.mp4"),
-                alt: "dx serve",
+                alt: "Serve",
                 title: "",
                 autoplay: true,
                 muted: true,
@@ -4881,7 +4880,7 @@ pub fn NewGuideNewApp() -> dioxus::prelude::Element {
         p {
             img {
                 src: asset!("/assets/06_docs/hotdog_loading.png", ImageAssetOptions::new().with_avif()),
-                alt: "dx serve",
+                alt: "loading",
                 title: "",
             }
         }
@@ -4891,7 +4890,7 @@ pub fn NewGuideNewApp() -> dioxus::prelude::Element {
                 src: asset!(
                     "/assets/06_docs/default_dioxus_app.png", ImageAssetOptions::new().with_avif()
                 ),
-                alt: "dx serve",
+                alt: "app",
                 title: "",
             }
         }
@@ -5042,7 +5041,7 @@ pub fn NewGuideNewApp() -> dioxus::prelude::Element {
     }
 }
 #[component(no_case_check)]
-pub fn NewGuideComponent() -> dioxus::prelude::Element {
+pub fn GuideComponent() -> dioxus::prelude::Element {
     use dioxus::prelude::*;
     rsx! {
         h1 { id: "your-first-component",
@@ -5200,7 +5199,7 @@ pub fn NewGuideComponent() -> dioxus::prelude::Element {
     }
 }
 #[component(no_case_check)]
-pub fn NewGuideRsx() -> dioxus::prelude::Element {
+pub fn GuideRsx() -> dioxus::prelude::Element {
     use dioxus::prelude::*;
     rsx! {
         h1 { id: "describing-the-ui",
@@ -5348,14 +5347,14 @@ pub fn NewGuideRsx() -> dioxus::prelude::Element {
     }
 }
 #[component(no_case_check)]
-pub fn NewGuideAssets() -> dioxus::prelude::Element {
+pub fn GuideAssets() -> dioxus::prelude::Element {
     use dioxus::prelude::*;
     rsx! {
         h1 { id: "styling-and-assets",
             a { href: "#styling-and-assets", class: "header", "Styling and Assets" }
         }
         p { "Unfortunately, our HotDog app isn't quite ready to show off - it's completely unstyled!" }
-        p { "In this chapter we'll cover adding assets and styles to our app." }
+        p { "In this chapter we'll cover adding assets and styles and assets to our app." }
         h2 { id: "dioxus-uses-css-for-styling",
             a { href: "#dioxus-uses-css-for-styling", class: "header",
                 "Dioxus uses CSS for Styling"
@@ -5396,7 +5395,7 @@ pub fn NewGuideAssets() -> dioxus::prelude::Element {
         }
         CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"font-style:italic;color:#66d9ef;\">static </span><span style=\"color:#ff80f4;\">CSS</span><span style=\"color:#f8f8f2;\">: Asset </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">asset!(</span><span style=\"color:#ffee99;\">&quot;/assets/main.css&quot;</span><span style=\"color:#f8f8f2;\">);</span></pre>\n" }
         p {
-            "We also need to make sure the asset gets loaded into our app using the  "
+            "We also need to load the asset into our app using the  "
             code { "document::Stylesheet" }
             " component. This component is equivalent to the  "
             code { "<link>" }
@@ -5435,21 +5434,25 @@ pub fn NewGuideAssets() -> dioxus::prelude::Element {
         h2 { id: "including-images",
             a { href: "#including-images", class: "header", "Including Images" }
         }
-        p {
-            "The  "
-            code { "asset!()" }
-            " macro can include a wide variety of assets in our app. We can also include images, JSON, JavaScript, and more."
+        p { "In Dioxus, you can include assets in two ways:" }
+        ul {
+            li { "Dynamically with a URL" }
+            li { "Statically with the asset!() macro." }
         }
         p {
-            "For "
-            em { "HotDog" }
-            ", we'll use a combination of static assets defined with "
-            code { "asset!()" }
-            " and by simply referring to the URL of the image in our app in the img "
+            "When including assets with a URL, simply fill the  "
             code { "src" }
-            ":"
+            " attribute of  "
+            code { "img {{}}" }
+            ". Note that when the app is offline, the image won't render."
         }
         CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">rsx! {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#8c8c8c;\">// ...\n</span><span style=\"color:#f8f8f2;\">    div {{\n</span><span style=\"color:#f8f8f2;\">        img {{ src: </span><span style=\"color:#ffee99;\">&quot;https://images.dog.ceo/breeds/pitbull/dog-3981540_1280.jpg&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#8c8c8c;\">// ...\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n" }
+        p {
+            "For static images, you can use the same  "
+            code { "asset!()" }
+            " macro that we used to include the app's CSS."
+        }
+        CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"font-style:italic;color:#66d9ef;\">static </span><span style=\"color:#ff80f4;\">ICON</span><span style=\"color:#f8f8f2;\">: Asset </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">asset!(</span><span style=\"color:#ffee99;\">&quot;/assets/icon.png&quot;</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">rsx! {{\n</span><span style=\"color:#f8f8f2;\">    img {{ src: </span><span style=\"color:#ff80f4;\">ICON </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n" }
         h2 { id: "optimizations",
             a { href: "#optimizations", class: "header", "Optimizations" }
         }
@@ -5474,19 +5477,7 @@ pub fn NewGuideAssets() -> dioxus::prelude::Element {
         p {
             "Check out the "
             a { href: "../guides/assets", "assets guide" }
-            " for a more in-depth explanation of how the Dioxus asset system works."
-        }
-        h2 { id: "using-tailwind-with-dioxus",
-            a { href: "#using-tailwind-with-dioxus", class: "header", "Using Tailwind with Dioxus" }
-        }
-        p {
-            "We're not going to use Tailwind for the "
-            em { "HotDog" }
-            ", but it's important to note that Dioxus "
-            em { "does" }
-            " have TailwindCSS support. If you're interested in using Tailwind to style your app, make sure to "
-            a { href: "../cookbook/tailwind", "read the guide" }
-            "."
+            " for a more in-depth explanation of how the Dioxus asset system works.a"
         }
         h2 { id: "the-final-css",
             a { href: "#the-final-css", class: "header", "The Final CSS" }
@@ -5510,7 +5501,7 @@ pub fn NewGuideAssets() -> dioxus::prelude::Element {
     }
 }
 #[component(no_case_check)]
-pub fn NewGuideState() -> dioxus::prelude::Element {
+pub fn GuideState() -> dioxus::prelude::Element {
     use dioxus::prelude::*;
     rsx! {
         h1 { id: "interactivity",
@@ -5723,23 +5714,7 @@ pub fn NewGuideState() -> dioxus::prelude::Element {
     }
 }
 #[component(no_case_check)]
-pub fn NewGuideRouting() -> dioxus::prelude::Element {
-    use dioxus::prelude::*;
-    rsx! {
-        h1 { id: "adding-more-routes",
-            a { href: "#adding-more-routes", class: "header", "Adding More Routes" }
-        }
-        p { "So far, our app has only had a single page. Let's change that!" }
-        p {
-            "In this chapter, we'll be adding a Navbar to our app, a welcome screen, and a \"favorites\" page where we can revisit our favorite dogs."
-        }
-        h2 { id: "",
-            a { href: "#", class: "header", "" }
-        }
-    }
-}
-#[component(no_case_check)]
-pub fn NewGuideDataFetching() -> dioxus::prelude::Element {
+pub fn GuideDataFetching() -> dioxus::prelude::Element {
     use dioxus::prelude::*;
     rsx! {
         h1 { id: "fetching-data",
@@ -5765,8 +5740,9 @@ pub fn NewGuideDataFetching() -> dioxus::prelude::Element {
             a { href: "https://crates.io/crates/reqwest", "reqwest" }
             "."
         }
-        p {
-            "Serde will let us derive a JSON Deserializer and Reqwest provides us an HTTP client to fetch with."
+        ul {
+            li { "Reqwest provides us an HTTP client for fetching." }
+            li { "Serde will let us derive a JSON Deserializer to decode the response." }
         }
         p {
             "In a new terminal window, add these crates to your app with  "
@@ -5881,7 +5857,7 @@ pub fn NewGuideDataFetching() -> dioxus::prelude::Element {
     }
 }
 #[component(no_case_check)]
-pub fn NewGuideBackend() -> dioxus::prelude::Element {
+pub fn GuideBackend() -> dioxus::prelude::Element {
     use dioxus::prelude::*;
     rsx! {
         h1 { id: "adding-a-backend",
@@ -5955,7 +5931,7 @@ pub fn NewGuideBackend() -> dioxus::prelude::Element {
         p {
             "Now,  "
             code { "dx" }
-            " is compiling two versions of your app twice parallel:"
+            " is compiling two versions of your app in parallel:"
         }
         ul {
             li {
@@ -5972,7 +5948,7 @@ pub fn NewGuideBackend() -> dioxus::prelude::Element {
         }
         p { "Let's add a server function to our dog app to save our favorite dog photos:" }
         CodeBlock {
-            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">DogView</span><span style=\"color:#f8f8f2;\">() -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let </span><span style=\"color:#f92672;\">mut</span><span style=\"color:#f8f8f2;\"> img_src </span><span style=\"color:#f92672;\">= </span><span style=\"color:#66d9ef;\">use_resource</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#8c8c8c;\">/**/</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> save </span><span style=\"color:#f92672;\">= move |_|</span><span style=\"color:#f8f8f2;\"> async </span><span style=\"color:#f92672;\">move </span><span style=\"color:#f8f8f2;\">{{\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"color:#8c8c8c;\">// Grab the current image\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> current </span><span style=\"color:#f92672;\">=</span><span style=\"color:#f8f8f2;\"> img_src.</span><span style=\"color:#66d9ef;\">value</span><span style=\"color:#f8f8f2;\">().</span><span style=\"color:#66d9ef;\">cloned</span><span style=\"color:#f8f8f2;\">().</span><span style=\"color:#66d9ef;\">unwrap</span><span style=\"color:#f8f8f2;\">();\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"color:#8c8c8c;\">// Start fetching a new image\n</span><span style=\"color:#f8f8f2;\">        img_src.</span><span style=\"color:#66d9ef;\">restart</span><span style=\"color:#f8f8f2;\">();\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"color:#8c8c8c;\">// And call the `save_dog` endpoint\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"color:#66d9ef;\">save_dog</span><span style=\"color:#f8f8f2;\">(current).await;\n</span><span style=\"color:#f8f8f2;\">    }};\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> skip </span><span style=\"color:#f92672;\">= move |_|</span><span style=\"color:#f8f8f2;\"> img_src.</span><span style=\"color:#66d9ef;\">restart</span><span style=\"color:#f8f8f2;\">();\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">    rsx! {{\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"color:#8c8c8c;\">// ...\n</span><span style=\"color:#f8f8f2;\">        div {{ id: </span><span style=\"color:#ffee99;\">&quot;buttons&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">            button {{ onclick: skip, id: </span><span style=\"color:#ffee99;\">&quot;skip&quot;</span><span style=\"color:#f8f8f2;\">, </span><span style=\"color:#ffee99;\">&quot;skip&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">            button {{ onclick: save, id: </span><span style=\"color:#ffee99;\">&quot;save&quot;</span><span style=\"color:#f8f8f2;\">, </span><span style=\"color:#ffee99;\">&quot;save!&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">        }}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#8c8c8c;\">// And then on the server, write the dog to &quot;dogs.txt&quot;\n</span><span style=\"color:#f8f8f2;\">#[server]\n</span><span style=\"color:#f8f8f2;\">async </span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">save_dog</span><span style=\"color:#f8f8f2;\">(</span><span style=\"font-style:italic;color:#fd971f;\">image</span><span style=\"color:#f8f8f2;\">: String) -&gt; Result&lt;(), ServerFnError&gt; {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#f92672;\">use </span><span style=\"color:#f8f8f2;\">std::io::Write;\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#f92672;\">_ = </span><span style=\"color:#f8f8f2;\">std::fs::OpenOptions::new()\n</span><span style=\"color:#f8f8f2;\">        .</span><span style=\"color:#66d9ef;\">write</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#ff80f4;\">true</span><span style=\"color:#f8f8f2;\">)\n</span><span style=\"color:#f8f8f2;\">        .</span><span style=\"color:#66d9ef;\">append</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#ff80f4;\">true</span><span style=\"color:#f8f8f2;\">)\n</span><span style=\"color:#f8f8f2;\">        .</span><span style=\"color:#66d9ef;\">create</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#ff80f4;\">true</span><span style=\"color:#f8f8f2;\">)\n</span><span style=\"color:#f8f8f2;\">        .</span><span style=\"color:#66d9ef;\">open</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#ffee99;\">&quot;dogs.txt&quot;</span><span style=\"color:#f8f8f2;\">)\n</span><span style=\"color:#f8f8f2;\">        .</span><span style=\"color:#66d9ef;\">unwrap</span><span style=\"color:#f8f8f2;\">()\n</span><span style=\"color:#f8f8f2;\">        .</span><span style=\"color:#66d9ef;\">write_fmt</span><span style=\"color:#f8f8f2;\">(format_args!(</span><span style=\"color:#ffee99;\">&quot;{{image}}</span><span style=\"color:#ff80f4;\">\\n</span><span style=\"color:#ffee99;\">&quot;</span><span style=\"color:#f8f8f2;\">));\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">Ok</span><span style=\"color:#f8f8f2;\">(())\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">DogView</span><span style=\"color:#f8f8f2;\">() -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let </span><span style=\"color:#f92672;\">mut</span><span style=\"color:#f8f8f2;\"> img_src </span><span style=\"color:#f92672;\">= </span><span style=\"color:#66d9ef;\">use_resource</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#8c8c8c;\">/**/</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> save </span><span style=\"color:#f92672;\">= move |_|</span><span style=\"color:#f8f8f2;\"> async </span><span style=\"color:#f92672;\">move </span><span style=\"color:#f8f8f2;\">{{\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"color:#8c8c8c;\">// Grab the current image\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> current </span><span style=\"color:#f92672;\">=</span><span style=\"color:#f8f8f2;\"> img_src.</span><span style=\"color:#66d9ef;\">value</span><span style=\"color:#f8f8f2;\">().</span><span style=\"color:#66d9ef;\">cloned</span><span style=\"color:#f8f8f2;\">().</span><span style=\"color:#66d9ef;\">unwrap</span><span style=\"color:#f8f8f2;\">();\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"color:#8c8c8c;\">// Start fetching a new image\n</span><span style=\"color:#f8f8f2;\">        img_src.</span><span style=\"color:#66d9ef;\">restart</span><span style=\"color:#f8f8f2;\">();\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"color:#8c8c8c;\">// And call the `save_dog` endpoint\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"color:#66d9ef;\">save_dog</span><span style=\"color:#f8f8f2;\">(current).await;\n</span><span style=\"color:#f8f8f2;\">    }};\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> skip </span><span style=\"color:#f92672;\">= move |_|</span><span style=\"color:#f8f8f2;\"> img_src.</span><span style=\"color:#66d9ef;\">restart</span><span style=\"color:#f8f8f2;\">();\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">    rsx! {{\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"color:#8c8c8c;\">// ...\n</span><span style=\"color:#f8f8f2;\">        div {{ id: </span><span style=\"color:#ffee99;\">&quot;buttons&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">            button {{ onclick: skip, id: </span><span style=\"color:#ffee99;\">&quot;skip&quot;</span><span style=\"color:#f8f8f2;\">, </span><span style=\"color:#ffee99;\">&quot;skip&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">            button {{ onclick: save, id: </span><span style=\"color:#ffee99;\">&quot;save&quot;</span><span style=\"color:#f8f8f2;\">, </span><span style=\"color:#ffee99;\">&quot;save!&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">        }}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#8c8c8c;\">// And then on the server, write the dog to &quot;dogs.txt&quot;\n</span><span style=\"color:#f8f8f2;\">#[server]\n</span><span style=\"color:#f8f8f2;\">async </span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">save_dog</span><span style=\"color:#f8f8f2;\">(</span><span style=\"font-style:italic;color:#fd971f;\">image</span><span style=\"color:#f8f8f2;\">: String) -&gt; Result&lt;(), ServerFnError&gt; {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#f92672;\">use </span><span style=\"color:#f8f8f2;\">std::io::Write;\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#f92672;\">_ = </span><span style=\"color:#f8f8f2;\">std::fs::OpenOptions::new()\n</span><span style=\"color:#f8f8f2;\">        .</span><span style=\"color:#66d9ef;\">write</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#ff80f4;\">true</span><span style=\"color:#f8f8f2;\">)\n</span><span style=\"color:#f8f8f2;\">        .</span><span style=\"color:#66d9ef;\">append</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#ff80f4;\">true</span><span style=\"color:#f8f8f2;\">)\n</span><span style=\"color:#f8f8f2;\">        .</span><span style=\"color:#66d9ef;\">create</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#ff80f4;\">true</span><span style=\"color:#f8f8f2;\">)\n</span><span style=\"color:#f8f8f2;\">        .</span><span style=\"color:#66d9ef;\">open</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#ffee99;\">&quot;dogs.txt&quot;</span><span style=\"color:#f8f8f2;\">)\n</span><span style=\"color:#f8f8f2;\">        .</span><span style=\"color:#66d9ef;\">unwrap</span><span style=\"color:#f8f8f2;\">()\n</span><span style=\"color:#f8f8f2;\">        .</span><span style=\"color:#66d9ef;\">write_fmt</span><span style=\"color:#f8f8f2;\">(format_args!(</span><span style=\"color:#ffee99;\">&quot;{{image}}</span><span style=\"color:#ff80f4;\">\\n</span><span style=\"color:#ffee99;\">&quot;</span><span style=\"color:#f8f8f2;\">));\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">Ok</span><span style=\"color:#f8f8f2;\">(())\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
         }
         p { "Wow, our app is really coming together!" }
         p {
@@ -5990,12 +5966,28 @@ pub fn NewGuideBackend() -> dioxus::prelude::Element {
     }
 }
 #[component(no_case_check)]
-pub fn NewGuideDeploy() -> dioxus::prelude::Element {
+pub fn GuideRouting() -> dioxus::prelude::Element {
+    use dioxus::prelude::*;
+    rsx! {
+        h1 { id: "adding-more-routes",
+            a { href: "#adding-more-routes", class: "header", "Adding More Routes" }
+        }
+        p { "So far, our app has only had a single page. Let's change that!" }
+        p {
+            "In this chapter, we'll be adding a Navbar to our app, a welcome screen, and a \"favorites\" page where we can revisit our favorite dogs."
+        }
+        h2 { id: "",
+            a { href: "#", class: "header", "" }
+        }
+    }
+}
+#[component(no_case_check)]
+pub fn GuideDeploy() -> dioxus::prelude::Element {
     use dioxus::prelude::*;
     rsx! {}
 }
 #[component(no_case_check)]
-pub fn NewGuideNextSteps() -> dioxus::prelude::Element {
+pub fn GuideNextSteps() -> dioxus::prelude::Element {
     use dioxus::prelude::*;
     rsx! {}
 }

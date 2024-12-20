@@ -31,7 +31,7 @@ fn DogApp(props: DogAppProps) -> Element {
 
 ## Component Properties
 
-The `DogAppProps` is a Rust struct that we declare that contains fields that the component will use to render. All `Props` structs in Dioxus need to derive the `Properties` trait which requires both `Clone` and `PartialEq`:
+The `DogAppProps` is a Rust struct that outlines which parameters `DogApp` can accept. All `Props` structs in Dioxus need to derive the `Properties` trait which requires both `Clone` and `PartialEq`:
 
 ```rust
 #[derive(Props, PartialEq, Clone)]
@@ -49,11 +49,13 @@ fn DogApp(breed: String) -> Element {
 }
 ```
 
+When building apps, you'll frequently use the `#[component]` macro. When building libraries, we generally suggest the struct approach.
+
 ## Properties are Immutable
 
-If you're familiar with JavaScript, then you might also be familiar with libraries like [React](http://react.dev). Dioxus is *very* similar to React: if you know React then you will be very comfortable with Dioxus.
+If you're familiar with JavaScript, then you might also be familiar with libraries like [React](http://react.dev). Dioxus is *very* similar to React: if you know React then you will feel comfortable with Dioxus.
 
-Just like React, Dioxus components are rendered by calling the function component with a `Clone` of the props. This ensures you can't accidentally modify your props which can lead to hard-to-track issues with state management.
+Just like React, Dioxus components are rendered by calling the function component. On every render, Dioxus makes a `.clone()` of the component's props. This ensures you can't accidentally modify your props which can lead to hard-to-track issues with state management.
 
 ```rust
 fn DogApp(props: DogAppProps) -> Element {
@@ -62,6 +64,8 @@ fn DogApp(props: DogAppProps) -> Element {
     // ...
 }
 ```
+
+Dioxus provides types that make `.clone()` cheaper to call, so don't worry about performance gotchas here.
 
 ## Component Functions are Called Multiple Times
 
@@ -87,7 +91,7 @@ Dioxus will re-render your component in only two circumstances:
 - When the `Props` change as determined by `PartialEq`
 - When a function like `signal.set()` or `signal.write()` calls `Scope.needs_update()`
 
-Unlike React, all Dioxus components are *memoized by default* meaning Dioxus will always compare `Props` before deciding to re-render your component.
+Unlike React, all Dioxus components are *memoized by default* meaning Dioxus will always compare `Props` before deciding to re-render your component. As an additional optimization, Dioxus only compares dynamic parts of your RSX. Elements that don't contain dynamic data won't be checked for changes.
 
 ## Composing Components
 

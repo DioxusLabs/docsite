@@ -8,13 +8,23 @@ Dioxus is a _declarative_ framework. This means that instead of telling Dioxus w
 
 Here, we use the `rsx!` macro to _declare_ that we want a `div` element, containing the text `"Hello, world!"`. Dioxus takes the RSX and constructs a user interface from it.
 
+## Editing RSX with Hot-Reloading
+
+When using `dx serve`, your app's RSX is automatically hot-reloaded whenever you edit and save the file. You can edit RSX structure, add new elements, and style your markup without a full rebuild.
+
+Whenever you edit *Rust* code, then `dx` will automatically force a "full rebuild" of your app.
+
+![Dog App Hotreloading](/assets/06_docs/dog_app_hotreload.mp4)
+
+For an in-depth guide in what can and can't be hot-reloaded, check the [hot-reload guide](../reference/hotreload.md) in the reference.
+
 ## RSX is just HTML
 
 Dioxus provides the `rsx! {}` macro for assembling `Element`s in your app. The `rsx! {}` macro primarily speaks HTML: the web, desktop, and mobile Dioxus first-party renderers all use HTML and CSS as the layout and styling technologies.
 
 This means you can reuse your knowledge of the web and build your app using `div`, `span`, `img`, `style`, `button`, and more.
 
-The RSX syntax is a "strict" form of Rust that uses Rust's `Struct` syntax for combining elements:
+The RSX syntax is a "strict" form of Rust that uses Rust's `Struct` syntax for assembling elements:
 
 ```rust
 rsx! {
@@ -30,7 +40,7 @@ Elements in RSX differ slightly from Rust struct syntax: they can also contain c
 rsx! {
     div { class: "bg-red-100",
         button {
-            onclick: handle_click,
+            onclick: move |_| info!("Clicked"),
             "Click me!"
         }
     }
@@ -45,10 +55,13 @@ rsx! {
 }
 ```
 
-Any expression that can be rendered to a String can be included directly in RSX as well as `Option<Element>` and iterators of Elements:
+Any expression that can be rendered to a String can be included directly in RSX. RSX also accepts `Option<Element>` and iterators of Elements:
 
 ```rust
 rsx! {
+    // Anything that's `Display`
+    {"Something"}
+
     // Optionals
     {show_title.and_then(|| rsx! { "title!" } )}
 
@@ -75,15 +88,18 @@ rsx! {
 }
 ```
 
-## Editing RSX with Hot-Reloading
+For lists, Dioxus uses the `key` attribute to ensure it's comparing the right elements between renders. If you forget to add a `key` attribute to your lists, you might run into performance and state management issues. Usually you can find a unique key to differentiate your list items:
 
-When using `dx serve`, your app's RSX is automatically hot-reloaded whenever you edit and save the file. You can edit RSX structure, add new elements, and style your markup without a full rebuild.
-
-Whenever you edit *Rust* code, then `dx` will automatically force a "full rebuild" of your app.
-
-![Dog App Hotreloading](/assets/06_docs/dog_app_hotreload.mp4)
-
-For an in-depth guide in what can and can't be hot-reloaded, check the [hot-reload guide](../reference/hotreload.md) in the reference.
+```rust
+rsx! {
+    for user in users {
+        div {
+            key: "{user.id}",
+            "{user.name}"
+        }
+    }
+}
+```
 
 ## Adding UI to our *HotDog* App
 

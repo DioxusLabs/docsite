@@ -66,7 +66,11 @@ We manually set the PATH variable to include the Android emulator since some dis
 
 ## IOS
 
-To develop on IOS, you will need to [install XCode](https://apps.apple.com/us/app/xcode/id497799835).
+To develop on IOS, you will need to [install XCode](https://apps.apple.com/us/app/xcode/id497799835). Also make sure to install the iOS targets
+
+```sh
+rustup target add aarch64-apple-ios aarch64-apple-ios-sim
+```
 
 > If you are using M1, you will have to run `cargo build --target x86_64-apple-ios` instead of `cargo apple build` if you want to run in simulator.
 

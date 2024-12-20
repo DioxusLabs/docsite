@@ -1,13 +1,15 @@
 
 ## Create a new project
 
+Let's get to work!
+
 You can create a new Dioxus project by running the following command and following the prompts:
 
 ```sh
 dx new hot_dog
 ```
 
-![dx new](/assets/06_docs/dx_new_06.mp4)
+![dxnew](/assets/06_docs/dx_new_06.mp4)
 
 You'll need to select a template to use to get started.
 
@@ -17,31 +19,32 @@ You'll need to select a template to use to get started.
 
 We're going to use the bare-bones template for *HotDog*. Our app won't be too complex and can fit in one file.
 
-You'll also need to select a "default platform" to run. This will set the corresponding `default = []` feature section in your Cargo.toml and inform `dx` to server that platform by default. For the sake of this tutorial, *HotDog* will be a web app by default, though we will create desktop and mobile builds as well.
+> You don't need `dx new` to create new Dioxus apps! Dioxus apps are Rust projects and can also be built with tools like cargo.
 
-We're not going to set up the project with a Router at first, though we will eventually add the router to the app.
+You'll also need to select a "default platform" to run. This will set the corresponding `default = []` feature section in your Cargo.toml and inform `dx` to serve that platform by default. For the sake of this tutorial, we'll develop *HotDog* as a web app. At the end, we will also create desktop and mobile builds.
+
+We're not going to start the project with a Router, though we *will* eventually add the router to the app.
 
 We're not going to use TailwindCSS for this tutorial, but make sure to read the [TailwindCSS guide](../cookbook/tailwind.md) if you want to use Tailwind for your own apps.
 
 ## Running the project
 
-Once you have created your project, you can start it with the following command:
+Once you created your project, you can start it with the following command:
 
 ```sh
 cd hot_dog
 dx serve
 ```
 
-![dx serve](/assets/06_docs/dx_serve_06.mp4)
+![Serve](/assets/06_docs/dx_serve_06.mp4)
 
-This will start the cargo build and launch a web server to serve your app. If you visit the "serve" address (in this case, `http://127.0.0.1:8080`), then you'll receive a nice loading screen in your browser:
+This will start the cargo build and launch a web server to serve your app. If you visit the "serve" address (in this case, `http://127.0.0.1:8080`), then you'll receive a loading screen in your browser:
 
-![dx serve](/assets/06_docs/hotdog_loading.png)
+![loading](/assets/06_docs/hotdog_loading.png)
 
-Once the app is loaded, you should be greeted with the default Dioxus template:
+Once the app is loaded, you should be greeted with the default Dioxus template app:
 
-
-![dx serve](/assets/06_docs/default_dioxus_app.png)
+![app](/assets/06_docs/default_dioxus_app.png)
 
 Congrats! You have your very first Dioxus App.
 
@@ -62,7 +65,9 @@ Open the app in your favorite editor and take a look at its structure:
     └── main.rs
 ```
 
-All Rust apps are comprised of a root `Cargo.toml` and a `main.rs` file located in the `src` folder. Our CLI `dx` pre-filled these files with the `dioxus` dependency and some starter code for us to get building quickly.
+All Rust apps are comprised of a root `Cargo.toml` with a `main.rs` file located in the `src` folder. Our CLI `dx` pre-filled these files with the `dioxus` dependency and some starter code for us to get building quickly.
+
+Assets in Dioxus can be placed anywhere in the project, but we suggest leaving them in the `assets` folder.
 
 ## The Cargo.toml
 
@@ -72,10 +77,10 @@ All Dioxus apps will include `dioxus` as a dependency:
 
 ```toml
 [dependencies]
-dioxus = { version = "0.6.0", features = [] }
+dioxus = { version = "0.6.0" }
 ```
 
-The prebuilt Dioxus templates initialize different cargo features for your app. `dx` will use these to decide what cargo features to enable when you specify the `--platform` feature when serving. For example, when building your app for desktop, `dx` will call `cargo build --no-default-features --features desktop`.
+The prebuilt Dioxus templates initialize different cargo features for your app. `dx` will use these to decide what cargo features to enable when you specify the `--platform` feature. For example, when building your app for desktop, `dx` will call `cargo build --no-default-features --features desktop`.
 
 ```toml
 [features]
@@ -85,11 +90,11 @@ desktop = ["dioxus/desktop"]
 mobile = ["dioxus/mobile"]
 ```
 
-Starting with Dioxus 0.6, `dx` will also initialize separate [Cargo profiles](https://doc.rust-lang.org/cargo/reference/profiles.html) for your app. These profiles let you customize the optimization level of each platform. `dx` also uses these platforms as a mechanism of isolating builds from each other, enabling parallel server and client builds and preventing unnecessary full-rebuilds.
+Starting with Dioxus 0.6, `dx` will also initialize separate [Cargo profiles](https://doc.rust-lang.org/cargo/reference/profiles.html) for your app. These profiles let you customize the optimization level of each platform. `dx` also uses these platforms as a mechanism of isolating builds from each other. Custom profiles enable parallel server and client builds and prevent unnecessary full-rebuilds.
 
 ## Dioxus.toml
 
-The `Dioxus.toml` file contains Dioxus-specific configuration for things like bundling and deploying. Before Dioxus 0.5, we used the `Dioxus.toml` to specify asset inclusion and hot-reload watch paths, but as of Dioxus 0.6, these fields are deprecated and replaced by standards like `asset!()` and `.gitignore`.
+The `Dioxus.toml` file contains Dioxus-specific configuration for stages like bundling and deploying. Before Dioxus 0.5, we used the `Dioxus.toml` to specify asset inclusion and hot-reload watch paths, but as of Dioxus 0.6, these fields are deprecated and replaced by standards like `asset!()` and `.gitignore`.
 
 We won't need to configure the `Dioxus.toml` for our DogApp just yet.
 
@@ -111,13 +116,13 @@ fn main() {
 }
 ```
 
-The `launch` function calls the platform-specific `launch` function depending on which feature (web/desktop/mobile) is enabled on `dioxus`. `launch` takes in a root component, typically called `App`.
+The `launch` function calls the platform-specific `launch` function depending on which feature (web/desktop/mobile) is enabled on `dioxus`. `launch` accepts a root component, typically called `App`.
 
 We'll cover components more in-depth in the [next chapter](component.md).
 
 ## Resetting to Basics
 
-The bare-bones template provides us some starter code that we could use as a basis for our app. However, we want to start truly from scratch, so we'll wipe away the `Hero` component and empty the `App` component to its basics:
+The bare-bones template provides basic starter code for our app. However, we want to start *truly* from scratch, so we'll wipe away the `Hero` component and empty the `App` component to its basics:
 
 ```rust
 use dioxus::prelude::*;

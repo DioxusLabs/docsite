@@ -1,0 +1,157 @@
+use build::{start_build, BuildState};
+use components::material_icons::Warning;
+use dioxus::logger::tracing::{error, info};
+use dioxus::prelude::*;
+use dioxus_devtools::HotReloadMsg;
+use dioxus_document::{eval, Link};
+use dioxus_sdk::{
+    theme::{use_system_theme, SystemTheme},
+    utils::timing::use_debounce,
+};
+use editor::monaco::{monaco_loader_src, on_monaco_load};
+use hotreload::{HotReload, HotReloadError};
+use share_code::use_share_code;
+use std::time::Duration;
+
+mod build;
+mod components;
+mod editor;
+mod error;
+mod examples;
+mod hotreload;
+mod share_code;
+mod ws;
+
+const DXP_CSS: Asset = asset!("/assets/dxp.css");
+
+// const MONACO_FOLDER_OPTIONS: FolderAssetOptions =
+//     FolderAssetOptions::new().with_preserve_files(true);
+const MONACO_FOLDER: Asset = asset!("/assets/monaco-editor-0.52.2"); //asset!("/assets/monaco-editor-0.52", MONACO_FOLDER_OPTIONS); //&str = "/assets/monaco-editor-0.52.2";
+
+/// The URLS that the playground should use for locating resources and services.
+#[derive(Debug, Clone, PartialEq)]
+pub struct PlaygroundUrls {
+    /// The URL to the websocket server.
+    pub socket: &'static str,
+    /// The URL to the built project files from the server.
+    pub built: &'static str,
+    /// The url location of the playground UI: e.g. `https://dioxuslabs.com/play`
+    pub location: &'static str,
+}
+
+#[component]
+pub fn Playground(urls: PlaygroundUrls, share_code: Option<String>) -> Element {
+    let mut build = provide_context(BuildState::new());
+    let mut show_share_warning = use_signal(|| false);
+
+    // Hot Reloading
+    let mut hot_reload = use_signal(|| HotReload::new());
+    let on_model_changed = use_debounce(Duration::from_millis(150), move |new_code: String| {
+        if !build.stage().is_finished() {
+            return;
+        }
+
+        // Process any potential hot -eloadable changes and send them to the iframe web client.
+        let result = hot_reload.write().process_file_change(new_code);
+        match result {
+            Ok(templates) => {
+                let hr_msg = HotReloadMsg {
+                    templates,
+                    assets: Vec::new(),
+                    unknown_files: Vec::new(),
+                };
+
+                let e = eval(
+                    r#"
+                    const hrMsg = await dioxus.recv();
+                    const iframeElem = document.getElementById("dxp-viewport");
+                    const hrMsgJson = JSON.stringify(hrMsg);
+                    
+                    if (iframeElem) {
+                        iframeElem.contentWindow.postMessage(hrMsgJson, "*");
+                    }
+                    "#,
+                );
+                _ = e.send(hr_msg);
+            }
+            Err(HotReloadError::NeedsRebuild) => error!("todo"),
+            e => error!("hot reload error occured: {:?}", e),
+        }
+    });
+
+    // We store the shared code in state as the editor may not be initialized yet.
+    let shared_code = use_share_code(share_code, show_share_warning, hot_reload);
+
+    // Themes
+    let system_theme = use_system_theme();
+    use_effect(move || {
+        let theme = system_theme().unwrap_or(SystemTheme::Light);
+        editor::monaco::set_theme(theme);
+    });
+
+    // Handle starting a build.
+    let on_run = move |_| {
+        let socket_url = urls.socket.to_string();
+        spawn(async move {
+            if let Err(e) = start_build(&mut build, socket_url).await {
+                error!(error = ?e, "failed to build project");
+            }
+        });
+    };
+
+    // Construct the full URL to the built project.
+    let built_page_url = use_memo(move || {
+        let id = build.stage().finished_id();
+        info!("PAGE ID: {:?}", id);
+        id.map(|id| format!("{}{}", urls.built, id))
+    });
+
+    info!("page url: {:?}", built_page_url());
+
+    // State for pane resizing, shared by headers and panes.
+    // The actual logic is in the panes component.
+    let pane_left_width: Signal<Option<i32>> = use_signal(|| None);
+    let pane_right_width: Signal<Option<i32>> = use_signal(|| None);
+
+    rsx! {
+        // Head elements
+        Link { rel: "stylesheet", href: DXP_CSS }
+
+        // Monaco script
+        script {
+            src: monaco_loader_src(MONACO_FOLDER),
+            onload: move |_| {
+                on_monaco_load(
+                    MONACO_FOLDER,
+                    system_theme().unwrap_or(SystemTheme::Light),
+                    shared_code(),
+                    hot_reload,
+                    on_model_changed
+                );
+            }
+        }
+
+        // Share warning
+        if show_share_warning() {
+            components::Modal {
+                icon: rsx! { Warning {} },
+                title: "Do you trust this code?",
+                text: "Anyone can share their project. Verify that nothing malicious has been included before running this project.",
+                on_ok: move |_| show_share_warning.set(false),
+            }
+        }
+
+        // Playground UI
+        components::Header {
+            urls,
+            on_run,
+            pane_left_width,
+            pane_right_width,
+        }
+        components::Panes {
+            pane_left_width,
+            pane_right_width,
+            built_page_url,
+        }
+    }
+}

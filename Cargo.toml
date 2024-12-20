@@ -1,15 +1,28 @@
 [workspace]
 resolver = "2"
-members = ["model", "runner", "server", "web"]
+members = ["model", "runner", "server", "playground"]
 exclude = ["server/template"]
 
 [workspace.dependencies]
-model = { path = "./model" }
+model = { path = "model" }
+dioxus-playground = { path = "playground" }
 
-dioxus = "0.6.0-rc.0"
-dioxus-document = "0.6.0-rc.0"
-dioxus-logger = "0.5.1"
-dioxus-dx-wire-format = { git = "https://github.com/dioxuslabs/dioxus", rev = "2db758a" }
+# Dioxus
+dioxus = "0.6"
+dioxus-document = "0.6"
+dioxus-sdk = "0.6"
+dioxus-core = "0.6"
+dioxus-core-types = "0.6"
+dioxus-devtools = "0.6"
+dioxus-rsx-hotreload = "0.6"
+dioxus-rsx = "0.6"
+dioxus-html = "0.6"
+dioxus-rsx-rosetta = "0.6"
+dioxus-autofmt = "0.6"
+dioxus-dx-wire-format = { git = "https://github.com/dioxuslabs/dioxus", rev = "30f760c" }
+
+# Logger is integrated now but server still needs it.
+dioxus-logger = "0.6"
 
 serde = { version = "1.0.215", features = ["derive"] }
 serde_json = "1.0.133"
@@ -20,3 +33,15 @@ gloo-net = { version = "0.6.0", features = ["websocket"] }
 axum = { version = "0.7.5" }
 
 thiserror = "2.0.4"
+
+[profile]
+
+[profile.wasm-dev]
+inherits = "dev"
+opt-level = 1
+
+[profile.server-dev]
+inherits = "dev"
+
+[profile.android-dev]
+inherits = "dev"

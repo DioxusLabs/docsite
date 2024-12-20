@@ -2,6 +2,7 @@ use super::{BuildError, BuildRequest};
 use crate::app::EnvVars;
 use crate::build::{BuildMessage, CliMessage};
 use dioxus_dx_wire_format::StructuredOutput;
+use dioxus_logger::tracing::debug;
 use fs_extra::dir::CopyOptions;
 use model::{BuildStage, CargoDiagnostic};
 use std::path::{Path, PathBuf};
@@ -144,6 +145,8 @@ async fn dx_build(template_path: &PathBuf, request: &BuildRequest) -> Result<(),
     let stdout = child.stdout.take().expect("dx stdout should exist");
     let mut stdout_reader = BufReader::new(stdout).lines();
 
+    let mut logs = Vec::new();
+
     loop {
         select! {
             // Read stdout lines from DX.
@@ -152,6 +155,7 @@ async fn dx_build(template_path: &PathBuf, request: &BuildRequest) -> Result<(),
                     continue;
                 };
 
+                logs.push(line.clone());
                 process_dx_message(request, line);
             }
             // Wait for the DX process to exit.
@@ -162,6 +166,11 @@ async fn dx_build(template_path: &PathBuf, request: &BuildRequest) -> Result<(),
                     if code == 0 {
                         break;
                     } else {
+                        // Dump logs in debug.
+                        for log in logs {
+                            debug!("{log}");
+                        }
+
                         return Err(BuildError::DxFailed(Some(code)));
                     }
                 }

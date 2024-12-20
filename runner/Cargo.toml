@@ -4,10 +4,9 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
-dioxus-playground = { path = "../web" }
+dioxus-playground = { workspace = true }
 
 dioxus = { workspace = true, features = ["web", "router"] }
-dioxus-logger = { workspace = true }
 dioxus-document = { workspace = true }
 
 [features]

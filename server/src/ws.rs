@@ -45,7 +45,7 @@ async fn handle_socket(state: AppState, ip: String, socket: WebSocket) {
         let _ = socket_tx.close().await;
         return;
     } else {
-        connected_sockets.push(ip);
+        connected_sockets.push(ip.clone());
     }
     drop(connected_sockets);
 
@@ -102,6 +102,14 @@ async fn handle_socket(state: AppState, ip: String, socket: WebSocket) {
         if result.is_err() {
             error!(build_id = ?request.id, "failed to send build stop signal for closed websocket");
         }
+    }
+
+    // Drop the socket from our connected list.
+    // TODO: Convert this to a drop guard.
+    let mut connected_sockets = state.connected_sockets.lock().await;
+    let index = connected_sockets.iter().position(|x| **x == ip);
+    if let Some(index) = index {
+        connected_sockets.remove(index);
     }
 }
 

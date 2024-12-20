@@ -1,7 +1,7 @@
 // TODO: Remove public folder with monaco in it (once manganis folder dir works)
 
 use dioxus::prelude::*;
-use dioxus_logger::tracing::Level;
+use dioxus::logger::tracing::Level;
 use dioxus_playground::{Playground, PlaygroundUrls};
 
 #[cfg(not(feature = "real-server"))]
@@ -31,7 +31,7 @@ enum Route {
 }
 
 fn main() {
-    dioxus_logger::init(Level::INFO).expect("failed to start logger");
+    dioxus::logger::init(Level::INFO).expect("failed to start logger");
     launch(App);
 }
 

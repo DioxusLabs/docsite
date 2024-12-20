@@ -1,4 +1,3 @@
-use gloo_net::websocket::WebSocketError;
 use serde::{Deserialize, Serialize};
 use std::string::FromUtf8Error;
 use thiserror::Error;
@@ -80,7 +79,7 @@ pub enum SocketError {
 
     #[cfg(feature = "web")]
     #[error(transparent)]
-    Gloo(#[from] WebSocketError),
+    Gloo(#[from] gloo_net::websocket::WebSocketError),
 
     #[cfg(feature = "server")]
     #[error(transparent)]

@@ -1,17 +1,16 @@
 use build::{start_build, BuildState};
 use components::material_icons::Warning;
-use dioxus::logger::tracing::{error, info};
+use dioxus::logger::tracing::error;
 use dioxus::prelude::*;
-use dioxus_devtools::HotReloadMsg;
-use dioxus_document::{eval, Link};
+use dioxus_document::Link;
 use dioxus_sdk::{
     theme::{use_system_theme, SystemTheme},
     utils::timing::use_debounce,
 };
 use editor::monaco::{monaco_loader_src, on_monaco_load};
-use hotreload::{HotReload, HotReloadError};
+use hotreload::{attempt_hot_reload, HotReload};
 use share_code::use_share_code;
-use std::time::Duration;
+use std::{cell::LazyCell, time::Duration};
 
 mod build;
 mod components;
@@ -28,6 +27,11 @@ const DXP_CSS: Asset = asset!("/assets/dxp.css");
 //     FolderAssetOptions::new().with_preserve_files(true);
 const MONACO_FOLDER: Asset = asset!("/assets/monaco-editor-0.52.2"); //asset!("/assets/monaco-editor-0.52", MONACO_FOLDER_OPTIONS); //&str = "/assets/monaco-editor-0.52.2";
 
+/// Include the template main.rs to get the extra lines for things like hot reload.
+const TEMPLATE_MAIN_RS: &str = include_str!("../../server/template/snippets/main.rs");
+const EXTRA_LINE_COUNT: LazyCell<usize> =
+    LazyCell::new(|| TEMPLATE_MAIN_RS.lines().count() - 1);
+
 /// The URLS that the playground should use for locating resources and services.
 #[derive(Debug, Clone, PartialEq)]
 pub struct PlaygroundUrls {
@@ -41,45 +45,32 @@ pub struct PlaygroundUrls {
 
 #[component]
 pub fn Playground(urls: PlaygroundUrls, share_code: Option<String>) -> Element {
-    let mut build = provide_context(BuildState::new());
-    let mut show_share_warning = use_signal(|| false);
-
-    // Hot Reloading
+    let mut build = use_context_provider(|| BuildState::new());
     let mut hot_reload = use_signal(|| HotReload::new());
-    let on_model_changed = use_debounce(Duration::from_millis(150), move |new_code: String| {
-        if !build.stage().is_finished() {
-            return;
-        }
 
-        // Process any potential hot -eloadable changes and send them to the iframe web client.
-        let result = hot_reload.write().process_file_change(new_code);
-        match result {
-            Ok(templates) => {
-                let hr_msg = HotReloadMsg {
-                    templates,
-                    assets: Vec::new(),
-                    unknown_files: Vec::new(),
-                };
+    // Handle starting a build.
+    let mut on_run = move |_| {
+        let code = editor::monaco::get_current_model_value();
+        hot_reload.write().set_starting_code(&code);
 
-                let e = eval(
-                    r#"
-                    const hrMsg = await dioxus.recv();
-                    const iframeElem = document.getElementById("dxp-viewport");
-                    const hrMsgJson = JSON.stringify(hrMsg);
-                    
-                    if (iframeElem) {
-                        iframeElem.contentWindow.postMessage(hrMsgJson, "*");
-                    }
-                    "#,
-                );
-                _ = e.send(hr_msg);
+        let socket_url = urls.socket.to_string();
+        spawn(async move {
+            if let Err(e) = start_build(&mut build, socket_url, code).await {
+                error!(error = ?e, "failed to build project");
             }
-            Err(HotReloadError::NeedsRebuild) => error!("todo"),
-            e => error!("hot reload error occured: {:?}", e),
+        });
+    };
+
+    // Handle events when code changes.
+    let on_model_changed = use_debounce(Duration::from_millis(150), move |new_code: String| {
+        let needs_full_rebuild = attempt_hot_reload(build, hot_reload, &new_code);
+        if needs_full_rebuild {
+            //on_run(());
         }
     });
 
     // We store the shared code in state as the editor may not be initialized yet.
+    let mut show_share_warning = use_signal(|| false);
     let shared_code = use_share_code(share_code, show_share_warning, hot_reload);
 
     // Themes
@@ -89,24 +80,11 @@ pub fn Playground(urls: PlaygroundUrls, share_code: Option<String>) -> Element {
         editor::monaco::set_theme(theme);
     });
 
-    // Handle starting a build.
-    let on_run = move |_| {
-        let socket_url = urls.socket.to_string();
-        spawn(async move {
-            if let Err(e) = start_build(&mut build, socket_url).await {
-                error!(error = ?e, "failed to build project");
-            }
-        });
-    };
-
     // Construct the full URL to the built project.
     let built_page_url = use_memo(move || {
         let id = build.stage().finished_id();
-        info!("PAGE ID: {:?}", id);
         id.map(|id| format!("{}{}", urls.built, id))
     });
-
-    info!("page url: {:?}", built_page_url());
 
     // State for pane resizing, shared by headers and panes.
     // The actual logic is in the panes component.

@@ -13,7 +13,7 @@ pub fn Header(
     pane_left_width: Signal<Option<i32>>,
     pane_right_width: Signal<Option<i32>>,
 ) -> Element {
-    let build = consume_context::<BuildState>();
+    let build = use_context::<BuildState>();
     let mut examples_open = use_signal(|| false);
     let mut show_share_copied = use_signal(|| false);
 

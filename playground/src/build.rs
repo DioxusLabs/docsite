@@ -1,4 +1,4 @@
-use crate::{editor, error::AppError, ws};
+use crate::{error::AppError, ws};
 use dioxus::prelude::*;
 use model::SocketMessage;
 use uuid::Uuid;
@@ -94,15 +94,17 @@ impl BuildState {
 }
 
 /// Start a build and handle updating the build signals according to socket messages.
-pub async fn start_build(build: &mut BuildState, socket_url: String) -> Result<(), AppError> {
+pub async fn start_build(
+    build: &mut BuildState,
+    socket_url: String,
+    code: String,
+) -> Result<(), AppError> {
     // Reset build state
     if build.stage().is_running() {
         return Ok(());
     }
     build.reset();
     build.set_stage(BuildStage::Starting);
-
-    let code = editor::monaco::get_current_model_value();
 
     // Send socket compile request
     let mut socket = ws::Socket::new(&socket_url)?;

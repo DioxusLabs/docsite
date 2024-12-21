@@ -6,7 +6,7 @@ asset_dir = "public"
 hot_reload = false
 
 [web.app]
-base_path = "./built/{BUILD_ID}"
+base_path = "built/{BUILD_ID}"
 
 title = "Dioxus Playground"
 [web.watcher]

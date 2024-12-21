@@ -26,7 +26,7 @@ pub fn Panes(
     pane_right_width: Signal<Option<i32>>,
     built_page_url: Memo<Option<String>>,
 ) -> Element {
-    let build = consume_context::<BuildState>();
+    let build = use_context::<BuildState>();
     let mut draggable_mouse_down = use_signal(|| false);
     let mut mouse_data = use_signal(DraggableData::default);
 
@@ -133,7 +133,7 @@ pub fn Panes(
 
 #[component]
 fn Progress() -> Element {
-    let build = consume_context::<BuildState>();
+    let build = use_context::<BuildState>();
 
     // Generate the loading message.
     let message = use_memo(move || {

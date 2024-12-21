@@ -1,15 +1,58 @@
 //! Simplified hot reloading for a single main.rs file.
-
-
-
+use crate::build::BuildState;
+use dioxus::{logger::tracing::error, prelude::*};
 use dioxus_core::internal::{
     HotReloadTemplateWithLocation, HotReloadedTemplate, TemplateGlobalKey,
 };
+use dioxus_devtools::HotReloadMsg;
+use dioxus_document::eval;
 use dioxus_html::HtmlCtx;
 use dioxus_rsx::CallBody;
 use dioxus_rsx_hotreload::{diff_rsx, ChangedRsx};
 use std::{collections::HashMap, fmt::Display, path::Path};
 use syn::spanned::Spanned as _;
+
+/// Atempts to hot reload and returns true if a full rebuild is needed.
+pub fn attempt_hot_reload(
+    build: BuildState,
+    mut hot_reload: Signal<HotReload>,
+    new_code: &str,
+) -> bool {
+    if !build.stage().is_finished() {
+        return false;
+    }
+
+    // Process any potential hot -eloadable changes and send them to the iframe web client.
+    let result = hot_reload.write().process_file_change(new_code.to_string());
+    match result {
+        Ok(templates) => {
+            let hr_msg = HotReloadMsg {
+                templates,
+                assets: Vec::new(),
+                unknown_files: Vec::new(),
+            };
+
+            let e = eval(
+                r#"
+                const hrMsg = await dioxus.recv();
+                const iframeElem = document.getElementById("dxp-viewport");
+                const hrMsgJson = JSON.stringify(hrMsg);
+                console.log(hrMsgJson);
+                if (iframeElem) {
+                    iframeElem.contentWindow.postMessage(hrMsgJson, "*");
+                }
+                "#,
+            );
+            _ = e.send(hr_msg);
+        }
+        Err(HotReloadError::NeedsRebuild) => {
+            return true;
+        }
+        e => error!("hot reload error occured: {:?}", e),
+    }
+
+    false
+}
 
 pub struct HotReload {
     cached_parse: CachedParse,
@@ -94,8 +137,8 @@ impl HotReload {
 
                 // Create the key we're going to use to identify this template
                 let key = TemplateGlobalKey {
-                    file: template_location.clone(),
-                    line: old_start.line,
+                    file: "src/main.rs".to_string(),
+                    line: old_start.line + *crate::EXTRA_LINE_COUNT,
                     column: old_start.column + 1,
                     index,
                 };
@@ -115,7 +158,7 @@ impl HotReload {
 
 fn template_location(old_start: proc_macro2::LineColumn) -> String {
     let file = Path::new("src/main.rs");
-    let line = old_start.line;
+    let line = old_start.line + *crate::EXTRA_LINE_COUNT;
     let column = old_start.column + 1;
 
     // Always ensure the path components are separated by `/`.

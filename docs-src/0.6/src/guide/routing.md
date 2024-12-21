@@ -15,8 +15,7 @@ We generally recommend splitting your components, models, and backend functional
 ```sh
 ├── Cargo.toml
 ├── assets
-│   ├── main.css
-│   └── screenshot.png
+│   └── main.css
 └── src
     ├── backend.rs
     ├── components
@@ -41,11 +40,29 @@ pub use nav::*;
 pub use view::*;
 ```
 
+Finally, we need to bring `backend` and `components` into scope in our `main.rs` file:
+
+```rust
+mod components;
+mod backend;
+
+use crate::components::*;
+```
+
+For more information on organizing Rust projects with modules, see the [Modules section](https://doc.rust-lang.org/book/ch07-02-defining-modules-to-control-scope-and-privacy.html) of the Rust Book.
+
 ## Creating a Route
 
 Most Dioxus apps you'll build will have different screens. This could include pages like *Login*, *Settings*, and *Profile*. Our HotDog app will have two screens: a *DogView* page and a *Favorites* page.
 
-Dioxus provides a first-party router that natively integrates with web, desktop, and mobile. For example, on web, whenever you visit the `/favorites` url in your browser, the corresponding *Favorites* page will load. The Dioxus router is very powerful, and most importantly, type-safe. You can rest easy knowing that users will never be sent to an invalid route. To achieve, this, the Dioxus router is defined as an enum with the `Routable` derive attribute:
+Dioxus provides a first-party router that natively integrates with web, desktop, and mobile. For example, on web, whenever you visit the `/favorites` url in your browser, the corresponding *Favorites* page will load. The Dioxus router is very powerful, and most importantly, type-safe. You can rest easy knowing that users will never be sent to an invalid route. To achieve this, we first need to add the "Router" feature to the Cargo.toml file:
+
+```toml
+[dependencies]
+dioxus = { version = "0.6.0", features = ["fullstack", "router"] } # <----- add "router"
+```
+
+Next, the Dioxus router is defined as an enum with the `Routable` derive attribute:
 
 ```rust
 #[derive(Routable, Clone, PartialEq)]

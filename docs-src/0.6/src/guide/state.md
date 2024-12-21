@@ -7,8 +7,10 @@ Now that our *HotDog* app is scaffolded and styled, we can finally add some inte
 Before we get too far, let's split our app into two parts: the `Title` and the `DogView`. This will help us organize our app and keep the `DogView` state separated from `Title` state.
 
 ```rust
+#[component]
 fn App() -> Element {
     rsx! {
+        document::Stylesheet { href: CSS }
         Title {}
         DogView {}
     }
@@ -74,6 +76,8 @@ When called in a component, the `use_hook` function will return a `.clone()` of 
 ```rust
 fn DogView() -> Element {
     let img_src = use_hook(|| "https://images.dog.ceo/breeds/pitbull/dog-3981540_1280.jpg");
+
+    // ..
 
     rsx! {
         div { id: "dogview",

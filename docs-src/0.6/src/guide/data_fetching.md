@@ -49,6 +49,7 @@ Dioxus has stellar support for asynchronous Rust. We can simply convert our `onc
 The changes to our code are quite simple - just add the `reqwest::get` call and then call `.set()` on `img_src` with the result.
 
 ```rust
+#[component]
 fn DogView() -> Element {
     let mut img_src = use_signal(|| "".to_string());
 
@@ -63,11 +64,14 @@ fn DogView() -> Element {
         img_src.set(response.message);
     };
 
+    // ..
+
     rsx! {
         div { id: "dogview",
             img { src: "{img_src}" }
         }
         div { id: "buttons",
+            // ..
             button { onclick: fetch_new, id: "save", "save!" }
         }
     }
@@ -99,6 +103,7 @@ In Dioxus, *Resources* are pieces of state whose value is dependent on the compl
 Let's change our component to use a resource instead:
 
 ```rust
+#[component]
 fn DogView() -> Element {
     let mut img_src = use_resource(|| async move {
         reqwest::get("https://dog.ceo/api/breeds/image/random")
@@ -115,6 +120,7 @@ fn DogView() -> Element {
             img { src: img_src.cloned().unwrap_or_default() }
         }
         div { id: "buttons",
+            button { onclick: move |_| img_src.restart(), id: "skip", "skip" }
             button { onclick: move |_| img_src.restart(), id: "save", "save!" }
         }
     }

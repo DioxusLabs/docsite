@@ -163,8 +163,9 @@ html, body {
     color: white;
 }
 
-#heart {
+a#heart {
     background-color: white;
+    color: red;
     padding: 5px;
     border-radius: 5px;
 }

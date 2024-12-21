@@ -11,14 +11,14 @@ export function initMonaco(vsPathPrefix, elementId, initialTheme, initialSnippet
             inherit: true,
             rules: [],
             colors: {
-                "editor.background": "#FFFFFF",
-                "editorWidget.background": "#FFFFFF",
+                "editor.background": "#DCDFE5",
+                "editorWidget.background": "#EDEFF2",
                 "editorWidget.border": "#A5A5A5",
                 "input.background": "#E6E6E6",
                 "editor.lineHighlightBackground": "#E6E6E6",
                 "editor.lineHighlightBorder": "#E6E6E6",
                 "list.hoverBackground": "#E6E6E6",
-                "dropdown.background": "#FFFFFF",
+                "dropdown.background": "#EDEFF2",
                 "dropdown.border": "#A5A5A5",
             },
         });

@@ -1,15 +1,15 @@
 /* Variables and their common uses */
 :root {
   /* Light Theme */
-  --dxp-bg-light-darker: #E6E6E6;
-  --dxp-bg-light: #FFFFFF;
-  --dxp-bg-light-lighter: #FFFFFF;
-  --dxp-bg-light-lighter-alt: #BDBDBD;
+  --dxp-bg-light-darker: #C1C6D2;
+  --dxp-bg-light: #DCDFE5;
+  --dxp-bg-light-lighter: #EDEFF2;
+  --dxp-bg-light-lighter-alt: #D6DAE1;
 
-  --dxp-border-light: #A5A5A5;
-  --dxp-border-light-lighter: #646464;
+  --dxp-border-light: #15181E;
+  --dxp-border-light-lighter: #242933;
 
-  --dxp-text-light: #000000;
+  --dxp-text-light: #131313;
 
   /* Dark Theme */
   --dxp-bg-dark-darker: #21252E;
@@ -20,7 +20,7 @@
   --dxp-border-dark: #5B667D;
   --dxp-border-dark-lighter: #8292B2;
 
-  --dxp-text-dark: #ffffff;
+  --dxp-text-dark: #dfdfdf;
 }
 
 /* Header */
@@ -87,6 +87,7 @@
 
 #dxp-run-btn {
   background-color: var(--dxp-bg-light-lighter);
+  color: var(--dxp-text-light);
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -94,11 +95,12 @@
   font-family: "Inter", sans-serif;
   font-size: 14px;
   font-weight: 400;
-  letter-spacing: 0.03em;
+  letter-spacing: -0.06em;
 }
 
 #dxp-run-btn:not(.disabled) {
-  background-color: #5DB1FF;
+  background-color: #288AE5;
+  color: var(--dxp-text-dark);
 }
 
 #dxp-run-btn.disabled:hover {
@@ -271,7 +273,7 @@
   width: 70%;
   margin-left: auto;
   margin-right: auto;
-  background-color: var(--dxp-bg-dark-lighter);
+  background-color: var(--dxp-bg-light-lighter);
   border-radius: 5px;
   overflow: hidden;
 }
@@ -418,10 +420,6 @@
     background-color: var(--dxp-bg-dark-lighter);
   }
 
-  #dxp-run-btn:not(.disabled) {
-    background-color: #288AE5;
-  }
-
   #dxp-run-btn>svg {
     color: var(--dxp-text-dark);
   }
@@ -490,6 +488,10 @@
   #dxp-panes-right>p,
   #dxp-panes-right>#dxp-progress-container>p {
     color: var(--dxp-text-dark);
+  }
+
+  #dxp-panes-right>#dxp-progress-container>#dxp-progress {
+    background-color: var(--dxp-bg-dark-lighter); 
   }
 
   #dxp-modal {

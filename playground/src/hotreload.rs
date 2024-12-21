@@ -13,17 +13,13 @@ use std::{collections::HashMap, fmt::Display, path::Path};
 use syn::spanned::Spanned as _;
 
 /// Atempts to hot reload and returns true if a full rebuild is needed.
-pub fn attempt_hot_reload(
-    build: BuildState,
-    mut hot_reload: Signal<HotReload>,
-    new_code: &str,
-) -> bool {
-    if !build.stage().is_finished() {
-        return false;
+pub fn attempt_hot_reload(build: BuildState, mut hot_reload: HotReload, new_code: &str) {
+    if !build.stage().is_finished() || hot_reload.needs_rebuild() {
+        return;
     }
 
     // Process any potential hot -eloadable changes and send them to the iframe web client.
-    let result = hot_reload.write().process_file_change(new_code.to_string());
+    let result = hot_reload.process_file_change(new_code.to_string());
     match result {
         Ok(templates) => {
             let hr_msg = HotReloadMsg {
@@ -37,7 +33,7 @@ pub fn attempt_hot_reload(
                 const hrMsg = await dioxus.recv();
                 const iframeElem = document.getElementById("dxp-viewport");
                 const hrMsgJson = JSON.stringify(hrMsg);
-                console.log(hrMsgJson);
+
                 if (iframeElem) {
                     iframeElem.contentWindow.postMessage(hrMsgJson, "*");
                 }
@@ -45,17 +41,15 @@ pub fn attempt_hot_reload(
             );
             _ = e.send(hr_msg);
         }
-        Err(HotReloadError::NeedsRebuild) => {
-            return true;
-        }
-        e => error!("hot reload error occured: {:?}", e),
+        Err(HotReloadError::NeedsRebuild) => {}
+        Err(e) => error!("hot reload error occured: {:?}", e),
     }
-
-    false
 }
 
+#[derive(Clone, Copy)]
 pub struct HotReload {
-    cached_parse: CachedParse,
+    needs_rebuild: Signal<bool>,
+    cached_parse: Signal<CachedParse>,
 }
 
 struct CachedParse {
@@ -67,26 +61,36 @@ impl HotReload {
     pub fn new() -> Self {
         Self {
             cached_parse: {
-                CachedParse {
+                Signal::new(CachedParse {
                     raw: String::new(),
                     templates: HashMap::new(),
-                }
+                })
             },
+            needs_rebuild: Signal::new(true),
         }
     }
 
+    pub fn needs_rebuild(&self) -> bool {
+        (self.needs_rebuild)()
+    }
+
+    pub fn set_needs_rebuild(&mut self, needs_rebuild: bool) {
+        self.needs_rebuild.set(needs_rebuild);
+    }
+
     pub fn set_starting_code(&mut self, code: &str) {
-        self.cached_parse = CachedParse {
+        *self.cached_parse.write() = CachedParse {
             raw: code.to_string(),
             templates: HashMap::new(),
         };
     }
 
     fn full_rebuild(&mut self, code: String) -> HotReloadError {
-        self.cached_parse = CachedParse {
+        *self.cached_parse.write() = CachedParse {
             raw: code,
             templates: HashMap::new(),
         };
+        self.set_needs_rebuild(true);
 
         HotReloadError::NeedsRebuild
     }
@@ -97,8 +101,10 @@ impl HotReload {
     ) -> Result<Vec<HotReloadTemplateWithLocation>, HotReloadError> {
         let new_file = syn::parse_file(&new_code).map_err(|_err| HotReloadError::Parse)?;
 
-        let cached = &mut self.cached_parse;
-        let cached_file = syn::parse_file(&cached.raw).map_err(|_err| HotReloadError::Parse)?;
+        let cached_file = {
+            let cached = &mut self.cached_parse.read();
+            syn::parse_file(&cached.raw).map_err(|_err| HotReloadError::Parse)?
+        };
 
         let changes = match diff_rsx(&new_file, &cached_file) {
             Some(rsx_calls) => rsx_calls,
@@ -130,6 +136,7 @@ impl HotReload {
                 return Err(self.full_rebuild(new_code));
             };
 
+            let mut cached = self.cached_parse.write();
             for (index, template) in results.templates {
                 if template.roots.is_empty() {
                     continue;
@@ -138,7 +145,7 @@ impl HotReload {
                 // Create the key we're going to use to identify this template
                 let key = TemplateGlobalKey {
                     file: "src/main.rs".to_string(),
-                    line: old_start.line + *crate::EXTRA_LINE_COUNT,
+                    line: old_start.line + crate::EXTRA_LINE_COUNT(),
                     column: old_start.column + 1,
                     index,
                 };
@@ -158,7 +165,7 @@ impl HotReload {
 
 fn template_location(old_start: proc_macro2::LineColumn) -> String {
     let file = Path::new("src/main.rs");
-    let line = old_start.line + *crate::EXTRA_LINE_COUNT;
+    let line = old_start.line + crate::EXTRA_LINE_COUNT();
     let column = old_start.column + 1;
 
     // Always ensure the path components are separated by `/`.

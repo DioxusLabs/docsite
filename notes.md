@@ -1,4 +1,0 @@
-- todo: readd server temp deletion
-- todo: add more logging
-- todo: hot reload requires exact file format
-- note: playground project template must use debug for hot reload to work

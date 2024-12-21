@@ -1,5 +1,6 @@
 use crate::build::BuildState;
-use crate::components::material_icons::ArrowDownIcon;
+use crate::components::icons::{ArrowDownIcon, LoadingSpinner};
+use crate::hotreload::HotReload;
 use crate::share_code::copy_share_link;
 use crate::{editor::monaco, examples, PlaygroundUrls};
 use dioxus::prelude::*;
@@ -14,6 +15,8 @@ pub fn Header(
     pane_right_width: Signal<Option<i32>>,
 ) -> Element {
     let build = use_context::<BuildState>();
+    let hot_reload = use_context::<HotReload>();
+
     let mut examples_open = use_signal(|| false);
     let mut show_share_copied = use_signal(|| false);
 
@@ -33,14 +36,24 @@ pub fn Header(
                 button {
                     id: "dxp-run-btn",
                     class: "dxp-ctrl-btn",
+                    class: if build.stage().is_running() || !hot_reload.needs_rebuild() { "disabled" },
                     onclick: move |_| on_run.call(()),
 
-                    // Check if we're already building.
-                    if let Some(pos) = build.queue_position() {
-                        "#{pos}"
+                    if build.stage().is_running() {
+                        LoadingSpinner {}
+                        if let Some(pos) = build.queue_position() {
+                            if pos == 0 {
+                                "Building"
+                            } else {
+                                "#{pos}"
+                            }
+                        } else {
+                            "Starting"
+                        }
                     } else {
-                        "Run"
+                       "Run"
                     }
+                    
                 }
 
                 // Examples button/menu

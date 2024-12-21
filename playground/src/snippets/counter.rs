@@ -8,12 +8,13 @@ fn App() -> Element {
         div {
             style: "display: flex;",
             button {
+                onclick: move |_| count -= 1,
                 "-"
-                onclick: move |_| count -= 1;
+                
             }
             button {
-                "+",
-                onclick: move |_| count += 1;
+                onclick: move |_| count += 1,
+                "+"
             }
         }
     }

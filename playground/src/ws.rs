@@ -19,7 +19,7 @@ impl Socket {
         self.socket
             .send(message.into_gloo()?)
             .await
-            .map_err(|e| SocketError::from(e))?;
+            .map_err(SocketError::from)?;
 
         Ok(())
     }
@@ -38,7 +38,7 @@ impl Socket {
 }
 
 /// Handles a websocket message, returning true if further messages shouldn't be handled.
-pub fn handle_message(build: &mut BuildState, message: SocketMessage) -> bool {
+pub fn handle_message(mut build: BuildState, message: SocketMessage) -> bool {
     match message {
         SocketMessage::BuildStage(stage) => build.set_stage(BuildStage::Building(stage)),
         SocketMessage::QueuePosition(position) => build.set_queue_position(Some(position)),
@@ -46,7 +46,7 @@ pub fn handle_message(build: &mut BuildState, message: SocketMessage) -> bool {
             build.set_stage(BuildStage::Finished(result));
             return true;
         }
-        _ => {},
+        _ => {}
     }
 
     false

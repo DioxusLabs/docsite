@@ -51,14 +51,16 @@ fn start_build(
     request: BuildRequest,
 ) {
     // If the builder has a build, add to queue, otherwise start the build.
-    if builder.has_build() {
-        let _ = request
-            .ws_msg_tx
-            .send(BuildMessage::QueuePosition(pending_builds.len() + 1));
-        pending_builds.push_back(request);
-    } else {
-        builder.start(request);
-    }
+    match builder.has_build() {
+        false => builder.start(request),
+        true => {
+            let _ = request
+                .ws_msg_tx
+                .send(BuildMessage::QueuePosition(pending_builds.len() + 1));
+
+            pending_builds.push_back(request);
+        }
+    };
 }
 
 /// Stop the current build by:

@@ -160,7 +160,7 @@ fn Progress() -> Element {
         let stage = build.stage();
         let compiling = stage.get_compiling_stage();
         if let Some((crates_compiled, total_crates, _)) = compiling {
-            return (crates_compiled as f64 / total_crates as f64) * 100 as f64;
+            return (crates_compiled as f64 / total_crates as f64) * 100.0;
         }
 
         match stage.is_running() {

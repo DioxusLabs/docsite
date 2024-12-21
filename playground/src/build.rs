@@ -13,18 +13,11 @@ pub(crate) enum BuildStage {
 
 impl BuildStage {
     pub fn is_running(&self) -> bool {
-        match self {
-            Self::Starting => true,
-            Self::Building(..) => true,
-            _ => false,
-        }
+        matches!(self, Self::Starting | Self::Building(..))
     }
 
     pub fn is_finished(&self) -> bool {
-        match self {
-            Self::Finished(..) => true,
-            _ => false,
-        }
+        matches!(self, Self::Finished(..))
     }
 
     pub fn finished_id(&self) -> Option<Uuid> {
@@ -37,15 +30,13 @@ impl BuildStage {
 
     /// Extract the compiling stage info if available.
     pub fn get_compiling_stage(&self) -> Option<(usize, usize, String)> {
-        if let Self::Building(stage) = self {
-            if let model::BuildStage::Compiling {
-                crates_compiled,
-                total_crates,
-                current_crate,
-            } = stage
-            {
-                return Some((*crates_compiled, *total_crates, current_crate.to_string()));
-            }
+        if let Self::Building(model::BuildStage::Compiling {
+            crates_compiled,
+            total_crates,
+            current_crate,
+        }) = self
+        {
+            return Some((*crates_compiled, *total_crates, current_crate.to_string()));
         }
 
         None
@@ -95,13 +86,13 @@ impl BuildState {
 
 /// Start a build and handle updating the build signals according to socket messages.
 pub async fn start_build(
-    build: &mut BuildState,
+    mut build: BuildState,
     socket_url: String,
     code: String,
-) -> Result<(), AppError> {
+) -> Result<bool, AppError> {
     // Reset build state
     if build.stage().is_running() {
-        return Ok(());
+        return Err(AppError::BuildIsAlreadyRunning);
     }
     build.reset();
     build.set_stage(BuildStage::Starting);
@@ -125,5 +116,11 @@ pub async fn start_build(
         }
     }
     socket.close().await;
-    Ok(())
+
+    let mut success = false;
+    if let BuildStage::Finished(Ok(_)) = build.stage() {
+        success = true;
+    };
+
+    Ok(success)
 }

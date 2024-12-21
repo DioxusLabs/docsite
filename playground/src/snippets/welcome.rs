@@ -4,9 +4,12 @@ Welcome to the Dioxus Playground!
 
 Here's some info to get you started:
 - The `main` function is already provided.
-- There must be a component named `App`
+- The Dioxus prelude is already imported.
+- There must be a component named `App` 
   this is the entrypoint into your Dioxus app. 
-- Nothing is saved. 
+- Aside from first use, the `Run` button will 
+  be disabled until hot reloading fails.
+- Nothing is saved.
 
 Have fun tinkering!
 

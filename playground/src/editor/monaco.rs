@@ -20,7 +20,7 @@ pub fn on_monaco_load(
     folder: Asset,
     system_theme: SystemTheme,
     shared_code: Option<String>,
-    mut hot_reload: Signal<HotReload>,
+    mut hot_reload: HotReload,
     on_model_changed: UseDebounce<String>,
 ) {
     // If shared code is available, use it, otherwise replace with starter snippet.
@@ -37,7 +37,7 @@ pub fn on_monaco_load(
         &snippet,
     );
 
-    hot_reload.write().set_starting_code(&snippet);
+    hot_reload.set_starting_code(&snippet);
     register_model_change(on_model_changed);
 }
 

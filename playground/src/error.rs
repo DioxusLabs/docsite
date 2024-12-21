@@ -22,6 +22,9 @@ pub enum AppError {
 
     #[error("js failed: {0}")]
     JsError(#[from] JsError),
+
+    #[error("build is already running")]
+    BuildIsAlreadyRunning,
 }
 
 #[derive(Debug, Error)]

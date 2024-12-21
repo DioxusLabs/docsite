@@ -7,7 +7,7 @@ use dioxus_document::eval;
 pub fn use_share_code(
     share_code: Option<String>,
     mut show_share_warning: Signal<bool>,
-    mut hot_reload: Signal<HotReload>,
+    mut hot_reload: HotReload,
 ) -> Memo<Option<String>> {
     use_memo(use_reactive((&share_code,), move |(share_code,)| {
         let share_code = share_code?;
@@ -18,7 +18,7 @@ pub fn use_share_code(
         // If monaco is initialized, set it now. Otherwise save it for monaco onload code.
         if monaco::is_ready() {
             monaco::set_current_model_value(&decoded);
-            hot_reload.write().set_starting_code(&decoded);
+            hot_reload.set_starting_code(&decoded);
             return None;
         }
 

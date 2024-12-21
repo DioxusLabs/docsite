@@ -1,5 +1,5 @@
 use build::{start_build, BuildState};
-use components::material_icons::Warning;
+use components::icons::Warning;
 use dioxus::logger::tracing::error;
 use dioxus::prelude::*;
 use dioxus_document::Link;
@@ -10,7 +10,7 @@ use dioxus_sdk::{
 use editor::monaco::{monaco_loader_src, on_monaco_load};
 use hotreload::{attempt_hot_reload, HotReload};
 use share_code::use_share_code;
-use std::{cell::LazyCell, time::Duration};
+use std::time::Duration;
 
 mod build;
 mod components;
@@ -29,8 +29,8 @@ const MONACO_FOLDER: Asset = asset!("/assets/monaco-editor-0.52.2"); //asset!("/
 
 /// Include the template main.rs to get the extra lines for things like hot reload.
 const TEMPLATE_MAIN_RS: &str = include_str!("../../server/template/snippets/main.rs");
-const EXTRA_LINE_COUNT: LazyCell<usize> =
-    LazyCell::new(|| TEMPLATE_MAIN_RS.lines().count() - 1);
+const EXTRA_LINE_COUNT: GlobalSignal<usize> =
+    GlobalSignal::new(|| TEMPLATE_MAIN_RS.lines().count() - 1);
 
 /// The URLS that the playground should use for locating resources and services.
 #[derive(Debug, Clone, PartialEq)]
@@ -45,33 +45,17 @@ pub struct PlaygroundUrls {
 
 #[component]
 pub fn Playground(urls: PlaygroundUrls, share_code: Option<String>) -> Element {
-    let mut build = use_context_provider(|| BuildState::new());
-    let mut hot_reload = use_signal(|| HotReload::new());
-
-    // Handle starting a build.
-    let mut on_run = move |_| {
-        let code = editor::monaco::get_current_model_value();
-        hot_reload.write().set_starting_code(&code);
-
-        let socket_url = urls.socket.to_string();
-        spawn(async move {
-            if let Err(e) = start_build(&mut build, socket_url, code).await {
-                error!(error = ?e, "failed to build project");
-            }
-        });
-    };
-
-    // Handle events when code changes.
-    let on_model_changed = use_debounce(Duration::from_millis(150), move |new_code: String| {
-        let needs_full_rebuild = attempt_hot_reload(build, hot_reload, &new_code);
-        if needs_full_rebuild {
-            //on_run(());
-        }
-    });
+    let build = use_context_provider(BuildState::new);
+    let mut hot_reload = use_context_provider(HotReload::new);
 
     // We store the shared code in state as the editor may not be initialized yet.
     let mut show_share_warning = use_signal(|| false);
     let shared_code = use_share_code(share_code, show_share_warning, hot_reload);
+
+    // Handle events when code changes.
+    let on_model_changed = use_debounce(Duration::from_millis(150), move |new_code: String| {
+        attempt_hot_reload(build, hot_reload, &new_code);
+    });
 
     // Themes
     let system_theme = use_system_theme();
@@ -79,6 +63,26 @@ pub fn Playground(urls: PlaygroundUrls, share_code: Option<String>) -> Element {
         let theme = system_theme().unwrap_or(SystemTheme::Light);
         editor::monaco::set_theme(theme);
     });
+
+    // Handle starting a build.
+    let on_run = move |_| {
+        if build.stage().is_running() || !hot_reload.needs_rebuild() {
+            return;
+        }
+        hot_reload.set_needs_rebuild(false);
+
+        // Update hot reload
+        let code = editor::monaco::get_current_model_value();
+        hot_reload.set_starting_code(&code);
+
+        let socket_url = urls.socket.to_string();
+        spawn(async move {
+            match start_build(build, socket_url, code).await {
+                Ok(success) => hot_reload.set_needs_rebuild(!success),
+                Err(e) => error!(error = ?e, "failed to build project"),
+            }
+        });
+    };
 
     // Construct the full URL to the built project.
     let built_page_url = use_memo(move || {

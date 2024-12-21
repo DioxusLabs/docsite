@@ -84,15 +84,6 @@ enum Route {
 fn DogView() -> Element { /* */ }
 ```
 
-To use a different component, we can specify the path manually with an additional parameter.
-
-```rust
-#[derive(Routable, Clone, PartialEq)]
-enum Route {
-    #[route("/", components::AppView)] // <---- an AppView component must exist
-    DogView,
-}
-```
 
 ## Rendering the Route
 

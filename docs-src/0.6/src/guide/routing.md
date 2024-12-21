@@ -103,7 +103,7 @@ fn app() -> Element {
     rsx! {
         document::Stylesheet { href: asset!("/assets/main.css") }
 
-        // 📣 delete DogView and replace it with the Router component.
+        // 📣 delete Title and DogView and replace it with the Router component.
         Router::<Route> {}
     }
 }
@@ -125,16 +125,16 @@ enum Route {
 
 Note here that the `PageNotFound` route takes the "segments" parameter. Dioxus routes are not only type-safe as variants, but also type-safe with URL parameters. For more information on how this works, [check the router guide](../router/index.md).
 
-At this point, we should see our app, but this time without its NavBar.
+At this point, we should see our app, but this time without its Title.
 
 ![No Navbar](/assets/06_docs/no_navbar.png)
 
 
 ## Rendering the NavBar with a Layout
 
-We're rendering our DogView component, but unfortunately we no longer see our title Navbar. Let's add that back!
+We're rendering our DogView component, but unfortunately we no longer see our Title. Let's add that back and turn it into a NavBar!
 
-In our `src/components/nav.rs` file, we'll add back our NavBar code, but this time with two new items: the `Link {}` and `Outlet` components:
+In our `src/components/nav.rs` file, we'll add back our Title code, but rename it to NavBar and modify it with two new items: the `Link {}` and `Outlet` components.
 
 ```rust
 use crate::Route;

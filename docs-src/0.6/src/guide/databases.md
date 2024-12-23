@@ -103,7 +103,7 @@ It's also important to note that several libraries exist at a higher level abstr
 - [SeaORM](https://github.com/SeaQL/sea-orm): An ORM built on top of Sqlx for deriving databases.
 - [rusqlite](https://github.com/rusqlite/rusqlite): An intuitive sqlite interface with no special ORM magic.
 - [rust-postgres](https://github.com/sfackler/rust-postgres): An interface to Postgres with an API similar to rusqlite.
-- [Turobsql](https://github.com/trevyn/turbosql): A *very* terse interface to Sqlite with automatic derives.
+- [Turbosql](https://github.com/trevyn/turbosql): A *very* terse interface to Sqlite with automatic derives.
 
 We aren't including libraries like [Diesel](http://diesel.rs) in this list since it seems that the Rust ecosystem has evolved towards newer projects with 1st-class async support.
 

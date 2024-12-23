@@ -29,7 +29,7 @@ pub(crate) fn Hero() -> Element {
                             Link {
                                 to: "https://www.youtube.com/watch?v=WgAjWPKRVlQ",
                                 new_tab: true,
-                                class: "bg-[#EDEDED] dark:bg-ghdarkmetal  text-black dark:text-white border border-[#a4a9ac7d]  m-0 p-2 px-4 rounded md:hover:-translate-y-1 transition-transform duration-300 w-full md:w-auto gap-2 flex flex-row items-center",
+                                class: "bg-[#EDEDED] dark:bg-ghdarkmetal  text-black dark:text-white border border-[#a4a9ac7d]  m-0 p-2 px-4 rounded md:hover:-translate-y-1 transition-transform duration-300 w-full md:w-auto gap-2 flex flex-row items-center justify-center",
                                 "Take a tour"
                                 span {
                                     svg {

@@ -35,7 +35,7 @@ static CSS: Asset = asset!("/assets/main.css");
 We also need to load the asset into our app using the `document::Stylesheet` component. This component is equivalent to the `<link>` HTML element but also ensures the CSS will be pre-loaded during server-side-rendering.
 
 ```rust
-fn app() -> Element {
+fn App() -> Element {
     rsx! {
         document::Stylesheet { href: CSS }
         // rest of the app
@@ -163,8 +163,9 @@ html, body {
     color: white;
 }
 
-#heart {
+a#heart {
     background-color: white;
+    color: red;
     padding: 5px;
     border-radius: 5px;
 }

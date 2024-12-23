@@ -15,8 +15,7 @@ We generally recommend splitting your components, models, and backend functional
 ```sh
 ├── Cargo.toml
 ├── assets
-│   ├── main.css
-│   └── screenshot.png
+│   └── main.css
 └── src
     ├── backend.rs
     ├── components
@@ -41,11 +40,29 @@ pub use nav::*;
 pub use view::*;
 ```
 
+Finally, we need to bring `backend` and `components` into scope in our `main.rs` file:
+
+```rust
+mod components;
+mod backend;
+
+use crate::components::*;
+```
+
+For more information on organizing Rust projects with modules, see the [Modules section](https://doc.rust-lang.org/book/ch07-02-defining-modules-to-control-scope-and-privacy.html) of the Rust Book.
+
 ## Creating a Route
 
 Most Dioxus apps you'll build will have different screens. This could include pages like *Login*, *Settings*, and *Profile*. Our HotDog app will have two screens: a *DogView* page and a *Favorites* page.
 
-Dioxus provides a first-party router that natively integrates with web, desktop, and mobile. For example, on web, whenever you visit the `/favorites` url in your browser, the corresponding *Favorites* page will load. The Dioxus router is very powerful, and most importantly, type-safe. You can rest easy knowing that users will never be sent to an invalid route. To achieve, this, the Dioxus router is defined as an enum with the `Routable` derive attribute:
+Dioxus provides a first-party router that natively integrates with web, desktop, and mobile. For example, on web, whenever you visit the `/favorites` url in your browser, the corresponding *Favorites* page will load. The Dioxus router is very powerful, and most importantly, type-safe. You can rest easy knowing that users will never be sent to an invalid route. To achieve this, we first need to add the "Router" feature to the Cargo.toml file:
+
+```toml
+[dependencies]
+dioxus = { version = "0.6.0", features = ["fullstack", "router"] } # <----- add "router"
+```
+
+Next, the Dioxus router is defined as an enum with the `Routable` derive attribute:
 
 ```rust
 #[derive(Routable, Clone, PartialEq)]
@@ -67,15 +84,6 @@ enum Route {
 fn DogView() -> Element { /* */ }
 ```
 
-To use a different component, we can specify the path manually with an additional parameter.
-
-```rust
-#[derive(Routable, Clone, PartialEq)]
-enum Route {
-    #[route("/", components::AppView)] // <---- an AppView component must exist
-    DogView,
-}
-```
 
 ## Rendering the Route
 
@@ -86,7 +94,7 @@ fn app() -> Element {
     rsx! {
         document::Stylesheet { href: asset!("/assets/main.css") }
 
-        // 📣 delete DogView and replace it with the Router component.
+        // 📣 delete Title and DogView and replace it with the Router component.
         Router::<Route> {}
     }
 }
@@ -108,16 +116,16 @@ enum Route {
 
 Note here that the `PageNotFound` route takes the "segments" parameter. Dioxus routes are not only type-safe as variants, but also type-safe with URL parameters. For more information on how this works, [check the router guide](../router/index.md).
 
-At this point, we should see our app, but this time without its NavBar.
+At this point, we should see our app, but this time without its Title.
 
 ![No Navbar](/assets/06_docs/no_navbar.png)
 
 
 ## Rendering the NavBar with a Layout
 
-We're rendering our DogView component, but unfortunately we no longer see our title Navbar. Let's add that back!
+We're rendering our DogView component, but unfortunately we no longer see our Title. Let's add that back and turn it into a NavBar!
 
-In our `src/components/nav.rs` file, we'll add back our NavBar code, but this time with two new items: the `Link {}` and `Outlet` components:
+In our `src/components/nav.rs` file, we'll add back our Title code, but rename it to NavBar and modify it with two new items: the `Link {}` and `Outlet` components.
 
 ```rust
 use crate::Route;

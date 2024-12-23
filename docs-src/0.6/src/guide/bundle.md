@@ -137,7 +137,7 @@ We should receive a series of INFO traces from the CLI as it builds, and then fi
 
 We can manually run the server simply by executing it. If you're using a default `dioxus::launch` setup, then the server will read the `IP` and `PORT` environment variables to serve.
 
-> 📣 If you intend to serve from within a container (eg Docker), then you need to override the default `127.0.0.1` address with `IP=0.0.0.0` to listen for external connections.
+> 📣 If you intend to serve from within a container (e.g., Docker), then you need to override the default `127.0.0.1` address with `IP=0.0.0.0` to listen for external connections.
 
 ![Serving the server](/assets/06_docs/serving_server.png)
 

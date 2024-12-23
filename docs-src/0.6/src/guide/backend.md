@@ -82,7 +82,7 @@ async fn launch(config: Config, app: Component<()>) {
 
     // start server
     axum::serve(listener, router).await
-}a
+}
 ```
 
 As of Dioxus 0.6, we only support the `axum` server framework. We plan to build additional server features in the future and  only support `axum` to ship faster.
@@ -235,6 +235,7 @@ fn DogView() -> Element {
         div { id: "buttons",
             // ...
             button {
+                id: "save",
                 onclick: move |_| async move {
                     // Clone the current image
                     let current = img_src.cloned().unwrap();

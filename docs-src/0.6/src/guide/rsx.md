@@ -82,7 +82,7 @@ rsx! {
 
     ul {
         for item in 0..5 {
-            "{i}"
+            "{item}"
         }
     }
 }

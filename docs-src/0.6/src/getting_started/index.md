@@ -131,6 +131,11 @@ sudo pacman -S --needed \
 
 For all other Linux targets, [check the Tauri docs which cover the same dependencies](https://tauri.app/start/prerequisites/#linux).
 
+In addition to the Tauri docs, for Fedora:
+```shell
+sudo dnf install libxdo-devel
+```
+
 ### WSL
 
 While doable, it can be tricky to setup development in WSL for Dioxus desktop. Not everything has been figured out and some stuff may not work.

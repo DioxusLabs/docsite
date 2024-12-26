@@ -23,7 +23,14 @@ You can follow the [installation instructions](https://rust-analyzer.github.io/m
 
 ## Install Rust
 
-Head over to [https://rust-lang.org](http://rust-lang.org) and install the Rust compiler.
+Head over to [https://rust-lang.org](http://rust-lang.org) and install the Rust compiler (preferably using `rustup`).
+
+Once installed, make sure you add the `stable` toolchain and the `wasm32-unknown-unknown` target for web development:
+
+```shell
+rustup toolchain install stable
+rustup target add wasm32-unknown-unknown
+```
 
 We strongly recommend going through the [official Rust book](https://doc.rust-lang.org/book/ch01-00-getting-started.html) _completely_. However, we hope that a Dioxus app can serve as a great first Rust project.
 

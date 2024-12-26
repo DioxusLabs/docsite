@@ -10,7 +10,7 @@ We covered the setup instructions in [Getting Started](../getting_started/index.
 
 - Rust is installed
 - You have a code editor installed
-- The wasm32-unknown-unknown Rust toolchain is installed
+- The wasm32-unknown-unknown target is installed
 - The `dioxus-cli` is installed and up-to-date
 - System-specific dependencies are installed
 

@@ -125,7 +125,8 @@ sudo pacman -S --needed \
   openssl \
   appmenu-gtk-module \
   libappindicator-gtk3 \
-  librsvg
+  librsvg \
+  xdotool
 ```
 
 For all other Linux targets, [check the Tauri docs which cover the same dependencies](https://tauri.app/start/prerequisites/#linux).

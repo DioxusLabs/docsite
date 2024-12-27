@@ -107,7 +107,7 @@ When the `Router {}` component renders, it will parse the document's current URL
 enum Route {
     // ...
     // We can collect the segments of the URL into a Vec<String>
-    #[route("/:..route")]
+    #[route("/:..segments")]
     PageNotFound {
         segments: Vec<String>,
     },

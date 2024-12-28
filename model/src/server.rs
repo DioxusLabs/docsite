@@ -66,6 +66,7 @@ impl TryFrom<CompilerMessage> for CargoDiagnostic {
             .spans
             .iter()
             .map(|s| CargoDiagnosticSpan {
+                is_primary: s.is_primary,
                 line_start: s.line_start,
                 line_end: s.line_end,
                 column_start: s.column_start,
@@ -75,6 +76,7 @@ impl TryFrom<CompilerMessage> for CargoDiagnostic {
             .collect();
 
         Ok(Self {
+            target_crate: value.target.name,
             level,
             message,
             spans,

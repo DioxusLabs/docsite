@@ -48,9 +48,10 @@ impl TryFrom<String> for SocketMessage {
 /// A cargo diagnostic
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct CargoDiagnostic {
-    level: CargoLevel,
-    message: String,
-    spans: Vec<CargoDiagnosticSpan>,
+    pub target_crate: String,
+    pub level: CargoLevel,
+    pub message: String,
+    pub spans: Vec<CargoDiagnosticSpan>,
 }
 
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
@@ -61,11 +62,12 @@ pub enum CargoLevel {
 
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct CargoDiagnosticSpan {
-    line_start: usize,
-    line_end: usize,
-    column_start: usize,
-    column_end: usize,
-    label: Option<String>,
+    pub is_primary: bool,
+    pub line_start: usize,
+    pub line_end: usize,
+    pub column_start: usize,
+    pub column_end: usize,
+    pub label: Option<String>,
 }
 
 /// Any socket error.

@@ -57,7 +57,7 @@ export function initMonaco(vsPathPrefix, elementId, initialTheme, initialSnippet
                 "dropdown.border": "#5B667D",
             },
         });
-        
+
 
         // Setup rust language providers
         monaco.languages.register({ id: 'rust' });
@@ -98,6 +98,19 @@ export function setTheme(theme) {
     if (monacoEditor) {
         monaco.editor.setTheme(theme);
     }
+}
+
+export function setModelMarkers(markers) {
+    if (!currentMonacoModel) {
+        return;
+    }
+
+    // We need to convert severity to monaco's severity enum.
+    for (let marker of markers) {
+        marker.severity = monaco.MarkerSeverity[marker.severity];
+    }
+
+    monaco.editor.setModelMarkers(currentMonacoModel, "owner", markers);
 }
 
 export function registerPasteAsRSX(convertHtmlToRSX) {

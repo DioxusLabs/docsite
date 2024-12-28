@@ -46,6 +46,7 @@ pub fn handle_message(mut build: BuildState, message: SocketMessage) -> bool {
             build.set_stage(BuildStage::Finished(result));
             return true;
         }
+        SocketMessage::BuildDiagnostic(diagnostic) => build.push_diagnostic(diagnostic),
         _ => {}
     }
 

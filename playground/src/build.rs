@@ -1,6 +1,6 @@
 use crate::{error::AppError, ws};
 use dioxus::prelude::*;
-use model::SocketMessage;
+use model::{CargoDiagnostic, SocketMessage};
 use uuid::Uuid;
 
 #[derive(Debug, Clone, PartialEq)]
@@ -47,6 +47,7 @@ impl BuildStage {
 pub(crate) struct BuildState {
     stage: Signal<BuildStage>,
     queue_position: Signal<Option<usize>>,
+    diagnostics: Signal<Vec<CargoDiagnostic>>
 }
 
 impl BuildState {
@@ -54,6 +55,7 @@ impl BuildState {
         Self {
             stage: Signal::new(BuildStage::NotStarted),
             queue_position: Signal::new(None),
+            diagnostics: Signal::new(Vec::new()),
         }
     }
 
@@ -61,6 +63,7 @@ impl BuildState {
     pub fn reset(&mut self) {
         self.stage.set(BuildStage::NotStarted);
         self.queue_position.set(None);
+        self.diagnostics.clear();
     }
 
     /// Get the current stage.
@@ -81,6 +84,16 @@ impl BuildState {
     /// Set the queue position.
     pub fn set_queue_position(&mut self, position: Option<usize>) {
         self.queue_position.set(position);
+    }
+
+    /// Get the diagnostics signal.
+    pub fn diagnostics(&self) -> Signal<Vec<CargoDiagnostic>> {
+        self.diagnostics
+    }
+
+    /// Add another diagnostic to the current list.
+    pub fn push_diagnostic(&mut self, diagnostic: CargoDiagnostic) {
+        self.diagnostics.push(diagnostic);
     }
 }
 

@@ -41,8 +41,11 @@ pub fn attempt_hot_reload(build: BuildState, mut hot_reload: HotReload, new_code
             );
             _ = e.send(hr_msg);
         }
-        Err(HotReloadError::NeedsRebuild) => {}
-        Err(e) => error!("hot reload error occured: {:?}", e),
+        Err(HotReloadError::NeedsRebuild) => hot_reload.set_needs_rebuild(true),
+        Err(e) => {
+            hot_reload.set_needs_rebuild(true);
+            error!("hot reload error occured: {:?}", e);
+        }
     }
 }
 
@@ -90,8 +93,6 @@ impl HotReload {
             raw: code,
             templates: HashMap::new(),
         };
-        self.set_needs_rebuild(true);
-
         HotReloadError::NeedsRebuild
     }
 

@@ -7,8 +7,9 @@ use dioxus_sdk::{
     theme::{use_system_theme, SystemTheme},
     utils::timing::use_debounce,
 };
-use editor::monaco::{monaco_loader_src, on_monaco_load};
+use editor::monaco::{monaco_loader_src, on_monaco_load, Marker, MarkerSeverity};
 use hotreload::{attempt_hot_reload, HotReload};
+use model::CargoLevel;
 use share_code::use_share_code;
 use std::time::Duration;
 
@@ -54,7 +55,42 @@ pub fn Playground(urls: PlaygroundUrls, share_code: Option<String>) -> Element {
 
     // Handle events when code changes.
     let on_model_changed = use_debounce(Duration::from_millis(150), move |new_code: String| {
+        editor::monaco::set_markers(&[]);
         attempt_hot_reload(build, hot_reload, &new_code);
+    });
+
+    // Handle setting diagnostics based on build state.
+    use_effect(move || {
+        let diagnostics = build.diagnostics();
+
+        let mut markers = Vec::new();
+        for diagnostic in diagnostics.read().iter() {
+            let severity = match diagnostic.level {
+                CargoLevel::Error => MarkerSeverity::Error,
+                CargoLevel::Warning => MarkerSeverity::Warning,
+            };
+
+            for span in diagnostic.spans.iter() {
+                let diagnostic_message = diagnostic.message.clone();
+                let message = match span.label.clone() {
+                    Some(label) => format!("{}\n{}", diagnostic_message, label),
+                    None => diagnostic_message,
+                };
+                
+                let marker = Marker {
+                    message,
+                    severity,
+                    start_line_number: span.line_start.saturating_sub(EXTRA_LINE_COUNT()),
+                    end_line_number: span.line_end.saturating_sub(EXTRA_LINE_COUNT()),
+                    start_column: span.column_start,
+                    end_column: span.column_end,
+                };
+
+                markers.push(marker);
+            }
+        }
+
+        editor::monaco::set_markers(&markers);
     });
 
     // Themes

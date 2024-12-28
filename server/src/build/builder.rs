@@ -209,6 +209,12 @@ fn process_dx_message(request: &BuildRequest, message: String) {
             let Ok(diagnostic) = CargoDiagnostic::try_from(message) else {
                 return;
             };
+
+            // Don't send any diagnostics for dependencies.
+            if diagnostic.target_crate != format!("play-{}", request.id.to_string()) {
+                return;
+            }
+
             request
                 .ws_msg_tx
                 .send(BuildMessage::CargoDiagnostic(diagnostic))

@@ -1,6 +1,7 @@
 use crate::{examples, hotreload::HotReload};
 use dioxus::prelude::*;
 use dioxus_sdk::{theme::SystemTheme, utils::timing::UseDebounce};
+use serde::{Deserialize, Serialize};
 use wasm_bindgen::prelude::*;
 
 /// Get the path prefix for the `/vs` folder inside the Monaco folder.
@@ -41,6 +42,37 @@ pub fn on_monaco_load(
     register_model_change(on_model_changed);
 }
 
+#[derive(Serialize, Deserialize, Clone)]
+pub struct Marker {
+    pub message: String,
+    pub severity: MarkerSeverity,
+
+    #[serde(rename = "startLineNumber")]
+    pub start_line_number: usize,
+
+    #[serde(rename = "endLineNumber")]
+    pub end_line_number: usize,
+
+    #[serde(rename = "startColumn")]
+    pub start_column: usize,
+
+    #[serde(rename = "endColumn")]
+    pub end_column: usize,
+}
+
+#[derive(Serialize, Deserialize, Clone, Copy)]
+pub enum MarkerSeverity {
+    Hint,
+    Info,
+    Warning,
+    Error,
+}
+
+pub fn set_markers(markers: &[Marker]) {
+    let data = serde_wasm_bindgen::to_value(markers).unwrap();
+    set_model_marker(data);
+}
+
 // Bindings
 #[wasm_bindgen(module = "/src/editor/monaco.js")]
 extern "C" {
@@ -63,6 +95,9 @@ extern "C" {
 
     #[wasm_bindgen(js_name = setTheme)]
     fn set_monaco_theme(theme: &str);
+
+    #[wasm_bindgen(js_name = setModelMarkers)]
+    fn set_model_marker(markers: JsValue);
 
     #[wasm_bindgen(js_name = registerPasteAsRSX)]
     fn register_paste_as_rsx(convertHtmlToRSX: &Closure<dyn Fn(String) -> Option<String>>);

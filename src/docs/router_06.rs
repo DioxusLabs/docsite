@@ -3171,7 +3171,7 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                     ::use_mdbook::mdbook_shared::Section {
                         title: "What is it?".to_string(),
-                        id: "what-is-it?".to_string(),
+                        id: "what-is-it".to_string(),
                         level: 2usize,
                     },
                     ::use_mdbook::mdbook_shared::Section {

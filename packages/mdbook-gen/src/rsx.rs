@@ -1,5 +1,6 @@
+use mdbook_shared::get_book_content_path;
 use proc_macro2::TokenStream as TokenStream2;
-use quote::quote;
+use quote::{quote, ToTokens};
 use std::{
     iter::Peekable,
     path::{Path, PathBuf},
@@ -14,6 +15,8 @@ use syn::{Ident, __private::Span, parse_quote, parse_str};
 use syntect::highlighting::ThemeSet;
 use syntect::parsing::SyntaxSet;
 
+use crate::path_to_route_enum;
+
 /// Convert a CallBody to a TokenStream
 pub fn callbody_to_tokens(cb: CallBody) -> TokenStream2 {
     // Get the tokens
@@ -23,7 +26,7 @@ pub fn callbody_to_tokens(cb: CallBody) -> TokenStream2 {
     TokenStream2::from_str(&out).unwrap()
 }
 
-pub fn parse_markdown(path: PathBuf, markdown: &str) -> syn::Result<CallBody> {
+pub fn parse_markdown(book_path: PathBuf, path: PathBuf, markdown: &str) -> syn::Result<CallBody> {
     let mut options = Options::empty();
     options.insert(
         Options::ENABLE_TABLES
@@ -40,6 +43,7 @@ pub fn parse_markdown(path: PathBuf, markdown: &str) -> syn::Result<CallBody> {
         current_table: vec![],
         in_table_header: false,
         iter: parser.by_ref().peekable(),
+        book_path,
         path,
         phantom: std::marker::PhantomData,
     };
@@ -61,6 +65,7 @@ struct RsxMarkdownParser<'a, I: Iterator<Item = Event<'a>>> {
     current_table: Vec<Alignment>,
     in_table_header: bool,
     iter: Peekable<I>,
+    book_path: PathBuf,
     path: PathBuf,
     phantom: std::marker::PhantomData<&'a ()>,
 }
@@ -328,20 +333,46 @@ impl<'a, I: Iterator<Item = Event<'a>>> RsxMarkdownParser<'a, I> {
                 s {}
             }),
             Tag::Link(ty, dest, title) => {
-                let without_extension = dest.trim_end_matches(".md");
-                let without_index = without_extension.trim_end_matches("/index");
-
                 let href = match ty {
-                    pulldown_cmark::LinkType::Email => format!("mailto:{}", without_index),
+                    pulldown_cmark::LinkType::Email => format!("mailto:{}", dest).to_token_stream(),
                     _ => {
                         if dest.starts_with("http") || dest.starts_with("https") {
-                            dest.to_string()
+                            escape_text(&dest).to_token_stream()
                         } else {
-                            without_index.to_string()
+                            // If this is a relative link, resolve it relative to the current file
+                            let path = PathBuf::from(dest.to_string());
+                            if path.is_relative() {
+                                let content_path = get_book_content_path(&self.book_path).unwrap();
+                                let current_file_path = content_path.join(&self.path);
+                                let parent_of_current_file = current_file_path.parent().unwrap();
+                                let relative_to_current_folder =
+                                    parent_of_current_file.join(path);
+                                match relative_to_current_folder
+                                    .canonicalize()
+                                    .map_err(|e| Box::new(e) as Box<dyn std::error::Error>)
+                                    .and_then(|p| {
+                                        p.strip_prefix(&content_path)
+                                            .map(PathBuf::from)
+                                            .map_err(|e| Box::new(e) as Box<dyn std::error::Error>)
+                                    }) {
+                                    Ok(resolved) => path_to_route_enum(&resolved),
+                                    Err(e) => {
+                                        let err = format!(
+                                            "Failed to resolve relative link {:?}: {}",
+                                            relative_to_current_folder, e
+                                        );
+                                        quote! {
+                                            compile_error!(#err)
+                                        }
+                                    }
+                                }
+                            } else {
+                                escape_text(&dest).to_token_stream()
+                            }
                         }
                     }
                 };
-                let href = escape_text(&href);
+
                 let title = escape_text(&title);
                 let title_attr = if !title.is_empty() {
                     quote! {
@@ -571,6 +602,7 @@ Some assets:
         in_table_header: false,
         iter: parser.by_ref().peekable(),
         path: PathBuf::from("example-book/en/chapter_1.md"),
+        book_path: PathBuf::from("example-book/en"),
         phantom: std::marker::PhantomData,
     };
 

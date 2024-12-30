@@ -142,6 +142,11 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                         id: "native-rendering".to_string(),
                         level: 3usize,
                     },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Internal Links".to_string(),
+                        id: "internal-links".to_string(),
+                        level: 2usize,
+                    },
                 ],
                 raw: String::new(),
                 id: ::use_mdbook::mdbook_shared::PageId(1usize),
@@ -213,14 +218,14 @@ pub fn Chapter2() -> dioxus::prelude::Element {
     use dioxus::prelude::*;
     rsx! {
         h1 { id: "roadmap--feature-set",
-            a { href: "#roadmap--feature-set", class: "header", "Roadmap & Feature-set" }
+            Link { to: "#roadmap--feature-set", class: "header", "Roadmap & Feature-set" }
         }
         p {
             "This feature set and roadmap can help you decide if what Dioxus can do today works for you."
         }
         p {
             "If a feature that you need doesn't exist or you want to contribute to projects on the roadmap, feel free to get involved by "
-            a { href: "https://discord.gg/XgGxMSkvUM", "joining the discord" }
+            Link { to: "https://discord.gg/XgGxMSkvUM" }
             "."
         }
         p { "Generally, here's the status of each platform:" }
@@ -260,7 +265,7 @@ pub fn Chapter2() -> dioxus::prelude::Element {
         }
         CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">main</span><span style=\"color:#f8f8f2;\">() {{\n</span><span style=\"color:#f8f8f2;\">  dioxus_rocks;\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n" }
         h2 { id: "features",
-            a { href: "#features", class: "header", "Features" }
+            Link { to: "#features", class: "header", "Features" }
         }
         hr {}
         table {
@@ -441,11 +446,11 @@ pub fn Chapter2() -> dioxus::prelude::Element {
             li { "👀 = not yet implemented or being worked on" }
         }
         h2 { id: "roadmap",
-            a { href: "#roadmap", class: "header", "Roadmap" }
+            Link { to: "#roadmap", class: "header", "Roadmap" }
         }
         p { "These Features are planned for the future of Dioxus:" }
         h3 { id: "core",
-            a { href: "#core", class: "header", "Core" }
+            Link { to: "#core", class: "header", "Core" }
         }
         ul {
             li {
@@ -504,7 +509,7 @@ pub fn Chapter2() -> dioxus::prelude::Element {
             }
         }
         h3 { id: "ssr",
-            a { href: "#ssr", class: "header", "SSR" }
+            Link { to: "#ssr", class: "header", "SSR" }
         }
         ul {
             li {
@@ -527,7 +532,7 @@ pub fn Chapter2() -> dioxus::prelude::Element {
             }
         }
         h3 { id: "desktop",
-            a { href: "#desktop", class: "header", "Desktop" }
+            Link { to: "#desktop", class: "header", "Desktop" }
         }
         ul {
             li {
@@ -559,7 +564,7 @@ pub fn Chapter2() -> dioxus::prelude::Element {
             }
         }
         h3 { id: "mobile",
-            a { href: "#mobile", class: "header", "Mobile" }
+            Link { to: "#mobile", class: "header", "Mobile" }
         }
         ul {
             li {
@@ -656,7 +661,7 @@ pub fn Chapter2() -> dioxus::prelude::Element {
             }
         }
         h3 { id: "bundling-cli",
-            a { href: "#bundling-cli", class: "header", "Bundling (CLI)" }
+            Link { to: "#bundling-cli", class: "header", "Bundling (CLI)" }
         }
         ul {
             li {
@@ -742,7 +747,7 @@ pub fn Chapter2() -> dioxus::prelude::Element {
             }
         }
         h3 { id: "essential-hooks",
-            a { href: "#essential-hooks", class: "header", "Essential hooks" }
+            Link { to: "#essential-hooks", class: "header", "Essential hooks" }
         }
         ul {
             li {
@@ -774,16 +779,14 @@ pub fn Chapter2() -> dioxus::prelude::Element {
             }
         }
         h2 { id: "work-in-progress",
-            a { href: "#work-in-progress", class: "header", "Work in Progress" }
+            Link { to: "#work-in-progress", class: "header", "Work in Progress" }
         }
         h3 { id: "build-tool",
-            a { href: "#build-tool", class: "header", "Build Tool" }
+            Link { to: "#build-tool", class: "header", "Build Tool" }
         }
         p {
             "We are currently working on our own build tool called "
-            a { href: "https://github.com/DioxusLabs/dioxus/tree/master/packages/cli",
-                "Dioxus CLI"
-            }
+            Link { to: "https://github.com/DioxusLabs/dioxus/tree/master/packages/cli" }
             " which will support:"
         }
         ul {
@@ -799,18 +802,26 @@ pub fn Chapter2() -> dioxus::prelude::Element {
             li { "bundling for iOS/Desktop/etc" }
         }
         h3 { id: "server-component-support",
-            a { href: "#server-component-support", class: "header", "Server Component Support" }
+            Link { to: "#server-component-support", class: "header", "Server Component Support" }
         }
         p {
             "While not currently fully implemented, the expectation is that LiveView apps can be a hybrid between Wasm and server-rendered where only portions of a page are \"live\" and the rest of the page is either server-rendered, statically generated, or handled by the host SPA."
         }
         h3 { id: "native-rendering",
-            a { href: "#native-rendering", class: "header", "Native rendering" }
+            Link { to: "#native-rendering", class: "header", "Native rendering" }
         }
         p {
             "We are currently working on a native renderer for Dioxus using WGPU called "
-            a { href: "https://github.com/DioxusLabs/blitz/", "Blitz" }
+            Link { to: "https://github.com/DioxusLabs/blitz/" }
             ". This will allow you to build apps that are rendered natively for iOS, Android, and Desktop."
+        }
+        h2 { id: "internal-links",
+            Link { to: "#internal-links", class: "header", "Internal Links" }
+        }
+        p {
+            "Internal links like "
+            Link { to: BookRoute::Chapter1 {} }
+            " are typechecked and will fail to compile if the file is not found."
         }
     }
 }
@@ -819,7 +830,7 @@ pub fn Chapter3() -> dioxus::prelude::Element {
     use dioxus::prelude::*;
     rsx! {
         h1 { id: "assets",
-            a { href: "#assets", class: "header", "Assets" }
+            Link { to: "#assets", class: "header", "Assets" }
         }
         p {
             "Some assets:"

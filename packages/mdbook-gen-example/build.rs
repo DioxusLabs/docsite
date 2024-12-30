@@ -2,11 +2,9 @@ use std::{env::current_dir, path::PathBuf};
 
 fn main() {
     // re-run only if the "example-book" directory changes
-    // println!("cargo:rerun-if-changed=../../example-book");
-    // println!("cargo:rerun-if-changed=../mdbook-gen/");
+    println!("cargo:rerun-if-changed=../../example-book");
 
-    let manifest_dir =
-        PathBuf::from("/Users/jonkelley/Development/ecosystem-dioxus/include_mdbook/");
+    let manifest_dir = PathBuf::from("../../");
 
     let mdbook_dir = manifest_dir.join("./example-book").canonicalize().unwrap();
     let out_dir = current_dir().unwrap().join("gen");

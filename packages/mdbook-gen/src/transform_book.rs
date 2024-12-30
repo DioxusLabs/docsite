@@ -1,4 +1,3 @@
-
 use std::path::PathBuf;
 
 use mdbook_shared::MdBook;
@@ -13,9 +12,7 @@ use quote::ToTokens;
 use crate::path_to_route_enum;
 
 /// Transforms the book to use enum routes instead of paths
-pub fn write_book_with_routes(
-    book: &mdbook_shared::MdBook<PathBuf>,
-) -> TokenStream {
+pub fn write_book_with_routes(book: &mdbook_shared::MdBook<PathBuf>) -> TokenStream {
     let MdBook { summary, .. } = book;
     let summary = write_summary_with_routes(summary);
     let pages = book.pages().iter().map(|(id, v)| {

@@ -34,9 +34,7 @@ pub fn generate_router_build_script(mdbook_dir: PathBuf) -> String {
 ///
 ///
 /// ```
-pub fn load_book_from_fs(
-    input: LitStr,
-) -> anyhow::Result<mdbook_shared::MdBook<PathBuf>> {
+pub fn load_book_from_fs(input: LitStr) -> anyhow::Result<mdbook_shared::MdBook<PathBuf>> {
     let user_dir = input.value().parse::<PathBuf>()?;
     let manifest_dir = PathBuf::from(std::env::var("CARGO_MANIFEST_DIR")?);
     let path = manifest_dir.join(user_dir);
@@ -47,12 +45,10 @@ pub fn load_book_from_fs(
         )
     })?;
 
-    Ok(MdBook::new(path)?) 
+    Ok(MdBook::new(path)?)
 }
 
-pub fn generate_router_as_file(
-    book: mdbook_shared::MdBook<PathBuf>,
-) -> syn::File {
+pub fn generate_router_as_file(book: mdbook_shared::MdBook<PathBuf>) -> syn::File {
     let router = generate_router(book);
 
     syn::parse_quote! {
@@ -67,7 +63,7 @@ pub fn generate_router(book: mdbook_shared::MdBook<PathBuf>) -> TokenStream2 {
         let name = path_to_route_variant(&page.url);
 
         // Rsx doesn't work very well in macros because the path for all the routes generated point to the same characters. We manually expand rsx here to get around that issue.
-        match rsx::parse_markdown(page.url.clone(), &page.raw) {
+        match rsx::parse_markdown(book.path.clone(), page.url.clone(), &page.raw) {
             Ok(rsx) => {
                 // for the sake of readability, we want to actuall convert the CallBody back to Tokens
                 let rsx = rsx::callbody_to_tokens(rsx);

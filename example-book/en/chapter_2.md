@@ -142,3 +142,6 @@ While not currently fully implemented, the expectation is that LiveView apps can
 ### Native rendering
 
 We are currently working on a native renderer for Dioxus using WGPU called [Blitz](https://github.com/DioxusLabs/blitz/). This will allow you to build apps that are rendered natively for iOS, Android, and Desktop.
+
+## Internal Links
+Internal links like [this](./chapter_1.md) are typechecked and will fail to compile if the file is not found.

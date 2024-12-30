@@ -346,7 +346,7 @@ impl<'a, I: Iterator<Item = Event<'a>>> RsxMarkdownParser<'a, I> {
                                 let current_file_path = content_path.join(&self.path);
                                 let parent_of_current_file = current_file_path.parent().unwrap();
                                 let relative_to_current_folder =
-                                    parent_of_current_file.join(path);
+                                    parent_of_current_file.join(&path);
                                 match relative_to_current_folder
                                     .canonicalize()
                                     .map_err(|e| Box::new(e) as Box<dyn std::error::Error>)
@@ -358,8 +358,8 @@ impl<'a, I: Iterator<Item = Event<'a>>> RsxMarkdownParser<'a, I> {
                                     Ok(resolved) => path_to_route_enum(&resolved),
                                     Err(e) => {
                                         let err = format!(
-                                            "Failed to resolve relative link {:?}: {}",
-                                            relative_to_current_folder, e
+                                            "Failed to resolve link {} relative to {}: {}",
+                                            path.display(), parent_of_current_file.display(), e
                                         );
                                         quote! {
                                             compile_error!(#err)

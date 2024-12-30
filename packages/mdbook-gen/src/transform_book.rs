@@ -1,4 +1,4 @@
-use std::path::Path;
+
 use std::path::PathBuf;
 
 use mdbook_shared::MdBook;
@@ -11,22 +11,16 @@ use quote::quote;
 use quote::ToTokens;
 
 use crate::path_to_route_enum;
-use mdbook_shared::get_book_content_path;
-use mdbook_shared::get_summary_path;
 
 /// Transforms the book to use enum routes instead of paths
 pub fn write_book_with_routes(
-    book_path: PathBuf,
     book: &mdbook_shared::MdBook<PathBuf>,
 ) -> TokenStream {
-    let summary_path = get_summary_path(&book_path).expect("SUMMARY.md path not found");
-    let index_path = summary_path.to_string_lossy();
-
     let MdBook { summary, .. } = book;
     let summary = write_summary_with_routes(summary);
     let pages = book.pages().iter().map(|(id, v)| {
         let name = path_to_route_enum(&v.url);
-        let page = write_page_with_routes(&book_path, v);
+        let page = write_page_with_routes(v);
         quote! {
             pages.push((#id, #page));
             page_id_mapping.insert(#name, ::use_mdbook::mdbook_shared::PageId(#id));
@@ -35,8 +29,6 @@ pub fn write_book_with_routes(
 
     let out = quote! {
         {
-            // Let the compiler know that we care about the index file
-            // const _: &[u8] = include_bytes!(#index_path);
             let mut page_id_mapping = ::std::collections::HashMap::new();
             let mut pages = Vec::new();
             #(#pages)*
@@ -146,7 +138,7 @@ fn write_number_with_routes(number: &mdbook_shared::SectionNumber) -> TokenStrea
     }
 }
 
-fn write_page_with_routes(book_path: &Path, book: &mdbook_shared::Page<PathBuf>) -> TokenStream {
+fn write_page_with_routes(book: &mdbook_shared::Page<PathBuf>) -> TokenStream {
     let Page {
         title,
         url,
@@ -166,16 +158,10 @@ fn write_page_with_routes(book_path: &Path, book: &mdbook_shared::Page<PathBuf>)
 
     let path = url;
     let url = path_to_route_enum(path);
-    let full_path = get_book_content_path(book_path)
-        .expect("No book content path found")
-        .join(path);
-    let path_str = full_path.to_str().unwrap();
     let id = id.0;
 
     quote! {
         {
-            // This lets the rust compile know that we read the file
-            // const _: &[u8] = include_bytes!(#path_str);
             ::use_mdbook::mdbook_shared::Page {
                 title: #title.to_string(),
                 url: #url,

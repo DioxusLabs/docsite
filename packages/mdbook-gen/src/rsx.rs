@@ -222,8 +222,8 @@ impl<'a, I: Iterator<Item = Event<'a>>> RsxMarkdownParser<'a, I> {
                 let element = parse_quote! {
                     #element_name {
                         id: #anchor,
-                        a {
-                            href: #fragment,
+                        Link {
+                            to: #fragment,
                             class: "header",
                             #text
                         }
@@ -337,22 +337,6 @@ impl<'a, I: Iterator<Item = Event<'a>>> RsxMarkdownParser<'a, I> {
                         if dest.starts_with("http") || dest.starts_with("https") {
                             dest.to_string()
                         } else {
-                            // If this route ends with index.md, we need to prefix any routes relative to it with /route
-                            // if self.path.ends_with("index.md") {
-                            //     if let Some(last_self_segment) =
-                            //         self.path.parent().and_then(|p| p.file_name())
-                            //     {
-                            //         format!(
-                            //             "{}/{}",
-                            //             last_self_segment.to_string_lossy(),
-                            //             without_index
-                            //         )
-                            //     } else {
-                            //         without_index.to_string()
-                            //     }
-                            // } else {
-                            //     without_index.to_string()
-                            // }
                             without_index.to_string()
                         }
                     }
@@ -368,8 +352,8 @@ impl<'a, I: Iterator<Item = Event<'a>>> RsxMarkdownParser<'a, I> {
                 };
 
                 self.start_node(parse_quote! {
-                    a {
-                        href: #href,
+                    Link {
+                        to: #href,
                         #title_attr
                     }
                 });

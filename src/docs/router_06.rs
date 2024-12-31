@@ -54,6 +54,8 @@ pub enum BookRoute {
     EssentialsBreakingIndex {},
     #[route("/guides/")]
     GuidesIndex {},
+    #[route("/guides/managing_state")]
+    GuidesManagingState {},
     #[route("/router/")]
     RouterIndex {},
     #[route("/router/example/")]
@@ -216,99 +218,100 @@ impl BookRoute {
             BookRoute::EssentialsStateIndex {} => use_mdbook::mdbook_shared::PageId(19usize),
             BookRoute::EssentialsBreakingIndex {} => use_mdbook::mdbook_shared::PageId(20usize),
             BookRoute::GuidesIndex {} => use_mdbook::mdbook_shared::PageId(21usize),
-            BookRoute::RouterIndex {} => use_mdbook::mdbook_shared::PageId(22usize),
-            BookRoute::RouterExampleIndex {} => use_mdbook::mdbook_shared::PageId(23usize),
-            BookRoute::RouterExampleFirstRoute {} => use_mdbook::mdbook_shared::PageId(24usize),
-            BookRoute::RouterExampleBuildingANest {} => use_mdbook::mdbook_shared::PageId(25usize),
+            BookRoute::GuidesManagingState {} => use_mdbook::mdbook_shared::PageId(22usize),
+            BookRoute::RouterIndex {} => use_mdbook::mdbook_shared::PageId(23usize),
+            BookRoute::RouterExampleIndex {} => use_mdbook::mdbook_shared::PageId(24usize),
+            BookRoute::RouterExampleFirstRoute {} => use_mdbook::mdbook_shared::PageId(25usize),
+            BookRoute::RouterExampleBuildingANest {} => use_mdbook::mdbook_shared::PageId(26usize),
             BookRoute::RouterExampleNavigationTargets {} => {
-                use_mdbook::mdbook_shared::PageId(26usize)
-            }
-            BookRoute::RouterExampleRedirectionPerfection {} => {
                 use_mdbook::mdbook_shared::PageId(27usize)
             }
-            BookRoute::RouterExampleFullCode {} => use_mdbook::mdbook_shared::PageId(28usize),
-            BookRoute::RouterReferenceIndex {} => use_mdbook::mdbook_shared::PageId(29usize),
-            BookRoute::RouterReferenceRoutesIndex {} => use_mdbook::mdbook_shared::PageId(30usize),
-            BookRoute::RouterReferenceRoutesNested {} => use_mdbook::mdbook_shared::PageId(31usize),
-            BookRoute::RouterReferenceLayouts {} => use_mdbook::mdbook_shared::PageId(32usize),
-            BookRoute::RouterReferenceNavigationIndex {} => {
-                use_mdbook::mdbook_shared::PageId(33usize)
+            BookRoute::RouterExampleRedirectionPerfection {} => {
+                use_mdbook::mdbook_shared::PageId(28usize)
             }
-            BookRoute::RouterReferenceNavigationProgrammatic {} => {
+            BookRoute::RouterExampleFullCode {} => use_mdbook::mdbook_shared::PageId(29usize),
+            BookRoute::RouterReferenceIndex {} => use_mdbook::mdbook_shared::PageId(30usize),
+            BookRoute::RouterReferenceRoutesIndex {} => use_mdbook::mdbook_shared::PageId(31usize),
+            BookRoute::RouterReferenceRoutesNested {} => use_mdbook::mdbook_shared::PageId(32usize),
+            BookRoute::RouterReferenceLayouts {} => use_mdbook::mdbook_shared::PageId(33usize),
+            BookRoute::RouterReferenceNavigationIndex {} => {
                 use_mdbook::mdbook_shared::PageId(34usize)
             }
-            BookRoute::RouterReferenceHistoryProviders {} => {
+            BookRoute::RouterReferenceNavigationProgrammatic {} => {
                 use_mdbook::mdbook_shared::PageId(35usize)
             }
-            BookRoute::RouterReferenceHistoryButtons {} => {
+            BookRoute::RouterReferenceHistoryProviders {} => {
                 use_mdbook::mdbook_shared::PageId(36usize)
             }
-            BookRoute::RouterReferenceRoutingUpdateCallback {} => {
+            BookRoute::RouterReferenceHistoryButtons {} => {
                 use_mdbook::mdbook_shared::PageId(37usize)
             }
-            BookRoute::GuidesAssets {} => use_mdbook::mdbook_shared::PageId(38usize),
-            BookRoute::GuidesWebIndex {} => use_mdbook::mdbook_shared::PageId(39usize),
-            BookRoute::GuidesDesktopIndex {} => use_mdbook::mdbook_shared::PageId(40usize),
-            BookRoute::GuidesMobileIndex {} => use_mdbook::mdbook_shared::PageId(41usize),
-            BookRoute::GuidesMobileApis {} => use_mdbook::mdbook_shared::PageId(42usize),
-            BookRoute::GuidesSsr {} => use_mdbook::mdbook_shared::PageId(43usize),
-            BookRoute::GuidesFullstackIndex {} => use_mdbook::mdbook_shared::PageId(44usize),
-            BookRoute::GuidesFullstackManagingDependencies {} => {
-                use_mdbook::mdbook_shared::PageId(45usize)
+            BookRoute::RouterReferenceRoutingUpdateCallback {} => {
+                use_mdbook::mdbook_shared::PageId(38usize)
             }
-            BookRoute::GuidesFullstackServerFunctions {} => {
+            BookRoute::GuidesAssets {} => use_mdbook::mdbook_shared::PageId(39usize),
+            BookRoute::GuidesWebIndex {} => use_mdbook::mdbook_shared::PageId(40usize),
+            BookRoute::GuidesDesktopIndex {} => use_mdbook::mdbook_shared::PageId(41usize),
+            BookRoute::GuidesMobileIndex {} => use_mdbook::mdbook_shared::PageId(42usize),
+            BookRoute::GuidesMobileApis {} => use_mdbook::mdbook_shared::PageId(43usize),
+            BookRoute::GuidesSsr {} => use_mdbook::mdbook_shared::PageId(44usize),
+            BookRoute::GuidesFullstackIndex {} => use_mdbook::mdbook_shared::PageId(45usize),
+            BookRoute::GuidesFullstackManagingDependencies {} => {
                 use_mdbook::mdbook_shared::PageId(46usize)
             }
-            BookRoute::GuidesFullstackExtractors {} => use_mdbook::mdbook_shared::PageId(47usize),
-            BookRoute::GuidesFullstackMiddleware {} => use_mdbook::mdbook_shared::PageId(48usize),
+            BookRoute::GuidesFullstackServerFunctions {} => {
+                use_mdbook::mdbook_shared::PageId(47usize)
+            }
+            BookRoute::GuidesFullstackExtractors {} => use_mdbook::mdbook_shared::PageId(48usize),
+            BookRoute::GuidesFullstackMiddleware {} => use_mdbook::mdbook_shared::PageId(49usize),
             BookRoute::GuidesFullstackAuthentication {} => {
-                use_mdbook::mdbook_shared::PageId(49usize)
+                use_mdbook::mdbook_shared::PageId(50usize)
             }
-            BookRoute::GuidesFullstackRouting {} => use_mdbook::mdbook_shared::PageId(50usize),
-            BookRoute::CookbookPublishing {} => use_mdbook::mdbook_shared::PageId(51usize),
-            BookRoute::CookbookAntipatterns {} => use_mdbook::mdbook_shared::PageId(52usize),
-            BookRoute::CookbookErrorHandling {} => use_mdbook::mdbook_shared::PageId(53usize),
-            BookRoute::CookbookIntegrationsIndex {} => use_mdbook::mdbook_shared::PageId(54usize),
-            BookRoute::CookbookIntegrationsLogging {} => use_mdbook::mdbook_shared::PageId(55usize),
+            BookRoute::GuidesFullstackRouting {} => use_mdbook::mdbook_shared::PageId(51usize),
+            BookRoute::CookbookPublishing {} => use_mdbook::mdbook_shared::PageId(52usize),
+            BookRoute::CookbookAntipatterns {} => use_mdbook::mdbook_shared::PageId(53usize),
+            BookRoute::CookbookErrorHandling {} => use_mdbook::mdbook_shared::PageId(54usize),
+            BookRoute::CookbookIntegrationsIndex {} => use_mdbook::mdbook_shared::PageId(55usize),
+            BookRoute::CookbookIntegrationsLogging {} => use_mdbook::mdbook_shared::PageId(56usize),
             BookRoute::CookbookIntegrationsInternationalization {} => {
-                use_mdbook::mdbook_shared::PageId(56usize)
+                use_mdbook::mdbook_shared::PageId(57usize)
             }
-            BookRoute::CookbookStateIndex {} => use_mdbook::mdbook_shared::PageId(57usize),
-            BookRoute::CookbookStateExternalIndex {} => use_mdbook::mdbook_shared::PageId(58usize),
+            BookRoute::CookbookStateIndex {} => use_mdbook::mdbook_shared::PageId(58usize),
+            BookRoute::CookbookStateExternalIndex {} => use_mdbook::mdbook_shared::PageId(59usize),
             BookRoute::CookbookStateCustomHooksIndex {} => {
-                use_mdbook::mdbook_shared::PageId(59usize)
+                use_mdbook::mdbook_shared::PageId(60usize)
             }
-            BookRoute::CookbookBundling {} => use_mdbook::mdbook_shared::PageId(60usize),
-            BookRoute::CookbookTesting {} => use_mdbook::mdbook_shared::PageId(61usize),
-            BookRoute::CookbookTailwind {} => use_mdbook::mdbook_shared::PageId(62usize),
-            BookRoute::CookbookOptimizing {} => use_mdbook::mdbook_shared::PageId(63usize),
-            BookRoute::MigrationIndex {} => use_mdbook::mdbook_shared::PageId(64usize),
-            BookRoute::ReferenceIndex {} => use_mdbook::mdbook_shared::PageId(65usize),
-            BookRoute::ReferenceHotreload {} => use_mdbook::mdbook_shared::PageId(66usize),
-            BookRoute::ReferenceRsx {} => use_mdbook::mdbook_shared::PageId(67usize),
-            BookRoute::ReferenceComponents {} => use_mdbook::mdbook_shared::PageId(68usize),
-            BookRoute::ReferenceComponentProps {} => use_mdbook::mdbook_shared::PageId(69usize),
-            BookRoute::ReferenceEventHandlers {} => use_mdbook::mdbook_shared::PageId(70usize),
-            BookRoute::ReferenceHooks {} => use_mdbook::mdbook_shared::PageId(71usize),
-            BookRoute::ReferenceUserInput {} => use_mdbook::mdbook_shared::PageId(72usize),
-            BookRoute::ReferenceContext {} => use_mdbook::mdbook_shared::PageId(73usize),
-            BookRoute::ReferenceDynamicRendering {} => use_mdbook::mdbook_shared::PageId(74usize),
-            BookRoute::ReferenceRouter {} => use_mdbook::mdbook_shared::PageId(75usize),
-            BookRoute::ReferenceUseResource {} => use_mdbook::mdbook_shared::PageId(76usize),
-            BookRoute::ReferenceUseCoroutine {} => use_mdbook::mdbook_shared::PageId(77usize),
-            BookRoute::ReferenceSpawn {} => use_mdbook::mdbook_shared::PageId(78usize),
-            BookRoute::ContributingIndex {} => use_mdbook::mdbook_shared::PageId(79usize),
+            BookRoute::CookbookBundling {} => use_mdbook::mdbook_shared::PageId(61usize),
+            BookRoute::CookbookTesting {} => use_mdbook::mdbook_shared::PageId(62usize),
+            BookRoute::CookbookTailwind {} => use_mdbook::mdbook_shared::PageId(63usize),
+            BookRoute::CookbookOptimizing {} => use_mdbook::mdbook_shared::PageId(64usize),
+            BookRoute::MigrationIndex {} => use_mdbook::mdbook_shared::PageId(65usize),
+            BookRoute::ReferenceIndex {} => use_mdbook::mdbook_shared::PageId(66usize),
+            BookRoute::ReferenceHotreload {} => use_mdbook::mdbook_shared::PageId(67usize),
+            BookRoute::ReferenceRsx {} => use_mdbook::mdbook_shared::PageId(68usize),
+            BookRoute::ReferenceComponents {} => use_mdbook::mdbook_shared::PageId(69usize),
+            BookRoute::ReferenceComponentProps {} => use_mdbook::mdbook_shared::PageId(70usize),
+            BookRoute::ReferenceEventHandlers {} => use_mdbook::mdbook_shared::PageId(71usize),
+            BookRoute::ReferenceHooks {} => use_mdbook::mdbook_shared::PageId(72usize),
+            BookRoute::ReferenceUserInput {} => use_mdbook::mdbook_shared::PageId(73usize),
+            BookRoute::ReferenceContext {} => use_mdbook::mdbook_shared::PageId(74usize),
+            BookRoute::ReferenceDynamicRendering {} => use_mdbook::mdbook_shared::PageId(75usize),
+            BookRoute::ReferenceRouter {} => use_mdbook::mdbook_shared::PageId(76usize),
+            BookRoute::ReferenceUseResource {} => use_mdbook::mdbook_shared::PageId(77usize),
+            BookRoute::ReferenceUseCoroutine {} => use_mdbook::mdbook_shared::PageId(78usize),
+            BookRoute::ReferenceSpawn {} => use_mdbook::mdbook_shared::PageId(79usize),
+            BookRoute::ContributingIndex {} => use_mdbook::mdbook_shared::PageId(80usize),
             BookRoute::ContributingProjectStructure {} => {
-                use_mdbook::mdbook_shared::PageId(80usize)
-            }
-            BookRoute::ContributingGuidingPrinciples {} => {
                 use_mdbook::mdbook_shared::PageId(81usize)
             }
-            BookRoute::ContributingRoadmap {} => use_mdbook::mdbook_shared::PageId(82usize),
-            BookRoute::CliIndex {} => use_mdbook::mdbook_shared::PageId(83usize),
-            BookRoute::CliCreating {} => use_mdbook::mdbook_shared::PageId(84usize),
-            BookRoute::CliConfigure {} => use_mdbook::mdbook_shared::PageId(85usize),
-            BookRoute::CliTranslate {} => use_mdbook::mdbook_shared::PageId(86usize),
+            BookRoute::ContributingGuidingPrinciples {} => {
+                use_mdbook::mdbook_shared::PageId(82usize)
+            }
+            BookRoute::ContributingRoadmap {} => use_mdbook::mdbook_shared::PageId(83usize),
+            BookRoute::CliIndex {} => use_mdbook::mdbook_shared::PageId(84usize),
+            BookRoute::CliCreating {} => use_mdbook::mdbook_shared::PageId(85usize),
+            BookRoute::CliConfigure {} => use_mdbook::mdbook_shared::PageId(86usize),
+            BookRoute::CliTranslate {} => use_mdbook::mdbook_shared::PageId(87usize),
         }
     }
 }
@@ -1397,6 +1400,41 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
         );
         pages.push((22usize, {
             ::use_mdbook::mdbook_shared::Page {
+                title: "Managing State".to_string(),
+                url: BookRoute::GuidesManagingState {},
+                segments: vec![],
+                sections: vec![
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "The Rules of Hooks".to_string(),
+                        id: "the-rules-of-hooks".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "No Hooks in Conditionals".to_string(),
+                        id: "no-hooks-in-conditionals".to_string(),
+                        level: 4usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "No Hooks in Closures".to_string(),
+                        id: "no-hooks-in-closures".to_string(),
+                        level: 4usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "No Hooks in Loops".to_string(),
+                        id: "no-hooks-in-loops".to_string(),
+                        level: 4usize,
+                    },
+                ],
+                raw: String::new(),
+                id: ::use_mdbook::mdbook_shared::PageId(22usize),
+            }
+        }));
+        page_id_mapping.insert(
+            BookRoute::GuidesManagingState {},
+            ::use_mdbook::mdbook_shared::PageId(22usize),
+        );
+        pages.push((23usize, {
+            ::use_mdbook::mdbook_shared::Page {
                 title: "Router".to_string(),
                 url: BookRoute::RouterIndex {},
                 segments: vec![],
@@ -1406,14 +1444,14 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     level: 1usize,
                 }],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(22usize),
+                id: ::use_mdbook::mdbook_shared::PageId(23usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::RouterIndex {},
-            ::use_mdbook::mdbook_shared::PageId(22usize),
+            ::use_mdbook::mdbook_shared::PageId(23usize),
         );
-        pages.push((23usize, {
+        pages.push((24usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Example Project".to_string(),
                 url: BookRoute::RouterExampleIndex {},
@@ -1431,14 +1469,14 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(23usize),
+                id: ::use_mdbook::mdbook_shared::PageId(24usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::RouterExampleIndex {},
-            ::use_mdbook::mdbook_shared::PageId(23usize),
+            ::use_mdbook::mdbook_shared::PageId(24usize),
         );
-        pages.push((24usize, {
+        pages.push((25usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Creating Our First Route".to_string(),
                 url: BookRoute::RouterExampleFirstRoute {},
@@ -1471,14 +1509,14 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(24usize),
+                id: ::use_mdbook::mdbook_shared::PageId(25usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::RouterExampleFirstRoute {},
-            ::use_mdbook::mdbook_shared::PageId(24usize),
+            ::use_mdbook::mdbook_shared::PageId(25usize),
         );
-        pages.push((25usize, {
+        pages.push((26usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Building a Nest".to_string(),
                 url: BookRoute::RouterExampleBuildingANest {},
@@ -1506,14 +1544,14 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(25usize),
+                id: ::use_mdbook::mdbook_shared::PageId(26usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::RouterExampleBuildingANest {},
-            ::use_mdbook::mdbook_shared::PageId(25usize),
+            ::use_mdbook::mdbook_shared::PageId(26usize),
         );
-        pages.push((26usize, {
+        pages.push((27usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Navigation Targets".to_string(),
                 url: BookRoute::RouterExampleNavigationTargets {},
@@ -1536,14 +1574,14 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(26usize),
+                id: ::use_mdbook::mdbook_shared::PageId(27usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::RouterExampleNavigationTargets {},
-            ::use_mdbook::mdbook_shared::PageId(26usize),
+            ::use_mdbook::mdbook_shared::PageId(27usize),
         );
-        pages.push((27usize, {
+        pages.push((28usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Redirection Perfection".to_string(),
                 url: BookRoute::RouterExampleRedirectionPerfection {},
@@ -1571,14 +1609,14 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(27usize),
+                id: ::use_mdbook::mdbook_shared::PageId(28usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::RouterExampleRedirectionPerfection {},
-            ::use_mdbook::mdbook_shared::PageId(27usize),
+            ::use_mdbook::mdbook_shared::PageId(28usize),
         );
-        pages.push((28usize, {
+        pages.push((29usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Full Code".to_string(),
                 url: BookRoute::RouterExampleFullCode {},
@@ -1589,14 +1627,14 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     level: 1usize,
                 }],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(28usize),
+                id: ::use_mdbook::mdbook_shared::PageId(29usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::RouterExampleFullCode {},
-            ::use_mdbook::mdbook_shared::PageId(28usize),
+            ::use_mdbook::mdbook_shared::PageId(29usize),
         );
-        pages.push((29usize, {
+        pages.push((30usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Reference".to_string(),
                 url: BookRoute::RouterReferenceIndex {},
@@ -1607,14 +1645,14 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     level: 1usize,
                 }],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(29usize),
+                id: ::use_mdbook::mdbook_shared::PageId(30usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::RouterReferenceIndex {},
-            ::use_mdbook::mdbook_shared::PageId(29usize),
+            ::use_mdbook::mdbook_shared::PageId(30usize),
         );
-        pages.push((30usize, {
+        pages.push((31usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Defining Routes".to_string(),
                 url: BookRoute::RouterReferenceRoutesIndex {},
@@ -1652,14 +1690,14 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(30usize),
+                id: ::use_mdbook::mdbook_shared::PageId(31usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::RouterReferenceRoutesIndex {},
-            ::use_mdbook::mdbook_shared::PageId(30usize),
+            ::use_mdbook::mdbook_shared::PageId(31usize),
         );
-        pages.push((31usize, {
+        pages.push((32usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Nested Routes".to_string(),
                 url: BookRoute::RouterReferenceRoutesNested {},
@@ -1677,14 +1715,14 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(31usize),
+                id: ::use_mdbook::mdbook_shared::PageId(32usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::RouterReferenceRoutesNested {},
-            ::use_mdbook::mdbook_shared::PageId(31usize),
+            ::use_mdbook::mdbook_shared::PageId(32usize),
         );
-        pages.push((32usize, {
+        pages.push((33usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Layouts".to_string(),
                 url: BookRoute::RouterReferenceLayouts {},
@@ -1702,14 +1740,14 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(32usize),
+                id: ::use_mdbook::mdbook_shared::PageId(33usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::RouterReferenceLayouts {},
-            ::use_mdbook::mdbook_shared::PageId(32usize),
+            ::use_mdbook::mdbook_shared::PageId(33usize),
         );
-        pages.push((33usize, {
+        pages.push((34usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Navigation".to_string(),
                 url: BookRoute::RouterReferenceNavigationIndex {},
@@ -1720,14 +1758,14 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     level: 1usize,
                 }],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(33usize),
+                id: ::use_mdbook::mdbook_shared::PageId(34usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::RouterReferenceNavigationIndex {},
-            ::use_mdbook::mdbook_shared::PageId(33usize),
+            ::use_mdbook::mdbook_shared::PageId(34usize),
         );
-        pages.push((34usize, {
+        pages.push((35usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Programmatic Navigation".to_string(),
                 url: BookRoute::RouterReferenceNavigationProgrammatic {},
@@ -1750,14 +1788,14 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(34usize),
+                id: ::use_mdbook::mdbook_shared::PageId(35usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::RouterReferenceNavigationProgrammatic {},
-            ::use_mdbook::mdbook_shared::PageId(34usize),
+            ::use_mdbook::mdbook_shared::PageId(35usize),
         );
-        pages.push((35usize, {
+        pages.push((36usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "History Providers".to_string(),
                 url: BookRoute::RouterReferenceHistoryProviders {},
@@ -1768,14 +1806,14 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     level: 1usize,
                 }],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(35usize),
+                id: ::use_mdbook::mdbook_shared::PageId(36usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::RouterReferenceHistoryProviders {},
-            ::use_mdbook::mdbook_shared::PageId(35usize),
+            ::use_mdbook::mdbook_shared::PageId(36usize),
         );
-        pages.push((36usize, {
+        pages.push((37usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "History Buttons".to_string(),
                 url: BookRoute::RouterReferenceHistoryButtons {},
@@ -1786,14 +1824,14 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     level: 1usize,
                 }],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(36usize),
+                id: ::use_mdbook::mdbook_shared::PageId(37usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::RouterReferenceHistoryButtons {},
-            ::use_mdbook::mdbook_shared::PageId(36usize),
+            ::use_mdbook::mdbook_shared::PageId(37usize),
         );
-        pages.push((37usize, {
+        pages.push((38usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Routing Update Callback".to_string(),
                 url: BookRoute::RouterReferenceRoutingUpdateCallback {},
@@ -1816,14 +1854,14 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(37usize),
+                id: ::use_mdbook::mdbook_shared::PageId(38usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::RouterReferenceRoutingUpdateCallback {},
-            ::use_mdbook::mdbook_shared::PageId(37usize),
+            ::use_mdbook::mdbook_shared::PageId(38usize),
         );
-        pages.push((38usize, {
+        pages.push((39usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Assets".to_string(),
                 url: BookRoute::GuidesAssets {},
@@ -1856,14 +1894,14 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(38usize),
+                id: ::use_mdbook::mdbook_shared::PageId(39usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::GuidesAssets {},
-            ::use_mdbook::mdbook_shared::PageId(38usize),
+            ::use_mdbook::mdbook_shared::PageId(39usize),
         );
-        pages.push((39usize, {
+        pages.push((40usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Web".to_string(),
                 url: BookRoute::GuidesWebIndex {},
@@ -1891,14 +1929,14 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(39usize),
+                id: ::use_mdbook::mdbook_shared::PageId(40usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::GuidesWebIndex {},
-            ::use_mdbook::mdbook_shared::PageId(39usize),
+            ::use_mdbook::mdbook_shared::PageId(40usize),
         );
-        pages.push((40usize, {
+        pages.push((41usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Desktop".to_string(),
                 url: BookRoute::GuidesDesktopIndex {},
@@ -1931,14 +1969,14 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(40usize),
+                id: ::use_mdbook::mdbook_shared::PageId(41usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::GuidesDesktopIndex {},
-            ::use_mdbook::mdbook_shared::PageId(40usize),
+            ::use_mdbook::mdbook_shared::PageId(41usize),
         );
-        pages.push((41usize, {
+        pages.push((42usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Mobile".to_string(),
                 url: BookRoute::GuidesMobileIndex {},
@@ -1976,14 +2014,14 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(41usize),
+                id: ::use_mdbook::mdbook_shared::PageId(42usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::GuidesMobileIndex {},
-            ::use_mdbook::mdbook_shared::PageId(41usize),
+            ::use_mdbook::mdbook_shared::PageId(42usize),
         );
-        pages.push((42usize, {
+        pages.push((43usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "APIs".to_string(),
                 url: BookRoute::GuidesMobileApis {},
@@ -2011,14 +2049,14 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(42usize),
+                id: ::use_mdbook::mdbook_shared::PageId(43usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::GuidesMobileApis {},
-            ::use_mdbook::mdbook_shared::PageId(42usize),
+            ::use_mdbook::mdbook_shared::PageId(43usize),
         );
-        pages.push((43usize, {
+        pages.push((44usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Streaming and SSR".to_string(),
                 url: BookRoute::GuidesSsr {},
@@ -2041,14 +2079,14 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(43usize),
+                id: ::use_mdbook::mdbook_shared::PageId(44usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::GuidesSsr {},
-            ::use_mdbook::mdbook_shared::PageId(43usize),
+            ::use_mdbook::mdbook_shared::PageId(44usize),
         );
-        pages.push((44usize, {
+        pages.push((45usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Fullstack".to_string(),
                 url: BookRoute::GuidesFullstackIndex {},
@@ -2059,14 +2097,14 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     level: 1usize,
                 }],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(44usize),
+                id: ::use_mdbook::mdbook_shared::PageId(45usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::GuidesFullstackIndex {},
-            ::use_mdbook::mdbook_shared::PageId(44usize),
+            ::use_mdbook::mdbook_shared::PageId(45usize),
         );
-        pages.push((45usize, {
+        pages.push((46usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Managing Dependencies".to_string(),
                 url: BookRoute::GuidesFullstackManagingDependencies {},
@@ -2099,14 +2137,14 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(45usize),
+                id: ::use_mdbook::mdbook_shared::PageId(46usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::GuidesFullstackManagingDependencies {},
-            ::use_mdbook::mdbook_shared::PageId(45usize),
+            ::use_mdbook::mdbook_shared::PageId(46usize),
         );
-        pages.push((46usize, {
+        pages.push((47usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Server Functions".to_string(),
                 url: BookRoute::GuidesFullstackServerFunctions {},
@@ -2139,14 +2177,14 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(46usize),
+                id: ::use_mdbook::mdbook_shared::PageId(47usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::GuidesFullstackServerFunctions {},
-            ::use_mdbook::mdbook_shared::PageId(46usize),
+            ::use_mdbook::mdbook_shared::PageId(47usize),
         );
-        pages.push((47usize, {
+        pages.push((48usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Extractors".to_string(),
                 url: BookRoute::GuidesFullstackExtractors {},
@@ -2157,14 +2195,14 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     level: 1usize,
                 }],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(47usize),
+                id: ::use_mdbook::mdbook_shared::PageId(48usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::GuidesFullstackExtractors {},
-            ::use_mdbook::mdbook_shared::PageId(47usize),
+            ::use_mdbook::mdbook_shared::PageId(48usize),
         );
-        pages.push((48usize, {
+        pages.push((49usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Middleware".to_string(),
                 url: BookRoute::GuidesFullstackMiddleware {},
@@ -2175,14 +2213,14 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     level: 1usize,
                 }],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(48usize),
+                id: ::use_mdbook::mdbook_shared::PageId(49usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::GuidesFullstackMiddleware {},
-            ::use_mdbook::mdbook_shared::PageId(48usize),
+            ::use_mdbook::mdbook_shared::PageId(49usize),
         );
-        pages.push((49usize, {
+        pages.push((50usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Authentication".to_string(),
                 url: BookRoute::GuidesFullstackAuthentication {},
@@ -2193,14 +2231,14 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     level: 1usize,
                 }],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(49usize),
+                id: ::use_mdbook::mdbook_shared::PageId(50usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::GuidesFullstackAuthentication {},
-            ::use_mdbook::mdbook_shared::PageId(49usize),
+            ::use_mdbook::mdbook_shared::PageId(50usize),
         );
-        pages.push((50usize, {
+        pages.push((51usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Routing".to_string(),
                 url: BookRoute::GuidesFullstackRouting {},
@@ -2211,14 +2249,14 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     level: 1usize,
                 }],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(50usize),
+                id: ::use_mdbook::mdbook_shared::PageId(51usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::GuidesFullstackRouting {},
-            ::use_mdbook::mdbook_shared::PageId(50usize),
+            ::use_mdbook::mdbook_shared::PageId(51usize),
         );
-        pages.push((51usize, {
+        pages.push((52usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Publishing".to_string(),
                 url: BookRoute::CookbookPublishing {},
@@ -2261,14 +2299,14 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(51usize),
+                id: ::use_mdbook::mdbook_shared::PageId(52usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::CookbookPublishing {},
-            ::use_mdbook::mdbook_shared::PageId(51usize),
+            ::use_mdbook::mdbook_shared::PageId(52usize),
         );
-        pages.push((52usize, {
+        pages.push((53usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Anti-patterns".to_string(),
                 url: BookRoute::CookbookAntipatterns {},
@@ -2317,14 +2355,14 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(52usize),
+                id: ::use_mdbook::mdbook_shared::PageId(53usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::CookbookAntipatterns {},
-            ::use_mdbook::mdbook_shared::PageId(52usize),
+            ::use_mdbook::mdbook_shared::PageId(53usize),
         );
-        pages.push((53usize, {
+        pages.push((54usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Error Handling".to_string(),
                 url: BookRoute::CookbookErrorHandling {},
@@ -2362,28 +2400,28 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(53usize),
+                id: ::use_mdbook::mdbook_shared::PageId(54usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::CookbookErrorHandling {},
-            ::use_mdbook::mdbook_shared::PageId(53usize),
+            ::use_mdbook::mdbook_shared::PageId(54usize),
         );
-        pages.push((54usize, {
+        pages.push((55usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Integrations".to_string(),
                 url: BookRoute::CookbookIntegrationsIndex {},
                 segments: vec![],
                 sections: vec![],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(54usize),
+                id: ::use_mdbook::mdbook_shared::PageId(55usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::CookbookIntegrationsIndex {},
-            ::use_mdbook::mdbook_shared::PageId(54usize),
+            ::use_mdbook::mdbook_shared::PageId(55usize),
         );
-        pages.push((55usize, {
+        pages.push((56usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Logging".to_string(),
                 url: BookRoute::CookbookIntegrationsLogging {},
@@ -2421,14 +2459,14 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(55usize),
+                id: ::use_mdbook::mdbook_shared::PageId(56usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::CookbookIntegrationsLogging {},
-            ::use_mdbook::mdbook_shared::PageId(55usize),
+            ::use_mdbook::mdbook_shared::PageId(56usize),
         );
-        pages.push((56usize, {
+        pages.push((57usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Internationalization".to_string(),
                 url: BookRoute::CookbookIntegrationsInternationalization {},
@@ -2439,14 +2477,14 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     level: 1usize,
                 }],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(56usize),
+                id: ::use_mdbook::mdbook_shared::PageId(57usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::CookbookIntegrationsInternationalization {},
-            ::use_mdbook::mdbook_shared::PageId(56usize),
+            ::use_mdbook::mdbook_shared::PageId(57usize),
         );
-        pages.push((57usize, {
+        pages.push((58usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "State Management".to_string(),
                 url: BookRoute::CookbookStateIndex {},
@@ -2457,14 +2495,14 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     level: 1usize,
                 }],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(57usize),
+                id: ::use_mdbook::mdbook_shared::PageId(58usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::CookbookStateIndex {},
-            ::use_mdbook::mdbook_shared::PageId(57usize),
+            ::use_mdbook::mdbook_shared::PageId(58usize),
         );
-        pages.push((58usize, {
+        pages.push((59usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "External State".to_string(),
                 url: BookRoute::CookbookStateExternalIndex {},
@@ -2487,14 +2525,14 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(58usize),
+                id: ::use_mdbook::mdbook_shared::PageId(59usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::CookbookStateExternalIndex {},
-            ::use_mdbook::mdbook_shared::PageId(58usize),
+            ::use_mdbook::mdbook_shared::PageId(59usize),
         );
-        pages.push((59usize, {
+        pages.push((60usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Custom Hooks".to_string(),
                 url: BookRoute::CookbookStateCustomHooksIndex {},
@@ -2517,14 +2555,14 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(59usize),
+                id: ::use_mdbook::mdbook_shared::PageId(60usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::CookbookStateCustomHooksIndex {},
-            ::use_mdbook::mdbook_shared::PageId(59usize),
+            ::use_mdbook::mdbook_shared::PageId(60usize),
         );
-        pages.push((60usize, {
+        pages.push((61usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Bundle Config".to_string(),
                 url: BookRoute::CookbookBundling {},
@@ -2535,14 +2573,14 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     level: 3usize,
                 }],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(60usize),
+                id: ::use_mdbook::mdbook_shared::PageId(61usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::CookbookBundling {},
-            ::use_mdbook::mdbook_shared::PageId(60usize),
+            ::use_mdbook::mdbook_shared::PageId(61usize),
         );
-        pages.push((61usize, {
+        pages.push((62usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Testing".to_string(),
                 url: BookRoute::CookbookTesting {},
@@ -2570,14 +2608,14 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(61usize),
+                id: ::use_mdbook::mdbook_shared::PageId(62usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::CookbookTesting {},
-            ::use_mdbook::mdbook_shared::PageId(61usize),
+            ::use_mdbook::mdbook_shared::PageId(62usize),
         );
-        pages.push((62usize, {
+        pages.push((63usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Tailwind".to_string(),
                 url: BookRoute::CookbookTailwind {},
@@ -2615,14 +2653,14 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(62usize),
+                id: ::use_mdbook::mdbook_shared::PageId(63usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::CookbookTailwind {},
-            ::use_mdbook::mdbook_shared::PageId(62usize),
+            ::use_mdbook::mdbook_shared::PageId(63usize),
         );
-        pages.push((63usize, {
+        pages.push((64usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Optimizing".to_string(),
                 url: BookRoute::CookbookOptimizing {},
@@ -2675,14 +2713,14 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(63usize),
+                id: ::use_mdbook::mdbook_shared::PageId(64usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::CookbookOptimizing {},
-            ::use_mdbook::mdbook_shared::PageId(63usize),
+            ::use_mdbook::mdbook_shared::PageId(64usize),
         );
-        pages.push((64usize, {
+        pages.push((65usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Migrating to v0.6".to_string(),
                 url: BookRoute::MigrationIndex {},
@@ -2715,14 +2753,14 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(64usize),
+                id: ::use_mdbook::mdbook_shared::PageId(65usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::MigrationIndex {},
-            ::use_mdbook::mdbook_shared::PageId(64usize),
+            ::use_mdbook::mdbook_shared::PageId(65usize),
         );
-        pages.push((65usize, {
+        pages.push((66usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Reference".to_string(),
                 url: BookRoute::ReferenceIndex {},
@@ -2733,14 +2771,14 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     level: 1usize,
                 }],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(65usize),
+                id: ::use_mdbook::mdbook_shared::PageId(66usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::ReferenceIndex {},
-            ::use_mdbook::mdbook_shared::PageId(65usize),
+            ::use_mdbook::mdbook_shared::PageId(66usize),
         );
-        pages.push((66usize, {
+        pages.push((67usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Hot-Reload".to_string(),
                 url: BookRoute::ReferenceHotreload {},
@@ -2763,14 +2801,14 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(66usize),
+                id: ::use_mdbook::mdbook_shared::PageId(67usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::ReferenceHotreload {},
-            ::use_mdbook::mdbook_shared::PageId(66usize),
+            ::use_mdbook::mdbook_shared::PageId(67usize),
         );
-        pages.push((67usize, {
+        pages.push((68usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "RSX".to_string(),
                 url: BookRoute::ReferenceRsx {},
@@ -2848,14 +2886,14 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(67usize),
+                id: ::use_mdbook::mdbook_shared::PageId(68usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::ReferenceRsx {},
-            ::use_mdbook::mdbook_shared::PageId(67usize),
+            ::use_mdbook::mdbook_shared::PageId(68usize),
         );
-        pages.push((68usize, {
+        pages.push((69usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Components".to_string(),
                 url: BookRoute::ReferenceComponents {},
@@ -2866,14 +2904,14 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     level: 1usize,
                 }],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(68usize),
+                id: ::use_mdbook::mdbook_shared::PageId(69usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::ReferenceComponents {},
-            ::use_mdbook::mdbook_shared::PageId(68usize),
+            ::use_mdbook::mdbook_shared::PageId(69usize),
         );
-        pages.push((69usize, {
+        pages.push((70usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Props".to_string(),
                 url: BookRoute::ReferenceComponentProps {},
@@ -2931,14 +2969,14 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(69usize),
+                id: ::use_mdbook::mdbook_shared::PageId(70usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::ReferenceComponentProps {},
-            ::use_mdbook::mdbook_shared::PageId(69usize),
+            ::use_mdbook::mdbook_shared::PageId(70usize),
         );
-        pages.push((70usize, {
+        pages.push((71usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Event Handlers".to_string(),
                 url: BookRoute::ReferenceEventHandlers {},
@@ -2981,14 +3019,14 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(70usize),
+                id: ::use_mdbook::mdbook_shared::PageId(71usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::ReferenceEventHandlers {},
-            ::use_mdbook::mdbook_shared::PageId(70usize),
+            ::use_mdbook::mdbook_shared::PageId(71usize),
         );
-        pages.push((71usize, {
+        pages.push((72usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Hooks".to_string(),
                 url: BookRoute::ReferenceHooks {},
@@ -3031,14 +3069,14 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(71usize),
+                id: ::use_mdbook::mdbook_shared::PageId(72usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::ReferenceHooks {},
-            ::use_mdbook::mdbook_shared::PageId(71usize),
+            ::use_mdbook::mdbook_shared::PageId(72usize),
         );
-        pages.push((72usize, {
+        pages.push((73usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "User Input".to_string(),
                 url: BookRoute::ReferenceUserInput {},
@@ -3066,14 +3104,14 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(72usize),
+                id: ::use_mdbook::mdbook_shared::PageId(73usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::ReferenceUserInput {},
-            ::use_mdbook::mdbook_shared::PageId(72usize),
+            ::use_mdbook::mdbook_shared::PageId(73usize),
         );
-        pages.push((73usize, {
+        pages.push((74usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Context".to_string(),
                 url: BookRoute::ReferenceContext {},
@@ -3096,14 +3134,14 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(73usize),
+                id: ::use_mdbook::mdbook_shared::PageId(74usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::ReferenceContext {},
-            ::use_mdbook::mdbook_shared::PageId(73usize),
+            ::use_mdbook::mdbook_shared::PageId(74usize),
         );
-        pages.push((74usize, {
+        pages.push((75usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Dynamic Rendering".to_string(),
                 url: BookRoute::ReferenceDynamicRendering {},
@@ -3151,14 +3189,14 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(74usize),
+                id: ::use_mdbook::mdbook_shared::PageId(75usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::ReferenceDynamicRendering {},
-            ::use_mdbook::mdbook_shared::PageId(74usize),
+            ::use_mdbook::mdbook_shared::PageId(75usize),
         );
-        pages.push((75usize, {
+        pages.push((76usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Routing".to_string(),
                 url: BookRoute::ReferenceRouter {},
@@ -3191,14 +3229,14 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(75usize),
+                id: ::use_mdbook::mdbook_shared::PageId(76usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::ReferenceRouter {},
-            ::use_mdbook::mdbook_shared::PageId(75usize),
+            ::use_mdbook::mdbook_shared::PageId(76usize),
         );
-        pages.push((76usize, {
+        pages.push((77usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Resource".to_string(),
                 url: BookRoute::ReferenceUseResource {},
@@ -3221,14 +3259,14 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(76usize),
+                id: ::use_mdbook::mdbook_shared::PageId(77usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::ReferenceUseResource {},
-            ::use_mdbook::mdbook_shared::PageId(76usize),
+            ::use_mdbook::mdbook_shared::PageId(77usize),
         );
-        pages.push((77usize, {
+        pages.push((78usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "UseCoroutine".to_string(),
                 url: BookRoute::ReferenceUseCoroutine {},
@@ -3261,14 +3299,14 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(77usize),
+                id: ::use_mdbook::mdbook_shared::PageId(78usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::ReferenceUseCoroutine {},
-            ::use_mdbook::mdbook_shared::PageId(77usize),
+            ::use_mdbook::mdbook_shared::PageId(78usize),
         );
-        pages.push((78usize, {
+        pages.push((79usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Spawn".to_string(),
                 url: BookRoute::ReferenceSpawn {},
@@ -3286,14 +3324,14 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(78usize),
+                id: ::use_mdbook::mdbook_shared::PageId(79usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::ReferenceSpawn {},
-            ::use_mdbook::mdbook_shared::PageId(78usize),
+            ::use_mdbook::mdbook_shared::PageId(79usize),
         );
-        pages.push((79usize, {
+        pages.push((80usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Contributing".to_string(),
                 url: BookRoute::ContributingIndex {},
@@ -3331,14 +3369,14 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(79usize),
+                id: ::use_mdbook::mdbook_shared::PageId(80usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::ContributingIndex {},
-            ::use_mdbook::mdbook_shared::PageId(79usize),
+            ::use_mdbook::mdbook_shared::PageId(80usize),
         );
-        pages.push((80usize, {
+        pages.push((81usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Project Structure".to_string(),
                 url: BookRoute::ContributingProjectStructure {},
@@ -3381,14 +3419,14 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(80usize),
+                id: ::use_mdbook::mdbook_shared::PageId(81usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::ContributingProjectStructure {},
-            ::use_mdbook::mdbook_shared::PageId(80usize),
+            ::use_mdbook::mdbook_shared::PageId(81usize),
         );
-        pages.push((81usize, {
+        pages.push((82usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Guiding Principles".to_string(),
                 url: BookRoute::ContributingGuidingPrinciples {},
@@ -3421,28 +3459,28 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(81usize),
+                id: ::use_mdbook::mdbook_shared::PageId(82usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::ContributingGuidingPrinciples {},
-            ::use_mdbook::mdbook_shared::PageId(81usize),
+            ::use_mdbook::mdbook_shared::PageId(82usize),
         );
-        pages.push((82usize, {
+        pages.push((83usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Roadmap".to_string(),
                 url: BookRoute::ContributingRoadmap {},
                 segments: vec![],
                 sections: vec![],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(82usize),
+                id: ::use_mdbook::mdbook_shared::PageId(83usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::ContributingRoadmap {},
-            ::use_mdbook::mdbook_shared::PageId(82usize),
+            ::use_mdbook::mdbook_shared::PageId(83usize),
         );
-        pages.push((83usize, {
+        pages.push((84usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "CLI".to_string(),
                 url: BookRoute::CliIndex {},
@@ -3460,14 +3498,14 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(83usize),
+                id: ::use_mdbook::mdbook_shared::PageId(84usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::CliIndex {},
-            ::use_mdbook::mdbook_shared::PageId(83usize),
+            ::use_mdbook::mdbook_shared::PageId(84usize),
         );
-        pages.push((84usize, {
+        pages.push((85usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Create a Project".to_string(),
                 url: BookRoute::CliCreating {},
@@ -3485,14 +3523,14 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(84usize),
+                id: ::use_mdbook::mdbook_shared::PageId(85usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::CliCreating {},
-            ::use_mdbook::mdbook_shared::PageId(84usize),
+            ::use_mdbook::mdbook_shared::PageId(85usize),
         );
-        pages.push((85usize, {
+        pages.push((86usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Configure Project".to_string(),
                 url: BookRoute::CliConfigure {},
@@ -3545,14 +3583,14 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(85usize),
+                id: ::use_mdbook::mdbook_shared::PageId(86usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::CliConfigure {},
-            ::use_mdbook::mdbook_shared::PageId(85usize),
+            ::use_mdbook::mdbook_shared::PageId(86usize),
         );
-        pages.push((86usize, {
+        pages.push((87usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Translate HTML".to_string(),
                 url: BookRoute::CliTranslate {},
@@ -3570,12 +3608,12 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(86usize),
+                id: ::use_mdbook::mdbook_shared::PageId(87usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::CliTranslate {},
-            ::use_mdbook::mdbook_shared::PageId(86usize),
+            ::use_mdbook::mdbook_shared::PageId(87usize),
         );
         ::use_mdbook::mdbook_shared::MdBook {
             summary: ::use_mdbook::mdbook_shared::Summary {
@@ -3774,10 +3812,18 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                         ),
                         nested_items: vec![
                             ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
+                                name: "Managing State".to_string(),
+                                location: Some(BookRoute::GuidesManagingState {}),
+                                number: Some(
+                                    ::use_mdbook::mdbook_shared::SectionNumber(vec![4u32, 1u32]),
+                                ),
+                                nested_items: vec![],
+                            }),
+                            ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
                                 name: "Router".to_string(),
                                 location: Some(BookRoute::RouterIndex {}),
                                 number: Some(
-                                    ::use_mdbook::mdbook_shared::SectionNumber(vec![4u32, 1u32]),
+                                    ::use_mdbook::mdbook_shared::SectionNumber(vec![4u32, 2u32]),
                                 ),
                                 nested_items: vec![
                                     ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
@@ -3785,7 +3831,7 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                                         location: Some(BookRoute::RouterExampleIndex {}),
                                         number: Some(
                                             ::use_mdbook::mdbook_shared::SectionNumber(
-                                                vec![4u32, 1u32, 1u32],
+                                                vec![4u32, 2u32, 1u32],
                                             ),
                                         ),
                                         nested_items: vec![
@@ -3795,7 +3841,7 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                                                 }),
                                                 number: Some(
                                                     ::use_mdbook::mdbook_shared::SectionNumber(
-                                                        vec![4u32, 1u32, 1u32, 1u32],
+                                                        vec![4u32, 2u32, 1u32, 1u32],
                                                     ),
                                                 ),
                                                 nested_items: vec![],
@@ -3806,7 +3852,7 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                                                 }),
                                                 number: Some(
                                                     ::use_mdbook::mdbook_shared::SectionNumber(
-                                                        vec![4u32, 1u32, 1u32, 2u32],
+                                                        vec![4u32, 2u32, 1u32, 2u32],
                                                     ),
                                                 ),
                                                 nested_items: vec![],
@@ -3817,7 +3863,7 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                                                 }),
                                                 number: Some(
                                                     ::use_mdbook::mdbook_shared::SectionNumber(
-                                                        vec![4u32, 1u32, 1u32, 3u32],
+                                                        vec![4u32, 2u32, 1u32, 3u32],
                                                     ),
                                                 ),
                                                 nested_items: vec![],
@@ -3827,7 +3873,7 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                                                 location: Some(BookRoute::RouterExampleRedirectionPerfection {}),
                                                 number: Some(
                                                     ::use_mdbook::mdbook_shared::SectionNumber(
-                                                        vec![4u32, 1u32, 1u32, 4u32],
+                                                        vec![4u32, 2u32, 1u32, 4u32],
                                                     ),
                                                 ),
                                                 nested_items: vec![],
@@ -3838,7 +3884,7 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                                                 }),
                                                 number: Some(
                                                     ::use_mdbook::mdbook_shared::SectionNumber(
-                                                        vec![4u32, 1u32, 1u32, 5u32],
+                                                        vec![4u32, 2u32, 1u32, 5u32],
                                                     ),
                                                 ),
                                                 nested_items: vec![],
@@ -3850,7 +3896,7 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                                         location: Some(BookRoute::RouterReferenceIndex {}),
                                         number: Some(
                                             ::use_mdbook::mdbook_shared::SectionNumber(
-                                                vec![4u32, 1u32, 2u32],
+                                                vec![4u32, 2u32, 2u32],
                                             ),
                                         ),
                                         nested_items: vec![
@@ -3860,7 +3906,7 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                                                 }),
                                                 number: Some(
                                                     ::use_mdbook::mdbook_shared::SectionNumber(
-                                                        vec![4u32, 1u32, 2u32, 1u32],
+                                                        vec![4u32, 2u32, 2u32, 1u32],
                                                     ),
                                                 ),
                                                 nested_items: vec![],
@@ -3871,7 +3917,7 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                                                 }),
                                                 number: Some(
                                                     ::use_mdbook::mdbook_shared::SectionNumber(
-                                                        vec![4u32, 1u32, 2u32, 2u32],
+                                                        vec![4u32, 2u32, 2u32, 2u32],
                                                     ),
                                                 ),
                                                 nested_items: vec![],
@@ -3882,7 +3928,7 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                                                 }),
                                                 number: Some(
                                                     ::use_mdbook::mdbook_shared::SectionNumber(
-                                                        vec![4u32, 1u32, 2u32, 3u32],
+                                                        vec![4u32, 2u32, 2u32, 3u32],
                                                     ),
                                                 ),
                                                 nested_items: vec![],
@@ -3893,7 +3939,7 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                                                 }),
                                                 number: Some(
                                                     ::use_mdbook::mdbook_shared::SectionNumber(
-                                                        vec![4u32, 1u32, 2u32, 4u32],
+                                                        vec![4u32, 2u32, 2u32, 4u32],
                                                     ),
                                                 ),
                                                 nested_items: vec![],
@@ -3903,7 +3949,7 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                                                 location: Some(BookRoute::RouterReferenceNavigationProgrammatic {}),
                                                 number: Some(
                                                     ::use_mdbook::mdbook_shared::SectionNumber(
-                                                        vec![4u32, 1u32, 2u32, 5u32],
+                                                        vec![4u32, 2u32, 2u32, 5u32],
                                                     ),
                                                 ),
                                                 nested_items: vec![],
@@ -3914,7 +3960,7 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                                                 }),
                                                 number: Some(
                                                     ::use_mdbook::mdbook_shared::SectionNumber(
-                                                        vec![4u32, 1u32, 2u32, 6u32],
+                                                        vec![4u32, 2u32, 2u32, 6u32],
                                                     ),
                                                 ),
                                                 nested_items: vec![],
@@ -3925,7 +3971,7 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                                                 }),
                                                 number: Some(
                                                     ::use_mdbook::mdbook_shared::SectionNumber(
-                                                        vec![4u32, 1u32, 2u32, 7u32],
+                                                        vec![4u32, 2u32, 2u32, 7u32],
                                                     ),
                                                 ),
                                                 nested_items: vec![],
@@ -3935,7 +3981,7 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                                                 location: Some(BookRoute::RouterReferenceRoutingUpdateCallback {}),
                                                 number: Some(
                                                     ::use_mdbook::mdbook_shared::SectionNumber(
-                                                        vec![4u32, 1u32, 2u32, 8u32],
+                                                        vec![4u32, 2u32, 2u32, 8u32],
                                                     ),
                                                 ),
                                                 nested_items: vec![],
@@ -3948,7 +3994,7 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                                 name: "Assets".to_string(),
                                 location: Some(BookRoute::GuidesAssets {}),
                                 number: Some(
-                                    ::use_mdbook::mdbook_shared::SectionNumber(vec![4u32, 2u32]),
+                                    ::use_mdbook::mdbook_shared::SectionNumber(vec![4u32, 3u32]),
                                 ),
                                 nested_items: vec![],
                             }),
@@ -3956,7 +4002,7 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                                 name: "Web".to_string(),
                                 location: Some(BookRoute::GuidesWebIndex {}),
                                 number: Some(
-                                    ::use_mdbook::mdbook_shared::SectionNumber(vec![4u32, 3u32]),
+                                    ::use_mdbook::mdbook_shared::SectionNumber(vec![4u32, 4u32]),
                                 ),
                                 nested_items: vec![],
                             }),
@@ -3964,7 +4010,7 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                                 name: "Desktop".to_string(),
                                 location: Some(BookRoute::GuidesDesktopIndex {}),
                                 number: Some(
-                                    ::use_mdbook::mdbook_shared::SectionNumber(vec![4u32, 4u32]),
+                                    ::use_mdbook::mdbook_shared::SectionNumber(vec![4u32, 5u32]),
                                 ),
                                 nested_items: vec![],
                             }),
@@ -3972,7 +4018,7 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                                 name: "Mobile".to_string(),
                                 location: Some(BookRoute::GuidesMobileIndex {}),
                                 number: Some(
-                                    ::use_mdbook::mdbook_shared::SectionNumber(vec![4u32, 5u32]),
+                                    ::use_mdbook::mdbook_shared::SectionNumber(vec![4u32, 6u32]),
                                 ),
                                 nested_items: vec![
                                     ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
@@ -3980,7 +4026,7 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                                         location: Some(BookRoute::GuidesMobileApis {}),
                                         number: Some(
                                             ::use_mdbook::mdbook_shared::SectionNumber(
-                                                vec![4u32, 5u32, 1u32],
+                                                vec![4u32, 6u32, 1u32],
                                             ),
                                         ),
                                         nested_items: vec![],
@@ -3991,7 +4037,7 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                                 name: "Streaming and SSR".to_string(),
                                 location: Some(BookRoute::GuidesSsr {}),
                                 number: Some(
-                                    ::use_mdbook::mdbook_shared::SectionNumber(vec![4u32, 6u32]),
+                                    ::use_mdbook::mdbook_shared::SectionNumber(vec![4u32, 7u32]),
                                 ),
                                 nested_items: vec![],
                             }),
@@ -3999,7 +4045,7 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                                 name: "Fullstack".to_string(),
                                 location: Some(BookRoute::GuidesFullstackIndex {}),
                                 number: Some(
-                                    ::use_mdbook::mdbook_shared::SectionNumber(vec![4u32, 7u32]),
+                                    ::use_mdbook::mdbook_shared::SectionNumber(vec![4u32, 8u32]),
                                 ),
                                 nested_items: vec![
                                     ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
@@ -4007,7 +4053,7 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                                         location: Some(BookRoute::GuidesFullstackManagingDependencies {}),
                                         number: Some(
                                             ::use_mdbook::mdbook_shared::SectionNumber(
-                                                vec![4u32, 7u32, 1u32],
+                                                vec![4u32, 8u32, 1u32],
                                             ),
                                         ),
                                         nested_items: vec![],
@@ -4018,7 +4064,7 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                                         }),
                                         number: Some(
                                             ::use_mdbook::mdbook_shared::SectionNumber(
-                                                vec![4u32, 7u32, 2u32],
+                                                vec![4u32, 8u32, 2u32],
                                             ),
                                         ),
                                         nested_items: vec![],
@@ -4029,7 +4075,7 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                                         }),
                                         number: Some(
                                             ::use_mdbook::mdbook_shared::SectionNumber(
-                                                vec![4u32, 7u32, 3u32],
+                                                vec![4u32, 8u32, 3u32],
                                             ),
                                         ),
                                         nested_items: vec![],
@@ -4040,7 +4086,7 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                                         }),
                                         number: Some(
                                             ::use_mdbook::mdbook_shared::SectionNumber(
-                                                vec![4u32, 7u32, 4u32],
+                                                vec![4u32, 8u32, 4u32],
                                             ),
                                         ),
                                         nested_items: vec![],
@@ -4051,7 +4097,7 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                                         }),
                                         number: Some(
                                             ::use_mdbook::mdbook_shared::SectionNumber(
-                                                vec![4u32, 7u32, 5u32],
+                                                vec![4u32, 8u32, 5u32],
                                             ),
                                         ),
                                         nested_items: vec![],
@@ -4062,7 +4108,7 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                                         }),
                                         number: Some(
                                             ::use_mdbook::mdbook_shared::SectionNumber(
-                                                vec![4u32, 7u32, 6u32],
+                                                vec![4u32, 8u32, 6u32],
                                             ),
                                         ),
                                         nested_items: vec![],
@@ -4073,7 +4119,7 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                                 name: "Publishing".to_string(),
                                 location: Some(BookRoute::CookbookPublishing {}),
                                 number: Some(
-                                    ::use_mdbook::mdbook_shared::SectionNumber(vec![4u32, 8u32]),
+                                    ::use_mdbook::mdbook_shared::SectionNumber(vec![4u32, 9u32]),
                                 ),
                                 nested_items: vec![],
                             }),
@@ -4081,7 +4127,9 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                                 name: "Anti-patterns".to_string(),
                                 location: Some(BookRoute::CookbookAntipatterns {}),
                                 number: Some(
-                                    ::use_mdbook::mdbook_shared::SectionNumber(vec![4u32, 9u32]),
+                                    ::use_mdbook::mdbook_shared::SectionNumber(
+                                        vec![4u32, 10u32],
+                                    ),
                                 ),
                                 nested_items: vec![],
                             }),
@@ -4091,7 +4139,7 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                                 }),
                                 number: Some(
                                     ::use_mdbook::mdbook_shared::SectionNumber(
-                                        vec![4u32, 10u32],
+                                        vec![4u32, 11u32],
                                     ),
                                 ),
                                 nested_items: vec![],
@@ -4102,7 +4150,7 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                                 }),
                                 number: Some(
                                     ::use_mdbook::mdbook_shared::SectionNumber(
-                                        vec![4u32, 11u32],
+                                        vec![4u32, 12u32],
                                     ),
                                 ),
                                 nested_items: vec![
@@ -4112,7 +4160,7 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                                         }),
                                         number: Some(
                                             ::use_mdbook::mdbook_shared::SectionNumber(
-                                                vec![4u32, 11u32, 1u32],
+                                                vec![4u32, 12u32, 1u32],
                                             ),
                                         ),
                                         nested_items: vec![],
@@ -4122,7 +4170,7 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                                         location: Some(BookRoute::CookbookIntegrationsInternationalization {}),
                                         number: Some(
                                             ::use_mdbook::mdbook_shared::SectionNumber(
-                                                vec![4u32, 11u32, 2u32],
+                                                vec![4u32, 12u32, 2u32],
                                             ),
                                         ),
                                         nested_items: vec![],
@@ -4134,7 +4182,7 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                                 location: Some(BookRoute::CookbookStateIndex {}),
                                 number: Some(
                                     ::use_mdbook::mdbook_shared::SectionNumber(
-                                        vec![4u32, 12u32],
+                                        vec![4u32, 13u32],
                                     ),
                                 ),
                                 nested_items: vec![
@@ -4144,7 +4192,7 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                                         }),
                                         number: Some(
                                             ::use_mdbook::mdbook_shared::SectionNumber(
-                                                vec![4u32, 12u32, 1u32],
+                                                vec![4u32, 13u32, 1u32],
                                             ),
                                         ),
                                         nested_items: vec![],
@@ -4155,7 +4203,7 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                                         }),
                                         number: Some(
                                             ::use_mdbook::mdbook_shared::SectionNumber(
-                                                vec![4u32, 12u32, 2u32],
+                                                vec![4u32, 13u32, 2u32],
                                             ),
                                         ),
                                         nested_items: vec![],
@@ -4167,7 +4215,7 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                                 location: Some(BookRoute::CookbookBundling {}),
                                 number: Some(
                                     ::use_mdbook::mdbook_shared::SectionNumber(
-                                        vec![4u32, 13u32],
+                                        vec![4u32, 14u32],
                                     ),
                                 ),
                                 nested_items: vec![],
@@ -4177,7 +4225,7 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                                 location: Some(BookRoute::CookbookTesting {}),
                                 number: Some(
                                     ::use_mdbook::mdbook_shared::SectionNumber(
-                                        vec![4u32, 14u32],
+                                        vec![4u32, 15u32],
                                     ),
                                 ),
                                 nested_items: vec![],
@@ -4187,7 +4235,7 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                                 location: Some(BookRoute::CookbookTailwind {}),
                                 number: Some(
                                     ::use_mdbook::mdbook_shared::SectionNumber(
-                                        vec![4u32, 15u32],
+                                        vec![4u32, 16u32],
                                     ),
                                 ),
                                 nested_items: vec![],
@@ -4197,7 +4245,7 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                                 location: Some(BookRoute::CookbookOptimizing {}),
                                 number: Some(
                                     ::use_mdbook::mdbook_shared::SectionNumber(
-                                        vec![4u32, 16u32],
+                                        vec![4u32, 17u32],
                                     ),
                                 ),
                                 nested_items: vec![],
@@ -4207,7 +4255,7 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                                 location: Some(BookRoute::MigrationIndex {}),
                                 number: Some(
                                     ::use_mdbook::mdbook_shared::SectionNumber(
-                                        vec![4u32, 17u32],
+                                        vec![4u32, 18u32],
                                     ),
                                 ),
                                 nested_items: vec![],
@@ -4904,11 +4952,7 @@ pub fn GuideIndex() -> dioxus::prelude::Element {
             "We will primarily focus on the higher-level concepts of Dioxus without diving deep into the details of specific APIs. We recommend experimenting with the APIs yourself or reading the "
             Link { to: BookRoute::EssentialsIndex {} }
             " and specific "
-            Link {
-                to: compile_error!(
-                    "Failed to resolve link guides/index.md relative to /Users/evanalmloff/Desktop/Github/docsite/docs-src/0.6/src/guide/index.md: No such file or directory (os error 2)",
-                ),
-            }
+            Link { to: BookRoute::GuidesIndex {} }
             " for more information."
         }
         h2 { id: "what-will-we-be-learning",
@@ -6421,11 +6465,7 @@ pub fn GuideBackend() -> dioxus::prelude::Element {
         }
         p {
             "Server functions are extremely capable and can even be used during server-side-rendering. Check out the complete "
-            Link {
-                to: compile_error!(
-                    "Failed to resolve link ../guides/fullstack.md relative to /Users/evanalmloff/Desktop/Github/docsite/docs-src/0.6/src/guide/backend.md: No such file or directory (os error 2)",
-                ),
-            }
+            Link { to: BookRoute::GuidesFullstackIndex {} }
             " for more information."
         }
     }
@@ -8565,11 +8605,7 @@ pub fn GuidesIndex() -> dioxus::prelude::Element {
         }
         ul {
             li {
-                Link {
-                    to: compile_error!(
-                        "Failed to resolve link guides/managing_state.md relative to /Users/evanalmloff/Desktop/Github/docsite/docs-src/0.6/src/guides/index.md: No such file or directory (os error 2)",
-                    ),
-                }
+                Link { to: BookRoute::GuidesManagingState {} }
                 " (signals-based reactivity)"
             }
         }
@@ -8639,6 +8675,55 @@ pub fn GuidesIndex() -> dioxus::prelude::Element {
                 Link { to: BookRoute::GuidesSsr {} }
                 " Overview of the SSR renderer"
             }
+        }
+    }
+}
+#[component(no_case_check)]
+pub fn GuidesManagingState() -> dioxus::prelude::Element {
+    use dioxus::prelude::*;
+    rsx! {
+        h2 { id: "the-rules-of-hooks",
+            Link { to: "#the-rules-of-hooks", class: "header", "The Rules of Hooks" }
+        }
+        p {
+            "Hooks are a powerful way to manage state in Dioxus, but there are some rules you need to follow to insure they work as expected. Dioxus uses the order you call hooks to differentiate between hooks. Because the order you call hooks matters, you must follow these rules:"
+        }
+        ol {
+            li { "Hooks may be only used in components or other hooks (we'll get to that later)" }
+            li {
+                "On every call to the component function"
+                ol {
+                    li { "The same hooks must be called" }
+                    li { "In the same order" }
+                }
+            }
+            li {
+                "Hooks name's should start with "
+                code { "use_" }
+                " so you don't accidentally confuse them with regular functions"
+            }
+        }
+        p { "These rules mean that there are certain things you can't do with hooks:" }
+        h4 { id: "no-hooks-in-conditionals",
+            Link { to: "#no-hooks-in-conditionals", class: "header", "No Hooks in Conditionals" }
+        }
+        CodeBlock {
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#8c8c8c;\">// ❌ don&#39;t call hooks in conditionals!\n</span><span style=\"color:#8c8c8c;\">// We must ensure that the same hooks will be called every time\n</span><span style=\"color:#8c8c8c;\">// But `if` statements only run if the conditional is true!\n</span><span style=\"color:#8c8c8c;\">// So we might violate rule 2.\n</span><span style=\"color:#f92672;\">if</span><span style=\"color:#f8f8f2;\"> you_are_happy </span><span style=\"color:#f92672;\">&amp;&amp;</span><span style=\"color:#f8f8f2;\"> you_know_it {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> something </span><span style=\"color:#f92672;\">= </span><span style=\"color:#66d9ef;\">use_signal</span><span style=\"color:#f8f8f2;\">(|| </span><span style=\"color:#ffee99;\">&quot;hands&quot;</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"color:#f8f8f2;\">    println!(</span><span style=\"color:#ffee99;\">&quot;clap your </span><span style=\"color:#ff80f4;\">{{something}}</span><span style=\"color:#ffee99;\">&quot;</span><span style=\"color:#f8f8f2;\">)\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#8c8c8c;\">// ✅ instead, *always* call use_signal\n</span><span style=\"color:#8c8c8c;\">// You can put other stuff in the conditional though\n</span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> something </span><span style=\"color:#f92672;\">= </span><span style=\"color:#66d9ef;\">use_signal</span><span style=\"color:#f8f8f2;\">(|| </span><span style=\"color:#ffee99;\">&quot;hands&quot;</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"color:#f92672;\">if</span><span style=\"color:#f8f8f2;\"> you_are_happy </span><span style=\"color:#f92672;\">&amp;&amp;</span><span style=\"color:#f8f8f2;\"> you_know_it {{\n</span><span style=\"color:#f8f8f2;\">    println!(</span><span style=\"color:#ffee99;\">&quot;clap your </span><span style=\"color:#ff80f4;\">{{something}}</span><span style=\"color:#ffee99;\">&quot;</span><span style=\"color:#f8f8f2;\">)\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
+            name: "hooks_bad.rs".to_string(),
+        }
+        h4 { id: "no-hooks-in-closures",
+            Link { to: "#no-hooks-in-closures", class: "header", "No Hooks in Closures" }
+        }
+        CodeBlock {
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#8c8c8c;\">// ❌ don&#39;t call hooks inside closures!\n</span><span style=\"color:#8c8c8c;\">// We can&#39;t guarantee that the closure, if used, will be called in the same order every time\n</span><span style=\"font-style:italic;color:#66d9ef;\">let </span><span style=\"color:#a6e22e;\">_a </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">|| {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> b </span><span style=\"color:#f92672;\">= </span><span style=\"color:#66d9ef;\">use_signal</span><span style=\"color:#f8f8f2;\">(|| </span><span style=\"color:#ff80f4;\">0</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#66d9ef;\">b</span><span style=\"color:#f8f8f2;\">()\n</span><span style=\"color:#f8f8f2;\">}};\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#8c8c8c;\">// ✅ instead, move hook `b` outside\n</span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> b </span><span style=\"color:#f92672;\">= </span><span style=\"color:#66d9ef;\">use_signal</span><span style=\"color:#f8f8f2;\">(|| </span><span style=\"color:#ff80f4;\">0</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"font-style:italic;color:#66d9ef;\">let </span><span style=\"color:#a6e22e;\">_a </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">|| </span><span style=\"color:#66d9ef;\">b</span><span style=\"color:#f8f8f2;\">();</span></pre>\n",
+            name: "hooks_bad.rs".to_string(),
+        }
+        h4 { id: "no-hooks-in-loops",
+            Link { to: "#no-hooks-in-loops", class: "header", "No Hooks in Loops" }
+        }
+        CodeBlock {
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#8c8c8c;\">// `names` is a Vec&lt;&amp;str&gt;\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#8c8c8c;\">// ❌ Do not use hooks in loops!\n</span><span style=\"color:#8c8c8c;\">// In this case, if the length of the Vec changes, we break rule 2\n</span><span style=\"color:#f92672;\">for</span><span style=\"color:#f8f8f2;\"> _name </span><span style=\"color:#f92672;\">in &amp;</span><span style=\"color:#f8f8f2;\">names {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> is_selected </span><span style=\"color:#f92672;\">= </span><span style=\"color:#66d9ef;\">use_signal</span><span style=\"color:#f8f8f2;\">(|| </span><span style=\"color:#ff80f4;\">false</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"color:#f8f8f2;\">    println!(</span><span style=\"color:#ffee99;\">&quot;selected: </span><span style=\"color:#ff80f4;\">{{is_selected}}</span><span style=\"color:#ffee99;\">&quot;</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#8c8c8c;\">// ✅ Instead, use a hashmap with use_signal\n</span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> selection_map </span><span style=\"color:#f92672;\">= </span><span style=\"color:#66d9ef;\">use_signal</span><span style=\"color:#f8f8f2;\">(HashMap::&lt;</span><span style=\"color:#f92672;\">&amp;</span><span style=\"font-style:italic;color:#66d9ef;\">str</span><span style=\"color:#f8f8f2;\">, </span><span style=\"font-style:italic;color:#66d9ef;\">bool</span><span style=\"color:#f8f8f2;\">&gt;::new);\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\">for</span><span style=\"color:#f8f8f2;\"> name </span><span style=\"color:#f92672;\">in &amp;</span><span style=\"color:#f8f8f2;\">names {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> is_selected </span><span style=\"color:#f92672;\">=</span><span style=\"color:#f8f8f2;\"> selection_map.</span><span style=\"color:#66d9ef;\">read</span><span style=\"color:#f8f8f2;\">()[name];\n</span><span style=\"color:#f8f8f2;\">    println!(</span><span style=\"color:#ffee99;\">&quot;selected: </span><span style=\"color:#ff80f4;\">{{is_selected}}</span><span style=\"color:#ffee99;\">&quot;</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
+            name: "hooks_bad.rs".to_string(),
         }
     }
 }

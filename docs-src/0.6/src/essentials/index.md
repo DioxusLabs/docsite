@@ -1,4 +1,6 @@
-The essentials section will guide you through key concepts in Dioxus:
+# Core Topics
+
+This section will guide you through key concepts in Dioxus:
 
 - [Building UIs with RSX](rsx/index.md) will teach you how to define html inside your Dioxus app with rsx.
 

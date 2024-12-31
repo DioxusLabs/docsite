@@ -1,6 +1,10 @@
-# Dioxus Reference
+# Dioxus Guides
 
-This Reference contains more detailed explanations for all concepts covered in the [`guide`](../guide/index.md) and more.
+These guides contains more detailed explanations for some concepts covered in the [`guide`](../guide/index.md) and more.
+
+## State
+
+- [State management](guides/managing_state.md) (signals-based reactivity)
 
 ## Assets
 
@@ -17,3 +21,4 @@ This Reference contains more detailed explanations for all concepts covered in t
     - [`Authentication`](fullstack/authentication.md) An overview of how to handle authentication with server functions
     - [`Routing`](fullstack/routing.md) An overview of how to work with the router in the fullstack renderer
 - [`SSR`](ssr.md) Overview of the SSR renderer
+

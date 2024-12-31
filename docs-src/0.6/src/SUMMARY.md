@@ -5,14 +5,23 @@
 ---
 
 - [Tutorial](guide/index.md)
-  - [Your First Component](guide/your_first_component.md)
-  - [State](guide/state.md)
-  - [Data Fetching](guide/data_fetching.md)
-  - [Full Code](guide/full_code.md)
+  - [Tooling Setup](guide/tooling.md)
+  - [Creating a new app](guide/new_app.md)
+  - [Your First Component](guide/component.md)
+  - [Creating UI with RSX](guide/rsx.md)
+  - [Styling and Assets](guide/assets.md)
+  - [Adding State](guide/state.md)
+  - [Fetching Data](guide/data_fetching.md)
+  - [Add a Backend](guide/backend.md)
+  - [Working with Databases](guide/databases.md)
+  - [Routing and Structure](guide/routing.md)
+  - [Bundling](guide/bundle.md)
+  - [Deploying](guide/deploy.md)
+  - [Next Steps](guide/next_steps.md)
 
 ---
 
-- [Essential Concepts](essentials/index.md)
+- [Core Concepts](essentials/index.md)
   - [Building UIs with RSX](essentials/rsx/index.md)
   - [Component Lifecycle](essentials/lifecycle/index.md)
   - [Managing State](essentials/state/index.md)
@@ -59,6 +68,7 @@
   - [State Management](cookbook/state/index.md)
     - [External State](cookbook/state/external/index.md)
     - [Custom Hooks](cookbook/state/custom_hooks/index.md)
+  - [Bundle Config](cookbook/bundling.md)
   - [Testing](cookbook/testing.md)
   - [Tailwind](cookbook/tailwind.md)
   - [Optimizing](cookbook/optimizing.md)
@@ -66,6 +76,7 @@
 
 ---
 - [Reference](reference/index.md)
+  - [Hot-Reload](reference/hotreload.md)
   - [RSX](reference/rsx.md)
   - [Components](reference/components.md)
   - [Props](reference/component_props.md)

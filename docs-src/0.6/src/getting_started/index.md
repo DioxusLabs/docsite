@@ -31,7 +31,7 @@ We've put a lot of care into making Dioxus syntax familiar and easy to understan
 
 ## Install cargo-binstall
 
-Dioxus ships prebuilt binaries for its CLI using [`cargo-binstall`](https://github.com/cargo-bins/cargo-binstall?tab=readme-ov-file#installation). This means you can install Dioxus without needing to compile from source.
+Dioxus ships prebuilt binaries for its CLI using [`cargo-binstall`](https://github.com/cargo-bins/cargo-binstall?tab=readme-ov-file#installation). This means you can install `dx` without needing to compile from source.
 
 You can install `cargo-binstall` with the following command:
 
@@ -39,15 +39,13 @@ You can install `cargo-binstall` with the following command:
 curl -L --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/cargo-bins/cargo-binstall/main/install-from-binstall-release.sh | bash
 ```
 
-through brew:
+or alternatively:
 
 ```shell
+# through brew
 brew install cargo-binstall
-```
 
-or from source:
-
-```shell
+# or from source
 cargo install cargo-binstall
 ```
 
@@ -70,7 +68,7 @@ If you want to build the CLI from source, you can install it with the following 
 cargo install dioxus-cli
 ```
 
-> Installing from source will take several minutes. We strongly recommend using `cargo-binstall` for installation.
+> 📣 Installing from source will take several minutes. We strongly recommend using `cargo-binstall` for installation.
 
 If you get an OpenSSL error on installation, ensure the dependencies listed [here](https://docs.rs/openssl/latest/openssl/#automatic) are installed.
 
@@ -127,14 +125,20 @@ sudo pacman -S --needed \
   openssl \
   appmenu-gtk-module \
   libappindicator-gtk3 \
-  librsvg
+  librsvg \
+  xdotool
 ```
 
 For all other Linux targets, [check the Tauri docs which cover the same dependencies](https://tauri.app/start/prerequisites/#linux).
 
+In addition to the Tauri docs, for Fedora:
+```shell
+sudo dnf install libxdo-devel
+```
+
 ### WSL
 
-While it's doable, it can be tricky to setup development in WSL for Dioxus desktop. Not everything has been figured out and some stuff may not work.
+While doable, it can be tricky to setup development in WSL for Dioxus desktop. Not everything has been figured out and some stuff may not work.
 
 Here are the steps we used to get Dioxus running through WSL:
 
@@ -143,7 +147,7 @@ Here are the steps we used to get Dioxus running through WSL:
 3. Install Tauri's Linux dependencies found [here](https://beta.tauri.app/start/prerequisites/).
 4. For file dialogs to work, you need to install a fallback like `zenity`
 
-When running Dioxus desktop on WSL, you may get warnings from `libEGL`. There is currently not a solution for these but the app should still render.
+When running Dioxus desktop on WSL, you may get warnings from `libEGL`. There is currently no way to silence these, but the app should still render.
 
 ### iOS
 
@@ -160,7 +164,3 @@ For more details, we recommend reading the [dedicated guide for iOS development]
 ### Android
 
 Android apps require the Android SDK and NDK to be installed. This can be a substantial amount of setup, so we recommend reading the [dedicated guide for Android development](../guides/mobile/index.md).
-
-## Conclusion
-
-That's it! You now have a working Dioxus project. You can continue learning about dioxus by [making a hackernews clone in the guide](../guide/index.md), or learning about specific topics/platforms in the [reference](../reference/index.md). If you have any questions, feel free to ask in the [discord](https://discord.gg/XgGxMSkvUM) or [open a discussion](https://github.com/DioxusLabs/dioxus/discussions).

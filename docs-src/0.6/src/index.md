@@ -17,7 +17,7 @@ DemoFrame {
 This guide is split into different sections:
 
 - [Tutorial](guide/index.md) walks you through your first Dioxus app.
-- [Essential Concepts](essentials/index.md) provides detail on topics like managing state.
+- [Core Concepts](essentials/index.md) provides detail on topics like managing state.
 - [Guides](reference/index.md) provides references for things like assets, routing, testing, and more.
 
 First, try walking through the [Tutorial](guide/index.md) to get familiar with Dioxus. Before embarking on a larger project, we strongly recommend reading the entire [Essential Concepts](essentials/index.md) and glancing through the [Guides Overview](guides/index.md).
@@ -36,7 +36,7 @@ In many ways, Dioxus is similar to Flutter: we integrate our own build tools, fo
 - Reactivity is inspired by web frameworks like React and SolidJS
 - Dioxus code runs natively with no virtual machine and enables direct FFI with system APIs
 
-Our goal is to provide a "better Flutter": faster, slimmer, and web-native. You can think of Dioxus is a hybrid of [Flutter](https://flutter.dev/) and [NextJS](https://nextjs.org/): cross-platform apps with stellar fullstack support. Today, Dioxus apps can only be written in Rust, but we plan to support more languages in the future.
+Our goal is to provide a "better Flutter": faster, slimmer, and web-native. You can think of Dioxus is a hybrid of [Flutter](http://flutter.dev) and [NextJS](http://nextjs.org): cross-platform apps with stellar fullstack support. Today, Dioxus apps can only be written in Rust, but we plan to support more languages in the future.
 
 ## Why Dioxus?
 

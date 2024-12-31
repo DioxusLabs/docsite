@@ -81,7 +81,7 @@ pub fn generate_router(mdbook_dir: PathBuf, book: mdbook_shared::MdBook<PathBuf>
                 let section_idents: Vec<_> = parsed
                     .sections
                     .iter()
-                    .map(|section| Ident::new(&section.variant().unwrap(), Span::call_site()))
+                    .filter_map(|section| Some(Ident::new(&section.variant().ok()?, Span::call_site())))
                     .collect();
                 let section_names: Vec<_> = parsed
                     .sections
@@ -89,22 +89,23 @@ pub fn generate_router(mdbook_dir: PathBuf, book: mdbook_shared::MdBook<PathBuf>
                     .map(|section| section.fragment())
                     .collect();
                 let fragment = quote! {
-                    #[derive(Clone, Copy, PartialEq, Eq, Hash, Debug)]
+                    #[derive(Clone, Copy, PartialEq, Eq, Hash, Debug, Default, serde::Serialize, serde::Deserialize)]
                     pub enum #section_enum {
+                        #[default]
                         Empty,
                         #(#section_idents),*
                     }
 
-                    impl FromStr for #section_enum {
+                    impl std::str::FromStr for #section_enum {
                         type Err = #section_parse_error;
 
                         fn from_str(s: &str) -> Result<Self, Self::Err> {
                             match s {
-                                "" => Ok(#section_enum::Empty),
+                                "" => Ok(Self::Empty),
                                 #(
-                                    #section_names => Ok(#section_enum::#section_idents),
+                                    #section_names => Ok(Self::#section_idents),
                                 )*
-                                _ => Err(format!("Invalid section name: {}", s))
+                                _ => Err(#section_parse_error)
                             }
                         }
                     }
@@ -113,9 +114,9 @@ pub fn generate_router(mdbook_dir: PathBuf, book: mdbook_shared::MdBook<PathBuf>
                         fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
                             use std::fmt::Write;
                             match self {
-                                #section_enum::Empty => f.write_str(""),
+                                Self::Empty => f.write_str(""),
                                 #(
-                                    #section_idents => f.write_str(#section_names),
+                                    Self::#section_idents => f.write_str(#section_names),
                                 )*
                             }
                         }
@@ -132,6 +133,7 @@ pub fn generate_router(mdbook_dir: PathBuf, book: mdbook_shared::MdBook<PathBuf>
                                 f.write_str(#section_names)?;
                                 f.write_str(", ")?;
                             )*
+                            Ok(())
                         }
                     }
 
@@ -142,7 +144,7 @@ pub fn generate_router(mdbook_dir: PathBuf, book: mdbook_shared::MdBook<PathBuf>
                     #fragment
 
                     #[component(no_case_check)]
-                    pub fn #name() -> dioxus::prelude::Element {
+                    pub fn #name(section: #section_enum) -> dioxus::prelude::Element {
                         use dioxus::prelude::*;
                         rsx! {
                             #rsx
@@ -193,9 +195,9 @@ pub fn generate_router(mdbook_dir: PathBuf, book: mdbook_shared::MdBook<PathBuf>
 
     let match_page_id = book.pages().iter().map(|(_, page)| {
         let id = page.id.0;
-        let variant = path_to_route_enum(&page.url).unwrap();
+        let variant = path_to_route_variant(&page.url).unwrap();
         quote! {
-            #variant => use_mdbook::mdbook_shared::PageId(#id),
+            BookRoute::#variant { .. } => use_mdbook::mdbook_shared::PageId(#id),
         }
     });
 

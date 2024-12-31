@@ -26,15 +26,9 @@ impl BookRoute {
     }
     pub fn page_id(&self) -> use_mdbook::mdbook_shared::PageId {
         match self {
-            BookRoute::Chapter1 {
-                section: Chapter1Section::Empty,
-            } => use_mdbook::mdbook_shared::PageId(0usize),
-            BookRoute::Chapter2 {
-                section: Chapter2Section::Empty,
-            } => use_mdbook::mdbook_shared::PageId(1usize),
-            BookRoute::Chapter3 {
-                section: Chapter3Section::Empty,
-            } => use_mdbook::mdbook_shared::PageId(2usize),
+            BookRoute::Chapter1 { .. } => use_mdbook::mdbook_shared::PageId(0usize),
+            BookRoute::Chapter2 { .. } => use_mdbook::mdbook_shared::PageId(1usize),
+            BookRoute::Chapter3 { .. } => use_mdbook::mdbook_shared::PageId(2usize),
         }
     }
 }
@@ -239,8 +233,11 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
 ::core::compile_error!(
     "Failed to read file example-book/book.toml: No such file or directory (os error 2)",
 );
-#[derive(Clone, Copy, PartialEq, Eq, Hash, Debug)]
+#[derive(
+    Clone, Copy, PartialEq, Eq, Hash, Debug, Default, serde::Serialize, serde::Deserialize,
+)]
 pub enum Chapter2Section {
+    #[default]
     Empty,
     RoadmapFeatureSet,
     Features,
@@ -257,26 +254,26 @@ pub enum Chapter2Section {
     NativeRendering,
     InternalLinks,
 }
-impl FromStr for Chapter2Section {
+impl std::str::FromStr for Chapter2Section {
     type Err = Chapter2SectionParseError;
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         match s {
-            "" => Ok(Chapter2Section::Empty),
-            "roadmap--feature-set" => Ok(Chapter2Section::RoadmapFeatureSet),
-            "features" => Ok(Chapter2Section::Features),
-            "roadmap" => Ok(Chapter2Section::Roadmap),
-            "core" => Ok(Chapter2Section::Core),
-            "ssr" => Ok(Chapter2Section::Ssr),
-            "desktop" => Ok(Chapter2Section::Desktop),
-            "mobile" => Ok(Chapter2Section::Mobile),
-            "bundling-cli" => Ok(Chapter2Section::BundlingCli),
-            "essential-hooks" => Ok(Chapter2Section::EssentialHooks),
-            "work-in-progress" => Ok(Chapter2Section::WorkInProgress),
-            "build-tool" => Ok(Chapter2Section::BuildTool),
-            "server-component-support" => Ok(Chapter2Section::ServerComponentSupport),
-            "native-rendering" => Ok(Chapter2Section::NativeRendering),
-            "internal-links" => Ok(Chapter2Section::InternalLinks),
-            _ => Err(format!("Invalid section name: {}", s)),
+            "" => Ok(Self::Empty),
+            "roadmap--feature-set" => Ok(Self::RoadmapFeatureSet),
+            "features" => Ok(Self::Features),
+            "roadmap" => Ok(Self::Roadmap),
+            "core" => Ok(Self::Core),
+            "ssr" => Ok(Self::Ssr),
+            "desktop" => Ok(Self::Desktop),
+            "mobile" => Ok(Self::Mobile),
+            "bundling-cli" => Ok(Self::BundlingCli),
+            "essential-hooks" => Ok(Self::EssentialHooks),
+            "work-in-progress" => Ok(Self::WorkInProgress),
+            "build-tool" => Ok(Self::BuildTool),
+            "server-component-support" => Ok(Self::ServerComponentSupport),
+            "native-rendering" => Ok(Self::NativeRendering),
+            "internal-links" => Ok(Self::InternalLinks),
+            _ => Err(Chapter2SectionParseError),
         }
     }
 }
@@ -284,21 +281,21 @@ impl std::fmt::Display for Chapter2Section {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         use std::fmt::Write;
         match self {
-            Chapter2Section::Empty => f.write_str(""),
-            RoadmapFeatureSet => f.write_str("roadmap--feature-set"),
-            Features => f.write_str("features"),
-            Roadmap => f.write_str("roadmap"),
-            Core => f.write_str("core"),
-            Ssr => f.write_str("ssr"),
-            Desktop => f.write_str("desktop"),
-            Mobile => f.write_str("mobile"),
-            BundlingCli => f.write_str("bundling-cli"),
-            EssentialHooks => f.write_str("essential-hooks"),
-            WorkInProgress => f.write_str("work-in-progress"),
-            BuildTool => f.write_str("build-tool"),
-            ServerComponentSupport => f.write_str("server-component-support"),
-            NativeRendering => f.write_str("native-rendering"),
-            InternalLinks => f.write_str("internal-links"),
+            Self::Empty => f.write_str(""),
+            Self::RoadmapFeatureSet => f.write_str("roadmap--feature-set"),
+            Self::Features => f.write_str("features"),
+            Self::Roadmap => f.write_str("roadmap"),
+            Self::Core => f.write_str("core"),
+            Self::Ssr => f.write_str("ssr"),
+            Self::Desktop => f.write_str("desktop"),
+            Self::Mobile => f.write_str("mobile"),
+            Self::BundlingCli => f.write_str("bundling-cli"),
+            Self::EssentialHooks => f.write_str("essential-hooks"),
+            Self::WorkInProgress => f.write_str("work-in-progress"),
+            Self::BuildTool => f.write_str("build-tool"),
+            Self::ServerComponentSupport => f.write_str("server-component-support"),
+            Self::NativeRendering => f.write_str("native-rendering"),
+            Self::InternalLinks => f.write_str("internal-links"),
         }
     }
 }
@@ -336,15 +333,22 @@ impl std::fmt::Display for Chapter2SectionParseError {
         f.write_str(", ")?;
         f.write_str("internal-links")?;
         f.write_str(", ")?;
+        Ok(())
     }
 }
 impl std::error::Error for Chapter2SectionParseError {}
 #[component(no_case_check)]
-pub fn Chapter2() -> dioxus::prelude::Element {
+pub fn Chapter2(section: Chapter2Section) -> dioxus::prelude::Element {
     use dioxus::prelude::*;
     rsx! {
         h1 { id: "roadmap--feature-set",
-            Link { to: Chapter2::RoadmapFeatureSet, class: "header", "Roadmap & Feature-set" }
+            Link {
+                to: BookRoute::Chapter2 {
+                    section: Chapter2Section::RoadmapFeatureSet,
+                },
+                class: "header",
+                "Roadmap & Feature-set"
+            }
         }
         p {
             "This feature set and roadmap can help you decide if what Dioxus can do today works for you."
@@ -391,7 +395,13 @@ pub fn Chapter2() -> dioxus::prelude::Element {
         }
         CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">main</span><span style=\"color:#f8f8f2;\">() {{\n</span><span style=\"color:#f8f8f2;\">  dioxus_rocks;\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n" }
         h2 { id: "features",
-            Link { to: Chapter2::Features, class: "header", "Features" }
+            Link {
+                to: BookRoute::Chapter2 {
+                    section: Chapter2Section::Features,
+                },
+                class: "header",
+                "Features"
+            }
         }
         hr {}
         table {
@@ -572,11 +582,23 @@ pub fn Chapter2() -> dioxus::prelude::Element {
             li { "👀 = not yet implemented or being worked on" }
         }
         h2 { id: "roadmap",
-            Link { to: Chapter2::Roadmap, class: "header", "Roadmap" }
+            Link {
+                to: BookRoute::Chapter2 {
+                    section: Chapter2Section::Roadmap,
+                },
+                class: "header",
+                "Roadmap"
+            }
         }
         p { "These Features are planned for the future of Dioxus:" }
         h3 { id: "core",
-            Link { to: Chapter2::Core, class: "header", "Core" }
+            Link {
+                to: BookRoute::Chapter2 {
+                    section: Chapter2Section::Core,
+                },
+                class: "header",
+                "Core"
+            }
         }
         ul {
             li {
@@ -635,7 +657,13 @@ pub fn Chapter2() -> dioxus::prelude::Element {
             }
         }
         h3 { id: "ssr",
-            Link { to: Chapter2::Ssr, class: "header", "SSR" }
+            Link {
+                to: BookRoute::Chapter2 {
+                    section: Chapter2Section::Ssr,
+                },
+                class: "header",
+                "SSR"
+            }
         }
         ul {
             li {
@@ -658,7 +686,13 @@ pub fn Chapter2() -> dioxus::prelude::Element {
             }
         }
         h3 { id: "desktop",
-            Link { to: Chapter2::Desktop, class: "header", "Desktop" }
+            Link {
+                to: BookRoute::Chapter2 {
+                    section: Chapter2Section::Desktop,
+                },
+                class: "header",
+                "Desktop"
+            }
         }
         ul {
             li {
@@ -690,7 +724,13 @@ pub fn Chapter2() -> dioxus::prelude::Element {
             }
         }
         h3 { id: "mobile",
-            Link { to: Chapter2::Mobile, class: "header", "Mobile" }
+            Link {
+                to: BookRoute::Chapter2 {
+                    section: Chapter2Section::Mobile,
+                },
+                class: "header",
+                "Mobile"
+            }
         }
         ul {
             li {
@@ -787,7 +827,13 @@ pub fn Chapter2() -> dioxus::prelude::Element {
             }
         }
         h3 { id: "bundling-cli",
-            Link { to: Chapter2::BundlingCli, class: "header", "Bundling (CLI)" }
+            Link {
+                to: BookRoute::Chapter2 {
+                    section: Chapter2Section::BundlingCli,
+                },
+                class: "header",
+                "Bundling (CLI)"
+            }
         }
         ul {
             li {
@@ -873,7 +919,13 @@ pub fn Chapter2() -> dioxus::prelude::Element {
             }
         }
         h3 { id: "essential-hooks",
-            Link { to: Chapter2::EssentialHooks, class: "header", "Essential hooks" }
+            Link {
+                to: BookRoute::Chapter2 {
+                    section: Chapter2Section::EssentialHooks,
+                },
+                class: "header",
+                "Essential hooks"
+            }
         }
         ul {
             li {
@@ -905,10 +957,22 @@ pub fn Chapter2() -> dioxus::prelude::Element {
             }
         }
         h2 { id: "work-in-progress",
-            Link { to: Chapter2::WorkInProgress, class: "header", "Work in Progress" }
+            Link {
+                to: BookRoute::Chapter2 {
+                    section: Chapter2Section::WorkInProgress,
+                },
+                class: "header",
+                "Work in Progress"
+            }
         }
         h3 { id: "build-tool",
-            Link { to: Chapter2::BuildTool, class: "header", "Build Tool" }
+            Link {
+                to: BookRoute::Chapter2 {
+                    section: Chapter2Section::BuildTool,
+                },
+                class: "header",
+                "Build Tool"
+            }
         }
         p {
             "We are currently working on our own build tool called "
@@ -928,13 +992,25 @@ pub fn Chapter2() -> dioxus::prelude::Element {
             li { "bundling for iOS/Desktop/etc" }
         }
         h3 { id: "server-component-support",
-            Link { to: Chapter2::ServerComponentSupport, class: "header", "Server Component Support" }
+            Link {
+                to: BookRoute::Chapter2 {
+                    section: Chapter2Section::ServerComponentSupport,
+                },
+                class: "header",
+                "Server Component Support"
+            }
         }
         p {
             "While not currently fully implemented, the expectation is that LiveView apps can be a hybrid between Wasm and server-rendered where only portions of a page are \"live\" and the rest of the page is either server-rendered, statically generated, or handled by the host SPA."
         }
         h3 { id: "native-rendering",
-            Link { to: Chapter2::NativeRendering, class: "header", "Native rendering" }
+            Link {
+                to: BookRoute::Chapter2 {
+                    section: Chapter2Section::NativeRendering,
+                },
+                class: "header",
+                "Native rendering"
+            }
         }
         p {
             "We are currently working on a native renderer for Dioxus using WGPU called "
@@ -942,7 +1018,13 @@ pub fn Chapter2() -> dioxus::prelude::Element {
             ". This will allow you to build apps that are rendered natively for iOS, Android, and Desktop."
         }
         h2 { id: "internal-links",
-            Link { to: Chapter2::InternalLinks, class: "header", "Internal Links" }
+            Link {
+                to: BookRoute::Chapter2 {
+                    section: Chapter2Section::InternalLinks,
+                },
+                class: "header",
+                "Internal Links"
+            }
         }
         p {
             "Internal links like "
@@ -955,18 +1037,21 @@ pub fn Chapter2() -> dioxus::prelude::Element {
         }
     }
 }
-#[derive(Clone, Copy, PartialEq, Eq, Hash, Debug)]
+#[derive(
+    Clone, Copy, PartialEq, Eq, Hash, Debug, Default, serde::Serialize, serde::Deserialize,
+)]
 pub enum Chapter3Section {
+    #[default]
     Empty,
     Assets,
 }
-impl FromStr for Chapter3Section {
+impl std::str::FromStr for Chapter3Section {
     type Err = Chapter3SectionParseError;
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         match s {
-            "" => Ok(Chapter3Section::Empty),
-            "assets" => Ok(Chapter3Section::Assets),
-            _ => Err(format!("Invalid section name: {}", s)),
+            "" => Ok(Self::Empty),
+            "assets" => Ok(Self::Assets),
+            _ => Err(Chapter3SectionParseError),
         }
     }
 }
@@ -974,8 +1059,8 @@ impl std::fmt::Display for Chapter3Section {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         use std::fmt::Write;
         match self {
-            Chapter3Section::Empty => f.write_str(""),
-            Assets => f.write_str("assets"),
+            Self::Empty => f.write_str(""),
+            Self::Assets => f.write_str("assets"),
         }
     }
 }
@@ -987,15 +1072,22 @@ impl std::fmt::Display for Chapter3SectionParseError {
         f.write_str("Invalid section name. Expected one of: ")?;
         f.write_str("assets")?;
         f.write_str(", ")?;
+        Ok(())
     }
 }
 impl std::error::Error for Chapter3SectionParseError {}
 #[component(no_case_check)]
-pub fn Chapter3() -> dioxus::prelude::Element {
+pub fn Chapter3(section: Chapter3Section) -> dioxus::prelude::Element {
     use dioxus::prelude::*;
     rsx! {
         h1 { id: "assets",
-            Link { to: Chapter3::Assets, class: "header", "Assets" }
+            Link {
+                to: BookRoute::Chapter3 {
+                    section: Chapter3Section::Assets,
+                },
+                class: "header",
+                "Assets"
+            }
         }
         p {
             "Some assets:"

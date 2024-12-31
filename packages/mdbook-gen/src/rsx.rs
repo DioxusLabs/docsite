@@ -17,7 +17,7 @@ use syntect::highlighting::ThemeSet;
 use syntect::parsing::SyntaxSet;
 
 use crate::{
-    path_to_route_enum, path_to_route_enum_with_section, path_to_route_variant, to_upper_camel_case_for_ident, EmptyIdentError
+    path_to_route_enum, path_to_route_enum_with_section, to_upper_camel_case_for_ident, EmptyIdentError
 };
 
 /// Convert a CallBody to a TokenStream
@@ -251,7 +251,14 @@ impl<'a, I: Iterator<Item = Event<'a>>> RsxMarkdownParser<'a, I> {
             Tag::Heading(level, _, _) => {
                 let text = self.take_text();
                 let section = Section::new(&text);
-                let section_variant = self.section_variant(&section);
+                let variant = section.variant();
+                let section_variant = variant.and_then(|variant|path_to_route_enum_with_section(&self.path, Ident::new(&variant, Span::call_site())));
+                let section_variant = match section_variant {
+                    Ok(section_variant) => section_variant,
+                    Err(err) => {
+                        err.to_token_stream()
+                    }
+                };
                 let anchor = section.fragment();
                 self.sections.push(section);
                 let element_name = match level {
@@ -575,23 +582,6 @@ impl<'a, I: Iterator<Item = Event<'a>>> RsxMarkdownParser<'a, I> {
 
     fn last_mut(&mut self) -> Option<&mut BodyNode> {
         self.element_stack.last_mut()
-    }
-
-    fn section_variant(&mut self, section: &Section) -> TokenStream2 {
-        let Ok(enum_name) = path_to_route_variant(&self.path) else {
-            return quote! {
-                compile_error!("Path links cannot be empty")
-            };
-        };
-        let Ok(variant) = section.variant() else {
-            return quote! {
-                compile_error!("Fragment cannot be empty")
-            };
-        };
-        let variant = Ident::new(&variant, Span::call_site());
-        quote! {
-            #enum_name::#variant
-        }
     }
 }
 

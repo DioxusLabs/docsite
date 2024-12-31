@@ -424,7 +424,7 @@ impl<'a, I: Iterator<Item = Event<'a>>> RsxMarkdownParser<'a, I> {
                                                 },
                                                 Err(_) => {
                                                     Ok(quote! {
-                                                        compile_error!("Fragment cannot be empty");
+                                                        compile_error!("Fragment cannot be empty")
                                                     })
                                                 }
                                             }
@@ -580,12 +580,12 @@ impl<'a, I: Iterator<Item = Event<'a>>> RsxMarkdownParser<'a, I> {
     fn section_variant(&mut self, section: &Section) -> TokenStream2 {
         let Ok(enum_name) = path_to_route_variant(&self.path) else {
             return quote! {
-                compile_error!("Path links cannot be empty");
+                compile_error!("Path links cannot be empty")
             };
         };
         let Ok(variant) = section.variant() else {
             return quote! {
-                compile_error!("Fragment cannot be empty");
+                compile_error!("Fragment cannot be empty")
             };
         };
         let variant = Ident::new(&variant, Span::call_site());

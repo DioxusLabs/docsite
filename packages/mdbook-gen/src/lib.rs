@@ -269,7 +269,7 @@ impl ToTokens for EmptyIdentError {
     fn to_tokens(&self, tokens: &mut proc_macro2::TokenStream) {
         let err = self.to_string();
         tokens.extend(quote! {
-            compile_error!(#err);
+            compile_error!(#err)
         })
     }
 }

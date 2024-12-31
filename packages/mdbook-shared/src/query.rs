@@ -14,8 +14,6 @@ pub struct MdBook<R>
 where
     R: Hash + Eq,
 {
-    pub path: PathBuf,
-
     pub summary: Summary<R>,
 
     // a mapping between urls and page ids
@@ -104,7 +102,6 @@ impl MdBook<PathBuf> {
         let summary = parse_summary(&mdbook_root, &summary)?;
 
         let mut book = Self {
-            path: mdbook_root.clone(),
             summary,
             page_id_mapping: Default::default(),
             pages: Default::default(),

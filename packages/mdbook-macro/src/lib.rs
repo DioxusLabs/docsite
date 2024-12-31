@@ -8,7 +8,7 @@ use mdbook_gen::*;
 #[proc_macro]
 pub fn mdbook_router(input: TokenStream) -> TokenStream {
     match syn::parse::<LitStr>(input).map(load_book_from_fs) {
-        Ok(Ok(book)) => generate_router(book).into(),
+        Ok(Ok((path, book))) => generate_router(path, book).into(),
         Ok(Err(err)) => write_book_err(err),
         Err(err) => err.to_compile_error().into(),
     }

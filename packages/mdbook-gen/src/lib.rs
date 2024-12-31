@@ -17,7 +17,7 @@ mod transform_book;
 
 /// Generate the contents of the mdbook from a router
 pub fn generate_router_build_script(mdbook_dir: PathBuf) -> String {
-    let file_src = generate_router_as_file(MdBook::new(mdbook_dir).unwrap());
+    let file_src = generate_router_as_file(mdbook_dir.clone(), MdBook::new(mdbook_dir).unwrap());
 
     let stringified = prettyplease::unparse(&file_src);
     let prettifed = rustfmt_via_cli(&stringified);
@@ -34,7 +34,7 @@ pub fn generate_router_build_script(mdbook_dir: PathBuf) -> String {
 ///
 ///
 /// ```
-pub fn load_book_from_fs(input: LitStr) -> anyhow::Result<mdbook_shared::MdBook<PathBuf>> {
+pub fn load_book_from_fs(input: LitStr) -> anyhow::Result<(PathBuf, mdbook_shared::MdBook<PathBuf>)> {
     let user_dir = input.value().parse::<PathBuf>()?;
     let manifest_dir = PathBuf::from(std::env::var("CARGO_MANIFEST_DIR")?);
     let path = manifest_dir.join(user_dir);
@@ -45,25 +45,25 @@ pub fn load_book_from_fs(input: LitStr) -> anyhow::Result<mdbook_shared::MdBook<
         )
     })?;
 
-    Ok(MdBook::new(path)?)
+    Ok((path.clone(), MdBook::new(path)?))
 }
 
-pub fn generate_router_as_file(book: mdbook_shared::MdBook<PathBuf>) -> syn::File {
-    let router = generate_router(book);
+pub fn generate_router_as_file(mdbook_dir: PathBuf, book: mdbook_shared::MdBook<PathBuf>) -> syn::File {
+    let router = generate_router(mdbook_dir, book);
 
     syn::parse_quote! {
         #router
     }
 }
 
-pub fn generate_router(book: mdbook_shared::MdBook<PathBuf>) -> TokenStream2 {
+pub fn generate_router(mdbook_dir: PathBuf, book: mdbook_shared::MdBook<PathBuf>) -> TokenStream2 {
     let mdbook = write_book_with_routes(&book);
 
     let book_pages = book.pages().iter().map(|(_, page)| {
         let name = path_to_route_variant(&page.url);
 
         // Rsx doesn't work very well in macros because the path for all the routes generated point to the same characters. We manually expand rsx here to get around that issue.
-        match rsx::parse_markdown(book.path.clone(), page.url.clone(), &page.raw) {
+        match rsx::parse_markdown(mdbook_dir.clone(), page.url.clone(), &page.raw) {
             Ok(rsx) => {
                 // for the sake of readability, we want to actuall convert the CallBody back to Tokens
                 let rsx = rsx::callbody_to_tokens(rsx);

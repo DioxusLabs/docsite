@@ -1,3 +1,4 @@
+use convert_case::{Case, Casing};
 use mdbook_shared::get_book_content_path;
 use proc_macro2::TokenStream as TokenStream2;
 use quote::{quote, ToTokens};
@@ -15,7 +16,7 @@ use syn::{Ident, __private::Span, parse_quote, parse_str};
 use syntect::highlighting::ThemeSet;
 use syntect::parsing::SyntaxSet;
 
-use crate::path_to_route_enum;
+use crate::{path_to_route_enum_with_section, path_to_route_variant};
 
 /// Convert a CallBody to a TokenStream
 pub fn callbody_to_tokens(cb: CallBody) -> TokenStream2 {
@@ -26,7 +27,45 @@ pub fn callbody_to_tokens(cb: CallBody) -> TokenStream2 {
     TokenStream2::from_str(&out).unwrap()
 }
 
-pub fn parse_markdown(book_path: PathBuf, path: PathBuf, markdown: &str) -> syn::Result<CallBody> {
+pub(crate) struct Section {
+    name: String,
+}
+
+impl Section {
+    fn new(name: &str) -> Self {
+        Self {
+            name: name.to_string(),
+        }
+    }
+
+    pub(crate) fn fragment(&self) -> String {
+        self.name
+            .trim()
+            .to_lowercase()
+            .chars()
+            .filter_map(|char| match char {
+                '-' | 'a'..='z' | '0'..='9' => Some(char),
+                ' ' | '_' => Some('-'),
+                _ => None,
+            })
+            .collect()
+    }
+
+    pub(crate) fn variant(&self) -> String {
+        self.fragment().to_case(Case::UpperCamel)
+    }
+}
+
+pub(crate) struct ParsedMarkdown {
+    pub(crate) body: CallBody,
+    pub(crate) sections: Vec<Section>,
+}
+
+pub fn parse_markdown(
+    book_path: PathBuf,
+    path: PathBuf,
+    markdown: &str,
+) -> syn::Result<ParsedMarkdown> {
     let mut options = Options::empty();
     options.insert(
         Options::ENABLE_TABLES
@@ -41,6 +80,7 @@ pub fn parse_markdown(book_path: PathBuf, path: PathBuf, markdown: &str) -> syn:
         element_stack: vec![],
         root_nodes: vec![],
         current_table: vec![],
+        sections: vec![],
         in_table_header: false,
         iter: parser.by_ref().peekable(),
         book_path,
@@ -52,10 +92,15 @@ pub fn parse_markdown(book_path: PathBuf, path: PathBuf, markdown: &str) -> syn:
         rsx_parser.end_node();
     }
 
-    Ok(if rsx_parser.root_nodes.is_empty() {
+    let body = if rsx_parser.root_nodes.is_empty() {
         parse_quote! {}
     } else {
         CallBody::new(TemplateBody::new(rsx_parser.root_nodes))
+    };
+
+    Ok(ParsedMarkdown {
+        body,
+        sections: rsx_parser.sections,
     })
 }
 
@@ -67,6 +112,7 @@ struct RsxMarkdownParser<'a, I: Iterator<Item = Event<'a>>> {
     iter: Peekable<I>,
     book_path: PathBuf,
     path: PathBuf,
+    sections: Vec<Section>,
     phantom: std::marker::PhantomData<&'a ()>,
 }
 
@@ -202,17 +248,10 @@ impl<'a, I: Iterator<Item = Event<'a>>> RsxMarkdownParser<'a, I> {
             }
             Tag::Heading(level, _, _) => {
                 let text = self.take_text();
-                let anchor: String = text
-                    .trim()
-                    .to_lowercase()
-                    .chars()
-                    .filter_map(|char| match char {
-                        '-' | 'a'..='z' | '0'..='9' => Some(char),
-                        ' ' | '_' => Some('-'),
-                        _ => None,
-                    })
-                    .collect();
-                let fragment = format!("#{}", anchor);
+                let section = Section::new(&text);
+                let section_variant = self.section_variant(&section);
+                let anchor = section.fragment();
+                self.sections.push(section);
                 let element_name = match level {
                     pulldown_cmark::HeadingLevel::H1 => Ident::new("h1", Span::call_site()),
                     pulldown_cmark::HeadingLevel::H2 => Ident::new("h2", Span::call_site()),
@@ -222,13 +261,12 @@ impl<'a, I: Iterator<Item = Event<'a>>> RsxMarkdownParser<'a, I> {
                     pulldown_cmark::HeadingLevel::H6 => Ident::new("h6", Span::call_site()),
                 };
                 let anchor = escape_text(&anchor);
-                let fragment = escape_text(&fragment);
                 let text = escape_text(&text);
                 let element = parse_quote! {
                     #element_name {
                         id: #anchor,
                         Link {
-                            to: #fragment,
+                            to: #section_variant,
                             class: "header",
                             #text
                         }
@@ -344,10 +382,10 @@ impl<'a, I: Iterator<Item = Event<'a>>> RsxMarkdownParser<'a, I> {
                             let content_path = content_path.canonicalize().unwrap();
                             let current_file_path = content_path.join(&self.path);
                             let parent_of_current_file = current_file_path.parent().unwrap();
-                            let contains_hash;
+                            let hash;
                             let dest_without_hash = match dest.split_once('#') {
-                                Some((without_hash, _)) => {
-                                    contains_hash = true;
+                                Some((without_hash, trailing_hash)) => {
+                                    hash = Some(trailing_hash);
                                     if without_hash.is_empty() {
                                         current_file_path
                                             .strip_prefix(&parent_of_current_file)
@@ -359,11 +397,12 @@ impl<'a, I: Iterator<Item = Event<'a>>> RsxMarkdownParser<'a, I> {
                                     }
                                 }
                                 None => {
-                                    contains_hash = false;
+                                    hash = None;
                                     &dest
                                 }
                             };
-                            let path = PathBuf::from(dest_without_hash.to_string()).with_extension("md");
+                            let path =
+                                PathBuf::from(dest_without_hash.to_string()).with_extension("md");
                             if path.is_relative() {
                                 let relative_to_current_folder = parent_of_current_file.join(&path);
                                 match relative_to_current_folder
@@ -375,11 +414,13 @@ impl<'a, I: Iterator<Item = Event<'a>>> RsxMarkdownParser<'a, I> {
                                             .map_err(|_| format!("failed to strip prefix {content_path:?} from {p:?}"))
                                     }) {
                                     Ok(resolved) if content_path.join(&resolved).is_file() => {
-                                        if contains_hash {
-                                            dest.to_token_stream()
+                                        let section = if let Some(hash) = hash {
+                                            let section = Section::new(hash);
+                                            Ident::new(&section.variant(), Span::call_site())
                                         } else {
-                                            path_to_route_enum(&resolved)
-                                        }
+                                            Ident::new("Empty", Span::call_site())
+                                        };
+                                        path_to_route_enum_with_section(&resolved, section)
                                     },
                                     Ok(resolved) => {
                                         let err = format!("The file {resolved:?} linked to in {current_file_path:?} does not exist");
@@ -518,6 +559,14 @@ impl<'a, I: Iterator<Item = Event<'a>>> RsxMarkdownParser<'a, I> {
     fn last_mut(&mut self) -> Option<&mut BodyNode> {
         self.element_stack.last_mut()
     }
+
+    fn section_variant(&mut self, section: &Section) -> TokenStream2 {
+        let enum_name = path_to_route_variant(&self.path);
+        let variant = Ident::new(&section.variant(), Span::call_site());
+        quote! {
+            #enum_name::#variant
+        }
+    }
 }
 
 fn transform_code_block(
@@ -630,6 +679,7 @@ Some assets:
         element_stack: vec![],
         root_nodes: vec![],
         current_table: vec![],
+        sections: vec![],
         in_table_header: false,
         iter: parser.by_ref().peekable(),
         path: PathBuf::from("example-book/en/chapter_1.md"),

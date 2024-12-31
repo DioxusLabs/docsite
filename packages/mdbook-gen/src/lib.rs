@@ -7,6 +7,7 @@ use mdbook_shared::MdBook;
 use proc_macro2::Ident;
 use proc_macro2::Span;
 use proc_macro2::TokenStream as TokenStream2;
+use quote::format_ident;
 use quote::quote;
 use syn::LitStr;
 
@@ -34,7 +35,9 @@ pub fn generate_router_build_script(mdbook_dir: PathBuf) -> String {
 ///
 ///
 /// ```
-pub fn load_book_from_fs(input: LitStr) -> anyhow::Result<(PathBuf, mdbook_shared::MdBook<PathBuf>)> {
+pub fn load_book_from_fs(
+    input: LitStr,
+) -> anyhow::Result<(PathBuf, mdbook_shared::MdBook<PathBuf>)> {
     let user_dir = input.value().parse::<PathBuf>()?;
     let manifest_dir = PathBuf::from(std::env::var("CARGO_MANIFEST_DIR")?);
     let path = manifest_dir.join(user_dir);
@@ -48,7 +51,10 @@ pub fn load_book_from_fs(input: LitStr) -> anyhow::Result<(PathBuf, mdbook_share
     Ok((path.clone(), MdBook::new(path)?))
 }
 
-pub fn generate_router_as_file(mdbook_dir: PathBuf, book: mdbook_shared::MdBook<PathBuf>) -> syn::File {
+pub fn generate_router_as_file(
+    mdbook_dir: PathBuf,
+    book: mdbook_shared::MdBook<PathBuf>,
+) -> syn::File {
     let router = generate_router(mdbook_dir, book);
 
     syn::parse_quote! {
@@ -64,11 +70,76 @@ pub fn generate_router(mdbook_dir: PathBuf, book: mdbook_shared::MdBook<PathBuf>
 
         // Rsx doesn't work very well in macros because the path for all the routes generated point to the same characters. We manually expand rsx here to get around that issue.
         match rsx::parse_markdown(mdbook_dir.clone(), page.url.clone(), &page.raw) {
-            Ok(rsx) => {
-                // for the sake of readability, we want to actuall convert the CallBody back to Tokens
-                let rsx = rsx::callbody_to_tokens(rsx);
+            Ok(parsed) => {
+                // for the sake of readability, we want to actually convert the CallBody back to Tokens
+                let rsx = rsx::callbody_to_tokens(parsed.body);
+
+                // Create the fragment enum for the section
+                let section_enum = path_to_route_section(&page.url);
+                let section_parse_error = format_ident!("{}ParseError", section_enum);
+                let section_idents: Vec<_> = parsed
+                    .sections
+                    .iter()
+                    .map(|section| Ident::new(&section.variant(), Span::call_site()))
+                    .collect();
+                let section_names: Vec<_> = parsed
+                    .sections
+                    .iter()
+                    .map(|section| section.fragment())
+                    .collect();
+                let fragment = quote! {
+                    #[derive(Clone, Copy, PartialEq, Eq, Hash, Debug)]
+                    pub enum #section_enum {
+                        Empty,
+                        #(#section_idents),*
+                    }
+
+                    impl FromStr for #section_enum {
+                        type Err = #section_parse_error;
+
+                        fn from_str(s: &str) -> Result<Self, Self::Err> {
+                            match s {
+                                "" => Ok(#section_enum::Empty),
+                                #(
+                                    #section_names => Ok(#section_enum::#section_idents),
+                                )*
+                                _ => Err(format!("Invalid section name: {}", s))
+                            }
+                        }
+                    }
+
+                    impl std::fmt::Display for #section_enum {
+                        fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+                            use std::fmt::Write;
+                            match self {
+                                #section_enum::Empty => f.write_str(""),
+                                #(
+                                    #section_idents => f.write_str(#section_names),
+                                )*
+                            }
+                        }
+                    }
+
+                    #[derive(Debug)]
+                    pub struct #section_parse_error;
+
+                    impl std::fmt::Display for #section_parse_error {
+                        fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+                            use std::fmt::Write;
+                            f.write_str("Invalid section name. Expected one of: ")?;
+                            #(
+                                f.write_str(#section_names)?;
+                                f.write_str(", ")?;
+                            )*
+                        }
+                    }
+
+                    impl std::error::Error for #section_parse_error {}
+                };
 
                 quote! {
+                    #fragment
+
                     #[component(no_case_check)]
                     pub fn #name() -> dioxus::prelude::Element {
                         use dioxus::prelude::*;
@@ -99,6 +170,7 @@ pub fn generate_router(mdbook_dir: PathBuf, book: mdbook_shared::MdBook<PathBuf>
 
     let book_routes = book.pages().iter().map(|(_, page)| {
         let name = path_to_route_variant(&page.url);
+        let section = path_to_route_section(&page.url);
         let route_without_extension = page.url.with_extension("");
         // remove any trailing "index"
         let route_without_extension = route_without_extension.to_string_lossy().to_string();
@@ -109,9 +181,12 @@ pub fn generate_router(mdbook_dir: PathBuf, book: mdbook_shared::MdBook<PathBuf>
         if !url.starts_with('/') {
             url = format!("/{}", url);
         }
+        url += "#:section";
         quote! {
             #[route(#url)]
-            #name {},
+            #name {
+                section: #section
+            },
         }
     });
 
@@ -159,27 +234,47 @@ pub fn generate_router(mdbook_dir: PathBuf, book: mdbook_shared::MdBook<PathBuf>
     }
 }
 
-pub(crate) fn path_to_route_variant(path: &Path) -> Ident {
+pub(crate) fn path_to_route_variant_name(path: &Path) -> String {
     let path_without_extension = path.with_extension("");
     let mut title = String::new();
     for segment in path_without_extension.components() {
         title.push(' ');
         title.push_str(&segment.as_os_str().to_string_lossy());
     }
-    let title_filtered_alphanumeric = title
+    title
         .chars()
         .filter(|c| c.is_alphanumeric() || c.is_whitespace() || *c == '-' || *c == '_')
-        .collect::<String>();
-    Ident::new(
-        &title_filtered_alphanumeric.to_case(Case::UpperCamel),
-        Span::call_site(),
-    )
+        .collect::<String>()
+        .to_case(Case::UpperCamel)
+}
+
+pub(crate) fn path_to_route_variant(path: &Path) -> Ident {
+    let title = path_to_route_variant_name(path);
+    Ident::new(&title, Span::call_site())
+}
+
+pub(crate) fn path_to_route_section(path: &Path) -> Ident {
+    let title = path_to_route_variant_name(path);
+    Ident::new(&format!("{}Section", title), Span::call_site())
 }
 
 pub(crate) fn path_to_route_enum(path: &Path) -> TokenStream2 {
     let name = path_to_route_variant(path);
+    let section = path_to_route_section(path);
     quote! {
-        BookRoute::#name {}
+        BookRoute::#name {
+            section: #section::Empty
+        }
+    }
+}
+
+pub(crate) fn path_to_route_enum_with_section(path: &Path, section_variant: Ident) -> TokenStream2 {
+    let name = path_to_route_variant(path);
+    let section = path_to_route_section(path);
+    quote! {
+        BookRoute::#name {
+            section: #section::#section_variant
+        }
     }
 }
 

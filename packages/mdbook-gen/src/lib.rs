@@ -9,6 +9,7 @@ use proc_macro2::Span;
 use proc_macro2::TokenStream as TokenStream2;
 use quote::format_ident;
 use quote::quote;
+use quote::ToTokens;
 use syn::LitStr;
 
 use crate::transform_book::write_book_with_routes;
@@ -66,7 +67,7 @@ pub fn generate_router(mdbook_dir: PathBuf, book: mdbook_shared::MdBook<PathBuf>
     let mdbook = write_book_with_routes(&book);
 
     let book_pages = book.pages().iter().map(|(_, page)| {
-        let name = path_to_route_variant(&page.url);
+        let name = path_to_route_variant(&page.url).unwrap();
 
         // Rsx doesn't work very well in macros because the path for all the routes generated point to the same characters. We manually expand rsx here to get around that issue.
         match rsx::parse_markdown(mdbook_dir.clone(), page.url.clone(), &page.raw) {
@@ -75,12 +76,12 @@ pub fn generate_router(mdbook_dir: PathBuf, book: mdbook_shared::MdBook<PathBuf>
                 let rsx = rsx::callbody_to_tokens(parsed.body);
 
                 // Create the fragment enum for the section
-                let section_enum = path_to_route_section(&page.url);
+                let section_enum = path_to_route_section(&page.url).unwrap();
                 let section_parse_error = format_ident!("{}ParseError", section_enum);
                 let section_idents: Vec<_> = parsed
                     .sections
                     .iter()
-                    .map(|section| Ident::new(&section.variant(), Span::call_site()))
+                    .map(|section| Ident::new(&section.variant().unwrap(), Span::call_site()))
                     .collect();
                 let section_names: Vec<_> = parsed
                     .sections
@@ -158,7 +159,7 @@ pub fn generate_router(mdbook_dir: PathBuf, book: mdbook_shared::MdBook<PathBuf>
         .iter()
         .min_by_key(|(_, page)| page.url.to_string_lossy().len())
         .map(|(_, page)| {
-            let name = path_to_route_enum(&page.url);
+            let name = path_to_route_enum(&page.url).unwrap();
             quote! {
                 impl Default for BookRoute {
                     fn default() -> Self {
@@ -169,8 +170,8 @@ pub fn generate_router(mdbook_dir: PathBuf, book: mdbook_shared::MdBook<PathBuf>
         });
 
     let book_routes = book.pages().iter().map(|(_, page)| {
-        let name = path_to_route_variant(&page.url);
-        let section = path_to_route_section(&page.url);
+        let name = path_to_route_variant(&page.url).unwrap();
+        let section = path_to_route_section(&page.url).unwrap();
         let route_without_extension = page.url.with_extension("");
         // remove any trailing "index"
         let route_without_extension = route_without_extension.to_string_lossy().to_string();
@@ -192,7 +193,7 @@ pub fn generate_router(mdbook_dir: PathBuf, book: mdbook_shared::MdBook<PathBuf>
 
     let match_page_id = book.pages().iter().map(|(_, page)| {
         let id = page.id.0;
-        let variant = path_to_route_enum(&page.url);
+        let variant = path_to_route_enum(&page.url).unwrap();
         quote! {
             #variant => use_mdbook::mdbook_shared::PageId(#id),
         }
@@ -234,7 +235,7 @@ pub fn generate_router(mdbook_dir: PathBuf, book: mdbook_shared::MdBook<PathBuf>
     }
 }
 
-pub(crate) fn path_to_route_variant_name(path: &Path) -> String {
+pub(crate) fn path_to_route_variant_name(path: &Path) -> Result<String, EmptyIdentError> {
     let path_without_extension = path.with_extension("");
     let mut title = String::new();
     for segment in path_without_extension.components() {
@@ -250,44 +251,59 @@ pub(crate) fn path_to_route_variant_name(path: &Path) -> String {
 }
 
 /// Convert a string to an upper camel case which will be a valid Rust identifier. Any leading numbers will be skipped.
-pub(crate) fn to_upper_camel_case_for_ident(title: &str) -> String {
-    let upper = title
-        .to_case(Case::UpperCamel);
-    if upper.chars().next().unwrap().is_numeric() {
-        format!("_{}", upper)
-    } else {
-        upper
+pub(crate) fn to_upper_camel_case_for_ident(title: &str) -> Result<String, EmptyIdentError> {
+    let upper = title.to_case(Case::UpperCamel);
+    Ok(
+        if upper.chars().next().ok_or(EmptyIdentError)?.is_numeric() {
+            format!("_{}", upper)
+        } else {
+            upper
+        },
+    )
+}
+
+#[derive(Debug)]
+pub(crate) struct EmptyIdentError;
+
+impl ToTokens for EmptyIdentError {
+    fn to_tokens(&self, tokens: &mut proc_macro2::TokenStream) {
+        let err = self.to_string();
+        tokens.extend(quote! {
+            compile_error!(#err);
+        })
     }
 }
 
-pub(crate) fn path_to_route_variant(path: &Path) -> Ident {
-    let title = path_to_route_variant_name(path);
-    Ident::new(&title, Span::call_site())
-}
+impl std::error::Error for EmptyIdentError {}
 
-pub(crate) fn path_to_route_section(path: &Path) -> Ident {
-    let title = path_to_route_variant_name(path);
-    Ident::new(&format!("{}Section", title), Span::call_site())
-}
-
-pub(crate) fn path_to_route_enum(path: &Path) -> TokenStream2 {
-    let name = path_to_route_variant(path);
-    let section = path_to_route_section(path);
-    quote! {
-        BookRoute::#name {
-            section: #section::Empty
-        }
+impl std::fmt::Display for EmptyIdentError {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.write_str("Empty identifiers are not allowed")
     }
 }
 
-pub(crate) fn path_to_route_enum_with_section(path: &Path, section_variant: Ident) -> TokenStream2 {
-    let name = path_to_route_variant(path);
-    let section = path_to_route_section(path);
-    quote! {
+pub(crate) fn path_to_route_variant(path: &Path) -> Result<Ident, EmptyIdentError> {
+    let title = path_to_route_variant_name(path)?;
+    Ok(Ident::new(&title, Span::call_site()))
+}
+
+pub(crate) fn path_to_route_section(path: &Path) -> Result<Ident, EmptyIdentError> {
+    let title = path_to_route_variant_name(path)?;
+    Ok(Ident::new(&format!("{}Section", title), Span::call_site()))
+}
+
+pub(crate) fn path_to_route_enum(path: &Path) -> Result<TokenStream2, EmptyIdentError> {
+    path_to_route_enum_with_section(path, Ident::new("Empty", Span::call_site()))
+}
+
+pub(crate) fn path_to_route_enum_with_section(path: &Path, section_variant: Ident) -> Result<TokenStream2, EmptyIdentError> {
+    let name = path_to_route_variant(path)?;
+    let section = path_to_route_section(path)?;
+    Ok(quote! {
         BookRoute::#name {
             section: #section::#section_variant
         }
-    }
+    })
 }
 
 fn rustfmt_via_cli(input: &str) -> String {

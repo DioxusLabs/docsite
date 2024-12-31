@@ -16,7 +16,12 @@ pub fn write_book_with_routes(book: &mdbook_shared::MdBook<PathBuf>) -> TokenStr
     let MdBook { summary, .. } = book;
     let summary = write_summary_with_routes(summary);
     let pages = book.pages().iter().map(|(id, v)| {
-        let name = path_to_route_enum(&v.url);
+        let name = match path_to_route_enum(&v.url) {
+            Ok(url) => url,
+            Err(err) => {
+                return err.to_token_stream();
+            }
+        };
         let page = write_page_with_routes(v);
         quote! {
             pages.push((#id, #page));
@@ -97,7 +102,12 @@ fn write_link_with_routes(book: &mdbook_shared::Link<PathBuf>) -> TokenStream {
 
     let location = match location {
         Some(loc) => {
-            let inner = path_to_route_enum(loc);
+            let inner = match path_to_route_enum(loc) {
+                Ok(url) => url,
+                Err(err) => {
+                    return err.to_token_stream();
+                }
+            };
             quote! { Some(#inner) }
         }
         None => quote! { None },
@@ -154,7 +164,12 @@ fn write_page_with_routes(book: &mdbook_shared::Page<PathBuf>) -> TokenStream {
     let sections = sections.iter().map(write_section_with_routes);
 
     let path = url;
-    let url = path_to_route_enum(path);
+    let url = match path_to_route_enum(path) {
+        Ok(url) => url,
+        Err(err) => {
+            return err.to_token_stream();
+        }
+    };
     let id = id.0;
 
     quote! {

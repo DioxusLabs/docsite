@@ -1,4 +1,4 @@
-use convert_case::{Case, Casing};
+
 use mdbook_shared::get_book_content_path;
 use proc_macro2::TokenStream as TokenStream2;
 use quote::{quote, ToTokens};
@@ -17,7 +17,7 @@ use syntect::highlighting::ThemeSet;
 use syntect::parsing::SyntaxSet;
 
 use crate::{
-    path_to_route_enum_with_section, path_to_route_variant, to_upper_camel_case_for_ident,
+    path_to_route_enum, path_to_route_enum_with_section, path_to_route_variant, to_upper_camel_case_for_ident, EmptyIdentError
 };
 
 /// Convert a CallBody to a TokenStream
@@ -53,7 +53,7 @@ impl Section {
             .collect()
     }
 
-    pub(crate) fn variant(&self) -> String {
+    pub(crate) fn variant(&self) -> Result<String, EmptyIdentError> {
         to_upper_camel_case_for_ident(&self.fragment())
     }
 }
@@ -416,13 +416,28 @@ impl<'a, I: Iterator<Item = Event<'a>>> RsxMarkdownParser<'a, I> {
                                             .map_err(|_| format!("failed to strip prefix {content_path:?} from {p:?}"))
                                     }) {
                                     Ok(resolved) if content_path.join(&resolved).is_file() => {
-                                        let section = if let Some(hash) = hash {
+                                        let result = if let Some(hash) = hash {
                                             let section = Section::new(hash);
-                                            Ident::new(&section.variant(), Span::call_site())
+                                            match section.variant() {
+                                                Ok(variant) => {
+                                                    path_to_route_enum_with_section(&resolved, Ident::new(&variant, Span::call_site()))
+                                                },
+                                                Err(_) => {
+                                                    Ok(quote! {
+                                                        compile_error!("Fragment cannot be empty");
+                                                    })
+                                                }
+                                            }
                                         } else {
-                                            Ident::new("Empty", Span::call_site())
+                                            path_to_route_enum(&resolved)
                                         };
-                                        path_to_route_enum_with_section(&resolved, section)
+
+                                        match result {
+                                            Ok(result) => result,
+                                            Err(err) => {
+                                                err.to_token_stream()
+                                            }
+                                        }
                                     },
                                     Ok(resolved) => {
                                         let err = format!("The file {resolved:?} linked to in {current_file_path:?} does not exist");
@@ -563,8 +578,17 @@ impl<'a, I: Iterator<Item = Event<'a>>> RsxMarkdownParser<'a, I> {
     }
 
     fn section_variant(&mut self, section: &Section) -> TokenStream2 {
-        let enum_name = path_to_route_variant(&self.path);
-        let variant = Ident::new(&section.variant(), Span::call_site());
+        let Ok(enum_name) = path_to_route_variant(&self.path) else {
+            return quote! {
+                compile_error!("Path links cannot be empty");
+            };
+        };
+        let Ok(variant) = section.variant() else {
+            return quote! {
+                compile_error!("Fragment cannot be empty");
+            };
+        };
+        let variant = Ident::new(&variant, Span::call_site());
         quote! {
             #enum_name::#variant
         }

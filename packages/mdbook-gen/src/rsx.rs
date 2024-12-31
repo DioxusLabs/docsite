@@ -340,26 +340,57 @@ impl<'a, I: Iterator<Item = Event<'a>>> RsxMarkdownParser<'a, I> {
                             escape_text(&dest).to_token_stream()
                         } else {
                             // If this is a relative link, resolve it relative to the current file
-                            let path = PathBuf::from(dest.to_string());
+                            let content_path = get_book_content_path(&self.book_path).unwrap();
+                            let content_path = content_path.canonicalize().unwrap();
+                            let current_file_path = content_path.join(&self.path);
+                            let parent_of_current_file = current_file_path.parent().unwrap();
+                            let contains_hash;
+                            let dest_without_hash = match dest.split_once('#') {
+                                Some((without_hash, _)) => {
+                                    contains_hash = true;
+                                    if without_hash.is_empty() {
+                                        current_file_path
+                                            .strip_prefix(&parent_of_current_file)
+                                            .unwrap()
+                                            .to_str()
+                                            .unwrap()
+                                    } else {
+                                        without_hash
+                                    }
+                                }
+                                None => {
+                                    contains_hash = false;
+                                    &dest
+                                }
+                            };
+                            let path = PathBuf::from(dest_without_hash.to_string()).with_extension("md");
                             if path.is_relative() {
-                                let content_path = get_book_content_path(&self.book_path).unwrap();
-                                let current_file_path = content_path.join(&self.path);
-                                let parent_of_current_file = current_file_path.parent().unwrap();
-                                let relative_to_current_folder =
-                                    parent_of_current_file.join(&path);
+                                let relative_to_current_folder = parent_of_current_file.join(&path);
                                 match relative_to_current_folder
                                     .canonicalize()
-                                    .map_err(|e| Box::new(e) as Box<dyn std::error::Error>)
+                                    .map_err(|e| e.to_string())
                                     .and_then(|p| {
                                         p.strip_prefix(&content_path)
                                             .map(PathBuf::from)
-                                            .map_err(|e| Box::new(e) as Box<dyn std::error::Error>)
+                                            .map_err(|_| format!("failed to strip prefix {content_path:?} from {p:?}"))
                                     }) {
-                                    Ok(resolved) => path_to_route_enum(&resolved),
+                                    Ok(resolved) if content_path.join(&resolved).is_file() => {
+                                        if contains_hash {
+                                            dest.to_token_stream()
+                                        } else {
+                                            path_to_route_enum(&resolved)
+                                        }
+                                    },
+                                    Ok(resolved) => {
+                                        let err = format!("The file {resolved:?} linked to in {current_file_path:?} does not exist");
+                                        quote! {
+                                            compile_error!(#err)
+                                        }
+                                    },
                                     Err(e) => {
                                         let err = format!(
                                             "Failed to resolve link {} relative to {}: {}",
-                                            path.display(), parent_of_current_file.display(), e
+                                            path.display(), current_file_path.display(), e
                                         );
                                         quote! {
                                             compile_error!(#err)

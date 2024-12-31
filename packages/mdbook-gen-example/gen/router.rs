@@ -327,7 +327,7 @@ pub fn Chapter2(section: Chapter2Section) -> dioxus::prelude::Element {
         }
         p {
             "If a feature that you need doesn't exist or you want to contribute to projects on the roadmap, feel free to get involved by "
-            Link { to: "https://discord.gg/XgGxMSkvUM" }
+            Link { to: "https://discord.gg/XgGxMSkvUM", "joining the discord" }
             "."
         }
         p { "Generally, here's the status of each platform:" }
@@ -948,7 +948,9 @@ pub fn Chapter2(section: Chapter2Section) -> dioxus::prelude::Element {
         }
         p {
             "We are currently working on our own build tool called "
-            Link { to: "https://github.com/DioxusLabs/dioxus/tree/master/packages/cli" }
+            Link { to: "https://github.com/DioxusLabs/dioxus/tree/master/packages/cli",
+                "Dioxus CLI"
+            }
             " which will support:"
         }
         ul {
@@ -986,7 +988,7 @@ pub fn Chapter2(section: Chapter2Section) -> dioxus::prelude::Element {
         }
         p {
             "We are currently working on a native renderer for Dioxus using WGPU called "
-            Link { to: "https://github.com/DioxusLabs/blitz/" }
+            Link { to: "https://github.com/DioxusLabs/blitz/", "Blitz" }
             ". This will allow you to build apps that are rendered natively for iOS, Android, and Desktop."
         }
         h2 { id: "internal-links",
@@ -1004,6 +1006,7 @@ pub fn Chapter2(section: Chapter2Section) -> dioxus::prelude::Element {
                 to: BookRoute::Chapter1 {
                     section: Chapter1Section::Empty,
                 },
+                "this"
             }
             " are typechecked and will fail to compile if the file is not found."
         }

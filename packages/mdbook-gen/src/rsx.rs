@@ -554,6 +554,9 @@ impl<'a, I: Iterator<Item = Event<'a>>> RsxMarkdownParser<'a, I> {
                 Some(BodyNode::Element(element)) => {
                     element.children.push(node);
                 }
+                Some(BodyNode::Component(element)) => {
+                    element.children.roots.push(node);
+                }
                 None => {
                     self.root_nodes.push(node);
                 }
@@ -566,6 +569,7 @@ impl<'a, I: Iterator<Item = Event<'a>>> RsxMarkdownParser<'a, I> {
         // Find the list of elements we should add the node to
         let element_list = match self.last_mut() {
             Some(BodyNode::Element(element)) => &mut element.children,
+            Some(BodyNode::Component(element)) => &mut element.children.roots,
             None => &mut self.root_nodes,
             _ => return,
         };

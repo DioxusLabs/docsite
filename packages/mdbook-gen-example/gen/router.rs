@@ -302,35 +302,9 @@ impl std::fmt::Display for Chapter2Section {
 pub struct Chapter2SectionParseError;
 impl std::fmt::Display for Chapter2SectionParseError {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        f.write_str("Invalid section name. Expected one of: ")?;
-        f.write_str("roadmap--feature-set")?;
-        f.write_str(", ")?;
-        f.write_str("features")?;
-        f.write_str(", ")?;
-        f.write_str("roadmap")?;
-        f.write_str(", ")?;
-        f.write_str("core")?;
-        f.write_str(", ")?;
-        f.write_str("ssr")?;
-        f.write_str(", ")?;
-        f.write_str("desktop")?;
-        f.write_str(", ")?;
-        f.write_str("mobile")?;
-        f.write_str(", ")?;
-        f.write_str("bundling-cli")?;
-        f.write_str(", ")?;
-        f.write_str("essential-hooks")?;
-        f.write_str(", ")?;
-        f.write_str("work-in-progress")?;
-        f.write_str(", ")?;
-        f.write_str("build-tool")?;
-        f.write_str(", ")?;
-        f.write_str("server-component-support")?;
-        f.write_str(", ")?;
-        f.write_str("native-rendering")?;
-        f.write_str(", ")?;
-        f.write_str("internal-links")?;
-        f.write_str(", ")?;
+        f.write_str(
+            "Invalid section name. Expected one of Chapter2Sectionroadmap--feature-set, features, roadmap, core, ssr, desktop, mobile, bundling-cli, essential-hooks, work-in-progress, build-tool, server-component-support, native-rendering, internal-links",
+        )?;
         Ok(())
     }
 }
@@ -1065,9 +1039,7 @@ impl std::fmt::Display for Chapter3Section {
 pub struct Chapter3SectionParseError;
 impl std::fmt::Display for Chapter3SectionParseError {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        f.write_str("Invalid section name. Expected one of: ")?;
-        f.write_str("assets")?;
-        f.write_str(", ")?;
+        f.write_str("Invalid section name. Expected one of Chapter3Sectionassets")?;
         Ok(())
     }
 }

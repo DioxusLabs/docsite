@@ -1,4 +1,3 @@
-
 use mdbook_shared::get_book_content_path;
 use proc_macro2::TokenStream as TokenStream2;
 use quote::{quote, ToTokens};
@@ -17,7 +16,8 @@ use syntect::highlighting::ThemeSet;
 use syntect::parsing::SyntaxSet;
 
 use crate::{
-    path_to_route_enum, path_to_route_enum_with_section, to_upper_camel_case_for_ident, EmptyIdentError
+    path_to_route_enum, path_to_route_enum_with_section, to_upper_camel_case_for_ident,
+    EmptyIdentError,
 };
 
 /// Convert a CallBody to a TokenStream
@@ -252,12 +252,15 @@ impl<'a, I: Iterator<Item = Event<'a>>> RsxMarkdownParser<'a, I> {
                 let text = self.take_text();
                 let section = Section::new(&text);
                 let variant = section.variant();
-                let section_variant = variant.and_then(|variant|path_to_route_enum_with_section(&self.path, Ident::new(&variant, Span::call_site())));
+                let section_variant = variant.and_then(|variant| {
+                    path_to_route_enum_with_section(
+                        &self.path,
+                        Ident::new(&variant, Span::call_site()),
+                    )
+                });
                 let section_variant = match section_variant {
                     Ok(section_variant) => section_variant,
-                    Err(err) => {
-                        err.to_token_stream()
-                    }
+                    Err(err) => err.to_token_stream(),
                 };
                 let anchor = section.fragment();
                 self.sections.push(section);

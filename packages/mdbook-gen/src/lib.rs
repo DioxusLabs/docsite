@@ -299,7 +299,10 @@ pub(crate) fn path_to_route_enum(path: &Path) -> Result<TokenStream2, EmptyIdent
     path_to_route_enum_with_section(path, Ident::new("Empty", Span::call_site()))
 }
 
-pub(crate) fn path_to_route_enum_with_section(path: &Path, section_variant: Ident) -> Result<TokenStream2, EmptyIdentError> {
+pub(crate) fn path_to_route_enum_with_section(
+    path: &Path,
+    section_variant: Ident,
+) -> Result<TokenStream2, EmptyIdentError> {
     let name = path_to_route_variant(path)?;
     let section = path_to_route_section(path)?;
     Ok(quote! {

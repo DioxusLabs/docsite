@@ -45,7 +45,7 @@ There are *many* deploy providers! We're not going to get too deep into the pros
 Depending on your app, you might have strict requirements like SOC2 or HIPAA compliance. Make sure to do your own research for your own use-case.
 
 - [AWS](http://aws.amazon.com): Full-featured cloud provider powered by Amazon.
-- [GCP](http://aws.amazon.com): Full-featured cloud provider powered by Google.
+- [GCP](https://cloud.google.com): Full-featured cloud provider powered by Google.
 - [Azure](http://azure.microsoft.com): Full-featured cloud provider powered by Microsoft.
 - [Fly.io](http://fly.io): Simple scale-to-zero micro-vm-based cloud with integrated wireguard.
 - [Vercel](https://vercel.com): Developer-focused cloud built on AWS cloud functions popular with JavaScript frameworks.

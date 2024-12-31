@@ -10,22 +10,22 @@
     serde::Deserialize,
 )]
 pub enum BookRoute {
-    #[route("/introducing-dioxus")]
-    IntroducingDioxus {},
-    #[route("/release-020")]
-    Release020 {},
-    #[route("/templates-diffing")]
-    TemplatesDiffing {},
-    #[route("/release-030")]
-    Release030 {},
-    #[route("/fulltime")]
-    Fulltime {},
-    #[route("/release-040")]
-    Release040 {},
-    #[route("/release-050")]
-    Release050 {},
-    #[route("/release-060")]
-    Release060 {},
+    #[route("/introducing-dioxus#:section")]
+    IntroducingDioxus { section: IntroducingDioxusSection },
+    #[route("/release-020#:section")]
+    Release020 { section: Release020Section },
+    #[route("/templates-diffing#:section")]
+    TemplatesDiffing { section: TemplatesDiffingSection },
+    #[route("/release-030#:section")]
+    Release030 { section: Release030Section },
+    #[route("/fulltime#:section")]
+    Fulltime { section: FulltimeSection },
+    #[route("/release-040#:section")]
+    Release040 { section: Release040Section },
+    #[route("/release-050#:section")]
+    Release050 { section: Release050Section },
+    #[route("/release-060#:section")]
+    Release060 { section: Release060Section },
 }
 impl BookRoute {
     pub fn sections(&self) -> &'static [use_mdbook::mdbook_shared::Section] {
@@ -36,20 +36,22 @@ impl BookRoute {
     }
     pub fn page_id(&self) -> use_mdbook::mdbook_shared::PageId {
         match self {
-            BookRoute::IntroducingDioxus {} => use_mdbook::mdbook_shared::PageId(0usize),
-            BookRoute::Release020 {} => use_mdbook::mdbook_shared::PageId(1usize),
-            BookRoute::TemplatesDiffing {} => use_mdbook::mdbook_shared::PageId(2usize),
-            BookRoute::Release030 {} => use_mdbook::mdbook_shared::PageId(3usize),
-            BookRoute::Fulltime {} => use_mdbook::mdbook_shared::PageId(4usize),
-            BookRoute::Release040 {} => use_mdbook::mdbook_shared::PageId(5usize),
-            BookRoute::Release050 {} => use_mdbook::mdbook_shared::PageId(6usize),
-            BookRoute::Release060 {} => use_mdbook::mdbook_shared::PageId(7usize),
+            BookRoute::IntroducingDioxus { .. } => use_mdbook::mdbook_shared::PageId(0usize),
+            BookRoute::Release020 { .. } => use_mdbook::mdbook_shared::PageId(1usize),
+            BookRoute::TemplatesDiffing { .. } => use_mdbook::mdbook_shared::PageId(2usize),
+            BookRoute::Release030 { .. } => use_mdbook::mdbook_shared::PageId(3usize),
+            BookRoute::Fulltime { .. } => use_mdbook::mdbook_shared::PageId(4usize),
+            BookRoute::Release040 { .. } => use_mdbook::mdbook_shared::PageId(5usize),
+            BookRoute::Release050 { .. } => use_mdbook::mdbook_shared::PageId(6usize),
+            BookRoute::Release060 { .. } => use_mdbook::mdbook_shared::PageId(7usize),
         }
     }
 }
 impl Default for BookRoute {
     fn default() -> Self {
-        BookRoute::Fulltime {}
+        BookRoute::Fulltime {
+            section: FulltimeSection::Empty,
+        }
     }
 }
 pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRoute>> =
@@ -63,7 +65,9 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     ::use_mdbook::mdbook_shared::Page {
                         title: "Dioxus 0.1 $ Jan 3 2022 $ Release Notes $ After months of work, we're very excited to release the first version of Dioxus! Dioxus is a new library for building interactive user interfaces with Rust."
                             .to_string(),
-                        url: BookRoute::IntroducingDioxus {},
+                        url: BookRoute::IntroducingDioxus {
+                            section: IntroducingDioxusSection::Empty,
+                        },
                         segments: vec![],
                         sections: vec![
                             ::use_mdbook::mdbook_shared::Section {
@@ -153,7 +157,9 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                 },
             ));
         page_id_mapping.insert(
-            BookRoute::IntroducingDioxus {},
+            BookRoute::IntroducingDioxus {
+                section: IntroducingDioxusSection::Empty,
+            },
             ::use_mdbook::mdbook_shared::PageId(0usize),
         );
         pages
@@ -163,7 +169,9 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     ::use_mdbook::mdbook_shared::Page {
                         title: "Dioxus 0.2 $ Release Notes $ March 9, 2022 $ Just over two months in, and we already have a ton of awesome changes to Dioxus!"
                             .to_string(),
-                        url: BookRoute::Release020 {},
+                        url: BookRoute::Release020 {
+                            section: Release020Section::Empty,
+                        },
                         segments: vec![],
                         sections: vec![
                             ::use_mdbook::mdbook_shared::Section {
@@ -243,7 +251,9 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                 },
             ));
         page_id_mapping.insert(
-            BookRoute::Release020 {},
+            BookRoute::Release020 {
+                section: Release020Section::Empty,
+            },
             ::use_mdbook::mdbook_shared::PageId(1usize),
         );
         pages
@@ -253,7 +263,9 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     ::use_mdbook::mdbook_shared::Page {
                         title: "Making Dioxus (almost) as fast as SolidJS $ Tech $ December 11, 2022 $ Using a new technique called subtree memoization, Dioxus is now almost as fast as SolidJS."
                             .to_string(),
-                        url: BookRoute::TemplatesDiffing {},
+                        url: BookRoute::TemplatesDiffing {
+                            section: TemplatesDiffingSection::Empty,
+                        },
                         segments: vec![],
                         sections: vec![
                             ::use_mdbook::mdbook_shared::Section {
@@ -315,7 +327,9 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                 },
             ));
         page_id_mapping.insert(
-            BookRoute::TemplatesDiffing {},
+            BookRoute::TemplatesDiffing {
+                section: TemplatesDiffingSection::Empty,
+            },
             ::use_mdbook::mdbook_shared::PageId(2usize),
         );
         pages
@@ -325,7 +339,9 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     ::use_mdbook::mdbook_shared::Page {
                         title: "Dioxus 0.3 $ Release Notes $ February 8, 2023 $ The next big release of Dioxus is here! Templates, autoformatting, multiwindow support, and more!"
                             .to_string(),
-                        url: BookRoute::Release030 {},
+                        url: BookRoute::Release030 {
+                            section: Release030Section::Empty,
+                        },
                         segments: vec![],
                         sections: vec![
                             ::use_mdbook::mdbook_shared::Section {
@@ -414,7 +430,9 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                 },
             ));
         page_id_mapping.insert(
-            BookRoute::Release030 {},
+            BookRoute::Release030 {
+                section: Release030Section::Empty,
+            },
             ::use_mdbook::mdbook_shared::PageId(3usize),
         );
         pages
@@ -424,7 +442,9 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     ::use_mdbook::mdbook_shared::Page {
                         title: "Going fulltime on Dioxus $ Misc $ May 5, 2023 $ Dioxus is now my full time job! I'm so excited to be able to work on this full time."
                             .to_string(),
-                        url: BookRoute::Fulltime {},
+                        url: BookRoute::Fulltime {
+                            section: FulltimeSection::Empty,
+                        },
                         segments: vec![],
                         sections: vec![
                             ::use_mdbook::mdbook_shared::Section {
@@ -439,7 +459,9 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                 },
             ));
         page_id_mapping.insert(
-            BookRoute::Fulltime {},
+            BookRoute::Fulltime {
+                section: FulltimeSection::Empty,
+            },
             ::use_mdbook::mdbook_shared::PageId(4usize),
         );
         pages
@@ -449,7 +471,9 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     ::use_mdbook::mdbook_shared::Page {
                         title: "Dioxus 0.4 $ Release Notes $ August 1, 2023 $ Server Functions, Suspense, Enum Router, Overhauled Docs, Bundler, Android Support, and more!"
                             .to_string(),
-                        url: BookRoute::Release040 {},
+                        url: BookRoute::Release040 {
+                            section: Release040Section::Empty,
+                        },
                         segments: vec![],
                         sections: vec![
                             ::use_mdbook::mdbook_shared::Section {
@@ -536,7 +560,9 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                 },
             ));
         page_id_mapping.insert(
-            BookRoute::Release040 {},
+            BookRoute::Release040 {
+                section: Release040Section::Empty,
+            },
             ::use_mdbook::mdbook_shared::PageId(5usize),
         );
         pages
@@ -546,7 +572,9 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     ::use_mdbook::mdbook_shared::Page {
                         title: "Dioxus 0.5 $ Release Notes $ March 21, 2024 $ A signal rewrite, zero unsafe, no lifetimes, unified launch, and more!"
                             .to_string(),
-                        url: BookRoute::Release050 {},
+                        url: BookRoute::Release050 {
+                            section: Release050Section::Empty,
+                        },
                         segments: vec![],
                         sections: vec![
                             ::use_mdbook::mdbook_shared::Section {
@@ -695,7 +723,9 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                 },
             ));
         page_id_mapping.insert(
-            BookRoute::Release050 {},
+            BookRoute::Release050 {
+                section: Release050Section::Empty,
+            },
             ::use_mdbook::mdbook_shared::PageId(6usize),
         );
         pages
@@ -705,7 +735,9 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     ::use_mdbook::mdbook_shared::Page {
                         title: "Dioxus 0.6 $ Release Notes $ December 9, 2024 $ Massive Tooling Improvements: Mobile Simulators, Magical Hot-Reloading, Interactive CLI, and more!"
                             .to_string(),
-                        url: BookRoute::Release060 {},
+                        url: BookRoute::Release060 {
+                            section: Release060Section::Empty,
+                        },
                         segments: vec![],
                         sections: vec![
                             ::use_mdbook::mdbook_shared::Section {
@@ -847,7 +879,9 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                 },
             ));
         page_id_mapping.insert(
-            BookRoute::Release060 {},
+            BookRoute::Release060 {
+                section: Release060Section::Empty,
+            },
             ::use_mdbook::mdbook_shared::PageId(7usize),
         );
         ::use_mdbook::mdbook_shared::MdBook {
@@ -858,7 +892,9 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
                         name: "Dioxus 0.1 $ Jan 3 2022 $ Release Notes $ After months of work, we're very excited to release the first version of Dioxus! Dioxus is a new library for building interactive user interfaces with Rust."
                             .to_string(),
-                        location: Some(BookRoute::IntroducingDioxus {}),
+                        location: Some(BookRoute::IntroducingDioxus {
+                            section: IntroducingDioxusSection::Empty,
+                        }),
                         number: Some(
                             ::use_mdbook::mdbook_shared::SectionNumber(vec![1u32]),
                         ),
@@ -867,7 +903,9 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
                         name: "Dioxus 0.2 $ Release Notes $ March 9, 2022 $ Just over two months in, and we already have a ton of awesome changes to Dioxus!"
                             .to_string(),
-                        location: Some(BookRoute::Release020 {}),
+                        location: Some(BookRoute::Release020 {
+                            section: Release020Section::Empty,
+                        }),
                         number: Some(
                             ::use_mdbook::mdbook_shared::SectionNumber(vec![2u32]),
                         ),
@@ -876,7 +914,9 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
                         name: "Making Dioxus (almost) as fast as SolidJS $ Tech $ December 11, 2022 $ Using a new technique called subtree memoization, Dioxus is now almost as fast as SolidJS."
                             .to_string(),
-                        location: Some(BookRoute::TemplatesDiffing {}),
+                        location: Some(BookRoute::TemplatesDiffing {
+                            section: TemplatesDiffingSection::Empty,
+                        }),
                         number: Some(
                             ::use_mdbook::mdbook_shared::SectionNumber(vec![3u32]),
                         ),
@@ -885,7 +925,9 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
                         name: "Dioxus 0.3 $ Release Notes $ February 8, 2023 $ The next big release of Dioxus is here! Templates, autoformatting, multiwindow support, and more!"
                             .to_string(),
-                        location: Some(BookRoute::Release030 {}),
+                        location: Some(BookRoute::Release030 {
+                            section: Release030Section::Empty,
+                        }),
                         number: Some(
                             ::use_mdbook::mdbook_shared::SectionNumber(vec![4u32]),
                         ),
@@ -894,7 +936,9 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
                         name: "Going fulltime on Dioxus $ Misc $ May 5, 2023 $ Dioxus is now my full time job! I'm so excited to be able to work on this full time."
                             .to_string(),
-                        location: Some(BookRoute::Fulltime {}),
+                        location: Some(BookRoute::Fulltime {
+                            section: FulltimeSection::Empty,
+                        }),
                         number: Some(
                             ::use_mdbook::mdbook_shared::SectionNumber(vec![5u32]),
                         ),
@@ -903,7 +947,9 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
                         name: "Dioxus 0.4 $ Release Notes $ August 1, 2023 $ Server Functions, Suspense, Enum Router, Overhauled Docs, Bundler, Android Support, and more!"
                             .to_string(),
-                        location: Some(BookRoute::Release040 {}),
+                        location: Some(BookRoute::Release040 {
+                            section: Release040Section::Empty,
+                        }),
                         number: Some(
                             ::use_mdbook::mdbook_shared::SectionNumber(vec![6u32]),
                         ),
@@ -912,7 +958,9 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
                         name: "Dioxus 0.5 $ Release Notes $ March 21, 2024 $ A signal rewrite, zero unsafe, no lifetimes, unified launch, and more!"
                             .to_string(),
-                        location: Some(BookRoute::Release050 {}),
+                        location: Some(BookRoute::Release050 {
+                            section: Release050Section::Empty,
+                        }),
                         number: Some(
                             ::use_mdbook::mdbook_shared::SectionNumber(vec![7u32]),
                         ),
@@ -921,7 +969,9 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
                         name: "Dioxus 0.6 $ Release Notes $ December 9, 2024 $ Massive Tooling Improvements: Mobile Simulators, Magical Hot-Reloading, Interactive CLI, and more!"
                             .to_string(),
-                        location: Some(BookRoute::Release060 {}),
+                        location: Some(BookRoute::Release060 {
+                            section: Release060Section::Empty,
+                        }),
                         number: Some(
                             ::use_mdbook::mdbook_shared::SectionNumber(vec![8u32]),
                         ),
@@ -934,12 +984,109 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
             page_id_mapping,
         }
     });
+#[derive(
+    Clone, Copy, PartialEq, Eq, Hash, Debug, Default, serde::Serialize, serde::Deserialize,
+)]
+pub enum IntroducingDioxusSection {
+    #[default]
+    Empty,
+    IntroducingDioxusV01,
+    ShowMeSomeExamplesOfWhatCanBeBuilt,
+    WhyShouldIUseRustAndDioxusForFrontend,
+    DifferenceFromTypescriptreact,
+    ShowMeMore,
+    BuildingANewProjectIsSimple,
+    SupportForJsxStyleTemplating,
+    DioxusPrioritizesDeveloperExperience,
+    DioxusIsPerfectedForTheIde,
+    DioxusIsExtremelyFast,
+    WorksOnDesktopAndMobile,
+    DidSomeoneSayTuiSupport,
+    ThingsWeDidntCover,
+    WhatsOnTheRoadmap,
+    Community,
+}
+impl std::str::FromStr for IntroducingDioxusSection {
+    type Err = IntroducingDioxusSectionParseError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "" => Ok(Self::Empty),
+            "introducing-dioxus-v01-" => Ok(Self::IntroducingDioxusV01),
+            "show-me-some-examples-of-what-can-be-built" => {
+                Ok(Self::ShowMeSomeExamplesOfWhatCanBeBuilt)
+            }
+            "why-should-i-use-rust-and-dioxus-for-frontend" => {
+                Ok(Self::WhyShouldIUseRustAndDioxusForFrontend)
+            }
+            "difference-from-typescriptreact" => Ok(Self::DifferenceFromTypescriptreact),
+            "show-me-more" => Ok(Self::ShowMeMore),
+            "building-a-new-project-is-simple" => Ok(Self::BuildingANewProjectIsSimple),
+            "support-for-jsx-style-templating" => Ok(Self::SupportForJsxStyleTemplating),
+            "dioxus-prioritizes-developer-experience" => {
+                Ok(Self::DioxusPrioritizesDeveloperExperience)
+            }
+            "dioxus-is-perfected-for-the-ide" => Ok(Self::DioxusIsPerfectedForTheIde),
+            "dioxus-is-extremely-fast" => Ok(Self::DioxusIsExtremelyFast),
+            "works-on-desktop-and-mobile" => Ok(Self::WorksOnDesktopAndMobile),
+            "did-someone-say-tui-support" => Ok(Self::DidSomeoneSayTuiSupport),
+            "things-we-didnt-cover" => Ok(Self::ThingsWeDidntCover),
+            "whats-on-the-roadmap" => Ok(Self::WhatsOnTheRoadmap),
+            "community" => Ok(Self::Community),
+            _ => Err(IntroducingDioxusSectionParseError),
+        }
+    }
+}
+impl std::fmt::Display for IntroducingDioxusSection {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Self::Empty => f.write_str(""),
+            Self::IntroducingDioxusV01 => f.write_str("introducing-dioxus-v01-"),
+            Self::ShowMeSomeExamplesOfWhatCanBeBuilt => {
+                f.write_str("show-me-some-examples-of-what-can-be-built")
+            }
+            Self::WhyShouldIUseRustAndDioxusForFrontend => {
+                f.write_str("why-should-i-use-rust-and-dioxus-for-frontend")
+            }
+            Self::DifferenceFromTypescriptreact => f.write_str("difference-from-typescriptreact"),
+            Self::ShowMeMore => f.write_str("show-me-more"),
+            Self::BuildingANewProjectIsSimple => f.write_str("building-a-new-project-is-simple"),
+            Self::SupportForJsxStyleTemplating => f.write_str("support-for-jsx-style-templating"),
+            Self::DioxusPrioritizesDeveloperExperience => {
+                f.write_str("dioxus-prioritizes-developer-experience")
+            }
+            Self::DioxusIsPerfectedForTheIde => f.write_str("dioxus-is-perfected-for-the-ide"),
+            Self::DioxusIsExtremelyFast => f.write_str("dioxus-is-extremely-fast"),
+            Self::WorksOnDesktopAndMobile => f.write_str("works-on-desktop-and-mobile"),
+            Self::DidSomeoneSayTuiSupport => f.write_str("did-someone-say-tui-support"),
+            Self::ThingsWeDidntCover => f.write_str("things-we-didnt-cover"),
+            Self::WhatsOnTheRoadmap => f.write_str("whats-on-the-roadmap"),
+            Self::Community => f.write_str("community"),
+        }
+    }
+}
+#[derive(Debug)]
+pub struct IntroducingDioxusSectionParseError;
+impl std::fmt::Display for IntroducingDioxusSectionParseError {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.write_str(
+            "Invalid section name. Expected one of IntroducingDioxusSectionintroducing-dioxus-v01-, show-me-some-examples-of-what-can-be-built, why-should-i-use-rust-and-dioxus-for-frontend, difference-from-typescriptreact, show-me-more, building-a-new-project-is-simple, support-for-jsx-style-templating, dioxus-prioritizes-developer-experience, dioxus-is-perfected-for-the-ide, dioxus-is-extremely-fast, works-on-desktop-and-mobile, did-someone-say-tui-support, things-we-didnt-cover, whats-on-the-roadmap, community",
+        )?;
+        Ok(())
+    }
+}
+impl std::error::Error for IntroducingDioxusSectionParseError {}
 #[component(no_case_check)]
-pub fn IntroducingDioxus() -> dioxus::prelude::Element {
+pub fn IntroducingDioxus(section: IntroducingDioxusSection) -> dioxus::prelude::Element {
     use dioxus::prelude::*;
     rsx! {
         h1 { id: "introducing-dioxus-v01-",
-            Link { to: "#introducing-dioxus-v01-", class: "header", "Introducing Dioxus v0.1 ✨" }
+            Link {
+                to: BookRoute::IntroducingDioxus {
+                    section: IntroducingDioxusSection::IntroducingDioxusV01,
+                },
+                class: "header",
+                "Introducing Dioxus v0.1 ✨"
+            }
         }
         blockquote {
             p { "Jan 3, 2022" }
@@ -1058,7 +1205,9 @@ pub fn IntroducingDioxus() -> dioxus::prelude::Element {
         }
         h2 { id: "show-me-some-examples-of-what-can-be-built",
             Link {
-                to: "#show-me-some-examples-of-what-can-be-built",
+                to: BookRoute::IntroducingDioxus {
+                    section: IntroducingDioxusSection::ShowMeSomeExamplesOfWhatCanBeBuilt,
+                },
                 class: "header",
                 "Show me some examples of what can be built!"
             }
@@ -1082,7 +1231,9 @@ pub fn IntroducingDioxus() -> dioxus::prelude::Element {
         }
         h2 { id: "why-should-i-use-rust-and-dioxus-for-frontend",
             Link {
-                to: "#why-should-i-use-rust-and-dioxus-for-frontend",
+                to: BookRoute::IntroducingDioxus {
+                    section: IntroducingDioxusSection::WhyShouldIUseRustAndDioxusForFrontend,
+                },
                 class: "header",
                 "Why should I use Rust and Dioxus for frontend?"
             }
@@ -1093,7 +1244,11 @@ pub fn IntroducingDioxus() -> dioxus::prelude::Element {
             " ever again! With Rust, all errors must be accounted for at compile time. You cannot ship an app that does not — in some way — handle its errors."
         }
         h3 { id: "difference-from-typescriptreact",
-            Link { to: "#difference-from-typescriptreact", class: "header",
+            Link {
+                to: BookRoute::IntroducingDioxus {
+                    section: IntroducingDioxusSection::DifferenceFromTypescriptreact,
+                },
+                class: "header",
                 "Difference from TypeScript/React:"
             }
         }
@@ -1161,7 +1316,13 @@ pub fn IntroducingDioxus() -> dioxus::prelude::Element {
             " project."
         }
         h2 { id: "show-me-more",
-            Link { to: "#show-me-more", class: "header", "Show me more" }
+            Link {
+                to: BookRoute::IntroducingDioxus {
+                    section: IntroducingDioxusSection::ShowMeMore,
+                },
+                class: "header",
+                "Show me more"
+            }
         }
         p {
             "Here, we'll dive into some features of Dioxus and why it's so fun to use. The "
@@ -1169,7 +1330,11 @@ pub fn IntroducingDioxus() -> dioxus::prelude::Element {
             " serves as a deeper and more comprehensive look at what Dioxus can do."
         }
         h2 { id: "building-a-new-project-is-simple",
-            Link { to: "#building-a-new-project-is-simple", class: "header",
+            Link {
+                to: BookRoute::IntroducingDioxus {
+                    section: IntroducingDioxusSection::BuildingANewProjectIsSimple,
+                },
+                class: "header",
                 "Building a new project is simple"
             }
         }
@@ -1204,7 +1369,11 @@ pub fn IntroducingDioxus() -> dioxus::prelude::Element {
             }
         }
         h2 { id: "support-for-jsx-style-templating",
-            Link { to: "#support-for-jsx-style-templating", class: "header",
+            Link {
+                to: BookRoute::IntroducingDioxus {
+                    section: IntroducingDioxusSection::SupportForJsxStyleTemplating,
+                },
+                class: "header",
                 "Support for JSX-style templating"
             }
         }
@@ -1230,7 +1399,9 @@ pub fn IntroducingDioxus() -> dioxus::prelude::Element {
         }
         h2 { id: "dioxus-prioritizes-developer-experience",
             Link {
-                to: "#dioxus-prioritizes-developer-experience",
+                to: BookRoute::IntroducingDioxus {
+                    section: IntroducingDioxusSection::DioxusPrioritizesDeveloperExperience,
+                },
                 class: "header",
                 "Dioxus prioritizes developer experience"
             }
@@ -1268,7 +1439,11 @@ pub fn IntroducingDioxus() -> dioxus::prelude::Element {
             " more to this story, but hopefully we've convinced you that Dioxus' DX somewhat approximates JSX/React."
         }
         h2 { id: "dioxus-is-perfected-for-the-ide",
-            Link { to: "#dioxus-is-perfected-for-the-ide", class: "header",
+            Link {
+                to: BookRoute::IntroducingDioxus {
+                    section: IntroducingDioxusSection::DioxusIsPerfectedForTheIde,
+                },
+                class: "header",
                 "Dioxus is perfected for the IDE"
             }
         }
@@ -1335,7 +1510,13 @@ pub fn IntroducingDioxus() -> dioxus::prelude::Element {
         }
         p { "We spent a ton of time on this and we hope you enjoy it!" }
         h2 { id: "dioxus-is-extremely-fast",
-            Link { to: "#dioxus-is-extremely-fast", class: "header", "Dioxus is extremely fast" }
+            Link {
+                to: BookRoute::IntroducingDioxus {
+                    section: IntroducingDioxusSection::DioxusIsExtremelyFast,
+                },
+                class: "header",
+                "Dioxus is extremely fast"
+            }
         }
         p {
             "We take the performance of Dioxus seriously. Instead of resolving to \"good enough,\" Dioxus is designed to push the limits of what a declarative React-like framework can achieve. Dioxus is designed with multi-tenancy in mind: a single machine should be able to run thousands of simultaneous low-latency LiveView apps without skipping a beat. To accomplish this goal we've implemented a large number of optimizations:"
@@ -1362,7 +1543,13 @@ pub fn IntroducingDioxus() -> dioxus::prelude::Element {
             " fast."
         }
         h2 { id: "works-on-desktop-and-mobile",
-            Link { to: "#works-on-desktop-and-mobile", class: "header", "Works on Desktop and Mobile" }
+            Link {
+                to: BookRoute::IntroducingDioxus {
+                    section: IntroducingDioxusSection::WorksOnDesktopAndMobile,
+                },
+                class: "header",
+                "Works on Desktop and Mobile"
+            }
         }
         p {
             "We’ve mentioned before that Dioxus works practically anywhere that Rust does. When running natively as a desktop or mobile app, your Dioxus code will run on its own thread, not inside of a web runtime. This means you can access hardware, file system, and platform APIs directly without needing to go through a shim layer. In our examples, we feature a "
@@ -1388,7 +1575,13 @@ pub fn IntroducingDioxus() -> dioxus::prelude::Element {
             "iOS should be supported out of the box, but Android support will take custom some boilerplate that hasn't been completely figured out. If you're interested in contributing to Dioxus, improving mobile support would be extremely helpful."
         }
         h3 { id: "did-someone-say-tui-support",
-            Link { to: "#did-someone-say-tui-support", class: "header", "Did someone say TUI support?" }
+            Link {
+                to: BookRoute::IntroducingDioxus {
+                    section: IntroducingDioxusSection::DidSomeoneSayTuiSupport,
+                },
+                class: "header",
+                "Did someone say TUI support?"
+            }
         }
         p {
             "Yes, you can even build terminal user interfaces with Dioxus. Full support is still a work in progress, but the foundation is there."
@@ -1397,7 +1590,13 @@ pub fn IntroducingDioxus() -> dioxus::prelude::Element {
             Link { to: "https://github.com/dioxusLabs/rink" }
         }
         h3 { id: "things-we-didnt-cover",
-            Link { to: "#things-we-didnt-cover", class: "header", "Things we didn't cover:" }
+            Link {
+                to: BookRoute::IntroducingDioxus {
+                    section: IntroducingDioxusSection::ThingsWeDidntCover,
+                },
+                class: "header",
+                "Things we didn't cover:"
+            }
         }
         p {
             "There are a bunch of things we didn't talk about here. Check out the guide for more information, or peruse the examples and reference for more context."
@@ -1416,7 +1615,13 @@ pub fn IntroducingDioxus() -> dioxus::prelude::Element {
             "."
         }
         h2 { id: "whats-on-the-roadmap",
-            Link { to: "#whats-on-the-roadmap", class: "header", "What's on the roadmap?" }
+            Link {
+                to: BookRoute::IntroducingDioxus {
+                    section: IntroducingDioxusSection::WhatsOnTheRoadmap,
+                },
+                class: "header",
+                "What's on the roadmap?"
+            }
         }
         p {
             "The world of Rust on the frontend is barely explored. Given the performance, ergonomics, and portability of Rust/Dioxus, we expect there to be a ton of different applications where having a React-like toolkit running natively can enable things previously considered impossible."
@@ -1471,7 +1676,13 @@ pub fn IntroducingDioxus() -> dioxus::prelude::Element {
             "Stay tuned for our next article, which will go over some of the optimization techniques that went into making Dioxus blazing fast."
         }
         h2 { id: "community",
-            Link { to: "#community", class: "header", "Community" }
+            Link {
+                to: BookRoute::IntroducingDioxus {
+                    section: IntroducingDioxusSection::Community,
+                },
+                class: "header",
+                "Community"
+            }
         }
         p {
             "The future is bright for Rust frontends! If you'd like to get involved, we have a "
@@ -1490,8 +1701,84 @@ pub fn IntroducingDioxus() -> dioxus::prelude::Element {
         }
     }
 }
+#[derive(
+    Clone, Copy, PartialEq, Eq, Hash, Debug, Default, serde::Serialize, serde::Deserialize,
+)]
+pub enum Release020Section {
+    #[default]
+    Empty,
+    WhatsNew,
+    ANewRendererYourTerminal,
+    NewRouter,
+    FermiForGlobalStateManagement,
+    InlinePropsMacro,
+    PropsOptionalFields,
+    DioxusWebSpeedBoost,
+    DioxusDesktopWindowContext,
+    CliTool,
+    AsyncImprovements,
+    AllNewFeatures,
+    Fixes,
+    CommunityAdditions,
+    LookingForward,
+}
+impl std::str::FromStr for Release020Section {
+    type Err = Release020SectionParseError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "" => Ok(Self::Empty),
+            "whats-new" => Ok(Self::WhatsNew),
+            "a-new-renderer-your-terminal" => Ok(Self::ANewRendererYourTerminal),
+            "new-router" => Ok(Self::NewRouter),
+            "fermi-for-global-state-management" => Ok(Self::FermiForGlobalStateManagement),
+            "inline-props-macro" => Ok(Self::InlinePropsMacro),
+            "props-optional-fields" => Ok(Self::PropsOptionalFields),
+            "dioxus-web-speed-boost" => Ok(Self::DioxusWebSpeedBoost),
+            "dioxus-desktop-window-context" => Ok(Self::DioxusDesktopWindowContext),
+            "cli-tool" => Ok(Self::CliTool),
+            "async-improvements" => Ok(Self::AsyncImprovements),
+            "all-new-features" => Ok(Self::AllNewFeatures),
+            "fixes" => Ok(Self::Fixes),
+            "community-additions" => Ok(Self::CommunityAdditions),
+            "looking-forward" => Ok(Self::LookingForward),
+            _ => Err(Release020SectionParseError),
+        }
+    }
+}
+impl std::fmt::Display for Release020Section {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Self::Empty => f.write_str(""),
+            Self::WhatsNew => f.write_str("whats-new"),
+            Self::ANewRendererYourTerminal => f.write_str("a-new-renderer-your-terminal"),
+            Self::NewRouter => f.write_str("new-router"),
+            Self::FermiForGlobalStateManagement => f.write_str("fermi-for-global-state-management"),
+            Self::InlinePropsMacro => f.write_str("inline-props-macro"),
+            Self::PropsOptionalFields => f.write_str("props-optional-fields"),
+            Self::DioxusWebSpeedBoost => f.write_str("dioxus-web-speed-boost"),
+            Self::DioxusDesktopWindowContext => f.write_str("dioxus-desktop-window-context"),
+            Self::CliTool => f.write_str("cli-tool"),
+            Self::AsyncImprovements => f.write_str("async-improvements"),
+            Self::AllNewFeatures => f.write_str("all-new-features"),
+            Self::Fixes => f.write_str("fixes"),
+            Self::CommunityAdditions => f.write_str("community-additions"),
+            Self::LookingForward => f.write_str("looking-forward"),
+        }
+    }
+}
+#[derive(Debug)]
+pub struct Release020SectionParseError;
+impl std::fmt::Display for Release020SectionParseError {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.write_str(
+            "Invalid section name. Expected one of Release020Sectionwhats-new, a-new-renderer-your-terminal, new-router, fermi-for-global-state-management, inline-props-macro, props-optional-fields, dioxus-web-speed-boost, dioxus-desktop-window-context, cli-tool, async-improvements, all-new-features, fixes, community-additions, looking-forward",
+        )?;
+        Ok(())
+    }
+}
+impl std::error::Error for Release020SectionParseError {}
 #[component(no_case_check)]
-pub fn Release020() -> dioxus::prelude::Element {
+pub fn Release020(section: Release020Section) -> dioxus::prelude::Element {
     use dioxus::prelude::*;
     rsx! {
         p { "Thanks to these amazing folks for their financial support on OpenCollective:" }
@@ -1544,7 +1831,13 @@ pub fn Release020() -> dioxus::prelude::Element {
             contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">app</span><span style=\"color:#f8f8f2;\">(</span><span style=\"font-style:italic;color:#fd971f;\">cx</span><span style=\"color:#f8f8f2;\">: Scope) -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let </span><span style=\"color:#f92672;\">mut</span><span style=\"color:#f8f8f2;\"> count </span><span style=\"color:#f92672;\">= </span><span style=\"color:#66d9ef;\">use_state</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#f92672;\">&amp;</span><span style=\"color:#f8f8f2;\">cx, || </span><span style=\"color:#ff80f4;\">0</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">    cx.</span><span style=\"color:#66d9ef;\">render</span><span style=\"color:#f8f8f2;\">(rsx! {{\n</span><span style=\"color:#f8f8f2;\">        h1 {{ </span><span style=\"color:#ffee99;\">&quot;Count: {{count}}&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">        button {{ onclick: </span><span style=\"color:#f92672;\">move |_|</span><span style=\"color:#f8f8f2;\"> count </span><span style=\"color:#f92672;\">+= </span><span style=\"color:#ff80f4;\">1</span><span style=\"color:#f8f8f2;\">, </span><span style=\"color:#ffee99;\">&quot;+&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">        button {{ onclick: </span><span style=\"color:#f92672;\">move |_|</span><span style=\"color:#f8f8f2;\"> count </span><span style=\"color:#f92672;\">-= </span><span style=\"color:#ff80f4;\">1</span><span style=\"color:#f8f8f2;\">, </span><span style=\"color:#ffee99;\">&quot;-&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">    }})\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
         }
         h1 { id: "whats-new",
-            Link { to: "#whats-new", class: "header", "What's new?" }
+            Link {
+                to: BookRoute::Release020 {
+                    section: Release020Section::WhatsNew,
+                },
+                class: "header",
+                "What's new?"
+            }
         }
         p {
             "A "
@@ -1577,7 +1870,11 @@ pub fn Release020() -> dioxus::prelude::Element {
         }
         p { "We also fixed and improved a bunch of stuff - check out the full list down below." }
         h2 { id: "a-new-renderer-your-terminal",
-            Link { to: "#a-new-renderer-your-terminal", class: "header",
+            Link {
+                to: BookRoute::Release020 {
+                    section: Release020Section::ANewRendererYourTerminal,
+                },
+                class: "header",
                 "A New Renderer: Your terminal!"
             }
         }
@@ -1597,7 +1894,13 @@ pub fn Release020() -> dioxus::prelude::Element {
             "The new TUI renderer even supports mouse movements, keyboard input, async tasks, borders, and a ton more."
         }
         h2 { id: "new-router",
-            Link { to: "#new-router", class: "header", "New Router" }
+            Link {
+                to: BookRoute::Release020 {
+                    section: Release020Section::NewRouter,
+                },
+                class: "header",
+                "New Router"
+            }
         }
         p {
             "We totally revamped the router, switching away from the old yew-router approach to the more familiar "
@@ -1631,7 +1934,11 @@ pub fn Release020() -> dioxus::prelude::Element {
             "."
         }
         h2 { id: "fermi-for-global-state-management",
-            Link { to: "#fermi-for-global-state-management", class: "header",
+            Link {
+                to: BookRoute::Release020 {
+                    section: Release020Section::FermiForGlobalStateManagement,
+                },
+                class: "header",
                 "Fermi for Global State Management"
             }
         }
@@ -1649,7 +1956,13 @@ pub fn Release020() -> dioxus::prelude::Element {
             contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#8c8c8c;\">// Create a single value in an &quot;Atom&quot;\n</span><span style=\"font-style:italic;color:#66d9ef;\">static </span><span style=\"color:#ff80f4;\">TITLE</span><span style=\"color:#f8f8f2;\">: Atom&lt;</span><span style=\"color:#f92672;\">&amp;</span><span style=\"font-style:italic;color:#66d9ef;\">str</span><span style=\"color:#f8f8f2;\">&gt; </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">|_| </span><span style=\"color:#ffee99;\">&quot;Hello&quot;</span><span style=\"color:#f8f8f2;\">;\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#8c8c8c;\">// Read the value from anywhere in the app, subscribing to any changes\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">app</span><span style=\"color:#f8f8f2;\">(</span><span style=\"font-style:italic;color:#fd971f;\">cx</span><span style=\"color:#f8f8f2;\">: Scope) -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> title </span><span style=\"color:#f92672;\">= </span><span style=\"color:#66d9ef;\">use_read</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#f92672;\">&amp;</span><span style=\"color:#f8f8f2;\">cx, </span><span style=\"color:#ff80f4;\">TITLE</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"color:#f8f8f2;\">    cx.</span><span style=\"color:#66d9ef;\">render</span><span style=\"color:#f8f8f2;\">(rsx!{{\n</span><span style=\"color:#f8f8f2;\">        h1 {{ </span><span style=\"color:#ffee99;\">&quot;{{title}}&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">        Child {{}}\n</span><span style=\"color:#f8f8f2;\">    }})\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#8c8c8c;\">// Set the value from anywhere in the app\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">Child</span><span style=\"color:#f8f8f2;\">(</span><span style=\"font-style:italic;color:#fd971f;\">cx</span><span style=\"color:#f8f8f2;\">: Scope) -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> set_title </span><span style=\"color:#f92672;\">= </span><span style=\"color:#66d9ef;\">use_set</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#f92672;\">&amp;</span><span style=\"color:#f8f8f2;\">cx, </span><span style=\"color:#ff80f4;\">TITLE</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"color:#f8f8f2;\">    cx.</span><span style=\"color:#66d9ef;\">render</span><span style=\"color:#f8f8f2;\">(rsx!{{\n</span><span style=\"color:#f8f8f2;\">        button {{\n</span><span style=\"color:#f8f8f2;\">            onclick: </span><span style=\"color:#f92672;\">move |_| </span><span style=\"color:#66d9ef;\">set_title</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#ffee99;\">&quot;goodbye&quot;</span><span style=\"color:#f8f8f2;\">),\n</span><span style=\"color:#f8f8f2;\">            </span><span style=\"color:#ffee99;\">&quot;Say goodbye&quot;\n</span><span style=\"color:#f8f8f2;\">        }}\n</span><span style=\"color:#f8f8f2;\">    }})\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
         }
         h2 { id: "inline-props-macro",
-            Link { to: "#inline-props-macro", class: "header", "Inline Props Macro" }
+            Link {
+                to: BookRoute::Release020 {
+                    section: Release020Section::InlinePropsMacro,
+                },
+                class: "header",
+                "Inline Props Macro"
+            }
         }
         p {
             "For internal components, explicitly declaring props structs can become tedious. That's why we've built the new  "
@@ -1668,7 +1981,13 @@ pub fn Release020() -> dioxus::prelude::Element {
             "You won't be able to document each field or attach attributes so you should refrain from using it in libraries."
         }
         h2 { id: "props-optional-fields",
-            Link { to: "#props-optional-fields", class: "header", "Props optional fields" }
+            Link {
+                to: BookRoute::Release020 {
+                    section: Release020Section::PropsOptionalFields,
+                },
+                class: "header",
+                "Props optional fields"
+            }
         }
         p {
             "Sometimes you don't want to specify "
@@ -1687,7 +2006,13 @@ pub fn Release020() -> dioxus::prelude::Element {
             contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">#[derive(Props, PartialEq)]\n</span><span style=\"font-style:italic;color:#66d9ef;\">struct </span><span style=\"color:#f8f8f2;\">ChildProps {{\n</span><span style=\"color:#f8f8f2;\">    #[props(default = &quot;client&quot;)]\n</span><span style=\"color:#f8f8f2;\">    name: String,\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">    #[props(default)]\n</span><span style=\"color:#f8f8f2;\">    age: Option&lt;</span><span style=\"font-style:italic;color:#66d9ef;\">u32</span><span style=\"color:#f8f8f2;\">&gt;,\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">    #[props(optional)]\n</span><span style=\"color:#f8f8f2;\">    age: Option&lt;</span><span style=\"font-style:italic;color:#66d9ef;\">u32</span><span style=\"color:#f8f8f2;\">&gt;,\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#8c8c8c;\">// then to use the accompanying component\n</span><span style=\"color:#f8f8f2;\">rsx!{{\n</span><span style=\"color:#f8f8f2;\">    Child {{\n</span><span style=\"color:#f8f8f2;\">        name: </span><span style=\"color:#ffee99;\">&quot;asd&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
         }
         h2 { id: "dioxus-web-speed-boost",
-            Link { to: "#dioxus-web-speed-boost", class: "header", "Dioxus Web Speed Boost" }
+            Link {
+                to: BookRoute::Release020 {
+                    section: Release020Section::DioxusWebSpeedBoost,
+                },
+                class: "header",
+                "Dioxus Web Speed Boost"
+            }
         }
         p {
             "We've changed how DOM patching works in Dioxus-Web; now, all of the DOM manipulation code is written in TypeScript and shared between our web, desktop, and mobile runtimes."
@@ -1708,7 +2033,11 @@ pub fn Release020() -> dioxus::prelude::Element {
             }
         }
         h2 { id: "dioxus-desktop-window-context",
-            Link { to: "#dioxus-desktop-window-context", class: "header",
+            Link {
+                to: BookRoute::Release020 {
+                    section: Release020Section::DioxusDesktopWindowContext,
+                },
+                class: "header",
                 "Dioxus Desktop Window Context"
             }
         }
@@ -1737,7 +2066,13 @@ pub fn Release020() -> dioxus::prelude::Element {
             }
         }
         h2 { id: "cli-tool",
-            Link { to: "#cli-tool", class: "header", "CLI Tool" }
+            Link {
+                to: BookRoute::Release020 {
+                    section: Release020Section::CliTool,
+                },
+                class: "header",
+                "CLI Tool"
+            }
         }
         p {
             "Thanks to the amazing work by "
@@ -1752,7 +2087,13 @@ pub fn Release020() -> dioxus::prelude::Element {
             ", the dioxus-cli supports running examples and tests, making it easier to test web-based projects and showcase web-focused libraries."
         }
         h2 { id: "async-improvements",
-            Link { to: "#async-improvements", class: "header", "Async Improvements" }
+            Link {
+                to: BookRoute::Release020 {
+                    section: Release020Section::AsyncImprovements,
+                },
+                class: "header",
+                "Async Improvements"
+            }
         }
         p {
             "Working with async isn't the easiest part of Rust. To help improve things, we've upgraded async support across the board in Dioxus."
@@ -1772,7 +2113,13 @@ pub fn Release020() -> dioxus::prelude::Element {
             contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">App</span><span style=\"color:#f8f8f2;\">(</span><span style=\"font-style:italic;color:#fd971f;\">cx</span><span style=\"color:#f8f8f2;\">: Scope) -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> sync_task </span><span style=\"color:#f92672;\">= </span><span style=\"color:#66d9ef;\">use_coroutine</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#f92672;\">&amp;</span><span style=\"color:#f8f8f2;\">cx, |</span><span style=\"font-style:italic;color:#fd971f;\">rx</span><span style=\"color:#f8f8f2;\">| async </span><span style=\"color:#f92672;\">move </span><span style=\"color:#f8f8f2;\">{{\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"color:#66d9ef;\">connect_to_server</span><span style=\"color:#f8f8f2;\">().await;\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> state </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">MyState::new();\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"color:#f92672;\">while </span><span style=\"font-style:italic;color:#66d9ef;\">let Some</span><span style=\"color:#f8f8f2;\">(action) </span><span style=\"color:#f92672;\">=</span><span style=\"color:#f8f8f2;\"> rx.</span><span style=\"color:#66d9ef;\">next</span><span style=\"color:#f8f8f2;\">().await {{\n</span><span style=\"color:#f8f8f2;\">            </span><span style=\"color:#66d9ef;\">reduce_state_with_action</span><span style=\"color:#f8f8f2;\">(action).await;\n</span><span style=\"color:#f8f8f2;\">        }}\n</span><span style=\"color:#f8f8f2;\">    }});\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">    cx.</span><span style=\"color:#66d9ef;\">render</span><span style=\"color:#f8f8f2;\">(rsx!{{\n</span><span style=\"color:#f8f8f2;\">        button {{\n</span><span style=\"color:#f8f8f2;\">            onclick: </span><span style=\"color:#f92672;\">move |_|</span><span style=\"color:#f8f8f2;\"> sync_task.</span><span style=\"color:#66d9ef;\">send</span><span style=\"color:#f8f8f2;\">(SyncAction::Username(</span><span style=\"color:#ffee99;\">&quot;Bob&quot;</span><span style=\"color:#f8f8f2;\">)),\n</span><span style=\"color:#f8f8f2;\">            </span><span style=\"color:#ffee99;\">&quot;Click to sync your username to the server&quot;\n</span><span style=\"color:#f8f8f2;\">        }}\n</span><span style=\"color:#f8f8f2;\">    }})\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
         }
         h2 { id: "all-new-features",
-            Link { to: "#all-new-features", class: "header", "All New Features" }
+            Link {
+                to: BookRoute::Release020 {
+                    section: Release020Section::AllNewFeatures,
+                },
+                class: "header",
+                "All New Features"
+            }
         }
         p { "We've covered the major headlining features, but there were so many more!" }
         ul {
@@ -1815,7 +2162,13 @@ pub fn Release020() -> dioxus::prelude::Element {
             li { "Right-click menus are now disabled by default" }
         }
         h2 { id: "fixes",
-            Link { to: "#fixes", class: "header", "Fixes" }
+            Link {
+                to: BookRoute::Release020 {
+                    section: Release020Section::Fixes,
+                },
+                class: "header",
+                "Fixes"
+            }
         }
         ul {
             li { "Windows support improved across the board" }
@@ -1825,7 +2178,13 @@ pub fn Release020() -> dioxus::prelude::Element {
         }
         p { "A ton more! Dioxus is now much more stable than it was at release!" }
         h2 { id: "community-additions",
-            Link { to: "#community-additions", class: "header", "Community Additions" }
+            Link {
+                to: BookRoute::Release020 {
+                    section: Release020Section::CommunityAdditions,
+                },
+                class: "header",
+                "Community Additions"
+            }
         }
         ul {
             li {
@@ -1885,7 +2244,13 @@ pub fn Release020() -> dioxus::prelude::Element {
             li { "New Examples: forms, routers, linking, tui, and more!" }
         }
         h2 { id: "looking-forward",
-            Link { to: "#looking-forward", class: "header", "Looking Forward" }
+            Link {
+                to: BookRoute::Release020 {
+                    section: Release020Section::LookingForward,
+                },
+                class: "header",
+                "Looking Forward"
+            }
         }
         p {
             "Dioxus is still under rapid, active development. We'd love for you to get involved! For the next release, we're looking to add:"
@@ -1916,13 +2281,87 @@ pub fn Release020() -> dioxus::prelude::Element {
         }
     }
 }
+#[derive(
+    Clone, Copy, PartialEq, Eq, Hash, Debug, Default, serde::Serialize, serde::Deserialize,
+)]
+pub enum TemplatesDiffingSection {
+    #[default]
+    Empty,
+    MakingDioxusAlmostAsFastAsSolidjs,
+    DioxusSharesReactsDna,
+    OvercomingTheWartsOfReact,
+    MakingDioxusFasterByDoingLessWork,
+    TakingItAStepFurther,
+    WhatDoesThisEnable,
+    HotReloading,
+    PerformantLiveview,
+    FasterServerSideRenderingSsr,
+    Disclaimer,
+}
+impl std::str::FromStr for TemplatesDiffingSection {
+    type Err = TemplatesDiffingSectionParseError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "" => Ok(Self::Empty),
+            "making-dioxus-almost-as-fast-as-solidjs" => {
+                Ok(Self::MakingDioxusAlmostAsFastAsSolidjs)
+            }
+            "dioxus-shares-reacts-dna" => Ok(Self::DioxusSharesReactsDna),
+            "overcoming-the-warts-of-react" => Ok(Self::OvercomingTheWartsOfReact),
+            "making-dioxus-faster-by-doing-less-work" => {
+                Ok(Self::MakingDioxusFasterByDoingLessWork)
+            }
+            "taking-it-a-step-further" => Ok(Self::TakingItAStepFurther),
+            "what-does-this-enable" => Ok(Self::WhatDoesThisEnable),
+            "hot-reloading" => Ok(Self::HotReloading),
+            "performant-liveview" => Ok(Self::PerformantLiveview),
+            "faster-server-side-rendering-ssr" => Ok(Self::FasterServerSideRenderingSsr),
+            "disclaimer" => Ok(Self::Disclaimer),
+            _ => Err(TemplatesDiffingSectionParseError),
+        }
+    }
+}
+impl std::fmt::Display for TemplatesDiffingSection {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Self::Empty => f.write_str(""),
+            Self::MakingDioxusAlmostAsFastAsSolidjs => {
+                f.write_str("making-dioxus-almost-as-fast-as-solidjs")
+            }
+            Self::DioxusSharesReactsDna => f.write_str("dioxus-shares-reacts-dna"),
+            Self::OvercomingTheWartsOfReact => f.write_str("overcoming-the-warts-of-react"),
+            Self::MakingDioxusFasterByDoingLessWork => {
+                f.write_str("making-dioxus-faster-by-doing-less-work")
+            }
+            Self::TakingItAStepFurther => f.write_str("taking-it-a-step-further"),
+            Self::WhatDoesThisEnable => f.write_str("what-does-this-enable"),
+            Self::HotReloading => f.write_str("hot-reloading"),
+            Self::PerformantLiveview => f.write_str("performant-liveview"),
+            Self::FasterServerSideRenderingSsr => f.write_str("faster-server-side-rendering-ssr"),
+            Self::Disclaimer => f.write_str("disclaimer"),
+        }
+    }
+}
+#[derive(Debug)]
+pub struct TemplatesDiffingSectionParseError;
+impl std::fmt::Display for TemplatesDiffingSectionParseError {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.write_str(
+            "Invalid section name. Expected one of TemplatesDiffingSectionmaking-dioxus-almost-as-fast-as-solidjs, dioxus-shares-reacts-dna, overcoming-the-warts-of-react, making-dioxus-faster-by-doing-less-work, taking-it-a-step-further, what-does-this-enable, hot-reloading, performant-liveview, faster-server-side-rendering-ssr, disclaimer",
+        )?;
+        Ok(())
+    }
+}
+impl std::error::Error for TemplatesDiffingSectionParseError {}
 #[component(no_case_check)]
-pub fn TemplatesDiffing() -> dioxus::prelude::Element {
+pub fn TemplatesDiffing(section: TemplatesDiffingSection) -> dioxus::prelude::Element {
     use dioxus::prelude::*;
     rsx! {
         h1 { id: "making-dioxus-almost-as-fast-as-solidjs",
             Link {
-                to: "#making-dioxus-almost-as-fast-as-solidjs",
+                to: BookRoute::TemplatesDiffing {
+                    section: TemplatesDiffingSection::MakingDioxusAlmostAsFastAsSolidjs,
+                },
                 class: "header",
                 "Making Dioxus (almost) as fast as SolidJS"
             }
@@ -1965,7 +2404,13 @@ pub fn TemplatesDiffing() -> dioxus::prelude::Element {
         }
         p { "Anyways…" }
         h2 { id: "dioxus-shares-reacts-dna",
-            Link { to: "#dioxus-shares-reacts-dna", class: "header", "Dioxus shares React’s DNA" }
+            Link {
+                to: BookRoute::TemplatesDiffing {
+                    section: TemplatesDiffingSection::DioxusSharesReactsDna,
+                },
+                class: "header",
+                "Dioxus shares React’s DNA"
+            }
         }
         p {
             "As eloquently put by the creator of Svelte, the "
@@ -2017,7 +2462,11 @@ pub fn TemplatesDiffing() -> dioxus::prelude::Element {
             "All in all, we’ve learned to love lifetimes rather than fear them. But for all the good of React, we’re still stuck with the bad."
         }
         h2 { id: "overcoming-the-warts-of-react",
-            Link { to: "#overcoming-the-warts-of-react", class: "header",
+            Link {
+                to: BookRoute::TemplatesDiffing {
+                    section: TemplatesDiffingSection::OvercomingTheWartsOfReact,
+                },
+                class: "header",
                 "Overcoming the warts of React"
             }
         }
@@ -2067,7 +2516,9 @@ pub fn TemplatesDiffing() -> dioxus::prelude::Element {
         }
         h2 { id: "making-dioxus-faster-by-doing-less-work",
             Link {
-                to: "#making-dioxus-faster-by-doing-less-work",
+                to: BookRoute::TemplatesDiffing {
+                    section: TemplatesDiffingSection::MakingDioxusFasterByDoingLessWork,
+                },
                 class: "header",
                 "Making Dioxus faster by doing less work"
             }
@@ -2135,7 +2586,13 @@ pub fn TemplatesDiffing() -> dioxus::prelude::Element {
             " change. However, React-Forget still doesn’t fix the underlying issue of node creation, memory usage, or anything of the other things compile-time memoization achieves."
         }
         h2 { id: "taking-it-a-step-further",
-            Link { to: "#taking-it-a-step-further", class: "header", "Taking it a step further" }
+            Link {
+                to: BookRoute::TemplatesDiffing {
+                    section: TemplatesDiffingSection::TakingItAStepFurther,
+                },
+                class: "header",
+                "Taking it a step further"
+            }
         }
         p {
             "Templates make diffing the tree faster, but they can also make building the UI faster too. Both SolidJS and LitHTML take advantage of this hack to achieve fantastic performance."
@@ -2159,13 +2616,25 @@ pub fn TemplatesDiffing() -> dioxus::prelude::Element {
             "For the tiny case we’re showing here, the benefit might seem limited. However, for real-world apps with lots of elements, custom styles, and all sorts of extra metadata, this caching system is immensely powerful and extremely performant."
         }
         h2 { id: "what-does-this-enable",
-            Link { to: "#what-does-this-enable", class: "header", "What does this enable?" }
+            Link {
+                to: BookRoute::TemplatesDiffing {
+                    section: TemplatesDiffingSection::WhatDoesThisEnable,
+                },
+                class: "header",
+                "What does this enable?"
+            }
         }
         p {
             "Now that we’re working with the mindset of templates, we can start to build new functionality previously locked behind the old model."
         }
         h3 { id: "hot-reloading",
-            Link { to: "#hot-reloading", class: "header", "Hot Reloading" }
+            Link {
+                to: BookRoute::TemplatesDiffing {
+                    section: TemplatesDiffingSection::HotReloading,
+                },
+                class: "header",
+                "Hot Reloading"
+            }
         }
         p {
             "One amazing feature added to Dioxus using the new template model is hot reloading. You can now modify your running Dioxus app without recompiling, provided you add, remove, or modify elements inside of  "
@@ -2190,7 +2659,13 @@ pub fn TemplatesDiffing() -> dioxus::prelude::Element {
             "Not only can templates be cached inside of a renderer, they can be modified after-the-fact. The renderer is smart enough to track down the instance of every template node on the page and apply the same patches."
         }
         h3 { id: "performant-liveview",
-            Link { to: "#performant-liveview", class: "header", "Performant LiveView" }
+            Link {
+                to: BookRoute::TemplatesDiffing {
+                    section: TemplatesDiffingSection::PerformantLiveview,
+                },
+                class: "header",
+                "Performant LiveView"
+            }
         }
         p {
             "Another addition to Dioxus 0.3 is the new LiveView renderer. Much like its counterpart Phoenix LiveView, Dioxus LiveView enables entirely server-rendered apps and components while shipping minimal JS to the client. In the Liveview model, minimizing latency and bandwidth is crucial to keeping apps snappy, especially for lower-end clients."
@@ -2212,7 +2687,11 @@ pub fn TemplatesDiffing() -> dioxus::prelude::Element {
             "Notice how the templates are collected during SSR and inserted into the header. The only edits sent over the network from the server to the client are commands to create/remove template nodes and to precisely modify just the nodes that changed. Fast, simple, and scalable!"
         }
         h2 { id: "faster-server-side-rendering-ssr",
-            Link { to: "#faster-server-side-rendering-ssr", class: "header",
+            Link {
+                to: BookRoute::TemplatesDiffing {
+                    section: TemplatesDiffingSection::FasterServerSideRenderingSsr,
+                },
+                class: "header",
                 "Faster Server-Side-Rendering (SSR)"
             }
         }
@@ -2223,7 +2702,13 @@ pub fn TemplatesDiffing() -> dioxus::prelude::Element {
             contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#8c8c8c;\">// Cached template segments:\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">PreRendered(</span><span style=\"color:#ffee99;\">&quot;&lt;div class=</span><span style=\"color:#ff80f4;\">\\&quot;</span><span style=\"color:#ffee99;\">asdasdasd</span><span style=\"color:#ff80f4;\">\\&quot;</span><span style=\"color:#ffee99;\"> class=</span><span style=\"color:#ff80f4;\">\\&quot;</span><span style=\"color:#ffee99;\">asdasdasd</span><span style=\"color:#ff80f4;\">\\&quot;</span><span style=\"color:#ffee99;\">&quot;</span><span style=\"color:#f8f8f2;\">.</span><span style=\"color:#66d9ef;\">into</span><span style=\"color:#f8f8f2;\">(),),\n</span><span style=\"color:#f8f8f2;\">Attr(</span><span style=\"color:#ff80f4;\">0</span><span style=\"color:#f8f8f2;\">,),\n</span><span style=\"color:#f8f8f2;\">PreRendered(</span><span style=\"color:#ffee99;\">&quot;&gt;Hello world 1 --&gt;&quot;</span><span style=\"color:#f8f8f2;\">.</span><span style=\"color:#66d9ef;\">into</span><span style=\"color:#f8f8f2;\">(),),\n</span><span style=\"color:#f8f8f2;\">Node(</span><span style=\"color:#ff80f4;\">0</span><span style=\"color:#f8f8f2;\">,),\n</span><span style=\"color:#f8f8f2;\">PreRendered(\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#ffee99;\">&quot;&lt;-- Hello world 2&lt;div&gt;nest 1&lt;/div&gt;&lt;div&gt;&lt;/div&gt;&lt;div&gt;nest 2&lt;/div&gt;&quot;</span><span style=\"color:#f8f8f2;\">.</span><span style=\"color:#66d9ef;\">into</span><span style=\"color:#f8f8f2;\">(),\n</span><span style=\"color:#f8f8f2;\">),\n</span><span style=\"color:#f8f8f2;\">Node(</span><span style=\"color:#ff80f4;\">1</span><span style=\"color:#f8f8f2;\">,),\n</span><span style=\"color:#f8f8f2;\">Node(</span><span style=\"color:#ff80f4;\">2</span><span style=\"color:#f8f8f2;\">,),\n</span><span style=\"color:#f8f8f2;\">PreRendered(</span><span style=\"color:#ffee99;\">&quot;&lt;/div&gt;&quot;</span><span style=\"color:#f8f8f2;\">.</span><span style=\"color:#66d9ef;\">into</span><span style=\"color:#f8f8f2;\">(),)</span></pre>\n",
         }
         h2 { id: "disclaimer",
-            Link { to: "#disclaimer", class: "header", "Disclaimer" }
+            Link {
+                to: BookRoute::TemplatesDiffing {
+                    section: TemplatesDiffingSection::Disclaimer,
+                },
+                class: "header",
+                "Disclaimer"
+            }
         }
         p {
             "Even with all the innovations here, it’s still very important to remember that Dioxus still takes after React. No matter how many tweaks, optimizations, and improvements we make to Dioxus, you can still shoot yourself in the foot with the classic React footguns."
@@ -2265,8 +2750,99 @@ pub fn TemplatesDiffing() -> dioxus::prelude::Element {
         }
     }
 }
+#[derive(
+    Clone, Copy, PartialEq, Eq, Hash, Debug, Default, serde::Serialize, serde::Deserialize,
+)]
+pub enum Release030Section {
+    #[default]
+    Empty,
+    TemplatesAndPerformanceImprovements,
+    HotReloading,
+    Autoformatting,
+    LiveviewAndLivecomponents,
+    TuiInputWidgets,
+    MultiWindowDesktopApps,
+    LowercaseComponents,
+    ForLoopsIfChainsAndMoreFlexibleRsx,
+    PreliminaryWgpuRenderer,
+    SkiaRenderer,
+    CompletingSupportForCrossPlatformEvents,
+    LuaPluginSystemForCli,
+    Translations,
+    ANewLandingPageAndBetterDocs,
+    CommunityProjects,
+}
+impl std::str::FromStr for Release030Section {
+    type Err = Release030SectionParseError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "" => Ok(Self::Empty),
+            "templates-and-performance-improvements" => {
+                Ok(Self::TemplatesAndPerformanceImprovements)
+            }
+            "hot-reloading" => Ok(Self::HotReloading),
+            "autoformatting" => Ok(Self::Autoformatting),
+            "liveview-and-livecomponents" => Ok(Self::LiveviewAndLivecomponents),
+            "tui-input-widgets" => Ok(Self::TuiInputWidgets),
+            "multi-window-desktop-apps" => Ok(Self::MultiWindowDesktopApps),
+            "lowercase-components" => Ok(Self::LowercaseComponents),
+            "for-loops-if-chains-and-more-flexible-rsx" => {
+                Ok(Self::ForLoopsIfChainsAndMoreFlexibleRsx)
+            }
+            "preliminary-wgpu-renderer" => Ok(Self::PreliminaryWgpuRenderer),
+            "skia-renderer" => Ok(Self::SkiaRenderer),
+            "completing-support-for-cross-platform-events" => {
+                Ok(Self::CompletingSupportForCrossPlatformEvents)
+            }
+            "lua-plugin-system-for-cli" => Ok(Self::LuaPluginSystemForCli),
+            "translations" => Ok(Self::Translations),
+            "a-new-landing-page-and-better-docs" => Ok(Self::ANewLandingPageAndBetterDocs),
+            "community-projects" => Ok(Self::CommunityProjects),
+            _ => Err(Release030SectionParseError),
+        }
+    }
+}
+impl std::fmt::Display for Release030Section {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Self::Empty => f.write_str(""),
+            Self::TemplatesAndPerformanceImprovements => {
+                f.write_str("templates-and-performance-improvements")
+            }
+            Self::HotReloading => f.write_str("hot-reloading"),
+            Self::Autoformatting => f.write_str("autoformatting"),
+            Self::LiveviewAndLivecomponents => f.write_str("liveview-and-livecomponents"),
+            Self::TuiInputWidgets => f.write_str("tui-input-widgets"),
+            Self::MultiWindowDesktopApps => f.write_str("multi-window-desktop-apps"),
+            Self::LowercaseComponents => f.write_str("lowercase-components"),
+            Self::ForLoopsIfChainsAndMoreFlexibleRsx => {
+                f.write_str("for-loops-if-chains-and-more-flexible-rsx")
+            }
+            Self::PreliminaryWgpuRenderer => f.write_str("preliminary-wgpu-renderer"),
+            Self::SkiaRenderer => f.write_str("skia-renderer"),
+            Self::CompletingSupportForCrossPlatformEvents => {
+                f.write_str("completing-support-for-cross-platform-events")
+            }
+            Self::LuaPluginSystemForCli => f.write_str("lua-plugin-system-for-cli"),
+            Self::Translations => f.write_str("translations"),
+            Self::ANewLandingPageAndBetterDocs => f.write_str("a-new-landing-page-and-better-docs"),
+            Self::CommunityProjects => f.write_str("community-projects"),
+        }
+    }
+}
+#[derive(Debug)]
+pub struct Release030SectionParseError;
+impl std::fmt::Display for Release030SectionParseError {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.write_str(
+            "Invalid section name. Expected one of Release030Sectiontemplates-and-performance-improvements, hot-reloading, autoformatting, liveview-and-livecomponents, tui-input-widgets, multi-window-desktop-apps, lowercase-components, for-loops-if-chains-and-more-flexible-rsx, preliminary-wgpu-renderer, skia-renderer, completing-support-for-cross-platform-events, lua-plugin-system-for-cli, translations, a-new-landing-page-and-better-docs, community-projects",
+        )?;
+        Ok(())
+    }
+}
+impl std::error::Error for Release030SectionParseError {}
 #[component(no_case_check)]
-pub fn Release030() -> dioxus::prelude::Element {
+pub fn Release030(section: Release030Section) -> dioxus::prelude::Element {
     use dioxus::prelude::*;
     rsx! {
         p {
@@ -2299,7 +2875,9 @@ pub fn Release030() -> dioxus::prelude::Element {
         }
         h2 { id: "templates-and-performance-improvements",
             Link {
-                to: "#templates-and-performance-improvements",
+                to: BookRoute::Release030 {
+                    section: Release030Section::TemplatesAndPerformanceImprovements,
+                },
                 class: "header",
                 "Templates and performance improvements"
             }
@@ -2320,7 +2898,13 @@ pub fn Release030() -> dioxus::prelude::Element {
             "Additionally, we’ve reworked how desktop apps stream edits from the native thread into the webview, greatly improving performance."
         }
         h2 { id: "hot-reloading",
-            Link { to: "#hot-reloading", class: "header", "Hot Reloading" }
+            Link {
+                to: BookRoute::Release030 {
+                    section: Release030Section::HotReloading,
+                },
+                class: "header",
+                "Hot Reloading"
+            }
         }
         p {
             "Dioxus can now update how your app looks without recompiling the underlying Rust code. For developers who choose to write their user interfaces with the RSX macro, the Dioxus development server will automatically update the appearance of a running app whenever the macro body is modified."
@@ -2344,7 +2928,13 @@ pub fn Release030() -> dioxus::prelude::Element {
             "Note that hot reloading works by interpreting the body of RSX macro calls. If the hot reloading engine detects a modification unrelated to RSX, then it will force a full refresh of the app."
         }
         h2 { id: "autoformatting",
-            Link { to: "#autoformatting", class: "header", "Autoformatting" }
+            Link {
+                to: BookRoute::Release030 {
+                    section: Release030Section::Autoformatting,
+                },
+                class: "header",
+                "Autoformatting"
+            }
         }
         p {
             "Another widely requested feature - autoformatting - is now built into the Dioxus CLI and VSCode Extension. Using the same interpreter engine in hot reloading, your code can now be formatted automatically. This saves a ton of time and ensures consistency between code commits."
@@ -2383,7 +2973,13 @@ pub fn Release030() -> dioxus::prelude::Element {
             "Autoformatting respects some simple rustfmt features but is still in its early stages. If you find any quirks or disagree with the formatting style, feel free to file an issue."
         }
         h2 { id: "liveview-and-livecomponents",
-            Link { to: "#liveview-and-livecomponents", class: "header", "LiveView and LiveComponents" }
+            Link {
+                to: BookRoute::Release030 {
+                    section: Release030Section::LiveviewAndLivecomponents,
+                },
+                class: "header",
+                "LiveView and LiveComponents"
+            }
         }
         p {
             "Dioxus 0.3 marks the first official release of dedicated tooling for LiveView. LiveView is a new web-app development paradigm that combines the simplicity of server-side rendering with the rich interactivity of the single-page-application."
@@ -2407,7 +3003,13 @@ pub fn Release030() -> dioxus::prelude::Element {
             contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">async </span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">main</span><span style=\"color:#f8f8f2;\">() {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> router </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">Router::new()\n</span><span style=\"color:#f8f8f2;\">        .</span><span style=\"color:#66d9ef;\">route</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#ffee99;\">&quot;/&quot;</span><span style=\"color:#f8f8f2;\">, </span><span style=\"color:#66d9ef;\">get</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#f92672;\">move || </span><span style=\"color:#f8f8f2;\">dioxus_liveview::body(addr))\n</span><span style=\"color:#f8f8f2;\">        .</span><span style=\"color:#66d9ef;\">route</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#ffee99;\">&quot;/app&quot;</span><span style=\"color:#f8f8f2;\">, </span><span style=\"color:#66d9ef;\">get</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#f92672;\">move |</span><span style=\"color:#f8f8f2;\">ws</span><span style=\"color:#f92672;\">| </span><span style=\"color:#f8f8f2;\">dioxus_liveview::render(ws));\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">    axum::Server::bind(</span><span style=\"color:#ffee99;\">&quot;127.0.0.1&quot;</span><span style=\"color:#f8f8f2;\">.</span><span style=\"color:#66d9ef;\">parse</span><span style=\"color:#f8f8f2;\">().</span><span style=\"color:#66d9ef;\">unwrap</span><span style=\"color:#f8f8f2;\">())\n</span><span style=\"color:#f8f8f2;\">        .</span><span style=\"color:#66d9ef;\">serve</span><span style=\"color:#f8f8f2;\">(router.</span><span style=\"color:#66d9ef;\">into_make_service</span><span style=\"color:#f8f8f2;\">())\n</span><span style=\"color:#f8f8f2;\">        .await;\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">app</span><span style=\"color:#f8f8f2;\">(</span><span style=\"font-style:italic;color:#fd971f;\">cx</span><span style=\"color:#f8f8f2;\">: Scope) -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">\t\t</span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> posts </span><span style=\"color:#f92672;\">= </span><span style=\"color:#66d9ef;\">use_db_query</span><span style=\"color:#f8f8f2;\">(cx, </span><span style=\"color:#ff80f4;\">RECENT_POSTS</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">\t\trender! {{\n</span><span style=\"color:#f8f8f2;\">\t\t\t\t</span><span style=\"color:#f92672;\">for</span><span style=\"color:#f8f8f2;\"> post </span><span style=\"color:#f92672;\">in</span><span style=\"color:#f8f8f2;\"> posts {{\n</span><span style=\"color:#f8f8f2;\">\t\t\t\t\t\tPost {{ key: </span><span style=\"color:#ffee99;\">&quot;{{post.id}}&quot;</span><span style=\"color:#f8f8f2;\">, data: post }}\n</span><span style=\"color:#f8f8f2;\">\t\t\t\t}}\n</span><span style=\"color:#f8f8f2;\">\t\t}}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
         }
         h2 { id: "tui-input-widgets",
-            Link { to: "#tui-input-widgets", class: "header", "TUI Input Widgets" }
+            Link {
+                to: BookRoute::Release030 {
+                    section: Release030Section::TuiInputWidgets,
+                },
+                class: "header",
+                "TUI Input Widgets"
+            }
         }
         p {
             "Up to this point, Dioxus rendered into the terminal using just static elements. Now, with the release of Dioxus 0.3, we’re shipping a collection of input widgets for common utilities like buttons, sliders, text inputs, checkboxes, and more. These same widgets provide a basis of functionality for the native renderers we mention below."
@@ -2425,7 +3027,13 @@ pub fn Release030() -> dioxus::prelude::Element {
             }
         }
         h2 { id: "multi-window-desktop-apps",
-            Link { to: "#multi-window-desktop-apps", class: "header", "Multi-window Desktop Apps" }
+            Link {
+                to: BookRoute::Release030 {
+                    section: Release030Section::MultiWindowDesktopApps,
+                },
+                class: "header",
+                "Multi-window Desktop Apps"
+            }
         }
         p {
             "The Dioxus VirtualDom and tao/wry event loop now share the same scheduler, allowing full control of the window and event loop from within your desktop and mobile app. This unlocks everything a typical tauri app might have access to, allowing Dioxus to share more code with the rest of the Tauri ecosystem."
@@ -2446,7 +3054,13 @@ pub fn Release030() -> dioxus::prelude::Element {
             }
         }
         h2 { id: "lowercase-components",
-            Link { to: "#lowercase-components", class: "header", "Lowercase components" }
+            Link {
+                to: BookRoute::Release030 {
+                    section: Release030Section::LowercaseComponents,
+                },
+                class: "header",
+                "Lowercase components"
+            }
         }
         p {
             "We’ve expanded what can be considered a component. Lowercase components are now accepted in the rsx macro provided that they either"
@@ -2465,7 +3079,9 @@ pub fn Release030() -> dioxus::prelude::Element {
         CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">header {{}}              ❌\n</span><span style=\"color:#f8f8f2;\">module::header {{}}      ❌\n</span><span style=\"color:#f8f8f2;\">my_header {{}}           ✅</span></pre>\n" }
         h2 { id: "for-loops-if-chains-and-more-flexible-rsx",
             Link {
-                to: "#for-loops-if-chains-and-more-flexible-rsx",
+                to: BookRoute::Release030 {
+                    section: Release030Section::ForLoopsIfChainsAndMoreFlexibleRsx,
+                },
                 class: "header",
                 "For Loops, If Chains, and more flexible RSX"
             }
@@ -2480,7 +3096,13 @@ pub fn Release030() -> dioxus::prelude::Element {
         }
         CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f92672;\">for</span><span style=\"color:#f8f8f2;\"> dog </span><span style=\"color:#f92672;\">in</span><span style=\"color:#f8f8f2;\"> doggos {{\n</span><span style=\"color:#f8f8f2;\">\tdiv {{ key: </span><span style=\"color:#ffee99;\">&quot;{{dog.id}}&quot;</span><span style=\"color:#f8f8f2;\">,  </span><span style=\"color:#ffee99;\">&quot;Dog: {{dog.name}}&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n" }
         h2 { id: "preliminary-wgpu-renderer",
-            Link { to: "#preliminary-wgpu-renderer", class: "header", "Preliminary WGPU renderer" }
+            Link {
+                to: BookRoute::Release030 {
+                    section: Release030Section::PreliminaryWgpuRenderer,
+                },
+                class: "header",
+                "Preliminary WGPU renderer"
+            }
         }
         p {
             "Dioxus 0.3 delivers on another commonly requested feature: native (non-web browser) rendering. This new update brings a very young, very unstable, but surprisingly capable WGPU renderer. This renderer is the culmination of many months of work: collaboration with the Bevy team to revive Taffy (flexbox), integration of the new Vello renderer, and research into highly efficient incremental screen patching."
@@ -2501,7 +3123,13 @@ pub fn Release030() -> dioxus::prelude::Element {
             }
         }
         h2 { id: "skia-renderer",
-            Link { to: "#skia-renderer", class: "header", "Skia Renderer" }
+            Link {
+                to: BookRoute::Release030 {
+                    section: Release030Section::SkiaRenderer,
+                },
+                class: "header",
+                "Skia Renderer"
+            }
         }
         p {
             "While not exactly a Dioxus Labs project, we wanted to make sure to call out the new Freya editor for Dioxus which uses Skia instead of Vello. Freya takes a different approach from Dioxus-Native in that instead of adhering to HTML and CSS, it sets its own styling and layout strategy. This has a different learning curve - you  can’t take your CSS knowledge with you, but you get a styling system better designed for the job."
@@ -2511,7 +3139,9 @@ pub fn Release030() -> dioxus::prelude::Element {
         }
         h2 { id: "completing-support-for-cross-platform-events",
             Link {
-                to: "#completing-support-for-cross-platform-events",
+                to: BookRoute::Release030 {
+                    section: Release030Section::CompletingSupportForCrossPlatformEvents,
+                },
                 class: "header",
                 "Completing support for cross-platform events"
             }
@@ -2539,13 +3169,25 @@ pub fn Release030() -> dioxus::prelude::Element {
             "Note that the old JS-like API is still available (but deprecated) and will be phased out in a future release of Dioxus."
         }
         h2 { id: "lua-plugin-system-for-cli",
-            Link { to: "#lua-plugin-system-for-cli", class: "header", "Lua Plugin System for CLI" }
+            Link {
+                to: BookRoute::Release030 {
+                    section: Release030Section::LuaPluginSystemForCli,
+                },
+                class: "header",
+                "Lua Plugin System for CLI"
+            }
         }
         p {
             "The CLI has been overhauled with a ton of new features and improved ergonomics. One major improvement to the CLI is the addition of a Lua-based plugin system. In the future we to expand the plugin system to any WASI-compatible modules but have simply opted for Lua support in the short term while we figure out the API."
         }
         h2 { id: "translations",
-            Link { to: "#translations", class: "header", "Translations" }
+            Link {
+                to: BookRoute::Release030 {
+                    section: Release030Section::Translations,
+                },
+                class: "header",
+                "Translations"
+            }
         }
         p {
             "The community seems to really enjoy Dioxus! And they want their friends to know about Dioxus, too! But, our guides have not been available in every language that developers want. In this release, we’re adding two new languages to our guide:"
@@ -2561,7 +3203,11 @@ pub fn Release030() -> dioxus::prelude::Element {
             }
         }
         h2 { id: "a-new-landing-page-and-better-docs",
-            Link { to: "#a-new-landing-page-and-better-docs", class: "header",
+            Link {
+                to: BookRoute::Release030 {
+                    section: Release030Section::ANewLandingPageAndBetterDocs,
+                },
+                class: "header",
                 "A new landing page and better docs"
             }
         }
@@ -2574,7 +3220,13 @@ pub fn Release030() -> dioxus::prelude::Element {
             " has overhauled our guide to be more familiar for Rust developers. This skips some of the boilerplate (IE install Rust) and gets straight into the action of building Dioxus apps."
         }
         h2 { id: "community-projects",
-            Link { to: "#community-projects", class: "header", "Community Projects" }
+            Link {
+                to: BookRoute::Release030 {
+                    section: Release030Section::CommunityProjects,
+                },
+                class: "header",
+                "Community Projects"
+            }
         }
         ul {
             li { "Styled components" }
@@ -2593,12 +3245,53 @@ pub fn Release030() -> dioxus::prelude::Element {
         }
     }
 }
+#[derive(
+    Clone, Copy, PartialEq, Eq, Hash, Debug, Default, serde::Serialize, serde::Deserialize,
+)]
+pub enum FulltimeSection {
+    #[default]
+    Empty,
+    GoingFullTime,
+}
+impl std::str::FromStr for FulltimeSection {
+    type Err = FulltimeSectionParseError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "" => Ok(Self::Empty),
+            "going-full-time" => Ok(Self::GoingFullTime),
+            _ => Err(FulltimeSectionParseError),
+        }
+    }
+}
+impl std::fmt::Display for FulltimeSection {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Self::Empty => f.write_str(""),
+            Self::GoingFullTime => f.write_str("going-full-time"),
+        }
+    }
+}
+#[derive(Debug)]
+pub struct FulltimeSectionParseError;
+impl std::fmt::Display for FulltimeSectionParseError {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.write_str("Invalid section name. Expected one of FulltimeSectiongoing-full-time")?;
+        Ok(())
+    }
+}
+impl std::error::Error for FulltimeSectionParseError {}
 #[component(no_case_check)]
-pub fn Fulltime() -> dioxus::prelude::Element {
+pub fn Fulltime(section: FulltimeSection) -> dioxus::prelude::Element {
     use dioxus::prelude::*;
     rsx! {
         h1 { id: "going-full-time",
-            Link { to: "#going-full-time", class: "header", "Going full time" }
+            Link {
+                to: BookRoute::Fulltime {
+                    section: FulltimeSection::GoingFullTime,
+                },
+                class: "header",
+                "Going full time"
+            }
         }
         blockquote {
             p { "Jan 5, 2023" }
@@ -2652,8 +3345,93 @@ pub fn Fulltime() -> dioxus::prelude::Element {
         p { "Jonathan Kelley" }
     }
 }
+#[derive(
+    Clone, Copy, PartialEq, Eq, Hash, Debug, Default, serde::Serialize, serde::Deserialize,
+)]
+pub enum Release040Section {
+    #[default]
+    Empty,
+    WeeklyOfficeHours,
+    ServerFunctions,
+    Suspense,
+    EnumRouter,
+    NewAndBeautifulInteractiveDocs,
+    AndroidSupportIosFixesGettingStartedGuideForMobile,
+    WindowCloseBehavior,
+    BidirectionalEval,
+    NewOnmountEvent,
+    RenamingDioxusCliToDx,
+    HotReloadingForDesktop,
+    DioxusBundle,
+    DioxusCheck,
+    VscodeExtensionUpdates,
+    GeneralFixes,
+}
+impl std::str::FromStr for Release040Section {
+    type Err = Release040SectionParseError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "" => Ok(Self::Empty),
+            "weekly-office-hours" => Ok(Self::WeeklyOfficeHours),
+            "server-functions" => Ok(Self::ServerFunctions),
+            "suspense" => Ok(Self::Suspense),
+            "enum-router" => Ok(Self::EnumRouter),
+            "new-and-beautiful-interactive-docs" => Ok(Self::NewAndBeautifulInteractiveDocs),
+            "android-support-ios-fixes-getting-started-guide-for-mobile" => {
+                Ok(Self::AndroidSupportIosFixesGettingStartedGuideForMobile)
+            }
+            "window-close-behavior" => Ok(Self::WindowCloseBehavior),
+            "bidirectional-eval" => Ok(Self::BidirectionalEval),
+            "new-onmount-event" => Ok(Self::NewOnmountEvent),
+            "renaming-dioxus-cli-to-dx" => Ok(Self::RenamingDioxusCliToDx),
+            "hot-reloading-for-desktop" => Ok(Self::HotReloadingForDesktop),
+            "dioxus-bundle" => Ok(Self::DioxusBundle),
+            "dioxus-check" => Ok(Self::DioxusCheck),
+            "vscode-extension-updates" => Ok(Self::VscodeExtensionUpdates),
+            "general-fixes" => Ok(Self::GeneralFixes),
+            _ => Err(Release040SectionParseError),
+        }
+    }
+}
+impl std::fmt::Display for Release040Section {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Self::Empty => f.write_str(""),
+            Self::WeeklyOfficeHours => f.write_str("weekly-office-hours"),
+            Self::ServerFunctions => f.write_str("server-functions"),
+            Self::Suspense => f.write_str("suspense"),
+            Self::EnumRouter => f.write_str("enum-router"),
+            Self::NewAndBeautifulInteractiveDocs => {
+                f.write_str("new-and-beautiful-interactive-docs")
+            }
+            Self::AndroidSupportIosFixesGettingStartedGuideForMobile => {
+                f.write_str("android-support-ios-fixes-getting-started-guide-for-mobile")
+            }
+            Self::WindowCloseBehavior => f.write_str("window-close-behavior"),
+            Self::BidirectionalEval => f.write_str("bidirectional-eval"),
+            Self::NewOnmountEvent => f.write_str("new-onmount-event"),
+            Self::RenamingDioxusCliToDx => f.write_str("renaming-dioxus-cli-to-dx"),
+            Self::HotReloadingForDesktop => f.write_str("hot-reloading-for-desktop"),
+            Self::DioxusBundle => f.write_str("dioxus-bundle"),
+            Self::DioxusCheck => f.write_str("dioxus-check"),
+            Self::VscodeExtensionUpdates => f.write_str("vscode-extension-updates"),
+            Self::GeneralFixes => f.write_str("general-fixes"),
+        }
+    }
+}
+#[derive(Debug)]
+pub struct Release040SectionParseError;
+impl std::fmt::Display for Release040SectionParseError {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.write_str(
+            "Invalid section name. Expected one of Release040Sectionweekly-office-hours, server-functions, suspense, enum-router, new-and-beautiful-interactive-docs, android-support-ios-fixes-getting-started-guide-for-mobile, window-close-behavior, bidirectional-eval, new-onmount-event, renaming-dioxus-cli-to-dx, hot-reloading-for-desktop, dioxus-bundle, dioxus-check, vscode-extension-updates, general-fixes",
+        )?;
+        Ok(())
+    }
+}
+impl std::error::Error for Release040SectionParseError {}
 #[component(no_case_check)]
-pub fn Release040() -> dioxus::prelude::Element {
+pub fn Release040(section: Release040Section) -> dioxus::prelude::Element {
     use dioxus::prelude::*;
     rsx! {
         p { "Welcome back, get your snacks, Dioxus 0.4 just dropped." }
@@ -2682,7 +3460,13 @@ pub fn Release040() -> dioxus::prelude::Element {
             li { "Polish, bug fixes, stability, testing, and more!" }
         }
         h2 { id: "weekly-office-hours",
-            Link { to: "#weekly-office-hours", class: "header", "Weekly Office Hours" }
+            Link {
+                to: BookRoute::Release040 {
+                    section: Release040Section::WeeklyOfficeHours,
+                },
+                class: "header",
+                "Weekly Office Hours"
+            }
         }
         p {
             "Before we dive right into the bulk of this release, we want to make sure everyone knows that Dioxus Labs now has weekly office hours, every Friday at 9am PST."
@@ -2697,7 +3481,13 @@ pub fn Release040() -> dioxus::prelude::Element {
             " We hope to see you there!"
         }
         h2 { id: "server-functions",
-            Link { to: "#server-functions", class: "header", "Server Functions" }
+            Link {
+                to: BookRoute::Release040 {
+                    section: Release040Section::ServerFunctions,
+                },
+                class: "header",
+                "Server Functions"
+            }
         }
         p {
             "These days, every cool UI library has some sort of backend framework to do server stuff. This could be interacting with a database, uploading files, working with websockets, you name it. With Dioxus 0.4, we’re adding our first backend solution: Server Functions."
@@ -2763,7 +3553,13 @@ pub fn Release040() -> dioxus::prelude::Element {
             "Our goal with Server Functions is to lay the foundation for our final vision of Dioxus: a fullstack, crossplatform, fully typed, and lightning fast toolkit for building, deploying, monitoring, and scaling any app you can dream of. With one ecosystem, you can quickly build complete apps that run on desktop, mobile, web with a type-safe backend to boot."
         }
         h2 { id: "suspense",
-            Link { to: "#suspense", class: "header", "Suspense" }
+            Link {
+                to: BookRoute::Release040 {
+                    section: Release040Section::Suspense,
+                },
+                class: "header",
+                "Suspense"
+            }
         }
         p {
             "One feature that has been missing in Dioxus since its release is the ability to wait for futures to complete before generating the final server-side-rendered HTML. Before, the expectation was that you’d load any data "
@@ -2821,7 +3617,13 @@ pub fn Release040() -> dioxus::prelude::Element {
             "Note that this is not 100% equivalent to React’s suspense as it’s not currently possible to render loading states or error boundaries. These features are currently experimental and will be stabilized during the 0.4 release cycle."
         }
         h2 { id: "enum-router",
-            Link { to: "#enum-router", class: "header", "Enum Router" }
+            Link {
+                to: BookRoute::Release040 {
+                    section: Release040Section::EnumRouter,
+                },
+                class: "header",
+                "Enum Router"
+            }
         }
         p {
             "Since the initial release of Dioxus, we’ve had a very simple App Router, inspired by the older versions of React Router. Most UI toolkits these days provide a Router object that interacts with the browser’s router, and to date, Dioxus’ router has been pretty simple."
@@ -2890,7 +3692,11 @@ pub fn Release040() -> dioxus::prelude::Element {
             }
         }
         h2 { id: "new-and-beautiful-interactive-docs",
-            Link { to: "#new-and-beautiful-interactive-docs", class: "header",
+            Link {
+                to: BookRoute::Release040 {
+                    section: Release040Section::NewAndBeautifulInteractiveDocs,
+                },
+                class: "header",
                 "New and beautiful interactive docs"
             }
         }
@@ -2971,7 +3777,9 @@ pub fn Release040() -> dioxus::prelude::Element {
         }
         h2 { id: "android-support-ios-fixes-getting-started-guide-for-mobile",
             Link {
-                to: "#android-support-ios-fixes-getting-started-guide-for-mobile",
+                to: BookRoute::Release040 {
+                    section: Release040Section::AndroidSupportIosFixesGettingStartedGuideForMobile,
+                },
                 class: "header",
                 "Android Support, iOS fixes, Getting Started Guide for Mobile"
             }
@@ -2998,7 +3806,13 @@ pub fn Release040() -> dioxus::prelude::Element {
             }
         }
         h2 { id: "window-close-behavior",
-            Link { to: "#window-close-behavior", class: "header", "Window-Close Behavior" }
+            Link {
+                to: BookRoute::Release040 {
+                    section: Release040Section::WindowCloseBehavior,
+                },
+                class: "header",
+                "Window-Close Behavior"
+            }
         }
         p {
             "Another great contribution from the community: Dioxus desktop now provides functionality for managing the “close” behavior of windows in your app. We support three modes now:"
@@ -3023,7 +3837,13 @@ pub fn Release040() -> dioxus::prelude::Element {
             }
         }
         h2 { id: "bidirectional-eval",
-            Link { to: "#bidirectional-eval", class: "header", "Bidirectional Eval" }
+            Link {
+                to: BookRoute::Release040 {
+                    section: Release040Section::BidirectionalEval,
+                },
+                class: "header",
+                "Bidirectional Eval"
+            }
         }
         p {
             "The use_eval hook allows you to run snippets of Javascript in your Dioxus application when needed. @doge has made some improvements that make this hook has significantly more powerful. The new version of the hook is compatible between the desktop, web, and Liveview renderers. It also allows you to send messages to and from Javascript asynchronously. This makes it possible to listen for Javascript events that Dioxus doesn’t officially support like the intersection observer API."
@@ -3032,7 +3852,13 @@ pub fn Release040() -> dioxus::prelude::Element {
             contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f92672;\">use </span><span style=\"color:#f8f8f2;\">dioxus::prelude::</span><span style=\"color:#f92672;\">*</span><span style=\"color:#f8f8f2;\">;\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">main</span><span style=\"color:#f8f8f2;\">() {{\n</span><span style=\"color:#f8f8f2;\">    dioxus_desktop::launch(app);\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">app</span><span style=\"color:#f8f8f2;\">(</span><span style=\"font-style:italic;color:#fd971f;\">cx</span><span style=\"color:#f8f8f2;\">: Scope) -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> eval </span><span style=\"color:#f92672;\">= </span><span style=\"color:#66d9ef;\">use_eval</span><span style=\"color:#f8f8f2;\">(cx);\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> future </span><span style=\"color:#f92672;\">= </span><span style=\"color:#66d9ef;\">use_future</span><span style=\"color:#f8f8f2;\">(cx, (), |_| {{\n</span><span style=\"color:#f8f8f2;\">        to_owned![eval];\n</span><span style=\"color:#f8f8f2;\">        async </span><span style=\"color:#f92672;\">move </span><span style=\"color:#f8f8f2;\">{{\n</span><span style=\"color:#f8f8f2;\">            </span><span style=\"color:#8c8c8c;\">// Eval some javascript\n</span><span style=\"color:#f8f8f2;\">            </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> eval </span><span style=\"color:#f92672;\">= </span><span style=\"color:#66d9ef;\">eval</span><span style=\"color:#f8f8f2;\">(\n</span><span style=\"color:#f8f8f2;\">                </span><span style=\"font-style:italic;color:#66d9ef;\">r</span><span style=\"color:#ffee99;\">#&quot;dioxus.send(&quot;Hi from JS!&quot;);\n</span><span style=\"color:#ffee99;\">                let msg = await dioxus.recv();\n</span><span style=\"color:#ffee99;\">                console.log(msg);\n</span><span style=\"color:#ffee99;\">                return &quot;hello world&quot;;&quot;#</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">            )\n</span><span style=\"color:#f8f8f2;\">            .</span><span style=\"color:#66d9ef;\">unwrap</span><span style=\"color:#f8f8f2;\">();\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">            </span><span style=\"color:#8c8c8c;\">// Send messages into the running javascript\n</span><span style=\"color:#f8f8f2;\">            eval.</span><span style=\"color:#66d9ef;\">send</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#ffee99;\">&quot;Hi from Rust!&quot;</span><span style=\"color:#f8f8f2;\">.</span><span style=\"color:#66d9ef;\">into</span><span style=\"color:#f8f8f2;\">()).</span><span style=\"color:#66d9ef;\">unwrap</span><span style=\"color:#f8f8f2;\">();\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">            </span><span style=\"color:#8c8c8c;\">// Receive messages from the javascript\n</span><span style=\"color:#f8f8f2;\">            </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> res </span><span style=\"color:#f92672;\">=</span><span style=\"color:#f8f8f2;\"> eval.</span><span style=\"color:#66d9ef;\">recv</span><span style=\"color:#f8f8f2;\">().await.</span><span style=\"color:#66d9ef;\">unwrap</span><span style=\"color:#f8f8f2;\">();\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">            </span><span style=\"color:#8c8c8c;\">// Wait for it to complete\n</span><span style=\"color:#f8f8f2;\">            println!(</span><span style=\"color:#ffee99;\">&quot;</span><span style=\"color:#ff80f4;\">{{:?}}</span><span style=\"color:#ffee99;\">&quot;</span><span style=\"color:#f8f8f2;\">, eval.await);\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">            res\n</span><span style=\"color:#f8f8f2;\">        }}\n</span><span style=\"color:#f8f8f2;\">    }});\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">    render!{{ </span><span style=\"color:#ffee99;\">&quot;{{future.value():?}}&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
         }
         h2 { id: "new-onmount-event",
-            Link { to: "#new-onmount-event", class: "header", "New onmount event" }
+            Link {
+                to: BookRoute::Release040 {
+                    section: Release040Section::NewOnmountEvent,
+                },
+                class: "header",
+                "New onmount event"
+            }
         }
         p {
             "This release also introduces a new onmounted event that provides access to elements after they are created in a cross platform way. The onmounted event makes it possible to:"
@@ -3059,7 +3885,13 @@ pub fn Release040() -> dioxus::prelude::Element {
             }
         }
         h2 { id: "renaming-dioxus-cli-to-dx",
-            Link { to: "#renaming-dioxus-cli-to-dx", class: "header", "Renaming dioxus-cli to dx" }
+            Link {
+                to: BookRoute::Release040 {
+                    section: Release040Section::RenamingDioxusCliToDx,
+                },
+                class: "header",
+                "Renaming dioxus-cli to dx"
+            }
         }
         p {
             "We made a small tweak to the CLI this release to rename the CLI from  "
@@ -3082,7 +3914,13 @@ pub fn Release040() -> dioxus::prelude::Element {
         p { "To install the new CLI, use the same old instructions:" }
         CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">cargo install dioxus</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">cli </span><span style=\"color:#f92672;\">--</span><span style=\"color:#f8f8f2;\">force</span></pre>\n" }
         h2 { id: "hot-reloading-for-desktop",
-            Link { to: "#hot-reloading-for-desktop", class: "header", "Hot Reloading for Desktop" }
+            Link {
+                to: BookRoute::Release040 {
+                    section: Release040Section::HotReloadingForDesktop,
+                },
+                class: "header",
+                "Hot Reloading for Desktop"
+            }
         }
         p {
             "Yet another small tweak the CLI: you can now use  "
@@ -3106,7 +3944,13 @@ pub fn Release040() -> dioxus::prelude::Element {
             }
         }
         h2 { id: "dioxus-bundle",
-            Link { to: "#dioxus-bundle", class: "header", "Dioxus-Bundle" }
+            Link {
+                to: BookRoute::Release040 {
+                    section: Release040Section::DioxusBundle,
+                },
+                class: "header",
+                "Dioxus-Bundle"
+            }
         }
         p {
             "So far, the CLI has supported useful commands like  "
@@ -3128,7 +3972,13 @@ pub fn Release040() -> dioxus::prelude::Element {
         }
         p { "This is a great place for new contributors to help flesh out the ecosystem!" }
         h2 { id: "dioxus-check",
-            Link { to: "#dioxus-check", class: "header", "Dioxus-Check" }
+            Link {
+                to: BookRoute::Release040 {
+                    section: Release040Section::DioxusCheck,
+                },
+                class: "header",
+                "Dioxus-Check"
+            }
         }
         p {
             "The Dioxus CLI has a new helper command:  "
@@ -3148,7 +3998,13 @@ pub fn Release040() -> dioxus::prelude::Element {
             "These lints make it easier for newcomers to Dioxus to get started, especially if they’re not super familiar with React."
         }
         h2 { id: "vscode-extension-updates",
-            Link { to: "#vscode-extension-updates", class: "header", "VSCode Extension Updates" }
+            Link {
+                to: BookRoute::Release040 {
+                    section: Release040Section::VscodeExtensionUpdates,
+                },
+                class: "header",
+                "VSCode Extension Updates"
+            }
         }
         p {
             "As part of improving stability and fixing bugs, we’ve made some improvements to the VSCode Extension."
@@ -3171,7 +4027,13 @@ pub fn Release040() -> dioxus::prelude::Element {
         }
         p { "The extension is a great place for new contributors to dive into the Dioxus codebase!" }
         h2 { id: "general-fixes",
-            Link { to: "#general-fixes", class: "header", "General Fixes" }
+            Link {
+                to: BookRoute::Release040 {
+                    section: Release040Section::GeneralFixes,
+                },
+                class: "header",
+                "General Fixes"
+            }
         }
         ul {
             li { "Several SSR and Hydration bugs were fixed including escaping text, and" }
@@ -3264,8 +4126,131 @@ pub fn Release040() -> dioxus::prelude::Element {
         }
     }
 }
+#[derive(
+    Clone, Copy, PartialEq, Eq, Hash, Debug, Default, serde::Serialize, serde::Deserialize,
+)]
+pub enum Release050Section {
+    #[default]
+    Empty,
+    WhatsNew,
+    LifetimeProblems,
+    GoodbyeScopesAndLifetimes,
+    RemovalOfAllUnsafeInCore,
+    Signals,
+    CopyState,
+    SmarterSubscriptions,
+    CssHotReloading,
+    EventSystemRewrite,
+    CrossPlatformLaunch,
+    AssetSystemBeta,
+    _5XFasterDesktopRendering,
+    SpreadingProps,
+    ShorthandAttributes,
+    MultiLineAttributeMerging,
+    ServerFunctionStreaming,
+    FullstackCliPlatform,
+    LiveviewRouterSupport,
+    CustomAssetHandlers,
+    NativeFileHandling,
+    ErrorHandling,
+    HotReloadingByDefaultAndDevelopModeForDesktop,
+    UpdatesToTheDioxusTemplate,
+    DioxusCommunityAndDioxusStd,
+    ComingSoon,
+    SneakPeekDioxusBlitzRevivalUsingServo,
+    HowCanYouContribute,
+}
+impl std::str::FromStr for Release050Section {
+    type Err = Release050SectionParseError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "" => Ok(Self::Empty),
+            "whats-new" => Ok(Self::WhatsNew),
+            "lifetime-problems" => Ok(Self::LifetimeProblems),
+            "goodbye-scopes-and-lifetimes" => Ok(Self::GoodbyeScopesAndLifetimes),
+            "removal-of-all-unsafe-in-core" => Ok(Self::RemovalOfAllUnsafeInCore),
+            "signals" => Ok(Self::Signals),
+            "copy-state" => Ok(Self::CopyState),
+            "smarter-subscriptions" => Ok(Self::SmarterSubscriptions),
+            "css-hot-reloading" => Ok(Self::CssHotReloading),
+            "event-system-rewrite" => Ok(Self::EventSystemRewrite),
+            "cross-platform-launch" => Ok(Self::CrossPlatformLaunch),
+            "asset-system-beta" => Ok(Self::AssetSystemBeta),
+            "5x-faster-desktop-rendering" => Ok(Self::_5XFasterDesktopRendering),
+            "spreading-props" => Ok(Self::SpreadingProps),
+            "shorthand-attributes" => Ok(Self::ShorthandAttributes),
+            "multi-line-attribute-merging" => Ok(Self::MultiLineAttributeMerging),
+            "server-function-streaming" => Ok(Self::ServerFunctionStreaming),
+            "fullstack-cli-platform" => Ok(Self::FullstackCliPlatform),
+            "liveview-router-support" => Ok(Self::LiveviewRouterSupport),
+            "custom-asset-handlers" => Ok(Self::CustomAssetHandlers),
+            "native-file-handling" => Ok(Self::NativeFileHandling),
+            "error-handling" => Ok(Self::ErrorHandling),
+            "hot-reloading-by-default-and-develop-mode-for-desktop" => {
+                Ok(Self::HotReloadingByDefaultAndDevelopModeForDesktop)
+            }
+            "updates-to-the-dioxus-template" => Ok(Self::UpdatesToTheDioxusTemplate),
+            "dioxus-community-and-dioxus-std" => Ok(Self::DioxusCommunityAndDioxusStd),
+            "coming-soon" => Ok(Self::ComingSoon),
+            "sneak-peek-dioxus-blitz-revival-using-servo" => {
+                Ok(Self::SneakPeekDioxusBlitzRevivalUsingServo)
+            }
+            "how-can-you-contribute" => Ok(Self::HowCanYouContribute),
+            _ => Err(Release050SectionParseError),
+        }
+    }
+}
+impl std::fmt::Display for Release050Section {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Self::Empty => f.write_str(""),
+            Self::WhatsNew => f.write_str("whats-new"),
+            Self::LifetimeProblems => f.write_str("lifetime-problems"),
+            Self::GoodbyeScopesAndLifetimes => f.write_str("goodbye-scopes-and-lifetimes"),
+            Self::RemovalOfAllUnsafeInCore => f.write_str("removal-of-all-unsafe-in-core"),
+            Self::Signals => f.write_str("signals"),
+            Self::CopyState => f.write_str("copy-state"),
+            Self::SmarterSubscriptions => f.write_str("smarter-subscriptions"),
+            Self::CssHotReloading => f.write_str("css-hot-reloading"),
+            Self::EventSystemRewrite => f.write_str("event-system-rewrite"),
+            Self::CrossPlatformLaunch => f.write_str("cross-platform-launch"),
+            Self::AssetSystemBeta => f.write_str("asset-system-beta"),
+            Self::_5XFasterDesktopRendering => f.write_str("5x-faster-desktop-rendering"),
+            Self::SpreadingProps => f.write_str("spreading-props"),
+            Self::ShorthandAttributes => f.write_str("shorthand-attributes"),
+            Self::MultiLineAttributeMerging => f.write_str("multi-line-attribute-merging"),
+            Self::ServerFunctionStreaming => f.write_str("server-function-streaming"),
+            Self::FullstackCliPlatform => f.write_str("fullstack-cli-platform"),
+            Self::LiveviewRouterSupport => f.write_str("liveview-router-support"),
+            Self::CustomAssetHandlers => f.write_str("custom-asset-handlers"),
+            Self::NativeFileHandling => f.write_str("native-file-handling"),
+            Self::ErrorHandling => f.write_str("error-handling"),
+            Self::HotReloadingByDefaultAndDevelopModeForDesktop => {
+                f.write_str("hot-reloading-by-default-and-develop-mode-for-desktop")
+            }
+            Self::UpdatesToTheDioxusTemplate => f.write_str("updates-to-the-dioxus-template"),
+            Self::DioxusCommunityAndDioxusStd => f.write_str("dioxus-community-and-dioxus-std"),
+            Self::ComingSoon => f.write_str("coming-soon"),
+            Self::SneakPeekDioxusBlitzRevivalUsingServo => {
+                f.write_str("sneak-peek-dioxus-blitz-revival-using-servo")
+            }
+            Self::HowCanYouContribute => f.write_str("how-can-you-contribute"),
+        }
+    }
+}
+#[derive(Debug)]
+pub struct Release050SectionParseError;
+impl std::fmt::Display for Release050SectionParseError {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.write_str(
+            "Invalid section name. Expected one of Release050Sectionwhats-new, lifetime-problems, goodbye-scopes-and-lifetimes, removal-of-all-unsafe-in-core, signals, copy-state, smarter-subscriptions, css-hot-reloading, event-system-rewrite, cross-platform-launch, asset-system-beta, 5x-faster-desktop-rendering, spreading-props, shorthand-attributes, multi-line-attribute-merging, server-function-streaming, fullstack-cli-platform, liveview-router-support, custom-asset-handlers, native-file-handling, error-handling, hot-reloading-by-default-and-develop-mode-for-desktop, updates-to-the-dioxus-template, dioxus-community-and-dioxus-std, coming-soon, sneak-peek-dioxus-blitz-revival-using-servo, how-can-you-contribute",
+        )?;
+        Ok(())
+    }
+}
+impl std::error::Error for Release050SectionParseError {}
 #[component(no_case_check)]
-pub fn Release050() -> dioxus::prelude::Element {
+pub fn Release050(section: Release050Section) -> dioxus::prelude::Element {
     use dioxus::prelude::*;
     rsx! {
         p { "Here at Dioxus Labs, we have an unofficial rule: only one rewrite per year." }
@@ -3282,7 +4267,13 @@ pub fn Release050() -> dioxus::prelude::Element {
             "With 0.5 we took a hard look at how Dioxus would need to change to achieve those goals. The request we got from the community was clear: make it simpler, make it robust, make it polished."
         }
         h2 { id: "whats-new",
-            Link { to: "#whats-new", class: "header", "What’s new?" }
+            Link {
+                to: BookRoute::Release050 {
+                    section: Release050Section::WhatsNew,
+                },
+                class: "header",
+                "What’s new?"
+            }
         }
         p {
             "This is probably the biggest release of Dioxus ever, with so many new features, bug fixes, and improvements that I can’t list them all. We churned over 100,000 lines of code (yes, 100,000+) with over 1,400 commits between 0.4.3 and 0.5.0. Here’s a quick overview:"
@@ -3334,7 +4325,13 @@ pub fn Release050() -> dioxus::prelude::Element {
             " is available"
         }
         h2 { id: "lifetime-problems",
-            Link { to: "#lifetime-problems", class: "header", "Lifetime Problems" }
+            Link {
+                to: BookRoute::Release050 {
+                    section: Release050Section::LifetimeProblems,
+                },
+                class: "header",
+                "Lifetime Problems"
+            }
         }
         p {
             "To make Dioxus simpler, we wanted to remove lifetimes entirely. Newcomers to rust are easily scared off by lifetime issues, and even experienced Rustaceans find wading through obtuse error messages exhausting."
@@ -3385,7 +4382,11 @@ pub fn Release050() -> dioxus::prelude::Element {
             "While this might seem like a rather innocuous change, it has an impressively huge impact on how easy it is to write new components. I’d say building a new Dioxus app is about 2-5x easier with this change alone."
         }
         h2 { id: "goodbye-scopes-and-lifetimes",
-            Link { to: "#goodbye-scopes-and-lifetimes", class: "header",
+            Link {
+                to: BookRoute::Release050 {
+                    section: Release050Section::GoodbyeScopesAndLifetimes,
+                },
+                class: "header",
                 "Goodbye scopes and lifetimes!"
             }
         }
@@ -3410,7 +4411,11 @@ pub fn Release050() -> dioxus::prelude::Element {
             " significantly easier. We expect more interesting APIs to emerge from the community now that you don’t need to be a Rust wizard to implement things like virtualization and offscreen rendering."
         }
         h2 { id: "removal-of-all-unsafe-in-core",
-            Link { to: "#removal-of-all-unsafe-in-core", class: "header",
+            Link {
+                to: BookRoute::Release050 {
+                    section: Release050Section::RemovalOfAllUnsafeInCore,
+                },
+                class: "header",
                 "Removal of all Unsafe in Core"
             }
         }
@@ -3431,7 +4436,13 @@ pub fn Release050() -> dioxus::prelude::Element {
             "There’s still a tiny bit of unsafe floating around various dependencies that we plan to remove throughout the 0.5 release cycle, but way less: all quite simple to cut or unfortunately necessary due to FFI."
         }
         h2 { id: "signals",
-            Link { to: "#signals", class: "header", "Signals!" }
+            Link {
+                to: BookRoute::Release050 {
+                    section: Release050Section::Signals,
+                },
+                class: "header",
+                "Signals!"
+            }
         }
         p {
             "Dioxus 0.5 introduces Signals as the core state primitive for components. Signals have two key advantages over the existing  "
@@ -3443,7 +4454,13 @@ pub fn Release050() -> dioxus::prelude::Element {
             " and they don’t require manual subscriptions."
         }
         h3 { id: "copy-state",
-            Link { to: "#copy-state", class: "header", "Copy state" }
+            Link {
+                to: BookRoute::Release050 {
+                    section: Release050Section::CopyState,
+                },
+                class: "header",
+                "Copy state"
+            }
         }
         p {
             code { "Signal<T>" }
@@ -3473,7 +4490,13 @@ pub fn Release050() -> dioxus::prelude::Element {
             " anything."
         }
         h3 { id: "smarter-subscriptions",
-            Link { to: "#smarter-subscriptions", class: "header", "Smarter subscriptions" }
+            Link {
+                to: BookRoute::Release050 {
+                    section: Release050Section::SmarterSubscriptions,
+                },
+                class: "header",
+                "Smarter subscriptions"
+            }
         }
         p {
             "Signals are smarter about what components rerun when they are changed. A component will only rerun if you read the value of the signal in the component (not in an async task or event handler). In this example, only the child will re-render when the button is clicked because only the child component is reading the signal:"
@@ -3516,7 +4539,13 @@ pub fn Release050() -> dioxus::prelude::Element {
             contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#8c8c8c;\">// You can use a lazily initialized signal called GlobalSignal in static instead of special Fermi atoms\n</span><span style=\"font-style:italic;color:#66d9ef;\">static </span><span style=\"color:#ff80f4;\">COUNT</span><span style=\"color:#f8f8f2;\">: GlobalSignal&lt;</span><span style=\"font-style:italic;color:#66d9ef;\">i32</span><span style=\"color:#f8f8f2;\">&gt; </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">Signal::global(|| </span><span style=\"color:#ff80f4;\">0</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">App</span><span style=\"color:#f8f8f2;\">() -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">  </span><span style=\"color:#8c8c8c;\">// Because we read COUNT inside the memo, it is automatically added to the memo&#39;s dependencies\n</span><span style=\"color:#f8f8f2;\">  </span><span style=\"color:#8c8c8c;\">// If we change COUNT, then the memo knows it needs to rerun\n</span><span style=\"color:#f8f8f2;\">  </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> memo </span><span style=\"color:#f92672;\">= </span><span style=\"color:#66d9ef;\">use_memo</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#f92672;\">move || </span><span style=\"color:#ff80f4;\">COUNT</span><span style=\"color:#f8f8f2;\">() </span><span style=\"color:#f92672;\">/ </span><span style=\"color:#ff80f4;\">2</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">  rsx! {{ </span><span style=\"color:#ffee99;\">&quot;{{memo}}&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
         }
         h2 { id: "css-hot-reloading",
-            Link { to: "#css-hot-reloading", class: "header", "CSS Hot Reloading" }
+            Link {
+                to: BookRoute::Release050 {
+                    section: Release050Section::CssHotReloading,
+                },
+                class: "header",
+                "CSS Hot Reloading"
+            }
         }
         p {
             "As part of our asset system overhaul, we implemented hot reloading of CSS files in the asset directory. If a CSS file appears in your RSX, the  "
@@ -3555,7 +4584,13 @@ pub fn Release050() -> dioxus::prelude::Element {
             }
         }
         h2 { id: "event-system-rewrite",
-            Link { to: "#event-system-rewrite", class: "header", "Event System Rewrite" }
+            Link {
+                to: BookRoute::Release050 {
+                    section: Release050Section::EventSystemRewrite,
+                },
+                class: "header",
+                "Event System Rewrite"
+            }
         }
         p {
             "Since its release, Dioxus has used a synthetic event system to create a cross platform event API. Synthetic events can be incredibly useful to make events work across platforms and even serialize them across the network, but they do have some drawbacks."
@@ -3592,7 +4627,13 @@ pub fn Release050() -> dioxus::prelude::Element {
             " has tips to help you make the smallest possible bundle"
         }
         h2 { id: "cross-platform-launch",
-            Link { to: "#cross-platform-launch", class: "header", "Cross platform launch" }
+            Link {
+                to: BookRoute::Release050 {
+                    section: Release050Section::CrossPlatformLaunch,
+                },
+                class: "header",
+                "Cross platform launch"
+            }
         }
         p {
             "Dioxus 0.5 introduces a new cross platform API to launch your app. This makes it easy to target multiple platforms with the same application. Instead of pulling in a separate renderer package, you can now enable a feature on the Dioxus crate and call the launch function from the prelude:"
@@ -3607,7 +4648,13 @@ pub fn Release050() -> dioxus::prelude::Element {
             "The CLI is now smart enough to automatically pass in the appropriate build features depending on the platform you’re targeting."
         }
         h2 { id: "asset-system-beta",
-            Link { to: "#asset-system-beta", class: "header", "Asset System Beta" }
+            Link {
+                to: BookRoute::Release050 {
+                    section: Release050Section::AssetSystemBeta,
+                },
+                class: "header",
+                "Asset System Beta"
+            }
         }
         p {
             "Currently assets in Dioxus (and web applications in general) can be difficult to get right. Links to your asset can easily get out of date, the link to your asset can be different between desktop and web applications, and you need to manually add assets you want to use into your bundled application. In addition to all of that, assets can be a huge performance bottleneck."
@@ -3649,7 +4696,13 @@ pub fn Release050() -> dioxus::prelude::Element {
             "As we continue to iterate on the 0.5 release, we plan to add hot reloading to manganis assets, so you can interactively add new the features to your app like CSS, images, Tailwind classes, and more without forcing a complete reload."
         }
         h2 { id: "5x-faster-desktop-rendering",
-            Link { to: "#5x-faster-desktop-rendering", class: "header", "5x Faster Desktop Rendering" }
+            Link {
+                to: BookRoute::Release050 {
+                    section: Release050Section::_5XFasterDesktopRendering,
+                },
+                class: "header",
+                "5x Faster Desktop Rendering"
+            }
         }
         p {
             "Dioxus implements several optimizations to make diffing rendering fast. "
@@ -3696,7 +4749,13 @@ pub fn Release050() -> dioxus::prelude::Element {
             }
         }
         h2 { id: "spreading-props",
-            Link { to: "#spreading-props", class: "header", "Spreading props" }
+            Link {
+                to: BookRoute::Release050 {
+                    section: Release050Section::SpreadingProps,
+                },
+                class: "header",
+                "Spreading props"
+            }
         }
         p {
             "One common pattern when creating components is providing some additional functionality to a specific element. When you wrap an element, it is often useful to provide some control over what attributes are set in the final element. Instead of manually copying over each attribute from the element, Dioxus 0.5 supports extending specific elements and spreading the attributes into an element:"
@@ -3705,7 +4764,13 @@ pub fn Release050() -> dioxus::prelude::Element {
             contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">#[derive(Props, PartialEq, Clone)]\n</span><span style=\"font-style:italic;color:#66d9ef;\">struct </span><span style=\"color:#f8f8f2;\">Props {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#8c8c8c;\">// You can extend a specific element or global attributes\n</span><span style=\"color:#f8f8f2;\">    #[props(extends = img)]\n</span><span style=\"color:#f8f8f2;\">    attributes: Vec&lt;Attribute&gt;,\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">ImgPlus</span><span style=\"color:#f8f8f2;\">(</span><span style=\"font-style:italic;color:#fd971f;\">props</span><span style=\"color:#f8f8f2;\">: Props) -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    rsx! {{\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"color:#8c8c8c;\">// You can spread those attributes into any element\n</span><span style=\"color:#f8f8f2;\">        img {{ </span><span style=\"color:#f92672;\">..</span><span style=\"color:#f8f8f2;\">props.attributes }}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">app</span><span style=\"color:#f8f8f2;\">() -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    rsx! {{\n</span><span style=\"color:#f8f8f2;\">        ImgPlus {{\n</span><span style=\"color:#f8f8f2;\">            </span><span style=\"color:#8c8c8c;\">// You can use any attributes you would normally use on the img element\n</span><span style=\"color:#f8f8f2;\">            width: </span><span style=\"color:#ffee99;\">&quot;10px&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">            height: </span><span style=\"color:#ffee99;\">&quot;10px&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">            src: </span><span style=\"color:#ffee99;\">&quot;https://example.com/image.png&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">        }}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
         }
         h2 { id: "shorthand-attributes",
-            Link { to: "#shorthand-attributes", class: "header", "Shorthand attributes" }
+            Link {
+                to: BookRoute::Release050 {
+                    section: Release050Section::ShorthandAttributes,
+                },
+                class: "header",
+                "Shorthand attributes"
+            }
         }
         p {
             "Another huge quality-of-life feature we added was the ability to use shorthand struct initialization syntax to pass attributes into elements and components. We got tired of passing  "
@@ -3719,7 +4784,11 @@ pub fn Release050() -> dioxus::prelude::Element {
             ", meaning signals also benefit from shorthand initialization. While signals as attributes don’t yet skip diffing, we plan to add this as a performance optimization throughout the 0.5 release cycle."
         }
         h2 { id: "multi-line-attribute-merging",
-            Link { to: "#multi-line-attribute-merging", class: "header",
+            Link {
+                to: BookRoute::Release050 {
+                    section: Release050Section::MultiLineAttributeMerging,
+                },
+                class: "header",
                 "Multi-line attribute merging"
             }
         }
@@ -3733,7 +4802,13 @@ pub fn Release050() -> dioxus::prelude::Element {
             "This is particularly important when using libraries like Tailwind where attributes need to be parsed at compile time but also dynamic at runtime. This syntax integrates with the Tailwind compiler, removing the runtime overhead for libraries like tailwind-merge."
         }
         h2 { id: "server-function-streaming",
-            Link { to: "#server-function-streaming", class: "header", "Server function streaming" }
+            Link {
+                to: BookRoute::Release050 {
+                    section: Release050Section::ServerFunctionStreaming,
+                },
+                class: "header",
+                "Server function streaming"
+            }
         }
         p {
             "Dioxus 0.5 supports the latest version of "
@@ -3767,7 +4842,13 @@ pub fn Release050() -> dioxus::prelude::Element {
             "Side note, the AI metaframework used here - Kalosm - is maintained by the Dioxus core team member ealmloff, and his AI GUI app Floneum is built with Dioxus!"
         }
         h2 { id: "fullstack-cli-platform",
-            Link { to: "#fullstack-cli-platform", class: "header", "Fullstack CLI platform" }
+            Link {
+                to: BookRoute::Release050 {
+                    section: Release050Section::FullstackCliPlatform,
+                },
+                class: "header",
+                "Fullstack CLI platform"
+            }
         }
         p {
             "The CLI now supports a  "
@@ -3778,7 +4859,13 @@ pub fn Release050() -> dioxus::prelude::Element {
         }
         CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">dx serve\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\">#</span><span style=\"color:#f8f8f2;\"> Or with an explicit platform\n</span><span style=\"color:#f8f8f2;\">dx serve </span><span style=\"color:#f92672;\">--</span><span style=\"color:#f8f8f2;\">platform fullstack</span></pre>\n" }
         h2 { id: "liveview-router-support",
-            Link { to: "#liveview-router-support", class: "header", "LiveView router support" }
+            Link {
+                to: BookRoute::Release050 {
+                    section: Release050Section::LiveviewRouterSupport,
+                },
+                class: "header",
+                "LiveView router support"
+            }
         }
         p {
             Link { to: "https://github.com/DioxusLabs/dioxus/pull/1505" }
@@ -3788,7 +4875,13 @@ pub fn Release050() -> dioxus::prelude::Element {
             " added LiveView support for the router in Dioxus 0.5. The router will now work out of the box with your LiveView apps!"
         }
         h2 { id: "custom-asset-handlers",
-            Link { to: "#custom-asset-handlers", class: "header", "Custom Asset Handlers" }
+            Link {
+                to: BookRoute::Release050 {
+                    section: Release050Section::CustomAssetHandlers,
+                },
+                class: "header",
+                "Custom Asset Handlers"
+            }
         }
         p {
             Link { to: "https://github.com/DioxusLabs/dioxus/pull/1719" }
@@ -3815,7 +4908,13 @@ pub fn Release050() -> dioxus::prelude::Element {
             "Now, you can do things like work with gstreamer or webrtc and pipe data directly into the webview without needing to encode/decode frames by hand."
         }
         h2 { id: "native-file-handling",
-            Link { to: "#native-file-handling", class: "header", "Native File Handling" }
+            Link {
+                to: BookRoute::Release050 {
+                    section: Release050Section::NativeFileHandling,
+                },
+                class: "header",
+                "Native File Handling"
+            }
         }
         p { "This is a bit smaller of a tweak, but now we properly support file drops for Desktop:" }
         p {
@@ -3832,7 +4931,13 @@ pub fn Release050() -> dioxus::prelude::Element {
             "Previously we just gave you the option to intercept filedrops but now it’s natively integrated into the event system"
         }
         h2 { id: "error-handling",
-            Link { to: "#error-handling", class: "header", "Error handling" }
+            Link {
+                to: BookRoute::Release050 {
+                    section: Release050Section::ErrorHandling,
+                },
+                class: "header",
+                "Error handling"
+            }
         }
         p {
             "Error handling: You can use error boundaries and the throw trait to easily handle errors higher up in your app"
@@ -3871,7 +4976,9 @@ pub fn Release050() -> dioxus::prelude::Element {
         }
         h2 { id: "hot-reloading-by-default-and-develop-mode-for-desktop",
             Link {
-                to: "#hot-reloading-by-default-and-develop-mode-for-desktop",
+                to: BookRoute::Release050 {
+                    section: Release050Section::HotReloadingByDefaultAndDevelopModeForDesktop,
+                },
                 class: "header",
                 "Hot reloading by default and “develop” mode for Desktop"
             }
@@ -3897,7 +5004,11 @@ pub fn Release050() -> dioxus::prelude::Element {
             }
         }
         h2 { id: "updates-to-the-dioxus-template",
-            Link { to: "#updates-to-the-dioxus-template", class: "header",
+            Link {
+                to: BookRoute::Release050 {
+                    section: Release050Section::UpdatesToTheDioxusTemplate,
+                },
+                class: "header",
                 "Updates to the Dioxus template"
             }
         }
@@ -3929,7 +5040,11 @@ pub fn Release050() -> dioxus::prelude::Element {
             }
         }
         h2 { id: "dioxus-community-and-dioxus-std",
-            Link { to: "#dioxus-community-and-dioxus-std", class: "header",
+            Link {
+                to: BookRoute::Release050 {
+                    section: Release050Section::DioxusCommunityAndDioxusStd,
+                },
+                class: "header",
                 "Dioxus-Community and Dioxus-std"
             }
         }
@@ -3946,7 +5061,13 @@ pub fn Release050() -> dioxus::prelude::Element {
             }
         }
         h2 { id: "coming-soon",
-            Link { to: "#coming-soon", class: "header", "Coming soon" }
+            Link {
+                to: BookRoute::Release050 {
+                    section: Release050Section::ComingSoon,
+                },
+                class: "header",
+                "Coming soon"
+            }
         }
         p {
             "At a certain point we had to stop adding new features to this release. There’s plenty of cool projects on the horizon:"
@@ -3966,7 +5087,9 @@ pub fn Release050() -> dioxus::prelude::Element {
         }
         h2 { id: "sneak-peek-dioxus-blitz-revival-using-servo",
             Link {
-                to: "#sneak-peek-dioxus-blitz-revival-using-servo",
+                to: BookRoute::Release050 {
+                    section: Release050Section::SneakPeekDioxusBlitzRevivalUsingServo,
+                },
                 class: "header",
                 "Sneak Peek: Dioxus-Blitz revival using Servo"
             }
@@ -3990,7 +5113,13 @@ pub fn Release050() -> dioxus::prelude::Element {
             Link { to: "https://github.com/jkelleyrtp/stylo-dioxus" }
         }
         h2 { id: "how-can-you-contribute",
-            Link { to: "#how-can-you-contribute", class: "header", "How can you contribute?" }
+            Link {
+                to: BookRoute::Release050 {
+                    section: Release050Section::HowCanYouContribute,
+                },
+                class: "header",
+                "How can you contribute?"
+            }
         }
         p {
             "Well, that’s it for the new features. We might’ve missed a few things (there’s so much new!). If you find Dioxus as exciting as we do, we’d love your help to completely transform app development. We’d love contributions including:"
@@ -4008,8 +5137,132 @@ pub fn Release050() -> dioxus::prelude::Element {
         p { "Build cool things! ✌\u{fe0f}" }
     }
 }
+#[derive(
+    Clone, Copy, PartialEq, Eq, Hash, Debug, Default, serde::Serialize, serde::Deserialize,
+)]
+pub enum Release060Section {
+    #[default]
+    Empty,
+    AboutThisRelease,
+    InteractiveCommandLineTools,
+    AndroidAndIosSupportFor,
+    CompletelyRevampedHotReloading,
+    CompletelyRevampedAutocomplete,
+    InlineWasmStacktracesAnd,
+    ToastsAndLoadingScreens,
+    FullstackDesktopAndMobile,
+    StabilizingManganis,
+    SuspenseAndHtmlStreamingForTheWeb,
+    StaticSiteGenerationAndIsg,
+    DocumentElements,
+    QuestionMarkErrorHandling,
+    Synchronous,
+    TrackingSizeWith,
+    TrackingVisibilityWith,
+    HybridWgpuOverlays,
+    WebIosAndAndroidBundleSupport,
+    JsonOutputForCiCli,
+    NewStarterTemplates,
+    NightlyDocsTutorialsAndNewGuides,
+    PreviewOfInPlaceBinaryPatching,
+    SmallerChanges,
+    UpgradingFrom05To06,
+    Conclusion,
+    ThanksToTheCommunity,
+}
+impl std::str::FromStr for Release060Section {
+    type Err = Release060SectionParseError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "" => Ok(Self::Empty),
+            "about-this-release" => Ok(Self::AboutThisRelease),
+            "interactive-command-line-tools" => Ok(Self::InteractiveCommandLineTools),
+            "android-and-ios-support-for" => Ok(Self::AndroidAndIosSupportFor),
+            "completely-revamped-hot-reloading" => Ok(Self::CompletelyRevampedHotReloading),
+            "completely-revamped-autocomplete" => Ok(Self::CompletelyRevampedAutocomplete),
+            "inline-wasm-stacktraces-and" => Ok(Self::InlineWasmStacktracesAnd),
+            "toasts-and-loading-screens" => Ok(Self::ToastsAndLoadingScreens),
+            "fullstack-desktop-and-mobile" => Ok(Self::FullstackDesktopAndMobile),
+            "stabilizing-manganis" => Ok(Self::StabilizingManganis),
+            "suspense-and-html-streaming-for-the-web" => {
+                Ok(Self::SuspenseAndHtmlStreamingForTheWeb)
+            }
+            "static-site-generation-and-isg" => Ok(Self::StaticSiteGenerationAndIsg),
+            "document-elements" => Ok(Self::DocumentElements),
+            "question-mark-error-handling" => Ok(Self::QuestionMarkErrorHandling),
+            "synchronous" => Ok(Self::Synchronous),
+            "tracking-size-with" => Ok(Self::TrackingSizeWith),
+            "tracking-visibility-with" => Ok(Self::TrackingVisibilityWith),
+            "hybrid-wgpu-overlays" => Ok(Self::HybridWgpuOverlays),
+            "web-ios-and-android-bundle-support" => Ok(Self::WebIosAndAndroidBundleSupport),
+            "json-output-for-ci--cli" => Ok(Self::JsonOutputForCiCli),
+            "new-starter-templates" => Ok(Self::NewStarterTemplates),
+            "nightly-docs-tutorials-and-new-guides" => Ok(Self::NightlyDocsTutorialsAndNewGuides),
+            "preview-of-in-place-binary-patching" => Ok(Self::PreviewOfInPlaceBinaryPatching),
+            "smaller-changes" => Ok(Self::SmallerChanges),
+            "upgrading-from-05-to-06" => Ok(Self::UpgradingFrom05To06),
+            "conclusion" => Ok(Self::Conclusion),
+            "thanks-to-the-community" => Ok(Self::ThanksToTheCommunity),
+            _ => Err(Release060SectionParseError),
+        }
+    }
+}
+impl std::fmt::Display for Release060Section {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Self::Empty => f.write_str(""),
+            Self::AboutThisRelease => f.write_str("about-this-release"),
+            Self::InteractiveCommandLineTools => f.write_str("interactive-command-line-tools"),
+            Self::AndroidAndIosSupportFor => f.write_str("android-and-ios-support-for"),
+            Self::CompletelyRevampedHotReloading => {
+                f.write_str("completely-revamped-hot-reloading")
+            }
+            Self::CompletelyRevampedAutocomplete => f.write_str("completely-revamped-autocomplete"),
+            Self::InlineWasmStacktracesAnd => f.write_str("inline-wasm-stacktraces-and"),
+            Self::ToastsAndLoadingScreens => f.write_str("toasts-and-loading-screens"),
+            Self::FullstackDesktopAndMobile => f.write_str("fullstack-desktop-and-mobile"),
+            Self::StabilizingManganis => f.write_str("stabilizing-manganis"),
+            Self::SuspenseAndHtmlStreamingForTheWeb => {
+                f.write_str("suspense-and-html-streaming-for-the-web")
+            }
+            Self::StaticSiteGenerationAndIsg => f.write_str("static-site-generation-and-isg"),
+            Self::DocumentElements => f.write_str("document-elements"),
+            Self::QuestionMarkErrorHandling => f.write_str("question-mark-error-handling"),
+            Self::Synchronous => f.write_str("synchronous"),
+            Self::TrackingSizeWith => f.write_str("tracking-size-with"),
+            Self::TrackingVisibilityWith => f.write_str("tracking-visibility-with"),
+            Self::HybridWgpuOverlays => f.write_str("hybrid-wgpu-overlays"),
+            Self::WebIosAndAndroidBundleSupport => {
+                f.write_str("web-ios-and-android-bundle-support")
+            }
+            Self::JsonOutputForCiCli => f.write_str("json-output-for-ci--cli"),
+            Self::NewStarterTemplates => f.write_str("new-starter-templates"),
+            Self::NightlyDocsTutorialsAndNewGuides => {
+                f.write_str("nightly-docs-tutorials-and-new-guides")
+            }
+            Self::PreviewOfInPlaceBinaryPatching => {
+                f.write_str("preview-of-in-place-binary-patching")
+            }
+            Self::SmallerChanges => f.write_str("smaller-changes"),
+            Self::UpgradingFrom05To06 => f.write_str("upgrading-from-05-to-06"),
+            Self::Conclusion => f.write_str("conclusion"),
+            Self::ThanksToTheCommunity => f.write_str("thanks-to-the-community"),
+        }
+    }
+}
+#[derive(Debug)]
+pub struct Release060SectionParseError;
+impl std::fmt::Display for Release060SectionParseError {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.write_str(
+            "Invalid section name. Expected one of Release060Sectionabout-this-release, interactive-command-line-tools, android-and-ios-support-for, completely-revamped-hot-reloading, completely-revamped-autocomplete, inline-wasm-stacktraces-and, toasts-and-loading-screens, fullstack-desktop-and-mobile, stabilizing-manganis, suspense-and-html-streaming-for-the-web, static-site-generation-and-isg, document-elements, question-mark-error-handling, synchronous, tracking-size-with, tracking-visibility-with, hybrid-wgpu-overlays, web-ios-and-android-bundle-support, json-output-for-ci--cli, new-starter-templates, nightly-docs-tutorials-and-new-guides, preview-of-in-place-binary-patching, smaller-changes, upgrading-from-05-to-06, conclusion, thanks-to-the-community",
+        )?;
+        Ok(())
+    }
+}
+impl std::error::Error for Release060SectionParseError {}
 #[component(no_case_check)]
-pub fn Release060() -> dioxus::prelude::Element {
+pub fn Release060(section: Release060Section) -> dioxus::prelude::Element {
     use dioxus::prelude::*;
     rsx! {
         p { "Today we're releasing Dioxus 0.6!" }
@@ -4023,13 +5276,21 @@ pub fn Release060() -> dioxus::prelude::Element {
         ul {
             li {
                 strong {
-                    Link { to: "#android-and-ios-support-for" }
+                    Link {
+                        to: BookRoute::Release060 {
+                            section: Release060Section::AndroidAndIosSupportFor,
+                        },
+                    }
                 }
                 ": Serve your app on Android and iOS simulators and devices."
             }
             li {
                 strong {
-                    Link { to: "#completely-revamped-hot-reloading" }
+                    Link {
+                        to: BookRoute::Release060 {
+                            section: Release060Section::CompletelyRevampedHotReloading,
+                        },
+                    }
                 }
                 ": Hot-Reloading of formatted strings, properties, and nested "
                 code { "rsx!{{}}" }
@@ -4037,19 +5298,31 @@ pub fn Release060() -> dioxus::prelude::Element {
             }
             li {
                 strong {
-                    Link { to: "#interactive-command-line-tools" }
+                    Link {
+                        to: BookRoute::Release060 {
+                            section: Release060Section::InteractiveCommandLineTools,
+                        },
+                    }
                 }
                 ": Rewrite of the Dioxus CLI with a new, interactive UX inspired by Astro."
             }
             li {
                 strong {
-                    Link { to: "#inline-wasm-stacktraces-and" }
+                    Link {
+                        to: BookRoute::Release060 {
+                            section: Release060Section::InlineWasmStacktracesAnd,
+                        },
+                    }
                 }
                 ": Capture WASM panics and logs directly into your terminal."
             }
             li {
                 strong {
-                    Link { to: "#fullstack-desktop-and-mobile" }
+                    Link {
+                        to: BookRoute::Release060 {
+                            section: Release060Section::FullstackDesktopAndMobile,
+                        },
+                    }
                 }
                 ": Inline Server RPC for Desktop and Mobile apps."
             }
@@ -4060,25 +5333,41 @@ pub fn Release060() -> dioxus::prelude::Element {
         ul {
             li {
                 strong {
-                    Link { to: "#toasts-and-loading-screens" }
+                    Link {
+                        to: BookRoute::Release060 {
+                            section: Release060Section::ToastsAndLoadingScreens,
+                        },
+                    }
                 }
                 ": New toasts and loading screens for web apps in development."
             }
             li {
                 strong {
-                    Link { to: "#completely-revamped-autocomplete" }
+                    Link {
+                        to: BookRoute::Release060 {
+                            section: Release060Section::CompletelyRevampedAutocomplete,
+                        },
+                    }
                 }
                 ": Massively improved autocomplete of RSX."
             }
             li {
                 strong {
-                    Link { to: "#stabilizing-manganis" }
+                    Link {
+                        to: BookRoute::Release060 {
+                            section: Release060Section::StabilizingManganis,
+                        },
+                    }
                 }
                 ": Stabilizing our linker-based asset system integrated for native apps."
             }
             li {
                 strong {
-                    Link { to: "#suspense-and-html-streaming-for-the-web" }
+                    Link {
+                        to: BookRoute::Release060 {
+                            section: Release060Section::SuspenseAndHtmlStreamingForTheWeb,
+                        },
+                    }
                 }
                 ": Stream "
                 code { "Suspense" }
@@ -4088,13 +5377,21 @@ pub fn Release060() -> dioxus::prelude::Element {
             }
             li {
                 strong {
-                    Link { to: "#static-site-generation-and-isg" }
+                    Link {
+                        to: BookRoute::Release060 {
+                            section: Release060Section::StaticSiteGenerationAndIsg,
+                        },
+                    }
                 }
                 ": Support for Static Site Generation and Incremental Static Regeneration."
             }
             li {
                 strong {
-                    Link { to: "#question-mark-error-handling" }
+                    Link {
+                        to: BookRoute::Release060 {
+                            section: Release060Section::QuestionMarkErrorHandling,
+                        },
+                    }
                 }
                 ": Use "
                 code { "?" }
@@ -4102,7 +5399,11 @@ pub fn Release060() -> dioxus::prelude::Element {
             }
             li {
                 strong {
-                    Link { to: "#document-elements" }
+                    Link {
+                        to: BookRoute::Release060 {
+                            section: Release060Section::DocumentElements,
+                        },
+                    }
                 }
                 ": New "
                 code { "Head" }
@@ -4116,31 +5417,51 @@ pub fn Release060() -> dioxus::prelude::Element {
             }
             li {
                 strong {
-                    Link { to: "#synchronous" }
+                    Link {
+                        to: BookRoute::Release060 {
+                            section: Release060Section::Synchronous,
+                        },
+                    }
                 }
                 ": Handle events synchronously across all platforms."
             }
             li {
                 strong {
-                    Link { to: "#tracking-size-with" }
+                    Link {
+                        to: BookRoute::Release060 {
+                            section: Release060Section::TrackingSizeWith,
+                        },
+                    }
                 }
                 ": Track an element's size without an IntersectionObserver."
             }
             li {
                 strong {
-                    Link { to: "#tracking-visibility-with" }
+                    Link {
+                        to: BookRoute::Release060 {
+                            section: Release060Section::TrackingVisibilityWith,
+                        },
+                    }
                 }
                 ": Track an element's visibility without an IntersectionObserver."
             }
             li {
                 strong {
-                    Link { to: "#hybrid-wgpu-overlays" }
+                    Link {
+                        to: BookRoute::Release060 {
+                            section: Release060Section::HybridWgpuOverlays,
+                        },
+                    }
                 }
                 ": Render Dioxus as an overlay on top of WGPU surfaces and child windows."
             }
             li {
                 strong {
-                    Link { to: "#web-ios-and-android-bundle-support" }
+                    Link {
+                        to: BookRoute::Release060 {
+                            section: Release060Section::WebIosAndAndroidBundleSupport,
+                        },
+                    }
                 }
                 ": Complete "
                 code { "dx bundle" }
@@ -4148,31 +5469,53 @@ pub fn Release060() -> dioxus::prelude::Element {
             }
             li {
                 strong {
-                    Link { to: "#json-output-for-ci--cli" }
+                    Link {
+                        to: BookRoute::Release060 {
+                            section: Release060Section::JsonOutputForCiCli,
+                        },
+                    }
                 }
                 ": Emit CLI messages as JSON for use by 3rd party tools and CI/CD pipelines."
             }
             li {
                 strong {
-                    Link { to: "#new-starter-templates" }
+                    Link {
+                        to: BookRoute::Release060 {
+                            section: Release060Section::NewStarterTemplates,
+                        },
+                    }
                 }
                 ": Three new starter templates for cross-platform apps."
             }
             li {
                 strong {
-                    Link { to: "#nightly-docs-tutorials-and-new-guides" }
+                    Link {
+                        to: BookRoute::Release060 {
+                            section: Release060Section::NightlyDocsTutorialsAndNewGuides,
+                        },
+                    }
                 }
                 ": New tutorials and guides for Dioxus 0.6 and beyond."
             }
             li {
                 strong {
-                    Link { to: "#preview-of-in-place-binary-patching" }
+                    Link {
+                        to: BookRoute::Release060 {
+                            section: Release060Section::PreviewOfInPlaceBinaryPatching,
+                        },
+                    }
                 }
                 ": Prototype of our new pure Rust hot-reloading engine."
             }
         }
         h2 { id: "about-this-release",
-            Link { to: "#about-this-release", class: "header", "About this Release" }
+            Link {
+                to: BookRoute::Release060 {
+                    section: Release060Section::AboutThisRelease,
+                },
+                class: "header",
+                "About this Release"
+            }
         }
         p {
             "Dioxus 0.6 is our biggest release ever: over 350 pull requests merged and hundreds of issues closed. We shipped 0.6 with a few goals:"
@@ -4190,7 +5533,11 @@ pub fn Release060() -> dioxus::prelude::Element {
             dangerous_inner_html: "<iframe style=\"width: 100%\" height=\"500px\" class=\"centered-overflow\" src=\"https://www.youtube.com/embed/WgAjWPKRVlQ\" title=\"Dioxus 0.6\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share\" referrerpolicy=\"strict-origin-when-cross-origin\" allowfullscreen></iframe>\n",
         }
         h2 { id: "interactive-command-line-tools",
-            Link { to: "#interactive-command-line-tools", class: "header",
+            Link {
+                to: BookRoute::Release060 {
+                    section: Release060Section::InteractiveCommandLineTools,
+                },
+                class: "header",
                 "Interactive Command Line Tools"
             }
         }
@@ -4249,7 +5596,13 @@ pub fn Release060() -> dioxus::prelude::Element {
             "."
         }
         h2 { id: "android-and-ios-support-for",
-            Link { to: "#android-and-ios-support-for", class: "header", "Android and iOS support for " }
+            Link {
+                to: BookRoute::Release060 {
+                    section: Release060Section::AndroidAndIosSupportFor,
+                },
+                class: "header",
+                "Android and iOS support for "
+            }
             code { "dx serve" }
         }
         p {
@@ -4319,7 +5672,11 @@ pub fn Release060() -> dioxus::prelude::Element {
             "."
         }
         h2 { id: "completely-revamped-hot-reloading",
-            Link { to: "#completely-revamped-hot-reloading", class: "header",
+            Link {
+                to: BookRoute::Release060 {
+                    section: Release060Section::CompletelyRevampedHotReloading,
+                },
+                class: "header",
                 "Completely Revamped Hot-Reloading"
             }
         }
@@ -4406,7 +5763,11 @@ pub fn Release060() -> dioxus::prelude::Element {
         }
         p { "The new hot-reloading feels like magic and we encourage you to try it out!" }
         h2 { id: "completely-revamped-autocomplete",
-            Link { to: "#completely-revamped-autocomplete", class: "header",
+            Link {
+                to: BookRoute::Release060 {
+                    section: Release060Section::CompletelyRevampedAutocomplete,
+                },
+                class: "header",
                 "Completely Revamped Autocomplete"
             }
         }
@@ -4454,7 +5815,13 @@ pub fn Release060() -> dioxus::prelude::Element {
             }
         }
         h2 { id: "inline-wasm-stacktraces-and",
-            Link { to: "#inline-wasm-stacktraces-and", class: "header", "Inline WASM stacktraces and " }
+            Link {
+                to: BookRoute::Release060 {
+                    section: Release060Section::InlineWasmStacktracesAnd,
+                },
+                class: "header",
+                "Inline WASM stacktraces and "
+            }
             code { "tracing" }
             " integration"
         }
@@ -4495,7 +5862,13 @@ pub fn Release060() -> dioxus::prelude::Element {
             }
         }
         h2 { id: "toasts-and-loading-screens",
-            Link { to: "#toasts-and-loading-screens", class: "header", "Toasts and Loading Screens" }
+            Link {
+                to: BookRoute::Release060 {
+                    section: Release060Section::ToastsAndLoadingScreens,
+                },
+                class: "header",
+                "Toasts and Loading Screens"
+            }
         }
         p {
             "As part of our CLI overhaul, we wanted to provide better feedback for developers when building web apps. Dioxus 0.6 will now show Popup Toasts and Loading Screens for web apps in development mode."
@@ -4527,7 +5900,11 @@ pub fn Release060() -> dioxus::prelude::Element {
             }
         }
         h2 { id: "fullstack-desktop-and-mobile",
-            Link { to: "#fullstack-desktop-and-mobile", class: "header",
+            Link {
+                to: BookRoute::Release060 {
+                    section: Release060Section::FullstackDesktopAndMobile,
+                },
+                class: "header",
                 "Fullstack Desktop and Mobile"
             }
         }
@@ -4551,7 +5928,13 @@ pub fn Release060() -> dioxus::prelude::Element {
         }
         CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">main</span><span style=\"color:#f8f8f2;\">() {{\n</span><span style=\"color:#f8f8f2;\">    #[cfg(feature </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;production&quot;</span><span style=\"color:#f8f8f2;\">)]\n</span><span style=\"color:#f8f8f2;\">    server_fn::client::set_server_url(</span><span style=\"color:#ffee99;\">&quot;app.endpoint.com&quot;</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">    dioxus::launch(app)\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n" }
         h2 { id: "stabilizing-manganis",
-            Link { to: "#stabilizing-manganis", class: "header", "Stabilizing Manganis " }
+            Link {
+                to: BookRoute::Release060 {
+                    section: Release060Section::StabilizingManganis,
+                },
+                class: "header",
+                "Stabilizing Manganis "
+            }
             code { "asset!()" }
             " system"
         }
@@ -4613,7 +5996,9 @@ pub fn Release060() -> dioxus::prelude::Element {
         }
         h2 { id: "suspense-and-html-streaming-for-the-web",
             Link {
-                to: "#suspense-and-html-streaming-for-the-web",
+                to: BookRoute::Release060 {
+                    section: Release060Section::SuspenseAndHtmlStreamingForTheWeb,
+                },
                 class: "header",
                 "Suspense and HTML Streaming for the Web"
             }
@@ -4661,7 +6046,11 @@ pub fn Release060() -> dioxus::prelude::Element {
             "Many of these features are quite cutting-edge and are just now being rolled out in frameworks in the JavaScript ecosystem. Getting the details right for Dioxus was quite difficult. We wanted to support both the fullstack web as well as native desktop and mobile apps. These two platforms often have competing design considerations. Fortunately, suspense also works for desktop and mobile, allowing you to emulate web-like data fetching patterns for native apps."
         }
         h2 { id: "static-site-generation-and-isg",
-            Link { to: "#static-site-generation-and-isg", class: "header",
+            Link {
+                to: BookRoute::Release060 {
+                    section: Release060Section::StaticSiteGenerationAndIsg,
+                },
+                class: "header",
                 "Static Site Generation and ISG"
             }
         }
@@ -4703,7 +6092,13 @@ pub fn Release060() -> dioxus::prelude::Element {
             "We will likely be changing these APIs in future releases, but we are eager to let users experiment with these new features to simplify the existing static site setup."
         }
         h2 { id: "document-elements",
-            Link { to: "#document-elements", class: "header", "Document Elements: " }
+            Link {
+                to: BookRoute::Release060 {
+                    section: Release060Section::DocumentElements,
+                },
+                class: "header",
+                "Document Elements: "
+            }
             code { "Title {{}}" }
             " , "
             code { "Link {{}}" }
@@ -4770,7 +6165,11 @@ pub fn Release060() -> dioxus::prelude::Element {
             }
         }
         h2 { id: "question-mark-error-handling",
-            Link { to: "#question-mark-error-handling", class: "header",
+            Link {
+                to: BookRoute::Release060 {
+                    section: Release060Section::QuestionMarkErrorHandling,
+                },
+                class: "header",
                 "Question Mark Error Handling"
             }
         }
@@ -4810,7 +6209,13 @@ pub fn Release060() -> dioxus::prelude::Element {
             "This new syntax lets Suspense and HTML-streaming return errors while rendering that don’t bring down the entire page."
         }
         h2 { id: "synchronous",
-            Link { to: "#synchronous", class: "header", "Synchronous " }
+            Link {
+                to: BookRoute::Release060 {
+                    section: Release060Section::Synchronous,
+                },
+                class: "header",
+                "Synchronous "
+            }
             code { "prevent_default" }
         }
         p {
@@ -4838,7 +6243,13 @@ pub fn Release060() -> dioxus::prelude::Element {
             " now exhibit behavior exactly aligned with their native counterparts, solving long-standing issues with Dioxus apps."
         }
         h2 { id: "tracking-size-with",
-            Link { to: "#tracking-size-with", class: "header", "Tracking size with " }
+            Link {
+                to: BookRoute::Release060 {
+                    section: Release060Section::TrackingSizeWith,
+                },
+                class: "header",
+                "Tracking size with "
+            }
             code { "onresize" }
         }
         p {
@@ -4857,7 +6268,13 @@ pub fn Release060() -> dioxus::prelude::Element {
             contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">app</span><span style=\"color:#f8f8f2;\">() -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let </span><span style=\"color:#f92672;\">mut</span><span style=\"color:#f8f8f2;\"> items </span><span style=\"color:#f92672;\">= </span><span style=\"color:#66d9ef;\">use_signal</span><span style=\"color:#f8f8f2;\">(|| </span><span style=\"color:#ff80f4;\">100</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">    rsx! {{\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"color:#8c8c8c;\">// Adding a value will cause the `div` to be re-rendered with an extra div\n</span><span style=\"color:#f8f8f2;\">        button {{ onclick: </span><span style=\"color:#f92672;\">move |_|</span><span style=\"color:#f8f8f2;\"> items </span><span style=\"color:#f92672;\">+= </span><span style=\"color:#ff80f4;\">1</span><span style=\"color:#f8f8f2;\">, </span><span style=\"color:#ffee99;\">&quot;Add one&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">        div {{\n</span><span style=\"color:#f8f8f2;\">            </span><span style=\"color:#8c8c8c;\">// This will be called when the `div` is resized\n</span><span style=\"color:#f8f8f2;\">            onresize: </span><span style=\"color:#f92672;\">move |</span><span style=\"color:#f8f8f2;\">data</span><span style=\"color:#f92672;\">| </span><span style=\"color:#f8f8f2;\">{{\n</span><span style=\"color:#f8f8f2;\">                tracing::info</span><span style=\"color:#f92672;\">!</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#ffee99;\">&quot;resized to {{:#?}}&quot;</span><span style=\"color:#f8f8f2;\">, data.</span><span style=\"color:#66d9ef;\">get_border_box_size</span><span style=\"color:#f8f8f2;\">().</span><span style=\"color:#66d9ef;\">unwrap</span><span style=\"color:#f8f8f2;\">());\n</span><span style=\"color:#f8f8f2;\">            }},\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">            </span><span style=\"color:#f92672;\">for</span><span style=\"color:#f8f8f2;\"> x </span><span style=\"color:#f92672;\">in </span><span style=\"color:#ff80f4;\">0</span><span style=\"color:#f92672;\">..</span><span style=\"color:#66d9ef;\">items</span><span style=\"color:#f8f8f2;\">() {{\n</span><span style=\"color:#f8f8f2;\">                div {{ </span><span style=\"color:#ffee99;\">&quot;{{x}}&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">            }}\n</span><span style=\"color:#f8f8f2;\">        }}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
         }
         h2 { id: "tracking-visibility-with",
-            Link { to: "#tracking-visibility-with", class: "header", "Tracking visibility with " }
+            Link {
+                to: BookRoute::Release060 {
+                    section: Release060Section::TrackingVisibilityWith,
+                },
+                class: "header",
+                "Tracking visibility with "
+            }
             code { "onvisible" }
         }
         p {
@@ -4888,7 +6305,13 @@ pub fn Release060() -> dioxus::prelude::Element {
             }
         }
         h2 { id: "hybrid-wgpu-overlays",
-            Link { to: "#hybrid-wgpu-overlays", class: "header", "Hybrid WGPU Overlays" }
+            Link {
+                to: BookRoute::Release060 {
+                    section: Release060Section::HybridWgpuOverlays,
+                },
+                class: "header",
+                "Hybrid WGPU Overlays"
+            }
         }
         p {
             "This release also brings the \"child window\" feature for Dioxus desktop which lets you overlay native Dioxus apps on existing windows. This makes it simple to integrate Dioxus as an overlay over other renderers like WGPU and OpenGL:"
@@ -4906,7 +6329,11 @@ pub fn Release060() -> dioxus::prelude::Element {
             }
         }
         h2 { id: "web-ios-and-android-bundle-support",
-            Link { to: "#web-ios-and-android-bundle-support", class: "header",
+            Link {
+                to: BookRoute::Release060 {
+                    section: Release060Section::WebIosAndAndroidBundleSupport,
+                },
+                class: "header",
                 "Web, iOS, and Android bundle support"
             }
         }
@@ -4926,7 +6353,13 @@ pub fn Release060() -> dioxus::prelude::Element {
             li { "Web (.appimage, /public folder)" }
         }
         h2 { id: "json-output-for-ci--cli",
-            Link { to: "#json-output-for-ci--cli", class: "header", "JSON Output for CI / CLI" }
+            Link {
+                to: BookRoute::Release060 {
+                    section: Release060Section::JsonOutputForCiCli,
+                },
+                class: "header",
+                "JSON Output for CI / CLI"
+            }
         }
         p {
             "As part of our overhaul with the CLI, we’re also shipping a  "
@@ -4965,7 +6398,13 @@ pub fn Release060() -> dioxus::prelude::Element {
             }
         }
         h2 { id: "new-starter-templates",
-            Link { to: "#new-starter-templates", class: "header", "New Starter Templates" }
+            Link {
+                to: BookRoute::Release060 {
+                    section: Release060Section::NewStarterTemplates,
+                },
+                class: "header",
+                "New Starter Templates"
+            }
         }
         p {
             "Dioxus 0.6 ships with three new starter templates for cross-platform apps. Each template is a fully-featured, production-ready app that you can use as a starting point for your own Dioxus apps."
@@ -4983,7 +6422,11 @@ pub fn Release060() -> dioxus::prelude::Element {
             " and follow the prompts to select the template you want."
         }
         h2 { id: "nightly-docs-tutorials-and-new-guides",
-            Link { to: "#nightly-docs-tutorials-and-new-guides", class: "header",
+            Link {
+                to: BookRoute::Release060 {
+                    section: Release060Section::NightlyDocsTutorialsAndNewGuides,
+                },
+                class: "header",
                 "Nightly Docs, Tutorials, and New Guides"
             }
         }
@@ -5037,7 +6480,11 @@ pub fn Release060() -> dioxus::prelude::Element {
             }
         }
         h2 { id: "preview-of-in-place-binary-patching",
-            Link { to: "#preview-of-in-place-binary-patching", class: "header",
+            Link {
+                to: BookRoute::Release060 {
+                    section: Release060Section::PreviewOfInPlaceBinaryPatching,
+                },
+                class: "header",
                 "Preview of In-Place Binary Patching"
             }
         }
@@ -5062,7 +6509,13 @@ pub fn Release060() -> dioxus::prelude::Element {
             "We likely won’t have the time to ship true Rust hot-reloading in 0.7, but stay tuned for early next year!"
         }
         h2 { id: "smaller-changes",
-            Link { to: "#smaller-changes", class: "header", "Smaller changes:" }
+            Link {
+                to: BookRoute::Release060 {
+                    section: Release060Section::SmallerChanges,
+                },
+                class: "header",
+                "Smaller changes:"
+            }
         }
         p {
             "Not every change gets a particularly large section in the release notes, but we did land several new features and refactors."
@@ -5114,7 +6567,13 @@ pub fn Release060() -> dioxus::prelude::Element {
             }
         }
         h2 { id: "upgrading-from-05-to-06",
-            Link { to: "#upgrading-from-05-to-06", class: "header", "Upgrading from 0.5 to 0.6" }
+            Link {
+                to: BookRoute::Release060 {
+                    section: Release060Section::UpgradingFrom05To06,
+                },
+                class: "header",
+                "Upgrading from 0.5 to 0.6"
+            }
         }
         p {
             "Generally there are few huge breaking changes in this release. However, we did change a few APIs that might break your existing apps but are easy to fix."
@@ -5144,7 +6603,13 @@ pub fn Release060() -> dioxus::prelude::Element {
             " to help."
         }
         h2 { id: "conclusion",
-            Link { to: "#conclusion", class: "header", "Conclusion" }
+            Link {
+                to: BookRoute::Release060 {
+                    section: Release060Section::Conclusion,
+                },
+                class: "header",
+                "Conclusion"
+            }
         }
         p {
             "That’s it for this release! We addressed countless issues including bundling bugs, spurious hot-reloads, and compatibility with unusual platforms and editors."
@@ -5176,7 +6641,13 @@ pub fn Release060() -> dioxus::prelude::Element {
             "We’re also hiring - if you want to come build Dioxus with me in San Francisco (or remote) please reach out!"
         }
         h2 { id: "thanks-to-the-community",
-            Link { to: "#thanks-to-the-community", class: "header", "Thanks to the community!" }
+            Link {
+                to: BookRoute::Release060 {
+                    section: Release060Section::ThanksToTheCommunity,
+                },
+                class: "header",
+                "Thanks to the community!"
+            }
         }
         p {
             "We want to extend a huge thank-you to everyone who helped test and improve this release. We saw an incredible number of contributors fix bugs and add features. Special thanks to:"

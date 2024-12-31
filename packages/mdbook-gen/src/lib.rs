@@ -251,11 +251,13 @@ pub(crate) fn path_to_route_variant_name(path: &Path) -> String {
 
 /// Convert a string to an upper camel case which will be a valid Rust identifier. Any leading numbers will be skipped.
 pub(crate) fn to_upper_camel_case_for_ident(title: &str) -> String {
-    title
-        .chars()
-        .skip_while(|c| c.is_numeric())
-        .collect::<String>()
-        .to_case(Case::UpperCamel)
+    let upper = title
+        .to_case(Case::UpperCamel);
+    if upper.chars().next().unwrap().is_numeric() {
+        format!("_{}", upper)
+    } else {
+        upper
+    }
 }
 
 pub(crate) fn path_to_route_variant(path: &Path) -> Ident {

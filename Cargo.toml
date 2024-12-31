@@ -26,9 +26,9 @@ include_dir = "0.7.3"
 anyhow = "1.0.71"
 
 dioxus-material-icons = { git = "https://github.com/jkelleyrtp/dioxus-material-icons", branch = "jk/git-rev" }
-syntect-html = { git = "https://github.com/dioxuslabs/include_mdbook", branch = "jk/build-gen" }
-mdbook-shared = { git = "https://github.com/dioxuslabs/include_mdbook", branch = "jk/build-gen" }
-use-mdbook = { git = "https://github.com/dioxuslabs/include_mdbook", branch = "jk/build-gen" }
+syntect-html = { git = "https://github.com/ealmloff/include_mdbook", branch = "clean-up" }
+mdbook-shared = { git = "https://github.com/ealmloff/include_mdbook", branch = "clean-up" }
+use-mdbook = { git = "https://github.com/ealmloff/include_mdbook", branch = "clean-up" }
 dioxus-search = { git = "https://github.com/dioxuslabs/dioxus-search" }
 
 # dioxus-playground = { git = "https://github.com/DioxusLabs/playground", branch = "jk/update-manganis" }
@@ -69,8 +69,8 @@ tracing = "0.1.40"
 rand = { version = "0.8.5", optional = true }
 
 [build-dependencies]
-mdbook-gen = { git = "https://github.com/dioxuslabs/include_mdbook", branch = "jk/build-gen", features = ["manganis"]}
-mdbook-shared = { git = "https://github.com/dioxuslabs/include_mdbook", branch = "jk/build-gen" }
+mdbook-gen = { git = "https://github.com/ealmloff/include_mdbook", branch = "clean-up", features = ["manganis"]}
+mdbook-shared = { git = "https://github.com/ealmloff/include_mdbook", branch = "clean-up" }
 prettyplease = "0.2.20"
 
 [patch.crates-io]

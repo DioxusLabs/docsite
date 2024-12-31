@@ -939,16 +939,16 @@ pub fn IntroducingDioxus() -> dioxus::prelude::Element {
     use dioxus::prelude::*;
     rsx! {
         h1 { id: "introducing-dioxus-v01-",
-            a { href: "#introducing-dioxus-v01-", class: "header", "Introducing Dioxus v0.1 ✨" }
+            Link { to: "#introducing-dioxus-v01-", class: "header", "Introducing Dioxus v0.1 ✨" }
         }
         blockquote {
             p { "Jan 3, 2022" }
         }
         blockquote {
             p {
-                a { href: "https://github.com/jkelleyrtp", "@jkelleyrtp" }
+                Link { to: "https://github.com/jkelleyrtp" }
                 ", thanks "
-                a { href: "https://github.com/alexkirsz", "@alexkirsz" }
+                Link { to: "https://github.com/alexkirsz" }
             }
         }
         p { "After many months of work, we're very excited to release the first version of Dioxus!" }
@@ -1033,7 +1033,7 @@ pub fn IntroducingDioxus() -> dioxus::prelude::Element {
         }
         p {
             "This very site is built with Dioxus, and the source code is available "
-            a { href: "https://github.com/dioxuslabs/docsite", "here" }
+            Link { to: "https://github.com/dioxuslabs/docsite" }
             "."
         }
         p {
@@ -1041,52 +1041,48 @@ pub fn IntroducingDioxus() -> dioxus::prelude::Element {
         }
         ul {
             li {
-                a { href: "https://dioxuslabs.com/docs/0.3/guide/en", "Getting Started with Dioxus" }
+                Link { to: "https://dioxuslabs.com/docs/0.3/guide/en" }
             }
             li {
-                a { href: "https://dioxuslabs.com/reference/web", "Getting Started with Web" }
+                Link { to: "https://dioxuslabs.com/reference/web" }
             }
             li {
-                a { href: "https://dioxuslabs.com/reference/desktop", "Getting Started with Desktop" }
+                Link { to: "https://dioxuslabs.com/reference/desktop" }
             }
             li {
-                a { href: "https://dioxuslabs.com/reference/mobile", "Getting Started with Mobile" }
+                Link { to: "https://dioxuslabs.com/reference/mobile" }
             }
             li {
-                a { href: "https://dioxuslabs.com/reference/ssr", "Getting Started with SSR" }
+                Link { to: "https://dioxuslabs.com/reference/ssr" }
             }
         }
         h2 { id: "show-me-some-examples-of-what-can-be-built",
-            a {
-                href: "#show-me-some-examples-of-what-can-be-built",
+            Link {
+                to: "#show-me-some-examples-of-what-can-be-built",
                 class: "header",
                 "Show me some examples of what can be built!"
             }
         }
         ul {
             li {
-                a { href: "https://github.com/dioxuslabs/example-projects",
-                    "File explorer desktop app"
-                }
+                Link { to: "https://github.com/dioxuslabs/example-projects" }
             }
             li {
-                a { href: "https://github.com/dioxuslabs/example-projects",
-                    "WiFi scanner desktop app"
-                }
+                Link { to: "https://github.com/dioxuslabs/example-projects" }
             }
             li {
-                a { href: "https://github.com/dioxuslabs/example-projects", "Dog CEO API Search" }
+                Link { to: "https://github.com/dioxuslabs/example-projects" }
             }
             li {
-                a { href: "https://github.com/dioxuslabs/example-projects", "TodoMVC Mobile App" }
+                Link { to: "https://github.com/dioxuslabs/example-projects" }
             }
             li {
-                a { href: "https://github.com/dioxuslabs/example-projects", "E-Commerce Liveview App" }
+                Link { to: "https://github.com/dioxuslabs/example-projects" }
             }
         }
         h2 { id: "why-should-i-use-rust-and-dioxus-for-frontend",
-            a {
-                href: "#why-should-i-use-rust-and-dioxus-for-frontend",
+            Link {
+                to: "#why-should-i-use-rust-and-dioxus-for-frontend",
                 class: "header",
                 "Why should I use Rust and Dioxus for frontend?"
             }
@@ -1097,7 +1093,7 @@ pub fn IntroducingDioxus() -> dioxus::prelude::Element {
             " ever again! With Rust, all errors must be accounted for at compile time. You cannot ship an app that does not — in some way — handle its errors."
         }
         h3 { id: "difference-from-typescriptreact",
-            a { href: "#difference-from-typescriptreact", class: "header",
+            Link { to: "#difference-from-typescriptreact", class: "header",
                 "Difference from TypeScript/React:"
             }
         }
@@ -1124,7 +1120,7 @@ pub fn IntroducingDioxus() -> dioxus::prelude::Element {
             li { "Powerful macro system" }
             li {
                 "Access to the "
-                a { href: "https://crates.io", "crates.io" }
+                Link { to: "https://crates.io" }
                 " ecosystem"
             }
         }
@@ -1161,19 +1157,19 @@ pub fn IntroducingDioxus() -> dioxus::prelude::Element {
         }
         p {
             "Today, to publish a Dioxus app, you don't need NPM/WebPack/Parcel/etc. Dioxus simply builds with cargo, and for web builds, Dioxus happily works with the popular "
-            a { href: "http://trunkrs.dev", "trunk" }
+            Link { to: "http://trunkrs.dev" }
             " project."
         }
         h2 { id: "show-me-more",
-            a { href: "#show-me-more", class: "header", "Show me more" }
+            Link { to: "#show-me-more", class: "header", "Show me more" }
         }
         p {
             "Here, we'll dive into some features of Dioxus and why it's so fun to use. The "
-            a { href: "https://dioxuslabs.com/docs/0.3/guide/en/", "guide" }
+            Link { to: "https://dioxuslabs.com/docs/0.3/guide/en/" }
             " serves as a deeper and more comprehensive look at what Dioxus can do."
         }
         h2 { id: "building-a-new-project-is-simple",
-            a { href: "#building-a-new-project-is-simple", class: "header",
+            Link { to: "#building-a-new-project-is-simple", class: "header",
                 "Building a new project is simple"
             }
         }
@@ -1208,13 +1204,13 @@ pub fn IntroducingDioxus() -> dioxus::prelude::Element {
             }
         }
         h2 { id: "support-for-jsx-style-templating",
-            a { href: "#support-for-jsx-style-templating", class: "header",
+            Link { to: "#support-for-jsx-style-templating", class: "header",
                 "Support for JSX-style templating"
             }
         }
         p {
             "Dioxus ships with a templating macro called RSX, a spin on React's JSX. RSX is very similar to regular struct syntax for Rust so it integrates well with your IDE. If used with "
-            a { href: "https://github.com/rust-analyzer/rust-analyzer", "Rust-Analyzer" }
+            Link { to: "https://github.com/rust-analyzer/rust-analyzer" }
             " (not tested anywhere else) RSX supports code-folding, block selection, bracket pair colorizing, autocompletion, symbol renaming — pretty much anything you would expect from writing regular struct-style code."
         }
         CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">rsx! {{\n</span><span style=\"color:#f8f8f2;\">\tdiv {{ </span><span style=\"color:#ffee99;\">&quot;Hello world&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\tbutton {{\n</span><span style=\"color:#f8f8f2;\">\t\tonclick: </span><span style=\"color:#f92672;\">move |_| </span><span style=\"color:#f8f8f2;\">log::info</span><span style=\"color:#f92672;\">!</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#ffee99;\">&quot;button pressed&quot;</span><span style=\"color:#f8f8f2;\">),\n</span><span style=\"color:#f8f8f2;\">\t\t</span><span style=\"color:#ffee99;\">&quot;Press me&quot;\n</span><span style=\"color:#f8f8f2;\">\t}}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n" }
@@ -1229,12 +1225,12 @@ pub fn IntroducingDioxus() -> dioxus::prelude::Element {
         }
         p {
             "To make it easier to work with RSX, we've built a small "
-            a { href: "https://github.com/DioxusLabs/studio", "VSCode extension" }
+            Link { to: "https://github.com/DioxusLabs/studio" }
             " with useful utilities. This extension provides a command that converts a selected block of HTML into RSX so you can easily reuse existing web templates."
         }
         h2 { id: "dioxus-prioritizes-developer-experience",
-            a {
-                href: "#dioxus-prioritizes-developer-experience",
+            Link {
+                to: "#dioxus-prioritizes-developer-experience",
                 class: "header",
                 "Dioxus prioritizes developer experience"
             }
@@ -1272,13 +1268,13 @@ pub fn IntroducingDioxus() -> dioxus::prelude::Element {
             " more to this story, but hopefully we've convinced you that Dioxus' DX somewhat approximates JSX/React."
         }
         h2 { id: "dioxus-is-perfected-for-the-ide",
-            a { href: "#dioxus-is-perfected-for-the-ide", class: "header",
+            Link { to: "#dioxus-is-perfected-for-the-ide", class: "header",
                 "Dioxus is perfected for the IDE"
             }
         }
         p {
             "Note: all IDE-related features have only been tested with "
-            a { href: "https://github.com/rust-analyzer/rust-analyzer", "Rust-Analyzer" }
+            Link { to: "https://github.com/rust-analyzer/rust-analyzer" }
             "."
         }
         p {
@@ -1293,9 +1289,9 @@ pub fn IntroducingDioxus() -> dioxus::prelude::Element {
         }
         p {
             "Dioxus also wraps platform-specific events with a custom synthetic event system. This means events enjoy proper autocomplete and documentation, unlike "
-            a { href: "https://yew.rs/", "Yew" }
+            Link { to: "https://yew.rs/" }
             " which currently relies on "
-            a { href: "https://crates.io/crates/web-sys", "web-sys" }
+            Link { to: "https://crates.io/crates/web-sys" }
             " with incomplete IDE support:"
         }
         p {
@@ -1339,7 +1335,7 @@ pub fn IntroducingDioxus() -> dioxus::prelude::Element {
         }
         p { "We spent a ton of time on this and we hope you enjoy it!" }
         h2 { id: "dioxus-is-extremely-fast",
-            a { href: "#dioxus-is-extremely-fast", class: "header", "Dioxus is extremely fast" }
+            Link { to: "#dioxus-is-extremely-fast", class: "header", "Dioxus is extremely fast" }
         }
         p {
             "We take the performance of Dioxus seriously. Instead of resolving to \"good enough,\" Dioxus is designed to push the limits of what a declarative React-like framework can achieve. Dioxus is designed with multi-tenancy in mind: a single machine should be able to run thousands of simultaneous low-latency LiveView apps without skipping a beat. To accomplish this goal we've implemented a large number of optimizations:"
@@ -1353,7 +1349,7 @@ pub fn IntroducingDioxus() -> dioxus::prelude::Element {
         }
         p {
             "Dioxus is humbly built off the work done by "
-            a { href: "https://github.com/fitzgen/dodrio", "Dodrio" }
+            Link { to: "https://github.com/fitzgen/dodrio" }
             ", a now-archived research project by fitzgen exploring the use of bump allocators in UI frameworks."
         }
         p {
@@ -1366,97 +1362,61 @@ pub fn IntroducingDioxus() -> dioxus::prelude::Element {
             " fast."
         }
         h2 { id: "works-on-desktop-and-mobile",
-            a { href: "#works-on-desktop-and-mobile", class: "header",
-                "Works on Desktop and Mobile"
-            }
+            Link { to: "#works-on-desktop-and-mobile", class: "header", "Works on Desktop and Mobile" }
         }
         p {
             "We’ve mentioned before that Dioxus works practically anywhere that Rust does. When running natively as a desktop or mobile app, your Dioxus code will run on its own thread, not inside of a web runtime. This means you can access hardware, file system, and platform APIs directly without needing to go through a shim layer. In our examples, we feature a "
-            a { href: "https://github.com/DioxusLabs/example-projects/tree/master/file-explorer",
-                "file explorer app"
-            }
+            Link { to: "https://github.com/DioxusLabs/example-projects/tree/master/file-explorer" }
             " and "
-            a { href: "https://github.com/DioxusLabs/example-projects/tree/master/wifi-scanner",
-                "WiFi scanner app"
-            }
+            Link { to: "https://github.com/DioxusLabs/example-projects/tree/master/wifi-scanner" }
             " where platform access occurs inside an asynchronous multithreaded coroutine. This solves the problem faced by React Native and other cross-platform toolkits where JavaScript apps incur a massive performance penalty with substantial maintenance overhead associated with platform API shims."
         }
         p { "A desktop app:" }
         p {
-            a { href: "https://github.com/DioxusLabs/example-projects/blob/master/file-explorer",
-                img {
-                    src: "https://github.com/DioxusLabs/example-projects/raw/master/file-explorer/image.png",
-                    alt: "Example Dioxus desktop app",
-                    title: "",
-                }
-            }
+            Link { to: "https://github.com/DioxusLabs/example-projects/blob/master/file-explorer" }
         }
         p { "A mobile app:" }
         p {
-            a { href: "https://github.com/DioxusLabs/example-projects/blob/master/ios_demo",
-                img {
-                    src: "https://github.com/DioxusLabs/example-projects/raw/master/ios_demo/assets/screenshot_smaller.jpeg",
-                    alt: "Example Dioxus mobile app",
-                    title: "",
-                }
-            }
+            Link { to: "https://github.com/DioxusLabs/example-projects/blob/master/ios_demo" }
         }
         p {
             "However, be warned that mobile is currently considered very experimental and there will likely be quirks. Dioxus is leveraging the work done by the "
-            a { href: "https://github.com/tauri-apps/tauri", "Tauri" }
+            Link { to: "https://github.com/tauri-apps/tauri" }
             " team to enable mobile support, and mobile support isn't technically complete in Tauri yet."
         }
         p {
             "iOS should be supported out of the box, but Android support will take custom some boilerplate that hasn't been completely figured out. If you're interested in contributing to Dioxus, improving mobile support would be extremely helpful."
         }
         h3 { id: "did-someone-say-tui-support",
-            a { href: "#did-someone-say-tui-support", class: "header",
-                "Did someone say TUI support?"
-            }
+            Link { to: "#did-someone-say-tui-support", class: "header", "Did someone say TUI support?" }
         }
         p {
             "Yes, you can even build terminal user interfaces with Dioxus. Full support is still a work in progress, but the foundation is there."
         }
         p {
-            a { href: "https://github.com/dioxusLabs/rink",
-                img {
-                    src: "https://github.com/DioxusLabs/rink/raw/master/examples/example.png",
-                    alt: "TUI Support",
-                    title: "",
-                }
-            }
+            Link { to: "https://github.com/dioxusLabs/rink" }
         }
         h3 { id: "things-we-didnt-cover",
-            a { href: "#things-we-didnt-cover", class: "header", "Things we didn't cover:" }
+            Link { to: "#things-we-didnt-cover", class: "header", "Things we didn't cover:" }
         }
         p {
             "There are a bunch of things we didn't talk about here. Check out the guide for more information, or peruse the examples and reference for more context."
         }
         ul {
             li { "Jank-free rendering with fiber scheduler" }
-            li {
-                a { href: "", "Support for borrowed props" }
-            }
-            li {
-                a { href: "", "Conditional rendering" }
-            }
-            li {
-                a { href: "", "CSS/Styling/Inline style support" }
-            }
-            li {
-                a { href: "", "Support for inline Context Providing/Consuming" }
-            }
-            li {
-                a { href: "", "First-class global state management" }
-            }
+            li { "Support for borrowed props" }
+            li { "Conditional rendering" }
+            li { "CSS/Styling/Inline style support" }
+            li { "Support for inline Context Providing/Consuming" }
+            li { "First-class global state management" }
         }
         p {
             "For a quick glance at party with React, check out the "
-            a { href: "https://github.com/DioxusLabs/dioxus#parity-with-react", "Readme on Github" }
+            Link { to: "https://github.com/DioxusLabs/dioxus#parity-with-react" }
             "."
         }
         h2 { id: "whats-on-the-roadmap",
-            a { href: "#whats-on-the-roadmap", class: "header", "What's on the roadmap?" }
+            Link { to: "#whats-on-the-roadmap", class: "header", "What's on the roadmap?" }
         }
         p {
             "The world of Rust on the frontend is barely explored. Given the performance, ergonomics, and portability of Rust/Dioxus, we expect there to be a ton of different applications where having a React-like toolkit running natively can enable things previously considered impossible."
@@ -1477,16 +1437,16 @@ pub fn IntroducingDioxus() -> dioxus::prelude::Element {
             li { "An extension to DioxusStudio that enables lazy bundling of static assets" }
             li {
                 "Animation library (see "
-                a { href: "https://react-spring.io/", "React Spring" }
+                Link { to: "https://react-spring.io/" }
                 ", "
-                a { href: "https://www.framer.com/motion/", "Framer Motion" }
+                Link { to: "https://www.framer.com/motion/" }
                 ")"
             }
             li {
                 "A "
-                a { href: "https://github.com/dioxuslabs/rink", "TUI renderer for Dioxus" }
+                Link { to: "https://github.com/dioxuslabs/rink" }
                 " (see "
-                a { href: "https://github.com/vadimdemedes/ink", "Ink" }
+                Link { to: "https://github.com/vadimdemedes/ink" }
                 ")"
             }
         }
@@ -1496,14 +1456,14 @@ pub fn IntroducingDioxus() -> dioxus::prelude::Element {
         ul {
             li {
                 "Completely native renderer for the Dioxus Virtual DOM (see "
-                a { href: "https://flutter.dev/", "Flutter" }
+                Link { to: "https://flutter.dev/" }
                 ")"
             }
             li { "Better support for LiveView" }
             li { "Code-splitting" }
             li {
                 "3D renderer (see "
-                a { href: "https://github.com/pmndrs/react-three-fiber", "react-three-fiber" }
+                Link { to: "https://github.com/pmndrs/react-three-fiber" }
                 ")"
             }
         }
@@ -1511,15 +1471,15 @@ pub fn IntroducingDioxus() -> dioxus::prelude::Element {
             "Stay tuned for our next article, which will go over some of the optimization techniques that went into making Dioxus blazing fast."
         }
         h2 { id: "community",
-            a { href: "#community", class: "header", "Community" }
+            Link { to: "#community", class: "header", "Community" }
         }
         p {
             "The future is bright for Rust frontends! If you'd like to get involved, we have a "
-            a { href: "https://discord.gg/XgGxMSkvUM", "Discord server" }
+            Link { to: "https://discord.gg/XgGxMSkvUM" }
             ", "
-            a { href: "http://reddit.com/r/dioxus", "a subreddit" }
+            Link { to: "http://reddit.com/r/dioxus" }
             ", and "
-            a { href: "https://github.com/DioxusLabs/dioxus/discussions", "GitHub discussion pages" }
+            Link { to: "https://github.com/DioxusLabs/dioxus/discussions" }
             "."
         }
         p { "Let us know what you build!" }
@@ -1537,43 +1497,43 @@ pub fn Release020() -> dioxus::prelude::Element {
         p { "Thanks to these amazing folks for their financial support on OpenCollective:" }
         ul {
             li {
-                a { href: "https://github.com/t1m0t", "@t1m0t" }
+                Link { to: "https://github.com/t1m0t" }
             }
             li {
-                a { href: "https://github.com/t1m0t", "@alexkirsz" }
+                Link { to: "https://github.com/t1m0t" }
             }
             li {
-                a { href: "https://github.com/freopen", "@freopen" }
+                Link { to: "https://github.com/freopen" }
             }
             li {
-                a { href: "https://github.com/DannyMichaels", "@DannyMichaels" }
+                Link { to: "https://github.com/DannyMichaels" }
             }
             li {
-                a { href: "https://github.com/Fatcat560", "@SweetLittleMUV" }
+                Link { to: "https://github.com/Fatcat560" }
             }
         }
         p { "Thanks to these amazing folks for their code contributions:" }
         ul {
             li {
-                a { href: "https://github.com/mrxiaozhuox", "@mrxiaozhuox" }
+                Link { to: "https://github.com/mrxiaozhuox" }
             }
             li {
-                a { href: "https://github.com/autarch", "@autarch" }
+                Link { to: "https://github.com/autarch" }
             }
             li {
-                a { href: "https://github.com/FruitieX", "@FruitieX" }
+                Link { to: "https://github.com/FruitieX" }
             }
             li {
-                a { href: "https://github.com/t1m0t", "@t1m0t" }
+                Link { to: "https://github.com/t1m0t" }
             }
             li {
-                a { href: "https://github.com/ealmloff", "@ealmloff" }
+                Link { to: "https://github.com/ealmloff" }
             }
             li {
-                a { href: "https://github.com/oovm", "@oovm" }
+                Link { to: "https://github.com/oovm" }
             }
             li {
-                a { href: "https://github.com/asaaki", "@asaaki" }
+                Link { to: "https://github.com/asaaki" }
             }
         }
         p { "Just over two months in, and we already have a ton of awesome changes to Dioxus!" }
@@ -1584,7 +1544,7 @@ pub fn Release020() -> dioxus::prelude::Element {
             contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">app</span><span style=\"color:#f8f8f2;\">(</span><span style=\"font-style:italic;color:#fd971f;\">cx</span><span style=\"color:#f8f8f2;\">: Scope) -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let </span><span style=\"color:#f92672;\">mut</span><span style=\"color:#f8f8f2;\"> count </span><span style=\"color:#f92672;\">= </span><span style=\"color:#66d9ef;\">use_state</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#f92672;\">&amp;</span><span style=\"color:#f8f8f2;\">cx, || </span><span style=\"color:#ff80f4;\">0</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">    cx.</span><span style=\"color:#66d9ef;\">render</span><span style=\"color:#f8f8f2;\">(rsx! {{\n</span><span style=\"color:#f8f8f2;\">        h1 {{ </span><span style=\"color:#ffee99;\">&quot;Count: {{count}}&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">        button {{ onclick: </span><span style=\"color:#f92672;\">move |_|</span><span style=\"color:#f8f8f2;\"> count </span><span style=\"color:#f92672;\">+= </span><span style=\"color:#ff80f4;\">1</span><span style=\"color:#f8f8f2;\">, </span><span style=\"color:#ffee99;\">&quot;+&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">        button {{ onclick: </span><span style=\"color:#f92672;\">move |_|</span><span style=\"color:#f8f8f2;\"> count </span><span style=\"color:#f92672;\">-= </span><span style=\"color:#ff80f4;\">1</span><span style=\"color:#f8f8f2;\">, </span><span style=\"color:#ffee99;\">&quot;-&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">    }})\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
         }
         h1 { id: "whats-new",
-            a { href: "#whats-new", class: "header", "What's new?" }
+            Link { to: "#whats-new", class: "header", "What's new?" }
         }
         p {
             "A "
@@ -1595,35 +1555,35 @@ pub fn Release020() -> dioxus::prelude::Element {
         ul {
             li {
                 "We now can render into the terminal, similar to Ink.JS - a huge thanks to "
-                a { href: "https://github.com/ealmloff", "@ealmloff" }
+                Link { to: "https://github.com/ealmloff" }
             }
             li {
                 "We have a new router in the spirit of React-Router "
-                a { href: "https://github.com/autarch", "@autarch" }
+                Link { to: "https://github.com/autarch" }
             }
             li {
                 "We now have Fermi for global state management in the spirit of "
-                a { href: "https://recoiljs.org", "Recoil.JS" }
+                Link { to: "https://recoiljs.org" }
             }
             li {
                 "Our desktop platform got major upgrades, getting closer to parity with Electron "
-                a { href: "https://github.com/mrxiaozhuox", "@mrxiaozhuox" }
+                Link { to: "https://github.com/mrxiaozhuox" }
             }
             li {
                 "Our CLI tools now support HTML-to-RSX translation for converting 3rd party HTML into Dioxus "
-                a { href: "https://github.com/mrxiaozhuox", "@mrxiaozhuox" }
+                Link { to: "https://github.com/mrxiaozhuox" }
             }
             li { "Dioxus-Web is sped up by 2.5x with JS-based DOM manipulation (3x faster than React)" }
         }
         p { "We also fixed and improved a bunch of stuff - check out the full list down below." }
         h2 { id: "a-new-renderer-your-terminal",
-            a { href: "#a-new-renderer-your-terminal", class: "header",
+            Link { to: "#a-new-renderer-your-terminal", class: "header",
                 "A New Renderer: Your terminal!"
             }
         }
         p {
             "When Dioxus was initially released, we had very simple support for logging Dioxus elements out as TUI elements. In the past month or so, "
-            a { href: "https://github.com/ealmloff", "@ealmloff" }
+            Link { to: "https://github.com/ealmloff" }
             " really stepped up and made the new crate a reality."
         }
         p {
@@ -1637,11 +1597,11 @@ pub fn Release020() -> dioxus::prelude::Element {
             "The new TUI renderer even supports mouse movements, keyboard input, async tasks, borders, and a ton more."
         }
         h2 { id: "new-router",
-            a { href: "#new-router", class: "header", "New Router" }
+            Link { to: "#new-router", class: "header", "New Router" }
         }
         p {
             "We totally revamped the router, switching away from the old yew-router approach to the more familiar "
-            a { href: "http://reactrouter.com", "React-Router" }
+            Link { to: "http://reactrouter.com" }
             ". It's less type-safe but provides more flexibility and support for beautiful URLs."
         }
         p {
@@ -1660,24 +1620,24 @@ pub fn Release020() -> dioxus::prelude::Element {
         }
         p {
             "Give a big thanks to "
-            a { href: "https://github.com/autarch", "@autarch" }
+            Link { to: "https://github.com/autarch" }
             " for putting in all the hard work to make this new router a reality."
         }
         p {
             "The Router guide is "
-            a { href: "https://dioxuslabs.com/nightly/router/", "available here" }
+            Link { to: "https://dioxuslabs.com/nightly/router/" }
             " - thanks to "
-            a { href: "https://github.com/dogedark", "@dogedark" }
+            Link { to: "https://github.com/dogedark" }
             "."
         }
         h2 { id: "fermi-for-global-state-management",
-            a { href: "#fermi-for-global-state-management", class: "header",
+            Link { to: "#fermi-for-global-state-management", class: "header",
                 "Fermi for Global State Management"
             }
         }
         p {
             "Managing state in your app can be challenging. Building global state management solutions can be even more challenging. For the first big attempt at building a global state management solution for Dioxus, we chose to keep it simple and follow in the footsteps of the "
-            a { href: "http://recoiljs.org", "Recoil.JS" }
+            Link { to: "http://recoiljs.org" }
             " project."
         }
         p {
@@ -1689,7 +1649,7 @@ pub fn Release020() -> dioxus::prelude::Element {
             contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#8c8c8c;\">// Create a single value in an &quot;Atom&quot;\n</span><span style=\"font-style:italic;color:#66d9ef;\">static </span><span style=\"color:#ff80f4;\">TITLE</span><span style=\"color:#f8f8f2;\">: Atom&lt;</span><span style=\"color:#f92672;\">&amp;</span><span style=\"font-style:italic;color:#66d9ef;\">str</span><span style=\"color:#f8f8f2;\">&gt; </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">|_| </span><span style=\"color:#ffee99;\">&quot;Hello&quot;</span><span style=\"color:#f8f8f2;\">;\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#8c8c8c;\">// Read the value from anywhere in the app, subscribing to any changes\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">app</span><span style=\"color:#f8f8f2;\">(</span><span style=\"font-style:italic;color:#fd971f;\">cx</span><span style=\"color:#f8f8f2;\">: Scope) -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> title </span><span style=\"color:#f92672;\">= </span><span style=\"color:#66d9ef;\">use_read</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#f92672;\">&amp;</span><span style=\"color:#f8f8f2;\">cx, </span><span style=\"color:#ff80f4;\">TITLE</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"color:#f8f8f2;\">    cx.</span><span style=\"color:#66d9ef;\">render</span><span style=\"color:#f8f8f2;\">(rsx!{{\n</span><span style=\"color:#f8f8f2;\">        h1 {{ </span><span style=\"color:#ffee99;\">&quot;{{title}}&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">        Child {{}}\n</span><span style=\"color:#f8f8f2;\">    }})\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#8c8c8c;\">// Set the value from anywhere in the app\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">Child</span><span style=\"color:#f8f8f2;\">(</span><span style=\"font-style:italic;color:#fd971f;\">cx</span><span style=\"color:#f8f8f2;\">: Scope) -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> set_title </span><span style=\"color:#f92672;\">= </span><span style=\"color:#66d9ef;\">use_set</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#f92672;\">&amp;</span><span style=\"color:#f8f8f2;\">cx, </span><span style=\"color:#ff80f4;\">TITLE</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"color:#f8f8f2;\">    cx.</span><span style=\"color:#66d9ef;\">render</span><span style=\"color:#f8f8f2;\">(rsx!{{\n</span><span style=\"color:#f8f8f2;\">        button {{\n</span><span style=\"color:#f8f8f2;\">            onclick: </span><span style=\"color:#f92672;\">move |_| </span><span style=\"color:#66d9ef;\">set_title</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#ffee99;\">&quot;goodbye&quot;</span><span style=\"color:#f8f8f2;\">),\n</span><span style=\"color:#f8f8f2;\">            </span><span style=\"color:#ffee99;\">&quot;Say goodbye&quot;\n</span><span style=\"color:#f8f8f2;\">        }}\n</span><span style=\"color:#f8f8f2;\">    }})\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
         }
         h2 { id: "inline-props-macro",
-            a { href: "#inline-props-macro", class: "header", "Inline Props Macro" }
+            Link { to: "#inline-props-macro", class: "header", "Inline Props Macro" }
         }
         p {
             "For internal components, explicitly declaring props structs can become tedious. That's why we've built the new  "
@@ -1708,7 +1668,7 @@ pub fn Release020() -> dioxus::prelude::Element {
             "You won't be able to document each field or attach attributes so you should refrain from using it in libraries."
         }
         h2 { id: "props-optional-fields",
-            a { href: "#props-optional-fields", class: "header", "Props optional fields" }
+            Link { to: "#props-optional-fields", class: "header", "Props optional fields" }
         }
         p {
             "Sometimes you don't want to specify "
@@ -1727,7 +1687,7 @@ pub fn Release020() -> dioxus::prelude::Element {
             contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">#[derive(Props, PartialEq)]\n</span><span style=\"font-style:italic;color:#66d9ef;\">struct </span><span style=\"color:#f8f8f2;\">ChildProps {{\n</span><span style=\"color:#f8f8f2;\">    #[props(default = &quot;client&quot;)]\n</span><span style=\"color:#f8f8f2;\">    name: String,\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">    #[props(default)]\n</span><span style=\"color:#f8f8f2;\">    age: Option&lt;</span><span style=\"font-style:italic;color:#66d9ef;\">u32</span><span style=\"color:#f8f8f2;\">&gt;,\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">    #[props(optional)]\n</span><span style=\"color:#f8f8f2;\">    age: Option&lt;</span><span style=\"font-style:italic;color:#66d9ef;\">u32</span><span style=\"color:#f8f8f2;\">&gt;,\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#8c8c8c;\">// then to use the accompanying component\n</span><span style=\"color:#f8f8f2;\">rsx!{{\n</span><span style=\"color:#f8f8f2;\">    Child {{\n</span><span style=\"color:#f8f8f2;\">        name: </span><span style=\"color:#ffee99;\">&quot;asd&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
         }
         h2 { id: "dioxus-web-speed-boost",
-            a { href: "#dioxus-web-speed-boost", class: "header", "Dioxus Web Speed Boost" }
+            Link { to: "#dioxus-web-speed-boost", class: "header", "Dioxus Web Speed Boost" }
         }
         p {
             "We've changed how DOM patching works in Dioxus-Web; now, all of the DOM manipulation code is written in TypeScript and shared between our web, desktop, and mobile runtimes."
@@ -1748,13 +1708,13 @@ pub fn Release020() -> dioxus::prelude::Element {
             }
         }
         h2 { id: "dioxus-desktop-window-context",
-            a { href: "#dioxus-desktop-window-context", class: "header",
+            Link { to: "#dioxus-desktop-window-context", class: "header",
                 "Dioxus Desktop Window Context"
             }
         }
         p {
             "A very welcome change, thanks AGAIN to "
-            a { href: "https://github.com/mrxiaozhuox", "@mrxiaozhuox" }
+            Link { to: "https://github.com/mrxiaozhuox" }
             " is support for imperatively controlling the desktop window from your Dioxus code."
         }
         p { "A bunch of new methods were added:" }
@@ -1777,11 +1737,11 @@ pub fn Release020() -> dioxus::prelude::Element {
             }
         }
         h2 { id: "cli-tool",
-            a { href: "#cli-tool", class: "header", "CLI Tool" }
+            Link { to: "#cli-tool", class: "header", "CLI Tool" }
         }
         p {
             "Thanks to the amazing work by "
-            a { href: "https://github.com/mrxiaozhuox", "@mrxiaozhuox" }
+            Link { to: "https://github.com/mrxiaozhuox" }
             ", our CLI tool is fixed and working better than ever. The Dioxus-CLI sports a new development server, an HTML to RSX translation engine, a "
             code { "cargo fmt" }
             "-style command, a configuration scheme, and much more."
@@ -1792,7 +1752,7 @@ pub fn Release020() -> dioxus::prelude::Element {
             ", the dioxus-cli supports running examples and tests, making it easier to test web-based projects and showcase web-focused libraries."
         }
         h2 { id: "async-improvements",
-            a { href: "#async-improvements", class: "header", "Async Improvements" }
+            Link { to: "#async-improvements", class: "header", "Async Improvements" }
         }
         p {
             "Working with async isn't the easiest part of Rust. To help improve things, we've upgraded async support across the board in Dioxus."
@@ -1812,7 +1772,7 @@ pub fn Release020() -> dioxus::prelude::Element {
             contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">App</span><span style=\"color:#f8f8f2;\">(</span><span style=\"font-style:italic;color:#fd971f;\">cx</span><span style=\"color:#f8f8f2;\">: Scope) -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> sync_task </span><span style=\"color:#f92672;\">= </span><span style=\"color:#66d9ef;\">use_coroutine</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#f92672;\">&amp;</span><span style=\"color:#f8f8f2;\">cx, |</span><span style=\"font-style:italic;color:#fd971f;\">rx</span><span style=\"color:#f8f8f2;\">| async </span><span style=\"color:#f92672;\">move </span><span style=\"color:#f8f8f2;\">{{\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"color:#66d9ef;\">connect_to_server</span><span style=\"color:#f8f8f2;\">().await;\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> state </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">MyState::new();\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"color:#f92672;\">while </span><span style=\"font-style:italic;color:#66d9ef;\">let Some</span><span style=\"color:#f8f8f2;\">(action) </span><span style=\"color:#f92672;\">=</span><span style=\"color:#f8f8f2;\"> rx.</span><span style=\"color:#66d9ef;\">next</span><span style=\"color:#f8f8f2;\">().await {{\n</span><span style=\"color:#f8f8f2;\">            </span><span style=\"color:#66d9ef;\">reduce_state_with_action</span><span style=\"color:#f8f8f2;\">(action).await;\n</span><span style=\"color:#f8f8f2;\">        }}\n</span><span style=\"color:#f8f8f2;\">    }});\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">    cx.</span><span style=\"color:#66d9ef;\">render</span><span style=\"color:#f8f8f2;\">(rsx!{{\n</span><span style=\"color:#f8f8f2;\">        button {{\n</span><span style=\"color:#f8f8f2;\">            onclick: </span><span style=\"color:#f92672;\">move |_|</span><span style=\"color:#f8f8f2;\"> sync_task.</span><span style=\"color:#66d9ef;\">send</span><span style=\"color:#f8f8f2;\">(SyncAction::Username(</span><span style=\"color:#ffee99;\">&quot;Bob&quot;</span><span style=\"color:#f8f8f2;\">)),\n</span><span style=\"color:#f8f8f2;\">            </span><span style=\"color:#ffee99;\">&quot;Click to sync your username to the server&quot;\n</span><span style=\"color:#f8f8f2;\">        }}\n</span><span style=\"color:#f8f8f2;\">    }})\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
         }
         h2 { id: "all-new-features",
-            a { href: "#all-new-features", class: "header", "All New Features" }
+            Link { to: "#all-new-features", class: "header", "All New Features" }
         }
         p { "We've covered the major headlining features, but there were so many more!" }
         ul {
@@ -1824,11 +1784,11 @@ pub fn Release020() -> dioxus::prelude::Element {
             li { "InlineProps macro allows definition of props within a component's function arguments" }
             li {
                 "Improved dev server, hot reloading for desktop and web apps "
-                a { href: "https://github.com/mrxiaozhuox", "@mrxiaozhuox" }
+                Link { to: "https://github.com/mrxiaozhuox" }
             }
             li {
                 "Templates: desktop, web, web/hydration, Axum + SSR, and more "
-                a { href: "https://github.com/mrxiaozhuox", "@mrxiaozhuox" }
+                Link { to: "https://github.com/mrxiaozhuox" }
             }
             li { "Web apps ship with console" }
             li { "Enhanced Hydration and server-side-rendering (recovery, validation)" }
@@ -1846,7 +1806,7 @@ pub fn Release020() -> dioxus::prelude::Element {
             li { "push" }
             li {
                 "Add gap and gap"
-                a { href: "https://github.com/FruitieX", "@FruitieX" }
+                Link { to: "https://github.com/FruitieX" }
             }
             li { "File Drag n Drop support for Desktop" }
             li { "Custom handler support for desktop" }
@@ -1855,7 +1815,7 @@ pub fn Release020() -> dioxus::prelude::Element {
             li { "Right-click menus are now disabled by default" }
         }
         h2 { id: "fixes",
-            a { href: "#fixes", class: "header", "Fixes" }
+            Link { to: "#fixes", class: "header", "Fixes" }
         }
         ul {
             li { "Windows support improved across the board" }
@@ -1865,79 +1825,67 @@ pub fn Release020() -> dioxus::prelude::Element {
         }
         p { "A ton more! Dioxus is now much more stable than it was at release!" }
         h2 { id: "community-additions",
-            a { href: "#community-additions", class: "header", "Community Additions" }
+            Link { to: "#community-additions", class: "header", "Community Additions" }
         }
         ul {
             li {
-                a { href: "https://github.com/Zomatree/Revolt-Client/blob/master/src/utils.rs#14-27",
-                    "Styled Components macro"
-                }
+                Link { to: "https://github.com/Zomatree/Revolt-Client/blob/master/src/utils.rs#14-27" }
                 " "
-                a { href: "https://github.com/Zomatree", "@Zomatree" }
+                Link { to: "https://github.com/Zomatree" }
             }
             li {
-                a { href: "https://github.com/FruitieX/dioxus-websocket-hooks",
-                    "Dioxus-Websocket hook"
-                }
+                Link { to: "https://github.com/FruitieX/dioxus-websocket-hooks" }
                 " "
-                a { href: "https://github.com/FruitieX", "@FruitieX" }
+                Link { to: "https://github.com/FruitieX" }
             }
             li {
-                a { href: "https://github.com/FruitieX/homectl", "Home automation server app" }
+                Link { to: "https://github.com/FruitieX/homectl" }
                 " "
-                a { href: "https://github.com/FruitieX", "@FruitieX" }
+                Link { to: "https://github.com/FruitieX" }
             }
             li {
-                a { href: "https://github.com/rustkid/recorder", "Video Recording app" }
+                Link { to: "https://github.com/rustkid/recorder" }
             }
             li {
-                a { href: "https://github.com/autarch/Crumb/tree/master/web-frontend",
-                    "Music streaming app"
-                }
+                Link { to: "https://github.com/autarch/Crumb/tree/master/web-frontend" }
                 " "
-                a { href: "https://github.com/autarch", "@autarch" }
+                Link { to: "https://github.com/autarch" }
             }
             li {
-                a { href: "https://gist.github.com/FruitieX/73afe3eb15da45e0e05d5c9cf5d318fc",
-                    "NixOS dependancy installation"
-                }
+                Link { to: "https://gist.github.com/FruitieX/73afe3eb15da45e0e05d5c9cf5d318fc" }
                 " "
-                a { href: "https://github.com/FruitieX", "@FruitieX" }
+                Link { to: "https://github.com/FruitieX" }
             }
             li {
-                a { href: "https://github.com/lucifer1004/dioxus-vercel-demo",
-                    "Vercel Deploy Template"
-                }
+                Link { to: "https://github.com/lucifer1004/dioxus-vercel-demo" }
                 " "
-                a { href: "https://github.com/lucifer1004", "@lucifer1004" }
+                Link { to: "https://github.com/lucifer1004" }
             }
             li {
-                a { href: "https://github.com/oovm/katex-wasm", "Render Katex in Dioxus" }
+                Link { to: "https://github.com/oovm/katex-wasm" }
             }
             li {
-                a { href: "https://github.com/oovm/prism-wasm", "Render PrismJS in Dioxus" }
+                Link { to: "https://github.com/oovm/prism-wasm" }
             }
             li {
-                a { href: "https://github.com/houseabsolute/tailwindcss-to-rust",
-                    "Compile-time correct TailwindCSS"
-                }
+                Link { to: "https://github.com/houseabsolute/tailwindcss-to-rust" }
             }
             li {
-                a { href: "https://github.com/oovm/tailwind-rs", "Autogenerate tailwind CSS" }
+                Link { to: "https://github.com/oovm/tailwind-rs" }
             }
             li {
-                a { href: "https://github.com/houseabsolute/dioxus-heroicons", "Heroicons library" }
+                Link { to: "https://github.com/houseabsolute/dioxus-heroicons" }
             }
             li {
-                a { href: "https://dioxus-convert.netlify.app", "RSX -> HTML translator app" }
+                Link { to: "https://dioxus-convert.netlify.app" }
             }
             li {
-                a { href: "https://github.com/mrxiaozhuox/dioxus-toast", "Toast Support" }
+                Link { to: "https://github.com/mrxiaozhuox/dioxus-toast" }
             }
             li { "New Examples: forms, routers, linking, tui, and more!" }
         }
         h2 { id: "looking-forward",
-            a { href: "#looking-forward", class: "header", "Looking Forward" }
+            Link { to: "#looking-forward", class: "header", "Looking Forward" }
         }
         p {
             "Dioxus is still under rapid, active development. We'd love for you to get involved! For the next release, we're looking to add:"
@@ -1954,16 +1902,16 @@ pub fn Release020() -> dioxus::prelude::Element {
         p { "If you're interested in building an app with Dioxus, make sure to check us out on:" }
         ul {
             li {
-                a { href: "http://github.com/dioxusLabs/dioxus", "Github" }
+                Link { to: "http://github.com/dioxusLabs/dioxus" }
             }
             li {
-                a { href: "http://reddit.com/r/dioxus/", "Reddit" }
+                Link { to: "http://reddit.com/r/dioxus/" }
             }
             li {
-                a { href: "https://discord.gg/XgGxMSkvUM", "Discord" }
+                Link { to: "https://discord.gg/XgGxMSkvUM" }
             }
             li {
-                a { href: "http://twitter.com/dioxuslabs", "Twitter" }
+                Link { to: "http://twitter.com/dioxuslabs" }
             }
         }
     }
@@ -1973,14 +1921,14 @@ pub fn TemplatesDiffing() -> dioxus::prelude::Element {
     use dioxus::prelude::*;
     rsx! {
         h1 { id: "making-dioxus-almost-as-fast-as-solidjs",
-            a {
-                href: "#making-dioxus-almost-as-fast-as-solidjs",
+            Link {
+                to: "#making-dioxus-almost-as-fast-as-solidjs",
                 class: "header",
                 "Making Dioxus (almost) as fast as SolidJS"
             }
         }
         p {
-            a { href: "https://github.com/dioxuslabs/dioxus", "Dioxus" }
+            Link { to: "https://github.com/dioxuslabs/dioxus" }
             " is a UI library for Rust that makes it easy to target almost any platform with the same React-like codebase. You can build apps for WASM, desktop, mobile, TUI, static-sites, SSR, LiveView, and more."
         }
         hr {}
@@ -2017,13 +1965,11 @@ pub fn TemplatesDiffing() -> dioxus::prelude::Element {
         }
         p { "Anyways…" }
         h2 { id: "dioxus-shares-reacts-dna",
-            a { href: "#dioxus-shares-reacts-dna", class: "header", "Dioxus shares React’s DNA" }
+            Link { to: "#dioxus-shares-reacts-dna", class: "header", "Dioxus shares React’s DNA" }
         }
         p {
             "As eloquently put by the creator of Svelte, the "
-            a { href: "https://svelte.dev/blog/virtual-dom-is-pure-overhead",
-                "“Virtual DOM is pure overhead”"
-            }
+            Link { to: "https://svelte.dev/blog/virtual-dom-is-pure-overhead" }
             ". So, why does Dioxus continue to share the React DNA if it’s ultimately just frivolous work?"
         }
         p { "Well, we still love React, despite its warts, footguns, and idiosyncrasies." }
@@ -2071,7 +2017,7 @@ pub fn TemplatesDiffing() -> dioxus::prelude::Element {
             "All in all, we’ve learned to love lifetimes rather than fear them. But for all the good of React, we’re still stuck with the bad."
         }
         h2 { id: "overcoming-the-warts-of-react",
-            a { href: "#overcoming-the-warts-of-react", class: "header",
+            Link { to: "#overcoming-the-warts-of-react", class: "header",
                 "Overcoming the warts of React"
             }
         }
@@ -2088,9 +2034,7 @@ pub fn TemplatesDiffing() -> dioxus::prelude::Element {
         }
         p { "Heck, there was even a very popular reddit post talking about this problem." }
         p {
-            a { href: "https://www.reddit.com/r/rust/comments/yd9ngs/worried_about_modern_rust_gui_libraries/",
-                "“Worried about “modern” Rust GUI libraries”"
-            }
+            Link { to: "https://www.reddit.com/r/rust/comments/yd9ngs/worried_about_modern_rust_gui_libraries/" }
         }
         p {
             "In Dioxus, we noticed this early on and decided to see if we could reuse all the heap allocations instead of just tossing them out. Inspired by the work on Dodrio, Dioxus is implemented using a bump allocator and double-buffering, just like many high-performance GPU APIs."
@@ -2122,8 +2066,8 @@ pub fn TemplatesDiffing() -> dioxus::prelude::Element {
             }
         }
         h2 { id: "making-dioxus-faster-by-doing-less-work",
-            a {
-                href: "#making-dioxus-faster-by-doing-less-work",
+            Link {
+                to: "#making-dioxus-faster-by-doing-less-work",
                 class: "header",
                 "Making Dioxus faster by doing less work"
             }
@@ -2166,7 +2110,7 @@ pub fn TemplatesDiffing() -> dioxus::prelude::Element {
         CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"font-style:italic;color:#66d9ef;\">static </span><span style=\"color:#ff80f4;\">THIS_TEMPLATE</span><span style=\"color:#f8f8f2;\">: Template </span><span style=\"color:#f92672;\">=</span><span style=\"color:#f8f8f2;\"> Template {{ </span><span style=\"color:#8c8c8c;\">/* */ </span><span style=\"color:#f8f8f2;\">}};\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">VNode {{\n</span><span style=\"color:#f8f8f2;\">\ttemplate: </span><span style=\"color:#ff80f4;\">THIS_TEMPLATE</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">\tdynamic_nodes: [\n</span><span style=\"color:#f8f8f2;\">\t\tText(format_args!(</span><span style=\"color:#ffee99;\">&quot;Count: {{val}}&quot;</span><span style=\"color:#f8f8f2;\">)\n</span><span style=\"color:#f8f8f2;\">\t]\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n" }
         p {
             "Now, on every render, we only create the single dynamic node. When we go to diff the VNode, we only need to diff that one text node too. So now, instead of 11 comparisons (9 elements and 2 attributes) we have one comparison. Diffing this template takes 90% less time than before! This is a huge win! Our app can be 10x bigger for the same diffing cost. And the results speak for themselves. Combined with the integration of "
-            a { href: "https://crates.io/crates/sledgehammer", "Sledgehammer" }
+            Link { to: "https://crates.io/crates/sledgehammer" }
             ", Dioxus is pushing the limits of what the React model can reasonably achieve."
         }
         p {
@@ -2183,9 +2127,7 @@ pub fn TemplatesDiffing() -> dioxus::prelude::Element {
             "The React team also agrees that React can be better. That’s why they’ve started working on an experimental compiler for React."
         }
         p {
-            a { href: "https://reactjs.org/blog/2022/06/15/react-labs-what-we-have-been-working-on-june-2022.html",
-                "https://reactjs.org/blog/2022/06/15/react-labs-what-we-have-been-working-on-june-2022.html"
-            }
+            Link { to: "https://reactjs.org/blog/2022/06/15/react-labs-what-we-have-been-working-on-june-2022.html" }
         }
         p {
             "The plan here is to cache these elements and only update them when variables inside the "
@@ -2193,7 +2135,7 @@ pub fn TemplatesDiffing() -> dioxus::prelude::Element {
             " change. However, React-Forget still doesn’t fix the underlying issue of node creation, memory usage, or anything of the other things compile-time memoization achieves."
         }
         h2 { id: "taking-it-a-step-further",
-            a { href: "#taking-it-a-step-further", class: "header", "Taking it a step further" }
+            Link { to: "#taking-it-a-step-further", class: "header", "Taking it a step further" }
         }
         p {
             "Templates make diffing the tree faster, but they can also make building the UI faster too. Both SolidJS and LitHTML take advantage of this hack to achieve fantastic performance."
@@ -2217,13 +2159,13 @@ pub fn TemplatesDiffing() -> dioxus::prelude::Element {
             "For the tiny case we’re showing here, the benefit might seem limited. However, for real-world apps with lots of elements, custom styles, and all sorts of extra metadata, this caching system is immensely powerful and extremely performant."
         }
         h2 { id: "what-does-this-enable",
-            a { href: "#what-does-this-enable", class: "header", "What does this enable?" }
+            Link { to: "#what-does-this-enable", class: "header", "What does this enable?" }
         }
         p {
             "Now that we’re working with the mindset of templates, we can start to build new functionality previously locked behind the old model."
         }
         h3 { id: "hot-reloading",
-            a { href: "#hot-reloading", class: "header", "Hot Reloading" }
+            Link { to: "#hot-reloading", class: "header", "Hot Reloading" }
         }
         p {
             "One amazing feature added to Dioxus using the new template model is hot reloading. You can now modify your running Dioxus app without recompiling, provided you add, remove, or modify elements inside of  "
@@ -2248,7 +2190,7 @@ pub fn TemplatesDiffing() -> dioxus::prelude::Element {
             "Not only can templates be cached inside of a renderer, they can be modified after-the-fact. The renderer is smart enough to track down the instance of every template node on the page and apply the same patches."
         }
         h3 { id: "performant-liveview",
-            a { href: "#performant-liveview", class: "header", "Performant LiveView" }
+            Link { to: "#performant-liveview", class: "header", "Performant LiveView" }
         }
         p {
             "Another addition to Dioxus 0.3 is the new LiveView renderer. Much like its counterpart Phoenix LiveView, Dioxus LiveView enables entirely server-rendered apps and components while shipping minimal JS to the client. In the Liveview model, minimizing latency and bandwidth is crucial to keeping apps snappy, especially for lower-end clients."
@@ -2270,7 +2212,7 @@ pub fn TemplatesDiffing() -> dioxus::prelude::Element {
             "Notice how the templates are collected during SSR and inserted into the header. The only edits sent over the network from the server to the client are commands to create/remove template nodes and to precisely modify just the nodes that changed. Fast, simple, and scalable!"
         }
         h2 { id: "faster-server-side-rendering-ssr",
-            a { href: "#faster-server-side-rendering-ssr", class: "header",
+            Link { to: "#faster-server-side-rendering-ssr", class: "header",
                 "Faster Server-Side-Rendering (SSR)"
             }
         }
@@ -2281,7 +2223,7 @@ pub fn TemplatesDiffing() -> dioxus::prelude::Element {
             contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#8c8c8c;\">// Cached template segments:\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">PreRendered(</span><span style=\"color:#ffee99;\">&quot;&lt;div class=</span><span style=\"color:#ff80f4;\">\\&quot;</span><span style=\"color:#ffee99;\">asdasdasd</span><span style=\"color:#ff80f4;\">\\&quot;</span><span style=\"color:#ffee99;\"> class=</span><span style=\"color:#ff80f4;\">\\&quot;</span><span style=\"color:#ffee99;\">asdasdasd</span><span style=\"color:#ff80f4;\">\\&quot;</span><span style=\"color:#ffee99;\">&quot;</span><span style=\"color:#f8f8f2;\">.</span><span style=\"color:#66d9ef;\">into</span><span style=\"color:#f8f8f2;\">(),),\n</span><span style=\"color:#f8f8f2;\">Attr(</span><span style=\"color:#ff80f4;\">0</span><span style=\"color:#f8f8f2;\">,),\n</span><span style=\"color:#f8f8f2;\">PreRendered(</span><span style=\"color:#ffee99;\">&quot;&gt;Hello world 1 --&gt;&quot;</span><span style=\"color:#f8f8f2;\">.</span><span style=\"color:#66d9ef;\">into</span><span style=\"color:#f8f8f2;\">(),),\n</span><span style=\"color:#f8f8f2;\">Node(</span><span style=\"color:#ff80f4;\">0</span><span style=\"color:#f8f8f2;\">,),\n</span><span style=\"color:#f8f8f2;\">PreRendered(\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#ffee99;\">&quot;&lt;-- Hello world 2&lt;div&gt;nest 1&lt;/div&gt;&lt;div&gt;&lt;/div&gt;&lt;div&gt;nest 2&lt;/div&gt;&quot;</span><span style=\"color:#f8f8f2;\">.</span><span style=\"color:#66d9ef;\">into</span><span style=\"color:#f8f8f2;\">(),\n</span><span style=\"color:#f8f8f2;\">),\n</span><span style=\"color:#f8f8f2;\">Node(</span><span style=\"color:#ff80f4;\">1</span><span style=\"color:#f8f8f2;\">,),\n</span><span style=\"color:#f8f8f2;\">Node(</span><span style=\"color:#ff80f4;\">2</span><span style=\"color:#f8f8f2;\">,),\n</span><span style=\"color:#f8f8f2;\">PreRendered(</span><span style=\"color:#ffee99;\">&quot;&lt;/div&gt;&quot;</span><span style=\"color:#f8f8f2;\">.</span><span style=\"color:#66d9ef;\">into</span><span style=\"color:#f8f8f2;\">(),)</span></pre>\n",
         }
         h2 { id: "disclaimer",
-            a { href: "#disclaimer", class: "header", "Disclaimer" }
+            Link { to: "#disclaimer", class: "header", "Disclaimer" }
         }
         p {
             "Even with all the innovations here, it’s still very important to remember that Dioxus still takes after React. No matter how many tweaks, optimizations, and improvements we make to Dioxus, you can still shoot yourself in the foot with the classic React footguns."
@@ -2356,15 +2298,15 @@ pub fn Release030() -> dioxus::prelude::Element {
             "This release represents an absolutely massive jump forward for the Dioxus ecosystem. We hope to ship future features more quickly into stable now that many of the desired breaking changes have been incorporated into the core library."
         }
         h2 { id: "templates-and-performance-improvements",
-            a {
-                href: "#templates-and-performance-improvements",
+            Link {
+                to: "#templates-and-performance-improvements",
                 class: "header",
                 "Templates and performance improvements"
             }
         }
         p {
             "We’ve made huge changes underpinning the architecture of Dioxus. The significance of these changes is hard to describe in this simple release document, but we did write a blog post about it "
-            a { href: "https://dioxuslabs.com/blog/templates-diffing/", "here" }
+            Link { to: "https://dioxuslabs.com/blog/templates-diffing/" }
             ". Now, Dioxus performance is on par with of SolidJS."
         }
         p {
@@ -2378,7 +2320,7 @@ pub fn Release030() -> dioxus::prelude::Element {
             "Additionally, we’ve reworked how desktop apps stream edits from the native thread into the webview, greatly improving performance."
         }
         h2 { id: "hot-reloading",
-            a { href: "#hot-reloading", class: "header", "Hot Reloading" }
+            Link { to: "#hot-reloading", class: "header", "Hot Reloading" }
         }
         p {
             "Dioxus can now update how your app looks without recompiling the underlying Rust code. For developers who choose to write their user interfaces with the RSX macro, the Dioxus development server will automatically update the appearance of a running app whenever the macro body is modified."
@@ -2402,7 +2344,7 @@ pub fn Release030() -> dioxus::prelude::Element {
             "Note that hot reloading works by interpreting the body of RSX macro calls. If the hot reloading engine detects a modification unrelated to RSX, then it will force a full refresh of the app."
         }
         h2 { id: "autoformatting",
-            a { href: "#autoformatting", class: "header", "Autoformatting" }
+            Link { to: "#autoformatting", class: "header", "Autoformatting" }
         }
         p {
             "Another widely requested feature - autoformatting - is now built into the Dioxus CLI and VSCode Extension. Using the same interpreter engine in hot reloading, your code can now be formatted automatically. This saves a ton of time and ensures consistency between code commits."
@@ -2441,9 +2383,7 @@ pub fn Release030() -> dioxus::prelude::Element {
             "Autoformatting respects some simple rustfmt features but is still in its early stages. If you find any quirks or disagree with the formatting style, feel free to file an issue."
         }
         h2 { id: "liveview-and-livecomponents",
-            a { href: "#liveview-and-livecomponents", class: "header",
-                "LiveView and LiveComponents"
-            }
+            Link { to: "#liveview-and-livecomponents", class: "header", "LiveView and LiveComponents" }
         }
         p {
             "Dioxus 0.3 marks the first official release of dedicated tooling for LiveView. LiveView is a new web-app development paradigm that combines the simplicity of server-side rendering with the rich interactivity of the single-page-application."
@@ -2467,7 +2407,7 @@ pub fn Release030() -> dioxus::prelude::Element {
             contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">async </span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">main</span><span style=\"color:#f8f8f2;\">() {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> router </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">Router::new()\n</span><span style=\"color:#f8f8f2;\">        .</span><span style=\"color:#66d9ef;\">route</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#ffee99;\">&quot;/&quot;</span><span style=\"color:#f8f8f2;\">, </span><span style=\"color:#66d9ef;\">get</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#f92672;\">move || </span><span style=\"color:#f8f8f2;\">dioxus_liveview::body(addr))\n</span><span style=\"color:#f8f8f2;\">        .</span><span style=\"color:#66d9ef;\">route</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#ffee99;\">&quot;/app&quot;</span><span style=\"color:#f8f8f2;\">, </span><span style=\"color:#66d9ef;\">get</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#f92672;\">move |</span><span style=\"color:#f8f8f2;\">ws</span><span style=\"color:#f92672;\">| </span><span style=\"color:#f8f8f2;\">dioxus_liveview::render(ws));\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">    axum::Server::bind(</span><span style=\"color:#ffee99;\">&quot;127.0.0.1&quot;</span><span style=\"color:#f8f8f2;\">.</span><span style=\"color:#66d9ef;\">parse</span><span style=\"color:#f8f8f2;\">().</span><span style=\"color:#66d9ef;\">unwrap</span><span style=\"color:#f8f8f2;\">())\n</span><span style=\"color:#f8f8f2;\">        .</span><span style=\"color:#66d9ef;\">serve</span><span style=\"color:#f8f8f2;\">(router.</span><span style=\"color:#66d9ef;\">into_make_service</span><span style=\"color:#f8f8f2;\">())\n</span><span style=\"color:#f8f8f2;\">        .await;\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">app</span><span style=\"color:#f8f8f2;\">(</span><span style=\"font-style:italic;color:#fd971f;\">cx</span><span style=\"color:#f8f8f2;\">: Scope) -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">\t\t</span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> posts </span><span style=\"color:#f92672;\">= </span><span style=\"color:#66d9ef;\">use_db_query</span><span style=\"color:#f8f8f2;\">(cx, </span><span style=\"color:#ff80f4;\">RECENT_POSTS</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">\t\trender! {{\n</span><span style=\"color:#f8f8f2;\">\t\t\t\t</span><span style=\"color:#f92672;\">for</span><span style=\"color:#f8f8f2;\"> post </span><span style=\"color:#f92672;\">in</span><span style=\"color:#f8f8f2;\"> posts {{\n</span><span style=\"color:#f8f8f2;\">\t\t\t\t\t\tPost {{ key: </span><span style=\"color:#ffee99;\">&quot;{{post.id}}&quot;</span><span style=\"color:#f8f8f2;\">, data: post }}\n</span><span style=\"color:#f8f8f2;\">\t\t\t\t}}\n</span><span style=\"color:#f8f8f2;\">\t\t}}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
         }
         h2 { id: "tui-input-widgets",
-            a { href: "#tui-input-widgets", class: "header", "TUI Input Widgets" }
+            Link { to: "#tui-input-widgets", class: "header", "TUI Input Widgets" }
         }
         p {
             "Up to this point, Dioxus rendered into the terminal using just static elements. Now, with the release of Dioxus 0.3, we’re shipping a collection of input widgets for common utilities like buttons, sliders, text inputs, checkboxes, and more. These same widgets provide a basis of functionality for the native renderers we mention below."
@@ -2485,7 +2425,7 @@ pub fn Release030() -> dioxus::prelude::Element {
             }
         }
         h2 { id: "multi-window-desktop-apps",
-            a { href: "#multi-window-desktop-apps", class: "header", "Multi-window Desktop Apps" }
+            Link { to: "#multi-window-desktop-apps", class: "header", "Multi-window Desktop Apps" }
         }
         p {
             "The Dioxus VirtualDom and tao/wry event loop now share the same scheduler, allowing full control of the window and event loop from within your desktop and mobile app. This unlocks everything a typical tauri app might have access to, allowing Dioxus to share more code with the rest of the Tauri ecosystem."
@@ -2506,7 +2446,7 @@ pub fn Release030() -> dioxus::prelude::Element {
             }
         }
         h2 { id: "lowercase-components",
-            a { href: "#lowercase-components", class: "header", "Lowercase components" }
+            Link { to: "#lowercase-components", class: "header", "Lowercase components" }
         }
         p {
             "We’ve expanded what can be considered a component. Lowercase components are now accepted in the rsx macro provided that they either"
@@ -2524,8 +2464,8 @@ pub fn Release030() -> dioxus::prelude::Element {
         }
         CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">header {{}}              ❌\n</span><span style=\"color:#f8f8f2;\">module::header {{}}      ❌\n</span><span style=\"color:#f8f8f2;\">my_header {{}}           ✅</span></pre>\n" }
         h2 { id: "for-loops-if-chains-and-more-flexible-rsx",
-            a {
-                href: "#for-loops-if-chains-and-more-flexible-rsx",
+            Link {
+                to: "#for-loops-if-chains-and-more-flexible-rsx",
                 class: "header",
                 "For Loops, If Chains, and more flexible RSX"
             }
@@ -2540,7 +2480,7 @@ pub fn Release030() -> dioxus::prelude::Element {
         }
         CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f92672;\">for</span><span style=\"color:#f8f8f2;\"> dog </span><span style=\"color:#f92672;\">in</span><span style=\"color:#f8f8f2;\"> doggos {{\n</span><span style=\"color:#f8f8f2;\">\tdiv {{ key: </span><span style=\"color:#ffee99;\">&quot;{{dog.id}}&quot;</span><span style=\"color:#f8f8f2;\">,  </span><span style=\"color:#ffee99;\">&quot;Dog: {{dog.name}}&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n" }
         h2 { id: "preliminary-wgpu-renderer",
-            a { href: "#preliminary-wgpu-renderer", class: "header", "Preliminary WGPU renderer" }
+            Link { to: "#preliminary-wgpu-renderer", class: "header", "Preliminary WGPU renderer" }
         }
         p {
             "Dioxus 0.3 delivers on another commonly requested feature: native (non-web browser) rendering. This new update brings a very young, very unstable, but surprisingly capable WGPU renderer. This renderer is the culmination of many months of work: collaboration with the Bevy team to revive Taffy (flexbox), integration of the new Vello renderer, and research into highly efficient incremental screen patching."
@@ -2561,7 +2501,7 @@ pub fn Release030() -> dioxus::prelude::Element {
             }
         }
         h2 { id: "skia-renderer",
-            a { href: "#skia-renderer", class: "header", "Skia Renderer" }
+            Link { to: "#skia-renderer", class: "header", "Skia Renderer" }
         }
         p {
             "While not exactly a Dioxus Labs project, we wanted to make sure to call out the new Freya editor for Dioxus which uses Skia instead of Vello. Freya takes a different approach from Dioxus-Native in that instead of adhering to HTML and CSS, it sets its own styling and layout strategy. This has a different learning curve - you  can’t take your CSS knowledge with you, but you get a styling system better designed for the job."
@@ -2570,8 +2510,8 @@ pub fn Release030() -> dioxus::prelude::Element {
             "Freya is already an amazing piece of technology and has support for things like camera input and infinite canvas."
         }
         h2 { id: "completing-support-for-cross-platform-events",
-            a {
-                href: "#completing-support-for-cross-platform-events",
+            Link {
+                to: "#completing-support-for-cross-platform-events",
                 class: "header",
                 "Completing support for cross-platform events"
             }
@@ -2599,13 +2539,13 @@ pub fn Release030() -> dioxus::prelude::Element {
             "Note that the old JS-like API is still available (but deprecated) and will be phased out in a future release of Dioxus."
         }
         h2 { id: "lua-plugin-system-for-cli",
-            a { href: "#lua-plugin-system-for-cli", class: "header", "Lua Plugin System for CLI" }
+            Link { to: "#lua-plugin-system-for-cli", class: "header", "Lua Plugin System for CLI" }
         }
         p {
             "The CLI has been overhauled with a ton of new features and improved ergonomics. One major improvement to the CLI is the addition of a Lua-based plugin system. In the future we to expand the plugin system to any WASI-compatible modules but have simply opted for Lua support in the short term while we figure out the API."
         }
         h2 { id: "translations",
-            a { href: "#translations", class: "header", "Translations" }
+            Link { to: "#translations", class: "header", "Translations" }
         }
         p {
             "The community seems to really enjoy Dioxus! And they want their friends to know about Dioxus, too! But, our guides have not been available in every language that developers want. In this release, we’re adding two new languages to our guide:"
@@ -2613,19 +2553,15 @@ pub fn Release030() -> dioxus::prelude::Element {
         ul {
             li {
                 "Chinese provided by "
-                a { href: "https://github.com/mrxiaozhuox",
-                    code { "@mrxiaozhuox" }
-                }
+                Link { to: "https://github.com/mrxiaozhuox" }
             }
             li {
                 "Portuguese provided by "
-                a { href: "https://github.com/whoeverdidthis",
-                    code { "@whoeverdidthis" }
-                }
+                Link { to: "https://github.com/whoeverdidthis" }
             }
         }
         h2 { id: "a-new-landing-page-and-better-docs",
-            a { href: "#a-new-landing-page-and-better-docs", class: "header",
+            Link { to: "#a-new-landing-page-and-better-docs", class: "header",
                 "A new landing page and better docs"
             }
         }
@@ -2634,13 +2570,11 @@ pub fn Release030() -> dioxus::prelude::Element {
         }
         p {
             "As part of our translation and Rust-ification work, "
-            a { href: "https://github.com/renis",
-                code { "@renis" }
-            }
+            Link { to: "https://github.com/renis" }
             " has overhauled our guide to be more familiar for Rust developers. This skips some of the boilerplate (IE install Rust) and gets straight into the action of building Dioxus apps."
         }
         h2 { id: "community-projects",
-            a { href: "#community-projects", class: "header", "Community Projects" }
+            Link { to: "#community-projects", class: "header", "Community Projects" }
         }
         ul {
             li { "Styled components" }
@@ -2664,14 +2598,14 @@ pub fn Fulltime() -> dioxus::prelude::Element {
     use dioxus::prelude::*;
     rsx! {
         h1 { id: "going-full-time",
-            a { href: "#going-full-time", class: "header", "Going full time" }
+            Link { to: "#going-full-time", class: "header", "Going full time" }
         }
         blockquote {
             p { "Jan 5, 2023" }
         }
         blockquote {
             p {
-                a { href: "https://github.com/jkelleyrtp", "@jkelleyrtp" }
+                Link { to: "https://github.com/jkelleyrtp" }
             }
         }
         p {
@@ -2748,24 +2682,22 @@ pub fn Release040() -> dioxus::prelude::Element {
             li { "Polish, bug fixes, stability, testing, and more!" }
         }
         h2 { id: "weekly-office-hours",
-            a { href: "#weekly-office-hours", class: "header", "Weekly Office Hours" }
+            Link { to: "#weekly-office-hours", class: "header", "Weekly Office Hours" }
         }
         p {
             "Before we dive right into the bulk of this release, we want to make sure everyone knows that Dioxus Labs now has weekly office hours, every Friday at 9am PST."
         }
         p { "These are held on the community Discord - with an invite here:" }
         p {
-            a { href: "https://discord.gg/XgGxMSkvUM", "Join the Dioxus Labs Discord Server!" }
+            Link { to: "https://discord.gg/XgGxMSkvUM" }
         }
         p {
             "In the office hours you can get help with your app, learn how to contribute, get feedback on code, and "
-            a { href: "https://www.notion.so/Dioxus-Labs-Public-Roadmap-771939f47d13423abe2a2195b5617555?pvs=21",
-                "help shape the roadmap."
-            }
+            Link { to: "https://www.notion.so/Dioxus-Labs-Public-Roadmap-771939f47d13423abe2a2195b5617555?pvs=21" }
             " We hope to see you there!"
         }
         h2 { id: "server-functions",
-            a { href: "#server-functions", class: "header", "Server Functions" }
+            Link { to: "#server-functions", class: "header", "Server Functions" }
         }
         p {
             "These days, every cool UI library has some sort of backend framework to do server stuff. This could be interacting with a database, uploading files, working with websockets, you name it. With Dioxus 0.4, we’re adding our first backend solution: Server Functions."
@@ -2779,9 +2711,9 @@ pub fn Release040() -> dioxus::prelude::Element {
         }
         p {
             "For example, take this simple Server Function. We’re using the awesome "
-            a { href: "https://github.com/trevyn/turbosql", "turbosql" }
+            Link { to: "https://github.com/trevyn/turbosql" }
             " crate by "
-            a { href: "https://github.com/trevyn", "trevyn" }
+            Link { to: "https://github.com/trevyn" }
             " to interact with a sqlite database to load a person’s username."
         }
         CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">#[server]\n</span><span style=\"color:#f8f8f2;\">async </span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">get_username</span><span style=\"color:#f8f8f2;\">() -&gt; Result&lt;String&gt; {{\n</span><span style=\"color:#f8f8f2;\">\t</span><span style=\"color:#8c8c8c;\">// Using turbosql to extract some data from the DB\n</span><span style=\"color:#f8f8f2;\">\t</span><span style=\"font-style:italic;color:#66d9ef;\">Ok</span><span style=\"color:#f8f8f2;\">(select!(</span><span style=\"font-style:italic;color:#66d9ef;\">String </span><span style=\"color:#ffee99;\">&quot;SELECT name FROM person&quot;</span><span style=\"color:#f8f8f2;\">)</span><span style=\"color:#f92672;\">?</span><span style=\"color:#f8f8f2;\">)\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n" }
@@ -2816,7 +2748,7 @@ pub fn Release040() -> dioxus::prelude::Element {
         }
         p {
             "You can attach middleware either at the server level or individually on server functions. The new fullstack utilities work seamlessly with "
-            a { href: "https://docs.rs/tower/latest/tower/index.html", "Tower" }
+            Link { to: "https://docs.rs/tower/latest/tower/index.html" }
             ", so any server function can be annotated with a middleware."
         }
         CodeBlock {
@@ -2824,16 +2756,14 @@ pub fn Release040() -> dioxus::prelude::Element {
         }
         p {
             "Combining all these concepts together, you can quickly add features like Authentication to your fullstack app. We’ve put together a "
-            a { href: "https://github.com/dioxuslabs/dioxus/blob/main/packages/fullstack/examples/axum-auth/src/main.rs",
-                "simple axum-auth example for you to get started"
-            }
+            Link { to: "https://github.com/dioxuslabs/dioxus/blob/main/packages/fullstack/examples/axum-auth/src/main.rs" }
             "."
         }
         p {
             "Our goal with Server Functions is to lay the foundation for our final vision of Dioxus: a fullstack, crossplatform, fully typed, and lightning fast toolkit for building, deploying, monitoring, and scaling any app you can dream of. With one ecosystem, you can quickly build complete apps that run on desktop, mobile, web with a type-safe backend to boot."
         }
         h2 { id: "suspense",
-            a { href: "#suspense", class: "header", "Suspense" }
+            Link { to: "#suspense", class: "header", "Suspense" }
         }
         p {
             "One feature that has been missing in Dioxus since its release is the ability to wait for futures to complete before generating the final server-side-rendered HTML. Before, the expectation was that you’d load any data "
@@ -2891,7 +2821,7 @@ pub fn Release040() -> dioxus::prelude::Element {
             "Note that this is not 100% equivalent to React’s suspense as it’s not currently possible to render loading states or error boundaries. These features are currently experimental and will be stabilized during the 0.4 release cycle."
         }
         h2 { id: "enum-router",
-            a { href: "#enum-router", class: "header", "Enum Router" }
+            Link { to: "#enum-router", class: "header", "Enum Router" }
         }
         p {
             "Since the initial release of Dioxus, we’ve had a very simple App Router, inspired by the older versions of React Router. Most UI toolkits these days provide a Router object that interacts with the browser’s router, and to date, Dioxus’ router has been pretty simple."
@@ -2960,7 +2890,7 @@ pub fn Release040() -> dioxus::prelude::Element {
             }
         }
         h2 { id: "new-and-beautiful-interactive-docs",
-            a { href: "#new-and-beautiful-interactive-docs", class: "header",
+            Link { to: "#new-and-beautiful-interactive-docs", class: "header",
                 "New and beautiful interactive docs"
             }
         }
@@ -2979,9 +2909,7 @@ pub fn Release040() -> dioxus::prelude::Element {
             "At the top of the page, you’ll see a new search bar. You can search for anything in our docs with just a  "
             code { "ctrl+/" }
             " .  This new search functionality uses a "
-            a { href: "https://github.com/dioxusLabs/dioxus-search",
-                "new search crate we designed and built"
-            }
+            Link { to: "https://github.com/dioxusLabs/dioxus-search" }
             ". "
             code { "Dioxus-search" }
             " is fully crossplatform and ready to use in your next Dioxus app."
@@ -3042,17 +2970,15 @@ pub fn Release040() -> dioxus::prelude::Element {
             li {}
         }
         h2 { id: "android-support-ios-fixes-getting-started-guide-for-mobile",
-            a {
-                href: "#android-support-ios-fixes-getting-started-guide-for-mobile",
+            Link {
+                to: "#android-support-ios-fixes-getting-started-guide-for-mobile",
                 class: "header",
                 "Android Support, iOS fixes, Getting Started Guide for Mobile"
             }
         }
         p {
             "To date, Dioxus has provided first-party support for mobile via iOS, but our Android support has been rather spotty and untested. In this release, we finally added iOS and Android testing to our suite of continuous integration. To round off mobile support, we’ve added a "
-            a { href: "https://dioxuslabs.com/learn/0.4/getting_started/mobile",
-                "mobile-specific getting started guide"
-            }
+            Link { to: "https://dioxuslabs.com/learn/0.4/getting_started/mobile" }
             " with a walkthrough on setting up platform-specific dependencies, handling basic cross-compilation, and booting up a mobile simulator. We’ve also fixed some bugs in upstream libraries like Tauri’s Tao which gives Dioxus its window-creation capabilities."
         }
         p { "iOS Demo:" }
@@ -3072,7 +2998,7 @@ pub fn Release040() -> dioxus::prelude::Element {
             }
         }
         h2 { id: "window-close-behavior",
-            a { href: "#window-close-behavior", class: "header", "Window-Close Behavior" }
+            Link { to: "#window-close-behavior", class: "header", "Window-Close Behavior" }
         }
         p {
             "Another great contribution from the community: Dioxus desktop now provides functionality for managing the “close” behavior of windows in your app. We support three modes now:"
@@ -3097,7 +3023,7 @@ pub fn Release040() -> dioxus::prelude::Element {
             }
         }
         h2 { id: "bidirectional-eval",
-            a { href: "#bidirectional-eval", class: "header", "Bidirectional Eval" }
+            Link { to: "#bidirectional-eval", class: "header", "Bidirectional Eval" }
         }
         p {
             "The use_eval hook allows you to run snippets of Javascript in your Dioxus application when needed. @doge has made some improvements that make this hook has significantly more powerful. The new version of the hook is compatible between the desktop, web, and Liveview renderers. It also allows you to send messages to and from Javascript asynchronously. This makes it possible to listen for Javascript events that Dioxus doesn’t officially support like the intersection observer API."
@@ -3106,7 +3032,7 @@ pub fn Release040() -> dioxus::prelude::Element {
             contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f92672;\">use </span><span style=\"color:#f8f8f2;\">dioxus::prelude::</span><span style=\"color:#f92672;\">*</span><span style=\"color:#f8f8f2;\">;\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">main</span><span style=\"color:#f8f8f2;\">() {{\n</span><span style=\"color:#f8f8f2;\">    dioxus_desktop::launch(app);\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">app</span><span style=\"color:#f8f8f2;\">(</span><span style=\"font-style:italic;color:#fd971f;\">cx</span><span style=\"color:#f8f8f2;\">: Scope) -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> eval </span><span style=\"color:#f92672;\">= </span><span style=\"color:#66d9ef;\">use_eval</span><span style=\"color:#f8f8f2;\">(cx);\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> future </span><span style=\"color:#f92672;\">= </span><span style=\"color:#66d9ef;\">use_future</span><span style=\"color:#f8f8f2;\">(cx, (), |_| {{\n</span><span style=\"color:#f8f8f2;\">        to_owned![eval];\n</span><span style=\"color:#f8f8f2;\">        async </span><span style=\"color:#f92672;\">move </span><span style=\"color:#f8f8f2;\">{{\n</span><span style=\"color:#f8f8f2;\">            </span><span style=\"color:#8c8c8c;\">// Eval some javascript\n</span><span style=\"color:#f8f8f2;\">            </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> eval </span><span style=\"color:#f92672;\">= </span><span style=\"color:#66d9ef;\">eval</span><span style=\"color:#f8f8f2;\">(\n</span><span style=\"color:#f8f8f2;\">                </span><span style=\"font-style:italic;color:#66d9ef;\">r</span><span style=\"color:#ffee99;\">#&quot;dioxus.send(&quot;Hi from JS!&quot;);\n</span><span style=\"color:#ffee99;\">                let msg = await dioxus.recv();\n</span><span style=\"color:#ffee99;\">                console.log(msg);\n</span><span style=\"color:#ffee99;\">                return &quot;hello world&quot;;&quot;#</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">            )\n</span><span style=\"color:#f8f8f2;\">            .</span><span style=\"color:#66d9ef;\">unwrap</span><span style=\"color:#f8f8f2;\">();\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">            </span><span style=\"color:#8c8c8c;\">// Send messages into the running javascript\n</span><span style=\"color:#f8f8f2;\">            eval.</span><span style=\"color:#66d9ef;\">send</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#ffee99;\">&quot;Hi from Rust!&quot;</span><span style=\"color:#f8f8f2;\">.</span><span style=\"color:#66d9ef;\">into</span><span style=\"color:#f8f8f2;\">()).</span><span style=\"color:#66d9ef;\">unwrap</span><span style=\"color:#f8f8f2;\">();\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">            </span><span style=\"color:#8c8c8c;\">// Receive messages from the javascript\n</span><span style=\"color:#f8f8f2;\">            </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> res </span><span style=\"color:#f92672;\">=</span><span style=\"color:#f8f8f2;\"> eval.</span><span style=\"color:#66d9ef;\">recv</span><span style=\"color:#f8f8f2;\">().await.</span><span style=\"color:#66d9ef;\">unwrap</span><span style=\"color:#f8f8f2;\">();\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">            </span><span style=\"color:#8c8c8c;\">// Wait for it to complete\n</span><span style=\"color:#f8f8f2;\">            println!(</span><span style=\"color:#ffee99;\">&quot;</span><span style=\"color:#ff80f4;\">{{:?}}</span><span style=\"color:#ffee99;\">&quot;</span><span style=\"color:#f8f8f2;\">, eval.await);\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">            res\n</span><span style=\"color:#f8f8f2;\">        }}\n</span><span style=\"color:#f8f8f2;\">    }});\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">    render!{{ </span><span style=\"color:#ffee99;\">&quot;{{future.value():?}}&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
         }
         h2 { id: "new-onmount-event",
-            a { href: "#new-onmount-event", class: "header", "New onmount event" }
+            Link { to: "#new-onmount-event", class: "header", "New onmount event" }
         }
         p {
             "This release also introduces a new onmounted event that provides access to elements after they are created in a cross platform way. The onmounted event makes it possible to:"
@@ -3133,7 +3059,7 @@ pub fn Release040() -> dioxus::prelude::Element {
             }
         }
         h2 { id: "renaming-dioxus-cli-to-dx",
-            a { href: "#renaming-dioxus-cli-to-dx", class: "header", "Renaming dioxus-cli to dx" }
+            Link { to: "#renaming-dioxus-cli-to-dx", class: "header", "Renaming dioxus-cli to dx" }
         }
         p {
             "We made a small tweak to the CLI this release to rename the CLI from  "
@@ -3156,7 +3082,7 @@ pub fn Release040() -> dioxus::prelude::Element {
         p { "To install the new CLI, use the same old instructions:" }
         CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">cargo install dioxus</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">cli </span><span style=\"color:#f92672;\">--</span><span style=\"color:#f8f8f2;\">force</span></pre>\n" }
         h2 { id: "hot-reloading-for-desktop",
-            a { href: "#hot-reloading-for-desktop", class: "header", "Hot Reloading for Desktop" }
+            Link { to: "#hot-reloading-for-desktop", class: "header", "Hot Reloading for Desktop" }
         }
         p {
             "Yet another small tweak the CLI: you can now use  "
@@ -3180,7 +3106,7 @@ pub fn Release040() -> dioxus::prelude::Element {
             }
         }
         h2 { id: "dioxus-bundle",
-            a { href: "#dioxus-bundle", class: "header", "Dioxus-Bundle" }
+            Link { to: "#dioxus-bundle", class: "header", "Dioxus-Bundle" }
         }
         p {
             "So far, the CLI has supported useful commands like  "
@@ -3202,7 +3128,7 @@ pub fn Release040() -> dioxus::prelude::Element {
         }
         p { "This is a great place for new contributors to help flesh out the ecosystem!" }
         h2 { id: "dioxus-check",
-            a { href: "#dioxus-check", class: "header", "Dioxus-Check" }
+            Link { to: "#dioxus-check", class: "header", "Dioxus-Check" }
         }
         p {
             "The Dioxus CLI has a new helper command:  "
@@ -3222,7 +3148,7 @@ pub fn Release040() -> dioxus::prelude::Element {
             "These lints make it easier for newcomers to Dioxus to get started, especially if they’re not super familiar with React."
         }
         h2 { id: "vscode-extension-updates",
-            a { href: "#vscode-extension-updates", class: "header", "VSCode Extension Updates" }
+            Link { to: "#vscode-extension-updates", class: "header", "VSCode Extension Updates" }
         }
         p {
             "As part of improving stability and fixing bugs, we’ve made some improvements to the VSCode Extension."
@@ -3245,7 +3171,7 @@ pub fn Release040() -> dioxus::prelude::Element {
         }
         p { "The extension is a great place for new contributors to dive into the Dioxus codebase!" }
         h2 { id: "general-fixes",
-            a { href: "#general-fixes", class: "header", "General Fixes" }
+            Link { to: "#general-fixes", class: "header", "General Fixes" }
         }
         ul {
             li { "Several SSR and Hydration bugs were fixed including escaping text, and" }
@@ -3356,7 +3282,7 @@ pub fn Release050() -> dioxus::prelude::Element {
             "With 0.5 we took a hard look at how Dioxus would need to change to achieve those goals. The request we got from the community was clear: make it simpler, make it robust, make it polished."
         }
         h2 { id: "whats-new",
-            a { href: "#whats-new", class: "header", "What’s new?" }
+            Link { to: "#whats-new", class: "header", "What’s new?" }
         }
         p {
             "This is probably the biggest release of Dioxus ever, with so many new features, bug fixes, and improvements that I can’t list them all. We churned over 100,000 lines of code (yes, 100,000+) with over 1,400 commits between 0.4.3 and 0.5.0. Here’s a quick overview:"
@@ -3404,13 +3330,11 @@ pub fn Release050() -> dioxus::prelude::Element {
         }
         p {
             "💡 If you are updating from Dioxus 0.4, a "
-            a { href: "https://dioxuslabs.com/learn/0.5/migration",
-                code { "migration guide" }
-            }
+            Link { to: "https://dioxuslabs.com/learn/0.5/migration" }
             " is available"
         }
         h2 { id: "lifetime-problems",
-            a { href: "#lifetime-problems", class: "header", "Lifetime Problems" }
+            Link { to: "#lifetime-problems", class: "header", "Lifetime Problems" }
         }
         p {
             "To make Dioxus simpler, we wanted to remove lifetimes entirely. Newcomers to rust are easily scared off by lifetime issues, and even experienced Rustaceans find wading through obtuse error messages exhausting."
@@ -3461,7 +3385,7 @@ pub fn Release050() -> dioxus::prelude::Element {
             "While this might seem like a rather innocuous change, it has an impressively huge impact on how easy it is to write new components. I’d say building a new Dioxus app is about 2-5x easier with this change alone."
         }
         h2 { id: "goodbye-scopes-and-lifetimes",
-            a { href: "#goodbye-scopes-and-lifetimes", class: "header",
+            Link { to: "#goodbye-scopes-and-lifetimes", class: "header",
                 "Goodbye scopes and lifetimes!"
             }
         }
@@ -3482,11 +3406,11 @@ pub fn Release050() -> dioxus::prelude::Element {
             "s are  "
             code { "'static" }
             " which means you can use them in hooks or even provide them through the context API. This makes some APIs like "
-            a { href: "https://github.com/matthunz/dioxus-lazy", "virtual lists in Dioxus" }
+            Link { to: "https://github.com/matthunz/dioxus-lazy" }
             " significantly easier. We expect more interesting APIs to emerge from the community now that you don’t need to be a Rust wizard to implement things like virtualization and offscreen rendering."
         }
         h2 { id: "removal-of-all-unsafe-in-core",
-            a { href: "#removal-of-all-unsafe-in-core", class: "header",
+            Link { to: "#removal-of-all-unsafe-in-core", class: "header",
                 "Removal of all Unsafe in Core"
             }
         }
@@ -3507,7 +3431,7 @@ pub fn Release050() -> dioxus::prelude::Element {
             "There’s still a tiny bit of unsafe floating around various dependencies that we plan to remove throughout the 0.5 release cycle, but way less: all quite simple to cut or unfortunately necessary due to FFI."
         }
         h2 { id: "signals",
-            a { href: "#signals", class: "header", "Signals!" }
+            Link { to: "#signals", class: "header", "Signals!" }
         }
         p {
             "Dioxus 0.5 introduces Signals as the core state primitive for components. Signals have two key advantages over the existing  "
@@ -3519,7 +3443,7 @@ pub fn Release050() -> dioxus::prelude::Element {
             " and they don’t require manual subscriptions."
         }
         h3 { id: "copy-state",
-            a { href: "#copy-state", class: "header", "Copy state" }
+            Link { to: "#copy-state", class: "header", "Copy state" }
         }
         p {
             code { "Signal<T>" }
@@ -3528,7 +3452,7 @@ pub fn Release050() -> dioxus::prelude::Element {
             ", even if the inner  "
             code { "T" }
             " values is not. This is enabled by our new "
-            a { href: "https://crates.io/crates/generational-box", "generational-box" }
+            Link { to: "https://crates.io/crates/generational-box" }
             " crate (implemented with zero unsafe). Signals can even optionally be "
             code { "Send+Sync" }
             " if you need to move them between threads, removing the need for a whole class of specialized state management solutions."
@@ -3549,7 +3473,7 @@ pub fn Release050() -> dioxus::prelude::Element {
             " anything."
         }
         h3 { id: "smarter-subscriptions",
-            a { href: "#smarter-subscriptions", class: "header", "Smarter subscriptions" }
+            Link { to: "#smarter-subscriptions", class: "header", "Smarter subscriptions" }
         }
         p {
             "Signals are smarter about what components rerun when they are changed. A component will only rerun if you read the value of the signal in the component (not in an async task or event handler). In this example, only the child will re-render when the button is clicked because only the child component is reading the signal:"
@@ -3592,7 +3516,7 @@ pub fn Release050() -> dioxus::prelude::Element {
             contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#8c8c8c;\">// You can use a lazily initialized signal called GlobalSignal in static instead of special Fermi atoms\n</span><span style=\"font-style:italic;color:#66d9ef;\">static </span><span style=\"color:#ff80f4;\">COUNT</span><span style=\"color:#f8f8f2;\">: GlobalSignal&lt;</span><span style=\"font-style:italic;color:#66d9ef;\">i32</span><span style=\"color:#f8f8f2;\">&gt; </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">Signal::global(|| </span><span style=\"color:#ff80f4;\">0</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">App</span><span style=\"color:#f8f8f2;\">() -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">  </span><span style=\"color:#8c8c8c;\">// Because we read COUNT inside the memo, it is automatically added to the memo&#39;s dependencies\n</span><span style=\"color:#f8f8f2;\">  </span><span style=\"color:#8c8c8c;\">// If we change COUNT, then the memo knows it needs to rerun\n</span><span style=\"color:#f8f8f2;\">  </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> memo </span><span style=\"color:#f92672;\">= </span><span style=\"color:#66d9ef;\">use_memo</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#f92672;\">move || </span><span style=\"color:#ff80f4;\">COUNT</span><span style=\"color:#f8f8f2;\">() </span><span style=\"color:#f92672;\">/ </span><span style=\"color:#ff80f4;\">2</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">  rsx! {{ </span><span style=\"color:#ffee99;\">&quot;{{memo}}&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
         }
         h2 { id: "css-hot-reloading",
-            a { href: "#css-hot-reloading", class: "header", "CSS Hot Reloading" }
+            Link { to: "#css-hot-reloading", class: "header", "CSS Hot Reloading" }
         }
         p {
             "As part of our asset system overhaul, we implemented hot reloading of CSS files in the asset directory. If a CSS file appears in your RSX, the  "
@@ -3601,9 +3525,7 @@ pub fn Release050() -> dioxus::prelude::Element {
         }
         p {
             "When combined with the Tailwind watcher, we now support hot reloading of Tailwind CSS! On top of that, we also support IDE hinting of Tailwind classes in VSCode with a "
-            a { href: "https://github.com/tailwindlabs/tailwindcss/discussions/7073",
-                "custom regex extension"
-            }
+            Link { to: "https://github.com/tailwindlabs/tailwindcss/discussions/7073" }
         }
         p {
             video {
@@ -3633,7 +3555,7 @@ pub fn Release050() -> dioxus::prelude::Element {
             }
         }
         h2 { id: "event-system-rewrite",
-            a { href: "#event-system-rewrite", class: "header", "Event System Rewrite" }
+            Link { to: "#event-system-rewrite", class: "header", "Event System Rewrite" }
         }
         p {
             "Since its release, Dioxus has used a synthetic event system to create a cross platform event API. Synthetic events can be incredibly useful to make events work across platforms and even serialize them across the network, but they do have some drawbacks."
@@ -3666,13 +3588,11 @@ pub fn Release050() -> dioxus::prelude::Element {
         }
         p {
             "💡 The "
-            a { href: "https://dioxuslabs.com/learn/0.5/cookbook/optimizing#build-configuration",
-                "Dioxus optimization guide"
-            }
+            Link { to: "https://dioxuslabs.com/learn/0.5/cookbook/optimizing#build-configuration" }
             " has tips to help you make the smallest possible bundle"
         }
         h2 { id: "cross-platform-launch",
-            a { href: "#cross-platform-launch", class: "header", "Cross platform launch" }
+            Link { to: "#cross-platform-launch", class: "header", "Cross platform launch" }
         }
         p {
             "Dioxus 0.5 introduces a new cross platform API to launch your app. This makes it easy to target multiple platforms with the same application. Instead of pulling in a separate renderer package, you can now enable a feature on the Dioxus crate and call the launch function from the prelude:"
@@ -3687,7 +3607,7 @@ pub fn Release050() -> dioxus::prelude::Element {
             "The CLI is now smart enough to automatically pass in the appropriate build features depending on the platform you’re targeting."
         }
         h2 { id: "asset-system-beta",
-            a { href: "#asset-system-beta", class: "header", "Asset System Beta" }
+            Link { to: "#asset-system-beta", class: "header", "Asset System Beta" }
         }
         p {
             "Currently assets in Dioxus (and web applications in general) can be difficult to get right. Links to your asset can easily get out of date, the link to your asset can be different between desktop and web applications, and you need to manually add assets you want to use into your bundled application. In addition to all of that, assets can be a huge performance bottleneck."
@@ -3718,33 +3638,29 @@ pub fn Release050() -> dioxus::prelude::Element {
         }
         p {
             "Dioxus 0.5 introduces a new asset system called "
-            a { href: "https://github.com/DioxusLabs/manganis", "manganis" }
+            Link { to: "https://github.com/DioxusLabs/manganis" }
             ". Manganis integrates with the CLI to check, bundle and optimize assets in your application. The API is currently unstable so the asset system is currently published as a separate crate. In the new asset system, you can just wrap your assets in the "
             code { "mg!" }
             " macro and they will automatically be picked up by the CLI. You can read more about the new asset system in the "
-            a { href: "https://docs.rs/crate/manganis/latest", "manganis docs" }
+            Link { to: "https://docs.rs/crate/manganis/latest" }
             "."
         }
         p {
             "As we continue to iterate on the 0.5 release, we plan to add hot reloading to manganis assets, so you can interactively add new the features to your app like CSS, images, Tailwind classes, and more without forcing a complete reload."
         }
         h2 { id: "5x-faster-desktop-rendering",
-            a { href: "#5x-faster-desktop-rendering", class: "header",
-                "5x Faster Desktop Rendering"
-            }
+            Link { to: "#5x-faster-desktop-rendering", class: "header", "5x Faster Desktop Rendering" }
         }
         p {
             "Dioxus implements several optimizations to make diffing rendering fast. "
-            a { href: "https://dioxuslabs.com/blog/templates-diffing", "Templates" }
+            Link { to: "https://dioxuslabs.com/blog/templates-diffing" }
             " let Dioxus skip diffing on any static parts of the rsx macro. However, diffing is only one side of the story. After you create a list of changes you need to make to the DOM, you need to apply them."
         }
         p {
             "We developed "
-            a { href: "https://github.com/ealmloff/sledgehammer_bindgen", "sledgehammer" }
+            Link { to: "https://github.com/ealmloff/sledgehammer_bindgen" }
             " for Dioxus Web to make applying those mutations as fast as possible. It makes manipulating the DOM from Rust almost as "
-            a { href: "https://krausest.github.io/js-framework-benchmark/2023/table_chrome_114.0.5735.90.html",
-                "fast as native JavaScript"
-            }
+            Link { to: "https://krausest.github.io/js-framework-benchmark/2023/table_chrome_114.0.5735.90.html" }
             "."
         }
         p {
@@ -3780,7 +3696,7 @@ pub fn Release050() -> dioxus::prelude::Element {
             }
         }
         h2 { id: "spreading-props",
-            a { href: "#spreading-props", class: "header", "Spreading props" }
+            Link { to: "#spreading-props", class: "header", "Spreading props" }
         }
         p {
             "One common pattern when creating components is providing some additional functionality to a specific element. When you wrap an element, it is often useful to provide some control over what attributes are set in the final element. Instead of manually copying over each attribute from the element, Dioxus 0.5 supports extending specific elements and spreading the attributes into an element:"
@@ -3789,7 +3705,7 @@ pub fn Release050() -> dioxus::prelude::Element {
             contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">#[derive(Props, PartialEq, Clone)]\n</span><span style=\"font-style:italic;color:#66d9ef;\">struct </span><span style=\"color:#f8f8f2;\">Props {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#8c8c8c;\">// You can extend a specific element or global attributes\n</span><span style=\"color:#f8f8f2;\">    #[props(extends = img)]\n</span><span style=\"color:#f8f8f2;\">    attributes: Vec&lt;Attribute&gt;,\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">ImgPlus</span><span style=\"color:#f8f8f2;\">(</span><span style=\"font-style:italic;color:#fd971f;\">props</span><span style=\"color:#f8f8f2;\">: Props) -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    rsx! {{\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"color:#8c8c8c;\">// You can spread those attributes into any element\n</span><span style=\"color:#f8f8f2;\">        img {{ </span><span style=\"color:#f92672;\">..</span><span style=\"color:#f8f8f2;\">props.attributes }}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">app</span><span style=\"color:#f8f8f2;\">() -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    rsx! {{\n</span><span style=\"color:#f8f8f2;\">        ImgPlus {{\n</span><span style=\"color:#f8f8f2;\">            </span><span style=\"color:#8c8c8c;\">// You can use any attributes you would normally use on the img element\n</span><span style=\"color:#f8f8f2;\">            width: </span><span style=\"color:#ffee99;\">&quot;10px&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">            height: </span><span style=\"color:#ffee99;\">&quot;10px&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">            src: </span><span style=\"color:#ffee99;\">&quot;https://example.com/image.png&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">        }}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
         }
         h2 { id: "shorthand-attributes",
-            a { href: "#shorthand-attributes", class: "header", "Shorthand attributes" }
+            Link { to: "#shorthand-attributes", class: "header", "Shorthand attributes" }
         }
         p {
             "Another huge quality-of-life feature we added was the ability to use shorthand struct initialization syntax to pass attributes into elements and components. We got tired of passing  "
@@ -3803,7 +3719,7 @@ pub fn Release050() -> dioxus::prelude::Element {
             ", meaning signals also benefit from shorthand initialization. While signals as attributes don’t yet skip diffing, we plan to add this as a performance optimization throughout the 0.5 release cycle."
         }
         h2 { id: "multi-line-attribute-merging",
-            a { href: "#multi-line-attribute-merging", class: "header",
+            Link { to: "#multi-line-attribute-merging", class: "header",
                 "Multi-line attribute merging"
             }
         }
@@ -3817,11 +3733,11 @@ pub fn Release050() -> dioxus::prelude::Element {
             "This is particularly important when using libraries like Tailwind where attributes need to be parsed at compile time but also dynamic at runtime. This syntax integrates with the Tailwind compiler, removing the runtime overhead for libraries like tailwind-merge."
         }
         h2 { id: "server-function-streaming",
-            a { href: "#server-function-streaming", class: "header", "Server function streaming" }
+            Link { to: "#server-function-streaming", class: "header", "Server function streaming" }
         }
         p {
             "Dioxus 0.5 supports the latest version of "
-            a { href: "https://crates.io/crates/server_fn", "the server functions crate" }
+            Link { to: "https://crates.io/crates/server_fn" }
             " which supports streaming data. Server functions can now choose to stream data to or from the client. This makes it easier to do a whole class of tasks on the server."
         }
         p {
@@ -3829,9 +3745,7 @@ pub fn Release050() -> dioxus::prelude::Element {
         }
         p {
             "We built an AI text generation example here: "
-            a { href: "https://github.com/ealmloff/dioxus-streaming-llm",
-                "https://github.com/ealmloff/dioxus-streaming-llm"
-            }
+            Link { to: "https://github.com/ealmloff/dioxus-streaming-llm" }
             " that uses Kalosm and local LLMS to serve what is essentially a clone of OpenAI’s ChatGPT endpoint on commodity hardware."
         }
         CodeBlock {
@@ -3853,7 +3767,7 @@ pub fn Release050() -> dioxus::prelude::Element {
             "Side note, the AI metaframework used here - Kalosm - is maintained by the Dioxus core team member ealmloff, and his AI GUI app Floneum is built with Dioxus!"
         }
         h2 { id: "fullstack-cli-platform",
-            a { href: "#fullstack-cli-platform", class: "header", "Fullstack CLI platform" }
+            Link { to: "#fullstack-cli-platform", class: "header", "Fullstack CLI platform" }
         }
         p {
             "The CLI now supports a  "
@@ -3864,33 +3778,25 @@ pub fn Release050() -> dioxus::prelude::Element {
         }
         CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">dx serve\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\">#</span><span style=\"color:#f8f8f2;\"> Or with an explicit platform\n</span><span style=\"color:#f8f8f2;\">dx serve </span><span style=\"color:#f92672;\">--</span><span style=\"color:#f8f8f2;\">platform fullstack</span></pre>\n" }
         h2 { id: "liveview-router-support",
-            a { href: "#liveview-router-support", class: "header", "LiveView router support" }
+            Link { to: "#liveview-router-support", class: "header", "LiveView router support" }
         }
         p {
-            a { href: "https://github.com/DioxusLabs/dioxus/pull/1505",
-                "https://github.com/DioxusLabs/dioxus/pull/1505"
-            }
+            Link { to: "https://github.com/DioxusLabs/dioxus/pull/1505" }
         }
         p {
-            a { href: "https://github.com/DonAlonzo",
-                code { "@DonAlonzo" }
-            }
+            Link { to: "https://github.com/DonAlonzo" }
             " added LiveView support for the router in Dioxus 0.5. The router will now work out of the box with your LiveView apps!"
         }
         h2 { id: "custom-asset-handlers",
-            a { href: "#custom-asset-handlers", class: "header", "Custom Asset Handlers" }
+            Link { to: "#custom-asset-handlers", class: "header", "Custom Asset Handlers" }
         }
         p {
-            a { href: "https://github.com/DioxusLabs/dioxus/pull/1719",
-                "https://github.com/DioxusLabs/dioxus/pull/1719"
-            }
+            Link { to: "https://github.com/DioxusLabs/dioxus/pull/1719" }
         }
         p {
-            a { href: "https://github.com/willcrichton",
-                code { "@willcrichton" }
-            }
+            Link { to: "https://github.com/willcrichton" }
             " added support for custom asset handlers to Dioxus Desktop. Custom asset handlers let you efficiently stream data from your rust code into the browser without going through JavaScript. This is great for high bandwidth communication like "
-            a { href: "https://github.com/DioxusLabs/dioxus/pull/1727", "video streaming" }
+            Link { to: "https://github.com/DioxusLabs/dioxus/pull/1727" }
             ":"
         }
         p {
@@ -3909,7 +3815,7 @@ pub fn Release050() -> dioxus::prelude::Element {
             "Now, you can do things like work with gstreamer or webrtc and pipe data directly into the webview without needing to encode/decode frames by hand."
         }
         h2 { id: "native-file-handling",
-            a { href: "#native-file-handling", class: "header", "Native File Handling" }
+            Link { to: "#native-file-handling", class: "header", "Native File Handling" }
         }
         p { "This is a bit smaller of a tweak, but now we properly support file drops for Desktop:" }
         p {
@@ -3926,7 +3832,7 @@ pub fn Release050() -> dioxus::prelude::Element {
             "Previously we just gave you the option to intercept filedrops but now it’s natively integrated into the event system"
         }
         h2 { id: "error-handling",
-            a { href: "#error-handling", class: "header", "Error handling" }
+            Link { to: "#error-handling", class: "header", "Error handling" }
         }
         p {
             "Error handling: You can use error boundaries and the throw trait to easily handle errors higher up in your app"
@@ -3964,8 +3870,8 @@ pub fn Release050() -> dioxus::prelude::Element {
             "This pattern is particularly helpful whenever your code generates a non-recoverable error. You can gracefully capture these \"global\" error states without panicking or handling state for each error yourself."
         }
         h2 { id: "hot-reloading-by-default-and-develop-mode-for-desktop",
-            a {
-                href: "#hot-reloading-by-default-and-develop-mode-for-desktop",
+            Link {
+                to: "#hot-reloading-by-default-and-develop-mode-for-desktop",
                 class: "header",
                 "Hot reloading by default and “develop” mode for Desktop"
             }
@@ -3991,7 +3897,7 @@ pub fn Release050() -> dioxus::prelude::Element {
             }
         }
         h2 { id: "updates-to-the-dioxus-template",
-            a { href: "#updates-to-the-dioxus-template", class: "header",
+            Link { to: "#updates-to-the-dioxus-template", class: "header",
                 "Updates to the Dioxus template"
             }
         }
@@ -4023,7 +3929,7 @@ pub fn Release050() -> dioxus::prelude::Element {
             }
         }
         h2 { id: "dioxus-community-and-dioxus-std",
-            a { href: "#dioxus-community-and-dioxus-std", class: "header",
+            Link { to: "#dioxus-community-and-dioxus-std", class: "header",
                 "Dioxus-Community and Dioxus-std"
             }
         }
@@ -4040,7 +3946,7 @@ pub fn Release050() -> dioxus::prelude::Element {
             }
         }
         h2 { id: "coming-soon",
-            a { href: "#coming-soon", class: "header", "Coming soon" }
+            Link { to: "#coming-soon", class: "header", "Coming soon" }
         }
         p {
             "At a certain point we had to stop adding new features to this release. There’s plenty of cool projects on the horizon:"
@@ -4059,15 +3965,15 @@ pub fn Release050() -> dioxus::prelude::Element {
             li { "Fullstack overhaul with WebSocket, SSE, progressive forms, and more" }
         }
         h2 { id: "sneak-peek-dioxus-blitz-revival-using-servo",
-            a {
-                href: "#sneak-peek-dioxus-blitz-revival-using-servo",
+            Link {
+                to: "#sneak-peek-dioxus-blitz-revival-using-servo",
                 class: "header",
                 "Sneak Peek: Dioxus-Blitz revival using Servo"
             }
         }
         p {
             "We’re not going to say much about this now, but here’s a sneak peek at “Blitz 2.0”… we’re finally integrating servo into Blitz so you can render natively with WGPU using the same CSS engine that powers Firefox. To push this effort forward, we’ve brought the extremely talented Nico Burns (the wizard behind our layout library Taffy) on full time. More about this later, but here’s a little demo of "
-            a { href: "http://google.com", "google.com" }
+            Link { to: "http://google.com" }
             " being rendered at 900 FPS entirely on the GPU:"
         }
         p {
@@ -4081,12 +3987,10 @@ pub fn Release050() -> dioxus::prelude::Element {
             "Admittedly the current iteration is not quite there (google.com is in fact a little wonky) but we’re progressing rapidly here and are quickly approaching something quite usable. The repo is here if you want to take a look and get involved:"
         }
         p {
-            a { href: "https://github.com/jkelleyrtp/stylo-dioxus",
-                "https://github.com/jkelleyrtp/stylo-dioxus"
-            }
+            Link { to: "https://github.com/jkelleyrtp/stylo-dioxus" }
         }
         h2 { id: "how-can-you-contribute",
-            a { href: "#how-can-you-contribute", class: "header", "How can you contribute?" }
+            Link { to: "#how-can-you-contribute", class: "header", "How can you contribute?" }
         }
         p {
             "Well, that’s it for the new features. We might’ve missed a few things (there’s so much new!). If you find Dioxus as exciting as we do, we’d love your help to completely transform app development. We’d love contributions including:"
@@ -4119,16 +4023,13 @@ pub fn Release060() -> dioxus::prelude::Element {
         ul {
             li {
                 strong {
-                    a { href: "#android-and-ios-support-for",
-                        code { "dx serve" }
-                        " for mobile"
-                    }
+                    Link { to: "#android-and-ios-support-for" }
                 }
                 ": Serve your app on Android and iOS simulators and devices."
             }
             li {
                 strong {
-                    a { href: "#completely-revamped-hot-reloading", "Magical Hot-Reloading" }
+                    Link { to: "#completely-revamped-hot-reloading" }
                 }
                 ": Hot-Reloading of formatted strings, properties, and nested "
                 code { "rsx!{{}}" }
@@ -4136,19 +4037,19 @@ pub fn Release060() -> dioxus::prelude::Element {
             }
             li {
                 strong {
-                    a { href: "#interactive-command-line-tools", "Interactive CLI" }
+                    Link { to: "#interactive-command-line-tools" }
                 }
                 ": Rewrite of the Dioxus CLI with a new, interactive UX inspired by Astro."
             }
             li {
                 strong {
-                    a { href: "#inline-wasm-stacktraces-and", "Inline Stack Traces" }
+                    Link { to: "#inline-wasm-stacktraces-and" }
                 }
                 ": Capture WASM panics and logs directly into your terminal."
             }
             li {
                 strong {
-                    a { href: "#fullstack-desktop-and-mobile", "Server Functions for Native" }
+                    Link { to: "#fullstack-desktop-and-mobile" }
                 }
                 ": Inline Server RPC for Desktop and Mobile apps."
             }
@@ -4159,28 +4060,25 @@ pub fn Release060() -> dioxus::prelude::Element {
         ul {
             li {
                 strong {
-                    a { href: "#toasts-and-loading-screens", "Toasts and Loading Screens" }
+                    Link { to: "#toasts-and-loading-screens" }
                 }
                 ": New toasts and loading screens for web apps in development."
             }
             li {
                 strong {
-                    a { href: "#completely-revamped-autocomplete", "Improved Autocomplete" }
+                    Link { to: "#completely-revamped-autocomplete" }
                 }
                 ": Massively improved autocomplete of RSX."
             }
             li {
                 strong {
-                    a { href: "#stabilizing-manganis",
-                        code { "asset!" }
-                        " Stabilization"
-                    }
+                    Link { to: "#stabilizing-manganis" }
                 }
                 ": Stabilizing our linker-based asset system integrated for native apps."
             }
             li {
                 strong {
-                    a { href: "#suspense-and-html-streaming-for-the-web", "Streaming HTML" }
+                    Link { to: "#suspense-and-html-streaming-for-the-web" }
                 }
                 ": Stream "
                 code { "Suspense" }
@@ -4190,16 +4088,13 @@ pub fn Release060() -> dioxus::prelude::Element {
             }
             li {
                 strong {
-                    a { href: "#static-site-generation-and-isg", "SSG and ISG" }
+                    Link { to: "#static-site-generation-and-isg" }
                 }
                 ": Support for Static Site Generation and Incremental Static Regeneration."
             }
             li {
                 strong {
-                    a { href: "#question-mark-error-handling",
-                        "Error Handling with  "
-                        code { "?" }
-                    }
+                    Link { to: "#question-mark-error-handling" }
                 }
                 ": Use "
                 code { "?" }
@@ -4207,7 +4102,7 @@ pub fn Release060() -> dioxus::prelude::Element {
             }
             li {
                 strong {
-                    a { href: "#document-elements", "Meta Elements" }
+                    Link { to: "#document-elements" }
                 }
                 ": New "
                 code { "Head" }
@@ -4221,43 +4116,31 @@ pub fn Release060() -> dioxus::prelude::Element {
             }
             li {
                 strong {
-                    a { href: "#synchronous",
-                        "Synchronous  "
-                        code { "prevent_default" }
-                    }
+                    Link { to: "#synchronous" }
                 }
                 ": Handle events synchronously across all platforms."
             }
             li {
                 strong {
-                    a { href: "#tracking-size-with",
-                        code { "onresize" }
-                        " Event Handler"
-                    }
+                    Link { to: "#tracking-size-with" }
                 }
                 ": Track an element's size without an IntersectionObserver."
             }
             li {
                 strong {
-                    a { href: "#tracking-visibility-with",
-                        code { "onvisible" }
-                        " Event Handler"
-                    }
+                    Link { to: "#tracking-visibility-with" }
                 }
                 ": Track an element's visibility without an IntersectionObserver."
             }
             li {
                 strong {
-                    a { href: "#hybrid-wgpu-overlays", "WGPU Integration" }
+                    Link { to: "#hybrid-wgpu-overlays" }
                 }
                 ": Render Dioxus as an overlay on top of WGPU surfaces and child windows."
             }
             li {
                 strong {
-                    a { href: "#web-ios-and-android-bundle-support",
-                        code { "dx bundle" }
-                        " for Web, iOS, and Android"
-                    }
+                    Link { to: "#web-ios-and-android-bundle-support" }
                 }
                 ": Complete "
                 code { "dx bundle" }
@@ -4265,34 +4148,31 @@ pub fn Release060() -> dioxus::prelude::Element {
             }
             li {
                 strong {
-                    a { href: "#json-output-for-ci--cli",
-                        code { "json" }
-                        " mode"
-                    }
+                    Link { to: "#json-output-for-ci--cli" }
                 }
                 ": Emit CLI messages as JSON for use by 3rd party tools and CI/CD pipelines."
             }
             li {
                 strong {
-                    a { href: "#new-starter-templates", "New Templates" }
+                    Link { to: "#new-starter-templates" }
                 }
                 ": Three new starter templates for cross-platform apps."
             }
             li {
                 strong {
-                    a { href: "#nightly-docs-tutorials-and-new-guides", "Nightly Tutorial and Guides" }
+                    Link { to: "#nightly-docs-tutorials-and-new-guides" }
                 }
                 ": New tutorials and guides for Dioxus 0.6 and beyond."
             }
             li {
                 strong {
-                    a { href: "#preview-of-in-place-binary-patching", "Binary Patching Prototype" }
+                    Link { to: "#preview-of-in-place-binary-patching" }
                 }
                 ": Prototype of our new pure Rust hot-reloading engine."
             }
         }
         h2 { id: "about-this-release",
-            a { href: "#about-this-release", class: "header", "About this Release" }
+            Link { to: "#about-this-release", class: "header", "About this Release" }
         }
         p {
             "Dioxus 0.6 is our biggest release ever: over 350 pull requests merged and hundreds of issues closed. We shipped 0.6 with a few goals:"
@@ -4310,7 +4190,7 @@ pub fn Release060() -> dioxus::prelude::Element {
             dangerous_inner_html: "<iframe style=\"width: 100%\" height=\"500px\" class=\"centered-overflow\" src=\"https://www.youtube.com/embed/WgAjWPKRVlQ\" title=\"Dioxus 0.6\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share\" referrerpolicy=\"strict-origin-when-cross-origin\" allowfullscreen></iframe>\n",
         }
         h2 { id: "interactive-command-line-tools",
-            a { href: "#interactive-command-line-tools", class: "header",
+            Link { to: "#interactive-command-line-tools", class: "header",
                 "Interactive Command Line Tools"
             }
         }
@@ -4363,15 +4243,13 @@ pub fn Release060() -> dioxus::prelude::Element {
         }
         p {
             "You can install the new CLI using "
-            a { href: "https://github.com/cargo-bins/cargo-binstall", "cargo binstall" }
+            Link { to: "https://github.com/cargo-bins/cargo-binstall" }
             " with "
             code { "cargo binstall dioxus-cli@0.6.0 --force" }
             "."
         }
         h2 { id: "android-and-ios-support-for",
-            a { href: "#android-and-ios-support-for", class: "header",
-                "Android and iOS support for "
-            }
+            Link { to: "#android-and-ios-support-for", class: "header", "Android and iOS support for " }
             code { "dx serve" }
         }
         p {
@@ -4381,13 +4259,9 @@ pub fn Release060() -> dioxus::prelude::Element {
         }
         p {
             "While Dioxus has always had mobile support, the Rust tooling for mobile has been extremely unstable. Users constantly ran into issues with tools like "
-            a { href: "https://github.com/BrainiumLLC/cargo-mobile",
-                code { "cargo-mobile" }
-            }
+            Link { to: "https://github.com/BrainiumLLC/cargo-mobile" }
             " and "
-            a { href: "https://github.com/tauri-apps/cargo-mobile2",
-                code { "cargo-mobile2" }
-            }
+            Link { to: "https://github.com/tauri-apps/cargo-mobile2" }
             ". These tools, while useful, take a different architectural approach than what is a good fit for Dioxus."
         }
         p {
@@ -4441,11 +4315,11 @@ pub fn Release060() -> dioxus::prelude::Element {
         }
         p {
             "If you're interested in helping us build out mobile support, please join us on "
-            a { href: "https://discord.gg/XgGxMSkvUM", "Discord" }
+            Link { to: "https://discord.gg/XgGxMSkvUM" }
             "."
         }
         h2 { id: "completely-revamped-hot-reloading",
-            a { href: "#completely-revamped-hot-reloading", class: "header",
+            Link { to: "#completely-revamped-hot-reloading", class: "header",
                 "Completely Revamped Hot-Reloading"
             }
         }
@@ -4532,7 +4406,7 @@ pub fn Release060() -> dioxus::prelude::Element {
         }
         p { "The new hot-reloading feels like magic and we encourage you to try it out!" }
         h2 { id: "completely-revamped-autocomplete",
-            a { href: "#completely-revamped-autocomplete", class: "header",
+            Link { to: "#completely-revamped-autocomplete", class: "header",
                 "Completely Revamped Autocomplete"
             }
         }
@@ -4580,9 +4454,7 @@ pub fn Release060() -> dioxus::prelude::Element {
             }
         }
         h2 { id: "inline-wasm-stacktraces-and",
-            a { href: "#inline-wasm-stacktraces-and", class: "header",
-                "Inline WASM stacktraces and "
-            }
+            Link { to: "#inline-wasm-stacktraces-and", class: "header", "Inline WASM stacktraces and " }
             code { "tracing" }
             " integration"
         }
@@ -4623,7 +4495,7 @@ pub fn Release060() -> dioxus::prelude::Element {
             }
         }
         h2 { id: "toasts-and-loading-screens",
-            a { href: "#toasts-and-loading-screens", class: "header", "Toasts and Loading Screens" }
+            Link { to: "#toasts-and-loading-screens", class: "header", "Toasts and Loading Screens" }
         }
         p {
             "As part of our CLI overhaul, we wanted to provide better feedback for developers when building web apps. Dioxus 0.6 will now show Popup Toasts and Loading Screens for web apps in development mode."
@@ -4655,7 +4527,7 @@ pub fn Release060() -> dioxus::prelude::Element {
             }
         }
         h2 { id: "fullstack-desktop-and-mobile",
-            a { href: "#fullstack-desktop-and-mobile", class: "header",
+            Link { to: "#fullstack-desktop-and-mobile", class: "header",
                 "Fullstack Desktop and Mobile"
             }
         }
@@ -4679,15 +4551,15 @@ pub fn Release060() -> dioxus::prelude::Element {
         }
         CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">main</span><span style=\"color:#f8f8f2;\">() {{\n</span><span style=\"color:#f8f8f2;\">    #[cfg(feature </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;production&quot;</span><span style=\"color:#f8f8f2;\">)]\n</span><span style=\"color:#f8f8f2;\">    server_fn::client::set_server_url(</span><span style=\"color:#ffee99;\">&quot;app.endpoint.com&quot;</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">    dioxus::launch(app)\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n" }
         h2 { id: "stabilizing-manganis",
-            a { href: "#stabilizing-manganis", class: "header", "Stabilizing Manganis " }
+            Link { to: "#stabilizing-manganis", class: "header", "Stabilizing Manganis " }
             code { "asset!()" }
             " system"
         }
         p {
             "We introduced our new asset system,\u{a0}"
-            a { href: "https://github.com/DioxusLabs/manganis", "Manganis" }
+            Link { to: "https://github.com/DioxusLabs/manganis" }
             ", in an alpha state with the 0.5 release. Dioxus 0.6 stabilizes the asset system and fixes several bugs and performance issues. You can try out the new\u{a0}"
-            a { href: "https://github.com/DioxusLabs/manganis/pull/30", "linker based asset system" }
+            Link { to: "https://github.com/DioxusLabs/manganis/pull/30" }
             "\u{a0}by including an\u{a0}"
             code { "asset!" }
             "\u{a0}anywhere in your code. It will automatically be optimized and bundled across all platforms:"
@@ -4705,9 +4577,7 @@ pub fn Release060() -> dioxus::prelude::Element {
         }
         p {
             "Even better, assets like images are automatically optimized to generate thumbnails and more optimized formats. This can cut huge amounts of data from your site - AVIF and Webp can reduce file sizes by up to 90%. A funny note - platforms like Vercel actually "
-            a { href: "https://vercel.com/docs/image-optimization",
-                "provide paid products for image optimization"
-            }
+            Link { to: "https://vercel.com/docs/image-optimization" }
             " while Manganis can do this for you, for free, at build time!"
         }
         p {
@@ -4742,8 +4612,8 @@ pub fn Release060() -> dioxus::prelude::Element {
             " to extract asset locations from the compiled binary. This is a rather advanced technique and took a while to get right, but we believe it’s a more robust solution in the long term. If you’re interested in integrating Manganis into your libraries and apps (like say, Bevy!), we have a guide just for that."
         }
         h2 { id: "suspense-and-html-streaming-for-the-web",
-            a {
-                href: "#suspense-and-html-streaming-for-the-web",
+            Link {
+                to: "#suspense-and-html-streaming-for-the-web",
                 class: "header",
                 "Suspense and HTML Streaming for the Web"
             }
@@ -4791,7 +4661,7 @@ pub fn Release060() -> dioxus::prelude::Element {
             "Many of these features are quite cutting-edge and are just now being rolled out in frameworks in the JavaScript ecosystem. Getting the details right for Dioxus was quite difficult. We wanted to support both the fullstack web as well as native desktop and mobile apps. These two platforms often have competing design considerations. Fortunately, suspense also works for desktop and mobile, allowing you to emulate web-like data fetching patterns for native apps."
         }
         h2 { id: "static-site-generation-and-isg",
-            a { href: "#static-site-generation-and-isg", class: "header",
+            Link { to: "#static-site-generation-and-isg", class: "header",
                 "Static Site Generation and ISG"
             }
         }
@@ -4833,7 +4703,7 @@ pub fn Release060() -> dioxus::prelude::Element {
             "We will likely be changing these APIs in future releases, but we are eager to let users experiment with these new features to simplify the existing static site setup."
         }
         h2 { id: "document-elements",
-            a { href: "#document-elements", class: "header", "Document Elements: " }
+            Link { to: "#document-elements", class: "header", "Document Elements: " }
             code { "Title {{}}" }
             " , "
             code { "Link {{}}" }
@@ -4900,7 +4770,7 @@ pub fn Release060() -> dioxus::prelude::Element {
             }
         }
         h2 { id: "question-mark-error-handling",
-            a { href: "#question-mark-error-handling", class: "header",
+            Link { to: "#question-mark-error-handling", class: "header",
                 "Question Mark Error Handling"
             }
         }
@@ -4940,7 +4810,7 @@ pub fn Release060() -> dioxus::prelude::Element {
             "This new syntax lets Suspense and HTML-streaming return errors while rendering that don’t bring down the entire page."
         }
         h2 { id: "synchronous",
-            a { href: "#synchronous", class: "header", "Synchronous " }
+            Link { to: "#synchronous", class: "header", "Synchronous " }
             code { "prevent_default" }
         }
         p {
@@ -4968,7 +4838,7 @@ pub fn Release060() -> dioxus::prelude::Element {
             " now exhibit behavior exactly aligned with their native counterparts, solving long-standing issues with Dioxus apps."
         }
         h2 { id: "tracking-size-with",
-            a { href: "#tracking-size-with", class: "header", "Tracking size with " }
+            Link { to: "#tracking-size-with", class: "header", "Tracking size with " }
             code { "onresize" }
         }
         p {
@@ -4987,7 +4857,7 @@ pub fn Release060() -> dioxus::prelude::Element {
             contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">app</span><span style=\"color:#f8f8f2;\">() -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let </span><span style=\"color:#f92672;\">mut</span><span style=\"color:#f8f8f2;\"> items </span><span style=\"color:#f92672;\">= </span><span style=\"color:#66d9ef;\">use_signal</span><span style=\"color:#f8f8f2;\">(|| </span><span style=\"color:#ff80f4;\">100</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">    rsx! {{\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"color:#8c8c8c;\">// Adding a value will cause the `div` to be re-rendered with an extra div\n</span><span style=\"color:#f8f8f2;\">        button {{ onclick: </span><span style=\"color:#f92672;\">move |_|</span><span style=\"color:#f8f8f2;\"> items </span><span style=\"color:#f92672;\">+= </span><span style=\"color:#ff80f4;\">1</span><span style=\"color:#f8f8f2;\">, </span><span style=\"color:#ffee99;\">&quot;Add one&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">        div {{\n</span><span style=\"color:#f8f8f2;\">            </span><span style=\"color:#8c8c8c;\">// This will be called when the `div` is resized\n</span><span style=\"color:#f8f8f2;\">            onresize: </span><span style=\"color:#f92672;\">move |</span><span style=\"color:#f8f8f2;\">data</span><span style=\"color:#f92672;\">| </span><span style=\"color:#f8f8f2;\">{{\n</span><span style=\"color:#f8f8f2;\">                tracing::info</span><span style=\"color:#f92672;\">!</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#ffee99;\">&quot;resized to {{:#?}}&quot;</span><span style=\"color:#f8f8f2;\">, data.</span><span style=\"color:#66d9ef;\">get_border_box_size</span><span style=\"color:#f8f8f2;\">().</span><span style=\"color:#66d9ef;\">unwrap</span><span style=\"color:#f8f8f2;\">());\n</span><span style=\"color:#f8f8f2;\">            }},\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">            </span><span style=\"color:#f92672;\">for</span><span style=\"color:#f8f8f2;\"> x </span><span style=\"color:#f92672;\">in </span><span style=\"color:#ff80f4;\">0</span><span style=\"color:#f92672;\">..</span><span style=\"color:#66d9ef;\">items</span><span style=\"color:#f8f8f2;\">() {{\n</span><span style=\"color:#f8f8f2;\">                div {{ </span><span style=\"color:#ffee99;\">&quot;{{x}}&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">            }}\n</span><span style=\"color:#f8f8f2;\">        }}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
         }
         h2 { id: "tracking-visibility-with",
-            a { href: "#tracking-visibility-with", class: "header", "Tracking visibility with " }
+            Link { to: "#tracking-visibility-with", class: "header", "Tracking visibility with " }
             code { "onvisible" }
         }
         p {
@@ -5018,7 +4888,7 @@ pub fn Release060() -> dioxus::prelude::Element {
             }
         }
         h2 { id: "hybrid-wgpu-overlays",
-            a { href: "#hybrid-wgpu-overlays", class: "header", "Hybrid WGPU Overlays" }
+            Link { to: "#hybrid-wgpu-overlays", class: "header", "Hybrid WGPU Overlays" }
         }
         p {
             "This release also brings the \"child window\" feature for Dioxus desktop which lets you overlay native Dioxus apps on existing windows. This makes it simple to integrate Dioxus as an overlay over other renderers like WGPU and OpenGL:"
@@ -5036,7 +4906,7 @@ pub fn Release060() -> dioxus::prelude::Element {
             }
         }
         h2 { id: "web-ios-and-android-bundle-support",
-            a { href: "#web-ios-and-android-bundle-support", class: "header",
+            Link { to: "#web-ios-and-android-bundle-support", class: "header",
                 "Web, iOS, and Android bundle support"
             }
         }
@@ -5056,7 +4926,7 @@ pub fn Release060() -> dioxus::prelude::Element {
             li { "Web (.appimage, /public folder)" }
         }
         h2 { id: "json-output-for-ci--cli",
-            a { href: "#json-output-for-ci--cli", class: "header", "JSON Output for CI / CLI" }
+            Link { to: "#json-output-for-ci--cli", class: "header", "JSON Output for CI / CLI" }
         }
         p {
             "As part of our overhaul with the CLI, we’re also shipping a  "
@@ -5095,7 +4965,7 @@ pub fn Release060() -> dioxus::prelude::Element {
             }
         }
         h2 { id: "new-starter-templates",
-            a { href: "#new-starter-templates", class: "header", "New Starter Templates" }
+            Link { to: "#new-starter-templates", class: "header", "New Starter Templates" }
         }
         p {
             "Dioxus 0.6 ships with three new starter templates for cross-platform apps. Each template is a fully-featured, production-ready app that you can use as a starting point for your own Dioxus apps."
@@ -5113,9 +4983,7 @@ pub fn Release060() -> dioxus::prelude::Element {
             " and follow the prompts to select the template you want."
         }
         h2 { id: "nightly-docs-tutorials-and-new-guides",
-            a {
-                href: "#nightly-docs-tutorials-and-new-guides",
-                class: "header",
+            Link { to: "#nightly-docs-tutorials-and-new-guides", class: "header",
                 "Nightly Docs, Tutorials, and New Guides"
             }
         }
@@ -5169,13 +5037,13 @@ pub fn Release060() -> dioxus::prelude::Element {
             }
         }
         h2 { id: "preview-of-in-place-binary-patching",
-            a { href: "#preview-of-in-place-binary-patching", class: "header",
+            Link { to: "#preview-of-in-place-binary-patching", class: "header",
                 "Preview of In-Place Binary Patching"
             }
         }
         p {
             "While working on the new hot-reloading engine, we experimented with adding proper hot-reloading of Rust code to Dioxus apps. The work here was inspired by Andrew Kelley’s “in-place-binary-patching” goal for Zig. Unfortunately, we didn’t have a chance to productionize the prototype for this release (way too many features already!) but we did put together a "
-            a { href: "http://github.com/jkelleyrtp/ipbp", "small prototype" }
+            Link { to: "http://github.com/jkelleyrtp/ipbp" }
             ":"
         }
         p {
@@ -5194,7 +5062,7 @@ pub fn Release060() -> dioxus::prelude::Element {
             "We likely won’t have the time to ship true Rust hot-reloading in 0.7, but stay tuned for early next year!"
         }
         h2 { id: "smaller-changes",
-            a { href: "#smaller-changes", class: "header", "Smaller changes:" }
+            Link { to: "#smaller-changes", class: "header", "Smaller changes:" }
         }
         p {
             "Not every change gets a particularly large section in the release notes, but we did land several new features and refactors."
@@ -5246,7 +5114,7 @@ pub fn Release060() -> dioxus::prelude::Element {
             }
         }
         h2 { id: "upgrading-from-05-to-06",
-            a { href: "#upgrading-from-05-to-06", class: "header", "Upgrading from 0.5 to 0.6" }
+            Link { to: "#upgrading-from-05-to-06", class: "header", "Upgrading from 0.5 to 0.6" }
         }
         p {
             "Generally there are few huge breaking changes in this release. However, we did change a few APIs that might break your existing apps but are easy to fix."
@@ -5272,11 +5140,11 @@ pub fn Release060() -> dioxus::prelude::Element {
         }
         p {
             "We’ve assembled a "
-            a { href: "https://dioxuslabs.com/learn/0.6/migration/", "migration guide" }
+            Link { to: "https://dioxuslabs.com/learn/0.6/migration/" }
             " to help."
         }
         h2 { id: "conclusion",
-            a { href: "#conclusion", class: "header", "Conclusion" }
+            Link { to: "#conclusion", class: "header", "Conclusion" }
         }
         p {
             "That’s it for this release! We addressed countless issues including bundling bugs, spurious hot-reloads, and compatibility with unusual platforms and editors."
@@ -5308,103 +5176,103 @@ pub fn Release060() -> dioxus::prelude::Element {
             "We’re also hiring - if you want to come build Dioxus with me in San Francisco (or remote) please reach out!"
         }
         h2 { id: "thanks-to-the-community",
-            a { href: "#thanks-to-the-community", class: "header", "Thanks to the community!" }
+            Link { to: "#thanks-to-the-community", class: "header", "Thanks to the community!" }
         }
         p {
             "We want to extend a huge thank-you to everyone who helped test and improve this release. We saw an incredible number of contributors fix bugs and add features. Special thanks to:"
         }
         p {
-            a { href: "https://github.com/ASR-ASU", "@ASR-ASU" }
+            Link { to: "https://github.com/ASR-ASU" }
             " - "
-            a { href: "https://github.com/Aandreba", "@Aandreba" }
+            Link { to: "https://github.com/Aandreba" }
             " - "
-            a { href: "https://github.com/Andrew15-5", "@Andrew15-5" }
+            Link { to: "https://github.com/Andrew15-5" }
             " - "
-            a { href: "https://github.com/DogeDark", "@DogeDark" }
+            Link { to: "https://github.com/DogeDark" }
             " - "
-            a { href: "https://github.com/Klemen2", "@Klemen2" }
+            Link { to: "https://github.com/Klemen2" }
             " - "
-            a { href: "https://github.com/LeWimbes", "@LeWimbes" }
+            Link { to: "https://github.com/LeWimbes" }
             " - "
-            a { href: "https://github.com/LeoDog896", "@LeoDog896" }
+            Link { to: "https://github.com/LeoDog896" }
             " - "
-            a { href: "https://github.com/MrGVSV", "@MrGVSV" }
+            Link { to: "https://github.com/MrGVSV" }
             " - "
-            a { href: "https://github.com/Rahul721999", "@Rahul721999" }
+            Link { to: "https://github.com/Rahul721999" }
             " - "
-            a { href: "https://github.com/Septimus", "@Septimus" }
+            Link { to: "https://github.com/Septimus" }
             " - "
-            a { href: "https://github.com/Tahinli", "@Tahinli" }
+            Link { to: "https://github.com/Tahinli" }
             " - "
-            a { href: "https://github.com/WilliamRagstad", "@WilliamRagstad" }
+            Link { to: "https://github.com/WilliamRagstad" }
             " - "
-            a { href: "https://github.com/ahqsoftwares", "@ahqsoftwares" }
+            Link { to: "https://github.com/ahqsoftwares" }
             " - "
-            a { href: "https://github.com/airblast-dev", "@airblast-dev" }
+            Link { to: "https://github.com/airblast-dev" }
             " - "
-            a { href: "https://github.com/alilosoft", "@alilosoft" }
+            Link { to: "https://github.com/alilosoft" }
             " - "
-            a { href: "https://github.com/azamara", "@azamara" }
+            Link { to: "https://github.com/azamara" }
             " - "
-            a { href: "https://github.com/chungwong", "@chungwong" }
+            Link { to: "https://github.com/chungwong" }
             " - "
-            a { href: "https://github.com/d3rpp", "@d3rpp" }
+            Link { to: "https://github.com/d3rpp" }
             " - "
-            a { href: "https://github.com/daixiwen", "@daixiwen" }
+            Link { to: "https://github.com/daixiwen" }
             " - "
-            a { href: "https://github.com/dependabot", "@dependabot" }
+            Link { to: "https://github.com/dependabot" }
             " - "
-            a { href: "https://github.com/ealmloff", "@ealmloff" }
+            Link { to: "https://github.com/ealmloff" }
             " - "
-            a { href: "https://github.com/hackartists", "@hackartists" }
+            Link { to: "https://github.com/hackartists" }
             " - "
-            a { href: "https://github.com/hardBSDk", "@hardBSDk" }
+            Link { to: "https://github.com/hardBSDk" }
             " - "
-            a { href: "https://github.com/houseme", "@houseme" }
+            Link { to: "https://github.com/houseme" }
             " - "
-            a { href: "https://github.com/i123iu", "@i123iu" }
+            Link { to: "https://github.com/i123iu" }
             " - "
-            a { href: "https://github.com/ilaborie", "@ilaborie" }
+            Link { to: "https://github.com/ilaborie" }
             " - "
-            a { href: "https://github.com/imgurbot12", "@imgurbot12" }
+            Link { to: "https://github.com/imgurbot12" }
             " - "
-            a { href: "https://github.com/jacklund", "@jacklund" }
+            Link { to: "https://github.com/jacklund" }
             " - "
-            a { href: "https://github.com/jingchanglu", "@jingchanglu" }
+            Link { to: "https://github.com/jingchanglu" }
             " - "
-            a { href: "https://github.com/luveti", "@luveti" }
+            Link { to: "https://github.com/luveti" }
             " - "
-            a { href: "https://github.com/marc2332", "@marc2332" }
+            Link { to: "https://github.com/marc2332" }
             " - "
-            a { href: "https://github.com/matthunz", "@matthunz" }
+            Link { to: "https://github.com/matthunz" }
             " - "
-            a { href: "https://github.com/nayo0513", "@nayo0513" }
+            Link { to: "https://github.com/nayo0513" }
             " - "
-            a { href: "https://github.com/opensource-inemar-net", "@opensource-inemar-net" }
+            Link { to: "https://github.com/opensource-inemar-net" }
             " - "
-            a { href: "https://github.com/oskardotglobal", "@oskardotglobal" }
+            Link { to: "https://github.com/oskardotglobal" }
             " - "
-            a { href: "https://github.com/panglars", "@panglars" }
+            Link { to: "https://github.com/panglars" }
             " - "
-            a { href: "https://github.com/pyrrho", "@pyrrho" }
+            Link { to: "https://github.com/pyrrho" }
             " - "
-            a { href: "https://github.com/ribelo", "@ribelo" }
+            Link { to: "https://github.com/ribelo" }
             " - "
-            a { href: "https://github.com/rogusdev", "@rogusdev" }
+            Link { to: "https://github.com/rogusdev" }
             " - "
-            a { href: "https://github.com/ryo33", "@ryo33" }
+            Link { to: "https://github.com/ryo33" }
             " - "
-            a { href: "https://github.com/samtay", "@samtay" }
+            Link { to: "https://github.com/samtay" }
             " - "
-            a { href: "https://github.com/sknauff", "@sknauff" }
+            Link { to: "https://github.com/sknauff" }
             " - "
-            a { href: "https://github.com/srid", "@srid" }
+            Link { to: "https://github.com/srid" }
             " - "
-            a { href: "https://github.com/tigerros", "@tigerros" }
+            Link { to: "https://github.com/tigerros" }
             " - "
-            a { href: "https://github.com/tpoliaw", "@tpoliaw" }
+            Link { to: "https://github.com/tpoliaw" }
             " - "
-            a { href: "https://github.com/uzytkownik", "@uzytkownik" }
+            Link { to: "https://github.com/uzytkownik" }
         }
     }
 }

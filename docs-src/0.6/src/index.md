@@ -36,7 +36,7 @@ In many ways, Dioxus is similar to Flutter: we integrate our own build tools, fo
 - Reactivity is inspired by web frameworks like React and SolidJS
 - Dioxus code runs natively with no virtual machine and enables direct FFI with system APIs
 
-Our goal is to provide a "better Flutter": faster, slimmer, and web-native. You can think of Dioxus is a hybrid of [Flutter]() and [NextJS](): cross-platform apps with stellar fullstack support. Today, Dioxus apps can only be written in Rust, but we plan to support more languages in the future.
+Our goal is to provide a "better Flutter": faster, slimmer, and web-native. You can think of Dioxus is a hybrid of [Flutter](https://flutter.dev/) and [NextJS](https://nextjs.org/): cross-platform apps with stellar fullstack support. Today, Dioxus apps can only be written in Rust, but we plan to support more languages in the future.
 
 ## Why Dioxus?
 
@@ -79,7 +79,7 @@ The core Dioxus framework covers a number of utilities that are either challengi
 - [App Routing](router/index.md)
 - [Backend integration via server functions](guides/fullstack/server_functions.md)
 - [Including and optimizing](guides/assets.md) assets
-- [State management](guides/managing_state.md) (signals-based reactivity)
+- [State management](essentials/state/index.md) (signals-based reactivity)
 - [SDK](http://github.com/dioxusLabs/sdk): 1st-party System integrations
 
 ## Stability

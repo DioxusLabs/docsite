@@ -3416,7 +3416,7 @@ checksum = "0e7465ac9959cc2b1404e8e2367b43684a6d13790fe23056cc8c6c5a6b7bcb94"
 [[package]]
 name = "mdbook-gen"
 version = "0.0.0"
-source = "git+https://github.com/dioxuslabs/include_mdbook?branch=jk%2Fbuild-gen#585682944c98737bb3759523f079cd7cbf1718bd"
+source = "git+https://github.com/ealmloff/include_mdbook?branch=clean-up#0fe58a1f71cdefe358ee2cd9f7c0a2ce25179b09"
 dependencies = [
  "anyhow",
  "convert_case 0.6.0",
@@ -3439,7 +3439,7 @@ dependencies = [
 [[package]]
 name = "mdbook-macro"
 version = "0.1.0"
-source = "git+https://github.com/dioxuslabs/include_mdbook?branch=jk%2Fbuild-gen#585682944c98737bb3759523f079cd7cbf1718bd"
+source = "git+https://github.com/ealmloff/include_mdbook?branch=clean-up#0fe58a1f71cdefe358ee2cd9f7c0a2ce25179b09"
 dependencies = [
  "anyhow",
  "convert_case 0.6.0",
@@ -3460,7 +3460,7 @@ dependencies = [
 [[package]]
 name = "mdbook-shared"
 version = "0.1.0"
-source = "git+https://github.com/dioxuslabs/include_mdbook?branch=jk%2Fbuild-gen#585682944c98737bb3759523f079cd7cbf1718bd"
+source = "git+https://github.com/ealmloff/include_mdbook?branch=clean-up#0fe58a1f71cdefe358ee2cd9f7c0a2ce25179b09"
 dependencies = [
  "anyhow",
  "bytes",
@@ -5372,7 +5372,7 @@ dependencies = [
 [[package]]
 name = "syntect-html"
 version = "0.1.0"
-source = "git+https://github.com/dioxuslabs/include_mdbook?branch=jk%2Fbuild-gen#585682944c98737bb3759523f079cd7cbf1718bd"
+source = "git+https://github.com/ealmloff/include_mdbook?branch=clean-up#0fe58a1f71cdefe358ee2cd9f7c0a2ce25179b09"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -5983,7 +5983,7 @@ checksum = "daf8dba3b7eb870caf1ddeed7bc9d2a049f3cfdfae7cb521b087cc33ae4c49da"
 [[package]]
 name = "use-mdbook"
 version = "0.1.0"
-source = "git+https://github.com/dioxuslabs/include_mdbook?branch=jk%2Fbuild-gen#585682944c98737bb3759523f079cd7cbf1718bd"
+source = "git+https://github.com/ealmloff/include_mdbook?branch=clean-up#0fe58a1f71cdefe358ee2cd9f7c0a2ce25179b09"
 dependencies = [
  "lazy_static",
  "mdbook-macro",

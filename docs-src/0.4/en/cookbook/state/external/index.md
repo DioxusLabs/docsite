@@ -4,7 +4,7 @@ This guide will help you integrate your Dioxus application with some external st
 
 ## Working with non-reactive State
 
-[Coroutines](../../reference/use_coroutine.md) are great tool for dealing with non-reactive (state you don't render directly) state within your application.
+[Coroutines](../../../reference/use_coroutine.md) are great tool for dealing with non-reactive (state you don't render directly) state within your application.
 
 
 You can store your state inside the coroutine async block and communicate with the coroutine with messages from any child components.

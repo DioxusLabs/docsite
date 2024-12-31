@@ -1815,7 +1815,7 @@ pub fn Index() -> dioxus::prelude::Element {
     use dioxus::prelude::*;
     rsx! {
         h1 { id: "introduction",
-            a { href: "#introduction", class: "header", "Introduction" }
+            Link { to: "#introduction", class: "header", "Introduction" }
         }
         p {
             img {
@@ -1839,16 +1839,14 @@ pub fn Index() -> dioxus::prelude::Element {
         blockquote {
             p {
                 "This guide assumes you already know some "
-                a { href: "https://www.rust-lang.org/", "Rust" }
+                Link { to: "https://www.rust-lang.org/" }
                 "! If not, we recommend reading "
-                a { href: "https://doc.rust-lang.org/book/ch01-00-getting-started.html",
-                    em { "the book" }
-                }
+                Link { to: "https://doc.rust-lang.org/book/ch01-00-getting-started.html" }
                 " to learn Rust first."
             }
         }
         h2 { id: "features",
-            a { href: "#features", class: "header", "Features" }
+            Link { to: "#features", class: "header", "Features" }
         }
         ul {
             li { "Desktop apps running natively (no Electron!) in less than 10 lines of code." }
@@ -1860,12 +1858,12 @@ pub fn Index() -> dioxus::prelude::Element {
             li { "Multi-channel asynchronous scheduler for first-class async support." }
             li {
                 "And more! Read the "
-                a { href: "https://dioxuslabs.com/blog/introducing-dioxus/", "full release post" }
+                Link { to: "https://dioxuslabs.com/blog/introducing-dioxus/" }
                 "."
             }
         }
         h3 { id: "multiplatform",
-            a { href: "#multiplatform", class: "header", "Multiplatform" }
+            Link { to: "#multiplatform", class: "header", "Multiplatform" }
         }
         p {
             "Dioxus is a "
@@ -1883,7 +1881,7 @@ pub fn Index() -> dioxus::prelude::Element {
             li { "TUI/Rink (for terminal-based apps): Experimental" }
         }
         h2 { id: "stability",
-            a { href: "#stability", class: "header", "Stability" }
+            Link { to: "#stability", class: "header", "Stability" }
         }
         p { "Dioxus has not reached a stable release yet." }
         p {
@@ -1900,33 +1898,31 @@ pub fn GettingStartedIndex() -> dioxus::prelude::Element {
     use dioxus::prelude::*;
     rsx! {
         h1 { id: "getting-started",
-            a { href: "#getting-started", class: "header", "Getting Started" }
+            Link { to: "#getting-started", class: "header", "Getting Started" }
         }
         p { "This section will help you set up your Dioxus project!" }
         h2 { id: "prerequisites",
-            a { href: "#prerequisites", class: "header", "Prerequisites" }
+            Link { to: "#prerequisites", class: "header", "Prerequisites" }
         }
         h3 { id: "an-editor",
-            a { href: "#an-editor", class: "header", "An Editor" }
+            Link { to: "#an-editor", class: "header", "An Editor" }
         }
         p {
             "Dioxus integrates very well with the "
-            a { href: "https://rust-analyzer.github.io", "Rust-Analyzer LSP plugin" }
+            Link { to: "https://rust-analyzer.github.io" }
             " which will provide appropriate syntax highlighting, code navigation, folding, and more."
         }
         h3 { id: "rust",
-            a { href: "#rust", class: "header", "Rust" }
+            Link { to: "#rust", class: "header", "Rust" }
         }
         p {
             "Head over to "
-            a { href: "http://rust-lang.org", "https://rust-lang.org" }
+            Link { to: "http://rust-lang.org" }
             " and install the Rust compiler."
         }
         p {
             "We strongly recommend going through the "
-            a { href: "https://doc.rust-lang.org/book/ch01-00-getting-started.html",
-                "official Rust book"
-            }
+            Link { to: "https://doc.rust-lang.org/book/ch01-00-getting-started.html" }
             " "
             em { "completely" }
             ". However, we hope that a Dioxus app can serve as a great first Rust project. With Dioxus, you'll learn about:"
@@ -1941,34 +1937,40 @@ pub fn GettingStartedIndex() -> dioxus::prelude::Element {
             "We've put a lot of care into making Dioxus syntax familiar and easy to understand, so you won't need deep knowledge of async, lifetimes, or smart pointers until you start building complex Dioxus apps."
         }
         h2 { id: "setup-guides",
-            a { href: "#setup-guides", class: "header", "Setup Guides" }
+            Link { to: "#setup-guides", class: "header", "Setup Guides" }
         }
         p {
             "Dioxus supports multiple platforms. Choose the platform you want to target below to get platform-specific setup instructions:"
         }
         ul {
             li {
-                a { href: "web", "Web" }
+                Link { to: BookRoute::GettingStartedWeb {} }
                 ": runs in the browser through WebAssembly"
             }
             li {
-                a { href: "ssr", "Server Side Rendering" }
+                Link { to: BookRoute::GettingStartedSsr {} }
                 ": renders to HTML text on the server"
             }
             li {
-                a { href: "liveview", "Liveview" }
+                Link {
+                    to: BookRoute::GettingStartedLiveview {
+                    },
+                }
                 ": runs on the server, renders in the browser using WebSockets"
             }
             li {
-                a { href: "desktop", "Desktop" }
+                Link {
+                    to: BookRoute::GettingStartedDesktop {
+                    },
+                }
                 ": runs in a web view on desktop"
             }
             li {
-                a { href: "mobile", "Mobile" }
+                Link { to: BookRoute::GettingStartedMobile {} }
                 ": runs in a web view on mobile"
             }
             li {
-                a { href: "tui", "Terminal UI" }
+                Link { to: BookRoute::GettingStartedTui {} }
                 ": renders text-based graphics in the terminal"
             }
         }
@@ -1979,7 +1981,7 @@ pub fn GettingStartedDesktop() -> dioxus::prelude::Element {
     use dioxus::prelude::*;
     rsx! {
         h1 { id: "desktop-overview",
-            a { href: "#desktop-overview", class: "header", "Desktop Overview" }
+            Link { to: "#desktop-overview", class: "header", "Desktop Overview" }
         }
         p {
             "Build a standalone native desktop app that looks and feels the same across operating systems."
@@ -1988,27 +1990,17 @@ pub fn GettingStartedDesktop() -> dioxus::prelude::Element {
         p { "Examples:" }
         ul {
             li {
-                a { href: "https://github.com/DioxusLabs/example-projects/blob/master/file-explorer",
-                    "File Explorer"
-                }
+                Link { to: "https://github.com/DioxusLabs/example-projects/blob/master/file-explorer" }
             }
             li {
-                a { href: "https://github.com/DioxusLabs/example-projects/blob/master/wifi-scanner",
-                    "WiFi Scanner"
-                }
+                Link { to: "https://github.com/DioxusLabs/example-projects/blob/master/wifi-scanner" }
             }
         }
         p {
-            a { href: "https://github.com/DioxusLabs/example-projects/tree/master/file-explorer",
-                img {
-                    src: "https://github.com/DioxusLabs/example-projects/raw/master/file-explorer/assets/image.png",
-                    alt: "File ExplorerExample",
-                    title: "",
-                }
-            }
+            Link { to: "https://github.com/DioxusLabs/example-projects/tree/master/file-explorer" }
         }
         h2 { id: "support",
-            a { href: "#support", class: "header", "Support" }
+            Link { to: "#support", class: "header", "Support" }
         }
         p {
             "The desktop is a powerful target for Dioxus but is currently limited in capability when compared to the Web platform. Currently, desktop apps are rendered with the platform's WebView library, but your Rust code is running natively on a native thread. This means that browser APIs are "
@@ -2019,18 +2011,18 @@ pub fn GettingStartedDesktop() -> dioxus::prelude::Element {
         }
         p {
             "Dioxus Desktop is built off "
-            a { href: "https://tauri.app/", "Tauri" }
+            Link { to: "https://tauri.app/" }
             ". Right now there aren't any Dioxus abstractions over keyboard shortcuts, menubar, handling, etc, so you'll want to leverage Tauri – mostly "
-            a { href: "http://github.com/tauri-apps/wry/", "Wry" }
+            Link { to: "http://github.com/tauri-apps/wry/" }
             " and "
-            a { href: "http://github.com/tauri-apps/tao", "Tao" }
+            Link { to: "http://github.com/tauri-apps/tao" }
             ") directly."
         }
         h1 { id: "getting-started",
-            a { href: "#getting-started", class: "header", "Getting started" }
+            Link { to: "#getting-started", class: "header", "Getting started" }
         }
         h2 { id: "platform-specific-dependencies",
-            a { href: "#platform-specific-dependencies", class: "header",
+            Link { to: "#platform-specific-dependencies", class: "header",
                 "Platform-Specific Dependencies"
             }
         }
@@ -2038,15 +2030,13 @@ pub fn GettingStartedDesktop() -> dioxus::prelude::Element {
             "Dioxus desktop renders through a web view. Depending on your platform, you might need to install some dependancies."
         }
         h3 { id: "windows",
-            a { href: "#windows", class: "header", "Windows" }
+            Link { to: "#windows", class: "header", "Windows" }
         }
         p {
             "Windows Desktop apps depend on WebView2 – a library that should be installed in all modern Windows distributions. If you have Edge installed, then Dioxus will work fine. If you "
             em { "don't" }
             " have Webview2, "
-            a { href: "https://developer.microsoft.com/en-us/microsoft-edge/webview2/",
-                "then you can install it through Microsoft"
-            }
+            Link { to: "https://developer.microsoft.com/en-us/microsoft-edge/webview2/" }
             ". MS provides 3 options:"
         }
         ol {
@@ -2064,7 +2054,7 @@ pub fn GettingStartedDesktop() -> dioxus::prelude::Element {
         }
         p { "For development purposes, use Option 1." }
         h3 { id: "linux",
-            a { href: "#linux", class: "header", "Linux" }
+            Link { to: "#linux", class: "header", "Linux" }
         }
         p {
             "Webview Linux apps require WebkitGtk. When distributing, this can be part of your dependency tree in your  "
@@ -2084,19 +2074,17 @@ pub fn GettingStartedDesktop() -> dioxus::prelude::Element {
         CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f92672;\">#</span><span style=\"color:#f8f8f2;\"> on Debian</span><span style=\"color:#f92672;\">/</span><span style=\"color:#f8f8f2;\">bullseye </span><span style=\"color:#f92672;\">use</span><span style=\"color:#f8f8f2;\">:\n</span><span style=\"color:#f8f8f2;\">sudo apt install libwebkit2gtk</span><span style=\"color:#f92672;\">-</span><span style=\"color:#ff80f4;\">4.0</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">dev libgtk</span><span style=\"color:#f92672;\">-</span><span style=\"color:#ff80f4;\">3</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">dev libayatana</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">appindicator3</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">dev</span></pre>\n" }
         p {
             "If you run into issues, make sure you have all the basics installed, as outlined in the "
-            a { href: "https://tauri.studio/v1/guides/getting-started/prerequisites#setting-up-linux",
-                "Tauri docs"
-            }
+            Link { to: "https://tauri.studio/v1/guides/getting-started/prerequisites#setting-up-linux" }
             "."
         }
         h3 { id: "macos",
-            a { href: "#macos", class: "header", "MacOS" }
+            Link { to: "#macos", class: "header", "MacOS" }
         }
         p {
             "Currently – everything for macOS is built right in! However, you might run into an issue if you're using nightly Rust due to some permissions issues in our Tao dependency (which have been resolved but not published)."
         }
         h2 { id: "creating-a-project",
-            a { href: "#creating-a-project", class: "header", "Creating a Project" }
+            Link { to: "#creating-a-project", class: "header", "Creating a Project" }
         }
         p { "Create a new crate:" }
         CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">cargo new </span><span style=\"color:#f92672;\">--</span><span style=\"color:#f8f8f2;\">bin demo\n</span><span style=\"color:#f8f8f2;\">cd demo</span></pre>\n" }
@@ -2122,7 +2110,7 @@ pub fn GettingStartedWeb() -> dioxus::prelude::Element {
     use dioxus::prelude::*;
     rsx! {
         h1 { id: "web",
-            a { href: "#web", class: "header", "Web" }
+            Link { to: "#web", class: "header", "Web" }
         }
         p {
             "Build single-page applications that run in the browser with Dioxus. To run on the Web, your app must be compiled to WebAssembly and depend on the  "
@@ -2133,68 +2121,50 @@ pub fn GettingStartedWeb() -> dioxus::prelude::Element {
         }
         p {
             "A build of Dioxus for the web will be roughly equivalent to the size of a React build (70kb vs 65kb) but it will load significantly faster because "
-            a { href: "https://hacks.mozilla.org/2018/01/making-webassembly-even-faster-firefoxs-new-streaming-and-tiering-compiler/",
-                "WebAssembly can be compiled as it is streamed"
-            }
+            Link { to: "https://hacks.mozilla.org/2018/01/making-webassembly-even-faster-firefoxs-new-streaming-and-tiering-compiler/" }
             "."
         }
         p { "Examples:" }
         ul {
             li {
-                a { href: "https://github.com/DioxusLabs/example-projects/tree/master/todomvc",
-                    "TodoMVC"
-                }
+                Link { to: "https://github.com/DioxusLabs/example-projects/tree/master/todomvc" }
             }
             li {
-                a { href: "https://github.com/DioxusLabs/example-projects/tree/master/ecommerce-site",
-                    "ECommerce"
-                }
+                Link { to: "https://github.com/DioxusLabs/example-projects/tree/master/ecommerce-site" }
             }
         }
         p {
-            a { href: "https://github.com/DioxusLabs/example-projects/blob/master/todomvc",
-                img {
-                    src: "https://github.com/DioxusLabs/example-projects/raw/master/todomvc/example.png",
-                    alt: "TodoMVC example",
-                    title: "",
-                }
-            }
+            Link { to: "https://github.com/DioxusLabs/example-projects/blob/master/todomvc" }
         }
         blockquote {
             p {
                 "Note: Because of the limitations of Wasm, "
-                a { href: "https://rustwasm.github.io/docs/book/reference/which-crates-work-with-wasm.html",
-                    "not every crate will work"
-                }
+                Link { to: "https://rustwasm.github.io/docs/book/reference/which-crates-work-with-wasm.html" }
                 " with your web apps, so you'll need to make sure that your crates work without native system calls (timers, IO, etc)."
             }
         }
         h2 { id: "support",
-            a { href: "#support", class: "header", "Support" }
+            Link { to: "#support", class: "header", "Support" }
         }
         p { "The Web is the best-supported target platform for Dioxus." }
         ul {
             li {
                 "Because your app will be compiled to WASM you have access to browser APIs through "
-                a { href: "https://rustwasm.github.io/docs/wasm-bindgen/introduction.html",
-                    "wasm-bingen"
-                }
+                Link { to: "https://rustwasm.github.io/docs/wasm-bindgen/introduction.html" }
                 "."
             }
             li {
                 "Dioxus provides hydration to resume apps that are rendered on the server. See the "
-                a { href: "https://github.com/DioxusLabs/dioxus/blob/master/packages/web/examples/hydrate.rs",
-                    "hydration example"
-                }
+                Link { to: "https://github.com/DioxusLabs/dioxus/blob/master/packages/web/examples/hydrate.rs" }
                 " for more details."
             }
         }
         h2 { id: "tooling",
-            a { href: "#tooling", class: "header", "Tooling" }
+            Link { to: "#tooling", class: "header", "Tooling" }
         }
         p {
             "To develop your Dioxus app for the web, you'll need a tool to build and serve your assets. We recommend using "
-            a { href: "https://github.com/DioxusLabs/cli", "dioxus-cli" }
+            Link { to: "https://github.com/DioxusLabs/cli" }
             " which includes a build system, Wasm optimization, a dev server, and support hot reloading:"
         }
         CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">cargo install dioxus</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">cli</span></pre>\n" }
@@ -2205,7 +2175,7 @@ pub fn GettingStartedWeb() -> dioxus::prelude::Element {
         }
         CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">rustup target add wasm32</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">unknown</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">unknown</span></pre>\n" }
         h2 { id: "creating-a-project",
-            a { href: "#creating-a-project", class: "header", "Creating a Project" }
+            Link { to: "#creating-a-project", class: "header", "Creating a Project" }
         }
         p { "Create a new crate:" }
         CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">cargo new </span><span style=\"color:#f92672;\">--</span><span style=\"color:#f8f8f2;\">bin demo\n</span><span style=\"color:#f8f8f2;\">cd demo</span></pre>\n" }
@@ -2233,7 +2203,7 @@ pub fn GettingStartedHotReload() -> dioxus::prelude::Element {
     use dioxus::prelude::*;
     rsx! {
         h1 { id: "setting-up-hot-reload",
-            a { href: "#setting-up-hot-reload", class: "header", "Setting Up Hot Reload" }
+            Link { to: "#setting-up-hot-reload", class: "header", "Setting Up Hot Reload" }
         }
         ol {
             li {
@@ -2245,15 +2215,15 @@ pub fn GettingStartedHotReload() -> dioxus::prelude::Element {
             li { "Currently the cli only implements hot reloading for the web renderer." }
         }
         h1 { id: "setup",
-            a { href: "#setup", class: "header", "Setup" }
+            Link { to: "#setup", class: "header", "Setup" }
         }
         p {
             "Install "
-            a { href: "https://github.com/DioxusLabs/cli", "dioxus-cli" }
+            Link { to: "https://github.com/DioxusLabs/cli" }
             "."
         }
         h1 { id: "usage",
-            a { href: "#usage", class: "header", "Usage" }
+            Link { to: "#usage", class: "header", "Usage" }
         }
         ol {
             li { "run:" }
@@ -2265,7 +2235,7 @@ pub fn GettingStartedHotReload() -> dioxus::prelude::Element {
             li { "save and watch the style change without recompiling" }
         }
         h1 { id: "limitations",
-            a { href: "#limitations", class: "header", "Limitations" }
+            Link { to: "#limitations", class: "header", "Limitations" }
         }
         ol {
             li {
@@ -2282,14 +2252,14 @@ pub fn GettingStartedSsr() -> dioxus::prelude::Element {
     use dioxus::prelude::*;
     rsx! {
         h1 { id: "server-side-rendering",
-            a { href: "#server-side-rendering", class: "header", "Server-Side Rendering" }
+            Link { to: "#server-side-rendering", class: "header", "Server-Side Rendering" }
         }
         p { "The Dioxus VirtualDom can be rendered server-side." }
         p {
-            a { href: "https://github.com/dioxusLabs/docsite", "Example: Dioxus DocSite" }
+            Link { to: "https://github.com/dioxusLabs/docsite" }
         }
         h2 { id: "multithreaded-support",
-            a { href: "#multithreaded-support", class: "header", "Multithreaded Support" }
+            Link { to: "#multithreaded-support", class: "header", "Multithreaded Support" }
         }
         p {
             "The Dioxus VirtualDom, sadly, is not currently  "
@@ -2305,11 +2275,11 @@ pub fn GettingStartedSsr() -> dioxus::prelude::Element {
             ", it is possible to render a VirtualDom immediately to a String – but you cannot hold the VirtualDom across an await point. For retained-state SSR (essentially LiveView), you'll need to create a pool of VirtualDoms."
         }
         h2 { id: "setup",
-            a { href: "#setup", class: "header", "Setup" }
+            Link { to: "#setup", class: "header", "Setup" }
         }
         p {
             "For this guide, we're going to show how to use Dioxus SSR with "
-            a { href: "https://docs.rs/axum/latest/axum/", "Axum" }
+            Link { to: "https://docs.rs/axum/latest/axum/" }
             "."
         }
         p { "Make sure you have Rust and Cargo installed, and then create a new project:" }
@@ -2353,7 +2323,7 @@ pub fn GettingStartedLiveview() -> dioxus::prelude::Element {
     use dioxus::prelude::*;
     rsx! {
         h1 { id: "liveview",
-            a { href: "#liveview", class: "header", "Liveview" }
+            Link { to: "#liveview", class: "header", "Liveview" }
         }
         p {
             "Liveview allows apps to "
@@ -2365,33 +2335,27 @@ pub fn GettingStartedLiveview() -> dioxus::prelude::Element {
         p { "Examples:" }
         ul {
             li {
-                a { href: "https://github.com/DioxusLabs/dioxus/tree/master/packages/liveview/examples/axum.rs",
-                    code { "Axum Example" }
-                }
+                Link { to: "https://github.com/DioxusLabs/dioxus/tree/master/packages/liveview/examples/axum.rs" }
             }
             li {
-                a { href: "https://github.com/DioxusLabs/dioxus/tree/master/packages/liveview/examples/salvo.rs",
-                    code { "Salvo Example" }
-                }
+                Link { to: "https://github.com/DioxusLabs/dioxus/tree/master/packages/liveview/examples/salvo.rs" }
             }
             li {
-                a { href: "https://github.com/DioxusLabs/dioxus/tree/master/packages/liveview/examples/warp.rs",
-                    code { "Warp Example" }
-                }
+                Link { to: "https://github.com/DioxusLabs/dioxus/tree/master/packages/liveview/examples/warp.rs" }
             }
         }
         h2 { id: "support",
-            a { href: "#support", class: "header", "Support" }
+            Link { to: "#support", class: "header", "Support" }
         }
         p {
             "Liveview is currently limited in capability when compared to the Web platform. Liveview apps run on the server in a native thread. This means that browser APIs are not available, so rendering WebGL, Canvas, etc is not as easy as the Web. However, native system APIs are accessible, so streaming, WebSockets, filesystem, etc are all viable APIs."
         }
         h2 { id: "setup",
-            a { href: "#setup", class: "header", "Setup" }
+            Link { to: "#setup", class: "header", "Setup" }
         }
         p {
             "For this guide, we're going to show how to use Dioxus Liveview with "
-            a { href: "https://docs.rs/axum/latest/axum/", "Axum" }
+            Link { to: "https://docs.rs/axum/latest/axum/" }
             "."
         }
         p { "Make sure you have Rust and Cargo installed, and then create a new project:" }
@@ -2424,7 +2388,7 @@ pub fn GettingStartedTui() -> dioxus::prelude::Element {
     use dioxus::prelude::*;
     rsx! {
         h1 { id: "terminal-ui",
-            a { href: "#terminal-ui", class: "header", "Terminal UI" }
+            Link { to: "#terminal-ui", class: "header", "Terminal UI" }
         }
         p { "You can build a text-based interface that will run in the terminal using Dioxus." }
         p {
@@ -2440,7 +2404,7 @@ pub fn GettingStartedTui() -> dioxus::prelude::Element {
             }
         }
         h2 { id: "support",
-            a { href: "#support", class: "header", "Support" }
+            Link { to: "#support", class: "header", "Support" }
         }
         p {
             "TUI support is currently quite experimental. But, if you're willing to venture into the realm of the unknown, this guide will get you started."
@@ -2450,15 +2414,13 @@ pub fn GettingStartedTui() -> dioxus::prelude::Element {
             li { "It only supports a subset of the attributes and elements" }
             li {
                 "Regular widgets will not work in the tui render, but the tui renderer has its own widget components that start with a capital letter. See the "
-                a { href: "https://github.com/DioxusLabs/dioxus/blob/master/packages/tui/examples/tui_widgets.rs",
-                    "widgets example"
-                }
+                Link { to: "https://github.com/DioxusLabs/dioxus/blob/master/packages/tui/examples/tui_widgets.rs" }
             }
             li { "1px is one character line height. Your regular CSS px does not translate" }
             li { "If your app panics, your terminal is wrecked. This will be fixed eventually" }
         }
         h2 { id: "getting-set-up",
-            a { href: "#getting-set-up", class: "header", "Getting Set up" }
+            Link { to: "#getting-set-up", class: "header", "Getting Set up" }
         }
         p { "Start by making a new package and adding Dioxus and the TUI renderer as dependancies." }
         CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">cargo new </span><span style=\"color:#f92672;\">--</span><span style=\"color:#f8f8f2;\">bin demo\n</span><span style=\"color:#f8f8f2;\">cd demo\n</span><span style=\"color:#f8f8f2;\">cargo add dioxus\n</span><span style=\"color:#f8f8f2;\">cargo add dioxus</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">tui</span></pre>\n" }
@@ -2487,21 +2449,19 @@ pub fn GettingStartedMobile() -> dioxus::prelude::Element {
     use dioxus::prelude::*;
     rsx! {
         h1 { id: "mobile-app",
-            a { href: "#mobile-app", class: "header", "Mobile App" }
+            Link { to: "#mobile-app", class: "header", "Mobile App" }
         }
         p { "Build a mobile app with Dioxus!" }
         p {
             "Example: "
-            a { href: "https://github.com/DioxusLabs/example-projects/blob/master/ios_demo",
-                "Todo App"
-            }
+            Link { to: "https://github.com/DioxusLabs/example-projects/blob/master/ios_demo" }
         }
         h2 { id: "support",
-            a { href: "#support", class: "header", "Support" }
+            Link { to: "#support", class: "header", "Support" }
         }
         p {
             "Mobile is currently the least-supported renderer target for Dioxus. Mobile apps are rendered with either the platform's WebView or experimentally through "
-            a { href: "https://github.com/DioxusLabs/blitz", "WGPU" }
+            Link { to: "https://github.com/DioxusLabs/blitz" }
             ". WebView doesn't support animations, transparency, and native widgets."
         }
         p {
@@ -2515,7 +2475,7 @@ pub fn GettingStartedMobile() -> dioxus::prelude::Element {
             "."
         }
         h2 { id: "getting-set-up",
-            a { href: "#getting-set-up", class: "header", "Getting Set up" }
+            Link { to: "#getting-set-up", class: "header", "Getting Set up" }
         }
         p {
             "Getting set up with mobile can be quite challenging. The tooling here isn't great (yet) and might take some hacking around to get things working. macOS M1 is broadly unexplored and might not work for you."
@@ -2559,7 +2519,7 @@ pub fn DescribingUiIndex() -> dioxus::prelude::Element {
     use dioxus::prelude::*;
     rsx! {
         h1 { id: "describing-the-ui",
-            a { href: "#describing-the-ui", class: "header", "Describing the UI" }
+            Link { to: "#describing-the-ui", class: "header", "Describing the UI" }
         }
         p {
             "Dioxus is a "
@@ -2585,7 +2545,7 @@ pub fn DescribingUiIndex() -> dioxus::prelude::Element {
             ". Dioxus takes the RSX and constructs a UI from it."
         }
         h2 { id: "rsx-features",
-            a { href: "#rsx-features", class: "header", "RSX Features" }
+            Link { to: "#rsx-features", class: "header", "RSX Features" }
         }
         p {
             "RSX is very similar to HTML in that it describes elements with attributes and children. Here's an empty  "
@@ -2598,11 +2558,11 @@ pub fn DescribingUiIndex() -> dioxus::prelude::Element {
         }
         CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f92672;\">&lt;</span><span style=\"color:#f8f8f2;\">div</span><span style=\"color:#f92672;\">&gt;&lt;/</span><span style=\"color:#f8f8f2;\">div</span><span style=\"color:#f92672;\">&gt;</span></pre>\n" }
         h3 { id: "attributes",
-            a { href: "#attributes", class: "header", "Attributes" }
+            Link { to: "#attributes", class: "header", "Attributes" }
         }
         p {
             "Attributes (and "
-            a { href: "../interactivity", "listeners" }
+            Link { to: BookRoute::InteractivityIndex {} }
             ") modify the behavior or appearance of the element they are attached to. They are specified inside the "
             code { "{{}}" }
             " brackets, using the "
@@ -2637,7 +2597,7 @@ pub fn DescribingUiIndex() -> dioxus::prelude::Element {
             }
         }
         h4 { id: "custom-attributes",
-            a { href: "#custom-attributes", class: "header", "Custom Attributes" }
+            Link { to: "#custom-attributes", class: "header", "Custom Attributes" }
         }
         p {
             "Dioxus has a pre-configured set of attributes that you can use. RSX is validated at compile time to make sure you didn't specify an invalid attribute. If you want to override this behavior with a custom attribute name, specify the attribute in quotes:"
@@ -2648,13 +2608,11 @@ pub fn DescribingUiIndex() -> dioxus::prelude::Element {
         }
         CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f92672;\">&lt;</span><span style=\"color:#f8f8f2;\">b customAttribute</span><span style=\"color:#f92672;\">=</span><span style=\"color:#ffee99;\">&quot;value&quot;</span><span style=\"color:#f92672;\">&gt;\n</span><span style=\"color:#f92672;\">&lt;/</span><span style=\"color:#f8f8f2;\">b</span><span style=\"color:#f92672;\">&gt;</span></pre>\n" }
         h3 { id: "interpolation",
-            a { href: "#interpolation", class: "header", "Interpolation" }
+            Link { to: "#interpolation", class: "header", "Interpolation" }
         }
         p {
             "Similarly to how you can "
-            a { href: "https://doc.rust-lang.org/rust-by-example/hello/print/fmt.html",
-                "format"
-            }
+            Link { to: "https://doc.rust-lang.org/rust-by-example/hello/print/fmt.html" }
             " Rust strings, you can also interpolate in RSX text. Use "
             code { "{{variable}}" }
             " to Display the value of a variable in a string, or "
@@ -2669,13 +2627,16 @@ pub fn DescribingUiIndex() -> dioxus::prelude::Element {
             contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f92672;\">&lt;</span><span style=\"color:#f8f8f2;\">div class</span><span style=\"color:#f92672;\">=</span><span style=\"color:#ffee99;\">&quot;country-es&quot;</span><span style=\"color:#f8f8f2;\"> position</span><span style=\"color:#f92672;\">=</span><span style=\"color:#ffee99;\">&quot;(42, 0)&quot;</span><span style=\"color:#f92672;\">&gt;\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#f92672;\">&lt;</span><span style=\"color:#f8f8f2;\">div</span><span style=\"color:#f92672;\">&gt;</span><span style=\"color:#f8f8f2;\">ES&lt;</span><span style=\"background-color:#f92672;color:#f8f8f0;\">/</span><span style=\"color:#f8f8f2;\">div</span><span style=\"color:#f92672;\">&gt;\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#f92672;\">&lt;</span><span style=\"color:#f8f8f2;\">div</span><span style=\"color:#f92672;\">&gt;</span><span style=\"color:#ff80f4;\">42</span><span style=\"color:#f92672;\">&lt;/</span><span style=\"color:#f8f8f2;\">div</span><span style=\"color:#f92672;\">&gt;\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#f92672;\">&lt;</span><span style=\"color:#f8f8f2;\">div</span><span style=\"color:#f92672;\">&gt;</span><span style=\"color:#f8f8f2;\">{{}}</span><span style=\"color:#f92672;\">&lt;/</span><span style=\"color:#f8f8f2;\">div</span><span style=\"color:#f92672;\">&gt;\n</span><span style=\"color:#f92672;\">&lt;/</span><span style=\"color:#f8f8f2;\">div</span><span style=\"color:#f92672;\">&gt;</span></pre>\n",
         }
         h3 { id: "children",
-            a { href: "#children", class: "header", "Children" }
+            Link { to: "#children", class: "header", "Children" }
         }
         p {
             "To add children to an element, put them inside the  "
             code { "{{}}" }
             " brackets after all attributes and listeners in the element. They can be other elements, text, or "
-            a { href: "components", "components" }
+            Link {
+                to: BookRoute::DescribingUiComponents {
+                },
+            }
             ". For example, you could have an "
             code { "ol" }
             " (ordered list) element, containing 3 "
@@ -2690,7 +2651,7 @@ pub fn DescribingUiIndex() -> dioxus::prelude::Element {
             contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f92672;\">&lt;</span><span style=\"color:#f8f8f2;\">ol</span><span style=\"color:#f92672;\">&gt;\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#f92672;\">&lt;</span><span style=\"color:#f8f8f2;\">li</span><span style=\"color:#f92672;\">&gt;</span><span style=\"color:#f8f8f2;\">First Item&lt;</span><span style=\"background-color:#f92672;color:#f8f8f0;\">/</span><span style=\"color:#f8f8f2;\">li</span><span style=\"color:#f92672;\">&gt;\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#f92672;\">&lt;</span><span style=\"color:#f8f8f2;\">li</span><span style=\"color:#f92672;\">&gt;</span><span style=\"color:#f8f8f2;\">Second Item&lt;</span><span style=\"background-color:#f92672;color:#f8f8f0;\">/</span><span style=\"color:#f8f8f2;\">li</span><span style=\"color:#f92672;\">&gt;\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#f92672;\">&lt;</span><span style=\"color:#f8f8f2;\">li</span><span style=\"color:#f92672;\">&gt;</span><span style=\"color:#f8f8f2;\">Third Item&lt;</span><span style=\"background-color:#f92672;color:#f8f8f0;\">/</span><span style=\"color:#f8f8f2;\">li</span><span style=\"color:#f92672;\">&gt;\n</span><span style=\"color:#f92672;\">&lt;/</span><span style=\"color:#f8f8f2;\">ol</span><span style=\"color:#f92672;\">&gt;</span></pre>\n",
         }
         h3 { id: "fragments",
-            a { href: "#fragments", class: "header", "Fragments" }
+            Link { to: "#fragments", class: "header", "Fragments" }
         }
         p {
             "You can render multiple elements at the top level of  "
@@ -2703,17 +2664,13 @@ pub fn DescribingUiIndex() -> dioxus::prelude::Element {
         }
         CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f92672;\">&lt;</span><span style=\"color:#f8f8f2;\">p</span><span style=\"color:#f92672;\">&gt;</span><span style=\"color:#f8f8f2;\">First Item&lt;</span><span style=\"background-color:#f92672;color:#f8f8f0;\">/</span><span style=\"color:#f8f8f2;\">p</span><span style=\"color:#f92672;\">&gt;\n</span><span style=\"color:#f92672;\">&lt;</span><span style=\"color:#f8f8f2;\">p</span><span style=\"color:#f92672;\">&gt;</span><span style=\"color:#f8f8f2;\">Second Item&lt;</span><span style=\"background-color:#f92672;color:#f8f8f0;\">/</span><span style=\"color:#f8f8f2;\">p</span><span style=\"color:#f92672;\">&gt;</span></pre>\n" }
         h3 { id: "expressions",
-            a { href: "#expressions", class: "header", "Expressions" }
+            Link { to: "#expressions", class: "header", "Expressions" }
         }
         p {
             "You can include arbitrary Rust expressions as children within RSX that implements "
-            a { href: "https://docs.rs/dioxus-core/0.3/dioxus_core/trait.IntoDynNode.html",
-                "IntoDynNode"
-            }
+            Link { to: "https://docs.rs/dioxus-core/0.3/dioxus_core/trait.IntoDynNode.html" }
             ". This is useful for displaying data from an "
-            a { href: "https://doc.rust-lang.org/stable/book/ch13-02-iterators.html#processing-a-series-of-items-with-iterators",
-                "iterator"
-            }
+            Link { to: "https://doc.rust-lang.org/stable/book/ch13-02-iterators.html#processing-a-series-of-items-with-iterators" }
             ":"
         }
         CodeBlock {
@@ -2722,7 +2679,7 @@ pub fn DescribingUiIndex() -> dioxus::prelude::Element {
         }
         CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f92672;\">&lt;</span><span style=\"color:#f8f8f2;\">span</span><span style=\"color:#f92672;\">&gt;</span><span style=\"color:#f8f8f2;\">DIOXUS0123456789&lt;</span><span style=\"background-color:#f92672;color:#f8f8f0;\">/</span><span style=\"color:#f8f8f2;\">span</span><span style=\"color:#f92672;\">&gt;</span></pre>\n" }
         h3 { id: "loops",
-            a { href: "#loops", class: "header", "Loops" }
+            Link { to: "#loops", class: "header", "Loops" }
         }
         p { "In addition to iterators you can also use for loops directly within RSX:" }
         CodeBlock {
@@ -2733,7 +2690,7 @@ pub fn DescribingUiIndex() -> dioxus::prelude::Element {
             contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f92672;\">&lt;</span><span style=\"color:#f8f8f2;\">div</span><span style=\"color:#f92672;\">&gt;</span><span style=\"color:#ff80f4;\">0</span><span style=\"color:#f92672;\">&lt;/</span><span style=\"color:#f8f8f2;\">div</span><span style=\"color:#f92672;\">&gt;\n</span><span style=\"color:#f92672;\">&lt;</span><span style=\"color:#f8f8f2;\">div</span><span style=\"color:#f92672;\">&gt;</span><span style=\"color:#ff80f4;\">1</span><span style=\"color:#f92672;\">&lt;/</span><span style=\"color:#f8f8f2;\">div</span><span style=\"color:#f92672;\">&gt;\n</span><span style=\"color:#f92672;\">&lt;</span><span style=\"color:#f8f8f2;\">div</span><span style=\"color:#f92672;\">&gt;</span><span style=\"color:#ff80f4;\">2</span><span style=\"color:#f92672;\">&lt;/</span><span style=\"color:#f8f8f2;\">div</span><span style=\"color:#f92672;\">&gt;\n</span><span style=\"color:#f92672;\">&lt;</span><span style=\"color:#f8f8f2;\">div</span><span style=\"color:#f92672;\">&gt;</span><span style=\"color:#ff80f4;\">0</span><span style=\"color:#f92672;\">&lt;/</span><span style=\"color:#f8f8f2;\">div</span><span style=\"color:#f92672;\">&gt;\n</span><span style=\"color:#f92672;\">&lt;</span><span style=\"color:#f8f8f2;\">div</span><span style=\"color:#f92672;\">&gt;</span><span style=\"color:#ff80f4;\">1</span><span style=\"color:#f92672;\">&lt;/</span><span style=\"color:#f8f8f2;\">div</span><span style=\"color:#f92672;\">&gt;\n</span><span style=\"color:#f92672;\">&lt;</span><span style=\"color:#f8f8f2;\">div</span><span style=\"color:#f92672;\">&gt;</span><span style=\"color:#ff80f4;\">2</span><span style=\"color:#f92672;\">&lt;/</span><span style=\"color:#f8f8f2;\">div</span><span style=\"color:#f92672;\">&gt;</span></pre>\n",
         }
         h3 { id: "if-statements",
-            a { href: "#if-statements", class: "header", "If statements" }
+            Link { to: "#if-statements", class: "header", "If statements" }
         }
         p { "You can also use if statements without an else branch within RSX:" }
         CodeBlock {
@@ -2748,11 +2705,11 @@ pub fn DescribingUiSpecialAttributes() -> dioxus::prelude::Element {
     use dioxus::prelude::*;
     rsx! {
         h1 { id: "special-attributes",
-            a { href: "#special-attributes", class: "header", "Special Attributes" }
+            Link { to: "#special-attributes", class: "header", "Special Attributes" }
         }
         p { "While most attributes are simply passed on to the HTML, some have special behaviors." }
         h2 { id: "the-html-escape-hatch",
-            a { href: "#the-html-escape-hatch", class: "header", "The HTML Escape Hatch" }
+            Link { to: "#the-html-escape-hatch", class: "header", "The HTML Escape Hatch" }
         }
         p {
             "If you're working with pre-rendered assets, output from templates, or output from a JS library, then you might want to pass HTML directly instead of going through Dioxus. In these instances, reach for  "
@@ -2761,7 +2718,7 @@ pub fn DescribingUiSpecialAttributes() -> dioxus::prelude::Element {
         }
         p {
             "For example, shipping a markdown-to-Dioxus converter might significantly bloat your final application size. Instead, you'll want to pre-render your markdown to HTML and then include the HTML directly in your output. We use this approach for the "
-            a { href: "https://dioxuslabs.com", "Dioxus homepage" }
+            Link { to: "https://dioxuslabs.com" }
             ":"
         }
         CodeBlock {
@@ -2773,9 +2730,7 @@ pub fn DescribingUiSpecialAttributes() -> dioxus::prelude::Element {
                 "Note! This attribute is called \"dangerous_inner_html\" because it is "
                 strong { "dangerous" }
                 " to pass it data you don't trust. If you're not careful, you can easily expose "
-                a { href: "https://en.wikipedia.org/wiki/Cross-site_scripting",
-                    "cross-site scripting (XSS)"
-                }
+                Link { to: "https://en.wikipedia.org/wiki/Cross-site_scripting" }
                 " attacks to your users."
             }
             p {
@@ -2785,7 +2740,7 @@ pub fn DescribingUiSpecialAttributes() -> dioxus::prelude::Element {
             }
         }
         h2 { id: "boolean-attributes",
-            a { href: "#boolean-attributes", class: "header", "Boolean Attributes" }
+            Link { to: "#boolean-attributes", class: "header", "Boolean Attributes" }
         }
         p {
             "Most attributes, when rendered, will be rendered exactly as the input you provided. However, some attributes are considered \"boolean\" attributes and just their presence determines whether they affect the output. For these attributes, a provided value of  "
@@ -2899,7 +2854,7 @@ pub fn DescribingUiComponents() -> dioxus::prelude::Element {
     use dioxus::prelude::*;
     rsx! {
         h1 { id: "components",
-            a { href: "#components", class: "header", "Components" }
+            Link { to: "#components", class: "header", "Components" }
         }
         p {
             "Just like you wouldn't want to write a complex program in a single, long,  "
@@ -2966,13 +2921,13 @@ pub fn DescribingUiComponentProps() -> dioxus::prelude::Element {
     use dioxus::prelude::*;
     rsx! {
         h1 { id: "component-props",
-            a { href: "#component-props", class: "header", "Component Props" }
+            Link { to: "#component-props", class: "header", "Component Props" }
         }
         p {
             "Just like you can pass arguments to a function, you can pass props to a component that customize its behavior! The components we've seen so far didn't accept any props – so let's write some components that do."
         }
         h2 { id: "",
-            a { href: "#", class: "header", "" }
+            Link { to: "#", class: "header", "" }
             code { "#[derive(Props)]" }
         }
         p {
@@ -3001,9 +2956,7 @@ pub fn DescribingUiComponentProps() -> dioxus::prelude::Element {
                 "Borrowed props:"
                 ul {
                     li {
-                        a { href: "https://doc.rust-lang.org/beta/rust-by-example/scope/borrow.html",
-                            "Borrow"
-                        }
+                        Link { to: "https://doc.rust-lang.org/beta/rust-by-example/scope/borrow.html" }
                         " from a parent component"
                     }
                     li { "Cannot be memoized due to lifetime constraints" }
@@ -3011,7 +2964,7 @@ pub fn DescribingUiComponentProps() -> dioxus::prelude::Element {
             }
         }
         h3 { id: "owned-props",
-            a { href: "#owned-props", class: "header", "Owned Props" }
+            Link { to: "#owned-props", class: "header", "Owned Props" }
         }
         p { "Owned Props are very simple – they don't borrow anything. Example:" }
         CodeBlock {
@@ -3036,7 +2989,7 @@ pub fn DescribingUiComponentProps() -> dioxus::prelude::Element {
             }
         }
         h3 { id: "borrowed-props",
-            a { href: "#borrowed-props", class: "header", "Borrowed Props" }
+            Link { to: "#borrowed-props", class: "header", "Borrowed Props" }
         }
         p {
             "Owned props work well if your props are easy to copy around – like a single number. But what if we need to pass a larger data type, like a String from an  "
@@ -3044,9 +2997,7 @@ pub fn DescribingUiComponentProps() -> dioxus::prelude::Element {
             " Component to a  "
             code { "TitleCard" }
             " subcomponent? A naive solution might be to "
-            a { href: "https://doc.rust-lang.org/std/clone/trait.Clone.html",
-                code { ".clone()" }
-            }
+            Link { to: "https://doc.rust-lang.org/std/clone/trait.Clone.html" }
             " the String, creating a copy of it for the subcomponent – but this would be inefficient, especially for larger Strings."
         }
         p {
@@ -3079,7 +3030,7 @@ pub fn DescribingUiComponentProps() -> dioxus::prelude::Element {
             " rerun when the parent scope is rerendered. Because of this Borrowed Props should be reserved for components that are cheap to rerun or places where cloning data is an issue. Using Borrowed Props everywhere will result in large parts of your app rerunning every interaction."
         }
         h2 { id: "prop-options",
-            a { href: "#prop-options", class: "header", "Prop Options" }
+            Link { to: "#prop-options", class: "header", "Prop Options" }
         }
         p {
             "The  "
@@ -3087,7 +3038,7 @@ pub fn DescribingUiComponentProps() -> dioxus::prelude::Element {
             " macro has some features that let you customize the behavior of props."
         }
         h3 { id: "optional-props",
-            a { href: "#optional-props", class: "header", "Optional Props" }
+            Link { to: "#optional-props", class: "header", "Optional Props" }
         }
         p {
             "You can create optional fields by using the  "
@@ -3104,7 +3055,7 @@ pub fn DescribingUiComponentProps() -> dioxus::prelude::Element {
             name: "component_props_options.rs".to_string(),
         }
         h3 { id: "explicitly-required",
-            a { href: "#explicitly-required", class: "header", "Explicitly Required " }
+            Link { to: "#explicitly-required", class: "header", "Explicitly Required " }
             code { "Option" }
             "s"
         }
@@ -3131,7 +3082,7 @@ pub fn DescribingUiComponentProps() -> dioxus::prelude::Element {
             name: "component_props_options.rs".to_string(),
         }
         h3 { id: "default-props",
-            a { href: "#default-props", class: "header", "Default Props" }
+            Link { to: "#default-props", class: "header", "Default Props" }
         }
         p {
             "You can use  "
@@ -3148,7 +3099,7 @@ pub fn DescribingUiComponentProps() -> dioxus::prelude::Element {
             name: "component_props_options.rs".to_string(),
         }
         h3 { id: "automatic-conversion-with",
-            a { href: "#automatic-conversion-with", class: "header", "Automatic Conversion with " }
+            Link { to: "#automatic-conversion-with", class: "header", "Automatic Conversion with " }
             code { ".into" }
         }
         p {
@@ -3176,7 +3127,7 @@ pub fn DescribingUiComponentProps() -> dioxus::prelude::Element {
             name: "component_props_options.rs".to_string(),
         }
         h2 { id: "the",
-            a { href: "#the", class: "header", "The " }
+            Link { to: "#the", class: "header", "The " }
             code { "inline_props" }
             " macro"
         }
@@ -3212,7 +3163,7 @@ pub fn DescribingUiComponentChildren() -> dioxus::prelude::Element {
     use dioxus::prelude::*;
     rsx! {
         h1 { id: "component-children",
-            a { href: "#component-children", class: "header", "Component Children" }
+            Link { to: "#component-children", class: "header", "Component Children" }
         }
         p {
             "In some cases, you may wish to create a component that acts as a container for some other content, without the component needing to know what that content is. To achieve this, create a prop of type  "
@@ -3247,7 +3198,7 @@ pub fn DescribingUiComponentChildren() -> dioxus::prelude::Element {
             }
         }
         h2 { id: "the",
-            a { href: "#the", class: "header", "The " }
+            Link { to: "#the", class: "header", "The " }
             code { "children" }
             " field"
         }
@@ -3278,7 +3229,7 @@ pub fn InteractivityIndex() -> dioxus::prelude::Element {
     use dioxus::prelude::*;
     rsx! {
         h1 { id: "interactivity",
-            a { href: "#interactivity", class: "header", "Interactivity" }
+            Link { to: "#interactivity", class: "header", "Interactivity" }
         }
         p {
             "So far, we've learned how to describe the structure and properties of our user interfaces. However, most interfaces need to be interactive in order to be useful. In this chapter, we describe how to make a Dioxus app that responds to the user."
@@ -3290,7 +3241,7 @@ pub fn InteractivityEventHandlers() -> dioxus::prelude::Element {
     use dioxus::prelude::*;
     rsx! {
         h1 { id: "event-handlers",
-            a { href: "#event-handlers", class: "header", "Event Handlers" }
+            Link { to: "#event-handlers", class: "header", "Event Handlers" }
         }
         p {
             "Event handlers are used to respond to user actions. For example, an event handler could be triggered when the user clicks, scrolls, moves the mouse, or types a character."
@@ -3313,19 +3264,15 @@ pub fn InteractivityEventHandlers() -> dioxus::prelude::Element {
             name: "event_click.rs".to_string(),
         }
         h2 { id: "the",
-            a { href: "#the", class: "header", "The " }
+            Link { to: "#the", class: "header", "The " }
             code { "Event" }
             " object"
         }
         p {
             "Event handlers receive an "
-            a { href: "https://docs.rs/dioxus-core/latest/dioxus_core/struct.Event.html",
-                code { "Event" }
-            }
+            Link { to: "https://docs.rs/dioxus-core/latest/dioxus_core/struct.Event.html" }
             " object containing information about the event. Different types of events contain different types of data. For example, mouse-related events contain "
-            a { href: "https://docs.rs/dioxus/latest/dioxus/events/struct.MouseData.html",
-                code { "MouseData" }
-            }
+            Link { to: "https://docs.rs/dioxus/latest/dioxus/events/struct.MouseData.html" }
             ", which tells you things like where the mouse was clicked and what mouse buttons were used."
         }
         p { "In the example above, this event data was logged to the terminal:" }
@@ -3334,13 +3281,11 @@ pub fn InteractivityEventHandlers() -> dioxus::prelude::Element {
         }
         p {
             "To learn what the different event types for HTML provide, read the "
-            a { href: "https://docs.rs/dioxus-html/latest/dioxus_html/events/index.html",
-                "events module docs"
-            }
+            Link { to: "https://docs.rs/dioxus-html/latest/dioxus_html/events/index.html" }
             "."
         }
         h3 { id: "event-propagation",
-            a { href: "#event-propagation", class: "header", "Event propagation" }
+            Link { to: "#event-propagation", class: "header", "Event propagation" }
         }
         p {
             "Some events will trigger first on the element the event originated at upward. For example, a click event on a  "
@@ -3352,9 +3297,7 @@ pub fn InteractivityEventHandlers() -> dioxus::prelude::Element {
         blockquote {
             p {
                 "For more information about event propigation see "
-                a { href: "https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Building_blocks/Events#event_bubbling",
-                    "the mdn docs on event bubling"
-                }
+                Link { to: "https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Building_blocks/Events#event_bubbling" }
             }
         }
         p {
@@ -3367,7 +3310,7 @@ pub fn InteractivityEventHandlers() -> dioxus::prelude::Element {
             name: "event_nested.rs".to_string(),
         }
         h2 { id: "prevent-default",
-            a { href: "#prevent-default", class: "header", "Prevent Default" }
+            Link { to: "#prevent-default", class: "header", "Prevent Default" }
         }
         p {
             "Some events have a default behavior. For keyboard events, this might be entering the typed character. For mouse events, this might be selecting some text."
@@ -3390,7 +3333,7 @@ pub fn InteractivityEventHandlers() -> dioxus::prelude::Element {
             }
         }
         h2 { id: "handler-props",
-            a { href: "#handler-props", class: "header", "Handler Props" }
+            Link { to: "#handler-props", class: "header", "Handler Props" }
         }
         p {
             "Sometimes, you might want to make a component that accepts an event handler. A simple example would be a  "
@@ -3428,7 +3371,7 @@ pub fn InteractivityHooks() -> dioxus::prelude::Element {
     use dioxus::prelude::*;
     rsx! {
         h1 { id: "hooks-and-component-state",
-            a { href: "#hooks-and-component-state", class: "header", "Hooks and Component State" }
+            Link { to: "#hooks-and-component-state", class: "header", "Hooks and Component State" }
         }
         p {
             "So far our components have had no state like a normal rust functions. However, in a UI component, it is often useful to have stateful functionality to build user interactions. For example, you might want to track whether the user has opened a drop-down, and render different things accordingly."
@@ -3441,14 +3384,12 @@ pub fn InteractivityHooks() -> dioxus::prelude::Element {
             "), and provide you with functionality and state."
         }
         h2 { id: "",
-            a { href: "#", class: "header", "" }
+            Link { to: "#", class: "header", "" }
             code { "use_state" }
             " Hook"
         }
         p {
-            a { href: "https://docs.rs/dioxus/latest/dioxus/prelude/fn.use_state.html",
-                code { "use_state" }
-            }
+            Link { to: "https://docs.rs/dioxus/latest/dioxus/prelude/fn.use_state.html" }
             " is one of the simplest hooks."
         }
         ul {
@@ -3486,9 +3427,7 @@ pub fn InteractivityHooks() -> dioxus::prelude::Element {
             p {
                 code { "use_state" }
                 " returns your value wrapped in a smart pointer of type "
-                a { href: "https://docs.rs/dioxus/latest/dioxus/prelude/struct.UseState.html",
-                    code { "UseState" }
-                }
+                Link { to: "https://docs.rs/dioxus/latest/dioxus/prelude/struct.UseState.html" }
                 ". This is why you can both read the value and update it, even within an event handler."
             }
         }
@@ -3508,7 +3447,7 @@ pub fn InteractivityHooks() -> dioxus::prelude::Element {
             }
         }
         h2 { id: "rules-of-hooks",
-            a { href: "#rules-of-hooks", class: "header", "Rules of Hooks" }
+            Link { to: "#rules-of-hooks", class: "header", "Rules of Hooks" }
         }
         p {
             "The above example might seem a bit magic, since Rust functions are typically not associated with state. Dioxus allows hooks to maintain state across renders through a reference to  "
@@ -3546,38 +3485,35 @@ pub fn InteractivityHooks() -> dioxus::prelude::Element {
         }
         p { "These rules mean that there are certain things you can't do with hooks:" }
         h3 { id: "no-hooks-in-conditionals",
-            a { href: "#no-hooks-in-conditionals", class: "header", "No Hooks in Conditionals" }
+            Link { to: "#no-hooks-in-conditionals", class: "header", "No Hooks in Conditionals" }
         }
         CodeBlock {
             contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#8c8c8c;\">// ❌ don&#39;t call hooks in conditionals!\n</span><span style=\"color:#8c8c8c;\">// We must ensure that the same hooks will be called every time\n</span><span style=\"color:#8c8c8c;\">// But `if` statements only run if the conditional is true!\n</span><span style=\"color:#8c8c8c;\">// So we might violate rule 2.\n</span><span style=\"color:#f92672;\">if</span><span style=\"color:#f8f8f2;\"> you_are_happy </span><span style=\"color:#f92672;\">&amp;&amp;</span><span style=\"color:#f8f8f2;\"> you_know_it {{\n</span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> something </span><span style=\"color:#f92672;\">= </span><span style=\"color:#66d9ef;\">use_state</span><span style=\"color:#f8f8f2;\">(cx, || </span><span style=\"color:#ffee99;\">&quot;hands&quot;</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"color:#f8f8f2;\">println!(</span><span style=\"color:#ffee99;\">&quot;clap your </span><span style=\"color:#ff80f4;\">{{something}}</span><span style=\"color:#ffee99;\">&quot;</span><span style=\"color:#f8f8f2;\">)\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#8c8c8c;\">// ✅ instead, *always* call use_state\n</span><span style=\"color:#8c8c8c;\">// You can put other stuff in the conditional though\n</span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> something </span><span style=\"color:#f92672;\">= </span><span style=\"color:#66d9ef;\">use_state</span><span style=\"color:#f8f8f2;\">(cx, || </span><span style=\"color:#ffee99;\">&quot;hands&quot;</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"color:#f92672;\">if</span><span style=\"color:#f8f8f2;\"> you_are_happy </span><span style=\"color:#f92672;\">&amp;&amp;</span><span style=\"color:#f8f8f2;\"> you_know_it {{\n</span><span style=\"color:#f8f8f2;\">println!(</span><span style=\"color:#ffee99;\">&quot;clap your </span><span style=\"color:#ff80f4;\">{{something}}</span><span style=\"color:#ffee99;\">&quot;</span><span style=\"color:#f8f8f2;\">)\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
             name: "hooks_bad.rs".to_string(),
         }
         h3 { id: "no-hooks-in-closures",
-            a { href: "#no-hooks-in-closures", class: "header", "No Hooks in Closures" }
+            Link { to: "#no-hooks-in-closures", class: "header", "No Hooks in Closures" }
         }
         CodeBlock {
             contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#8c8c8c;\">// ❌ don&#39;t call hooks inside closures!\n</span><span style=\"color:#8c8c8c;\">// We can&#39;t guarantee that the closure, if used, will be called in the same order every time\n</span><span style=\"font-style:italic;color:#66d9ef;\">let </span><span style=\"color:#a6e22e;\">_a </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">|| {{\n</span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> b </span><span style=\"color:#f92672;\">= </span><span style=\"color:#66d9ef;\">use_state</span><span style=\"color:#f8f8f2;\">(cx, || </span><span style=\"color:#ff80f4;\">0</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"color:#f8f8f2;\">b.</span><span style=\"color:#66d9ef;\">get</span><span style=\"color:#f8f8f2;\">()\n</span><span style=\"color:#f8f8f2;\">}};\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#8c8c8c;\">// ✅ instead, move hook `b` outside\n</span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> b </span><span style=\"color:#f92672;\">= </span><span style=\"color:#66d9ef;\">use_state</span><span style=\"color:#f8f8f2;\">(cx, || </span><span style=\"color:#ff80f4;\">0</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"font-style:italic;color:#66d9ef;\">let </span><span style=\"color:#a6e22e;\">_a </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">|| b.</span><span style=\"color:#66d9ef;\">get</span><span style=\"color:#f8f8f2;\">();</span></pre>\n",
             name: "hooks_bad.rs".to_string(),
         }
         h3 { id: "no-hooks-in-loops",
-            a { href: "#no-hooks-in-loops", class: "header", "No Hooks in Loops" }
+            Link { to: "#no-hooks-in-loops", class: "header", "No Hooks in Loops" }
         }
         CodeBlock {
             contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#8c8c8c;\">// `names` is a Vec&lt;&amp;str&gt;\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#8c8c8c;\">// ❌ Do not use hooks in loops!\n</span><span style=\"color:#8c8c8c;\">// In this case, if the length of the Vec changes, we break rule 2\n</span><span style=\"color:#f92672;\">for</span><span style=\"color:#f8f8f2;\"> _name </span><span style=\"color:#f92672;\">in &amp;</span><span style=\"color:#f8f8f2;\">names {{\n</span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> is_selected </span><span style=\"color:#f92672;\">= </span><span style=\"color:#66d9ef;\">use_state</span><span style=\"color:#f8f8f2;\">(cx, || </span><span style=\"color:#ff80f4;\">false</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"color:#f8f8f2;\">println!(</span><span style=\"color:#ffee99;\">&quot;selected: </span><span style=\"color:#ff80f4;\">{{is_selected}}</span><span style=\"color:#ffee99;\">&quot;</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#8c8c8c;\">// ✅ Instead, use a hashmap with use_ref\n</span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> selection_map </span><span style=\"color:#f92672;\">= </span><span style=\"color:#66d9ef;\">use_ref</span><span style=\"color:#f8f8f2;\">(cx, HashMap::&lt;</span><span style=\"color:#f92672;\">&amp;</span><span style=\"font-style:italic;color:#66d9ef;\">str</span><span style=\"color:#f8f8f2;\">, </span><span style=\"font-style:italic;color:#66d9ef;\">bool</span><span style=\"color:#f8f8f2;\">&gt;::new);\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\">for</span><span style=\"color:#f8f8f2;\"> name </span><span style=\"color:#f92672;\">in &amp;</span><span style=\"color:#f8f8f2;\">names {{\n</span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> is_selected </span><span style=\"color:#f92672;\">=</span><span style=\"color:#f8f8f2;\"> selection_map.</span><span style=\"color:#66d9ef;\">read</span><span style=\"color:#f8f8f2;\">()[name];\n</span><span style=\"color:#f8f8f2;\">println!(</span><span style=\"color:#ffee99;\">&quot;selected: </span><span style=\"color:#ff80f4;\">{{is_selected}}</span><span style=\"color:#ffee99;\">&quot;</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
             name: "hooks_bad.rs".to_string(),
         }
         h2 { id: "",
-            a { href: "#", class: "header", "" }
+            Link { to: "#", class: "header", "" }
             code { "use_ref" }
             " Hook"
         }
         p {
             code { "use_state" }
             " is great for tracking simple values. However, you may notice in the "
-            a { href: "https://docs.rs/dioxus/latest/dioxus/hooks/struct.UseState.html",
-                code { "UseState" }
-                " API"
-            }
+            Link { to: "https://docs.rs/dioxus/latest/dioxus/hooks/struct.UseState.html" }
             " that the only way to modify its value is to replace it with something else (e.g., by calling "
             code { "set" }
             ", or through one of the "
@@ -3628,13 +3564,9 @@ pub fn InteractivityHooks() -> dioxus::prelude::Element {
                 " and  "
                 code { "UseRef" }
                 ", respectively) are in some ways similar to "
-                a { href: "https://doc.rust-lang.org/std/cell/",
-                    code { "Cell" }
-                }
+                Link { to: "https://doc.rust-lang.org/std/cell/" }
                 " and "
-                a { href: "https://doc.rust-lang.org/std/cell/struct.RefCell.html",
-                    code { "RefCell" }
-                }
+                Link { to: "https://doc.rust-lang.org/std/cell/struct.RefCell.html" }
                 " – they provide interior mutability. However, these Dioxus wrappers also ensure that the component gets re-rendered whenever you change the state."
             }
         }
@@ -3645,13 +3577,13 @@ pub fn InteractivityUserInput() -> dioxus::prelude::Element {
     use dioxus::prelude::*;
     rsx! {
         h1 { id: "user-input",
-            a { href: "#user-input", class: "header", "User Input" }
+            Link { to: "#user-input", class: "header", "User Input" }
         }
         p {
             "Interfaces often need to provide a way to input data: e.g. text, numbers, checkboxes, etc. In Dioxus, there are two ways you can work with user input."
         }
         h2 { id: "controlled-inputs",
-            a { href: "#controlled-inputs", class: "header", "Controlled Inputs" }
+            Link { to: "#controlled-inputs", class: "header", "Controlled Inputs" }
         }
         p {
             "With controlled inputs, you are directly in charge of the state of the input. This gives you a lot of flexibility, and makes it easy to keep things in sync. For example, this is how you would create a controlled text input:"
@@ -3673,7 +3605,7 @@ pub fn InteractivityUserInput() -> dioxus::prelude::Element {
             }
         }
         h2 { id: "uncontrolled-inputs",
-            a { href: "#uncontrolled-inputs", class: "header", "Uncontrolled Inputs" }
+            Link { to: "#uncontrolled-inputs", class: "header", "Uncontrolled Inputs" }
         }
         p {
             "As an alternative to controlled inputs, you can simply let the platform keep track of the input values. If we don't tell a HTML input what content it should have, it will be editable anyway (this is built into the browser). This approach can be more performant, but less flexible. For example, it's harder to keep the input in sync with another element."
@@ -3699,13 +3631,13 @@ pub fn InteractivitySharingState() -> dioxus::prelude::Element {
     use dioxus::prelude::*;
     rsx! {
         h1 { id: "sharing-state",
-            a { href: "#sharing-state", class: "header", "Sharing State" }
+            Link { to: "#sharing-state", class: "header", "Sharing State" }
         }
         p {
             "Often, multiple components need to access the same state. Depending on your needs, there are several ways to implement this."
         }
         h2 { id: "lifting-state",
-            a { href: "#lifting-state", class: "header", "Lifting State" }
+            Link { to: "#lifting-state", class: "header", "Lifting State" }
         }
         p {
             "One approach to share state between components is to \"lift\" it up to the nearest common ancestor. This means putting the  "
@@ -3767,7 +3699,7 @@ pub fn InteractivitySharingState() -> dioxus::prelude::Element {
             }
         }
         h2 { id: "using-context",
-            a { href: "#using-context", class: "header", "Using Context" }
+            Link { to: "#using-context", class: "header", "Using Context" }
         }
         p {
             "Sometimes, some state needs to be shared between multiple components far down the tree, and passing it down through props is very inconvenient."
@@ -3789,15 +3721,11 @@ pub fn InteractivitySharingState() -> dioxus::prelude::Element {
         }
         p {
             "Dioxus offers a better solution than this \"prop drilling\" – providing context. The "
-            a { href: "https://docs.rs/dioxus-hooks/latest/dioxus_hooks/fn.use_context_provider.html",
-                code { "use_context_provider" }
-            }
+            Link { to: "https://docs.rs/dioxus-hooks/latest/dioxus_hooks/fn.use_context_provider.html" }
             " hook is similar to "
             code { "use_ref" }
             ", but it makes it available through "
-            a { href: "https://docs.rs/dioxus-hooks/latest/dioxus_hooks/fn.use_context.html",
-                code { "use_context" }
-            }
+            Link { to: "https://docs.rs/dioxus-hooks/latest/dioxus_hooks/fn.use_context.html" }
             " for all children components."
         }
         p { "First, we have to create a struct for our dark mode configuration:" }
@@ -3859,13 +3787,13 @@ pub fn InteractivityCustomHooks() -> dioxus::prelude::Element {
     use dioxus::prelude::*;
     rsx! {
         h1 { id: "custom-hooks",
-            a { href: "#custom-hooks", class: "header", "Custom Hooks" }
+            Link { to: "#custom-hooks", class: "header", "Custom Hooks" }
         }
         p {
             "Hooks are a great way to encapsulate business logic. If none of the existing hooks work for your problem, you can write your own."
         }
         h2 { id: "composing-hooks",
-            a { href: "#composing-hooks", class: "header", "Composing Hooks" }
+            Link { to: "#composing-hooks", class: "header", "Composing Hooks" }
         }
         p {
             "To avoid repetition, you can encapsulate business logic based on existing hooks to create a new hook."
@@ -3880,13 +3808,11 @@ pub fn InteractivityCustomHooks() -> dioxus::prelude::Element {
             name: "hooks_composed.rs".to_string(),
         }
         h2 { id: "custom-hook-logic",
-            a { href: "#custom-hook-logic", class: "header", "Custom Hook Logic" }
+            Link { to: "#custom-hook-logic", class: "header", "Custom Hook Logic" }
         }
         p {
             "You can use "
-            a { href: "https://docs.rs/dioxus/latest/dioxus/prelude/struct.Scope.html#method.use_hook",
-                code { "cx.use_hook" }
-            }
+            Link { to: "https://docs.rs/dioxus/latest/dioxus/prelude/struct.Scope.html#method.use_hook" }
             " to build your own hooks. In fact, this is what all the standard hooks are built on!"
         }
         p {
@@ -3896,9 +3822,7 @@ pub fn InteractivityCustomHooks() -> dioxus::prelude::Element {
         blockquote {
             p {
                 "Note: You can implement "
-                a { href: "https://doc.rust-lang.org/std/ops/trait.Drop.html",
-                    code { "Drop" }
-                }
+                Link { to: "https://doc.rust-lang.org/std/ops/trait.Drop.html" }
                 " for your hook value – it will be dropped then the component is unmounted (no longer in the UI)"
             }
         }
@@ -3912,18 +3836,14 @@ pub fn InteractivityCustomHooks() -> dioxus::prelude::Element {
                 "The "
                 code { "use_state" }
                 " hook tracks state in the hook value, and uses "
-                a { href: "https://docs.rs/dioxus/latest/dioxus/prelude/struct.Scope.html#method.schedule_update",
-                    code { "cx.schedule_update" }
-                }
+                Link { to: "https://docs.rs/dioxus/latest/dioxus/prelude/struct.Scope.html#method.schedule_update" }
                 " to make Dioxus re-render the component whenever it changes."
             }
             li {
                 "The "
                 code { "use_context" }
                 " hook calls "
-                a { href: "https://docs.rs/dioxus/latest/dioxus/prelude/struct.Scope.html#method.consume_context",
-                    code { "cx.consume_context" }
-                }
+                Link { to: "https://docs.rs/dioxus/latest/dioxus/prelude/struct.Scope.html#method.consume_context" }
                 " (which would be expensive to call on every render) to get some context from the scope"
             }
         }
@@ -3934,13 +3854,13 @@ pub fn InteractivityDynamicRendering() -> dioxus::prelude::Element {
     use dioxus::prelude::*;
     rsx! {
         h1 { id: "dynamic-rendering",
-            a { href: "#dynamic-rendering", class: "header", "Dynamic Rendering" }
+            Link { to: "#dynamic-rendering", class: "header", "Dynamic Rendering" }
         }
         p {
             "Sometimes you want to render different things depending on the state/props. With Dioxus, just describe what you want to see using Rust control flow – the framework will take care of making the necessary changes on the fly if the state or props change!"
         }
         h2 { id: "conditional-rendering",
-            a { href: "#conditional-rendering", class: "header", "Conditional Rendering" }
+            Link { to: "#conditional-rendering", class: "header", "Conditional Rendering" }
         }
         p {
             "To render different elements based on a condition, you could use an  "
@@ -3959,7 +3879,7 @@ pub fn InteractivityDynamicRendering() -> dioxus::prelude::Element {
             }
         }
         h3 { id: "improving-the",
-            a { href: "#improving-the", class: "header", "Improving the " }
+            Link { to: "#improving-the", class: "header", "Improving the " }
             code { "if-else" }
             " Example"
         }
@@ -3978,7 +3898,7 @@ pub fn InteractivityDynamicRendering() -> dioxus::prelude::Element {
             name: "conditional_rendering.rs".to_string(),
         }
         h3 { id: "inspecting",
-            a { href: "#inspecting", class: "header", "Inspecting " }
+            Link { to: "#inspecting", class: "header", "Inspecting " }
             code { "Element" }
             " props"
         }
@@ -4001,7 +3921,7 @@ pub fn InteractivityDynamicRendering() -> dioxus::prelude::Element {
             ", but if you need a modified version of it, you can construct a new one based on its attributes/children/etc."
         }
         h2 { id: "rendering-nothing",
-            a { href: "#rendering-nothing", class: "header", "Rendering Nothing" }
+            Link { to: "#rendering-nothing", class: "header", "Rendering Nothing" }
         }
         p {
             "To render nothing, you can return  "
@@ -4023,14 +3943,12 @@ pub fn InteractivityDynamicRendering() -> dioxus::prelude::Element {
                 "Again, you may use a different method to conditionally return  "
                 code { "None" }
                 ". For example the boolean's "
-                a { href: "https://doc.rust-lang.org/std/primitive.bool.html#method.then",
-                    code { "then()" }
-                }
+                Link { to: "https://doc.rust-lang.org/std/primitive.bool.html#method.then" }
                 " function could be used."
             }
         }
         h2 { id: "rendering-lists",
-            a { href: "#rendering-lists", class: "header", "Rendering Lists" }
+            Link { to: "#rendering-lists", class: "header", "Rendering Lists" }
         }
         p {
             "Often, you'll want to render a collection of components. For example, you might want to render a list of all comments on a post."
@@ -4072,7 +3990,7 @@ pub fn InteractivityDynamicRendering() -> dioxus::prelude::Element {
             name: "rendering_lists.rs".to_string(),
         }
         h3 { id: "inline-for-loops",
-            a { href: "#inline-for-loops", class: "header", "Inline for loops" }
+            Link { to: "#inline-for-loops", class: "header", "Inline for loops" }
         }
         p {
             "Because of how common it is to render a list of items, Dioxus provides a shorthand for this. Instead of using  "
@@ -4088,7 +4006,7 @@ pub fn InteractivityDynamicRendering() -> dioxus::prelude::Element {
             name: "rendering_lists.rs".to_string(),
         }
         h3 { id: "the",
-            a { href: "#the", class: "header", "The " }
+            Link { to: "#the", class: "header", "The " }
             code { "key" }
             " Attribute"
         }
@@ -4125,7 +4043,7 @@ pub fn InteractivityRouter() -> dioxus::prelude::Element {
     use dioxus::prelude::*;
     rsx! {
         h1 { id: "router",
-            a { href: "#router", class: "header", "Router" }
+            Link { to: "#router", class: "header", "Router" }
         }
         p {
             "In many of your apps, you'll want to have different \"scenes\". For a webpage, these scenes might be the different webpages with their own content. For a desktop app, these scenes might be different views in your app."
@@ -4134,7 +4052,7 @@ pub fn InteractivityRouter() -> dioxus::prelude::Element {
             "To unify these platforms, Dioxus provides a first-party solution for scene management called Dioxus Router."
         }
         h2 { id: "what-is-it",
-            a { href: "#what-is-it", class: "header", "What is it?" }
+            Link { to: "#what-is-it", class: "header", "What is it?" }
         }
         p {
             "For an app like the Dioxus landing page (https://dioxuslabs.com), we want to have several different scenes:"
@@ -4155,7 +4073,7 @@ pub fn InteractivityRouter() -> dioxus::prelude::Element {
         }
         CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">cargo add dioxus</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">router</span></pre>\n" }
         h2 { id: "using-the-router",
-            a { href: "#using-the-router", class: "header", "Using the router" }
+            Link { to: "#using-the-router", class: "header", "Using the router" }
         }
         p {
             "Unlike other routers in the Rust ecosystem, our router is built declaratively. This makes it possible to compose our app layout simply by arranging components."
@@ -4178,7 +4096,7 @@ pub fn InteractivityRouter() -> dioxus::prelude::Element {
             contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">rsx!{{\n</span><span style=\"color:#f8f8f2;\">    Router {{\n</span><span style=\"color:#f8f8f2;\">        Route {{ to: </span><span style=\"color:#ffee99;\">&quot;/home&quot;</span><span style=\"color:#f8f8f2;\">, Home {{}} }}\n</span><span style=\"color:#f8f8f2;\">        Route {{ to: </span><span style=\"color:#ffee99;\">&quot;/blog&quot;</span><span style=\"color:#f8f8f2;\">, Blog {{}} }}\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"color:#8c8c8c;\">//  if the current location doesn&#39;t match any of the above routes, redirect to &quot;/home&quot;\n</span><span style=\"color:#f8f8f2;\">        Redirect {{ from: </span><span style=\"color:#ffee99;\">&quot;&quot;</span><span style=\"color:#f8f8f2;\">, to: </span><span style=\"color:#ffee99;\">&quot;/home&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
         }
         h2 { id: "links",
-            a { href: "#links", class: "header", "Links" }
+            Link { to: "#links", class: "header", "Links" }
         }
         p {
             "For our app to navigate these routes, we can provide clickable elements called Links. These simply wrap  "
@@ -4187,15 +4105,13 @@ pub fn InteractivityRouter() -> dioxus::prelude::Element {
         }
         CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">rsx!{{\n</span><span style=\"color:#f8f8f2;\">    Link {{\n</span><span style=\"color:#f8f8f2;\">        to: </span><span style=\"color:#ffee99;\">&quot;/home&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"color:#ffee99;\">&quot;Go home!&quot;\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n" }
         h2 { id: "more-reading",
-            a { href: "#more-reading", class: "header", "More reading" }
+            Link { to: "#more-reading", class: "header", "More reading" }
         }
         p {
             "This page is just a very brief overview of the router. For more information, check out "
-            a { href: "https://dioxuslabs.com/router/guide/", "the router book" }
+            Link { to: "https://dioxuslabs.com/router/guide/" }
             " or some of "
-            a { href: "https://github.com/DioxusLabs/dioxus/blob/master/examples/router.rs",
-                "the router examples"
-            }
+            Link { to: "https://github.com/DioxusLabs/dioxus/blob/master/examples/router.rs" }
             "."
         }
     }
@@ -4205,13 +4121,13 @@ pub fn AsyncIndex() -> dioxus::prelude::Element {
     use dioxus::prelude::*;
     rsx! {
         h1 { id: "working-with-async",
-            a { href: "#working-with-async", class: "header", "Working with Async" }
+            Link { to: "#working-with-async", class: "header", "Working with Async" }
         }
         p {
             "Often, apps need to interact with file systems, network interfaces, hardware, or timers. This chapter provides an overview of using async code in Dioxus."
         }
         h2 { id: "the-runtime",
-            a { href: "#the-runtime", class: "header", "The Runtime" }
+            Link { to: "#the-runtime", class: "header", "The Runtime" }
         }
         p {
             "By default, Dioxus-Desktop ships with the  "
@@ -4238,17 +4154,15 @@ pub fn AsyncUseFuture() -> dioxus::prelude::Element {
     use dioxus::prelude::*;
     rsx! {
         h1 { id: "usefuture",
-            a { href: "#usefuture", class: "header", "UseFuture" }
+            Link { to: "#usefuture", class: "header", "UseFuture" }
         }
         p {
-            a { href: "https://docs.rs/dioxus-hooks/latest/dioxus_hooks/fn.use_future.html",
-                code { "use_future" }
-            }
+            Link { to: "https://docs.rs/dioxus-hooks/latest/dioxus_hooks/fn.use_future.html" }
             " lets you run an async closure, and provides you with its result."
         }
         p {
             "For example, we can make an API request (using "
-            a { href: "https://docs.rs/reqwest/latest/reqwest/index.html", "reqwest" }
+            Link { to: "https://docs.rs/reqwest/latest/reqwest/index.html" }
             ") inside "
             code { "use_future" }
             ":"
@@ -4277,7 +4191,7 @@ pub fn AsyncUseFuture() -> dioxus::prelude::Element {
             name: "use_future.rs".to_string(),
         }
         h2 { id: "restarting-the-future",
-            a { href: "#restarting-the-future", class: "header", "Restarting the Future" }
+            Link { to: "#restarting-the-future", class: "header", "Restarting the Future" }
         }
         p {
             "The  "
@@ -4287,7 +4201,7 @@ pub fn AsyncUseFuture() -> dioxus::prelude::Element {
             " method. It can be used to execute the future again, producing a new value."
         }
         h2 { id: "dependencies",
-            a { href: "#dependencies", class: "header", "Dependencies" }
+            Link { to: "#dependencies", class: "header", "Dependencies" }
         }
         p {
             "Often, you will need to run the future again every time some value (e.g. a prop) changes. Rather than calling  "
@@ -4305,7 +4219,7 @@ pub fn AsyncUseCoroutine() -> dioxus::prelude::Element {
     use dioxus::prelude::*;
     rsx! {
         h1 { id: "coroutines",
-            a { href: "#coroutines", class: "header", "Coroutines" }
+            Link { to: "#coroutines", class: "header", "Coroutines" }
         }
         p {
             "Another tool in your async toolbox are coroutines. Coroutines are futures that can be manually stopped, started, paused, and resumed."
@@ -4316,7 +4230,7 @@ pub fn AsyncUseCoroutine() -> dioxus::prelude::Element {
             " point before yielding. This low-level control over asynchronous tasks is quite powerful, allowing for infinitely looping tasks like WebSocket polling, background timers, and other periodic actions."
         }
         h2 { id: "",
-            a { href: "#", class: "header", "" }
+            Link { to: "#", class: "header", "" }
             code { "use_coroutine" }
         }
         p {
@@ -4342,7 +4256,7 @@ pub fn AsyncUseCoroutine() -> dioxus::prelude::Element {
             "This pattern is where coroutines are extremely useful – instead of writing all the complicated logic for pausing our async tasks like we would with JavaScript promises, the Rust model allows us to just not poll our future."
         }
         h2 { id: "yielding-values",
-            a { href: "#yielding-values", class: "header", "Yielding Values" }
+            Link { to: "#yielding-values", class: "header", "Yielding Values" }
         }
         p {
             "To yield values from a coroutine, simply bring in a  "
@@ -4360,9 +4274,7 @@ pub fn AsyncUseCoroutine() -> dioxus::prelude::Element {
         }
         p {
             "You can use "
-            a { href: "https://doc.rust-lang.org/std/borrow/trait.ToOwned.html#tymethod.to_owned",
-                "to_owned"
-            }
+            Link { to: "https://doc.rust-lang.org/std/borrow/trait.ToOwned.html#tymethod.to_owned" }
             " to create a clone of the hook handle which can be moved into the async closure."
         }
         CodeBlock {
@@ -4377,7 +4289,7 @@ pub fn AsyncUseCoroutine() -> dioxus::prelude::Element {
             contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> sync_status </span><span style=\"color:#f92672;\">= </span><span style=\"color:#66d9ef;\">use_state</span><span style=\"color:#f8f8f2;\">(cx, || Status::Launching);\n</span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> load_status </span><span style=\"color:#f92672;\">= </span><span style=\"color:#66d9ef;\">use_state</span><span style=\"color:#f8f8f2;\">(cx, || Status::Launching);\n</span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> sync_task </span><span style=\"color:#f92672;\">= </span><span style=\"color:#66d9ef;\">use_coroutine</span><span style=\"color:#f8f8f2;\">(cx, |</span><span style=\"font-style:italic;color:#fd971f;\">rx</span><span style=\"color:#f8f8f2;\">: UnboundedReceiver&lt;SyncAction&gt;| {{\n</span><span style=\"color:#f8f8f2;\">    to_owned![sync_status, load_status];\n</span><span style=\"color:#f8f8f2;\">    async </span><span style=\"color:#f92672;\">move </span><span style=\"color:#f8f8f2;\">{{\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"color:#8c8c8c;\">// ...\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}})</span></pre>\n",
         }
         h2 { id: "sending-values",
-            a { href: "#sending-values", class: "header", "Sending Values" }
+            Link { to: "#sending-values", class: "header", "Sending Values" }
         }
         p {
             "You might've noticed the  "
@@ -4404,7 +4316,7 @@ pub fn AsyncUseCoroutine() -> dioxus::prelude::Element {
         }
         p {
             "We can combine coroutines with "
-            a { href: "https://docs.rs/fermi/latest/fermi/index.html", "Fermi" }
+            Link { to: "https://docs.rs/fermi/latest/fermi/index.html" }
             " to emulate Redux Toolkit's Thunk system with much less headache. This lets us store all of our app's state "
             em { "within" }
             " a task and then simply update the \"view\" values stored in Atoms. It cannot be understated how powerful this technique is: we get all the perks of native Rust tasks with the optimizations and ergonomics of global state. This means your "
@@ -4421,8 +4333,8 @@ pub fn AsyncUseCoroutine() -> dioxus::prelude::Element {
             contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"font-style:italic;color:#66d9ef;\">enum </span><span style=\"color:#f8f8f2;\">SyncAction {{\n</span><span style=\"color:#f8f8f2;\">    SetUsername(</span><span style=\"font-style:italic;color:#66d9ef;\">String</span><span style=\"color:#f8f8f2;\">),\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">async </span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">sync_service</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#f92672;\">mut </span><span style=\"font-style:italic;color:#fd971f;\">rx</span><span style=\"color:#f8f8f2;\">: UnboundedReceiver&lt;SyncAction&gt;, </span><span style=\"font-style:italic;color:#fd971f;\">atoms</span><span style=\"color:#f8f8f2;\">: AtomRoot) {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> username </span><span style=\"color:#f92672;\">=</span><span style=\"color:#f8f8f2;\"> atoms.</span><span style=\"color:#66d9ef;\">write</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#ff80f4;\">USERNAME</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> errors </span><span style=\"color:#f92672;\">=</span><span style=\"color:#f8f8f2;\"> atoms.</span><span style=\"color:#66d9ef;\">write</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#ff80f4;\">ERRORS</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#f92672;\">while </span><span style=\"font-style:italic;color:#66d9ef;\">let Ok</span><span style=\"color:#f8f8f2;\">(msg) </span><span style=\"color:#f92672;\">=</span><span style=\"color:#f8f8f2;\"> rx.</span><span style=\"color:#66d9ef;\">next</span><span style=\"color:#f8f8f2;\">().await {{\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"color:#f92672;\">match</span><span style=\"color:#f8f8f2;\"> msg {{\n</span><span style=\"color:#f8f8f2;\">            SyncAction::SetUsername(name) </span><span style=\"color:#f92672;\">=&gt; </span><span style=\"color:#f8f8f2;\">{{\n</span><span style=\"color:#f8f8f2;\">                </span><span style=\"color:#f92672;\">if </span><span style=\"color:#66d9ef;\">set_name_on_server</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#f92672;\">&amp;</span><span style=\"color:#f8f8f2;\">name).await.</span><span style=\"color:#66d9ef;\">is_ok</span><span style=\"color:#f8f8f2;\">() {{\n</span><span style=\"color:#f8f8f2;\">                    username.</span><span style=\"color:#66d9ef;\">set</span><span style=\"color:#f8f8f2;\">(name);\n</span><span style=\"color:#f8f8f2;\">                }} </span><span style=\"color:#f92672;\">else </span><span style=\"color:#f8f8f2;\">{{\n</span><span style=\"color:#f8f8f2;\">                    errors.</span><span style=\"color:#66d9ef;\">make_mut</span><span style=\"color:#f8f8f2;\">().</span><span style=\"color:#66d9ef;\">push</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#ffee99;\">&quot;SetUsernameFailed&quot;</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"color:#f8f8f2;\">                }}\n</span><span style=\"color:#f8f8f2;\">            }}\n</span><span style=\"color:#f8f8f2;\">        }}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
         }
         h2 { id: "automatic-injection-into-the-context-api",
-            a {
-                href: "#automatic-injection-into-the-context-api",
+            Link {
+                to: "#automatic-injection-into-the-context-api",
                 class: "header",
                 "Automatic injection into the Context API"
             }
@@ -4440,7 +4352,7 @@ pub fn AsyncSpawn() -> dioxus::prelude::Element {
     use dioxus::prelude::*;
     rsx! {
         h1 { id: "spawning-futures",
-            a { href: "#spawning-futures", class: "header", "Spawning Futures" }
+            Link { to: "#spawning-futures", class: "header", "Spawning Futures" }
         }
         p {
             "The  "
@@ -4472,7 +4384,7 @@ pub fn AsyncSpawn() -> dioxus::prelude::Element {
             " which lets you cancel or pause the future."
         }
         h2 { id: "spawning-tokio-tasks",
-            a { href: "#spawning-tokio-tasks", class: "header", "Spawning Tokio Tasks" }
+            Link { to: "#spawning-tokio-tasks", class: "header", "Spawning Tokio Tasks" }
         }
         p {
             "Sometimes, you might want to spawn a background task that needs multiple threads or talk to hardware that might block your app code. In these cases, we can directly spawn a Tokio task from our future. For Dioxus-Desktop, your task will be spawned onto Tokio's Multithreaded runtime:"
@@ -4488,19 +4400,17 @@ pub fn BestPracticesIndex() -> dioxus::prelude::Element {
     use dioxus::prelude::*;
     rsx! {
         h1 { id: "best-practices",
-            a { href: "#best-practices", class: "header", "Best Practices" }
+            Link { to: "#best-practices", class: "header", "Best Practices" }
         }
         h2 { id: "reusable-components",
-            a { href: "#reusable-components", class: "header", "Reusable Components" }
+            Link { to: "#reusable-components", class: "header", "Reusable Components" }
         }
         p {
             "As much as possible, break your code down into small, reusable components and hooks, instead of implementing large chunks of the UI in a single component. This will help you keep the code maintainable – it is much easier to e.g. add, remove or re-order parts of the UI if it is organized in components."
         }
         p { "Organize your components in modules to keep the codebase easy to navigate!" }
         h2 { id: "minimize-state-dependencies",
-            a { href: "#minimize-state-dependencies", class: "header",
-                "Minimize State Dependencies"
-            }
+            Link { to: "#minimize-state-dependencies", class: "header", "Minimize State Dependencies" }
         }
         p {
             "While it is possible to share state between components, this should only be done when necessary. Any component that is associated with a particular state object needs to be re-rendered when that state changes. For this reason:"
@@ -4516,7 +4426,7 @@ pub fn BestPracticesErrorHandling() -> dioxus::prelude::Element {
     use dioxus::prelude::*;
     rsx! {
         h1 { id: "error-handling",
-            a { href: "#error-handling", class: "header", "Error handling" }
+            Link { to: "#error-handling", class: "header", "Error handling" }
         }
         p {
             "A selling point of Rust for web development is the reliability of always knowing where errors can occur and being forced to handle them"
@@ -4525,7 +4435,7 @@ pub fn BestPracticesErrorHandling() -> dioxus::prelude::Element {
             "However, we haven't talked about error handling at all in this guide! In this chapter, we'll cover some strategies in handling errors to ensure your app never crashes."
         }
         h2 { id: "the-simplest--returning-none",
-            a { href: "#the-simplest--returning-none", class: "header",
+            Link { to: "#the-simplest--returning-none", class: "header",
                 "The simplest – returning None"
             }
         }
@@ -4557,7 +4467,7 @@ pub fn BestPracticesErrorHandling() -> dioxus::prelude::Element {
             contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">App</span><span style=\"color:#f8f8f2;\">(</span><span style=\"font-style:italic;color:#fd971f;\">cx</span><span style=\"color:#f8f8f2;\">: Scope) -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#8c8c8c;\">// immediately return &quot;None&quot;\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> name </span><span style=\"color:#f92672;\">=</span><span style=\"color:#f8f8f2;\"> cx.</span><span style=\"color:#66d9ef;\">use_hook</span><span style=\"color:#f8f8f2;\">(|_| </span><span style=\"font-style:italic;color:#66d9ef;\">Some</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#ffee99;\">&quot;hi&quot;</span><span style=\"color:#f8f8f2;\">))</span><span style=\"color:#f92672;\">?</span><span style=\"color:#f8f8f2;\">;\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
         }
         h2 { id: "early-return-on-result",
-            a { href: "#early-return-on-result", class: "header", "Early return on result" }
+            Link { to: "#early-return-on-result", class: "header", "Early return on result" }
         }
         p {
             "Because Rust can't accept both Options and Results with the existing try infrastructure, you'll need to manually handle Results. This can be done by converting them into Options or by explicitly handling them."
@@ -4571,7 +4481,7 @@ pub fn BestPracticesErrorHandling() -> dioxus::prelude::Element {
             " okay with early returns. Returning an error state early is a completely valid way of handling errors."
         }
         h2 { id: "match-results",
-            a { href: "#match-results", class: "header", "Match results" }
+            Link { to: "#match-results", class: "header", "Match results" }
         }
         p {
             "The next \"best\" way of handling errors in Dioxus is to match on the error locally. This is the most robust way of handling errors, though it doesn't scale to architectures beyond a single component."
@@ -4585,8 +4495,8 @@ pub fn BestPracticesErrorHandling() -> dioxus::prelude::Element {
             contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">Commandline</span><span style=\"color:#f8f8f2;\">(</span><span style=\"font-style:italic;color:#fd971f;\">cx</span><span style=\"color:#f8f8f2;\">: Scope) -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> error </span><span style=\"color:#f92672;\">= </span><span style=\"color:#66d9ef;\">use_state</span><span style=\"color:#f8f8f2;\">(cx, || </span><span style=\"font-style:italic;color:#66d9ef;\">None</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">    cx.</span><span style=\"color:#66d9ef;\">render</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#f92672;\">match *</span><span style=\"color:#f8f8f2;\">error {{\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"font-style:italic;color:#66d9ef;\">Some</span><span style=\"color:#f8f8f2;\">(error) </span><span style=\"color:#f92672;\">=&gt; </span><span style=\"color:#f8f8f2;\">rsx!(\n</span><span style=\"color:#f8f8f2;\">            h1 {{ </span><span style=\"color:#ffee99;\">&quot;An error occured&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">        )\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"font-style:italic;color:#66d9ef;\">None </span><span style=\"color:#f92672;\">=&gt; </span><span style=\"color:#f8f8f2;\">rsx!(\n</span><span style=\"color:#f8f8f2;\">            input {{\n</span><span style=\"color:#f8f8f2;\">                oninput: </span><span style=\"color:#f92672;\">move |_|</span><span style=\"color:#f8f8f2;\"> error.</span><span style=\"color:#66d9ef;\">set</span><span style=\"color:#f8f8f2;\">(</span><span style=\"font-style:italic;color:#66d9ef;\">Some</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#ffee99;\">&quot;bad thing happened!&quot;</span><span style=\"color:#f8f8f2;\">)),\n</span><span style=\"color:#f8f8f2;\">            }}\n</span><span style=\"color:#f8f8f2;\">        )\n</span><span style=\"color:#f8f8f2;\">    }})\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
         }
         h2 { id: "passing-error-states-through-components",
-            a {
-                href: "#passing-error-states-through-components",
+            Link {
+                to: "#passing-error-states-through-components",
                 class: "header",
                 "Passing error states through components"
             }
@@ -4601,7 +4511,7 @@ pub fn BestPracticesErrorHandling() -> dioxus::prelude::Element {
             "Much like before, our child components can manually set the error during their own actions. The advantage to this pattern is that we can easily isolate error states to a few components at a time, making our app more predictable and robust."
         }
         h2 { id: "going-global",
-            a { href: "#going-global", class: "header", "Going global" }
+            Link { to: "#going-global", class: "header", "Going global" }
         }
         p {
             "A strategy for handling cascaded errors in larger apps is through signaling an error using global state. This particular pattern involves creating an \"error\" context, and then setting it wherever relevant. This particular method is not as \"sophisticated\" as React's error boundary, but it is more fitting for Rust."
@@ -4646,13 +4556,13 @@ pub fn BestPracticesAntipatterns() -> dioxus::prelude::Element {
     use dioxus::prelude::*;
     rsx! {
         h1 { id: "antipatterns",
-            a { href: "#antipatterns", class: "header", "Antipatterns" }
+            Link { to: "#antipatterns", class: "header", "Antipatterns" }
         }
         p {
             "This example shows what not to do and provides a reason why a given pattern is considered an \"AntiPattern\". Most anti-patterns are considered wrong for performance or code re-usability reasons."
         }
         h2 { id: "unnecessarily-nested-fragments",
-            a { href: "#unnecessarily-nested-fragments", class: "header",
+            Link { to: "#unnecessarily-nested-fragments", class: "header",
                 "Unnecessarily Nested Fragments"
             }
         }
@@ -4667,13 +4577,11 @@ pub fn BestPracticesAntipatterns() -> dioxus::prelude::Element {
             name: "anti_patterns.rs".to_string(),
         }
         h2 { id: "incorrect-iterator-keys",
-            a { href: "#incorrect-iterator-keys", class: "header", "Incorrect Iterator Keys" }
+            Link { to: "#incorrect-iterator-keys", class: "header", "Incorrect Iterator Keys" }
         }
         p {
             "As described in the "
-            a { href: "../interactivity/dynamic_rendering.md#the-key-attribute",
-                "dynamic rendering chapter"
-            }
+            Link { to: "../interactivity/dynamic_rendering.md#the-key-attribute" }
             ", list items must have unique keys that are associated with the same items across renders. This helps Dioxus associate state with the contained components and ensures good diffing performance. Do not omit keys, unless you know that the list will never change."
         }
         CodeBlock {
@@ -4681,7 +4589,7 @@ pub fn BestPracticesAntipatterns() -> dioxus::prelude::Element {
             name: "anti_patterns.rs".to_string(),
         }
         h2 { id: "avoid-interior-mutability-in-props",
-            a { href: "#avoid-interior-mutability-in-props", class: "header",
+            Link { to: "#avoid-interior-mutability-in-props", class: "header",
                 "Avoid Interior Mutability in Props"
             }
         }
@@ -4712,7 +4620,7 @@ pub fn BestPracticesAntipatterns() -> dioxus::prelude::Element {
             " field."
         }
         h2 { id: "avoid-updating-state-during-render",
-            a { href: "#avoid-updating-state-during-render", class: "header",
+            Link { to: "#avoid-updating-state-during-render", class: "header",
                 "Avoid Updating State During Render"
             }
         }
@@ -4729,7 +4637,7 @@ pub fn PublishingIndex() -> dioxus::prelude::Element {
     use dioxus::prelude::*;
     rsx! {
         h1 { id: "publishing",
-            a { href: "#publishing", class: "header", "Publishing" }
+            Link { to: "#publishing", class: "header", "Publishing" }
         }
     }
 }
@@ -4738,21 +4646,19 @@ pub fn PublishingDesktop() -> dioxus::prelude::Element {
     use dioxus::prelude::*;
     rsx! {
         h1 { id: "publishing",
-            a { href: "#publishing", class: "header", "Publishing" }
+            Link { to: "#publishing", class: "header", "Publishing" }
         }
         p {
             "Congrats! You've made your first Dioxus app that actually does some pretty cool stuff. This app uses your operating system's WebView library, so it's portable to be distributed for other platforms."
         }
         p { "In this section, we'll cover how to bundle your app for macOS, Windows, and Linux." }
         h2 { id: "install",
-            a { href: "#install", class: "header", "Install " }
+            Link { to: "#install", class: "header", "Install " }
             code { "cargo-bundle" }
         }
         p {
             "The first thing we'll do is install "
-            a { href: "https://github.com/burtonageo/cargo-bundle",
-                code { "cargo-bundle" }
-            }
+            Link { to: "https://github.com/burtonageo/cargo-bundle" }
             ". This extension to cargo will make it very easy to package our app for the various platforms."
         }
         p {
@@ -4770,7 +4676,7 @@ pub fn PublishingDesktop() -> dioxus::prelude::Element {
             code { "cargo install cargo-bundle" }
         }
         h2 { id: "setting-up-your-project",
-            a { href: "#setting-up-your-project", class: "header", "Setting up your project" }
+            Link { to: "#setting-up-your-project", class: "header", "Setting up your project" }
         }
         p {
             "To get a project setup for bundling, we need to add some flags to our  "
@@ -4781,7 +4687,7 @@ pub fn PublishingDesktop() -> dioxus::prelude::Element {
             contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">[package]\n</span><span style=\"color:#f8f8f2;\">name </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;example&quot;\n</span><span style=\"color:#f92672;\"># ...</span><span style=\"color:#f8f8f2;\">other fields</span><span style=\"color:#f92672;\">...\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">[package.metadata.bundle]\n</span><span style=\"color:#f8f8f2;\">name </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;DogSearch&quot;\n</span><span style=\"color:#f8f8f2;\">identifier </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;com.dogs.dogsearch&quot;\n</span><span style=\"color:#f8f8f2;\">version </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;1.0.0&quot;\n</span><span style=\"color:#f8f8f2;\">copyright </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;Copyright (c) Jane Doe 2016. All rights reserved.&quot;\n</span><span style=\"color:#f8f8f2;\">category </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;Developer Tool&quot;\n</span><span style=\"color:#f8f8f2;\">short_description </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;Easily search for Dog photos&quot;\n</span><span style=\"color:#f8f8f2;\">long_description </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;&quot;&quot;\n</span><span style=\"color:#ffee99;\">This app makes it quick and easy to browse photos of dogs from over 200 bree\n</span><span style=\"color:#ffee99;\">&quot;&quot;&quot;</span></pre>\n",
         }
         h2 { id: "building",
-            a { href: "#building", class: "header", "Building" }
+            Link { to: "#building", class: "header", "Building" }
         }
         p {
             "Following cargo-bundle's instructions, we simply  "
@@ -4820,7 +4726,7 @@ pub fn PublishingWeb() -> dioxus::prelude::Element {
     use dioxus::prelude::*;
     rsx! {
         h2 { id: "publishing-with-github-pages",
-            a { href: "#publishing-with-github-pages", class: "header",
+            Link { to: "#publishing-with-github-pages", class: "header",
                 "Publishing with Github Pages"
             }
         }
@@ -4849,7 +4755,7 @@ pub fn CustomRendererIndex() -> dioxus::prelude::Element {
     use dioxus::prelude::*;
     rsx! {
         h1 { id: "custom-renderer",
-            a { href: "#custom-renderer", class: "header", "Custom Renderer" }
+            Link { to: "#custom-renderer", class: "header", "Custom Renderer" }
         }
         p {
             "Dioxus is an incredibly portable framework for UI development. The lessons, knowledge, hooks, and components you acquire over time can always be used for future projects. However, sometimes those projects cannot leverage a supported renderer or you need to implement your own better renderer."
@@ -4862,7 +4768,7 @@ pub fn CustomRendererIndex() -> dioxus::prelude::Element {
             "."
         }
         h2 { id: "the-specifics",
-            a { href: "#the-specifics", class: "header", "The specifics:" }
+            Link { to: "#the-specifics", class: "header", "The specifics:" }
         }
         p { "Implementing the renderer is fairly straightforward. The renderer needs to:" }
         ol {
@@ -4877,27 +4783,21 @@ pub fn CustomRendererIndex() -> dioxus::prelude::Element {
         }
         p {
             "For reference, check out the "
-            a { href: "https://github.com/DioxusLabs/dioxus/tree/master/packages/interpreter",
-                "javascript interpreter"
-            }
+            Link { to: "https://github.com/DioxusLabs/dioxus/tree/master/packages/interpreter" }
             " or "
-            a { href: "https://github.com/DioxusLabs/dioxus/tree/master/packages/tui",
-                "tui renderer"
-            }
+            Link { to: "https://github.com/DioxusLabs/dioxus/tree/master/packages/tui" }
             " as a starting point for your custom renderer."
         }
         h2 { id: "templates",
-            a { href: "#templates", class: "header", "Templates" }
+            Link { to: "#templates", class: "header", "Templates" }
         }
         p {
             "Dioxus is built around the concept of "
-            a { href: "https://docs.rs/dioxus-core/latest/dioxus_core/prelude/struct.Template.html",
-                "Templates"
-            }
+            Link { to: "https://docs.rs/dioxus-core/latest/dioxus_core/prelude/struct.Template.html" }
             ". Templates describe a UI tree known at compile time with dynamic parts filled at runtime. This is useful internally to make skip diffing static nodes, but it is also useful for the renderer to reuse parts of the UI tree. This can be useful for things like a list of items. Each item could contain some static parts and some dynamic parts. The renderer can use the template to create a static part of the UI once, clone it for each element in the list, and then fill in the dynamic parts."
         }
         h2 { id: "mutations",
-            a { href: "#mutations", class: "header", "Mutations" }
+            Link { to: "#mutations", class: "header", "Mutations" }
         }
         p {
             "The  "
@@ -4909,11 +4809,11 @@ pub fn CustomRendererIndex() -> dioxus::prelude::Element {
         }
         p {
             "The Dioxus diffing mechanism operates as a "
-            a { href: "https://en.wikipedia.org/wiki/Stack_machine", "stack machine" }
+            Link { to: "https://en.wikipedia.org/wiki/Stack_machine" }
             " where the \"push_root\" method pushes a new \"real\" DOM node onto the stack and \"append_child\" and \"replace_with\" both remove nodes from the stack."
         }
         h3 { id: "an-example",
-            a { href: "#an-example", class: "header", "An Example" }
+            Link { to: "#an-example", class: "header", "An Example" }
         }
         p {
             "For the sake of understanding, let's consider this example – a very simple UI declaration:"
@@ -4978,7 +4878,7 @@ pub fn CustomRendererIndex() -> dioxus::prelude::Element {
             "This little demo serves to show exactly how a Renderer would need to process an edit stream to build UIs. A set of serialized DomEditss for various demos is available for you to test your custom renderer against."
         }
         h2 { id: "event-loop",
-            a { href: "#event-loop", class: "header", "Event loop" }
+            Link { to: "#event-loop", class: "header", "Event loop" }
         }
         p {
             "Like most GUIs, Dioxus relies on an event loop to progress the VirtualDOM. The VirtualDOM itself can produce events as well, so it's important that your custom renderer can handle those too."
@@ -4998,7 +4898,7 @@ pub fn CustomRendererIndex() -> dioxus::prelude::Element {
             contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">virtual_event_from_websys_event</span><span style=\"color:#f8f8f2;\">(</span><span style=\"font-style:italic;color:#fd971f;\">event</span><span style=\"color:#f8f8f2;\">: </span><span style=\"color:#f92672;\">&amp;</span><span style=\"color:#f8f8f2;\">web_sys::Event) -&gt; VirtualEvent {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#f92672;\">match</span><span style=\"color:#f8f8f2;\"> event.</span><span style=\"color:#66d9ef;\">type_</span><span style=\"color:#f8f8f2;\">().</span><span style=\"color:#66d9ef;\">as_str</span><span style=\"color:#f8f8f2;\">() {{\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"color:#ffee99;\">&quot;keydown&quot; </span><span style=\"color:#f92672;\">=&gt; </span><span style=\"color:#f8f8f2;\">{{\n</span><span style=\"color:#f8f8f2;\">            </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> event: web_sys::KeyboardEvent </span><span style=\"color:#f92672;\">=</span><span style=\"color:#f8f8f2;\"> event.</span><span style=\"color:#66d9ef;\">clone</span><span style=\"color:#f8f8f2;\">().</span><span style=\"color:#66d9ef;\">dyn_into</span><span style=\"color:#f8f8f2;\">().</span><span style=\"color:#66d9ef;\">unwrap</span><span style=\"color:#f8f8f2;\">();\n</span><span style=\"color:#f8f8f2;\">            UserEvent::KeyboardEvent(UserEvent {{\n</span><span style=\"color:#f8f8f2;\">                scope_id: </span><span style=\"font-style:italic;color:#66d9ef;\">None</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">                priority: EventPriority::Medium,\n</span><span style=\"color:#f8f8f2;\">                name: </span><span style=\"color:#ffee99;\">&quot;keydown&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">                </span><span style=\"color:#8c8c8c;\">// This should be whatever element is focused\n</span><span style=\"color:#f8f8f2;\">                element: </span><span style=\"font-style:italic;color:#66d9ef;\">Some</span><span style=\"color:#f8f8f2;\">(ElementId(</span><span style=\"color:#ff80f4;\">0</span><span style=\"color:#f8f8f2;\">)),\n</span><span style=\"color:#f8f8f2;\">                data: Arc::new(KeyboardData{{\n</span><span style=\"color:#f8f8f2;\">                    char_code: event.</span><span style=\"color:#66d9ef;\">char_code</span><span style=\"color:#f8f8f2;\">(),\n</span><span style=\"color:#f8f8f2;\">                    key: event.</span><span style=\"color:#66d9ef;\">key</span><span style=\"color:#f8f8f2;\">(),\n</span><span style=\"color:#f8f8f2;\">                    key_code: event.</span><span style=\"color:#66d9ef;\">key_code</span><span style=\"color:#f8f8f2;\">(),\n</span><span style=\"color:#f8f8f2;\">                    alt_key: event.</span><span style=\"color:#66d9ef;\">alt_key</span><span style=\"color:#f8f8f2;\">(),\n</span><span style=\"color:#f8f8f2;\">                    ctrl_key: event.</span><span style=\"color:#66d9ef;\">ctrl_key</span><span style=\"color:#f8f8f2;\">(),\n</span><span style=\"color:#f8f8f2;\">                    meta_key: event.</span><span style=\"color:#66d9ef;\">meta_key</span><span style=\"color:#f8f8f2;\">(),\n</span><span style=\"color:#f8f8f2;\">                    shift_key: event.</span><span style=\"color:#66d9ef;\">shift_key</span><span style=\"color:#f8f8f2;\">(),\n</span><span style=\"color:#f8f8f2;\">                    location: event.</span><span style=\"color:#66d9ef;\">location</span><span style=\"color:#f8f8f2;\">(),\n</span><span style=\"color:#f8f8f2;\">                    repeat: event.</span><span style=\"color:#66d9ef;\">repeat</span><span style=\"color:#f8f8f2;\">(),\n</span><span style=\"color:#f8f8f2;\">                    which: event.</span><span style=\"color:#66d9ef;\">which</span><span style=\"color:#f8f8f2;\">(),\n</span><span style=\"color:#f8f8f2;\">                }})\n</span><span style=\"color:#f8f8f2;\">            }})\n</span><span style=\"color:#f8f8f2;\">        }}\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"color:#f92672;\">_ =&gt; </span><span style=\"color:#f8f8f2;\">todo!()\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
         }
         h2 { id: "custom-raw-elements",
-            a { href: "#custom-raw-elements", class: "header", "Custom raw elements" }
+            Link { to: "#custom-raw-elements", class: "header", "Custom raw elements" }
         }
         p {
             "If you need to go as far as relying on custom elements for your renderer – you totally can. This still enables you to use Dioxus' reactive nature, component system, shared state, and other features, but will ultimately generate different nodes. All attributes and listeners for the HTML and SVG namespace are shuttled through helper structs that essentially compile away (pose no runtime overhead). You can drop in your own elements any time you want, with little hassle. However, you must be absolutely sure your renderer can handle the new type, or it will crash and burn."
@@ -5018,13 +4918,13 @@ pub fn CustomRendererIndex() -> dioxus::prelude::Element {
             " macros support on-hover documentation. The approach we take to custom elements means that the unit struct is created immediately where the element is used in the macro. When the macro is expanded, the doc comments still apply to the unit struct, giving tons of in-editor feedback, even inside a proc macro."
         }
         h1 { id: "native-core",
-            a { href: "#native-core", class: "header", "Native Core" }
+            Link { to: "#native-core", class: "header", "Native Core" }
         }
         p {
             "If you are creating a renderer in rust, native-core provides some utilities to implement a renderer. It provides an abstraction over DomEdits and handles the layout for you."
         }
         h2 { id: "realdom",
-            a { href: "#realdom", class: "header", "RealDom" }
+            Link { to: "#realdom", class: "header", "RealDom" }
         }
         p {
             "The  "
@@ -5034,7 +4934,7 @@ pub fn CustomRendererIndex() -> dioxus::prelude::Element {
             " and provides a way to incrementally update the state of nodes based on what attributes change."
         }
         h3 { id: "example",
-            a { href: "#example", class: "header", "Example" }
+            Link { to: "#example", class: "header", "Example" }
         }
         p { "Let's build a toy renderer with borders, size, and text color." }
         CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">cx.</span><span style=\"color:#66d9ef;\">render</span><span style=\"color:#f8f8f2;\">(rsx!{{\n</span><span style=\"color:#f8f8f2;\">    div{{\n</span><span style=\"color:#f8f8f2;\">        color: </span><span style=\"color:#ffee99;\">&quot;red&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">        p{{\n</span><span style=\"color:#f8f8f2;\">            border: </span><span style=\"color:#ffee99;\">&quot;1px solid black&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">            </span><span style=\"color:#ffee99;\">&quot;hello world&quot;\n</span><span style=\"color:#f8f8f2;\">        }}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}})</span></pre>\n" }
@@ -5043,13 +4943,7 @@ pub fn CustomRendererIndex() -> dioxus::prelude::Element {
         }
         p { "In the following diagram arrows represent dataflow:" }
         p {
-            a { href: "https://mermaid-js.github.io/mermaid-live-editor/edit#pako:eNqdVNFqgzAU_RXJXizUUZPJmIM-jO0LukdhpCbO0JhIGteW0n9fNK1Oa0brfUnu9VxyzzkXjyCVhIIYZFzu0hwr7X2-JcIzsa3W3wqXuZdKoele22oddfa1Y0Tnfn31muvMfqeCDNq3GmvaNROmaKqZFO1DPTRhP8MOd1fTWYNDvzlmQbBMJZcq9JtjNgY1mLVUhBqQPQeojl3wGCw5PsjqnIe-zXqEL8GZ2Kz0gVMPmoeU3ND4IcuiaLGY2zRouuKncv_qGKv3VodpJe0JVU6QCQ5kgqMyWQVr8hbk4hm1PBcmsuwmnrCVH94rP7xN_ucp8sOB_EPSfz9drYVrkpc_AmH8_yTjJueUc-ntpOJkgt2os9tKjcYlt-DLUiD3UsB2KZCLcwjv3Aq33-g2v0M0xXA0MBy5DUdXi-gcJZriuLmAOSioKjAj5ld8rMsJ0DktaAJicyVYbRKQiJPBVSUx438QpqUCcYb5ls4BrrRcHUTaFizqnWGzR8W5evoFI-bJdw",
-                img {
-                    src: "https://mermaid.ink/img/pako:eNqdVNFqgzAU_RXJXizUUZPJmIM-jO0LukdhpCbO0JhIGteW0n9fNK1Oa0brfUnu9VxyzzkXjyCVhIIYZFzu0hwr7X2-JcIzsa3W3wqXuZdKoele22oddfa1Y0Tnfn31muvMfqeCDNq3GmvaNROmaKqZFO1DPTRhP8MOd1fTWYNDvzlmQbBMJZcq9JtjNgY1mLVUhBqQPQeojl3wGCw5PsjqnIe-zXqEL8GZ2Kz0gVMPmoeU3ND4IcuiaLGY2zRouuKncv_qGKv3VodpJe0JVU6QCQ5kgqMyWQVr8hbk4hm1PBcmsuwmnrCVH94rP7xN_ucp8sOB_EPSfz9drYVrkpc_AmH8_yTjJueUc-ntpOJkgt2os9tKjcYlt-DLUiD3UsB2KZCLcwjv3Aq33-g2v0M0xXA0MBy5DUdXi-gcJZriuLmAOSioKjAj5ld8rMsJ0DktaAJicyVYbRKQiJPBVSUx438QpqUCcYb5ls4BrrRcHUTaFizqnWGzR8W5evoFI-bJdw",
-                    alt: "",
-                    title: "",
-                }
-            }
+            Link { to: "https://mermaid-js.github.io/mermaid-live-editor/edit#pako:eNqdVNFqgzAU_RXJXizUUZPJmIM-jO0LukdhpCbO0JhIGteW0n9fNK1Oa0brfUnu9VxyzzkXjyCVhIIYZFzu0hwr7X2-JcIzsa3W3wqXuZdKoele22oddfa1Y0Tnfn31muvMfqeCDNq3GmvaNROmaKqZFO1DPTRhP8MOd1fTWYNDvzlmQbBMJZcq9JtjNgY1mLVUhBqQPQeojl3wGCw5PsjqnIe-zXqEL8GZ2Kz0gVMPmoeU3ND4IcuiaLGY2zRouuKncv_qGKv3VodpJe0JVU6QCQ5kgqMyWQVr8hbk4hm1PBcmsuwmnrCVH94rP7xN_ucp8sOB_EPSfz9drYVrkpc_AmH8_yTjJueUc-ntpOJkgt2os9tKjcYlt-DLUiD3UsB2KZCLcwjv3Aq33-g2v0M0xXA0MBy5DUdXi-gcJZriuLmAOSioKjAj5ld8rMsJ0DktaAJicyVYbRKQiJPBVSUx438QpqUCcYb5ls4BrrRcHUTaFizqnWGzR8W5evoFI-bJdw" }
         }
         p {
             "To help in building a Dom, native-core provides four traits: State, ChildDepState, ParentDepState, NodeDepState, and a RealDom struct. The ChildDepState, ParentDepState, and NodeDepState provide a way to describe how some information in a node relates to that of its relatives. By providing how to build a single node from its relations, native-core will derive a way to update the state of all nodes for you with  "
@@ -5066,17 +4960,17 @@ pub fn CustomRendererIndex() -> dioxus::prelude::Element {
             contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">main</span><span style=\"color:#f8f8f2;\">(){{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">app</span><span style=\"color:#f8f8f2;\">(</span><span style=\"font-style:italic;color:#fd971f;\">cx</span><span style=\"color:#f8f8f2;\">: Scope) -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">        cx.</span><span style=\"color:#66d9ef;\">render</span><span style=\"color:#f8f8f2;\">(rsx!{{\n</span><span style=\"color:#f8f8f2;\">            div{{\n</span><span style=\"color:#f8f8f2;\">                color: </span><span style=\"color:#ffee99;\">&quot;red&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">                </span><span style=\"color:#ffee99;\">&quot;hello world&quot;\n</span><span style=\"color:#f8f8f2;\">            }}\n</span><span style=\"color:#f8f8f2;\">        }})\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> vdom </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">VirtualDom::new(app);\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> rdom: RealDom&lt;ToyState&gt; </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">RealDom::new();\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> mutations </span><span style=\"color:#f92672;\">=</span><span style=\"color:#f8f8f2;\"> dom.</span><span style=\"color:#66d9ef;\">rebuild</span><span style=\"color:#f8f8f2;\">();\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#8c8c8c;\">// update the structure of the real_dom tree\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> to_update </span><span style=\"color:#f92672;\">=</span><span style=\"color:#f8f8f2;\"> rdom.</span><span style=\"color:#66d9ef;\">apply_mutations</span><span style=\"color:#f8f8f2;\">(vec![mutations]);\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let </span><span style=\"color:#f92672;\">mut</span><span style=\"color:#f8f8f2;\"> ctx </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">AnyMap::new();\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#8c8c8c;\">// set the font size to 3.3\n</span><span style=\"color:#f8f8f2;\">    ctx.</span><span style=\"color:#66d9ef;\">insert</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#ff80f4;\">3.3</span><span style=\"font-style:italic;color:#66d9ef;\">f32</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#8c8c8c;\">// update the ToyState for nodes in the real_dom tree\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> _to_rerender </span><span style=\"color:#f92672;\">=</span><span style=\"color:#f8f8f2;\"> rdom.</span><span style=\"color:#66d9ef;\">update_state</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#f92672;\">&amp;</span><span style=\"color:#f8f8f2;\">dom, to_update, ctx).</span><span style=\"color:#66d9ef;\">unwrap</span><span style=\"color:#f8f8f2;\">();\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#8c8c8c;\">// we need to run the vdom in a async runtime\n</span><span style=\"color:#f8f8f2;\">    tokio::runtime::Builder::new_current_thread()\n</span><span style=\"color:#f8f8f2;\">        .</span><span style=\"color:#66d9ef;\">enable_all</span><span style=\"color:#f8f8f2;\">()\n</span><span style=\"color:#f8f8f2;\">        .</span><span style=\"color:#66d9ef;\">build</span><span style=\"color:#f8f8f2;\">()</span><span style=\"color:#f92672;\">?\n</span><span style=\"color:#f8f8f2;\">        .</span><span style=\"color:#66d9ef;\">block_on</span><span style=\"color:#f8f8f2;\">(async {{\n</span><span style=\"color:#f8f8f2;\">            </span><span style=\"color:#f92672;\">loop</span><span style=\"color:#f8f8f2;\">{{\n</span><span style=\"color:#f8f8f2;\">                </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> wait </span><span style=\"color:#f92672;\">=</span><span style=\"color:#f8f8f2;\"> vdom.</span><span style=\"color:#66d9ef;\">wait_for_work</span><span style=\"color:#f8f8f2;\">();\n</span><span style=\"color:#f8f8f2;\">                </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> mutations </span><span style=\"color:#f92672;\">=</span><span style=\"color:#f8f8f2;\"> vdom.</span><span style=\"color:#66d9ef;\">work_with_deadline</span><span style=\"color:#f8f8f2;\">(|| </span><span style=\"color:#ff80f4;\">false</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"color:#f8f8f2;\">                </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> to_update </span><span style=\"color:#f92672;\">=</span><span style=\"color:#f8f8f2;\"> rdom.</span><span style=\"color:#66d9ef;\">apply_mutations</span><span style=\"color:#f8f8f2;\">(mutations);\n</span><span style=\"color:#f8f8f2;\">                </span><span style=\"font-style:italic;color:#66d9ef;\">let </span><span style=\"color:#f92672;\">mut</span><span style=\"color:#f8f8f2;\"> ctx </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">AnyMap::new();\n</span><span style=\"color:#f8f8f2;\">                ctx.</span><span style=\"color:#66d9ef;\">insert</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#ff80f4;\">3.3</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"color:#f8f8f2;\">                </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> _to_rerender </span><span style=\"color:#f92672;\">=</span><span style=\"color:#f8f8f2;\"> rdom.</span><span style=\"color:#66d9ef;\">update_state</span><span style=\"color:#f8f8f2;\">(vdom, to_update, ctx).</span><span style=\"color:#66d9ef;\">unwrap</span><span style=\"color:#f8f8f2;\">();\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">                </span><span style=\"color:#8c8c8c;\">// render...\n</span><span style=\"color:#f8f8f2;\">            }}\n</span><span style=\"color:#f8f8f2;\">        }})\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
         }
         h2 { id: "layout",
-            a { href: "#layout", class: "header", "Layout" }
+            Link { to: "#layout", class: "header", "Layout" }
         }
         p {
             "For most platforms, the layout of the Elements will stay the same. The layout_attributes module provides a way to apply HTML attributes to a stretch layout style."
         }
         h2 { id: "conclusion",
-            a { href: "#conclusion", class: "header", "Conclusion" }
+            Link { to: "#conclusion", class: "header", "Conclusion" }
         }
         p {
             "That should be it! You should have nearly all the knowledge required on how to implement your own renderer. We're super interested in seeing Dioxus apps brought to custom desktop renderers, mobile renderers, video game UI, and even augmented reality! If you're interested in contributing to any of these projects, don't be afraid to reach out or join the "
-            a { href: "https://discord.gg/XgGxMSkvUM", "community" }
+            Link { to: "https://discord.gg/XgGxMSkvUM" }
             "."
         }
     }
@@ -5086,14 +4980,14 @@ pub fn Roadmap() -> dioxus::prelude::Element {
     use dioxus::prelude::*;
     rsx! {
         h1 { id: "roadmap--feature-set",
-            a { href: "#roadmap--feature-set", class: "header", "Roadmap & Feature-set" }
+            Link { to: "#roadmap--feature-set", class: "header", "Roadmap & Feature-set" }
         }
         p {
             "This feature set and roadmap can help you decide if what Dioxus can do today works for you."
         }
         p {
             "If a feature that you need doesn't exist or you want to contribute to projects on the roadmap, feel free to get involved by "
-            a { href: "https://discord.gg/XgGxMSkvUM", "joining the discord" }
+            Link { to: "https://discord.gg/XgGxMSkvUM" }
             "."
         }
         p { "Generally, here's the status of each platform:" }
@@ -5132,7 +5026,7 @@ pub fn Roadmap() -> dioxus::prelude::Element {
             }
         }
         h2 { id: "features",
-            a { href: "#features", class: "header", "Features" }
+            Link { to: "#features", class: "header", "Features" }
         }
         hr {}
         table {
@@ -5313,11 +5207,11 @@ pub fn Roadmap() -> dioxus::prelude::Element {
             li { "👀 = not yet implemented or being worked on" }
         }
         h2 { id: "roadmap",
-            a { href: "#roadmap", class: "header", "Roadmap" }
+            Link { to: "#roadmap", class: "header", "Roadmap" }
         }
         p { "These Features are planned for the future of Dioxus:" }
         h3 { id: "core",
-            a { href: "#core", class: "header", "Core" }
+            Link { to: "#core", class: "header", "Core" }
         }
         ul {
             li {
@@ -5376,7 +5270,7 @@ pub fn Roadmap() -> dioxus::prelude::Element {
             }
         }
         h3 { id: "ssr",
-            a { href: "#ssr", class: "header", "SSR" }
+            Link { to: "#ssr", class: "header", "SSR" }
         }
         ul {
             li {
@@ -5399,7 +5293,7 @@ pub fn Roadmap() -> dioxus::prelude::Element {
             }
         }
         h3 { id: "desktop",
-            a { href: "#desktop", class: "header", "Desktop" }
+            Link { to: "#desktop", class: "header", "Desktop" }
         }
         ul {
             li {
@@ -5440,7 +5334,7 @@ pub fn Roadmap() -> dioxus::prelude::Element {
             }
         }
         h3 { id: "mobile",
-            a { href: "#mobile", class: "header", "Mobile" }
+            Link { to: "#mobile", class: "header", "Mobile" }
         }
         ul {
             li {
@@ -5546,7 +5440,7 @@ pub fn Roadmap() -> dioxus::prelude::Element {
             }
         }
         h3 { id: "bundling-cli",
-            a { href: "#bundling-cli", class: "header", "Bundling (CLI)" }
+            Link { to: "#bundling-cli", class: "header", "Bundling (CLI)" }
         }
         ul {
             li {
@@ -5632,7 +5526,7 @@ pub fn Roadmap() -> dioxus::prelude::Element {
             }
         }
         h3 { id: "essential-hooks",
-            a { href: "#essential-hooks", class: "header", "Essential hooks" }
+            Link { to: "#essential-hooks", class: "header", "Essential hooks" }
         }
         ul {
             li {
@@ -5664,14 +5558,14 @@ pub fn Roadmap() -> dioxus::prelude::Element {
             }
         }
         h2 { id: "work-in-progress",
-            a { href: "#work-in-progress", class: "header", "Work in Progress" }
+            Link { to: "#work-in-progress", class: "header", "Work in Progress" }
         }
         h3 { id: "build-tool",
-            a { href: "#build-tool", class: "header", "Build Tool" }
+            Link { to: "#build-tool", class: "header", "Build Tool" }
         }
         p {
             "We are currently working on our own build tool called "
-            a { href: "https://github.com/DioxusLabs/cli", "Dioxus CLI" }
+            Link { to: "https://github.com/DioxusLabs/cli" }
             " which will support:"
         }
         ul {
@@ -5687,17 +5581,17 @@ pub fn Roadmap() -> dioxus::prelude::Element {
             li { "bundling for iOS/Desktop/etc" }
         }
         h3 { id: "server-component-support",
-            a { href: "#server-component-support", class: "header", "Server Component Support" }
+            Link { to: "#server-component-support", class: "header", "Server Component Support" }
         }
         p {
             "While not currently fully implemented, the expectation is that LiveView apps can be a hybrid between Wasm and server-rendered where only portions of a page are \"live\" and the rest of the page is either server-rendered, statically generated, or handled by the host SPA."
         }
         h3 { id: "native-rendering",
-            a { href: "#native-rendering", class: "header", "Native rendering" }
+            Link { to: "#native-rendering", class: "header", "Native rendering" }
         }
         p {
             "We are currently working on a native renderer for Dioxus using WGPU called "
-            a { href: "https://github.com/DioxusLabs/blitz/", "Blitz" }
+            Link { to: "https://github.com/DioxusLabs/blitz/" }
             ". This will allow you to build apps that are rendered natively for iOS, Android, and Desktop."
         }
     }
@@ -5707,53 +5601,49 @@ pub fn Contributing() -> dioxus::prelude::Element {
     use dioxus::prelude::*;
     rsx! {
         h1 { id: "contributing",
-            a { href: "#contributing", class: "header", "Contributing" }
+            Link { to: "#contributing", class: "header", "Contributing" }
         }
         p {
             "Development happens in the "
-            a { href: "https://github.com/DioxusLabs/dioxus", "Dioxus GitHub repository" }
+            Link { to: "https://github.com/DioxusLabs/dioxus" }
             ". If you've found a bug or have an idea for a feature, please submit an issue (but first check if someone hasn't "
-            a { href: "https://github.com/DioxusLabs/dioxus/issues", "done it already" }
+            Link { to: "https://github.com/DioxusLabs/dioxus/issues" }
             ")."
         }
         p {
-            a { href: "https://github.com/DioxusLabs/dioxus/discussions", "GitHub discussions" }
+            Link { to: "https://github.com/DioxusLabs/dioxus/discussions" }
             " can be used as a place to ask for help or talk about features. You can also join "
-            a { href: "https://discord.gg/XgGxMSkvUM", "our Discord channel" }
+            Link { to: "https://discord.gg/XgGxMSkvUM" }
             " where some development discussion happens."
         }
         h2 { id: "improving-docs",
-            a { href: "#improving-docs", class: "header", "Improving Docs" }
+            Link { to: "#improving-docs", class: "header", "Improving Docs" }
         }
         p {
             "If you'd like to improve the docs, PRs are welcome! Both Rust docs ("
-            a { href: "https://github.com/DioxusLabs/dioxus/tree/master/packages",
-                "source"
-            }
+            Link { to: "https://github.com/DioxusLabs/dioxus/tree/master/packages" }
             ") and this guide ("
-            a { href: "https://github.com/DioxusLabs/dioxus/tree/master/docs/guide",
-                "source"
-            }
+            Link { to: "https://github.com/DioxusLabs/dioxus/tree/master/docs/guide" }
             ") can be found in the GitHub repo."
         }
         h2 { id: "working-on-the-ecosystem",
-            a { href: "#working-on-the-ecosystem", class: "header", "Working on the Ecosystem" }
+            Link { to: "#working-on-the-ecosystem", class: "header", "Working on the Ecosystem" }
         }
         p {
             "Part of what makes React great is the rich ecosystem. We'd like the same for Dioxus! So if you have a library in mind that you'd like to write and many people would benefit from, it will be appreciated. You can "
-            a { href: "https://www.npmjs.com/search?q=keywords:react-component", "browse npm.js" }
+            Link { to: "https://www.npmjs.com/search?q=keywords:react-component" }
             " for inspiration."
         }
         h2 { id: "bugs--features",
-            a { href: "#bugs--features", class: "header", "Bugs & Features" }
+            Link { to: "#bugs--features", class: "header", "Bugs & Features" }
         }
         p {
             "If you've fixed "
-            a { href: "https://github.com/DioxusLabs/dioxus/issues", "an open issue" }
+            Link { to: "https://github.com/DioxusLabs/dioxus/issues" }
             ", feel free to submit a PR! You can also take a look at "
-            a { href: "./roadmap", "the roadmap" }
+            Link { to: BookRoute::Roadmap {} }
             " and work on something in there. Consider "
-            a { href: "https://discord.gg/XgGxMSkvUM", "reaching out" }
+            Link { to: "https://discord.gg/XgGxMSkvUM" }
             " to the team first to make sure everyone's on the same page, and you don't do useless work!"
         }
         p {

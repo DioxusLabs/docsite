@@ -16,7 +16,9 @@ use syn::{Ident, __private::Span, parse_quote, parse_str};
 use syntect::highlighting::ThemeSet;
 use syntect::parsing::SyntaxSet;
 
-use crate::{path_to_route_enum_with_section, path_to_route_variant};
+use crate::{
+    path_to_route_enum_with_section, path_to_route_variant, to_upper_camel_case_for_ident,
+};
 
 /// Convert a CallBody to a TokenStream
 pub fn callbody_to_tokens(cb: CallBody) -> TokenStream2 {
@@ -52,7 +54,7 @@ impl Section {
     }
 
     pub(crate) fn variant(&self) -> String {
-        self.fragment().to_case(Case::UpperCamel)
+        to_upper_camel_case_for_ident(&self.fragment())
     }
 }
 

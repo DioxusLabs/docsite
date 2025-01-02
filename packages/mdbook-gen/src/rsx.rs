@@ -318,7 +318,7 @@ impl<'a, I: Iterator<Item = Event<'a>>> RsxMarkdownParser<'a, I> {
                     let syntax = ss.find_syntax_by_extension("rs").unwrap();
                     let html = escape_text(
                         &syntect::html::highlighted_html_for_string(
-                            &code.trim_end(),
+                            code.trim_end(),
                             &ss,
                             syntax,
                             &THEME,
@@ -400,7 +400,7 @@ impl<'a, I: Iterator<Item = Event<'a>>> RsxMarkdownParser<'a, I> {
                                     hash = Some(trailing_hash);
                                     if without_hash.is_empty() {
                                         current_file_path
-                                            .strip_prefix(&parent_of_current_file)
+                                            .strip_prefix(parent_of_current_file)
                                             .unwrap()
                                             .to_str()
                                             .unwrap()

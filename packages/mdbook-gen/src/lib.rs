@@ -26,9 +26,7 @@ pub fn generate_router_build_script(mdbook_dir: PathBuf) -> String {
 
     let as_file = syn::parse_file(&prettifed).unwrap();
     let fmts = dioxus_autofmt::try_fmt_file(&prettifed, &as_file, Default::default()).unwrap();
-    let out = dioxus_autofmt::apply_formats(&prettifed, fmts);
-
-    out
+    dioxus_autofmt::apply_formats(&prettifed, fmts)
 }
 
 /// Load an mdbook from the filesystem using the target tokens

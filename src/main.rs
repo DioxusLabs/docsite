@@ -185,8 +185,9 @@ pub enum Route {
 
     #[redirect("/docs/:..segments", |segments: Vec<String>| {
         let joined = segments.join("/");
-        let docs_route = format!("/docs/{}", joined);
-        Route::from_str(&docs_route).unwrap_or_else(|_| Route::Docs06 { child: crate::docs::router_06::BookRoute::Index { section: Default::default() } })
+        let docs_route = format!("/{}", joined.trim_matches('/'));
+        let child = crate::docs::router_06::BookRoute::from_str(&joined).unwrap_or_else(|_| crate::docs::router_06::BookRoute::Index { section: Default::default() });
+        Route::Docs06 { child }
     })]
     #[route("/:..segments")]
     Err404 { segments: Vec<String> },

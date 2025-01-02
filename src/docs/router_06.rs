@@ -5151,6 +5151,7 @@ pub fn Index(section: IndexSection) -> dioxus::prelude::Element {
                     to: BookRoute::GuideIndex {
                         section: GuideIndexSection::Empty,
                     },
+                    "Tutorial"
                 }
                 " walks you through your first Dioxus app."
             }
@@ -5159,6 +5160,7 @@ pub fn Index(section: IndexSection) -> dioxus::prelude::Element {
                     to: BookRoute::EssentialsIndex {
                         section: EssentialsIndexSection::Empty,
                     },
+                    "Core Concepts"
                 }
                 " provides detail on topics like managing state."
             }
@@ -5167,6 +5169,7 @@ pub fn Index(section: IndexSection) -> dioxus::prelude::Element {
                     to: BookRoute::ReferenceIndex {
                         section: ReferenceIndexSection::Empty,
                     },
+                    "Guides"
                 }
                 " provides references for things like assets, routing, testing, and more."
             }
@@ -5177,27 +5180,32 @@ pub fn Index(section: IndexSection) -> dioxus::prelude::Element {
                 to: BookRoute::GuideIndex {
                     section: GuideIndexSection::Empty,
                 },
+                "Tutorial"
             }
             " to get familiar with Dioxus. Before embarking on a larger project, we strongly recommend reading the entire "
             Link {
                 to: BookRoute::EssentialsIndex {
                     section: EssentialsIndexSection::Empty,
                 },
+                "Essential Concepts"
             }
             " and glancing through the "
             Link {
                 to: BookRoute::GuidesIndex {
                     section: GuidesIndexSection::Empty,
                 },
+                "Guides Overview"
             }
             "."
         }
         blockquote {
             p {
                 "This guide assumes you already know some "
-                Link { to: "https://www.rust-lang.org/" }
+                Link { to: "https://www.rust-lang.org/", "Rust" }
                 "! If not, we recommend reading "
-                Link { to: "https://doc.rust-lang.org/book/ch01-00-getting-started.html" }
+                Link { to: "https://doc.rust-lang.org/book/ch01-00-getting-started.html",
+                    em { "the book" }
+                }
                 " to learn Rust first."
             }
         }
@@ -5235,9 +5243,9 @@ pub fn Index(section: IndexSection) -> dioxus::prelude::Element {
         }
         p {
             "Our goal is to provide a \"better Flutter\": faster, slimmer, and web-native. You can think of Dioxus is a hybrid of "
-            Link { to: "http://flutter.dev" }
+            Link { to: "http://flutter.dev", "Flutter" }
             " and "
-            Link { to: "http://nextjs.org" }
+            Link { to: "http://nextjs.org", "NextJS" }
             ": cross-platform apps with stellar fullstack support. Today, Dioxus apps can only be written in Rust, but we plan to support more languages in the future."
         }
         h2 { id: "why-dioxus",
@@ -5285,9 +5293,13 @@ pub fn Index(section: IndexSection) -> dioxus::prelude::Element {
         }
         p {
             "Dioxus is designed to be easy to extend and fairly thin over system APIs. This means you can easily drop into system APIs when first-party APIs are lacking. When targeting the web, this might mean using "
-            Link { to: "http://crates.io/crates/web-sys/" }
+            Link { to: "http://crates.io/crates/web-sys/",
+                code { "web-sys" }
+            }
             " and on Android using "
-            Link { to: "http://crates.io/crates/jni" }
+            Link { to: "http://crates.io/crates/jni",
+                code { "jni" }
+            }
             "."
         }
         CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">PromptModal</span><span style=\"color:#f8f8f2;\">() {{\n</span><span style=\"color:#f8f8f2;\">    #[cfg(web)]\n</span><span style=\"color:#f8f8f2;\">    web_sys::call_web_function();\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">    #[cfg(android)]\n</span><span style=\"color:#f8f8f2;\">    jni_sys::call_android_function();\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n" }
@@ -5302,6 +5314,7 @@ pub fn Index(section: IndexSection) -> dioxus::prelude::Element {
                     to: BookRoute::RouterIndex {
                         section: RouterIndexSection::Empty,
                     },
+                    "App Routing"
                 }
             }
             li {
@@ -5309,6 +5322,7 @@ pub fn Index(section: IndexSection) -> dioxus::prelude::Element {
                     to: BookRoute::GuidesFullstackServerFunctions {
                         section: GuidesFullstackServerFunctionsSection::Empty,
                     },
+                    "Backend integration via server functions"
                 }
             }
             li {
@@ -5316,6 +5330,7 @@ pub fn Index(section: IndexSection) -> dioxus::prelude::Element {
                     to: BookRoute::GuidesAssets {
                         section: GuidesAssetsSection::Empty,
                     },
+                    "Including and optimizing"
                 }
                 " assets"
             }
@@ -5324,11 +5339,12 @@ pub fn Index(section: IndexSection) -> dioxus::prelude::Element {
                     to: BookRoute::EssentialsStateIndex {
                         section: EssentialsStateIndexSection::Empty,
                     },
+                    "State management"
                 }
                 " (signals-based reactivity)"
             }
             li {
-                Link { to: "http://github.com/dioxusLabs/sdk" }
+                Link { to: "http://github.com/dioxusLabs/sdk", "SDK" }
                 ": 1st-party System integrations"
             }
         }
@@ -5351,6 +5367,7 @@ pub fn Index(section: IndexSection) -> dioxus::prelude::Element {
                 to: BookRoute::MigrationIndex {
                     section: MigrationIndexSection::Empty,
                 },
+                "0.6"
             }
             "."
         }
@@ -5370,15 +5387,19 @@ pub fn Index(section: IndexSection) -> dioxus::prelude::Element {
         ul {
             li {
                 "The "
-                Link { to: "https://github.com/DioxusLabs/dioxus/tree/main/examples" }
+                Link { to: "https://github.com/DioxusLabs/dioxus/tree/main/examples",
+                    "official folder of small examples"
+                }
             }
             li {
                 "The "
-                Link { to: "https://github.com/DioxusLabs/dioxus/tree/main/example-projects" }
+                Link { to: "https://github.com/DioxusLabs/dioxus/tree/main/example-projects",
+                    "official repository of example projects"
+                }
             }
             li {
                 "The official "
-                Link { to: "https://www.youtube.com/@DioxusLabs" }
+                Link { to: "https://www.youtube.com/@DioxusLabs", "YouTube channel" }
             }
         }
         h2 { id: "whos-funding-dioxus",
@@ -5392,14 +5413,14 @@ pub fn Index(section: IndexSection) -> dioxus::prelude::Element {
         }
         p {
             "Dioxus is funded by a mix of corporate sponsorships, enterprise support contracts, "
-            Link { to: "https://github.com/sponsors/DioxusLabs#sponsors" }
+            Link { to: "https://github.com/sponsors/DioxusLabs#sponsors", "crowd-sourced funding" }
             ", and "
-            Link { to: "http://ycombinator.com/companies/dioxus-labs" }
+            Link { to: "http://ycombinator.com/companies/dioxus-labs", "venture capital" }
             ". We strive to maintain a healthy mix of funding to balance the various competing visions of the future. We want to provide a \"Flutter but better\" for everyone - not controlled by Apple, Meta, or Google - and we need to make sure Dioxus has a sustainable long-term financial future."
         }
         p {
             "Ultimately, we'd like Dioxus to be self-sustaining. This means that you'll eventually have the option to deploy your production apps with "
-            Link { to: "/deploy" }
+            Link { to: "/deploy", "Dioxus Deploy" }
             ". Revenue from "
             em { "Dioxus Deploy" }
             " will in turn fund development on Dioxus itself."
@@ -5508,9 +5529,11 @@ pub fn GettingStartedIndex(section: GettingStartedIndexSection) -> dioxus::prelu
         p { "Pick your favorite editor!" }
         p {
             "We recommend using "
-            Link { to: "https://code.visualstudio.com" }
+            Link { to: "https://code.visualstudio.com", "VSCode" }
             " since Dioxus ships with its "
-            Link { to: "https://marketplace.visualstudio.com/items?itemName=DioxusLabs.dioxus" }
+            Link { to: "https://marketplace.visualstudio.com/items?itemName=DioxusLabs.dioxus",
+                "own VSCode extension"
+            }
             "."
         }
         p {
@@ -5529,26 +5552,28 @@ pub fn GettingStartedIndex(section: GettingStartedIndexSection) -> dioxus::prelu
         }
         p {
             "Dioxus integrates very well with the "
-            Link { to: "https://rust-analyzer.github.io" }
+            Link { to: "https://rust-analyzer.github.io", "Rust-Analyzer LSP plugin" }
             " which provides appropriate syntax highlighting, code navigation, folding, and more."
         }
         p {
             "You can follow the "
-            Link { to: "https://rust-analyzer.github.io/manual.html#installation" }
+            Link { to: "https://rust-analyzer.github.io/manual.html#installation",
+                "installation instructions"
+            }
             " for your editor of choice."
         }
         ul {
             li {
-                Link { to: "https://rust-analyzer.github.io/manual.html#vs-code" }
+                Link { to: "https://rust-analyzer.github.io/manual.html#vs-code", "VSCode" }
             }
             li {
-                Link { to: "https://rust-analyzer.github.io/manual.html#zed" }
+                Link { to: "https://rust-analyzer.github.io/manual.html#zed", "Zed" }
             }
             li {
-                Link { to: "https://rust-analyzer.github.io/manual.html#emacs" }
+                Link { to: "https://rust-analyzer.github.io/manual.html#emacs", "Emacs" }
             }
             li {
-                Link { to: "https://rust-analyzer.github.io/manual.html#vimneovim" }
+                Link { to: "https://rust-analyzer.github.io/manual.html#vimneovim", "Vim" }
             }
         }
         h2 { id: "install-rust",
@@ -5562,12 +5587,14 @@ pub fn GettingStartedIndex(section: GettingStartedIndexSection) -> dioxus::prelu
         }
         p {
             "Head over to "
-            Link { to: "http://rust-lang.org" }
+            Link { to: "http://rust-lang.org", "https://rust-lang.org" }
             " and install the Rust compiler."
         }
         p {
             "We strongly recommend going through the "
-            Link { to: "https://doc.rust-lang.org/book/ch01-00-getting-started.html" }
+            Link { to: "https://doc.rust-lang.org/book/ch01-00-getting-started.html",
+                "official Rust book"
+            }
             " "
             em { "completely" }
             ". However, we hope that a Dioxus app can serve as a great first Rust project."
@@ -5586,7 +5613,9 @@ pub fn GettingStartedIndex(section: GettingStartedIndexSection) -> dioxus::prelu
         }
         p {
             "Dioxus ships prebuilt binaries for its CLI using "
-            Link { to: "https://github.com/cargo-bins/cargo-binstall?tab=readme-ov-file#installation" }
+            Link { to: "https://github.com/cargo-bins/cargo-binstall?tab=readme-ov-file#installation",
+                code { "cargo-binstall" }
+            }
             ". This means you can install "
             code { "dx" }
             " without needing to compile from source."
@@ -5638,7 +5667,7 @@ pub fn GettingStartedIndex(section: GettingStartedIndexSection) -> dioxus::prelu
         }
         p {
             "If you get an OpenSSL error on installation, ensure the dependencies listed "
-            Link { to: "https://docs.rs/openssl/latest/openssl/#automatic" }
+            Link { to: "https://docs.rs/openssl/latest/openssl/#automatic", "here" }
             " are installed."
         }
         h2 { id: "platform-specific-dependencies",
@@ -5668,6 +5697,7 @@ pub fn GettingStartedIndex(section: GettingStartedIndexSection) -> dioxus::prelu
                 to: BookRoute::GettingStartedIndex {
                     section: GettingStartedIndexSection::Ios,
                 },
+                "iOS section"
             }
             " below."
         }
@@ -5687,7 +5717,9 @@ pub fn GettingStartedIndex(section: GettingStartedIndexSection) -> dioxus::prelu
             "If you have Edge installed, then Dioxus will work fine. If you "
             em { "don't" }
             " have WebView2, then you can "
-            Link { to: "https://developer.microsoft.com/en-us/microsoft-edge/webview2/" }
+            Link { to: "https://developer.microsoft.com/en-us/microsoft-edge/webview2/",
+                "install it through Microsoft"
+            }
             ". Microsoft provides 3 options:"
         }
         ol {
@@ -5731,7 +5763,9 @@ pub fn GettingStartedIndex(section: GettingStartedIndexSection) -> dioxus::prelu
         }
         p {
             "For all other Linux targets, "
-            Link { to: "https://tauri.app/start/prerequisites/#linux" }
+            Link { to: "https://tauri.app/start/prerequisites/#linux",
+                "check the Tauri docs which cover the same dependencies"
+            }
             "."
         }
         p { "In addition to the Tauri docs, for Fedora:" }
@@ -5759,7 +5793,7 @@ pub fn GettingStartedIndex(section: GettingStartedIndexSection) -> dioxus::prelu
             }
             li {
                 "Install Tauri's Linux dependencies found "
-                Link { to: "https://beta.tauri.app/start/prerequisites/" }
+                Link { to: "https://beta.tauri.app/start/prerequisites/", "here" }
                 "."
             }
             li {
@@ -5785,10 +5819,10 @@ pub fn GettingStartedIndex(section: GettingStartedIndexSection) -> dioxus::prelu
         p { "Download and install XCode from one of the following places:" }
         ul {
             li {
-                Link { to: "https://apps.apple.com/gb/app/xcode/id497799835?mt=12" }
+                Link { to: "https://apps.apple.com/gb/app/xcode/id497799835?mt=12", "Mac App Store" }
             }
             li {
-                Link { to: "https://developer.apple.com/xcode/resources/" }
+                Link { to: "https://developer.apple.com/xcode/resources/", "Apple Developer website" }
             }
         }
         p { "You will need to download the iOS SDK and install some simulators." }
@@ -5798,6 +5832,7 @@ pub fn GettingStartedIndex(section: GettingStartedIndexSection) -> dioxus::prelu
                 to: BookRoute::GuidesMobileIndex {
                     section: GuidesMobileIndexSection::Empty,
                 },
+                "dedicated guide for iOS development"
             }
             "."
         }
@@ -5816,6 +5851,7 @@ pub fn GettingStartedIndex(section: GettingStartedIndexSection) -> dioxus::prelu
                 to: BookRoute::GuidesMobileIndex {
                     section: GuidesMobileIndexSection::Empty,
                 },
+                "dedicated guide for Android development"
             }
             "."
         }
@@ -5884,7 +5920,7 @@ pub fn GuideIndex(section: GuideIndexSection) -> dioxus::prelude::Element {
         }
         p {
             "By the end of this tutorial, you will launch your very own web, desktop, and mobile apps and a backend deployed to "
-            Link { to: "http://fly.io" }
+            Link { to: "http://fly.io", "Fly.io" }
             "."
         }
         p {
@@ -5900,12 +5936,14 @@ pub fn GuideIndex(section: GuideIndexSection) -> dioxus::prelude::Element {
                 to: BookRoute::EssentialsIndex {
                     section: EssentialsIndexSection::Empty,
                 },
+                "Core Concepts"
             }
             " and specific "
             Link {
                 to: BookRoute::GuidesIndex {
                     section: GuidesIndexSection::Empty,
                 },
+                "Guides"
             }
             " for more information."
         }
@@ -5925,6 +5963,7 @@ pub fn GuideIndex(section: GuideIndexSection) -> dioxus::prelude::Element {
                     to: BookRoute::GuideTooling {
                         section: GuideToolingSection::Empty,
                     },
+                    "Tooling Setup"
                 }
             }
             li {
@@ -5932,6 +5971,7 @@ pub fn GuideIndex(section: GuideIndexSection) -> dioxus::prelude::Element {
                     to: BookRoute::GuideNewApp {
                         section: GuideNewAppSection::Empty,
                     },
+                    "Creating a new app"
                 }
             }
             li {
@@ -5939,6 +5979,7 @@ pub fn GuideIndex(section: GuideIndexSection) -> dioxus::prelude::Element {
                     to: BookRoute::GuideComponent {
                         section: GuideComponentSection::Empty,
                     },
+                    "How Components Work"
                 }
             }
             li {
@@ -5946,6 +5987,7 @@ pub fn GuideIndex(section: GuideIndexSection) -> dioxus::prelude::Element {
                     to: BookRoute::GuideRsx {
                         section: GuideRsxSection::Empty,
                     },
+                    "Creating UI with RSX"
                 }
             }
             li {
@@ -5953,6 +5995,7 @@ pub fn GuideIndex(section: GuideIndexSection) -> dioxus::prelude::Element {
                     to: BookRoute::GuideAssets {
                         section: GuideAssetsSection::Empty,
                     },
+                    "Styling and Assets"
                 }
             }
             li {
@@ -5960,6 +6003,7 @@ pub fn GuideIndex(section: GuideIndexSection) -> dioxus::prelude::Element {
                     to: BookRoute::GuideState {
                         section: GuideStateSection::Empty,
                     },
+                    "Adding State"
                 }
             }
             li {
@@ -5967,6 +6011,7 @@ pub fn GuideIndex(section: GuideIndexSection) -> dioxus::prelude::Element {
                     to: BookRoute::GuideDataFetching {
                         section: GuideDataFetchingSection::Empty,
                     },
+                    "Fetching Data"
                 }
             }
             li {
@@ -5974,6 +6019,7 @@ pub fn GuideIndex(section: GuideIndexSection) -> dioxus::prelude::Element {
                     to: BookRoute::GuideBackend {
                         section: GuideBackendSection::Empty,
                     },
+                    "Adding a Backend"
                 }
             }
             li {
@@ -5981,6 +6027,7 @@ pub fn GuideIndex(section: GuideIndexSection) -> dioxus::prelude::Element {
                     to: BookRoute::GuideDatabases {
                         section: GuideDatabasesSection::Empty,
                     },
+                    "Integrating a Database"
                 }
             }
             li {
@@ -5988,6 +6035,7 @@ pub fn GuideIndex(section: GuideIndexSection) -> dioxus::prelude::Element {
                     to: BookRoute::GuideRouting {
                         section: GuideRoutingSection::Empty,
                     },
+                    "App Routing"
                 }
             }
             li {
@@ -5995,6 +6043,7 @@ pub fn GuideIndex(section: GuideIndexSection) -> dioxus::prelude::Element {
                     to: BookRoute::GuideBundle {
                         section: GuideBundleSection::Empty,
                     },
+                    "Bundling"
                 }
             }
             li {
@@ -6002,6 +6051,7 @@ pub fn GuideIndex(section: GuideIndexSection) -> dioxus::prelude::Element {
                     to: BookRoute::GuideDeploy {
                         section: GuideDeploySection::Empty,
                     },
+                    "Deployment"
                 }
             }
             li {
@@ -6009,6 +6059,7 @@ pub fn GuideIndex(section: GuideIndexSection) -> dioxus::prelude::Element {
                     to: BookRoute::GuideNextSteps {
                         section: GuideNextStepsSection::Empty,
                     },
+                    "Next Steps"
                 }
             }
         }
@@ -6107,6 +6158,7 @@ pub fn GuideTooling(section: GuideToolingSection) -> dioxus::prelude::Element {
                 to: BookRoute::GettingStartedIndex {
                     section: GettingStartedIndexSection::Empty,
                 },
+                "Getting Started"
             }
             " page on installing the required dependencies."
         }
@@ -6130,6 +6182,7 @@ pub fn GuideTooling(section: GuideToolingSection) -> dioxus::prelude::Element {
                 to: BookRoute::GettingStartedIndex {
                     section: GettingStartedIndexSection::Empty,
                 },
+                "Getting Started"
             }
             ", but first you should verify everything is set up properly:"
         }
@@ -6304,6 +6357,7 @@ pub fn GuideNewApp(section: GuideNewAppSection) -> dioxus::prelude::Element {
                     to: BookRoute::CookbookTailwind {
                         section: CookbookTailwindSection::Empty,
                     },
+                    "TailwindCSS guide"
                 }
                 "."
             }
@@ -6439,7 +6493,7 @@ pub fn GuideNewApp(section: GuideNewAppSection) -> dioxus::prelude::Element {
             "Starting with Dioxus 0.6,  "
             code { "dx" }
             " will also initialize separate "
-            Link { to: "https://doc.rust-lang.org/cargo/reference/profiles.html" }
+            Link { to: "https://doc.rust-lang.org/cargo/reference/profiles.html", "Cargo profiles" }
             " for your app. These profiles let you customize the optimization level of each platform. "
             code { "dx" }
             " also uses these platforms as a mechanism of isolating builds from each other."
@@ -6486,6 +6540,7 @@ pub fn GuideNewApp(section: GuideNewAppSection) -> dioxus::prelude::Element {
                 to: BookRoute::GuideAssets {
                     section: GuideAssetsSection::Empty,
                 },
+                "Styling and Assets"
             }
             " chapter. You can include assets from anywhere within your app's file tree, but we recommend using the pregenerated "
             code { "assets" }
@@ -6536,6 +6591,7 @@ pub fn GuideNewApp(section: GuideNewAppSection) -> dioxus::prelude::Element {
                 to: BookRoute::GuideComponent {
                     section: GuideComponentSection::Empty,
                 },
+                "next chapter"
             }
             "."
         }
@@ -6696,7 +6752,7 @@ pub fn GuideComponent(section: GuideComponentSection) -> dioxus::prelude::Elemen
         }
         p {
             "If you're familiar with JavaScript, then you might also be familiar with libraries like "
-            Link { to: "http://react.dev" }
+            Link { to: "http://react.dev", "React" }
             ". Dioxus is "
             em { "very" }
             " similar to React: if you know React then you will feel comfortable with Dioxus."
@@ -6804,6 +6860,7 @@ pub fn GuideComponent(section: GuideComponentSection) -> dioxus::prelude::Elemen
                 to: BookRoute::GuideRsx {
                     section: GuideRsxSection::Empty,
                 },
+                "next chapter"
             }
             "."
         }
@@ -6929,6 +6986,7 @@ pub fn GuideRsx(section: GuideRsxSection) -> dioxus::prelude::Element {
                 to: BookRoute::ReferenceHotreload {
                     section: ReferenceHotreloadSection::Empty,
                 },
+                "hot-reload guide"
             }
             " in the reference."
         }
@@ -7036,6 +7094,7 @@ pub fn GuideRsx(section: GuideRsxSection) -> dioxus::prelude::Element {
                 to: BookRoute::GuideAssets {
                     section: GuideAssetsSection::Empty,
                 },
+                "styling our app"
             }
             "."
         }
@@ -7125,7 +7184,7 @@ pub fn GuideAssets(section: GuideAssetsSection) -> dioxus::prelude::Element {
         }
         p {
             "CSS is by-far the most popular styling system and is extremely capable. For example, here's a screenshot of "
-            Link { to: "https://github.com/terhechte/Ebou" }
+            Link { to: "https://github.com/terhechte/Ebou", "ebou" }
             ", a very beautiful Mastodon client built with Dioxus."
         }
         p {
@@ -7277,6 +7336,7 @@ pub fn GuideAssets(section: GuideAssetsSection) -> dioxus::prelude::Element {
                 to: BookRoute::GuidesAssets {
                     section: GuidesAssetsSection::Empty,
                 },
+                "assets guide"
             }
             " for a more in-depth explanation of how the Dioxus asset system works."
         }
@@ -7420,6 +7480,7 @@ pub fn GuideState(section: GuideStateSection) -> dioxus::prelude::Element {
                 to: BookRoute::ReferenceEventHandlers {
                     section: ReferenceEventHandlersSection::Empty,
                 },
+                "EventListener"
             }
             " to listen for the "
             code { "click" }
@@ -7429,7 +7490,9 @@ pub fn GuideState(section: GuideStateSection) -> dioxus::prelude::Element {
             "Event handlers are similar to regular attributes, but their name usually starts with  "
             code { "on" }
             " - and they accept closures as values. The closure will be called whenever its corresponding event is triggered. The listener receives information about the event in the "
-            Link { to: "https://docs.rs/dioxus/latest/dioxus/prelude/struct.Event.html" }
+            Link { to: "https://docs.rs/dioxus/latest/dioxus/prelude/struct.Event.html",
+                "Event"
+            }
             " object."
         }
         p {
@@ -7451,6 +7514,7 @@ pub fn GuideState(section: GuideStateSection) -> dioxus::prelude::Element {
                     to: BookRoute::ReferenceEventHandlers {
                         section: ReferenceEventHandlersSection::Empty,
                     },
+                    "Event Handler reference"
                 }
             }
         }
@@ -7493,6 +7557,7 @@ pub fn GuideState(section: GuideStateSection) -> dioxus::prelude::Element {
                 to: BookRoute::GuidesManagingState {
                     section: GuidesManagingStateSection::TheRulesOfHooks,
                 },
+                "simple rules"
             }
             " to function properly."
         }
@@ -7552,6 +7617,7 @@ pub fn GuideState(section: GuideStateSection) -> dioxus::prelude::Element {
                 to: BookRoute::EssentialsStateIndex {
                     section: EssentialsStateIndexSection::Empty,
                 },
+                "state management"
             }
             " guide in depth before diving into your first large app."
         }
@@ -7728,14 +7794,14 @@ pub fn GuideDataFetching(section: GuideDataFetchingSection) -> dioxus::prelude::
         }
         p {
             "Dioxus does not provide any built-in utilities for fetching data. Crates like "
-            Link { to: "https://github.com/marc2332/dioxus-query" }
+            Link { to: "https://github.com/marc2332/dioxus-query", "dioxus-query" }
             " exist, but for this tutorial we'll implement data-fetching from scratch."
         }
         p {
             "First, we need to add two new dependencies to our app: "
-            Link { to: "https://crates.io/crates/serde" }
+            Link { to: "https://crates.io/crates/serde", "serde" }
             " and "
-            Link { to: "https://crates.io/crates/reqwest" }
+            Link { to: "https://crates.io/crates/reqwest", "reqwest" }
             "."
         }
         ul {
@@ -7759,7 +7825,7 @@ pub fn GuideDataFetching(section: GuideDataFetchingSection) -> dioxus::prelude::
         }
         p {
             "We'll be using the amazing "
-            Link { to: "https://dog.ceo/dog-api/" }
+            Link { to: "https://dog.ceo/dog-api/", "dog.ceo/dog-api" }
             " to fetch images of dogs for "
             em { "HotDog" }
             ". Fortunately, the API response is quite simple to deserialize."
@@ -7885,6 +7951,7 @@ pub fn GuideDataFetching(section: GuideDataFetchingSection) -> dioxus::prelude::
                 to: BookRoute::ReferenceUseResource {
                     section: ReferenceUseResourceSection::Empty,
                 },
+                "read the docs"
             }
             "."
         }
@@ -7979,6 +8046,7 @@ pub fn GuideBackend(section: GuideBackendSection) -> dioxus::prelude::Element {
                 to: BookRoute::GuidesFullstackIndex {
                     section: GuidesFullstackIndexSection::Empty,
                 },
+                "Fullstack Guide"
             }
             "."
         }
@@ -8038,7 +8106,7 @@ pub fn GuideBackend(section: GuideBackendSection) -> dioxus::prelude::Element {
         }
         p {
             "Dioxus integrates with the "
-            Link { to: "https://crates.io/crates/server_fn" }
+            Link { to: "https://crates.io/crates/server_fn", "server_fn" }
             " crate to provide a simple inline communication system for your apps. The server_fn crate makes it easy to build your app's backend with just basic Rust functions. Server Functions are "
             code { "async" }
             " functions annotated with the "
@@ -8062,7 +8130,7 @@ pub fn GuideBackend(section: GuideBackendSection) -> dioxus::prelude::Element {
         }
         p {
             "On the server, the server function expands to an "
-            Link { to: "https://github.com/tokio-rs/axum" }
+            Link { to: "https://github.com/tokio-rs/axum", "axum" }
             " handler:"
         }
         CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#8c8c8c;\">// on the server:\n</span><span style=\"font-style:italic;color:#66d9ef;\">struct </span><span style=\"color:#f8f8f2;\">SaveDogArgs {{\n</span><span style=\"color:#f8f8f2;\">    image: String,\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">async </span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">save_dog</span><span style=\"color:#f8f8f2;\">(Json(</span><span style=\"font-style:italic;color:#fd971f;\">args</span><span style=\"color:#f8f8f2;\">): Json&lt;SaveDogArgs&gt;) -&gt; Result&lt;(), ServerFnError&gt; {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">Ok</span><span style=\"color:#f8f8f2;\">(())\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n" }
@@ -8159,13 +8227,15 @@ pub fn GuideBackend(section: GuideBackendSection) -> dioxus::prelude::Element {
         }
         p {
             "Some dependencies like "
-            Link { to: "https://github.com/tokio-rs/tokio" }
+            Link { to: "https://github.com/tokio-rs/tokio", "Tokio" }
             " only compile properly when targeting native platforms. Other dependencies like "
-            Link { to: "https://github.com/jni-rs/jni-sys" }
+            Link { to: "https://github.com/jni-rs/jni-sys", "jni-sys" }
             " only work properly when running on a specific platform. In these cases, you'll want to make sure that these dependencies are only compiled when a particular feature is enabled. To do this, we can use Rust's "
             code { "optional" }
             " "
-            Link { to: "https://doc.rust-lang.org/cargo/reference/features.html#optional-dependencies" }
+            Link { to: "https://doc.rust-lang.org/cargo/reference/features.html#optional-dependencies",
+                "flag on dependencies in our Cargo.toml"
+            }
             "."
         }
         CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">[dependencies]\n</span><span style=\"color:#f8f8f2;\">tokio </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">{{ version </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;1&quot;</span><span style=\"color:#f8f8f2;\">, optional </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ff80f4;\">true </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">[features]\n</span><span style=\"color:#f8f8f2;\">default </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">[]\n</span><span style=\"color:#f8f8f2;\">server </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">[</span><span style=\"color:#ffee99;\">&quot;dep:tokio&quot;</span><span style=\"color:#f8f8f2;\">]</span></pre>\n" }
@@ -8187,6 +8257,7 @@ pub fn GuideBackend(section: GuideBackendSection) -> dioxus::prelude::Element {
                 to: BookRoute::GuidesFullstackManagingDependencies {
                     section: GuidesFullstackManagingDependenciesSection::Empty,
                 },
+                "here"
             }
             "."
         }
@@ -8207,6 +8278,7 @@ pub fn GuideBackend(section: GuideBackendSection) -> dioxus::prelude::Element {
                 to: BookRoute::GuideDatabases {
                     section: GuideDatabasesSection::Empty,
                 },
+                "the next chapter"
             }
             ", but for now we'll use a simple file to test things out."
         }
@@ -8245,6 +8317,7 @@ pub fn GuideBackend(section: GuideBackendSection) -> dioxus::prelude::Element {
                 to: BookRoute::GuidesFullstackIndex {
                     section: GuidesFullstackIndexSection::Empty,
                 },
+                "fullstack guide"
             }
             " for more information."
         }
@@ -8328,6 +8401,7 @@ pub fn GuideDatabases(section: GuideDatabasesSection) -> dioxus::prelude::Elemen
                 to: BookRoute::GuideDatabases {
                     section: GuideDatabasesSection::AddingDatabaseOperationsToHotdog,
                 },
+                "section where we integrate Sqlite with HotDog"
             }
             ";"
         }
@@ -8348,39 +8422,41 @@ pub fn GuideDatabases(section: GuideDatabasesSection) -> dioxus::prelude::Elemen
         p { "Here is a (incomplete!) list of databases and a short summary of each:" }
         ul {
             li {
-                Link { to: "https://www.postgresql.org" }
+                Link { to: "https://www.postgresql.org", "PostgreSQL" }
                 ": Advanced database known for its powerful plugin system."
             }
             li {
-                Link { to: "https://www.mysql.com" }
+                Link { to: "https://www.mysql.com", "MySQL" }
                 ": World's most popular open source database good for all apps."
             }
             li {
-                Link { to: "https://www.sqlite.org" }
+                Link { to: "https://www.sqlite.org", "SQLite" }
                 ": Simple file-based engine known for its reliability and embeddability."
             }
             li {
-                Link { to: "https://www.oracle.com/database/" }
+                Link { to: "https://www.oracle.com/database/", "Oracle" }
                 ": Advanced commercial database known for its enterprise features."
             }
             li {
-                Link { to: "http://redis.io" }
+                Link { to: "http://redis.io", "Redis" }
                 ": Simple key-value database known for its great performancel."
             }
             li {
-                Link { to: "https://www.mongodb.com/" }
+                Link { to: "https://www.mongodb.com/", "MongoDB" }
                 ": A database ideal for data that doesn't fit into rows and columns."
             }
             li {
-                Link { to: "https://surrealdb.com/" }
+                Link { to: "https://surrealdb.com/", "SurrealDB" }
                 ": A new \"all-in-one\" database that combines many models."
             }
             li {
-                Link { to: "https://www.cockroachlabs.com" }
+                Link { to: "https://www.cockroachlabs.com", "CockroachDB" }
                 ": Distributed SQL database designed for high-availability."
             }
             li {
-                Link { to: "https://dev.to/shreyvijayvargiya/list-of-45-databases-in-the-world-57e8" }
+                Link { to: "https://dev.to/shreyvijayvargiya/list-of-45-databases-in-the-world-57e8",
+                    "and many more"
+                }
                 "!"
             }
         }
@@ -8433,9 +8509,9 @@ pub fn GuideDatabases(section: GuideDatabasesSection) -> dioxus::prelude::Elemen
             " or the "
             em { "user's machine" }
             ". In these cases, you'll want to use an embedded database like "
-            Link { to: "https://www.sqlite.org" }
+            Link { to: "https://www.sqlite.org", "SQLite" }
             " or "
-            Link { to: "https://rocksdb.org" }
+            Link { to: "https://rocksdb.org", "RocksDB" }
             "."
         }
         h2 { id: "adding-database-operations-to-hotdog",
@@ -8521,23 +8597,23 @@ pub fn GuideDatabases(section: GuideDatabasesSection) -> dioxus::prelude::Elemen
         }
         ul {
             li {
-                Link { to: "https://github.com/launchbadge/sqlx" }
+                Link { to: "https://github.com/launchbadge/sqlx", "Sqlx" }
                 ": A straightforward yet large interface to Postgres, MySql, and Sqlite."
             }
             li {
-                Link { to: "https://github.com/SeaQL/sea-orm" }
+                Link { to: "https://github.com/SeaQL/sea-orm", "SeaORM" }
                 ": An ORM built on top of Sqlx for deriving databases."
             }
             li {
-                Link { to: "https://github.com/rusqlite/rusqlite" }
+                Link { to: "https://github.com/rusqlite/rusqlite", "rusqlite" }
                 ": An intuitive sqlite interface with no special ORM magic."
             }
             li {
-                Link { to: "https://github.com/sfackler/rust-postgres" }
+                Link { to: "https://github.com/sfackler/rust-postgres", "rust-postgres" }
                 ": An interface to Postgres with an API similar to rusqlite."
             }
             li {
-                Link { to: "https://github.com/trevyn/turbosql" }
+                Link { to: "https://github.com/trevyn/turbosql", "Turbosql" }
                 ": A "
                 em { "very" }
                 " terse interface to Sqlite with automatic derives."
@@ -8545,21 +8621,21 @@ pub fn GuideDatabases(section: GuideDatabasesSection) -> dioxus::prelude::Elemen
         }
         p {
             "We aren't including libraries like "
-            Link { to: "http://diesel.rs" }
+            Link { to: "http://diesel.rs", "Diesel" }
             " in this list since it seems that the Rust ecosystem has evolved towards newer projects with 1st-class async support."
         }
         p { "There are many libraries we haven't tested yet, but might be worth checking out:" }
         ul {
             li {
-                Link { to: "https://github.com/emreyalvac/firebase-rs" }
+                Link { to: "https://github.com/emreyalvac/firebase-rs", "firebase-rs" }
                 ": Firebase client crate"
             }
             li {
-                Link { to: "https://github.com/supabase-community/postgrest-rs" }
+                Link { to: "https://github.com/supabase-community/postgrest-rs", "postgrest-rs" }
                 ": Supabase client crate"
             }
             li {
-                Link { to: "https://github.com/mongodb/mongo-rust-driver" }
+                Link { to: "https://github.com/mongodb/mongo-rust-driver", "mongo-rust-driver" }
                 ": Official MongoDB client crate"
             }
         }
@@ -8585,48 +8661,48 @@ pub fn GuideDatabases(section: GuideDatabasesSection) -> dioxus::prelude::Elemen
         p { "For popular relational databases:" }
         ul {
             li {
-                Link { to: "https://cloud.google.com/products/databases" }
+                Link { to: "https://cloud.google.com/products/databases", "GCP" }
                 ": Provides AlloyDB (enterprise postgres), CloudSQL (MySql, Postgres), and more."
             }
             li {
-                Link { to: "https://aws.amazon.com/products/databases/" }
+                Link { to: "https://aws.amazon.com/products/databases/", "AWS" }
                 ": Provides RDS, Aurora, DynamoDB, and more."
             }
             li {
-                Link { to: "https://planetscale.com" }
+                Link { to: "https://planetscale.com", "PlanetScale" }
                 ": Reliable MySQL-compatible database with sharding designed for scale."
             }
             li {
-                Link { to: "https://firebase.google.com" }
+                Link { to: "https://firebase.google.com", "Firebase" }
                 ": Google's comprehensive real-time database designed for rapid app development."
             }
             li {
-                Link { to: "https://supabase.com" }
+                Link { to: "https://supabase.com", "Supabase" }
                 ": Hosted Postgres known for its great dashboard and tooling."
             }
             li {
-                Link { to: "https://neon.tech" }
+                Link { to: "https://neon.tech", "Neon" }
                 ": Hosted Postgres that separates compute and storage for scale-to-zero apps."
             }
         }
         p { "For Sqlite:" }
         ul {
             li {
-                Link { to: "https://fly.io/docs/litefs/" }
+                Link { to: "https://fly.io/docs/litefs/", "LiteFS" }
                 ": A distributed Sqlite sync engine designed to be used with Fly.io"
             }
             li {
-                Link { to: "https://turso.tech" }
+                Link { to: "https://turso.tech", "Turso" }
                 ": A \"multi-tenant\" sqlite provider that maintains one isolated database per user"
             }
         }
         p { "The \"scale-to-zero\" relational solutions:" }
         ul {
             li {
-                Link { to: "https://aws.amazon.com/rds/aurora/" }
+                Link { to: "https://aws.amazon.com/rds/aurora/", "AWS Aurora" }
             }
             li {
-                Link { to: "https://fly.io/docs/litefs/" }
+                Link { to: "https://fly.io/docs/litefs/", "LiteFS" }
             }
         }
         p { "We don't suggest any particular database provider." }
@@ -8771,7 +8847,9 @@ pub fn GuideRouting(section: GuideRoutingSection) -> dioxus::prelude::Element {
         CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"font-style:italic;color:#66d9ef;\">mod </span><span style=\"color:#f8f8f2;\">components;\n</span><span style=\"font-style:italic;color:#66d9ef;\">mod </span><span style=\"color:#f8f8f2;\">backend;\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\">use crate</span><span style=\"color:#f8f8f2;\">::components::</span><span style=\"color:#f92672;\">*</span><span style=\"color:#f8f8f2;\">;</span></pre>\n" }
         p {
             "For more information on organizing Rust projects with modules, see the "
-            Link { to: "https://doc.rust-lang.org/book/ch07-02-defining-modules-to-control-scope-and-privacy.html" }
+            Link { to: "https://doc.rust-lang.org/book/ch07-02-defining-modules-to-control-scope-and-privacy.html",
+                "Modules section"
+            }
             " of the Rust Book."
         }
         h2 { id: "creating-a-route",
@@ -8853,6 +8931,7 @@ pub fn GuideRouting(section: GuideRoutingSection) -> dioxus::prelude::Element {
                 to: BookRoute::RouterIndex {
                     section: RouterIndexSection::Empty,
                 },
+                "check the router guide"
             }
             "."
         }
@@ -9141,7 +9220,9 @@ pub fn GuideBundle(section: GuideBundleSection) -> dioxus::prelude::Element {
             li { "Make sure you are developing on a device running macOS" }
             li { "Install XCode" }
             li {
-                Link { to: "https://developer.apple.com/ios/" }
+                Link { to: "https://developer.apple.com/ios/",
+                    "Download a recent iOS SDK and Emulator pack"
+                }
             }
             li {
                 "Install the iOS Rust toolchains ("
@@ -9195,6 +9276,7 @@ pub fn GuideBundle(section: GuideBundleSection) -> dioxus::prelude::Element {
                 to: BookRoute::GuidesMobileIndex {
                     section: GuidesMobileIndexSection::Empty,
                 },
+                "mobile tooling guide"
             }
             "."
         }
@@ -9355,7 +9437,9 @@ pub fn GuideBundle(section: GuideBundleSection) -> dioxus::prelude::Element {
             ". As of today,  "
             code { "dx bundle" }
             " only builds desktop apps for the native platform and architecture. Unfortunately, you can't build macOS apps from Windows, Linux apps from Mac, etc. We recommend using a Continuous Integration Matrix (like "
-            Link { to: "https://docs.github.com/en/actions/writing-workflows/choosing-what-your-workflow-does/running-variations-of-jobs-in-a-workflow" }
+            Link { to: "https://docs.github.com/en/actions/writing-workflows/choosing-what-your-workflow-does/running-variations-of-jobs-in-a-workflow",
+                "Github Actions"
+            }
             ") to perform a \"cross-build\" of your app in multiple different containers."
         }
         p {
@@ -9419,19 +9503,19 @@ pub fn GuideBundle(section: GuideBundleSection) -> dioxus::prelude::Element {
         p { "Tauri provides documentation on the signing process:" }
         ul {
             li {
-                Link { to: "https://tauri.app/distribute/sign/macos/" }
+                Link { to: "https://tauri.app/distribute/sign/macos/", "macOS" }
             }
             li {
-                Link { to: "https://tauri.app/distribute/sign/iOS/" }
+                Link { to: "https://tauri.app/distribute/sign/iOS/", "iOS" }
             }
             li {
-                Link { to: "https://tauri.app/distribute/sign/android/" }
+                Link { to: "https://tauri.app/distribute/sign/android/", "Android" }
             }
             li {
-                Link { to: "https://tauri.app/distribute/sign/Windows/" }
+                Link { to: "https://tauri.app/distribute/sign/Windows/", "Windows" }
             }
             li {
-                Link { to: "https://tauri.app/distribute/sign/Linux/" }
+                Link { to: "https://tauri.app/distribute/sign/Linux/", "Linux" }
             }
         }
         h2 { id: "customizing-your-bundle",
@@ -9460,6 +9544,9 @@ pub fn GuideBundle(section: GuideBundleSection) -> dioxus::prelude::Element {
                 to: BookRoute::CookbookBundling {
                     section: CookbookBundlingSection::Empty,
                 },
+                "reference page on the  "
+                code { "bundle" }
+                " section"
             }
             "."
         }
@@ -9476,7 +9563,7 @@ pub fn GuideBundle(section: GuideBundleSection) -> dioxus::prelude::Element {
             "Also added in Dioxus 0.6 is a JSON output mode for  "
             code { "dx" }
             ". This makes it possible to parse the output of the CLI using tools like "
-            Link { to: "https://jqlang.github.io/jq/" }
+            Link { to: "https://jqlang.github.io/jq/", "jq" }
             " which provide stdin/stdout support for JSON parsing."
         }
         p {
@@ -9595,6 +9682,7 @@ pub fn GuideDeploy(section: GuideDeploySection) -> dioxus::prelude::Element {
                 to: BookRoute::GuideNextSteps {
                     section: GuideNextStepsSection::Empty,
                 },
+                "next steps"
             }
             " if you're not interested in deploying."
         }
@@ -9613,14 +9701,15 @@ pub fn GuideDeploy(section: GuideDeploySection) -> dioxus::prelude::Element {
                 to: BookRoute::Index {
                     section: IndexSection::WhosFundingDioxus,
                 },
+                "introduction"
             }
             ", Dioxus is an independent project with aspirations to fund itself through a paid deploy platform. Hopefully, one day, enough people ship apps with "
-            Link { to: "https://dioxuslabs.com/deploy" }
+            Link { to: "https://dioxuslabs.com/deploy", "Dioxus Deploy" }
             " to fund development on Dioxus itself!"
         }
         p {
             "Currently, Dioxus does not provide its own deploy platform. If you want to sign-up for the beta and help us design the ideal \"end-to-end app-development experience,\" please "
-            Link { to: "https://forms.gle/zeBZmrjSkajqg7hUA" }
+            Link { to: "https://forms.gle/zeBZmrjSkajqg7hUA", "join the waitlist!" }
         }
         p {
             img {
@@ -9650,6 +9739,7 @@ pub fn GuideDeploy(section: GuideDeploySection) -> dioxus::prelude::Element {
                     to: BookRoute::GuideDeploy {
                         section: GuideDeploySection::FullstackDesktopAndMobile,
                     },
+                    "covered later"
                 }
                 "."
             }
@@ -9659,21 +9749,21 @@ pub fn GuideDeploy(section: GuideDeploySection) -> dioxus::prelude::Element {
         }
         ul {
             li {
-                Link { to: "https://developer.apple.com/ios/submit/" }
+                Link { to: "https://developer.apple.com/ios/submit/", "iOS" }
                 ": Directly publish to the Apple App Store"
             }
             li {
-                Link { to: "https://developer.apple.com/macos/submit/" }
+                Link { to: "https://developer.apple.com/macos/submit/", "macOS" }
                 ": Directly publish to the Apple App Store"
             }
             li {
-                Link { to: "https://developer.android.com/studio/publish" }
+                Link { to: "https://developer.android.com/studio/publish", "Android" }
                 ": Directly publish to the Google Play Store"
             }
         }
         p {
             "Tauri provides some "
-            Link { to: "https://tauri.app/distribute/" }
+            Link { to: "https://tauri.app/distribute/", "helpful guides" }
             " for deploying Tauri apps which, while not Dioxus apps, need to follow many of the same steps for deploying to app stores."
         }
         p { "Making native app distribution easier is a top priority for Dioxus Deploy!" }
@@ -9691,9 +9781,9 @@ pub fn GuideDeploy(section: GuideDeploySection) -> dioxus::prelude::Element {
         }
         p {
             "Some providers like "
-            Link { to: "http://workers.cloudflare.com" }
+            Link { to: "http://workers.cloudflare.com", "Cloudflare Workers" }
             " and "
-            Link { to: "https://www.fermyon.com/spin" }
+            Link { to: "https://www.fermyon.com/spin", "Fermyon Spin" }
             " provider WASM-based containers for apps. WASM runtimes are typically cheaper to operate and can horizontally scale better than a traditional virtual-machine based container. When deploying on WASM runtimes, you will need to create a WASM build of your server manually."
         }
         p {
@@ -9727,31 +9817,31 @@ pub fn GuideDeploy(section: GuideDeploySection) -> dioxus::prelude::Element {
         }
         ul {
             li {
-                Link { to: "http://aws.amazon.com" }
+                Link { to: "http://aws.amazon.com", "AWS" }
                 ": Full-featured cloud provider powered by Amazon."
             }
             li {
-                Link { to: "http://aws.amazon.com" }
+                Link { to: "http://aws.amazon.com", "GCP" }
                 ": Full-featured cloud provider powered by Google."
             }
             li {
-                Link { to: "http://azure.microsoft.com" }
+                Link { to: "http://azure.microsoft.com", "Azure" }
                 ": Full-featured cloud provider powered by Microsoft."
             }
             li {
-                Link { to: "http://fly.io" }
+                Link { to: "http://fly.io", "Fly.io" }
                 ": Simple scale-to-zero micro-vm-based cloud with integrated wireguard."
             }
             li {
-                Link { to: "https://vercel.com" }
+                Link { to: "https://vercel.com", "Vercel" }
                 ": Developer-focused cloud built on AWS cloud functions popular with JavaScript frameworks."
             }
             li {
-                Link { to: "http://render.com" }
+                Link { to: "http://render.com", "Render" }
                 ": A \"Modern Heroku\" focused on developer experience and simplicity."
             }
             li {
-                Link { to: "https://www.digitalocean.com" }
+                Link { to: "https://www.digitalocean.com", "Digital Ocean" }
                 ": A cloud built around virtual machines, databases, and storage."
             }
         }
@@ -9759,11 +9849,11 @@ pub fn GuideDeploy(section: GuideDeploySection) -> dioxus::prelude::Element {
             "For "
             em { "HotDog" }
             " we're going to deploy on "
-            Link { to: "http://fly.io" }
+            Link { to: "http://fly.io", "Fly.io" }
             ". We like "
-            Link { to: "http://fly.io" }
+            Link { to: "http://fly.io", "Fly.io" }
             " for a number of reasons. Most importantly, Fly is built on Amazon's "
-            Link { to: "https://firecracker-microvm.github.io" }
+            Link { to: "https://firecracker-microvm.github.io", "Firecracker" }
             " project which is entirely written in Rust!"
         }
         p {
@@ -9815,19 +9905,24 @@ pub fn GuideDeploy(section: GuideDeploySection) -> dioxus::prelude::Element {
         }
         p {
             "To get started with Fly, we need to go through the "
-            Link { to: "https://fly.io/app/sign-up" }
+            Link { to: "https://fly.io/app/sign-up", "Sign Up flow" }
             " and enter our details. This shouldn't take too long."
         }
         p {
             "We'll add the dockerfile from above along with the dockerignore. We'll want to "
-            Link { to: "https://fly.io/docs/flyctl/install/" }
+            Link { to: "https://fly.io/docs/flyctl/install/",
+                "install  "
+                code { "flyctl" }
+            }
             " which also installs the "
             code { "fly" }
             " CLI."
         }
         p {
             "Let's call "
-            Link { to: "https://fly.io/docs/flyctl/launch/" }
+            Link { to: "https://fly.io/docs/flyctl/launch/",
+                code { "fly launch" }
+            }
             " which will automatically initialize our "
             code { "fly.toml" }
             "."
@@ -9887,7 +9982,9 @@ pub fn GuideDeploy(section: GuideDeploySection) -> dioxus::prelude::Element {
         }
         p {
             "Fly also supports "
-            Link { to: "https://fly.io/docs/app-guides/continuous-deployment-with-github-actions/" }
+            Link { to: "https://fly.io/docs/app-guides/continuous-deployment-with-github-actions/",
+                "continuous deployment"
+            }
             ". Whenever we push to our GitHub repository, we can execute "
             code { "fly deploy" }
             " automatically. This can serve as a foundation for staging environments and automatic releases."
@@ -10068,6 +10165,7 @@ pub fn GuideNextSteps(section: GuideNextStepsSection) -> dioxus::prelude::Elemen
                 to: BookRoute::EssentialsIndex {
                     section: EssentialsIndexSection::Empty,
                 },
+                "Essential Topics"
             }
             " to become familiar with the important details of Dioxus."
         }
@@ -10079,6 +10177,7 @@ pub fn GuideNextSteps(section: GuideNextStepsSection) -> dioxus::prelude::Elemen
                         to: BookRoute::EssentialsRsxIndex {
                             section: EssentialsRsxIndexSection::Empty,
                         },
+                        "Building UIs with RSX"
                     }
                     " will teach you how to define html inside your Dioxus app with rsx."
                 }
@@ -10089,6 +10188,7 @@ pub fn GuideNextSteps(section: GuideNextStepsSection) -> dioxus::prelude::Elemen
                         to: BookRoute::EssentialsLifecycleIndex {
                             section: EssentialsLifecycleIndexSection::Empty,
                         },
+                        "Component Lifecycle"
                     }
                     " teaches you about the lifecycle of components along with the hooks you need to run code when the component is first created, mounted, and removed."
                 }
@@ -10099,6 +10199,7 @@ pub fn GuideNextSteps(section: GuideNextStepsSection) -> dioxus::prelude::Elemen
                         to: BookRoute::EssentialsStateIndex {
                             section: EssentialsStateIndexSection::Empty,
                         },
+                        "Managing State"
                     }
                     " guides you through how state works in Dioxus. It will teach you how to create state with "
                     code { "use_signal" }
@@ -10115,6 +10216,7 @@ pub fn GuideNextSteps(section: GuideNextStepsSection) -> dioxus::prelude::Elemen
                         to: BookRoute::EssentialsBreakingIndex {
                             section: EssentialsBreakingIndexSection::Empty,
                         },
+                        "Breaking Out"
                     }
                     " will teach you how to break out of Dioxus' rendering model to run JavaScript or interact with the DOM directly with "
                     code { "web-sys" }
@@ -10139,12 +10241,12 @@ pub fn GuideNextSteps(section: GuideNextStepsSection) -> dioxus::prelude::Elemen
         ul {
             li {
                 "Add animations to your app with CSS or "
-                Link { to: "https://github.com/wheregmis/dioxus-motion" }
+                Link { to: "https://github.com/wheregmis/dioxus-motion", "dioxus-motion" }
                 "."
             }
             li {
                 "Style your app with a library like "
-                Link { to: "http://tailwindcss.com" }
+                Link { to: "http://tailwindcss.com", "TailwindCSS" }
                 "."
             }
             li { "Add inputs to allow users to upload their own dog photos." }
@@ -10176,12 +10278,14 @@ pub fn GuideNextSteps(section: GuideNextStepsSection) -> dioxus::prelude::Elemen
             "Dioxus is really fast. Dioxus is built around an "
             em { "extremely" }
             " performant VirtualDom. While a VirtualDom might sound like "
-            Link { to: "https://svelte.dev/blog/virtual-dom-is-pure-overhead" }
+            Link { to: "https://svelte.dev/blog/virtual-dom-is-pure-overhead", "\"pure overhead\"" }
             ", Dioxus leverages compile-time optimizations that make it faster than nearly all UI frameworks."
         }
         p {
             "On the web, Dioxus "
-            Link { to: "https://krausest.github.io/js-framework-benchmark/2023/table_chrome_120.0.6099.62.html" }
+            Link { to: "https://krausest.github.io/js-framework-benchmark/2023/table_chrome_120.0.6099.62.html",
+                "is on par with frameworks like Solid and Svelte"
+            }
             " which leveragea new reactivity models or custom compilers."
         }
         h3 { id: "is-rust-too-hard",
@@ -10215,6 +10319,7 @@ pub fn GuideNextSteps(section: GuideNextStepsSection) -> dioxus::prelude::Elemen
                     to: BookRoute::CookbookTailwind {
                         section: CookbookTailwindSection::Empty,
                     },
+                    "docs for more info"
                 }
                 "."
             }
@@ -10230,7 +10335,7 @@ pub fn GuideNextSteps(section: GuideNextStepsSection) -> dioxus::prelude::Elemen
             }
             li {
                 "Animations: Yes, you can use CSS animations, "
-                Link { to: "https://github.com/wheregmis/dioxus-motion" }
+                Link { to: "https://github.com/wheregmis/dioxus-motion", "dioxus-motion" }
                 ", or integrate with the system animation APIs."
             }
             li { "Accessibility: Yes. Use semantic HTML and aria-tags for good screen-reader support." }
@@ -10239,9 +10344,9 @@ pub fn GuideNextSteps(section: GuideNextStepsSection) -> dioxus::prelude::Elemen
             }
             li {
                 "AI: Yes, you can interface with providers like "
-                Link { to: "https://crates.io/crates/openai-api-rs" }
+                Link { to: "https://crates.io/crates/openai-api-rs", "OpenAI" }
                 " or even "
-                Link { to: "https://github.com/DioxusLabs/dioxus-ai" }
+                Link { to: "https://github.com/DioxusLabs/dioxus-ai", "build your own provider" }
                 "."
             }
         }
@@ -10272,7 +10377,9 @@ pub fn GuideNextSteps(section: GuideNextStepsSection) -> dioxus::prelude::Elemen
         }
         p {
             "The Dioxus "
-            Link { to: "http://marketplace.visualstudio.com/items?itemName=DioxusLabs.dioxus" }
+            Link { to: "http://marketplace.visualstudio.com/items?itemName=DioxusLabs.dioxus",
+                "VSCode Extension"
+            }
             " can convert HTML to RSX as well as the CLI with "
             code { "dx translate" }
             "."
@@ -10288,7 +10395,9 @@ pub fn GuideNextSteps(section: GuideNextStepsSection) -> dioxus::prelude::Elemen
         }
         p {
             "There's a budding ecosystem of Rust projects for building apps and websites! We have a good comparison in our "
-            Link { to: "https://github.com/DioxusLabs/dioxus#dioxus-vs-other-frameworks" }
+            Link { to: "https://github.com/DioxusLabs/dioxus#dioxus-vs-other-frameworks",
+                "Readme.md"
+            }
         }
         p {
             "Dioxus is an \"all-in-one\" solution for building apps with Rust. We try to be helpful every step of the way: getting started, iterating, testing, bundling, and deploying."
@@ -10368,6 +10477,7 @@ pub fn EssentialsIndex(section: EssentialsIndexSection) -> dioxus::prelude::Elem
                         to: BookRoute::EssentialsRsxIndex {
                             section: EssentialsRsxIndexSection::Empty,
                         },
+                        "Building UIs with RSX"
                     }
                     " will teach you how to define html inside your Dioxus app with rsx."
                 }
@@ -10378,6 +10488,7 @@ pub fn EssentialsIndex(section: EssentialsIndexSection) -> dioxus::prelude::Elem
                         to: BookRoute::EssentialsLifecycleIndex {
                             section: EssentialsLifecycleIndexSection::Empty,
                         },
+                        "Component Lifecycle"
                     }
                     " teaches you about the lifecycle of components along with the hooks you need to run code when the component is first created, mounted, and removed."
                 }
@@ -10388,6 +10499,7 @@ pub fn EssentialsIndex(section: EssentialsIndexSection) -> dioxus::prelude::Elem
                         to: BookRoute::EssentialsStateIndex {
                             section: EssentialsStateIndexSection::Empty,
                         },
+                        "Managing State"
                     }
                     " guides you through how state works in Dioxus. It will teach you how to create state with "
                     code { "use_signal" }
@@ -10404,6 +10516,7 @@ pub fn EssentialsIndex(section: EssentialsIndexSection) -> dioxus::prelude::Elem
                         to: BookRoute::EssentialsBreakingIndex {
                             section: EssentialsBreakingIndexSection::Empty,
                         },
+                        "Breaking Out"
                     }
                     " will teach you how to break out of Dioxus' rendering model to run JavaScript or interact with the DOM directly with "
                     code { "web-sys" }
@@ -10492,7 +10605,7 @@ pub fn EssentialsRsxIndex(section: EssentialsRsxIndexSection) -> dioxus::prelude
         }
         p {
             "Dioxus renders to HTML, if you are not familiar with HTML, this guide will help you get started with the basics. For more detail, the "
-            Link { to: "https://developer.mozilla.org/en-US/docs/Web/HTML" }
+            Link { to: "https://developer.mozilla.org/en-US/docs/Web/HTML", "MDN docs" }
             " are a great resource."
         }
         h2 { id: "text-nodes",
@@ -10814,6 +10927,7 @@ pub fn EssentialsLifecycleIndex(
                 to: BookRoute::EssentialsStateIndex {
                     section: EssentialsStateIndexSection::Empty,
                 },
+                "tracked values"
             }
             " to re-render your component whenever a value changes. "
         }
@@ -10871,7 +10985,9 @@ pub fn EssentialsLifecycleIndex(
         }
         p {
             "Before a component is dropped, it will drop all of its hooks. You can use this drop behavior to clean up any resources that your component is using. If you just need the drop effect, you can use the "
-            Link { to: "https://docs.rs/dioxus/latest/dioxus/prelude/fn.use_drop.html" }
+            Link { to: "https://docs.rs/dioxus/latest/dioxus/prelude/fn.use_drop.html",
+                code { "use_drop" }
+            }
             " hook."
         }
         CodeBlock {
@@ -11172,6 +11288,7 @@ pub fn EssentialsStateIndex(section: EssentialsStateIndexSection) -> dioxus::pre
                 to: BookRoute::ReferenceComponentProps {
                     section: ReferenceComponentPropsSection::Empty,
                 },
+                "props"
             }
             ". This should be your default when passing around state. It is the most explicit and local to your component. Use this until it gets annoying to pass around the value:"
         }
@@ -11194,9 +11311,13 @@ pub fn EssentialsStateIndex(section: EssentialsStateIndexSection) -> dioxus::pre
         }
         p {
             "The context API lets you pass state from a parent component to all children. This is useful if you want to share state between many components. You can insert a unique type into the context with the "
-            Link { to: "https://docs.rs/dioxus-hooks/latest/dioxus_hooks/fn.use_context_provider.html" }
+            Link { to: "https://docs.rs/dioxus-hooks/latest/dioxus_hooks/fn.use_context_provider.html",
+                code { "use_context_provider" }
+            }
             " hook in the parent component. Then you can access the context in any child component with the "
-            Link { to: "https://docs.rs/dioxus-hooks/latest/dioxus_hooks/fn.use_context.html" }
+            Link { to: "https://docs.rs/dioxus-hooks/latest/dioxus_hooks/fn.use_context.html",
+                code { "use_context" }
+            }
             " hook."
         }
         CodeBlock {
@@ -11327,7 +11448,7 @@ pub fn EssentialsBreakingIndex(
         }
         p {
             "Dioxus exposes a limited number of "
-            Link { to: "https://developer.mozilla.org/en-US/docs/Web/API" }
+            Link { to: "https://developer.mozilla.org/en-US/docs/Web/API", "web apis" }
             " with a nicer interface. If you need access to more APIs, you can use the "
             code { "eval" }
             " function to run JavaScript in the browser."
@@ -11340,7 +11461,9 @@ pub fn EssentialsBreakingIndex(
         DemoFrame { breaking_out::Eval {} }
         p {
             "If you are only targeting web, you can also use the "
-            Link { to: "https://crates.io/crates/web-sys" }
+            Link { to: "https://crates.io/crates/web-sys",
+                code { "web-sys" }
+            }
             " crate for typed access to the web APIs. Here is what reading the domain looks like with web-sys:"
         }
         CodeBlock {
@@ -11482,6 +11605,7 @@ pub fn GuidesIndex(section: GuidesIndexSection) -> dioxus::prelude::Element {
                 to: BookRoute::GuideIndex {
                     section: GuideIndexSection::Empty,
                 },
+                code { "guide" }
             }
             " and more."
         }
@@ -11500,6 +11624,7 @@ pub fn GuidesIndex(section: GuidesIndexSection) -> dioxus::prelude::Element {
                     to: BookRoute::GuidesManagingState {
                         section: GuidesManagingStateSection::Empty,
                     },
+                    "State management"
                 }
                 " (signals-based reactivity)"
             }
@@ -11519,6 +11644,7 @@ pub fn GuidesIndex(section: GuidesIndexSection) -> dioxus::prelude::Element {
                     to: BookRoute::GuidesAssets {
                         section: GuidesAssetsSection::Empty,
                     },
+                    code { "Assets" }
                 }
                 " Overview of how to include assets in your application"
             }
@@ -11538,6 +11664,7 @@ pub fn GuidesIndex(section: GuidesIndexSection) -> dioxus::prelude::Element {
                     to: BookRoute::GuidesDesktopIndex {
                         section: GuidesDesktopIndexSection::Empty,
                     },
+                    code { "Desktop" }
                 }
                 " Overview of desktop specific APIS"
             }
@@ -11546,6 +11673,7 @@ pub fn GuidesIndex(section: GuidesIndexSection) -> dioxus::prelude::Element {
                     to: BookRoute::GuidesWebIndex {
                         section: GuidesWebIndexSection::Empty,
                     },
+                    code { "Web" }
                 }
                 " Overview of web specific APIS"
             }
@@ -11554,6 +11682,7 @@ pub fn GuidesIndex(section: GuidesIndexSection) -> dioxus::prelude::Element {
                     to: BookRoute::GuidesFullstackIndex {
                         section: GuidesFullstackIndexSection::Empty,
                     },
+                    code { "Fullstack" }
                 }
                 " Overview of Fullstack specific APIS"
                 ul {
@@ -11562,6 +11691,7 @@ pub fn GuidesIndex(section: GuidesIndexSection) -> dioxus::prelude::Element {
                             to: BookRoute::GuidesFullstackServerFunctions {
                                 section: GuidesFullstackServerFunctionsSection::Empty,
                             },
+                            code { "Server Functions" }
                         }
                         " Server functions make it easy to communicate between your server and client"
                     }
@@ -11570,6 +11700,7 @@ pub fn GuidesIndex(section: GuidesIndexSection) -> dioxus::prelude::Element {
                             to: BookRoute::GuidesFullstackExtractors {
                                 section: GuidesFullstackExtractorsSection::Empty,
                             },
+                            code { "Extractors" }
                         }
                         " Extractors allow you to get extra information out of the headers of a request"
                     }
@@ -11578,6 +11709,7 @@ pub fn GuidesIndex(section: GuidesIndexSection) -> dioxus::prelude::Element {
                             to: BookRoute::GuidesFullstackMiddleware {
                                 section: GuidesFullstackMiddlewareSection::Empty,
                             },
+                            code { "Middleware" }
                         }
                         " Middleware allows you to wrap a server function request or response"
                     }
@@ -11586,6 +11718,7 @@ pub fn GuidesIndex(section: GuidesIndexSection) -> dioxus::prelude::Element {
                             to: BookRoute::GuidesFullstackAuthentication {
                                 section: GuidesFullstackAuthenticationSection::Empty,
                             },
+                            code { "Authentication" }
                         }
                         " An overview of how to handle authentication with server functions"
                     }
@@ -11594,6 +11727,7 @@ pub fn GuidesIndex(section: GuidesIndexSection) -> dioxus::prelude::Element {
                             to: BookRoute::GuidesFullstackRouting {
                                 section: GuidesFullstackRoutingSection::Empty,
                             },
+                            code { "Routing" }
                         }
                         " An overview of how to work with the router in the fullstack renderer"
                     }
@@ -11604,6 +11738,7 @@ pub fn GuidesIndex(section: GuidesIndexSection) -> dioxus::prelude::Element {
                     to: BookRoute::GuidesSsr {
                         section: GuidesSsrSection::Empty,
                     },
+                    code { "SSR" }
                 }
                 " Overview of the SSR renderer"
             }
@@ -11784,6 +11919,7 @@ pub fn RouterIndex(section: RouterIndexSection) -> dioxus::prelude::Element {
                     to: BookRoute::GuideIndex {
                         section: GuideIndexSection::Empty,
                     },
+                    "Dioxus guide"
                 }
                 " first."
             }
@@ -11805,6 +11941,7 @@ pub fn RouterIndex(section: RouterIndexSection) -> dioxus::prelude::Element {
                 to: BookRoute::CliConfigure {
                     section: CliConfigureSection::Empty,
                 },
+                "here"
             }
             "):"
         }
@@ -11839,6 +11976,7 @@ pub fn RouterIndex(section: RouterIndexSection) -> dioxus::prelude::Element {
                     to: BookRoute::RouterReferenceIndex {
                         section: RouterReferenceIndexSection::Empty,
                     },
+                    "reference"
                 }
                 " section explains individual features in "
             }
@@ -11849,6 +11987,7 @@ pub fn RouterIndex(section: RouterIndexSection) -> dioxus::prelude::Element {
                         to: BookRoute::RouterExampleIndex {
                             section: RouterExampleIndexSection::Empty,
                         },
+                        "example project"
                     }
                 }
                 ". It guides you through "
@@ -11857,7 +11996,7 @@ pub fn RouterIndex(section: RouterIndexSection) -> dioxus::prelude::Element {
         blockquote {
             p {
                 "Please note that this is not the only documentation for the Dioxus Router. You can also check out the "
-                Link { to: "https://docs.rs/dioxus-router/" }
+                Link { to: "https://docs.rs/dioxus-router/", "API Docs" }
                 "."
             }
         }
@@ -11920,7 +12059,7 @@ pub fn RouterExampleIndex(section: RouterExampleIndexSection) -> dioxus::prelude
         blockquote {
             p {
                 "To follow along with the router example, you'll need a working Dioxus app."
-                Link { to: "https://dioxuslabs.com/learn/0.6/getting_started" }
+                Link { to: "https://dioxuslabs.com/learn/0.6/getting_started", "Dioxus book" }
                 " to get started."
             }
         }
@@ -11931,6 +12070,7 @@ pub fn RouterExampleIndex(section: RouterExampleIndexSection) -> dioxus::prelude
                     to: BookRoute::RouterIndex {
                         section: RouterIndexSection::Empty,
                     },
+                    "introduction"
                 }
                 "."
             }
@@ -11962,6 +12102,7 @@ pub fn RouterExampleIndex(section: RouterExampleIndexSection) -> dioxus::prelude
                 to: BookRoute::RouterExampleFullCode {
                     section: RouterExampleFullCodeSection::Empty,
                 },
+                "full code"
             }
             " chapter."
         }
@@ -12043,9 +12184,13 @@ pub fn RouterExampleFirstRoute(
         }
         p {
             "The core of the Dioxus Router is the "
-            Link { to: "https://docs.rs/dioxus-router/latest/dioxus_router/components/fn.Routable.html" }
+            Link { to: "https://docs.rs/dioxus-router/latest/dioxus_router/components/fn.Routable.html",
+                code { "Routable" }
+            }
             " macro and the "
-            Link { to: "https://docs.rs/dioxus-router/latest/dioxus_router/components/fn.Router.html" }
+            Link { to: "https://docs.rs/dioxus-router/latest/dioxus_router/components/fn.Router.html",
+                code { "Router" }
+            }
             " component."
         }
         p { "Routable is a trait for anything that can:" }
@@ -12073,12 +12218,16 @@ pub fn RouterExampleFirstRoute(
         p { "We want to use Dioxus Router to separate our application into different \"pages\"." }
         p {
             "To start using Dioxus Router, we need to use the "
-            Link { to: "https://docs.rs/dioxus-router/latest/dioxus_router/components/fn.Routable.html" }
+            Link { to: "https://docs.rs/dioxus-router/latest/dioxus_router/components/fn.Routable.html",
+                code { "Routable" }
+            }
             " macro."
         }
         p {
             "The "
-            Link { to: "https://docs.rs/dioxus-router/latest/dioxus_router/components/fn.Routable.html" }
+            Link { to: "https://docs.rs/dioxus-router/latest/dioxus_router/components/fn.Routable.html",
+                code { "Routable" }
+            }
             " macro takes an enum with all of the possible routes in our application. Each variant of the enum represents a route and must be annotated with the "
             code { "#[route(path)]" }
             " attribute."
@@ -12089,7 +12238,9 @@ pub fn RouterExampleFirstRoute(
         }
         p {
             "The "
-            Link { to: "https://docs.rs/dioxus-router/latest/dioxus_router/components/fn.Router.html" }
+            Link { to: "https://docs.rs/dioxus-router/latest/dioxus_router/components/fn.Router.html",
+                code { "Router" }
+            }
             " component will provide a router context for all the inner components and hooks to use. You usually will want to place this at the top of your components tree."
         }
         CodeBlock {
@@ -12227,7 +12378,9 @@ pub fn RouterExampleBuildingANest(
         p { "Our site visitors won't know all the available pages and blogs on our site so we" }
         p {
             "We want our navbar component to be rendered on several different pages on our site. Instead of duplicating the code, we can create a component that wraps all children routes. This is called a layout component. To tell the router where to render the child routes, we use the "
-            Link { to: "https://docs.rs/dioxus-router/latest/dioxus_router/components/fn.Outlet.html" }
+            Link { to: "https://docs.rs/dioxus-router/latest/dioxus_router/components/fn.Outlet.html",
+                code { "Outlet" }
+            }
             " component."
         }
         p {
@@ -12259,12 +12412,16 @@ pub fn RouterExampleBuildingANest(
         }
         p {
             "Instead, we want to use the "
-            Link { to: "https://docs.rs/dioxus-router/latest/dioxus_router/components/fn.Link.html" }
+            Link { to: "https://docs.rs/dioxus-router/latest/dioxus_router/components/fn.Link.html",
+                code { "Link" }
+            }
             " component provided by Dioxus Router."
         }
         p {
             "The "
-            Link { to: "https://docs.rs/dioxus-router/latest/dioxus_router/components/fn.Link.html" }
+            Link { to: "https://docs.rs/dioxus-router/latest/dioxus_router/components/fn.Link.html",
+                code { "Link" }
+            }
             " is similar to a regular "
             code { "<a>" }
             " tag. It takes a target and children."
@@ -12275,7 +12432,9 @@ pub fn RouterExampleBuildingANest(
             " tag, we can pass in our Route enum as the target. Because we annotated our routes with the  "
             code { "#[route(path)]" }
             " attribute, the "
-            Link { to: "https://docs.rs/dioxus-router/latest/dioxus_router/components/fn.Link.html" }
+            Link { to: "https://docs.rs/dioxus-router/latest/dioxus_router/components/fn.Link.html",
+                code { "Link" }
+            }
             " will know how to generate the correct URL. If we use the Route enum, the rust compiler will prevent us from linking to a page that doesn't exist."
         }
         p { "Let's add our links:" }
@@ -12286,12 +12445,15 @@ pub fn RouterExampleBuildingANest(
         blockquote {
             p {
                 "Using this method, the "
-                Link { to: "https://docs.rs/dioxus-router/latest/dioxus_router/components/fn.Link.html" }
+                Link { to: "https://docs.rs/dioxus-router/latest/dioxus_router/components/fn.Link.html",
+                    code { "Link" }
+                }
                 " component only works for links within our"
                 Link {
                     to: BookRoute::RouterExampleNavigationTargets {
                         section: RouterExampleNavigationTargetsSection::Empty,
                     },
+                    "here"
                 }
                 "."
             }
@@ -12423,7 +12585,9 @@ pub fn RouterExampleNavigationTargets(
             "In the previous chapter, we learned how to create links to pages within our app."
             code { "target" }
             " property. This property takes something that can be converted to a "
-            Link { to: "https://docs.rs/dioxus-router/latest/dioxus_router/navigation/enum.NavigationTarget.html" }
+            Link { to: "https://docs.rs/dioxus-router/latest/dioxus_router/navigation/enum.NavigationTarget.html",
+                code { "NavigationTarget" }
+            }
             "."
         }
         h2 { id: "what-is-a-navigation-target",
@@ -12437,18 +12601,24 @@ pub fn RouterExampleNavigationTargets(
         }
         p {
             "A "
-            Link { to: "https://docs.rs/dioxus-router/latest/dioxus_router/navigation/enum.NavigationTarget.html" }
+            Link { to: "https://docs.rs/dioxus-router/latest/dioxus_router/navigation/enum.NavigationTarget.html",
+                code { "NavigationTarget" }
+            }
             " is similar to the "
             code { "href" }
             " of an HTML anchor element. It"
         }
         ul {
             li {
-                Link { to: "https://docs.rs/dioxus-router/latest/dioxus_router/navigation/enum.NavigationTarget.html#variant.Internal" }
+                Link { to: "https://docs.rs/dioxus-router/latest/dioxus_router/navigation/enum.NavigationTarget.html#variant.Internal",
+                    code { "Internal" }
+                }
                 ": We used internal links in the previous chapter. It's a link to a page within our"
             }
             li {
-                Link { to: "https://docs.rs/dioxus-router/latest/dioxus_router/navigation/enum.NavigationTarget.html#variant.External" }
+                Link { to: "https://docs.rs/dioxus-router/latest/dioxus_router/navigation/enum.NavigationTarget.html#variant.External",
+                    code { "External" }
+                }
                 ": This works exactly like an HTML anchors' "
                 code { "href" }
                 ". Don't use this for in-app"
@@ -12568,9 +12738,11 @@ pub fn RouterExampleRedirectionPerfection(
         }
         p {
             "Well done! You've completed the Dioxus Router guide. You've built a small "
-            Link { to: "https://github.com/DioxusLabs/dioxus/tree/main/packages/router/examples" }
+            Link { to: "https://github.com/DioxusLabs/dioxus/tree/main/packages/router/examples",
+                "router examples"
+            }
             ", or "
-            Link { to: "https://docs.rs/dioxus-router/" }
+            Link { to: "https://docs.rs/dioxus-router/", "API reference" }
             "."
         }
         h3 { id: "challenges",
@@ -12708,6 +12880,7 @@ pub fn RouterReferenceIndex(section: RouterReferenceIndexSection) -> dioxus::pre
                     to: BookRoute::RouterIndex {
                         section: RouterIndexSection::Empty,
                     },
+                    "introduction"
                 }
                 "."
             }
@@ -12824,6 +12997,7 @@ pub fn RouterReferenceRoutesIndex(
                     to: BookRoute::RouterReferenceRoutesIndex {
                         section: RouterReferenceRoutesIndexSection::StaticSegments,
                     },
+                    "Static segments"
                 }
                 " are fixed strings that must be present in the path."
             }
@@ -12832,6 +13006,7 @@ pub fn RouterReferenceRoutesIndex(
                     to: BookRoute::RouterReferenceRoutesIndex {
                         section: RouterReferenceRoutesIndexSection::DynamicSegments,
                     },
+                    "Dynamic segments"
                 }
                 " are types that can be parsed from a segment."
             }
@@ -12840,6 +13015,7 @@ pub fn RouterReferenceRoutesIndex(
                     to: BookRoute::RouterReferenceRoutesIndex {
                         section: RouterReferenceRoutesIndexSection::CatchAllSegments,
                     },
+                    "Catch-all segments"
                 }
                 " are types that can be parsed from multiple segments."
             }
@@ -12848,6 +13024,7 @@ pub fn RouterReferenceRoutesIndex(
                     to: BookRoute::RouterReferenceRoutesIndex {
                         section: RouterReferenceRoutesIndexSection::QuerySegments,
                     },
+                    "Query segments"
                 }
                 " are types that can be parsed from the query string."
             }
@@ -12962,12 +13139,14 @@ pub fn RouterReferenceRoutesIndex(
                 to: BookRoute::RouterReferenceRoutesIndex {
                     section: RouterReferenceRoutesIndexSection::DynamicSegments,
                 },
+                "Dynamic Segments"
             }
             " and "
             Link {
                 to: BookRoute::RouterReferenceRoutesIndex {
                     section: RouterReferenceRoutesIndexSection::CatchAllSegments,
                 },
+                "Catch All Segments"
             }
             ", parsing a Query segment must not fail."
         }
@@ -13071,6 +13250,7 @@ pub fn RouterReferenceRoutesNested(
                     to: BookRoute::RouterReferenceRoutesIndex {
                         section: RouterReferenceRoutesIndexSection::CatchAllSegments,
                     },
+                    "Catch All Segment"
                 }
             }
             li {
@@ -13079,6 +13259,7 @@ pub fn RouterReferenceRoutesNested(
                     to: BookRoute::RouterReferenceRoutesIndex {
                         section: RouterReferenceRoutesIndexSection::QuerySegments,
                     },
+                    "Query Segment"
                 }
             }
         }
@@ -13153,9 +13334,13 @@ pub fn RouterReferenceLayouts(section: RouterReferenceLayoutsSection) -> dioxus:
             "Layouts allow you to wrap all child routes in a component. This can be useful when creating something like a header that will be used in many different routes."
         }
         p {
-            Link { to: "https://docs.rs/dioxus-router/latest/dioxus_router/components/fn.Outlet.html" }
+            Link { to: "https://docs.rs/dioxus-router/latest/dioxus_router/components/fn.Outlet.html",
+                code { "Outlet" }
+            }
             " tells the router where to render content in layouts. In the following example,"
-            Link { to: "https://docs.rs/dioxus-router/latest/dioxus_router/components/fn.Outlet.html" }
+            Link { to: "https://docs.rs/dioxus-router/latest/dioxus_router/components/fn.Outlet.html",
+                code { "Outlet" }
+            }
             "."
         }
         p {
@@ -13186,6 +13371,7 @@ pub fn RouterReferenceLayouts(section: RouterReferenceLayoutsSection) -> dioxus:
                 to: BookRoute::RouterReferenceRoutesNested {
                     section: RouterReferenceRoutesNestedSection::Empty,
                 },
+                "nested routes"
             }
             " to create dynamic layouts with content that changes based on the current route."
         }
@@ -13380,14 +13566,20 @@ pub fn RouterReferenceNavigationProgrammatic(
         }
         p {
             "We can get a navigator with the "
-            Link { to: "https://docs.rs/dioxus-router/latest/dioxus_router/prelude/struct.Navigator.html" }
+            Link { to: "https://docs.rs/dioxus-router/latest/dioxus_router/prelude/struct.Navigator.html",
+                code { "navigator" }
+            }
             " function which returns a "
-            Link { to: "https://docs.rs/dioxus-router/latest/dioxus_router/prelude/struct.Navigator.html" }
+            Link { to: "https://docs.rs/dioxus-router/latest/dioxus_router/prelude/struct.Navigator.html",
+                code { "Navigator" }
+            }
             "."
         }
         p {
             "We can use the "
-            Link { to: "https://docs.rs/dioxus-router/latest/dioxus_router/prelude/struct.Navigator.html" }
+            Link { to: "https://docs.rs/dioxus-router/latest/dioxus_router/prelude/struct.Navigator.html",
+                code { "Navigator" }
+            }
             " to trigger four different kinds of navigation:"
         }
         ul {
@@ -13416,15 +13608,21 @@ pub fn RouterReferenceNavigationProgrammatic(
         }
         p {
             "You might have noticed that, like "
-            Link { to: "https://docs.rs/dioxus-router/latest/dioxus_router/components/fn.Link.html" }
+            Link { to: "https://docs.rs/dioxus-router/latest/dioxus_router/components/fn.Link.html",
+                code { "Link" }
+            }
             ", the "
-            Link { to: "https://docs.rs/dioxus-router/latest/dioxus_router/prelude/struct.Navigator.html" }
+            Link { to: "https://docs.rs/dioxus-router/latest/dioxus_router/prelude/struct.Navigator.html",
+                code { "Navigator" }
+            }
             "s "
             code { "push" }
             " and"
             code { "replace" }
             " functions take a "
-            Link { to: "https://docs.rs/dioxus-router/latest/dioxus_router/navigation/enum.NavigationTarget.html" }
+            Link { to: "https://docs.rs/dioxus-router/latest/dioxus_router/navigation/enum.NavigationTarget.html",
+                code { "NavigationTarget" }
+            }
             ". This means we can use either"
             code { "Internal" }
             ", or "
@@ -13442,9 +13640,13 @@ pub fn RouterReferenceNavigationProgrammatic(
         }
         p {
             "Unlike a "
-            Link { to: "https://docs.rs/dioxus-router/latest/dioxus_router/components/fn.Link.html" }
+            Link { to: "https://docs.rs/dioxus-router/latest/dioxus_router/components/fn.Link.html",
+                code { "Link" }
+            }
             ", the "
-            Link { to: "https://docs.rs/dioxus-router/latest/dioxus_router/prelude/struct.Navigator.html" }
+            Link { to: "https://docs.rs/dioxus-router/latest/dioxus_router/prelude/struct.Navigator.html",
+                code { "Navigator" }
+            }
             " cannot rely on the browser (or webview) to"
         }
         p { "This means, that under certain conditions, navigation to external targets can" }
@@ -13601,10 +13803,14 @@ pub fn RouterReferenceHistoryButtons(
         p { "However, native platforms usually don't provide such amenities, which means that" }
         ul {
             li {
-                Link { to: "https://docs.rs/dioxus-router/latest/dioxus_router/components/fn.GoBackButton.html" }
+                Link { to: "https://docs.rs/dioxus-router/latest/dioxus_router/components/fn.GoBackButton.html",
+                    code { "GoBackButton" }
+                }
             }
             li {
-                Link { to: "https://docs.rs/dioxus-router/latest/dioxus_router/components/fn.GoForwardButton.html" }
+                Link { to: "https://docs.rs/dioxus-router/latest/dioxus_router/components/fn.GoForwardButton.html",
+                    code { "GoForwardButton" }
+                }
             }
         }
         blockquote {
@@ -13614,6 +13820,7 @@ pub fn RouterReferenceHistoryButtons(
                     to: BookRoute::RouterReferenceNavigationProgrammatic {
                         section: RouterReferenceNavigationProgrammaticSection::Empty,
                     },
+                    code { "programmatic navigation" }
                 }
                 "."
             }
@@ -13696,7 +13903,9 @@ pub fn RouterReferenceRoutingUpdateCallback(
         }
         p {
             "In some cases, we might want to run custom code when the current route changes. For this reason, the "
-            Link { to: "https://docs.rs/dioxus-router/latest/dioxus_router/prelude/struct.RouterConfig.html" }
+            Link { to: "https://docs.rs/dioxus-router/latest/dioxus_router/prelude/struct.RouterConfig.html",
+                code { "RouterConfig" }
+            }
             " exposes an "
             code { "on_update" }
             " field."
@@ -13717,7 +13926,9 @@ pub fn RouterReferenceRoutingUpdateCallback(
         }
         p {
             "If the callback returns a "
-            Link { to: "https://docs.rs/dioxus-router/latest/dioxus_router/navigation/enum.NavigationTarget.html" }
+            Link { to: "https://docs.rs/dioxus-router/latest/dioxus_router/navigation/enum.NavigationTarget.html",
+                code { "NavigationTarget" }
+            }
             ", the router will replace the current location with the specified target. It will not call the "
             code { "on_update" }
             " again."
@@ -13883,6 +14094,7 @@ pub fn GuidesAssets(section: GuidesAssetsSection) -> dioxus::prelude::Element {
                     to: BookRoute::CookbookTailwind {
                         section: CookbookTailwindSection::Empty,
                     },
+                    "tailwind guide"
                 }
                 " has more information on how to use tailwind with dioxus."
             }
@@ -13901,7 +14113,7 @@ pub fn GuidesAssets(section: GuidesAssetsSection) -> dioxus::prelude::Element {
         }
         p {
             "You can read more about assets and all the options available to optimize your assets in the "
-            Link { to: "https://docs.rs/manganis/0.6.0/manganis" }
+            Link { to: "https://docs.rs/manganis/0.6.0/manganis", "manganis documentation" }
             "."
         }
     }
@@ -13974,25 +14186,39 @@ pub fn GuidesWebIndex(section: GuidesWebIndexSection) -> dioxus::prelude::Elemen
         }
         p {
             "A build of Dioxus for the web will be roughly equivalent to the size of a React build (70kb vs 65kb) but it will load significantly faster because "
-            Link { to: "https://hacks.mozilla.org/2018/01/making-webassembly-even-faster-firefoxs-new-streaming-and-tiering-compiler/" }
+            Link { to: "https://hacks.mozilla.org/2018/01/making-webassembly-even-faster-firefoxs-new-streaming-and-tiering-compiler/",
+                "WebAssembly can be compiled as it is streamed"
+            }
             "."
         }
         p { "Examples:" }
         ul {
             li {
-                Link { to: "https://github.com/DioxusLabs/dioxus/blob/main/examples/todomvc.rs" }
+                Link { to: "https://github.com/DioxusLabs/dioxus/blob/main/examples/todomvc.rs",
+                    "TodoMVC"
+                }
             }
             li {
-                Link { to: "https://github.com/DioxusLabs/dioxus/tree/main/examples/tailwind" }
+                Link { to: "https://github.com/DioxusLabs/dioxus/tree/main/examples/tailwind",
+                    "Tailwind App"
+                }
             }
         }
         p {
-            Link { to: "https://github.com/DioxusLabs/dioxus/blob/main/examples/todomvc.rs" }
+            Link { to: "https://github.com/DioxusLabs/dioxus/blob/main/examples/todomvc.rs",
+                img {
+                    src: "https://github.com/DioxusLabs/example-projects/raw/master/todomvc/example.png",
+                    alt: "TodoMVC example",
+                    title: "",
+                }
+            }
         }
         blockquote {
             p {
                 "Note: Because of the limitations of Wasm, "
-                Link { to: "https://rustwasm.github.io/docs/book/reference/which-crates-work-with-wasm.html" }
+                Link { to: "https://rustwasm.github.io/docs/book/reference/which-crates-work-with-wasm.html",
+                    "not every crate will work"
+                }
                 " with your web apps, so you'll need to make sure that your crates work without native system calls (timers, IO, etc)."
             }
         }
@@ -14009,7 +14235,9 @@ pub fn GuidesWebIndex(section: GuidesWebIndexSection) -> dioxus::prelude::Elemen
         ul {
             li {
                 "Because your app will be compiled to WASM you have access to browser APIs through "
-                Link { to: "https://rustwasm.github.io/docs/wasm-bindgen/introduction.html" }
+                Link { to: "https://rustwasm.github.io/docs/wasm-bindgen/introduction.html",
+                    "wasm-bindgen"
+                }
                 "."
             }
             li {
@@ -14018,6 +14246,7 @@ pub fn GuidesWebIndex(section: GuidesWebIndexSection) -> dioxus::prelude::Elemen
                     to: BookRoute::GuidesFullstackIndex {
                         section: GuidesFullstackIndexSection::Empty,
                     },
+                    "fullstack"
                 }
                 " reference for more information."
             }
@@ -14043,9 +14272,11 @@ pub fn GuidesWebIndex(section: GuidesWebIndexSection) -> dioxus::prelude::Elemen
         }
         p {
             "If you are targeting web, but don't plan on targeting any other Dioxus renderer you can also use the generated wrappers in the "
-            Link { to: "https://rustwasm.github.io/wasm-bindgen/web-sys/index.html" }
+            Link { to: "https://rustwasm.github.io/wasm-bindgen/web-sys/index.html",
+                "web-sys"
+            }
             " and "
-            Link { to: "https://gloo-rs.web.app/" }
+            Link { to: "https://gloo-rs.web.app/", "gloo" }
             " crates."
         }
         h2 { id: "customizing-index-template",
@@ -14063,7 +14294,9 @@ pub fn GuidesWebIndex(section: GuidesWebIndexSection) -> dioxus::prelude::Elemen
             " with the id  "
             code { "main" }
             " to be used. Hot Reload is still supported. An example"
-            Link { to: "https://github.com/DioxusLabs/dioxus/blob/main/examples/PWA-example/index.html" }
+            Link { to: "https://github.com/DioxusLabs/dioxus/blob/main/examples/PWA-example/index.html",
+                "PWA-Example"
+            }
             "."
         }
     }
@@ -14143,13 +14376,13 @@ pub fn GuidesDesktopIndex(section: GuidesDesktopIndexSection) -> dioxus::prelude
         }
         p {
             "Dioxus desktop is built on top of "
-            Link { to: "https://github.com/tauri-apps/wry" }
+            Link { to: "https://github.com/tauri-apps/wry", "wry" }
             ", a Rust library for creating desktop applications with a WebView."
         }
         blockquote {
             p {
                 "In the future, we plan to move to a custom web renderer-based DOM renderer with WGPU integrations ("
-                Link { to: "https://github.com/DioxusLabs/blitz" }
+                Link { to: "https://github.com/DioxusLabs/blitz", "Blitz" }
                 ")."
             }
         }
@@ -14164,14 +14397,26 @@ pub fn GuidesDesktopIndex(section: GuidesDesktopIndexSection) -> dioxus::prelude
         }
         ul {
             li {
-                Link { to: "https://github.com/DioxusLabs/dioxus/blob/main/examples/file_explorer.rs" }
+                Link { to: "https://github.com/DioxusLabs/dioxus/blob/main/examples/file_explorer.rs",
+                    "File Explorer"
+                }
             }
             li {
-                Link { to: "https://github.com/DioxusLabs/dioxus/tree/main/examples/tailwind" }
+                Link { to: "https://github.com/DioxusLabs/dioxus/tree/main/examples/tailwind",
+                    "Tailwind App"
+                }
             }
         }
         p {
-            Link { to: "https://github.com/DioxusLabs/dioxus/tree/main/examples/tailwind" }
+            Link { to: "https://github.com/DioxusLabs/dioxus/tree/main/examples/tailwind",
+                img {
+                    src: asset!(
+                        "/assets/static/tailwind_desktop_app.png", ImageAssetOptions::new().with_avif()
+                    ),
+                    alt: "Tailwind App screenshot",
+                    title: "",
+                }
+            }
         }
         h2 { id: "running-javascript",
             Link {
@@ -14212,6 +14457,7 @@ pub fn GuidesDesktopIndex(section: GuidesDesktopIndexSection) -> dioxus::prelude
                 to: BookRoute::GuidesAssets {
                     section: GuidesAssetsSection::Empty,
                 },
+                "assets"
             }
             " reference."
         }
@@ -14226,9 +14472,13 @@ pub fn GuidesDesktopIndex(section: GuidesDesktopIndexSection) -> dioxus::prelude
         }
         p {
             "In cases where you need more low level control over your window, you can use wry APIs exposed through the "
-            Link { to: "https://docs.rs/dioxus-desktop/0.6.0/dioxus_desktop/struct.Config.html" }
+            Link { to: "https://docs.rs/dioxus-desktop/0.6.0/dioxus_desktop/struct.Config.html",
+                "Desktop Config"
+            }
             " and the "
-            Link { to: "https://docs.rs/dioxus-desktop/0.6.0/dioxus_desktop/fn.use_window.html" }
+            Link { to: "https://docs.rs/dioxus-desktop/0.6.0/dioxus_desktop/fn.use_window.html",
+                "use_window hook"
+            }
         }
     }
 }
@@ -14312,7 +14562,7 @@ pub fn GuidesMobileIndex(section: GuidesMobileIndexSection) -> dioxus::prelude::
         }
         p {
             "Mobile apps are rendered with either the platform's WebView or experimentally with "
-            Link { to: "https://github.com/DioxusLabs/blitz" }
+            Link { to: "https://github.com/DioxusLabs/blitz", "WGPU" }
             ". WebView doesn't support animations, transparency, and native widgets."
         }
         p {
@@ -14343,7 +14593,7 @@ pub fn GuidesMobileIndex(section: GuidesMobileIndexSection) -> dioxus::prelude::
         CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">rustup target add aarch64</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">linux</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">android armv7</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">linux</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">androideabi i686</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">linux</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">android x86_64</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">linux</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">android</span></pre>\n" }
         p {
             "To develop on Android, you will need to "
-            Link { to: "https://developer.android.com/studio" }
+            Link { to: "https://developer.android.com/studio", "install Android Studio" }
             "."
         }
         p { "Once you have installed Android Studio, you will need to install the Android SDK and NDK:" }
@@ -14385,7 +14635,9 @@ pub fn GuidesMobileIndex(section: GuidesMobileIndexSection) -> dioxus::prelude::
         blockquote {
             p {
                 "More details that could be useful for debugging any errors you encounter are available "
-                Link { to: "https://developer.android.com/studio/intro/update#sdk-manager" }
+                Link { to: "https://developer.android.com/studio/intro/update#sdk-manager",
+                    "in the official android docs"
+                }
             }
         }
         p { "Next set the Java, Android, NDK, and PATH variables:" }
@@ -14412,7 +14664,7 @@ pub fn GuidesMobileIndex(section: GuidesMobileIndexSection) -> dioxus::prelude::
         }
         p {
             "To develop on IOS, you will need to "
-            Link { to: "https://apps.apple.com/us/app/xcode/id497799835" }
+            Link { to: "https://apps.apple.com/us/app/xcode/id497799835", "install XCode" }
             ". Also make sure to install the iOS targets"
         }
         CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">rustup target add aarch64</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">apple</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">ios aarch64</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">apple</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">ios</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">sim</span></pre>\n" }
@@ -14557,9 +14809,13 @@ pub fn GuidesMobileApis(section: GuidesMobileApisSection) -> dioxus::prelude::El
         }
         p {
             "In cases where you need more low level control over your window, you can use wry APIs exposed through the "
-            Link { to: "https://docs.rs/dioxus-desktop/0.6.0/dioxus_desktop/type.DesktopContext.html" }
+            Link { to: "https://docs.rs/dioxus-desktop/0.6.0/dioxus_desktop/type.DesktopContext.html",
+                "Desktop Config"
+            }
             " and the "
-            Link { to: "https://docs.rs/dioxus-desktop/0.6.0/dioxus_desktop/fn.use_window.html" }
+            Link { to: "https://docs.rs/dioxus-desktop/0.6.0/dioxus_desktop/fn.use_window.html",
+                "use_window hook"
+            }
         }
     }
 }
@@ -14637,7 +14893,7 @@ pub fn GuidesSsr(section: GuidesSsrSection) -> dioxus::prelude::Element {
         }
         p {
             "For this guide, we're going to show how to use Dioxus SSR with "
-            Link { to: "https://docs.rs/axum/latest/axum/" }
+            Link { to: "https://docs.rs/axum/latest/axum/", "Axum" }
             "."
         }
         p { "Make sure you have Rust and Cargo installed, and then create a new project:" }
@@ -14760,7 +15016,9 @@ pub fn GuidesFullstackIndex(section: GuidesFullstackIndexSection) -> dioxus::pre
         blockquote {
             p {
                 "In addition to this guide, you can find more examples of full-stack apps and information about how to integrate with other frameworks and desktop renderers in the "
-                Link { to: "https://github.com/DioxusLabs/dioxus/tree/main/packages/fullstack/examples" }
+                Link { to: "https://github.com/DioxusLabs/dioxus/tree/main/packages/fullstack/examples",
+                    "dioxus-fullstack examples directory"
+                }
                 "."
             }
         }
@@ -14869,7 +15127,9 @@ pub fn GuidesFullstackManagingDependencies(
         blockquote {
             p {
                 "If you are not familiar with features in rust, you can read more about feature flags in the "
-                Link { to: "https://doc.rust-lang.org/cargo/reference/features.html" }
+                Link { to: "https://doc.rust-lang.org/cargo/reference/features.html",
+                    "cargo reference"
+                }
                 "."
             }
         }
@@ -14884,15 +15144,21 @@ pub fn GuidesFullstackManagingDependencies(
         }
         p {
             "Many dependencies like "
-            Link { to: "https://docs.rs/tokio/latest/tokio/index.html" }
+            Link { to: "https://docs.rs/tokio/latest/tokio/index.html",
+                code { "tokio" }
+            }
             " and "
-            Link { to: "https://docs.rs/axum/latest/axum/index.html" }
+            Link { to: "https://docs.rs/axum/latest/axum/index.html",
+                code { "axum" }
+            }
             " are only compatible with the server. If these dependencies are enabled when building a WASM bundle for the browser client, you will get a compilation error. For example, if we want to interact with the filesystem in a server function, we might want to add "
             code { "tokio" }
             ". "
             code { "tokio" }
             " has utilities for working with async IO like "
-            Link { to: "https://docs.rs/tokio/latest/tokio/fs/struct.File.html" }
+            Link { to: "https://docs.rs/tokio/latest/tokio/fs/struct.File.html",
+                code { "tokio::fs::File" }
+            }
             ". Let's try it as a dependency to our fullstack project:"
         }
         CodeBlock {
@@ -14937,9 +15203,13 @@ pub fn GuidesFullstackManagingDependencies(
         }
         p {
             "Many dependencies like "
-            Link { to: "https://docs.rs/wasm-bindgen/latest/wasm_bindgen/index.html" }
+            Link { to: "https://docs.rs/wasm-bindgen/latest/wasm_bindgen/index.html",
+                code { "wasm-bindgen" }
+            }
             " and "
-            Link { to: "https://docs.rs/web-sys/latest/web_sys/index.html" }
+            Link { to: "https://docs.rs/web-sys/latest/web_sys/index.html",
+                code { "web-sys" }
+            }
             " are only compatible with the client. Unlike server-only dependencies, these dependencies can generally compile on native targets, but they will panic when used outside of the browser."
         }
         p {
@@ -14995,7 +15265,9 @@ pub fn GuidesFullstackManagingDependencies(
         blockquote {
             p {
                 "The "
-                Link { to: "https://doc.rust-lang.org/reference/conditional-compilation.html" }
+                Link { to: "https://doc.rust-lang.org/reference/conditional-compilation.html",
+                    "rust reference"
+                }
                 " has more information about conditional compilation in rust."
             }
         }
@@ -15080,7 +15352,7 @@ pub fn GuidesFullstackServerFunctions(
             li { "Be an async function" }
             li {
                 "Have arguments and a return type that both implement serialize and deserialize (with "
-                Link { to: "https://serde.rs/" }
+                Link { to: "https://serde.rs/", "serde" }
                 ")."
             }
             li {
@@ -15102,6 +15374,7 @@ pub fn GuidesFullstackServerFunctions(
                 to: BookRoute::GettingStartedIndex {
                     section: GettingStartedIndexSection::Empty,
                 },
+                "getting started"
             }
             " guide. We will add a server function to our app that allows us to double the count on the server."
         }
@@ -15197,7 +15470,9 @@ pub fn GuidesFullstackServerFunctions(
         }
         p {
             "The project presented so far makes a web browser interact with the server, but it is also possible to make a desktop program interact with the server in a similar fashion. (The full example code is available in the "
-            Link { to: "https://github.com/DioxusLabs/dioxus/tree/main/packages/fullstack/examples/axum-desktop" }
+            Link { to: "https://github.com/DioxusLabs/dioxus/tree/main/packages/fullstack/examples/axum-desktop",
+                "Dioxus repo"
+            }
             ")"
         }
         p {
@@ -15340,7 +15615,9 @@ pub fn GuidesFullstackExtractors(
         }
         p {
             "For example, requests contain information about the user's browser (called the "
-            Link { to: "https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/User-Agent" }
+            Link { to: "https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/User-Agent",
+                "user agent"
+            }
             "). We can use an extractor to retrieve that information."
         }
         p {
@@ -15410,7 +15687,7 @@ pub fn GuidesFullstackMiddleware(
         }
         p {
             "Extractors allow you to wrap your server function in some code that changes either the request or the response. Dioxus fullstack integrates with "
-            Link { to: "https://docs.rs/tower/latest/tower/index.html" }
+            Link { to: "https://docs.rs/tower/latest/tower/index.html", "Tower" }
             " to allow you to wrap your server functions in middleware."
         }
         p {
@@ -15482,6 +15759,7 @@ pub fn GuidesFullstackAuthentication(
                 to: BookRoute::GuidesFullstackExtractors {
                     section: GuidesFullstackExtractorsSection::Empty,
                 },
+                "extractors"
             }
             " to integrate auth with your Fullstack application."
         }
@@ -15490,7 +15768,9 @@ pub fn GuidesFullstackAuthentication(
         }
         p {
             "A "
-            Link { to: "https://github.com/DioxusLabs/dioxus/blob/v0.5/packages/fullstack/examples/axum-auth/src/main.rs" }
+            Link { to: "https://github.com/DioxusLabs/dioxus/blob/v0.5/packages/fullstack/examples/axum-auth/src/main.rs",
+                "full auth example"
+            }
             " with the complete implementation is available in the fullstack examples."
         }
     }
@@ -15549,6 +15829,7 @@ pub fn GuidesFullstackRouting(section: GuidesFullstackRoutingSection) -> dioxus:
                 to: BookRoute::RouterIndex {
                     section: RouterIndexSection::Empty,
                 },
+                "router reference"
             }
         }
         CodeBlock {
@@ -15730,6 +16011,7 @@ pub fn CookbookPublishing(section: CookbookPublishingSection) -> dioxus::prelude
                 to: BookRoute::GuidesAssets {
                     section: GuidesAssetsSection::Empty,
                 },
+                "assets"
             }
             " page), or you can include them in your "
             code { "Dioxus.toml" }
@@ -15748,7 +16030,9 @@ pub fn CookbookPublishing(section: CookbookPublishingSection) -> dioxus::prelude
         }
         p {
             "The first thing we'll do is install the "
-            Link { to: "https://github.com/DioxusLabs/dioxus/tree/main/packages/cli" }
+            Link { to: "https://github.com/DioxusLabs/dioxus/tree/main/packages/cli",
+                "dioxus-cli"
+            }
             ". This extension to cargo will make it very easy to package our app for the various platforms."
         }
         p { "To install, simply run" }
@@ -15774,6 +16058,7 @@ pub fn CookbookPublishing(section: CookbookPublishingSection) -> dioxus::prelude
                 to: BookRoute::CookbookPublishing {
                     section: CookbookPublishingSection::PreparingYourApplicationForBundling,
                 },
+                "this"
             }
             " for more) to produce a final app with all the optimizations and assets builtin."
         }
@@ -15918,6 +16203,7 @@ pub fn CookbookAntipatterns(section: CookbookAntipatternsSection) -> dioxus::pre
                 to: BookRoute::ReferenceDynamicRendering {
                     section: ReferenceDynamicRenderingSection::TheKeyAttribute,
                 },
+                "dynamic rendering chapter"
             }
             ", list items must have unique keys that are associated with the same items across renders. This helps Dioxus associate state with the contained components and ensures good diffing performance. Do not omit keys, unless you know that the list will never change."
         }
@@ -16341,6 +16627,7 @@ pub fn CookbookIntegrationsIndex(
                     to: BookRoute::CookbookIntegrationsLogging {
                         section: CookbookIntegrationsLoggingSection::Empty,
                     },
+                    "Logging"
                 }
             }
             li {
@@ -16348,6 +16635,7 @@ pub fn CookbookIntegrationsIndex(
                     to: BookRoute::CookbookIntegrationsInternationalization {
                         section: CookbookIntegrationsInternationalizationSection::Empty,
                     },
+                    "Internationalization"
                 }
             }
         }
@@ -16470,7 +16758,7 @@ pub fn CookbookIntegrationsLogging(
         }
         p {
             "The "
-            Link { to: "https://crates.io/crates/tracing" }
+            Link { to: "https://crates.io/crates/tracing", "Tracing" }
             " crate is the logging interface that the dioxus-logger uses. It is not required to use the Tracing crate, but you will not receive logs from the Dioxus library."
         }
         p {
@@ -16488,7 +16776,7 @@ pub fn CookbookIntegrationsLogging(
         }
         p {
             "For more information, visit the Tracing crate's "
-            Link { to: "https://docs.rs/tracing/latest/tracing/" }
+            Link { to: "https://docs.rs/tracing/latest/tracing/", "docs" }
             "."
         }
         h2 { id: "platform-intricacies",
@@ -16502,9 +16790,9 @@ pub fn CookbookIntegrationsLogging(
         }
         p {
             "On web, Dioxus Logger will use "
-            Link { to: "https://crates.io/crates/tracing-wasm" }
+            Link { to: "https://crates.io/crates/tracing-wasm", "tracing-wasm" }
             ". On Desktop and server-based targets, Dioxus Logger will use "
-            Link { to: "https://crates.io/crates/tracing-subscriber" }
+            Link { to: "https://crates.io/crates/tracing-subscriber", "tracing-subscriber" }
             "'s "
             code { "FmtSubscriber" }
             "."
@@ -16523,13 +16811,13 @@ pub fn CookbookIntegrationsLogging(
         p { "Your Android device will need developer options/usb debugging enabled." }
         p {
             "For more information, visit android_logger's "
-            Link { to: "https://docs.rs/android_logger/latest/android_logger/" }
+            Link { to: "https://docs.rs/android_logger/latest/android_logger/", "docs" }
             "."
         }
         p { "iOS logs are sent to oslog." }
         p {
             "For more information, visit "
-            Link { to: "https://crates.io/crates/oslog" }
+            Link { to: "https://crates.io/crates/oslog", "oslog" }
             "."
         }
         h4 { id: "final-notes",
@@ -16543,12 +16831,12 @@ pub fn CookbookIntegrationsLogging(
         }
         p {
             "Dioxus Logger is the preferred logger to use with Dioxus if it suites your needs. There are more features to come. If there are any feature suggestions or issues with Dioxus Logger, feel free to reach out on the "
-            Link { to: "https://discord.gg/XgGxMSkvUM" }
+            Link { to: "https://discord.gg/XgGxMSkvUM", "Dioxus Discord Server" }
             "!"
         }
         p {
             "For more information, visit Dioxus Logger's "
-            Link { to: "https://docs.rs/dioxus-logger/latest/dioxus_logger/" }
+            Link { to: "https://docs.rs/dioxus-logger/latest/dioxus_logger/", "docs" }
             "."
         }
     }
@@ -16607,12 +16895,14 @@ pub fn CookbookIntegrationsInternationalization(
         }
         p {
             "If your application supports multiple languages, the "
-            Link { to: "https://github.com/dioxus-community/dioxus-i18n" }
+            Link { to: "https://github.com/dioxus-community/dioxus-i18n", "dioxus-i18n" }
             " crate contains helpers to make working with translations in your application easier."
         }
         p {
             "You can find an example "
-            Link { to: "https://github.com/dioxus-community/dioxus-i18n/blob/main/examples/dioxus-desktop.rs" }
+            Link { to: "https://github.com/dioxus-community/dioxus-i18n/blob/main/examples/dioxus-desktop.rs",
+                "here"
+            }
             "."
         }
     }
@@ -16673,6 +16963,7 @@ pub fn CookbookStateIndex(section: CookbookStateIndexSection) -> dioxus::prelude
                     to: BookRoute::CookbookStateExternalIndex {
                         section: CookbookStateExternalIndexSection::Empty,
                     },
+                    "External State"
                 }
             }
             li {
@@ -16680,6 +16971,7 @@ pub fn CookbookStateIndex(section: CookbookStateIndexSection) -> dioxus::prelude
                     to: BookRoute::CookbookStateCustomHooksIndex {
                         section: CookbookStateCustomHooksIndexSection::Empty,
                     },
+                    "Custom Hook"
                 }
             }
         }
@@ -16760,6 +17052,7 @@ pub fn CookbookStateExternalIndex(
                 to: BookRoute::ReferenceUseCoroutine {
                     section: ReferenceUseCoroutineSection::Empty,
                 },
+                "Coroutines"
             }
             " are great tool for dealing with non-reactive (state you don't render directly) state within your application."
         }
@@ -16895,7 +17188,9 @@ pub fn CookbookStateCustomHooksIndex(
         }
         p {
             "You can use "
-            Link { to: "https://docs.rs/dioxus/latest/dioxus/prelude/fn.use_hook.html" }
+            Link { to: "https://docs.rs/dioxus/latest/dioxus/prelude/fn.use_hook.html",
+                code { "use_hook" }
+            }
             " to build your own hooks. In fact, this is what all the standard hooks are built on!"
         }
         p {
@@ -16919,7 +17214,9 @@ pub fn CookbookStateCustomHooksIndex(
                 "The "
                 code { "use_signal" }
                 " hook tracks state in the hook value, and uses "
-                Link { to: "https://docs.rs/dioxus/latest/dioxus/prelude/fn.schedule_update.html" }
+                Link { to: "https://docs.rs/dioxus/latest/dioxus/prelude/fn.schedule_update.html",
+                    code { "schedule_update" }
+                }
                 " to make Dioxus re-render the component whenever it changes."
             }
         }
@@ -16937,7 +17234,9 @@ pub fn CookbookStateCustomHooksIndex(
                 "The "
                 code { "use_context" }
                 " hook calls "
-                Link { to: "https://docs.rs/dioxus/latest/dioxus/prelude/fn.consume_context.html" }
+                Link { to: "https://docs.rs/dioxus/latest/dioxus/prelude/fn.consume_context.html",
+                    code { "consume_context" }
+                }
                 " (which would be expensive to call on every render) to get some context from the component"
             }
         }
@@ -17088,9 +17387,11 @@ pub fn CookbookTesting(section: CookbookTestingSection) -> dioxus::prelude::Elem
         }
         p {
             "You can use a combination of "
-            Link { to: "https://docs.rs/pretty_assertions/latest/pretty_assertions/" }
+            Link { to: "https://docs.rs/pretty_assertions/latest/pretty_assertions/",
+                "pretty-assertions"
+            }
             " and "
-            Link { to: "http://crates.io/crates/dioxus-ssr" }
+            Link { to: "http://crates.io/crates/dioxus-ssr", "dioxus-ssr" }
             " to check that two snippets of rsx are equal:"
         }
         CodeBlock {
@@ -17112,6 +17413,7 @@ pub fn CookbookTesting(section: CookbookTestingSection) -> dioxus::prelude::Elem
                 to: BookRoute::CookbookStateCustomHooksIndex {
                     section: CookbookStateCustomHooksIndexSection::Empty,
                 },
+                "custom hooks"
             }
             "."
         }
@@ -17133,7 +17435,7 @@ pub fn CookbookTesting(section: CookbookTestingSection) -> dioxus::prelude::Elem
         }
         p {
             "You can use "
-            Link { to: "https://playwright.dev/" }
+            Link { to: "https://playwright.dev/", "Playwright" }
             " to create end to end tests for your dioxus application."
         }
         p {
@@ -17146,13 +17448,19 @@ pub fn CookbookTesting(section: CookbookTestingSection) -> dioxus::prelude::Elem
         }
         ul {
             li {
-                Link { to: "https://github.com/DioxusLabs/dioxus/tree/main/playwright-tests/web" }
+                Link { to: "https://github.com/DioxusLabs/dioxus/tree/main/playwright-tests/web",
+                    "Web example"
+                }
             }
             li {
-                Link { to: "https://github.com/DioxusLabs/dioxus/tree/main/playwright-tests/liveview" }
+                Link { to: "https://github.com/DioxusLabs/dioxus/tree/main/playwright-tests/liveview",
+                    "Liveview example"
+                }
             }
             li {
-                Link { to: "https://github.com/DioxusLabs/dioxus/tree/main/playwright-tests/fullstack" }
+                Link { to: "https://github.com/DioxusLabs/dioxus/tree/main/playwright-tests/fullstack",
+                    "Fullstack example"
+                }
             }
         }
     }
@@ -17227,7 +17535,7 @@ pub fn CookbookTailwind(section: CookbookTailwindSection) -> dioxus::prelude::El
         }
         p {
             "One popular option for styling your Dioxus application is "
-            Link { to: "https://tailwindcss.com/" }
+            Link { to: "https://tailwindcss.com/", "Tailwind" }
             ". Tailwind allows you to style your elements with CSS utility classes. This guide will show you how to setup tailwind CSS with your Dioxus application."
         }
         h2 { id: "setup",
@@ -17246,11 +17554,15 @@ pub fn CookbookTailwind(section: CookbookTailwindSection) -> dioxus::prelude::El
         ol {
             li {
                 "Install npm: "
-                Link { to: "https://docs.npmjs.com/downloading-and-installing-node-js-and-npm" }
+                Link { to: "https://docs.npmjs.com/downloading-and-installing-node-js-and-npm",
+                    "https://docs.npmjs.com/downloading-and-installing-node-js-and-npm"
+                }
             }
             li {
                 "Install the tailwind css cli: "
-                Link { to: "https://tailwindcss.com/docs/installation" }
+                Link { to: "https://tailwindcss.com/docs/installation",
+                    "https://tailwindcss.com/docs/installation"
+                }
             }
             li { "Initialize the tailwind css project:" }
         }
@@ -17336,7 +17648,7 @@ pub fn CookbookTailwind(section: CookbookTailwindSection) -> dioxus::prelude::El
         ul {
             li {
                 "Open the browser to "
-                Link { to: "http://localhost:8080" }
+                Link { to: "http://localhost:8080", "http://localhost:8080" }
                 "."
             }
         }
@@ -17436,7 +17748,7 @@ pub fn CookbookOptimizing(section: CookbookOptimizingSection) -> dioxus::prelude
         }
         p {
             "You might have noticed that Dioxus binaries are pretty big."
-            Link { to: "https://github.com/tigerros/dioxus-todo-app" }
+            Link { to: "https://github.com/tigerros/dioxus-todo-app", "TodoMVC app" }
             " weighs in at 2.36mb!"
         }
         p { "We will also discuss ways to optimize your app for increased speed." }
@@ -17445,7 +17757,7 @@ pub fn CookbookOptimizing(section: CookbookOptimizingSection) -> dioxus::prelude
         }
         p {
             "To test binary sizes, we will use "
-            Link { to: "https://github.com/tigerros/dioxus-todo-app" }
+            Link { to: "https://github.com/tigerros/dioxus-todo-app", "this" }
             " repository as a sample app."
             code { "no-optimizations" }
             " package will serve as the base, which weighs 2.36mb as of right now."
@@ -17453,10 +17765,14 @@ pub fn CookbookOptimizing(section: CookbookOptimizingSection) -> dioxus::prelude
         p { "Additional resources:" }
         ul {
             li {
-                Link { to: "https://rustwasm.github.io/docs/book/reference/code-size.html" }
+                Link { to: "https://rustwasm.github.io/docs/book/reference/code-size.html",
+                    "WASM book - Shrinking  "
+                    code { ".wasm" }
+                    " code size"
+                }
             }
             li {
-                Link { to: "https://github.com/johnthagen/min-sized-rust" }
+                Link { to: "https://github.com/johnthagen/min-sized-rust", "min-sized-rust" }
             }
         }
         h2 { id: "building-in-release-mode",
@@ -17490,14 +17806,14 @@ pub fn CookbookOptimizing(section: CookbookOptimizingSection) -> dioxus::prelude
         }
         p {
             "If you're not targeting web, you can use the "
-            Link { to: "https://github.com/upx/upx" }
+            Link { to: "https://github.com/upx/upx", "UPX" }
             " CLI tool to compress your executables."
         }
         p { "Setup:" }
         ul {
             li {
                 "Download a "
-                Link { to: "https://github.com/upx/upx/releases" }
+                Link { to: "https://github.com/upx/upx/releases", "release" }
                 " and extract the directory inside to a sensible location."
             }
             li { "Add the executable located in the directory to your path variable." }
@@ -17557,25 +17873,39 @@ pub fn CookbookOptimizing(section: CookbookOptimizingSection) -> dioxus::prelude
         p { "Links to the documentation of each value:" }
         ul {
             li {
-                Link { to: "https://doc.rust-lang.org/rustc/codegen-options/index.html#opt-level" }
+                Link { to: "https://doc.rust-lang.org/rustc/codegen-options/index.html#opt-level",
+                    code { "opt-level" }
+                }
             }
             li {
-                Link { to: "https://doc.rust-lang.org/rustc/codegen-options/index.html#debuginfo" }
+                Link { to: "https://doc.rust-lang.org/rustc/codegen-options/index.html#debuginfo",
+                    code { "debug" }
+                }
             }
             li {
-                Link { to: "https://doc.rust-lang.org/rustc/codegen-options/index.html#lto" }
+                Link { to: "https://doc.rust-lang.org/rustc/codegen-options/index.html#lto",
+                    code { "lto" }
+                }
             }
             li {
-                Link { to: "https://doc.rust-lang.org/rustc/codegen-options/index.html#codegen-units" }
+                Link { to: "https://doc.rust-lang.org/rustc/codegen-options/index.html#codegen-units",
+                    code { "codegen-units" }
+                }
             }
             li {
-                Link { to: "https://doc.rust-lang.org/rustc/codegen-options/index.html#panic" }
+                Link { to: "https://doc.rust-lang.org/rustc/codegen-options/index.html#panic",
+                    code { "panic" }
+                }
             }
             li {
-                Link { to: "https://doc.rust-lang.org/rustc/codegen-options/index.html#strip" }
+                Link { to: "https://doc.rust-lang.org/rustc/codegen-options/index.html#strip",
+                    code { "strip" }
+                }
             }
             li {
-                Link { to: "https://doc.rust-lang.org/rustc/codegen-options/index.html#incremental" }
+                Link { to: "https://doc.rust-lang.org/rustc/codegen-options/index.html#incremental",
+                    code { "incremental" }
+                }
             }
         }
         h3 { id: "unstable",
@@ -17610,21 +17940,30 @@ pub fn CookbookOptimizing(section: CookbookOptimizingSection) -> dioxus::prelude
                 to: BookRoute::CookbookOptimizing {
                     section: CookbookOptimizingSection::Stable,
                 },
+                "Stable"
             }
             " section. Links to the documentation of each value:"
         }
         ul {
             li {
-                Link { to: "https://doc.rust-lang.org/cargo/reference/config.html#buildrustflags" }
+                Link { to: "https://doc.rust-lang.org/cargo/reference/config.html#buildrustflags",
+                    code { "[build.rustflags]" }
+                }
             }
             li {
-                Link { to: "https://doc.rust-lang.org/rustc/codegen-options/index.html#lto" }
+                Link { to: "https://doc.rust-lang.org/rustc/codegen-options/index.html#lto",
+                    code { "-C lto" }
+                }
             }
             li {
-                Link { to: "https://doc.rust-lang.org/stable/unstable-book/compiler-flags/virtual-function-elimination.html" }
+                Link { to: "https://doc.rust-lang.org/stable/unstable-book/compiler-flags/virtual-function-elimination.html",
+                    code { "-Z virtual-function-elimination" }
+                }
             }
             li {
-                Link { to: "https://doc.rust-lang.org/stable/unstable-book/compiler-flags/location-detail.html" }
+                Link { to: "https://doc.rust-lang.org/stable/unstable-book/compiler-flags/location-detail.html",
+                    code { "-Z location-detail" }
+                }
             }
         }
         h2 { id: "wasm-opt",
@@ -17641,16 +17980,16 @@ pub fn CookbookOptimizing(section: CookbookOptimizingSection) -> dioxus::prelude
                 "Note: In the future, "
                 code { "wasm-opt" }
                 " will be supported natively through the "
-                Link { to: "https://crates.io/crates/dioxus-cli" }
+                Link { to: "https://crates.io/crates/dioxus-cli", "Dioxus CLI" }
                 "."
             }
         }
         p {
             code { "wasm-opt" }
             " is a tool from the "
-            Link { to: "https://github.com/WebAssembly/binaryen" }
+            Link { to: "https://github.com/WebAssembly/binaryen", "binaryen" }
             " library that optimizes your WASM files."
-            Link { to: "https://github.com/WebAssembly/binaryen/releases" }
+            Link { to: "https://github.com/WebAssembly/binaryen/releases", "binaryen release" }
             " and run this command from the package directory:"
         }
         CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">wasm</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">opt dist</span><span style=\"color:#f92672;\">/</span><span style=\"color:#f8f8f2;\">assets</span><span style=\"color:#f92672;\">/</span><span style=\"color:#f8f8f2;\">dioxus</span><span style=\"color:#f92672;\">/</span><span style=\"color:#f8f8f2;\">APP_NAME_bg.wasm </span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">o dist</span><span style=\"color:#f92672;\">/</span><span style=\"color:#f8f8f2;\">assets</span><span style=\"color:#f92672;\">/</span><span style=\"color:#f8f8f2;\">dioxus</span><span style=\"color:#f92672;\">/</span><span style=\"color:#f8f8f2;\">APP_NAME_bg.wasm </span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">Oz</span></pre>\n" }
@@ -17681,6 +18020,7 @@ pub fn CookbookOptimizing(section: CookbookOptimizingSection) -> dioxus::prelude
                 to: BookRoute::ReferenceDynamicRendering {
                     section: ReferenceDynamicRenderingSection::Empty,
                 },
+                "Dynamic Rendering"
             }
             "."
         }
@@ -17690,6 +18030,7 @@ pub fn CookbookOptimizing(section: CookbookOptimizingSection) -> dioxus::prelude
                 to: BookRoute::CookbookAntipatterns {
                     section: CookbookAntipatternsSection::Empty,
                 },
+                "Anti-patterns"
             }
             " for patterns that you should avoid."
         }
@@ -17708,6 +18049,7 @@ pub fn CookbookOptimizing(section: CookbookOptimizingSection) -> dioxus::prelude
                 to: BookRoute::GuidesAssets {
                     section: GuidesAssetsSection::Empty,
                 },
+                "assets"
             }
             ". Any assets you include with the "
             code { "asset!" }
@@ -18010,6 +18352,7 @@ pub fn ReferenceIndex(section: ReferenceIndexSection) -> dioxus::prelude::Elemen
                     to: BookRoute::ReferenceRsx {
                         section: ReferenceRsxSection::Empty,
                     },
+                    "RSX"
                 }
             }
             li {
@@ -18017,6 +18360,7 @@ pub fn ReferenceIndex(section: ReferenceIndexSection) -> dioxus::prelude::Elemen
                     to: BookRoute::ReferenceComponents {
                         section: ReferenceComponentsSection::Empty,
                     },
+                    "Components"
                 }
             }
             li {
@@ -18024,6 +18368,7 @@ pub fn ReferenceIndex(section: ReferenceIndexSection) -> dioxus::prelude::Elemen
                     to: BookRoute::ReferenceComponentProps {
                         section: ReferenceComponentPropsSection::Empty,
                     },
+                    "Props"
                 }
             }
             li {
@@ -18031,6 +18376,7 @@ pub fn ReferenceIndex(section: ReferenceIndexSection) -> dioxus::prelude::Elemen
                     to: BookRoute::ReferenceEventHandlers {
                         section: ReferenceEventHandlersSection::Empty,
                     },
+                    "Event Handlers"
                 }
             }
             li {
@@ -18038,6 +18384,7 @@ pub fn ReferenceIndex(section: ReferenceIndexSection) -> dioxus::prelude::Elemen
                     to: BookRoute::ReferenceHooks {
                         section: ReferenceHooksSection::Empty,
                     },
+                    "Hooks"
                 }
             }
             li {
@@ -18045,6 +18392,7 @@ pub fn ReferenceIndex(section: ReferenceIndexSection) -> dioxus::prelude::Elemen
                     to: BookRoute::ReferenceUserInput {
                         section: ReferenceUserInputSection::Empty,
                     },
+                    "User Input"
                 }
             }
             li {
@@ -18052,6 +18400,7 @@ pub fn ReferenceIndex(section: ReferenceIndexSection) -> dioxus::prelude::Elemen
                     to: BookRoute::ReferenceContext {
                         section: ReferenceContextSection::Empty,
                     },
+                    "Context"
                 }
             }
             li {
@@ -18059,6 +18408,7 @@ pub fn ReferenceIndex(section: ReferenceIndexSection) -> dioxus::prelude::Elemen
                     to: BookRoute::ReferenceDynamicRendering {
                         section: ReferenceDynamicRenderingSection::Empty,
                     },
+                    "Dynamic Rendering"
                 }
             }
             li {
@@ -18066,6 +18416,7 @@ pub fn ReferenceIndex(section: ReferenceIndexSection) -> dioxus::prelude::Elemen
                     to: BookRoute::ReferenceRouter {
                         section: ReferenceRouterSection::Empty,
                     },
+                    "Routing"
                 }
             }
             li {
@@ -18073,6 +18424,7 @@ pub fn ReferenceIndex(section: ReferenceIndexSection) -> dioxus::prelude::Elemen
                     to: BookRoute::ReferenceUseResource {
                         section: ReferenceUseResourceSection::Empty,
                     },
+                    "Resource"
                 }
             }
             li {
@@ -18080,6 +18432,7 @@ pub fn ReferenceIndex(section: ReferenceIndexSection) -> dioxus::prelude::Elemen
                     to: BookRoute::ReferenceUseCoroutine {
                         section: ReferenceUseCoroutineSection::Empty,
                     },
+                    "UseCoroutine"
                 }
             }
             li {
@@ -18087,6 +18440,7 @@ pub fn ReferenceIndex(section: ReferenceIndexSection) -> dioxus::prelude::Elemen
                     to: BookRoute::ReferenceSpawn {
                         section: ReferenceSpawnSection::Empty,
                     },
+                    "Spawn"
                 }
             }
         }
@@ -18336,6 +18690,7 @@ pub fn ReferenceRsx(section: ReferenceRsxSection) -> dioxus::prelude::Element {
                 to: BookRoute::ReferenceEventHandlers {
                     section: ReferenceEventHandlersSection::Empty,
                 },
+                "event handlers"
             }
             ") modify the behavior or appearance of the element they are attached to. They are specified inside the "
             code { "{{}}" }
@@ -18445,7 +18800,7 @@ pub fn ReferenceRsx(section: ReferenceRsxSection) -> dioxus::prelude::Element {
         }
         p {
             "For example, shipping a markdown-to-Dioxus converter might significantly bloat your final application size. Instead, you'll want to pre-render your markdown to HTML and then include the HTML directly in your output. We use this approach for the "
-            Link { to: "https://dioxuslabs.com" }
+            Link { to: "https://dioxuslabs.com", "Dioxus homepage" }
             ":"
         }
         CodeBlock {
@@ -18458,7 +18813,9 @@ pub fn ReferenceRsx(section: ReferenceRsxSection) -> dioxus::prelude::Element {
                 "Note! This attribute is called \"dangerous_inner_html\" because it is "
                 strong { "dangerous" }
                 " to pass it data you don't trust. If you're not careful, you can easily expose "
-                Link { to: "https://en.wikipedia.org/wiki/Cross-site_scripting" }
+                Link { to: "https://en.wikipedia.org/wiki/Cross-site_scripting",
+                    "cross-site scripting (XSS)"
+                }
                 " attacks to your users."
             }
             p {
@@ -18592,7 +18949,9 @@ pub fn ReferenceRsx(section: ReferenceRsxSection) -> dioxus::prelude::Element {
         }
         p {
             "Similarly to how you can "
-            Link { to: "https://doc.rust-lang.org/rust-by-example/hello/print/fmt.html" }
+            Link { to: "https://doc.rust-lang.org/rust-by-example/hello/print/fmt.html",
+                "format"
+            }
             " Rust strings, you can also interpolate in RSX text. Use "
             code { "{{variable}}" }
             " to Display the value of a variable in a string, or "
@@ -18621,6 +18980,7 @@ pub fn ReferenceRsx(section: ReferenceRsxSection) -> dioxus::prelude::Element {
                 to: BookRoute::ReferenceComponents {
                     section: ReferenceComponentsSection::Empty,
                 },
+                "components"
             }
             ". For example, you could have an "
             code { "ol" }
@@ -18665,9 +19025,13 @@ pub fn ReferenceRsx(section: ReferenceRsxSection) -> dioxus::prelude::Element {
             "You can include arbitrary Rust expressions as children within RSX by surrounding your expression with  "
             code { "{{}}" }
             "s. Any expression that implements "
-            Link { to: "https://docs.rs/dioxus-core/0.3/dioxus_core/trait.IntoDynNode.html" }
+            Link { to: "https://docs.rs/dioxus-core/0.3/dioxus_core/trait.IntoDynNode.html",
+                "IntoDynNode"
+            }
             " can be used within rsx. This is useful for displaying data from an "
-            Link { to: "https://doc.rust-lang.org/stable/book/ch13-02-iterators.html#processing-a-series-of-items-with-iterators" }
+            Link { to: "https://doc.rust-lang.org/stable/book/ch13-02-iterators.html#processing-a-series-of-items-with-iterators",
+                "iterator"
+            }
             ":"
         }
         CodeBlock {
@@ -19240,9 +19604,13 @@ pub fn ReferenceEventHandlers(section: ReferenceEventHandlersSection) -> dioxus:
         }
         p {
             "Event handlers receive an "
-            Link { to: "https://docs.rs/dioxus-core/latest/dioxus_core/struct.Event.html" }
+            Link { to: "https://docs.rs/dioxus-core/latest/dioxus_core/struct.Event.html",
+                code { "Event" }
+            }
             " object containing information about the event. Different types of events contain different types of data. For example, mouse-related events contain "
-            Link { to: "https://docs.rs/dioxus/latest/dioxus/events/struct.MouseData.html" }
+            Link { to: "https://docs.rs/dioxus/latest/dioxus/events/struct.MouseData.html",
+                code { "MouseData" }
+            }
             ", which tells you things like where the mouse was clicked and what mouse buttons were used."
         }
         p { "In the example above, this event data was logged to the terminal:" }
@@ -19251,7 +19619,9 @@ pub fn ReferenceEventHandlers(section: ReferenceEventHandlersSection) -> dioxus:
         }
         p {
             "To learn what the different event types for HTML provide, read the "
-            Link { to: "https://docs.rs/dioxus-html/latest/dioxus_html/events/index.html" }
+            Link { to: "https://docs.rs/dioxus-html/latest/dioxus_html/events/index.html",
+                "events module docs"
+            }
             "."
         }
         h3 { id: "event-propagation",
@@ -19273,7 +19643,9 @@ pub fn ReferenceEventHandlers(section: ReferenceEventHandlersSection) -> dioxus:
         blockquote {
             p {
                 "For more information about event propagation see "
-                Link { to: "https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Building_blocks/Events#event_bubbling" }
+                Link { to: "https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Building_blocks/Events#event_bubbling",
+                    "the mdn docs on event bubbling"
+                }
             }
         }
         p {
@@ -19464,6 +19836,7 @@ pub fn ReferenceHooks(section: ReferenceHooksSection) -> dioxus::prelude::Elemen
                 to: BookRoute::CookbookStateCustomHooksIndex {
                     section: CookbookStateCustomHooksIndexSection::Empty,
                 },
+                "create your own hook"
             }
         }
         h2 { id: "use-signal-hook",
@@ -19476,7 +19849,9 @@ pub fn ReferenceHooks(section: ReferenceHooksSection) -> dioxus::prelude::Elemen
             }
         }
         p {
-            Link { to: "https://docs.rs/dioxus/latest/dioxus/prelude/fn.use_signal.html" }
+            Link { to: "https://docs.rs/dioxus/latest/dioxus/prelude/fn.use_signal.html",
+                code { "use_signal" }
+            }
             " is one of the simplest hooks."
         }
         ul {
@@ -19511,7 +19886,9 @@ pub fn ReferenceHooks(section: ReferenceHooksSection) -> dioxus::prelude::Elemen
             p {
                 code { "use_signal" }
                 " returns your value wrapped in a smart pointer of type "
-                Link { to: "https://docs.rs/dioxus/latest/dioxus/prelude/struct.Signal.html" }
+                Link { to: "https://docs.rs/dioxus/latest/dioxus/prelude/struct.Signal.html",
+                    code { "Signal" }
+                }
                 " that is "
                 code { "Copy" }
                 ". This is why you can both read the value and update it, even within an event handler."
@@ -19570,6 +19947,7 @@ pub fn ReferenceHooks(section: ReferenceHooksSection) -> dioxus::prelude::Elemen
                     to: BookRoute::CookbookErrorHandling {
                         section: CookbookErrorHandlingSection::Empty,
                     },
+                    "Error Handling chapter"
                 }
                 ")."
             }
@@ -19637,10 +20015,12 @@ pub fn ReferenceHooks(section: ReferenceHooksSection) -> dioxus::prelude::Elemen
         }
         ul {
             li {
-                Link { to: "https://docs.rs/dioxus-hooks/latest/dioxus_hooks/" }
+                Link { to: "https://docs.rs/dioxus-hooks/latest/dioxus_hooks/", "dioxus_hooks API docs" }
             }
             li {
-                Link { to: "https://github.com/DioxusLabs/dioxus/tree/main/packages/hooks" }
+                Link { to: "https://github.com/DioxusLabs/dioxus/tree/main/packages/hooks",
+                    "dioxus_hooks source code"
+                }
             }
         }
     }
@@ -19978,9 +20358,13 @@ pub fn ReferenceContext(section: ReferenceContextSection) -> dioxus::prelude::El
         }
         p {
             "Dioxus offers a better solution than this \"prop drilling\" – providing context. The "
-            Link { to: "https://docs.rs/dioxus-hooks/latest/dioxus_hooks/fn.use_context_provider.html" }
+            Link { to: "https://docs.rs/dioxus-hooks/latest/dioxus_hooks/fn.use_context_provider.html",
+                code { "use_context_provider" }
+            }
             " hook provides any Clone context (including Signals!) to any child components. Child components can use the "
-            Link { to: "https://docs.rs/dioxus-hooks/latest/dioxus_hooks/fn.use_context.html" }
+            Link { to: "https://docs.rs/dioxus-hooks/latest/dioxus_hooks/fn.use_context.html",
+                code { "use_context" }
+            }
             " hook to get that context and if it is a Signal, they can read and write to it."
         }
         p { "First, we have to create a struct for our dark mode configuration:" }
@@ -20227,7 +20611,9 @@ pub fn ReferenceDynamicRendering(
                 "Again, you may use a different method to conditionally return  "
                 code { "None" }
                 ". For example the boolean's "
-                Link { to: "https://doc.rust-lang.org/std/primitive.bool.html#method.then" }
+                Link { to: "https://doc.rust-lang.org/std/primitive.bool.html#method.then",
+                    code { "then()" }
+                }
                 " function could be used."
             }
         }
@@ -20504,9 +20890,12 @@ pub fn ReferenceRouter(section: ReferenceRouterSection) -> dioxus::prelude::Elem
                 to: BookRoute::RouterIndex {
                     section: RouterIndexSection::Empty,
                 },
+                "router book"
             }
             " or some of the "
-            Link { to: "https://github.com/DioxusLabs/dioxus/blob/master/examples/router.rs" }
+            Link { to: "https://github.com/DioxusLabs/dioxus/blob/master/examples/router.rs",
+                "router examples"
+            }
             "."
         }
     }
@@ -20568,12 +20957,14 @@ pub fn ReferenceUseResource(section: ReferenceUseResourceSection) -> dioxus::pre
             }
         }
         p {
-            Link { to: "https://docs.rs/dioxus-hooks/latest/dioxus_hooks/fn.use_resource.html" }
+            Link { to: "https://docs.rs/dioxus-hooks/latest/dioxus_hooks/fn.use_resource.html",
+                code { "use_resource" }
+            }
             " lets you run an async closure, and provides you with its result."
         }
         p {
             "For example, we can make an API request (using "
-            Link { to: "https://docs.rs/reqwest/latest/reqwest/index.html" }
+            Link { to: "https://docs.rs/reqwest/latest/reqwest/index.html", "reqwest" }
             ") inside "
             code { "use_resource" }
             ":"
@@ -20756,7 +21147,9 @@ pub fn ReferenceUseCoroutine(section: ReferenceUseCoroutineSection) -> dioxus::p
         }
         p {
             "You can use "
-            Link { to: "https://doc.rust-lang.org/std/borrow/trait.ToOwned.html#tymethod.to_owned" }
+            Link { to: "https://doc.rust-lang.org/std/borrow/trait.ToOwned.html#tymethod.to_owned",
+                "to_owned"
+            }
             " to create a clone of the hook handle which can be moved into the async closure."
         }
         CodeBlock {
@@ -21029,15 +21422,15 @@ pub fn ContributingIndex(section: ContributingIndexSection) -> dioxus::prelude::
         }
         p {
             "Development happens in the "
-            Link { to: "https://github.com/DioxusLabs/dioxus" }
+            Link { to: "https://github.com/DioxusLabs/dioxus", "Dioxus GitHub repository" }
             ". If you've found a bug or have an idea for a feature, please submit an issue (but first check if someone hasn't "
-            Link { to: "https://github.com/DioxusLabs/dioxus/issues" }
+            Link { to: "https://github.com/DioxusLabs/dioxus/issues", "done it already" }
             ")."
         }
         p {
-            Link { to: "https://github.com/DioxusLabs/dioxus/discussions" }
+            Link { to: "https://github.com/DioxusLabs/dioxus/discussions", "GitHub discussions" }
             " can be used as a place to ask for help or talk about features. You can also join "
-            Link { to: "https://discord.gg/XgGxMSkvUM" }
+            Link { to: "https://discord.gg/XgGxMSkvUM", "our Discord channel" }
             " where some development discussion happens."
         }
         h2 { id: "improving-docs",
@@ -21051,9 +21444,11 @@ pub fn ContributingIndex(section: ContributingIndexSection) -> dioxus::prelude::
         }
         p {
             "If you'd like to improve the docs, PRs are welcome! The Rust docs ("
-            Link { to: "https://github.com/DioxusLabs/dioxus/tree/main/packages" }
+            Link { to: "https://github.com/DioxusLabs/dioxus/tree/main/packages", "source" }
             ") and this guide ("
-            Link { to: "https://github.com/DioxusLabs/docsite/tree/main/docs-src/0.6" }
+            Link { to: "https://github.com/DioxusLabs/docsite/tree/main/docs-src/0.6",
+                "source"
+            }
             ") can be found in their respective GitHub repos."
         }
         h2 { id: "working-on-the-ecosystem",
@@ -21067,13 +21462,13 @@ pub fn ContributingIndex(section: ContributingIndexSection) -> dioxus::prelude::
         }
         p {
             "Part of what makes React great is the rich ecosystem. We'd like the same for Dioxus! So if you have a library in mind that you'd like to write and many people would benefit from, it will be appreciated. You can "
-            Link { to: "https://www.npmjs.com/search?q=keywords:react-component" }
+            Link { to: "https://www.npmjs.com/search?q=keywords:react-component", "browse npm.js" }
             " for inspiration. Once you are done, add your library to the "
-            Link { to: "https://github.com/DioxusLabs/awesome-dioxus" }
+            Link { to: "https://github.com/DioxusLabs/awesome-dioxus", "awesome dioxus" }
             " list or share it in the "
             code { "#I-made-a-thing" }
             " channel on "
-            Link { to: "https://discord.gg/XgGxMSkvUM" }
+            Link { to: "https://discord.gg/XgGxMSkvUM", "Discord" }
             "."
         }
         h2 { id: "bugs--features",
@@ -21087,15 +21482,16 @@ pub fn ContributingIndex(section: ContributingIndexSection) -> dioxus::prelude::
         }
         p {
             "If you've fixed "
-            Link { to: "https://github.com/DioxusLabs/dioxus/issues" }
+            Link { to: "https://github.com/DioxusLabs/dioxus/issues", "an open issue" }
             ", feel free to submit a PR! You can also take a look at "
             Link {
                 to: BookRoute::ContributingRoadmap {
                     section: ContributingRoadmapSection::Empty,
                 },
+                "the roadmap"
             }
             " and work on something in there. Consider "
-            Link { to: "https://discord.gg/XgGxMSkvUM" }
+            Link { to: "https://discord.gg/XgGxMSkvUM", "reaching out" }
             " to the team first to make sure everyone's on the same page, and you don't do useless work!"
         }
         p {
@@ -21118,7 +21514,7 @@ pub fn ContributingIndex(section: ContributingIndexSection) -> dioxus::prelude::
         ul {
             li {
                 "Format code with "
-                Link { to: "https://github.com/rust-lang/rustfmt" }
+                Link { to: "https://github.com/rust-lang/rustfmt", "rustfmt" }
                 ":"
             }
         }
@@ -21134,7 +21530,9 @@ pub fn ContributingIndex(section: ContributingIndexSection) -> dioxus::prelude::
         ul {
             li {
                 "Check all code "
-                Link { to: "https://doc.rust-lang.org/cargo/commands/cargo-check.html" }
+                Link { to: "https://doc.rust-lang.org/cargo/commands/cargo-check.html",
+                    "cargo check"
+                }
                 ":"
             }
         }
@@ -21142,7 +21540,7 @@ pub fn ContributingIndex(section: ContributingIndexSection) -> dioxus::prelude::
         ul {
             li {
                 "Check if "
-                Link { to: "https://doc.rust-lang.org/clippy/" }
+                Link { to: "https://doc.rust-lang.org/clippy/", "Clippy" }
                 " generates any warnings. Please fix these!"
             }
         }
@@ -21150,7 +21548,9 @@ pub fn ContributingIndex(section: ContributingIndexSection) -> dioxus::prelude::
         ul {
             li {
                 "Test all code with "
-                Link { to: "https://doc.rust-lang.org/cargo/commands/cargo-test.html" }
+                Link { to: "https://doc.rust-lang.org/cargo/commands/cargo-test.html",
+                    "cargo-test"
+                }
                 ":"
             }
         }
@@ -21158,7 +21558,7 @@ pub fn ContributingIndex(section: ContributingIndexSection) -> dioxus::prelude::
         ul {
             li {
                 "More tests, this time with "
-                Link { to: "https://sagiegurari.github.io/cargo-make/" }
+                Link { to: "https://sagiegurari.github.io/cargo-make/", "cargo-make" }
                 ". Here are all steps, including installation:"
             }
         }
@@ -21207,6 +21607,7 @@ pub fn ContributingIndex(section: ContributingIndexSection) -> dioxus::prelude::
                 to: BookRoute::GettingStartedIndex {
                     section: GettingStartedIndexSection::Empty,
                 },
+                "here"
             }
             "."
         }
@@ -21220,6 +21621,7 @@ pub fn ContributingIndex(section: ContributingIndexSection) -> dioxus::prelude::
                 to: BookRoute::GuideIndex {
                     section: GuideIndexSection::Empty,
                 },
+                "the guide"
             }
             " to get familiar with dioxus."
         }
@@ -21309,39 +21711,55 @@ pub fn ContributingProjectStructure(
         }
         ul {
             li {
-                Link { to: "https://github.com/DioxusLabs/dioxus/tree/main/packages/desktop" }
+                Link { to: "https://github.com/DioxusLabs/dioxus/tree/main/packages/desktop",
+                    "Desktop"
+                }
                 ": A Render that Runs Dioxus applications natively, but renders them with the system webview"
             }
             li {
-                Link { to: "https://github.com/DioxusLabs/dioxus/tree/main/packages/mobile" }
+                Link { to: "https://github.com/DioxusLabs/dioxus/tree/main/packages/mobile",
+                    "Mobile"
+                }
                 ": A Render that Runs Dioxus applications natively, but renders them with the system webview. This is currently a copy of the desktop render"
             }
             li {
-                Link { to: "https://github.com/DioxusLabs/dioxus/tree/main/packages/web" }
+                Link { to: "https://github.com/DioxusLabs/dioxus/tree/main/packages/web",
+                    "Web"
+                }
                 ": Renders Dioxus applications in the browser by compiling to WASM and manipulating the DOM"
             }
             li {
-                Link { to: "https://github.com/DioxusLabs/dioxus/tree/main/packages/liveview" }
+                Link { to: "https://github.com/DioxusLabs/dioxus/tree/main/packages/liveview",
+                    "Liveview"
+                }
                 ": A Render that Runs on the server, and renders using a websocket proxy in the browser"
             }
             li {
-                Link { to: "https://github.com/DioxusLabs/blitz/tree/master/packages/plasmo" }
+                Link { to: "https://github.com/DioxusLabs/blitz/tree/master/packages/plasmo",
+                    "Plasmo"
+                }
                 ": A Renderer that renders a HTML-like tree into a terminal"
             }
             li {
-                Link { to: "https://github.com/DioxusLabs/blitz/tree/master/packages/dioxus-tui" }
+                Link { to: "https://github.com/DioxusLabs/blitz/tree/master/packages/dioxus-tui",
+                    "TUI"
+                }
                 ": A Renderer that uses Plasmo to render a Dioxus application in a terminal"
             }
             li {
-                Link { to: "https://github.com/DioxusLabs/blitz/tree/master/packages/blitz-core" }
+                Link { to: "https://github.com/DioxusLabs/blitz/tree/master/packages/blitz-core",
+                    "Blitz-Core"
+                }
                 ": An experimental native renderer that renders a HTML-like tree using WGPU."
             }
             li {
-                Link { to: "https://github.com/DioxusLabs/blitz" }
+                Link { to: "https://github.com/DioxusLabs/blitz", "Blitz" }
                 ": An experimental native renderer that uses Blitz-Core to render a Dioxus application using WGPU."
             }
             li {
-                Link { to: "https://github.com/DioxusLabs/dioxus/tree/main/packages/ssr" }
+                Link { to: "https://github.com/DioxusLabs/dioxus/tree/main/packages/ssr",
+                    "SSR"
+                }
                 ": A Render that Runs Dioxus applications on the server, and renders them to HTML"
             }
         }
@@ -21356,25 +21774,33 @@ pub fn ContributingProjectStructure(
         }
         ul {
             li {
-                Link { to: "https://github.com/DioxusLabs/dioxus/tree/main/packages/hooks" }
+                Link { to: "https://github.com/DioxusLabs/dioxus/tree/main/packages/hooks",
+                    "Hooks"
+                }
                 ": A collection of common hooks for Dioxus applications"
             }
             li {
-                Link { to: "https://github.com/DioxusLabs/dioxus/tree/main/packages/signals" }
+                Link { to: "https://github.com/DioxusLabs/dioxus/tree/main/packages/signals",
+                    "Signals"
+                }
                 ": A experimental state management library for Dioxus applications. This currently contains a "
                 code { "Copy" }
                 " version of Signal"
             }
             li {
-                Link { to: "https://github.com/DioxusLabs/sdk" }
+                Link { to: "https://github.com/DioxusLabs/sdk", "SDK" }
                 ": A collection of platform agnostic hooks to interact with system interfaces (The clipboard, camera, etc.)."
             }
             li {
-                Link { to: "https://github.com/DioxusLabs/dioxus/tree/main/packages/fermi" }
+                Link { to: "https://github.com/DioxusLabs/dioxus/tree/main/packages/fermi",
+                    "Fermi"
+                }
                 ": A global state management library for Dioxus applications."
             }
             li {
-                Link { to: "https://github.com/DioxusLabs/dioxus/tree/main/packages/router" }
+                Link { to: "https://github.com/DioxusLabs/dioxus/tree/main/packages/router",
+                    "Router"
+                }
                 ": A client-side router for Dioxus applications"
             }
         }
@@ -21389,25 +21815,33 @@ pub fn ContributingProjectStructure(
         }
         ul {
             li {
-                Link { to: "https://github.com/DioxusLabs/dioxus/tree/main/packages/core" }
+                Link { to: "https://github.com/DioxusLabs/dioxus/tree/main/packages/core",
+                    "core"
+                }
                 ": The core virtual dom implementation every Dioxus application uses"
                 ul {
                     li {
                         "You can read more about the architecture of the core "
-                        Link { to: "https://dioxuslabs.com/blog/templates-diffing/" }
+                        Link { to: "https://dioxuslabs.com/blog/templates-diffing/",
+                            "in this blog post"
+                        }
                     }
                 }
             }
             li {
-                Link { to: "https://github.com/DioxusLabs/dioxus/tree/main/packages/rsx" }
+                Link { to: "https://github.com/DioxusLabs/dioxus/tree/main/packages/rsx",
+                    "RSX"
+                }
                 ": The core parsing for RSX used for hot reloading, autoformatting, and the macro"
             }
             li {
-                Link { to: "https://github.com/DioxusLabs/dioxus/tree/main/packages/core-macro" }
+                Link { to: "https://github.com/DioxusLabs/dioxus/tree/main/packages/core-macro",
+                    "core-macro"
+                }
                 ": The rsx! macro used to write Dioxus applications. (This is a wrapper over the RSX crate)"
             }
             li {
-                Link { to: "https://github.com/DioxusLabs/dioxus-html-macro" }
+                Link { to: "https://github.com/DioxusLabs/dioxus-html-macro", "HTML macro" }
                 ": A html-like alternative to the RSX macro"
             }
         }
@@ -21422,11 +21856,11 @@ pub fn ContributingProjectStructure(
         }
         ul {
             li {
-                Link { to: "https://github.com/DioxusLabs/taffy" }
+                Link { to: "https://github.com/DioxusLabs/taffy", "Taffy" }
                 ": Layout engine powering Blitz-Core, Plasmo, and Bevy UI"
             }
             li {
-                Link { to: "https://github.com/DioxusLabs/blitz" }
+                Link { to: "https://github.com/DioxusLabs/blitz", "Blitz" }
                 ": An experimental native renderer for HTML+CSS"
             }
         }
@@ -21441,11 +21875,15 @@ pub fn ContributingProjectStructure(
         }
         ul {
             li {
-                Link { to: "https://github.com/DioxusLabs/dioxus/tree/main/packages/html" }
+                Link { to: "https://github.com/DioxusLabs/dioxus/tree/main/packages/html",
+                    "HTML"
+                }
                 ": defines html specific elements, events, and attributes"
             }
             li {
-                Link { to: "https://github.com/DioxusLabs/dioxus/tree/main/packages/interpreter" }
+                Link { to: "https://github.com/DioxusLabs/dioxus/tree/main/packages/interpreter",
+                    "Interpreter"
+                }
                 ": defines browser bindings used by the web and desktop renderers"
             }
         }
@@ -21460,20 +21898,28 @@ pub fn ContributingProjectStructure(
         }
         ul {
             li {
-                Link { to: "https://github.com/DioxusLabs/dioxus/tree/main/packages/hot-reload" }
+                Link { to: "https://github.com/DioxusLabs/dioxus/tree/main/packages/hot-reload",
+                    "hot-reload"
+                }
                 ": Macro that uses the RSX crate to hot reload static parts of any rsx! macro. This macro works with any non-web renderer with an "
-                Link { to: "https://crates.io/crates/dioxus-hot-reload" }
+                Link { to: "https://crates.io/crates/dioxus-hot-reload", "integration" }
             }
             li {
-                Link { to: "https://github.com/DioxusLabs/dioxus/tree/main/packages/autofmt" }
+                Link { to: "https://github.com/DioxusLabs/dioxus/tree/main/packages/autofmt",
+                    "autofmt"
+                }
                 ": Formats RSX code"
             }
             li {
-                Link { to: "https://github.com/DioxusLabs/dioxus/tree/main/packages/rsx-rosetta" }
+                Link { to: "https://github.com/DioxusLabs/dioxus/tree/main/packages/rsx-rosetta",
+                    "rsx-rosetta"
+                }
                 ": Handles conversion between HTML and RSX"
             }
             li {
-                Link { to: "https://github.com/DioxusLabs/dioxus/tree/main/packages/cli" }
+                Link { to: "https://github.com/DioxusLabs/dioxus/tree/main/packages/cli",
+                    "CLI"
+                }
                 ": A Command Line Interface and VSCode extension to assist with Dioxus usage"
             }
         }
@@ -21834,7 +22280,7 @@ pub fn CliCreating(section: CliCreatingSection) -> dioxus::prelude::Element {
         blockquote {
             p {
                 "It clones this "
-                Link { to: "https://github.com/DioxusLabs/dioxus-template" }
+                Link { to: "https://github.com/DioxusLabs/dioxus-template", "template" }
                 ", which is used to create dioxus apps."
             }
             p {
@@ -21942,6 +22388,7 @@ pub fn CliConfigure(section: CliConfigureSection) -> dioxus::prelude::Element {
                 to: BookRoute::CliConfigure {
                     section: CliConfigureSection::ConfigExample,
                 },
+                "example"
             }
             " which has comments to describe individual keys. You can copy that or view this documentation for a more complete learning experience."
         }
@@ -22110,6 +22557,7 @@ pub fn CliConfigure(section: CliConfigureSection) -> dioxus::prelude::Element {
                 to: BookRoute::CliConfigure {
                     section: CliConfigureSection::Webresource,
                 },
+                code { "[web.resource]" }
             }
             ", but it only works in development servers. For example, if you want to include a file in a "
             code { "dx serve" }

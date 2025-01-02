@@ -249,17 +249,20 @@ fn RightNav<R: AnyBookRoute>() -> Element {
     let page_url = use_memo(move || page.to_string());
 
     let edit_github_url = use_resource(move || async move {
+        let page = page_url();
+        let page_without_hash = page.split_once("#").map(|(url, _)| url).unwrap_or(&page);
+        let page_without_query = page_without_hash.split_once("?").map(|(url, _)| url).unwrap_or(&page_without_hash);
         // This is the URL for the file if that file is not a directory that uses /index.md
         // page_url starts with '/', so we don't need to worry about that
-        let github_api_url = format!("{GITHUB_API_URL}{short_version}/en/{page_url}.md");
+        let github_api_url = format!("{GITHUB_API_URL}{short_version}/src{page_without_hash}.md");
 
         // If the file is not found, that means that we have to use /index.md
-        if reqwest::get(github_api_url).await.ok().map(|f| f.status())
+        if reqwest::get(&github_api_url).await.ok().map(|f| f.status())
             == Some(reqwest::StatusCode::NOT_FOUND)
         {
-            format!("{GITHUB_EDIT_PAGE_EDIT_URL}{short_version}/en/{page_url}/index.md")
+            format!("{GITHUB_EDIT_PAGE_EDIT_URL}{short_version}/src{page_without_hash}/index.md")
         } else {
-            format!("{GITHUB_EDIT_PAGE_EDIT_URL}{short_version}/en/{page_url}.md")
+            format!("{GITHUB_EDIT_PAGE_EDIT_URL}{short_version}/src{page_without_hash}.md")
         }
     });
 

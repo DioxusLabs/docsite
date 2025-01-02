@@ -2713,6 +2713,51 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                         id: "logging".to_string(),
                         level: 2usize,
                     },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Launch".to_string(),
+                        id: "launch".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Eval".to_string(),
+                        id: "eval".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Fullstack".to_string(),
+                        id: "fullstack".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Router".to_string(),
+                        id: "router".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "derive(Props)".to_string(),
+                        id: "derive(props)".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "State Management".to_string(),
+                        id: "state-management".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Core changes".to_string(),
+                        id: "core-changes".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Custom Renderers".to_string(),
+                        id: "custom-renderers".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Minor Breaking Changes".to_string(),
+                        id: "minor-breaking-changes".to_string(),
+                        level: 2usize,
+                    },
                 ],
                 raw: String::new(),
                 id: ::use_mdbook::mdbook_shared::PageId(64usize),
@@ -4840,6 +4885,8 @@ pub fn GettingStartedIndex() -> dioxus::prelude::Element {
             }
             "."
         }
+        p { "In addition to the Tauri docs, for Fedora:" }
+        CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">sudo dnf install libxdo</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">devel</span></pre>\n" }
         h3 { id: "wsl",
             a { href: "#wsl", class: "header", "WSL" }
         }
@@ -5801,7 +5848,7 @@ pub fn GuideAssets() -> dioxus::prelude::Element {
         }
         p { "The final CSS is here for reference:" }
         CodeBlock {
-            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#8c8c8c;\">/* App-wide styling */\n</span><span style=\"color:#f8f8f2;\">html, body {{\n</span><span style=\"color:#f8f8f2;\">    background</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">color: </span><span style=\"color:#f92672;\">#</span><span style=\"color:#f8f8f2;\">0e0e0e;\n</span><span style=\"color:#f8f8f2;\">    color: white;\n</span><span style=\"color:#f8f8f2;\">    font</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">family: </span><span style=\"color:#f92672;\">&#39;Segoe </span><span style=\"color:#ff80f4;\">UI</span><span style=\"color:#f92672;\">&#39;</span><span style=\"color:#f8f8f2;\">, Tahoma, Geneva, Verdana, sans</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">serif;\n</span><span style=\"color:#f8f8f2;\">    height: </span><span style=\"color:#ff80f4;\">100</span><span style=\"color:#f92672;\">%</span><span style=\"color:#f8f8f2;\">;\n</span><span style=\"color:#f8f8f2;\">    width: </span><span style=\"color:#ff80f4;\">100</span><span style=\"color:#f92672;\">%</span><span style=\"color:#f8f8f2;\">;\n</span><span style=\"color:#f8f8f2;\">    overflow: hidden;\n</span><span style=\"color:#f8f8f2;\">    margin: </span><span style=\"color:#ff80f4;\">0</span><span style=\"color:#f8f8f2;\">;\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\">#</span><span style=\"color:#f8f8f2;\">main {{\n</span><span style=\"color:#f8f8f2;\">    display: flex;\n</span><span style=\"color:#f8f8f2;\">    flex</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">direction: column;\n</span><span style=\"color:#f8f8f2;\">    height: </span><span style=\"color:#ff80f4;\">100</span><span style=\"color:#f92672;\">%</span><span style=\"color:#f8f8f2;\">;\n</span><span style=\"color:#f8f8f2;\">    justify</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">content: space</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">between;\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\">#</span><span style=\"color:#f8f8f2;\">dogview {{\n</span><span style=\"color:#f8f8f2;\">    max</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">height: 80vh;\n</span><span style=\"color:#f8f8f2;\">    flex</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">grow: </span><span style=\"color:#ff80f4;\">1</span><span style=\"color:#f8f8f2;\">;\n</span><span style=\"color:#f8f8f2;\">    width: </span><span style=\"color:#ff80f4;\">100</span><span style=\"color:#f92672;\">%</span><span style=\"color:#f8f8f2;\">;\n</span><span style=\"color:#f8f8f2;\">    display: flex;\n</span><span style=\"color:#f8f8f2;\">    flex</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">direction: column;\n</span><span style=\"color:#f8f8f2;\">    align</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">items: center;\n</span><span style=\"color:#f8f8f2;\">    justify</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">content: center;\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\">#</span><span style=\"color:#f8f8f2;\">dogimg {{\n</span><span style=\"color:#f8f8f2;\">    display: block;\n</span><span style=\"color:#f8f8f2;\">    max</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">width: </span><span style=\"color:#ff80f4;\">50</span><span style=\"color:#f92672;\">%</span><span style=\"color:#f8f8f2;\">;\n</span><span style=\"color:#f8f8f2;\">    max</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">height: </span><span style=\"color:#ff80f4;\">50</span><span style=\"color:#f92672;\">%</span><span style=\"color:#f8f8f2;\">;\n</span><span style=\"color:#f8f8f2;\">    transform: </span><span style=\"color:#66d9ef;\">scale</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#ff80f4;\">1.8</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"color:#f8f8f2;\">    border</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">radius: 5px;\n</span><span style=\"color:#f8f8f2;\">    border: 1px solid </span><span style=\"color:#66d9ef;\">rgb</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#ff80f4;\">233</span><span style=\"color:#f8f8f2;\">, </span><span style=\"color:#ff80f4;\">233</span><span style=\"color:#f8f8f2;\">, </span><span style=\"color:#ff80f4;\">233</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#f92672;\">box-</span><span style=\"color:#f8f8f2;\">shadow: 0px 0px 5px 1px </span><span style=\"color:#66d9ef;\">rgb</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#ff80f4;\">216</span><span style=\"color:#f8f8f2;\">, </span><span style=\"color:#ff80f4;\">216</span><span style=\"color:#f8f8f2;\">, </span><span style=\"color:#ff80f4;\">216</span><span style=\"color:#f8f8f2;\">, </span><span style=\"color:#ff80f4;\">0.5</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\">#</span><span style=\"color:#f8f8f2;\">title {{\n</span><span style=\"color:#f8f8f2;\">    text</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">align: center;\n</span><span style=\"color:#f8f8f2;\">    padding</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">top: 10px;\n</span><span style=\"color:#f8f8f2;\">    border</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">bottom: 1px solid </span><span style=\"color:#f92672;\">#</span><span style=\"color:#f8f8f2;\">a8a8a8;\n</span><span style=\"color:#f8f8f2;\">    display: flex;\n</span><span style=\"color:#f8f8f2;\">    flex</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">direction: row;\n</span><span style=\"color:#f8f8f2;\">    justify</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">content: space</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">evenly;\n</span><span style=\"color:#f8f8f2;\">    align</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">items: center;\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\">#</span><span style=\"color:#f8f8f2;\">title a {{\n</span><span style=\"color:#f8f8f2;\">    text</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">decoration: none;\n</span><span style=\"color:#f8f8f2;\">    color: white;\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">a</span><span style=\"color:#f92672;\">#</span><span style=\"color:#f8f8f2;\">heart {{\n</span><span style=\"color:#f8f8f2;\">    background</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">color: white;\n</span><span style=\"color:#f8f8f2;\">    color: red;\n</span><span style=\"color:#f8f8f2;\">    padding: 5px;\n</span><span style=\"color:#f8f8f2;\">    border</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">radius: 5px;\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\">#</span><span style=\"color:#f8f8f2;\">title span {{\n</span><span style=\"color:#f8f8f2;\">    width: 20px;\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\">#</span><span style=\"color:#f8f8f2;\">title h1 {{\n</span><span style=\"color:#f8f8f2;\">    margin: </span><span style=\"color:#ff80f4;\">0.25</span><span style=\"color:#f8f8f2;\">em;\n</span><span style=\"color:#f8f8f2;\">    font</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">style: italic;\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\">#</span><span style=\"color:#f8f8f2;\">buttons {{\n</span><span style=\"color:#f8f8f2;\">    display: flex;\n</span><span style=\"color:#f8f8f2;\">    flex</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">direction: row;\n</span><span style=\"color:#f8f8f2;\">    justify</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">content: center;\n</span><span style=\"color:#f8f8f2;\">    gap: 20px;\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#8c8c8c;\">/* padding-top: 20px; */\n</span><span style=\"color:#f8f8f2;\">    padding</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">bottom: 20px;\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\">#</span><span style=\"color:#f8f8f2;\">skip {{ background</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">color: gray }}\n</span><span style=\"color:#f92672;\">#</span><span style=\"color:#f8f8f2;\">save {{ background</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">color: green; }}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\">#</span><span style=\"color:#f8f8f2;\">skip, </span><span style=\"color:#f92672;\">#</span><span style=\"color:#f8f8f2;\">save {{\n</span><span style=\"color:#f8f8f2;\">    padding: 5px 30px 5px 30px;\n</span><span style=\"color:#f8f8f2;\">    border</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">radius: 3px;\n</span><span style=\"color:#f8f8f2;\">    font</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">size: 2rem;\n</span><span style=\"color:#f8f8f2;\">    font</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">weight: bold;\n</span><span style=\"color:#f8f8f2;\">    color: </span><span style=\"color:#66d9ef;\">rgb</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#ff80f4;\">230</span><span style=\"color:#f8f8f2;\">, </span><span style=\"color:#ff80f4;\">230</span><span style=\"color:#f8f8f2;\">, </span><span style=\"color:#ff80f4;\">230</span><span style=\"color:#f8f8f2;\">)\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\">#</span><span style=\"color:#f8f8f2;\">navbar {{\n</span><span style=\"color:#f8f8f2;\">    border: 1px solid </span><span style=\"color:#66d9ef;\">rgb</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#ff80f4;\">233</span><span style=\"color:#f8f8f2;\">, </span><span style=\"color:#ff80f4;\">233</span><span style=\"color:#f8f8f2;\">, </span><span style=\"color:#ff80f4;\">233</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"color:#f8f8f2;\">    border</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">width: 1px 0px 0px 0px;\n</span><span style=\"color:#f8f8f2;\">    display: flex;\n</span><span style=\"color:#f8f8f2;\">    flex</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">direction: row;\n</span><span style=\"color:#f8f8f2;\">    justify</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">content: space</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">evenly;\n</span><span style=\"color:#f8f8f2;\">    padding: 20px;\n</span><span style=\"color:#f8f8f2;\">    gap: 20px;\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\">#</span><span style=\"color:#f8f8f2;\">navbar a {{\n</span><span style=\"color:#f8f8f2;\">    background</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">color: </span><span style=\"color:#f92672;\">#</span><span style=\"color:#f8f8f2;\">a8a8a8;\n</span><span style=\"color:#f8f8f2;\">    border</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">radius: 5px;\n</span><span style=\"color:#f8f8f2;\">    border: 1px solid black;\n</span><span style=\"color:#f8f8f2;\">    text</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">decoration: none;\n</span><span style=\"color:#f8f8f2;\">    color: black;\n</span><span style=\"color:#f8f8f2;\">    padding: 10px 30px 10px 30px;\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\">#</span><span style=\"color:#f8f8f2;\">favorites {{\n</span><span style=\"color:#f8f8f2;\">    flex</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">grow: </span><span style=\"color:#ff80f4;\">1</span><span style=\"color:#f8f8f2;\">;\n</span><span style=\"color:#f8f8f2;\">    overflow: hidden;\n</span><span style=\"color:#f8f8f2;\">    display: flex;\n</span><span style=\"color:#f8f8f2;\">    flex</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">direction: column;\n</span><span style=\"color:#f8f8f2;\">    padding: 10px;\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\">#</span><span style=\"color:#f8f8f2;\">favorites</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">container {{\n</span><span style=\"color:#f8f8f2;\">    overflow</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">y: auto;\n</span><span style=\"color:#f8f8f2;\">    overflow</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">x: hidden;\n</span><span style=\"color:#f8f8f2;\">    display: flex;\n</span><span style=\"color:#f8f8f2;\">    flex</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">direction: row;\n</span><span style=\"color:#f8f8f2;\">    flex</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">wrap: wrap;\n</span><span style=\"color:#f8f8f2;\">    justify</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">content: center;\n</span><span style=\"color:#f8f8f2;\">    gap: 10px;\n</span><span style=\"color:#f8f8f2;\">    padding: 10px;\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">.favorite</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">dog {{\n</span><span style=\"color:#f8f8f2;\">    max</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">height: 180px;\n</span><span style=\"color:#f8f8f2;\">    max</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">width: </span><span style=\"color:#ff80f4;\">60</span><span style=\"color:#f92672;\">%</span><span style=\"color:#f8f8f2;\">;\n</span><span style=\"color:#f8f8f2;\">    position: relative;\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">.favorite</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">dog img {{\n</span><span style=\"color:#f8f8f2;\">    max</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">height: 150px;\n</span><span style=\"color:#f8f8f2;\">    border</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">radius: 5px;\n</span><span style=\"color:#f8f8f2;\">    margin: 5px;\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">.favorite</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">dog:hover button {{\n</span><span style=\"color:#f8f8f2;\">    display: block;\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">.favorite</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">dog button {{\n</span><span style=\"color:#f8f8f2;\">    display: none;\n</span><span style=\"color:#f8f8f2;\">    position: absolute;\n</span><span style=\"color:#f8f8f2;\">    bottom: 10px;\n</span><span style=\"color:#f8f8f2;\">    left: 10px;\n</span><span style=\"color:#f8f8f2;\">    z</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">index: </span><span style=\"color:#ff80f4;\">10</span><span style=\"color:#f8f8f2;\">;\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#8c8c8c;\">/* App-wide styling */\n</span><span style=\"color:#f8f8f2;\">html, body {{\n</span><span style=\"color:#f8f8f2;\">    background</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">color: </span><span style=\"color:#f92672;\">#</span><span style=\"color:#f8f8f2;\">0e0e0e;\n</span><span style=\"color:#f8f8f2;\">    color: white;\n</span><span style=\"color:#f8f8f2;\">    font</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">family: </span><span style=\"color:#f92672;\">&#39;Segoe </span><span style=\"color:#ff80f4;\">UI</span><span style=\"color:#f92672;\">&#39;</span><span style=\"color:#f8f8f2;\">, Tahoma, Geneva, Verdana, sans</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">serif;\n</span><span style=\"color:#f8f8f2;\">    height: </span><span style=\"color:#ff80f4;\">100</span><span style=\"color:#f92672;\">%</span><span style=\"color:#f8f8f2;\">;\n</span><span style=\"color:#f8f8f2;\">    width: </span><span style=\"color:#ff80f4;\">100</span><span style=\"color:#f92672;\">%</span><span style=\"color:#f8f8f2;\">;\n</span><span style=\"color:#f8f8f2;\">    overflow: hidden;\n</span><span style=\"color:#f8f8f2;\">    margin: </span><span style=\"color:#ff80f4;\">0</span><span style=\"color:#f8f8f2;\">;\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\">#</span><span style=\"color:#f8f8f2;\">main {{\n</span><span style=\"color:#f8f8f2;\">    display: flex;\n</span><span style=\"color:#f8f8f2;\">    flex</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">direction: column;\n</span><span style=\"color:#f8f8f2;\">    height: </span><span style=\"color:#ff80f4;\">100</span><span style=\"color:#f92672;\">%</span><span style=\"color:#f8f8f2;\">;\n</span><span style=\"color:#f8f8f2;\">    justify</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">content: space</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">between;\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\">#</span><span style=\"color:#f8f8f2;\">dogview {{\n</span><span style=\"color:#f8f8f2;\">    max</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">height: 80vh;\n</span><span style=\"color:#f8f8f2;\">    flex</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">grow: </span><span style=\"color:#ff80f4;\">1</span><span style=\"color:#f8f8f2;\">;\n</span><span style=\"color:#f8f8f2;\">    width: </span><span style=\"color:#ff80f4;\">100</span><span style=\"color:#f92672;\">%</span><span style=\"color:#f8f8f2;\">;\n</span><span style=\"color:#f8f8f2;\">    display: flex;\n</span><span style=\"color:#f8f8f2;\">    flex</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">direction: column;\n</span><span style=\"color:#f8f8f2;\">    align</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">items: center;\n</span><span style=\"color:#f8f8f2;\">    justify</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">content: center;\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\">#</span><span style=\"color:#f8f8f2;\">dogview img {{\n</span><span style=\"color:#f8f8f2;\">    display: block;\n</span><span style=\"color:#f8f8f2;\">    max</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">width: </span><span style=\"color:#ff80f4;\">50</span><span style=\"color:#f92672;\">%</span><span style=\"color:#f8f8f2;\">;\n</span><span style=\"color:#f8f8f2;\">    max</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">height: </span><span style=\"color:#ff80f4;\">50</span><span style=\"color:#f92672;\">%</span><span style=\"color:#f8f8f2;\">;\n</span><span style=\"color:#f8f8f2;\">    transform: </span><span style=\"color:#66d9ef;\">scale</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#ff80f4;\">1.8</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"color:#f8f8f2;\">    border</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">radius: 5px;\n</span><span style=\"color:#f8f8f2;\">    border: 1px solid </span><span style=\"color:#66d9ef;\">rgb</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#ff80f4;\">233</span><span style=\"color:#f8f8f2;\">, </span><span style=\"color:#ff80f4;\">233</span><span style=\"color:#f8f8f2;\">, </span><span style=\"color:#ff80f4;\">233</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#f92672;\">box-</span><span style=\"color:#f8f8f2;\">shadow: 0px 0px 5px 1px </span><span style=\"color:#66d9ef;\">rgb</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#ff80f4;\">216</span><span style=\"color:#f8f8f2;\">, </span><span style=\"color:#ff80f4;\">216</span><span style=\"color:#f8f8f2;\">, </span><span style=\"color:#ff80f4;\">216</span><span style=\"color:#f8f8f2;\">, </span><span style=\"color:#ff80f4;\">0.5</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\">#</span><span style=\"color:#f8f8f2;\">title {{\n</span><span style=\"color:#f8f8f2;\">    text</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">align: center;\n</span><span style=\"color:#f8f8f2;\">    padding</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">top: 10px;\n</span><span style=\"color:#f8f8f2;\">    border</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">bottom: 1px solid </span><span style=\"color:#f92672;\">#</span><span style=\"color:#f8f8f2;\">a8a8a8;\n</span><span style=\"color:#f8f8f2;\">    display: flex;\n</span><span style=\"color:#f8f8f2;\">    flex</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">direction: row;\n</span><span style=\"color:#f8f8f2;\">    justify</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">content: space</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">evenly;\n</span><span style=\"color:#f8f8f2;\">    align</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">items: center;\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\">#</span><span style=\"color:#f8f8f2;\">title a {{\n</span><span style=\"color:#f8f8f2;\">    text</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">decoration: none;\n</span><span style=\"color:#f8f8f2;\">    color: white;\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">a</span><span style=\"color:#f92672;\">#</span><span style=\"color:#f8f8f2;\">heart {{\n</span><span style=\"color:#f8f8f2;\">    background</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">color: white;\n</span><span style=\"color:#f8f8f2;\">    color: red;\n</span><span style=\"color:#f8f8f2;\">    padding: 5px;\n</span><span style=\"color:#f8f8f2;\">    border</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">radius: 5px;\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\">#</span><span style=\"color:#f8f8f2;\">title span {{\n</span><span style=\"color:#f8f8f2;\">    width: 20px;\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\">#</span><span style=\"color:#f8f8f2;\">title h1 {{\n</span><span style=\"color:#f8f8f2;\">    margin: </span><span style=\"color:#ff80f4;\">0.25</span><span style=\"color:#f8f8f2;\">em;\n</span><span style=\"color:#f8f8f2;\">    font</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">style: italic;\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\">#</span><span style=\"color:#f8f8f2;\">buttons {{\n</span><span style=\"color:#f8f8f2;\">    display: flex;\n</span><span style=\"color:#f8f8f2;\">    flex</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">direction: row;\n</span><span style=\"color:#f8f8f2;\">    justify</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">content: center;\n</span><span style=\"color:#f8f8f2;\">    gap: 20px;\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#8c8c8c;\">/* padding-top: 20px; */\n</span><span style=\"color:#f8f8f2;\">    padding</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">bottom: 20px;\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\">#</span><span style=\"color:#f8f8f2;\">skip {{ background</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">color: gray }}\n</span><span style=\"color:#f92672;\">#</span><span style=\"color:#f8f8f2;\">save {{ background</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">color: green; }}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\">#</span><span style=\"color:#f8f8f2;\">skip, </span><span style=\"color:#f92672;\">#</span><span style=\"color:#f8f8f2;\">save {{\n</span><span style=\"color:#f8f8f2;\">    padding: 5px 30px 5px 30px;\n</span><span style=\"color:#f8f8f2;\">    border</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">radius: 3px;\n</span><span style=\"color:#f8f8f2;\">    font</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">size: 2rem;\n</span><span style=\"color:#f8f8f2;\">    font</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">weight: bold;\n</span><span style=\"color:#f8f8f2;\">    color: </span><span style=\"color:#66d9ef;\">rgb</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#ff80f4;\">230</span><span style=\"color:#f8f8f2;\">, </span><span style=\"color:#ff80f4;\">230</span><span style=\"color:#f8f8f2;\">, </span><span style=\"color:#ff80f4;\">230</span><span style=\"color:#f8f8f2;\">)\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\">#</span><span style=\"color:#f8f8f2;\">navbar {{\n</span><span style=\"color:#f8f8f2;\">    border: 1px solid </span><span style=\"color:#66d9ef;\">rgb</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#ff80f4;\">233</span><span style=\"color:#f8f8f2;\">, </span><span style=\"color:#ff80f4;\">233</span><span style=\"color:#f8f8f2;\">, </span><span style=\"color:#ff80f4;\">233</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"color:#f8f8f2;\">    border</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">width: 1px 0px 0px 0px;\n</span><span style=\"color:#f8f8f2;\">    display: flex;\n</span><span style=\"color:#f8f8f2;\">    flex</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">direction: row;\n</span><span style=\"color:#f8f8f2;\">    justify</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">content: space</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">evenly;\n</span><span style=\"color:#f8f8f2;\">    padding: 20px;\n</span><span style=\"color:#f8f8f2;\">    gap: 20px;\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\">#</span><span style=\"color:#f8f8f2;\">navbar a {{\n</span><span style=\"color:#f8f8f2;\">    background</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">color: </span><span style=\"color:#f92672;\">#</span><span style=\"color:#f8f8f2;\">a8a8a8;\n</span><span style=\"color:#f8f8f2;\">    border</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">radius: 5px;\n</span><span style=\"color:#f8f8f2;\">    border: 1px solid black;\n</span><span style=\"color:#f8f8f2;\">    text</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">decoration: none;\n</span><span style=\"color:#f8f8f2;\">    color: black;\n</span><span style=\"color:#f8f8f2;\">    padding: 10px 30px 10px 30px;\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\">#</span><span style=\"color:#f8f8f2;\">favorites {{\n</span><span style=\"color:#f8f8f2;\">    flex</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">grow: </span><span style=\"color:#ff80f4;\">1</span><span style=\"color:#f8f8f2;\">;\n</span><span style=\"color:#f8f8f2;\">    overflow: hidden;\n</span><span style=\"color:#f8f8f2;\">    display: flex;\n</span><span style=\"color:#f8f8f2;\">    flex</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">direction: column;\n</span><span style=\"color:#f8f8f2;\">    padding: 10px;\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\">#</span><span style=\"color:#f8f8f2;\">favorites</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">container {{\n</span><span style=\"color:#f8f8f2;\">    overflow</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">y: auto;\n</span><span style=\"color:#f8f8f2;\">    overflow</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">x: hidden;\n</span><span style=\"color:#f8f8f2;\">    display: flex;\n</span><span style=\"color:#f8f8f2;\">    flex</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">direction: row;\n</span><span style=\"color:#f8f8f2;\">    flex</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">wrap: wrap;\n</span><span style=\"color:#f8f8f2;\">    justify</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">content: center;\n</span><span style=\"color:#f8f8f2;\">    gap: 10px;\n</span><span style=\"color:#f8f8f2;\">    padding: 10px;\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">.favorite</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">dog {{\n</span><span style=\"color:#f8f8f2;\">    max</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">height: 180px;\n</span><span style=\"color:#f8f8f2;\">    max</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">width: </span><span style=\"color:#ff80f4;\">60</span><span style=\"color:#f92672;\">%</span><span style=\"color:#f8f8f2;\">;\n</span><span style=\"color:#f8f8f2;\">    position: relative;\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">.favorite</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">dog img {{\n</span><span style=\"color:#f8f8f2;\">    max</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">height: 150px;\n</span><span style=\"color:#f8f8f2;\">    border</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">radius: 5px;\n</span><span style=\"color:#f8f8f2;\">    margin: 5px;\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">.favorite</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">dog:hover button {{\n</span><span style=\"color:#f8f8f2;\">    display: block;\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">.favorite</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">dog button {{\n</span><span style=\"color:#f8f8f2;\">    display: none;\n</span><span style=\"color:#f8f8f2;\">    position: absolute;\n</span><span style=\"color:#f8f8f2;\">    bottom: 10px;\n</span><span style=\"color:#f8f8f2;\">    left: 10px;\n</span><span style=\"color:#f8f8f2;\">    z</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">index: </span><span style=\"color:#ff80f4;\">10</span><span style=\"color:#f8f8f2;\">;\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
         }
     }
 }
@@ -6890,7 +6937,7 @@ pub fn GuideRouting() -> dioxus::prelude::Element {
             code { "Route" }
             " variant. If the url doesn't parse properly, the router will render nothing unless you add a \"catch-all\" route:"
         }
-        CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">#[derive(Routable, Clone, PartialEq)]\n</span><span style=\"font-style:italic;color:#66d9ef;\">enum </span><span style=\"color:#f8f8f2;\">Route {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#8c8c8c;\">// ...\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#8c8c8c;\">// We can collect the segments of the URL into a Vec&lt;String&gt;\n</span><span style=\"color:#f8f8f2;\">    #[route(</span><span style=\"color:#ffee99;\">&quot;/:..route&quot;</span><span style=\"color:#f8f8f2;\">)]\n</span><span style=\"color:#f8f8f2;\">    PageNotFound {{\n</span><span style=\"color:#f8f8f2;\">        segments: Vec&lt;String&gt;,\n</span><span style=\"color:#f8f8f2;\">    }},\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n" }
+        CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">#[derive(Routable, Clone, PartialEq)]\n</span><span style=\"font-style:italic;color:#66d9ef;\">enum </span><span style=\"color:#f8f8f2;\">Route {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#8c8c8c;\">// ...\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#8c8c8c;\">// We can collect the segments of the URL into a Vec&lt;String&gt;\n</span><span style=\"color:#f8f8f2;\">    #[route(</span><span style=\"color:#ffee99;\">&quot;/:..segments&quot;</span><span style=\"color:#f8f8f2;\">)]\n</span><span style=\"color:#f8f8f2;\">    PageNotFound {{\n</span><span style=\"color:#f8f8f2;\">        segments: Vec&lt;String&gt;,\n</span><span style=\"color:#f8f8f2;\">    }},\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n" }
         p {
             "Note here that the  "
             code { "PageNotFound" }
@@ -7542,7 +7589,7 @@ pub fn GuideDeploy() -> dioxus::prelude::Element {
                 ": Full-featured cloud provider powered by Amazon."
             }
             li {
-                a { href: "http://aws.amazon.com", "GCP" }
+                a { href: "https://cloud.google.com", "GCP" }
                 ": Full-featured cloud provider powered by Google."
             }
             li {
@@ -12146,7 +12193,7 @@ pub fn MigrationIndex() -> dioxus::prelude::Element {
             code { "0.6" }
             " releases. The  "
             code { "0.6" }
-            " release contains a few breaking changes to:"
+            " release contains a breaking changes to:"
         }
         ul {
             li {
@@ -12161,6 +12208,34 @@ pub fn MigrationIndex() -> dioxus::prelude::Element {
                 " integration with "
                 code { "dioxus" }
             }
+            li {
+                "The "
+                code { "launch" }
+                " function"
+            }
+            li {
+                "The "
+                code { "eval" }
+                " function"
+            }
+            li {
+                "The "
+                code { "dioxus-fullstack" }
+                " crate"
+            }
+            li { "The router crate" }
+            li {
+                "The "
+                code { "derive(Props)" }
+                " macro"
+            }
+            li {
+                "The "
+                code { "dioxus-core" }
+                " crate"
+            }
+            li { "Custom renderer API" }
+            li { "Global state management" }
         }
         h2 { id: "element",
             a { href: "#element", class: "header", "Element" }
@@ -12289,6 +12364,521 @@ pub fn MigrationIndex() -> dioxus::prelude::Element {
             " call:"
         }
         CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f92672;\">use </span><span style=\"color:#f8f8f2;\">dioxus::prelude::</span><span style=\"color:#f92672;\">*</span><span style=\"color:#f8f8f2;\">;\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">main</span><span style=\"color:#f8f8f2;\">() {{\n</span><span style=\"color:#f8f8f2;\">    dioxus::logger::initialize_default();\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">    tracing::info</span><span style=\"color:#f92672;\">!</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#ffee99;\">&quot;Logs received!&quot;</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">    dioxus::launch(app);\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n" }
+        h2 { id: "launch",
+            a { href: "#launch", class: "header", "Launch" }
+        }
+        p {
+            "The  "
+            code { "launch" }
+            " function was removed from the prelude. You must now import the launch method from  "
+            code { "dioxus" }
+            " or use it by its full path:"
+        }
+        CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f92672;\">use </span><span style=\"color:#f8f8f2;\">dioxus::prelude::</span><span style=\"color:#f92672;\">*</span><span style=\"color:#f8f8f2;\">;\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">main</span><span style=\"color:#f8f8f2;\">() {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#8c8c8c;\">// ❌ launch(app);\n</span><span style=\"color:#f8f8f2;\">    dioxus::launch(app); </span><span style=\"color:#8c8c8c;\">// ✅\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n" }
+        p {
+            "See "
+            a { href: "https://github.com/DioxusLabs/dioxus/pull/2967",
+                "https://github.com/DioxusLabs/dioxus/pull/2967"
+            }
+            " for more details."
+        }
+        h2 { id: "eval",
+            a { href: "#eval", class: "header", "Eval" }
+        }
+        ul {
+            li {
+                code { "eval" }
+                " was moved from the prelude to the "
+                code { "document" }
+                " module. You must now call it with "
+                code { "document::eval" }
+                " instead of "
+                code { "eval" }
+                ":"
+            }
+        }
+        CodeBlock {
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f92672;\">use </span><span style=\"color:#f8f8f2;\">dioxus::prelude::</span><span style=\"color:#f92672;\">*</span><span style=\"color:#f8f8f2;\">;\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">app</span><span style=\"color:#f8f8f2;\">() -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#8c8c8c;\">// ❌ use_effect(|| eval(&quot;console.log(1)&quot;));\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#66d9ef;\">use_effect</span><span style=\"color:#f8f8f2;\">(|| document::eval(</span><span style=\"color:#ffee99;\">&quot;console.log(1)&quot;</span><span style=\"color:#f8f8f2;\">)); </span><span style=\"color:#8c8c8c;\">// ✅\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">    rsx! {{}}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
+        }
+        ul {
+            li {
+                "The "
+                code { "eval" }
+                " feature flag was removed from the "
+                code { "dioxus-html" }
+                " crate and the functionality of "
+                code { "EvalProvider" }
+                " was moved to the new "
+                code { "dioxus-document" }
+                " crate. Custom renderers must now provide a "
+                code { "Rc<dyn Document>" }
+                " context to the application to make "
+                code { "eval" }
+                " and head elements work correctly. See "
+                a { href: "https://github.com/DioxusLabs/dioxus/pull/2635",
+                    "https://github.com/DioxusLabs/dioxus/pull/2635"
+                }
+                " for more details."
+            }
+            li {
+                code { "Eval::recv" }
+                " and "
+                code { "Eval::join" }
+                " now returns any value that implements "
+                code { "DeserializeOwned" }
+                " instead of "
+                code { "serde_json::Value" }
+                ". "
+                code { "Eval::send" }
+                " now accepts any value that implements "
+                code { "Serialize" }
+                ". See "
+                a { href: "https://github.com/DioxusLabs/dioxus/pull/3035",
+                    "https://github.com/DioxusLabs/dioxus/pull/3035"
+                }
+                " for more details"
+            }
+        }
+        h2 { id: "fullstack",
+            a { href: "#fullstack", class: "header", "Fullstack" }
+        }
+        ul {
+            li {
+                "The feature "
+                code { "dioxus/axum" }
+                " was renamed to "
+                code { "dioxus/server" }
+            }
+        }
+        CodeBlock {
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">[features]\n</span><span style=\"color:#f8f8f2;\">default </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">[]\n</span><span style=\"color:#f92672;\">#</span><span style=\"color:#f8f8f2;\"> ❌ server </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">[</span><span style=\"color:#ffee99;\">&quot;dioxus/axum&quot;</span><span style=\"color:#f8f8f2;\">]\n</span><span style=\"color:#f8f8f2;\">server </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">[</span><span style=\"color:#ffee99;\">&quot;dioxus/server&quot;</span><span style=\"color:#f8f8f2;\">] </span><span style=\"color:#f92672;\">#</span><span style=\"color:#f8f8f2;\"> ✅\n</span><span style=\"color:#f8f8f2;\">web </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">[</span><span style=\"color:#ffee99;\">&quot;dioxus/web&quot;</span><span style=\"color:#f8f8f2;\">]</span></pre>\n",
+        }
+        p {
+            "See "
+            a { href: "https://github.com/DioxusLabs/dioxus/pull/3186",
+                "https://github.com/DioxusLabs/dioxus/pull/3186"
+            }
+            " for more details"
+        }
+        ul {
+            li {
+                "The "
+                code { "fullstack::Config" }
+                " item was removed. You can now pass the platform configs into the "
+                code { "LaunchBuilder" }
+                " directly. For example, if you want to set the rootname on each platform, you can set the root name in each config:"
+            }
+        }
+        CodeBlock {
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">LaunchBuilder::new()\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#8c8c8c;\">// Only set the server config if the server feature is enabled\n</span><span style=\"color:#f8f8f2;\">    .</span><span style=\"color:#66d9ef;\">with_cfg</span><span style=\"color:#f8f8f2;\">(server_only! {{\n</span><span style=\"color:#f8f8f2;\">        ServeConfigBuilder::default().</span><span style=\"color:#66d9ef;\">root_id</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#ffee99;\">&quot;app&quot;</span><span style=\"color:#f8f8f2;\">)\n</span><span style=\"color:#f8f8f2;\">    }})\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#8c8c8c;\">// You also need to set the root id in your web config\n</span><span style=\"color:#f8f8f2;\">    .</span><span style=\"color:#66d9ef;\">with_cfg</span><span style=\"color:#f8f8f2;\">(web! {{\n</span><span style=\"color:#f8f8f2;\">        dioxus::web::Config::default().</span><span style=\"color:#66d9ef;\">rootname</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#ffee99;\">&quot;app&quot;</span><span style=\"color:#f8f8f2;\">)\n</span><span style=\"color:#f8f8f2;\">    }})\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#8c8c8c;\">// And desktop config\n</span><span style=\"color:#f8f8f2;\">    .</span><span style=\"color:#66d9ef;\">with_cfg</span><span style=\"color:#f8f8f2;\">(desktop! {{\n</span><span style=\"color:#f8f8f2;\">        dioxus::desktop::Config::default().</span><span style=\"color:#66d9ef;\">with_root_name</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#ffee99;\">&quot;app&quot;</span><span style=\"color:#f8f8f2;\">)\n</span><span style=\"color:#f8f8f2;\">    }})\n</span><span style=\"color:#f8f8f2;\">    .</span><span style=\"color:#66d9ef;\">launch</span><span style=\"color:#f8f8f2;\">(app);</span></pre>\n",
+        }
+        p {
+            "See "
+            a { href: "https://github.com/DioxusLabs/dioxus/pull/2967",
+                "https://github.com/DioxusLabs/dioxus/pull/2967"
+            }
+            " for more details."
+        }
+        ul {
+            li {
+                "The dioxus-cli now proxies fullstack applications at a port behind a reverse proxy. If you have a custom axum server, you must serve your application at the port returned by "
+                code { "dioxus_cli_config::server_port" }
+                " and the address returned by "
+                code { "dioxus_cli_config::server_ip" }
+                " or the complete address returned by "
+                code { "dioxus_cli_config::fullstack_address_or_localhost" }
+                " during development:"
+            }
+        }
+        CodeBlock {
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">#[cfg(feature </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;server&quot;</span><span style=\"color:#f8f8f2;\">)]\n</span><span style=\"color:#f8f8f2;\">#[tokio::main]\n</span><span style=\"color:#f8f8f2;\">async </span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">main</span><span style=\"color:#f8f8f2;\">() {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#8c8c8c;\">// Get the address the server should run on. If the CLI is running, the CLI proxies fullstack into the main address\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#8c8c8c;\">// and we use the generated address the CLI gives us\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> address </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">dioxus_cli_config::fullstack_address_or_localhost();\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#8c8c8c;\">// Launch the fullstack application on the address the CLI is proxying\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> router </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">axum::Router::new()\n</span><span style=\"color:#f8f8f2;\">        .</span><span style=\"color:#66d9ef;\">serve_dioxus_application</span><span style=\"color:#f8f8f2;\">(ServeConfigBuilder::default(), App);\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> router </span><span style=\"color:#f92672;\">=</span><span style=\"color:#f8f8f2;\"> router.</span><span style=\"color:#66d9ef;\">into_make_service</span><span style=\"color:#f8f8f2;\">();\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> listener </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">tokio::net::TcpListener::bind(address).await.</span><span style=\"color:#66d9ef;\">unwrap</span><span style=\"color:#f8f8f2;\">();\n</span><span style=\"color:#f8f8f2;\">    axum::serve(listener, router).await.</span><span style=\"color:#66d9ef;\">unwrap</span><span style=\"color:#f8f8f2;\">();\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
+        }
+        p {
+            "See "
+            a { href: "https://github.com/DioxusLabs/dioxus/pull/2258",
+                "https://github.com/DioxusLabs/dioxus/pull/2258"
+            }
+            " for more details."
+        }
+        ul {
+            li {
+                code { "serve_dioxus_application" }
+                " was changed to accept a component directly instead of a virtual dom factory. See "
+                a { href: "https://github.com/DioxusLabs/dioxus/pull/2515",
+                    "https://github.com/DioxusLabs/dioxus/pull/2515"
+                }
+                " for more details."
+            }
+            li {
+                code { "register_server_fns" }
+                " was renamed to "
+                code { "register_server_functions" }
+                ". See "
+                a { href: "https://github.com/DioxusLabs/dioxus/pull/2515",
+                    "https://github.com/DioxusLabs/dioxus/pull/2515"
+                }
+                " for more details."
+            }
+            li {
+                code { "RenderHandleState::new" }
+                " accepts a new "
+                code { "ServeConfig" }
+                " argument. See "
+                a { href: "https://github.com/DioxusLabs/dioxus/pull/2862",
+                    "https://github.com/DioxusLabs/dioxus/pull/2862"
+                }
+                " for more details."
+            }
+            li {
+                code { "ServeConfigBuilder::build" }
+                " returns a result. It may fail during desktop builds if no "
+                code { "index.html" }
+                " file is found. This error is fine to ignore in desktop builds. You can pass the builder directly to "
+                code { "serve_dioxus_application" }
+                " to only serve the index.html file if it exists. See "
+                a { href: "https://github.com/DioxusLabs/dioxus/pull/2862",
+                    "https://github.com/DioxusLabs/dioxus/pull/2862"
+                }
+                " for more details."
+            }
+            li {
+                code { "dioxus_fullstack::Config::addr" }
+                " was removed. You can now export the "
+                code { "PORT" }
+                " and "
+                code { "IP" }
+                " environment variables to set the address the "
+                code { "launch" }
+                " method uses for the server."
+            }
+        }
+        h2 { id: "router",
+            a { href: "#router", class: "header", "Router" }
+        }
+        ul {
+            li {
+                "The "
+                code { "Routable" }
+                " derive macro no longer accepts fields that are not present in the "
+                code { "route(\"/route\")" }
+                " if the web feature is enabled. See "
+                a { href: "https://github.com/DioxusLabs/dioxus/pull/2159",
+                    "https://github.com/DioxusLabs/dioxus/pull/2159"
+                }
+                " for more details."
+            }
+            li {
+                "The "
+                code { "ToRouteSegments" }
+                " trait in the router was changed from accepting "
+                code { "self" }
+                " to accepting "
+                code { "&self" }
+                ". This means you can now implement it for "
+                code { "T" }
+                " directly instead of "
+                code { "&T" }
+                ". See "
+                a { href: "https://github.com/DioxusLabs/dioxus/pull/2283",
+                    "https://github.com/DioxusLabs/dioxus/pull/2283"
+                }
+                " for more details."
+            }
+        }
+        h2 { id: "deriveprops",
+            a { href: "#deriveprops", class: "header", "derive(Props)" }
+        }
+        ul {
+            li {
+                code { "#[props(into)]" }
+                " is ignore on any String props. String props already accept "
+                code { "impl ToString" }
+                " which is implemented for many of the same types, but if you implement "
+                code { "Into<String>" }
+                " for a specific type, your code may require some changes. See "
+                a { href: "https://github.com/DioxusLabs/dioxus/pull/2501",
+                    "https://github.com/DioxusLabs/dioxus/pull/2501"
+                }
+                " for more details"
+            }
+            li {
+                "Properties that start with an uppercase letter are no longer accepted. This allows us to autocomplete Components. See "
+                a { href: "https://github.com/DioxusLabs/dioxus/pull/2652",
+                    "https://github.com/DioxusLabs/dioxus/pull/2652"
+                }
+                " for more details."
+            }
+        }
+        h2 { id: "state-management",
+            a { href: "#state-management", class: "header", "State Management" }
+        }
+        ul {
+            li {
+                code { "use_coroutine" }
+                " now accepts "
+                code { "impl FnMut" }
+                " instead of "
+                code { "impl FnOnce" }
+                ". This was required to support restarting the coroutine without rerunning the component. See "
+                a { href: "https://github.com/DioxusLabs/dioxus/pull/3005",
+                    "https://github.com/DioxusLabs/dioxus/pull/3005"
+                }
+                " for more details."
+            }
+            li {
+                code { "Signal::global_memo" }
+                " now requires "
+                code { "T: PartialEq" }
+                " just like "
+                code { "use_memo" }
+                ". See "
+                a { href: "https://github.com/DioxusLabs/dioxus/pull/2851",
+                    "https://github.com/DioxusLabs/dioxus/pull/2851"
+                }
+                " for more details."
+            }
+            li {
+                code { "GlobalMemo<T>" }
+                " is now a trait alias for "
+                code { "Global<Memo<T>, T>" }
+                " and "
+                code { "GlobalSignal<T>" }
+                " is now a trait alias for "
+                code { "Global<Signal<T>, T>" }
+                ". To get the underlying "
+                code { "Memo" }
+                " or "
+                code { "Signal" }
+                ", you can now use the "
+                code { "resolve" }
+                " method instead of "
+                code { "signal" }
+                " or "
+                code { "memo" }
+                ". See "
+                a { href: "https://github.com/DioxusLabs/dioxus/pull/2851",
+                    "https://github.com/DioxusLabs/dioxus/pull/2851"
+                }
+                " for more details."
+            }
+            li {
+                "The "
+                code { "Readable" }
+                " trait in dioxus signals now requires a "
+                code { "try_peek_unchecked" }
+                " method instead of "
+                code { "peek_unchecked" }
+                ". See "
+                a { href: "https://github.com/DioxusLabs/dioxus/pull/2714",
+                    "https://github.com/DioxusLabs/dioxus/pull/2714"
+                }
+                " for more details."
+            }
+            li {
+                "The "
+                code { "check_generation" }
+                " feature flag was removed from the "
+                code { "generational-box" }
+                " crate. See "
+                a { href: "https://github.com/DioxusLabs/dioxus/pull/2638",
+                    "https://github.com/DioxusLabs/dioxus/pull/2638"
+                }
+                " for more details."
+            }
+        }
+        h2 { id: "core-changes",
+            a { href: "#core-changes", class: "header", "Core changes" }
+        }
+        ul {
+            li {
+                "The "
+                code { "Template::name" }
+                " field was removed. See "
+                a { href: "https://github.com/DioxusLabs/dioxus/pull/2799",
+                    "https://github.com/DioxusLabs/dioxus/pull/2799"
+                }
+                " for more details."
+            }
+            li {
+                code { "Properties::into_vcomponent" }
+                " now accepts only the "
+                code { "render_fn" }
+                " instead of the "
+                code { "render_fn" }
+                " and "
+                code { "component_name" }
+                ". This change fixes the name of re-exported components. Fixes "
+                a { href: "https://github.com/DioxusLabs/dioxus/pull/2744",
+                    "https://github.com/DioxusLabs/dioxus/pull/2744"
+                }
+            }
+            li {
+                "The field "
+                code { "VNode::template" }
+                " is now "
+                code { "Template" }
+                " instead of "
+                code { "Cell<Template>" }
+                ". See "
+                a { href: "https://github.com/DioxusLabs/dioxus/pull/2705",
+                    "https://github.com/DioxusLabs/dioxus/pull/2705"
+                }
+                " for more details"
+            }
+            li {
+                code { "Mutations::santize" }
+                " was renamed to "
+                code { "Mutations::sanitize" }
+                ". See "
+                a { href: "https://github.com/DioxusLabs/dioxus/pull/2653",
+                    "https://github.com/DioxusLabs/dioxus/pull/2653"
+                }
+                " for more details."
+            }
+            li {
+                "The variant "
+                code { "AttributeValue::Any" }
+                " now contains "
+                code { "Rc<dyn AnyValue>" }
+                " instead of "
+                code { "Box<dyn AnyValue>" }
+                " to make "
+                code { "AttributeValue" }
+                " "
+                code { "Clone" }
+                ". See "
+                a { href: "https://github.com/DioxusLabs/dioxus/pull/2705",
+                    "https://github.com/DioxusLabs/dioxus/pull/2705"
+                }
+                " for more details"
+            }
+        }
+        h2 { id: "custom-renderers",
+            a { href: "#custom-renderers", class: "header", "Custom Renderers" }
+        }
+        p {
+            "If you are building a custom renderer, there were some breaking changes to hot reloading and rsx that you should be aware of:"
+        }
+        ul {
+            li {
+                "The CLI hot reloading format changed significantly. Custom renderers must switch from "
+                code { "dioxus-hot-reload" }
+                " to "
+                code { "dioxus_devtools" }
+                ". Renderers can connect to the hot reloading engine with the "
+                a { href: "https://docs.rs/dioxus", "https://docs.rs/dioxus" }
+                "-devtools/0.6.0/dioxus_devtools/fn.connect.html) function. See "
+                a { href: "https://github.com/DioxusLabs/dioxus/pull/2258",
+                    "https://github.com/DioxusLabs/dioxus/pull/2258"
+                }
+                " for more details."
+            }
+            li {
+                "The format of custom elements was changed to improve autocomplete. The "
+                code { "dioxus_elements" }
+                " namespace must now contain each element as a module with a TAG_NAME and NAME_SPACE constant inside that module. Each attribute should be another constant in that module. The top-level "
+                code { "dioxus_elements" }
+                " module should contain a "
+                code { "completions" }
+                " module with a "
+                code { "CompleteWithBraces" }
+                " enum that re-exports each element the namespace supports for braces autocomplete. See "
+                a { href: "https://github.com/DioxusLabs/dioxus/pull/2421",
+                    "https://github.com/DioxusLabs/dioxus/pull/2421"
+                }
+                " for more details."
+            }
+            li {
+                "The format for custom event handlers changed include "
+                code { "eventname::call_with_explicit_closure" }
+                " to provide better type inference for inline closures. See "
+                a { href: "https://github.com/DioxusLabs/dioxus/pull/2437",
+                    "https://github.com/DioxusLabs/dioxus/pull/2437"
+                }
+                " for more details"
+            }
+        }
+        p { "If you are also using dioxus-html, there are a few more breaking changes:" }
+        ul {
+            li {
+                "A "
+                code { "file_size" }
+                " method was added to the "
+                code { "FileEngine" }
+                " trait. Any custom renderers must implement this method. See "
+                a { href: "https://github.com/DioxusLabs/dioxus/pull/2323/files",
+                    "https://github.com/DioxusLabs/dioxus/pull/2323/files"
+                }
+                " for more details."
+            }
+            li {
+                code { "HtmlEventConverter" }
+                " has a new "
+                code { "convert_resize_data" }
+                " method which must be implemented by any custom renderers that use dioxus-html. See "
+                a { href: "https://github.com/DioxusLabs/dioxus/pull/2479",
+                    "https://github.com/DioxusLabs/dioxus/pull/2479"
+                }
+                " for more details"
+            }
+            li {
+                "The web and native features were removed from the "
+                code { "dioxus-html" }
+                " crate. See "
+                a { href: "https://github.com/DioxusLabs/dioxus/pull/3006",
+                    "https://github.com/DioxusLabs/dioxus/pull/3006"
+                }
+                " for more details."
+            }
+            li {
+                code { "dioxus_html::AttributeDiscription " }
+                " was renamed to "
+                code { "dioxus_html::AttributeDescription" }
+                ". See "
+                a { href: "https://github.com/DioxusLabs/dioxus/pull/2653",
+                    "https://github.com/DioxusLabs/dioxus/pull/2653"
+                }
+                " for more details."
+            }
+        }
+        h2 { id: "minor-breaking-changes",
+            a { href: "#minor-breaking-changes", class: "header", "Minor Breaking Changes" }
+        }
+        p { "There were several more minor breaking changes in Dioxus 0.6:" }
+        ul {
+            li {
+                "Many implicit features from dioxus crates were removed. These features were automatically generated by cargo and generally not functional. See "
+                a { href: "https://github.com/DioxusLabs/dioxus/pull/2512",
+                    "https://github.com/DioxusLabs/dioxus/pull/2512"
+                }
+                " for more details."
+            }
+            li {
+                code { "dioxus_autofmt::write_block_out" }
+                " accepts "
+                code { "&CallBody" }
+                " instead of "
+                code { "CallBody" }
+                ". See "
+                a { href: "https://github.com/DioxusLabs/dioxus/pull/2573",
+                    "https://github.com/DioxusLabs/dioxus/pull/2573"
+                }
+                " for more details."
+            }
+            li {
+                "The "
+                code { "panic_hook" }
+                " feature which provides a console panic message for wasm panics was moved from the "
+                code { "dioxus-web" }
+                " crate to the "
+                code { "dioxus-logger" }
+                " crate. The handler is still provided by default. See "
+                a { href: "https://github.com/DioxusLabs/dioxus/pull/3302",
+                    "https://github.com/DioxusLabs/dioxus/pull/3302"
+                }
+                " for more details."
+            }
+        }
     }
 }
 #[component(no_case_check)]

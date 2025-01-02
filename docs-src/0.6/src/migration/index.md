@@ -153,7 +153,7 @@ fn main() {
 }
 ```
 
-See https://github.com/DioxusLabs/dioxus/pull/2967 for more details.
+See <https://github.com/DioxusLabs/dioxus/pull/2967> for more details.
 
 ## Eval
 
@@ -170,8 +170,8 @@ fn app() -> Element {
 }
 ```
 
-- The `eval` feature flag was removed from the `dioxus-html` crate and the functionality of `EvalProvider` was moved to the new `dioxus-document` crate. Custom renderers must now provide a `Rc<dyn Document>` context to the application to make `eval` and head elements work correctly. See https://github.com/DioxusLabs/dioxus/pull/2635 for more details.
-- `Eval::recv` and `Eval::join` now returns any value that implements `DeserializeOwned` instead of `serde_json::Value`. `Eval::send` now accepts any value that implements `Serialize`. See https://github.com/DioxusLabs/dioxus/pull/3035 for more details
+- The `eval` feature flag was removed from the `dioxus-html` crate and the functionality of `EvalProvider` was moved to the new `dioxus-document` crate. Custom renderers must now provide a `Rc<dyn Document>` context to the application to make `eval` and head elements work correctly. See <https://github.com/DioxusLabs/dioxus/pull/2635> for more details.
+- `Eval::recv` and `Eval::join` now returns any value that implements `DeserializeOwned` instead of `serde_json::Value`. `Eval::send` now accepts any value that implements `Serialize`. See <https://github.com/DioxusLabs/dioxus/pull/3035> for more details
 
 ## Fullstack
 
@@ -185,7 +185,7 @@ server = ["dioxus/server"] # ✅
 web = ["dioxus/web"]
 ```
 
-See https://github.com/DioxusLabs/dioxus/pull/3186 for more details
+See <https://github.com/DioxusLabs/dioxus/pull/3186> for more details
 
 - The `fullstack::Config` item was removed. You can now pass the platform configs into the `LaunchBuilder` directly. For example, if you want to set the rootname on each platform, you can set the root name in each config:
 
@@ -206,7 +206,7 @@ LaunchBuilder::new()
     .launch(app);
 ```
 
-See https://github.com/DioxusLabs/dioxus/pull/2967 for more details.
+See <https://github.com/DioxusLabs/dioxus/pull/2967> for more details.
 
 - The dioxus-cli now proxies fullstack applications at a port behind a reverse proxy. If you have a custom axum server, you must serve your application at the port returned by `dioxus_cli_config::server_port` and the address returned by `dioxus_cli_config::server_ip` or the complete address returned by `dioxus_cli_config::fullstack_address_or_localhost` during development:
 
@@ -228,59 +228,59 @@ async fn main() {
 }
 ```
 
-See https://github.com/DioxusLabs/dioxus/pull/2258 for more details.
+See <https://github.com/DioxusLabs/dioxus/pull/2258> for more details.
 
-- `serve_dioxus_application` was changed to accept a component directly instead of a virtual dom factory. See https://github.com/DioxusLabs/dioxus/pull/2515 for more details.
-- `register_server_fns` was renamed to `register_server_functions`. See https://github.com/DioxusLabs/dioxus/pull/2515 for more details.
-- `RenderHandleState::new` accepts a new `ServeConfig` argument. See https://github.com/DioxusLabs/dioxus/pull/2862 for more details.
-- `ServeConfigBuilder::build` returns a result. It may fail during desktop builds if no `index.html` file is found. This error is fine to ignore in desktop builds. You can pass the builder directly to `serve_dioxus_application` to only serve the index.html file if it exists. See https://github.com/DioxusLabs/dioxus/pull/2862 for more details.
+- `serve_dioxus_application` was changed to accept a component directly instead of a virtual dom factory. See <https://github.com/DioxusLabs/dioxus/pull/2515> for more details.
+- `register_server_fns` was renamed to `register_server_functions`. See <https://github.com/DioxusLabs/dioxus/pull/2515> for more details.
+- `RenderHandleState::new` accepts a new `ServeConfig` argument. See <https://github.com/DioxusLabs/dioxus/pull/2862> for more details.
+- `ServeConfigBuilder::build` returns a result. It may fail during desktop builds if no `index.html` file is found. This error is fine to ignore in desktop builds. You can pass the builder directly to `serve_dioxus_application` to only serve the index.html file if it exists. See <https://github.com/DioxusLabs/dioxus/pull/2862> for more details.
 - `dioxus_fullstack::Config::addr` was removed. You can now export the `PORT` and `IP` environment variables to set the address the `launch` method uses for the server.
 
 ## Router
 
-- The `Routable` derive macro no longer accepts fields that are not present in the `route("/route")` if the web feature is enabled. See https://github.com/DioxusLabs/dioxus/pull/2159 for more details.
-- The `ToRouteSegments` trait in the router was changed from accepting `self` to accepting `&self`. This means you can now implement it for `T` directly instead of `&T`. See https://github.com/DioxusLabs/dioxus/pull/2283 for more details.
+- The `Routable` derive macro no longer accepts fields that are not present in the `route("/route")` if the web feature is enabled. See <https://github.com/DioxusLabs/dioxus/pull/2159> for more details.
+- The `ToRouteSegments` trait in the router was changed from accepting `self` to accepting `&self`. This means you can now implement it for `T` directly instead of `&T`. See <https://github.com/DioxusLabs/dioxus/pull/2283> for more details.
 
 ## derive(Props)
 
-- `#[props(into)]` is ignore on any String props. String props already accept `impl ToString` which is implemented for many of the same types, but if you implement `Into<String>` for a specific type, your code may require some changes. See https://github.com/DioxusLabs/dioxus/pull/2501 for more details
-- Properties that start with an uppercase letter are no longer accepted. This allows us to autocomplete Components. See https://github.com/DioxusLabs/dioxus/pull/2652 for more details.
+- `#[props(into)]` is ignore on any String props. String props already accept `impl ToString` which is implemented for many of the same types, but if you implement `Into<String>` for a specific type, your code may require some changes. See <https://github.com/DioxusLabs/dioxus/pull/2501> for more details
+- Properties that start with an uppercase letter are no longer accepted. This allows us to autocomplete Components. See <https://github.com/DioxusLabs/dioxus/pull/2652> for more details.
 
 ## State Management
 
-- `use_coroutine` now accepts `impl FnMut` instead of `impl FnOnce`. This was required to support restarting the coroutine without rerunning the component. See https://github.com/DioxusLabs/dioxus/pull/3005 for more details.
-- `Signal::global_memo` now requires `T: PartialEq` just like `use_memo`. See https://github.com/DioxusLabs/dioxus/pull/2851 for more details.
-- `GlobalMemo<T>` is now a trait alias for `Global<Memo<T>, T>` and `GlobalSignal<T>` is now a trait alias for `Global<Signal<T>, T>`. To get the underlying `Memo` or `Signal`, you can now use the `resolve` method instead of `signal` or `memo`. See https://github.com/DioxusLabs/dioxus/pull/2851 for more details.
-- The `Readable` trait in dioxus signals now requires a `try_peek_unchecked` method instead of `peek_unchecked`. See https://github.com/DioxusLabs/dioxus/pull/2714 for more details.
-- The `check_generation` feature flag was removed from the `generational-box` crate. See https://github.com/DioxusLabs/dioxus/pull/2638 for more details.
+- `use_coroutine` now accepts `impl FnMut` instead of `impl FnOnce`. This was required to support restarting the coroutine without rerunning the component. See <https://github.com/DioxusLabs/dioxus/pull/3005> for more details.
+- `Signal::global_memo` now requires `T: PartialEq` just like `use_memo`. See <https://github.com/DioxusLabs/dioxus/pull/2851> for more details.
+- `GlobalMemo<T>` is now a trait alias for `Global<Memo<T>, T>` and `GlobalSignal<T>` is now a trait alias for `Global<Signal<T>, T>`. To get the underlying `Memo` or `Signal`, you can now use the `resolve` method instead of `signal` or `memo`. See <https://github.com/DioxusLabs/dioxus/pull/2851> for more details.
+- The `Readable` trait in dioxus signals now requires a `try_peek_unchecked` method instead of `peek_unchecked`. See <https://github.com/DioxusLabs/dioxus/pull/2714> for more details.
+- The `check_generation` feature flag was removed from the `generational-box` crate. See <https://github.com/DioxusLabs/dioxus/pull/2638> for more details.
 
 ## Core changes
 
-- The `Template::name` field was removed. See https://github.com/DioxusLabs/dioxus/pull/2799 for more details.
-- `Properties::into_vcomponent` now accepts only the `render_fn` instead of the `render_fn` and `component_name`. This change fixes the name of re-exported components. Fixes https://github.com/DioxusLabs/dioxus/pull/2744
-- The field `VNode::template` is now `Template` instead of `Cell<Template>`. See https://github.com/DioxusLabs/dioxus/pull/2705 for more details
-- `Mutations::santize` was renamed to `Mutations::sanitize`. See https://github.com/DioxusLabs/dioxus/pull/2653 for more details.
-- The variant `AttributeValue::Any` now contains `Rc<dyn AnyValue>` instead of `Box<dyn AnyValue>` to make `AttributeValue` `Clone`. See https://github.com/DioxusLabs/dioxus/pull/2705 for more details
+- The `Template::name` field was removed. See <https://github.com/DioxusLabs/dioxus/pull/2799> for more details.
+- `Properties::into_vcomponent` now accepts only the `render_fn` instead of the `render_fn` and `component_name`. This change fixes the name of re-exported components. Fixes <https://github.com/DioxusLabs/dioxus/pull/2744>
+- The field `VNode::template` is now `Template` instead of `Cell<Template>`. See <https://github.com/DioxusLabs/dioxus/pull/2705> for more details
+- `Mutations::santize` was renamed to `Mutations::sanitize`. See <https://github.com/DioxusLabs/dioxus/pull/2653> for more details.
+- The variant `AttributeValue::Any` now contains `Rc<dyn AnyValue>` instead of `Box<dyn AnyValue>` to make `AttributeValue` `Clone`. See <https://github.com/DioxusLabs/dioxus/pull/2705> for more details
 
 ## Custom Renderers
 
 If you are building a custom renderer, there were some breaking changes to hot reloading and rsx that you should be aware of:
 
-- The CLI hot reloading format changed significantly. Custom renderers must switch from `dioxus-hot-reload` to `dioxus_devtools`. Renderers can connect to the hot reloading engine with the [connect](https://docs.rs/dioxus-devtools/0.6.0/dioxus_devtools/fn.connect.html) function. See https://github.com/DioxusLabs/dioxus/pull/2258 for more details.
-- The format of custom elements was changed to improve autocomplete. The `dioxus_elements` namespace must now contain each element as a module with a TAG_NAME and NAME_SPACE constant inside that module. Each attribute should be another constant in that module. The top-level `dioxus_elements` module should contain a `completions` module with a `CompleteWithBraces` enum that re-exports each element the namespace supports for braces autocomplete. See https://github.com/DioxusLabs/dioxus/pull/2421 for more details.
-- The format for custom event handlers changed include `eventname::call_with_explicit_closure` to provide better type inference for inline closures. See https://github.com/DioxusLabs/dioxus/pull/2437 for more details
+- The CLI hot reloading format changed significantly. Custom renderers must switch from `dioxus-hot-reload` to `dioxus_devtools`. Renderers can connect to the hot reloading engine with the [connect](<https://docs.rs/dioxus>-devtools/0.6.0/dioxus_devtools/fn.connect.html) function. See <https://github.com/DioxusLabs/dioxus/pull/2258> for more details.
+- The format of custom elements was changed to improve autocomplete. The `dioxus_elements` namespace must now contain each element as a module with a TAG_NAME and NAME_SPACE constant inside that module. Each attribute should be another constant in that module. The top-level `dioxus_elements` module should contain a `completions` module with a `CompleteWithBraces` enum that re-exports each element the namespace supports for braces autocomplete. See <https://github.com/DioxusLabs/dioxus/pull/2421> for more details.
+- The format for custom event handlers changed include `eventname::call_with_explicit_closure` to provide better type inference for inline closures. See <https://github.com/DioxusLabs/dioxus/pull/2437> for more details
 
 If you are also using dioxus-html, there are a few more breaking changes:
 
-- A `file_size` method was added to the `FileEngine` trait. Any custom renderers must implement this method. See https://github.com/DioxusLabs/dioxus/pull/2323/files for more details.
-- `HtmlEventConverter` has a new `convert_resize_data` method which must be implemented by any custom renderers that use dioxus-html. See https://github.com/DioxusLabs/dioxus/pull/2479 for more details
-- The web and native features were removed from the `dioxus-html` crate. See https://github.com/DioxusLabs/dioxus/pull/3006 for more details.
-- `dioxus_html::AttributeDiscription ` was renamed to `dioxus_html::AttributeDescription`. See https://github.com/DioxusLabs/dioxus/pull/2653 for more details.
+- A `file_size` method was added to the `FileEngine` trait. Any custom renderers must implement this method. See <https://github.com/DioxusLabs/dioxus/pull/2323/files> for more details.
+- `HtmlEventConverter` has a new `convert_resize_data` method which must be implemented by any custom renderers that use dioxus-html. See <https://github.com/DioxusLabs/dioxus/pull/2479> for more details
+- The web and native features were removed from the `dioxus-html` crate. See <https://github.com/DioxusLabs/dioxus/pull/3006> for more details.
+- `dioxus_html::AttributeDiscription ` was renamed to `dioxus_html::AttributeDescription`. See <https://github.com/DioxusLabs/dioxus/pull/2653> for more details.
 
 ## Minor Breaking Changes
 
 There were several more minor breaking changes in Dioxus 0.6:
 
-- Many implicit features from dioxus crates were removed. These features were automatically generated by cargo and generally not functional. See https://github.com/DioxusLabs/dioxus/pull/2512 for more details.
-- `dioxus_autofmt::write_block_out` accepts `&CallBody` instead of `CallBody`. See https://github.com/DioxusLabs/dioxus/pull/2573 for more details.
-- The `panic_hook` feature which provides a console panic message for wasm panics was moved from the `dioxus-web` crate to the `dioxus-logger` crate. The handler is still provided by default. See https://github.com/DioxusLabs/dioxus/pull/3302 for more details.
+- Many implicit features from dioxus crates were removed. These features were automatically generated by cargo and generally not functional. See <https://github.com/DioxusLabs/dioxus/pull/2512> for more details.
+- `dioxus_autofmt::write_block_out` accepts `&CallBody` instead of `CallBody`. See <https://github.com/DioxusLabs/dioxus/pull/2573> for more details.
+- The `panic_hook` feature which provides a console panic message for wasm panics was moved from the `dioxus-web` crate to the `dioxus-logger` crate. The handler is still provided by default. See <https://github.com/DioxusLabs/dioxus/pull/3302> for more details.

@@ -138,7 +138,7 @@ html, body {
     justify-content: center;
 }
 
-#dogimg {
+#dogview img {
     display: block;
     max-width: 50%;
     max-height: 50%;

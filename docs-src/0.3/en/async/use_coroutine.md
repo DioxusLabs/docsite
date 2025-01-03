@@ -4,7 +4,7 @@ Another tool in your async toolbox are coroutines. Coroutines are futures that c
 
 Like regular futures, code in a coroutine will run until the next `await` point before yielding. This low-level control over asynchronous tasks is quite powerful, allowing for infinitely looping tasks like WebSocket polling, background timers, and other periodic actions.
 
-## `use_coroutine`
+## use_coroutine
 
 The `use_coroutine` hook allows you to create a coroutine. Most coroutines we write will be polling loops using async/await.
 

@@ -95,7 +95,7 @@ DemoFrame {
 }
 ```
 
-### The `key` Attribute
+### The key Attribute
 
 Every time you re-render your list, Dioxus needs to keep track of which items go where to determine what updates need to be made to the UI.
 

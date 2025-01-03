@@ -2,7 +2,7 @@
 
 Assim como você pode passar argumentos para uma função, você pode passar _props_ para um componente que personaliza seu comportamento! Os componentes que vimos até agora não aceitam _props_ – então vamos escrever alguns componentes que aceitam.
 
-## `#[derive(Props)]`
+## derive(Props)
 
 _Props_ de componente são uma única estrutura anotada com `#[derive(Props)]`. Para um componente aceitar _props_, o tipo de seu argumento deve ser `Scope<YourPropsStruct>`. Então, você pode acessar o valor das _props_ usando `cx.props`.
 
@@ -67,7 +67,7 @@ Em seguida, você pode optar por fornecê-los ou não:
 {{#include src/doc_examples/untested_03/component_props_options.rs:OptionalProps_usage}}
 ```
 
-### `Option` Explicitamente Obrigatórias
+### Option Explicitamente Obrigatórias
 
 Se você quiser exigir explicitamente uma `Option`, e não uma _prop_ opcional, você pode anotá-la com `#[props(!optional)]`:
 

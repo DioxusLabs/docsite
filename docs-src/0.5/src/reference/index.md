@@ -32,5 +32,4 @@ This Reference contains more detailed explanations for all concepts covered in t
     - [`Authentication`](fullstack/authentication.md) An overview of how to handle authentication with server functions
     - [`Routing`](fullstack/routing.md) An overview of how to work with the router in the fullstack renderer
 - [`SSR`](ssr.md) Overview of the SSR renderer
-- [`TUI`](tui.md) Overview of web specific APIS
 - [`Liveview`](liveview.md) Overview of liveview specific APIS

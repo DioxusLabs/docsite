@@ -2,7 +2,7 @@
 
 OS functions are for getting system information.
 
-### `current_platform() -> string ("windows" | "macos" | "linux")`
+### current_platform
 
 Get the current OS platform.
 

@@ -12,7 +12,7 @@ For example, to handle clicks on an element, we can specify an `onclick` handler
 {{#include src/doc_examples/untested_03/event_click.rs:rsx}}
 ```
 
-## The `Event` object
+## The Event object
 
 Event handlers receive an [`Event`](https://docs.rs/dioxus-core/latest/dioxus_core/struct.Event.html) object containing information about the event. Different types of events contain different types of data. For example, mouse-related events contain [`MouseData`](https://docs.rs/dioxus/latest/dioxus/events/struct.MouseData.html), which tells you things like where the mouse was clicked and what mouse buttons were used.
 

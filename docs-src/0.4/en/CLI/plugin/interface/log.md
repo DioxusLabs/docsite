@@ -2,7 +2,7 @@
 
 You can use log functions to print various logging information.
 
-### `trace(info: string)`
+### trace
 
 Print trace log info.
 
@@ -11,7 +11,7 @@ local log = plugin.log
 log.trace("trace information")
 ```
 
-### `debug(info: string)`
+### debug
 
 Print debug log info.
 
@@ -20,7 +20,7 @@ local log = plugin.log
 log.debug("debug information")
 ```
 
-### `info(info: string)`
+### info
 
 Print info log info.
 
@@ -29,7 +29,7 @@ local log = plugin.log
 log.info("info information")
 ```
 
-### `warn(info: string)`
+### warn
 
 Print warning log info.
 
@@ -38,7 +38,7 @@ local log = plugin.log
 log.warn("warn information")
 ```
 
-### `error(info: string)`
+### error
 
 Print error log info.
 

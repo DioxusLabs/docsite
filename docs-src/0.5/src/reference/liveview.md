@@ -20,7 +20,7 @@ Currently, the Dioxus router does not integrate with the browser history in the 
 Liveview makes it incredibly convenient to talk to your server from the client, but there are some downsides. Mainly in Dioxus Liveview every interaction goes through the server by default.
 
 
-Because of this, with the liveview renderer you need to be very deliberate about managing latency. Events that would be fast enough on other renderers like [controlled inputs](../../reference/user_input.md), can be frustrating to use in the liveview renderer.
+Because of this, with the liveview renderer you need to be very deliberate about managing latency. Events that would be fast enough on other renderers like [controlled inputs](../reference/user_input.md), can be frustrating to use in the liveview renderer.
 
 
 To get around this issue you can inject bits of javascript in your liveview application. If you use a raw attribute as a listener, you can inject some javascript that will be run when the event is triggered:

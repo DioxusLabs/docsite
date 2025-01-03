@@ -70,7 +70,7 @@ And that's it!
 1. Hot reloading allows much faster iteration times inside of rsx calls by interpreting them and streaming the edits.
 2. It is useful when changing the styling/layout of a program, but will not help with changing the logic of a program.
 
-### Setup
+### Hot Reload Setup
 
 Install [dioxus-cli](https://github.com/DioxusLabs/dioxus/tree/master/packages/cli).
 

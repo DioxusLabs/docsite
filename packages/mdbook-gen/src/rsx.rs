@@ -1,5 +1,5 @@
 use mdbook_shared::get_book_content_path;
-use proc_macro2::TokenStream as TokenStream2;
+use proc_macro2::{Span, TokenStream as TokenStream2};
 use quote::{quote, ToTokens};
 use std::{
     iter::Peekable,
@@ -10,7 +10,7 @@ use std::{
 
 use dioxus_rsx::{BodyNode, CallBody, TemplateBody};
 use pulldown_cmark::{Alignment, Event, Options, Parser, Tag};
-use syn::{Ident, __private::Span, parse_quote, parse_str};
+use syn::{parse_quote, parse_str, Ident};
 
 use syntect::highlighting::ThemeSet;
 use syntect::parsing::SyntaxSet;
@@ -19,6 +19,9 @@ use crate::{
     path_to_route_enum, path_to_route_enum_with_section, to_upper_camel_case_for_ident,
     EmptyIdentError,
 };
+
+#[cfg(test)]
+use pretty_assertions::assert_eq;
 
 /// Convert a CallBody to a TokenStream
 pub fn callbody_to_tokens(cb: CallBody) -> TokenStream2 {
@@ -180,11 +183,16 @@ impl<'a, I: Iterator<Item = Event<'a>>> RsxMarkdownParser<'a, I> {
 
     fn take_code_or_text(&mut self) -> String {
         let mut current_text = String::new();
-        while let Some(pulldown_cmark::Event::Code(text) | pulldown_cmark::Event::Text(text)) =
-            self.iter.peek()
-        {
-            current_text += text;
-            let _ = self.iter.next().unwrap();
+        loop {
+            match self.iter.peek() {
+                Some(pulldown_cmark::Event::Code(text) | pulldown_cmark::Event::Text(text)) => {
+                    current_text += text;
+                    self.iter.next().unwrap();
+                }
+                // Ignore any softbreaks
+                Some(pulldown_cmark::Event::SoftBreak) => {}
+                _ => break,
+            }
         }
         current_text
     }
@@ -219,6 +227,10 @@ impl<'a, I: Iterator<Item = Event<'a>>> RsxMarkdownParser<'a, I> {
                     // Take the text or code event we just inserted
                     let _ = self.iter.next().unwrap();
                 }
+                // Ignore any softbreaks
+                Some(pulldown_cmark::Event::SoftBreak) => {
+                    let _ = self.iter.next().unwrap();
+                }
                 _ => return,
             }
         }
@@ -229,13 +241,24 @@ impl<'a, I: Iterator<Item = Event<'a>>> RsxMarkdownParser<'a, I> {
         // pulldown_cmark will create a new text node for each newline. We insert a space
         // between each newline to avoid two lines being rendered right next to each other.
         let mut insert_space = false;
-        while let Some(pulldown_cmark::Event::Text(text)) = self.iter.peek() {
-            if insert_space {
-                current_text.push(' ');
+        loop {
+            match self.iter.peek() {
+                Some(pulldown_cmark::Event::Text(text) | pulldown_cmark::Event::Code(text)) => {
+                    let starts_with_space = text.chars().next().filter(|c| c.is_whitespace()).is_some();
+                    let ends_with_space = text.chars().last().filter(|c| c.is_whitespace()).is_some();
+                    if insert_space && !starts_with_space {
+                        current_text.push(' ');
+                    }
+                    current_text += text;
+                    insert_space = !ends_with_space;
+                    _ = self.iter.next().unwrap();
+                }
+                // Ignore any softbreaks
+                Some(pulldown_cmark::Event::SoftBreak) => {
+                    _ = self.iter.next().unwrap();
+                }
+                _ => break,
             }
-            current_text += text;
-            insert_space = true;
-            let _ = self.iter.next().unwrap();
         }
         current_text
     }
@@ -390,7 +413,13 @@ impl<'a, I: Iterator<Item = Event<'a>>> RsxMarkdownParser<'a, I> {
                             escape_text(&dest).to_token_stream()
                         } else {
                             // If this is a relative link, resolve it relative to the current file
-                            let content_path = get_book_content_path(&self.book_path).unwrap();
+                            let content_path =
+                                get_book_content_path(&self.book_path).ok_or_else(|| {
+                                    syn::Error::new(
+                                        Span::call_site(),
+                                        "Failed to resolve the content path",
+                                    )
+                                })?;
                             let content_path = content_path.canonicalize().unwrap();
                             let current_file_path = content_path.join(&self.path);
                             let parent_of_current_file = current_file_path.parent().unwrap();
@@ -575,16 +604,16 @@ impl<'a, I: Iterator<Item = Event<'a>>> RsxMarkdownParser<'a, I> {
         };
 
         // If the last element is a text node, we can just join the text nodes together with a space
-        if let (Some(BodyNode::Text(last_text)), BodyNode::Text(new_text)) =
-            (element_list.last_mut(), &node)
-        {
-            last_text
-                .input
-                .formatted_input
-                .push_ifmt(new_text.input.formatted_input.clone());
-        } else {
-            element_list.push(node);
-        }
+        // if let (Some(BodyNode::Text(last_text)), BodyNode::Text(new_text)) =
+        //     (element_list.last_mut(), &node)
+        // {
+        //     last_text
+        //         .input
+        //         .formatted_input
+        //         .push_ifmt(new_text.input.formatted_input.clone());
+        // } else {
+        element_list.push(node);
+        // }
     }
 
     fn last_mut(&mut self) -> Option<&mut BodyNode> {
@@ -705,8 +734,8 @@ Some assets:
         sections: vec![],
         in_table_header: false,
         iter: parser.by_ref().peekable(),
-        path: PathBuf::from("example-book/en/chapter_1.md"),
-        book_path: PathBuf::from("example-book/en"),
+        path: PathBuf::from("../../example-book/en/chapter_1.md"),
+        book_path: PathBuf::from("../../example-book"),
         phantom: std::marker::PhantomData,
     };
 
@@ -738,6 +767,128 @@ Some assets:
     let fmted = prettyplease::unparse(&out);
 
     println!("{}", fmted);
+}
+
+#[test]
+fn parse_softbreaks() {
+    let markdown = r#"
+# Programmatic Navigation
+
+Sometimes we want our application to navigate to another page without having the
+user click on a link. This is called programmatic navigation.
+
+## Using a Navigator
+
+We can get a navigator with the `navigator` function which returns a `Navigator`.
+"#;
+
+    let mut options = Options::empty();
+    options.insert(Options::ENABLE_STRIKETHROUGH);
+    options.insert(Options::ENABLE_TABLES);
+    options.insert(Options::ENABLE_TASKLISTS);
+    let mut parser = Parser::new_ext(markdown, options);
+
+    let mut rsx_parser = RsxMarkdownParser {
+        element_stack: vec![],
+        root_nodes: vec![],
+        current_table: vec![],
+        sections: vec![],
+        in_table_header: false,
+        iter: parser.by_ref().peekable(),
+        path: PathBuf::from("../../example-book/en/chapter_1.md"),
+        book_path: PathBuf::from("../../example-book"),
+        phantom: std::marker::PhantomData,
+    };
+
+    rsx_parser.parse().unwrap();
+    while !rsx_parser.element_stack.is_empty() {
+        rsx_parser.end_node();
+    }
+
+    let body = CallBody::new(TemplateBody::new(rsx_parser.root_nodes));
+    let fmted = dioxus_autofmt::write_block_out(&body).unwrap();
+    println!("{}", fmted);
+
+    let expected_tokens: CallBody = parse_quote! {
+        h1 { id: "programmatic-navigation",
+            Link {
+                to: BookRoute::ExampleBookEnChapter1 {
+                    section: ExampleBookEnChapter1Section::ProgrammaticNavigation
+                },
+                class: "header",
+                "Programmatic Navigation"
+            }
+        }
+        p {
+            "Sometimes we want our application to navigate to another page without having the"
+            "user click on a link. This is called programmatic navigation."
+        }
+        h2 { id: "using-a-navigator",
+            Link {
+                to: BookRoute::ExampleBookEnChapter1 {
+                    section: ExampleBookEnChapter1Section::UsingANavigator
+                },
+                class: "header",
+                "Using a Navigator"
+            }
+        }
+        p {
+            "We can get a navigator with the  "
+            code { "navigator" }
+            " function which returns a  "
+            code { "Navigator" }
+            "."
+        }
+    };
+
+    assert_eq!(expected_tokens.body, body.body);
+}
+
+
+#[test]
+fn parse_code_headers() {
+    let markdown = r#"# This `is` a header about `MdBook`"#;
+
+    let mut options = Options::empty();
+    options.insert(Options::ENABLE_STRIKETHROUGH);
+    options.insert(Options::ENABLE_TABLES);
+    options.insert(Options::ENABLE_TASKLISTS);
+    let mut parser = Parser::new_ext(markdown, options);
+
+    let mut rsx_parser = RsxMarkdownParser {
+        element_stack: vec![],
+        root_nodes: vec![],
+        current_table: vec![],
+        sections: vec![],
+        in_table_header: false,
+        iter: parser.by_ref().peekable(),
+        path: PathBuf::from("../../example-book/en/chapter_1.md"),
+        book_path: PathBuf::from("../../example-book"),
+        phantom: std::marker::PhantomData,
+    };
+
+    rsx_parser.parse().unwrap();
+    while !rsx_parser.element_stack.is_empty() {
+        rsx_parser.end_node();
+    }
+
+    let body = CallBody::new(TemplateBody::new(rsx_parser.root_nodes));
+    let fmted = dioxus_autofmt::write_block_out(&body).unwrap();
+    println!("{}", fmted);
+
+    let expected_tokens: CallBody = parse_quote! {
+        h1 { id: "this-is-a-header-about-mdbook",
+            Link {
+                to: BookRoute::ExampleBookEnChapter1 {
+                    section: ExampleBookEnChapter1Section::ThisIsAHeaderAboutMdbook
+                },
+                class: "header",
+                "This is a header about MdBook"
+            }
+        }
+    };
+
+    assert_eq!(expected_tokens.body, body.body);
 }
 
 #[test]

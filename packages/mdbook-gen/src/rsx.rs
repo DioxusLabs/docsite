@@ -605,6 +605,15 @@ impl<'a, I: Iterator<Item = Event<'a>>> RsxMarkdownParser<'a, I> {
             _ => return,
         };
 
+        // If the last element is a text node, add a space between them
+        if let (Some(BodyNode::Text(last_text)), BodyNode::Text(new_text)) =
+            (element_list.last_mut(), &node)
+        {
+            if !last_text.input.source.value().chars().last().filter(|c| c.is_whitespace()).is_some() && !new_text.input.source.value().chars().next().filter(|c| c.is_whitespace()).is_some() {
+                element_list.push(parse_quote!{ " " });
+            }
+        }
+
         element_list.push(node);
     }
 

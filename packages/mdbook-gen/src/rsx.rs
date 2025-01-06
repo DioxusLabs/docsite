@@ -244,8 +244,10 @@ impl<'a, I: Iterator<Item = Event<'a>>> RsxMarkdownParser<'a, I> {
         loop {
             match self.iter.peek() {
                 Some(pulldown_cmark::Event::Text(text) | pulldown_cmark::Event::Code(text)) => {
-                    let starts_with_space = text.chars().next().filter(|c| c.is_whitespace()).is_some();
-                    let ends_with_space = text.chars().last().filter(|c| c.is_whitespace()).is_some();
+                    let starts_with_space =
+                        text.chars().next().filter(|c| c.is_whitespace()).is_some();
+                    let ends_with_space =
+                        text.chars().last().filter(|c| c.is_whitespace()).is_some();
                     if insert_space && !starts_with_space {
                         current_text.push(' ');
                     }
@@ -603,17 +605,7 @@ impl<'a, I: Iterator<Item = Event<'a>>> RsxMarkdownParser<'a, I> {
             _ => return,
         };
 
-        // If the last element is a text node, we can just join the text nodes together with a space
-        // if let (Some(BodyNode::Text(last_text)), BodyNode::Text(new_text)) =
-        //     (element_list.last_mut(), &node)
-        // {
-        //     last_text
-        //         .input
-        //         .formatted_input
-        //         .push_ifmt(new_text.input.formatted_input.clone());
-        // } else {
         element_list.push(node);
-        // }
     }
 
     fn last_mut(&mut self) -> Option<&mut BodyNode> {
@@ -843,7 +835,6 @@ We can get a navigator with the `navigator` function which returns a `Navigator`
 
     assert_eq!(expected_tokens.body, body.body);
 }
-
 
 #[test]
 fn parse_code_headers() {

@@ -6599,8 +6599,10 @@ pub fn GettingStartedMobile(section: GettingStartedMobileSection) -> dioxus::pre
         blockquote {
             p {
                 "Note: On Apple silicon you must run Xcode on rosetta. Goto Application > Right Click Xcode > Get Info > Open in Rosetta."
+                " "
+                "If you are using M1, you will have to run  "
                 code { "cargo build --target x86_64-apple-ios" }
-                " instead of "
+                " instead of  "
                 code { "cargo apple build" }
                 " if you want to run in simulator."
             }
@@ -8917,9 +8919,9 @@ pub enum ReferenceComponentPropsSection {
     BorrowedProps,
     PropOptions,
     OptionalProps,
-    ExplicitlyRequired,
+    ExplicitlyRequiredOptionS,
     DefaultProps,
-    AutomaticConversionWith,
+    AutomaticConversionWithInto,
     TheComponentMacro,
     ComponentChildren,
     TheChildrenField,
@@ -8935,9 +8937,9 @@ impl std::str::FromStr for ReferenceComponentPropsSection {
             "borrowed-props" => Ok(Self::BorrowedProps),
             "prop-options" => Ok(Self::PropOptions),
             "optional-props" => Ok(Self::OptionalProps),
-            "explicitly-required" => Ok(Self::ExplicitlyRequired),
+            "explicitly-required-option-s" => Ok(Self::ExplicitlyRequiredOptionS),
             "default-props" => Ok(Self::DefaultProps),
-            "automatic-conversion-with" => Ok(Self::AutomaticConversionWith),
+            "automatic-conversion-with-into" => Ok(Self::AutomaticConversionWithInto),
             "the-component-macro" => Ok(Self::TheComponentMacro),
             "component-children" => Ok(Self::ComponentChildren),
             "the-children-field" => Ok(Self::TheChildrenField),
@@ -8955,9 +8957,9 @@ impl std::fmt::Display for ReferenceComponentPropsSection {
             Self::BorrowedProps => f.write_str("borrowed-props"),
             Self::PropOptions => f.write_str("prop-options"),
             Self::OptionalProps => f.write_str("optional-props"),
-            Self::ExplicitlyRequired => f.write_str("explicitly-required"),
+            Self::ExplicitlyRequiredOptionS => f.write_str("explicitly-required-option-s"),
             Self::DefaultProps => f.write_str("default-props"),
-            Self::AutomaticConversionWith => f.write_str("automatic-conversion-with"),
+            Self::AutomaticConversionWithInto => f.write_str("automatic-conversion-with-into"),
             Self::TheComponentMacro => f.write_str("the-component-macro"),
             Self::ComponentChildren => f.write_str("component-children"),
             Self::TheChildrenField => f.write_str("the-children-field"),
@@ -8969,7 +8971,7 @@ pub struct ReferenceComponentPropsSectionParseError;
 impl std::fmt::Display for ReferenceComponentPropsSectionParseError {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         f.write_str(
-            "Invalid section name. Expected one of ReferenceComponentPropsSectioncomponent-props, deriveprops, owned-props, borrowed-props, prop-options, optional-props, explicitly-required, default-props, automatic-conversion-with, the-component-macro, component-children, the-children-field",
+            "Invalid section name. Expected one of ReferenceComponentPropsSectioncomponent-props, deriveprops, owned-props, borrowed-props, prop-options, optional-props, explicitly-required-option-s, default-props, automatic-conversion-with-into, the-component-macro, component-children, the-children-field",
         )?;
         Ok(())
     }
@@ -9136,16 +9138,14 @@ pub fn ReferenceComponentProps(
             contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">Title {{\n</span><span style=\"color:#f8f8f2;\">title: </span><span style=\"color:#ffee99;\">&quot;Some Title&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">}},\n</span><span style=\"color:#f8f8f2;\">Title {{\n</span><span style=\"color:#f8f8f2;\">title: </span><span style=\"color:#ffee99;\">&quot;Some Title&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">subtitle: </span><span style=\"color:#ffee99;\">&quot;Some Subtitle&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">}},\n</span><span style=\"color:#8c8c8c;\">// Providing an Option explicitly won&#39;t compile though:\n</span><span style=\"color:#8c8c8c;\">// Title {{\n</span><span style=\"color:#8c8c8c;\">//     title: &quot;Some Title&quot;,\n</span><span style=\"color:#8c8c8c;\">//     subtitle: None,\n</span><span style=\"color:#8c8c8c;\">// }},</span></pre>\n",
             name: "component_props_options.rs".to_string(),
         }
-        h3 { id: "explicitly-required",
+        h3 { id: "explicitly-required-option-s",
             Link {
                 to: BookRoute::ReferenceComponentProps {
-                    section: ReferenceComponentPropsSection::ExplicitlyRequired,
+                    section: ReferenceComponentPropsSection::ExplicitlyRequiredOptionS,
                 },
                 class: "header",
-                "Explicitly Required "
+                "Explicitly Required Option s"
             }
-            code { "Option" }
-            "s"
         }
         p {
             "If you want to explicitly require an  "
@@ -9192,15 +9192,14 @@ pub fn ReferenceComponentProps(
             contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">DefaultComponent {{\n</span><span style=\"color:#f8f8f2;\">number: </span><span style=\"color:#ff80f4;\">5</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">}},\n</span><span style=\"color:#f8f8f2;\">DefaultComponent {{}},</span></pre>\n",
             name: "component_props_options.rs".to_string(),
         }
-        h3 { id: "automatic-conversion-with",
+        h3 { id: "automatic-conversion-with-into",
             Link {
                 to: BookRoute::ReferenceComponentProps {
-                    section: ReferenceComponentPropsSection::AutomaticConversionWith,
+                    section: ReferenceComponentPropsSection::AutomaticConversionWithInto,
                 },
                 class: "header",
-                "Automatic Conversion with "
+                "Automatic Conversion with .into"
             }
-            code { ".into" }
         }
         p {
             "It is common for Rust functions to accept  "
@@ -9796,6 +9795,8 @@ pub fn ReferenceHooks(section: ReferenceHooksSection) -> dioxus::prelude::Elemen
                 "Hook names should start with "
                 code { "use_" }
                 " so you don't accidentally confuse them with regular"
+                " "
+                "functions ("
                 code { "use_state()" }
                 ", "
                 code { "use_ref()" }
@@ -9874,10 +9875,16 @@ pub fn ReferenceHooks(section: ReferenceHooksSection) -> dioxus::prelude::Elemen
             " of values. If we stored it with  "
             code { "use_state" }
             ", the"
+            " "
+            "only way to add a new value to the list would be to copy the existing  "
             code { "Vec" }
             ", add our value to it,"
+            " "
+            "and then replace the existing  "
             code { "Vec" }
             " in the state with it. This is expensive! We want to modify the"
+            " "
+            "existing  "
             code { "Vec" }
             " instead."
         }
@@ -9909,22 +9916,31 @@ pub fn ReferenceHooks(section: ReferenceHooksSection) -> dioxus::prelude::Elemen
                 " and  "
                 code { "use_ref" }
                 " ("
+                "\u{a0}"
                 Link { to: "https://docs.rs/dioxus/latest/dioxus/prelude/struct.UseState.html",
                     code { "UseState" }
                 }
                 " and"
+                "\u{a0}"
                 Link { to: "https://docs.rs/dioxus/latest/dioxus/prelude/struct.UseRef.html",
                     code { "UseRef" }
                 }
                 ", respectively) are in"
+                "\u{a0}"
+                "some ways similar to "
                 Link { to: "https://doc.rust-lang.org/std/cell/",
                     code { "Cell" }
                 }
                 " and"
+                "\u{a0}"
                 Link { to: "https://doc.rust-lang.org/std/cell/struct.RefCell.html",
                     code { "RefCell" }
                 }
                 " – they provide interior"
+                "\u{a0}"
+                "mutability. However, these Dioxus wrappers also ensure that the component gets re-rendered"
+                "\u{a0}"
+                "whenever you change the state."
             }
         }
         h2 { id: "additional-resources",
@@ -10356,8 +10372,8 @@ pub enum ReferenceDynamicRenderingSection {
     Empty,
     DynamicRendering,
     ConditionalRendering,
-    ImprovingThe,
-    Inspecting,
+    ImprovingTheIfElseExample,
+    InspectingElementProps,
     RenderingNothing,
     RenderingLists,
     InlineForLoops,
@@ -10370,8 +10386,8 @@ impl std::str::FromStr for ReferenceDynamicRenderingSection {
             "" => Ok(Self::Empty),
             "dynamic-rendering" => Ok(Self::DynamicRendering),
             "conditional-rendering" => Ok(Self::ConditionalRendering),
-            "improving-the" => Ok(Self::ImprovingThe),
-            "inspecting" => Ok(Self::Inspecting),
+            "improving-the-if-else-example" => Ok(Self::ImprovingTheIfElseExample),
+            "inspecting-element-props" => Ok(Self::InspectingElementProps),
             "rendering-nothing" => Ok(Self::RenderingNothing),
             "rendering-lists" => Ok(Self::RenderingLists),
             "inline-for-loops" => Ok(Self::InlineForLoops),
@@ -10386,8 +10402,8 @@ impl std::fmt::Display for ReferenceDynamicRenderingSection {
             Self::Empty => f.write_str(""),
             Self::DynamicRendering => f.write_str("dynamic-rendering"),
             Self::ConditionalRendering => f.write_str("conditional-rendering"),
-            Self::ImprovingThe => f.write_str("improving-the"),
-            Self::Inspecting => f.write_str("inspecting"),
+            Self::ImprovingTheIfElseExample => f.write_str("improving-the-if-else-example"),
+            Self::InspectingElementProps => f.write_str("inspecting-element-props"),
             Self::RenderingNothing => f.write_str("rendering-nothing"),
             Self::RenderingLists => f.write_str("rendering-lists"),
             Self::InlineForLoops => f.write_str("inline-for-loops"),
@@ -10400,7 +10416,7 @@ pub struct ReferenceDynamicRenderingSectionParseError;
 impl std::fmt::Display for ReferenceDynamicRenderingSectionParseError {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         f.write_str(
-            "Invalid section name. Expected one of ReferenceDynamicRenderingSectiondynamic-rendering, conditional-rendering, improving-the, inspecting, rendering-nothing, rendering-lists, inline-for-loops, the-key-attribute",
+            "Invalid section name. Expected one of ReferenceDynamicRenderingSectiondynamic-rendering, conditional-rendering, improving-the-if-else-example, inspecting-element-props, rendering-nothing, rendering-lists, inline-for-loops, the-key-attribute",
         )?;
         Ok(())
     }
@@ -10450,16 +10466,14 @@ pub fn ReferenceDynamicRendering(
                 " statements, or any Rust function to conditionally render different things."
             }
         }
-        h3 { id: "improving-the",
+        h3 { id: "improving-the-if-else-example",
             Link {
                 to: BookRoute::ReferenceDynamicRendering {
-                    section: ReferenceDynamicRenderingSection::ImprovingThe,
+                    section: ReferenceDynamicRenderingSection::ImprovingTheIfElseExample,
                 },
                 class: "header",
-                "Improving the "
+                "Improving the if-else Example"
             }
-            code { "if-else" }
-            " Example"
         }
         p {
             "You may have noticed some repeated code in the  "
@@ -10476,16 +10490,14 @@ pub fn ReferenceDynamicRendering(
             name: "conditional_rendering.rs".to_string(),
         }
         DemoFrame { conditional_rendering::LogInImprovedApp {} }
-        h3 { id: "inspecting",
+        h3 { id: "inspecting-element-props",
             Link {
                 to: BookRoute::ReferenceDynamicRendering {
-                    section: ReferenceDynamicRenderingSection::Inspecting,
+                    section: ReferenceDynamicRenderingSection::InspectingElementProps,
                 },
                 class: "header",
-                "Inspecting "
+                "Inspecting Element props"
             }
-            code { "Element" }
-            " props"
         }
         p {
             "Since  "
@@ -11115,10 +11127,15 @@ pub fn ReferenceUseCoroutine(section: ReferenceUseCoroutineSection) -> dioxus::p
                 "Note: In order to use/run the  "
                 code { "rx.next().await" }
                 " statement you will need to extend the "
+                "[ "
                 code { "Stream" }
                 "]"
+                " trait (used by "
+                "[ "
                 code { "UnboundedReceiver" }
                 "]"
+                " "
+                ") by adding 'futures_util' as a dependency to your project and adding the  "
                 code { "use futures_util::stream::StreamExt;" }
                 "."
             }
@@ -11485,6 +11502,8 @@ pub fn ReferenceWebIndex(section: ReferenceWebIndexSection) -> dioxus::prelude::
             " with the id  "
             code { "main" }
             " to be used. Hot Reload is still supported. An example"
+            " "
+            "is provided in the "
             Link { to: "https://github.com/DioxusLabs/Dioxus/examples/PWA-example/index.html",
                 "PWA-Example"
             }
@@ -11608,8 +11627,12 @@ pub fn ReferenceSsr(section: ReferenceSsrSection) -> dioxus::prelude::Element {
             "The Dioxus VirtualDom, sadly, is not currently  "
             code { "Send" }
             ". Internally, we use quite a bit of interior mutability which is not thread-safe."
+            " "
+            "When working with web frameworks that require  "
             code { "Send" }
             ", it is possible to render a VirtualDom immediately to a String – but you cannot hold the VirtualDom across an await point. For retained-state SSR (essentially LiveView), you'll need to spawn a VirtualDom on its own thread and communicate with it via channels or create a pool of VirtualDoms."
+            " "
+            "You might notice that you cannot hold the VirtualDom across an await point. Because Dioxus is currently not ThreadSafe, it "
             em { "must" }
             " remain on the thread it started. We are working on loosening this requirement."
         }
@@ -11997,6 +12020,8 @@ pub fn ReferenceFullstackServerFunctions(
         }
         p {
             "The desktop and server targets have slightly different build configuration to enable additional dependencies or features."
+            " "
+            "The Cargo.toml in the full example has more information, but the main points are:"
         }
         ul {
             li {
@@ -12054,6 +12079,8 @@ pub fn ReferenceFullstackServerFunctions(
         }
         p {
             "Then, you have to register the types declared in the server function macros into the axum server."
+            " "
+            "For example, consider this server function:"
         }
         CodeBlock {
             contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">#[server(GetServerData)]\n</span><span style=\"color:#f8f8f2;\">async </span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">get_server_data</span><span style=\"color:#f8f8f2;\">() -&gt; Result&lt;String, ServerFnError&gt; {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">Ok</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#ffee99;\">&quot;Hello from the server!&quot;</span><span style=\"color:#f8f8f2;\">.</span><span style=\"color:#66d9ef;\">to_string</span><span style=\"color:#f8f8f2;\">())\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
@@ -12451,16 +12478,24 @@ pub fn RouterIndex(section: RouterIndexSection) -> dioxus::prelude::Element {
             "This will instruct  "
             code { "dx serve" }
             " to redirect any unknown route to the index, to then be resolved by the router."
+            " "
+            "The router works on the client. If we connect through the index route (e.g.,  "
             code { "localhost:8080" }
-            ", then click a link to go to "
+            ", then click a link to go to  "
             code { "localhost:8080/contact" }
             "), the app renders the new route without reloading."
+            " "
+            "However, when we go to a route "
             em { "before" }
             " going to the index (go straight to "
             code { "localhost:8080/contact" }
             "), we are trying to access a static route from the server, but the only static route on our server is the index (because the Dioxus frontend is a Single Page Application) and it will fail unless we redirect all missing routes to the index."
         }
-        p { "This book is intended to get you up to speed with Dioxus Router. It is split" }
+        p {
+            "This book is intended to get you up to speed with Dioxus Router. It is split"
+            " "
+            "into two sections:"
+        }
         ol {
             li {
                 "The "
@@ -12471,6 +12506,8 @@ pub fn RouterIndex(section: RouterIndexSection) -> dioxus::prelude::Element {
                     "reference"
                 }
                 " section explains individual features in "
+                "depth. You can read it from start to finish, or you can read individual chapters "
+                "in whatever order you want."
             }
             li {
                 "If you prefer a learning-by-doing approach, you can check out the "
@@ -12483,11 +12520,15 @@ pub fn RouterIndex(section: RouterIndexSection) -> dioxus::prelude::Element {
                     }
                 }
                 ". It guides you through "
+                "creating a dioxus app, setting up the router, and using some of its "
+                "functionality."
             }
         }
         blockquote {
             p {
                 "Please note that this is not the only documentation for the Dioxus Router. You"
+                " "
+                "can also check out the "
                 Link { to: "https://docs.rs/dioxus-router/", "API Docs" }
                 "."
             }
@@ -12547,10 +12588,18 @@ pub fn RouterExampleIndex(section: RouterExampleIndexSection) -> dioxus::prelude
                 "Overview"
             }
         }
-        p { "In this guide, you'll learn to effectively use Dioxus Router whether you're" }
+        p {
+            "In this guide, you'll learn to effectively use Dioxus Router whether you're"
+            " "
+            "building a small todo app or the next FAANG company. We will create a small"
+            " "
+            "website with a blog, homepage, and more!"
+        }
         blockquote {
             p {
                 "To follow along with the router example, you'll need a working Dioxus app."
+                " "
+                "Check out the "
                 Link { to: "https://dioxuslabs.com/learn/0.4/getting_started", "Dioxus book" }
                 " to get started."
             }
@@ -12578,7 +12627,11 @@ pub fn RouterExampleIndex(section: RouterExampleIndexSection) -> dioxus::prelude
         }
         ul {
             li { "Create routes and render \"pages\"." }
-            li { "Utilize nested routes, create a navigation bar, and render content for a" }
+            li {
+                "Utilize nested routes, create a navigation bar, and render content for a"
+                " "
+                "set of routes."
+            }
             li { "Parse URL parameters to dynamically display content." }
             li { "Redirect visitors to different routes." }
         }
@@ -12586,7 +12639,15 @@ pub fn RouterExampleIndex(section: RouterExampleIndexSection) -> dioxus::prelude
             p {
                 strong { "Disclaimer" }
             }
-            p { "The example will only display the features of Dioxus Router. It will not" }
+            p {
+                "The example will only display the features of Dioxus Router. It will not"
+                " "
+                "include any actual functionality. To keep things simple we will only be using"
+                " "
+                "a single file, this is not the recommended way of doing things with a real"
+                " "
+                "application."
+            }
         }
         p {
             "You can find the complete application in the "
@@ -12664,7 +12725,11 @@ pub fn RouterExampleFirstRoute(
                 "Creating Our First Route"
             }
         }
-        p { "In this chapter, we will start utilizing Dioxus Router and add a homepage and a" }
+        p {
+            "In this chapter, we will start utilizing Dioxus Router and add a homepage and a"
+            " "
+            "404 page to our project."
+        }
         h2 { id: "fundamentals",
             Link {
                 to: BookRoute::RouterExampleFirstRoute {
@@ -12676,10 +12741,14 @@ pub fn RouterExampleFirstRoute(
         }
         p {
             "The core of the Dioxus Router is the "
+            "[ "
             code { "Routable" }
             "]"
+            " macro and the "
+            "[ "
             code { "Router" }
             "]"
+            " component."
         }
         p { "Routable is a trait for anything that can:" }
         ul {
@@ -12703,18 +12772,28 @@ pub fn RouterExampleFirstRoute(
                 "Creating Routes"
             }
         }
-        p { "We want to use Dioxus Router to separate our application into different \"pages\"." }
+        p {
+            "We want to use Dioxus Router to separate our application into different \"pages\"."
+            " "
+            "Dioxus Router will then determine which page to render based on the URL path."
+        }
         p {
             "To start using Dioxus Router, we need to use the "
+            "[ "
             code { "Routable" }
             "]"
+            " macro."
         }
         p {
             "The "
+            "[ "
             code { "Routable" }
             "]"
+            " macro takes an enum with all of the possible routes in our application. Each variant of the enum represents a route and must be annotated with the "
+            "[ "
             code { "route(path)" }
             "]"
+            " attribute."
         }
         CodeBlock {
             contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">#![allow(non_snake_case)]\n</span><span style=\"color:#f92672;\">use </span><span style=\"color:#f8f8f2;\">dioxus::prelude::</span><span style=\"color:#f92672;\">*</span><span style=\"color:#f8f8f2;\">;\n</span><span style=\"color:#f92672;\">use </span><span style=\"color:#f8f8f2;\">dioxus_router::prelude::</span><span style=\"color:#f92672;\">*</span><span style=\"color:#f8f8f2;\">;\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#8c8c8c;\">/// An enum of all of the possible routes in the app.\n</span><span style=\"color:#f8f8f2;\">#[derive(Routable, Clone)]\n</span><span style=\"font-style:italic;color:#66d9ef;\">enum </span><span style=\"color:#f8f8f2;\">Route {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#8c8c8c;\">// The home page is at the / route\n</span><span style=\"color:#f8f8f2;\">    #[route(</span><span style=\"color:#ffee99;\">&quot;/&quot;</span><span style=\"color:#f8f8f2;\">)]\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#8c8c8c;\">// If the name of the component and variant are the same you can omit the component and props name\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#8c8c8c;\">// If they are different you can specify them like this:\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#8c8c8c;\">// #[route(&quot;/&quot;, ComponentName, PropsName)]\n</span><span style=\"color:#f8f8f2;\">    Home {{}},\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
@@ -12722,20 +12801,26 @@ pub fn RouterExampleFirstRoute(
         }
         p {
             "All other hooks and components the router provides can only be used as a descendant of a "
+            "[ "
             code { "Router" }
             "]"
+            " component."
         }
         p {
             "If you head to your application's browser tab, you should now see the text"
             code { "Welcome to Dioxus Blog!" }
-            " when on the root URL ("
+            " when on the root URL ( "
             code { "http://localhost:8080/" }
             "). If"
+            " "
+            "you enter a different path for the URL, nothing should be displayed."
         }
         p {
             "This is because we told Dioxus Router to render the  "
             code { "Home" }
             " component only when"
+            " "
+            "the URL path is  "
             code { "/" }
             "."
         }
@@ -12765,7 +12850,11 @@ pub fn RouterExampleFirstRoute(
             contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">#[derive(Routable, Clone)]\n</span><span style=\"font-style:italic;color:#66d9ef;\">enum </span><span style=\"color:#f8f8f2;\">Route {{\n</span><span style=\"color:#f8f8f2;\">    #[route(</span><span style=\"color:#ffee99;\">&quot;/&quot;</span><span style=\"color:#f8f8f2;\">)]\n</span><span style=\"color:#f8f8f2;\">    Home {{}},\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#8c8c8c;\">// PageNotFound is a catch all route that will match any route and placing the matched segments in the route field\n</span><span style=\"color:#f8f8f2;\">    #[route(</span><span style=\"color:#ffee99;\">&quot;/:..route&quot;</span><span style=\"color:#f8f8f2;\">)]\n</span><span style=\"color:#f8f8f2;\">    PageNotFound {{ route: Vec&lt;String&gt; }},\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
             name: "catch_all.rs".to_string(),
         }
-        p { "Now when you go to a route that doesn't exist, you should see the page not found" }
+        p {
+            "Now when you go to a route that doesn't exist, you should see the page not found"
+            " "
+            "text."
+        }
         h2 { id: "conclusion",
             Link {
                 to: BookRoute::RouterExampleFirstRoute {
@@ -12777,8 +12866,14 @@ pub fn RouterExampleFirstRoute(
         }
         p {
             "In this chapter, we learned how to create a route and tell Dioxus Router what"
+            " "
+            "component to render when the URL path is  "
             code { "/" }
             ". We also created a 404 page to"
+            " "
+            "handle when a route doesn't exist. Next, we'll create the blog portion of our"
+            " "
+            "site. We will utilize nested routes and URL parameters."
         }
     }
 }
@@ -12843,7 +12938,11 @@ pub fn RouterExampleBuildingANest(
                 "Building a Nest"
             }
         }
-        p { "In this chapter, we will begin to build the blog portion of our site which will" }
+        p {
+            "In this chapter, we will begin to build the blog portion of our site which will"
+            " "
+            "include links, nested routes, and route parameters."
+        }
         h2 { id: "site-navigation",
             Link {
                 to: BookRoute::RouterExampleBuildingANest {
@@ -12853,11 +12952,17 @@ pub fn RouterExampleBuildingANest(
                 "Site Navigation"
             }
         }
-        p { "Our site visitors won't know all the available pages and blogs on our site so we" }
+        p {
+            "Our site visitors won't know all the available pages and blogs on our site so we"
+            " "
+            "should provide a navigation bar for them. Our navbar will be a list of links going between our pages."
+        }
         p {
             "We want our navbar component to be rendered on several different pages on our site. Instead of duplicating the code, we can create a component that wraps all children routes. This is called a layout component. To tell the router where to render the child routes, we use the "
+            "[ "
             code { "Outlet" }
             "]"
+            " component."
         }
         p {
             "Let's create a new  "
@@ -12906,8 +13011,10 @@ pub fn RouterExampleBuildingANest(
             "Unlike a regular  "
             code { "<a>" }
             " tag, we can pass in our Route enum as the target. Because we annotated our routes with the "
+            "[ "
             code { "route(path)" }
             "]"
+            " attribute, the "
             Link { to: "https://docs.rs/dioxus-router/latest/dioxus_router/components/fn.Link.html",
                 code { "Link" }
             }
@@ -12925,6 +13032,8 @@ pub fn RouterExampleBuildingANest(
                     code { "Link" }
                 }
                 " component only works for links within our"
+                " "
+                "application. To learn more about navigation targets see"
                 Link {
                     to: BookRoute::RouterExampleNavigationTargets {
                         section: RouterExampleNavigationTargetsSection::Empty,
@@ -12934,7 +13043,11 @@ pub fn RouterExampleBuildingANest(
                 "."
             }
         }
-        p { "Now you should see a list of links near the top of your page. Click on one and" }
+        p {
+            "Now you should see a list of links near the top of your page. Click on one and"
+            " "
+            "you should seamlessly travel between pages."
+        }
         h2 { id: "url-parameters-and-nested-routes",
             Link {
                 to: BookRoute::RouterExampleBuildingANest {
@@ -12948,15 +13061,29 @@ pub fn RouterExampleBuildingANest(
             "Many websites such as GitHub put parameters in their URL. For example,"
             code { "https://github.com/DioxusLabs" }
             " utilizes the text after the domain to"
+            " "
+            "dynamically search and display content about an organization."
         }
-        p { "We want to store our blogs in a database and load them as needed. We also" }
-        p { "We could utilize a search page that loads a blog when clicked but then our users" }
+        p {
+            "We want to store our blogs in a database and load them as needed. We also"
+            " "
+            "want our users to be able to send people a link to a specific blog post."
+            " "
+            "Instead of listing all of the blog titles at compile time, we can make a dynamic route."
+        }
+        p {
+            "We could utilize a search page that loads a blog when clicked but then our users"
+            " "
+            "won't be able to share our blogs easily. This is where URL parameters come in."
+        }
         p {
             "The path to our blog will look like  "
             code { "/blog/myBlogPage" }
             ",  "
             code { "myBlogPage" }
             " being the"
+            " "
+            "URL parameter."
         }
         p {
             "First, let's create a layout component (similar to the navbar) that wraps the blog content. This allows us to add a heading that tells the user they are on the blog."
@@ -12965,7 +13092,11 @@ pub fn RouterExampleBuildingANest(
             contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">#[component]\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">Blog</span><span style=\"color:#f8f8f2;\">(</span><span style=\"font-style:italic;color:#fd971f;\">cx</span><span style=\"color:#f8f8f2;\">: Scope) -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    render! {{\n</span><span style=\"color:#f8f8f2;\">        h1 {{ </span><span style=\"color:#ffee99;\">&quot;Blog&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">        Outlet::&lt;Route&gt; {{}}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
             name: "dynamic_route.rs".to_string(),
         }
-        p { "Now we'll create another index component, that'll be displayed when no blog post" }
+        p {
+            "Now we'll create another index component, that'll be displayed when no blog post"
+            " "
+            "is selected:"
+        }
         CodeBlock {
             contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">#[component]\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">BlogList</span><span style=\"color:#f8f8f2;\">(</span><span style=\"font-style:italic;color:#fd971f;\">cx</span><span style=\"color:#f8f8f2;\">: Scope) -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    render! {{\n</span><span style=\"color:#f8f8f2;\">        h2 {{ </span><span style=\"color:#ffee99;\">&quot;Choose a post&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">        ul {{\n</span><span style=\"color:#f8f8f2;\">            li {{\n</span><span style=\"color:#f8f8f2;\">                Link {{\n</span><span style=\"color:#f8f8f2;\">                    to: Route::BlogPost {{ name: </span><span style=\"color:#ffee99;\">&quot;Blog post 1&quot;</span><span style=\"color:#f8f8f2;\">.</span><span style=\"color:#66d9ef;\">into</span><span style=\"color:#f8f8f2;\">() }},\n</span><span style=\"color:#f8f8f2;\">                    </span><span style=\"color:#ffee99;\">&quot;Read the first blog post&quot;\n</span><span style=\"color:#f8f8f2;\">                }}\n</span><span style=\"color:#f8f8f2;\">            }}\n</span><span style=\"color:#f8f8f2;\">            li {{\n</span><span style=\"color:#f8f8f2;\">                Link {{\n</span><span style=\"color:#f8f8f2;\">                    to: Route::BlogPost {{ name: </span><span style=\"color:#ffee99;\">&quot;Blog post 2&quot;</span><span style=\"color:#f8f8f2;\">.</span><span style=\"color:#66d9ef;\">into</span><span style=\"color:#f8f8f2;\">() }},\n</span><span style=\"color:#f8f8f2;\">                    </span><span style=\"color:#ffee99;\">&quot;Read the second blog post&quot;\n</span><span style=\"color:#f8f8f2;\">                }}\n</span><span style=\"color:#f8f8f2;\">            }}\n</span><span style=\"color:#f8f8f2;\">        }}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
             name: "dynamic_route.rs".to_string(),
@@ -12996,7 +13127,15 @@ pub fn RouterExampleBuildingANest(
                 "Conclusion"
             }
         }
-        p { "In this chapter, we utilized Dioxus Router's Link, and Route Parameter" }
+        p {
+            "In this chapter, we utilized Dioxus Router's Link, and Route Parameter"
+            " "
+            "functionality to build the blog portion of our application. In the next chapter,"
+            " "
+            "we will go over how navigation targets (like the one we passed to our links)"
+            " "
+            "work."
+        }
     }
 }
 #[derive(
@@ -13059,6 +13198,8 @@ pub fn RouterExampleNavigationTargets(
         }
         p {
             "In the previous chapter, we learned how to create links to pages within our app."
+            " "
+            "We told them where to go using the  "
             code { "target" }
             " property. This property takes something that can be converted to a "
             Link { to: "https://docs.rs/dioxus-router/latest/dioxus_router/navigation/enum.NavigationTarget.html",
@@ -13083,6 +13224,10 @@ pub fn RouterExampleNavigationTargets(
             " is similar to the "
             code { "href" }
             " of an HTML anchor element. It"
+            " "
+            "tells the router where to navigate to. The Dioxus Router knows two kinds of"
+            " "
+            "navigation targets:"
         }
         ul {
             li {
@@ -13090,6 +13235,8 @@ pub fn RouterExampleNavigationTargets(
                     code { "Internal" }
                 }
                 ": We used internal links in the previous chapter. It's a link to a page within our"
+                " "
+                "app represented as a Route enum."
             }
             li {
                 Link { to: "https://docs.rs/dioxus-router/latest/dioxus_router/navigation/enum.NavigationTarget.html#variant.External",
@@ -13098,6 +13245,8 @@ pub fn RouterExampleNavigationTargets(
                 ": This works exactly like an HTML anchors' "
                 code { "href" }
                 ". Don't use this for in-app"
+                " "
+                "navigation as it will trigger a page reload by the browser."
             }
         }
         h2 { id: "external-navigation",
@@ -13188,15 +13337,27 @@ pub fn RouterExampleRedirectionPerfection(
                 "Creating Redirects"
             }
         }
-        p { "A redirect is very simple. When dioxus encounters a redirect while finding out" }
+        p {
+            "A redirect is very simple. When dioxus encounters a redirect while finding out"
+            " "
+            "what components to render, it will redirect the user to the target of the"
+            " "
+            "redirect."
+        }
         p {
             "As a simple example, let's say you want user to still land on your blog, even"
+            " "
+            "if they used the path  "
             code { "/myblog" }
-            " or "
+            " or  "
             code { "/myblog/:name" }
             "."
         }
-        p { "Redirects are special attributes in the router enum that accept a route and a closure" }
+        p {
+            "Redirects are special attributes in the router enum that accept a route and a closure"
+            " "
+            "with the route parameters. The closure should return a route to redirect to."
+        }
         p { "Let's add a redirect to our router enum:" }
         CodeBlock {
             contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">#[derive(Routable, Clone)]\n</span><span style=\"color:#f8f8f2;\">#[rustfmt::skip]\n</span><span style=\"font-style:italic;color:#66d9ef;\">enum </span><span style=\"color:#f8f8f2;\">Route {{\n</span><span style=\"color:#f8f8f2;\">    #[layout(NavBar)]\n</span><span style=\"color:#f8f8f2;\">        #[route(</span><span style=\"color:#ffee99;\">&quot;/&quot;</span><span style=\"color:#f8f8f2;\">)]\n</span><span style=\"color:#f8f8f2;\">        Home {{}},\n</span><span style=\"color:#f8f8f2;\">        #[nest(</span><span style=\"color:#ffee99;\">&quot;/blog&quot;</span><span style=\"color:#f8f8f2;\">)]\n</span><span style=\"color:#f8f8f2;\">            #[layout(Blog)]\n</span><span style=\"color:#f8f8f2;\">                #[route(</span><span style=\"color:#ffee99;\">&quot;/&quot;</span><span style=\"color:#f8f8f2;\">)]\n</span><span style=\"color:#f8f8f2;\">                BlogList {{}},\n</span><span style=\"color:#f8f8f2;\">                #[route(</span><span style=\"color:#ffee99;\">&quot;/post/:name&quot;</span><span style=\"color:#f8f8f2;\">)]\n</span><span style=\"color:#f8f8f2;\">                BlogPost {{ name: </span><span style=\"font-style:italic;color:#66d9ef;\">String </span><span style=\"color:#f8f8f2;\">}},\n</span><span style=\"color:#f8f8f2;\">            #[end_layout]\n</span><span style=\"color:#f8f8f2;\">        #[end_nest]\n</span><span style=\"color:#f8f8f2;\">    #[end_layout]\n</span><span style=\"color:#f8f8f2;\">    #[nest(</span><span style=\"color:#ffee99;\">&quot;/myblog&quot;</span><span style=\"color:#f8f8f2;\">)]\n</span><span style=\"color:#f8f8f2;\">        #[redirect(</span><span style=\"color:#ffee99;\">&quot;/&quot;</span><span style=\"color:#f8f8f2;\">, || Route::BlogList {{}})]\n</span><span style=\"color:#f8f8f2;\">        #[redirect(</span><span style=\"color:#ffee99;\">&quot;/:name&quot;</span><span style=\"color:#f8f8f2;\">, |name: String| Route::BlogPost {{ name }})]\n</span><span style=\"color:#f8f8f2;\">    #[end_nest]\n</span><span style=\"color:#f8f8f2;\">    #[route(</span><span style=\"color:#ffee99;\">&quot;/:..route&quot;</span><span style=\"color:#f8f8f2;\">)]\n</span><span style=\"color:#f8f8f2;\">    PageNotFound {{\n</span><span style=\"color:#f8f8f2;\">        route: Vec&lt;String&gt;,\n</span><span style=\"color:#f8f8f2;\">    }},\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
@@ -13214,10 +13375,16 @@ pub fn RouterExampleRedirectionPerfection(
         }
         p {
             "Well done! You've completed the Dioxus Router guide. You've built a small"
+            " "
+            "application and learned about the many things you can do with Dioxus Router."
+            " "
+            "To continue your journey, you attempt a challenge listed below, look at the "
             Link { to: "https://github.com/DioxusLabs/dioxus/tree/master/packages/router/examples",
                 "router examples"
             }
             ", or"
+            " "
+            "can check out the "
             Link { to: "https://docs.rs/dioxus-router/", "API reference" }
             "."
         }
@@ -13346,7 +13513,13 @@ pub fn RouterReferenceIndex(section: RouterReferenceIndexSection) -> dioxus::pre
                 "Adding the router to your application"
             }
         }
-        p { "In this chapter, we will learn how to add the router to our app. By itself, this" }
+        p {
+            "In this chapter, we will learn how to add the router to our app. By itself, this"
+            " "
+            "is not very useful. However, it is a prerequisite for all the functionality"
+            " "
+            "described in the other chapters."
+        }
         blockquote {
             p {
                 "Make sure you added the  "
@@ -13361,7 +13534,11 @@ pub fn RouterReferenceIndex(section: RouterReferenceIndexSection) -> dioxus::pre
                 "."
             }
         }
-        p { "In most cases, we want to add the router to the root component of our app. This" }
+        p {
+            "In most cases, we want to add the router to the root component of our app. This"
+            " "
+            "way, we can ensure that we have access to all its functionality everywhere."
+        }
         p { "First, we define the router with the router macro:" }
         CodeBlock {
             contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">#![allow(non_snake_case)]\n</span><span style=\"color:#f92672;\">use </span><span style=\"color:#f8f8f2;\">dioxus::prelude::</span><span style=\"color:#f92672;\">*</span><span style=\"color:#f8f8f2;\">;\n</span><span style=\"color:#f92672;\">use </span><span style=\"color:#f8f8f2;\">dioxus_router::prelude::</span><span style=\"color:#f92672;\">*</span><span style=\"color:#f8f8f2;\">;\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#8c8c8c;\">/// An enum of all of the possible routes in the app.\n</span><span style=\"color:#f8f8f2;\">#[derive(Routable, Clone)]\n</span><span style=\"font-style:italic;color:#66d9ef;\">enum </span><span style=\"color:#f8f8f2;\">Route {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#8c8c8c;\">// The home page is at the / route\n</span><span style=\"color:#f8f8f2;\">    #[route(</span><span style=\"color:#ffee99;\">&quot;/&quot;</span><span style=\"color:#f8f8f2;\">)]\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#8c8c8c;\">// If the name of the component and variant are the same you can omit the component and props name\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#8c8c8c;\">// If they are different you can specify them like this:\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#8c8c8c;\">// #[route(&quot;/&quot;, ComponentName, PropsName)]\n</span><span style=\"color:#f8f8f2;\">    Home {{}},\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
@@ -13369,8 +13546,10 @@ pub fn RouterReferenceIndex(section: RouterReferenceIndexSection) -> dioxus::pre
         }
         p {
             "Then we render the router with the "
+            "[ "
             code { "Router" }
             "]"
+            " component."
         }
         CodeBlock {
             contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">App</span><span style=\"color:#f8f8f2;\">(</span><span style=\"font-style:italic;color:#fd971f;\">cx</span><span style=\"color:#f8f8f2;\">: Scope) -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    render! {{\n</span><span style=\"color:#f8f8f2;\">        Router::&lt;Route&gt; {{}}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
@@ -13447,8 +13626,10 @@ pub fn RouterReferenceRoutesIndex(
         }
         p {
             "When creating a "
+            "[ "
             code { "Routable" }
             "]"
+            " enum, we can define routes for our application using the  "
             code { "route(\"path\")" }
             " attribute."
         }
@@ -13549,6 +13730,10 @@ pub fn RouterReferenceRoutesIndex(
             " where  "
             code { "name" }
             " is"
+            " "
+            "the name of the field in the route variant. If the segment is parsed"
+            " "
+            "successfully then the route matches, otherwise the matching continues."
         }
         p {
             "The segment can be of any type that implements  "
@@ -13695,7 +13880,13 @@ pub fn RouterReferenceRoutesNested(
                 "Nested Routes"
             }
         }
-        p { "When developing bigger applications we often want to nest routes within each" }
+        p {
+            "When developing bigger applications we often want to nest routes within each"
+            " "
+            "other. As an example, we might want to organize a settings menu using this"
+            " "
+            "pattern:"
+        }
         CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">└ Settings\n</span><span style=\"color:#f8f8f2;\">  ├ General Settings (displayed when opening the settings)\n</span><span style=\"color:#f8f8f2;\">  ├ Change Password\n</span><span style=\"color:#f8f8f2;\">  └ Privacy Settings</span></pre>\n" }
         p { "We might want to map this structure to these paths and components:" }
         CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f92672;\">/</span><span style=\"color:#f8f8f2;\">settings\t\t  -&gt; Settings {{ GeneralSettings }}\n</span><span style=\"color:#f92672;\">/</span><span style=\"color:#f8f8f2;\">settings</span><span style=\"color:#f92672;\">/</span><span style=\"color:#f8f8f2;\">password -&gt; Settings {{ PWSettings }}\n</span><span style=\"color:#f92672;\">/</span><span style=\"color:#f8f8f2;\">settings</span><span style=\"color:#f92672;\">/</span><span style=\"color:#f8f8f2;\">privacy  -&gt; Settings {{ PrivacySettings }}</span></pre>\n" }
@@ -13811,8 +14002,14 @@ pub fn RouterReferenceLayouts(section: RouterReferenceLayoutsSection) -> dioxus:
             "[ "
             code { "Outlet" }
             "]"
+            " tells the router where to render content in layouts. In the following example,"
+            " "
+            "the Index will be rendered within the "
+            "[ "
             code { "Outlet" }
             "]"
+            " "
+            "."
         }
         p {
             "This page is built with the Dioxus. It uses Layouts in several different places. Here is an outline of how layouts are used on the current page. Hover over different layouts to see what elements they are on the page."
@@ -13823,7 +14020,11 @@ pub fn RouterReferenceLayouts(section: RouterReferenceLayoutsSection) -> dioxus:
             contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">#[derive(Routable, Clone)]\n</span><span style=\"color:#f8f8f2;\">#[rustfmt::skip]\n</span><span style=\"font-style:italic;color:#66d9ef;\">enum </span><span style=\"color:#f8f8f2;\">Route {{\n</span><span style=\"color:#f8f8f2;\">    #[layout(Wrapper)]\n</span><span style=\"color:#f8f8f2;\">        #[route(</span><span style=\"color:#ffee99;\">&quot;/&quot;</span><span style=\"color:#f8f8f2;\">)]\n</span><span style=\"color:#f8f8f2;\">        Index {{}},\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">#[component]\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">Wrapper</span><span style=\"color:#f8f8f2;\">(</span><span style=\"font-style:italic;color:#fd971f;\">cx</span><span style=\"color:#f8f8f2;\">: Scope) -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    render! {{\n</span><span style=\"color:#f8f8f2;\">        header {{ </span><span style=\"color:#ffee99;\">&quot;header&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"color:#8c8c8c;\">// The index route will be rendered here\n</span><span style=\"color:#f8f8f2;\">        Outlet::&lt;Route&gt; {{ }}\n</span><span style=\"color:#f8f8f2;\">        footer {{ </span><span style=\"color:#ffee99;\">&quot;footer&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">#[component]\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">Index</span><span style=\"color:#f8f8f2;\">(</span><span style=\"font-style:italic;color:#fd971f;\">cx</span><span style=\"color:#f8f8f2;\">: Scope) -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    render! {{\n</span><span style=\"color:#f8f8f2;\">        h1 {{ </span><span style=\"color:#ffee99;\">&quot;Index&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
             name: "outlet.rs".to_string(),
         }
-        p { "The example above will output the following HTML (line breaks added for" }
+        p {
+            "The example above will output the following HTML (line breaks added for"
+            " "
+            "readability):"
+        }
         CodeBlock {
             contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f92672;\">&lt;</span><span style=\"color:#f8f8f2;\">header</span><span style=\"color:#f92672;\">&gt;</span><span style=\"color:#f8f8f2;\">header&lt;</span><span style=\"background-color:#f92672;color:#f8f8f0;\">/</span><span style=\"color:#f8f8f2;\">header</span><span style=\"color:#f92672;\">&gt;\n</span><span style=\"color:#f92672;\">&lt;</span><span style=\"color:#f8f8f2;\">h1</span><span style=\"color:#f92672;\">&gt;</span><span style=\"color:#f8f8f2;\">Index&lt;</span><span style=\"background-color:#f92672;color:#f8f8f0;\">/</span><span style=\"color:#f8f8f2;\">h1</span><span style=\"color:#f92672;\">&gt;\n</span><span style=\"color:#f92672;\">&lt;</span><span style=\"color:#f8f8f2;\">footer</span><span style=\"color:#f92672;\">&gt;</span><span style=\"color:#f8f8f2;\">footer&lt;</span><span style=\"background-color:#f92672;color:#f8f8f0;\">/</span><span style=\"color:#f8f8f2;\">footer</span><span style=\"color:#f92672;\">&gt;</span></pre>\n",
         }
@@ -13922,18 +14123,42 @@ pub fn RouterReferenceNavigationIndex(
                 "Links & Navigation"
             }
         }
-        p { "When we split our app into pages, we need to provide our users with a way to" }
+        p {
+            "When we split our app into pages, we need to provide our users with a way to"
+            " "
+            "navigate between them. On regular web pages, we'd use an anchor element for that,"
+            " "
+            "like this:"
+        }
         CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f92672;\">&lt;</span><span style=\"color:#f8f8f2;\">a href</span><span style=\"color:#f92672;\">=</span><span style=\"color:#ffee99;\">&quot;/other&quot;</span><span style=\"color:#f92672;\">&gt;</span><span style=\"color:#f8f8f2;\">Link to an other page&lt;</span><span style=\"background-color:#f92672;color:#f8f8f0;\">/</span><span style=\"color:#f8f8f2;\">a</span><span style=\"color:#f92672;\">&gt;</span></pre>\n" }
         p { "However, we cannot do that when using the router for three reasons:" }
         ol {
-            li { "Anchor tags make the browser load a new page from the server. This takes a" }
-            li { "Navigation using anchor tags only works when the app is running inside a" }
-            li { "Anchor tags cannot check if the target page exists. This means we cannot" }
+            li {
+                "Anchor tags make the browser load a new page from the server. This takes a"
+                " "
+                "lot of time, and it is much faster to let the router handle the navigation"
+                " "
+                "client-side."
+            }
+            li {
+                "Navigation using anchor tags only works when the app is running inside a"
+                " "
+                "browser. This means we cannot use them inside apps using Dioxus Desktop."
+            }
+            li {
+                "Anchor tags cannot check if the target page exists. This means we cannot"
+                " "
+                "prevent accidentally linking to non-existent pages."
+            }
         }
         p {
             "To solve these problems, the router provides us with a "
+            "[ "
             code { "Link" }
             "]"
+            " component we can"
+            " "
+            "use like this:"
         }
         CodeBlock {
             contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">#[component]\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">NavBar</span><span style=\"color:#f8f8f2;\">(</span><span style=\"font-style:italic;color:#fd971f;\">cx</span><span style=\"color:#f8f8f2;\">: Scope) -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    render! {{\n</span><span style=\"color:#f8f8f2;\">        nav {{\n</span><span style=\"color:#f8f8f2;\">            ul {{\n</span><span style=\"color:#f8f8f2;\">                li {{\n</span><span style=\"color:#f8f8f2;\">                    Link {{\n</span><span style=\"color:#f8f8f2;\">                        </span><span style=\"color:#8c8c8c;\">// The Link component will navigate to the route specified\n</span><span style=\"color:#f8f8f2;\">                        </span><span style=\"color:#8c8c8c;\">// in the target prop which is checked to exist at compile time\n</span><span style=\"color:#f8f8f2;\">                        to: Route::Home {{}},\n</span><span style=\"color:#f8f8f2;\">                        </span><span style=\"color:#ffee99;\">&quot;Home&quot;\n</span><span style=\"color:#f8f8f2;\">                    }}\n</span><span style=\"color:#f8f8f2;\">                }}\n</span><span style=\"color:#f8f8f2;\">            }}\n</span><span style=\"color:#f8f8f2;\">        }}\n</span><span style=\"color:#f8f8f2;\">        Outlet::&lt;Route&gt; {{}}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
@@ -13945,26 +14170,45 @@ pub fn RouterReferenceNavigationIndex(
             " in the example above is similar to the  "
             code { "href" }
             " of a regular anchor"
+            " "
+            "element. However, it tells the router more about what kind of navigation it"
+            " "
+            "should perform. It accepts something that can be converted into a"
+            " "
+            "[ "
             code { "NavigationTarget" }
             "]"
+            " "
+            ":"
         }
         ul {
             li {
                 "The example uses a Internal route. This is the most common type of navigation."
+                " "
+                "It tells the router to navigate to a page within our app by passing a variant of a "
+                "["
                 code { "Routable" }
                 "]"
+                " enum. This type of navigation can never fail if the link component is used inside a router component."
             }
             li {
                 "["
                 code { "External" }
                 "]"
+                " allows us to navigate to URLs outside of our app. This is useful"
+                " "
+                "for links to external websites. NavigationTarget::External accepts an URL to navigate to. This type of navigation can fail if the URL is invalid."
             }
         }
         blockquote {
             p {
                 "The "
+                "[ "
                 code { "Link" }
                 "]"
+                " accepts several props that modify its behavior. See the API docs"
+                " "
+                "for more details."
             }
         }
     }
@@ -14027,7 +14271,11 @@ pub fn RouterReferenceNavigationProgrammatic(
                 "Programmatic Navigation"
             }
         }
-        p { "Sometimes we want our application to navigate to another page without having the" }
+        p {
+            "Sometimes we want our application to navigate to another page without having the"
+            " "
+            "user click on a link. This is called programmatic navigation."
+        }
         h2 { id: "using-a-navigator",
             Link {
                 to: BookRoute::RouterReferenceNavigationProgrammatic {
@@ -14039,15 +14287,22 @@ pub fn RouterReferenceNavigationProgrammatic(
         }
         p {
             "We can get a navigator with the "
+            "[ "
             code { "use_navigator" }
             "]"
+            " hook. This hook returns a "
+            "[ "
             code { "Navigator" }
             "]"
+            " "
+            "."
         }
         p {
             "We can use the "
+            "[ "
             code { "Navigator" }
             "]"
+            " to trigger four different kinds of navigation:"
         }
         ul {
             li {
@@ -14059,6 +14314,8 @@ pub fn RouterReferenceNavigationProgrammatic(
                 " works like "
                 code { "push" }
                 ", except that it replaces the current history entry"
+                " "
+                "instead of adding a new one. This means the prior page cannot be restored with the browser's back button."
             }
             li {
                 code { "Go back" }
@@ -14075,20 +14332,35 @@ pub fn RouterReferenceNavigationProgrammatic(
         }
         p {
             "You might have noticed that, like "
+            "[ "
             code { "Link" }
             "]"
+            " "
+            ", the "
+            "[ "
             code { "Navigator" }
             "]"
+            " "
+            "s  "
             code { "push" }
             " and"
             code { "replace" }
             " functions take a "
+            "[ "
             code { "NavigationTarget" }
             "]"
+            " "
+            ". This means we can use either"
+            " "
+            "[ "
             code { "Internal" }
             "]"
+            " "
+            ", or "
+            "[ "
             code { "External" }
             "]"
+            " targets."
         }
         h2 { id: "external-navigation-targets",
             Link {
@@ -14101,12 +14373,23 @@ pub fn RouterReferenceNavigationProgrammatic(
         }
         p {
             "Unlike a "
+            "[ "
             code { "Link" }
             "]"
+            " "
+            ", the "
+            "[ "
             code { "Navigator" }
             "]"
+            " cannot rely on the browser (or webview) to"
+            " "
+            "handle navigation to external targets via a generated anchor element."
         }
-        p { "This means, that under certain conditions, navigation to external targets can" }
+        p {
+            "This means, that under certain conditions, navigation to external targets can"
+            " "
+            "fail."
+        }
     }
 }
 #[derive(
@@ -14165,30 +14448,49 @@ pub fn RouterReferenceHistoryProviders(
             "[ "
             code { "HistoryProvider" }
             "]"
+            " "
+            "s are used by the router to keep track of the navigation history"
+            " "
+            "and update any external state (e.g. the browser's URL)."
         }
         p {
             "The router provides two "
+            "[ "
             code { "HistoryProvider" }
             "]"
+            " "
+            "s, but you can also create your own."
+            " "
+            "The two default implementations are:"
         }
         ul {
             li {
                 "The "
+                "["
                 code { "MemoryHistory" }
                 "]"
+                " is a custom implementation that works in memory."
             }
             li {
                 "The "
+                "["
                 code { "WebHistory" }
                 "]"
+                " integrates with the browser's URL."
             }
         }
         p {
             "By default, the router uses the "
+            "[ "
             code { "MemoryHistory" }
             "]"
+            " "
+            ". It might be changed to use"
+            " "
+            "[ "
             code { "WebHistory" }
             "]"
+            " when the  "
             code { "web" }
             " feature is active, but that is not guaranteed."
         }
@@ -14251,8 +14553,20 @@ pub fn RouterReferenceHistoryButtons(
                 "History Buttons"
             }
         }
-        p { "Some platforms, like web browsers, provide users with an easy way to navigate" }
-        p { "However, native platforms usually don't provide such amenities, which means that" }
+        p {
+            "Some platforms, like web browsers, provide users with an easy way to navigate"
+            " "
+            "through an app's history. They have UI elements or integrate with the OS."
+        }
+        p {
+            "However, native platforms usually don't provide such amenities, which means that"
+            " "
+            "apps wanting users to have access to them, need to implement them. For this"
+            " "
+            "reason, the router comes with two components, which emulate a browser's back and"
+            " "
+            "forward buttons:"
+        }
         ul {
             li {
                 Link { to: "https://docs.rs/dioxus-router/latest/dioxus_router/components/fn.GoBackButton.html",
@@ -14281,17 +14595,42 @@ pub fn RouterReferenceHistoryButtons(
             contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">HistoryNavigation</span><span style=\"color:#f8f8f2;\">(</span><span style=\"font-style:italic;color:#fd971f;\">cx</span><span style=\"color:#f8f8f2;\">: Scope) -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    render! {{\n</span><span style=\"color:#f8f8f2;\">        GoBackButton {{\n</span><span style=\"color:#f8f8f2;\">            </span><span style=\"color:#ffee99;\">&quot;Back to the Past&quot;\n</span><span style=\"color:#f8f8f2;\">        }}\n</span><span style=\"color:#f8f8f2;\">        GoForwardButton {{\n</span><span style=\"color:#f8f8f2;\">            </span><span style=\"color:#ffee99;\">&quot;Back to the Future&quot; </span><span style=\"color:#8c8c8c;\">/* You see what I did there? 😉 */\n</span><span style=\"color:#f8f8f2;\">        }}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
             name: "history_buttons.rs".to_string(),
         }
-        p { "As you might know, browsers usually disable the back and forward buttons if" }
+        p {
+            "As you might know, browsers usually disable the back and forward buttons if"
+            " "
+            "there is no history to navigate to. The router's history buttons try to do that"
+            " "
+            "too, but depending on the "
+            "["
+            " "
+            "history provider"
+            " "
+            "]"
+            " that might not be possible."
+        }
         p {
             "Importantly, neither "
+            "[ "
             code { "WebHistory" }
             "]"
+            " supports that feature."
+            " "
+            "This is due to limitations of the browser History API."
         }
-        p { "However, in both cases, the router will just ignore button presses, if there is" }
+        p {
+            "However, in both cases, the router will just ignore button presses, if there is"
+            " "
+            "no history to navigate to."
+        }
         p {
             "Also, when using "
+            "[ "
             code { "WebHistory" }
             "]"
+            " "
+            ", the history buttons might"
+            " "
+            "navigate a user to a history entry outside your app."
         }
     }
 }
@@ -14367,10 +14706,14 @@ pub fn RouterReferenceStaticGeneration(
         }
         p {
             "The "
+            "[ "
             code { "Routable" }
             "]"
+            " trait includes an associated "
+            "[ "
             code { "SITE_MAP" }
             "]"
+            " constant that contains the map of all of the routes in the enum."
         }
         p {
             "By default, the sitemap is a tree of (static or dynamic) RouteTypes, but it can be flattened into a list of individual routes with the  "
@@ -14471,8 +14814,10 @@ pub fn RouterReferenceRoutingUpdateCallback(
         }
         p {
             "In some cases, we might want to run custom code when the current route changes. For this reason, the "
+            "[ "
             code { "RouterConfig" }
             "]"
+            " exposes an  "
             code { "on_update" }
             " field."
         }
@@ -14492,8 +14837,11 @@ pub fn RouterReferenceRoutingUpdateCallback(
         }
         p {
             "If the callback returns a "
+            "[ "
             code { "NavigationTarget" }
             "]"
+            " "
+            ", the router will replace the current location with the specified target. It will not call the  "
             code { "on_update" }
             " again."
         }
@@ -14677,7 +15025,7 @@ pub enum CookbookPublishingSection {
     WebPublishingWithGithubPages,
     DesktopCreatingAnInstaller,
     PreparingYourApplicationForBundling,
-    Install,
+    InstallDioxusCli,
     Building,
 }
 impl std::str::FromStr for CookbookPublishingSection {
@@ -14691,7 +15039,7 @@ impl std::str::FromStr for CookbookPublishingSection {
             "preparing-your-application-for-bundling" => {
                 Ok(Self::PreparingYourApplicationForBundling)
             }
-            "install" => Ok(Self::Install),
+            "install-dioxus-cli" => Ok(Self::InstallDioxusCli),
             "building" => Ok(Self::Building),
             _ => Err(CookbookPublishingSectionParseError),
         }
@@ -14707,7 +15055,7 @@ impl std::fmt::Display for CookbookPublishingSection {
             Self::PreparingYourApplicationForBundling => {
                 f.write_str("preparing-your-application-for-bundling")
             }
-            Self::Install => f.write_str("install"),
+            Self::InstallDioxusCli => f.write_str("install-dioxus-cli"),
             Self::Building => f.write_str("building"),
         }
     }
@@ -14717,7 +15065,7 @@ pub struct CookbookPublishingSectionParseError;
 impl std::fmt::Display for CookbookPublishingSectionParseError {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         f.write_str(
-            "Invalid section name. Expected one of CookbookPublishingSectionpublishing, web-publishing-with-github-pages, desktop-creating-an-installer, preparing-your-application-for-bundling, install, building",
+            "Invalid section name. Expected one of CookbookPublishingSectionpublishing, web-publishing-with-github-pages, desktop-creating-an-installer, preparing-your-application-for-bundling, install-dioxus-cli, building",
         )?;
         Ok(())
     }
@@ -14812,15 +15160,14 @@ pub fn CookbookPublishing(section: CookbookPublishingSection) -> dioxus::prelude
             ":"
         }
         CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">#![cfg_attr(feature </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;bundle&quot;</span><span style=\"color:#f8f8f2;\">, windows_subsystem </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;windows&quot;</span><span style=\"color:#f8f8f2;\">)]</span></pre>\n" }
-        h2 { id: "install",
+        h2 { id: "install-dioxus-cli",
             Link {
                 to: BookRoute::CookbookPublishing {
-                    section: CookbookPublishingSection::Install,
+                    section: CookbookPublishingSection::InstallDioxusCli,
                 },
                 class: "header",
-                "Install "
+                "Install dioxus CLI"
             }
-            code { "dioxus CLI" }
         }
         p {
             "The first thing we'll do is install the "
@@ -15433,6 +15780,7 @@ pub fn CookbookIntegrationsLogging(
             "The log crate provides a variety of simple  "
             code { "println" }
             "-like macros with varying levels of severity. "
+            "The available macros are as follows with the highest severity on the bottom:"
         }
         CodeBlock {
             contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">main</span><span style=\"color:#f8f8f2;\">() {{\n</span><span style=\"color:#f8f8f2;\">    log::trace</span><span style=\"color:#f92672;\">!</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#ffee99;\">&quot;trace&quot;</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"color:#f8f8f2;\">    log::debug</span><span style=\"color:#f92672;\">!</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#ffee99;\">&quot;debug&quot;</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"color:#f8f8f2;\">    log::info</span><span style=\"color:#f92672;\">!</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#ffee99;\">&quot;info&quot;</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"color:#f8f8f2;\">    log::warn</span><span style=\"color:#f92672;\">!</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#ffee99;\">&quot;warn&quot;</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"color:#f8f8f2;\">    log::error</span><span style=\"color:#f92672;\">!</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#ffee99;\">&quot;error&quot;</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
@@ -16410,9 +16758,15 @@ pub fn CookbookExamples(section: CookbookExamplesSection) -> dioxus::prelude::El
             "There's a "
             em { "lot" }
             " of these, so if you're having trouble implementing something, or you just want to see cool things"
+            " "
+            "that you can do with Dioxus, make sure to give these a look!"
         }
         p {
             "Each of the examples in the main repository also has a permalink attached, in case the main one doesn't work."
+            " "
+            "However, permalinks lead to an older \"archived\" version, so if you're reading this a long time in the future in a galaxy far, far away..."
+            " "
+            "The examples in the permalinks might not work."
         }
         ul {
             li {
@@ -16969,6 +17323,10 @@ pub fn CookbookCustomRenderer(section: CookbookCustomRendererSection) -> dioxus:
             "Whenever a  "
             code { "CreateElement" }
             " edit is generated during diffing, Dioxus increments its node counter and assigns that new element its current NodeCount. The RealDom is responsible for remembering this ID and pushing the correct node when id is used in a mutation. Dioxus reclaims the IDs of elements when removed. To stay in sync with Dioxus you can use a sparse Vec (Vec"
+            " "
+            "<"
+            " "
+            "Option"
             p { class: "inline-html-block", dangerous_inner_html: "<T>" }
             ">) with possibly unoccupied items. You can use the ids as indexes into the Vec for elements, and grow the Vec when an id does not exist."
         }
@@ -17165,7 +17523,11 @@ pub fn CookbookCustomRenderer(section: CookbookCustomRendererSection) -> dioxus:
                 "Example"
             }
         }
-        p { "Let's build a toy renderer with borders, size, and text color." }
+        p {
+            "Let's build a toy renderer with borders, size, and text color."
+            " "
+            "Before we start let's take a look at an example element we can render:"
+        }
         CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">cx.</span><span style=\"color:#66d9ef;\">render</span><span style=\"color:#f8f8f2;\">(rsx!{{\n</span><span style=\"color:#f8f8f2;\">\tdiv{{\n</span><span style=\"color:#f8f8f2;\">\t\tcolor: </span><span style=\"color:#ffee99;\">&quot;red&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">\t\tp{{\n</span><span style=\"color:#f8f8f2;\">\t\t\tborder: </span><span style=\"color:#ffee99;\">&quot;1px solid black&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">\t\t\t</span><span style=\"color:#ffee99;\">&quot;hello world&quot;\n</span><span style=\"color:#f8f8f2;\">\t\t}}\n</span><span style=\"color:#f8f8f2;\">\t}}\n</span><span style=\"color:#f8f8f2;\">}})</span></pre>\n" }
         p {
             "In this tree, the color depends on the parent's color. The layout depends on the children's layout, the current text, and the text size. The border depends on only the current node."
@@ -17341,19 +17703,33 @@ pub fn CookbookOptimizing(section: CookbookOptimizingSection) -> dioxus::prelude
         }
         p {
             "You might have noticed that Dioxus binaries are pretty big."
+            " "
+            "The WASM binary of a "
             Link { to: "https://github.com/tigerros/dioxus-todo-app", "TodoMVC app" }
             " weighs in at 2.36mb!"
+            " "
+            "Don't worry; we can get it down to a much more manageable 234kb."
+            " "
+            "This will get obviously lower over time."
+            " "
+            "For example, the new "
             Link { to: "https://github.com/DioxusLabs/dioxus/pull/1402", "event system" }
             " will reduce the binary size of a hello world app to less than 100kb (with unstable features)."
         }
         p { "We will also discuss ways to optimize your app for increased speed." }
         p {
             "However, certain optimizations will sacrifice speed for decreased binary size or the other way around."
+            " "
+            "That's what you need to figure out yourself. Does your app perform performance-intensive tasks, such as graphical processing or tons of DOM manipulations?"
+            " "
+            "You could go for increased speed. In most cases, though, decreased binary size is the better choice, especially because Dioxus WASM binaries are quite large."
         }
         p {
             "To test binary sizes, we will use "
             Link { to: "https://github.com/tigerros/dioxus-todo-app", "this" }
             " repository as a sample app."
+            " "
+            "The "
             code { "no-optimizations" }
             " package will serve as the base, which weighs 2.36mb as of right now."
         }
@@ -17381,6 +17757,8 @@ pub fn CookbookOptimizing(section: CookbookOptimizingSection) -> dioxus::prelude
         }
         p {
             "This is the best way to optimize. In fact, the 2.36mb figure at the start of the guide is with release mode."
+            " "
+            "In debug mode, it's actually a whopping 32mb! It also increases the speed of your app."
         }
         p {
             "Thankfully, no matter what tool you're using to build your app, it will probably have a  "
@@ -17433,6 +17811,8 @@ pub fn CookbookOptimizing(section: CookbookOptimizingSection) -> dioxus::prelude
             " to get the CLI options, but you should also view  "
             code { "upx-doc.html" }
             " for more detailed information."
+            " "
+            "It's included in the extracted directory."
         }
         p {
             "An example command might be:  "
@@ -17461,6 +17841,8 @@ pub fn CookbookOptimizing(section: CookbookOptimizingSection) -> dioxus::prelude
             "Other than the  "
             code { "--release" }
             " flag, this is the easiest way to optimize your projects, and also the most effective way,"
+            " "
+            "at least in terms of reducing binary size."
         }
         h3 { id: "stable",
             Link {
@@ -17473,6 +17855,8 @@ pub fn CookbookOptimizing(section: CookbookOptimizingSection) -> dioxus::prelude
         }
         p {
             "This configuration is 100% stable and decreases the binary size from 2.36mb to 310kb."
+            " "
+            "Add this to your  "
             code { ".cargo/config.toml" }
             ":"
         }
@@ -17528,6 +17912,10 @@ pub fn CookbookOptimizing(section: CookbookOptimizingSection) -> dioxus::prelude
         }
         p {
             "This configuration contains some unstable features, but it should work just fine."
+            " "
+            "It decreases the binary size from 310kb to 234kb."
+            " "
+            "Add this to your  "
             code { ".cargo/config.toml" }
             ":"
         }
@@ -17598,6 +17986,8 @@ pub fn CookbookOptimizing(section: CookbookOptimizingSection) -> dioxus::prelude
             " is a tool from the "
             Link { to: "https://github.com/WebAssembly/binaryen", "binaryen" }
             " library that optimizes your WASM files."
+            " "
+            "To use it, install a "
             Link { to: "https://github.com/WebAssembly/binaryen/releases", "binaryen release" }
             " and run this command from the package directory:"
         }
@@ -17625,6 +18015,12 @@ pub fn CookbookOptimizing(section: CookbookOptimizingSection) -> dioxus::prelude
             "It's important to minimize the number of dynamic parts in your  "
             code { "rsx" }
             ", like conditional rendering."
+            " "
+            "When Dioxus is rendering your component, it will skip parts that are the same as the last render."
+            " "
+            "That means that if you keep dynamic rendering to a minimum, your app will speed up, and quite a bit if it's not just hello world."
+            " "
+            "To see an example of this, check out "
             Link {
                 to: BookRoute::ReferenceDynamicRendering {
                     section: ReferenceDynamicRenderingSection::Empty,
@@ -17642,6 +18038,8 @@ pub fn CookbookOptimizing(section: CookbookOptimizingSection) -> dioxus::prelude
                 "Anti-patterns"
             }
             " for patterns that you should avoid."
+            " "
+            "Obviously, not all of them are just about performance, but some of them are."
         }
         h2 { id: "bundling-and-minifying-the-output-js-and-html",
             Link {
@@ -17941,7 +18339,11 @@ pub fn CliCreating(section: CliCreatingSection) -> dioxus::prelude::Element {
             ", or simply opening it in an IDE."
         }
         blockquote {
-            p { "Make sure the WASM target is installed before running the projects." }
+            p {
+                "Make sure the WASM target is installed before running the projects."
+                " "
+                "You can install the WASM target for rust using rustup:"
+            }
             CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">rustup target add wasm32</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">unknown</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">unknown</span></pre>\n" }
         }
         p {
@@ -18510,6 +18912,8 @@ pub fn ContributingIndex(section: ContributingIndexSection) -> dioxus::prelude::
         }
         p {
             "All pull requests (including those made by a team member) must be approved by at least one other team member."
+            " "
+            "Larger, more nuanced decisions about design, architecture, breaking changes, trade-offs, etc. are made by team consensus."
         }
         h2 { id: "before-you-contribute",
             Link {
@@ -18522,8 +18926,12 @@ pub fn ContributingIndex(section: ContributingIndexSection) -> dioxus::prelude::
         }
         p {
             "You might be surprised that a lot of checks fail when making your first PR."
+            " "
+            "That's why you should first run these commands before contributing, and it will save you "
             em { "lots" }
             " of time, because the"
+            " "
+            "GitHub CI is much slower at executing all of these than your PC."
         }
         ul {
             li {
@@ -18612,6 +19020,8 @@ pub fn ContributingIndex(section: ContributingIndexSection) -> dioxus::prelude::
         ul {
             li {
                 "Create a new or use an existing rust crate (ignore this step if you will use an existing rust crate):"
+                " "
+                "This is where we will be testing the features of the forked"
             }
         }
         CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">cargo new </span><span style=\"color:#f92672;\">--</span><span style=\"color:#f8f8f2;\">bin demo</span></pre>\n" }
@@ -19201,6 +19611,8 @@ pub fn ContributingWalkthroughReadme(
                 "They store the current and previous versions of the "
                 code { "VNode" }
                 " that was rendered, so they can be"
+                " "
+                "diffed to generate the set of mutations needed to re-render it."
             }
         }
         h3 { id: "the-initial-render",
@@ -19277,6 +19689,8 @@ pub fn ContributingWalkthroughReadme(
         ol {
             li {
                 "The renderer triggers an event: An event listener on this event may be called, which may mark a"
+                " "
+                "component as dirty, if processing the event resulted in any generated any mutations."
             }
             li {
                 "The renderer calls"
@@ -19284,6 +19698,8 @@ pub fn ContributingWalkthroughReadme(
                     code { "wait_for_work" }
                 }
                 ":"
+                " "
+                "This polls dioxus internal future queue. One of these futures may mark a component as dirty."
             }
         }
         p {

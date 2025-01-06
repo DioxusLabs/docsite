@@ -1539,6 +1539,9 @@ pub fn IntroducingDioxus(section: IntroducingDioxusSection) -> dioxus::prelude::
             " more performant than many of the other Rust DOM-based UI libraries (Yew/Percy) and is "
             em { "significantly" }
             " more performant than React - roughly competitive with InfernoJS. While not as performant as libraries like SolidJS/Sycamore, Dioxus imposes roughly a "
+            "~"
+            " "
+            "3% overhead over DOM patching, so it's "
             em { "plenty" }
             " fast."
         }
@@ -2044,6 +2047,9 @@ pub fn Release020(section: Release020Section) -> dioxus::prelude::Element {
         }
         p {
             "Under the hood, we have a new string interning engine to cache commonly used tags and values on the Rust "
+            "<"
+            " "
+            "-> JS boundary, resulting in significant performance improvements."
         }
         p { "Overall, Dioxus apps are even more snappy than before." }
         p {
@@ -2159,7 +2165,15 @@ pub fn Release020(section: Release020Section) -> dioxus::prelude::Element {
                 "Templates: desktop, web, web/hydration, Axum + SSR, and more "
                 Link { to: "https://github.com/mrxiaozhuox", "@mrxiaozhuox" }
             }
-            li { "Web apps ship with console" }
+            li {
+                "Web apps ship with console"
+                " "
+                "_error"
+                " "
+                "_panic"
+                " "
+                "_hook enabled, so you always get tracebacks"
+            }
             li { "Enhanced Hydration and server-side-rendering (recovery, validation)" }
             li { "Optional fields for component properties" }
             li {
@@ -2167,14 +2181,32 @@ pub fn Release020(section: Release020Section) -> dioxus::prelude::Element {
                 code { "EventHandler" }
                 " type"
             }
-            li { "Improved use" }
-            li { "Improved use" }
-            li { "New use" }
+            li {
+                "Improved use"
+                " "
+                "_state hook to be closer to react"
+            }
+            li {
+                "Improved use"
+                " "
+                "_ref hook to be easier to use in async contexts"
+            }
+            li {
+                "New use"
+                " "
+                "_coroutine hook for carefully controlling long-running async tasks"
+            }
             li { "Prevent Default attribute" }
             li { "Provide Default Context allows injection of global contexts to the top of the app" }
-            li { "push" }
+            li {
+                "push"
+                " "
+                "_future now has a spawn counterpart to be more consistent with rust"
+            }
             li {
                 "Add gap and gap"
+                " "
+                "_row attributes "
                 Link { to: "https://github.com/FruitieX", "@FruitieX" }
             }
             li { "File Drag n Drop support for Desktop" }
@@ -4663,6 +4695,9 @@ pub fn Release050(section: Release050Section) -> dioxus::prelude::Element {
         ol {
             li {
                 "Dioxus can bundle split code for events apps don’t use. For a hello world example, this shrinks the gzipped size "
+                "~"
+                " "
+                "25%!"
             }
         }
         p {
@@ -5215,20 +5250,20 @@ pub enum Release060Section {
     Empty,
     AboutThisRelease,
     InteractiveCommandLineTools,
-    AndroidAndIosSupportFor,
+    AndroidAndIosSupportForDxServe,
     CompletelyRevampedHotReloading,
     CompletelyRevampedAutocomplete,
-    InlineWasmStacktracesAnd,
+    InlineWasmStacktracesAndTracingIntegration,
     ToastsAndLoadingScreens,
     FullstackDesktopAndMobile,
-    StabilizingManganis,
+    StabilizingManganisAssetSystem,
     SuspenseAndHtmlStreamingForTheWeb,
     StaticSiteGenerationAndIsg,
-    DocumentElements,
+    DocumentElementsTitleLinkStylesheetAndMeta,
     QuestionMarkErrorHandling,
-    Synchronous,
-    TrackingSizeWith,
-    TrackingVisibilityWith,
+    SynchronousPreventDefault,
+    TrackingSizeWithOnresize,
+    TrackingVisibilityWithOnvisible,
     HybridWgpuOverlays,
     WebIosAndAndroidBundleSupport,
     JsonOutputForCiCli,
@@ -5247,22 +5282,26 @@ impl std::str::FromStr for Release060Section {
             "" => Ok(Self::Empty),
             "about-this-release" => Ok(Self::AboutThisRelease),
             "interactive-command-line-tools" => Ok(Self::InteractiveCommandLineTools),
-            "android-and-ios-support-for" => Ok(Self::AndroidAndIosSupportFor),
+            "android-and-ios-support-for-dx-serve" => Ok(Self::AndroidAndIosSupportForDxServe),
             "completely-revamped-hot-reloading" => Ok(Self::CompletelyRevampedHotReloading),
             "completely-revamped-autocomplete" => Ok(Self::CompletelyRevampedAutocomplete),
-            "inline-wasm-stacktraces-and" => Ok(Self::InlineWasmStacktracesAnd),
+            "inline-wasm-stacktraces-and-tracing-integration" => {
+                Ok(Self::InlineWasmStacktracesAndTracingIntegration)
+            }
             "toasts-and-loading-screens" => Ok(Self::ToastsAndLoadingScreens),
             "fullstack-desktop-and-mobile" => Ok(Self::FullstackDesktopAndMobile),
-            "stabilizing-manganis" => Ok(Self::StabilizingManganis),
+            "stabilizing-manganis-asset-system" => Ok(Self::StabilizingManganisAssetSystem),
             "suspense-and-html-streaming-for-the-web" => {
                 Ok(Self::SuspenseAndHtmlStreamingForTheWeb)
             }
             "static-site-generation-and-isg" => Ok(Self::StaticSiteGenerationAndIsg),
-            "document-elements" => Ok(Self::DocumentElements),
+            "document-elements-title---link---stylesheet--and-meta-" => {
+                Ok(Self::DocumentElementsTitleLinkStylesheetAndMeta)
+            }
             "question-mark-error-handling" => Ok(Self::QuestionMarkErrorHandling),
-            "synchronous" => Ok(Self::Synchronous),
-            "tracking-size-with" => Ok(Self::TrackingSizeWith),
-            "tracking-visibility-with" => Ok(Self::TrackingVisibilityWith),
+            "synchronous-prevent-default" => Ok(Self::SynchronousPreventDefault),
+            "tracking-size-with-onresize" => Ok(Self::TrackingSizeWithOnresize),
+            "tracking-visibility-with-onvisible" => Ok(Self::TrackingVisibilityWithOnvisible),
             "hybrid-wgpu-overlays" => Ok(Self::HybridWgpuOverlays),
             "web-ios-and-android-bundle-support" => Ok(Self::WebIosAndAndroidBundleSupport),
             "json-output-for-ci--cli" => Ok(Self::JsonOutputForCiCli),
@@ -5283,24 +5322,34 @@ impl std::fmt::Display for Release060Section {
             Self::Empty => f.write_str(""),
             Self::AboutThisRelease => f.write_str("about-this-release"),
             Self::InteractiveCommandLineTools => f.write_str("interactive-command-line-tools"),
-            Self::AndroidAndIosSupportFor => f.write_str("android-and-ios-support-for"),
+            Self::AndroidAndIosSupportForDxServe => {
+                f.write_str("android-and-ios-support-for-dx-serve")
+            }
             Self::CompletelyRevampedHotReloading => {
                 f.write_str("completely-revamped-hot-reloading")
             }
             Self::CompletelyRevampedAutocomplete => f.write_str("completely-revamped-autocomplete"),
-            Self::InlineWasmStacktracesAnd => f.write_str("inline-wasm-stacktraces-and"),
+            Self::InlineWasmStacktracesAndTracingIntegration => {
+                f.write_str("inline-wasm-stacktraces-and-tracing-integration")
+            }
             Self::ToastsAndLoadingScreens => f.write_str("toasts-and-loading-screens"),
             Self::FullstackDesktopAndMobile => f.write_str("fullstack-desktop-and-mobile"),
-            Self::StabilizingManganis => f.write_str("stabilizing-manganis"),
+            Self::StabilizingManganisAssetSystem => {
+                f.write_str("stabilizing-manganis-asset-system")
+            }
             Self::SuspenseAndHtmlStreamingForTheWeb => {
                 f.write_str("suspense-and-html-streaming-for-the-web")
             }
             Self::StaticSiteGenerationAndIsg => f.write_str("static-site-generation-and-isg"),
-            Self::DocumentElements => f.write_str("document-elements"),
+            Self::DocumentElementsTitleLinkStylesheetAndMeta => {
+                f.write_str("document-elements-title---link---stylesheet--and-meta-")
+            }
             Self::QuestionMarkErrorHandling => f.write_str("question-mark-error-handling"),
-            Self::Synchronous => f.write_str("synchronous"),
-            Self::TrackingSizeWith => f.write_str("tracking-size-with"),
-            Self::TrackingVisibilityWith => f.write_str("tracking-visibility-with"),
+            Self::SynchronousPreventDefault => f.write_str("synchronous-prevent-default"),
+            Self::TrackingSizeWithOnresize => f.write_str("tracking-size-with-onresize"),
+            Self::TrackingVisibilityWithOnvisible => {
+                f.write_str("tracking-visibility-with-onvisible")
+            }
             Self::HybridWgpuOverlays => f.write_str("hybrid-wgpu-overlays"),
             Self::WebIosAndAndroidBundleSupport => {
                 f.write_str("web-ios-and-android-bundle-support")
@@ -5325,7 +5374,7 @@ pub struct Release060SectionParseError;
 impl std::fmt::Display for Release060SectionParseError {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         f.write_str(
-            "Invalid section name. Expected one of Release060Sectionabout-this-release, interactive-command-line-tools, android-and-ios-support-for, completely-revamped-hot-reloading, completely-revamped-autocomplete, inline-wasm-stacktraces-and, toasts-and-loading-screens, fullstack-desktop-and-mobile, stabilizing-manganis, suspense-and-html-streaming-for-the-web, static-site-generation-and-isg, document-elements, question-mark-error-handling, synchronous, tracking-size-with, tracking-visibility-with, hybrid-wgpu-overlays, web-ios-and-android-bundle-support, json-output-for-ci--cli, new-starter-templates, nightly-docs-tutorials-and-new-guides, preview-of-in-place-binary-patching, smaller-changes, upgrading-from-05-to-06, conclusion, thanks-to-the-community",
+            "Invalid section name. Expected one of Release060Sectionabout-this-release, interactive-command-line-tools, android-and-ios-support-for-dx-serve, completely-revamped-hot-reloading, completely-revamped-autocomplete, inline-wasm-stacktraces-and-tracing-integration, toasts-and-loading-screens, fullstack-desktop-and-mobile, stabilizing-manganis-asset-system, suspense-and-html-streaming-for-the-web, static-site-generation-and-isg, document-elements-title---link---stylesheet--and-meta-, question-mark-error-handling, synchronous-prevent-default, tracking-size-with-onresize, tracking-visibility-with-onvisible, hybrid-wgpu-overlays, web-ios-and-android-bundle-support, json-output-for-ci--cli, new-starter-templates, nightly-docs-tutorials-and-new-guides, preview-of-in-place-binary-patching, smaller-changes, upgrading-from-05-to-06, conclusion, thanks-to-the-community",
         )?;
         Ok(())
     }
@@ -5348,7 +5397,7 @@ pub fn Release060(section: Release060Section) -> dioxus::prelude::Element {
                 strong {
                     Link {
                         to: BookRoute::Release060 {
-                            section: Release060Section::AndroidAndIosSupportFor,
+                            section: Release060Section::AndroidAndIosSupportForDxServe,
                         },
                         code { "dx serve" }
                         " for mobile"
@@ -5384,7 +5433,7 @@ pub fn Release060(section: Release060Section) -> dioxus::prelude::Element {
                 strong {
                     Link {
                         to: BookRoute::Release060 {
-                            section: Release060Section::InlineWasmStacktracesAnd,
+                            section: Release060Section::InlineWasmStacktracesAndTracingIntegration,
                         },
                         "Inline Stack Traces"
                     }
@@ -5433,7 +5482,7 @@ pub fn Release060(section: Release060Section) -> dioxus::prelude::Element {
                 strong {
                     Link {
                         to: BookRoute::Release060 {
-                            section: Release060Section::StabilizingManganis,
+                            section: Release060Section::StabilizingManganisAssetSystem,
                         },
                         code { "asset!" }
                         " Stabilization"
@@ -5485,7 +5534,7 @@ pub fn Release060(section: Release060Section) -> dioxus::prelude::Element {
                 strong {
                     Link {
                         to: BookRoute::Release060 {
-                            section: Release060Section::DocumentElements,
+                            section: Release060Section::DocumentElementsTitleLinkStylesheetAndMeta,
                         },
                         "Meta Elements"
                     }
@@ -5504,7 +5553,7 @@ pub fn Release060(section: Release060Section) -> dioxus::prelude::Element {
                 strong {
                     Link {
                         to: BookRoute::Release060 {
-                            section: Release060Section::Synchronous,
+                            section: Release060Section::SynchronousPreventDefault,
                         },
                         "Synchronous  "
                         code { "prevent_default" }
@@ -5516,7 +5565,7 @@ pub fn Release060(section: Release060Section) -> dioxus::prelude::Element {
                 strong {
                     Link {
                         to: BookRoute::Release060 {
-                            section: Release060Section::TrackingSizeWith,
+                            section: Release060Section::TrackingSizeWithOnresize,
                         },
                         code { "onresize" }
                         " Event Handler"
@@ -5528,7 +5577,7 @@ pub fn Release060(section: Release060Section) -> dioxus::prelude::Element {
                 strong {
                     Link {
                         to: BookRoute::Release060 {
-                            section: Release060Section::TrackingVisibilityWith,
+                            section: Release060Section::TrackingVisibilityWithOnvisible,
                         },
                         code { "onvisible" }
                         " Event Handler"
@@ -5694,15 +5743,14 @@ pub fn Release060(section: Release060Section) -> dioxus::prelude::Element {
             code { "cargo binstall dioxus-cli@0.6.0 --force" }
             "."
         }
-        h2 { id: "android-and-ios-support-for",
+        h2 { id: "android-and-ios-support-for-dx-serve",
             Link {
                 to: BookRoute::Release060 {
-                    section: Release060Section::AndroidAndIosSupportFor,
+                    section: Release060Section::AndroidAndIosSupportForDxServe,
                 },
                 class: "header",
-                "Android and iOS support for "
+                "Android and iOS support for dx serve"
             }
-            code { "dx serve" }
         }
         p {
             "With Dioxus 0.6, the dioxus CLI supports  "
@@ -5917,16 +5965,14 @@ pub fn Release060(section: Release060Section) -> dioxus::prelude::Element {
                 preload: "metadata",
             }
         }
-        h2 { id: "inline-wasm-stacktraces-and",
+        h2 { id: "inline-wasm-stacktraces-and-tracing-integration",
             Link {
                 to: BookRoute::Release060 {
-                    section: Release060Section::InlineWasmStacktracesAnd,
+                    section: Release060Section::InlineWasmStacktracesAndTracingIntegration,
                 },
                 class: "header",
-                "Inline WASM stacktraces and "
+                "Inline WASM stacktraces and tracing integration"
             }
-            code { "tracing" }
-            " integration"
         }
         p {
             "Along with the rewrite of the CLI, we shipped a  "
@@ -6030,16 +6076,14 @@ pub fn Release060(section: Release060Section) -> dioxus::prelude::Element {
             "By default, in development, we set the server function endpoint to be localhost, so in production you need to make sure to point the functions to your deployed server:"
         }
         CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">main</span><span style=\"color:#f8f8f2;\">() {{\n</span><span style=\"color:#f8f8f2;\">    #[cfg(feature </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;production&quot;</span><span style=\"color:#f8f8f2;\">)]\n</span><span style=\"color:#f8f8f2;\">    server_fn::client::set_server_url(</span><span style=\"color:#ffee99;\">&quot;app.endpoint.com&quot;</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">    dioxus::launch(app)\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n" }
-        h2 { id: "stabilizing-manganis",
+        h2 { id: "stabilizing-manganis-asset-system",
             Link {
                 to: BookRoute::Release060 {
-                    section: Release060Section::StabilizingManganis,
+                    section: Release060Section::StabilizingManganisAssetSystem,
                 },
                 class: "header",
-                "Stabilizing Manganis "
+                "Stabilizing Manganis asset!() system"
             }
-            code { "asset!()" }
-            " system"
         }
         p {
             "We introduced our new asset system,\u{a0}"
@@ -6196,21 +6240,14 @@ pub fn Release060(section: Release060Section) -> dioxus::prelude::Element {
         p {
             "We will likely be changing these APIs in future releases, but we are eager to let users experiment with these new features to simplify the existing static site setup."
         }
-        h2 { id: "document-elements",
+        h2 { id: "document-elements-title---link---stylesheet--and-meta-",
             Link {
                 to: BookRoute::Release060 {
-                    section: Release060Section::DocumentElements,
+                    section: Release060Section::DocumentElementsTitleLinkStylesheetAndMeta,
                 },
                 class: "header",
-                "Document Elements: "
+                "Document Elements: Title {{}} , Link {{}} , Stylesheet , and Meta {{}}"
             }
-            code { "Title {{}}" }
-            " , "
-            code { "Link {{}}" }
-            " , "
-            code { "Stylesheet" }
-            " , and "
-            code { "Meta {{}}" }
         }
         p {
             "To date, it’s been rather cumbersome to do seemingly simple JavaScript operations in Dioxus. Due to our cross-platform nature, we need to find solutions to simple problems in ways that work for web, desktop, and mobile with a single abstraction."
@@ -6313,15 +6350,14 @@ pub fn Release060(section: Release060Section) -> dioxus::prelude::Element {
         p {
             "This new syntax lets Suspense and HTML-streaming return errors while rendering that don’t bring down the entire page."
         }
-        h2 { id: "synchronous",
+        h2 { id: "synchronous-prevent-default",
             Link {
                 to: BookRoute::Release060 {
-                    section: Release060Section::Synchronous,
+                    section: Release060Section::SynchronousPreventDefault,
                 },
                 class: "header",
-                "Synchronous "
+                "Synchronous prevent_default"
             }
-            code { "prevent_default" }
         }
         p {
             "In addition to being able to access the native event type, Dioxus 0.6 also makes all event handling synchronous. Previously, all event handling in Dioxus had to occur outside the normal browser event handling flow to support platforms like  "
@@ -6347,15 +6383,14 @@ pub fn Release060(section: Release060Section) -> dioxus::prelude::Element {
             code { "Link {{}}" }
             " now exhibit behavior exactly aligned with their native counterparts, solving long-standing issues with Dioxus apps."
         }
-        h2 { id: "tracking-size-with",
+        h2 { id: "tracking-size-with-onresize",
             Link {
                 to: BookRoute::Release060 {
-                    section: Release060Section::TrackingSizeWith,
+                    section: Release060Section::TrackingSizeWithOnresize,
                 },
                 class: "header",
-                "Tracking size with "
+                "Tracking size with onresize"
             }
-            code { "onresize" }
         }
         p {
             "Thanks to the community, we now have two special handlers "
@@ -6372,15 +6407,14 @@ pub fn Release060(section: Release060Section) -> dioxus::prelude::Element {
         CodeBlock {
             contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">app</span><span style=\"color:#f8f8f2;\">() -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let </span><span style=\"color:#f92672;\">mut</span><span style=\"color:#f8f8f2;\"> items </span><span style=\"color:#f92672;\">= </span><span style=\"color:#66d9ef;\">use_signal</span><span style=\"color:#f8f8f2;\">(|| </span><span style=\"color:#ff80f4;\">100</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">    rsx! {{\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"color:#8c8c8c;\">// Adding a value will cause the `div` to be re-rendered with an extra div\n</span><span style=\"color:#f8f8f2;\">        button {{ onclick: </span><span style=\"color:#f92672;\">move |_|</span><span style=\"color:#f8f8f2;\"> items </span><span style=\"color:#f92672;\">+= </span><span style=\"color:#ff80f4;\">1</span><span style=\"color:#f8f8f2;\">, </span><span style=\"color:#ffee99;\">&quot;Add one&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">        div {{\n</span><span style=\"color:#f8f8f2;\">            </span><span style=\"color:#8c8c8c;\">// This will be called when the `div` is resized\n</span><span style=\"color:#f8f8f2;\">            onresize: </span><span style=\"color:#f92672;\">move |</span><span style=\"color:#f8f8f2;\">data</span><span style=\"color:#f92672;\">| </span><span style=\"color:#f8f8f2;\">{{\n</span><span style=\"color:#f8f8f2;\">                tracing::info</span><span style=\"color:#f92672;\">!</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#ffee99;\">&quot;resized to {{:#?}}&quot;</span><span style=\"color:#f8f8f2;\">, data.</span><span style=\"color:#66d9ef;\">get_border_box_size</span><span style=\"color:#f8f8f2;\">().</span><span style=\"color:#66d9ef;\">unwrap</span><span style=\"color:#f8f8f2;\">());\n</span><span style=\"color:#f8f8f2;\">            }},\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">            </span><span style=\"color:#f92672;\">for</span><span style=\"color:#f8f8f2;\"> x </span><span style=\"color:#f92672;\">in </span><span style=\"color:#ff80f4;\">0</span><span style=\"color:#f92672;\">..</span><span style=\"color:#66d9ef;\">items</span><span style=\"color:#f8f8f2;\">() {{\n</span><span style=\"color:#f8f8f2;\">                div {{ </span><span style=\"color:#ffee99;\">&quot;{{x}}&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">            }}\n</span><span style=\"color:#f8f8f2;\">        }}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
         }
-        h2 { id: "tracking-visibility-with",
+        h2 { id: "tracking-visibility-with-onvisible",
             Link {
                 to: BookRoute::Release060 {
-                    section: Release060Section::TrackingVisibilityWith,
+                    section: Release060Section::TrackingVisibilityWithOnvisible,
                 },
                 class: "header",
-                "Tracking visibility with "
+                "Tracking visibility with onvisible"
             }
-            code { "onvisible" }
         }
         p {
             "In addition to  "

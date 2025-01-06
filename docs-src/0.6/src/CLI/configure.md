@@ -217,9 +217,9 @@ Controls the bundling process for your application. Dioxus uses tauri-bundler un
    ```toml
    long_description = "This application provides various utility functions..."
    ```
-* **external_bin** - Paths to external sidecar binaries to include in the bundle. These bundles may be accessed at runtime with the name of the binary (not the absolute path)
+* **external_bin** - Paths to external sidecar binaries to include in the bundle. These bundles may be accessed at runtime with the name of the binary (not the absolute path). **the target triple will be automatically added to the binary name before it is added to the bundle.**
    ```toml
-   external_bin = ["path/to/external_binary"]
+   external_bin = ["path/to/external_binary"] # On macos, the binary at path/to/external_binary-aarch64-apple-darwin will be included in the bundle. It can be accessed at runtime with the name external_binary
    ```
 
 ### Bundle.macos

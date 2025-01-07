@@ -1575,6 +1575,7 @@ dependencies = [
  "axum",
  "chrono",
  "dioxus",
+ "dioxus-cli-config",
  "dioxus-desktop",
  "dioxus-liveview",
  "dioxus-material-icons",

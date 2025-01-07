@@ -12,6 +12,7 @@ dioxus = { version = "0.6.0", features = ["router"] }
 dioxus-web = { version = "0.6.0", features = ["hydrate"], optional = true }
 dioxus-ssr = { version = "0.6.0", optional = true }
 dioxus-desktop = { version = "0.6.0", optional = true }
+dioxus-cli-config = { version = "0.6.0", optional = true }
 dioxus-liveview = { version = "0.6.0", features = ["axum"], optional = true }
 
 dioxus-material-icons = { git = "https://github.com/jkelleyrtp/dioxus-material-icons", branch = "jk/git-rev" }
@@ -167,5 +168,6 @@ doc_test = [
     "http",
     "rand",
     "server",
-    "dioxus/fullstack"
+    "dioxus/fullstack",
+    "dioxus-cli-config",
 ]

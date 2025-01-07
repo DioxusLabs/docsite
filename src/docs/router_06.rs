@@ -3584,6 +3584,36 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                         level: 3usize,
                     },
                     ::use_mdbook::mdbook_shared::Section {
+                        title: "Web.https".to_string(),
+                        id: "web.https".to_string(),
+                        level: 3usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Web.pre_compress".to_string(),
+                        id: "web.pre_compress".to_string(),
+                        level: 3usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Web.wasm_opt".to_string(),
+                        id: "web.wasm_opt".to_string(),
+                        level: 3usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Bundle".to_string(),
+                        id: "bundle".to_string(),
+                        level: 3usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Bundle.macos".to_string(),
+                        id: "bundle.macos".to_string(),
+                        level: 3usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Bundle.windows".to_string(),
+                        id: "bundle.windows".to_string(),
+                        level: 3usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
                         title: "Config example".to_string(),
                         id: "config-example".to_string(),
                         level: 2usize,
@@ -4623,7 +4653,7 @@ pub fn Index() -> dioxus::prelude::Element {
         }
         p { "Dioxus has not reached a \"1.0\" release yet." }
         p {
-            "We are currently on version 0.6, which has stabilized a huge number of APIs are drastically improved the developer experience. In version 0.5 we overhauled the state management system and in 0.6 we overhauled tooling."
+            "We are currently on version 0.6, which has stabilized a huge number of APIs and drastically improved the developer experience. In version 0.5 we overhauled the state management system and in 0.6 we overhauled tooling."
         }
         p {
             "It's likely that the next few versions of Dioxus (0.7, 0.8) will bring breaking changes to your apps. Fortunately, these planned changes will only affect the syntax of specific APIs and not your apps at large. With every version update, we ship a rather comprehensive migration guide - eg "
@@ -5394,7 +5424,10 @@ pub fn GuideComponent() -> dioxus::prelude::Element {
             em { "Element" }
             ":"
         }
-        CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">DogApp</span><span style=\"color:#f8f8f2;\">(</span><span style=\"font-style:italic;color:#fd971f;\">props</span><span style=\"color:#f8f8f2;\">: DogAppProps) -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#8c8c8c;\">// ...\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n" }
+        CodeBlock {
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">DogApp</span><span style=\"color:#f8f8f2;\">(</span><span style=\"font-style:italic;color:#fd971f;\">props</span><span style=\"color:#f8f8f2;\">: DogAppProps) -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    todo!()\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
+            name: "guide_component.rs".to_string(),
+        }
         h2 { id: "component-properties",
             a { href: "#component-properties", class: "header", "Component Properties" }
         }
@@ -5409,13 +5442,19 @@ pub fn GuideComponent() -> dioxus::prelude::Element {
             code { "PartialEq" }
             ":"
         }
-        CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">#[derive(Props, PartialEq, Clone)]\n</span><span style=\"font-style:italic;color:#66d9ef;\">struct </span><span style=\"color:#f8f8f2;\">DogAppProps {{\n</span><span style=\"color:#f8f8f2;\">    breed: String\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n" }
+        CodeBlock {
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">#[derive(Props, PartialEq, Clone)]\n</span><span style=\"font-style:italic;color:#66d9ef;\">struct </span><span style=\"color:#f8f8f2;\">DogAppProps {{\n</span><span style=\"color:#f8f8f2;\">    breed: String,\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
+            name: "guide_component.rs".to_string(),
+        }
         p {
             "Dioxus provides the  "
             code { "#[component]" }
             " macro for simplifying how components are defined. This macro converts the parameters of the annotated function into a hidden accompanying struct."
         }
-        CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">#[component]\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">DogApp</span><span style=\"color:#f8f8f2;\">(</span><span style=\"font-style:italic;color:#fd971f;\">breed</span><span style=\"color:#f8f8f2;\">: String) -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#8c8c8c;\">// ...\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n" }
+        CodeBlock {
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">#[component]\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">DogApp</span><span style=\"color:#f8f8f2;\">(</span><span style=\"font-style:italic;color:#fd971f;\">breed</span><span style=\"color:#f8f8f2;\">: String) -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    todo!()\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
+            name: "guide_component.rs".to_string(),
+        }
         p {
             "When building apps, you'll frequently use the  "
             code { "#[component]" }
@@ -5436,7 +5475,10 @@ pub fn GuideComponent() -> dioxus::prelude::Element {
             code { ".clone()" }
             " of the component's props. This ensures you can't accidentally modify your props which can lead to hard-to-track issues with state management."
         }
-        CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">DogApp</span><span style=\"color:#f8f8f2;\">(</span><span style=\"font-style:italic;color:#fd971f;\">props</span><span style=\"color:#f8f8f2;\">: DogAppProps) -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    tracing::info</span><span style=\"color:#f92672;\">!</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#ffee99;\">&quot;Rendered with breed: {{}}&quot;</span><span style=\"color:#f8f8f2;\">, props.breed);\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#8c8c8c;\">// ...\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n" }
+        CodeBlock {
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">#[component]\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">DogApp</span><span style=\"color:#f8f8f2;\">(</span><span style=\"font-style:italic;color:#fd971f;\">breed</span><span style=\"color:#f8f8f2;\">: String) -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    tracing::info</span><span style=\"color:#f92672;\">!</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#ffee99;\">&quot;Rendered with breed: {{breed}}&quot;</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">    todo!()\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
+            name: "guide_component.rs".to_string(),
+        }
         p {
             "Dioxus provides types that make  "
             code { ".clone()" }
@@ -5470,7 +5512,10 @@ pub fn GuideComponent() -> dioxus::prelude::Element {
             code { "breed" }
             " property changes on the DogApp component, Dioxus will call the DogApp function a second time and compare the previous Element against the new Element."
         }
-        CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">#[component]\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">DogApp</span><span style=\"color:#f8f8f2;\">(</span><span style=\"font-style:italic;color:#fd971f;\">breed</span><span style=\"color:#f8f8f2;\">: String) -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">\trsx! {{\n</span><span style=\"color:#f8f8f2;\">\t\t</span><span style=\"color:#ffee99;\">&quot;Breed: {{breed}}&quot;\n</span><span style=\"color:#f8f8f2;\">\t}}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n" }
+        CodeBlock {
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">#[component]\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">DogApp</span><span style=\"color:#f8f8f2;\">(</span><span style=\"font-style:italic;color:#fd971f;\">breed</span><span style=\"color:#f8f8f2;\">: String) -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    rsx! {{\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"color:#ffee99;\">&quot;Breed: {{breed}}&quot;\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
+            name: "guide_component.rs".to_string(),
+        }
         p {
             img {
                 src: asset!("/assets/06_docs/diffing_diagram.png", ImageAssetOptions::new().with_avif()),
@@ -5517,7 +5562,10 @@ pub fn GuideComponent() -> dioxus::prelude::Element {
             code { "rsx! {{}}" }
             " macro to define the structure of our app."
         }
-        CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">#[component]\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">App</span><span style=\"color:#f8f8f2;\">() -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    rsx! {{\n</span><span style=\"color:#f8f8f2;\">        Header {{}}\n</span><span style=\"color:#f8f8f2;\">        DogApp {{ breed: </span><span style=\"color:#ffee99;\">&quot;corgi&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">        Footer {{}}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n" }
+        CodeBlock {
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">#[component]\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">App</span><span style=\"color:#f8f8f2;\">() -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    rsx! {{\n</span><span style=\"color:#f8f8f2;\">        Header {{}}\n</span><span style=\"color:#f8f8f2;\">        DogApp {{ breed: </span><span style=\"color:#ffee99;\">&quot;corgi&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">        Footer {{}}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
+            name: "guide_component.rs".to_string(),
+        }
         p {
             "We'll cover  "
             code { "rsx! {{}}" }
@@ -5731,7 +5779,10 @@ pub fn GuideAssets() -> dioxus::prelude::Element {
             code { "asset!()" }
             " macro. This macro ensures the asset will be included in the final app bundle."
         }
-        CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"font-style:italic;color:#66d9ef;\">static </span><span style=\"color:#ff80f4;\">CSS</span><span style=\"color:#f8f8f2;\">: Asset </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">asset!(</span><span style=\"color:#ffee99;\">&quot;/assets/main.css&quot;</span><span style=\"color:#f8f8f2;\">);</span></pre>\n" }
+        CodeBlock {
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"font-style:italic;color:#66d9ef;\">static </span><span style=\"color:#ff80f4;\">CSS</span><span style=\"color:#f8f8f2;\">: Asset </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">asset!(</span><span style=\"color:#ffee99;\">&quot;/assets/main.css&quot;</span><span style=\"color:#f8f8f2;\">);</span></pre>\n",
+            name: "guide_assets.rs".to_string(),
+        }
         p {
             "We also need to load the asset into our app using the  "
             code { "document::Stylesheet" }
@@ -5739,7 +5790,10 @@ pub fn GuideAssets() -> dioxus::prelude::Element {
             code { "<link>" }
             " HTML element but also ensures the CSS will be pre-loaded during server-side-rendering."
         }
-        CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">App</span><span style=\"color:#f8f8f2;\">() -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    rsx! {{\n</span><span style=\"color:#f8f8f2;\">        document::Stylesheet {{ href: </span><span style=\"color:#ff80f4;\">CSS </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"color:#8c8c8c;\">// rest of the app\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n" }
+        CodeBlock {
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">App</span><span style=\"color:#f8f8f2;\">() -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    rsx! {{\n</span><span style=\"color:#f8f8f2;\">        document::Stylesheet {{ href: </span><span style=\"color:#ff80f4;\">CSS </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"color:#8c8c8c;\">// rest of the app\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
+            name: "guide_assets.rs".to_string(),
+        }
         p {
             "Unlike Rust's  "
             code { "include_str!()" }
@@ -5795,13 +5849,19 @@ pub fn GuideAssets() -> dioxus::prelude::Element {
             code { "img {{}}" }
             ". Note that when the app is offline, URL-based images won't download."
         }
-        CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">rsx! {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#8c8c8c;\">// ...\n</span><span style=\"color:#f8f8f2;\">    div {{\n</span><span style=\"color:#f8f8f2;\">        img {{ src: </span><span style=\"color:#ffee99;\">&quot;https://images.dog.ceo/breeds/pitbull/dog-3981540_1280.jpg&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#8c8c8c;\">// ...\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n" }
+        CodeBlock {
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">rsx! {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#8c8c8c;\">// ...\n</span><span style=\"color:#f8f8f2;\">    div {{\n</span><span style=\"color:#f8f8f2;\">        img {{ src: </span><span style=\"color:#ffee99;\">&quot;https://images.dog.ceo/breeds/pitbull/dog-3981540_1280.jpg&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#8c8c8c;\">// ...\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
+            name: "guide_assets.rs".to_string(),
+        }
         p {
             "For static images, you can use the same  "
             code { "asset!()" }
             " macro that we used to include the app's CSS."
         }
-        CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"font-style:italic;color:#66d9ef;\">static </span><span style=\"color:#ff80f4;\">ICON</span><span style=\"color:#f8f8f2;\">: Asset </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">asset!(</span><span style=\"color:#ffee99;\">&quot;/assets/icon.png&quot;</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">rsx! {{\n</span><span style=\"color:#f8f8f2;\">    img {{ src: </span><span style=\"color:#ff80f4;\">ICON </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n" }
+        CodeBlock {
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"font-style:italic;color:#66d9ef;\">static </span><span style=\"color:#ff80f4;\">ICON</span><span style=\"color:#f8f8f2;\">: Asset </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">asset!(</span><span style=\"color:#ffee99;\">&quot;/assets/icon.png&quot;</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">rsx! {{\n</span><span style=\"color:#f8f8f2;\">    img {{ src: </span><span style=\"color:#ff80f4;\">ICON </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
+            name: "guide_assets.rs".to_string(),
+        }
         h2 { id: "optimizations",
             a { href: "#optimizations", class: "header", "Optimizations" }
         }
@@ -5810,7 +5870,10 @@ pub fn GuideAssets() -> dioxus::prelude::Element {
             code { "asset!()" }
             " macro will lightly optimize CSS, JavaScript, JSON, and images. The name of the asset will also be modified to include a content hash."
         }
-        CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#8c8c8c;\">// would output main-j1238nask123.css\n</span><span style=\"color:#f8f8f2;\">asset!(</span><span style=\"color:#ffee99;\">&quot;/assets/main.css&quot;</span><span style=\"color:#f8f8f2;\">).</span><span style=\"color:#66d9ef;\">to_string</span><span style=\"color:#f8f8f2;\">()</span></pre>\n" }
+        CodeBlock {
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n</pre>\n",
+            name: "guide_assets.rs".to_string(),
+        }
         p {
             "You can optimize assets even further, with an optional  "
             code { "Options" }
@@ -5822,7 +5885,10 @@ pub fn GuideAssets() -> dioxus::prelude::Element {
             code { ".avif" }
             " format:"
         }
-        CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#8c8c8c;\">// outputs image-j1238jd2.avif\n</span><span style=\"color:#f8f8f2;\">asset!(</span><span style=\"color:#ffee99;\">&quot;/assets/image.png&quot;</span><span style=\"color:#f8f8f2;\">, ImageAssetOptions::new().</span><span style=\"color:#66d9ef;\">with_avif</span><span style=\"color:#f8f8f2;\">())</span></pre>\n" }
+        CodeBlock {
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#8c8c8c;\">// outputs icon-j1238jd2.avif\n</span><span style=\"color:#f8f8f2;\">asset!(</span><span style=\"color:#ffee99;\">&quot;/assets/icon.png&quot;</span><span style=\"color:#f8f8f2;\">, ImageAssetOptions::new().</span><span style=\"color:#66d9ef;\">with_avif</span><span style=\"color:#f8f8f2;\">());</span></pre>\n",
+            name: "guide_assets.rs".to_string(),
+        }
         p {
             "For many apps, asset optimization is the most effective way of improving load times. As developers, we frequently overlook the size of images and accidentally make our sites load slower."
         }
@@ -6323,7 +6389,10 @@ pub fn GuideBackend() -> dioxus::prelude::Element {
             " attribute."
         }
         p { "A typical server function looks like this:" }
-        CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">#[server]\n</span><span style=\"color:#f8f8f2;\">async </span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">save_dog</span><span style=\"color:#f8f8f2;\">(</span><span style=\"font-style:italic;color:#fd971f;\">image</span><span style=\"color:#f8f8f2;\">: String) -&gt; Result&lt;(), ServerFnError&gt; {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">Ok</span><span style=\"color:#f8f8f2;\">(())\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n" }
+        CodeBlock {
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">#[server]\n</span><span style=\"color:#f8f8f2;\">async </span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">save_dog</span><span style=\"color:#f8f8f2;\">(</span><span style=\"font-style:italic;color:#fd971f;\">image</span><span style=\"color:#f8f8f2;\">: String) -&gt; Result&lt;(), ServerFnError&gt; {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">Ok</span><span style=\"color:#f8f8f2;\">(())\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
+            name: "guide_backend.rs".to_string(),
+        }
         p {
             "Every server function is an async function that takes some parameters and returns a  "
             code { "Result<(), ServerFnError>" }
@@ -6335,26 +6404,31 @@ pub fn GuideBackend() -> dioxus::prelude::Element {
             " call:"
         }
         CodeBlock {
-            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#8c8c8c;\">// on the client:\n</span><span style=\"color:#f8f8f2;\">async </span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">save_dog</span><span style=\"color:#f8f8f2;\">(</span><span style=\"font-style:italic;color:#fd971f;\">image</span><span style=\"color:#f8f8f2;\">: String) -&gt; Result&lt;(), ServerFnError&gt; {{\n</span><span style=\"color:#f8f8f2;\">    reqwest::Client::new()\n</span><span style=\"color:#f8f8f2;\">        .</span><span style=\"color:#66d9ef;\">post</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#ffee99;\">&quot;http://localhost:8080/api/save_dog&quot;</span><span style=\"color:#f8f8f2;\">)\n</span><span style=\"color:#f8f8f2;\">        .</span><span style=\"color:#66d9ef;\">json</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#f92672;\">&amp;</span><span style=\"color:#f8f8f2;\">image)\n</span><span style=\"color:#f8f8f2;\">        .</span><span style=\"color:#66d9ef;\">send</span><span style=\"color:#f8f8f2;\">()\n</span><span style=\"color:#f8f8f2;\">        .await\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#8c8c8c;\">// on the client:\n</span><span style=\"color:#f8f8f2;\">async </span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">save_dog</span><span style=\"color:#f8f8f2;\">(</span><span style=\"font-style:italic;color:#fd971f;\">image</span><span style=\"color:#f8f8f2;\">: String) -&gt; Result&lt;(), ServerFnError&gt; {{\n</span><span style=\"color:#f8f8f2;\">    reqwest::Client::new()\n</span><span style=\"color:#f8f8f2;\">        .</span><span style=\"color:#66d9ef;\">post</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#ffee99;\">&quot;http://localhost:8080/api/save_dog&quot;</span><span style=\"color:#f8f8f2;\">)\n</span><span style=\"color:#f8f8f2;\">        .</span><span style=\"color:#66d9ef;\">json</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#f92672;\">&amp;</span><span style=\"color:#f8f8f2;\">image)\n</span><span style=\"color:#f8f8f2;\">        .</span><span style=\"color:#66d9ef;\">send</span><span style=\"color:#f8f8f2;\">()\n</span><span style=\"color:#f8f8f2;\">        .await</span><span style=\"color:#f92672;\">?</span><span style=\"color:#f8f8f2;\">;\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">Ok</span><span style=\"color:#f8f8f2;\">(())\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
+            name: "guide_backend.rs".to_string(),
         }
         p {
             "On the server, the server function expands to an "
             a { href: "https://github.com/tokio-rs/axum", "axum" }
             " handler:"
         }
-        CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#8c8c8c;\">// on the server:\n</span><span style=\"font-style:italic;color:#66d9ef;\">struct </span><span style=\"color:#f8f8f2;\">SaveDogArgs {{\n</span><span style=\"color:#f8f8f2;\">    image: String,\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">async </span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">save_dog</span><span style=\"color:#f8f8f2;\">(Json(</span><span style=\"font-style:italic;color:#fd971f;\">args</span><span style=\"color:#f8f8f2;\">): Json&lt;SaveDogArgs&gt;) -&gt; Result&lt;(), ServerFnError&gt; {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">Ok</span><span style=\"color:#f8f8f2;\">(())\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n" }
+        CodeBlock {
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#8c8c8c;\">// on the server:\n</span><span style=\"font-style:italic;color:#66d9ef;\">struct </span><span style=\"color:#f8f8f2;\">SaveDogArgs {{\n</span><span style=\"color:#f8f8f2;\">    image: String,\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">async </span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">save_dog</span><span style=\"color:#f8f8f2;\">(Json(</span><span style=\"font-style:italic;color:#fd971f;\">args</span><span style=\"color:#f8f8f2;\">): Json&lt;SaveDogArgs&gt;) -&gt; Result&lt;(), ServerFnError&gt; {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">Ok</span><span style=\"color:#f8f8f2;\">(())\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">async </span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">launch</span><span style=\"color:#f8f8f2;\">(</span><span style=\"font-style:italic;color:#fd971f;\">config</span><span style=\"color:#f8f8f2;\">: ServeConfig, </span><span style=\"font-style:italic;color:#fd971f;\">app</span><span style=\"color:#f8f8f2;\">: </span><span style=\"font-style:italic;color:#66d9ef;\">fn</span><span style=\"color:#f8f8f2;\">() -&gt; Element) {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#8c8c8c;\">// register server functions\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> router </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">axum::Router::new().</span><span style=\"color:#66d9ef;\">serve_dioxus_application</span><span style=\"color:#f8f8f2;\">(config, app);\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#8c8c8c;\">// start server\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> socket_addr </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">dioxus_cli_config::fullstack_address_or_localhost();\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> listener </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">tokio::net::TcpListener::bind(socket_addr).await.</span><span style=\"color:#66d9ef;\">unwrap</span><span style=\"color:#f8f8f2;\">();\n</span><span style=\"color:#f8f8f2;\">    axum::serve(listener, router).await.</span><span style=\"color:#66d9ef;\">unwrap</span><span style=\"color:#f8f8f2;\">();\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
+            name: "guide_backend.rs".to_string(),
+        }
         p {
             "When  "
             code { "dioxus::launch" }
             " is called, the server functions are automatically registered for you and set up as an Axum router."
         }
         CodeBlock {
-            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">async </span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">launch</span><span style=\"color:#f8f8f2;\">(</span><span style=\"font-style:italic;color:#fd971f;\">config</span><span style=\"color:#f8f8f2;\">: Config, </span><span style=\"font-style:italic;color:#fd971f;\">app</span><span style=\"color:#f8f8f2;\">: Component&lt;()&gt;) {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#8c8c8c;\">// register server functions\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> router </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">axum::Router::new().</span><span style=\"color:#66d9ef;\">serve_dioxus_application</span><span style=\"color:#f8f8f2;\">(config, app);\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#8c8c8c;\">// start server\n</span><span style=\"color:#f8f8f2;\">    axum::serve(listener, router).await\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n</pre>\n",
+            name: "guide_backend.rs".to_string(),
         }
         p {
             "As of Dioxus 0.6, we only support the  "
             code { "axum" }
-            " server framework. We plan to build additional server features in the future and  only support  "
+            " server framework. We plan to build additional server features in the future and only support  "
             code { "axum" }
             " to ship faster."
         }
@@ -6366,7 +6440,8 @@ pub fn GuideBackend() -> dioxus::prelude::Element {
             " function also handles setting up logging and reading environment variables, which you will have to handle yourself."
         }
         CodeBlock {
-            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">main</span><span style=\"color:#f8f8f2;\">() {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#f92672;\">if </span><span style=\"color:#f8f8f2;\">cfg!(feature </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;server&quot;</span><span style=\"color:#f8f8f2;\">) {{\n</span><span style=\"color:#f8f8f2;\">        tokio::runtime::Runtime::new()\n</span><span style=\"color:#f8f8f2;\">            .</span><span style=\"color:#66d9ef;\">unwrap</span><span style=\"color:#f8f8f2;\">()\n</span><span style=\"color:#f8f8f2;\">            .</span><span style=\"color:#66d9ef;\">block_on</span><span style=\"color:#f8f8f2;\">(launch_server);\n</span><span style=\"color:#f8f8f2;\">    }} </span><span style=\"color:#f92672;\">else </span><span style=\"color:#f8f8f2;\">{{\n</span><span style=\"color:#f8f8f2;\">        dioxus::launch(app);\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">#[cfg(feature </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;server&quot;</span><span style=\"color:#f8f8f2;\">)]\n</span><span style=\"color:#f8f8f2;\">async </span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">launch_server</span><span style=\"color:#f8f8f2;\">() {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#8c8c8c;\">// Connect to dioxus&#39; logging infrastructure\n</span><span style=\"color:#f8f8f2;\">    dioxus::logger::initialize_default();\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#8c8c8c;\">// Connect to the IP and PORT env vars passed by the Dioxus CLI (or your dockerfile)\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> socket_addr </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">dioxus_cli_config::fullstack_address_or_localhost();\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#8c8c8c;\">// Build a custom axum router\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> router </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">axum::Router::new()\n</span><span style=\"color:#f8f8f2;\">        .</span><span style=\"color:#66d9ef;\">serve_dioxus_application</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#ffee99;\">&quot;&quot;</span><span style=\"color:#f8f8f2;\">, ServeConfigBuilder::new(app, ()))\n</span><span style=\"color:#f8f8f2;\">        .</span><span style=\"color:#66d9ef;\">into_make_service</span><span style=\"color:#f8f8f2;\">();\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#8c8c8c;\">// And launch it!\n</span><span style=\"color:#f8f8f2;\">    axum::Server::bind(</span><span style=\"color:#f92672;\">&amp;</span><span style=\"color:#f8f8f2;\">addr).</span><span style=\"color:#66d9ef;\">serve</span><span style=\"color:#f8f8f2;\">(router).await\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">main</span><span style=\"color:#f8f8f2;\">() {{\n</span><span style=\"color:#f8f8f2;\">    #[cfg(feature </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;server&quot;</span><span style=\"color:#f8f8f2;\">)]\n</span><span style=\"color:#f8f8f2;\">    tokio::runtime::Runtime::new()\n</span><span style=\"color:#f8f8f2;\">        .</span><span style=\"color:#66d9ef;\">unwrap</span><span style=\"color:#f8f8f2;\">()\n</span><span style=\"color:#f8f8f2;\">        .</span><span style=\"color:#66d9ef;\">block_on</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#66d9ef;\">launch_server</span><span style=\"color:#f8f8f2;\">());\n</span><span style=\"color:#f8f8f2;\">    #[cfg(not(feature </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;server&quot;</span><span style=\"color:#f8f8f2;\">))]\n</span><span style=\"color:#f8f8f2;\">    dioxus::launch(app);\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">#[cfg(feature </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;server&quot;</span><span style=\"color:#f8f8f2;\">)]\n</span><span style=\"color:#f8f8f2;\">async </span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">launch_server</span><span style=\"color:#f8f8f2;\">() {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#8c8c8c;\">// Connect to dioxus&#39; logging infrastructure\n</span><span style=\"color:#f8f8f2;\">    dioxus::logger::initialize_default();\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#8c8c8c;\">// Connect to the IP and PORT env vars passed by the Dioxus CLI (or your dockerfile)\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> socket_addr </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">dioxus_cli_config::fullstack_address_or_localhost();\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#8c8c8c;\">// Build a custom axum router\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> router </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">axum::Router::new()\n</span><span style=\"color:#f8f8f2;\">        .</span><span style=\"color:#66d9ef;\">serve_dioxus_application</span><span style=\"color:#f8f8f2;\">(ServeConfigBuilder::new(), app)\n</span><span style=\"color:#f8f8f2;\">        .</span><span style=\"color:#66d9ef;\">into_make_service</span><span style=\"color:#f8f8f2;\">();\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#8c8c8c;\">// And launch it!\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> listener </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">tokio::net::TcpListener::bind(socket_addr).await.</span><span style=\"color:#66d9ef;\">unwrap</span><span style=\"color:#f8f8f2;\">();\n</span><span style=\"color:#f8f8f2;\">    axum::serve(listener, router).await.</span><span style=\"color:#66d9ef;\">unwrap</span><span style=\"color:#f8f8f2;\">();\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
+            name: "guide_backend.rs".to_string(),
         }
         h2 { id: "the-clientserver-split",
             a { href: "#the-clientserver-split", class: "header", "The Client/Server split" }
@@ -6405,20 +6480,27 @@ pub fn GuideBackend() -> dioxus::prelude::Element {
             " make it into the final app."
         }
         CodeBlock {
-            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#8c8c8c;\">// ❌ this will leak your DB_PASSWORD to your client app!\n</span><span style=\"font-style:italic;color:#66d9ef;\">static </span><span style=\"color:#ff80f4;\">DB_PASSWORD</span><span style=\"color:#f8f8f2;\">: </span><span style=\"color:#f92672;\">&amp;</span><span style=\"font-style:italic;color:#66d9ef;\">str </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;1234&quot;</span><span style=\"color:#f8f8f2;\">;\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">app</span><span style=\"color:#f8f8f2;\">() -&gt; Element {{ }}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">#[server]\n</span><span style=\"color:#f8f8f2;\">async </span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">DoThing</span><span style=\"color:#f8f8f2;\">() -&gt; Result&lt;(), ServerFnError&gt; {{\n</span><span style=\"color:#f8f8f2;\">    db.</span><span style=\"color:#66d9ef;\">connect</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#ff80f4;\">DB_PASSWORD</span><span style=\"color:#f8f8f2;\">).await\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#8c8c8c;\">// ...\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#8c8c8c;\">// ❌ this will leak your DB_PASSWORD to your client app!\n</span><span style=\"font-style:italic;color:#66d9ef;\">static </span><span style=\"color:#ff80f4;\">DB_PASSWORD</span><span style=\"color:#f8f8f2;\">: </span><span style=\"color:#f92672;\">&amp;</span><span style=\"font-style:italic;color:#66d9ef;\">str </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;1234&quot;</span><span style=\"color:#f8f8f2;\">;\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">#[server]\n</span><span style=\"color:#f8f8f2;\">async </span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">DoThing</span><span style=\"color:#f8f8f2;\">() -&gt; Result&lt;(), ServerFnError&gt; {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#66d9ef;\">connect_to_db</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#ff80f4;\">DB_PASSWORD</span><span style=\"color:#f8f8f2;\">).await\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#8c8c8c;\">// ...\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
+            name: "guide_backend.rs".to_string(),
         }
         p {
             "Instead, we recommend placing server-only code within modules configured for the  "
             code { "\"server\"" }
             " feature."
         }
-        CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#8c8c8c;\">// ✅ code in this module can only be accessed on the server\n</span><span style=\"color:#f8f8f2;\">#[cfg(feature </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;server&quot;</span><span style=\"color:#f8f8f2;\">)]\n</span><span style=\"font-style:italic;color:#66d9ef;\">mod </span><span style=\"color:#f8f8f2;\">server_utils {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#f92672;\">pub </span><span style=\"font-style:italic;color:#66d9ef;\">static </span><span style=\"color:#ff80f4;\">DB_PASSWORD</span><span style=\"color:#f8f8f2;\">: </span><span style=\"color:#f92672;\">&amp;</span><span style=\"font-style:italic;color:#66d9ef;\">str </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;1234&quot;</span><span style=\"color:#f8f8f2;\">;\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n" }
+        CodeBlock {
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#8c8c8c;\">// ✅ code in this module can only be accessed on the server\n</span><span style=\"color:#f8f8f2;\">#[cfg(feature </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;server&quot;</span><span style=\"color:#f8f8f2;\">)]\n</span><span style=\"font-style:italic;color:#66d9ef;\">mod </span><span style=\"color:#f8f8f2;\">server_utils {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#f92672;\">pub </span><span style=\"font-style:italic;color:#66d9ef;\">static </span><span style=\"color:#ff80f4;\">DB_PASSWORD</span><span style=\"color:#f8f8f2;\">: </span><span style=\"color:#f92672;\">&amp;</span><span style=\"font-style:italic;color:#66d9ef;\">str </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;1234&quot;</span><span style=\"color:#f8f8f2;\">;\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
+            name: "guide_backend.rs".to_string(),
+        }
         p {
             "While Dioxus expects a \"server\" feature, it does not expect a \"client\" feature. It is assumed that all client code will make it to the server. However, some libraries like web-sys only work when running in the browser, so make sure to not run specific client code in your server functions or before your  "
             code { "launch" }
             "."
         }
-        CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">#[server]\n</span><span style=\"color:#f8f8f2;\">async </span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">DoThing</span><span style=\"color:#f8f8f2;\">() -&gt; Result&lt;(), ServerFnError&gt; {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#8c8c8c;\">// ❌ attempting to use web_sys on the server will panic!\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> document </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">web_sys::document();\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#8c8c8c;\">// ..\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n" }
+        CodeBlock {
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">main</span><span style=\"color:#f8f8f2;\">() {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#8c8c8c;\">// ❌ attempting to use web_sys on the server will panic!\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> window </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">web_sys::window();\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#8c8c8c;\">// ..\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">    dioxus::launch(app);\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
+            name: "guide_backend.rs".to_string(),
+        }
         h2 { id: "managing-dependencies",
             a { href: "#managing-dependencies", class: "header", "Managing Dependencies" }
         }
@@ -6465,6 +6547,7 @@ pub fn GuideBackend() -> dioxus::prelude::Element {
         }
         CodeBlock {
             contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#8c8c8c;\">// Expose a `save_dog` endpoint on our server that takes an &quot;image&quot; parameter\n</span><span style=\"color:#f8f8f2;\">#[server]\n</span><span style=\"color:#f8f8f2;\">async </span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">save_dog</span><span style=\"color:#f8f8f2;\">(</span><span style=\"font-style:italic;color:#fd971f;\">image</span><span style=\"color:#f8f8f2;\">: String) -&gt; Result&lt;(), ServerFnError&gt; {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#f92672;\">use </span><span style=\"color:#f8f8f2;\">std::io::Write;\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#8c8c8c;\">// Open the `dogs.txt` file in append-only mode, creating it if it doesn&#39;t exist;\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let </span><span style=\"color:#f92672;\">mut</span><span style=\"color:#f8f8f2;\"> file </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">std::fs::OpenOptions::new()\n</span><span style=\"color:#f8f8f2;\">        .</span><span style=\"color:#66d9ef;\">write</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#ff80f4;\">true</span><span style=\"color:#f8f8f2;\">)\n</span><span style=\"color:#f8f8f2;\">        .</span><span style=\"color:#66d9ef;\">append</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#ff80f4;\">true</span><span style=\"color:#f8f8f2;\">)\n</span><span style=\"color:#f8f8f2;\">        .</span><span style=\"color:#66d9ef;\">create</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#ff80f4;\">true</span><span style=\"color:#f8f8f2;\">)\n</span><span style=\"color:#f8f8f2;\">        .</span><span style=\"color:#66d9ef;\">open</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#ffee99;\">&quot;dogs.txt&quot;</span><span style=\"color:#f8f8f2;\">)\n</span><span style=\"color:#f8f8f2;\">        .</span><span style=\"color:#66d9ef;\">unwrap</span><span style=\"color:#f8f8f2;\">();\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#8c8c8c;\">// And then write a newline to it with the image url\n</span><span style=\"color:#f8f8f2;\">    file.</span><span style=\"color:#66d9ef;\">write_fmt</span><span style=\"color:#f8f8f2;\">(format_args!(</span><span style=\"color:#ffee99;\">&quot;{{image}}</span><span style=\"color:#ff80f4;\">\\n</span><span style=\"color:#ffee99;\">&quot;</span><span style=\"color:#f8f8f2;\">));\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">Ok</span><span style=\"color:#f8f8f2;\">(())\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
+            name: "guide_backend.rs".to_string(),
         }
         h3 { id: "calling-the-server-function",
             a { href: "#calling-the-server-function", class: "header",
@@ -6473,7 +6556,8 @@ pub fn GuideBackend() -> dioxus::prelude::Element {
         }
         p { "Now, in our client code, we can actually call the server function." }
         CodeBlock {
-            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">DogView</span><span style=\"color:#f8f8f2;\">() -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let </span><span style=\"color:#f92672;\">mut</span><span style=\"color:#f8f8f2;\"> img_src </span><span style=\"color:#f92672;\">= </span><span style=\"color:#66d9ef;\">use_resource</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#8c8c8c;\">/**/</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#8c8c8c;\">// ...\n</span><span style=\"color:#f8f8f2;\">    rsx! {{\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"color:#8c8c8c;\">// ...\n</span><span style=\"color:#f8f8f2;\">        div {{ id: </span><span style=\"color:#ffee99;\">&quot;buttons&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">            </span><span style=\"color:#8c8c8c;\">// ...\n</span><span style=\"color:#f8f8f2;\">            button {{\n</span><span style=\"color:#f8f8f2;\">                id: </span><span style=\"color:#ffee99;\">&quot;save&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">                onclick: </span><span style=\"color:#f92672;\">move |_|</span><span style=\"color:#f8f8f2;\"> async </span><span style=\"color:#f92672;\">move </span><span style=\"color:#f8f8f2;\">{{\n</span><span style=\"color:#f8f8f2;\">                    </span><span style=\"color:#8c8c8c;\">// Clone the current image\n</span><span style=\"color:#f8f8f2;\">                    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> current </span><span style=\"color:#f92672;\">=</span><span style=\"color:#f8f8f2;\"> img_src.</span><span style=\"color:#66d9ef;\">cloned</span><span style=\"color:#f8f8f2;\">().</span><span style=\"color:#66d9ef;\">unwrap</span><span style=\"color:#f8f8f2;\">();\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">                    </span><span style=\"color:#8c8c8c;\">// Start fetching a new image\n</span><span style=\"color:#f8f8f2;\">                    img_src.</span><span style=\"color:#66d9ef;\">restart</span><span style=\"color:#f8f8f2;\">();\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">                    </span><span style=\"color:#8c8c8c;\">// And call the `save_dog` server function\n</span><span style=\"color:#f8f8f2;\">                    </span><span style=\"color:#66d9ef;\">save_dog</span><span style=\"color:#f8f8f2;\">(current).await;\n</span><span style=\"color:#f8f8f2;\">                }},\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">                </span><span style=\"color:#ffee99;\">&quot;save!&quot;\n</span><span style=\"color:#f8f8f2;\">            }}\n</span><span style=\"color:#f8f8f2;\">        }}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n</pre>\n",
+            name: "guide_backend.rs".to_string(),
         }
         p { "Wow, our app is really coming together!" }
         p {
@@ -15297,27 +15381,6 @@ pub fn CliConfigure() -> dioxus::prelude::Element {
         p { "Application-wide configuration. Applies to both web and desktop." }
         ul {
             li {
-                strong { "name" }
-                " 🔒 - Project name & title."
-                CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">name </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;my_project&quot;</span></pre>\n" }
-            }
-            li {
-                strong { "default_platform" }
-                " 🔒 - The platform this project targets"
-                CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f92672;\">#</span><span style=\"color:#f8f8f2;\"> Currently supported platforms: web, desktop\n</span><span style=\"color:#f8f8f2;\">default_platform </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;web&quot;</span></pre>\n" }
-            }
-            li {
-                strong { "out_dir" }
-                " - The directory to place the build artifacts from "
-                code { "dx build" }
-                " or "
-                code { "dx serve" }
-                " into. This is also where the "
-                code { "assets" }
-                " directory will be copied into."
-                CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">out_dir </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;dist&quot;</span></pre>\n" }
-            }
-            li {
                 strong { "asset_dir" }
                 " - The directory with your static assets. The CLI will automatically copy these assets into the "
                 strong { "out_dir" }
@@ -15432,12 +15495,328 @@ pub fn CliConfigure() -> dioxus::prelude::Element {
                 "This will cause any requests made to the dev server with prefix /api/ to be redirected to the backend server at http://localhost:8000. The path and query parameters will be passed on as-is (path rewriting is currently not supported)."
             }
         }
+        h3 { id: "webhttps",
+            a { href: "#webhttps", class: "header", "Web.https" }
+        }
+        CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">[[web.https]]</span></pre>\n" }
+        p { "Controls the https config for the CLI." }
+        ul {
+            li {
+                strong { "enabled" }
+                " enables or disables https in the CLI"
+                CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">enabled </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ff80f4;\">true</span></pre>\n" }
+            }
+            li {
+                strong { "mkcert" }
+                " enables or disables generating certs with the mkcert CLI"
+                CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">mkcert </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ff80f4;\">true</span></pre>\n" }
+            }
+            li {
+                strong { "key_path" }
+                " sets the path to use for the https key"
+                CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">key_path </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;/path/to/key&quot;</span></pre>\n" }
+            }
+            li {
+                strong { "cert_path" }
+                " sets the path to use for the https cert"
+                CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">cert_path </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;/path/to/cert&quot;</span></pre>\n" }
+            }
+        }
+        h3 { id: "webpre-compress",
+            a { href: "#webpre-compress", class: "header", "Web.pre_compress" }
+        }
+        p {
+            "If this setting is enabled, the CLI will pre-compress the built assets in release mode with brotli. This setting is enabled by default."
+        }
+        CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">[web]\n</span><span style=\"color:#f8f8f2;\">pre_compress </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ff80f4;\">true</span></pre>\n" }
+        h3 { id: "webwasm-opt",
+            a { href: "#webwasm-opt", class: "header", "Web.wasm_opt" }
+        }
+        p { "Controls the wasm-opt config for the CLI." }
+        ul {
+            li {
+                strong { "level" }
+                " sets the level of optimization to use for wasm-opt in release builds."
+                ul {
+                    li { "z: optimize aggressively for size" }
+                    li { "s: optimize for size" }
+                    li { "1: optimize for speed" }
+                    li { "2: optimize for more for speed" }
+                    li { "3: optimize for even more for speed" }
+                    li { "4: optimize aggressively for speed (default)" }
+                }
+                CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">level </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;z&quot;</span></pre>\n" }
+            }
+            li {
+                strong { "debug" }
+                " keep debug symbols in the wasm file even in release builds"
+                CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">debug </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ff80f4;\">true</span></pre>\n" }
+            }
+        }
+        h3 { id: "bundle",
+            a { href: "#bundle", class: "header", "Bundle" }
+        }
+        CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">[bundle]</span></pre>\n" }
+        p {
+            "Controls the bundling process for your application. Dioxus uses tauri-bundler under the hood. This section only includes a subset of the options available in tauri-bundler. More options can be found in the tauri-bundler "
+            a { href: "https://v1.tauri.app/v1/guides/building/#configuration-options",
+                "documentation"
+            }
+            "."
+        }
+        ul {
+            li {
+                strong { "identifier" }
+                " - A unique identifier for your application (e.g., "
+                code { "com.dioxuslabs" }
+                ")."
+                CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">identifier </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;com.dioxuslabs&quot;</span></pre>\n" }
+            }
+            li {
+                strong { "publisher" }
+                " - The name of the entity publishing the application."
+                CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">publisher </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;DioxusLabs&quot;</span></pre>\n" }
+            }
+            li {
+                strong { "icon" }
+                " - Paths to icon files to be used in the bundle. Icon files must be square and 16, 24, 32, 64, or 256 pixels in size. PNG icons must have a 32 bit depth in the RGBA format. If you use a "
+                code { ".icns" }
+                " file is must fit "
+                a { href: "https://github.com/tauri-apps/tauri/blob/d8db5042a28635259f646c329c3ec5ccf23eac9e/tooling/cli/src/helpers/icns.json",
+                    "this"
+                }
+                " format. The icons must include a "
+                code { ".icns" }
+                " icon for macOS, "
+                code { ".ico" }
+                " for Windows and "
+                code { ".png" }
+                " for Linux."
+                CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">icon </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">[\n</span><span style=\"color:#f8f8f2;\">   </span><span style=\"color:#ffee99;\">&quot;icons/32x32.png&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">   </span><span style=\"color:#ffee99;\">&quot;icons/128x128.png&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">   </span><span style=\"color:#ffee99;\">&quot;icons/128x128@2x.png&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">   </span><span style=\"color:#ffee99;\">&quot;icons/icon.icns&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">   </span><span style=\"color:#ffee99;\">&quot;icons/icon.ico&quot;\n</span><span style=\"color:#f8f8f2;\">]</span></pre>\n" }
+            }
+            li {
+                strong { "resources" }
+                " - Additional files to include in the bundle. Each asset is copied from the path and is accessible from the bundle at the same path. Any "
+                a { href: "../guides/assets", "assets" }
+                " are automatically bundled with the installer."
+                CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">resources </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">[</span><span style=\"color:#ffee99;\">&quot;path/to/resource&quot;</span><span style=\"color:#f8f8f2;\">]</span></pre>\n" }
+            }
+            li {
+                strong { "copyright" }
+                " - Copyright information for the application."
+                CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">copyright </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;Copyright 2023 DioxusLabs&quot;</span></pre>\n" }
+            }
+            li {
+                strong { "category" }
+                " - The category of the application. Must be one of "
+                code { "Business" }
+                ", "
+                code { "DeveloperTool" }
+                ", "
+                code { "Education" }
+                ", "
+                code { "Entertainment" }
+                ", "
+                code { "Finance" }
+                ", "
+                code { "Game" }
+                ", "
+                code { "ActionGame" }
+                ", "
+                code { "AdventureGame" }
+                ", "
+                code { "ArcadeGame" }
+                ", "
+                code { "BoardGame" }
+                ", "
+                code { "CardGame" }
+                ", "
+                code { "CasinoGame" }
+                ", "
+                code { "DiceGame" }
+                ", "
+                code { "EducationalGame" }
+                ", "
+                code { "FamilyGame" }
+                ", "
+                code { "KidsGame" }
+                ", "
+                code { "MusicGame" }
+                ", "
+                code { "PuzzleGame" }
+                ", "
+                code { "RacingGame" }
+                ", "
+                code { "RolePlayingGame" }
+                ", "
+                code { "SimulationGame" }
+                ", "
+                code { "SportsGame" }
+                ", "
+                code { "StrategyGame" }
+                ", "
+                code { "TriviaGame" }
+                ", "
+                code { "WordGame" }
+                ", "
+                code { "GraphicsAndDesign" }
+                ", "
+                code { "HealthcareAndFitness" }
+                ", "
+                code { "Lifestyle" }
+                ", "
+                code { "Medical" }
+                ", "
+                code { "Music" }
+                ", "
+                code { "News" }
+                ", "
+                code { "Photography" }
+                ", "
+                code { "Productivity" }
+                ", "
+                code { "Reference" }
+                ", "
+                code { "SocialNetworking" }
+                ", "
+                code { "Sports" }
+                ", "
+                code { "Travel" }
+                ", "
+                code { "Utility" }
+                ", "
+                code { "Video" }
+                ", or "
+                code { "Weather" }
+                CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">category </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;Utility&quot;</span></pre>\n" }
+            }
+            li {
+                strong { "short_description" }
+                " - A brief description of the application."
+                CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">short_description </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;A utility application built with Dioxus&quot;</span></pre>\n" }
+            }
+            li {
+                strong { "long_description" }
+                " - A detailed description of the application."
+                CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">long_description </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;This application provides various utility functions...&quot;</span></pre>\n" }
+            }
+            li {
+                strong { "external_bin" }
+                " - Paths to external sidecar binaries to include in the bundle. These bundles may be accessed at runtime with the name of the binary (not the absolute path). "
+                strong {
+                    "the target triple will be automatically added to the binary name before it is added to the bundle."
+                }
+                CodeBlock {
+                    contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">external_bin </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">[</span><span style=\"color:#ffee99;\">&quot;path/to/external_binary&quot;</span><span style=\"color:#f8f8f2;\">] </span><span style=\"color:#f92672;\">#</span><span style=\"color:#f8f8f2;\"> On macos, the binary at path</span><span style=\"color:#f92672;\">/</span><span style=\"color:#f8f8f2;\">to</span><span style=\"color:#f92672;\">/</span><span style=\"color:#f8f8f2;\">external_binary</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">aarch64</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">apple</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">darwin will be included </span><span style=\"color:#f92672;\">in</span><span style=\"color:#f8f8f2;\"> the bundle. It can be accessed at runtime with the name external_binary</span></pre>\n",
+                }
+            }
+        }
+        h3 { id: "bundlemacos",
+            a { href: "#bundlemacos", class: "header", "Bundle.macos" }
+        }
+        CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">[bundle.macos]</span></pre>\n" }
+        p { "Configuration options for macOS bundles." }
+        ul {
+            li {
+                strong { "frameworks" }
+                " - List of frameworks to include in the bundle."
+                CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">frameworks </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">[</span><span style=\"color:#ffee99;\">&quot;CoreML&quot;</span><span style=\"color:#f8f8f2;\">]</span></pre>\n" }
+            }
+            li {
+                strong { "minimum_system_version" }
+                " - Minimum macOS version required. (default: "
+                code { "10.13" }
+                ")"
+                CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">minimum_system_version </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;10.13&quot;</span></pre>\n" }
+            }
+            li {
+                strong { "license" }
+                " - Path to the license file."
+                CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">license </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;LICENSE.txt&quot;</span></pre>\n" }
+            }
+            li {
+                strong { "exception_domain" }
+                " - Domain for exception handling. The domain must be lowercase without a port or protocol."
+                CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">exception_domain </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;mysite.com&quot;</span></pre>\n" }
+            }
+            li {
+                strong { "signing_identity" }
+                " - macOS signing identity."
+                CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">signing_identity </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;SIGNING IDENTITY KEYCHAIN ENTRY NAME&quot;</span></pre>\n" }
+            }
+            li {
+                strong { "provider_short_name" }
+                " - Provider short name for the bundle."
+                CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">provider_short_name </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;DioxusLabs&quot;</span></pre>\n" }
+            }
+            li {
+                strong { "entitlements" }
+                " - Path to the entitlements file."
+                CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">entitlements </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;entitlements.plist&quot;</span></pre>\n" }
+            }
+            li {
+                strong { "hardened_runtime" }
+                " - Whether to enable the "
+                a { href: "https://developer.apple.com/documentation/security/hardened-runtime",
+                    "hardened runtime"
+                }
+                " in the bundle."
+                CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">hardened_runtime </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ff80f4;\">true</span></pre>\n" }
+            }
+        }
+        h3 { id: "bundlewindows",
+            a { href: "#bundlewindows", class: "header", "Bundle.windows" }
+        }
+        CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">[bundle.windows]</span></pre>\n" }
+        p { "Configuration options for Windows bundles." }
+        ul {
+            li {
+                strong { "digest_algorithm" }
+                " - Sets the file digest algorithm used for signing."
+                CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">digest_algorithm </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;sha-256&quot;</span></pre>\n" }
+            }
+            li {
+                strong { "certificate_thumbprint" }
+                " - SHA1 hash of the signing certificate."
+                CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">certificate_thumbprint </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;A1B2C3D4E5F6...&quot;</span></pre>\n" }
+            }
+            li {
+                strong { "timestamp_url" }
+                " - Sets the server to used for timestamping the signature."
+                CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">timestamp_url </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;http://timestamp.digicert.com&quot;</span></pre>\n" }
+            }
+            li {
+                strong { "tsp" }
+                " - Whether to use the time stamping protocol."
+                CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">tsp </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ff80f4;\">true</span></pre>\n" }
+            }
+            li {
+                strong { "icon_path" }
+                " - Path to the icon for the system tray icon. (defaults to "
+                code { "./icons/icon.ico" }
+                ")"
+                CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">icon_path </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;assets/icon.ico&quot;</span></pre>\n" }
+            }
+            li {
+                strong { "webview_install_mode" }
+                " - Installation mode for WebView2."
+                CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">[webview_install_mode.EmbedBootstrapper]\n</span><span style=\"color:#f8f8f2;\">silent </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ff80f4;\">true</span></pre>\n" }
+                "DownloadBootstrapper: download the WebView2 bootstrapper in the installer at runtime"
+                CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">[webview_install_mode.DownloadBootstrapper]\n</span><span style=\"color:#f8f8f2;\">silent </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ff80f4;\">true</span></pre>\n" }
+                "OfflineInstaller: Embed the WebView2 installer into the main installer"
+                CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">[webview_install_mode.OfflineInstaller]\n</span><span style=\"color:#f8f8f2;\">silent </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ff80f4;\">true</span></pre>\n" }
+                "FixedRuntime: Use a fixed path to the WebView2 runtime"
+                CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">[webview_install_mode.FixedRuntime]\n</span><span style=\"color:#f8f8f2;\">path </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;path/to/runtime&quot;</span></pre>\n" }
+                "Skip: Does not install WebView2 as part of the installer. This will cause the application to fail if webview was not already installed"
+                CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">webview_install_mode </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;Skip&quot;</span></pre>\n" }
+            }
+        }
         h2 { id: "config-example",
             a { href: "#config-example", class: "header", "Config example" }
         }
         p { "This includes all fields, mandatory or not." }
         CodeBlock {
-            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">[application]\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\">#</span><span style=\"color:#f8f8f2;\"> App name\n</span><span style=\"color:#f8f8f2;\">name </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;project_name&quot;\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\">#</span><span style=\"color:#f8f8f2;\"> The Dioxus platform to default to\n</span><span style=\"color:#f8f8f2;\">default_platform </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;web&quot;\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\">#</span><span style=\"color:#f8f8f2;\"> `build` </span><span style=\"color:#f92672;\">&amp;</span><span style=\"color:#f8f8f2;\"> `serve` output path\n</span><span style=\"color:#f8f8f2;\">out_dir </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;dist&quot;\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\">#</span><span style=\"color:#f8f8f2;\"> The </span><span style=\"font-style:italic;color:#66d9ef;\">static</span><span style=\"color:#f8f8f2;\"> resource path\n</span><span style=\"color:#f8f8f2;\">asset_dir </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;public&quot;\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">[web.app]\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\"># </span><span style=\"color:#ff80f4;\">HTML</span><span style=\"color:#f8f8f2;\"> title tag content\n</span><span style=\"color:#f8f8f2;\">title </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;project_name&quot;\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">[web.watcher]\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\">#</span><span style=\"color:#f8f8f2;\"> When watcher is triggered, regenerate the `index.html`\n</span><span style=\"color:#f8f8f2;\">reload_html </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ff80f4;\">true\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\">#</span><span style=\"color:#f8f8f2;\"> Which files or dirs will be monitored\n</span><span style=\"color:#f8f8f2;\">watch_path </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">[</span><span style=\"color:#ffee99;\">&quot;src&quot;</span><span style=\"color:#f8f8f2;\">, </span><span style=\"color:#ffee99;\">&quot;public&quot;</span><span style=\"color:#f8f8f2;\">]\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\">#</span><span style=\"color:#f8f8f2;\"> Include style or script assets\n</span><span style=\"color:#f8f8f2;\">[web.resource]\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\"># </span><span style=\"color:#ff80f4;\">CSS</span><span style=\"color:#f8f8f2;\"> style file\n</span><span style=\"color:#f8f8f2;\">style </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">[]\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\">#</span><span style=\"color:#f8f8f2;\"> Javascript code file\n</span><span style=\"color:#f8f8f2;\">script </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">[]\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">[web.resource.dev]\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\">#</span><span style=\"color:#f8f8f2;\"> Same </span><span style=\"color:#f92672;\">as </span><span style=\"color:#f8f8f2;\">[web.resource], but </span><span style=\"color:#f92672;\">for</span><span style=\"color:#f8f8f2;\"> development servers\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\"># </span><span style=\"color:#ff80f4;\">CSS</span><span style=\"color:#f8f8f2;\"> style file\n</span><span style=\"color:#f8f8f2;\">style </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">[]\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\">#</span><span style=\"color:#f8f8f2;\"> JavaScript files\n</span><span style=\"color:#f8f8f2;\">script </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">[]\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">[[web.proxy]]\n</span><span style=\"color:#f8f8f2;\">backend </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;http://localhost:8000/api/&quot;</span></pre>\n",
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">[application]\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\">#</span><span style=\"color:#f8f8f2;\"> App name\n</span><span style=\"color:#f8f8f2;\">name </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;project_name&quot;\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\">#</span><span style=\"color:#f8f8f2;\"> The Dioxus platform to default to\n</span><span style=\"color:#f8f8f2;\">default_platform </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;web&quot;\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\">#</span><span style=\"color:#f8f8f2;\"> `build` </span><span style=\"color:#f92672;\">&amp;</span><span style=\"color:#f8f8f2;\"> `serve` output path\n</span><span style=\"color:#f8f8f2;\">out_dir </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;dist&quot;\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\">#</span><span style=\"color:#f8f8f2;\"> The </span><span style=\"font-style:italic;color:#66d9ef;\">static</span><span style=\"color:#f8f8f2;\"> resource path\n</span><span style=\"color:#f8f8f2;\">asset_dir </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;public&quot;\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">[web.app]\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\"># </span><span style=\"color:#ff80f4;\">HTML</span><span style=\"color:#f8f8f2;\"> title tag content\n</span><span style=\"color:#f8f8f2;\">title </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;project_name&quot;\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">[web.watcher]\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\">#</span><span style=\"color:#f8f8f2;\"> When watcher is triggered, regenerate the `index.html`\n</span><span style=\"color:#f8f8f2;\">reload_html </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ff80f4;\">true\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\">#</span><span style=\"color:#f8f8f2;\"> Which files or dirs will be monitored\n</span><span style=\"color:#f8f8f2;\">watch_path </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">[</span><span style=\"color:#ffee99;\">&quot;src&quot;</span><span style=\"color:#f8f8f2;\">, </span><span style=\"color:#ffee99;\">&quot;public&quot;</span><span style=\"color:#f8f8f2;\">]\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\">#</span><span style=\"color:#f8f8f2;\"> Include style or script assets\n</span><span style=\"color:#f8f8f2;\">[web.resource]\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\"># </span><span style=\"color:#ff80f4;\">CSS</span><span style=\"color:#f8f8f2;\"> style file\n</span><span style=\"color:#f8f8f2;\">style </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">[]\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\">#</span><span style=\"color:#f8f8f2;\"> Javascript code file\n</span><span style=\"color:#f8f8f2;\">script </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">[]\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">[web.resource.dev]\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\">#</span><span style=\"color:#f8f8f2;\"> Same </span><span style=\"color:#f92672;\">as </span><span style=\"color:#f8f8f2;\">[web.resource], but </span><span style=\"color:#f92672;\">for</span><span style=\"color:#f8f8f2;\"> development servers\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\"># </span><span style=\"color:#ff80f4;\">CSS</span><span style=\"color:#f8f8f2;\"> style file\n</span><span style=\"color:#f8f8f2;\">style </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">[]\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\">#</span><span style=\"color:#f8f8f2;\"> JavaScript files\n</span><span style=\"color:#f8f8f2;\">script </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">[]\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">[[web.proxy]]\n</span><span style=\"color:#f8f8f2;\">backend </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;http://localhost:8000/api/&quot;\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">[bundle]\n</span><span style=\"color:#f8f8f2;\">identifier </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;com.dioxuslabs&quot;\n</span><span style=\"color:#f8f8f2;\">publisher </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;DioxusLabs&quot;\n</span><span style=\"color:#f8f8f2;\">icon </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;assets/icon.png&quot;</span></pre>\n",
         }
     }
 }

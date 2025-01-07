@@ -16,12 +16,18 @@ Generally, here's the status of each platform:
 
 - **LiveView**: LiveView support is very young. You'll be figuring things out as you go. Thankfully, none of it is too hard and any work can be upstreamed into Dioxus.
 
+```rust
+fn main() {
+  dioxus_rocks;
+}
+```
+
 ## Features
 
 ---
 
 | Feature                   | Status | Description                                                          |
-|---------------------------|--------|----------------------------------------------------------------------|
+| ------------------------- | ------ | -------------------------------------------------------------------- |
 | Conditional Rendering     | ✅      | if/then to hide/show component                                       |
 | Map, Iterator             | ✅      | map/filter/reduce to produce rsx!                                    |
 | Keyed Components          | ✅      | advanced diffing with keys                                           |
@@ -136,3 +142,6 @@ While not currently fully implemented, the expectation is that LiveView apps can
 ### Native rendering
 
 We are currently working on a native renderer for Dioxus using WGPU called [Blitz](https://github.com/DioxusLabs/blitz/). This will allow you to build apps that are rendered natively for iOS, Android, and Desktop.
+
+## Internal Links
+Internal links like [this](./chapter_1.md) are typechecked and will fail to compile if the file is not found.

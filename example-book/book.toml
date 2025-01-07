@@ -1,7 +1,8 @@
 [book]
 authors = ["Jonathan Kelley"]
 language = "en"
-src = "src"
+src = "en"
 title = "example-book"
+
 [language.en]
 name = "English"

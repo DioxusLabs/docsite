@@ -146,6 +146,18 @@ impl MdBook<PathBuf> {
                 anyhow::anyhow!("Failed to canonicalize file for page {:?}: {}", url, e)
             })?;
 
+        // create the file if it doesn't exist
+        if !md_file.exists() {
+            std::fs::write(&md_file, "").map_err(|e| {
+                anyhow::anyhow!(
+                    "Failed to create file {:?} for page {:?}: {}",
+                    md_file,
+                    url,
+                    e
+                )
+            })?;
+        }
+
         let body = std::fs::read_to_string(&md_file).map_err(|e| {
             anyhow::anyhow!(
                 "Failed to read file {:?} for page {:?}: {}",

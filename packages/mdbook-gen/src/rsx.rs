@@ -838,6 +838,7 @@ We can get a navigator with the `navigator` function which returns a `Navigator`
         }
         p {
             "Sometimes we want our application to navigate to another page without having the"
+            " "
             "user click on a link. This is called programmatic navigation."
         }
         h2 { id: "using-a-navigator",

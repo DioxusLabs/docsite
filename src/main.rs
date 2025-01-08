@@ -206,10 +206,7 @@ impl Route {
     }
 
     fn is_latest_docs(&self) -> bool {
-        matches!(
-            self,
-            Route::Docs06 { .. }
-        )
+        matches!(self, Route::Docs06 { .. })
     }
 }
 
@@ -231,16 +228,15 @@ fn static_dir() -> std::path::PathBuf {
         .join("public")
 }
 
-
 fn create_sitemap() {
     #[cfg(not(debug_assertions))]
     server_only! {
         use std::io::Write;
-        
+
         // Write a sitemap file on the server
         // The sitemap helps with SEO because google will deprioritize pages it finds that are not in the sitemap
         let all_routes = Route::static_routes();
-        _ = std::fs::create_dir_all(static_dir()); 
+        _ = std::fs::create_dir_all(static_dir());
         let output_path = static_dir().join("sitemap.xml");
         let Ok(file) = std::fs::File::create(output_path) else {
             eprintln!("Failed to create sitemap file");
@@ -263,6 +259,6 @@ fn create_sitemap() {
         _ = writeln!(writer, r#"</urlset>"#);
 
         // Point to the sitemap file in the robots.txt
-        _ = std::fs::write(static_dir().join("robots.txt"), formaot!("Sitemap: https://dioxuslabs.com/sitemap.xml"));
+        _ = std::fs::write(static_dir().join("robots.txt"), format!("Sitemap: https://dioxuslabs.com/sitemap.xml"));
     }
 }

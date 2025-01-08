@@ -361,11 +361,11 @@ Yes, you can even build terminal user interfaces with Dioxus. Full support is st
 There are a bunch of things we didn't talk about here. Check out the guide for more information, or peruse the examples and reference for more context.
 
 - Jank-free rendering with fiber scheduler
-- [Support for borrowed props]()
-- [Conditional rendering]()
-- [CSS/Styling/Inline style support]()
-- [Support for inline Context Providing/Consuming]()
-- [First-class global state management]()
+- Support for borrowed props
+- Conditional rendering
+- CSS/Styling/Inline style support
+- Support for inline Context Providing/Consuming
+- First-class global state management
 
 For a quick glance at party with React, check out the [Readme on Github](https://github.com/DioxusLabs/dioxus#parity-with-react).
 

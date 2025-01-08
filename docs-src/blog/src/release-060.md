@@ -6,24 +6,24 @@ With this release, we focused on making Dioxus easier to use, improving the deve
 
 Headlining the release is a complete overhaul of the Dioxus CLI:
 
-- **[`dx serve` for mobile](#android-and-ios-support-for)**: Serve your app on Android and iOS simulators and devices.
+- **[`dx serve` for mobile](#android-and-ios-support-for-dx-serve)**: Serve your app on Android and iOS simulators and devices.
 - **[Magical Hot-Reloading](#completely-revamped-hot-reloading)**: Hot-Reloading of formatted strings, properties, and nested `rsx!{}`.
 - **[Interactive CLI](#interactive-command-line-tools)**: Rewrite of the Dioxus CLI with a new, interactive UX inspired by Astro.
-- **[Inline Stack Traces](#inline-wasm-stacktraces-and)**: Capture WASM panics and logs directly into your terminal.
+- **[Inline Stack Traces](#inline-wasm-stacktraces-and-tracing-integration)**: Capture WASM panics and logs directly into your terminal.
 - **[Server Functions for Native](#fullstack-desktop-and-mobile)**: Inline Server RPC for Desktop and Mobile apps.
 
 We also improved the developer experience across the entire framework, fixing long standing bugs and improving tooling:
 
 - **[Toasts and Loading Screens](#toasts-and-loading-screens)**: New toasts and loading screens for web apps in development.
 - **[Improved Autocomplete](#completely-revamped-autocomplete)**: Massively improved autocomplete of RSX.
-- **[`asset!` Stabilization](#stabilizing-manganis)**: Stabilizing our linker-based asset system integrated for native apps.
+- **[`asset!` Stabilization](#stabilizing-manganis-asset-system)**: Stabilizing our linker-based asset system integrated for native apps.
 - **[Streaming HTML](#suspense-and-html-streaming-for-the-web)**: Stream `Suspense` and `Error` Boundaries from the server to the client.
 - **[SSG and ISG](#static-site-generation-and-isg)**: Support for Static Site Generation and Incremental Static Regeneration.
 - **[Error Handling with `?`](#question-mark-error-handling)**: Use `?` to handle errors in event handlers, tasks, and components.
-- **[Meta Elements](#document-elements)**: New `Head`, `Title`, `Meta`, and `Link` elements for setting document attributes.
-- **[Synchronous `prevent_default`](#synchronous)**: Handle events synchronously across all platforms.
-- **[`onresize` Event Handler](#tracking-size-with)**: Track an element's size without an IntersectionObserver.
-- **[`onvisible` Event Handler](#tracking-visibility-with)**: Track an element's visibility without an IntersectionObserver.
+- **[Meta Elements](#document-elements-title-link-stylesheet-and-meta)**: New `Head`, `Title`, `Meta`, and `Link` elements for setting document attributes.
+- **[Synchronous `prevent_default`](#synchronous-prevent_default)**: Handle events synchronously across all platforms.
+- **[`onresize` Event Handler](#tracking-size-with-onresize)**: Track an element's size without an IntersectionObserver.
+- **[`onvisible` Event Handler](#tracking-visibility-with-onvisible)**: Track an element's visibility without an IntersectionObserver.
 - **[WGPU Integration](#hybrid-wgpu-overlays)**: Render Dioxus as an overlay on top of WGPU surfaces and child windows.
 - **[`dx bundle` for Web, iOS, and Android](#web-ios-and-android-bundle-support)**: Complete `dx bundle` support for every platform.
 - **[`json` mode](#json-output-for-ci--cli)**: Emit CLI messages as JSON for use by 3rd party tools and CI/CD pipelines.

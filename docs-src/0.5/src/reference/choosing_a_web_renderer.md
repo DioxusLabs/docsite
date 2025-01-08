@@ -2,9 +2,9 @@
 
 Dioxus has three different renderers that target the web:
 
-- [dioxus-web](web.md) allows you to render your application to HTML with [WebAssembly](https://rustwasm.github.io/docs/book/) on the client
+- [dioxus-web](web/index.md) allows you to render your application to HTML with [WebAssembly](https://rustwasm.github.io/docs/book/) on the client
 - [dioxus-liveview](liveview.md) allows you to run your application on the server and render it to HTML on the client with a websocket
-- [dioxus-fullstack](fullstack.md) allows you to initially render static HTML on the server and then update that HTML from the client with [WebAssembly](https://rustwasm.github.io/docs/book/)
+- [dioxus-fullstack](fullstack/index.md) allows you to initially render static HTML on the server and then update that HTML from the client with [WebAssembly](https://rustwasm.github.io/docs/book/)
 
 Each approach has its tradeoffs:
 

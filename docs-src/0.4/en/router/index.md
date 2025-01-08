@@ -10,7 +10,7 @@ For this purpose, Dioxus provides a router. Use the `cargo add` command to add t
 cargo add dioxus-router
 ```
 
-Then, add this to your `Dioxus.toml` (learn more about configuration [here](../CLI/configure)):
+Then, add this to your `Dioxus.toml` (learn more about configuration [here](../CLI/configure.md)):
 
 ```toml
 [web.watcher]

@@ -17,7 +17,7 @@ Getting set up with mobile can be quite challenging. The tooling here isn't grea
 
 ### Setting up dependencies
 
-#### Android
+#### Android Dependencies
 
 First, install the rust Android targets:
 
@@ -63,7 +63,7 @@ Windows:
 
 > The NDK version in the paths should match the version you installed in the last step
 
-#### IOS
+#### IOS Dependencies
 
 First, install the rust IOS targets:
 

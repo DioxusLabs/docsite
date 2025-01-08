@@ -82,7 +82,7 @@ This is only possible because the two hooks are always called in the same order,
 
 1. Hooks may be only used in components or other hooks (we'll get to that later).
 2. On every call to a component function.
-3. The same hooks must be called (except in the case of early returns, as explained later in the [Error Handling chapter](../../cookbook/error_handling.md)).
+3. The same hooks must be called (except in the case of early returns, as explained later in the [Error Handling chapter](../cookbook/error_handling.md)).
 4. In the same order.
 5. Hook names should start with `use_` so you don't accidentally confuse them with regular
    functions (`use_state()`, `use_ref()`, `use_future()`, etc...).

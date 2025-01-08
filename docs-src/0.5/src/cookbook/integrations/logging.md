@@ -99,7 +99,7 @@ fn native_activity_create() {
 ```
 The `with_tag()` is what your app's logs will show as.
 
-#### Viewing Logs
+#### Viewing Android Logs
 Android logs are sent to logcat. To use logcat through the Android debugger, run:
 ```cmd
 adb -d logcat
@@ -122,7 +122,7 @@ fn main() {
 }
 ```
 
-#### Viewing Logs
+#### Viewing IOS Logs
 You can view the emitted logs in Xcode. 
 
 For more information, visit [oslog](https://crates.io/crates/oslog). 

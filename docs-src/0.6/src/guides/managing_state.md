@@ -1,5 +1,4 @@
-
-## The Rules of Hooks
+# The Rules of Hooks
 
 Hooks are a powerful way to manage state in Dioxus, but there are some rules you need to follow to insure they work as expected. Dioxus uses the order you call hooks to differentiate between hooks. Because the order you call hooks matters, you must follow these rules:
 

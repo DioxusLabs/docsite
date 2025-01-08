@@ -15,7 +15,7 @@ DemoFrame {
 
 ## Rerendering
 
-You can use [tracked values](../reference/reactivity.md) to re-render your component whenever a value changes. 
+You can use [tracked values](../state/index.md) to re-render your component whenever a value changes. 
 
 ```rust, no_run
 {{#include src/doc_examples/component_lifecycle.rs:rerenders}}
@@ -38,7 +38,7 @@ Instead, derive state with `use_memo`, `use_resource`, or mutate state in a effe
 
 ## Using Effects
 
-You can use [effects](../reference/reactivity.md) to run code whenever a component is rendered.
+You can use effects to run code whenever a component is rendered.
 
 
 ```rust, no_run

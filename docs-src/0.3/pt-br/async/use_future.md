@@ -1,4 +1,4 @@
-# `UseFuture`
+# UseFuture
 
 [`use_future`](https://docs.rs/dioxus-hooks/latest/dioxus_hooks/fn.use_future.html) permite executar um encerramento assíncrono e fornece seu resultado.
 

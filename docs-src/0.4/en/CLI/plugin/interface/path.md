@@ -2,7 +2,7 @@
 
 You can use path functions to perform operations on valid path strings.
 
-### `join(path: string, extra: string) -> string`
+### join
 
 <!-- TODO: Add specifics.
 From the example given, it seems like it just creates a subdirectory path.
@@ -15,7 +15,7 @@ local new_path = plugin.path.join(current_path, "world")
 -- new_path = "~/hello/dioxus/world"
 ```
 
-### `parent(path: string) -> string`
+### parent
 
 Return the parent path of the specified path. The parent path is always a directory.
 
@@ -25,14 +25,14 @@ local new_path = plugin.path.parent(current_path)
 -- new_path = "~/hello/"
 ```
 
-### `exists(path: string) -> boolean`
+### exists
 
 Check if the specified path exists, as either a file or a directory.
 
-### `is_file(path: string) -> boolean`
+### is_file
 
 Check if the specified path is a file.
 
-### `is_dir(path: string) -> boolean`
+### is_dir
 
 Check if the specified path is a directory.

@@ -13342,7 +13342,7 @@ pub fn ReferenceComponents() -> dioxus::prelude::Element {
             " function. Instead, you should break down the functionality of an app in logical parts called components."
         }
         p {
-            "A component is a Rust function, named in UpperCammelCase, that either takes no parameters or a properties struct and returns an  "
+            "A component is a Rust function, named in UpperCamelCase, that either takes no parameters or a properties struct and returns an  "
             code { "Element" }
             " describing the UI it wants to render."
         }
@@ -13354,7 +13354,7 @@ pub fn ReferenceComponents() -> dioxus::prelude::Element {
             p {
                 "You'll probably want to add  "
                 code { "#![allow(non_snake_case)]" }
-                " to the top of your crate to avoid warnings about UpperCammelCase component names"
+                " to the top of your crate to avoid warnings about UpperCamelCase component names"
             }
         }
         p {

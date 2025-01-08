@@ -214,14 +214,14 @@
 
 .markdown-body img {
   border-style: none;
-  max-width: 85%;
+  max-width: 95%;
   margin: auto;
   box-sizing: content-box;
   background-color: var(--color-canvas-default);
 }
 
 .markdown-body video {
-  max-width: 85%;
+  max-width: 95%;
   margin: auto;
   box-sizing: content-box;
   background-color: var(--color-canvas-default);
@@ -377,7 +377,7 @@
 .markdown-body h2 {
   font-weight: 600;
   font-size: 1.5em;
-  padding-top: 1.5rem;
+  padding-top: 0.75rem;
   /* border-bottom: 1px solid var(--color-border-muted) */
 }
 

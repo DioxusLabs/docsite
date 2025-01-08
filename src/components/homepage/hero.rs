@@ -21,17 +21,38 @@ pub(crate) fn Hero() -> Element {
                         div { class: "pt-8 lg:pt-16 text-[1em] flex flex-row space-x-4 mx-auto lg:mx-0 justify-center lg:justify-start",
                             Link {
                                 to: Route::Docs06 {
-                                    child: BookRoute::GuideIndex {},
-                                },
-                                class: "bg-ghdarkmetal dark:bg-[#EDEDED] text-white dark:text-black border border-[#a4a9ac7d] m-0 p-2 px-4 rounded md:hover:-translate-y-1 transition-transform duration-300 w-full md:w-auto  dark:shadow-white",
-                                "Quickstart"
-                            }
-                            Link {
-                                to: Route::Docs06 {
                                     child: BookRoute::Index {},
                                 },
-                                class: "bg-[#EDEDED] dark:bg-ghdarkmetal  text-black dark:text-white border border-[#a4a9ac7d]  m-0 p-2 px-4 rounded md:hover:-translate-y-1 transition-transform duration-300 w-full md:w-auto",
-                                "Read the docs"
+                                class: "bg-ghdarkmetal dark:bg-[#EDEDED] text-white dark:text-black border border-[#a4a9ac7d] m-0 p-2 px-4 rounded md:hover:-translate-y-1 transition-transform duration-300 w-full md:w-auto  dark:shadow-white",
+                                "Get started"
+                            }
+                            Link {
+                                to: "https://www.youtube.com/watch?v=WgAjWPKRVlQ",
+                                new_tab: true,
+                                class: "bg-[#EDEDED] dark:bg-ghdarkmetal  text-black dark:text-white border border-[#a4a9ac7d]  m-0 p-2 px-4 rounded md:hover:-translate-y-1 transition-transform duration-300 w-full md:w-auto gap-2 flex flex-row items-center justify-center",
+                                "Take a tour"
+                                span {
+                                    svg {
+                                        fill: "none",
+                                        "viewBox": "0 0 24 24",
+                                        xmlns: "http://www.w3.org/2000/svg",
+                                        width: "1.5rem",
+                                        height: "1.5rem",
+                                        circle {
+                                            "stroke-width": "1.5",
+                                            cx: "12",
+                                            r: "10",
+                                            stroke: "currentColor",
+                                            cy: "12",
+                                        }
+                                        path {
+                                            stroke: "currentColor",
+                                            fill: "currentColor",
+                                            "stroke-width": "1.5",
+                                            d: "M15.4137 10.941C16.1954 11.4026 16.1954 12.5974 15.4137 13.059L10.6935 15.8458C9.93371 16.2944 9 15.7105 9 14.7868L9 9.21316C9 8.28947 9.93371 7.70561 10.6935 8.15419L15.4137 10.941Z",
+                                        }
+                                    }
+                                }
                             }
                         }
                     }

@@ -14,29 +14,20 @@ dioxus-ssr = { version = "0.6.0", optional = true }
 dioxus-desktop = { version = "0.6.0", optional = true }
 dioxus-liveview = { version = "0.6.0", features = ["axum"], optional = true }
 
-serde = { version = "1.0.163", features = ["derive"] }
-serde_json = "1.0.96"
-log = "0.4.17"
-wasm-bindgen = { version = "0.2.99", features = ["enable-interning"] }
-once_cell = "1.17.1"
-console_error_panic_hook = "0.1.7"
-gloo-history = "0.1.3"
-autoexport = "0.1.0"
-include_dir = "0.7.3"
-anyhow = "1.0.71"
-
 dioxus-material-icons = { git = "https://github.com/jkelleyrtp/dioxus-material-icons", branch = "jk/git-rev" }
 syntect-html = { git = "https://github.com/dioxuslabs/include_mdbook", branch = "jk/build-gen" }
 mdbook-shared = { git = "https://github.com/dioxuslabs/include_mdbook", branch = "jk/build-gen" }
 use-mdbook = { git = "https://github.com/dioxuslabs/include_mdbook", branch = "jk/build-gen" }
 dioxus-search = { git = "https://github.com/dioxuslabs/dioxus-search" }
 
-# dioxus-playground = { git = "https://github.com/DioxusLabs/playground", branch = "jk/update-manganis" }
-
+serde = { version = "1.0.163", features = ["derive"] }
+serde_json = "1.0.96"
+log = "0.4.17"
+wasm-bindgen = { version = "0.2.99", features = ["enable-interning"] }
+once_cell = "1.17.1"
 tokio = { version = "1.29.0", features = ["full"], optional = true }
 axum = { version = "0.7", optional = true }
 http = { version = "1.0.0", optional = true }
-simple_logger = "5.0.0"
 reqwest = { version = "0.11.18", features = ["json"] }
 gloo-storage = { version = "0.3.0", optional = true }
 web-sys = { version = "0.3.64", features = [
@@ -57,7 +48,6 @@ gloo-timers = { version = "0.3.0", features = ["futures"] }
 js-sys = "0.3.64"
 form_urlencoded = "1.2.0"
 automod = "1.0.13"
-fs_extra = { version = "1.3.0", optional = true }
 stork-lib = { version = "1.6.0", features = [
     "build-v3",
 ], default-features = false }
@@ -72,7 +62,6 @@ askama_escape = { version = "0.10.3", optional = true }
 [build-dependencies]
 mdbook-gen = { git = "https://github.com/dioxuslabs/include_mdbook", branch = "jk/build-gen", features = ["manganis"]}
 mdbook-shared = { git = "https://github.com/dioxuslabs/include_mdbook", branch = "jk/build-gen" }
-prettyplease = "0.2.20"
 
 [patch.crates-io]
 # dioxus = { git = "https://github.com/dioxuslabs/dioxus", rev ="e00ebec8048d8ca934fff918d2d1432bf6ce7640" }
@@ -129,7 +118,7 @@ prettyplease = "0.2.20"
 # dioxus-devtools-types = { path = "../../dioxus/packages/devtools-types" }
 # manganis = { path = "../../dioxus/packages/manganis/manganis" }
 # manganis-core = { path = "../../dioxus/packages/manganis/manganis-core" }
-# manganis-macro = { path = "../../dioxus/packages/manganis/manganis-macro" }a
+# manganis-macro = { path = "../../dioxus/packages/manganis/manganis-macro" }
 
 [profile.release]
 lto = true
@@ -166,7 +155,6 @@ server = [
     "dioxus/ssr",
     "tokio",
     "axum",
-    "fs_extra",
     "askama_escape",
 ]
 doc_test = [

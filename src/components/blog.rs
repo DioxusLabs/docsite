@@ -33,7 +33,7 @@ pub(crate) fn BlogPost() -> Element {
 
     rsx! {
         section { class: "text-gray-600 body-font max-w-screen-md mx-auto pt-12 font-light",
-            div { class: "px-2 border-b border-gray-200 my-4 mb-8 pb-8 ",
+            div { class: "px-2 border-b border-gray-200 my-4 mb-8 pb-8  dark:text-white",
                 Link { to: Route::BlogList {},
                     p { class: "pb-12 text-sm flex flex-row gap-2 items-center",
                         svg {
@@ -57,12 +57,12 @@ pub(crate) fn BlogPost() -> Element {
                 h1 { class: "text-[2.75rem] font-semibold text-black dark:text-white",
                     "{meta.title}"
                 }
-                p { class: "text-gray-500 text-sm pb-8",
+                p { class: "text-gray-500 text-sm pb-8 dark:text-white",
                     "{meta.date}"
                     " - "
                     "{meta.author}"
                 }
-                h3 { class: "text-[1.5rem] pb-2 ", "{meta.description}" }
+                h3 { class: "text-[1.5rem] pb-2  dark:text-white", "{meta.description}" }
             }
             div { class: "markdown-body px-2  dioxus-blog-post", Outlet::<Route> {} }
         }

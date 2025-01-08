@@ -482,13 +482,13 @@ dx serve --platform fullstack
 
 ## LiveView router support
 
-[https://github.com/DioxusLabs/dioxus/pull/1505](https://github.com/DioxusLabs/dioxus/pull/1505)
+<https://github.com/DioxusLabs/dioxus/pull/1505>
 
 [`@DonAlonzo`](https://github.com/DonAlonzo) added LiveView support for the router in Dioxus 0.5. The router will now work out of the box with your LiveView apps!
 
 ## Custom Asset Handlers
 
-[https://github.com/DioxusLabs/dioxus/pull/1719](https://github.com/DioxusLabs/dioxus/pull/1719)
+<https://github.com/DioxusLabs/dioxus/pull/1719>
 
 [`@willcrichton`](https://github.com/willcrichton) added support for custom asset handlers to Dioxus Desktop. Custom asset handlers let you efficiently stream data from your rust code into the browser without going through JavaScript. This is great for high bandwidth communication like [video streaming](https://github.com/DioxusLabs/dioxus/pull/1727):
 

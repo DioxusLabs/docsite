@@ -108,7 +108,7 @@ pub(crate) fn Nav() -> Element {
                                 new_tab: true,
                                 span { class: "sr-only", "Dioxus on GitHub" }
                                 crate::icons::Github2 {}
-                                span { class: "text-xs text", "21.7k" }
+                                span { class: "text-xs text", "22.5k" }
                             }
                         }
                         div { class: "border-l border-gray-200 dark:border-gray-800 h-full" }

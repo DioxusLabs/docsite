@@ -4,7 +4,7 @@ When building application or libraries with Dioxus, you may want to include some
 
 ## Component Testing
 
-You can use a combination of [pretty-assertions](https://docs.rs/pretty_assertions/latest/pretty_assertions/) and [dioxus-ssr]() to check that two snippets of rsx are equal:
+You can use a combination of [pretty-assertions](https://docs.rs/pretty_assertions/latest/pretty_assertions/) and [dioxus-ssr](http://crates.io/crates/dioxus-ssr) to check that two snippets of rsx are equal:
 
 ```rust
 {{#include src/doc_examples/component_test.rs}}

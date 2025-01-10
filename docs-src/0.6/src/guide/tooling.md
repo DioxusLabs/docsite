@@ -44,7 +44,6 @@ Commands:
   fmt        Automatically format RSX
   check      Check the project for any issues
   run        Run the project without any hotreloading
-  doctor     Ensure all the tooling is installed and configured correctly
   config     Dioxus config file controls
   help       Print this message or the help of the given subcommand(s)
 

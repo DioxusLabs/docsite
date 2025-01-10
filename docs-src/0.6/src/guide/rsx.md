@@ -27,78 +27,37 @@ This means you can reuse your knowledge of the web and build your app using `div
 The RSX syntax is a "strict" form of Rust that uses Rust's `Struct` syntax for assembling elements:
 
 ```rust
-rsx! {
-    div {
-        class: "bg-red-100"
-    }
-}
+{{#include src/doc_examples/guide_rsx.rs:rsx_is_html}}
 ```
 
 Elements in RSX differ slightly from Rust struct syntax: they can also contain child structs placed immediately after the final attribute.
 
 ```rust
-rsx! {
-    div { class: "bg-red-100",
-        button {
-            onclick: move |_| info!("Clicked"),
-            "Click me!"
-        }
-    }
-}
+{{#include src/doc_examples/guide_rsx.rs:child_rsx}}
 ```
 
 Additionally, all quoted strings in RSX imply `format!()` automatically, so you can define a variable outside your markup and use it in your strings without an explicit format call:
 
 ```rust
-rsx! {
-    div { "Breed: {breed}" }
-}
+{{#include src/doc_examples/guide_rsx.rs:rsx_format}}
 ```
 
 Any expression that can be rendered to a String can be included directly in RSX. RSX also accepts `Option<Element>` and iterators of Elements:
 
 ```rust
-rsx! {
-    // Anything that's `Display`
-    {"Something"}
-
-    // Optionals
-    {show_title.and_then(|| rsx! { "title!" } )}
-
-    // And iterators
-    ul {
-        {(0..5).map(|i| rsx! { "{i}" })}
-    }
-}
+{{#include src/doc_examples/guide_rsx.rs:rsx_expression}}
 ```
 
 Dioxus provides two items of syntax sugar for these common cases: `for` loops and `if` chains. These blocks return the contained RSX directly.
 
 ```rust
-rsx! {
-    if show_title {
-        "title!"
-    }
-
-    ul {
-        for item in 0..5 {
-            "{item}"
-        }
-    }
-}
+{{#include src/doc_examples/guide_rsx.rs:rsx_loop}}
 ```
 
 For lists, Dioxus uses the `key` attribute to ensure it's comparing the right elements between renders. If you forget to add a `key` attribute to your list item, you might run into performance and state management issues. Usually you can find a unique key to differentiate your list items:
 
 ```rust
-rsx! {
-    for user in users {
-        div {
-            key: "{user.id}",
-            "{user.name}"
-        }
-    }
-}
+{{#include src/doc_examples/guide_rsx.rs:rsx_keyed}}
 ```
 
 ## Adding UI to our *HotDog* App
@@ -107,21 +66,7 @@ Let's add a basic UI to our app. We'll add a header, a body image for the dog ph
 
 
 ```rust
-#[component]
-fn App() -> Element {
-    rsx! {
-        div { id: "title",
-            h1 { "HotDog! 🌭" }
-        }
-        div { id: "dogview",
-            img { src: "https://images.dog.ceo/breeds/pitbull/dog-3981540_1280.jpg" }
-        }
-        div { id: "buttons",
-            button { id: "skip", "skip" }
-            button { id: "save", "save!" }
-        }
-    }
-}
+{{#include src/doc_examples/guide_rsx.rs:adding_ui}}
 ```
 
 Our app is coming together!

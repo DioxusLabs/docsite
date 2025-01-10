@@ -63,5 +63,5 @@ fn App() -> Element {
     }
     // ANCHOR_END: loop
 
-    rsx! {  }
+    rsx! {}
 }

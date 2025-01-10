@@ -60,7 +60,7 @@ mod save_dog_launch {
 mod separate_server_launch {
     use dioxus::prelude::*;
 
-    fn app() -> Element {
+    fn App() -> Element {
         rsx! { "hello world" }
     }
 
@@ -71,7 +71,7 @@ mod separate_server_launch {
             .unwrap()
             .block_on(launch_server());
         #[cfg(not(feature = "server"))]
-        dioxus::launch(app);
+        dioxus::launch(App);
     }
 
     #[cfg(feature = "server")]
@@ -84,7 +84,7 @@ mod separate_server_launch {
 
         // Build a custom axum router
         let router = axum::Router::new()
-            .serve_dioxus_application(ServeConfigBuilder::new(), app)
+            .serve_dioxus_application(ServeConfigBuilder::new(), App)
             .into_make_service();
 
         // And launch it!
@@ -126,7 +126,7 @@ mod server_client_split_fixed {
 mod server_client_split_client_broken {
     use dioxus::prelude::*;
 
-    fn app() -> Element {
+    fn App() -> Element {
         rsx! { "hello world" }
     }
 
@@ -137,7 +137,7 @@ mod server_client_split_client_broken {
 
         // ..
 
-        dioxus::launch(app);
+        dioxus::launch(App);
     }
     // ANCHOR_END: server_client_split_broken_client_broken
 }
@@ -183,7 +183,7 @@ mod save_dog_call {
     // ANCHOR: save_dog_client_body
     fn DogView() -> Element {
         let mut img_src = use_resource(snipped!());
-    
+
         // ...
         rsx! {
             // ...
@@ -194,14 +194,14 @@ mod save_dog_call {
                     onclick: move |_| async move {
                         // Clone the current image
                         let current = img_src.cloned().unwrap();
-    
+
                         // Start fetching a new image
                         img_src.restart();
-    
+
                         // And call the `save_dog` server function
                         _ = save_dog(current).await;
                     },
-    
+
                     "save!"
                 }
             }

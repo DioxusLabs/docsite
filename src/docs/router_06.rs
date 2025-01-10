@@ -5976,7 +5976,7 @@ pub fn GuideState() -> dioxus::prelude::Element {
             "In the  "
             code { "DogView" }
             " component, we want to attach an action to the click of the buttons. For example: skipping or saving the current dog photo. We can use an "
-            a { href: "../reference/event_handlers", "EventListener" }
+            a { href: "../reference/event_handlers", "EventHandler" }
             " to listen for the "
             code { "click" }
             " events."
@@ -6066,7 +6066,7 @@ pub fn GuideState() -> dioxus::prelude::Element {
         blockquote {
             p {
                 "📣 Manually creating Signals requires remembering to call  "
-                code { ".dispose()" }
+                code { ".manually_drop()" }
                 " on the signal whereas  "
                 code { "use_signal" }
                 " cleans the Signal up for you automatically."
@@ -6381,9 +6381,11 @@ pub fn GuideBackend() -> dioxus::prelude::Element {
             "Before we can start using server functions, we need to enable the \"fullstack\" feature on Dioxus in our Cargo.toml."
         }
         CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">[dependencies]\n</span><span style=\"color:#f8f8f2;\">dioxus </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">{{ version </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;0.6.0&quot;</span><span style=\"color:#f8f8f2;\">, features </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">[</span><span style=\"color:#ffee99;\">&quot;fullstack&quot;</span><span style=\"color:#f8f8f2;\">] }}</span></pre>\n" }
-        p { "We also need to add the \"server\" feature to our app's features, also in the Cargo.toml" }
+        p {
+            "We also need to add the \"server\" feature to our app's features in the Cargo.toml and remove the default web target."
+        }
         CodeBlock {
-            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">[features]\n</span><span style=\"color:#f8f8f2;\">default </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">[</span><span style=\"color:#ffee99;\">&quot;web&quot;</span><span style=\"color:#f8f8f2;\">]\n</span><span style=\"color:#f8f8f2;\">web </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">[</span><span style=\"color:#ffee99;\">&quot;dioxus/web&quot;</span><span style=\"color:#f8f8f2;\">]\n</span><span style=\"color:#f8f8f2;\">desktop </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">[</span><span style=\"color:#ffee99;\">&quot;dioxus/desktop&quot;</span><span style=\"color:#f8f8f2;\">]\n</span><span style=\"color:#f8f8f2;\">mobile </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">[</span><span style=\"color:#ffee99;\">&quot;dioxus/mobile&quot;</span><span style=\"color:#f8f8f2;\">]\n</span><span style=\"color:#f8f8f2;\">server </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">[</span><span style=\"color:#ffee99;\">&quot;dioxus/server&quot;</span><span style=\"color:#f8f8f2;\">] </span><span style=\"color:#f92672;\"># &lt;-----</span><span style=\"color:#f8f8f2;\"> add this additional platform</span></pre>\n",
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">[features]\n</span><span style=\"color:#f8f8f2;\">default </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">[] </span><span style=\"color:#f92672;\"># &lt;-----</span><span style=\"color:#f8f8f2;\"> remove the default web target\n</span><span style=\"color:#f8f8f2;\">web </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">[</span><span style=\"color:#ffee99;\">&quot;dioxus/web&quot;</span><span style=\"color:#f8f8f2;\">]\n</span><span style=\"color:#f8f8f2;\">desktop </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">[</span><span style=\"color:#ffee99;\">&quot;dioxus/desktop&quot;</span><span style=\"color:#f8f8f2;\">]\n</span><span style=\"color:#f8f8f2;\">mobile </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">[</span><span style=\"color:#ffee99;\">&quot;dioxus/mobile&quot;</span><span style=\"color:#f8f8f2;\">]\n</span><span style=\"color:#f8f8f2;\">server </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">[</span><span style=\"color:#ffee99;\">&quot;dioxus/server&quot;</span><span style=\"color:#f8f8f2;\">] </span><span style=\"color:#f92672;\"># &lt;-----</span><span style=\"color:#f8f8f2;\"> add this additional target</span></pre>\n",
         }
         p {
             "If you selected "
@@ -6400,9 +6402,11 @@ pub fn GuideBackend() -> dioxus::prelude::Element {
             }
         }
         p {
-            "Give your app a moment to build again and make sure that the \"fullstack\" feature is enabled in  "
+            "Now instead of running  "
             code { "dx serve" }
-            "."
+            ", you need to run with a manual platform with  "
+            code { "dx serve --platform web" }
+            ". Give your app a moment to build again and make sure that the \"fullstack\" feature is enabled in the dashboard."
         }
         p {
             img {
@@ -6534,12 +6538,12 @@ pub fn GuideBackend() -> dioxus::prelude::Element {
             name: "guide_backend.rs".to_string(),
         }
         p {
-            "While Dioxus expects a \"server\" feature, it does not expect a \"client\" feature. It is assumed that all client code will make it to the server. However, some libraries like web-sys only work when running in the browser, so make sure to not run specific client code in your server functions or before your  "
+            "In addition to the \"server\" feature, Dioxus expects a client side rendering feature like \"web\" or \"desktop\". Some libraries like web-sys only work when running in the browser, so make sure to not run specific client code in your server functions or before your  "
             code { "launch" }
-            "."
+            ". You can place client only code under a config for a client target feature like \"web\"."
         }
         CodeBlock {
-            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">main</span><span style=\"color:#f8f8f2;\">() {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#8c8c8c;\">// ❌ attempting to use web_sys on the server will panic!\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> window </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">web_sys::window();\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#8c8c8c;\">// ..\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">    dioxus::launch(App);\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">main</span><span style=\"color:#f8f8f2;\">() {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#8c8c8c;\">// ❌ attempting to use web_sys on the server will panic!\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> window </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">web_sys::window();\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#8c8c8c;\">// ✅ moving the web-sys call under the web feature flag will make sure it only runs in the browser\n</span><span style=\"color:#f8f8f2;\">    #[cfg(feature </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;web&quot;</span><span style=\"color:#f8f8f2;\">)]\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> window </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">web_sys::window();\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#8c8c8c;\">// ..\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">    dioxus::launch(App);\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
             name: "guide_backend.rs".to_string(),
         }
         h2 { id: "managing-dependencies",

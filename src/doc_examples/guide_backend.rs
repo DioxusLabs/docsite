@@ -123,23 +123,26 @@ mod server_client_split_fixed {
     // ANCHOR_END: server_client_split_fixed
 }
 
-mod server_client_split_client_broken {
+mod server_client_split_client {
     use dioxus::prelude::*;
 
     fn App() -> Element {
         rsx! { "hello world" }
     }
 
-    // ANCHOR: server_client_split_broken_client_broken
+    // ANCHOR: server_client_split_client
     fn main() {
         // ❌ attempting to use web_sys on the server will panic!
+        let window = web_sys::window();
+        // ✅ moving the web-sys call under the web feature flag will make sure it only runs in the browser
+        #[cfg(feature = "web")]
         let window = web_sys::window();
 
         // ..
 
         dioxus::launch(App);
     }
-    // ANCHOR_END: server_client_split_broken_client_broken
+    // ANCHOR_END: server_client_split_client
 }
 
 mod save_dog_v2 {

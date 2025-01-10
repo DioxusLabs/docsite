@@ -12,7 +12,7 @@ Before we get too far, let's split our app into two parts: the `Title` and the `
 
 ## Event Handlers
 
-In the `DogView` component, we want to attach an action to the click of the buttons. For example: skipping or saving the current dog photo. We can use an [EventListener](../reference/event_handlers.md) to listen for the `click` events.
+In the `DogView` component, we want to attach an action to the click of the buttons. For example: skipping or saving the current dog photo. We can use an [EventHandler](../reference/event_handlers.md) to listen for the `click` events.
 
 Event handlers are similar to regular attributes, but their name usually starts with `on` - and they accept closures as values. The closure will be called whenever its corresponding event is triggered. The listener receives information about the event in the [Event](https://docs.rs/dioxus/latest/dioxus/prelude/struct.Event.html) object.
 
@@ -44,7 +44,7 @@ While `use_hook` makes it possible to store any value that implements `Clone`, y
 
 `Signal` is a wrapper type around an ordinary Rust value that tracks reads and writes, bringing your app to life. You can wrap any Rust value in a signal. Signals can be created manually with `Signal::new()` but we strongly recommend using the `use_signal` hook instead.
 
-> 📣 Manually creating Signals requires remembering to call `.dispose()` on the signal whereas `use_signal` cleans the Signal up for you automatically.
+> 📣 Manually creating Signals requires remembering to call `.manually_drop()` on the signal whereas `use_signal` cleans the Signal up for you automatically.
 
 Whenever a signal's value changes, its containing "reactive scope" will be "marked dirty" and re-run. By default, Dioxus components are reactive scopes, and thus, will re-render whenever a signal value changes.
 

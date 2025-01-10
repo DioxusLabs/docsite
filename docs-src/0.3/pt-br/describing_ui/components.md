@@ -2,7 +2,7 @@
 
 Assim como você não gostaria de escrever um programa complexo em uma única e longa função `main`, você não deve construir uma interface complexa em uma única função `App`. Em vez disso, seria melhor dividir a funcionalidade de um aplicativo em partes lógicas chamadas componentes.
 
-Um componente é uma função Rust, nomeada em _UpperCammelCase_, que recebe um parâmetro `Scope` e retorna um `Element` descrevendo a interface do usuário que deseja renderizar. Na verdade, nossa função `App` é um componente!
+Um componente é uma função Rust, nomeada em _UpperCamelCase_, que recebe um parâmetro `Scope` e retorna um `Element` descrevendo a interface do usuário que deseja renderizar. Na verdade, nossa função `App` é um componente!
 
 ```rust
 {{#include src/doc_examples/untested_03/hello_world_desktop.rs:component}}

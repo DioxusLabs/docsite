@@ -7713,7 +7713,7 @@ pub fn GuideDeploy() -> dioxus::prelude::Element {
             a { href: "http://workers.cloudflare.com", "Cloudflare Workers" }
             " and "
             a { href: "https://www.fermyon.com/spin", "Fermyon Spin" }
-            " provider WASM-based containers for apps. WASM runtimes are typically cheaper to operate and can horizontally scale better than a traditional virtual-machine based container. When deploying on WASM runtimes, you will need to create a WASM build of your server manually."
+            " provide WASM-based containers for apps. WASM runtimes are typically cheaper to operate and can horizontally scale better than a traditional virtual-machine based container. When deploying on WASM runtimes, you will need to create a WASM build of your server manually."
         }
         p {
             "Running the webserver is as simple as executing  "
@@ -10288,7 +10288,7 @@ pub fn GuidesDesktopIndex() -> dioxus::prelude::Element {
         }
         ul {
             li {
-                a { href: "https://github.com/DioxusLabs/dioxus/blob/main/examples/file_explorer.rs",
+                a { href: "https://github.com/DioxusLabs/dioxus/tree/main/example-projects/file-explorer",
                     "File Explorer"
                 }
             }
@@ -13501,7 +13501,7 @@ pub fn ReferenceComponents() -> dioxus::prelude::Element {
             " function. Instead, you should break down the functionality of an app in logical parts called components."
         }
         p {
-            "A component is a Rust function, named in UpperCammelCase, that either takes no parameters or a properties struct and returns an  "
+            "A component is a Rust function, named in UpperCamelCase, that either takes no parameters or a properties struct and returns an  "
             code { "Element" }
             " describing the UI it wants to render."
         }
@@ -13513,7 +13513,7 @@ pub fn ReferenceComponents() -> dioxus::prelude::Element {
             p {
                 "You'll probably want to add  "
                 code { "#![allow(non_snake_case)]" }
-                " to the top of your crate to avoid warnings about UpperCammelCase component names"
+                " to the top of your crate to avoid warnings about UpperCamelCase component names"
             }
         }
         p {

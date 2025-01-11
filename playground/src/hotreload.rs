@@ -1,5 +1,4 @@
 //! Simplified hot reloading for a single main.rs file.
-use crate::build::BuildState;
 use dioxus::{logger::tracing::error, prelude::*};
 use dioxus_core::internal::{
     HotReloadTemplateWithLocation, HotReloadedTemplate, TemplateGlobalKey,
@@ -13,8 +12,8 @@ use std::{collections::HashMap, fmt::Display, path::Path};
 use syn::spanned::Spanned as _;
 
 /// Atempts to hot reload and returns true if a full rebuild is needed.
-pub fn attempt_hot_reload(build: BuildState, mut hot_reload: HotReload, new_code: &str) {
-    if !build.stage().is_finished() || hot_reload.needs_rebuild() {
+pub fn attempt_hot_reload(mut hot_reload: HotReload, new_code: &str) {
+    if hot_reload.needs_rebuild() {
         return;
     }
 

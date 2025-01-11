@@ -2,7 +2,10 @@ use dioxus::prelude::*;
 use dioxus_document::eval;
 use dioxus_sdk::utils::{timing::use_debounce, window::use_window_size};
 
-use crate::build::{BuildStage, BuildState};
+use crate::{
+    build::{BuildStage, BuildState},
+    snippets::{SelectedExample, EXAMPLES},
+};
 
 /// Stores data required for draggable pane resizing to work.
 #[derive(Default)]
@@ -27,6 +30,7 @@ pub fn Panes(
     built_page_url: Memo<Option<String>>,
 ) -> Element {
     let build = use_context::<BuildState>();
+    let selected_example = use_context::<Signal<SelectedExample>>();
     let mut draggable_mouse_down = use_signal(|| false);
     let mut mouse_data = use_signal(DraggableData::default);
 
@@ -121,6 +125,10 @@ pub fn Panes(
                         iframe {
                             id: "dxp-viewport",
                             src: "{url}",
+                        }
+                    } else if let Some(example_id) = selected_example().0 {
+                        div {
+                            {EXAMPLES[example_id].2()}
                         }
                     } else {
                         p { "Click `Run` to start a build!"}

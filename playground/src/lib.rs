@@ -7,26 +7,23 @@ use dioxus_sdk::{
     theme::{use_system_theme, SystemTheme},
     utils::timing::use_debounce,
 };
-use editor::monaco::{monaco_loader_src, on_monaco_load, Marker, MarkerSeverity};
+use editor::monaco::{monaco_loader_src, on_monaco_load, use_monaco_markers};
 use hotreload::{attempt_hot_reload, HotReload};
-use model::CargoLevel;
 use share_code::use_share_code;
+use snippets::{use_provide_selected_example, SelectedExample};
 use std::time::Duration;
 
 mod build;
 mod components;
 mod editor;
 mod error;
-mod examples;
 mod hotreload;
 mod share_code;
+mod snippets;
 mod ws;
 
 const DXP_CSS: Asset = asset!("/assets/dxp.css");
-
-// const MONACO_FOLDER_OPTIONS: FolderAssetOptions =
-//     FolderAssetOptions::new().with_preserve_files(true);
-const MONACO_FOLDER: Asset = asset!("/assets/monaco-editor-0.52.2"); //asset!("/assets/monaco-editor-0.52", MONACO_FOLDER_OPTIONS); //&str = "/assets/monaco-editor-0.52.2";
+const MONACO_FOLDER: Asset = asset!("/assets/monaco-editor-0.52.2");
 
 /// Include the template main.rs to get the extra lines for things like hot reload.
 const TEMPLATE_MAIN_RS: &str = include_str!("../../server/template/snippets/main.rs");
@@ -48,6 +45,7 @@ pub struct PlaygroundUrls {
 pub fn Playground(urls: PlaygroundUrls, share_code: Option<String>) -> Element {
     let build = use_context_provider(BuildState::new);
     let mut hot_reload = use_context_provider(HotReload::new);
+    let mut selected_example = use_provide_selected_example(build, hot_reload);
 
     // We store the shared code in state as the editor may not be initialized yet.
     let mut show_share_warning = use_signal(|| false);
@@ -56,42 +54,14 @@ pub fn Playground(urls: PlaygroundUrls, share_code: Option<String>) -> Element {
     // Handle events when code changes.
     let on_model_changed = use_debounce(Duration::from_millis(150), move |new_code: String| {
         editor::monaco::set_markers(&[]);
-        attempt_hot_reload(build, hot_reload, &new_code);
+
+        if build.stage().is_finished() && selected_example().0.is_none() {
+            attempt_hot_reload(hot_reload, &new_code);
+        }
     });
 
     // Handle setting diagnostics based on build state.
-    use_effect(move || {
-        let diagnostics = build.diagnostics();
-
-        let mut markers = Vec::new();
-        for diagnostic in diagnostics.read().iter() {
-            let severity = match diagnostic.level {
-                CargoLevel::Error => MarkerSeverity::Error,
-                CargoLevel::Warning => MarkerSeverity::Warning,
-            };
-
-            for span in diagnostic.spans.iter() {
-                let diagnostic_message = diagnostic.message.clone();
-                let message = match span.label.clone() {
-                    Some(label) => format!("{}\n{}", diagnostic_message, label),
-                    None => diagnostic_message,
-                };
-                
-                let marker = Marker {
-                    message,
-                    severity,
-                    start_line_number: span.line_start.saturating_sub(EXTRA_LINE_COUNT()),
-                    end_line_number: span.line_end.saturating_sub(EXTRA_LINE_COUNT()),
-                    start_column: span.column_start,
-                    end_column: span.column_end,
-                };
-
-                markers.push(marker);
-            }
-        }
-
-        editor::monaco::set_markers(&markers);
-    });
+    use_monaco_markers(build.diagnostics());
 
     // Themes
     let system_theme = use_system_theme();
@@ -106,6 +76,7 @@ pub fn Playground(urls: PlaygroundUrls, share_code: Option<String>) -> Element {
             return;
         }
         hot_reload.set_needs_rebuild(false);
+        selected_example.set(SelectedExample(None));
 
         // Update hot reload
         let code = editor::monaco::get_current_model_value();
@@ -143,6 +114,7 @@ pub fn Playground(urls: PlaygroundUrls, share_code: Option<String>) -> Element {
                     MONACO_FOLDER,
                     system_theme().unwrap_or(SystemTheme::Light),
                     shared_code(),
+                    selected_example,
                     hot_reload,
                     on_model_changed
                 );

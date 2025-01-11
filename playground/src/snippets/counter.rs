@@ -1,7 +1,9 @@
+use dioxus::prelude::*;
+
 #[component]
-fn App() -> Element {
+pub fn App() -> Element {
     let mut count = use_signal(|| 0);
-    
+
     rsx! {
         p { "Count: {count}" }
 
@@ -10,7 +12,7 @@ fn App() -> Element {
             button {
                 onclick: move |_| count -= 1,
                 "-"
-                
+
             }
             button {
                 onclick: move |_| count += 1,

@@ -1,6 +1,11 @@
-use crate::{examples, hotreload::HotReload};
+use crate::{
+    hotreload::HotReload,
+    snippets::{self, SelectedExample},
+    EXTRA_LINE_COUNT,
+};
 use dioxus::prelude::*;
 use dioxus_sdk::{theme::SystemTheme, utils::timing::UseDebounce};
+use model::{CargoDiagnostic, CargoLevel};
 use serde::{Deserialize, Serialize};
 use wasm_bindgen::prelude::*;
 
@@ -16,18 +21,54 @@ pub fn monaco_loader_src(folder: Asset) -> String {
     format!("{prefix}/loader.js")
 }
 
+/// Use monaco code markers for build diagnostics.
+pub fn use_monaco_markers(diagnostics: Signal<Vec<CargoDiagnostic>>) {
+    let mut markers = Vec::new();
+    for diagnostic in diagnostics.read().iter() {
+        let severity = match diagnostic.level {
+            CargoLevel::Error => MarkerSeverity::Error,
+            CargoLevel::Warning => MarkerSeverity::Warning,
+        };
+
+        for span in diagnostic.spans.iter() {
+            let diagnostic_message = diagnostic.message.clone();
+            let message = match span.label.clone() {
+                Some(label) => format!("{}\n{}", diagnostic_message, label),
+                None => diagnostic_message,
+            };
+
+            let marker = Marker {
+                message,
+                severity,
+                start_line_number: span.line_start.saturating_sub(EXTRA_LINE_COUNT()),
+                end_line_number: span.line_end.saturating_sub(EXTRA_LINE_COUNT()),
+                start_column: span.column_start,
+                end_column: span.column_end,
+            };
+
+            markers.push(marker);
+        }
+    }
+
+    set_markers(&markers);
+}
+
 /// Initialize Monaco once the loader script loads.
 pub fn on_monaco_load(
     folder: Asset,
     system_theme: SystemTheme,
     shared_code: Option<String>,
+    mut selected_example: Signal<SelectedExample>,
     mut hot_reload: HotReload,
     on_model_changed: UseDebounce<String>,
 ) {
     // If shared code is available, use it, otherwise replace with starter snippet.
     let snippet = match shared_code {
         Some(c) => c,
-        None => examples::SNIPPETS[0].1.to_string(),
+        None => {
+            selected_example.set(SelectedExample(Some(0)));
+            snippets::EXAMPLES[0].1.to_string()
+        }
     };
 
     let monaco_prefix = monaco_vs_prefix(folder);

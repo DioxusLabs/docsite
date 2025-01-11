@@ -2,7 +2,8 @@ use crate::build::BuildState;
 use crate::components::icons::{ArrowDownIcon, LoadingSpinner};
 use crate::hotreload::HotReload;
 use crate::share_code::copy_share_link;
-use crate::{editor::monaco, examples, PlaygroundUrls};
+use crate::snippets::SelectedExample;
+use crate::{editor::monaco, snippets, PlaygroundUrls};
 use dioxus::prelude::*;
 use dioxus_sdk::utils::timing::use_debounce;
 use std::time::Duration;
@@ -16,6 +17,7 @@ pub fn Header(
 ) -> Element {
     let build = use_context::<BuildState>();
     let hot_reload = use_context::<HotReload>();
+    let mut selected_example = use_context::<Signal<SelectedExample>>();
 
     let mut examples_open = use_signal(|| false);
     let mut show_share_copied = use_signal(|| false);
@@ -37,7 +39,10 @@ pub fn Header(
                     id: "dxp-run-btn",
                     class: "dxp-ctrl-btn",
                     class: if build.stage().is_running() || !hot_reload.needs_rebuild() { "disabled" },
-                    onclick: move |_| on_run.call(()),
+                    onclick: move |_| {
+                        examples_open.set(false);
+                        on_run.call(());
+                    },
 
                     if build.stage().is_running() {
                         LoadingSpinner {}
@@ -53,7 +58,7 @@ pub fn Header(
                     } else {
                        "Run"
                     }
-                    
+
                 }
 
                 // Examples button/menu
@@ -62,8 +67,13 @@ pub fn Header(
                     button {
                         id: "dxp-examples-btn",
                         class: "dxp-ctrl-btn",
+                        class: if build.stage().is_running() { "disabled" },
                         class: if examples_open() { "dxp-open" },
-                        onclick: move |_| examples_open.set(!examples_open()),
+                        onclick: move |_| {
+                            if !build.stage().is_running() {
+                                examples_open.set(!examples_open());
+                            }
+                        },
                         "Examples"
                         ArrowDownIcon {}
                     }
@@ -72,11 +82,14 @@ pub fn Header(
                         div {
                             id: "dxp-examples-dropdown",
 
-                            for snippet in examples::SNIPPETS {
+                            for (i, snippet) in snippets::EXAMPLES.into_iter().enumerate() {
                                 button {
                                     onclick: move |_| {
-                                        examples_open.set(false);
-                                        monaco::set_current_model_value(snippet.1);
+                                        if !build.stage().is_running() {
+                                            examples_open.set(false);
+                                            selected_example.set(SelectedExample(Some(i)));
+                                            monaco::set_current_model_value(snippet.1);
+                                        }
                                     },
                                     "{snippet.0}"
                                 }

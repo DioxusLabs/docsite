@@ -131,6 +131,10 @@
   min-width: 100px;
 }
 
+#dxp-examples-btn.disabled:hover {
+  cursor: not-allowed;
+}
+
 #dxp-examples-btn.dxp-open {
   border: 1px solid var(--dxp-border-light-lighter);
 }

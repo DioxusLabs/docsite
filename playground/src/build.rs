@@ -47,7 +47,7 @@ impl BuildStage {
 pub(crate) struct BuildState {
     stage: Signal<BuildStage>,
     queue_position: Signal<Option<usize>>,
-    diagnostics: Signal<Vec<CargoDiagnostic>>
+    diagnostics: Signal<Vec<CargoDiagnostic>>,
 }
 
 impl BuildState {

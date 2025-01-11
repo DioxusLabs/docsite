@@ -8,21 +8,34 @@ model = { path = "model" }
 dioxus-playground = { path = "playground" }
 
 # Dioxus
-dioxus = "0.6"
-dioxus-document = "0.6"
-dioxus-sdk = "0.6"
-dioxus-core = "0.6"
-dioxus-core-types = "0.6"
-dioxus-devtools = "0.6"
-dioxus-rsx-hotreload = "0.6"
-dioxus-rsx = "0.6"
-dioxus-html = "0.6"
-dioxus-rsx-rosetta = "0.6"
-dioxus-autofmt = "0.6"
-dioxus-dx-wire-format = { git = "https://github.com/dioxuslabs/dioxus", rev = "30f760c" }
+# dioxus = "0.6"
+# dioxus-document = "0.6"
+# dioxus-sdk = "0.6"
+# dioxus-core = "0.6"
+# dioxus-core-types = "0.6"
+# dioxus-devtools = "0.6"
+# dioxus-rsx-hotreload = "0.6"
+# dioxus-rsx = "0.6"
+# dioxus-html = { version = "0.6", default-features = false }
+# dioxus-rsx-rosetta = "0.6"
+# dioxus-autofmt = "0.6"
+# dioxus-dx-wire-format = { git = "https://github.com/dioxuslabs/dioxus", rev = "30f760c" }
+# dioxus-logger = "0.6"
 
-# Logger is integrated now but server still needs it.
-dioxus-logger = "0.6"
+dioxus = { path = "../dioxus/packages/dioxus" }
+dioxus-document = { path = "../dioxus/packages/document" }
+dioxus-sdk = { path = "../sdk-upstream/sdk" } #git = "https://github.com/DioxusLabs/sdk" }
+dioxus-core = { path = "../dioxus/packages/core" }
+dioxus-core-types = { path = "../dioxus/packages/core-types" }
+dioxus-devtools = { path = "../dioxus/packages/devtools" }
+dioxus-rsx-hotreload = { path = "../dioxus/packages/rsx-hotreload" }
+dioxus-rsx = { path = "../dioxus/packages/rsx" }
+dioxus-html = { path = "../dioxus/packages/html", default-features = false }
+dioxus-rsx-rosetta = { path = "../dioxus/packages/rsx-rosetta" }
+dioxus-autofmt = { path = "../dioxus/packages/autofmt" }
+dioxus-dx-wire-format = { path = "../dioxus/packages/dx-wire-format" }
+dioxus-logger = { path = "../dioxus/packages/logger" }
+
 
 serde = { version = "1.0.215", features = ["derive"] }
 serde_json = "1.0.133"

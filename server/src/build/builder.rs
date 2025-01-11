@@ -42,9 +42,7 @@ impl Builder {
 
     /// Start a new build, cancelling any ongoing builds.
     pub fn start(&mut self, request: BuildRequest) {
-        let _ = request
-            .ws_msg_tx
-            .send(BuildMessage::QueuePosition(0));
+        let _ = request.ws_msg_tx.send(BuildMessage::QueuePosition(0));
 
         self.stop_current();
         self.is_building.store(true, Ordering::SeqCst);

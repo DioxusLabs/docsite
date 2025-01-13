@@ -44,9 +44,7 @@
 </span><span style="color:#f8f8f2;">                    response.</span><span style="color:#66d9ef;">set</span><span style="color:#f8f8f2;">(</span><span style="color:#ffee99;">&quot;dioxuslabs.com responded!&quot;</span><span style="color:#f8f8f2;">.</span><span style="color:#66d9ef;">into</span><span style="color:#f8f8f2;">());
 </span><span style="color:#f8f8f2;">                }
 </span><span style="color:#f8f8f2;">                </span><span style="font-style:italic;color:#66d9ef;">Err</span><span style="color:#f8f8f2;">(err) </span><span style="color:#f92672;">=&gt; </span><span style="color:#f8f8f2;">{
-</span><span style="color:#f8f8f2;">                    log::info</span><span style="color:#f92672;">!</span><span style="color:#f8f8f2;">(
-</span><span style="color:#f8f8f2;">                        </span><span style="color:#ffee99;">&quot;Request failed with error: {err:?}&quot;
-</span><span style="color:#f8f8f2;">                    )
+</span><span style="color:#f8f8f2;">                    log::info</span><span style="color:#f92672;">!</span><span style="color:#f8f8f2;">(</span><span style="color:#ffee99;">&quot;Request failed with error: {err:?}&quot;</span><span style="color:#f8f8f2;">)
 </span><span style="color:#f8f8f2;">                }
 </span><span style="color:#f8f8f2;">            }
 </span><span style="color:#f8f8f2;">        }

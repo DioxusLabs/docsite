@@ -43,7 +43,10 @@
 </span><span style="color:#f8f8f2;">    </span><span style="color:#8c8c8c;">// You can pass a second argument to the asset macro to set up options for the asset
 </span><span style="color:#f8f8f2;">    ImageAssetOptions::new()
 </span><span style="color:#f8f8f2;">        </span><span style="color:#8c8c8c;">// You can set the image size in pixels at compile time to send the smallest possible image to the client
-</span><span style="color:#f8f8f2;">        .</span><span style="color:#66d9ef;">with_size</span><span style="color:#f8f8f2;">(ImageSize::Manual { width: </span><span style="color:#ff80f4;">52</span><span style="color:#f8f8f2;">, height: </span><span style="color:#ff80f4;">52 </span><span style="color:#f8f8f2;">})
+</span><span style="color:#f8f8f2;">        .</span><span style="color:#66d9ef;">with_size</span><span style="color:#f8f8f2;">(ImageSize::Manual {
+</span><span style="color:#f8f8f2;">            width: </span><span style="color:#ff80f4;">52</span><span style="color:#f8f8f2;">,
+</span><span style="color:#f8f8f2;">            height: </span><span style="color:#ff80f4;">52
+</span><span style="color:#f8f8f2;">        })
 </span><span style="color:#f8f8f2;">        </span><span style="color:#8c8c8c;">// You can also convert the image to a web friendly format at compile time. This can make your images significantly smaller
 </span><span style="color:#f8f8f2;">        .</span><span style="color:#66d9ef;">with_format</span><span style="color:#f8f8f2;">(ImageFormat::Avif)
 </span><span style="color:#f8f8f2;">);

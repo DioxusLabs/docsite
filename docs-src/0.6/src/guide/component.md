@@ -7,9 +7,7 @@ Now that we've initialized our *HotDog* app, we can start building out its compo
 In Dioxus, apps are comprised of individual functions called *Components* that take in some *Properties* and render an *Element*:
 
 ```rust
-fn DogApp(props: DogAppProps) -> Element {
-    // ...
-}
+{{#include src/doc_examples/guide_component.rs:dog_app_component_props_fn}}
 ```
 
 ## Component Properties
@@ -17,19 +15,13 @@ fn DogApp(props: DogAppProps) -> Element {
 All components take an object that outlines which parameters the component can accept. All `Props` structs in Dioxus need to derive the `Properties` trait which requires both `Clone` and `PartialEq`:
 
 ```rust
-#[derive(Props, PartialEq, Clone)]
-struct DogAppProps {
-    breed: String
-}
+{{#include src/doc_examples/guide_component.rs:dog_app_component_props}}
 ```
 
 Dioxus provides the `#[component]` macro for simplifying how components are defined. This macro converts the parameters of the annotated function into a hidden accompanying struct.
 
 ```rust
-#[component]
-fn DogApp(breed: String) -> Element {
-    // ...
-}
+{{#include src/doc_examples/guide_component.rs:dog_app_component_macro}}
 ```
 
 When building apps, you'll frequently use the `#[component]` macro. When building libraries, we generally suggest deriving Props instead.
@@ -41,11 +33,7 @@ If you're familiar with JavaScript, then you might also be familiar with librari
 Just like React, Dioxus components are rendered by calling the function component. On every render, Dioxus makes a `.clone()` of the component's props. This ensures you can't accidentally modify your props which can lead to hard-to-track issues with state management.
 
 ```rust
-fn DogApp(props: DogAppProps) -> Element {
-    tracing::info!("Rendered with breed: {}", props.breed);
-
-    // ...
-}
+{{#include src/doc_examples/guide_component.rs:dog_app_component_props_clone}}
 ```
 
 Dioxus provides types that make `.clone()` cheaper to call, so don't worry about performance gotchas here.
@@ -59,12 +47,7 @@ When Dioxus re-renders your component, it compares the `Element` returned from t
 For example, when the `breed` property changes on the DogApp component, Dioxus will call the DogApp function a second time and compare the previous Element against the new Element.
 
 ```rust
-#[component]
-fn DogApp(breed: String) -> Element {
-	rsx! {
-		"Breed: {breed}"
-	}
-}
+{{#include src/doc_examples/guide_component.rs:dog_app_component_run}}
 ```
 
 ![Diffing](/assets/06_docs/diffing_diagram.png)
@@ -83,14 +66,7 @@ In Dioxus, *Components* are composed together to create *Apps*. Each component w
 To compose components together, we'll use the `rsx! {}` macro to define the structure of our app.
 
 ```rust
-#[component]
-fn App() -> Element {
-    rsx! {
-        Header {}
-        DogApp { breed: "corgi" }
-        Footer {}
-    }
-}
+{{#include src/doc_examples/guide_component.rs:dog_app_component_compose}}
 ```
 
 We'll cover `rsx! {}` in more depth in the [next chapter](rsx.md).

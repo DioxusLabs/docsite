@@ -8,7 +8,6 @@ async fn get_server_data() -> Result<String, ServerFnError> {
 }
 // ANCHOR_END: server_function
 
-
 use dioxus_fullstack::prelude::*;
 
 #[tokio::main]

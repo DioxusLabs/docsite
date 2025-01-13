@@ -4,7 +4,7 @@ mod handle_none {
     use super::*;
     // ANCHOR: none
     fn App() -> Element {
-        rsx! {  }
+        rsx! {}
     }
     // ANCHOR_END: none
 }

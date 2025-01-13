@@ -22,9 +22,7 @@ pub fn App(cx: Scope) -> Element {
                         response.set("dioxuslabs.com responded!".into());
                     }
                     Err(err) => {
-                        log::info!(
-                            "Request failed with error: {err:?}"
-                        )
+                        log::info!("Request failed with error: {err:?}")
                     }
                 }
             }

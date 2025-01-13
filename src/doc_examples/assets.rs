@@ -18,7 +18,10 @@ pub const ENUM_ROUTER_IMG: Asset = asset!(
     // You can pass a second argument to the asset macro to set up options for the asset
     ImageAssetOptions::new()
         // You can set the image size in pixels at compile time to send the smallest possible image to the client
-        .with_size(ImageSize::Manual { width: 52, height: 52 })
+        .with_size(ImageSize::Manual {
+            width: 52,
+            height: 52
+        })
         // You can also convert the image to a web friendly format at compile time. This can make your images significantly smaller
         .with_format(ImageFormat::Avif)
 );

@@ -65,23 +65,13 @@ dioxus = { version = "0.6.0", features = ["fullstack", "router"] } # <----- add 
 Next, the Dioxus router is defined as an enum with the `Routable` derive attribute:
 
 ```rust
-#[derive(Routable, Clone, PartialEq)]
-enum Route {
-    #[route("/")]
-    DogView,
-}
+{{#include src/doc_examples/guide_router.rs:new_router}}
 ```
 
 With the Dioxus router, every route is an enum variant with a `#[route]` attribute that specifics the route's URL. Whenever the router renders our route, the component of the same name will be rendered.
 
 ```rust
-#[derive(Routable, Clone, PartialEq)]
-enum Route {
-    #[route("/")]
-    DogView,     // <---- a DogView component must be in scope
-}
-
-fn DogView() -> Element { /* */ }
+{{#include src/doc_examples/guide_router.rs:new_router_with_component}}
 ```
 
 
@@ -90,28 +80,13 @@ fn DogView() -> Element { /* */ }
 Now that we have our app's `Route` defined, we need to render it. Let's change our `app` component to render the `Route {}` component instead of the `DogView`.
 
 ```rust
-fn app() -> Element {
-    rsx! {
-        document::Stylesheet { href: asset!("/assets/main.css") }
-
-        // 📣 delete Title and DogView and replace it with the Router component.
-        Router::<Route> {}
-    }
-}
+{{#include src/doc_examples/guide_router.rs:rendering_the_route}}
 ```
 
 When the `Router {}` component renders, it will parse the document's current URL into a `Route` variant. If the url doesn't parse properly, the router will render nothing unless you add a "catch-all" route:
 
 ```rust
-#[derive(Routable, Clone, PartialEq)]
-enum Route {
-    // ...
-    // We can collect the segments of the URL into a Vec<String>
-    #[route("/:..segments")]
-    PageNotFound {
-        segments: Vec<String>,
-    },
-}
+{{#include src/doc_examples/guide_router.rs:catch_all}}
 ```
 
 Note here that the `PageNotFound` route takes the "segments" parameter. Dioxus routes are not only type-safe as variants, but also type-safe with URL parameters. For more information on how this works, [check the router guide](../router/index.md).
@@ -129,29 +104,13 @@ In our `src/components/nav.rs` file, we'll add back our Title code, but rename i
 
 ```rust
 use crate::Route;
-use dioxus::prelude::*;
-
-#[component]
-pub fn NavBar() -> Element {
-    rsx! {
-        div { id: "title",
-            Link { to: Route::DogView,
-                h1 { "🌭 HotDog! " }
-            }
-        }
-        Outlet::<Route> {}
-    }
-}
+{{#include src/doc_examples/guide_router.rs:nav_bar}}
 ```
 
 The `Link {}` component wraps the anchor `<a>` element with a type-safe interface. This means any struct that implements `Routable` - anything that can `.to_string()` - is a valid navigation target.
 
 ```rust
-// Using the Link with Route
-Link { to: Route::DogView }
-
-// Or passing in a "/" route directly
-Link { to: "/" }
+{{#include src/doc_examples/guide_router.rs:link}}
 ```
 
 The Link component takes many different arguments, making it possible to extend and customize for your use-case.
@@ -161,16 +120,11 @@ In `NavBar`, we also added an `Outlet::<Route> {}` component. When the Router co
 To actually add the NavBar component to our app, we need to update our `Route` enum with the `#[layout]` attribute. This forces the router to render the `NavBar` component *first* so it can expose its `Outlet {}`.
 
 ```rust
-#[derive(Routable, PartialEq, Clone)]
-enum Route {
-    #[layout(NavBar)] // <---- add the #[layout] attribute
-    #[route("/")]
-    DogView,
-}
+{{#include src/doc_examples/guide_router.rs:nav_bar_router}}
 ```
 
 The `layout` attribute instructs the Router to wrap the following enum variants in the given component.
-```rust
+```rust, ignore
 Router  {
     NavBar {
         Outlet {
@@ -193,46 +147,20 @@ Now that we understand the fundamentals of routing, let's finally add our *Favor
 We'll start by creating an empty component `src/components/favorites.rs`:
 
 ```rust
-use dioxus::prelude::*;
-
-#[component]
-pub fn Favorites() -> Element {
-    rsx! { "favorites!" }
-}
+{{#include src/doc_examples/guide_router.rs:favorites}}
 ```
 
 And then let's make sure to add a new variant in our `Route` enum:
 
 ```rust
-#[derive(Routable, PartialEq, Clone)]
-enum Route {
-    #[layout(NavBar)]
-    #[route("/")]
-    DogView,
-
-    #[route("/favorites")]
-    Favorites,     // <------ add this new variant
-}
+{{#include src/doc_examples/guide_router.rs:favorites_router}}
 ```
 
 To make sure the user can reach this page, let's also add a button in the nav that points to it.
 
 ```rust
 use crate::Route;
-use dioxus::prelude::*;
-
-#[component]
-pub fn NavBar() -> Element {
-    rsx! {
-        div { id: "title",
-            Link { to: Route::DogView,
-                h1 { "🌭 HotDog! " }
-            }
-            Link { to: Route::Favorites, id: "heart", "♥️" } // <------- add this Link
-        }
-        Outlet::<Route> {}
-    }
-}
+{{#include src/doc_examples/guide_router.rs:nav_bar_favorites_link}}
 ```
 
 ## Our Favorites Page
@@ -240,48 +168,13 @@ pub fn NavBar() -> Element {
 Finally, we can build our favorites page. Let's add a new `list_dogs` server function that fetches the 10 most recently saved dog photos:
 
 ```rust
-// Query the database and return the last 10 dogs and their url
-#[server]
-pub async fn list_dogs() -> Result<Vec<(usize, String)>, ServerFnError> {
-    let dogs = DB.with(|f| {
-        f.prepare("SELECT id, url FROM dogs ORDER BY id DESC LIMIT 10")
-            .unwrap()
-            .query_map([], |row| Ok((row.get(0)?, row.get(1)?)))
-            .unwrap()
-            .map(|r| r.unwrap())
-            .collect()
-    });
-
-    Ok(dogs)
-}
+{{#include src/doc_examples/guide_router.rs:list_dogs}}
 ```
 
 Now, we can fill in our component. We're going to use the same `use_resource` hook from earlier. Resolving the request from the server might take some time, so we'll use the `.suspend()?` method on `Resource` to wait for the request to finish before mapping the contents to a list.
 
 ```rust
-use dioxus::prelude::*;
-
-#[component]
-pub fn Favorites() -> Element {
-    // Create a pending resource that resolves to the list of dogs from the backend
-    // Wait for the favorites list to resolve with `.suspend()`
-    let mut favorites = use_resource(crate::backend::list_dogs).suspend()?;
-
-    rsx! {
-        div { id: "favorites",
-            div { id: "favorites-container",
-                for (id, url) in favorites().unwrap() {
-                    // Render a div for each photo using the dog's ID as the list key
-                    div {
-                        key: id,
-                        class: "favorite-dog",
-                        img { src: "{url}" }
-                    }
-                }
-            }
-        }
-    }
-}
+{{#include src/doc_examples/guide_router.rs:favorites_list_dogs}}
 ```
 
 As a stretch goal, try adding a button that lets the user also delete items from the database.

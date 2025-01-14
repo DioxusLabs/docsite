@@ -131,7 +131,7 @@ pub fn Panes(
                             {EXAMPLES[example_id].2()}
                         }
                     } else {
-                        p { "Click `Run` to start a build!"}
+                        p { "Click `Run` to start a build!" }
                     }
                 }
             }

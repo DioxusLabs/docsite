@@ -58,13 +58,35 @@ To connect to our database, we're going to use the `rusqlite::Connection`. Rusql
 When the connection is initialized, we'll run a SQL action to create the "dogs" table with our data.
 
 ```rust
-{{#include src/doc_examples/guide_databases.rs:initialize_database}}
+// The database is only available to server code
+#[cfg(feature = "server")]
+thread_local! {
+    pub static DB: rusqlite::Connection = {
+        // Open the database from the persisted "hotdog.db" file
+        let conn = rusqlite::Connection::open("hotdog.db").expect("Failed to open database");
+
+        // Create the "dogs" table if it doesn't already exist
+        conn.execute_batch(
+            "CREATE TABLE IF NOT EXISTS dogs (
+                id INTEGER PRIMARY KEY,
+                url TEXT NOT NULL
+            );",
+        ).unwrap();
+
+        // Return the connection
+        conn
+    };
+}
 ```
 
 Now, in our `save_dog` server function, we can use SQL to insert the value into the database:
 
 ```rust
-{{#include src/doc_examples/guide_databases.rs:save_dog}}
+#[server]
+async fn save_dog(image: String) -> Result<(), ServerFnError> {
+    DB.with(|f| f.execute("INSERT INTO dogs (url) VALUES (?1)", &[&image]))?;
+    Ok(())
+}
 ```
 
 Once the app is launched, you should see a "hotdog.db" file in your crate's directory. Let's save a few dog photos and then open the database in a database viewer. If all goes well, you should see the saved dog photos!

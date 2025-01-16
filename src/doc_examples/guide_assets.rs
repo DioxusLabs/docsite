@@ -49,10 +49,10 @@ mod asset_optimization {
     use dioxus::prelude::*;
 
     fn main() {
-        // ANCHOR: asset_expansion
+        // ANCHOR: asset_optimization
         // would output main-j1238nask123.css
         asset!("/assets/main.css").to_string();
-        // ANCHOR_END: asset_expansion
+        // ANCHOR_END: asset_optimization
         // ANCHOR: image_asset_expansion
         // outputs icon-j1238jd2.avif
         asset!("/assets/icon.png", ImageAssetOptions::new().with_avif());

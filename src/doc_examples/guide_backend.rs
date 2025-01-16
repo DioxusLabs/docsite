@@ -44,7 +44,7 @@ mod save_dog_server {
 mod save_dog_launch {
     use dioxus::prelude::*;
 
-    // ANCHOR: save_dog_server
+    // ANCHOR: save_dog_launch
     async fn launch(config: ServeConfig, app: fn() -> Element) {
         // register server functions
         let router = axum::Router::new().serve_dioxus_application(config, app);
@@ -54,7 +54,7 @@ mod save_dog_launch {
         let listener = tokio::net::TcpListener::bind(socket_addr).await.unwrap();
         axum::serve(listener, router).await.unwrap();
     }
-    // ANCHOR_END: save_dog_server
+    // ANCHOR_END: save_dog_launch
 }
 
 mod separate_server_launch {
@@ -180,7 +180,7 @@ mod save_dog_call {
         };
     }
 
-    // ANCHOR: save_dog_client_body
+    // ANCHOR: save_dog_call
     fn DogView() -> Element {
         let mut img_src = use_resource(snipped!());
 

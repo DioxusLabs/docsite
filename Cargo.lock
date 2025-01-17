@@ -1316,6 +1316,7 @@ dependencies = [
 [[package]]
 name = "dioxus-sdk"
 version = "0.6.0"
+source = "git+https://github.com/dioxuslabs/sdk?branch=nightly#9d322a6869c24d75b7f8110f8a85d8f7e0d73b80"
 dependencies = [
  "cfg-if",
  "dioxus",

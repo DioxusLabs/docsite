@@ -1,11 +1,10 @@
+use crate::{
+    build::{BuildStage, BuildState},
+    snippets::{CounterExample, SelectedExample, WelcomeExample},
+};
 use dioxus::prelude::*;
 use dioxus_document::eval;
 use dioxus_sdk::utils::{timing::use_debounce, window::use_window_size};
-
-use crate::{
-    build::{BuildStage, BuildState},
-    snippets::{SelectedExample, EXAMPLES},
-};
 
 /// Stores data required for draggable pane resizing to work.
 #[derive(Default)]
@@ -95,6 +94,7 @@ pub fn Panes(
         pane_right_width.set(Some(prev_mouse_data.second_width - delta_x));
     };
 
+    let selected_example = selected_example();
     rsx! {
         // Panes
         div {
@@ -126,9 +126,13 @@ pub fn Panes(
                             id: "dxp-viewport",
                             src: "{url}",
                         }
-                    } else if let Some(example_id) = selected_example().0 {
+                    } else if selected_example.is_some() {
                         div {
-                            {EXAMPLES[example_id].2()}
+                            match selected_example {
+                                SelectedExample::Welcome => rsx! { WelcomeExample {} },
+                                SelectedExample::Counter => rsx! { CounterExample {} },
+                                _ => rsx! {},
+                            }
                         }
                     } else {
                         p { "Click `Run` to start a build!" }

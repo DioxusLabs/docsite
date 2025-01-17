@@ -66,7 +66,7 @@ pub fn on_monaco_load(
     let snippet = match shared_code {
         Some(c) => c,
         None => {
-            selected_example.set(SelectedExample(Some(0)));
+            selected_example.set(SelectedExample::Welcome);
             snippets::EXAMPLES[0].1.to_string()
         }
     };

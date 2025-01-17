@@ -52,10 +52,10 @@ pub fn Playground(urls: PlaygroundUrls, share_code: Option<String>) -> Element {
     let shared_code = use_share_code(share_code, show_share_warning, hot_reload);
 
     // Handle events when code changes.
-    let on_model_changed = use_debounce(Duration::from_millis(150), move |new_code: String| {
+    let on_model_changed = use_debounce(Duration::from_millis(250), move |new_code: String| {
         editor::monaco::set_markers(&[]);
 
-        if build.stage().is_finished() && selected_example().0.is_none() {
+        if build.stage().is_finished() && !selected_example().is_some() {
             attempt_hot_reload(hot_reload, &new_code);
         }
     });
@@ -76,7 +76,7 @@ pub fn Playground(urls: PlaygroundUrls, share_code: Option<String>) -> Element {
             return;
         }
         hot_reload.set_needs_rebuild(false);
-        selected_example.set(SelectedExample(None));
+        selected_example.set(SelectedExample::None);
 
         // Update hot reload
         let code = editor::monaco::get_current_model_value();

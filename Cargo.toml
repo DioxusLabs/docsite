@@ -25,7 +25,7 @@ dioxus-playground = { path = "playground" }
 # Dioxus Main
 dioxus = { git = "https://github.com/dioxuslabs/dioxus" }
 dioxus-document = { git = "https://github.com/dioxuslabs/dioxus" }
-dioxus-sdk = { git = "https://github.com/dioxuslabs/dioxus", branch = "nightly" }
+dioxus-sdk = { git = "https://github.com/dioxuslabs/sdk", branch = "nightly" }
 dioxus-core = { git = "https://github.com/dioxuslabs/dioxus" }
 dioxus-core-types = { git = "https://github.com/dioxuslabs/dioxus" }
 dioxus-devtools = { git = "https://github.com/dioxuslabs/dioxus" }

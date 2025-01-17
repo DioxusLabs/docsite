@@ -2,7 +2,7 @@ use crate::build::BuildState;
 use crate::components::icons::{ArrowDownIcon, LoadingSpinner};
 use crate::hotreload::HotReload;
 use crate::share_code::copy_share_link;
-use crate::snippets::SelectedExample;
+use crate::snippets::{SelectedExample, EXAMPLES};
 use crate::{editor::monaco, snippets, PlaygroundUrls};
 use dioxus::prelude::*;
 use dioxus_sdk::utils::timing::use_debounce;
@@ -87,7 +87,7 @@ pub fn Header(
                                     onclick: move |_| {
                                         if !build.stage().is_running() {
                                             examples_open.set(false);
-                                            selected_example.set(SelectedExample(Some(i)));
+                                            selected_example.set(EXAMPLES[i].2);
                                             monaco::set_current_model_value(snippet.1);
                                         }
                                     },

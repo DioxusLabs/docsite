@@ -6,6 +6,8 @@ use dioxus::prelude::*;
 use dioxus_document::eval;
 use dioxus_sdk::utils::{timing::use_debounce, window::use_window_size};
 
+use super::Logs;
+
 /// Stores data required for draggable pane resizing to work.
 #[derive(Default)]
 struct DraggableData {
@@ -95,6 +97,8 @@ pub fn Panes(
     };
 
     let selected_example = selected_example();
+    let build_stage = build.stage();
+
     rsx! {
         // Panes
         div {
@@ -117,7 +121,7 @@ pub fn Panes(
                 id: "dxp-panes-right",
                 style: if let Some(val) = pane_right_width() { "width:{val}px;" },
 
-                if build.stage().is_running() {
+                if build_stage.is_running() {
                     Progress {}
                 } else {
                     // Viewport
@@ -126,6 +130,8 @@ pub fn Panes(
                             id: "dxp-viewport",
                             src: "{url}",
                         }
+                    } else if build_stage.is_err() {
+                        Logs {}
                     } else if selected_example.is_some() {
                         div {
                             match selected_example {

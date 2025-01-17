@@ -28,6 +28,18 @@ impl BuildStage {
         None
     }
 
+    pub fn is_err(&self) -> bool {
+        matches!(self, Self::Finished(Err(_)))
+    }
+
+    pub fn err_message(&self) -> Option<String> {
+        if let Self::Finished(Err(e)) = self {
+            return Some(e.to_string());
+        }
+
+        None
+    }
+
     /// Extract the compiling stage info if available.
     pub fn get_compiling_stage(&self) -> Option<(usize, usize, String)> {
         if let Self::Building(model::BuildStage::Compiling {

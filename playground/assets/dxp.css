@@ -11,6 +11,10 @@
 
   --dxp-text-light: #131313;
 
+  --dxp-log-info-light: #002fff;
+  --dxp-log-warn-light: #ff8400;
+  --dxp-log-error-light: #ff0000;
+
   /* Dark Theme */
   --dxp-bg-dark-darker: #21252E;
   --dxp-bg-dark: #2B303B;
@@ -21,6 +25,72 @@
   --dxp-border-dark-lighter: #8292B2;
 
   --dxp-text-dark: #dfdfdf;
+
+  --dxp-log-info-dark: #4fa2f0;
+  --dxp-log-warn-dark: #f0b04f;
+  --dxp-log-error-dark: #f04f4f;
+
+  /* Both Themes */
+  --dxp-log-border: #374155;
+}
+
+#logs {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  overflow-y: auto;
+}
+
+#logs .log {
+  padding: 20px 15px;
+  transition: background-color 0.3s ease;
+  color: var(--dxp-text-light);
+  border-bottom: var(--dxp-log-border) 1px solid;
+}
+
+#logs .log:hover {
+  background-color: var(--dxp-bg-light);
+}
+
+#logs .log .log-level {
+  font-family: "Inter", sans-serif;
+  padding-top: 0px;
+  padding-bottom: 10px;
+  margin: 0px;
+}
+
+#logs .log .level-error {
+  color: var(--dxp-log-error-light);
+}
+
+#logs .log .level-warn {
+  color: var(--dxp-log-warn-light);
+}
+
+#logs .log .level-info {
+  color: var(--dxp-log-info-light)
+}
+
+#logs .log .log-codeblock {
+  background-color: var(--dxp-bg-light);
+  padding: 10px;
+  border-radius: 10px;
+  border: var(--dxp-border-light) 1px solid;
+}
+
+#logs .log .log-message, #logs.log.log-span {
+  font-family: ui-monospace, SFMono-Regular, SF Mono, Menlo, Consolas, Liberation Mono, monospace;
+}
+
+#logs .log .log-message {
+  padding: 0px;
+  margin: 0px;
+}
+
+#logs .log .log-span {
+  padding: 0px;
+  margin: 0px;
+  font-family: ui-monospace, SFMono-Regular, SF Mono, Menlo, Consolas, Liberation Mono, monospace;
 }
 
 /* Header */
@@ -410,6 +480,7 @@
 }
 
 @media screen and (prefers-color-scheme: dark) {
+  /* Header */
   #dxp-header {
     border: 1px solid var(--dxp-border-dark);
     background-color: var(--dxp-bg-dark-darker);
@@ -471,6 +542,8 @@
     border: 1px solid var(--dxp-border-dark-lighter);
   }
 
+  /* Panes */
+
   #dxp-panes {
     border-left: 1px solid var(--dxp-border-dark);
     border-bottom: 1px solid var(--dxp-border-dark);
@@ -495,8 +568,10 @@
   }
 
   #dxp-panes-right>#dxp-progress-container>#dxp-progress {
-    background-color: var(--dxp-bg-dark-lighter); 
+    background-color: var(--dxp-bg-dark-lighter);
   }
+
+  /* Modal */
 
   #dxp-modal {
     background-color: var(--dxp-bg-dark);
@@ -511,6 +586,33 @@
 
   #dxp-modal-ok-btn:hover {
     background-color: var(--dxp-bg-dark-lighter-alt);
+  }
+
+  /* Logs */
+
+  #logs .log {
+    color: var(--dxp-text-dark);
+  }
+  
+  #logs .log:hover {
+    background-color: var(--dxp-bg-dark);
+  }
+  
+  #logs .log .level-error {
+    color: var(--dxp-log-error-dark);
+  }
+  
+  #logs .log .level-warn {
+    color: var(--dxp-log-warn-dark);
+  }
+  
+  #logs .log .level-info {
+    color: var(--dxp-log-info-dark)
+  }
+  
+  #logs .log .log-codeblock {
+    background-color: var(--dxp-bg-dark);
+    border-color: var(--dxp-border-dark);
   }
 }
 

@@ -209,7 +209,7 @@ fn process_dx_message(request: &BuildRequest, message: String) {
             };
 
             // Don't send any diagnostics for dependencies.
-            if diagnostic.target_crate != format!("play-{}", request.id.to_string()) {
+            if diagnostic.target_crate != format!("play-{}", request.id) {
                 return;
             }
 

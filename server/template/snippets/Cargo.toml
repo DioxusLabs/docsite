@@ -7,8 +7,7 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
-dioxus = { path = "../../../dioxus/packages/dioxus", features = ["web", "router"] }
-#dioxus = { version = "=0.6.1", features = ["web", "router"] }
+dioxus = { version = "=0.6.1", features = ["web", "router"] }
 
 [profile.dev]
 opt-level = 3

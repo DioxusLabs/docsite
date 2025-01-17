@@ -34,65 +34,6 @@
   --dxp-log-border: #374155;
 }
 
-#logs {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  overflow-y: auto;
-}
-
-#logs .log {
-  padding: 20px 15px;
-  transition: background-color 0.3s ease;
-  color: var(--dxp-text-light);
-  border-bottom: var(--dxp-log-border) 1px solid;
-}
-
-#logs .log:hover {
-  background-color: var(--dxp-bg-light);
-}
-
-#logs .log .log-level {
-  font-family: "Inter", sans-serif;
-  padding-top: 0px;
-  padding-bottom: 10px;
-  margin: 0px;
-}
-
-#logs .log .level-error {
-  color: var(--dxp-log-error-light);
-}
-
-#logs .log .level-warn {
-  color: var(--dxp-log-warn-light);
-}
-
-#logs .log .level-info {
-  color: var(--dxp-log-info-light)
-}
-
-#logs .log .log-codeblock {
-  background-color: var(--dxp-bg-light);
-  padding: 10px;
-  border-radius: 10px;
-  border: var(--dxp-border-light) 1px solid;
-}
-
-#logs .log .log-message, #logs.log.log-span {
-  font-family: ui-monospace, SFMono-Regular, SF Mono, Menlo, Consolas, Liberation Mono, monospace;
-}
-
-#logs .log .log-message {
-  padding: 0px;
-  margin: 0px;
-}
-
-#logs .log .log-span {
-  padding: 0px;
-  margin: 0px;
-  font-family: ui-monospace, SFMono-Regular, SF Mono, Menlo, Consolas, Liberation Mono, monospace;
-}
-
 /* Header */
 #dxp-header {
   border-top-left-radius: 5px;
@@ -432,6 +373,68 @@
   cursor: pointer;
 }
 
+/* Logs pane */
+
+#logs {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  overflow-y: auto;
+}
+
+#logs .log {
+  padding: 20px 15px;
+  transition: background-color 0.3s ease;
+  color: var(--dxp-text-light);
+  border-bottom: var(--dxp-log-border) 1px solid;
+}
+
+#logs .log:hover {
+  background-color: var(--dxp-bg-light);
+}
+
+#logs .log .log-level {
+  font-family: "Inter", sans-serif;
+  padding-top: 0px;
+  padding-bottom: 10px;
+  margin: 0px;
+}
+
+#logs .log .level-error {
+  color: var(--dxp-log-error-light);
+}
+
+#logs .log .level-warn {
+  color: var(--dxp-log-warn-light);
+}
+
+#logs .log .level-info {
+  color: var(--dxp-log-info-light)
+}
+
+#logs .log .log-codeblock {
+  background-color: var(--dxp-bg-light);
+  padding: 10px;
+  border-radius: 10px;
+  border: var(--dxp-border-light) 1px solid;
+}
+
+#logs .log .log-message, #logs.log.log-span {
+  font-family: ui-monospace, SFMono-Regular, SF Mono, Menlo, Consolas, Liberation Mono, monospace;
+}
+
+#logs .log .log-message {
+  padding: 0px;
+  margin: 0px;
+}
+
+#logs .log .log-span {
+  padding: 0px;
+  margin: 0px;
+  font-family: ui-monospace, SFMono-Regular, SF Mono, Menlo, Consolas, Liberation Mono, monospace;
+}
+
+/* Media Queries */
 @media screen and (max-width: 455px) {
 
   #dxp-header,

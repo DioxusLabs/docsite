@@ -3,10 +3,10 @@ Dioxus Playground is a code playground similar to the Rust playground except it 
 
 ### Design
 The playground is in a Cargo workspace with:
-- `web`: the playground component library.
+- `playground`: the playground component library.
 - `server`: an axum server that runs the build logic.
 - `model`: shared structures for communicating between web and server.
-- `runner`: currently wraps around the playground component to run it. (keeps unnescessary deps out of playground library)
+- `runner`: currently wraps around the playground component to run it.
 
 **Build Flow:**
 1. User submits code
@@ -28,6 +28,9 @@ Most of these are already set in the `Dockerfile` and shouldn't need modified.
 ```
 # The port the server should listen to.
 PORT = 3000
+
+# Whether the server should run in produce mode. This informs the server to use forwarded ip addresses.
+PRODUCTION = false
 
 # The build template that should be used.
 BUILD_TEMPLATE_PATH = "/usr/local/bin/template"

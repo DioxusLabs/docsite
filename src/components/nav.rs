@@ -303,13 +303,18 @@ fn SearchResults(results: Signal<Results>, search_text: Signal<String>) -> Eleme
 
     let _results = results.read();
     let results = _results.deref().as_ref().unwrap();
+    let cur_route = use_route::<Route>();
     let results = results
         .iter()
         .filter(|route| match route.route {
-            Route::Docs03 { .. } => false,
-            Route::Docs04 { .. } => false,
-            Route::Docs05 { .. } => false,
-            Route::Docs06 { .. } => true,
+            Route::Docs03 { .. } => matches!(cur_route, Route::Docs03 { .. }),
+            Route::Docs04 { .. } => matches!(cur_route, Route::Docs04 { .. }),
+            Route::Docs05 { .. } => matches!(cur_route, Route::Docs05 { .. }),
+            Route::Docs06 { .. } => {
+                !matches!(cur_route, Route::Docs03 { .. })
+                    && !matches!(cur_route, Route::Docs04 { .. })
+                    && !matches!(cur_route, Route::Docs05 { .. })
+            }
             _ => true,
         })
         .collect::<Vec<_>>();

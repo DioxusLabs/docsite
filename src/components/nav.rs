@@ -303,6 +303,16 @@ fn SearchResults(results: Signal<Results>, search_text: Signal<String>) -> Eleme
 
     let _results = results.read();
     let results = _results.deref().as_ref().unwrap();
+    let results = results
+        .iter()
+        .filter(|route| match route.route {
+            Route::Docs03 { .. } => false,
+            Route::Docs04 { .. } => false,
+            Route::Docs05 { .. } => false,
+            Route::Docs06 { .. } => true,
+            _ => true,
+        })
+        .collect::<Vec<_>>();
 
     use crate::docs::router_06::BookRoute;
 

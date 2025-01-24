@@ -100,6 +100,8 @@ pub enum BookRoute {
     GuidesSsr {},
     #[route("/guides/fullstack/")]
     GuidesFullstackIndex {},
+    #[route("/guides/fullstack/hydration")]
+    GuidesFullstackHydration {},
     #[route("/guides/fullstack/managing_dependencies")]
     GuidesFullstackManagingDependencies {},
     #[route("/guides/fullstack/server_functions")]
@@ -253,62 +255,63 @@ impl BookRoute {
             BookRoute::GuidesMobileApis {} => use_mdbook::mdbook_shared::PageId(42usize),
             BookRoute::GuidesSsr {} => use_mdbook::mdbook_shared::PageId(43usize),
             BookRoute::GuidesFullstackIndex {} => use_mdbook::mdbook_shared::PageId(44usize),
+            BookRoute::GuidesFullstackHydration {} => use_mdbook::mdbook_shared::PageId(45usize),
             BookRoute::GuidesFullstackManagingDependencies {} => {
-                use_mdbook::mdbook_shared::PageId(45usize)
-            }
-            BookRoute::GuidesFullstackServerFunctions {} => {
                 use_mdbook::mdbook_shared::PageId(46usize)
             }
-            BookRoute::GuidesFullstackExtractors {} => use_mdbook::mdbook_shared::PageId(47usize),
-            BookRoute::GuidesFullstackMiddleware {} => use_mdbook::mdbook_shared::PageId(48usize),
+            BookRoute::GuidesFullstackServerFunctions {} => {
+                use_mdbook::mdbook_shared::PageId(47usize)
+            }
+            BookRoute::GuidesFullstackExtractors {} => use_mdbook::mdbook_shared::PageId(48usize),
+            BookRoute::GuidesFullstackMiddleware {} => use_mdbook::mdbook_shared::PageId(49usize),
             BookRoute::GuidesFullstackAuthentication {} => {
-                use_mdbook::mdbook_shared::PageId(49usize)
+                use_mdbook::mdbook_shared::PageId(50usize)
             }
-            BookRoute::GuidesFullstackRouting {} => use_mdbook::mdbook_shared::PageId(50usize),
-            BookRoute::CookbookPublishing {} => use_mdbook::mdbook_shared::PageId(51usize),
-            BookRoute::CookbookAntipatterns {} => use_mdbook::mdbook_shared::PageId(52usize),
-            BookRoute::CookbookErrorHandling {} => use_mdbook::mdbook_shared::PageId(53usize),
-            BookRoute::CookbookIntegrationsIndex {} => use_mdbook::mdbook_shared::PageId(54usize),
-            BookRoute::CookbookIntegrationsLogging {} => use_mdbook::mdbook_shared::PageId(55usize),
+            BookRoute::GuidesFullstackRouting {} => use_mdbook::mdbook_shared::PageId(51usize),
+            BookRoute::CookbookPublishing {} => use_mdbook::mdbook_shared::PageId(52usize),
+            BookRoute::CookbookAntipatterns {} => use_mdbook::mdbook_shared::PageId(53usize),
+            BookRoute::CookbookErrorHandling {} => use_mdbook::mdbook_shared::PageId(54usize),
+            BookRoute::CookbookIntegrationsIndex {} => use_mdbook::mdbook_shared::PageId(55usize),
+            BookRoute::CookbookIntegrationsLogging {} => use_mdbook::mdbook_shared::PageId(56usize),
             BookRoute::CookbookIntegrationsInternationalization {} => {
-                use_mdbook::mdbook_shared::PageId(56usize)
+                use_mdbook::mdbook_shared::PageId(57usize)
             }
-            BookRoute::CookbookStateIndex {} => use_mdbook::mdbook_shared::PageId(57usize),
-            BookRoute::CookbookStateExternalIndex {} => use_mdbook::mdbook_shared::PageId(58usize),
+            BookRoute::CookbookStateIndex {} => use_mdbook::mdbook_shared::PageId(58usize),
+            BookRoute::CookbookStateExternalIndex {} => use_mdbook::mdbook_shared::PageId(59usize),
             BookRoute::CookbookStateCustomHooksIndex {} => {
-                use_mdbook::mdbook_shared::PageId(59usize)
+                use_mdbook::mdbook_shared::PageId(60usize)
             }
-            BookRoute::CookbookBundling {} => use_mdbook::mdbook_shared::PageId(60usize),
-            BookRoute::CookbookTesting {} => use_mdbook::mdbook_shared::PageId(61usize),
-            BookRoute::CookbookTailwind {} => use_mdbook::mdbook_shared::PageId(62usize),
-            BookRoute::CookbookOptimizing {} => use_mdbook::mdbook_shared::PageId(63usize),
-            BookRoute::MigrationIndex {} => use_mdbook::mdbook_shared::PageId(64usize),
-            BookRoute::ReferenceIndex {} => use_mdbook::mdbook_shared::PageId(65usize),
-            BookRoute::ReferenceHotreload {} => use_mdbook::mdbook_shared::PageId(66usize),
-            BookRoute::ReferenceRsx {} => use_mdbook::mdbook_shared::PageId(67usize),
-            BookRoute::ReferenceComponents {} => use_mdbook::mdbook_shared::PageId(68usize),
-            BookRoute::ReferenceComponentProps {} => use_mdbook::mdbook_shared::PageId(69usize),
-            BookRoute::ReferenceEventHandlers {} => use_mdbook::mdbook_shared::PageId(70usize),
-            BookRoute::ReferenceHooks {} => use_mdbook::mdbook_shared::PageId(71usize),
-            BookRoute::ReferenceUserInput {} => use_mdbook::mdbook_shared::PageId(72usize),
-            BookRoute::ReferenceContext {} => use_mdbook::mdbook_shared::PageId(73usize),
-            BookRoute::ReferenceDynamicRendering {} => use_mdbook::mdbook_shared::PageId(74usize),
-            BookRoute::ReferenceRouter {} => use_mdbook::mdbook_shared::PageId(75usize),
-            BookRoute::ReferenceUseResource {} => use_mdbook::mdbook_shared::PageId(76usize),
-            BookRoute::ReferenceUseCoroutine {} => use_mdbook::mdbook_shared::PageId(77usize),
-            BookRoute::ReferenceSpawn {} => use_mdbook::mdbook_shared::PageId(78usize),
-            BookRoute::ContributingIndex {} => use_mdbook::mdbook_shared::PageId(79usize),
+            BookRoute::CookbookBundling {} => use_mdbook::mdbook_shared::PageId(61usize),
+            BookRoute::CookbookTesting {} => use_mdbook::mdbook_shared::PageId(62usize),
+            BookRoute::CookbookTailwind {} => use_mdbook::mdbook_shared::PageId(63usize),
+            BookRoute::CookbookOptimizing {} => use_mdbook::mdbook_shared::PageId(64usize),
+            BookRoute::MigrationIndex {} => use_mdbook::mdbook_shared::PageId(65usize),
+            BookRoute::ReferenceIndex {} => use_mdbook::mdbook_shared::PageId(66usize),
+            BookRoute::ReferenceHotreload {} => use_mdbook::mdbook_shared::PageId(67usize),
+            BookRoute::ReferenceRsx {} => use_mdbook::mdbook_shared::PageId(68usize),
+            BookRoute::ReferenceComponents {} => use_mdbook::mdbook_shared::PageId(69usize),
+            BookRoute::ReferenceComponentProps {} => use_mdbook::mdbook_shared::PageId(70usize),
+            BookRoute::ReferenceEventHandlers {} => use_mdbook::mdbook_shared::PageId(71usize),
+            BookRoute::ReferenceHooks {} => use_mdbook::mdbook_shared::PageId(72usize),
+            BookRoute::ReferenceUserInput {} => use_mdbook::mdbook_shared::PageId(73usize),
+            BookRoute::ReferenceContext {} => use_mdbook::mdbook_shared::PageId(74usize),
+            BookRoute::ReferenceDynamicRendering {} => use_mdbook::mdbook_shared::PageId(75usize),
+            BookRoute::ReferenceRouter {} => use_mdbook::mdbook_shared::PageId(76usize),
+            BookRoute::ReferenceUseResource {} => use_mdbook::mdbook_shared::PageId(77usize),
+            BookRoute::ReferenceUseCoroutine {} => use_mdbook::mdbook_shared::PageId(78usize),
+            BookRoute::ReferenceSpawn {} => use_mdbook::mdbook_shared::PageId(79usize),
+            BookRoute::ContributingIndex {} => use_mdbook::mdbook_shared::PageId(80usize),
             BookRoute::ContributingProjectStructure {} => {
-                use_mdbook::mdbook_shared::PageId(80usize)
-            }
-            BookRoute::ContributingGuidingPrinciples {} => {
                 use_mdbook::mdbook_shared::PageId(81usize)
             }
-            BookRoute::ContributingRoadmap {} => use_mdbook::mdbook_shared::PageId(82usize),
-            BookRoute::CliIndex {} => use_mdbook::mdbook_shared::PageId(83usize),
-            BookRoute::CliCreating {} => use_mdbook::mdbook_shared::PageId(84usize),
-            BookRoute::CliConfigure {} => use_mdbook::mdbook_shared::PageId(85usize),
-            BookRoute::CliTranslate {} => use_mdbook::mdbook_shared::PageId(86usize),
+            BookRoute::ContributingGuidingPrinciples {} => {
+                use_mdbook::mdbook_shared::PageId(82usize)
+            }
+            BookRoute::ContributingRoadmap {} => use_mdbook::mdbook_shared::PageId(83usize),
+            BookRoute::CliIndex {} => use_mdbook::mdbook_shared::PageId(84usize),
+            BookRoute::CliCreating {} => use_mdbook::mdbook_shared::PageId(85usize),
+            BookRoute::CliConfigure {} => use_mdbook::mdbook_shared::PageId(86usize),
+            BookRoute::CliTranslate {} => use_mdbook::mdbook_shared::PageId(87usize),
         }
     }
 }
@@ -2068,6 +2071,61 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
         );
         pages.push((45usize, {
             ::use_mdbook::mdbook_shared::Page {
+                title: "Hydration".to_string(),
+                url: BookRoute::GuidesFullstackHydration {},
+                segments: vec![],
+                sections: vec![
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Hydration".to_string(),
+                        id: "hydration".to_string(),
+                        level: 1usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Rendering the initial HTML".to_string(),
+                        id: "rendering-the-initial-html".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Hydrating on the client".to_string(),
+                        id: "hydrating-on-the-client".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Hydration errors".to_string(),
+                        id: "hydration-errors".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Non-deterministic data with server cached".to_string(),
+                        id: "non-deterministic-data-with-server-cached".to_string(),
+                        level: 3usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Async loading with server futures".to_string(),
+                        id: "async-loading-with-server-futures".to_string(),
+                        level: 3usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Client only data with effects".to_string(),
+                        id: "client-only-data-with-effects".to_string(),
+                        level: 3usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Avoid side effects in server cached hooks".to_string(),
+                        id: "avoid-side-effects-in-server-cached-hooks".to_string(),
+                        level: 3usize,
+                    },
+                ],
+                raw: String::new(),
+                id: ::use_mdbook::mdbook_shared::PageId(45usize),
+            }
+        }));
+        page_id_mapping.insert(
+            BookRoute::GuidesFullstackHydration {},
+            ::use_mdbook::mdbook_shared::PageId(45usize),
+        );
+        pages.push((46usize, {
+            ::use_mdbook::mdbook_shared::Page {
                 title: "Managing Dependencies".to_string(),
                 url: BookRoute::GuidesFullstackManagingDependencies {},
                 segments: vec![],
@@ -2099,14 +2157,14 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(45usize),
+                id: ::use_mdbook::mdbook_shared::PageId(46usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::GuidesFullstackManagingDependencies {},
-            ::use_mdbook::mdbook_shared::PageId(45usize),
+            ::use_mdbook::mdbook_shared::PageId(46usize),
         );
-        pages.push((46usize, {
+        pages.push((47usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Server Functions".to_string(),
                 url: BookRoute::GuidesFullstackServerFunctions {},
@@ -2139,14 +2197,14 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(46usize),
+                id: ::use_mdbook::mdbook_shared::PageId(47usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::GuidesFullstackServerFunctions {},
-            ::use_mdbook::mdbook_shared::PageId(46usize),
+            ::use_mdbook::mdbook_shared::PageId(47usize),
         );
-        pages.push((47usize, {
+        pages.push((48usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Extractors".to_string(),
                 url: BookRoute::GuidesFullstackExtractors {},
@@ -2157,14 +2215,14 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     level: 1usize,
                 }],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(47usize),
+                id: ::use_mdbook::mdbook_shared::PageId(48usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::GuidesFullstackExtractors {},
-            ::use_mdbook::mdbook_shared::PageId(47usize),
+            ::use_mdbook::mdbook_shared::PageId(48usize),
         );
-        pages.push((48usize, {
+        pages.push((49usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Middleware".to_string(),
                 url: BookRoute::GuidesFullstackMiddleware {},
@@ -2175,14 +2233,14 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     level: 1usize,
                 }],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(48usize),
+                id: ::use_mdbook::mdbook_shared::PageId(49usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::GuidesFullstackMiddleware {},
-            ::use_mdbook::mdbook_shared::PageId(48usize),
+            ::use_mdbook::mdbook_shared::PageId(49usize),
         );
-        pages.push((49usize, {
+        pages.push((50usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Authentication".to_string(),
                 url: BookRoute::GuidesFullstackAuthentication {},
@@ -2193,14 +2251,14 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     level: 1usize,
                 }],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(49usize),
+                id: ::use_mdbook::mdbook_shared::PageId(50usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::GuidesFullstackAuthentication {},
-            ::use_mdbook::mdbook_shared::PageId(49usize),
+            ::use_mdbook::mdbook_shared::PageId(50usize),
         );
-        pages.push((50usize, {
+        pages.push((51usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Routing".to_string(),
                 url: BookRoute::GuidesFullstackRouting {},
@@ -2211,14 +2269,14 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     level: 1usize,
                 }],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(50usize),
+                id: ::use_mdbook::mdbook_shared::PageId(51usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::GuidesFullstackRouting {},
-            ::use_mdbook::mdbook_shared::PageId(50usize),
+            ::use_mdbook::mdbook_shared::PageId(51usize),
         );
-        pages.push((51usize, {
+        pages.push((52usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Publishing".to_string(),
                 url: BookRoute::CookbookPublishing {},
@@ -2261,14 +2319,14 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(51usize),
+                id: ::use_mdbook::mdbook_shared::PageId(52usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::CookbookPublishing {},
-            ::use_mdbook::mdbook_shared::PageId(51usize),
+            ::use_mdbook::mdbook_shared::PageId(52usize),
         );
-        pages.push((52usize, {
+        pages.push((53usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Anti-patterns".to_string(),
                 url: BookRoute::CookbookAntipatterns {},
@@ -2317,14 +2375,14 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(52usize),
+                id: ::use_mdbook::mdbook_shared::PageId(53usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::CookbookAntipatterns {},
-            ::use_mdbook::mdbook_shared::PageId(52usize),
+            ::use_mdbook::mdbook_shared::PageId(53usize),
         );
-        pages.push((53usize, {
+        pages.push((54usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Error Handling".to_string(),
                 url: BookRoute::CookbookErrorHandling {},
@@ -2362,28 +2420,28 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(53usize),
+                id: ::use_mdbook::mdbook_shared::PageId(54usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::CookbookErrorHandling {},
-            ::use_mdbook::mdbook_shared::PageId(53usize),
+            ::use_mdbook::mdbook_shared::PageId(54usize),
         );
-        pages.push((54usize, {
+        pages.push((55usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Integrations".to_string(),
                 url: BookRoute::CookbookIntegrationsIndex {},
                 segments: vec![],
                 sections: vec![],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(54usize),
+                id: ::use_mdbook::mdbook_shared::PageId(55usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::CookbookIntegrationsIndex {},
-            ::use_mdbook::mdbook_shared::PageId(54usize),
+            ::use_mdbook::mdbook_shared::PageId(55usize),
         );
-        pages.push((55usize, {
+        pages.push((56usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Logging".to_string(),
                 url: BookRoute::CookbookIntegrationsLogging {},
@@ -2421,14 +2479,14 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(55usize),
+                id: ::use_mdbook::mdbook_shared::PageId(56usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::CookbookIntegrationsLogging {},
-            ::use_mdbook::mdbook_shared::PageId(55usize),
+            ::use_mdbook::mdbook_shared::PageId(56usize),
         );
-        pages.push((56usize, {
+        pages.push((57usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Internationalization".to_string(),
                 url: BookRoute::CookbookIntegrationsInternationalization {},
@@ -2439,14 +2497,14 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     level: 1usize,
                 }],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(56usize),
+                id: ::use_mdbook::mdbook_shared::PageId(57usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::CookbookIntegrationsInternationalization {},
-            ::use_mdbook::mdbook_shared::PageId(56usize),
+            ::use_mdbook::mdbook_shared::PageId(57usize),
         );
-        pages.push((57usize, {
+        pages.push((58usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "State Management".to_string(),
                 url: BookRoute::CookbookStateIndex {},
@@ -2457,14 +2515,14 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     level: 1usize,
                 }],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(57usize),
+                id: ::use_mdbook::mdbook_shared::PageId(58usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::CookbookStateIndex {},
-            ::use_mdbook::mdbook_shared::PageId(57usize),
+            ::use_mdbook::mdbook_shared::PageId(58usize),
         );
-        pages.push((58usize, {
+        pages.push((59usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "External State".to_string(),
                 url: BookRoute::CookbookStateExternalIndex {},
@@ -2487,14 +2545,14 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(58usize),
+                id: ::use_mdbook::mdbook_shared::PageId(59usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::CookbookStateExternalIndex {},
-            ::use_mdbook::mdbook_shared::PageId(58usize),
+            ::use_mdbook::mdbook_shared::PageId(59usize),
         );
-        pages.push((59usize, {
+        pages.push((60usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Custom Hooks".to_string(),
                 url: BookRoute::CookbookStateCustomHooksIndex {},
@@ -2517,14 +2575,14 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(59usize),
+                id: ::use_mdbook::mdbook_shared::PageId(60usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::CookbookStateCustomHooksIndex {},
-            ::use_mdbook::mdbook_shared::PageId(59usize),
+            ::use_mdbook::mdbook_shared::PageId(60usize),
         );
-        pages.push((60usize, {
+        pages.push((61usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Bundle Config".to_string(),
                 url: BookRoute::CookbookBundling {},
@@ -2535,14 +2593,14 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     level: 3usize,
                 }],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(60usize),
+                id: ::use_mdbook::mdbook_shared::PageId(61usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::CookbookBundling {},
-            ::use_mdbook::mdbook_shared::PageId(60usize),
+            ::use_mdbook::mdbook_shared::PageId(61usize),
         );
-        pages.push((61usize, {
+        pages.push((62usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Testing".to_string(),
                 url: BookRoute::CookbookTesting {},
@@ -2570,14 +2628,14 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(61usize),
+                id: ::use_mdbook::mdbook_shared::PageId(62usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::CookbookTesting {},
-            ::use_mdbook::mdbook_shared::PageId(61usize),
+            ::use_mdbook::mdbook_shared::PageId(62usize),
         );
-        pages.push((62usize, {
+        pages.push((63usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Tailwind".to_string(),
                 url: BookRoute::CookbookTailwind {},
@@ -2615,14 +2673,14 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(62usize),
+                id: ::use_mdbook::mdbook_shared::PageId(63usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::CookbookTailwind {},
-            ::use_mdbook::mdbook_shared::PageId(62usize),
+            ::use_mdbook::mdbook_shared::PageId(63usize),
         );
-        pages.push((63usize, {
+        pages.push((64usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Optimizing".to_string(),
                 url: BookRoute::CookbookOptimizing {},
@@ -2675,14 +2733,14 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(63usize),
+                id: ::use_mdbook::mdbook_shared::PageId(64usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::CookbookOptimizing {},
-            ::use_mdbook::mdbook_shared::PageId(63usize),
+            ::use_mdbook::mdbook_shared::PageId(64usize),
         );
-        pages.push((64usize, {
+        pages.push((65usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Migrating to v0.6".to_string(),
                 url: BookRoute::MigrationIndex {},
@@ -2760,14 +2818,14 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(64usize),
+                id: ::use_mdbook::mdbook_shared::PageId(65usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::MigrationIndex {},
-            ::use_mdbook::mdbook_shared::PageId(64usize),
+            ::use_mdbook::mdbook_shared::PageId(65usize),
         );
-        pages.push((65usize, {
+        pages.push((66usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Reference".to_string(),
                 url: BookRoute::ReferenceIndex {},
@@ -2778,14 +2836,14 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     level: 1usize,
                 }],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(65usize),
+                id: ::use_mdbook::mdbook_shared::PageId(66usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::ReferenceIndex {},
-            ::use_mdbook::mdbook_shared::PageId(65usize),
+            ::use_mdbook::mdbook_shared::PageId(66usize),
         );
-        pages.push((66usize, {
+        pages.push((67usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Hot-Reload".to_string(),
                 url: BookRoute::ReferenceHotreload {},
@@ -2808,14 +2866,14 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(66usize),
+                id: ::use_mdbook::mdbook_shared::PageId(67usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::ReferenceHotreload {},
-            ::use_mdbook::mdbook_shared::PageId(66usize),
+            ::use_mdbook::mdbook_shared::PageId(67usize),
         );
-        pages.push((67usize, {
+        pages.push((68usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "RSX".to_string(),
                 url: BookRoute::ReferenceRsx {},
@@ -2893,14 +2951,14 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(67usize),
+                id: ::use_mdbook::mdbook_shared::PageId(68usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::ReferenceRsx {},
-            ::use_mdbook::mdbook_shared::PageId(67usize),
+            ::use_mdbook::mdbook_shared::PageId(68usize),
         );
-        pages.push((68usize, {
+        pages.push((69usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Components".to_string(),
                 url: BookRoute::ReferenceComponents {},
@@ -2911,14 +2969,14 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     level: 1usize,
                 }],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(68usize),
+                id: ::use_mdbook::mdbook_shared::PageId(69usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::ReferenceComponents {},
-            ::use_mdbook::mdbook_shared::PageId(68usize),
+            ::use_mdbook::mdbook_shared::PageId(69usize),
         );
-        pages.push((69usize, {
+        pages.push((70usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Props".to_string(),
                 url: BookRoute::ReferenceComponentProps {},
@@ -2976,14 +3034,14 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(69usize),
+                id: ::use_mdbook::mdbook_shared::PageId(70usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::ReferenceComponentProps {},
-            ::use_mdbook::mdbook_shared::PageId(69usize),
+            ::use_mdbook::mdbook_shared::PageId(70usize),
         );
-        pages.push((70usize, {
+        pages.push((71usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Event Handlers".to_string(),
                 url: BookRoute::ReferenceEventHandlers {},
@@ -3026,14 +3084,14 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(70usize),
+                id: ::use_mdbook::mdbook_shared::PageId(71usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::ReferenceEventHandlers {},
-            ::use_mdbook::mdbook_shared::PageId(70usize),
+            ::use_mdbook::mdbook_shared::PageId(71usize),
         );
-        pages.push((71usize, {
+        pages.push((72usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Hooks".to_string(),
                 url: BookRoute::ReferenceHooks {},
@@ -3076,14 +3134,14 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(71usize),
+                id: ::use_mdbook::mdbook_shared::PageId(72usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::ReferenceHooks {},
-            ::use_mdbook::mdbook_shared::PageId(71usize),
+            ::use_mdbook::mdbook_shared::PageId(72usize),
         );
-        pages.push((72usize, {
+        pages.push((73usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "User Input".to_string(),
                 url: BookRoute::ReferenceUserInput {},
@@ -3111,14 +3169,14 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(72usize),
+                id: ::use_mdbook::mdbook_shared::PageId(73usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::ReferenceUserInput {},
-            ::use_mdbook::mdbook_shared::PageId(72usize),
+            ::use_mdbook::mdbook_shared::PageId(73usize),
         );
-        pages.push((73usize, {
+        pages.push((74usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Context".to_string(),
                 url: BookRoute::ReferenceContext {},
@@ -3141,14 +3199,14 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(73usize),
+                id: ::use_mdbook::mdbook_shared::PageId(74usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::ReferenceContext {},
-            ::use_mdbook::mdbook_shared::PageId(73usize),
+            ::use_mdbook::mdbook_shared::PageId(74usize),
         );
-        pages.push((74usize, {
+        pages.push((75usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Dynamic Rendering".to_string(),
                 url: BookRoute::ReferenceDynamicRendering {},
@@ -3196,14 +3254,14 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(74usize),
+                id: ::use_mdbook::mdbook_shared::PageId(75usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::ReferenceDynamicRendering {},
-            ::use_mdbook::mdbook_shared::PageId(74usize),
+            ::use_mdbook::mdbook_shared::PageId(75usize),
         );
-        pages.push((75usize, {
+        pages.push((76usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Routing".to_string(),
                 url: BookRoute::ReferenceRouter {},
@@ -3236,14 +3294,14 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(75usize),
+                id: ::use_mdbook::mdbook_shared::PageId(76usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::ReferenceRouter {},
-            ::use_mdbook::mdbook_shared::PageId(75usize),
+            ::use_mdbook::mdbook_shared::PageId(76usize),
         );
-        pages.push((76usize, {
+        pages.push((77usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Resource".to_string(),
                 url: BookRoute::ReferenceUseResource {},
@@ -3266,14 +3324,14 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(76usize),
+                id: ::use_mdbook::mdbook_shared::PageId(77usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::ReferenceUseResource {},
-            ::use_mdbook::mdbook_shared::PageId(76usize),
+            ::use_mdbook::mdbook_shared::PageId(77usize),
         );
-        pages.push((77usize, {
+        pages.push((78usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "UseCoroutine".to_string(),
                 url: BookRoute::ReferenceUseCoroutine {},
@@ -3306,14 +3364,14 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(77usize),
+                id: ::use_mdbook::mdbook_shared::PageId(78usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::ReferenceUseCoroutine {},
-            ::use_mdbook::mdbook_shared::PageId(77usize),
+            ::use_mdbook::mdbook_shared::PageId(78usize),
         );
-        pages.push((78usize, {
+        pages.push((79usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Spawn".to_string(),
                 url: BookRoute::ReferenceSpawn {},
@@ -3331,14 +3389,14 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(78usize),
+                id: ::use_mdbook::mdbook_shared::PageId(79usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::ReferenceSpawn {},
-            ::use_mdbook::mdbook_shared::PageId(78usize),
+            ::use_mdbook::mdbook_shared::PageId(79usize),
         );
-        pages.push((79usize, {
+        pages.push((80usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Contributing".to_string(),
                 url: BookRoute::ContributingIndex {},
@@ -3376,14 +3434,14 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(79usize),
+                id: ::use_mdbook::mdbook_shared::PageId(80usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::ContributingIndex {},
-            ::use_mdbook::mdbook_shared::PageId(79usize),
+            ::use_mdbook::mdbook_shared::PageId(80usize),
         );
-        pages.push((80usize, {
+        pages.push((81usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Project Structure".to_string(),
                 url: BookRoute::ContributingProjectStructure {},
@@ -3426,14 +3484,14 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(80usize),
+                id: ::use_mdbook::mdbook_shared::PageId(81usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::ContributingProjectStructure {},
-            ::use_mdbook::mdbook_shared::PageId(80usize),
+            ::use_mdbook::mdbook_shared::PageId(81usize),
         );
-        pages.push((81usize, {
+        pages.push((82usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Guiding Principles".to_string(),
                 url: BookRoute::ContributingGuidingPrinciples {},
@@ -3466,28 +3524,28 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(81usize),
+                id: ::use_mdbook::mdbook_shared::PageId(82usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::ContributingGuidingPrinciples {},
-            ::use_mdbook::mdbook_shared::PageId(81usize),
+            ::use_mdbook::mdbook_shared::PageId(82usize),
         );
-        pages.push((82usize, {
+        pages.push((83usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Roadmap".to_string(),
                 url: BookRoute::ContributingRoadmap {},
                 segments: vec![],
                 sections: vec![],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(82usize),
+                id: ::use_mdbook::mdbook_shared::PageId(83usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::ContributingRoadmap {},
-            ::use_mdbook::mdbook_shared::PageId(82usize),
+            ::use_mdbook::mdbook_shared::PageId(83usize),
         );
-        pages.push((83usize, {
+        pages.push((84usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "CLI".to_string(),
                 url: BookRoute::CliIndex {},
@@ -3505,14 +3563,14 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(83usize),
+                id: ::use_mdbook::mdbook_shared::PageId(84usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::CliIndex {},
-            ::use_mdbook::mdbook_shared::PageId(83usize),
+            ::use_mdbook::mdbook_shared::PageId(84usize),
         );
-        pages.push((84usize, {
+        pages.push((85usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Create a Project".to_string(),
                 url: BookRoute::CliCreating {},
@@ -3530,14 +3588,14 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(84usize),
+                id: ::use_mdbook::mdbook_shared::PageId(85usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::CliCreating {},
-            ::use_mdbook::mdbook_shared::PageId(84usize),
+            ::use_mdbook::mdbook_shared::PageId(85usize),
         );
-        pages.push((85usize, {
+        pages.push((86usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Configure Project".to_string(),
                 url: BookRoute::CliConfigure {},
@@ -3620,14 +3678,14 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(85usize),
+                id: ::use_mdbook::mdbook_shared::PageId(86usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::CliConfigure {},
-            ::use_mdbook::mdbook_shared::PageId(85usize),
+            ::use_mdbook::mdbook_shared::PageId(86usize),
         );
-        pages.push((86usize, {
+        pages.push((87usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Translate HTML".to_string(),
                 url: BookRoute::CliTranslate {},
@@ -3645,12 +3703,12 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(86usize),
+                id: ::use_mdbook::mdbook_shared::PageId(87usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::CliTranslate {},
-            ::use_mdbook::mdbook_shared::PageId(86usize),
+            ::use_mdbook::mdbook_shared::PageId(87usize),
         );
         ::use_mdbook::mdbook_shared::MdBook {
             summary: ::use_mdbook::mdbook_shared::Summary {
@@ -4078,11 +4136,22 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                                 ),
                                 nested_items: vec![
                                     ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
+                                        name: "Hydration".to_string(),
+                                        location: Some(BookRoute::GuidesFullstackHydration {
+                                        }),
+                                        number: Some(
+                                            ::use_mdbook::mdbook_shared::SectionNumber(
+                                                vec![4u32, 7u32, 1u32],
+                                            ),
+                                        ),
+                                        nested_items: vec![],
+                                    }),
+                                    ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
                                         name: "Managing Dependencies".to_string(),
                                         location: Some(BookRoute::GuidesFullstackManagingDependencies {}),
                                         number: Some(
                                             ::use_mdbook::mdbook_shared::SectionNumber(
-                                                vec![4u32, 7u32, 1u32],
+                                                vec![4u32, 7u32, 2u32],
                                             ),
                                         ),
                                         nested_items: vec![],
@@ -4093,7 +4162,7 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                                         }),
                                         number: Some(
                                             ::use_mdbook::mdbook_shared::SectionNumber(
-                                                vec![4u32, 7u32, 2u32],
+                                                vec![4u32, 7u32, 3u32],
                                             ),
                                         ),
                                         nested_items: vec![],
@@ -4104,7 +4173,7 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                                         }),
                                         number: Some(
                                             ::use_mdbook::mdbook_shared::SectionNumber(
-                                                vec![4u32, 7u32, 3u32],
+                                                vec![4u32, 7u32, 4u32],
                                             ),
                                         ),
                                         nested_items: vec![],
@@ -4115,7 +4184,7 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                                         }),
                                         number: Some(
                                             ::use_mdbook::mdbook_shared::SectionNumber(
-                                                vec![4u32, 7u32, 4u32],
+                                                vec![4u32, 7u32, 5u32],
                                             ),
                                         ),
                                         nested_items: vec![],
@@ -4126,7 +4195,7 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                                         }),
                                         number: Some(
                                             ::use_mdbook::mdbook_shared::SectionNumber(
-                                                vec![4u32, 7u32, 5u32],
+                                                vec![4u32, 7u32, 6u32],
                                             ),
                                         ),
                                         nested_items: vec![],
@@ -4137,7 +4206,7 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                                         }),
                                         number: Some(
                                             ::use_mdbook::mdbook_shared::SectionNumber(
-                                                vec![4u32, 7u32, 6u32],
+                                                vec![4u32, 7u32, 7u32],
                                             ),
                                         ),
                                         nested_items: vec![],
@@ -10233,15 +10302,13 @@ pub fn GuidesMobileIndex() -> dioxus::prelude::Element {
             a { href: "#support", class: "header", "Support" }
         }
         p {
-            "The Rust ecosystem for mobile is still in its infancy. Mobile is a 1st-class target for Dioxus apps, but there are very few packages that are battle-tested and ready to use."
+            "The Rust ecosystem for mobile continues to mature, with Dioxus offering strong support for mobile applications. Mobile is a first-class target for Dioxus apps, with a robust WebView implementation that supports CSS animations and transparency effects."
         }
         p {
-            "Mobile apps are rendered with either the platform's WebView or experimentally with "
-            a { href: "https://github.com/DioxusLabs/blitz", "WGPU" }
-            ". WebView doesn't support animations, transparency, and native widgets."
+            "Mobile apps are rendered with either the platform's WebView or experimentally with WGPU. While native Android animations and widgets aren't currently supported, CSS-based animations and styling provide a powerful alternative."
         }
         p {
-            "Mobile support is currently best suited for CRUD-style apps, ideally for internal teams who need to develop quickly but don't care much about animations or native widgets."
+            "Mobile support is well-suited for most application types, from business tools to consumer apps, making it an excellent choice for teams looking to build cross-platform applications with a single codebase."
         }
         h2 { id: "getting-set-up",
             a { href: "#getting-set-up", class: "header", "Getting Set up" }
@@ -10498,6 +10565,170 @@ pub fn GuidesFullstackIndex() -> dioxus::prelude::Element {
                 }
                 "."
             }
+        }
+    }
+}
+#[component(no_case_check)]
+pub fn GuidesFullstackHydration() -> dioxus::prelude::Element {
+    use dioxus::prelude::*;
+    rsx! {
+        h1 { id: "hydration",
+            a { href: "#hydration", class: "header", "Hydration" }
+        }
+        p {
+            "Dioxus fullstack renders the initial HTML on the server and then continues updating that HTML on the client. Hydration lets the client pick up where the server left off. Most of the time, you shouldn't need to think about hydration, but there are a few cases where you might run into hydration issues. To better understand hydration, we'll walk through a simple example:"
+        }
+        CodeBlock {
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">Weather</span><span style=\"color:#f8f8f2;\">() -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> weather </span><span style=\"color:#f92672;\">= </span><span style=\"color:#66d9ef;\">use_server_future</span><span style=\"color:#f8f8f2;\">(fetch_weather)</span><span style=\"color:#f92672;\">?</span><span style=\"color:#f8f8f2;\">;\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">    rsx! {{\n</span><span style=\"color:#f8f8f2;\">        div {{\n</span><span style=\"color:#f8f8f2;\">            </span><span style=\"color:#ffee99;\">&quot;{{weather:?}}&quot;\n</span><span style=\"color:#f8f8f2;\">        }}\n</span><span style=\"color:#f8f8f2;\">        button {{\n</span><span style=\"color:#f8f8f2;\">            onclick: </span><span style=\"color:#f92672;\">move |_|</span><span style=\"color:#f8f8f2;\"> weather.</span><span style=\"color:#66d9ef;\">restart</span><span style=\"color:#f8f8f2;\">(),\n</span><span style=\"color:#f8f8f2;\">            </span><span style=\"color:#ffee99;\">&quot;Refetch&quot;\n</span><span style=\"color:#f8f8f2;\">        }}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
+            name: "hydration.rs".to_string(),
+        }
+        h2 { id: "rendering-the-initial-html",
+            a { href: "#rendering-the-initial-html", class: "header", "Rendering the initial HTML" }
+        }
+        p {
+            "When the server receives a request to render the  "
+            code { "Weather" }
+            " component, it will:"
+        }
+        ol {
+            li { "Run the component and wait until all server futures are resolved" }
+            li {
+                "Serializes any non-deterministic data (like the "
+                code { "weather" }
+                " future) to hydrate on the client"
+            }
+            li { "Renders the HTML" }
+        }
+        p {
+            a { href: "https://mermaid-js.github.io/mermaid-live-editor/edit#pako:eNpdkDFTwzAMhf-KT3M70HbKwELhGMqSdAIziFhNfI2lnGzDQa__HZfk4Iq1-D1_ejr5BK04ggoOg3y0PWoy-61lE_Nbpzj2Jt68WGhI30lN4x2ZmtiReu4svBZwPs4rtckLm13958ZVaa4zmzsJozBxumqK6ynb4-C_yMxTHnLKSvGa3FyCfiabx_3Tbn4sxsTElVkub0vgLNeT3FieChYQSAN6V1Y9XSALqadAFqpydahHC5bPhcOcpPnkFqqkmRagkrseqgMOsag8Oky09Vh-J_y6I_KzSPhH3TufRGfz_A3Ce3PT",
+                img {
+                    src: "https://mermaid.ink/img/pako:eNpdkDFTwzAMhf-KT3M70HbKwELhGMqSdAIziFhNfI2lnGzDQa__HZfk4Iq1-D1_ejr5BK04ggoOg3y0PWoy-61lE_Nbpzj2Jt68WGhI30lN4x2ZmtiReu4svBZwPs4rtckLm13958ZVaa4zmzsJozBxumqK6ynb4-C_yMxTHnLKSvGa3FyCfiabx_3Tbn4sxsTElVkub0vgLNeT3FieChYQSAN6V1Y9XSALqadAFqpydahHC5bPhcOcpPnkFqqkmRagkrseqgMOsag8Oky09Vh-J_y6I_KzSPhH3TufRGfz_A3Ce3PT?type=png",
+                    alt: "",
+                    title: "",
+                }
+            }
+        }
+        p {
+            "Once the server finishes rendering, it will send this structure to the client serialized into the HTML:"
+        }
+        p {
+            a { href: "https://mermaid-js.github.io/mermaid-live-editor/edit#pako:eNqFUcFKAzEQ_ZUwh57agy22sAUFqaCgF1sQNCLTZLYbupss2VmLlv67s92luoo4uSRv3nvzhuzBBEuQQJqHnckwslottFdVvd5ELDNVjZ81LCk6zN0HWbVARg0vQpGyLpJhF7xaXbVIU_5MJCmxyV53hJxR7ATkbc96Irxb71i81c3q_u4_3ybKIOe5dW-DDc9P9GPzXJr7bl5yeeg3p51yXTOLa_Amd2b722QmvAdKI1XZH5mb3R57W7VVjb_dJ1_KY241Gl1IQjWQJB02bbGZ9u2BIRQUC3RWPmPfkDTIkII0JHK1GLcatD8ID2sOy3dvIOFY0xBiqDcZJCnmlbzq0iLTwqEELk5oif4phOIH69o6DrEDD5_uGqQ1",
+                img {
+                    src: "https://mermaid.ink/img/pako:eNqFUcFKAzEQ_ZUwh57agy22sAUFqaCgF1sQNCLTZLYbupss2VmLlv67s92luoo4uSRv3nvzhuzBBEuQQJqHnckwslottFdVvd5ELDNVjZ81LCk6zN0HWbVARg0vQpGyLpJhF7xaXbVIU_5MJCmxyV53hJxR7ATkbc96Irxb71i81c3q_u4_3ybKIOe5dW-DDc9P9GPzXJr7bl5yeeg3p51yXTOLa_Amd2b722QmvAdKI1XZH5mb3R57W7VVjb_dJ1_KY241Gl1IQjWQJB02bbGZ9u2BIRQUC3RWPmPfkDTIkII0JHK1GLcatD8ID2sOy3dvIOFY0xBiqDcZJCnmlbzq0iLTwqEELk5oif4phOIH69o6DrEDD5_uGqQ1?type=png",
+                    alt: "",
+                    title: "",
+                }
+            }
+        }
+        h2 { id: "hydrating-on-the-client",
+            a { href: "#hydrating-on-the-client", class: "header", "Hydrating on the client" }
+        }
+        p {
+            "Once the client receives the initial HTML, it hydrates the HTML by rerunning each component and linking each element the server rendered to the corresponding element on the client. Rerunning each component lets the client re-construct some non-serializable state like event handlers and kick off any client side logic like  "
+            code { "use_effect" }
+            " and  "
+            code { "use_future" }
+            "."
+        }
+        p { "It will follow these steps:" }
+        ol {
+            li { "Deserialize the serer future data from the server" }
+            li {
+                "Run the component with the deserialized data. All server futures are immediately resolved with the deserialized data from the server."
+            }
+            li {
+                "Hydrate the HTML sent from the server. This adds all event handlers and links the html nodes to the component so they can be modified later"
+            }
+        }
+        p {
+            a { href: "https://mermaid-js.github.io/mermaid-live-editor/edit#pako:eNpdkLFuAjEMhl_F8gxDgemGLlyrDnThmNp0SC-Gi7g4JydpRRHvXsOdkFpnif__s534jG10hBXu-_jddlYy7GrDkMrnQezQQXp4N7juPXGGxjuCl5MT63Nkgx8Kajgv1GYfGTbbUblGWmphTYnE297_EDQkXyTwXHIRSvfqG7tQdlsY1jEMkXXWX3ul9m1u1vm7183kErsRSkuYzx-1zZQuxnRleDw4w0ASrHf60_MVMpg7CmSw0quzcjRo-KKcLTk2J26xylJohhLLocNqb_ukWRmcvqH2VpcT7upg-S3G8I96crolmcTLL4RBdIg",
+                img {
+                    src: "https://mermaid.ink/img/pako:eNpdkLFuAjEMhl_F8gxDgemGLlyrDnThmNp0SC-Gi7g4JydpRRHvXsOdkFpnif__s534jG10hBXu-_jddlYy7GrDkMrnQezQQXp4N7juPXGGxjuCl5MT63Nkgx8Kajgv1GYfGTbbUblGWmphTYnE297_EDQkXyTwXHIRSvfqG7tQdlsY1jEMkXXWX3ul9m1u1vm7183kErsRSkuYzx-1zZQuxnRleDw4w0ASrHf60_MVMpg7CmSw0quzcjRo-KKcLTk2J26xylJohhLLocNqb_ukWRmcvqH2VpcT7upg-S3G8I96crolmcTLL4RBdIg?type=png",
+                    alt: "",
+                    title: "",
+                }
+            }
+        }
+        h2 { id: "hydration-errors",
+            a { href: "#hydration-errors", class: "header", "Hydration errors" }
+        }
+        p {
+            "For hydration to work, "
+            strong { "the component must render exactly the same thing on the client and the server" }
+            ". If it doesn't, you might see an error like this:"
+        }
+        CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">Uncaught TypeError: Cannot set properties of undefined (setting </span><span style=\"color:#f92672;\">&#39;</span><span style=\"color:#f8f8f2;\">textContent</span><span style=\"color:#f92672;\">&#39;</span><span style=\"color:#f8f8f2;\">)\n</span><span style=\"color:#f8f8f2;\">at RawInterpreter.run (yourwasm</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">hash.js:</span><span style=\"color:#ff80f4;\">1</span><span style=\"color:#f8f8f2;\">:</span><span style=\"color:#ff80f4;\">12246</span><span style=\"color:#f8f8f2;\">)</span></pre>\n" }
+        p { "Or this:" }
+        CodeBlock {
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">Error deserializing data:\n</span><span style=\"color:#f8f8f2;\">Semantic(</span><span style=\"font-style:italic;color:#66d9ef;\">None</span><span style=\"color:#f8f8f2;\">, </span><span style=\"color:#ffee99;\">&quot;invalid type: floating point `1.2`, expected integer&quot;</span><span style=\"color:#f8f8f2;\">)\n</span><span style=\"color:#f8f8f2;\">This </span><span style=\"font-style:italic;color:#66d9ef;\">type </span><span style=\"color:#f8f8f2;\">was serialized on the server at src</span><span style=\"color:#f92672;\">/</span><span style=\"color:#f8f8f2;\">main.rs:</span><span style=\"color:#ff80f4;\">11</span><span style=\"color:#f8f8f2;\">:</span><span style=\"color:#ff80f4;\">5</span><span style=\"color:#f8f8f2;\"> with the </span><span style=\"font-style:italic;color:#66d9ef;\">type </span><span style=\"color:#f8f8f2;\">name </span><span style=\"font-style:italic;color:#66d9ef;\">f64</span><span style=\"color:#f8f8f2;\">. The client failed to deserialize the </span><span style=\"font-style:italic;color:#66d9ef;\">type </span><span style=\"color:#f8f8f2;\">i32 at </span><span style=\"color:#f92672;\">/</span><span style=\"color:#f8f8f2;\">path</span><span style=\"color:#f92672;\">/</span><span style=\"color:#f8f8f2;\">to</span><span style=\"color:#f92672;\">/</span><span style=\"color:#f8f8f2;\">server_future.rs</span></pre>\n",
+        }
+        h3 { id: "non-deterministic-data-with-server-cached",
+            a {
+                href: "#non-deterministic-data-with-server-cached",
+                class: "header",
+                "Non-deterministic data with server cached"
+            }
+        }
+        p {
+            "To avoid hydration errors, make sure you put any non-deterministic data in a  "
+            code { "use_server_future" }
+            ",  "
+            code { "use_server_cached" }
+            " or effect. For example, if you need"
+            code { "use_server_cached" }
+            " to cache the random number on the server and then use it on the client:"
+        }
+        CodeBlock {
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#8c8c8c;\">// ❌ The random number will be different on the client and the server\n</span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> random: </span><span style=\"font-style:italic;color:#66d9ef;\">u8 </span><span style=\"color:#f92672;\">= </span><span style=\"color:#66d9ef;\">use_hook</span><span style=\"color:#f8f8f2;\">(|| rand::random());\n</span><span style=\"color:#8c8c8c;\">// ✅ The same random number will be serialized on the server and deserialized on the client\n</span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> random: </span><span style=\"font-style:italic;color:#66d9ef;\">u8 </span><span style=\"color:#f92672;\">= </span><span style=\"color:#66d9ef;\">use_server_cached</span><span style=\"color:#f8f8f2;\">(|| rand::random());</span></pre>\n",
+            name: "hydration.rs".to_string(),
+        }
+        h3 { id: "async-loading-with-server-futures",
+            a { href: "#async-loading-with-server-futures", class: "header",
+                "Async loading with server futures"
+            }
+        }
+        p {
+            "If you need render some data from a server future, you need to use  "
+            code { "use_server_future" }
+            " to serialize the data instead of waiting for the (non-deterministic) amount of time  "
+            code { "use_resource(...).suspend()?" }
+            " takes:"
+        }
+        CodeBlock {
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#8c8c8c;\">// ❌ The server function result may be finished on the server, but pending on the client\n</span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> random: </span><span style=\"font-style:italic;color:#66d9ef;\">u8 </span><span style=\"color:#f92672;\">= </span><span style=\"color:#66d9ef;\">use_resource</span><span style=\"color:#f8f8f2;\">(|| </span><span style=\"color:#66d9ef;\">random_server_function</span><span style=\"color:#f8f8f2;\">()).</span><span style=\"color:#66d9ef;\">suspend</span><span style=\"color:#f8f8f2;\">()</span><span style=\"color:#f92672;\">?</span><span style=\"color:#f8f8f2;\">().</span><span style=\"color:#66d9ef;\">unwrap_or_default</span><span style=\"color:#f8f8f2;\">();\n</span><span style=\"color:#8c8c8c;\">// ✅ Once the server function is resolved on the server, it will be sent to the client\n</span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> random: </span><span style=\"font-style:italic;color:#66d9ef;\">u8 </span><span style=\"color:#f92672;\">= </span><span style=\"color:#66d9ef;\">use_server_future</span><span style=\"color:#f8f8f2;\">(|| </span><span style=\"color:#66d9ef;\">random_server_function</span><span style=\"color:#f8f8f2;\">())</span><span style=\"color:#f92672;\">?</span><span style=\"color:#f8f8f2;\">()\n</span><span style=\"color:#f8f8f2;\">    .</span><span style=\"color:#66d9ef;\">unwrap</span><span style=\"color:#f8f8f2;\">()\n</span><span style=\"color:#f8f8f2;\">    .</span><span style=\"color:#66d9ef;\">unwrap_or_default</span><span style=\"color:#f8f8f2;\">();</span></pre>\n",
+            name: "hydration.rs".to_string(),
+        }
+        h3 { id: "client-only-data-with-effects",
+            a { href: "#client-only-data-with-effects", class: "header",
+                "Client only data with effects"
+            }
+        }
+        p {
+            "If you need to grab some data that is only available on the client, make sure you get it inside of a"
+            code { "use_effect" }
+            " hook which runs after the component has been hydrated:"
+        }
+        CodeBlock {
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#8c8c8c;\">// ❌ Using a different value client side before hydration will cause hydration issues\n</span><span style=\"color:#8c8c8c;\">// because the server rendered the html with another value\n</span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> storage </span><span style=\"color:#f92672;\">= </span><span style=\"color:#66d9ef;\">use_signal</span><span style=\"color:#f8f8f2;\">(|| {{\n</span><span style=\"color:#f8f8f2;\">    #[cfg(feature </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;server&quot;</span><span style=\"color:#f8f8f2;\">)]\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#f92672;\">return </span><span style=\"font-style:italic;color:#66d9ef;\">None</span><span style=\"color:#f8f8f2;\">;\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> window </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">web_sys::window().</span><span style=\"color:#66d9ef;\">unwrap</span><span style=\"color:#f8f8f2;\">();\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> local_storage </span><span style=\"color:#f92672;\">=</span><span style=\"color:#f8f8f2;\"> window.</span><span style=\"color:#66d9ef;\">local_storage</span><span style=\"color:#f8f8f2;\">().</span><span style=\"color:#66d9ef;\">unwrap</span><span style=\"color:#f8f8f2;\">().</span><span style=\"color:#66d9ef;\">unwrap</span><span style=\"color:#f8f8f2;\">();\n</span><span style=\"color:#f8f8f2;\">    local_storage.</span><span style=\"color:#66d9ef;\">set_item</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#ffee99;\">&quot;count&quot;</span><span style=\"color:#f8f8f2;\">, </span><span style=\"color:#ffee99;\">&quot;1&quot;</span><span style=\"color:#f8f8f2;\">).</span><span style=\"color:#66d9ef;\">unwrap</span><span style=\"color:#f8f8f2;\">();\n</span><span style=\"color:#f8f8f2;\">    local_storage.</span><span style=\"color:#66d9ef;\">get_item</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#ffee99;\">&quot;count&quot;</span><span style=\"color:#f8f8f2;\">).</span><span style=\"color:#66d9ef;\">unwrap</span><span style=\"color:#f8f8f2;\">()\n</span><span style=\"color:#f8f8f2;\">}});\n</span><span style=\"color:#8c8c8c;\">// ✅ Changing the value inside of an effect is fine because effects run after hydration\n</span><span style=\"font-style:italic;color:#66d9ef;\">let </span><span style=\"color:#f92672;\">mut</span><span style=\"color:#f8f8f2;\"> storage </span><span style=\"color:#f92672;\">= </span><span style=\"color:#66d9ef;\">use_signal</span><span style=\"color:#f8f8f2;\">(|| </span><span style=\"font-style:italic;color:#66d9ef;\">None</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"color:#66d9ef;\">use_effect</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#f92672;\">move || </span><span style=\"color:#f8f8f2;\">{{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> window </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">web_sys::window().</span><span style=\"color:#66d9ef;\">unwrap</span><span style=\"color:#f8f8f2;\">();\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> local_storage </span><span style=\"color:#f92672;\">=</span><span style=\"color:#f8f8f2;\"> window.</span><span style=\"color:#66d9ef;\">local_storage</span><span style=\"color:#f8f8f2;\">().</span><span style=\"color:#66d9ef;\">unwrap</span><span style=\"color:#f8f8f2;\">().</span><span style=\"color:#66d9ef;\">unwrap</span><span style=\"color:#f8f8f2;\">();\n</span><span style=\"color:#f8f8f2;\">    local_storage.</span><span style=\"color:#66d9ef;\">set_item</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#ffee99;\">&quot;count&quot;</span><span style=\"color:#f8f8f2;\">, </span><span style=\"color:#ffee99;\">&quot;1&quot;</span><span style=\"color:#f8f8f2;\">).</span><span style=\"color:#66d9ef;\">unwrap</span><span style=\"color:#f8f8f2;\">();\n</span><span style=\"color:#f8f8f2;\">    storage.</span><span style=\"color:#66d9ef;\">set</span><span style=\"color:#f8f8f2;\">(local_storage.</span><span style=\"color:#66d9ef;\">get_item</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#ffee99;\">&quot;count&quot;</span><span style=\"color:#f8f8f2;\">).</span><span style=\"color:#66d9ef;\">unwrap</span><span style=\"color:#f8f8f2;\">());\n</span><span style=\"color:#f8f8f2;\">}});</span></pre>\n",
+            name: "hydration.rs".to_string(),
+        }
+        h3 { id: "avoid-side-effects-in-server-cached-hooks",
+            a {
+                href: "#avoid-side-effects-in-server-cached-hooks",
+                class: "header",
+                "Avoid side effects in server cached hooks"
+            }
+        }
+        p {
+            "The dioxus fullstack specific hooks  "
+            code { "use_server_cached" }
+            " and  "
+            code { "use_server_future" }
+            " don't run the same on the server and the client. The code you run inside these hooks cannot have side effects because those side effects cannot be serialized:"
+        }
+        CodeBlock {
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#8c8c8c;\">// ❌ The state of the signal cannot be serialized on the server\n</span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> storage </span><span style=\"color:#f92672;\">= </span><span style=\"color:#66d9ef;\">use_signal</span><span style=\"color:#f8f8f2;\">(|| </span><span style=\"font-style:italic;color:#66d9ef;\">None</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"color:#66d9ef;\">use_server_future</span><span style=\"color:#f8f8f2;\">(|| async </span><span style=\"color:#f92672;\">move </span><span style=\"color:#f8f8f2;\">{{\n</span><span style=\"color:#f8f8f2;\">    storage.</span><span style=\"color:#66d9ef;\">set</span><span style=\"color:#f8f8f2;\">(</span><span style=\"font-style:italic;color:#66d9ef;\">Some</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#66d9ef;\">server_future</span><span style=\"color:#f8f8f2;\">().await));\n</span><span style=\"color:#f8f8f2;\">}})</span><span style=\"color:#f92672;\">?</span><span style=\"color:#f8f8f2;\">;\n</span><span style=\"color:#8c8c8c;\">// ✅ The value returned from use_server_future will be serialized on the server and hydrated on the client\n</span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> storage </span><span style=\"color:#f92672;\">= </span><span style=\"color:#66d9ef;\">use_server_cached</span><span style=\"color:#f8f8f2;\">(|| async </span><span style=\"color:#f92672;\">move </span><span style=\"color:#f8f8f2;\">{{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#66d9ef;\">server_future</span><span style=\"color:#f8f8f2;\">().await\n</span><span style=\"color:#f8f8f2;\">}})</span><span style=\"color:#f92672;\">?</span><span style=\"color:#f8f8f2;\">;</span></pre>\n",
+            name: "hydration.rs".to_string(),
         }
     }
 }
@@ -15762,7 +15993,7 @@ pub fn CliConfigure() -> dioxus::prelude::Element {
         }
         p { "This includes all fields, mandatory or not." }
         CodeBlock {
-            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">[application]\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\">#</span><span style=\"color:#f8f8f2;\"> App name\n</span><span style=\"color:#f8f8f2;\">name </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;project_name&quot;\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\">#</span><span style=\"color:#f8f8f2;\"> The Dioxus platform to default to\n</span><span style=\"color:#f8f8f2;\">default_platform </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;web&quot;\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\">#</span><span style=\"color:#f8f8f2;\"> `build` </span><span style=\"color:#f92672;\">&amp;</span><span style=\"color:#f8f8f2;\"> `serve` output path\n</span><span style=\"color:#f8f8f2;\">out_dir </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;dist&quot;\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\">#</span><span style=\"color:#f8f8f2;\"> The </span><span style=\"font-style:italic;color:#66d9ef;\">static</span><span style=\"color:#f8f8f2;\"> resource path\n</span><span style=\"color:#f8f8f2;\">asset_dir </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;public&quot;\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">[web.app]\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\"># </span><span style=\"color:#ff80f4;\">HTML</span><span style=\"color:#f8f8f2;\"> title tag content\n</span><span style=\"color:#f8f8f2;\">title </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;project_name&quot;\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">[web.watcher]\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\">#</span><span style=\"color:#f8f8f2;\"> When watcher is triggered, regenerate the `index.html`\n</span><span style=\"color:#f8f8f2;\">reload_html </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ff80f4;\">true\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\">#</span><span style=\"color:#f8f8f2;\"> Which files or dirs will be monitored\n</span><span style=\"color:#f8f8f2;\">watch_path </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">[</span><span style=\"color:#ffee99;\">&quot;src&quot;</span><span style=\"color:#f8f8f2;\">, </span><span style=\"color:#ffee99;\">&quot;public&quot;</span><span style=\"color:#f8f8f2;\">]\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\">#</span><span style=\"color:#f8f8f2;\"> Include style or script assets\n</span><span style=\"color:#f8f8f2;\">[web.resource]\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\"># </span><span style=\"color:#ff80f4;\">CSS</span><span style=\"color:#f8f8f2;\"> style file\n</span><span style=\"color:#f8f8f2;\">style </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">[]\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\">#</span><span style=\"color:#f8f8f2;\"> Javascript code file\n</span><span style=\"color:#f8f8f2;\">script </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">[]\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">[web.resource.dev]\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\">#</span><span style=\"color:#f8f8f2;\"> Same </span><span style=\"color:#f92672;\">as </span><span style=\"color:#f8f8f2;\">[web.resource], but </span><span style=\"color:#f92672;\">for</span><span style=\"color:#f8f8f2;\"> development servers\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\"># </span><span style=\"color:#ff80f4;\">CSS</span><span style=\"color:#f8f8f2;\"> style file\n</span><span style=\"color:#f8f8f2;\">style </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">[]\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\">#</span><span style=\"color:#f8f8f2;\"> JavaScript files\n</span><span style=\"color:#f8f8f2;\">script </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">[]\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">[[web.proxy]]\n</span><span style=\"color:#f8f8f2;\">backend </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;http://localhost:8000/api/&quot;\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">[bundle]\n</span><span style=\"color:#f8f8f2;\">identifier </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;com.dioxuslabs&quot;\n</span><span style=\"color:#f8f8f2;\">publisher </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;DioxusLabs&quot;\n</span><span style=\"color:#f8f8f2;\">icon </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;assets/icon.png&quot;</span></pre>\n",
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">[application]\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\">#</span><span style=\"color:#f8f8f2;\"> App name\n</span><span style=\"color:#f8f8f2;\">name </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;project_name&quot;\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\">#</span><span style=\"color:#f8f8f2;\"> `build` </span><span style=\"color:#f92672;\">&amp;</span><span style=\"color:#f8f8f2;\"> `serve` output path\n</span><span style=\"color:#f8f8f2;\">out_dir </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;dist&quot;\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\">#</span><span style=\"color:#f8f8f2;\"> The </span><span style=\"font-style:italic;color:#66d9ef;\">static</span><span style=\"color:#f8f8f2;\"> resource path\n</span><span style=\"color:#f8f8f2;\">asset_dir </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;public&quot;\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">[web.app]\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\"># </span><span style=\"color:#ff80f4;\">HTML</span><span style=\"color:#f8f8f2;\"> title tag content\n</span><span style=\"color:#f8f8f2;\">title </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;project_name&quot;\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">[web.watcher]\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\">#</span><span style=\"color:#f8f8f2;\"> When watcher is triggered, regenerate the `index.html`\n</span><span style=\"color:#f8f8f2;\">reload_html </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ff80f4;\">true\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\">#</span><span style=\"color:#f8f8f2;\"> Which files or dirs will be monitored\n</span><span style=\"color:#f8f8f2;\">watch_path </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">[</span><span style=\"color:#ffee99;\">&quot;src&quot;</span><span style=\"color:#f8f8f2;\">, </span><span style=\"color:#ffee99;\">&quot;public&quot;</span><span style=\"color:#f8f8f2;\">]\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\">#</span><span style=\"color:#f8f8f2;\"> Include style or script assets\n</span><span style=\"color:#f8f8f2;\">[web.resource]\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\"># </span><span style=\"color:#ff80f4;\">CSS</span><span style=\"color:#f8f8f2;\"> style file\n</span><span style=\"color:#f8f8f2;\">style </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">[]\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\">#</span><span style=\"color:#f8f8f2;\"> Javascript code file\n</span><span style=\"color:#f8f8f2;\">script </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">[]\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">[web.resource.dev]\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\">#</span><span style=\"color:#f8f8f2;\"> Same </span><span style=\"color:#f92672;\">as </span><span style=\"color:#f8f8f2;\">[web.resource], but </span><span style=\"color:#f92672;\">for</span><span style=\"color:#f8f8f2;\"> development servers\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\"># </span><span style=\"color:#ff80f4;\">CSS</span><span style=\"color:#f8f8f2;\"> style file\n</span><span style=\"color:#f8f8f2;\">style </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">[]\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\">#</span><span style=\"color:#f8f8f2;\"> JavaScript files\n</span><span style=\"color:#f8f8f2;\">script </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">[]\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">[[web.proxy]]\n</span><span style=\"color:#f8f8f2;\">backend </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;http://localhost:8000/api/&quot;\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">[bundle]\n</span><span style=\"color:#f8f8f2;\">identifier </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;com.dioxuslabs&quot;\n</span><span style=\"color:#f8f8f2;\">publisher </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;DioxusLabs&quot;\n</span><span style=\"color:#f8f8f2;\">icon </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;assets/icon.png&quot;</span></pre>\n",
         }
     }
 }

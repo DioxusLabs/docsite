@@ -53,6 +53,7 @@
     - [APIs](guides/mobile/apis.md)
   - [Streaming and SSR](guides/ssr.md)
   - [Fullstack](guides/fullstack/index.md)
+    - [Hydration](guides/fullstack/hydration.md)
     - [Managing Dependencies](guides/fullstack/managing_dependencies.md)
   	- [Server Functions](guides/fullstack/server_functions.md)
   	- [Extractors](guides/fullstack/extractors.md)
@@ -63,7 +64,7 @@
   - [Anti-patterns](cookbook/antipatterns.md)
   - [Error Handling](cookbook/error_handling.md)
   - [Integrations](cookbook/integrations/index.md)
-    - [Logging](cookbook/integrations/logging.md)
+    - [Logging](cookbook/integrations/logging.md)o
     - [Internationalization](cookbook/integrations/internationalization.md)
   - [State Management](cookbook/state/index.md)
     - [External State](cookbook/state/external/index.md)

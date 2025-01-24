@@ -64,7 +64,7 @@
   - [Anti-patterns](cookbook/antipatterns.md)
   - [Error Handling](cookbook/error_handling.md)
   - [Integrations](cookbook/integrations/index.md)
-    - [Logging](cookbook/integrations/logging.md)o
+    - [Logging](cookbook/integrations/logging.md)
     - [Internationalization](cookbook/integrations/internationalization.md)
   - [State Management](cookbook/state/index.md)
     - [External State](cookbook/state/external/index.md)

@@ -63,6 +63,8 @@ Semantic(None, "invalid type: floating point `1.2`, expected integer")
 This type was serialized on the server at src/main.rs:11:5 with the type name f64. The client failed to deserialize the type i32 at /path/to/server_future.rs
 ```
 
+### Non-deterministic data with server cached
+
 To avoid hydration errors, make sure you put any non-deterministic data in a `use_server_future`, `use_server_cached` or effect. For example, if you need
 to render a random number on your page, you can use `use_server_cached` to cache the random number on the server and then use it on the client:
 
@@ -89,7 +91,9 @@ fn app() -> Element {
 }
 ```
 
-Or if you need render some data from a server future, you need to use `use_server_future` to serialize the data instead of waiting for the (non-deterministic) amount of time `use_resource(...).suspend()?` takes:
+### Async loading with server futures
+
+If you need render some data from a server future, you need to use `use_server_future` to serialize the data instead of waiting for the (non-deterministic) amount of time `use_resource(...).suspend()?` takes:
 
 ```rust
 #[server]
@@ -120,7 +124,9 @@ fn app() -> Element {
 }
 ```
 
-Finally, if you need to grab some data that is only available on the client, make sure you get it inside of a
+### Client only data with effects
+
+If you need to grab some data that is only available on the client, make sure you get it inside of a
 `use_effect` hook which runs after the component has been hydrated:
 
 ```rust
@@ -151,5 +157,25 @@ fn app() -> Element {
             }
         }
     }
+}
+```
+
+### Avoid side effects in server cached hooks
+
+The dioxus fullstack specific hooks `use_server_cached` and `use_server_future` don't run the same on the server and the client. The code you run inside these hooks cannot have side effects because those side effects cannot be serialized:
+
+```rust
+fn app() -> Element {
+    // ❌ The state of the signal cannot be serialized on the server
+    let storage = use_signal(|| None);
+    use_server_future(|| async move {
+        storage.set(Some(server_future().await));
+    })?;
+    // ✅ The value returned from use_server_future will be serialized on the server and hydrated on the client
+    let storage = use_server_cached(|| async move {
+        server_future().await
+    })?;
+
+    panic!()
 }
 ```

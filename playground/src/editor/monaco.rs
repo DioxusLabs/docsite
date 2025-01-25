@@ -23,34 +23,36 @@ pub fn monaco_loader_src(folder: Asset) -> String {
 
 /// Use monaco code markers for build diagnostics.
 pub fn use_monaco_markers(diagnostics: Signal<Vec<CargoDiagnostic>>) {
-    let mut markers = Vec::new();
-    for diagnostic in diagnostics.read().iter() {
-        let severity = match diagnostic.level {
-            CargoLevel::Error => MarkerSeverity::Error,
-            CargoLevel::Warning => MarkerSeverity::Warning,
-        };
-
-        for span in diagnostic.spans.iter() {
-            let diagnostic_message = diagnostic.message.clone();
-            let message = match span.label.clone() {
-                Some(label) => format!("{}\n{}", diagnostic_message, label),
-                None => diagnostic_message,
+    use_effect(move || {
+        let mut markers = Vec::new();
+        for diagnostic in diagnostics.read().iter() {
+            let severity = match diagnostic.level {
+                CargoLevel::Error => MarkerSeverity::Error,
+                CargoLevel::Warning => MarkerSeverity::Warning,
             };
 
-            let marker = Marker {
-                message,
-                severity,
-                start_line_number: span.line_start.saturating_sub(EXTRA_LINE_COUNT()),
-                end_line_number: span.line_end.saturating_sub(EXTRA_LINE_COUNT()),
-                start_column: span.column_start,
-                end_column: span.column_end,
-            };
+            for span in diagnostic.spans.iter() {
+                let diagnostic_message = diagnostic.message.clone();
+                let message = match span.label.clone() {
+                    Some(label) => format!("{}\n{}", diagnostic_message, label),
+                    None => diagnostic_message,
+                };
 
-            markers.push(marker);
+                let marker = Marker {
+                    message,
+                    severity,
+                    start_line_number: span.line_start.saturating_sub(EXTRA_LINE_COUNT()),
+                    end_line_number: span.line_end.saturating_sub(EXTRA_LINE_COUNT()),
+                    start_column: span.column_start,
+                    end_column: span.column_end,
+                };
+
+                markers.push(marker);
+            }
         }
-    }
 
-    set_markers(&markers);
+        set_markers(&markers);
+    });
 }
 
 /// Initialize Monaco once the loader script loads.

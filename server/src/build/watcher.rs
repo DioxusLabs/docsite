@@ -91,7 +91,7 @@ fn stop_build(builder: &mut Builder, pending_builds: &mut VecDeque<BuildRequest>
     for (i, build_request) in pending_builds.iter_mut().enumerate() {
         if build_request.id == id {
             matching_id = Some(i);
-            break;
+            continue;
         }
 
         // Tell any other requests behind the removed that they're moving up.

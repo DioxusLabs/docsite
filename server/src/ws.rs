@@ -57,7 +57,10 @@ async fn handle_socket(state: AppState, ip: String, socket: WebSocket) {
         select! {
             // Parse socket messages, performing the proper action.
             Some(Ok(socket_msg)) = socket_rx.next() => {
-                let socket_msg = SocketMessage::try_from(socket_msg).unwrap();
+                // Try decoding the socket messages into our own type. If invalid, just ignore it.
+                let Ok(socket_msg) = SocketMessage::try_from(socket_msg) else {
+                    continue;
+                };
 
                 // Start a new build, stopping any existing ones.
                 if let SocketMessage::BuildRequest(code) = socket_msg {

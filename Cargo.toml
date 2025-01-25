@@ -8,34 +8,34 @@ model = { path = "model" }
 dioxus-playground = { path = "playground" }
 
 # Dioxus Release
-# dioxus = "0.6.2"
-# dioxus-document = "0.6.2"
-# dioxus-sdk = "0.6"
-# dioxus-core = "0.6.2"
-# dioxus-core-types = "0.6.2"
-# dioxus-devtools = "0.6.2"
-# dioxus-rsx-hotreload = "0.6.2"
-# dioxus-rsx = "0.6.2"
-# dioxus-html = { version = "0.6.2", default-features = false }
-# dioxus-rsx-rosetta = "0.6.2"
-# dioxus-autofmt = "0.6.2"
-# dioxus-dx-wire-format = { git = "https://github.com/dioxuslabs/dioxus", tag = "v0.6.2" }
-# dioxus-logger = "0.6.2"
+dioxus = "0.6.2"
+dioxus-document = "0.6.2"
+dioxus-sdk = "0.6"
+dioxus-core = "0.6.2"
+dioxus-core-types = "0.6.2"
+dioxus-devtools = "0.6.2"
+dioxus-rsx-hotreload = "0.6.2"
+dioxus-rsx = "0.6.2"
+dioxus-html = { version = "0.6.2", default-features = false }
+dioxus-rsx-rosetta = "0.6.2"
+dioxus-autofmt = "0.6.2"
+dioxus-dx-wire-format = { git = "https://github.com/dioxuslabs/dioxus", tag = "v0.6.2" }
+dioxus-logger = "0.6.2"
 
 # Dioxus Main
-dioxus = { git = "https://github.com/dioxuslabs/dioxus" }
-dioxus-document = { git = "https://github.com/dioxuslabs/dioxus" }
-dioxus-sdk = { git = "https://github.com/dioxuslabs/sdk", branch = "nightly" }
-dioxus-core = { git = "https://github.com/dioxuslabs/dioxus" }
-dioxus-core-types = { git = "https://github.com/dioxuslabs/dioxus" }
-dioxus-devtools = { git = "https://github.com/dioxuslabs/dioxus" }
-dioxus-rsx-hotreload = { git = "https://github.com/dioxuslabs/dioxus" }
-dioxus-rsx = { git = "https://github.com/dioxuslabs/dioxus" }
-dioxus-html = { git = "https://github.com/dioxuslabs/dioxus", default-features = false }
-dioxus-rsx-rosetta = { git = "https://github.com/dioxuslabs/dioxus" }
-dioxus-autofmt = { git = "https://github.com/dioxuslabs/dioxus" }
-dioxus-dx-wire-format = { git = "https://github.com/dioxuslabs/dioxus" }
-dioxus-logger = { git = "https://github.com/dioxuslabs/dioxus" }
+# dioxus = { git = "https://github.com/dioxuslabs/dioxus" }
+# dioxus-document = { git = "https://github.com/dioxuslabs/dioxus" }
+# dioxus-sdk = { git = "https://github.com/dioxuslabs/sdk", branch = "nightly" }
+# dioxus-core = { git = "https://github.com/dioxuslabs/dioxus" }
+# dioxus-core-types = { git = "https://github.com/dioxuslabs/dioxus" }
+# dioxus-devtools = { git = "https://github.com/dioxuslabs/dioxus" }
+# dioxus-rsx-hotreload = { git = "https://github.com/dioxuslabs/dioxus" }
+# dioxus-rsx = { git = "https://github.com/dioxuslabs/dioxus" }
+# dioxus-html = { git = "https://github.com/dioxuslabs/dioxus", default-features = false }
+# dioxus-rsx-rosetta = { git = "https://github.com/dioxuslabs/dioxus" }
+# dioxus-autofmt = { git = "https://github.com/dioxuslabs/dioxus" }
+# dioxus-dx-wire-format = { git = "https://github.com/dioxuslabs/dioxus" }
+# dioxus-logger = { git = "https://github.com/dioxuslabs/dioxus" }
 
 serde = { version = "1.0.215", features = ["derive"] }
 serde_json = "1.0.133"

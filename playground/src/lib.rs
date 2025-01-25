@@ -71,7 +71,7 @@ pub fn Playground(urls: PlaygroundUrls, share_code: Option<String>) -> Element {
     });
 
     // Handle starting a build.
-    let on_run = move |_| {
+    let on_run = move |_| async move {
         if build.stage().is_running() || !hot_reload.needs_rebuild() {
             return;
         }
@@ -83,12 +83,11 @@ pub fn Playground(urls: PlaygroundUrls, share_code: Option<String>) -> Element {
         hot_reload.set_starting_code(&code);
 
         let socket_url = urls.socket.to_string();
-        spawn(async move {
-            match start_build(build, socket_url, code).await {
-                Ok(success) => hot_reload.set_needs_rebuild(!success),
-                Err(e) => error!(error = ?e, "failed to build project"),
-            }
-        });
+        match start_build(build, socket_url, code).await {
+            Ok(success) => hot_reload.set_needs_rebuild(!success),
+            Err(e) => error!(error = ?e, "failed to build project"),
+        }
+        
     };
 
     // Construct the full URL to the built project.

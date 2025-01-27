@@ -1,3 +1,4 @@
+use dioxus::prelude::*;
 #[derive(
     Clone,
     Copy,
@@ -230,9 +231,137 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
             page_id_mapping,
         }
     });
-::core::compile_error!(
-    "Failed to read file example-book/book.toml: No such file or directory (os error 2)",
-);
+#[derive(
+    Clone, Copy, PartialEq, Eq, Hash, Debug, Default, serde::Serialize, serde::Deserialize,
+)]
+pub enum Chapter1Section {
+    #[default]
+    Empty,
+    Liveview,
+    Support,
+    Setup,
+}
+impl std::str::FromStr for Chapter1Section {
+    type Err = Chapter1SectionParseError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "" => Ok(Self::Empty),
+            "liveview" => Ok(Self::Liveview),
+            "support" => Ok(Self::Support),
+            "setup" => Ok(Self::Setup),
+            _ => Err(Chapter1SectionParseError),
+        }
+    }
+}
+impl std::fmt::Display for Chapter1Section {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Self::Empty => f.write_str(""),
+            Self::Liveview => f.write_str("liveview"),
+            Self::Support => f.write_str("support"),
+            Self::Setup => f.write_str("setup"),
+        }
+    }
+}
+#[derive(Debug)]
+pub struct Chapter1SectionParseError;
+impl std::fmt::Display for Chapter1SectionParseError {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.write_str(
+            "Invalid section name. Expected one of Chapter1Sectionliveview, support, setup",
+        )?;
+        Ok(())
+    }
+}
+impl std::error::Error for Chapter1SectionParseError {}
+#[component(no_case_check)]
+pub fn Chapter1(section: Chapter1Section) -> dioxus::prelude::Element {
+    use dioxus::prelude::*;
+    rsx! {
+        h1 { id: "liveview",
+            Link {
+                to: BookRoute::Chapter1 {
+                    section: Chapter1Section::Liveview,
+                },
+                class: "header",
+                "Liveview"
+            }
+        }
+        p {
+            "Liveview allows apps to "
+            em { "run" }
+            " on the server and "
+            em { "render" }
+            " in the browser. It uses WebSockets to communicate between the server and the browser."
+        }
+        p { "Examples:" }
+        ul {
+            li {
+                Link { to: "https://github.com/DioxusLabs/dioxus/tree/master/packages/liveview/examples/axum.rs",
+                    "Axum Example"
+                }
+            }
+            li {
+                Link { to: "https://github.com/DioxusLabs/dioxus/tree/master/packages/liveview/examples/salvo.rs",
+                    "Salvo Example"
+                }
+            }
+            li {
+                Link { to: "https://github.com/DioxusLabs/dioxus/tree/master/packages/liveview/examples/warp.rs",
+                    "Warp Example"
+                }
+            }
+        }
+        h2 { id: "support",
+            Link {
+                to: BookRoute::Chapter1 {
+                    section: Chapter1Section::Support,
+                },
+                class: "header",
+                "Support"
+            }
+        }
+        p {
+            "Liveview is currently limited in capability when compared to the Web platform. Liveview apps run on the server in a native thread. This means that browser APIs are not available, so rendering WebGL, Canvas, etc is not as easy as the Web. However, native system APIs are accessible, so streaming, WebSockets, filesystem, etc are all viable APIs."
+        }
+        h2 { id: "setup",
+            Link {
+                to: BookRoute::Chapter1 {
+                    section: Chapter1Section::Setup,
+                },
+                class: "header",
+                "Setup"
+            }
+        }
+        p {
+            "For this guide, we're going to show how to use Dioxus Liveview with "
+            Link { to: "https://docs.rs/axum/latest/axum/", "Axum" }
+            "."
+        }
+        p { "Make sure you have Rust and Cargo installed, and then create a new project:" }
+        CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">cargo new </span><span style=\"color:#f92672;\">--</span><span style=\"color:#f8f8f2;\">bin demo\n</span><span style=\"color:#f8f8f2;\">cd app</span></pre>\n" }
+        p { "Add Dioxus and the liveview renderer with the Axum feature as dependencies:" }
+        CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">cargo add dioxus\n</span><span style=\"color:#f8f8f2;\">cargo add dioxus</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">liveview </span><span style=\"color:#f92672;\">--</span><span style=\"color:#f8f8f2;\">features axum</span></pre>\n" }
+        p {
+            "Next, add all the Axum dependencies. This will be different if you're using a different Web Framework"
+        }
+        CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">cargo add tokio </span><span style=\"color:#f92672;\">--</span><span style=\"color:#f8f8f2;\">features full\n</span><span style=\"color:#f8f8f2;\">cargo add axum</span></pre>\n" }
+        p { "Your dependencies should look roughly like this:" }
+        CodeBlock {
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">[dependencies]\n</span><span style=\"color:#f8f8f2;\">axum </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;0.4.5&quot;\n</span><span style=\"color:#f8f8f2;\">dioxus </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">{{ version </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;*&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">dioxus</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">liveview </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">{{ version </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;*&quot;</span><span style=\"color:#f8f8f2;\">, features </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">[</span><span style=\"color:#ffee99;\">&quot;axum&quot;</span><span style=\"color:#f8f8f2;\">] }}\n</span><span style=\"color:#f8f8f2;\">tokio </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">{{ version </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;1.15.0&quot;</span><span style=\"color:#f8f8f2;\">, features </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">[</span><span style=\"color:#ffee99;\">&quot;full&quot;</span><span style=\"color:#f8f8f2;\">] }}</span></pre>\n",
+        }
+        p {
+            class: "inline-html-block",
+            dangerous_inner_html: "<!-- ```rust\n",
+        }
+        p {
+            class: "inline-html-block",
+            dangerous_inner_html: "{{{{#include ../example-book/book.toml}}}}\n",
+        }
+        p { class: "inline-html-block", dangerous_inner_html: "``` -->\n" }
+        CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n</pre>\n" }
+    }
+}
 #[derive(
     Clone, Copy, PartialEq, Eq, Hash, Debug, Default, serde::Serialize, serde::Deserialize,
 )]
@@ -1068,20 +1197,22 @@ pub fn Chapter3(section: Chapter3Section) -> dioxus::prelude::Element {
                 title: "",
             }
             img {
-                src: asset!("/example-book/assetsasd/logo"),
+                src: asset!("/example-book/assets/logo.png", ImageAssetOptions::new().with_avif()),
                 alt: "some_local",
                 title: "",
             }
             img {
-                src: asset!("/example-book/assets1/logo.png", ImageAssetOptions::new().with_avif()),
+                src: asset!("/example-book/assets/logo1.png", ImageAssetOptions::new().with_avif()),
                 alt: "some_local1",
                 title: "",
             }
             img {
-                src: asset!("/example-book/assets2/logo.png", ImageAssetOptions::new().with_avif()),
+                src: asset!("/example-book/assets/logo2.png", ImageAssetOptions::new().with_avif()),
                 alt: "some_local2",
                 title: "",
             }
         }
     }
 }
+
+use super::*;

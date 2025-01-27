@@ -12,3 +12,5 @@ members = [
 
 [workspace.dependencies]
 mdbook-gen = { path = "packages/mdbook-gen" }
+use-mdbook = { path = "packages/use-mdbook" }
+

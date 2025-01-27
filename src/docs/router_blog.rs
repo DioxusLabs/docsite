@@ -1,3 +1,4 @@
+use dioxus::prelude::*;
 #[derive(
     Clone,
     Copy,
@@ -3709,7 +3710,9 @@ pub fn Release040(section: Release040Section) -> dioxus::prelude::Element {
         p {
             "In the beginning we opted for simplicity and flexibility. The old router let you create route trees with just components. This router was easy to add new routes to and easy to compose."
         }
-        CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n</pre>\n" }
+        CodeBlock {
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f92672;\">pub </span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">app</span><span style=\"color:#f8f8f2;\">(</span><span style=\"font-style:italic;color:#fd971f;\">cx</span><span style=\"color:#f8f8f2;\">: Scope) -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    render! {{\n</span><span style=\"color:#f8f8f2;\">        Router {{\n</span><span style=\"color:#f8f8f2;\">            Nav {{}}\n</span><span style=\"color:#f8f8f2;\">            Route {{ to: </span><span style=\"color:#ffee99;\">&quot;/&quot;</span><span style=\"color:#f8f8f2;\">, Homepage {{}} }}\n</span><span style=\"color:#f8f8f2;\">            Route {{ to: </span><span style=\"color:#ffee99;\">&quot;/awesome&quot;</span><span style=\"color:#f8f8f2;\">, Awesome {{}}}}\n</span><span style=\"color:#f8f8f2;\">            Route {{ to: </span><span style=\"color:#ffee99;\">&quot;/learn&quot;</span><span style=\"color:#f8f8f2;\">, Learn {{}} }}\n</span><span style=\"color:#f8f8f2;\">            Route {{ to: </span><span style=\"color:#ffee99;\">&quot;/tutorials/:id&quot;</span><span style=\"color:#f8f8f2;\">, Tutorial {{}} }}\n</span><span style=\"color:#f8f8f2;\">            Route {{ to: </span><span style=\"color:#ffee99;\">&quot;/blog&quot;</span><span style=\"color:#f8f8f2;\">, BlogList {{}} }}\n</span><span style=\"color:#f8f8f2;\">            Route {{ to: </span><span style=\"color:#ffee99;\">&quot;/blog/going-fulltime&quot;</span><span style=\"color:#f8f8f2;\">, GoingFulltime {{}} }}\n</span><span style=\"color:#f8f8f2;\">            Route {{ to: </span><span style=\"color:#ffee99;\">&quot;/blog/release-030&quot;</span><span style=\"color:#f8f8f2;\">, Release03 {{}} }}\n</span><span style=\"color:#f8f8f2;\">            Route {{ to: </span><span style=\"color:#ffee99;\">&quot;&quot;</span><span style=\"color:#f8f8f2;\">, Err404 {{}} }}\n</span><span style=\"color:#f8f8f2;\">        }}\n</span><span style=\"color:#f8f8f2;\">        Footer {{}}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
+        }
         p {
             "However, after thinking about the new features we wanted to add to Dioxus, we realized that this router design wouldn’t cut it in the future. We were lacking many crucial features like nested routes and type-safe URLs."
         }

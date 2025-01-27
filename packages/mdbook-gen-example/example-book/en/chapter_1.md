@@ -48,9 +48,9 @@ dioxus-liveview = { version = "*", features = ["axum"] }
 tokio = { version = "1.15.0", features = ["full"] }
 ```
 
-<!-- ```rust
-{{#include ../example-book/book.toml}}
-``` -->
+```rust
+{{#include src/included_example.rs}}
+```
 
 ```sh
 {"timestamp":"   9.927s","level":"INFO","message":"Bundled app successfully!","target":"dx::cli::bundle"}

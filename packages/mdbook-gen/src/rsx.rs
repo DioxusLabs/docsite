@@ -329,32 +329,13 @@ impl<'a, I: Iterator<Item = Event<'a>>> RsxMarkdownParser<'a, I> {
                 if lang.as_deref() == Some("inject-dioxus") {
                     self.start_node(parse_str::<BodyNode>(&raw_code).unwrap());
                 } else {
-                    let mut fname = None;
-                    let code = transform_code_block(&self.path, raw_code, &mut fname)?;
-
-                    static THEME: once_cell::sync::Lazy<syntect::highlighting::Theme> =
-                        once_cell::sync::Lazy::new(|| {
-                            let raw = include_str!("../themes/MonokaiDark.thTheme").to_string();
-                            let mut reader = std::io::Cursor::new(raw.clone());
-                            ThemeSet::load_from_reader(&mut reader).unwrap()
-                        });
-
-                    let ss = SyntaxSet::load_defaults_newlines();
-                    let syntax = ss.find_syntax_by_extension("rs").unwrap();
-                    let html = escape_text(
-                        &syntect::html::highlighted_html_for_string(
-                            code.trim_end(),
-                            &ss,
-                            syntax,
-                            &THEME,
-                        )
-                        .unwrap(),
-                    );
+                    let (fname, html) = build_codeblock(raw_code, &self.path)?;
                     let fname = if let Some(fname) = fname {
                         quote! { name: #fname.to_string() }
                     } else {
                         quote! {}
                     };
+
                     self.start_node(parse_quote! {
                         CodeBlock {
                             contents: #html,
@@ -638,12 +619,39 @@ impl<'a, I: Iterator<Item = Event<'a>>> RsxMarkdownParser<'a, I> {
     }
 }
 
+fn build_codeblock(
+    raw_code: String,
+    path: &PathBuf,
+) -> Result<(Option<String>, String), syn::Error> {
+    let mut fname = None;
+    let code = transform_code_block(&path, raw_code, &mut fname)?;
+    static THEME: once_cell::sync::Lazy<syntect::highlighting::Theme> =
+        once_cell::sync::Lazy::new(|| {
+            let raw = include_str!("../themes/MonokaiDark.thTheme").to_string();
+            let mut reader = std::io::Cursor::new(raw.clone());
+            ThemeSet::load_from_reader(&mut reader).unwrap()
+        });
+
+    let ss = SyntaxSet::load_defaults_newlines();
+    let syntax = ss.find_syntax_by_extension("rs").unwrap();
+    let html =
+        syntect::html::highlighted_html_for_string(code.trim_end(), &ss, syntax, &THEME).unwrap();
+
+    let html = escape_text(&html);
+
+    Ok((fname, html))
+}
+
 fn transform_code_block(
     path: &Path,
     code_contents: String,
     fname: &mut Option<String>,
 ) -> syn::Result<String> {
-    let segments = code_contents.split("{{#");
+    if !code_contents.starts_with("{{#include") {
+        return Ok(code_contents);
+    }
+
+    let mut segments = code_contents.split("{{#");
     let mut output = String::new();
     for segment in segments {
         if let Some((plugin, after)) = segment.split_once("}}") {
@@ -658,7 +666,7 @@ fn transform_code_block(
     Ok(output)
 }
 
-fn resolve_extension(_path: &Path, ext: &str, fname: &mut Option<String>) -> syn::Result<String> {
+fn resolve_extension(path: &Path, ext: &str, fname: &mut Option<String>) -> syn::Result<String> {
     if let Some(file) = ext.strip_prefix("include") {
         let file = file.trim();
         let mut segment = None;
@@ -668,10 +676,17 @@ fn resolve_extension(_path: &Path, ext: &str, fname: &mut Option<String>) -> syn
         } else {
             file
         };
+
         let result = std::fs::read_to_string(file).map_err(|e| {
             syn::Error::new(
                 Span::call_site(),
-                format!("Failed to read file {}: {}", file, e),
+                format!(
+                    "Failed to read file {}: {} from path {} at cwd {}",
+                    file,
+                    e,
+                    path.display(),
+                    std::env::current_dir().unwrap().display()
+                ),
             )
         })?;
         *fname = Some(
@@ -935,4 +950,24 @@ fn syn_parsing_race() {
 
     println!("{:?}", out_toks1);
     println!("{:?}", out_toks2);
+}
+
+#[test]
+fn parses_codeblocks() {
+    let code = r##"
+{"timestamp":"   9.927s","level":"INFO","message":"Bundled app successfully!","target":"dx::cli::bundle"}
+{"timestamp":"   9.927s","level":"INFO","message":"App produced 2 outputs:","target":"dx::cli::bundle"}
+{"timestamp":"   9.927s","level":"INFO","message":"app - [target/dx/hot_dog/bundle/macos/bundle/macos/HotDog.app]","target":"dx::cli::bundle"}
+{"timestamp":"   9.927s","level":"INFO","message":"dmg - [target/dx/hot_dog/bundle/macos/bundle/dmg/HotDog_0.1.0_aarch64.dmg]","target":"dx::cli::bundle"}
+{"timestamp":"   9.927s","level":"DEBUG","json":"{\"BundleOutput\":{\"bundles\":[\"target/dx/hot_dog/bundle/macos/bundle/macos/HotDog.app\"]}}"}
+    "##;
+
+    let (name, contents) = build_codeblock(
+        code.to_string(),
+        &PathBuf::from("../../example-book/en/chapter_1.md"),
+    )
+    .unwrap();
+
+    println!("{:?}", name);
+    println!("{}", contents);
 }

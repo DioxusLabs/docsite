@@ -12,7 +12,7 @@ Dioxus desktop is built on top of [wry](https://github.com/tauri-apps/wry), a Ru
 
 ## Examples
 
-- [File Explorer](https://github.com/DioxusLabs/dioxus/blob/main/examples/file_explorer.rs)
+- [File Explorer](https://github.com/DioxusLabs/dioxus/tree/main/example-projects/file-explorer)
 - [Tailwind App](https://github.com/DioxusLabs/dioxus/tree/main/examples/tailwind)
 
 [![Tailwind App screenshot](/assets/static/tailwind_desktop_app.png)](https://github.com/DioxusLabs/dioxus/tree/main/examples/tailwind)

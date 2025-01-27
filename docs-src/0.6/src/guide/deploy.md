@@ -32,7 +32,7 @@ Making native app distribution easier is a top priority for Dioxus Deploy!
 
 Dioxus web apps are structured as a Client bundle and a Server executable. Generally, any deploy provider that exposes a simple container will be sufficient for a Dioxus fullstack web application.
 
-Some providers like [Cloudflare Workers](http://workers.cloudflare.com) and [Fermyon Spin](https://www.fermyon.com/spin) provider WASM-based containers for apps. WASM runtimes are typically cheaper to operate and can horizontally scale better than a traditional virtual-machine based container. When deploying on WASM runtimes, you will need to create a WASM build of your server manually.
+Some providers like [Cloudflare Workers](http://workers.cloudflare.com) and [Fermyon Spin](https://www.fermyon.com/spin) provide WASM-based containers for apps. WASM runtimes are typically cheaper to operate and can horizontally scale better than a traditional virtual-machine based container. When deploying on WASM runtimes, you will need to create a WASM build of your server manually.
 
 Running the webserver is as simple as executing `./server`. Make sure to set the IP and PORT environment variables correctly:
 

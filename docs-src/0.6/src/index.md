@@ -86,7 +86,7 @@ The core Dioxus framework covers a number of utilities that are either challengi
 
 Dioxus has not reached a "1.0" release yet.
 
-We are currently on version 0.6, which has stabilized a huge number of APIs are drastically improved the developer experience. In version 0.5 we overhauled the state management system and in 0.6 we overhauled tooling.
+We are currently on version 0.6, which has stabilized a huge number of APIs and drastically improved the developer experience. In version 0.5 we overhauled the state management system and in 0.6 we overhauled tooling.
 
 It's likely that the next few versions of Dioxus (0.7, 0.8) will bring breaking changes to your apps. Fortunately, these planned changes will only affect the syntax of specific APIs and not your apps at large. With every version update, we ship a rather comprehensive migration guide - eg [0.6](migration/index.md).
 

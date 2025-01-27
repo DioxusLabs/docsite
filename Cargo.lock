@@ -1543,6 +1543,7 @@ dependencies = [
 name = "dioxus_docs_site"
 version = "0.0.0"
 dependencies = [
+ "askama_escape",
  "async-recursion",
  "automod",
  "axum",

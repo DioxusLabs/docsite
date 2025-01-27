@@ -4067,6 +4067,36 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                         level: 3usize,
                     },
                     ::use_mdbook::mdbook_shared::Section {
+                        title: "Web.https".to_string(),
+                        id: "web.https".to_string(),
+                        level: 3usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Web.pre_compress".to_string(),
+                        id: "web.pre_compress".to_string(),
+                        level: 3usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Web.wasm_opt".to_string(),
+                        id: "web.wasm_opt".to_string(),
+                        level: 3usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Bundle".to_string(),
+                        id: "bundle".to_string(),
+                        level: 3usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Bundle.macos".to_string(),
+                        id: "bundle.macos".to_string(),
+                        level: 3usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Bundle.windows".to_string(),
+                        id: "bundle.windows".to_string(),
+                        level: 3usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
                         title: "Config example".to_string(),
                         id: "config-example".to_string(),
                         level: 2usize,
@@ -5405,7 +5435,7 @@ pub fn Index(section: IndexSection) -> dioxus::prelude::Element {
         }
         p { "Dioxus has not reached a \"1.0\" release yet." }
         p {
-            "We are currently on version 0.6, which has stabilized a huge number of APIs are drastically improved the developer experience. In version 0.5 we overhauled the state management system and in 0.6 we overhauled tooling."
+            "We are currently on version 0.6, which has stabilized a huge number of APIs and drastically improved the developer experience. In version 0.5 we overhauled the state management system and in 0.6 we overhauled tooling."
         }
         p {
             "It's likely that the next few versions of Dioxus (0.7, 0.8) will bring breaking changes to your apps. Fortunately, these planned changes will only affect the syntax of specific APIs and not your apps at large. With every version update, we ship a rather comprehensive migration guide - eg "
@@ -9829,7 +9859,7 @@ pub fn GuideDeploy(section: GuideDeploySection) -> dioxus::prelude::Element {
             Link { to: "http://workers.cloudflare.com", "Cloudflare Workers" }
             " and "
             Link { to: "https://www.fermyon.com/spin", "Fermyon Spin" }
-            " provider WASM-based containers for apps. WASM runtimes are typically cheaper to operate and can horizontally scale better than a traditional virtual-machine based container. When deploying on WASM runtimes, you will need to create a WASM build of your server manually."
+            " provide WASM-based containers for apps. WASM runtimes are typically cheaper to operate and can horizontally scale better than a traditional virtual-machine based container. When deploying on WASM runtimes, you will need to create a WASM build of your server manually."
         }
         p {
             "Running the webserver is as simple as executing  "
@@ -14714,7 +14744,7 @@ pub fn GuidesDesktopIndex(section: GuidesDesktopIndexSection) -> dioxus::prelude
         }
         ul {
             li {
-                Link { to: "https://github.com/DioxusLabs/dioxus/blob/main/examples/file_explorer.rs",
+                Link { to: "https://github.com/DioxusLabs/dioxus/tree/main/example-projects/file-explorer",
                     "File Explorer"
                 }
             }
@@ -14875,15 +14905,13 @@ pub fn GuidesMobileIndex(section: GuidesMobileIndexSection) -> dioxus::prelude::
             }
         }
         p {
-            "The Rust ecosystem for mobile is still in its infancy. Mobile is a 1st-class target for Dioxus apps, but there are very few packages that are battle-tested and ready to use."
+            "The Rust ecosystem for mobile continues to mature, with Dioxus offering strong support for mobile applications. Mobile is a first-class target for Dioxus apps, with a robust WebView implementation that supports CSS animations and transparency effects."
         }
         p {
-            "Mobile apps are rendered with either the platform's WebView or experimentally with "
-            Link { to: "https://github.com/DioxusLabs/blitz", "WGPU" }
-            ". WebView doesn't support animations, transparency, and native widgets."
+            "Mobile apps are rendered with either the platform's WebView or experimentally with WGPU. While native Android animations and widgets aren't currently supported, CSS-based animations and styling provide a powerful alternative."
         }
         p {
-            "Mobile support is currently best suited for CRUD-style apps, ideally for internal teams who need to develop quickly but don't care much about animations or native widgets."
+            "Mobile support is well-suited for most application types, from business tools to consumer apps, making it an excellent choice for teams looking to build cross-platform applications with a single codebase."
         }
         h2 { id: "getting-set-up",
             Link {
@@ -20119,7 +20147,7 @@ pub fn ReferenceComponents(section: ReferenceComponentsSection) -> dioxus::prelu
             " function. Instead, you should break down the functionality of an app in logical parts called components."
         }
         p {
-            "A component is a Rust function, named in UpperCammelCase, that either takes no parameters or a properties struct and returns an  "
+            "A component is a Rust function, named in UpperCamelCase, that either takes no parameters or a properties struct and returns an  "
             code { "Element" }
             " describing the UI it wants to render."
         }
@@ -20131,7 +20159,7 @@ pub fn ReferenceComponents(section: ReferenceComponentsSection) -> dioxus::prelu
             p {
                 "You'll probably want to add  "
                 code { "#![allow(non_snake_case)]" }
-                " to the top of your crate to avoid warnings about UpperCammelCase component names"
+                " to the top of your crate to avoid warnings about UpperCamelCase component names"
             }
         }
         p {
@@ -23329,6 +23357,12 @@ pub enum CliConfigureSection {
     Webresource,
     Webresourcedev,
     Webproxy,
+    Webhttps,
+    WebpreCompress,
+    WebwasmOpt,
+    Bundle,
+    Bundlemacos,
+    Bundlewindows,
     ConfigExample,
 }
 impl std::str::FromStr for CliConfigureSection {
@@ -23344,6 +23378,12 @@ impl std::str::FromStr for CliConfigureSection {
             "webresource-" => Ok(Self::Webresource),
             "webresourcedev-" => Ok(Self::Webresourcedev),
             "webproxy" => Ok(Self::Webproxy),
+            "webhttps" => Ok(Self::Webhttps),
+            "webpre-compress" => Ok(Self::WebpreCompress),
+            "webwasm-opt" => Ok(Self::WebwasmOpt),
+            "bundle" => Ok(Self::Bundle),
+            "bundlemacos" => Ok(Self::Bundlemacos),
+            "bundlewindows" => Ok(Self::Bundlewindows),
             "config-example" => Ok(Self::ConfigExample),
             _ => Err(CliConfigureSectionParseError),
         }
@@ -23361,6 +23401,12 @@ impl std::fmt::Display for CliConfigureSection {
             Self::Webresource => f.write_str("webresource-"),
             Self::Webresourcedev => f.write_str("webresourcedev-"),
             Self::Webproxy => f.write_str("webproxy"),
+            Self::Webhttps => f.write_str("webhttps"),
+            Self::WebpreCompress => f.write_str("webpre-compress"),
+            Self::WebwasmOpt => f.write_str("webwasm-opt"),
+            Self::Bundle => f.write_str("bundle"),
+            Self::Bundlemacos => f.write_str("bundlemacos"),
+            Self::Bundlewindows => f.write_str("bundlewindows"),
             Self::ConfigExample => f.write_str("config-example"),
         }
     }
@@ -23370,7 +23416,7 @@ pub struct CliConfigureSectionParseError;
 impl std::fmt::Display for CliConfigureSectionParseError {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         f.write_str(
-            "Invalid section name. Expected one of CliConfigureSectionconfigure-project, structure, application-, webapp-, webwatcher-, webresource-, webresourcedev-, webproxy, config-example",
+            "Invalid section name. Expected one of CliConfigureSectionconfigure-project, structure, application-, webapp-, webwatcher-, webresource-, webresourcedev-, webproxy, webhttps, webpre-compress, webwasm-opt, bundle, bundlemacos, bundlewindows, config-example",
         )?;
         Ok(())
     }
@@ -23426,27 +23472,6 @@ pub fn CliConfigure(section: CliConfigureSection) -> dioxus::prelude::Element {
         CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">[application]</span></pre>\n" }
         p { "Application-wide configuration. Applies to both web and desktop." }
         ul {
-            li {
-                strong { "name" }
-                " 🔒 - Project name & title."
-                CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">name </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;my_project&quot;</span></pre>\n" }
-            }
-            li {
-                strong { "default_platform" }
-                " 🔒 - The platform this project targets"
-                CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f92672;\">#</span><span style=\"color:#f8f8f2;\"> Currently supported platforms: web, desktop\n</span><span style=\"color:#f8f8f2;\">default_platform </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;web&quot;</span></pre>\n" }
-            }
-            li {
-                strong { "out_dir" }
-                " - The directory to place the build artifacts from "
-                code { "dx build" }
-                " or "
-                code { "dx serve" }
-                " into. This is also where the "
-                code { "assets" }
-                " directory will be copied into."
-                CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">out_dir </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;dist&quot;</span></pre>\n" }
-            }
             li {
                 strong { "asset_dir" }
                 " - The directory with your static assets. The CLI will automatically copy these assets into the "
@@ -23595,6 +23620,365 @@ pub fn CliConfigure(section: CliConfigureSection) -> dioxus::prelude::Element {
                 "This will cause any requests made to the dev server with prefix /api/ to be redirected to the backend server at http://localhost:8000. The path and query parameters will be passed on as-is (path rewriting is currently not supported)."
             }
         }
+        h3 { id: "webhttps",
+            Link {
+                to: BookRoute::CliConfigure {
+                    section: CliConfigureSection::Webhttps,
+                },
+                class: "header",
+                "Web.https"
+            }
+        }
+        CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">[[web.https]]</span></pre>\n" }
+        p { "Controls the https config for the CLI." }
+        ul {
+            li {
+                strong { "enabled" }
+                " enables or disables https in the CLI"
+                CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">enabled </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ff80f4;\">true</span></pre>\n" }
+            }
+            li {
+                strong { "mkcert" }
+                " enables or disables generating certs with the mkcert CLI"
+                CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">mkcert </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ff80f4;\">true</span></pre>\n" }
+            }
+            li {
+                strong { "key_path" }
+                " sets the path to use for the https key"
+                CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">key_path </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;/path/to/key&quot;</span></pre>\n" }
+            }
+            li {
+                strong { "cert_path" }
+                " sets the path to use for the https cert"
+                CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">cert_path </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;/path/to/cert&quot;</span></pre>\n" }
+            }
+        }
+        h3 { id: "webpre-compress",
+            Link {
+                to: BookRoute::CliConfigure {
+                    section: CliConfigureSection::WebpreCompress,
+                },
+                class: "header",
+                "Web.pre_compress"
+            }
+        }
+        p {
+            "If this setting is enabled, the CLI will pre-compress the built assets in release mode with brotli. This setting is enabled by default."
+        }
+        CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">[web]\n</span><span style=\"color:#f8f8f2;\">pre_compress </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ff80f4;\">true</span></pre>\n" }
+        h3 { id: "webwasm-opt",
+            Link {
+                to: BookRoute::CliConfigure {
+                    section: CliConfigureSection::WebwasmOpt,
+                },
+                class: "header",
+                "Web.wasm_opt"
+            }
+        }
+        p { "Controls the wasm-opt config for the CLI." }
+        ul {
+            li {
+                strong { "level" }
+                " sets the level of optimization to use for wasm-opt in release builds."
+                ul {
+                    li { "z: optimize aggressively for size" }
+                    li { "s: optimize for size" }
+                    li { "1: optimize for speed" }
+                    li { "2: optimize for more for speed" }
+                    li { "3: optimize for even more for speed" }
+                    li { "4: optimize aggressively for speed (default)" }
+                }
+                CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">level </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;z&quot;</span></pre>\n" }
+            }
+            li {
+                strong { "debug" }
+                " keep debug symbols in the wasm file even in release builds"
+                CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">debug </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ff80f4;\">true</span></pre>\n" }
+            }
+        }
+        h3 { id: "bundle",
+            Link {
+                to: BookRoute::CliConfigure {
+                    section: CliConfigureSection::Bundle,
+                },
+                class: "header",
+                "Bundle"
+            }
+        }
+        CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">[bundle]</span></pre>\n" }
+        p {
+            "Controls the bundling process for your application. Dioxus uses tauri-bundler under the hood. This section only includes a subset of the options available in tauri-bundler. More options can be found in the tauri-bundler "
+            Link { to: "https://v1.tauri.app/v1/guides/building/#configuration-options",
+                "documentation"
+            }
+            "."
+        }
+        ul {
+            li {
+                strong { "identifier" }
+                " - A unique identifier for your application (e.g., "
+                code { "com.dioxuslabs" }
+                ")."
+                CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">identifier </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;com.dioxuslabs&quot;</span></pre>\n" }
+            }
+            li {
+                strong { "publisher" }
+                " - The name of the entity publishing the application."
+                CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">publisher </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;DioxusLabs&quot;</span></pre>\n" }
+            }
+            li {
+                strong { "icon" }
+                " - Paths to icon files to be used in the bundle. Icon files must be square and 16, 24, 32, 64, or 256 pixels in size. PNG icons must have a 32 bit depth in the RGBA format. If you use a "
+                code { ".icns" }
+                " file is must fit "
+                Link { to: "https://github.com/tauri-apps/tauri/blob/d8db5042a28635259f646c329c3ec5ccf23eac9e/tooling/cli/src/helpers/icns.json",
+                    "this"
+                }
+                " format. The icons must include a "
+                code { ".icns" }
+                " icon for macOS, "
+                code { ".ico" }
+                " for Windows and "
+                code { ".png" }
+                " for Linux."
+                CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">icon </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">[\n</span><span style=\"color:#f8f8f2;\">   </span><span style=\"color:#ffee99;\">&quot;icons/32x32.png&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">   </span><span style=\"color:#ffee99;\">&quot;icons/128x128.png&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">   </span><span style=\"color:#ffee99;\">&quot;icons/128x128@2x.png&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">   </span><span style=\"color:#ffee99;\">&quot;icons/icon.icns&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">   </span><span style=\"color:#ffee99;\">&quot;icons/icon.ico&quot;\n</span><span style=\"color:#f8f8f2;\">]</span></pre>\n" }
+            }
+            li {
+                strong { "resources" }
+                " - Additional files to include in the bundle. Each asset is copied from the path and is accessible from the bundle at the same path. Any "
+                Link {
+                    to: BookRoute::GuidesAssets {
+                        section: GuidesAssetsSection::Empty,
+                    },
+                    "assets"
+                }
+                " are automatically bundled with the installer."
+                CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">resources </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">[</span><span style=\"color:#ffee99;\">&quot;path/to/resource&quot;</span><span style=\"color:#f8f8f2;\">]</span></pre>\n" }
+            }
+            li {
+                strong { "copyright" }
+                " - Copyright information for the application."
+                CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">copyright </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;Copyright 2023 DioxusLabs&quot;</span></pre>\n" }
+            }
+            li {
+                strong { "category" }
+                " - The category of the application. Must be one of "
+                code { "Business" }
+                ", "
+                code { "DeveloperTool" }
+                ", "
+                code { "Education" }
+                ", "
+                code { "Entertainment" }
+                ", "
+                code { "Finance" }
+                ", "
+                code { "Game" }
+                ", "
+                code { "ActionGame" }
+                ", "
+                code { "AdventureGame" }
+                ", "
+                code { "ArcadeGame" }
+                ", "
+                code { "BoardGame" }
+                ", "
+                code { "CardGame" }
+                ", "
+                code { "CasinoGame" }
+                ", "
+                code { "DiceGame" }
+                ", "
+                code { "EducationalGame" }
+                ", "
+                code { "FamilyGame" }
+                ", "
+                code { "KidsGame" }
+                ", "
+                code { "MusicGame" }
+                ", "
+                code { "PuzzleGame" }
+                ", "
+                code { "RacingGame" }
+                ", "
+                code { "RolePlayingGame" }
+                ", "
+                code { "SimulationGame" }
+                ", "
+                code { "SportsGame" }
+                ", "
+                code { "StrategyGame" }
+                ", "
+                code { "TriviaGame" }
+                ", "
+                code { "WordGame" }
+                ", "
+                code { "GraphicsAndDesign" }
+                ", "
+                code { "HealthcareAndFitness" }
+                ", "
+                code { "Lifestyle" }
+                ", "
+                code { "Medical" }
+                ", "
+                code { "Music" }
+                ", "
+                code { "News" }
+                ", "
+                code { "Photography" }
+                ", "
+                code { "Productivity" }
+                ", "
+                code { "Reference" }
+                ", "
+                code { "SocialNetworking" }
+                ", "
+                code { "Sports" }
+                ", "
+                code { "Travel" }
+                ", "
+                code { "Utility" }
+                ", "
+                code { "Video" }
+                ", or "
+                code { "Weather" }
+                CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">category </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;Utility&quot;</span></pre>\n" }
+            }
+            li {
+                strong { "short_description" }
+                " - A brief description of the application."
+                CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">short_description </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;A utility application built with Dioxus&quot;</span></pre>\n" }
+            }
+            li {
+                strong { "long_description" }
+                " - A detailed description of the application."
+                CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">long_description </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;This application provides various utility functions...&quot;</span></pre>\n" }
+            }
+            li {
+                strong { "external_bin" }
+                " - Paths to external sidecar binaries to include in the bundle. These bundles may be accessed at runtime with the name of the binary (not the absolute path). "
+                strong {
+                    "the target triple will be automatically added to the binary name before it is added to the bundle."
+                }
+                CodeBlock {
+                    contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">external_bin </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">[</span><span style=\"color:#ffee99;\">&quot;path/to/external_binary&quot;</span><span style=\"color:#f8f8f2;\">] </span><span style=\"color:#f92672;\">#</span><span style=\"color:#f8f8f2;\"> On macos, the binary at path</span><span style=\"color:#f92672;\">/</span><span style=\"color:#f8f8f2;\">to</span><span style=\"color:#f92672;\">/</span><span style=\"color:#f8f8f2;\">external_binary</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">aarch64</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">apple</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">darwin will be included </span><span style=\"color:#f92672;\">in</span><span style=\"color:#f8f8f2;\"> the bundle. It can be accessed at runtime with the name external_binary</span></pre>\n",
+                }
+            }
+        }
+        h3 { id: "bundlemacos",
+            Link {
+                to: BookRoute::CliConfigure {
+                    section: CliConfigureSection::Bundlemacos,
+                },
+                class: "header",
+                "Bundle.macos"
+            }
+        }
+        CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">[bundle.macos]</span></pre>\n" }
+        p { "Configuration options for macOS bundles." }
+        ul {
+            li {
+                strong { "frameworks" }
+                " - List of frameworks to include in the bundle."
+                CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">frameworks </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">[</span><span style=\"color:#ffee99;\">&quot;CoreML&quot;</span><span style=\"color:#f8f8f2;\">]</span></pre>\n" }
+            }
+            li {
+                strong { "minimum_system_version" }
+                " - Minimum macOS version required. (default: "
+                code { "10.13" }
+                ")"
+                CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">minimum_system_version </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;10.13&quot;</span></pre>\n" }
+            }
+            li {
+                strong { "license" }
+                " - Path to the license file."
+                CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">license </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;LICENSE.txt&quot;</span></pre>\n" }
+            }
+            li {
+                strong { "exception_domain" }
+                " - Domain for exception handling. The domain must be lowercase without a port or protocol."
+                CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">exception_domain </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;mysite.com&quot;</span></pre>\n" }
+            }
+            li {
+                strong { "signing_identity" }
+                " - macOS signing identity."
+                CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">signing_identity </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;SIGNING IDENTITY KEYCHAIN ENTRY NAME&quot;</span></pre>\n" }
+            }
+            li {
+                strong { "provider_short_name" }
+                " - Provider short name for the bundle."
+                CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">provider_short_name </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;DioxusLabs&quot;</span></pre>\n" }
+            }
+            li {
+                strong { "entitlements" }
+                " - Path to the entitlements file."
+                CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">entitlements </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;entitlements.plist&quot;</span></pre>\n" }
+            }
+            li {
+                strong { "hardened_runtime" }
+                " - Whether to enable the "
+                Link { to: "https://developer.apple.com/documentation/security/hardened-runtime",
+                    "hardened runtime"
+                }
+                " in the bundle."
+                CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">hardened_runtime </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ff80f4;\">true</span></pre>\n" }
+            }
+        }
+        h3 { id: "bundlewindows",
+            Link {
+                to: BookRoute::CliConfigure {
+                    section: CliConfigureSection::Bundlewindows,
+                },
+                class: "header",
+                "Bundle.windows"
+            }
+        }
+        CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">[bundle.windows]</span></pre>\n" }
+        p { "Configuration options for Windows bundles." }
+        ul {
+            li {
+                strong { "digest_algorithm" }
+                " - Sets the file digest algorithm used for signing."
+                CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">digest_algorithm </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;sha-256&quot;</span></pre>\n" }
+            }
+            li {
+                strong { "certificate_thumbprint" }
+                " - SHA1 hash of the signing certificate."
+                CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">certificate_thumbprint </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;A1B2C3D4E5F6...&quot;</span></pre>\n" }
+            }
+            li {
+                strong { "timestamp_url" }
+                " - Sets the server to used for timestamping the signature."
+                CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">timestamp_url </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;http://timestamp.digicert.com&quot;</span></pre>\n" }
+            }
+            li {
+                strong { "tsp" }
+                " - Whether to use the time stamping protocol."
+                CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">tsp </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ff80f4;\">true</span></pre>\n" }
+            }
+            li {
+                strong { "icon_path" }
+                " - Path to the icon for the system tray icon. (defaults to "
+                code { "./icons/icon.ico" }
+                ")"
+                CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">icon_path </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;assets/icon.ico&quot;</span></pre>\n" }
+            }
+            li {
+                strong { "webview_install_mode" }
+                " - Installation mode for WebView2."
+                " "
+                "EmbedBootstrapper: embed the WebView2 bootstrapper into the installer"
+                CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">[webview_install_mode.EmbedBootstrapper]\n</span><span style=\"color:#f8f8f2;\">silent </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ff80f4;\">true</span></pre>\n" }
+                "DownloadBootstrapper: download the WebView2 bootstrapper in the installer at runtime"
+                CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">[webview_install_mode.DownloadBootstrapper]\n</span><span style=\"color:#f8f8f2;\">silent </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ff80f4;\">true</span></pre>\n" }
+                "OfflineInstaller: Embed the WebView2 installer into the main installer"
+                CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">[webview_install_mode.OfflineInstaller]\n</span><span style=\"color:#f8f8f2;\">silent </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ff80f4;\">true</span></pre>\n" }
+                "FixedRuntime: Use a fixed path to the WebView2 runtime"
+                CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">[webview_install_mode.FixedRuntime]\n</span><span style=\"color:#f8f8f2;\">path </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;path/to/runtime&quot;</span></pre>\n" }
+                "Skip: Does not install WebView2 as part of the installer. This will cause the application to fail if webview was not already installed"
+                CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">webview_install_mode </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;Skip&quot;</span></pre>\n" }
+            }
+        }
         h2 { id: "config-example",
             Link {
                 to: BookRoute::CliConfigure {
@@ -23606,7 +23990,7 @@ pub fn CliConfigure(section: CliConfigureSection) -> dioxus::prelude::Element {
         }
         p { "This includes all fields, mandatory or not." }
         CodeBlock {
-            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">[application]\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\">#</span><span style=\"color:#f8f8f2;\"> App name\n</span><span style=\"color:#f8f8f2;\">name </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;project_name&quot;\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\">#</span><span style=\"color:#f8f8f2;\"> The Dioxus platform to default to\n</span><span style=\"color:#f8f8f2;\">default_platform </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;web&quot;\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\">#</span><span style=\"color:#f8f8f2;\"> `build` </span><span style=\"color:#f92672;\">&amp;</span><span style=\"color:#f8f8f2;\"> `serve` output path\n</span><span style=\"color:#f8f8f2;\">out_dir </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;dist&quot;\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\">#</span><span style=\"color:#f8f8f2;\"> The </span><span style=\"font-style:italic;color:#66d9ef;\">static</span><span style=\"color:#f8f8f2;\"> resource path\n</span><span style=\"color:#f8f8f2;\">asset_dir </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;public&quot;\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">[web.app]\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\"># </span><span style=\"color:#ff80f4;\">HTML</span><span style=\"color:#f8f8f2;\"> title tag content\n</span><span style=\"color:#f8f8f2;\">title </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;project_name&quot;\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">[web.watcher]\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\">#</span><span style=\"color:#f8f8f2;\"> When watcher is triggered, regenerate the `index.html`\n</span><span style=\"color:#f8f8f2;\">reload_html </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ff80f4;\">true\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\">#</span><span style=\"color:#f8f8f2;\"> Which files or dirs will be monitored\n</span><span style=\"color:#f8f8f2;\">watch_path </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">[</span><span style=\"color:#ffee99;\">&quot;src&quot;</span><span style=\"color:#f8f8f2;\">, </span><span style=\"color:#ffee99;\">&quot;public&quot;</span><span style=\"color:#f8f8f2;\">]\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\">#</span><span style=\"color:#f8f8f2;\"> Include style or script assets\n</span><span style=\"color:#f8f8f2;\">[web.resource]\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\"># </span><span style=\"color:#ff80f4;\">CSS</span><span style=\"color:#f8f8f2;\"> style file\n</span><span style=\"color:#f8f8f2;\">style </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">[]\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\">#</span><span style=\"color:#f8f8f2;\"> Javascript code file\n</span><span style=\"color:#f8f8f2;\">script </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">[]\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">[web.resource.dev]\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\">#</span><span style=\"color:#f8f8f2;\"> Same </span><span style=\"color:#f92672;\">as </span><span style=\"color:#f8f8f2;\">[web.resource], but </span><span style=\"color:#f92672;\">for</span><span style=\"color:#f8f8f2;\"> development servers\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\"># </span><span style=\"color:#ff80f4;\">CSS</span><span style=\"color:#f8f8f2;\"> style file\n</span><span style=\"color:#f8f8f2;\">style </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">[]\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\">#</span><span style=\"color:#f8f8f2;\"> JavaScript files\n</span><span style=\"color:#f8f8f2;\">script </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">[]\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">[[web.proxy]]\n</span><span style=\"color:#f8f8f2;\">backend </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;http://localhost:8000/api/&quot;</span></pre>\n",
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">[application]\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\">#</span><span style=\"color:#f8f8f2;\"> App name\n</span><span style=\"color:#f8f8f2;\">name </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;project_name&quot;\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\">#</span><span style=\"color:#f8f8f2;\"> `build` </span><span style=\"color:#f92672;\">&amp;</span><span style=\"color:#f8f8f2;\"> `serve` output path\n</span><span style=\"color:#f8f8f2;\">out_dir </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;dist&quot;\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\">#</span><span style=\"color:#f8f8f2;\"> The </span><span style=\"font-style:italic;color:#66d9ef;\">static</span><span style=\"color:#f8f8f2;\"> resource path\n</span><span style=\"color:#f8f8f2;\">asset_dir </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;public&quot;\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">[web.app]\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\"># </span><span style=\"color:#ff80f4;\">HTML</span><span style=\"color:#f8f8f2;\"> title tag content\n</span><span style=\"color:#f8f8f2;\">title </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;project_name&quot;\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">[web.watcher]\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\">#</span><span style=\"color:#f8f8f2;\"> When watcher is triggered, regenerate the `index.html`\n</span><span style=\"color:#f8f8f2;\">reload_html </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ff80f4;\">true\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\">#</span><span style=\"color:#f8f8f2;\"> Which files or dirs will be monitored\n</span><span style=\"color:#f8f8f2;\">watch_path </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">[</span><span style=\"color:#ffee99;\">&quot;src&quot;</span><span style=\"color:#f8f8f2;\">, </span><span style=\"color:#ffee99;\">&quot;public&quot;</span><span style=\"color:#f8f8f2;\">]\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\">#</span><span style=\"color:#f8f8f2;\"> Include style or script assets\n</span><span style=\"color:#f8f8f2;\">[web.resource]\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\"># </span><span style=\"color:#ff80f4;\">CSS</span><span style=\"color:#f8f8f2;\"> style file\n</span><span style=\"color:#f8f8f2;\">style </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">[]\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\">#</span><span style=\"color:#f8f8f2;\"> Javascript code file\n</span><span style=\"color:#f8f8f2;\">script </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">[]\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">[web.resource.dev]\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\">#</span><span style=\"color:#f8f8f2;\"> Same </span><span style=\"color:#f92672;\">as </span><span style=\"color:#f8f8f2;\">[web.resource], but </span><span style=\"color:#f92672;\">for</span><span style=\"color:#f8f8f2;\"> development servers\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\"># </span><span style=\"color:#ff80f4;\">CSS</span><span style=\"color:#f8f8f2;\"> style file\n</span><span style=\"color:#f8f8f2;\">style </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">[]\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\">#</span><span style=\"color:#f8f8f2;\"> JavaScript files\n</span><span style=\"color:#f8f8f2;\">script </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">[]\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">[[web.proxy]]\n</span><span style=\"color:#f8f8f2;\">backend </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;http://localhost:8000/api/&quot;\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">[bundle]\n</span><span style=\"color:#f8f8f2;\">identifier </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;com.dioxuslabs&quot;\n</span><span style=\"color:#f8f8f2;\">publisher </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;DioxusLabs&quot;\n</span><span style=\"color:#f8f8f2;\">icon </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;assets/icon.png&quot;</span></pre>\n",
         }
     }
 }

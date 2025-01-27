@@ -28,15 +28,19 @@ impl CurrentDocsVersion {
     }
 }
 
-pub fn use_current_docs_version() -> CurrentDocsVersion {
+pub fn use_try_current_docs_version() -> Option<CurrentDocsVersion> {
     let route = use_route();
     match route {
-        Route::Docs06 { child } => CurrentDocsVersion::V06(child),
-        Route::Docs05 { child } => CurrentDocsVersion::V05(child),
-        Route::Docs04 { child } => CurrentDocsVersion::V04(child),
-        Route::Docs03 { child } => CurrentDocsVersion::V03(child),
-        _ => panic!("current docs version should be set"),
+        Route::Docs06 { child } => Some(CurrentDocsVersion::V06(child)),
+        Route::Docs05 { child } => Some(CurrentDocsVersion::V05(child)),
+        Route::Docs04 { child } => Some(CurrentDocsVersion::V04(child)),
+        Route::Docs03 { child } => Some(CurrentDocsVersion::V03(child)),
+        _ => None,
     }
+}
+
+pub fn use_current_docs_version() -> CurrentDocsVersion {
+    use_try_current_docs_version().expect("current docs version should be set")
 }
 
 pub trait AnyBookRoute: Routable + PartialEq + Hash + Eq + Clone + Copy {
@@ -209,7 +213,7 @@ impl AnyBookRoute for router_06::BookRoute {
         "0.6"
     }
     fn full_version() -> &'static str {
-        "0.6.0"
+        "0.6.1"
     }
     fn index() -> Self {
         Self::Index {

@@ -64,34 +64,6 @@ mdbook-gen = { git = "https://github.com/dioxuslabs/include_mdbook", features = 
 mdbook-shared = { git = "https://github.com/dioxuslabs/include_mdbook" }
 
 [patch.crates-io]
-dioxus = { git = "https://github.com/dioxuslabs/dioxus", rev = "20cdafbf1653fe193ea389d8cd36ce548457e4f3" }
-dioxus-lib = { git = "https://github.com/dioxuslabs/dioxus", rev = "20cdafbf1653fe193ea389d8cd36ce548457e4f3" }
-dioxus-core = { git = "https://github.com/dioxuslabs/dioxus", rev = "20cdafbf1653fe193ea389d8cd36ce548457e4f3" }
-dioxus-core-macro = { git = "https://github.com/dioxuslabs/dioxus", rev = "20cdafbf1653fe193ea389d8cd36ce548457e4f3" }
-dioxus-config-macro = { git = "https://github.com/dioxuslabs/dioxus", rev = "20cdafbf1653fe193ea389d8cd36ce548457e4f3" }
-dioxus-router = { git = "https://github.com/dioxuslabs/dioxus", rev = "20cdafbf1653fe193ea389d8cd36ce548457e4f3" }
-dioxus-router-macro = { git = "https://github.com/dioxuslabs/dioxus", rev = "20cdafbf1653fe193ea389d8cd36ce548457e4f3" }
-dioxus-html = { git = "https://github.com/dioxuslabs/dioxus", rev = "20cdafbf1653fe193ea389d8cd36ce548457e4f3" }
-dioxus-html-internal-macro = { git = "https://github.com/dioxuslabs/dioxus", rev = "20cdafbf1653fe193ea389d8cd36ce548457e4f3" }
-dioxus-hooks = { git = "https://github.com/dioxuslabs/dioxus", rev = "20cdafbf1653fe193ea389d8cd36ce548457e4f3" }
-dioxus-web = { git = "https://github.com/dioxuslabs/dioxus", rev = "20cdafbf1653fe193ea389d8cd36ce548457e4f3" }
-dioxus-ssr = { git = "https://github.com/dioxuslabs/dioxus", rev = "20cdafbf1653fe193ea389d8cd36ce548457e4f3" }
-dioxus-desktop = { git = "https://github.com/dioxuslabs/dioxus", rev = "20cdafbf1653fe193ea389d8cd36ce548457e4f3" }
-dioxus-interpreter-js = { git = "https://github.com/dioxuslabs/dioxus", rev = "20cdafbf1653fe193ea389d8cd36ce548457e4f3" }
-dioxus-liveview = { git = "https://github.com/dioxuslabs/dioxus", rev = "20cdafbf1653fe193ea389d8cd36ce548457e4f3" }
-dioxus-rsx = { git = "https://github.com/dioxuslabs/dioxus", rev = "20cdafbf1653fe193ea389d8cd36ce548457e4f3" }
-dioxus-signals = { git = "https://github.com/dioxuslabs/dioxus", rev = "20cdafbf1653fe193ea389d8cd36ce548457e4f3" }
-dioxus-cli-config = { git = "https://github.com/dioxuslabs/dioxus", rev = "20cdafbf1653fe193ea389d8cd36ce548457e4f3" }
-generational-box = { git = "https://github.com/dioxuslabs/dioxus", rev = "20cdafbf1653fe193ea389d8cd36ce548457e4f3" }
-dioxus_server_macro = { git = "https://github.com/dioxuslabs/dioxus", rev = "20cdafbf1653fe193ea389d8cd36ce548457e4f3" }
-dioxus-fullstack = { git = "https://github.com/dioxuslabs/dioxus", rev = "20cdafbf1653fe193ea389d8cd36ce548457e4f3" }
-dioxus-autofmt = { git = "https://github.com/dioxuslabs/dioxus", rev = "20cdafbf1653fe193ea389d8cd36ce548457e4f3" }
-dioxus-devtools = { git = "https://github.com/dioxuslabs/dioxus", rev = "20cdafbf1653fe193ea389d8cd36ce548457e4f3" }
-dioxus-devtools-types = { git = "https://github.com/dioxuslabs/dioxus", rev = "20cdafbf1653fe193ea389d8cd36ce548457e4f3" }
-manganis = { git = "https://github.com/dioxuslabs/dioxus", rev = "20cdafbf1653fe193ea389d8cd36ce548457e4f3" }
-manganis-core = { git = "https://github.com/dioxuslabs/dioxus", rev = "20cdafbf1653fe193ea389d8cd36ce548457e4f3" }
-manganis-macro = { git = "https://github.com/dioxuslabs/dioxus", rev = "20cdafbf1653fe193ea389d8cd36ce548457e4f3" }
-
 # dioxus = { path = "../../dioxus/packages/dioxus" }
 # dioxus-lib = { path = "../../dioxus/packages/dioxus-lib" }
 # dioxus-core = { path = "../../dioxus/packages/core" }

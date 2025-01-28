@@ -1,70 +1,151 @@
+use crate::{
+    build::{BuildCommand, BuildMessage, BuildRequest},
+    AppState,
+};
 use axum::{
     extract::{ws::WebSocket, State, WebSocketUpgrade},
     response::IntoResponse,
 };
+use axum_client_ip::SecureClientIp;
+use dioxus_logger::tracing::error;
+use example_projects::ExampleProject;
 use futures::{SinkExt, StreamExt as _};
-use model::{QueueAction, SocketMessage};
-use tokio::sync::mpsc;
-
-use crate::{build::BuildMessage, AppState};
+use model::SocketMessage;
+use tokio::{
+    select,
+    sync::mpsc::{self, UnboundedSender},
+};
 
 /// Handle any pre-websocket processing.
-pub async fn ws_handler(State(state): State<AppState>, ws: WebSocketUpgrade) -> impl IntoResponse {
-    ws.on_upgrade(move |socket| handle_socket(state, socket))
+pub async fn ws_handler(
+    State(state): State<AppState>,
+    SecureClientIp(ip): SecureClientIp,
+    ws: WebSocketUpgrade,
+) -> impl IntoResponse {
+    let ip = ip.to_string();
+    ws.on_upgrade(move |socket| handle_socket(state, ip, socket))
 }
 
-/// Handle the websocket.
-async fn handle_socket(state: AppState, socket: WebSocket) {
-    let (mut tx, mut rx) = socket.split();
+/// Handle the websocket connection.
+///
+/// We need to:
+/// - Handle submitting build requests, allowing only one build per socket.
+/// - Send any build messages to the client.
+/// - Stop any ongoing builds if the connection closes.
+async fn handle_socket(state: AppState, ip: String, socket: WebSocket) {
+    let (mut socket_tx, mut socket_rx) = socket.split();
 
-    // Store common errors
-    let failed_to_parse =
-        SocketMessage::CompileFinished(Err("failed to parse received data".to_string()))
-            .as_json_string()
-            .expect("failed to convert error message to json");
+    // Ensure only one client per socket.
+    let mut connected_sockets = state.connected_sockets.lock().await;
+    if connected_sockets.contains(&ip) {
+        // Client is already connected. Send error and close socket.
+        let _ = socket_tx
+            .send(SocketMessage::AlreadyConnected.into_axum())
+            .await;
+        let _ = socket_tx.close().await;
+        return;
+    } else {
+        connected_sockets.push(ip.clone());
+    }
+    drop(connected_sockets);
 
-    let failed_to_compile =
-        SocketMessage::CompileFinished(Err("failed to compile code".to_string()))
-            .as_json_string()
-            .expect("failed to convert error message to json");
+    // Start our build loop.
+    let (build_tx, mut build_rx) = mpsc::unbounded_channel();
+    let mut current_build: Option<BuildRequest> = None;
 
-    while let Some(Ok(msg)) = rx.next().await {
-        // Get websocket message and try converting to text.
-        let Some(txt) = msg.into_text().ok() else {
-            tx.send(failed_to_parse.clone().into()).await.ok();
-            continue;
-        };
+    loop {
+        select! {
+            // Parse socket messages, performing the proper action.
+            Some(Ok(socket_msg)) = socket_rx.next() => {
+                // Try decoding the socket messages into our own type. If invalid, just ignore it.
+                let Ok(socket_msg) = SocketMessage::try_from(socket_msg) else {
+                    continue;
+                };
 
-        // Convert websocket message from text to `SocketMessage`
-        let msg = SocketMessage::from(txt);
-
-        if let SocketMessage::CompileRequest(code) = msg {
-            let (res_tx, mut res_rx) = mpsc::unbounded_channel();
-
-            // Send build request and receive any response from builder.
-            if state.build_queue_tx.send((res_tx, code)).is_ok() {
-                while let Some(msg) = res_rx.recv().await {
-                    let socket_msg = SocketMessage::from(msg);
-                    if let Ok(as_json) = socket_msg.as_json_string() {
-                        tx.send(as_json.into()).await.ok();
+                // Start a new build, stopping any existing ones.
+                if let SocketMessage::BuildRequest(code) = socket_msg {
+                    if let Some(ref request) = current_build {
+                        let result = state.build_queue_tx.send(BuildCommand::Stop { id: request.id });
+                        if result.is_err() {
+                            error!(build_id = ?request.id, "failed to send build stop signal for new build request");
+                            continue;
+                        }
                     }
+
+                    let request = start_build(&state, build_tx.clone(), code);
+                    current_build = Some(request);
                 }
-            } else {
-                tx.send(failed_to_compile.clone().into()).await.ok();
-                continue;
-            };
+            }
+            // Handle sending build messages to client and closing the socket when finished.
+            Some(build_msg) = build_rx.recv() => {
+                // Send the build message.
+                let socket_msg = SocketMessage::from(build_msg.clone());
+                let socket_result = socket_tx.send(socket_msg.into_axum()).await;
+                if socket_result.is_err() {
+                    break;
+                }
+
+                // If the build finished, let's close this socket.
+                if let BuildMessage::Finished(_) = build_msg {
+                    current_build = None;
+                    let _ = socket_tx.close().await;
+                    break;
+                }
+            }
+            else => break,
         }
     }
+
+    // The socket has closed. Make sure we cancel any active builds.
+    if let Some(request) = current_build {
+        let result = state
+            .build_queue_tx
+            .send(BuildCommand::Stop { id: request.id });
+
+        if result.is_err() {
+            error!(build_id = ?request.id, "failed to send build stop signal for closed websocket");
+        }
+    }
+
+    // Drop the socket from our connected list.
+    // TODO: Convert this to a drop guard.
+    let mut connected_sockets = state.connected_sockets.lock().await;
+    let index = connected_sockets.iter().position(|x| **x == ip);
+    if let Some(index) = index {
+        connected_sockets.remove(index);
+    }
+}
+
+/// Assembles the build request and sends it to the queue.
+fn start_build(
+    state: &AppState,
+    build_tx: UnboundedSender<BuildMessage>,
+    code: String,
+) -> BuildRequest {
+    let code = ExampleProject::new(code, "".into(), "".into());
+    let request = BuildRequest {
+        id: code.id(),
+        code,
+        ws_msg_tx: build_tx,
+    };
+
+    state
+        .build_queue_tx
+        .send(BuildCommand::Start {
+            request: request.clone(),
+        })
+        .expect("the build queue channel should never close");
+
+    request
 }
 
 impl From<BuildMessage> for SocketMessage {
     fn from(value: BuildMessage) -> Self {
         match value {
-            BuildMessage::Message(msg) => SocketMessage::CompileMessage(msg),
-            BuildMessage::Finished(id) => SocketMessage::CompileFinished(Ok(id)),
-            BuildMessage::BuildError(e) => SocketMessage::CompileFinished(Err(e.to_string())),
-            BuildMessage::QueuePosition(pos) => SocketMessage::QueuePosition(QueueAction::Set(pos)),
-            BuildMessage::QueueMoved => SocketMessage::QueuePosition(QueueAction::Sub),
+            BuildMessage::Building(stage) => Self::BuildStage(stage),
+            BuildMessage::Finished(result) => Self::BuildFinished(result),
+            BuildMessage::QueuePosition(i) => Self::QueuePosition(i),
+            BuildMessage::CargoDiagnostic(diagnostic) => Self::BuildDiagnostic(diagnostic),
         }
     }
 }

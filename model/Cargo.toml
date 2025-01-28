@@ -6,11 +6,16 @@ edition = "2021"
 [dependencies]
 serde_json = { workspace = true }
 uuid = { workspace = true, features = ["serde"] }
-serde = { version = "1.0.204", features = ["derive"] }
+serde = { workspace = true }
+thiserror = { workspace = true }
+
+# Server only
+dioxus-dx-wire-format = { workspace = true, optional = true }
+axum = { workspace = true, features = ["ws"], optional = true }
 
 # Web only
 gloo-net = { workspace = true, optional = true }
 
 [features]
-server = []
+server = ["dep:dioxus-dx-wire-format", "dep:axum"]
 web = ["dep:gloo-net"]

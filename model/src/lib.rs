@@ -1,72 +1,89 @@
 use serde::{Deserialize, Serialize};
-use std::{error::Error, string::FromUtf8Error};
+use std::string::FromUtf8Error;
+use thiserror::Error;
 use uuid::Uuid;
+
+#[cfg(feature = "server")]
+mod server;
+
+#[cfg(feature = "web")]
+mod web;
 
 #[derive(Debug, Serialize, Deserialize)]
 pub enum SocketMessage {
-    CompileRequest(String),
-    CompileFinished(Result<Uuid, String>),
-    CompileMessage(String),
-    QueuePosition(QueueAction),
-    Unknown,
+    BuildRequest(String),
+    BuildFinished(Result<Uuid, String>),
+    BuildStage(BuildStage),
+    BuildDiagnostic(CargoDiagnostic),
+    QueuePosition(usize),
+    AlreadyConnected,
 }
 
-#[derive(Debug, Serialize, Deserialize)]
-pub enum QueueAction {
-    Set(u32),
-    Sub,
+/// A stage of building from the playground.
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+pub enum BuildStage {
+    Compiling {
+        crates_compiled: usize,
+        total_crates: usize,
+        current_crate: String,
+    },
+    RunningBindgen,
+    Other,
 }
 
 impl SocketMessage {
-    pub fn as_json_string(&self) -> Result<String, serde_json::Error> {
-        serde_json::to_string(self)
+    pub fn as_json_string(&self) -> Result<String, SocketError> {
+        Ok(serde_json::to_string(self)?)
     }
 }
 
-impl From<String> for SocketMessage {
-    fn from(value: String) -> Self {
-        serde_json::from_str(&value).unwrap_or(SocketMessage::Unknown)
+impl TryFrom<String> for SocketMessage {
+    type Error = SocketError;
+
+    fn try_from(value: String) -> Result<Self, Self::Error> {
+        Ok(serde_json::from_str(&value)?)
     }
 }
 
-// Automatic SocketMessage conversion from gloo_net
-#[cfg(feature = "web")]
-use gloo_net::websocket::Message;
-
-#[cfg(feature = "web")]
-impl TryFrom<SocketMessage> for Message {
-    type Error = serde_json::Error;
-
-    fn try_from(value: SocketMessage) -> Result<Self, Self::Error> {
-        let val = value.as_json_string()?;
-        Ok(Self::Text(val))
-    }
+/// A cargo diagnostic
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+pub struct CargoDiagnostic {
+    pub target_crate: String,
+    pub level: CargoLevel,
+    pub message: String,
+    pub spans: Vec<CargoDiagnosticSpan>,
 }
 
-#[cfg(feature = "web")]
-impl From<Message> for SocketMessage {
-    fn from(value: Message) -> Self {
-        match value {
-            Message::Bytes(bytes) => {
-                let as_string = String::from_utf8(bytes).unwrap_or("unknown".to_string());
-                Self::from(as_string)
-            }
-            Message::Text(txt) => Self::from(txt),
-        }
-    }
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+pub enum CargoLevel {
+    Error,
+    Warning,
 }
 
-/// Represents a generic socket error.
-pub struct SocketError(pub Box<dyn Error>);
-
-impl From<serde_json::Error> for SocketError {
-    fn from(value: serde_json::Error) -> Self {
-        Self(Box::new(value))
-    }
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+pub struct CargoDiagnosticSpan {
+    pub is_primary: bool,
+    pub line_start: usize,
+    pub line_end: usize,
+    pub column_start: usize,
+    pub column_end: usize,
+    pub label: Option<String>,
 }
 
-impl From<FromUtf8Error> for SocketError {
-    fn from(value: FromUtf8Error) -> Self {
-        Self(Box::new(value))
-    }
+/// Any socket error.
+#[derive(Debug, Error)]
+pub enum SocketError {
+    #[error(transparent)]
+    ParseJson(#[from] serde_json::Error),
+
+    #[error(transparent)]
+    Utf8Decode(#[from] FromUtf8Error),
+
+    #[cfg(feature = "web")]
+    #[error(transparent)]
+    Gloo(#[from] gloo_net::websocket::WebSocketError),
+
+    #[cfg(feature = "server")]
+    #[error(transparent)]
+    Axum(#[from] axum::Error),
 }

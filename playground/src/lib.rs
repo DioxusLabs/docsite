@@ -7,9 +7,9 @@ use dioxus_sdk::{
     theme::{use_system_theme, SystemTheme},
     utils::timing::use_debounce,
 };
-use editor::monaco::{monaco_loader_src, on_monaco_load, use_monaco_markers};
+use editor::monaco::{self, monaco_loader_src, on_monaco_load, use_monaco_markers};
 use hotreload::{attempt_hot_reload, HotReload};
-use share_code::use_share_code;
+use share_code::decode_code;
 use snippets::{use_provide_selected_example, SelectedExample};
 use std::time::Duration;
 
@@ -41,15 +41,26 @@ pub struct PlaygroundUrls {
     pub location: &'static str,
 }
 
+/// A type of snippet that the playground can be set to.
+#[derive(Debug, Clone, PartialEq)]
+pub enum Snippet {
+    /// A generic piece of text to set the editor value to.
+    Generic(String),
+    /// A share code which can be parsed and converted into text.
+    ShareCode(String),
+    /// No snippet.
+    None,
+}
+
 #[component]
-pub fn Playground(urls: PlaygroundUrls, share_code: Option<String>) -> Element {
+pub fn Playground(urls: PlaygroundUrls, snippet: ReadOnlySignal<Snippet>) -> Element {
     let build = use_context_provider(BuildState::new);
     let mut hot_reload = use_context_provider(HotReload::new);
     let mut selected_example = use_provide_selected_example(build, hot_reload);
 
     // We store the shared code in state as the editor may not be initialized yet.
     let mut show_share_warning = use_signal(|| false);
-    let shared_code = use_share_code(share_code, show_share_warning, hot_reload);
+    let init_code = use_snippet(snippet, hot_reload, show_share_warning);
 
     // Handle events when code changes.
     let on_model_changed = use_debounce(Duration::from_millis(250), move |new_code: String| {
@@ -111,7 +122,7 @@ pub fn Playground(urls: PlaygroundUrls, share_code: Option<String>) -> Element {
                 on_monaco_load(
                     MONACO_FOLDER,
                     system_theme().unwrap_or(SystemTheme::Light),
-                    shared_code(),
+                    init_code(),
                     selected_example,
                     hot_reload,
                     on_model_changed
@@ -142,4 +153,29 @@ pub fn Playground(urls: PlaygroundUrls, share_code: Option<String>) -> Element {
             built_page_url,
         }
     }
+}
+
+/// Use the snippet prop, setting monaco if loaded, and providing the init value if not.
+fn use_snippet(
+    snippet: ReadOnlySignal<Snippet>,
+    mut hot_reload: HotReload,
+    mut show_share_warning: Signal<bool>,
+) -> Memo<Option<String>> {
+    use_memo(move || {
+        let code = match snippet() {
+            Snippet::Generic(code) => code,
+            Snippet::ShareCode(share_code) => {
+                show_share_warning.set(true);
+                decode_code(&share_code).ok()?
+            }
+            Snippet::None => return None,
+        };
+
+        if monaco::is_ready() {
+            monaco::set_current_model_value(&code);
+            hot_reload.set_starting_code(&code);
+        }
+
+        Some(code)
+    })
 }

@@ -1,30 +1,6 @@
-use crate::{editor::monaco, error::ShareError, hotreload::HotReload};
+use crate::{editor::monaco, error::ShareError};
 use base64::{prelude::BASE64_URL_SAFE, Engine};
-use dioxus::prelude::*;
 use dioxus_document::eval;
-
-/// Use a share code, converting the share code to real code.
-pub fn use_share_code(
-    share_code: Option<String>,
-    mut show_share_warning: Signal<bool>,
-    mut hot_reload: HotReload,
-) -> Memo<Option<String>> {
-    use_memo(use_reactive((&share_code,), move |(share_code,)| {
-        let share_code = share_code?;
-        let decoded = decode_code(&share_code).ok()?;
-
-        show_share_warning.set(true);
-
-        // If monaco is initialized, set it now. Otherwise save it for monaco onload code.
-        if monaco::is_ready() {
-            monaco::set_current_model_value(&decoded);
-            hot_reload.set_starting_code(&decoded);
-            return None;
-        }
-
-        Some(decoded)
-    }))
-}
 
 /// Copy a share link to the clipboard.
 ///
@@ -61,7 +37,7 @@ fn encode_code(code: &str) -> String {
 }
 
 /// Decode the share code into code.
-fn decode_code(share_code: &str) -> Result<String, ShareError> {
+pub fn decode_code(share_code: &str) -> Result<String, ShareError> {
     let bytes = BASE64_URL_SAFE.decode(share_code)?;
     let decoded_bytes = miniz_oxide::inflate::decompress_to_vec(&bytes)?;
     let decoded = String::from_utf8(decoded_bytes)?;

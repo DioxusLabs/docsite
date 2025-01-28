@@ -59,14 +59,14 @@ pub fn use_monaco_markers(diagnostics: Signal<Vec<CargoDiagnostic>>) {
 pub fn on_monaco_load(
     folder: Asset,
     system_theme: SystemTheme,
-    shared_code: Option<String>,
+    init_code: Option<String>,
     mut selected_example: Signal<SelectedExample>,
     mut hot_reload: HotReload,
     on_model_changed: UseDebounce<String>,
 ) {
     // If shared code is available, use it, otherwise replace with starter snippet.
-    let snippet = match shared_code {
-        Some(c) => c,
+    let snippet = match init_code {
+        Some(code) => code,
         None => {
             selected_example.set(SelectedExample::Welcome);
             snippets::EXAMPLES[0].1.to_string()

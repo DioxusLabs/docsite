@@ -2,7 +2,7 @@
 
 use dioxus::logger::tracing::Level;
 use dioxus::prelude::*;
-use dioxus_playground::{Playground, PlaygroundUrls};
+use dioxus_playground::{Playground, PlaygroundUrls, Snippet};
 
 #[cfg(not(feature = "real-server"))]
 const URLS: PlaygroundUrls = PlaygroundUrls {
@@ -46,13 +46,19 @@ fn App() -> Element {
 #[component]
 fn DefaultPlayground() -> Element {
     rsx! {
-        Playground { urls: URLS, share_code: None, }
+        Playground { 
+            urls: URLS, 
+            snippet: Snippet::None, 
+        }
     }
 }
 
 #[component]
 fn SharePlayground(share_code: String) -> Element {
     rsx! {
-        Playground { urls: URLS, share_code }
+        Playground { 
+            urls: URLS, 
+            snippet: Snippet::ShareCode(share_code) 
+        }
     }
 }

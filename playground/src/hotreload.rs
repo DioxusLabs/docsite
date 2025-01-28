@@ -13,10 +13,6 @@ use syn::spanned::Spanned as _;
 
 /// Atempts to hot reload and returns true if a full rebuild is needed.
 pub fn attempt_hot_reload(mut hot_reload: HotReload, new_code: &str) {
-    if hot_reload.needs_rebuild() {
-        return;
-    }
-
     // Process any potential hot -eloadable changes and send them to the iframe web client.
     let result = hot_reload.process_file_change(new_code.to_string());
     match result {
@@ -70,10 +66,6 @@ impl HotReload {
             },
             needs_rebuild: Signal::new(true),
         }
-    }
-
-    pub fn needs_rebuild(&self) -> bool {
-        (self.needs_rebuild)()
     }
 
     pub fn set_needs_rebuild(&mut self, needs_rebuild: bool) {

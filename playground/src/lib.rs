@@ -72,7 +72,7 @@ pub fn Playground(urls: PlaygroundUrls, share_code: Option<String>) -> Element {
 
     // Handle starting a build.
     let on_run = move |_| async move {
-        if build.stage().is_running() || !hot_reload.needs_rebuild() {
+        if build.stage().is_running() {
             return;
         }
         hot_reload.set_needs_rebuild(false);
@@ -87,7 +87,6 @@ pub fn Playground(urls: PlaygroundUrls, share_code: Option<String>) -> Element {
             Ok(success) => hot_reload.set_needs_rebuild(!success),
             Err(e) => error!(error = ?e, "failed to build project"),
         }
-        
     };
 
     // Construct the full URL to the built project.

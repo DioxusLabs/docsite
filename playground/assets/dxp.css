@@ -265,6 +265,12 @@
   border: none;
 }
 
+#dxp-panes-right>#dxp-examples-viewport {
+  padding: 8px;
+  width: 100%;
+  height: 100%;
+}
+
 #dxp-panes-right>#dxp-progress-container {
   display: flex;
   flex-direction: column;
@@ -419,7 +425,8 @@
   border: var(--dxp-border-light) 1px solid;
 }
 
-#logs .log .log-message, #logs.log.log-span {
+#logs .log .log-message,
+#logs.log.log-span {
   font-family: ui-monospace, SFMono-Regular, SF Mono, Menlo, Consolas, Liberation Mono, monospace;
 }
 
@@ -483,6 +490,7 @@
 }
 
 @media screen and (prefers-color-scheme: dark) {
+
   /* Header */
   #dxp-header {
     border: 1px solid var(--dxp-border-dark);
@@ -596,23 +604,23 @@
   #logs .log {
     color: var(--dxp-text-dark);
   }
-  
+
   #logs .log:hover {
     background-color: var(--dxp-bg-dark);
   }
-  
+
   #logs .log .level-error {
     color: var(--dxp-log-error-dark);
   }
-  
+
   #logs .log .level-warn {
     color: var(--dxp-log-warn-dark);
   }
-  
+
   #logs .log .level-info {
     color: var(--dxp-log-info-dark)
   }
-  
+
   #logs .log .log-codeblock {
     background-color: var(--dxp-bg-dark);
     border-color: var(--dxp-border-dark);

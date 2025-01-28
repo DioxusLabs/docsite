@@ -8,7 +8,6 @@ Here's some info to get you started:
 - The `main` function is already provided.
 - The Dioxus prelude is already imported.
 - There must be a component named `App`
-- The `Run` button will be disabled until hot reloading fails.
 - Nothing is saved.
 
 Have fun tinkering!

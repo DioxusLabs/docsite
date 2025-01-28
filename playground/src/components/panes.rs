@@ -136,6 +136,7 @@ pub fn Panes(
                         Logs {}
                     } else if selected_example.is_some() {
                         div {
+                            id: "dxp-examples-viewport",
                             match selected_example {
                                 SelectedExample::Welcome => rsx! { WelcomeExample {} },
                                 SelectedExample::Counter => rsx! { CounterExample {} },

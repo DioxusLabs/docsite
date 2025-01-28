@@ -1,6 +1,5 @@
 use crate::build::BuildState;
 use crate::components::icons::{ArrowDownIcon, LoadingSpinner};
-use crate::hotreload::HotReload;
 use crate::share_code::copy_share_link;
 use crate::snippets::{SelectedExample, EXAMPLES};
 use crate::{editor::monaco, snippets, PlaygroundUrls};
@@ -16,7 +15,6 @@ pub fn Header(
     pane_right_width: Signal<Option<i32>>,
 ) -> Element {
     let build = use_context::<BuildState>();
-    let hot_reload = use_context::<HotReload>();
     let mut selected_example = use_context::<Signal<SelectedExample>>();
 
     let mut examples_open = use_signal(|| false);
@@ -38,7 +36,7 @@ pub fn Header(
                 button {
                     id: "dxp-run-btn",
                     class: "dxp-ctrl-btn",
-                    class: if build.stage().is_running() || !hot_reload.needs_rebuild() { "disabled" },
+                    class: if build.stage().is_running() { "disabled" },
                     onclick: move |_| {
                         examples_open.set(false);
                         on_run.call(());

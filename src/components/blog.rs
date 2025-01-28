@@ -128,8 +128,6 @@ struct BlogMeta {
 
 fn page_to_meta(page: &'static use_mdbook::mdbook_shared::Page<BlogRoute>) -> BlogMeta {
     let raw_title = &page.title;
-    let raw_title = &page.title;
-    let raw_title = &page.title;
 
     let items = raw_title.splitn(4, " $ ").collect::<Vec<_>>();
     let [title, category, date, description, ..] = items.as_slice() else {

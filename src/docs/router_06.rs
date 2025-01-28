@@ -1,3 +1,4 @@
+use dioxus::prelude::*;
 #[derive(
     Clone,
     Copy,
@@ -10,180 +11,258 @@
     serde::Deserialize,
 )]
 pub enum BookRoute {
-    #[route("/")]
-    Index {},
-    #[route("/getting_started/")]
-    GettingStartedIndex {},
-    #[route("/guide/")]
-    GuideIndex {},
-    #[route("/guide/tooling")]
-    GuideTooling {},
-    #[route("/guide/new_app")]
-    GuideNewApp {},
-    #[route("/guide/component")]
-    GuideComponent {},
-    #[route("/guide/rsx")]
-    GuideRsx {},
-    #[route("/guide/assets")]
-    GuideAssets {},
-    #[route("/guide/state")]
-    GuideState {},
-    #[route("/guide/data_fetching")]
-    GuideDataFetching {},
-    #[route("/guide/backend")]
-    GuideBackend {},
-    #[route("/guide/databases")]
-    GuideDatabases {},
-    #[route("/guide/routing")]
-    GuideRouting {},
-    #[route("/guide/bundle")]
-    GuideBundle {},
-    #[route("/guide/deploy")]
-    GuideDeploy {},
-    #[route("/guide/next_steps")]
-    GuideNextSteps {},
-    #[route("/essentials/")]
-    EssentialsIndex {},
-    #[route("/essentials/rsx/")]
-    EssentialsRsxIndex {},
-    #[route("/essentials/lifecycle/")]
-    EssentialsLifecycleIndex {},
-    #[route("/essentials/state/")]
-    EssentialsStateIndex {},
-    #[route("/essentials/breaking/")]
-    EssentialsBreakingIndex {},
-    #[route("/guides/")]
-    GuidesIndex {},
-    #[route("/router/")]
-    RouterIndex {},
-    #[route("/router/example/")]
-    RouterExampleIndex {},
-    #[route("/router/example/first-route")]
-    RouterExampleFirstRoute {},
-    #[route("/router/example/building-a-nest")]
-    RouterExampleBuildingANest {},
-    #[route("/router/example/navigation-targets")]
-    RouterExampleNavigationTargets {},
-    #[route("/router/example/redirection-perfection")]
-    RouterExampleRedirectionPerfection {},
-    #[route("/router/example/full-code")]
-    RouterExampleFullCode {},
-    #[route("/router/reference/")]
-    RouterReferenceIndex {},
-    #[route("/router/reference/routes/")]
-    RouterReferenceRoutesIndex {},
-    #[route("/router/reference/routes/nested")]
-    RouterReferenceRoutesNested {},
-    #[route("/router/reference/layouts")]
-    RouterReferenceLayouts {},
-    #[route("/router/reference/navigation/")]
-    RouterReferenceNavigationIndex {},
-    #[route("/router/reference/navigation/programmatic")]
-    RouterReferenceNavigationProgrammatic {},
-    #[route("/router/reference/history-providers")]
-    RouterReferenceHistoryProviders {},
-    #[route("/router/reference/history-buttons")]
-    RouterReferenceHistoryButtons {},
-    #[route("/router/reference/routing-update-callback")]
-    RouterReferenceRoutingUpdateCallback {},
-    #[route("/guides/assets")]
-    GuidesAssets {},
-    #[route("/guides/web/")]
-    GuidesWebIndex {},
-    #[route("/guides/desktop/")]
-    GuidesDesktopIndex {},
-    #[route("/guides/mobile/")]
-    GuidesMobileIndex {},
-    #[route("/guides/mobile/apis")]
-    GuidesMobileApis {},
-    #[route("/guides/ssr")]
-    GuidesSsr {},
-    #[route("/guides/fullstack/")]
-    GuidesFullstackIndex {},
-    #[route("/guides/fullstack/managing_dependencies")]
-    GuidesFullstackManagingDependencies {},
-    #[route("/guides/fullstack/server_functions")]
-    GuidesFullstackServerFunctions {},
-    #[route("/guides/fullstack/extractors")]
-    GuidesFullstackExtractors {},
-    #[route("/guides/fullstack/middleware")]
-    GuidesFullstackMiddleware {},
-    #[route("/guides/fullstack/authentication")]
-    GuidesFullstackAuthentication {},
-    #[route("/guides/fullstack/routing")]
-    GuidesFullstackRouting {},
-    #[route("/cookbook/publishing")]
-    CookbookPublishing {},
-    #[route("/cookbook/antipatterns")]
-    CookbookAntipatterns {},
-    #[route("/cookbook/error_handling")]
-    CookbookErrorHandling {},
-    #[route("/cookbook/integrations/")]
-    CookbookIntegrationsIndex {},
-    #[route("/cookbook/integrations/logging")]
-    CookbookIntegrationsLogging {},
-    #[route("/cookbook/integrations/internationalization")]
-    CookbookIntegrationsInternationalization {},
-    #[route("/cookbook/state/")]
-    CookbookStateIndex {},
-    #[route("/cookbook/state/external/")]
-    CookbookStateExternalIndex {},
-    #[route("/cookbook/state/custom_hooks/")]
-    CookbookStateCustomHooksIndex {},
-    #[route("/cookbook/bundling")]
-    CookbookBundling {},
-    #[route("/cookbook/testing")]
-    CookbookTesting {},
-    #[route("/cookbook/tailwind")]
-    CookbookTailwind {},
-    #[route("/cookbook/optimizing")]
-    CookbookOptimizing {},
-    #[route("/migration/")]
-    MigrationIndex {},
-    #[route("/reference/")]
-    ReferenceIndex {},
-    #[route("/reference/hotreload")]
-    ReferenceHotreload {},
-    #[route("/reference/rsx")]
-    ReferenceRsx {},
-    #[route("/reference/components")]
-    ReferenceComponents {},
-    #[route("/reference/component_props")]
-    ReferenceComponentProps {},
-    #[route("/reference/event_handlers")]
-    ReferenceEventHandlers {},
-    #[route("/reference/hooks")]
-    ReferenceHooks {},
-    #[route("/reference/user_input")]
-    ReferenceUserInput {},
-    #[route("/reference/context")]
-    ReferenceContext {},
-    #[route("/reference/dynamic_rendering")]
-    ReferenceDynamicRendering {},
-    #[route("/reference/router")]
-    ReferenceRouter {},
-    #[route("/reference/use_resource")]
-    ReferenceUseResource {},
-    #[route("/reference/use_coroutine")]
-    ReferenceUseCoroutine {},
-    #[route("/reference/spawn")]
-    ReferenceSpawn {},
-    #[route("/contributing/")]
-    ContributingIndex {},
-    #[route("/contributing/project_structure")]
-    ContributingProjectStructure {},
-    #[route("/contributing/guiding_principles")]
-    ContributingGuidingPrinciples {},
-    #[route("/contributing/roadmap")]
-    ContributingRoadmap {},
-    #[route("/CLI/")]
-    CliIndex {},
-    #[route("/CLI/creating")]
-    CliCreating {},
-    #[route("/CLI/configure")]
-    CliConfigure {},
-    #[route("/CLI/translate")]
-    CliTranslate {},
+    #[route("/#:section")]
+    Index { section: IndexSection },
+    #[route("/getting_started/#:section")]
+    GettingStartedIndex { section: GettingStartedIndexSection },
+    #[route("/guide/#:section")]
+    GuideIndex { section: GuideIndexSection },
+    #[route("/guide/tooling#:section")]
+    GuideTooling { section: GuideToolingSection },
+    #[route("/guide/new_app#:section")]
+    GuideNewApp { section: GuideNewAppSection },
+    #[route("/guide/component#:section")]
+    GuideComponent { section: GuideComponentSection },
+    #[route("/guide/rsx#:section")]
+    GuideRsx { section: GuideRsxSection },
+    #[route("/guide/assets#:section")]
+    GuideAssets { section: GuideAssetsSection },
+    #[route("/guide/state#:section")]
+    GuideState { section: GuideStateSection },
+    #[route("/guide/data_fetching#:section")]
+    GuideDataFetching { section: GuideDataFetchingSection },
+    #[route("/guide/backend#:section")]
+    GuideBackend { section: GuideBackendSection },
+    #[route("/guide/databases#:section")]
+    GuideDatabases { section: GuideDatabasesSection },
+    #[route("/guide/routing#:section")]
+    GuideRouting { section: GuideRoutingSection },
+    #[route("/guide/bundle#:section")]
+    GuideBundle { section: GuideBundleSection },
+    #[route("/guide/deploy#:section")]
+    GuideDeploy { section: GuideDeploySection },
+    #[route("/guide/next_steps#:section")]
+    GuideNextSteps { section: GuideNextStepsSection },
+    #[route("/essentials/#:section")]
+    EssentialsIndex { section: EssentialsIndexSection },
+    #[route("/essentials/rsx/#:section")]
+    EssentialsRsxIndex { section: EssentialsRsxIndexSection },
+    #[route("/essentials/lifecycle/#:section")]
+    EssentialsLifecycleIndex {
+        section: EssentialsLifecycleIndexSection,
+    },
+    #[route("/essentials/state/#:section")]
+    EssentialsStateIndex {
+        section: EssentialsStateIndexSection,
+    },
+    #[route("/essentials/breaking/#:section")]
+    EssentialsBreakingIndex {
+        section: EssentialsBreakingIndexSection,
+    },
+    #[route("/guides/#:section")]
+    GuidesIndex { section: GuidesIndexSection },
+    #[route("/guides/managing_state#:section")]
+    GuidesManagingState { section: GuidesManagingStateSection },
+    #[route("/router/#:section")]
+    RouterIndex { section: RouterIndexSection },
+    #[route("/router/example/#:section")]
+    RouterExampleIndex { section: RouterExampleIndexSection },
+    #[route("/router/example/first-route#:section")]
+    RouterExampleFirstRoute {
+        section: RouterExampleFirstRouteSection,
+    },
+    #[route("/router/example/building-a-nest#:section")]
+    RouterExampleBuildingANest {
+        section: RouterExampleBuildingANestSection,
+    },
+    #[route("/router/example/navigation-targets#:section")]
+    RouterExampleNavigationTargets {
+        section: RouterExampleNavigationTargetsSection,
+    },
+    #[route("/router/example/redirection-perfection#:section")]
+    RouterExampleRedirectionPerfection {
+        section: RouterExampleRedirectionPerfectionSection,
+    },
+    #[route("/router/example/full-code#:section")]
+    RouterExampleFullCode {
+        section: RouterExampleFullCodeSection,
+    },
+    #[route("/router/reference/#:section")]
+    RouterReferenceIndex {
+        section: RouterReferenceIndexSection,
+    },
+    #[route("/router/reference/routes/#:section")]
+    RouterReferenceRoutesIndex {
+        section: RouterReferenceRoutesIndexSection,
+    },
+    #[route("/router/reference/routes/nested#:section")]
+    RouterReferenceRoutesNested {
+        section: RouterReferenceRoutesNestedSection,
+    },
+    #[route("/router/reference/layouts#:section")]
+    RouterReferenceLayouts {
+        section: RouterReferenceLayoutsSection,
+    },
+    #[route("/router/reference/navigation/#:section")]
+    RouterReferenceNavigationIndex {
+        section: RouterReferenceNavigationIndexSection,
+    },
+    #[route("/router/reference/navigation/programmatic#:section")]
+    RouterReferenceNavigationProgrammatic {
+        section: RouterReferenceNavigationProgrammaticSection,
+    },
+    #[route("/router/reference/history-providers#:section")]
+    RouterReferenceHistoryProviders {
+        section: RouterReferenceHistoryProvidersSection,
+    },
+    #[route("/router/reference/history-buttons#:section")]
+    RouterReferenceHistoryButtons {
+        section: RouterReferenceHistoryButtonsSection,
+    },
+    #[route("/router/reference/routing-update-callback#:section")]
+    RouterReferenceRoutingUpdateCallback {
+        section: RouterReferenceRoutingUpdateCallbackSection,
+    },
+    #[route("/guides/assets#:section")]
+    GuidesAssets { section: GuidesAssetsSection },
+    #[route("/guides/web/#:section")]
+    GuidesWebIndex { section: GuidesWebIndexSection },
+    #[route("/guides/desktop/#:section")]
+    GuidesDesktopIndex { section: GuidesDesktopIndexSection },
+    #[route("/guides/mobile/#:section")]
+    GuidesMobileIndex { section: GuidesMobileIndexSection },
+    #[route("/guides/mobile/apis#:section")]
+    GuidesMobileApis { section: GuidesMobileApisSection },
+    #[route("/guides/ssr#:section")]
+    GuidesSsr { section: GuidesSsrSection },
+    #[route("/guides/fullstack/#:section")]
+    GuidesFullstackIndex {
+        section: GuidesFullstackIndexSection,
+    },
+    #[route("/guides/fullstack/managing_dependencies#:section")]
+    GuidesFullstackManagingDependencies {
+        section: GuidesFullstackManagingDependenciesSection,
+    },
+    #[route("/guides/fullstack/server_functions#:section")]
+    GuidesFullstackServerFunctions {
+        section: GuidesFullstackServerFunctionsSection,
+    },
+    #[route("/guides/fullstack/extractors#:section")]
+    GuidesFullstackExtractors {
+        section: GuidesFullstackExtractorsSection,
+    },
+    #[route("/guides/fullstack/middleware#:section")]
+    GuidesFullstackMiddleware {
+        section: GuidesFullstackMiddlewareSection,
+    },
+    #[route("/guides/fullstack/authentication#:section")]
+    GuidesFullstackAuthentication {
+        section: GuidesFullstackAuthenticationSection,
+    },
+    #[route("/guides/fullstack/routing#:section")]
+    GuidesFullstackRouting {
+        section: GuidesFullstackRoutingSection,
+    },
+    #[route("/cookbook/publishing#:section")]
+    CookbookPublishing { section: CookbookPublishingSection },
+    #[route("/cookbook/antipatterns#:section")]
+    CookbookAntipatterns {
+        section: CookbookAntipatternsSection,
+    },
+    #[route("/cookbook/error_handling#:section")]
+    CookbookErrorHandling {
+        section: CookbookErrorHandlingSection,
+    },
+    #[route("/cookbook/integrations/#:section")]
+    CookbookIntegrationsIndex {
+        section: CookbookIntegrationsIndexSection,
+    },
+    #[route("/cookbook/integrations/logging#:section")]
+    CookbookIntegrationsLogging {
+        section: CookbookIntegrationsLoggingSection,
+    },
+    #[route("/cookbook/integrations/internationalization#:section")]
+    CookbookIntegrationsInternationalization {
+        section: CookbookIntegrationsInternationalizationSection,
+    },
+    #[route("/cookbook/state/#:section")]
+    CookbookStateIndex { section: CookbookStateIndexSection },
+    #[route("/cookbook/state/external/#:section")]
+    CookbookStateExternalIndex {
+        section: CookbookStateExternalIndexSection,
+    },
+    #[route("/cookbook/state/custom_hooks/#:section")]
+    CookbookStateCustomHooksIndex {
+        section: CookbookStateCustomHooksIndexSection,
+    },
+    #[route("/cookbook/bundling#:section")]
+    CookbookBundling { section: CookbookBundlingSection },
+    #[route("/cookbook/testing#:section")]
+    CookbookTesting { section: CookbookTestingSection },
+    #[route("/cookbook/tailwind#:section")]
+    CookbookTailwind { section: CookbookTailwindSection },
+    #[route("/cookbook/optimizing#:section")]
+    CookbookOptimizing { section: CookbookOptimizingSection },
+    #[route("/migration/#:section")]
+    MigrationIndex { section: MigrationIndexSection },
+    #[route("/reference/#:section")]
+    ReferenceIndex { section: ReferenceIndexSection },
+    #[route("/reference/hotreload#:section")]
+    ReferenceHotreload { section: ReferenceHotreloadSection },
+    #[route("/reference/rsx#:section")]
+    ReferenceRsx { section: ReferenceRsxSection },
+    #[route("/reference/components#:section")]
+    ReferenceComponents { section: ReferenceComponentsSection },
+    #[route("/reference/component_props#:section")]
+    ReferenceComponentProps {
+        section: ReferenceComponentPropsSection,
+    },
+    #[route("/reference/event_handlers#:section")]
+    ReferenceEventHandlers {
+        section: ReferenceEventHandlersSection,
+    },
+    #[route("/reference/hooks#:section")]
+    ReferenceHooks { section: ReferenceHooksSection },
+    #[route("/reference/user_input#:section")]
+    ReferenceUserInput { section: ReferenceUserInputSection },
+    #[route("/reference/context#:section")]
+    ReferenceContext { section: ReferenceContextSection },
+    #[route("/reference/dynamic_rendering#:section")]
+    ReferenceDynamicRendering {
+        section: ReferenceDynamicRenderingSection,
+    },
+    #[route("/reference/router#:section")]
+    ReferenceRouter { section: ReferenceRouterSection },
+    #[route("/reference/use_resource#:section")]
+    ReferenceUseResource {
+        section: ReferenceUseResourceSection,
+    },
+    #[route("/reference/use_coroutine#:section")]
+    ReferenceUseCoroutine {
+        section: ReferenceUseCoroutineSection,
+    },
+    #[route("/reference/spawn#:section")]
+    ReferenceSpawn { section: ReferenceSpawnSection },
+    #[route("/contributing/#:section")]
+    ContributingIndex { section: ContributingIndexSection },
+    #[route("/contributing/project_structure#:section")]
+    ContributingProjectStructure {
+        section: ContributingProjectStructureSection,
+    },
+    #[route("/contributing/guiding_principles#:section")]
+    ContributingGuidingPrinciples {
+        section: ContributingGuidingPrinciplesSection,
+    },
+    #[route("/contributing/roadmap#:section")]
+    ContributingRoadmap { section: ContributingRoadmapSection },
+    #[route("/CLI/#:section")]
+    CliIndex { section: CliIndexSection },
+    #[route("/CLI/creating#:section")]
+    CliCreating { section: CliCreatingSection },
+    #[route("/CLI/configure#:section")]
+    CliConfigure { section: CliConfigureSection },
+    #[route("/CLI/translate#:section")]
+    CliTranslate { section: CliTranslateSection },
 }
 impl BookRoute {
     pub fn sections(&self) -> &'static [use_mdbook::mdbook_shared::Section] {
@@ -194,127 +273,150 @@ impl BookRoute {
     }
     pub fn page_id(&self) -> use_mdbook::mdbook_shared::PageId {
         match self {
-            BookRoute::Index {} => use_mdbook::mdbook_shared::PageId(0usize),
-            BookRoute::GettingStartedIndex {} => use_mdbook::mdbook_shared::PageId(1usize),
-            BookRoute::GuideIndex {} => use_mdbook::mdbook_shared::PageId(2usize),
-            BookRoute::GuideTooling {} => use_mdbook::mdbook_shared::PageId(3usize),
-            BookRoute::GuideNewApp {} => use_mdbook::mdbook_shared::PageId(4usize),
-            BookRoute::GuideComponent {} => use_mdbook::mdbook_shared::PageId(5usize),
-            BookRoute::GuideRsx {} => use_mdbook::mdbook_shared::PageId(6usize),
-            BookRoute::GuideAssets {} => use_mdbook::mdbook_shared::PageId(7usize),
-            BookRoute::GuideState {} => use_mdbook::mdbook_shared::PageId(8usize),
-            BookRoute::GuideDataFetching {} => use_mdbook::mdbook_shared::PageId(9usize),
-            BookRoute::GuideBackend {} => use_mdbook::mdbook_shared::PageId(10usize),
-            BookRoute::GuideDatabases {} => use_mdbook::mdbook_shared::PageId(11usize),
-            BookRoute::GuideRouting {} => use_mdbook::mdbook_shared::PageId(12usize),
-            BookRoute::GuideBundle {} => use_mdbook::mdbook_shared::PageId(13usize),
-            BookRoute::GuideDeploy {} => use_mdbook::mdbook_shared::PageId(14usize),
-            BookRoute::GuideNextSteps {} => use_mdbook::mdbook_shared::PageId(15usize),
-            BookRoute::EssentialsIndex {} => use_mdbook::mdbook_shared::PageId(16usize),
-            BookRoute::EssentialsRsxIndex {} => use_mdbook::mdbook_shared::PageId(17usize),
-            BookRoute::EssentialsLifecycleIndex {} => use_mdbook::mdbook_shared::PageId(18usize),
-            BookRoute::EssentialsStateIndex {} => use_mdbook::mdbook_shared::PageId(19usize),
-            BookRoute::EssentialsBreakingIndex {} => use_mdbook::mdbook_shared::PageId(20usize),
-            BookRoute::GuidesIndex {} => use_mdbook::mdbook_shared::PageId(21usize),
-            BookRoute::RouterIndex {} => use_mdbook::mdbook_shared::PageId(22usize),
-            BookRoute::RouterExampleIndex {} => use_mdbook::mdbook_shared::PageId(23usize),
-            BookRoute::RouterExampleFirstRoute {} => use_mdbook::mdbook_shared::PageId(24usize),
-            BookRoute::RouterExampleBuildingANest {} => use_mdbook::mdbook_shared::PageId(25usize),
-            BookRoute::RouterExampleNavigationTargets {} => {
+            BookRoute::Index { .. } => use_mdbook::mdbook_shared::PageId(0usize),
+            BookRoute::GettingStartedIndex { .. } => use_mdbook::mdbook_shared::PageId(1usize),
+            BookRoute::GuideIndex { .. } => use_mdbook::mdbook_shared::PageId(2usize),
+            BookRoute::GuideTooling { .. } => use_mdbook::mdbook_shared::PageId(3usize),
+            BookRoute::GuideNewApp { .. } => use_mdbook::mdbook_shared::PageId(4usize),
+            BookRoute::GuideComponent { .. } => use_mdbook::mdbook_shared::PageId(5usize),
+            BookRoute::GuideRsx { .. } => use_mdbook::mdbook_shared::PageId(6usize),
+            BookRoute::GuideAssets { .. } => use_mdbook::mdbook_shared::PageId(7usize),
+            BookRoute::GuideState { .. } => use_mdbook::mdbook_shared::PageId(8usize),
+            BookRoute::GuideDataFetching { .. } => use_mdbook::mdbook_shared::PageId(9usize),
+            BookRoute::GuideBackend { .. } => use_mdbook::mdbook_shared::PageId(10usize),
+            BookRoute::GuideDatabases { .. } => use_mdbook::mdbook_shared::PageId(11usize),
+            BookRoute::GuideRouting { .. } => use_mdbook::mdbook_shared::PageId(12usize),
+            BookRoute::GuideBundle { .. } => use_mdbook::mdbook_shared::PageId(13usize),
+            BookRoute::GuideDeploy { .. } => use_mdbook::mdbook_shared::PageId(14usize),
+            BookRoute::GuideNextSteps { .. } => use_mdbook::mdbook_shared::PageId(15usize),
+            BookRoute::EssentialsIndex { .. } => use_mdbook::mdbook_shared::PageId(16usize),
+            BookRoute::EssentialsRsxIndex { .. } => use_mdbook::mdbook_shared::PageId(17usize),
+            BookRoute::EssentialsLifecycleIndex { .. } => {
+                use_mdbook::mdbook_shared::PageId(18usize)
+            }
+            BookRoute::EssentialsStateIndex { .. } => use_mdbook::mdbook_shared::PageId(19usize),
+            BookRoute::EssentialsBreakingIndex { .. } => use_mdbook::mdbook_shared::PageId(20usize),
+            BookRoute::GuidesIndex { .. } => use_mdbook::mdbook_shared::PageId(21usize),
+            BookRoute::GuidesManagingState { .. } => use_mdbook::mdbook_shared::PageId(22usize),
+            BookRoute::RouterIndex { .. } => use_mdbook::mdbook_shared::PageId(23usize),
+            BookRoute::RouterExampleIndex { .. } => use_mdbook::mdbook_shared::PageId(24usize),
+            BookRoute::RouterExampleFirstRoute { .. } => use_mdbook::mdbook_shared::PageId(25usize),
+            BookRoute::RouterExampleBuildingANest { .. } => {
                 use_mdbook::mdbook_shared::PageId(26usize)
             }
-            BookRoute::RouterExampleRedirectionPerfection {} => {
+            BookRoute::RouterExampleNavigationTargets { .. } => {
                 use_mdbook::mdbook_shared::PageId(27usize)
             }
-            BookRoute::RouterExampleFullCode {} => use_mdbook::mdbook_shared::PageId(28usize),
-            BookRoute::RouterReferenceIndex {} => use_mdbook::mdbook_shared::PageId(29usize),
-            BookRoute::RouterReferenceRoutesIndex {} => use_mdbook::mdbook_shared::PageId(30usize),
-            BookRoute::RouterReferenceRoutesNested {} => use_mdbook::mdbook_shared::PageId(31usize),
-            BookRoute::RouterReferenceLayouts {} => use_mdbook::mdbook_shared::PageId(32usize),
-            BookRoute::RouterReferenceNavigationIndex {} => {
-                use_mdbook::mdbook_shared::PageId(33usize)
+            BookRoute::RouterExampleRedirectionPerfection { .. } => {
+                use_mdbook::mdbook_shared::PageId(28usize)
             }
-            BookRoute::RouterReferenceNavigationProgrammatic {} => {
+            BookRoute::RouterExampleFullCode { .. } => use_mdbook::mdbook_shared::PageId(29usize),
+            BookRoute::RouterReferenceIndex { .. } => use_mdbook::mdbook_shared::PageId(30usize),
+            BookRoute::RouterReferenceRoutesIndex { .. } => {
+                use_mdbook::mdbook_shared::PageId(31usize)
+            }
+            BookRoute::RouterReferenceRoutesNested { .. } => {
+                use_mdbook::mdbook_shared::PageId(32usize)
+            }
+            BookRoute::RouterReferenceLayouts { .. } => use_mdbook::mdbook_shared::PageId(33usize),
+            BookRoute::RouterReferenceNavigationIndex { .. } => {
                 use_mdbook::mdbook_shared::PageId(34usize)
             }
-            BookRoute::RouterReferenceHistoryProviders {} => {
+            BookRoute::RouterReferenceNavigationProgrammatic { .. } => {
                 use_mdbook::mdbook_shared::PageId(35usize)
             }
-            BookRoute::RouterReferenceHistoryButtons {} => {
+            BookRoute::RouterReferenceHistoryProviders { .. } => {
                 use_mdbook::mdbook_shared::PageId(36usize)
             }
-            BookRoute::RouterReferenceRoutingUpdateCallback {} => {
+            BookRoute::RouterReferenceHistoryButtons { .. } => {
                 use_mdbook::mdbook_shared::PageId(37usize)
             }
-            BookRoute::GuidesAssets {} => use_mdbook::mdbook_shared::PageId(38usize),
-            BookRoute::GuidesWebIndex {} => use_mdbook::mdbook_shared::PageId(39usize),
-            BookRoute::GuidesDesktopIndex {} => use_mdbook::mdbook_shared::PageId(40usize),
-            BookRoute::GuidesMobileIndex {} => use_mdbook::mdbook_shared::PageId(41usize),
-            BookRoute::GuidesMobileApis {} => use_mdbook::mdbook_shared::PageId(42usize),
-            BookRoute::GuidesSsr {} => use_mdbook::mdbook_shared::PageId(43usize),
-            BookRoute::GuidesFullstackIndex {} => use_mdbook::mdbook_shared::PageId(44usize),
-            BookRoute::GuidesFullstackManagingDependencies {} => {
-                use_mdbook::mdbook_shared::PageId(45usize)
+            BookRoute::RouterReferenceRoutingUpdateCallback { .. } => {
+                use_mdbook::mdbook_shared::PageId(38usize)
             }
-            BookRoute::GuidesFullstackServerFunctions {} => {
+            BookRoute::GuidesAssets { .. } => use_mdbook::mdbook_shared::PageId(39usize),
+            BookRoute::GuidesWebIndex { .. } => use_mdbook::mdbook_shared::PageId(40usize),
+            BookRoute::GuidesDesktopIndex { .. } => use_mdbook::mdbook_shared::PageId(41usize),
+            BookRoute::GuidesMobileIndex { .. } => use_mdbook::mdbook_shared::PageId(42usize),
+            BookRoute::GuidesMobileApis { .. } => use_mdbook::mdbook_shared::PageId(43usize),
+            BookRoute::GuidesSsr { .. } => use_mdbook::mdbook_shared::PageId(44usize),
+            BookRoute::GuidesFullstackIndex { .. } => use_mdbook::mdbook_shared::PageId(45usize),
+            BookRoute::GuidesFullstackManagingDependencies { .. } => {
                 use_mdbook::mdbook_shared::PageId(46usize)
             }
-            BookRoute::GuidesFullstackExtractors {} => use_mdbook::mdbook_shared::PageId(47usize),
-            BookRoute::GuidesFullstackMiddleware {} => use_mdbook::mdbook_shared::PageId(48usize),
-            BookRoute::GuidesFullstackAuthentication {} => {
+            BookRoute::GuidesFullstackServerFunctions { .. } => {
+                use_mdbook::mdbook_shared::PageId(47usize)
+            }
+            BookRoute::GuidesFullstackExtractors { .. } => {
+                use_mdbook::mdbook_shared::PageId(48usize)
+            }
+            BookRoute::GuidesFullstackMiddleware { .. } => {
                 use_mdbook::mdbook_shared::PageId(49usize)
             }
-            BookRoute::GuidesFullstackRouting {} => use_mdbook::mdbook_shared::PageId(50usize),
-            BookRoute::CookbookPublishing {} => use_mdbook::mdbook_shared::PageId(51usize),
-            BookRoute::CookbookAntipatterns {} => use_mdbook::mdbook_shared::PageId(52usize),
-            BookRoute::CookbookErrorHandling {} => use_mdbook::mdbook_shared::PageId(53usize),
-            BookRoute::CookbookIntegrationsIndex {} => use_mdbook::mdbook_shared::PageId(54usize),
-            BookRoute::CookbookIntegrationsLogging {} => use_mdbook::mdbook_shared::PageId(55usize),
-            BookRoute::CookbookIntegrationsInternationalization {} => {
+            BookRoute::GuidesFullstackAuthentication { .. } => {
+                use_mdbook::mdbook_shared::PageId(50usize)
+            }
+            BookRoute::GuidesFullstackRouting { .. } => use_mdbook::mdbook_shared::PageId(51usize),
+            BookRoute::CookbookPublishing { .. } => use_mdbook::mdbook_shared::PageId(52usize),
+            BookRoute::CookbookAntipatterns { .. } => use_mdbook::mdbook_shared::PageId(53usize),
+            BookRoute::CookbookErrorHandling { .. } => use_mdbook::mdbook_shared::PageId(54usize),
+            BookRoute::CookbookIntegrationsIndex { .. } => {
+                use_mdbook::mdbook_shared::PageId(55usize)
+            }
+            BookRoute::CookbookIntegrationsLogging { .. } => {
                 use_mdbook::mdbook_shared::PageId(56usize)
             }
-            BookRoute::CookbookStateIndex {} => use_mdbook::mdbook_shared::PageId(57usize),
-            BookRoute::CookbookStateExternalIndex {} => use_mdbook::mdbook_shared::PageId(58usize),
-            BookRoute::CookbookStateCustomHooksIndex {} => {
+            BookRoute::CookbookIntegrationsInternationalization { .. } => {
+                use_mdbook::mdbook_shared::PageId(57usize)
+            }
+            BookRoute::CookbookStateIndex { .. } => use_mdbook::mdbook_shared::PageId(58usize),
+            BookRoute::CookbookStateExternalIndex { .. } => {
                 use_mdbook::mdbook_shared::PageId(59usize)
             }
-            BookRoute::CookbookBundling {} => use_mdbook::mdbook_shared::PageId(60usize),
-            BookRoute::CookbookTesting {} => use_mdbook::mdbook_shared::PageId(61usize),
-            BookRoute::CookbookTailwind {} => use_mdbook::mdbook_shared::PageId(62usize),
-            BookRoute::CookbookOptimizing {} => use_mdbook::mdbook_shared::PageId(63usize),
-            BookRoute::MigrationIndex {} => use_mdbook::mdbook_shared::PageId(64usize),
-            BookRoute::ReferenceIndex {} => use_mdbook::mdbook_shared::PageId(65usize),
-            BookRoute::ReferenceHotreload {} => use_mdbook::mdbook_shared::PageId(66usize),
-            BookRoute::ReferenceRsx {} => use_mdbook::mdbook_shared::PageId(67usize),
-            BookRoute::ReferenceComponents {} => use_mdbook::mdbook_shared::PageId(68usize),
-            BookRoute::ReferenceComponentProps {} => use_mdbook::mdbook_shared::PageId(69usize),
-            BookRoute::ReferenceEventHandlers {} => use_mdbook::mdbook_shared::PageId(70usize),
-            BookRoute::ReferenceHooks {} => use_mdbook::mdbook_shared::PageId(71usize),
-            BookRoute::ReferenceUserInput {} => use_mdbook::mdbook_shared::PageId(72usize),
-            BookRoute::ReferenceContext {} => use_mdbook::mdbook_shared::PageId(73usize),
-            BookRoute::ReferenceDynamicRendering {} => use_mdbook::mdbook_shared::PageId(74usize),
-            BookRoute::ReferenceRouter {} => use_mdbook::mdbook_shared::PageId(75usize),
-            BookRoute::ReferenceUseResource {} => use_mdbook::mdbook_shared::PageId(76usize),
-            BookRoute::ReferenceUseCoroutine {} => use_mdbook::mdbook_shared::PageId(77usize),
-            BookRoute::ReferenceSpawn {} => use_mdbook::mdbook_shared::PageId(78usize),
-            BookRoute::ContributingIndex {} => use_mdbook::mdbook_shared::PageId(79usize),
-            BookRoute::ContributingProjectStructure {} => {
-                use_mdbook::mdbook_shared::PageId(80usize)
+            BookRoute::CookbookStateCustomHooksIndex { .. } => {
+                use_mdbook::mdbook_shared::PageId(60usize)
             }
-            BookRoute::ContributingGuidingPrinciples {} => {
+            BookRoute::CookbookBundling { .. } => use_mdbook::mdbook_shared::PageId(61usize),
+            BookRoute::CookbookTesting { .. } => use_mdbook::mdbook_shared::PageId(62usize),
+            BookRoute::CookbookTailwind { .. } => use_mdbook::mdbook_shared::PageId(63usize),
+            BookRoute::CookbookOptimizing { .. } => use_mdbook::mdbook_shared::PageId(64usize),
+            BookRoute::MigrationIndex { .. } => use_mdbook::mdbook_shared::PageId(65usize),
+            BookRoute::ReferenceIndex { .. } => use_mdbook::mdbook_shared::PageId(66usize),
+            BookRoute::ReferenceHotreload { .. } => use_mdbook::mdbook_shared::PageId(67usize),
+            BookRoute::ReferenceRsx { .. } => use_mdbook::mdbook_shared::PageId(68usize),
+            BookRoute::ReferenceComponents { .. } => use_mdbook::mdbook_shared::PageId(69usize),
+            BookRoute::ReferenceComponentProps { .. } => use_mdbook::mdbook_shared::PageId(70usize),
+            BookRoute::ReferenceEventHandlers { .. } => use_mdbook::mdbook_shared::PageId(71usize),
+            BookRoute::ReferenceHooks { .. } => use_mdbook::mdbook_shared::PageId(72usize),
+            BookRoute::ReferenceUserInput { .. } => use_mdbook::mdbook_shared::PageId(73usize),
+            BookRoute::ReferenceContext { .. } => use_mdbook::mdbook_shared::PageId(74usize),
+            BookRoute::ReferenceDynamicRendering { .. } => {
+                use_mdbook::mdbook_shared::PageId(75usize)
+            }
+            BookRoute::ReferenceRouter { .. } => use_mdbook::mdbook_shared::PageId(76usize),
+            BookRoute::ReferenceUseResource { .. } => use_mdbook::mdbook_shared::PageId(77usize),
+            BookRoute::ReferenceUseCoroutine { .. } => use_mdbook::mdbook_shared::PageId(78usize),
+            BookRoute::ReferenceSpawn { .. } => use_mdbook::mdbook_shared::PageId(79usize),
+            BookRoute::ContributingIndex { .. } => use_mdbook::mdbook_shared::PageId(80usize),
+            BookRoute::ContributingProjectStructure { .. } => {
                 use_mdbook::mdbook_shared::PageId(81usize)
             }
-            BookRoute::ContributingRoadmap {} => use_mdbook::mdbook_shared::PageId(82usize),
-            BookRoute::CliIndex {} => use_mdbook::mdbook_shared::PageId(83usize),
-            BookRoute::CliCreating {} => use_mdbook::mdbook_shared::PageId(84usize),
-            BookRoute::CliConfigure {} => use_mdbook::mdbook_shared::PageId(85usize),
-            BookRoute::CliTranslate {} => use_mdbook::mdbook_shared::PageId(86usize),
+            BookRoute::ContributingGuidingPrinciples { .. } => {
+                use_mdbook::mdbook_shared::PageId(82usize)
+            }
+            BookRoute::ContributingRoadmap { .. } => use_mdbook::mdbook_shared::PageId(83usize),
+            BookRoute::CliIndex { .. } => use_mdbook::mdbook_shared::PageId(84usize),
+            BookRoute::CliCreating { .. } => use_mdbook::mdbook_shared::PageId(85usize),
+            BookRoute::CliConfigure { .. } => use_mdbook::mdbook_shared::PageId(86usize),
+            BookRoute::CliTranslate { .. } => use_mdbook::mdbook_shared::PageId(87usize),
         }
     }
 }
 impl Default for BookRoute {
     fn default() -> Self {
-        BookRoute::Index {}
+        BookRoute::Index {
+            section: IndexSection::Empty,
+        }
     }
 }
 pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRoute>> =
@@ -324,7 +426,9 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
         pages.push((0usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Introduction".to_string(),
-                url: BookRoute::Index {},
+                url: BookRoute::Index {
+                    section: IndexSection::Empty,
+                },
                 segments: vec![],
                 sections: vec![
                     ::use_mdbook::mdbook_shared::Section {
@@ -368,13 +472,17 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
             }
         }));
         page_id_mapping.insert(
-            BookRoute::Index {},
+            BookRoute::Index {
+                section: IndexSection::Empty,
+            },
             ::use_mdbook::mdbook_shared::PageId(0usize),
         );
         pages.push((1usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Getting Started".to_string(),
-                url: BookRoute::GettingStartedIndex {},
+                url: BookRoute::GettingStartedIndex {
+                    section: GettingStartedIndexSection::Empty,
+                },
                 segments: vec![],
                 sections: vec![
                     ::use_mdbook::mdbook_shared::Section {
@@ -448,13 +556,17 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
             }
         }));
         page_id_mapping.insert(
-            BookRoute::GettingStartedIndex {},
+            BookRoute::GettingStartedIndex {
+                section: GettingStartedIndexSection::Empty,
+            },
             ::use_mdbook::mdbook_shared::PageId(1usize),
         );
         pages.push((2usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Tutorial".to_string(),
-                url: BookRoute::GuideIndex {},
+                url: BookRoute::GuideIndex {
+                    section: GuideIndexSection::Empty,
+                },
                 segments: vec![],
                 sections: vec![
                     ::use_mdbook::mdbook_shared::Section {
@@ -478,13 +590,17 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
             }
         }));
         page_id_mapping.insert(
-            BookRoute::GuideIndex {},
+            BookRoute::GuideIndex {
+                section: GuideIndexSection::Empty,
+            },
             ::use_mdbook::mdbook_shared::PageId(2usize),
         );
         pages.push((3usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Tooling Setup".to_string(),
-                url: BookRoute::GuideTooling {},
+                url: BookRoute::GuideTooling {
+                    section: GuideToolingSection::Empty,
+                },
                 segments: vec![],
                 sections: vec![
                     ::use_mdbook::mdbook_shared::Section {
@@ -513,13 +629,17 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
             }
         }));
         page_id_mapping.insert(
-            BookRoute::GuideTooling {},
+            BookRoute::GuideTooling {
+                section: GuideToolingSection::Empty,
+            },
             ::use_mdbook::mdbook_shared::PageId(3usize),
         );
         pages.push((4usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Creating a new app".to_string(),
-                url: BookRoute::GuideNewApp {},
+                url: BookRoute::GuideNewApp {
+                    section: GuideNewAppSection::Empty,
+                },
                 segments: vec![],
                 sections: vec![
                     ::use_mdbook::mdbook_shared::Section {
@@ -568,13 +688,17 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
             }
         }));
         page_id_mapping.insert(
-            BookRoute::GuideNewApp {},
+            BookRoute::GuideNewApp {
+                section: GuideNewAppSection::Empty,
+            },
             ::use_mdbook::mdbook_shared::PageId(4usize),
         );
         pages.push((5usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Your First Component".to_string(),
-                url: BookRoute::GuideComponent {},
+                url: BookRoute::GuideComponent {
+                    section: GuideComponentSection::Empty,
+                },
                 segments: vec![],
                 sections: vec![
                     ::use_mdbook::mdbook_shared::Section {
@@ -613,13 +737,17 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
             }
         }));
         page_id_mapping.insert(
-            BookRoute::GuideComponent {},
+            BookRoute::GuideComponent {
+                section: GuideComponentSection::Empty,
+            },
             ::use_mdbook::mdbook_shared::PageId(5usize),
         );
         pages.push((6usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Creating UI with RSX".to_string(),
-                url: BookRoute::GuideRsx {},
+                url: BookRoute::GuideRsx {
+                    section: GuideRsxSection::Empty,
+                },
                 segments: vec![],
                 sections: vec![
                     ::use_mdbook::mdbook_shared::Section {
@@ -648,13 +776,17 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
             }
         }));
         page_id_mapping.insert(
-            BookRoute::GuideRsx {},
+            BookRoute::GuideRsx {
+                section: GuideRsxSection::Empty,
+            },
             ::use_mdbook::mdbook_shared::PageId(6usize),
         );
         pages.push((7usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Styling and Assets".to_string(),
-                url: BookRoute::GuideAssets {},
+                url: BookRoute::GuideAssets {
+                    section: GuideAssetsSection::Empty,
+                },
                 segments: vec![],
                 sections: vec![
                     ::use_mdbook::mdbook_shared::Section {
@@ -698,13 +830,17 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
             }
         }));
         page_id_mapping.insert(
-            BookRoute::GuideAssets {},
+            BookRoute::GuideAssets {
+                section: GuideAssetsSection::Empty,
+            },
             ::use_mdbook::mdbook_shared::PageId(7usize),
         );
         pages.push((8usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Adding State".to_string(),
-                url: BookRoute::GuideState {},
+                url: BookRoute::GuideState {
+                    section: GuideStateSection::Empty,
+                },
                 segments: vec![],
                 sections: vec![
                     ::use_mdbook::mdbook_shared::Section {
@@ -728,8 +864,8 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                         level: 2usize,
                     },
                     ::use_mdbook::mdbook_shared::Section {
-                        title: "Signals and ".to_string(),
-                        id: "signals-and".to_string(),
+                        title: "Signals and use_signal".to_string(),
+                        id: "signals-and-use_signal".to_string(),
                         level: 2usize,
                     },
                     ::use_mdbook::mdbook_shared::Section {
@@ -748,13 +884,17 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
             }
         }));
         page_id_mapping.insert(
-            BookRoute::GuideState {},
+            BookRoute::GuideState {
+                section: GuideStateSection::Empty,
+            },
             ::use_mdbook::mdbook_shared::PageId(8usize),
         );
         pages.push((9usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Fetching Data".to_string(),
-                url: BookRoute::GuideDataFetching {},
+                url: BookRoute::GuideDataFetching {
+                    section: GuideDataFetchingSection::Empty,
+                },
                 segments: vec![],
                 sections: vec![
                     ::use_mdbook::mdbook_shared::Section {
@@ -788,13 +928,17 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
             }
         }));
         page_id_mapping.insert(
-            BookRoute::GuideDataFetching {},
+            BookRoute::GuideDataFetching {
+                section: GuideDataFetchingSection::Empty,
+            },
             ::use_mdbook::mdbook_shared::PageId(9usize),
         );
         pages.push((10usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Add a Backend".to_string(),
-                url: BookRoute::GuideBackend {},
+                url: BookRoute::GuideBackend {
+                    section: GuideBackendSection::Empty,
+                },
                 segments: vec![],
                 sections: vec![
                     ::use_mdbook::mdbook_shared::Section {
@@ -838,13 +982,17 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
             }
         }));
         page_id_mapping.insert(
-            BookRoute::GuideBackend {},
+            BookRoute::GuideBackend {
+                section: GuideBackendSection::Empty,
+            },
             ::use_mdbook::mdbook_shared::PageId(10usize),
         );
         pages.push((11usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Working with Databases".to_string(),
-                url: BookRoute::GuideDatabases {},
+                url: BookRoute::GuideDatabases {
+                    section: GuideDatabasesSection::Empty,
+                },
                 segments: vec![],
                 sections: vec![
                     ::use_mdbook::mdbook_shared::Section {
@@ -878,13 +1026,17 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
             }
         }));
         page_id_mapping.insert(
-            BookRoute::GuideDatabases {},
+            BookRoute::GuideDatabases {
+                section: GuideDatabasesSection::Empty,
+            },
             ::use_mdbook::mdbook_shared::PageId(11usize),
         );
         pages.push((12usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Routing and Structure".to_string(),
-                url: BookRoute::GuideRouting {},
+                url: BookRoute::GuideRouting {
+                    section: GuideRoutingSection::Empty,
+                },
                 segments: vec![],
                 sections: vec![
                     ::use_mdbook::mdbook_shared::Section {
@@ -928,13 +1080,17 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
             }
         }));
         page_id_mapping.insert(
-            BookRoute::GuideRouting {},
+            BookRoute::GuideRouting {
+                section: GuideRoutingSection::Empty,
+            },
             ::use_mdbook::mdbook_shared::PageId(12usize),
         );
         pages.push((13usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Bundling".to_string(),
-                url: BookRoute::GuideBundle {},
+                url: BookRoute::GuideBundle {
+                    section: GuideBundleSection::Empty,
+                },
                 segments: vec![],
                 sections: vec![
                     ::use_mdbook::mdbook_shared::Section {
@@ -988,13 +1144,17 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
             }
         }));
         page_id_mapping.insert(
-            BookRoute::GuideBundle {},
+            BookRoute::GuideBundle {
+                section: GuideBundleSection::Empty,
+            },
             ::use_mdbook::mdbook_shared::PageId(13usize),
         );
         pages.push((14usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Deploying".to_string(),
-                url: BookRoute::GuideDeploy {},
+                url: BookRoute::GuideDeploy {
+                    section: GuideDeploySection::Empty,
+                },
                 segments: vec![],
                 sections: vec![
                     ::use_mdbook::mdbook_shared::Section {
@@ -1053,13 +1213,17 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
             }
         }));
         page_id_mapping.insert(
-            BookRoute::GuideDeploy {},
+            BookRoute::GuideDeploy {
+                section: GuideDeploySection::Empty,
+            },
             ::use_mdbook::mdbook_shared::PageId(14usize),
         );
         pages.push((15usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Next Steps".to_string(),
-                url: BookRoute::GuideNextSteps {},
+                url: BookRoute::GuideNextSteps {
+                    section: GuideNextStepsSection::Empty,
+                },
                 segments: vec![],
                 sections: vec![
                     ::use_mdbook::mdbook_shared::Section {
@@ -1113,13 +1277,17 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
             }
         }));
         page_id_mapping.insert(
-            BookRoute::GuideNextSteps {},
+            BookRoute::GuideNextSteps {
+                section: GuideNextStepsSection::Empty,
+            },
             ::use_mdbook::mdbook_shared::PageId(15usize),
         );
         pages.push((16usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Core Concepts".to_string(),
-                url: BookRoute::EssentialsIndex {},
+                url: BookRoute::EssentialsIndex {
+                    section: EssentialsIndexSection::Empty,
+                },
                 segments: vec![],
                 sections: vec![::use_mdbook::mdbook_shared::Section {
                     title: "Core Topics".to_string(),
@@ -1131,13 +1299,17 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
             }
         }));
         page_id_mapping.insert(
-            BookRoute::EssentialsIndex {},
+            BookRoute::EssentialsIndex {
+                section: EssentialsIndexSection::Empty,
+            },
             ::use_mdbook::mdbook_shared::PageId(16usize),
         );
         pages.push((17usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Building UIs with RSX".to_string(),
-                url: BookRoute::EssentialsRsxIndex {},
+                url: BookRoute::EssentialsRsxIndex {
+                    section: EssentialsRsxIndexSection::Empty,
+                },
                 segments: vec![],
                 sections: vec![
                     ::use_mdbook::mdbook_shared::Section {
@@ -1196,13 +1368,17 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
             }
         }));
         page_id_mapping.insert(
-            BookRoute::EssentialsRsxIndex {},
+            BookRoute::EssentialsRsxIndex {
+                section: EssentialsRsxIndexSection::Empty,
+            },
             ::use_mdbook::mdbook_shared::PageId(17usize),
         );
         pages.push((18usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Component Lifecycle".to_string(),
-                url: BookRoute::EssentialsLifecycleIndex {},
+                url: BookRoute::EssentialsLifecycleIndex {
+                    section: EssentialsLifecycleIndexSection::Empty,
+                },
                 segments: vec![],
                 sections: vec![
                     ::use_mdbook::mdbook_shared::Section {
@@ -1242,13 +1418,17 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
             }
         }));
         page_id_mapping.insert(
-            BookRoute::EssentialsLifecycleIndex {},
+            BookRoute::EssentialsLifecycleIndex {
+                section: EssentialsLifecycleIndexSection::Empty,
+            },
             ::use_mdbook::mdbook_shared::PageId(18usize),
         );
         pages.push((19usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Managing State".to_string(),
-                url: BookRoute::EssentialsStateIndex {},
+                url: BookRoute::EssentialsStateIndex {
+                    section: EssentialsStateIndexSection::Empty,
+                },
                 segments: vec![],
                 sections: vec![
                     ::use_mdbook::mdbook_shared::Section {
@@ -1317,13 +1497,17 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
             }
         }));
         page_id_mapping.insert(
-            BookRoute::EssentialsStateIndex {},
+            BookRoute::EssentialsStateIndex {
+                section: EssentialsStateIndexSection::Empty,
+            },
             ::use_mdbook::mdbook_shared::PageId(19usize),
         );
         pages.push((20usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Breaking Out".to_string(),
-                url: BookRoute::EssentialsBreakingIndex {},
+                url: BookRoute::EssentialsBreakingIndex {
+                    section: EssentialsBreakingIndexSection::Empty,
+                },
                 segments: vec![],
                 sections: vec![
                     ::use_mdbook::mdbook_shared::Section {
@@ -1357,28 +1541,32 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
             }
         }));
         page_id_mapping.insert(
-            BookRoute::EssentialsBreakingIndex {},
+            BookRoute::EssentialsBreakingIndex {
+                section: EssentialsBreakingIndexSection::Empty,
+            },
             ::use_mdbook::mdbook_shared::PageId(20usize),
         );
         pages.push((21usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Guides".to_string(),
-                url: BookRoute::GuidesIndex {},
+                url: BookRoute::GuidesIndex {
+                    section: GuidesIndexSection::Empty,
+                },
                 segments: vec![],
                 sections: vec![
                     ::use_mdbook::mdbook_shared::Section {
-                        title: "Dioxus Reference".to_string(),
-                        id: "dioxus-reference".to_string(),
+                        title: "Dioxus Guides".to_string(),
+                        id: "dioxus-guides".to_string(),
                         level: 1usize,
-                    },
-                    ::use_mdbook::mdbook_shared::Section {
-                        title: "Rendering".to_string(),
-                        id: "rendering".to_string(),
-                        level: 2usize,
                     },
                     ::use_mdbook::mdbook_shared::Section {
                         title: "State".to_string(),
                         id: "state".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Assets".to_string(),
+                        id: "assets".to_string(),
                         level: 2usize,
                     },
                     ::use_mdbook::mdbook_shared::Section {
@@ -1392,13 +1580,56 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
             }
         }));
         page_id_mapping.insert(
-            BookRoute::GuidesIndex {},
+            BookRoute::GuidesIndex {
+                section: GuidesIndexSection::Empty,
+            },
             ::use_mdbook::mdbook_shared::PageId(21usize),
         );
         pages.push((22usize, {
             ::use_mdbook::mdbook_shared::Page {
+                title: "Managing State".to_string(),
+                url: BookRoute::GuidesManagingState {
+                    section: GuidesManagingStateSection::Empty,
+                },
+                segments: vec![],
+                sections: vec![
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "The Rules of Hooks".to_string(),
+                        id: "the-rules-of-hooks".to_string(),
+                        level: 1usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "No Hooks in Conditionals".to_string(),
+                        id: "no-hooks-in-conditionals".to_string(),
+                        level: 4usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "No Hooks in Closures".to_string(),
+                        id: "no-hooks-in-closures".to_string(),
+                        level: 4usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "No Hooks in Loops".to_string(),
+                        id: "no-hooks-in-loops".to_string(),
+                        level: 4usize,
+                    },
+                ],
+                raw: String::new(),
+                id: ::use_mdbook::mdbook_shared::PageId(22usize),
+            }
+        }));
+        page_id_mapping.insert(
+            BookRoute::GuidesManagingState {
+                section: GuidesManagingStateSection::Empty,
+            },
+            ::use_mdbook::mdbook_shared::PageId(22usize),
+        );
+        pages.push((23usize, {
+            ::use_mdbook::mdbook_shared::Page {
                 title: "Router".to_string(),
-                url: BookRoute::RouterIndex {},
+                url: BookRoute::RouterIndex {
+                    section: RouterIndexSection::Empty,
+                },
                 segments: vec![],
                 sections: vec![::use_mdbook::mdbook_shared::Section {
                     title: "Introduction".to_string(),
@@ -1406,17 +1637,21 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     level: 1usize,
                 }],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(22usize),
+                id: ::use_mdbook::mdbook_shared::PageId(23usize),
             }
         }));
         page_id_mapping.insert(
-            BookRoute::RouterIndex {},
-            ::use_mdbook::mdbook_shared::PageId(22usize),
+            BookRoute::RouterIndex {
+                section: RouterIndexSection::Empty,
+            },
+            ::use_mdbook::mdbook_shared::PageId(23usize),
         );
-        pages.push((23usize, {
+        pages.push((24usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Example Project".to_string(),
-                url: BookRoute::RouterExampleIndex {},
+                url: BookRoute::RouterExampleIndex {
+                    section: RouterExampleIndexSection::Empty,
+                },
                 segments: vec![],
                 sections: vec![
                     ::use_mdbook::mdbook_shared::Section {
@@ -1431,17 +1666,21 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(23usize),
+                id: ::use_mdbook::mdbook_shared::PageId(24usize),
             }
         }));
         page_id_mapping.insert(
-            BookRoute::RouterExampleIndex {},
-            ::use_mdbook::mdbook_shared::PageId(23usize),
+            BookRoute::RouterExampleIndex {
+                section: RouterExampleIndexSection::Empty,
+            },
+            ::use_mdbook::mdbook_shared::PageId(24usize),
         );
-        pages.push((24usize, {
+        pages.push((25usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Creating Our First Route".to_string(),
-                url: BookRoute::RouterExampleFirstRoute {},
+                url: BookRoute::RouterExampleFirstRoute {
+                    section: RouterExampleFirstRouteSection::Empty,
+                },
                 segments: vec![],
                 sections: vec![
                     ::use_mdbook::mdbook_shared::Section {
@@ -1471,17 +1710,21 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(24usize),
+                id: ::use_mdbook::mdbook_shared::PageId(25usize),
             }
         }));
         page_id_mapping.insert(
-            BookRoute::RouterExampleFirstRoute {},
-            ::use_mdbook::mdbook_shared::PageId(24usize),
+            BookRoute::RouterExampleFirstRoute {
+                section: RouterExampleFirstRouteSection::Empty,
+            },
+            ::use_mdbook::mdbook_shared::PageId(25usize),
         );
-        pages.push((25usize, {
+        pages.push((26usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Building a Nest".to_string(),
-                url: BookRoute::RouterExampleBuildingANest {},
+                url: BookRoute::RouterExampleBuildingANest {
+                    section: RouterExampleBuildingANestSection::Empty,
+                },
                 segments: vec![],
                 sections: vec![
                     ::use_mdbook::mdbook_shared::Section {
@@ -1506,17 +1749,21 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(25usize),
+                id: ::use_mdbook::mdbook_shared::PageId(26usize),
             }
         }));
         page_id_mapping.insert(
-            BookRoute::RouterExampleBuildingANest {},
-            ::use_mdbook::mdbook_shared::PageId(25usize),
+            BookRoute::RouterExampleBuildingANest {
+                section: RouterExampleBuildingANestSection::Empty,
+            },
+            ::use_mdbook::mdbook_shared::PageId(26usize),
         );
-        pages.push((26usize, {
+        pages.push((27usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Navigation Targets".to_string(),
-                url: BookRoute::RouterExampleNavigationTargets {},
+                url: BookRoute::RouterExampleNavigationTargets {
+                    section: RouterExampleNavigationTargetsSection::Empty,
+                },
                 segments: vec![],
                 sections: vec![
                     ::use_mdbook::mdbook_shared::Section {
@@ -1536,17 +1783,21 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(26usize),
+                id: ::use_mdbook::mdbook_shared::PageId(27usize),
             }
         }));
         page_id_mapping.insert(
-            BookRoute::RouterExampleNavigationTargets {},
-            ::use_mdbook::mdbook_shared::PageId(26usize),
+            BookRoute::RouterExampleNavigationTargets {
+                section: RouterExampleNavigationTargetsSection::Empty,
+            },
+            ::use_mdbook::mdbook_shared::PageId(27usize),
         );
-        pages.push((27usize, {
+        pages.push((28usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Redirection Perfection".to_string(),
-                url: BookRoute::RouterExampleRedirectionPerfection {},
+                url: BookRoute::RouterExampleRedirectionPerfection {
+                    section: RouterExampleRedirectionPerfectionSection::Empty,
+                },
                 segments: vec![],
                 sections: vec![
                     ::use_mdbook::mdbook_shared::Section {
@@ -1571,17 +1822,21 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(27usize),
+                id: ::use_mdbook::mdbook_shared::PageId(28usize),
             }
         }));
         page_id_mapping.insert(
-            BookRoute::RouterExampleRedirectionPerfection {},
-            ::use_mdbook::mdbook_shared::PageId(27usize),
+            BookRoute::RouterExampleRedirectionPerfection {
+                section: RouterExampleRedirectionPerfectionSection::Empty,
+            },
+            ::use_mdbook::mdbook_shared::PageId(28usize),
         );
-        pages.push((28usize, {
+        pages.push((29usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Full Code".to_string(),
-                url: BookRoute::RouterExampleFullCode {},
+                url: BookRoute::RouterExampleFullCode {
+                    section: RouterExampleFullCodeSection::Empty,
+                },
                 segments: vec![],
                 sections: vec![::use_mdbook::mdbook_shared::Section {
                     title: "Full Code".to_string(),
@@ -1589,17 +1844,21 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     level: 1usize,
                 }],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(28usize),
+                id: ::use_mdbook::mdbook_shared::PageId(29usize),
             }
         }));
         page_id_mapping.insert(
-            BookRoute::RouterExampleFullCode {},
-            ::use_mdbook::mdbook_shared::PageId(28usize),
+            BookRoute::RouterExampleFullCode {
+                section: RouterExampleFullCodeSection::Empty,
+            },
+            ::use_mdbook::mdbook_shared::PageId(29usize),
         );
-        pages.push((29usize, {
+        pages.push((30usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Reference".to_string(),
-                url: BookRoute::RouterReferenceIndex {},
+                url: BookRoute::RouterReferenceIndex {
+                    section: RouterReferenceIndexSection::Empty,
+                },
                 segments: vec![],
                 sections: vec![::use_mdbook::mdbook_shared::Section {
                     title: "Adding the router to your application".to_string(),
@@ -1607,17 +1866,21 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     level: 1usize,
                 }],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(29usize),
+                id: ::use_mdbook::mdbook_shared::PageId(30usize),
             }
         }));
         page_id_mapping.insert(
-            BookRoute::RouterReferenceIndex {},
-            ::use_mdbook::mdbook_shared::PageId(29usize),
+            BookRoute::RouterReferenceIndex {
+                section: RouterReferenceIndexSection::Empty,
+            },
+            ::use_mdbook::mdbook_shared::PageId(30usize),
         );
-        pages.push((30usize, {
+        pages.push((31usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Defining Routes".to_string(),
-                url: BookRoute::RouterReferenceRoutesIndex {},
+                url: BookRoute::RouterReferenceRoutesIndex {
+                    section: RouterReferenceRoutesIndexSection::Empty,
+                },
                 segments: vec![],
                 sections: vec![
                     ::use_mdbook::mdbook_shared::Section {
@@ -1652,17 +1915,21 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(30usize),
+                id: ::use_mdbook::mdbook_shared::PageId(31usize),
             }
         }));
         page_id_mapping.insert(
-            BookRoute::RouterReferenceRoutesIndex {},
-            ::use_mdbook::mdbook_shared::PageId(30usize),
+            BookRoute::RouterReferenceRoutesIndex {
+                section: RouterReferenceRoutesIndexSection::Empty,
+            },
+            ::use_mdbook::mdbook_shared::PageId(31usize),
         );
-        pages.push((31usize, {
+        pages.push((32usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Nested Routes".to_string(),
-                url: BookRoute::RouterReferenceRoutesNested {},
+                url: BookRoute::RouterReferenceRoutesNested {
+                    section: RouterReferenceRoutesNestedSection::Empty,
+                },
                 segments: vec![],
                 sections: vec![
                     ::use_mdbook::mdbook_shared::Section {
@@ -1677,17 +1944,21 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(31usize),
+                id: ::use_mdbook::mdbook_shared::PageId(32usize),
             }
         }));
         page_id_mapping.insert(
-            BookRoute::RouterReferenceRoutesNested {},
-            ::use_mdbook::mdbook_shared::PageId(31usize),
+            BookRoute::RouterReferenceRoutesNested {
+                section: RouterReferenceRoutesNestedSection::Empty,
+            },
+            ::use_mdbook::mdbook_shared::PageId(32usize),
         );
-        pages.push((32usize, {
+        pages.push((33usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Layouts".to_string(),
-                url: BookRoute::RouterReferenceLayouts {},
+                url: BookRoute::RouterReferenceLayouts {
+                    section: RouterReferenceLayoutsSection::Empty,
+                },
                 segments: vec![],
                 sections: vec![
                     ::use_mdbook::mdbook_shared::Section {
@@ -1702,17 +1973,21 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(32usize),
+                id: ::use_mdbook::mdbook_shared::PageId(33usize),
             }
         }));
         page_id_mapping.insert(
-            BookRoute::RouterReferenceLayouts {},
-            ::use_mdbook::mdbook_shared::PageId(32usize),
+            BookRoute::RouterReferenceLayouts {
+                section: RouterReferenceLayoutsSection::Empty,
+            },
+            ::use_mdbook::mdbook_shared::PageId(33usize),
         );
-        pages.push((33usize, {
+        pages.push((34usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Navigation".to_string(),
-                url: BookRoute::RouterReferenceNavigationIndex {},
+                url: BookRoute::RouterReferenceNavigationIndex {
+                    section: RouterReferenceNavigationIndexSection::Empty,
+                },
                 segments: vec![],
                 sections: vec![::use_mdbook::mdbook_shared::Section {
                     title: "Links & Navigation".to_string(),
@@ -1720,17 +1995,21 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     level: 1usize,
                 }],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(33usize),
+                id: ::use_mdbook::mdbook_shared::PageId(34usize),
             }
         }));
         page_id_mapping.insert(
-            BookRoute::RouterReferenceNavigationIndex {},
-            ::use_mdbook::mdbook_shared::PageId(33usize),
+            BookRoute::RouterReferenceNavigationIndex {
+                section: RouterReferenceNavigationIndexSection::Empty,
+            },
+            ::use_mdbook::mdbook_shared::PageId(34usize),
         );
-        pages.push((34usize, {
+        pages.push((35usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Programmatic Navigation".to_string(),
-                url: BookRoute::RouterReferenceNavigationProgrammatic {},
+                url: BookRoute::RouterReferenceNavigationProgrammatic {
+                    section: RouterReferenceNavigationProgrammaticSection::Empty,
+                },
                 segments: vec![],
                 sections: vec![
                     ::use_mdbook::mdbook_shared::Section {
@@ -1750,17 +2029,21 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(34usize),
+                id: ::use_mdbook::mdbook_shared::PageId(35usize),
             }
         }));
         page_id_mapping.insert(
-            BookRoute::RouterReferenceNavigationProgrammatic {},
-            ::use_mdbook::mdbook_shared::PageId(34usize),
+            BookRoute::RouterReferenceNavigationProgrammatic {
+                section: RouterReferenceNavigationProgrammaticSection::Empty,
+            },
+            ::use_mdbook::mdbook_shared::PageId(35usize),
         );
-        pages.push((35usize, {
+        pages.push((36usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "History Providers".to_string(),
-                url: BookRoute::RouterReferenceHistoryProviders {},
+                url: BookRoute::RouterReferenceHistoryProviders {
+                    section: RouterReferenceHistoryProvidersSection::Empty,
+                },
                 segments: vec![],
                 sections: vec![::use_mdbook::mdbook_shared::Section {
                     title: "History Providers".to_string(),
@@ -1768,17 +2051,21 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     level: 1usize,
                 }],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(35usize),
+                id: ::use_mdbook::mdbook_shared::PageId(36usize),
             }
         }));
         page_id_mapping.insert(
-            BookRoute::RouterReferenceHistoryProviders {},
-            ::use_mdbook::mdbook_shared::PageId(35usize),
+            BookRoute::RouterReferenceHistoryProviders {
+                section: RouterReferenceHistoryProvidersSection::Empty,
+            },
+            ::use_mdbook::mdbook_shared::PageId(36usize),
         );
-        pages.push((36usize, {
+        pages.push((37usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "History Buttons".to_string(),
-                url: BookRoute::RouterReferenceHistoryButtons {},
+                url: BookRoute::RouterReferenceHistoryButtons {
+                    section: RouterReferenceHistoryButtonsSection::Empty,
+                },
                 segments: vec![],
                 sections: vec![::use_mdbook::mdbook_shared::Section {
                     title: "History Buttons".to_string(),
@@ -1786,17 +2073,21 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     level: 1usize,
                 }],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(36usize),
+                id: ::use_mdbook::mdbook_shared::PageId(37usize),
             }
         }));
         page_id_mapping.insert(
-            BookRoute::RouterReferenceHistoryButtons {},
-            ::use_mdbook::mdbook_shared::PageId(36usize),
+            BookRoute::RouterReferenceHistoryButtons {
+                section: RouterReferenceHistoryButtonsSection::Empty,
+            },
+            ::use_mdbook::mdbook_shared::PageId(37usize),
         );
-        pages.push((37usize, {
+        pages.push((38usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Routing Update Callback".to_string(),
-                url: BookRoute::RouterReferenceRoutingUpdateCallback {},
+                url: BookRoute::RouterReferenceRoutingUpdateCallback {
+                    section: RouterReferenceRoutingUpdateCallbackSection::Empty,
+                },
                 segments: vec![],
                 sections: vec![
                     ::use_mdbook::mdbook_shared::Section {
@@ -1816,17 +2107,21 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(37usize),
+                id: ::use_mdbook::mdbook_shared::PageId(38usize),
             }
         }));
         page_id_mapping.insert(
-            BookRoute::RouterReferenceRoutingUpdateCallback {},
-            ::use_mdbook::mdbook_shared::PageId(37usize),
+            BookRoute::RouterReferenceRoutingUpdateCallback {
+                section: RouterReferenceRoutingUpdateCallbackSection::Empty,
+            },
+            ::use_mdbook::mdbook_shared::PageId(38usize),
         );
-        pages.push((38usize, {
+        pages.push((39usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Assets".to_string(),
-                url: BookRoute::GuidesAssets {},
+                url: BookRoute::GuidesAssets {
+                    section: GuidesAssetsSection::Empty,
+                },
                 segments: vec![],
                 sections: vec![
                     ::use_mdbook::mdbook_shared::Section {
@@ -1856,17 +2151,21 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(38usize),
+                id: ::use_mdbook::mdbook_shared::PageId(39usize),
             }
         }));
         page_id_mapping.insert(
-            BookRoute::GuidesAssets {},
-            ::use_mdbook::mdbook_shared::PageId(38usize),
+            BookRoute::GuidesAssets {
+                section: GuidesAssetsSection::Empty,
+            },
+            ::use_mdbook::mdbook_shared::PageId(39usize),
         );
-        pages.push((39usize, {
+        pages.push((40usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Web".to_string(),
-                url: BookRoute::GuidesWebIndex {},
+                url: BookRoute::GuidesWebIndex {
+                    section: GuidesWebIndexSection::Empty,
+                },
                 segments: vec![],
                 sections: vec![
                     ::use_mdbook::mdbook_shared::Section {
@@ -1891,17 +2190,21 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(39usize),
+                id: ::use_mdbook::mdbook_shared::PageId(40usize),
             }
         }));
         page_id_mapping.insert(
-            BookRoute::GuidesWebIndex {},
-            ::use_mdbook::mdbook_shared::PageId(39usize),
+            BookRoute::GuidesWebIndex {
+                section: GuidesWebIndexSection::Empty,
+            },
+            ::use_mdbook::mdbook_shared::PageId(40usize),
         );
-        pages.push((40usize, {
+        pages.push((41usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Desktop".to_string(),
-                url: BookRoute::GuidesDesktopIndex {},
+                url: BookRoute::GuidesDesktopIndex {
+                    section: GuidesDesktopIndexSection::Empty,
+                },
                 segments: vec![],
                 sections: vec![
                     ::use_mdbook::mdbook_shared::Section {
@@ -1931,17 +2234,21 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(40usize),
+                id: ::use_mdbook::mdbook_shared::PageId(41usize),
             }
         }));
         page_id_mapping.insert(
-            BookRoute::GuidesDesktopIndex {},
-            ::use_mdbook::mdbook_shared::PageId(40usize),
+            BookRoute::GuidesDesktopIndex {
+                section: GuidesDesktopIndexSection::Empty,
+            },
+            ::use_mdbook::mdbook_shared::PageId(41usize),
         );
-        pages.push((41usize, {
+        pages.push((42usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Mobile".to_string(),
-                url: BookRoute::GuidesMobileIndex {},
+                url: BookRoute::GuidesMobileIndex {
+                    section: GuidesMobileIndexSection::Empty,
+                },
                 segments: vec![],
                 sections: vec![
                     ::use_mdbook::mdbook_shared::Section {
@@ -1976,17 +2283,21 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(41usize),
+                id: ::use_mdbook::mdbook_shared::PageId(42usize),
             }
         }));
         page_id_mapping.insert(
-            BookRoute::GuidesMobileIndex {},
-            ::use_mdbook::mdbook_shared::PageId(41usize),
+            BookRoute::GuidesMobileIndex {
+                section: GuidesMobileIndexSection::Empty,
+            },
+            ::use_mdbook::mdbook_shared::PageId(42usize),
         );
-        pages.push((42usize, {
+        pages.push((43usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "APIs".to_string(),
-                url: BookRoute::GuidesMobileApis {},
+                url: BookRoute::GuidesMobileApis {
+                    section: GuidesMobileApisSection::Empty,
+                },
                 segments: vec![],
                 sections: vec![
                     ::use_mdbook::mdbook_shared::Section {
@@ -2011,17 +2322,21 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(42usize),
+                id: ::use_mdbook::mdbook_shared::PageId(43usize),
             }
         }));
         page_id_mapping.insert(
-            BookRoute::GuidesMobileApis {},
-            ::use_mdbook::mdbook_shared::PageId(42usize),
+            BookRoute::GuidesMobileApis {
+                section: GuidesMobileApisSection::Empty,
+            },
+            ::use_mdbook::mdbook_shared::PageId(43usize),
         );
-        pages.push((43usize, {
+        pages.push((44usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Streaming and SSR".to_string(),
-                url: BookRoute::GuidesSsr {},
+                url: BookRoute::GuidesSsr {
+                    section: GuidesSsrSection::Empty,
+                },
                 segments: vec![],
                 sections: vec![
                     ::use_mdbook::mdbook_shared::Section {
@@ -2041,17 +2356,21 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(43usize),
+                id: ::use_mdbook::mdbook_shared::PageId(44usize),
             }
         }));
         page_id_mapping.insert(
-            BookRoute::GuidesSsr {},
-            ::use_mdbook::mdbook_shared::PageId(43usize),
+            BookRoute::GuidesSsr {
+                section: GuidesSsrSection::Empty,
+            },
+            ::use_mdbook::mdbook_shared::PageId(44usize),
         );
-        pages.push((44usize, {
+        pages.push((45usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Fullstack".to_string(),
-                url: BookRoute::GuidesFullstackIndex {},
+                url: BookRoute::GuidesFullstackIndex {
+                    section: GuidesFullstackIndexSection::Empty,
+                },
                 segments: vec![],
                 sections: vec![::use_mdbook::mdbook_shared::Section {
                     title: "Fullstack development".to_string(),
@@ -2059,17 +2378,21 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     level: 1usize,
                 }],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(44usize),
+                id: ::use_mdbook::mdbook_shared::PageId(45usize),
             }
         }));
         page_id_mapping.insert(
-            BookRoute::GuidesFullstackIndex {},
-            ::use_mdbook::mdbook_shared::PageId(44usize),
+            BookRoute::GuidesFullstackIndex {
+                section: GuidesFullstackIndexSection::Empty,
+            },
+            ::use_mdbook::mdbook_shared::PageId(45usize),
         );
-        pages.push((45usize, {
+        pages.push((46usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Managing Dependencies".to_string(),
-                url: BookRoute::GuidesFullstackManagingDependencies {},
+                url: BookRoute::GuidesFullstackManagingDependencies {
+                    section: GuidesFullstackManagingDependenciesSection::Empty,
+                },
                 segments: vec![],
                 sections: vec![
                     ::use_mdbook::mdbook_shared::Section {
@@ -2099,17 +2422,21 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(45usize),
+                id: ::use_mdbook::mdbook_shared::PageId(46usize),
             }
         }));
         page_id_mapping.insert(
-            BookRoute::GuidesFullstackManagingDependencies {},
-            ::use_mdbook::mdbook_shared::PageId(45usize),
+            BookRoute::GuidesFullstackManagingDependencies {
+                section: GuidesFullstackManagingDependenciesSection::Empty,
+            },
+            ::use_mdbook::mdbook_shared::PageId(46usize),
         );
-        pages.push((46usize, {
+        pages.push((47usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Server Functions".to_string(),
-                url: BookRoute::GuidesFullstackServerFunctions {},
+                url: BookRoute::GuidesFullstackServerFunctions {
+                    section: GuidesFullstackServerFunctionsSection::Empty,
+                },
                 segments: vec![],
                 sections: vec![
                     ::use_mdbook::mdbook_shared::Section {
@@ -2139,17 +2466,21 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(46usize),
+                id: ::use_mdbook::mdbook_shared::PageId(47usize),
             }
         }));
         page_id_mapping.insert(
-            BookRoute::GuidesFullstackServerFunctions {},
-            ::use_mdbook::mdbook_shared::PageId(46usize),
+            BookRoute::GuidesFullstackServerFunctions {
+                section: GuidesFullstackServerFunctionsSection::Empty,
+            },
+            ::use_mdbook::mdbook_shared::PageId(47usize),
         );
-        pages.push((47usize, {
+        pages.push((48usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Extractors".to_string(),
-                url: BookRoute::GuidesFullstackExtractors {},
+                url: BookRoute::GuidesFullstackExtractors {
+                    section: GuidesFullstackExtractorsSection::Empty,
+                },
                 segments: vec![],
                 sections: vec![::use_mdbook::mdbook_shared::Section {
                     title: "Extractors".to_string(),
@@ -2157,17 +2488,21 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     level: 1usize,
                 }],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(47usize),
+                id: ::use_mdbook::mdbook_shared::PageId(48usize),
             }
         }));
         page_id_mapping.insert(
-            BookRoute::GuidesFullstackExtractors {},
-            ::use_mdbook::mdbook_shared::PageId(47usize),
+            BookRoute::GuidesFullstackExtractors {
+                section: GuidesFullstackExtractorsSection::Empty,
+            },
+            ::use_mdbook::mdbook_shared::PageId(48usize),
         );
-        pages.push((48usize, {
+        pages.push((49usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Middleware".to_string(),
-                url: BookRoute::GuidesFullstackMiddleware {},
+                url: BookRoute::GuidesFullstackMiddleware {
+                    section: GuidesFullstackMiddlewareSection::Empty,
+                },
                 segments: vec![],
                 sections: vec![::use_mdbook::mdbook_shared::Section {
                     title: "Middleware".to_string(),
@@ -2175,17 +2510,21 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     level: 1usize,
                 }],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(48usize),
+                id: ::use_mdbook::mdbook_shared::PageId(49usize),
             }
         }));
         page_id_mapping.insert(
-            BookRoute::GuidesFullstackMiddleware {},
-            ::use_mdbook::mdbook_shared::PageId(48usize),
+            BookRoute::GuidesFullstackMiddleware {
+                section: GuidesFullstackMiddlewareSection::Empty,
+            },
+            ::use_mdbook::mdbook_shared::PageId(49usize),
         );
-        pages.push((49usize, {
+        pages.push((50usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Authentication".to_string(),
-                url: BookRoute::GuidesFullstackAuthentication {},
+                url: BookRoute::GuidesFullstackAuthentication {
+                    section: GuidesFullstackAuthenticationSection::Empty,
+                },
                 segments: vec![],
                 sections: vec![::use_mdbook::mdbook_shared::Section {
                     title: "Authentication".to_string(),
@@ -2193,17 +2532,21 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     level: 1usize,
                 }],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(49usize),
+                id: ::use_mdbook::mdbook_shared::PageId(50usize),
             }
         }));
         page_id_mapping.insert(
-            BookRoute::GuidesFullstackAuthentication {},
-            ::use_mdbook::mdbook_shared::PageId(49usize),
+            BookRoute::GuidesFullstackAuthentication {
+                section: GuidesFullstackAuthenticationSection::Empty,
+            },
+            ::use_mdbook::mdbook_shared::PageId(50usize),
         );
-        pages.push((50usize, {
+        pages.push((51usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Routing".to_string(),
-                url: BookRoute::GuidesFullstackRouting {},
+                url: BookRoute::GuidesFullstackRouting {
+                    section: GuidesFullstackRoutingSection::Empty,
+                },
                 segments: vec![],
                 sections: vec![::use_mdbook::mdbook_shared::Section {
                     title: "Routing".to_string(),
@@ -2211,17 +2554,21 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     level: 1usize,
                 }],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(50usize),
+                id: ::use_mdbook::mdbook_shared::PageId(51usize),
             }
         }));
         page_id_mapping.insert(
-            BookRoute::GuidesFullstackRouting {},
-            ::use_mdbook::mdbook_shared::PageId(50usize),
+            BookRoute::GuidesFullstackRouting {
+                section: GuidesFullstackRoutingSection::Empty,
+            },
+            ::use_mdbook::mdbook_shared::PageId(51usize),
         );
-        pages.push((51usize, {
+        pages.push((52usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Publishing".to_string(),
-                url: BookRoute::CookbookPublishing {},
+                url: BookRoute::CookbookPublishing {
+                    section: CookbookPublishingSection::Empty,
+                },
                 segments: vec![],
                 sections: vec![
                     ::use_mdbook::mdbook_shared::Section {
@@ -2261,17 +2608,21 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(51usize),
+                id: ::use_mdbook::mdbook_shared::PageId(52usize),
             }
         }));
         page_id_mapping.insert(
-            BookRoute::CookbookPublishing {},
-            ::use_mdbook::mdbook_shared::PageId(51usize),
+            BookRoute::CookbookPublishing {
+                section: CookbookPublishingSection::Empty,
+            },
+            ::use_mdbook::mdbook_shared::PageId(52usize),
         );
-        pages.push((52usize, {
+        pages.push((53usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Anti-patterns".to_string(),
-                url: BookRoute::CookbookAntipatterns {},
+                url: BookRoute::CookbookAntipatterns {
+                    section: CookbookAntipatternsSection::Empty,
+                },
                 segments: vec![],
                 sections: vec![
                     ::use_mdbook::mdbook_shared::Section {
@@ -2317,17 +2668,21 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(52usize),
+                id: ::use_mdbook::mdbook_shared::PageId(53usize),
             }
         }));
         page_id_mapping.insert(
-            BookRoute::CookbookAntipatterns {},
-            ::use_mdbook::mdbook_shared::PageId(52usize),
+            BookRoute::CookbookAntipatterns {
+                section: CookbookAntipatternsSection::Empty,
+            },
+            ::use_mdbook::mdbook_shared::PageId(53usize),
         );
-        pages.push((53usize, {
+        pages.push((54usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Error Handling".to_string(),
-                url: BookRoute::CookbookErrorHandling {},
+                url: BookRoute::CookbookErrorHandling {
+                    section: CookbookErrorHandlingSection::Empty,
+                },
                 segments: vec![],
                 sections: vec![
                     ::use_mdbook::mdbook_shared::Section {
@@ -2362,31 +2717,39 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(53usize),
-            }
-        }));
-        page_id_mapping.insert(
-            BookRoute::CookbookErrorHandling {},
-            ::use_mdbook::mdbook_shared::PageId(53usize),
-        );
-        pages.push((54usize, {
-            ::use_mdbook::mdbook_shared::Page {
-                title: "Integrations".to_string(),
-                url: BookRoute::CookbookIntegrationsIndex {},
-                segments: vec![],
-                sections: vec![],
-                raw: String::new(),
                 id: ::use_mdbook::mdbook_shared::PageId(54usize),
             }
         }));
         page_id_mapping.insert(
-            BookRoute::CookbookIntegrationsIndex {},
+            BookRoute::CookbookErrorHandling {
+                section: CookbookErrorHandlingSection::Empty,
+            },
             ::use_mdbook::mdbook_shared::PageId(54usize),
         );
         pages.push((55usize, {
             ::use_mdbook::mdbook_shared::Page {
+                title: "Integrations".to_string(),
+                url: BookRoute::CookbookIntegrationsIndex {
+                    section: CookbookIntegrationsIndexSection::Empty,
+                },
+                segments: vec![],
+                sections: vec![],
+                raw: String::new(),
+                id: ::use_mdbook::mdbook_shared::PageId(55usize),
+            }
+        }));
+        page_id_mapping.insert(
+            BookRoute::CookbookIntegrationsIndex {
+                section: CookbookIntegrationsIndexSection::Empty,
+            },
+            ::use_mdbook::mdbook_shared::PageId(55usize),
+        );
+        pages.push((56usize, {
+            ::use_mdbook::mdbook_shared::Page {
                 title: "Logging".to_string(),
-                url: BookRoute::CookbookIntegrationsLogging {},
+                url: BookRoute::CookbookIntegrationsLogging {
+                    section: CookbookIntegrationsLoggingSection::Empty,
+                },
                 segments: vec![],
                 sections: vec![
                     ::use_mdbook::mdbook_shared::Section {
@@ -2421,17 +2784,21 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(55usize),
+                id: ::use_mdbook::mdbook_shared::PageId(56usize),
             }
         }));
         page_id_mapping.insert(
-            BookRoute::CookbookIntegrationsLogging {},
-            ::use_mdbook::mdbook_shared::PageId(55usize),
+            BookRoute::CookbookIntegrationsLogging {
+                section: CookbookIntegrationsLoggingSection::Empty,
+            },
+            ::use_mdbook::mdbook_shared::PageId(56usize),
         );
-        pages.push((56usize, {
+        pages.push((57usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Internationalization".to_string(),
-                url: BookRoute::CookbookIntegrationsInternationalization {},
+                url: BookRoute::CookbookIntegrationsInternationalization {
+                    section: CookbookIntegrationsInternationalizationSection::Empty,
+                },
                 segments: vec![],
                 sections: vec![::use_mdbook::mdbook_shared::Section {
                     title: "Internationalization".to_string(),
@@ -2439,17 +2806,21 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     level: 1usize,
                 }],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(56usize),
+                id: ::use_mdbook::mdbook_shared::PageId(57usize),
             }
         }));
         page_id_mapping.insert(
-            BookRoute::CookbookIntegrationsInternationalization {},
-            ::use_mdbook::mdbook_shared::PageId(56usize),
+            BookRoute::CookbookIntegrationsInternationalization {
+                section: CookbookIntegrationsInternationalizationSection::Empty,
+            },
+            ::use_mdbook::mdbook_shared::PageId(57usize),
         );
-        pages.push((57usize, {
+        pages.push((58usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "State Management".to_string(),
-                url: BookRoute::CookbookStateIndex {},
+                url: BookRoute::CookbookStateIndex {
+                    section: CookbookStateIndexSection::Empty,
+                },
                 segments: vec![],
                 sections: vec![::use_mdbook::mdbook_shared::Section {
                     title: "State Cookbook".to_string(),
@@ -2457,17 +2828,21 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     level: 1usize,
                 }],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(57usize),
+                id: ::use_mdbook::mdbook_shared::PageId(58usize),
             }
         }));
         page_id_mapping.insert(
-            BookRoute::CookbookStateIndex {},
-            ::use_mdbook::mdbook_shared::PageId(57usize),
+            BookRoute::CookbookStateIndex {
+                section: CookbookStateIndexSection::Empty,
+            },
+            ::use_mdbook::mdbook_shared::PageId(58usize),
         );
-        pages.push((58usize, {
+        pages.push((59usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "External State".to_string(),
-                url: BookRoute::CookbookStateExternalIndex {},
+                url: BookRoute::CookbookStateExternalIndex {
+                    section: CookbookStateExternalIndexSection::Empty,
+                },
                 segments: vec![],
                 sections: vec![
                     ::use_mdbook::mdbook_shared::Section {
@@ -2487,17 +2862,21 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(58usize),
+                id: ::use_mdbook::mdbook_shared::PageId(59usize),
             }
         }));
         page_id_mapping.insert(
-            BookRoute::CookbookStateExternalIndex {},
-            ::use_mdbook::mdbook_shared::PageId(58usize),
+            BookRoute::CookbookStateExternalIndex {
+                section: CookbookStateExternalIndexSection::Empty,
+            },
+            ::use_mdbook::mdbook_shared::PageId(59usize),
         );
-        pages.push((59usize, {
+        pages.push((60usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Custom Hooks".to_string(),
-                url: BookRoute::CookbookStateCustomHooksIndex {},
+                url: BookRoute::CookbookStateCustomHooksIndex {
+                    section: CookbookStateCustomHooksIndexSection::Empty,
+                },
                 segments: vec![],
                 sections: vec![
                     ::use_mdbook::mdbook_shared::Section {
@@ -2517,17 +2896,21 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(59usize),
+                id: ::use_mdbook::mdbook_shared::PageId(60usize),
             }
         }));
         page_id_mapping.insert(
-            BookRoute::CookbookStateCustomHooksIndex {},
-            ::use_mdbook::mdbook_shared::PageId(59usize),
+            BookRoute::CookbookStateCustomHooksIndex {
+                section: CookbookStateCustomHooksIndexSection::Empty,
+            },
+            ::use_mdbook::mdbook_shared::PageId(60usize),
         );
-        pages.push((60usize, {
+        pages.push((61usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Bundle Config".to_string(),
-                url: BookRoute::CookbookBundling {},
+                url: BookRoute::CookbookBundling {
+                    section: CookbookBundlingSection::Empty,
+                },
                 segments: vec![],
                 sections: vec![::use_mdbook::mdbook_shared::Section {
                     title: "Bundling config".to_string(),
@@ -2535,17 +2918,21 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     level: 3usize,
                 }],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(60usize),
+                id: ::use_mdbook::mdbook_shared::PageId(61usize),
             }
         }));
         page_id_mapping.insert(
-            BookRoute::CookbookBundling {},
-            ::use_mdbook::mdbook_shared::PageId(60usize),
+            BookRoute::CookbookBundling {
+                section: CookbookBundlingSection::Empty,
+            },
+            ::use_mdbook::mdbook_shared::PageId(61usize),
         );
-        pages.push((61usize, {
+        pages.push((62usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Testing".to_string(),
-                url: BookRoute::CookbookTesting {},
+                url: BookRoute::CookbookTesting {
+                    section: CookbookTestingSection::Empty,
+                },
                 segments: vec![],
                 sections: vec![
                     ::use_mdbook::mdbook_shared::Section {
@@ -2570,17 +2957,21 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(61usize),
+                id: ::use_mdbook::mdbook_shared::PageId(62usize),
             }
         }));
         page_id_mapping.insert(
-            BookRoute::CookbookTesting {},
-            ::use_mdbook::mdbook_shared::PageId(61usize),
+            BookRoute::CookbookTesting {
+                section: CookbookTestingSection::Empty,
+            },
+            ::use_mdbook::mdbook_shared::PageId(62usize),
         );
-        pages.push((62usize, {
+        pages.push((63usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Tailwind".to_string(),
-                url: BookRoute::CookbookTailwind {},
+                url: BookRoute::CookbookTailwind {
+                    section: CookbookTailwindSection::Empty,
+                },
                 segments: vec![],
                 sections: vec![
                     ::use_mdbook::mdbook_shared::Section {
@@ -2615,17 +3006,21 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(62usize),
+                id: ::use_mdbook::mdbook_shared::PageId(63usize),
             }
         }));
         page_id_mapping.insert(
-            BookRoute::CookbookTailwind {},
-            ::use_mdbook::mdbook_shared::PageId(62usize),
+            BookRoute::CookbookTailwind {
+                section: CookbookTailwindSection::Empty,
+            },
+            ::use_mdbook::mdbook_shared::PageId(63usize),
         );
-        pages.push((63usize, {
+        pages.push((64usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Optimizing".to_string(),
-                url: BookRoute::CookbookOptimizing {},
+                url: BookRoute::CookbookOptimizing {
+                    section: CookbookOptimizingSection::Empty,
+                },
                 segments: vec![],
                 sections: vec![
                     ::use_mdbook::mdbook_shared::Section {
@@ -2675,17 +3070,21 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(63usize),
+                id: ::use_mdbook::mdbook_shared::PageId(64usize),
             }
         }));
         page_id_mapping.insert(
-            BookRoute::CookbookOptimizing {},
-            ::use_mdbook::mdbook_shared::PageId(63usize),
+            BookRoute::CookbookOptimizing {
+                section: CookbookOptimizingSection::Empty,
+            },
+            ::use_mdbook::mdbook_shared::PageId(64usize),
         );
-        pages.push((64usize, {
+        pages.push((65usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Migrating to v0.6".to_string(),
-                url: BookRoute::MigrationIndex {},
+                url: BookRoute::MigrationIndex {
+                    section: MigrationIndexSection::Empty,
+                },
                 segments: vec![],
                 sections: vec![
                     ::use_mdbook::mdbook_shared::Section {
@@ -2760,17 +3159,21 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(64usize),
+                id: ::use_mdbook::mdbook_shared::PageId(65usize),
             }
         }));
         page_id_mapping.insert(
-            BookRoute::MigrationIndex {},
-            ::use_mdbook::mdbook_shared::PageId(64usize),
+            BookRoute::MigrationIndex {
+                section: MigrationIndexSection::Empty,
+            },
+            ::use_mdbook::mdbook_shared::PageId(65usize),
         );
-        pages.push((65usize, {
+        pages.push((66usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Reference".to_string(),
-                url: BookRoute::ReferenceIndex {},
+                url: BookRoute::ReferenceIndex {
+                    section: ReferenceIndexSection::Empty,
+                },
                 segments: vec![],
                 sections: vec![::use_mdbook::mdbook_shared::Section {
                     title: "Reference".to_string(),
@@ -2778,17 +3181,21 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     level: 1usize,
                 }],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(65usize),
+                id: ::use_mdbook::mdbook_shared::PageId(66usize),
             }
         }));
         page_id_mapping.insert(
-            BookRoute::ReferenceIndex {},
-            ::use_mdbook::mdbook_shared::PageId(65usize),
+            BookRoute::ReferenceIndex {
+                section: ReferenceIndexSection::Empty,
+            },
+            ::use_mdbook::mdbook_shared::PageId(66usize),
         );
-        pages.push((66usize, {
+        pages.push((67usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Hot-Reload".to_string(),
-                url: BookRoute::ReferenceHotreload {},
+                url: BookRoute::ReferenceHotreload {
+                    section: ReferenceHotreloadSection::Empty,
+                },
                 segments: vec![],
                 sections: vec![
                     ::use_mdbook::mdbook_shared::Section {
@@ -2808,17 +3215,21 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(66usize),
+                id: ::use_mdbook::mdbook_shared::PageId(67usize),
             }
         }));
         page_id_mapping.insert(
-            BookRoute::ReferenceHotreload {},
-            ::use_mdbook::mdbook_shared::PageId(66usize),
+            BookRoute::ReferenceHotreload {
+                section: ReferenceHotreloadSection::Empty,
+            },
+            ::use_mdbook::mdbook_shared::PageId(67usize),
         );
-        pages.push((67usize, {
+        pages.push((68usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "RSX".to_string(),
-                url: BookRoute::ReferenceRsx {},
+                url: BookRoute::ReferenceRsx {
+                    section: ReferenceRsxSection::Empty,
+                },
                 segments: vec![],
                 sections: vec![
                     ::use_mdbook::mdbook_shared::Section {
@@ -2893,17 +3304,21 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(67usize),
+                id: ::use_mdbook::mdbook_shared::PageId(68usize),
             }
         }));
         page_id_mapping.insert(
-            BookRoute::ReferenceRsx {},
-            ::use_mdbook::mdbook_shared::PageId(67usize),
+            BookRoute::ReferenceRsx {
+                section: ReferenceRsxSection::Empty,
+            },
+            ::use_mdbook::mdbook_shared::PageId(68usize),
         );
-        pages.push((68usize, {
+        pages.push((69usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Components".to_string(),
-                url: BookRoute::ReferenceComponents {},
+                url: BookRoute::ReferenceComponents {
+                    section: ReferenceComponentsSection::Empty,
+                },
                 segments: vec![],
                 sections: vec![::use_mdbook::mdbook_shared::Section {
                     title: "Components".to_string(),
@@ -2911,17 +3326,21 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     level: 1usize,
                 }],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(68usize),
+                id: ::use_mdbook::mdbook_shared::PageId(69usize),
             }
         }));
         page_id_mapping.insert(
-            BookRoute::ReferenceComponents {},
-            ::use_mdbook::mdbook_shared::PageId(68usize),
+            BookRoute::ReferenceComponents {
+                section: ReferenceComponentsSection::Empty,
+            },
+            ::use_mdbook::mdbook_shared::PageId(69usize),
         );
-        pages.push((69usize, {
+        pages.push((70usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Props".to_string(),
-                url: BookRoute::ReferenceComponentProps {},
+                url: BookRoute::ReferenceComponentProps {
+                    section: ReferenceComponentPropsSection::Empty,
+                },
                 segments: vec![],
                 sections: vec![
                     ::use_mdbook::mdbook_shared::Section {
@@ -2930,8 +3349,8 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                         level: 1usize,
                     },
                     ::use_mdbook::mdbook_shared::Section {
-                        title: "Component props are a single struct annotated with ".to_string(),
-                        id: "component-props-are-a-single-struct-annotated-with".to_string(),
+                        title: "derive(Props)".to_string(),
+                        id: "derive(props)".to_string(),
                         level: 2usize,
                     },
                     ::use_mdbook::mdbook_shared::Section {
@@ -2976,17 +3395,21 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(69usize),
+                id: ::use_mdbook::mdbook_shared::PageId(70usize),
             }
         }));
         page_id_mapping.insert(
-            BookRoute::ReferenceComponentProps {},
-            ::use_mdbook::mdbook_shared::PageId(69usize),
+            BookRoute::ReferenceComponentProps {
+                section: ReferenceComponentPropsSection::Empty,
+            },
+            ::use_mdbook::mdbook_shared::PageId(70usize),
         );
-        pages.push((70usize, {
+        pages.push((71usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Event Handlers".to_string(),
-                url: BookRoute::ReferenceEventHandlers {},
+                url: BookRoute::ReferenceEventHandlers {
+                    section: ReferenceEventHandlersSection::Empty,
+                },
                 segments: vec![],
                 sections: vec![
                     ::use_mdbook::mdbook_shared::Section {
@@ -2995,8 +3418,8 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                         level: 1usize,
                     },
                     ::use_mdbook::mdbook_shared::Section {
-                        title: "The ".to_string(),
-                        id: "the".to_string(),
+                        title: "The Event object".to_string(),
+                        id: "the-event-object".to_string(),
                         level: 2usize,
                     },
                     ::use_mdbook::mdbook_shared::Section {
@@ -3026,17 +3449,21 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(70usize),
+                id: ::use_mdbook::mdbook_shared::PageId(71usize),
             }
         }));
         page_id_mapping.insert(
-            BookRoute::ReferenceEventHandlers {},
-            ::use_mdbook::mdbook_shared::PageId(70usize),
+            BookRoute::ReferenceEventHandlers {
+                section: ReferenceEventHandlersSection::Empty,
+            },
+            ::use_mdbook::mdbook_shared::PageId(71usize),
         );
-        pages.push((71usize, {
+        pages.push((72usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Hooks".to_string(),
-                url: BookRoute::ReferenceHooks {},
+                url: BookRoute::ReferenceHooks {
+                    section: ReferenceHooksSection::Empty,
+                },
                 segments: vec![],
                 sections: vec![
                     ::use_mdbook::mdbook_shared::Section {
@@ -3076,17 +3503,21 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(71usize),
+                id: ::use_mdbook::mdbook_shared::PageId(72usize),
             }
         }));
         page_id_mapping.insert(
-            BookRoute::ReferenceHooks {},
-            ::use_mdbook::mdbook_shared::PageId(71usize),
+            BookRoute::ReferenceHooks {
+                section: ReferenceHooksSection::Empty,
+            },
+            ::use_mdbook::mdbook_shared::PageId(72usize),
         );
-        pages.push((72usize, {
+        pages.push((73usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "User Input".to_string(),
-                url: BookRoute::ReferenceUserInput {},
+                url: BookRoute::ReferenceUserInput {
+                    section: ReferenceUserInputSection::Empty,
+                },
                 segments: vec![],
                 sections: vec![
                     ::use_mdbook::mdbook_shared::Section {
@@ -3111,17 +3542,21 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(72usize),
+                id: ::use_mdbook::mdbook_shared::PageId(73usize),
             }
         }));
         page_id_mapping.insert(
-            BookRoute::ReferenceUserInput {},
-            ::use_mdbook::mdbook_shared::PageId(72usize),
+            BookRoute::ReferenceUserInput {
+                section: ReferenceUserInputSection::Empty,
+            },
+            ::use_mdbook::mdbook_shared::PageId(73usize),
         );
-        pages.push((73usize, {
+        pages.push((74usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Context".to_string(),
-                url: BookRoute::ReferenceContext {},
+                url: BookRoute::ReferenceContext {
+                    section: ReferenceContextSection::Empty,
+                },
                 segments: vec![],
                 sections: vec![
                     ::use_mdbook::mdbook_shared::Section {
@@ -3141,17 +3576,21 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(73usize),
+                id: ::use_mdbook::mdbook_shared::PageId(74usize),
             }
         }));
         page_id_mapping.insert(
-            BookRoute::ReferenceContext {},
-            ::use_mdbook::mdbook_shared::PageId(73usize),
+            BookRoute::ReferenceContext {
+                section: ReferenceContextSection::Empty,
+            },
+            ::use_mdbook::mdbook_shared::PageId(74usize),
         );
-        pages.push((74usize, {
+        pages.push((75usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Dynamic Rendering".to_string(),
-                url: BookRoute::ReferenceDynamicRendering {},
+                url: BookRoute::ReferenceDynamicRendering {
+                    section: ReferenceDynamicRenderingSection::Empty,
+                },
                 segments: vec![],
                 sections: vec![
                     ::use_mdbook::mdbook_shared::Section {
@@ -3190,23 +3629,27 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                         level: 3usize,
                     },
                     ::use_mdbook::mdbook_shared::Section {
-                        title: "The ".to_string(),
-                        id: "the".to_string(),
+                        title: "The key Attribute".to_string(),
+                        id: "the-key-attribute".to_string(),
                         level: 3usize,
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(74usize),
+                id: ::use_mdbook::mdbook_shared::PageId(75usize),
             }
         }));
         page_id_mapping.insert(
-            BookRoute::ReferenceDynamicRendering {},
-            ::use_mdbook::mdbook_shared::PageId(74usize),
+            BookRoute::ReferenceDynamicRendering {
+                section: ReferenceDynamicRenderingSection::Empty,
+            },
+            ::use_mdbook::mdbook_shared::PageId(75usize),
         );
-        pages.push((75usize, {
+        pages.push((76usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Routing".to_string(),
-                url: BookRoute::ReferenceRouter {},
+                url: BookRoute::ReferenceRouter {
+                    section: ReferenceRouterSection::Empty,
+                },
                 segments: vec![],
                 sections: vec![
                     ::use_mdbook::mdbook_shared::Section {
@@ -3236,17 +3679,21 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(75usize),
+                id: ::use_mdbook::mdbook_shared::PageId(76usize),
             }
         }));
         page_id_mapping.insert(
-            BookRoute::ReferenceRouter {},
-            ::use_mdbook::mdbook_shared::PageId(75usize),
+            BookRoute::ReferenceRouter {
+                section: ReferenceRouterSection::Empty,
+            },
+            ::use_mdbook::mdbook_shared::PageId(76usize),
         );
-        pages.push((76usize, {
+        pages.push((77usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Resource".to_string(),
-                url: BookRoute::ReferenceUseResource {},
+                url: BookRoute::ReferenceUseResource {
+                    section: ReferenceUseResourceSection::Empty,
+                },
                 segments: vec![],
                 sections: vec![
                     ::use_mdbook::mdbook_shared::Section {
@@ -3266,17 +3713,21 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(76usize),
+                id: ::use_mdbook::mdbook_shared::PageId(77usize),
             }
         }));
         page_id_mapping.insert(
-            BookRoute::ReferenceUseResource {},
-            ::use_mdbook::mdbook_shared::PageId(76usize),
+            BookRoute::ReferenceUseResource {
+                section: ReferenceUseResourceSection::Empty,
+            },
+            ::use_mdbook::mdbook_shared::PageId(77usize),
         );
-        pages.push((77usize, {
+        pages.push((78usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "UseCoroutine".to_string(),
-                url: BookRoute::ReferenceUseCoroutine {},
+                url: BookRoute::ReferenceUseCoroutine {
+                    section: ReferenceUseCoroutineSection::Empty,
+                },
                 segments: vec![],
                 sections: vec![
                     ::use_mdbook::mdbook_shared::Section {
@@ -3285,8 +3736,8 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                         level: 1usize,
                     },
                     ::use_mdbook::mdbook_shared::Section {
-                        title: "The ".to_string(),
-                        id: "the".to_string(),
+                        title: "use_coroutine".to_string(),
+                        id: "use_coroutine".to_string(),
                         level: 2usize,
                     },
                     ::use_mdbook::mdbook_shared::Section {
@@ -3306,17 +3757,21 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(77usize),
+                id: ::use_mdbook::mdbook_shared::PageId(78usize),
             }
         }));
         page_id_mapping.insert(
-            BookRoute::ReferenceUseCoroutine {},
-            ::use_mdbook::mdbook_shared::PageId(77usize),
+            BookRoute::ReferenceUseCoroutine {
+                section: ReferenceUseCoroutineSection::Empty,
+            },
+            ::use_mdbook::mdbook_shared::PageId(78usize),
         );
-        pages.push((78usize, {
+        pages.push((79usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Spawn".to_string(),
-                url: BookRoute::ReferenceSpawn {},
+                url: BookRoute::ReferenceSpawn {
+                    section: ReferenceSpawnSection::Empty,
+                },
                 segments: vec![],
                 sections: vec![
                     ::use_mdbook::mdbook_shared::Section {
@@ -3331,17 +3786,21 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(78usize),
+                id: ::use_mdbook::mdbook_shared::PageId(79usize),
             }
         }));
         page_id_mapping.insert(
-            BookRoute::ReferenceSpawn {},
-            ::use_mdbook::mdbook_shared::PageId(78usize),
+            BookRoute::ReferenceSpawn {
+                section: ReferenceSpawnSection::Empty,
+            },
+            ::use_mdbook::mdbook_shared::PageId(79usize),
         );
-        pages.push((79usize, {
+        pages.push((80usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Contributing".to_string(),
-                url: BookRoute::ContributingIndex {},
+                url: BookRoute::ContributingIndex {
+                    section: ContributingIndexSection::Empty,
+                },
                 segments: vec![],
                 sections: vec![
                     ::use_mdbook::mdbook_shared::Section {
@@ -3376,17 +3835,21 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(79usize),
+                id: ::use_mdbook::mdbook_shared::PageId(80usize),
             }
         }));
         page_id_mapping.insert(
-            BookRoute::ContributingIndex {},
-            ::use_mdbook::mdbook_shared::PageId(79usize),
+            BookRoute::ContributingIndex {
+                section: ContributingIndexSection::Empty,
+            },
+            ::use_mdbook::mdbook_shared::PageId(80usize),
         );
-        pages.push((80usize, {
+        pages.push((81usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Project Structure".to_string(),
-                url: BookRoute::ContributingProjectStructure {},
+                url: BookRoute::ContributingProjectStructure {
+                    section: ContributingProjectStructureSection::Empty,
+                },
                 segments: vec![],
                 sections: vec![
                     ::use_mdbook::mdbook_shared::Section {
@@ -3426,17 +3889,21 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(80usize),
+                id: ::use_mdbook::mdbook_shared::PageId(81usize),
             }
         }));
         page_id_mapping.insert(
-            BookRoute::ContributingProjectStructure {},
-            ::use_mdbook::mdbook_shared::PageId(80usize),
+            BookRoute::ContributingProjectStructure {
+                section: ContributingProjectStructureSection::Empty,
+            },
+            ::use_mdbook::mdbook_shared::PageId(81usize),
         );
-        pages.push((81usize, {
+        pages.push((82usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Guiding Principles".to_string(),
-                url: BookRoute::ContributingGuidingPrinciples {},
+                url: BookRoute::ContributingGuidingPrinciples {
+                    section: ContributingGuidingPrinciplesSection::Empty,
+                },
                 segments: vec![],
                 sections: vec![
                     ::use_mdbook::mdbook_shared::Section {
@@ -3466,31 +3933,39 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(81usize),
-            }
-        }));
-        page_id_mapping.insert(
-            BookRoute::ContributingGuidingPrinciples {},
-            ::use_mdbook::mdbook_shared::PageId(81usize),
-        );
-        pages.push((82usize, {
-            ::use_mdbook::mdbook_shared::Page {
-                title: "Roadmap".to_string(),
-                url: BookRoute::ContributingRoadmap {},
-                segments: vec![],
-                sections: vec![],
-                raw: String::new(),
                 id: ::use_mdbook::mdbook_shared::PageId(82usize),
             }
         }));
         page_id_mapping.insert(
-            BookRoute::ContributingRoadmap {},
+            BookRoute::ContributingGuidingPrinciples {
+                section: ContributingGuidingPrinciplesSection::Empty,
+            },
             ::use_mdbook::mdbook_shared::PageId(82usize),
         );
         pages.push((83usize, {
             ::use_mdbook::mdbook_shared::Page {
+                title: "Roadmap".to_string(),
+                url: BookRoute::ContributingRoadmap {
+                    section: ContributingRoadmapSection::Empty,
+                },
+                segments: vec![],
+                sections: vec![],
+                raw: String::new(),
+                id: ::use_mdbook::mdbook_shared::PageId(83usize),
+            }
+        }));
+        page_id_mapping.insert(
+            BookRoute::ContributingRoadmap {
+                section: ContributingRoadmapSection::Empty,
+            },
+            ::use_mdbook::mdbook_shared::PageId(83usize),
+        );
+        pages.push((84usize, {
+            ::use_mdbook::mdbook_shared::Page {
                 title: "CLI".to_string(),
-                url: BookRoute::CliIndex {},
+                url: BookRoute::CliIndex {
+                    section: CliIndexSection::Empty,
+                },
                 segments: vec![],
                 sections: vec![
                     ::use_mdbook::mdbook_shared::Section {
@@ -3505,17 +3980,21 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(83usize),
+                id: ::use_mdbook::mdbook_shared::PageId(84usize),
             }
         }));
         page_id_mapping.insert(
-            BookRoute::CliIndex {},
-            ::use_mdbook::mdbook_shared::PageId(83usize),
+            BookRoute::CliIndex {
+                section: CliIndexSection::Empty,
+            },
+            ::use_mdbook::mdbook_shared::PageId(84usize),
         );
-        pages.push((84usize, {
+        pages.push((85usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Create a Project".to_string(),
-                url: BookRoute::CliCreating {},
+                url: BookRoute::CliCreating {
+                    section: CliCreatingSection::Empty,
+                },
                 segments: vec![],
                 sections: vec![
                     ::use_mdbook::mdbook_shared::Section {
@@ -3530,17 +4009,21 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(84usize),
+                id: ::use_mdbook::mdbook_shared::PageId(85usize),
             }
         }));
         page_id_mapping.insert(
-            BookRoute::CliCreating {},
-            ::use_mdbook::mdbook_shared::PageId(84usize),
+            BookRoute::CliCreating {
+                section: CliCreatingSection::Empty,
+            },
+            ::use_mdbook::mdbook_shared::PageId(85usize),
         );
-        pages.push((85usize, {
+        pages.push((86usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Configure Project".to_string(),
-                url: BookRoute::CliConfigure {},
+                url: BookRoute::CliConfigure {
+                    section: CliConfigureSection::Empty,
+                },
                 segments: vec![],
                 sections: vec![
                     ::use_mdbook::mdbook_shared::Section {
@@ -3620,17 +4103,21 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(85usize),
+                id: ::use_mdbook::mdbook_shared::PageId(86usize),
             }
         }));
         page_id_mapping.insert(
-            BookRoute::CliConfigure {},
-            ::use_mdbook::mdbook_shared::PageId(85usize),
+            BookRoute::CliConfigure {
+                section: CliConfigureSection::Empty,
+            },
+            ::use_mdbook::mdbook_shared::PageId(86usize),
         );
-        pages.push((86usize, {
+        pages.push((87usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Translate HTML".to_string(),
-                url: BookRoute::CliTranslate {},
+                url: BookRoute::CliTranslate {
+                    section: CliTranslateSection::Empty,
+                },
                 segments: vec![],
                 sections: vec![
                     ::use_mdbook::mdbook_shared::Section {
@@ -3645,12 +4132,14 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(86usize),
+                id: ::use_mdbook::mdbook_shared::PageId(87usize),
             }
         }));
         page_id_mapping.insert(
-            BookRoute::CliTranslate {},
-            ::use_mdbook::mdbook_shared::PageId(86usize),
+            BookRoute::CliTranslate {
+                section: CliTranslateSection::Empty,
+            },
+            ::use_mdbook::mdbook_shared::PageId(87usize),
         );
         ::use_mdbook::mdbook_shared::MdBook {
             summary: ::use_mdbook::mdbook_shared::Summary {
@@ -3659,14 +4148,18 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                 numbered_chapters: vec![
                     ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
                         name: "Introduction".to_string(),
-                        location: Some(BookRoute::Index {}),
+                        location: Some(BookRoute::Index {
+                            section: IndexSection::Empty,
+                        }),
                         number: Some(
                             ::use_mdbook::mdbook_shared::SectionNumber(vec![1u32]),
                         ),
                         nested_items: vec![
                             ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
                                 name: "Getting Started".to_string(),
-                                location: Some(BookRoute::GettingStartedIndex {}),
+                                location: Some(BookRoute::GettingStartedIndex {
+                                    section: GettingStartedIndexSection::Empty,
+                                }),
                                 number: Some(
                                     ::use_mdbook::mdbook_shared::SectionNumber(vec![1u32, 1u32]),
                                 ),
@@ -3677,14 +4170,18 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     ::use_mdbook::mdbook_shared::SummaryItem::Separator,
                     ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
                         name: "Tutorial".to_string(),
-                        location: Some(BookRoute::GuideIndex {}),
+                        location: Some(BookRoute::GuideIndex {
+                            section: GuideIndexSection::Empty,
+                        }),
                         number: Some(
                             ::use_mdbook::mdbook_shared::SectionNumber(vec![2u32]),
                         ),
                         nested_items: vec![
                             ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
                                 name: "Tooling Setup".to_string(),
-                                location: Some(BookRoute::GuideTooling {}),
+                                location: Some(BookRoute::GuideTooling {
+                                    section: GuideToolingSection::Empty,
+                                }),
                                 number: Some(
                                     ::use_mdbook::mdbook_shared::SectionNumber(vec![2u32, 1u32]),
                                 ),
@@ -3692,7 +4189,9 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                             }),
                             ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
                                 name: "Creating a new app".to_string(),
-                                location: Some(BookRoute::GuideNewApp {}),
+                                location: Some(BookRoute::GuideNewApp {
+                                    section: GuideNewAppSection::Empty,
+                                }),
                                 number: Some(
                                     ::use_mdbook::mdbook_shared::SectionNumber(vec![2u32, 2u32]),
                                 ),
@@ -3700,7 +4199,9 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                             }),
                             ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
                                 name: "Your First Component".to_string(),
-                                location: Some(BookRoute::GuideComponent {}),
+                                location: Some(BookRoute::GuideComponent {
+                                    section: GuideComponentSection::Empty,
+                                }),
                                 number: Some(
                                     ::use_mdbook::mdbook_shared::SectionNumber(vec![2u32, 3u32]),
                                 ),
@@ -3708,7 +4209,9 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                             }),
                             ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
                                 name: "Creating UI with RSX".to_string(),
-                                location: Some(BookRoute::GuideRsx {}),
+                                location: Some(BookRoute::GuideRsx {
+                                    section: GuideRsxSection::Empty,
+                                }),
                                 number: Some(
                                     ::use_mdbook::mdbook_shared::SectionNumber(vec![2u32, 4u32]),
                                 ),
@@ -3716,7 +4219,9 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                             }),
                             ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
                                 name: "Styling and Assets".to_string(),
-                                location: Some(BookRoute::GuideAssets {}),
+                                location: Some(BookRoute::GuideAssets {
+                                    section: GuideAssetsSection::Empty,
+                                }),
                                 number: Some(
                                     ::use_mdbook::mdbook_shared::SectionNumber(vec![2u32, 5u32]),
                                 ),
@@ -3724,7 +4229,9 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                             }),
                             ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
                                 name: "Adding State".to_string(),
-                                location: Some(BookRoute::GuideState {}),
+                                location: Some(BookRoute::GuideState {
+                                    section: GuideStateSection::Empty,
+                                }),
                                 number: Some(
                                     ::use_mdbook::mdbook_shared::SectionNumber(vec![2u32, 6u32]),
                                 ),
@@ -3732,7 +4239,9 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                             }),
                             ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
                                 name: "Fetching Data".to_string(),
-                                location: Some(BookRoute::GuideDataFetching {}),
+                                location: Some(BookRoute::GuideDataFetching {
+                                    section: GuideDataFetchingSection::Empty,
+                                }),
                                 number: Some(
                                     ::use_mdbook::mdbook_shared::SectionNumber(vec![2u32, 7u32]),
                                 ),
@@ -3740,7 +4249,9 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                             }),
                             ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
                                 name: "Add a Backend".to_string(),
-                                location: Some(BookRoute::GuideBackend {}),
+                                location: Some(BookRoute::GuideBackend {
+                                    section: GuideBackendSection::Empty,
+                                }),
                                 number: Some(
                                     ::use_mdbook::mdbook_shared::SectionNumber(vec![2u32, 8u32]),
                                 ),
@@ -3748,7 +4259,9 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                             }),
                             ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
                                 name: "Working with Databases".to_string(),
-                                location: Some(BookRoute::GuideDatabases {}),
+                                location: Some(BookRoute::GuideDatabases {
+                                    section: GuideDatabasesSection::Empty,
+                                }),
                                 number: Some(
                                     ::use_mdbook::mdbook_shared::SectionNumber(vec![2u32, 9u32]),
                                 ),
@@ -3756,7 +4269,9 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                             }),
                             ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
                                 name: "Routing and Structure".to_string(),
-                                location: Some(BookRoute::GuideRouting {}),
+                                location: Some(BookRoute::GuideRouting {
+                                    section: GuideRoutingSection::Empty,
+                                }),
                                 number: Some(
                                     ::use_mdbook::mdbook_shared::SectionNumber(
                                         vec![2u32, 10u32],
@@ -3766,7 +4281,9 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                             }),
                             ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
                                 name: "Bundling".to_string(),
-                                location: Some(BookRoute::GuideBundle {}),
+                                location: Some(BookRoute::GuideBundle {
+                                    section: GuideBundleSection::Empty,
+                                }),
                                 number: Some(
                                     ::use_mdbook::mdbook_shared::SectionNumber(
                                         vec![2u32, 11u32],
@@ -3776,7 +4293,9 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                             }),
                             ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
                                 name: "Deploying".to_string(),
-                                location: Some(BookRoute::GuideDeploy {}),
+                                location: Some(BookRoute::GuideDeploy {
+                                    section: GuideDeploySection::Empty,
+                                }),
                                 number: Some(
                                     ::use_mdbook::mdbook_shared::SectionNumber(
                                         vec![2u32, 12u32],
@@ -3786,7 +4305,9 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                             }),
                             ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
                                 name: "Next Steps".to_string(),
-                                location: Some(BookRoute::GuideNextSteps {}),
+                                location: Some(BookRoute::GuideNextSteps {
+                                    section: GuideNextStepsSection::Empty,
+                                }),
                                 number: Some(
                                     ::use_mdbook::mdbook_shared::SectionNumber(
                                         vec![2u32, 13u32],
@@ -3799,14 +4320,18 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     ::use_mdbook::mdbook_shared::SummaryItem::Separator,
                     ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
                         name: "Core Concepts".to_string(),
-                        location: Some(BookRoute::EssentialsIndex {}),
+                        location: Some(BookRoute::EssentialsIndex {
+                            section: EssentialsIndexSection::Empty,
+                        }),
                         number: Some(
                             ::use_mdbook::mdbook_shared::SectionNumber(vec![3u32]),
                         ),
                         nested_items: vec![
                             ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
                                 name: "Building UIs with RSX".to_string(),
-                                location: Some(BookRoute::EssentialsRsxIndex {}),
+                                location: Some(BookRoute::EssentialsRsxIndex {
+                                    section: EssentialsRsxIndexSection::Empty,
+                                }),
                                 number: Some(
                                     ::use_mdbook::mdbook_shared::SectionNumber(vec![3u32, 1u32]),
                                 ),
@@ -3815,6 +4340,7 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                             ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
                                 name: "Component Lifecycle".to_string(),
                                 location: Some(BookRoute::EssentialsLifecycleIndex {
+                                    section: EssentialsLifecycleIndexSection::Empty,
                                 }),
                                 number: Some(
                                     ::use_mdbook::mdbook_shared::SectionNumber(vec![3u32, 2u32]),
@@ -3823,7 +4349,9 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                             }),
                             ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
                                 name: "Managing State".to_string(),
-                                location: Some(BookRoute::EssentialsStateIndex {}),
+                                location: Some(BookRoute::EssentialsStateIndex {
+                                    section: EssentialsStateIndexSection::Empty,
+                                }),
                                 number: Some(
                                     ::use_mdbook::mdbook_shared::SectionNumber(vec![3u32, 3u32]),
                                 ),
@@ -3832,6 +4360,7 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                             ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
                                 name: "Breaking Out".to_string(),
                                 location: Some(BookRoute::EssentialsBreakingIndex {
+                                    section: EssentialsBreakingIndexSection::Empty,
                                 }),
                                 number: Some(
                                     ::use_mdbook::mdbook_shared::SectionNumber(vec![3u32, 4u32]),
@@ -3843,34 +4372,51 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     ::use_mdbook::mdbook_shared::SummaryItem::Separator,
                     ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
                         name: "Guides".to_string(),
-                        location: Some(BookRoute::GuidesIndex {}),
+                        location: Some(BookRoute::GuidesIndex {
+                            section: GuidesIndexSection::Empty,
+                        }),
                         number: Some(
                             ::use_mdbook::mdbook_shared::SectionNumber(vec![4u32]),
                         ),
                         nested_items: vec![
                             ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
-                                name: "Router".to_string(),
-                                location: Some(BookRoute::RouterIndex {}),
+                                name: "Managing State".to_string(),
+                                location: Some(BookRoute::GuidesManagingState {
+                                    section: GuidesManagingStateSection::Empty,
+                                }),
                                 number: Some(
                                     ::use_mdbook::mdbook_shared::SectionNumber(vec![4u32, 1u32]),
+                                ),
+                                nested_items: vec![],
+                            }),
+                            ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
+                                name: "Router".to_string(),
+                                location: Some(BookRoute::RouterIndex {
+                                    section: RouterIndexSection::Empty,
+                                }),
+                                number: Some(
+                                    ::use_mdbook::mdbook_shared::SectionNumber(vec![4u32, 2u32]),
                                 ),
                                 nested_items: vec![
                                     ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
                                         name: "Example Project".to_string(),
-                                        location: Some(BookRoute::RouterExampleIndex {}),
+                                        location: Some(BookRoute::RouterExampleIndex {
+                                            section: RouterExampleIndexSection::Empty,
+                                        }),
                                         number: Some(
                                             ::use_mdbook::mdbook_shared::SectionNumber(
-                                                vec![4u32, 1u32, 1u32],
+                                                vec![4u32, 2u32, 1u32],
                                             ),
                                         ),
                                         nested_items: vec![
                                             ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
                                                 name: "Creating Our First Route".to_string(),
                                                 location: Some(BookRoute::RouterExampleFirstRoute {
+                                                    section: RouterExampleFirstRouteSection::Empty,
                                                 }),
                                                 number: Some(
                                                     ::use_mdbook::mdbook_shared::SectionNumber(
-                                                        vec![4u32, 1u32, 1u32, 1u32],
+                                                        vec![4u32, 2u32, 1u32, 1u32],
                                                     ),
                                                 ),
                                                 nested_items: vec![],
@@ -3878,10 +4424,11 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                                             ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
                                                 name: "Building a Nest".to_string(),
                                                 location: Some(BookRoute::RouterExampleBuildingANest {
+                                                    section: RouterExampleBuildingANestSection::Empty,
                                                 }),
                                                 number: Some(
                                                     ::use_mdbook::mdbook_shared::SectionNumber(
-                                                        vec![4u32, 1u32, 1u32, 2u32],
+                                                        vec![4u32, 2u32, 1u32, 2u32],
                                                     ),
                                                 ),
                                                 nested_items: vec![],
@@ -3889,20 +4436,23 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                                             ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
                                                 name: "Navigation Targets".to_string(),
                                                 location: Some(BookRoute::RouterExampleNavigationTargets {
+                                                    section: RouterExampleNavigationTargetsSection::Empty,
                                                 }),
                                                 number: Some(
                                                     ::use_mdbook::mdbook_shared::SectionNumber(
-                                                        vec![4u32, 1u32, 1u32, 3u32],
+                                                        vec![4u32, 2u32, 1u32, 3u32],
                                                     ),
                                                 ),
                                                 nested_items: vec![],
                                             }),
                                             ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
                                                 name: "Redirection Perfection".to_string(),
-                                                location: Some(BookRoute::RouterExampleRedirectionPerfection {}),
+                                                location: Some(BookRoute::RouterExampleRedirectionPerfection {
+                                                    section: RouterExampleRedirectionPerfectionSection::Empty,
+                                                }),
                                                 number: Some(
                                                     ::use_mdbook::mdbook_shared::SectionNumber(
-                                                        vec![4u32, 1u32, 1u32, 4u32],
+                                                        vec![4u32, 2u32, 1u32, 4u32],
                                                     ),
                                                 ),
                                                 nested_items: vec![],
@@ -3910,10 +4460,11 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                                             ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
                                                 name: "Full Code".to_string(),
                                                 location: Some(BookRoute::RouterExampleFullCode {
+                                                    section: RouterExampleFullCodeSection::Empty,
                                                 }),
                                                 number: Some(
                                                     ::use_mdbook::mdbook_shared::SectionNumber(
-                                                        vec![4u32, 1u32, 1u32, 5u32],
+                                                        vec![4u32, 2u32, 1u32, 5u32],
                                                     ),
                                                 ),
                                                 nested_items: vec![],
@@ -3922,20 +4473,23 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                                     }),
                                     ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
                                         name: "Reference".to_string(),
-                                        location: Some(BookRoute::RouterReferenceIndex {}),
+                                        location: Some(BookRoute::RouterReferenceIndex {
+                                            section: RouterReferenceIndexSection::Empty,
+                                        }),
                                         number: Some(
                                             ::use_mdbook::mdbook_shared::SectionNumber(
-                                                vec![4u32, 1u32, 2u32],
+                                                vec![4u32, 2u32, 2u32],
                                             ),
                                         ),
                                         nested_items: vec![
                                             ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
                                                 name: "Defining Routes".to_string(),
                                                 location: Some(BookRoute::RouterReferenceRoutesIndex {
+                                                    section: RouterReferenceRoutesIndexSection::Empty,
                                                 }),
                                                 number: Some(
                                                     ::use_mdbook::mdbook_shared::SectionNumber(
-                                                        vec![4u32, 1u32, 2u32, 1u32],
+                                                        vec![4u32, 2u32, 2u32, 1u32],
                                                     ),
                                                 ),
                                                 nested_items: vec![],
@@ -3943,10 +4497,11 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                                             ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
                                                 name: "Nested Routes".to_string(),
                                                 location: Some(BookRoute::RouterReferenceRoutesNested {
+                                                    section: RouterReferenceRoutesNestedSection::Empty,
                                                 }),
                                                 number: Some(
                                                     ::use_mdbook::mdbook_shared::SectionNumber(
-                                                        vec![4u32, 1u32, 2u32, 2u32],
+                                                        vec![4u32, 2u32, 2u32, 2u32],
                                                     ),
                                                 ),
                                                 nested_items: vec![],
@@ -3954,10 +4509,11 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                                             ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
                                                 name: "Layouts".to_string(),
                                                 location: Some(BookRoute::RouterReferenceLayouts {
+                                                    section: RouterReferenceLayoutsSection::Empty,
                                                 }),
                                                 number: Some(
                                                     ::use_mdbook::mdbook_shared::SectionNumber(
-                                                        vec![4u32, 1u32, 2u32, 3u32],
+                                                        vec![4u32, 2u32, 2u32, 3u32],
                                                     ),
                                                 ),
                                                 nested_items: vec![],
@@ -3965,20 +4521,23 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                                             ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
                                                 name: "Navigation".to_string(),
                                                 location: Some(BookRoute::RouterReferenceNavigationIndex {
+                                                    section: RouterReferenceNavigationIndexSection::Empty,
                                                 }),
                                                 number: Some(
                                                     ::use_mdbook::mdbook_shared::SectionNumber(
-                                                        vec![4u32, 1u32, 2u32, 4u32],
+                                                        vec![4u32, 2u32, 2u32, 4u32],
                                                     ),
                                                 ),
                                                 nested_items: vec![],
                                             }),
                                             ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
                                                 name: "Programmatic Navigation".to_string(),
-                                                location: Some(BookRoute::RouterReferenceNavigationProgrammatic {}),
+                                                location: Some(BookRoute::RouterReferenceNavigationProgrammatic {
+                                                    section: RouterReferenceNavigationProgrammaticSection::Empty,
+                                                }),
                                                 number: Some(
                                                     ::use_mdbook::mdbook_shared::SectionNumber(
-                                                        vec![4u32, 1u32, 2u32, 5u32],
+                                                        vec![4u32, 2u32, 2u32, 5u32],
                                                     ),
                                                 ),
                                                 nested_items: vec![],
@@ -3986,10 +4545,11 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                                             ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
                                                 name: "History Providers".to_string(),
                                                 location: Some(BookRoute::RouterReferenceHistoryProviders {
+                                                    section: RouterReferenceHistoryProvidersSection::Empty,
                                                 }),
                                                 number: Some(
                                                     ::use_mdbook::mdbook_shared::SectionNumber(
-                                                        vec![4u32, 1u32, 2u32, 6u32],
+                                                        vec![4u32, 2u32, 2u32, 6u32],
                                                     ),
                                                 ),
                                                 nested_items: vec![],
@@ -3997,20 +4557,23 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                                             ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
                                                 name: "History Buttons".to_string(),
                                                 location: Some(BookRoute::RouterReferenceHistoryButtons {
+                                                    section: RouterReferenceHistoryButtonsSection::Empty,
                                                 }),
                                                 number: Some(
                                                     ::use_mdbook::mdbook_shared::SectionNumber(
-                                                        vec![4u32, 1u32, 2u32, 7u32],
+                                                        vec![4u32, 2u32, 2u32, 7u32],
                                                     ),
                                                 ),
                                                 nested_items: vec![],
                                             }),
                                             ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
                                                 name: "Routing Update Callback".to_string(),
-                                                location: Some(BookRoute::RouterReferenceRoutingUpdateCallback {}),
+                                                location: Some(BookRoute::RouterReferenceRoutingUpdateCallback {
+                                                    section: RouterReferenceRoutingUpdateCallbackSection::Empty,
+                                                }),
                                                 number: Some(
                                                     ::use_mdbook::mdbook_shared::SectionNumber(
-                                                        vec![4u32, 1u32, 2u32, 8u32],
+                                                        vec![4u32, 2u32, 2u32, 8u32],
                                                     ),
                                                 ),
                                                 nested_items: vec![],
@@ -4021,41 +4584,51 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                             }),
                             ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
                                 name: "Assets".to_string(),
-                                location: Some(BookRoute::GuidesAssets {}),
-                                number: Some(
-                                    ::use_mdbook::mdbook_shared::SectionNumber(vec![4u32, 2u32]),
-                                ),
-                                nested_items: vec![],
-                            }),
-                            ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
-                                name: "Web".to_string(),
-                                location: Some(BookRoute::GuidesWebIndex {}),
+                                location: Some(BookRoute::GuidesAssets {
+                                    section: GuidesAssetsSection::Empty,
+                                }),
                                 number: Some(
                                     ::use_mdbook::mdbook_shared::SectionNumber(vec![4u32, 3u32]),
                                 ),
                                 nested_items: vec![],
                             }),
                             ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
-                                name: "Desktop".to_string(),
-                                location: Some(BookRoute::GuidesDesktopIndex {}),
+                                name: "Web".to_string(),
+                                location: Some(BookRoute::GuidesWebIndex {
+                                    section: GuidesWebIndexSection::Empty,
+                                }),
                                 number: Some(
                                     ::use_mdbook::mdbook_shared::SectionNumber(vec![4u32, 4u32]),
                                 ),
                                 nested_items: vec![],
                             }),
                             ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
-                                name: "Mobile".to_string(),
-                                location: Some(BookRoute::GuidesMobileIndex {}),
+                                name: "Desktop".to_string(),
+                                location: Some(BookRoute::GuidesDesktopIndex {
+                                    section: GuidesDesktopIndexSection::Empty,
+                                }),
                                 number: Some(
                                     ::use_mdbook::mdbook_shared::SectionNumber(vec![4u32, 5u32]),
+                                ),
+                                nested_items: vec![],
+                            }),
+                            ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
+                                name: "Mobile".to_string(),
+                                location: Some(BookRoute::GuidesMobileIndex {
+                                    section: GuidesMobileIndexSection::Empty,
+                                }),
+                                number: Some(
+                                    ::use_mdbook::mdbook_shared::SectionNumber(vec![4u32, 6u32]),
                                 ),
                                 nested_items: vec![
                                     ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
                                         name: "APIs".to_string(),
-                                        location: Some(BookRoute::GuidesMobileApis {}),
+                                        location: Some(BookRoute::GuidesMobileApis {
+                                            section: GuidesMobileApisSection::Empty,
+                                        }),
                                         number: Some(
                                             ::use_mdbook::mdbook_shared::SectionNumber(
-                                                vec![4u32, 5u32, 1u32],
+                                                vec![4u32, 6u32, 1u32],
                                             ),
                                         ),
                                         nested_items: vec![],
@@ -4064,25 +4637,31 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                             }),
                             ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
                                 name: "Streaming and SSR".to_string(),
-                                location: Some(BookRoute::GuidesSsr {}),
+                                location: Some(BookRoute::GuidesSsr {
+                                    section: GuidesSsrSection::Empty,
+                                }),
                                 number: Some(
-                                    ::use_mdbook::mdbook_shared::SectionNumber(vec![4u32, 6u32]),
+                                    ::use_mdbook::mdbook_shared::SectionNumber(vec![4u32, 7u32]),
                                 ),
                                 nested_items: vec![],
                             }),
                             ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
                                 name: "Fullstack".to_string(),
-                                location: Some(BookRoute::GuidesFullstackIndex {}),
+                                location: Some(BookRoute::GuidesFullstackIndex {
+                                    section: GuidesFullstackIndexSection::Empty,
+                                }),
                                 number: Some(
-                                    ::use_mdbook::mdbook_shared::SectionNumber(vec![4u32, 7u32]),
+                                    ::use_mdbook::mdbook_shared::SectionNumber(vec![4u32, 8u32]),
                                 ),
                                 nested_items: vec![
                                     ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
                                         name: "Managing Dependencies".to_string(),
-                                        location: Some(BookRoute::GuidesFullstackManagingDependencies {}),
+                                        location: Some(BookRoute::GuidesFullstackManagingDependencies {
+                                            section: GuidesFullstackManagingDependenciesSection::Empty,
+                                        }),
                                         number: Some(
                                             ::use_mdbook::mdbook_shared::SectionNumber(
-                                                vec![4u32, 7u32, 1u32],
+                                                vec![4u32, 8u32, 1u32],
                                             ),
                                         ),
                                         nested_items: vec![],
@@ -4090,10 +4669,11 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                                     ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
                                         name: "Server Functions".to_string(),
                                         location: Some(BookRoute::GuidesFullstackServerFunctions {
+                                            section: GuidesFullstackServerFunctionsSection::Empty,
                                         }),
                                         number: Some(
                                             ::use_mdbook::mdbook_shared::SectionNumber(
-                                                vec![4u32, 7u32, 2u32],
+                                                vec![4u32, 8u32, 2u32],
                                             ),
                                         ),
                                         nested_items: vec![],
@@ -4101,10 +4681,11 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                                     ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
                                         name: "Extractors".to_string(),
                                         location: Some(BookRoute::GuidesFullstackExtractors {
+                                            section: GuidesFullstackExtractorsSection::Empty,
                                         }),
                                         number: Some(
                                             ::use_mdbook::mdbook_shared::SectionNumber(
-                                                vec![4u32, 7u32, 3u32],
+                                                vec![4u32, 8u32, 3u32],
                                             ),
                                         ),
                                         nested_items: vec![],
@@ -4112,10 +4693,11 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                                     ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
                                         name: "Middleware".to_string(),
                                         location: Some(BookRoute::GuidesFullstackMiddleware {
+                                            section: GuidesFullstackMiddlewareSection::Empty,
                                         }),
                                         number: Some(
                                             ::use_mdbook::mdbook_shared::SectionNumber(
-                                                vec![4u32, 7u32, 4u32],
+                                                vec![4u32, 8u32, 4u32],
                                             ),
                                         ),
                                         nested_items: vec![],
@@ -4123,10 +4705,11 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                                     ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
                                         name: "Authentication".to_string(),
                                         location: Some(BookRoute::GuidesFullstackAuthentication {
+                                            section: GuidesFullstackAuthenticationSection::Empty,
                                         }),
                                         number: Some(
                                             ::use_mdbook::mdbook_shared::SectionNumber(
-                                                vec![4u32, 7u32, 5u32],
+                                                vec![4u32, 8u32, 5u32],
                                             ),
                                         ),
                                         nested_items: vec![],
@@ -4134,10 +4717,11 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                                     ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
                                         name: "Routing".to_string(),
                                         location: Some(BookRoute::GuidesFullstackRouting {
+                                            section: GuidesFullstackRoutingSection::Empty,
                                         }),
                                         number: Some(
                                             ::use_mdbook::mdbook_shared::SectionNumber(
-                                                vec![4u32, 7u32, 6u32],
+                                                vec![4u32, 8u32, 6u32],
                                             ),
                                         ),
                                         nested_items: vec![],
@@ -4146,23 +4730,18 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                             }),
                             ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
                                 name: "Publishing".to_string(),
-                                location: Some(BookRoute::CookbookPublishing {}),
-                                number: Some(
-                                    ::use_mdbook::mdbook_shared::SectionNumber(vec![4u32, 8u32]),
-                                ),
-                                nested_items: vec![],
-                            }),
-                            ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
-                                name: "Anti-patterns".to_string(),
-                                location: Some(BookRoute::CookbookAntipatterns {}),
+                                location: Some(BookRoute::CookbookPublishing {
+                                    section: CookbookPublishingSection::Empty,
+                                }),
                                 number: Some(
                                     ::use_mdbook::mdbook_shared::SectionNumber(vec![4u32, 9u32]),
                                 ),
                                 nested_items: vec![],
                             }),
                             ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
-                                name: "Error Handling".to_string(),
-                                location: Some(BookRoute::CookbookErrorHandling {
+                                name: "Anti-patterns".to_string(),
+                                location: Some(BookRoute::CookbookAntipatterns {
+                                    section: CookbookAntipatternsSection::Empty,
                                 }),
                                 number: Some(
                                     ::use_mdbook::mdbook_shared::SectionNumber(
@@ -4172,41 +4751,22 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                                 nested_items: vec![],
                             }),
                             ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
-                                name: "Integrations".to_string(),
-                                location: Some(BookRoute::CookbookIntegrationsIndex {
+                                name: "Error Handling".to_string(),
+                                location: Some(BookRoute::CookbookErrorHandling {
+                                    section: CookbookErrorHandlingSection::Empty,
                                 }),
                                 number: Some(
                                     ::use_mdbook::mdbook_shared::SectionNumber(
                                         vec![4u32, 11u32],
                                     ),
                                 ),
-                                nested_items: vec![
-                                    ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
-                                        name: "Logging".to_string(),
-                                        location: Some(BookRoute::CookbookIntegrationsLogging {
-                                        }),
-                                        number: Some(
-                                            ::use_mdbook::mdbook_shared::SectionNumber(
-                                                vec![4u32, 11u32, 1u32],
-                                            ),
-                                        ),
-                                        nested_items: vec![],
-                                    }),
-                                    ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
-                                        name: "Internationalization".to_string(),
-                                        location: Some(BookRoute::CookbookIntegrationsInternationalization {}),
-                                        number: Some(
-                                            ::use_mdbook::mdbook_shared::SectionNumber(
-                                                vec![4u32, 11u32, 2u32],
-                                            ),
-                                        ),
-                                        nested_items: vec![],
-                                    }),
-                                ],
+                                nested_items: vec![],
                             }),
                             ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
-                                name: "State Management".to_string(),
-                                location: Some(BookRoute::CookbookStateIndex {}),
+                                name: "Integrations".to_string(),
+                                location: Some(BookRoute::CookbookIntegrationsIndex {
+                                    section: CookbookIntegrationsIndexSection::Empty,
+                                }),
                                 number: Some(
                                     ::use_mdbook::mdbook_shared::SectionNumber(
                                         vec![4u32, 12u32],
@@ -4214,8 +4774,9 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                                 ),
                                 nested_items: vec![
                                     ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
-                                        name: "External State".to_string(),
-                                        location: Some(BookRoute::CookbookStateExternalIndex {
+                                        name: "Logging".to_string(),
+                                        location: Some(BookRoute::CookbookIntegrationsLogging {
+                                            section: CookbookIntegrationsLoggingSection::Empty,
                                         }),
                                         number: Some(
                                             ::use_mdbook::mdbook_shared::SectionNumber(
@@ -4225,8 +4786,9 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                                         nested_items: vec![],
                                     }),
                                     ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
-                                        name: "Custom Hooks".to_string(),
-                                        location: Some(BookRoute::CookbookStateCustomHooksIndex {
+                                        name: "Internationalization".to_string(),
+                                        location: Some(BookRoute::CookbookIntegrationsInternationalization {
+                                            section: CookbookIntegrationsInternationalizationSection::Empty,
                                         }),
                                         number: Some(
                                             ::use_mdbook::mdbook_shared::SectionNumber(
@@ -4238,18 +4800,47 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                                 ],
                             }),
                             ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
-                                name: "Bundle Config".to_string(),
-                                location: Some(BookRoute::CookbookBundling {}),
+                                name: "State Management".to_string(),
+                                location: Some(BookRoute::CookbookStateIndex {
+                                    section: CookbookStateIndexSection::Empty,
+                                }),
                                 number: Some(
                                     ::use_mdbook::mdbook_shared::SectionNumber(
                                         vec![4u32, 13u32],
                                     ),
                                 ),
-                                nested_items: vec![],
+                                nested_items: vec![
+                                    ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
+                                        name: "External State".to_string(),
+                                        location: Some(BookRoute::CookbookStateExternalIndex {
+                                            section: CookbookStateExternalIndexSection::Empty,
+                                        }),
+                                        number: Some(
+                                            ::use_mdbook::mdbook_shared::SectionNumber(
+                                                vec![4u32, 13u32, 1u32],
+                                            ),
+                                        ),
+                                        nested_items: vec![],
+                                    }),
+                                    ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
+                                        name: "Custom Hooks".to_string(),
+                                        location: Some(BookRoute::CookbookStateCustomHooksIndex {
+                                            section: CookbookStateCustomHooksIndexSection::Empty,
+                                        }),
+                                        number: Some(
+                                            ::use_mdbook::mdbook_shared::SectionNumber(
+                                                vec![4u32, 13u32, 2u32],
+                                            ),
+                                        ),
+                                        nested_items: vec![],
+                                    }),
+                                ],
                             }),
                             ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
-                                name: "Testing".to_string(),
-                                location: Some(BookRoute::CookbookTesting {}),
+                                name: "Bundle Config".to_string(),
+                                location: Some(BookRoute::CookbookBundling {
+                                    section: CookbookBundlingSection::Empty,
+                                }),
                                 number: Some(
                                     ::use_mdbook::mdbook_shared::SectionNumber(
                                         vec![4u32, 14u32],
@@ -4258,8 +4849,10 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                                 nested_items: vec![],
                             }),
                             ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
-                                name: "Tailwind".to_string(),
-                                location: Some(BookRoute::CookbookTailwind {}),
+                                name: "Testing".to_string(),
+                                location: Some(BookRoute::CookbookTesting {
+                                    section: CookbookTestingSection::Empty,
+                                }),
                                 number: Some(
                                     ::use_mdbook::mdbook_shared::SectionNumber(
                                         vec![4u32, 15u32],
@@ -4268,8 +4861,10 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                                 nested_items: vec![],
                             }),
                             ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
-                                name: "Optimizing".to_string(),
-                                location: Some(BookRoute::CookbookOptimizing {}),
+                                name: "Tailwind".to_string(),
+                                location: Some(BookRoute::CookbookTailwind {
+                                    section: CookbookTailwindSection::Empty,
+                                }),
                                 number: Some(
                                     ::use_mdbook::mdbook_shared::SectionNumber(
                                         vec![4u32, 16u32],
@@ -4278,11 +4873,25 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                                 nested_items: vec![],
                             }),
                             ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
-                                name: "Migrating to v0.6".to_string(),
-                                location: Some(BookRoute::MigrationIndex {}),
+                                name: "Optimizing".to_string(),
+                                location: Some(BookRoute::CookbookOptimizing {
+                                    section: CookbookOptimizingSection::Empty,
+                                }),
                                 number: Some(
                                     ::use_mdbook::mdbook_shared::SectionNumber(
                                         vec![4u32, 17u32],
+                                    ),
+                                ),
+                                nested_items: vec![],
+                            }),
+                            ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
+                                name: "Migrating to v0.6".to_string(),
+                                location: Some(BookRoute::MigrationIndex {
+                                    section: MigrationIndexSection::Empty,
+                                }),
+                                number: Some(
+                                    ::use_mdbook::mdbook_shared::SectionNumber(
+                                        vec![4u32, 18u32],
                                     ),
                                 ),
                                 nested_items: vec![],
@@ -4292,14 +4901,18 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     ::use_mdbook::mdbook_shared::SummaryItem::Separator,
                     ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
                         name: "Reference".to_string(),
-                        location: Some(BookRoute::ReferenceIndex {}),
+                        location: Some(BookRoute::ReferenceIndex {
+                            section: ReferenceIndexSection::Empty,
+                        }),
                         number: Some(
                             ::use_mdbook::mdbook_shared::SectionNumber(vec![5u32]),
                         ),
                         nested_items: vec![
                             ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
                                 name: "Hot-Reload".to_string(),
-                                location: Some(BookRoute::ReferenceHotreload {}),
+                                location: Some(BookRoute::ReferenceHotreload {
+                                    section: ReferenceHotreloadSection::Empty,
+                                }),
                                 number: Some(
                                     ::use_mdbook::mdbook_shared::SectionNumber(vec![5u32, 1u32]),
                                 ),
@@ -4307,7 +4920,9 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                             }),
                             ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
                                 name: "RSX".to_string(),
-                                location: Some(BookRoute::ReferenceRsx {}),
+                                location: Some(BookRoute::ReferenceRsx {
+                                    section: ReferenceRsxSection::Empty,
+                                }),
                                 number: Some(
                                     ::use_mdbook::mdbook_shared::SectionNumber(vec![5u32, 2u32]),
                                 ),
@@ -4315,7 +4930,9 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                             }),
                             ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
                                 name: "Components".to_string(),
-                                location: Some(BookRoute::ReferenceComponents {}),
+                                location: Some(BookRoute::ReferenceComponents {
+                                    section: ReferenceComponentsSection::Empty,
+                                }),
                                 number: Some(
                                     ::use_mdbook::mdbook_shared::SectionNumber(vec![5u32, 3u32]),
                                 ),
@@ -4324,6 +4941,7 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                             ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
                                 name: "Props".to_string(),
                                 location: Some(BookRoute::ReferenceComponentProps {
+                                    section: ReferenceComponentPropsSection::Empty,
                                 }),
                                 number: Some(
                                     ::use_mdbook::mdbook_shared::SectionNumber(vec![5u32, 4u32]),
@@ -4333,6 +4951,7 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                             ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
                                 name: "Event Handlers".to_string(),
                                 location: Some(BookRoute::ReferenceEventHandlers {
+                                    section: ReferenceEventHandlersSection::Empty,
                                 }),
                                 number: Some(
                                     ::use_mdbook::mdbook_shared::SectionNumber(vec![5u32, 5u32]),
@@ -4341,7 +4960,9 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                             }),
                             ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
                                 name: "Hooks".to_string(),
-                                location: Some(BookRoute::ReferenceHooks {}),
+                                location: Some(BookRoute::ReferenceHooks {
+                                    section: ReferenceHooksSection::Empty,
+                                }),
                                 number: Some(
                                     ::use_mdbook::mdbook_shared::SectionNumber(vec![5u32, 6u32]),
                                 ),
@@ -4349,7 +4970,9 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                             }),
                             ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
                                 name: "User Input".to_string(),
-                                location: Some(BookRoute::ReferenceUserInput {}),
+                                location: Some(BookRoute::ReferenceUserInput {
+                                    section: ReferenceUserInputSection::Empty,
+                                }),
                                 number: Some(
                                     ::use_mdbook::mdbook_shared::SectionNumber(vec![5u32, 7u32]),
                                 ),
@@ -4357,7 +4980,9 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                             }),
                             ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
                                 name: "Context".to_string(),
-                                location: Some(BookRoute::ReferenceContext {}),
+                                location: Some(BookRoute::ReferenceContext {
+                                    section: ReferenceContextSection::Empty,
+                                }),
                                 number: Some(
                                     ::use_mdbook::mdbook_shared::SectionNumber(vec![5u32, 8u32]),
                                 ),
@@ -4366,6 +4991,7 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                             ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
                                 name: "Dynamic Rendering".to_string(),
                                 location: Some(BookRoute::ReferenceDynamicRendering {
+                                    section: ReferenceDynamicRenderingSection::Empty,
                                 }),
                                 number: Some(
                                     ::use_mdbook::mdbook_shared::SectionNumber(vec![5u32, 9u32]),
@@ -4374,7 +5000,9 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                             }),
                             ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
                                 name: "Routing".to_string(),
-                                location: Some(BookRoute::ReferenceRouter {}),
+                                location: Some(BookRoute::ReferenceRouter {
+                                    section: ReferenceRouterSection::Empty,
+                                }),
                                 number: Some(
                                     ::use_mdbook::mdbook_shared::SectionNumber(
                                         vec![5u32, 10u32],
@@ -4384,7 +5012,9 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                             }),
                             ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
                                 name: "Resource".to_string(),
-                                location: Some(BookRoute::ReferenceUseResource {}),
+                                location: Some(BookRoute::ReferenceUseResource {
+                                    section: ReferenceUseResourceSection::Empty,
+                                }),
                                 number: Some(
                                     ::use_mdbook::mdbook_shared::SectionNumber(
                                         vec![5u32, 11u32],
@@ -4395,6 +5025,7 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                             ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
                                 name: "UseCoroutine".to_string(),
                                 location: Some(BookRoute::ReferenceUseCoroutine {
+                                    section: ReferenceUseCoroutineSection::Empty,
                                 }),
                                 number: Some(
                                     ::use_mdbook::mdbook_shared::SectionNumber(
@@ -4405,7 +5036,9 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                             }),
                             ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
                                 name: "Spawn".to_string(),
-                                location: Some(BookRoute::ReferenceSpawn {}),
+                                location: Some(BookRoute::ReferenceSpawn {
+                                    section: ReferenceSpawnSection::Empty,
+                                }),
                                 number: Some(
                                     ::use_mdbook::mdbook_shared::SectionNumber(
                                         vec![5u32, 13u32],
@@ -4418,7 +5051,9 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     ::use_mdbook::mdbook_shared::SummaryItem::Separator,
                     ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
                         name: "Contributing".to_string(),
-                        location: Some(BookRoute::ContributingIndex {}),
+                        location: Some(BookRoute::ContributingIndex {
+                            section: ContributingIndexSection::Empty,
+                        }),
                         number: Some(
                             ::use_mdbook::mdbook_shared::SectionNumber(vec![6u32]),
                         ),
@@ -4426,6 +5061,7 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                             ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
                                 name: "Project Structure".to_string(),
                                 location: Some(BookRoute::ContributingProjectStructure {
+                                    section: ContributingProjectStructureSection::Empty,
                                 }),
                                 number: Some(
                                     ::use_mdbook::mdbook_shared::SectionNumber(vec![6u32, 1u32]),
@@ -4435,6 +5071,7 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                             ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
                                 name: "Guiding Principles".to_string(),
                                 location: Some(BookRoute::ContributingGuidingPrinciples {
+                                    section: ContributingGuidingPrinciplesSection::Empty,
                                 }),
                                 number: Some(
                                     ::use_mdbook::mdbook_shared::SectionNumber(vec![6u32, 2u32]),
@@ -4443,7 +5080,9 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                             }),
                             ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
                                 name: "Roadmap".to_string(),
-                                location: Some(BookRoute::ContributingRoadmap {}),
+                                location: Some(BookRoute::ContributingRoadmap {
+                                    section: ContributingRoadmapSection::Empty,
+                                }),
                                 number: Some(
                                     ::use_mdbook::mdbook_shared::SectionNumber(vec![6u32, 3u32]),
                                 ),
@@ -4454,14 +5093,18 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     ::use_mdbook::mdbook_shared::SummaryItem::Separator,
                     ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
                         name: "CLI".to_string(),
-                        location: Some(BookRoute::CliIndex {}),
+                        location: Some(BookRoute::CliIndex {
+                            section: CliIndexSection::Empty,
+                        }),
                         number: Some(
                             ::use_mdbook::mdbook_shared::SectionNumber(vec![7u32]),
                         ),
                         nested_items: vec![
                             ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
                                 name: "Create a Project".to_string(),
-                                location: Some(BookRoute::CliCreating {}),
+                                location: Some(BookRoute::CliCreating {
+                                    section: CliCreatingSection::Empty,
+                                }),
                                 number: Some(
                                     ::use_mdbook::mdbook_shared::SectionNumber(vec![7u32, 1u32]),
                                 ),
@@ -4469,7 +5112,9 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                             }),
                             ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
                                 name: "Configure Project".to_string(),
-                                location: Some(BookRoute::CliConfigure {}),
+                                location: Some(BookRoute::CliConfigure {
+                                    section: CliConfigureSection::Empty,
+                                }),
                                 number: Some(
                                     ::use_mdbook::mdbook_shared::SectionNumber(vec![7u32, 2u32]),
                                 ),
@@ -4477,7 +5122,9 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                             }),
                             ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
                                 name: "Translate HTML".to_string(),
-                                location: Some(BookRoute::CliTranslate {}),
+                                location: Some(BookRoute::CliTranslate {
+                                    section: CliTranslateSection::Empty,
+                                }),
                                 number: Some(
                                     ::use_mdbook::mdbook_shared::SectionNumber(vec![7u32, 3u32]),
                                 ),
@@ -4492,12 +5139,75 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
             page_id_mapping,
         }
     });
+#[derive(
+    Clone, Copy, PartialEq, Eq, Hash, Debug, Default, serde::Serialize, serde::Deserialize,
+)]
+pub enum IndexSection {
+    #[default]
+    Empty,
+    Introduction,
+    WhatIsDioxus,
+    WhyDioxus,
+    SyntaxAndEcosystem,
+    Stability,
+    ExamplesProjectsTutorialsAndMore,
+    WhosFundingDioxus,
+}
+impl std::str::FromStr for IndexSection {
+    type Err = IndexSectionParseError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "" => Ok(Self::Empty),
+            "introduction" => Ok(Self::Introduction),
+            "what-is-dioxus" => Ok(Self::WhatIsDioxus),
+            "why-dioxus" => Ok(Self::WhyDioxus),
+            "syntax-and-ecosystem" => Ok(Self::SyntaxAndEcosystem),
+            "stability" => Ok(Self::Stability),
+            "examples-projects-tutorials-and-more" => Ok(Self::ExamplesProjectsTutorialsAndMore),
+            "whos-funding-dioxus" => Ok(Self::WhosFundingDioxus),
+            _ => Err(IndexSectionParseError),
+        }
+    }
+}
+impl std::fmt::Display for IndexSection {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Self::Empty => f.write_str(""),
+            Self::Introduction => f.write_str("introduction"),
+            Self::WhatIsDioxus => f.write_str("what-is-dioxus"),
+            Self::WhyDioxus => f.write_str("why-dioxus"),
+            Self::SyntaxAndEcosystem => f.write_str("syntax-and-ecosystem"),
+            Self::Stability => f.write_str("stability"),
+            Self::ExamplesProjectsTutorialsAndMore => {
+                f.write_str("examples-projects-tutorials-and-more")
+            }
+            Self::WhosFundingDioxus => f.write_str("whos-funding-dioxus"),
+        }
+    }
+}
+#[derive(Debug)]
+pub struct IndexSectionParseError;
+impl std::fmt::Display for IndexSectionParseError {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.write_str(
+            "Invalid section name. Expected one of IndexSectionintroduction, what-is-dioxus, why-dioxus, syntax-and-ecosystem, stability, examples-projects-tutorials-and-more, whos-funding-dioxus",
+        )?;
+        Ok(())
+    }
+}
+impl std::error::Error for IndexSectionParseError {}
 #[component(no_case_check)]
-pub fn Index() -> dioxus::prelude::Element {
+pub fn Index(section: IndexSection) -> dioxus::prelude::Element {
     use dioxus::prelude::*;
     rsx! {
         h1 { id: "introduction",
-            a { href: "#introduction", class: "header", "Introduction" }
+            Link {
+                to: BookRoute::Index {
+                    section: IndexSection::Introduction,
+                },
+                class: "header",
+                "Introduction"
+            }
         }
         p {
             "Welcome to the Dioxus documentation! Dioxus is a framework for building cross-platform apps with the Rust programming language. With one codebase, you can build apps that run on web, desktop, and mobile."
@@ -4513,40 +5223,76 @@ pub fn Index() -> dioxus::prelude::Element {
         p { "This guide is split into different sections:" }
         ul {
             li {
-                a { href: "guide", "Tutorial" }
+                Link {
+                    to: BookRoute::GuideIndex {
+                        section: GuideIndexSection::Empty,
+                    },
+                    "Tutorial"
+                }
                 " walks you through your first Dioxus app."
             }
             li {
-                a { href: "essentials", "Core Concepts" }
+                Link {
+                    to: BookRoute::EssentialsIndex {
+                        section: EssentialsIndexSection::Empty,
+                    },
+                    "Core Concepts"
+                }
                 " provides detail on topics like managing state."
             }
             li {
-                a { href: "reference", "Guides" }
+                Link {
+                    to: BookRoute::ReferenceIndex {
+                        section: ReferenceIndexSection::Empty,
+                    },
+                    "Guides"
+                }
                 " provides references for things like assets, routing, testing, and more."
             }
         }
         p {
             "First, try walking through the "
-            a { href: "guide", "Tutorial" }
+            Link {
+                to: BookRoute::GuideIndex {
+                    section: GuideIndexSection::Empty,
+                },
+                "Tutorial"
+            }
             " to get familiar with Dioxus. Before embarking on a larger project, we strongly recommend reading the entire "
-            a { href: "essentials", "Essential Concepts" }
+            Link {
+                to: BookRoute::EssentialsIndex {
+                    section: EssentialsIndexSection::Empty,
+                },
+                "Essential Concepts"
+            }
             " and glancing through the "
-            a { href: "guides", "Guides Overview" }
+            Link {
+                to: BookRoute::GuidesIndex {
+                    section: GuidesIndexSection::Empty,
+                },
+                "Guides Overview"
+            }
             "."
         }
         blockquote {
             p {
                 "This guide assumes you already know some "
-                a { href: "https://www.rust-lang.org/", "Rust" }
+                Link { to: "https://www.rust-lang.org/", "Rust" }
                 "! If not, we recommend reading "
-                a { href: "https://doc.rust-lang.org/book/ch01-00-getting-started.html",
+                Link { to: "https://doc.rust-lang.org/book/ch01-00-getting-started.html",
                     em { "the book" }
                 }
                 " to learn Rust first."
             }
         }
         h2 { id: "what-is-dioxus",
-            a { href: "#what-is-dioxus", class: "header", "What is Dioxus?" }
+            Link {
+                to: BookRoute::Index {
+                    section: IndexSection::WhatIsDioxus,
+                },
+                class: "header",
+                "What is Dioxus?"
+            }
         }
         p {
             "Dioxus is a developer-friendly framework that empowers developers to ship cross-platform apps with one codebase."
@@ -4573,13 +5319,19 @@ pub fn Index() -> dioxus::prelude::Element {
         }
         p {
             "Our goal is to provide a \"better Flutter\": faster, slimmer, and web-native. You can think of Dioxus is a hybrid of "
-            a { href: "http://flutter.dev", "Flutter" }
+            Link { to: "http://flutter.dev", "Flutter" }
             " and "
-            a { href: "http://nextjs.org", "NextJS" }
+            Link { to: "http://nextjs.org", "NextJS" }
             ": cross-platform apps with stellar fullstack support. Today, Dioxus apps can only be written in Rust, but we plan to support more languages in the future."
         }
         h2 { id: "why-dioxus",
-            a { href: "#why-dioxus", class: "header", "Why Dioxus?" }
+            Link {
+                to: BookRoute::Index {
+                    section: IndexSection::WhyDioxus,
+                },
+                class: "header",
+                "Why Dioxus?"
+            }
         }
         p {
             "We started Dioxus because we believe the current standard of building apps is too complex. Developers need to learn and install dozens of different tools just to get their app into the world."
@@ -4595,7 +5347,13 @@ pub fn Index() -> dioxus::prelude::Element {
             "Our vision for Dioxus is a framework that is fast, flexible, and has a minimal learning curve. We want developers to confidently ship their app from idea to production as fast as possible. We believe that fewer tools and a simpler architecture makes it easier to develop apps. Apps that are easier to build also ship faster and are more likely to succeed."
         }
         h2 { id: "syntax-and-ecosystem",
-            a { href: "#syntax-and-ecosystem", class: "header", "Syntax and Ecosystem" }
+            Link {
+                to: BookRoute::Index {
+                    section: IndexSection::SyntaxAndEcosystem,
+                },
+                class: "header",
+                "Syntax and Ecosystem"
+            }
         }
         p {
             "The Dioxus syntax is similar to React's JSX markup, borrowing React's component and hooks approach. All components are Rust functions that take  "
@@ -4611,11 +5369,11 @@ pub fn Index() -> dioxus::prelude::Element {
         }
         p {
             "Dioxus is designed to be easy to extend and fairly thin over system APIs. This means you can easily drop into system APIs when first-party APIs are lacking. When targeting the web, this might mean using "
-            a { href: "http://crates.io/crates/web-sys/",
+            Link { to: "http://crates.io/crates/web-sys/",
                 code { "web-sys" }
             }
             " and on Android using "
-            a { href: "http://crates.io/crates/jni",
+            Link { to: "http://crates.io/crates/jni",
                 code { "jni" }
             }
             "."
@@ -4628,28 +5386,52 @@ pub fn Index() -> dioxus::prelude::Element {
         }
         ul {
             li {
-                a { href: "router", "App Routing" }
+                Link {
+                    to: BookRoute::RouterIndex {
+                        section: RouterIndexSection::Empty,
+                    },
+                    "App Routing"
+                }
             }
             li {
-                a { href: "guides/fullstack/server_functions",
+                Link {
+                    to: BookRoute::GuidesFullstackServerFunctions {
+                        section: GuidesFullstackServerFunctionsSection::Empty,
+                    },
                     "Backend integration via server functions"
                 }
             }
             li {
-                a { href: "guides/assets", "Including and optimizing" }
+                Link {
+                    to: BookRoute::GuidesAssets {
+                        section: GuidesAssetsSection::Empty,
+                    },
+                    "Including and optimizing"
+                }
                 " assets"
             }
             li {
-                a { href: "guides/managing_state", "State management" }
+                Link {
+                    to: BookRoute::EssentialsStateIndex {
+                        section: EssentialsStateIndexSection::Empty,
+                    },
+                    "State management"
+                }
                 " (signals-based reactivity)"
             }
             li {
-                a { href: "http://github.com/dioxusLabs/sdk", "SDK" }
+                Link { to: "http://github.com/dioxusLabs/sdk", "SDK" }
                 ": 1st-party System integrations"
             }
         }
         h2 { id: "stability",
-            a { href: "#stability", class: "header", "Stability" }
+            Link {
+                to: BookRoute::Index {
+                    section: IndexSection::Stability,
+                },
+                class: "header",
+                "Stability"
+            }
         }
         p { "Dioxus has not reached a \"1.0\" release yet." }
         p {
@@ -4657,12 +5439,19 @@ pub fn Index() -> dioxus::prelude::Element {
         }
         p {
             "It's likely that the next few versions of Dioxus (0.7, 0.8) will bring breaking changes to your apps. Fortunately, these planned changes will only affect the syntax of specific APIs and not your apps at large. With every version update, we ship a rather comprehensive migration guide - eg "
-            a { href: "migration", "0.6" }
+            Link {
+                to: BookRoute::MigrationIndex {
+                    section: MigrationIndexSection::Empty,
+                },
+                "0.6"
+            }
             "."
         }
         h2 { id: "examples-projects-tutorials-and-more",
-            a {
-                href: "#examples-projects-tutorials-and-more",
+            Link {
+                to: BookRoute::Index {
+                    section: IndexSection::ExamplesProjectsTutorialsAndMore,
+                },
                 class: "header",
                 "Examples, projects, tutorials, and more"
             }
@@ -4674,34 +5463,40 @@ pub fn Index() -> dioxus::prelude::Element {
         ul {
             li {
                 "The "
-                a { href: "https://github.com/DioxusLabs/dioxus/tree/main/examples",
+                Link { to: "https://github.com/DioxusLabs/dioxus/tree/main/examples",
                     "official folder of small examples"
                 }
             }
             li {
                 "The "
-                a { href: "https://github.com/DioxusLabs/dioxus/tree/main/example-projects",
+                Link { to: "https://github.com/DioxusLabs/dioxus/tree/main/example-projects",
                     "official repository of example projects"
                 }
             }
             li {
                 "The official "
-                a { href: "https://www.youtube.com/@DioxusLabs", "YouTube channel" }
+                Link { to: "https://www.youtube.com/@DioxusLabs", "YouTube channel" }
             }
         }
         h2 { id: "whos-funding-dioxus",
-            a { href: "#whos-funding-dioxus", class: "header", "Who's funding Dioxus?" }
+            Link {
+                to: BookRoute::Index {
+                    section: IndexSection::WhosFundingDioxus,
+                },
+                class: "header",
+                "Who's funding Dioxus?"
+            }
         }
         p {
             "Dioxus is funded by a mix of corporate sponsorships, enterprise support contracts, "
-            a { href: "https://github.com/sponsors/DioxusLabs#sponsors", "crowd-sourced funding" }
+            Link { to: "https://github.com/sponsors/DioxusLabs#sponsors", "crowd-sourced funding" }
             ", and "
-            a { href: "http://ycombinator.com/companies/dioxus-labs", "venture capital" }
+            Link { to: "http://ycombinator.com/companies/dioxus-labs", "venture capital" }
             ". We strive to maintain a healthy mix of funding to balance the various competing visions of the future. We want to provide a \"Flutter but better\" for everyone - not controlled by Apple, Meta, or Google - and we need to make sure Dioxus has a sustainable long-term financial future."
         }
         p {
             "Ultimately, we'd like Dioxus to be self-sustaining. This means that you'll eventually have the option to deploy your production apps with "
-            a { href: "/deploy", "Dioxus Deploy" }
+            Link { to: "/deploy", "Dioxus Deploy" }
             ". Revenue from "
             em { "Dioxus Deploy" }
             " will in turn fund development on Dioxus itself."
@@ -4711,23 +5506,108 @@ pub fn Index() -> dioxus::prelude::Element {
         }
     }
 }
+#[derive(
+    Clone, Copy, PartialEq, Eq, Hash, Debug, Default, serde::Serialize, serde::Deserialize,
+)]
+pub enum GettingStartedIndexSection {
+    #[default]
+    Empty,
+    GettingStarted,
+    PickAnEditor,
+    InstallRustAnalyzer,
+    InstallRust,
+    InstallCargoBinstall,
+    InstallTheDioxusCli,
+    PlatformSpecificDependencies,
+    Macos,
+    Windows,
+    Linux,
+    Wsl,
+    Ios,
+    Android,
+}
+impl std::str::FromStr for GettingStartedIndexSection {
+    type Err = GettingStartedIndexSectionParseError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "" => Ok(Self::Empty),
+            "getting-started" => Ok(Self::GettingStarted),
+            "pick-an-editor" => Ok(Self::PickAnEditor),
+            "install-rust-analyzer" => Ok(Self::InstallRustAnalyzer),
+            "install-rust" => Ok(Self::InstallRust),
+            "install-cargo-binstall" => Ok(Self::InstallCargoBinstall),
+            "install-the-dioxus-cli" => Ok(Self::InstallTheDioxusCli),
+            "platform-specific-dependencies" => Ok(Self::PlatformSpecificDependencies),
+            "macos" => Ok(Self::Macos),
+            "windows" => Ok(Self::Windows),
+            "linux" => Ok(Self::Linux),
+            "wsl" => Ok(Self::Wsl),
+            "ios" => Ok(Self::Ios),
+            "android" => Ok(Self::Android),
+            _ => Err(GettingStartedIndexSectionParseError),
+        }
+    }
+}
+impl std::fmt::Display for GettingStartedIndexSection {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Self::Empty => f.write_str(""),
+            Self::GettingStarted => f.write_str("getting-started"),
+            Self::PickAnEditor => f.write_str("pick-an-editor"),
+            Self::InstallRustAnalyzer => f.write_str("install-rust-analyzer"),
+            Self::InstallRust => f.write_str("install-rust"),
+            Self::InstallCargoBinstall => f.write_str("install-cargo-binstall"),
+            Self::InstallTheDioxusCli => f.write_str("install-the-dioxus-cli"),
+            Self::PlatformSpecificDependencies => f.write_str("platform-specific-dependencies"),
+            Self::Macos => f.write_str("macos"),
+            Self::Windows => f.write_str("windows"),
+            Self::Linux => f.write_str("linux"),
+            Self::Wsl => f.write_str("wsl"),
+            Self::Ios => f.write_str("ios"),
+            Self::Android => f.write_str("android"),
+        }
+    }
+}
+#[derive(Debug)]
+pub struct GettingStartedIndexSectionParseError;
+impl std::fmt::Display for GettingStartedIndexSectionParseError {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.write_str(
+            "Invalid section name. Expected one of GettingStartedIndexSectiongetting-started, pick-an-editor, install-rust-analyzer, install-rust, install-cargo-binstall, install-the-dioxus-cli, platform-specific-dependencies, macos, windows, linux, wsl, ios, android",
+        )?;
+        Ok(())
+    }
+}
+impl std::error::Error for GettingStartedIndexSectionParseError {}
 #[component(no_case_check)]
-pub fn GettingStartedIndex() -> dioxus::prelude::Element {
+pub fn GettingStartedIndex(section: GettingStartedIndexSection) -> dioxus::prelude::Element {
     use dioxus::prelude::*;
     rsx! {
         h1 { id: "getting-started",
-            a { href: "#getting-started", class: "header", "Getting Started" }
+            Link {
+                to: BookRoute::GettingStartedIndex {
+                    section: GettingStartedIndexSection::GettingStarted,
+                },
+                class: "header",
+                "Getting Started"
+            }
         }
         p { "Getting started with Dioxus is quick and shouldn't take more than a minute or two." }
         h2 { id: "pick-an-editor",
-            a { href: "#pick-an-editor", class: "header", "Pick an Editor" }
+            Link {
+                to: BookRoute::GettingStartedIndex {
+                    section: GettingStartedIndexSection::PickAnEditor,
+                },
+                class: "header",
+                "Pick an Editor"
+            }
         }
         p { "Pick your favorite editor!" }
         p {
             "We recommend using "
-            a { href: "https://code.visualstudio.com", "VSCode" }
+            Link { to: "https://code.visualstudio.com", "VSCode" }
             " since Dioxus ships with its "
-            a { href: "https://marketplace.visualstudio.com/items?itemName=DioxusLabs.dioxus",
+            Link { to: "https://marketplace.visualstudio.com/items?itemName=DioxusLabs.dioxus",
                 "own VSCode extension"
             }
             "."
@@ -4738,47 +5618,57 @@ pub fn GettingStartedIndex() -> dioxus::prelude::Element {
             " is standalone and works with any editor."
         }
         h2 { id: "install-rust-analyzer",
-            a { href: "#install-rust-analyzer", class: "header", "Install Rust-Analyzer" }
+            Link {
+                to: BookRoute::GettingStartedIndex {
+                    section: GettingStartedIndexSection::InstallRustAnalyzer,
+                },
+                class: "header",
+                "Install Rust-Analyzer"
+            }
         }
         p {
             "Dioxus integrates very well with the "
-            a { href: "https://rust-analyzer.github.io", "Rust-Analyzer LSP plugin" }
+            Link { to: "https://rust-analyzer.github.io", "Rust-Analyzer LSP plugin" }
             " which provides appropriate syntax highlighting, code navigation, folding, and more."
         }
         p {
             "You can follow the "
-            a { href: "https://rust-analyzer.github.io/manual.html#installation",
+            Link { to: "https://rust-analyzer.github.io/manual.html#installation",
                 "installation instructions"
             }
             " for your editor of choice."
         }
         ul {
             li {
-                a { href: "https://rust-analyzer.github.io/manual.html#vs-code", "VSCode" }
+                Link { to: "https://rust-analyzer.github.io/manual.html#vs-code", "VSCode" }
             }
             li {
-                a { href: "https://rust-analyzer.github.io/manual.html#zed", "Zed" }
+                Link { to: "https://rust-analyzer.github.io/manual.html#zed", "Zed" }
             }
             li {
-                a { href: "https://rust-analyzer.github.io/manual.html#emacs", "Emacs" }
+                Link { to: "https://rust-analyzer.github.io/manual.html#emacs", "Emacs" }
             }
             li {
-                a { href: "https://rust-analyzer.github.io/manual.html#vimneovim",
-                    "Vim"
-                }
+                Link { to: "https://rust-analyzer.github.io/manual.html#vimneovim", "Vim" }
             }
         }
         h2 { id: "install-rust",
-            a { href: "#install-rust", class: "header", "Install Rust" }
+            Link {
+                to: BookRoute::GettingStartedIndex {
+                    section: GettingStartedIndexSection::InstallRust,
+                },
+                class: "header",
+                "Install Rust"
+            }
         }
         p {
             "Head over to "
-            a { href: "http://rust-lang.org", "https://rust-lang.org" }
+            Link { to: "http://rust-lang.org", "https://rust-lang.org" }
             " and install the Rust compiler."
         }
         p {
             "We strongly recommend going through the "
-            a { href: "https://doc.rust-lang.org/book/ch01-00-getting-started.html",
+            Link { to: "https://doc.rust-lang.org/book/ch01-00-getting-started.html",
                 "official Rust book"
             }
             " "
@@ -4789,11 +5679,17 @@ pub fn GettingStartedIndex() -> dioxus::prelude::Element {
             "We've put a lot of care into making Dioxus syntax familiar and easy to understand, so you won't need deep knowledge of async, lifetimes, or smart pointers until you start building complex Dioxus apps."
         }
         h2 { id: "install-cargo-binstall",
-            a { href: "#install-cargo-binstall", class: "header", "Install cargo-binstall" }
+            Link {
+                to: BookRoute::GettingStartedIndex {
+                    section: GettingStartedIndexSection::InstallCargoBinstall,
+                },
+                class: "header",
+                "Install cargo-binstall"
+            }
         }
         p {
             "Dioxus ships prebuilt binaries for its CLI using "
-            a { href: "https://github.com/cargo-bins/cargo-binstall?tab=readme-ov-file#installation",
+            Link { to: "https://github.com/cargo-bins/cargo-binstall?tab=readme-ov-file#installation",
                 code { "cargo-binstall" }
             }
             ". This means you can install "
@@ -4809,7 +5705,13 @@ pub fn GettingStartedIndex() -> dioxus::prelude::Element {
         p { "or alternatively:" }
         CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f92672;\">#</span><span style=\"color:#f8f8f2;\"> through brew\n</span><span style=\"color:#f8f8f2;\">brew install cargo</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">binstall\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\">#</span><span style=\"color:#f8f8f2;\"> or from source\n</span><span style=\"color:#f8f8f2;\">cargo install cargo</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">binstall</span></pre>\n" }
         h2 { id: "install-the-dioxus-cli",
-            a { href: "#install-the-dioxus-cli", class: "header", "Install the Dioxus CLI" }
+            Link {
+                to: BookRoute::GettingStartedIndex {
+                    section: GettingStartedIndexSection::InstallTheDioxusCli,
+                },
+                class: "header",
+                "Install the Dioxus CLI"
+            }
         }
         p { "Dioxus is comprised of two parts:" }
         ul {
@@ -4841,11 +5743,15 @@ pub fn GettingStartedIndex() -> dioxus::prelude::Element {
         }
         p {
             "If you get an OpenSSL error on installation, ensure the dependencies listed "
-            a { href: "https://docs.rs/openssl/latest/openssl/#automatic", "here" }
+            Link { to: "https://docs.rs/openssl/latest/openssl/#automatic", "here" }
             " are installed."
         }
         h2 { id: "platform-specific-dependencies",
-            a { href: "#platform-specific-dependencies", class: "header",
+            Link {
+                to: BookRoute::GettingStartedIndex {
+                    section: GettingStartedIndexSection::PlatformSpecificDependencies,
+                },
+                class: "header",
                 "Platform-specific dependencies"
             }
         }
@@ -4853,15 +5759,32 @@ pub fn GettingStartedIndex() -> dioxus::prelude::Element {
             "Most platforms don't require any additional dependencies, but if you are targeting desktop, you can install the following dependencies."
         }
         h3 { id: "macos",
-            a { href: "#macos", class: "header", "macOS" }
+            Link {
+                to: BookRoute::GettingStartedIndex {
+                    section: GettingStartedIndexSection::Macos,
+                },
+                class: "header",
+                "macOS"
+            }
         }
         p {
             "There are no extra dependencies for macOS! However, if you want to build iOS apps, read the "
-            a { href: "#ios", "iOS section" }
+            Link {
+                to: BookRoute::GettingStartedIndex {
+                    section: GettingStartedIndexSection::Ios,
+                },
+                "iOS section"
+            }
             " below."
         }
         h3 { id: "windows",
-            a { href: "#windows", class: "header", "Windows" }
+            Link {
+                to: BookRoute::GettingStartedIndex {
+                    section: GettingStartedIndexSection::Windows,
+                },
+                class: "header",
+                "Windows"
+            }
         }
         p {
             "Windows apps depend on WebView2 – a library that should be installed in all modern Windows distributions."
@@ -4870,7 +5793,7 @@ pub fn GettingStartedIndex() -> dioxus::prelude::Element {
             "If you have Edge installed, then Dioxus will work fine. If you "
             em { "don't" }
             " have WebView2, then you can "
-            a { href: "https://developer.microsoft.com/en-us/microsoft-edge/webview2/",
+            Link { to: "https://developer.microsoft.com/en-us/microsoft-edge/webview2/",
                 "install it through Microsoft"
             }
             ". Microsoft provides 3 options:"
@@ -4890,7 +5813,13 @@ pub fn GettingStartedIndex() -> dioxus::prelude::Element {
         }
         p { "We recommend using Option 1." }
         h3 { id: "linux",
-            a { href: "#linux", class: "header", "Linux" }
+            Link {
+                to: BookRoute::GettingStartedIndex {
+                    section: GettingStartedIndexSection::Linux,
+                },
+                class: "header",
+                "Linux"
+            }
         }
         p {
             "WebView Linux apps require WebkitGtk and xdotool. When distributing, these should be part of your dependency tree in your  "
@@ -4910,7 +5839,7 @@ pub fn GettingStartedIndex() -> dioxus::prelude::Element {
         }
         p {
             "For all other Linux targets, "
-            a { href: "https://tauri.app/start/prerequisites/#linux",
+            Link { to: "https://tauri.app/start/prerequisites/#linux",
                 "check the Tauri docs which cover the same dependencies"
             }
             "."
@@ -4918,7 +5847,13 @@ pub fn GettingStartedIndex() -> dioxus::prelude::Element {
         p { "In addition to the Tauri docs, for Fedora:" }
         CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">sudo dnf install libxdo</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">devel</span></pre>\n" }
         h3 { id: "wsl",
-            a { href: "#wsl", class: "header", "WSL" }
+            Link {
+                to: BookRoute::GettingStartedIndex {
+                    section: GettingStartedIndexSection::Wsl,
+                },
+                class: "header",
+                "WSL"
+            }
         }
         p {
             "While doable, it can be tricky to setup development in WSL for Dioxus desktop. Not everything has been figured out and some stuff may not work."
@@ -4934,7 +5869,7 @@ pub fn GettingStartedIndex() -> dioxus::prelude::Element {
             }
             li {
                 "Install Tauri's Linux dependencies found "
-                a { href: "https://beta.tauri.app/start/prerequisites/", "here" }
+                Link { to: "https://beta.tauri.app/start/prerequisites/", "here" }
                 "."
             }
             li {
@@ -4948,42 +5883,111 @@ pub fn GettingStartedIndex() -> dioxus::prelude::Element {
             ". There is currently no way to silence these, but the app should still render."
         }
         h3 { id: "ios",
-            a { href: "#ios", class: "header", "iOS" }
+            Link {
+                to: BookRoute::GettingStartedIndex {
+                    section: GettingStartedIndexSection::Ios,
+                },
+                class: "header",
+                "iOS"
+            }
         }
         p { "Building iOS apps requires a device running macOS with XCode installed." }
         p { "Download and install XCode from one of the following places:" }
         ul {
             li {
-                a { href: "https://apps.apple.com/gb/app/xcode/id497799835?mt=12",
-                    "Mac App Store"
-                }
+                Link { to: "https://apps.apple.com/gb/app/xcode/id497799835?mt=12", "Mac App Store" }
             }
             li {
-                a { href: "https://developer.apple.com/xcode/resources/", "Apple Developer website" }
+                Link { to: "https://developer.apple.com/xcode/resources/", "Apple Developer website" }
             }
         }
         p { "You will need to download the iOS SDK and install some simulators." }
         p {
             "For more details, we recommend reading the "
-            a { href: "../guides/mobile", "dedicated guide for iOS development" }
+            Link {
+                to: BookRoute::GuidesMobileIndex {
+                    section: GuidesMobileIndexSection::Empty,
+                },
+                "dedicated guide for iOS development"
+            }
             "."
         }
         h3 { id: "android",
-            a { href: "#android", class: "header", "Android" }
+            Link {
+                to: BookRoute::GettingStartedIndex {
+                    section: GettingStartedIndexSection::Android,
+                },
+                class: "header",
+                "Android"
+            }
         }
         p {
             "Android apps require the Android SDK and NDK to be installed. This can be a substantial amount of setup, so we recommend reading the "
-            a { href: "../guides/mobile", "dedicated guide for Android development" }
+            Link {
+                to: BookRoute::GuidesMobileIndex {
+                    section: GuidesMobileIndexSection::Empty,
+                },
+                "dedicated guide for Android development"
+            }
             "."
         }
     }
 }
+#[derive(
+    Clone, Copy, PartialEq, Eq, Hash, Debug, Default, serde::Serialize, serde::Deserialize,
+)]
+pub enum GuideIndexSection {
+    #[default]
+    Empty,
+    DioxusTutorial,
+    WhatWillWeBeLearning,
+    WhatAreWeBuilding,
+}
+impl std::str::FromStr for GuideIndexSection {
+    type Err = GuideIndexSectionParseError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "" => Ok(Self::Empty),
+            "dioxus-tutorial" => Ok(Self::DioxusTutorial),
+            "what-will-we-be-learning" => Ok(Self::WhatWillWeBeLearning),
+            "what-are-we-building" => Ok(Self::WhatAreWeBuilding),
+            _ => Err(GuideIndexSectionParseError),
+        }
+    }
+}
+impl std::fmt::Display for GuideIndexSection {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Self::Empty => f.write_str(""),
+            Self::DioxusTutorial => f.write_str("dioxus-tutorial"),
+            Self::WhatWillWeBeLearning => f.write_str("what-will-we-be-learning"),
+            Self::WhatAreWeBuilding => f.write_str("what-are-we-building"),
+        }
+    }
+}
+#[derive(Debug)]
+pub struct GuideIndexSectionParseError;
+impl std::fmt::Display for GuideIndexSectionParseError {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.write_str(
+            "Invalid section name. Expected one of GuideIndexSectiondioxus-tutorial, what-will-we-be-learning, what-are-we-building",
+        )?;
+        Ok(())
+    }
+}
+impl std::error::Error for GuideIndexSectionParseError {}
 #[component(no_case_check)]
-pub fn GuideIndex() -> dioxus::prelude::Element {
+pub fn GuideIndex(section: GuideIndexSection) -> dioxus::prelude::Element {
     use dioxus::prelude::*;
     rsx! {
         h1 { id: "dioxus-tutorial",
-            a { href: "#dioxus-tutorial", class: "header", "Dioxus Tutorial" }
+            Link {
+                to: BookRoute::GuideIndex {
+                    section: GuideIndexSection::DioxusTutorial,
+                },
+                class: "header",
+                "Dioxus Tutorial"
+            }
         }
         p {
             "In this tutorial, we'll be building a small app called: "
@@ -4992,7 +5996,7 @@ pub fn GuideIndex() -> dioxus::prelude::Element {
         }
         p {
             "By the end of this tutorial, you will launch your very own web, desktop, and mobile apps and a backend deployed to "
-            a { href: "http://fly.io", "Fly.io" }
+            Link { to: "http://fly.io", "Fly.io" }
             "."
         }
         p {
@@ -5004,61 +6008,148 @@ pub fn GuideIndex() -> dioxus::prelude::Element {
         }
         p {
             "We will primarily focus on the higher-level concepts of Dioxus without diving deep into the details of specific APIs. We recommend experimenting with the APIs yourself or reading the "
-            a { href: "../essentials", "Core Concepts" }
+            Link {
+                to: BookRoute::EssentialsIndex {
+                    section: EssentialsIndexSection::Empty,
+                },
+                "Core Concepts"
+            }
             " and specific "
-            a { href: "guides", "Guides" }
+            Link {
+                to: BookRoute::GuidesIndex {
+                    section: GuidesIndexSection::Empty,
+                },
+                "Guides"
+            }
             " for more information."
         }
         h2 { id: "what-will-we-be-learning",
-            a { href: "#what-will-we-be-learning", class: "header", "What will we be learning?" }
+            Link {
+                to: BookRoute::GuideIndex {
+                    section: GuideIndexSection::WhatWillWeBeLearning,
+                },
+                class: "header",
+                "What will we be learning?"
+            }
         }
         p { "This guide will cover the \"core\" Dioxus features including:" }
         ul {
             li {
-                a { href: "tooling", "Tooling Setup" }
+                Link {
+                    to: BookRoute::GuideTooling {
+                        section: GuideToolingSection::Empty,
+                    },
+                    "Tooling Setup"
+                }
             }
             li {
-                a { href: "new_app", "Creating a new app" }
+                Link {
+                    to: BookRoute::GuideNewApp {
+                        section: GuideNewAppSection::Empty,
+                    },
+                    "Creating a new app"
+                }
             }
             li {
-                a { href: "component", "How Components Work" }
+                Link {
+                    to: BookRoute::GuideComponent {
+                        section: GuideComponentSection::Empty,
+                    },
+                    "How Components Work"
+                }
             }
             li {
-                a { href: "rsx", "Creating UI with RSX" }
+                Link {
+                    to: BookRoute::GuideRsx {
+                        section: GuideRsxSection::Empty,
+                    },
+                    "Creating UI with RSX"
+                }
             }
             li {
-                a { href: "assets", "Styling and Assets" }
+                Link {
+                    to: BookRoute::GuideAssets {
+                        section: GuideAssetsSection::Empty,
+                    },
+                    "Styling and Assets"
+                }
             }
             li {
-                a { href: "state", "Adding State" }
+                Link {
+                    to: BookRoute::GuideState {
+                        section: GuideStateSection::Empty,
+                    },
+                    "Adding State"
+                }
             }
             li {
-                a { href: "data_fetching", "Fetching Data" }
+                Link {
+                    to: BookRoute::GuideDataFetching {
+                        section: GuideDataFetchingSection::Empty,
+                    },
+                    "Fetching Data"
+                }
             }
             li {
-                a { href: "backend", "Adding a Backend" }
+                Link {
+                    to: BookRoute::GuideBackend {
+                        section: GuideBackendSection::Empty,
+                    },
+                    "Adding a Backend"
+                }
             }
             li {
-                a { href: "databases", "Integrating a Database" }
+                Link {
+                    to: BookRoute::GuideDatabases {
+                        section: GuideDatabasesSection::Empty,
+                    },
+                    "Integrating a Database"
+                }
             }
             li {
-                a { href: "routing", "App Routing" }
+                Link {
+                    to: BookRoute::GuideRouting {
+                        section: GuideRoutingSection::Empty,
+                    },
+                    "App Routing"
+                }
             }
             li {
-                a { href: "bundle", "Bundling" }
+                Link {
+                    to: BookRoute::GuideBundle {
+                        section: GuideBundleSection::Empty,
+                    },
+                    "Bundling"
+                }
             }
             li {
-                a { href: "deploy", "Deployment" }
+                Link {
+                    to: BookRoute::GuideDeploy {
+                        section: GuideDeploySection::Empty,
+                    },
+                    "Deployment"
+                }
             }
             li {
-                a { href: "next_steps", "Next Steps" }
+                Link {
+                    to: BookRoute::GuideNextSteps {
+                        section: GuideNextStepsSection::Empty,
+                    },
+                    "Next Steps"
+                }
             }
         }
         p {
             "Dioxus is a very full-featured framework, so we encourage you to follow up this tutorial by building your own larger apps."
         }
         h2 { id: "what-are-we-building",
-            a { href: "#what-are-we-building", class: "header", "What are we building?" }
+            Link {
+                to: BookRoute::GuideIndex {
+                    section: GuideIndexSection::WhatAreWeBuilding,
+                },
+                class: "header",
+                "What are we building?"
+            }
         }
         p {
             "The features of "
@@ -5078,16 +6169,73 @@ pub fn GuideIndex() -> dioxus::prelude::Element {
         }
     }
 }
+#[derive(
+    Clone, Copy, PartialEq, Eq, Hash, Debug, Default, serde::Serialize, serde::Deserialize,
+)]
+pub enum GuideToolingSection {
+    #[default]
+    Empty,
+    SettingUpTooling,
+    Checklist,
+    VerifyYourSetup,
+    AllTheCommands,
+}
+impl std::str::FromStr for GuideToolingSection {
+    type Err = GuideToolingSectionParseError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "" => Ok(Self::Empty),
+            "setting-up-tooling" => Ok(Self::SettingUpTooling),
+            "checklist" => Ok(Self::Checklist),
+            "verify-your-setup" => Ok(Self::VerifyYourSetup),
+            "all-the-commands" => Ok(Self::AllTheCommands),
+            _ => Err(GuideToolingSectionParseError),
+        }
+    }
+}
+impl std::fmt::Display for GuideToolingSection {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Self::Empty => f.write_str(""),
+            Self::SettingUpTooling => f.write_str("setting-up-tooling"),
+            Self::Checklist => f.write_str("checklist"),
+            Self::VerifyYourSetup => f.write_str("verify-your-setup"),
+            Self::AllTheCommands => f.write_str("all-the-commands"),
+        }
+    }
+}
+#[derive(Debug)]
+pub struct GuideToolingSectionParseError;
+impl std::fmt::Display for GuideToolingSectionParseError {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.write_str(
+            "Invalid section name. Expected one of GuideToolingSectionsetting-up-tooling, checklist, verify-your-setup, all-the-commands",
+        )?;
+        Ok(())
+    }
+}
+impl std::error::Error for GuideToolingSectionParseError {}
 #[component(no_case_check)]
-pub fn GuideTooling() -> dioxus::prelude::Element {
+pub fn GuideTooling(section: GuideToolingSection) -> dioxus::prelude::Element {
     use dioxus::prelude::*;
     rsx! {
         h1 { id: "setting-up-tooling",
-            a { href: "#setting-up-tooling", class: "header", "Setting up Tooling" }
+            Link {
+                to: BookRoute::GuideTooling {
+                    section: GuideToolingSection::SettingUpTooling,
+                },
+                class: "header",
+                "Setting up Tooling"
+            }
         }
         p {
             "Before we get started, make sure you've followed the "
-            a { href: "../getting_started", "Getting Started" }
+            Link {
+                to: BookRoute::GettingStartedIndex {
+                    section: GettingStartedIndexSection::Empty,
+                },
+                "Getting Started"
+            }
             " page on installing the required dependencies."
         }
         p {
@@ -5096,11 +6244,22 @@ pub fn GuideTooling() -> dioxus::prelude::Element {
             " as web application, but we still recommend setting up the relevant tooling for desktop and mobile development as well."
         }
         h2 { id: "checklist",
-            a { href: "#checklist", class: "header", "Checklist" }
+            Link {
+                to: BookRoute::GuideTooling {
+                    section: GuideToolingSection::Checklist,
+                },
+                class: "header",
+                "Checklist"
+            }
         }
         p {
             "We covered the setup instructions in "
-            a { href: "../getting_started", "Getting Started" }
+            Link {
+                to: BookRoute::GettingStartedIndex {
+                    section: GettingStartedIndexSection::Empty,
+                },
+                "Getting Started"
+            }
             ", but first you should verify everything is set up properly:"
         }
         ul {
@@ -5115,7 +6274,13 @@ pub fn GuideTooling() -> dioxus::prelude::Element {
             li { "System-specific dependencies are installed" }
         }
         h2 { id: "verify-your-setup",
-            a { href: "#verify-your-setup", class: "header", "Verify your setup" }
+            Link {
+                to: BookRoute::GuideTooling {
+                    section: GuideToolingSection::VerifyYourSetup,
+                },
+                class: "header",
+                "Verify your setup"
+            }
         }
         p {
             "Before proceeding, make sure you have the  "
@@ -5125,7 +6290,13 @@ pub fn GuideTooling() -> dioxus::prelude::Element {
         p { "Verify the returned version matches this guide (eg 0.6) by running:" }
         CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">dx </span><span style=\"color:#f92672;\">--</span><span style=\"color:#f8f8f2;\">version</span></pre>\n" }
         h2 { id: "all-the-commands",
-            a { href: "#all-the-commands", class: "header", "All the Commands" }
+            Link {
+                to: BookRoute::GuideTooling {
+                    section: GuideToolingSection::AllTheCommands,
+                },
+                class: "header",
+                "All the Commands"
+            }
         }
         p {
             "You can also run  "
@@ -5144,12 +6315,76 @@ pub fn GuideTooling() -> dioxus::prelude::Element {
         }
     }
 }
+#[derive(
+    Clone, Copy, PartialEq, Eq, Hash, Debug, Default, serde::Serialize, serde::Deserialize,
+)]
+pub enum GuideNewAppSection {
+    #[default]
+    Empty,
+    CreateANewProject,
+    RunningTheProject,
+    StructureOfTheApp,
+    TheCargotoml,
+    Dioxustoml,
+    AssetsFolder,
+    Mainrs,
+    ResettingToBasics,
+}
+impl std::str::FromStr for GuideNewAppSection {
+    type Err = GuideNewAppSectionParseError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "" => Ok(Self::Empty),
+            "create-a-new-project" => Ok(Self::CreateANewProject),
+            "running-the-project" => Ok(Self::RunningTheProject),
+            "structure-of-the-app" => Ok(Self::StructureOfTheApp),
+            "the-cargotoml" => Ok(Self::TheCargotoml),
+            "dioxustoml" => Ok(Self::Dioxustoml),
+            "assets-folder" => Ok(Self::AssetsFolder),
+            "mainrs" => Ok(Self::Mainrs),
+            "resetting-to-basics" => Ok(Self::ResettingToBasics),
+            _ => Err(GuideNewAppSectionParseError),
+        }
+    }
+}
+impl std::fmt::Display for GuideNewAppSection {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Self::Empty => f.write_str(""),
+            Self::CreateANewProject => f.write_str("create-a-new-project"),
+            Self::RunningTheProject => f.write_str("running-the-project"),
+            Self::StructureOfTheApp => f.write_str("structure-of-the-app"),
+            Self::TheCargotoml => f.write_str("the-cargotoml"),
+            Self::Dioxustoml => f.write_str("dioxustoml"),
+            Self::AssetsFolder => f.write_str("assets-folder"),
+            Self::Mainrs => f.write_str("mainrs"),
+            Self::ResettingToBasics => f.write_str("resetting-to-basics"),
+        }
+    }
+}
+#[derive(Debug)]
+pub struct GuideNewAppSectionParseError;
+impl std::fmt::Display for GuideNewAppSectionParseError {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.write_str(
+            "Invalid section name. Expected one of GuideNewAppSectioncreate-a-new-project, running-the-project, structure-of-the-app, the-cargotoml, dioxustoml, assets-folder, mainrs, resetting-to-basics",
+        )?;
+        Ok(())
+    }
+}
+impl std::error::Error for GuideNewAppSectionParseError {}
 #[component(no_case_check)]
-pub fn GuideNewApp() -> dioxus::prelude::Element {
+pub fn GuideNewApp(section: GuideNewAppSection) -> dioxus::prelude::Element {
     use dioxus::prelude::*;
     rsx! {
         h2 { id: "create-a-new-project",
-            a { href: "#create-a-new-project", class: "header", "Create a new project" }
+            Link {
+                to: BookRoute::GuideNewApp {
+                    section: GuideNewAppSection::CreateANewProject,
+                },
+                class: "header",
+                "Create a new project"
+            }
         }
         p { "Let's get to work!" }
         p {
@@ -5194,7 +6429,12 @@ pub fn GuideNewApp() -> dioxus::prelude::Element {
             }
             li {
                 "Select no for TailwindCSS. If you want to use Tailwind, make sure to read the "
-                a { href: "../cookbook/tailwind", "TailwindCSS guide" }
+                Link {
+                    to: BookRoute::CookbookTailwind {
+                        section: CookbookTailwindSection::Empty,
+                    },
+                    "TailwindCSS guide"
+                }
                 "."
             }
             li { "Select \"Web\" as the default platform." }
@@ -5207,7 +6447,13 @@ pub fn GuideNewApp() -> dioxus::prelude::Element {
             }
         }
         h2 { id: "running-the-project",
-            a { href: "#running-the-project", class: "header", "Running the project" }
+            Link {
+                to: BookRoute::GuideNewApp {
+                    section: GuideNewAppSection::RunningTheProject,
+                },
+                class: "header",
+                "Running the project"
+            }
         }
         p { "Once the project is generated, you can start it with the following command:" }
         CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">cd hot_dog\n</span><span style=\"color:#f8f8f2;\">dx serve</span></pre>\n" }
@@ -5247,7 +6493,13 @@ pub fn GuideNewApp() -> dioxus::prelude::Element {
         }
         p { "Congrats! You have your very first Dioxus app." }
         h2 { id: "structure-of-the-app",
-            a { href: "#structure-of-the-app", class: "header", "Structure of the app" }
+            Link {
+                to: BookRoute::GuideNewApp {
+                    section: GuideNewAppSection::StructureOfTheApp,
+                },
+                class: "header",
+                "Structure of the app"
+            }
         }
         p { "Open the app in your editor and take a look at its structure:" }
         CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">├── Cargo.lock\n</span><span style=\"color:#f8f8f2;\">├── Cargo.toml\n</span><span style=\"color:#f8f8f2;\">├── Dioxus.toml\n</span><span style=\"color:#f8f8f2;\">├── </span><span style=\"color:#ff80f4;\">README</span><span style=\"color:#f8f8f2;\">.md\n</span><span style=\"color:#f8f8f2;\">├── assets\n</span><span style=\"color:#f8f8f2;\">│\u{a0}\u{a0} ├── favicon.ico\n</span><span style=\"color:#f8f8f2;\">│\u{a0}\u{a0} ├── header.svg\n</span><span style=\"color:#f8f8f2;\">│\u{a0}\u{a0} └── main.css\n</span><span style=\"color:#f8f8f2;\">└── src\n</span><span style=\"color:#f8f8f2;\">    └── main.rs</span></pre>\n" }
@@ -5270,7 +6522,13 @@ pub fn GuideNewApp() -> dioxus::prelude::Element {
             " folder."
         }
         h2 { id: "the-cargotoml",
-            a { href: "#the-cargotoml", class: "header", "The Cargo.toml" }
+            Link {
+                to: BookRoute::GuideNewApp {
+                    section: GuideNewAppSection::TheCargotoml,
+                },
+                class: "header",
+                "The Cargo.toml"
+            }
         }
         p {
             "The  "
@@ -5311,13 +6569,19 @@ pub fn GuideNewApp() -> dioxus::prelude::Element {
             "Starting with Dioxus 0.6,  "
             code { "dx" }
             " will also initialize separate "
-            a { href: "https://doc.rust-lang.org/cargo/reference/profiles.html", "Cargo profiles" }
+            Link { to: "https://doc.rust-lang.org/cargo/reference/profiles.html", "Cargo profiles" }
             " for your app. These profiles let you customize the optimization level of each platform. "
             code { "dx" }
             " also uses these platforms as a mechanism of isolating builds from each other."
         }
         h2 { id: "dioxustoml",
-            a { href: "#dioxustoml", class: "header", "Dioxus.toml" }
+            Link {
+                to: BookRoute::GuideNewApp {
+                    section: GuideNewAppSection::Dioxustoml,
+                },
+                class: "header",
+                "Dioxus.toml"
+            }
         }
         p {
             "The  "
@@ -5336,19 +6600,36 @@ pub fn GuideNewApp() -> dioxus::prelude::Element {
             " for our app just yet."
         }
         h2 { id: "assets-folder",
-            a { href: "#assets-folder", class: "header", "Assets Folder" }
+            Link {
+                to: BookRoute::GuideNewApp {
+                    section: GuideNewAppSection::AssetsFolder,
+                },
+                class: "header",
+                "Assets Folder"
+            }
         }
         p {
             "To include assets in your Dioxus app, you'll want to use the  "
             code { "asset!()" }
             " macro that we'll cover later in the "
-            a { href: "assets", "Styling and Assets" }
+            Link {
+                to: BookRoute::GuideAssets {
+                    section: GuideAssetsSection::Empty,
+                },
+                "Styling and Assets"
+            }
             " chapter. You can include assets from anywhere within your app's file tree, but we recommend using the pregenerated "
             code { "assets" }
             " folder."
         }
         h2 { id: "mainrs",
-            a { href: "#mainrs", class: "header", "main.rs" }
+            Link {
+                to: BookRoute::GuideNewApp {
+                    section: GuideNewAppSection::Mainrs,
+                },
+                class: "header",
+                "main.rs"
+            }
         }
         p {
             "Finally, the  "
@@ -5382,11 +6663,22 @@ pub fn GuideNewApp() -> dioxus::prelude::Element {
         }
         p {
             "We'll cover components more in-depth in the "
-            a { href: "component", "next chapter" }
+            Link {
+                to: BookRoute::GuideComponent {
+                    section: GuideComponentSection::Empty,
+                },
+                "next chapter"
+            }
             "."
         }
         h2 { id: "resetting-to-basics",
-            a { href: "#resetting-to-basics", class: "header", "Resetting to Basics" }
+            Link {
+                to: BookRoute::GuideNewApp {
+                    section: GuideNewAppSection::ResettingToBasics,
+                },
+                class: "header",
+                "Resetting to Basics"
+            }
         }
         p {
             "The bare-bones template provides basic starter code for our app. However, we want to start "
@@ -5400,12 +6692,74 @@ pub fn GuideNewApp() -> dioxus::prelude::Element {
         CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f92672;\">use </span><span style=\"color:#f8f8f2;\">dioxus::prelude::</span><span style=\"color:#f92672;\">*</span><span style=\"color:#f8f8f2;\">;\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">main</span><span style=\"color:#f8f8f2;\">() {{\n</span><span style=\"color:#f8f8f2;\">    dioxus::launch(App);\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">#[component]\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">App</span><span style=\"color:#f8f8f2;\">() -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    rsx! {{ </span><span style=\"color:#ffee99;\">&quot;HotDog!&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n" }
     }
 }
+#[derive(
+    Clone, Copy, PartialEq, Eq, Hash, Debug, Default, serde::Serialize, serde::Deserialize,
+)]
+pub enum GuideComponentSection {
+    #[default]
+    Empty,
+    YourFirstComponent,
+    WhatIsAComponent,
+    ComponentProperties,
+    PropertiesAreImmutable,
+    ComponentFunctionsAreCalledMultipleTimes,
+    ComposingComponents,
+}
+impl std::str::FromStr for GuideComponentSection {
+    type Err = GuideComponentSectionParseError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "" => Ok(Self::Empty),
+            "your-first-component" => Ok(Self::YourFirstComponent),
+            "what-is-a-component" => Ok(Self::WhatIsAComponent),
+            "component-properties" => Ok(Self::ComponentProperties),
+            "properties-are-immutable" => Ok(Self::PropertiesAreImmutable),
+            "component-functions-are-called-multiple-times" => {
+                Ok(Self::ComponentFunctionsAreCalledMultipleTimes)
+            }
+            "composing-components" => Ok(Self::ComposingComponents),
+            _ => Err(GuideComponentSectionParseError),
+        }
+    }
+}
+impl std::fmt::Display for GuideComponentSection {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Self::Empty => f.write_str(""),
+            Self::YourFirstComponent => f.write_str("your-first-component"),
+            Self::WhatIsAComponent => f.write_str("what-is-a-component"),
+            Self::ComponentProperties => f.write_str("component-properties"),
+            Self::PropertiesAreImmutable => f.write_str("properties-are-immutable"),
+            Self::ComponentFunctionsAreCalledMultipleTimes => {
+                f.write_str("component-functions-are-called-multiple-times")
+            }
+            Self::ComposingComponents => f.write_str("composing-components"),
+        }
+    }
+}
+#[derive(Debug)]
+pub struct GuideComponentSectionParseError;
+impl std::fmt::Display for GuideComponentSectionParseError {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.write_str(
+            "Invalid section name. Expected one of GuideComponentSectionyour-first-component, what-is-a-component, component-properties, properties-are-immutable, component-functions-are-called-multiple-times, composing-components",
+        )?;
+        Ok(())
+    }
+}
+impl std::error::Error for GuideComponentSectionParseError {}
 #[component(no_case_check)]
-pub fn GuideComponent() -> dioxus::prelude::Element {
+pub fn GuideComponent(section: GuideComponentSection) -> dioxus::prelude::Element {
     use dioxus::prelude::*;
     rsx! {
         h1 { id: "your-first-component",
-            a { href: "#your-first-component", class: "header", "Your First Component" }
+            Link {
+                to: BookRoute::GuideComponent {
+                    section: GuideComponentSection::YourFirstComponent,
+                },
+                class: "header",
+                "Your First Component"
+            }
         }
         p {
             "Now that we've initialized our "
@@ -5413,7 +6767,13 @@ pub fn GuideComponent() -> dioxus::prelude::Element {
             " app, we can start building out its components."
         }
         h2 { id: "what-is-a-component",
-            a { href: "#what-is-a-component", class: "header", "What is a component?" }
+            Link {
+                to: BookRoute::GuideComponent {
+                    section: GuideComponentSection::WhatIsAComponent,
+                },
+                class: "header",
+                "What is a component?"
+            }
         }
         p {
             "In Dioxus, apps are comprised of individual functions called "
@@ -5426,7 +6786,13 @@ pub fn GuideComponent() -> dioxus::prelude::Element {
         }
         CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">DogApp</span><span style=\"color:#f8f8f2;\">(</span><span style=\"font-style:italic;color:#fd971f;\">props</span><span style=\"color:#f8f8f2;\">: DogAppProps) -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#8c8c8c;\">// ...\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n" }
         h2 { id: "component-properties",
-            a { href: "#component-properties", class: "header", "Component Properties" }
+            Link {
+                to: BookRoute::GuideComponent {
+                    section: GuideComponentSection::ComponentProperties,
+                },
+                class: "header",
+                "Component Properties"
+            }
         }
         p {
             "All components take an object that outlines which parameters the component can accept. All  "
@@ -5452,11 +6818,17 @@ pub fn GuideComponent() -> dioxus::prelude::Element {
             " macro. When building libraries, we generally suggest deriving Props instead."
         }
         h2 { id: "properties-are-immutable",
-            a { href: "#properties-are-immutable", class: "header", "Properties are Immutable" }
+            Link {
+                to: BookRoute::GuideComponent {
+                    section: GuideComponentSection::PropertiesAreImmutable,
+                },
+                class: "header",
+                "Properties are Immutable"
+            }
         }
         p {
             "If you're familiar with JavaScript, then you might also be familiar with libraries like "
-            a { href: "http://react.dev", "React" }
+            Link { to: "http://react.dev", "React" }
             ". Dioxus is "
             em { "very" }
             " similar to React: if you know React then you will feel comfortable with Dioxus."
@@ -5473,8 +6845,10 @@ pub fn GuideComponent() -> dioxus::prelude::Element {
             " cheaper to call, so don't worry about performance gotchas here."
         }
         h2 { id: "component-functions-are-called-multiple-times",
-            a {
-                href: "#component-functions-are-called-multiple-times",
+            Link {
+                to: BookRoute::GuideComponent {
+                    section: GuideComponentSection::ComponentFunctionsAreCalledMultipleTimes,
+                },
                 class: "header",
                 "Component Functions are Called Multiple Times"
             }
@@ -5533,7 +6907,13 @@ pub fn GuideComponent() -> dioxus::prelude::Element {
             " before deciding to re-render your component. As an additional optimization, Dioxus only compares dynamic parts of your RSX. Elements that don't contain dynamic data won't be checked for changes."
         }
         h2 { id: "composing-components",
-            a { href: "#composing-components", class: "header", "Composing Components" }
+            Link {
+                to: BookRoute::GuideComponent {
+                    section: GuideComponentSection::ComposingComponents,
+                },
+                class: "header",
+                "Composing Components"
+            }
         }
         p {
             "In Dioxus, "
@@ -5552,17 +6932,74 @@ pub fn GuideComponent() -> dioxus::prelude::Element {
             "We'll cover  "
             code { "rsx! {{}}" }
             " in more depth in the "
-            a { href: "rsx", "next chapter" }
+            Link {
+                to: BookRoute::GuideRsx {
+                    section: GuideRsxSection::Empty,
+                },
+                "next chapter"
+            }
             "."
         }
     }
 }
+#[derive(
+    Clone, Copy, PartialEq, Eq, Hash, Debug, Default, serde::Serialize, serde::Deserialize,
+)]
+pub enum GuideRsxSection {
+    #[default]
+    Empty,
+    DescribingTheUi,
+    EditingRsxWithHotReloading,
+    RsxIsJustHtml,
+    AddingUiToOur,
+}
+impl std::str::FromStr for GuideRsxSection {
+    type Err = GuideRsxSectionParseError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "" => Ok(Self::Empty),
+            "describing-the-ui" => Ok(Self::DescribingTheUi),
+            "editing-rsx-with-hot-reloading" => Ok(Self::EditingRsxWithHotReloading),
+            "rsx-is-just-html" => Ok(Self::RsxIsJustHtml),
+            "adding-ui-to-our" => Ok(Self::AddingUiToOur),
+            _ => Err(GuideRsxSectionParseError),
+        }
+    }
+}
+impl std::fmt::Display for GuideRsxSection {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Self::Empty => f.write_str(""),
+            Self::DescribingTheUi => f.write_str("describing-the-ui"),
+            Self::EditingRsxWithHotReloading => f.write_str("editing-rsx-with-hot-reloading"),
+            Self::RsxIsJustHtml => f.write_str("rsx-is-just-html"),
+            Self::AddingUiToOur => f.write_str("adding-ui-to-our"),
+        }
+    }
+}
+#[derive(Debug)]
+pub struct GuideRsxSectionParseError;
+impl std::fmt::Display for GuideRsxSectionParseError {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.write_str(
+            "Invalid section name. Expected one of GuideRsxSectiondescribing-the-ui, editing-rsx-with-hot-reloading, rsx-is-just-html, adding-ui-to-our",
+        )?;
+        Ok(())
+    }
+}
+impl std::error::Error for GuideRsxSectionParseError {}
 #[component(no_case_check)]
-pub fn GuideRsx() -> dioxus::prelude::Element {
+pub fn GuideRsx(section: GuideRsxSection) -> dioxus::prelude::Element {
     use dioxus::prelude::*;
     rsx! {
         h1 { id: "describing-the-ui",
-            a { href: "#describing-the-ui", class: "header", "Describing the UI" }
+            Link {
+                to: BookRoute::GuideRsx {
+                    section: GuideRsxSection::DescribingTheUi,
+                },
+                class: "header",
+                "Describing the UI"
+            }
         }
         p {
             "Dioxus is a "
@@ -5587,7 +7024,11 @@ pub fn GuideRsx() -> dioxus::prelude::Element {
             ". Dioxus takes the RSX and constructs a user interface from it."
         }
         h2 { id: "editing-rsx-with-hot-reloading",
-            a { href: "#editing-rsx-with-hot-reloading", class: "header",
+            Link {
+                to: BookRoute::GuideRsx {
+                    section: GuideRsxSection::EditingRsxWithHotReloading,
+                },
+                class: "header",
                 "Editing RSX with Hot-Reloading"
             }
         }
@@ -5617,11 +7058,22 @@ pub fn GuideRsx() -> dioxus::prelude::Element {
         }
         p {
             "For an in-depth guide in what can and can't be hot-reloaded, check the "
-            a { href: "../reference/hotreload", "hot-reload guide" }
+            Link {
+                to: BookRoute::ReferenceHotreload {
+                    section: ReferenceHotreloadSection::Empty,
+                },
+                "hot-reload guide"
+            }
             " in the reference."
         }
         h2 { id: "rsx-is-just-html",
-            a { href: "#rsx-is-just-html", class: "header", "RSX is just HTML" }
+            Link {
+                to: BookRoute::GuideRsx {
+                    section: GuideRsxSection::RsxIsJustHtml,
+                },
+                class: "header",
+                "RSX is just HTML"
+            }
         }
         p {
             "Dioxus provides the  "
@@ -5688,7 +7140,13 @@ pub fn GuideRsx() -> dioxus::prelude::Element {
         }
         CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">rsx! {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#f92672;\">for</span><span style=\"color:#f8f8f2;\"> user </span><span style=\"color:#f92672;\">in</span><span style=\"color:#f8f8f2;\"> users {{\n</span><span style=\"color:#f8f8f2;\">        div {{\n</span><span style=\"color:#f8f8f2;\">            key: </span><span style=\"color:#ffee99;\">&quot;{{user.id}}&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">            </span><span style=\"color:#ffee99;\">&quot;{{user.name}}&quot;\n</span><span style=\"color:#f8f8f2;\">        }}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n" }
         h2 { id: "adding-ui-to-our",
-            a { href: "#adding-ui-to-our", class: "header", "Adding UI to our " }
+            Link {
+                to: BookRoute::GuideRsx {
+                    section: GuideRsxSection::AddingUiToOur,
+                },
+                class: "header",
+                "Adding UI to our "
+            }
             em { "HotDog" }
             " App"
         }
@@ -5708,22 +7166,92 @@ pub fn GuideRsx() -> dioxus::prelude::Element {
         }
         p {
             "Unfortunately, it's not very beautiful yet. Let's move on to "
-            a { href: "assets", "styling our app" }
+            Link {
+                to: BookRoute::GuideAssets {
+                    section: GuideAssetsSection::Empty,
+                },
+                "styling our app"
+            }
             "."
         }
     }
 }
+#[derive(
+    Clone, Copy, PartialEq, Eq, Hash, Debug, Default, serde::Serialize, serde::Deserialize,
+)]
+pub enum GuideAssetsSection {
+    #[default]
+    Empty,
+    StylingAndAssets,
+    DioxusUsesCssForStyling,
+    AddingTheCssFileWithAsset,
+    HotReloading,
+    IncludingImages,
+    Optimizations,
+    TheFinalCss,
+}
+impl std::str::FromStr for GuideAssetsSection {
+    type Err = GuideAssetsSectionParseError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "" => Ok(Self::Empty),
+            "styling-and-assets" => Ok(Self::StylingAndAssets),
+            "dioxus-uses-css-for-styling" => Ok(Self::DioxusUsesCssForStyling),
+            "adding-the-css-file-with-asset" => Ok(Self::AddingTheCssFileWithAsset),
+            "hot-reloading" => Ok(Self::HotReloading),
+            "including-images" => Ok(Self::IncludingImages),
+            "optimizations" => Ok(Self::Optimizations),
+            "the-final-css" => Ok(Self::TheFinalCss),
+            _ => Err(GuideAssetsSectionParseError),
+        }
+    }
+}
+impl std::fmt::Display for GuideAssetsSection {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Self::Empty => f.write_str(""),
+            Self::StylingAndAssets => f.write_str("styling-and-assets"),
+            Self::DioxusUsesCssForStyling => f.write_str("dioxus-uses-css-for-styling"),
+            Self::AddingTheCssFileWithAsset => f.write_str("adding-the-css-file-with-asset"),
+            Self::HotReloading => f.write_str("hot-reloading"),
+            Self::IncludingImages => f.write_str("including-images"),
+            Self::Optimizations => f.write_str("optimizations"),
+            Self::TheFinalCss => f.write_str("the-final-css"),
+        }
+    }
+}
+#[derive(Debug)]
+pub struct GuideAssetsSectionParseError;
+impl std::fmt::Display for GuideAssetsSectionParseError {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.write_str(
+            "Invalid section name. Expected one of GuideAssetsSectionstyling-and-assets, dioxus-uses-css-for-styling, adding-the-css-file-with-asset, hot-reloading, including-images, optimizations, the-final-css",
+        )?;
+        Ok(())
+    }
+}
+impl std::error::Error for GuideAssetsSectionParseError {}
 #[component(no_case_check)]
-pub fn GuideAssets() -> dioxus::prelude::Element {
+pub fn GuideAssets(section: GuideAssetsSection) -> dioxus::prelude::Element {
     use dioxus::prelude::*;
     rsx! {
         h1 { id: "styling-and-assets",
-            a { href: "#styling-and-assets", class: "header", "Styling and Assets" }
+            Link {
+                to: BookRoute::GuideAssets {
+                    section: GuideAssetsSection::StylingAndAssets,
+                },
+                class: "header",
+                "Styling and Assets"
+            }
         }
         p { "Unfortunately, our HotDog app isn't quite ready to show off - it's completely unstyled!" }
         p { "In this chapter we'll cover adding assets and styles to our app." }
         h2 { id: "dioxus-uses-css-for-styling",
-            a { href: "#dioxus-uses-css-for-styling", class: "header",
+            Link {
+                to: BookRoute::GuideAssets {
+                    section: GuideAssetsSection::DioxusUsesCssForStyling,
+                },
+                class: "header",
                 "Dioxus uses CSS for Styling"
             }
         }
@@ -5732,7 +7260,7 @@ pub fn GuideAssets() -> dioxus::prelude::Element {
         }
         p {
             "CSS is by-far the most popular styling system and is extremely capable. For example, here's a screenshot of "
-            a { href: "https://github.com/terhechte/Ebou", "ebou" }
+            Link { to: "https://github.com/terhechte/Ebou", "ebou" }
             ", a very beautiful Mastodon client built with Dioxus."
         }
         p {
@@ -5744,7 +7272,11 @@ pub fn GuideAssets() -> dioxus::prelude::Element {
         }
         p { "HTML and CSS are very powerful - don't worry about being too limited!" }
         h2 { id: "adding-the-css-file-with-asset",
-            a { href: "#adding-the-css-file-with-asset", class: "header",
+            Link {
+                to: BookRoute::GuideAssets {
+                    section: GuideAssetsSection::AddingTheCssFileWithAsset,
+                },
+                class: "header",
                 "Adding the CSS File with asset!()"
             }
         }
@@ -5787,7 +7319,13 @@ pub fn GuideAssets() -> dioxus::prelude::Element {
             }
         }
         h2 { id: "hot-reloading",
-            a { href: "#hot-reloading", class: "header", "Hot-Reloading" }
+            Link {
+                to: BookRoute::GuideAssets {
+                    section: GuideAssetsSection::HotReloading,
+                },
+                class: "header",
+                "Hot-Reloading"
+            }
         }
         p {
             "All assets in Dioxus participate in hot-reloading. Try editing your app's  "
@@ -5807,7 +7345,13 @@ pub fn GuideAssets() -> dioxus::prelude::Element {
             }
         }
         h2 { id: "including-images",
-            a { href: "#including-images", class: "header", "Including Images" }
+            Link {
+                to: BookRoute::GuideAssets {
+                    section: GuideAssetsSection::IncludingImages,
+                },
+                class: "header",
+                "Including Images"
+            }
         }
         p { "In Dioxus, you can include images in two ways:" }
         ul {
@@ -5833,7 +7377,13 @@ pub fn GuideAssets() -> dioxus::prelude::Element {
         }
         CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"font-style:italic;color:#66d9ef;\">static </span><span style=\"color:#ff80f4;\">ICON</span><span style=\"color:#f8f8f2;\">: Asset </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">asset!(</span><span style=\"color:#ffee99;\">&quot;/assets/icon.png&quot;</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">rsx! {{\n</span><span style=\"color:#f8f8f2;\">    img {{ src: </span><span style=\"color:#ff80f4;\">ICON </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n" }
         h2 { id: "optimizations",
-            a { href: "#optimizations", class: "header", "Optimizations" }
+            Link {
+                to: BookRoute::GuideAssets {
+                    section: GuideAssetsSection::Optimizations,
+                },
+                class: "header",
+                "Optimizations"
+            }
         }
         p {
             "By default, the  "
@@ -5858,11 +7408,22 @@ pub fn GuideAssets() -> dioxus::prelude::Element {
         }
         p {
             "Check out the "
-            a { href: "../guides/assets", "assets guide" }
+            Link {
+                to: BookRoute::GuidesAssets {
+                    section: GuidesAssetsSection::Empty,
+                },
+                "assets guide"
+            }
             " for a more in-depth explanation of how the Dioxus asset system works."
         }
         h2 { id: "the-final-css",
-            a { href: "#the-final-css", class: "header", "The Final CSS" }
+            Link {
+                to: BookRoute::GuideAssets {
+                    section: GuideAssetsSection::TheFinalCss,
+                },
+                class: "header",
+                "The Final CSS"
+            }
         }
         p {
             "We can use the asset hot-reload system of  "
@@ -5882,12 +7443,73 @@ pub fn GuideAssets() -> dioxus::prelude::Element {
         }
     }
 }
+#[derive(
+    Clone, Copy, PartialEq, Eq, Hash, Debug, Default, serde::Serialize, serde::Deserialize,
+)]
+pub enum GuideStateSection {
+    #[default]
+    Empty,
+    Interactivity,
+    EncapsulatingState,
+    EventHandlers,
+    StateWithUseHook,
+    SignalsAndUseSignal,
+    GlobalStateWithContext,
+    GlobalSignals,
+}
+impl std::str::FromStr for GuideStateSection {
+    type Err = GuideStateSectionParseError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "" => Ok(Self::Empty),
+            "interactivity" => Ok(Self::Interactivity),
+            "encapsulating-state" => Ok(Self::EncapsulatingState),
+            "event-handlers" => Ok(Self::EventHandlers),
+            "state-with-use-hook" => Ok(Self::StateWithUseHook),
+            "signals-and-use-signal" => Ok(Self::SignalsAndUseSignal),
+            "global-state-with-context" => Ok(Self::GlobalStateWithContext),
+            "global-signals" => Ok(Self::GlobalSignals),
+            _ => Err(GuideStateSectionParseError),
+        }
+    }
+}
+impl std::fmt::Display for GuideStateSection {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Self::Empty => f.write_str(""),
+            Self::Interactivity => f.write_str("interactivity"),
+            Self::EncapsulatingState => f.write_str("encapsulating-state"),
+            Self::EventHandlers => f.write_str("event-handlers"),
+            Self::StateWithUseHook => f.write_str("state-with-use-hook"),
+            Self::SignalsAndUseSignal => f.write_str("signals-and-use-signal"),
+            Self::GlobalStateWithContext => f.write_str("global-state-with-context"),
+            Self::GlobalSignals => f.write_str("global-signals"),
+        }
+    }
+}
+#[derive(Debug)]
+pub struct GuideStateSectionParseError;
+impl std::fmt::Display for GuideStateSectionParseError {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.write_str(
+            "Invalid section name. Expected one of GuideStateSectioninteractivity, encapsulating-state, event-handlers, state-with-use-hook, signals-and-use-signal, global-state-with-context, global-signals",
+        )?;
+        Ok(())
+    }
+}
+impl std::error::Error for GuideStateSectionParseError {}
 #[component(no_case_check)]
-pub fn GuideState() -> dioxus::prelude::Element {
+pub fn GuideState(section: GuideStateSection) -> dioxus::prelude::Element {
     use dioxus::prelude::*;
     rsx! {
         h1 { id: "interactivity",
-            a { href: "#interactivity", class: "header", "Interactivity" }
+            Link {
+                to: BookRoute::GuideState {
+                    section: GuideStateSection::Interactivity,
+                },
+                class: "header",
+                "Interactivity"
+            }
         }
         p {
             "Now that our "
@@ -5895,7 +7517,13 @@ pub fn GuideState() -> dioxus::prelude::Element {
             " app is scaffolded and styled, we can finally add some interactive elements."
         }
         h2 { id: "encapsulating-state",
-            a { href: "#encapsulating-state", class: "header", "Encapsulating State" }
+            Link {
+                to: BookRoute::GuideState {
+                    section: GuideStateSection::EncapsulatingState,
+                },
+                class: "header",
+                "Encapsulating State"
+            }
         }
         p {
             "Before we get too far, let's split our app into two parts: the  "
@@ -5912,13 +7540,24 @@ pub fn GuideState() -> dioxus::prelude::Element {
             contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">#[component]\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">App</span><span style=\"color:#f8f8f2;\">() -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    rsx! {{\n</span><span style=\"color:#f8f8f2;\">        document::Stylesheet {{ href: </span><span style=\"color:#ff80f4;\">CSS </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">        Title {{}}\n</span><span style=\"color:#f8f8f2;\">        DogView {{}}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">#[component]\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">Title</span><span style=\"color:#f8f8f2;\">() -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    rsx! {{\n</span><span style=\"color:#f8f8f2;\">        div {{ id: </span><span style=\"color:#ffee99;\">&quot;title&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">            h1 {{ </span><span style=\"color:#ffee99;\">&quot;HotDog! 🌭&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">        }}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">#[component]\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">DogView</span><span style=\"color:#f8f8f2;\">() -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    rsx! {{\n</span><span style=\"color:#f8f8f2;\">        div {{ id: </span><span style=\"color:#ffee99;\">&quot;dogview&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">            img {{ src: </span><span style=\"color:#ffee99;\">&quot;https://images.dog.ceo/breeds/pitbull/dog-3981540_1280.jpg&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">        }}\n</span><span style=\"color:#f8f8f2;\">        div {{ id: </span><span style=\"color:#ffee99;\">&quot;buttons&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">            button {{ id: </span><span style=\"color:#ffee99;\">&quot;skip&quot;</span><span style=\"color:#f8f8f2;\">, </span><span style=\"color:#ffee99;\">&quot;skip&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">            button {{ id: </span><span style=\"color:#ffee99;\">&quot;save&quot;</span><span style=\"color:#f8f8f2;\">, </span><span style=\"color:#ffee99;\">&quot;save!&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">        }}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
         }
         h2 { id: "event-handlers",
-            a { href: "#event-handlers", class: "header", "Event Handlers" }
+            Link {
+                to: BookRoute::GuideState {
+                    section: GuideStateSection::EventHandlers,
+                },
+                class: "header",
+                "Event Handlers"
+            }
         }
         p {
             "In the  "
             code { "DogView" }
             " component, we want to attach an action to the click of the buttons. For example: skipping or saving the current dog photo. We can use an "
-            a { href: "../reference/event_handlers", "EventListener" }
+            Link {
+                to: BookRoute::ReferenceEventHandlers {
+                    section: ReferenceEventHandlersSection::Empty,
+                },
+                "EventListener"
+            }
             " to listen for the "
             code { "click" }
             " events."
@@ -5927,7 +7566,7 @@ pub fn GuideState() -> dioxus::prelude::Element {
             "Event handlers are similar to regular attributes, but their name usually starts with  "
             code { "on" }
             " - and they accept closures as values. The closure will be called whenever its corresponding event is triggered. The listener receives information about the event in the "
-            a { href: "https://docs.rs/dioxus/latest/dioxus/prelude/struct.Event.html",
+            Link { to: "https://docs.rs/dioxus/latest/dioxus/prelude/struct.Event.html",
                 "Event"
             }
             " object."
@@ -5947,11 +7586,22 @@ pub fn GuideState() -> dioxus::prelude::Element {
         blockquote {
             p {
                 "You can read more about Event Handlers in the "
-                a { href: "../reference/event_handlers", "Event Handler reference" }
+                Link {
+                    to: BookRoute::ReferenceEventHandlers {
+                        section: ReferenceEventHandlersSection::Empty,
+                    },
+                    "Event Handler reference"
+                }
             }
         }
         h2 { id: "state-with-use-hook",
-            a { href: "#state-with-use-hook", class: "header", "State with use_hook" }
+            Link {
+                to: BookRoute::GuideState {
+                    section: GuideStateSection::StateWithUseHook,
+                },
+                class: "header",
+                "State with use_hook"
+            }
         }
         p {
             "So far, our components have no internal state. For our  "
@@ -5979,12 +7629,22 @@ pub fn GuideState() -> dioxus::prelude::Element {
         }
         p {
             "Dioxus hooks are very similar to React's hooks and need to follow some "
-            a { href: "#the-rules-of-hooks", "simple rules" }
+            Link {
+                to: BookRoute::GuidesManagingState {
+                    section: GuidesManagingStateSection::TheRulesOfHooks,
+                },
+                "simple rules"
+            }
             " to function properly."
         }
-        h2 { id: "signals-and",
-            a { href: "#signals-and", class: "header", "Signals and " }
-            code { "use_signal" }
+        h2 { id: "signals-and-use-signal",
+            Link {
+                to: BookRoute::GuideState {
+                    section: GuideStateSection::SignalsAndUseSignal,
+                },
+                class: "header",
+                "Signals and use_signal"
+            }
         }
         p {
             "While  "
@@ -6029,11 +7689,22 @@ pub fn GuideState() -> dioxus::prelude::Element {
         }
         p {
             "Signals are core to Dioxus and take time to master. We recommend reading the "
-            a { href: "../essentials/state", "state management" }
+            Link {
+                to: BookRoute::EssentialsStateIndex {
+                    section: EssentialsStateIndexSection::Empty,
+                },
+                "state management"
+            }
             " guide in depth before diving into your first large app."
         }
         h2 { id: "global-state-with-context",
-            a { href: "#global-state-with-context", class: "header", "Global State with Context" }
+            Link {
+                to: BookRoute::GuideState {
+                    section: GuideStateSection::GlobalStateWithContext,
+                },
+                class: "header",
+                "Global State with Context"
+            }
         }
         p {
             "While hooks are good for state "
@@ -6086,7 +7757,13 @@ pub fn GuideState() -> dioxus::prelude::Element {
             "Any components that read the song signal will automatically re-render when the value changes."
         }
         h2 { id: "global-signals",
-            a { href: "#global-signals", class: "header", "Global Signals" }
+            Link {
+                to: BookRoute::GuideState {
+                    section: GuideStateSection::GlobalSignals,
+                },
+                class: "header",
+                "Global Signals"
+            }
         }
         p {
             "Occasionally you'll want a simple global value. This is where  "
@@ -6111,12 +7788,71 @@ pub fn GuideState() -> dioxus::prelude::Element {
         }
     }
 }
+#[derive(
+    Clone, Copy, PartialEq, Eq, Hash, Debug, Default, serde::Serialize, serde::Deserialize,
+)]
+pub enum GuideDataFetchingSection {
+    #[default]
+    Empty,
+    FetchingData,
+    AddingDependencies,
+    DefiningAResponseType,
+    UsingReqwestAndAsync,
+    ManagingDataFetchingWithUseResource,
+}
+impl std::str::FromStr for GuideDataFetchingSection {
+    type Err = GuideDataFetchingSectionParseError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "" => Ok(Self::Empty),
+            "fetching-data" => Ok(Self::FetchingData),
+            "adding-dependencies" => Ok(Self::AddingDependencies),
+            "defining-a-response-type" => Ok(Self::DefiningAResponseType),
+            "using-reqwest-and-async" => Ok(Self::UsingReqwestAndAsync),
+            "managing-data-fetching-with-use-resource" => {
+                Ok(Self::ManagingDataFetchingWithUseResource)
+            }
+            _ => Err(GuideDataFetchingSectionParseError),
+        }
+    }
+}
+impl std::fmt::Display for GuideDataFetchingSection {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Self::Empty => f.write_str(""),
+            Self::FetchingData => f.write_str("fetching-data"),
+            Self::AddingDependencies => f.write_str("adding-dependencies"),
+            Self::DefiningAResponseType => f.write_str("defining-a-response-type"),
+            Self::UsingReqwestAndAsync => f.write_str("using-reqwest-and-async"),
+            Self::ManagingDataFetchingWithUseResource => {
+                f.write_str("managing-data-fetching-with-use-resource")
+            }
+        }
+    }
+}
+#[derive(Debug)]
+pub struct GuideDataFetchingSectionParseError;
+impl std::fmt::Display for GuideDataFetchingSectionParseError {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.write_str(
+            "Invalid section name. Expected one of GuideDataFetchingSectionfetching-data, adding-dependencies, defining-a-response-type, using-reqwest-and-async, managing-data-fetching-with-use-resource",
+        )?;
+        Ok(())
+    }
+}
+impl std::error::Error for GuideDataFetchingSectionParseError {}
 #[component(no_case_check)]
-pub fn GuideDataFetching() -> dioxus::prelude::Element {
+pub fn GuideDataFetching(section: GuideDataFetchingSection) -> dioxus::prelude::Element {
     use dioxus::prelude::*;
     rsx! {
         h1 { id: "fetching-data",
-            a { href: "#fetching-data", class: "header", "Fetching Data" }
+            Link {
+                to: BookRoute::GuideDataFetching {
+                    section: GuideDataFetchingSection::FetchingData,
+                },
+                class: "header",
+                "Fetching Data"
+            }
         }
         p {
             "Our "
@@ -6124,18 +7860,24 @@ pub fn GuideDataFetching() -> dioxus::prelude::Element {
             " app has some basic interactivity but does not yet fetch new dog images. In this chapter, we'll interact with async and fetching data from an API."
         }
         h2 { id: "adding-dependencies",
-            a { href: "#adding-dependencies", class: "header", "Adding Dependencies" }
+            Link {
+                to: BookRoute::GuideDataFetching {
+                    section: GuideDataFetchingSection::AddingDependencies,
+                },
+                class: "header",
+                "Adding Dependencies"
+            }
         }
         p {
             "Dioxus does not provide any built-in utilities for fetching data. Crates like "
-            a { href: "https://github.com/marc2332/dioxus-query", "dioxus-query" }
+            Link { to: "https://github.com/marc2332/dioxus-query", "dioxus-query" }
             " exist, but for this tutorial we'll implement data-fetching from scratch."
         }
         p {
             "First, we need to add two new dependencies to our app: "
-            a { href: "https://crates.io/crates/serde", "serde" }
+            Link { to: "https://crates.io/crates/serde", "serde" }
             " and "
-            a { href: "https://crates.io/crates/reqwest", "reqwest" }
+            Link { to: "https://crates.io/crates/reqwest", "reqwest" }
             "."
         }
         ul {
@@ -6149,11 +7891,17 @@ pub fn GuideDataFetching() -> dioxus::prelude::Element {
         }
         CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">cargo add reqwest </span><span style=\"color:#f92672;\">--</span><span style=\"color:#f8f8f2;\">features json\n</span><span style=\"color:#f8f8f2;\">cargo add serde </span><span style=\"color:#f92672;\">--</span><span style=\"color:#f8f8f2;\">features derive</span></pre>\n" }
         h2 { id: "defining-a-response-type",
-            a { href: "#defining-a-response-type", class: "header", "Defining a Response Type" }
+            Link {
+                to: BookRoute::GuideDataFetching {
+                    section: GuideDataFetchingSection::DefiningAResponseType,
+                },
+                class: "header",
+                "Defining a Response Type"
+            }
         }
         p {
             "We'll be using the amazing "
-            a { href: "https://dog.ceo/dog-api/", "dog.ceo/dog-api" }
+            Link { to: "https://dog.ceo/dog-api/", "dog.ceo/dog-api" }
             " to fetch images of dogs for "
             em { "HotDog" }
             ". Fortunately, the API response is quite simple to deserialize."
@@ -6169,11 +7917,14 @@ pub fn GuideDataFetching() -> dioxus::prelude::Element {
             "Our Rust struct needs to match that format, though for now we'll only include the \"message\" field."
         }
         CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">#[derive(serde::Deserialize)]\n</span><span style=\"font-style:italic;color:#66d9ef;\">struct </span><span style=\"color:#f8f8f2;\">DogApi {{\n</span><span style=\"color:#f8f8f2;\">\tmessage: String,\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n" }
-        h2 { id: "using",
-            a { href: "#using", class: "header", "Using " }
-            code { "reqwest" }
-            " and "
-            code { "async" }
+        h2 { id: "using-reqwest-and-async",
+            Link {
+                to: BookRoute::GuideDataFetching {
+                    section: GuideDataFetchingSection::UsingReqwestAndAsync,
+                },
+                class: "header",
+                "Using reqwest and async"
+            }
         }
         p {
             "Dioxus has stellar support for asynchronous Rust. We can simply convert our  "
@@ -6234,8 +7985,10 @@ pub fn GuideDataFetching() -> dioxus::prelude::Element {
             "."
         }
         h2 { id: "managing-data-fetching-with-use-resource",
-            a {
-                href: "#managing-data-fetching-with-use-resource",
+            Link {
+                to: BookRoute::GuideDataFetching {
+                    section: GuideDataFetchingSection::ManagingDataFetchingWithUseResource,
+                },
                 class: "header",
                 "Managing Data Fetching with use_resource"
             }
@@ -6267,17 +8020,85 @@ pub fn GuideDataFetching() -> dioxus::prelude::Element {
             "The details of the  "
             code { "Resource" }
             " API are not terribly important right now, but you'll be using Resources frequently in larger apps, so it's a good idea to "
-            a { href: "../reference/use_resource", "read the docs" }
+            Link {
+                to: BookRoute::ReferenceUseResource {
+                    section: ReferenceUseResourceSection::Empty,
+                },
+                "read the docs"
+            }
             "."
         }
     }
 }
+#[derive(
+    Clone, Copy, PartialEq, Eq, Hash, Debug, Default, serde::Serialize, serde::Deserialize,
+)]
+pub enum GuideBackendSection {
+    #[default]
+    Empty,
+    AddingABackend,
+    EnablingFullstack,
+    ServerFunctionsAnInlineRpcSystem,
+    TheClientserverSplit,
+    ManagingDependencies,
+    OurHotdogServerFunction,
+    CallingTheServerFunction,
+}
+impl std::str::FromStr for GuideBackendSection {
+    type Err = GuideBackendSectionParseError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "" => Ok(Self::Empty),
+            "adding-a-backend" => Ok(Self::AddingABackend),
+            "enabling-fullstack" => Ok(Self::EnablingFullstack),
+            "server-functions-an-inline-rpc-system" => Ok(Self::ServerFunctionsAnInlineRpcSystem),
+            "the-clientserver-split" => Ok(Self::TheClientserverSplit),
+            "managing-dependencies" => Ok(Self::ManagingDependencies),
+            "our-hotdog-server-function" => Ok(Self::OurHotdogServerFunction),
+            "calling-the-server-function" => Ok(Self::CallingTheServerFunction),
+            _ => Err(GuideBackendSectionParseError),
+        }
+    }
+}
+impl std::fmt::Display for GuideBackendSection {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Self::Empty => f.write_str(""),
+            Self::AddingABackend => f.write_str("adding-a-backend"),
+            Self::EnablingFullstack => f.write_str("enabling-fullstack"),
+            Self::ServerFunctionsAnInlineRpcSystem => {
+                f.write_str("server-functions-an-inline-rpc-system")
+            }
+            Self::TheClientserverSplit => f.write_str("the-clientserver-split"),
+            Self::ManagingDependencies => f.write_str("managing-dependencies"),
+            Self::OurHotdogServerFunction => f.write_str("our-hotdog-server-function"),
+            Self::CallingTheServerFunction => f.write_str("calling-the-server-function"),
+        }
+    }
+}
+#[derive(Debug)]
+pub struct GuideBackendSectionParseError;
+impl std::fmt::Display for GuideBackendSectionParseError {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.write_str(
+            "Invalid section name. Expected one of GuideBackendSectionadding-a-backend, enabling-fullstack, server-functions-an-inline-rpc-system, the-clientserver-split, managing-dependencies, our-hotdog-server-function, calling-the-server-function",
+        )?;
+        Ok(())
+    }
+}
+impl std::error::Error for GuideBackendSectionParseError {}
 #[component(no_case_check)]
-pub fn GuideBackend() -> dioxus::prelude::Element {
+pub fn GuideBackend(section: GuideBackendSection) -> dioxus::prelude::Element {
     use dioxus::prelude::*;
     rsx! {
         h1 { id: "adding-a-backend",
-            a { href: "#adding-a-backend", class: "header", "Adding a Backend" }
+            Link {
+                to: BookRoute::GuideBackend {
+                    section: GuideBackendSection::AddingABackend,
+                },
+                class: "header",
+                "Adding a Backend"
+            }
         }
         p {
             "Dioxus is a "
@@ -6294,11 +8115,22 @@ pub fn GuideBackend() -> dioxus::prelude::Element {
             " for you to integrate into your apps. In this chapter, we'll cover loading and saving state to our backend with "
             em { "Server Functions" }
             ". For an in-depth guide on fullstack, check out the dedicated "
-            a { href: "../guides/fullstack", "Fullstack Guide" }
+            Link {
+                to: BookRoute::GuidesFullstackIndex {
+                    section: GuidesFullstackIndexSection::Empty,
+                },
+                "Fullstack Guide"
+            }
             "."
         }
         h2 { id: "enabling-fullstack",
-            a { href: "#enabling-fullstack", class: "header", "Enabling Fullstack" }
+            Link {
+                to: BookRoute::GuideBackend {
+                    section: GuideBackendSection::EnablingFullstack,
+                },
+                class: "header",
+                "Enabling Fullstack"
+            }
         }
         p {
             "Before we can start using server functions, we need to enable the \"fullstack\" feature on Dioxus in our Cargo.toml."
@@ -6337,15 +8169,17 @@ pub fn GuideBackend() -> dioxus::prelude::Element {
             }
         }
         h2 { id: "server-functions-an-inline-rpc-system",
-            a {
-                href: "#server-functions-an-inline-rpc-system",
+            Link {
+                to: BookRoute::GuideBackend {
+                    section: GuideBackendSection::ServerFunctionsAnInlineRpcSystem,
+                },
                 class: "header",
                 "Server Functions: an inline RPC system"
             }
         }
         p {
             "Dioxus integrates with the "
-            a { href: "https://crates.io/crates/server_fn", "server_fn" }
+            Link { to: "https://crates.io/crates/server_fn", "server_fn" }
             " crate to provide a simple inline communication system for your apps. The server_fn crate makes it easy to build your app's backend with just basic Rust functions. Server Functions are "
             code { "async" }
             " functions annotated with the "
@@ -6369,7 +8203,7 @@ pub fn GuideBackend() -> dioxus::prelude::Element {
         }
         p {
             "On the server, the server function expands to an "
-            a { href: "https://github.com/tokio-rs/axum", "axum" }
+            Link { to: "https://github.com/tokio-rs/axum", "axum" }
             " handler:"
         }
         CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#8c8c8c;\">// on the server:\n</span><span style=\"font-style:italic;color:#66d9ef;\">struct </span><span style=\"color:#f8f8f2;\">SaveDogArgs {{\n</span><span style=\"color:#f8f8f2;\">    image: String,\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">async </span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">save_dog</span><span style=\"color:#f8f8f2;\">(Json(</span><span style=\"font-style:italic;color:#fd971f;\">args</span><span style=\"color:#f8f8f2;\">): Json&lt;SaveDogArgs&gt;) -&gt; Result&lt;(), ServerFnError&gt; {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">Ok</span><span style=\"color:#f8f8f2;\">(())\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n" }
@@ -6399,7 +8233,13 @@ pub fn GuideBackend() -> dioxus::prelude::Element {
             contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">main</span><span style=\"color:#f8f8f2;\">() {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#f92672;\">if </span><span style=\"color:#f8f8f2;\">cfg!(feature </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;server&quot;</span><span style=\"color:#f8f8f2;\">) {{\n</span><span style=\"color:#f8f8f2;\">        tokio::runtime::Runtime::new()\n</span><span style=\"color:#f8f8f2;\">            .</span><span style=\"color:#66d9ef;\">unwrap</span><span style=\"color:#f8f8f2;\">()\n</span><span style=\"color:#f8f8f2;\">            .</span><span style=\"color:#66d9ef;\">block_on</span><span style=\"color:#f8f8f2;\">(launch_server);\n</span><span style=\"color:#f8f8f2;\">    }} </span><span style=\"color:#f92672;\">else </span><span style=\"color:#f8f8f2;\">{{\n</span><span style=\"color:#f8f8f2;\">        dioxus::launch(app);\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">#[cfg(feature </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;server&quot;</span><span style=\"color:#f8f8f2;\">)]\n</span><span style=\"color:#f8f8f2;\">async </span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">launch_server</span><span style=\"color:#f8f8f2;\">() {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#8c8c8c;\">// Connect to dioxus&#39; logging infrastructure\n</span><span style=\"color:#f8f8f2;\">    dioxus::logger::initialize_default();\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#8c8c8c;\">// Connect to the IP and PORT env vars passed by the Dioxus CLI (or your dockerfile)\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> socket_addr </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">dioxus_cli_config::fullstack_address_or_localhost();\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#8c8c8c;\">// Build a custom axum router\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> router </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">axum::Router::new()\n</span><span style=\"color:#f8f8f2;\">        .</span><span style=\"color:#66d9ef;\">serve_dioxus_application</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#ffee99;\">&quot;&quot;</span><span style=\"color:#f8f8f2;\">, ServeConfigBuilder::new(app, ()))\n</span><span style=\"color:#f8f8f2;\">        .</span><span style=\"color:#66d9ef;\">into_make_service</span><span style=\"color:#f8f8f2;\">();\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#8c8c8c;\">// And launch it!\n</span><span style=\"color:#f8f8f2;\">    axum::Server::bind(</span><span style=\"color:#f92672;\">&amp;</span><span style=\"color:#f8f8f2;\">addr).</span><span style=\"color:#66d9ef;\">serve</span><span style=\"color:#f8f8f2;\">(router).await\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
         }
         h2 { id: "the-clientserver-split",
-            a { href: "#the-clientserver-split", class: "header", "The Client/Server split" }
+            Link {
+                to: BookRoute::GuideBackend {
+                    section: GuideBackendSection::TheClientserverSplit,
+                },
+                class: "header",
+                "The Client/Server split"
+            }
         }
         p {
             "When Dioxus builds your fullstack apps, it actually creates two separate applications: the server and the client. To achieve this,  "
@@ -6450,17 +8290,23 @@ pub fn GuideBackend() -> dioxus::prelude::Element {
         }
         CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">#[server]\n</span><span style=\"color:#f8f8f2;\">async </span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">DoThing</span><span style=\"color:#f8f8f2;\">() -&gt; Result&lt;(), ServerFnError&gt; {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#8c8c8c;\">// ❌ attempting to use web_sys on the server will panic!\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> document </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">web_sys::document();\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#8c8c8c;\">// ..\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n" }
         h2 { id: "managing-dependencies",
-            a { href: "#managing-dependencies", class: "header", "Managing Dependencies" }
+            Link {
+                to: BookRoute::GuideBackend {
+                    section: GuideBackendSection::ManagingDependencies,
+                },
+                class: "header",
+                "Managing Dependencies"
+            }
         }
         p {
             "Some dependencies like "
-            a { href: "https://github.com/tokio-rs/tokio", "Tokio" }
+            Link { to: "https://github.com/tokio-rs/tokio", "Tokio" }
             " only compile properly when targeting native platforms. Other dependencies like "
-            a { href: "https://github.com/jni-rs/jni-sys", "jni-sys" }
+            Link { to: "https://github.com/jni-rs/jni-sys", "jni-sys" }
             " only work properly when running on a specific platform. In these cases, you'll want to make sure that these dependencies are only compiled when a particular feature is enabled. To do this, we can use Rust's "
             code { "optional" }
             " "
-            a { href: "https://doc.rust-lang.org/cargo/reference/features.html#optional-dependencies",
+            Link { to: "https://doc.rust-lang.org/cargo/reference/features.html#optional-dependencies",
                 "flag on dependencies in our Cargo.toml"
             }
             "."
@@ -6480,24 +8326,44 @@ pub fn GuideBackend() -> dioxus::prelude::Element {
         CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">[dependencies]\n</span><span style=\"color:#f8f8f2;\">server </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">{{ workspace </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ff80f4;\">true</span><span style=\"color:#f8f8f2;\">, default</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">features </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ff80f4;\">false </span><span style=\"color:#f8f8f2;\">}}</span></pre>\n" }
         p {
             "We provide a longer guide about the details of managing dependencies across the server and the client "
-            a { href: "../guides/fullstack/managing_dependencies", "here" }
+            Link {
+                to: BookRoute::GuidesFullstackManagingDependencies {
+                    section: GuidesFullstackManagingDependenciesSection::Empty,
+                },
+                "here"
+            }
             "."
         }
         h2 { id: "our-hotdog-server-function",
-            a { href: "#our-hotdog-server-function", class: "header", "Our HotDog Server Function" }
+            Link {
+                to: BookRoute::GuideBackend {
+                    section: GuideBackendSection::OurHotdogServerFunction,
+                },
+                class: "header",
+                "Our HotDog Server Function"
+            }
         }
         p {
             "Revisiting our HotDog app, let's create a new server function that saves our favorite dog to a file called  "
             code { "dogs.txt" }
             ". In production, you'd want to use a proper database as covered in "
-            a { href: "databases", "the next chapter" }
+            Link {
+                to: BookRoute::GuideDatabases {
+                    section: GuideDatabasesSection::Empty,
+                },
+                "the next chapter"
+            }
             ", but for now we'll use a simple file to test things out."
         }
         CodeBlock {
             contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#8c8c8c;\">// Expose a `save_dog` endpoint on our server that takes an &quot;image&quot; parameter\n</span><span style=\"color:#f8f8f2;\">#[server]\n</span><span style=\"color:#f8f8f2;\">async </span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">save_dog</span><span style=\"color:#f8f8f2;\">(</span><span style=\"font-style:italic;color:#fd971f;\">image</span><span style=\"color:#f8f8f2;\">: String) -&gt; Result&lt;(), ServerFnError&gt; {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#f92672;\">use </span><span style=\"color:#f8f8f2;\">std::io::Write;\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#8c8c8c;\">// Open the `dogs.txt` file in append-only mode, creating it if it doesn&#39;t exist;\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let </span><span style=\"color:#f92672;\">mut</span><span style=\"color:#f8f8f2;\"> file </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">std::fs::OpenOptions::new()\n</span><span style=\"color:#f8f8f2;\">        .</span><span style=\"color:#66d9ef;\">write</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#ff80f4;\">true</span><span style=\"color:#f8f8f2;\">)\n</span><span style=\"color:#f8f8f2;\">        .</span><span style=\"color:#66d9ef;\">append</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#ff80f4;\">true</span><span style=\"color:#f8f8f2;\">)\n</span><span style=\"color:#f8f8f2;\">        .</span><span style=\"color:#66d9ef;\">create</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#ff80f4;\">true</span><span style=\"color:#f8f8f2;\">)\n</span><span style=\"color:#f8f8f2;\">        .</span><span style=\"color:#66d9ef;\">open</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#ffee99;\">&quot;dogs.txt&quot;</span><span style=\"color:#f8f8f2;\">)\n</span><span style=\"color:#f8f8f2;\">        .</span><span style=\"color:#66d9ef;\">unwrap</span><span style=\"color:#f8f8f2;\">();\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#8c8c8c;\">// And then write a newline to it with the image url\n</span><span style=\"color:#f8f8f2;\">    file.</span><span style=\"color:#66d9ef;\">write_fmt</span><span style=\"color:#f8f8f2;\">(format_args!(</span><span style=\"color:#ffee99;\">&quot;{{image}}</span><span style=\"color:#ff80f4;\">\\n</span><span style=\"color:#ffee99;\">&quot;</span><span style=\"color:#f8f8f2;\">));\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">Ok</span><span style=\"color:#f8f8f2;\">(())\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
         }
         h3 { id: "calling-the-server-function",
-            a { href: "#calling-the-server-function", class: "header",
+            Link {
+                to: BookRoute::GuideBackend {
+                    section: GuideBackendSection::CallingTheServerFunction,
+                },
+                class: "header",
                 "Calling the server function"
             }
         }
@@ -6520,17 +8386,79 @@ pub fn GuideBackend() -> dioxus::prelude::Element {
         }
         p {
             "Server functions are extremely capable and can even be used during server-side-rendering. Check out the complete "
-            a { href: "../guides/fullstack/", "fullstack guide" }
+            Link {
+                to: BookRoute::GuidesFullstackIndex {
+                    section: GuidesFullstackIndexSection::Empty,
+                },
+                "fullstack guide"
+            }
             " for more information."
         }
     }
 }
+#[derive(
+    Clone, Copy, PartialEq, Eq, Hash, Debug, Default, serde::Serialize, serde::Deserialize,
+)]
+pub enum GuideDatabasesSection {
+    #[default]
+    Empty,
+    WorkingWithDatabases,
+    ChoosingADatabase,
+    AddingDatabaseOperationsToHotdog,
+    NotesOnDatabasesAndRust,
+    ChoosingADatabaseProvider,
+}
+impl std::str::FromStr for GuideDatabasesSection {
+    type Err = GuideDatabasesSectionParseError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "" => Ok(Self::Empty),
+            "working-with-databases" => Ok(Self::WorkingWithDatabases),
+            "choosing-a-database" => Ok(Self::ChoosingADatabase),
+            "adding-database-operations-to-hotdog" => Ok(Self::AddingDatabaseOperationsToHotdog),
+            "notes-on-databases-and-rust" => Ok(Self::NotesOnDatabasesAndRust),
+            "choosing-a-database-provider" => Ok(Self::ChoosingADatabaseProvider),
+            _ => Err(GuideDatabasesSectionParseError),
+        }
+    }
+}
+impl std::fmt::Display for GuideDatabasesSection {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Self::Empty => f.write_str(""),
+            Self::WorkingWithDatabases => f.write_str("working-with-databases"),
+            Self::ChoosingADatabase => f.write_str("choosing-a-database"),
+            Self::AddingDatabaseOperationsToHotdog => {
+                f.write_str("adding-database-operations-to-hotdog")
+            }
+            Self::NotesOnDatabasesAndRust => f.write_str("notes-on-databases-and-rust"),
+            Self::ChoosingADatabaseProvider => f.write_str("choosing-a-database-provider"),
+        }
+    }
+}
+#[derive(Debug)]
+pub struct GuideDatabasesSectionParseError;
+impl std::fmt::Display for GuideDatabasesSectionParseError {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.write_str(
+            "Invalid section name. Expected one of GuideDatabasesSectionworking-with-databases, choosing-a-database, adding-database-operations-to-hotdog, notes-on-databases-and-rust, choosing-a-database-provider",
+        )?;
+        Ok(())
+    }
+}
+impl std::error::Error for GuideDatabasesSectionParseError {}
 #[component(no_case_check)]
-pub fn GuideDatabases() -> dioxus::prelude::Element {
+pub fn GuideDatabases(section: GuideDatabasesSection) -> dioxus::prelude::Element {
     use dioxus::prelude::*;
     rsx! {
         h1 { id: "working-with-databases",
-            a { href: "#working-with-databases", class: "header", "Working with Databases" }
+            Link {
+                to: BookRoute::GuideDatabases {
+                    section: GuideDatabasesSection::WorkingWithDatabases,
+                },
+                class: "header",
+                "Working with Databases"
+            }
         }
         p {
             "Our HotDog app is coming together nicely! We implemented a very simple backend that saves the user's favorite dog images to a local \"dogs.txt\" file."
@@ -6542,13 +8470,22 @@ pub fn GuideDatabases() -> dioxus::prelude::Element {
         }
         p {
             "If you already have a good understanding of databases, jump ahead to the "
-            a { href: "#adding-database-operations-to-hotdog",
+            Link {
+                to: BookRoute::GuideDatabases {
+                    section: GuideDatabasesSection::AddingDatabaseOperationsToHotdog,
+                },
                 "section where we integrate Sqlite with HotDog"
             }
             ";"
         }
         h2 { id: "choosing-a-database",
-            a { href: "#choosing-a-database", class: "header", "Choosing a Database" }
+            Link {
+                to: BookRoute::GuideDatabases {
+                    section: GuideDatabasesSection::ChoosingADatabase,
+                },
+                class: "header",
+                "Choosing a Database"
+            }
         }
         p {
             "In today's age of app development, there are "
@@ -6558,39 +8495,39 @@ pub fn GuideDatabases() -> dioxus::prelude::Element {
         p { "Here is a (incomplete!) list of databases and a short summary of each:" }
         ul {
             li {
-                a { href: "https://www.postgresql.org", "PostgreSQL" }
+                Link { to: "https://www.postgresql.org", "PostgreSQL" }
                 ": Advanced database known for its powerful plugin system."
             }
             li {
-                a { href: "https://www.mysql.com", "MySQL" }
+                Link { to: "https://www.mysql.com", "MySQL" }
                 ": World's most popular open source database good for all apps."
             }
             li {
-                a { href: "https://www.sqlite.org", "SQLite" }
+                Link { to: "https://www.sqlite.org", "SQLite" }
                 ": Simple file-based engine known for its reliability and embeddability."
             }
             li {
-                a { href: "https://www.oracle.com/database/", "Oracle" }
+                Link { to: "https://www.oracle.com/database/", "Oracle" }
                 ": Advanced commercial database known for its enterprise features."
             }
             li {
-                a { href: "http://redis.io", "Redis" }
+                Link { to: "http://redis.io", "Redis" }
                 ": Simple key-value database known for its great performancel."
             }
             li {
-                a { href: "https://www.mongodb.com/", "MongoDB" }
+                Link { to: "https://www.mongodb.com/", "MongoDB" }
                 ": A database ideal for data that doesn't fit into rows and columns."
             }
             li {
-                a { href: "https://surrealdb.com/", "SurrealDB" }
+                Link { to: "https://surrealdb.com/", "SurrealDB" }
                 ": A new \"all-in-one\" database that combines many models."
             }
             li {
-                a { href: "https://www.cockroachlabs.com", "CockroachDB" }
+                Link { to: "https://www.cockroachlabs.com", "CockroachDB" }
                 ": Distributed SQL database designed for high-availability."
             }
             li {
-                a { href: "https://dev.to/shreyvijayvargiya/list-of-45-databases-in-the-world-57e8",
+                Link { to: "https://dev.to/shreyvijayvargiya/list-of-45-databases-in-the-world-57e8",
                     "and many more"
                 }
                 "!"
@@ -6645,14 +8582,16 @@ pub fn GuideDatabases() -> dioxus::prelude::Element {
             " or the "
             em { "user's machine" }
             ". In these cases, you'll want to use an embedded database like "
-            a { href: "https://www.sqlite.org", "SQLite" }
+            Link { to: "https://www.sqlite.org", "SQLite" }
             " or "
-            a { href: "https://rocksdb.org", "RocksDB" }
+            Link { to: "https://rocksdb.org", "RocksDB" }
             "."
         }
         h2 { id: "adding-database-operations-to-hotdog",
-            a {
-                href: "#adding-database-operations-to-hotdog",
+            Link {
+                to: BookRoute::GuideDatabases {
+                    section: GuideDatabasesSection::AddingDatabaseOperationsToHotdog,
+                },
                 class: "header",
                 "Adding Database operations to HotDog"
             }
@@ -6713,7 +8652,11 @@ pub fn GuideDatabases() -> dioxus::prelude::Element {
             }
         }
         h2 { id: "notes-on-databases-and-rust",
-            a { href: "#notes-on-databases-and-rust", class: "header",
+            Link {
+                to: BookRoute::GuideDatabases {
+                    section: GuideDatabasesSection::NotesOnDatabasesAndRust,
+                },
+                class: "header",
                 "Notes on Databases and Rust"
             }
         }
@@ -6727,23 +8670,23 @@ pub fn GuideDatabases() -> dioxus::prelude::Element {
         }
         ul {
             li {
-                a { href: "https://github.com/launchbadge/sqlx", "Sqlx" }
+                Link { to: "https://github.com/launchbadge/sqlx", "Sqlx" }
                 ": A straightforward yet large interface to Postgres, MySql, and Sqlite."
             }
             li {
-                a { href: "https://github.com/SeaQL/sea-orm", "SeaORM" }
+                Link { to: "https://github.com/SeaQL/sea-orm", "SeaORM" }
                 ": An ORM built on top of Sqlx for deriving databases."
             }
             li {
-                a { href: "https://github.com/rusqlite/rusqlite", "rusqlite" }
+                Link { to: "https://github.com/rusqlite/rusqlite", "rusqlite" }
                 ": An intuitive sqlite interface with no special ORM magic."
             }
             li {
-                a { href: "https://github.com/sfackler/rust-postgres", "rust-postgres" }
+                Link { to: "https://github.com/sfackler/rust-postgres", "rust-postgres" }
                 ": An interface to Postgres with an API similar to rusqlite."
             }
             li {
-                a { href: "https://github.com/trevyn/turbosql", "Turbosql" }
+                Link { to: "https://github.com/trevyn/turbosql", "Turbosql" }
                 ": A "
                 em { "very" }
                 " terse interface to Sqlite with automatic derives."
@@ -6751,26 +8694,30 @@ pub fn GuideDatabases() -> dioxus::prelude::Element {
         }
         p {
             "We aren't including libraries like "
-            a { href: "http://diesel.rs", "Diesel" }
+            Link { to: "http://diesel.rs", "Diesel" }
             " in this list since it seems that the Rust ecosystem has evolved towards newer projects with 1st-class async support."
         }
         p { "There are many libraries we haven't tested yet, but might be worth checking out:" }
         ul {
             li {
-                a { href: "https://github.com/emreyalvac/firebase-rs", "firebase-rs" }
+                Link { to: "https://github.com/emreyalvac/firebase-rs", "firebase-rs" }
                 ": Firebase client crate"
             }
             li {
-                a { href: "https://github.com/supabase-community/postgrest-rs", "postgrest-rs" }
+                Link { to: "https://github.com/supabase-community/postgrest-rs", "postgrest-rs" }
                 ": Supabase client crate"
             }
             li {
-                a { href: "https://github.com/mongodb/mongo-rust-driver", "mongo-rust-driver" }
+                Link { to: "https://github.com/mongodb/mongo-rust-driver", "mongo-rust-driver" }
                 ": Official MongoDB client crate"
             }
         }
         h2 { id: "choosing-a-database-provider",
-            a { href: "#choosing-a-database-provider", class: "header",
+            Link {
+                to: BookRoute::GuideDatabases {
+                    section: GuideDatabasesSection::ChoosingADatabaseProvider,
+                },
+                class: "header",
                 "Choosing a Database Provider"
             }
         }
@@ -6787,48 +8734,48 @@ pub fn GuideDatabases() -> dioxus::prelude::Element {
         p { "For popular relational databases:" }
         ul {
             li {
-                a { href: "https://cloud.google.com/products/databases", "GCP" }
+                Link { to: "https://cloud.google.com/products/databases", "GCP" }
                 ": Provides AlloyDB (enterprise postgres), CloudSQL (MySql, Postgres), and more."
             }
             li {
-                a { href: "https://aws.amazon.com/products/databases/", "AWS" }
+                Link { to: "https://aws.amazon.com/products/databases/", "AWS" }
                 ": Provides RDS, Aurora, DynamoDB, and more."
             }
             li {
-                a { href: "https://planetscale.com", "PlanetScale" }
+                Link { to: "https://planetscale.com", "PlanetScale" }
                 ": Reliable MySQL-compatible database with sharding designed for scale."
             }
             li {
-                a { href: "https://firebase.google.com", "Firebase" }
+                Link { to: "https://firebase.google.com", "Firebase" }
                 ": Google's comprehensive real-time database designed for rapid app development."
             }
             li {
-                a { href: "https://supabase.com", "Supabase" }
+                Link { to: "https://supabase.com", "Supabase" }
                 ": Hosted Postgres known for its great dashboard and tooling."
             }
             li {
-                a { href: "https://neon.tech", "Neon" }
+                Link { to: "https://neon.tech", "Neon" }
                 ": Hosted Postgres that separates compute and storage for scale-to-zero apps."
             }
         }
         p { "For Sqlite:" }
         ul {
             li {
-                a { href: "https://fly.io/docs/litefs/", "LiteFS" }
+                Link { to: "https://fly.io/docs/litefs/", "LiteFS" }
                 ": A distributed Sqlite sync engine designed to be used with Fly.io"
             }
             li {
-                a { href: "https://turso.tech", "Turso" }
+                Link { to: "https://turso.tech", "Turso" }
                 ": A \"multi-tenant\" sqlite provider that maintains one isolated database per user"
             }
         }
         p { "The \"scale-to-zero\" relational solutions:" }
         ul {
             li {
-                a { href: "https://aws.amazon.com/rds/aurora/", "AWS Aurora" }
+                Link { to: "https://aws.amazon.com/rds/aurora/", "AWS Aurora" }
             }
             li {
-                a { href: "https://fly.io/docs/litefs/", "LiteFS" }
+                Link { to: "https://fly.io/docs/litefs/", "LiteFS" }
             }
         }
         p { "We don't suggest any particular database provider." }
@@ -6839,19 +8786,88 @@ pub fn GuideDatabases() -> dioxus::prelude::Element {
         }
     }
 }
+#[derive(
+    Clone, Copy, PartialEq, Eq, Hash, Debug, Default, serde::Serialize, serde::Deserialize,
+)]
+pub enum GuideRoutingSection {
+    #[default]
+    Empty,
+    AddingMoreRoutes,
+    OrganizingOurProject,
+    CreatingARoute,
+    RenderingTheRoute,
+    RenderingTheNavbarWithALayout,
+    AddingAFavoritesRoute,
+    OurFavoritesPage,
+}
+impl std::str::FromStr for GuideRoutingSection {
+    type Err = GuideRoutingSectionParseError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "" => Ok(Self::Empty),
+            "adding-more-routes" => Ok(Self::AddingMoreRoutes),
+            "organizing-our-project" => Ok(Self::OrganizingOurProject),
+            "creating-a-route" => Ok(Self::CreatingARoute),
+            "rendering-the-route" => Ok(Self::RenderingTheRoute),
+            "rendering-the-navbar-with-a-layout" => Ok(Self::RenderingTheNavbarWithALayout),
+            "adding-a-favorites-route" => Ok(Self::AddingAFavoritesRoute),
+            "our-favorites-page" => Ok(Self::OurFavoritesPage),
+            _ => Err(GuideRoutingSectionParseError),
+        }
+    }
+}
+impl std::fmt::Display for GuideRoutingSection {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Self::Empty => f.write_str(""),
+            Self::AddingMoreRoutes => f.write_str("adding-more-routes"),
+            Self::OrganizingOurProject => f.write_str("organizing-our-project"),
+            Self::CreatingARoute => f.write_str("creating-a-route"),
+            Self::RenderingTheRoute => f.write_str("rendering-the-route"),
+            Self::RenderingTheNavbarWithALayout => {
+                f.write_str("rendering-the-navbar-with-a-layout")
+            }
+            Self::AddingAFavoritesRoute => f.write_str("adding-a-favorites-route"),
+            Self::OurFavoritesPage => f.write_str("our-favorites-page"),
+        }
+    }
+}
+#[derive(Debug)]
+pub struct GuideRoutingSectionParseError;
+impl std::fmt::Display for GuideRoutingSectionParseError {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.write_str(
+            "Invalid section name. Expected one of GuideRoutingSectionadding-more-routes, organizing-our-project, creating-a-route, rendering-the-route, rendering-the-navbar-with-a-layout, adding-a-favorites-route, our-favorites-page",
+        )?;
+        Ok(())
+    }
+}
+impl std::error::Error for GuideRoutingSectionParseError {}
 #[component(no_case_check)]
-pub fn GuideRouting() -> dioxus::prelude::Element {
+pub fn GuideRouting(section: GuideRoutingSection) -> dioxus::prelude::Element {
     use dioxus::prelude::*;
     rsx! {
         h1 { id: "adding-more-routes",
-            a { href: "#adding-more-routes", class: "header", "Adding More Routes" }
+            Link {
+                to: BookRoute::GuideRouting {
+                    section: GuideRoutingSection::AddingMoreRoutes,
+                },
+                class: "header",
+                "Adding More Routes"
+            }
         }
         p { "So far, our app has only had a single page. Let's change that!" }
         p {
             "In this chapter, we'll be adding a Navbar, a welcome screen, and a \"favorites\" page where we can revisit our favorite dogs."
         }
         h2 { id: "organizing-our-project",
-            a { href: "#organizing-our-project", class: "header", "Organizing our Project" }
+            Link {
+                to: BookRoute::GuideRouting {
+                    section: GuideRoutingSection::OrganizingOurProject,
+                },
+                class: "header",
+                "Organizing our Project"
+            }
         }
         p {
             "Before we get too far with adding new pages to our app, let's organize our codebase a bit better. For larger projects you might want to break your app into different smaller crates. For HotDog, we'll keep it simple."
@@ -6904,13 +8920,19 @@ pub fn GuideRouting() -> dioxus::prelude::Element {
         CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"font-style:italic;color:#66d9ef;\">mod </span><span style=\"color:#f8f8f2;\">components;\n</span><span style=\"font-style:italic;color:#66d9ef;\">mod </span><span style=\"color:#f8f8f2;\">backend;\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\">use crate</span><span style=\"color:#f8f8f2;\">::components::</span><span style=\"color:#f92672;\">*</span><span style=\"color:#f8f8f2;\">;</span></pre>\n" }
         p {
             "For more information on organizing Rust projects with modules, see the "
-            a { href: "https://doc.rust-lang.org/book/ch07-02-defining-modules-to-control-scope-and-privacy.html",
+            Link { to: "https://doc.rust-lang.org/book/ch07-02-defining-modules-to-control-scope-and-privacy.html",
                 "Modules section"
             }
             " of the Rust Book."
         }
         h2 { id: "creating-a-route",
-            a { href: "#creating-a-route", class: "header", "Creating a Route" }
+            Link {
+                to: BookRoute::GuideRouting {
+                    section: GuideRoutingSection::CreatingARoute,
+                },
+                class: "header",
+                "Creating a Route"
+            }
         }
         p {
             "Most Dioxus apps you'll build will have different screens. This could include pages like "
@@ -6946,7 +8968,13 @@ pub fn GuideRouting() -> dioxus::prelude::Element {
         }
         CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">#[derive(Routable, Clone, PartialEq)]\n</span><span style=\"font-style:italic;color:#66d9ef;\">enum </span><span style=\"color:#f8f8f2;\">Route {{\n</span><span style=\"color:#f8f8f2;\">    #[route(</span><span style=\"color:#ffee99;\">&quot;/&quot;</span><span style=\"color:#f8f8f2;\">)]\n</span><span style=\"color:#f8f8f2;\">    DogView,     </span><span style=\"color:#8c8c8c;\">// &lt;---- a DogView component must be in scope\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">DogView</span><span style=\"color:#f8f8f2;\">() -&gt; Element {{ </span><span style=\"color:#8c8c8c;\">/* */ </span><span style=\"color:#f8f8f2;\">}}</span></pre>\n" }
         h2 { id: "rendering-the-route",
-            a { href: "#rendering-the-route", class: "header", "Rendering the Route" }
+            Link {
+                to: BookRoute::GuideRouting {
+                    section: GuideRoutingSection::RenderingTheRoute,
+                },
+                class: "header",
+                "Rendering the Route"
+            }
         }
         p {
             "Now that we have our app's  "
@@ -6972,7 +9000,12 @@ pub fn GuideRouting() -> dioxus::prelude::Element {
             "Note here that the  "
             code { "PageNotFound" }
             " route takes the \"segments\" parameter. Dioxus routes are not only type-safe as variants, but also type-safe with URL parameters. For more information on how this works, "
-            a { href: "../router", "check the router guide" }
+            Link {
+                to: BookRoute::RouterIndex {
+                    section: RouterIndexSection::Empty,
+                },
+                "check the router guide"
+            }
             "."
         }
         p { "At this point, we should see our app, but this time without its Title." }
@@ -6984,7 +9017,11 @@ pub fn GuideRouting() -> dioxus::prelude::Element {
             }
         }
         h2 { id: "rendering-the-navbar-with-a-layout",
-            a { href: "#rendering-the-navbar-with-a-layout", class: "header",
+            Link {
+                to: BookRoute::GuideRouting {
+                    section: GuideRoutingSection::RenderingTheNavbarWithALayout,
+                },
+                class: "header",
                 "Rendering the NavBar with a Layout"
             }
         }
@@ -7064,7 +9101,13 @@ pub fn GuideRouting() -> dioxus::prelude::Element {
             }
         }
         h2 { id: "adding-a-favorites-route",
-            a { href: "#adding-a-favorites-route", class: "header", "Adding a Favorites Route" }
+            Link {
+                to: BookRoute::GuideRouting {
+                    section: GuideRoutingSection::AddingAFavoritesRoute,
+                },
+                class: "header",
+                "Adding a Favorites Route"
+            }
         }
         p {
             "Now that we understand the fundamentals of routing, let's finally add our "
@@ -7090,7 +9133,13 @@ pub fn GuideRouting() -> dioxus::prelude::Element {
             contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f92672;\">use crate</span><span style=\"color:#f8f8f2;\">::Route;\n</span><span style=\"color:#f92672;\">use </span><span style=\"color:#f8f8f2;\">dioxus::prelude::</span><span style=\"color:#f92672;\">*</span><span style=\"color:#f8f8f2;\">;\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">#[component]\n</span><span style=\"color:#f92672;\">pub </span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">NavBar</span><span style=\"color:#f8f8f2;\">() -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    rsx! {{\n</span><span style=\"color:#f8f8f2;\">        div {{ id: </span><span style=\"color:#ffee99;\">&quot;title&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">            Link {{ to: Route::DogView,\n</span><span style=\"color:#f8f8f2;\">                h1 {{ </span><span style=\"color:#ffee99;\">&quot;🌭 HotDog! &quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">            }}\n</span><span style=\"color:#f8f8f2;\">            Link {{ to: Route::Favorites, id: </span><span style=\"color:#ffee99;\">&quot;heart&quot;</span><span style=\"color:#f8f8f2;\">, </span><span style=\"color:#ffee99;\">&quot;♥\u{fe0f}&quot; </span><span style=\"color:#f8f8f2;\">}} </span><span style=\"color:#8c8c8c;\">// &lt;------- add this Link\n</span><span style=\"color:#f8f8f2;\">        }}\n</span><span style=\"color:#f8f8f2;\">        Outlet::&lt;Route&gt; {{}}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
         }
         h2 { id: "our-favorites-page",
-            a { href: "#our-favorites-page", class: "header", "Our Favorites Page" }
+            Link {
+                to: BookRoute::GuideRouting {
+                    section: GuideRoutingSection::OurFavoritesPage,
+                },
+                class: "header",
+                "Our Favorites Page"
+            }
         }
         p {
             "Finally, we can build our favorites page. Let's add a new  "
@@ -7129,19 +9178,92 @@ pub fn GuideRouting() -> dioxus::prelude::Element {
         }
     }
 }
+#[derive(
+    Clone, Copy, PartialEq, Eq, Hash, Debug, Default, serde::Serialize, serde::Deserialize,
+)]
+pub enum GuideBundleSection {
+    #[default]
+    Empty,
+    Bundling,
+    TestingOnDesktopAndMobile,
+    TestingOnIos,
+    TestingOnAndroid,
+    TestingOnDesktop,
+    BundlingForTheWeb,
+    BundlingForDesktopAndMobile,
+    CustomizingYourBundle,
+    AutomatingDxBundleWithJsonMode,
+}
+impl std::str::FromStr for GuideBundleSection {
+    type Err = GuideBundleSectionParseError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "" => Ok(Self::Empty),
+            "bundling" => Ok(Self::Bundling),
+            "testing-on-desktop-and-mobile" => Ok(Self::TestingOnDesktopAndMobile),
+            "testing-on-ios" => Ok(Self::TestingOnIos),
+            "testing-on-android" => Ok(Self::TestingOnAndroid),
+            "testing-on-desktop" => Ok(Self::TestingOnDesktop),
+            "bundling-for-the-web" => Ok(Self::BundlingForTheWeb),
+            "bundling-for-desktop-and-mobile" => Ok(Self::BundlingForDesktopAndMobile),
+            "customizing-your-bundle" => Ok(Self::CustomizingYourBundle),
+            "automating-dx-bundle-with-json-mode" => Ok(Self::AutomatingDxBundleWithJsonMode),
+            _ => Err(GuideBundleSectionParseError),
+        }
+    }
+}
+impl std::fmt::Display for GuideBundleSection {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Self::Empty => f.write_str(""),
+            Self::Bundling => f.write_str("bundling"),
+            Self::TestingOnDesktopAndMobile => f.write_str("testing-on-desktop-and-mobile"),
+            Self::TestingOnIos => f.write_str("testing-on-ios"),
+            Self::TestingOnAndroid => f.write_str("testing-on-android"),
+            Self::TestingOnDesktop => f.write_str("testing-on-desktop"),
+            Self::BundlingForTheWeb => f.write_str("bundling-for-the-web"),
+            Self::BundlingForDesktopAndMobile => f.write_str("bundling-for-desktop-and-mobile"),
+            Self::CustomizingYourBundle => f.write_str("customizing-your-bundle"),
+            Self::AutomatingDxBundleWithJsonMode => {
+                f.write_str("automating-dx-bundle-with-json-mode")
+            }
+        }
+    }
+}
+#[derive(Debug)]
+pub struct GuideBundleSectionParseError;
+impl std::fmt::Display for GuideBundleSectionParseError {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.write_str(
+            "Invalid section name. Expected one of GuideBundleSectionbundling, testing-on-desktop-and-mobile, testing-on-ios, testing-on-android, testing-on-desktop, bundling-for-the-web, bundling-for-desktop-and-mobile, customizing-your-bundle, automating-dx-bundle-with-json-mode",
+        )?;
+        Ok(())
+    }
+}
+impl std::error::Error for GuideBundleSectionParseError {}
 #[component(no_case_check)]
-pub fn GuideBundle() -> dioxus::prelude::Element {
+pub fn GuideBundle(section: GuideBundleSection) -> dioxus::prelude::Element {
     use dioxus::prelude::*;
     rsx! {
         h1 { id: "bundling",
-            a { href: "#bundling", class: "header", "Bundling" }
+            Link {
+                to: BookRoute::GuideBundle {
+                    section: GuideBundleSection::Bundling,
+                },
+                class: "header",
+                "Bundling"
+            }
         }
         p {
             "Congratulations! You built your first fully-functional Dioxus app, completely loaded with Routing, asynchronous data-fetching, Server Functions, and a database! That's incredible for just a few minutes of work."
         }
         p { "Let's get your app bundled for multiple platforms and then ready to deploy." }
         h2 { id: "testing-on-desktop-and-mobile",
-            a { href: "#testing-on-desktop-and-mobile", class: "header",
+            Link {
+                to: BookRoute::GuideBundle {
+                    section: GuideBundleSection::TestingOnDesktopAndMobile,
+                },
+                class: "header",
                 "Testing on Desktop and Mobile"
             }
         }
@@ -7156,7 +9278,13 @@ pub fn GuideBundle() -> dioxus::prelude::Element {
             " for Android and iOS!"
         }
         h3 { id: "testing-on-ios",
-            a { href: "#testing-on-ios", class: "header", "Testing on iOS" }
+            Link {
+                to: BookRoute::GuideBundle {
+                    section: GuideBundleSection::TestingOnIos,
+                },
+                class: "header",
+                "Testing on iOS"
+            }
         }
         p {
             "To test iOS, your development environment needs to be setup to build iOS apps. This involves a few steps:"
@@ -7165,7 +9293,7 @@ pub fn GuideBundle() -> dioxus::prelude::Element {
             li { "Make sure you are developing on a device running macOS" }
             li { "Install XCode" }
             li {
-                a { href: "https://developer.apple.com/ios/",
+                Link { to: "https://developer.apple.com/ios/",
                     "Download a recent iOS SDK and Emulator pack"
                 }
             }
@@ -7207,11 +9335,22 @@ pub fn GuideBundle() -> dioxus::prelude::Element {
         }
         p { "Fantastic - our app works seamlessly with no changes." }
         h3 { id: "testing-on-android",
-            a { href: "#testing-on-android", class: "header", "Testing on Android" }
+            Link {
+                to: BookRoute::GuideBundle {
+                    section: GuideBundleSection::TestingOnAndroid,
+                },
+                class: "header",
+                "Testing on Android"
+            }
         }
         p {
             "Setting up your environment for Android development takes time, so make sure to read the "
-            a { href: "../guides/mobile", "mobile tooling guide" }
+            Link {
+                to: BookRoute::GuidesMobileIndex {
+                    section: GuidesMobileIndexSection::Empty,
+                },
+                "mobile tooling guide"
+            }
             "."
         }
         ul {
@@ -7273,7 +9412,13 @@ pub fn GuideBundle() -> dioxus::prelude::Element {
             }
         }
         h2 { id: "testing-on-desktop",
-            a { href: "#testing-on-desktop", class: "header", "Testing on Desktop" }
+            Link {
+                to: BookRoute::GuideBundle {
+                    section: GuideBundleSection::TestingOnDesktop,
+                },
+                class: "header",
+                "Testing on Desktop"
+            }
         }
         p {
             "HotDog also works on macOS, Windows, and Linux! We can use  "
@@ -7288,7 +9433,13 @@ pub fn GuideBundle() -> dioxus::prelude::Element {
             }
         }
         h2 { id: "bundling-for-the-web",
-            a { href: "#bundling-for-the-web", class: "header", "Bundling for the web" }
+            Link {
+                to: BookRoute::GuideBundle {
+                    section: GuideBundleSection::BundlingForTheWeb,
+                },
+                class: "header",
+                "Bundling for the web"
+            }
         }
         p {
             "After we're done making changes to our server and client apps, we can build bundles that are ready to distribute."
@@ -7345,7 +9496,11 @@ pub fn GuideBundle() -> dioxus::prelude::Element {
             }
         }
         h2 { id: "bundling-for-desktop-and-mobile",
-            a { href: "#bundling-for-desktop-and-mobile", class: "header",
+            Link {
+                to: BookRoute::GuideBundle {
+                    section: GuideBundleSection::BundlingForDesktopAndMobile,
+                },
+                class: "header",
                 "Bundling for Desktop and Mobile"
             }
         }
@@ -7355,7 +9510,7 @@ pub fn GuideBundle() -> dioxus::prelude::Element {
             ". As of today,  "
             code { "dx bundle" }
             " only builds desktop apps for the native platform and architecture. Unfortunately, you can't build macOS apps from Windows, Linux apps from Mac, etc. We recommend using a Continuous Integration Matrix (like "
-            a { href: "https://docs.github.com/en/actions/writing-workflows/choosing-what-your-workflow-does/running-variations-of-jobs-in-a-workflow",
+            Link { to: "https://docs.github.com/en/actions/writing-workflows/choosing-what-your-workflow-does/running-variations-of-jobs-in-a-workflow",
                 "Github Actions"
             }
             ") to perform a \"cross-build\" of your app in multiple different containers."
@@ -7421,23 +9576,29 @@ pub fn GuideBundle() -> dioxus::prelude::Element {
         p { "Tauri provides documentation on the signing process:" }
         ul {
             li {
-                a { href: "https://tauri.app/distribute/sign/macos/", "macOS" }
+                Link { to: "https://tauri.app/distribute/sign/macos/", "macOS" }
             }
             li {
-                a { href: "https://tauri.app/distribute/sign/iOS/", "iOS" }
+                Link { to: "https://tauri.app/distribute/sign/iOS/", "iOS" }
             }
             li {
-                a { href: "https://tauri.app/distribute/sign/android/", "Android" }
+                Link { to: "https://tauri.app/distribute/sign/android/", "Android" }
             }
             li {
-                a { href: "https://tauri.app/distribute/sign/Windows/", "Windows" }
+                Link { to: "https://tauri.app/distribute/sign/Windows/", "Windows" }
             }
             li {
-                a { href: "https://tauri.app/distribute/sign/Linux/", "Linux" }
+                Link { to: "https://tauri.app/distribute/sign/Linux/", "Linux" }
             }
         }
         h2 { id: "customizing-your-bundle",
-            a { href: "#customizing-your-bundle", class: "header", "Customizing your Bundle" }
+            Link {
+                to: BookRoute::GuideBundle {
+                    section: GuideBundleSection::CustomizingYourBundle,
+                },
+                class: "header",
+                "Customizing your Bundle"
+            }
         }
         p {
             "Before you ship your app, you might want to configure how your app icon looks, what entitlements it has, and other details. Our  "
@@ -7452,7 +9613,10 @@ pub fn GuideBundle() -> dioxus::prelude::Element {
         CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">[application]\n</span><span style=\"color:#f8f8f2;\">name </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;docsite&quot;\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">[bundle]\n</span><span style=\"color:#f8f8f2;\">identifier </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;com.dioxuslabs&quot;\n</span><span style=\"color:#f8f8f2;\">publisher </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;DioxusLabs&quot;\n</span><span style=\"color:#f8f8f2;\">icon </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;assets/icon.png&quot;</span></pre>\n" }
         p {
             "For a full list of options, see the "
-            a { href: "../cookbook/bundling",
+            Link {
+                to: BookRoute::CookbookBundling {
+                    section: CookbookBundlingSection::Empty,
+                },
                 "reference page on the  "
                 code { "bundle" }
                 " section"
@@ -7460,7 +9624,11 @@ pub fn GuideBundle() -> dioxus::prelude::Element {
             "."
         }
         h2 { id: "automating-dx-bundle-with-json-mode",
-            a { href: "#automating-dx-bundle-with-json-mode", class: "header",
+            Link {
+                to: BookRoute::GuideBundle {
+                    section: GuideBundleSection::AutomatingDxBundleWithJsonMode,
+                },
+                class: "header",
                 "Automating dx bundle with JSON mode"
             }
         }
@@ -7468,13 +9636,15 @@ pub fn GuideBundle() -> dioxus::prelude::Element {
             "Also added in Dioxus 0.6 is a JSON output mode for  "
             code { "dx" }
             ". This makes it possible to parse the output of the CLI using tools like "
-            a { href: "https://jqlang.github.io/jq/", "jq" }
+            Link { to: "https://jqlang.github.io/jq/", "jq" }
             " which provide stdin/stdout support for JSON parsing."
         }
         p {
             "This mode is not particular friendly to humans, but does contain more information than the standard trace output."
         }
-        CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n</pre>\n" }
+        CodeBlock {
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">{{</span><span style=\"color:#ffee99;\">&quot;timestamp&quot;</span><span style=\"color:#f8f8f2;\">:</span><span style=\"color:#ffee99;\">&quot;   9.927s&quot;</span><span style=\"color:#f8f8f2;\">,</span><span style=\"color:#ffee99;\">&quot;level&quot;</span><span style=\"color:#f8f8f2;\">:</span><span style=\"color:#ffee99;\">&quot;INFO&quot;</span><span style=\"color:#f8f8f2;\">,</span><span style=\"color:#ffee99;\">&quot;message&quot;</span><span style=\"color:#f8f8f2;\">:</span><span style=\"color:#ffee99;\">&quot;Bundled app successfully!&quot;</span><span style=\"color:#f8f8f2;\">,</span><span style=\"color:#ffee99;\">&quot;target&quot;</span><span style=\"color:#f8f8f2;\">:</span><span style=\"color:#ffee99;\">&quot;dx::cli::bundle&quot;</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">{{</span><span style=\"color:#ffee99;\">&quot;timestamp&quot;</span><span style=\"color:#f8f8f2;\">:</span><span style=\"color:#ffee99;\">&quot;   9.927s&quot;</span><span style=\"color:#f8f8f2;\">,</span><span style=\"color:#ffee99;\">&quot;level&quot;</span><span style=\"color:#f8f8f2;\">:</span><span style=\"color:#ffee99;\">&quot;INFO&quot;</span><span style=\"color:#f8f8f2;\">,</span><span style=\"color:#ffee99;\">&quot;message&quot;</span><span style=\"color:#f8f8f2;\">:</span><span style=\"color:#ffee99;\">&quot;App produced 2 outputs:&quot;</span><span style=\"color:#f8f8f2;\">,</span><span style=\"color:#ffee99;\">&quot;target&quot;</span><span style=\"color:#f8f8f2;\">:</span><span style=\"color:#ffee99;\">&quot;dx::cli::bundle&quot;</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">{{</span><span style=\"color:#ffee99;\">&quot;timestamp&quot;</span><span style=\"color:#f8f8f2;\">:</span><span style=\"color:#ffee99;\">&quot;   9.927s&quot;</span><span style=\"color:#f8f8f2;\">,</span><span style=\"color:#ffee99;\">&quot;level&quot;</span><span style=\"color:#f8f8f2;\">:</span><span style=\"color:#ffee99;\">&quot;DEBUG&quot;</span><span style=\"color:#f8f8f2;\">,</span><span style=\"color:#ffee99;\">&quot;message&quot;</span><span style=\"color:#f8f8f2;\">:</span><span style=\"color:#ffee99;\">&quot;Bundling produced bundles: [</span><span style=\"color:#ff80f4;\">\\n</span><span style=\"color:#ffee99;\">    Bundle {{</span><span style=\"color:#ff80f4;\">\\n</span><span style=\"color:#ffee99;\">        package_type: MacOsBundle,</span><span style=\"color:#ff80f4;\">\\n</span><span style=\"color:#ffee99;\">        bundle_paths: [</span><span style=\"color:#ff80f4;\">\\n            \\&quot;</span><span style=\"color:#ffee99;\">/Users/jonkelley/Development/Tinkering/06-demos/hot_dog/target/dx/hot_dog/bundle/macos/bundle/macos/HotDog.app</span><span style=\"color:#ff80f4;\">\\&quot;</span><span style=\"color:#ffee99;\">,</span><span style=\"color:#ff80f4;\">\\n</span><span style=\"color:#ffee99;\">        ],</span><span style=\"color:#ff80f4;\">\\n</span><span style=\"color:#ffee99;\">    }},</span><span style=\"color:#ff80f4;\">\\n</span><span style=\"color:#ffee99;\">    Bundle {{</span><span style=\"color:#ff80f4;\">\\n</span><span style=\"color:#ffee99;\">        package_type: Dmg,</span><span style=\"color:#ff80f4;\">\\n</span><span style=\"color:#ffee99;\">        bundle_paths: [</span><span style=\"color:#ff80f4;\">\\n            \\&quot;</span><span style=\"color:#ffee99;\">/Users/jonkelley/Development/Tinkering/06-demos/hot_dog/target/dx/hot_dog/bundle/macos/bundle/dmg/HotDog_0.1.0_aarch64.dmg</span><span style=\"color:#ff80f4;\">\\&quot;</span><span style=\"color:#ffee99;\">,</span><span style=\"color:#ff80f4;\">\\n</span><span style=\"color:#ffee99;\">        ],</span><span style=\"color:#ff80f4;\">\\n</span><span style=\"color:#ffee99;\">    }},</span><span style=\"color:#ff80f4;\">\\n</span><span style=\"color:#ffee99;\">]&quot;</span><span style=\"color:#f8f8f2;\">,</span><span style=\"color:#ffee99;\">&quot;target&quot;</span><span style=\"color:#f8f8f2;\">:</span><span style=\"color:#ffee99;\">&quot;dx::cli::bundle&quot;</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">{{</span><span style=\"color:#ffee99;\">&quot;timestamp&quot;</span><span style=\"color:#f8f8f2;\">:</span><span style=\"color:#ffee99;\">&quot;   9.927s&quot;</span><span style=\"color:#f8f8f2;\">,</span><span style=\"color:#ffee99;\">&quot;level&quot;</span><span style=\"color:#f8f8f2;\">:</span><span style=\"color:#ffee99;\">&quot;INFO&quot;</span><span style=\"color:#f8f8f2;\">,</span><span style=\"color:#ffee99;\">&quot;message&quot;</span><span style=\"color:#f8f8f2;\">:</span><span style=\"color:#ffee99;\">&quot;app - [/Users/jonkelley/Development/Tinkering/06-demos/hot_dog/target/dx/hot_dog/bundle/macos/bundle/macos/HotDog.app]&quot;</span><span style=\"color:#f8f8f2;\">,</span><span style=\"color:#ffee99;\">&quot;target&quot;</span><span style=\"color:#f8f8f2;\">:</span><span style=\"color:#ffee99;\">&quot;dx::cli::bundle&quot;</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">{{</span><span style=\"color:#ffee99;\">&quot;timestamp&quot;</span><span style=\"color:#f8f8f2;\">:</span><span style=\"color:#ffee99;\">&quot;   9.927s&quot;</span><span style=\"color:#f8f8f2;\">,</span><span style=\"color:#ffee99;\">&quot;level&quot;</span><span style=\"color:#f8f8f2;\">:</span><span style=\"color:#ffee99;\">&quot;INFO&quot;</span><span style=\"color:#f8f8f2;\">,</span><span style=\"color:#ffee99;\">&quot;message&quot;</span><span style=\"color:#f8f8f2;\">:</span><span style=\"color:#ffee99;\">&quot;dmg - [/Users/jonkelley/Development/Tinkering/06-demos/hot_dog/target/dx/hot_dog/bundle/macos/bundle/dmg/HotDog_0.1.0_aarch64.dmg]&quot;</span><span style=\"color:#f8f8f2;\">,</span><span style=\"color:#ffee99;\">&quot;target&quot;</span><span style=\"color:#f8f8f2;\">:</span><span style=\"color:#ffee99;\">&quot;dx::cli::bundle&quot;</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">{{</span><span style=\"color:#ffee99;\">&quot;timestamp&quot;</span><span style=\"color:#f8f8f2;\">:</span><span style=\"color:#ffee99;\">&quot;   9.927s&quot;</span><span style=\"color:#f8f8f2;\">,</span><span style=\"color:#ffee99;\">&quot;level&quot;</span><span style=\"color:#f8f8f2;\">:</span><span style=\"color:#ffee99;\">&quot;DEBUG&quot;</span><span style=\"color:#f8f8f2;\">,</span><span style=\"color:#ffee99;\">&quot;json&quot;</span><span style=\"color:#f8f8f2;\">:</span><span style=\"color:#ffee99;\">&quot;{{</span><span style=\"color:#ff80f4;\">\\&quot;</span><span style=\"color:#ffee99;\">BundleOutput</span><span style=\"color:#ff80f4;\">\\&quot;</span><span style=\"color:#ffee99;\">:{{</span><span style=\"color:#ff80f4;\">\\&quot;</span><span style=\"color:#ffee99;\">bundles</span><span style=\"color:#ff80f4;\">\\&quot;</span><span style=\"color:#ffee99;\">:[</span><span style=\"color:#ff80f4;\">\\&quot;</span><span style=\"color:#ffee99;\">/Users/jonkelley/Development/Tinkering/06-demos/hot_dog/target/dx/hot_dog/bundle/macos/bundle/macos/HotDog.app</span><span style=\"color:#ff80f4;\">\\&quot;</span><span style=\"color:#ffee99;\">,</span><span style=\"color:#ff80f4;\">\\&quot;</span><span style=\"color:#ffee99;\">/Users/jonkelley/Development/Tinkering/06-demos/hot_dog/target/dx/hot_dog/bundle/macos/bundle/dmg/HotDog_0.1.0_aarch64.dmg</span><span style=\"color:#ff80f4;\">\\&quot;</span><span style=\"color:#ffee99;\">]}}}}&quot;</span><span style=\"color:#f8f8f2;\">,</span><span style=\"color:#ffee99;\">&quot;target&quot;</span><span style=\"color:#f8f8f2;\">:</span><span style=\"color:#ffee99;\">&quot;dx&quot;</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
+        }
         p {
             "JSON mode works with all  "
             code { "dx" }
@@ -7497,12 +9667,84 @@ pub fn GuideBundle() -> dioxus::prelude::Element {
         }
     }
 }
+#[derive(
+    Clone, Copy, PartialEq, Eq, Hash, Debug, Default, serde::Serialize, serde::Deserialize,
+)]
+pub enum GuideDeploySection {
+    #[default]
+    Empty,
+    Deploying,
+    DioxusDeploy,
+    DeployingYourDesktopAndMobileApps,
+    DeployRequirements,
+    ChoosingADeployProvider,
+    BuildingADockerfile,
+    DeployingToFly,
+    ContinuousDeployment,
+    FullstackDesktopAndMobile,
+    NextSteps,
+}
+impl std::str::FromStr for GuideDeploySection {
+    type Err = GuideDeploySectionParseError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "" => Ok(Self::Empty),
+            "deploying" => Ok(Self::Deploying),
+            "dioxus-deploy" => Ok(Self::DioxusDeploy),
+            "deploying-your-desktop-and-mobile-apps" => Ok(Self::DeployingYourDesktopAndMobileApps),
+            "deploy-requirements" => Ok(Self::DeployRequirements),
+            "choosing-a-deploy-provider" => Ok(Self::ChoosingADeployProvider),
+            "building-a-dockerfile" => Ok(Self::BuildingADockerfile),
+            "deploying-to-fly" => Ok(Self::DeployingToFly),
+            "continuous-deployment" => Ok(Self::ContinuousDeployment),
+            "fullstack-desktop-and-mobile" => Ok(Self::FullstackDesktopAndMobile),
+            "next-steps" => Ok(Self::NextSteps),
+            _ => Err(GuideDeploySectionParseError),
+        }
+    }
+}
+impl std::fmt::Display for GuideDeploySection {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Self::Empty => f.write_str(""),
+            Self::Deploying => f.write_str("deploying"),
+            Self::DioxusDeploy => f.write_str("dioxus-deploy"),
+            Self::DeployingYourDesktopAndMobileApps => {
+                f.write_str("deploying-your-desktop-and-mobile-apps")
+            }
+            Self::DeployRequirements => f.write_str("deploy-requirements"),
+            Self::ChoosingADeployProvider => f.write_str("choosing-a-deploy-provider"),
+            Self::BuildingADockerfile => f.write_str("building-a-dockerfile"),
+            Self::DeployingToFly => f.write_str("deploying-to-fly"),
+            Self::ContinuousDeployment => f.write_str("continuous-deployment"),
+            Self::FullstackDesktopAndMobile => f.write_str("fullstack-desktop-and-mobile"),
+            Self::NextSteps => f.write_str("next-steps"),
+        }
+    }
+}
+#[derive(Debug)]
+pub struct GuideDeploySectionParseError;
+impl std::fmt::Display for GuideDeploySectionParseError {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.write_str(
+            "Invalid section name. Expected one of GuideDeploySectiondeploying, dioxus-deploy, deploying-your-desktop-and-mobile-apps, deploy-requirements, choosing-a-deploy-provider, building-a-dockerfile, deploying-to-fly, continuous-deployment, fullstack-desktop-and-mobile, next-steps",
+        )?;
+        Ok(())
+    }
+}
+impl std::error::Error for GuideDeploySectionParseError {}
 #[component(no_case_check)]
-pub fn GuideDeploy() -> dioxus::prelude::Element {
+pub fn GuideDeploy(section: GuideDeploySection) -> dioxus::prelude::Element {
     use dioxus::prelude::*;
     rsx! {
         h1 { id: "deploying",
-            a { href: "#deploying", class: "header", "Deploying" }
+            Link {
+                to: BookRoute::GuideDeploy {
+                    section: GuideDeploySection::Deploying,
+                },
+                class: "header",
+                "Deploying"
+            }
         }
         p {
             "We're "
@@ -7511,22 +9753,38 @@ pub fn GuideDeploy() -> dioxus::prelude::Element {
         }
         p {
             "This step is optional for the tutorial but worth covering to understand the process. Feel free to skip ahead to "
-            a { href: "next_steps", "next steps" }
+            Link {
+                to: BookRoute::GuideNextSteps {
+                    section: GuideNextStepsSection::Empty,
+                },
+                "next steps"
+            }
             " if you're not interested in deploying."
         }
         h2 { id: "dioxus-deploy",
-            a { href: "#dioxus-deploy", class: "header", "Dioxus Deploy" }
+            Link {
+                to: BookRoute::GuideDeploy {
+                    section: GuideDeploySection::DioxusDeploy,
+                },
+                class: "header",
+                "Dioxus Deploy"
+            }
         }
         p {
             "As mentioned in the "
-            a { href: "../index.md#whos-funding-dioxus", "introduction" }
+            Link {
+                to: BookRoute::Index {
+                    section: IndexSection::WhosFundingDioxus,
+                },
+                "introduction"
+            }
             ", Dioxus is an independent project with aspirations to fund itself through a paid deploy platform. Hopefully, one day, enough people ship apps with "
-            a { href: "https://dioxuslabs.com/deploy", "Dioxus Deploy" }
+            Link { to: "https://dioxuslabs.com/deploy", "Dioxus Deploy" }
             " to fund development on Dioxus itself!"
         }
         p {
             "Currently, Dioxus does not provide its own deploy platform. If you want to sign-up for the beta and help us design the ideal \"end-to-end app-development experience,\" please "
-            a { href: "https://forms.gle/zeBZmrjSkajqg7hUA", "join the waitlist!" }
+            Link { to: "https://forms.gle/zeBZmrjSkajqg7hUA", "join the waitlist!" }
         }
         p {
             img {
@@ -7538,8 +9796,10 @@ pub fn GuideDeploy() -> dioxus::prelude::Element {
             }
         }
         h2 { id: "deploying-your-desktop-and-mobile-apps",
-            a {
-                href: "#deploying-your-desktop-and-mobile-apps",
+            Link {
+                to: BookRoute::GuideDeploy {
+                    section: GuideDeploySection::DeployingYourDesktopAndMobileApps,
+                },
                 class: "header",
                 "Deploying your Desktop and Mobile apps"
             }
@@ -7550,7 +9810,12 @@ pub fn GuideDeploy() -> dioxus::prelude::Element {
         blockquote {
             p {
                 "📣 When shipping fullstack apps to production, you'll want to make sure to set your backend API URL properly as "
-                a { href: "#fullstack-desktop-and-mobile", "covered later" }
+                Link {
+                    to: BookRoute::GuideDeploy {
+                        section: GuideDeploySection::FullstackDesktopAndMobile,
+                    },
+                    "covered later"
+                }
                 "."
             }
         }
@@ -7559,35 +9824,41 @@ pub fn GuideDeploy() -> dioxus::prelude::Element {
         }
         ul {
             li {
-                a { href: "https://developer.apple.com/ios/submit/", "iOS" }
+                Link { to: "https://developer.apple.com/ios/submit/", "iOS" }
                 ": Directly publish to the Apple App Store"
             }
             li {
-                a { href: "https://developer.apple.com/macos/submit/", "macOS" }
+                Link { to: "https://developer.apple.com/macos/submit/", "macOS" }
                 ": Directly publish to the Apple App Store"
             }
             li {
-                a { href: "https://developer.android.com/studio/publish", "Android" }
+                Link { to: "https://developer.android.com/studio/publish", "Android" }
                 ": Directly publish to the Google Play Store"
             }
         }
         p {
             "Tauri provides some "
-            a { href: "https://tauri.app/distribute/", "helpful guides" }
+            Link { to: "https://tauri.app/distribute/", "helpful guides" }
             " for deploying Tauri apps which, while not Dioxus apps, need to follow many of the same steps for deploying to app stores."
         }
         p { "Making native app distribution easier is a top priority for Dioxus Deploy!" }
         h2 { id: "deploy-requirements",
-            a { href: "#deploy-requirements", class: "header", "Deploy Requirements" }
+            Link {
+                to: BookRoute::GuideDeploy {
+                    section: GuideDeploySection::DeployRequirements,
+                },
+                class: "header",
+                "Deploy Requirements"
+            }
         }
         p {
             "Dioxus web apps are structured as a Client bundle and a Server executable. Generally, any deploy provider that exposes a simple container will be sufficient for a Dioxus fullstack web application."
         }
         p {
             "Some providers like "
-            a { href: "http://workers.cloudflare.com", "Cloudflare Workers" }
+            Link { to: "http://workers.cloudflare.com", "Cloudflare Workers" }
             " and "
-            a { href: "https://www.fermyon.com/spin", "Fermyon Spin" }
+            Link { to: "https://www.fermyon.com/spin", "Fermyon Spin" }
             " provide WASM-based containers for apps. WASM runtimes are typically cheaper to operate and can horizontally scale better than a traditional virtual-machine based container. When deploying on WASM runtimes, you will need to create a WASM build of your server manually."
         }
         p {
@@ -7603,7 +9874,13 @@ pub fn GuideDeploy() -> dioxus::prelude::Element {
             }
         }
         h2 { id: "choosing-a-deploy-provider",
-            a { href: "#choosing-a-deploy-provider", class: "header", "Choosing a deploy provider" }
+            Link {
+                to: BookRoute::GuideDeploy {
+                    section: GuideDeploySection::ChoosingADeployProvider,
+                },
+                class: "header",
+                "Choosing a deploy provider"
+            }
         }
         p {
             "There are "
@@ -7615,31 +9892,31 @@ pub fn GuideDeploy() -> dioxus::prelude::Element {
         }
         ul {
             li {
-                a { href: "http://aws.amazon.com", "AWS" }
+                Link { to: "http://aws.amazon.com", "AWS" }
                 ": Full-featured cloud provider powered by Amazon."
             }
             li {
-                a { href: "https://cloud.google.com", "GCP" }
+                Link { to: "https://cloud.google.com", "GCP" }
                 ": Full-featured cloud provider powered by Google."
             }
             li {
-                a { href: "http://azure.microsoft.com", "Azure" }
+                Link { to: "http://azure.microsoft.com", "Azure" }
                 ": Full-featured cloud provider powered by Microsoft."
             }
             li {
-                a { href: "http://fly.io", "Fly.io" }
+                Link { to: "http://fly.io", "Fly.io" }
                 ": Simple scale-to-zero micro-vm-based cloud with integrated wireguard."
             }
             li {
-                a { href: "https://vercel.com", "Vercel" }
+                Link { to: "https://vercel.com", "Vercel" }
                 ": Developer-focused cloud built on AWS cloud functions popular with JavaScript frameworks."
             }
             li {
-                a { href: "http://render.com", "Render" }
+                Link { to: "http://render.com", "Render" }
                 ": A \"Modern Heroku\" focused on developer experience and simplicity."
             }
             li {
-                a { href: "https://www.digitalocean.com", "Digital Ocean" }
+                Link { to: "https://www.digitalocean.com", "Digital Ocean" }
                 ": A cloud built around virtual machines, databases, and storage."
             }
         }
@@ -7647,18 +9924,24 @@ pub fn GuideDeploy() -> dioxus::prelude::Element {
             "For "
             em { "HotDog" }
             " we're going to deploy on "
-            a { href: "http://fly.io", "Fly.io" }
+            Link { to: "http://fly.io", "Fly.io" }
             ". We like "
-            a { href: "http://fly.io", "Fly.io" }
+            Link { to: "http://fly.io", "Fly.io" }
             " for a number of reasons. Most importantly, Fly is built on Amazon's "
-            a { href: "https://firecracker-microvm.github.io", "Firecracker" }
+            Link { to: "https://firecracker-microvm.github.io", "Firecracker" }
             " project which is entirely written in Rust!"
         }
         p {
             "Fly is also quite simple to get started - just log in with either your GitHub account or Google account."
         }
         h2 { id: "building-a-dockerfile",
-            a { href: "#building-a-dockerfile", class: "header", "Building a Dockerfile" }
+            Link {
+                to: BookRoute::GuideDeploy {
+                    section: GuideDeploySection::BuildingADockerfile,
+                },
+                class: "header",
+                "Building a Dockerfile"
+            }
         }
         p {
             "Some deploy providers have prebuilt solutions for various runtimes. For example, some have dedicated NodeJS and Python runtimes with strict requirements."
@@ -7687,16 +9970,22 @@ pub fn GuideDeploy() -> dioxus::prelude::Element {
         }
         CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f92672;\">**/</span><span style=\"color:#f8f8f2;\">target\n</span><span style=\"color:#f92672;\">**/</span><span style=\"color:#f8f8f2;\">dist\n</span><span style=\"color:#ff80f4;\">LICENSES\n</span><span style=\"color:#ff80f4;\">LICENSE\n</span><span style=\"color:#f8f8f2;\">temp\n</span><span style=\"color:#ff80f4;\">README</span><span style=\"color:#f8f8f2;\">.md</span></pre>\n" }
         h2 { id: "deploying-to-fly",
-            a { href: "#deploying-to-fly", class: "header", "Deploying to Fly" }
+            Link {
+                to: BookRoute::GuideDeploy {
+                    section: GuideDeploySection::DeployingToFly,
+                },
+                class: "header",
+                "Deploying to Fly"
+            }
         }
         p {
             "To get started with Fly, we need to go through the "
-            a { href: "https://fly.io/app/sign-up", "Sign Up flow" }
+            Link { to: "https://fly.io/app/sign-up", "Sign Up flow" }
             " and enter our details. This shouldn't take too long."
         }
         p {
             "We'll add the dockerfile from above along with the dockerignore. We'll want to "
-            a { href: "https://fly.io/docs/flyctl/install/",
+            Link { to: "https://fly.io/docs/flyctl/install/",
                 "install  "
                 code { "flyctl" }
             }
@@ -7706,7 +9995,7 @@ pub fn GuideDeploy() -> dioxus::prelude::Element {
         }
         p {
             "Let's call "
-            a { href: "https://fly.io/docs/flyctl/launch/",
+            Link { to: "https://fly.io/docs/flyctl/launch/",
                 code { "fly launch" }
             }
             " which will automatically initialize our "
@@ -7758,11 +10047,17 @@ pub fn GuideDeploy() -> dioxus::prelude::Element {
             }
         }
         h2 { id: "continuous-deployment",
-            a { href: "#continuous-deployment", class: "header", "Continuous Deployment" }
+            Link {
+                to: BookRoute::GuideDeploy {
+                    section: GuideDeploySection::ContinuousDeployment,
+                },
+                class: "header",
+                "Continuous Deployment"
+            }
         }
         p {
             "Fly also supports "
-            a { href: "https://fly.io/docs/app-guides/continuous-deployment-with-github-actions/",
+            Link { to: "https://fly.io/docs/app-guides/continuous-deployment-with-github-actions/",
                 "continuous deployment"
             }
             ". Whenever we push to our GitHub repository, we can execute "
@@ -7774,9 +10069,15 @@ pub fn GuideDeploy() -> dioxus::prelude::Element {
             code { ".github/workflows/fly-deploy.yml" }
             "."
         }
-        CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n</pre>\n" }
+        CodeBlock {
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">name: Fly Deploy\n</span><span style=\"color:#f8f8f2;\">on:\n</span><span style=\"color:#f8f8f2;\">  push:\n</span><span style=\"color:#f8f8f2;\">    branches:\n</span><span style=\"color:#f8f8f2;\">      </span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\"> main\n</span><span style=\"color:#f8f8f2;\">jobs:\n</span><span style=\"color:#f8f8f2;\">  deploy:\n</span><span style=\"color:#f8f8f2;\">    name: Deploy app\n</span><span style=\"color:#f8f8f2;\">    runs</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">on: ubuntu</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">latest\n</span><span style=\"color:#f8f8f2;\">    concurrency: deploy</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">group\n</span><span style=\"color:#f8f8f2;\">    steps:\n</span><span style=\"color:#f8f8f2;\">      </span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\"> uses: actions</span><span style=\"color:#f92672;\">/</span><span style=\"color:#f8f8f2;\">checkout</span><span style=\"color:#f92672;\">@</span><span style=\"color:#f8f8f2;\">v4\n</span><span style=\"color:#f8f8f2;\">      </span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\"> uses: superfly</span><span style=\"color:#f92672;\">/</span><span style=\"color:#f8f8f2;\">flyctl</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">actions</span><span style=\"color:#f92672;\">/</span><span style=\"color:#f8f8f2;\">setup</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">flyctl</span><span style=\"color:#f92672;\">@</span><span style=\"color:#f8f8f2;\">master\n</span><span style=\"color:#f8f8f2;\">      </span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\"> run: flyctl deploy </span><span style=\"color:#f92672;\">--</span><span style=\"color:#f8f8f2;\">remote</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">only\n</span><span style=\"color:#f8f8f2;\">        env:\n</span><span style=\"color:#f8f8f2;\">          </span><span style=\"color:#ff80f4;\">FLY_API_TOKEN</span><span style=\"color:#f8f8f2;\">: </span><span style=\"color:#f92672;\">$</span><span style=\"color:#f8f8f2;\">{{{{ secrets.</span><span style=\"color:#ff80f4;\">FLY_API_TOKEN </span><span style=\"color:#f8f8f2;\">}}}}</span></pre>\n",
+        }
         h2 { id: "fullstack-desktop-and-mobile",
-            a { href: "#fullstack-desktop-and-mobile", class: "header",
+            Link {
+                to: BookRoute::GuideDeploy {
+                    section: GuideDeploySection::FullstackDesktopAndMobile,
+                },
+                class: "header",
                 "Fullstack Desktop and Mobile"
             }
         }
@@ -7824,7 +10125,13 @@ pub fn GuideDeploy() -> dioxus::prelude::Element {
             }
         }
         h2 { id: "next-steps",
-            a { href: "#next-steps", class: "header", "Next Steps" }
+            Link {
+                to: BookRoute::GuideDeploy {
+                    section: GuideDeploySection::NextSteps,
+                },
+                class: "header",
+                "Next Steps"
+            }
         }
         p { "Our app isn't done yet, but this guide has become pretty long!" }
         p { "There's so much extra to do:" }
@@ -7836,12 +10143,83 @@ pub fn GuideDeploy() -> dioxus::prelude::Element {
         }
     }
 }
+#[derive(
+    Clone, Copy, PartialEq, Eq, Hash, Debug, Default, serde::Serialize, serde::Deserialize,
+)]
+pub enum GuideNextStepsSection {
+    #[default]
+    Empty,
+    WrappingUp,
+    UpNext,
+    IdeasForNewFeatures,
+    Faq,
+    IsDioxusFast,
+    IsRustTooHard,
+    DoesDioxusSupportXyz,
+    WhyRsxInsteadOfHtml,
+    ShouldIUseDioxusOrTauriOrLeptosOrIcedOr,
+}
+impl std::str::FromStr for GuideNextStepsSection {
+    type Err = GuideNextStepsSectionParseError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "" => Ok(Self::Empty),
+            "wrapping-up" => Ok(Self::WrappingUp),
+            "up-next" => Ok(Self::UpNext),
+            "ideas-for-new-features" => Ok(Self::IdeasForNewFeatures),
+            "faq" => Ok(Self::Faq),
+            "is-dioxus-fast" => Ok(Self::IsDioxusFast),
+            "is-rust-too-hard" => Ok(Self::IsRustTooHard),
+            "does-dioxus-support-xyz" => Ok(Self::DoesDioxusSupportXyz),
+            "why-rsx-instead-of-html" => Ok(Self::WhyRsxInsteadOfHtml),
+            "should-i-use-dioxus-or-tauri-or-leptos-or-iced-or" => {
+                Ok(Self::ShouldIUseDioxusOrTauriOrLeptosOrIcedOr)
+            }
+            _ => Err(GuideNextStepsSectionParseError),
+        }
+    }
+}
+impl std::fmt::Display for GuideNextStepsSection {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Self::Empty => f.write_str(""),
+            Self::WrappingUp => f.write_str("wrapping-up"),
+            Self::UpNext => f.write_str("up-next"),
+            Self::IdeasForNewFeatures => f.write_str("ideas-for-new-features"),
+            Self::Faq => f.write_str("faq"),
+            Self::IsDioxusFast => f.write_str("is-dioxus-fast"),
+            Self::IsRustTooHard => f.write_str("is-rust-too-hard"),
+            Self::DoesDioxusSupportXyz => f.write_str("does-dioxus-support-xyz"),
+            Self::WhyRsxInsteadOfHtml => f.write_str("why-rsx-instead-of-html"),
+            Self::ShouldIUseDioxusOrTauriOrLeptosOrIcedOr => {
+                f.write_str("should-i-use-dioxus-or-tauri-or-leptos-or-iced-or")
+            }
+        }
+    }
+}
+#[derive(Debug)]
+pub struct GuideNextStepsSectionParseError;
+impl std::fmt::Display for GuideNextStepsSectionParseError {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.write_str(
+            "Invalid section name. Expected one of GuideNextStepsSectionwrapping-up, up-next, ideas-for-new-features, faq, is-dioxus-fast, is-rust-too-hard, does-dioxus-support-xyz, why-rsx-instead-of-html, should-i-use-dioxus-or-tauri-or-leptos-or-iced-or",
+        )?;
+        Ok(())
+    }
+}
+impl std::error::Error for GuideNextStepsSectionParseError {}
 #[component(no_case_check)]
-pub fn GuideNextSteps() -> dioxus::prelude::Element {
+pub fn GuideNextSteps(section: GuideNextStepsSection) -> dioxus::prelude::Element {
     use dioxus::prelude::*;
     rsx! {
         h1 { id: "wrapping-up",
-            a { href: "#wrapping-up", class: "header", "Wrapping Up" }
+            Link {
+                to: BookRoute::GuideNextSteps {
+                    section: GuideNextStepsSection::WrappingUp,
+                },
+                class: "header",
+                "Wrapping Up"
+            }
         }
         p {
             "Congrats on making it through our "
@@ -7850,30 +10228,56 @@ pub fn GuideNextSteps() -> dioxus::prelude::Element {
         }
         p { "Hopefully this isn't the end of our journey, but rather, a bold new beginning." }
         h2 { id: "up-next",
-            a { href: "#up-next", class: "header", "Up Next" }
+            Link {
+                to: BookRoute::GuideNextSteps {
+                    section: GuideNextStepsSection::UpNext,
+                },
+                class: "header",
+                "Up Next"
+            }
         }
         p {
             "We strongly recommend moving on to the "
-            a { href: "../essentials", "Essential Topics" }
+            Link {
+                to: BookRoute::EssentialsIndex {
+                    section: EssentialsIndexSection::Empty,
+                },
+                "Essential Topics"
+            }
             " to become familiar with the important details of Dioxus."
         }
         p { "The essentials section will guide you through key concepts in Dioxus:" }
         ul {
             li {
                 p {
-                    a { href: "../essentials/rsx", "Building UIs with RSX" }
+                    Link {
+                        to: BookRoute::EssentialsRsxIndex {
+                            section: EssentialsRsxIndexSection::Empty,
+                        },
+                        "Building UIs with RSX"
+                    }
                     " will teach you how to define html inside your Dioxus app with rsx."
                 }
             }
             li {
                 p {
-                    a { href: "../essentials/lifecycle", "Component Lifecycle" }
+                    Link {
+                        to: BookRoute::EssentialsLifecycleIndex {
+                            section: EssentialsLifecycleIndexSection::Empty,
+                        },
+                        "Component Lifecycle"
+                    }
                     " teaches you about the lifecycle of components along with the hooks you need to run code when the component is first created, mounted, and removed."
                 }
             }
             li {
                 p {
-                    a { href: "../essentials/state", "Managing State" }
+                    Link {
+                        to: BookRoute::EssentialsStateIndex {
+                            section: EssentialsStateIndexSection::Empty,
+                        },
+                        "Managing State"
+                    }
                     " guides you through how state works in Dioxus. It will teach you how to create state with "
                     code { "use_signal" }
                     ", derive state with "
@@ -7885,7 +10289,12 @@ pub fn GuideNextSteps() -> dioxus::prelude::Element {
             }
             li {
                 p {
-                    a { href: "../essentials/breaking", "Breaking Out" }
+                    Link {
+                        to: BookRoute::EssentialsBreakingIndex {
+                            section: EssentialsBreakingIndexSection::Empty,
+                        },
+                        "Breaking Out"
+                    }
                     " will teach you how to break out of Dioxus' rendering model to run JavaScript or interact with the DOM directly with "
                     code { "web-sys" }
                     "."
@@ -7893,7 +10302,13 @@ pub fn GuideNextSteps() -> dioxus::prelude::Element {
             }
         }
         h2 { id: "ideas-for-new-features",
-            a { href: "#ideas-for-new-features", class: "header", "Ideas for New Features" }
+            Link {
+                to: BookRoute::GuideNextSteps {
+                    section: GuideNextStepsSection::IdeasForNewFeatures,
+                },
+                class: "header",
+                "Ideas for New Features"
+            }
         }
         p {
             "Challenge yourself by adding new features to "
@@ -7903,12 +10318,12 @@ pub fn GuideNextSteps() -> dioxus::prelude::Element {
         ul {
             li {
                 "Add animations to your app with CSS or "
-                a { href: "https://github.com/wheregmis/dioxus-motion", "dioxus-motion" }
+                Link { to: "https://github.com/wheregmis/dioxus-motion", "dioxus-motion" }
                 "."
             }
             li {
                 "Style your app with a library like "
-                a { href: "http://tailwindcss.com", "TailwindCSS" }
+                Link { to: "http://tailwindcss.com", "TailwindCSS" }
                 "."
             }
             li { "Add inputs to allow users to upload their own dog photos." }
@@ -7916,30 +10331,48 @@ pub fn GuideNextSteps() -> dioxus::prelude::Element {
             li { "Remix HotDog for something entirely new." }
         }
         h2 { id: "faq",
-            a { href: "#faq", class: "header", "FAQ" }
+            Link {
+                to: BookRoute::GuideNextSteps {
+                    section: GuideNextStepsSection::Faq,
+                },
+                class: "header",
+                "FAQ"
+            }
         }
         p {
             "You might be curious how particular features work in Dioxus. Let's try to address a few popular question:"
         }
         h3 { id: "is-dioxus-fast",
-            a { href: "#is-dioxus-fast", class: "header", "Is Dioxus Fast?" }
+            Link {
+                to: BookRoute::GuideNextSteps {
+                    section: GuideNextStepsSection::IsDioxusFast,
+                },
+                class: "header",
+                "Is Dioxus Fast?"
+            }
         }
         p {
             "Dioxus is really fast. Dioxus is built around an "
             em { "extremely" }
             " performant VirtualDom. While a VirtualDom might sound like "
-            a { href: "https://svelte.dev/blog/virtual-dom-is-pure-overhead", "\"pure overhead\"" }
+            Link { to: "https://svelte.dev/blog/virtual-dom-is-pure-overhead", "\"pure overhead\"" }
             ", Dioxus leverages compile-time optimizations that make it faster than nearly all UI frameworks."
         }
         p {
             "On the web, Dioxus "
-            a { href: "https://krausest.github.io/js-framework-benchmark/2023/table_chrome_120.0.6099.62.html",
+            Link { to: "https://krausest.github.io/js-framework-benchmark/2023/table_chrome_120.0.6099.62.html",
                 "is on par with frameworks like Solid and Svelte"
             }
             " which leveragea new reactivity models or custom compilers."
         }
         h3 { id: "is-rust-too-hard",
-            a { href: "#is-rust-too-hard", class: "header", "Is Rust too hard?" }
+            Link {
+                to: BookRoute::GuideNextSteps {
+                    section: GuideNextStepsSection::IsRustTooHard,
+                },
+                class: "header",
+                "Is Rust too hard?"
+            }
         }
         p {
             "Rust is a notoriously difficult language to learn, but it's extremely powerful. Dioxus has been designed to use the \"easy\" parts of Rust. For example, Dioxus primarily uses single-threaded code and avoids complicated generic interfaces."
@@ -7948,12 +10381,23 @@ pub fn GuideNextSteps() -> dioxus::prelude::Element {
             "All-in-all, the productivity you gain by building once and deploying everywhere usually makes up for the steeper learning curve. Plus, as Dioxus matures, interfaces become easier to use and the ecosystem improves."
         }
         h3 { id: "does-dioxus-support-xyz",
-            a { href: "#does-dioxus-support-xyz", class: "header", "Does Dioxus support \"xyz\"?" }
+            Link {
+                to: BookRoute::GuideNextSteps {
+                    section: GuideNextStepsSection::DoesDioxusSupportXyz,
+                },
+                class: "header",
+                "Does Dioxus support \"xyz\"?"
+            }
         }
         ul {
             li {
                 "TailwindCSS: Yes, but it requires an additional step, see the "
-                a { href: "../cookbook/tailwind", "docs for more info" }
+                Link {
+                    to: BookRoute::CookbookTailwind {
+                        section: CookbookTailwindSection::Empty,
+                    },
+                    "docs for more info"
+                }
                 "."
             }
             li {
@@ -7968,7 +10412,7 @@ pub fn GuideNextSteps() -> dioxus::prelude::Element {
             }
             li {
                 "Animations: Yes, you can use CSS animations, "
-                a { href: "https://github.com/wheregmis/dioxus-motion", "dioxus-motion" }
+                Link { to: "https://github.com/wheregmis/dioxus-motion", "dioxus-motion" }
                 ", or integrate with the system animation APIs."
             }
             li { "Accessibility: Yes. Use semantic HTML and aria-tags for good screen-reader support." }
@@ -7977,15 +10421,21 @@ pub fn GuideNextSteps() -> dioxus::prelude::Element {
             }
             li {
                 "AI: Yes, you can interface with providers like "
-                a { href: "https://crates.io/crates/openai-api-rs", "OpenAI" }
+                Link { to: "https://crates.io/crates/openai-api-rs", "OpenAI" }
                 " or even "
-                a { href: "https://github.com/DioxusLabs/dioxus-ai", "build your own provider" }
+                Link { to: "https://github.com/DioxusLabs/dioxus-ai", "build your own provider" }
                 "."
             }
         }
         p { "If you have an FAQ not covered here, suggest an edit!" }
         h3 { id: "why-rsx-instead-of-html",
-            a { href: "#why-rsx-instead-of-html", class: "header", "Why RSX instead of HTML?" }
+            Link {
+                to: BookRoute::GuideNextSteps {
+                    section: GuideNextStepsSection::WhyRsxInsteadOfHtml,
+                },
+                class: "header",
+                "Why RSX instead of HTML?"
+            }
         }
         p {
             "If you've seen React's JSX or the  "
@@ -8004,7 +10454,7 @@ pub fn GuideNextSteps() -> dioxus::prelude::Element {
         }
         p {
             "The Dioxus "
-            a { href: "http://marketplace.visualstudio.com/items?itemName=DioxusLabs.dioxus",
+            Link { to: "http://marketplace.visualstudio.com/items?itemName=DioxusLabs.dioxus",
                 "VSCode Extension"
             }
             " can convert HTML to RSX as well as the CLI with "
@@ -8012,15 +10462,17 @@ pub fn GuideNextSteps() -> dioxus::prelude::Element {
             "."
         }
         h3 { id: "should-i-use-dioxus-or-tauri-or-leptos-or-iced-or",
-            a {
-                href: "#should-i-use-dioxus-or-tauri-or-leptos-or-iced-or",
+            Link {
+                to: BookRoute::GuideNextSteps {
+                    section: GuideNextStepsSection::ShouldIUseDioxusOrTauriOrLeptosOrIcedOr,
+                },
                 class: "header",
                 "Should I use Dioxus or Tauri or Leptos or Iced or...?"
             }
         }
         p {
             "There's a budding ecosystem of Rust projects for building apps and websites! We have a good comparison in our "
-            a { href: "https://github.com/DioxusLabs/dioxus#dioxus-vs-other-frameworks",
+            Link { to: "https://github.com/DioxusLabs/dioxus#dioxus-vs-other-frameworks",
                 "Readme.md"
             }
         }
@@ -8046,30 +10498,86 @@ pub fn GuideNextSteps() -> dioxus::prelude::Element {
         }
     }
 }
+#[derive(
+    Clone, Copy, PartialEq, Eq, Hash, Debug, Default, serde::Serialize, serde::Deserialize,
+)]
+pub enum EssentialsIndexSection {
+    #[default]
+    Empty,
+    CoreTopics,
+}
+impl std::str::FromStr for EssentialsIndexSection {
+    type Err = EssentialsIndexSectionParseError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "" => Ok(Self::Empty),
+            "core-topics" => Ok(Self::CoreTopics),
+            _ => Err(EssentialsIndexSectionParseError),
+        }
+    }
+}
+impl std::fmt::Display for EssentialsIndexSection {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Self::Empty => f.write_str(""),
+            Self::CoreTopics => f.write_str("core-topics"),
+        }
+    }
+}
+#[derive(Debug)]
+pub struct EssentialsIndexSectionParseError;
+impl std::fmt::Display for EssentialsIndexSectionParseError {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.write_str("Invalid section name. Expected one of EssentialsIndexSectioncore-topics")?;
+        Ok(())
+    }
+}
+impl std::error::Error for EssentialsIndexSectionParseError {}
 #[component(no_case_check)]
-pub fn EssentialsIndex() -> dioxus::prelude::Element {
+pub fn EssentialsIndex(section: EssentialsIndexSection) -> dioxus::prelude::Element {
     use dioxus::prelude::*;
     rsx! {
         h1 { id: "core-topics",
-            a { href: "#core-topics", class: "header", "Core Topics" }
+            Link {
+                to: BookRoute::EssentialsIndex {
+                    section: EssentialsIndexSection::CoreTopics,
+                },
+                class: "header",
+                "Core Topics"
+            }
         }
         p { "This section will guide you through key concepts in Dioxus:" }
         ul {
             li {
                 p {
-                    a { href: "rsx", "Building UIs with RSX" }
+                    Link {
+                        to: BookRoute::EssentialsRsxIndex {
+                            section: EssentialsRsxIndexSection::Empty,
+                        },
+                        "Building UIs with RSX"
+                    }
                     " will teach you how to define html inside your Dioxus app with rsx."
                 }
             }
             li {
                 p {
-                    a { href: "lifecycle", "Component Lifecycle" }
+                    Link {
+                        to: BookRoute::EssentialsLifecycleIndex {
+                            section: EssentialsLifecycleIndexSection::Empty,
+                        },
+                        "Component Lifecycle"
+                    }
                     " teaches you about the lifecycle of components along with the hooks you need to run code when the component is first created, mounted, and removed."
                 }
             }
             li {
                 p {
-                    a { href: "state", "Managing State" }
+                    Link {
+                        to: BookRoute::EssentialsStateIndex {
+                            section: EssentialsStateIndexSection::Empty,
+                        },
+                        "Managing State"
+                    }
                     " guides you through how state works in Dioxus. It will teach you how to create state with "
                     code { "use_signal" }
                     ", derive state with "
@@ -8081,7 +10589,12 @@ pub fn EssentialsIndex() -> dioxus::prelude::Element {
             }
             li {
                 p {
-                    a { href: "breaking", "Breaking Out" }
+                    Link {
+                        to: BookRoute::EssentialsBreakingIndex {
+                            section: EssentialsBreakingIndexSection::Empty,
+                        },
+                        "Breaking Out"
+                    }
                     " will teach you how to break out of Dioxus' rendering model to run JavaScript or interact with the DOM directly with "
                     code { "web-sys" }
                     "."
@@ -8090,20 +10603,96 @@ pub fn EssentialsIndex() -> dioxus::prelude::Element {
         }
     }
 }
+#[derive(
+    Clone, Copy, PartialEq, Eq, Hash, Debug, Default, serde::Serialize, serde::Deserialize,
+)]
+pub enum EssentialsRsxIndexSection {
+    #[default]
+    Empty,
+    BuildingUisWithRsx,
+    TextNodes,
+    Elements,
+    Attributes,
+    ConditionalAttributes,
+    EventListeners,
+    Children,
+    Loops,
+    IfStatements,
+    WhyRsxAndNotHtml,
+}
+impl std::str::FromStr for EssentialsRsxIndexSection {
+    type Err = EssentialsRsxIndexSectionParseError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "" => Ok(Self::Empty),
+            "building-uis-with-rsx" => Ok(Self::BuildingUisWithRsx),
+            "text-nodes" => Ok(Self::TextNodes),
+            "elements" => Ok(Self::Elements),
+            "attributes" => Ok(Self::Attributes),
+            "conditional-attributes" => Ok(Self::ConditionalAttributes),
+            "event-listeners" => Ok(Self::EventListeners),
+            "children" => Ok(Self::Children),
+            "loops" => Ok(Self::Loops),
+            "if-statements" => Ok(Self::IfStatements),
+            "why-rsx-and-not-html-" => Ok(Self::WhyRsxAndNotHtml),
+            _ => Err(EssentialsRsxIndexSectionParseError),
+        }
+    }
+}
+impl std::fmt::Display for EssentialsRsxIndexSection {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Self::Empty => f.write_str(""),
+            Self::BuildingUisWithRsx => f.write_str("building-uis-with-rsx"),
+            Self::TextNodes => f.write_str("text-nodes"),
+            Self::Elements => f.write_str("elements"),
+            Self::Attributes => f.write_str("attributes"),
+            Self::ConditionalAttributes => f.write_str("conditional-attributes"),
+            Self::EventListeners => f.write_str("event-listeners"),
+            Self::Children => f.write_str("children"),
+            Self::Loops => f.write_str("loops"),
+            Self::IfStatements => f.write_str("if-statements"),
+            Self::WhyRsxAndNotHtml => f.write_str("why-rsx-and-not-html-"),
+        }
+    }
+}
+#[derive(Debug)]
+pub struct EssentialsRsxIndexSectionParseError;
+impl std::fmt::Display for EssentialsRsxIndexSectionParseError {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.write_str(
+            "Invalid section name. Expected one of EssentialsRsxIndexSectionbuilding-uis-with-rsx, text-nodes, elements, attributes, conditional-attributes, event-listeners, children, loops, if-statements, why-rsx-and-not-html-",
+        )?;
+        Ok(())
+    }
+}
+impl std::error::Error for EssentialsRsxIndexSectionParseError {}
 #[component(no_case_check)]
-pub fn EssentialsRsxIndex() -> dioxus::prelude::Element {
+pub fn EssentialsRsxIndex(section: EssentialsRsxIndexSection) -> dioxus::prelude::Element {
     use dioxus::prelude::*;
     rsx! {
         h1 { id: "building-uis-with-rsx",
-            a { href: "#building-uis-with-rsx", class: "header", "Building UIs with RSX" }
+            Link {
+                to: BookRoute::EssentialsRsxIndex {
+                    section: EssentialsRsxIndexSection::BuildingUisWithRsx,
+                },
+                class: "header",
+                "Building UIs with RSX"
+            }
         }
         p {
             "Dioxus renders to HTML, if you are not familiar with HTML, this guide will help you get started with the basics. For more detail, the "
-            a { href: "https://developer.mozilla.org/en-US/docs/Web/HTML", "MDN docs" }
+            Link { to: "https://developer.mozilla.org/en-US/docs/Web/HTML", "MDN docs" }
             " are a great resource."
         }
         h2 { id: "text-nodes",
-            a { href: "#text-nodes", class: "header", "Text Nodes" }
+            Link {
+                to: BookRoute::EssentialsRsxIndex {
+                    section: EssentialsRsxIndexSection::TextNodes,
+                },
+                class: "header",
+                "Text Nodes"
+            }
         }
         p { "Any content surrounded by quotes is rendered as a text node in rsx:" }
         CodeBlock {
@@ -8122,7 +10711,13 @@ pub fn EssentialsRsxIndex() -> dioxus::prelude::Element {
         }
         DemoFrame { building_uis_with_rsx::FormattedText {} }
         h2 { id: "elements",
-            a { href: "#elements", class: "header", "Elements" }
+            Link {
+                to: BookRoute::EssentialsRsxIndex {
+                    section: EssentialsRsxIndexSection::Elements,
+                },
+                class: "header",
+                "Elements"
+            }
         }
         p {
             "The most basic building block of HTML is an element. In rsx, you can create elements with the name and then curly braces. One of the most common elements is the  "
@@ -8135,14 +10730,24 @@ pub fn EssentialsRsxIndex() -> dioxus::prelude::Element {
         }
         DemoFrame { building_uis_with_rsx::Input {} }
         blockquote {
-            p { "Bonus: web components" }
+            p {
+                "Bonus: web components"
+                " "
+                "Any element with a dash in the name is a web component. Web components are rendered directly in dioxus without type checking. We recommend wrapping web components in a type safe component to make them easier to use."
+            }
             CodeBlock {
                 contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">rsx! {{\n</span><span style=\"color:#f8f8f2;\">    my</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">web</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">component {{}}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
                 name: "building_uis_with_rsx.rs".to_string(),
             }
         }
         h2 { id: "attributes",
-            a { href: "#attributes", class: "header", "Attributes" }
+            Link {
+                to: BookRoute::EssentialsRsxIndex {
+                    section: EssentialsRsxIndexSection::Attributes,
+                },
+                class: "header",
+                "Attributes"
+            }
         }
         p {
             "Attributes provide extra information about an element. You can specify attributes in dioxus inside an element's braces by typing the name of the attribute, a colon, and then the value (typically a formatted string). We can use an attribute to set the  "
@@ -8167,7 +10772,13 @@ pub fn EssentialsRsxIndex() -> dioxus::prelude::Element {
         }
         DemoFrame { building_uis_with_rsx::InputValue {} }
         h3 { id: "conditional-attributes",
-            a { href: "#conditional-attributes", class: "header", "Conditional Attributes" }
+            Link {
+                to: BookRoute::EssentialsRsxIndex {
+                    section: EssentialsRsxIndexSection::ConditionalAttributes,
+                },
+                class: "header",
+                "Conditional Attributes"
+            }
         }
         p {
             "You can conditionally set an attribute by setting the attribute value to an unterminated if statement. If the if statement evaluates to true, the attribute will be set:"
@@ -8178,7 +10789,13 @@ pub fn EssentialsRsxIndex() -> dioxus::prelude::Element {
         }
         DemoFrame { building_uis_with_rsx::InputDisabled {} }
         h2 { id: "event-listeners",
-            a { href: "#event-listeners", class: "header", "Event Listeners" }
+            Link {
+                to: BookRoute::EssentialsRsxIndex {
+                    section: EssentialsRsxIndexSection::EventListeners,
+                },
+                class: "header",
+                "Event Listeners"
+            }
         }
         p {
             "Event listeners allow you to respond to user input. In rsx, event handlers always start with  "
@@ -8193,7 +10810,13 @@ pub fn EssentialsRsxIndex() -> dioxus::prelude::Element {
         }
         DemoFrame { building_uis_with_rsx::OnInput {} }
         h2 { id: "children",
-            a { href: "#children", class: "header", "Children" }
+            Link {
+                to: BookRoute::EssentialsRsxIndex {
+                    section: EssentialsRsxIndexSection::Children,
+                },
+                class: "header",
+                "Children"
+            }
         }
         p {
             "You can add children to an element after all attributes and event listeners. Elements can accept text, components or other elements as children. We can add a  "
@@ -8206,7 +10829,13 @@ pub fn EssentialsRsxIndex() -> dioxus::prelude::Element {
         }
         DemoFrame { building_uis_with_rsx::InputChildren {} }
         h2 { id: "loops",
-            a { href: "#loops", class: "header", "Loops" }
+            Link {
+                to: BookRoute::EssentialsRsxIndex {
+                    section: EssentialsRsxIndexSection::Loops,
+                },
+                class: "header",
+                "Loops"
+            }
         }
         p {
             "You can insert for loops directly in rsx. The body of the loop accepts any number of children that will be rendered with each iteration of the loop. The  "
@@ -8231,7 +10860,13 @@ pub fn EssentialsRsxIndex() -> dioxus::prelude::Element {
         }
         DemoFrame { building_uis_with_rsx::KeyedForLoop {} }
         h2 { id: "if-statements",
-            a { href: "#if-statements", class: "header", "If Statements" }
+            Link {
+                to: BookRoute::EssentialsRsxIndex {
+                    section: EssentialsRsxIndexSection::IfStatements,
+                },
+                class: "header",
+                "If Statements"
+            }
         }
         p {
             "You can also use if/else statements in rsx. Each branch of the if statement accepts child nodes that will be rendered if the condition is true. We can use the  "
@@ -8244,7 +10879,13 @@ pub fn EssentialsRsxIndex() -> dioxus::prelude::Element {
         }
         DemoFrame { building_uis_with_rsx::IfStatement {} }
         h2 { id: "why-rsx-and-not-html-",
-            a { href: "#why-rsx-and-not-html-", class: "header", "Why RSX and not HTML ?" }
+            Link {
+                to: BookRoute::EssentialsRsxIndex {
+                    section: EssentialsRsxIndexSection::WhyRsxAndNotHtml,
+                },
+                class: "header",
+                "Why RSX and not HTML ?"
+            }
         }
         p {
             "If you've seen React's JSX or the  "
@@ -8260,16 +10901,85 @@ pub fn EssentialsRsxIndex() -> dioxus::prelude::Element {
         }
     }
 }
+#[derive(
+    Clone, Copy, PartialEq, Eq, Hash, Debug, Default, serde::Serialize, serde::Deserialize,
+)]
+pub enum EssentialsLifecycleIndexSection {
+    #[default]
+    Empty,
+    ComponentLifecycle,
+    InitializingStateWithUseHook,
+    Rerendering,
+    DontMutateStateInTheBodyOfAComponent,
+    UsingEffects,
+    CleaningUpComponentsWithDrop,
+}
+impl std::str::FromStr for EssentialsLifecycleIndexSection {
+    type Err = EssentialsLifecycleIndexSectionParseError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "" => Ok(Self::Empty),
+            "component-lifecycle" => Ok(Self::ComponentLifecycle),
+            "initializing-state-with-use-hook" => Ok(Self::InitializingStateWithUseHook),
+            "rerendering" => Ok(Self::Rerendering),
+            "-dont-mutate-state-in-the-body-of-a-component" => {
+                Ok(Self::DontMutateStateInTheBodyOfAComponent)
+            }
+            "using-effects" => Ok(Self::UsingEffects),
+            "cleaning-up-components-with-drop" => Ok(Self::CleaningUpComponentsWithDrop),
+            _ => Err(EssentialsLifecycleIndexSectionParseError),
+        }
+    }
+}
+impl std::fmt::Display for EssentialsLifecycleIndexSection {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Self::Empty => f.write_str(""),
+            Self::ComponentLifecycle => f.write_str("component-lifecycle"),
+            Self::InitializingStateWithUseHook => f.write_str("initializing-state-with-use-hook"),
+            Self::Rerendering => f.write_str("rerendering"),
+            Self::DontMutateStateInTheBodyOfAComponent => {
+                f.write_str("-dont-mutate-state-in-the-body-of-a-component")
+            }
+            Self::UsingEffects => f.write_str("using-effects"),
+            Self::CleaningUpComponentsWithDrop => f.write_str("cleaning-up-components-with-drop"),
+        }
+    }
+}
+#[derive(Debug)]
+pub struct EssentialsLifecycleIndexSectionParseError;
+impl std::fmt::Display for EssentialsLifecycleIndexSectionParseError {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.write_str(
+            "Invalid section name. Expected one of EssentialsLifecycleIndexSectioncomponent-lifecycle, initializing-state-with-use-hook, rerendering, -dont-mutate-state-in-the-body-of-a-component, using-effects, cleaning-up-components-with-drop",
+        )?;
+        Ok(())
+    }
+}
+impl std::error::Error for EssentialsLifecycleIndexSectionParseError {}
 #[component(no_case_check)]
-pub fn EssentialsLifecycleIndex() -> dioxus::prelude::Element {
+pub fn EssentialsLifecycleIndex(
+    section: EssentialsLifecycleIndexSection,
+) -> dioxus::prelude::Element {
     use dioxus::prelude::*;
     rsx! {
         h1 { id: "component-lifecycle",
-            a { href: "#component-lifecycle", class: "header", "Component Lifecycle" }
+            Link {
+                to: BookRoute::EssentialsLifecycleIndex {
+                    section: EssentialsLifecycleIndexSection::ComponentLifecycle,
+                },
+                class: "header",
+                "Component Lifecycle"
+            }
         }
-        h2 { id: "initializing-state-with",
-            a { href: "#initializing-state-with", class: "header", "Initializing State with " }
-            code { "use_hook" }
+        h2 { id: "initializing-state-with-use-hook",
+            Link {
+                to: BookRoute::EssentialsLifecycleIndex {
+                    section: EssentialsLifecycleIndexSection::InitializingStateWithUseHook,
+                },
+                class: "header",
+                "Initializing State with use_hook"
+            }
         }
         p {
             code { "use_hook" }
@@ -8283,11 +10993,22 @@ pub fn EssentialsLifecycleIndex() -> dioxus::prelude::Element {
         }
         DemoFrame { component_lifecycle::UseHookDemo {} }
         h2 { id: "rerendering",
-            a { href: "#rerendering", class: "header", "Rerendering" }
+            Link {
+                to: BookRoute::EssentialsLifecycleIndex {
+                    section: EssentialsLifecycleIndexSection::Rerendering,
+                },
+                class: "header",
+                "Rerendering"
+            }
         }
         p {
             "You can use "
-            a { href: "../reference/reactivity", "tracked values" }
+            Link {
+                to: BookRoute::EssentialsStateIndex {
+                    section: EssentialsStateIndexSection::Empty,
+                },
+                "tracked values"
+            }
             " to re-render your component whenever a value changes. "
         }
         CodeBlock {
@@ -8296,8 +11017,10 @@ pub fn EssentialsLifecycleIndex() -> dioxus::prelude::Element {
         }
         DemoFrame { component_lifecycle::RerenderDemo {} }
         h3 { id: "-dont-mutate-state-in-the-body-of-a-component",
-            a {
-                href: "#-dont-mutate-state-in-the-body-of-a-component",
+            Link {
+                to: BookRoute::EssentialsLifecycleIndex {
+                    section: EssentialsLifecycleIndexSection::DontMutateStateInTheBodyOfAComponent,
+                },
                 class: "header",
                 "⚠\u{fe0f} Don't mutate state in the body of a component"
             }
@@ -8317,26 +11040,32 @@ pub fn EssentialsLifecycleIndex() -> dioxus::prelude::Element {
             ", or mutate state in a effect."
         }
         h2 { id: "using-effects",
-            a { href: "#using-effects", class: "header", "Using Effects" }
+            Link {
+                to: BookRoute::EssentialsLifecycleIndex {
+                    section: EssentialsLifecycleIndexSection::UsingEffects,
+                },
+                class: "header",
+                "Using Effects"
+            }
         }
-        p {
-            "You can use "
-            a { href: "../reference/reactivity", "effects" }
-            " to run code whenever a component is rendered."
-        }
+        p { "You can use effects to run code whenever a component is rendered." }
         CodeBlock {
             contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">Effect</span><span style=\"color:#f8f8f2;\">() -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#8c8c8c;\">// Effects run after the component is rendered\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#8c8c8c;\">// You can use them to read or modify the rendered component\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#66d9ef;\">use_effect</span><span style=\"color:#f8f8f2;\">(|| {{\n</span><span style=\"color:#f8f8f2;\">        log!(</span><span style=\"color:#ffee99;\">&quot;Effect ran&quot;</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"color:#f8f8f2;\">        document::eval(</span><span style=\"color:#f92672;\">&amp;</span><span style=\"color:#f8f8f2;\">format!(\n</span><span style=\"color:#f8f8f2;\">            </span><span style=\"color:#ffee99;\">&quot;document.getElementById(&#39;effect-output&#39;).innerText = &#39;Effect ran&#39;&quot;\n</span><span style=\"color:#f8f8f2;\">        ));\n</span><span style=\"color:#f8f8f2;\">    }});\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">    rsx! {{\n</span><span style=\"color:#f8f8f2;\">        div {{ id: </span><span style=\"color:#ffee99;\">&quot;effect-output&quot;</span><span style=\"color:#f8f8f2;\">, </span><span style=\"color:#ffee99;\">&quot;This will be changed by the effect&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
             name: "component_lifecycle.rs".to_string(),
         }
         DemoFrame { component_lifecycle::EffectDemo {} }
         h2 { id: "cleaning-up-components-with-drop",
-            a { href: "#cleaning-up-components-with-drop", class: "header",
+            Link {
+                to: BookRoute::EssentialsLifecycleIndex {
+                    section: EssentialsLifecycleIndexSection::CleaningUpComponentsWithDrop,
+                },
+                class: "header",
                 "Cleaning Up Components with Drop"
             }
         }
         p {
             "Before a component is dropped, it will drop all of its hooks. You can use this drop behavior to clean up any resources that your component is using. If you just need the drop effect, you can use the "
-            a { href: "https://docs.rs/dioxus/latest/dioxus/prelude/fn.use_drop.html",
+            Link { to: "https://docs.rs/dioxus/latest/dioxus/prelude/fn.use_drop.html",
                 code { "use_drop" }
             }
             " hook."
@@ -8348,18 +11077,100 @@ pub fn EssentialsLifecycleIndex() -> dioxus::prelude::Element {
         DemoFrame { component_lifecycle::DropDemo {} }
     }
 }
+#[derive(
+    Clone, Copy, PartialEq, Eq, Hash, Debug, Default, serde::Serialize, serde::Deserialize,
+)]
+pub enum EssentialsStateIndexSection {
+    #[default]
+    Empty,
+    ManagingState,
+    CreatingState,
+    ReactiveScopes,
+    DerivedState,
+    DerivedAsyncState,
+    DerivedUi,
+    WorkingWithUntrackedState,
+    MakingPropsReactive,
+    MovingAroundState,
+    PassingProps,
+    PassingContext,
+    UsingGlobals,
+}
+impl std::str::FromStr for EssentialsStateIndexSection {
+    type Err = EssentialsStateIndexSectionParseError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "" => Ok(Self::Empty),
+            "managing-state" => Ok(Self::ManagingState),
+            "creating-state" => Ok(Self::CreatingState),
+            "reactive-scopes" => Ok(Self::ReactiveScopes),
+            "derived-state" => Ok(Self::DerivedState),
+            "derived-async-state" => Ok(Self::DerivedAsyncState),
+            "derived-ui" => Ok(Self::DerivedUi),
+            "working-with-untracked-state" => Ok(Self::WorkingWithUntrackedState),
+            "making-props-reactive" => Ok(Self::MakingPropsReactive),
+            "moving-around-state" => Ok(Self::MovingAroundState),
+            "passing-props" => Ok(Self::PassingProps),
+            "passing-context" => Ok(Self::PassingContext),
+            "using-globals" => Ok(Self::UsingGlobals),
+            _ => Err(EssentialsStateIndexSectionParseError),
+        }
+    }
+}
+impl std::fmt::Display for EssentialsStateIndexSection {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Self::Empty => f.write_str(""),
+            Self::ManagingState => f.write_str("managing-state"),
+            Self::CreatingState => f.write_str("creating-state"),
+            Self::ReactiveScopes => f.write_str("reactive-scopes"),
+            Self::DerivedState => f.write_str("derived-state"),
+            Self::DerivedAsyncState => f.write_str("derived-async-state"),
+            Self::DerivedUi => f.write_str("derived-ui"),
+            Self::WorkingWithUntrackedState => f.write_str("working-with-untracked-state"),
+            Self::MakingPropsReactive => f.write_str("making-props-reactive"),
+            Self::MovingAroundState => f.write_str("moving-around-state"),
+            Self::PassingProps => f.write_str("passing-props"),
+            Self::PassingContext => f.write_str("passing-context"),
+            Self::UsingGlobals => f.write_str("using-globals"),
+        }
+    }
+}
+#[derive(Debug)]
+pub struct EssentialsStateIndexSectionParseError;
+impl std::fmt::Display for EssentialsStateIndexSectionParseError {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.write_str(
+            "Invalid section name. Expected one of EssentialsStateIndexSectionmanaging-state, creating-state, reactive-scopes, derived-state, derived-async-state, derived-ui, working-with-untracked-state, making-props-reactive, moving-around-state, passing-props, passing-context, using-globals",
+        )?;
+        Ok(())
+    }
+}
+impl std::error::Error for EssentialsStateIndexSectionParseError {}
 #[component(no_case_check)]
-pub fn EssentialsStateIndex() -> dioxus::prelude::Element {
+pub fn EssentialsStateIndex(section: EssentialsStateIndexSection) -> dioxus::prelude::Element {
     use dioxus::prelude::*;
     rsx! {
         h1 { id: "managing-state",
-            a { href: "#managing-state", class: "header", "Managing State" }
+            Link {
+                to: BookRoute::EssentialsStateIndex {
+                    section: EssentialsStateIndexSection::ManagingState,
+                },
+                class: "header",
+                "Managing State"
+            }
         }
         p {
             "In Dioxus, your app is defined as a function of the current state. As the state changes, the parts of your app that depend on that state will automatically re-run. Reactivity automatically tracks state and updates derived state in your application."
         }
         h2 { id: "creating-state",
-            a { href: "#creating-state", class: "header", "Creating State" }
+            Link {
+                to: BookRoute::EssentialsStateIndex {
+                    section: EssentialsStateIndexSection::CreatingState,
+                },
+                class: "header",
+                "Creating State"
+            }
         }
         p {
             "You can create mutable state in Dioxus with Signals. Signals are tracked values that automatically update your app when you change them. They form the skeleton of your app's state from which you can derive other state. Signals are often driven directly from user input through event handlers or async tasks."
@@ -8394,7 +11205,13 @@ pub fn EssentialsStateIndex() -> dioxus::prelude::Element {
             name: "reactivity.rs".to_string(),
         }
         h3 { id: "reactive-scopes",
-            a { href: "#reactive-scopes", class: "header", "Reactive Scopes" }
+            Link {
+                to: BookRoute::EssentialsStateIndex {
+                    section: EssentialsStateIndexSection::ReactiveScopes,
+                },
+                class: "header",
+                "Reactive Scopes"
+            }
         }
         p {
             "The simplest reactive primitive in Dioxus is the  "
@@ -8410,7 +11227,13 @@ pub fn EssentialsStateIndex() -> dioxus::prelude::Element {
         }
         DemoFrame { reactivity::EffectDemo {} }
         h3 { id: "derived-state",
-            a { href: "#derived-state", class: "header", "Derived State" }
+            Link {
+                to: BookRoute::EssentialsStateIndex {
+                    section: EssentialsStateIndexSection::DerivedState,
+                },
+                class: "header",
+                "Derived State"
+            }
         }
         p {
             code { "use_memo" }
@@ -8427,7 +11250,13 @@ pub fn EssentialsStateIndex() -> dioxus::prelude::Element {
         }
         DemoFrame { reactivity::MemoDemo {} }
         h3 { id: "derived-async-state",
-            a { href: "#derived-async-state", class: "header", "Derived Async State" }
+            Link {
+                to: BookRoute::EssentialsStateIndex {
+                    section: EssentialsStateIndexSection::DerivedAsyncState,
+                },
+                class: "header",
+                "Derived Async State"
+            }
         }
         p {
             code { "use_resource" }
@@ -8446,7 +11275,13 @@ pub fn EssentialsStateIndex() -> dioxus::prelude::Element {
         }
         DemoFrame { reactivity::ResourceDemo {} }
         h3 { id: "derived-ui",
-            a { href: "#derived-ui", class: "header", "Derived UI" }
+            Link {
+                to: BookRoute::EssentialsStateIndex {
+                    section: EssentialsStateIndexSection::DerivedUi,
+                },
+                class: "header",
+                "Derived UI"
+            }
         }
         p {
             "Components are functions that return some UI. They memorize the output of the function just like memos. Components keep track of any dependencies you read inside the component and rerun when those dependencies change."
@@ -8457,7 +11292,11 @@ pub fn EssentialsStateIndex() -> dioxus::prelude::Element {
         }
         DemoFrame { reactivity::ComponentDemo {} }
         h3 { id: "working-with-untracked-state",
-            a { href: "#working-with-untracked-state", class: "header",
+            Link {
+                to: BookRoute::EssentialsStateIndex {
+                    section: EssentialsStateIndexSection::WorkingWithUntrackedState,
+                },
+                class: "header",
                 "Working with Untracked State"
             }
         }
@@ -8480,7 +11319,13 @@ pub fn EssentialsStateIndex() -> dioxus::prelude::Element {
         }
         DemoFrame { reactivity::UseReactiveDemo {} }
         h3 { id: "making-props-reactive",
-            a { href: "#making-props-reactive", class: "header", "Making Props Reactive" }
+            Link {
+                to: BookRoute::EssentialsStateIndex {
+                    section: EssentialsStateIndexSection::MakingPropsReactive,
+                },
+                class: "header",
+                "Making Props Reactive"
+            }
         }
         p {
             "To avoid losing reactivity with props, we recommend you wrap any props you want to track in a  "
@@ -8497,17 +11342,34 @@ pub fn EssentialsStateIndex() -> dioxus::prelude::Element {
         }
         DemoFrame { reactivity::MakingPropsReactiveDemo {} }
         h2 { id: "moving-around-state",
-            a { href: "#moving-around-state", class: "header", "Moving Around State" }
+            Link {
+                to: BookRoute::EssentialsStateIndex {
+                    section: EssentialsStateIndexSection::MovingAroundState,
+                },
+                class: "header",
+                "Moving Around State"
+            }
         }
         p {
             "As you create signals and derived state in your app, you will need to move around that state between components. Dioxus provides three different ways to pass around state:"
         }
         h3 { id: "passing-props",
-            a { href: "#passing-props", class: "header", "Passing props" }
+            Link {
+                to: BookRoute::EssentialsStateIndex {
+                    section: EssentialsStateIndexSection::PassingProps,
+                },
+                class: "header",
+                "Passing props"
+            }
         }
         p {
             "You can pass your values through component "
-            a { href: "./component_props", "props" }
+            Link {
+                to: BookRoute::ReferenceComponentProps {
+                    section: ReferenceComponentPropsSection::Empty,
+                },
+                "props"
+            }
             ". This should be your default when passing around state. It is the most explicit and local to your component. Use this until it gets annoying to pass around the value:"
         }
         CodeBlock {
@@ -8516,18 +11378,24 @@ pub fn EssentialsStateIndex() -> dioxus::prelude::Element {
         }
         DemoFrame { moving_state_around::PassingProps {} }
         h3 { id: "passing-context",
-            a { href: "#passing-context", class: "header", "Passing context" }
+            Link {
+                to: BookRoute::EssentialsStateIndex {
+                    section: EssentialsStateIndexSection::PassingContext,
+                },
+                class: "header",
+                "Passing context"
+            }
         }
         p {
             "If you need a slightly more powerful way to pass around state, you can use the context API."
         }
         p {
             "The context API lets you pass state from a parent component to all children. This is useful if you want to share state between many components. You can insert a unique type into the context with the "
-            a { href: "https://docs.rs/dioxus-hooks/latest/dioxus_hooks/fn.use_context_provider.html",
+            Link { to: "https://docs.rs/dioxus-hooks/latest/dioxus_hooks/fn.use_context_provider.html",
                 code { "use_context_provider" }
             }
             " hook in the parent component. Then you can access the context in any child component with the "
-            a { href: "https://docs.rs/dioxus-hooks/latest/dioxus_hooks/fn.use_context.html",
+            Link { to: "https://docs.rs/dioxus-hooks/latest/dioxus_hooks/fn.use_context.html",
                 code { "use_context" }
             }
             " hook."
@@ -8545,7 +11413,13 @@ pub fn EssentialsStateIndex() -> dioxus::prelude::Element {
             "."
         }
         h3 { id: "using-globals",
-            a { href: "#using-globals", class: "header", "Using globals" }
+            Link {
+                to: BookRoute::EssentialsStateIndex {
+                    section: EssentialsStateIndexSection::UsingGlobals,
+                },
+                class: "header",
+                "Using globals"
+            }
         }
         p {
             "Finally, if you have truly global state, you can put your state in a  "
@@ -8573,27 +11447,97 @@ pub fn EssentialsStateIndex() -> dioxus::prelude::Element {
         }
     }
 }
+#[derive(
+    Clone, Copy, PartialEq, Eq, Hash, Debug, Default, serde::Serialize, serde::Deserialize,
+)]
+pub enum EssentialsBreakingIndexSection {
+    #[default]
+    Empty,
+    BreakingOutOfDioxus,
+    InteractingWithJavascriptWithEvalAndWebSys,
+    SynchronizingDomUpdatesWithUseEffect,
+    GettingAccessToElementsWithOnmounted,
+    DownCastingWebSysEvents,
+}
+impl std::str::FromStr for EssentialsBreakingIndexSection {
+    type Err = EssentialsBreakingIndexSectionParseError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "" => Ok(Self::Empty),
+            "breaking-out-of-dioxus" => Ok(Self::BreakingOutOfDioxus),
+            "interacting-with-javascript-with-eval-and-web-sys" => {
+                Ok(Self::InteractingWithJavascriptWithEvalAndWebSys)
+            }
+            "synchronizing-dom-updates-with-use-effect" => {
+                Ok(Self::SynchronizingDomUpdatesWithUseEffect)
+            }
+            "getting-access-to-elements-with-onmounted" => {
+                Ok(Self::GettingAccessToElementsWithOnmounted)
+            }
+            "down-casting-web-sys-events" => Ok(Self::DownCastingWebSysEvents),
+            _ => Err(EssentialsBreakingIndexSectionParseError),
+        }
+    }
+}
+impl std::fmt::Display for EssentialsBreakingIndexSection {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Self::Empty => f.write_str(""),
+            Self::BreakingOutOfDioxus => f.write_str("breaking-out-of-dioxus"),
+            Self::InteractingWithJavascriptWithEvalAndWebSys => {
+                f.write_str("interacting-with-javascript-with-eval-and-web-sys")
+            }
+            Self::SynchronizingDomUpdatesWithUseEffect => {
+                f.write_str("synchronizing-dom-updates-with-use-effect")
+            }
+            Self::GettingAccessToElementsWithOnmounted => {
+                f.write_str("getting-access-to-elements-with-onmounted")
+            }
+            Self::DownCastingWebSysEvents => f.write_str("down-casting-web-sys-events"),
+        }
+    }
+}
+#[derive(Debug)]
+pub struct EssentialsBreakingIndexSectionParseError;
+impl std::fmt::Display for EssentialsBreakingIndexSectionParseError {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.write_str(
+            "Invalid section name. Expected one of EssentialsBreakingIndexSectionbreaking-out-of-dioxus, interacting-with-javascript-with-eval-and-web-sys, synchronizing-dom-updates-with-use-effect, getting-access-to-elements-with-onmounted, down-casting-web-sys-events",
+        )?;
+        Ok(())
+    }
+}
+impl std::error::Error for EssentialsBreakingIndexSectionParseError {}
 #[component(no_case_check)]
-pub fn EssentialsBreakingIndex() -> dioxus::prelude::Element {
+pub fn EssentialsBreakingIndex(
+    section: EssentialsBreakingIndexSection,
+) -> dioxus::prelude::Element {
     use dioxus::prelude::*;
     rsx! {
         h1 { id: "breaking-out-of-dioxus",
-            a { href: "#breaking-out-of-dioxus", class: "header", "Breaking Out of Dioxus" }
+            Link {
+                to: BookRoute::EssentialsBreakingIndex {
+                    section: EssentialsBreakingIndexSection::BreakingOutOfDioxus,
+                },
+                class: "header",
+                "Breaking Out of Dioxus"
+            }
         }
         p {
             "Dioxus is makes it easy to build reactive user interfaces. However, there are some cases where you may need to break out of the reactive paradigm to interact with the DOM directly."
         }
-        h2 { id: "interacting-with-javascript-with",
-            a { href: "#interacting-with-javascript-with", class: "header",
-                "Interacting with JavaScript with "
+        h2 { id: "interacting-with-javascript-with-eval-and-web-sys",
+            Link {
+                to: BookRoute::EssentialsBreakingIndex {
+                    section: EssentialsBreakingIndexSection::InteractingWithJavascriptWithEvalAndWebSys,
+                },
+                class: "header",
+                "Interacting with JavaScript with eval and web-sys"
             }
-            code { "eval" }
-            " and "
-            code { "web-sys" }
         }
         p {
             "Dioxus exposes a limited number of "
-            a { href: "https://developer.mozilla.org/en-US/docs/Web/API", "web apis" }
+            Link { to: "https://developer.mozilla.org/en-US/docs/Web/API", "web apis" }
             " with a nicer interface. If you need access to more APIs, you can use the "
             code { "eval" }
             " function to run JavaScript in the browser."
@@ -8606,7 +11550,7 @@ pub fn EssentialsBreakingIndex() -> dioxus::prelude::Element {
         DemoFrame { breaking_out::Eval {} }
         p {
             "If you are only targeting web, you can also use the "
-            a { href: "https://crates.io/crates/web-sys",
+            Link { to: "https://crates.io/crates/web-sys",
                 code { "web-sys" }
             }
             " crate for typed access to the web APIs. Here is what reading the domain looks like with web-sys:"
@@ -8616,11 +11560,14 @@ pub fn EssentialsBreakingIndex() -> dioxus::prelude::Element {
             name: "breaking_out.rs".to_string(),
         }
         DemoFrame { breaking_out::WebSys {} }
-        h2 { id: "synchronizing-dom-updates-with",
-            a { href: "#synchronizing-dom-updates-with", class: "header",
-                "Synchronizing DOM updates with "
+        h2 { id: "synchronizing-dom-updates-with-use-effect",
+            Link {
+                to: BookRoute::EssentialsBreakingIndex {
+                    section: EssentialsBreakingIndexSection::SynchronizingDomUpdatesWithUseEffect,
+                },
+                class: "header",
+                "Synchronizing DOM updates with use_effect"
             }
-            code { "use_effect" }
         }
         p {
             "If you do need to interact with the DOM directly, you should do so in a  "
@@ -8637,11 +11584,14 @@ pub fn EssentialsBreakingIndex() -> dioxus::prelude::Element {
             name: "breaking_out.rs".to_string(),
         }
         DemoFrame { breaking_out::Canvas {} }
-        h2 { id: "getting-access-to-elements-with",
-            a { href: "#getting-access-to-elements-with", class: "header",
-                "Getting access to elements with "
+        h2 { id: "getting-access-to-elements-with-onmounted",
+            Link {
+                to: BookRoute::EssentialsBreakingIndex {
+                    section: EssentialsBreakingIndexSection::GettingAccessToElementsWithOnmounted,
+                },
+                class: "header",
+                "Getting access to elements with onmounted"
             }
-            code { "onmounted" }
         }
         p {
             "If you need a handle to an element that is rendered by dioxus, you can use the  "
@@ -8657,7 +11607,11 @@ pub fn EssentialsBreakingIndex() -> dioxus::prelude::Element {
         }
         DemoFrame { breaking_out::OnMounted {} }
         h2 { id: "down-casting-web-sys-events",
-            a { href: "#down-casting-web-sys-events", class: "header",
+            Link {
+                to: BookRoute::EssentialsBreakingIndex {
+                    section: EssentialsBreakingIndexSection::DownCastingWebSysEvents,
+                },
+                class: "header",
                 "Down casting web sys events"
             }
         }
@@ -8673,156 +11627,193 @@ pub fn EssentialsBreakingIndex() -> dioxus::prelude::Element {
         DemoFrame { breaking_out::Downcast {} }
     }
 }
+#[derive(
+    Clone, Copy, PartialEq, Eq, Hash, Debug, Default, serde::Serialize, serde::Deserialize,
+)]
+pub enum GuidesIndexSection {
+    #[default]
+    Empty,
+    DioxusGuides,
+    State,
+    Assets,
+    Platforms,
+}
+impl std::str::FromStr for GuidesIndexSection {
+    type Err = GuidesIndexSectionParseError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "" => Ok(Self::Empty),
+            "dioxus-guides" => Ok(Self::DioxusGuides),
+            "state" => Ok(Self::State),
+            "assets" => Ok(Self::Assets),
+            "platforms" => Ok(Self::Platforms),
+            _ => Err(GuidesIndexSectionParseError),
+        }
+    }
+}
+impl std::fmt::Display for GuidesIndexSection {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Self::Empty => f.write_str(""),
+            Self::DioxusGuides => f.write_str("dioxus-guides"),
+            Self::State => f.write_str("state"),
+            Self::Assets => f.write_str("assets"),
+            Self::Platforms => f.write_str("platforms"),
+        }
+    }
+}
+#[derive(Debug)]
+pub struct GuidesIndexSectionParseError;
+impl std::fmt::Display for GuidesIndexSectionParseError {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.write_str(
+            "Invalid section name. Expected one of GuidesIndexSectiondioxus-guides, state, assets, platforms",
+        )?;
+        Ok(())
+    }
+}
+impl std::error::Error for GuidesIndexSectionParseError {}
 #[component(no_case_check)]
-pub fn GuidesIndex() -> dioxus::prelude::Element {
+pub fn GuidesIndex(section: GuidesIndexSection) -> dioxus::prelude::Element {
     use dioxus::prelude::*;
     rsx! {
-        h1 { id: "dioxus-reference",
-            a { href: "#dioxus-reference", class: "header", "Dioxus Reference" }
+        h1 { id: "dioxus-guides",
+            Link {
+                to: BookRoute::GuidesIndex {
+                    section: GuidesIndexSection::DioxusGuides,
+                },
+                class: "header",
+                "Dioxus Guides"
+            }
         }
         p {
-            "This Reference contains more detailed explanations for all concepts covered in the "
-            a { href: "../guide",
+            "These guides contains more detailed explanations for some concepts covered in the "
+            Link {
+                to: BookRoute::GuideIndex {
+                    section: GuideIndexSection::Empty,
+                },
                 code { "guide" }
             }
             " and more."
         }
-        h2 { id: "rendering",
-            a { href: "#rendering", class: "header", "Rendering" }
-        }
-        ul {
-            li {
-                a { href: "rsx",
-                    code { "RSX" }
-                }
-                " Rsx is a HTML-like macro that allows you to declare UI"
-            }
-            li {
-                a { href: "components",
-                    code { "Components" }
-                }
-                " Components are the building blocks of UI in Dioxus"
-            }
-            li {
-                a { href: "component_props",
-                    code { "Props" }
-                }
-                " Props allow you pass information to Components"
-            }
-            li {
-                a { href: "event_handlers",
-                    code { "Event Listeners" }
-                }
-                " Event listeners let you respond to user input"
-            }
-            li {
-                a { href: "user_input",
-                    code { "User Input" }
-                }
-                " How to handle User input in Dioxus"
-            }
-            li {
-                a { href: "dynamic_rendering",
-                    code { "Dynamic Rendering" }
-                }
-                " How to dynamically render data in Dioxus"
-            }
-        }
         h2 { id: "state",
-            a { href: "#state", class: "header", "State" }
+            Link {
+                to: BookRoute::GuidesIndex {
+                    section: GuidesIndexSection::State,
+                },
+                class: "header",
+                "State"
+            }
         }
         ul {
             li {
-                a { href: "hooks",
-                    code { "Hooks" }
+                Link {
+                    to: BookRoute::GuidesManagingState {
+                        section: GuidesManagingStateSection::Empty,
+                    },
+                    "State management"
                 }
-                " Hooks allow you to create components state"
+                " (signals-based reactivity)"
             }
-            li {
-                a { href: "context",
-                    code { "Context" }
-                }
-                " Context allows you to create state in a parent and consume it in children"
+        }
+        h2 { id: "assets",
+            Link {
+                to: BookRoute::GuidesIndex {
+                    section: GuidesIndexSection::Assets,
+                },
+                class: "header",
+                "Assets"
             }
+        }
+        ul {
             li {
-                a { href: "router",
-                    code { "Routing" }
+                Link {
+                    to: BookRoute::GuidesAssets {
+                        section: GuidesAssetsSection::Empty,
+                    },
+                    code { "Assets" }
                 }
-                " The router helps you manage the URL state"
-            }
-            li {
-                a { href: "use_resource",
-                    code { "Resource" }
-                }
-                " Use future allows you to create an async task and monitor it's state"
-            }
-            li {
-                a { href: "use_coroutine",
-                    code { "UseCoroutine" }
-                }
-                " Use coroutine helps you manage external state"
-            }
-            li {
-                a { href: "spawn",
-                    code { "Spawn" }
-                }
-                " Spawn creates an async task"
+                " Overview of how to include assets in your application"
             }
         }
         h2 { id: "platforms",
-            a { href: "#platforms", class: "header", "Platforms" }
+            Link {
+                to: BookRoute::GuidesIndex {
+                    section: GuidesIndexSection::Platforms,
+                },
+                class: "header",
+                "Platforms"
+            }
         }
         ul {
             li {
-                a { href: "choosing_a_web_renderer",
-                    code { "Choosing a Web Renderer" }
-                }
-                " Overview of the different web renderers"
-            }
-            li {
-                a { href: "desktop",
+                Link {
+                    to: BookRoute::GuidesDesktopIndex {
+                        section: GuidesDesktopIndexSection::Empty,
+                    },
                     code { "Desktop" }
                 }
                 " Overview of desktop specific APIS"
             }
             li {
-                a { href: "web",
+                Link {
+                    to: BookRoute::GuidesWebIndex {
+                        section: GuidesWebIndexSection::Empty,
+                    },
                     code { "Web" }
                 }
                 " Overview of web specific APIS"
             }
             li {
-                a { href: "fullstack",
+                Link {
+                    to: BookRoute::GuidesFullstackIndex {
+                        section: GuidesFullstackIndexSection::Empty,
+                    },
                     code { "Fullstack" }
                 }
                 " Overview of Fullstack specific APIS"
                 ul {
                     li {
-                        a { href: "fullstack/server_functions",
+                        Link {
+                            to: BookRoute::GuidesFullstackServerFunctions {
+                                section: GuidesFullstackServerFunctionsSection::Empty,
+                            },
                             code { "Server Functions" }
                         }
                         " Server functions make it easy to communicate between your server and client"
                     }
                     li {
-                        a { href: "fullstack/extractors",
+                        Link {
+                            to: BookRoute::GuidesFullstackExtractors {
+                                section: GuidesFullstackExtractorsSection::Empty,
+                            },
                             code { "Extractors" }
                         }
                         " Extractors allow you to get extra information out of the headers of a request"
                     }
                     li {
-                        a { href: "fullstack/middleware",
+                        Link {
+                            to: BookRoute::GuidesFullstackMiddleware {
+                                section: GuidesFullstackMiddlewareSection::Empty,
+                            },
                             code { "Middleware" }
                         }
                         " Middleware allows you to wrap a server function request or response"
                     }
                     li {
-                        a { href: "fullstack/authentication",
+                        Link {
+                            to: BookRoute::GuidesFullstackAuthentication {
+                                section: GuidesFullstackAuthenticationSection::Empty,
+                            },
                             code { "Authentication" }
                         }
                         " An overview of how to handle authentication with server functions"
                     }
                     li {
-                        a { href: "fullstack/routing",
+                        Link {
+                            to: BookRoute::GuidesFullstackRouting {
+                                section: GuidesFullstackRoutingSection::Empty,
+                            },
                             code { "Routing" }
                         }
                         " An overview of how to work with the router in the fullstack renderer"
@@ -8830,31 +11821,193 @@ pub fn GuidesIndex() -> dioxus::prelude::Element {
                 }
             }
             li {
-                a { href: "ssr",
+                Link {
+                    to: BookRoute::GuidesSsr {
+                        section: GuidesSsrSection::Empty,
+                    },
                     code { "SSR" }
                 }
                 " Overview of the SSR renderer"
             }
-            li {
-                a { href: "liveview",
-                    code { "Liveview" }
-                }
-                " Overview of liveview specific APIS"
-            }
         }
     }
 }
+#[derive(
+    Clone, Copy, PartialEq, Eq, Hash, Debug, Default, serde::Serialize, serde::Deserialize,
+)]
+pub enum GuidesManagingStateSection {
+    #[default]
+    Empty,
+    TheRulesOfHooks,
+    NoHooksInConditionals,
+    NoHooksInClosures,
+    NoHooksInLoops,
+}
+impl std::str::FromStr for GuidesManagingStateSection {
+    type Err = GuidesManagingStateSectionParseError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "" => Ok(Self::Empty),
+            "the-rules-of-hooks" => Ok(Self::TheRulesOfHooks),
+            "no-hooks-in-conditionals" => Ok(Self::NoHooksInConditionals),
+            "no-hooks-in-closures" => Ok(Self::NoHooksInClosures),
+            "no-hooks-in-loops" => Ok(Self::NoHooksInLoops),
+            _ => Err(GuidesManagingStateSectionParseError),
+        }
+    }
+}
+impl std::fmt::Display for GuidesManagingStateSection {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Self::Empty => f.write_str(""),
+            Self::TheRulesOfHooks => f.write_str("the-rules-of-hooks"),
+            Self::NoHooksInConditionals => f.write_str("no-hooks-in-conditionals"),
+            Self::NoHooksInClosures => f.write_str("no-hooks-in-closures"),
+            Self::NoHooksInLoops => f.write_str("no-hooks-in-loops"),
+        }
+    }
+}
+#[derive(Debug)]
+pub struct GuidesManagingStateSectionParseError;
+impl std::fmt::Display for GuidesManagingStateSectionParseError {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.write_str(
+            "Invalid section name. Expected one of GuidesManagingStateSectionthe-rules-of-hooks, no-hooks-in-conditionals, no-hooks-in-closures, no-hooks-in-loops",
+        )?;
+        Ok(())
+    }
+}
+impl std::error::Error for GuidesManagingStateSectionParseError {}
 #[component(no_case_check)]
-pub fn RouterIndex() -> dioxus::prelude::Element {
+pub fn GuidesManagingState(section: GuidesManagingStateSection) -> dioxus::prelude::Element {
+    use dioxus::prelude::*;
+    rsx! {
+        h1 { id: "the-rules-of-hooks",
+            Link {
+                to: BookRoute::GuidesManagingState {
+                    section: GuidesManagingStateSection::TheRulesOfHooks,
+                },
+                class: "header",
+                "The Rules of Hooks"
+            }
+        }
+        p {
+            "Hooks are a powerful way to manage state in Dioxus, but there are some rules you need to follow to insure they work as expected. Dioxus uses the order you call hooks to differentiate between hooks. Because the order you call hooks matters, you must follow these rules:"
+        }
+        ol {
+            li { "Hooks may be only used in components or other hooks (we'll get to that later)" }
+            li {
+                "On every call to the component function"
+                ol {
+                    li { "The same hooks must be called" }
+                    li { "In the same order" }
+                }
+            }
+            li {
+                "Hooks name's should start with "
+                code { "use_" }
+                " so you don't accidentally confuse them with regular functions"
+            }
+        }
+        p { "These rules mean that there are certain things you can't do with hooks:" }
+        h4 { id: "no-hooks-in-conditionals",
+            Link {
+                to: BookRoute::GuidesManagingState {
+                    section: GuidesManagingStateSection::NoHooksInConditionals,
+                },
+                class: "header",
+                "No Hooks in Conditionals"
+            }
+        }
+        CodeBlock {
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#8c8c8c;\">// ❌ don&#39;t call hooks in conditionals!\n</span><span style=\"color:#8c8c8c;\">// We must ensure that the same hooks will be called every time\n</span><span style=\"color:#8c8c8c;\">// But `if` statements only run if the conditional is true!\n</span><span style=\"color:#8c8c8c;\">// So we might violate rule 2.\n</span><span style=\"color:#f92672;\">if</span><span style=\"color:#f8f8f2;\"> you_are_happy </span><span style=\"color:#f92672;\">&amp;&amp;</span><span style=\"color:#f8f8f2;\"> you_know_it {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> something </span><span style=\"color:#f92672;\">= </span><span style=\"color:#66d9ef;\">use_signal</span><span style=\"color:#f8f8f2;\">(|| </span><span style=\"color:#ffee99;\">&quot;hands&quot;</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"color:#f8f8f2;\">    println!(</span><span style=\"color:#ffee99;\">&quot;clap your </span><span style=\"color:#ff80f4;\">{{something}}</span><span style=\"color:#ffee99;\">&quot;</span><span style=\"color:#f8f8f2;\">)\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#8c8c8c;\">// ✅ instead, *always* call use_signal\n</span><span style=\"color:#8c8c8c;\">// You can put other stuff in the conditional though\n</span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> something </span><span style=\"color:#f92672;\">= </span><span style=\"color:#66d9ef;\">use_signal</span><span style=\"color:#f8f8f2;\">(|| </span><span style=\"color:#ffee99;\">&quot;hands&quot;</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"color:#f92672;\">if</span><span style=\"color:#f8f8f2;\"> you_are_happy </span><span style=\"color:#f92672;\">&amp;&amp;</span><span style=\"color:#f8f8f2;\"> you_know_it {{\n</span><span style=\"color:#f8f8f2;\">    println!(</span><span style=\"color:#ffee99;\">&quot;clap your </span><span style=\"color:#ff80f4;\">{{something}}</span><span style=\"color:#ffee99;\">&quot;</span><span style=\"color:#f8f8f2;\">)\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
+            name: "hooks_bad.rs".to_string(),
+        }
+        h4 { id: "no-hooks-in-closures",
+            Link {
+                to: BookRoute::GuidesManagingState {
+                    section: GuidesManagingStateSection::NoHooksInClosures,
+                },
+                class: "header",
+                "No Hooks in Closures"
+            }
+        }
+        CodeBlock {
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#8c8c8c;\">// ❌ don&#39;t call hooks inside closures!\n</span><span style=\"color:#8c8c8c;\">// We can&#39;t guarantee that the closure, if used, will be called in the same order every time\n</span><span style=\"font-style:italic;color:#66d9ef;\">let </span><span style=\"color:#a6e22e;\">_a </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">|| {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> b </span><span style=\"color:#f92672;\">= </span><span style=\"color:#66d9ef;\">use_signal</span><span style=\"color:#f8f8f2;\">(|| </span><span style=\"color:#ff80f4;\">0</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#66d9ef;\">b</span><span style=\"color:#f8f8f2;\">()\n</span><span style=\"color:#f8f8f2;\">}};\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#8c8c8c;\">// ✅ instead, move hook `b` outside\n</span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> b </span><span style=\"color:#f92672;\">= </span><span style=\"color:#66d9ef;\">use_signal</span><span style=\"color:#f8f8f2;\">(|| </span><span style=\"color:#ff80f4;\">0</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"font-style:italic;color:#66d9ef;\">let </span><span style=\"color:#a6e22e;\">_a </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">|| </span><span style=\"color:#66d9ef;\">b</span><span style=\"color:#f8f8f2;\">();</span></pre>\n",
+            name: "hooks_bad.rs".to_string(),
+        }
+        h4 { id: "no-hooks-in-loops",
+            Link {
+                to: BookRoute::GuidesManagingState {
+                    section: GuidesManagingStateSection::NoHooksInLoops,
+                },
+                class: "header",
+                "No Hooks in Loops"
+            }
+        }
+        CodeBlock {
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#8c8c8c;\">// `names` is a Vec&lt;&amp;str&gt;\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#8c8c8c;\">// ❌ Do not use hooks in loops!\n</span><span style=\"color:#8c8c8c;\">// In this case, if the length of the Vec changes, we break rule 2\n</span><span style=\"color:#f92672;\">for</span><span style=\"color:#f8f8f2;\"> _name </span><span style=\"color:#f92672;\">in &amp;</span><span style=\"color:#f8f8f2;\">names {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> is_selected </span><span style=\"color:#f92672;\">= </span><span style=\"color:#66d9ef;\">use_signal</span><span style=\"color:#f8f8f2;\">(|| </span><span style=\"color:#ff80f4;\">false</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"color:#f8f8f2;\">    println!(</span><span style=\"color:#ffee99;\">&quot;selected: </span><span style=\"color:#ff80f4;\">{{is_selected}}</span><span style=\"color:#ffee99;\">&quot;</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#8c8c8c;\">// ✅ Instead, use a hashmap with use_signal\n</span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> selection_map </span><span style=\"color:#f92672;\">= </span><span style=\"color:#66d9ef;\">use_signal</span><span style=\"color:#f8f8f2;\">(HashMap::&lt;</span><span style=\"color:#f92672;\">&amp;</span><span style=\"font-style:italic;color:#66d9ef;\">str</span><span style=\"color:#f8f8f2;\">, </span><span style=\"font-style:italic;color:#66d9ef;\">bool</span><span style=\"color:#f8f8f2;\">&gt;::new);\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\">for</span><span style=\"color:#f8f8f2;\"> name </span><span style=\"color:#f92672;\">in &amp;</span><span style=\"color:#f8f8f2;\">names {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> is_selected </span><span style=\"color:#f92672;\">=</span><span style=\"color:#f8f8f2;\"> selection_map.</span><span style=\"color:#66d9ef;\">read</span><span style=\"color:#f8f8f2;\">()[name];\n</span><span style=\"color:#f8f8f2;\">    println!(</span><span style=\"color:#ffee99;\">&quot;selected: </span><span style=\"color:#ff80f4;\">{{is_selected}}</span><span style=\"color:#ffee99;\">&quot;</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
+            name: "hooks_bad.rs".to_string(),
+        }
+    }
+}
+#[derive(
+    Clone, Copy, PartialEq, Eq, Hash, Debug, Default, serde::Serialize, serde::Deserialize,
+)]
+pub enum RouterIndexSection {
+    #[default]
+    Empty,
+    Introduction,
+}
+impl std::str::FromStr for RouterIndexSection {
+    type Err = RouterIndexSectionParseError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "" => Ok(Self::Empty),
+            "introduction" => Ok(Self::Introduction),
+            _ => Err(RouterIndexSectionParseError),
+        }
+    }
+}
+impl std::fmt::Display for RouterIndexSection {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Self::Empty => f.write_str(""),
+            Self::Introduction => f.write_str("introduction"),
+        }
+    }
+}
+#[derive(Debug)]
+pub struct RouterIndexSectionParseError;
+impl std::fmt::Display for RouterIndexSectionParseError {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.write_str("Invalid section name. Expected one of RouterIndexSectionintroduction")?;
+        Ok(())
+    }
+}
+impl std::error::Error for RouterIndexSectionParseError {}
+#[component(no_case_check)]
+pub fn RouterIndex(section: RouterIndexSection) -> dioxus::prelude::Element {
     use dioxus::prelude::*;
     rsx! {
         h1 { id: "introduction",
-            a { href: "#introduction", class: "header", "Introduction" }
+            Link {
+                to: BookRoute::RouterIndex {
+                    section: RouterIndexSection::Introduction,
+                },
+                class: "header",
+                "Introduction"
+            }
         }
         blockquote {
             p {
                 "If you are not familiar with Dioxus itself, check out the "
-                a { href: "../guide", "Dioxus guide" }
+                Link {
+                    to: BookRoute::GuideIndex {
+                        section: GuideIndexSection::Empty,
+                    },
+                    "Dioxus guide"
+                }
                 " first."
             }
         }
@@ -8871,7 +12024,12 @@ pub fn RouterIndex() -> dioxus::prelude::Element {
             "Then, add this to your  "
             code { "Dioxus.toml" }
             " (learn more about configuration "
-            a { href: "../CLI/configure", "here" }
+            Link {
+                to: BookRoute::CliConfigure {
+                    section: CliConfigureSection::Empty,
+                },
+                "here"
+            }
             "):"
         }
         CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">[web.watcher]\n</span><span style=\"color:#f8f8f2;\">index_on_404 </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ff80f4;\">true</span></pre>\n" }
@@ -8888,67 +12046,158 @@ pub fn RouterIndex() -> dioxus::prelude::Element {
             "This will instruct  "
             code { "dx serve" }
             " to redirect any unknown route to the index, to then be resolved by the router."
+            " "
+            "The router works on the client. If we connect through the index route (e.g.,  "
             code { "localhost:8080" }
-            ", then click a link to go to "
+            ", then click a link to go to  "
             code { "localhost:8080/contact" }
             "), the app renders the new route without reloading."
+            " "
+            "However, when we go to a route "
             em { "before" }
             " going to the index (go straight to "
             code { "localhost:8080/contact" }
             "), we are trying to access a static route from the server, but the only static route on our server is the index (because the Dioxus frontend is a Single Page Application) and it will fail unless we redirect all missing routes to the index."
         }
-        p { "This book is intended to get you up to speed with Dioxus Router. It is split" }
+        p {
+            "This book is intended to get you up to speed with Dioxus Router. It is split"
+            " "
+            "into two sections:"
+        }
         ol {
             li {
                 "The "
-                a { href: "reference", "reference" }
+                Link {
+                    to: BookRoute::RouterReferenceIndex {
+                        section: RouterReferenceIndexSection::Empty,
+                    },
+                    "reference"
+                }
                 " section explains individual features in "
+                "depth. You can read it from start to finish, or you can read individual chapters "
+                "in whatever order you want."
             }
             li {
                 "If you prefer a learning-by-doing approach, you can check out the "
                 em {
-                    a { href: "example", "example project" }
+                    Link {
+                        to: BookRoute::RouterExampleIndex {
+                            section: RouterExampleIndexSection::Empty,
+                        },
+                        "example project"
+                    }
                 }
                 ". It guides you through "
+                "creating a dioxus app, setting up the router, and using some of its "
+                "functionality."
             }
         }
         blockquote {
             p {
                 "Please note that this is not the only documentation for the Dioxus Router. You can also check out the "
-                a { href: "https://docs.rs/dioxus-router/", "API Docs" }
+                Link { to: "https://docs.rs/dioxus-router/", "API Docs" }
                 "."
             }
         }
     }
 }
+#[derive(
+    Clone, Copy, PartialEq, Eq, Hash, Debug, Default, serde::Serialize, serde::Deserialize,
+)]
+pub enum RouterExampleIndexSection {
+    #[default]
+    Empty,
+    Overview,
+    YoullLearnHowTo,
+}
+impl std::str::FromStr for RouterExampleIndexSection {
+    type Err = RouterExampleIndexSectionParseError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "" => Ok(Self::Empty),
+            "overview" => Ok(Self::Overview),
+            "youll-learn-how-to" => Ok(Self::YoullLearnHowTo),
+            _ => Err(RouterExampleIndexSectionParseError),
+        }
+    }
+}
+impl std::fmt::Display for RouterExampleIndexSection {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Self::Empty => f.write_str(""),
+            Self::Overview => f.write_str("overview"),
+            Self::YoullLearnHowTo => f.write_str("youll-learn-how-to"),
+        }
+    }
+}
+#[derive(Debug)]
+pub struct RouterExampleIndexSectionParseError;
+impl std::fmt::Display for RouterExampleIndexSectionParseError {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.write_str(
+            "Invalid section name. Expected one of RouterExampleIndexSectionoverview, youll-learn-how-to",
+        )?;
+        Ok(())
+    }
+}
+impl std::error::Error for RouterExampleIndexSectionParseError {}
 #[component(no_case_check)]
-pub fn RouterExampleIndex() -> dioxus::prelude::Element {
+pub fn RouterExampleIndex(section: RouterExampleIndexSection) -> dioxus::prelude::Element {
     use dioxus::prelude::*;
     rsx! {
         h1 { id: "overview",
-            a { href: "#overview", class: "header", "Overview" }
+            Link {
+                to: BookRoute::RouterExampleIndex {
+                    section: RouterExampleIndexSection::Overview,
+                },
+                class: "header",
+                "Overview"
+            }
         }
-        p { "In this guide, you'll learn to effectively use Dioxus Router whether you're" }
+        p {
+            "In this guide, you'll learn to effectively use Dioxus Router whether you're"
+            " "
+            "building a small todo app or the next FAANG company. We will create a small"
+            " "
+            "website with a blog, homepage, and more!"
+        }
         blockquote {
             p {
                 "To follow along with the router example, you'll need a working Dioxus app."
-                a { href: "https://dioxuslabs.com/learn/0.6/getting_started", "Dioxus book" }
+                " "
+                "Check out the "
+                Link { to: "https://dioxuslabs.com/learn/0.6/getting_started", "Dioxus book" }
                 " to get started."
             }
         }
         blockquote {
             p {
                 "Make sure to add Dioxus Router as a dependency, as explained in the"
-                a { href: "..", "introduction" }
+                Link {
+                    to: BookRoute::RouterIndex {
+                        section: RouterIndexSection::Empty,
+                    },
+                    "introduction"
+                }
                 "."
             }
         }
         h2 { id: "youll-learn-how-to",
-            a { href: "#youll-learn-how-to", class: "header", "You'll learn how to" }
+            Link {
+                to: BookRoute::RouterExampleIndex {
+                    section: RouterExampleIndexSection::YoullLearnHowTo,
+                },
+                class: "header",
+                "You'll learn how to"
+            }
         }
         ul {
             li { "Create routes and render \"pages\"." }
-            li { "Utilize nested routes, create a navigation bar, and render content for a" }
+            li {
+                "Utilize nested routes, create a navigation bar, and render content for a"
+                " "
+                "set of routes."
+            }
             li { "Parse URL parameters to dynamically display content." }
             li { "Redirect visitors to different routes." }
         }
@@ -8956,33 +12205,113 @@ pub fn RouterExampleIndex() -> dioxus::prelude::Element {
             p {
                 strong { "Disclaimer" }
             }
-            p { "The example will only display the features of Dioxus Router. It will not" }
+            p {
+                "The example will only display the features of Dioxus Router. It will not"
+                " "
+                "include any actual functionality. To keep things simple we will only be using"
+                " "
+                "a single file, this is not the recommended way of doing things with a real"
+                " "
+                "application."
+            }
         }
         p {
             "You can find the complete application in the "
-            a { href: "full-code", "full code" }
+            Link {
+                to: BookRoute::RouterExampleFullCode {
+                    section: RouterExampleFullCodeSection::Empty,
+                },
+                "full code"
+            }
             " chapter."
         }
     }
 }
+#[derive(
+    Clone, Copy, PartialEq, Eq, Hash, Debug, Default, serde::Serialize, serde::Deserialize,
+)]
+pub enum RouterExampleFirstRouteSection {
+    #[default]
+    Empty,
+    CreatingOurFirstRoute,
+    Fundamentals,
+    CreatingRoutes,
+    FallbackRoute,
+    Conclusion,
+}
+impl std::str::FromStr for RouterExampleFirstRouteSection {
+    type Err = RouterExampleFirstRouteSectionParseError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "" => Ok(Self::Empty),
+            "creating-our-first-route" => Ok(Self::CreatingOurFirstRoute),
+            "fundamentals" => Ok(Self::Fundamentals),
+            "creating-routes" => Ok(Self::CreatingRoutes),
+            "fallback-route" => Ok(Self::FallbackRoute),
+            "conclusion" => Ok(Self::Conclusion),
+            _ => Err(RouterExampleFirstRouteSectionParseError),
+        }
+    }
+}
+impl std::fmt::Display for RouterExampleFirstRouteSection {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Self::Empty => f.write_str(""),
+            Self::CreatingOurFirstRoute => f.write_str("creating-our-first-route"),
+            Self::Fundamentals => f.write_str("fundamentals"),
+            Self::CreatingRoutes => f.write_str("creating-routes"),
+            Self::FallbackRoute => f.write_str("fallback-route"),
+            Self::Conclusion => f.write_str("conclusion"),
+        }
+    }
+}
+#[derive(Debug)]
+pub struct RouterExampleFirstRouteSectionParseError;
+impl std::fmt::Display for RouterExampleFirstRouteSectionParseError {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.write_str(
+            "Invalid section name. Expected one of RouterExampleFirstRouteSectioncreating-our-first-route, fundamentals, creating-routes, fallback-route, conclusion",
+        )?;
+        Ok(())
+    }
+}
+impl std::error::Error for RouterExampleFirstRouteSectionParseError {}
 #[component(no_case_check)]
-pub fn RouterExampleFirstRoute() -> dioxus::prelude::Element {
+pub fn RouterExampleFirstRoute(
+    section: RouterExampleFirstRouteSection,
+) -> dioxus::prelude::Element {
     use dioxus::prelude::*;
     rsx! {
         h1 { id: "creating-our-first-route",
-            a { href: "#creating-our-first-route", class: "header", "Creating Our First Route" }
+            Link {
+                to: BookRoute::RouterExampleFirstRoute {
+                    section: RouterExampleFirstRouteSection::CreatingOurFirstRoute,
+                },
+                class: "header",
+                "Creating Our First Route"
+            }
         }
-        p { "In this chapter, we will start utilizing Dioxus Router and add a homepage and a" }
+        p {
+            "In this chapter, we will start utilizing Dioxus Router and add a homepage and a"
+            " "
+            "404 page to our project."
+        }
         h2 { id: "fundamentals",
-            a { href: "#fundamentals", class: "header", "Fundamentals" }
+            Link {
+                to: BookRoute::RouterExampleFirstRoute {
+                    section: RouterExampleFirstRouteSection::Fundamentals,
+                },
+                class: "header",
+                "Fundamentals"
+            }
         }
         p {
             "The core of the Dioxus Router is the "
-            a { href: "https://docs.rs/dioxus-router/latest/dioxus_router/components/fn.Routable.html",
+            Link { to: "https://docs.rs/dioxus-router/latest/dioxus_router/components/fn.Routable.html",
                 code { "Routable" }
             }
             " macro and the "
-            a { href: "https://docs.rs/dioxus-router/latest/dioxus_router/components/fn.Router.html",
+            Link { to: "https://docs.rs/dioxus-router/latest/dioxus_router/components/fn.Router.html",
                 code { "Router" }
             }
             " component."
@@ -9001,19 +12330,29 @@ pub fn RouterExampleFirstRoute() -> dioxus::prelude::Element {
             name: "first_route.rs".to_string(),
         }
         h2 { id: "creating-routes",
-            a { href: "#creating-routes", class: "header", "Creating Routes" }
+            Link {
+                to: BookRoute::RouterExampleFirstRoute {
+                    section: RouterExampleFirstRouteSection::CreatingRoutes,
+                },
+                class: "header",
+                "Creating Routes"
+            }
         }
-        p { "We want to use Dioxus Router to separate our application into different \"pages\"." }
+        p {
+            "We want to use Dioxus Router to separate our application into different \"pages\"."
+            " "
+            "Dioxus Router will then determine which page to render based on the URL path."
+        }
         p {
             "To start using Dioxus Router, we need to use the "
-            a { href: "https://docs.rs/dioxus-router/latest/dioxus_router/components/fn.Routable.html",
+            Link { to: "https://docs.rs/dioxus-router/latest/dioxus_router/components/fn.Routable.html",
                 code { "Routable" }
             }
             " macro."
         }
         p {
             "The "
-            a { href: "https://docs.rs/dioxus-router/latest/dioxus_router/components/fn.Routable.html",
+            Link { to: "https://docs.rs/dioxus-router/latest/dioxus_router/components/fn.Routable.html",
                 code { "Routable" }
             }
             " macro takes an enum with all of the possible routes in our application. Each variant of the enum represents a route and must be annotated with the "
@@ -9026,7 +12365,7 @@ pub fn RouterExampleFirstRoute() -> dioxus::prelude::Element {
         }
         p {
             "The "
-            a { href: "https://docs.rs/dioxus-router/latest/dioxus_router/components/fn.Router.html",
+            Link { to: "https://docs.rs/dioxus-router/latest/dioxus_router/components/fn.Router.html",
                 code { "Router" }
             }
             " component will provide a router context for all the inner components and hooks to use. You usually will want to place this at the top of your components tree."
@@ -9038,19 +12377,29 @@ pub fn RouterExampleFirstRoute() -> dioxus::prelude::Element {
         p {
             "If you head to your application's browser tab, you should now see the text"
             code { "Welcome to Dioxus Blog!" }
-            " when on the root URL ("
+            " when on the root URL ( "
             code { "http://localhost:8080/" }
             "). If"
+            " "
+            "you enter a different path for the URL, nothing should be displayed."
         }
         p {
             "This is because we told Dioxus Router to render the  "
             code { "Home" }
             " component only when"
+            " "
+            "the URL path is  "
             code { "/" }
             "."
         }
         h2 { id: "fallback-route",
-            a { href: "#fallback-route", class: "header", "Fallback Route" }
+            Link {
+                to: BookRoute::RouterExampleFirstRoute {
+                    section: RouterExampleFirstRouteSection::FallbackRoute,
+                },
+                class: "header",
+                "Fallback Route"
+            }
         }
         p {
             "In our example, when a route doesn't exist Dioxus Router doesn't render anything. Many sites also have a \"404\" page when a path does not exist. Let's add one to our site."
@@ -9069,32 +12418,116 @@ pub fn RouterExampleFirstRoute() -> dioxus::prelude::Element {
             contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">#[derive(Routable, Clone)]\n</span><span style=\"font-style:italic;color:#66d9ef;\">enum </span><span style=\"color:#f8f8f2;\">Route {{\n</span><span style=\"color:#f8f8f2;\">    #[route(</span><span style=\"color:#ffee99;\">&quot;/&quot;</span><span style=\"color:#f8f8f2;\">)]\n</span><span style=\"color:#f8f8f2;\">    Home {{}},\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#8c8c8c;\">// PageNotFound is a catch all route that will match any route and placing the matched segments in the route field\n</span><span style=\"color:#f8f8f2;\">    #[route(</span><span style=\"color:#ffee99;\">&quot;/:..route&quot;</span><span style=\"color:#f8f8f2;\">)]\n</span><span style=\"color:#f8f8f2;\">    PageNotFound {{ route: Vec&lt;String&gt; }},\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
             name: "catch_all.rs".to_string(),
         }
-        p { "Now when you go to a route that doesn't exist, you should see the page not found" }
+        p {
+            "Now when you go to a route that doesn't exist, you should see the page not found"
+            " "
+            "text."
+        }
         h2 { id: "conclusion",
-            a { href: "#conclusion", class: "header", "Conclusion" }
+            Link {
+                to: BookRoute::RouterExampleFirstRoute {
+                    section: RouterExampleFirstRouteSection::Conclusion,
+                },
+                class: "header",
+                "Conclusion"
+            }
         }
         p {
             "In this chapter, we learned how to create a route and tell Dioxus Router what"
+            " "
+            "component to render when the URL path is  "
             code { "/" }
             ". We also created a 404 page to"
+            " "
+            "handle when a route doesn't exist. Next, we'll create the blog portion of our"
+            " "
+            "site. We will utilize nested routes and URL parameters."
         }
     }
 }
+#[derive(
+    Clone, Copy, PartialEq, Eq, Hash, Debug, Default, serde::Serialize, serde::Deserialize,
+)]
+pub enum RouterExampleBuildingANestSection {
+    #[default]
+    Empty,
+    BuildingANest,
+    SiteNavigation,
+    UrlParametersAndNestedRoutes,
+    Conclusion,
+}
+impl std::str::FromStr for RouterExampleBuildingANestSection {
+    type Err = RouterExampleBuildingANestSectionParseError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "" => Ok(Self::Empty),
+            "building-a-nest" => Ok(Self::BuildingANest),
+            "site-navigation" => Ok(Self::SiteNavigation),
+            "url-parameters-and-nested-routes" => Ok(Self::UrlParametersAndNestedRoutes),
+            "conclusion" => Ok(Self::Conclusion),
+            _ => Err(RouterExampleBuildingANestSectionParseError),
+        }
+    }
+}
+impl std::fmt::Display for RouterExampleBuildingANestSection {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Self::Empty => f.write_str(""),
+            Self::BuildingANest => f.write_str("building-a-nest"),
+            Self::SiteNavigation => f.write_str("site-navigation"),
+            Self::UrlParametersAndNestedRoutes => f.write_str("url-parameters-and-nested-routes"),
+            Self::Conclusion => f.write_str("conclusion"),
+        }
+    }
+}
+#[derive(Debug)]
+pub struct RouterExampleBuildingANestSectionParseError;
+impl std::fmt::Display for RouterExampleBuildingANestSectionParseError {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.write_str(
+            "Invalid section name. Expected one of RouterExampleBuildingANestSectionbuilding-a-nest, site-navigation, url-parameters-and-nested-routes, conclusion",
+        )?;
+        Ok(())
+    }
+}
+impl std::error::Error for RouterExampleBuildingANestSectionParseError {}
 #[component(no_case_check)]
-pub fn RouterExampleBuildingANest() -> dioxus::prelude::Element {
+pub fn RouterExampleBuildingANest(
+    section: RouterExampleBuildingANestSection,
+) -> dioxus::prelude::Element {
     use dioxus::prelude::*;
     rsx! {
         h1 { id: "building-a-nest",
-            a { href: "#building-a-nest", class: "header", "Building a Nest" }
+            Link {
+                to: BookRoute::RouterExampleBuildingANest {
+                    section: RouterExampleBuildingANestSection::BuildingANest,
+                },
+                class: "header",
+                "Building a Nest"
+            }
         }
-        p { "In this chapter, we will begin to build the blog portion of our site which will" }
+        p {
+            "In this chapter, we will begin to build the blog portion of our site which will"
+            " "
+            "include links, nested routes, and route parameters."
+        }
         h2 { id: "site-navigation",
-            a { href: "#site-navigation", class: "header", "Site Navigation" }
+            Link {
+                to: BookRoute::RouterExampleBuildingANest {
+                    section: RouterExampleBuildingANestSection::SiteNavigation,
+                },
+                class: "header",
+                "Site Navigation"
+            }
         }
-        p { "Our site visitors won't know all the available pages and blogs on our site so we" }
+        p {
+            "Our site visitors won't know all the available pages and blogs on our site so we"
+            " "
+            "should provide a navigation bar for them. Our navbar will be a list of links going between our pages."
+        }
         p {
             "We want our navbar component to be rendered on several different pages on our site. Instead of duplicating the code, we can create a component that wraps all children routes. This is called a layout component. To tell the router where to render the child routes, we use the "
-            a { href: "https://docs.rs/dioxus-router/latest/dioxus_router/components/fn.Outlet.html",
+            Link { to: "https://docs.rs/dioxus-router/latest/dioxus_router/components/fn.Outlet.html",
                 code { "Outlet" }
             }
             " component."
@@ -9128,14 +12561,14 @@ pub fn RouterExampleBuildingANest() -> dioxus::prelude::Element {
         }
         p {
             "Instead, we want to use the "
-            a { href: "https://docs.rs/dioxus-router/latest/dioxus_router/components/fn.Link.html",
+            Link { to: "https://docs.rs/dioxus-router/latest/dioxus_router/components/fn.Link.html",
                 code { "Link" }
             }
             " component provided by Dioxus Router."
         }
         p {
             "The "
-            a { href: "https://docs.rs/dioxus-router/latest/dioxus_router/components/fn.Link.html",
+            Link { to: "https://docs.rs/dioxus-router/latest/dioxus_router/components/fn.Link.html",
                 code { "Link" }
             }
             " is similar to a regular "
@@ -9148,7 +12581,7 @@ pub fn RouterExampleBuildingANest() -> dioxus::prelude::Element {
             " tag, we can pass in our Route enum as the target. Because we annotated our routes with the  "
             code { "#[route(path)]" }
             " attribute, the "
-            a { href: "https://docs.rs/dioxus-router/latest/dioxus_router/components/fn.Link.html",
+            Link { to: "https://docs.rs/dioxus-router/latest/dioxus_router/components/fn.Link.html",
                 code { "Link" }
             }
             " will know how to generate the correct URL. If we use the Route enum, the rust compiler will prevent us from linking to a page that doesn't exist."
@@ -9161,17 +12594,32 @@ pub fn RouterExampleBuildingANest() -> dioxus::prelude::Element {
         blockquote {
             p {
                 "Using this method, the "
-                a { href: "https://docs.rs/dioxus-router/latest/dioxus_router/components/fn.Link.html",
+                Link { to: "https://docs.rs/dioxus-router/latest/dioxus_router/components/fn.Link.html",
                     code { "Link" }
                 }
                 " component only works for links within our"
-                a { href: "./navigation-targets", "here" }
+                " "
+                "application. To learn more about navigation targets see"
+                Link {
+                    to: BookRoute::RouterExampleNavigationTargets {
+                        section: RouterExampleNavigationTargetsSection::Empty,
+                    },
+                    "here"
+                }
                 "."
             }
         }
-        p { "Now you should see a list of links near the top of your page. Click on one and" }
+        p {
+            "Now you should see a list of links near the top of your page. Click on one and"
+            " "
+            "you should seamlessly travel between pages."
+        }
         h2 { id: "url-parameters-and-nested-routes",
-            a { href: "#url-parameters-and-nested-routes", class: "header",
+            Link {
+                to: BookRoute::RouterExampleBuildingANest {
+                    section: RouterExampleBuildingANestSection::UrlParametersAndNestedRoutes,
+                },
+                class: "header",
                 "URL Parameters and Nested Routes"
             }
         }
@@ -9179,15 +12627,29 @@ pub fn RouterExampleBuildingANest() -> dioxus::prelude::Element {
             "Many websites such as GitHub put parameters in their URL. For example,"
             code { "https://github.com/DioxusLabs" }
             " utilizes the text after the domain to"
+            " "
+            "dynamically search and display content about an organization."
         }
-        p { "We want to store our blogs in a database and load them as needed. We also" }
-        p { "We could utilize a search page that loads a blog when clicked but then our users" }
+        p {
+            "We want to store our blogs in a database and load them as needed. We also"
+            " "
+            "want our users to be able to send people a link to a specific blog post."
+            " "
+            "Instead of listing all of the blog titles at compile time, we can make a dynamic route."
+        }
+        p {
+            "We could utilize a search page that loads a blog when clicked but then our users"
+            " "
+            "won't be able to share our blogs easily. This is where URL parameters come in."
+        }
         p {
             "The path to our blog will look like  "
             code { "/blog/myBlogPage" }
             ",  "
             code { "myBlogPage" }
             " being the"
+            " "
+            "URL parameter."
         }
         p {
             "First, let's create a layout component (similar to the navbar) that wraps the blog content. This allows us to add a heading that tells the user they are on the blog."
@@ -9196,7 +12658,11 @@ pub fn RouterExampleBuildingANest() -> dioxus::prelude::Element {
             contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">#[component]\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">Blog</span><span style=\"color:#f8f8f2;\">() -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    rsx! {{\n</span><span style=\"color:#f8f8f2;\">        h1 {{ </span><span style=\"color:#ffee99;\">&quot;Blog&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">        Outlet::&lt;Route&gt; {{}}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
             name: "dynamic_route.rs".to_string(),
         }
-        p { "Now we'll create another index component, that'll be displayed when no blog post" }
+        p {
+            "Now we'll create another index component, that'll be displayed when no blog post"
+            " "
+            "is selected:"
+        }
         CodeBlock {
             contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">#[component]\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">BlogList</span><span style=\"color:#f8f8f2;\">() -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    rsx! {{\n</span><span style=\"color:#f8f8f2;\">        h2 {{ </span><span style=\"color:#ffee99;\">&quot;Choose a post&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">        ul {{\n</span><span style=\"color:#f8f8f2;\">            li {{\n</span><span style=\"color:#f8f8f2;\">                Link {{\n</span><span style=\"color:#f8f8f2;\">                    to: Route::BlogPost {{\n</span><span style=\"color:#f8f8f2;\">                        name: </span><span style=\"color:#ffee99;\">&quot;Blog post 1&quot;</span><span style=\"color:#f8f8f2;\">.</span><span style=\"color:#66d9ef;\">into</span><span style=\"color:#f8f8f2;\">(),\n</span><span style=\"color:#f8f8f2;\">                    }},\n</span><span style=\"color:#f8f8f2;\">                    </span><span style=\"color:#ffee99;\">&quot;Read the first blog post&quot;\n</span><span style=\"color:#f8f8f2;\">                }}\n</span><span style=\"color:#f8f8f2;\">            }}\n</span><span style=\"color:#f8f8f2;\">            li {{\n</span><span style=\"color:#f8f8f2;\">                Link {{\n</span><span style=\"color:#f8f8f2;\">                    to: Route::BlogPost {{\n</span><span style=\"color:#f8f8f2;\">                        name: </span><span style=\"color:#ffee99;\">&quot;Blog post 2&quot;</span><span style=\"color:#f8f8f2;\">.</span><span style=\"color:#66d9ef;\">into</span><span style=\"color:#f8f8f2;\">(),\n</span><span style=\"color:#f8f8f2;\">                    }},\n</span><span style=\"color:#f8f8f2;\">                    </span><span style=\"color:#ffee99;\">&quot;Read the second blog post&quot;\n</span><span style=\"color:#f8f8f2;\">                }}\n</span><span style=\"color:#f8f8f2;\">            }}\n</span><span style=\"color:#f8f8f2;\">        }}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
             name: "dynamic_route.rs".to_string(),
@@ -9219,59 +12685,144 @@ pub fn RouterExampleBuildingANest() -> dioxus::prelude::Element {
             " you should see our sample post."
         }
         h2 { id: "conclusion",
-            a { href: "#conclusion", class: "header", "Conclusion" }
+            Link {
+                to: BookRoute::RouterExampleBuildingANest {
+                    section: RouterExampleBuildingANestSection::Conclusion,
+                },
+                class: "header",
+                "Conclusion"
+            }
         }
-        p { "In this chapter, we utilized Dioxus Router's Link, and Route Parameter" }
+        p {
+            "In this chapter, we utilized Dioxus Router's Link, and Route Parameter"
+            " "
+            "functionality to build the blog portion of our application. In the next chapter,"
+            " "
+            "we will go over how navigation targets (like the one we passed to our links)"
+            " "
+            "work."
+        }
     }
 }
+#[derive(
+    Clone, Copy, PartialEq, Eq, Hash, Debug, Default, serde::Serialize, serde::Deserialize,
+)]
+pub enum RouterExampleNavigationTargetsSection {
+    #[default]
+    Empty,
+    NavigationTargets,
+    WhatIsANavigationTarget,
+    ExternalNavigation,
+}
+impl std::str::FromStr for RouterExampleNavigationTargetsSection {
+    type Err = RouterExampleNavigationTargetsSectionParseError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "" => Ok(Self::Empty),
+            "navigation-targets" => Ok(Self::NavigationTargets),
+            "what-is-a-navigation-target" => Ok(Self::WhatIsANavigationTarget),
+            "external-navigation" => Ok(Self::ExternalNavigation),
+            _ => Err(RouterExampleNavigationTargetsSectionParseError),
+        }
+    }
+}
+impl std::fmt::Display for RouterExampleNavigationTargetsSection {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Self::Empty => f.write_str(""),
+            Self::NavigationTargets => f.write_str("navigation-targets"),
+            Self::WhatIsANavigationTarget => f.write_str("what-is-a-navigation-target"),
+            Self::ExternalNavigation => f.write_str("external-navigation"),
+        }
+    }
+}
+#[derive(Debug)]
+pub struct RouterExampleNavigationTargetsSectionParseError;
+impl std::fmt::Display for RouterExampleNavigationTargetsSectionParseError {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.write_str(
+            "Invalid section name. Expected one of RouterExampleNavigationTargetsSectionnavigation-targets, what-is-a-navigation-target, external-navigation",
+        )?;
+        Ok(())
+    }
+}
+impl std::error::Error for RouterExampleNavigationTargetsSectionParseError {}
 #[component(no_case_check)]
-pub fn RouterExampleNavigationTargets() -> dioxus::prelude::Element {
+pub fn RouterExampleNavigationTargets(
+    section: RouterExampleNavigationTargetsSection,
+) -> dioxus::prelude::Element {
     use dioxus::prelude::*;
     rsx! {
         h1 { id: "navigation-targets",
-            a { href: "#navigation-targets", class: "header", "Navigation Targets" }
+            Link {
+                to: BookRoute::RouterExampleNavigationTargets {
+                    section: RouterExampleNavigationTargetsSection::NavigationTargets,
+                },
+                class: "header",
+                "Navigation Targets"
+            }
         }
         p {
             "In the previous chapter, we learned how to create links to pages within our app."
+            " "
+            "We told them where to go using the  "
             code { "target" }
             " property. This property takes something that can be converted to a "
-            a { href: "https://docs.rs/dioxus-router/latest/dioxus_router/navigation/enum.NavigationTarget.html",
+            Link { to: "https://docs.rs/dioxus-router/latest/dioxus_router/navigation/enum.NavigationTarget.html",
                 code { "NavigationTarget" }
             }
             "."
         }
         h2 { id: "what-is-a-navigation-target",
-            a { href: "#what-is-a-navigation-target", class: "header",
+            Link {
+                to: BookRoute::RouterExampleNavigationTargets {
+                    section: RouterExampleNavigationTargetsSection::WhatIsANavigationTarget,
+                },
+                class: "header",
                 "What is a navigation target?"
             }
         }
         p {
             "A "
-            a { href: "https://docs.rs/dioxus-router/latest/dioxus_router/navigation/enum.NavigationTarget.html",
+            Link { to: "https://docs.rs/dioxus-router/latest/dioxus_router/navigation/enum.NavigationTarget.html",
                 code { "NavigationTarget" }
             }
             " is similar to the "
             code { "href" }
             " of an HTML anchor element. It"
+            " "
+            "tells the router where to navigate to. The Dioxus Router knows two kinds of"
+            " "
+            "navigation targets:"
         }
         ul {
             li {
-                a { href: "https://docs.rs/dioxus-router/latest/dioxus_router/navigation/enum.NavigationTarget.html#variant.Internal",
+                Link { to: "https://docs.rs/dioxus-router/latest/dioxus_router/navigation/enum.NavigationTarget.html#variant.Internal",
                     code { "Internal" }
                 }
                 ": We used internal links in the previous chapter. It's a link to a page within our"
+                " "
+                "app represented as a Route enum."
             }
             li {
-                a { href: "https://docs.rs/dioxus-router/latest/dioxus_router/navigation/enum.NavigationTarget.html#variant.External",
+                Link { to: "https://docs.rs/dioxus-router/latest/dioxus_router/navigation/enum.NavigationTarget.html#variant.External",
                     code { "External" }
                 }
                 ": This works exactly like an HTML anchors' "
                 code { "href" }
                 ". Don't use this for in-app"
+                " "
+                "navigation as it will trigger a page reload by the browser."
             }
         }
         h2 { id: "external-navigation",
-            a { href: "#external-navigation", class: "header", "External navigation" }
+            Link {
+                to: BookRoute::RouterExampleNavigationTargets {
+                    section: RouterExampleNavigationTargetsSection::ExternalNavigation,
+                },
+                class: "header",
+                "External navigation"
+            }
         }
         p { "If we need a link to an external page we can do it like this:" }
         CodeBlock {
@@ -9280,27 +12831,99 @@ pub fn RouterExampleNavigationTargets() -> dioxus::prelude::Element {
         }
     }
 }
+#[derive(
+    Clone, Copy, PartialEq, Eq, Hash, Debug, Default, serde::Serialize, serde::Deserialize,
+)]
+pub enum RouterExampleRedirectionPerfectionSection {
+    #[default]
+    Empty,
+    RedirectionPerfection,
+    CreatingRedirects,
+    Conclusion,
+    Challenges,
+}
+impl std::str::FromStr for RouterExampleRedirectionPerfectionSection {
+    type Err = RouterExampleRedirectionPerfectionSectionParseError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "" => Ok(Self::Empty),
+            "redirection-perfection" => Ok(Self::RedirectionPerfection),
+            "creating-redirects" => Ok(Self::CreatingRedirects),
+            "conclusion" => Ok(Self::Conclusion),
+            "challenges" => Ok(Self::Challenges),
+            _ => Err(RouterExampleRedirectionPerfectionSectionParseError),
+        }
+    }
+}
+impl std::fmt::Display for RouterExampleRedirectionPerfectionSection {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Self::Empty => f.write_str(""),
+            Self::RedirectionPerfection => f.write_str("redirection-perfection"),
+            Self::CreatingRedirects => f.write_str("creating-redirects"),
+            Self::Conclusion => f.write_str("conclusion"),
+            Self::Challenges => f.write_str("challenges"),
+        }
+    }
+}
+#[derive(Debug)]
+pub struct RouterExampleRedirectionPerfectionSectionParseError;
+impl std::fmt::Display for RouterExampleRedirectionPerfectionSectionParseError {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.write_str(
+            "Invalid section name. Expected one of RouterExampleRedirectionPerfectionSectionredirection-perfection, creating-redirects, conclusion, challenges",
+        )?;
+        Ok(())
+    }
+}
+impl std::error::Error for RouterExampleRedirectionPerfectionSectionParseError {}
 #[component(no_case_check)]
-pub fn RouterExampleRedirectionPerfection() -> dioxus::prelude::Element {
+pub fn RouterExampleRedirectionPerfection(
+    section: RouterExampleRedirectionPerfectionSection,
+) -> dioxus::prelude::Element {
     use dioxus::prelude::*;
     rsx! {
         h1 { id: "redirection-perfection",
-            a { href: "#redirection-perfection", class: "header", "Redirection Perfection" }
+            Link {
+                to: BookRoute::RouterExampleRedirectionPerfection {
+                    section: RouterExampleRedirectionPerfectionSection::RedirectionPerfection,
+                },
+                class: "header",
+                "Redirection Perfection"
+            }
         }
         p { "You're well on your way to becoming a routing master!" }
         p { "In this chapter, we will cover creating redirects" }
         h2 { id: "creating-redirects",
-            a { href: "#creating-redirects", class: "header", "Creating Redirects" }
+            Link {
+                to: BookRoute::RouterExampleRedirectionPerfection {
+                    section: RouterExampleRedirectionPerfectionSection::CreatingRedirects,
+                },
+                class: "header",
+                "Creating Redirects"
+            }
         }
-        p { "A redirect is very simple. When dioxus encounters a redirect while finding out" }
+        p {
+            "A redirect is very simple. When dioxus encounters a redirect while finding out"
+            " "
+            "what components to render, it will redirect the user to the target of the"
+            " "
+            "redirect."
+        }
         p {
             "As a simple example, let's say you want user to still land on your blog, even"
+            " "
+            "if they used the path  "
             code { "/myblog" }
-            " or "
+            " or  "
             code { "/myblog/:name" }
             "."
         }
-        p { "Redirects are special attributes in the router enum that accept a route and a closure" }
+        p {
+            "Redirects are special attributes in the router enum that accept a route and a closure"
+            " "
+            "with the route parameters. The closure should return a route to redirect to."
+        }
         p { "Let's add a redirect to our router enum:" }
         CodeBlock {
             contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">#[derive(Routable, Clone)]\n</span><span style=\"color:#f8f8f2;\">#[rustfmt::skip]\n</span><span style=\"font-style:italic;color:#66d9ef;\">enum </span><span style=\"color:#f8f8f2;\">Route {{\n</span><span style=\"color:#f8f8f2;\">    #[layout(NavBar)]\n</span><span style=\"color:#f8f8f2;\">        #[route(</span><span style=\"color:#ffee99;\">&quot;/&quot;</span><span style=\"color:#f8f8f2;\">)]\n</span><span style=\"color:#f8f8f2;\">        Home {{}},\n</span><span style=\"color:#f8f8f2;\">        #[nest(</span><span style=\"color:#ffee99;\">&quot;/blog&quot;</span><span style=\"color:#f8f8f2;\">)]\n</span><span style=\"color:#f8f8f2;\">            #[layout(Blog)]\n</span><span style=\"color:#f8f8f2;\">                #[route(</span><span style=\"color:#ffee99;\">&quot;/&quot;</span><span style=\"color:#f8f8f2;\">)]\n</span><span style=\"color:#f8f8f2;\">                BlogList {{}},\n</span><span style=\"color:#f8f8f2;\">                #[route(</span><span style=\"color:#ffee99;\">&quot;/post/:name&quot;</span><span style=\"color:#f8f8f2;\">)]\n</span><span style=\"color:#f8f8f2;\">                BlogPost {{ name: </span><span style=\"font-style:italic;color:#66d9ef;\">String </span><span style=\"color:#f8f8f2;\">}},\n</span><span style=\"color:#f8f8f2;\">            #[end_layout]\n</span><span style=\"color:#f8f8f2;\">        #[end_nest]\n</span><span style=\"color:#f8f8f2;\">    #[end_layout]\n</span><span style=\"color:#f8f8f2;\">    #[nest(</span><span style=\"color:#ffee99;\">&quot;/myblog&quot;</span><span style=\"color:#f8f8f2;\">)]\n</span><span style=\"color:#f8f8f2;\">        #[redirect(</span><span style=\"color:#ffee99;\">&quot;/&quot;</span><span style=\"color:#f8f8f2;\">, || Route::BlogList {{}})]\n</span><span style=\"color:#f8f8f2;\">        #[redirect(</span><span style=\"color:#ffee99;\">&quot;/:name&quot;</span><span style=\"color:#f8f8f2;\">, |name: String| Route::BlogPost {{ name }})]\n</span><span style=\"color:#f8f8f2;\">    #[end_nest]\n</span><span style=\"color:#f8f8f2;\">    #[route(</span><span style=\"color:#ffee99;\">&quot;/:..route&quot;</span><span style=\"color:#f8f8f2;\">)]\n</span><span style=\"color:#f8f8f2;\">    PageNotFound {{\n</span><span style=\"color:#f8f8f2;\">        route: Vec&lt;String&gt;,\n</span><span style=\"color:#f8f8f2;\">    }},\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
@@ -9308,19 +12931,35 @@ pub fn RouterExampleRedirectionPerfection() -> dioxus::prelude::Element {
         }
         p { "That's it! Now your users will be redirected to the blog." }
         h3 { id: "conclusion",
-            a { href: "#conclusion", class: "header", "Conclusion" }
+            Link {
+                to: BookRoute::RouterExampleRedirectionPerfection {
+                    section: RouterExampleRedirectionPerfectionSection::Conclusion,
+                },
+                class: "header",
+                "Conclusion"
+            }
         }
         p {
             "Well done! You've completed the Dioxus Router guide. You've built a small "
-            a { href: "https://github.com/DioxusLabs/dioxus/tree/main/packages/router/examples",
+            "application and learned about the many things you can do with Dioxus Router."
+            " "
+            "To continue your journey, you attempt a challenge listed below, look at the "
+            Link { to: "https://github.com/DioxusLabs/dioxus/tree/main/packages/router/examples",
                 "router examples"
             }
             ", or "
-            a { href: "https://docs.rs/dioxus-router/", "API reference" }
+            "the "
+            Link { to: "https://docs.rs/dioxus-router/", "API reference" }
             "."
         }
         h3 { id: "challenges",
-            a { href: "#challenges", class: "header", "Challenges" }
+            Link {
+                to: BookRoute::RouterExampleRedirectionPerfection {
+                    section: RouterExampleRedirectionPerfectionSection::Challenges,
+                },
+                class: "header",
+                "Challenges"
+            }
         }
         ul {
             li { "Organize your components into separate files for better maintainability." }
@@ -9332,12 +12971,53 @@ pub fn RouterExampleRedirectionPerfection() -> dioxus::prelude::Element {
         }
     }
 }
+#[derive(
+    Clone, Copy, PartialEq, Eq, Hash, Debug, Default, serde::Serialize, serde::Deserialize,
+)]
+pub enum RouterExampleFullCodeSection {
+    #[default]
+    Empty,
+    FullCode,
+}
+impl std::str::FromStr for RouterExampleFullCodeSection {
+    type Err = RouterExampleFullCodeSectionParseError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "" => Ok(Self::Empty),
+            "full-code" => Ok(Self::FullCode),
+            _ => Err(RouterExampleFullCodeSectionParseError),
+        }
+    }
+}
+impl std::fmt::Display for RouterExampleFullCodeSection {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Self::Empty => f.write_str(""),
+            Self::FullCode => f.write_str("full-code"),
+        }
+    }
+}
+#[derive(Debug)]
+pub struct RouterExampleFullCodeSectionParseError;
+impl std::fmt::Display for RouterExampleFullCodeSectionParseError {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.write_str("Invalid section name. Expected one of RouterExampleFullCodeSectionfull-code")?;
+        Ok(())
+    }
+}
+impl std::error::Error for RouterExampleFullCodeSectionParseError {}
 #[component(no_case_check)]
-pub fn RouterExampleFullCode() -> dioxus::prelude::Element {
+pub fn RouterExampleFullCode(section: RouterExampleFullCodeSection) -> dioxus::prelude::Element {
     use dioxus::prelude::*;
     rsx! {
         h1 { id: "full-code",
-            a { href: "#full-code", class: "header", "Full Code" }
+            Link {
+                to: BookRoute::RouterExampleFullCode {
+                    section: RouterExampleFullCodeSection::FullCode,
+                },
+                class: "header",
+                "Full Code"
+            }
         }
         CodeBlock {
             contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">#![allow(non_snake_case)]\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\">use </span><span style=\"color:#f8f8f2;\">dioxus::prelude::</span><span style=\"color:#f92672;\">*</span><span style=\"color:#f8f8f2;\">;\n</span><span style=\"color:#f92672;\">use </span><span style=\"color:#f8f8f2;\">dioxus_router::prelude::</span><span style=\"color:#f92672;\">*</span><span style=\"color:#f8f8f2;\">;\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#8c8c8c;\">// ANCHOR: router\n</span><span style=\"color:#f8f8f2;\">#[derive(Routable, Clone)]\n</span><span style=\"color:#f8f8f2;\">#[rustfmt::skip]\n</span><span style=\"font-style:italic;color:#66d9ef;\">enum </span><span style=\"color:#f8f8f2;\">Route {{\n</span><span style=\"color:#f8f8f2;\">    #[layout(NavBar)]\n</span><span style=\"color:#f8f8f2;\">        #[route(</span><span style=\"color:#ffee99;\">&quot;/&quot;</span><span style=\"color:#f8f8f2;\">)]\n</span><span style=\"color:#f8f8f2;\">        Home {{}},\n</span><span style=\"color:#f8f8f2;\">        #[nest(</span><span style=\"color:#ffee99;\">&quot;/blog&quot;</span><span style=\"color:#f8f8f2;\">)]\n</span><span style=\"color:#f8f8f2;\">            #[layout(Blog)]\n</span><span style=\"color:#f8f8f2;\">                #[route(</span><span style=\"color:#ffee99;\">&quot;/&quot;</span><span style=\"color:#f8f8f2;\">)]\n</span><span style=\"color:#f8f8f2;\">                BlogList {{}},\n</span><span style=\"color:#f8f8f2;\">                #[route(</span><span style=\"color:#ffee99;\">&quot;/post/:name&quot;</span><span style=\"color:#f8f8f2;\">)]\n</span><span style=\"color:#f8f8f2;\">                BlogPost {{ name: </span><span style=\"font-style:italic;color:#66d9ef;\">String </span><span style=\"color:#f8f8f2;\">}},\n</span><span style=\"color:#f8f8f2;\">            #[end_layout]\n</span><span style=\"color:#f8f8f2;\">        #[end_nest]\n</span><span style=\"color:#f8f8f2;\">    #[end_layout]\n</span><span style=\"color:#f8f8f2;\">    #[nest(</span><span style=\"color:#ffee99;\">&quot;/myblog&quot;</span><span style=\"color:#f8f8f2;\">)]\n</span><span style=\"color:#f8f8f2;\">        #[redirect(</span><span style=\"color:#ffee99;\">&quot;/&quot;</span><span style=\"color:#f8f8f2;\">, || Route::BlogList {{}})]\n</span><span style=\"color:#f8f8f2;\">        #[redirect(</span><span style=\"color:#ffee99;\">&quot;/:name&quot;</span><span style=\"color:#f8f8f2;\">, |name: String| Route::BlogPost {{ name }})]\n</span><span style=\"color:#f8f8f2;\">    #[end_nest]\n</span><span style=\"color:#f8f8f2;\">    #[route(</span><span style=\"color:#ffee99;\">&quot;/:..route&quot;</span><span style=\"color:#f8f8f2;\">)]\n</span><span style=\"color:#f8f8f2;\">    PageNotFound {{\n</span><span style=\"color:#f8f8f2;\">        route: Vec&lt;String&gt;,\n</span><span style=\"color:#f8f8f2;\">    }},\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#8c8c8c;\">// ANCHOR_END: router\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\">pub </span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">App</span><span style=\"color:#f8f8f2;\">() -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    rsx! {{ Router::&lt;Route&gt; {{}} }}\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">#[component]\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">NavBar</span><span style=\"color:#f8f8f2;\">() -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    rsx! {{\n</span><span style=\"color:#f8f8f2;\">        nav {{\n</span><span style=\"color:#f8f8f2;\">            ul {{\n</span><span style=\"color:#f8f8f2;\">                li {{\n</span><span style=\"color:#f8f8f2;\">                    Link {{ to: Route::Home {{}}, </span><span style=\"color:#ffee99;\">&quot;Home&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">                }}\n</span><span style=\"color:#f8f8f2;\">                li {{\n</span><span style=\"color:#f8f8f2;\">                    Link {{ to: Route::BlogList {{}}, </span><span style=\"color:#ffee99;\">&quot;Blog&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">                }}\n</span><span style=\"color:#f8f8f2;\">            }}\n</span><span style=\"color:#f8f8f2;\">        }}\n</span><span style=\"color:#f8f8f2;\">        Outlet::&lt;Route&gt; {{}}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">#[component]\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">Home</span><span style=\"color:#f8f8f2;\">() -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    rsx! {{ h1 {{ </span><span style=\"color:#ffee99;\">&quot;Welcome to the Dioxus Blog!&quot; </span><span style=\"color:#f8f8f2;\">}} }}\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">#[component]\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">Blog</span><span style=\"color:#f8f8f2;\">() -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    rsx! {{\n</span><span style=\"color:#f8f8f2;\">        h1 {{ </span><span style=\"color:#ffee99;\">&quot;Blog&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">        Outlet::&lt;Route&gt; {{}}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">#[component]\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">BlogList</span><span style=\"color:#f8f8f2;\">() -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    rsx! {{\n</span><span style=\"color:#f8f8f2;\">        h2 {{ </span><span style=\"color:#ffee99;\">&quot;Choose a post&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">        ul {{\n</span><span style=\"color:#f8f8f2;\">            li {{\n</span><span style=\"color:#f8f8f2;\">                Link {{\n</span><span style=\"color:#f8f8f2;\">                    to: Route::BlogPost {{\n</span><span style=\"color:#f8f8f2;\">                        name: </span><span style=\"color:#ffee99;\">&quot;Blog post 1&quot;</span><span style=\"color:#f8f8f2;\">.</span><span style=\"color:#66d9ef;\">into</span><span style=\"color:#f8f8f2;\">(),\n</span><span style=\"color:#f8f8f2;\">                    }},\n</span><span style=\"color:#f8f8f2;\">                    </span><span style=\"color:#ffee99;\">&quot;Read the first blog post&quot;\n</span><span style=\"color:#f8f8f2;\">                }}\n</span><span style=\"color:#f8f8f2;\">            }}\n</span><span style=\"color:#f8f8f2;\">            li {{\n</span><span style=\"color:#f8f8f2;\">                Link {{\n</span><span style=\"color:#f8f8f2;\">                    to: Route::BlogPost {{\n</span><span style=\"color:#f8f8f2;\">                        name: </span><span style=\"color:#ffee99;\">&quot;Blog post 2&quot;</span><span style=\"color:#f8f8f2;\">.</span><span style=\"color:#66d9ef;\">into</span><span style=\"color:#f8f8f2;\">(),\n</span><span style=\"color:#f8f8f2;\">                    }},\n</span><span style=\"color:#f8f8f2;\">                    </span><span style=\"color:#ffee99;\">&quot;Read the second blog post&quot;\n</span><span style=\"color:#f8f8f2;\">                }}\n</span><span style=\"color:#f8f8f2;\">            }}\n</span><span style=\"color:#f8f8f2;\">        }}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">#[component]\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">BlogPost</span><span style=\"color:#f8f8f2;\">(</span><span style=\"font-style:italic;color:#fd971f;\">name</span><span style=\"color:#f8f8f2;\">: String) -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    rsx! {{ h2 {{ </span><span style=\"color:#ffee99;\">&quot;Blog Post: {{name}}&quot; </span><span style=\"color:#f8f8f2;\">}} }}\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">#[component]\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">PageNotFound</span><span style=\"color:#f8f8f2;\">(</span><span style=\"font-style:italic;color:#fd971f;\">route</span><span style=\"color:#f8f8f2;\">: Vec&lt;String&gt;) -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    rsx! {{\n</span><span style=\"color:#f8f8f2;\">        h1 {{ </span><span style=\"color:#ffee99;\">&quot;Page not found&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">        p {{ </span><span style=\"color:#ffee99;\">&quot;We are terribly sorry, but the page you requested doesn&#39;t exist.&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">        pre {{ color: </span><span style=\"color:#ffee99;\">&quot;red&quot;</span><span style=\"color:#f8f8f2;\">, </span><span style=\"color:#ffee99;\">&quot;log:</span><span style=\"color:#ff80f4;\">\\n</span><span style=\"color:#ffee99;\">attemped to navigate to: {{route:?}}&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
@@ -9345,28 +13025,84 @@ pub fn RouterExampleFullCode() -> dioxus::prelude::Element {
         }
     }
 }
+#[derive(
+    Clone, Copy, PartialEq, Eq, Hash, Debug, Default, serde::Serialize, serde::Deserialize,
+)]
+pub enum RouterReferenceIndexSection {
+    #[default]
+    Empty,
+    AddingTheRouterToYourApplication,
+}
+impl std::str::FromStr for RouterReferenceIndexSection {
+    type Err = RouterReferenceIndexSectionParseError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "" => Ok(Self::Empty),
+            "adding-the-router-to-your-application" => Ok(Self::AddingTheRouterToYourApplication),
+            _ => Err(RouterReferenceIndexSectionParseError),
+        }
+    }
+}
+impl std::fmt::Display for RouterReferenceIndexSection {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Self::Empty => f.write_str(""),
+            Self::AddingTheRouterToYourApplication => {
+                f.write_str("adding-the-router-to-your-application")
+            }
+        }
+    }
+}
+#[derive(Debug)]
+pub struct RouterReferenceIndexSectionParseError;
+impl std::fmt::Display for RouterReferenceIndexSectionParseError {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.write_str(
+            "Invalid section name. Expected one of RouterReferenceIndexSectionadding-the-router-to-your-application",
+        )?;
+        Ok(())
+    }
+}
+impl std::error::Error for RouterReferenceIndexSectionParseError {}
 #[component(no_case_check)]
-pub fn RouterReferenceIndex() -> dioxus::prelude::Element {
+pub fn RouterReferenceIndex(section: RouterReferenceIndexSection) -> dioxus::prelude::Element {
     use dioxus::prelude::*;
     rsx! {
         h1 { id: "adding-the-router-to-your-application",
-            a {
-                href: "#adding-the-router-to-your-application",
+            Link {
+                to: BookRoute::RouterReferenceIndex {
+                    section: RouterReferenceIndexSection::AddingTheRouterToYourApplication,
+                },
                 class: "header",
                 "Adding the router to your application"
             }
         }
-        p { "In this chapter, we will learn how to add the router to our app. By itself, this" }
+        p {
+            "In this chapter, we will learn how to add the router to our app. By itself, this"
+            " "
+            "is not very useful. However, it is a prerequisite for all the functionality"
+            " "
+            "described in the other chapters."
+        }
         blockquote {
             p {
                 "Make sure you added the  "
                 code { "dioxus-router" }
                 " dependency as explained in the"
-                a { href: "..", "introduction" }
+                Link {
+                    to: BookRoute::RouterIndex {
+                        section: RouterIndexSection::Empty,
+                    },
+                    "introduction"
+                }
                 "."
             }
         }
-        p { "In most cases, we want to add the router to the root component of our app. This" }
+        p {
+            "In most cases, we want to add the router to the root component of our app. This"
+            " "
+            "way, we can ensure that we have access to all its functionality everywhere."
+        }
         p { "First, we define the router with the router macro:" }
         CodeBlock {
             contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">#![allow(non_snake_case)]\n</span><span style=\"color:#f92672;\">use </span><span style=\"color:#f8f8f2;\">dioxus::prelude::</span><span style=\"color:#f92672;\">*</span><span style=\"color:#f8f8f2;\">;\n</span><span style=\"color:#f92672;\">use </span><span style=\"color:#f8f8f2;\">dioxus_router::prelude::</span><span style=\"color:#f92672;\">*</span><span style=\"color:#f8f8f2;\">;\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#8c8c8c;\">/// An enum of all of the possible routes in the app.\n</span><span style=\"color:#f8f8f2;\">#[derive(Routable, Clone)]\n</span><span style=\"font-style:italic;color:#66d9ef;\">enum </span><span style=\"color:#f8f8f2;\">Route {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#8c8c8c;\">// The home page is at the / route\n</span><span style=\"color:#f8f8f2;\">    #[route(</span><span style=\"color:#ffee99;\">&quot;/&quot;</span><span style=\"color:#f8f8f2;\">)]\n</span><span style=\"color:#f8f8f2;\">    Home {{}},\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
@@ -9374,8 +13110,10 @@ pub fn RouterReferenceIndex() -> dioxus::prelude::Element {
         }
         p {
             "Then we render the router with the "
+            "[ "
             code { "Router" }
             "]"
+            " component."
         }
         CodeBlock {
             contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">App</span><span style=\"color:#f8f8f2;\">() -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    rsx! {{ Router::&lt;Route&gt; {{}} }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
@@ -9383,22 +13121,90 @@ pub fn RouterReferenceIndex() -> dioxus::prelude::Element {
         }
     }
 }
+#[derive(
+    Clone, Copy, PartialEq, Eq, Hash, Debug, Default, serde::Serialize, serde::Deserialize,
+)]
+pub enum RouterReferenceRoutesIndexSection {
+    #[default]
+    Empty,
+    DefiningRoutes,
+    RouteSegments,
+    StaticSegments,
+    DynamicSegments,
+    CatchAllSegments,
+    QuerySegments,
+}
+impl std::str::FromStr for RouterReferenceRoutesIndexSection {
+    type Err = RouterReferenceRoutesIndexSectionParseError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "" => Ok(Self::Empty),
+            "defining-routes" => Ok(Self::DefiningRoutes),
+            "route-segments" => Ok(Self::RouteSegments),
+            "static-segments" => Ok(Self::StaticSegments),
+            "dynamic-segments" => Ok(Self::DynamicSegments),
+            "catch-all-segments" => Ok(Self::CatchAllSegments),
+            "query-segments" => Ok(Self::QuerySegments),
+            _ => Err(RouterReferenceRoutesIndexSectionParseError),
+        }
+    }
+}
+impl std::fmt::Display for RouterReferenceRoutesIndexSection {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Self::Empty => f.write_str(""),
+            Self::DefiningRoutes => f.write_str("defining-routes"),
+            Self::RouteSegments => f.write_str("route-segments"),
+            Self::StaticSegments => f.write_str("static-segments"),
+            Self::DynamicSegments => f.write_str("dynamic-segments"),
+            Self::CatchAllSegments => f.write_str("catch-all-segments"),
+            Self::QuerySegments => f.write_str("query-segments"),
+        }
+    }
+}
+#[derive(Debug)]
+pub struct RouterReferenceRoutesIndexSectionParseError;
+impl std::fmt::Display for RouterReferenceRoutesIndexSectionParseError {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.write_str(
+            "Invalid section name. Expected one of RouterReferenceRoutesIndexSectiondefining-routes, route-segments, static-segments, dynamic-segments, catch-all-segments, query-segments",
+        )?;
+        Ok(())
+    }
+}
+impl std::error::Error for RouterReferenceRoutesIndexSectionParseError {}
 #[component(no_case_check)]
-pub fn RouterReferenceRoutesIndex() -> dioxus::prelude::Element {
+pub fn RouterReferenceRoutesIndex(
+    section: RouterReferenceRoutesIndexSection,
+) -> dioxus::prelude::Element {
     use dioxus::prelude::*;
     rsx! {
         h1 { id: "defining-routes",
-            a { href: "#defining-routes", class: "header", "Defining Routes" }
+            Link {
+                to: BookRoute::RouterReferenceRoutesIndex {
+                    section: RouterReferenceRoutesIndexSection::DefiningRoutes,
+                },
+                class: "header",
+                "Defining Routes"
+            }
         }
         p {
             "When creating a "
+            "[ "
             code { "Routable" }
             "]"
+            " enum, we can define routes for our application using the  "
             code { "route(\"path\")" }
             " attribute."
         }
         h2 { id: "route-segments",
-            a { href: "#route-segments", class: "header", "Route Segments" }
+            Link {
+                to: BookRoute::RouterReferenceRoutesIndex {
+                    section: RouterReferenceRoutesIndexSection::RouteSegments,
+                },
+                class: "header",
+                "Route Segments"
+            }
         }
         p {
             "Each route is made up of segments. Most segments are separated by  "
@@ -9408,19 +13214,39 @@ pub fn RouterReferenceRoutesIndex() -> dioxus::prelude::Element {
         p { "There are four fundamental types of segments:" }
         ol {
             li {
-                a { href: "#static-segments", "Static segments" }
+                Link {
+                    to: BookRoute::RouterReferenceRoutesIndex {
+                        section: RouterReferenceRoutesIndexSection::StaticSegments,
+                    },
+                    "Static segments"
+                }
                 " are fixed strings that must be present in the path."
             }
             li {
-                a { href: "#dynamic-segments", "Dynamic segments" }
+                Link {
+                    to: BookRoute::RouterReferenceRoutesIndex {
+                        section: RouterReferenceRoutesIndexSection::DynamicSegments,
+                    },
+                    "Dynamic segments"
+                }
                 " are types that can be parsed from a segment."
             }
             li {
-                a { href: "#catch-all-segments", "Catch-all segments" }
+                Link {
+                    to: BookRoute::RouterReferenceRoutesIndex {
+                        section: RouterReferenceRoutesIndexSection::CatchAllSegments,
+                    },
+                    "Catch-all segments"
+                }
                 " are types that can be parsed from multiple segments."
             }
             li {
-                a { href: "#query-segments", "Query segments" }
+                Link {
+                    to: BookRoute::RouterReferenceRoutesIndex {
+                        section: RouterReferenceRoutesIndexSection::QuerySegments,
+                    },
+                    "Query segments"
+                }
                 " are types that can be parsed from the query string."
             }
         }
@@ -9434,7 +13260,13 @@ pub fn RouterReferenceRoutesIndex() -> dioxus::prelude::Element {
             }
         }
         h2 { id: "static-segments",
-            a { href: "#static-segments", class: "header", "Static segments" }
+            Link {
+                to: BookRoute::RouterReferenceRoutesIndex {
+                    section: RouterReferenceRoutesIndexSection::StaticSegments,
+                },
+                class: "header",
+                "Static segments"
+            }
         }
         p {
             "Fixed routes match a specific path. For example, the route  "
@@ -9448,7 +13280,13 @@ pub fn RouterReferenceRoutesIndex() -> dioxus::prelude::Element {
             name: "static_segments.rs".to_string(),
         }
         h2 { id: "dynamic-segments",
-            a { href: "#dynamic-segments", class: "header", "Dynamic Segments" }
+            Link {
+                to: BookRoute::RouterReferenceRoutesIndex {
+                    section: RouterReferenceRoutesIndexSection::DynamicSegments,
+                },
+                class: "header",
+                "Dynamic Segments"
+            }
         }
         p {
             "Dynamic segments are in the form of  "
@@ -9456,6 +13294,10 @@ pub fn RouterReferenceRoutesIndex() -> dioxus::prelude::Element {
             " where  "
             code { "name" }
             " is"
+            " "
+            "the name of the field in the route variant. If the segment is parsed"
+            " "
+            "successfully then the route matches, otherwise the matching continues."
         }
         p {
             "The segment can be of any type that implements  "
@@ -9467,7 +13309,13 @@ pub fn RouterReferenceRoutesIndex() -> dioxus::prelude::Element {
             name: "dynamic_segments.rs".to_string(),
         }
         h2 { id: "catch-all-segments",
-            a { href: "#catch-all-segments", class: "header", "Catch All Segments" }
+            Link {
+                to: BookRoute::RouterReferenceRoutesIndex {
+                    section: RouterReferenceRoutesIndexSection::CatchAllSegments,
+                },
+                class: "header",
+                "Catch All Segments"
+            }
         }
         p {
             "Catch All segments are in the form of  "
@@ -9493,7 +13341,13 @@ pub fn RouterReferenceRoutesIndex() -> dioxus::prelude::Element {
             name: "catch_all_segments.rs".to_string(),
         }
         h2 { id: "query-segments",
-            a { href: "#query-segments", class: "header", "Query Segments" }
+            Link {
+                to: BookRoute::RouterReferenceRoutesIndex {
+                    section: RouterReferenceRoutesIndexSection::QuerySegments,
+                },
+                class: "header",
+                "Query Segments"
+            }
         }
         p {
             "Query segments are in the form of  "
@@ -9506,9 +13360,19 @@ pub fn RouterReferenceRoutesIndex() -> dioxus::prelude::Element {
         }
         p {
             "Unlike "
-            a { href: "#dynamic-segments", "Dynamic Segments" }
+            Link {
+                to: BookRoute::RouterReferenceRoutesIndex {
+                    section: RouterReferenceRoutesIndexSection::DynamicSegments,
+                },
+                "Dynamic Segments"
+            }
             " and "
-            a { href: "#catch-all-segments", "Catch All Segments" }
+            Link {
+                to: BookRoute::RouterReferenceRoutesIndex {
+                    section: RouterReferenceRoutesIndexSection::CatchAllSegments,
+                },
+                "Catch All Segments"
+            }
             ", parsing a Query segment must not fail."
         }
         p {
@@ -9527,20 +13391,80 @@ pub fn RouterReferenceRoutesIndex() -> dioxus::prelude::Element {
         }
     }
 }
+#[derive(
+    Clone, Copy, PartialEq, Eq, Hash, Debug, Default, serde::Serialize, serde::Deserialize,
+)]
+pub enum RouterReferenceRoutesNestedSection {
+    #[default]
+    Empty,
+    NestedRoutes,
+    Nesting,
+}
+impl std::str::FromStr for RouterReferenceRoutesNestedSection {
+    type Err = RouterReferenceRoutesNestedSectionParseError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "" => Ok(Self::Empty),
+            "nested-routes" => Ok(Self::NestedRoutes),
+            "nesting" => Ok(Self::Nesting),
+            _ => Err(RouterReferenceRoutesNestedSectionParseError),
+        }
+    }
+}
+impl std::fmt::Display for RouterReferenceRoutesNestedSection {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Self::Empty => f.write_str(""),
+            Self::NestedRoutes => f.write_str("nested-routes"),
+            Self::Nesting => f.write_str("nesting"),
+        }
+    }
+}
+#[derive(Debug)]
+pub struct RouterReferenceRoutesNestedSectionParseError;
+impl std::fmt::Display for RouterReferenceRoutesNestedSectionParseError {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.write_str(
+            "Invalid section name. Expected one of RouterReferenceRoutesNestedSectionnested-routes, nesting",
+        )?;
+        Ok(())
+    }
+}
+impl std::error::Error for RouterReferenceRoutesNestedSectionParseError {}
 #[component(no_case_check)]
-pub fn RouterReferenceRoutesNested() -> dioxus::prelude::Element {
+pub fn RouterReferenceRoutesNested(
+    section: RouterReferenceRoutesNestedSection,
+) -> dioxus::prelude::Element {
     use dioxus::prelude::*;
     rsx! {
         h1 { id: "nested-routes",
-            a { href: "#nested-routes", class: "header", "Nested Routes" }
+            Link {
+                to: BookRoute::RouterReferenceRoutesNested {
+                    section: RouterReferenceRoutesNestedSection::NestedRoutes,
+                },
+                class: "header",
+                "Nested Routes"
+            }
         }
-        p { "When developing bigger applications we often want to nest routes within each" }
+        p {
+            "When developing bigger applications we often want to nest routes within each"
+            " "
+            "other. As an example, we might want to organize a settings menu using this"
+            " "
+            "pattern:"
+        }
         CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">└ Settings\n</span><span style=\"color:#f8f8f2;\">  ├ General Settings (displayed when opening the settings)\n</span><span style=\"color:#f8f8f2;\">  ├ Change Password\n</span><span style=\"color:#f8f8f2;\">  └ Privacy Settings</span></pre>\n" }
         p { "We might want to map this structure to these paths and components:" }
         CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f92672;\">/</span><span style=\"color:#f8f8f2;\">settings\t\t  -&gt; Settings {{ GeneralSettings }}\n</span><span style=\"color:#f92672;\">/</span><span style=\"color:#f8f8f2;\">settings</span><span style=\"color:#f92672;\">/</span><span style=\"color:#f8f8f2;\">password -&gt; Settings {{ PWSettings }}\n</span><span style=\"color:#f92672;\">/</span><span style=\"color:#f8f8f2;\">settings</span><span style=\"color:#f92672;\">/</span><span style=\"color:#f8f8f2;\">privacy  -&gt; Settings {{ PrivacySettings }}</span></pre>\n" }
         p { "Nested routes allow us to do this without repeating /settings in every route." }
         h2 { id: "nesting",
-            a { href: "#nesting", class: "header", "Nesting" }
+            Link {
+                to: BookRoute::RouterReferenceRoutesNested {
+                    section: RouterReferenceRoutesNestedSection::Nesting,
+                },
+                class: "header",
+                "Nesting"
+            }
         }
         p {
             "To nest routes, we use the  "
@@ -9553,11 +13477,21 @@ pub fn RouterReferenceRoutesNested() -> dioxus::prelude::Element {
         ol {
             li {
                 "Contain a "
-                a { href: "./#catch-all-segments", "Catch All Segment" }
+                Link {
+                    to: BookRoute::RouterReferenceRoutesIndex {
+                        section: RouterReferenceRoutesIndexSection::CatchAllSegments,
+                    },
+                    "Catch All Segment"
+                }
             }
             li {
                 "Contain a "
-                a { href: "./#query-segments", "Query Segment" }
+                Link {
+                    to: BookRoute::RouterReferenceRoutesIndex {
+                        section: RouterReferenceRoutesIndexSection::QuerySegments,
+                    },
+                    "Query Segment"
+                }
             }
         }
         p {
@@ -9574,22 +13508,70 @@ pub fn RouterReferenceRoutesNested() -> dioxus::prelude::Element {
         }
     }
 }
+#[derive(
+    Clone, Copy, PartialEq, Eq, Hash, Debug, Default, serde::Serialize, serde::Deserialize,
+)]
+pub enum RouterReferenceLayoutsSection {
+    #[default]
+    Empty,
+    Layouts,
+    LayoutsWithDynamicSegments,
+}
+impl std::str::FromStr for RouterReferenceLayoutsSection {
+    type Err = RouterReferenceLayoutsSectionParseError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "" => Ok(Self::Empty),
+            "layouts" => Ok(Self::Layouts),
+            "layouts-with-dynamic-segments" => Ok(Self::LayoutsWithDynamicSegments),
+            _ => Err(RouterReferenceLayoutsSectionParseError),
+        }
+    }
+}
+impl std::fmt::Display for RouterReferenceLayoutsSection {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Self::Empty => f.write_str(""),
+            Self::Layouts => f.write_str("layouts"),
+            Self::LayoutsWithDynamicSegments => f.write_str("layouts-with-dynamic-segments"),
+        }
+    }
+}
+#[derive(Debug)]
+pub struct RouterReferenceLayoutsSectionParseError;
+impl std::fmt::Display for RouterReferenceLayoutsSectionParseError {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.write_str(
+            "Invalid section name. Expected one of RouterReferenceLayoutsSectionlayouts, layouts-with-dynamic-segments",
+        )?;
+        Ok(())
+    }
+}
+impl std::error::Error for RouterReferenceLayoutsSectionParseError {}
 #[component(no_case_check)]
-pub fn RouterReferenceLayouts() -> dioxus::prelude::Element {
+pub fn RouterReferenceLayouts(section: RouterReferenceLayoutsSection) -> dioxus::prelude::Element {
     use dioxus::prelude::*;
     rsx! {
         h1 { id: "layouts",
-            a { href: "#layouts", class: "header", "Layouts" }
+            Link {
+                to: BookRoute::RouterReferenceLayouts {
+                    section: RouterReferenceLayoutsSection::Layouts,
+                },
+                class: "header",
+                "Layouts"
+            }
         }
         p {
             "Layouts allow you to wrap all child routes in a component. This can be useful when creating something like a header that will be used in many different routes."
         }
         p {
-            a { href: "https://docs.rs/dioxus-router/latest/dioxus_router/components/fn.Outlet.html",
+            Link { to: "https://docs.rs/dioxus-router/latest/dioxus_router/components/fn.Outlet.html",
                 code { "Outlet" }
             }
             " tells the router where to render content in layouts. In the following example,"
-            a { href: "https://docs.rs/dioxus-router/latest/dioxus_router/components/fn.Outlet.html",
+            " "
+            "the Index will be rendered within the "
+            Link { to: "https://docs.rs/dioxus-router/latest/dioxus_router/components/fn.Outlet.html",
                 code { "Outlet" }
             }
             "."
@@ -9603,18 +13585,31 @@ pub fn RouterReferenceLayouts() -> dioxus::prelude::Element {
             contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">#[derive(Routable, Clone)]\n</span><span style=\"color:#f8f8f2;\">#[rustfmt::skip]\n</span><span style=\"font-style:italic;color:#66d9ef;\">enum </span><span style=\"color:#f8f8f2;\">Route {{\n</span><span style=\"color:#f8f8f2;\">    #[layout(Wrapper)]\n</span><span style=\"color:#f8f8f2;\">        #[route(</span><span style=\"color:#ffee99;\">&quot;/&quot;</span><span style=\"color:#f8f8f2;\">)]\n</span><span style=\"color:#f8f8f2;\">        Index {{}},\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">#[component]\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">Wrapper</span><span style=\"color:#f8f8f2;\">() -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    rsx! {{\n</span><span style=\"color:#f8f8f2;\">        header {{ </span><span style=\"color:#ffee99;\">&quot;header&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">        </span><span style=\"color:#8c8c8c;\">// The index route will be rendered here\n</span><span style=\"color:#f8f8f2;\">        Outlet::&lt;Route&gt; {{}}\n</span><span style=\"color:#f8f8f2;\">        footer {{ </span><span style=\"color:#ffee99;\">&quot;footer&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">#[component]\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">Index</span><span style=\"color:#f8f8f2;\">() -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    rsx! {{ h1 {{ </span><span style=\"color:#ffee99;\">&quot;Index&quot; </span><span style=\"color:#f8f8f2;\">}} }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
             name: "outlet.rs".to_string(),
         }
-        p { "The example above will output the following HTML (line breaks added for" }
+        p {
+            "The example above will output the following HTML (line breaks added for"
+            " "
+            "readability):"
+        }
         CodeBlock {
             contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f92672;\">&lt;</span><span style=\"color:#f8f8f2;\">header</span><span style=\"color:#f92672;\">&gt;</span><span style=\"color:#f8f8f2;\">header&lt;</span><span style=\"background-color:#f92672;color:#f8f8f0;\">/</span><span style=\"color:#f8f8f2;\">header</span><span style=\"color:#f92672;\">&gt;\n</span><span style=\"color:#f92672;\">&lt;</span><span style=\"color:#f8f8f2;\">h1</span><span style=\"color:#f92672;\">&gt;</span><span style=\"color:#f8f8f2;\">Index&lt;</span><span style=\"background-color:#f92672;color:#f8f8f0;\">/</span><span style=\"color:#f8f8f2;\">h1</span><span style=\"color:#f92672;\">&gt;\n</span><span style=\"color:#f92672;\">&lt;</span><span style=\"color:#f8f8f2;\">footer</span><span style=\"color:#f92672;\">&gt;</span><span style=\"color:#f8f8f2;\">footer&lt;</span><span style=\"background-color:#f92672;color:#f8f8f0;\">/</span><span style=\"color:#f8f8f2;\">footer</span><span style=\"color:#f92672;\">&gt;</span></pre>\n",
         }
         h2 { id: "layouts-with-dynamic-segments",
-            a { href: "#layouts-with-dynamic-segments", class: "header",
+            Link {
+                to: BookRoute::RouterReferenceLayouts {
+                    section: RouterReferenceLayoutsSection::LayoutsWithDynamicSegments,
+                },
+                class: "header",
                 "Layouts with dynamic segments"
             }
         }
         p {
             "You can combine layouts with "
-            a { href: "./routes/nested", "nested routes" }
+            Link {
+                to: BookRoute::RouterReferenceRoutesNested {
+                    section: RouterReferenceRoutesNestedSection::Empty,
+                },
+                "nested routes"
+            }
             " to create dynamic layouts with content that changes based on the current route."
         }
         p {
@@ -9639,25 +13634,94 @@ pub fn RouterReferenceLayouts() -> dioxus::prelude::Element {
         }
     }
 }
+#[derive(
+    Clone, Copy, PartialEq, Eq, Hash, Debug, Default, serde::Serialize, serde::Deserialize,
+)]
+pub enum RouterReferenceNavigationIndexSection {
+    #[default]
+    Empty,
+    LinksNavigation,
+}
+impl std::str::FromStr for RouterReferenceNavigationIndexSection {
+    type Err = RouterReferenceNavigationIndexSectionParseError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "" => Ok(Self::Empty),
+            "links--navigation" => Ok(Self::LinksNavigation),
+            _ => Err(RouterReferenceNavigationIndexSectionParseError),
+        }
+    }
+}
+impl std::fmt::Display for RouterReferenceNavigationIndexSection {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Self::Empty => f.write_str(""),
+            Self::LinksNavigation => f.write_str("links--navigation"),
+        }
+    }
+}
+#[derive(Debug)]
+pub struct RouterReferenceNavigationIndexSectionParseError;
+impl std::fmt::Display for RouterReferenceNavigationIndexSectionParseError {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.write_str(
+            "Invalid section name. Expected one of RouterReferenceNavigationIndexSectionlinks--navigation",
+        )?;
+        Ok(())
+    }
+}
+impl std::error::Error for RouterReferenceNavigationIndexSectionParseError {}
 #[component(no_case_check)]
-pub fn RouterReferenceNavigationIndex() -> dioxus::prelude::Element {
+pub fn RouterReferenceNavigationIndex(
+    section: RouterReferenceNavigationIndexSection,
+) -> dioxus::prelude::Element {
     use dioxus::prelude::*;
     rsx! {
         h1 { id: "links--navigation",
-            a { href: "#links--navigation", class: "header", "Links & Navigation" }
+            Link {
+                to: BookRoute::RouterReferenceNavigationIndex {
+                    section: RouterReferenceNavigationIndexSection::LinksNavigation,
+                },
+                class: "header",
+                "Links & Navigation"
+            }
         }
-        p { "When we split our app into pages, we need to provide our users with a way to" }
+        p {
+            "When we split our app into pages, we need to provide our users with a way to"
+            " "
+            "navigate between them. On regular web pages, we'd use an anchor element for that,"
+            " "
+            "like this:"
+        }
         CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f92672;\">&lt;</span><span style=\"color:#f8f8f2;\">a href</span><span style=\"color:#f92672;\">=</span><span style=\"color:#ffee99;\">&quot;/other&quot;</span><span style=\"color:#f92672;\">&gt;</span><span style=\"color:#f8f8f2;\">Link to an other page&lt;</span><span style=\"background-color:#f92672;color:#f8f8f0;\">/</span><span style=\"color:#f8f8f2;\">a</span><span style=\"color:#f92672;\">&gt;</span></pre>\n" }
         p { "However, we cannot do that when using the router for three reasons:" }
         ol {
-            li { "Anchor tags make the browser load a new page from the server. This takes a" }
-            li { "Navigation using anchor tags only works when the app is running inside a" }
-            li { "Anchor tags cannot check if the target page exists. This means we cannot" }
+            li {
+                "Anchor tags make the browser load a new page from the server. This takes a"
+                " "
+                "lot of time, and it is much faster to let the router handle the navigation"
+                " "
+                "client-side."
+            }
+            li {
+                "Navigation using anchor tags only works when the app is running inside a"
+                " "
+                "browser. This means we cannot use them inside apps using Dioxus Desktop."
+            }
+            li {
+                "Anchor tags cannot check if the target page exists. This means we cannot"
+                " "
+                "prevent accidentally linking to non-existent pages."
+            }
         }
         p {
             "To solve these problems, the router provides us with a "
+            "[ "
             code { "Link" }
             "]"
+            " component we can"
+            " "
+            "use like this:"
         }
         CodeBlock {
             contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">#[component]\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">NavBar</span><span style=\"color:#f8f8f2;\">() -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    rsx! {{\n</span><span style=\"color:#f8f8f2;\">        nav {{\n</span><span style=\"color:#f8f8f2;\">            ul {{\n</span><span style=\"color:#f8f8f2;\">                li {{\n</span><span style=\"color:#f8f8f2;\">                    Link {{ to: Route::Home {{}}, </span><span style=\"color:#ffee99;\">&quot;Home&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">                }}\n</span><span style=\"color:#f8f8f2;\">            }}\n</span><span style=\"color:#f8f8f2;\">        }}\n</span><span style=\"color:#f8f8f2;\">        Outlet::&lt;Route&gt; {{}}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
@@ -9669,55 +13733,135 @@ pub fn RouterReferenceNavigationIndex() -> dioxus::prelude::Element {
             " in the example above is similar to the  "
             code { "href" }
             " of a regular anchor"
+            " "
+            "element. However, it tells the router more about what kind of navigation it"
+            " "
+            "should perform. It accepts something that can be converted into a"
+            " "
+            "[ "
             code { "NavigationTarget" }
             "]"
+            " "
+            ":"
         }
         ul {
             li {
                 "The example uses a Internal route. This is the most common type of navigation."
+                " "
+                "It tells the router to navigate to a page within our app by passing a variant of a "
+                "["
                 code { "Routable" }
                 "]"
+                " enum. This type of navigation can never fail if the link component is used inside a router component."
             }
             li {
                 "["
                 code { "External" }
                 "]"
+                " allows us to navigate to URLs outside of our app. This is useful"
+                " "
+                "for links to external websites. NavigationTarget::External accepts an URL to navigate to. This type of navigation can fail if the URL is invalid."
             }
         }
         blockquote {
             p {
                 "The "
+                "[ "
                 code { "Link" }
                 "]"
+                " accepts several props that modify its behavior. See the API docs"
+                " "
+                "for more details."
             }
         }
     }
 }
+#[derive(
+    Clone, Copy, PartialEq, Eq, Hash, Debug, Default, serde::Serialize, serde::Deserialize,
+)]
+pub enum RouterReferenceNavigationProgrammaticSection {
+    #[default]
+    Empty,
+    ProgrammaticNavigation,
+    UsingANavigator,
+    ExternalNavigationTargets,
+}
+impl std::str::FromStr for RouterReferenceNavigationProgrammaticSection {
+    type Err = RouterReferenceNavigationProgrammaticSectionParseError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "" => Ok(Self::Empty),
+            "programmatic-navigation" => Ok(Self::ProgrammaticNavigation),
+            "using-a-navigator" => Ok(Self::UsingANavigator),
+            "external-navigation-targets" => Ok(Self::ExternalNavigationTargets),
+            _ => Err(RouterReferenceNavigationProgrammaticSectionParseError),
+        }
+    }
+}
+impl std::fmt::Display for RouterReferenceNavigationProgrammaticSection {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Self::Empty => f.write_str(""),
+            Self::ProgrammaticNavigation => f.write_str("programmatic-navigation"),
+            Self::UsingANavigator => f.write_str("using-a-navigator"),
+            Self::ExternalNavigationTargets => f.write_str("external-navigation-targets"),
+        }
+    }
+}
+#[derive(Debug)]
+pub struct RouterReferenceNavigationProgrammaticSectionParseError;
+impl std::fmt::Display for RouterReferenceNavigationProgrammaticSectionParseError {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.write_str(
+            "Invalid section name. Expected one of RouterReferenceNavigationProgrammaticSectionprogrammatic-navigation, using-a-navigator, external-navigation-targets",
+        )?;
+        Ok(())
+    }
+}
+impl std::error::Error for RouterReferenceNavigationProgrammaticSectionParseError {}
 #[component(no_case_check)]
-pub fn RouterReferenceNavigationProgrammatic() -> dioxus::prelude::Element {
+pub fn RouterReferenceNavigationProgrammatic(
+    section: RouterReferenceNavigationProgrammaticSection,
+) -> dioxus::prelude::Element {
     use dioxus::prelude::*;
     rsx! {
         h1 { id: "programmatic-navigation",
-            a { href: "#programmatic-navigation", class: "header", "Programmatic Navigation" }
+            Link {
+                to: BookRoute::RouterReferenceNavigationProgrammatic {
+                    section: RouterReferenceNavigationProgrammaticSection::ProgrammaticNavigation,
+                },
+                class: "header",
+                "Programmatic Navigation"
+            }
         }
-        p { "Sometimes we want our application to navigate to another page without having the" }
+        p {
+            "Sometimes we want our application to navigate to another page without having the"
+            " "
+            "user click on a link. This is called programmatic navigation."
+        }
         h2 { id: "using-a-navigator",
-            a { href: "#using-a-navigator", class: "header", "Using a Navigator" }
+            Link {
+                to: BookRoute::RouterReferenceNavigationProgrammatic {
+                    section: RouterReferenceNavigationProgrammaticSection::UsingANavigator,
+                },
+                class: "header",
+                "Using a Navigator"
+            }
         }
         p {
             "We can get a navigator with the "
-            a { href: "https://docs.rs/dioxus-router/latest/dioxus_router/prelude/struct.Navigator.html",
+            Link { to: "https://docs.rs/dioxus-router/latest/dioxus_router/prelude/struct.Navigator.html",
                 code { "navigator" }
             }
             " function which returns a "
-            a { href: "https://docs.rs/dioxus-router/latest/dioxus_router/prelude/struct.Navigator.html",
+            Link { to: "https://docs.rs/dioxus-router/latest/dioxus_router/prelude/struct.Navigator.html",
                 code { "Navigator" }
             }
             "."
         }
         p {
             "We can use the "
-            a { href: "https://docs.rs/dioxus-router/latest/dioxus_router/prelude/struct.Navigator.html",
+            Link { to: "https://docs.rs/dioxus-router/latest/dioxus_router/prelude/struct.Navigator.html",
                 code { "Navigator" }
             }
             " to trigger four different kinds of navigation:"
@@ -9732,6 +13876,8 @@ pub fn RouterReferenceNavigationProgrammatic() -> dioxus::prelude::Element {
                 " works like "
                 code { "push" }
                 ", except that it replaces the current history entry"
+                " "
+                "instead of adding a new one. This means the prior page cannot be restored with the browser's back button."
             }
             li {
                 code { "Go back" }
@@ -9748,11 +13894,11 @@ pub fn RouterReferenceNavigationProgrammatic() -> dioxus::prelude::Element {
         }
         p {
             "You might have noticed that, like "
-            a { href: "https://docs.rs/dioxus-router/latest/dioxus_router/components/fn.Link.html",
+            Link { to: "https://docs.rs/dioxus-router/latest/dioxus_router/components/fn.Link.html",
                 code { "Link" }
             }
             ", the "
-            a { href: "https://docs.rs/dioxus-router/latest/dioxus_router/prelude/struct.Navigator.html",
+            Link { to: "https://docs.rs/dioxus-router/latest/dioxus_router/prelude/struct.Navigator.html",
                 code { "Navigator" }
             }
             "s "
@@ -9760,7 +13906,7 @@ pub fn RouterReferenceNavigationProgrammatic() -> dioxus::prelude::Element {
             " and"
             code { "replace" }
             " functions take a "
-            a { href: "https://docs.rs/dioxus-router/latest/dioxus_router/navigation/enum.NavigationTarget.html",
+            Link { to: "https://docs.rs/dioxus-router/latest/dioxus_router/navigation/enum.NavigationTarget.html",
                 code { "NavigationTarget" }
             }
             ". This means we can use either"
@@ -9770,64 +13916,140 @@ pub fn RouterReferenceNavigationProgrammatic() -> dioxus::prelude::Element {
             " targets."
         }
         h2 { id: "external-navigation-targets",
-            a { href: "#external-navigation-targets", class: "header",
+            Link {
+                to: BookRoute::RouterReferenceNavigationProgrammatic {
+                    section: RouterReferenceNavigationProgrammaticSection::ExternalNavigationTargets,
+                },
+                class: "header",
                 "External Navigation Targets"
             }
         }
         p {
             "Unlike a "
-            a { href: "https://docs.rs/dioxus-router/latest/dioxus_router/components/fn.Link.html",
+            Link { to: "https://docs.rs/dioxus-router/latest/dioxus_router/components/fn.Link.html",
                 code { "Link" }
             }
             ", the "
-            a { href: "https://docs.rs/dioxus-router/latest/dioxus_router/prelude/struct.Navigator.html",
+            Link { to: "https://docs.rs/dioxus-router/latest/dioxus_router/prelude/struct.Navigator.html",
                 code { "Navigator" }
             }
             " cannot rely on the browser (or webview) to"
+            " "
+            "handle navigation to external targets via a generated anchor element."
         }
-        p { "This means, that under certain conditions, navigation to external targets can" }
+        p {
+            "This means, that under certain conditions, navigation to external targets can"
+            " "
+            "fail."
+        }
     }
 }
+#[derive(
+    Clone, Copy, PartialEq, Eq, Hash, Debug, Default, serde::Serialize, serde::Deserialize,
+)]
+pub enum RouterReferenceHistoryProvidersSection {
+    #[default]
+    Empty,
+    HistoryProviders,
+}
+impl std::str::FromStr for RouterReferenceHistoryProvidersSection {
+    type Err = RouterReferenceHistoryProvidersSectionParseError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "" => Ok(Self::Empty),
+            "history-providers" => Ok(Self::HistoryProviders),
+            _ => Err(RouterReferenceHistoryProvidersSectionParseError),
+        }
+    }
+}
+impl std::fmt::Display for RouterReferenceHistoryProvidersSection {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Self::Empty => f.write_str(""),
+            Self::HistoryProviders => f.write_str("history-providers"),
+        }
+    }
+}
+#[derive(Debug)]
+pub struct RouterReferenceHistoryProvidersSectionParseError;
+impl std::fmt::Display for RouterReferenceHistoryProvidersSectionParseError {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.write_str(
+            "Invalid section name. Expected one of RouterReferenceHistoryProvidersSectionhistory-providers",
+        )?;
+        Ok(())
+    }
+}
+impl std::error::Error for RouterReferenceHistoryProvidersSectionParseError {}
 #[component(no_case_check)]
-pub fn RouterReferenceHistoryProviders() -> dioxus::prelude::Element {
+pub fn RouterReferenceHistoryProviders(
+    section: RouterReferenceHistoryProvidersSection,
+) -> dioxus::prelude::Element {
     use dioxus::prelude::*;
     rsx! {
         h1 { id: "history-providers",
-            a { href: "#history-providers", class: "header", "History Providers" }
+            Link {
+                to: BookRoute::RouterReferenceHistoryProviders {
+                    section: RouterReferenceHistoryProvidersSection::HistoryProviders,
+                },
+                class: "header",
+                "History Providers"
+            }
         }
         p {
             "[ "
             code { "HistoryProvider" }
             "]"
+            " "
+            "s are used by the router to keep track of the navigation history"
+            " "
+            "and update any external state (e.g. the browser's URL)."
         }
         p {
             "The router provides two "
+            "[ "
             code { "HistoryProvider" }
             "]"
+            " "
+            "s, but you can also create your own."
+            " "
+            "The two default implementations are:"
         }
         ul {
             li {
                 "The "
+                "["
                 code { "MemoryHistory" }
                 "]"
+                " is a custom implementation that works in memory."
             }
             li {
                 "The "
+                "["
                 code { "LiveviewHistory" }
                 "]"
+                " is a custom implementation that works with the liveview renderer."
             }
             li {
                 "The "
+                "["
                 code { "WebHistory" }
                 "]"
+                " integrates with the browser's URL."
             }
         }
         p {
             "By default, the router uses the "
+            "[ "
             code { "MemoryHistory" }
             "]"
+            " "
+            ". It might be changed to use"
+            " "
+            "[ "
             code { "WebHistory" }
             "]"
+            " when the  "
             code { "web" }
             " feature is active, but that is not guaranteed."
         }
@@ -9838,23 +14060,80 @@ pub fn RouterReferenceHistoryProviders() -> dioxus::prelude::Element {
         }
     }
 }
+#[derive(
+    Clone, Copy, PartialEq, Eq, Hash, Debug, Default, serde::Serialize, serde::Deserialize,
+)]
+pub enum RouterReferenceHistoryButtonsSection {
+    #[default]
+    Empty,
+    HistoryButtons,
+}
+impl std::str::FromStr for RouterReferenceHistoryButtonsSection {
+    type Err = RouterReferenceHistoryButtonsSectionParseError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "" => Ok(Self::Empty),
+            "history-buttons" => Ok(Self::HistoryButtons),
+            _ => Err(RouterReferenceHistoryButtonsSectionParseError),
+        }
+    }
+}
+impl std::fmt::Display for RouterReferenceHistoryButtonsSection {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Self::Empty => f.write_str(""),
+            Self::HistoryButtons => f.write_str("history-buttons"),
+        }
+    }
+}
+#[derive(Debug)]
+pub struct RouterReferenceHistoryButtonsSectionParseError;
+impl std::fmt::Display for RouterReferenceHistoryButtonsSectionParseError {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.write_str(
+            "Invalid section name. Expected one of RouterReferenceHistoryButtonsSectionhistory-buttons",
+        )?;
+        Ok(())
+    }
+}
+impl std::error::Error for RouterReferenceHistoryButtonsSectionParseError {}
 #[component(no_case_check)]
-pub fn RouterReferenceHistoryButtons() -> dioxus::prelude::Element {
+pub fn RouterReferenceHistoryButtons(
+    section: RouterReferenceHistoryButtonsSection,
+) -> dioxus::prelude::Element {
     use dioxus::prelude::*;
     rsx! {
         h1 { id: "history-buttons",
-            a { href: "#history-buttons", class: "header", "History Buttons" }
+            Link {
+                to: BookRoute::RouterReferenceHistoryButtons {
+                    section: RouterReferenceHistoryButtonsSection::HistoryButtons,
+                },
+                class: "header",
+                "History Buttons"
+            }
         }
-        p { "Some platforms, like web browsers, provide users with an easy way to navigate" }
-        p { "However, native platforms usually don't provide such amenities, which means that" }
+        p {
+            "Some platforms, like web browsers, provide users with an easy way to navigate"
+            " "
+            "through an app's history. They have UI elements or integrate with the OS."
+        }
+        p {
+            "However, native platforms usually don't provide such amenities, which means that"
+            " "
+            "apps wanting users to have access to them, need to implement them. For this"
+            " "
+            "reason, the router comes with two components, which emulate a browser's back and"
+            " "
+            "forward buttons:"
+        }
         ul {
             li {
-                a { href: "https://docs.rs/dioxus-router/latest/dioxus_router/components/fn.GoBackButton.html",
+                Link { to: "https://docs.rs/dioxus-router/latest/dioxus_router/components/fn.GoBackButton.html",
                     code { "GoBackButton" }
                 }
             }
             li {
-                a { href: "https://docs.rs/dioxus-router/latest/dioxus_router/components/fn.GoForwardButton.html",
+                Link { to: "https://docs.rs/dioxus-router/latest/dioxus_router/components/fn.GoForwardButton.html",
                     code { "GoForwardButton" }
                 }
             }
@@ -9862,7 +14141,10 @@ pub fn RouterReferenceHistoryButtons() -> dioxus::prelude::Element {
         blockquote {
             p {
                 "If you want to navigate through the history programmatically, take a look at"
-                a { href: "./navigation/programmatic",
+                Link {
+                    to: BookRoute::RouterReferenceNavigationProgrammatic {
+                        section: RouterReferenceNavigationProgrammaticSection::Empty,
+                    },
                     code { "programmatic navigation" }
                 }
                 "."
@@ -9872,30 +14154,101 @@ pub fn RouterReferenceHistoryButtons() -> dioxus::prelude::Element {
             contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">HistoryNavigation</span><span style=\"color:#f8f8f2;\">() -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    rsx! {{\n</span><span style=\"color:#f8f8f2;\">        GoBackButton {{ </span><span style=\"color:#ffee99;\">&quot;Back to the Past&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">        GoForwardButton {{ </span><span style=\"color:#ffee99;\">&quot;Back to the Future&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
             name: "history_buttons.rs".to_string(),
         }
-        p { "As you might know, browsers usually disable the back and forward buttons if" }
+        p {
+            "As you might know, browsers usually disable the back and forward buttons if"
+            " "
+            "there is no history to navigate to. The router's history buttons try to do that"
+            " "
+            "too, but depending on the "
+            "["
+            " "
+            "history provider"
+            " "
+            "]"
+            " that might not be possible."
+        }
         p {
             "Importantly, neither  "
             code { "WebHistory" }
             " supports that feature."
+            " "
+            "This is due to limitations of the browser History API."
         }
-        p { "However, in both cases, the router will just ignore button presses, if there is" }
+        p {
+            "However, in both cases, the router will just ignore button presses, if there is"
+            " "
+            "no history to navigate to."
+        }
         p {
             "Also, when using  "
             code { "WebHistory" }
             ", the history buttons might"
+            " "
+            "navigate a user to a history entry outside your app."
         }
     }
 }
+#[derive(
+    Clone, Copy, PartialEq, Eq, Hash, Debug, Default, serde::Serialize, serde::Deserialize,
+)]
+pub enum RouterReferenceRoutingUpdateCallbackSection {
+    #[default]
+    Empty,
+    RoutingUpdateCallback,
+    HowDoesTheCallbackBehave,
+    CodeExample,
+}
+impl std::str::FromStr for RouterReferenceRoutingUpdateCallbackSection {
+    type Err = RouterReferenceRoutingUpdateCallbackSectionParseError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "" => Ok(Self::Empty),
+            "routing-update-callback" => Ok(Self::RoutingUpdateCallback),
+            "how-does-the-callback-behave" => Ok(Self::HowDoesTheCallbackBehave),
+            "code-example" => Ok(Self::CodeExample),
+            _ => Err(RouterReferenceRoutingUpdateCallbackSectionParseError),
+        }
+    }
+}
+impl std::fmt::Display for RouterReferenceRoutingUpdateCallbackSection {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Self::Empty => f.write_str(""),
+            Self::RoutingUpdateCallback => f.write_str("routing-update-callback"),
+            Self::HowDoesTheCallbackBehave => f.write_str("how-does-the-callback-behave"),
+            Self::CodeExample => f.write_str("code-example"),
+        }
+    }
+}
+#[derive(Debug)]
+pub struct RouterReferenceRoutingUpdateCallbackSectionParseError;
+impl std::fmt::Display for RouterReferenceRoutingUpdateCallbackSectionParseError {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.write_str(
+            "Invalid section name. Expected one of RouterReferenceRoutingUpdateCallbackSectionrouting-update-callback, how-does-the-callback-behave, code-example",
+        )?;
+        Ok(())
+    }
+}
+impl std::error::Error for RouterReferenceRoutingUpdateCallbackSectionParseError {}
 #[component(no_case_check)]
-pub fn RouterReferenceRoutingUpdateCallback() -> dioxus::prelude::Element {
+pub fn RouterReferenceRoutingUpdateCallback(
+    section: RouterReferenceRoutingUpdateCallbackSection,
+) -> dioxus::prelude::Element {
     use dioxus::prelude::*;
     rsx! {
         h1 { id: "routing-update-callback",
-            a { href: "#routing-update-callback", class: "header", "Routing Update Callback" }
+            Link {
+                to: BookRoute::RouterReferenceRoutingUpdateCallback {
+                    section: RouterReferenceRoutingUpdateCallbackSection::RoutingUpdateCallback,
+                },
+                class: "header",
+                "Routing Update Callback"
+            }
         }
         p {
             "In some cases, we might want to run custom code when the current route changes. For this reason, the "
-            a { href: "https://docs.rs/dioxus-router/latest/dioxus_router/prelude/struct.RouterConfig.html",
+            Link { to: "https://docs.rs/dioxus-router/latest/dioxus_router/prelude/struct.RouterConfig.html",
                 code { "RouterConfig" }
             }
             " exposes an "
@@ -9903,7 +14256,11 @@ pub fn RouterReferenceRoutingUpdateCallback() -> dioxus::prelude::Element {
             " field."
         }
         h2 { id: "how-does-the-callback-behave",
-            a { href: "#how-does-the-callback-behave", class: "header",
+            Link {
+                to: BookRoute::RouterReferenceRoutingUpdateCallback {
+                    section: RouterReferenceRoutingUpdateCallbackSection::HowDoesTheCallbackBehave,
+                },
+                class: "header",
                 "How does the callback behave?"
             }
         }
@@ -9914,7 +14271,7 @@ pub fn RouterReferenceRoutingUpdateCallback() -> dioxus::prelude::Element {
         }
         p {
             "If the callback returns a "
-            a { href: "https://docs.rs/dioxus-router/latest/dioxus_router/navigation/enum.NavigationTarget.html",
+            Link { to: "https://docs.rs/dioxus-router/latest/dioxus_router/navigation/enum.NavigationTarget.html",
                 code { "NavigationTarget" }
             }
             ", the router will replace the current location with the specified target. It will not call the "
@@ -9929,7 +14286,13 @@ pub fn RouterReferenceRoutingUpdateCallback() -> dioxus::prelude::Element {
             " itself."
         }
         h2 { id: "code-example",
-            a { href: "#code-example", class: "header", "Code Example" }
+            Link {
+                to: BookRoute::RouterReferenceRoutingUpdateCallback {
+                    section: RouterReferenceRoutingUpdateCallbackSection::CodeExample,
+                },
+                class: "header",
+                "Code Example"
+            }
         }
         CodeBlock {
             contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">#[derive(Routable, Clone, PartialEq)]\n</span><span style=\"font-style:italic;color:#66d9ef;\">enum </span><span style=\"color:#f8f8f2;\">Route {{\n</span><span style=\"color:#f8f8f2;\">    #[route(</span><span style=\"color:#ffee99;\">&quot;/&quot;</span><span style=\"color:#f8f8f2;\">)]\n</span><span style=\"color:#f8f8f2;\">    Index {{}},\n</span><span style=\"color:#f8f8f2;\">    #[route(</span><span style=\"color:#ffee99;\">&quot;/home&quot;</span><span style=\"color:#f8f8f2;\">)]\n</span><span style=\"color:#f8f8f2;\">    Home {{}},\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">#[component]\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">Home</span><span style=\"color:#f8f8f2;\">() -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    rsx! {{ p {{ </span><span style=\"color:#ffee99;\">&quot;Home&quot; </span><span style=\"color:#f8f8f2;\">}} }}\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">#[component]\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">Index</span><span style=\"color:#f8f8f2;\">() -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    rsx! {{ p {{ </span><span style=\"color:#ffee99;\">&quot;Index&quot; </span><span style=\"color:#f8f8f2;\">}} }}\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">app</span><span style=\"color:#f8f8f2;\">() -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    rsx! {{\n</span><span style=\"color:#f8f8f2;\">        Router::&lt;Route&gt; {{\n</span><span style=\"color:#f8f8f2;\">            config: || {{\n</span><span style=\"color:#f8f8f2;\">                RouterConfig::default()\n</span><span style=\"color:#f8f8f2;\">                    .</span><span style=\"color:#66d9ef;\">on_update</span><span style=\"color:#f8f8f2;\">(|</span><span style=\"font-style:italic;color:#fd971f;\">state</span><span style=\"color:#f8f8f2;\">| {{\n</span><span style=\"color:#f8f8f2;\">                        (state.</span><span style=\"color:#66d9ef;\">current</span><span style=\"color:#f8f8f2;\">() </span><span style=\"color:#f92672;\">== </span><span style=\"color:#f8f8f2;\">Route::Index {{}})\n</span><span style=\"color:#f8f8f2;\">                            .</span><span style=\"color:#66d9ef;\">then_some</span><span style=\"color:#f8f8f2;\">(NavigationTarget::Internal(Route::Home {{}}))\n</span><span style=\"color:#f8f8f2;\">                    }})\n</span><span style=\"color:#f8f8f2;\">            }}\n</span><span style=\"color:#f8f8f2;\">        }}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
@@ -9937,12 +14300,67 @@ pub fn RouterReferenceRoutingUpdateCallback() -> dioxus::prelude::Element {
         }
     }
 }
+#[derive(
+    Clone, Copy, PartialEq, Eq, Hash, Debug, Default, serde::Serialize, serde::Deserialize,
+)]
+pub enum GuidesAssetsSection {
+    #[default]
+    Empty,
+    Assets,
+    IncludingImages,
+    IncludingArbitraryFiles,
+    IncludingStylesheets,
+    Conclusion,
+}
+impl std::str::FromStr for GuidesAssetsSection {
+    type Err = GuidesAssetsSectionParseError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "" => Ok(Self::Empty),
+            "assets" => Ok(Self::Assets),
+            "including-images" => Ok(Self::IncludingImages),
+            "including-arbitrary-files" => Ok(Self::IncludingArbitraryFiles),
+            "including-stylesheets" => Ok(Self::IncludingStylesheets),
+            "conclusion" => Ok(Self::Conclusion),
+            _ => Err(GuidesAssetsSectionParseError),
+        }
+    }
+}
+impl std::fmt::Display for GuidesAssetsSection {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Self::Empty => f.write_str(""),
+            Self::Assets => f.write_str("assets"),
+            Self::IncludingImages => f.write_str("including-images"),
+            Self::IncludingArbitraryFiles => f.write_str("including-arbitrary-files"),
+            Self::IncludingStylesheets => f.write_str("including-stylesheets"),
+            Self::Conclusion => f.write_str("conclusion"),
+        }
+    }
+}
+#[derive(Debug)]
+pub struct GuidesAssetsSectionParseError;
+impl std::fmt::Display for GuidesAssetsSectionParseError {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.write_str(
+            "Invalid section name. Expected one of GuidesAssetsSectionassets, including-images, including-arbitrary-files, including-stylesheets, conclusion",
+        )?;
+        Ok(())
+    }
+}
+impl std::error::Error for GuidesAssetsSectionParseError {}
 #[component(no_case_check)]
-pub fn GuidesAssets() -> dioxus::prelude::Element {
+pub fn GuidesAssets(section: GuidesAssetsSection) -> dioxus::prelude::Element {
     use dioxus::prelude::*;
     rsx! {
         h1 { id: "assets",
-            a { href: "#assets", class: "header", "Assets" }
+            Link {
+                to: BookRoute::GuidesAssets {
+                    section: GuidesAssetsSection::Assets,
+                },
+                class: "header",
+                "Assets"
+            }
         }
         p {
             "Assets are files that are included in the final build of the application. They can be images, fonts, stylesheets, or any other file that is not a source file. Dioxus includes first class support for assets, and provides a simple way to include them in your application and automatically optimize them for production."
@@ -9951,7 +14369,13 @@ pub fn GuidesAssets() -> dioxus::prelude::Element {
             "Assets in dioxus are also compatible with libraries! If you are building a library, you can include assets in your library and they will be automatically included in the final build of any application that uses your library."
         }
         h2 { id: "including-images",
-            a { href: "#including-images", class: "header", "Including images" }
+            Link {
+                to: BookRoute::GuidesAssets {
+                    section: GuidesAssetsSection::IncludingImages,
+                },
+                class: "header",
+                "Including images"
+            }
         }
         p {
             "To include an asset in your application, you can simply wrap the path to the asset in the  "
@@ -9972,7 +14396,13 @@ pub fn GuidesAssets() -> dioxus::prelude::Element {
             name: "assets.rs".to_string(),
         }
         h2 { id: "including-arbitrary-files",
-            a { href: "#including-arbitrary-files", class: "header", "Including arbitrary files" }
+            Link {
+                to: BookRoute::GuidesAssets {
+                    section: GuidesAssetsSection::IncludingArbitraryFiles,
+                },
+                class: "header",
+                "Including arbitrary files"
+            }
         }
         p {
             "In dioxus desktop, you may want to include a file with data for your application. If you don't set any options for your asset and the file extension is not recognized, the asset will be copied without any changes. For example, you can use the following code to include a binary file in your application:"
@@ -9985,7 +14415,13 @@ pub fn GuidesAssets() -> dioxus::prelude::Element {
             "These files will be automatically included in the final build of your application, and you can use them in your application as you would any other file."
         }
         h2 { id: "including-stylesheets",
-            a { href: "#including-stylesheets", class: "header", "Including stylesheets" }
+            Link {
+                to: BookRoute::GuidesAssets {
+                    section: GuidesAssetsSection::IncludingStylesheets,
+                },
+                class: "header",
+                "Including stylesheets"
+            }
         }
         p {
             "You can include stylesheets in your application using the  "
@@ -9999,29 +14435,92 @@ pub fn GuidesAssets() -> dioxus::prelude::Element {
         blockquote {
             p {
                 "The "
-                a { href: "../cookbook/tailwind", "tailwind guide" }
+                Link {
+                    to: BookRoute::CookbookTailwind {
+                        section: CookbookTailwindSection::Empty,
+                    },
+                    "tailwind guide"
+                }
                 " has more information on how to use tailwind with dioxus."
             }
         }
         h2 { id: "conclusion",
-            a { href: "#conclusion", class: "header", "Conclusion" }
+            Link {
+                to: BookRoute::GuidesAssets {
+                    section: GuidesAssetsSection::Conclusion,
+                },
+                class: "header",
+                "Conclusion"
+            }
         }
         p {
             "Dioxus provides first class support for assets, and makes it easy to include them in your application. You can include images, arbitrary files, and stylesheets in your application, and dioxus will automatically optimize them for production. This makes it easy to include assets in your application and ensure that they are optimized for production."
         }
         p {
             "You can read more about assets and all the options available to optimize your assets in the "
-            a { href: "https://docs.rs/manganis/0.6.0/manganis", "manganis documentation" }
+            Link { to: "https://docs.rs/manganis/0.6.0/manganis", "manganis documentation" }
             "."
         }
     }
 }
+#[derive(
+    Clone, Copy, PartialEq, Eq, Hash, Debug, Default, serde::Serialize, serde::Deserialize,
+)]
+pub enum GuidesWebIndexSection {
+    #[default]
+    Empty,
+    Web,
+    Support,
+    RunningJavascript,
+    CustomizingIndexTemplate,
+}
+impl std::str::FromStr for GuidesWebIndexSection {
+    type Err = GuidesWebIndexSectionParseError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "" => Ok(Self::Empty),
+            "web" => Ok(Self::Web),
+            "support" => Ok(Self::Support),
+            "running-javascript" => Ok(Self::RunningJavascript),
+            "customizing-index-template" => Ok(Self::CustomizingIndexTemplate),
+            _ => Err(GuidesWebIndexSectionParseError),
+        }
+    }
+}
+impl std::fmt::Display for GuidesWebIndexSection {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Self::Empty => f.write_str(""),
+            Self::Web => f.write_str("web"),
+            Self::Support => f.write_str("support"),
+            Self::RunningJavascript => f.write_str("running-javascript"),
+            Self::CustomizingIndexTemplate => f.write_str("customizing-index-template"),
+        }
+    }
+}
+#[derive(Debug)]
+pub struct GuidesWebIndexSectionParseError;
+impl std::fmt::Display for GuidesWebIndexSectionParseError {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.write_str(
+            "Invalid section name. Expected one of GuidesWebIndexSectionweb, support, running-javascript, customizing-index-template",
+        )?;
+        Ok(())
+    }
+}
+impl std::error::Error for GuidesWebIndexSectionParseError {}
 #[component(no_case_check)]
-pub fn GuidesWebIndex() -> dioxus::prelude::Element {
+pub fn GuidesWebIndex(section: GuidesWebIndexSection) -> dioxus::prelude::Element {
     use dioxus::prelude::*;
     rsx! {
         h1 { id: "web",
-            a { href: "#web", class: "header", "Web" }
+            Link {
+                to: BookRoute::GuidesWebIndex {
+                    section: GuidesWebIndexSection::Web,
+                },
+                class: "header",
+                "Web"
+            }
         }
         p {
             "To run on the Web, your app must be compiled to WebAssembly and depend on the  "
@@ -10032,7 +14531,7 @@ pub fn GuidesWebIndex() -> dioxus::prelude::Element {
         }
         p {
             "A build of Dioxus for the web will be roughly equivalent to the size of a React build (70kb vs 65kb) but it will load significantly faster because "
-            a { href: "https://hacks.mozilla.org/2018/01/making-webassembly-even-faster-firefoxs-new-streaming-and-tiering-compiler/",
+            Link { to: "https://hacks.mozilla.org/2018/01/making-webassembly-even-faster-firefoxs-new-streaming-and-tiering-compiler/",
                 "WebAssembly can be compiled as it is streamed"
             }
             "."
@@ -10040,18 +14539,18 @@ pub fn GuidesWebIndex() -> dioxus::prelude::Element {
         p { "Examples:" }
         ul {
             li {
-                a { href: "https://github.com/DioxusLabs/dioxus/blob/main/examples/todomvc.rs",
+                Link { to: "https://github.com/DioxusLabs/dioxus/blob/main/examples/todomvc.rs",
                     "TodoMVC"
                 }
             }
             li {
-                a { href: "https://github.com/DioxusLabs/dioxus/tree/main/examples/tailwind",
+                Link { to: "https://github.com/DioxusLabs/dioxus/tree/main/examples/tailwind",
                     "Tailwind App"
                 }
             }
         }
         p {
-            a { href: "https://github.com/DioxusLabs/dioxus/blob/main/examples/todomvc.rs",
+            Link { to: "https://github.com/DioxusLabs/dioxus/blob/main/examples/todomvc.rs",
                 img {
                     src: "https://github.com/DioxusLabs/example-projects/raw/master/todomvc/example.png",
                     alt: "TodoMVC example",
@@ -10062,32 +14561,49 @@ pub fn GuidesWebIndex() -> dioxus::prelude::Element {
         blockquote {
             p {
                 "Note: Because of the limitations of Wasm, "
-                a { href: "https://rustwasm.github.io/docs/book/reference/which-crates-work-with-wasm.html",
+                Link { to: "https://rustwasm.github.io/docs/book/reference/which-crates-work-with-wasm.html",
                     "not every crate will work"
                 }
                 " with your web apps, so you'll need to make sure that your crates work without native system calls (timers, IO, etc)."
             }
         }
         h2 { id: "support",
-            a { href: "#support", class: "header", "Support" }
+            Link {
+                to: BookRoute::GuidesWebIndex {
+                    section: GuidesWebIndexSection::Support,
+                },
+                class: "header",
+                "Support"
+            }
         }
         p { "The Web is the best-supported target platform for Dioxus." }
         ul {
             li {
                 "Because your app will be compiled to WASM you have access to browser APIs through "
-                a { href: "https://rustwasm.github.io/docs/wasm-bindgen/introduction.html",
+                Link { to: "https://rustwasm.github.io/docs/wasm-bindgen/introduction.html",
                     "wasm-bindgen"
                 }
                 "."
             }
             li {
                 "Dioxus provides hydration to resume apps that are rendered on the server. See the "
-                a { href: "../fullstack", "fullstack" }
+                Link {
+                    to: BookRoute::GuidesFullstackIndex {
+                        section: GuidesFullstackIndexSection::Empty,
+                    },
+                    "fullstack"
+                }
                 " reference for more information."
             }
         }
         h2 { id: "running-javascript",
-            a { href: "#running-javascript", class: "header", "Running Javascript" }
+            Link {
+                to: BookRoute::GuidesWebIndex {
+                    section: GuidesWebIndexSection::RunningJavascript,
+                },
+                class: "header",
+                "Running Javascript"
+            }
         }
         p {
             "Dioxus provides some ergonomic wrappers over the browser API, but in some cases you may need to access parts of the browser API Dioxus does not expose."
@@ -10101,15 +14617,21 @@ pub fn GuidesWebIndex() -> dioxus::prelude::Element {
         }
         p {
             "If you are targeting web, but don't plan on targeting any other Dioxus renderer you can also use the generated wrappers in the "
-            a { href: "https://rustwasm.github.io/wasm-bindgen/web-sys/index.html",
+            Link { to: "https://rustwasm.github.io/wasm-bindgen/web-sys/index.html",
                 "web-sys"
             }
             " and "
-            a { href: "https://gloo-rs.web.app/", "gloo" }
+            Link { to: "https://gloo-rs.web.app/", "gloo" }
             " crates."
         }
         h2 { id: "customizing-index-template",
-            a { href: "#customizing-index-template", class: "header", "Customizing Index Template" }
+            Link {
+                to: BookRoute::GuidesWebIndex {
+                    section: GuidesWebIndexSection::CustomizingIndexTemplate,
+                },
+                class: "header",
+                "Customizing Index Template"
+            }
         }
         p {
             "Dioxus supports providing custom index.html templates. The index.html must include a  "
@@ -10117,19 +14639,76 @@ pub fn GuidesWebIndex() -> dioxus::prelude::Element {
             " with the id  "
             code { "main" }
             " to be used. Hot Reload is still supported. An example"
-            a { href: "https://github.com/DioxusLabs/dioxus/blob/main/examples/PWA-example/index.html",
+            " "
+            "is provided in the "
+            Link { to: "https://github.com/DioxusLabs/dioxus/blob/main/examples/PWA-example/index.html",
                 "PWA-Example"
             }
             "."
         }
     }
 }
+#[derive(
+    Clone, Copy, PartialEq, Eq, Hash, Debug, Default, serde::Serialize, serde::Deserialize,
+)]
+pub enum GuidesDesktopIndexSection {
+    #[default]
+    Empty,
+    Desktop,
+    Examples,
+    RunningJavascript,
+    CustomAssets,
+    IntegratingWithWry,
+}
+impl std::str::FromStr for GuidesDesktopIndexSection {
+    type Err = GuidesDesktopIndexSectionParseError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "" => Ok(Self::Empty),
+            "desktop" => Ok(Self::Desktop),
+            "examples" => Ok(Self::Examples),
+            "running-javascript" => Ok(Self::RunningJavascript),
+            "custom-assets" => Ok(Self::CustomAssets),
+            "integrating-with-wry" => Ok(Self::IntegratingWithWry),
+            _ => Err(GuidesDesktopIndexSectionParseError),
+        }
+    }
+}
+impl std::fmt::Display for GuidesDesktopIndexSection {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Self::Empty => f.write_str(""),
+            Self::Desktop => f.write_str("desktop"),
+            Self::Examples => f.write_str("examples"),
+            Self::RunningJavascript => f.write_str("running-javascript"),
+            Self::CustomAssets => f.write_str("custom-assets"),
+            Self::IntegratingWithWry => f.write_str("integrating-with-wry"),
+        }
+    }
+}
+#[derive(Debug)]
+pub struct GuidesDesktopIndexSectionParseError;
+impl std::fmt::Display for GuidesDesktopIndexSectionParseError {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.write_str(
+            "Invalid section name. Expected one of GuidesDesktopIndexSectiondesktop, examples, running-javascript, custom-assets, integrating-with-wry",
+        )?;
+        Ok(())
+    }
+}
+impl std::error::Error for GuidesDesktopIndexSectionParseError {}
 #[component(no_case_check)]
-pub fn GuidesDesktopIndex() -> dioxus::prelude::Element {
+pub fn GuidesDesktopIndex(section: GuidesDesktopIndexSection) -> dioxus::prelude::Element {
     use dioxus::prelude::*;
     rsx! {
         h1 { id: "desktop",
-            a { href: "#desktop", class: "header", "Desktop" }
+            Link {
+                to: BookRoute::GuidesDesktopIndex {
+                    section: GuidesDesktopIndexSection::Desktop,
+                },
+                class: "header",
+                "Desktop"
+            }
         }
         p { "This guide will cover concepts specific to the Dioxus desktop renderer." }
         p {
@@ -10144,33 +14723,39 @@ pub fn GuidesDesktopIndex() -> dioxus::prelude::Element {
         }
         p {
             "Dioxus desktop is built on top of "
-            a { href: "https://github.com/tauri-apps/wry", "wry" }
+            Link { to: "https://github.com/tauri-apps/wry", "wry" }
             ", a Rust library for creating desktop applications with a WebView."
         }
         blockquote {
             p {
                 "In the future, we plan to move to a custom web renderer-based DOM renderer with WGPU integrations ("
-                a { href: "https://github.com/DioxusLabs/blitz", "Blitz" }
+                Link { to: "https://github.com/DioxusLabs/blitz", "Blitz" }
                 ")."
             }
         }
         h2 { id: "examples",
-            a { href: "#examples", class: "header", "Examples" }
+            Link {
+                to: BookRoute::GuidesDesktopIndex {
+                    section: GuidesDesktopIndexSection::Examples,
+                },
+                class: "header",
+                "Examples"
+            }
         }
         ul {
             li {
-                a { href: "https://github.com/DioxusLabs/dioxus/tree/main/example-projects/file-explorer",
+                Link { to: "https://github.com/DioxusLabs/dioxus/tree/main/example-projects/file-explorer",
                     "File Explorer"
                 }
             }
             li {
-                a { href: "https://github.com/DioxusLabs/dioxus/tree/main/examples/tailwind",
+                Link { to: "https://github.com/DioxusLabs/dioxus/tree/main/examples/tailwind",
                     "Tailwind App"
                 }
             }
         }
         p {
-            a { href: "https://github.com/DioxusLabs/dioxus/tree/main/examples/tailwind",
+            Link { to: "https://github.com/DioxusLabs/dioxus/tree/main/examples/tailwind",
                 img {
                     src: asset!(
                         "/assets/static/tailwind_desktop_app.png", ImageAssetOptions::new().with_avif()
@@ -10181,7 +14766,13 @@ pub fn GuidesDesktopIndex() -> dioxus::prelude::Element {
             }
         }
         h2 { id: "running-javascript",
-            a { href: "#running-javascript", class: "header", "Running Javascript" }
+            Link {
+                to: BookRoute::GuidesDesktopIndex {
+                    section: GuidesDesktopIndexSection::RunningJavascript,
+                },
+                class: "header",
+                "Running Javascript"
+            }
         }
         p {
             "Dioxus provides some ergonomic wrappers over the browser API, but in some cases you may need to access parts of the browser API Dioxus does not expose."
@@ -10194,7 +14785,13 @@ pub fn GuidesDesktopIndex() -> dioxus::prelude::Element {
             name: "eval.rs".to_string(),
         }
         h2 { id: "custom-assets",
-            a { href: "#custom-assets", class: "header", "Custom Assets" }
+            Link {
+                to: BookRoute::GuidesDesktopIndex {
+                    section: GuidesDesktopIndexSection::CustomAssets,
+                },
+                class: "header",
+                "Custom Assets"
+            }
         }
         p { "You can link to local assets in dioxus desktop instead of using a url:" }
         CodeBlock {
@@ -10203,51 +14800,136 @@ pub fn GuidesDesktopIndex() -> dioxus::prelude::Element {
         }
         p {
             "You can read more about assets in the "
-            a { href: "./assets", "assets" }
+            Link {
+                to: BookRoute::GuidesAssets {
+                    section: GuidesAssetsSection::Empty,
+                },
+                "assets"
+            }
             " reference."
         }
         h2 { id: "integrating-with-wry",
-            a { href: "#integrating-with-wry", class: "header", "Integrating with Wry" }
+            Link {
+                to: BookRoute::GuidesDesktopIndex {
+                    section: GuidesDesktopIndexSection::IntegratingWithWry,
+                },
+                class: "header",
+                "Integrating with Wry"
+            }
         }
         p {
             "In cases where you need more low level control over your window, you can use wry APIs exposed through the "
-            a { href: "https://docs.rs/dioxus-desktop/0.6.0/dioxus_desktop/struct.Config.html",
+            Link { to: "https://docs.rs/dioxus-desktop/0.6.0/dioxus_desktop/struct.Config.html",
                 "Desktop Config"
             }
             " and the "
-            a { href: "https://docs.rs/dioxus-desktop/0.6.0/dioxus_desktop/fn.use_window.html",
+            Link { to: "https://docs.rs/dioxus-desktop/0.6.0/dioxus_desktop/fn.use_window.html",
                 "use_window hook"
             }
         }
     }
 }
+#[derive(
+    Clone, Copy, PartialEq, Eq, Hash, Debug, Default, serde::Serialize, serde::Deserialize,
+)]
+pub enum GuidesMobileIndexSection {
+    #[default]
+    Empty,
+    MobileApp,
+    Support,
+    GettingSetUp,
+    Android,
+    Ios,
+    RunningYourApp,
+}
+impl std::str::FromStr for GuidesMobileIndexSection {
+    type Err = GuidesMobileIndexSectionParseError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "" => Ok(Self::Empty),
+            "mobile-app" => Ok(Self::MobileApp),
+            "support" => Ok(Self::Support),
+            "getting-set-up" => Ok(Self::GettingSetUp),
+            "android" => Ok(Self::Android),
+            "ios" => Ok(Self::Ios),
+            "running-your-app" => Ok(Self::RunningYourApp),
+            _ => Err(GuidesMobileIndexSectionParseError),
+        }
+    }
+}
+impl std::fmt::Display for GuidesMobileIndexSection {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Self::Empty => f.write_str(""),
+            Self::MobileApp => f.write_str("mobile-app"),
+            Self::Support => f.write_str("support"),
+            Self::GettingSetUp => f.write_str("getting-set-up"),
+            Self::Android => f.write_str("android"),
+            Self::Ios => f.write_str("ios"),
+            Self::RunningYourApp => f.write_str("running-your-app"),
+        }
+    }
+}
+#[derive(Debug)]
+pub struct GuidesMobileIndexSectionParseError;
+impl std::fmt::Display for GuidesMobileIndexSectionParseError {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.write_str(
+            "Invalid section name. Expected one of GuidesMobileIndexSectionmobile-app, support, getting-set-up, android, ios, running-your-app",
+        )?;
+        Ok(())
+    }
+}
+impl std::error::Error for GuidesMobileIndexSectionParseError {}
 #[component(no_case_check)]
-pub fn GuidesMobileIndex() -> dioxus::prelude::Element {
+pub fn GuidesMobileIndex(section: GuidesMobileIndexSection) -> dioxus::prelude::Element {
     use dioxus::prelude::*;
     rsx! {
         h1 { id: "mobile-app",
-            a { href: "#mobile-app", class: "header", "Mobile App" }
+            Link {
+                to: BookRoute::GuidesMobileIndex {
+                    section: GuidesMobileIndexSection::MobileApp,
+                },
+                class: "header",
+                "Mobile App"
+            }
         }
         p { "Build a mobile app with Dioxus!" }
         h2 { id: "support",
-            a { href: "#support", class: "header", "Support" }
+            Link {
+                to: BookRoute::GuidesMobileIndex {
+                    section: GuidesMobileIndexSection::Support,
+                },
+                class: "header",
+                "Support"
+            }
         }
         p {
-            "The Rust ecosystem for mobile is still in its infancy. Mobile is a 1st-class target for Dioxus apps, but there are very few packages that are battle-tested and ready to use."
+            "The Rust ecosystem for mobile continues to mature, with Dioxus offering strong support for mobile applications. Mobile is a first-class target for Dioxus apps, with a robust WebView implementation that supports CSS animations and transparency effects."
         }
         p {
-            "Mobile apps are rendered with either the platform's WebView or experimentally with "
-            a { href: "https://github.com/DioxusLabs/blitz", "WGPU" }
-            ". WebView doesn't support animations, transparency, and native widgets."
+            "Mobile apps are rendered with either the platform's WebView or experimentally with WGPU. While native Android animations and widgets aren't currently supported, CSS-based animations and styling provide a powerful alternative."
         }
         p {
-            "Mobile support is currently best suited for CRUD-style apps, ideally for internal teams who need to develop quickly but don't care much about animations or native widgets."
+            "Mobile support is well-suited for most application types, from business tools to consumer apps, making it an excellent choice for teams looking to build cross-platform applications with a single codebase."
         }
         h2 { id: "getting-set-up",
-            a { href: "#getting-set-up", class: "header", "Getting Set up" }
+            Link {
+                to: BookRoute::GuidesMobileIndex {
+                    section: GuidesMobileIndexSection::GettingSetUp,
+                },
+                class: "header",
+                "Getting Set up"
+            }
         }
         h2 { id: "android",
-            a { href: "#android", class: "header", "Android" }
+            Link {
+                to: BookRoute::GuidesMobileIndex {
+                    section: GuidesMobileIndexSection::Android,
+                },
+                class: "header",
+                "Android"
+            }
         }
         p {
             "Android devices run a different executable architecture than desktop and web. We need to install these toolchains to build Dioxus apps for Android."
@@ -10256,7 +14938,7 @@ pub fn GuidesMobileIndex() -> dioxus::prelude::Element {
         CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">rustup target add aarch64</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">linux</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">android armv7</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">linux</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">androideabi i686</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">linux</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">android x86_64</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">linux</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">android</span></pre>\n" }
         p {
             "To develop on Android, you will need to "
-            a { href: "https://developer.android.com/studio", "install Android Studio" }
+            Link { to: "https://developer.android.com/studio", "install Android Studio" }
             "."
         }
         p { "Once you have installed Android Studio, you will need to install the Android SDK and NDK:" }
@@ -10298,7 +14980,7 @@ pub fn GuidesMobileIndex() -> dioxus::prelude::Element {
         blockquote {
             p {
                 "More details that could be useful for debugging any errors you encounter are available "
-                a { href: "https://developer.android.com/studio/intro/update#sdk-manager",
+                Link { to: "https://developer.android.com/studio/intro/update#sdk-manager",
                     "in the official android docs"
                 }
             }
@@ -10317,11 +14999,17 @@ pub fn GuidesMobileIndex() -> dioxus::prelude::Element {
             "We manually set the PATH variable to include the Android emulator since some distributions of Android Studio include the emulator in the wrong location."
         }
         h2 { id: "ios",
-            a { href: "#ios", class: "header", "IOS" }
+            Link {
+                to: BookRoute::GuidesMobileIndex {
+                    section: GuidesMobileIndexSection::Ios,
+                },
+                class: "header",
+                "IOS"
+            }
         }
         p {
             "To develop on IOS, you will need to "
-            a { href: "https://apps.apple.com/us/app/xcode/id497799835", "install XCode" }
+            Link { to: "https://apps.apple.com/us/app/xcode/id497799835", "install XCode" }
             ". Also make sure to install the iOS targets"
         }
         CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">rustup target add aarch64</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">apple</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">ios aarch64</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">apple</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">ios</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">sim</span></pre>\n" }
@@ -10336,7 +15024,13 @@ pub fn GuidesMobileIndex() -> dioxus::prelude::Element {
         }
         p { "You will also need to install the iOS SDK and the Xcode command line tools." }
         h2 { id: "running-your-app",
-            a { href: "#running-your-app", class: "header", "Running your app" }
+            Link {
+                to: BookRoute::GuidesMobileIndex {
+                    section: GuidesMobileIndexSection::RunningYourApp,
+                },
+                class: "header",
+                "Running your app"
+            }
         }
         p {
             "Starting with Dioxus 0.6,  "
@@ -10356,16 +15050,74 @@ pub fn GuidesMobileIndex() -> dioxus::prelude::Element {
         p { "This will start the app in development mode." }
     }
 }
+#[derive(
+    Clone, Copy, PartialEq, Eq, Hash, Debug, Default, serde::Serialize, serde::Deserialize,
+)]
+pub enum GuidesMobileApisSection {
+    #[default]
+    Empty,
+    Mobile,
+    RunningJavascript,
+    CustomAssets,
+    IntegratingWithWry,
+}
+impl std::str::FromStr for GuidesMobileApisSection {
+    type Err = GuidesMobileApisSectionParseError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "" => Ok(Self::Empty),
+            "mobile" => Ok(Self::Mobile),
+            "running-javascript" => Ok(Self::RunningJavascript),
+            "custom-assets" => Ok(Self::CustomAssets),
+            "integrating-with-wry" => Ok(Self::IntegratingWithWry),
+            _ => Err(GuidesMobileApisSectionParseError),
+        }
+    }
+}
+impl std::fmt::Display for GuidesMobileApisSection {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Self::Empty => f.write_str(""),
+            Self::Mobile => f.write_str("mobile"),
+            Self::RunningJavascript => f.write_str("running-javascript"),
+            Self::CustomAssets => f.write_str("custom-assets"),
+            Self::IntegratingWithWry => f.write_str("integrating-with-wry"),
+        }
+    }
+}
+#[derive(Debug)]
+pub struct GuidesMobileApisSectionParseError;
+impl std::fmt::Display for GuidesMobileApisSectionParseError {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.write_str(
+            "Invalid section name. Expected one of GuidesMobileApisSectionmobile, running-javascript, custom-assets, integrating-with-wry",
+        )?;
+        Ok(())
+    }
+}
+impl std::error::Error for GuidesMobileApisSectionParseError {}
 #[component(no_case_check)]
-pub fn GuidesMobileApis() -> dioxus::prelude::Element {
+pub fn GuidesMobileApis(section: GuidesMobileApisSection) -> dioxus::prelude::Element {
     use dioxus::prelude::*;
     rsx! {
         h1 { id: "mobile",
-            a { href: "#mobile", class: "header", "Mobile" }
+            Link {
+                to: BookRoute::GuidesMobileApis {
+                    section: GuidesMobileApisSection::Mobile,
+                },
+                class: "header",
+                "Mobile"
+            }
         }
         p { "This guide will cover concepts specific to the Dioxus mobile renderer." }
         h2 { id: "running-javascript",
-            a { href: "#running-javascript", class: "header", "Running Javascript" }
+            Link {
+                to: BookRoute::GuidesMobileApis {
+                    section: GuidesMobileApisSection::RunningJavascript,
+                },
+                class: "header",
+                "Running Javascript"
+            }
         }
         p {
             "Dioxus provides some ergonomic wrappers over the browser API, but in some cases you may need to access parts of the browser API Dioxus does not expose."
@@ -10378,7 +15130,13 @@ pub fn GuidesMobileApis() -> dioxus::prelude::Element {
             name: "eval.rs".to_string(),
         }
         h2 { id: "custom-assets",
-            a { href: "#custom-assets", class: "header", "Custom Assets" }
+            Link {
+                to: BookRoute::GuidesMobileApis {
+                    section: GuidesMobileApisSection::CustomAssets,
+                },
+                class: "header",
+                "Custom Assets"
+            }
         }
         p { "You can link to local assets in dioxus mobile instead of using a url:" }
         CodeBlock {
@@ -10386,26 +15144,81 @@ pub fn GuidesMobileApis() -> dioxus::prelude::Element {
             name: "custom_assets.rs".to_string(),
         }
         h2 { id: "integrating-with-wry",
-            a { href: "#integrating-with-wry", class: "header", "Integrating with Wry" }
+            Link {
+                to: BookRoute::GuidesMobileApis {
+                    section: GuidesMobileApisSection::IntegratingWithWry,
+                },
+                class: "header",
+                "Integrating with Wry"
+            }
         }
         p {
             "In cases where you need more low level control over your window, you can use wry APIs exposed through the "
-            a { href: "https://docs.rs/dioxus-desktop/0.6.0/dioxus_desktop/type.DesktopContext.html",
+            Link { to: "https://docs.rs/dioxus-desktop/0.6.0/dioxus_desktop/type.DesktopContext.html",
                 "Desktop Config"
             }
             " and the "
-            a { href: "https://docs.rs/dioxus-desktop/0.6.0/dioxus_desktop/fn.use_window.html",
+            Link { to: "https://docs.rs/dioxus-desktop/0.6.0/dioxus_desktop/fn.use_window.html",
                 "use_window hook"
             }
         }
     }
 }
+#[derive(
+    Clone, Copy, PartialEq, Eq, Hash, Debug, Default, serde::Serialize, serde::Deserialize,
+)]
+pub enum GuidesSsrSection {
+    #[default]
+    Empty,
+    ServerSideRendering,
+    Setup,
+    MultithreadedSupport,
+}
+impl std::str::FromStr for GuidesSsrSection {
+    type Err = GuidesSsrSectionParseError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "" => Ok(Self::Empty),
+            "server-side-rendering" => Ok(Self::ServerSideRendering),
+            "setup" => Ok(Self::Setup),
+            "multithreaded-support" => Ok(Self::MultithreadedSupport),
+            _ => Err(GuidesSsrSectionParseError),
+        }
+    }
+}
+impl std::fmt::Display for GuidesSsrSection {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Self::Empty => f.write_str(""),
+            Self::ServerSideRendering => f.write_str("server-side-rendering"),
+            Self::Setup => f.write_str("setup"),
+            Self::MultithreadedSupport => f.write_str("multithreaded-support"),
+        }
+    }
+}
+#[derive(Debug)]
+pub struct GuidesSsrSectionParseError;
+impl std::fmt::Display for GuidesSsrSectionParseError {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.write_str(
+            "Invalid section name. Expected one of GuidesSsrSectionserver-side-rendering, setup, multithreaded-support",
+        )?;
+        Ok(())
+    }
+}
+impl std::error::Error for GuidesSsrSectionParseError {}
 #[component(no_case_check)]
-pub fn GuidesSsr() -> dioxus::prelude::Element {
+pub fn GuidesSsr(section: GuidesSsrSection) -> dioxus::prelude::Element {
     use dioxus::prelude::*;
     rsx! {
         h1 { id: "server-side-rendering",
-            a { href: "#server-side-rendering", class: "header", "Server-Side Rendering" }
+            Link {
+                to: BookRoute::GuidesSsr {
+                    section: GuidesSsrSection::ServerSideRendering,
+                },
+                class: "header",
+                "Server-Side Rendering"
+            }
         }
         p {
             "For lower-level control over the rendering process, you can use the  "
@@ -10415,11 +15228,17 @@ pub fn GuidesSsr() -> dioxus::prelude::Element {
             " does not support, or pre-rendering pages."
         }
         h2 { id: "setup",
-            a { href: "#setup", class: "header", "Setup" }
+            Link {
+                to: BookRoute::GuidesSsr {
+                    section: GuidesSsrSection::Setup,
+                },
+                class: "header",
+                "Setup"
+            }
         }
         p {
             "For this guide, we're going to show how to use Dioxus SSR with "
-            a { href: "https://docs.rs/axum/latest/axum/", "Axum" }
+            Link { to: "https://docs.rs/axum/latest/axum/", "Axum" }
             "."
         }
         p { "Make sure you have Rust and Cargo installed, and then create a new project:" }
@@ -10461,25 +15280,78 @@ pub fn GuidesSsr() -> dioxus::prelude::Element {
             "."
         }
         h2 { id: "multithreaded-support",
-            a { href: "#multithreaded-support", class: "header", "Multithreaded Support" }
+            Link {
+                to: BookRoute::GuidesSsr {
+                    section: GuidesSsrSection::MultithreadedSupport,
+                },
+                class: "header",
+                "Multithreaded Support"
+            }
         }
         p {
             "The Dioxus VirtualDom, sadly, is not currently  "
             code { "Send" }
             ". Internally, we use quite a bit of interior mutability which is not thread-safe."
+            " "
+            "When working with web frameworks that require  "
             code { "Send" }
             ", it is possible to render a VirtualDom immediately to a String – but you cannot hold the VirtualDom across an await point. For retained-state SSR (essentially LiveView), you'll need to spawn a VirtualDom on its own thread and communicate with it via channels or create a pool of VirtualDoms."
+            " "
+            "You might notice that you cannot hold the VirtualDom across an await point. Because Dioxus is currently not ThreadSafe, it "
             em { "must" }
             " remain on the thread it started. We are working on loosening this requirement."
         }
     }
 }
+#[derive(
+    Clone, Copy, PartialEq, Eq, Hash, Debug, Default, serde::Serialize, serde::Deserialize,
+)]
+pub enum GuidesFullstackIndexSection {
+    #[default]
+    Empty,
+    FullstackDevelopment,
+}
+impl std::str::FromStr for GuidesFullstackIndexSection {
+    type Err = GuidesFullstackIndexSectionParseError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "" => Ok(Self::Empty),
+            "fullstack-development" => Ok(Self::FullstackDevelopment),
+            _ => Err(GuidesFullstackIndexSectionParseError),
+        }
+    }
+}
+impl std::fmt::Display for GuidesFullstackIndexSection {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Self::Empty => f.write_str(""),
+            Self::FullstackDevelopment => f.write_str("fullstack-development"),
+        }
+    }
+}
+#[derive(Debug)]
+pub struct GuidesFullstackIndexSectionParseError;
+impl std::fmt::Display for GuidesFullstackIndexSectionParseError {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.write_str(
+            "Invalid section name. Expected one of GuidesFullstackIndexSectionfullstack-development",
+        )?;
+        Ok(())
+    }
+}
+impl std::error::Error for GuidesFullstackIndexSectionParseError {}
 #[component(no_case_check)]
-pub fn GuidesFullstackIndex() -> dioxus::prelude::Element {
+pub fn GuidesFullstackIndex(section: GuidesFullstackIndexSection) -> dioxus::prelude::Element {
     use dioxus::prelude::*;
     rsx! {
         h1 { id: "fullstack-development",
-            a { href: "#fullstack-development", class: "header", "Fullstack development" }
+            Link {
+                to: BookRoute::GuidesFullstackIndex {
+                    section: GuidesFullstackIndexSection::FullstackDevelopment,
+                },
+                class: "header",
+                "Fullstack development"
+            }
         }
         p { "Dioxus Fullstack contains helpers for:" }
         ul {
@@ -10493,7 +15365,7 @@ pub fn GuidesFullstackIndex() -> dioxus::prelude::Element {
         blockquote {
             p {
                 "In addition to this guide, you can find more examples of full-stack apps and information about how to integrate with other frameworks and desktop renderers in the "
-                a { href: "https://github.com/DioxusLabs/dioxus/tree/main/packages/fullstack/examples",
+                Link { to: "https://github.com/DioxusLabs/dioxus/tree/main/packages/fullstack/examples",
                     "dioxus-fullstack examples directory"
                 }
                 "."
@@ -10501,12 +15373,67 @@ pub fn GuidesFullstackIndex() -> dioxus::prelude::Element {
         }
     }
 }
+#[derive(
+    Clone, Copy, PartialEq, Eq, Hash, Debug, Default, serde::Serialize, serde::Deserialize,
+)]
+pub enum GuidesFullstackManagingDependenciesSection {
+    #[default]
+    Empty,
+    ManagingFullstackDependencies,
+    ClientAndServerFeatureFlags,
+    AddingServerOnlyDependencies,
+    AddingClientOnlyDependencies,
+    ManagingBinarySpecificImports,
+}
+impl std::str::FromStr for GuidesFullstackManagingDependenciesSection {
+    type Err = GuidesFullstackManagingDependenciesSectionParseError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "" => Ok(Self::Empty),
+            "managing-fullstack-dependencies" => Ok(Self::ManagingFullstackDependencies),
+            "client-and-server-feature-flags" => Ok(Self::ClientAndServerFeatureFlags),
+            "adding-server-only-dependencies" => Ok(Self::AddingServerOnlyDependencies),
+            "adding-client-only-dependencies" => Ok(Self::AddingClientOnlyDependencies),
+            "managing-binary-specific-imports" => Ok(Self::ManagingBinarySpecificImports),
+            _ => Err(GuidesFullstackManagingDependenciesSectionParseError),
+        }
+    }
+}
+impl std::fmt::Display for GuidesFullstackManagingDependenciesSection {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Self::Empty => f.write_str(""),
+            Self::ManagingFullstackDependencies => f.write_str("managing-fullstack-dependencies"),
+            Self::ClientAndServerFeatureFlags => f.write_str("client-and-server-feature-flags"),
+            Self::AddingServerOnlyDependencies => f.write_str("adding-server-only-dependencies"),
+            Self::AddingClientOnlyDependencies => f.write_str("adding-client-only-dependencies"),
+            Self::ManagingBinarySpecificImports => f.write_str("managing-binary-specific-imports"),
+        }
+    }
+}
+#[derive(Debug)]
+pub struct GuidesFullstackManagingDependenciesSectionParseError;
+impl std::fmt::Display for GuidesFullstackManagingDependenciesSectionParseError {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.write_str(
+            "Invalid section name. Expected one of GuidesFullstackManagingDependenciesSectionmanaging-fullstack-dependencies, client-and-server-feature-flags, adding-server-only-dependencies, adding-client-only-dependencies, managing-binary-specific-imports",
+        )?;
+        Ok(())
+    }
+}
+impl std::error::Error for GuidesFullstackManagingDependenciesSectionParseError {}
 #[component(no_case_check)]
-pub fn GuidesFullstackManagingDependencies() -> dioxus::prelude::Element {
+pub fn GuidesFullstackManagingDependencies(
+    section: GuidesFullstackManagingDependenciesSection,
+) -> dioxus::prelude::Element {
     use dioxus::prelude::*;
     rsx! {
         h1 { id: "managing-fullstack-dependencies",
-            a { href: "#managing-fullstack-dependencies", class: "header",
+            Link {
+                to: BookRoute::GuidesFullstackManagingDependencies {
+                    section: GuidesFullstackManagingDependenciesSection::ManagingFullstackDependencies,
+                },
+                class: "header",
                 "Managing Fullstack Dependencies"
             }
         }
@@ -10519,7 +15446,11 @@ pub fn GuidesFullstackManagingDependencies() -> dioxus::prelude::Element {
             "Those binaries tend to have different dependencies and those dependencies often are only compatible with a specific target platform. This guide will cover how fullstack manages each binary's dependencies and how to add dependencies that are only compatible with one binary/target."
         }
         h2 { id: "client-and-server-feature-flags",
-            a { href: "#client-and-server-feature-flags", class: "header",
+            Link {
+                to: BookRoute::GuidesFullstackManagingDependencies {
+                    section: GuidesFullstackManagingDependenciesSection::ClientAndServerFeatureFlags,
+                },
+                class: "header",
                 "Client and Server Feature Flags"
             }
         }
@@ -10545,24 +15476,28 @@ pub fn GuidesFullstackManagingDependencies() -> dioxus::prelude::Element {
         blockquote {
             p {
                 "If you are not familiar with features in rust, you can read more about feature flags in the "
-                a { href: "https://doc.rust-lang.org/cargo/reference/features.html",
+                Link { to: "https://doc.rust-lang.org/cargo/reference/features.html",
                     "cargo reference"
                 }
                 "."
             }
         }
         h2 { id: "adding-server-only-dependencies",
-            a { href: "#adding-server-only-dependencies", class: "header",
+            Link {
+                to: BookRoute::GuidesFullstackManagingDependencies {
+                    section: GuidesFullstackManagingDependenciesSection::AddingServerOnlyDependencies,
+                },
+                class: "header",
                 "Adding Server Only Dependencies"
             }
         }
         p {
             "Many dependencies like "
-            a { href: "https://docs.rs/tokio/latest/tokio/index.html",
+            Link { to: "https://docs.rs/tokio/latest/tokio/index.html",
                 code { "tokio" }
             }
             " and "
-            a { href: "https://docs.rs/axum/latest/axum/index.html",
+            Link { to: "https://docs.rs/axum/latest/axum/index.html",
                 code { "axum" }
             }
             " are only compatible with the server. If these dependencies are enabled when building a WASM bundle for the browser client, you will get a compilation error. For example, if we want to interact with the filesystem in a server function, we might want to add "
@@ -10570,7 +15505,7 @@ pub fn GuidesFullstackManagingDependencies() -> dioxus::prelude::Element {
             ". "
             code { "tokio" }
             " has utilities for working with async IO like "
-            a { href: "https://docs.rs/tokio/latest/tokio/fs/struct.File.html",
+            Link { to: "https://docs.rs/tokio/latest/tokio/fs/struct.File.html",
                 code { "tokio::fs::File" }
             }
             ". Let's try it as a dependency to our fullstack project:"
@@ -10607,17 +15542,21 @@ pub fn GuidesFullstackManagingDependencies() -> dioxus::prelude::Element {
             ", the project compiles successfully."
         }
         h2 { id: "adding-client-only-dependencies",
-            a { href: "#adding-client-only-dependencies", class: "header",
+            Link {
+                to: BookRoute::GuidesFullstackManagingDependencies {
+                    section: GuidesFullstackManagingDependenciesSection::AddingClientOnlyDependencies,
+                },
+                class: "header",
                 "Adding Client Only Dependencies"
             }
         }
         p {
             "Many dependencies like "
-            a { href: "https://docs.rs/wasm-bindgen/latest/wasm_bindgen/index.html",
+            Link { to: "https://docs.rs/wasm-bindgen/latest/wasm_bindgen/index.html",
                 code { "wasm-bindgen" }
             }
             " and "
-            a { href: "https://docs.rs/web-sys/latest/web_sys/index.html",
+            Link { to: "https://docs.rs/web-sys/latest/web_sys/index.html",
                 code { "web-sys" }
             }
             " are only compatible with the client. Unlike server-only dependencies, these dependencies can generally compile on native targets, but they will panic when used outside of the browser."
@@ -10640,7 +15579,11 @@ pub fn GuidesFullstackManagingDependencies() -> dioxus::prelude::Element {
             contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">[dependencies]\n</span><span style=\"color:#f92672;\"># ...\n</span><span style=\"color:#f92672;\">#</span><span style=\"color:#f8f8f2;\"> ✅ Since the web</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">sys dependency is optional, it is not included </span><span style=\"color:#f92672;\">in</span><span style=\"color:#f8f8f2;\"> the server and\n</span><span style=\"color:#f92672;\">#</span><span style=\"color:#f8f8f2;\"> native bundles.\n</span><span style=\"color:#f8f8f2;\">web</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">sys </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">{{ version </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;0.3.60&quot;</span><span style=\"color:#f8f8f2;\">, features </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">[</span><span style=\"color:#ffee99;\">&quot;console&quot;</span><span style=\"color:#f8f8f2;\">], optional </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ff80f4;\">true </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">[features]\n</span><span style=\"color:#f92672;\"># ...\n</span><span style=\"color:#f92672;\">#</span><span style=\"color:#f8f8f2;\"> ✅ Since the web</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">sys dependency is enabled </span><span style=\"color:#f92672;\">in</span><span style=\"color:#f8f8f2;\"> the web feature, it is included </span><span style=\"color:#f92672;\">in\n</span><span style=\"color:#f92672;\">#</span><span style=\"color:#f8f8f2;\"> the web bundle.\n</span><span style=\"color:#f8f8f2;\">web </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">[</span><span style=\"color:#ffee99;\">&quot;dioxus/web&quot;</span><span style=\"color:#f8f8f2;\">, </span><span style=\"color:#ffee99;\">&quot;dep:web-sys&quot;</span><span style=\"color:#f8f8f2;\">]</span></pre>\n",
         }
         h2 { id: "managing-binary-specific-imports",
-            a { href: "#managing-binary-specific-imports", class: "header",
+            Link {
+                to: BookRoute::GuidesFullstackManagingDependencies {
+                    section: GuidesFullstackManagingDependenciesSection::ManagingBinarySpecificImports,
+                },
+                class: "header",
                 "Managing Binary Specific Imports"
             }
         }
@@ -10671,7 +15614,7 @@ pub fn GuidesFullstackManagingDependencies() -> dioxus::prelude::Element {
         blockquote {
             p {
                 "The "
-                a { href: "https://doc.rust-lang.org/reference/conditional-compilation.html",
+                Link { to: "https://doc.rust-lang.org/reference/conditional-compilation.html",
                     "rust reference"
                 }
                 " has more information about conditional compilation in rust."
@@ -10679,12 +15622,69 @@ pub fn GuidesFullstackManagingDependencies() -> dioxus::prelude::Element {
         }
     }
 }
+#[derive(
+    Clone, Copy, PartialEq, Eq, Hash, Debug, Default, serde::Serialize, serde::Deserialize,
+)]
+pub enum GuidesFullstackServerFunctionsSection {
+    #[default]
+    Empty,
+    CommunicatingWithTheServer,
+    CachedDataFetching,
+    RunningTheClientWithDioxusDesktop,
+    ClientCode,
+    ServerCode,
+}
+impl std::str::FromStr for GuidesFullstackServerFunctionsSection {
+    type Err = GuidesFullstackServerFunctionsSectionParseError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "" => Ok(Self::Empty),
+            "communicating-with-the-server" => Ok(Self::CommunicatingWithTheServer),
+            "cached-data-fetching" => Ok(Self::CachedDataFetching),
+            "running-the-client-with-dioxus-desktop" => Ok(Self::RunningTheClientWithDioxusDesktop),
+            "client-code" => Ok(Self::ClientCode),
+            "server-code" => Ok(Self::ServerCode),
+            _ => Err(GuidesFullstackServerFunctionsSectionParseError),
+        }
+    }
+}
+impl std::fmt::Display for GuidesFullstackServerFunctionsSection {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Self::Empty => f.write_str(""),
+            Self::CommunicatingWithTheServer => f.write_str("communicating-with-the-server"),
+            Self::CachedDataFetching => f.write_str("cached-data-fetching"),
+            Self::RunningTheClientWithDioxusDesktop => {
+                f.write_str("running-the-client-with-dioxus-desktop")
+            }
+            Self::ClientCode => f.write_str("client-code"),
+            Self::ServerCode => f.write_str("server-code"),
+        }
+    }
+}
+#[derive(Debug)]
+pub struct GuidesFullstackServerFunctionsSectionParseError;
+impl std::fmt::Display for GuidesFullstackServerFunctionsSectionParseError {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.write_str(
+            "Invalid section name. Expected one of GuidesFullstackServerFunctionsSectioncommunicating-with-the-server, cached-data-fetching, running-the-client-with-dioxus-desktop, client-code, server-code",
+        )?;
+        Ok(())
+    }
+}
+impl std::error::Error for GuidesFullstackServerFunctionsSectionParseError {}
 #[component(no_case_check)]
-pub fn GuidesFullstackServerFunctions() -> dioxus::prelude::Element {
+pub fn GuidesFullstackServerFunctions(
+    section: GuidesFullstackServerFunctionsSection,
+) -> dioxus::prelude::Element {
     use dioxus::prelude::*;
     rsx! {
         h1 { id: "communicating-with-the-server",
-            a { href: "#communicating-with-the-server", class: "header",
+            Link {
+                to: BookRoute::GuidesFullstackServerFunctions {
+                    section: GuidesFullstackServerFunctionsSection::CommunicatingWithTheServer,
+                },
+                class: "header",
                 "Communicating with the server"
             }
         }
@@ -10701,7 +15701,7 @@ pub fn GuidesFullstackServerFunctions() -> dioxus::prelude::Element {
             li { "Be an async function" }
             li {
                 "Have arguments and a return type that both implement serialize and deserialize (with "
-                a { href: "https://serde.rs/", "serde" }
+                Link { to: "https://serde.rs/", "serde" }
                 ")."
             }
             li {
@@ -10719,7 +15719,12 @@ pub fn GuidesFullstackServerFunctions() -> dioxus::prelude::Element {
         }
         p {
             "Let's continue building on the app we made in the "
-            a { href: "../../getting_started/fullstack", "getting started" }
+            Link {
+                to: BookRoute::GettingStartedIndex {
+                    section: GettingStartedIndexSection::Empty,
+                },
+                "getting started"
+            }
             " guide. We will add a server function to our app that allows us to double the count on the server."
         }
         p { "First, add serde as a dependency:" }
@@ -10741,7 +15746,13 @@ pub fn GuidesFullstackServerFunctions() -> dioxus::prelude::Element {
             ". You should see a new button that multiplies the count by 2."
         }
         h2 { id: "cached-data-fetching",
-            a { href: "#cached-data-fetching", class: "header", "Cached data fetching" }
+            Link {
+                to: BookRoute::GuidesFullstackServerFunctions {
+                    section: GuidesFullstackServerFunctionsSection::CachedDataFetching,
+                },
+                class: "header",
+                "Cached data fetching"
+            }
         }
         p { "One common use case for server functions is fetching data from the server:" }
         CodeBlock {
@@ -10798,15 +15809,17 @@ pub fn GuidesFullstackServerFunctions() -> dioxus::prelude::Element {
         }
         SandBoxFrame { url: "https://codesandbox.io/p/sandbox/dioxus-fullstack-server-future-qwpp4p?file=/src/main.rs:3,24" }
         h2 { id: "running-the-client-with-dioxus-desktop",
-            a {
-                href: "#running-the-client-with-dioxus-desktop",
+            Link {
+                to: BookRoute::GuidesFullstackServerFunctions {
+                    section: GuidesFullstackServerFunctionsSection::RunningTheClientWithDioxusDesktop,
+                },
                 class: "header",
                 "Running the client with dioxus-desktop"
             }
         }
         p {
             "The project presented so far makes a web browser interact with the server, but it is also possible to make a desktop program interact with the server in a similar fashion. (The full example code is available in the "
-            a { href: "https://github.com/DioxusLabs/dioxus/tree/main/packages/fullstack/examples/axum-desktop",
+            Link { to: "https://github.com/DioxusLabs/dioxus/tree/main/packages/fullstack/examples/axum-desktop",
                 "Dioxus repo"
             }
             ")"
@@ -10822,6 +15835,7 @@ pub fn GuidesFullstackServerFunctions() -> dioxus::prelude::Element {
         }
         p {
             "The desktop and server targets have slightly different build configuration to enable additional dependencies or features. "
+            "The Cargo.toml in the full example has more information, but the main points are:"
         }
         ul {
             li {
@@ -10842,7 +15856,13 @@ pub fn GuidesFullstackServerFunctions() -> dioxus::prelude::Element {
         p { "and the client desktop executable with:" }
         CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">cargo run </span><span style=\"color:#f92672;\">--</span><span style=\"color:#f8f8f2;\">bin client </span><span style=\"color:#f92672;\">--</span><span style=\"color:#f8f8f2;\">features desktop</span></pre>\n" }
         h3 { id: "client-code",
-            a { href: "#client-code", class: "header", "Client code" }
+            Link {
+                to: BookRoute::GuidesFullstackServerFunctions {
+                    section: GuidesFullstackServerFunctionsSection::ClientCode,
+                },
+                class: "header",
+                "Client code"
+            }
         }
         p {
             "The client file is pretty straightforward. You only need to set the server url in the client code, so it knows where to send the network requests. Then, dioxus_desktop launches the app."
@@ -10854,7 +15874,13 @@ pub fn GuidesFullstackServerFunctions() -> dioxus::prelude::Element {
             strong { "Before you release remember to update the url to your production url." }
         }
         h3 { id: "server-code",
-            a { href: "#server-code", class: "header", "Server code" }
+            Link {
+                to: BookRoute::GuidesFullstackServerFunctions {
+                    section: GuidesFullstackServerFunctionsSection::ServerCode,
+                },
+                class: "header",
+                "Server code"
+            }
         }
         p {
             "In the server code, first you have to set the network address and port where the server will listen to."
@@ -10865,6 +15891,8 @@ pub fn GuidesFullstackServerFunctions() -> dioxus::prelude::Element {
         }
         p {
             "Then, you have to register the types declared in the server function macros into the server."
+            " "
+            "For example, consider this server function:"
         }
         CodeBlock {
             contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">#[server(GetServerData)]\n</span><span style=\"color:#f8f8f2;\">async </span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">get_server_data</span><span style=\"color:#f8f8f2;\">() -&gt; Result&lt;String, ServerFnError&gt; {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">Ok</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#ffee99;\">&quot;Hello from the server!&quot;</span><span style=\"color:#f8f8f2;\">.</span><span style=\"color:#66d9ef;\">to_string</span><span style=\"color:#f8f8f2;\">())\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
@@ -10882,19 +15910,64 @@ pub fn GuidesFullstackServerFunctions() -> dioxus::prelude::Element {
         p { "Finally, the server is started and it begins responding to requests." }
     }
 }
+#[derive(
+    Clone, Copy, PartialEq, Eq, Hash, Debug, Default, serde::Serialize, serde::Deserialize,
+)]
+pub enum GuidesFullstackExtractorsSection {
+    #[default]
+    Empty,
+    Extractors,
+}
+impl std::str::FromStr for GuidesFullstackExtractorsSection {
+    type Err = GuidesFullstackExtractorsSectionParseError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "" => Ok(Self::Empty),
+            "extractors" => Ok(Self::Extractors),
+            _ => Err(GuidesFullstackExtractorsSectionParseError),
+        }
+    }
+}
+impl std::fmt::Display for GuidesFullstackExtractorsSection {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Self::Empty => f.write_str(""),
+            Self::Extractors => f.write_str("extractors"),
+        }
+    }
+}
+#[derive(Debug)]
+pub struct GuidesFullstackExtractorsSectionParseError;
+impl std::fmt::Display for GuidesFullstackExtractorsSectionParseError {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.write_str(
+            "Invalid section name. Expected one of GuidesFullstackExtractorsSectionextractors",
+        )?;
+        Ok(())
+    }
+}
+impl std::error::Error for GuidesFullstackExtractorsSectionParseError {}
 #[component(no_case_check)]
-pub fn GuidesFullstackExtractors() -> dioxus::prelude::Element {
+pub fn GuidesFullstackExtractors(
+    section: GuidesFullstackExtractorsSection,
+) -> dioxus::prelude::Element {
     use dioxus::prelude::*;
     rsx! {
         h1 { id: "extractors",
-            a { href: "#extractors", class: "header", "Extractors" }
+            Link {
+                to: BookRoute::GuidesFullstackExtractors {
+                    section: GuidesFullstackExtractorsSection::Extractors,
+                },
+                class: "header",
+                "Extractors"
+            }
         }
         p {
             "Server functions are an ergonomic way to call a function on the server. Server function work by registering an endpoint on the server and using requests on the client. Most of the time, you shouldn't need to worry about how server functions operate, but there are some times when you need to get some value from the request other than the data passed in the server function."
         }
         p {
             "For example, requests contain information about the user's browser (called the "
-            a { href: "https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/User-Agent",
+            Link { to: "https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/User-Agent",
                 "user agent"
             }
             "). We can use an extractor to retrieve that information."
@@ -10912,16 +15985,61 @@ pub fn GuidesFullstackExtractors() -> dioxus::prelude::Element {
         }
     }
 }
+#[derive(
+    Clone, Copy, PartialEq, Eq, Hash, Debug, Default, serde::Serialize, serde::Deserialize,
+)]
+pub enum GuidesFullstackMiddlewareSection {
+    #[default]
+    Empty,
+    Middleware,
+}
+impl std::str::FromStr for GuidesFullstackMiddlewareSection {
+    type Err = GuidesFullstackMiddlewareSectionParseError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "" => Ok(Self::Empty),
+            "middleware" => Ok(Self::Middleware),
+            _ => Err(GuidesFullstackMiddlewareSectionParseError),
+        }
+    }
+}
+impl std::fmt::Display for GuidesFullstackMiddlewareSection {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Self::Empty => f.write_str(""),
+            Self::Middleware => f.write_str("middleware"),
+        }
+    }
+}
+#[derive(Debug)]
+pub struct GuidesFullstackMiddlewareSectionParseError;
+impl std::fmt::Display for GuidesFullstackMiddlewareSectionParseError {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.write_str(
+            "Invalid section name. Expected one of GuidesFullstackMiddlewareSectionmiddleware",
+        )?;
+        Ok(())
+    }
+}
+impl std::error::Error for GuidesFullstackMiddlewareSectionParseError {}
 #[component(no_case_check)]
-pub fn GuidesFullstackMiddleware() -> dioxus::prelude::Element {
+pub fn GuidesFullstackMiddleware(
+    section: GuidesFullstackMiddlewareSection,
+) -> dioxus::prelude::Element {
     use dioxus::prelude::*;
     rsx! {
         h1 { id: "middleware",
-            a { href: "#middleware", class: "header", "Middleware" }
+            Link {
+                to: BookRoute::GuidesFullstackMiddleware {
+                    section: GuidesFullstackMiddlewareSection::Middleware,
+                },
+                class: "header",
+                "Middleware"
+            }
         }
         p {
             "Extractors allow you to wrap your server function in some code that changes either the request or the response. Dioxus fullstack integrates with "
-            a { href: "https://docs.rs/tower/latest/tower/index.html", "Tower" }
+            Link { to: "https://docs.rs/tower/latest/tower/index.html", "Tower" }
             " to allow you to wrap your server functions in middleware."
         }
         p {
@@ -10935,16 +16053,66 @@ pub fn GuidesFullstackMiddleware() -> dioxus::prelude::Element {
         }
     }
 }
+#[derive(
+    Clone, Copy, PartialEq, Eq, Hash, Debug, Default, serde::Serialize, serde::Deserialize,
+)]
+pub enum GuidesFullstackAuthenticationSection {
+    #[default]
+    Empty,
+    Authentication,
+}
+impl std::str::FromStr for GuidesFullstackAuthenticationSection {
+    type Err = GuidesFullstackAuthenticationSectionParseError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "" => Ok(Self::Empty),
+            "authentication" => Ok(Self::Authentication),
+            _ => Err(GuidesFullstackAuthenticationSectionParseError),
+        }
+    }
+}
+impl std::fmt::Display for GuidesFullstackAuthenticationSection {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Self::Empty => f.write_str(""),
+            Self::Authentication => f.write_str("authentication"),
+        }
+    }
+}
+#[derive(Debug)]
+pub struct GuidesFullstackAuthenticationSectionParseError;
+impl std::fmt::Display for GuidesFullstackAuthenticationSectionParseError {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.write_str(
+            "Invalid section name. Expected one of GuidesFullstackAuthenticationSectionauthentication",
+        )?;
+        Ok(())
+    }
+}
+impl std::error::Error for GuidesFullstackAuthenticationSectionParseError {}
 #[component(no_case_check)]
-pub fn GuidesFullstackAuthentication() -> dioxus::prelude::Element {
+pub fn GuidesFullstackAuthentication(
+    section: GuidesFullstackAuthenticationSection,
+) -> dioxus::prelude::Element {
     use dioxus::prelude::*;
     rsx! {
         h1 { id: "authentication",
-            a { href: "#authentication", class: "header", "Authentication" }
+            Link {
+                to: BookRoute::GuidesFullstackAuthentication {
+                    section: GuidesFullstackAuthenticationSection::Authentication,
+                },
+                class: "header",
+                "Authentication"
+            }
         }
         p {
             "You can use "
-            a { href: "./extractors", "extractors" }
+            Link {
+                to: BookRoute::GuidesFullstackExtractors {
+                    section: GuidesFullstackExtractorsSection::Empty,
+                },
+                "extractors"
+            }
             " to integrate auth with your Fullstack application."
         }
         p {
@@ -10952,23 +16120,69 @@ pub fn GuidesFullstackAuthentication() -> dioxus::prelude::Element {
         }
         p {
             "A "
-            a { href: "https://github.com/DioxusLabs/dioxus/blob/v0.5/packages/fullstack/examples/axum-auth/src/main.rs",
+            Link { to: "https://github.com/DioxusLabs/dioxus/blob/v0.5/packages/fullstack/examples/axum-auth/src/main.rs",
                 "full auth example"
             }
             " with the complete implementation is available in the fullstack examples."
         }
     }
 }
+#[derive(
+    Clone, Copy, PartialEq, Eq, Hash, Debug, Default, serde::Serialize, serde::Deserialize,
+)]
+pub enum GuidesFullstackRoutingSection {
+    #[default]
+    Empty,
+    Routing,
+}
+impl std::str::FromStr for GuidesFullstackRoutingSection {
+    type Err = GuidesFullstackRoutingSectionParseError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "" => Ok(Self::Empty),
+            "routing" => Ok(Self::Routing),
+            _ => Err(GuidesFullstackRoutingSectionParseError),
+        }
+    }
+}
+impl std::fmt::Display for GuidesFullstackRoutingSection {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Self::Empty => f.write_str(""),
+            Self::Routing => f.write_str("routing"),
+        }
+    }
+}
+#[derive(Debug)]
+pub struct GuidesFullstackRoutingSectionParseError;
+impl std::fmt::Display for GuidesFullstackRoutingSectionParseError {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.write_str("Invalid section name. Expected one of GuidesFullstackRoutingSectionrouting")?;
+        Ok(())
+    }
+}
+impl std::error::Error for GuidesFullstackRoutingSectionParseError {}
 #[component(no_case_check)]
-pub fn GuidesFullstackRouting() -> dioxus::prelude::Element {
+pub fn GuidesFullstackRouting(section: GuidesFullstackRoutingSection) -> dioxus::prelude::Element {
     use dioxus::prelude::*;
     rsx! {
         h1 { id: "routing",
-            a { href: "#routing", class: "header", "Routing" }
+            Link {
+                to: BookRoute::GuidesFullstackRouting {
+                    section: GuidesFullstackRoutingSection::Routing,
+                },
+                class: "header",
+                "Routing"
+            }
         }
         p {
             "You can easily integrate your fullstack application with a client side router using Dioxus Router. This allows you to create different scenes in your app and navigate between them. You can read more about the router in the "
-            a { href: "../router", "router reference" }
+            Link {
+                to: BookRoute::RouterIndex {
+                    section: RouterIndexSection::Empty,
+                },
+                "router reference"
+            }
         }
         CodeBlock {
             contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">#![allow(non_snake_case)]\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\">use </span><span style=\"color:#f8f8f2;\">axum::Router;\n</span><span style=\"color:#f92672;\">use </span><span style=\"color:#f8f8f2;\">dioxus::prelude::</span><span style=\"color:#f92672;\">*</span><span style=\"color:#f8f8f2;\">;\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\">use </span><span style=\"color:#f8f8f2;\">dioxus_router::prelude::</span><span style=\"color:#f92672;\">*</span><span style=\"color:#f8f8f2;\">;\n</span><span style=\"color:#f92672;\">use </span><span style=\"color:#f8f8f2;\">serde::{{Deserialize, Serialize}};\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">main</span><span style=\"color:#f8f8f2;\">() {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#66d9ef;\">launch</span><span style=\"color:#f8f8f2;\">(|| rsx! {{ Router::&lt;Route&gt; {{}} }});\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">#[derive(Clone, Routable, Debug, PartialEq, Serialize, Deserialize)]\n</span><span style=\"font-style:italic;color:#66d9ef;\">enum </span><span style=\"color:#f8f8f2;\">Route {{\n</span><span style=\"color:#f8f8f2;\">    #[route(</span><span style=\"color:#ffee99;\">&quot;/&quot;</span><span style=\"color:#f8f8f2;\">)]\n</span><span style=\"color:#f8f8f2;\">    Home {{}},\n</span><span style=\"color:#f8f8f2;\">    #[route(</span><span style=\"color:#ffee99;\">&quot;/blog/:id&quot;</span><span style=\"color:#f8f8f2;\">)]\n</span><span style=\"color:#f8f8f2;\">    Blog {{ id: </span><span style=\"font-style:italic;color:#66d9ef;\">i32 </span><span style=\"color:#f8f8f2;\">}},\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">#[component]\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">Blog</span><span style=\"color:#f8f8f2;\">(</span><span style=\"font-style:italic;color:#fd971f;\">id</span><span style=\"color:#f8f8f2;\">: </span><span style=\"font-style:italic;color:#66d9ef;\">i32</span><span style=\"color:#f8f8f2;\">) -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    rsx! {{\n</span><span style=\"color:#f8f8f2;\">        Link {{ to: Route::Home {{}}, </span><span style=\"color:#ffee99;\">&quot;Go to counter&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">        table {{\n</span><span style=\"color:#f8f8f2;\">            tbody {{\n</span><span style=\"color:#f8f8f2;\">                </span><span style=\"color:#f92672;\">for _ in </span><span style=\"color:#ff80f4;\">0</span><span style=\"color:#f92672;\">..</span><span style=\"color:#f8f8f2;\">id {{\n</span><span style=\"color:#f8f8f2;\">                    tr {{\n</span><span style=\"color:#f8f8f2;\">                        </span><span style=\"color:#f92672;\">for _ in </span><span style=\"color:#ff80f4;\">0</span><span style=\"color:#f92672;\">..</span><span style=\"color:#f8f8f2;\">id {{\n</span><span style=\"color:#f8f8f2;\">                            td {{ </span><span style=\"color:#ffee99;\">&quot;hello world!&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">                        }}\n</span><span style=\"color:#f8f8f2;\">                    }}\n</span><span style=\"color:#f8f8f2;\">                }}\n</span><span style=\"color:#f8f8f2;\">            }}\n</span><span style=\"color:#f8f8f2;\">        }}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">#[component]\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">Home</span><span style=\"color:#f8f8f2;\">() -&gt; Element {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let </span><span style=\"color:#f92672;\">mut</span><span style=\"color:#f8f8f2;\"> count </span><span style=\"color:#f92672;\">= </span><span style=\"color:#66d9ef;\">use_signal</span><span style=\"color:#f8f8f2;\">(|| </span><span style=\"color:#ff80f4;\">0</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let </span><span style=\"color:#f92672;\">mut</span><span style=\"color:#f8f8f2;\"> text </span><span style=\"color:#f92672;\">= </span><span style=\"color:#66d9ef;\">use_signal</span><span style=\"color:#f8f8f2;\">(|| </span><span style=\"color:#ffee99;\">&quot;...&quot;</span><span style=\"color:#f8f8f2;\">.</span><span style=\"color:#66d9ef;\">to_string</span><span style=\"color:#f8f8f2;\">());\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">    rsx! {{\n</span><span style=\"color:#f8f8f2;\">        Link {{ to: Route::Blog {{ id: </span><span style=\"color:#66d9ef;\">count</span><span style=\"color:#f8f8f2;\">() }}, </span><span style=\"color:#ffee99;\">&quot;Go to blog&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">        div {{\n</span><span style=\"color:#f8f8f2;\">            h1 {{ </span><span style=\"color:#ffee99;\">&quot;High-Five counter: {{count}}&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">            button {{ onclick: </span><span style=\"color:#f92672;\">move |_|</span><span style=\"color:#f8f8f2;\"> count </span><span style=\"color:#f92672;\">+= </span><span style=\"color:#ff80f4;\">1</span><span style=\"color:#f8f8f2;\">, </span><span style=\"color:#ffee99;\">&quot;Up high!&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">            button {{ onclick: </span><span style=\"color:#f92672;\">move |_|</span><span style=\"color:#f8f8f2;\"> count </span><span style=\"color:#f92672;\">-= </span><span style=\"color:#ff80f4;\">1</span><span style=\"color:#f8f8f2;\">, </span><span style=\"color:#ffee99;\">&quot;Down low!&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">            button {{\n</span><span style=\"color:#f8f8f2;\">                onclick: </span><span style=\"color:#f92672;\">move |_| </span><span style=\"color:#f8f8f2;\">{{\n</span><span style=\"color:#f8f8f2;\">                    async </span><span style=\"color:#f92672;\">move </span><span style=\"color:#f8f8f2;\">{{\n</span><span style=\"color:#f8f8f2;\">                        </span><span style=\"color:#f92672;\">if </span><span style=\"font-style:italic;color:#66d9ef;\">let Ok</span><span style=\"color:#f8f8f2;\">(data) </span><span style=\"color:#f92672;\">= </span><span style=\"color:#66d9ef;\">get_server_data</span><span style=\"color:#f8f8f2;\">().await {{\n</span><span style=\"color:#f8f8f2;\">                            println!(</span><span style=\"color:#ffee99;\">&quot;Client received: </span><span style=\"color:#ff80f4;\">{{}}</span><span style=\"color:#ffee99;\">&quot;</span><span style=\"color:#f8f8f2;\">, data);\n</span><span style=\"color:#f8f8f2;\">                            text.</span><span style=\"color:#66d9ef;\">set</span><span style=\"color:#f8f8f2;\">(data.</span><span style=\"color:#66d9ef;\">clone</span><span style=\"color:#f8f8f2;\">());\n</span><span style=\"color:#f8f8f2;\">                            </span><span style=\"color:#66d9ef;\">post_server_data</span><span style=\"color:#f8f8f2;\">(data).await.</span><span style=\"color:#66d9ef;\">unwrap</span><span style=\"color:#f8f8f2;\">();\n</span><span style=\"color:#f8f8f2;\">                        }}\n</span><span style=\"color:#f8f8f2;\">                    }}\n</span><span style=\"color:#f8f8f2;\">                }},\n</span><span style=\"color:#f8f8f2;\">                </span><span style=\"color:#ffee99;\">&quot;Run server function!&quot;\n</span><span style=\"color:#f8f8f2;\">            }}\n</span><span style=\"color:#f8f8f2;\">            </span><span style=\"color:#ffee99;\">&quot;Server said: {{text}}&quot;\n</span><span style=\"color:#f8f8f2;\">        }}\n</span><span style=\"color:#f8f8f2;\">    }}\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">#[server(PostServerData)]\n</span><span style=\"color:#f8f8f2;\">async </span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">post_server_data</span><span style=\"color:#f8f8f2;\">(</span><span style=\"font-style:italic;color:#fd971f;\">data</span><span style=\"color:#f8f8f2;\">: String) -&gt; Result&lt;(), ServerFnError&gt; {{\n</span><span style=\"color:#f8f8f2;\">    println!(</span><span style=\"color:#ffee99;\">&quot;Server received: </span><span style=\"color:#ff80f4;\">{{}}</span><span style=\"color:#ffee99;\">&quot;</span><span style=\"color:#f8f8f2;\">, data);\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">Ok</span><span style=\"color:#f8f8f2;\">(())\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">#[server(GetServerData)]\n</span><span style=\"color:#f8f8f2;\">async </span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">get_server_data</span><span style=\"color:#f8f8f2;\">() -&gt; Result&lt;String, ServerFnError&gt; {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">Ok</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#ffee99;\">&quot;Hello from the server!&quot;</span><span style=\"color:#f8f8f2;\">.</span><span style=\"color:#66d9ef;\">to_string</span><span style=\"color:#f8f8f2;\">())\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
@@ -10977,18 +16191,87 @@ pub fn GuidesFullstackRouting() -> dioxus::prelude::Element {
         SandBoxFrame { url: "https://codesandbox.io/p/sandbox/dioxus-fullstack-router-s75v5q?file=%2Fsrc%2Fmain.rs%3A7%2C1" }
     }
 }
+#[derive(
+    Clone, Copy, PartialEq, Eq, Hash, Debug, Default, serde::Serialize, serde::Deserialize,
+)]
+pub enum CookbookPublishingSection {
+    #[default]
+    Empty,
+    Publishing,
+    WebPublishingWithGithubPages,
+    DesktopCreatingAnInstaller,
+    PreparingYourApplicationForBundling,
+    AddingAssetsToYourApplication,
+    InstallDioxusCli,
+    Building,
+}
+impl std::str::FromStr for CookbookPublishingSection {
+    type Err = CookbookPublishingSectionParseError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "" => Ok(Self::Empty),
+            "publishing" => Ok(Self::Publishing),
+            "web-publishing-with-github-pages" => Ok(Self::WebPublishingWithGithubPages),
+            "desktop-creating-an-installer" => Ok(Self::DesktopCreatingAnInstaller),
+            "preparing-your-application-for-bundling" => {
+                Ok(Self::PreparingYourApplicationForBundling)
+            }
+            "adding-assets-to-your-application" => Ok(Self::AddingAssetsToYourApplication),
+            "install-dioxus-cli" => Ok(Self::InstallDioxusCli),
+            "building" => Ok(Self::Building),
+            _ => Err(CookbookPublishingSectionParseError),
+        }
+    }
+}
+impl std::fmt::Display for CookbookPublishingSection {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Self::Empty => f.write_str(""),
+            Self::Publishing => f.write_str("publishing"),
+            Self::WebPublishingWithGithubPages => f.write_str("web-publishing-with-github-pages"),
+            Self::DesktopCreatingAnInstaller => f.write_str("desktop-creating-an-installer"),
+            Self::PreparingYourApplicationForBundling => {
+                f.write_str("preparing-your-application-for-bundling")
+            }
+            Self::AddingAssetsToYourApplication => f.write_str("adding-assets-to-your-application"),
+            Self::InstallDioxusCli => f.write_str("install-dioxus-cli"),
+            Self::Building => f.write_str("building"),
+        }
+    }
+}
+#[derive(Debug)]
+pub struct CookbookPublishingSectionParseError;
+impl std::fmt::Display for CookbookPublishingSectionParseError {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.write_str(
+            "Invalid section name. Expected one of CookbookPublishingSectionpublishing, web-publishing-with-github-pages, desktop-creating-an-installer, preparing-your-application-for-bundling, adding-assets-to-your-application, install-dioxus-cli, building",
+        )?;
+        Ok(())
+    }
+}
+impl std::error::Error for CookbookPublishingSectionParseError {}
 #[component(no_case_check)]
-pub fn CookbookPublishing() -> dioxus::prelude::Element {
+pub fn CookbookPublishing(section: CookbookPublishingSection) -> dioxus::prelude::Element {
     use dioxus::prelude::*;
     rsx! {
         h1 { id: "publishing",
-            a { href: "#publishing", class: "header", "Publishing" }
+            Link {
+                to: BookRoute::CookbookPublishing {
+                    section: CookbookPublishingSection::Publishing,
+                },
+                class: "header",
+                "Publishing"
+            }
         }
         p {
             "After you have build your application, you will need to publish it somewhere. This reference will outline different methods of publishing your desktop or web application."
         }
         h2 { id: "web-publishing-with-github-pages",
-            a { href: "#web-publishing-with-github-pages", class: "header",
+            Link {
+                to: BookRoute::CookbookPublishing {
+                    section: CookbookPublishingSection::WebPublishingWithGithubPages,
+                },
+                class: "header",
                 "Web: Publishing with GitHub Pages"
             }
         }
@@ -11024,7 +16307,11 @@ pub fn CookbookPublishing() -> dioxus::prelude::Element {
             li { "Push to GitHub" }
         }
         h2 { id: "desktop-creating-an-installer",
-            a { href: "#desktop-creating-an-installer", class: "header",
+            Link {
+                to: BookRoute::CookbookPublishing {
+                    section: CookbookPublishingSection::DesktopCreatingAnInstaller,
+                },
+                class: "header",
                 "Desktop: Creating an installer"
             }
         }
@@ -11033,8 +16320,10 @@ pub fn CookbookPublishing() -> dioxus::prelude::Element {
         }
         p { "In this section, we'll cover how to bundle your app for macOS, Windows, and Linux." }
         h2 { id: "preparing-your-application-for-bundling",
-            a {
-                href: "#preparing-your-application-for-bundling",
+            Link {
+                to: BookRoute::CookbookPublishing {
+                    section: CookbookPublishingSection::PreparingYourApplicationForBundling,
+                },
                 class: "header",
                 "Preparing your application for bundling"
             }
@@ -11058,7 +16347,11 @@ pub fn CookbookPublishing() -> dioxus::prelude::Element {
         }
         CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">#![cfg_attr(feature </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;bundle&quot;</span><span style=\"color:#f8f8f2;\">, windows_subsystem </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;windows&quot;</span><span style=\"color:#f8f8f2;\">)]</span></pre>\n" }
         h2 { id: "adding-assets-to-your-application",
-            a { href: "#adding-assets-to-your-application", class: "header",
+            Link {
+                to: BookRoute::CookbookPublishing {
+                    section: CookbookPublishingSection::AddingAssetsToYourApplication,
+                },
+                class: "header",
                 "Adding assets to your application"
             }
         }
@@ -11066,19 +16359,29 @@ pub fn CookbookPublishing() -> dioxus::prelude::Element {
             "If you want to bundle assets with your application, you can either use them with the  "
             code { "manganis" }
             " crate (covered more in the "
-            a { href: "../reference/assets", "assets" }
+            Link {
+                to: BookRoute::GuidesAssets {
+                    section: GuidesAssetsSection::Empty,
+                },
+                "assets"
+            }
             " page), or you can include them in your "
             code { "Dioxus.toml" }
             " file:"
         }
         CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">[bundle]\n</span><span style=\"color:#f92672;\">#</span><span style=\"color:#f8f8f2;\"> The list of files to include </span><span style=\"color:#f92672;\">in</span><span style=\"color:#f8f8f2;\"> the bundle. These can contain globs.\n</span><span style=\"color:#f8f8f2;\">resources </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">[</span><span style=\"color:#ffee99;\">&quot;main.css&quot;</span><span style=\"color:#f8f8f2;\">, </span><span style=\"color:#ffee99;\">&quot;header.svg&quot;</span><span style=\"color:#f8f8f2;\">, </span><span style=\"color:#ffee99;\">&quot;**/*.png&quot;</span><span style=\"color:#f8f8f2;\">]</span></pre>\n" }
-        h2 { id: "install",
-            a { href: "#install", class: "header", "Install " }
-            code { "dioxus CLI" }
+        h2 { id: "install-dioxus-cli",
+            Link {
+                to: BookRoute::CookbookPublishing {
+                    section: CookbookPublishingSection::InstallDioxusCli,
+                },
+                class: "header",
+                "Install dioxus CLI"
+            }
         }
         p {
             "The first thing we'll do is install the "
-            a { href: "https://github.com/DioxusLabs/dioxus/tree/main/packages/cli",
+            Link { to: "https://github.com/DioxusLabs/dioxus/tree/main/packages/cli",
                 "dioxus-cli"
             }
             ". This extension to cargo will make it very easy to package our app for the various platforms."
@@ -11088,7 +16391,13 @@ pub fn CookbookPublishing() -> dioxus::prelude::Element {
             code { "cargo install dioxus-cli" }
         }
         h2 { id: "building",
-            a { href: "#building", class: "header", "Building" }
+            Link {
+                to: BookRoute::CookbookPublishing {
+                    section: CookbookPublishingSection::Building,
+                },
+                class: "header",
+                "Building"
+            }
         }
         p {
             "To bundle your application you can simply run  "
@@ -11096,7 +16405,12 @@ pub fn CookbookPublishing() -> dioxus::prelude::Element {
             " (also add  "
             code { "--features bundle" }
             " if you're using that, see the "
-            a { href: "#preparing-your-application-for-bundling", "this" }
+            Link {
+                to: BookRoute::CookbookPublishing {
+                    section: CookbookPublishingSection::PreparingYourApplicationForBundling,
+                },
+                "this"
+            }
             " for more) to produce a final app with all the optimizations and assets builtin."
         }
         p {
@@ -11122,18 +16436,96 @@ pub fn CookbookPublishing() -> dioxus::prelude::Element {
         }
     }
 }
+#[derive(
+    Clone, Copy, PartialEq, Eq, Hash, Debug, Default, serde::Serialize, serde::Deserialize,
+)]
+pub enum CookbookAntipatternsSection {
+    #[default]
+    Empty,
+    Antipatterns,
+    UnnecessarilyNestedFragments,
+    IncorrectIteratorKeys,
+    AvoidInteriorMutabilityInProps,
+    AvoidUpdatingStateDuringRender,
+    AvoidLargeGroupsOfState,
+    RunningNonDeterministicCodeInTheBodyOfAComponent,
+    OverlyPermissivePartialeqForProps,
+}
+impl std::str::FromStr for CookbookAntipatternsSection {
+    type Err = CookbookAntipatternsSectionParseError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "" => Ok(Self::Empty),
+            "antipatterns" => Ok(Self::Antipatterns),
+            "unnecessarily-nested-fragments" => Ok(Self::UnnecessarilyNestedFragments),
+            "incorrect-iterator-keys" => Ok(Self::IncorrectIteratorKeys),
+            "avoid-interior-mutability-in-props" => Ok(Self::AvoidInteriorMutabilityInProps),
+            "avoid-updating-state-during-render" => Ok(Self::AvoidUpdatingStateDuringRender),
+            "avoid-large-groups-of-state" => Ok(Self::AvoidLargeGroupsOfState),
+            "running-non-deterministic-code-in-the-body-of-a-component" => {
+                Ok(Self::RunningNonDeterministicCodeInTheBodyOfAComponent)
+            }
+            "overly-permissive-partialeq-for-props" => Ok(Self::OverlyPermissivePartialeqForProps),
+            _ => Err(CookbookAntipatternsSectionParseError),
+        }
+    }
+}
+impl std::fmt::Display for CookbookAntipatternsSection {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Self::Empty => f.write_str(""),
+            Self::Antipatterns => f.write_str("antipatterns"),
+            Self::UnnecessarilyNestedFragments => f.write_str("unnecessarily-nested-fragments"),
+            Self::IncorrectIteratorKeys => f.write_str("incorrect-iterator-keys"),
+            Self::AvoidInteriorMutabilityInProps => {
+                f.write_str("avoid-interior-mutability-in-props")
+            }
+            Self::AvoidUpdatingStateDuringRender => {
+                f.write_str("avoid-updating-state-during-render")
+            }
+            Self::AvoidLargeGroupsOfState => f.write_str("avoid-large-groups-of-state"),
+            Self::RunningNonDeterministicCodeInTheBodyOfAComponent => {
+                f.write_str("running-non-deterministic-code-in-the-body-of-a-component")
+            }
+            Self::OverlyPermissivePartialeqForProps => {
+                f.write_str("overly-permissive-partialeq-for-props")
+            }
+        }
+    }
+}
+#[derive(Debug)]
+pub struct CookbookAntipatternsSectionParseError;
+impl std::fmt::Display for CookbookAntipatternsSectionParseError {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.write_str(
+            "Invalid section name. Expected one of CookbookAntipatternsSectionantipatterns, unnecessarily-nested-fragments, incorrect-iterator-keys, avoid-interior-mutability-in-props, avoid-updating-state-during-render, avoid-large-groups-of-state, running-non-deterministic-code-in-the-body-of-a-component, overly-permissive-partialeq-for-props",
+        )?;
+        Ok(())
+    }
+}
+impl std::error::Error for CookbookAntipatternsSectionParseError {}
 #[component(no_case_check)]
-pub fn CookbookAntipatterns() -> dioxus::prelude::Element {
+pub fn CookbookAntipatterns(section: CookbookAntipatternsSection) -> dioxus::prelude::Element {
     use dioxus::prelude::*;
     rsx! {
         h1 { id: "antipatterns",
-            a { href: "#antipatterns", class: "header", "Antipatterns" }
+            Link {
+                to: BookRoute::CookbookAntipatterns {
+                    section: CookbookAntipatternsSection::Antipatterns,
+                },
+                class: "header",
+                "Antipatterns"
+            }
         }
         p {
             "This example shows what not to do and provides a reason why a given pattern is considered an \"AntiPattern\". Most anti-patterns are considered wrong for performance or code re-usability reasons."
         }
         h2 { id: "unnecessarily-nested-fragments",
-            a { href: "#unnecessarily-nested-fragments", class: "header",
+            Link {
+                to: BookRoute::CookbookAntipatterns {
+                    section: CookbookAntipatternsSection::UnnecessarilyNestedFragments,
+                },
+                class: "header",
                 "Unnecessarily Nested Fragments"
             }
         }
@@ -11148,11 +16540,22 @@ pub fn CookbookAntipatterns() -> dioxus::prelude::Element {
             name: "anti_patterns.rs".to_string(),
         }
         h2 { id: "incorrect-iterator-keys",
-            a { href: "#incorrect-iterator-keys", class: "header", "Incorrect Iterator Keys" }
+            Link {
+                to: BookRoute::CookbookAntipatterns {
+                    section: CookbookAntipatternsSection::IncorrectIteratorKeys,
+                },
+                class: "header",
+                "Incorrect Iterator Keys"
+            }
         }
         p {
             "As described in the "
-            a { href: "../reference/dynamic_rendering#the", "dynamic rendering chapter" }
+            Link {
+                to: BookRoute::ReferenceDynamicRendering {
+                    section: ReferenceDynamicRenderingSection::TheKeyAttribute,
+                },
+                "dynamic rendering chapter"
+            }
             ", list items must have unique keys that are associated with the same items across renders. This helps Dioxus associate state with the contained components and ensures good diffing performance. Do not omit keys, unless you know that the list will never change."
         }
         CodeBlock {
@@ -11160,7 +16563,11 @@ pub fn CookbookAntipatterns() -> dioxus::prelude::Element {
             name: "anti_patterns.rs".to_string(),
         }
         h2 { id: "avoid-interior-mutability-in-props",
-            a { href: "#avoid-interior-mutability-in-props", class: "header",
+            Link {
+                to: BookRoute::CookbookAntipatterns {
+                    section: CookbookAntipatternsSection::AvoidInteriorMutabilityInProps,
+                },
+                class: "header",
                 "Avoid Interior Mutability in Props"
             }
         }
@@ -11191,7 +16598,11 @@ pub fn CookbookAntipatterns() -> dioxus::prelude::Element {
             name: "anti_patterns.rs".to_string(),
         }
         h2 { id: "avoid-updating-state-during-render",
-            a { href: "#avoid-updating-state-during-render", class: "header",
+            Link {
+                to: BookRoute::CookbookAntipatterns {
+                    section: CookbookAntipatternsSection::AvoidUpdatingStateDuringRender,
+                },
+                class: "header",
                 "Avoid Updating State During Render"
             }
         }
@@ -11206,7 +16617,11 @@ pub fn CookbookAntipatterns() -> dioxus::prelude::Element {
             name: "anti_patterns.rs".to_string(),
         }
         h2 { id: "avoid-large-groups-of-state",
-            a { href: "#avoid-large-groups-of-state", class: "header",
+            Link {
+                to: BookRoute::CookbookAntipatterns {
+                    section: CookbookAntipatternsSection::AvoidLargeGroupsOfState,
+                },
+                class: "header",
                 "Avoid Large Groups of State"
             }
         }
@@ -11228,8 +16643,10 @@ pub fn CookbookAntipatterns() -> dioxus::prelude::Element {
             name: "anti_patterns.rs".to_string(),
         }
         h2 { id: "running-non-deterministic-code-in-the-body-of-a-component",
-            a {
-                href: "#running-non-deterministic-code-in-the-body-of-a-component",
+            Link {
+                to: BookRoute::CookbookAntipatterns {
+                    section: CookbookAntipatternsSection::RunningNonDeterministicCodeInTheBodyOfAComponent,
+                },
                 class: "header",
                 "Running Non-Deterministic Code in the Body of a Component"
             }
@@ -11245,8 +16662,10 @@ pub fn CookbookAntipatterns() -> dioxus::prelude::Element {
             name: "anti_patterns.rs".to_string(),
         }
         h2 { id: "overly-permissive-partialeq-for-props",
-            a {
-                href: "#overly-permissive-partialeq-for-props",
+            Link {
+                to: BookRoute::CookbookAntipatterns {
+                    section: CookbookAntipatternsSection::OverlyPermissivePartialeqForProps,
+                },
                 class: "header",
                 "Overly Permissive PartialEq for Props"
             }
@@ -11286,12 +16705,74 @@ pub fn CookbookAntipatterns() -> dioxus::prelude::Element {
         }
     }
 }
+#[derive(
+    Clone, Copy, PartialEq, Eq, Hash, Debug, Default, serde::Serialize, serde::Deserialize,
+)]
+pub enum CookbookErrorHandlingSection {
+    #[default]
+    Empty,
+    ErrorHandling,
+    TheSimplestReturningNone,
+    EarlyReturnOnResult,
+    MatchResults,
+    PassingErrorStatesThroughComponents,
+    ThrowingErrors,
+}
+impl std::str::FromStr for CookbookErrorHandlingSection {
+    type Err = CookbookErrorHandlingSectionParseError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "" => Ok(Self::Empty),
+            "error-handling" => Ok(Self::ErrorHandling),
+            "the-simplest--returning-none" => Ok(Self::TheSimplestReturningNone),
+            "early-return-on-result" => Ok(Self::EarlyReturnOnResult),
+            "match-results" => Ok(Self::MatchResults),
+            "passing-error-states-through-components" => {
+                Ok(Self::PassingErrorStatesThroughComponents)
+            }
+            "throwing-errors" => Ok(Self::ThrowingErrors),
+            _ => Err(CookbookErrorHandlingSectionParseError),
+        }
+    }
+}
+impl std::fmt::Display for CookbookErrorHandlingSection {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Self::Empty => f.write_str(""),
+            Self::ErrorHandling => f.write_str("error-handling"),
+            Self::TheSimplestReturningNone => f.write_str("the-simplest--returning-none"),
+            Self::EarlyReturnOnResult => f.write_str("early-return-on-result"),
+            Self::MatchResults => f.write_str("match-results"),
+            Self::PassingErrorStatesThroughComponents => {
+                f.write_str("passing-error-states-through-components")
+            }
+            Self::ThrowingErrors => f.write_str("throwing-errors"),
+        }
+    }
+}
+#[derive(Debug)]
+pub struct CookbookErrorHandlingSectionParseError;
+impl std::fmt::Display for CookbookErrorHandlingSectionParseError {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.write_str(
+            "Invalid section name. Expected one of CookbookErrorHandlingSectionerror-handling, the-simplest--returning-none, early-return-on-result, match-results, passing-error-states-through-components, throwing-errors",
+        )?;
+        Ok(())
+    }
+}
+impl std::error::Error for CookbookErrorHandlingSectionParseError {}
 #[component(no_case_check)]
-pub fn CookbookErrorHandling() -> dioxus::prelude::Element {
+pub fn CookbookErrorHandling(section: CookbookErrorHandlingSection) -> dioxus::prelude::Element {
     use dioxus::prelude::*;
     rsx! {
         h1 { id: "error-handling",
-            a { href: "#error-handling", class: "header", "Error handling" }
+            Link {
+                to: BookRoute::CookbookErrorHandling {
+                    section: CookbookErrorHandlingSection::ErrorHandling,
+                },
+                class: "header",
+                "Error handling"
+            }
         }
         p {
             "A selling point of Rust for web development is the reliability of always knowing where errors can occur and being forced to handle them"
@@ -11300,7 +16781,11 @@ pub fn CookbookErrorHandling() -> dioxus::prelude::Element {
             "However, we haven't talked about error handling at all in this guide! In this chapter, we'll cover some strategies in handling errors to ensure your app never crashes."
         }
         h2 { id: "the-simplest--returning-none",
-            a { href: "#the-simplest--returning-none", class: "header",
+            Link {
+                to: BookRoute::CookbookErrorHandling {
+                    section: CookbookErrorHandlingSection::TheSimplestReturningNone,
+                },
+                class: "header",
                 "The simplest – returning None"
             }
         }
@@ -11336,7 +16821,13 @@ pub fn CookbookErrorHandling() -> dioxus::prelude::Element {
             name: "error_handling.rs".to_string(),
         }
         h2 { id: "early-return-on-result",
-            a { href: "#early-return-on-result", class: "header", "Early return on result" }
+            Link {
+                to: BookRoute::CookbookErrorHandling {
+                    section: CookbookErrorHandlingSection::EarlyReturnOnResult,
+                },
+                class: "header",
+                "Early return on result"
+            }
         }
         p {
             "Because Rust can't accept both Options and Results with the existing try infrastructure, you'll need to manually handle Results. This can be done by converting them into Options or by explicitly handling them. If you choose to convert your Result into an Option and bubble it with a  "
@@ -11353,7 +16844,13 @@ pub fn CookbookErrorHandling() -> dioxus::prelude::Element {
             " okay with early returns. Returning an error state early is a completely valid way of handling errors."
         }
         h2 { id: "match-results",
-            a { href: "#match-results", class: "header", "Match results" }
+            Link {
+                to: BookRoute::CookbookErrorHandling {
+                    section: CookbookErrorHandlingSection::MatchResults,
+                },
+                class: "header",
+                "Match results"
+            }
         }
         p {
             "The next \"best\" way of handling errors in Dioxus is to match on the error locally. This is the most robust way of handling errors, but it doesn't scale to architectures beyond a single component."
@@ -11371,8 +16868,10 @@ pub fn CookbookErrorHandling() -> dioxus::prelude::Element {
             name: "error_handling.rs".to_string(),
         }
         h2 { id: "passing-error-states-through-components",
-            a {
-                href: "#passing-error-states-through-components",
+            Link {
+                to: BookRoute::CookbookErrorHandling {
+                    section: CookbookErrorHandlingSection::PassingErrorStatesThroughComponents,
+                },
                 class: "header",
                 "Passing error states through components"
             }
@@ -11388,7 +16887,13 @@ pub fn CookbookErrorHandling() -> dioxus::prelude::Element {
             "Much like before, our child components can manually set the error during their own actions. The advantage to this pattern is that we can easily isolate error states to a few components at a time, making our app more predictable and robust."
         }
         h2 { id: "throwing-errors",
-            a { href: "#throwing-errors", class: "header", "Throwing errors" }
+            Link {
+                to: BookRoute::CookbookErrorHandling {
+                    section: CookbookErrorHandlingSection::ThrowingErrors,
+                },
+                class: "header",
+                "Throwing errors"
+            }
         }
         p {
             "Dioxus provides a much easier way to handle errors: throwing them. Throwing errors combines the best parts of an error state and early return: you can easily throw and error with  "
@@ -11426,8 +16931,42 @@ pub fn CookbookErrorHandling() -> dioxus::prelude::Element {
         }
     }
 }
+#[derive(
+    Clone, Copy, PartialEq, Eq, Hash, Debug, Default, serde::Serialize, serde::Deserialize,
+)]
+pub enum CookbookIntegrationsIndexSection {
+    #[default]
+    Empty,
+}
+impl std::str::FromStr for CookbookIntegrationsIndexSection {
+    type Err = CookbookIntegrationsIndexSectionParseError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "" => Ok(Self::Empty),
+            _ => Err(CookbookIntegrationsIndexSectionParseError),
+        }
+    }
+}
+impl std::fmt::Display for CookbookIntegrationsIndexSection {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Self::Empty => f.write_str(""),
+        }
+    }
+}
+#[derive(Debug)]
+pub struct CookbookIntegrationsIndexSectionParseError;
+impl std::fmt::Display for CookbookIntegrationsIndexSectionParseError {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.write_str("Invalid section name. Expected one of CookbookIntegrationsIndexSection")?;
+        Ok(())
+    }
+}
+impl std::error::Error for CookbookIntegrationsIndexSectionParseError {}
 #[component(no_case_check)]
-pub fn CookbookIntegrationsIndex() -> dioxus::prelude::Element {
+pub fn CookbookIntegrationsIndex(
+    section: CookbookIntegrationsIndexSection,
+) -> dioxus::prelude::Element {
     use dioxus::prelude::*;
     rsx! {
         p {
@@ -11435,26 +16974,102 @@ pub fn CookbookIntegrationsIndex() -> dioxus::prelude::Element {
         }
         ul {
             li {
-                a { href: "./logging", "Logging" }
+                Link {
+                    to: BookRoute::CookbookIntegrationsLogging {
+                        section: CookbookIntegrationsLoggingSection::Empty,
+                    },
+                    "Logging"
+                }
             }
             li {
-                a { href: "./internationalization", "Internationalization" }
+                Link {
+                    to: BookRoute::CookbookIntegrationsInternationalization {
+                        section: CookbookIntegrationsInternationalizationSection::Empty,
+                    },
+                    "Internationalization"
+                }
             }
         }
     }
 }
+#[derive(
+    Clone, Copy, PartialEq, Eq, Hash, Debug, Default, serde::Serialize, serde::Deserialize,
+)]
+pub enum CookbookIntegrationsLoggingSection {
+    #[default]
+    Empty,
+    Logging,
+    DioxusLogger,
+    TheTracingCrate,
+    PlatformIntricacies,
+    ViewingLogs,
+    FinalNotes,
+}
+impl std::str::FromStr for CookbookIntegrationsLoggingSection {
+    type Err = CookbookIntegrationsLoggingSectionParseError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "" => Ok(Self::Empty),
+            "logging" => Ok(Self::Logging),
+            "dioxus-logger" => Ok(Self::DioxusLogger),
+            "the-tracing-crate" => Ok(Self::TheTracingCrate),
+            "platform-intricacies" => Ok(Self::PlatformIntricacies),
+            "viewing-logs" => Ok(Self::ViewingLogs),
+            "final-notes" => Ok(Self::FinalNotes),
+            _ => Err(CookbookIntegrationsLoggingSectionParseError),
+        }
+    }
+}
+impl std::fmt::Display for CookbookIntegrationsLoggingSection {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Self::Empty => f.write_str(""),
+            Self::Logging => f.write_str("logging"),
+            Self::DioxusLogger => f.write_str("dioxus-logger"),
+            Self::TheTracingCrate => f.write_str("the-tracing-crate"),
+            Self::PlatformIntricacies => f.write_str("platform-intricacies"),
+            Self::ViewingLogs => f.write_str("viewing-logs"),
+            Self::FinalNotes => f.write_str("final-notes"),
+        }
+    }
+}
+#[derive(Debug)]
+pub struct CookbookIntegrationsLoggingSectionParseError;
+impl std::fmt::Display for CookbookIntegrationsLoggingSectionParseError {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.write_str(
+            "Invalid section name. Expected one of CookbookIntegrationsLoggingSectionlogging, dioxus-logger, the-tracing-crate, platform-intricacies, viewing-logs, final-notes",
+        )?;
+        Ok(())
+    }
+}
+impl std::error::Error for CookbookIntegrationsLoggingSectionParseError {}
 #[component(no_case_check)]
-pub fn CookbookIntegrationsLogging() -> dioxus::prelude::Element {
+pub fn CookbookIntegrationsLogging(
+    section: CookbookIntegrationsLoggingSection,
+) -> dioxus::prelude::Element {
     use dioxus::prelude::*;
     rsx! {
         h1 { id: "logging",
-            a { href: "#logging", class: "header", "Logging" }
+            Link {
+                to: BookRoute::CookbookIntegrationsLogging {
+                    section: CookbookIntegrationsLoggingSection::Logging,
+                },
+                class: "header",
+                "Logging"
+            }
         }
         p {
             "Dioxus has a wide range of supported platforms, each with their own logging requirements. We'll discuss the different options available for your projects."
         }
         h2 { id: "dioxus-logger",
-            a { href: "#dioxus-logger", class: "header", "Dioxus Logger" }
+            Link {
+                to: BookRoute::CookbookIntegrationsLogging {
+                    section: CookbookIntegrationsLoggingSection::DioxusLogger,
+                },
+                class: "header",
+                "Dioxus Logger"
+            }
         }
         p {
             "Dioxus provides a first-party logger as part of  "
@@ -11484,17 +17099,25 @@ pub fn CookbookIntegrationsLogging() -> dioxus::prelude::Element {
             contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f92672;\">use </span><span style=\"color:#f8f8f2;\">tracing::Level;\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">main</span><span style=\"color:#f8f8f2;\">() {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#8c8c8c;\">// Init logger\n</span><span style=\"color:#f8f8f2;\">    dioxus_logger::init(Level::</span><span style=\"color:#ff80f4;\">INFO</span><span style=\"color:#f8f8f2;\">).</span><span style=\"color:#66d9ef;\">expect</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#ffee99;\">&quot;failed to init logger&quot;</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#8c8c8c;\">// Dioxus launch code\n</span><span style=\"color:#f8f8f2;\">    dioxus::launch(|| rsx! {{}})\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
         }
         h2 { id: "the-tracing-crate",
-            a { href: "#the-tracing-crate", class: "header", "The Tracing Crate" }
+            Link {
+                to: BookRoute::CookbookIntegrationsLogging {
+                    section: CookbookIntegrationsLoggingSection::TheTracingCrate,
+                },
+                class: "header",
+                "The Tracing Crate"
+            }
         }
         p {
             "The "
-            a { href: "https://crates.io/crates/tracing", "Tracing" }
+            Link { to: "https://crates.io/crates/tracing", "Tracing" }
             " crate is the logging interface that the dioxus-logger uses. It is not required to use the Tracing crate, but you will not receive logs from the Dioxus library."
         }
         p {
             "The Tracing crate provides a variety of simple  "
             code { "println" }
             "-like macros with varying levels of severity."
+            " "
+            "The available macros are as follows with the highest severity on the bottom:"
         }
         CodeBlock {
             contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">main</span><span style=\"color:#f8f8f2;\">() {{\n</span><span style=\"color:#f8f8f2;\">    tracing::trace</span><span style=\"color:#f92672;\">!</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#ffee99;\">&quot;trace&quot;</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"color:#f8f8f2;\">    tracing::debug</span><span style=\"color:#f92672;\">!</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#ffee99;\">&quot;debug&quot;</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"color:#f8f8f2;\">    tracing::info</span><span style=\"color:#f92672;\">!</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#ffee99;\">&quot;info&quot;</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"color:#f8f8f2;\">    tracing::warn</span><span style=\"color:#f92672;\">!</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#ffee99;\">&quot;warn&quot;</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"color:#f8f8f2;\">    tracing::error</span><span style=\"color:#f92672;\">!</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#ffee99;\">&quot;error&quot;</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
@@ -11506,97 +17129,262 @@ pub fn CookbookIntegrationsLogging() -> dioxus::prelude::Element {
         }
         p {
             "For more information, visit the Tracing crate's "
-            a { href: "https://docs.rs/tracing/latest/tracing/", "docs" }
+            Link { to: "https://docs.rs/tracing/latest/tracing/", "docs" }
             "."
         }
         h2 { id: "platform-intricacies",
-            a { href: "#platform-intricacies", class: "header", "Platform Intricacies" }
+            Link {
+                to: BookRoute::CookbookIntegrationsLogging {
+                    section: CookbookIntegrationsLoggingSection::PlatformIntricacies,
+                },
+                class: "header",
+                "Platform Intricacies"
+            }
         }
         p {
             "On web, Dioxus Logger will use "
-            a { href: "https://crates.io/crates/tracing-wasm", "tracing-wasm" }
+            Link { to: "https://crates.io/crates/tracing-wasm", "tracing-wasm" }
             ". On Desktop and server-based targets, Dioxus Logger will use "
-            a { href: "https://crates.io/crates/tracing-subscriber", "tracing-subscriber" }
+            Link { to: "https://crates.io/crates/tracing-subscriber", "tracing-subscriber" }
             "'s "
             code { "FmtSubscriber" }
             "."
         }
         h2 { id: "viewing-logs",
-            a { href: "#viewing-logs", class: "header", "Viewing Logs" }
+            Link {
+                to: BookRoute::CookbookIntegrationsLogging {
+                    section: CookbookIntegrationsLoggingSection::ViewingLogs,
+                },
+                class: "header",
+                "Viewing Logs"
+            }
         }
         p { "Android logs are sent to logcat. To use logcat through the Android debugger, run:" }
         CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">adb </span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">d logcat</span></pre>\n" }
         p { "Your Android device will need developer options/usb debugging enabled." }
         p {
             "For more information, visit android_logger's "
-            a { href: "https://docs.rs/android_logger/latest/android_logger/", "docs" }
+            Link { to: "https://docs.rs/android_logger/latest/android_logger/", "docs" }
             "."
         }
         p { "iOS logs are sent to oslog." }
         p {
             "For more information, visit "
-            a { href: "https://crates.io/crates/oslog", "oslog" }
+            Link { to: "https://crates.io/crates/oslog", "oslog" }
             "."
         }
         h4 { id: "final-notes",
-            a { href: "#final-notes", class: "header", "Final Notes" }
+            Link {
+                to: BookRoute::CookbookIntegrationsLogging {
+                    section: CookbookIntegrationsLoggingSection::FinalNotes,
+                },
+                class: "header",
+                "Final Notes"
+            }
         }
         p {
             "Dioxus Logger is the preferred logger to use with Dioxus if it suites your needs. There are more features to come. If there are any feature suggestions or issues with Dioxus Logger, feel free to reach out on the "
-            a { href: "https://discord.gg/XgGxMSkvUM", "Dioxus Discord Server" }
+            Link { to: "https://discord.gg/XgGxMSkvUM", "Dioxus Discord Server" }
             "!"
         }
         p {
             "For more information, visit Dioxus Logger's "
-            a { href: "https://docs.rs/dioxus-logger/latest/dioxus_logger/", "docs" }
+            Link { to: "https://docs.rs/dioxus-logger/latest/dioxus_logger/", "docs" }
             "."
         }
     }
 }
+#[derive(
+    Clone, Copy, PartialEq, Eq, Hash, Debug, Default, serde::Serialize, serde::Deserialize,
+)]
+pub enum CookbookIntegrationsInternationalizationSection {
+    #[default]
+    Empty,
+    Internationalization,
+}
+impl std::str::FromStr for CookbookIntegrationsInternationalizationSection {
+    type Err = CookbookIntegrationsInternationalizationSectionParseError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "" => Ok(Self::Empty),
+            "internationalization" => Ok(Self::Internationalization),
+            _ => Err(CookbookIntegrationsInternationalizationSectionParseError),
+        }
+    }
+}
+impl std::fmt::Display for CookbookIntegrationsInternationalizationSection {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Self::Empty => f.write_str(""),
+            Self::Internationalization => f.write_str("internationalization"),
+        }
+    }
+}
+#[derive(Debug)]
+pub struct CookbookIntegrationsInternationalizationSectionParseError;
+impl std::fmt::Display for CookbookIntegrationsInternationalizationSectionParseError {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.write_str(
+            "Invalid section name. Expected one of CookbookIntegrationsInternationalizationSectioninternationalization",
+        )?;
+        Ok(())
+    }
+}
+impl std::error::Error for CookbookIntegrationsInternationalizationSectionParseError {}
 #[component(no_case_check)]
-pub fn CookbookIntegrationsInternationalization() -> dioxus::prelude::Element {
+pub fn CookbookIntegrationsInternationalization(
+    section: CookbookIntegrationsInternationalizationSection,
+) -> dioxus::prelude::Element {
     use dioxus::prelude::*;
     rsx! {
         h1 { id: "internationalization",
-            a { href: "#internationalization", class: "header", "Internationalization" }
+            Link {
+                to: BookRoute::CookbookIntegrationsInternationalization {
+                    section: CookbookIntegrationsInternationalizationSection::Internationalization,
+                },
+                class: "header",
+                "Internationalization"
+            }
         }
         p {
             "If your application supports multiple languages, the "
-            a { href: "https://github.com/dioxus-community/dioxus-i18n", "dioxus-i18n" }
+            Link { to: "https://github.com/dioxus-community/dioxus-i18n", "dioxus-i18n" }
             " crate contains helpers to make working with translations in your application easier."
         }
         p {
             "You can find an example "
-            a { href: "https://github.com/dioxus-community/dioxus-i18n/blob/main/examples/dioxus-desktop.rs",
+            Link { to: "https://github.com/dioxus-community/dioxus-i18n/blob/main/examples/dioxus-desktop.rs",
                 "here"
             }
             "."
         }
     }
 }
+#[derive(
+    Clone, Copy, PartialEq, Eq, Hash, Debug, Default, serde::Serialize, serde::Deserialize,
+)]
+pub enum CookbookStateIndexSection {
+    #[default]
+    Empty,
+    StateCookbook,
+}
+impl std::str::FromStr for CookbookStateIndexSection {
+    type Err = CookbookStateIndexSectionParseError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "" => Ok(Self::Empty),
+            "state-cookbook" => Ok(Self::StateCookbook),
+            _ => Err(CookbookStateIndexSectionParseError),
+        }
+    }
+}
+impl std::fmt::Display for CookbookStateIndexSection {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Self::Empty => f.write_str(""),
+            Self::StateCookbook => f.write_str("state-cookbook"),
+        }
+    }
+}
+#[derive(Debug)]
+pub struct CookbookStateIndexSectionParseError;
+impl std::fmt::Display for CookbookStateIndexSectionParseError {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.write_str(
+            "Invalid section name. Expected one of CookbookStateIndexSectionstate-cookbook",
+        )?;
+        Ok(())
+    }
+}
+impl std::error::Error for CookbookStateIndexSectionParseError {}
 #[component(no_case_check)]
-pub fn CookbookStateIndex() -> dioxus::prelude::Element {
+pub fn CookbookStateIndex(section: CookbookStateIndexSection) -> dioxus::prelude::Element {
     use dioxus::prelude::*;
     rsx! {
         h1 { id: "state-cookbook",
-            a { href: "#state-cookbook", class: "header", "State Cookbook" }
+            Link {
+                to: BookRoute::CookbookStateIndex {
+                    section: CookbookStateIndexSection::StateCookbook,
+                },
+                class: "header",
+                "State Cookbook"
+            }
         }
         ul {
             li {
-                a { href: "external", "External State" }
+                Link {
+                    to: BookRoute::CookbookStateExternalIndex {
+                        section: CookbookStateExternalIndexSection::Empty,
+                    },
+                    "External State"
+                }
             }
             li {
-                a { href: "custom_hooks", "Custom Hook" }
+                Link {
+                    to: BookRoute::CookbookStateCustomHooksIndex {
+                        section: CookbookStateCustomHooksIndexSection::Empty,
+                    },
+                    "Custom Hook"
+                }
             }
         }
     }
 }
+#[derive(
+    Clone, Copy, PartialEq, Eq, Hash, Debug, Default, serde::Serialize, serde::Deserialize,
+)]
+pub enum CookbookStateExternalIndexSection {
+    #[default]
+    Empty,
+    WorkingWithExternalState,
+    WorkingWithNonReactiveState,
+    MakingReactiveStateExternal,
+}
+impl std::str::FromStr for CookbookStateExternalIndexSection {
+    type Err = CookbookStateExternalIndexSectionParseError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "" => Ok(Self::Empty),
+            "working-with-external-state" => Ok(Self::WorkingWithExternalState),
+            "working-with-non-reactive-state" => Ok(Self::WorkingWithNonReactiveState),
+            "making-reactive-state-external" => Ok(Self::MakingReactiveStateExternal),
+            _ => Err(CookbookStateExternalIndexSectionParseError),
+        }
+    }
+}
+impl std::fmt::Display for CookbookStateExternalIndexSection {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Self::Empty => f.write_str(""),
+            Self::WorkingWithExternalState => f.write_str("working-with-external-state"),
+            Self::WorkingWithNonReactiveState => f.write_str("working-with-non-reactive-state"),
+            Self::MakingReactiveStateExternal => f.write_str("making-reactive-state-external"),
+        }
+    }
+}
+#[derive(Debug)]
+pub struct CookbookStateExternalIndexSectionParseError;
+impl std::fmt::Display for CookbookStateExternalIndexSectionParseError {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.write_str(
+            "Invalid section name. Expected one of CookbookStateExternalIndexSectionworking-with-external-state, working-with-non-reactive-state, making-reactive-state-external",
+        )?;
+        Ok(())
+    }
+}
+impl std::error::Error for CookbookStateExternalIndexSectionParseError {}
 #[component(no_case_check)]
-pub fn CookbookStateExternalIndex() -> dioxus::prelude::Element {
+pub fn CookbookStateExternalIndex(
+    section: CookbookStateExternalIndexSection,
+) -> dioxus::prelude::Element {
     use dioxus::prelude::*;
     rsx! {
         h1 { id: "working-with-external-state",
-            a { href: "#working-with-external-state", class: "header",
+            Link {
+                to: BookRoute::CookbookStateExternalIndex {
+                    section: CookbookStateExternalIndexSection::WorkingWithExternalState,
+                },
+                class: "header",
                 "Working with External State"
             }
         }
@@ -11604,12 +17392,21 @@ pub fn CookbookStateExternalIndex() -> dioxus::prelude::Element {
             "This guide will help you integrate your Dioxus application with some external state like a different thread or a websocket connection."
         }
         h2 { id: "working-with-non-reactive-state",
-            a { href: "#working-with-non-reactive-state", class: "header",
+            Link {
+                to: BookRoute::CookbookStateExternalIndex {
+                    section: CookbookStateExternalIndexSection::WorkingWithNonReactiveState,
+                },
+                class: "header",
                 "Working with non-reactive State"
             }
         }
         p {
-            a { href: "../../reference/use_coroutine", "Coroutines" }
+            Link {
+                to: BookRoute::ReferenceUseCoroutine {
+                    section: ReferenceUseCoroutineSection::Empty,
+                },
+                "Coroutines"
+            }
             " are great tool for dealing with non-reactive (state you don't render directly) state within your application."
         }
         p {
@@ -11620,7 +17417,11 @@ pub fn CookbookStateExternalIndex() -> dioxus::prelude::Element {
             name: "use_coroutine.rs".to_string(),
         }
         h2 { id: "making-reactive-state-external",
-            a { href: "#making-reactive-state-external", class: "header",
+            Link {
+                to: BookRoute::CookbookStateExternalIndex {
+                    section: CookbookStateExternalIndexSection::MakingReactiveStateExternal,
+                },
+                class: "header",
                 "Making Reactive State External"
             }
         }
@@ -11633,12 +17434,63 @@ pub fn CookbookStateExternalIndex() -> dioxus::prelude::Element {
         }
     }
 }
+#[derive(
+    Clone, Copy, PartialEq, Eq, Hash, Debug, Default, serde::Serialize, serde::Deserialize,
+)]
+pub enum CookbookStateCustomHooksIndexSection {
+    #[default]
+    Empty,
+    CustomHooks,
+    ComposingHooks,
+    CustomHookLogic,
+}
+impl std::str::FromStr for CookbookStateCustomHooksIndexSection {
+    type Err = CookbookStateCustomHooksIndexSectionParseError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "" => Ok(Self::Empty),
+            "custom-hooks" => Ok(Self::CustomHooks),
+            "composing-hooks" => Ok(Self::ComposingHooks),
+            "custom-hook-logic" => Ok(Self::CustomHookLogic),
+            _ => Err(CookbookStateCustomHooksIndexSectionParseError),
+        }
+    }
+}
+impl std::fmt::Display for CookbookStateCustomHooksIndexSection {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Self::Empty => f.write_str(""),
+            Self::CustomHooks => f.write_str("custom-hooks"),
+            Self::ComposingHooks => f.write_str("composing-hooks"),
+            Self::CustomHookLogic => f.write_str("custom-hook-logic"),
+        }
+    }
+}
+#[derive(Debug)]
+pub struct CookbookStateCustomHooksIndexSectionParseError;
+impl std::fmt::Display for CookbookStateCustomHooksIndexSectionParseError {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.write_str(
+            "Invalid section name. Expected one of CookbookStateCustomHooksIndexSectioncustom-hooks, composing-hooks, custom-hook-logic",
+        )?;
+        Ok(())
+    }
+}
+impl std::error::Error for CookbookStateCustomHooksIndexSectionParseError {}
 #[component(no_case_check)]
-pub fn CookbookStateCustomHooksIndex() -> dioxus::prelude::Element {
+pub fn CookbookStateCustomHooksIndex(
+    section: CookbookStateCustomHooksIndexSection,
+) -> dioxus::prelude::Element {
     use dioxus::prelude::*;
     rsx! {
         h1 { id: "custom-hooks",
-            a { href: "#custom-hooks", class: "header", "Custom Hooks" }
+            Link {
+                to: BookRoute::CookbookStateCustomHooksIndex {
+                    section: CookbookStateCustomHooksIndexSection::CustomHooks,
+                },
+                class: "header",
+                "Custom Hooks"
+            }
         }
         p {
             "Hooks are a great way to encapsulate business logic. If none of the existing hooks work for your problem, you can write your own."
@@ -11651,7 +17503,13 @@ pub fn CookbookStateCustomHooksIndex() -> dioxus::prelude::Element {
             " method to create a hook that will be called the first time the component is rendered."
         }
         h2 { id: "composing-hooks",
-            a { href: "#composing-hooks", class: "header", "Composing Hooks" }
+            Link {
+                to: BookRoute::CookbookStateCustomHooksIndex {
+                    section: CookbookStateCustomHooksIndexSection::ComposingHooks,
+                },
+                class: "header",
+                "Composing Hooks"
+            }
         }
         p {
             "To avoid repetition, you can encapsulate business logic based on existing hooks to create a new hook."
@@ -11673,11 +17531,17 @@ pub fn CookbookStateCustomHooksIndex() -> dioxus::prelude::Element {
             name: "hooks_composed.rs".to_string(),
         }
         h2 { id: "custom-hook-logic",
-            a { href: "#custom-hook-logic", class: "header", "Custom Hook Logic" }
+            Link {
+                to: BookRoute::CookbookStateCustomHooksIndex {
+                    section: CookbookStateCustomHooksIndexSection::CustomHookLogic,
+                },
+                class: "header",
+                "Custom Hook Logic"
+            }
         }
         p {
             "You can use "
-            a { href: "https://docs.rs/dioxus/latest/dioxus/prelude/fn.use_hook.html",
+            Link { to: "https://docs.rs/dioxus/latest/dioxus/prelude/fn.use_hook.html",
                 code { "use_hook" }
             }
             " to build your own hooks. In fact, this is what all the standard hooks are built on!"
@@ -11703,7 +17567,7 @@ pub fn CookbookStateCustomHooksIndex() -> dioxus::prelude::Element {
                 "The "
                 code { "use_signal" }
                 " hook tracks state in the hook value, and uses "
-                a { href: "https://docs.rs/dioxus/latest/dioxus/prelude/fn.schedule_update.html",
+                Link { to: "https://docs.rs/dioxus/latest/dioxus/prelude/fn.schedule_update.html",
                     code { "schedule_update" }
                 }
                 " to make Dioxus re-render the component whenever it changes."
@@ -11723,7 +17587,7 @@ pub fn CookbookStateCustomHooksIndex() -> dioxus::prelude::Element {
                 "The "
                 code { "use_context" }
                 " hook calls "
-                a { href: "https://docs.rs/dioxus/latest/dioxus/prelude/fn.consume_context.html",
+                Link { to: "https://docs.rs/dioxus/latest/dioxus/prelude/fn.consume_context.html",
                     code { "consume_context" }
                 }
                 " (which would be expensive to call on every render) to get some context from the component"
@@ -11742,12 +17606,55 @@ pub fn CookbookStateCustomHooksIndex() -> dioxus::prelude::Element {
         }
     }
 }
+#[derive(
+    Clone, Copy, PartialEq, Eq, Hash, Debug, Default, serde::Serialize, serde::Deserialize,
+)]
+pub enum CookbookBundlingSection {
+    #[default]
+    Empty,
+    BundlingConfig,
+}
+impl std::str::FromStr for CookbookBundlingSection {
+    type Err = CookbookBundlingSectionParseError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "" => Ok(Self::Empty),
+            "bundling-config" => Ok(Self::BundlingConfig),
+            _ => Err(CookbookBundlingSectionParseError),
+        }
+    }
+}
+impl std::fmt::Display for CookbookBundlingSection {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Self::Empty => f.write_str(""),
+            Self::BundlingConfig => f.write_str("bundling-config"),
+        }
+    }
+}
+#[derive(Debug)]
+pub struct CookbookBundlingSectionParseError;
+impl std::fmt::Display for CookbookBundlingSectionParseError {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.write_str(
+            "Invalid section name. Expected one of CookbookBundlingSectionbundling-config",
+        )?;
+        Ok(())
+    }
+}
+impl std::error::Error for CookbookBundlingSectionParseError {}
 #[component(no_case_check)]
-pub fn CookbookBundling() -> dioxus::prelude::Element {
+pub fn CookbookBundling(section: CookbookBundlingSection) -> dioxus::prelude::Element {
     use dioxus::prelude::*;
     rsx! {
         h3 { id: "bundling-config",
-            a { href: "#bundling-config", class: "header", "Bundling config" }
+            Link {
+                to: BookRoute::CookbookBundling {
+                    section: CookbookBundlingSection::BundlingConfig,
+                },
+                class: "header",
+                "Bundling config"
+            }
         }
         p {
             "The  "
@@ -11760,26 +17667,84 @@ pub fn CookbookBundling() -> dioxus::prelude::Element {
         }
     }
 }
+#[derive(
+    Clone, Copy, PartialEq, Eq, Hash, Debug, Default, serde::Serialize, serde::Deserialize,
+)]
+pub enum CookbookTestingSection {
+    #[default]
+    Empty,
+    Testing,
+    ComponentTesting,
+    HookTesting,
+    EndToEndTesting,
+}
+impl std::str::FromStr for CookbookTestingSection {
+    type Err = CookbookTestingSectionParseError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "" => Ok(Self::Empty),
+            "testing" => Ok(Self::Testing),
+            "component-testing" => Ok(Self::ComponentTesting),
+            "hook-testing" => Ok(Self::HookTesting),
+            "end-to-end-testing" => Ok(Self::EndToEndTesting),
+            _ => Err(CookbookTestingSectionParseError),
+        }
+    }
+}
+impl std::fmt::Display for CookbookTestingSection {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Self::Empty => f.write_str(""),
+            Self::Testing => f.write_str("testing"),
+            Self::ComponentTesting => f.write_str("component-testing"),
+            Self::HookTesting => f.write_str("hook-testing"),
+            Self::EndToEndTesting => f.write_str("end-to-end-testing"),
+        }
+    }
+}
+#[derive(Debug)]
+pub struct CookbookTestingSectionParseError;
+impl std::fmt::Display for CookbookTestingSectionParseError {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.write_str(
+            "Invalid section name. Expected one of CookbookTestingSectiontesting, component-testing, hook-testing, end-to-end-testing",
+        )?;
+        Ok(())
+    }
+}
+impl std::error::Error for CookbookTestingSectionParseError {}
 #[component(no_case_check)]
-pub fn CookbookTesting() -> dioxus::prelude::Element {
+pub fn CookbookTesting(section: CookbookTestingSection) -> dioxus::prelude::Element {
     use dioxus::prelude::*;
     rsx! {
         h1 { id: "testing",
-            a { href: "#testing", class: "header", "Testing" }
+            Link {
+                to: BookRoute::CookbookTesting {
+                    section: CookbookTestingSection::Testing,
+                },
+                class: "header",
+                "Testing"
+            }
         }
         p {
             "When building application or libraries with Dioxus, you may want to include some tests to check the behavior of parts of your application. This guide will teach you how to test different parts of your Dioxus application."
         }
         h2 { id: "component-testing",
-            a { href: "#component-testing", class: "header", "Component Testing" }
+            Link {
+                to: BookRoute::CookbookTesting {
+                    section: CookbookTestingSection::ComponentTesting,
+                },
+                class: "header",
+                "Component Testing"
+            }
         }
         p {
             "You can use a combination of "
-            a { href: "https://docs.rs/pretty_assertions/latest/pretty_assertions/",
+            Link { to: "https://docs.rs/pretty_assertions/latest/pretty_assertions/",
                 "pretty-assertions"
             }
             " and "
-            a { href: "http://crates.io/crates/dioxus-ssr", "dioxus-ssr" }
+            Link { to: "http://crates.io/crates/dioxus-ssr", "dioxus-ssr" }
             " to check that two snippets of rsx are equal:"
         }
         CodeBlock {
@@ -11787,11 +17752,22 @@ pub fn CookbookTesting() -> dioxus::prelude::Element {
             name: "component_test.rs".to_string(),
         }
         h2 { id: "hook-testing",
-            a { href: "#hook-testing", class: "header", "Hook Testing" }
+            Link {
+                to: BookRoute::CookbookTesting {
+                    section: CookbookTestingSection::HookTesting,
+                },
+                class: "header",
+                "Hook Testing"
+            }
         }
         p {
             "When creating libraries around Dioxus, it can be helpful to make tests for your "
-            a { href: "./state/custom_hooks", "custom hooks" }
+            Link {
+                to: BookRoute::CookbookStateCustomHooksIndex {
+                    section: CookbookStateCustomHooksIndexSection::Empty,
+                },
+                "custom hooks"
+            }
             "."
         }
         p {
@@ -11802,11 +17778,17 @@ pub fn CookbookTesting() -> dioxus::prelude::Element {
             name: "hook_test.rs".to_string(),
         }
         h2 { id: "end-to-end-testing",
-            a { href: "#end-to-end-testing", class: "header", "End to End Testing" }
+            Link {
+                to: BookRoute::CookbookTesting {
+                    section: CookbookTestingSection::EndToEndTesting,
+                },
+                class: "header",
+                "End to End Testing"
+            }
         }
         p {
             "You can use "
-            a { href: "https://playwright.dev/", "Playwright" }
+            Link { to: "https://playwright.dev/", "Playwright" }
             " to create end to end tests for your dioxus application."
         }
         p {
@@ -11819,40 +17801,104 @@ pub fn CookbookTesting() -> dioxus::prelude::Element {
         }
         ul {
             li {
-                a { href: "https://github.com/DioxusLabs/dioxus/tree/main/playwright-tests/web",
+                Link { to: "https://github.com/DioxusLabs/dioxus/tree/main/playwright-tests/web",
                     "Web example"
                 }
             }
             li {
-                a { href: "https://github.com/DioxusLabs/dioxus/tree/main/playwright-tests/liveview",
+                Link { to: "https://github.com/DioxusLabs/dioxus/tree/main/playwright-tests/liveview",
                     "Liveview example"
                 }
             }
             li {
-                a { href: "https://github.com/DioxusLabs/dioxus/tree/main/playwright-tests/fullstack",
+                Link { to: "https://github.com/DioxusLabs/dioxus/tree/main/playwright-tests/fullstack",
                     "Fullstack example"
                 }
             }
         }
     }
 }
+#[derive(
+    Clone, Copy, PartialEq, Eq, Hash, Debug, Default, serde::Serialize, serde::Deserialize,
+)]
+pub enum CookbookTailwindSection {
+    #[default]
+    Empty,
+    Tailwind,
+    Setup,
+    BonusSteps,
+    Development,
+    Web,
+    Desktop,
+}
+impl std::str::FromStr for CookbookTailwindSection {
+    type Err = CookbookTailwindSectionParseError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "" => Ok(Self::Empty),
+            "tailwind" => Ok(Self::Tailwind),
+            "setup" => Ok(Self::Setup),
+            "bonus-steps" => Ok(Self::BonusSteps),
+            "development" => Ok(Self::Development),
+            "web" => Ok(Self::Web),
+            "desktop" => Ok(Self::Desktop),
+            _ => Err(CookbookTailwindSectionParseError),
+        }
+    }
+}
+impl std::fmt::Display for CookbookTailwindSection {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Self::Empty => f.write_str(""),
+            Self::Tailwind => f.write_str("tailwind"),
+            Self::Setup => f.write_str("setup"),
+            Self::BonusSteps => f.write_str("bonus-steps"),
+            Self::Development => f.write_str("development"),
+            Self::Web => f.write_str("web"),
+            Self::Desktop => f.write_str("desktop"),
+        }
+    }
+}
+#[derive(Debug)]
+pub struct CookbookTailwindSectionParseError;
+impl std::fmt::Display for CookbookTailwindSectionParseError {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.write_str(
+            "Invalid section name. Expected one of CookbookTailwindSectiontailwind, setup, bonus-steps, development, web, desktop",
+        )?;
+        Ok(())
+    }
+}
+impl std::error::Error for CookbookTailwindSectionParseError {}
 #[component(no_case_check)]
-pub fn CookbookTailwind() -> dioxus::prelude::Element {
+pub fn CookbookTailwind(section: CookbookTailwindSection) -> dioxus::prelude::Element {
     use dioxus::prelude::*;
     rsx! {
         h1 { id: "tailwind",
-            a { href: "#tailwind", class: "header", "Tailwind" }
+            Link {
+                to: BookRoute::CookbookTailwind {
+                    section: CookbookTailwindSection::Tailwind,
+                },
+                class: "header",
+                "Tailwind"
+            }
         }
         p {
             "You can style your Dioxus application with whatever CSS framework you choose, or just write vanilla CSS."
         }
         p {
             "One popular option for styling your Dioxus application is "
-            a { href: "https://tailwindcss.com/", "Tailwind" }
+            Link { to: "https://tailwindcss.com/", "Tailwind" }
             ". Tailwind allows you to style your elements with CSS utility classes. This guide will show you how to setup tailwind CSS with your Dioxus application."
         }
         h2 { id: "setup",
-            a { href: "#setup", class: "header", "Setup" }
+            Link {
+                to: BookRoute::CookbookTailwind {
+                    section: CookbookTailwindSection::Setup,
+                },
+                class: "header",
+                "Setup"
+            }
         }
         ol {
             li { "Install the Dioxus CLI:" }
@@ -11861,13 +17907,13 @@ pub fn CookbookTailwind() -> dioxus::prelude::Element {
         ol {
             li {
                 "Install npm: "
-                a { href: "https://docs.npmjs.com/downloading-and-installing-node-js-and-npm",
+                Link { to: "https://docs.npmjs.com/downloading-and-installing-node-js-and-npm",
                     "https://docs.npmjs.com/downloading-and-installing-node-js-and-npm"
                 }
             }
             li {
                 "Install the tailwind css cli: "
-                a { href: "https://tailwindcss.com/docs/installation",
+                Link { to: "https://tailwindcss.com/docs/installation",
                     "https://tailwindcss.com/docs/installation"
                 }
             }
@@ -11909,7 +17955,13 @@ pub fn CookbookTailwind() -> dioxus::prelude::Element {
             name: "tailwind.rs".to_string(),
         }
         h3 { id: "bonus-steps",
-            a { href: "#bonus-steps", class: "header", "Bonus Steps" }
+            Link {
+                to: BookRoute::CookbookTailwind {
+                    section: CookbookTailwindSection::BonusSteps,
+                },
+                class: "header",
+                "Bonus Steps"
+            }
         }
         ol {
             li { "Install the tailwind css vs code extension" }
@@ -11919,7 +17971,13 @@ pub fn CookbookTailwind() -> dioxus::prelude::Element {
         }
         CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#ffee99;\">&quot;tailwindCSS.experimental.classRegex&quot;</span><span style=\"color:#f8f8f2;\">: [</span><span style=\"color:#ffee99;\">&quot;class: </span><span style=\"color:#ff80f4;\">\\&quot;</span><span style=\"color:#ffee99;\">(.*)</span><span style=\"color:#ff80f4;\">\\&quot;</span><span style=\"color:#ffee99;\">&quot;</span><span style=\"color:#f8f8f2;\">],\n</span><span style=\"color:#ffee99;\">&quot;tailwindCSS.includeLanguages&quot;</span><span style=\"color:#f8f8f2;\">: {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#ffee99;\">&quot;rust&quot;</span><span style=\"color:#f8f8f2;\">: </span><span style=\"color:#ffee99;\">&quot;html&quot;\n</span><span style=\"color:#f8f8f2;\">}},</span></pre>\n" }
         h2 { id: "development",
-            a { href: "#development", class: "header", "Development" }
+            Link {
+                to: BookRoute::CookbookTailwind {
+                    section: CookbookTailwindSection::Development,
+                },
+                class: "header",
+                "Development"
+            }
         }
         ul {
             li {
@@ -11928,7 +17986,13 @@ pub fn CookbookTailwind() -> dioxus::prelude::Element {
         }
         CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">npx tailwindcss </span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">i .</span><span style=\"color:#f92672;\">/</span><span style=\"color:#f8f8f2;\">input.css </span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">o .</span><span style=\"color:#f92672;\">/</span><span style=\"color:#f8f8f2;\">assets</span><span style=\"color:#f92672;\">/</span><span style=\"color:#f8f8f2;\">tailwind.css </span><span style=\"color:#f92672;\">--</span><span style=\"color:#f8f8f2;\">watch</span></pre>\n" }
         h3 { id: "web",
-            a { href: "#web", class: "header", "Web" }
+            Link {
+                to: BookRoute::CookbookTailwind {
+                    section: CookbookTailwindSection::Web,
+                },
+                class: "header",
+                "Web"
+            }
         }
         ul {
             li { "Run the following command in the root of the project to start the dioxus dev server:" }
@@ -11937,12 +18001,18 @@ pub fn CookbookTailwind() -> dioxus::prelude::Element {
         ul {
             li {
                 "Open the browser to "
-                a { href: "http://localhost:8080", "http://localhost:8080" }
+                Link { to: "http://localhost:8080", "http://localhost:8080" }
                 "."
             }
         }
         h3 { id: "desktop",
-            a { href: "#desktop", class: "header", "Desktop" }
+            Link {
+                to: BookRoute::CookbookTailwind {
+                    section: CookbookTailwindSection::Desktop,
+                },
+                class: "header",
+                "Desktop"
+            }
         }
         ul {
             li { "Launch the dioxus desktop app:" }
@@ -11950,12 +18020,79 @@ pub fn CookbookTailwind() -> dioxus::prelude::Element {
         CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">dx serve </span><span style=\"color:#f92672;\">--</span><span style=\"color:#f8f8f2;\">platform desktop</span></pre>\n" }
     }
 }
+#[derive(
+    Clone, Copy, PartialEq, Eq, Hash, Debug, Default, serde::Serialize, serde::Deserialize,
+)]
+pub enum CookbookOptimizingSection {
+    #[default]
+    Empty,
+    Optimizing,
+    BuildingInReleaseMode,
+    Upx,
+    BuildConfiguration,
+    Stable,
+    Unstable,
+    WasmOpt,
+    ImprovingDioxusCode,
+    OptimizingTheSizeOfAssets,
+}
+impl std::str::FromStr for CookbookOptimizingSection {
+    type Err = CookbookOptimizingSectionParseError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "" => Ok(Self::Empty),
+            "optimizing" => Ok(Self::Optimizing),
+            "building-in-release-mode" => Ok(Self::BuildingInReleaseMode),
+            "upx" => Ok(Self::Upx),
+            "build-configuration" => Ok(Self::BuildConfiguration),
+            "stable" => Ok(Self::Stable),
+            "unstable" => Ok(Self::Unstable),
+            "wasm-opt" => Ok(Self::WasmOpt),
+            "improving-dioxus-code" => Ok(Self::ImprovingDioxusCode),
+            "optimizing-the-size-of-assets" => Ok(Self::OptimizingTheSizeOfAssets),
+            _ => Err(CookbookOptimizingSectionParseError),
+        }
+    }
+}
+impl std::fmt::Display for CookbookOptimizingSection {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Self::Empty => f.write_str(""),
+            Self::Optimizing => f.write_str("optimizing"),
+            Self::BuildingInReleaseMode => f.write_str("building-in-release-mode"),
+            Self::Upx => f.write_str("upx"),
+            Self::BuildConfiguration => f.write_str("build-configuration"),
+            Self::Stable => f.write_str("stable"),
+            Self::Unstable => f.write_str("unstable"),
+            Self::WasmOpt => f.write_str("wasm-opt"),
+            Self::ImprovingDioxusCode => f.write_str("improving-dioxus-code"),
+            Self::OptimizingTheSizeOfAssets => f.write_str("optimizing-the-size-of-assets"),
+        }
+    }
+}
+#[derive(Debug)]
+pub struct CookbookOptimizingSectionParseError;
+impl std::fmt::Display for CookbookOptimizingSectionParseError {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.write_str(
+            "Invalid section name. Expected one of CookbookOptimizingSectionoptimizing, building-in-release-mode, upx, build-configuration, stable, unstable, wasm-opt, improving-dioxus-code, optimizing-the-size-of-assets",
+        )?;
+        Ok(())
+    }
+}
+impl std::error::Error for CookbookOptimizingSectionParseError {}
 #[component(no_case_check)]
-pub fn CookbookOptimizing() -> dioxus::prelude::Element {
+pub fn CookbookOptimizing(section: CookbookOptimizingSection) -> dioxus::prelude::Element {
     use dioxus::prelude::*;
     rsx! {
         h1 { id: "optimizing",
-            a { href: "#optimizing", class: "header", "Optimizing" }
+            Link {
+                to: BookRoute::CookbookOptimizing {
+                    section: CookbookOptimizingSection::Optimizing,
+                },
+                class: "header",
+                "Optimizing"
+            }
         }
         p {
             em {
@@ -11964,38 +18101,60 @@ pub fn CookbookOptimizing() -> dioxus::prelude::Element {
         }
         p {
             "You might have noticed that Dioxus binaries are pretty big."
-            a { href: "https://github.com/tigerros/dioxus-todo-app", "TodoMVC app" }
+            " "
+            "The WASM binary of a "
+            Link { to: "https://github.com/tigerros/dioxus-todo-app", "TodoMVC app" }
             " weighs in at 2.36mb!"
+            " "
+            "Don't worry; we can get it down to a much more manageable 234kb."
+            " "
+            "This will get obviously lower over time."
+            " "
+            "With nightly features, you can even reduce the binary size of a hello world app to less than 100kb!"
         }
         p { "We will also discuss ways to optimize your app for increased speed." }
         p {
             "However, certain optimizations will sacrifice speed for decreased binary size or the other way around."
+            " "
+            "That's what you need to figure out yourself. Does your app perform performance-intensive tasks, such as graphical processing or tons of DOM manipulations?"
+            " "
+            "You could go for increased speed. In most cases, though, decreased binary size is the better choice, especially because Dioxus WASM binaries are quite large."
         }
         p {
             "To test binary sizes, we will use "
-            a { href: "https://github.com/tigerros/dioxus-todo-app", "this" }
+            Link { to: "https://github.com/tigerros/dioxus-todo-app", "this" }
             " repository as a sample app."
+            " "
+            "The "
             code { "no-optimizations" }
             " package will serve as the base, which weighs 2.36mb as of right now."
         }
         p { "Additional resources:" }
         ul {
             li {
-                a { href: "https://rustwasm.github.io/docs/book/reference/code-size.html",
+                Link { to: "https://rustwasm.github.io/docs/book/reference/code-size.html",
                     "WASM book - Shrinking  "
                     code { ".wasm" }
                     " code size"
                 }
             }
             li {
-                a { href: "https://github.com/johnthagen/min-sized-rust", "min-sized-rust" }
+                Link { to: "https://github.com/johnthagen/min-sized-rust", "min-sized-rust" }
             }
         }
         h2 { id: "building-in-release-mode",
-            a { href: "#building-in-release-mode", class: "header", "Building in release mode" }
+            Link {
+                to: BookRoute::CookbookOptimizing {
+                    section: CookbookOptimizingSection::BuildingInReleaseMode,
+                },
+                class: "header",
+                "Building in release mode"
+            }
         }
         p {
             "This is the best way to optimize. In fact, the 2.36mb figure at the start of the guide is with release mode."
+            " "
+            "In debug mode, it's actually a whopping 32mb! It also increases the speed of your app."
         }
         p {
             "We can use the  "
@@ -12006,18 +18165,24 @@ pub fn CookbookOptimizing() -> dioxus::prelude::Element {
             code { "dx build --release" }
         }
         h2 { id: "upx",
-            a { href: "#upx", class: "header", "UPX" }
+            Link {
+                to: BookRoute::CookbookOptimizing {
+                    section: CookbookOptimizingSection::Upx,
+                },
+                class: "header",
+                "UPX"
+            }
         }
         p {
             "If you're not targeting web, you can use the "
-            a { href: "https://github.com/upx/upx", "UPX" }
+            Link { to: "https://github.com/upx/upx", "UPX" }
             " CLI tool to compress your executables."
         }
         p { "Setup:" }
         ul {
             li {
                 "Download a "
-                a { href: "https://github.com/upx/upx/releases", "release" }
+                Link { to: "https://github.com/upx/upx/releases", "release" }
                 " and extract the directory inside to a sensible location."
             }
             li { "Add the executable located in the directory to your path variable." }
@@ -12028,6 +18193,8 @@ pub fn CookbookOptimizing() -> dioxus::prelude::Element {
             " to get the CLI options, but you should also view  "
             code { "upx-doc.html" }
             " for more detailed information."
+            " "
+            "It's included in the extracted directory."
         }
         p {
             "An example command might be:  "
@@ -12035,7 +18202,13 @@ pub fn CookbookOptimizing() -> dioxus::prelude::Element {
             "."
         }
         h2 { id: "build-configuration",
-            a { href: "#build-configuration", class: "header", "Build configuration" }
+            Link {
+                to: BookRoute::CookbookOptimizing {
+                    section: CookbookOptimizingSection::BuildConfiguration,
+                },
+                class: "header",
+                "Build configuration"
+            }
         }
         p {
             em {
@@ -12050,12 +18223,22 @@ pub fn CookbookOptimizing() -> dioxus::prelude::Element {
             "Other than the  "
             code { "--release" }
             " flag, this is the easiest way to optimize your projects, and also the most effective way,"
+            " "
+            "at least in terms of reducing binary size."
         }
         h3 { id: "stable",
-            a { href: "#stable", class: "header", "Stable" }
+            Link {
+                to: BookRoute::CookbookOptimizing {
+                    section: CookbookOptimizingSection::Stable,
+                },
+                class: "header",
+                "Stable"
+            }
         }
         p {
             "This configuration is 100% stable and decreases the binary size from 2.36mb to 310kb."
+            " "
+            "Add this to your  "
             code { ".cargo/config.toml" }
             ":"
         }
@@ -12065,46 +18248,56 @@ pub fn CookbookOptimizing() -> dioxus::prelude::Element {
         p { "Links to the documentation of each value:" }
         ul {
             li {
-                a { href: "https://doc.rust-lang.org/rustc/codegen-options/index.html#opt-level",
+                Link { to: "https://doc.rust-lang.org/rustc/codegen-options/index.html#opt-level",
                     code { "opt-level" }
                 }
             }
             li {
-                a { href: "https://doc.rust-lang.org/rustc/codegen-options/index.html#debuginfo",
+                Link { to: "https://doc.rust-lang.org/rustc/codegen-options/index.html#debuginfo",
                     code { "debug" }
                 }
             }
             li {
-                a { href: "https://doc.rust-lang.org/rustc/codegen-options/index.html#lto",
+                Link { to: "https://doc.rust-lang.org/rustc/codegen-options/index.html#lto",
                     code { "lto" }
                 }
             }
             li {
-                a { href: "https://doc.rust-lang.org/rustc/codegen-options/index.html#codegen-units",
+                Link { to: "https://doc.rust-lang.org/rustc/codegen-options/index.html#codegen-units",
                     code { "codegen-units" }
                 }
             }
             li {
-                a { href: "https://doc.rust-lang.org/rustc/codegen-options/index.html#panic",
+                Link { to: "https://doc.rust-lang.org/rustc/codegen-options/index.html#panic",
                     code { "panic" }
                 }
             }
             li {
-                a { href: "https://doc.rust-lang.org/rustc/codegen-options/index.html#strip",
+                Link { to: "https://doc.rust-lang.org/rustc/codegen-options/index.html#strip",
                     code { "strip" }
                 }
             }
             li {
-                a { href: "https://doc.rust-lang.org/rustc/codegen-options/index.html#incremental",
+                Link { to: "https://doc.rust-lang.org/rustc/codegen-options/index.html#incremental",
                     code { "incremental" }
                 }
             }
         }
         h3 { id: "unstable",
-            a { href: "#unstable", class: "header", "Unstable" }
+            Link {
+                to: BookRoute::CookbookOptimizing {
+                    section: CookbookOptimizingSection::Unstable,
+                },
+                class: "header",
+                "Unstable"
+            }
         }
         p {
             "This configuration contains some unstable features, but it should work just fine."
+            " "
+            "It decreases the binary size from 310kb to 234kb."
+            " "
+            "Add this to your  "
             code { ".cargo/config.toml" }
             ":"
         }
@@ -12122,49 +18315,62 @@ pub fn CookbookOptimizing() -> dioxus::prelude::Element {
             "The values in  "
             code { "[profile.release]" }
             " are documented in the "
-            a { href: "#stable", "Stable" }
+            Link {
+                to: BookRoute::CookbookOptimizing {
+                    section: CookbookOptimizingSection::Stable,
+                },
+                "Stable"
+            }
             " section. Links to the documentation of each value:"
         }
         ul {
             li {
-                a { href: "https://doc.rust-lang.org/cargo/reference/config.html#buildrustflags",
+                Link { to: "https://doc.rust-lang.org/cargo/reference/config.html#buildrustflags",
                     code { "[build.rustflags]" }
                 }
             }
             li {
-                a { href: "https://doc.rust-lang.org/rustc/codegen-options/index.html#lto",
+                Link { to: "https://doc.rust-lang.org/rustc/codegen-options/index.html#lto",
                     code { "-C lto" }
                 }
             }
             li {
-                a { href: "https://doc.rust-lang.org/stable/unstable-book/compiler-flags/virtual-function-elimination.html",
+                Link { to: "https://doc.rust-lang.org/stable/unstable-book/compiler-flags/virtual-function-elimination.html",
                     code { "-Z virtual-function-elimination" }
                 }
             }
             li {
-                a { href: "https://doc.rust-lang.org/stable/unstable-book/compiler-flags/location-detail.html",
+                Link { to: "https://doc.rust-lang.org/stable/unstable-book/compiler-flags/location-detail.html",
                     code { "-Z location-detail" }
                 }
             }
         }
         h2 { id: "wasm-opt",
-            a { href: "#wasm-opt", class: "header", "wasm-opt" }
+            Link {
+                to: BookRoute::CookbookOptimizing {
+                    section: CookbookOptimizingSection::WasmOpt,
+                },
+                class: "header",
+                "wasm-opt"
+            }
         }
         p {
             em {
                 "Note: In the future, "
                 code { "wasm-opt" }
                 " will be supported natively through the "
-                a { href: "https://crates.io/crates/dioxus-cli", "Dioxus CLI" }
+                Link { to: "https://crates.io/crates/dioxus-cli", "Dioxus CLI" }
                 "."
             }
         }
         p {
             code { "wasm-opt" }
             " is a tool from the "
-            a { href: "https://github.com/WebAssembly/binaryen", "binaryen" }
+            Link { to: "https://github.com/WebAssembly/binaryen", "binaryen" }
             " library that optimizes your WASM files."
-            a { href: "https://github.com/WebAssembly/binaryen/releases", "binaryen release" }
+            " "
+            "To use it, install a "
+            Link { to: "https://github.com/WebAssembly/binaryen/releases", "binaryen release" }
             " and run this command from the package directory:"
         }
         CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">wasm</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">opt dist</span><span style=\"color:#f92672;\">/</span><span style=\"color:#f8f8f2;\">assets</span><span style=\"color:#f92672;\">/</span><span style=\"color:#f8f8f2;\">dioxus</span><span style=\"color:#f92672;\">/</span><span style=\"color:#f8f8f2;\">APP_NAME_bg.wasm </span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">o dist</span><span style=\"color:#f92672;\">/</span><span style=\"color:#f8f8f2;\">assets</span><span style=\"color:#f92672;\">/</span><span style=\"color:#f8f8f2;\">dioxus</span><span style=\"color:#f92672;\">/</span><span style=\"color:#f8f8f2;\">APP_NAME_bg.wasm </span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">Oz</span></pre>\n" }
@@ -12178,41 +18384,154 @@ pub fn CookbookOptimizing() -> dioxus::prelude::Element {
             "."
         }
         h2 { id: "improving-dioxus-code",
-            a { href: "#improving-dioxus-code", class: "header", "Improving Dioxus code" }
+            Link {
+                to: BookRoute::CookbookOptimizing {
+                    section: CookbookOptimizingSection::ImprovingDioxusCode,
+                },
+                class: "header",
+                "Improving Dioxus code"
+            }
         }
         p { "Let's talk about how you can improve your Dioxus code to be more performant." }
         p {
             "It's important to minimize the number of dynamic parts in your  "
             code { "rsx" }
             ", like conditional rendering."
-            a { href: "../reference/dynamic_rendering", "Dynamic Rendering" }
+            " "
+            "When Dioxus is rendering your component, it will skip parts that are the same as the last render."
+            " "
+            "That means that if you keep dynamic rendering to a minimum, your app will speed up, and quite a bit if it's not just hello world."
+            " "
+            "To see an example of this, check out "
+            Link {
+                to: BookRoute::ReferenceDynamicRendering {
+                    section: ReferenceDynamicRenderingSection::Empty,
+                },
+                "Dynamic Rendering"
+            }
             "."
         }
         p {
             "Also check out "
-            a { href: "antipatterns", "Anti-patterns" }
+            Link {
+                to: BookRoute::CookbookAntipatterns {
+                    section: CookbookAntipatternsSection::Empty,
+                },
+                "Anti-patterns"
+            }
             " for patterns that you should avoid."
+            " "
+            "Obviously, not all of them are just about performance, but some of them are."
         }
         h2 { id: "optimizing-the-size-of-assets",
-            a { href: "#optimizing-the-size-of-assets", class: "header",
+            Link {
+                to: BookRoute::CookbookOptimizing {
+                    section: CookbookOptimizingSection::OptimizingTheSizeOfAssets,
+                },
+                class: "header",
                 "Optimizing the size of assets"
             }
         }
         p {
             "Assets can be a significant part of your app's size. Dioxus includes alpha support for first party "
-            a { href: "../reference/assets", "assets" }
+            Link {
+                to: BookRoute::GuidesAssets {
+                    section: GuidesAssetsSection::Empty,
+                },
+                "assets"
+            }
             ". Any assets you include with the "
             code { "asset!" }
             " macro will be optimized for production in release builds."
         }
     }
 }
+#[derive(
+    Clone, Copy, PartialEq, Eq, Hash, Debug, Default, serde::Serialize, serde::Deserialize,
+)]
+pub enum MigrationIndexSection {
+    #[default]
+    Empty,
+    HowToUpgradeToDioxus06,
+    Element,
+    PreventDefault,
+    Assets,
+    Logging,
+    Launch,
+    Eval,
+    Fullstack,
+    Router,
+    Deriveprops,
+    StateManagement,
+    CoreChanges,
+    CustomRenderers,
+    MinorBreakingChanges,
+}
+impl std::str::FromStr for MigrationIndexSection {
+    type Err = MigrationIndexSectionParseError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "" => Ok(Self::Empty),
+            "how-to-upgrade-to-dioxus-06" => Ok(Self::HowToUpgradeToDioxus06),
+            "element" => Ok(Self::Element),
+            "prevent-default" => Ok(Self::PreventDefault),
+            "assets" => Ok(Self::Assets),
+            "logging" => Ok(Self::Logging),
+            "launch" => Ok(Self::Launch),
+            "eval" => Ok(Self::Eval),
+            "fullstack" => Ok(Self::Fullstack),
+            "router" => Ok(Self::Router),
+            "deriveprops" => Ok(Self::Deriveprops),
+            "state-management" => Ok(Self::StateManagement),
+            "core-changes" => Ok(Self::CoreChanges),
+            "custom-renderers" => Ok(Self::CustomRenderers),
+            "minor-breaking-changes" => Ok(Self::MinorBreakingChanges),
+            _ => Err(MigrationIndexSectionParseError),
+        }
+    }
+}
+impl std::fmt::Display for MigrationIndexSection {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Self::Empty => f.write_str(""),
+            Self::HowToUpgradeToDioxus06 => f.write_str("how-to-upgrade-to-dioxus-06"),
+            Self::Element => f.write_str("element"),
+            Self::PreventDefault => f.write_str("prevent-default"),
+            Self::Assets => f.write_str("assets"),
+            Self::Logging => f.write_str("logging"),
+            Self::Launch => f.write_str("launch"),
+            Self::Eval => f.write_str("eval"),
+            Self::Fullstack => f.write_str("fullstack"),
+            Self::Router => f.write_str("router"),
+            Self::Deriveprops => f.write_str("deriveprops"),
+            Self::StateManagement => f.write_str("state-management"),
+            Self::CoreChanges => f.write_str("core-changes"),
+            Self::CustomRenderers => f.write_str("custom-renderers"),
+            Self::MinorBreakingChanges => f.write_str("minor-breaking-changes"),
+        }
+    }
+}
+#[derive(Debug)]
+pub struct MigrationIndexSectionParseError;
+impl std::fmt::Display for MigrationIndexSectionParseError {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.write_str(
+            "Invalid section name. Expected one of MigrationIndexSectionhow-to-upgrade-to-dioxus-06, element, prevent-default, assets, logging, launch, eval, fullstack, router, deriveprops, state-management, core-changes, custom-renderers, minor-breaking-changes",
+        )?;
+        Ok(())
+    }
+}
+impl std::error::Error for MigrationIndexSectionParseError {}
 #[component(no_case_check)]
-pub fn MigrationIndex() -> dioxus::prelude::Element {
+pub fn MigrationIndex(section: MigrationIndexSection) -> dioxus::prelude::Element {
     use dioxus::prelude::*;
     rsx! {
         h1 { id: "how-to-upgrade-to-dioxus-06",
-            a { href: "#how-to-upgrade-to-dioxus-06", class: "header",
+            Link {
+                to: BookRoute::MigrationIndex {
+                    section: MigrationIndexSection::HowToUpgradeToDioxus06,
+                },
+                class: "header",
                 "How to Upgrade to Dioxus 0.6"
             }
         }
@@ -12268,7 +18587,13 @@ pub fn MigrationIndex() -> dioxus::prelude::Element {
             li { "Global state management" }
         }
         h2 { id: "element",
-            a { href: "#element", class: "header", "Element" }
+            Link {
+                to: BookRoute::MigrationIndex {
+                    section: MigrationIndexSection::Element,
+                },
+                class: "header",
+                "Element"
+            }
         }
         p {
             "The element type has changed from  "
@@ -12297,7 +18622,13 @@ pub fn MigrationIndex() -> dioxus::prelude::Element {
             name: "migration.rs".to_string(),
         }
         h2 { id: "prevent-default",
-            a { href: "#prevent-default", class: "header", "Prevent Default" }
+            Link {
+                to: BookRoute::MigrationIndex {
+                    section: MigrationIndexSection::PreventDefault,
+                },
+                class: "header",
+                "Prevent Default"
+            }
         }
         p {
             "Dioxus 0.1-0.5 used the  "
@@ -12337,7 +18668,13 @@ pub fn MigrationIndex() -> dioxus::prelude::Element {
             }
         }
         h2 { id: "assets",
-            a { href: "#assets", class: "header", "Assets" }
+            Link {
+                to: BookRoute::MigrationIndex {
+                    section: MigrationIndexSection::Assets,
+                },
+                class: "header",
+                "Assets"
+            }
         }
         p {
             "The syntax of the  "
@@ -12359,7 +18696,13 @@ pub fn MigrationIndex() -> dioxus::prelude::Element {
             name: "migration.rs".to_string(),
         }
         h2 { id: "logging",
-            a { href: "#logging", class: "header", "Logging" }
+            Link {
+                to: BookRoute::MigrationIndex {
+                    section: MigrationIndexSection::Logging,
+                },
+                class: "header",
+                "Logging"
+            }
         }
         p {
             "Dioxus 0.6 brings the  "
@@ -12395,7 +18738,13 @@ pub fn MigrationIndex() -> dioxus::prelude::Element {
         }
         CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f92672;\">use </span><span style=\"color:#f8f8f2;\">dioxus::prelude::</span><span style=\"color:#f92672;\">*</span><span style=\"color:#f8f8f2;\">;\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">main</span><span style=\"color:#f8f8f2;\">() {{\n</span><span style=\"color:#f8f8f2;\">    dioxus::logger::initialize_default();\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">    tracing::info</span><span style=\"color:#f92672;\">!</span><span style=\"color:#f8f8f2;\">(</span><span style=\"color:#ffee99;\">&quot;Logs received!&quot;</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">    dioxus::launch(app);\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n" }
         h2 { id: "launch",
-            a { href: "#launch", class: "header", "Launch" }
+            Link {
+                to: BookRoute::MigrationIndex {
+                    section: MigrationIndexSection::Launch,
+                },
+                class: "header",
+                "Launch"
+            }
         }
         p {
             "The  "
@@ -12407,13 +18756,19 @@ pub fn MigrationIndex() -> dioxus::prelude::Element {
         CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f92672;\">use </span><span style=\"color:#f8f8f2;\">dioxus::prelude::</span><span style=\"color:#f92672;\">*</span><span style=\"color:#f8f8f2;\">;\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"font-style:italic;color:#66d9ef;\">fn </span><span style=\"color:#a6e22e;\">main</span><span style=\"color:#f8f8f2;\">() {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#8c8c8c;\">// ❌ launch(app);\n</span><span style=\"color:#f8f8f2;\">    dioxus::launch(app); </span><span style=\"color:#8c8c8c;\">// ✅\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n" }
         p {
             "See "
-            a { href: "https://github.com/DioxusLabs/dioxus/pull/2967",
+            Link { to: "https://github.com/DioxusLabs/dioxus/pull/2967",
                 "https://github.com/DioxusLabs/dioxus/pull/2967"
             }
             " for more details."
         }
         h2 { id: "eval",
-            a { href: "#eval", class: "header", "Eval" }
+            Link {
+                to: BookRoute::MigrationIndex {
+                    section: MigrationIndexSection::Eval,
+                },
+                class: "header",
+                "Eval"
+            }
         }
         ul {
             li {
@@ -12445,7 +18800,7 @@ pub fn MigrationIndex() -> dioxus::prelude::Element {
                 " context to the application to make "
                 code { "eval" }
                 " and head elements work correctly. See "
-                a { href: "https://github.com/DioxusLabs/dioxus/pull/2635",
+                Link { to: "https://github.com/DioxusLabs/dioxus/pull/2635",
                     "https://github.com/DioxusLabs/dioxus/pull/2635"
                 }
                 " for more details."
@@ -12463,14 +18818,20 @@ pub fn MigrationIndex() -> dioxus::prelude::Element {
                 " now accepts any value that implements "
                 code { "Serialize" }
                 ". See "
-                a { href: "https://github.com/DioxusLabs/dioxus/pull/3035",
+                Link { to: "https://github.com/DioxusLabs/dioxus/pull/3035",
                     "https://github.com/DioxusLabs/dioxus/pull/3035"
                 }
                 " for more details"
             }
         }
         h2 { id: "fullstack",
-            a { href: "#fullstack", class: "header", "Fullstack" }
+            Link {
+                to: BookRoute::MigrationIndex {
+                    section: MigrationIndexSection::Fullstack,
+                },
+                class: "header",
+                "Fullstack"
+            }
         }
         ul {
             li {
@@ -12485,7 +18846,7 @@ pub fn MigrationIndex() -> dioxus::prelude::Element {
         }
         p {
             "See "
-            a { href: "https://github.com/DioxusLabs/dioxus/pull/3186",
+            Link { to: "https://github.com/DioxusLabs/dioxus/pull/3186",
                 "https://github.com/DioxusLabs/dioxus/pull/3186"
             }
             " for more details"
@@ -12504,7 +18865,7 @@ pub fn MigrationIndex() -> dioxus::prelude::Element {
         }
         p {
             "See "
-            a { href: "https://github.com/DioxusLabs/dioxus/pull/2967",
+            Link { to: "https://github.com/DioxusLabs/dioxus/pull/2967",
                 "https://github.com/DioxusLabs/dioxus/pull/2967"
             }
             " for more details."
@@ -12525,7 +18886,7 @@ pub fn MigrationIndex() -> dioxus::prelude::Element {
         }
         p {
             "See "
-            a { href: "https://github.com/DioxusLabs/dioxus/pull/2258",
+            Link { to: "https://github.com/DioxusLabs/dioxus/pull/2258",
                 "https://github.com/DioxusLabs/dioxus/pull/2258"
             }
             " for more details."
@@ -12534,7 +18895,7 @@ pub fn MigrationIndex() -> dioxus::prelude::Element {
             li {
                 code { "serve_dioxus_application" }
                 " was changed to accept a component directly instead of a virtual dom factory. See "
-                a { href: "https://github.com/DioxusLabs/dioxus/pull/2515",
+                Link { to: "https://github.com/DioxusLabs/dioxus/pull/2515",
                     "https://github.com/DioxusLabs/dioxus/pull/2515"
                 }
                 " for more details."
@@ -12544,7 +18905,7 @@ pub fn MigrationIndex() -> dioxus::prelude::Element {
                 " was renamed to "
                 code { "register_server_functions" }
                 ". See "
-                a { href: "https://github.com/DioxusLabs/dioxus/pull/2515",
+                Link { to: "https://github.com/DioxusLabs/dioxus/pull/2515",
                     "https://github.com/DioxusLabs/dioxus/pull/2515"
                 }
                 " for more details."
@@ -12554,7 +18915,7 @@ pub fn MigrationIndex() -> dioxus::prelude::Element {
                 " accepts a new "
                 code { "ServeConfig" }
                 " argument. See "
-                a { href: "https://github.com/DioxusLabs/dioxus/pull/2862",
+                Link { to: "https://github.com/DioxusLabs/dioxus/pull/2862",
                     "https://github.com/DioxusLabs/dioxus/pull/2862"
                 }
                 " for more details."
@@ -12566,7 +18927,7 @@ pub fn MigrationIndex() -> dioxus::prelude::Element {
                 " file is found. This error is fine to ignore in desktop builds. You can pass the builder directly to "
                 code { "serve_dioxus_application" }
                 " to only serve the index.html file if it exists. See "
-                a { href: "https://github.com/DioxusLabs/dioxus/pull/2862",
+                Link { to: "https://github.com/DioxusLabs/dioxus/pull/2862",
                     "https://github.com/DioxusLabs/dioxus/pull/2862"
                 }
                 " for more details."
@@ -12583,7 +18944,13 @@ pub fn MigrationIndex() -> dioxus::prelude::Element {
             }
         }
         h2 { id: "router",
-            a { href: "#router", class: "header", "Router" }
+            Link {
+                to: BookRoute::MigrationIndex {
+                    section: MigrationIndexSection::Router,
+                },
+                class: "header",
+                "Router"
+            }
         }
         ul {
             li {
@@ -12592,7 +18959,7 @@ pub fn MigrationIndex() -> dioxus::prelude::Element {
                 " derive macro no longer accepts fields that are not present in the "
                 code { "route(\"/route\")" }
                 " if the web feature is enabled. See "
-                a { href: "https://github.com/DioxusLabs/dioxus/pull/2159",
+                Link { to: "https://github.com/DioxusLabs/dioxus/pull/2159",
                     "https://github.com/DioxusLabs/dioxus/pull/2159"
                 }
                 " for more details."
@@ -12609,14 +18976,20 @@ pub fn MigrationIndex() -> dioxus::prelude::Element {
                 " directly instead of "
                 code { "&T" }
                 ". See "
-                a { href: "https://github.com/DioxusLabs/dioxus/pull/2283",
+                Link { to: "https://github.com/DioxusLabs/dioxus/pull/2283",
                     "https://github.com/DioxusLabs/dioxus/pull/2283"
                 }
                 " for more details."
             }
         }
         h2 { id: "deriveprops",
-            a { href: "#deriveprops", class: "header", "derive(Props)" }
+            Link {
+                to: BookRoute::MigrationIndex {
+                    section: MigrationIndexSection::Deriveprops,
+                },
+                class: "header",
+                "derive(Props)"
+            }
         }
         ul {
             li {
@@ -12626,21 +18999,27 @@ pub fn MigrationIndex() -> dioxus::prelude::Element {
                 " which is implemented for many of the same types, but if you implement "
                 code { "Into<String>" }
                 " for a specific type, your code may require some changes. See "
-                a { href: "https://github.com/DioxusLabs/dioxus/pull/2501",
+                Link { to: "https://github.com/DioxusLabs/dioxus/pull/2501",
                     "https://github.com/DioxusLabs/dioxus/pull/2501"
                 }
                 " for more details"
             }
             li {
                 "Properties that start with an uppercase letter are no longer accepted. This allows us to autocomplete Components. See "
-                a { href: "https://github.com/DioxusLabs/dioxus/pull/2652",
+                Link { to: "https://github.com/DioxusLabs/dioxus/pull/2652",
                     "https://github.com/DioxusLabs/dioxus/pull/2652"
                 }
                 " for more details."
             }
         }
         h2 { id: "state-management",
-            a { href: "#state-management", class: "header", "State Management" }
+            Link {
+                to: BookRoute::MigrationIndex {
+                    section: MigrationIndexSection::StateManagement,
+                },
+                class: "header",
+                "State Management"
+            }
         }
         ul {
             li {
@@ -12650,7 +19029,7 @@ pub fn MigrationIndex() -> dioxus::prelude::Element {
                 " instead of "
                 code { "impl FnOnce" }
                 ". This was required to support restarting the coroutine without rerunning the component. See "
-                a { href: "https://github.com/DioxusLabs/dioxus/pull/3005",
+                Link { to: "https://github.com/DioxusLabs/dioxus/pull/3005",
                     "https://github.com/DioxusLabs/dioxus/pull/3005"
                 }
                 " for more details."
@@ -12662,7 +19041,7 @@ pub fn MigrationIndex() -> dioxus::prelude::Element {
                 " just like "
                 code { "use_memo" }
                 ". See "
-                a { href: "https://github.com/DioxusLabs/dioxus/pull/2851",
+                Link { to: "https://github.com/DioxusLabs/dioxus/pull/2851",
                     "https://github.com/DioxusLabs/dioxus/pull/2851"
                 }
                 " for more details."
@@ -12686,7 +19065,7 @@ pub fn MigrationIndex() -> dioxus::prelude::Element {
                 " or "
                 code { "memo" }
                 ". See "
-                a { href: "https://github.com/DioxusLabs/dioxus/pull/2851",
+                Link { to: "https://github.com/DioxusLabs/dioxus/pull/2851",
                     "https://github.com/DioxusLabs/dioxus/pull/2851"
                 }
                 " for more details."
@@ -12699,7 +19078,7 @@ pub fn MigrationIndex() -> dioxus::prelude::Element {
                 " method instead of "
                 code { "peek_unchecked" }
                 ". See "
-                a { href: "https://github.com/DioxusLabs/dioxus/pull/2714",
+                Link { to: "https://github.com/DioxusLabs/dioxus/pull/2714",
                     "https://github.com/DioxusLabs/dioxus/pull/2714"
                 }
                 " for more details."
@@ -12710,21 +19089,27 @@ pub fn MigrationIndex() -> dioxus::prelude::Element {
                 " feature flag was removed from the "
                 code { "generational-box" }
                 " crate. See "
-                a { href: "https://github.com/DioxusLabs/dioxus/pull/2638",
+                Link { to: "https://github.com/DioxusLabs/dioxus/pull/2638",
                     "https://github.com/DioxusLabs/dioxus/pull/2638"
                 }
                 " for more details."
             }
         }
         h2 { id: "core-changes",
-            a { href: "#core-changes", class: "header", "Core changes" }
+            Link {
+                to: BookRoute::MigrationIndex {
+                    section: MigrationIndexSection::CoreChanges,
+                },
+                class: "header",
+                "Core changes"
+            }
         }
         ul {
             li {
                 "The "
                 code { "Template::name" }
                 " field was removed. See "
-                a { href: "https://github.com/DioxusLabs/dioxus/pull/2799",
+                Link { to: "https://github.com/DioxusLabs/dioxus/pull/2799",
                     "https://github.com/DioxusLabs/dioxus/pull/2799"
                 }
                 " for more details."
@@ -12738,7 +19123,7 @@ pub fn MigrationIndex() -> dioxus::prelude::Element {
                 " and "
                 code { "component_name" }
                 ". This change fixes the name of re-exported components. Fixes "
-                a { href: "https://github.com/DioxusLabs/dioxus/pull/2744",
+                Link { to: "https://github.com/DioxusLabs/dioxus/pull/2744",
                     "https://github.com/DioxusLabs/dioxus/pull/2744"
                 }
             }
@@ -12750,7 +19135,7 @@ pub fn MigrationIndex() -> dioxus::prelude::Element {
                 " instead of "
                 code { "Cell<Template>" }
                 ". See "
-                a { href: "https://github.com/DioxusLabs/dioxus/pull/2705",
+                Link { to: "https://github.com/DioxusLabs/dioxus/pull/2705",
                     "https://github.com/DioxusLabs/dioxus/pull/2705"
                 }
                 " for more details"
@@ -12760,7 +19145,7 @@ pub fn MigrationIndex() -> dioxus::prelude::Element {
                 " was renamed to "
                 code { "Mutations::sanitize" }
                 ". See "
-                a { href: "https://github.com/DioxusLabs/dioxus/pull/2653",
+                Link { to: "https://github.com/DioxusLabs/dioxus/pull/2653",
                     "https://github.com/DioxusLabs/dioxus/pull/2653"
                 }
                 " for more details."
@@ -12777,14 +19162,20 @@ pub fn MigrationIndex() -> dioxus::prelude::Element {
                 " "
                 code { "Clone" }
                 ". See "
-                a { href: "https://github.com/DioxusLabs/dioxus/pull/2705",
+                Link { to: "https://github.com/DioxusLabs/dioxus/pull/2705",
                     "https://github.com/DioxusLabs/dioxus/pull/2705"
                 }
                 " for more details"
             }
         }
         h2 { id: "custom-renderers",
-            a { href: "#custom-renderers", class: "header", "Custom Renderers" }
+            Link {
+                to: BookRoute::MigrationIndex {
+                    section: MigrationIndexSection::CustomRenderers,
+                },
+                class: "header",
+                "Custom Renderers"
+            }
         }
         p {
             "If you are building a custom renderer, there were some breaking changes to hot reloading and rsx that you should be aware of:"
@@ -12796,9 +19187,16 @@ pub fn MigrationIndex() -> dioxus::prelude::Element {
                 " to "
                 code { "dioxus_devtools" }
                 ". Renderers can connect to the hot reloading engine with the "
-                a { href: "https://docs.rs/dioxus", "https://docs.rs/dioxus" }
+                "["
+                " "
+                "connect"
+                " "
+                "]"
+                " "
+                "("
+                Link { to: "https://docs.rs/dioxus", "https://docs.rs/dioxus" }
                 "-devtools/0.6.0/dioxus_devtools/fn.connect.html) function. See "
-                a { href: "https://github.com/DioxusLabs/dioxus/pull/2258",
+                Link { to: "https://github.com/DioxusLabs/dioxus/pull/2258",
                     "https://github.com/DioxusLabs/dioxus/pull/2258"
                 }
                 " for more details."
@@ -12813,7 +19211,7 @@ pub fn MigrationIndex() -> dioxus::prelude::Element {
                 " module with a "
                 code { "CompleteWithBraces" }
                 " enum that re-exports each element the namespace supports for braces autocomplete. See "
-                a { href: "https://github.com/DioxusLabs/dioxus/pull/2421",
+                Link { to: "https://github.com/DioxusLabs/dioxus/pull/2421",
                     "https://github.com/DioxusLabs/dioxus/pull/2421"
                 }
                 " for more details."
@@ -12822,7 +19220,7 @@ pub fn MigrationIndex() -> dioxus::prelude::Element {
                 "The format for custom event handlers changed include "
                 code { "eventname::call_with_explicit_closure" }
                 " to provide better type inference for inline closures. See "
-                a { href: "https://github.com/DioxusLabs/dioxus/pull/2437",
+                Link { to: "https://github.com/DioxusLabs/dioxus/pull/2437",
                     "https://github.com/DioxusLabs/dioxus/pull/2437"
                 }
                 " for more details"
@@ -12836,7 +19234,7 @@ pub fn MigrationIndex() -> dioxus::prelude::Element {
                 " method was added to the "
                 code { "FileEngine" }
                 " trait. Any custom renderers must implement this method. See "
-                a { href: "https://github.com/DioxusLabs/dioxus/pull/2323/files",
+                Link { to: "https://github.com/DioxusLabs/dioxus/pull/2323/files",
                     "https://github.com/DioxusLabs/dioxus/pull/2323/files"
                 }
                 " for more details."
@@ -12846,7 +19244,7 @@ pub fn MigrationIndex() -> dioxus::prelude::Element {
                 " has a new "
                 code { "convert_resize_data" }
                 " method which must be implemented by any custom renderers that use dioxus-html. See "
-                a { href: "https://github.com/DioxusLabs/dioxus/pull/2479",
+                Link { to: "https://github.com/DioxusLabs/dioxus/pull/2479",
                     "https://github.com/DioxusLabs/dioxus/pull/2479"
                 }
                 " for more details"
@@ -12855,7 +19253,7 @@ pub fn MigrationIndex() -> dioxus::prelude::Element {
                 "The web and native features were removed from the "
                 code { "dioxus-html" }
                 " crate. See "
-                a { href: "https://github.com/DioxusLabs/dioxus/pull/3006",
+                Link { to: "https://github.com/DioxusLabs/dioxus/pull/3006",
                     "https://github.com/DioxusLabs/dioxus/pull/3006"
                 }
                 " for more details."
@@ -12865,20 +19263,26 @@ pub fn MigrationIndex() -> dioxus::prelude::Element {
                 " was renamed to "
                 code { "dioxus_html::AttributeDescription" }
                 ". See "
-                a { href: "https://github.com/DioxusLabs/dioxus/pull/2653",
+                Link { to: "https://github.com/DioxusLabs/dioxus/pull/2653",
                     "https://github.com/DioxusLabs/dioxus/pull/2653"
                 }
                 " for more details."
             }
         }
         h2 { id: "minor-breaking-changes",
-            a { href: "#minor-breaking-changes", class: "header", "Minor Breaking Changes" }
+            Link {
+                to: BookRoute::MigrationIndex {
+                    section: MigrationIndexSection::MinorBreakingChanges,
+                },
+                class: "header",
+                "Minor Breaking Changes"
+            }
         }
         p { "There were several more minor breaking changes in Dioxus 0.6:" }
         ul {
             li {
                 "Many implicit features from dioxus crates were removed. These features were automatically generated by cargo and generally not functional. See "
-                a { href: "https://github.com/DioxusLabs/dioxus/pull/2512",
+                Link { to: "https://github.com/DioxusLabs/dioxus/pull/2512",
                     "https://github.com/DioxusLabs/dioxus/pull/2512"
                 }
                 " for more details."
@@ -12890,7 +19294,7 @@ pub fn MigrationIndex() -> dioxus::prelude::Element {
                 " instead of "
                 code { "CallBody" }
                 ". See "
-                a { href: "https://github.com/DioxusLabs/dioxus/pull/2573",
+                Link { to: "https://github.com/DioxusLabs/dioxus/pull/2573",
                     "https://github.com/DioxusLabs/dioxus/pull/2573"
                 }
                 " for more details."
@@ -12903,7 +19307,7 @@ pub fn MigrationIndex() -> dioxus::prelude::Element {
                 " crate to the "
                 code { "dioxus-logger" }
                 " crate. The handler is still provided by default. See "
-                a { href: "https://github.com/DioxusLabs/dioxus/pull/3302",
+                Link { to: "https://github.com/DioxusLabs/dioxus/pull/3302",
                     "https://github.com/DioxusLabs/dioxus/pull/3302"
                 }
                 " for more details."
@@ -12911,62 +19315,210 @@ pub fn MigrationIndex() -> dioxus::prelude::Element {
         }
     }
 }
+#[derive(
+    Clone, Copy, PartialEq, Eq, Hash, Debug, Default, serde::Serialize, serde::Deserialize,
+)]
+pub enum ReferenceIndexSection {
+    #[default]
+    Empty,
+    Reference,
+}
+impl std::str::FromStr for ReferenceIndexSection {
+    type Err = ReferenceIndexSectionParseError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "" => Ok(Self::Empty),
+            "reference" => Ok(Self::Reference),
+            _ => Err(ReferenceIndexSectionParseError),
+        }
+    }
+}
+impl std::fmt::Display for ReferenceIndexSection {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Self::Empty => f.write_str(""),
+            Self::Reference => f.write_str("reference"),
+        }
+    }
+}
+#[derive(Debug)]
+pub struct ReferenceIndexSectionParseError;
+impl std::fmt::Display for ReferenceIndexSectionParseError {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.write_str("Invalid section name. Expected one of ReferenceIndexSectionreference")?;
+        Ok(())
+    }
+}
+impl std::error::Error for ReferenceIndexSectionParseError {}
 #[component(no_case_check)]
-pub fn ReferenceIndex() -> dioxus::prelude::Element {
+pub fn ReferenceIndex(section: ReferenceIndexSection) -> dioxus::prelude::Element {
     use dioxus::prelude::*;
     rsx! {
         h1 { id: "reference",
-            a { href: "#reference", class: "header", "Reference" }
+            Link {
+                to: BookRoute::ReferenceIndex {
+                    section: ReferenceIndexSection::Reference,
+                },
+                class: "header",
+                "Reference"
+            }
         }
         p {
             "This portion of the Dioxus Docs contains specific details about features that provide more depth than what is necessary for most reading."
         }
         ul {
             li {
-                a { href: "./rsx", "RSX" }
+                Link {
+                    to: BookRoute::ReferenceRsx {
+                        section: ReferenceRsxSection::Empty,
+                    },
+                    "RSX"
+                }
             }
             li {
-                a { href: "./components", "Components" }
+                Link {
+                    to: BookRoute::ReferenceComponents {
+                        section: ReferenceComponentsSection::Empty,
+                    },
+                    "Components"
+                }
             }
             li {
-                a { href: "./component_props", "Props" }
+                Link {
+                    to: BookRoute::ReferenceComponentProps {
+                        section: ReferenceComponentPropsSection::Empty,
+                    },
+                    "Props"
+                }
             }
             li {
-                a { href: "./event_handlers", "Event Handlers" }
+                Link {
+                    to: BookRoute::ReferenceEventHandlers {
+                        section: ReferenceEventHandlersSection::Empty,
+                    },
+                    "Event Handlers"
+                }
             }
             li {
-                a { href: "./hooks", "Hooks" }
+                Link {
+                    to: BookRoute::ReferenceHooks {
+                        section: ReferenceHooksSection::Empty,
+                    },
+                    "Hooks"
+                }
             }
             li {
-                a { href: "./user_input", "User Input" }
+                Link {
+                    to: BookRoute::ReferenceUserInput {
+                        section: ReferenceUserInputSection::Empty,
+                    },
+                    "User Input"
+                }
             }
             li {
-                a { href: "./context", "Context" }
+                Link {
+                    to: BookRoute::ReferenceContext {
+                        section: ReferenceContextSection::Empty,
+                    },
+                    "Context"
+                }
             }
             li {
-                a { href: "./dynamic_rendering", "Dynamic Rendering" }
+                Link {
+                    to: BookRoute::ReferenceDynamicRendering {
+                        section: ReferenceDynamicRenderingSection::Empty,
+                    },
+                    "Dynamic Rendering"
+                }
             }
             li {
-                a { href: "./router", "Routing" }
+                Link {
+                    to: BookRoute::ReferenceRouter {
+                        section: ReferenceRouterSection::Empty,
+                    },
+                    "Routing"
+                }
             }
             li {
-                a { href: "./use_resource", "Resource" }
+                Link {
+                    to: BookRoute::ReferenceUseResource {
+                        section: ReferenceUseResourceSection::Empty,
+                    },
+                    "Resource"
+                }
             }
             li {
-                a { href: "./use_coroutine", "UseCoroutine" }
+                Link {
+                    to: BookRoute::ReferenceUseCoroutine {
+                        section: ReferenceUseCoroutineSection::Empty,
+                    },
+                    "UseCoroutine"
+                }
             }
             li {
-                a { href: "./spawn", "Spawn" }
+                Link {
+                    to: BookRoute::ReferenceSpawn {
+                        section: ReferenceSpawnSection::Empty,
+                    },
+                    "Spawn"
+                }
             }
         }
     }
 }
+#[derive(
+    Clone, Copy, PartialEq, Eq, Hash, Debug, Default, serde::Serialize, serde::Deserialize,
+)]
+pub enum ReferenceHotreloadSection {
+    #[default]
+    Empty,
+    DioxusHotReloadingReference,
+    WhatCanBeHotReloaded,
+    WhatCausesAFullRebuild,
+}
+impl std::str::FromStr for ReferenceHotreloadSection {
+    type Err = ReferenceHotreloadSectionParseError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "" => Ok(Self::Empty),
+            "dioxus-hot-reloading-reference" => Ok(Self::DioxusHotReloadingReference),
+            "what-can-be-hot-reloaded" => Ok(Self::WhatCanBeHotReloaded),
+            "what-causes-a-full-rebuild" => Ok(Self::WhatCausesAFullRebuild),
+            _ => Err(ReferenceHotreloadSectionParseError),
+        }
+    }
+}
+impl std::fmt::Display for ReferenceHotreloadSection {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Self::Empty => f.write_str(""),
+            Self::DioxusHotReloadingReference => f.write_str("dioxus-hot-reloading-reference"),
+            Self::WhatCanBeHotReloaded => f.write_str("what-can-be-hot-reloaded"),
+            Self::WhatCausesAFullRebuild => f.write_str("what-causes-a-full-rebuild"),
+        }
+    }
+}
+#[derive(Debug)]
+pub struct ReferenceHotreloadSectionParseError;
+impl std::fmt::Display for ReferenceHotreloadSectionParseError {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.write_str(
+            "Invalid section name. Expected one of ReferenceHotreloadSectiondioxus-hot-reloading-reference, what-can-be-hot-reloaded, what-causes-a-full-rebuild",
+        )?;
+        Ok(())
+    }
+}
+impl std::error::Error for ReferenceHotreloadSectionParseError {}
 #[component(no_case_check)]
-pub fn ReferenceHotreload() -> dioxus::prelude::Element {
+pub fn ReferenceHotreload(section: ReferenceHotreloadSection) -> dioxus::prelude::Element {
     use dioxus::prelude::*;
     rsx! {
         h1 { id: "dioxus-hot-reloading-reference",
-            a { href: "#dioxus-hot-reloading-reference", class: "header",
+            Link {
+                to: BookRoute::ReferenceHotreload {
+                    section: ReferenceHotreloadSection::DioxusHotReloadingReference,
+                },
+                class: "header",
                 "Dioxus Hot-Reloading Reference"
             }
         }
@@ -12991,21 +19543,115 @@ pub fn ReferenceHotreload() -> dioxus::prelude::Element {
             dangerous_inner_html: "<iframe style=\"width: 100%\" height=\"500px\" class=\"centered-overflow\" src=\"https://www.youtube.com/embed/Q4Xzz8OJEoc\" title=\"Dioxus 0.6\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share\" referrerpolicy=\"strict-origin-when-cross-origin\" allowfullscreen></iframe>\n",
         }
         h2 { id: "what-can-be-hot-reloaded",
-            a { href: "#what-can-be-hot-reloaded", class: "header", "What can be hot-reloaded?" }
+            Link {
+                to: BookRoute::ReferenceHotreload {
+                    section: ReferenceHotreloadSection::WhatCanBeHotReloaded,
+                },
+                class: "header",
+                "What can be hot-reloaded?"
+            }
         }
         p { "Within RSX, all elements and their properties can be hot-reloaded." }
         CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">rsx! {{\n</span><span style=\"color:#f8f8f2;\">    div {{}}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n" }
         h2 { id: "what-causes-a-full-rebuild",
-            a { href: "#what-causes-a-full-rebuild", class: "header", "What causes a full-rebuild?" }
+            Link {
+                to: BookRoute::ReferenceHotreload {
+                    section: ReferenceHotreloadSection::WhatCausesAFullRebuild,
+                },
+                class: "header",
+                "What causes a full-rebuild?"
+            }
         }
     }
 }
+#[derive(
+    Clone, Copy, PartialEq, Eq, Hash, Debug, Default, serde::Serialize, serde::Deserialize,
+)]
+pub enum ReferenceRsxSection {
+    #[default]
+    Empty,
+    DescribingTheUi,
+    RsxFeatures,
+    Attributes,
+    ConditionalAttributes,
+    CustomAttributes,
+    SpecialAttributes,
+    TheHtmlEscapeHatch,
+    BooleanAttributes,
+    Interpolation,
+    Children,
+    Fragments,
+    Expressions,
+    Loops,
+    IfStatements,
+}
+impl std::str::FromStr for ReferenceRsxSection {
+    type Err = ReferenceRsxSectionParseError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "" => Ok(Self::Empty),
+            "describing-the-ui" => Ok(Self::DescribingTheUi),
+            "rsx-features" => Ok(Self::RsxFeatures),
+            "attributes" => Ok(Self::Attributes),
+            "conditional-attributes" => Ok(Self::ConditionalAttributes),
+            "custom-attributes" => Ok(Self::CustomAttributes),
+            "special-attributes" => Ok(Self::SpecialAttributes),
+            "the-html-escape-hatch" => Ok(Self::TheHtmlEscapeHatch),
+            "boolean-attributes" => Ok(Self::BooleanAttributes),
+            "interpolation" => Ok(Self::Interpolation),
+            "children" => Ok(Self::Children),
+            "fragments" => Ok(Self::Fragments),
+            "expressions" => Ok(Self::Expressions),
+            "loops" => Ok(Self::Loops),
+            "if-statements" => Ok(Self::IfStatements),
+            _ => Err(ReferenceRsxSectionParseError),
+        }
+    }
+}
+impl std::fmt::Display for ReferenceRsxSection {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Self::Empty => f.write_str(""),
+            Self::DescribingTheUi => f.write_str("describing-the-ui"),
+            Self::RsxFeatures => f.write_str("rsx-features"),
+            Self::Attributes => f.write_str("attributes"),
+            Self::ConditionalAttributes => f.write_str("conditional-attributes"),
+            Self::CustomAttributes => f.write_str("custom-attributes"),
+            Self::SpecialAttributes => f.write_str("special-attributes"),
+            Self::TheHtmlEscapeHatch => f.write_str("the-html-escape-hatch"),
+            Self::BooleanAttributes => f.write_str("boolean-attributes"),
+            Self::Interpolation => f.write_str("interpolation"),
+            Self::Children => f.write_str("children"),
+            Self::Fragments => f.write_str("fragments"),
+            Self::Expressions => f.write_str("expressions"),
+            Self::Loops => f.write_str("loops"),
+            Self::IfStatements => f.write_str("if-statements"),
+        }
+    }
+}
+#[derive(Debug)]
+pub struct ReferenceRsxSectionParseError;
+impl std::fmt::Display for ReferenceRsxSectionParseError {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.write_str(
+            "Invalid section name. Expected one of ReferenceRsxSectiondescribing-the-ui, rsx-features, attributes, conditional-attributes, custom-attributes, special-attributes, the-html-escape-hatch, boolean-attributes, interpolation, children, fragments, expressions, loops, if-statements",
+        )?;
+        Ok(())
+    }
+}
+impl std::error::Error for ReferenceRsxSectionParseError {}
 #[component(no_case_check)]
-pub fn ReferenceRsx() -> dioxus::prelude::Element {
+pub fn ReferenceRsx(section: ReferenceRsxSection) -> dioxus::prelude::Element {
     use dioxus::prelude::*;
     rsx! {
         h1 { id: "describing-the-ui",
-            a { href: "#describing-the-ui", class: "header", "Describing the UI" }
+            Link {
+                to: BookRoute::ReferenceRsx {
+                    section: ReferenceRsxSection::DescribingTheUi,
+                },
+                class: "header",
+                "Describing the UI"
+            }
         }
         p {
             "Dioxus is a "
@@ -13031,7 +19677,13 @@ pub fn ReferenceRsx() -> dioxus::prelude::Element {
             ". Dioxus takes the RSX and constructs a UI from it."
         }
         h2 { id: "rsx-features",
-            a { href: "#rsx-features", class: "header", "RSX Features" }
+            Link {
+                to: BookRoute::ReferenceRsx {
+                    section: ReferenceRsxSection::RsxFeatures,
+                },
+                class: "header",
+                "RSX Features"
+            }
         }
         p {
             "RSX is very similar to HTML in that it describes elements with attributes and children. Here's an empty  "
@@ -13044,11 +19696,22 @@ pub fn ReferenceRsx() -> dioxus::prelude::Element {
         }
         DemoFrame { rsx_overview::Button {} }
         h3 { id: "attributes",
-            a { href: "#attributes", class: "header", "Attributes" }
+            Link {
+                to: BookRoute::ReferenceRsx {
+                    section: ReferenceRsxSection::Attributes,
+                },
+                class: "header",
+                "Attributes"
+            }
         }
         p {
             "Attributes (and "
-            a { href: "event_handlers", "event handlers" }
+            Link {
+                to: BookRoute::ReferenceEventHandlers {
+                    section: ReferenceEventHandlersSection::Empty,
+                },
+                "event handlers"
+            }
             ") modify the behavior or appearance of the element they are attached to. They are specified inside the "
             code { "{{}}" }
             " brackets, using the "
@@ -13098,7 +19761,13 @@ pub fn ReferenceRsx() -> dioxus::prelude::Element {
             }
         }
         h4 { id: "conditional-attributes",
-            a { href: "#conditional-attributes", class: "header", "Conditional Attributes" }
+            Link {
+                to: BookRoute::ReferenceRsx {
+                    section: ReferenceRsxSection::ConditionalAttributes,
+                },
+                class: "header",
+                "Conditional Attributes"
+            }
         }
         p {
             "You can also conditionally include attributes by using an if statement without an else branch. This is useful for adding an attribute only if a certain condition is met:"
@@ -13109,7 +19778,13 @@ pub fn ReferenceRsx() -> dioxus::prelude::Element {
         }
         DemoFrame { rsx_overview::ConditionalAttributes {} }
         h4 { id: "custom-attributes",
-            a { href: "#custom-attributes", class: "header", "Custom Attributes" }
+            Link {
+                to: BookRoute::ReferenceRsx {
+                    section: ReferenceRsxSection::CustomAttributes,
+                },
+                class: "header",
+                "Custom Attributes"
+            }
         }
         p {
             "Dioxus has a pre-configured set of attributes that you can use. RSX is validated at compile time to make sure you didn't specify an invalid attribute. If you want to override this behavior with a custom attribute name, specify the attribute in quotes:"
@@ -13120,11 +19795,23 @@ pub fn ReferenceRsx() -> dioxus::prelude::Element {
         }
         DemoFrame { rsx_overview::CustomAttributes {} }
         h3 { id: "special-attributes",
-            a { href: "#special-attributes", class: "header", "Special Attributes" }
+            Link {
+                to: BookRoute::ReferenceRsx {
+                    section: ReferenceRsxSection::SpecialAttributes,
+                },
+                class: "header",
+                "Special Attributes"
+            }
         }
         p { "While most attributes are simply passed on to the HTML, some have special behaviors." }
         h4 { id: "the-html-escape-hatch",
-            a { href: "#the-html-escape-hatch", class: "header", "The HTML Escape Hatch" }
+            Link {
+                to: BookRoute::ReferenceRsx {
+                    section: ReferenceRsxSection::TheHtmlEscapeHatch,
+                },
+                class: "header",
+                "The HTML Escape Hatch"
+            }
         }
         p {
             "If you're working with pre-rendered assets, output from templates, or output from a JS library, then you might want to pass HTML directly instead of going through Dioxus. In these instances, reach for  "
@@ -13133,7 +19820,7 @@ pub fn ReferenceRsx() -> dioxus::prelude::Element {
         }
         p {
             "For example, shipping a markdown-to-Dioxus converter might significantly bloat your final application size. Instead, you'll want to pre-render your markdown to HTML and then include the HTML directly in your output. We use this approach for the "
-            a { href: "https://dioxuslabs.com", "Dioxus homepage" }
+            Link { to: "https://dioxuslabs.com", "Dioxus homepage" }
             ":"
         }
         CodeBlock {
@@ -13146,7 +19833,7 @@ pub fn ReferenceRsx() -> dioxus::prelude::Element {
                 "Note! This attribute is called \"dangerous_inner_html\" because it is "
                 strong { "dangerous" }
                 " to pass it data you don't trust. If you're not careful, you can easily expose "
-                a { href: "https://en.wikipedia.org/wiki/Cross-site_scripting",
+                Link { to: "https://en.wikipedia.org/wiki/Cross-site_scripting",
                     "cross-site scripting (XSS)"
                 }
                 " attacks to your users."
@@ -13158,7 +19845,13 @@ pub fn ReferenceRsx() -> dioxus::prelude::Element {
             }
         }
         h4 { id: "boolean-attributes",
-            a { href: "#boolean-attributes", class: "header", "Boolean Attributes" }
+            Link {
+                to: BookRoute::ReferenceRsx {
+                    section: ReferenceRsxSection::BooleanAttributes,
+                },
+                class: "header",
+                "Boolean Attributes"
+            }
         }
         p {
             "Most attributes, when rendered, will be rendered exactly as the input you provided. However, some attributes are considered \"boolean\" attributes and just their presence determines whether they affect the output. For these attributes, a provided value of  "
@@ -13266,11 +19959,17 @@ pub fn ReferenceRsx() -> dioxus::prelude::Element {
             " will be sent directly to the DOM."
         }
         h3 { id: "interpolation",
-            a { href: "#interpolation", class: "header", "Interpolation" }
+            Link {
+                to: BookRoute::ReferenceRsx {
+                    section: ReferenceRsxSection::Interpolation,
+                },
+                class: "header",
+                "Interpolation"
+            }
         }
         p {
             "Similarly to how you can "
-            a { href: "https://doc.rust-lang.org/rust-by-example/hello/print/fmt.html",
+            Link { to: "https://doc.rust-lang.org/rust-by-example/hello/print/fmt.html",
                 "format"
             }
             " Rust strings, you can also interpolate in RSX text. Use "
@@ -13285,13 +19984,24 @@ pub fn ReferenceRsx() -> dioxus::prelude::Element {
         }
         DemoFrame { rsx_overview::Formatting {} }
         h3 { id: "children",
-            a { href: "#children", class: "header", "Children" }
+            Link {
+                to: BookRoute::ReferenceRsx {
+                    section: ReferenceRsxSection::Children,
+                },
+                class: "header",
+                "Children"
+            }
         }
         p {
             "To add children to an element, put them inside the  "
             code { "{{}}" }
             " brackets after all attributes and listeners in the element. They can be other elements, text, or "
-            a { href: "components", "components" }
+            Link {
+                to: BookRoute::ReferenceComponents {
+                    section: ReferenceComponentsSection::Empty,
+                },
+                "components"
+            }
             ". For example, you could have an "
             code { "ol" }
             " (ordered list) element, containing 3 "
@@ -13304,7 +20014,13 @@ pub fn ReferenceRsx() -> dioxus::prelude::Element {
         }
         DemoFrame { rsx_overview::Children {} }
         h3 { id: "fragments",
-            a { href: "#fragments", class: "header", "Fragments" }
+            Link {
+                to: BookRoute::ReferenceRsx {
+                    section: ReferenceRsxSection::Fragments,
+                },
+                class: "header",
+                "Fragments"
+            }
         }
         p {
             "You can render multiple elements at the top level of  "
@@ -13317,17 +20033,23 @@ pub fn ReferenceRsx() -> dioxus::prelude::Element {
         }
         DemoFrame { rsx_overview::ManyRoots {} }
         h3 { id: "expressions",
-            a { href: "#expressions", class: "header", "Expressions" }
+            Link {
+                to: BookRoute::ReferenceRsx {
+                    section: ReferenceRsxSection::Expressions,
+                },
+                class: "header",
+                "Expressions"
+            }
         }
         p {
             "You can include arbitrary Rust expressions as children within RSX by surrounding your expression with  "
             code { "{{}}" }
             "s. Any expression that implements "
-            a { href: "https://docs.rs/dioxus-core/0.3/dioxus_core/trait.IntoDynNode.html",
+            Link { to: "https://docs.rs/dioxus-core/0.3/dioxus_core/trait.IntoDynNode.html",
                 "IntoDynNode"
             }
             " can be used within rsx. This is useful for displaying data from an "
-            a { href: "https://doc.rust-lang.org/stable/book/ch13-02-iterators.html#processing-a-series-of-items-with-iterators",
+            Link { to: "https://doc.rust-lang.org/stable/book/ch13-02-iterators.html#processing-a-series-of-items-with-iterators",
                 "iterator"
             }
             ":"
@@ -13338,7 +20060,13 @@ pub fn ReferenceRsx() -> dioxus::prelude::Element {
         }
         DemoFrame { rsx_overview::Expression {} }
         h3 { id: "loops",
-            a { href: "#loops", class: "header", "Loops" }
+            Link {
+                to: BookRoute::ReferenceRsx {
+                    section: ReferenceRsxSection::Loops,
+                },
+                class: "header",
+                "Loops"
+            }
         }
         p { "In addition to iterators you can also use for loops directly within RSX:" }
         CodeBlock {
@@ -13347,7 +20075,13 @@ pub fn ReferenceRsx() -> dioxus::prelude::Element {
         }
         DemoFrame { rsx_overview::Loops {} }
         h3 { id: "if-statements",
-            a { href: "#if-statements", class: "header", "If statements" }
+            Link {
+                to: BookRoute::ReferenceRsx {
+                    section: ReferenceRsxSection::IfStatements,
+                },
+                class: "header",
+                "If statements"
+            }
         }
         p { "You can also use if statements without an else branch within RSX:" }
         CodeBlock {
@@ -13357,12 +20091,53 @@ pub fn ReferenceRsx() -> dioxus::prelude::Element {
         DemoFrame { rsx_overview::IfStatements {} }
     }
 }
+#[derive(
+    Clone, Copy, PartialEq, Eq, Hash, Debug, Default, serde::Serialize, serde::Deserialize,
+)]
+pub enum ReferenceComponentsSection {
+    #[default]
+    Empty,
+    Components,
+}
+impl std::str::FromStr for ReferenceComponentsSection {
+    type Err = ReferenceComponentsSectionParseError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "" => Ok(Self::Empty),
+            "components" => Ok(Self::Components),
+            _ => Err(ReferenceComponentsSectionParseError),
+        }
+    }
+}
+impl std::fmt::Display for ReferenceComponentsSection {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Self::Empty => f.write_str(""),
+            Self::Components => f.write_str("components"),
+        }
+    }
+}
+#[derive(Debug)]
+pub struct ReferenceComponentsSectionParseError;
+impl std::fmt::Display for ReferenceComponentsSectionParseError {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.write_str("Invalid section name. Expected one of ReferenceComponentsSectioncomponents")?;
+        Ok(())
+    }
+}
+impl std::error::Error for ReferenceComponentsSectionParseError {}
 #[component(no_case_check)]
-pub fn ReferenceComponents() -> dioxus::prelude::Element {
+pub fn ReferenceComponents(section: ReferenceComponentsSection) -> dioxus::prelude::Element {
     use dioxus::prelude::*;
     rsx! {
         h1 { id: "components",
-            a { href: "#components", class: "header", "Components" }
+            Link {
+                to: BookRoute::ReferenceComponents {
+                    section: ReferenceComponentsSection::Components,
+                },
+                class: "header",
+                "Components"
+            }
         }
         p {
             "Just like you wouldn't want to write a complex program in a single, long,  "
@@ -13412,19 +20187,96 @@ pub fn ReferenceComponents() -> dioxus::prelude::Element {
         }
     }
 }
+#[derive(
+    Clone, Copy, PartialEq, Eq, Hash, Debug, Default, serde::Serialize, serde::Deserialize,
+)]
+pub enum ReferenceComponentPropsSection {
+    #[default]
+    Empty,
+    ComponentProps,
+    Deriveprops,
+    PropOptions,
+    OptionalProps,
+    ExplicitlyRequiredOption,
+    DefaultProps,
+    AutomaticConversionWithInto,
+    TheComponentMacro,
+    ComponentChildren,
+    TheChildrenField,
+}
+impl std::str::FromStr for ReferenceComponentPropsSection {
+    type Err = ReferenceComponentPropsSectionParseError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "" => Ok(Self::Empty),
+            "component-props" => Ok(Self::ComponentProps),
+            "deriveprops" => Ok(Self::Deriveprops),
+            "prop-options" => Ok(Self::PropOptions),
+            "optional-props" => Ok(Self::OptionalProps),
+            "explicitly-required-option" => Ok(Self::ExplicitlyRequiredOption),
+            "default-props" => Ok(Self::DefaultProps),
+            "automatic-conversion-with-into" => Ok(Self::AutomaticConversionWithInto),
+            "the-component-macro" => Ok(Self::TheComponentMacro),
+            "component-children" => Ok(Self::ComponentChildren),
+            "the-children-field" => Ok(Self::TheChildrenField),
+            _ => Err(ReferenceComponentPropsSectionParseError),
+        }
+    }
+}
+impl std::fmt::Display for ReferenceComponentPropsSection {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Self::Empty => f.write_str(""),
+            Self::ComponentProps => f.write_str("component-props"),
+            Self::Deriveprops => f.write_str("deriveprops"),
+            Self::PropOptions => f.write_str("prop-options"),
+            Self::OptionalProps => f.write_str("optional-props"),
+            Self::ExplicitlyRequiredOption => f.write_str("explicitly-required-option"),
+            Self::DefaultProps => f.write_str("default-props"),
+            Self::AutomaticConversionWithInto => f.write_str("automatic-conversion-with-into"),
+            Self::TheComponentMacro => f.write_str("the-component-macro"),
+            Self::ComponentChildren => f.write_str("component-children"),
+            Self::TheChildrenField => f.write_str("the-children-field"),
+        }
+    }
+}
+#[derive(Debug)]
+pub struct ReferenceComponentPropsSectionParseError;
+impl std::fmt::Display for ReferenceComponentPropsSectionParseError {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.write_str(
+            "Invalid section name. Expected one of ReferenceComponentPropsSectioncomponent-props, deriveprops, prop-options, optional-props, explicitly-required-option, default-props, automatic-conversion-with-into, the-component-macro, component-children, the-children-field",
+        )?;
+        Ok(())
+    }
+}
+impl std::error::Error for ReferenceComponentPropsSectionParseError {}
 #[component(no_case_check)]
-pub fn ReferenceComponentProps() -> dioxus::prelude::Element {
+pub fn ReferenceComponentProps(
+    section: ReferenceComponentPropsSection,
+) -> dioxus::prelude::Element {
     use dioxus::prelude::*;
     rsx! {
         h1 { id: "component-props",
-            a { href: "#component-props", class: "header", "Component Props" }
+            Link {
+                to: BookRoute::ReferenceComponentProps {
+                    section: ReferenceComponentPropsSection::ComponentProps,
+                },
+                class: "header",
+                "Component Props"
+            }
         }
         p {
             "Just like you can pass arguments to a function or attributes to an element, you can pass props to a component that customize its behavior! The components we've seen so far didn't accept any props – so let's write some components that do."
         }
-        h2 { id: "",
-            a { href: "#", class: "header", "" }
-            code { "#[derive(Props)]" }
+        h2 { id: "deriveprops",
+            Link {
+                to: BookRoute::ReferenceComponentProps {
+                    section: ReferenceComponentPropsSection::Deriveprops,
+                },
+                class: "header",
+                "derive(Props)"
+            }
         }
         p {
             "Component props are a single struct annotated with  "
@@ -13447,7 +20299,13 @@ pub fn ReferenceComponentProps() -> dioxus::prelude::Element {
         }
         DemoFrame { component_owned_props::App {} }
         h2 { id: "prop-options",
-            a { href: "#prop-options", class: "header", "Prop Options" }
+            Link {
+                to: BookRoute::ReferenceComponentProps {
+                    section: ReferenceComponentPropsSection::PropOptions,
+                },
+                class: "header",
+                "Prop Options"
+            }
         }
         p {
             "The  "
@@ -13455,7 +20313,13 @@ pub fn ReferenceComponentProps() -> dioxus::prelude::Element {
             " macro has some features that let you customize the behavior of props."
         }
         h3 { id: "optional-props",
-            a { href: "#optional-props", class: "header", "Optional Props" }
+            Link {
+                to: BookRoute::ReferenceComponentProps {
+                    section: ReferenceComponentPropsSection::OptionalProps,
+                },
+                class: "header",
+                "Optional Props"
+            }
         }
         p {
             "You can create optional fields by using the  "
@@ -13472,7 +20336,13 @@ pub fn ReferenceComponentProps() -> dioxus::prelude::Element {
             name: "component_props_options.rs".to_string(),
         }
         h3 { id: "explicitly-required-option",
-            a { href: "#explicitly-required-option", class: "header", "Explicitly Required Option" }
+            Link {
+                to: BookRoute::ReferenceComponentProps {
+                    section: ReferenceComponentPropsSection::ExplicitlyRequiredOption,
+                },
+                class: "header",
+                "Explicitly Required Option"
+            }
         }
         p {
             "If you want to explicitly require an  "
@@ -13497,7 +20367,13 @@ pub fn ReferenceComponentProps() -> dioxus::prelude::Element {
             name: "component_props_options.rs".to_string(),
         }
         h3 { id: "default-props",
-            a { href: "#default-props", class: "header", "Default Props" }
+            Link {
+                to: BookRoute::ReferenceComponentProps {
+                    section: ReferenceComponentPropsSection::DefaultProps,
+                },
+                class: "header",
+                "Default Props"
+            }
         }
         p {
             "You can use  "
@@ -13514,7 +20390,11 @@ pub fn ReferenceComponentProps() -> dioxus::prelude::Element {
             name: "component_props_options.rs".to_string(),
         }
         h3 { id: "automatic-conversion-with-into",
-            a { href: "#automatic-conversion-with-into", class: "header",
+            Link {
+                to: BookRoute::ReferenceComponentProps {
+                    section: ReferenceComponentPropsSection::AutomaticConversionWithInto,
+                },
+                class: "header",
                 "Automatic Conversion with into"
             }
         }
@@ -13543,7 +20423,13 @@ pub fn ReferenceComponentProps() -> dioxus::prelude::Element {
             name: "component_props_options.rs".to_string(),
         }
         h2 { id: "the-component-macro",
-            a { href: "#the-component-macro", class: "header", "The component macro" }
+            Link {
+                to: BookRoute::ReferenceComponentProps {
+                    section: ReferenceComponentPropsSection::TheComponentMacro,
+                },
+                class: "header",
+                "The component macro"
+            }
         }
         p {
             "So far, every Component function we've seen had a corresponding ComponentProps struct to pass in props. This was quite verbose... Wouldn't it be nice to have props as simple function arguments? Then we wouldn't need to define a Props struct, and instead of typing  "
@@ -13569,7 +20455,13 @@ pub fn ReferenceComponentProps() -> dioxus::prelude::Element {
             }
         }
         h2 { id: "component-children",
-            a { href: "#component-children", class: "header", "Component Children" }
+            Link {
+                to: BookRoute::ReferenceComponentProps {
+                    section: ReferenceComponentPropsSection::ComponentChildren,
+                },
+                class: "header",
+                "Component Children"
+            }
         }
         p {
             "In some cases, you may wish to create a component that acts as a container for some other content, without the component needing to know what that content is. To achieve this, create a prop of type  "
@@ -13597,7 +20489,13 @@ pub fn ReferenceComponentProps() -> dioxus::prelude::Element {
             }
         }
         h3 { id: "the-children-field",
-            a { href: "#the-children-field", class: "header", "The children field" }
+            Link {
+                to: BookRoute::ReferenceComponentProps {
+                    section: ReferenceComponentPropsSection::TheChildrenField,
+                },
+                class: "header",
+                "The children field"
+            }
         }
         p {
             "Rather than passing the RSX through a regular prop, you may wish to accept children similarly to how elements can have children. The \"magic\"  "
@@ -13622,12 +20520,77 @@ pub fn ReferenceComponentProps() -> dioxus::prelude::Element {
         DemoFrame { component_children::App {} }
     }
 }
+#[derive(
+    Clone, Copy, PartialEq, Eq, Hash, Debug, Default, serde::Serialize, serde::Deserialize,
+)]
+pub enum ReferenceEventHandlersSection {
+    #[default]
+    Empty,
+    EventHandlers,
+    TheEventObject,
+    EventPropagation,
+    PreventDefault,
+    HandlerProps,
+    CustomData,
+    ReturningAValueFromAnEventHandler,
+}
+impl std::str::FromStr for ReferenceEventHandlersSection {
+    type Err = ReferenceEventHandlersSectionParseError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "" => Ok(Self::Empty),
+            "event-handlers" => Ok(Self::EventHandlers),
+            "the-event-object" => Ok(Self::TheEventObject),
+            "event-propagation" => Ok(Self::EventPropagation),
+            "prevent-default" => Ok(Self::PreventDefault),
+            "handler-props" => Ok(Self::HandlerProps),
+            "custom-data" => Ok(Self::CustomData),
+            "returning-a-value-from-an-event-handler" => {
+                Ok(Self::ReturningAValueFromAnEventHandler)
+            }
+            _ => Err(ReferenceEventHandlersSectionParseError),
+        }
+    }
+}
+impl std::fmt::Display for ReferenceEventHandlersSection {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Self::Empty => f.write_str(""),
+            Self::EventHandlers => f.write_str("event-handlers"),
+            Self::TheEventObject => f.write_str("the-event-object"),
+            Self::EventPropagation => f.write_str("event-propagation"),
+            Self::PreventDefault => f.write_str("prevent-default"),
+            Self::HandlerProps => f.write_str("handler-props"),
+            Self::CustomData => f.write_str("custom-data"),
+            Self::ReturningAValueFromAnEventHandler => {
+                f.write_str("returning-a-value-from-an-event-handler")
+            }
+        }
+    }
+}
+#[derive(Debug)]
+pub struct ReferenceEventHandlersSectionParseError;
+impl std::fmt::Display for ReferenceEventHandlersSectionParseError {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.write_str(
+            "Invalid section name. Expected one of ReferenceEventHandlersSectionevent-handlers, the-event-object, event-propagation, prevent-default, handler-props, custom-data, returning-a-value-from-an-event-handler",
+        )?;
+        Ok(())
+    }
+}
+impl std::error::Error for ReferenceEventHandlersSectionParseError {}
 #[component(no_case_check)]
-pub fn ReferenceEventHandlers() -> dioxus::prelude::Element {
+pub fn ReferenceEventHandlers(section: ReferenceEventHandlersSection) -> dioxus::prelude::Element {
     use dioxus::prelude::*;
     rsx! {
         h1 { id: "event-handlers",
-            a { href: "#event-handlers", class: "header", "Event Handlers" }
+            Link {
+                to: BookRoute::ReferenceEventHandlers {
+                    section: ReferenceEventHandlersSection::EventHandlers,
+                },
+                class: "header",
+                "Event Handlers"
+            }
         }
         p {
             "Event handlers are used to respond to user actions. For example, an event handler could be triggered when the user clicks, scrolls, moves the mouse, or types a character."
@@ -13650,18 +20613,22 @@ pub fn ReferenceEventHandlers() -> dioxus::prelude::Element {
             name: "event_click.rs".to_string(),
         }
         DemoFrame { event_click::App {} }
-        h2 { id: "the",
-            a { href: "#the", class: "header", "The " }
-            code { "Event" }
-            " object"
+        h2 { id: "the-event-object",
+            Link {
+                to: BookRoute::ReferenceEventHandlers {
+                    section: ReferenceEventHandlersSection::TheEventObject,
+                },
+                class: "header",
+                "The Event object"
+            }
         }
         p {
             "Event handlers receive an "
-            a { href: "https://docs.rs/dioxus-core/latest/dioxus_core/struct.Event.html",
+            Link { to: "https://docs.rs/dioxus-core/latest/dioxus_core/struct.Event.html",
                 code { "Event" }
             }
             " object containing information about the event. Different types of events contain different types of data. For example, mouse-related events contain "
-            a { href: "https://docs.rs/dioxus/latest/dioxus/events/struct.MouseData.html",
+            Link { to: "https://docs.rs/dioxus/latest/dioxus/events/struct.MouseData.html",
                 code { "MouseData" }
             }
             ", which tells you things like where the mouse was clicked and what mouse buttons were used."
@@ -13672,13 +20639,19 @@ pub fn ReferenceEventHandlers() -> dioxus::prelude::Element {
         }
         p {
             "To learn what the different event types for HTML provide, read the "
-            a { href: "https://docs.rs/dioxus-html/latest/dioxus_html/events/index.html",
+            Link { to: "https://docs.rs/dioxus-html/latest/dioxus_html/events/index.html",
                 "events module docs"
             }
             "."
         }
         h3 { id: "event-propagation",
-            a { href: "#event-propagation", class: "header", "Event propagation" }
+            Link {
+                to: BookRoute::ReferenceEventHandlers {
+                    section: ReferenceEventHandlersSection::EventPropagation,
+                },
+                class: "header",
+                "Event propagation"
+            }
         }
         p {
             "Some events will trigger first on the element the event originated at upward. For example, a click event on a  "
@@ -13690,7 +20663,7 @@ pub fn ReferenceEventHandlers() -> dioxus::prelude::Element {
         blockquote {
             p {
                 "For more information about event propagation see "
-                a { href: "https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Building_blocks/Events#event_bubbling",
+                Link { to: "https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Building_blocks/Events#event_bubbling",
                     "the mdn docs on event bubbling"
                 }
             }
@@ -13705,7 +20678,13 @@ pub fn ReferenceEventHandlers() -> dioxus::prelude::Element {
             name: "event_nested.rs".to_string(),
         }
         h2 { id: "prevent-default",
-            a { href: "#prevent-default", class: "header", "Prevent Default" }
+            Link {
+                to: BookRoute::ReferenceEventHandlers {
+                    section: ReferenceEventHandlersSection::PreventDefault,
+                },
+                class: "header",
+                "Prevent Default"
+            }
         }
         p {
             "Some events have a default behavior. For keyboard events, this might be entering the typed character. For mouse events, this might be selecting some text."
@@ -13722,7 +20701,13 @@ pub fn ReferenceEventHandlers() -> dioxus::prelude::Element {
         DemoFrame { event_prevent_default::App {} }
         p { "Any event handlers will still be called." }
         h2 { id: "handler-props",
-            a { href: "#handler-props", class: "header", "Handler Props" }
+            Link {
+                to: BookRoute::ReferenceEventHandlers {
+                    section: ReferenceEventHandlersSection::HandlerProps,
+                },
+                class: "header",
+                "Handler Props"
+            }
         }
         p {
             "Sometimes, you might want to make a component that accepts an event handler. A simple example would be a  "
@@ -13748,7 +20733,13 @@ pub fn ReferenceEventHandlers() -> dioxus::prelude::Element {
             }
         }
         h2 { id: "custom-data",
-            a { href: "#custom-data", class: "header", "Custom Data" }
+            Link {
+                to: BookRoute::ReferenceEventHandlers {
+                    section: ReferenceEventHandlersSection::CustomData,
+                },
+                class: "header",
+                "Custom Data"
+            }
         }
         p {
             "Event Handlers are generic over any type, so you can pass in any data you want to them, e.g:"
@@ -13758,8 +20749,10 @@ pub fn ReferenceEventHandlers() -> dioxus::prelude::Element {
             name: "event_handler_prop.rs".to_string(),
         }
         h2 { id: "returning-a-value-from-an-event-handler",
-            a {
-                href: "#returning-a-value-from-an-event-handler",
+            Link {
+                to: BookRoute::ReferenceEventHandlers {
+                    section: ReferenceEventHandlersSection::ReturningAValueFromAnEventHandler,
+                },
                 class: "header",
                 "Returning a value from an event handler"
             }
@@ -13783,12 +20776,73 @@ pub fn ReferenceEventHandlers() -> dioxus::prelude::Element {
         }
     }
 }
+#[derive(
+    Clone, Copy, PartialEq, Eq, Hash, Debug, Default, serde::Serialize, serde::Deserialize,
+)]
+pub enum ReferenceHooksSection {
+    #[default]
+    Empty,
+    HooksAndComponentState,
+    UseSignalHook,
+    RulesOfHooks,
+    NoHooksInConditionals,
+    NoHooksInClosures,
+    NoHooksInLoops,
+    AdditionalResources,
+}
+impl std::str::FromStr for ReferenceHooksSection {
+    type Err = ReferenceHooksSectionParseError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "" => Ok(Self::Empty),
+            "hooks-and-component-state" => Ok(Self::HooksAndComponentState),
+            "use-signal-hook" => Ok(Self::UseSignalHook),
+            "rules-of-hooks" => Ok(Self::RulesOfHooks),
+            "no-hooks-in-conditionals" => Ok(Self::NoHooksInConditionals),
+            "no-hooks-in-closures" => Ok(Self::NoHooksInClosures),
+            "no-hooks-in-loops" => Ok(Self::NoHooksInLoops),
+            "additional-resources" => Ok(Self::AdditionalResources),
+            _ => Err(ReferenceHooksSectionParseError),
+        }
+    }
+}
+impl std::fmt::Display for ReferenceHooksSection {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Self::Empty => f.write_str(""),
+            Self::HooksAndComponentState => f.write_str("hooks-and-component-state"),
+            Self::UseSignalHook => f.write_str("use-signal-hook"),
+            Self::RulesOfHooks => f.write_str("rules-of-hooks"),
+            Self::NoHooksInConditionals => f.write_str("no-hooks-in-conditionals"),
+            Self::NoHooksInClosures => f.write_str("no-hooks-in-closures"),
+            Self::NoHooksInLoops => f.write_str("no-hooks-in-loops"),
+            Self::AdditionalResources => f.write_str("additional-resources"),
+        }
+    }
+}
+#[derive(Debug)]
+pub struct ReferenceHooksSectionParseError;
+impl std::fmt::Display for ReferenceHooksSectionParseError {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.write_str(
+            "Invalid section name. Expected one of ReferenceHooksSectionhooks-and-component-state, use-signal-hook, rules-of-hooks, no-hooks-in-conditionals, no-hooks-in-closures, no-hooks-in-loops, additional-resources",
+        )?;
+        Ok(())
+    }
+}
+impl std::error::Error for ReferenceHooksSectionParseError {}
 #[component(no_case_check)]
-pub fn ReferenceHooks() -> dioxus::prelude::Element {
+pub fn ReferenceHooks(section: ReferenceHooksSection) -> dioxus::prelude::Element {
     use dioxus::prelude::*;
     rsx! {
         h1 { id: "hooks-and-component-state",
-            a { href: "#hooks-and-component-state", class: "header", "Hooks and component state" }
+            Link {
+                to: BookRoute::ReferenceHooks {
+                    section: ReferenceHooksSection::HooksAndComponentState,
+                },
+                class: "header",
+                "Hooks and component state"
+            }
         }
         p {
             "So far, our components have had no state like a normal Rust function. However, in a UI component, it is often useful to have stateful functionality to build user interactions. For example, you might want to track whether the user has opened a drop-down and render different things accordingly."
@@ -13798,13 +20852,24 @@ pub fn ReferenceHooks() -> dioxus::prelude::Element {
         }
         p {
             "Dioxus provides many built-in hooks, but if those hooks don't fit your specific use case, you also can "
-            a { href: "../cookbook/state/custom_hooks", "create your own hook" }
+            Link {
+                to: BookRoute::CookbookStateCustomHooksIndex {
+                    section: CookbookStateCustomHooksIndexSection::Empty,
+                },
+                "create your own hook"
+            }
         }
         h2 { id: "use-signal-hook",
-            a { href: "#use-signal-hook", class: "header", "use_signal hook" }
+            Link {
+                to: BookRoute::ReferenceHooks {
+                    section: ReferenceHooksSection::UseSignalHook,
+                },
+                class: "header",
+                "use_signal hook"
+            }
         }
         p {
-            a { href: "https://docs.rs/dioxus/latest/dioxus/prelude/fn.use_signal.html",
+            Link { to: "https://docs.rs/dioxus/latest/dioxus/prelude/fn.use_signal.html",
                 code { "use_signal" }
             }
             " is one of the simplest hooks."
@@ -13841,7 +20906,7 @@ pub fn ReferenceHooks() -> dioxus::prelude::Element {
             p {
                 code { "use_signal" }
                 " returns your value wrapped in a smart pointer of type "
-                a { href: "https://docs.rs/dioxus/latest/dioxus/prelude/struct.Signal.html",
+                Link { to: "https://docs.rs/dioxus/latest/dioxus/prelude/struct.Signal.html",
                     code { "Signal" }
                 }
                 " that is "
@@ -13870,7 +20935,13 @@ pub fn ReferenceHooks() -> dioxus::prelude::Element {
         }
         DemoFrame { hooks_use_signal::App {} }
         h2 { id: "rules-of-hooks",
-            a { href: "#rules-of-hooks", class: "header", "Rules of hooks" }
+            Link {
+                to: BookRoute::ReferenceHooks {
+                    section: ReferenceHooksSection::RulesOfHooks,
+                },
+                class: "header",
+                "Rules of hooks"
+            }
         }
         p {
             "The above example might seem a bit magic since Rust functions are typically not associated with state. Dioxus allows hooks to maintain state across renders through a hidden scope that is associated with the component."
@@ -13892,7 +20963,12 @@ pub fn ReferenceHooks() -> dioxus::prelude::Element {
             li { "On every call to a component function." }
             li {
                 "The same hooks must be called (except in the case of early returns, as explained later in the "
-                a { href: "../../cookbook/error_handling", "Error Handling chapter" }
+                Link {
+                    to: BookRoute::CookbookErrorHandling {
+                        section: CookbookErrorHandlingSection::Empty,
+                    },
+                    "Error Handling chapter"
+                }
                 ")."
             }
             li { "In the same order." }
@@ -13900,6 +20976,8 @@ pub fn ReferenceHooks() -> dioxus::prelude::Element {
                 "Hook names should start with "
                 code { "use_" }
                 " so you don't accidentally confuse them with regular"
+                " "
+                "functions ("
                 code { "use_signal()" }
                 ", "
                 code { "use_signal()" }
@@ -13910,55 +20988,135 @@ pub fn ReferenceHooks() -> dioxus::prelude::Element {
         }
         p { "These rules mean that there are certain things you can't do with hooks:" }
         h3 { id: "no-hooks-in-conditionals",
-            a { href: "#no-hooks-in-conditionals", class: "header", "No hooks in conditionals" }
+            Link {
+                to: BookRoute::ReferenceHooks {
+                    section: ReferenceHooksSection::NoHooksInConditionals,
+                },
+                class: "header",
+                "No hooks in conditionals"
+            }
         }
         CodeBlock {
             contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#8c8c8c;\">// ❌ don&#39;t call hooks in conditionals!\n</span><span style=\"color:#8c8c8c;\">// We must ensure that the same hooks will be called every time\n</span><span style=\"color:#8c8c8c;\">// But `if` statements only run if the conditional is true!\n</span><span style=\"color:#8c8c8c;\">// So we might violate rule 2.\n</span><span style=\"color:#f92672;\">if</span><span style=\"color:#f8f8f2;\"> you_are_happy </span><span style=\"color:#f92672;\">&amp;&amp;</span><span style=\"color:#f8f8f2;\"> you_know_it {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> something </span><span style=\"color:#f92672;\">= </span><span style=\"color:#66d9ef;\">use_signal</span><span style=\"color:#f8f8f2;\">(|| </span><span style=\"color:#ffee99;\">&quot;hands&quot;</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"color:#f8f8f2;\">    println!(</span><span style=\"color:#ffee99;\">&quot;clap your </span><span style=\"color:#ff80f4;\">{{something}}</span><span style=\"color:#ffee99;\">&quot;</span><span style=\"color:#f8f8f2;\">)\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#8c8c8c;\">// ✅ instead, *always* call use_signal\n</span><span style=\"color:#8c8c8c;\">// You can put other stuff in the conditional though\n</span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> something </span><span style=\"color:#f92672;\">= </span><span style=\"color:#66d9ef;\">use_signal</span><span style=\"color:#f8f8f2;\">(|| </span><span style=\"color:#ffee99;\">&quot;hands&quot;</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"color:#f92672;\">if</span><span style=\"color:#f8f8f2;\"> you_are_happy </span><span style=\"color:#f92672;\">&amp;&amp;</span><span style=\"color:#f8f8f2;\"> you_know_it {{\n</span><span style=\"color:#f8f8f2;\">    println!(</span><span style=\"color:#ffee99;\">&quot;clap your </span><span style=\"color:#ff80f4;\">{{something}}</span><span style=\"color:#ffee99;\">&quot;</span><span style=\"color:#f8f8f2;\">)\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
             name: "hooks_bad.rs".to_string(),
         }
         h3 { id: "no-hooks-in-closures",
-            a { href: "#no-hooks-in-closures", class: "header", "No hooks in closures" }
+            Link {
+                to: BookRoute::ReferenceHooks {
+                    section: ReferenceHooksSection::NoHooksInClosures,
+                },
+                class: "header",
+                "No hooks in closures"
+            }
         }
         CodeBlock {
             contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#8c8c8c;\">// ❌ don&#39;t call hooks inside closures!\n</span><span style=\"color:#8c8c8c;\">// We can&#39;t guarantee that the closure, if used, will be called in the same order every time\n</span><span style=\"font-style:italic;color:#66d9ef;\">let </span><span style=\"color:#a6e22e;\">_a </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">|| {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> b </span><span style=\"color:#f92672;\">= </span><span style=\"color:#66d9ef;\">use_signal</span><span style=\"color:#f8f8f2;\">(|| </span><span style=\"color:#ff80f4;\">0</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"color:#66d9ef;\">b</span><span style=\"color:#f8f8f2;\">()\n</span><span style=\"color:#f8f8f2;\">}};\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#8c8c8c;\">// ✅ instead, move hook `b` outside\n</span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> b </span><span style=\"color:#f92672;\">= </span><span style=\"color:#66d9ef;\">use_signal</span><span style=\"color:#f8f8f2;\">(|| </span><span style=\"color:#ff80f4;\">0</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"font-style:italic;color:#66d9ef;\">let </span><span style=\"color:#a6e22e;\">_a </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">|| </span><span style=\"color:#66d9ef;\">b</span><span style=\"color:#f8f8f2;\">();</span></pre>\n",
             name: "hooks_bad.rs".to_string(),
         }
         h3 { id: "no-hooks-in-loops",
-            a { href: "#no-hooks-in-loops", class: "header", "No hooks in loops" }
+            Link {
+                to: BookRoute::ReferenceHooks {
+                    section: ReferenceHooksSection::NoHooksInLoops,
+                },
+                class: "header",
+                "No hooks in loops"
+            }
         }
         CodeBlock {
             contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#8c8c8c;\">// `names` is a Vec&lt;&amp;str&gt;\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#8c8c8c;\">// ❌ Do not use hooks in loops!\n</span><span style=\"color:#8c8c8c;\">// In this case, if the length of the Vec changes, we break rule 2\n</span><span style=\"color:#f92672;\">for</span><span style=\"color:#f8f8f2;\"> _name </span><span style=\"color:#f92672;\">in &amp;</span><span style=\"color:#f8f8f2;\">names {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> is_selected </span><span style=\"color:#f92672;\">= </span><span style=\"color:#66d9ef;\">use_signal</span><span style=\"color:#f8f8f2;\">(|| </span><span style=\"color:#ff80f4;\">false</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"color:#f8f8f2;\">    println!(</span><span style=\"color:#ffee99;\">&quot;selected: </span><span style=\"color:#ff80f4;\">{{is_selected}}</span><span style=\"color:#ffee99;\">&quot;</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#8c8c8c;\">// ✅ Instead, use a hashmap with use_signal\n</span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> selection_map </span><span style=\"color:#f92672;\">= </span><span style=\"color:#66d9ef;\">use_signal</span><span style=\"color:#f8f8f2;\">(HashMap::&lt;</span><span style=\"color:#f92672;\">&amp;</span><span style=\"font-style:italic;color:#66d9ef;\">str</span><span style=\"color:#f8f8f2;\">, </span><span style=\"font-style:italic;color:#66d9ef;\">bool</span><span style=\"color:#f8f8f2;\">&gt;::new);\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\">for</span><span style=\"color:#f8f8f2;\"> name </span><span style=\"color:#f92672;\">in &amp;</span><span style=\"color:#f8f8f2;\">names {{\n</span><span style=\"color:#f8f8f2;\">    </span><span style=\"font-style:italic;color:#66d9ef;\">let</span><span style=\"color:#f8f8f2;\"> is_selected </span><span style=\"color:#f92672;\">=</span><span style=\"color:#f8f8f2;\"> selection_map.</span><span style=\"color:#66d9ef;\">read</span><span style=\"color:#f8f8f2;\">()[name];\n</span><span style=\"color:#f8f8f2;\">    println!(</span><span style=\"color:#ffee99;\">&quot;selected: </span><span style=\"color:#ff80f4;\">{{is_selected}}</span><span style=\"color:#ffee99;\">&quot;</span><span style=\"color:#f8f8f2;\">);\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
             name: "hooks_bad.rs".to_string(),
         }
         h2 { id: "additional-resources",
-            a { href: "#additional-resources", class: "header", "Additional resources" }
+            Link {
+                to: BookRoute::ReferenceHooks {
+                    section: ReferenceHooksSection::AdditionalResources,
+                },
+                class: "header",
+                "Additional resources"
+            }
         }
         ul {
             li {
-                a { href: "https://docs.rs/dioxus-hooks/latest/dioxus_hooks/",
-                    "dioxus_hooks API docs"
-                }
+                Link { to: "https://docs.rs/dioxus-hooks/latest/dioxus_hooks/", "dioxus_hooks API docs" }
             }
             li {
-                a { href: "https://github.com/DioxusLabs/dioxus/tree/main/packages/hooks",
+                Link { to: "https://github.com/DioxusLabs/dioxus/tree/main/packages/hooks",
                     "dioxus_hooks source code"
                 }
             }
         }
     }
 }
+#[derive(
+    Clone, Copy, PartialEq, Eq, Hash, Debug, Default, serde::Serialize, serde::Deserialize,
+)]
+pub enum ReferenceUserInputSection {
+    #[default]
+    Empty,
+    UserInput,
+    ControlledInputs,
+    UncontrolledInputs,
+    HandlingFiles,
+}
+impl std::str::FromStr for ReferenceUserInputSection {
+    type Err = ReferenceUserInputSectionParseError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "" => Ok(Self::Empty),
+            "user-input" => Ok(Self::UserInput),
+            "controlled-inputs" => Ok(Self::ControlledInputs),
+            "uncontrolled-inputs" => Ok(Self::UncontrolledInputs),
+            "handling-files" => Ok(Self::HandlingFiles),
+            _ => Err(ReferenceUserInputSectionParseError),
+        }
+    }
+}
+impl std::fmt::Display for ReferenceUserInputSection {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Self::Empty => f.write_str(""),
+            Self::UserInput => f.write_str("user-input"),
+            Self::ControlledInputs => f.write_str("controlled-inputs"),
+            Self::UncontrolledInputs => f.write_str("uncontrolled-inputs"),
+            Self::HandlingFiles => f.write_str("handling-files"),
+        }
+    }
+}
+#[derive(Debug)]
+pub struct ReferenceUserInputSectionParseError;
+impl std::fmt::Display for ReferenceUserInputSectionParseError {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.write_str(
+            "Invalid section name. Expected one of ReferenceUserInputSectionuser-input, controlled-inputs, uncontrolled-inputs, handling-files",
+        )?;
+        Ok(())
+    }
+}
+impl std::error::Error for ReferenceUserInputSectionParseError {}
 #[component(no_case_check)]
-pub fn ReferenceUserInput() -> dioxus::prelude::Element {
+pub fn ReferenceUserInput(section: ReferenceUserInputSection) -> dioxus::prelude::Element {
     use dioxus::prelude::*;
     rsx! {
         h1 { id: "user-input",
-            a { href: "#user-input", class: "header", "User Input" }
+            Link {
+                to: BookRoute::ReferenceUserInput {
+                    section: ReferenceUserInputSection::UserInput,
+                },
+                class: "header",
+                "User Input"
+            }
         }
         p {
             "Interfaces often need to provide a way to input data: e.g. text, numbers, checkboxes, etc. In Dioxus, there are two ways you can work with user input."
         }
         h2 { id: "controlled-inputs",
-            a { href: "#controlled-inputs", class: "header", "Controlled Inputs" }
+            Link {
+                to: BookRoute::ReferenceUserInput {
+                    section: ReferenceUserInputSection::ControlledInputs,
+                },
+                class: "header",
+                "Controlled Inputs"
+            }
         }
         p {
             "With controlled inputs, you are directly in charge of the state of the input. This gives you a lot of flexibility, and makes it easy to keep things in sync. For example, this is how you would create a controlled text input:"
@@ -13981,7 +21139,13 @@ pub fn ReferenceUserInput() -> dioxus::prelude::Element {
             }
         }
         h2 { id: "uncontrolled-inputs",
-            a { href: "#uncontrolled-inputs", class: "header", "Uncontrolled Inputs" }
+            Link {
+                to: BookRoute::ReferenceUserInput {
+                    section: ReferenceUserInputSection::UncontrolledInputs,
+                },
+                class: "header",
+                "Uncontrolled Inputs"
+            }
         }
         p {
             "As an alternative to controlled inputs, you can simply let the platform keep track of the input values. If we don't tell a HTML input what content it should have, it will be editable anyway (this is built into the browser). This approach can be more performant, but less flexible. For example, it's harder to keep the input in sync with another element."
@@ -14002,7 +21166,13 @@ pub fn ReferenceUserInput() -> dioxus::prelude::Element {
         DemoFrame { input_uncontrolled::App {} }
         CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">Submitted</span><span style=\"color:#f92672;\">!</span><span style=\"color:#f8f8f2;\"> UiEvent {{ data: FormData {{ value: </span><span style=\"color:#ffee99;\">&quot;&quot;</span><span style=\"color:#f8f8f2;\">, values: {{</span><span style=\"color:#ffee99;\">&quot;age&quot;</span><span style=\"color:#f8f8f2;\">: </span><span style=\"color:#ffee99;\">&quot;very old&quot;</span><span style=\"color:#f8f8f2;\">, </span><span style=\"color:#ffee99;\">&quot;date&quot;</span><span style=\"color:#f8f8f2;\">: </span><span style=\"color:#ffee99;\">&quot;1966&quot;</span><span style=\"color:#f8f8f2;\">, </span><span style=\"color:#ffee99;\">&quot;name&quot;</span><span style=\"color:#f8f8f2;\">: </span><span style=\"color:#ffee99;\">&quot;Fred&quot;</span><span style=\"color:#f8f8f2;\">}} }} }}</span></pre>\n" }
         h2 { id: "handling-files",
-            a { href: "#handling-files", class: "header", "Handling files" }
+            Link {
+                to: BookRoute::ReferenceUserInput {
+                    section: ReferenceUserInputSection::HandlingFiles,
+                },
+                class: "header",
+                "Handling files"
+            }
         }
         p {
             "You can insert a file picker by using an input element of type  "
@@ -14057,18 +21227,73 @@ pub fn ReferenceUserInput() -> dioxus::prelude::Element {
         }
     }
 }
+#[derive(
+    Clone, Copy, PartialEq, Eq, Hash, Debug, Default, serde::Serialize, serde::Deserialize,
+)]
+pub enum ReferenceContextSection {
+    #[default]
+    Empty,
+    SharingState,
+    LiftingState,
+    UsingSharedState,
+}
+impl std::str::FromStr for ReferenceContextSection {
+    type Err = ReferenceContextSectionParseError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "" => Ok(Self::Empty),
+            "sharing-state" => Ok(Self::SharingState),
+            "lifting-state" => Ok(Self::LiftingState),
+            "using-shared-state" => Ok(Self::UsingSharedState),
+            _ => Err(ReferenceContextSectionParseError),
+        }
+    }
+}
+impl std::fmt::Display for ReferenceContextSection {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Self::Empty => f.write_str(""),
+            Self::SharingState => f.write_str("sharing-state"),
+            Self::LiftingState => f.write_str("lifting-state"),
+            Self::UsingSharedState => f.write_str("using-shared-state"),
+        }
+    }
+}
+#[derive(Debug)]
+pub struct ReferenceContextSectionParseError;
+impl std::fmt::Display for ReferenceContextSectionParseError {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.write_str(
+            "Invalid section name. Expected one of ReferenceContextSectionsharing-state, lifting-state, using-shared-state",
+        )?;
+        Ok(())
+    }
+}
+impl std::error::Error for ReferenceContextSectionParseError {}
 #[component(no_case_check)]
-pub fn ReferenceContext() -> dioxus::prelude::Element {
+pub fn ReferenceContext(section: ReferenceContextSection) -> dioxus::prelude::Element {
     use dioxus::prelude::*;
     rsx! {
         h1 { id: "sharing-state",
-            a { href: "#sharing-state", class: "header", "Sharing State" }
+            Link {
+                to: BookRoute::ReferenceContext {
+                    section: ReferenceContextSection::SharingState,
+                },
+                class: "header",
+                "Sharing State"
+            }
         }
         p {
             "Often, multiple components need to access the same state. Depending on your needs, there are several ways to implement this."
         }
         h2 { id: "lifting-state",
-            a { href: "#lifting-state", class: "header", "Lifting State" }
+            Link {
+                to: BookRoute::ReferenceContext {
+                    section: ReferenceContextSection::LiftingState,
+                },
+                class: "header",
+                "Lifting State"
+            }
         }
         p {
             "One approach to share state between components is to \"lift\" it up to the nearest common ancestor. This means putting the  "
@@ -14127,7 +21352,13 @@ pub fn ReferenceContext() -> dioxus::prelude::Element {
             }
         }
         h2 { id: "using-shared-state",
-            a { href: "#using-shared-state", class: "header", "Using Shared State" }
+            Link {
+                to: BookRoute::ReferenceContext {
+                    section: ReferenceContextSection::UsingSharedState,
+                },
+                class: "header",
+                "Using Shared State"
+            }
         }
         p {
             "Sometimes, some state needs to be shared between multiple components far down the tree, and passing it down through props is very inconvenient."
@@ -14149,11 +21380,11 @@ pub fn ReferenceContext() -> dioxus::prelude::Element {
         }
         p {
             "Dioxus offers a better solution than this \"prop drilling\" – providing context. The "
-            a { href: "https://docs.rs/dioxus-hooks/latest/dioxus_hooks/fn.use_context_provider.html",
+            Link { to: "https://docs.rs/dioxus-hooks/latest/dioxus_hooks/fn.use_context_provider.html",
                 code { "use_context_provider" }
             }
             " hook provides any Clone context (including Signals!) to any child components. Child components can use the "
-            a { href: "https://docs.rs/dioxus-hooks/latest/dioxus_hooks/fn.use_context.html",
+            Link { to: "https://docs.rs/dioxus-hooks/latest/dioxus_hooks/fn.use_context.html",
                 code { "use_context" }
             }
             " hook to get that context and if it is a Signal, they can read and write to it."
@@ -14215,18 +21446,90 @@ pub fn ReferenceContext() -> dioxus::prelude::Element {
         }
     }
 }
+#[derive(
+    Clone, Copy, PartialEq, Eq, Hash, Debug, Default, serde::Serialize, serde::Deserialize,
+)]
+pub enum ReferenceDynamicRenderingSection {
+    #[default]
+    Empty,
+    DynamicRendering,
+    ConditionalRendering,
+    ImprovingTheIfElseExample,
+    InspectingElementProps,
+    RenderingNothing,
+    RenderingLists,
+    InlineForLoops,
+    TheKeyAttribute,
+}
+impl std::str::FromStr for ReferenceDynamicRenderingSection {
+    type Err = ReferenceDynamicRenderingSectionParseError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "" => Ok(Self::Empty),
+            "dynamic-rendering" => Ok(Self::DynamicRendering),
+            "conditional-rendering" => Ok(Self::ConditionalRendering),
+            "improving-the-if-else-example" => Ok(Self::ImprovingTheIfElseExample),
+            "inspecting-element-props" => Ok(Self::InspectingElementProps),
+            "rendering-nothing" => Ok(Self::RenderingNothing),
+            "rendering-lists" => Ok(Self::RenderingLists),
+            "inline-for-loops" => Ok(Self::InlineForLoops),
+            "the-key-attribute" => Ok(Self::TheKeyAttribute),
+            _ => Err(ReferenceDynamicRenderingSectionParseError),
+        }
+    }
+}
+impl std::fmt::Display for ReferenceDynamicRenderingSection {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Self::Empty => f.write_str(""),
+            Self::DynamicRendering => f.write_str("dynamic-rendering"),
+            Self::ConditionalRendering => f.write_str("conditional-rendering"),
+            Self::ImprovingTheIfElseExample => f.write_str("improving-the-if-else-example"),
+            Self::InspectingElementProps => f.write_str("inspecting-element-props"),
+            Self::RenderingNothing => f.write_str("rendering-nothing"),
+            Self::RenderingLists => f.write_str("rendering-lists"),
+            Self::InlineForLoops => f.write_str("inline-for-loops"),
+            Self::TheKeyAttribute => f.write_str("the-key-attribute"),
+        }
+    }
+}
+#[derive(Debug)]
+pub struct ReferenceDynamicRenderingSectionParseError;
+impl std::fmt::Display for ReferenceDynamicRenderingSectionParseError {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.write_str(
+            "Invalid section name. Expected one of ReferenceDynamicRenderingSectiondynamic-rendering, conditional-rendering, improving-the-if-else-example, inspecting-element-props, rendering-nothing, rendering-lists, inline-for-loops, the-key-attribute",
+        )?;
+        Ok(())
+    }
+}
+impl std::error::Error for ReferenceDynamicRenderingSectionParseError {}
 #[component(no_case_check)]
-pub fn ReferenceDynamicRendering() -> dioxus::prelude::Element {
+pub fn ReferenceDynamicRendering(
+    section: ReferenceDynamicRenderingSection,
+) -> dioxus::prelude::Element {
     use dioxus::prelude::*;
     rsx! {
         h1 { id: "dynamic-rendering",
-            a { href: "#dynamic-rendering", class: "header", "Dynamic Rendering" }
+            Link {
+                to: BookRoute::ReferenceDynamicRendering {
+                    section: ReferenceDynamicRenderingSection::DynamicRendering,
+                },
+                class: "header",
+                "Dynamic Rendering"
+            }
         }
         p {
             "Sometimes you want to render different things depending on the state/props. With Dioxus, just describe what you want to see using Rust control flow – the framework will take care of making the necessary changes on the fly if the state or props change!"
         }
         h2 { id: "conditional-rendering",
-            a { href: "#conditional-rendering", class: "header", "Conditional Rendering" }
+            Link {
+                to: BookRoute::ReferenceDynamicRendering {
+                    section: ReferenceDynamicRenderingSection::ConditionalRendering,
+                },
+                class: "header",
+                "Conditional Rendering"
+            }
         }
         p {
             "To render different elements based on a condition, you could use an  "
@@ -14245,10 +21548,14 @@ pub fn ReferenceDynamicRendering() -> dioxus::prelude::Element {
                 " statements, or any Rust function to conditionally render different things."
             }
         }
-        h3 { id: "improving-the",
-            a { href: "#improving-the", class: "header", "Improving the " }
-            code { "if-else" }
-            " Example"
+        h3 { id: "improving-the-if-else-example",
+            Link {
+                to: BookRoute::ReferenceDynamicRendering {
+                    section: ReferenceDynamicRenderingSection::ImprovingTheIfElseExample,
+                },
+                class: "header",
+                "Improving the if-else Example"
+            }
         }
         p {
             "You may have noticed some repeated code in the  "
@@ -14265,10 +21572,14 @@ pub fn ReferenceDynamicRendering() -> dioxus::prelude::Element {
             name: "conditional_rendering.rs".to_string(),
         }
         DemoFrame { conditional_rendering::LogInImprovedApp {} }
-        h3 { id: "inspecting",
-            a { href: "#inspecting", class: "header", "Inspecting " }
-            code { "Element" }
-            " props"
+        h3 { id: "inspecting-element-props",
+            Link {
+                to: BookRoute::ReferenceDynamicRendering {
+                    section: ReferenceDynamicRenderingSection::InspectingElementProps,
+                },
+                class: "header",
+                "Inspecting Element props"
+            }
         }
         p {
             "Since  "
@@ -14289,7 +21600,13 @@ pub fn ReferenceDynamicRendering() -> dioxus::prelude::Element {
             ", but if you need a modified version of it, you can construct a new one based on its attributes/children/etc."
         }
         h2 { id: "rendering-nothing",
-            a { href: "#rendering-nothing", class: "header", "Rendering Nothing" }
+            Link {
+                to: BookRoute::ReferenceDynamicRendering {
+                    section: ReferenceDynamicRenderingSection::RenderingNothing,
+                },
+                class: "header",
+                "Rendering Nothing"
+            }
         }
         p {
             "To render nothing, you can return  "
@@ -14312,14 +21629,20 @@ pub fn ReferenceDynamicRendering() -> dioxus::prelude::Element {
                 "Again, you may use a different method to conditionally return  "
                 code { "None" }
                 ". For example the boolean's "
-                a { href: "https://doc.rust-lang.org/std/primitive.bool.html#method.then",
+                Link { to: "https://doc.rust-lang.org/std/primitive.bool.html#method.then",
                     code { "then()" }
                 }
                 " function could be used."
             }
         }
         h2 { id: "rendering-lists",
-            a { href: "#rendering-lists", class: "header", "Rendering Lists" }
+            Link {
+                to: BookRoute::ReferenceDynamicRendering {
+                    section: ReferenceDynamicRenderingSection::RenderingLists,
+                },
+                class: "header",
+                "Rendering Lists"
+            }
         }
         p {
             "Often, you'll want to render a collection of components. For example, you might want to render a list of all comments on a post."
@@ -14362,7 +21685,13 @@ pub fn ReferenceDynamicRendering() -> dioxus::prelude::Element {
         }
         DemoFrame { rendering_lists::App {} }
         h3 { id: "inline-for-loops",
-            a { href: "#inline-for-loops", class: "header", "Inline for loops" }
+            Link {
+                to: BookRoute::ReferenceDynamicRendering {
+                    section: ReferenceDynamicRenderingSection::InlineForLoops,
+                },
+                class: "header",
+                "Inline for loops"
+            }
         }
         p {
             "Because of how common it is to render a list of items, Dioxus provides a shorthand for this. Instead of using  "
@@ -14380,10 +21709,14 @@ pub fn ReferenceDynamicRendering() -> dioxus::prelude::Element {
             name: "rendering_lists.rs".to_string(),
         }
         DemoFrame { rendering_lists::AppForLoop {} }
-        h3 { id: "the",
-            a { href: "#the", class: "header", "The " }
-            code { "key" }
-            " Attribute"
+        h3 { id: "the-key-attribute",
+            Link {
+                to: BookRoute::ReferenceDynamicRendering {
+                    section: ReferenceDynamicRenderingSection::TheKeyAttribute,
+                },
+                class: "header",
+                "The key Attribute"
+            }
         }
         p {
             "Every time you re-render your list, Dioxus needs to keep track of which items go where to determine what updates need to be made to the UI."
@@ -14413,12 +21746,67 @@ pub fn ReferenceDynamicRendering() -> dioxus::prelude::Element {
         }
     }
 }
+#[derive(
+    Clone, Copy, PartialEq, Eq, Hash, Debug, Default, serde::Serialize, serde::Deserialize,
+)]
+pub enum ReferenceRouterSection {
+    #[default]
+    Empty,
+    Router,
+    WhatIsIt,
+    UsingTheRouter,
+    Links,
+    MoreReading,
+}
+impl std::str::FromStr for ReferenceRouterSection {
+    type Err = ReferenceRouterSectionParseError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "" => Ok(Self::Empty),
+            "router" => Ok(Self::Router),
+            "what-is-it" => Ok(Self::WhatIsIt),
+            "using-the-router" => Ok(Self::UsingTheRouter),
+            "links" => Ok(Self::Links),
+            "more-reading" => Ok(Self::MoreReading),
+            _ => Err(ReferenceRouterSectionParseError),
+        }
+    }
+}
+impl std::fmt::Display for ReferenceRouterSection {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Self::Empty => f.write_str(""),
+            Self::Router => f.write_str("router"),
+            Self::WhatIsIt => f.write_str("what-is-it"),
+            Self::UsingTheRouter => f.write_str("using-the-router"),
+            Self::Links => f.write_str("links"),
+            Self::MoreReading => f.write_str("more-reading"),
+        }
+    }
+}
+#[derive(Debug)]
+pub struct ReferenceRouterSectionParseError;
+impl std::fmt::Display for ReferenceRouterSectionParseError {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.write_str(
+            "Invalid section name. Expected one of ReferenceRouterSectionrouter, what-is-it, using-the-router, links, more-reading",
+        )?;
+        Ok(())
+    }
+}
+impl std::error::Error for ReferenceRouterSectionParseError {}
 #[component(no_case_check)]
-pub fn ReferenceRouter() -> dioxus::prelude::Element {
+pub fn ReferenceRouter(section: ReferenceRouterSection) -> dioxus::prelude::Element {
     use dioxus::prelude::*;
     rsx! {
         h1 { id: "router",
-            a { href: "#router", class: "header", "Router" }
+            Link {
+                to: BookRoute::ReferenceRouter {
+                    section: ReferenceRouterSection::Router,
+                },
+                class: "header",
+                "Router"
+            }
         }
         p {
             "In many of your apps, you'll want to have different \"scenes\". For a webpage, these scenes might be the different webpages with their own content. For a desktop app, these scenes might be different views in your app."
@@ -14427,7 +21815,13 @@ pub fn ReferenceRouter() -> dioxus::prelude::Element {
             "To unify these platforms, Dioxus provides a first-party solution for scene management called Dioxus Router."
         }
         h2 { id: "what-is-it",
-            a { href: "#what-is-it", class: "header", "What is it?" }
+            Link {
+                to: BookRoute::ReferenceRouter {
+                    section: ReferenceRouterSection::WhatIsIt,
+                },
+                class: "header",
+                "What is it?"
+            }
         }
         p {
             "For an app like the Dioxus landing page (https://dioxuslabs.com), we want to have several different scenes:"
@@ -14448,7 +21842,13 @@ pub fn ReferenceRouter() -> dioxus::prelude::Element {
         }
         CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">cargo add dioxus </span><span style=\"color:#f92672;\">--</span><span style=\"color:#f8f8f2;\">features router</span></pre>\n" }
         h2 { id: "using-the-router",
-            a { href: "#using-the-router", class: "header", "Using the router" }
+            Link {
+                to: BookRoute::ReferenceRouter {
+                    section: ReferenceRouterSection::UsingTheRouter,
+                },
+                class: "header",
+                "Using the router"
+            }
         }
         p {
             "Unlike other routers in the Rust ecosystem, our router is built declaratively at compile time. This makes it possible to compose our app layout simply by defining an enum."
@@ -14476,7 +21876,13 @@ pub fn ReferenceRouter() -> dioxus::prelude::Element {
             name: "router_reference.rs".to_string(),
         }
         h2 { id: "links",
-            a { href: "#links", class: "header", "Links" }
+            Link {
+                to: BookRoute::ReferenceRouter {
+                    section: ReferenceRouterSection::Links,
+                },
+                class: "header",
+                "Links"
+            }
         }
         p {
             "For our app to navigate these routes, we can provide clickable elements called Links. These simply wrap  "
@@ -14488,35 +21894,95 @@ pub fn ReferenceRouter() -> dioxus::prelude::Element {
             name: "router_reference.rs".to_string(),
         }
         h2 { id: "more-reading",
-            a { href: "#more-reading", class: "header", "More reading" }
+            Link {
+                to: BookRoute::ReferenceRouter {
+                    section: ReferenceRouterSection::MoreReading,
+                },
+                class: "header",
+                "More reading"
+            }
         }
         p {
             "This page is just a very brief overview of the router. For more information, check out the "
-            a { href: "../router", "router book" }
+            Link {
+                to: BookRoute::RouterIndex {
+                    section: RouterIndexSection::Empty,
+                },
+                "router book"
+            }
             " or some of the "
-            a { href: "https://github.com/DioxusLabs/dioxus/blob/master/examples/router.rs",
+            Link { to: "https://github.com/DioxusLabs/dioxus/blob/master/examples/router.rs",
                 "router examples"
             }
             "."
         }
     }
 }
+#[derive(
+    Clone, Copy, PartialEq, Eq, Hash, Debug, Default, serde::Serialize, serde::Deserialize,
+)]
+pub enum ReferenceUseResourceSection {
+    #[default]
+    Empty,
+    Resource,
+    RestartingTheFuture,
+    Dependencies,
+}
+impl std::str::FromStr for ReferenceUseResourceSection {
+    type Err = ReferenceUseResourceSectionParseError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "" => Ok(Self::Empty),
+            "resource" => Ok(Self::Resource),
+            "restarting-the-future" => Ok(Self::RestartingTheFuture),
+            "dependencies" => Ok(Self::Dependencies),
+            _ => Err(ReferenceUseResourceSectionParseError),
+        }
+    }
+}
+impl std::fmt::Display for ReferenceUseResourceSection {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Self::Empty => f.write_str(""),
+            Self::Resource => f.write_str("resource"),
+            Self::RestartingTheFuture => f.write_str("restarting-the-future"),
+            Self::Dependencies => f.write_str("dependencies"),
+        }
+    }
+}
+#[derive(Debug)]
+pub struct ReferenceUseResourceSectionParseError;
+impl std::fmt::Display for ReferenceUseResourceSectionParseError {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.write_str(
+            "Invalid section name. Expected one of ReferenceUseResourceSectionresource, restarting-the-future, dependencies",
+        )?;
+        Ok(())
+    }
+}
+impl std::error::Error for ReferenceUseResourceSectionParseError {}
 #[component(no_case_check)]
-pub fn ReferenceUseResource() -> dioxus::prelude::Element {
+pub fn ReferenceUseResource(section: ReferenceUseResourceSection) -> dioxus::prelude::Element {
     use dioxus::prelude::*;
     rsx! {
         h1 { id: "resource",
-            a { href: "#resource", class: "header", "Resource" }
+            Link {
+                to: BookRoute::ReferenceUseResource {
+                    section: ReferenceUseResourceSection::Resource,
+                },
+                class: "header",
+                "Resource"
+            }
         }
         p {
-            a { href: "https://docs.rs/dioxus-hooks/latest/dioxus_hooks/fn.use_resource.html",
+            Link { to: "https://docs.rs/dioxus-hooks/latest/dioxus_hooks/fn.use_resource.html",
                 code { "use_resource" }
             }
             " lets you run an async closure, and provides you with its result."
         }
         p {
             "For example, we can make an API request (using "
-            a { href: "https://docs.rs/reqwest/latest/reqwest/index.html", "reqwest" }
+            Link { to: "https://docs.rs/reqwest/latest/reqwest/index.html", "reqwest" }
             ") inside "
             code { "use_resource" }
             ":"
@@ -14546,7 +22012,13 @@ pub fn ReferenceUseResource() -> dioxus::prelude::Element {
         }
         DemoFrame { use_resource::App {} }
         h2 { id: "restarting-the-future",
-            a { href: "#restarting-the-future", class: "header", "Restarting the Future" }
+            Link {
+                to: BookRoute::ReferenceUseResource {
+                    section: ReferenceUseResourceSection::RestartingTheFuture,
+                },
+                class: "header",
+                "Restarting the Future"
+            }
         }
         p {
             "The  "
@@ -14556,7 +22028,13 @@ pub fn ReferenceUseResource() -> dioxus::prelude::Element {
             " method. It can be used to execute the future again, producing a new value."
         }
         h2 { id: "dependencies",
-            a { href: "#dependencies", class: "header", "Dependencies" }
+            Link {
+                to: BookRoute::ReferenceUseResource {
+                    section: ReferenceUseResourceSection::Dependencies,
+                },
+                class: "header",
+                "Dependencies"
+            }
         }
         p {
             "Often, you will need to run the future again every time some value (e.g. a state) changes. Rather than calling  "
@@ -14569,12 +22047,71 @@ pub fn ReferenceUseResource() -> dioxus::prelude::Element {
         }
     }
 }
+#[derive(
+    Clone, Copy, PartialEq, Eq, Hash, Debug, Default, serde::Serialize, serde::Deserialize,
+)]
+pub enum ReferenceUseCoroutineSection {
+    #[default]
+    Empty,
+    Coroutines,
+    UseCoroutine,
+    YieldingValues,
+    SendingValues,
+    AutomaticInjectionIntoTheContextApi,
+}
+impl std::str::FromStr for ReferenceUseCoroutineSection {
+    type Err = ReferenceUseCoroutineSectionParseError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "" => Ok(Self::Empty),
+            "coroutines" => Ok(Self::Coroutines),
+            "use-coroutine" => Ok(Self::UseCoroutine),
+            "yielding-values" => Ok(Self::YieldingValues),
+            "sending-values" => Ok(Self::SendingValues),
+            "automatic-injection-into-the-context-api" => {
+                Ok(Self::AutomaticInjectionIntoTheContextApi)
+            }
+            _ => Err(ReferenceUseCoroutineSectionParseError),
+        }
+    }
+}
+impl std::fmt::Display for ReferenceUseCoroutineSection {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Self::Empty => f.write_str(""),
+            Self::Coroutines => f.write_str("coroutines"),
+            Self::UseCoroutine => f.write_str("use-coroutine"),
+            Self::YieldingValues => f.write_str("yielding-values"),
+            Self::SendingValues => f.write_str("sending-values"),
+            Self::AutomaticInjectionIntoTheContextApi => {
+                f.write_str("automatic-injection-into-the-context-api")
+            }
+        }
+    }
+}
+#[derive(Debug)]
+pub struct ReferenceUseCoroutineSectionParseError;
+impl std::fmt::Display for ReferenceUseCoroutineSectionParseError {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.write_str(
+            "Invalid section name. Expected one of ReferenceUseCoroutineSectioncoroutines, use-coroutine, yielding-values, sending-values, automatic-injection-into-the-context-api",
+        )?;
+        Ok(())
+    }
+}
+impl std::error::Error for ReferenceUseCoroutineSectionParseError {}
 #[component(no_case_check)]
-pub fn ReferenceUseCoroutine() -> dioxus::prelude::Element {
+pub fn ReferenceUseCoroutine(section: ReferenceUseCoroutineSection) -> dioxus::prelude::Element {
     use dioxus::prelude::*;
     rsx! {
         h1 { id: "coroutines",
-            a { href: "#coroutines", class: "header", "Coroutines" }
+            Link {
+                to: BookRoute::ReferenceUseCoroutine {
+                    section: ReferenceUseCoroutineSection::Coroutines,
+                },
+                class: "header",
+                "Coroutines"
+            }
         }
         p {
             "Another tool in your async toolbox are coroutines. Coroutines are futures that can have values sent to them."
@@ -14584,9 +22121,14 @@ pub fn ReferenceUseCoroutine() -> dioxus::prelude::Element {
             code { "await" }
             " point before yielding. This low-level control over asynchronous tasks is quite powerful, allowing for infinitely looping tasks like WebSocket polling, background timers, and other periodic actions."
         }
-        h2 { id: "",
-            a { href: "#", class: "header", "" }
-            code { "use_coroutine" }
+        h2 { id: "use-coroutine",
+            Link {
+                to: BookRoute::ReferenceUseCoroutine {
+                    section: ReferenceUseCoroutineSection::UseCoroutine,
+                },
+                class: "header",
+                "use_coroutine"
+            }
         }
         p {
             "The  "
@@ -14599,7 +22141,13 @@ pub fn ReferenceUseCoroutine() -> dioxus::prelude::Element {
         }
         p { "For many services, a simple async loop will handle the majority of use cases." }
         h2 { id: "yielding-values",
-            a { href: "#yielding-values", class: "header", "Yielding Values" }
+            Link {
+                to: BookRoute::ReferenceUseCoroutine {
+                    section: ReferenceUseCoroutineSection::YieldingValues,
+                },
+                class: "header",
+                "Yielding Values"
+            }
         }
         p {
             "To yield values from a coroutine, simply bring in a  "
@@ -14617,7 +22165,7 @@ pub fn ReferenceUseCoroutine() -> dioxus::prelude::Element {
         }
         p {
             "You can use "
-            a { href: "https://doc.rust-lang.org/std/borrow/trait.ToOwned.html#tymethod.to_owned",
+            Link { to: "https://doc.rust-lang.org/std/borrow/trait.ToOwned.html#tymethod.to_owned",
                 "to_owned"
             }
             " to create a clone of the hook handle which can be moved into the async closure."
@@ -14636,7 +22184,13 @@ pub fn ReferenceUseCoroutine() -> dioxus::prelude::Element {
             name: "use_coroutine_reference.rs".to_string(),
         }
         h2 { id: "sending-values",
-            a { href: "#sending-values", class: "header", "Sending Values" }
+            Link {
+                to: BookRoute::ReferenceUseCoroutine {
+                    section: ReferenceUseCoroutineSection::SendingValues,
+                },
+                class: "header",
+                "Sending Values"
+            }
         }
         p {
             "You might've noticed the  "
@@ -14661,10 +22215,15 @@ pub fn ReferenceUseCoroutine() -> dioxus::prelude::Element {
                 "Note: In order to use/run the  "
                 code { "rx.next().await" }
                 " statement you will need to extend the "
+                "[ "
                 code { "Stream" }
                 "]"
+                " trait (used by "
+                "[ "
                 code { "UnboundedReceiver" }
                 "]"
+                " "
+                ") by adding 'futures_util' as a dependency to your project and adding the  "
                 code { "use futures_util::stream::StreamExt;" }
                 "."
             }
@@ -14697,8 +22256,10 @@ pub fn ReferenceUseCoroutine() -> dioxus::prelude::Element {
             name: "use_coroutine_reference.rs".to_string(),
         }
         h2 { id: "automatic-injection-into-the-context-api",
-            a {
-                href: "#automatic-injection-into-the-context-api",
+            Link {
+                to: BookRoute::ReferenceUseCoroutine {
+                    section: ReferenceUseCoroutineSection::AutomaticInjectionIntoTheContextApi,
+                },
                 class: "header",
                 "Automatic injection into the Context API"
             }
@@ -14714,12 +22275,58 @@ pub fn ReferenceUseCoroutine() -> dioxus::prelude::Element {
         }
     }
 }
+#[derive(
+    Clone, Copy, PartialEq, Eq, Hash, Debug, Default, serde::Serialize, serde::Deserialize,
+)]
+pub enum ReferenceSpawnSection {
+    #[default]
+    Empty,
+    SpawningFutures,
+    SpawningTokioTasks,
+}
+impl std::str::FromStr for ReferenceSpawnSection {
+    type Err = ReferenceSpawnSectionParseError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "" => Ok(Self::Empty),
+            "spawning-futures" => Ok(Self::SpawningFutures),
+            "spawning-tokio-tasks" => Ok(Self::SpawningTokioTasks),
+            _ => Err(ReferenceSpawnSectionParseError),
+        }
+    }
+}
+impl std::fmt::Display for ReferenceSpawnSection {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Self::Empty => f.write_str(""),
+            Self::SpawningFutures => f.write_str("spawning-futures"),
+            Self::SpawningTokioTasks => f.write_str("spawning-tokio-tasks"),
+        }
+    }
+}
+#[derive(Debug)]
+pub struct ReferenceSpawnSectionParseError;
+impl std::fmt::Display for ReferenceSpawnSectionParseError {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.write_str(
+            "Invalid section name. Expected one of ReferenceSpawnSectionspawning-futures, spawning-tokio-tasks",
+        )?;
+        Ok(())
+    }
+}
+impl std::error::Error for ReferenceSpawnSectionParseError {}
 #[component(no_case_check)]
-pub fn ReferenceSpawn() -> dioxus::prelude::Element {
+pub fn ReferenceSpawn(section: ReferenceSpawnSection) -> dioxus::prelude::Element {
     use dioxus::prelude::*;
     rsx! {
         h1 { id: "spawning-futures",
-            a { href: "#spawning-futures", class: "header", "Spawning Futures" }
+            Link {
+                to: BookRoute::ReferenceSpawn {
+                    section: ReferenceSpawnSection::SpawningFutures,
+                },
+                class: "header",
+                "Spawning Futures"
+            }
         }
         p {
             "The  "
@@ -14752,7 +22359,13 @@ pub fn ReferenceSpawn() -> dioxus::prelude::Element {
             " which lets you cancel or pause the future."
         }
         h2 { id: "spawning-tokio-tasks",
-            a { href: "#spawning-tokio-tasks", class: "header", "Spawning Tokio Tasks" }
+            Link {
+                to: BookRoute::ReferenceSpawn {
+                    section: ReferenceSpawnSection::SpawningTokioTasks,
+                },
+                class: "header",
+                "Spawning Tokio Tasks"
+            }
         }
         p {
             "Sometimes, you might want to spawn a background task that needs multiple threads or talk to hardware that might block your app code. In these cases, we can directly spawn a Tokio task from our future. For Dioxus-Desktop, your task will be spawned onto Tokio's Multithreaded runtime:"
@@ -14763,79 +22376,174 @@ pub fn ReferenceSpawn() -> dioxus::prelude::Element {
         }
     }
 }
+#[derive(
+    Clone, Copy, PartialEq, Eq, Hash, Debug, Default, serde::Serialize, serde::Deserialize,
+)]
+pub enum ContributingIndexSection {
+    #[default]
+    Empty,
+    Contributing,
+    ImprovingDocs,
+    WorkingOnTheEcosystem,
+    BugsFeatures,
+    BeforeYouContribute,
+    HowToTestDioxusWithLocalCrate,
+}
+impl std::str::FromStr for ContributingIndexSection {
+    type Err = ContributingIndexSectionParseError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "" => Ok(Self::Empty),
+            "contributing" => Ok(Self::Contributing),
+            "improving-docs" => Ok(Self::ImprovingDocs),
+            "working-on-the-ecosystem" => Ok(Self::WorkingOnTheEcosystem),
+            "bugs--features" => Ok(Self::BugsFeatures),
+            "before-you-contribute" => Ok(Self::BeforeYouContribute),
+            "how-to-test-dioxus-with-local-crate" => Ok(Self::HowToTestDioxusWithLocalCrate),
+            _ => Err(ContributingIndexSectionParseError),
+        }
+    }
+}
+impl std::fmt::Display for ContributingIndexSection {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Self::Empty => f.write_str(""),
+            Self::Contributing => f.write_str("contributing"),
+            Self::ImprovingDocs => f.write_str("improving-docs"),
+            Self::WorkingOnTheEcosystem => f.write_str("working-on-the-ecosystem"),
+            Self::BugsFeatures => f.write_str("bugs--features"),
+            Self::BeforeYouContribute => f.write_str("before-you-contribute"),
+            Self::HowToTestDioxusWithLocalCrate => {
+                f.write_str("how-to-test-dioxus-with-local-crate")
+            }
+        }
+    }
+}
+#[derive(Debug)]
+pub struct ContributingIndexSectionParseError;
+impl std::fmt::Display for ContributingIndexSectionParseError {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.write_str(
+            "Invalid section name. Expected one of ContributingIndexSectioncontributing, improving-docs, working-on-the-ecosystem, bugs--features, before-you-contribute, how-to-test-dioxus-with-local-crate",
+        )?;
+        Ok(())
+    }
+}
+impl std::error::Error for ContributingIndexSectionParseError {}
 #[component(no_case_check)]
-pub fn ContributingIndex() -> dioxus::prelude::Element {
+pub fn ContributingIndex(section: ContributingIndexSection) -> dioxus::prelude::Element {
     use dioxus::prelude::*;
     rsx! {
         h1 { id: "contributing",
-            a { href: "#contributing", class: "header", "Contributing" }
+            Link {
+                to: BookRoute::ContributingIndex {
+                    section: ContributingIndexSection::Contributing,
+                },
+                class: "header",
+                "Contributing"
+            }
         }
         p {
             "Development happens in the "
-            a { href: "https://github.com/DioxusLabs/dioxus", "Dioxus GitHub repository" }
+            Link { to: "https://github.com/DioxusLabs/dioxus", "Dioxus GitHub repository" }
             ". If you've found a bug or have an idea for a feature, please submit an issue (but first check if someone hasn't "
-            a { href: "https://github.com/DioxusLabs/dioxus/issues", "done it already" }
+            Link { to: "https://github.com/DioxusLabs/dioxus/issues", "done it already" }
             ")."
         }
         p {
-            a { href: "https://github.com/DioxusLabs/dioxus/discussions", "GitHub discussions" }
+            Link { to: "https://github.com/DioxusLabs/dioxus/discussions", "GitHub discussions" }
             " can be used as a place to ask for help or talk about features. You can also join "
-            a { href: "https://discord.gg/XgGxMSkvUM", "our Discord channel" }
+            Link { to: "https://discord.gg/XgGxMSkvUM", "our Discord channel" }
             " where some development discussion happens."
         }
         h2 { id: "improving-docs",
-            a { href: "#improving-docs", class: "header", "Improving Docs" }
+            Link {
+                to: BookRoute::ContributingIndex {
+                    section: ContributingIndexSection::ImprovingDocs,
+                },
+                class: "header",
+                "Improving Docs"
+            }
         }
         p {
             "If you'd like to improve the docs, PRs are welcome! The Rust docs ("
-            a { href: "https://github.com/DioxusLabs/dioxus/tree/main/packages", "source" }
+            Link { to: "https://github.com/DioxusLabs/dioxus/tree/main/packages", "source" }
             ") and this guide ("
-            a { href: "https://github.com/DioxusLabs/docsite/tree/main/docs-src/0.6",
+            Link { to: "https://github.com/DioxusLabs/docsite/tree/main/docs-src/0.6",
                 "source"
             }
             ") can be found in their respective GitHub repos."
         }
         h2 { id: "working-on-the-ecosystem",
-            a { href: "#working-on-the-ecosystem", class: "header", "Working on the Ecosystem" }
+            Link {
+                to: BookRoute::ContributingIndex {
+                    section: ContributingIndexSection::WorkingOnTheEcosystem,
+                },
+                class: "header",
+                "Working on the Ecosystem"
+            }
         }
         p {
             "Part of what makes React great is the rich ecosystem. We'd like the same for Dioxus! So if you have a library in mind that you'd like to write and many people would benefit from, it will be appreciated. You can "
-            a { href: "https://www.npmjs.com/search?q=keywords:react-component", "browse npm.js" }
+            Link { to: "https://www.npmjs.com/search?q=keywords:react-component", "browse npm.js" }
             " for inspiration. Once you are done, add your library to the "
-            a { href: "https://github.com/DioxusLabs/awesome-dioxus", "awesome dioxus" }
+            Link { to: "https://github.com/DioxusLabs/awesome-dioxus", "awesome dioxus" }
             " list or share it in the "
             code { "#I-made-a-thing" }
             " channel on "
-            a { href: "https://discord.gg/XgGxMSkvUM", "Discord" }
+            Link { to: "https://discord.gg/XgGxMSkvUM", "Discord" }
             "."
         }
         h2 { id: "bugs--features",
-            a { href: "#bugs--features", class: "header", "Bugs & Features" }
+            Link {
+                to: BookRoute::ContributingIndex {
+                    section: ContributingIndexSection::BugsFeatures,
+                },
+                class: "header",
+                "Bugs & Features"
+            }
         }
         p {
             "If you've fixed "
-            a { href: "https://github.com/DioxusLabs/dioxus/issues", "an open issue" }
+            Link { to: "https://github.com/DioxusLabs/dioxus/issues", "an open issue" }
             ", feel free to submit a PR! You can also take a look at "
-            a { href: "./roadmap", "the roadmap" }
+            Link {
+                to: BookRoute::ContributingRoadmap {
+                    section: ContributingRoadmapSection::Empty,
+                },
+                "the roadmap"
+            }
             " and work on something in there. Consider "
-            a { href: "https://discord.gg/XgGxMSkvUM", "reaching out" }
+            Link { to: "https://discord.gg/XgGxMSkvUM", "reaching out" }
             " to the team first to make sure everyone's on the same page, and you don't do useless work!"
         }
         p {
             "All pull requests (including those made by a team member) must be approved by at least one other team member."
+            " "
+            "Larger, more nuanced decisions about design, architecture, breaking changes, trade-offs, etc. are made by team consensus."
         }
         h2 { id: "before-you-contribute",
-            a { href: "#before-you-contribute", class: "header", "Before you contribute" }
+            Link {
+                to: BookRoute::ContributingIndex {
+                    section: ContributingIndexSection::BeforeYouContribute,
+                },
+                class: "header",
+                "Before you contribute"
+            }
         }
         p {
             "You might be surprised that a lot of checks fail when making your first PR."
+            " "
+            "That's why you should first run these commands before contributing, and it will save you "
             em { "lots" }
             " of time, because the"
+            " "
+            "GitHub CI is much slower at executing all of these than your PC."
         }
         ul {
             li {
                 "Format code with "
-                a { href: "https://github.com/rust-lang/rustfmt", "rustfmt" }
+                Link { to: "https://github.com/rust-lang/rustfmt", "rustfmt" }
                 ":"
             }
         }
@@ -14851,7 +22559,7 @@ pub fn ContributingIndex() -> dioxus::prelude::Element {
         ul {
             li {
                 "Check all code "
-                a { href: "https://doc.rust-lang.org/cargo/commands/cargo-check.html",
+                Link { to: "https://doc.rust-lang.org/cargo/commands/cargo-check.html",
                     "cargo check"
                 }
                 ":"
@@ -14861,7 +22569,7 @@ pub fn ContributingIndex() -> dioxus::prelude::Element {
         ul {
             li {
                 "Check if "
-                a { href: "https://doc.rust-lang.org/clippy/", "Clippy" }
+                Link { to: "https://doc.rust-lang.org/clippy/", "Clippy" }
                 " generates any warnings. Please fix these!"
             }
         }
@@ -14869,7 +22577,7 @@ pub fn ContributingIndex() -> dioxus::prelude::Element {
         ul {
             li {
                 "Test all code with "
-                a { href: "https://doc.rust-lang.org/cargo/commands/cargo-test.html",
+                Link { to: "https://doc.rust-lang.org/cargo/commands/cargo-test.html",
                     "cargo-test"
                 }
                 ":"
@@ -14879,7 +22587,7 @@ pub fn ContributingIndex() -> dioxus::prelude::Element {
         ul {
             li {
                 "More tests, this time with "
-                a { href: "https://sagiegurari.github.io/cargo-make/", "cargo-make" }
+                Link { to: "https://sagiegurari.github.io/cargo-make/", "cargo-make" }
                 ". Here are all steps, including installation:"
             }
         }
@@ -14895,7 +22603,11 @@ pub fn ContributingIndex() -> dioxus::prelude::Element {
         }
         CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">cd playwright</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">tests\n</span><span style=\"color:#f8f8f2;\">npm ci\n</span><span style=\"color:#f8f8f2;\">npm install </span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">D </span><span style=\"color:#f92672;\">@</span><span style=\"color:#f8f8f2;\">playwright</span><span style=\"color:#f92672;\">/</span><span style=\"color:#f8f8f2;\">test\n</span><span style=\"color:#f8f8f2;\">npx playwright install </span><span style=\"color:#f92672;\">--</span><span style=\"color:#f8f8f2;\">with</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">deps\n</span><span style=\"color:#f8f8f2;\">npx playwright test</span></pre>\n" }
         h2 { id: "how-to-test-dioxus-with-local-crate",
-            a { href: "#how-to-test-dioxus-with-local-crate", class: "header",
+            Link {
+                to: BookRoute::ContributingIndex {
+                    section: ContributingIndexSection::HowToTestDioxusWithLocalCrate,
+                },
+                class: "header",
                 "How to test dioxus with local crate"
             }
         }
@@ -14911,6 +22623,8 @@ pub fn ContributingIndex() -> dioxus::prelude::Element {
         ul {
             li {
                 "Create a new or use an existing rust crate (ignore this step if you will use an existing rust crate):"
+                " "
+                "This is where we will be testing the features of the forked"
             }
         }
         CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">cargo new </span><span style=\"color:#f92672;\">--</span><span style=\"color:#f8f8f2;\">bin demo</span></pre>\n" }
@@ -14920,7 +22634,12 @@ pub fn ContributingIndex() -> dioxus::prelude::Element {
         CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">dioxus </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">{{ path </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;&lt;path to forked dioxus project&gt;/dioxus/packages/dioxus&quot;</span><span style=\"color:#f8f8f2;\">, features </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">[</span><span style=\"color:#ffee99;\">&quot;web&quot;</span><span style=\"color:#f8f8f2;\">, </span><span style=\"color:#ffee99;\">&quot;router&quot;</span><span style=\"color:#f8f8f2;\">] }}</span></pre>\n" }
         p {
             "This above example is for dioxus-web, with dioxus-router. To know about the dependencies for different renderer visit "
-            a { href: "../getting_started", "here" }
+            Link {
+                to: BookRoute::GettingStartedIndex {
+                    section: GettingStartedIndexSection::Empty,
+                },
+                "here"
+            }
             "."
         }
         ul {
@@ -14929,90 +22648,170 @@ pub fn ContributingIndex() -> dioxus::prelude::Element {
         CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">dx serve</span></pre>\n" }
         p {
             "If this is your first time with dioxus, please read "
-            a { href: "../guide", "the guide" }
+            Link {
+                to: BookRoute::GuideIndex {
+                    section: GuideIndexSection::Empty,
+                },
+                "the guide"
+            }
             " to get familiar with dioxus."
         }
     }
 }
+#[derive(
+    Clone, Copy, PartialEq, Eq, Hash, Debug, Default, serde::Serialize, serde::Deserialize,
+)]
+pub enum ContributingProjectStructureSection {
+    #[default]
+    Empty,
+    ProjectStructure,
+    Renderers,
+    StateManagementhooks,
+    CoreUtilities,
+    NativeRendererUtilities,
+    WebRendererTooling,
+    DeveloperTooling,
+}
+impl std::str::FromStr for ContributingProjectStructureSection {
+    type Err = ContributingProjectStructureSectionParseError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "" => Ok(Self::Empty),
+            "project-structure" => Ok(Self::ProjectStructure),
+            "renderers" => Ok(Self::Renderers),
+            "state-managementhooks" => Ok(Self::StateManagementhooks),
+            "core-utilities" => Ok(Self::CoreUtilities),
+            "native-renderer-utilities" => Ok(Self::NativeRendererUtilities),
+            "web-renderer-tooling" => Ok(Self::WebRendererTooling),
+            "developer-tooling" => Ok(Self::DeveloperTooling),
+            _ => Err(ContributingProjectStructureSectionParseError),
+        }
+    }
+}
+impl std::fmt::Display for ContributingProjectStructureSection {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Self::Empty => f.write_str(""),
+            Self::ProjectStructure => f.write_str("project-structure"),
+            Self::Renderers => f.write_str("renderers"),
+            Self::StateManagementhooks => f.write_str("state-managementhooks"),
+            Self::CoreUtilities => f.write_str("core-utilities"),
+            Self::NativeRendererUtilities => f.write_str("native-renderer-utilities"),
+            Self::WebRendererTooling => f.write_str("web-renderer-tooling"),
+            Self::DeveloperTooling => f.write_str("developer-tooling"),
+        }
+    }
+}
+#[derive(Debug)]
+pub struct ContributingProjectStructureSectionParseError;
+impl std::fmt::Display for ContributingProjectStructureSectionParseError {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.write_str(
+            "Invalid section name. Expected one of ContributingProjectStructureSectionproject-structure, renderers, state-managementhooks, core-utilities, native-renderer-utilities, web-renderer-tooling, developer-tooling",
+        )?;
+        Ok(())
+    }
+}
+impl std::error::Error for ContributingProjectStructureSectionParseError {}
 #[component(no_case_check)]
-pub fn ContributingProjectStructure() -> dioxus::prelude::Element {
+pub fn ContributingProjectStructure(
+    section: ContributingProjectStructureSection,
+) -> dioxus::prelude::Element {
     use dioxus::prelude::*;
     rsx! {
         h1 { id: "project-structure",
-            a { href: "#project-structure", class: "header", "Project Structure" }
+            Link {
+                to: BookRoute::ContributingProjectStructure {
+                    section: ContributingProjectStructureSection::ProjectStructure,
+                },
+                class: "header",
+                "Project Structure"
+            }
         }
         p {
             "There are many packages in the Dioxus organization. This document will help you understand the purpose of each package and how they fit together."
         }
         h2 { id: "renderers",
-            a { href: "#renderers", class: "header", "Renderers" }
+            Link {
+                to: BookRoute::ContributingProjectStructure {
+                    section: ContributingProjectStructureSection::Renderers,
+                },
+                class: "header",
+                "Renderers"
+            }
         }
         ul {
             li {
-                a { href: "https://github.com/DioxusLabs/dioxus/tree/main/packages/desktop",
+                Link { to: "https://github.com/DioxusLabs/dioxus/tree/main/packages/desktop",
                     "Desktop"
                 }
                 ": A Render that Runs Dioxus applications natively, but renders them with the system webview"
             }
             li {
-                a { href: "https://github.com/DioxusLabs/dioxus/tree/main/packages/mobile",
+                Link { to: "https://github.com/DioxusLabs/dioxus/tree/main/packages/mobile",
                     "Mobile"
                 }
                 ": A Render that Runs Dioxus applications natively, but renders them with the system webview. This is currently a copy of the desktop render"
             }
             li {
-                a { href: "https://github.com/DioxusLabs/dioxus/tree/main/packages/web",
+                Link { to: "https://github.com/DioxusLabs/dioxus/tree/main/packages/web",
                     "Web"
                 }
                 ": Renders Dioxus applications in the browser by compiling to WASM and manipulating the DOM"
             }
             li {
-                a { href: "https://github.com/DioxusLabs/dioxus/tree/main/packages/liveview",
+                Link { to: "https://github.com/DioxusLabs/dioxus/tree/main/packages/liveview",
                     "Liveview"
                 }
                 ": A Render that Runs on the server, and renders using a websocket proxy in the browser"
             }
             li {
-                a { href: "https://github.com/DioxusLabs/blitz/tree/master/packages/plasmo",
+                Link { to: "https://github.com/DioxusLabs/blitz/tree/master/packages/plasmo",
                     "Plasmo"
                 }
                 ": A Renderer that renders a HTML-like tree into a terminal"
             }
             li {
-                a { href: "https://github.com/DioxusLabs/blitz/tree/master/packages/dioxus-tui",
+                Link { to: "https://github.com/DioxusLabs/blitz/tree/master/packages/dioxus-tui",
                     "TUI"
                 }
                 ": A Renderer that uses Plasmo to render a Dioxus application in a terminal"
             }
             li {
-                a { href: "https://github.com/DioxusLabs/blitz/tree/master/packages/blitz-core",
+                Link { to: "https://github.com/DioxusLabs/blitz/tree/master/packages/blitz-core",
                     "Blitz-Core"
                 }
                 ": An experimental native renderer that renders a HTML-like tree using WGPU."
             }
             li {
-                a { href: "https://github.com/DioxusLabs/blitz", "Blitz" }
+                Link { to: "https://github.com/DioxusLabs/blitz", "Blitz" }
                 ": An experimental native renderer that uses Blitz-Core to render a Dioxus application using WGPU."
             }
             li {
-                a { href: "https://github.com/DioxusLabs/dioxus/tree/main/packages/ssr",
+                Link { to: "https://github.com/DioxusLabs/dioxus/tree/main/packages/ssr",
                     "SSR"
                 }
                 ": A Render that Runs Dioxus applications on the server, and renders them to HTML"
             }
         }
         h2 { id: "state-managementhooks",
-            a { href: "#state-managementhooks", class: "header", "State Management/Hooks" }
+            Link {
+                to: BookRoute::ContributingProjectStructure {
+                    section: ContributingProjectStructureSection::StateManagementhooks,
+                },
+                class: "header",
+                "State Management/Hooks"
+            }
         }
         ul {
             li {
-                a { href: "https://github.com/DioxusLabs/dioxus/tree/main/packages/hooks",
+                Link { to: "https://github.com/DioxusLabs/dioxus/tree/main/packages/hooks",
                     "Hooks"
                 }
                 ": A collection of common hooks for Dioxus applications"
             }
             li {
-                a { href: "https://github.com/DioxusLabs/dioxus/tree/main/packages/signals",
+                Link { to: "https://github.com/DioxusLabs/dioxus/tree/main/packages/signals",
                     "Signals"
                 }
                 ": A experimental state management library for Dioxus applications. This currently contains a "
@@ -15020,112 +22819,136 @@ pub fn ContributingProjectStructure() -> dioxus::prelude::Element {
                 " version of Signal"
             }
             li {
-                a { href: "https://github.com/DioxusLabs/sdk", "SDK" }
+                Link { to: "https://github.com/DioxusLabs/sdk", "SDK" }
                 ": A collection of platform agnostic hooks to interact with system interfaces (The clipboard, camera, etc.)."
             }
             li {
-                a { href: "https://github.com/DioxusLabs/dioxus/tree/main/packages/fermi",
+                Link { to: "https://github.com/DioxusLabs/dioxus/tree/main/packages/fermi",
                     "Fermi"
                 }
                 ": A global state management library for Dioxus applications."
             }
             li {
-                a { href: "https://github.com/DioxusLabs/dioxus/tree/main/packages/router",
+                Link { to: "https://github.com/DioxusLabs/dioxus/tree/main/packages/router",
                     "Router"
                 }
                 ": A client-side router for Dioxus applications"
             }
         }
         h2 { id: "core-utilities",
-            a { href: "#core-utilities", class: "header", "Core utilities" }
+            Link {
+                to: BookRoute::ContributingProjectStructure {
+                    section: ContributingProjectStructureSection::CoreUtilities,
+                },
+                class: "header",
+                "Core utilities"
+            }
         }
         ul {
             li {
-                a { href: "https://github.com/DioxusLabs/dioxus/tree/main/packages/core",
+                Link { to: "https://github.com/DioxusLabs/dioxus/tree/main/packages/core",
                     "core"
                 }
                 ": The core virtual dom implementation every Dioxus application uses"
                 ul {
                     li {
                         "You can read more about the architecture of the core "
-                        a { href: "https://dioxuslabs.com/blog/templates-diffing/",
+                        Link { to: "https://dioxuslabs.com/blog/templates-diffing/",
                             "in this blog post"
                         }
                     }
                 }
             }
             li {
-                a { href: "https://github.com/DioxusLabs/dioxus/tree/main/packages/rsx",
+                Link { to: "https://github.com/DioxusLabs/dioxus/tree/main/packages/rsx",
                     "RSX"
                 }
                 ": The core parsing for RSX used for hot reloading, autoformatting, and the macro"
             }
             li {
-                a { href: "https://github.com/DioxusLabs/dioxus/tree/main/packages/core-macro",
+                Link { to: "https://github.com/DioxusLabs/dioxus/tree/main/packages/core-macro",
                     "core-macro"
                 }
                 ": The rsx! macro used to write Dioxus applications. (This is a wrapper over the RSX crate)"
             }
             li {
-                a { href: "https://github.com/DioxusLabs/dioxus-html-macro", "HTML macro" }
+                Link { to: "https://github.com/DioxusLabs/dioxus-html-macro", "HTML macro" }
                 ": A html-like alternative to the RSX macro"
             }
         }
         h2 { id: "native-renderer-utilities",
-            a { href: "#native-renderer-utilities", class: "header", "Native Renderer Utilities" }
+            Link {
+                to: BookRoute::ContributingProjectStructure {
+                    section: ContributingProjectStructureSection::NativeRendererUtilities,
+                },
+                class: "header",
+                "Native Renderer Utilities"
+            }
         }
         ul {
             li {
-                a { href: "https://github.com/DioxusLabs/taffy", "Taffy" }
+                Link { to: "https://github.com/DioxusLabs/taffy", "Taffy" }
                 ": Layout engine powering Blitz-Core, Plasmo, and Bevy UI"
             }
             li {
-                a { href: "https://github.com/DioxusLabs/blitz", "Blitz" }
+                Link { to: "https://github.com/DioxusLabs/blitz", "Blitz" }
                 ": An experimental native renderer for HTML+CSS"
             }
         }
         h2 { id: "web-renderer-tooling",
-            a { href: "#web-renderer-tooling", class: "header", "Web renderer tooling" }
+            Link {
+                to: BookRoute::ContributingProjectStructure {
+                    section: ContributingProjectStructureSection::WebRendererTooling,
+                },
+                class: "header",
+                "Web renderer tooling"
+            }
         }
         ul {
             li {
-                a { href: "https://github.com/DioxusLabs/dioxus/tree/main/packages/html",
+                Link { to: "https://github.com/DioxusLabs/dioxus/tree/main/packages/html",
                     "HTML"
                 }
                 ": defines html specific elements, events, and attributes"
             }
             li {
-                a { href: "https://github.com/DioxusLabs/dioxus/tree/main/packages/interpreter",
+                Link { to: "https://github.com/DioxusLabs/dioxus/tree/main/packages/interpreter",
                     "Interpreter"
                 }
                 ": defines browser bindings used by the web and desktop renderers"
             }
         }
         h2 { id: "developer-tooling",
-            a { href: "#developer-tooling", class: "header", "Developer tooling" }
+            Link {
+                to: BookRoute::ContributingProjectStructure {
+                    section: ContributingProjectStructureSection::DeveloperTooling,
+                },
+                class: "header",
+                "Developer tooling"
+            }
         }
         ul {
             li {
-                a { href: "https://github.com/DioxusLabs/dioxus/tree/main/packages/hot-reload",
+                Link { to: "https://github.com/DioxusLabs/dioxus/tree/main/packages/hot-reload",
                     "hot-reload"
                 }
                 ": Macro that uses the RSX crate to hot reload static parts of any rsx! macro. This macro works with any non-web renderer with an "
-                a { href: "https://crates.io/crates/dioxus-hot-reload", "integration" }
+                Link { to: "https://crates.io/crates/dioxus-hot-reload", "integration" }
             }
             li {
-                a { href: "https://github.com/DioxusLabs/dioxus/tree/main/packages/autofmt",
+                Link { to: "https://github.com/DioxusLabs/dioxus/tree/main/packages/autofmt",
                     "autofmt"
                 }
                 ": Formats RSX code"
             }
             li {
-                a { href: "https://github.com/DioxusLabs/dioxus/tree/main/packages/rsx-rosetta",
+                Link { to: "https://github.com/DioxusLabs/dioxus/tree/main/packages/rsx-rosetta",
                     "rsx-rosetta"
                 }
                 ": Handles conversion between HTML and RSX"
             }
             li {
-                a { href: "https://github.com/DioxusLabs/dioxus/tree/main/packages/cli",
+                Link { to: "https://github.com/DioxusLabs/dioxus/tree/main/packages/cli",
                     "CLI"
                 }
                 ": A Command Line Interface and VSCode extension to assist with Dioxus usage"
@@ -15133,12 +22956,69 @@ pub fn ContributingProjectStructure() -> dioxus::prelude::Element {
         }
     }
 }
+#[derive(
+    Clone, Copy, PartialEq, Eq, Hash, Debug, Default, serde::Serialize, serde::Deserialize,
+)]
+pub enum ContributingGuidingPrinciplesSection {
+    #[default]
+    Empty,
+    OverallGoals,
+    CrossPlatform,
+    Performance,
+    TypeSafety,
+    DeveloperExperience,
+}
+impl std::str::FromStr for ContributingGuidingPrinciplesSection {
+    type Err = ContributingGuidingPrinciplesSectionParseError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "" => Ok(Self::Empty),
+            "overall-goals" => Ok(Self::OverallGoals),
+            "cross-platform" => Ok(Self::CrossPlatform),
+            "performance" => Ok(Self::Performance),
+            "type-safety" => Ok(Self::TypeSafety),
+            "developer-experience" => Ok(Self::DeveloperExperience),
+            _ => Err(ContributingGuidingPrinciplesSectionParseError),
+        }
+    }
+}
+impl std::fmt::Display for ContributingGuidingPrinciplesSection {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Self::Empty => f.write_str(""),
+            Self::OverallGoals => f.write_str("overall-goals"),
+            Self::CrossPlatform => f.write_str("cross-platform"),
+            Self::Performance => f.write_str("performance"),
+            Self::TypeSafety => f.write_str("type-safety"),
+            Self::DeveloperExperience => f.write_str("developer-experience"),
+        }
+    }
+}
+#[derive(Debug)]
+pub struct ContributingGuidingPrinciplesSectionParseError;
+impl std::fmt::Display for ContributingGuidingPrinciplesSectionParseError {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.write_str(
+            "Invalid section name. Expected one of ContributingGuidingPrinciplesSectionoverall-goals, cross-platform, performance, type-safety, developer-experience",
+        )?;
+        Ok(())
+    }
+}
+impl std::error::Error for ContributingGuidingPrinciplesSectionParseError {}
 #[component(no_case_check)]
-pub fn ContributingGuidingPrinciples() -> dioxus::prelude::Element {
+pub fn ContributingGuidingPrinciples(
+    section: ContributingGuidingPrinciplesSection,
+) -> dioxus::prelude::Element {
     use dioxus::prelude::*;
     rsx! {
         h1 { id: "overall-goals",
-            a { href: "#overall-goals", class: "header", "Overall Goals" }
+            Link {
+                to: BookRoute::ContributingGuidingPrinciples {
+                    section: ContributingGuidingPrinciplesSection::OverallGoals,
+                },
+                class: "header",
+                "Overall Goals"
+            }
         }
         p {
             "This document outlines some of the overall goals for Dioxus. These goals are not set in stone, but they represent general guidelines for the project."
@@ -15149,7 +23029,13 @@ pub fn ContributingGuidingPrinciples() -> dioxus::prelude::Element {
             "."
         }
         h2 { id: "cross-platform",
-            a { href: "#cross-platform", class: "header", "Cross-Platform" }
+            Link {
+                to: BookRoute::ContributingGuidingPrinciples {
+                    section: ContributingGuidingPrinciplesSection::CrossPlatform,
+                },
+                class: "header",
+                "Cross-Platform"
+            }
         }
         p {
             "Dioxus is designed to be cross-platform by default. This means that it should be easy to build applications that run on the web, desktop, and mobile. However, Dioxus should also be flexible enough to allow users to opt into platform-specific features when needed. The  "
@@ -15157,7 +23043,13 @@ pub fn ContributingGuidingPrinciples() -> dioxus::prelude::Element {
             " is one example of this. By default, Dioxus does not assume that the platform supports JavaScript, but it does provide a hook that allows users to opt into JavaScript when needed."
         }
         h2 { id: "performance",
-            a { href: "#performance", class: "header", "Performance" }
+            Link {
+                to: BookRoute::ContributingGuidingPrinciples {
+                    section: ContributingGuidingPrinciplesSection::Performance,
+                },
+                class: "header",
+                "Performance"
+            }
         }
         p {
             "As Dioxus applications grow, they should remain relatively performant without the need for manual optimizations. There will be cases where manual optimizations are needed, but Dioxus should try to make these cases as rare as possible."
@@ -15166,7 +23058,13 @@ pub fn ContributingGuidingPrinciples() -> dioxus::prelude::Element {
             "One of the benefits of the core architecture of Dioxus is that it delivers reasonable performance even when components are rerendered often. It is based on a Virtual Dom which performs diffing which should prevent unnecessary re-renders even when large parts of the component tree are rerun. On top of this, Dioxus groups static parts of the RSX tree together to skip diffing them entirely."
         }
         h2 { id: "type-safety",
-            a { href: "#type-safety", class: "header", "Type Safety" }
+            Link {
+                to: BookRoute::ContributingGuidingPrinciples {
+                    section: ContributingGuidingPrinciplesSection::TypeSafety,
+                },
+                class: "header",
+                "Type Safety"
+            }
         }
         p {
             "As teams grow, the Type safety of Rust is a huge advantage. Dioxus should leverage this advantage to make it easy to build applications with large teams."
@@ -15177,7 +23075,13 @@ pub fn ContributingGuidingPrinciples() -> dioxus::prelude::Element {
             " types and string-ly typed APIs where possible."
         }
         h2 { id: "developer-experience",
-            a { href: "#developer-experience", class: "header", "Developer Experience" }
+            Link {
+                to: BookRoute::ContributingGuidingPrinciples {
+                    section: ContributingGuidingPrinciplesSection::DeveloperExperience,
+                },
+                class: "header",
+                "Developer Experience"
+            }
         }
         p { "Dioxus should be easy to learn and ergonomic to use." }
         ul {
@@ -15214,17 +23118,93 @@ pub fn ContributingGuidingPrinciples() -> dioxus::prelude::Element {
         }
     }
 }
+#[derive(
+    Clone, Copy, PartialEq, Eq, Hash, Debug, Default, serde::Serialize, serde::Deserialize,
+)]
+pub enum ContributingRoadmapSection {
+    #[default]
+    Empty,
+}
+impl std::str::FromStr for ContributingRoadmapSection {
+    type Err = ContributingRoadmapSectionParseError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "" => Ok(Self::Empty),
+            _ => Err(ContributingRoadmapSectionParseError),
+        }
+    }
+}
+impl std::fmt::Display for ContributingRoadmapSection {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Self::Empty => f.write_str(""),
+        }
+    }
+}
+#[derive(Debug)]
+pub struct ContributingRoadmapSectionParseError;
+impl std::fmt::Display for ContributingRoadmapSectionParseError {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.write_str("Invalid section name. Expected one of ContributingRoadmapSection")?;
+        Ok(())
+    }
+}
+impl std::error::Error for ContributingRoadmapSectionParseError {}
 #[component(no_case_check)]
-pub fn ContributingRoadmap() -> dioxus::prelude::Element {
+pub fn ContributingRoadmap(section: ContributingRoadmapSection) -> dioxus::prelude::Element {
     use dioxus::prelude::*;
     rsx! {}
 }
+#[derive(
+    Clone, Copy, PartialEq, Eq, Hash, Debug, Default, serde::Serialize, serde::Deserialize,
+)]
+pub enum CliIndexSection {
+    #[default]
+    Empty,
+    Introduction,
+    Features,
+}
+impl std::str::FromStr for CliIndexSection {
+    type Err = CliIndexSectionParseError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "" => Ok(Self::Empty),
+            "introduction" => Ok(Self::Introduction),
+            "features" => Ok(Self::Features),
+            _ => Err(CliIndexSectionParseError),
+        }
+    }
+}
+impl std::fmt::Display for CliIndexSection {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Self::Empty => f.write_str(""),
+            Self::Introduction => f.write_str("introduction"),
+            Self::Features => f.write_str("features"),
+        }
+    }
+}
+#[derive(Debug)]
+pub struct CliIndexSectionParseError;
+impl std::fmt::Display for CliIndexSectionParseError {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.write_str("Invalid section name. Expected one of CliIndexSectionintroduction, features")?;
+        Ok(())
+    }
+}
+impl std::error::Error for CliIndexSectionParseError {}
 #[component(no_case_check)]
-pub fn CliIndex() -> dioxus::prelude::Element {
+pub fn CliIndex(section: CliIndexSection) -> dioxus::prelude::Element {
     use dioxus::prelude::*;
     rsx! {
         h1 { id: "introduction",
-            a { href: "#introduction", class: "header", "Introduction" }
+            Link {
+                to: BookRoute::CliIndex {
+                    section: CliIndexSection::Introduction,
+                },
+                class: "header",
+                "Introduction"
+            }
         }
         p {
             "The ✨"
@@ -15239,7 +23219,13 @@ pub fn CliIndex() -> dioxus::prelude::Element {
             " to get help with a specific command."
         }
         h2 { id: "features",
-            a { href: "#features", class: "header", "Features" }
+            Link {
+                to: BookRoute::CliIndex {
+                    section: CliIndexSection::Features,
+                },
+                class: "header",
+                "Features"
+            }
         }
         ul {
             li { "Build and pack a Dioxus project." }
@@ -15254,16 +23240,68 @@ pub fn CliIndex() -> dioxus::prelude::Element {
         }
     }
 }
+#[derive(
+    Clone, Copy, PartialEq, Eq, Hash, Debug, Default, serde::Serialize, serde::Deserialize,
+)]
+pub enum CliCreatingSection {
+    #[default]
+    Empty,
+    CreateAProject,
+    InitializingAProject,
+}
+impl std::str::FromStr for CliCreatingSection {
+    type Err = CliCreatingSectionParseError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "" => Ok(Self::Empty),
+            "create-a-project" => Ok(Self::CreateAProject),
+            "initializing-a-project" => Ok(Self::InitializingAProject),
+            _ => Err(CliCreatingSectionParseError),
+        }
+    }
+}
+impl std::fmt::Display for CliCreatingSection {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Self::Empty => f.write_str(""),
+            Self::CreateAProject => f.write_str("create-a-project"),
+            Self::InitializingAProject => f.write_str("initializing-a-project"),
+        }
+    }
+}
+#[derive(Debug)]
+pub struct CliCreatingSectionParseError;
+impl std::fmt::Display for CliCreatingSectionParseError {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.write_str(
+            "Invalid section name. Expected one of CliCreatingSectioncreate-a-project, initializing-a-project",
+        )?;
+        Ok(())
+    }
+}
+impl std::error::Error for CliCreatingSectionParseError {}
 #[component(no_case_check)]
-pub fn CliCreating() -> dioxus::prelude::Element {
+pub fn CliCreating(section: CliCreatingSection) -> dioxus::prelude::Element {
     use dioxus::prelude::*;
     rsx! {
         h1 { id: "create-a-project",
-            a { href: "#create-a-project", class: "header", "Create a Project" }
+            Link {
+                to: BookRoute::CliCreating {
+                    section: CliCreatingSection::CreateAProject,
+                },
+                class: "header",
+                "Create a Project"
+            }
         }
         p { "Once you have the Dioxus CLI installed, you can use it to create your own project!" }
         h2 { id: "initializing-a-project",
-            a { href: "#initializing-a-project", class: "header", "Initializing a project" }
+            Link {
+                to: BookRoute::CliCreating {
+                    section: CliCreatingSection::InitializingAProject,
+                },
+                class: "header",
+                "Initializing a project"
+            }
         }
         p {
             "First, run the  "
@@ -15273,7 +23311,7 @@ pub fn CliCreating() -> dioxus::prelude::Element {
         blockquote {
             p {
                 "It clones this "
-                a { href: "https://github.com/DioxusLabs/dioxus-template", "template" }
+                Link { to: "https://github.com/DioxusLabs/dioxus-template", "template" }
                 ", which is used to create dioxus apps."
             }
             p {
@@ -15289,39 +23327,147 @@ pub fn CliCreating() -> dioxus::prelude::Element {
             ", or simply opening it in an IDE."
         }
         blockquote {
-            p { "Make sure the WASM target is installed before running the projects." }
+            p {
+                "Make sure the WASM target is installed before running the projects."
+                " "
+                "You can install the WASM target for rust using rustup:"
+            }
             CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">rustup target add wasm32</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">unknown</span><span style=\"color:#f92672;\">-</span><span style=\"color:#f8f8f2;\">unknown</span></pre>\n" }
         }
         p {
             "Finally, serve your project with  "
             code { "dx serve" }
             "! The CLI will tell you the address it is serving on, along with additional"
+            " "
+            "info such as code warnings."
         }
     }
 }
+#[derive(
+    Clone, Copy, PartialEq, Eq, Hash, Debug, Default, serde::Serialize, serde::Deserialize,
+)]
+pub enum CliConfigureSection {
+    #[default]
+    Empty,
+    ConfigureProject,
+    Structure,
+    Application,
+    Webapp,
+    Webwatcher,
+    Webresource,
+    Webresourcedev,
+    Webproxy,
+    Webhttps,
+    WebpreCompress,
+    WebwasmOpt,
+    Bundle,
+    Bundlemacos,
+    Bundlewindows,
+    ConfigExample,
+}
+impl std::str::FromStr for CliConfigureSection {
+    type Err = CliConfigureSectionParseError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "" => Ok(Self::Empty),
+            "configure-project" => Ok(Self::ConfigureProject),
+            "structure" => Ok(Self::Structure),
+            "application-" => Ok(Self::Application),
+            "webapp-" => Ok(Self::Webapp),
+            "webwatcher-" => Ok(Self::Webwatcher),
+            "webresource-" => Ok(Self::Webresource),
+            "webresourcedev-" => Ok(Self::Webresourcedev),
+            "webproxy" => Ok(Self::Webproxy),
+            "webhttps" => Ok(Self::Webhttps),
+            "webpre-compress" => Ok(Self::WebpreCompress),
+            "webwasm-opt" => Ok(Self::WebwasmOpt),
+            "bundle" => Ok(Self::Bundle),
+            "bundlemacos" => Ok(Self::Bundlemacos),
+            "bundlewindows" => Ok(Self::Bundlewindows),
+            "config-example" => Ok(Self::ConfigExample),
+            _ => Err(CliConfigureSectionParseError),
+        }
+    }
+}
+impl std::fmt::Display for CliConfigureSection {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Self::Empty => f.write_str(""),
+            Self::ConfigureProject => f.write_str("configure-project"),
+            Self::Structure => f.write_str("structure"),
+            Self::Application => f.write_str("application-"),
+            Self::Webapp => f.write_str("webapp-"),
+            Self::Webwatcher => f.write_str("webwatcher-"),
+            Self::Webresource => f.write_str("webresource-"),
+            Self::Webresourcedev => f.write_str("webresourcedev-"),
+            Self::Webproxy => f.write_str("webproxy"),
+            Self::Webhttps => f.write_str("webhttps"),
+            Self::WebpreCompress => f.write_str("webpre-compress"),
+            Self::WebwasmOpt => f.write_str("webwasm-opt"),
+            Self::Bundle => f.write_str("bundle"),
+            Self::Bundlemacos => f.write_str("bundlemacos"),
+            Self::Bundlewindows => f.write_str("bundlewindows"),
+            Self::ConfigExample => f.write_str("config-example"),
+        }
+    }
+}
+#[derive(Debug)]
+pub struct CliConfigureSectionParseError;
+impl std::fmt::Display for CliConfigureSectionParseError {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.write_str(
+            "Invalid section name. Expected one of CliConfigureSectionconfigure-project, structure, application-, webapp-, webwatcher-, webresource-, webresourcedev-, webproxy, webhttps, webpre-compress, webwasm-opt, bundle, bundlemacos, bundlewindows, config-example",
+        )?;
+        Ok(())
+    }
+}
+impl std::error::Error for CliConfigureSectionParseError {}
 #[component(no_case_check)]
-pub fn CliConfigure() -> dioxus::prelude::Element {
+pub fn CliConfigure(section: CliConfigureSection) -> dioxus::prelude::Element {
     use dioxus::prelude::*;
     rsx! {
         h1 { id: "configure-project",
-            a { href: "#configure-project", class: "header", "Configure Project" }
+            Link {
+                to: BookRoute::CliConfigure {
+                    section: CliConfigureSection::ConfigureProject,
+                },
+                class: "header",
+                "Configure Project"
+            }
         }
         p {
             "This chapter will teach you how to configure the CLI with the  "
             code { "Dioxus.toml" }
             " file. There's an "
-            a { href: "#config-example", "example" }
+            Link {
+                to: BookRoute::CliConfigure {
+                    section: CliConfigureSection::ConfigExample,
+                },
+                "example"
+            }
             " which has comments to describe individual keys. You can copy that or view this documentation for a more complete learning experience."
         }
         p {
             "\"🔒\" indicates a mandatory item. Some headers are mandatory, but none of the keys inside them are. In that case, you only need to include the header, but no keys. It might look weird, but it's normal."
         }
         h2 { id: "structure",
-            a { href: "#structure", class: "header", "Structure" }
+            Link {
+                to: BookRoute::CliConfigure {
+                    section: CliConfigureSection::Structure,
+                },
+                class: "header",
+                "Structure"
+            }
         }
         p { "Each header has its TOML form directly under it." }
         h3 { id: "application-",
-            a { href: "#application-", class: "header", "Application 🔒" }
+            Link {
+                to: BookRoute::CliConfigure {
+                    section: CliConfigureSection::Application,
+                },
+                class: "header",
+                "Application 🔒"
+            }
         }
         CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">[application]</span></pre>\n" }
         p { "Application-wide configuration. Applies to both web and desktop." }
@@ -15340,7 +23486,13 @@ pub fn CliConfigure() -> dioxus::prelude::Element {
             }
         }
         h3 { id: "webapp-",
-            a { href: "#webapp-", class: "header", "Web.App 🔒" }
+            Link {
+                to: BookRoute::CliConfigure {
+                    section: CliConfigureSection::Webapp,
+                },
+                class: "header",
+                "Web.App 🔒"
+            }
         }
         CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">[web.app]</span></pre>\n" }
         p { "Web-specific configuration." }
@@ -15357,7 +23509,13 @@ pub fn CliConfigure() -> dioxus::prelude::Element {
             }
         }
         h3 { id: "webwatcher-",
-            a { href: "#webwatcher-", class: "header", "Web.Watcher 🔒" }
+            Link {
+                to: BookRoute::CliConfigure {
+                    section: CliConfigureSection::Webwatcher,
+                },
+                class: "header",
+                "Web.Watcher 🔒"
+            }
         }
         CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">[web.watcher]</span></pre>\n" }
         p { "Development server configuration." }
@@ -15391,7 +23549,13 @@ pub fn CliConfigure() -> dioxus::prelude::Element {
             }
         }
         h3 { id: "webresource-",
-            a { href: "#webresource-", class: "header", "Web.Resource 🔒" }
+            Link {
+                to: BookRoute::CliConfigure {
+                    section: CliConfigureSection::Webresource,
+                },
+                class: "header",
+                "Web.Resource 🔒"
+            }
         }
         CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">[web.resource]</span></pre>\n" }
         p { "Static resource configuration." }
@@ -15412,12 +23576,21 @@ pub fn CliConfigure() -> dioxus::prelude::Element {
             }
         }
         h3 { id: "webresourcedev-",
-            a { href: "#webresourcedev-", class: "header", "Web.Resource.Dev 🔒" }
+            Link {
+                to: BookRoute::CliConfigure {
+                    section: CliConfigureSection::Webresourcedev,
+                },
+                class: "header",
+                "Web.Resource.Dev 🔒"
+            }
         }
         CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">[web.resource.dev]</span></pre>\n" }
         p {
             "This is the same as "
-            a { href: "#webresource-",
+            Link {
+                to: BookRoute::CliConfigure {
+                    section: CliConfigureSection::Webresource,
+                },
                 code { "[web.resource]" }
             }
             ", but it only works in development servers. For example, if you want to include a file in a "
@@ -15427,7 +23600,13 @@ pub fn CliConfigure() -> dioxus::prelude::Element {
             " server, put it here."
         }
         h3 { id: "webproxy",
-            a { href: "#webproxy", class: "header", "Web.Proxy" }
+            Link {
+                to: BookRoute::CliConfigure {
+                    section: CliConfigureSection::Webproxy,
+                },
+                class: "header",
+                "Web.Proxy"
+            }
         }
         CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">[[web.proxy]]</span></pre>\n" }
         p {
@@ -15442,7 +23621,13 @@ pub fn CliConfigure() -> dioxus::prelude::Element {
             }
         }
         h3 { id: "webhttps",
-            a { href: "#webhttps", class: "header", "Web.https" }
+            Link {
+                to: BookRoute::CliConfigure {
+                    section: CliConfigureSection::Webhttps,
+                },
+                class: "header",
+                "Web.https"
+            }
         }
         CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">[[web.https]]</span></pre>\n" }
         p { "Controls the https config for the CLI." }
@@ -15469,14 +23654,26 @@ pub fn CliConfigure() -> dioxus::prelude::Element {
             }
         }
         h3 { id: "webpre-compress",
-            a { href: "#webpre-compress", class: "header", "Web.pre_compress" }
+            Link {
+                to: BookRoute::CliConfigure {
+                    section: CliConfigureSection::WebpreCompress,
+                },
+                class: "header",
+                "Web.pre_compress"
+            }
         }
         p {
             "If this setting is enabled, the CLI will pre-compress the built assets in release mode with brotli. This setting is enabled by default."
         }
         CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">[web]\n</span><span style=\"color:#f8f8f2;\">pre_compress </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ff80f4;\">true</span></pre>\n" }
         h3 { id: "webwasm-opt",
-            a { href: "#webwasm-opt", class: "header", "Web.wasm_opt" }
+            Link {
+                to: BookRoute::CliConfigure {
+                    section: CliConfigureSection::WebwasmOpt,
+                },
+                class: "header",
+                "Web.wasm_opt"
+            }
         }
         p { "Controls the wasm-opt config for the CLI." }
         ul {
@@ -15500,12 +23697,18 @@ pub fn CliConfigure() -> dioxus::prelude::Element {
             }
         }
         h3 { id: "bundle",
-            a { href: "#bundle", class: "header", "Bundle" }
+            Link {
+                to: BookRoute::CliConfigure {
+                    section: CliConfigureSection::Bundle,
+                },
+                class: "header",
+                "Bundle"
+            }
         }
         CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">[bundle]</span></pre>\n" }
         p {
             "Controls the bundling process for your application. Dioxus uses tauri-bundler under the hood. This section only includes a subset of the options available in tauri-bundler. More options can be found in the tauri-bundler "
-            a { href: "https://v1.tauri.app/v1/guides/building/#configuration-options",
+            Link { to: "https://v1.tauri.app/v1/guides/building/#configuration-options",
                 "documentation"
             }
             "."
@@ -15528,7 +23731,7 @@ pub fn CliConfigure() -> dioxus::prelude::Element {
                 " - Paths to icon files to be used in the bundle. Icon files must be square and 16, 24, 32, 64, or 256 pixels in size. PNG icons must have a 32 bit depth in the RGBA format. If you use a "
                 code { ".icns" }
                 " file is must fit "
-                a { href: "https://github.com/tauri-apps/tauri/blob/d8db5042a28635259f646c329c3ec5ccf23eac9e/tooling/cli/src/helpers/icns.json",
+                Link { to: "https://github.com/tauri-apps/tauri/blob/d8db5042a28635259f646c329c3ec5ccf23eac9e/tooling/cli/src/helpers/icns.json",
                     "this"
                 }
                 " format. The icons must include a "
@@ -15543,7 +23746,12 @@ pub fn CliConfigure() -> dioxus::prelude::Element {
             li {
                 strong { "resources" }
                 " - Additional files to include in the bundle. Each asset is copied from the path and is accessible from the bundle at the same path. Any "
-                a { href: "../guides/assets", "assets" }
+                Link {
+                    to: BookRoute::GuidesAssets {
+                        section: GuidesAssetsSection::Empty,
+                    },
+                    "assets"
+                }
                 " are automatically bundled with the installer."
                 CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">resources </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">[</span><span style=\"color:#ffee99;\">&quot;path/to/resource&quot;</span><span style=\"color:#f8f8f2;\">]</span></pre>\n" }
             }
@@ -15658,7 +23866,13 @@ pub fn CliConfigure() -> dioxus::prelude::Element {
             }
         }
         h3 { id: "bundlemacos",
-            a { href: "#bundlemacos", class: "header", "Bundle.macos" }
+            Link {
+                to: BookRoute::CliConfigure {
+                    section: CliConfigureSection::Bundlemacos,
+                },
+                class: "header",
+                "Bundle.macos"
+            }
         }
         CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">[bundle.macos]</span></pre>\n" }
         p { "Configuration options for macOS bundles." }
@@ -15703,7 +23917,7 @@ pub fn CliConfigure() -> dioxus::prelude::Element {
             li {
                 strong { "hardened_runtime" }
                 " - Whether to enable the "
-                a { href: "https://developer.apple.com/documentation/security/hardened-runtime",
+                Link { to: "https://developer.apple.com/documentation/security/hardened-runtime",
                     "hardened runtime"
                 }
                 " in the bundle."
@@ -15711,7 +23925,13 @@ pub fn CliConfigure() -> dioxus::prelude::Element {
             }
         }
         h3 { id: "bundlewindows",
-            a { href: "#bundlewindows", class: "header", "Bundle.windows" }
+            Link {
+                to: BookRoute::CliConfigure {
+                    section: CliConfigureSection::Bundlewindows,
+                },
+                class: "header",
+                "Bundle.windows"
+            }
         }
         CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">[bundle.windows]</span></pre>\n" }
         p { "Configuration options for Windows bundles." }
@@ -15746,6 +23966,8 @@ pub fn CliConfigure() -> dioxus::prelude::Element {
             li {
                 strong { "webview_install_mode" }
                 " - Installation mode for WebView2."
+                " "
+                "EmbedBootstrapper: embed the WebView2 bootstrapper into the installer"
                 CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">[webview_install_mode.EmbedBootstrapper]\n</span><span style=\"color:#f8f8f2;\">silent </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ff80f4;\">true</span></pre>\n" }
                 "DownloadBootstrapper: download the WebView2 bootstrapper in the installer at runtime"
                 CodeBlock { contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">[webview_install_mode.DownloadBootstrapper]\n</span><span style=\"color:#f8f8f2;\">silent </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ff80f4;\">true</span></pre>\n" }
@@ -15758,20 +23980,72 @@ pub fn CliConfigure() -> dioxus::prelude::Element {
             }
         }
         h2 { id: "config-example",
-            a { href: "#config-example", class: "header", "Config example" }
+            Link {
+                to: BookRoute::CliConfigure {
+                    section: CliConfigureSection::ConfigExample,
+                },
+                class: "header",
+                "Config example"
+            }
         }
         p { "This includes all fields, mandatory or not." }
         CodeBlock {
-            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">[application]\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\">#</span><span style=\"color:#f8f8f2;\"> App name\n</span><span style=\"color:#f8f8f2;\">name </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;project_name&quot;\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\">#</span><span style=\"color:#f8f8f2;\"> The Dioxus platform to default to\n</span><span style=\"color:#f8f8f2;\">default_platform </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;web&quot;\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\">#</span><span style=\"color:#f8f8f2;\"> `build` </span><span style=\"color:#f92672;\">&amp;</span><span style=\"color:#f8f8f2;\"> `serve` output path\n</span><span style=\"color:#f8f8f2;\">out_dir </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;dist&quot;\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\">#</span><span style=\"color:#f8f8f2;\"> The </span><span style=\"font-style:italic;color:#66d9ef;\">static</span><span style=\"color:#f8f8f2;\"> resource path\n</span><span style=\"color:#f8f8f2;\">asset_dir </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;public&quot;\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">[web.app]\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\"># </span><span style=\"color:#ff80f4;\">HTML</span><span style=\"color:#f8f8f2;\"> title tag content\n</span><span style=\"color:#f8f8f2;\">title </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;project_name&quot;\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">[web.watcher]\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\">#</span><span style=\"color:#f8f8f2;\"> When watcher is triggered, regenerate the `index.html`\n</span><span style=\"color:#f8f8f2;\">reload_html </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ff80f4;\">true\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\">#</span><span style=\"color:#f8f8f2;\"> Which files or dirs will be monitored\n</span><span style=\"color:#f8f8f2;\">watch_path </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">[</span><span style=\"color:#ffee99;\">&quot;src&quot;</span><span style=\"color:#f8f8f2;\">, </span><span style=\"color:#ffee99;\">&quot;public&quot;</span><span style=\"color:#f8f8f2;\">]\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\">#</span><span style=\"color:#f8f8f2;\"> Include style or script assets\n</span><span style=\"color:#f8f8f2;\">[web.resource]\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\"># </span><span style=\"color:#ff80f4;\">CSS</span><span style=\"color:#f8f8f2;\"> style file\n</span><span style=\"color:#f8f8f2;\">style </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">[]\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\">#</span><span style=\"color:#f8f8f2;\"> Javascript code file\n</span><span style=\"color:#f8f8f2;\">script </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">[]\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">[web.resource.dev]\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\">#</span><span style=\"color:#f8f8f2;\"> Same </span><span style=\"color:#f92672;\">as </span><span style=\"color:#f8f8f2;\">[web.resource], but </span><span style=\"color:#f92672;\">for</span><span style=\"color:#f8f8f2;\"> development servers\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\"># </span><span style=\"color:#ff80f4;\">CSS</span><span style=\"color:#f8f8f2;\"> style file\n</span><span style=\"color:#f8f8f2;\">style </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">[]\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\">#</span><span style=\"color:#f8f8f2;\"> JavaScript files\n</span><span style=\"color:#f8f8f2;\">script </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">[]\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">[[web.proxy]]\n</span><span style=\"color:#f8f8f2;\">backend </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;http://localhost:8000/api/&quot;\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">[bundle]\n</span><span style=\"color:#f8f8f2;\">identifier </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;com.dioxuslabs&quot;\n</span><span style=\"color:#f8f8f2;\">publisher </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;DioxusLabs&quot;\n</span><span style=\"color:#f8f8f2;\">icon </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;assets/icon.png&quot;</span></pre>\n",
+            contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">[application]\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\">#</span><span style=\"color:#f8f8f2;\"> App name\n</span><span style=\"color:#f8f8f2;\">name </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;project_name&quot;\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\">#</span><span style=\"color:#f8f8f2;\"> `build` </span><span style=\"color:#f92672;\">&amp;</span><span style=\"color:#f8f8f2;\"> `serve` output path\n</span><span style=\"color:#f8f8f2;\">out_dir </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;dist&quot;\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\">#</span><span style=\"color:#f8f8f2;\"> The </span><span style=\"font-style:italic;color:#66d9ef;\">static</span><span style=\"color:#f8f8f2;\"> resource path\n</span><span style=\"color:#f8f8f2;\">asset_dir </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;public&quot;\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">[web.app]\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\"># </span><span style=\"color:#ff80f4;\">HTML</span><span style=\"color:#f8f8f2;\"> title tag content\n</span><span style=\"color:#f8f8f2;\">title </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;project_name&quot;\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">[web.watcher]\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\">#</span><span style=\"color:#f8f8f2;\"> When watcher is triggered, regenerate the `index.html`\n</span><span style=\"color:#f8f8f2;\">reload_html </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ff80f4;\">true\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\">#</span><span style=\"color:#f8f8f2;\"> Which files or dirs will be monitored\n</span><span style=\"color:#f8f8f2;\">watch_path </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">[</span><span style=\"color:#ffee99;\">&quot;src&quot;</span><span style=\"color:#f8f8f2;\">, </span><span style=\"color:#ffee99;\">&quot;public&quot;</span><span style=\"color:#f8f8f2;\">]\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\">#</span><span style=\"color:#f8f8f2;\"> Include style or script assets\n</span><span style=\"color:#f8f8f2;\">[web.resource]\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\"># </span><span style=\"color:#ff80f4;\">CSS</span><span style=\"color:#f8f8f2;\"> style file\n</span><span style=\"color:#f8f8f2;\">style </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">[]\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\">#</span><span style=\"color:#f8f8f2;\"> Javascript code file\n</span><span style=\"color:#f8f8f2;\">script </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">[]\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">[web.resource.dev]\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\">#</span><span style=\"color:#f8f8f2;\"> Same </span><span style=\"color:#f92672;\">as </span><span style=\"color:#f8f8f2;\">[web.resource], but </span><span style=\"color:#f92672;\">for</span><span style=\"color:#f8f8f2;\"> development servers\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\"># </span><span style=\"color:#ff80f4;\">CSS</span><span style=\"color:#f8f8f2;\"> style file\n</span><span style=\"color:#f8f8f2;\">style </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">[]\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f92672;\">#</span><span style=\"color:#f8f8f2;\"> JavaScript files\n</span><span style=\"color:#f8f8f2;\">script </span><span style=\"color:#f92672;\">= </span><span style=\"color:#f8f8f2;\">[]\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">[[web.proxy]]\n</span><span style=\"color:#f8f8f2;\">backend </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;http://localhost:8000/api/&quot;\n</span><span style=\"color:#f8f8f2;\">\n</span><span style=\"color:#f8f8f2;\">[bundle]\n</span><span style=\"color:#f8f8f2;\">identifier </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;com.dioxuslabs&quot;\n</span><span style=\"color:#f8f8f2;\">publisher </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;DioxusLabs&quot;\n</span><span style=\"color:#f8f8f2;\">icon </span><span style=\"color:#f92672;\">= </span><span style=\"color:#ffee99;\">&quot;assets/icon.png&quot;</span></pre>\n",
         }
     }
 }
+#[derive(
+    Clone, Copy, PartialEq, Eq, Hash, Debug, Default, serde::Serialize, serde::Deserialize,
+)]
+pub enum CliTranslateSection {
+    #[default]
+    Empty,
+    TranslatingExistingHtml,
+    Usage,
+}
+impl std::str::FromStr for CliTranslateSection {
+    type Err = CliTranslateSectionParseError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "" => Ok(Self::Empty),
+            "translating-existing-html" => Ok(Self::TranslatingExistingHtml),
+            "usage" => Ok(Self::Usage),
+            _ => Err(CliTranslateSectionParseError),
+        }
+    }
+}
+impl std::fmt::Display for CliTranslateSection {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Self::Empty => f.write_str(""),
+            Self::TranslatingExistingHtml => f.write_str("translating-existing-html"),
+            Self::Usage => f.write_str("usage"),
+        }
+    }
+}
+#[derive(Debug)]
+pub struct CliTranslateSectionParseError;
+impl std::fmt::Display for CliTranslateSectionParseError {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.write_str(
+            "Invalid section name. Expected one of CliTranslateSectiontranslating-existing-html, usage",
+        )?;
+        Ok(())
+    }
+}
+impl std::error::Error for CliTranslateSectionParseError {}
 #[component(no_case_check)]
-pub fn CliTranslate() -> dioxus::prelude::Element {
+pub fn CliTranslate(section: CliTranslateSection) -> dioxus::prelude::Element {
     use dioxus::prelude::*;
     rsx! {
         h1 { id: "translating-existing-html",
-            a { href: "#translating-existing-html", class: "header", "Translating existing HTML" }
+            Link {
+                to: BookRoute::CliTranslate {
+                    section: CliTranslateSection::TranslatingExistingHtml,
+                },
+                class: "header",
+                "Translating existing HTML"
+            }
         }
         p {
             "Dioxus uses a custom format called RSX to represent the HTML because it is more concise and looks more like Rust code. However, it can be a pain to convert existing HTML to RSX. That's why Dioxus comes with a tool called  "
@@ -15789,7 +24063,13 @@ pub fn CliTranslate() -> dioxus::prelude::Element {
             contents: "<pre style=\"background-color:#0d0d0d;\">\n<span style=\"color:#f8f8f2;\">div {{ class: </span><span style=\"color:#ffee99;\">&quot;relative w-full mx-4 sm:mx-auto text-gray-600&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">   div {{ class: </span><span style=\"color:#ffee99;\">&quot;text-[3em] md:text-[5em] font-semibold dark:text-white text-ghdarkmetal font-sans py-12 flex flex-col&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">      span {{ </span><span style=\"color:#ffee99;\">&quot;Fullstack, crossplatform,&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">      span {{ </span><span style=\"color:#ffee99;\">&quot;lightning fast, fully typed.&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">   }}\n</span><span style=\"color:#f8f8f2;\">   h3 {{ class: </span><span style=\"color:#ffee99;\">&quot;text-[2em] dark:text-white font-extralight text-ghdarkmetal pt-4 max-w-screen-md mx-auto&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">      </span><span style=\"color:#ffee99;\">&quot;Dioxus is a Rust library for building apps that run on desktop, web, mobile, and more.&quot;\n</span><span style=\"color:#f8f8f2;\">   }}\n</span><span style=\"color:#f8f8f2;\">   div {{ class: </span><span style=\"color:#ffee99;\">&quot;pt-12 text-white text-[1.2em] font-sans font-bold flex flex-row justify-center space-x-4&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">      a {{\n</span><span style=\"color:#f8f8f2;\">         href: </span><span style=\"color:#ffee99;\">&quot;/learn/0.6/getting_started&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">         data_dioxus_id: </span><span style=\"color:#ffee99;\">&quot;216&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">         dioxus_prevent_default: </span><span style=\"color:#ffee99;\">&quot;onclick&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">         class: </span><span style=\"color:#ffee99;\">&quot;bg-red-600 py-2 px-8 hover:-translate-y-2 transition-transform duration-300&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">         </span><span style=\"color:#ffee99;\">&quot;Quickstart&quot;\n</span><span style=\"color:#f8f8f2;\">      }}\n</span><span style=\"color:#f8f8f2;\">      a {{\n</span><span style=\"color:#f8f8f2;\">         dioxus_prevent_default: </span><span style=\"color:#ffee99;\">&quot;onclick&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">         href: </span><span style=\"color:#ffee99;\">&quot;/learn/0.6/reference&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">         data_dioxus_id: </span><span style=\"color:#ffee99;\">&quot;214&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">         class: </span><span style=\"color:#ffee99;\">&quot;bg-blue-500 py-2 px-8 hover:-translate-y-2 **transition**-transform duration-300&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">         </span><span style=\"color:#ffee99;\">&quot;Read the docs&quot;\n</span><span style=\"color:#f8f8f2;\">      }}\n</span><span style=\"color:#f8f8f2;\">   }}\n</span><span style=\"color:#f8f8f2;\">   div {{ class: </span><span style=\"color:#ffee99;\">&quot;max-w-screen-2xl mx-auto pt-36&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">      h1 {{ class: </span><span style=\"color:#ffee99;\">&quot;text-md&quot;</span><span style=\"color:#f8f8f2;\">, </span><span style=\"color:#ffee99;\">&quot;Trusted by top companies&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">      div {{ class: </span><span style=\"color:#ffee99;\">&quot;pt-4 flex flex-row flex-wrap justify-center&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">         div {{ class: </span><span style=\"color:#ffee99;\">&quot;h-12 w-40 p-2 m-4 flex justify-center items-center&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">            img {{ src: </span><span style=\"color:#ffee99;\">&quot;/assets/static/futurewei_bw.png&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">         }}\n</span><span style=\"color:#f8f8f2;\">         div {{ class: </span><span style=\"color:#ffee99;\">&quot;h-12 w-40 p-2 m-4 flex justify-center items-center&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">            img {{ src: </span><span style=\"color:#ffee99;\">&quot;/assets/static/airbuslogo.svg&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">         }}\n</span><span style=\"color:#f8f8f2;\">         div {{ class: </span><span style=\"color:#ffee99;\">&quot;h-12 w-40 p-2 m-4 flex justify-center items-center&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">            img {{ src: </span><span style=\"color:#ffee99;\">&quot;/assets/static/ESA_logo.svg&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">         }}\n</span><span style=\"color:#f8f8f2;\">         div {{ class: </span><span style=\"color:#ffee99;\">&quot;h-12 w-40 p-2 m-4 flex justify-center items-center&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">            img {{ src: </span><span style=\"color:#ffee99;\">&quot;/assets/static/yclogo.svg&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">         }}\n</span><span style=\"color:#f8f8f2;\">         div {{ class: </span><span style=\"color:#ffee99;\">&quot;h-12 w-40 p-2 m-4 flex justify-center items-center&quot;</span><span style=\"color:#f8f8f2;\">,\n</span><span style=\"color:#f8f8f2;\">            img {{ src: </span><span style=\"color:#ffee99;\">&quot;/assets/static/satellite.webp&quot; </span><span style=\"color:#f8f8f2;\">}}\n</span><span style=\"color:#f8f8f2;\">         }}\n</span><span style=\"color:#f8f8f2;\">      }}\n</span><span style=\"color:#f8f8f2;\">   }}\n</span><span style=\"color:#f8f8f2;\">}}</span></pre>\n",
         }
         h2 { id: "usage",
-            a { href: "#usage", class: "header", "Usage" }
+            Link {
+                to: BookRoute::CliTranslate {
+                    section: CliTranslateSection::Usage,
+                },
+                class: "header",
+                "Usage"
+            }
         }
         p {
             "The  "

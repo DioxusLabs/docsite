@@ -88,9 +88,9 @@ fn DogView() -> Element {
 }
 ```
 
-Dioxus hooks are very similar to React's hooks and need to follow some [simple rules](#the-rules-of-hooks) to function properly.
+Dioxus hooks are very similar to React's hooks and need to follow some [simple rules](../guides/managing_state.md#the-rules-of-hooks) to function properly.
 
-## Signals and `use_signal`
+## Signals and use_signal
 
 While `use_hook` makes it possible to store any value that implements `Clone`, you'll frequently want a more capable form of state management. Built-in to Dioxus are *signals*.
 

@@ -94,7 +94,9 @@ impl AnyBookRoute for router_03::BookRoute {
     }
 
     fn index() -> Self {
-        Self::Index {}
+        Self::Index {
+            section: Default::default(),
+        }
     }
 }
 impl AnyBookRoute for router_04::BookRoute {
@@ -133,7 +135,9 @@ impl AnyBookRoute for router_04::BookRoute {
     }
 
     fn index() -> Self {
-        Self::Index {}
+        Self::Index {
+            section: Default::default(),
+        }
     }
 }
 impl AnyBookRoute for router_05::BookRoute {
@@ -172,7 +176,9 @@ impl AnyBookRoute for router_05::BookRoute {
     }
 
     fn index() -> Self {
-        Self::Index {}
+        Self::Index {
+            section: Default::default(),
+        }
     }
 }
 
@@ -210,7 +216,9 @@ impl AnyBookRoute for router_06::BookRoute {
         "0.6.1"
     }
     fn index() -> Self {
-        Self::Index {}
+        Self::Index {
+            section: Default::default(),
+        }
     }
 }
 

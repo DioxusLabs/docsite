@@ -125,8 +125,8 @@ pub(crate) fn Nav() -> Element {
                             }
                             Link {
                                 to: crate::docs::router_06::BookRoute::Index {
-                                }
-                                    .global_route(),
+                                    section: Default::default(),
+                                }.global_route(),
                                 class: "md:px-3 h-full flex flex-col justify-center bg-blue-500 text-lg md:text-sm text-white rounded font-semibold hover:brightness-95 dark:hover:brightness-105",
                                 "Learn"
                             }
@@ -344,12 +344,42 @@ fn SearchResults(results: Signal<Results>, search_text: Signal<String>) -> Eleme
     use crate::docs::router_06::BookRoute;
 
     let default_searches = [
-        ("Tutorial", BookRoute::GuideIndex {}),
-        ("Web", BookRoute::GuidesWebIndex {}),
-        ("Desktop", BookRoute::GuidesDesktopIndex {}),
-        ("Mobile", BookRoute::GuidesMobileIndex {}),
-        ("Fullstack", BookRoute::GuidesFullstackIndex {}),
-        ("Typesafe Routing", BookRoute::RouterReferenceIndex {}),
+        (
+            "Tutorial",
+            BookRoute::GuideIndex {
+                section: Default::default(),
+            },
+        ),
+        (
+            "Web",
+            BookRoute::GuidesWebIndex {
+                section: Default::default(),
+            },
+        ),
+        (
+            "Desktop",
+            BookRoute::GuidesDesktopIndex {
+                section: Default::default(),
+            },
+        ),
+        (
+            "Mobile",
+            BookRoute::GuidesMobileIndex {
+                section: Default::default(),
+            },
+        ),
+        (
+            "Fullstack",
+            BookRoute::GuidesFullstackIndex {
+                section: Default::default(),
+            },
+        ),
+        (
+            "Typesafe Routing",
+            BookRoute::RouterReferenceIndex {
+                section: Default::default(),
+            },
+        ),
     ];
 
     rsx! {

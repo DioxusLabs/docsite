@@ -46,9 +46,9 @@ fn App() -> Element {
 #[component]
 fn DefaultPlayground() -> Element {
     rsx! {
-        Playground { 
-            urls: URLS, 
-            snippet: Snippet::None, 
+        Playground {
+            urls: URLS,
+            snippet: Snippet::None,
         }
     }
 }
@@ -56,9 +56,9 @@ fn DefaultPlayground() -> Element {
 #[component]
 fn SharePlayground(share_code: String) -> Element {
     rsx! {
-        Playground { 
-            urls: URLS, 
-            snippet: Snippet::ShareCode(share_code) 
+        Playground {
+            urls: URLS,
+            snippet: Snippet::ShareCode(share_code)
         }
     }
 }

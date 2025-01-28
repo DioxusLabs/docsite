@@ -58,6 +58,44 @@ pub trait AnyBookRoute: Routable + PartialEq + Hash + Eq + Clone + Copy {
     fn index() -> Self;
 }
 
+impl AnyBookRoute for router_blog::BookRoute {
+    fn sections(&self) -> &[use_mdbook::mdbook_shared::Section] {
+        self.sections()
+    }
+
+    fn page(&self) -> &use_mdbook::mdbook_shared::Page<Self> {
+        self.page()
+    }
+
+    fn global_route(&self) -> crate::Route {
+        crate::Route::BlogPost { child: *self }
+    }
+
+    fn page_id(&self) -> use_mdbook::mdbook_shared::PageId {
+        self.page_id()
+    }
+    fn book() -> &'static MdBook<Self> {
+        &*router_blog::LAZY_BOOK
+    }
+
+    fn use_current() -> Option<Self> {
+        let route = use_route();
+        match route {
+            Route::BlogPost { child } => Some(child),
+            _ => None,
+        }
+    }
+    fn short_version() -> &'static str {
+        "blog"
+    }
+    fn full_version() -> &'static str {
+        "blog"
+    }
+    fn index() -> Self {
+        todo!()
+    }
+}
+
 impl AnyBookRoute for router_03::BookRoute {
     fn sections(&self) -> &[use_mdbook::mdbook_shared::Section] {
         self.sections()

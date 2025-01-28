@@ -242,7 +242,7 @@ fn SidebarChapter<R: AnyBookRoute>(chapter: &'static SummaryItem<R>) -> Element 
 }
 
 // Todo: wire this up to the sections of the current page and a scroll controller
-fn RightNav<R: AnyBookRoute>() -> Element {
+pub fn RightNav<R: AnyBookRoute>() -> Element {
     let page = R::use_route();
     let short_version = R::short_version();
 

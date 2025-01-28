@@ -14,7 +14,7 @@ dioxus-ssr = { version = "0.6.0", optional = true }
 dioxus-desktop = { version = "0.6.0", optional = true }
 dioxus-liveview = { version = "0.6.0", features = ["axum"], optional = true }
 
-dioxus-material-icons = { git = "https://github.com/jkelleyrtp/dioxus-material-icons", branch = "jk/git-rev" }
+dioxus-material-icons = { version = "3.0.0" }
 syntect-html = { git = "https://github.com/dioxuslabs/include_mdbook" }
 mdbook-shared = { git = "https://github.com/dioxuslabs/include_mdbook" }
 use-mdbook = { git = "https://github.com/dioxuslabs/include_mdbook" }

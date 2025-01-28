@@ -32,39 +32,45 @@ pub(crate) fn BlogPost() -> Element {
     let meta = use_current_blog().unwrap();
 
     rsx! {
-        section { class: "text-gray-600 body-font max-w-screen-md mx-auto pt-12 font-light",
-            div { class: "px-2 border-b border-gray-200 my-4 mb-8 pb-8  dark:text-white",
-                Link { to: Route::BlogList {},
-                    p { class: "pb-12 text-sm flex flex-row gap-2 items-center",
-                        svg {
-                            "viewBox": "0 0 16 16",
-                            width: "16",
-                            style: "width: 12px; height: 12px; color: currentcolor;",
-                            "data-testid": "geist-icon",
-                            height: "16",
-                            "stroke-linejoin": "round",
-                            path {
-                                d: "M10.5 14.0607L9.96966 13.5303L5.14644 8.7071C4.75592 8.31658 4.75592 7.68341 5.14644 7.29289L9.96966 2.46966L10.5 1.93933L11.5607 2.99999L11.0303 3.53032L6.56065 7.99999L11.0303 12.4697L11.5607 13L10.5 14.0607Z",
-                                "clip-rule": "evenodd",
-                                fill: "currentColor",
-                                "fill-rule": "evenodd",
+        section { class: "text-gray-600 body-font pt-12 font-light w-full",
+            div { class: "flex flex-row justify-center pt-4 md:pt-[3.125rem] lg:gap-12",
+                div {}
+                div { class: "text-gray-600 dark:text-gray-300 body-font overflow-hidden container pb-12 max-w-screen-md px-4 grow min-h-[100vh] md:block",
+                    div { class: "px-2 border-b border-gray-200 my-4 mb-8 pb-8  dark:text-white",
+                        Link { to: Route::BlogList {},
+                            p { class: "pb-12 text-sm flex flex-row gap-2 items-center",
+                                svg {
+                                    "viewBox": "0 0 16 16",
+                                    width: "16",
+                                    style: "width: 12px; height: 12px; color: currentcolor;",
+                                    "data-testid": "geist-icon",
+                                    height: "16",
+                                    "stroke-linejoin": "round",
+                                    path {
+                                        d: "M10.5 14.0607L9.96966 13.5303L5.14644 8.7071C4.75592 8.31658 4.75592 7.68341 5.14644 7.29289L9.96966 2.46966L10.5 1.93933L11.5607 2.99999L11.0303 3.53032L6.56065 7.99999L11.0303 12.4697L11.5607 13L10.5 14.0607Z",
+                                        "clip-rule": "evenodd",
+                                        fill: "currentColor",
+                                        "fill-rule": "evenodd",
+                                    }
+                                }
+                                "Back to blog"
                             }
                         }
-                        "Back to blog"
-                    }
-                }
 
-                h1 { class: "text-[2.75rem] font-semibold text-black dark:text-white",
-                    "{meta.title}"
+                        h1 { class: "text-[2.75rem] font-semibold text-black dark:text-white",
+                            "{meta.title}"
+                        }
+                        p { class: "text-gray-500 text-sm pb-8 dark:text-white",
+                            "{meta.date}"
+                            " - "
+                            "{meta.author}"
+                        }
+                        h3 { class: "text-[1.5rem] pb-2  dark:text-white", "{meta.description}" }
+                    }
+                    div { class: "markdown-body px-2  dioxus-blog-post", Outlet::<Route> {} }
                 }
-                p { class: "text-gray-500 text-sm pb-8 dark:text-white",
-                    "{meta.date}"
-                    " - "
-                    "{meta.author}"
-                }
-                h3 { class: "text-[1.5rem] pb-2  dark:text-white", "{meta.description}" }
+                crate::learn::RightNav::<BlogRoute> {}
             }
-            div { class: "markdown-body px-2  dioxus-blog-post", Outlet::<Route> {} }
         }
     }
 }

@@ -8,13 +8,13 @@ use axum::{
 };
 use axum_client_ip::SecureClientIp;
 use dioxus_logger::tracing::error;
+use example_projects::ExampleProject;
 use futures::{SinkExt, StreamExt as _};
 use model::SocketMessage;
 use tokio::{
     select,
     sync::mpsc::{self, UnboundedSender},
 };
-use uuid::Uuid;
 
 /// Handle any pre-websocket processing.
 pub async fn ws_handler(
@@ -122,9 +122,9 @@ fn start_build(
     build_tx: UnboundedSender<BuildMessage>,
     code: String,
 ) -> BuildRequest {
-    let build_id = Uuid::new_v4();
+    let code = ExampleProject::new(code, "".into(), "".into());
     let request = BuildRequest {
-        id: build_id,
+        id: code.id(),
         code,
         ws_msg_tx: build_tx,
     };

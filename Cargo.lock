@@ -1250,6 +1250,7 @@ dependencies = [
  "dioxus-rsx-hotreload",
  "dioxus-rsx-rosetta",
  "dioxus-sdk",
+ "example-projects",
  "futures",
  "gloo-net",
  "gloo-utils",
@@ -1609,6 +1610,19 @@ checksum = "3c3e4e0dd3673c1139bf041f3008816d9cf2946bbfac2945c09e523b8d7b05b2"
 dependencies = [
  "event-listener",
  "pin-project-lite",
+]
+
+[[package]]
+name = "example-projects"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "base64",
+ "dioxus",
+ "include_dir",
+ "miniz_oxide",
+ "once_cell",
+ "uuid",
 ]
 
 [[package]]
@@ -2517,6 +2531,25 @@ dependencies = [
 ]
 
 [[package]]
+name = "include_dir"
+version = "0.7.4"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "923d117408f1e49d914f1a379a309cffe4f18c05cf4e3d12e613a15fc81bd0dd"
+dependencies = [
+ "include_dir_macros",
+]
+
+[[package]]
+name = "include_dir_macros"
+version = "0.7.4"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "7cab85a7ed0bd5f0e76d93846e0147172bed2e2d3f859bcc33a8d9699cad1a75"
+dependencies = [
+ "proc-macro2",
+ "quote",
+]
+
+[[package]]
 name = "indexmap"
 version = "1.9.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2846,6 +2879,16 @@ name = "matchit"
 version = "0.7.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "0e7465ac9959cc2b1404e8e2367b43684a6d13790fe23056cc8c6c5a6b7bcb94"
+
+[[package]]
+name = "md-5"
+version = "0.10.6"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "d89e7ee0cfbedfc4da3340218492196241d89eefb6dab27de5df917a6d2e78cf"
+dependencies = [
+ "cfg-if",
+ "digest",
+]
 
 [[package]]
 name = "memchr"
@@ -3766,6 +3809,7 @@ dependencies = [
  "dioxus",
  "dioxus-document",
  "dioxus-playground",
+ "example-projects",
 ]
 
 [[package]]
@@ -3980,8 +4024,10 @@ version = "0.1.0"
 dependencies = [
  "axum",
  "axum-client-ip",
+ "dioxus",
  "dioxus-dx-wire-format",
  "dioxus-logger",
+ "example-projects",
  "fs_extra",
  "futures",
  "model",
@@ -4822,6 +4868,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "f8c5f0a0af699448548ad1a2fbf920fb4bee257eae39953ba95cb84891a0446a"
 dependencies = [
  "getrandom 0.2.15",
+ "md-5",
  "serde",
  "wasm-bindgen",
 ]

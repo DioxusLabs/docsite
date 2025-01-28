@@ -1,7 +1,4 @@
-use crate::{
-    build::{BuildStage, BuildState},
-    snippets::{CounterExample, SelectedExample, WelcomeExample},
-};
+use crate::build::{BuildStage, BuildState};
 use dioxus::prelude::*;
 use dioxus_document::eval;
 use dioxus_sdk::utils::{timing::use_debounce, window::use_window_size};
@@ -31,7 +28,6 @@ pub fn Panes(
     built_page_url: Memo<Option<String>>,
 ) -> Element {
     let build = use_context::<BuildState>();
-    let selected_example = use_context::<Signal<SelectedExample>>();
     let mut dragging = use_signal(|| false);
     let mut mouse_data = use_signal(DraggableData::default);
 
@@ -96,7 +92,6 @@ pub fn Panes(
         pane_right_width.set(Some(prev_mouse_data.second_width - delta_x));
     };
 
-    let selected_example = selected_example();
     let build_stage = build.stage();
 
     rsx! {
@@ -128,21 +123,15 @@ pub fn Panes(
                 } else {
                     // Viewport
                     if let Some(url) = built_page_url() {
-                        iframe {
-                            id: "dxp-viewport",
-                            src: "{url}",
+                        div { id: "dxp-viewport",
+                            iframe {
+                                id: "dxp-iframe",
+                                src: "{url}",
+                                pointer_events: if dragging() { "none" } else { "all" },
+                            }
                         }
                     } else if build_stage.is_err() {
                         Logs {}
-                    } else if selected_example.is_some() {
-                        div {
-                            id: "dxp-examples-viewport",
-                            match selected_example {
-                                SelectedExample::Welcome => rsx! { WelcomeExample {} },
-                                SelectedExample::Counter => rsx! { CounterExample {} },
-                                _ => rsx! {},
-                            }
-                        }
                     } else {
                         p { "Click `Run` to start a build!" }
                     }
@@ -191,15 +180,10 @@ fn Progress() -> Element {
     });
 
     rsx! {
-        div {
-            id: "dxp-progress-container",
+        div { id: "dxp-progress-container",
             p { "{message}" }
-            div {
-                id: "dxp-progress",
-                div {
-                    id: "dxp-bar",
-                    width: "{progress_width}%",
-                }
+            div { id: "dxp-progress",
+                div { id: "dxp-bar", width: "{progress_width}%" }
             }
         }
     }

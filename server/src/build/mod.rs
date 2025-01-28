@@ -1,3 +1,4 @@
+use example_projects::ExampleProject;
 use model::CargoDiagnostic;
 use std::io;
 use thiserror::Error;
@@ -18,7 +19,7 @@ pub enum BuildCommand {
 #[derive(Debug, Clone)]
 pub struct BuildRequest {
     pub id: Uuid,
-    pub code: String,
+    pub code: ExampleProject,
     pub ws_msg_tx: UnboundedSender<BuildMessage>,
 }
 

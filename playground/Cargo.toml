@@ -41,3 +41,6 @@ base64 = "0.22.1"
 
 syn = "2.0.85"
 proc-macro2 = "1.0.89"
+
+
+example-projects = { workspace = true }

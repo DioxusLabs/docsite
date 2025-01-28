@@ -11,3 +11,9 @@ body {
     background-color: #0e1116;
   }
 }
+
+.playground-container {
+  height: 800px;
+  display: flex;
+  flex-direction: column;
+}

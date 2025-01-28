@@ -127,6 +127,15 @@ async fn check_cleanup(state: AppState) -> Result<(), io::Error> {
         for item in dir {
             let item = item?;
             let path = item.path();
+            let pathname = path.file_name().unwrap().to_string_lossy();
+
+            // Always cache the examples - don't remove those.
+            if example_projects::get_example_projects()
+                .iter()
+                .any(|p| p.id().to_string() == pathname)
+            {
+                continue;
+            }
 
             let time_elapsed = item
                 .metadata()

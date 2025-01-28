@@ -6,7 +6,7 @@ edition = "2021"
 [dependencies]
 model = { workspace = true, features = ["server"] }
 futures = { workspace = true }
-uuid = { workspace = true, features = ["v4", "serde"] }
+uuid = { workspace = true, features = ["v4", "v3", "serde"] }
 serde = { workspace = true }
 serde_json = { workspace = true }
 
@@ -22,3 +22,7 @@ tower-http = { version = "0.5.2", features = ["fs"] }
 tower = { version = "0.4.13", features = ["buffer", "limit"] }
 
 thiserror = { workspace = true }
+
+
+dioxus = { workspace = true, features = ["web"] }
+example-projects = { workspace = true }

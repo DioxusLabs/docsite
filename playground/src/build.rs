@@ -1,5 +1,6 @@
 use crate::{error::AppError, ws};
 use dioxus::prelude::*;
+use example_projects::ExampleProject;
 use model::{CargoDiagnostic, SocketMessage};
 use uuid::Uuid;
 
@@ -63,9 +64,15 @@ pub(crate) struct BuildState {
 }
 
 impl BuildState {
-    pub fn new() -> Self {
+    pub fn new(project: Signal<ExampleProject>) -> Self {
+        let stage = if project.read().prebuilt {
+            BuildStage::Finished(Ok(project.read().id()))
+        } else {
+            BuildStage::NotStarted
+        };
+
         Self {
-            stage: Signal::new(BuildStage::NotStarted),
+            stage: Signal::new(stage),
             queue_position: Signal::new(None),
             diagnostics: Signal::new(Vec::new()),
         }

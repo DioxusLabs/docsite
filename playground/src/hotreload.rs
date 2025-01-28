@@ -26,7 +26,7 @@ pub fn attempt_hot_reload(mut hot_reload: HotReload, new_code: &str) {
             let e = eval(
                 r#"
                 const hrMsg = await dioxus.recv();
-                const iframeElem = document.getElementById("dxp-viewport");
+                const iframeElem = document.getElementById("dxp-iframe");
                 const hrMsgJson = JSON.stringify(hrMsg);
 
                 if (iframeElem) {
@@ -137,7 +137,7 @@ impl HotReload {
                 // Create the key we're going to use to identify this template
                 let key = TemplateGlobalKey {
                     file: "src/main.rs".to_string(),
-                    line: old_start.line + crate::EXTRA_LINE_COUNT(),
+                    line: old_start.line,
                     column: old_start.column + 1,
                     index,
                 };
@@ -157,7 +157,7 @@ impl HotReload {
 
 fn template_location(old_start: proc_macro2::LineColumn) -> String {
     let file = Path::new("src/main.rs");
-    let line = old_start.line + crate::EXTRA_LINE_COUNT();
+    let line = old_start.line;
     let column = old_start.column + 1;
 
     // Always ensure the path components are separated by `/`.

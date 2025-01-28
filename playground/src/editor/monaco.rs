@@ -1,8 +1,4 @@
-use crate::{
-    hotreload::HotReload,
-    snippets::{self, SelectedExample},
-    EXTRA_LINE_COUNT,
-};
+use crate::hotreload::HotReload;
 use dioxus::prelude::*;
 use dioxus_sdk::{theme::SystemTheme, utils::timing::UseDebounce};
 use model::{CargoDiagnostic, CargoLevel};
@@ -22,67 +18,60 @@ pub fn monaco_loader_src(folder: Asset) -> String {
 }
 
 /// Use monaco code markers for build diagnostics.
-pub fn use_monaco_markers(diagnostics: Signal<Vec<CargoDiagnostic>>) {
-    use_effect(move || {
-        let mut markers = Vec::new();
-        for diagnostic in diagnostics.read().iter() {
-            let severity = match diagnostic.level {
-                CargoLevel::Error => MarkerSeverity::Error,
-                CargoLevel::Warning => MarkerSeverity::Warning,
+pub fn set_monaco_markers(diagnostics: Signal<Vec<CargoDiagnostic>>) {
+    let mut markers = Vec::new();
+    for diagnostic in diagnostics.read().iter() {
+        let severity = match diagnostic.level {
+            CargoLevel::Error => MarkerSeverity::Error,
+            CargoLevel::Warning => MarkerSeverity::Warning,
+        };
+
+        for span in diagnostic.spans.iter() {
+            let diagnostic_message = diagnostic.message.clone();
+            let message = match span.label.clone() {
+                Some(label) => format!("{}\n{}", diagnostic_message, label),
+                None => diagnostic_message,
             };
 
-            for span in diagnostic.spans.iter() {
-                let diagnostic_message = diagnostic.message.clone();
-                let message = match span.label.clone() {
-                    Some(label) => format!("{}\n{}", diagnostic_message, label),
-                    None => diagnostic_message,
-                };
+            let marker = Marker {
+                message,
+                severity,
+                start_line_number: span.line_start,
+                end_line_number: span.line_end,
+                start_column: span.column_start,
+                end_column: span.column_end,
+            };
 
-                let marker = Marker {
-                    message,
-                    severity,
-                    start_line_number: span.line_start.saturating_sub(EXTRA_LINE_COUNT()),
-                    end_line_number: span.line_end.saturating_sub(EXTRA_LINE_COUNT()),
-                    start_column: span.column_start,
-                    end_column: span.column_end,
-                };
-
-                markers.push(marker);
-            }
+            markers.push(marker);
         }
+    }
 
-        set_markers(&markers);
-    });
+    set_markers(&markers);
 }
 
 /// Initialize Monaco once the loader script loads.
 pub fn on_monaco_load(
     folder: Asset,
     system_theme: SystemTheme,
-    init_code: Option<String>,
-    mut selected_example: Signal<SelectedExample>,
+    contents: &str,
     mut hot_reload: HotReload,
-    on_model_changed: UseDebounce<String>,
+    mut on_model_changed: UseDebounce<String>,
 ) {
-    // If shared code is available, use it, otherwise replace with starter snippet.
-    let snippet = match init_code {
-        Some(code) => code,
-        None => {
-            selected_example.set(SelectedExample::Welcome);
-            snippets::EXAMPLES[0].1.to_string()
-        }
-    };
-
     let monaco_prefix = monaco_vs_prefix(folder);
     init(
         &monaco_prefix,
         super::EDITOR_ELEMENT_ID,
         system_theme,
-        &snippet,
+        &contents,
     );
 
-    hot_reload.set_starting_code(&snippet);
-    register_model_change(on_model_changed);
+    hot_reload.set_starting_code(&contents);
+
+    let callback = Closure::new(move |new_code: String| on_model_changed.action(new_code));
+
+    register_model_change_event(&callback);
+
+    callback.forget();
 }
 
 #[derive(Serialize, Deserialize, Clone)]
@@ -173,15 +162,6 @@ fn register_paste_as_rsx_action() {
     });
 
     register_paste_as_rsx(&callback);
-    callback.forget();
-}
-
-pub fn register_model_change(mut debounce: UseDebounce<String>) {
-    let callback = Closure::new(move |new_code: String| {
-        debounce.action(new_code);
-    });
-
-    register_model_change_event(&callback);
     callback.forget();
 }
 

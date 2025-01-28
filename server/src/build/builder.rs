@@ -14,9 +14,6 @@ use tokio::process::Command;
 use tokio::task::JoinHandle;
 use tokio::{fs, select};
 
-// The in-code templates that get replaced.
-const USER_CODE_ID: &str = "{USER_CODE}";
-// The build id template.
 const BUILD_ID_ID: &str = "{BUILD_ID}";
 
 // TODO: We need some way of cleaning up any stopped builds.
@@ -93,23 +90,27 @@ async fn build(
     built_path: PathBuf,
     request: BuildRequest,
 ) -> Result<(), BuildError> {
+    // If the project already exists, don't build it again.
+    if std::fs::exists(built_path.join(request.id.to_string())).unwrap_or_default() {
+        return Ok(());
+    }
+
     setup_template(&template_path, &request).await?;
     dx_build(&template_path, &request).await?;
     move_to_built(&template_path, &built_path, &request).await?;
+
     Ok(())
 }
 
 /// Resets the template with values for the next build.
 async fn setup_template(template_path: &Path, request: &BuildRequest) -> Result<(), BuildError> {
     let snippets_from_copy = [
-        template_path.join("snippets/main.rs"),
         template_path.join("snippets/Cargo.toml"),
         template_path.join("snippets/Dioxus.toml"),
     ];
 
     // New locations
     let snippets_to_copy = [
-        template_path.join("src/main.rs"),
         template_path.join("Cargo.toml"),
         template_path.join("Dioxus.toml"),
     ];
@@ -118,13 +119,16 @@ async fn setup_template(template_path: &Path, request: &BuildRequest) -> Result<
     for (i, path) in snippets_from_copy.iter().enumerate() {
         let new_path = &snippets_to_copy[i];
         let contents = fs::read_to_string(path).await?;
-
-        let contents = contents
-            .replace(USER_CODE_ID, &request.code)
-            .replace(BUILD_ID_ID, &request.id.to_string());
-
+        let contents = contents.replace(BUILD_ID_ID, &request.id.to_string());
         fs::write(new_path, contents).await?;
     }
+
+    // Write the user's code to main.rs
+    fs::write(
+        template_path.join("src/main.rs"),
+        request.code.contents.clone(),
+    )
+    .await?;
 
     Ok(())
 }

@@ -2,7 +2,7 @@
 
 use dioxus::logger::tracing::Level;
 use dioxus::prelude::*;
-use dioxus_playground::{Playground, PlaygroundUrls, Snippet};
+use dioxus_playground::{Playground, PlaygroundUrls};
 
 #[cfg(not(feature = "real-server"))]
 const URLS: PlaygroundUrls = PlaygroundUrls {
@@ -32,7 +32,7 @@ enum Route {
 
 fn main() {
     dioxus::logger::init(Level::INFO).expect("failed to start logger");
-    launch(App);
+    dioxus::launch(App);
 }
 
 #[component]
@@ -46,19 +46,13 @@ fn App() -> Element {
 #[component]
 fn DefaultPlayground() -> Element {
     rsx! {
-        Playground {
-            urls: URLS,
-            snippet: Snippet::None,
-        }
+        Playground { urls: URLS, class: "playground-container" }
     }
 }
 
 #[component]
-fn SharePlayground(share_code: String) -> Element {
+fn SharePlayground(share_code: ReadOnlySignal<Option<String>>) -> Element {
     rsx! {
-        Playground {
-            urls: URLS,
-            snippet: Snippet::ShareCode(share_code)
-        }
+        Playground { urls: URLS, share_code, class: "playground-container" }
     }
 }

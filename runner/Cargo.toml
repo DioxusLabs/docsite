@@ -5,6 +5,7 @@ edition = "2021"
 
 [dependencies]
 dioxus-playground = { workspace = true }
+example-projects = { workspace = true }
 
 dioxus = { workspace = true, features = ["web", "router"] }
 dioxus-document = { workspace = true }

@@ -1,11 +1,12 @@
 [workspace]
 resolver = "2"
-members = ["model", "runner", "server", "playground"]
+members = ["model", "runner", "server", "playground", "example-projects"]
 exclude = ["server/template"]
 
 [workspace.dependencies]
 model = { path = "model" }
 dioxus-playground = { path = "playground" }
+example-projects = { path = "example-projects" }
 
 # Dioxus Release
 dioxus = "0.6.2"

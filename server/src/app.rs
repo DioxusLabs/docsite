@@ -1,7 +1,7 @@
 //! Initialization of the server application and environment configurations.
 
 use crate::{
-    build::{watcher::start_build_watcher, BuildCommand},
+    build::{watcher::start_build_watcher, BuildCommand, BuildRequest},
     start_cleanup_services,
 };
 use dioxus_logger::tracing::{info, warn};
@@ -165,6 +165,20 @@ impl AppState {
         let result = state.reset_built_dir().await;
         if let Err(e) = result {
             warn!("failed to reset built dir: {}", e);
+        }
+
+        // Queue the examples to be built on startup.
+        // This ensures the cache is hot before users try to use it, meaning the examples will be ready to go.
+        let (tx, rx) = tokio::sync::mpsc::unbounded_channel();
+        std::mem::forget(rx);
+        for project in example_projects::get_example_projects() {
+            let _ = state.build_queue_tx.send(BuildCommand::Start {
+                request: BuildRequest {
+                    id: project.id(),
+                    code: project.clone(),
+                    ws_msg_tx: tx.clone(),
+                },
+            });
         }
 
         // Start the app services

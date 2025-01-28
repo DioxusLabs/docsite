@@ -14,9 +14,6 @@ pub enum AppError {
     #[error("json parse failed: {0}")]
     JsonParse(#[from] serde_json::Error),
 
-    #[error("share code failed: {0}")]
-    ShareCode(ShareError),
-
     #[error("js eval failed: {0}")]
     JsEvalError(#[from] EvalError),
 
@@ -25,16 +22,4 @@ pub enum AppError {
 
     #[error("build is already running")]
     BuildIsAlreadyRunning,
-}
-
-#[derive(Debug, Error)]
-pub enum ShareError {
-    #[error(transparent)]
-    Base64Decode(#[from] base64::DecodeError),
-
-    #[error(transparent)]
-    Decompression(#[from] miniz_oxide::inflate::DecompressError),
-
-    #[error(transparent)]
-    Utf8Decode(#[from] FromUtf8Error),
 }

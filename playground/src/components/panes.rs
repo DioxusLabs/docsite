@@ -32,7 +32,7 @@ pub fn Panes(
 ) -> Element {
     let build = use_context::<BuildState>();
     let selected_example = use_context::<Signal<SelectedExample>>();
-    let mut draggable_mouse_down = use_signal(|| false);
+    let mut dragging = use_signal(|| false);
     let mut mouse_data = use_signal(DraggableData::default);
 
     // Reset the panes slider on window resize.
@@ -50,7 +50,7 @@ pub fn Panes(
 
     // Handle retrieving required data from dom elements and enabling drag.
     let draggable_mousedown = move |e: Event<MouseData>| async move {
-        draggable_mouse_down.set(true);
+        dragging.set(true);
 
         let mut data = eval(
             r#"
@@ -74,13 +74,13 @@ pub fn Panes(
     };
 
     // Stops dragging when the mouse is released.
-    let draggable_mouseup = move |_| {
-        draggable_mouse_down.set(false);
+    let stop_dragging = move |_| {
+        dragging.set(false);
     };
 
     // Handle resizing panes when mouse moves and mouse is down on the draggable.
     let panes_mousemove = move |e: Event<MouseData>| {
-        if !draggable_mouse_down() {
+        if !dragging() {
             return;
         }
 
@@ -104,6 +104,8 @@ pub fn Panes(
         div {
             id: "dxp-panes",
             onmousemove: panes_mousemove,
+            onmouseup: stop_dragging,
+            onmouseleave: stop_dragging,
 
             // Left Pane
             div {
@@ -114,7 +116,7 @@ pub fn Panes(
             div {
                 id: "dxp-panes-draggable",
                 onmousedown: draggable_mousedown,
-                onmouseup: draggable_mouseup,
+                onmouseup: stop_dragging,
             }
             // Right Pane
             div {

@@ -45,6 +45,7 @@
   border-top: 1px solid var(--dxp-border-light);
   border-bottom: 1px solid var(--dxp-border-light);
   border-left: 1px solid var(--dxp-border-light);
+  border-right: 1px solid var(--dxp-border-light);
   overflow: hidden;
 }
 

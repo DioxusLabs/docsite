@@ -1087,7 +1087,8 @@ dependencies = [
 [[package]]
 name = "dioxus-dx-wire-format"
 version = "0.6.2"
-source = "git+https://github.com/dioxuslabs/dioxus?tag=v0.6.2#01203736f332bb1c2970705bd4d376bf61f806b3"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "28d60aae3fc86793b8e54e388f631fea7b525108b88cd32c8ce348d19710cd65"
 dependencies = [
  "cargo_metadata",
  "serde",

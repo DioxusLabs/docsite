@@ -20,7 +20,7 @@ dioxus-rsx = "0.6.2"
 dioxus-html = { version = "0.6.2", default-features = false }
 dioxus-rsx-rosetta = "0.6.2"
 dioxus-autofmt = "0.6.2"
-dioxus-dx-wire-format = { git = "https://github.com/dioxuslabs/dioxus", tag = "v0.6.2" }
+dioxus-dx-wire-format = "0.6.2"
 dioxus-logger = "0.6.2"
 
 # Dioxus Main

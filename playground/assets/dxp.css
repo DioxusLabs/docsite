@@ -58,7 +58,7 @@
 #dxp-header {
   border-bottom: 1px solid var(--dxp-border-light);
   background-color: var(--dxp-bg-light-darker);
-  height: 32px;
+  height: 36px;
   display: flex;
   flex-direction: row;
   margin-left: auto;
@@ -71,6 +71,7 @@
   display: flex;
   flex-direction: row;
   align-items: center;
+  padding: 4px;
 }
 
 #dxp-header-left-divider {
@@ -84,7 +85,7 @@
   flex-direction: row;
   justify-content: end;
   align-items: center;
-  padding: 2px;
+  padding: 4px;
 }
 
 
@@ -116,13 +117,13 @@
   background-color: var(--dxp-bg-light-lighter-alt);
 }
 
-#dxp-header-left>.dxp-ctrl-btn {
+/* #dxp-header-left>.dxp-ctrl-btn {
   margin-left: 12px;
 }
 
 #dxp-header-right>.dxp-ctrl-btn {
   margin-right: 12px;
-}
+} */
 
 #dxp-run-btn {
   background-color: var(--dxp-bg-light-lighter);

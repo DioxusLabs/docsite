@@ -31,6 +31,8 @@ concurrency:
 jobs:
   check:
     runs-on: ubuntu-latest
+    env:
+      CARGO_INCREMENTAL: 1
     steps:
       - uses: actions/checkout@v4
       - uses: dtolnay/rust-toolchain@stable

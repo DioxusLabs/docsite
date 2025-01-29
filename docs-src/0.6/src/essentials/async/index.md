@@ -57,6 +57,17 @@ DemoFrame {
 >     asynchronous::NotCancelSafe {}
 > }
 > ```
+> 
+> It can be fixed by making sure the global state is restored when the future is dropped:
+> ```rust
+> {{#include src/doc_examples/asynchronous.rs:cancel_safe}}
+> ```
+> 
+> ```inject-dioxus
+> DemoFrame {
+>     asynchronous::CancelSafe {}
+> }
+> ```
 >
 > Async methods will often mention if they are cancel safe in their documentation.
 
@@ -74,39 +85,20 @@ DemoFrame {
 
 ## Unified Loading Views with suspense
 
-`SuspenseBoundary` is a convenient way to bundle multiple async tasks into a single loading view. It accepts a loading closure and children. If any of the tasks underneath the suspense boundary are suspended, the loading view will be shown instead of the children. When all of the tasks are resolved, the children will be rendered:
+`SuspenseBoundary` is a convenient way to bundle multiple async tasks into a single loading view. It accepts a loading closure and children. If any of the tasks underneath the suspense boundary are suspended, the loading view will be shown instead of the children. When all of the tasks are resolved, the children will be rendered.
+
+
+We can use a suspense boundary to show a grid of different breeds of dogs without handling each loading state individually:
 
 ```rust
-// {{#include src/doc_examples/asynchronous.rs:suspense_boundary}}
-fn Article() -> Element {
-    rsx! {
-        SuspenseBoundary {
-            // When any child components (like ArticleContents) are suspended, this closure will be called and the loading view will be rendered instead of the children
-            fallback: |_| rsx! {
-                "Loading..."
-            },
-            ArticleContents {}
-        }
-    }
-}
-
-fn ArticleContents() -> Element {
-    let resource = use_resource(|_| todo!())
-        // Calling .suspend()? will suspend the component and return early while the future is running
-        .suspend()?;
-
-    // Then you can just handle the happy path with the resolved future
-    rsx! {
-        "Article Contents: {resource}"
-    }
-}
+{{#include src/doc_examples/asynchronous.rs:suspense_boundary}}
 ```
-<!-- 
+
 ```inject-dioxus
 DemoFrame {
-    asynchronous::SuspenseBoundary {}
+    asynchronous::DogGridView {}
 }
-``` -->
+```
 
 If you nest multiple suspense boundaries, the closest suspense boundary will capture the suspense and show the loading view:
 

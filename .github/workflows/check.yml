@@ -34,7 +34,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: dtolnay/rust-toolchain@stable
-      - uses: jkelleyrtp/rust-cache@jk/speed-cache
+      - uses: jkelleyrtp/rust-cache@jk/speedy-cache
         # - uses: Swatinem/rust-cache@v2
         with:
           cache-all-crates: "true"

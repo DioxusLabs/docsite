@@ -74,7 +74,6 @@ fn Head() -> Element {
         Stylesheet { href: asset!("/assets/githubmarkdown.css") }
         Stylesheet { href: asset!("/assets/tailwind.css", CssAssetOptions::new().with_minify(false)) }
         Stylesheet { href: asset!("/assets/main.css") }
-        Stylesheet { href: asset!("/assets/dxp.css") }
         Stylesheet { href: asset!("/assets/material.css") }
         Stylesheet { href: "https://rsms.me/inter/inter.css" }
         Link { rel: "preconnect", href: "https://fonts.googleapis.com" }
@@ -144,7 +143,7 @@ pub enum Route {
         #[route("/")]
         Homepage {},
 
-        #[route("/play")]
+        #[route("/playground")]
         Playground {},
 
         #[route("/awesome")]

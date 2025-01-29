@@ -3,7 +3,7 @@ use crate::*;
 
 pub(crate) fn Hero() -> Element {
     rsx! {
-        section { class: "w-full mx-auto dark:text-white flex flex-col justify-between items-center  border-b  min-h-[760px] flex-1 dark:border-[#a4a9ac7d] max-h-[960px] px-4",
+        section { class: "w-full mx-auto dark:text-white flex flex-col justify-between items-center  border-b  border-gray-300 min-h-[760px] flex-1 dark:border-[#a4a9ac7d] max-h-[960px] px-4",
             div { class: "flex w-full max-w-screen-xl flex-col text-center md:min-h-[520px] min-h-[760px] h-[calc(100vh-4rem)] gap-2 justify-evenly",
                 div { class: "flex flex-col-reverse lg:flex-row items-center justify-end lg:justify-between lg:flex-1 flex-none",
                     div { class: "text-center lg:text-left lg:flex-1",
@@ -21,7 +21,9 @@ pub(crate) fn Hero() -> Element {
                         div { class: "pt-8 lg:pt-16 text-[1em] flex flex-row space-x-4 mx-auto lg:mx-0 justify-center lg:justify-start",
                             Link {
                                 to: Route::Docs06 {
-                                    child: BookRoute::Index { section: Default::default() },
+                                    child: BookRoute::Index {
+                                        section: Default::default(),
+                                    },
                                 },
                                 class: "bg-ghdarkmetal dark:bg-[#EDEDED] text-white dark:text-black border border-[#a4a9ac7d] m-0 p-2 px-4 rounded md:hover:-translate-y-1 transition-transform duration-300 w-full md:w-auto  dark:shadow-white",
                                 "Get started"

@@ -112,6 +112,7 @@ It's so unliklely anyone is copying text on mobile that we can just hide it
 .dioxus-demo input {
   border: 1px solid #ced4da;
   border-radius: 5px;
+  background-color: white;
   padding: 5px;
   margin: 5px;
   max-width: 150px;

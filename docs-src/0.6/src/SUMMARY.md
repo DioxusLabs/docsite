@@ -25,6 +25,7 @@
   - [Building UIs with RSX](essentials/rsx/index.md)
   - [Component Lifecycle](essentials/lifecycle/index.md)
   - [Managing State](essentials/state/index.md)
+  - [Async](essentials/async/index.md)
   - [Breaking Out](essentials/breaking/index.md)
 
 ---
@@ -52,7 +53,7 @@
   - [Desktop](guides/desktop/index.md)
   - [Mobile](guides/mobile/index.md)
     - [APIs](guides/mobile/apis.md)
-  - [Streaming and SSR](guides/ssr.md)
+  - [SSR](guides/ssr.md)
   - [Fullstack](guides/fullstack/index.md)
     - [Managing Dependencies](guides/fullstack/managing_dependencies.md)
   	- [Server Functions](guides/fullstack/server_functions.md)

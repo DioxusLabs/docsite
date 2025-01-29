@@ -31,12 +31,11 @@ concurrency:
 jobs:
   check:
     runs-on: ubuntu-latest
-    env:
-      CARGO_INCREMENTAL: 1
     steps:
       - uses: actions/checkout@v4
       - uses: dtolnay/rust-toolchain@stable
-      - uses: Swatinem/rust-cache@v2
+      - uses: jkelleyrtp/rust-cache@jk/speed-cache
+        # - uses: Swatinem/rust-cache@v2
         with:
           cache-all-crates: "true"
           cache-on-failure: "true"

@@ -10312,7 +10312,7 @@ pub fn GuideNextSteps(section: GuideNextStepsSection) -> dioxus::prelude::Elemen
         }
         p {
             "Challenge yourself by adding new features to "
-            em { "HotDop" }
+            em { "HotDog" }
             "."
         }
         ul {

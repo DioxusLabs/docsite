@@ -100,29 +100,17 @@ DemoFrame {
 }
 ```
 
-If you nest multiple suspense boundaries, the closest suspense boundary will capture the suspense and show the loading view:
-
-```rust
-{{#include src/doc_examples/asynchronous.rs:suspense_boundary_nested}}
-```
-
-<!-- ```inject-dioxus
-DemoFrame {
-    asynchronous::SuspenseBoundaryNested {}
-}
-``` -->
-
 You may want more control over what is shown in the loading view depending on what future is blocking the suspense boundary from loading. You can use the `with_loading_placeholder` method to provide a Element to the suspense boundary that it may choose to render in the loading view:
 
 ```rust
 {{#include src/doc_examples/asynchronous.rs:suspense_boundary_with_loading_placeholder}}
 ```
 
-<!-- ```inject-dioxus
+```inject-dioxus
 DemoFrame {
-    asynchronous::SuspenseBoundaryWithLoadingPlaceholder {}
+    asynchronous::DogGridViewWithLoadingPlaceholder {}
 }
-``` -->
+```
 
 ## Suspense with Fullstack
 
@@ -132,11 +120,11 @@ To use suspense in your fullstack application, you need to use the `use_server_f
 {{#include src/doc_examples/asynchronous.rs:use_server_future}}
 ```
 
-<!-- ```inject-dioxus
+```inject-dioxus
 DemoFrame {
-    asynchronous::UseServerFuture {}
+    asynchronous::DogGridFullstack {}
 }
-``` -->
+```
 
 When you use suspense with fullstack without streaming enabled, dioxus will wait until all suspended futures are resolved before sending the resolved html to the client.
 
@@ -147,8 +135,4 @@ If you [enable](https://docs.rs/dioxus/0.6.2/dioxus/prelude/struct.ServeConfigBu
 {{#include src/doc_examples/asynchronous.rs:use_server_future_streaming}}
 ```
 
-<!-- ```inject-dioxus
-DemoFrame {
-    asynchronous::UseServerFutureStreaming {}
-}
-``` -->
+![Out of order streaming](/assets/06_docs/streaming_dogs.mp4)

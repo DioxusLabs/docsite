@@ -30,6 +30,7 @@
 ---
 
 - [Guides](guides/index.md)
+  - [Managing State](guides/managing_state.md)
   - [Router](router/index.md)
     - [Example Project](router/example/index.md)
       - [Creating Our First Route](router/example/first-route.md)

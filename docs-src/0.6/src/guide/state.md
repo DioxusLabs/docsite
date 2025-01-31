@@ -7,7 +7,36 @@ Now that our *HotDog* app is scaffolded and styled, we can finally add some inte
 Before we get too far, let's split our app into two parts: the `Title` and the `DogView`. This will help us organize our app and keep the `DogView` state separated from `Title` state.
 
 ```rust
-{{#include src/doc_examples/guide_state.rs:split_app}}
+#[component]
+fn App() -> Element {
+    rsx! {
+        document::Stylesheet { href: CSS }
+        Title {}
+        DogView {}
+    }
+}
+
+#[component]
+fn Title() -> Element {
+    rsx! {
+        div { id: "title",
+            h1 { "HotDog! 🌭" }
+        }
+    }
+}
+
+#[component]
+fn DogView() -> Element {
+    rsx! {
+        div { id: "dogview",
+            img { src: "https://images.dog.ceo/breeds/pitbull/dog-3981540_1280.jpg" }
+        }
+        div { id: "buttons",
+            button { id: "skip", "skip" }
+            button { id: "save", "save!" }
+        }
+    }
+}
 ```
 
 ## Event Handlers
@@ -19,7 +48,19 @@ Event handlers are similar to regular attributes, but their name usually starts 
 We'll add some closures inline and then pass them to the `onclick` attribute for both the *skip* and *save* buttons:
 
 ```rust
-{{#include src/doc_examples/guide_state.rs:event_handler}}
+#[component]
+fn DogView() -> Element {
+    let skip = move |evt| {};
+    let save = move |evt| {};
+
+    rsx! {
+        // ...
+        div { id: "buttons",
+            button { onclick: skip, id: "skip",  "skip" }
+            button { onclick: save, id: "save",  "save!" }
+        }
+    }
+}
 ```
 
 > You can read more about Event Handlers in the [Event Handler reference](../reference/event_handlers.md)
@@ -33,12 +74,23 @@ To store state in components, Dioxus provides the `use_hook` function. This make
 When called in a component, the `use_hook` function will return a `.clone()` of the originally stored value:
 
 ```rust
-{{#include src/doc_examples/guide_state.rs:use_hook}}
+fn DogView() -> Element {
+    let img_src = use_hook(|| "https://images.dog.ceo/breeds/pitbull/dog-3981540_1280.jpg");
+
+    // ..
+
+    rsx! {
+        div { id: "dogview",
+            img { src: "{img_src}" }
+        }
+        // ..
+    }
+}
 ```
 
-Dioxus hooks are very similar to React's hooks and need to follow some [simple rules](#the-rules-of-hooks) to function properly.
+Dioxus hooks are very similar to React's hooks and need to follow some [simple rules](../guides/managing_state.md#the-rules-of-hooks) to function properly.
 
-## Signals and `use_signal`
+## Signals and use_signal
 
 While `use_hook` makes it possible to store any value that implements `Clone`, you'll frequently want a more capable form of state management. Built-in to Dioxus are *signals*.
 
@@ -63,19 +115,52 @@ The `Context` API makes it possible for parent components to share state with ch
 To "provide" context, simply call `use_context_provider()` with a struct that implements `Clone`. To read the context in a child, call `use_context()`.
 
 ```rust
-{{#include src/doc_examples/guide_state.rs:context}}
+// Create a new wrapper type
+#[derive(Clone)]
+struct TitleState(String);
+
+fn App() -> Element {
+    // Provide that type as a Context
+    use_context_provider(|| TitleState("HotDog".to_string()));
+    rsx! {
+        Title {}
+    }
+}
+
+fn Title() -> Element {
+    // Consume that type as a Context
+    let title = use_context::<TitleState>();
+    rsx! {
+        h1 { "{title.0}" }
+    }
+}
 ```
 
 You can combine use_signal and `Context` to provide reactive state to your app:
 
 ```rust
-{{#include src/doc_examples/guide_state.rs:signal_context}}
+#[derive(Clone, Copy)]
+struct MusicPlayer {
+    song: Signal<String>
+}
+
+fn use_music_player_provider() {
+    let song = use_signal(|| "Drift Away".to_string());
+    use_context_provider(|| MusicPlayer { song });
+}
 ```
 
 With `use_context` and `consume_context`, you can easily reach up to modify that state:
 
 ```rust
-{{#include src/doc_examples/guide_state.rs:signal_context_usage}}
+fn Player() -> Element {
+    rsx! {
+        button {
+            onclick: move |_| consume_context::<MusicPlayer>().song.set("Vienna"),
+            "Shuffle"
+        }
+    }
+}
 ```
 
 Any components that read the song signal will automatically re-render when the value changes.
@@ -87,13 +172,21 @@ Occasionally you'll want a simple global value. This is where `GlobalSignal` hel
 Simply declare a GlobalSignal somewhere in your app:
 
 ```rust
-{{#include src/doc_examples/guide_state.rs:initialize_global_signal}}
+static SONG: GlobalSignal<String> = Signal::global(|| "Drift Away".to_string());
 ```
 
 And then read and write to it from anywhere:
 
 ```rust
-{{#include src/doc_examples/guide_state.rs:use_global_signal}}
+fn Player() -> Element {
+    rsx! {
+        h3 { "Now playing {SONG}" }
+        button {
+            onclick: move |_| *SONG.write() = "Vienna".to_string(),
+            "Shuffle"
+        }
+    }
+}
 ```
 
 > 📣 GlobalSignals are only global to one app - not the entire program. On the server, every app gets its own GlobalSignal.

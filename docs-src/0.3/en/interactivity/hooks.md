@@ -4,7 +4,7 @@ So far our components have had no state like a normal rust functions. However, i
 
 Hooks allow us to create state in our components. Hooks are Rust functions that take a reference to `ScopeState` (in a component, you can pass `cx`), and provide you with functionality and state.
 
-## `use_state` Hook
+## use_state Hook
 
 [`use_state`](https://docs.rs/dioxus/latest/dioxus/prelude/fn.use_state.html) is one of the simplest hooks.
 
@@ -65,7 +65,7 @@ These rules mean that there are certain things you can't do with hooks:
 {{#include src/doc_examples/untested_03/hooks_bad.rs:loop}}
 ```
 
-## `use_ref` Hook
+## use_ref Hook
 
 `use_state` is great for tracking simple values. However, you may notice in the [`UseState` API](https://docs.rs/dioxus/latest/dioxus/hooks/struct.UseState.html) that the only way to modify its value is to replace it with something else (e.g., by calling `set`, or through one of the `+=`, `-=` operators). This works well when it is cheap to construct a value (such as any primitive). But what if you want to maintain more complex data in the components state?
 

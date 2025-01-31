@@ -21,7 +21,7 @@ pub(crate) fn Hero() -> Element {
                         div { class: "pt-8 lg:pt-16 text-[1em] flex flex-row space-x-4 mx-auto lg:mx-0 justify-center lg:justify-start",
                             Link {
                                 to: Route::Docs06 {
-                                    child: BookRoute::Index {},
+                                    child: BookRoute::Index { section: Default::default() },
                                 },
                                 class: "bg-ghdarkmetal dark:bg-[#EDEDED] text-white dark:text-black border border-[#a4a9ac7d] m-0 p-2 px-4 rounded md:hover:-translate-y-1 transition-transform duration-300 w-full md:w-auto  dark:shadow-white",
                                 "Get started"

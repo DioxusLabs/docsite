@@ -6,7 +6,7 @@ There are many packages in the Dioxus organization. This document will help you 
 
 ## Entry Points
 
-- [dioxus](https://github.com/DioxusLabs/dioxus/tree/main/packages/dioxus): The main crate for Dioxus applications. The dioxus crate has different feature flags to enable a specific [renderer](#renderers) with the launch API and expose different features like the [router](#router) and [fullstack](#fullstack). The [CLI](https://github.com/DioxusLabs/dioxus/tree/main/packages/cli) uses the renderer feature flag that is enabled to determine what rust target to compile for.
+- [dioxus](https://github.com/DioxusLabs/dioxus/tree/main/packages/dioxus): The main crate for Dioxus applications. The dioxus crate has different feature flags to enable a specific [renderer](#renderers) with the launch API and expose different features like the router and [fullstack](#fullstack). The [CLI](https://github.com/DioxusLabs/dioxus/tree/main/packages/cli) uses the renderer feature flag that is enabled to determine what rust target to compile for.
 - [dioxus-lib](https://github.com/DioxusLabs/dioxus/tree/main/packages/dioxus-lib): Dioxus lib is a re-export of the dioxus crate without any renderer features. This crate is recommended for libraries because it is impossible to pull in a renderer feature accidentally which would enable that renderer for any downstream crates.
 
 ## Renderers

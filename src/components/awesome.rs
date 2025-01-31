@@ -66,8 +66,8 @@ impl Display for Category {
 }
 
 #[derive(serde::Deserialize)]
-struct StarsResponse {
-    stargazers_count: u64,
+pub struct StarsResponse {
+    pub stargazers_count: u64,
 }
 
 #[component]
@@ -219,43 +219,41 @@ pub(crate) fn AwesomeInner() -> Element {
 
 #[component]
 fn AwesomeItem(item: ReadOnlySignal<Item>) -> Element {
-    let stars = use_resource(move || {
-        async move {
-            let item = item.read();
-            let is_github = item.github.is_some();
-            let username = item
-                .github
-                .clone()
-                .unwrap_or(GithubInfo::default())
-                .username;
-            let repo = item.github.clone().unwrap_or(GithubInfo::default()).repo;
+    let stars = use_resource(move || async move {
+        let item = item.read();
+        let is_github = item.github.is_some();
+        let username = item
+            .github
+            .clone()
+            .unwrap_or(GithubInfo::default())
+            .username;
 
-            if !is_github {
-                return None;
-            }
+        let repo = item.github.clone().unwrap_or(GithubInfo::default()).repo;
 
-            // Check cache
-            if let Some(stars) = get_stars(format!("{}{}/{}", STAR_CACHE_NAME, username, repo)) {
-                return Some(stars);
-            }
-
-            // Not in cache or expired, lets get from github
-            if let Ok(req) =
-                reqwest::get(format!("https://api.github.com/repos/{username}/{repo}")).await
-            {
-                if let Ok(res) = req.json::<StarsResponse>().await {
-                    // Add to cache
-
-                    set_stars(
-                        format!("{}{}/{}", STAR_CACHE_NAME, username, repo),
-                        res.stargazers_count as usize,
-                    );
-                    return Some(res.stargazers_count as usize);
-                }
-            }
-
-            None
+        if !is_github {
+            return None;
         }
+
+        // Check cache
+        if let Some(stars) = get_stars(format!("{}{}/{}", STAR_CACHE_NAME, username, repo)) {
+            return Some(stars);
+        }
+
+        // Not in cache or expired, lets get from github
+        if let Ok(req) =
+            reqwest::get(format!("https://api.github.com/repos/{username}/{repo}")).await
+        {
+            if let Ok(res) = req.json::<StarsResponse>().await {
+                // Add to cache
+                set_stars(
+                    format!("{}{}/{}", STAR_CACHE_NAME, username, repo),
+                    res.stargazers_count as usize,
+                );
+                return Some(res.stargazers_count as usize);
+            }
+        }
+
+        None
     });
 
     // Format stars text

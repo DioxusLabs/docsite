@@ -1,6 +1,7 @@
 use std::{
     collections::HashMap,
     fmt::{Debug, Display},
+    num::ParseIntError,
     path::PathBuf,
     str::FromStr,
 };
@@ -197,76 +198,47 @@ impl Config {
         let mut files = Vec::new();
         let base_directory = mapping.base_directory();
 
-        // Collect all the routes
-        let mut static_routes = std::collections::HashSet::new();
-        for segments in R::SITE_MAP.iter().flat_map(|segs| segs.flatten()) {
-            let mut route = String::from("/");
-            for seg in segments {
-                match seg {
-                    dioxus_router::routable::SegmentType::Static(segment) => {
-                        route.push_str(segment);
-                        route.push('/');
-                    }
-                    dioxus_router::routable::SegmentType::Child => {}
-                    dioxus_router::routable::SegmentType::CatchAll(_)
-                    | dioxus_router::routable::SegmentType::Dynamic(_) => continue,
-                    _ => todo!(),
-                }
-            }
-            // Strip any trailing slashes
-            if route.len() > 1 {
-                while let Some('/') = route.chars().last() {
-                    route.pop();
-                }
-            }
-            static_routes.insert(route);
-        }
+        // Collect all the static routes
+        let static_routes = R::static_routes();
         // Add the routes to the index
         for route in static_routes {
-            let url = route;
-            match R::from_str(&url) {
-                Ok(route) => {
-                    if let Some(path) = mapping.map_route(route) {
-                        let path = &path.strip_prefix("/").unwrap_or(&path);
-                        let absolute_path = base_directory.join(path);
-                        log::trace!("Adding {:?} to search index", absolute_path);
-                        match std::fs::read_to_string(&absolute_path) {
-                            Ok(contents) => {
-                                let document = Html::parse_document(&contents);
-                                let title = document
-                                    .select(&Selector::parse("h1").unwrap())
+            let url = route.to_string();
+            if let Some(path) = mapping.map_route(route) {
+                let path = &path.strip_prefix("/").unwrap_or(&path);
+                let absolute_path = base_directory.join(path);
+                log::trace!("Adding {:?} to search index", absolute_path);
+                match std::fs::read_to_string(&absolute_path) {
+                    Ok(contents) => {
+                        let document = Html::parse_document(&contents);
+                        let title = document
+                            .select(&Selector::parse("h1").unwrap())
+                            .next()
+                            .map(|title| title.text().collect::<String>())
+                            .unwrap_or_else(|| {
+                                document
+                                    .select(&Selector::parse("title").unwrap())
                                     .next()
                                     .map(|title| title.text().collect::<String>())
                                     .unwrap_or_else(|| {
-                                        document
-                                            .select(&Selector::parse("title").unwrap())
-                                            .next()
-                                            .map(|title| title.text().collect::<String>())
-                                            .unwrap_or_else(|| {
-                                                let mut title = String::new();
-                                                for segment in path.iter() {
-                                                    title.push_str(&segment.to_string_lossy());
-                                                    title.push(' ');
-                                                }
-                                                title
-                                            })
-                                    });
-                                files.push(File {
-                                    path: path.to_string_lossy().into(),
-                                    url,
-                                    title,
-                                    fields: HashMap::new(),
-                                    explicit_source: None,
-                                })
-                            }
-                            Err(err) => {
-                                log::error!("Error reading file: {:?}: {}", absolute_path, err);
-                            }
-                        }
+                                        let mut title = String::new();
+                                        for segment in path.iter() {
+                                            title.push_str(&segment.to_string_lossy());
+                                            title.push(' ');
+                                        }
+                                        title
+                                    })
+                            });
+                        files.push(File {
+                            path: path.to_string_lossy().into(),
+                            url,
+                            title,
+                            fields: HashMap::new(),
+                            explicit_source: None,
+                        })
                     }
-                }
-                Err(err) => {
-                    log::error!("Failed to parse url ({}): {err}", url);
+                    Err(err) => {
+                        log::error!("Error reading file: {:?}: {}", absolute_path, err);
+                    }
                 }
             }
         }
@@ -354,8 +326,8 @@ impl<R: Routable> SearchIndexMapping<R> for BaseDirectoryMapping {
 
     fn map_route(&self, route: R) -> Option<PathBuf> {
         let route = route.to_string();
-        let (route, _) = route.split_once('#')?;
-        let (route, _) = route.split_once('?')?;
+        let (route, _) = route.split_once('#').unwrap_or((&route, ""));
+        let (route, _) = route.split_once('?').unwrap_or((&route, ""));
         let route = PathBuf::from(route).join("index.html");
         Some(route)
     }

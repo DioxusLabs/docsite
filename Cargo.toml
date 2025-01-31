@@ -143,3 +143,4 @@ doc_test = [
     "server",
     "dioxus/fullstack"
 ]
+production = []

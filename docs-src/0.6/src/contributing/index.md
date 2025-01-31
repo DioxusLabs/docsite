@@ -14,7 +14,7 @@ Part of what makes React great is the rich ecosystem. We'd like the same for Dio
 
 ## Bugs & Features
 
-If you've fixed [an open issue](https://github.com/DioxusLabs/dioxus/issues), feel free to submit a PR! You can also take a look at [the roadmap](./roadmap.md) and work on something in there. Consider [reaching out](https://discord.gg/XgGxMSkvUM) to the team first to make sure everyone's on the same page, and you don't do useless work!
+If you've fixed [an open issue](https://github.com/DioxusLabs/dioxus/issues), feel free to submit a PR! Consider [reaching out](https://discord.gg/XgGxMSkvUM) to the team first to make sure everyone's on the same page, and you don't do useless work!
 
 All pull requests (including those made by a team member) must be approved by at least one other team member.
 Larger, more nuanced decisions about design, architecture, breaking changes, trade-offs, etc. are made by team consensus.

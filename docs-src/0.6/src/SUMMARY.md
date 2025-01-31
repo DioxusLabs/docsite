@@ -95,7 +95,6 @@
 - [Contributing](contributing/index.md)
   - [Project Structure](contributing/project_structure.md)
   - [Guiding Principles](contributing/guiding_principles.md)
-  - [Roadmap](contributing/roadmap.md)
 
 ---
 - [CLI](CLI/index.md)

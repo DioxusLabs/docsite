@@ -18,4 +18,4 @@ To statically render pages, we need to flatten the route tree and generate a fil
 
 - [examples/static-hydrated](https://github.com/DioxusLabs/dioxus/tree/v0.5/packages/fullstack/examples/static-hydrated)
 
-[`Routable`]: https://docs.rs/dioxus-router/latest/dioxus_router/components/fn.Routable.html
+[`Routable`]: https://docs.rs/dioxus-router/latest/dioxus_router/routable/trait.Routable.html

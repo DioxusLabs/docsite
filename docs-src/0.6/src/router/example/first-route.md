@@ -73,4 +73,4 @@ handle when a route doesn't exist. Next, we'll create the blog portion of our
 site. We will utilize nested routes and URL parameters.
 
 [`Router`]: https://docs.rs/dioxus-router/latest/dioxus_router/components/fn.Router.html
-[`Routable`]: https://docs.rs/dioxus-router/latest/dioxus_router/components/fn.Routable.html
+[`Routable`]: https://docs.rs/dioxus-router/latest/dioxus_router/routable/trait.Routable.html

@@ -41,6 +41,6 @@ webServer: [
 ],
 ```
 
-- [Web example](https://github.com/DioxusLabs/dioxus/tree/main/playwright-tests/web)
-- [Liveview example](https://github.com/DioxusLabs/dioxus/tree/main/playwright-tests/liveview)
-- [Fullstack example](https://github.com/DioxusLabs/dioxus/tree/main/playwright-tests/fullstack)
+- [Web example](https://github.com/DioxusLabs/dioxus/tree/main/packages/playwright-tests/web)
+- [Liveview example](https://github.com/DioxusLabs/dioxus/tree/main/packages/playwright-tests/liveview)
+- [Fullstack example](https://github.com/DioxusLabs/dioxus/tree/main/packages/playwright-tests/fullstack)

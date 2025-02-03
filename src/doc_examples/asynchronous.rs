@@ -606,6 +606,33 @@ mod use_server_future {
 }
 
 #[cfg(feature = "fullstack")]
+mod use_server_future_reactive {
+    use dioxus::prelude::*;
+
+    fn main() {
+        // ANCHOR: use_server_future_reactive
+        let id = use_signal(|| 0);
+        // ❌ The future inside of use_server_future is not reactive
+        use_server_future(move || {
+            async move {
+                // But the future is not reactive which means that the future will not subscribe to any reads here
+                println!("{id}");
+            }
+        });
+        // ✅ The closure that creates the future for use_server_future is reactive
+        use_server_future(move || {
+            // The closure itself is reactive which means the future will subscribe to any signals you read here
+            let cloned_id = id();
+            async move {
+                // But the future is not reactive which means that the future will not subscribe to any reads here
+                println!("{cloned_id}");
+            }
+        });
+        // ANCHOR_END: use_server_future_reactive
+    }
+}
+
+#[cfg(feature = "fullstack")]
 mod use_server_future_streaming {
     use dioxus::prelude::*;
 
@@ -616,7 +643,7 @@ mod use_server_future_streaming {
                 // Enable out of order streaming during SSR
                 dioxus::fullstack::ServeConfig::builder().enable_out_of_order_streaming()
             })
-            .launch(DogGrid); 
+            .launch(DogGrid);
     }
     // ANCHOR_END: use_server_future_streaming
 

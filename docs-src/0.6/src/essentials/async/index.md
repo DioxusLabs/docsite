@@ -19,7 +19,7 @@ DemoFrame {
 }
 ```
 
-Dioxus will automatically call `spawn` if you return a future from an event handler:
+Since spawning in event handlers is very common, Dioxus provides a more concise syntax for async event handlers. If you return a future from an event handler, Dioxus will automatically `spawn` it:
 
 ```rust
 {{#include src/doc_examples/asynchronous.rs:spawn_simplified}}
@@ -33,7 +33,7 @@ The future you pass to the `spawn` will automatically be cancelled when the comp
 
 ## Asynchronous State with `use_resource`
 
-The [`use_resource`](https://docs.rs/dioxus-hooks/latest/dioxus_hooks/fn.use_resource.html) can be used to derive asynchronous state. It takes a closure that returns a future and returns a tracked value with the current state of the future. Any time a dependency of the resource changes, the resource will rerun:
+The [`use_resource`](https://docs.rs/dioxus-hooks/latest/dioxus_hooks/fn.use_resource.html) can be used to derive asynchronous state. It takes an async closure to calculate the state and returns a tracked value with the current state of the future. Any time a dependency of the resource changes, the resource will rerun:
 
 ```rust
 {{#include src/doc_examples/asynchronous.rs:use_resource}}
@@ -42,6 +42,18 @@ The [`use_resource`](https://docs.rs/dioxus-hooks/latest/dioxus_hooks/fn.use_res
 ```inject-dioxus
 DemoFrame {
     asynchronous::UseResource {}
+}
+```
+
+The `use_resource` hook might look similar to the `use_memo` hook, but unlike `use_memo`, the resource's output is not memoized with `PartialEq`. That means any components/reactive hooks that read the output will rerun if the future reruns even if the value it returns is the same: 
+
+```rust
+{{#include src/doc_examples/asynchronous.rs:use_resource_memo}}
+```
+
+```inject-dioxus
+DemoFrame {
+    asynchronous::UseResourceDemo {}
 }
 ```
 
@@ -71,21 +83,9 @@ DemoFrame {
 >
 > Async methods will often mention if they are cancel safe in their documentation.
 
-The `use_resource` hook might look similar to the `use_memo` hook. Both hooks derive a new state and will rerun when any value used to compute that state is written to. However unlike `use_memo`, the resource's output is not memoized with `PartialEq`:
-
-```rust
-{{#include src/doc_examples/asynchronous.rs:use_resource_memo}}
-```
-
-```inject-dioxus
-DemoFrame {
-    asynchronous::UseResourceDemo {}
-}
-```
-
 ## Unified Loading Views with suspense
 
-`SuspenseBoundary` is a convenient way to bundle multiple async tasks into a single loading view. It accepts a loading closure and children. If any of the tasks underneath the suspense boundary are suspended, the loading view will be shown instead of the children. When all of the tasks are resolved, the children will be rendered.
+`SuspenseBoundary` is a convenient way to bundle multiple async tasks into a single loading view. It accepts a loading closure and children. You can suspend tasks in children to pause rendering of that child until the future is finished. The suspense boundary will show the loading view instead of the children while any of its children are suspended. Once that suspense is resolved, it will show the children again.
 
 
 We can use a suspense boundary to show a grid of different breeds of dogs without handling each loading state individually:
@@ -100,7 +100,7 @@ DemoFrame {
 }
 ```
 
-You may want more control over what is shown in the loading view depending on what future is blocking the suspense boundary from loading. You can use the `with_loading_placeholder` method to provide a Element to the suspense boundary that it may choose to render in the loading view:
+If you need to change the loading view while a specific task is loading, you can provide a different loading view with the `with_loading_placeholder` method. The loading placeholder you return from the method will be passed to the suspense boundary and may choose to render it instead of the default loading view:
 
 ```rust
 {{#include src/doc_examples/asynchronous.rs:suspense_boundary_with_loading_placeholder}}
@@ -126,13 +126,27 @@ DemoFrame {
 }
 ```
 
-When you use suspense with fullstack without streaming enabled, dioxus will wait until all suspended futures are resolved before sending the resolved html to the client.
+Unlike `use_resource`, `use_server_future` is only reactive in the closure, not the future itself. If you need to subscribe to another reactive value, you need to read it in the closure before passing it to the future:
 
+```rust
+{{#include src/doc_examples/asynchronous.rs:use_server_future_reactive}}
+```
 
-If you [enable](https://docs.rs/dioxus/0.6.2/dioxus/prelude/struct.ServeConfigBuilder.html#method.enable_out_of_order_streaming) out of order streaming, dioxus will send the finished HTML chunks to the client one at a time as they are resolved:
+When you use suspense with fullstack without streaming enabled, dioxus will wait until all suspended futures are resolved before sending the resolved html to the client. If you [enable](https://docs.rs/dioxus/0.6.2/dioxus/prelude/struct.ServeConfigBuilder.html#method.enable_out_of_order_streaming) out of order streaming, dioxus will send the finished HTML chunks to the client one at a time as they are resolved:
 
 ```rust
 {{#include src/doc_examples/asynchronous.rs:use_server_future_streaming}}
 ```
 
 ![Out of order streaming](/assets/06_docs/streaming_dogs.mp4)
+
+## Conclusion
+
+This guide has covered the basics of asynchronous tasks in Dioxus. More detailed documentation about specific hooks are available in docs.rs:
+- [use_resource](https://docs.rs/dioxus/latest/dioxus/prelude/fn.use_resource.html)
+- [use_server_future](https://docs.rs/dioxus/latest/dioxus/prelude/fn.use_server_future.html)
+- [SuspenseBoundary](https://docs.rs/dioxus/latest/dioxus/prelude/fn.SuspenseBoundary.html)
+- [spawn](https://docs.rs/dioxus/latest/dioxus/prelude/fn.spawn.html)
+- [spawn_forever](https://docs.rs/dioxus/latest/dioxus/prelude/fn.spawn_forever.html)
+
+More examples of futures and asynchronous tasks are available in the [example folder](https://github.com/DioxusLabs/dioxus/tree/v0.6/examples) in the dioxus repo.

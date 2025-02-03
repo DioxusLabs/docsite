@@ -108,7 +108,7 @@ pub(crate) fn Nav() -> Element {
                                 new_tab: true,
                                 span { class: "sr-only", "Dioxus on GitHub" }
                                 crate::icons::Github2 {}
-                                span { class: "text-xs text", "22.5k" }
+                                span { class: "text-xs text", CurrentStarCount {} }
                             }
                         }
                         div { class: "border-l border-gray-200 dark:border-gray-800 h-full" }
@@ -126,7 +126,8 @@ pub(crate) fn Nav() -> Element {
                             Link {
                                 to: crate::docs::router_06::BookRoute::Index {
                                     section: Default::default(),
-                                }.global_route(),
+                                }
+                                    .global_route(),
                                 class: "md:px-3 h-full flex flex-col justify-center bg-blue-500 text-lg md:text-sm text-white rounded font-semibold hover:brightness-95 dark:hover:brightness-105",
                                 "Learn"
                             }
@@ -136,6 +137,26 @@ pub(crate) fn Nav() -> Element {
             }
         }
     }
+}
+
+fn CurrentStarCount() -> Element {
+    let num_stars = use_resource(move || async move {
+        use crate::awesome::StarsResponse;
+        let username = "DioxusLabs";
+        let repo = "dioxus";
+        let res = reqwest::get(format!("https://api.github.com/repos/{username}/{repo}")).await;
+        let res = res.ok()?.json::<StarsResponse>().await.ok()?;
+        Some(res.stargazers_count as usize)
+    });
+
+    let mut rendered_stars = 24.5;
+
+    if let Some(Some(loaded)) = num_stars.value()() {
+        let as_float = loaded as f64;
+        rendered_stars = as_float.round() / 1000.0;
+    }
+
+    rsx! { "{rendered_stars:.1}k" }
 }
 
 static LINKS: &[(&str, &str)] = &[

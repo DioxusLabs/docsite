@@ -257,8 +257,6 @@ pub enum BookRoute {
     ContributingGuidingPrinciples {
         section: ContributingGuidingPrinciplesSection,
     },
-    #[route("/contributing/roadmap#:section")]
-    ContributingRoadmap { section: ContributingRoadmapSection },
     #[route("/CLI/#:section")]
     CliIndex { section: CliIndexSection },
     #[route("/CLI/creating#:section")]
@@ -409,11 +407,10 @@ impl BookRoute {
             BookRoute::ContributingGuidingPrinciples { .. } => {
                 use_mdbook::mdbook_shared::PageId(83usize)
             }
-            BookRoute::ContributingRoadmap { .. } => use_mdbook::mdbook_shared::PageId(84usize),
-            BookRoute::CliIndex { .. } => use_mdbook::mdbook_shared::PageId(85usize),
-            BookRoute::CliCreating { .. } => use_mdbook::mdbook_shared::PageId(86usize),
-            BookRoute::CliConfigure { .. } => use_mdbook::mdbook_shared::PageId(87usize),
-            BookRoute::CliTranslate { .. } => use_mdbook::mdbook_shared::PageId(88usize),
+            BookRoute::CliIndex { .. } => use_mdbook::mdbook_shared::PageId(84usize),
+            BookRoute::CliCreating { .. } => use_mdbook::mdbook_shared::PageId(85usize),
+            BookRoute::CliConfigure { .. } => use_mdbook::mdbook_shared::PageId(86usize),
+            BookRoute::CliTranslate { .. } => use_mdbook::mdbook_shared::PageId(87usize),
         }
     }
 }
@@ -3912,13 +3909,23 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                         level: 1usize,
                     },
                     ::use_mdbook::mdbook_shared::Section {
+                        title: "Entry Points".to_string(),
+                        id: "entry-points".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
                         title: "Renderers".to_string(),
                         id: "renderers".to_string(),
                         level: 2usize,
                     },
                     ::use_mdbook::mdbook_shared::Section {
-                        title: "State Management/Hooks".to_string(),
-                        id: "state-management/hooks".to_string(),
+                        title: "Experimental Native Rendering".to_string(),
+                        id: "experimental-native-rendering".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Fullstack".to_string(),
+                        id: "fullstack".to_string(),
                         level: 2usize,
                     },
                     ::use_mdbook::mdbook_shared::Section {
@@ -3927,18 +3934,63 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                         level: 2usize,
                     },
                     ::use_mdbook::mdbook_shared::Section {
-                        title: "Native Renderer Utilities".to_string(),
-                        id: "native-renderer-utilities".to_string(),
+                        title: "Web utilities".to_string(),
+                        id: "web-utilities".to_string(),
                         level: 2usize,
                     },
                     ::use_mdbook::mdbook_shared::Section {
-                        title: "Web renderer tooling".to_string(),
-                        id: "web-renderer-tooling".to_string(),
+                        title: "State Management".to_string(),
+                        id: "state-management".to_string(),
                         level: 2usize,
                     },
                     ::use_mdbook::mdbook_shared::Section {
-                        title: "Developer tooling".to_string(),
-                        id: "developer-tooling".to_string(),
+                        title: "Logging".to_string(),
+                        id: "logging".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Routing".to_string(),
+                        id: "routing".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Assets".to_string(),
+                        id: "assets".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Formatting".to_string(),
+                        id: "formatting".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Linting".to_string(),
+                        id: "linting".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Translation".to_string(),
+                        id: "translation".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Hot Reloading".to_string(),
+                        id: "hot-reloading".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "CLI".to_string(),
+                        id: "cli".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Extension".to_string(),
+                        id: "extension".to_string(),
+                        level: 2usize,
+                    },
+                    ::use_mdbook::mdbook_shared::Section {
+                        title: "Testing".to_string(),
+                        id: "testing".to_string(),
                         level: 2usize,
                     },
                 ],
@@ -3998,24 +4050,6 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
         );
         pages.push((84usize, {
             ::use_mdbook::mdbook_shared::Page {
-                title: "Roadmap".to_string(),
-                url: BookRoute::ContributingRoadmap {
-                    section: ContributingRoadmapSection::Empty,
-                },
-                segments: vec![],
-                sections: vec![],
-                raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(84usize),
-            }
-        }));
-        page_id_mapping.insert(
-            BookRoute::ContributingRoadmap {
-                section: ContributingRoadmapSection::Empty,
-            },
-            ::use_mdbook::mdbook_shared::PageId(84usize),
-        );
-        pages.push((85usize, {
-            ::use_mdbook::mdbook_shared::Page {
                 title: "CLI".to_string(),
                 url: BookRoute::CliIndex {
                     section: CliIndexSection::Empty,
@@ -4034,16 +4068,16 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(85usize),
+                id: ::use_mdbook::mdbook_shared::PageId(84usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::CliIndex {
                 section: CliIndexSection::Empty,
             },
-            ::use_mdbook::mdbook_shared::PageId(85usize),
+            ::use_mdbook::mdbook_shared::PageId(84usize),
         );
-        pages.push((86usize, {
+        pages.push((85usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Create a Project".to_string(),
                 url: BookRoute::CliCreating {
@@ -4063,16 +4097,16 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(86usize),
+                id: ::use_mdbook::mdbook_shared::PageId(85usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::CliCreating {
                 section: CliCreatingSection::Empty,
             },
-            ::use_mdbook::mdbook_shared::PageId(86usize),
+            ::use_mdbook::mdbook_shared::PageId(85usize),
         );
-        pages.push((87usize, {
+        pages.push((86usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Configure Project".to_string(),
                 url: BookRoute::CliConfigure {
@@ -4157,16 +4191,16 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(87usize),
+                id: ::use_mdbook::mdbook_shared::PageId(86usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::CliConfigure {
                 section: CliConfigureSection::Empty,
             },
-            ::use_mdbook::mdbook_shared::PageId(87usize),
+            ::use_mdbook::mdbook_shared::PageId(86usize),
         );
-        pages.push((88usize, {
+        pages.push((87usize, {
             ::use_mdbook::mdbook_shared::Page {
                 title: "Translate HTML".to_string(),
                 url: BookRoute::CliTranslate {
@@ -4186,14 +4220,14 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                 ],
                 raw: String::new(),
-                id: ::use_mdbook::mdbook_shared::PageId(88usize),
+                id: ::use_mdbook::mdbook_shared::PageId(87usize),
             }
         }));
         page_id_mapping.insert(
             BookRoute::CliTranslate {
                 section: CliTranslateSection::Empty,
             },
-            ::use_mdbook::mdbook_shared::PageId(88usize),
+            ::use_mdbook::mdbook_shared::PageId(87usize),
         );
         ::use_mdbook::mdbook_shared::MdBook {
             summary: ::use_mdbook::mdbook_shared::Summary {
@@ -5139,16 +5173,6 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                                 }),
                                 number: Some(
                                     ::use_mdbook::mdbook_shared::SectionNumber(vec![6u32, 2u32]),
-                                ),
-                                nested_items: vec![],
-                            }),
-                            ::use_mdbook::mdbook_shared::SummaryItem::Link(::use_mdbook::mdbook_shared::Link {
-                                name: "Roadmap".to_string(),
-                                location: Some(BookRoute::ContributingRoadmap {
-                                    section: ContributingRoadmapSection::Empty,
-                                }),
-                                number: Some(
-                                    ::use_mdbook::mdbook_shared::SectionNumber(vec![6u32, 3u32]),
                                 ),
                                 nested_items: vec![],
                             }),
@@ -11856,6 +11880,11 @@ pub fn EssentialsAsyncIndex(section: EssentialsAsyncIndexSection) -> dioxus::pre
                     "spawn_forever"
                 }
             }
+        }
+        p {
+            "More examples of futures and asynchronous tasks are available in the "
+            Link { to: "https://github.com/DioxusLabs/dioxus/tree/v0.6/examples", "example folder" }
+            " in the dioxus repo."
         }
     }
 }
@@ -22918,14 +22947,7 @@ pub fn ContributingIndex(section: ContributingIndexSection) -> dioxus::prelude::
         p {
             "If you've fixed "
             Link { to: "https://github.com/DioxusLabs/dioxus/issues", "an open issue" }
-            ", feel free to submit a PR! You can also take a look at "
-            Link {
-                to: BookRoute::ContributingRoadmap {
-                    section: ContributingRoadmapSection::Empty,
-                },
-                "the roadmap"
-            }
-            " and work on something in there. Consider "
+            ", feel free to submit a PR! Consider "
             Link { to: "https://discord.gg/XgGxMSkvUM", "reaching out" }
             " to the team first to make sure everyone's on the same page, and you don't do useless work!"
         }
@@ -23077,12 +23099,23 @@ pub enum ContributingProjectStructureSection {
     #[default]
     Empty,
     ProjectStructure,
+    EntryPoints,
     Renderers,
-    StateManagementhooks,
+    ExperimentalNativeRendering,
+    Fullstack,
     CoreUtilities,
-    NativeRendererUtilities,
-    WebRendererTooling,
-    DeveloperTooling,
+    WebUtilities,
+    StateManagement,
+    Logging,
+    Routing,
+    Assets,
+    Formatting,
+    Linting,
+    Translation,
+    HotReloading,
+    Cli,
+    Extension,
+    Testing,
 }
 impl std::str::FromStr for ContributingProjectStructureSection {
     type Err = ContributingProjectStructureSectionParseError;
@@ -23090,12 +23123,23 @@ impl std::str::FromStr for ContributingProjectStructureSection {
         match s {
             "" => Ok(Self::Empty),
             "project-structure" => Ok(Self::ProjectStructure),
+            "entry-points" => Ok(Self::EntryPoints),
             "renderers" => Ok(Self::Renderers),
-            "state-managementhooks" => Ok(Self::StateManagementhooks),
+            "experimental-native-rendering" => Ok(Self::ExperimentalNativeRendering),
+            "fullstack" => Ok(Self::Fullstack),
             "core-utilities" => Ok(Self::CoreUtilities),
-            "native-renderer-utilities" => Ok(Self::NativeRendererUtilities),
-            "web-renderer-tooling" => Ok(Self::WebRendererTooling),
-            "developer-tooling" => Ok(Self::DeveloperTooling),
+            "web-utilities" => Ok(Self::WebUtilities),
+            "state-management" => Ok(Self::StateManagement),
+            "logging" => Ok(Self::Logging),
+            "routing" => Ok(Self::Routing),
+            "assets" => Ok(Self::Assets),
+            "formatting" => Ok(Self::Formatting),
+            "linting" => Ok(Self::Linting),
+            "translation" => Ok(Self::Translation),
+            "hot-reloading" => Ok(Self::HotReloading),
+            "cli" => Ok(Self::Cli),
+            "extension" => Ok(Self::Extension),
+            "testing" => Ok(Self::Testing),
             _ => Err(ContributingProjectStructureSectionParseError),
         }
     }
@@ -23105,12 +23149,23 @@ impl std::fmt::Display for ContributingProjectStructureSection {
         match self {
             Self::Empty => f.write_str(""),
             Self::ProjectStructure => f.write_str("project-structure"),
+            Self::EntryPoints => f.write_str("entry-points"),
             Self::Renderers => f.write_str("renderers"),
-            Self::StateManagementhooks => f.write_str("state-managementhooks"),
+            Self::ExperimentalNativeRendering => f.write_str("experimental-native-rendering"),
+            Self::Fullstack => f.write_str("fullstack"),
             Self::CoreUtilities => f.write_str("core-utilities"),
-            Self::NativeRendererUtilities => f.write_str("native-renderer-utilities"),
-            Self::WebRendererTooling => f.write_str("web-renderer-tooling"),
-            Self::DeveloperTooling => f.write_str("developer-tooling"),
+            Self::WebUtilities => f.write_str("web-utilities"),
+            Self::StateManagement => f.write_str("state-management"),
+            Self::Logging => f.write_str("logging"),
+            Self::Routing => f.write_str("routing"),
+            Self::Assets => f.write_str("assets"),
+            Self::Formatting => f.write_str("formatting"),
+            Self::Linting => f.write_str("linting"),
+            Self::Translation => f.write_str("translation"),
+            Self::HotReloading => f.write_str("hot-reloading"),
+            Self::Cli => f.write_str("cli"),
+            Self::Extension => f.write_str("extension"),
+            Self::Testing => f.write_str("testing"),
         }
     }
 }
@@ -23119,7 +23174,7 @@ pub struct ContributingProjectStructureSectionParseError;
 impl std::fmt::Display for ContributingProjectStructureSectionParseError {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         f.write_str(
-            "Invalid section name. Expected one of ContributingProjectStructureSectionproject-structure, renderers, state-managementhooks, core-utilities, native-renderer-utilities, web-renderer-tooling, developer-tooling",
+            "Invalid section name. Expected one of ContributingProjectStructureSectionproject-structure, entry-points, renderers, experimental-native-rendering, fullstack, core-utilities, web-utilities, state-management, logging, routing, assets, formatting, linting, translation, hot-reloading, cli, extension, testing",
         )?;
         Ok(())
     }
@@ -23141,7 +23196,55 @@ pub fn ContributingProjectStructure(
             }
         }
         p {
-            "There are many packages in the Dioxus organization. This document will help you understand the purpose of each package and how they fit together."
+            "There are many packages in the Dioxus organization. This document will help you understand the purpose of each package and how they fit together:"
+        }
+        p {
+            img {
+                src: asset!("/assets/static/workspace-graph.png", ImageAssetOptions::new().with_avif()),
+                alt: "Dioxus Dependency Graph",
+                title: "",
+            }
+        }
+        h2 { id: "entry-points",
+            Link {
+                to: BookRoute::ContributingProjectStructure {
+                    section: ContributingProjectStructureSection::EntryPoints,
+                },
+                class: "header",
+                "Entry Points"
+            }
+        }
+        ul {
+            li {
+                Link { to: "https://github.com/DioxusLabs/dioxus/tree/main/packages/dioxus",
+                    "dioxus"
+                }
+                ": The main crate for Dioxus applications. The dioxus crate has different feature flags to enable a specific "
+                Link {
+                    to: BookRoute::ContributingProjectStructure {
+                        section: ContributingProjectStructureSection::Renderers,
+                    },
+                    "renderer"
+                }
+                " with the launch API and expose different features like the router and "
+                Link {
+                    to: BookRoute::ContributingProjectStructure {
+                        section: ContributingProjectStructureSection::Fullstack,
+                    },
+                    "fullstack"
+                }
+                ". The "
+                Link { to: "https://github.com/DioxusLabs/dioxus/tree/main/packages/cli",
+                    "CLI"
+                }
+                " uses the renderer feature flag that is enabled to determine what rust target to compile for."
+            }
+            li {
+                Link { to: "https://github.com/DioxusLabs/dioxus/tree/main/packages/dioxus-lib",
+                    "dioxus-lib"
+                }
+                ": Dioxus lib is a re-export of the dioxus crate without any renderer features. This crate is recommended for libraries because it is impossible to pull in a renderer feature accidentally which would enable that renderer for any downstream crates."
+            }
         }
         h2 { id: "renderers",
             Link {
@@ -23152,99 +23255,121 @@ pub fn ContributingProjectStructure(
                 "Renderers"
             }
         }
+        p {
+            "Renderers are the entry point for Dioxus applications. They handle rendering the application, polling async tasks, and handling events. Each renderer depends on  "
+            code { "dioxus-core" }
+            " for the core virtual dom and implements both the history trait from  "
+            code { "dioxus-history" }
+            " and the event conversion trait from  "
+            code { "dioxus-html" }
+            ". Dioxus has four renderers in the main repository:"
+        }
         ul {
             li {
                 Link { to: "https://github.com/DioxusLabs/dioxus/tree/main/packages/desktop",
-                    "Desktop"
+                    "desktop"
                 }
                 ": A Render that Runs Dioxus applications natively, but renders them with the system webview"
             }
             li {
                 Link { to: "https://github.com/DioxusLabs/dioxus/tree/main/packages/mobile",
-                    "Mobile"
+                    "mobile"
                 }
-                ": A Render that Runs Dioxus applications natively, but renders them with the system webview. This is currently a copy of the desktop render"
+                ": A Render that Runs Dioxus applications natively, but renders them with the system webview. This is currently a think wrapper on top of the desktop renderer since both renderers use the webview"
             }
             li {
                 Link { to: "https://github.com/DioxusLabs/dioxus/tree/main/packages/web",
-                    "Web"
+                    "web"
                 }
-                ": Renders Dioxus applications in the browser by compiling to WASM and manipulating the DOM"
+                ": Renders Dioxus applications in the browser by compiling to WASM and manipulating the DOM. The web renderer has a hydration feature to take over rendering from the server if "
+                Link {
+                    to: BookRoute::ContributingProjectStructure {
+                        section: ContributingProjectStructureSection::Fullstack,
+                    },
+                    "fullstack"
+                }
+                " is enabled"
             }
             li {
                 Link { to: "https://github.com/DioxusLabs/dioxus/tree/main/packages/liveview",
-                    "Liveview"
+                    "liveview"
                 }
-                ": A Render that Runs on the server, and renders using a websocket proxy in the browser"
-            }
-            li {
-                Link { to: "https://github.com/DioxusLabs/blitz/tree/master/packages/plasmo",
-                    "Plasmo"
-                }
-                ": A Renderer that renders a HTML-like tree into a terminal"
-            }
-            li {
-                Link { to: "https://github.com/DioxusLabs/blitz/tree/master/packages/dioxus-tui",
-                    "TUI"
-                }
-                ": A Renderer that uses Plasmo to render a Dioxus application in a terminal"
-            }
-            li {
-                Link { to: "https://github.com/DioxusLabs/blitz/tree/master/packages/blitz-core",
-                    "Blitz-Core"
-                }
-                ": An experimental native renderer that renders a HTML-like tree using WGPU."
-            }
-            li {
-                Link { to: "https://github.com/DioxusLabs/blitz", "Blitz" }
-                ": An experimental native renderer that uses Blitz-Core to render a Dioxus application using WGPU."
-            }
-            li {
-                Link { to: "https://github.com/DioxusLabs/dioxus/tree/main/packages/ssr",
-                    "SSR"
-                }
-                ": A Render that Runs Dioxus applications on the server, and renders them to HTML"
+                ": A Render that Runs on the server, and renders using a websocket proxy in the browser. The liveview renderer is currently supported, but development has been deprioritized in favor of fullstack and it may be removed in the future"
             }
         }
-        h2 { id: "state-managementhooks",
+        blockquote {
+            p {
+                "The "
+                Link { to: "https://github.com/DioxusLabs/blitz/tree/legacy/packages/dioxus-tui",
+                    "TUI"
+                }
+                " renderer has been deprecated but may be revisited in the future once the new version of Blitz is more stable"
+            }
+        }
+        h2 { id: "experimental-native-rendering",
             Link {
                 to: BookRoute::ContributingProjectStructure {
-                    section: ContributingProjectStructureSection::StateManagementhooks,
+                    section: ContributingProjectStructureSection::ExperimentalNativeRendering,
                 },
                 class: "header",
-                "State Management/Hooks"
+                "Experimental Native Rendering"
             }
+        }
+        p {
+            "In addition to the renderers listed above, Dioxus also has an experimental native renderer called Blitz that uses WebGPU to render HTML+CSS for dioxus applications:"
         }
         ul {
             li {
-                Link { to: "https://github.com/DioxusLabs/dioxus/tree/main/packages/hooks",
-                    "Hooks"
-                }
-                ": A collection of common hooks for Dioxus applications"
+                Link { to: "https://github.com/DioxusLabs/taffy", "taffy" }
+                ": Layout engine powering Blitz-Core, Plasmo, and Bevy UI"
             }
             li {
-                Link { to: "https://github.com/DioxusLabs/dioxus/tree/main/packages/signals",
-                    "Signals"
+                Link { to: "https://github.com/DioxusLabs/blitz", "blitz" }
+                ": An experimental native renderer for Dioxus applications using WGPU"
+            }
+        }
+        h2 { id: "fullstack",
+            Link {
+                to: BookRoute::ContributingProjectStructure {
+                    section: ContributingProjectStructureSection::Fullstack,
+                },
+                class: "header",
+                "Fullstack"
+            }
+        }
+        p {
+            "Fullstack can be layered on top of any renderer to add support for server functions and server-side rendering."
+        }
+        ul {
+            li {
+                Link { to: "https://github.com/DioxusLabs/dioxus/tree/main/packages/ssr",
+                    "ssr"
                 }
-                ": A experimental state management library for Dioxus applications. This currently contains a "
-                code { "Copy" }
-                " version of Signal"
+                ": dioxus-ssr handles rendering a dioxus virtual dom to a string for testing or on the server. SSR is used in the fullstack renderer to handle server side rendering and static generation."
             }
             li {
-                Link { to: "https://github.com/DioxusLabs/sdk", "SDK" }
-                ": A collection of platform agnostic hooks to interact with system interfaces (The clipboard, camera, etc.)."
+                Link { to: "https://github.com/DioxusLabs/dioxus/tree/main/packages/isrg",
+                    "isrg"
+                }
+                ": dioxus-isrg handles incremental static site generation for dioxus fullstack applications. It helps fullstack cache server side rendered routes in memory and on the file system."
             }
             li {
-                Link { to: "https://github.com/DioxusLabs/dioxus/tree/main/packages/fermi",
-                    "Fermi"
+                Link { to: "https://github.com/DioxusLabs/dioxus/tree/main/packages/fullstack",
+                    "fullstack"
                 }
-                ": A global state management library for Dioxus applications."
+                ": dioxus-fullstack package handles the integration between a "
+                Link { to: "https://github.com/tokio-rs/axum", "axum" }
+                " server and a dioxus renderer. If the frontend renderer is targeting the web, the fullstack renderer will prepare html with embedded data so the client can take over rendering after the initial load (hydration)"
             }
             li {
-                Link { to: "https://github.com/DioxusLabs/dioxus/tree/main/packages/router",
-                    "Router"
+                Link { to: "https://github.com/DioxusLabs/dioxus/tree/main/packages/server-macro",
+                    "server-macro"
                 }
-                ": A client-side router for Dioxus applications"
+                ": The server-macro crate defines the "
+                code { "server" }
+                " macro used to define server functions in Dioxus applications. It integrates with the "
+                Link { to: "https://crates.io/crates/server_fn", "server_fn" }
+                " to automatically register the server functions on the server and call them on the client."
             }
         }
         h2 { id: "core-utilities",
@@ -23256,114 +23381,415 @@ pub fn ContributingProjectStructure(
                 "Core utilities"
             }
         }
+        p {
+            "The core utilities contain the implementation of the virtual dom, and other macros used in all dioxus renderers. The core of dioxus doesn't assume it is running in a web context, so these utilities can be used by third party renderers like "
+            Link { to: "https://github.com/marc2332/freya", "Freya" }
+            "."
+        }
         ul {
             li {
                 Link { to: "https://github.com/DioxusLabs/dioxus/tree/main/packages/core",
                     "core"
                 }
-                ": The core virtual dom implementation every Dioxus application uses"
-                ul {
-                    li {
-                        "You can read more about the architecture of the core "
-                        Link { to: "https://dioxuslabs.com/blog/templates-diffing/",
-                            "in this blog post"
-                        }
-                    }
-                }
+                ": The core virtual dom implementation every Dioxus application uses. The main entry point for core is the "
+                code { "VirtualDom" }
+                ". The virtual dom diffing methods accept a cross platform "
+                code { "WriteMutations" }
+                " trait that is called any time the renderer need to change what is rendered. The vdom also has methods for running futures, and inserting events. You can read more about the architecture of the core "
+                Link { to: "https://dioxuslabs.com/blog/templates-diffing/", "in this blog post" }
             }
             li {
-                Link { to: "https://github.com/DioxusLabs/dioxus/tree/main/packages/rsx",
-                    "RSX"
+                Link { to: "https://github.com/DioxusLabs/dioxus/tree/main/packages/core-types",
+                    "core-types"
                 }
-                ": The core parsing for RSX used for hot reloading, autoformatting, and the macro"
+                ": The core types crate contains some of the core functions used in both in dioxus core and the hot reloading engine."
             }
             li {
                 Link { to: "https://github.com/DioxusLabs/dioxus/tree/main/packages/core-macro",
                     "core-macro"
                 }
-                ": The rsx! macro used to write Dioxus applications. (This is a wrapper over the RSX crate)"
+                ": The core macro crate implement the "
+                code { "derive(Props)" }
+                " and "
+                code { "#[component]" }
+                " macros to derive builds for components. It also re-exports the rsx macro"
             }
             li {
-                Link { to: "https://github.com/DioxusLabs/dioxus-html-macro", "HTML macro" }
-                ": A html-like alternative to the RSX macro"
-            }
-        }
-        h2 { id: "native-renderer-utilities",
-            Link {
-                to: BookRoute::ContributingProjectStructure {
-                    section: ContributingProjectStructureSection::NativeRendererUtilities,
-                },
-                class: "header",
-                "Native Renderer Utilities"
-            }
-        }
-        ul {
-            li {
-                Link { to: "https://github.com/DioxusLabs/taffy", "Taffy" }
-                ": Layout engine powering Blitz-Core, Plasmo, and Bevy UI"
-            }
-            li {
-                Link { to: "https://github.com/DioxusLabs/blitz", "Blitz" }
-                ": An experimental native renderer for HTML+CSS"
-            }
-        }
-        h2 { id: "web-renderer-tooling",
-            Link {
-                to: BookRoute::ContributingProjectStructure {
-                    section: ContributingProjectStructureSection::WebRendererTooling,
-                },
-                class: "header",
-                "Web renderer tooling"
-            }
-        }
-        ul {
-            li {
-                Link { to: "https://github.com/DioxusLabs/dioxus/tree/main/packages/html",
-                    "HTML"
+                Link { to: "https://github.com/DioxusLabs/dioxus/tree/main/packages/rsx",
+                    "rsx"
                 }
-                ": defines html specific elements, events, and attributes"
+                ": Implements parsing and expansion for the RSX macro. The parser is also used for hot reloading, and autoformatting in the CLI"
             }
+        }
+        h2 { id: "web-utilities",
+            Link {
+                to: BookRoute::ContributingProjectStructure {
+                    section: ContributingProjectStructureSection::WebUtilities,
+                },
+                class: "header",
+                "Web utilities"
+            }
+        }
+        p {
+            "Every first party dioxus renderer targets html and css. With the exception of the blitz, all renderers run inside the browser context. Dioxus has a few utilities in the workspace with shared traits and javascript bindings to help interact with the browser:"
+        }
+        ul {
             li {
                 Link { to: "https://github.com/DioxusLabs/dioxus/tree/main/packages/interpreter",
-                    "Interpreter"
+                    "interpreter"
                 }
-                ": defines browser bindings used by the web and desktop renderers"
+                ": The interpreter implements the "
+                code { "WriteMutations" }
+                " trait from dioxus core to modify the DOM with the diffs the virtual dom generates. The interpreter is used by the desktop, web and liveview renderers. It uses a combination of "
+                Link { to: "https://rustwasm.github.io/wasm-bindgen",
+                    code { "wasm-bindgen" }
+                }
+                " and "
+                Link { to: "https://github.com/ealmloff/sledgehammer_bindgen",
+                    code { "sledgehammer-bindgen" }
+                }
+                " to interact with the browser"
+            }
+            li {
+                Link { to: "https://github.com/DioxusLabs/dioxus/tree/main/packages/html",
+                    "html"
+                }
+                ": defines html specific elements, events, and attributes. The elements and attributes are used in the rsx macro and hot reloading engine to map the rust identifiers to the html names. The events defined in the html crate are traits defined for each platform."
+            }
+            li {
+                Link { to: "https://github.com/DioxusLabs/dioxus/tree/main/packages/html-internal-macro",
+                    "html-internal-macro"
+                }
+                ": The html-internal-macro crate is used by the html crate to define the html elements and attributes."
+            }
+            li {
+                Link { to: "https://github.com/DioxusLabs/dioxus/tree/main/packages/lazy-js-bundle",
+                    "lazy-js-bundle"
+                }
+                ": A library to bundle typescript files at build time with bun only if the contents change. Only compiling the typescript when the files change and committing the build output lets us not require a ts compiler to be installed when dioxus is added as a library."
+            }
+            li {
+                Link { to: "https://github.com/DioxusLabs/dioxus/tree/main/packages/history",
+                    "history"
+                }
+                ": The dioxus-history crate defines the history trait backing each renderer must provide for use with the router. For web renderers, this should call the javascript history api. Native renderers maintain their own history stack in memory."
+            }
+            li {
+                Link { to: "https://github.com/DioxusLabs/dioxus/tree/main/packages/document",
+                    "document"
+                }
+                ": The dioxus-document crate defines the document trait backing each renderer must provide for use with "
+                code { "eval" }
+                " and the "
+                code { "document::*" }
+                " components. "
+                code { "eval" }
+                " runs javascript code from rust, and the "
+                code { "document::*" }
+                " components create html elements in the head."
             }
         }
-        h2 { id: "developer-tooling",
+        h2 { id: "state-management",
             Link {
                 to: BookRoute::ContributingProjectStructure {
-                    section: ContributingProjectStructureSection::DeveloperTooling,
+                    section: ContributingProjectStructureSection::StateManagement,
                 },
                 class: "header",
-                "Developer tooling"
+                "State Management"
             }
         }
         ul {
             li {
-                Link { to: "https://github.com/DioxusLabs/dioxus/tree/main/packages/hot-reload",
-                    "hot-reload"
+                Link { to: "https://github.com/DioxusLabs/dioxus/tree/main/packages/generational-box",
+                    "generational-box"
                 }
-                ": Macro that uses the RSX crate to hot reload static parts of any rsx! macro. This macro works with any non-web renderer with an "
-                Link { to: "https://crates.io/crates/dioxus-hot-reload", "integration" }
+                ": Generational Box is the core of all "
+                code { "Copy" }
+                " state management in Dioxus. It allocates an arena of dynamically borrow checked values used throughout the dioxus ecosystem. The "
+                code { "GenerationalBox" }
+                " type backs "
+                code { "Signal" }
+                ", "
+                code { "Memo" }
+                ", and "
+                code { "Resource" }
+                " in dioxus signals. It is also used in "
+                code { "dioxus-core" }
+                " to make the "
+                code { "Closure" }
+                " and "
+                code { "EventHandler" }
+                " types "
+                code { "Copy" }
+                "."
             }
+            li {
+                Link { to: "https://github.com/DioxusLabs/dioxus/tree/main/packages/signals",
+                    "signals"
+                }
+                ": Signals are the main user facing state management crate for Dioxus. Signals track when they are read and written to and automatically re-run any "
+                code { "ReactiveContext" }
+                "s that depends on the signal."
+            }
+            li {
+                Link { to: "https://github.com/DioxusLabs/dioxus/tree/main/packages/hooks",
+                    "hooks"
+                }
+                ": Hooks are a collection of common hooks for Dioxus applications. Most hooks are a thin wrapper over the new methods in the "
+                code { "signals" }
+                " crate to only create the object once when the component is created."
+            }
+        }
+        h2 { id: "logging",
+            Link {
+                to: BookRoute::ContributingProjectStructure {
+                    section: ContributingProjectStructureSection::Logging,
+                },
+                class: "header",
+                "Logging"
+            }
+        }
+        ul {
+            li {
+                Link { to: "https://github.com/DioxusLabs/dioxus/tree/main/packages/logger",
+                    "logger"
+                }
+                ": The logger crate provides a simple logging interface for Dioxus applications that works across native and wasm targets. It is automatically called in the launch function if the logging feature is enabled."
+            }
+        }
+        h2 { id: "routing",
+            Link {
+                to: BookRoute::ContributingProjectStructure {
+                    section: ContributingProjectStructureSection::Routing,
+                },
+                class: "header",
+                "Routing"
+            }
+        }
+        ul {
+            li {
+                Link { to: "https://github.com/DioxusLabs/dioxus/tree/main/packages/router",
+                    "router"
+                }
+                ": The router crate handles routing in Dioxus applications. It uses the history provider the renderer provides to get and modify the url. The route parsing logic is derived with the "
+                code { "derive(Routable)" }
+                " macro defined in the dioxus-router-macro crate."
+            }
+            li {
+                Link { to: "https://github.com/DioxusLabs/dioxus/tree/main/packages/router-macro",
+                    "router-macro"
+                }
+                ": The router-macro crate defines the "
+                code { "derive(Routable)" }
+                " macro used to the route enum from a url and display it as a url."
+            }
+        }
+        h2 { id: "assets",
+            Link {
+                to: BookRoute::ContributingProjectStructure {
+                    section: ContributingProjectStructureSection::Assets,
+                },
+                class: "header",
+                "Assets"
+            }
+        }
+        ul {
+            li {
+                Link { to: "https://github.com/DioxusLabs/dioxus/tree/main/packages/manganis/manganis",
+                    "manganis"
+                }
+                ": Manganis is dioxus' asset system. It uses a macro to inject assets from rust code into the linker. Every asset gets a unique hash for cache busting. The CLI pulls the asset out of the linker and bundled them into the final application."
+            }
+            li {
+                Link { to: "https://github.com/DioxusLabs/dioxus/tree/main/packages/manganis/manganis-macro",
+                    "manganis-macro"
+                }
+                ": Manganis-macro defines the "
+                code { "asset!()" }
+                " macro used to include assets in Dioxus applications."
+            }
+            li {
+                Link { to: "https://github.com/DioxusLabs/dioxus/tree/main/packages/manganis/manganis-core",
+                    "manganis-core"
+                }
+                ": Manganis-core contains the builders for all options passed into the "
+                code { "asset!()" }
+                " macro and the link sections the asset macro and CLI use to bundle assets."
+            }
+            li {
+                Link { to: "https://github.com/DioxusLabs/dioxus/tree/main/packages/const-serialize",
+                    "const-serialize"
+                }
+                ": Const Serialize defines a trait to serialize rust types to a cross platform format at compile time. This is used to serialize the options for assets at compile time in manganis."
+            }
+            li {
+                Link { to: "https://github.com/DioxusLabs/dioxus/tree/main/packages/const-serialize-macro",
+                    "const-serialize-macro"
+                }
+                ": Const Serialize Macro defines a derive macro for types that can be serialized at compile time with the "
+                code { "const-serialize" }
+                " crate."
+            }
+            li {
+                Link { to: "https://github.com/DioxusLabs/dioxus/tree/main/packages/cli-opt",
+                    "cli-opt"
+                }
+                ": The cli-opt optimizes the assets that manganis produces."
+            }
+        }
+        h2 { id: "formatting",
+            Link {
+                to: BookRoute::ContributingProjectStructure {
+                    section: ContributingProjectStructureSection::Formatting,
+                },
+                class: "header",
+                "Formatting"
+            }
+        }
+        ul {
             li {
                 Link { to: "https://github.com/DioxusLabs/dioxus/tree/main/packages/autofmt",
                     "autofmt"
                 }
-                ": Formats RSX code"
+                ": The autofmt crate finds and formats all rsx macros in a rust project. It uses the "
+                code { "dioxus-rsx" }
+                " crate to parse rsx."
             }
+        }
+        h2 { id: "linting",
+            Link {
+                to: BookRoute::ContributingProjectStructure {
+                    section: ContributingProjectStructureSection::Linting,
+                },
+                class: "header",
+                "Linting"
+            }
+        }
+        ul {
+            li {
+                Link { to: "https://github.com/DioxusLabs/dioxus/tree/main/packages/check",
+                    "check"
+                }
+                ": The dioxus-check crate analyzes dioxus code to check for common errors like calling hooks in conditionals or loops."
+            }
+        }
+        h2 { id: "translation",
+            Link {
+                to: BookRoute::ContributingProjectStructure {
+                    section: ContributingProjectStructureSection::Translation,
+                },
+                class: "header",
+                "Translation"
+            }
+        }
+        ul {
             li {
                 Link { to: "https://github.com/DioxusLabs/dioxus/tree/main/packages/rsx-rosetta",
                     "rsx-rosetta"
                 }
-                ": Handles conversion between HTML and RSX"
+                ": The rsx-rosetta crate translates html to rsx. It uses the element definitions from "
+                code { "dioxus-html" }
+                " to translate html elements and attributes to their rust names and the "
+                code { "rsx" }
+                " crate to generate the rsx macro."
+            }
+        }
+        h2 { id: "hot-reloading",
+            Link {
+                to: BookRoute::ContributingProjectStructure {
+                    section: ContributingProjectStructureSection::HotReloading,
+                },
+                class: "header",
+                "Hot Reloading"
+            }
+        }
+        ul {
+            li {
+                Link { to: "https://github.com/DioxusLabs/dioxus/tree/main/packages/rsx-hotreload",
+                    "rsx-hotreload"
+                }
+                ": The rsx-hotreload crate handles diffing rsx macros between builds and creating the hot reload templates for the CLI."
             }
             li {
-                Link { to: "https://github.com/DioxusLabs/dioxus/tree/main/packages/cli",
-                    "CLI"
+                Link { to: "https://github.com/DioxusLabs/dioxus/tree/main/packages/devtools",
+                    "devtools"
                 }
-                ": A Command Line Interface and VSCode extension to assist with Dioxus usage"
+                ": The devtools crate contains the frontend for hot reloading each renderer needs to integrate with. It receives hot reload messages from a websocket connection with the CLI"
+            }
+            li {
+                Link { to: "https://github.com/DioxusLabs/dioxus/tree/main/packages/devtools-types",
+                    "devtools-types"
+                }
+                ": The devtools-types crate contains the types used to communicate between the devtools frontend and the backend in the CLI."
+            }
+        }
+        h2 { id: "cli",
+            Link {
+                to: BookRoute::ContributingProjectStructure {
+                    section: ContributingProjectStructureSection::Cli,
+                },
+                class: "header",
+                "CLI"
+            }
+        }
+        ul {
+            li {
+                Link { to: "https://github.com/DioxusLabs/dioxus/tree/main/packages/cli",
+                    "cli"
+                }
+                ": The cli crate contains the dioxus CLI. It integrates check, autofmt, cli-opt, and rsx-hotreload to build and serve Dioxus applications."
+            }
+            li {
+                Link { to: "https://github.com/DioxusLabs/dioxus/tree/main/packages/cli-config",
+                    "cli-config"
+                }
+                ": The cli-config crate has shared types that are provided at runtime from the CLI to crates the CLI are built with. It is used by "
+                code { "dioxus-desktop" }
+                " to set the title from the "
+                code { "Dioxus.toml" }
+                " file and by "
+                code { "dioxus-fullstack" }
+                " to set the port the CLI proxies the server from."
+            }
+            li {
+                Link { to: "https://github.com/DioxusLabs/dioxus/tree/main/packages/dx-wire-format",
+                    "dx-wire-format"
+                }
+                ": The dx-wire-format crate has the unstable types the CLI emits in json mode. This is used by the dioxus playground."
+            }
+        }
+        h2 { id: "extension",
+            Link {
+                to: BookRoute::ContributingProjectStructure {
+                    section: ContributingProjectStructureSection::Extension,
+                },
+                class: "header",
+                "Extension"
+            }
+        }
+        ul {
+            li {
+                Link { to: "https://github.com/DioxusLabs/dioxus/tree/main/packages/extension",
+                    "extension"
+                }
+                ": The extension folder contains the source code for the dioxus VSCode extension. It uses many of the same crates as the CLI, but packaged into a wasm+JS bundle for VSCode."
+            }
+        }
+        h2 { id: "testing",
+            Link {
+                to: BookRoute::ContributingProjectStructure {
+                    section: ContributingProjectStructureSection::Testing,
+                },
+                class: "header",
+                "Testing"
+            }
+        }
+        ul {
+            li {
+                Link { to: "https://github.com/DioxusLabs/dioxus/tree/main/packages/playwright-tests",
+                    "playwright-tests"
+                }
+                ": The playwright-tests folder contains end to end tests for dioxus-web, dioxus-liveview and fullstack. These crates are not published on crates.io"
             }
         }
     }
@@ -23529,43 +23955,6 @@ pub fn ContributingGuidingPrinciples(
             }
         }
     }
-}
-#[derive(
-    Clone, Copy, PartialEq, Eq, Hash, Debug, Default, serde::Serialize, serde::Deserialize,
-)]
-pub enum ContributingRoadmapSection {
-    #[default]
-    Empty,
-}
-impl std::str::FromStr for ContributingRoadmapSection {
-    type Err = ContributingRoadmapSectionParseError;
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
-        match s {
-            "" => Ok(Self::Empty),
-            _ => Err(ContributingRoadmapSectionParseError),
-        }
-    }
-}
-impl std::fmt::Display for ContributingRoadmapSection {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        match self {
-            Self::Empty => f.write_str(""),
-        }
-    }
-}
-#[derive(Debug)]
-pub struct ContributingRoadmapSectionParseError;
-impl std::fmt::Display for ContributingRoadmapSectionParseError {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        f.write_str("Invalid section name. Expected one of ContributingRoadmapSection")?;
-        Ok(())
-    }
-}
-impl std::error::Error for ContributingRoadmapSectionParseError {}
-#[component(no_case_check)]
-pub fn ContributingRoadmap(section: ContributingRoadmapSection) -> dioxus::prelude::Element {
-    use dioxus::prelude::*;
-    rsx! {}
 }
 #[derive(
     Clone, Copy, PartialEq, Eq, Hash, Debug, Default, serde::Serialize, serde::Deserialize,

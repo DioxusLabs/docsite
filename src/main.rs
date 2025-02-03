@@ -59,6 +59,10 @@ fn HeaderFooter() -> Element {
 
 fn Head() -> Element {
     use document::{Link, Meta, Script, Stylesheet, Title};
+    
+    // Tell google to not index old documentation
+    let current_doc_route = use_route::<Route>();
+    let don_t_index = current_doc_route.is_docs() && !current_doc_route.is_latest_docs(); 
 
     rsx! {
         Title { "Dioxus | Fullstack crossplatform app framework for Rust" }
@@ -133,6 +137,9 @@ fn Head() -> Element {
             r#async: true,
             src: asset!("/assets/gtag.js"),
             r#type: "text/javascript",
+        }
+        if don_t_index {
+            Meta { name: "robots", content: "noindex" }
         }
     }
 }

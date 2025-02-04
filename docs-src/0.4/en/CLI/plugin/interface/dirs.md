@@ -2,7 +2,7 @@
 
 Dirs functions are for getting various directory paths. Not to be confused with `plugin.path`.
 
-### `plugin_dir() -> string`
+### plugin_dir
 
 Get the plugin's root directory path.
 
@@ -11,7 +11,7 @@ local path = plugin.dirs.plugin_dir()
 -- example: ~/Development/DioxusCli/plugin/test-plugin/
 ```
 
-### `bin_dir() -> string`
+### bin_dir
 
 Get the plugin's binary directory path. Put binary files like `tailwind-cli` or `sass-cli` in this directory.
 
@@ -20,7 +20,7 @@ local path = plugin.dirs.bin_dir()
 -- example: ~/Development/DioxusCli/plugin/test-plugin/bin/
 ```
 
-### `temp_dir() -> string`
+### temp_dir
 
 Get the plugin's temporary directory path. Put any temporary files here.
 

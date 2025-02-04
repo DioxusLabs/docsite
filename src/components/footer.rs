@@ -38,7 +38,7 @@ pub fn Footer() -> Element {
 
     rsx! {
         footer { class: "text-gray-700 dark:text-gray-400 w-full mx-auto max-w-screen-xl px-2",
-            div { class: "py-8 md:py-24 flex flex-wrap justify-between items-start lg:items-start md:flex-row md:flex-nowrap  gap-x-24 gap-y-8 mx-auto",
+            div { class: "py-8 md:py-24 flex flex-wrap justify-evenly items-start lg:items-start md:flex-row md:flex-nowrap  gap-x-24 gap-y-8 mx-auto",
                 for (name , links) in categories.iter() {
                     div { key: "{name}",
                         h2 { class: "text-md mb-3 text-black dark:text-gray-100", "{name}" }

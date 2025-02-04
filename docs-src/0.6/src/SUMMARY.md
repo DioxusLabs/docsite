@@ -30,6 +30,7 @@
 ---
 
 - [Guides](guides/index.md)
+  - [Managing State](guides/managing_state.md)
   - [Router](router/index.md)
     - [Example Project](router/example/index.md)
       - [Creating Our First Route](router/example/first-route.md)
@@ -95,7 +96,6 @@
 - [Contributing](contributing/index.md)
   - [Project Structure](contributing/project_structure.md)
   - [Guiding Principles](contributing/guiding_principles.md)
-  - [Roadmap](contributing/roadmap.md)
 
 ---
 - [CLI](CLI/index.md)

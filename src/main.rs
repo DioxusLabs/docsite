@@ -13,6 +13,13 @@ pub mod snippets;
 pub use components::*;
 
 fn main() {
+    // If we are just building the search index, we don't need to launch the app
+    #[cfg(feature = "server")]
+    if std::env::args().any(|arg| arg == "--generate-search-index") {
+        search::generate_search_index();
+        return;
+    }
+    
     create_sitemap();
 
     dioxus::LaunchBuilder::new()
@@ -59,6 +66,10 @@ fn HeaderFooter() -> Element {
 
 fn Head() -> Element {
     use document::{Link, Meta, Script, Stylesheet, Title};
+    
+    // Tell google to not index old documentation
+    let current_doc_route = use_route::<Route>();
+    let don_t_index = current_doc_route.is_docs() && !current_doc_route.is_latest_docs(); 
 
     rsx! {
         Title { "Dioxus | Fullstack crossplatform app framework for Rust" }
@@ -134,6 +145,9 @@ fn Head() -> Element {
             src: asset!("/assets/gtag.js"),
             r#type: "text/javascript",
         }
+        if don_t_index {
+            Meta { name: "robots", content: "noindex" }
+        }
     }
 }
 
@@ -164,7 +178,7 @@ pub enum Route {
 
         #[layout(Learn)]
             #[nest("/learn")]
-                #[redirect("/", || Route::Docs06 { child: crate::docs::router_06::BookRoute::Index {} })]
+                #[redirect("/", || Route::Docs06 { child: crate::docs::router_06::BookRoute::Index { section: Default::default() } })]
                 #[child("/0.6")]
                 Docs06 { child: crate::docs::router_06::BookRoute },
 
@@ -180,15 +194,11 @@ pub enum Route {
         #[end_layout]
     #[end_nest]
 
-    // once all the routes above have been generated, we build the search index
-    // a bit of a hack, sorry
-    #[route("/search")]
-    Search {},
-
     #[redirect("/docs/:..segments", |segments: Vec<String>| {
         let joined = segments.join("/");
-        let docs_route = format!("/docs/{}", joined);
-        Route::from_str(&docs_route).unwrap_or_else(|_| Route::Docs06 { child: crate::docs::router_06::BookRoute::Index {} })
+        let docs_route = format!("/{}", joined.trim_matches('/'));
+        let child = crate::docs::router_06::BookRoute::from_str(&joined).unwrap_or_else(|_| crate::docs::router_06::BookRoute::Index { section: Default::default() });
+        Route::Docs06 { child }
     })]
     #[route("/:..segments")]
     Err404 { segments: Vec<String> },

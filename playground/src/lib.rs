@@ -7,7 +7,7 @@ use dioxus_sdk::{
     theme::{use_system_theme, SystemTheme},
     utils::timing::use_debounce,
 };
-use editor::monaco::{self, monaco_loader_src, on_monaco_load, set_monaco_markers};
+use editor::monaco::{self, monaco_loader_src, set_monaco_markers};
 use example_projects::ExampleProject;
 use hotreload::{attempt_hot_reload, HotReload};
 // use snippets::use_provide_selected_example;
@@ -71,8 +71,8 @@ pub fn Playground(
     // Themes
     let system_theme = use_system_theme();
     use_effect(move || {
-        let theme = system_theme().unwrap_or(SystemTheme::Light);
-        editor::monaco::set_theme(theme);
+        #[cfg(target_arch = "wasm32")]
+        editor::monaco::set_theme(system_theme().unwrap_or(SystemTheme::Light));
     });
 
     // The current contents of the editor.
@@ -124,7 +124,8 @@ pub fn Playground(
             script {
                 src: monaco_loader_src(MONACO_FOLDER),
                 onload: move |_| {
-                    on_monaco_load(
+                    #[cfg(target_arch = "wasm32")]
+                    monaco::on_monaco_load(
                         MONACO_FOLDER,
                         system_theme().unwrap_or(SystemTheme::Light),
                         &contents(),

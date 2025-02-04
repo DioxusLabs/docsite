@@ -1,6 +1,6 @@
 use crate::hotreload::HotReload;
 use dioxus::prelude::*;
-use dioxus_sdk::{theme::SystemTheme, utils::timing::UseDebounce};
+use dioxus_sdk::utils::timing::UseDebounce;
 use model::{CargoDiagnostic, CargoLevel};
 use serde::{Deserialize, Serialize};
 use wasm_bindgen::prelude::*;
@@ -50,6 +50,7 @@ pub fn set_monaco_markers(diagnostics: Signal<Vec<CargoDiagnostic>>) {
 }
 
 /// Initialize Monaco once the loader script loads.
+#[cfg(target_arch = "wasm32")]
 pub fn on_monaco_load(
     folder: Asset,
     system_theme: SystemTheme,
@@ -138,6 +139,7 @@ extern "C" {
     fn register_model_change_event(callback: &Closure<dyn FnMut(String)>);
 }
 
+#[cfg(target_arch = "wasm32")]
 pub fn init(
     vs_path_prefix: &str,
     element_id: &str,
@@ -149,6 +151,7 @@ pub fn init(
     register_paste_as_rsx_action();
 }
 
+#[cfg(target_arch = "wasm32")]
 pub fn set_theme(theme: SystemTheme) {
     let theme = system_theme_to_string(theme);
     set_monaco_theme(&theme);
@@ -165,6 +168,7 @@ fn register_paste_as_rsx_action() {
     callback.forget();
 }
 
+#[cfg(target_arch = "wasm32")]
 fn system_theme_to_string(theme: SystemTheme) -> String {
     match theme {
         SystemTheme::Light => "dx-vs",

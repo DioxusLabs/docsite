@@ -11,7 +11,7 @@ example-projects = { path = "example-projects" }
 # Dioxus Release
 dioxus = "0.6.2"
 dioxus-document = "0.6.2"
-dioxus-sdk = "0.6"
+dioxus-sdk = { version = "0.6", default-features = false }
 dioxus-core = "0.6.2"
 dioxus-core-types = "0.6.2"
 dioxus-devtools = "0.6.2"

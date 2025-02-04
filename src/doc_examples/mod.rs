@@ -56,6 +56,8 @@ pub fn ComponentWithLogs(children: Element) -> Element {
 #[cfg(not(feature = "doc_test"))]
 pub mod __interactive_04;
 #[cfg(not(feature = "doc_test"))]
+pub mod asynchronous;
+#[cfg(not(feature = "doc_test"))]
 pub mod boolean_attribute;
 #[cfg(not(feature = "doc_test"))]
 pub mod breaking_out;

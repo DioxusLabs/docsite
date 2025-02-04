@@ -24,7 +24,6 @@ members = [
     "packages/search/search",
     "packages/search/search-macro",
     "packages/search/search-shared",
-    "packages/search/examples/searchable",
 ]
 exclude = ["packages/playground/server/template"]
 

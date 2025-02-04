@@ -41,5 +41,5 @@ const PATH_TO_BUNDLED_CARGO_TOML: Asset = asset!("/Cargo.toml");
 // ANCHOR: style_sheets
 // You can also bundle stylesheets with your application
 // Any files that end with .css will be minified and bundled with your application even if you don't explicitly include them in your <head>
-const _: Asset = asset!("/tailwind.css");
+const _: Asset = asset!("/assets/tailwind.css");
 // ANCHOR_END: style_sheets

@@ -46,4 +46,4 @@ jobs:
           cache-on-failure: "true"
           cache-directories: "target/dx"
       - name: Check
-        run: cargo check --features doc_test
+        run: cargo check --workspace --all-features

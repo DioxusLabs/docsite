@@ -19,20 +19,33 @@ members = [
     "packages/include_mdbook/packages/syntect-html",
     "packages/include_mdbook/packages/mdbook-gen",
     "packages/include_mdbook/packages/mdbook-gen-example",
+
+    # search
+    "packages/search/search",
+    "packages/search/search-macro",
+    "packages/search/search-shared",
+    "packages/search/examples/searchable",
 ]
 exclude = ["packages/playground/server/template"]
 
 [workspace.dependencies]
 dioxus_docs_router = { path = "packages/docs-router" }
 
+# mdbook
 mdbook-gen = { path = "packages/include_mdbook/packages/mdbook-gen" }
 use-mdbook = { path = "packages/include_mdbook/packages/use-mdbook" }
 mdbook-shared = { path = "packages/include_mdbook/packages/mdbook-shared" }
 syntect-html = { path = "packages/include_mdbook/packages/syntect-html" }
 
+# playground
 model = { path = "packages/playground/model" }
 dioxus-playground = { path = "packages/playground/playground" }
 example-projects = { path = "packages/playground/example-projects" }
+
+# search
+dioxus-search = { path = "packages/search/search" }
+dioxus-search-macro = { path = "packages/search/search-macro" }
+dioxus-search-shared = { path = "packages/search/search-shared" }
 
 # Dioxus Release
 dioxus = "0.6.2"

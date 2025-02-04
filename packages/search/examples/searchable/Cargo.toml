@@ -7,7 +7,7 @@ edition = "2021"
 
 [dependencies]
 dioxus = { version = "0.6.0", features = ["fullstack", "router"] }
-dioxus-search = { path = "../../" }
+dioxus-search = { workspace = true }
 axum = { version = "0.6.12", optional = true }
 serde = { version = "1.0.174", features = ["derive"] }
 getrandom = { version = "0.2" }

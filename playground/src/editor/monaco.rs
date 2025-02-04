@@ -5,6 +5,9 @@ use model::{CargoDiagnostic, CargoLevel};
 use serde::{Deserialize, Serialize};
 use wasm_bindgen::prelude::*;
 
+#[cfg(target_arch = "wasm32")]
+use dioxus_sdk::theme::{use_system_theme, SystemTheme};
+
 /// Get the path prefix for the `/vs` folder inside the Monaco folder.
 pub fn monaco_vs_prefix(folder: Asset) -> String {
     let monaco_vs_prefix = format!("{}/vs", folder);

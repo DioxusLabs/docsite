@@ -19,7 +19,6 @@ dioxus-document = { workspace = true }
 dioxus-sdk = { workspace = true, features = [
     "window_size",
     "timing",
-    "system_theme",
 ] }
 
 # Hot reload / Paste as RSX
@@ -44,3 +43,7 @@ proc-macro2 = "1.0.89"
 
 
 example-projects = { workspace = true }
+
+[target.'cfg(target_arch = "wasm32")'.dependencies]
+dioxus-sdk = { version = "0.6", default-features = false, features = ["system_theme", "window_size",
+    "timing",] }

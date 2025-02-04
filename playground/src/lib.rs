@@ -3,15 +3,15 @@ use components::icons::Warning;
 use dioxus::logger::tracing::error;
 use dioxus::prelude::*;
 use dioxus_document::Link;
-use dioxus_sdk::{
-    theme::{use_system_theme, SystemTheme},
-    utils::timing::use_debounce,
-};
+use dioxus_sdk::utils::timing::use_debounce;
 use editor::monaco::{self, monaco_loader_src, set_monaco_markers};
 use example_projects::ExampleProject;
 use hotreload::{attempt_hot_reload, HotReload};
 // use snippets::use_provide_selected_example;
 use std::time::Duration;
+
+#[cfg(target_arch = "wasm32")]
+use dioxus_sdk::theme::{use_system_theme, SystemTheme};
 
 mod build;
 mod components;
@@ -69,6 +69,7 @@ pub fn Playground(
     use_effect(move || set_monaco_markers(build.diagnostics()));
 
     // Themes
+    #[cfg(target_arch = "wasm32")]
     let system_theme = use_system_theme();
     use_effect(move || {
         #[cfg(target_arch = "wasm32")]

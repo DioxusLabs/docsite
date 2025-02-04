@@ -44,7 +44,7 @@ mod save_dog_server {
 mod save_dog_launch {
     use dioxus::prelude::*;
 
-    // ANCHOR: save_dog_server
+    // ANCHOR: save_dog_launch
     async fn launch(config: ServeConfig, app: fn() -> Element) {
         // register server functions
         let router = axum::Router::new().serve_dioxus_application(config, app);
@@ -54,7 +54,7 @@ mod save_dog_launch {
         let listener = tokio::net::TcpListener::bind(socket_addr).await.unwrap();
         axum::serve(listener, router).await.unwrap();
     }
-    // ANCHOR_END: save_dog_server
+    // ANCHOR_END: save_dog_launch
 }
 
 mod separate_server_launch {
@@ -123,26 +123,23 @@ mod server_client_split_fixed {
     // ANCHOR_END: server_client_split_fixed
 }
 
-mod server_client_split_client {
+mod server_client_split_client_broken {
     use dioxus::prelude::*;
 
     fn App() -> Element {
         rsx! { "hello world" }
     }
 
-    // ANCHOR: server_client_split_client
+    // ANCHOR: server_client_split_broken_client_broken
     fn main() {
         // ❌ attempting to use web_sys on the server will panic!
-        let window = web_sys::window();
-        // ✅ moving the web-sys call under the web feature flag will make sure it only runs in the browser
-        #[cfg(feature = "web")]
         let window = web_sys::window();
 
         // ..
 
         dioxus::launch(App);
     }
-    // ANCHOR_END: server_client_split_client
+    // ANCHOR_END: server_client_split_broken_client_broken
 }
 
 mod save_dog_v2 {
@@ -183,7 +180,7 @@ mod save_dog_call {
         };
     }
 
-    // ANCHOR: save_dog_client_body
+    // ANCHOR: save_dog_call
     fn DogView() -> Element {
         let mut img_src = use_resource(snipped!());
 
@@ -195,13 +192,8 @@ mod save_dog_call {
                 button {
                     id: "save",
                     onclick: move |_| async move {
-                        // Clone the current image
                         let current = img_src.cloned().unwrap();
-
-                        // Start fetching a new image
                         img_src.restart();
-
-                        // And call the `save_dog` server function
                         _ = save_dog(current).await;
                     },
 

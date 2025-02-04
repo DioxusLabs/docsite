@@ -94,7 +94,7 @@ Instead, we recommend placing server-only code within modules configured for the
 In addition to the "server" feature, Dioxus expects a client side rendering feature like "web" or "desktop". Some libraries like web-sys only work when running in the browser, so make sure to not run specific client code in your server functions or before your `launch`. You can place client only code under a config for a client target feature like "web".
 
 ```rust
-{{#include src/doc_examples/guide_backend.rs:server_client_split_client}}
+{{#include src/doc_examples/guide_backend.rs:server_client_split_broken_client_broken}}
 ```
 
 ## Managing Dependencies

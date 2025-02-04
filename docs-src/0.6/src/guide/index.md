@@ -6,7 +6,7 @@ By the end of this tutorial, you will launch your very own web, desktop, and mob
 
 ![Photo of HotDog](/assets/06_docs/dog_app_styled.png)
 
-We will primarily focus on the higher-level concepts of Dioxus without diving deep into the details of specific APIs. We recommend experimenting with the APIs yourself or reading the [Core Concepts](../essentials/index.md) and specific [Guides](guides/index.md) for more information.
+We will primarily focus on the higher-level concepts of Dioxus without diving deep into the details of specific APIs. We recommend experimenting with the APIs yourself or reading the [Core Concepts](../essentials/index.md) and specific [Guides](../guides/index.md) for more information.
 
 
 ## What will we be learning?

@@ -28,15 +28,19 @@ impl CurrentDocsVersion {
     }
 }
 
-pub fn use_current_docs_version() -> CurrentDocsVersion {
+pub fn use_try_current_docs_version() -> Option<CurrentDocsVersion> {
     let route = use_route();
     match route {
-        Route::Docs06 { child } => CurrentDocsVersion::V06(child),
-        Route::Docs05 { child } => CurrentDocsVersion::V05(child),
-        Route::Docs04 { child } => CurrentDocsVersion::V04(child),
-        Route::Docs03 { child } => CurrentDocsVersion::V03(child),
-        _ => panic!("current docs version should be set"),
+        Route::Docs06 { child } => Some(CurrentDocsVersion::V06(child)),
+        Route::Docs05 { child } => Some(CurrentDocsVersion::V05(child)),
+        Route::Docs04 { child } => Some(CurrentDocsVersion::V04(child)),
+        Route::Docs03 { child } => Some(CurrentDocsVersion::V03(child)),
+        _ => None,
     }
+}
+
+pub fn use_current_docs_version() -> CurrentDocsVersion {
+    use_try_current_docs_version().expect("current docs version should be set")
 }
 
 pub trait AnyBookRoute: Routable + PartialEq + Hash + Eq + Clone + Copy {
@@ -52,6 +56,44 @@ pub trait AnyBookRoute: Routable + PartialEq + Hash + Eq + Clone + Copy {
     fn short_version() -> &'static str;
     fn full_version() -> &'static str;
     fn index() -> Self;
+}
+
+impl AnyBookRoute for router_blog::BookRoute {
+    fn sections(&self) -> &[use_mdbook::mdbook_shared::Section] {
+        self.sections()
+    }
+
+    fn page(&self) -> &use_mdbook::mdbook_shared::Page<Self> {
+        self.page()
+    }
+
+    fn global_route(&self) -> crate::Route {
+        crate::Route::BlogPost { child: *self }
+    }
+
+    fn page_id(&self) -> use_mdbook::mdbook_shared::PageId {
+        self.page_id()
+    }
+    fn book() -> &'static MdBook<Self> {
+        &*router_blog::LAZY_BOOK
+    }
+
+    fn use_current() -> Option<Self> {
+        let route = use_route();
+        match route {
+            Route::BlogPost { child } => Some(child),
+            _ => None,
+        }
+    }
+    fn short_version() -> &'static str {
+        "blog"
+    }
+    fn full_version() -> &'static str {
+        "blog"
+    }
+    fn index() -> Self {
+        todo!()
+    }
 }
 
 impl AnyBookRoute for router_03::BookRoute {
@@ -90,7 +132,9 @@ impl AnyBookRoute for router_03::BookRoute {
     }
 
     fn index() -> Self {
-        Self::Index {}
+        Self::Index {
+            section: Default::default(),
+        }
     }
 }
 impl AnyBookRoute for router_04::BookRoute {
@@ -129,7 +173,9 @@ impl AnyBookRoute for router_04::BookRoute {
     }
 
     fn index() -> Self {
-        Self::Index {}
+        Self::Index {
+            section: Default::default(),
+        }
     }
 }
 impl AnyBookRoute for router_05::BookRoute {
@@ -168,7 +214,9 @@ impl AnyBookRoute for router_05::BookRoute {
     }
 
     fn index() -> Self {
-        Self::Index {}
+        Self::Index {
+            section: Default::default(),
+        }
     }
 }
 
@@ -206,7 +254,9 @@ impl AnyBookRoute for router_06::BookRoute {
         "0.6.1"
     }
     fn index() -> Self {
-        Self::Index {}
+        Self::Index {
+            section: Default::default(),
+        }
     }
 }
 

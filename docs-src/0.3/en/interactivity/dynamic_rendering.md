@@ -70,7 +70,7 @@ Because of how common it is to render a list of items, Dioxus provides a shortha
 {{#include src/doc_examples/untested_03/rendering_lists.rs:render_list_for_loop}}
 ```
 
-### The `key` Attribute
+### The key Attribute
 
 Every time you re-render your list, Dioxus needs to keep track of which items go where to determine what updates need to be made to the UI.
 

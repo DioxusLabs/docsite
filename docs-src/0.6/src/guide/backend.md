@@ -149,4 +149,4 @@ Wow, our app is really coming together!
 
 ![Working Server Functions](/assets/06_docs/dog-save-serverfn.mp4)
 
-Server functions are extremely capable and can even be used during server-side-rendering. Check out the complete [fullstack guide](../guides/fullstack/) for more information.
+Server functions are extremely capable and can even be used during server-side-rendering. Check out the complete [fullstack guide](../guides/fullstack/index.md) for more information.

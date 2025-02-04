@@ -25,7 +25,7 @@ There are many packages in the Dioxus organization. This document will help you 
 ## Core utilities
 
 - [core](https://github.com/DioxusLabs/dioxus/tree/master/packages/core): The core virtual dom implementation every Dioxus application uses
-  - You can read more about the architecture of the core [in this blog post](https://dioxuslabs.com/blog/templates-diffing/) and the [custom renderer section of the guide](../custom_renderer/index.md)
+  - You can read more about the architecture of the core [in this blog post](https://dioxuslabs.com/blog/templates-diffing/) and the [custom renderer section of the guide](../cookbook/custom_renderer.md)
 - [RSX](https://github.com/DioxusLabs/dioxus/tree/master/packages/rsx): The core parsing for RSX used for hot reloading, autoformatting, and the macro
 - [core-macro](https://github.com/DioxusLabs/dioxus/tree/master/packages/core-macro): The rsx! macro used to write Dioxus applications. (This is a wrapper over the RSX crate)
 - [HTML macro](https://github.com/DioxusLabs/dioxus-html-macro): A html-like alternative to the RSX macro
@@ -33,7 +33,7 @@ There are many packages in the Dioxus organization. This document will help you 
 ## Native Renderer Utilities
 
 - [native-core](https://github.com/DioxusLabs/dioxus/tree/master/packages/native-core): Incrementally computed tree of states (mostly styles)
-  - You can read more about how native-core can help you build native renderers in the [custom renderer section of the guide](../custom_renderer/index.html#native-core)
+  - You can read more about how native-core can help you build native renderers in the [custom renderer section of the guide](../cookbook/custom_renderer.md#native-core)
 - [native-core-macro](https://github.com/DioxusLabs/dioxus/tree/master/packages/native-core-macro): A helper macro for native core
 - [Taffy](https://github.com/DioxusLabs/taffy): Layout engine powering Blitz-Core, Rink, and Bevy UI
 

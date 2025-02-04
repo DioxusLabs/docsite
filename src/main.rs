@@ -13,6 +13,13 @@ pub mod snippets;
 pub use components::*;
 
 fn main() {
+    // If we are just building the search index, we don't need to launch the app
+    #[cfg(feature = "server")]
+    if std::env::args().any(|arg| arg == "--generate-search-index") {
+        search::generate_search_index();
+        return;
+    }
+    
     create_sitemap();
 
     dioxus::LaunchBuilder::new()
@@ -186,11 +193,6 @@ pub enum Route {
             #[end_nest]
         #[end_layout]
     #[end_nest]
-
-    // once all the routes above have been generated, we build the search index
-    // a bit of a hack, sorry
-    #[route("/search")]
-    Search {},
 
     #[redirect("/docs/:..segments", |segments: Vec<String>| {
         let joined = segments.join("/");

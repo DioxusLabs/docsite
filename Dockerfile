@@ -34,7 +34,7 @@ RUN set -ex; \
 FROM pre-runtime AS runtime
 
 COPY --from=builder /app/target/release/server /usr/local/bin
-COPY --from=builder /app/server/template /usr/local/bin/template
+COPY --from=builder /app/packages/playground/server/template /usr/local/bin/template
 COPY --from=planner /.cargo/bin/dx /usr/local/bin
 
 ENV PATH="${PATH}:/usr/local/bin"

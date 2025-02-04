@@ -192,13 +192,8 @@ mod save_dog_call {
                 button {
                     id: "save",
                     onclick: move |_| async move {
-                        // Clone the current image
                         let current = img_src.cloned().unwrap();
-
-                        // Start fetching a new image
                         img_src.restart();
-
-                        // And call the `save_dog` server function
                         _ = save_dog(current).await;
                     },
 

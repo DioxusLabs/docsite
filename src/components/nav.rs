@@ -108,7 +108,7 @@ pub(crate) fn Nav() -> Element {
                                 new_tab: true,
                                 span { class: "sr-only", "Dioxus on GitHub" }
                                 crate::icons::Github2 {}
-                                span { class: "text-xs text", "22.5k" }
+                                span { class: "text-xs text", CurrentStarCount {} }
                             }
                         }
                         div { class: "border-l border-gray-200 dark:border-gray-800 h-full" }
@@ -125,6 +125,7 @@ pub(crate) fn Nav() -> Element {
                             }
                             Link {
                                 to: crate::docs::router_06::BookRoute::Index {
+                                    section: Default::default(),
                                 }
                                     .global_route(),
                                 class: "md:px-3 h-full flex flex-col justify-center bg-blue-500 text-lg md:text-sm text-white rounded font-semibold hover:brightness-95 dark:hover:brightness-105",
@@ -136,6 +137,26 @@ pub(crate) fn Nav() -> Element {
             }
         }
     }
+}
+
+fn CurrentStarCount() -> Element {
+    let num_stars = use_resource(move || async move {
+        use crate::awesome::StarsResponse;
+        let username = "DioxusLabs";
+        let repo = "dioxus";
+        let res = reqwest::get(format!("https://api.github.com/repos/{username}/{repo}")).await;
+        let res = res.ok()?.json::<StarsResponse>().await.ok()?;
+        Some(res.stargazers_count as usize)
+    });
+
+    let mut rendered_stars = 24.5;
+
+    if let Some(Some(loaded)) = num_stars.value()() {
+        let as_float = loaded as f64;
+        rendered_stars = as_float.round() / 1000.0;
+    }
+
+    rsx! { "{rendered_stars:.1}k" }
 }
 
 static LINKS: &[(&str, &str)] = &[
@@ -183,10 +204,10 @@ fn SearchModal() -> Element {
     let mut search_text = use_signal(String::new);
 
     let search_index = use_resource(|| async move {
-        #[cfg(debug_assertions)]
+        #[cfg(not(feature = "production"))]
         let url = "http://localhost:8080/assets/dioxus_search/index_searchable.bin";
 
-        #[cfg(not(debug_assertions))]
+        #[cfg(feature = "production")]
         let url = "https://dioxuslabs.com/assets/dioxus_search/index_searchable.bin";
 
         let data = reqwest::get(url).await.ok()?.bytes().await.ok()?;
@@ -194,22 +215,44 @@ fn SearchModal() -> Element {
         let (bytes, _) =
             dioxus_search::yazi::decompress(&data, dioxus_search::yazi::Format::Zlib).ok()?;
 
-        let index = dioxus_search::SearchIndex::from_bytes("search", bytes);
+        let index: dioxus_search::SearchIndex<Route> =
+            dioxus_search::SearchIndex::from_bytes("search", bytes);
 
         Some(index)
     });
 
     let search = move || {
         let query = &search_text.read();
-        search_index
+        let mut results = search_index
             .value()
             .as_ref()
-            .map(|search| search.as_ref().map(|s| s.search(query)))
-            .flatten()
-            .unwrap_or_else(|| Ok(vec![]))
+            .and_then(|search| search.as_ref().map(|s| s.search(query)))
+            .unwrap_or_else(|| Ok(vec![]));
+        let current_route: Route = router().current();
+
+        // Only show search results from the version of the docs the user is currently on (or the latest if they
+        // are not on a doc page)
+        if let Ok(results) = &mut results {
+            results.retain(|result| {
+                // If the user is not on a doc page, show only the latest docs
+                if !current_route.is_docs() {
+                    return result.route.is_latest_docs();
+                }
+                // Otherwise, show the results from the current version of the docs
+                matches!(
+                    (&current_route, &result.route),
+                    (Route::Docs06 { .. }, Route::Docs06 { .. })
+                        | (Route::Docs05 { .. }, Route::Docs05 { .. })
+                        | (Route::Docs04 { .. }, Route::Docs04 { .. })
+                        | (Route::Docs03 { .. }, Route::Docs03 { .. })
+                )
+            });
+        }
+
+        results
     };
 
-    let mut results = use_signal(|| search());
+    let mut results = use_signal(search);
 
     let mut last_key_press = use_signal(|| {
         if cfg!(target_arch = "wasm32") {
@@ -303,16 +346,61 @@ fn SearchResults(results: Signal<Results>, search_text: Signal<String>) -> Eleme
 
     let _results = results.read();
     let results = _results.deref().as_ref().unwrap();
+    let cur_route = use_route::<Route>();
+    let results = results
+        .iter()
+        .filter(|route| match route.route {
+            Route::Docs03 { .. } => matches!(cur_route, Route::Docs03 { .. }),
+            Route::Docs04 { .. } => matches!(cur_route, Route::Docs04 { .. }),
+            Route::Docs05 { .. } => matches!(cur_route, Route::Docs05 { .. }),
+            Route::Docs06 { .. } => {
+                !matches!(cur_route, Route::Docs03 { .. })
+                    && !matches!(cur_route, Route::Docs04 { .. })
+                    && !matches!(cur_route, Route::Docs05 { .. })
+            }
+            _ => true,
+        })
+        .collect::<Vec<_>>();
 
     use crate::docs::router_06::BookRoute;
 
     let default_searches = [
-        ("Tutorial", BookRoute::GuideIndex {}),
-        ("Web", BookRoute::GuidesWebIndex {}),
-        ("Desktop", BookRoute::GuidesDesktopIndex {}),
-        ("Mobile", BookRoute::GuidesMobileIndex {}),
-        ("Fullstack", BookRoute::GuidesFullstackIndex {}),
-        ("Typesafe Routing", BookRoute::RouterReferenceIndex {}),
+        (
+            "Tutorial",
+            BookRoute::GuideIndex {
+                section: Default::default(),
+            },
+        ),
+        (
+            "Web",
+            BookRoute::GuidesWebIndex {
+                section: Default::default(),
+            },
+        ),
+        (
+            "Desktop",
+            BookRoute::GuidesDesktopIndex {
+                section: Default::default(),
+            },
+        ),
+        (
+            "Mobile",
+            BookRoute::GuidesMobileIndex {
+                section: Default::default(),
+            },
+        ),
+        (
+            "Fullstack",
+            BookRoute::GuidesFullstackIndex {
+                section: Default::default(),
+            },
+        ),
+        (
+            "Typesafe Routing",
+            BookRoute::RouterReferenceIndex {
+                section: Default::default(),
+            },
+        ),
     ];
 
     rsx! {

@@ -17,8 +17,7 @@ fn make_docs(version: &str) {
     let mdbook_dir = PathBuf::from("docs-src").join(version);
     let out_dir = current_dir().unwrap().join("src/docs");
     let mut out = generate_router_build_script(mdbook_dir);
-    out.push_str("\n");
-    out.push_str("use super::*;\n");
+    out.push_str("\nuse super::*;\n");
 
     let version_flattened = version.replace(".", "");
     let filename = format!("router_{version_flattened}.rs");

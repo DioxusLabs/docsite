@@ -21,7 +21,7 @@ The essentials section will guide you through key concepts in Dioxus:
 
 ## Ideas for New Features
 
-Challenge yourself by adding new features to *HotDop*.
+Challenge yourself by adding new features to *HotDog*.
 
 - Add animations to your app with CSS or [dioxus-motion](https://github.com/wheregmis/dioxus-motion).
 - Style your app with a library like [TailwindCSS](http://tailwindcss.com).

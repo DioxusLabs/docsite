@@ -13,22 +13,22 @@ Before we can start using server functions, we need to enable the "fullstack" fe
 dioxus = { version = "0.6.0", features = ["fullstack"] }
 ```
 
-We also need to add the "server" feature to our app's features, also in the Cargo.toml
+We also need to add the "server" feature to our app's features in the Cargo.toml and remove the default web target.
 
 ```toml
 [features]
-default = ["web"]
+default = [] # <----- remove the default web target
 web = ["dioxus/web"]
 desktop = ["dioxus/desktop"]
 mobile = ["dioxus/mobile"]
-server = ["dioxus/server"] # <----- add this additional platform
+server = ["dioxus/server"] # <----- add this additional target
 ```
 
 If you selected _yes_ to the "use fullstack?" prompt when creating your app, you will already have this set up!
 
 > 📣 Unfortunately, `dx` doesn't know how to hot-reload this change, so we'll need to kill our currently running `dx serve` process and launch it again.
 
-Give your app a moment to build again and make sure that the "fullstack" feature is enabled in `dx serve`.
+Now instead of running `dx serve`, you need to run with a manual platform with `dx serve --platform web`. Give your app a moment to build again and make sure that the "fullstack" feature is enabled in the dashboard.
 
 ![Fullstack Enabled](/assets/06_docs/serve_with_fullstack.png)
 
@@ -91,7 +91,7 @@ Instead, we recommend placing server-only code within modules configured for the
 {{#include src/doc_examples/guide_backend.rs:server_client_split_fixed}}
 ```
 
-While Dioxus expects a "server" feature, it does not expect a "client" feature. It is assumed that all client code will make it to the server. However, some libraries like web-sys only work when running in the browser, so make sure to not run specific client code in your server functions or before your `launch`.
+In addition to the "server" feature, Dioxus expects a client side rendering feature like "web" or "desktop". Some libraries like web-sys only work when running in the browser, so make sure to not run specific client code in your server functions or before your `launch`. You can place client only code under a config for a client target feature like "web".
 
 ```rust
 {{#include src/doc_examples/guide_backend.rs:server_client_split_broken_client_broken}}
@@ -149,4 +149,4 @@ Wow, our app is really coming together!
 
 ![Working Server Functions](/assets/06_docs/dog-save-serverfn.mp4)
 
-Server functions are extremely capable and can even be used during server-side-rendering. Check out the complete [fullstack guide](../guides/fullstack/) for more information.
+Server functions are extremely capable and can even be used during server-side-rendering. Check out the complete [fullstack guide](../guides/fullstack/index.md) for more information.

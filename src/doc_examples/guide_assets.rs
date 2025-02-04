@@ -9,7 +9,6 @@ mod stylesheet {
     fn App() -> Element {
         rsx! {
             document::Stylesheet { href: CSS }
-            // rest of the app
         }
     }
     // ANCHOR_END: css_stylesheet
@@ -25,7 +24,6 @@ mod image_url {
             div {
                 img { src: "https://images.dog.ceo/breeds/pitbull/dog-3981540_1280.jpg" }
             }
-            // ...
         }
         // ANCHOR_END: url_image
     }

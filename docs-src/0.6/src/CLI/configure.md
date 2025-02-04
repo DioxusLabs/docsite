@@ -327,9 +327,6 @@ This includes all fields, mandatory or not.
 # App name
 name = "project_name"
 
-# The Dioxus platform to default to
-default_platform = "web"
-
 # `build` & `serve` output path
 out_dir = "dist"
 

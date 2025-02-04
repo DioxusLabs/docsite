@@ -43,6 +43,7 @@ jobs:
           folder: docs # The folder the action should deploy.
           target-folder: .
           clean: true
+          single-commit: true
 
       # - name: Install CLI
       #   run: cargo install --force --git https://github.com/DioxusLabs/dioxus dioxus-cli --locked

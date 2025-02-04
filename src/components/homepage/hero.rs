@@ -3,7 +3,7 @@ use crate::*;
 
 pub(crate) fn Hero() -> Element {
     rsx! {
-        section { class: "w-full mx-auto dark:text-white flex flex-col justify-between items-center  border-b  min-h-[760px] flex-1 dark:border-[#a4a9ac7d] max-h-[960px] px-4",
+        section { class: "w-full mx-auto dark:text-white flex flex-col justify-between items-center  border-b  border-gray-300 min-h-[760px] flex-1 dark:border-[#a4a9ac7d] max-h-[960px] px-4",
             div { class: "flex w-full max-w-screen-xl flex-col text-center md:min-h-[520px] min-h-[760px] h-[calc(100vh-4rem)] gap-2 justify-evenly",
                 div { class: "flex flex-col-reverse lg:flex-row items-center justify-end lg:justify-between lg:flex-1 flex-none",
                     div { class: "text-center lg:text-left lg:flex-1",

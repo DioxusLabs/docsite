@@ -11,14 +11,14 @@ pub(crate) fn Nav() -> Element {
 
     rsx! {
         SearchModal {}
-        header { class: "sticky top-0 z-30 bg-opacity-80 dark:text-gray-200 dark:bg-opacity-80 border-b dark:border-stone-700 h-16 backdrop-blur-sm",
+        header { class: "sticky top-0 z-30 bg-opacity-80 dark:text-gray-200 dark:bg-opacity-80 border-b border-stone-300 dark:border-stone-700 h-16 backdrop-blur-sm",
             div { class: "py-2 px-2 max-w-screen-2xl mx-auto flex items-center justify-between text-sm leading-6 h-16",
                 div { class: "flex z-50 md:px-2 flex-1", LinkList {} }
                 div { class: "flex h-full justify-end ml-2 items-center gap-3 py-2",
                     button {
                         class: "
             max-w-[12rem] items-center rounded
-            p-1 text-left text-sm font-light leading-none border
+            p-1 text-left text-sm font-light leading-none border  border-gray-300
 
             hidden md:flex flex-row
             w-full sm:flex-1 md:w-full xl:max-w-[12rem]
@@ -162,7 +162,7 @@ fn CurrentStarCount() -> Element {
 static LINKS: &[(&str, &str)] = &[
     ("Learn", "/learn/0.6/"),
     // ("SDK", "/sdk"),
-    // ("Playground", "/play"),
+    // ("Playground", "/playground"),
     // ("Components", "/components"),
     ("Awesome", "/awesome"),
     ("Blog", "/blog"),

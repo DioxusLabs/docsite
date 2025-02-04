@@ -22,7 +22,7 @@ pub(crate) fn Learn() -> Element {
     let current_version = use_current_docs_version();
 
     rsx! {
-        div { class: "w-full text-sm border-b dark:border-[#a4a9ac7d]",
+        div { class: "w-full text-sm border-b dark:border-[#a4a9ac7d] border-gray-300",
             div { class: "flex flex-row justify-center dark:text-[#dee2e6] font-light lg:gap-12",
                 match current_version {
                     CurrentDocsVersion::V06(_) => rsx! {
@@ -98,7 +98,7 @@ fn VersionSwitch() -> Element {
             onmouseleave: move |_| show_versions.set(false),
             onclick: move |_| show_versions.toggle(),
             div { class: "hover:bg-gray-100 dark:hover:bg-ghdarkmetal rounded w-full py-1",
-                div { class: "grid grid-cols-[auto,1fr,auto] items-center gap-2 px-1",
+                div { class: "grid grid-cols-(--my-grid-cols) items-center gap-2 px-1",
                     div { class: "w-8 h-8 rounded-md border flex items-center justify-center bg-gray-50 border-gray-200 text-gray-900 dark:bg-inherit dark:text-gray-500 dark:border-gray-700 ",
                         icons::VersionTagIcon {}
                     }
@@ -272,7 +272,7 @@ pub fn RightNav<R: AnyBookRoute>() -> Element {
     // That might be a naive approach, but it's the easiest
     rsx! {
         div { class: "overflow-y-auto hidden xl:block top-28 px-2 h-full md:text-[14px] leading-5 text-gray-600  w-48 sticky  dark:text-gray-400 pt-1",
-            div { class: "border-b pb-2 dark:border-[#a4a9ac7d]",
+            div { class: "border-b border-gray-300 pb-2 dark:border-[#a4a9ac7d]",
                 h2 { class: "pb-2 font-semibold text-gray-600 dark:text-gray-100",
                     "On this page"
                 }

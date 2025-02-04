@@ -18,7 +18,7 @@ pub fn Footer() -> Element {
                 ("crates.io", "https://crates.io/crates/dioxus"),
                 ("Guide", "/learn/0.6/guide"),
                 ("Awesome", "/awesome"),
-                ("Playground", "/play"),
+                ("Playground", "/playground"),
             ],
         ),
         (

@@ -38,6 +38,16 @@
   }
 }
 
+.playground-container {
+    height: 900px;
+  display: flex;
+  flex-direction: column;
+  /* width: 100vw;
+  height: 80vh;
+  display: flex;
+  flex-direction: column; */
+}
+
 .full-chapter {
   padding-top: 12px;
   padding-bottom: 12px;
@@ -118,6 +128,10 @@ It's so unliklely anyone is copying text on mobile that we can just hide it
   max-width: 150px;
 }
 
+.dioxus-demo {
+  border-width: 2px;
+}
+
 .dioxus-show {
   z-index: 10000;
   visibility: visible;
@@ -133,9 +147,6 @@ It's so unliklely anyone is copying text on mobile that we can just hide it
   scale: 1.1;
 }
 
-.dioxus-demo {
-  border-width: 3px;
-}
 
 .markdown-body ul {
   list-style: disc;

@@ -1,11 +1,34 @@
 [workspace]
+resolver = "2"
 members = [
+    # Docs
     "packages/docsite",
     "packages/docs-router",
+
+    # Playground
+    "packages/playground/model",
+    "packages/playground/runner",
+    "packages/playground/server",
+    "packages/playground/playground",
+    "packages/playground/example-projects",
+
+    # Include MDBook
+    "packages/include_mdbook/packages/mdbook-macro",
+    "packages/include_mdbook/packages/use-mdbook",
+    "packages/include_mdbook/packages/mdbook-shared",
+    "packages/include_mdbook/packages/syntect-html",
+    "packages/include_mdbook/packages/mdbook-gen",
+    "packages/include_mdbook/packages/mdbook-gen-example",
 ]
+exclude = ["packages/playground/server/template"]
 
 [workspace.dependencies]
 dioxus_docs_router = { path = "packages/docs-router" }
+
+mdbook-gen = { path = "packages/include_mdbook/packages/mdbook-gen" }
+use-mdbook = { path = "packages/include_mdbook/packages/use-mdbook" }
+mdbook-shared = { path = "packages/include_mdbook/packages/mdbook-shared" }
+syntect-html = { path = "packages/include_mdbook/packages/syntect-html" }
 
 model = { path = "packages/playground/model" }
 dioxus-playground = { path = "packages/playground/playground" }

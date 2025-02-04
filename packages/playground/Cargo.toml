@@ -1,4 +1,0 @@
-[workspace]
-resolver = "2"
-members = ["model", "runner", "server", "playground", "example-projects"]
-exclude = ["server/template"]

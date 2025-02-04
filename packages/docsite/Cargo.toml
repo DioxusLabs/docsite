@@ -14,9 +14,9 @@ dioxus-web = { version = "0.6.0", features = ["hydrate"], optional = true }
 dioxus_docs_router = { workspace = true }
 
 dioxus-material-icons = { version = "3.0.0" }
-syntect-html = { git = "https://github.com/dioxuslabs/include_mdbook" }
-mdbook-shared = { git = "https://github.com/dioxuslabs/include_mdbook" }
-use-mdbook = { git = "https://github.com/dioxuslabs/include_mdbook" }
+syntect-html = { workspace = true }
+mdbook-shared = { workspace = true }
+use-mdbook = { workspace = true }
 dioxus-search = { git = "https://github.com/dioxuslabs/dioxus-search" }
 dioxus-playground = { workspace = true }
 
@@ -49,10 +49,6 @@ automod = "1.0.13"
 stork-lib = { version = "1.6.0", features = [
     "build-v3",
 ], default-features = false }
-
-[build-dependencies]
-mdbook-gen = { git = "https://github.com/dioxuslabs/include_mdbook", features = ["manganis"]}
-mdbook-shared = { git = "https://github.com/dioxuslabs/include_mdbook" }
 
 [features]
 default = []

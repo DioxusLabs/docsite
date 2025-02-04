@@ -14,10 +14,9 @@ dioxus-cli-config = { version = "0.6.0", optional = true }
 dioxus-liveview = { version = "0.6.0", features = ["axum"], optional = true }
 
 dioxus-material-icons = { version = "3.0.0" }
-syntect-html = { git = "https://github.com/dioxuslabs/include_mdbook" }
-mdbook-shared = { git = "https://github.com/dioxuslabs/include_mdbook" }
-use-mdbook = { git = "https://github.com/dioxuslabs/include_mdbook" }
-dioxus-search = { git = "https://github.com/dioxuslabs/dioxus-search" }
+syntect-html = { workspace = true }
+mdbook-shared = { workspace = true }
+use-mdbook = { workspace = true }
 
 serde = { version = "1.0.163", features = ["derive"] }
 serde_json = "1.0.96"
@@ -89,5 +88,5 @@ doc_test = [
 production = []
 
 [build-dependencies]
-mdbook-gen = { git = "https://github.com/dioxuslabs/include_mdbook", features = ["manganis"]}
-mdbook-shared = { git = "https://github.com/dioxuslabs/include_mdbook" }
+mdbook-gen = { workspace = true, features = ["manganis"]}
+mdbook-shared = { workspace = true }

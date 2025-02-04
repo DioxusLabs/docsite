@@ -309,6 +309,17 @@ dependencies = [
 ]
 
 [[package]]
+name = "axum-client-ip"
+version = "0.6.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "9eefda7e2b27e1bda4d6fa8a06b50803b8793769045918bc37ad062d48a6efac"
+dependencies = [
+ "axum",
+ "forwarded-header-value",
+ "serde",
+]
+
+[[package]]
 name = "axum-core"
 version = "0.4.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1703,7 +1714,6 @@ dependencies = [
  "dioxus-liveview",
  "dioxus-material-icons",
  "dioxus-sdk",
- "dioxus-search",
  "dioxus-ssr",
  "dioxus-web",
  "form_urlencoded",
@@ -1755,7 +1765,6 @@ dependencies = [
  "http 1.2.0",
  "js-sys",
  "log",
- "mdbook-gen",
  "mdbook-shared",
  "once_cell",
  "reqwest 0.11.27",
@@ -2128,6 +2137,16 @@ dependencies = [
 ]
 
 [[package]]
+name = "forwarded-header-value"
+version = "0.1.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "8835f84f38484cc86f110a805655697908257fb9a7af005234060891557198e9"
+dependencies = [
+ "nonempty",
+ "thiserror 1.0.69",
+]
+
+[[package]]
 name = "frontmatter"
 version = "0.4.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2135,6 +2154,12 @@ checksum = "8fc799a66fc39c6d56fa3bdc8afc1fd7efa8ebff71f4ff091596faffb96c84fa"
 dependencies = [
  "yaml-rust",
 ]
+
+[[package]]
+name = "fs_extra"
+version = "1.3.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "42703706b716c37f96a77aea830392ad231f44c9e9a67872fa5548707e11b11c"
 
 [[package]]
 name = "futf"
@@ -3619,7 +3644,6 @@ dependencies = [
 [[package]]
 name = "mdbook-gen"
 version = "0.0.0"
-source = "git+https://github.com/dioxuslabs/include_mdbook#e99185df758d5d7858dcd187729f5839e887efa0"
 dependencies = [
  "anyhow",
  "convert_case 0.6.0",
@@ -3629,6 +3653,7 @@ dependencies = [
  "mdbook-shared",
  "once_cell",
  "postcard",
+ "pretty_assertions",
  "prettyplease",
  "proc-macro2",
  "pulldown-cmark",
@@ -3640,9 +3665,22 @@ dependencies = [
 ]
 
 [[package]]
+name = "mdbook-gen-example"
+version = "0.0.0"
+dependencies = [
+ "dioxus",
+ "dioxus-autofmt",
+ "mdbook-gen",
+ "mdbook-shared",
+ "prettyplease",
+ "serde",
+ "syn 2.0.98",
+ "use-mdbook",
+]
+
+[[package]]
 name = "mdbook-macro"
 version = "0.1.0"
-source = "git+https://github.com/dioxuslabs/include_mdbook#e99185df758d5d7858dcd187729f5839e887efa0"
 dependencies = [
  "anyhow",
  "convert_case 0.6.0",
@@ -3663,7 +3701,6 @@ dependencies = [
 [[package]]
 name = "mdbook-shared"
 version = "0.1.0"
-source = "git+https://github.com/dioxuslabs/include_mdbook#e99185df758d5d7858dcd187729f5839e887efa0"
 dependencies = [
  "anyhow",
  "bytes",
@@ -3867,6 +3904,12 @@ name = "nodrop"
 version = "0.1.14"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "72ef4a56884ca558e5ddb05a1d1e7e1bfd9a68d9ed024c21704cc98872dae1bb"
+
+[[package]]
+name = "nonempty"
+version = "0.7.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "e9e591e719385e6ebaeb5ce5d3887f7d5676fceca6411d1925ccc95745f3d6f7"
 
 [[package]]
 name = "num-conv"
@@ -4922,6 +4965,16 @@ dependencies = [
 ]
 
 [[package]]
+name = "runner"
+version = "0.1.0"
+dependencies = [
+ "dioxus",
+ "dioxus-document",
+ "dioxus-playground",
+ "example-projects",
+]
+
+[[package]]
 name = "rusqlite"
 version = "0.32.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -5241,6 +5294,29 @@ dependencies = [
  "itoa 1.0.14",
  "ryu",
  "serde",
+]
+
+[[package]]
+name = "server"
+version = "0.1.0"
+dependencies = [
+ "axum",
+ "axum-client-ip",
+ "dioxus",
+ "dioxus-dx-wire-format",
+ "dioxus-logger",
+ "example-projects",
+ "fs_extra",
+ "futures",
+ "model",
+ "serde",
+ "serde_json",
+ "thiserror 2.0.11",
+ "tokio",
+ "tokio-util",
+ "tower 0.4.13",
+ "tower-http",
+ "uuid",
 ]
 
 [[package]]
@@ -5646,7 +5722,6 @@ dependencies = [
 [[package]]
 name = "syntect-html"
 version = "0.1.0"
-source = "git+https://github.com/dioxuslabs/include_mdbook#e99185df758d5d7858dcd187729f5839e887efa0"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -6024,6 +6099,8 @@ dependencies = [
  "futures-util",
  "pin-project",
  "pin-project-lite",
+ "tokio",
+ "tokio-util",
  "tower-layer",
  "tower-service",
  "tracing",
@@ -6282,8 +6359,9 @@ checksum = "daf8dba3b7eb870caf1ddeed7bc9d2a049f3cfdfae7cb521b087cc33ae4c49da"
 [[package]]
 name = "use-mdbook"
 version = "0.1.0"
-source = "git+https://github.com/dioxuslabs/include_mdbook#e99185df758d5d7858dcd187729f5839e887efa0"
 dependencies = [
+ "dioxus",
+ "dioxus-router",
  "lazy_static",
  "mdbook-macro",
  "mdbook-shared",
@@ -6291,6 +6369,7 @@ dependencies = [
  "postcard",
  "serde",
  "serde_json",
+ "tokio",
  "yazi",
 ]
 

@@ -6,7 +6,7 @@ edition = "2021"
 [dependencies]
 proc-macro2 = { version = "1.0" }
 quote = "1.0"
-syn = "2.0"
+syn = { workspace = true }
 mdbook-shared = { path = "../mdbook-shared" }
 anyhow = "1.0.71"
 serde = { version = "1.0.163", features = ["derive"] }

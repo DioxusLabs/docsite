@@ -13,10 +13,10 @@ stork-lib = { version = "1.6.0", features = ["build-v3"], default-features = fal
 bytes = { version = "1.3.0", features = ["serde"] }
 slab = "0.4.8"
 dioxus-router = { version = "0.6.0" }
-yazi = "0.1.5"
+yazi = { workspace = true }
 once_cell = "1.18.0"
 dioxus-search-macro = { workspace = true }
 dioxus-search-shared = { workspace = true }
 
 [target.'cfg(target_family = "wasm")'.dependencies]
-getrandom = { version = "0.2", features = ["js"] }
+getrandom = { workspace = true, features = ["wasm_js"] }

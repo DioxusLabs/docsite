@@ -11,5 +11,5 @@ proc-macro = true
 [dependencies]
 proc-macro2 = { version = "1.0" }
 quote = "1.0"
-syn = "1.0.109"
+syn = { workspace = true }
 syntect = "5.0"

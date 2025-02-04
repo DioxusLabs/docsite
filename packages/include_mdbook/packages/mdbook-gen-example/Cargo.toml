@@ -13,4 +13,4 @@ mdbook-gen = { path = "../mdbook-gen", features = ["manganis"] }
 mdbook-shared = { path = "../mdbook-shared" }
 dioxus-autofmt = { version = "0.6.0" }
 prettyplease = "0.2.20"
-syn = "2.0"
+syn = { workspace = true }

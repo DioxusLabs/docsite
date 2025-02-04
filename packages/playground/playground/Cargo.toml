@@ -38,7 +38,7 @@ wasm-bindgen = { version = "0.2.99", features = ["serde-serialize"] }
 miniz_oxide = { version = "0.8.0", features = ["std"] }
 base64 = "0.22.1"
 
-syn = "2.0.85"
+syn = { workspace = true }
 proc-macro2 = "1.0.89"
 
 

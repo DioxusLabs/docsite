@@ -17,6 +17,6 @@ bytes = { version = "1.3.0", features = ["serde"] }
 slab = "0.4.8"
 
 [target.'cfg(arch = "wasm32")'.dependencies]
-getrandom = { version = "0.2", features = ["js"] }
+getrandom = { workspace = true, features = ["wasm_js"] }
 
 [features]

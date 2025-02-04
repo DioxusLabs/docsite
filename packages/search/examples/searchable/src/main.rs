@@ -9,13 +9,6 @@ use dioxus::prelude::*;
 fn main() {
     #[cfg(feature = "ssr")]
     {
-        use log::LevelFilter;
-        simple_logger::SimpleLogger::new()
-            .with_level(LevelFilter::Info)
-            .with_module_level("dioxus_search_macro", LevelFilter::Trace)
-            .with_module_level("dioxus_search_shared", LevelFilter::Trace)
-            .init()
-            .unwrap();
         tokio::runtime::Runtime::new()
             .unwrap()
             .block_on(async move {
@@ -38,7 +31,9 @@ fn main() {
         println!("finished creating search index");
     }
 
-    launch(|| rsx! { Router::<Route> {} });
+    launch(|| rsx! {
+        Router::<Route> {}
+    });
 }
 
 #[derive(Clone, Routable, PartialEq, Eq, Debug, serde::Serialize, serde::Deserialize)]
@@ -68,10 +63,7 @@ fn Homepage() -> Element {
         ul {
             for result in results.map(|i| i.into_iter()).ok().into_iter().flatten() {
                 li {
-                    Link {
-                        to: result.route.clone(),
-                        "{result:#?}"
-                    }
+                    Link { to: result.route.clone(), "{result:#?}" }
                 }
             }
         }

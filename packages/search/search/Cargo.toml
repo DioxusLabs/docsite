@@ -19,4 +19,4 @@ dioxus-search-macro = { workspace = true }
 dioxus-search-shared = { workspace = true }
 
 [target.'cfg(target_family = "wasm")'.dependencies]
-getrandom = { workspace = true, features = ["wasm_js"] }
+getrandom = { workspace = true, features = ["js"] }

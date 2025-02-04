@@ -1588,7 +1588,7 @@ dependencies = [
  "dioxus-router",
  "dioxus-search-macro",
  "dioxus-search-shared",
- "getrandom 0.3.1",
+ "getrandom 0.2.15",
  "once_cell",
  "serde",
  "serde_json",
@@ -1612,7 +1612,7 @@ version = "0.1.0"
 dependencies = [
  "bytes",
  "dioxus-router",
- "getrandom 0.3.1",
+ "getrandom 0.2.15",
  "log",
  "scraper",
  "serde",
@@ -1745,6 +1745,7 @@ dependencies = [
  "dioxus_docs_router",
  "futures",
  "futures-util",
+ "getrandom 0.2.15",
  "gloo-storage",
  "gloo-timers",
  "http",
@@ -2426,10 +2427,8 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "43a49c392881ce6d5c3b8cb70f98717b7c07aabbdff06687b9030dbfbe2725f8"
 dependencies = [
  "cfg-if",
- "js-sys",
  "libc",
  "wasi 0.13.3+wasi-0.2.2",
- "wasm-bindgen",
  "windows-targets 0.52.6",
 ]
 
@@ -3687,7 +3686,7 @@ version = "0.1.0"
 dependencies = [
  "anyhow",
  "bytes",
- "getrandom 0.3.1",
+ "getrandom 0.2.15",
  "log",
  "memchr",
  "pulldown-cmark",
@@ -5110,7 +5109,7 @@ dependencies = [
  "axum",
  "dioxus",
  "dioxus-search",
- "getrandom 0.3.1",
+ "getrandom 0.2.15",
  "log",
  "serde",
  "tokio",

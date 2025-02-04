@@ -8,7 +8,7 @@ resolver = "2"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-dioxus = { version = "0.6.0", features = ["router"] }
+dioxus = { version = "0.6.0", features = ["router", "launch"] }
 dioxus-web = { version = "0.6.0", features = ["hydrate"], optional = true }
 
 dioxus_docs_router = { workspace = true }
@@ -20,6 +20,7 @@ use-mdbook = { workspace = true }
 dioxus-search = { workspace = true }
 dioxus-playground = { workspace = true }
 
+getrandom = { workspace = true, features = ["js"] }
 serde = { version = "1.0.163", features = ["derive"] }
 serde_json = "1.0.96"
 log = "0.4.17"

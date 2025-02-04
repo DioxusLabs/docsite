@@ -18,4 +18,4 @@ scraper = "0.22.0"
 log = "0.4.19"
 
 [target.'cfg(target_family = "wasm")'.dependencies]
-getrandom = { workspace = true, features = ["wasm_js"] }
+getrandom = { workspace = true, features = ["js"] }

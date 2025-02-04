@@ -25,6 +25,7 @@
   - [Building UIs with RSX](essentials/rsx/index.md)
   - [Component Lifecycle](essentials/lifecycle/index.md)
   - [Managing State](essentials/state/index.md)
+  - [Async](essentials/async/index.md)
   - [Breaking Out](essentials/breaking/index.md)
 
 ---
@@ -52,14 +53,16 @@
   - [Desktop](guides/desktop/index.md)
   - [Mobile](guides/mobile/index.md)
     - [APIs](guides/mobile/apis.md)
-  - [Streaming and SSR](guides/ssr.md)
+  - [SSR](guides/ssr.md)
   - [Fullstack](guides/fullstack/index.md)
+    - [Hydration](guides/fullstack/hydration.md)
     - [Managing Dependencies](guides/fullstack/managing_dependencies.md)
   	- [Server Functions](guides/fullstack/server_functions.md)
   	- [Extractors](guides/fullstack/extractors.md)
   	- [Middleware](guides/fullstack/middleware.md)
   	- [Authentication](guides/fullstack/authentication.md)
   	- [Routing](guides/fullstack/routing.md)
+    - [Static Site Generation](guides/fullstack/static_site_generation.md)
   - [Publishing](cookbook/publishing.md)
   - [Anti-patterns](cookbook/antipatterns.md)
   - [Error Handling](cookbook/error_handling.md)
@@ -95,7 +98,6 @@
 - [Contributing](contributing/index.md)
   - [Project Structure](contributing/project_structure.md)
   - [Guiding Principles](contributing/guiding_principles.md)
-  - [Roadmap](contributing/roadmap.md)
 
 ---
 - [CLI](CLI/index.md)

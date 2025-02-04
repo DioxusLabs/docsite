@@ -84,10 +84,10 @@ pub(crate) fn Hero() -> Element {
                             class: "h-6 ",
                             src: asset!("/assets/static/ESA_logo.svg"),
                         }
-                        img {
-                            class: "h-6 ",
-                            src: asset!("/assets/static/xailogo.svg"),
-                        }
+                        // img {
+                        //     class: "h-6 ",
+                        //     src: asset!("/assets/static/xailogo.svg"),
+                        // }
                         img {
                             class: "h-6 ",
                             src: asset!("/assets/static/yclogo.svg"),

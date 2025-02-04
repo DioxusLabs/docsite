@@ -34,10 +34,7 @@ The Dog API docs outline a sample API response:
 
 Our Rust struct needs to match that format, though for now we'll only include the "message" field.
 ```rust
-#[derive(serde::Deserialize)]
-struct DogApi {
-	message: String,
-}
+{{#include src/doc_examples/guide_data_fetching.rs:dog_api}}
 ```
 
 ## Using `reqwest` and `async`
@@ -49,50 +46,16 @@ Dioxus has stellar support for asynchronous Rust. We can simply convert our `onc
 The changes to our code are quite simple - just add the `reqwest::get` call and then call `.set()` on `img_src` with the result.
 
 ```rust
-#[component]
-fn DogView() -> Element {
-    let mut img_src = use_signal(|| "".to_string());
-
-    let fetch_new = move |_| async move {
-        let response = reqwest::get("https://dog.ceo/api/breeds/image/random")
-            .await
-            .unwrap()
-            .json::<DogApi>()
-            .await
-			.unwrap();
-
-        img_src.set(response.message);
-    };
-
-    // ..
-
-    rsx! {
-        div { id: "dogview",
-            img { src: "{img_src}" }
-        }
-        div { id: "buttons",
-            // ..
-            button { onclick: fetch_new, id: "save", "save!" }
-        }
-    }
-}
+{{#include src/doc_examples/guide_data_fetching.rs:dog_view_reqwest}}
 ```
 
-Dioxus automatically calls `dioxus::spawn` on asynchronous closures. You can also use `dioxus::spawn` to perform async work *without* async closures - just call `spawn()` on any async block.
+Dioxus automatically calls `spawn` on asynchronous closures. You can also use `spawn` to perform async work *without* async closures - just call `spawn()` on any async block.
 
 ```rust
-rsx! {
-    button {
-        onclick: move |_| {
-            dioxus::spawn(async move {
-                // do some async work...
-            });
-        }
-    }
-}
+{{#include src/doc_examples/guide_data_fetching.rs:spawn}}
 ```
 
-The futures passed to `dioxus::spawn` must not contain latent references to data outside the async block. Data that is `Copy` *can* be captured by async blocks, but all other data must be *moved*, usually by calling `.clone()`.
+The futures passed to `spawn` must not contain latent references to data outside the async block. Data that is `Copy` *can* be captured by async blocks, but all other data must be *moved*, usually by calling `.clone()`.
 
 ## Managing Data Fetching with use_resource
 
@@ -103,28 +66,7 @@ In Dioxus, *Resources* are pieces of state whose value is dependent on the compl
 Let's change our component to use a resource instead:
 
 ```rust
-#[component]
-fn DogView() -> Element {
-    let mut img_src = use_resource(|| async move {
-        reqwest::get("https://dog.ceo/api/breeds/image/random")
-            .await
-            .unwrap()
-            .json::<DogApi>()
-            .await
-            .unwrap()
-            .message
-    });
-
-    rsx! {
-        div { id: "dogview",
-            img { src: img_src.cloned().unwrap_or_default() }
-        }
-        div { id: "buttons",
-            button { onclick: move |_| img_src.restart(), id: "skip", "skip" }
-            button { onclick: move |_| img_src.restart(), id: "save", "save!" }
-        }
-    }
-}
+{{#include src/doc_examples/guide_data_fetching.rs:dog_view_resource}}
 ```
 
 Resources are very powerful: they integrate with Suspense, Streaming HTML, reactivity, and more.

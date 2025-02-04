@@ -13,6 +13,13 @@ pub mod snippets;
 pub use components::*;
 
 fn main() {
+    // If we are just building the search index, we don't need to launch the app
+    #[cfg(feature = "server")]
+    if std::env::args().any(|arg| arg == "--generate-search-index") {
+        search::generate_search_index();
+        return;
+    }
+    
     create_sitemap();
 
     dioxus::LaunchBuilder::new()
@@ -59,6 +66,10 @@ fn HeaderFooter() -> Element {
 
 fn Head() -> Element {
     use document::{Link, Meta, Script, Stylesheet, Title};
+    
+    // Tell google to not index old documentation
+    let current_doc_route = use_route::<Route>();
+    let don_t_index = current_doc_route.is_docs() && !current_doc_route.is_latest_docs(); 
 
     rsx! {
         Title { "Dioxus | Fullstack crossplatform app framework for Rust" }
@@ -133,6 +144,9 @@ fn Head() -> Element {
             src: asset!("/assets/gtag.js"),
             r#type: "text/javascript",
         }
+        if don_t_index {
+            Meta { name: "robots", content: "noindex" }
+        }
     }
 }
 
@@ -178,11 +192,6 @@ pub enum Route {
             #[end_nest]
         #[end_layout]
     #[end_nest]
-
-    // once all the routes above have been generated, we build the search index
-    // a bit of a hack, sorry
-    #[route("/search")]
-    Search {},
 
     #[redirect("/docs/:..segments", |segments: Vec<String>| {
         let joined = segments.join("/");

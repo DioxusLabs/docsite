@@ -204,10 +204,10 @@ fn SearchModal() -> Element {
     let mut search_text = use_signal(String::new);
 
     let search_index = use_resource(|| async move {
-        #[cfg(debug_assertions)]
+        #[cfg(not(feature = "production"))]
         let url = "http://localhost:8080/assets/dioxus_search/index_searchable.bin";
 
-        #[cfg(not(debug_assertions))]
+        #[cfg(feature = "production")]
         let url = "https://dioxuslabs.com/assets/dioxus_search/index_searchable.bin";
 
         let data = reqwest::get(url).await.ok()?.bytes().await.ok()?;

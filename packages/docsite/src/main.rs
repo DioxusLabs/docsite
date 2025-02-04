@@ -5,7 +5,6 @@ use dioxus::prelude::*;
 use serde::{Deserialize, Serialize};
 
 pub mod components;
-pub mod doc_examples;
 pub mod docs;
 pub mod icons;
 pub mod shortcut;
@@ -19,7 +18,7 @@ fn main() {
         search::generate_search_index();
         return;
     }
-    
+
     create_sitemap();
 
     dioxus::LaunchBuilder::new()
@@ -66,10 +65,10 @@ fn HeaderFooter() -> Element {
 
 fn Head() -> Element {
     use document::{Link, Meta, Script, Stylesheet, Title};
-    
+
     // Tell google to not index old documentation
     let current_doc_route = use_route::<Route>();
-    let don_t_index = current_doc_route.is_docs() && !current_doc_route.is_latest_docs(); 
+    let don_t_index = current_doc_route.is_docs() && !current_doc_route.is_latest_docs();
 
     rsx! {
         Title { "Dioxus | Fullstack crossplatform app framework for Rust" }

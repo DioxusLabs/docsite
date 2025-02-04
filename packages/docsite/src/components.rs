@@ -4,8 +4,6 @@ pub mod blog;
 pub use blog::*;
 pub mod deploy;
 pub use deploy::*;
-pub mod desktop_dependencies;
-pub use desktop_dependencies::*;
 pub mod footer;
 pub use footer::*;
 pub mod homepage;

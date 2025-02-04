@@ -1,6 +1,6 @@
 # Introduction
 
-![dioxuslogo](/assets/static/images03/dioxuslogo_full.png)
+![dioxuslogo](/assets/blog/release-03/dioxuslogo_full.png)
 
 Dioxus is a portable, performant, and ergonomic framework for building cross-platform user interfaces in Rust. This guide will help you get started with writing Dioxus apps for the Web, Desktop, Mobile, and more.
 

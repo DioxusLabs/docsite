@@ -17,7 +17,7 @@ For example, you might have seen the counter example, in which state (a number) 
 ```rust
 {{#include src/doc_examples/untested_03/hooks_counter.rs:component}}
 ```
-![Screenshot: counter app](/assets/static/images03/counter.png)
+![Screenshot: counter app](/assets/blog/release-03/counter.png)
 
 Every time the component's state changes, it re-renders, and the component function is called, so you can describe what you want the new UI to look like. You don't have to worry about "changing" anything – just describe what you want in terms of the state, and Dioxus will take care of the rest!
 
@@ -28,7 +28,7 @@ You can use multiple hooks in the same component if you want:
 ```rust
 {{#include src/doc_examples/untested_03/hooks_counter_two_state.rs:component}}
 ```
-![Screenshot: app with two counters](/assets/static/images03/counter_two_state.png)
+![Screenshot: app with two counters](/assets/blog/release-03/counter_two_state.png)
 
 ## Rules of Hooks
 

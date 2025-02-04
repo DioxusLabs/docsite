@@ -1,0 +1,7 @@
+target
+Cargo.lock
+/dist
+/Cargo.toml
+/Dioxus.toml
+/src/main.rs
+.cargo

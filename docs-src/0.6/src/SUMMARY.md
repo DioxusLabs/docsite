@@ -54,6 +54,7 @@
     - [APIs](guides/mobile/apis.md)
   - [Streaming and SSR](guides/ssr.md)
   - [Fullstack](guides/fullstack/index.md)
+    - [Hydration](guides/fullstack/hydration.md)
     - [Managing Dependencies](guides/fullstack/managing_dependencies.md)
   	- [Server Functions](guides/fullstack/server_functions.md)
   	- [Extractors](guides/fullstack/extractors.md)

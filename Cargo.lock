@@ -475,6 +475,38 @@ dependencies = [
 ]
 
 [[package]]
+name = "camino"
+version = "1.1.9"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "8b96ec4966b5813e2c0507c1f86115c8c5abaadc3980879c3424042a02fd1ad3"
+dependencies = [
+ "serde",
+]
+
+[[package]]
+name = "cargo-platform"
+version = "0.1.9"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "e35af189006b9c0f00a064685c727031e3ed2d8020f7ba284d78cc2671bd36ea"
+dependencies = [
+ "serde",
+]
+
+[[package]]
+name = "cargo_metadata"
+version = "0.18.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "2d886547e41f740c616ae73108f6eb70afe6d940c7bc697cb30f13daec073037"
+dependencies = [
+ "camino",
+ "cargo-platform",
+ "semver",
+ "serde",
+ "serde_json",
+ "thiserror 1.0.69",
+]
+
+[[package]]
 name = "cc"
 version = "1.2.12"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1202,6 +1234,17 @@ dependencies = [
 ]
 
 [[package]]
+name = "dioxus-dx-wire-format"
+version = "0.6.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "28d60aae3fc86793b8e54e388f631fea7b525108b88cd32c8ce348d19710cd65"
+dependencies = [
+ "cargo_metadata",
+ "serde",
+ "serde_json",
+]
+
+[[package]]
 name = "dioxus-fullstack"
 version = "0.6.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1413,7 +1456,6 @@ dependencies = [
 [[package]]
 name = "dioxus-playground"
 version = "0.1.0"
-source = "git+https://github.com/dioxuslabs/playground#475783a81ed0ace8b8eefd3504f02d7e32889af7"
 dependencies = [
  "base64 0.22.1",
  "dioxus",
@@ -1965,10 +2007,10 @@ dependencies = [
 [[package]]
 name = "example-projects"
 version = "0.1.0"
-source = "git+https://github.com/dioxuslabs/playground#475783a81ed0ace8b8eefd3504f02d7e32889af7"
 dependencies = [
  "anyhow",
  "base64 0.22.1",
+ "dioxus",
  "include_dir",
  "miniz_oxide",
  "once_cell",
@@ -3690,8 +3732,9 @@ dependencies = [
 [[package]]
 name = "model"
 version = "0.1.0"
-source = "git+https://github.com/dioxuslabs/playground#475783a81ed0ace8b8eefd3504f02d7e32889af7"
 dependencies = [
+ "axum",
+ "dioxus-dx-wire-format",
  "gloo-net",
  "serde",
  "serde_json",
@@ -5080,6 +5123,9 @@ name = "semver"
 version = "1.0.25"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "f79dfe2d285b0488816f30e700a7438c5a73d816b5b7d3ac72fbc48b0d185e03"
+dependencies = [
+ "serde",
+]
 
 [[package]]
 name = "send_wrapper"

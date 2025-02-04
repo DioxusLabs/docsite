@@ -18,7 +18,7 @@ syntect-html = { git = "https://github.com/dioxuslabs/include_mdbook" }
 mdbook-shared = { git = "https://github.com/dioxuslabs/include_mdbook" }
 use-mdbook = { git = "https://github.com/dioxuslabs/include_mdbook" }
 dioxus-search = { git = "https://github.com/dioxuslabs/dioxus-search" }
-dioxus-playground = { git = "https://github.com/dioxuslabs/playground" }
+dioxus-playground = { workspace = true }
 
 serde = { version = "1.0.163", features = ["derive"] }
 serde_json = "1.0.96"

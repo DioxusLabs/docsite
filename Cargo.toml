@@ -7,7 +7,7 @@ members = [
 [workspace.dependencies]
 dioxus_docs_router = { path = "packages/docs-router" }
 
-model = { path = "packags/playground/model" }
+model = { path = "packages/playground/model" }
 dioxus-playground = { path = "packages/playground/playground" }
 example-projects = { path = "packages/playground/example-projects" }
 

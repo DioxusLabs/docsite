@@ -1413,7 +1413,7 @@ dependencies = [
 [[package]]
 name = "dioxus-playground"
 version = "0.1.0"
-source = "git+https://github.com/dioxuslabs/playground#0e77d14983d3f2838655e926dfff3e07ff9e9a79"
+source = "git+https://github.com/dioxuslabs/playground#475783a81ed0ace8b8eefd3504f02d7e32889af7"
 dependencies = [
  "base64 0.22.1",
  "dioxus",
@@ -1930,7 +1930,7 @@ dependencies = [
 [[package]]
 name = "example-projects"
 version = "0.1.0"
-source = "git+https://github.com/dioxuslabs/playground#0e77d14983d3f2838655e926dfff3e07ff9e9a79"
+source = "git+https://github.com/dioxuslabs/playground#475783a81ed0ace8b8eefd3504f02d7e32889af7"
 dependencies = [
  "anyhow",
  "base64 0.22.1",
@@ -3655,7 +3655,7 @@ dependencies = [
 [[package]]
 name = "model"
 version = "0.1.0"
-source = "git+https://github.com/dioxuslabs/playground#0e77d14983d3f2838655e926dfff3e07ff9e9a79"
+source = "git+https://github.com/dioxuslabs/playground#475783a81ed0ace8b8eefd3504f02d7e32889af7"
 dependencies = [
  "gloo-net",
  "serde",

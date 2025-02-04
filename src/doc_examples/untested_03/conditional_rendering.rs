@@ -9,11 +9,13 @@ fn main() {
 pub fn App(cx: Scope) -> Element {
     let is_logged_in = use_state(cx, || false);
 
-    cx.render(rsx!(LogIn {
-        is_logged_in: **is_logged_in,
-        on_log_in: |_| is_logged_in.set(true),
-        on_log_out: |_| is_logged_in.set(false),
-    }))
+    cx.render(rsx!(
+        LogIn {
+            is_logged_in: **is_logged_in,
+            on_log_in: |_| is_logged_in.set(true),
+            on_log_out: |_| is_logged_in.set(false),
+        }
+    ))
 }
 
 #[inline_props]
@@ -57,7 +59,7 @@ cx.render(rsx! {
     // We only render the welcome message if we are logged in
     // You can use if statements in the middle of a render block to conditionally render elements
     if *is_logged_in {
-        // Notice the body of this if statment is rsx code, not an expression
+        // Notice the body of this if statemenet is rsx code, not an expression
         "Welcome!"
     }
     button {

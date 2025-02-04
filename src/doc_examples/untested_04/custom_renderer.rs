@@ -33,9 +33,9 @@ impl State for Size {
     fn update<'a>(
         &mut self,
         node_view: NodeView<()>,
-        _node: <Self::NodeDependencies as Dependancy>::ElementBorrowed<'a>,
-        _parent: Option<<Self::ParentDependencies as Dependancy>::ElementBorrowed<'a>>,
-        children: Vec<<Self::ChildDependencies as Dependancy>::ElementBorrowed<'a>>,
+        _node: <Self::NodeDependencies as Dependency>::ElementBorrowed<'a>,
+        _parent: Option<<Self::ParentDependencies as Dependency>::ElementBorrowed<'a>>,
+        children: Vec<<Self::ChildDependencies as Dependency>::ElementBorrowed<'a>>,
         context: &SendAnyMap,
     ) -> bool {
         let font_size = context.get::<FontSize>().unwrap().0;
@@ -99,9 +99,9 @@ impl State for TextColor {
     fn update<'a>(
         &mut self,
         node_view: NodeView<()>,
-        _node: <Self::NodeDependencies as Dependancy>::ElementBorrowed<'a>,
-        parent: Option<<Self::ParentDependencies as Dependancy>::ElementBorrowed<'a>>,
-        _children: Vec<<Self::ChildDependencies as Dependancy>::ElementBorrowed<'a>>,
+        _node: <Self::NodeDependencies as Dependency>::ElementBorrowed<'a>,
+        parent: Option<<Self::ParentDependencies as Dependency>::ElementBorrowed<'a>>,
+        _children: Vec<<Self::ChildDependencies as Dependency>::ElementBorrowed<'a>>,
         _context: &SendAnyMap,
     ) -> bool {
         // TextColor only depends on the color tag, so getting the first tag is equivalent to looking through all tags
@@ -148,9 +148,9 @@ impl State for Border {
     fn update<'a>(
         &mut self,
         node_view: NodeView<()>,
-        _node: <Self::NodeDependencies as Dependancy>::ElementBorrowed<'a>,
-        _parent: Option<<Self::ParentDependencies as Dependancy>::ElementBorrowed<'a>>,
-        _children: Vec<<Self::ChildDependencies as Dependancy>::ElementBorrowed<'a>>,
+        _node: <Self::NodeDependencies as Dependency>::ElementBorrowed<'a>,
+        _parent: Option<<Self::ParentDependencies as Dependency>::ElementBorrowed<'a>>,
+        _children: Vec<<Self::ChildDependencies as Dependency>::ElementBorrowed<'a>>,
         _context: &SendAnyMap,
     ) -> bool {
         // check if the node contains a border attribute
@@ -271,11 +271,11 @@ impl State for MyState {
         // The view of the current node limited to the parts this state depends on
         _node_view: NodeView<()>,
         // The state of the current node that this state depends on
-        _node: <Self::NodeDependencies as Dependancy>::ElementBorrowed<'a>,
+        _node: <Self::NodeDependencies as Dependency>::ElementBorrowed<'a>,
         // The state of the parent nodes that this state depends on
-        _parent: Option<<Self::ParentDependencies as Dependancy>::ElementBorrowed<'a>>,
+        _parent: Option<<Self::ParentDependencies as Dependency>::ElementBorrowed<'a>>,
         // The state of the child nodes that this state depends on
-        _children: Vec<<Self::ChildDependencies as Dependancy>::ElementBorrowed<'a>>,
+        _children: Vec<<Self::ChildDependencies as Dependency>::ElementBorrowed<'a>>,
         // The context of the current node used to pass global state into the tree
         _context: &SendAnyMap,
     ) -> bool {

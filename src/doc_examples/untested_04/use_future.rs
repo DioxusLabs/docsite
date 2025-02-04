@@ -42,7 +42,7 @@ pub fn App(cx: Scope) -> Element {
 
 #[component]
 fn RandomDog(cx: Scope, breed: String) -> Element {
-    // ANCHOR: dependancy
+    // ANCHOR: dependency
     let future = use_future(cx, (breed,), |(breed,)| async move {
         reqwest::get(format!("https://dog.ceo/api/breed/{breed}/images/random"))
             .await
@@ -50,7 +50,7 @@ fn RandomDog(cx: Scope, breed: String) -> Element {
             .json::<ApiResponse>()
             .await
     });
-    // ANCHOR_END: dependancy
+    // ANCHOR_END: dependency
 
     cx.render(rsx!(()))
 }

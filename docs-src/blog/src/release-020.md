@@ -313,7 +313,7 @@ A ton more! Dioxus is now much more stable than it was at release!
 *   [Home automation server app](https://github.com/FruitieX/homectl) [@FruitieX](https://github.com/FruitieX)
 *   [Video Recording app](https://github.com/rustkid/recorder)
 *   [Music streaming app](https://github.com/autarch/Crumb/tree/master/web-frontend) [@autarch](https://github.com/autarch)
-*   [NixOS dependancy installation](https://gist.github.com/FruitieX/73afe3eb15da45e0e05d5c9cf5d318fc) [@FruitieX](https://github.com/FruitieX)
+*   [NixOS dependency installation](https://gist.github.com/FruitieX/73afe3eb15da45e0e05d5c9cf5d318fc) [@FruitieX](https://github.com/FruitieX)
 *   [Vercel Deploy Template](https://github.com/lucifer1004/dioxus-vercel-demo) [@lucifer1004](https://github.com/lucifer1004)
 *   [Render Katex in Dioxus](https://github.com/oovm/katex-wasm)
 *   [Render PrismJS in Dioxus](https://github.com/oovm/prism-wasm)

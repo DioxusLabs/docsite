@@ -1,0 +1,13 @@
+# This excludes the template from the rest of the workspaces.
+[workspace]
+
+[package]
+name = "play-{BUILD_ID}"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+dioxus = { version= "0.6", features = ["web", "router"] }
+
+[profile.dev]
+opt-level = 3

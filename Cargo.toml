@@ -1,99 +1,77 @@
-[package]
-name = "dioxus_docs_site"
-version = "0.0.0"
-authors = ["Jonathan Kelley <jkelleyrtp@gmail.com>"]
-edition = "2018"
+[workspace]
 resolver = "2"
+members = [
+    # Docs
+    "packages/docsite",
+    "packages/docs-router",
 
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+    # Playground
+    "packages/playground/model",
+    "packages/playground/runner",
+    "packages/playground/server",
+    "packages/playground/playground",
+    "packages/playground/example-projects",
 
-[dependencies]
-dioxus = { version = "0.6.0", features = ["router"] }
-dioxus-web = { version = "0.6.0", features = ["hydrate"], optional = true }
-dioxus-ssr = { version = "0.6.0", optional = true }
-dioxus-desktop = { version = "0.6.0", optional = true }
-dioxus-cli-config = { version = "0.6.0", optional = true }
-dioxus-liveview = { version = "0.6.0", features = ["axum"], optional = true }
+    # Include MDBook
+    "packages/include_mdbook/packages/mdbook-macro",
+    "packages/include_mdbook/packages/use-mdbook",
+    "packages/include_mdbook/packages/mdbook-shared",
+    "packages/include_mdbook/packages/syntect-html",
+    "packages/include_mdbook/packages/mdbook-gen",
+    "packages/include_mdbook/packages/mdbook-gen-example",
 
-dioxus-material-icons = { version = "3.0.0" }
-syntect-html = { git = "https://github.com/dioxuslabs/include_mdbook" }
-mdbook-shared = { git = "https://github.com/dioxuslabs/include_mdbook" }
-use-mdbook = { git = "https://github.com/dioxuslabs/include_mdbook" }
-dioxus-search = { git = "https://github.com/dioxuslabs/dioxus-search" }
-dioxus-playground = { git = "https://github.com/dioxuslabs/playground" }
+    # search
+    "packages/search/search",
+    "packages/search/search-macro",
+    "packages/search/search-shared",
+]
+exclude = ["packages/playground/server/template"]
 
-serde = { version = "1.0.163", features = ["derive"] }
-serde_json = "1.0.96"
-log = "0.4.17"
-wasm-bindgen = { version = "0.2.99", features = ["enable-interning"] }
-once_cell = "1.17.1"
-tokio = { version = "1.29.0", features = ["full"], optional = true }
-axum = { version = "0.7", optional = true }
-http = { version = "1.0.0", optional = true }
-reqwest = { version = "0.11.18", features = ["json"] }
-gloo-storage = { version = "0.3.0", optional = true }
-web-sys = { version = "0.3.64", features = [
-    "Document",
-    "HtmlDocument",
-    "Window",
-    "Event",
-    "AddEventListenerOptions",
-    "Navigator",
-] }
-slab = "0.4.8"
-chrono = { version = "0.4.26", features = ["serde"] }
-futures = "0.3.28"
-async-recursion = "1.0.4"
-futures-util = "0.3"
-pretty_assertions = { version = "1.4.0", optional = true }
-gloo-timers = { version = "0.3.0", features = ["futures"] }
-js-sys = "0.3.64"
-form_urlencoded = "1.2.0"
-automod = "1.0.13"
-stork-lib = { version = "1.6.0", features = [
-    "build-v3",
-], default-features = false }
+[workspace.dependencies]
+dioxus_docs_router = { path = "packages/docs-router" }
 
-# Used only in doc tests
-dioxus-sdk = { version = "0.6.0", optional = true, default-features = false }
-tower-http = { version = "0.5.0", optional = true, features = ["timeout"] }
-tracing = "0.1.40"
-rand = { version = "0.8.5", optional = true }
-rusqlite = { version = "0.32.1", optional = true }
-askama_escape = { version = "0.10.3", optional = true }
+# mdbook
+mdbook-gen = { path = "packages/include_mdbook/packages/mdbook-gen" }
+use-mdbook = { path = "packages/include_mdbook/packages/use-mdbook" }
+mdbook-shared = { path = "packages/include_mdbook/packages/mdbook-shared" }
+syntect-html = { path = "packages/include_mdbook/packages/syntect-html" }
 
-[build-dependencies]
-mdbook-gen = { git = "https://github.com/dioxuslabs/include_mdbook", features = ["manganis"]}
-mdbook-shared = { git = "https://github.com/dioxuslabs/include_mdbook" }
+# playground
+model = { path = "packages/playground/model" }
+dioxus-playground = { path = "packages/playground/playground" }
+example-projects = { path = "packages/playground/example-projects" }
 
-[patch.crates-io]
-# dioxus = { path = "../../dioxus/packages/dioxus" }
-# dioxus-lib = { path = "../../dioxus/packages/dioxus-lib" }
-# dioxus-core = { path = "../../dioxus/packages/core" }
-# dioxus-core-macro = { path = "../../dioxus/packages/core-macro" }
-# dioxus-config-macro = { path = "../../dioxus/packages/config-macro" }
-# dioxus-router = { path = "../../dioxus/packages/router" }
-# dioxus-router-macro = { path = "../../dioxus/packages/router-macro" }
-# dioxus-html = { path = "../../dioxus/packages/html" }
-# dioxus-html-internal-macro = { path = "../../dioxus/packages/html-internal-macro" }
-# dioxus-hooks = { path = "../../dioxus/packages/hooks" }
-# dioxus-web = { path = "../../dioxus/packages/web" }
-# dioxus-ssr = { path = "../../dioxus/packages/ssr" }
-# dioxus-desktop = { path = "../../dioxus/packages/desktop" }
-# dioxus-interpreter-js = { path = "../../dioxus/packages/interpreter" }
-# dioxus-liveview = { path = "../../dioxus/packages/liveview" }
-# dioxus-rsx = { path = "../../dioxus/packages/rsx" }
-# dioxus-signals = { path = "../../dioxus/packages/signals" }
-# dioxus-cli-config = { path = "../../dioxus/packages/cli-config" }
-# generational-box = { path = "../../dioxus/packages/generational-box" }
-# dioxus_server_macro = { path = "../../dioxus/packages/server-macro" }
-# dioxus-fullstack = { path = "../../dioxus/packages/fullstack" }
-# dioxus-autofmt = { path = "../../dioxus/packages/autofmt" }
-# dioxus-devtools = { path = "../../dioxus/packages/devtools" }
-# dioxus-devtools-types = { path = "../../dioxus/packages/devtools-types" }
-# manganis = { path = "../../dioxus/packages/manganis/manganis" }
-# manganis-core = { path = "../../dioxus/packages/manganis/manganis-core" }
-# manganis-macro = { path = "../../dioxus/packages/manganis/manganis-macro" }
+# search
+dioxus-search = { path = "packages/search/search" }
+dioxus-search-macro = { path = "packages/search/search-macro" }
+dioxus-search-shared = { path = "packages/search/search-shared" }
+
+# Dioxus Release
+dioxus = "0.6.2"
+dioxus-document = "0.6.2"
+dioxus-sdk = { version = "0.6", default-features = false }
+dioxus-core = "0.6.2"
+dioxus-core-types = "0.6.2"
+dioxus-devtools = "0.6.2"
+dioxus-rsx-hotreload = "0.6.2"
+dioxus-rsx = "0.6.2"
+dioxus-html = { version = "0.6.2", default-features = false }
+dioxus-rsx-rosetta = "0.6.2"
+dioxus-autofmt = "0.6.2"
+dioxus-dx-wire-format = "0.6.2"
+dioxus-logger = "0.6.2"
+
+getrandom = { version = "0.2" }
+serde = { version = "1.0.215", features = ["derive"] }
+serde_json = "1.0.133"
+futures = "0.3.30"
+uuid = "1.8.0"
+gloo-net = { version = "0.6.0", features = ["websocket"] }
+axum = { version = "0.7.5" }
+thiserror = "2.0.4"
+yazi = "0.2.1"
+chrono = { version = "0.4.39" }
+syn = "2.0.98"
 
 [profile.release]
 lto = true
@@ -119,33 +97,3 @@ inherits = "dev"
 [profile.release.build-override]
 opt-level = 3
 codegen-units = 1
-
-[features]
-default = []
-fullstack = ["dioxus/fullstack"]
-web = ["dioxus/web"]
-server = [
-    "dioxus/server",
-    "dioxus-ssr",
-    "dioxus/ssr",
-    "tokio",
-    "axum",
-    "askama_escape",
-]
-doc_test = [
-    "tokio",
-    "web",
-    "dioxus-desktop",
-    "dioxus-liveview",
-    "gloo-storage",
-    "pretty_assertions",
-    "tower-http",
-    "dioxus-sdk",
-    "http",
-    "rand",
-    "server",
-    "dioxus/fullstack",
-    "dioxus-cli-config",
-    "dep:rusqlite"
-]
-production = []

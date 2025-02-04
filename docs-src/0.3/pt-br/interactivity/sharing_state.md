@@ -30,7 +30,7 @@ Finalmente, um terceiro componente renderizará os outros dois como filhos. Ele 
 {{#include src/doc_examples/untested_03/meme_editor.rs:meme_editor}}
 ```
 
-![Captura de tela do editor de memes: Um velho esqueleto de plástico sentado em um banco de parque. Legenda: "eu esperando por um recurso de idioma"](/assets/static/images03/meme_editor_screenshot.png)
+![Captura de tela do editor de memes: Um velho esqueleto de plástico sentado em um banco de parque. Legenda: "eu esperando por um recurso de idioma"](/assets/blog/release-03/meme_editor_screenshot.png)
 
 ## Usando o contexto
 

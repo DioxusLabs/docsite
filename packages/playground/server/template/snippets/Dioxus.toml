@@ -1,0 +1,23 @@
+[application]
+name = "{BUILD_ID}"
+default_platform = "web"
+out_dir = "dist"
+asset_dir = "public"
+hot_reload = false
+
+[web.app]
+base_path = "built/{BUILD_ID}"
+
+title = "Dioxus Playground"
+[web.watcher]
+index_on_404 = true
+watch_path = ["src", "examples"]
+[web.resource]
+style = []
+script = []
+[web.resource.dev]
+script = []
+[application.plugins]
+available = true
+required = []
+

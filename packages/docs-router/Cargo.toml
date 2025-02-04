@@ -1,0 +1,92 @@
+[package]
+name = "dioxus_docs_router"
+version = "0.0.0"
+authors = ["Jonathan Kelley <jkelleyrtp@gmail.com>"]
+edition = "2018"
+resolver = "2"
+
+[dependencies]
+dioxus = { version = "0.6.0", features = ["router"] }
+dioxus-web = { version = "0.6.0", features = ["hydrate"], optional = true }
+dioxus-ssr = { version = "0.6.0", optional = true }
+dioxus-desktop = { version = "0.6.0", optional = true }
+dioxus-cli-config = { version = "0.6.0", optional = true }
+dioxus-liveview = { version = "0.6.0", features = ["axum"], optional = true }
+
+dioxus-material-icons = { version = "3.0.0" }
+syntect-html = { workspace = true }
+mdbook-shared = { workspace = true }
+use-mdbook = { workspace = true }
+
+serde = { version = "1.0.163", features = ["derive"] }
+serde_json = "1.0.96"
+log = "0.4.17"
+wasm-bindgen = { version = "0.2.99", features = ["enable-interning"] }
+once_cell = "1.17.1"
+tokio = { version = "1.29.0", features = ["full"], optional = true }
+axum = { workspace = true, optional = true }
+http = { version = "1.0.0", optional = true }
+reqwest = { version = "0.12.12", features = ["json"] }
+gloo-storage = { version = "0.3.0", optional = true }
+web-sys = { version = "0.3.64", features = [
+    "Document",
+    "HtmlDocument",
+    "Window",
+    "Event",
+    "AddEventListenerOptions",
+    "Navigator",
+] }
+slab = "0.4.8"
+chrono = { workspace = true, features = ["serde"] }
+futures = "0.3.28"
+async-recursion = "1.0.4"
+futures-util = "0.3"
+pretty_assertions = { version = "1.4.0", optional = true }
+gloo-timers = { version = "0.3.0", features = ["futures"] }
+js-sys = "0.3.64"
+form_urlencoded = "1.2.0"
+automod = "1.0.13"
+stork-lib = { version = "1.6.0", features = [
+    "build-v3",
+], default-features = false }
+
+dioxus-sdk = { version = "0.6.0", optional = true, default-features = false }
+tower-http = { version = "0.5.0", optional = true, features = ["timeout"] }
+tracing = "0.1.40"
+rand = { version = "0.8.5", optional = true }
+rusqlite = { version = "0.32.1", optional = true }
+askama_escape = { version = "0.10.3", optional = true }
+
+[features]
+default = []
+fullstack = ["dioxus/fullstack"]
+web = ["dioxus/web"]
+server = [
+    "dioxus/server",
+    "dioxus/ssr",
+    "dep:dioxus-ssr",
+    "dep:tokio",
+    "dep:axum",
+    "dep:askama_escape",
+]
+doc_test = [
+    "web",
+    "server",
+    "dioxus/fullstack",
+    "dep:tokio",
+    "dep:dioxus-desktop",
+    "dep:dioxus-liveview",
+    "gloo-storage",
+    "dep:pretty_assertions",
+    "dep:tower-http",
+    "dep:dioxus-sdk",
+    "dep:http",
+    "dep:rand",
+    "dep:dioxus-cli-config",
+    "dep:rusqlite"
+]
+production = []
+
+[build-dependencies]
+mdbook-gen = { workspace = true, features = ["manganis"]}
+mdbook-shared = { workspace = true }

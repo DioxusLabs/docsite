@@ -60,6 +60,7 @@
   	- [Middleware](guides/fullstack/middleware.md)
   	- [Authentication](guides/fullstack/authentication.md)
   	- [Routing](guides/fullstack/routing.md)
+    - [Static Site Generation](guides/fullstack/static_site_generation.md)
   - [Publishing](cookbook/publishing.md)
   - [Anti-patterns](cookbook/antipatterns.md)
   - [Error Handling](cookbook/error_handling.md)

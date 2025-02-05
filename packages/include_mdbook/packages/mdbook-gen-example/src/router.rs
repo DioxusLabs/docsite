@@ -1194,17 +1194,17 @@ pub fn Chapter3(section: Chapter3Section) -> dioxus::prelude::Element {
                 title: "",
             }
             img {
-                src: asset!("/example-book/assets/logo.png", ImageAssetOptions::new().with_avif()),
+                src: asset!("/example-book/assets/logo.png", ImageAssetOptions::new().with_webp()),
                 alt: "some_local",
                 title: "",
             }
             img {
-                src: asset!("/example-book/assets/logo1.png", ImageAssetOptions::new().with_avif()),
+                src: asset!("/example-book/assets/logo1.png", ImageAssetOptions::new().with_webp()),
                 alt: "some_local1",
                 title: "",
             }
             img {
-                src: asset!("/example-book/assets/logo2.png", ImageAssetOptions::new().with_avif()),
+                src: asset!("/example-book/assets/logo2.png", ImageAssetOptions::new().with_webp()),
                 alt: "some_local2",
                 title: "",
             }

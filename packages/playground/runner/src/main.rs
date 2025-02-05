@@ -13,9 +13,9 @@ const URLS: PlaygroundUrls = PlaygroundUrls {
 
 #[cfg(feature = "real-server")]
 const URLS: PlaygroundUrls = PlaygroundUrls {
-    socket: "ws://play.dioxuslabs.com/ws",
-    built: "https://play.dioxuslabs.com/built/",
-    location: "http://localhost:8080",
+    socket: "wss://docsite-playground.fly.dev/ws",
+    built: "https://docsite-playground.fly.dev/built/",
+    location: "https://dioxuslabs.com/playground",
 };
 
 // Runner-only styling

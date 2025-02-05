@@ -104,9 +104,6 @@ fn Head() -> Element {
             rel: "stylesheet",
             href: "https://fonts.googleapis.com/icon?family=Material+Icons",
         }
-        Script { src: asset!("/assets/ace/ace.js") }
-        Script { src: asset!("/assets/ace/mode-rust.js") }
-        Script { src: asset!("/assets/ace/theme-github.js") }
         Meta {
             property: "og:title",
             content: "Dioxus | Fullstack crossplatform app framework for Rust",

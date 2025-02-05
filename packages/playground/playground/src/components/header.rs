@@ -20,7 +20,9 @@ pub fn Header(
     let mut show_share_copied = use_signal(|| false);
 
     let mut reset_share_copied = use_debounce(Duration::from_secs(1), move |()| {
-        show_share_copied.set(false);
+        spawn(async move {
+            show_share_copied.set(false);
+        });
     });
 
     rsx! {

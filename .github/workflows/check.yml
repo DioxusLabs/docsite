@@ -31,8 +31,6 @@ concurrency:
 jobs:
   check:
     runs-on: ubuntu-latest
-    env:
-      CARGO_INCREMENTAL: 1
     steps:
       - uses: awalsh128/cache-apt-pkgs-action@latest
         with:
@@ -43,7 +41,7 @@ jobs:
       - uses: Swatinem/rust-cache@v2
         with:
           cache-all-crates: "true"
-          cache-on-failure: "true"
+          cache-on-failure: "false"
           cache-directories: "target/dx"
       - name: Check
         run: cargo check --workspace --all-features

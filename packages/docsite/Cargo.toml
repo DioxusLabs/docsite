@@ -20,6 +20,7 @@ use-mdbook = { workspace = true }
 dioxus-search = { workspace = true }
 dioxus-playground = { workspace = true }
 
+askama_escape = { version = "0.10.3", optional = true }
 getrandom = { workspace = true, features = ["js"] }
 serde = { version = "1.0.163", features = ["derive"] }
 serde_json = "1.0.96"
@@ -65,6 +66,7 @@ server = [
     "dioxus/server",
     "dioxus/ssr",
     "dioxus_docs_router/server",
+    "dep:askama_escape",
 ]
 production = [
     "dioxus_docs_router/production",

@@ -16,6 +16,10 @@ jobs:
       CARGO_INCREMENTAL: 1
     steps:
       - uses: actions/checkout@v4
+      - uses: awalsh128/cache-apt-pkgs-action@latest
+        with:
+          packages: libwebkit2gtk-4.1-dev libgtk-3-dev libayatana-appindicator3-dev libxdo-dev
+          version: 1.0
       - name: Install Rust
         uses: dtolnay/rust-toolchain@master
         with:
@@ -24,12 +28,12 @@ jobs:
       - uses: Swatinem/rust-cache@v2
         with:
           cache-all-crates: "true"
-          cache-on-failure: "true"
+          cache-on-failure: "false"
       - uses: cargo-bins/cargo-binstall@main
       - name: Install CLI
         run: cargo binstall dioxus-cli -y --force --version 0.6
       - name: Build
-        run: DIOXUS_LOG=dx=trace dx build --platform web --fullstack --features fullstack,production --release --ssg
+        run: cd packages/docsite && dx build --verbose --trace --platform web --fullstack --features fullstack,production --release --ssg
       - name: Generate search index
         run: target/dx/dioxus_docs_site/release/web/server --generate-search-index
       - name: Copy output
@@ -44,6 +48,3 @@ jobs:
           target-folder: .
           clean: true
           single-commit: true
-
-      # - name: Install CLI
-      #   run: cargo install --force --git https://github.com/DioxusLabs/dioxus dioxus-cli --locked

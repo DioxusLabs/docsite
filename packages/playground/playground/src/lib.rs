@@ -1,6 +1,6 @@
 use build::{start_build, BuildStage, BuildState};
 use components::icons::Warning;
-use dioxus::logger::tracing::{info, error};
+use dioxus::logger::tracing::error;
 use dioxus::prelude::*;
 use dioxus_document::Link;
 use dioxus_sdk::utils::timing::use_debounce;

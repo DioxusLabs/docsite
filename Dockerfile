@@ -16,7 +16,7 @@ RUN cargo chef prepare --recipe-path recipe.json --bin server
 # Builder
 # Builds binary and imports cached deps from planner
 FROM chef AS builder
-COPY --from=planner /app/recipe.json recipe.json
+COPY --from=planner /app/recipe.json recipe.jsonPRODUCTION
 RUN cargo chef cook --release --recipe-path recipe.json --bin server
 COPY . .
 RUN cargo build --release --bin server
@@ -37,7 +37,7 @@ WORKDIR /app
 COPY --from=builder /app/target/release/server /app/server
 COPY --from=builder /app/packages/playground/server/template /app/template
 COPY --from=planner /.cargo/bin/dx /usr/local/bin
-RUN MKDIR /app/temp
+RUN mkdir /app/temp
 
 ENV PATH="${PATH}:/usr/local/bin"
 ENV PORT=8080

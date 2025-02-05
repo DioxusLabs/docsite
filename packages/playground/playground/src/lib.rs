@@ -113,11 +113,16 @@ pub fn Playground(
 
     // State for pane resizing, shared by headers and panes.
     // The actual logic is in the panes component.
-    let pane_left_width: Signal<Option<i32>> = use_signal(|| None);
-    let pane_right_width: Signal<Option<i32>> = use_signal(|| None);
+    let mut pane_left_width: Signal<Option<i32>> = use_signal(|| None);
+    let mut pane_right_width: Signal<Option<i32>> = use_signal(|| None);
 
     // Show the example list
     let show_examples = use_signal(|| true);
+    use_effect(move || {
+        let _show_examples = show_examples();
+        pane_left_width.set(None);
+        pane_right_width.set(None);
+    });
 
     rsx! {
         div { class, id: "dxp-playground-root",
@@ -173,7 +178,7 @@ pub fn Playground(
                             },
                             h3 { {example.path.clone()} }
                             p { {example.description.clone()} }
-                        }
+                        }   
                     }
                 }
                 components::Panes {

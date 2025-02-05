@@ -34,8 +34,9 @@ pub fn Header(
 
                 // Examples button/menu
                 button {
-                    class: "dxp-ctrl-btn dxp-menu-btn",
-                    class: if show_examples() { "dxp-menu-open" },
+                    id: "dxp-menu-btn",
+                    class: "dxp-ctrl-btn",
+                    class: if show_examples() { "dxp-open" },
                     onclick: move |_| show_examples.toggle(),
                     crate::components::icons::MenuIcon {}
                 }

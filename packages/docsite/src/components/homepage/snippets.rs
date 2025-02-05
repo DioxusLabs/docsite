@@ -69,7 +69,7 @@ pub(crate) fn Snippets() -> Element {
                             class: "w-full min-h-0 p-4",
                             // Instead of hiding/showing, we just render all the code blocks at once and hide them with css instead
                             class: if selected_snippet() == id { "block" } else { "hidden" },
-                            background_color: "#2b303b",
+                            background_color: "#000000",
                             dangerous_inner_html: "{snippet.html}",
                         }
                     }

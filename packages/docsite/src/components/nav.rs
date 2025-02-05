@@ -162,7 +162,7 @@ fn CurrentStarCount() -> Element {
 static LINKS: &[(&str, &str)] = &[
     ("Learn", "/learn/0.6/"),
     // ("SDK", "/sdk"),
-    // ("Playground", "/playground"),
+    ("Playground", "/playground"),
     // ("Components", "/components"),
     ("Awesome", "/awesome"),
     ("Blog", "/blog"),

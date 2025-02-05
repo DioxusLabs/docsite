@@ -515,7 +515,7 @@ impl<'a, I: Iterator<Item = Event<'a>>> RsxMarkdownParser<'a, I> {
                     // todo(jon): recognize the url by parsing it and checking if it's external/internal - these might be unreliable heuristics
                     if dest.ends_with(".png") || dest.ends_with(".jpg") || dest.ends_with(".jpeg") {
                         let res = quote::quote! {
-                            asset!(#dest, ImageAssetOptions::new().with_avif())
+                            asset!(#dest, ImageAssetOptions::new().with_webp())
                         };
 
                         res

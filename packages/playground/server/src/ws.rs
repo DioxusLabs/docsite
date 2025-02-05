@@ -36,18 +36,18 @@ async fn handle_socket(state: AppState, ip: String, socket: WebSocket) {
     let (mut socket_tx, mut socket_rx) = socket.split();
 
     // Ensure only one client per socket.
-    let mut connected_sockets = state.connected_sockets.lock().await;
-    if connected_sockets.contains(&ip) {
-        // Client is already connected. Send error and close socket.
-        let _ = socket_tx
-            .send(SocketMessage::AlreadyConnected.into_axum())
-            .await;
-        let _ = socket_tx.close().await;
-        return;
-    } else {
-        connected_sockets.push(ip.clone());
-    }
-    drop(connected_sockets);
+    // let mut connected_sockets = state.connected_sockets.lock().await;
+    // if connected_sockets.contains(&ip) {
+    //     // Client is already connected. Send error and close socket.
+    //     let _ = socket_tx
+    //         .send(SocketMessage::AlreadyConnected.into_axum())
+    //         .await;
+    //     let _ = socket_tx.close().await;
+    //     return;
+    // } else {
+    // connected_sockets.push(ip.clone());
+    // }
+    // drop(connected_sockets);
 
     // Start our build loop.
     let (build_tx, mut build_rx) = mpsc::unbounded_channel();
@@ -109,11 +109,11 @@ async fn handle_socket(state: AppState, ip: String, socket: WebSocket) {
 
     // Drop the socket from our connected list.
     // TODO: Convert this to a drop guard.
-    let mut connected_sockets = state.connected_sockets.lock().await;
-    let index = connected_sockets.iter().position(|x| **x == ip);
-    if let Some(index) = index {
-        connected_sockets.remove(index);
-    }
+    // let mut connected_sockets = state.connected_sockets.lock().await;
+    // let index = connected_sockets.iter().position(|x| **x == ip);
+    // if let Some(index) = index {
+    //     connected_sockets.remove(index);
+    // }
 }
 
 /// Assembles the build request and sends it to the queue.

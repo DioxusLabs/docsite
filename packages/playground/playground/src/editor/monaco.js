@@ -90,10 +90,12 @@ export function initMonaco(
 }
 
 export function getCurrentModelValue() {
+  if (!isReady) return;
   return currentMonacoModel.getValue();
 }
 
 export function setCurrentModelvalue(value) {
+  if (!isReady) return;
   currentMonacoModel.setValue(value);
 }
 

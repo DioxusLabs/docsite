@@ -41,7 +41,7 @@ jobs:
       - uses: Swatinem/rust-cache@v2
         with:
           cache-all-crates: "true"
-          cache-on-failure: "true"
+          cache-on-failure: "false"
           cache-directories: "target/dx"
       - name: Check
         run: cargo check --workspace --all-features

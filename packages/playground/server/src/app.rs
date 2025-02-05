@@ -20,7 +20,7 @@ use tokio::{
 const DEFAULT_PORT: u16 = 3000;
 
 // Paths
-const DEFAULT_BUILT_PATH: &str = "../temp/";
+const DEFAULT_BUILT_PATH: &str = "./temp/";
 const DEFAULT_BUILD_TEMPLATE_PATH: &str = "./template";
 
 // Duration after built projects are created to be removed.

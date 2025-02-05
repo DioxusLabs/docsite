@@ -99,6 +99,7 @@ async fn build(
 
     setup_template(&template_path, &request).await?;
     dx_build(&template_path, &request).await?;
+    tracing::info!("Moving build from {template_path:?} to {built_path:?}");
     move_to_built(&template_path, &built_path, &request).await?;
 
     Ok(())

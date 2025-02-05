@@ -35,7 +35,7 @@ FROM pre-runtime AS runtime
 
 WORKDIR /usr/src/app
 COPY --from=builder /app/target/release/server /usr/src/app/server
-COPY --from=builder /usr/src/packages/playground/server/template /usr/src/app/template
+COPY --from=builder /app/packages/playground/server/template /usr/src/app/template
 COPY --from=planner /.cargo/bin/dx /usr/local/bin
 
 RUN mkdir /usr/src/app/temp

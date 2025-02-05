@@ -41,6 +41,7 @@ RUN MKDIR /app/temp
 
 ENV PATH="${PATH}:/usr/local/bin"
 ENV PORT=8080
+env PRODUCTION=true
 ENV BUILD_TEMPLATE_PATH="/app/template"
 EXPOSE 8080
 

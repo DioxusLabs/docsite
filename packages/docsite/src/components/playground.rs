@@ -17,10 +17,18 @@ const URLS: PlaygroundUrls = PlaygroundUrls {
 
 #[component]
 pub fn Playground() -> Element {
-    rsx! {
-        dioxus_playground::Playground {
-            urls: URLS,
-            class: "playground-container max-w-screen-2xl mx-auto mt-8",
+    // Only render playground on client.
+    let mut on_client = use_signal(|| false);
+    use_effect(move || on_client.set(true));
+
+    if on_client() {
+        rsx! {
+            dioxus_playground::Playground {
+                urls: URLS,
+                class: "playground-container max-w-screen-2xl mx-auto mt-8",
+            }
         }
+    } else {
+        rsx! {}
     }
 }

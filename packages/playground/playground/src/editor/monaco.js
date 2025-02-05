@@ -53,7 +53,7 @@ export function initMonaco(
         { token: "parameter.mutable", fontStyle: "underline" },
       ],
       colors: {
-        "editor.background": "#2B303B",
+        "editor.background": "#000000",
         "editorWidget.background": "#454E61",
         "editorWidget.border": "#5B667D",
         "input.background": "#21252E",

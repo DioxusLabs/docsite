@@ -23,7 +23,7 @@
 
   /* Dark Theme */
   --dxp-bg-dark-darker: #21252E;
-  --dxp-bg-dark: #2B303B;
+  --dxp-bg-dark: #000000;
   --dxp-bg-dark-lighter: #454E61;
   --dxp-bg-dark-lighter-alt: #363E4D;
 
@@ -525,15 +525,15 @@
   #dxp-menu-btn {
     background-color: var(--dxp-bg-dark-lighter);
   }
-  
+
   #dxp-menu-btn:hover {
     background-color: var(--dxp-bg-dark-lighter-alt);
   }
-  
+
   #dxp-menu-btn.dxp-open {
     border: 1px solid var(--dxp-border-dark-lighter);
   }
-  
+
   #dxp-menu-btn>svg {
     color: var(--dxp-text-dark);
   }
@@ -568,7 +568,7 @@
     color: var(--dxp-text-dark);
     border-bottom: 1px solid var(--dxp-bg-dark-lighter-alt);
   }
-  
+
   .dxp-example-project:hover {
     background-color: var(--dxp-bg-dark-lighter-alt);
   }

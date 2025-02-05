@@ -35,8 +35,10 @@ pub fn Panes(
     // TODO: This is annoying for the user, it should instead just recalculate the size from previous data.
     let window_size = use_window_size();
     let mut reset_panes_debounce = use_debounce(std::time::Duration::from_millis(200), move |_| {
-        pane_left_width.set(None);
-        pane_right_width.set(None);
+        spawn(async move {
+            pane_left_width.set(None);
+            pane_right_width.set(None);
+        });
     });
 
     use_effect(move || {

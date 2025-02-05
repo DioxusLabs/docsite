@@ -58,11 +58,13 @@ pub fn Playground(
 
     // Handle events when code changes.
     let on_model_changed = use_debounce(Duration::from_millis(250), move |new_code: String| {
-        editor::monaco::set_markers(&[]);
+        spawn(async move {
+            editor::monaco::set_markers(&[]);
 
-        if build.stage().is_finished() {
-            attempt_hot_reload(hot_reload, &new_code);
-        }
+            if build.stage().is_finished() {
+                attempt_hot_reload(hot_reload, &new_code);
+            }
+        });
     });
 
     // Handle setting diagnostics based on build state.

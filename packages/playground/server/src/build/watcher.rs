@@ -120,7 +120,7 @@ fn handle_finished_build(
     // Tell the socket the result of their build.
     let _ = match build_result {
         Ok(request) => {
-            tracing::info!("Build finished for {request:?}");
+            dioxus::logger::tracing::info!("Build finished for {request:?}");
             request
                 .ws_msg_tx
                 .send(BuildMessage::Finished(Ok(request.id)))

@@ -36,6 +36,7 @@ FROM pre-runtime AS runtime
 COPY --from=builder /app/target/release/server /usr/local/bin
 COPY --from=builder /app/packages/playground/server/template /usr/local/bin/template
 COPY --from=planner /.cargo/bin/dx /usr/local/bin
+RUN MKDIR /app/temp
 
 ENV PATH="${PATH}:/usr/local/bin"
 ENV PORT=8080

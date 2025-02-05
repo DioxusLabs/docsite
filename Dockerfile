@@ -16,7 +16,7 @@ RUN cargo chef prepare --recipe-path recipe.json --bin server
 # Builder
 # Builds binary and imports cached deps from planner
 FROM chef AS builder
-COPY --from=planner /app/recipe.json recipe.jsonPRODUCTION
+COPY --from=planner /app/recipe.json recipe.json
 RUN cargo chef cook --release --recipe-path recipe.json --bin server
 COPY . .
 RUN cargo build --release --bin server

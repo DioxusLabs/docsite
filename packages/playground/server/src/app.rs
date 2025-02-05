@@ -20,7 +20,6 @@ use tokio::{
 const DEFAULT_PORT: u16 = 3000;
 
 // Paths
-const DEFAULT_BUILT_PATH: &str = "../temp/";
 const DEFAULT_BUILD_TEMPLATE_PATH: &str = "./template";
 
 // Duration after built projects are created to be removed.
@@ -61,7 +60,11 @@ impl EnvVars {
             production,
             port,
             build_template_path,
-            built_path: PathBuf::from(DEFAULT_BUILT_PATH),
+            built_path: if production {
+                PathBuf::from("/usr/src/app/temp/")
+            } else {
+                PathBuf::from("./temp/")
+            },
             shutdown_delay,
             built_cleanup_delay: DEFAULT_BUILT_CLEANUP_DELAY,
         }
@@ -172,6 +175,7 @@ impl AppState {
         let (tx, rx) = tokio::sync::mpsc::unbounded_channel();
         std::mem::forget(rx);
         for project in example_projects::get_example_projects() {
+            dioxus::logger::tracing::info!("Queueing example project: {project:?}");
             let _ = state.build_queue_tx.send(BuildCommand::Start {
                 request: BuildRequest {
                     id: project.id(),

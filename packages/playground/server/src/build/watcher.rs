@@ -119,11 +119,14 @@ fn handle_finished_build(
 ) {
     // Tell the socket the result of their build.
     let _ = match build_result {
-        Ok(request) => request
-            .ws_msg_tx
-            .send(BuildMessage::Finished(Ok(request.id))),
+        Ok(request) => {
+            dioxus::logger::tracing::info!("Build finished for {request:?}");
+            request
+                .ws_msg_tx
+                .send(BuildMessage::Finished(Ok(request.id)))
+        }
         Err(e) => {
-            debug!(err = ?e, src = ?e.source(), "build failed");
+            dioxus::logger::tracing::warn!(err = ?e, src = ?e.source(), "build failed");
             match builder.current_build() {
                 Some(request) => request
                     .ws_msg_tx

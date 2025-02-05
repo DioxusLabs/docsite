@@ -540,6 +540,7 @@
 
   #dxp-run-btn {
     color: var(--dxp-text-dark);
+    background-color: var(--dxp-bg-dark-lighter);
   }
 
   #dxp-run-btn>svg {

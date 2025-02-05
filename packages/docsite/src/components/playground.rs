@@ -12,7 +12,7 @@ const URLS: PlaygroundUrls = PlaygroundUrls {
 const URLS: PlaygroundUrls = PlaygroundUrls {
     socket: "wss://docsite-playground.fly.dev/ws",
     built: "https://docsite-playground.fly.dev/built/",
-    location: "https://dioxuslabs.com",
+    location: "https://dioxuslabs.com/playground",
 };
 
 #[component]

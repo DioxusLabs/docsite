@@ -61,7 +61,7 @@ impl EnvVars {
             port,
             build_template_path,
             built_path: if production {
-                PathBuf::from("/app/temp/")
+                PathBuf::from("/usr/src/app/temp/")
             } else {
                 PathBuf::from("./temp/")
             },

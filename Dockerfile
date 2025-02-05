@@ -37,8 +37,8 @@ WORKDIR /app
 COPY --from=builder /app/target/release/server /app/server
 COPY --from=builder /app/packages/playground/server/template /app/template
 COPY --from=planner /.cargo/bin/dx /usr/local/bin
-RUN mkdir /app/temp
 
+RUN mkdir /app/temp
 ENV PATH="${PATH}:/usr/local/bin"
 ENV PORT=8080
 env PRODUCTION=true

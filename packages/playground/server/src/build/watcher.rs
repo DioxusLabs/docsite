@@ -123,7 +123,7 @@ fn handle_finished_build(
             .ws_msg_tx
             .send(BuildMessage::Finished(Ok(request.id))),
         Err(e) => {
-            debug!(err = ?e, src = ?e.source(), "build failed");
+            dioxus::logger::tracing::warn!(err = ?e, src = ?e.source(), "build failed");
             match builder.current_build() {
                 Some(request) => request
                     .ws_msg_tx

@@ -3,7 +3,7 @@ use crate::app::EnvVars;
 use crate::build::{BuildMessage, CliMessage};
 use dioxus_dx_wire_format::StructuredOutput;
 use dioxus_logger::tracing;
-use dioxus_logger::tracing::{debug, info, warn};
+use dioxus_logger::tracing::debug;
 use fs_extra::dir::CopyOptions;
 use model::{BuildStage, CargoDiagnostic};
 use std::path::{Path, PathBuf};

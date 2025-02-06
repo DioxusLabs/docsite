@@ -3,6 +3,8 @@ use std::string::FromUtf8Error;
 use thiserror::Error;
 use uuid::Uuid;
 
+pub mod share;
+
 #[cfg(feature = "server")]
 mod server;
 

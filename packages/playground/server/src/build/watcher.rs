@@ -1,6 +1,5 @@
 use super::{builder::Builder, BuildCommand, BuildError, BuildMessage, BuildRequest};
 use crate::app::EnvVars;
-use dioxus_logger::tracing::debug;
 use std::{
     collections::VecDeque,
     error::Error as _,

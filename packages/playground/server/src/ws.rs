@@ -32,7 +32,7 @@ pub async fn ws_handler(
 /// - Handle submitting build requests, allowing only one build per socket.
 /// - Send any build messages to the client.
 /// - Stop any ongoing builds if the connection closes.
-async fn handle_socket(state: AppState, ip: String, socket: WebSocket) {
+async fn handle_socket(state: AppState, _ip: String, socket: WebSocket) {
     let (mut socket_tx, mut socket_rx) = socket.split();
 
     // Ensure only one client per socket.

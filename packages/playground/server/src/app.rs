@@ -4,6 +4,8 @@ use crate::{
     build::{watcher::start_build_watcher, BuildCommand, BuildRequest},
     start_cleanup_services,
 };
+use axum::http::StatusCode;
+use axum::response::IntoResponse;
 use dioxus_logger::tracing::{info, warn};
 use std::{
     env, io,
@@ -46,6 +48,8 @@ pub struct EnvVars {
     /// The optional shutdown delay that specifies how many seconds after
     /// inactivity to shut down the server.
     pub shutdown_delay: Option<Duration>,
+
+    pub gist_auth_token: String,
 }
 
 impl EnvVars {
@@ -55,6 +59,7 @@ impl EnvVars {
         let port = Self::get_port_env();
         let build_template_path = Self::get_build_template_path();
         let shutdown_delay = Self::get_shutdown_delay();
+        let gist_auth_token = Self::get_gist_auth_token();
 
         Self {
             production,
@@ -67,6 +72,7 @@ impl EnvVars {
             },
             shutdown_delay,
             built_cleanup_delay: DEFAULT_BUILT_CLEANUP_DELAY,
+            gist_auth_token: gist_auth_token.unwrap_or_default(),
         }
     }
 
@@ -126,6 +132,17 @@ impl EnvVars {
 
         shutdown_delay
     }
+
+    /// Get the GitHub Gists authentication token from the environment.
+    fn get_gist_auth_token() -> Option<String> {
+        let gist_auth_token = env::var("GIST_AUTH_TOKEN").ok();
+
+        if gist_auth_token.is_none() {
+            warn!("`GIST_AUTH_TOKEN` environment variable is not set")
+        }
+
+        gist_auth_token
+    }
 }
 
 /// The state of the server application.
@@ -144,7 +161,9 @@ pub struct AppState {
     pub is_building: Arc<AtomicBool>,
 
     /// A list of connected sockets by ip. Used to disallow extra socket connections.
-    pub connected_sockets: Arc<Mutex<Vec<String>>>,
+    pub _connected_sockets: Arc<Mutex<Vec<String>>>,
+
+    pub reqwest_client: reqwest::Client,
 }
 
 impl AppState {
@@ -161,7 +180,8 @@ impl AppState {
             build_queue_tx,
             last_request_time: Arc::new(Mutex::new(Instant::now())),
             is_building,
-            connected_sockets: Arc::new(Mutex::new(Vec::new())),
+            _connected_sockets: Arc::new(Mutex::new(Vec::new())),
+            reqwest_client: reqwest::Client::new(),
         };
 
         // Reset the built dir
@@ -196,5 +216,23 @@ impl AppState {
         let _ = fs::remove_dir_all(&self.env.built_path).await;
         fs::create_dir(&self.env.built_path).await?;
         Ok(())
+    }
+}
+
+pub enum Error {
+    InternalServerError,
+}
+
+impl From<reqwest::Error> for Error {
+    fn from(_value: reqwest::Error) -> Self {
+        Self::InternalServerError
+    }
+}
+
+impl IntoResponse for Error {
+    fn into_response(self) -> axum::response::Response {
+        match self {
+            Error::InternalServerError => StatusCode::INTERNAL_SERVER_ERROR.into_response(),
+        }
     }
 }

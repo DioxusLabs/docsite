@@ -13,13 +13,14 @@ serde_json = { workspace = true }
 dioxus-logger = { workspace = true }
 dioxus-dx-wire-format = { workspace = true }
 
-axum = { workspace = true, features = ["ws"] }
+axum = { workspace = true, features = ["ws", "macros"] }
 axum-client-ip = "0.6.1"
 fs_extra = "1.3.0"
 tokio = { version = "1.37.0", features = ["full"] }
 tokio-util = { version = "0.7.11", features = ["futures-util"] }
 tower-http = { version = "0.5.2", features = ["fs"] }
 tower = { version = "0.4.13", features = ["buffer", "limit"] }
+reqwest = { version = "0.12.12", features = ["json"] }
 
 thiserror = { workspace = true }
 

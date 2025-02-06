@@ -49,6 +49,12 @@ module.exports = {
 @tailwind utilities;
 ```
 
+Use this as your `input.css` if you're using tailwind v4 (you can check your version with `npx tailwindcss --help`)
+```css
+@import "tailwindcss";
+@source "./src/**/*.{rs,html,css}";
+```
+
 7. Create a link to the `tailwind.css` file using manganis somewhere in your rust code:
 
 ```rust

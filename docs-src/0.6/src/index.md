@@ -48,7 +48,7 @@ Our vision for Dioxus is a framework that is fast, flexible, and has a minimal l
 
 ## Syntax and Ecosystem
 
-The Dioxus syntax is similar to React's JSX markup, borrowing React's component and hooks approach. All components are Rust functions that take `Properties`, define state with hooks, and return an `Element`. We only support markup in with the `rsx! {}` markup; this ensures your app is automatically optimized and has stellar devtools support like advanced hot-reloading.
+The Dioxus syntax is similar to React's JSX markup, borrowing React's component and hooks approach. All components are Rust functions that take `Properties`, define state with hooks, and return an `Element`. We only support markup within the `rsx! {}` macro; this ensures your app is automatically optimized and has stellar devtools support like advanced hot-reloading.
 
 ```rust
 #[component]

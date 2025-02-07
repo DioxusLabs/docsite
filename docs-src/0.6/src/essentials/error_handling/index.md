@@ -1,12 +1,10 @@
 # Error handling
 
-A selling point of Rust for web development is the reliability of always knowing where errors can occur and being forced to handle them
-
-However, we haven't talked about error handling at all in this guide! In this chapter, we'll cover some strategies in handling errors to ensure your app never crashes.
+A selling point of Rust for web development is the reliability of always knowing where errors can occur and being forced to handle them. Dioxus provides ErrorBoundarys to help you handle errors in a declarative way. This guide will teach you how to use ErrorBoundaries and other error handling strategies in Dioxus.
 
 ## Returning Errors from Components
 
-Astute observers might have noticed that `Element` is actually a type alias for `Result<VNode, RenderError>`. We can use the error variant of the `Result` type to return early if you do hit an error. The `RenderError` type can be created from an error type that implements `Error`. You can use `?` to bubble up any errors you encounter while rendering:
+Astute observers might have noticed that `Element` is actually a type alias for `Result<VNode, RenderError>`. The `RenderError` type can be created from an error type that implements `Error`. You can use `?` to bubble up any errors you encounter while rendering to the nearest error boundary:
 
 ```rust
 {{#include src/doc_examples/error_handling.rs:throw_error}}
@@ -14,7 +12,7 @@ Astute observers might have noticed that `Element` is actually a type alias for 
 
 ## Capturing errors with ErrorBoundaries
 
-When you return an error from a component, it gets bubbled up to the nearest error boundary. That error boundary can then handle the error and render a fallback UI:
+When you return an error from a component, it gets sent to the nearest error boundary. That error boundary can then handle the error and render a fallback UI with the handle_error closure:
 
 ```rust
 {{#include src/doc_examples/error_handling.rs:capture_error}}
@@ -36,7 +34,7 @@ You can add additional context to your errors with the [`Context`](https://docs.
 {{#include src/doc_examples/error_handling.rs:add_context}}
 ```
 
-If you need to show the error message in a different way in the error boundary, you can call `show` on a result to attach an Element to the error variant. The parent error boundary can choose to render this element instead of the default error message:
+If you need some custom UI for the error message, you can call `show` on a result to attach an Element to the error variant. The parent error boundary can choose to render this element instead of the default error message:
 
 ```rust, no_run
 {{#include src/doc_examples/error_handling.rs:show}}

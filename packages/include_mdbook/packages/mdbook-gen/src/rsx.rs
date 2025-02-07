@@ -651,7 +651,7 @@ fn transform_code_block(
         return Ok(code_contents);
     }
 
-    let mut segments = code_contents.split("{{#");
+    let segments = code_contents.split("{{#");
     let mut output = String::new();
     for segment in segments {
         if let Some((plugin, after)) = segment.split_once("}}") {

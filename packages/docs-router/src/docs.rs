@@ -1,8 +1,7 @@
+use crate::desktop_dependencies::*;
 use crate::doc_examples::*;
 use dioxus::prelude::*;
-use mdbook_shared::MdBook;
 use std::hash::Hash;
-use crate::desktop_dependencies::*;
 
 pub mod router_03;
 pub mod router_04;
@@ -94,8 +93,7 @@ fn CodeBlock(contents: String, name: Option<String>) -> Element {
     }
 }
 
-
-pub(crate) static Copy: Component<()> = |cx| {
+pub(crate) static Copy: Component<()> = |_| {
     rsx!(
         svg {
             width: "24",

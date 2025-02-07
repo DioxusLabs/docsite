@@ -1,9 +1,9 @@
+use crate::Route;
 use dioxus::prelude::*;
 use mdbook_shared::MdBook;
 use std::hash::Hash;
-use crate::Route;
 
-pub use dioxus_docs_router::{docs::*, doc_examples::*};
+pub use dioxus_docs_router::{doc_examples::*, docs::*};
 
 pub enum CurrentDocsVersion {
     V06(router_06::BookRoute),

@@ -11,3 +11,5 @@ This section will guide you through key concepts in Dioxus:
 - [Breaking Out](breaking/index.md) will teach you how to break out of Dioxus' rendering model to run JavaScript or interact with the DOM directly with `web-sys`.
 
 - [Async](async/index.md) will teach you how to integrate async tasks with Dioxus and how to handle loading states while waiting for async tasks to finish.
+
+- [Error Handling](error_handling/index.md) will teach you how to throw and handle errors in Dioxus.

@@ -178,7 +178,7 @@ pub fn Playground(
                             },
                             h3 { {example.path.clone()} }
                             p { {example.description.clone()} }
-                        }   
+                        }
                     }
                 }
                 components::Panes {

@@ -16,7 +16,7 @@ Here is a (incomplete!) list of databases and a short summary of each:
 - [MySQL](https://www.mysql.com): World's most popular open source database good for all apps.
 - [SQLite](https://www.sqlite.org): Simple file-based engine known for its reliability and embeddability.
 - [Oracle](https://www.oracle.com/database/): Advanced commercial database known for its enterprise features.
-- [Redis](http://redis.io): Simple key-value database known for its great performancel.
+- [Redis](http://redis.io): Simple key-value database known for its great performance.
 - [MongoDB](https://www.mongodb.com/): A database ideal for data that doesn't fit into rows and columns.
 - [SurrealDB](https://surrealdb.com/): A new "all-in-one" database that combines many models.
 - [CockroachDB](https://www.cockroachlabs.com): Distributed SQL database designed for high-availability.

@@ -29,6 +29,7 @@ exclude = ["packages/playground/server/template"]
 
 [workspace.dependencies]
 dioxus_docs_router = { path = "packages/docs-router" }
+stork-lib = { git = "https://github.com/dioxuslabs/stork", default-features = false }
 
 # mdbook
 mdbook-gen = { path = "packages/include_mdbook/packages/mdbook-gen" }
@@ -93,6 +94,45 @@ debug = 0
 
 [profile.android-dev]
 inherits = "dev"
+
+[profile.wasm-release]
+inherits = "release"
+
+[profile.server-release]
+inherits = "release"
+
+[profile.ios-dev]
+inherits = "dev"
+
+[profile.ios-release]
+inherits = "release"
+
+[profile.android-release]
+inherits = "release"
+
+[profile.windows-dev]
+inherits = "dev"
+
+[profile.windows-release]
+inherits = "release"
+
+[profile.macos-dev]
+inherits = "dev"
+
+[profile.macos-release]
+inherits = "release"
+
+[profile.linux-dev]
+inherits = "dev"
+
+[profile.linux-release]
+inherits = "release"
+
+[profile.liveview-dev]
+inherits = "dev"
+
+[profile.liveview-release]
+inherits = "release"
 
 [profile.release.build-override]
 opt-level = 3

@@ -10,7 +10,8 @@ resolver = "2"
 [dependencies]
 dioxus = { version = "0.6.0", features = ["router", "launch"] }
 dioxus-web = { version = "0.6.0", features = ["hydrate"], optional = true }
-
+dioxus-motion = { version = "*", optional = true, default-features = false }
+easer = { version = "0.3.0", default-features = false }
 dioxus_docs_router = { workspace = true }
 
 dioxus-material-icons = { version = "3.0.0" }
@@ -54,20 +55,12 @@ stork-lib = { version = "1.6.0", features = [
 
 [features]
 default = []
-fullstack = [
-    "dioxus/fullstack",
-    "dioxus_docs_router/fullstack",
-]
-web = [
-    "dioxus/web",
-    "dioxus_docs_router/web",
-]
+fullstack = ["dioxus/fullstack", "dioxus_docs_router/fullstack"]
+web = ["dioxus/web", "dioxus_docs_router/web", "dioxus-motion/web"]
 server = [
     "dioxus/server",
     "dioxus/ssr",
     "dioxus_docs_router/server",
     "dep:askama_escape",
 ]
-production = [
-    "dioxus_docs_router/production",
-]
+production = ["dioxus_docs_router/production"]

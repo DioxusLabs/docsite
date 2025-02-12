@@ -1453,6 +1453,22 @@ dependencies = [
 ]
 
 [[package]]
+name = "dioxus-motion"
+version = "0.2.3"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "aaffec1b1121860db2b55f484ccf476c268e5235eb453cb5d8b07a220d08e758"
+dependencies = [
+ "dioxus-hooks",
+ "dioxus-signals",
+ "easer",
+ "futures-channel",
+ "futures-util",
+ "instant",
+ "wasm-bindgen",
+ "web-sys",
+]
+
+[[package]]
 name = "dioxus-playground"
 version = "0.1.0"
 dependencies = [
@@ -1740,10 +1756,12 @@ dependencies = [
  "chrono",
  "dioxus",
  "dioxus-material-icons",
+ "dioxus-motion",
  "dioxus-playground",
  "dioxus-search",
  "dioxus-web",
  "dioxus_docs_router",
+ "easer",
  "futures",
  "futures-util",
  "getrandom 0.2.15",
@@ -1871,6 +1889,15 @@ name = "dunce"
 version = "1.0.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "92773504d58c093f6de2459af4af33faa518c13451eb8f2b5698ed3d36e7c813"
+
+[[package]]
+name = "easer"
+version = "0.3.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "fba524f8b83c9c5bde02c2bb1627de9d1f81980489a6d54168cdfd08c258f917"
+dependencies = [
+ "num-traits",
+]
 
 [[package]]
 name = "ego-tree"
@@ -3206,6 +3233,9 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "e0242819d153cba4b4b05a5a8f2a7e9bbf97b6055b2a002b395c96b5ff3c0222"
 dependencies = [
  "cfg-if",
+ "js-sys",
+ "wasm-bindgen",
+ "web-sys",
 ]
 
 [[package]]

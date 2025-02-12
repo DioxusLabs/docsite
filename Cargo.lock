@@ -5596,8 +5596,7 @@ checksum = "a2eb9349b6444b326872e140eb1cf5e7c522154d69e7a0ffb0fb81c06b37543f"
 [[package]]
 name = "stork-lib"
 version = "1.6.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "91da154bfff411d476e715c79d5810241751802dd6e4b08990e1112c0b8f8976"
+source = "git+https://github.com/ealmloff/stork#efa98dad15b52bd6da9c9e87d612f0913431a95e"
 dependencies = [
  "bytes",
  "frontmatter",

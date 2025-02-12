@@ -1,7 +1,6 @@
 use std::{
     collections::HashMap,
     fmt::{Debug, Display},
-    num::ParseIntError,
     path::PathBuf,
     str::FromStr,
 };

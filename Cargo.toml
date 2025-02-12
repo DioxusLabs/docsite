@@ -29,7 +29,7 @@ exclude = ["packages/playground/server/template"]
 
 [workspace.dependencies]
 dioxus_docs_router = { path = "packages/docs-router" }
-stork-lib = { git = "https://github.com/ealmloff/stork", default-features = false }
+stork-lib = { git = "https://github.com/dioxuslabs/stork", default-features = false }
 
 # mdbook
 mdbook-gen = { path = "packages/include_mdbook/packages/mdbook-gen" }

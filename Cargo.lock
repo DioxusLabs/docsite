@@ -5596,7 +5596,7 @@ checksum = "a2eb9349b6444b326872e140eb1cf5e7c522154d69e7a0ffb0fb81c06b37543f"
 [[package]]
 name = "stork-lib"
 version = "1.6.0"
-source = "git+https://github.com/ealmloff/stork#86f4e8d8ffdf285b44bf94dfa7ff1d2c3d9f5ad8"
+source = "git+https://github.com/dioxuslabs/stork#86f4e8d8ffdf285b44bf94dfa7ff1d2c3d9f5ad8"
 dependencies = [
  "bytes",
  "frontmatter",

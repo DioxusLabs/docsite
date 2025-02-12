@@ -71,7 +71,7 @@ pub(crate) fn Hero() -> Element {
                         }
                     }
                 }
-                div { class: "flex max-w-screen-2xl flex-col justify-end md:flex gap-4 pb-8",
+                div { class: "flex max-w-screen-2xl flex-col justify-end md:flex gap-4 pb-8 items-center justify-center",
                     h1 { class: "lg:text-left text-center font-extralight text-sm",
                         "Trusted by top companies"
                     }

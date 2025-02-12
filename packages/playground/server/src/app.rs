@@ -6,7 +6,7 @@ use crate::{
 };
 use axum::http::StatusCode;
 use axum::response::IntoResponse;
-use dioxus_logger::tracing::{info, warn};
+use dioxus_logger::tracing::{error, info, warn};
 use std::{
     env, io,
     path::PathBuf,
@@ -195,7 +195,7 @@ impl AppState {
         let (tx, rx) = tokio::sync::mpsc::unbounded_channel();
         std::mem::forget(rx);
         for project in example_projects::get_example_projects() {
-            dioxus::logger::tracing::info!("Queueing example project: {project:?}");
+            dioxus::logger::tracing::trace!(example = ?project, "queueing example project");
             let _ = state.build_queue_tx.send(BuildCommand::Start {
                 request: BuildRequest {
                     id: project.id(),
@@ -221,10 +221,12 @@ impl AppState {
 
 pub enum Error {
     InternalServerError,
+    ResourceNotFound,
 }
 
 impl From<reqwest::Error> for Error {
-    fn from(_value: reqwest::Error) -> Self {
+    fn from(value: reqwest::Error) -> Self {
+        error!(error = ?value, "reqwest error");
         Self::InternalServerError
     }
 }
@@ -233,6 +235,7 @@ impl IntoResponse for Error {
     fn into_response(self) -> axum::response::Response {
         match self {
             Error::InternalServerError => StatusCode::INTERNAL_SERVER_ERROR.into_response(),
+            Error::ResourceNotFound => StatusCode::NOT_FOUND.into_response(),
         }
     }
 }

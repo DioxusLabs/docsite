@@ -93,13 +93,13 @@ async fn build(
 ) -> Result<(), BuildError> {
     // If the project already exists, don't build it again.
     if std::fs::exists(built_path.join(request.id.to_string())).unwrap_or_default() {
-        tracing::info!("Skipping build for {request:?} since it already exists");
+        tracing::trace!("Skipping build for {request:?} since it already exists");
         return Ok(());
     }
 
     setup_template(&template_path, &request).await?;
     dx_build(&template_path, &request).await?;
-    tracing::info!("Moving build from {template_path:?} to {built_path:?}");
+    tracing::trace!("Noving build from {template_path:?} to {built_path:?}");
     move_to_built(&template_path, &built_path, &request).await?;
 
     Ok(())

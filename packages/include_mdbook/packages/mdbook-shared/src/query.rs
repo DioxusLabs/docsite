@@ -88,6 +88,19 @@ pub struct Section {
     pub id: String,
 }
 
+pub fn text_to_anchor(text: String) -> String {
+    //  Taken from method on private mdbook-gen::rsx::Section.
+    text.trim()
+        .to_lowercase()
+        .chars()
+        .filter_map(|char| match char {
+            '-' | 'a'..='z' | '0'..='9' => Some(char),
+            ' ' | '_' => Some('-'),
+            _ => None,
+        })
+        .collect()
+}
+
 impl MdBook<PathBuf> {
     pub fn new(mdbook_root: PathBuf) -> anyhow::Result<Self> {
         let buf = get_summary_path(&mdbook_root)
@@ -179,16 +192,10 @@ impl MdBook<PathBuf> {
             }
             Event::Text(text) => {
                 if let Some(current_level) = &mut last_heading {
-                    let anchor = text
-                        .clone()
-                        .into_string()
-                        .trim()
-                        .to_lowercase()
-                        .replace(' ', "-");
                     sections.push(Section {
                         level: *current_level as usize,
                         title: text.to_string(),
-                        id: anchor,
+                        id: text_to_anchor(text.to_string()),
                     });
 
                     last_heading = None;

@@ -1,37 +1,37 @@
-use std::collections::HashMap;
-
-use crate::app::{AppState, Error};
+use crate::app::AppState;
 use axum::{
     extract::{Path, State},
     Json,
 };
 use dioxus_logger::tracing::trace;
 use gists::{GistFile, NewGist};
-use model::share::{GetGistRes, SaveToGistReq, SaveToGistRes};
+use model::api::{GetSharedProjectRes, ShareProjectReq, ShareProjectRes};
+use model::AppError;
+use std::collections::HashMap;
 
 const PRIMARY_GIST_FILE_NAME: &str = "dxp.rs";
 
-pub async fn get_gist(
+pub async fn get_shared_project(
     State(state): State<AppState>,
     Path(id): Path<String>,
-) -> Result<Json<GetGistRes>, Error> {
+) -> Result<Json<GetSharedProjectRes>, AppError> {
     trace!(id = ?id, "get_gist request");
     let gist = gists::get(&state, id).await?;
 
     let Some(file) = gist.files.get(PRIMARY_GIST_FILE_NAME) else {
-        return Err(Error::InternalServerError);
+        return Err(AppError::ResourceNotFound);
     };
 
-    Ok(Json(GetGistRes {
+    Ok(Json(GetSharedProjectRes {
         id: gist.id,
         code: file.content.clone(),
     }))
 }
 
-pub async fn save_to_gist(
+pub async fn share_project(
     State(state): State<AppState>,
-    Json(payload): Json<SaveToGistReq>,
-) -> Result<Json<SaveToGistRes>, Error> {
+    Json(payload): Json<ShareProjectReq>,
+) -> Result<Json<ShareProjectRes>, AppError> {
     trace!(payload = ?payload, "save_to_gist request");
     let mut files = HashMap::new();
     files.insert(
@@ -48,11 +48,12 @@ pub async fn save_to_gist(
     };
 
     let new_gist = gists::create(&state, new_gist).await?;
-    Ok(Json(SaveToGistRes { id: new_gist.id }))
+    Ok(Json(ShareProjectRes { id: new_gist.id }))
 }
 
 pub mod gists {
-    use crate::app::{AppState, Error};
+    use crate::app::AppState;
+    use model::AppError;
     use reqwest::{header, StatusCode};
     use serde::{Deserialize, Serialize};
     use std::collections::HashMap;
@@ -60,7 +61,7 @@ pub mod gists {
     const GISTS_URL_PREFIX: &str = "https://api.github.com/gists";
     const GITHUB_USER_AGENT: &str = "Dioxus Playground";
 
-    pub async fn get(state: &AppState, id: String) -> Result<Gist, Error> {
+    pub async fn get(state: &AppState, id: String) -> Result<Gist, AppError> {
         let res = state
             .reqwest_client
             .get(format!("{GISTS_URL_PREFIX}/{id}"))
@@ -72,13 +73,13 @@ pub mod gists {
 
         // Was the gist found?
         if res.status() == StatusCode::NOT_FOUND {
-            return Err(Error::ResourceNotFound);
+            return Err(AppError::ResourceNotFound);
         }
 
         Ok(res.json::<Gist>().await?)
     }
 
-    pub async fn create(state: &AppState, gist: NewGist) -> Result<Gist, Error> {
+    pub async fn create(state: &AppState, gist: NewGist) -> Result<Gist, AppError> {
         let res = state
             .reqwest_client
             .post(GISTS_URL_PREFIX)

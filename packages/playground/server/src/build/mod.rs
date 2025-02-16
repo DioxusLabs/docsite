@@ -1,4 +1,4 @@
-use example_projects::ExampleProject;
+use model::Project;
 use model::CargoDiagnostic;
 use std::io;
 use thiserror::Error;
@@ -19,7 +19,7 @@ pub enum BuildCommand {
 #[derive(Debug, Clone)]
 pub struct BuildRequest {
     pub id: Uuid,
-    pub code: ExampleProject,
+    pub project: Project,
     pub ws_msg_tx: UnboundedSender<BuildMessage>,
 }
 

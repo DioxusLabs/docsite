@@ -4,9 +4,7 @@ use crate::{
     build::{watcher::start_build_watcher, BuildCommand, BuildRequest},
     start_cleanup_services,
 };
-use axum::http::StatusCode;
-use axum::response::IntoResponse;
-use dioxus_logger::tracing::{error, info, warn};
+use dioxus_logger::tracing::{info, warn};
 use std::{
     env, io,
     path::PathBuf,
@@ -199,7 +197,7 @@ impl AppState {
             let _ = state.build_queue_tx.send(BuildCommand::Start {
                 request: BuildRequest {
                     id: project.id(),
-                    code: project.clone(),
+                    project: project.clone(),
                     ws_msg_tx: tx.clone(),
                 },
             });
@@ -216,26 +214,5 @@ impl AppState {
         let _ = fs::remove_dir_all(&self.env.built_path).await;
         fs::create_dir(&self.env.built_path).await?;
         Ok(())
-    }
-}
-
-pub enum Error {
-    InternalServerError,
-    ResourceNotFound,
-}
-
-impl From<reqwest::Error> for Error {
-    fn from(value: reqwest::Error) -> Self {
-        error!(error = ?value, "reqwest error");
-        Self::InternalServerError
-    }
-}
-
-impl IntoResponse for Error {
-    fn into_response(self) -> axum::response::Response {
-        match self {
-            Error::InternalServerError => StatusCode::INTERNAL_SERVER_ERROR.into_response(),
-            Error::ResourceNotFound => StatusCode::NOT_FOUND.into_response(),
-        }
     }
 }

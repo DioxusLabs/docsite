@@ -2005,12 +2005,10 @@ name = "example-projects"
 version = "0.1.0"
 dependencies = [
  "anyhow",
- "base64",
  "dioxus",
  "include_dir",
- "miniz_oxide",
+ "model",
  "once_cell",
- "uuid",
 ]
 
 [[package]]
@@ -3754,8 +3752,12 @@ name = "model"
 version = "0.1.0"
 dependencies = [
  "axum",
+ "dioxus-document",
  "dioxus-dx-wire-format",
+ "dioxus-logger",
  "gloo-net",
+ "gloo-utils",
+ "reqwest",
  "serde",
  "serde_json",
  "thiserror 2.0.11",

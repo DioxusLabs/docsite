@@ -8,6 +8,8 @@ serde_json = { workspace = true }
 uuid = { workspace = true, features = ["serde"] }
 serde = { workspace = true }
 thiserror = { workspace = true }
+reqwest = { workspace = true, features = ["json"] }
+dioxus-logger = { workspace = true }
 
 # Server only
 dioxus-dx-wire-format = { workspace = true, optional = true }
@@ -15,7 +17,9 @@ axum = { workspace = true, features = ["ws"], optional = true }
 
 # Web only
 gloo-net = { workspace = true, optional = true }
+gloo-utils = { workspace = true, optional = true }
+dioxus-document = { workspace = true, optional = true }
 
 [features]
 server = ["dep:dioxus-dx-wire-format", "dep:axum"]
-web = ["dep:gloo-net"]
+web = ["dep:gloo-net", "dep:gloo-utils", "dep:dioxus-document"]

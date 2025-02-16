@@ -10,7 +10,7 @@ use axum::{
 };
 use axum_client_ip::SecureClientIpSource;
 use dioxus_logger::tracing::{info, warn, Level};
-use share::{get_gist, save_to_gist};
+use share::{get_shared_project, share_project};
 use std::{io, net::SocketAddr, sync::atomic::Ordering, time::Duration};
 use tokio::{net::TcpListener, select, time::Instant};
 use tower::{buffer::BufferLayer, limit::RateLimitLayer, ServiceBuilder};
@@ -18,8 +18,8 @@ use tower::{buffer::BufferLayer, limit::RateLimitLayer, ServiceBuilder};
 mod app;
 mod build;
 mod serve;
-mod ws;
 mod share;
+mod ws;
 
 /// Rate limiter configuration.
 /// How many requests each user should get within a time period.
@@ -44,11 +44,14 @@ async fn main() {
         .route("/", get(serve::serve_built_index))
         .route("/*file_path", get(serve::serve_other_built));
 
+    let shared_router = Router::new()
+        .route("/", post(share_project))
+        .route("/:id", get(get_shared_project));
+
     let app = Router::new()
         .route("/ws", get(ws::ws_handler))
         .nest("/built/:build_id", built_router)
-        .route("/shared", post(save_to_gist))
-        .route("/shared/:id", get(get_gist))
+        .nest("/shared", shared_router)
         .route(
             "/",
             get(|| async { Redirect::permanent("https://dioxuslabs.com/play") }),

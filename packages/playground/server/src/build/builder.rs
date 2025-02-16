@@ -129,7 +129,7 @@ async fn setup_template(template_path: &Path, request: &BuildRequest) -> Result<
     // Write the user's code to main.rs
     fs::write(
         template_path.join("src/main.rs"),
-        request.code.contents.clone(),
+        request.project.contents.clone(),
     )
     .await?;
 

@@ -5,9 +5,8 @@ use dioxus::prelude::*;
 use dioxus_document::Link;
 use dioxus_sdk::utils::timing::use_debounce;
 use editor::monaco::{self, monaco_loader_src, set_monaco_markers};
-use example_projects::ExampleProject;
 use hotreload::{attempt_hot_reload, HotReload};
-// use snippets::use_provide_selected_example;
+use model::{AppError, Project};
 use std::time::Duration;
 
 #[cfg(target_arch = "wasm32")]
@@ -16,7 +15,6 @@ use dioxus_sdk::theme::{use_system_theme, SystemTheme};
 mod build;
 mod components;
 mod editor;
-mod error;
 mod hotreload;
 mod share_code;
 mod ws;
@@ -41,20 +39,25 @@ pub fn Playground(
     share_code: ReadOnlySignal<Option<String>>,
     class: Option<String>,
 ) -> Element {
-    let mut project = use_signal(|| {
-        if let Some(code) = share_code() {
-            ExampleProject::from_compressed_base64(code)
-                .unwrap_or_else(|_| example_projects::get_welcome_project())
-        } else {
-            example_projects::get_welcome_project()
-        }
-    });
-
-    let mut build = use_context_provider(|| BuildState::new(project));
+    let mut build = use_context_provider(BuildState::new);
     let mut hot_reload = use_context_provider(HotReload::new);
 
-    // We store the shared code in state as the editor may not be initialized yet.
     let mut show_share_warning = use_signal(|| false);
+    let mut project = use_resource(move || async move {
+        match share_code() {
+            Some(share_code) => {
+                let project = Project::from_share_code(share_code).await;
+
+                if let Ok(project) = project {
+                    show_share_warning.set(true);
+                    project
+                } else {
+                    example_projects::get_welcome_project()
+                }
+            }
+            None => example_projects::get_welcome_project(),
+        }
+    });
 
     // Handle events when code changes.
     let on_model_changed = use_debounce(Duration::from_millis(250), move |new_code: String| {
@@ -178,7 +181,7 @@ pub fn Playground(
                             },
                             h3 { {example.path.clone()} }
                             p { {example.description.clone()} }
-                        }   
+                        }
                     }
                 }
                 components::Panes {

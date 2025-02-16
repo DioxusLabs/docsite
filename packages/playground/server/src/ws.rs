@@ -8,9 +8,8 @@ use axum::{
 };
 use axum_client_ip::SecureClientIp;
 use dioxus_logger::tracing::error;
-use example_projects::ExampleProject;
 use futures::{SinkExt, StreamExt as _};
-use model::SocketMessage;
+use model::{Project, SocketMessage};
 use tokio::{
     select,
     sync::mpsc::{self, UnboundedSender},
@@ -122,10 +121,10 @@ fn start_build(
     build_tx: UnboundedSender<BuildMessage>,
     code: String,
 ) -> BuildRequest {
-    let code = ExampleProject::new(code, "".into(), "".into());
+    let project = Project::new(code, None, None);
     let request = BuildRequest {
-        id: code.id(),
-        code,
+        id: project.id(),
+        project,
         ws_msg_tx: build_tx,
     };
 

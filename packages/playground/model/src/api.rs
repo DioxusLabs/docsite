@@ -22,16 +22,17 @@ pub struct GetSharedProjectRes {
 }
 
 /// An api client for the Dioxus Playground server.
+#[derive(Clone)]
 pub struct ApiClient {
     pub server_url: String,
     client: reqwest::Client,
 }
 
 impl ApiClient {
-    pub fn new(server_url: String) -> Self {
+    pub fn new(server_url: impl ToString) -> Self {
         let client = reqwest::Client::new();
 
-        Self { server_url, client }
+        Self { server_url: server_url.to_string(), client }
     }
 }
 

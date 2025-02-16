@@ -5,7 +5,7 @@ edition = "2021"
 
 [dependencies]
 serde_json = { workspace = true }
-uuid = { workspace = true, features = ["serde"] }
+uuid = { workspace = true, features = ["serde", "v3"] }
 serde = { workspace = true }
 thiserror = { workspace = true }
 reqwest = { workspace = true, features = ["json"] }

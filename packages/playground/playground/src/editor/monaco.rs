@@ -59,23 +59,28 @@ pub fn on_monaco_load(
     system_theme: SystemTheme,
     contents: &str,
     mut hot_reload: HotReload,
+    mut monaco_ready: Signal<bool>,
     mut on_model_changed: UseDebounce<String>,
 ) {
+
+    let on_ready_callback = Closure::new(move || monaco_ready.set(true));
     let monaco_prefix = monaco_vs_prefix(folder);
     init(
         &monaco_prefix,
         super::EDITOR_ELEMENT_ID,
         system_theme,
         &contents,
+        &on_ready_callback,
     );
+
 
     hot_reload.set_starting_code(&contents);
 
-    let callback = Closure::new(move |new_code: String| on_model_changed.action(new_code));
+    let model_change_callback = Closure::new(move |new_code: String| on_model_changed.action(new_code));
+    register_model_change_event(&model_change_callback);
 
-    register_model_change_event(&callback);
-
-    callback.forget();
+    on_ready_callback.forget();
+    model_change_callback.forget();
 }
 
 #[derive(Serialize, Deserialize, Clone)]
@@ -118,6 +123,7 @@ extern "C" {
         element_id: &str,
         initial_theme: &str,
         initial_snippet: &str,
+        on_ready_callback: &Closure<dyn FnMut()>,
     );
 
     #[wasm_bindgen(js_name = getCurrentModelValue)]
@@ -148,9 +154,10 @@ pub fn init(
     element_id: &str,
     initial_theme: SystemTheme,
     initial_snippet: &str,
+    on_ready_callback: &Closure<dyn FnMut()>,
 ) {
     let theme = system_theme_to_string(initial_theme);
-    init_monaco(vs_path_prefix, element_id, &theme, initial_snippet);
+    init_monaco(vs_path_prefix, element_id, &theme, initial_snippet, on_ready_callback);
     register_paste_as_rsx_action();
 }
 

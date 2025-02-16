@@ -7,14 +7,14 @@ use dioxus_playground::{Playground, PlaygroundUrls};
 #[cfg(not(feature = "real-server"))]
 const URLS: PlaygroundUrls = PlaygroundUrls {
     socket: "ws://localhost:3000/ws",
-    built: "http://localhost:3000/built/",
+    server: "http://localhost:3000",
     location: "http://localhost:8080",
 };
 
 #[cfg(feature = "real-server")]
 const URLS: PlaygroundUrls = PlaygroundUrls {
     socket: "wss://docsite-playground.fly.dev/ws",
-    built: "https://docsite-playground.fly.dev/built/",
+    server: "https://docsite-playground.fly.dev",
     location: "https://dioxuslabs.com/playground",
 };
 
@@ -26,7 +26,7 @@ enum Route {
     #[route("/")]
     DefaultPlayground {},
 
-    #[route("/:share_code")]
+    #[route("/shared/:share_code")]
     SharePlayground { share_code: String },
 }
 

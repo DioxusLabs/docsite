@@ -7,7 +7,7 @@ static EXAMPLES: include_dir::Dir = include_dir::include_dir!("$CARGO_MANIFEST_D
 pub fn get_welcome_project() -> Project {
     get_example_projects()
         .iter()
-        .find(|p| p.path.as_ref().unwrap_or(&String::new()) == "welcome.rs")
+        .find(|p| &p.path == "welcome.rs")
         .unwrap()
         .clone()
 }
@@ -29,8 +29,8 @@ pub fn get_example_projects() -> &'static [Project] {
             let mut description = String::new();
 
             for line in contents.lines() {
-                if line.starts_with("//!") {
-                    description.push_str(&line[3..]);
+                if let Some(line) = line.strip_prefix("//!") {
+                    description.push_str(line);
                     description.push('\n');
                 } else {
                     break;

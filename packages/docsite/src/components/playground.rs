@@ -4,7 +4,7 @@ use dioxus_playground::PlaygroundUrls;
 #[cfg(not(feature = "production"))]
 const URLS: PlaygroundUrls = PlaygroundUrls {
     socket: "ws://localhost:3000/ws",
-    built: "http://localhost:3000/built/",
+    server: "http://localhost:3000/built/",
     location: "http://localhost:8080",
 };
 

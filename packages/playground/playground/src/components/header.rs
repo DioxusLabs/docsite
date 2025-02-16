@@ -13,7 +13,7 @@ pub fn Header(
     pane_left_width: Signal<Option<i32>>,
     pane_right_width: Signal<Option<i32>>,
     mut show_examples: Signal<bool>,
-    example_name: ReadOnlySignal<String>,
+    file_name: ReadOnlySignal<String>,
 ) -> Element {
     let build = use_context::<BuildState>();
 
@@ -40,7 +40,7 @@ pub fn Header(
                     onclick: move |_| show_examples.toggle(),
                     crate::components::icons::MenuIcon {}
                 }
-                button { class: "dxp-ctrl-btn dxp-file-btn dxp-selected-file", {example_name} }
+                button { class: "dxp-ctrl-btn dxp-file-btn dxp-selected-file", {file_name} }
             }
 
             // Right pane header

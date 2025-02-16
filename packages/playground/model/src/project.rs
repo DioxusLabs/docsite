@@ -9,11 +9,14 @@ use crate::{
 #[derive(Debug, Clone, PartialEq)]
 pub struct Project {
     pub description: Option<String>,
-    pub path: Option<String>,
+    pub path: String,
     pub contents: String,
     pub prebuilt: bool,
     id: Uuid,
     shared_id: Option<String>,
+    // Whether the project data is dirty and needs updated.
+    // E.g. code was updated in Rust and needs forwarded to the editor.
+    pub dirty: bool,
 }
 
 impl Project {
@@ -26,9 +29,10 @@ impl Project {
             prebuilt: false,
             contents,
             description,
-            path,
+            path: path.unwrap_or("main.rs".to_string()),
             id,
             shared_id: None,
+            dirty: false,
         }
     }
 
@@ -51,11 +55,12 @@ impl Project {
 
         Ok(Self {
             description: None,
-            path: None,
+            path: "main.rs".to_string(),
             contents: shared.code,
             prebuilt: false,
             id,
             shared_id: Some(shared.id),
+            dirty: true,
         })
     }
 }

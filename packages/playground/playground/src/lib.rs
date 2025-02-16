@@ -1,12 +1,12 @@
 use build::{start_build, BuildStage, BuildState};
 use components::icons::Warning;
-use dioxus::logger::tracing::error;
+use dioxus::logger::tracing::{error, warn};
 use dioxus::prelude::*;
 use dioxus_document::Link;
 use dioxus_sdk::utils::timing::use_debounce;
 use editor::monaco::{self, monaco_loader_src, set_monaco_markers};
 use hotreload::{attempt_hot_reload, HotReload};
-use model::{AppError, Project};
+use model::{api::ApiClient, Project};
 use std::time::Duration;
 
 #[cfg(target_arch = "wasm32")]
@@ -28,7 +28,7 @@ pub struct PlaygroundUrls {
     /// The URL to the websocket server.
     pub socket: &'static str,
     /// The URL to the built project files from the server.
-    pub built: &'static str,
+    pub server: &'static str,
     /// The url location of the playground UI: e.g. `https://dioxuslabs.com/play`
     pub location: &'static str,
 }
@@ -41,26 +41,43 @@ pub fn Playground(
 ) -> Element {
     let mut build = use_context_provider(BuildState::new);
     let mut hot_reload = use_context_provider(HotReload::new);
+    let api_client = use_context_provider(|| Signal::new(ApiClient::new(urls.server)));
 
+    let monaco_ready = use_signal(|| false);
     let mut show_share_warning = use_signal(|| false);
-    let mut project = use_resource(move || async move {
-        match share_code() {
-            Some(share_code) => {
-                let project = Project::from_share_code(share_code).await;
 
-                if let Ok(project) = project {
+    // Default to the welcome project.
+    // Project dirty determines whether the Rust-project is synced with the project in the editor.
+    let mut project = use_signal(|| example_projects::get_welcome_project());
+    let mut project_dirty = use_signal(|| false);
+    use_effect(move || {
+        if project_dirty() && monaco_ready() {
+            let project = project.read();
+            monaco::set_current_model_value(&project.contents);
+        }
+    });
+
+    // Get the shared project if a share code was provided.
+    // Share code is not yet reactive.
+    use_effect(move || {
+        if let Some(share_code) = share_code() {
+            spawn(async move {
+                let api_client = api_client();
+                let shared_project = Project::from_share_code(&api_client, share_code).await;
+                if let Ok(shared_project) = shared_project {
                     show_share_warning.set(true);
-                    project
-                } else {
-                    example_projects::get_welcome_project()
+                    project_dirty.set(true);
+                    project.set(shared_project);
                 }
-            }
-            None => example_projects::get_welcome_project(),
+            });
         }
     });
 
     // Handle events when code changes.
     let on_model_changed = use_debounce(Duration::from_millis(250), move |new_code: String| {
+        warn!("MODEL CHANGED");
+        // Update the project
+        project.write().contents = new_code.clone();
         spawn(async move {
             editor::monaco::set_markers(&[]);
 
@@ -81,13 +98,6 @@ pub fn Playground(
         editor::monaco::set_theme(system_theme().unwrap_or(SystemTheme::Light));
     });
 
-    // The current contents of the editor.
-    let mut custom_contents = use_signal(|| None);
-    let contents = use_memo(move || {
-        let default = project().contents;
-        custom_contents().unwrap_or(default)
-    });
-
     // Handle starting a build.
     let on_rebuild = move |_| async move {
         if build.stage().is_running() {
@@ -97,7 +107,6 @@ pub fn Playground(
 
         // Update hot reload
         let code = editor::monaco::get_current_model_value();
-        custom_contents.set(Some(code.clone()));
 
         let socket_url = urls.socket.to_string();
         match start_build(build, socket_url, code).await {
@@ -111,7 +120,7 @@ pub fn Playground(
         let prebuilt_id = project.read().prebuilt.then_some(project.read().id());
         let local_id = build.stage().finished_id();
         let id = local_id.or(prebuilt_id)?;
-        Some(format!("{}{}", urls.built, id))
+        Some(format!("{}/built/{}", urls.server, id))
     });
 
     // State for pane resizing, shared by headers and panes.
@@ -139,8 +148,9 @@ pub fn Playground(
                     monaco::on_monaco_load(
                         MONACO_FOLDER,
                         system_theme().unwrap_or(SystemTheme::Light),
-                        &contents(),
+                        &project.read().contents,
                         hot_reload,
+                        monaco_ready,
                         on_model_changed,
                     );
                 },
@@ -163,7 +173,7 @@ pub fn Playground(
                 show_examples,
                 pane_left_width,
                 pane_right_width,
-                example_name: project.read().path.clone(),
+                file_name: project.read().path.clone(),
             }
             div { id: "dxp-lower-half",
                 div {
@@ -173,9 +183,8 @@ pub fn Playground(
                         button {
                             class: "dxp-example-project",
                             onclick: move |_| {
-                                custom_contents.set(None);
-                                build.set_stage(BuildStage::Finished(Ok(example.id())));
                                 project.set(example.clone());
+                                build.set_stage(BuildStage::Finished(Ok(example.id())));
                                 monaco::set_current_model_value(&example.contents);
                                 hot_reload.set_starting_code(&example.contents);
                             },

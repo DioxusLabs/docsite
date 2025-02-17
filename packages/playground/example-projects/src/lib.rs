@@ -1,6 +1,6 @@
 use include_dir::DirEntry;
-use once_cell::sync::Lazy;
 use model::Project;
+use once_cell::sync::Lazy;
 
 static EXAMPLES: include_dir::Dir = include_dir::include_dir!("$CARGO_MANIFEST_DIR/examples");
 

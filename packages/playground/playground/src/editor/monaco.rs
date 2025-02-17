@@ -6,7 +6,7 @@ use serde::{Deserialize, Serialize};
 use wasm_bindgen::prelude::*;
 
 #[cfg(target_arch = "wasm32")]
-use dioxus_sdk::theme::{use_system_theme, SystemTheme};
+use dioxus_sdk::theme::SystemTheme;
 
 /// Get the path prefix for the `/vs` folder inside the Monaco folder.
 pub fn monaco_vs_prefix(folder: Asset) -> String {
@@ -62,21 +62,20 @@ pub fn on_monaco_load(
     mut monaco_ready: Signal<bool>,
     mut on_model_changed: UseDebounce<String>,
 ) {
-
     let on_ready_callback = Closure::new(move || monaco_ready.set(true));
     let monaco_prefix = monaco_vs_prefix(folder);
     init(
         &monaco_prefix,
         super::EDITOR_ELEMENT_ID,
         system_theme,
-        &contents,
+        contents,
         &on_ready_callback,
     );
 
+    hot_reload.set_starting_code(contents);
 
-    hot_reload.set_starting_code(&contents);
-
-    let model_change_callback = Closure::new(move |new_code: String| on_model_changed.action(new_code));
+    let model_change_callback =
+        Closure::new(move |new_code: String| on_model_changed.action(new_code));
     register_model_change_event(&model_change_callback);
 
     on_ready_callback.forget();
@@ -157,7 +156,13 @@ pub fn init(
     on_ready_callback: &Closure<dyn FnMut()>,
 ) {
     let theme = system_theme_to_string(initial_theme);
-    init_monaco(vs_path_prefix, element_id, &theme, initial_snippet, on_ready_callback);
+    init_monaco(
+        vs_path_prefix,
+        element_id,
+        &theme,
+        initial_snippet,
+        on_ready_callback,
+    );
     register_paste_as_rsx_action();
 }
 

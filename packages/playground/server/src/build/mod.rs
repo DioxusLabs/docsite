@@ -1,5 +1,5 @@
-use model::Project;
 use model::CargoDiagnostic;
+use model::Project;
 use std::io;
 use thiserror::Error;
 use tokio::{sync::mpsc::UnboundedSender, task::JoinError};

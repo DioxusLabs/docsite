@@ -43,7 +43,7 @@ pub async fn share_project(
 
     let new_gist = NewGist {
         description: "A user-saved Dioxus Playground snippet.".to_string(),
-        public: false,
+        public: true,
         files,
     };
 

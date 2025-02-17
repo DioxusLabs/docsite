@@ -32,7 +32,10 @@ impl ApiClient {
     pub fn new(server_url: impl ToString) -> Self {
         let client = reqwest::Client::new();
 
-        Self { server_url: server_url.to_string(), client }
+        Self {
+            server_url: server_url.to_string(),
+            client,
+        }
     }
 }
 

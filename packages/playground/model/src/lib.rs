@@ -78,6 +78,7 @@ pub struct CargoDiagnosticSpan {
 
 /// Any socket error.
 #[derive(Debug, Error)]
+#[non_exhaustive]
 pub enum SocketError {
     #[error(transparent)]
     ParseJson(#[from] serde_json::Error),
@@ -96,6 +97,7 @@ pub enum SocketError {
 
 /// Generic App Error
 #[derive(Debug, Error)]
+#[non_exhaustive]
 pub enum AppError {
     #[error("parse error: {0}")]
     Parse(Box<dyn Error>),

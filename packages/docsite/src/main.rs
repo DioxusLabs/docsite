@@ -156,6 +156,9 @@ pub enum Route {
         #[route("/playground")]
         Playground {},
 
+        #[route("/playground/shared/:share_code")]
+        SharePlayground { share_code: String },
+
         #[route("/awesome")]
         Awesome {},
 

@@ -1,7 +1,4 @@
-use dioxus::{
-    logger::tracing::error,
-    signals::{Signal, Writable},
-};
+use dioxus::signals::{Signal, Writable};
 use dioxus_document::eval;
 use model::{api::ApiClient, AppError, Project};
 

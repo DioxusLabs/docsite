@@ -61,7 +61,7 @@ pub fn Header(
                             Ok(()) => share_btn_text.set("Link Copied!"),
                             Err(error) => {
                                 share_btn_text.set("Error!");
-                                errors.push_error(("Share Failed", format!("An error occured while generating a share link: {error}")));
+                                errors.push_error(("Share Failed", format!("An error occured while generating a share link: {error:?}")));
                             }
                         }
 

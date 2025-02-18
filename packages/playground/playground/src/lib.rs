@@ -6,7 +6,7 @@ use dioxus_document::Link;
 use dioxus_sdk::utils::timing::use_debounce;
 use editor::monaco::{self, monaco_loader_src, set_monaco_markers};
 use hotreload::{attempt_hot_reload, HotReload};
-use model::{api::ApiClient, AppError, Project};
+use model::{api::ApiClient, AppError, Project, SocketError};
 use std::time::Duration;
 
 #[cfg(target_arch = "wasm32")]
@@ -60,7 +60,6 @@ pub fn Playground(
     });
 
     // Get the shared project if a share code was provided.
-    // Share code is not yet reactive.
     use_effect(move || {
         if let Some(share_code) = share_code() {
             spawn(async move {
@@ -101,7 +100,7 @@ pub fn Playground(
 
     // Handle starting a build.
     let on_rebuild = move |_| async move {
-        if build.stage().is_running() {
+        if build.stage().is_running() || !monaco_ready() {
             return;
         }
         hot_reload.set_needs_rebuild(false);
@@ -112,7 +111,7 @@ pub fn Playground(
         let socket_url = urls.socket.to_string();
         match start_build(build, socket_url, code).await {
             Ok(success) => hot_reload.set_needs_rebuild(!success),
-            Err(e) => error!(error = ?e, "failed to build project"),
+            Err(error) => errors.push_from_app_error(error),
         }
     };
 
@@ -250,7 +249,15 @@ impl Errors {
                 "Resource Not Found",
                 "A requested resource was not found.".to_string(),
             ),
-            AppError::Socket(error) => ("Socket Error", error.to_string()),
+            AppError::Socket(error) => (
+                "Socket Error",
+                match error {
+                    SocketError::ParseJson(error) => error.to_string(),
+                    SocketError::Utf8Decode(_) => "UTF-8 decode failed".to_string(),
+                    SocketError::Gloo(web_socket_error) => web_socket_error.to_string(),
+                    e => e.to_string(),
+                },
+            ),
             AppError::Js(error) => ("JS Error", error.to_string()),
             _ => return,
         };
@@ -264,5 +271,11 @@ impl Errors {
 
     pub fn pop(&mut self) -> Option<(String, String)> {
         self.errors.pop()
+    }
+}
+
+impl Default for Errors {
+    fn default() -> Self {
+        Self::new()
     }
 }

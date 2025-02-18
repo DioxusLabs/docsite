@@ -76,6 +76,8 @@ pub mod conditional_rendering;
 #[cfg(not(feature = "doc_test"))]
 pub mod dangerous_inner_html;
 #[cfg(not(feature = "doc_test"))]
+pub mod error_handling;
+#[cfg(not(feature = "doc_test"))]
 pub mod event_click;
 #[cfg(not(feature = "doc_test"))]
 pub mod event_prevent_default;

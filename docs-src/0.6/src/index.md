@@ -36,7 +36,7 @@ In many ways, Dioxus is similar to Flutter: we integrate our own build tools, fo
 - Reactivity is inspired by web frameworks like React and SolidJS
 - Dioxus code runs natively with no virtual machine and enables direct FFI with system APIs
 
-Our goal is to provide a "better Flutter": faster, slimmer, and web-native. You can think of Dioxus is a hybrid of [Flutter](http://flutter.dev) and [NextJS](http://nextjs.org): cross-platform apps with stellar fullstack support. Today, Dioxus apps can only be written in Rust, but we plan to support more languages in the future.
+Our goal is to provide a "better Flutter": faster, slimmer, and web-native. You can think of Dioxus as a hybrid of [Flutter](http://flutter.dev) and [NextJS](http://nextjs.org): cross-platform apps with stellar fullstack support. Today, Dioxus apps can only be written in Rust, but we plan to support more languages in the future.
 
 ## Why Dioxus?
 
@@ -48,7 +48,7 @@ Our vision for Dioxus is a framework that is fast, flexible, and has a minimal l
 
 ## Syntax and Ecosystem
 
-The Dioxus syntax is similar to React's JSX markup, borrowing React's component and hooks approach. All components are Rust functions that take `Properties`, define state with hooks, and return an `Element`. We only support markup in with the `rsx! {}` markup; this ensures your app is automatically optimized and has stellar devtools support like advanced hot-reloading.
+The Dioxus syntax is similar to React's JSX markup, borrowing React's component and hooks approach. All components are Rust functions that take `Properties`, define state with hooks, and return an `Element`. We only support markup within the `rsx! {}` macro; this ensures your app is automatically optimized and has stellar devtools support like advanced hot-reloading.
 
 ```rust
 #[component]

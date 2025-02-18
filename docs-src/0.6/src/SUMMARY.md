@@ -27,6 +27,7 @@
   - [Managing State](essentials/state/index.md)
   - [Async](essentials/async/index.md)
   - [Breaking Out](essentials/breaking/index.md)
+  - [Error Handling](essentials/error_handling/index.md)
 
 ---
 
@@ -65,7 +66,6 @@
     - [Static Site Generation](guides/fullstack/static_site_generation.md)
   - [Publishing](cookbook/publishing.md)
   - [Anti-patterns](cookbook/antipatterns.md)
-  - [Error Handling](cookbook/error_handling.md)
   - [Integrations](cookbook/integrations/index.md)
     - [Logging](cookbook/integrations/logging.md)
     - [Internationalization](cookbook/integrations/internationalization.md)

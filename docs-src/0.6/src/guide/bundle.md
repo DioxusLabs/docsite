@@ -196,7 +196,7 @@ name = "docsite"
 [bundle]
 identifier = "com.dioxuslabs"
 publisher = "DioxusLabs"
-icon = "assets/icon.png"
+icon = ["assets/icon.png"]
 ```
 
 For a full list of options, see the [reference page on the `bundle` section](../cookbook/bundling.md).

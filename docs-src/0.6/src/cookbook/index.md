@@ -6,7 +6,6 @@ There are a few different sections in the cookbook:
 
 - [Publishing](publishing.md) will teach you how to present your app in a variety of delicious forms.
 - Explore the [Anti-patterns](antipatterns.md) section to discover what ingredients to avoid when preparing your application.
-- Within [Error Handling](error_handling.md), we'll master the fine art of managing spoiled ingredients in Dioxus.
 - Take a culinary journey through [State management](state/index.md), where we'll explore the world of handling local, global, and external state in Dioxus.
 - [Integrations](integrations/index.md) will guide you how to seamlessly blend external libraries into your Dioxus culinary creations.
 - [Testing](testing.md) explains how to examine the unique flavor of Dioxus-specific features, like components.

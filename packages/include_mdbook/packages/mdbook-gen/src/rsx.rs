@@ -647,18 +647,14 @@ fn transform_code_block(
     code_contents: String,
     fname: &mut Option<String>,
 ) -> syn::Result<String> {
-    if !code_contents.starts_with("{{#include") {
-        return Ok(code_contents);
-    }
-
-    let mut segments = code_contents.split("{{#");
+    let segments = code_contents.split("{{#include");
+    let segments = segments;
     let mut output = String::new();
-    for segment in segments {
-        if let Some((plugin, after)) = segment.split_once("}}") {
-            if plugin.starts_with("include") {
-                output += &resolve_extension(path, plugin, fname)?;
-                output += after;
-            }
+    for (i, segment) in segments.enumerate() {
+        // Skip the first segment which is before the first include
+        if let Some((file, after)) = segment.split_once("}}").filter(|_| i > 0) {
+            output += &resolve_extension(path, file, fname)?;
+            output += after;
         } else {
             output += segment;
         }
@@ -666,73 +662,69 @@ fn transform_code_block(
     Ok(output)
 }
 
-fn resolve_extension(path: &Path, ext: &str, fname: &mut Option<String>) -> syn::Result<String> {
-    if let Some(file) = ext.strip_prefix("include") {
-        let file = file.trim();
-        let mut segment = None;
-        let file = if let Some((file, file_segment)) = file.split_once(':') {
-            segment = Some(file_segment);
-            file
-        } else {
-            file
-        };
-
-        let result = std::fs::read_to_string(file).map_err(|e| {
-            syn::Error::new(
-                Span::call_site(),
-                format!(
-                    "Failed to read file {}: {} from path {} at cwd {}",
-                    file,
-                    e,
-                    path.display(),
-                    std::env::current_dir().unwrap().display()
-                ),
-            )
-        })?;
-        *fname = Some(
-            PathBuf::from(file)
-                .file_name()
-                .unwrap()
-                .to_string_lossy()
-                .to_string(),
-        );
-        if let Some(segment) = segment {
-            // get the text between lines with ANCHOR: segment and ANCHOR_END: segment
-            let lines = result.lines();
-            let mut output = String::new();
-            let mut in_segment: bool = false;
-            // normalize indentation to the first line
-            let mut first_line_indent = 0;
-            for line in lines {
-                if let Some((_, remaining)) = line.split_once("ANCHOR:") {
-                    if remaining.trim() == segment {
-                        in_segment = true;
-                        first_line_indent = line.chars().take_while(|c| c.is_whitespace()).count();
-                    }
-                } else if let Some((_, remaining)) = line.split_once("ANCHOR_END:") {
-                    if remaining.trim() == segment {
-                        in_segment = false;
-                    }
-                } else if in_segment {
-                    for (_, char) in line
-                        .chars()
-                        .enumerate()
-                        .skip_while(|(i, c)| *i < first_line_indent && c.is_whitespace())
-                    {
-                        output.push(char);
-                    }
-                    output += "\n";
-                }
-            }
-            if output.ends_with('\n') {
-                output.pop();
-            }
-            Ok(output)
-        } else {
-            Ok(result)
-        }
+fn resolve_extension(path: &Path, file: &str, fname: &mut Option<String>) -> syn::Result<String> {
+    let file = file.trim();
+    let mut segment = None;
+    let file = if let Some((file, file_segment)) = file.split_once(':') {
+        segment = Some(file_segment);
+        file
     } else {
-        todo!("Unknown extension: {}", ext);
+        file
+    };
+
+    let result = std::fs::read_to_string(file).map_err(|e| {
+        syn::Error::new(
+            Span::call_site(),
+            format!(
+                "Failed to read file {}: {} from path {} at cwd {}",
+                file,
+                e,
+                path.display(),
+                std::env::current_dir().unwrap().display()
+            ),
+        )
+    })?;
+    *fname = Some(
+        PathBuf::from(file)
+            .file_name()
+            .unwrap()
+            .to_string_lossy()
+            .to_string(),
+    );
+    if let Some(segment) = segment {
+        // get the text between lines with ANCHOR: segment and ANCHOR_END: segment
+        let lines = result.lines();
+        let mut output = String::new();
+        let mut in_segment: bool = false;
+        // normalize indentation to the first line
+        let mut first_line_indent = 0;
+        for line in lines {
+            if let Some((_, remaining)) = line.split_once("ANCHOR:") {
+                if remaining.trim() == segment {
+                    in_segment = true;
+                    first_line_indent = line.chars().take_while(|c| c.is_whitespace()).count();
+                }
+            } else if let Some((_, remaining)) = line.split_once("ANCHOR_END:") {
+                if remaining.trim() == segment {
+                    in_segment = false;
+                }
+            } else if in_segment {
+                for (_, char) in line
+                    .chars()
+                    .enumerate()
+                    .skip_while(|(i, c)| *i < first_line_indent && c.is_whitespace())
+                {
+                    output.push(char);
+                }
+                output += "\n";
+            }
+        }
+        if output.ends_with('\n') {
+            output.pop();
+        }
+        Ok(output)
+    } else {
+        Ok(result)
     }
 }
 

@@ -6,13 +6,12 @@ use crate::{
 };
 use dioxus_logger::tracing::{info, warn};
 use std::{
-    env, io,
+    env,
     path::PathBuf,
     sync::{atomic::AtomicBool, Arc},
     time::Duration,
 };
 use tokio::{
-    fs,
     sync::{mpsc::UnboundedSender, Mutex},
     time::Instant,
 };
@@ -167,11 +166,23 @@ pub struct AppState {
 impl AppState {
     /// Build the app state and initialize app services.
     pub async fn new() -> Self {
-        let env = EnvVars::new().await;
+        let mut env = EnvVars::new().await;
 
         // Build the app state
         let is_building = Arc::new(AtomicBool::new(false));
         let build_queue_tx = start_build_watcher(env.clone(), is_building.clone());
+
+        // Get prebuild arg
+        let prebuild = std::env::args()
+            .collect::<Vec<String>>()
+            .get(1)
+            .map(|x| x == "--prebuild")
+            .unwrap_or(false);
+
+        if prebuild {
+            info!("server is prebuilding");
+            env.shutdown_delay = Some(Duration::from_secs(1));
+        }
 
         let state = Self {
             env,
@@ -181,12 +192,6 @@ impl AppState {
             _connected_sockets: Arc::new(Mutex::new(Vec::new())),
             reqwest_client: reqwest::Client::new(),
         };
-
-        // Reset the built dir
-        let result = state.reset_built_dir().await;
-        if let Err(e) = result {
-            warn!("failed to reset built dir: {}", e);
-        }
 
         // Queue the examples to be built on startup.
         // This ensures the cache is hot before users try to use it, meaning the examples will be ready to go.
@@ -207,12 +212,5 @@ impl AppState {
         start_cleanup_services(state.clone());
 
         state
-    }
-
-    /// Remove and recreate the built directory to clear any stale built projects.
-    async fn reset_built_dir(&self) -> Result<(), io::Error> {
-        let _ = fs::remove_dir_all(&self.env.built_path).await;
-        fs::create_dir(&self.env.built_path).await?;
-        Ok(())
     }
 }

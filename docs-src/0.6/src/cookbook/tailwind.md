@@ -5,7 +5,7 @@ You can style your Dioxus application with whatever CSS framework you choose, or
 
 One popular option for styling your Dioxus application is [Tailwind](https://tailwindcss.com/). Tailwind allows you to style your elements with CSS utility classes. This guide will show you how to setup tailwind CSS with your Dioxus application.
 
-## Setup
+## Setup with Tailwind v4 (Recommended)
 
 1. Install the Dioxus CLI:
 
@@ -27,7 +27,59 @@ One popular option for styling your Dioxus application is [Tailwind](https://tai
     {{#include src/doc_examples/tailwind.rs}}
     ```
 
-### Bonus Steps
+## Setup with Tailwind v3
+
+Projects created with the Dioxus CLI currently use this version. 
+
+1. Install the Dioxus CLI:
+
+    ```bash
+    cargo install dioxus-cli
+    ```
+
+2. Install npm: [https://docs.npmjs.com/downloading-and-installing-node-js-and-npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)
+3. Install the tailwind css cli: [https://v3.tailwindcss.com/docs/installation](https://v3.tailwindcss.com/docs/installation)
+4. Initialize the tailwind css project:
+
+    ```bash
+    npx tailwindcss init
+    ```
+
+    This should create a `tailwind.config.js` file in the root of the project.
+
+5. Edit the `tailwind.config.js` file to include rust files:
+
+    ```js
+    module.exports = {
+        mode: "all",
+        content: [
+            // include all rust, html and css files in the src directory
+            "./src/**/*.{rs,html,css}",
+            // include all html files in the output (dist) directory
+            "./dist/**/*.html",
+        ],
+        theme: {
+            extend: {},
+        },
+        plugins: [],
+    }
+    ```
+
+6. Create a `input.css` file in the root of your project with the following content:
+
+    ```css
+    @tailwind base;
+    @tailwind components;
+    @tailwind utilities;
+    ```
+
+7. Create a link to the `tailwind.css` file using manganis somewhere in your rust code:
+
+    ```rust
+    {{#include src/doc_examples/tailwind.rs}}
+    ```
+
+## Bonus Steps
 
 1. Install the tailwind css vs code extension
 2. Go to the settings for the extension and find the experimental regex support section. Edit the setting.json file to look like this:
@@ -41,10 +93,16 @@ One popular option for styling your Dioxus application is [Tailwind](https://tai
 
 ## Development
 
-- Run the following command in the root of the project to start the tailwind css compiler:
+- If using Tailwind v4 run the following command in the root of the project to start the tailwind css compiler:
 
     ```bash
     npx @tailwindcss/cli -i ./input.css -o ./assets/tailwind.css --watch
+    ```
+
+- If using Tailwind v3:
+
+    ```bash
+    npx tailwindcss -i ./input.css -o ./assets/tailwind.css --watch
     ```
 
 ### Web

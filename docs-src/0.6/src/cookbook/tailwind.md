@@ -5,7 +5,9 @@ You can style your Dioxus application with whatever CSS framework you choose, or
 
 One popular option for styling your Dioxus application is [Tailwind](https://tailwindcss.com/). Tailwind allows you to style your elements with CSS utility classes. This guide will show you how to setup tailwind CSS with your Dioxus application.
 
-## Setup
+## Tailwind V3
+
+### Setup
 
 1. Install the Dioxus CLI:
 
@@ -15,6 +17,11 @@ cargo install dioxus-cli
 
 2. Install npm: [https://docs.npmjs.com/downloading-and-installing-node-js-and-npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)
 3. Install the tailwind css cli: [https://tailwindcss.com/docs/installation](https://tailwindcss.com/docs/installation)
+
+```bash
+npm install -D tailwindcss@3
+```
+
 4. Initialize the tailwind css project:
 
 ```bash
@@ -55,7 +62,7 @@ module.exports = {
 {{#include src/doc_examples/tailwind.rs}}
 ```
 
-### Bonus Steps
+#### Bonus Steps
 
 1. Install the tailwind css vs code extension
 2. Go to the settings for the extension and find the experimental regex support section. Edit the setting.json file to look like this:
@@ -67,7 +74,7 @@ module.exports = {
 },
 ```
 
-## Development
+### Development
 
 - Run the following command in the root of the project to start the tailwind css compiler:
 
@@ -75,7 +82,7 @@ module.exports = {
 npx tailwindcss -i ./input.css -o ./assets/tailwind.css --watch
 ```
 
-### Web
+#### Web
 
 - Run the following command in the root of the project to start the dioxus dev server:
 
@@ -85,7 +92,64 @@ dx serve
 
 - Open the browser to [http://localhost:8080](http://localhost:8080).
 
-### Desktop
+#### Desktop
+
+- Launch the dioxus desktop app:
+
+```bash
+dx serve --platform desktop
+```
+
+## Tailwind V4
+
+Version 4 of tailwind css introduced some breaking changes. Notably, the cli is now called via `npx @tailwindcss/cli` instead of `npx tailwindcss`. Tailwind is now imported via `@import "tailwindcss";` in `input.css` and the way tailwind is configured has changed. See the [upgrade guide](https://tailwindcss.com/docs/upgrade-guide) for more information.
+
+### Setup
+
+1. Install the Dioxus CLI:
+
+```bash
+cargo install dioxus-cli
+```
+
+2. Install npm: [https://docs.npmjs.com/downloading-and-installing-node-js-and-npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)
+3. Install the tailwind css cli: [https://tailwindcss.com/docs/installation](https://tailwindcss.com/docs/installation)
+
+```bash
+npm install tailwindcss @tailwindcss/cli
+```
+
+4. Create a `input.css` file in the root of your project with the following content:
+
+```css
+@import "tailwindcss";
+```
+
+5. Create a link to the `tailwind.css` file using manganis somewhere in your rust code:
+
+```rust
+{{#include src/doc_examples/tailwind.rs}}
+```
+
+### Development
+
+- Run the following command in the root of the project to start the tailwind css compiler:
+
+```bash
+npx @tailwindcss/cli -i ./input.css -o ./assets/tailwind.css --watch
+```
+
+#### Web
+
+- Run the following command in the root of the project to start the dioxus dev server:
+
+```bash
+dx serve
+```
+
+- Open the browser to [http://localhost:8080](http://localhost:8080).
+
+#### Desktop
 
 - Launch the dioxus desktop app:
 

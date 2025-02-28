@@ -38,11 +38,15 @@ COPY --from=builder /app/target/release/server /usr/src/app/server
 COPY --from=builder /app/packages/playground/server/template /usr/src/app/template
 COPY --from=planner /.cargo/bin/dx /usr/local/bin
 
+# Setup environment
 RUN mkdir /usr/src/app/temp
 ENV PATH="${PATH}:/usr/local/bin"
 ENV PORT=8080
-env PRODUCTION=true
+ENV PRODUCTION=true
 ENV BUILD_TEMPLATE_PATH="/usr/src/app/template"
 EXPOSE 8080
+
+# Prebuild examples + target cache
+RUN /usr/src/app/server --prebuild
 
 ENTRYPOINT [ "/usr/src/app/server" ]

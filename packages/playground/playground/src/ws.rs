@@ -1,4 +1,4 @@
-use crate::{build::BuildStage, error::AppError, BuildState};
+use crate::{build::BuildStage, BuildState};
 use futures::{SinkExt as _, StreamExt};
 use gloo_net::websocket::futures::WebSocket;
 use model::*;

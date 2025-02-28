@@ -10,4 +10,12 @@ edition = "2021"
 dioxus = { version= "0.6", features = ["web", "router"] }
 
 [profile.dev]
-opt-level = 3
+opt-level = 1
+debug-assertions = true
+strip = true
+debug = false
+incremental = true
+
+[profile.wasm-dev]
+inherits = "dev"
+opt-level = 1

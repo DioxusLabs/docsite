@@ -1,6 +1,6 @@
 //! Web-specific implementations
 
-use crate::{SocketError, SocketMessage};
+use crate::{AppError, SocketError, SocketMessage};
 use gloo_net::websocket::Message as GlooMessage;
 
 impl SocketMessage {
@@ -22,5 +22,20 @@ impl TryFrom<GlooMessage> for SocketMessage {
             }
             GlooMessage::Text(txt) => Self::try_from(txt)?,
         })
+    }
+}
+
+// Web AppError impls
+use gloo_utils::errors::JsError;
+impl From<JsError> for AppError {
+    fn from(value: JsError) -> Self {
+        Self::Js(Box::new(value))
+    }
+}
+
+use dioxus_document::EvalError;
+impl From<EvalError> for AppError {
+    fn from(value: EvalError) -> Self {
+        Self::Js(Box::new(value))
     }
 }

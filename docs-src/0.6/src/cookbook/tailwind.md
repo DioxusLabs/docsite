@@ -44,6 +44,10 @@ module.exports = {
 6. Create a `input.css` file in the root of your project with the following content:
 
 ```css
+/* only for tailwind v4.0 */
+@import tailwindcss;
+
+/* for tailwind under v4.0  */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;

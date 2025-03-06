@@ -32,7 +32,7 @@
 ---
 
 - [Guides](guides/index.md)
-  - [Managing State](guides/managing_state.md)
+  - [Rules of Hooks](guides/rules_of_hooks.md)
   - [Router](router/index.md)
     - [Example Project](router/example/index.md)
       - [Creating Our First Route](router/example/first-route.md)

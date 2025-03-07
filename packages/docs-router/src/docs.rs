@@ -98,10 +98,10 @@ fn MermaidBlock(chart: &'static str) -> Element {
     rsx! {
         div {
             document::Link { rel: "stylesheet", href: asset!("assets/mermaid_block.css") }
-            pre {
-                class: "mermaid",
-                style: "background-color: #fff",
-                dangerous_inner_html: "{chart}",
+            div {
+                class: "mermaid min-h-[60vh]",
+                style: "background-color: #fff; ",
+                "value": "{chart}",
             }
             script { r#type: "module",
                 r#"
@@ -118,7 +118,7 @@ mermaidElements.forEach((element, index) => {{
     if (element.getAttribute('data-processed') === 'true') {{
         return;
     }}
-    element.textContent = element.textContent.trim();
+    element.textContent = element.value;
     elements.push(element);
 }});
 
@@ -132,9 +132,7 @@ mermaid.run().then(() => {{
         }});
         element.addEventListener('wheel', panzoom.zoomWithWheel);
     }})
-}});
-
-                    "#
+}});"#
             }
         }
     }

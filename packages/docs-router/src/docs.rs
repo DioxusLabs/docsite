@@ -98,29 +98,43 @@ fn MermaidBlock(chart: &'static str) -> Element {
     rsx! {
         div {
             document::Link { rel: "stylesheet", href: asset!("assets/mermaid_block.css") }
-            div { class: "diagram-container", style: "height: 600px;",
-                div { class: "diagram-wrapper", id: "diagram-wrapper",
-                    pre { class: "mermaid", dangerous_inner_html: "{chart}" }
-                    script { r#type: "module",
-                        r#"
+            pre {
+                class: "mermaid",
+                style: "background-color: #fff",
+                dangerous_inner_html: "{chart}",
+            }
+            script { r#type: "module",
+                r#"
 import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/+esm';
-mermaid.initialize({{ startOnLoad: false }});
+import Panzoom from 'https://cdn.jsdelivr.net/npm/@panzoom/panzoom@4.6.0/+esm';
+
+mermaid.initialize({{
+    startOnLoad: false,
+}});
+
 const mermaidElements = document.querySelectorAll('.mermaid');
+let elements = [];
 mermaidElements.forEach((element, index) => {{
+    if (element.getAttribute('data-processed') === 'true') {{
+        return;
+    }}
     element.textContent = element.textContent.trim();
+    elements.push(element);
 }});
-mermaid.run().catch(error => {{
-    console.error('Mermaid rendering error:', error);
+
+mermaid.run().then(() => {{
+    elements.forEach((element, index) => {{
+        let svg = element.firstElementChild;
+        const panzoom = Panzoom(svg, {{
+            step: 1,
+            maxScale: 10,
+            minScale: 0.5,
+        }});
+        element.addEventListener('wheel', panzoom.zoomWithWheel);
+    }})
 }});
+
                     "#
-                    }
-                }
-                div { class: "zoom-controls",
-                    button { class: "zoom-in", "+" }
-                    button { class: "zoom-reset", "Reset" }
-                    button { class: "zoom-out", "-" }
-                    div { class: "zoom-level", "100%" }
-                }
             }
         }
     }

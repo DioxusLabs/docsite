@@ -580,7 +580,7 @@ mod use_server_future {
         // If the future was still pending, it would have returned suspended with the `?` above
         // we can unwrap the None case here to get the inner result
         let response_read = response.read();
-        let response = response_read.as_ref().unwrap();
+        let response = response_read.unwrap();
 
         // Then you can just handle the happy path with the resolved future
         rsx! {

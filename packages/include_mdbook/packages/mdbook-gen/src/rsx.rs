@@ -64,6 +64,7 @@ impl Section {
 pub(crate) struct ParsedMarkdown {
     pub(crate) body: CallBody,
     pub(crate) sections: Vec<Section>,
+    pub(crate) resolved_markdown: String,
 }
 
 pub fn parse_markdown(
@@ -81,7 +82,28 @@ pub fn parse_markdown(
 
     let mut parser = Parser::new_ext(markdown, options);
     let parser_by_ref = parser.by_ref().peekable();
-    let iter = ResolveCodeBlock::new(path.clone(), parser_by_ref).peekable();
+    let mut resolved = ResolveCodeBlock::new(path.clone(), parser_by_ref);
+    let all_resolved: Vec<_> = resolved.by_ref().collect();
+    let mut resolved_markdown = String::new();
+    pulldown_cmark_to_cmark::cmark_resume(
+        all_resolved.iter().cloned(),
+        &mut resolved_markdown,
+        Default::default(),
+    ).map_err(|e| {
+        syn::Error::new(
+            Span::call_site(),
+            format!(
+                "Failed to reformat markdown: {}",
+                e
+            ),
+        )
+    })?;
+    // Check for any errors encountered while resolving code blocks
+    if let Some(err) = resolved.errors.first() {
+        return Err(err.clone());
+    }
+
+    let iter = all_resolved.iter().cloned().peekable();
 
     let mut rsx_parser = RsxMarkdownParser {
         element_stack: vec![],
@@ -104,10 +126,12 @@ pub fn parse_markdown(
     } else {
         CallBody::new(TemplateBody::new(rsx_parser.root_nodes))
     };
+    let sections = rsx_parser.sections;
 
     Ok(ParsedMarkdown {
         body,
-        sections: rsx_parser.sections,
+        sections,
+        resolved_markdown,
     })
 }
 
@@ -149,7 +173,7 @@ impl<'a, I: Iterator<Item = Event<'a>>> RsxMarkdownParser<'a, I> {
                     }
                 })
             }
-            pulldown_cmark::Event::Html(node) => {
+            pulldown_cmark::Event::Html(node) | pulldown_cmark::Event::InlineHtml(node) => {
                 let code = escape_text(&node);
                 self.create_node(parse_quote! {
                     p {
@@ -167,6 +191,7 @@ impl<'a, I: Iterator<Item = Event<'a>>> RsxMarkdownParser<'a, I> {
             pulldown_cmark::Event::TaskListMarker(value) => {
                 self.write_checkbox(value);
             }
+            _ => {}
         }
         Ok(())
     }
@@ -259,7 +284,7 @@ impl<'a, I: Iterator<Item = Event<'a>>> RsxMarkdownParser<'a, I> {
                 });
                 self.write_text();
             }
-            Tag::Heading(level, _, _) => {
+            Tag::Heading { level, .. } => {
                 let text = self.take_text();
                 let section = Section::new(&text);
                 let variant = section.variant();
@@ -297,7 +322,7 @@ impl<'a, I: Iterator<Item = Event<'a>>> RsxMarkdownParser<'a, I> {
                 };
                 self.start_node(element);
             }
-            Tag::BlockQuote => {
+            Tag::BlockQuote { .. } => {
                 self.start_node(parse_quote! {
                     blockquote {}
                 });
@@ -379,7 +404,12 @@ impl<'a, I: Iterator<Item = Event<'a>>> RsxMarkdownParser<'a, I> {
             Tag::Strikethrough => self.start_node(parse_quote! {
                 s {}
             }),
-            Tag::Link(ty, dest, title) => {
+            Tag::Link {
+                link_type: ty,
+                dest_url: dest,
+                title,
+                ..
+            } => {
                 let href = match ty {
                     pulldown_cmark::LinkType::Email => format!("mailto:{}", dest).to_token_stream(),
                     _ => {
@@ -493,7 +523,11 @@ impl<'a, I: Iterator<Item = Event<'a>>> RsxMarkdownParser<'a, I> {
 
                 self.write_text();
             }
-            Tag::Image(_, dest, title) => {
+            Tag::Image {
+                dest_url: dest,
+                title,
+                ..
+            } => {
                 let alt = escape_text(&self.take_text());
                 let dest: &str = &dest;
                 let title = escape_text(&title);
@@ -543,6 +577,7 @@ impl<'a, I: Iterator<Item = Event<'a>>> RsxMarkdownParser<'a, I> {
                     })
                 }
             }
+            _ => {}
         }
         Ok(())
     }
@@ -666,9 +701,12 @@ impl<'a, I: Iterator<Item = Event<'a>>> Iterator for ResolveCodeBlock<'a, I> {
                     }
                 };
 
+                // If the code block is fenced, add the file name after the language
                 if let (Some(fname), CodeBlockKind::Fenced(lang)) = (fname, &kind) {
-                    // If the code block is fenced, add the file name after the language
-                    kind = CodeBlockKind::Fenced(format!("{}@{}", lang, fname).into());
+                    // If the kind already contains a path, don't add it again
+                    if !lang.contains('@') {
+                        kind = CodeBlockKind::Fenced(format!("{}@{}", lang, fname).into());
+                    }
                 }
 
                 // Queue the text event next

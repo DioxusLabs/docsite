@@ -16,6 +16,7 @@ fn main() {
     #[cfg(feature = "server")]
     if std::env::args().any(|arg| arg == "--generate-search-index") {
         search::generate_search_index();
+        llms::generate_llms_txt();
         return;
     }
 

@@ -1,19 +1,21 @@
 pub fn generate_llms_txt() {
     #[cfg(not(target_arch = "wasm32"))]
     {
+        use crate::static_dir;
         use crate::Route;
-        use std::fmt::Display;
         use dioxus::prelude::Routable;
+        use std::fmt::Display;
 
         fn write_content_to_llm_txt(route: impl Display, content: &str) {
             let route = route.to_string();
+            let route = route.trim_matches('/');
             let (route, _) = route.split_once('#').unwrap_or((&route, ""));
             let (route, _) = route.split_once('?').unwrap_or((&route, ""));
-            let path = std::path::PathBuf::from(route)
-                .join("index")
-                .join("llms.txt");
+            let path = static_dir().join(route).join("index").join("llms.txt");
             _ = std::fs::create_dir_all(path.parent().unwrap());
-            std::fs::write(path.to_str().unwrap(), content).expect("Failed to write llms.txt");
+            std::fs::write(&path, content).unwrap_or_else(|err| {
+                panic!("Failed to write llms.txt to {}: {}", path.display(), err)
+            });
         }
         for route in crate::Route::static_routes() {
             match route {

@@ -278,7 +278,7 @@ fn SearchModal() -> Element {
         div {
             height: "100vh",
             width: "100vw",
-            class: "fixed top-0 left-0 z-50 block bg-gray-100 dark:bg-opacity-70 bg-opacity-70 overflow-y-hidden search-modal-animated  ",
+            class: "fixed top-0 left-0 z-50 block bg-gray-100/70 dark:bg-gray-950/70 backdrop-blur-sm overflow-y-hidden search-modal-animated  ",
             class: if *SHOW_SEARCH.read() { "dioxus-show" } else { "dioxus-hide" },
             onclick: move |_| *SHOW_SEARCH.write() = false,
 

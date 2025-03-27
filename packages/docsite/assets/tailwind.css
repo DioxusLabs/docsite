@@ -3022,11 +3022,26 @@
       height: 88vh;
     }
   }
-  .md\:min-h-\[520px\] {
-    @media (width >= 48rem) {
-      min-height: 520px;
+    .md\:h-\[calc\(100vh_-_calc\(var\(--spacing\)_\*_28\)\)\] {
+      @media (width >= 48rem) {
+        height: calc(100vh - calc(var(--spacing) * 28));
+      }
     }
-  }
+    .md\:h-full {
+      @media (width >= 48rem) {
+        height: 100%;
+      }
+    }
+    .md\:min-h-\[520px\] {
+      @media (width >= 48rem) {
+        min-height: 520px;
+      }
+    }
+    .md\:flex-col {
+      @media (width >= 48rem) {
+        flex-direction: column;
+      }
+    }
   .md\:w-60 {
     @media (width >= 48rem) {
       width: calc(var(--spacing) * 60);

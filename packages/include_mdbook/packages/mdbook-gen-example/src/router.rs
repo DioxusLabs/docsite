@@ -88,7 +88,7 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                 sections: vec![
                     ::use_mdbook::mdbook_shared::Section {
                         title: "Roadmap & Feature-set".to_string(),
-                        id: "roadmap-&-feature-set".to_string(),
+                        id: "roadmap--feature-set".to_string(),
                         level: 1usize,
                     },
                     ::use_mdbook::mdbook_shared::Section {
@@ -123,7 +123,7 @@ pub static LAZY_BOOK: use_mdbook::Lazy<use_mdbook::mdbook_shared::MdBook<BookRou
                     },
                     ::use_mdbook::mdbook_shared::Section {
                         title: "Bundling (CLI)".to_string(),
-                        id: "bundling-(cli)".to_string(),
+                        id: "bundling-cli".to_string(),
                         level: 3usize,
                     },
                     ::use_mdbook::mdbook_shared::Section {

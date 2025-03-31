@@ -173,26 +173,37 @@ impl MdBook<PathBuf> {
 
         let mut sections = Vec::new();
 
+        let mut title = String::new();
+
         parser.for_each(|event| match event {
             Event::Start(Tag::Heading(level, ..)) => {
+                title.clear();
                 last_heading = Some(level);
             }
-            Event::Text(text) => {
+            Event::Text(text) | Event::Code(text) => {
+                title.push_str(&text);
+            }
+            Event::End(Tag::Heading(_, _, _)) => {
                 if let Some(current_level) = &mut last_heading {
-                    let anchor = text
+                    let anchor = title
                         .clone()
-                        .into_string()
                         .trim()
                         .to_lowercase()
+                        .chars()
+                        .filter(|c| {
+                            c.is_ascii_alphanumeric() || *c == ' ' || *c == '-' || *c == '_'
+                        })
+                        .collect::<String>()
+                        .replace('_', "-")
                         .replace(' ', "-");
                     sections.push(Section {
                         level: *current_level as usize,
-                        title: text.to_string(),
+                        title: title.clone(),
                         id: anchor,
                     });
-
-                    last_heading = None;
                 }
+
+                last_heading = None;
             }
             _ => {}
         });

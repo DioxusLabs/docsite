@@ -14,7 +14,8 @@ serde_json = "1.0.96"
 macro_state = "0.2.0"
 convert_case = "0.6.0"
 postcard = { version = "1.0.4", features = ["use-std"] }
-pulldown-cmark = "0.9.3"
+pulldown-cmark = "0.13.0"
+pulldown-cmark-to-cmark = "21.0.0"
 syntect = { version = "5.2.0", features = ["plist-load"] }
 dioxus-rsx = { version = "0.6.0" }
 dioxus-autofmt = { version = "0.6.0" }

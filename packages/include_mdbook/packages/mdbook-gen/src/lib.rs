@@ -1,3 +1,4 @@
+use std::collections::HashMap;
 use std::path::Path;
 use std::path::PathBuf;
 
@@ -64,12 +65,17 @@ pub fn generate_router_as_file(
 pub fn generate_router(mdbook_dir: PathBuf, book: mdbook_shared::MdBook<PathBuf>) -> TokenStream2 {
     let mdbook = write_book_with_routes(&book);
 
+    let mut page_markdown_map = HashMap::new();
+
     let book_pages = book.pages().iter().map(|(_, page)| {
         let name = path_to_route_variant(&page.url).unwrap();
 
         // Rsx doesn't work very well in macros because the path for all the routes generated point to the same characters. We manually expand rsx here to get around that issue.
         match rsx::parse_markdown(mdbook_dir.clone(), page.url.clone(), &page.raw) {
             Ok(parsed) => {
+                // insert the parsed markdown into the page_markdown map
+                page_markdown_map.insert(page.id.0, parsed.resolved_markdown);
+
                 // for the sake of readability, we want to actually convert the CallBody back to Tokens
                 let rsx = rsx::callbody_to_tokens(parsed.body);
 
@@ -154,6 +160,7 @@ pub fn generate_router(mdbook_dir: PathBuf, book: mdbook_shared::MdBook<PathBuf>
             Err(err) => err.to_compile_error(),
         }
     });
+    let book_pages = quote! {#(#book_pages)*};
 
     let default_impl = book
         .pages()
@@ -200,6 +207,29 @@ pub fn generate_router(mdbook_dir: PathBuf, book: mdbook_shared::MdBook<PathBuf>
         }
     });
 
+    let page_markdown = {
+        let match_page = page_markdown_map.iter().map(|(id, markdown)| {
+            let id = *id;
+            quote! {
+                #id => #markdown,
+            }
+        });
+
+        quote! {
+            /// Get the markdown for a page by its ID
+            pub const fn page_markdown(id: use_mdbook::mdbook_shared::PageId) -> &'static str {
+                match id.0 {
+                    #(
+                        #match_page
+                    )*
+                    _ => {
+                        panic!("Invalid page ID:")
+                    }
+                }
+            }
+        }
+    };
+
     quote! {
         use dioxus::prelude::*;
 
@@ -209,6 +239,8 @@ pub fn generate_router(mdbook_dir: PathBuf, book: mdbook_shared::MdBook<PathBuf>
         }
 
         impl BookRoute {
+            #page_markdown
+
             pub fn sections(&self) -> &'static [use_mdbook::mdbook_shared::Section] {
                 &self.page().sections
             }
@@ -232,9 +264,7 @@ pub fn generate_router(mdbook_dir: PathBuf, book: mdbook_shared::MdBook<PathBuf>
             #mdbook
         });
 
-        #(
-            #book_pages
-        )*
+        #book_pages
     }
 }
 

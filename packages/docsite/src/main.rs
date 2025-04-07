@@ -15,6 +15,7 @@ fn main() {
     // If we are just building the search index, we don't need to launch the app
     #[cfg(feature = "server")]
     if std::env::args().any(|arg| arg == "--generate-search-index") {
+        llms::generate_llms_txt();
         search::generate_search_index();
         return;
     }
@@ -215,7 +216,6 @@ impl Route {
     }
 }
 
-// todo - when we update to 0.6.0 we need to change this to return a Vec<String>
 #[cfg(feature = "fullstack")]
 #[server(endpoint = "static_routes")]
 async fn static_routes() -> Result<Vec<String>, ServerFnError> {

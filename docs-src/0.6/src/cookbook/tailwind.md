@@ -2,8 +2,7 @@
 
 You can style your Dioxus application with whatever CSS framework you choose, or just write vanilla CSS.
 
-
-One popular option for styling your Dioxus application is [Tailwind](https://tailwindcss.com/). Tailwind allows you to style your elements with CSS utility classes. This guide will show you how to setup tailwind CSS with your Dioxus application.
+One popular option for styling your Dioxus application is [Tailwind](https://tailwindcss.com/). Tailwind allows you to style your elements with CSS utility classes. This guide will show you how to setup Tailwind CSS with your Dioxus application.
 
 ## Setup
 
@@ -13,43 +12,16 @@ One popular option for styling your Dioxus application is [Tailwind](https://tai
 cargo install dioxus-cli
 ```
 
-2. Install npm: [https://docs.npmjs.com/downloading-and-installing-node-js-and-npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)
-3. Install the tailwind css cli: [https://tailwindcss.com/docs/installation](https://tailwindcss.com/docs/installation)
-4. Initialize the tailwind css project:
+2. Install NPM: [https://docs.npmjs.com/downloading-and-installing-node-js-and-npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)
+3. Install the Tailwind CSS CLI: [https://tailwindcss.com/docs/installation/tailwind-cli](https://tailwindcss.com/docs/installation/tailwind-cli)
 
-```bash
-npx tailwindcss init
-```
-
-This should create a `tailwind.config.js` file in the root of the project.
-
-5. Edit the `tailwind.config.js` file to include rust files:
-
-```js
-module.exports = {
-    mode: "all",
-    content: [
-        // include all rust, html and css files in the src directory
-        "./src/**/*.{rs,html,css}",
-        // include all html files in the output (dist) directory
-        "./dist/**/*.html",
-    ],
-    theme: {
-        extend: {},
-    },
-    plugins: [],
-}
-```
-
-6. Create a `input.css` file in the root of your project with the following content:
+4. Create a `input.css` file in the root of your project with the following content:
 
 ```css
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
 ```
 
-7. Create a link to the `tailwind.css` file using manganis somewhere in your rust code:
+5. Create a link to the `tailwind.css` file using manganis somewhere in your rust code:
 
 ```rust
 {{#include src/doc_examples/tailwind.rs}}
@@ -57,7 +29,7 @@ module.exports = {
 
 ### Bonus Steps
 
-1. Install the tailwind css vs code extension
+1. Install the Tailwind CSS VSCode extension
 2. Go to the settings for the extension and find the experimental regex support section. Edit the setting.json file to look like this:
 
 ```json
@@ -69,15 +41,15 @@ module.exports = {
 
 ## Development
 
-- Run the following command in the root of the project to start the tailwind css compiler:
+- Run the following command in the root of the project to start the Tailwind CSS compiler:
 
 ```bash
-npx tailwindcss -i ./input.css -o ./assets/tailwind.css --watch
+npx @tailwindcss/cli -i ./input.css -o ./assets/tailwind.css --watch
 ```
 
 ### Web
 
-- Run the following command in the root of the project to start the dioxus dev server:
+- Run the following command in the root of the project to start the Dioxus dev server:
 
 ```bash
 dx serve
@@ -87,7 +59,7 @@ dx serve
 
 ### Desktop
 
-- Launch the dioxus desktop app:
+- Launch the Dioxus desktop app:
 
 ```bash
 dx serve --platform desktop

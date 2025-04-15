@@ -64,6 +64,7 @@
   	- [Authentication](guides/fullstack/authentication.md)
   	- [Routing](guides/fullstack/routing.md)
     - [Static Site Generation](guides/fullstack/static_site_generation.md)
+    - [Axum Integration](guides/fullstack/axum.md)
   - [Publishing](cookbook/publishing.md)
   - [Anti-patterns](cookbook/antipatterns.md)
   - [Integrations](cookbook/integrations/index.md)

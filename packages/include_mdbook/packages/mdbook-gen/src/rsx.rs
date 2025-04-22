@@ -89,13 +89,11 @@ pub fn parse_markdown(
         all_resolved.iter().cloned(),
         &mut resolved_markdown,
         Default::default(),
-    ).map_err(|e| {
+    )
+    .map_err(|e| {
         syn::Error::new(
             Span::call_site(),
-            format!(
-                "Failed to reformat markdown: {}",
-                e
-            ),
+            format!("Failed to reformat markdown: {}", e),
         )
     })?;
     // Check for any errors encountered while resolving code blocks

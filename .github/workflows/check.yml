@@ -6,8 +6,9 @@ on:
       - main
     paths:
       - examples/**
-      - docs_src/**
-      - src/**
+      - docs-src/**
+      - packages/**/*.rs
+      - packages/**/Cargo.toml
       - .github/**
       - lib.rs
       - Cargo.toml
@@ -18,8 +19,9 @@ on:
       - main
     paths:
       - examples/**
-      - docs_src/**
-      - src/**
+      - docs-src/**
+      - packages/**/*.rs
+      - packages/**/Cargo.toml
       - .github/**
       - lib.rs
       - Cargo.toml

@@ -1,6 +1,7 @@
 #![allow(non_snake_case, non_upper_case_globals)]
 
 use dioxus::html::input_data::keyboard_types::{Key, Modifiers};
+use dioxus::logger::tracing::Level;
 use dioxus::prelude::*;
 use serde::{Deserialize, Serialize};
 
@@ -27,13 +28,11 @@ fn main() {
             // Only in release do we SSG
             let mut cfg = ServeConfig::builder();
 
-            if !cfg!(debug_assertions) {
-                cfg = cfg.incremental(
-                    IncrementalRendererConfig::new()
-                        .static_dir(static_dir())
-                        .clear_cache(false)
-                );
-            }
+            cfg = cfg.incremental(
+                IncrementalRendererConfig::new()
+                    .static_dir(static_dir())
+                    .clear_cache(false)
+            );
 
             cfg.build().expect("Unable to build ServeConfig")
         })
@@ -217,7 +216,7 @@ impl Route {
 }
 
 #[cfg(feature = "fullstack")]
-#[server(endpoint = "static_routes")]
+#[server(endpoint = "static_routes", output = server_fn::codec::Json)]
 async fn static_routes() -> Result<Vec<String>, ServerFnError> {
     Ok(Route::static_routes()
         .into_iter()
@@ -234,7 +233,7 @@ fn static_dir() -> std::path::PathBuf {
 }
 
 fn create_sitemap() {
-    #[cfg(not(debug_assertions))]
+    #[cfg(feature = "production")]
     server_only! {
         use std::io::Write;
 

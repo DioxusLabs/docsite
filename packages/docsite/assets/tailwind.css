@@ -712,6 +712,9 @@
   .max-h-\[calc\(100\%-8rem\)\] {
     max-height: calc(100% - 8rem);
   }
+  .max-h-\[calc\(100vh_-_calc\(var\(--spacing\)_\*_28\)\)\] {
+    max-height: calc(100vh - calc(var(--spacing) * 28));
+  }
   .max-h-none {
     max-height: none;
   }
@@ -2822,6 +2825,11 @@
       }
     }
   }
+  .placeholder\:text-gray-400 {
+    &::placeholder {
+      color: var(--color-gray-400);
+    }
+  }
   .hover\:-translate-y-2 {
     &:hover {
       @media (hover: hover) {
@@ -3437,6 +3445,13 @@
   .dark\:bg-gray-950\/70 {
     @media (prefers-color-scheme: dark) {
       background-color: color-mix(in oklab, var(--color-gray-950) 70%, transparent);
+    }
+  }
+  .dark\:placeholder\:text-gray-300 {
+    @media (prefers-color-scheme: dark) {
+      &::placeholder {
+        color: var(--color-gray-300);
+      }
     }
   }
   .dark\:bg-ideblack {

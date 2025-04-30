@@ -4,7 +4,7 @@ These guides contains more detailed explanations for some concepts covered in th
 
 ## State
 
-- [State management](managing_state.md) (signals-based reactivity)
+- [Rules of hooks](rules_of_hooks.md) (signals-based reactivity)
 
 ## Assets
 

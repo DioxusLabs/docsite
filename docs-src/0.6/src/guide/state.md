@@ -36,7 +36,7 @@ When called in a component, the `use_hook` function will return a `.clone()` of 
 {{#include src/doc_examples/guide_state.rs:use_hook}}
 ```
 
-Dioxus hooks are very similar to React's hooks and need to follow some [simple rules](../guides/managing_state.md#the-rules-of-hooks) to function properly.
+Dioxus hooks are very similar to React's hooks and need to follow some [simple rules](../guides/rules_of_hooks.md#the-rules-of-hooks) to function properly.
 
 ## Signals and use_signal
 

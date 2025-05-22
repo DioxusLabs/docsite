@@ -1,0 +1,8 @@
+.mermaid {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    border: 1px solid #ddd;
+    margin: 20px 0px;
+    cursor: grab;
+}

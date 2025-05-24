@@ -40,7 +40,10 @@ pub fn generate_llms_txt() {
             let path = route_to_path(&route);
             _ = std::fs::create_dir_all(&path);
             let path = path.join("llms.txt");
-            let file = std::fs::File::options().create(true).write(true).open(&path)?;
+            let file = std::fs::File::options()
+                .create(true)
+                .write(true)
+                .open(&path)?;
             let mut file = std::io::BufWriter::new(file);
             writeln!(file, "<SYSTEM>This is the developer documentation for Dioxus from {route}.</SYSTEM>\n{content}")?;
             file.write_all(content.as_bytes())?;

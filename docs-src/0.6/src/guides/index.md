@@ -20,5 +20,6 @@ These guides contains more detailed explanations for some concepts covered in th
     - [`Middleware`](fullstack/middleware.md) Middleware allows you to wrap a server function request or response
     - [`Authentication`](fullstack/authentication.md) An overview of how to handle authentication with server functions
     - [`Routing`](fullstack/routing.md) An overview of how to work with the router in the fullstack renderer
+    - [`Secrets`](fullstack/secrets.md) A guide on managing client-side and server-side secrets in Dioxus fullstack apps
 - [`SSR`](ssr.md) Overview of the SSR renderer
 

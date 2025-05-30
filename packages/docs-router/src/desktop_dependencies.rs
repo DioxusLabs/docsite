@@ -1,5 +1,5 @@
 use dioxus::prelude::*;
-use dioxus_material_icons::MaterialIconColor;
+// use dioxus_material_icons::MaterialIconColor;
 
 #[derive(Clone, Copy, PartialEq)]
 enum Platform {
@@ -76,17 +76,17 @@ pub fn DesktopDependencies() -> Element {
             onclick: move |_| {
                 active.toggle();
             },
-            if active() {
-                dioxus_material_icons::MaterialIcon {
-                    name: "expand_more",
-                    color: MaterialIconColor::Custom("gray".to_string()),
-                }
-            } else {
-                dioxus_material_icons::MaterialIcon {
-                    name: "chevron_right",
-                    color: MaterialIconColor::Custom("gray".to_string()),
-                }
-            }
+            // if active() {
+            //     dioxus_material_icons::MaterialIcon {
+            //         name: "expand_more",
+            //         color: MaterialIconColor::Custom("gray".to_string()),
+            //     }
+            // } else {
+            //     dioxus_material_icons::MaterialIcon {
+            //         name: "chevron_right",
+            //         color: MaterialIconColor::Custom("gray".to_string()),
+            //     }
+            // }
             "Desktop Specific Dependencies"
         }
         if active() {

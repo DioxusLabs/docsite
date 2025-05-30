@@ -48,19 +48,25 @@ dioxus-search-macro = { path = "packages/search/search-macro" }
 dioxus-search-shared = { path = "packages/search/search-shared" }
 
 # Dioxus Release
-dioxus = "0.6.2"
-dioxus-document = "0.6.2"
-dioxus-sdk = { version = "0.6", default-features = false }
-dioxus-core = "0.6.2"
-dioxus-core-types = "0.6.2"
-dioxus-devtools = "0.6.2"
-dioxus-rsx-hotreload = "0.6.2"
-dioxus-rsx = "0.6.2"
-dioxus-html = { version = "0.6.2", default-features = false }
-dioxus-rsx-rosetta = "0.6.2"
-dioxus-autofmt = "0.6.2"
-dioxus-dx-wire-format = "0.6.2"
-dioxus-logger = "0.6.2"
+dioxus = "0.7.0-alpha.0"
+dioxus-document = "0.7.0-alpha.0"
+# dioxus-sdk = { version = "0.6", default-features = false }
+dioxus-core = "0.7.0-alpha.0"
+dioxus-web = "0.7.0-alpha.0"
+dioxus-router = "0.7.0-alpha.0"
+dioxus-cli-config = "0.7.0-alpha.0"
+dioxus-desktop = "0.7.0-alpha.0"
+dioxus-liveview = "0.7.0-alpha.0"
+dioxus-ssr = "0.7.0-alpha.0"
+dioxus-core-types = "0.7.0-alpha.0"
+dioxus-devtools = "0.7.0-alpha.0"
+dioxus-rsx-hotreload = "0.7.0-alpha.0"
+dioxus-rsx = "0.7.0-alpha.0"
+dioxus-html = { version = "0.7.0-alpha.0", default-features = false }
+dioxus-rsx-rosetta = "0.7.0-alpha.0"
+dioxus-autofmt = "0.7.0-alpha.0"
+dioxus-dx-wire-format = "0.7.0-alpha.0"
+dioxus-logger = "0.7.0-alpha.0"
 
 getrandom = { version = "0.2" }
 serde = { version = "1.0.215", features = ["derive"] }
@@ -137,3 +143,32 @@ inherits = "release"
 [profile.release.build-override]
 opt-level = 3
 codegen-units = 1
+
+[patch.crates-io]
+dioxus = { path = "../../dioxus/packages/dioxus" }
+dioxus-lib = { path = "../../dioxus/packages/dioxus-lib" }
+dioxus-core = { path = "../../dioxus/packages/core" }
+dioxus-core-macro = { path = "../../dioxus/packages/core-macro" }
+dioxus-config-macro = { path = "../../dioxus/packages/config-macro" }
+dioxus-router = { path = "../../dioxus/packages/router" }
+dioxus-router-macro = { path = "../../dioxus/packages/router-macro" }
+dioxus-html = { path = "../../dioxus/packages/html" }
+dioxus-html-internal-macro = { path = "../../dioxus/packages/html-internal-macro" }
+dioxus-hooks = { path = "../../dioxus/packages/hooks" }
+dioxus-web = { path = "../../dioxus/packages/web" }
+dioxus-ssr = { path = "../../dioxus/packages/ssr" }
+dioxus-desktop = { path = "../../dioxus/packages/desktop" }
+dioxus-interpreter-js = { path = "../../dioxus/packages/interpreter" }
+dioxus-liveview = { path = "../../dioxus/packages/liveview" }
+dioxus-rsx = { path = "../../dioxus/packages/rsx" }
+dioxus-signals = { path = "../../dioxus/packages/signals" }
+dioxus-cli-config = { path = "../../dioxus/packages/cli-config" }
+generational-box = { path = "../../dioxus/packages/generational-box" }
+dioxus_server_macro = { path = "../../dioxus/packages/server-macro" }
+dioxus-fullstack = { path = "../../dioxus/packages/fullstack" }
+dioxus-autofmt = { path = "../../dioxus/packages/autofmt" }
+dioxus-devtools = { path = "../../dioxus/packages/devtools" }
+dioxus-devtools-types = { path = "../../dioxus/packages/devtools-types" }
+manganis = { path = "../../dioxus/packages/manganis/manganis" }
+manganis-core = { path = "../../dioxus/packages/manganis/manganis-core" }
+manganis-macro = { path = "../../dioxus/packages/manganis/manganis-macro" }

@@ -1,7 +1,7 @@
 use crate::docs::AnyBookRoute;
 use crate::*;
 use dioxus::html::input_data::keyboard_types::Key;
-use dioxus_material_icons::{MaterialIcon, MaterialIconColor};
+// use dioxus_material_icons::{MaterialIcon, MaterialIconColor};
 use std::ops::Deref;
 
 pub(crate) static SHOW_SEARCH: GlobalSignal<bool> = Signal::global(|| false);
@@ -29,20 +29,20 @@ pub(crate) fn Nav() -> Element {
                         onclick: move |_| {
                             *SHOW_SEARCH.write() = true;
                         },
-                        span { class: "h-4 px-1 dark:hidden",
-                            MaterialIcon {
-                                name: "search",
-                                size: 16,
-                                color: MaterialIconColor::Dark,
-                            }
-                        }
-                        span { class: "h-4 px-1 hidden dark:block",
-                            MaterialIcon {
-                                name: "search",
-                                size: 16,
-                                color: MaterialIconColor::Light,
-                            }
-                        }
+                        // span { class: "h-4 px-1 dark:hidden",
+                        //     MaterialIcon {
+                        //         name: "search",
+                        //         size: 16,
+                        //         color: MaterialIconColor::Dark,
+                        //     }
+                        // }
+                        // span { class: "h-4 px-1 hidden dark:block",
+                        //     MaterialIcon {
+                        //         name: "search",
+                        //         size: 16,
+                        //         color: MaterialIconColor::Light,
+                        //     }
+                        // }
                         span { class: "hidden content-center text-sm sm:flex flex-row w-60 justify-between",
                             span { "Search..." }
                             span { class: "px-1 min-w-6
@@ -63,11 +63,11 @@ pub(crate) fn Nav() -> Element {
                         },
                         class: "bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-500 md:hidden rounded-lg p-1 mr-2 my-3 h-8 flex items-center text-lg z-50",
                         class: if !route.is_docs() { "hidden" },
-                        MaterialIcon {
-                            name: "menu",
-                            size: 24,
-                            color: MaterialIconColor::Dark,
-                        }
+                        // MaterialIcon {
+                        //     name: "menu",
+                        //     size: 24,
+                        //     color: MaterialIconColor::Dark,
+                        // }
                     }
 
                     div { class: "h-full  gap-3 hidden lg:flex",
@@ -292,11 +292,11 @@ fn SearchModal() -> Element {
                     div { class: "flex flex-col flex-grow border-b p-2 gap-2 border-inherit",
                         div { class: "my-auto flex flex-row items-center pl-2",
                             div { class: "dark:invert h-5",
-                                MaterialIcon {
-                                    name: "search",
-                                    size: 20,
-                                    color: MaterialIconColor::Dark,
-                                }
+                                // MaterialIcon {
+                                //     name: "search",
+                                //     size: 20,
+                                //     color: MaterialIconColor::Dark,
+                                // }
                             }
 
                             // hide the input until show search so the onmounted fires

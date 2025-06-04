@@ -71,3 +71,4 @@ server = [
 production = [
     "dioxus_docs_router/production",
 ]
+doc_test = []

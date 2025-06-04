@@ -35,4 +35,4 @@ If you are targeting web, but don't plan on targeting any other Dioxus renderer 
 ## Customizing Index Template
 
 Dioxus supports providing custom index.html templates. The index.html must include a `div` with the id `main` to be used. Hot Reload is still supported. An example
-is provided in the [PWA-Example](https://github.com/DioxusLabs/dioxus/blob/main/examples/PWA-example/index.html).
+is provided in the [PWA-Example](https://github.com/DioxusLabs/dioxus/blob/main/examples/pwa/index.html).

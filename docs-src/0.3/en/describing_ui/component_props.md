@@ -2,7 +2,7 @@
 
 Just like you can pass arguments to a function, you can pass props to a component that customize its behavior! The components we've seen so far didn't accept any props – so let's write some components that do.
 
-## `#[derive(Props)]`
+## derive(Props)
 
 Component props are a single struct annotated with `#[derive(Props)]`. For a component to accept props, the type of its argument must be `Scope<YourPropsStruct>`. Then, you can access the value of the props using `cx.props`.
 
@@ -28,7 +28,7 @@ You can then pass prop values to the component the same way you would pass attri
 {{#include src/doc_examples/untested_03/component_owned_props.rs:App}}
 ```
 
-![Screenshot: Likes component](/assets/static/images03/component_owned_props_screenshot.png)
+![Screenshot: Likes component](/assets/blog/release-03/component_owned_props_screenshot.png)
 
 ### Borrowed Props
 
@@ -45,7 +45,7 @@ We can then use the component like this:
 ```rust
 {{#include src/doc_examples/untested_03/component_borrowed_props.rs:App}}
 ```
-![Screenshot: TitleCard component](/assets/static/images03/component_borrowed_props_screenshot.png)
+![Screenshot: TitleCard component](/assets/blog/release-03/component_borrowed_props_screenshot.png)
 
 Borrowed props can be very useful, but they do not allow for memorization so they will *always* rerun when the parent scope is rerendered. Because of this Borrowed Props should be reserved for components that are cheap to rerun or places where cloning data is an issue. Using Borrowed Props everywhere will result in large parts of your app rerunning every interaction.
 
@@ -109,7 +109,7 @@ Then, you can use it so:
 {{#include src/doc_examples/untested_03/component_props_options.rs:IntoComponent_usage}}
 ```
 
-## The `inline_props` macro
+## The inline_props macro
 
 So far, every Component function we've seen had a corresponding ComponentProps struct to pass in props. This was quite verbose... Wouldn't it be nice to have props as simple function arguments? Then we wouldn't need to define a Props struct, and instead of typing `cx.props.whatever`, we could just use `whatever` directly!
 

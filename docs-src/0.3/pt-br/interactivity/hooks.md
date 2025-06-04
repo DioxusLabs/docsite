@@ -18,7 +18,7 @@ Por exemplo, você pode ter visto o exemplo do contador, no qual o estado (um n�
 {{#include src/doc_examples/untested_03/hooks_counter.rs:component}}
 ```
 
-![Screenshot: counter app](/assets/static/images03/counter.png)
+![Screenshot: counter app](/assets/blog/release-03/counter.png)
 
 Toda vez que o estado do componente muda, ele é renderizado novamente e a função do componente é chamada, para que você possa descrever como deseja que a nova interface do usuário se pareça. Você não precisa se preocupar em "mudar" nada - apenas descreva o que você quer em termos de estado, e Dioxus cuidará do resto!
 
@@ -30,7 +30,7 @@ Você pode usar vários _hooks_ no mesmo componente se quiser:
 {{#include src/doc_examples/untested_03/hooks_counter_two_state.rs:component}}
 ```
 
-![Screenshot: app with two counters](/assets/static/images03/counter_two_state.png)
+![Screenshot: app with two counters](/assets/blog/release-03/counter_two_state.png)
 
 ## Regras dos Hooks
 

@@ -16,7 +16,7 @@ Then, when rendering the component, you can pass in the output of `cx.render(rsx
 
 > Warning: While it may compile, do not include the same `Element` more than once in the RSX. The resulting behavior is unspecified.
 
-## The `children` field
+## The children field
 
 Rather than passing the RSX through a regular prop, you may wish to accept children similarly to how elements can have children. The "magic" `children` prop lets you achieve this:
 

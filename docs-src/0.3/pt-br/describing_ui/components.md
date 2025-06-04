@@ -2,7 +2,7 @@
 
 Assim como você não gostaria de escrever um programa complexo em uma única e longa função `main`, você não deve construir uma interface complexa em uma única função `App`. Em vez disso, seria melhor dividir a funcionalidade de um aplicativo em partes lógicas chamadas componentes.
 
-Um componente é uma função Rust, nomeada em _UpperCammelCase_, que recebe um parâmetro `Scope` e retorna um `Element` descrevendo a interface do usuário que deseja renderizar. Na verdade, nossa função `App` é um componente!
+Um componente é uma função Rust, nomeada em _UpperCamelCase_, que recebe um parâmetro `Scope` e retorna um `Element` descrevendo a interface do usuário que deseja renderizar. Na verdade, nossa função `App` é um componente!
 
 ```rust
 {{#include src/doc_examples/untested_03/hello_world_desktop.rs:component}}
@@ -22,6 +22,6 @@ Em seguida, você pode renderizar seu componente em outro componente, da mesma f
 {{#include src/doc_examples/untested_03/components.rs:App}}
 ```
 
-![Captura de tela contendo o componente Sobre duas vezes](/assets/static/images03/screenshot_about_component.png)
+![Captura de tela contendo o componente Sobre duas vezes](/assets/blog/release-03/screenshot_about_component.png)
 
 > Neste ponto, pode parecer que os componentes nada mais são do que funções. No entanto, à medida que você aprende mais sobre os recursos do Dioxus, verá que eles são realmente mais poderosos!

@@ -1,0 +1,49 @@
+[package]
+name = "dioxus-playground"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+model = { workspace = true, features = ["web"] }
+serde = { workspace = true }
+serde_json = { workspace = true }
+serde-wasm-bindgen = "0.6.5"
+futures = { workspace = true }
+gloo-net = { workspace = true }
+uuid = { workspace = true }
+thiserror = { workspace = true }
+
+# Dioxus
+dioxus = { workspace = true, features = ["web"] }
+dioxus-document = { workspace = true }
+dioxus-sdk = { workspace = true, features = [
+    "window_size",
+    "timing",
+] }
+
+# Hot reload / Paste as RSX
+dioxus-core = { workspace = true }
+dioxus-core-types = { workspace = true }
+dioxus-devtools = { workspace = true }
+dioxus-rsx-hotreload = { workspace = true }
+dioxus-rsx = { workspace = true }
+dioxus-html = { workspace = true, features = [
+    "hot-reload-context",
+], default-features = false }
+dioxus-rsx-rosetta = { workspace = true }
+dioxus-autofmt = { workspace = true }
+
+gloo-utils = { workspace = true }
+wasm-bindgen = { version = "0.2.99", features = ["serde-serialize"] }
+miniz_oxide = { version = "0.8.0", features = ["std"] }
+base64 = "0.22.1"
+
+syn = { workspace = true }
+proc-macro2 = "1.0.89"
+
+
+example-projects = { workspace = true }
+
+[target.'cfg(target_arch = "wasm32")'.dependencies]
+dioxus-sdk = { version = "0.6", default-features = false, features = ["system_theme", "window_size",
+    "timing",] }

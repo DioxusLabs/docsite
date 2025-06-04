@@ -69,7 +69,7 @@ dioxus-logger = { version = "*", features = ["timestamps"] }
 By enabling this feature, you gain access to the `TIMESTAMP` format variable.
 
 
-#### Platform Intricacies
+#### Dioxus Logger Platform Intricacies
 On web, Dioxus Logger will use [web-sys](https://crates.io/crates/web-sys) to interact with `console.log()` to output your logs to the browser's console. On Desktop and server-based targets, Dioxus Logger will output using `println()`.
 
 #### Final Notes
@@ -117,7 +117,8 @@ fn main() {
     // Dioxus code
 }
 ```
-#### Platform Intricacies
+
+#### Wasm Logger Platform Intricacies
 WASM Logger also uses the [web-sys](https://crates.io/crates/web-sys) crate to output to the console.
 
 For more information, visit wasm-logger's [docs](https://docs.rs/wasm-logger/latest/wasm_logger/).
@@ -138,7 +139,7 @@ fn native_activity_create() {
 ```
 The `with_tag()` is what your app's logs will show as.
 
-#### Viewing Logs
+#### Viewing Android Logs
 Android logs are sent to logcat. To use logcat through the Android debugger, run:
 ```cmd
 adb -d logcat
@@ -161,7 +162,7 @@ fn main() {
 }
 ```
 
-#### Viewing Logs
+#### Viewing IOS Logs
 You can view the emitted logs in Xcode. 
 
 For more information, visit [oslog](https://crates.io/crates/oslog). 

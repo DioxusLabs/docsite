@@ -1,6 +1,6 @@
 # Breaking Out of Dioxus
 
-Dioxus is makes it easy to build reactive user interfaces. However, there are some cases where you may need to break out of the reactive paradigm to interact with the DOM directly.
+Dioxus makes it easy to build reactive user interfaces. However, there are some cases where you may need to break out of the reactive paradigm to interact with the DOM directly.
 
 ## Interacting with JavaScript with `eval` and `web-sys`
 

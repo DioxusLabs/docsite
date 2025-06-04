@@ -2,7 +2,7 @@
 
 Assim como você pode passar argumentos para uma função, você pode passar _props_ para um componente que personaliza seu comportamento! Os componentes que vimos até agora não aceitam _props_ – então vamos escrever alguns componentes que aceitam.
 
-## `#[derive(Props)]`
+## derive(Props)
 
 _Props_ de componente são uma única estrutura anotada com `#[derive(Props)]`. Para um componente aceitar _props_, o tipo de seu argumento deve ser `Scope<YourPropsStruct>`. Então, você pode acessar o valor das _props_ usando `cx.props`.
 
@@ -29,7 +29,7 @@ Você pode então passar valores de _prop_ para o componente da mesma forma que 
 {{#include src/doc_examples/untested_03/component_owned_props.rs:App}}
 ```
 
-![Screenshot: Likes component](/assets/static/images03/component_owned_props_screenshot.png)
+![Screenshot: Likes component](/assets/blog/release-03/component_owned_props_screenshot.png)
 
 ### Props Emprestados
 
@@ -47,7 +47,7 @@ Podemos então usar o componente assim:
 {{#include src/doc_examples/untested_03/component_borrowed_props.rs:App}}
 ```
 
-![Screenshot: TitleCard component](/assets/static/images03/component_borrowed_props_screenshot.png)
+![Screenshot: TitleCard component](/assets/blog/release-03/component_borrowed_props_screenshot.png)
 
 ## Props de Option
 
@@ -67,7 +67,7 @@ Em seguida, você pode optar por fornecê-los ou não:
 {{#include src/doc_examples/untested_03/component_props_options.rs:OptionalProps_usage}}
 ```
 
-### `Option` Explicitamente Obrigatórias
+### Option Explicitamente Obrigatórias
 
 Se você quiser exigir explicitamente uma `Option`, e não uma _prop_ opcional, você pode anotá-la com `#[props(!optional)]`:
 

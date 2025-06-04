@@ -9,8 +9,6 @@ Edit your `Dioxus.toml` to point your `out_dir` to the `docs` folder and the `ba
 ```toml
 [application]
 # ...
-out_dir = "docs"
-
 [web.app]
 base_path = "your_repo"
 ```
@@ -18,11 +16,18 @@ base_path = "your_repo"
 Then build your app and publish it to Github:
 
 - Make sure GitHub Pages is set up for your repo to publish any static files in the docs directory
-- Build your app with:
+- Build your app into the `docs` directory with:
 ```sh
-dx build --release
+dx bundle --out-dir docs
 ```
-- Make a copy of your `docs/index.html` file and rename the copy to `docs/404.html` so that your app will work with client-side routing
+- Move the static content from `docs/public` to `docs`
+```sh
+mv docs/public/* docs
+```
+- Make a copy of your `docs/index.html` file and rename the copy to `docs/404.html` so that your app will work with client-side routing:
+```sh
+cp docs/index.html docs/404.html
+```
 - Add and commit with git
 - Push to GitHub
 
@@ -50,7 +55,7 @@ And then your `main.rs`:
 
 ## Adding assets to your application
 
-If you want to bundle assets with your application, you can either use them with the `manganis` crate (covered more in the [assets](../reference/assets.md) page), or you can include them in your `Dioxus.toml` file:
+If you want to bundle assets with your application, you can either use them with the `manganis` crate (covered more in the [assets](../guides/assets.md) page), or you can include them in your `Dioxus.toml` file:
 
 ```toml
 [bundle]

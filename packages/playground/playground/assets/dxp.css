@@ -1,0 +1,649 @@
+/* Variables and their common uses */
+:root {
+  /* Light Theme */
+  --dxp-bg-light-darker: white;
+  --dxp-bg-light: white;
+  --dxp-bg-light-lighter: white;
+  /* --dxp-bg-light-darker: #C1C6D2; */
+  /* --dxp-bg-light: #DCDFE5;
+  --dxp-bg-light-lighter: #EDEFF2; */
+  --dxp-bg-light-lighter-alt: #D6DAE1;
+
+  --dxp-border-light: #b4b4b4;
+  --dxp-border-light-lighter: #dbdbdc;
+  /* --dxp-border-light: #15181E;
+  --dxp-border-light-lighter: #242933; */
+
+  --dxp-text-light: #131313;
+  /* --dxp-text-light: #131313; */
+
+  --dxp-log-info-light: #002fff;
+  --dxp-log-warn-light: #ff8400;
+  --dxp-log-error-light: #ff0000;
+
+  /* Dark Theme */
+  --dxp-bg-dark-darker: #21252E;
+  --dxp-bg-dark: #000000;
+  --dxp-bg-dark-lighter: #454E61;
+  --dxp-bg-dark-lighter-alt: #363E4D;
+
+  --dxp-border-dark: #5B667D;
+  --dxp-border-dark-lighter: #8292B2;
+
+  --dxp-text-dark: white;
+  /* --dxp-text-dark: #dfdfdf; */
+
+  --dxp-log-info-dark: #4fa2f0;
+  --dxp-log-warn-dark: #f0b04f;
+  --dxp-log-error-dark: #f04f4f;
+
+  /* Both Themes */
+  --dxp-log-border: #374155;
+}
+
+#dxp-playground-root {
+  border: 1px solid var(--dxp-border-light);
+  overflow: hidden;
+}
+
+/* Header */
+#dxp-header {
+  border-bottom: 1px solid var(--dxp-border-light);
+  background-color: var(--dxp-bg-light-darker);
+  height: 36px;
+  display: flex;
+  flex-direction: row;
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+}
+
+#dxp-header-left {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 8px;
+}
+
+#dxp-header-left-divider {
+  flex-grow: 1;
+}
+
+#dxp-header-right {
+  flex-grow: 1;
+  min-width: 100px;
+  display: flex;
+  flex-direction: row;
+  justify-content: end;
+  align-items: center;
+  padding: 8px;
+}
+
+
+/* Header buttons */
+.dxp-ctrl-btn {
+  height: 25px;
+  padding: 0px 10px;
+  border-radius: 5px;
+  border-style: none;
+  color: var(--dxp-text-light);
+  font-family: "Inter", sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  letter-spacing: -0.06em;
+  transition: background-color 0.2s ease;
+}
+
+#dxp-menu-btn {
+  background-color: var(--dxp-bg-light-lighter);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5px;
+
+}
+
+#dxp-menu-btn:hover {
+  cursor: pointer;
+  background-color: var(--dxp-bg-light-lighter-alt);
+}
+
+#dxp-menu-btn.dxp-open {
+  border: 1px solid var(--dxp-border-light-lighter);
+}
+
+#dxp-menu-btn>svg {
+  color: var(--dxp-text-light);
+}
+
+.dxp-ctrl-btn:hover {
+  cursor: pointer;
+  background-color: var(--dxp-bg-light-lighter-alt);
+}
+
+#dxp-header-left>.dxp-ctrl-btn:not(:first-child) {
+  margin-left: 12px;
+}
+
+#dxp-header-right>.dxp-ctrl-btn:not(:last-child) {
+  margin-right: 12px;
+}
+
+#dxp-run-btn {
+  background-color: var(--dxp-bg-light-lighter);
+  color: var(--dxp-text-light);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-items: start;
+  font-family: "Inter", sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  letter-spacing: -0.06em;
+}
+
+#dxp-run-btn:not(.disabled) {
+  background-color: #288AE5;
+  color: var(--dxp-text-dark);
+}
+
+#dxp-run-btn.disabled:hover {
+  cursor: not-allowed;
+}
+
+#dxp-run-btn:hover:not(.disabled) {
+  background-color: #1E68AD;
+}
+
+#dxp-run-btn>svg {
+  color: var(--dxp-text-light);
+  height: 16px;
+  position: relative;
+  left: -5px;
+}
+
+.dxp-file-btn {
+  min-width: 100px;
+  background-color: var(--dxp-bg-light-lighter);
+}
+
+.dxp-selected-file {
+  border: 1px solid var(--dxp-border-light-lighter);
+}
+
+#dxp-share-btn {
+  background-color: transparent;
+}
+
+#dxp-share-btn:hover {
+  text-decoration: underline;
+}
+
+#dxp-examples-list {
+  width: 200px;
+  display: none;
+  background-color: var(--dxp-bg-light-darker);
+}
+
+#dxp-examples-list.dxp-open {
+  display: block;
+}
+
+
+.dxp-example-project {
+  color: var(--dxp-text-light);
+  background: inherit;
+  text-align: left;
+  cursor: pointer;
+  width: 100%;
+  padding: 10px 10px;
+  margin: 0;
+  transition: background-color 0.2s ease;
+  border: none;
+  border-bottom: 1px solid var(--dxp-bg-light-lighter-alt);
+}
+
+.dxp-example-project:hover {
+  background-color: var(--dxp-bg-light-lighter-alt);
+}
+
+.dxp-example-project>h3 {
+  padding: 0;
+  margin: 0;
+  font-family: "Inter", sans-serif;
+  font-weight: 500;
+}
+
+.dxp-example-project>p {
+  font-family: "Inter", sans-serif;
+  font-weight: 300;
+}
+
+#dxp-lower-half {
+  display: flex;
+  flex-grow: 1;
+}
+
+/* Panes */
+#dxp-panes {
+  flex-grow: 1;
+  flex-direction: row;
+  margin-left: auto;
+  margin-right: auto;
+  display: flex;
+  border-left: 1px solid var(--dxp-border-light);
+}
+
+#dxp-panes-left {
+  width: 50%;
+  min-width: 100px;
+  background-color: var(--dxp-bg-light);
+}
+
+#dxp-panes-draggable {
+  width: 3px;
+  background-color: var(--dxp-border-light);
+  cursor: col-resize;
+  user-select: none;
+}
+
+
+#dxp-panes-right {
+  display: flex;
+  width: 50%;
+  min-width: 100px;
+  background-color: var(--dxp-bg-light-darker);
+  position: relative;
+}
+
+#dxp-panes-right>p {
+  color: var(--dxp-text-light);
+  font-family: "Inter", sans-serif;
+  user-select: none;
+  text-align: center;
+  width: 100%;
+  height: fit-content;
+  top: 30%;
+  position: relative;
+}
+
+#dxp-panes-right>#iframe-cover {
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  position: absolute;
+  opacity: 1;
+  pointer-events: all;
+}
+
+#dxp-panes-right>#dxp-viewport {
+  width: 100%;
+  margin: 10px;
+  background-color: white;
+}
+
+#dxp-iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+#dxp-panes-right>#dxp-examples-viewport {
+  padding: 8px;
+  width: 100%;
+  height: 100%;
+}
+
+#dxp-panes-right>#dxp-progress-container {
+  display: flex;
+  flex-direction: column;
+  height: fit-content;
+  width: 100%;
+  top: 30%;
+  position: relative;
+}
+
+#dxp-panes-right>#dxp-progress-container>p {
+  color: var(--dxp-text-light);
+  font-family: "Inter", sans-serif;
+  margin-left: auto;
+  margin-right: auto;
+  width: 70%;
+  user-select: none;
+}
+
+#dxp-panes-right>#dxp-progress-container>#dxp-progress {
+  height: 6px;
+  width: 70%;
+  margin-left: auto;
+  margin-right: auto;
+  background-color: var(--dxp-bg-light-lighter);
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+#dxp-panes-right>#dxp-progress-container>#dxp-progress>#dxp-bar {
+  background: #288AE5;
+  background: linear-gradient(90deg, rgb(91, 87, 202) 0%, rgba(40, 138, 229, 1) 100%);
+  height: 100%;
+}
+
+/* Modal */
+
+#dxp-modal-bg {
+  background-color: rgba(0, 0, 0, 40%);
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  z-index: 100;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#dxp-modal {
+  background-color: var(--dxp-bg-light);
+  border: 1px solid #000000;
+  color: var(--dxp-text-light);
+  border-radius: 5px;
+  padding: 15px;
+  margin-bottom: 20vh;
+
+  font-family: "Inter", sans-serif;
+  font-weight: 400;
+
+  max-width: 500px;
+}
+
+#dxp-modal-header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+#dxp-modal-header>svg {
+  height: 40px;
+}
+
+#dxp-modal-title {
+  font-size: 20px;
+  font-weight: 600;
+  margin-top: 0px;
+  margin-bottom: 0px;
+  margin-left: 10px;
+}
+
+#dxp-modal-text {
+  font-weight: 400;
+  font-size: 16px;
+  margin-bottom: 20px;
+}
+
+#dxp-modal-ok-btn {
+  display: block;
+  background-color: var(--dxp-bg-light-lighter);
+  border-radius: 3px;
+  color: var(--dxp-text-light);
+  padding: 8px;
+
+  font-weight: 400;
+  font-size: 14px;
+  margin-left: auto;
+
+  border: none;
+  transition: background-color 0.2s ease;
+}
+
+#dxp-modal-ok-btn:hover {
+  background-color: var(--dxp-bg-light-darker);
+  cursor: pointer;
+}
+
+/* Logs pane */
+
+#logs {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  overflow-y: auto;
+}
+
+#logs .log {
+  padding: 20px 15px;
+  transition: background-color 0.3s ease;
+  color: var(--dxp-text-light);
+  border-bottom: var(--dxp-log-border) 1px solid;
+}
+
+#logs .log:hover {
+  background-color: var(--dxp-bg-light);
+}
+
+#logs .log .log-level {
+  font-family: "Inter", sans-serif;
+  padding-top: 0px;
+  padding-bottom: 10px;
+  margin: 0px;
+}
+
+#logs .log .level-error {
+  color: var(--dxp-log-error-light);
+}
+
+#logs .log .level-warn {
+  color: var(--dxp-log-warn-light);
+}
+
+#logs .log .level-info {
+  color: var(--dxp-log-info-light)
+}
+
+#logs .log .log-codeblock {
+  background-color: var(--dxp-bg-light);
+  padding: 10px;
+  border-radius: 10px;
+  border: var(--dxp-border-light) 1px solid;
+}
+
+#logs .log .log-message,
+#logs.log.log-span {
+  font-family: ui-monospace, SFMono-Regular, SF Mono, Menlo, Consolas, Liberation Mono, monospace;
+}
+
+#logs .log .log-message {
+  padding: 0px;
+  margin: 0px;
+}
+
+#logs .log .log-span {
+  padding: 0px;
+  margin: 0px;
+  font-family: ui-monospace, SFMono-Regular, SF Mono, Menlo, Consolas, Liberation Mono, monospace;
+}
+
+/* Media Queries */
+/* TODO: Fix right pane responsive design */
+/* @media screen and (max-width: 1000px) {
+  #dxp-header-right {
+    width: auto;
+    margin-left: auto;
+  }
+
+  #dxp-header-left {
+    width: auto;
+  }
+
+  #dxp-panes {
+    flex-direction: column;
+    height: auto;
+  }
+
+  #dxp-panes-left {
+    width: 100%;
+  }
+
+  #dxp-panes-draggable {
+    visibility: hidden;
+    display: none;
+  }
+
+  #dxp-panes-right {
+    width: 100%;
+    min-height: 400px;
+  }
+} */
+
+/* Color Scheme Queries */
+
+/* @media screen and (max-width: 1000px) and (prefers-color-scheme: dark) {
+  #dxp-panes-right {
+    border-top: 1px solid var(--dxp-border-dark);
+  }
+} */
+
+@media screen and (prefers-color-scheme: dark) {
+
+  #dxp-playground-root {
+    border-color: var(--dxp-border-dark);
+  }
+
+  /* Header */
+  #dxp-header {
+    border-bottom-color: var(--dxp-border-dark);
+    background-color: var(--dxp-bg-dark-darker);
+  }
+
+  .dxp-ctrl-btn {
+    color: var(--dxp-text-dark);
+  }
+
+  #dxp-menu-btn {
+    background-color: var(--dxp-bg-dark-lighter);
+  }
+
+  #dxp-menu-btn:hover {
+    background-color: var(--dxp-bg-dark-lighter-alt);
+  }
+
+  #dxp-menu-btn.dxp-open {
+    border: 1px solid var(--dxp-border-dark-lighter);
+  }
+
+  #dxp-menu-btn>svg {
+    color: var(--dxp-text-dark);
+  }
+
+  #dxp-run-btn {
+    color: var(--dxp-text-dark);
+    background-color: var(--dxp-bg-dark-lighter);
+  }
+
+  #dxp-run-btn>svg {
+    color: var(--dxp-text-dark);
+  }
+
+  .dxp-ctrl-btn:hover {
+    cursor: pointer;
+    background-color: var(--dxp-bg-dark-lighter-alt);
+  }
+
+  .dxp-file-btn {
+    background-color: var(--dxp-bg-dark-lighter);
+  }
+
+  .dxp-selected-file {
+    border-color: var(--dxp-border-dark-lighter);
+  }
+
+  /* Examples */
+  #dxp-examples-list {
+    background-color: var(--dxp-bg-dark-darker);
+  }
+
+  .dxp-example-project {
+    color: var(--dxp-text-dark);
+    border-bottom: 1px solid var(--dxp-bg-dark-lighter-alt);
+  }
+
+  .dxp-example-project:hover {
+    background-color: var(--dxp-bg-dark-lighter-alt);
+  }
+
+
+  /* Panes */
+
+  #dxp-panes {
+    border-left-color: var(--dxp-border-dark);
+  }
+
+  #dxp-panes-left {
+    background-color: var(--dxp-bg-dark);
+  }
+
+  #dxp-panes-draggable {
+    background-color: var(--dxp-border-dark);
+  }
+
+  #dxp-panes-right {
+    background-color: var(--dxp-bg-dark-darker);
+  }
+
+  #dxp-panes-right>p,
+  #dxp-panes-right>#dxp-progress-container>p {
+    color: var(--dxp-text-dark);
+  }
+
+  #dxp-panes-right>#dxp-progress-container>#dxp-progress {
+    background-color: var(--dxp-bg-dark-lighter);
+  }
+
+  /* Modal */
+
+  #dxp-modal {
+    background-color: var(--dxp-bg-dark);
+    border: 1px solid var(--dxp-border-dark);
+    color: var(--dxp-text-dark);
+  }
+
+  #dxp-modal-ok-btn {
+    background-color: var(--dxp-bg-dark-lighter);
+    color: var(--dxp-text-dark);
+  }
+
+  #dxp-modal-ok-btn:hover {
+    background-color: var(--dxp-bg-dark-lighter-alt);
+  }
+
+  /* Logs */
+
+  #logs .log {
+    color: var(--dxp-text-dark);
+  }
+
+  #logs .log:hover {
+    background-color: var(--dxp-bg-dark);
+  }
+
+  #logs .log .level-error {
+    color: var(--dxp-log-error-dark);
+  }
+
+  #logs .log .level-warn {
+    color: var(--dxp-log-warn-dark);
+  }
+
+  #logs .log .level-info {
+    color: var(--dxp-log-info-dark)
+  }
+
+  #logs .log .log-codeblock {
+    background-color: var(--dxp-bg-dark);
+    border-color: var(--dxp-border-dark);
+  }
+}

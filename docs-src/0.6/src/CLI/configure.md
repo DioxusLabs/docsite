@@ -16,19 +16,6 @@ Each header has its TOML form directly under it.
 
 Application-wide configuration. Applies to both web and desktop.
 
-* **name** 🔒 - Project name & title.
-   ```toml
-   name = "my_project"
-   ```
-* **default_platform** 🔒 - The platform this project targets
-   ```toml
-   # Currently supported platforms: web, desktop
-   default_platform = "web"
-   ```
-* **out_dir** - The directory to place the build artifacts from `dx build` or `dx serve` into. This is also where the `assets` directory will be copied into.
-    ```toml
-    out_dir = "dist"
-    ```
 * **asset_dir** - The directory with your static assets. The CLI will automatically copy these assets into the **out_dir** after a build/serve.
    ```toml
    asset_dir = "public"
@@ -69,6 +56,7 @@ Development server configuration.
    ```toml
    reload_html = true
    ```
+
 * **watch_path** - The files & directories to monitor for changes
    ```toml
    watch_path = ["src", "public"]
@@ -130,6 +118,205 @@ Configuration related to any proxies your application requires during developmen
    ```
    This will cause any requests made to the dev server with prefix /api/ to be redirected to the backend server at http://localhost:8000. The path and query parameters will be passed on as-is (path rewriting is currently not supported).
 
+### Web.https
+
+```toml
+[[web.https]]
+```
+
+Controls the https config for the CLI.
+
+* **enabled** enables or disables https in the CLI
+   ```toml
+   enabled = true
+   ```
+* **mkcert** enables or disables generating certs with the mkcert CLI
+   ```toml
+   mkcert = true
+   ```
+* **key_path** sets the path to use for the https key
+   ```toml
+   key_path = "/path/to/key"
+   ```
+* **cert_path** sets the path to use for the https cert
+   ```toml
+   cert_path = "/path/to/cert"
+   ```
+
+### Web.pre_compress
+
+If this setting is enabled, the CLI will pre-compress the built assets in release mode with brotli. This setting is enabled by default.
+
+```toml
+[web]
+pre_compress = true
+```
+
+### Web.wasm_opt
+
+Controls the wasm-opt config for the CLI.
+
+* **level** sets the level of optimization to use for wasm-opt in release builds.
+   - z: optimize aggressively for size
+   - s: optimize for size
+   - 1: optimize for speed
+   - 2: optimize for more for speed
+   - 3: optimize for even more for speed
+   - 4: optimize aggressively for speed (default)
+   ```toml
+   level = "z"
+   ```
+* **debug** keep debug symbols in the wasm file even in release builds
+   ```toml
+   debug = true
+   ```
+
+### Bundle
+
+```toml
+[bundle]
+```
+
+Controls the bundling process for your application. Dioxus uses tauri-bundler under the hood. This section only includes a subset of the options available in tauri-bundler. More options can be found in the tauri-bundler [documentation](https://v1.tauri.app/v1/guides/building/#configuration-options).
+
+* **identifier** - A unique identifier for your application (e.g., `com.dioxuslabs`).
+   ```toml
+   identifier = "com.dioxuslabs"
+   ```
+* **publisher** - The name of the entity publishing the application.
+   ```toml
+   publisher = "DioxusLabs"
+   ```
+* **icon** - Paths to icon files to be used in the bundle. Icon files must be square and 16, 24, 32, 64, or 256 pixels in size. PNG icons must have a 32 bit depth in the RGBA format. If you use a `.icns` file is must fit [this](https://github.com/tauri-apps/tauri/blob/d8db5042a28635259f646c329c3ec5ccf23eac9e/tooling/cli/src/helpers/icns.json) format. The icons must include a `.icns` icon for macOS, `.ico` for Windows and `.png` for Linux.
+   ```toml
+   icon = [
+      "icons/32x32.png",
+      "icons/128x128.png",
+      "icons/128x128@2x.png",
+      "icons/icon.icns",
+      "icons/icon.ico"
+   ]
+   ```
+* **resources** - Additional files to include in the bundle. Each asset is copied from the path and is accessible from the bundle at the same path. Any [assets](../guides/assets.md) are automatically bundled with the installer.
+   ```toml
+   resources = ["path/to/resource"]
+   ```
+* **copyright** - Copyright information for the application.
+   ```toml
+   copyright = "Copyright 2023 DioxusLabs"
+   ```
+* **category** - The category of the application. Must be one of `Business`, `DeveloperTool`, `Education`, `Entertainment`, `Finance`, `Game`, `ActionGame`, `AdventureGame`, `ArcadeGame`, `BoardGame`, `CardGame`, `CasinoGame`, `DiceGame`, `EducationalGame`, `FamilyGame`, `KidsGame`, `MusicGame`, `PuzzleGame`, `RacingGame`, `RolePlayingGame`, `SimulationGame`, `SportsGame`, `StrategyGame`, `TriviaGame`, `WordGame`, `GraphicsAndDesign`, `HealthcareAndFitness`, `Lifestyle`, `Medical`, `Music`, `News`, `Photography`, `Productivity`, `Reference`, `SocialNetworking`, `Sports`, `Travel`, `Utility`, `Video`, or `Weather`
+   ```toml
+   category = "Utility"
+   ```
+* **short_description** - A brief description of the application.
+   ```toml
+   short_description = "A utility application built with Dioxus"
+   ```
+* **long_description** - A detailed description of the application.
+   ```toml
+   long_description = "This application provides various utility functions..."
+   ```
+* **external_bin** - Paths to external sidecar binaries to include in the bundle. These bundles may be accessed at runtime with the name of the binary (not the absolute path). **the target triple will be automatically added to the binary name before it is added to the bundle.**
+   ```toml
+   external_bin = ["path/to/external_binary"] # On macos, the binary at path/to/external_binary-aarch64-apple-darwin will be included in the bundle. It can be accessed at runtime with the name external_binary
+   ```
+
+### Bundle.macos
+
+```toml
+[bundle.macos]
+```
+
+Configuration options for macOS bundles.
+
+* **frameworks** - List of frameworks to include in the bundle.
+   ```toml
+   frameworks = ["CoreML"]
+   ```
+* **minimum_system_version** - Minimum macOS version required. (default: `10.13`)
+   ```toml
+   minimum_system_version = "10.13"
+   ```
+* **license** - Path to the license file.
+   ```toml
+   license = "LICENSE.txt"
+   ```
+* **exception_domain** - Domain for exception handling. The domain must be lowercase without a port or protocol.
+   ```toml
+   exception_domain = "mysite.com"
+   ```
+* **signing_identity** - macOS signing identity.
+   ```toml
+   signing_identity = "SIGNING IDENTITY KEYCHAIN ENTRY NAME"
+   ```
+* **provider_short_name** - Provider short name for the bundle.
+   ```toml
+   provider_short_name = "DioxusLabs"
+   ```
+* **entitlements** - Path to the entitlements file.
+   ```toml
+   entitlements = "entitlements.plist"
+   ```
+* **hardened_runtime** - Whether to enable the [hardened runtime](https://developer.apple.com/documentation/security/hardened-runtime) in the bundle.
+   ```toml
+   hardened_runtime = true
+   ```
+
+### Bundle.windows
+
+```toml
+[bundle.windows]
+```
+
+Configuration options for Windows bundles.
+
+* **digest_algorithm** - Sets the file digest algorithm used for signing.
+   ```toml
+   digest_algorithm = "sha-256"
+   ```
+* **certificate_thumbprint** - SHA1 hash of the signing certificate.
+   ```toml
+   certificate_thumbprint = "A1B2C3D4E5F6..."
+   ```
+* **timestamp_url** - Sets the server to used for timestamping the signature.
+   ```toml
+   timestamp_url = "http://timestamp.digicert.com"
+   ```
+* **tsp** - Whether to use the time stamping protocol.
+   ```toml
+   tsp = true
+   ```
+* **icon_path** - Path to the icon for the system tray icon. (defaults to `./icons/icon.ico`)
+   ```toml
+   icon_path = "assets/icon.ico"
+   ```
+* **webview_install_mode** - Installation mode for WebView2.
+   EmbedBootstrapper: embed the WebView2 bootstrapper into the installer
+   ```toml
+   [webview_install_mode.EmbedBootstrapper]
+   silent = true
+   ```
+   DownloadBootstrapper: download the WebView2 bootstrapper in the installer at runtime
+   ```toml
+   [webview_install_mode.DownloadBootstrapper]
+   silent = true
+   ```
+   OfflineInstaller: Embed the WebView2 installer into the main installer
+   ```toml
+   [webview_install_mode.OfflineInstaller]
+   silent = true
+   ```
+   FixedRuntime: Use a fixed path to the WebView2 runtime
+   ```toml
+   [webview_install_mode.FixedRuntime]
+   path = "path/to/runtime"
+   ```
+   Skip: Does not install WebView2 as part of the installer. This will cause the application to fail if webview was not already installed
+   ```toml
+   webview_install_mode = "Skip"
+   ```
+
 ## Config example
 
 This includes all fields, mandatory or not.
@@ -139,9 +326,6 @@ This includes all fields, mandatory or not.
 
 # App name
 name = "project_name"
-
-# The Dioxus platform to default to
-default_platform = "web"
 
 # `build` & `serve` output path
 out_dir = "dist"
@@ -183,4 +367,9 @@ script = []
 
 [[web.proxy]]
 backend = "http://localhost:8000/api/"
+
+[bundle]
+identifier = "com.dioxuslabs"
+publisher = "DioxusLabs"
+icon = "assets/icon.png"
 ```

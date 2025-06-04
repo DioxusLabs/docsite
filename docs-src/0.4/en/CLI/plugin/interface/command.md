@@ -7,7 +7,7 @@ Type definition:
 Stdio: "Inherit" | "Piped" | "Null"
 ```
 
-### `exec(commands: [string], stdout: Stdio, stderr: Stdio)`
+### exec
 
 You can use this function to run some commands on the current system.
 

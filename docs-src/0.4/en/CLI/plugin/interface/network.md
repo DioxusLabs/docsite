@@ -2,7 +2,7 @@
 
 You can use Network functions to download & read some data from the internet.
 
-### `download_file(url: string, path: string) -> boolean`
+### download_file
 
 Downloads a file from the specified URL,
 and returns a `boolean` that represents the download status (true: success, false: failure).
@@ -20,7 +20,7 @@ if status != true then
 end
 ```
 
-### `clone_repo(url: string, path: string) -> boolean`
+### clone_repo
 
 Clone a repository from the given URL into the given path.
 Returns a `boolean` that represents the clone status (true: success, false: failure).

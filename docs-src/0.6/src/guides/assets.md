@@ -38,6 +38,9 @@ You can include stylesheets in your application using the `asset!` macro. Styles
 
 > The [tailwind guide](../cookbook/tailwind.md) has more information on how to use tailwind with dioxus.
 
+#### SCSS Support
+SCSS is also supported through the `asset!` macro. Include it the same way as a regular CSS file.
+
 ## Conclusion
 
 Dioxus provides first class support for assets, and makes it easy to include them in your application. You can include images, arbitrary files, and stylesheets in your application, and dioxus will automatically optimize them for production. This makes it easy to include assets in your application and ensure that they are optimized for production.

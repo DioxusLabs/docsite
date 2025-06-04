@@ -21,7 +21,7 @@ We're going to use the bare-bones template for *HotDog*. Our app won't be too co
 
 - Select "false" when asked if you want to create a fullstack website.
 - Select "false" for the router, though we *will* eventually add the router to the app.
-- Select no for TailwindCSS. If you want to use Tailwind, make sure to read the [TailwindCSS guide](../cookbook/tailwind.md).
+- Select "false" for TailwindCSS. If you want to use Tailwind, make sure to read the [TailwindCSS guide](../cookbook/tailwind.md).
 - Select "Web" as the default platform.
 
 > 📣 You don't need `dx new` to create new Dioxus apps! Dioxus apps are Rust projects and can also be built with tools like cargo.
@@ -109,11 +109,7 @@ Finally, the `main.rs`. The `main.rs` file is the entrypoint of our app, contain
 The `main` of our HotDog app looks like this:
 
 ```rust
-use dioxus::prelude::*;
-
-fn main() {
-    dioxus::launch(App);
-}
+{{#include src/doc_examples/guide_new_app.rs:new_app}}
 ```
 
 The `launch` function calls the platform-specific `launch` function depending on which feature (web/desktop/mobile) is enabled on `dioxus`. `launch` accepts a root component, typically called `App`.
@@ -125,14 +121,5 @@ We'll cover components more in-depth in the [next chapter](component.md).
 The bare-bones template provides basic starter code for our app. However, we want to start *truly* from scratch, so we'll wipe away the `Hero` component and empty the `App` component to its basics:
 
 ```rust
-use dioxus::prelude::*;
-
-fn main() {
-    dioxus::launch(App);
-}
-
-#[component]
-fn App() -> Element {
-    rsx! { "HotDog!" }
-}
+{{#include src/doc_examples/guide_new_app.rs:new_app_full}}
 ```

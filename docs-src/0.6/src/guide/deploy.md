@@ -32,7 +32,7 @@ Making native app distribution easier is a top priority for Dioxus Deploy!
 
 Dioxus web apps are structured as a Client bundle and a Server executable. Generally, any deploy provider that exposes a simple container will be sufficient for a Dioxus fullstack web application.
 
-Some providers like [Cloudflare Workers](http://workers.cloudflare.com) and [Fermyon Spin](https://www.fermyon.com/spin) provider WASM-based containers for apps. WASM runtimes are typically cheaper to operate and can horizontally scale better than a traditional virtual-machine based container. When deploying on WASM runtimes, you will need to create a WASM build of your server manually.
+Some providers like [Cloudflare Workers](http://workers.cloudflare.com) and [Fermyon Spin](https://www.fermyon.com/spin) provide WASM-based containers for apps. WASM runtimes are typically cheaper to operate and can horizontally scale better than a traditional virtual-machine based container. When deploying on WASM runtimes, you will need to create a WASM build of your server manually.
 
 Running the webserver is as simple as executing `./server`. Make sure to set the IP and PORT environment variables correctly:
 
@@ -45,7 +45,7 @@ There are *many* deploy providers! We're not going to get too deep into the pros
 Depending on your app, you might have strict requirements like SOC2 or HIPAA compliance. Make sure to do your own research for your own use-case.
 
 - [AWS](http://aws.amazon.com): Full-featured cloud provider powered by Amazon.
-- [GCP](http://aws.amazon.com): Full-featured cloud provider powered by Google.
+- [GCP](https://cloud.google.com): Full-featured cloud provider powered by Google.
 - [Azure](http://azure.microsoft.com): Full-featured cloud provider powered by Microsoft.
 - [Fly.io](http://fly.io): Simple scale-to-zero micro-vm-based cloud with integrated wireguard.
 - [Vercel](https://vercel.com): Developer-focused cloud built on AWS cloud functions popular with JavaScript frameworks.
@@ -85,6 +85,7 @@ COPY . .
 # Install `dx`
 RUN curl -L --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/cargo-bins/cargo-binstall/main/install-from-binstall-release.sh | bash
 RUN cargo binstall dioxus-cli --root /.cargo -y --force
+ENV PATH="/.cargo/bin:$PATH"
 
 # Create the final bundle folder. Bundle always executes in release mode with optimizations enabled
 RUN dx bundle --platform web
@@ -177,12 +178,7 @@ jobs:
 Now that our backend is live, we can wire up the API to our native apps. By default, Dioxus doesn't know where to find your API, so you'll need to specify the URL manually by calling `server_fn::client::set_server_url`.
 
 ```rust
-fn main() {
-    #[cfg(not(feature = "server"))]
-    server_fn::client::set_server_url("https://hot-dog.fly.dev");
-
-    dioxus::launch(app);
-}
+{{#include src/doc_examples/guide_deploy.rs:set_server_url}}
 ```
 
 Note that as our app changes, the "true" endpoint of our server functions might change. The `#[server]` macro generates an API endpoint with the form of `/api/fetch_dogs-jkhj12` where the trailing data is a unique hash. As we update our server functions, the hash will change.
@@ -190,14 +186,7 @@ Note that as our app changes, the "true" endpoint of our server functions might 
 To make server functions maintain a stable endpoint, we can manually name them with the `endpoint = "xyz"` attribute.
 
 ```rust
-#[server(endpoint = "list_dogs")]
-pub async fn list_dogs() -> Result<Vec<(usize, String)>, ServerFnError> { /* ... */ }
-
-#[server(endpoint = "remove_dog")]
-pub async fn remove_dog(id: usize) -> Result<(), ServerFnError> { /* ... */ }
-
-#[server(endpoint = "save_dog")]
-pub async fn save_dog(image: String) -> Result<(), ServerFnError> { /* ... */ }
+{{#include src/doc_examples/guide_deploy.rs:stable_server_endpoints}}
 ```
 
 Let's re-deploy our web app with `fly deploy`. This deploy should complete faster thanks to `cargo chef` caching our build.

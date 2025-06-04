@@ -36,7 +36,7 @@ In many ways, Dioxus is similar to Flutter: we integrate our own build tools, fo
 - Reactivity is inspired by web frameworks like React and SolidJS
 - Dioxus code runs natively with no virtual machine and enables direct FFI with system APIs
 
-Our goal is to provide a "better Flutter": faster, slimmer, and web-native. You can think of Dioxus is a hybrid of [Flutter](http://flutter.dev) and [NextJS](http://nextjs.org): cross-platform apps with stellar fullstack support. Today, Dioxus apps can only be written in Rust, but we plan to support more languages in the future.
+Our goal is to provide a "better Flutter": faster, slimmer, and web-native. You can think of Dioxus as a hybrid of [Flutter](http://flutter.dev) and [NextJS](http://nextjs.org): cross-platform apps with stellar fullstack support. Today, Dioxus apps can only be written in Rust, but we plan to support more languages in the future.
 
 ## Why Dioxus?
 
@@ -48,7 +48,7 @@ Our vision for Dioxus is a framework that is fast, flexible, and has a minimal l
 
 ## Syntax and Ecosystem
 
-The Dioxus syntax is similar to React's JSX markup, borrowing React's component and hooks approach. All components are Rust functions that take `Properties`, define state with hooks, and return an `Element`. We only support markup in with the `rsx! {}` markup; this ensures your app is automatically optimized and has stellar devtools support like advanced hot-reloading.
+The Dioxus syntax is similar to React's JSX markup, borrowing React's component and hooks approach. All components are Rust functions that take `Properties`, define state with hooks, and return an `Element`. We only support markup within the `rsx! {}` macro; this ensures your app is automatically optimized and has stellar devtools support like advanced hot-reloading.
 
 ```rust
 #[component]
@@ -79,14 +79,14 @@ The core Dioxus framework covers a number of utilities that are either challengi
 - [App Routing](router/index.md)
 - [Backend integration via server functions](guides/fullstack/server_functions.md)
 - [Including and optimizing](guides/assets.md) assets
-- [State management](guides/managing_state.md) (signals-based reactivity)
+- [State management](essentials/state/index.md) (signals-based reactivity)
 - [SDK](http://github.com/dioxusLabs/sdk): 1st-party System integrations
 
 ## Stability
 
 Dioxus has not reached a "1.0" release yet.
 
-We are currently on version 0.6, which has stabilized a huge number of APIs are drastically improved the developer experience. In version 0.5 we overhauled the state management system and in 0.6 we overhauled tooling.
+We are currently on version 0.6, which has stabilized a huge number of APIs and drastically improved the developer experience. In version 0.5 we overhauled the state management system and in 0.6 we overhauled tooling.
 
 It's likely that the next few versions of Dioxus (0.7, 0.8) will bring breaking changes to your apps. Fortunately, these planned changes will only affect the syntax of specific APIs and not your apps at large. With every version update, we ship a rather comprehensive migration guide - eg [0.6](migration/index.md).
 
@@ -104,6 +104,6 @@ We highly recommend a few first-party sources:
 
 Dioxus is funded by a mix of corporate sponsorships, enterprise support contracts, [crowd-sourced funding](https://github.com/sponsors/DioxusLabs#sponsors), and [venture capital](http://ycombinator.com/companies/dioxus-labs). We strive to maintain a healthy mix of funding to balance the various competing visions of the future. We want to provide a "Flutter but better" for everyone - not controlled by Apple, Meta, or Google - and we need to make sure Dioxus has a sustainable long-term financial future.
 
-Ultimately, we'd like Dioxus to be self-sustaining. This means that you'll eventually have the option to deploy your production apps with [Dioxus Deploy](/deploy). Revenue from *Dioxus Deploy* will in turn fund development on Dioxus itself.
+Ultimately, we'd like Dioxus to be self-sustaining. This means that you'll eventually have the option to deploy your production apps with [Dioxus Deploy](https://dioxuslabs.com/deploy). Revenue from *Dioxus Deploy* will in turn fund development on Dioxus itself.
 
 We're committed to keeping Dioxus free and open source forever. You'll never need to pay us to build apps nor will we ever change the license of Dioxus.

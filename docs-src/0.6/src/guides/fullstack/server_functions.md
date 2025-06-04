@@ -10,7 +10,7 @@ To make a server function, simply add the `#[server(YourUniqueType)]` attribute 
 
 > If you are targeting WASM on the server with WASI, you must call `register` on the type you passed into the server macro in your main function before starting your server to tell Dioxus about the server function. For all other targets, the server function will be registered automatically.
 
-Let's continue building on the app we made in the [getting started](../../getting_started/fullstack.md) guide. We will add a server function to our app that allows us to double the count on the server.
+Let's continue building on the app we made in the [getting started](../../getting_started/index.md) guide. We will add a server function to our app that allows us to double the count on the server.
 
 First, add serde as a dependency:
 
@@ -98,11 +98,6 @@ Then, you have to register the types declared in the server function macros into
 For example, consider this server function:
 ```rust
 {{#include src/doc_examples/server_function_desktop_client.rs:server_function}}
-```
-
-The `GetServerData` type has to be registered in the server, which will add the corresponding route to the server.
-```rust
-{{#include src/doc_examples/server_function_desktop_client.rs:function_registration}}
 ```
 
 Finally, the server is started and it begins responding to requests.

@@ -10,7 +10,7 @@ We covered the setup instructions in [Getting Started](../getting_started/index.
 
 - Rust is installed
 - You have a code editor installed
-- The wasm32-unknown-unknown target is installed
+- The wasm32-unknown-unknown Rust target is installed
 - The `dioxus-cli` is installed and up-to-date
 - System-specific dependencies are installed
 
@@ -44,7 +44,6 @@ Commands:
   fmt        Automatically format RSX
   check      Check the project for any issues
   run        Run the project without any hotreloading
-  doctor     Ensure all the tooling is installed and configured correctly
   config     Dioxus config file controls
   help       Print this message or the help of the given subcommand(s)
 

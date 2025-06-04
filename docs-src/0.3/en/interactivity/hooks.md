@@ -4,7 +4,7 @@ So far our components have had no state like a normal rust functions. However, i
 
 Hooks allow us to create state in our components. Hooks are Rust functions that take a reference to `ScopeState` (in a component, you can pass `cx`), and provide you with functionality and state.
 
-## `use_state` Hook
+## use_state Hook
 
 [`use_state`](https://docs.rs/dioxus/latest/dioxus/prelude/fn.use_state.html) is one of the simplest hooks.
 
@@ -17,7 +17,7 @@ For example, you might have seen the counter example, in which state (a number) 
 ```rust
 {{#include src/doc_examples/untested_03/hooks_counter.rs:component}}
 ```
-![Screenshot: counter app](/assets/static/images03/counter.png)
+![Screenshot: counter app](/assets/blog/release-03/counter.png)
 
 Every time the component's state changes, it re-renders, and the component function is called, so you can describe what you want the new UI to look like. You don't have to worry about "changing" anything – just describe what you want in terms of the state, and Dioxus will take care of the rest!
 
@@ -28,7 +28,7 @@ You can use multiple hooks in the same component if you want:
 ```rust
 {{#include src/doc_examples/untested_03/hooks_counter_two_state.rs:component}}
 ```
-![Screenshot: app with two counters](/assets/static/images03/counter_two_state.png)
+![Screenshot: app with two counters](/assets/blog/release-03/counter_two_state.png)
 
 ## Rules of Hooks
 
@@ -65,7 +65,7 @@ These rules mean that there are certain things you can't do with hooks:
 {{#include src/doc_examples/untested_03/hooks_bad.rs:loop}}
 ```
 
-## `use_ref` Hook
+## use_ref Hook
 
 `use_state` is great for tracking simple values. However, you may notice in the [`UseState` API](https://docs.rs/dioxus/latest/dioxus/hooks/struct.UseState.html) that the only way to modify its value is to replace it with something else (e.g., by calling `set`, or through one of the `+=`, `-=` operators). This works well when it is cheap to construct a value (such as any primitive). But what if you want to maintain more complex data in the components state?
 

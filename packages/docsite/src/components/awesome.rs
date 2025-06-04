@@ -149,7 +149,7 @@ pub(crate) fn AwesomeInner() -> Element {
                             class: "mx-2 rounded-lg lg:w-2/5 lg:mx-auto",
                             background_color: "#24292f",
                             input {
-                                class: "w-full text-center p-4 rounded-lg text-gray-300 bg-gray-100",
+                                class: "w-full text-center p-4 rounded-lg text-gray-500 bg-gray-100",
                                 placeholder: "Looking for something specific?",
                                 value: "{search}",
                                 oninput: move |evt| search.set(evt.value()),

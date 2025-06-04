@@ -1,0 +1,315 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<url>
+    <loc>https://dioxuslabs.com/</loc>
+</url>
+<url>
+    <loc>https://dioxuslabs.com/playground</loc>
+</url>
+<url>
+    <loc>https://dioxuslabs.com/awesome</loc>
+</url>
+<url>
+    <loc>https://dioxuslabs.com/deploy</loc>
+</url>
+<url>
+    <loc>https://dioxuslabs.com/blog/</loc>
+</url>
+<url>
+    <loc>https://dioxuslabs.com/blog/introducing-dioxus#</loc>
+</url>
+<url>
+    <loc>https://dioxuslabs.com/blog/release-020#</loc>
+</url>
+<url>
+    <loc>https://dioxuslabs.com/blog/templates-diffing#</loc>
+</url>
+<url>
+    <loc>https://dioxuslabs.com/blog/release-030#</loc>
+</url>
+<url>
+    <loc>https://dioxuslabs.com/blog/fulltime#</loc>
+</url>
+<url>
+    <loc>https://dioxuslabs.com/blog/release-040#</loc>
+</url>
+<url>
+    <loc>https://dioxuslabs.com/blog/release-050#</loc>
+</url>
+<url>
+    <loc>https://dioxuslabs.com/blog/release-060#</loc>
+</url>
+<url>
+    <loc>https://dioxuslabs.com/learn/0.6/#</loc>
+</url>
+<url>
+    <loc>https://dioxuslabs.com/learn/0.6/getting_started/#</loc>
+</url>
+<url>
+    <loc>https://dioxuslabs.com/learn/0.6/guide/#</loc>
+</url>
+<url>
+    <loc>https://dioxuslabs.com/learn/0.6/guide/tooling#</loc>
+</url>
+<url>
+    <loc>https://dioxuslabs.com/learn/0.6/guide/new_app#</loc>
+</url>
+<url>
+    <loc>https://dioxuslabs.com/learn/0.6/guide/component#</loc>
+</url>
+<url>
+    <loc>https://dioxuslabs.com/learn/0.6/guide/rsx#</loc>
+</url>
+<url>
+    <loc>https://dioxuslabs.com/learn/0.6/guide/assets#</loc>
+</url>
+<url>
+    <loc>https://dioxuslabs.com/learn/0.6/guide/state#</loc>
+</url>
+<url>
+    <loc>https://dioxuslabs.com/learn/0.6/guide/data_fetching#</loc>
+</url>
+<url>
+    <loc>https://dioxuslabs.com/learn/0.6/guide/backend#</loc>
+</url>
+<url>
+    <loc>https://dioxuslabs.com/learn/0.6/guide/databases#</loc>
+</url>
+<url>
+    <loc>https://dioxuslabs.com/learn/0.6/guide/routing#</loc>
+</url>
+<url>
+    <loc>https://dioxuslabs.com/learn/0.6/guide/bundle#</loc>
+</url>
+<url>
+    <loc>https://dioxuslabs.com/learn/0.6/guide/deploy#</loc>
+</url>
+<url>
+    <loc>https://dioxuslabs.com/learn/0.6/guide/next_steps#</loc>
+</url>
+<url>
+    <loc>https://dioxuslabs.com/learn/0.6/essentials/#</loc>
+</url>
+<url>
+    <loc>https://dioxuslabs.com/learn/0.6/essentials/rsx/#</loc>
+</url>
+<url>
+    <loc>https://dioxuslabs.com/learn/0.6/essentials/lifecycle/#</loc>
+</url>
+<url>
+    <loc>https://dioxuslabs.com/learn/0.6/essentials/state/#</loc>
+</url>
+<url>
+    <loc>https://dioxuslabs.com/learn/0.6/essentials/async/#</loc>
+</url>
+<url>
+    <loc>https://dioxuslabs.com/learn/0.6/essentials/breaking/#</loc>
+</url>
+<url>
+    <loc>https://dioxuslabs.com/learn/0.6/essentials/error_handling/#</loc>
+</url>
+<url>
+    <loc>https://dioxuslabs.com/learn/0.6/guides/#</loc>
+</url>
+<url>
+    <loc>https://dioxuslabs.com/learn/0.6/guides/rules_of_hooks#</loc>
+</url>
+<url>
+    <loc>https://dioxuslabs.com/learn/0.6/router/#</loc>
+</url>
+<url>
+    <loc>https://dioxuslabs.com/learn/0.6/router/example/#</loc>
+</url>
+<url>
+    <loc>https://dioxuslabs.com/learn/0.6/router/example/first-route#</loc>
+</url>
+<url>
+    <loc>https://dioxuslabs.com/learn/0.6/router/example/building-a-nest#</loc>
+</url>
+<url>
+    <loc>https://dioxuslabs.com/learn/0.6/router/example/navigation-targets#</loc>
+</url>
+<url>
+    <loc>https://dioxuslabs.com/learn/0.6/router/example/redirection-perfection#</loc>
+</url>
+<url>
+    <loc>https://dioxuslabs.com/learn/0.6/router/example/full-code#</loc>
+</url>
+<url>
+    <loc>https://dioxuslabs.com/learn/0.6/router/reference/#</loc>
+</url>
+<url>
+    <loc>https://dioxuslabs.com/learn/0.6/router/reference/routes/#</loc>
+</url>
+<url>
+    <loc>https://dioxuslabs.com/learn/0.6/router/reference/routes/nested#</loc>
+</url>
+<url>
+    <loc>https://dioxuslabs.com/learn/0.6/router/reference/layouts#</loc>
+</url>
+<url>
+    <loc>https://dioxuslabs.com/learn/0.6/router/reference/navigation/#</loc>
+</url>
+<url>
+    <loc>https://dioxuslabs.com/learn/0.6/router/reference/navigation/programmatic#</loc>
+</url>
+<url>
+    <loc>https://dioxuslabs.com/learn/0.6/router/reference/history-providers#</loc>
+</url>
+<url>
+    <loc>https://dioxuslabs.com/learn/0.6/router/reference/history-buttons#</loc>
+</url>
+<url>
+    <loc>https://dioxuslabs.com/learn/0.6/router/reference/routing-update-callback#</loc>
+</url>
+<url>
+    <loc>https://dioxuslabs.com/learn/0.6/guides/assets#</loc>
+</url>
+<url>
+    <loc>https://dioxuslabs.com/learn/0.6/guides/web/#</loc>
+</url>
+<url>
+    <loc>https://dioxuslabs.com/learn/0.6/guides/desktop/#</loc>
+</url>
+<url>
+    <loc>https://dioxuslabs.com/learn/0.6/guides/mobile/#</loc>
+</url>
+<url>
+    <loc>https://dioxuslabs.com/learn/0.6/guides/mobile/apis#</loc>
+</url>
+<url>
+    <loc>https://dioxuslabs.com/learn/0.6/guides/ssr#</loc>
+</url>
+<url>
+    <loc>https://dioxuslabs.com/learn/0.6/guides/fullstack/#</loc>
+</url>
+<url>
+    <loc>https://dioxuslabs.com/learn/0.6/guides/fullstack/hydration#</loc>
+</url>
+<url>
+    <loc>https://dioxuslabs.com/learn/0.6/guides/fullstack/managing_dependencies#</loc>
+</url>
+<url>
+    <loc>https://dioxuslabs.com/learn/0.6/guides/fullstack/server_functions#</loc>
+</url>
+<url>
+    <loc>https://dioxuslabs.com/learn/0.6/guides/fullstack/extractors#</loc>
+</url>
+<url>
+    <loc>https://dioxuslabs.com/learn/0.6/guides/fullstack/middleware#</loc>
+</url>
+<url>
+    <loc>https://dioxuslabs.com/learn/0.6/guides/fullstack/authentication#</loc>
+</url>
+<url>
+    <loc>https://dioxuslabs.com/learn/0.6/guides/fullstack/routing#</loc>
+</url>
+<url>
+    <loc>https://dioxuslabs.com/learn/0.6/guides/fullstack/static_site_generation#</loc>
+</url>
+<url>
+    <loc>https://dioxuslabs.com/learn/0.6/guides/fullstack/axum#</loc>
+</url>
+<url>
+    <loc>https://dioxuslabs.com/learn/0.6/cookbook/publishing#</loc>
+</url>
+<url>
+    <loc>https://dioxuslabs.com/learn/0.6/cookbook/antipatterns#</loc>
+</url>
+<url>
+    <loc>https://dioxuslabs.com/learn/0.6/cookbook/integrations/#</loc>
+</url>
+<url>
+    <loc>https://dioxuslabs.com/learn/0.6/cookbook/integrations/logging#</loc>
+</url>
+<url>
+    <loc>https://dioxuslabs.com/learn/0.6/cookbook/integrations/internationalization#</loc>
+</url>
+<url>
+    <loc>https://dioxuslabs.com/learn/0.6/cookbook/state/#</loc>
+</url>
+<url>
+    <loc>https://dioxuslabs.com/learn/0.6/cookbook/state/external/#</loc>
+</url>
+<url>
+    <loc>https://dioxuslabs.com/learn/0.6/cookbook/state/custom_hooks/#</loc>
+</url>
+<url>
+    <loc>https://dioxuslabs.com/learn/0.6/cookbook/bundling#</loc>
+</url>
+<url>
+    <loc>https://dioxuslabs.com/learn/0.6/cookbook/testing#</loc>
+</url>
+<url>
+    <loc>https://dioxuslabs.com/learn/0.6/cookbook/tailwind#</loc>
+</url>
+<url>
+    <loc>https://dioxuslabs.com/learn/0.6/cookbook/optimizing#</loc>
+</url>
+<url>
+    <loc>https://dioxuslabs.com/learn/0.6/migration/#</loc>
+</url>
+<url>
+    <loc>https://dioxuslabs.com/learn/0.6/reference/#</loc>
+</url>
+<url>
+    <loc>https://dioxuslabs.com/learn/0.6/reference/hotreload#</loc>
+</url>
+<url>
+    <loc>https://dioxuslabs.com/learn/0.6/reference/rsx#</loc>
+</url>
+<url>
+    <loc>https://dioxuslabs.com/learn/0.6/reference/components#</loc>
+</url>
+<url>
+    <loc>https://dioxuslabs.com/learn/0.6/reference/component_props#</loc>
+</url>
+<url>
+    <loc>https://dioxuslabs.com/learn/0.6/reference/event_handlers#</loc>
+</url>
+<url>
+    <loc>https://dioxuslabs.com/learn/0.6/reference/hooks#</loc>
+</url>
+<url>
+    <loc>https://dioxuslabs.com/learn/0.6/reference/user_input#</loc>
+</url>
+<url>
+    <loc>https://dioxuslabs.com/learn/0.6/reference/context#</loc>
+</url>
+<url>
+    <loc>https://dioxuslabs.com/learn/0.6/reference/dynamic_rendering#</loc>
+</url>
+<url>
+    <loc>https://dioxuslabs.com/learn/0.6/reference/router#</loc>
+</url>
+<url>
+    <loc>https://dioxuslabs.com/learn/0.6/reference/use_resource#</loc>
+</url>
+<url>
+    <loc>https://dioxuslabs.com/learn/0.6/reference/use_coroutine#</loc>
+</url>
+<url>
+    <loc>https://dioxuslabs.com/learn/0.6/reference/spawn#</loc>
+</url>
+<url>
+    <loc>https://dioxuslabs.com/learn/0.6/contributing/#</loc>
+</url>
+<url>
+    <loc>https://dioxuslabs.com/learn/0.6/contributing/project_structure#</loc>
+</url>
+<url>
+    <loc>https://dioxuslabs.com/learn/0.6/contributing/guiding_principles#</loc>
+</url>
+<url>
+    <loc>https://dioxuslabs.com/learn/0.6/CLI/#</loc>
+</url>
+<url>
+    <loc>https://dioxuslabs.com/learn/0.6/CLI/creating#</loc>
+</url>
+<url>
+    <loc>https://dioxuslabs.com/learn/0.6/CLI/configure#</loc>
+</url>
+<url>
+    <loc>https://dioxuslabs.com/learn/0.6/CLI/translate#</loc>
+</url>
+</urlset>

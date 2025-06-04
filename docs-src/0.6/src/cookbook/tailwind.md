@@ -19,6 +19,7 @@ cargo install dioxus-cli
 
 ```css
 @import "tailwindcss";
+@source "./src/**/*.{rs,html,css}";
 ```
 
 5. Create a link to the `tailwind.css` file using manganis somewhere in your rust code:

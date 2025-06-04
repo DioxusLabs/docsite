@@ -33,7 +33,7 @@ dioxus-html = { workspace = true, features = [
 dioxus-rsx-rosetta = { workspace = true }
 dioxus-autofmt = { workspace = true }
 
-gloo-utils = "0.2.0"
+gloo-utils = { workspace = true }
 wasm-bindgen = { version = "0.2.99", features = ["serde-serialize"] }
 miniz_oxide = { version = "0.8.0", features = ["std"] }
 base64 = "0.22.1"

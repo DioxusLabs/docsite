@@ -1,5 +1,5 @@
-use example_projects::ExampleProject;
 use model::CargoDiagnostic;
+use model::Project;
 use std::io;
 use thiserror::Error;
 use tokio::{sync::mpsc::UnboundedSender, task::JoinError};
@@ -19,7 +19,7 @@ pub enum BuildCommand {
 #[derive(Debug, Clone)]
 pub struct BuildRequest {
     pub id: Uuid,
-    pub code: ExampleProject,
+    pub project: Project,
     pub ws_msg_tx: UnboundedSender<BuildMessage>,
 }
 

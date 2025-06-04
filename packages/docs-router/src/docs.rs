@@ -93,6 +93,7 @@ fn CodeBlock(contents: String, name: Option<String>) -> Element {
     }
 }
 
+
 pub(crate) static Copy: Component<()> = |_| {
     rsx!(
         svg {

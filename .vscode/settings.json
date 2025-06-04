@@ -6,10 +6,6 @@
     "[css]": {
         "editor.formatOnSave": false
     },
-    "rust-analyzer.cargo.features": [
-        "web",
-        "server"
-    ],
     "cSpell.words": [
         "appimage",
         "autoplay",

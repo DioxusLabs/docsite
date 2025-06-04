@@ -1,7 +1,6 @@
-use crate::{error::AppError, ws};
+use crate::ws;
 use dioxus::prelude::*;
-use example_projects::ExampleProject;
-use model::{CargoDiagnostic, SocketMessage};
+use model::{AppError, CargoDiagnostic, SocketMessage};
 use uuid::Uuid;
 
 #[derive(Debug, Clone, PartialEq)]
@@ -64,15 +63,9 @@ pub(crate) struct BuildState {
 }
 
 impl BuildState {
-    pub fn new(project: Signal<ExampleProject>) -> Self {
-        let stage = if project.read().prebuilt {
-            BuildStage::Finished(Ok(project.read().id()))
-        } else {
-            BuildStage::NotStarted
-        };
-
+    pub fn new() -> Self {
         Self {
-            stage: Signal::new(stage),
+            stage: Signal::new(BuildStage::NotStarted),
             queue_position: Signal::new(None),
             diagnostics: Signal::new(Vec::new()),
         }

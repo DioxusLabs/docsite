@@ -1,23 +1,16 @@
-use crate::editor::monaco;
+use dioxus::signals::{Signal, Writable};
 use dioxus_document::eval;
-use example_projects::ExampleProject;
+use model::{api::ApiClient, AppError, Project};
 
-/// Copy a share link to the clipboard.
-///
-/// This will:
-/// 1. Get the current code from the editor.
-/// 2. Compress it using `miniz_oxide`.
-/// 3. Encodes it in url-safe base64.
-/// 4. Formats the code with the provided `location` url prefix.
-/// 5. Copies the link to the clipboard.
-///
-/// This allows users to have primitve serverless sharing.
-/// Links will be large and ugly but it works.
-pub fn copy_share_link(location: &str) {
-    let code = monaco::get_current_model_value();
-    let encoded = ExampleProject::new(code, "".into(), "".into()).to_compressed_base64();
+/// Share a project and copy the link to the clipboard.
+pub async fn copy_share_link(
+    api_client: &ApiClient,
+    mut project: Signal<Project>,
+    location: &str,
+) -> Result<(), AppError> {
+    let share_code = project.write().share_project(api_client).await?;
 
-    let formatted = format!("{}/{}", location, encoded);
+    let formatted = format!("{}/shared/{}", location, share_code);
     let e = eval(
         r#"
         const data = await dioxus.recv();
@@ -25,5 +18,7 @@ pub fn copy_share_link(location: &str) {
         "#,
     );
 
-    let _ = e.send(formatted);
+    e.send(formatted)?;
+
+    Ok(())
 }

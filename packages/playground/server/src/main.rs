@@ -5,18 +5,21 @@ use axum::{
     http::StatusCode,
     middleware::{self, Next},
     response::{Redirect, Response},
-    routing::get,
+    routing::{get, post},
     BoxError, Router,
 };
 use axum_client_ip::SecureClientIpSource;
-use dioxus_logger::tracing::{info, warn, Level};
+use dioxus_logger::tracing::{error, info, warn, Level};
+use share::{get_shared_project, share_project};
 use std::{io, net::SocketAddr, sync::atomic::Ordering, time::Duration};
 use tokio::{net::TcpListener, select, time::Instant};
 use tower::{buffer::BufferLayer, limit::RateLimitLayer, ServiceBuilder};
+use tower_http::{compression::CompressionLayer, cors::CorsLayer};
 
 mod app;
 mod build;
 mod serve;
+mod share;
 mod ws;
 
 /// Rate limiter configuration.
@@ -42,9 +45,14 @@ async fn main() {
         .route("/", get(serve::serve_built_index))
         .route("/*file_path", get(serve::serve_other_built));
 
+    let shared_router = Router::new()
+        .route("/", post(share_project))
+        .route("/:id", get(get_shared_project));
+
     let app = Router::new()
         .route("/ws", get(ws::ws_handler))
         .nest("/built/:build_id", built_router)
+        .nest("/shared", shared_router)
         .route(
             "/",
             get(|| async { Redirect::permanent("https://dioxuslabs.com/play") }),
@@ -52,12 +60,12 @@ async fn main() {
         .route("/health", get(|| async { StatusCode::OK }))
         .layer(
             ServiceBuilder::new()
-                .layer(HandleErrorLayer::new(|err: BoxError| async move {
-                    (
-                        StatusCode::INTERNAL_SERVER_ERROR,
-                        format!("unhandled error: {}", err),
-                    )
+                .layer(HandleErrorLayer::new(|error: BoxError| async move {
+                    error!(?error, "unhandled server error");
+                    (StatusCode::INTERNAL_SERVER_ERROR, "Internal Server Error")
                 }))
+                .layer(CompressionLayer::new())
+                .layer(CorsLayer::very_permissive())
                 .layer(BufferLayer::new(1024))
                 .layer(RateLimitLayer::new(
                     REQUESTS_PER_INTERVAL,

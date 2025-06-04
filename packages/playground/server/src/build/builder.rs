@@ -3,7 +3,7 @@ use crate::app::EnvVars;
 use crate::build::{BuildMessage, CliMessage};
 use dioxus_dx_wire_format::StructuredOutput;
 use dioxus_logger::tracing;
-use dioxus_logger::tracing::{debug, info, warn};
+use dioxus_logger::tracing::debug;
 use fs_extra::dir::CopyOptions;
 use model::{BuildStage, CargoDiagnostic};
 use std::path::{Path, PathBuf};
@@ -93,13 +93,13 @@ async fn build(
 ) -> Result<(), BuildError> {
     // If the project already exists, don't build it again.
     if std::fs::exists(built_path.join(request.id.to_string())).unwrap_or_default() {
-        tracing::info!("Skipping build for {request:?} since it already exists");
+        tracing::trace!("Skipping build for {request:?} since it already exists");
         return Ok(());
     }
 
     setup_template(&template_path, &request).await?;
     dx_build(&template_path, &request).await?;
-    tracing::info!("Moving build from {template_path:?} to {built_path:?}");
+    tracing::trace!("Noving build from {template_path:?} to {built_path:?}");
     move_to_built(&template_path, &built_path, &request).await?;
 
     Ok(())
@@ -129,7 +129,7 @@ async fn setup_template(template_path: &Path, request: &BuildRequest) -> Result<
     // Write the user's code to main.rs
     fs::write(
         template_path.join("src/main.rs"),
-        request.code.contents.clone(),
+        request.project.contents(),
     )
     .await?;
 

@@ -35,7 +35,7 @@ Inside the initialization closure, you will typically make calls to other `cx` m
 Here is a simplified implementation of the `use_signal` hook:
 
 \```rust
-{{#include src/doc_examples/hooks_custom_logic.rs:use_signal}}
+{{#include src/doc_examples/untested_05/hooks_custom_logic.rs:use_signal}}
 \```
 
 - The `use_context` hook calls [`consume_context`](https://docs.rs/dioxus/latest/dioxus/prelude/fn.consume_context.html) (which would be expensive to call on every render) to get some context from the component
@@ -43,5 +43,5 @@ Here is a simplified implementation of the `use_signal` hook:
 Here is an implementation of the `use_context` and `use_context_provider` hooks:
 
 \```rust
-{{#include src/doc_examples/hooks_custom_logic.rs:use_context}}
+{{#include src/doc_examples/untested_05/hooks_custom_logic.rs:use_context}}
 \```

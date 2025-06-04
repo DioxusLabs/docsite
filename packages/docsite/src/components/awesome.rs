@@ -147,9 +147,8 @@ pub(crate) fn AwesomeInner() -> Element {
                     div { class: "container mx-auto",
                         div {
                             class: "mx-2 rounded-lg lg:w-2/5 lg:mx-auto",
-                            background_color: "#24292f",
                             input {
-                                class: "w-full text-center p-4 rounded-lg text-gray-500 bg-gray-100",
+                                class: "w-full text-center p-4 rounded-lg border placeholder:text-gray-400 bg-gray-100 border-gray-300 dark:bg-ghdarkmetal dark:placeholder:text-gray-300 dark:text-white dark:border-gray-700",
                                 placeholder: "Looking for something specific?",
                                 value: "{search}",
                                 oninput: move |evt| search.set(evt.value()),

@@ -242,6 +242,7 @@ fn SidebarChapter<R: AnyBookRoute>(chapter: &'static SummaryItem<R>) -> Element 
 }
 
 // Todo: wire this up to the sections of the current page and a scroll controller
+// TODO: I think this should be split out since it's used in blog as well - juls0730 (Vue pilled)
 pub fn RightNav<R: AnyBookRoute>() -> Element {
     let page = R::use_route();
     let short_version = R::short_version();
@@ -271,7 +272,7 @@ pub fn RightNav<R: AnyBookRoute>() -> Element {
 
     // That might be a naive approach, but it's the easiest
     rsx! {
-        div { class: "overflow-y-auto hidden xl:block top-28 px-2 h-full md:text-[14px] leading-5 text-gray-600  w-48 sticky  dark:text-gray-400 pt-1",
+        div { class: "overflow-y-auto hidden xl:block top-28 px-2 h-full md:text-[14px] leading-5 text-gray-600 max-h-[calc(100vh_-_calc(var(--spacing)_*_28))] w-48 sticky  dark:text-gray-400 pt-1",
             div { class: "border-b border-gray-300 pb-2 dark:border-[#a4a9ac7d]",
                 h2 { class: "pb-2 font-semibold text-gray-600 dark:text-gray-100",
                     "On this page"

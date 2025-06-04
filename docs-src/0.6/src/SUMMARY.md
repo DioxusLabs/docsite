@@ -27,11 +27,12 @@
   - [Managing State](essentials/state/index.md)
   - [Async](essentials/async/index.md)
   - [Breaking Out](essentials/breaking/index.md)
+  - [Error Handling](essentials/error_handling/index.md)
 
 ---
 
 - [Guides](guides/index.md)
-  - [Managing State](guides/managing_state.md)
+  - [Rules of Hooks](guides/rules_of_hooks.md)
   - [Router](router/index.md)
     - [Example Project](router/example/index.md)
       - [Creating Our First Route](router/example/first-route.md)
@@ -63,9 +64,9 @@
   	- [Authentication](guides/fullstack/authentication.md)
   	- [Routing](guides/fullstack/routing.md)
     - [Static Site Generation](guides/fullstack/static_site_generation.md)
+    - [Axum Integration](guides/fullstack/axum.md)
   - [Publishing](cookbook/publishing.md)
   - [Anti-patterns](cookbook/antipatterns.md)
-  - [Error Handling](cookbook/error_handling.md)
   - [Integrations](cookbook/integrations/index.md)
     - [Logging](cookbook/integrations/logging.md)
     - [Internationalization](cookbook/integrations/internationalization.md)

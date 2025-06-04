@@ -205,10 +205,23 @@ fn SearchModal() -> Element {
 
     let search_index = use_resource(|| async move {
         #[cfg(not(feature = "production"))]
-        let url = "http://localhost:8080/assets/dioxus_search/index_searchable.bin";
+        let url_base = "http://localhost:8080/assets/dioxus_search";
 
         #[cfg(feature = "production")]
-        let url = "https://dioxuslabs.com/assets/dioxus_search/index_searchable.bin";
+        let url_base = "https://dioxuslabs.com/assets/dioxus_search";
+
+        let current_route: Route = router().current();
+        // Only show search results from the version of the docs the user is currently on (or the latest if they
+        // are not on a doc page)
+        let docs_index_version = match &current_route {
+            Route::Docs06 { .. } => "0_6",
+            Route::Docs05 { .. } => "0_5",
+            Route::Docs04 { .. } => "0_4",
+            Route::Docs03 { .. } => "0_3",
+            _ => "0_6",
+        };
+
+        let url = format!("{url_base}/index_searchable_{docs_index_version}.bin");
 
         let data = reqwest::get(url).await.ok()?.bytes().await.ok()?;
 
@@ -228,26 +241,6 @@ fn SearchModal() -> Element {
             .as_ref()
             .and_then(|search| search.as_ref().map(|s| s.search(query)))
             .unwrap_or_else(|| Ok(vec![]));
-        let current_route: Route = router().current();
-
-        // Only show search results from the version of the docs the user is currently on (or the latest if they
-        // are not on a doc page)
-        if let Ok(results) = &mut results {
-            results.retain(|result| {
-                // If the user is not on a doc page, show only the latest docs
-                if !current_route.is_docs() {
-                    return result.route.is_latest_docs();
-                }
-                // Otherwise, show the results from the current version of the docs
-                matches!(
-                    (&current_route, &result.route),
-                    (Route::Docs06 { .. }, Route::Docs06 { .. })
-                        | (Route::Docs05 { .. }, Route::Docs05 { .. })
-                        | (Route::Docs04 { .. }, Route::Docs04 { .. })
-                        | (Route::Docs03 { .. }, Route::Docs03 { .. })
-                )
-            });
-        }
 
         results
     };
@@ -285,7 +278,7 @@ fn SearchModal() -> Element {
         div {
             height: "100vh",
             width: "100vw",
-            class: "fixed top-0 left-0 z-50 block bg-gray-100 dark:bg-opacity-70 bg-opacity-70 overflow-y-hidden search-modal-animated  ",
+            class: "fixed top-0 left-0 z-50 block bg-gray-100/70 dark:bg-gray-950/70 backdrop-blur-sm overflow-y-hidden search-modal-animated  ",
             class: if *SHOW_SEARCH.read() { "dioxus-show" } else { "dioxus-hide" },
             onclick: move |_| *SHOW_SEARCH.write() = false,
 

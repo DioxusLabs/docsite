@@ -1,6 +1,7 @@
 #![allow(non_snake_case, non_upper_case_globals)]
 
 use dioxus::html::input_data::keyboard_types::{Key, Modifiers};
+use dioxus::logger::tracing::Level;
 use dioxus::prelude::*;
 use serde::{Deserialize, Serialize};
 
@@ -15,6 +16,7 @@ fn main() {
     // If we are just building the search index, we don't need to launch the app
     #[cfg(feature = "server")]
     if std::env::args().any(|arg| arg == "--generate-search-index") {
+        llms::generate_llms_txt();
         search::generate_search_index();
         return;
     }
@@ -26,13 +28,11 @@ fn main() {
             // Only in release do we SSG
             let mut cfg = ServeConfig::builder();
 
-            if !cfg!(debug_assertions) {
-                cfg = cfg.incremental(
-                    IncrementalRendererConfig::new()
-                        .static_dir(static_dir())
-                        .clear_cache(false)
-                );
-            }
+            cfg = cfg.incremental(
+                IncrementalRendererConfig::new()
+                    .static_dir(static_dir())
+                    .clear_cache(false)
+            );
 
             cfg.build().expect("Unable to build ServeConfig")
         })
@@ -156,6 +156,9 @@ pub enum Route {
         #[route("/playground")]
         Playground {},
 
+        #[route("/playground/shared/:share_code")]
+        SharePlayground { share_code: String },
+
         #[route("/awesome")]
         Awesome {},
 
@@ -215,9 +218,8 @@ impl Route {
     }
 }
 
-// todo - when we update to 0.6.0 we need to change this to return a Vec<String>
 #[cfg(feature = "fullstack")]
-#[server(endpoint = "static_routes")]
+#[server(endpoint = "static_routes", output = server_fn::codec::Json)]
 async fn static_routes() -> Result<Vec<String>, ServerFnError> {
     Ok(Route::static_routes()
         .into_iter()
@@ -234,7 +236,7 @@ fn static_dir() -> std::path::PathBuf {
 }
 
 fn create_sitemap() {
-    #[cfg(not(debug_assertions))]
+    #[cfg(feature = "production")]
     server_only! {
         use std::io::Write;
 

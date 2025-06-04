@@ -63,12 +63,12 @@ fn LeftNav<R: AnyBookRoute>() -> Element {
     rsx! {
         div {
             class: if SHOW_SIDEBAR() { "w-full md:w-auto" } else { "hidden" },
-            class: "h-full md:block top-28 sticky",
-            div { class: "lg:block mb-2 md:text-[14px] leading-5 text-gray-700  dark:text-gray-400 space-y-2 px-4 md:px-2 py-2 md:py-0",
+            class: "h-full md:block top-28 sticky md:h-[calc(100vh_-_calc(var(--spacing)_*_28))]",
+            div { class: "md:flex md:flex-col md:h-full mb-2 md:text-[14px] leading-5 text-gray-700 dark:text-gray-400 space-y-2 px-4 md:px-2 py-2 md:py-0",
                 VersionSwitch {}
                 nav { class: "
                 styled-scrollbar
-                pl-2 pb-2 z-20 text-base sm:block top-28 md:h-[88vh]
+                pl-2 pb-2 z-20 text-base sm:block top-28
                 md:w-60 lg:text-[14px] content-start text-gray-600 dark:text-gray-400 overflow-y-scroll pr-2 space-y-1",
                     for chapter in chapters.into_iter().flatten().filter(|chapter| chapter.maybe_link().is_some()) {
                         SidebarSection { chapter }
@@ -242,6 +242,7 @@ fn SidebarChapter<R: AnyBookRoute>(chapter: &'static SummaryItem<R>) -> Element 
 }
 
 // Todo: wire this up to the sections of the current page and a scroll controller
+// TODO: I think this should be split out since it's used in blog as well - juls0730 (Vue pilled)
 pub fn RightNav<R: AnyBookRoute>() -> Element {
     let page = R::use_route();
     let short_version = R::short_version();
@@ -271,7 +272,7 @@ pub fn RightNav<R: AnyBookRoute>() -> Element {
 
     // That might be a naive approach, but it's the easiest
     rsx! {
-        div { class: "overflow-y-auto hidden xl:block top-28 px-2 h-full md:text-[14px] leading-5 text-gray-600  w-48 sticky  dark:text-gray-400 pt-1",
+        div { class: "overflow-y-auto hidden xl:block top-28 px-2 h-full md:text-[14px] leading-5 text-gray-600 max-h-[calc(100vh_-_calc(var(--spacing)_*_28))] w-48 sticky  dark:text-gray-400 pt-1",
             div { class: "border-b border-gray-300 pb-2 dark:border-[#a4a9ac7d]",
                 h2 { class: "pb-2 font-semibold text-gray-600 dark:text-gray-100",
                     "On this page"

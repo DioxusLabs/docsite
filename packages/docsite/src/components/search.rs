@@ -2,12 +2,27 @@ pub fn generate_search_index() {
     #[cfg(not(target_arch = "wasm32"))]
     {
         use crate::{static_dir, Route};
-        use std::sync::atomic::{AtomicBool, Ordering};
 
         std::env::set_var("CARGO_MANIFEST_DIR", static_dir().join("assets"));
-        dioxus_search::SearchIndex::<Route>::create(
-            "searchable",
-            dioxus_search::BaseDirectoryMapping::new(static_dir()),
-        );
+        let version_filter: [(&str, fn(&Route) -> bool); 4] = [
+            ("0_3", |route| matches!(route, Route::Docs03 { .. })),
+            ("0_4", |route| matches!(route, Route::Docs04 { .. })),
+            ("0_5", |route| matches!(route, Route::Docs05 { .. })),
+            ("0_6", |route| matches!(route, Route::Docs06 { .. })),
+        ];
+        for (version, filter) in version_filter {
+            dioxus_search::SearchIndex::<Route>::create(
+                format!("searchable_{version}"),
+                dioxus_search::BaseDirectoryMapping::new(static_dir()).map(|route| {
+                    filter(&route).then(|| {
+                        let route = route.to_string();
+                        println!("route: {route}");
+                        let (route, _) = route.split_once('#').unwrap_or((&route, ""));
+                        let (route, _) = route.split_once('?').unwrap_or((&route, ""));
+                        std::path::PathBuf::from(route).join("index.html")
+                    })
+                }),
+            );
+        }
     }
 }

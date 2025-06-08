@@ -53,6 +53,8 @@ rusqlite = { version = "0.32.1", optional = true } # <--- add rusqlite
 server = ["dioxus/server", "dep:rusqlite"] # <---- add dep:rusqlite
 ```
 
+> 📣 On Windows if you are encountering `link.exe` errors after adding `rusqlite`, add `features = ["bundled"]` to fix that.
+
 To connect to our database, we're going to use the `rusqlite::Connection`. Rusqlite connections are not thread-safe and must exist once-per-thread, so we'll need to wrap it in a thread_locals.
 
 When the connection is initialized, we'll run a SQL action to create the "dogs" table with our data.

@@ -71,7 +71,7 @@ This is only possible because the two hooks are always called in the same order,
 3. The same hooks must be called (except in the case of early returns, as explained later in the [Error Handling chapter](../essentials/error_handling/index.md)).
 4. In the same order.
 5. Hook names should start with `use_` so you don't accidentally confuse them with regular
-   functions (`use_signal()`, `use_signal()`, `use_resource()`, etc...).
+   functions (`use_signal()`, `use_effect()`, `use_resource()`, etc...).
 
 These rules mean that there are certain things you can't do with hooks:
 

@@ -14,7 +14,7 @@ The essentials section will guide you through key concepts in Dioxus:
 
 - [Component Lifecycle](../essentials/lifecycle/index.md) teaches you about the lifecycle of components along with the hooks you need to run code when the component is first created, mounted, and removed.
 
-- [Managing State](../essentials/state/index.md) guides you through how state works in Dioxus. It will teach you how to create state with `use_signal`, derive state with `use_memo`, and integrate state with asynchronous tasks with `use_resource`. Along the way, you will learn about you can use reactivity to declaratively describe your UI.
+- [Managing State](../essentials/state/index.md) guides you through how state works in Dioxus. It will teach you how to create state with `use_signal`, derive state with `use_memo`, and integrate state with asynchronous tasks with `use_resource`. Along the way, you will learn about how you can use reactivity to declaratively describe your UI.
 
 - [Breaking Out](../essentials/breaking/index.md) will teach you how to break out of Dioxus' rendering model to run JavaScript or interact with the DOM directly with `web-sys`.
 
@@ -38,7 +38,7 @@ You might be curious how particular features work in Dioxus. Let's try to addres
 
 Dioxus is really fast. Dioxus is built around an *extremely* performant VirtualDom. While a VirtualDom might sound like ["pure overhead"](https://svelte.dev/blog/virtual-dom-is-pure-overhead), Dioxus leverages compile-time optimizations that make it faster than nearly all UI frameworks.
 
-On the web, Dioxus [is on par with frameworks like Solid and Svelte](https://krausest.github.io/js-framework-benchmark/2023/table_chrome_120.0.6099.62.html) which leveragea new reactivity models or custom compilers.
+On the web, Dioxus [is on par with frameworks like Solid and Svelte](https://krausest.github.io/js-framework-benchmark/2023/table_chrome_120.0.6099.62.html) which leverage new reactivity models or custom compilers.
 
 ### Is Rust too hard?
 

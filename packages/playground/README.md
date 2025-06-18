@@ -37,6 +37,9 @@ BUILD_TEMPLATE_PATH = "/usr/local/bin/template"
 
 # If specified, shuts down the server after X ms since the last http request.
 SHUTDOWN_DELAY = null
+
+# The authentication token for saving code to GitHub gist.
+GIST_AUTH_TOKEN = null
 ```
 
 ### Licenses

@@ -1,7 +1,15 @@
 use dioxus::prelude::*;
 
 #[component]
-pub fn Modal(icon: Element, title: String, text: String, on_ok: EventHandler) -> Element {
+pub fn Modal(
+    icon: Element,
+    title: String,
+    text: String,
+    ok_text: Option<String>,
+    on_ok: EventHandler,
+) -> Element {
+    let ok_text = ok_text.unwrap_or("Ok".to_string());
+
     rsx! {
         // Background
         div {
@@ -30,7 +38,7 @@ pub fn Modal(icon: Element, title: String, text: String, on_ok: EventHandler) ->
                 button {
                     id: "dxp-modal-ok-btn",
                     onclick: move |_| on_ok.call(()),
-                    "I understand"
+                    "{ok_text}"
                 }
             }
         }

@@ -50,7 +50,7 @@ mod save_dog_launch {
         let router = axum::Router::new().serve_dioxus_application(config, app);
 
         // start server
-        let socket_addr = dioxus_cli_config::fullstack_address_or_localhost();
+        let socket_addr = dioxus::cli_config::fullstack_address_or_localhost();
         let listener = tokio::net::TcpListener::bind(socket_addr).await.unwrap();
         axum::serve(listener, router).await.unwrap();
     }
@@ -80,7 +80,7 @@ mod separate_server_launch {
         dioxus::logger::initialize_default();
 
         // Connect to the IP and PORT env vars passed by the Dioxus CLI (or your dockerfile)
-        let socket_addr = dioxus_cli_config::fullstack_address_or_localhost();
+        let socket_addr = dioxus::cli_config::fullstack_address_or_localhost();
 
         // Build a custom axum router
         let router = axum::Router::new()

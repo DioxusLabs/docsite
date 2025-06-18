@@ -16,6 +16,7 @@ pub fn generate_search_index() {
                 dioxus_search::BaseDirectoryMapping::new(static_dir()).map(|route| {
                     filter(&route).then(|| {
                         let route = route.to_string();
+                        println!("route: {route}");
                         let (route, _) = route.split_once('#').unwrap_or((&route, ""));
                         let (route, _) = route.split_once('?').unwrap_or((&route, ""));
                         std::path::PathBuf::from(route).join("index.html")

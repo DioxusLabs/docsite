@@ -1,9 +1,11 @@
 use crate::build::BuildState;
 use crate::components::icons::LoadingSpinner;
 use crate::share_code::copy_share_link;
-use crate::PlaygroundUrls;
+use crate::{Errors, PlaygroundUrls};
 use dioxus::prelude::*;
 use dioxus_sdk::utils::timing::use_debounce;
+use model::api::ApiClient;
+use model::Project;
 use std::time::Duration;
 
 #[component]
@@ -13,16 +15,16 @@ pub fn Header(
     pane_left_width: Signal<Option<i32>>,
     pane_right_width: Signal<Option<i32>>,
     mut show_examples: Signal<bool>,
-    example_name: ReadOnlySignal<String>,
+    file_name: ReadOnlySignal<String>,
 ) -> Element {
     let build = use_context::<BuildState>();
+    let api_client = use_context::<Signal<ApiClient>>();
+    let project = use_context::<Signal<Project>>();
+    let mut errors = use_context::<Errors>();
 
-    let mut show_share_copied = use_signal(|| false);
-
-    let mut reset_share_copied = use_debounce(Duration::from_secs(1), move |()| {
-        spawn(async move {
-            show_share_copied.set(false);
-        });
+    let mut share_btn_text = use_signal(|| "Share");
+    let mut reset_share_btn = use_debounce(Duration::from_secs(1), move |()| {
+        share_btn_text.set("Share")
     });
 
     rsx! {
@@ -40,7 +42,7 @@ pub fn Header(
                     onclick: move |_| show_examples.toggle(),
                     crate::components::icons::MenuIcon {}
                 }
-                button { class: "dxp-ctrl-btn dxp-file-btn dxp-selected-file", {example_name} }
+                button { class: "dxp-ctrl-btn dxp-file-btn dxp-selected-file", {file_name} }
             }
 
             // Right pane header
@@ -52,16 +54,20 @@ pub fn Header(
                 button {
                     id: "dxp-share-btn",
                     class: "dxp-ctrl-btn",
-                    onclick: move |_| {
-                        copy_share_link(urls.location);
-                        show_share_copied.set(true);
-                        reset_share_copied.action(());
+                    onclick: move |_| async move {
+                        share_btn_text.set("Sharing...");
+
+                        match copy_share_link(&api_client(), project, urls.location).await {
+                            Ok(()) => share_btn_text.set("Link Copied!"),
+                            Err(error) => {
+                                share_btn_text.set("Error!");
+                                errors.push_error(("Share Failed", format!("An error occured while generating a share link: {error:?}")));
+                            }
+                        }
+
+                        reset_share_btn.action(());
                     },
-                    if show_share_copied() {
-                        "Copied!"
-                    } else {
-                        "Share"
-                    }
+                    "{share_btn_text}"
                 }
 
 

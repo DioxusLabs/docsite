@@ -30,7 +30,7 @@ You can use [`use_hook`](https://docs.rs/dioxus/latest/dioxus/prelude/fn.use_hoo
 
 Inside the initialization closure, you will typically make calls to other `cx` methods. For example:
 
-- The `use_signal` hook tracks state in the hook value, and uses [`schedule_update`](https://docs.rs/dioxus/latest/dioxus/prelude/fn.schedule_update.html) to make Dioxus re-render the component whenever it changes.
+- The `use_signal` hook tracks state in the hook value, and uses [`ReactiveContext`](https://docs.rs/dioxus/latest/dioxus/prelude/struct.ReactiveContext.html) to make Dioxus re-render any component that has observed it whenever the signal's value changes.
 
 Here is a simplified implementation of the `use_signal` hook:
 

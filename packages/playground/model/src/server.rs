@@ -1,13 +1,16 @@
 //! Server-specific implementations
 
 use crate::{
-    BuildStage, CargoDiagnostic, CargoDiagnosticSpan, CargoLevel, SocketError, SocketMessage,
+    AppError, BuildStage, CargoDiagnostic, CargoDiagnosticSpan, CargoLevel, SocketError,
+    SocketMessage,
 };
-use axum::extract::ws;
+use axum::http::StatusCode;
+use axum::{extract::ws, response::IntoResponse};
 use dioxus_dx_wire_format::{
     cargo_metadata::{diagnostic::DiagnosticLevel, CompilerMessage},
     BuildStage as DxBuildStage,
 };
+use dioxus_logger::tracing::{error, warn};
 
 impl From<DxBuildStage> for BuildStage {
     fn from(value: DxBuildStage) -> Self {
@@ -81,5 +84,27 @@ impl TryFrom<CompilerMessage> for CargoDiagnostic {
             message,
             spans,
         })
+    }
+}
+
+/// IntoResponse for app errors.
+impl IntoResponse for AppError {
+    fn into_response(self) -> axum::response::Response {
+        match self {
+            AppError::ResourceNotFound => StatusCode::NOT_FOUND,
+            AppError::Parse(error) => {
+                error!(?error, "parse error");
+                StatusCode::INTERNAL_SERVER_ERROR
+            }
+            AppError::Request(error) => {
+                error!(?error, "request error");
+                StatusCode::INTERNAL_SERVER_ERROR
+            }
+            error => {
+                warn!(?error, "unhandled `IntoResponse` server error");
+                StatusCode::INTERNAL_SERVER_ERROR
+            }
+        }
+        .into_response()
     }
 }

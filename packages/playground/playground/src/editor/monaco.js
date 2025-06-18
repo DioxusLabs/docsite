@@ -5,11 +5,14 @@ export function initMonaco(
   vsPathPrefix,
   elementId,
   initialTheme,
-  initialSnippet
+  initialSnippet, 
+  onReadyCallback,
 ) {
   require.config({ paths: { vs: vsPathPrefix } });
 
   require(["vs/editor/editor.main"], function () {
+    monaco.editor.onDidCreateModel((_model) => onReadyCallback());
+
     // Light Theme
     monaco.editor.defineTheme("dx-vs", {
       base: "vs",

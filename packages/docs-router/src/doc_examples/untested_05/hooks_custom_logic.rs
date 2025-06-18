@@ -6,53 +6,44 @@ fn main() {}
 
 // ANCHOR: use_signal
 use std::cell::RefCell;
-use std::collections::HashSet;
 use std::rc::Rc;
-use std::sync::{Arc, Mutex};
+use std::sync::Arc;
 
 struct Signal<T> {
     value: Rc<RefCell<T>>,
-    subscribers: Arc<Mutex<HashSet<ReactiveContext>>>,
+    update: Arc<dyn Fn()>,
 }
 
 impl<T> Clone for Signal<T> {
     fn clone(&self) -> Self {
         Self {
             value: self.value.clone(),
-            subscribers: self.subscribers.clone(),
+            update: self.update.clone(),
         }
     }
 }
 
 fn my_use_signal<T: 'static>(init: impl FnOnce() -> T) -> Signal<T> {
     use_hook(|| {
-        // A set of subscribers to notify about changes to this signals value
-        let subscribers = Default::default();
+        // The update function will trigger a re-render in the component cx is attached to
+        let update = schedule_update();
         // Create the initial state
         let value = Rc::new(RefCell::new(init()));
 
-        Signal { value, subscribers }
+        Signal { value, update }
     })
 }
 
 impl<T: Clone> Signal<T> {
     fn get(&self) -> T {
-        // Subscribe the context observing the signal (if any) to updates of its value.
-        if let Some(reactive_context) = ReactiveContext::current() {
-            reactive_context.subscribe(self.subscribers.clone());
-        }
-
         self.value.borrow().clone()
     }
 
     fn set(&self, value: T) {
         // Update the state
         *self.value.borrow_mut() = value;
-        // Trigger a re-render of the components that observed the signal's previous value
-        let mut subscribers = std::mem::take(&mut *self.subscribers.lock().unwrap());
-        subscribers.retain(|reactive_context| reactive_context.mark_dirty());
-        // Extend the subscribers list instead of overwriting it in case a subscriber is added while reactive contexts are marked dirty
-        self.subscribers.lock().unwrap().extend(subscribers);
+        // Trigger a re-render on the component the state is from
+        (self.update)();
     }
 }
 // ANCHOR_END: use_signal

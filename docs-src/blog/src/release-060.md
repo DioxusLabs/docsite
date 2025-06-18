@@ -404,7 +404,7 @@ Static site generation is a technique used by many web frameworks like Jekyll, H
 In Dioxus 0.6, we now support static-site-generation out of the box for all fullstack projects. Simply add a server function to your app called `static_routes` that returns the list of routes that `dx` should generate:
 
 ```rust
-#[server(endpoint = "static_routes")]
+#[server(endpoint = "static_routes", output = server_fn::codec::Json)]
 async fn static_routes() -> Result<Vec<String>, ServerFnError> {
     Ok(Route::static_routes()
         .into_iter()

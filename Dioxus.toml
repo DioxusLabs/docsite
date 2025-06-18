@@ -1,5 +1,2 @@
 [application]
 name = "docsite"
-
-[web.app]
-base_path = "docsite"

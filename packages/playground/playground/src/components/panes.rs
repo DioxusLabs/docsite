@@ -135,7 +135,7 @@ pub fn Panes(
                     } else if build_stage.is_err() {
                         Logs {}
                     } else {
-                        p { "Click `Run` to start a build!" }
+                        p { "Click `Rebuild` to start a build!" }
                     }
                 }
             }

@@ -32,7 +32,7 @@
 ---
 
 - [Guides](guides/index.md)
-  - [Managing State](guides/managing_state.md)
+  - [Rules of Hooks](guides/rules_of_hooks.md)
   - [Router](router/index.md)
     - [Example Project](router/example/index.md)
       - [Creating Our First Route](router/example/first-route.md)
@@ -64,6 +64,7 @@
   	- [Authentication](guides/fullstack/authentication.md)
   	- [Routing](guides/fullstack/routing.md)
     - [Static Site Generation](guides/fullstack/static_site_generation.md)
+    - [Axum Integration](guides/fullstack/axum.md)
   - [Publishing](cookbook/publishing.md)
   - [Anti-patterns](cookbook/antipatterns.md)
   - [Integrations](cookbook/integrations/index.md)

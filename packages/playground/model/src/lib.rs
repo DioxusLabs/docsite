@@ -1,7 +1,13 @@
 use serde::{Deserialize, Serialize};
+use std::error::Error;
 use std::string::FromUtf8Error;
 use thiserror::Error;
 use uuid::Uuid;
+
+pub mod api;
+
+mod project;
+pub use project::Project;
 
 #[cfg(feature = "server")]
 mod server;
@@ -72,6 +78,7 @@ pub struct CargoDiagnosticSpan {
 
 /// Any socket error.
 #[derive(Debug, Error)]
+#[non_exhaustive]
 pub enum SocketError {
     #[error(transparent)]
     ParseJson(#[from] serde_json::Error),
@@ -86,4 +93,36 @@ pub enum SocketError {
     #[cfg(feature = "server")]
     #[error(transparent)]
     Axum(#[from] axum::Error),
+}
+
+/// Generic App Error
+#[derive(Debug, Error)]
+#[non_exhaustive]
+pub enum AppError {
+    #[error("parse error: {0}")]
+    Parse(Box<dyn Error>),
+
+    #[error(transparent)]
+    Request(#[from] reqwest::Error),
+
+    #[error("build is already running")]
+    BuildIsAlreadyRunning,
+
+    #[error("resource not found")]
+    ResourceNotFound,
+
+    // Web-specific errors
+    #[cfg(feature = "web")]
+    #[error(transparent)]
+    Socket(#[from] SocketError),
+
+    #[cfg(feature = "web")]
+    #[error(transparent)]
+    Js(Box<dyn Error>),
+}
+
+impl From<serde_json::Error> for AppError {
+    fn from(value: serde_json::Error) -> Self {
+        Self::Parse(Box::new(value))
+    }
 }

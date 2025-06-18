@@ -12,7 +12,7 @@ In Dioxus, apps are comprised of individual functions called *Components* that t
 
 ## Component Properties
 
-All components take an object that outlines which parameters the component can accept. All `Props` structs in Dioxus need to derive the `Properties` trait which requires both `Clone` and `PartialEq`:
+All components take an object that outlines which parameters the component can accept. All property structs in Dioxus need to derive the `Props` trait which requires both `Clone` and `PartialEq`:
 
 ```rust
 {{#include src/doc_examples/guide_component.rs:dog_app_component_props}}

@@ -6,8 +6,8 @@ body {
   background-color: #ffffff;
 }
 
-@media (prefers-color-scheme: dark) {
-  body {
+body {
+  &:where([data-theme="dark"], [data-theme="dark"] *) {
     background-color: #0e1116;
   }
 }

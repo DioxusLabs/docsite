@@ -11,7 +11,7 @@ pub(crate) fn Components(
         let dark_mode = DARK_MODE()
             .map(|dark_mode| format!("dark_mode={}", dark_mode))
             .unwrap_or_default();
-        format!("http://127.0.0.1:1111/{segments}?iframe=true&{dark_mode}&{query}")
+        format!("https://dioxuslabs.github.io/components/{segments}?iframe=true&{dark_mode}&{query}")
     }
 
     let initial_url = use_hook(|| format_segments(&segments.read(), &query.read()));

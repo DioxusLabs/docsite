@@ -39,7 +39,7 @@
 }
 
 .playground-container {
-    height: 900px;
+  height: 900px;
   display: flex;
   flex-direction: column;
   /* width: 100vw;
@@ -53,20 +53,25 @@
   padding-bottom: 12px;
 }
 .full-chapter:not(:last-child) {
-  border-bottom: 1px solid #3b3d3e29;
+  &:where([data-theme="light"], [data-theme="light"] *) {
+    border-bottom: 1px solid #3b3d3e29;
+  }
 }
-@media (prefers-color-scheme: dark) {
-  .full-chapter:not(:last-child) {
+
+.full-chapter:not(:last-child) {
+  &:where([data-theme="dark"], [data-theme="dark"] *) {
     border-bottom: 1px solid #a4a9ac7d;
   }
+}
 
-  html {
+html {
+  &:where([data-theme="dark"], [data-theme="dark"] *) {
     background-color: black;
   }
 }
 
-@media (prefers-color-scheme: light) {
-  .codeblock > pre {
+.codeblock > pre {
+  &:where([data-theme="light"], [data-theme="light"] *) {
     background-color: rgb(37, 36, 36) !important;
   }
 }
@@ -146,7 +151,6 @@ It's so unliklely anyone is copying text on mobile that we can just hide it
   opacity: 0;
   scale: 1.1;
 }
-
 
 .markdown-body ul {
   list-style: disc;

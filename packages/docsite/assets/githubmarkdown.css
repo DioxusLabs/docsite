@@ -1,5 +1,5 @@
-@media (prefers-color-scheme: dark) {
-  .markdown-body {
+.markdown-body {
+  &:where([data-theme="dark"], [data-theme="dark"] *) {
     color-scheme: dark;
     --color-prettylights-syntax-comment: #8b949e;
     --color-prettylights-syntax-constant: #79c0ff;
@@ -46,8 +46,8 @@
   }
 }
 
-@media (prefers-color-scheme: light) {
-  .markdown-body {
+.markdown-body {
+  &:where([data-theme="light"], [data-theme="light"] *) {
     color-scheme: light;
     --color-prettylights-syntax-comment: #6e7781;
     --color-prettylights-syntax-constant: #0550ae;

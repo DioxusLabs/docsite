@@ -18,4 +18,8 @@ pub mod playground;
 pub use playground::*;
 pub mod search;
 pub use search::*;
+pub mod component_demo;
+pub use component_demo::*;
 pub mod llms;
+pub mod theme;
+pub use theme::*;

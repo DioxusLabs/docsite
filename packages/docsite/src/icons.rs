@@ -364,7 +364,6 @@ pub(crate) fn IconWarning() -> Element {
     }
 }
 
-
 #[component]
 pub(crate) fn DarkModeIcon() -> Element {
     rsx! {

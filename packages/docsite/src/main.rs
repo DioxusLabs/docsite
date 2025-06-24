@@ -173,9 +173,9 @@ pub enum Route {
     #[route("/playground/shared/:share_code")]
     SharePlayground { share_code: String },
 
-    #[route("/components/:..segments")]
+    #[route("/components/:..segments?:..query")]
     #[layout(!FooterLayout)]
-    Components { segments: Vec<String> },
+    Components { segments: Vec<String>, query: String },
 
     #[route("/awesome")]
     Awesome {},
@@ -243,10 +243,16 @@ pub(crate) fn dark_mode() -> bool {
 #[cfg(feature = "fullstack")]
 #[server(endpoint = "static_routes", output = server_fn::codec::Json)]
 async fn static_routes() -> Result<Vec<String>, ServerFnError> {
-    Ok(Route::static_routes()
+    let mut static_routes = Route::static_routes()
         .into_iter()
         .map(|route| route.to_string())
-        .collect::<Vec<_>>())
+        .collect::<Vec<_>>();
+
+    // Add the components preview routes manually
+    static_routes.push("/components/".to_string());
+    static_routes.push("/components/component/".to_string());
+
+    Ok(static_routes)
 }
 
 fn static_dir() -> std::path::PathBuf {

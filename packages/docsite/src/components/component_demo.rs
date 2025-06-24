@@ -1,25 +1,30 @@
-use std::rc::Rc;
-
-use crate::{Route, DARK_MODE};
+use crate::DARK_MODE;
 use dioxus::prelude::*;
-use wasm_bindgen::{prelude::Closure, JsCast};
 
 #[component]
-pub(crate) fn Components(segments: ReadOnlySignal<Vec<String>>) -> Element {
-    fn format_segments(segments: &[String]) -> String {
+pub(crate) fn Components(
+    segments: ReadOnlySignal<Vec<String>>,
+    query: ReadOnlySignal<String>,
+) -> Element {
+    fn format_segments(segments: &[String], query: &str) -> String {
         let segments = segments.join("/");
         let dark_mode = DARK_MODE()
             .map(|dark_mode| format!("dark_mode={}", dark_mode))
             .unwrap_or_default();
-        format!("https://dioxuslabs.github.io/components/{segments}?iframe=true&{dark_mode}")
+        format!("http://127.0.0.1:1111/{segments}?iframe=true&{dark_mode}&{query}")
     }
 
-    let initial_url = use_hook(|| format_segments(&segments.read()));
+    let initial_url = use_hook(|| format_segments(&segments.read(), &query.read()));
 
     // Handle syncing the parent route/history with the iframe's route on the client.
     // The iframe will send a message to the parent window when its route changes,
     // and the parent will update its route accordingly.
-    client! {
+    #[cfg(all(feature = "web", not(feature = "server")))]
+    {
+        use crate::Route;
+        use std::rc::Rc;
+        use wasm_bindgen::{prelude::Closure, JsCast};
+
         let onmessage_callback = use_callback(|event: web_sys::MessageEvent| {
             #[derive(serde::Deserialize)]
             struct MessageData {
@@ -30,9 +35,11 @@ pub(crate) fn Components(segments: ReadOnlySignal<Vec<String>>) -> Element {
                 // Update the frame's url to the new route
                 let new_route = deserialized.route;
                 let cleaned_route = new_route.trim_start_matches('/');
-                let without_query = cleaned_route.split('?').next().unwrap_or(cleaned_route);
+                let (without_query, query) =
+                    cleaned_route.split_once('?').unwrap_or((cleaned_route, ""));
                 let new_route = Route::Components {
                     segments: without_query.split('/').map(String::from).collect(),
+                    query: query.to_string(),
                 };
                 let router = router();
                 if new_route != router.current() {
@@ -55,7 +62,10 @@ pub(crate) fn Components(segments: ReadOnlySignal<Vec<String>>) -> Element {
                 let window = web_sys::window().expect("No global `window` exists");
 
                 window
-                    .add_event_listener_with_callback("message", &onmessage_web_sys_callback.as_ref().as_ref().unchecked_ref())
+                    .add_event_listener_with_callback(
+                        "message",
+                        &onmessage_web_sys_callback.as_ref().as_ref().unchecked_ref(),
+                    )
                     .expect("Failed to add message event listener to iframe");
             }
         });
@@ -63,14 +73,17 @@ pub(crate) fn Components(segments: ReadOnlySignal<Vec<String>>) -> Element {
         use_drop(move || {
             let window = web_sys::window().expect("No global `window` exists");
             window
-                .remove_event_listener_with_callback("message", &onmessage_web_sys_callback.as_ref().as_ref().unchecked_ref())
+                .remove_event_listener_with_callback(
+                    "message",
+                    &onmessage_web_sys_callback.as_ref().as_ref().unchecked_ref(),
+                )
                 .expect("Failed to remove message event listener from iframe");
         });
 
         // After the initial load, replace the iframes location instead of changing the src to avoid
         // adding a new history entry.
         use_effect(move || {
-            let url = format_segments(&segments.read());
+            let url = format_segments(&segments.read(), &query.read());
 
             let window = web_sys::window().expect("No global `window` exists");
             let document = window.document().expect("No global `document` exists");

@@ -18,7 +18,7 @@ cargo install dioxus-cli
 4. Create a `input.css` file in the root of your project with the following content:
 
 ```css
-@import "tailwind.css";
+@import "tailwindcss";
 @source "./src/**/*.{rs,html,css}";
 ```
 

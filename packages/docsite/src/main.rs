@@ -4,7 +4,6 @@ use dioxus::html::input_data::keyboard_types::{Key, Modifiers};
 use dioxus::prelude::*;
 use serde::{Deserialize, Serialize};
 
-
 pub mod components;
 pub mod docs;
 pub mod icons;
@@ -236,7 +235,10 @@ impl Route {
 }
 
 /// The active theme for the site.
-pub(crate) static DARK_MODE: GlobalSignal<bool> = Signal::global(|| false);
+pub(crate) static DARK_MODE: GlobalSignal<Option<bool>> = Signal::global(|| None);
+pub(crate) fn dark_mode() -> bool {
+    DARK_MODE().unwrap_or_default()
+}
 
 #[cfg(feature = "fullstack")]
 #[server(endpoint = "static_routes", output = server_fn::codec::Json)]

@@ -113,6 +113,20 @@ DemoFrame {
 }
 ```
 
+### Opting Out of Subscriptions
+
+In some situations, you may need to read a reactive value without subscribing to it. You can use the `peek` method to get a reference to the inner value without registering the value as a dependency of the current reactive context:
+
+```rust
+{{#include src/doc_examples/reactivity.rs:peek}}
+```
+
+```inject-dioxus
+DemoFrame {
+    reactivity::PeekDemo {}
+}
+```
+
 ### Making Props Reactive
 
 To avoid losing reactivity with props, we recommend you wrap any props you want to track in a `ReadOnlySignal`. Dioxus will automatically convert `T` into `ReadOnlySignal<T>` when you pass props to the component. This will ensure your props are tracked and rerun any state you derive in the component:

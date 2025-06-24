@@ -6,6 +6,7 @@ pub use effect::EffectDemo;
 pub use memo::MemoDemo;
 pub use non_reactive_state::MakingPropsReactiveDemo;
 pub use non_reactive_state::NonReactiveDemo;
+pub use non_reactive_state::PeekDemo;
 pub use non_reactive_state::UseReactiveDemo;
 pub use resource::ResourceDemo;
 
@@ -201,6 +202,7 @@ mod non_reactive_state {
     use super::*;
     pub use making_props_reactive::*;
     pub use non_reactive::*;
+    pub use peek::*;
     pub use use_reactive::*;
 
     mod non_reactive {
@@ -295,6 +297,48 @@ mod non_reactive_state {
                         }
                     }
                 }
+            }
+        }
+    }
+
+    mod peek {
+        use super::*;
+
+        // ANCHOR: peek
+        fn Peek() -> Element {
+            let mut count = use_signal(|| 0);
+
+            // The toggle signal is a tracked value
+            let mut toggle = use_signal(|| false);
+
+            use_effect(move || {
+                // When we read count, it becomes a dependency of the effect
+                let current_count = count();
+                log!("current_count is {current_count}");
+
+                if current_count % 4 == 0 {
+                    // We peek at the value of toggle instead of reading it,
+                    // so it does not become a dependency
+                    let current_toggle = *toggle.peek();
+                    // We didn't subscribe to toggle, so this will not cause
+                    // the effect to rerun forever
+                    toggle.set(!current_toggle);
+                    log!("flipped toggle to {current_toggle}");
+                }
+            });
+
+            rsx! {
+                button { onclick: move |_| count += 1, "Change Signal" }
+
+                div { "Count is {count}" }
+                div { "Toggle is {toggle}" }
+            }
+        }
+        // ANCHOR_END: peek
+
+        pub fn PeekDemo() -> Element {
+            rsx! {
+                ComponentWithLogs { Peek {} }
             }
         }
     }

@@ -73,10 +73,8 @@ pub(crate) fn Nav() -> Element {
                     div { class: "h-full  gap-3 hidden lg:flex",
                         div { class: "border-l border-gray-200 dark:border-gray-800 h-full" }
                         div { class: "hidden lg:flex items-center gap-3",
-                            label {
-                                class: "sr-only",
-                                id: "headlessui-listbox-label-2",
-                                "Theme"
+                            DarkModeToggle {
+                                class: "block text-gray-400 hover:text-gray-500 dark:hover:text-gray-300",
                             }
                             Link {
                                 to: "https://crates.io/crates/dioxus",
@@ -111,27 +109,6 @@ pub(crate) fn Nav() -> Element {
                                 span { class: "text-xs text", CurrentStarCount {} }
                             }
                         }
-                        div { class: "border-l border-gray-200 dark:border-gray-800 h-full" }
-                        div { class: "hidden lg:flex items-center gap-2 h-full",
-                            label {
-                                class: "sr-only",
-                                id: "headlessui-listbox-label-2",
-                                "Theme"
-                            }
-                            Link {
-                                to: Route::Deploy {},
-                                class: "h-full flex flex-col justify-center text-center md:px-3 bg-white dark:bg-gray-300 border border-gray-200 dark:border-gray-700 text-sm md:text-sm rounded font-semibold text-gray-700 hover:brightness-95 dark:hover:brightness-105",
-                                "Deploy"
-                            }
-                            Link {
-                                to: crate::docs::router_06::BookRoute::Index {
-                                    section: Default::default(),
-                                }
-                                    .global_route(),
-                                class: "md:px-3 h-full flex flex-col justify-center bg-blue-500 text-lg md:text-sm text-white rounded font-semibold hover:brightness-95 dark:hover:brightness-105",
-                                "Learn"
-                            }
-                        }
                     }
                 }
             }
@@ -163,7 +140,7 @@ static LINKS: &[(&str, &str)] = &[
     ("Learn", "/learn/0.6/"),
     // ("SDK", "/sdk"),
     // ("Playground", "/playground"),
-    // ("Components", "/components"),
+    ("Components", "/components"),
     ("Awesome", "/awesome"),
     ("Blog", "/blog"),
 ];

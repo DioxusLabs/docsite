@@ -100,9 +100,4 @@ For example, consider this server function:
 {{#include src/doc_examples/server_function_desktop_client.rs:server_function}}
 ```
 
-The `GetServerData` type has to be registered in the server, which will add the corresponding route to the server.
-```rust
-{{#include src/doc_examples/server_function_desktop_client.rs:function_registration}}
-```
-
 Finally, the server is started and it begins responding to requests.

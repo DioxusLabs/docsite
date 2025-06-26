@@ -9,9 +9,13 @@
 !.vscode/extensions.json
 
 .idea
+.env
 
 /pkg
 /static
 /docs
 /dist
 /dioxus_search
+/node_modules
+/package-lock.json
+/package.json

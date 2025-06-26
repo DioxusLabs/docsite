@@ -16,19 +16,48 @@ use dioxus::prelude::*;
 // };`
 
 #[component]
-pub fn Playground() -> Element {
+pub fn Playground(share_code: Option<String>) -> Element {
     // Only render playground on client.
     let mut on_client = use_signal(|| false);
     use_effect(move || on_client.set(true));
 
     if on_client() {
         rsx! {
-            // dioxus_playground::Playground {
-            //     urls: URLS,
-            //     class: "playground-container max-w-screen-2xl mx-auto mt-8",
-            // }
+            ErrorBoundary {
+                handle_error: move |err: ErrorContext| {
+                    let errors = err.errors();
+                    rsx! {
+                        div { class: "mx-auto mt-8 max-w-3/4",
+
+                            h4 { class: "dark:text-white font-light text-ghdarkmetal",
+                                "The Dioxus Playground encountered an error."
+                            }
+
+                            br {}
+
+                            for error in errors {
+                                p { class: "dark:text-white font-light text-ghdarkmetal", "{error:?}" }
+                                br {}
+                            }
+                        }
+                    }
+                },
+
+                dioxus_playground::Playground {
+                    class: "playground-container max-w-screen-2xl mx-auto mt-8",
+                    urls: URLS,
+                    share_code,
+                }
+            }
         }
     } else {
         rsx! {}
+    }
+}
+
+#[component]
+pub fn SharePlayground(share_code: String) -> Element {
+    rsx! {
+        Playground { share_code }
     }
 }

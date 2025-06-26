@@ -66,7 +66,7 @@ To "provide" context, simply call `use_context_provider()` with a struct that im
 {{#include src/doc_examples/guide_state.rs:context}}
 ```
 
-You can combine use_signal and `Context` to provide reactive state to your app:
+You can combine `use_signal` and `Context` to provide reactive state to your app:
 
 ```rust
 {{#include src/doc_examples/guide_state.rs:signal_context}}

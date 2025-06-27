@@ -34,7 +34,7 @@ DemoFrame {
 
 ### Inspecting `Element` props
 
-Since `Element` is a `Option<VNode>`, components accepting `Element` as a prop can inspect its contents, and render different things based on that. Example:
+Since `Element` is a `Result<VNode, RenderError>`, components accepting `Element` as a prop can inspect its contents, and render different things based on that. Example:
 
 ```rust, no_run
 {{#include src/doc_examples/component_children_inspect.rs:Clickable}}
@@ -56,7 +56,7 @@ DemoFrame {
 }
 ```
 
-This works because the `Element` type is just an alias for `Option<VNode>`
+This works because the `Element` type is just an alias for `Result<VNode, RenderError>`
 
 > Again, you may use a different method to conditionally return `None`. For example the boolean's [`then()`](https://doc.rust-lang.org/std/primitive.bool.html#method.then) function could be used.
 

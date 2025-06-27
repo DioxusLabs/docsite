@@ -94,6 +94,7 @@
   - [Resource](reference/use_resource.md)
   - [UseCoroutine](reference/use_coroutine.md)
   - [Spawn](reference/spawn.md)
+  - [Cheat Sheet](reference/cheat_sheet.md)
 
 ---
 - [Contributing](contributing/index.md)

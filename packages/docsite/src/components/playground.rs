@@ -1,19 +1,19 @@
 use dioxus::prelude::*;
-use dioxus_playground::PlaygroundUrls;
+// use dioxus_playground::PlaygroundUrls;
 
-#[cfg(not(feature = "production"))]
-const URLS: PlaygroundUrls = PlaygroundUrls {
-    socket: "ws://localhost:3000/ws",
-    server: "http://localhost:3000",
-    location: "http://localhost:8080/playground",
-};
+// #[cfg(not(feature = `"production"))]
+// const URLS: PlaygroundUrls = PlaygroundUrls {
+//     socket: "ws://localhost:3000/ws",
+//     built: "http://localhost:3000/built/",
+//     location: "http://localhost:8080",
+// };
 
-#[cfg(feature = "production")]
-const URLS: PlaygroundUrls = PlaygroundUrls {
-    socket: "wss://docsite-playground.fly.dev/ws",
-    server: "https://docsite-playground.fly.dev",
-    location: "https://dioxuslabs.com/playground",
-};
+// #[cfg(feature = "production")]
+// const URLS: PlaygroundUrls = PlaygroundUrls {
+//     socket: "wss://docsite-playground.fly.dev/ws",
+//     built: "https://docsite-playground.fly.dev/built/",
+//     location: "https://dioxuslabs.com/playground",
+// };`
 
 #[component]
 pub fn Playground(share_code: Option<String>) -> Element {
@@ -26,23 +26,17 @@ pub fn Playground(share_code: Option<String>) -> Element {
             ErrorBoundary {
                 handle_error: move |err: ErrorContext| {
                     let errors = err.errors();
-
                     rsx! {
-                        div {
-                            class: "mx-auto mt-8 max-w-3/4",
+                        div { class: "mx-auto mt-8 max-w-3/4",
 
-                            h4 {
-                                class: "dark:text-white font-light text-ghdarkmetal",
+                            h4 { class: "dark:text-white font-light text-ghdarkmetal",
                                 "The Dioxus Playground encountered an error."
                             }
 
                             br {}
 
                             for error in errors {
-                                p {
-                                    class: "dark:text-white font-light text-ghdarkmetal",
-                                    "{error:?}"
-                                }
+                                p { class: "dark:text-white font-light text-ghdarkmetal", "{error:?}" }
                                 br {}
                             }
                         }

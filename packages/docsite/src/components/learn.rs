@@ -1,6 +1,6 @@
 use crate::*;
 use docs::{
-    router_03, router_04, router_05, router_06, use_current_docs_version, AnyBookRoute,
+    router_03, router_04, router_05, router_06, router_07, use_current_docs_version, AnyBookRoute,
     CurrentDocsVersion,
 };
 
@@ -25,6 +25,9 @@ pub(crate) fn Learn() -> Element {
         div { class: "w-full text-sm border-b dark:border-[#a4a9ac7d] border-gray-300",
             div { class: "flex flex-row justify-center dark:text-[#dee2e6] font-light lg:gap-12",
                 match current_version {
+                    CurrentDocsVersion::V07(_) => rsx! {
+                        GenericDocs::<router_07::BookRoute> {}
+                    },
                     CurrentDocsVersion::V06(_) => rsx! {
                         GenericDocs::<router_06::BookRoute> {}
                     },
@@ -83,6 +86,7 @@ fn VersionSwitch() -> Element {
     let mut show_versions = use_signal(|| false);
     let current_version = use_current_docs_version();
     let current_stability = match current_version {
+        CurrentDocsVersion::V07(_) => "Alpha",
         CurrentDocsVersion::V06(_) => "Stable",
         CurrentDocsVersion::V05(_) => "Stable",
         CurrentDocsVersion::V04(_) => "Stable",
@@ -115,6 +119,7 @@ fn VersionSwitch() -> Element {
                 class: "relative w-full z-50",
                 class: if !show_versions() { "hidden" },
                 div { class: "absolute flex flex-col bg-white dark:bg-ghdarkmetal text-left rounded-lg border  dark:border-gray-700 w-full overflow-hidden text-gray-500 dark:text-gray-100 text-xs shadow-lg",
+                    TypedVersionSelectItem::<crate::docs::router_07::BookRoute> {}
                     TypedVersionSelectItem::<crate::docs::router_06::BookRoute> {}
                     TypedVersionSelectItem::<crate::docs::router_05::BookRoute> {}
                     TypedVersionSelectItem::<crate::docs::router_04::BookRoute> {}
@@ -337,11 +342,13 @@ fn Content<R: AnyBookRoute>() -> Element {
 
 fn VersionWarning() -> Element {
     let current_version = use_current_docs_version();
-    // div { class: "flex flex-row items-center justify-start w-full bg-yellow-200 opacity-80 text-yellow-800 text-sm font-normal py-2 px-2 rounded-md mb-4 gap-2",
-    // crate::icons::IconWarning {}
-    // "You are currently viewing the docs for Dioxus 0.6.0 which is under construction."
-    // }
     match current_version {
+        CurrentDocsVersion::V07(_) => rsx! {
+            div { class: "flex flex-row items-center justify-start w-full bg-yellow-200 opacity-80 text-yellow-800 text-sm font-normal py-2 px-2 rounded-md mb-4 gap-2",
+                crate::icons::IconWarning {}
+                "You are currently viewing the docs for Dioxus 0.7.0 which is under construction."
+            }
+        },
         CurrentDocsVersion::V06(_) => rsx! {},
         CurrentDocsVersion::V05(_) | CurrentDocsVersion::V04(_) | CurrentDocsVersion::V03(_) => {
             rsx! {

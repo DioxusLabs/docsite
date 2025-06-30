@@ -7,6 +7,7 @@ pub mod router_03;
 pub mod router_04;
 pub mod router_05;
 pub mod router_06;
+pub mod router_07;
 pub mod router_blog;
 
 #[component]

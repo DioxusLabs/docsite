@@ -6,6 +6,7 @@ use std::hash::Hash;
 pub use dioxus_docs_router::{doc_examples::*, docs::*};
 
 pub enum CurrentDocsVersion {
+    V07(router_07::BookRoute),
     V06(router_06::BookRoute),
     V05(router_05::BookRoute),
     V04(router_04::BookRoute),
@@ -15,6 +16,7 @@ pub enum CurrentDocsVersion {
 impl CurrentDocsVersion {
     pub fn full_version(&self) -> &'static str {
         match self {
+            CurrentDocsVersion::V07(_) => router_07::BookRoute::full_version(),
             CurrentDocsVersion::V06(_) => router_06::BookRoute::full_version(),
             CurrentDocsVersion::V05(_) => router_05::BookRoute::full_version(),
             CurrentDocsVersion::V04(_) => router_04::BookRoute::full_version(),
@@ -26,6 +28,7 @@ impl CurrentDocsVersion {
 pub fn use_try_current_docs_version() -> Option<CurrentDocsVersion> {
     let route = use_route();
     match route {
+        Route::Docs07 { child } => Some(CurrentDocsVersion::V07(child)),
         Route::Docs06 { child } => Some(CurrentDocsVersion::V06(child)),
         Route::Docs05 { child } => Some(CurrentDocsVersion::V05(child)),
         Route::Docs04 { child } => Some(CurrentDocsVersion::V04(child)),
@@ -247,6 +250,46 @@ impl AnyBookRoute for router_06::BookRoute {
     }
     fn full_version() -> &'static str {
         "0.6.1"
+    }
+    fn index() -> Self {
+        Self::Index {
+            section: Default::default(),
+        }
+    }
+}
+
+impl AnyBookRoute for router_07::BookRoute {
+    fn sections(&self) -> &[use_mdbook::mdbook_shared::Section] {
+        self.sections()
+    }
+
+    fn page(&self) -> &use_mdbook::mdbook_shared::Page<Self> {
+        self.page()
+    }
+
+    fn global_route(&self) -> crate::Route {
+        crate::Route::Docs07 { child: *self }
+    }
+
+    fn page_id(&self) -> use_mdbook::mdbook_shared::PageId {
+        self.page_id()
+    }
+    fn book() -> &'static MdBook<Self> {
+        &*router_07::LAZY_BOOK
+    }
+
+    fn use_current() -> Option<Self> {
+        let route = use_route();
+        match route {
+            Route::Docs07 { child } => Some(child),
+            _ => None,
+        }
+    }
+    fn short_version() -> &'static str {
+        "0.7"
+    }
+    fn full_version() -> &'static str {
+        "0.7.0"
     }
     fn index() -> Self {
         Self::Index {

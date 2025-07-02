@@ -11,13 +11,13 @@ To avoid repetition, you can encapsulate business logic based on existing hooks 
 For example, if many components need to access an `AppSettings` struct, you can create a "shortcut" hook:
 
 ```rust
-{{#include src/doc_examples/hooks_composed.rs:wrap_context}}
+{{#include src/doc_examples/untested_06/hooks_composed.rs:wrap_context}}
 ```
 
 Or if you want to wrap a hook that persists reloads with the storage API, you can build on top of the use_signal hook to work with mutable state:
 
 ```rust
-{{#include src/doc_examples/hooks_composed.rs:use_storage}}
+{{#include src/doc_examples/untested_06/hooks_composed.rs:use_storage}}
 ```
 
 ## Custom Hook Logic
@@ -35,7 +35,7 @@ Inside the initialization closure, you will typically make calls to other `cx` m
 Here is a simplified implementation of the `use_signal` hook:
 
 ```rust
-{{#include src/doc_examples/hooks_custom_logic.rs:use_signal}}
+{{#include src/doc_examples/untested_06/hooks_custom_logic.rs:use_signal}}
 ```
 
 - The `use_context` hook calls [`consume_context`](https://docs.rs/dioxus/latest/dioxus/prelude/fn.consume_context.html) (which would be expensive to call on every render) to get some context from the component
@@ -43,5 +43,5 @@ Here is a simplified implementation of the `use_signal` hook:
 Here is an implementation of the `use_context` and `use_context_provider` hooks:
 
 ```rust
-{{#include src/doc_examples/hooks_custom_logic.rs:use_context}}
+{{#include src/doc_examples/untested_06/hooks_custom_logic.rs:use_context}}
 ```

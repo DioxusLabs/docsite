@@ -7,6 +7,7 @@ pub mod router_03;
 pub mod router_04;
 pub mod router_05;
 pub mod router_06;
+pub mod router_07;
 pub mod router_blog;
 
 #[component]
@@ -23,11 +24,15 @@ fn SandBoxFrame(url: String) -> Element {
 }
 
 #[component]
-fn DemoFrame(children: Element) -> Element {
+fn DemoFrame(
+    #[props(extends = GlobalAttributes)] attributes: Vec<Attribute>,
+    children: Element,
+) -> Element {
     rsx! {
         div {
             class: "bg-white rounded-md shadow-md p-4 my-4 overflow-auto text-black dioxus-demo",
             max_height: "50vh",
+            ..attributes,
             {children}
         }
     }

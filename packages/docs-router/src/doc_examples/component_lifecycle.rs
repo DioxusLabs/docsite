@@ -8,6 +8,7 @@ pub use rerenders::RerenderDemo;
 pub use use_hook::UseHookDemo;
 
 mod use_hook {
+    use crate::doc_examples::FakePage;
     use std::sync::atomic::AtomicUsize;
 
     use super::*;
@@ -36,19 +37,13 @@ mod use_hook {
         RANDOM[COUNT.fetch_add(1, std::sync::atomic::Ordering::SeqCst) % RANDOM.len()]
     }
 
-    fn FakePage() -> Element {
-        let mut uuid = use_signal(|| 0);
-        rsx! {
-            button { onclick: move |_| uuid += 1, "🔄" }
-            {std::iter::once(rsx! {
-                UseHook { key: "{uuid}" }
-            })}
-        }
-    }
-
     pub fn UseHookDemo() -> Element {
         rsx! {
-            ComponentWithLogs { FakePage {} }
+            ComponentWithLogs {
+                FakePage {
+                    UseHook {}
+                }
+            }
         }
     }
 }

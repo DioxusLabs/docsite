@@ -52,6 +52,17 @@ pub fn ComponentWithLogs(children: Element) -> Element {
     }
 }
 
+#[component]
+pub(crate) fn FakePage(children: Element) -> Element {
+        let mut uuid = use_signal(|| 0);
+        rsx! {
+            button { onclick: move |_| uuid += 1, "🔄" }
+            {std::iter::once(rsx! {
+                Fragment { key: "{uuid}", {children} }
+            })}
+        }
+    }
+
 // Include any examples we compile into the docsite
 #[cfg(not(feature = "doc_test"))]
 pub mod __interactive_04;

@@ -1280,9 +1280,9 @@ dependencies = [
 
 [[package]]
 name = "dioxus-dx-wire-format"
-version = "0.7.0-alpha.1"
+version = "0.7.0-alpha.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "08b9adec830350b11ab7f820b19849e8b5d10b4bc3078a45d4d06418aecf33b5"
+checksum = "830a02a368181d48251ed3181d0a31429e49012ef0d5dddd94e3f4cf468bd85d"
 dependencies = [
  "cargo_metadata",
  "serde",
@@ -1579,9 +1579,9 @@ dependencies = [
 
 [[package]]
 name = "dioxus-rsx-hotreload"
-version = "0.7.0-alpha.1"
+version = "0.7.0-alpha.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "737c9eb47b81fd1d41cff670ae0f3b72f20b9090e940456debdd08feddddfa95"
+checksum = "81a7c52f92a591dc38efc6c57b57e44acb11823626fc308e94ed3a9ad1d4e57b"
 dependencies = [
  "dioxus-core",
  "dioxus-core-types",
@@ -1596,9 +1596,9 @@ dependencies = [
 
 [[package]]
 name = "dioxus-rsx-rosetta"
-version = "0.7.0-alpha.1"
+version = "0.7.0-alpha.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "21e2c2d1fa6924e8a1445d23ffb62beb32088da3f18337a06b75aa8ed3fe4bbb"
+checksum = "9f8d330a1e66eae1d169b114ed4043e7fba0ca43e48677239616111b70188668"
 dependencies = [
  "convert_case 0.8.0",
  "dioxus-autofmt",

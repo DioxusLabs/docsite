@@ -326,7 +326,7 @@ pub fn RightNav<R: AnyBookRoute>() -> Element {
 fn Content<R: AnyBookRoute>() -> Element {
     rsx! {
         section {
-            class: "text-gray-600 dark:text-gray-300 body-font overflow-hidden container pb-12 max-w-screen-sm px-4 pt-4 md:pt-[3.125rem] grow min-h-[100vh] ",
+            class: "text-gray-600 dark:text-gray-300 body-font overflow-hidden container pb-12 max-w-screen-md px-4 pt-4 md:pt-[3.125rem] grow min-h-[100vh] ",
             class: if SHOW_SIDEBAR() { "hidden md:block" },
             div { class: "",
                 Breadcrumbs::<R> {}

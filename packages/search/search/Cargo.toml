@@ -14,7 +14,6 @@ bytes = { version = "1.3.0", features = ["serde"] }
 slab = "0.4.8"
 yazi = { workspace = true }
 once_cell = "1.18.0"
-
 dioxus-router = { workspace = true }
 dioxus-search-macro = { workspace = true }
 dioxus-search-shared = { workspace = true }

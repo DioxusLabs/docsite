@@ -63,19 +63,17 @@ pub(crate) fn Nav() -> Element {
                         },
                         class: "bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-500 md:hidden rounded-lg p-1 mr-2 my-3 h-8 flex items-center text-lg z-50",
                         class: if !route.is_docs() { "hidden" },
-                        // MaterialIcon {
-                        //     name: "menu",
-                        //     size: 24,
-                        //     color: MaterialIconColor::Dark,
-                        // }
+                                        // MaterialIcon {
+                    //     name: "menu",
+                    //     size: 24,
+                    //     color: MaterialIconColor::Dark,
+                    // }
                     }
 
                     div { class: "h-full  gap-3 hidden lg:flex",
                         div { class: "border-l border-gray-200 dark:border-gray-800 h-full" }
                         div { class: "hidden lg:flex items-center gap-3",
-                            DarkModeToggle {
-                                class: "block text-gray-400 hover:text-gray-500 dark:hover:text-gray-300",
-                            }
+                            DarkModeToggle { class: "block text-gray-400 hover:text-gray-500 dark:hover:text-gray-300" }
                             Link {
                                 to: "https://crates.io/crates/dioxus",
                                 new_tab: true,
@@ -268,13 +266,7 @@ fn SearchModal() -> Element {
                     // Search input
                     div { class: "flex flex-col flex-grow border-b p-2 gap-2 border-inherit",
                         div { class: "my-auto flex flex-row items-center pl-2",
-                            div { class: "dark:invert h-5",
-                                // MaterialIcon {
-                                //     name: "search",
-                                //     size: 20,
-                                //     color: MaterialIconColor::Dark,
-                                // }
-                            }
+                            div { class: "dark:invert h-5" }
 
                             // hide the input until show search so the onmounted fires
                             if SHOW_SEARCH() {

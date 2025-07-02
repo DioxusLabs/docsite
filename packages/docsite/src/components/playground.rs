@@ -21,6 +21,12 @@ pub fn Playground(share_code: Option<String>) -> Element {
     let mut on_client = use_signal(|| false);
     use_effect(move || on_client.set(true));
 
+    // dioxus_playground::Playground {
+    //     class: "playground-container max-w-screen-2xl mx-auto mt-8",
+    //     urls: URLS,
+    //     share_code,
+    // }
+
     if on_client() {
         rsx! {
             ErrorBoundary {
@@ -42,12 +48,6 @@ pub fn Playground(share_code: Option<String>) -> Element {
                         }
                     }
                 },
-
-                dioxus_playground::Playground {
-                    class: "playground-container max-w-screen-2xl mx-auto mt-8",
-                    urls: URLS,
-                    share_code,
-                }
             }
         }
     } else {

@@ -1,4 +1,4 @@
-# Handling Asynchronous Tasks  
+# Handling Asynchronous Tasks
 
 Asynchronous tasks are a core part of any modern application. Dioxus provides a few different methods to handle asynchronous tasks. This guide will cover how to use each of them. If you already know what kind of asynchronous task you need, you can skip to the section for that task:
 - [spawn](#running-futures-with-spawn) is great for futures you need to run in the background that don't return a value
@@ -7,7 +7,7 @@ Asynchronous tasks are a core part of any modern application. Dioxus provides a 
 
 ## Running Futures with `spawn`
 
-The [`spawn`](https://docs.rs/dioxus/0.6.2/dioxus/prelude/fn.spawn.html) method spawns a future in the background and returns a `Task` that you can use to cancel the future. Spawn is great for futures you want to start and then forget about like sending analytics data to a server:
+The [`spawn`](https://docs.rs/dioxus/0.7/dioxus/prelude/fn.spawn.html) method spawns a future in the background and returns a `Task` that you can use to cancel the future. Spawn is great for futures you want to start and then forget about like sending analytics data to a server:
 
 ```rust
 {{#include src/doc_examples/asynchronous.rs:spawn}}
@@ -27,7 +27,7 @@ Since spawning in event handlers is very common, Dioxus provides a more concise 
 
 <div class="warning">
 
-The future you pass to the `spawn` will automatically be cancelled when the component is unmounted. If you need to keep the future running until it is finished, you can use [`spawn_forever`](https://docs.rs/dioxus/0.6.2/dioxus/prelude/fn.spawn_forever.html) instead.
+The future you pass to the `spawn` will automatically be cancelled when the component is unmounted. If you need to keep the future running until it is finished, you can use [`spawn_forever`](https://docs.rs/dioxus/0.7/dioxus/prelude/fn.spawn_forever.html) instead.
 
 </div>
 
@@ -45,7 +45,7 @@ DemoFrame {
 }
 ```
 
-The `use_resource` hook might look similar to the `use_memo` hook, but unlike `use_memo`, the resource's output is not memoized with `PartialEq`. That means any components/reactive hooks that read the output will rerun if the future reruns even if the value it returns is the same: 
+The `use_resource` hook might look similar to the `use_memo` hook, but unlike `use_memo`, the resource's output is not memoized with `PartialEq`. That means any components/reactive hooks that read the output will rerun if the future reruns even if the value it returns is the same:
 
 ```rust
 {{#include src/doc_examples/asynchronous.rs:use_resource_memo}}
@@ -58,23 +58,23 @@ DemoFrame {
 ```
 
 > Note: The future you pass to `use_resource` must be cancel safe. Cancel safe futures are futures that can be stopped at any await point without causing causing issues. For example, this task is not cancel safe:
-> 
+>
 > ```rust
 > {{#include src/doc_examples/asynchronous.rs:not_cancel_safe}}
 > ```
-> 
-> 
+>
+>
 > ```inject-dioxus
 > DemoFrame {
 >     asynchronous::NotCancelSafe {}
 > }
 > ```
-> 
+>
 > It can be fixed by making sure the global state is restored when the future is dropped:
 > ```rust
 > {{#include src/doc_examples/asynchronous.rs:cancel_safe}}
 > ```
-> 
+>
 > ```inject-dioxus
 > DemoFrame {
 >     asynchronous::CancelSafe {}
@@ -132,7 +132,7 @@ Unlike `use_resource`, `use_server_future` is only reactive in the closure, not 
 {{#include src/doc_examples/asynchronous.rs:use_server_future_reactive}}
 ```
 
-When you use suspense with fullstack without streaming enabled, dioxus will wait until all suspended futures are resolved before sending the resolved html to the client. If you [enable](https://docs.rs/dioxus/0.6.2/dioxus/prelude/struct.ServeConfigBuilder.html#method.enable_out_of_order_streaming) out of order streaming, dioxus will send the finished HTML chunks to the client one at a time as they are resolved:
+When you use suspense with fullstack without streaming enabled, dioxus will wait until all suspended futures are resolved before sending the resolved html to the client. If you [enable](https://docs.rs/dioxus/0.7/dioxus/prelude/struct.ServeConfigBuilder.html#method.enable_out_of_order_streaming) out of order streaming, dioxus will send the finished HTML chunks to the client one at a time as they are resolved:
 
 ```rust
 {{#include src/doc_examples/asynchronous.rs:use_server_future_streaming}}
@@ -149,4 +149,4 @@ This guide has covered the basics of asynchronous tasks in Dioxus. More detailed
 - [spawn](https://docs.rs/dioxus/latest/dioxus/prelude/fn.spawn.html)
 - [spawn_forever](https://docs.rs/dioxus/latest/dioxus/prelude/fn.spawn_forever.html)
 
-More examples of futures and asynchronous tasks are available in the [example folder](https://github.com/DioxusLabs/dioxus/tree/v0.6/examples) in the dioxus repo.
+More examples of futures and asynchronous tasks are available in the [example folder](https://github.com/DioxusLabs/dioxus/tree/v0.7xamples) in the dioxus repo.

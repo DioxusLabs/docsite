@@ -8,8 +8,6 @@ Let's get your app bundled for multiple platforms and then ready to deploy.
 
 So far, we've been testing our app in a simple web browser. Let's actually build and test our app for mobile platforms.
 
-In Dioxus 0.6, `dx` finally supports `dx serve` for Android and iOS!
-
 ### Testing on iOS
 
 To test iOS, your development environment needs to be setup to build iOS apps. This involves a few steps:
@@ -21,24 +19,7 @@ To test iOS, your development environment needs to be setup to build iOS apps. T
 
 This is a multi-step process and requires creating an Apple Developer account. You shouldn't need to pay any fees until you want to sign your app. Signing your app is required for deploying to the Apple App Store and testing on your iOS device.
 
-If everything is installed properly, you should be able to open the Simulator app:
-```sh
-open /Applications/Xcode.app/Contents/Developer/Applications/Simulator.app
-```
-
-If the Simulator app opens but no device pops up, you might need to open a specific device. Use `xcrun` to discover which devices you have installed.
-
-```sh
-xcrun simctl list
-```
-
-Identify an available device. We're going to simulate an iPhone 15 Pro Max:
-
-```sh
-xcrun simctl boot "iPhone 15 Pro Max"
-```
-
-Once the simulator is booted, we can run `dx serve --platform ios`.
+Simply run run `dx serve --platform ios` and your app should load in the iOS Simulator.
 
 ![DogApp](/assets/06_docs/dog-app-ios.mp4)
 
@@ -52,12 +33,6 @@ Setting up your environment for Android development takes time, so make sure to 
 - Set JAVA_HOME, ANDROID_HOME, NDK_HOME, and fix PATH issues to use the `emulator` tool
 - Install and set up an Android emulator
 - Install the Android rustup targets (`aarch64-linux-android armv7-linux-androideabi i686-linux-android x86_64-linux-android`)
-
-Let's start an emulator. We can use the `emulator` command which should be in your PATH if setup properly. We're going to use our `Pixel_6_API_34` emulator, but you can use any device you've configured.
-
-```sh
-emulator -avd Pixel_6_API_34  -netdelay none -netspeed full
-```
 
 If we try to `dx serve --platform android`, we'll find that our app fails to build for Android. This is not good!
 

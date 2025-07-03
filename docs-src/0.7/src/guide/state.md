@@ -54,9 +54,7 @@ Signals are core to Dioxus and take time to master. We recommend reading the [st
 
 ## Global State with Context
 
-While hooks are good for state *local* to components, occasionally you'll want to manage state for your *entire* app.
-
-Dioxus provides two mechanisms: `Context` and `GlobalSignal`.
+While hooks are good for state *local* to components, occasionally you'll want to manage state for your *entire* app. Dioxus provides two mechanisms: `Context` and `GlobalSignal`.
 
 The `Context` API makes it possible for parent components to share state with child components without explicitly declaring an additional property field. This is used by larger apps and libraries to share state across the app without modifying component signatures.
 
@@ -96,6 +94,4 @@ And then read and write to it from anywhere:
 {{#include src/doc_examples/guide_state.rs:use_global_signal}}
 ```
 
-> 📣 GlobalSignals are only global to one app - not the entire program. On the server, every app gets its own GlobalSignal.
-
-We won't need either GlobalSignal or Context for *HotDog*, but it's important to know that these are available to you.
+GlobalSignals are only global to one app - not the entire program. On the server, every app gets its own GlobalSignal. We won't need either GlobalSignal or Context for *HotDog*, but it's useful to know that these are available to you.

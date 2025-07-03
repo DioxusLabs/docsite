@@ -14,6 +14,8 @@ When using `dx serve`, your app's RSX is automatically hot-reloaded whenever you
 
 Whenever you edit *Rust* code, then `dx` will automatically force a "full rebuild" of your app.
 
+As of Dioxus 0.7, you can run `dx serve --hotpatch` to enable hot-reloading of Rust code at runtime.
+
 ![Dog App Hotreloading](/assets/06_docs/dog_app_hotreload.mp4)
 
 For an in-depth guide in what can and can't be hot-reloaded, check the [hot-reload guide](../reference/hotreload.md) in the reference.

@@ -1,18 +1,12 @@
 # Styling and Assets
 
-Unfortunately, our HotDog app isn't quite ready to show off - it's completely unstyled!
-
-In this chapter we'll cover adding assets and styles to our app.
-
 ## Dioxus uses CSS for Styling
 
-As mentioned earlier, Dioxus apps use HTML and CSS as the core markup and styling technology. Instead of re-inventing the wheel like Flutter and React-Native, we designed Dioxus to use HTML and CSS on every platform.
+As mentioned earlier, Dioxus apps use HTML and CSS as the core markup and styling technology. Instead of re-inventing the wheel like Flutter and React-Native, we designed Dioxus to use HTML and CSS.
 
 CSS is by-far the most popular styling system and is extremely capable. For example, here's a screenshot of [ebou](https://github.com/terhechte/Ebou), a very beautiful Mastodon client built with Dioxus.
 
 ![Ebou](/assets/06_docs/ebou-following.png)
-
-HTML and CSS are very powerful - don't worry about being too limited!
 
 ## Adding the CSS File with asset!()
 

@@ -12,8 +12,8 @@ pub(crate) fn Nav() -> Element {
     rsx! {
         SearchModal {}
         header { class: "sticky top-0 z-30 bg-opacity-80 dark:text-gray-200 dark:bg-opacity-80 border-b border-stone-300 dark:border-stone-700 h-16 backdrop-blur-sm",
-            div { class: "py-2 px-2 max-w-screen-2xl mx-auto flex items-center justify-between text-sm leading-6 h-16",
-                div { class: "flex z-50 md:px-2 flex-1", LinkList {} }
+            div { class: "py-2 px-4 sm:px-6 md:px-8 max-w-screen-2xl mx-auto flex items-center justify-between text-sm leading-6 h-16",
+                div { class: "flex z-50 flex-1", LinkList {} }
                 div { class: "flex h-full justify-end ml-2 items-center gap-3 py-2",
                     button {
                         class: "
@@ -262,7 +262,7 @@ fn SearchModal() -> Element {
                 div { class: "h-40" }
 
                 // The actual modal
-                div { class: "bg-white dark:bg-ideblack rounded-xl max-h-[calc(100%-8rem)] overflow-y-auto text-gray-800 dark:text-gray-100 border dark:border-[#a4a9ac7d]",
+                div { class: "bg-white dark:bg-ideblack rounded-xl max-h-[calc(100%-8rem)] overflow-y-auto text-gray-800 dark:text-gray-100 border border-gray-300 dark:border-[#a4a9ac7d]",
                     // Search input
                     div { class: "flex flex-col flex-grow border-b p-2 gap-2 border-inherit",
                         div { class: "my-auto flex flex-row items-center pl-2",
@@ -283,7 +283,7 @@ fn SearchModal() -> Element {
                                     onmounted: move |evt| async move {
                                         _ = evt.set_focus(true).await;
                                     },
-                                    class: "flex-grow bg-transparent border-none outline-none pl-2 text-gray-800 dark:text-gray-100 py-2 placeholder-gray-200",
+                                    class: "flex-grow bg-transparent border-none outline-none pl-2 text-gray-500 dark:text-gray-100 py-2 placeholder-gray-400",
                                     placeholder: "Search the docs...",
                                     value: "{search_text}",
                                 }

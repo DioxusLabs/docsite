@@ -12,6 +12,10 @@ pub mod snippets;
 pub use components::*;
 
 fn main() {
+    let _class = rsx! {
+        div { class: "mx-2 mx-4" }
+    };
+
     // If we are just building the search index, we don't need to launch the app
     #[cfg(feature = "server")]
     if std::env::args().any(|arg| arg == "--generate-search-index") {
@@ -53,9 +57,7 @@ fn HeaderLayout() -> Element {
     rsx! {
         div { class: "bg-white dark:bg-black min-h-screen",
             Nav {}
-            div {
-                Outlet::<Route> {}
-            }
+            div { Outlet::<Route> {} }
         }
     }
 }

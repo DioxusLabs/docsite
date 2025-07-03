@@ -10,19 +10,3 @@ We provide this text guide as a resource for the details of hot-reloading. This 
 
 
 <iframe style="width: 100%" height="500px" class="centered-overflow" src="https://www.youtube.com/embed/Q4Xzz8OJEoc" title="Dioxus 0.6" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-
-
-## What can be hot-reloaded?
-
-Within RSX, all elements and their properties can be hot-reloaded.
-
-```rust
-rsx! {
-    div {}
-}
-```
-
-
-## What causes a full-rebuild?
-
-

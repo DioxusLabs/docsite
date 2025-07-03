@@ -1,12 +1,10 @@
 # Setting up Tooling
 
-Before we get started, make sure you've followed the [Getting Started](../getting_started/index.md) page on installing the required dependencies.
-
-We will be primarily developing *HotDog* as web application, but we still recommend setting up the relevant tooling for desktop and mobile development as well.
+Before we get started, make sure you've followed the [Getting Started](../getting_started/index.md) page on installing the required dependencies. We will be primarily developing *HotDog* as web application, but we still recommend setting up the relevant tooling for desktop and mobile development as well.
 
 ## Checklist
 
-We covered the setup instructions in [Getting Started](../getting_started/index.md), but first you should verify everything is set up properly:
+We covered the setup instructions in [Getting Started](../getting_started/index.md), but first verify your setup:
 
 - Rust is installed
 - You have a code editor installed
@@ -14,17 +12,13 @@ We covered the setup instructions in [Getting Started](../getting_started/index.
 - The `dioxus-cli` is installed and up-to-date
 - System-specific dependencies are installed
 
-## Verify your setup
+## All the Commands
 
-Before proceeding, make sure you have the `dioxus-cli` installed and up-to-date.
-
-Verify the returned version matches this guide (eg 0.6) by running:
+Before proceeding, make sure you have the `dioxus-cli` installed and up-to-date. Verify the returned version matches this guide by running:
 
 ```sh
 dx --version
 ```
-
-## All the Commands
 
 You can also run `dx help` which will give you a list of useful commands and some information on how to use `dx`.
 

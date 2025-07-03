@@ -1,31 +1,14 @@
 # Getting Started
 
-Getting started with Dioxus is quick and shouldn't take more than a minute or two.
-
 ## Pick an Editor
 
-Pick your favorite editor!
+We recommend using [VSCode](https://code.visualstudio.com) since Dioxus ships with its [own VSCode extension](https://marketplace.visualstudio.com/items?itemName=DioxusLabs.dioxus). Our build tool `dx` is standalone and is meant to be used through a terminal.
 
-We recommend using [VSCode](https://code.visualstudio.com) since Dioxus ships with its [own VSCode extension](https://marketplace.visualstudio.com/items?itemName=DioxusLabs.dioxus).
-
-Our build tool `dx` is standalone and works with any editor.
-
-## Install Rust-Analyzer
-
-Dioxus integrates very well with the [Rust-Analyzer LSP plugin](https://rust-analyzer.github.io) which provides appropriate syntax highlighting, code navigation, folding, and more.
-
-You can follow the [installation instructions](https://rust-analyzer.github.io/manual.html#installation) for your editor of choice.
-
-- [VSCode](https://rust-analyzer.github.io/manual.html#vs-code)
-- [Zed](https://rust-analyzer.github.io/manual.html#zed)
-- [Emacs](https://rust-analyzer.github.io/manual.html#emacs)
-- [Vim](https://rust-analyzer.github.io/manual.html#vimneovim)
+Most editors support the [Rust-Analyzer LSP plugin](https://rust-analyzer.github.io) which provides appropriate syntax highlighting, code navigation, folding, and more. You can follow the [installation instructions](https://rust-analyzer.github.io/manual.html#installation) for your editor of choice: [VSCode](https://rust-analyzer.github.io/manual.html#vs-code), [Zed](https://rust-analyzer.github.io/manual.html#zed), [Emacs](https://rust-analyzer.github.io/manual.html#emacs), or [Vim](https://rust-analyzer.github.io/manual.html#vimneovim).
 
 ## Install Rust
 
-Head over to [https://rust-lang.org](http://rust-lang.org) and install the Rust compiler (preferably using `rustup`).
-
-Once installed, make sure you add the `stable` toolchain and the `wasm32-unknown-unknown` target for web development:
+Head over to [https://rust-lang.org](http://rust-lang.org) and install the Rust compiler (preferably using `rustup`). Once installed, make sure you add the `stable` toolchain and any relevant toolchains (ie wasm32-unknown-unknown for web apps):
 
 ```shell
 rustup toolchain install stable
@@ -36,52 +19,34 @@ We strongly recommend going through the [official Rust book](https://doc.rust-la
 
 We've put a lot of care into making Dioxus syntax familiar and easy to understand, so you won't need deep knowledge of async, lifetimes, or smart pointers until you start building complex Dioxus apps.
 
-## Install cargo-binstall
-
-Dioxus ships prebuilt binaries for its CLI using [`cargo-binstall`](https://github.com/cargo-bins/cargo-binstall?tab=readme-ov-file#installation). This means you can install `dx` without needing to compile from source.
-
-You can install `cargo-binstall` with the following command:
-
-```shell
-curl -L --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/cargo-bins/cargo-binstall/main/install-from-binstall-release.sh | bash
-```
-
-or alternatively:
-
-```shell
-# through brew
-brew install cargo-binstall
-
-# or from source
-cargo install cargo-binstall
-```
 
 ## Install the Dioxus CLI
 
-Dioxus is comprised of two parts:
+Dioxus ships with its own build tool that leverages `cargo` to provide integrated hot-reloading, bundling, and development servers for web and mobile. You can download the prebuilt binary with the following command:
 
-- The `dioxus` crate: the core Dioxus framework
-- The `dx` tool: a CLI tool for building Dioxus apps
-
-If you want to build web or mobile apps with Dioxus, or benefit from features like hot-reloading and bundling, you'll need to install the `dx` tool. You can download the prebuilt binary with the following command:
-
+```sh
+curl -fsSL https://dioxuslabs.com/install | bash
 ```
-cargo binstall dioxus-cli
+
+You can also download with `cargo-binstall`:
+
+```sh
+cargo binstall dioxus-cli --force
 ```
 
 If you want to build the CLI from source, you can install it with the following command:
 
-```rust
+```sh
 cargo install dioxus-cli
 ```
 
-> 📣 Installing from source will take several minutes. We strongly recommend using `cargo-binstall` for installation.
+> 📣 Installing from source can take up to 10 minutes and requires multiple dependencies. We strongly recommend downloading the prebuilt binaries.
 
 If you get an OpenSSL error on installation, ensure the dependencies listed [here](https://docs.rs/openssl/latest/openssl/#automatic) are installed.
 
 ## Platform-specific dependencies
 
-Most platforms don't require any additional dependencies, but if you are targeting desktop, you can install the following dependencies.
+Most platforms don't require any additional dependencies, but if you are targeting desktop, you might need to install additional dependencies.
 
 ### macOS
 

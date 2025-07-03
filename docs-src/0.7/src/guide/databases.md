@@ -4,7 +4,7 @@ Our HotDog app is coming together nicely! We implemented a very simple backend t
 
 In practice, you will likely want to store data in a proper database. Modern databases are *much* more powerful than a text file!
 
-If you already have a good understanding of databases, jump ahead to the [section where we integrate Sqlite with HotDog](#adding-database-operations-to-hotdog);
+If you already have a good understanding of databases, jump ahead to the [section where we integrate Sqlite with HotDog](#adding-database-operations-to-hotdog).
 
 ## Choosing a Database
 

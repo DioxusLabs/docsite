@@ -1,6 +1,6 @@
 # Adding a Backend
 
-Dioxus is a _fullstack_ framework, meaning it allows you to seamlessly build your frontend alongside your backend.
+Dioxus is a _fullstack_ framework, enabling you to seamlessly build your frontend alongside your backend.
 
 We provide a number of utilities like _Server Functions_, _Server Futures_, and _Server State_ for you to integrate into your apps. In this chapter, we'll cover loading and saving state to our backend with _Server Functions_. For an in-depth guide on fullstack, check out the dedicated [Fullstack Guide](../guides/fullstack/index.md).
 
@@ -10,7 +10,7 @@ Before we can start using server functions, we need to enable the "fullstack" fe
 
 ```toml
 [dependencies]
-dioxus = { version = "0.6.0", features = ["fullstack"] }
+dioxus = { version = "0.7.0", features = ["fullstack"] }
 ```
 
 We also need to add the "server" feature to our app's features in the Cargo.toml and remove the default web target.
@@ -62,7 +62,7 @@ When `dioxus::launch` is called, the server functions are automatically register
 {{#include src/doc_examples/guide_backend.rs:save_dog_launch}}
 ```
 
-As of Dioxus 0.6, we only support the `axum` server framework. We plan to build additional server features in the future and only support `axum` to ship faster.
+We currently only support the `axum` server framework. We plan to build additional server features in the future and only support `axum` to ship faster.
 
 In some cases, the `dioxus::launch` function might be too limiting for your use-case on the server. You can easily drop down to axum by changing your main.rs. The `dioxus::launch` function also handles setting up logging and reading environment variables, which you will have to handle yourself.
 

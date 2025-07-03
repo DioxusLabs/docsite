@@ -6,7 +6,7 @@ Development happens in the [Dioxus GitHub repository](https://github.com/DioxusL
 
 ## Improving Docs
 
-If you'd like to improve the docs, PRs are welcome! The Rust docs ([source](https://github.com/DioxusLabs/dioxus/tree/main/packages)) and this guide ([source](https://github.com/DioxusLabs/docsite/tree/main/docs-src/0.6)) can be found in their respective GitHub repos.
+If you'd like to improve the docs, PRs are welcome! The Rust docs ([source](https://github.com/DioxusLabs/dioxus/tree/main/packages)) and this guide ([source](https://github.com/DioxusLabs/docsite/tree/main/docs-src/0.7)) can be found in their respective GitHub repos.
 
 ## Working on the Ecosystem
 

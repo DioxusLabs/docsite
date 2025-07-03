@@ -2,6 +2,7 @@ use crate::docs::router_06::BookRoute;
 use crate::*;
 
 pub(crate) fn Hero() -> Element {
+    let abc = 11121;
     rsx! {
         section { class: "w-full mx-auto dark:text-white flex flex-col justify-between items-center  border-b  border-gray-300 min-h-[760px] flex-1 dark:border-[#a4a9ac7d] max-h-[960px] px-4",
             div { class: "flex w-full max-w-screen-xl flex-col text-center md:min-h-[520px] min-h-[760px] h-[calc(100vh-4rem)] gap-2 justify-evenly",
@@ -38,8 +39,6 @@ pub(crate) fn Hero() -> Element {
                                         fill: "none",
                                         "viewBox": "0 0 24 24",
                                         xmlns: "http://www.w3.org/2000/svg",
-                                        width: "1.5rem",
-                                        height: "1.5rem",
                                         circle {
                                             "stroke-width": "1.5",
                                             cx: "12",

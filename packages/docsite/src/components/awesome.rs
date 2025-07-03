@@ -72,13 +72,6 @@ pub struct StarsResponse {
 
 #[component]
 pub(crate) fn Awesome() -> Element {
-    rsx! {
-        div { class: "mx-auto max-w-screen-lg", AwesomeInner {} }
-    }
-}
-
-#[component]
-pub(crate) fn AwesomeInner() -> Element {
     let items = use_resource(move || async move {
         let req = match reqwest::get(ITEM_LIST_LINK).await {
             Ok(r) => r,
@@ -93,9 +86,7 @@ pub(crate) fn AwesomeInner() -> Element {
         Ok(items)
     });
 
-    let mut search = use_signal(|| "".to_string());
-
-    match &*items.read_unchecked() {
+    let content = match &*items.read_unchecked() {
         Some(Ok(items)) => {
             to_owned![items];
             items.sort_by(|a, b| {
@@ -104,22 +95,14 @@ pub(crate) fn AwesomeInner() -> Element {
                     .to_lowercase()
                     .cmp(&a.category.to_string().to_lowercase())
             });
-            let items: Vec<Item> = items
-                .into_iter()
-                .filter(|i| {
-                    i.name
-                        .to_lowercase()
-                        .contains(&search.read().to_lowercase())
-                })
-                .collect();
 
-            rsx!(
+            rsx! {
                 section { class: "w-full pt-4 md:pt-24 pb-10",
                     div { class: "mx-auto max-w-screen-1g text-center",
-                        h1 { class: "text-[1.5em] md:text-[3.3em] font-bold tracking-tight dark:text-white text-ghdarkmetal mb-2 px-2 ",
+                        h1 { class: "text-[1.5em] md:text-5xl font-bold tracking-tight dark:text-white text-ghdarkmetal mb-2 px-2 ",
                             "Awesome stuff for Dioxus"
                         }
-                        p { class: "mx-auto text-md lg:text-xl text-gray-600 dark:text-gray-400 pb-10 px-2 max-w-screen-sm",
+                        p { class: "mx-auto text-md lg:text-lg text-gray-600 dark:text-gray-400 pb-10 px-2 max-w-screen-md",
                             div {
                                 "Everything you'll need to build awesome Dioxus apps. Also check out "
                                 b {
@@ -141,17 +124,6 @@ pub(crate) fn AwesomeInner() -> Element {
                                     }
                                 }
                                 " repo."
-                            }
-                        }
-                    }
-                    div { class: "container mx-auto",
-                        div {
-                            class: "mx-2 rounded-lg lg:w-2/5 lg:mx-auto",
-                            input {
-                                class: "w-full text-center p-4 rounded-lg border placeholder:text-gray-400 bg-gray-100 border-gray-300 dark:bg-ghdarkmetal dark:placeholder:text-gray-300 dark:text-white dark:border-gray-700",
-                                placeholder: "Looking for something specific?",
-                                value: "{search}",
-                                oninput: move |evt| search.set(evt.value()),
                             }
                         }
                     }
@@ -186,10 +158,10 @@ pub(crate) fn AwesomeInner() -> Element {
                         }
                     }
                 }
-            )
+            }
         }
         Some(Err(e)) => {
-            rsx!(
+            rsx! {
                 section { class: "w-full pt-24 pb-96",
                     div { class: "container mx-auto max-w-screen-1g text-center animate-fadein-medium",
                         p { class: "text-[3.3em] font-bold tracking-tight dark:text-white text-ghdarkmetal mb-2 px-2",
@@ -200,10 +172,10 @@ pub(crate) fn AwesomeInner() -> Element {
                         }
                     }
                 }
-            )
+            }
         }
         None => {
-            rsx!(
+            rsx! {
                 section { class: "w-full pt-24 pb-96",
                     div { class: "container mx-auto max-w-screen-1g text-center animate-fadein-medium",
                         p { class: "text-[3.3em] font-bold tracking-tight dark:text-white text-ghdarkmetal mb-2 px-2",
@@ -211,8 +183,12 @@ pub(crate) fn AwesomeInner() -> Element {
                         }
                     }
                 }
-            )
+            }
         }
+    };
+
+    rsx! {
+        div { class: "mx-auto max-w-screen-lg", {content} }
     }
 }
 
@@ -277,7 +253,7 @@ fn AwesomeItem(item: ReadOnlySignal<Item>) -> Element {
 
     rsx! {
         Link { to: NavigationTarget::<Route>::External(link), new_tab: true,
-            div { class: "flex flex-col h-full p-3 rounded hover:-translate-y-2 transition-transform duration-300 shadow border border-gray-800",
+            div { class: "flex flex-col h-full p-3 rounded hover:-translate-y-2 transition-transform duration-300 shadow border border-gray-200",
                 div {
                     p { class: "text-xl text-gray-800 dark:text-gray-100 font-bold",
                         "{item.name}"

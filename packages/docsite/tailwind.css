@@ -9,7 +9,9 @@
     --color-ghdarkmetal: #161b22;
     --color-ideblack: #0e1116;
 
-    --font-sans: "Inter var",sans-serif;
+    --font-sans: "Space Grotesk", sans-serif;
+    --font-mono: "Space Mono", monospace;
+    /* --font-sans: "Inter var",sans-serif; */
 
     --bodx-shadow-3xl: 0 35px 60px -15px rgb(0 0 0 / 0.5);
     --bodx-shadow-cutesy: 0px 0px 40px -5px rgb(255 255 255 / 0.2);

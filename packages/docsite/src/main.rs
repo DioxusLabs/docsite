@@ -12,6 +12,10 @@ pub mod snippets;
 pub use components::*;
 
 fn main() {
+    let _class = rsx! {
+        div { class: "mx-2 mx-4" }
+    };
+
     // If we are just building the search index, we don't need to launch the app
     #[cfg(feature = "server")]
     if std::env::args().any(|arg| arg == "--generate-search-index") {
@@ -53,9 +57,7 @@ fn HeaderLayout() -> Element {
     rsx! {
         div { class: "bg-white dark:bg-black min-h-screen",
             Nav {}
-            div {
-                Outlet::<Route> {}
-            }
+            div { Outlet::<Route> {} }
         }
     }
 }
@@ -167,11 +169,11 @@ pub enum Route {
     #[route("/")]
     Homepage {},
 
-    #[route("/playground")]
-    Playground {},
+    // #[route("/playground")]
+    // Playground {},
 
-    #[route("/playground/shared/:share_code")]
-    SharePlayground { share_code: String },
+    // #[route("/playground/shared/:share_code")]
+    // SharePlayground { share_code: String },
 
     #[route("/components/:..segments?:..query")]
     #[layout(!FooterLayout)]
@@ -194,7 +196,10 @@ pub enum Route {
 
     #[layout(Learn)]
         #[nest("/learn")]
-            #[redirect("/", || Route::Docs06 { child: crate::docs::router_06::BookRoute::Index { section: Default::default() } })]
+            #[redirect("/", || Route::Docs07 { child: crate::docs::router_07::BookRoute::Index { section: Default::default() } })]
+            #[child("/0.7")]
+            Docs07 { child: crate::docs::router_07::BookRoute },
+
             #[child("/0.6")]
             Docs06 { child: crate::docs::router_06::BookRoute },
 

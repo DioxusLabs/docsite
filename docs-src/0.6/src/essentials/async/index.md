@@ -10,7 +10,7 @@ Asynchronous tasks are a core part of any modern application. Dioxus provides a 
 The [`spawn`](https://docs.rs/dioxus/0.6.2/dioxus/prelude/fn.spawn.html) method spawns a future in the background and returns a `Task` that you can use to cancel the future. Spawn is great for futures you want to start and then forget about like sending analytics data to a server:
 
 ```rust
-{{#include src/doc_examples/asynchronous.rs:spawn}}
+{{#include src/doc_examples/untested_06/asynchronous.rs:spawn}}
 ```
 
 ```inject-dioxus
@@ -22,7 +22,7 @@ DemoFrame {
 Since spawning in event handlers is very common, Dioxus provides a more concise syntax for async event handlers. If you return a future from an event handler, Dioxus will automatically `spawn` it:
 
 ```rust
-{{#include src/doc_examples/asynchronous.rs:spawn_simplified}}
+{{#include src/doc_examples/untested_06/asynchronous.rs:spawn_simplified}}
 ```
 
 <div class="warning">
@@ -36,7 +36,7 @@ The future you pass to the `spawn` will automatically be cancelled when the comp
 The [`use_resource`](https://docs.rs/dioxus-hooks/latest/dioxus_hooks/fn.use_resource.html) can be used to derive asynchronous state. It takes an async closure to calculate the state and returns a tracked value with the current state of the future. Any time a dependency of the resource changes, the resource will rerun:
 
 ```rust
-{{#include src/doc_examples/asynchronous.rs:use_resource}}
+{{#include src/doc_examples/untested_06/asynchronous.rs:use_resource}}
 ```
 
 ```inject-dioxus
@@ -48,7 +48,7 @@ DemoFrame {
 The `use_resource` hook might look similar to the `use_memo` hook, but unlike `use_memo`, the resource's output is not memoized with `PartialEq`. That means any components/reactive hooks that read the output will rerun if the future reruns even if the value it returns is the same: 
 
 ```rust
-{{#include src/doc_examples/asynchronous.rs:use_resource_memo}}
+{{#include src/doc_examples/untested_06/asynchronous.rs:use_resource_memo}}
 ```
 
 ```inject-dioxus
@@ -60,7 +60,7 @@ DemoFrame {
 > Note: The future you pass to `use_resource` must be cancel safe. Cancel safe futures are futures that can be stopped at any await point without causing causing issues. For example, this task is not cancel safe:
 > 
 > ```rust
-> {{#include src/doc_examples/asynchronous.rs:not_cancel_safe}}
+> {{#include src/doc_examples/untested_06/asynchronous.rs:not_cancel_safe}}
 > ```
 > 
 > 
@@ -72,7 +72,7 @@ DemoFrame {
 > 
 > It can be fixed by making sure the global state is restored when the future is dropped:
 > ```rust
-> {{#include src/doc_examples/asynchronous.rs:cancel_safe}}
+> {{#include src/doc_examples/untested_06/asynchronous.rs:cancel_safe}}
 > ```
 > 
 > ```inject-dioxus
@@ -91,7 +91,7 @@ DemoFrame {
 We can use a suspense boundary to show a grid of different breeds of dogs without handling each loading state individually:
 
 ```rust
-{{#include src/doc_examples/asynchronous.rs:suspense_boundary}}
+{{#include src/doc_examples/untested_06/asynchronous.rs:suspense_boundary}}
 ```
 
 ```inject-dioxus
@@ -103,7 +103,7 @@ DemoFrame {
 If you need to change the loading view while a specific task is loading, you can provide a different loading view with the `with_loading_placeholder` method. The loading placeholder you return from the method will be passed to the suspense boundary and may choose to render it instead of the default loading view:
 
 ```rust
-{{#include src/doc_examples/asynchronous.rs:suspense_boundary_with_loading_placeholder}}
+{{#include src/doc_examples/untested_06/asynchronous.rs:suspense_boundary_with_loading_placeholder}}
 ```
 
 ```inject-dioxus
@@ -117,7 +117,7 @@ DemoFrame {
 To use suspense in your fullstack application, you need to use the `use_server_future` hook instead of `use_resource`. `use_server_future` handles serialization of the result of the future for hydration. It will also suspend automatically, so you don't need to call `.suspend()` on the future.
 
 ```rust
-{{#include src/doc_examples/asynchronous.rs:use_server_future}}
+{{#include src/doc_examples/untested_06/asynchronous.rs:use_server_future}}
 ```
 
 ```inject-dioxus
@@ -129,13 +129,13 @@ DemoFrame {
 Unlike `use_resource`, `use_server_future` is only reactive in the closure, not the future itself. If you need to subscribe to another reactive value, you need to read it in the closure before passing it to the future:
 
 ```rust
-{{#include src/doc_examples/asynchronous.rs:use_server_future_reactive}}
+{{#include src/doc_examples/untested_06/asynchronous.rs:use_server_future_reactive}}
 ```
 
 When you use suspense with fullstack without streaming enabled, dioxus will wait until all suspended futures are resolved before sending the resolved html to the client. If you [enable](https://docs.rs/dioxus/0.6.2/dioxus/prelude/struct.ServeConfigBuilder.html#method.enable_out_of_order_streaming) out of order streaming, dioxus will send the finished HTML chunks to the client one at a time as they are resolved:
 
 ```rust
-{{#include src/doc_examples/asynchronous.rs:use_server_future_streaming}}
+{{#include src/doc_examples/untested_06/asynchronous.rs:use_server_future_streaming}}
 ```
 
 ![Out of order streaming](/assets/06_docs/streaming_dogs.mp4)

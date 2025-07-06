@@ -11,7 +11,9 @@ pub(crate) fn Components(
         let dark_mode = DARK_MODE()
             .map(|dark_mode| format!("dark_mode={}", dark_mode))
             .unwrap_or_default();
-        format!("https://dioxuslabs.github.io/components/{segments}?iframe=true&{dark_mode}&{query}")
+        format!(
+            "https://dioxuslabs.github.io/components/{segments}?iframe=true&{dark_mode}&{query}"
+        )
     }
 
     let initial_url = use_hook(|| format_segments(&segments.read(), &query.read()));
@@ -101,11 +103,16 @@ pub(crate) fn Components(
     }
 
     rsx! {
-        iframe {
-            style: "border: 1px solid rgba(0, 0, 0, 0.1);border-radius:2px;height: calc(100vh - var(--spacing) * 16);width: 100%;",
-            src: initial_url,
-            id: "component-demo-iframe",
-            "allowfullscreen": true,
+        div {
+            div { class: "w-full max-w-screen-xl mx-auto flex flex-col items-center gap-4",
+                iframe {
+                    style: "width: 100%;",
+                    height: "3500px",
+                    src: initial_url,
+                    id: "component-demo-iframe",
+                    "allowfullscreen": true,
+                }
+            }
         }
     }
 }

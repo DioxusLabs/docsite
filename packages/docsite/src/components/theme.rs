@@ -44,12 +44,13 @@ pub(crate) fn DarkModeToggle(
                 *DARK_MODE.write() = Some(new_mode);
             },
             aria_label: if dark_mode() { "Enable light mode" } else { "Enable dark mode" },
+            cursor: "pointer",
             ..attributes,
 
             if dark_mode() {
-                LightModeIcon {}
-            } else {
                 DarkModeIcon {}
+            } else {
+                LightModeIcon {}
             }
         }
     }

@@ -70,11 +70,11 @@ html {
   }
 }
 
-.markdown-body div + p {
+.markdown-body > div + p {
   margin-top: 2rem;
 }
 
-.markdown-body video, img {
+.markdown-body > video, .markdown-body > img {
   margin-bottom: 2rem;
 }
 
@@ -130,11 +130,11 @@ It's so unliklely anyone is copying text on mobile that we can just hide it
   }
 }
 
-.dioxus-demo div input form {
+.dioxus-demo div, input, form {
   all: revert;
 }
 
-.dioxus-demo input button {
+.dioxus-demo input {
   border: 1px solid #ced4da;
   border-radius: 5px;
   background-color: white;

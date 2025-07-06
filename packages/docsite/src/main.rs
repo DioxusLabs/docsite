@@ -99,7 +99,19 @@ fn Head() -> Element {
         Stylesheet { href: asset!("/assets/tailwind.css", CssAssetOptions::new().with_minify(false)) }
         Stylesheet { href: asset!("/assets/main.css") }
         Stylesheet { href: asset!("/assets/material.css") }
-        Stylesheet { href: "https://rsms.me/inter/inter.css" }
+        // Stylesheet { href: "https://rsms.me/inter/inter.css" }
+
+    // link { href: "https://fonts.googleapis.com", rel: "preconnect" }
+    // link {
+    //     crossorigin: "false",
+    //     href: "https://fonts.gstatic.com",
+    //     rel: "preconnect",
+    // }
+    // link {
+    //     href: "https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&display=swap",
+    //     rel: "stylesheet",
+    // }
+
         Link { rel: "preconnect", href: "https://fonts.googleapis.com" }
         Link {
             href: "https://fonts.gstatic.com",

@@ -4,11 +4,11 @@ use crate::*;
 pub(crate) fn Hero() -> Element {
     let abc = 11121;
     rsx! {
-        section { class: "w-full mx-auto dark:text-white flex flex-col justify-between items-center  border-b  border-gray-300 min-h-[760px] flex-1 dark:border-[#a4a9ac7d] max-h-[960px] px-4",
-            div { class: "flex w-full max-w-screen-xl flex-col text-center md:min-h-[520px] min-h-[760px] h-[calc(100vh-4rem)] gap-2 justify-evenly",
+        section { class: "w-full mx-auto dark:text-white flex flex-col justify-between items-center  border-b  border-gray-300 min-h-[760px] flex-1 dark:border-[#a4a9ac7d] max-h-[960px] ",
+            div { class: "flex w-full max-w-screen-2xl flex-col text-center md:min-h-[520px] min-h-[760px] h-[calc(100vh-4rem)] gap-2 justify-evenly lg:px-8",
                 div { class: "flex flex-col-reverse lg:flex-row items-center justify-end lg:justify-between lg:flex-1 flex-none",
-                    div { class: "text-center lg:text-left lg:flex-1",
-                        div { class: "text-[2.5em] md:text-[3.5em] font-semibold dark:text-white text-ghdarkmetal font-sans leading-snug text-balance",
+                    div { class: "text-center lg:text-left",
+                        div { class: "text-[2.5em] md:text-[4.5em] dark:text-white text-ghdarkmetal tracking-tight font-sans leading-relaxed text-balance",
                             span { "One codebase, " }
                             span { " every platform." }
                         }
@@ -57,15 +57,15 @@ pub(crate) fn Hero() -> Element {
                             }
                         }
                     }
-                    div { class: "lg:pb-12 h-screen max-h-40 lg:max-h-80 my-8",
+                    div { class: "lg:pb-12 h-screen max-h-40 lg:max-h-80 my-8 mx-auto",
                         img {
                             src: asset!("/assets/static/multiplatform-dark.svg"),
-                            class: "dark:hidden w-full h-full",
+                            class: "dark:hidden h-full",
                             alt: "Animated Icon",
                         }
                         img {
                             src: asset!("/assets/static/multiplatform-light.svg"),
-                            class: "hidden dark:block w-full h-full",
+                            class: "hidden dark:block h-full",
                             alt: "Animated Icon",
                         }
                     }

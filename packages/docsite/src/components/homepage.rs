@@ -23,7 +23,7 @@ fn AvailablePlatforms() -> Element {
             div { class: "container mx-auto max-w-screen-lg",
                 div { class: "relative overflow-x-hidden",
                     div { class: "flex flex-col items-center justify-center text-center max-w-screen-lg mx-auto pb-4",
-                        h1 { class: "text-[3.3em] font-bold tracking-tight dark:text-white text-ghdarkmetal pb-4 mb-4 ",
+                        h1 { class: "text-[3.3em] font-thin tracking-tight dark:text-white text-ghdarkmetal pb-4 mb-4 ",
                             "One codebase, every platform."
                         }
                         p { class: "text-xl text-gray-600 dark:text-gray-400 pb-4 max-w-screen-sm",
@@ -35,49 +35,59 @@ fn AvailablePlatforms() -> Element {
             }
             div { class: "max-w-screen-lg mx-auto pb-8 px-2 md:px-16 dark:text-white",
                 TriShow {
-                    left: rsx! {  },
-                    center: rsx! {  },
+                    left: rsx! {},
+                    center: rsx! {},
                     right: rsx! { "Build for the web using Rust and WebAssembly. As fast as SolidJS and more robust than React. Integrated hot reloading for instant iterations." },
                     to: Route::Docs06 {
-                        child: BookRoute::Index { section: Default::default() },
+                        child: BookRoute::Index {
+                            section: Default::default(),
+                        },
                     },
                     title: "Web with WASM",
                 }
                 TriShow {
-                    left: rsx! {  },
-                    center: rsx! {  },
+                    left: rsx! {},
+                    center: rsx! {},
                     right: rsx! { "Lightweight (<2mb) desktop and mobile apps with zero configuration. Choose between WebView or WGPU-enabled renderers. Runs on macOS, Windows, Linux, iOS, and Android." },
                     to: Route::Docs06 {
-                        child: BookRoute::Index { section: Default::default() },
+                        child: BookRoute::Index {
+                            section: Default::default(),
+                        },
                     },
                     title: "Desktop and Mobile",
                 }
                 TriShow {
                     to: Route::Docs06 {
-                        child: BookRoute::Index { section: Default::default() },
+                        child: BookRoute::Index {
+                            section: Default::default(),
+                        },
                     },
                     title: "Terminal User Interfaces",
                     right: rsx! { "Quickly convert any CLI tool to a beautiful interactive user interface with just a few lines of code. Runs anywhere with a terminal." },
-                    left: rsx! {  },
-                    center: rsx! {  },
+                    left: rsx! {},
+                    center: rsx! {},
                 }
                 TriShow {
                     to: Route::Docs06 {
-                        child: BookRoute::Index { section: Default::default() },
+                        child: BookRoute::Index {
+                            section: Default::default(),
+                        },
                     },
                     title: "Fullstack Apps",
                     right: rsx! { "Pre-render on the server, and hydrate on the client. Perfect lighthouse scores and performance over 1000x better than Node and Python. Perfect for static site generation or fullstack apps." },
-                    left: rsx! {  },
-                    center: rsx! {  },
+                    left: rsx! {},
+                    center: rsx! {},
                 }
                 TriShow {
                     to: Route::Docs06 {
-                        child: BookRoute::Index { section: Default::default() },
+                        child: BookRoute::Index {
+                            section: Default::default(),
+                        },
                     },
                     title: "LiveView",
                     right: rsx! { "Render your app entirely on the server. Zero backend configuration capable of handling thousands of active clients." },
-                    left: rsx! {  },
-                    center: rsx! {  },
+                    left: rsx! {},
+                    center: rsx! {},
                     last: true,
                 }
             }

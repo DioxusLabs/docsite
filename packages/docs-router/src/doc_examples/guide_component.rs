@@ -30,6 +30,9 @@ mod dog_app_component_props_clone {
     use dioxus::prelude::*;
 
     // ANCHOR: dog_app_component_props_clone
+    // ...
+    use dioxus::logger::*;
+
     #[component]
     fn DogApp(breed: String) -> Element {
         tracing::info!("Rendered with breed: {breed}");

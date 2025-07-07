@@ -2,9 +2,7 @@ use dioxus::prelude::*;
 
 pub fn Text() -> Element {
     // ANCHOR: text
-    rsx! {
-        "Hello world"
-    }
+    rsx! { "Hello world" }
     // ANCHOR_END: text
 }
 
@@ -16,10 +14,7 @@ pub fn FormattedText() -> Element {
     let user = use_signal(|| User {
         name: "Dioxus".to_string(),
     });
-    rsx! {
-        // Unlike the format macro, you can include many expressions inline in the formatted text
-        "Hello {user.read().name}"
-    }
+    rsx! { "Hello {user.read().name}" }
     // ANCHOR_END: formatted_text
 }
 
@@ -42,7 +37,7 @@ pub fn WebComponent() -> Element {
 pub fn InputType() -> Element {
     // ANCHOR: input_type
     rsx! {
-        input { type: "number" }
+        input { r#type: "number" }
     }
     // ANCHOR_END: input_type
 }
@@ -60,7 +55,7 @@ pub fn InputDisabled() -> Element {
     // ANCHOR: input_disabled
     let number_type = use_signal(|| false);
     rsx! {
-        input { type: if number_type() { "number" } }
+        input { r#type: if number_type() { "number" } }
     }
     // ANCHOR_END: input_disabled
 }
@@ -69,10 +64,7 @@ pub fn OnInput() -> Element {
     // ANCHOR: on_input
     let mut value = use_signal(|| "Hello world".to_string());
     rsx! {
-        input {
-            oninput: move |event| value.set(event.value()),
-            value: "{value}"
-        }
+        input { oninput: move |event| value.set(event.value()), value: "{value}" }
     }
     // ANCHOR_END: on_input
 }
@@ -85,9 +77,7 @@ pub fn InputChildren() -> Element {
             display: "flex",
             // justify-content centers the element horizontally
             justify_content: "center",
-            input {
-                type: "number"
-            }
+            input { r#type: "number" }
         }
     }
     // ANCHOR_END: input_children

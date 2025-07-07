@@ -11,6 +11,7 @@ fn main() {
     make_docs("0.4");
     make_docs("0.5");
     make_docs("0.6");
+    make_docs("0.7");
 }
 
 fn make_docs(version: &str) {

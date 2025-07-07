@@ -1,6 +1,6 @@
 use crate::*;
 use docs::{
-    router_03, router_04, router_05, router_06, use_current_docs_version, AnyBookRoute,
+    router_03, router_04, router_05, router_06, router_07, use_current_docs_version, AnyBookRoute,
     CurrentDocsVersion,
 };
 
@@ -23,8 +23,11 @@ pub(crate) fn Learn() -> Element {
 
     rsx! {
         div { class: "w-full text-sm border-b dark:border-[#a4a9ac7d] border-gray-300",
-            div { class: "flex flex-row justify-center dark:text-[#dee2e6] font-light lg:gap-12",
+            div { class: "flex flex-row justify-between dark:text-[#dee2e6] font-light max-w-screen-2xl gap-8 mx-auto px-4 sm:px-6 md:px-8",
                 match current_version {
+                    CurrentDocsVersion::V07(_) => rsx! {
+                        GenericDocs::<router_07::BookRoute> {}
+                    },
                     CurrentDocsVersion::V06(_) => rsx! {
                         GenericDocs::<router_06::BookRoute> {}
                     },
@@ -63,13 +66,13 @@ fn LeftNav<R: AnyBookRoute>() -> Element {
     rsx! {
         div {
             class: if SHOW_SIDEBAR() { "w-full md:w-auto" } else { "hidden" },
-            class: "h-full md:block top-28 sticky md:h-[calc(100vh_-_calc(var(--spacing)_*_28))]",
-            div { class: "md:flex md:flex-col md:h-full mb-2 md:text-[14px] leading-5 text-gray-700 dark:text-gray-400 space-y-2 px-4 md:px-2 py-2 md:py-0",
+            class: "h-full md:block top-24 sticky md:h-[calc(100vh_-_calc(var(--spacing)_*_28))]",
+            div { class: "md:flex md:flex-col md:h-full mb-2 md:text-sm leading-5 text-gray-700 dark:text-gray-400 space-y-2 py-2 md:py-0",
                 VersionSwitch {}
                 nav { class: "
                 styled-scrollbar
-                pl-2 pb-2 z-20 text-base sm:block top-28
-                md:w-60 lg:text-[14px] content-start text-gray-600 dark:text-gray-400 overflow-y-scroll pr-2 space-y-1",
+                pb-2 z-20 text-sm sm:block top-24
+                md:w-72 lg:text-sm content-start text-gray-600 dark:text-gray-400 overflow-y-scroll mt-2",
                     for chapter in chapters.into_iter().flatten().filter(|chapter| chapter.maybe_link().is_some()) {
                         SidebarSection { chapter }
                     }
@@ -83,6 +86,7 @@ fn VersionSwitch() -> Element {
     let mut show_versions = use_signal(|| false);
     let current_version = use_current_docs_version();
     let current_stability = match current_version {
+        CurrentDocsVersion::V07(_) => "Alpha",
         CurrentDocsVersion::V06(_) => "Stable",
         CurrentDocsVersion::V05(_) => "Stable",
         CurrentDocsVersion::V04(_) => "Stable",
@@ -114,7 +118,8 @@ fn VersionSwitch() -> Element {
             div {
                 class: "relative w-full z-50",
                 class: if !show_versions() { "hidden" },
-                div { class: "absolute flex flex-col bg-white dark:bg-ghdarkmetal text-left rounded-lg border  dark:border-gray-700 w-full overflow-hidden text-gray-500 dark:text-gray-100 text-xs shadow-lg",
+                div { class: "absolute flex flex-col bg-white dark:bg-ghdarkmetal text-left rounded-lg border border-gray-200  dark:border-gray-700 w-full overflow-hidden text-gray-500 dark:text-gray-100 text-xs shadow-lg",
+                    TypedVersionSelectItem::<crate::docs::router_07::BookRoute> {}
                     TypedVersionSelectItem::<crate::docs::router_06::BookRoute> {}
                     TypedVersionSelectItem::<crate::docs::router_05::BookRoute> {}
                     TypedVersionSelectItem::<crate::docs::router_04::BookRoute> {}
@@ -172,20 +177,27 @@ fn UntypedVersionSelectItem(
 fn SidebarSection<R: AnyBookRoute>(chapter: &'static SummaryItem<R>) -> Element {
     let link = chapter.maybe_link().context("Could not get link")?;
 
+    // top padding is connected to the -top-y on Link
     rsx! {
-        div { class: "full-chapter",
+        div { class: "full-chapter border-gray-600 pb-6 mt-9 ",
             if let Some(url) = &link.location {
                 Link {
                     onclick: move |_| *SHOW_SIDEBAR.write() = false,
                     to: url.global_route(),
-                    class: "font-semibold hover:text-sky-500 dark:hover:text-sky-400 dark:text-gray-100 text-gray-700",
+                    class: "dark:text-gray-100 text-gray-700
+                    -top-3 -mt-13 pt-3 sticky z-[1] flex items-center flex-col
+                    font-semibold text-xs uppercase tracking-wide
+                    ",
                     active_class: "text-sky-600 dark:text-sky-400",
-                    h3 { class: "pb-2", "{link.name}" }
+                    h3 { class: "px-1 pt-1 w-full bg-white dark:bg-black", "{link.name}" }
+                    h3 { class: "bg-gradient-to-b from-white dark:from-black to-transparent h-2 w-full" }
+                
+
                 }
             }
-            ul { class: "ml-1 space-y-1",
+            ul { class: "gap-y-0.5",
                 for chapter in link.nested_items.iter() {
-                    SidebarChapter { chapter }
+                    SidebarChapter { chapter, nest: 0 }
                 }
             }
         }
@@ -193,7 +205,7 @@ fn SidebarSection<R: AnyBookRoute>(chapter: &'static SummaryItem<R>) -> Element 
 }
 
 #[component]
-fn SidebarChapter<R: AnyBookRoute>(chapter: &'static SummaryItem<R>) -> Element {
+fn SidebarChapter<R: AnyBookRoute>(chapter: &'static SummaryItem<R>, nest: usize) -> Element {
     // current route of the browser, trimmed to the book url
     let mut list_toggle = use_signal(|| false);
     let book_url = R::use_route().to_string();
@@ -209,15 +221,18 @@ fn SidebarChapter<R: AnyBookRoute>(chapter: &'static SummaryItem<R>) -> Element 
     let show_chevron = !link.nested_items.is_empty();
 
     rsx! {
-        li { class: "rounded-md hover:text-sky-500 dark:hover:text-sky-400 flex flex-row",
+        li {
+            class: "text-gray-500 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100 flex flex-row hover:bg-gray-100 dark:hover:bg-gray-800 rounded-r-md",
+            class: if nest == 0 { "rounded-md" },
+            class: if nest > 0 { "pl-4" },
             Link {
                 onclick: move |_| {
                     list_toggle.toggle();
                     *SHOW_SIDEBAR.write() = false;
                 },
                 to: url.global_route(),
-                class: "flex-grow flex flex-row items-center",
-                active_class: "text-sky-600 dark:text-sky-400",
+                class: "flex-grow flex flex-row items-center  p-1",
+                active_class: "text-sky-600 dark:text-sky-400 font-medium",
                 "{link.name}"
                 if show_chevron {
                     div { class: "flex-grow" }
@@ -231,10 +246,10 @@ fn SidebarChapter<R: AnyBookRoute>(chapter: &'static SummaryItem<R>) -> Element 
         }
         if !link.nested_items.is_empty() {
             ul {
-                class: "border-l border-gray-300 px-4 ml-2 space-y-1 py-2 transition-[transform] duration-500 ease-in-out ",
+                class: "border-l border-gray-300 ml-4 space-y-0.5 transition-[transform] duration-500 ease-in-out",
                 class: if show_dropdown { "block transform translate-y-0" } else { "hidden transform translate-y-12" },
                 for chapter in link.nested_items.iter() {
-                    SidebarChapter { chapter }
+                    SidebarChapter { chapter, nest: nest + 1 }
                 }
             }
         }
@@ -255,7 +270,7 @@ pub fn RightNav<R: AnyBookRoute>() -> Element {
         let page_without_query = page_without_hash
             .split_once("?")
             .map(|(url, _)| url)
-            .unwrap_or(&page_without_hash);
+            .unwrap_or(page_without_hash);
         // This is the URL for the file if that file is not a directory that uses /index.md
         // page_url starts with '/', so we don't need to worry about that
         let github_api_url = format!("{GITHUB_API_URL}{short_version}/src{page_without_query}.md");
@@ -272,9 +287,9 @@ pub fn RightNav<R: AnyBookRoute>() -> Element {
 
     // That might be a naive approach, but it's the easiest
     rsx! {
-        div { class: "overflow-y-auto hidden xl:block top-28 px-2 h-full md:text-[14px] leading-5 text-gray-600 max-h-[calc(100vh_-_calc(var(--spacing)_*_28))] w-48 sticky  dark:text-gray-400 pt-1",
+        div { class: "overflow-y-auto hidden xl:block top-24 px-2 h-full md:text-sm leading-5 text-gray-600 max-h-[calc(100vh_-_calc(var(--spacing)_*_28))] w-72 sticky  dark:text-gray-400 pt-1",
             div { class: "border-b border-gray-300 pb-2 dark:border-[#a4a9ac7d]",
-                h2 { class: "pb-2 font-semibold text-gray-600 dark:text-gray-100",
+                h2 { class: "pb-2 font-semibold text-gray-800 dark:text-gray-100 uppercase tracking-wide text-xs",
                     "On this page"
                 }
                 ul {
@@ -321,7 +336,7 @@ pub fn RightNav<R: AnyBookRoute>() -> Element {
 fn Content<R: AnyBookRoute>() -> Element {
     rsx! {
         section {
-            class: "text-gray-600 dark:text-gray-300 body-font overflow-hidden container pb-12 max-w-screen-sm px-4 pt-4 md:pt-[3.125rem] grow min-h-[100vh] ",
+            class: "text-gray-600 dark:text-gray-300 body-font overflow-hidden container pb-12 md:mt-8 grow min-h-[100vh] max-w-screen-md",
             class: if SHOW_SIDEBAR() { "hidden md:block" },
             div { class: "",
                 Breadcrumbs::<R> {}
@@ -337,11 +352,13 @@ fn Content<R: AnyBookRoute>() -> Element {
 
 fn VersionWarning() -> Element {
     let current_version = use_current_docs_version();
-    // div { class: "flex flex-row items-center justify-start w-full bg-yellow-200 opacity-80 text-yellow-800 text-sm font-normal py-2 px-2 rounded-md mb-4 gap-2",
-    // crate::icons::IconWarning {}
-    // "You are currently viewing the docs for Dioxus 0.6.0 which is under construction."
-    // }
     match current_version {
+        CurrentDocsVersion::V07(_) => rsx! {
+            div { class: "flex flex-row items-center justify-start w-full bg-yellow-200 opacity-80 text-yellow-800 text-sm font-normal py-2 px-2 rounded-md mb-4 gap-2",
+                crate::icons::IconWarning {}
+                "You are currently viewing the docs for Dioxus 0.7.0 which is under construction."
+            }
+        },
         CurrentDocsVersion::V06(_) => rsx! {},
         CurrentDocsVersion::V05(_) | CurrentDocsVersion::V04(_) | CurrentDocsVersion::V03(_) => {
             rsx! {
@@ -380,6 +397,7 @@ fn Breadcrumbs<R: AnyBookRoute>() -> Element {
                 }
             }
         }
+        div { class: "h-4 w-full", class: if !is_index { "hidden " } }
     }
 }
 

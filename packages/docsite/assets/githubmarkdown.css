@@ -106,6 +106,10 @@
   word-wrap: break-word;
 }
 
+.markdown-body button {
+  cursor: pointer;
+}
+
 /* tailwind is turning off our list styles :/ */
 .markdown-body ol ul {
   list-style: unset !important;
@@ -182,8 +186,8 @@
 .markdown-body h1 {
   margin: 0.67em 0;
   font-weight: 600;
-  padding-bottom: 0.3em;
   font-size: 2em;
+  /* padding-bottom: 0.3em; */
   /* border-bottom: 1px solid var(--color-border-muted) */
 }
 
@@ -368,7 +372,7 @@
 .markdown-body h4,
 .markdown-body h5,
 .markdown-body h6 {
-  margin-top: 24px;
+  margin-top: 32px;
   margin-bottom: 16px;
   font-weight: 600;
   line-height: 1.25;
@@ -404,7 +408,7 @@
 
 .markdown-body p {
   margin-top: 0;
-  margin-bottom: 10px;
+  /* margin-bottom: 10px; */
   /* margin-left: 5px; */
 }
 
@@ -659,7 +663,7 @@
 .markdown-body table,
 .markdown-body ul {
   margin-top: 0;
-  margin-bottom: 16px;
+  margin-bottom: 12px;
 }
 
 .markdown-body blockquote > :first-child {

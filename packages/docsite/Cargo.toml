@@ -39,7 +39,11 @@ web-sys = { version = "0.3.64", features = [
     "Event",
     "AddEventListenerOptions",
     "Navigator",
-    "HtmlIFrameElement"
+    "HtmlIFrameElement",
+    "console",
+    "History",
+    "Window",
+    "Location"
 ] }
 slab = "0.4.8"
 chrono = { workspace = true, features = ["serde"] }

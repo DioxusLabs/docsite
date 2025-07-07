@@ -3,11 +3,22 @@ use crate::doc_examples::*;
 use dioxus::prelude::*;
 use std::hash::Hash;
 
+#[rustfmt::skip]
 pub mod router_03;
+
+#[rustfmt::skip]
 pub mod router_04;
+
+#[rustfmt::skip]
 pub mod router_05;
+
+#[rustfmt::skip]
 pub mod router_06;
+
+#[rustfmt::skip]
 pub mod router_07;
+
+#[rustfmt::skip]
 pub mod router_blog;
 
 #[component]

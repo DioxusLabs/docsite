@@ -189,6 +189,7 @@ fn SearchModal() -> Element {
         // Only show search results from the version of the docs the user is currently on (or the latest if they
         // are not on a doc page)
         let docs_index_version = match &current_route {
+            Route::Docs07 { .. } => "0_7",
             Route::Docs06 { .. } => "0_6",
             Route::Docs05 { .. } => "0_5",
             Route::Docs04 { .. } => "0_4",

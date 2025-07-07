@@ -2,10 +2,10 @@ use crate::DARK_MODE;
 use dioxus::prelude::*;
 
 #[component]
-pub(crate) fn Components(
-    segments: ReadOnlySignal<Vec<String>>,
-    query: ReadOnlySignal<String>,
-) -> Element {
+pub(crate) fn Components() -> Element {
+    let segments: ReadOnlySignal<Vec<String>> = Default::default();
+    let query: ReadOnlySignal<String> = Default::default();
+
     fn format_segments(segments: &[String], query: &str) -> String {
         let segments = segments.join("/");
         let dark_mode = DARK_MODE()
@@ -40,8 +40,8 @@ pub(crate) fn Components(
                 let (without_query, query) =
                     cleaned_route.split_once('?').unwrap_or((cleaned_route, ""));
                 let new_route = Route::Components {
-                    segments: without_query.split('/').map(String::from).collect(),
-                    query: query.to_string(),
+                    // segments: without_query.split('/').map(String::from).collect(),
+                    // query: query.to_string(),
                 };
                 let router = router();
                 if new_route != router.current() {

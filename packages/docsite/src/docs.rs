@@ -33,12 +33,31 @@ pub fn use_try_current_docs_version() -> Option<CurrentDocsVersion> {
         Route::Docs05 { child } => Some(CurrentDocsVersion::V05(child)),
         Route::Docs04 { child } => Some(CurrentDocsVersion::V04(child)),
         Route::Docs03 { child } => Some(CurrentDocsVersion::V03(child)),
-        _ => None,
+        Route::Homepage {} => None,
+        Route::Components { .. } => None,
+        Route::Awesome {} => None,
+        Route::Deploy {} => None,
+        Route::BlogList {} => None,
+        Route::BlogPost { .. } => None,
+        Route::Err404 { .. } => None,
     }
 }
 
 pub fn use_current_docs_version() -> CurrentDocsVersion {
-    use_try_current_docs_version().expect("current docs version should be set")
+    let route: Route = use_route();
+
+    use_try_current_docs_version().unwrap_or_else(move || {
+        // let r = dioxus::router::router().full_route_string();
+        let r = web_sys::window()
+            .and_then(|w| w.location().pathname().ok())
+            .unwrap_or_else(|| "unknown".to_string());
+        web_sys::console::log_1(&r.into());
+
+        panic!(
+            "No current docs version found. This should not happen. {:#?} ",
+            route
+        )
+    })
 }
 
 pub trait AnyBookRoute: Routable + PartialEq + Hash + Eq + Clone + Copy {

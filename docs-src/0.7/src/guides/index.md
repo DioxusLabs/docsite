@@ -18,3 +18,6 @@ These guides contains more detailed explanations for some concepts covered in th
     - [`Routing`](fullstack/routing.md) An overview of how to work with the router in the fullstack renderer
 - [`SSR`](ssr.md) Overview of the SSR renderer
 
+## Hot Reloading
+
+- [`Hot Reloading`](hotreload.md) Overview of how to use hot reloading in Dioxus

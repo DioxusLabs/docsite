@@ -87,7 +87,6 @@
   - [Props](reference/component_props.md)
   - [Event Handlers](reference/event_handlers.md)
   - [Context](reference/context.md)
-  - [Dynamic Rendering](reference/dynamic_rendering.md)
 
 ---
 - [Contributing](contributing/index.md)

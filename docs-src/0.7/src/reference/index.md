@@ -6,4 +6,3 @@ This portion of the Dioxus Docs contains specific details about features that pr
 - [Props](./component_props.md)
 - [Event Handlers](./event_handlers.md)
 - [Context](./context.md)
-- [Dynamic Rendering](./dynamic_rendering.md)

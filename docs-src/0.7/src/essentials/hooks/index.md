@@ -8,17 +8,17 @@ Hooks use the order they are called in to keep track of what state belongs to ea
 
 These rules mean that there are certain things you can't do with hooks:
 
-#### No Hooks in Conditionals
+## No Hooks in Conditionals
 ```rust
 {{#include src/doc_examples/hooks_bad.rs:conditional}}
 ```
 
-#### No Hooks in Closures
+## No Hooks in Closures
 ```rust
 {{#include src/doc_examples/hooks_bad.rs:closure}}
 ```
 
-#### No Hooks in Loops
+## No Hooks in Loops
 ```rust
 {{#include src/doc_examples/hooks_bad.rs:loop}}
 ```

@@ -90,6 +90,75 @@ DemoFrame {
 }
 ```
 
+### Special Attributes
+
+Most attributes in rsx are passed onto the html directly, but there are a few exceptions.
+
+#### The HTML Escape Hatch
+
+If you're working with pre-rendered assets, output from templates, or output from a JS library, then you might want to pass HTML directly instead of going through Dioxus. In these instances, reach for `dangerous_inner_html`.
+
+`dangerous_inner_html` sets the text content of the element to the provided value. This will overwrite any other attributes or children of the element.
+
+For example, shipping a markdown-to-Dioxus converter might significantly bloat your final application size. Instead, you'll want to pre-render your markdown to HTML and then include the HTML directly in your output. We use this approach for the [Dioxus homepage](https://dioxuslabs.com):
+
+```rust, no_run
+{{#include src/doc_examples/dangerous_inner_html.rs:dangerous_inner_html}}
+```
+
+```inject-dioxus
+DemoFrame {
+	dangerous_inner_html::App {}
+}
+```
+
+> Note! This attribute is called "dangerous_inner_html" because it is **dangerous** to pass it data you don't trust. If you're not careful, you can easily expose [cross-site scripting (XSS)](https://en.wikipedia.org/wiki/Cross-site_scripting) attacks to your users.
+>
+> If you're handling untrusted input, make sure to sanitize your HTML before passing it into `dangerous_inner_html` – or just pass it to a Text Element to escape any HTML tags.
+
+#### Style attributes
+
+In addition to the standard `style` attribute, each style can also be passed as a separate attribute. For example, we can set the `color` and `font-size` of an element using the `color` and `font_size` attributes:
+
+```rust, no_run
+{{#include src/doc_examples/building_uis_with_rsx.rs:style_attributes}}
+```
+
+```inject-dioxus
+DemoFrame {
+    building_uis_with_rsx::StyleAttributes {}
+}
+```
+
+#### Class attribute
+
+Most attributes can only be defined once per element, but the `class` attribute can be defined multiple times. Each class will be added to the element's class list. This can be convenient when adding many optional classes to an element in a styling system like tailwindcss:
+
+```rust, no_run
+{{#include src/doc_examples/building_uis_with_rsx.rs:class_attribute}}
+```
+
+```inject-dioxus
+DemoFrame {
+    building_uis_with_rsx::ClassAttribute {}
+}
+```
+
+
+#### Custom Attributes
+
+Dioxus has a pre-configured set of attributes that you can use that are validated at compile time. You can use a custom attribute name surrounded in quotes to add an attribute outside of the pre-defined set:
+
+```rust, no_run
+{{#include src/doc_examples/building_uis_with_rsx.rs:custom_attributes}}
+```
+
+```inject-dioxus
+DemoFrame {
+	building_uis_with_rsx::CustomAttributes {}
+}
+```
+
 ## Event Listeners
 
 Event listeners allow you to respond to user input. In rsx, event handlers always start with `on`. The syntax is the same as normal attributes, but event handlers only accept a closure that responds to the event. We can attach an event listener to the `oninput` event of the input element to listen for changes to the input:
@@ -155,6 +224,20 @@ You can also use if/else statements in rsx. Each branch of the if statement acce
 ```inject-dioxus
 DemoFrame {
     building_uis_with_rsx::IfStatement {}
+}
+```
+
+## Expressions
+
+Finally, you can use arbitrary Rust expressions inside of rsx by surrounding them with `{}`. Any expression you include must implement the [`IntoDynNode`](https://docs.rs/dioxus-core/latest/dioxus_core/trait.IntoDynNode.html) trait. You can use raw expressions to render nodes from an iterator, variable, or function:
+
+```rust, no_run
+{{#include src/doc_examples/building_uis_with_rsx.rs:expression}}
+```
+
+```inject-dioxus
+DemoFrame {
+    building_uis_with_rsx::Expression {}
 }
 ```
 

@@ -83,11 +83,9 @@
 ---
 - [Reference](reference/index.md)
   - [Hot-Reload](reference/hotreload.md)
-  - [RSX](reference/rsx.md)
   - [Components](reference/components.md)
   - [Props](reference/component_props.md)
   - [Event Handlers](reference/event_handlers.md)
-  - [Hooks](reference/hooks.md)
   - [Context](reference/context.md)
   - [Dynamic Rendering](reference/dynamic_rendering.md)
 

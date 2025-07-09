@@ -174,7 +174,7 @@ pub fn ClassAttribute() -> Element {
         span {
             class: if red { "bg-red-500" },
             class: if blue_border { "border border-blue-500" },
-            class: "w-4 h-4"
+            class: "w-4 h-4 block"
         }
     }
     // ANCHOR_END: class_attribute

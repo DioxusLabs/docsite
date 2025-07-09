@@ -23,6 +23,7 @@
 
 - [Core Concepts](essentials/index.md)
   - [Building UIs with RSX](essentials/rsx/index.md)
+  - [Hooks](essentials/hooks/index.md)
   - [Component Lifecycle](essentials/lifecycle/index.md)
   - [Managing State](essentials/state/index.md)
   - [Async](essentials/async/index.md)
@@ -32,7 +33,6 @@
 ---
 
 - [Guides](guides/index.md)
-  - [Rules of Hooks](guides/rules_of_hooks.md)
   - [Router](router/index.md)
     - [Example Project](router/example/index.md)
       - [Creating Our First Route](router/example/first-route.md)
@@ -88,13 +88,8 @@
   - [Props](reference/component_props.md)
   - [Event Handlers](reference/event_handlers.md)
   - [Hooks](reference/hooks.md)
-  - [User Input](reference/user_input.md)
   - [Context](reference/context.md)
   - [Dynamic Rendering](reference/dynamic_rendering.md)
-  - [Routing](reference/router.md)
-  - [Resource](reference/use_resource.md)
-  - [UseCoroutine](reference/use_coroutine.md)
-  - [Spawn](reference/spawn.md)
 
 ---
 - [Contributing](contributing/index.md)

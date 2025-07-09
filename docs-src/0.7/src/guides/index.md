@@ -2,10 +2,6 @@
 
 These guides contains more detailed explanations for some concepts covered in the [`guide`](../guide/index.md) and more.
 
-## State
-
-- [Rules of hooks](rules_of_hooks.md) Overview of the rules of hooks
-
 ## Assets
 
 - [`Assets`](assets.md) Overview of how to include assets in your application

@@ -66,6 +66,7 @@
     - [Streaming](guides/fullstack/streaming.md)
     - [Static Site Generation](guides/fullstack/static_site_generation.md)
     - [Axum Integration](guides/fullstack/axum.md)
+  - [Hot-Reload](guides/hotreload.md)
   - [Publishing](cookbook/publishing.md)
   - [Anti-patterns](cookbook/antipatterns.md)
   - [Integrations](cookbook/integrations/index.md)
@@ -82,11 +83,9 @@
 
 ---
 - [Reference](reference/index.md)
-  - [Hot-Reload](reference/hotreload.md)
   - [Components](reference/components.md)
   - [Props](reference/component_props.md)
   - [Event Handlers](reference/event_handlers.md)
-  - [Context](reference/context.md)
 
 ---
 - [Contributing](contributing/index.md)

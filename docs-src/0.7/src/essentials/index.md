@@ -4,6 +4,8 @@ This section will guide you through key concepts in Dioxus:
 
 - [Building UIs with RSX](rsx/index.md) will teach you how to define html inside your Dioxus app with rsx.
 
+- [Event Handlers](event_handlers/index.md) will teach you how to handle events in Dioxus, including how to prevent default behavior and stop event propagation.
+
 - [Hooks](hooks/index.md) will teach you about the concept of hooks and their limitations.
 
 - [Components](components/index.md) will teach you about the concept of components and their role in building UIs.

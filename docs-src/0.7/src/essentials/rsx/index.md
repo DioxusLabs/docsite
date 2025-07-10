@@ -2,7 +2,6 @@
 
 Dioxus renders to HTML, if you are not familiar with HTML, this guide will help you get started with the basics. For more detail, the [MDN docs](https://developer.mozilla.org/en-US/docs/Web/HTML) are a great resource.
 
-
 ## Text Nodes
 
 Any content surrounded by quotes is rendered as a text node in rsx:
@@ -144,7 +143,6 @@ DemoFrame {
 }
 ```
 
-
 #### Custom Attributes
 
 Dioxus has a pre-configured set of attributes that you can use that are validated at compile time. You can use a custom attribute name surrounded in quotes to add an attribute outside of the pre-defined set:
@@ -172,6 +170,8 @@ DemoFrame {
     building_uis_with_rsx::OnInput {}
 }
 ```
+
+More information about event listeners including how events bubble and how to prevent default behavior can be found in the [Event Handlers](../event_handlers/index.md) section.
 
 ## Children
 
@@ -251,4 +251,3 @@ A few reasons:
 - RSX is faster to type since curly braces are auto-closed
 - Not all RSX is HTML - Dioxus can be used in non-HTML contexts
 - HTML is not valid Rust - not all HTML can be used in html!{}
-

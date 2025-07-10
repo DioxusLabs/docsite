@@ -12,7 +12,7 @@ Before we get too far, let's split our app into two parts: the `Title` and the `
 
 ## Event Handlers
 
-In the `DogView` component, we want to attach an action to the click of the buttons. For example: skipping or saving the current dog photo. We can use an [EventHandler](../reference/event_handlers.md) to listen for the `click` events.
+In the `DogView` component, we want to attach an action to the click of the buttons. For example: skipping or saving the current dog photo. We can use an [EventHandler](../essentials/event_handlers/index.md) to listen for the `click` events.
 
 Event handlers are similar to regular attributes, but their name usually starts with `on` - and they accept closures as values. The closure will be called whenever its corresponding event is triggered. The listener receives information about the event in the [Event](https://docs.rs/dioxus/latest/dioxus/prelude/struct.Event.html) object.
 
@@ -22,7 +22,7 @@ We'll add some closures inline and then pass them to the `onclick` attribute for
 {{#include src/doc_examples/guide_state.rs:event_handler}}
 ```
 
-> You can read more about Event Handlers in the [Event Handler reference](../reference/event_handlers.md)
+> You can read more about Event Handlers in the [Event Handler reference](../essentials/event_handlers/index.md)
 
 ## State with use_hook
 

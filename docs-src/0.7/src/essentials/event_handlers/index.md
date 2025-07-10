@@ -46,7 +46,7 @@ If you want to prevent this behavior, you can call `stop_propagation()` on the e
 
 Some events have a default behavior. For keyboard events, this might be entering the typed character. For mouse events, this might be selecting some text.
 
-In some instances, might want to avoid this default behavior. For this, you can add the `prevent_default` attribute with the name of the handler whose default behavior you want to stop. This attribute can be used for multiple handlers using their name separated by spaces:
+You can call the `prevent_default()` method on the event to stop this default behavior.
 
 ```rust, no_run
 {{#include src/doc_examples/event_prevent_default.rs:prevent_default}}

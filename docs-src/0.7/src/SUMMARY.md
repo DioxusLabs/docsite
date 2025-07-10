@@ -23,6 +23,7 @@
 
 - [Core Concepts](essentials/index.md)
   - [Building UIs with RSX](essentials/rsx/index.md)
+  - [Event Handlers](essentials/event_handlers/index.md)
   - [Hooks](essentials/hooks/index.md)
   - [Components](essentials/components/index.md)
   - [Component Lifecycle](essentials/lifecycle/index.md)
@@ -81,10 +82,6 @@
   - [Tailwind](cookbook/tailwind.md)
   - [Optimizing](cookbook/optimizing.md)
   - [Migrating to v0.6](migration/index.md)
-
----
-- [Reference](reference/index.md)
-  - [Event Handlers](reference/event_handlers.md)
 
 ---
 - [Contributing](contributing/index.md)

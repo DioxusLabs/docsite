@@ -16,7 +16,7 @@ This guide is split into different sections:
 
 - [Tutorial](guide/index.md) walks you through your first Dioxus app.
 - [Core Concepts](essentials/index.md) provides detail on topics like managing state.
-- [Guides](reference/index.md) provides references for things like assets, routing, testing, and more.
+- [Guides](guides/index.md) provides references for things like assets, routing, testing, and more.
 
 First, try walking through the [Tutorial](guide/index.md) to get familiar with Dioxus. Before embarking on a larger project, we strongly recommend reading the entire [Essential Concepts](essentials/index.md) and glancing through the [Guides Overview](guides/index.md). This guide assumes you already know some [Rust](https://www.rust-lang.org/)! If not, we recommend reading [*the book*](https://doc.rust-lang.org/book/ch01-00-getting-started.html) to learn Rust first.
 

@@ -3,10 +3,22 @@ use crate::doc_examples::*;
 use dioxus::prelude::*;
 use std::hash::Hash;
 
+#[rustfmt::skip]
 pub mod router_03;
+
+#[rustfmt::skip]
 pub mod router_04;
+
+#[rustfmt::skip]
 pub mod router_05;
+
+#[rustfmt::skip]
 pub mod router_06;
+
+#[rustfmt::skip]
+pub mod router_07;
+
+#[rustfmt::skip]
 pub mod router_blog;
 
 #[component]
@@ -23,11 +35,15 @@ fn SandBoxFrame(url: String) -> Element {
 }
 
 #[component]
-fn DemoFrame(children: Element) -> Element {
+fn DemoFrame(
+    #[props(extends = GlobalAttributes)] attributes: Vec<Attribute>,
+    children: Element,
+) -> Element {
     rsx! {
         div {
-            class: "bg-white rounded-md shadow-md p-4 my-4 overflow-auto text-black dioxus-demo",
+            class: "bg-white rounded-md shadow-md p-4 my-4 overflow-auto text-black dioxus-demo mx-4",
             max_height: "50vh",
+            ..attributes,
             {children}
         }
     }
@@ -70,8 +86,8 @@ pub enum Route {{\n\t"
 fn CodeBlock(contents: String, name: Option<String>) -> Element {
     let mut copied = use_signal(|| false);
     rsx! {
-        div { class: "border overflow-hidden rounded-md border-gray-300 dark:border-gray-700 mb-8",
-            div { class: "w-full bg-red flex flex-row justify-between border-b border-gray-300 dark:border-gray-700 py-1 px-2 text-xs items-center bg-gray-100 dark:bg-ideblack",
+        div { class: "border overflow-hidden rounded-md border-gray-300 dark:border-gray-700 mx-4 mb-4",
+            div { class: "w-full bg-red flex flex-row justify-between border-b border-gray-300 dark:border-gray-700 py-1 px-2 text-sm items-center bg-gray-100 dark:bg-ideblack",
                 div { class: "font-mono",
                     if let Some(path) = name {
                         "src/{path}"

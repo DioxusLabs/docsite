@@ -5,7 +5,7 @@ use dioxus::prelude::*;
 #[server]
 pub async fn log_headers() -> Result<(), ServerFnError> {
     let headers: http::HeaderMap = extract().await?;
-    log::info!("{:?}", headers[http::header::USER_AGENT]);
+    tracing::info!("{:?}", headers[http::header::USER_AGENT]);
     Ok(())
 }
 // ANCHOR_END: server_function_extract

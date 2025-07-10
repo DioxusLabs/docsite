@@ -1,4 +1,5 @@
 #![allow(non_snake_case)]
+use crate::doc_examples::ComponentWithLogs;
 use dioxus::prelude::*;
 
 pub fn App() -> Element {
@@ -8,10 +9,19 @@ pub fn App() -> Element {
             href: "https://example.com",
             onclick: |evt| {
                 evt.prevent_default();
-                log::info!("link clicked")
+                log!("link clicked")
             },
             "example.com"
         }
     }
     // ANCHOR_END: prevent_default
+}
+
+#[component]
+pub fn AppDemo() -> Element {
+    rsx! {
+        ComponentWithLogs {
+            App {}
+        }
+    }
 }

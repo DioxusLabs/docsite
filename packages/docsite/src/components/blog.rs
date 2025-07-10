@@ -8,21 +8,59 @@ pub(crate) fn BlogList() -> Element {
     rsx! {
         section { class: "body-font overflow-hidden font-light",
             div { class: "container max-w-screen-md pt-12 pb-12 mx-auto",
-                div { class: "-my-8 px-8 pb-12",
-                    h2 { class: "dark:text-white my-8 md:mb-16 sm:text-3xl text-2xl font-medium title-font font-sans",
+                div { class: "",
+                    h2 { class: "dark:text-white my-8 text-2xl sm:text-5xl font-medium title-font font-sans",
+                        // h2 { class: "dark:text-white my-8 md:mb-16 sm:text-3xl text-2xl font-medium title-font font-sans",
                         "Blog"
                     }
                     section { class: "body-font overflow-hidden",
-                        div { class: "container px- mx-auto",
-                            div { class: "-my-8 divide-y divide-neutral-400",
-                                for route in BlogRoute::static_routes().into_iter().rev() {
-                                    BlogPostItem { route }
-                                }
+                        div { class: "container mx-auto space-y-4",
+                            for route in BlogRoute::static_routes().into_iter().rev() {
+                                BlogPostItem { route }
                             }
                         }
                     }
                 }
             }
+        }
+    }
+}
+
+#[component]
+fn BlogPostItem(route: BlogRoute) -> Element {
+    // coming in the form of:
+    // "Announcing Dioxus 0.6 [draft] $ Release Notes $ November 18, 2024 $ Android/iOS simulator, Interactive CLI, RSX Autocomplete, Props Hotreloading, and more!"
+    let raw_title = &route.page().title;
+
+    if raw_title.contains("[draft]") {
+        return rsx! {};
+    }
+
+    let items = raw_title.splitn(4, " $ ").collect::<Vec<_>>();
+    let [title, _category, date, description, ..] = items.as_slice() else {
+        panic!("Invalid post structure:");
+    };
+
+    // "Read more"
+    // icons::ArrowRight {}
+    // class: "text-indigo-500 inline-flex items-center mt-4",
+
+    rsx! {
+        Link {
+            to: Route::BlogPost { child: route },
+            class: "flex flex-wrap md:flex-nowrap pb-8 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors duration-200 rounded p-2",
+            div { class: "md:flex-grow",
+                div { class: "flex flex-row justify-between gap-4",
+                    h2 { class: "text-2xl font-bold text-gray-900 title-font mb-2 dark:text-white",
+                        "{title}"
+                    }
+                    span { class: "my-2 text-gray-500 text-sm", "{date}" }
+                }
+                p { class: "leading-relaxed dark:text-white text-base dark:opacity-75",
+                    "{description}"
+                }
+            }
+        
         }
     }
 }
@@ -34,7 +72,7 @@ pub(crate) fn BlogPost() -> Element {
     rsx! {
         section { class: "text-gray-600 body-font pt-12 font-light w-full",
             div { class: "flex flex-row justify-center pt-4 md:pt-[3.125rem] lg:gap-12",
-                div {}
+                div { class: "hidden xl:block w-72" }
                 div { class: "text-gray-600 dark:text-gray-300 body-font overflow-hidden container pb-12 max-w-screen-md px-4 grow min-h-[100vh] md:block",
                     div { class: "px-2 border-b border-gray-200 my-4 mb-8 pb-8  dark:text-white",
                         Link { to: Route::BlogList {},
@@ -60,7 +98,7 @@ pub(crate) fn BlogPost() -> Element {
                         h1 { class: "text-[2.75rem] font-semibold text-black dark:text-white",
                             "{meta.title}"
                         }
-                        p { class: "text-gray-500 text-sm pb-8 dark:text-white",
+                        p { class: "text-gray-500 text-sm pb-4 dark:text-white",
                             "{meta.date}"
                             " - "
                             "{meta.author}"
@@ -70,45 +108,6 @@ pub(crate) fn BlogPost() -> Element {
                     div { class: "markdown-body px-2  dioxus-blog-post", Outlet::<Route> {} }
                 }
                 crate::learn::RightNav::<BlogRoute> {}
-            }
-        }
-    }
-}
-
-#[component]
-fn BlogPostItem(route: BlogRoute) -> Element {
-    // coming in the form of:
-    // "Announcing Dioxus 0.6 [draft] $ Release Notes $ November 18, 2024 $ Android/iOS simulator, Interactive CLI, RSX Autocomplete, Props Hotreloading, and more!"
-    let raw_title = &route.page().title;
-
-    if raw_title.contains("[draft]") {
-        return rsx! {};
-    }
-
-    let items = raw_title.splitn(4, " $ ").collect::<Vec<_>>();
-    let [title, _category, date, description, ..] = items.as_slice() else {
-        panic!("Invalid post structure:");
-    };
-
-    rsx! {
-        div { class: "py-8 flex flex-wrap md:flex-nowrap",
-
-            div { class: "md:flex-grow pl-8",
-                div { class: "flex flex-row justify-between gap-4",
-                    h2 { class: "text-2xl font-medium text-gray-900 title-font mb-4 dark:text-white",
-                        "{title}"
-                    }
-                    span { class: "my-2 text-gray-500 text-sm", "{date}" }
-                }
-                p { class: "leading-relaxed dark:text-white text-base dark:opacity-75",
-                    "{description}"
-                }
-                Link {
-                    class: "text-indigo-500 inline-flex items-center mt-4",
-                    to: Route::BlogPost { child: route },
-                    "Read more"
-                    icons::ArrowRight {}
-                }
             }
         }
     }

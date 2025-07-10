@@ -1,5 +1,5 @@
 use crate::{errors::*, get_book_content_path};
-use log::{debug, trace, warn};
+use tracing::{debug, trace, warn};
 use memchr::{self, Memchr};
 use pulldown_cmark::{self, Event, HeadingLevel, Tag};
 use serde::{Deserialize, Serialize};

@@ -1653,13 +1653,13 @@ dependencies = [
  "bytes",
  "dioxus-router",
  "getrandom 0.2.16",
- "log",
  "scraper",
  "serde",
  "serde_json",
  "slab",
  "stork-lib",
  "toml 0.8.23",
+ "tracing",
  "yazi",
 ]
 
@@ -1788,7 +1788,6 @@ dependencies = [
  "gloo-timers",
  "http",
  "js-sys",
- "log",
  "mdbook-gen",
  "mdbook-shared",
  "once_cell",
@@ -1829,7 +1828,6 @@ dependencies = [
  "gloo-timers",
  "http",
  "js-sys",
- "log",
  "mdbook-shared",
  "once_cell",
  "reqwest",
@@ -1840,6 +1838,7 @@ dependencies = [
  "stork-lib",
  "syntect-html",
  "tokio",
+ "tracing",
  "use-mdbook",
  "wasm-bindgen",
  "web-sys",
@@ -3772,13 +3771,13 @@ dependencies = [
  "anyhow",
  "bytes",
  "getrandom 0.2.16",
- "log",
  "memchr",
  "pulldown-cmark 0.9.6",
  "serde",
  "serde_json",
  "slab",
  "toml 0.7.8",
+ "tracing",
 ]
 
 [[package]]

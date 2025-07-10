@@ -14,7 +14,7 @@ bytes = { version = "1.3.0", features = ["serde"] }
 slab = "0.4.8"
 yazi = { workspace = true }
 scraper = "0.22.0"
-log = "0.4.19"
+tracing = "0.1.41"
 
 dioxus-router = { workspace = true }
 

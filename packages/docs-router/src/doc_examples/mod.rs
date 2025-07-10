@@ -22,10 +22,13 @@ fn use_provide_log_state() -> Signal<LogState> {
 }
 
 pub fn log(message: impl ToString) {
-    consume_context::<Signal<LogState>>()
-        .write()
-        .logs
-        .insert(0, message.to_string());
+    let message = message.to_string();
+    match try_consume_context::<Signal<LogState>>() {
+        Some(mut logs) => logs.write().logs.insert(0, message),
+        None => {
+            tracing::info!("{message}");
+        }
+    }
 }
 
 #[macro_export]
@@ -54,14 +57,14 @@ pub fn ComponentWithLogs(children: Element) -> Element {
 
 #[component]
 pub(crate) fn FakePage(children: Element) -> Element {
-        let mut uuid = use_signal(|| 0);
-        rsx! {
-            button { onclick: move |_| uuid += 1, "🔄" }
-            {std::iter::once(rsx! {
-                Fragment { key: "{uuid}", {children} }
-            })}
-        }
+    let mut uuid = use_signal(|| 0);
+    rsx! {
+        button { onclick: move |_| uuid += 1, "🔄" }
+        {std::iter::once(rsx! {
+            Fragment { key: "{uuid}", {children} }
+        })}
     }
+}
 
 // Include any examples we compile into the docsite
 #[cfg(not(feature = "doc_test"))]

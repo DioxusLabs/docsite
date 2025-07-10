@@ -13,7 +13,7 @@ For example, to handle clicks on an element, we can specify an `onclick` handler
 ```
 ```inject-dioxus
 DemoFrame {
-    event_click::App {}
+    event_click::AppDemo {}
 }
 ```
 
@@ -54,7 +54,7 @@ You can call the `prevent_default()` method on the event to stop this default be
 
 ```inject-dioxus
 DemoFrame {
-    event_prevent_default::App {}
+    event_prevent_default::AppDemo {}
 }
 ```
 

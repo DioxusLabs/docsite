@@ -31,7 +31,7 @@ pub fn log(message: impl ToString) {
 #[macro_export]
 macro_rules! log {
     ($($arg:tt)*) => {
-        log(format!($($arg)*))
+        crate::doc_examples::log(format!($($arg)*))
     }
 }
 

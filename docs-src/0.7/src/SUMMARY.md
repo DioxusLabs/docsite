@@ -24,6 +24,7 @@
 - [Core Concepts](essentials/index.md)
   - [Building UIs with RSX](essentials/rsx/index.md)
   - [Hooks](essentials/hooks/index.md)
+  - [Components](essentials/components/index.md)
   - [Component Lifecycle](essentials/lifecycle/index.md)
   - [Managing State](essentials/state/index.md)
   - [Async](essentials/async/index.md)
@@ -83,8 +84,6 @@
 
 ---
 - [Reference](reference/index.md)
-  - [Components](reference/components.md)
-  - [Props](reference/component_props.md)
   - [Event Handlers](reference/event_handlers.md)
 
 ---

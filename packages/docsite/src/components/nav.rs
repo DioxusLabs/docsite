@@ -175,7 +175,32 @@ fn LinkList() -> Element {
     }
 }
 
-type Results = Result<Vec<dioxus_search::SearchResult<Route>>, stork_lib::SearchError>;
+struct MergedSearchIndex {
+    docsrs: dioxus_search::SearchIndex<String>,
+    dioxus: dioxus_search::SearchIndex<Route>,
+}
+
+impl MergedSearchIndex {
+    fn search(
+        &self,
+        query: &str,
+    ) -> Result<Vec<dioxus_search::SearchResult<String>>, stork_lib::SearchError> {
+        let docsrs_results = self.docsrs.search(query)?;
+        let dioxus_results = self.dioxus.search(query)?;
+
+        // Take the first 5 results from dioxus and then append up to 5 results from docsrs
+        let merged_results = dioxus_results
+            .into_iter()
+            .take(5)
+            .map(|result| result.map(|route| route.to_string()))
+            .chain(docsrs_results.into_iter().take(5))
+            .collect();
+
+        Ok(merged_results)
+    }
+}
+
+type SearchItems = Result<Vec<dioxus_search::SearchResult<String>>, stork_lib::SearchError>;
 
 fn SearchModal() -> Element {
     let mut search_text = use_signal(String::new);
@@ -198,28 +223,35 @@ fn SearchModal() -> Element {
             _ => "0_6",
         };
 
-        let url = format!("{url_base}/index_searchable_{docs_index_version}.bin");
-
-        let data = reqwest::get(url).await.ok()?.bytes().await.ok()?;
+        let docsrs_url = format!("{url_base}/index_docsrs_{docs_index_version}.bin");
+        let data = reqwest::get(docsrs_url).await.ok()?.bytes().await.ok()?;
 
         let (bytes, _) =
             dioxus_search::yazi::decompress(&data, dioxus_search::yazi::Format::Zlib).ok()?;
 
-        let index: dioxus_search::SearchIndex<Route> =
+        let docsrs: dioxus_search::SearchIndex<String> =
+            dioxus_search::SearchIndex::from_bytes(format!("docsrs_{docs_index_version}"), bytes);
+
+        let dioxus_url = format!("{url_base}/index_searchable_{docs_index_version}.bin");
+
+        let data = reqwest::get(dioxus_url).await.ok()?.bytes().await.ok()?;
+
+        let (bytes, _) =
+            dioxus_search::yazi::decompress(&data, dioxus_search::yazi::Format::Zlib).ok()?;
+
+        let dioxus: dioxus_search::SearchIndex<Route> =
             dioxus_search::SearchIndex::from_bytes("search", bytes);
 
-        Some(index)
+        Some(MergedSearchIndex { docsrs, dioxus })
     });
 
     let search = move || {
         let query = &search_text.read();
-        let mut results = search_index
+        search_index
             .value()
             .as_ref()
             .and_then(|search| search.as_ref().map(|s| s.search(query)))
-            .unwrap_or_else(|| Ok(vec![]));
-
-        results
+            .unwrap_or_else(|| Ok(vec![]))
     };
 
     let mut results = use_signal(search);
@@ -307,7 +339,7 @@ fn SearchModal() -> Element {
 }
 
 #[component]
-fn SearchResults(results: Signal<Results>, search_text: Signal<String>) -> Element {
+fn SearchResults(results: Signal<SearchItems>, search_text: Signal<String>) -> Element {
     if let Err(err) = results.read().as_ref() {
         return rsx! {
             div { class: "text-red-500", "{err}" }
@@ -316,21 +348,6 @@ fn SearchResults(results: Signal<Results>, search_text: Signal<String>) -> Eleme
 
     let _results = results.read();
     let results = _results.deref().as_ref().unwrap();
-    let cur_route = use_route::<Route>();
-    let results = results
-        .iter()
-        .filter(|route| match route.route {
-            Route::Docs03 { .. } => matches!(cur_route, Route::Docs03 { .. }),
-            Route::Docs04 { .. } => matches!(cur_route, Route::Docs04 { .. }),
-            Route::Docs05 { .. } => matches!(cur_route, Route::Docs05 { .. }),
-            Route::Docs06 { .. } => {
-                !matches!(cur_route, Route::Docs03 { .. })
-                    && !matches!(cur_route, Route::Docs04 { .. })
-                    && !matches!(cur_route, Route::Docs05 { .. })
-            }
-            _ => true,
-        })
-        .collect::<Vec<_>>();
 
     use crate::docs::router_06::BookRoute;
 
@@ -390,7 +407,7 @@ fn SearchResults(results: Signal<Results>, search_text: Signal<String>) -> Eleme
                         title: result.title.clone(),
                         route: result.route.clone(),
                         span { class: "mt-1",
-                            for segment in result.excerpts.first().unwrap().text.iter() {
+                            for segment in result.excerpts.iter().take(1).flat_map(|excerpt| excerpt.text.iter()) {
                                 if segment.highlighted {
                                     span { class: "text-blue-500", "{segment.text}" }
                                 } else {
@@ -406,7 +423,8 @@ fn SearchResults(results: Signal<Results>, search_text: Signal<String>) -> Eleme
 }
 
 #[component]
-fn SearchResultItem(title: String, route: Route, children: Element) -> Element {
+fn SearchResultItem(title: String, route: String, children: Element) -> Element {
+    let docs_rs_route = route.starts_with("https://docs.rs/");
     rsx! {
         li { class: "w-full rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors duration-200 ease-in-out",
             Link {
@@ -417,8 +435,15 @@ fn SearchResultItem(title: String, route: Route, children: Element) -> Element {
                 class: "flex flex-row items-center gap-x-2 p-2",
                 div { class: "flex flex-col mt-1 mb-1",
                     span { class: "flex flex-row items-center gap-x-1",
-                        icons::DocumentIcon {}
+                        if docs_rs_route {
+                            icons::CratesIOIcon {}
+                        } else {
+                            icons::DocumentIcon {}
+                        }
                         h2 { class: "dark:text-white ml-1", "{title}" }
+                        if docs_rs_route {
+                            icons::ExternalLinkIcon2 {}
+                        }
                     }
                     {children}
                 }

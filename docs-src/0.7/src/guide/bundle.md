@@ -34,35 +34,9 @@ Setting up your environment for Android development takes time, so make sure to 
 - Install and set up an Android emulator
 - Install the Android rustup targets (`aarch64-linux-android armv7-linux-androideabi i686-linux-android x86_64-linux-android`)
 
-If we try to `dx serve --platform android`, we'll find that our app fails to build for Android. This is not good!
+Getting your Android install correct might be somewhat tricky, so try enabling "verbose" mode on dx to debug any issues.
 
-```text
-12:45:39 [cargo]   Could not find directory of OpenSSL installation, and this `-sys` crate cannot
-12:45:39 [cargo]   proceed without this knowledge. If OpenSSL is installed and this crate had
-12:45:39 [cargo]   trouble finding it,  you can set the `OPENSSL_DIR` environment variable for the
-12:45:39 [cargo]   compilation process.
-12:45:39 [cargo]   Make sure you also have the development packages of openssl installed.
-12:45:39 [cargo]   For example, `libssl-dev` on Ubuntu or `openssl-devel` on Fedora.
-12:45:39 [cargo]   If you're in a situation where you think the directory *should* be found
-12:45:39 [cargo]   automatically, please open a bug at https://github.com/sfackler/rust-openssl
-12:45:39 [cargo]   and include information about your system as well as this message.
-12:45:39 [cargo]   $HOST = aarch64-apple-darwin
-12:45:39 [cargo]   $TARGET = aarch64-linux-android
-12:45:39 [cargo]   openssl-sys = 0.9.104
-```
-
-Currently, `rust-openssl` does not cross-compile properly for Android targets. To fix this, we need to add the `openssl` crate to our Cargo.toml and then enable its "vendored" feature. This will build OpenSSL from source instead of trying and failing to read it from the Android NDK.
-
-We're only going to enable the vendored feature when targeting Android.
-
-```toml
-[target.'cfg(target_os = "android")'.dependencies]
-openssl = { version = "0.10", features = ["vendored"] }
-```
-
-In the future, Dioxus might add OpenSSL's vendored feature implicitly to make this error go away. We're covering it here since it's important to understand that not every Rust dependency works out-of-the-box for iOS and Android. Unfortunately, the Rust ecosystem for mobile is still quite young and you'll need to know how to solve problems like these.
-
-Let's try again!
+If all goes well, we can simply serve and our app should show up in our Android simulator.
 
 ```
 dx serve --platform android

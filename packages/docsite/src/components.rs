@@ -16,7 +16,9 @@ pub mod notfound;
 pub use notfound::*;
 pub mod playground;
 pub use playground::*;
+#[cfg(feature = "server")]
 pub mod search;
+#[cfg(feature = "server")]
 pub use search::*;
 pub mod component_demo;
 pub use component_demo::*;

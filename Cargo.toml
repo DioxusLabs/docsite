@@ -77,7 +77,7 @@ futures = "0.3.30"
 uuid = "1.8.0"
 gloo-net = { version = "0.6.0", features = ["websocket"] }
 gloo-utils = "0.2.0"
-axum = { version = "0.7.5" }
+axum = { version = "0.8" }
 reqwest = { version = "0.12.12" }
 thiserror = "2.0.4"
 yazi = "0.2.1"

@@ -9,7 +9,7 @@ fn main() {
             ServeConfig::builder()
                 // Enable incremental rendering
                 .incremental(
-                    IncrementalRendererConfig::new()
+                    dioxus::server::IncrementalRendererConfig::new()
                         // Store static files in the public directory where other static assets like wasm are stored
                         .static_dir(
                             std::env::current_exe()
@@ -62,6 +62,9 @@ pub enum Route {
 #[server(endpoint = "static_routes", output = server_fn::codec::Json)]
 async fn static_routes() -> Result<Vec<String>, ServerFnError> {
     // The `Routable` trait has a `static_routes` method that returns all static routes in the enum
-    Ok(Route::static_routes().iter().map(ToString::to_string).collect())
+    Ok(Route::static_routes()
+        .iter()
+        .map(ToString::to_string)
+        .collect())
 }
 // ANCHOR_END: static_routes
